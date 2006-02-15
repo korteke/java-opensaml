@@ -112,7 +112,7 @@ public interface XMLObject {
     public boolean hasChildren();
     
     /**
-     * Gets a list of child elements in the order that they will appear in the DOM.
+     * Gets an unmodifiable list of child elements in the order that they will appear in the DOM.
      * 
      * @return ordered list of child elements
      */
