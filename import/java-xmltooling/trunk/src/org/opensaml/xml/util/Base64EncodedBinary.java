@@ -32,7 +32,7 @@ public interface Base64EncodedBinary {
     public String getBase64EncodedValue();
     
     /**
-     * Gets the binary value, i.e. the Base64 decoded string.
+     * Gets the binary value of the Base64 decoded string.
      * 
      * @return the binary value
      */

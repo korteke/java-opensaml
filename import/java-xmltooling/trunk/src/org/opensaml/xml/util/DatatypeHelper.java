@@ -27,9 +27,6 @@ import javax.xml.datatype.Duration;
  */
 public class DatatypeHelper {
 
-    /** Constant representing the UTC Timezone */
-    public final static int UTC_TIMEZONE = 0;
-
     /** JAXP DatatypeFactory */
     private static DatatypeFactory dataTypeFactory;
 
