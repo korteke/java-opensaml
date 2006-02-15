@@ -22,17 +22,22 @@ import java.util.Set;
 import javax.xml.namespace.QName;
 
 import org.apache.log4j.Logger;
+import org.apache.xml.security.signature.XMLSignature;
+import org.apache.xml.security.signature.XMLSignatureException;
 import org.opensaml.xml.DOMCachingXMLObject;
 import org.opensaml.xml.Namespace;
+import org.opensaml.xml.SignableXMLObject;
+import org.opensaml.xml.SigningContext;
 import org.opensaml.xml.XMLObject;
+import org.opensaml.xml.signature.Signature;
 import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.util.XMLConstants;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
- * A thread safe, abstract implementation of the {@link org.opensaml.xml.io.Marshaller} interface that handles most
- * of the boilerplate code:
+ * A thread safe, abstract implementation of the {@link org.opensaml.xml.io.Marshaller} interface that handles most of
+ * the boilerplate code:
  * <ul>
  * <li>Ensuring elements to be marshalled are of either the correct xsi:type or element QName</li>
  * <li>Setting the appropriate namespace and prefix for the marshalled element</li>
@@ -56,7 +61,7 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller<XMLObjec
     /**
      * 
      * Constructor
-     *
+     * 
      * @param targetNamespaceURI the namespace URI of either the schema type QName or element QName of the elements this
      *            unmarshaller operates on
      * @param targetLocalName the local name of either the schema type QName or element QName of the elements this
@@ -97,21 +102,24 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller<XMLObjec
                 return domCachingObject.getDOM();
             }
         }
-        
-        if(log.isDebugEnabled()) {
+
+        if (log.isDebugEnabled()) {
             log.debug("Creating Element to marshall " + xmlObject.getElementQName() + " into");
         }
-        Element domElement = document.createElementNS(xmlObject.getElementQName().getNamespaceURI(), xmlObject.getElementQName().getLocalPart());
-        
-        if(log.isDebugEnabled()) {
-            log.debug("Setting namespace prefix for " + xmlObject.getElementQName().getPrefix() + " for XMLObject " + xmlObject.getElementQName());
+        Element domElement = document.createElementNS(xmlObject.getElementQName().getNamespaceURI(), xmlObject
+                .getElementQName().getLocalPart());
+
+        if (log.isDebugEnabled()) {
+            log.debug("Setting namespace prefix for " + xmlObject.getElementQName().getPrefix() + " for XMLObject "
+                    + xmlObject.getElementQName());
         }
         domElement.setPrefix(xmlObject.getElementQName().getPrefix());
 
         // Plant the element as the document root if this XMLObject is at the top of tree
         if (xmlObject.getParent() == null) {
-            if(log.isDebugEnabled()) {
-                log.debug("XMLObject " + xmlObject.getElementQName() + " is the root of the tree, planting it at the Document root");
+            if (log.isDebugEnabled()) {
+                log.debug("XMLObject " + xmlObject.getElementQName()
+                        + " is the root of the tree, planting it at the Document root");
             }
             Element docElement = document.getDocumentElement();
             if (document.getDocumentElement() != null) {
@@ -131,8 +139,12 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller<XMLObjec
 
         marshallElementType(xmlObject, domElement);
 
+        if (xmlObject instanceof SignableXMLObject) {
+            signElement(xmlObject);
+        }
+
         if (xmlObject instanceof DOMCachingXMLObject) {
-            if(log.isDebugEnabled()) {
+            if (log.isDebugEnabled()) {
                 log.debug("Caching DOM for XMLObject " + xmlObject.getElementQName());
             }
             ((DOMCachingXMLObject) xmlObject).setDOM(domElement);
@@ -148,26 +160,25 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller<XMLObjec
      * @param xmlObject the XMLObject to marshall
      */
     protected void checkXMLObjectIsTarget(XMLObject xmlObject) throws MarshallingException {
-        if(log.isDebugEnabled()) {
+        if (log.isDebugEnabled()) {
             log.debug("Checking that " + xmlObject.getElementQName() + " meets target criteria");
         }
-        
+
         QName type = xmlObject.getSchemaType();
         if (type != null && type.equals(targetQName)) {
-            if(log.isDebugEnabled()) {
+            if (log.isDebugEnabled()) {
                 log.debug(xmlObject.getElementQName() + " schema type matches target");
             }
             return;
-        }else {
+        } else {
             QName elementQName = xmlObject.getElementQName();
-            if(elementQName.equals(targetQName)) {
-                if(log.isDebugEnabled()) {
+            if (elementQName.equals(targetQName)) {
+                if (log.isDebugEnabled()) {
                     log.debug(xmlObject.getElementQName() + " element QName matches target");
                 }
                 return;
-            }else {
-                String errorMsg = "This marshaller only operations on " + targetQName + " elements not "
-                + elementQName;
+            } else {
+                String errorMsg = "This marshaller only operations on " + targetQName + " elements not " + elementQName;
                 log.error(errorMsg);
                 throw new MarshallingException(errorMsg);
             }
@@ -175,17 +186,18 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller<XMLObjec
     }
 
     protected Marshaller<XMLObject> getMarshaller(XMLObject xmlObject) throws MarshallingException {
-        if(log.isDebugEnabled()) {
+        if (log.isDebugEnabled()) {
             log.debug("Getting Marshalelr for XMLObject " + xmlObject.getElementQName());
         }
-        
+
         Marshaller<XMLObject> marshaller;
 
         // Try to get the marshaller based off the schema type
         marshaller = marshallerFactory.getMarshaller(xmlObject.getSchemaType());
         if (marshaller != null) {
-            if(log.isDebugEnabled()) {
-                log.debug("Marshaller" + marshaller.getClass() + " located based on schema type " + xmlObject.getSchemaType());
+            if (log.isDebugEnabled()) {
+                log.debug("Marshaller" + marshaller.getClass() + " located based on schema type "
+                        + xmlObject.getSchemaType());
             }
             return marshaller;
         }
@@ -193,8 +205,9 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller<XMLObjec
         // Since there was no marshaller registered for the schema type try to get one based off the element QName
         marshaller = marshallerFactory.getMarshaller(xmlObject.getElementQName());
         if (marshaller != null) {
-            if(log.isDebugEnabled()) {
-                log.debug("Marshaller" + marshaller.getClass() + " located based on element QName " + xmlObject.getElementQName());
+            if (log.isDebugEnabled()) {
+                log.debug("Marshaller" + marshaller.getClass() + " located based on element QName "
+                        + xmlObject.getElementQName());
             }
             return marshaller;
         }
@@ -225,13 +238,13 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller<XMLObjec
                     continue;
                 }
 
-                if(log.isDebugEnabled()) {
+                if (log.isDebugEnabled()) {
                     log.debug("Getting marshaller for child XMLObject " + childXMLObject.getElementQName());
                 }
                 Marshaller<XMLObject> marshaller = getMarshaller(childXMLObject);
-                
-                if(log.isDebugEnabled()) {
-                    log.debug("Marshalling "+ childXMLObject.getElementQName() + " and adding it to DOM");
+
+                if (log.isDebugEnabled()) {
+                    log.debug("Marshalling " + childXMLObject.getElementQName() + " and adding it to DOM");
                 }
                 domElement.appendChild(marshaller.marshall(childXMLObject, domElement.getOwnerDocument()));
             }
@@ -248,8 +261,8 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller<XMLObjec
      * @param xmlObject the XMLObject
      * @param domElement the DOM element
      * 
-     * @throws MarshallingException thrown if the type on the XMLObject is does contain a local name, local name
-     *             prefix, and namespace URI
+     * @throws MarshallingException thrown if the type on the XMLObject is does contain a local name, local name prefix,
+     *             and namespace URI
      */
     protected void marshallElementType(XMLObject xmlObject, Element domElement) throws MarshallingException {
         QName type = xmlObject.getSchemaType();
@@ -261,25 +274,27 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller<XMLObjec
             String typePrefix = type.getPrefix();
 
             if (typeLocalName == null) {
-                throw new MarshallingException("The type QName on XMLObject "
-                        + xmlObject.getElementQName() + " may not have a null local name");
+                throw new MarshallingException("The type QName on XMLObject " + xmlObject.getElementQName()
+                        + " may not have a null local name");
             }
 
             if (typePrefix == null) {
-                throw new MarshallingException("The type QName on XMLObject "
-                        + xmlObject.getElementQName() + " may not have a null prefix");
+                throw new MarshallingException("The type QName on XMLObject " + xmlObject.getElementQName()
+                        + " may not have a null prefix");
             }
 
             if (type.getNamespaceURI() == null) {
-                throw new MarshallingException("The type URI QName on XMLObject "
-                        + xmlObject.getElementQName() + " may not have a null namespace URI");
+                throw new MarshallingException("The type URI QName on XMLObject " + xmlObject.getElementQName()
+                        + " may not have a null namespace URI");
             }
 
             domElement.setAttributeNS(XMLConstants.XSI_NS, XMLConstants.XSI_PREFIX + ":type", typePrefix + ":"
                     + typeLocalName);
-            
-            if(log.isDebugEnabled()) {
-                log.debug("Adding XSI namespace to list of namespaces used by XMLObject " + xmlObject.getElementQName());
+
+            if (log.isDebugEnabled()) {
+                log
+                        .debug("Adding XSI namespace to list of namespaces used by XMLObject "
+                                + xmlObject.getElementQName());
             }
             xmlObject.addNamespace(new Namespace(XMLConstants.XSI_NS, XMLConstants.XSI_PREFIX));
         }
@@ -301,7 +316,27 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller<XMLObjec
                     .getNamespaceURI());
         }
     }
-    
+
+    protected void signElement(XMLObject xmlObject) throws MarshallingException {
+        SignableXMLObject signableXMLObject = (SignableXMLObject) xmlObject;
+
+        if (signableXMLObject.getSigningContext() != null) {
+            if (log.isDebugEnabled()) {
+                log.debug("Computing digital signature for " + xmlObject.getElementQName());
+            }
+            
+            Signature signature = signableXMLObject.getSignature();
+            SigningContext signingCtx = signableXMLObject.getSigningContext();
+            XMLSignature dsig = signature.getXMLSignature();
+
+            try {
+                dsig.sign(signingCtx.getSigningKey());
+            } catch (XMLSignatureException e) {
+                throw new MarshallingException("Unable compute digital signature for " + xmlObject.getElementQName(), e);
+            }
+        }
+    }
+
     /**
      * Marshalls a given XMLObject into a W3C Element. The given signing context should be blindly passed to the
      * marshaller for child elements. The XMLObject passed to this method is guaranteed to be of the target name
@@ -313,7 +348,7 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller<XMLObjec
      * @throws MarshallingException thrown if there is a problem marshalling the element
      */
     protected abstract void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException;
-    
+
     /**
      * Marshalls data from the XMLObject into content of the DOM Element.
      * 

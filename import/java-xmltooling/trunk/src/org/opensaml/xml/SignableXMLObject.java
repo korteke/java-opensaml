@@ -16,6 +16,8 @@
 
 package org.opensaml.xml;
 
+import org.opensaml.xml.signature.Signature;
+
 /**
  * An XMLObject whose DOM representation can be digitally signed.
  */
@@ -41,4 +43,8 @@ public interface SignableXMLObject extends XMLObject {
      * @param signingContext the information need to construct the digital signature for this element
      */
     public void setSigningContext(SigningContext signingContext);
+    
+    public Signature getSignature();
+    
+    public void setSignature(Signature newSignature);
 }

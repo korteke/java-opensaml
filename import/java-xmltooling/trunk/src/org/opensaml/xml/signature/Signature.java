@@ -18,74 +18,42 @@ package org.opensaml.xml.signature;
 
 import java.util.List;
 
+import org.apache.xml.security.signature.XMLSignature;
+import org.opensaml.xml.AbstractXMLObject;
 import org.opensaml.xml.XMLObject;
+import org.opensaml.xml.util.XMLConstants;
 
 /**
  * XMLObject representing XML Digital Signature, version 20020212, Signature element.
  */
-public interface Signature extends XMLObject {
+public class Signature extends AbstractXMLObject {
 
     /** Element local name */
     public final static String LOCAL_NAME = "Signature";
     
-    /** Id attribute name */
-    public final static String ID_ATTRIB_NAME = "Id";
-
+    private XMLSignature signature;
+    
     /**
-     * Gets the XML ID of this signature.
-     * 
-     * @return the XML ID of this signature
+     * Constructor
      */
-    public String getId();
-
-    /**
-     * Sets the XML ID of this signature.
-     * 
-     * @param newId the XML ID of this signature
+    public Signature() {
+        super(XMLConstants.XMLSIG_NS, LOCAL_NAME);
+        setElementNamespacePrefix(XMLConstants.XMLSIG_PREFIX);
+    }
+    
+    public XMLSignature getXMLSignature() {
+        return signature;
+    }
+    
+    protected void setXMLSignature(XMLSignature xmlSignature) {
+        signature = xmlSignature;
+    }
+    
+    /*
+     * @see org.opensaml.xml.XMLObject#getOrderedChildren()
      */
-    public void setId(String newId);
-
-    /**
-     * Gets the information about what was signed and what algorithims were used.
-     * 
-     * @return the information about what was signed and what algorithims were used
-     */
-    public SignedInfo getSignedInfo();
-
-    /**
-     * Sets the information about what was signed and what algorithims were used.
-     * 
-     * @param newSignedInfo the information about what was signed and what algorithims were used
-     */
-    public void setSignedInfo(SignedInfo newSignedInfo);
-
-    /**
-     * Gets the value of the signature.
-     * 
-     * @return the value of the signature
-     */
-    public SignatureValue getSignatureValue();
-
-    // No setSignatureValue as this is a computed value and must be handled by the underlying Digital Signature library
-
-    /**
-     * Gets the information about the key(s) used to compute the signature.
-     * 
-     * @return the information about the key(s) used to compute the signature
-     */
-    public KeyInfo getKeyInfo();
-
-    /**
-     * Sets the information about the key(s) used to compute the signature.
-     * 
-     * @param newKeyInfo the information about the key(s) used to compute the signature
-     */
-    public void setKeyInfo(KeyInfo newKeyInfo);
-
-    /**
-     * Gets the Object in the signature.
-     * 
-     * @return the Object in the signature
-     */
-    public List<SignatureObject> getObjects();    
+    public List<XMLObject> getOrderedChildren() {
+        //No children
+        return null;
+    }
 }
