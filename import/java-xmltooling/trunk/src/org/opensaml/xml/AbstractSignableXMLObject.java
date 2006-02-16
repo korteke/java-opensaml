@@ -20,7 +20,6 @@
 package org.opensaml.xml;
 
 import org.opensaml.xml.signature.Signature;
-import org.opensaml.xml.util.DigitalSignatureHelper;
 
 /**
  * Extension to {@link org.opensaml.xml.DOMCachingXMLObject} that implements {@link org.opensaml.xml.SignableXMLObject}.
@@ -44,7 +43,11 @@ public abstract class AbstractSignableXMLObject extends AbstractDOMCachingXMLObj
      * @see org.opensaml.xml.SignableXMLObject#isSigned()
      */
     public boolean isSigned() {
-        return DigitalSignatureHelper.isSigned(this);
+        if(signature != null && signature.getXMLSignature() != null) {
+            return true;
+        }
+        
+        return false;
     }
 
     /*

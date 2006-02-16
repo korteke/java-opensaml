@@ -19,71 +19,53 @@ package org.opensaml.xml.signature;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.cert.X509Certificate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.xml.security.algorithms.MessageDigestAlgorithm;
+import org.apache.xml.security.c14n.Canonicalizer;
 import org.apache.xml.security.signature.XMLSignature;
 
 /**
- * A data construct containing the information needed to digitally sign an XML Node.  By default the 
- * HMAC-SHA1 will be used to create the message digest and RSA-SHA1 will be used to create 
- * the signature.
+ * A data construct containing the information needed to digitally sign an XML Node.  Default algorithms are:
+ * <ul>
+ *   <li>Exlusive, omit comment, canonicalization</li>
+ *   <li>HMAC-SHA1 message digest</li>
+ *   <li>RSA-SHA1 signature algorithm</li>
+ * </ul>
  */
 public class SigningContext {
+
+    /** Method used to canonicalize the XML */
+    private String canonicalizationMethod;
     
-    /** ID attribute used as reference by digital signature */
-    private String idAttributeValue;
+    /** The signature algorithim */
+    private String signatureAlgorithim;
 
-    /**
-     * The signature algorithim
-     */
-    private String signatureAlgorithim = XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA1;
+    /** The digest algorithim */
+    private String digestAlgorithim;
 
-    /**
-     * The digest algorithim
-     */
-    private String digestAlgorithim = MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA1;
-
-    /**
-     * The signing key
-     */
+    /** The signing key */
     private PrivateKey signingKey;
 
-    /**
-     * Public key to validate signature with
-     */
+    /** Public key to validate signature with */
     private PublicKey publicKey;
 
-    /**
-     * Certificate containing the public key to validate signature with
-     */
-    private X509Certificate publicKeyCert;
-
-    /**
-     * The certificates to be included with the signature
-     */
+    /** The certificates to be included with the signature */
     private Set<X509Certificate> certs;
+    
+    /** Transforms applied to content to be signed */
+    private List<String> transforms;
 
     /**
-     * Constructor.  Neither the idAttributeName nor the idAttributeValue may be null or an empty string.
-     * 
-     * @param idAttributeValue ID attribute value used as a reference for the signature
+     * Constructor
      */
-    public SigningContext(String idAttributeValue) throws NullPointerException{
-        if(idAttributeValue == null || idAttributeValue.trim().length() <= 0) {
-            throw new NullPointerException("ID attribute value may not be null or empty");
-        }else {
-            this.idAttributeValue = idAttributeValue.trim();
-        }
-    }
-    
-    /**
-     * Gets the ID attribute value used for the digital signature.
-     * 
-     * @return the ID attribute value used for the digital signature
-     */
-    public String getIdAttributeValue() {
-        return idAttributeValue;
+    public SigningContext() throws NullPointerException{
+        canonicalizationMethod = Canonicalizer.ALGO_ID_C14N_EXCL_OMIT_COMMENTS;
+        signatureAlgorithim = XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA1;
+        digestAlgorithim = MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA1;
+        transforms = new ArrayList<String>();
     }
 
     /**
@@ -103,13 +85,31 @@ public class SigningContext {
     public void setCerts(Set<X509Certificate> certs) {
         this.certs = certs;
     }
+    
+    /**
+     * Gets the canonicalization algorithim used to construct the signature.
+     * 
+     * @return the canonicalization algorithim used to construct the signature
+     */
+    public String getCanonicalizationAlgorithm() {
+        return canonicalizationMethod;
+    }
+    
+    /**
+     * Sets the canonicalization algorithim used to construct the signature.
+     * 
+     * @param newAlgorithm the canonicalization algorithim used to construct the signature
+     */
+    public void setCanonicalizationAlgortihm(String newAlgorithm) {
+        canonicalizationMethod = newAlgorithm;
+    }
 
     /**
      * Gets the digest algorithim used in creating the signature.
      * 
      * @return the digest algorithim used in creating the signature
      */
-    public String getDigestAlgorithim() {
+    public String getDigestAlgorithm() {
         return digestAlgorithim;
     }
 
@@ -118,7 +118,7 @@ public class SigningContext {
      * 
      * @param digestAlgorithim the digest algorithim used in creating the signature
      */
-    public void setDigestAlgorithim(String digestAlgorithim) {
+    public void setDigestAlgorithm(String digestAlgorithim) {
         this.digestAlgorithim = digestAlgorithim;
     }
 
@@ -127,7 +127,7 @@ public class SigningContext {
      * 
      * @return the signature algorithim used in creating the signature
      */
-    public String getSignatureAlgorithim() {
+    public String getSignatureAlgorithm() {
         return signatureAlgorithim;
     }
 
@@ -136,8 +136,19 @@ public class SigningContext {
      * 
      * @param signatureAlgorithim the signature algorithim used in creating the signature
      */
-    public void setSignatureAlgorithim(String signatureAlgorithim) {
+    public void setSignatureAlgorithm(String signatureAlgorithim) {
         this.signatureAlgorithim = signatureAlgorithim;
+    }
+    
+    /**
+     * Gets the transforms applied to the content before a digest is computed.  See 
+     * {@link org.apache.xml.security.transforms.Transforms} for a list of available 
+     * transforms.
+     * 
+     * @return the transforms applied to the content before a digest is computed
+     */
+    public List<String> getTransforms(){
+        return transforms;
     }
 
     /**
@@ -174,23 +185,5 @@ public class SigningContext {
      */
     public void setPublicKey(PublicKey key) {
         publicKey = key;
-    }
-
-    /**
-     * Gets the certificate containing the public key used to validate the signature.
-     * 
-     * @return certificate containing the public key used to validate the signature
-     */
-    public X509Certificate getPublicKeyCertificate() {
-        return publicKeyCert;
-    }
-
-    /**
-     * Sets the certificate containing the public key used to validate the signature.
-     * 
-     * @param cert the certificate containing the public key used to validate the signature
-     */
-    public void setPublicKeyCertificate(X509Certificate cert) {
-        publicKeyCert = cert;
     }
 }

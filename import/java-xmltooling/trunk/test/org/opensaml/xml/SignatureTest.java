@@ -16,35 +16,28 @@
 
 package org.opensaml.xml;
 
+import java.rmi.UnmarshalException;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 
-import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import junit.framework.TestCase;
-
-import org.apache.xml.security.Init;
-import org.opensaml.xml.io.Marshaller;
-import org.opensaml.xml.io.MarshallerFactory;
+import org.apache.xml.security.transforms.Transforms;
 import org.opensaml.xml.io.MarshallingException;
+import org.opensaml.xml.io.Unmarshaller;
 import org.opensaml.xml.mock.SimpleXMLObject;
 import org.opensaml.xml.mock.SimpleXMLObjectMarshaller;
 import org.opensaml.xml.signature.Signature;
-import org.opensaml.xml.signature.SignatureMarshaller;
 import org.opensaml.xml.signature.SigningContext;
-import org.opensaml.xml.util.XMLConstants;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.ls.DOMImplementationLS;
 import org.w3c.dom.ls.LSSerializer;
 
-public class SignatureTest extends TestCase {
-
-    private MarshallerFactory<QName, Marshaller<XMLObject>> marshallerFactory;
+public class SignatureTest extends XMLObjectBaseTestCase {
     
     /** Signing key */
     private PrivateKey signingKey;
@@ -56,14 +49,14 @@ public class SignatureTest extends TestCase {
     
     private Document document;
     
+    private Document expectedDocument;
+    
+    public SignatureTest() {
+        
+    }
+    
     protected void setUp() throws Exception {
         super.setUp();
-        
-        Init.init();
-        
-        marshallerFactory = new MarshallerFactory<QName, Marshaller<XMLObject>>();
-        marshallerFactory.registerMarshaller(new QName(SimpleXMLObject.NAMESAPACE, SimpleXMLObject.LOCAL_NAME), new SimpleXMLObjectMarshaller(marshallerFactory));
-        marshallerFactory.registerMarshaller(new QName(XMLConstants.XMLSIG_NS, Signature.LOCAL_NAME), new SignatureMarshaller());
         
         KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
         KeyPair keyPair = keyGen.generateKeyPair();
@@ -73,6 +66,7 @@ public class SignatureTest extends TestCase {
         ID = "Foo";
         
         document = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+        expectedDocument = parse("/data/org/opensaml/xml/mock/SignedSimpleXMLObject.xml");
     }
 
     public void testSigning() throws MarshallingException {
@@ -88,21 +82,24 @@ public class SignatureTest extends TestCase {
         SimpleXMLObject child3 = new SimpleXMLObject();
         rootXMLObject.getSimpleXMLObjects().add(child3);
         
-        SigningContext dsigCtx = new SigningContext(ID);
+        SigningContext dsigCtx = new SigningContext();
+        dsigCtx.getTransforms().add(Transforms.TRANSFORM_ENVELOPED_SIGNATURE);
+        dsigCtx.getTransforms().add(Transforms.TRANSFORM_C14N_EXCL_OMIT_COMMENTS);
         dsigCtx.setSigningKey(signingKey);
         dsigCtx.setPublicKey(publicKey);
         
-        rootXMLObject.setSignature(new Signature(dsigCtx));
+        Signature signature = new Signature(dsigCtx);
+        signature.setId("#" + ID);
+        rootXMLObject.setSignature(signature);
         
         SimpleXMLObjectMarshaller marshaller = new SimpleXMLObjectMarshaller(marshallerFactory);
         Element domElement = marshaller.marshall(rootXMLObject, document);
+        
+        //assertEquals(expectedDocument.getDocumentElement(), domElement);
         System.out.println(elementToString(domElement));
     }
     
-    public String elementToString(Element domElement) {
-        DOMImplementation domImpl = domElement.getOwnerDocument().getImplementation();
-        DOMImplementationLS domImplLS = (DOMImplementationLS) domImpl.getFeature("LS", "3.0");
-        LSSerializer serializer = domImplLS.createLSSerializer();
-        return serializer.writeToString(domElement);
+    public void testSignatureVerification() throws UnmarshalException{
+
     }
 }

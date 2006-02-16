@@ -41,7 +41,8 @@ import org.w3c.dom.Element;
 
 /**
  * A marshaller for {@link org.opensaml.xml.signature.Signature} objects that creates the XML Digital Signature element
- * Signature and its children. This marshaller does not do the actual signing.
+ * Signature and its children. This marshaller does not do the actual signing.  Creation of the signature is handled by the
+ * marshaller of the for the parent object of the Signature by way of the {@link org.opensaml.xml.io.AbstractXMLObjectMarshaller}.
  */
 public class SignatureMarshaller implements Marshaller<XMLObject> {
 
@@ -60,7 +61,7 @@ public class SignatureMarshaller implements Marshaller<XMLObject> {
      */
     public Element marshall(XMLObject xmlObject, Document document) throws MarshallingException {
         Signature signature = (Signature) xmlObject;
-        
+
         if (log.isDebugEnabled()) {
             log.debug("Starting to marshall " + xmlObject.getElementQName());
         }
@@ -77,15 +78,8 @@ public class SignatureMarshaller implements Marshaller<XMLObject> {
             if (log.isDebugEnabled()) {
                 log.debug("Creating XMLSignature object");
             }
-            XMLSignature dsig = new XMLSignature(document, "", signatureContext.getSignatureAlgorithim(),
+            XMLSignature dsig = new XMLSignature(document, "", signatureContext.getSignatureAlgorithm(),
                     Canonicalizer.ALGO_ID_C14N_EXCL_OMIT_COMMENTS);
-
-            if (signatureContext.getPublicKeyCertificate() != null) {
-                if (log.isDebugEnabled()) {
-                    log.debug("Adding public key certificates to signature key info");
-                }
-                dsig.addKeyInfo(signatureContext.getPublicKeyCertificate());
-            }
 
             if (signatureContext.getPublicKey() != null) {
                 if (log.isDebugEnabled()) {
@@ -97,7 +91,7 @@ public class SignatureMarshaller implements Marshaller<XMLObject> {
             X509Data x509Data = new X509Data(document);
             if (signatureContext.getCerts() != null) {
                 if (log.isDebugEnabled()) {
-                    log.debug("Adding additional X.509 certifiactes into signature's X509 data");
+                    log.debug("Adding X.509 certifiacte(s) into signature's X509 data");
                 }
                 for (X509Certificate cert : signatureContext.getCerts()) {
                     x509Data.addCertificate(cert);
@@ -108,8 +102,12 @@ public class SignatureMarshaller implements Marshaller<XMLObject> {
                 log.debug("Adding content transforms to XMLSignature.");
             }
             Transforms dsigTransforms = new Transforms(dsig.getDocument());
-            dsigTransforms.addTransform(Transforms.TRANSFORM_ENVELOPED_SIGNATURE);
-            dsigTransforms.addTransform(Transforms.TRANSFORM_C14N_EXCL_OMIT_COMMENTS);
+            for(String transform : signatureContext.getTransforms()) {
+                if (log.isDebugEnabled()) {
+                    log.debug("Adding content transform " + transform);
+                }
+                dsigTransforms.addTransform(transform);
+            }
 
             // Namespaces that aren't visibly used, such as those used in QName attribute values, would
             // be stripped out by exclusive canonicalization. Need to make sure they aren't by explicitly
@@ -132,8 +130,7 @@ public class SignatureMarshaller implements Marshaller<XMLObject> {
             if (log.isDebugEnabled()) {
                 log.debug("Adding in-document URI ID based reference to content being signed");
             }
-            dsig.addDocument("#" + signatureContext.getIdAttributeValue(), dsigTransforms, signatureContext
-                    .getDigestAlgorithim());
+            dsig.addDocument(signature.getId(), dsigTransforms, signatureContext.getDigestAlgorithm());
 
             signature.setXMLSignature(dsig);
 

@@ -31,6 +31,9 @@ public class Signature extends AbstractXMLObject {
     /** Element local name */
     public final static String LOCAL_NAME = "Signature";
     
+    /** ID attribute used as reference by digital signature */
+    private String id;
+    
     /** Signing information */
     private SigningContext signingContext;
     
@@ -38,7 +41,10 @@ public class Signature extends AbstractXMLObject {
     private XMLSignature signature;
     
     /**
-     * Constructor
+     * Constructor.  Note, the provided signing context is NOT altered by this class and thus 
+     * can be reused if deemed appropriate.
+     * 
+     * @param signingContext configuration information for computing the signature
      */
     public Signature(final SigningContext signingContext) {
         super(XMLConstants.XMLSIG_NS, LOCAL_NAME);
@@ -53,6 +59,24 @@ public class Signature extends AbstractXMLObject {
      */
     public SigningContext getSigningContext(){
         return signingContext;
+    }
+    
+    /**
+     * Gets the value if the Signature's Id attribute.
+     * 
+     * @return the value if the Signature's Id attribute
+     */
+    public String getId() {
+        return id;
+    }
+    
+    /**
+     * Sets the value if the Signature's Id attribute.
+     * 
+     * @param newID the value if the Signature's Id attribute
+     */
+    public void setId(String newID) {
+        id = newID;
     }
 
     /**

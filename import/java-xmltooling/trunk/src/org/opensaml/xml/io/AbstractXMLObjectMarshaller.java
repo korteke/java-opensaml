@@ -339,6 +339,7 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller<XMLObjec
             try {
                 dsig.sign(signingCtx.getSigningKey());
             } catch (XMLSignatureException e) {
+                log.error("Unable compute digital signature for " + xmlObject.getElementQName(), e);
                 throw new MarshallingException("Unable compute digital signature for " + xmlObject.getElementQName(), e);
             }
         }
