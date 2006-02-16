@@ -27,9 +27,9 @@ import org.apache.xml.security.signature.XMLSignatureException;
 import org.opensaml.xml.DOMCachingXMLObject;
 import org.opensaml.xml.Namespace;
 import org.opensaml.xml.SignableXMLObject;
-import org.opensaml.xml.SigningContext;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.signature.Signature;
+import org.opensaml.xml.signature.SigningContext;
 import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.util.XMLConstants;
 import org.w3c.dom.Document;
@@ -317,16 +317,23 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller<XMLObjec
         }
     }
 
+    /**
+     * Signs the DOM representation of the given XMLObject.
+     * 
+     * @param xmlObject the XMLObject whose XML representation will be signed
+     * 
+     * @throws MarshallingException thrown is there is a problem signing the XML
+     */
     protected void signElement(XMLObject xmlObject) throws MarshallingException {
         SignableXMLObject signableXMLObject = (SignableXMLObject) xmlObject;
 
-        if (signableXMLObject.getSigningContext() != null) {
+        Signature signature = signableXMLObject.getSignature();
+        if (signature != null) {
             if (log.isDebugEnabled()) {
                 log.debug("Computing digital signature for " + xmlObject.getElementQName());
             }
             
-            Signature signature = signableXMLObject.getSignature();
-            SigningContext signingCtx = signableXMLObject.getSigningContext();
+            SigningContext signingCtx = signature.getSigningContext();
             XMLSignature dsig = signature.getXMLSignature();
 
             try {

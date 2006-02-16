@@ -34,6 +34,7 @@ import org.opensaml.xml.mock.SimpleXMLObject;
 import org.opensaml.xml.mock.SimpleXMLObjectMarshaller;
 import org.opensaml.xml.signature.Signature;
 import org.opensaml.xml.signature.SignatureMarshaller;
+import org.opensaml.xml.signature.SigningContext;
 import org.opensaml.xml.util.XMLConstants;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
@@ -87,12 +88,11 @@ public class SignatureTest extends TestCase {
         SimpleXMLObject child3 = new SimpleXMLObject();
         rootXMLObject.getSimpleXMLObjects().add(child3);
         
-        SigningContext dsigCtx = new SigningContext(SimpleXMLObject.ID_ATTRIB_NAME, ID);
+        SigningContext dsigCtx = new SigningContext(ID);
         dsigCtx.setSigningKey(signingKey);
         dsigCtx.setPublicKey(publicKey);
-        rootXMLObject.setSigningContext(dsigCtx);
         
-        rootXMLObject.setSignature(new Signature());
+        rootXMLObject.setSignature(new Signature(dsigCtx));
         
         SimpleXMLObjectMarshaller marshaller = new SimpleXMLObjectMarshaller(marshallerFactory);
         Element domElement = marshaller.marshall(rootXMLObject, document);

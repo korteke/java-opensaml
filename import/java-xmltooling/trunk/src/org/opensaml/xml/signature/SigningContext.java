@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.xml;
+package org.opensaml.xml.signature;
 
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -30,9 +30,6 @@ import org.apache.xml.security.signature.XMLSignature;
  * the signature.
  */
 public class SigningContext {
-
-    /** Name of the attribute used as a reference by the digital signature */
-    private String idAttributeName;
     
     /** ID attribute used as reference by digital signature */
     private String idAttributeValue;
@@ -70,30 +67,14 @@ public class SigningContext {
     /**
      * Constructor.  Neither the idAttributeName nor the idAttributeValue may be null or an empty string.
      * 
-     * @param idAttributeName the name of the ID attribute used as a reference for the signature
      * @param idAttributeValue ID attribute value used as a reference for the signature
      */
-    public SigningContext(String idAttributeName, String idAttributeValue) throws NullPointerException{
-        if(idAttributeName == null || idAttributeName.trim().length() <= 0) {
-            throw new NullPointerException("ID attribute name may not be null or empty");
-        }else {
-            this.idAttributeName = idAttributeName.trim();
-        }
-        
+    public SigningContext(String idAttributeValue) throws NullPointerException{
         if(idAttributeValue == null || idAttributeValue.trim().length() <= 0) {
             throw new NullPointerException("ID attribute value may not be null or empty");
         }else {
             this.idAttributeValue = idAttributeValue.trim();
         }
-    }
-
-    /**
-     * Gets the name of the ID attribute used for the digital signature reference.
-     * 
-     * @return the name of the ID attribute used for the digital signature reference
-     */
-    public String getIdAttributeName() {
-        return idAttributeName;
     }
     
     /**

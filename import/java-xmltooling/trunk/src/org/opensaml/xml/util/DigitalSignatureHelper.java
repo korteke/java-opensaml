@@ -19,19 +19,14 @@ package org.opensaml.xml.util;
 import java.security.PublicKey;
 import java.security.SignatureException;
 import java.security.cert.X509Certificate;
-import java.util.Set;
 
-import org.apache.xml.security.c14n.Canonicalizer;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.keys.KeyInfo;
-import org.apache.xml.security.keys.content.X509Data;
 import org.apache.xml.security.signature.XMLSignature;
-import org.apache.xml.security.transforms.Transforms;
-import org.apache.xml.security.transforms.params.InclusiveNamespaces;
 import org.opensaml.xml.DOMCachingXMLObject;
 import org.opensaml.xml.SignableXMLObject;
-import org.opensaml.xml.SigningContext;
 import org.opensaml.xml.XMLObject;
+import org.opensaml.xml.signature.SigningContext;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -113,67 +108,6 @@ public class DigitalSignatureHelper {
     }
 
     /**
-     * Signs a DOM element.
-     * 
-     * @param domElement the DOM Element to be signed
-     * @param signatureContext the signature context containing the information need for signing
-     * @param inclusiveNamespacePrefixes list of namespace, identified by prefix, to include in the signature
-     * 
-     * @throws SignatureException thrown if there is a problem creating the signature
-     */
-    public static void signElement(Element domElement, SigningContext signatureContext,
-            Set<String> inclusiveNamespacePrefixes) throws SignatureException {
-        try {
-            String idAttributeName = signatureContext.getIdAttributeName();
-            String idAttributeValue = signatureContext.getIdAttributeValue();
-
-            domElement.setAttributeNS(null, idAttributeName, idAttributeValue);
-            domElement.setIdAttributeNS(null, idAttributeName, true);
-
-            XMLSignature dsig = new XMLSignature(domElement.getOwnerDocument(), "", signatureContext
-                    .getSignatureAlgorithim(), Canonicalizer.ALGO_ID_C14N_EXCL_OMIT_COMMENTS);
-
-            if (signatureContext.getPublicKeyCertificate() != null) {
-                dsig.addKeyInfo(signatureContext.getPublicKeyCertificate());
-            }
-            if (signatureContext.getPublicKey() != null) {
-                dsig.addKeyInfo(signatureContext.getPublicKey());
-            }
-
-            domElement.appendChild(dsig.getElement());
-
-            // Create the transformations the element will go through to prepare for signing
-            Transforms dsigTransforms = new Transforms(dsig.getDocument());
-            dsigTransforms.addTransform(Transforms.TRANSFORM_ENVELOPED_SIGNATURE);
-            dsigTransforms.addTransform(Transforms.TRANSFORM_C14N_EXCL_OMIT_COMMENTS);
-
-            // Namespaces that aren't visibly used, such as those used in QName attribute values, would
-            // be stripped out by exclusive canonicalization. Need to make sure they aren't by explicitly
-            // telling the transformer about them.
-            if (inclusiveNamespacePrefixes != null && inclusiveNamespacePrefixes.size() > 0) {
-                InclusiveNamespaces inclusiveNamespaces = new InclusiveNamespaces(domElement.getOwnerDocument(),
-                        inclusiveNamespacePrefixes);
-                Element transformElem = dsigTransforms.item(1).getElement();
-                transformElem.appendChild(inclusiveNamespaces.getElement());
-            }
-
-            dsig.addDocument("#" + idAttributeValue, dsigTransforms, signatureContext.getDigestAlgorithim());
-
-            X509Data x509Data = new X509Data(domElement.getOwnerDocument());
-            if (signatureContext.getCerts() != null) {
-                for (X509Certificate cert : signatureContext.getCerts()) {
-                    x509Data.addCertificate(cert);
-                }
-            }
-
-            dsig.sign(signatureContext.getSigningKey());
-
-        } catch (XMLSecurityException e) {
-            throw new SignatureException("Unable to sign Element " + domElement.getLocalName(), e);
-        }
-    }
-
-    /**
      * Removes the digital signature, including the associated {@link SigningContext}, from the given XMLObject.  If
      * the XMLObject is not signed nothing happens.
      * 
@@ -185,7 +119,7 @@ public class DigitalSignatureHelper {
             removeSignature(domCachingXMLObject.getDOM());
             
             SignableXMLObject signableXMLObject = (SignableXMLObject)xmlObject;
-            signableXMLObject.setSigningContext(null);
+            signableXMLObject.setSignature(null);
         }
     }
 
@@ -279,7 +213,7 @@ public class DigitalSignatureHelper {
                 return null;
             }
 
-            SigningContext signatureContext = new SigningContext(idAttribute.getLocalName(), idAttribute.getValue());
+            org.opensaml.xml.signature.SigningContext signatureContext = new SigningContext(idAttribute.getValue());
 
             XMLSignature signature = new XMLSignature(signatureElement, "");
 

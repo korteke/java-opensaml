@@ -33,7 +33,6 @@ import org.apache.xml.security.transforms.Transforms;
 import org.apache.xml.security.transforms.params.InclusiveNamespaces;
 import org.opensaml.xml.Namespace;
 import org.opensaml.xml.SignableXMLObject;
-import org.opensaml.xml.SigningContext;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallingException;
@@ -72,8 +71,7 @@ public class SignatureMarshaller implements Marshaller<XMLObject> {
                     "Parent XMLObject was not an instance of SignableXMLObject, can not create digital signature");
         }
 
-        SignableXMLObject signableParentXMLObject = (SignableXMLObject) parentXMLObject;
-        SigningContext signatureContext = signableParentXMLObject.getSigningContext();
+        SigningContext signatureContext = signature.getSigningContext();
 
         try {
             if (log.isDebugEnabled()) {

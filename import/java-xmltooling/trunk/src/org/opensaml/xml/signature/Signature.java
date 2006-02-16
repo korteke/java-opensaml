@@ -31,20 +31,44 @@ public class Signature extends AbstractXMLObject {
     /** Element local name */
     public final static String LOCAL_NAME = "Signature";
     
+    /** Signing information */
+    private SigningContext signingContext;
+    
+    /** XML Signature construct */
     private XMLSignature signature;
     
     /**
      * Constructor
      */
-    public Signature() {
+    public Signature(final SigningContext signingContext) {
         super(XMLConstants.XMLSIG_NS, LOCAL_NAME);
         setElementNamespacePrefix(XMLConstants.XMLSIG_PREFIX);
+        this.signingContext = signingContext;
     }
     
+    /**
+     * Gets the information need to construct the digital signature for this element.
+     * 
+     * @return the information need to construct the digital signature for this element
+     */
+    public SigningContext getSigningContext(){
+        return signingContext;
+    }
+
+    /**
+     * Gets the XML signature construct.
+     * 
+     * @return the XML signature construct
+     */
     public XMLSignature getXMLSignature() {
         return signature;
     }
     
+    /**
+     * Sets the XML signature construct.
+     * 
+     * @param xmlSignature the XML signature construct
+     */
     protected void setXMLSignature(XMLSignature xmlSignature) {
         signature = xmlSignature;
     }

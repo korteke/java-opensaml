@@ -29,22 +29,18 @@ public interface SignableXMLObject extends XMLObject {
      * @return true if this element is signed, false if not
      */
     public boolean isSigned();
-
-    /**
-     * Gets the information need to construct the digital signature for this element.
-     * 
-     * @return the information need to construct the digital signature for this element
-     */
-    public SigningContext getSigningContext();
-
-    /**
-     * Sets the information need to construct the digital signature for this element.
-     * 
-     * @param signingContext the information need to construct the digital signature for this element
-     */
-    public void setSigningContext(SigningContext signingContext);
     
+    /**
+     * Gets the Signature XMLObject.
+     * 
+     * @return the Signature XMLObject
+     */
     public Signature getSignature();
     
+    /**
+     * Sets the Signature XMLObject.
+     * 
+     * @param newSignature the Signature XMLObject
+     */
     public void setSignature(Signature newSignature);
 }

@@ -19,6 +19,7 @@
  */
 package org.opensaml.xml;
 
+import org.opensaml.xml.signature.Signature;
 import org.opensaml.xml.util.DigitalSignatureHelper;
 
 /**
@@ -26,8 +27,8 @@ import org.opensaml.xml.util.DigitalSignatureHelper;
  */
 public abstract class AbstractSignableXMLObject extends AbstractDOMCachingXMLObject implements SignableXMLObject {
 
-    /** Signature context */
-    private SigningContext sigCtx;
+    /** Signature */
+    private Signature signature;
     
     /**
      * Constructor
@@ -47,16 +48,16 @@ public abstract class AbstractSignableXMLObject extends AbstractDOMCachingXMLObj
     }
 
     /*
-     * @see org.opensaml.xml.SignableXMLObject#getSigningContext()
+     * @see org.opensaml.xml.SignableXMLObject#getSignature()
      */
-    public SigningContext getSigningContext() {
-        return sigCtx;
+    public Signature getSignature(){
+        return signature;
     }
-
+    
     /*
-     * @see org.opensaml.xml.SignableXMLObject#setSigningContext(org.opensaml.xml.SigningContext)
+     * @see org.opensaml.xml.SignableXMLObject#setSignature(org.opensaml.xml.signature.Signature)
      */
-    public void setSigningContext(SigningContext signingContext) {
-        sigCtx = signingContext;
+    public void setSignature(Signature newSignature){
+        signature = prepareForAssignment(signature, newSignature);
     }
 }
