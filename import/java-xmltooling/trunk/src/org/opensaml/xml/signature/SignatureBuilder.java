@@ -17,12 +17,11 @@
 package org.opensaml.xml.signature;
 
 import org.opensaml.xml.AbstractXMLObjectBuilder;
-import org.opensaml.xml.XMLObject;
 
 /**
  * Builder of {@link org.opensaml.xml.signature.Signature}s.
  */
-public class SignatureBuilder extends AbstractXMLObjectBuilder<XMLObject>{
+public class SignatureBuilder extends AbstractXMLObjectBuilder{
 
     /** Signing context used when creating a Signature */
     private SigningContext context;

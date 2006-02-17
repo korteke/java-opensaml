@@ -48,11 +48,11 @@ public class XMLObjectBaseTestCase extends XMLTestCase {
 
     protected ParserPool parserPool;
     
-    protected XMLObjectBuilderFactory<QName, XMLObjectBuilder<XMLObject>> builderFactory;
+    protected XMLObjectBuilderFactory<QName, XMLObjectBuilder> builderFactory;
     
-    protected MarshallerFactory<QName, Marshaller<XMLObject>> marshallerFactory;
+    protected MarshallerFactory<QName, Marshaller> marshallerFactory;
     
-    protected UnmarshallerFactory<QName, Unmarshaller<XMLObject>> unmarshallerFactory;
+    protected UnmarshallerFactory<QName, Unmarshaller> unmarshallerFactory;
     
     public XMLObjectBaseTestCase(){
         Init.init();
@@ -63,15 +63,15 @@ public class XMLObjectBaseTestCase extends XMLTestCase {
         
         parserPool = new ParserPool(true, null, features);
         
-        builderFactory = new XMLObjectBuilderFactory<QName, XMLObjectBuilder<XMLObject>>();
+        builderFactory = new XMLObjectBuilderFactory<QName, XMLObjectBuilder>();
         builderFactory.registerBuilder(new QName(XMLConstants.XMLSIG_NS, Signature.LOCAL_NAME), new SignatureBuilder());
         builderFactory.registerBuilder(new QName(SimpleXMLObject.NAMESAPACE, SimpleXMLObject.LOCAL_NAME), new SimpleXMLObjectBuilder());
         
-        marshallerFactory = new MarshallerFactory<QName, Marshaller<XMLObject>>();
+        marshallerFactory = new MarshallerFactory<QName, Marshaller>();
         marshallerFactory.registerMarshaller(new QName(XMLConstants.XMLSIG_NS, Signature.LOCAL_NAME), new SignatureMarshaller());
         marshallerFactory.registerMarshaller(new QName(SimpleXMLObject.NAMESAPACE, SimpleXMLObject.LOCAL_NAME), new SimpleXMLObjectMarshaller(marshallerFactory));
         
-        unmarshallerFactory = new UnmarshallerFactory<QName, Unmarshaller<XMLObject>>();
+        unmarshallerFactory = new UnmarshallerFactory<QName, Unmarshaller>();
         unmarshallerFactory.registerUnmarshaller(new QName(XMLConstants.XMLSIG_NS, Signature.LOCAL_NAME), new SignatureUnmarshaller());
         unmarshallerFactory.registerUnmarshaller(new QName(SimpleXMLObject.NAMESAPACE, SimpleXMLObject.LOCAL_NAME), new SimpleXMLObjectUnmarshaller(builderFactory, unmarshallerFactory));
     }

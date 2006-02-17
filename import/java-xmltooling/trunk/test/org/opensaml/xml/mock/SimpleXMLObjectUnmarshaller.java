@@ -41,8 +41,8 @@ public class SimpleXMLObjectUnmarshaller extends AbstractXMLObjectUnmarshaller {
      * @param xmlObjectBuilderFactory factory for retrieving XMLObjectBuilders
      * @param unmarshallerFactory factory for retrieving Unmarshallers
      */
-    public SimpleXMLObjectUnmarshaller(XMLObjectBuilderFactory<QName, XMLObjectBuilder<XMLObject>> xmlObjectBuilderFactory,
-            UnmarshallerFactory<QName, Unmarshaller<XMLObject>> unmarshallerFactory){
+    public SimpleXMLObjectUnmarshaller(XMLObjectBuilderFactory<QName, XMLObjectBuilder> xmlObjectBuilderFactory,
+            UnmarshallerFactory<QName, Unmarshaller> unmarshallerFactory){
         super(SimpleXMLObject.NAMESAPACE, SimpleXMLObject.LOCAL_NAME, xmlObjectBuilderFactory, unmarshallerFactory);
     }
     

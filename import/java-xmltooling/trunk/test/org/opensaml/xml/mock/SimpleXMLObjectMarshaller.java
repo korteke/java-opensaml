@@ -31,7 +31,7 @@ import org.w3c.dom.Element;
  */
 public class SimpleXMLObjectMarshaller extends AbstractXMLObjectMarshaller {
 
-    public SimpleXMLObjectMarshaller(MarshallerFactory<QName, Marshaller<XMLObject>> marshallerFactory) {
+    public SimpleXMLObjectMarshaller(MarshallerFactory<QName, Marshaller> marshallerFactory) {
         super(SimpleXMLObject.NAMESAPACE, SimpleXMLObject.LOCAL_NAME, marshallerFactory);
     }
     

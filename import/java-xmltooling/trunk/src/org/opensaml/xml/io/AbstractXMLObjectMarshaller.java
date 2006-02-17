@@ -47,7 +47,7 @@ import org.w3c.dom.Element;
  * <li>Caching of created DOM for elements that implement {@link org.opensaml.xml.DOMCachingXMLObject}
  * </ul>
  */
-public abstract class AbstractXMLObjectMarshaller implements Marshaller<XMLObject> {
+public abstract class AbstractXMLObjectMarshaller implements Marshaller {
 
     /** Logger */
     private static Logger log = Logger.getLogger(AbstractXMLObjectMarshaller.class);
@@ -56,7 +56,7 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller<XMLObjec
     private QName targetQName;
 
     /** Factory for XMLObject Marshallers */
-    private MarshallerFactory<QName, Marshaller<XMLObject>> marshallerFactory;
+    private MarshallerFactory<QName, Marshaller> marshallerFactory;
 
     /**
      * 
@@ -71,7 +71,7 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller<XMLObjec
      * @throws NullPointerException if any of the arguments are null (or empty in the case of String parameters)
      */
     protected AbstractXMLObjectMarshaller(String targetNamespaceURI, String targetLocalName,
-            MarshallerFactory<QName, Marshaller<XMLObject>> marshallerFactory) throws IllegalArgumentException {
+            MarshallerFactory<QName, Marshaller> marshallerFactory) throws IllegalArgumentException {
         if (DatatypeHelper.isEmpty(targetNamespaceURI)) {
             throw new NullPointerException("Target Namespace URI may not be null or an empty");
         }
@@ -185,12 +185,12 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller<XMLObjec
         }
     }
 
-    protected Marshaller<XMLObject> getMarshaller(XMLObject xmlObject) throws MarshallingException {
+    protected Marshaller getMarshaller(XMLObject xmlObject) throws MarshallingException {
         if (log.isDebugEnabled()) {
             log.debug("Getting Marshalelr for XMLObject " + xmlObject.getElementQName());
         }
 
-        Marshaller<XMLObject> marshaller;
+        Marshaller marshaller;
 
         // Try to get the marshaller based off the schema type
         marshaller = marshallerFactory.getMarshaller(xmlObject.getSchemaType());
@@ -241,7 +241,7 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller<XMLObjec
                 if (log.isDebugEnabled()) {
                     log.debug("Getting marshaller for child XMLObject " + childXMLObject.getElementQName());
                 }
-                Marshaller<XMLObject> marshaller = getMarshaller(childXMLObject);
+                Marshaller marshaller = getMarshaller(childXMLObject);
 
                 if (log.isDebugEnabled()) {
                     log.debug("Marshalling " + childXMLObject.getElementQName() + " and adding it to DOM");

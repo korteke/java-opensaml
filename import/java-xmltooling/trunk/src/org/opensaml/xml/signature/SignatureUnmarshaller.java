@@ -28,7 +28,6 @@ import org.apache.xml.security.signature.Reference;
 import org.apache.xml.security.signature.SignedInfo;
 import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.transforms.Transforms;
-import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.Unmarshaller;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.w3c.dom.Element;
@@ -39,7 +38,7 @@ import org.w3c.dom.Element;
  * Signature object. Verification of the signature is handled by the unmarshaller for the parent object of the Signature
  * by way of the {@link org.opensaml.xml.io.AbstractXMLObjectUnmarshaller}.
  */
-public class SignatureUnmarshaller implements Unmarshaller<XMLObject> {
+public class SignatureUnmarshaller implements Unmarshaller {
 
     /** Logger */
     private static Logger log = Logger.getLogger(SignatureUnmarshaller.class);

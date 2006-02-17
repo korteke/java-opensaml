@@ -23,14 +23,14 @@ package org.opensaml.xml;
  * Base implementation of {@link org.opensaml.xml.XMLObjectBuilder} that automatically 
  * invoked {@link #resetState()} after the XMLObject is built.
  */
-public abstract class AbstractXMLObjectBuilder<T extends XMLObject> implements XMLObjectBuilder<T> {
+public abstract class AbstractXMLObjectBuilder implements XMLObjectBuilder {
 
     /**
      * Builds the XMLObject, by delegating to {@link #doBuildObject()} and then 
      * invokes {@link #resetState()} before returning the build object.
      */
-    public T buildObject() {
-        T builtObject = doBuildObject();
+    public XMLObject buildObject() {
+        XMLObject builtObject = doBuildObject();
         resetState();
         return builtObject;
     }
@@ -47,5 +47,5 @@ public abstract class AbstractXMLObjectBuilder<T extends XMLObject> implements X
      * 
      * @return the build XMLObject
      */
-    public abstract T doBuildObject();
+    public abstract XMLObject doBuildObject();
 }

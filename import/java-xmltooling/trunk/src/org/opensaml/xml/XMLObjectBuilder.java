@@ -20,14 +20,14 @@ package org.opensaml.xml;
  *
  * @param <T> the XMLObject type this builder produces
  */
-public interface XMLObjectBuilder<T extends XMLObject> {
+public interface XMLObjectBuilder {
 
     /**
      * Creates an empty XMLObject.
      * 
      * @return the empty XMLObject
      */
-    public T buildObject();
+    public XMLObject buildObject();
     
     /**
      * Resets the state of the builder.  This normally means 

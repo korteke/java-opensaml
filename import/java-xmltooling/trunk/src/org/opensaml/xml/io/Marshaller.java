@@ -26,7 +26,7 @@ import org.w3c.dom.Element;
  * 
  * @param <T> object type this marshaller operates on
  */
-public interface Marshaller<T extends XMLObject> {
+public interface Marshaller {
 	
 	/**
 	 * Marshall this element, and its children, into a W3C DOM element rooted in the given document.
@@ -38,5 +38,5 @@ public interface Marshaller<T extends XMLObject> {
 	 * 
 	 * @throws MarshallingException thrown if there is a problem marshalling the given object
 	 */
-	public Element marshall(T xmlObject, Document document) throws MarshallingException;
+	public Element marshall(XMLObject xmlObject, Document document) throws MarshallingException;
 }

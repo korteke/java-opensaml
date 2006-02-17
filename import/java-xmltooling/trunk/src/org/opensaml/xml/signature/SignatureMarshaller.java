@@ -43,7 +43,7 @@ import org.w3c.dom.Element;
  * Signature and its children. This marshaller does not do the actual signing.  Creation of the signature is handled by the
  * marshaller of the for the parent object of the Signature by way of the {@link org.opensaml.xml.io.AbstractXMLObjectMarshaller}.
  */
-public class SignatureMarshaller implements Marshaller<XMLObject> {
+public class SignatureMarshaller implements Marshaller {
 
     /** Logger */
     private static Logger log = Logger.getLogger(SignatureMarshaller.class);

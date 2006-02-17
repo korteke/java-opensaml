@@ -20,12 +20,11 @@
 package org.opensaml.xml.mock;
 
 import org.opensaml.xml.AbstractXMLObjectBuilder;
-import org.opensaml.xml.XMLObject;
 
 /**
  * Builder of {@link org.opensaml.xml.mock.SimpleXMLObject}s.
  */
-public class SimpleXMLObjectBuilder extends AbstractXMLObjectBuilder<XMLObject> {
+public class SimpleXMLObjectBuilder extends AbstractXMLObjectBuilder {
 
     /*
      * @see org.opensaml.xml.AbstractXMLObjectBuilder#doBuildObject()

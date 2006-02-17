@@ -44,7 +44,7 @@ import org.w3c.dom.NodeList;
 /**
  * An thread safe abstract unmarshaller.
  */
-public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller<XMLObject> {
+public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
 
     /** Logger */
     private static Logger log = Logger.getLogger(AbstractXMLObjectUnmarshaller.class);
@@ -53,10 +53,10 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller<XMLO
     private QName targetQName;
 
     /** Factory for XMLObjectBuilders */
-    private XMLObjectBuilderFactory<QName, XMLObjectBuilder<XMLObject>> xmlObjectBuilderFactory;
+    private XMLObjectBuilderFactory<QName, XMLObjectBuilder> xmlObjectBuilderFactory;
 
     /** Factory for creating unmarshallers for child elements */
-    private UnmarshallerFactory<QName, Unmarshaller<XMLObject>> unmarshallerFactory;
+    private UnmarshallerFactory<QName, Unmarshaller> unmarshallerFactory;
 
     /**
      * Constructor.
@@ -72,8 +72,8 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller<XMLO
      * @throws NullPointerException if any of the arguments are null (or empty in the case of String parameters)
      */
     protected AbstractXMLObjectUnmarshaller(String targetNamespaceURI, String targetLocalName,
-            XMLObjectBuilderFactory<QName, XMLObjectBuilder<XMLObject>> xmlObjectBuilderFactory,
-            UnmarshallerFactory<QName, Unmarshaller<XMLObject>> unmarshallerFactory) throws IllegalArgumentException,
+            XMLObjectBuilderFactory<QName, XMLObjectBuilder> xmlObjectBuilderFactory,
+            UnmarshallerFactory<QName, Unmarshaller> unmarshallerFactory) throws IllegalArgumentException,
             NullPointerException {
         if (DatatypeHelper.isEmpty(targetNamespaceURI)) {
             throw new NullPointerException("Target Namespace URI may not be null or an empty");
@@ -183,7 +183,7 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller<XMLO
         if (log.isDebugEnabled()) {
             log.debug("Building XMLObject for " + XMLHelper.getNodeQName(domElement));
         }
-        XMLObjectBuilder<XMLObject> xmlObjectBuilder;
+        XMLObjectBuilder xmlObjectBuilder;
 
         QName schemaType = XMLHelper.getXSIType(domElement);
         xmlObjectBuilder = xmlObjectBuilderFactory.getBuilder(schemaType);
@@ -330,11 +330,11 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller<XMLO
      * 
      * @throws UnmarshallingException thrown if no unmarshaller is available for the given DOM Element
      */
-    protected Unmarshaller<XMLObject> getUnmarshaller(Element domElement) throws UnmarshallingException {
+    protected Unmarshaller getUnmarshaller(Element domElement) throws UnmarshallingException {
         if (log.isDebugEnabled()) {
             log.debug("Getting unmarshaller for Element " + XMLHelper.getNodeQName(domElement));
         }
-        Unmarshaller<XMLObject> unmarshaller;
+        Unmarshaller unmarshaller;
 
         // Try to get the unmarshaller based off the schema type
         QName schemaType = XMLHelper.getXSIType(domElement);

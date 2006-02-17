@@ -25,7 +25,7 @@ import org.w3c.dom.Element;
  * 
  * @param <T> the object type this unmarshaller produces
  */
-public interface Unmarshaller<T extends XMLObject> {
+public interface Unmarshaller{
 
 	/**
 	 * Unmarshalls the given W3C DOM element into a XMLObject
@@ -36,5 +36,5 @@ public interface Unmarshaller<T extends XMLObject> {
      * 
      * @throws UnmarshallingException thrown if an error occurs unmarshalling the DOM element into the XMLObject
 	 */
-	public T unmarshall(Element element) throws UnmarshallingException;
+	public XMLObject unmarshall(Element element) throws UnmarshallingException;
 }
