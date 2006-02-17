@@ -27,7 +27,6 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 import org.apache.xml.security.c14n.Canonicalizer;
 import org.apache.xml.security.exceptions.XMLSecurityException;
-import org.apache.xml.security.keys.content.X509Data;
 import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.transforms.Transforms;
 import org.apache.xml.security.transforms.params.InclusiveNamespaces;
@@ -88,13 +87,12 @@ public class SignatureMarshaller implements Marshaller<XMLObject> {
                 dsig.addKeyInfo(signatureContext.getPublicKey());
             }
 
-            X509Data x509Data = new X509Data(document);
-            if (signatureContext.getCerts() != null) {
+            if (signatureContext.getCertificates() != null) {
                 if (log.isDebugEnabled()) {
                     log.debug("Adding X.509 certifiacte(s) into signature's X509 data");
                 }
-                for (X509Certificate cert : signatureContext.getCerts()) {
-                    x509Data.addCertificate(cert);
+                for (X509Certificate cert : signatureContext.getCertificates()) {
+                    dsig.addKeyInfo(cert);
                 }
             }
 

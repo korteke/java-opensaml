@@ -18,12 +18,12 @@ package org.opensaml.xml.io;
 
 import java.security.PublicKey;
 import java.security.cert.X509Certificate;
+import java.util.List;
 
 import javax.xml.namespace.QName;
 
 import org.apache.log4j.Logger;
 import org.apache.xml.security.exceptions.XMLSecurityException;
-import org.apache.xml.security.keys.KeyInfo;
 import org.apache.xml.security.signature.XMLSignature;
 import org.opensaml.xml.DOMCachingXMLObject;
 import org.opensaml.xml.Namespace;
@@ -116,8 +116,8 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller<XMLO
         }
 
         unmarshallChildElements(domElement, xmlObject);
-        
-        if(xmlObject instanceof SignableXMLObject) {
+
+        if (xmlObject instanceof SignableXMLObject) {
             verifySignature(xmlObject);
         }
 
@@ -339,28 +339,28 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller<XMLO
         // Try to get the unmarshaller based off the schema type
         QName schemaType = XMLHelper.getXSIType(domElement);
         unmarshaller = unmarshallerFactory.getUnmarshaller(schemaType);
-        if(unmarshaller != null) {
+        if (unmarshaller != null) {
             if (log.isDebugEnabled()) {
                 log.debug("Unmarshaller " + unmarshaller.getClass() + " located based on schema type " + schemaType);
             }
             return unmarshaller;
         }
-        
+
         // Since there was no unmarshaller registered for the schema type try to get one based off the element QName
         QName elementName = XMLHelper.getNodeQName(domElement);
         unmarshaller = unmarshallerFactory.getUnmarshaller(elementName);
-        if(unmarshaller != null) {
+        if (unmarshaller != null) {
             if (log.isDebugEnabled()) {
                 log.debug("Unmarshaller " + unmarshaller.getClass() + " located based on element QName " + elementName);
             }
             return unmarshaller;
         }
-        
+
         String errorMsg = "No unmarshaller registered for element " + elementName;
         log.error(errorMsg);
         throw new UnmarshallingException(errorMsg);
     }
-    
+
     /**
      * Verifies the digital signature on DOM representation of the given XMLObject.
      * 
@@ -368,51 +368,70 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller<XMLO
      * 
      * @throws UnmarshallingException thrown if ther eis a problem verifying the signature
      */
-    protected void verifySignature(XMLObject xmlObject) throws UnmarshallingException{
+    protected void verifySignature(XMLObject xmlObject) throws UnmarshallingException {
         SignableXMLObject signableXMLObject = (SignableXMLObject) xmlObject;
         Signature signature = signableXMLObject.getSignature();
-        
-        if(signature == null){
-            if(log.isDebugEnabled()){
-                log.debug(xmlObject + " is a signable object but does not contain a Signature child, skipping signature verification");
+
+        if (signature == null) {
+            if (log.isDebugEnabled()) {
+                log
+                        .debug(xmlObject.getElementQName()
+                                + " is a signable object but does not contain a Signature child, skipping signature verification");
             }
             return;
         }
-        
+
         try {
             XMLSignature xmlSignature = signature.getXMLSignature();
 
-            KeyInfo keyInfo = xmlSignature.getKeyInfo();
-            if (keyInfo == null) {
-                throw new UnmarshallingException("Unable to validate digital signature for XMLObject "
-                        + xmlObject.getElementQName() + ", no key info present within Signatue element");
+            List<X509Certificate> certs = signature.getSigningContext().getCertificates();
+            if (certs.size() > 0 && log.isDebugEnabled()) {
+                log.debug("Attempting to validate digital signature using certifcates found in the signature");
             }
-
-            X509Certificate cert = keyInfo.getX509Certificate();
-            if (cert != null) {
-                if (!xmlSignature.checkSignatureValue(cert)) {
-                    throw new UnmarshallingException("Digital signature for XMLObject " + xmlObject.getElementQName()
-                            + " was not valid.");
+            for (X509Certificate cert : certs) {
+                if (xmlSignature.checkSignatureValue(cert)) {
+                    if (log.isDebugEnabled()) {
+                        log.debug("Signature for XMLObject " + xmlObject.getElementQName()
+                                + " validated with certifcate with subject DN of " + cert.getSubjectDN());
+                    }
+                    signature.getSigningContext().setValidatingCertificate(cert);
+                    return;
+                } else {
+                    if (log.isDebugEnabled()) {
+                        log.debug("Signature for XMLObject " + xmlObject.getElementQName()
+                                + " could not be validated with certifcates found in signature");
+                    }
                 }
-
-                return;
             }
 
-            PublicKey publicKey = keyInfo.getPublicKey();
+            PublicKey publicKey = signature.getSigningContext().getPublicKey();
             if (publicKey != null) {
-                if (!xmlSignature.checkSignatureValue(publicKey)) {
-                    throw new UnmarshallingException("Digital signature for XMLObject " + xmlObject.getElementQName()
-                            + " was not valid.");
+                if (log.isDebugEnabled()) {
+                    log.debug("Attempting to validate digital signature using public key found in the signature");
                 }
-
-                return;
+                if (xmlSignature.checkSignatureValue(publicKey)) {
+                    if (log.isDebugEnabled()) {
+                        log.debug("Signature for XMLObject " + xmlObject.getElementQName()
+                                + " validated with public key found in signature.");
+                    }
+                    return;
+                } else {
+                    if (log.isDebugEnabled()) {
+                        log.debug("Signature for XMLObject " + xmlObject.getElementQName()
+                                + " could not be validated with public key found in signature");
+                    }
+                }
             }
 
-            throw new UnmarshallingException("XMLObject " + xmlObject.getElementQName()
-                    + " did not contain a public key or certificate that could be used to validate digital signature");
+            String errorMsg = "XMLObject " + xmlObject.getElementQName()
+                    + " could not be validated with any certificates or public key included with the digital signature";
+            log.error(errorMsg);
+            throw new UnmarshallingException(errorMsg);
         } catch (XMLSecurityException e) {
-            log.error("Unable to validate digital signature for XMLObject " + xmlObject.getElementQName(), e);
-            throw new UnmarshallingException("Unable to validate digital signature for XMLObject " + xmlObject.getElementQName(), e);
+            String errorMsg = "Received the following error when attempting to validate the signature for XMLObject "
+                    + xmlObject.getElementQName();
+            log.error(errorMsg, e);
+            throw new UnmarshallingException(errorMsg, e);
         }
     }
 

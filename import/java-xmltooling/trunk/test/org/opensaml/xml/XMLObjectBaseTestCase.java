@@ -54,7 +54,7 @@ public class XMLObjectBaseTestCase extends XMLTestCase {
     
     protected UnmarshallerFactory<QName, Unmarshaller<XMLObject>> unmarshallerFactory;
     
-    protected void setUp() throws Exception {
+    public XMLObjectBaseTestCase(){
         Init.init();
         
         HashMap<String, Boolean> features = new HashMap<String, Boolean>();
@@ -74,6 +74,10 @@ public class XMLObjectBaseTestCase extends XMLTestCase {
         unmarshallerFactory = new UnmarshallerFactory<QName, Unmarshaller<XMLObject>>();
         unmarshallerFactory.registerUnmarshaller(new QName(XMLConstants.XMLSIG_NS, Signature.LOCAL_NAME), new SignatureUnmarshaller());
         unmarshallerFactory.registerUnmarshaller(new QName(SimpleXMLObject.NAMESAPACE, SimpleXMLObject.LOCAL_NAME), new SimpleXMLObjectUnmarshaller(builderFactory, unmarshallerFactory));
+    }
+    
+    protected void setUp() throws Exception {
+
     }
     
     protected Document parse(String resourceID) throws XMLParserException {

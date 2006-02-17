@@ -16,102 +16,199 @@
 
 package org.opensaml.xml;
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
+import java.security.KeyStore;
+import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.security.cert.X509Certificate;
 
 import javax.xml.namespace.QName;
-import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.transforms.Transforms;
 import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.io.Unmarshaller;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.mock.SimpleXMLObject;
+import org.opensaml.xml.parse.XMLParserException;
 import org.opensaml.xml.signature.Signature;
 import org.opensaml.xml.signature.SignatureBuilder;
 import org.opensaml.xml.signature.SigningContext;
 import org.opensaml.xml.util.XMLConstants;
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 public class SignatureTest extends XMLObjectBaseTestCase {
-    
+
+    /** QName for Signature element */
     private QName signatureQName;
-    
+
+    /** QName for SimpleXMLObject */
     private QName simpleXMLObjectQName;
     
-    /** Signing key */
-    private PrivateKey signingKey;
-
-    /** Public key sed to validate signature */
-    private PublicKey publicKey;
-    
+    /** ID used for signing URI reference */
     private String ID;
-    
-    private Document document;
-    
-    private Document expectedDocument;
-    
-    public SignatureTest() {
-        
-    }
-    
-    protected void setUp() throws Exception {
-        super.setUp();
-        
+
+    /**
+     * Constructor
+     */
+    public SignatureTest(){
+        super();
         signatureQName = new QName(XMLConstants.XMLSIG_NS, Signature.LOCAL_NAME);
         simpleXMLObjectQName = new QName(SimpleXMLObject.NAMESAPACE, SimpleXMLObject.LOCAL_NAME);
         
-        KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
-        KeyPair keyPair = keyGen.generateKeyPair();
-        signingKey = keyPair.getPrivate();
-        publicKey = keyPair.getPublic();
-        
         ID = "Foo";
-        
-        document = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
-        expectedDocument = parse("/data/org/opensaml/xml/mock/SignedSimpleXMLObject.xml");
-    }
-
-    public void testSigning() throws MarshallingException {
-        SimpleXMLObject rootXMLObject = new SimpleXMLObject();
-        rootXMLObject.setId(ID);
-        
-        SimpleXMLObject child1 = new SimpleXMLObject();
-        rootXMLObject.getSimpleXMLObjects().add(child1);
-        
-        SimpleXMLObject child2 = new SimpleXMLObject();
-        rootXMLObject.getSimpleXMLObjects().add(child2);
-        
-        SimpleXMLObject child3 = new SimpleXMLObject();
-        rootXMLObject.getSimpleXMLObjects().add(child3);
-        
-        SigningContext dsigCtx = new SigningContext();
-        dsigCtx.getTransforms().add(Transforms.TRANSFORM_ENVELOPED_SIGNATURE);
-        dsigCtx.getTransforms().add(Transforms.TRANSFORM_C14N_EXCL_OMIT_COMMENTS);
-        dsigCtx.setSigningKey(signingKey);
-        dsigCtx.setPublicKey(publicKey);
-        
-        SignatureBuilder sigBuilder = (SignatureBuilder) builderFactory.getBuilder(signatureQName);
-        sigBuilder.setSigningContext(dsigCtx);
-        Signature signature = (Signature) sigBuilder.buildObject();
-        signature.setId(ID);
-        rootXMLObject.setSignature(signature);
-        
-        Marshaller marshaller = marshallerFactory.getMarshaller(simpleXMLObjectQName);
-        Element domElement = marshaller.marshall(rootXMLObject, document);
-        
-        //assertEquals(expectedDocument.getDocumentElement(), domElement);
-        System.out.println(elementToString(domElement));
     }
     
-    public void testSignatureVerification() throws UnmarshallingException{
-        Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(simpleXMLObjectQName);
+    /*
+     * @see junit.framework.TestCase#setUp()
+     */
+    protected void setUp() throws Exception {
+        super.setUp();
+    }
+
+    /**
+     * Tests that a signature can be created and verified with an RSA key pair.
+     * 
+     * @throws MarshallingException thrown if the signature can not be created
+     * @throws UnmarshallingException thrown if the signature can be verified
+     * @throws XMLParserException thrown if a document can not be created to root the marshalled XMLObject in
+     * @throws NoSuchAlgorithmException thrown if RSA keys are not supporter
+     */
+    public void testRSAPublicKeySignature() throws MarshallingException, UnmarshallingException, XMLParserException, NoSuchAlgorithmException {
+        KeyPair keyPair = KeyPairGenerator.getInstance("RSA").generateKeyPair();
+        SimpleXMLObject xmlObject = getXMLSignableObject(keyPair.getPrivate(), keyPair.getPublic());
         
-        SimpleXMLObject simpleXMLObject = (SimpleXMLObject) unmarshaller.unmarshall(expectedDocument.getDocumentElement());
-        System.out.println(simpleXMLObject.getSignature().getXMLSignature());
+        // Marshall & sign
+        Marshaller marshaller = marshallerFactory.getMarshaller(simpleXMLObjectQName);
+        Element domElement = marshaller.marshall(xmlObject, parserPool.newDocument());
+
+        // Unmarshall and verify
+        Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(simpleXMLObjectQName);
+        SimpleXMLObject simpleXMLObject = (SimpleXMLObject) unmarshaller.unmarshall(domElement);
+    }
+    
+    /**
+     * Tests that a signature can be created and verified with an DSA key pair.
+     * 
+     * @throws MarshallingException thrown if the signature can not be created
+     * @throws UnmarshallingException thrown if the signature can be verified
+     * @throws XMLParserException thrown if a document can not be created to root the marshalled XMLObject in
+     * @throws NoSuchAlgorithmException thrown if DSA keys are not supporter
+     */
+    public void testDSAPublicKeySignature()  throws MarshallingException, UnmarshallingException, XMLParserException, NoSuchAlgorithmException {
+        KeyPair keyPair = KeyPairGenerator.getInstance("DSA").generateKeyPair();
+        SimpleXMLObject xmlObject = getXMLSignableObject(keyPair.getPrivate(), keyPair.getPublic());
+        xmlObject.getSignature().getSigningContext().setSignatureAlgorithm(XMLSignature.ALGO_ID_SIGNATURE_DSA);
+        
+        // Marshall & sign
+        Marshaller marshaller = marshallerFactory.getMarshaller(simpleXMLObjectQName);
+        Element domElement = marshaller.marshall(xmlObject, parserPool.newDocument());
+
+        // Unmarshall and verify
+        Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(simpleXMLObjectQName);
+        SimpleXMLObject simpleXMLObject = (SimpleXMLObject) unmarshaller.unmarshall(domElement);
+    }
+    
+    /**
+     * Tests that a signature can be created with a RSA key pair and validated with a 
+     * certificate containing the public key.
+     * 
+     * @throws GeneralSecurityException
+     * @throws IOException 
+     * @throws XMLParserException 
+     * @throws MarshallingException 
+     * @throws UnmarshallingException 
+     *
+     */
+    public void testCertificateSignature() throws GeneralSecurityException, IOException, XMLParserException, MarshallingException, UnmarshallingException{
+        KeyStore keystore = KeyStore.getInstance("JKS");
+        char[] password = new String("insecure").toCharArray();
+        keystore.load(SignatureTest.class.getResourceAsStream("/data/org/opensaml/xml/keys.jks"), password);
+        
+        PrivateKey signingKey = (PrivateKey) keystore.getKey("opensaml2testkeys", password);
+        X509Certificate certificate = (X509Certificate) keystore.getCertificate("opensaml2testkeys");
+        
+        SimpleXMLObject xmlObject = getXMLObject();
+        SigningContext signingContext = getSigningContext();
+        signingContext.setSigningKey(signingKey);
+        signingContext.getCertificates().add(certificate);
+        
+        SignatureBuilder sigBuilder = (SignatureBuilder) builderFactory.getBuilder(signatureQName);
+        sigBuilder.setSigningContext(signingContext);
+        Signature signature = (Signature) sigBuilder.buildObject();
+        signature.setId(ID);
+        xmlObject.setSignature(signature);
+        
+        // Marshall & sign
+        Marshaller marshaller = marshallerFactory.getMarshaller(simpleXMLObjectQName);
+        Element domElement = marshaller.marshall(xmlObject, parserPool.newDocument());
+        System.out.println(elementToString(domElement));
+
+        // Unmarshall and verify
+        Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(simpleXMLObjectQName);
+        SimpleXMLObject simpleXMLObject = (SimpleXMLObject) unmarshaller.unmarshall(domElement);
+    }
+    
+    /**
+     * Creates an XMLObject that is ready to be signed.
+     * 
+     * @param signingKey key to use for signing
+     * @param publicKey key to use for validating
+     * 
+     * @return an XMLObject that is read to be signed
+     */
+    private SimpleXMLObject getXMLSignableObject(PrivateKey signingKey, PublicKey publicKey){
+        SimpleXMLObject xmlObject = getXMLObject();
+
+        SigningContext signingContext = getSigningContext();
+        signingContext.setSigningKey(signingKey);
+        signingContext.setPublicKey(publicKey);
+        
+        SignatureBuilder sigBuilder = (SignatureBuilder) builderFactory.getBuilder(signatureQName);
+        sigBuilder.setSigningContext(signingContext);
+        Signature signature = (Signature) sigBuilder.buildObject();
+        signature.setId(ID);
+        xmlObject.setSignature(signature);
+        
+        return xmlObject;
+    }
+    
+    /**
+     * Creates a simple tree of XMLObjects which could be signed.
+     * 
+     * @return a simple tree of XMLObjects which could be signed
+     */
+    private SimpleXMLObject getXMLObject(){
+        SimpleXMLObject xmlObject = new SimpleXMLObject();
+        xmlObject.setId(ID);
+        
+        SimpleXMLObject child1 = new SimpleXMLObject();
+        xmlObject.getSimpleXMLObjects().add(child1);
+        
+        SimpleXMLObject child2 = new SimpleXMLObject();
+        xmlObject.getSimpleXMLObjects().add(child2);
+        
+        SimpleXMLObject child3 = new SimpleXMLObject();
+        xmlObject.getSimpleXMLObjects().add(child3);
+        
+        return xmlObject;
+    }
+
+    /**
+     * Creates a signing context with a base set of transforms.
+     * 
+     * @return a signing context with a base set of transforms
+     */
+    private SigningContext getSigningContext(){
+        SigningContext context = new SigningContext();
+        context.getTransforms().add(Transforms.TRANSFORM_ENVELOPED_SIGNATURE);
+        context.getTransforms().add(Transforms.TRANSFORM_C14N_EXCL_OMIT_COMMENTS);
+        
+        return context;
     }
 }

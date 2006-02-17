@@ -20,10 +20,6 @@
 
 package org.opensaml.xml.signature;
 
-import java.security.cert.X509Certificate;
-import java.util.HashSet;
-import java.util.Set;
-
 import org.apache.log4j.Logger;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.keys.KeyInfo;
@@ -98,11 +94,9 @@ public class SignatureUnmarshaller implements Unmarshaller<XMLObject> {
                 }
                 X509Data x509data = keyInfo.itemX509Data(0);
                 if(x509data != null) {
-                    Set<X509Certificate> certificates = new HashSet<X509Certificate>();
                     for(int i = 0; i < x509data.lengthCertificate(); i++) {
-                        certificates.add(x509data.itemCertificate(i).getX509Certificate());
+                        signatureContext.getCertificates().add(x509data.itemCertificate(i).getX509Certificate());
                     }
-                    signatureContext.setCerts(certificates);
                 }
             }
 

@@ -21,7 +21,6 @@ import java.security.PublicKey;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.xml.security.algorithms.MessageDigestAlgorithm;
 import org.apache.xml.security.c14n.Canonicalizer;
@@ -53,7 +52,10 @@ public class SigningContext {
     private PublicKey publicKey;
 
     /** The certificates to be included with the signature */
-    private Set<X509Certificate> certs;
+    private List<X509Certificate> certificates;
+    
+    /** The certificate, from the set of certificates, that was used to validate the signature. */
+    private X509Certificate validatingCertificate;
     
     /** Transforms applied to content to be signed */
     private List<String> transforms;
@@ -66,24 +68,34 @@ public class SigningContext {
         signatureAlgorithim = XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA1;
         digestAlgorithim = MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA1;
         transforms = new ArrayList<String>();
+        certificates = new ArrayList<X509Certificate>();
     }
 
     /**
-     * Gets the certificates to be included with the signature.
+     * Gets the certificates which can be used to validate the signature.
      * 
      * @return the certificates to be included with the signature
      */
-    public Set<X509Certificate> getCerts() {
-        return certs;
+    public List<X509Certificate> getCertificates() {
+        return certificates;
     }
-
+    
     /**
-     * Sets the certificates to be included with the signature.
+     * Gets the certificate, from the set of certificates, that was used to validate the signature.
      * 
-     * @param certs the certificates to be included with the signature
+     * @return the certificate, from the set of certificates, that was used to validate the signature
      */
-    public void setCerts(Set<X509Certificate> certs) {
-        this.certs = certs;
+    public X509Certificate getValidatingCertificate(){
+        return validatingCertificate;
+    }
+    
+    /**
+     * Sets the certificate, from the set of certificates, that was used to validate the signature.  
+     * 
+     * @param newCert the certificate, from the set of certificates, that was used to validate the signature
+     */
+    public void setValidatingCertificate(X509Certificate newCert){
+        validatingCertificate = newCert;
     }
     
     /**
