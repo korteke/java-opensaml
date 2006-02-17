@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 
+import org.opensaml.xml.mock.SimpleXMLObject;
 import org.opensaml.xml.util.XMLObjectChildrenList;
 
 import junit.framework.TestCase;

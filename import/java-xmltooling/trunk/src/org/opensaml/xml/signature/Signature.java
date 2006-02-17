@@ -46,7 +46,7 @@ public class Signature extends AbstractXMLObject {
      * 
      * @param signingContext configuration information for computing the signature
      */
-    public Signature(final SigningContext signingContext) {
+    Signature(final SigningContext signingContext) {
         super(XMLConstants.XMLSIG_NS, LOCAL_NAME);
         setElementNamespacePrefix(XMLConstants.XMLSIG_PREFIX);
         this.signingContext = signingContext;

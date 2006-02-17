@@ -16,28 +16,32 @@
 
 package org.opensaml.xml;
 
-import java.rmi.UnmarshalException;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 
+import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.xml.security.transforms.Transforms;
+import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.io.Unmarshaller;
+import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.mock.SimpleXMLObject;
-import org.opensaml.xml.mock.SimpleXMLObjectMarshaller;
 import org.opensaml.xml.signature.Signature;
+import org.opensaml.xml.signature.SignatureBuilder;
 import org.opensaml.xml.signature.SigningContext;
-import org.w3c.dom.DOMImplementation;
+import org.opensaml.xml.util.XMLConstants;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.ls.DOMImplementationLS;
-import org.w3c.dom.ls.LSSerializer;
 
 public class SignatureTest extends XMLObjectBaseTestCase {
+    
+    private QName signatureQName;
+    
+    private QName simpleXMLObjectQName;
     
     /** Signing key */
     private PrivateKey signingKey;
@@ -57,6 +61,9 @@ public class SignatureTest extends XMLObjectBaseTestCase {
     
     protected void setUp() throws Exception {
         super.setUp();
+        
+        signatureQName = new QName(XMLConstants.XMLSIG_NS, Signature.LOCAL_NAME);
+        simpleXMLObjectQName = new QName(SimpleXMLObject.NAMESAPACE, SimpleXMLObject.LOCAL_NAME);
         
         KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
         KeyPair keyPair = keyGen.generateKeyPair();
@@ -88,18 +95,23 @@ public class SignatureTest extends XMLObjectBaseTestCase {
         dsigCtx.setSigningKey(signingKey);
         dsigCtx.setPublicKey(publicKey);
         
-        Signature signature = new Signature(dsigCtx);
-        signature.setId("#" + ID);
+        SignatureBuilder sigBuilder = (SignatureBuilder) builderFactory.getBuilder(signatureQName);
+        sigBuilder.setSigningContext(dsigCtx);
+        Signature signature = (Signature) sigBuilder.buildObject();
+        signature.setId(ID);
         rootXMLObject.setSignature(signature);
         
-        SimpleXMLObjectMarshaller marshaller = new SimpleXMLObjectMarshaller(marshallerFactory);
+        Marshaller marshaller = marshallerFactory.getMarshaller(simpleXMLObjectQName);
         Element domElement = marshaller.marshall(rootXMLObject, document);
         
         //assertEquals(expectedDocument.getDocumentElement(), domElement);
         System.out.println(elementToString(domElement));
     }
     
-    public void testSignatureVerification() throws UnmarshalException{
-
+    public void testSignatureVerification() throws UnmarshallingException{
+        Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(simpleXMLObjectQName);
+        
+        SimpleXMLObject simpleXMLObject = (SimpleXMLObject) unmarshaller.unmarshall(expectedDocument.getDocumentElement());
+        System.out.println(simpleXMLObject.getSignature().getXMLSignature());
     }
 }

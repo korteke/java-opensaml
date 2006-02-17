@@ -130,7 +130,7 @@ public class SignatureMarshaller implements Marshaller<XMLObject> {
             if (log.isDebugEnabled()) {
                 log.debug("Adding in-document URI ID based reference to content being signed");
             }
-            dsig.addDocument(signature.getId(), dsigTransforms, signatureContext.getDigestAlgorithm());
+            dsig.addDocument("#" + signature.getId(), dsigTransforms, signatureContext.getDigestAlgorithm());
 
             signature.setXMLSignature(dsig);
 

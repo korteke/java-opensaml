@@ -20,6 +20,7 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.xml.mock.SimpleXMLObject;
 import org.opensaml.xml.util.IndexedXMLObjectChildrenList;
 
 import junit.framework.TestCase;

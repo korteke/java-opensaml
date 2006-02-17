@@ -1,5 +1,5 @@
 /*
- * Copyright [2005] [University Corporation for Advanced Internet Development, Inc.]
+ * Copyright [2006] [University Corporation for Advanced Internet Development, Inc.]
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,25 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.opensaml.xml;
 
 /**
- * A builder for XMLObjects.
- *
- * @param <T> the XMLObject type this builder produces
+ * 
  */
-public interface XMLObjectBuilder<T extends XMLObject> {
+package org.opensaml.xml.mock;
 
-    /**
-     * Creates an empty XMLObject.
-     * 
-     * @return the empty XMLObject
+import org.opensaml.xml.AbstractXMLObjectBuilder;
+import org.opensaml.xml.XMLObject;
+
+/**
+ * Builder of {@link org.opensaml.xml.mock.SimpleXMLObject}s.
+ */
+public class SimpleXMLObjectBuilder extends AbstractXMLObjectBuilder<XMLObject> {
+
+    /*
+     * @see org.opensaml.xml.AbstractXMLObjectBuilder#doBuildObject()
      */
-    public T buildObject();
-    
-    /**
-     * Resets the state of the builder.  This normally means 
-     * null'ing out any properties that were needed to build an object.
-     */
-    public void resetState();
+    public SimpleXMLObject doBuildObject() {
+        return new SimpleXMLObject();
+    }
 }

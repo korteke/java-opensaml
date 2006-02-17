@@ -368,8 +368,16 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller<XMLO
      * 
      * @throws UnmarshallingException thrown if ther eis a problem verifying the signature
      */
-    public void verifySignature(XMLObject xmlObject) throws UnmarshallingException{
-        Signature signature = (Signature) xmlObject;
+    protected void verifySignature(XMLObject xmlObject) throws UnmarshallingException{
+        SignableXMLObject signableXMLObject = (SignableXMLObject) xmlObject;
+        Signature signature = signableXMLObject.getSignature();
+        
+        if(signature == null){
+            if(log.isDebugEnabled()){
+                log.debug(xmlObject + " is a signable object but does not contain a Signature child, skipping signature verification");
+            }
+            return;
+        }
         
         try {
             XMLSignature xmlSignature = signature.getXMLSignature();
@@ -403,6 +411,7 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller<XMLO
             throw new UnmarshallingException("XMLObject " + xmlObject.getElementQName()
                     + " did not contain a public key or certificate that could be used to validate digital signature");
         } catch (XMLSecurityException e) {
+            log.error("Unable to validate digital signature for XMLObject " + xmlObject.getElementQName(), e);
             throw new UnmarshallingException("Unable to validate digital signature for XMLObject " + xmlObject.getElementQName(), e);
         }
     }

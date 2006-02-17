@@ -24,6 +24,7 @@ import java.security.cert.X509Certificate;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.keys.KeyInfo;
 import org.apache.xml.security.keys.content.X509Data;
@@ -42,18 +43,31 @@ import org.w3c.dom.Element;
  * Signature object. Verification of the signature is handled by the unmarshaller for the parent object of the Signature
  * by way of the {@link org.opensaml.xml.io.AbstractXMLObjectUnmarshaller}.
  */
-public class SignatureUnmarshaller implements Unmarshaller {
+public class SignatureUnmarshaller implements Unmarshaller<XMLObject> {
 
+    /** Logger */
+    private static Logger log = Logger.getLogger(SignatureUnmarshaller.class);
+    
     /*
      * @see org.opensaml.xml.io.Unmarshaller#unmarshall(org.w3c.dom.Element)
      */
-    public XMLObject unmarshall(Element signatureElement) throws UnmarshallingException {
+    public Signature unmarshall(Element signatureElement) throws UnmarshallingException {
+        if(log.isDebugEnabled()){
+            log.debug("Starting to unmarshall Signature element");
+        }
         SigningContext signatureContext = new SigningContext();
 
         try {
+            if(log.isDebugEnabled()){
+                log.debug("Constructing XMLSignature object");
+            }
+            
             XMLSignature xmlSignature = new XMLSignature(signatureElement, "");
             
             SignedInfo signedInfo = xmlSignature.getSignedInfo();
+            if(log.isDebugEnabled()){
+                log.debug("Adding Canonicalization, Digest, and Signature methods to signing context");
+            }
             signatureContext.setCanonicalizationAlgortihm(signedInfo.getCanonicalizationMethodURI());
             signatureContext.setSignatureAlgorithm(signedInfo.getSignatureMethodURI());
             
@@ -61,6 +75,9 @@ public class SignatureUnmarshaller implements Unmarshaller {
                 if(documentReference != null) {
                 signatureContext.setDigestAlgorithm(documentReference.getMessageDigestAlgorithm().getAlgorithmURI());
                 
+                if(log.isDebugEnabled()){
+                    log.debug("Adding transforms to signing context");
+                }
                 Transforms documentTransforms = documentReference.getTransforms();
                 if(documentTransforms != null) {
                     for(int i = 0; i < documentTransforms.getLength(); i++) {
@@ -71,8 +88,14 @@ public class SignatureUnmarshaller implements Unmarshaller {
             
             KeyInfo keyInfo = xmlSignature.getKeyInfo();
             if (keyInfo != null) {
+                if(log.isDebugEnabled()){
+                    log.debug("Adding any public key data to signing context");
+                }
                 signatureContext.setPublicKey(keyInfo.getPublicKey());
                 
+                if(log.isDebugEnabled()){
+                    log.debug("Adding any X509 certificates to signing context");
+                }
                 X509Data x509data = keyInfo.itemX509Data(0);
                 if(x509data != null) {
                     Set<X509Certificate> certificates = new HashSet<X509Certificate>();
@@ -83,7 +106,11 @@ public class SignatureUnmarshaller implements Unmarshaller {
                 }
             }
 
+            if(log.isDebugEnabled()){
+                log.debug("Creating new Signature XMLObject with created SigningContext and XMLSignature objects");
+            }
             Signature signature = new Signature(signatureContext);
+            signature.setXMLSignature(xmlSignature);
             signature.setId(xmlSignature.getId());
 
             return signature;

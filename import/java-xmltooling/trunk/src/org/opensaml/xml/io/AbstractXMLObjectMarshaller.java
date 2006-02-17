@@ -328,20 +328,22 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller<XMLObjec
         SignableXMLObject signableXMLObject = (SignableXMLObject) xmlObject;
 
         Signature signature = signableXMLObject.getSignature();
-        if (signature != null) {
-            if (log.isDebugEnabled()) {
-                log.debug("Computing digital signature for " + xmlObject.getElementQName());
-            }
-            
-            SigningContext signingCtx = signature.getSigningContext();
-            XMLSignature dsig = signature.getXMLSignature();
+        if (signature == null) {
+            return;
+        }
+        
+        if (log.isDebugEnabled()) {
+            log.debug("Computing digital signature for " + xmlObject.getElementQName());
+        }
 
-            try {
-                dsig.sign(signingCtx.getSigningKey());
-            } catch (XMLSignatureException e) {
-                log.error("Unable compute digital signature for " + xmlObject.getElementQName(), e);
-                throw new MarshallingException("Unable compute digital signature for " + xmlObject.getElementQName(), e);
-            }
+        SigningContext signingCtx = signature.getSigningContext();
+        XMLSignature dsig = signature.getXMLSignature();
+
+        try {
+            dsig.sign(signingCtx.getSigningKey());
+        } catch (XMLSignatureException e) {
+            log.error("Unable compute digital signature for " + xmlObject.getElementQName(), e);
+            throw new MarshallingException("Unable compute digital signature for " + xmlObject.getElementQName(), e);
         }
     }
 
