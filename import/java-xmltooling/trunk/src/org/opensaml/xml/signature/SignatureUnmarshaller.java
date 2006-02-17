@@ -43,69 +43,74 @@ public class SignatureUnmarshaller implements Unmarshaller<XMLObject> {
 
     /** Logger */
     private static Logger log = Logger.getLogger(SignatureUnmarshaller.class);
-    
+
     /*
      * @see org.opensaml.xml.io.Unmarshaller#unmarshall(org.w3c.dom.Element)
      */
     public Signature unmarshall(Element signatureElement) throws UnmarshallingException {
-        if(log.isDebugEnabled()){
+        if (log.isDebugEnabled()) {
             log.debug("Starting to unmarshall Signature element");
         }
         SigningContext signatureContext = new SigningContext();
+        Signature signature = new Signature(signatureContext);
 
         try {
-            if(log.isDebugEnabled()){
+            if (log.isDebugEnabled()) {
                 log.debug("Constructing XMLSignature object");
             }
-            
+
             XMLSignature xmlSignature = new XMLSignature(signatureElement, "");
-            
+
             SignedInfo signedInfo = xmlSignature.getSignedInfo();
-            if(log.isDebugEnabled()){
+            if (log.isDebugEnabled()) {
                 log.debug("Adding Canonicalization, Digest, and Signature methods to signing context");
             }
             signatureContext.setCanonicalizationAlgortihm(signedInfo.getCanonicalizationMethodURI());
             signatureContext.setSignatureAlgorithm(signedInfo.getSignatureMethodURI());
-            
+
             Reference documentReference = signedInfo.item(0);
-                if(documentReference != null) {
+            if (documentReference != null) {
                 signatureContext.setDigestAlgorithm(documentReference.getMessageDigestAlgorithm().getAlgorithmURI());
-                
+
                 if(log.isDebugEnabled()){
+                    log.debug("Setting Signature reference URI to " + documentReference.getURI());
+                }
+                signature.setReferenceURI(documentReference.getURI());
+                
+                if (log.isDebugEnabled()) {
                     log.debug("Adding transforms to signing context");
                 }
                 Transforms documentTransforms = documentReference.getTransforms();
-                if(documentTransforms != null) {
-                    for(int i = 0; i < documentTransforms.getLength(); i++) {
+                if (documentTransforms != null) {
+                    for (int i = 0; i < documentTransforms.getLength(); i++) {
                         signatureContext.getTransforms().add(documentTransforms.item(i).getURI());
                     }
                 }
             }
-            
+
             KeyInfo keyInfo = xmlSignature.getKeyInfo();
             if (keyInfo != null) {
-                if(log.isDebugEnabled()){
+                if (log.isDebugEnabled()) {
                     log.debug("Adding any public key data to signing context");
                 }
                 signatureContext.setPublicKey(keyInfo.getPublicKey());
-                
-                if(log.isDebugEnabled()){
+
+                if (log.isDebugEnabled()) {
                     log.debug("Adding any X509 certificates to signing context");
                 }
                 X509Data x509data = keyInfo.itemX509Data(0);
-                if(x509data != null) {
-                    for(int i = 0; i < x509data.lengthCertificate(); i++) {
+                if (x509data != null) {
+                    for (int i = 0; i < x509data.lengthCertificate(); i++) {
                         signatureContext.getCertificates().add(x509data.itemCertificate(i).getX509Certificate());
                     }
                 }
             }
 
-            if(log.isDebugEnabled()){
+            if (log.isDebugEnabled()) {
                 log.debug("Creating new Signature XMLObject with created SigningContext and XMLSignature objects");
             }
-            Signature signature = new Signature(signatureContext);
             signature.setXMLSignature(xmlSignature);
-            signature.setId(xmlSignature.getId());
+            signature.setReferenceURI(xmlSignature.getId());
 
             return signature;
         } catch (XMLSecurityException e) {

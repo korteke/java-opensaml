@@ -56,7 +56,7 @@
    </category>
    
    <category name="org.apache.xml.security">
-      <priority value="DEBUG"/>
+      <priority value="WARN"/>
    </category>
    
 

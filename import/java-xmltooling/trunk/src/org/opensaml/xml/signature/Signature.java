@@ -31,8 +31,8 @@ public class Signature extends AbstractXMLObject {
     /** Element local name */
     public final static String LOCAL_NAME = "Signature";
     
-    /** ID attribute used as reference by digital signature */
-    private String id;
+    /** The reference URI to the content to be signed */
+    private String referenceURI;
     
     /** Signing information */
     private SigningContext signingContext;
@@ -62,21 +62,21 @@ public class Signature extends AbstractXMLObject {
     }
     
     /**
-     * Gets the value if the Signature's Id attribute.
+     * Gets reference URI to the content to be signed.
      * 
-     * @return the value if the Signature's Id attribute
+     * @return reference URI to the content to be signed
      */
-    public String getId() {
-        return id;
+    public String getReferenceURI() {
+        return referenceURI;
     }
     
     /**
-     * Sets the value if the Signature's Id attribute.
+     * Sets reference URI to the content to be signed.
      * 
-     * @param newID the value if the Signature's Id attribute
+     * @param newID reference URI to the content to be signed
      */
-    public void setId(String newID) {
-        id = newID;
+    public void setReferenceURI(String newID) {
+        referenceURI = newID;
     }
 
     /**

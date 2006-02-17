@@ -141,7 +141,7 @@ public class SignatureTest extends XMLObjectBaseTestCase {
         SignatureBuilder sigBuilder = (SignatureBuilder) builderFactory.getBuilder(signatureQName);
         sigBuilder.setSigningContext(signingContext);
         Signature signature = (Signature) sigBuilder.buildObject();
-        signature.setId(ID);
+        signature.setReferenceURI("#" + ID);
         xmlObject.setSignature(signature);
         
         // Marshall & sign
@@ -172,7 +172,7 @@ public class SignatureTest extends XMLObjectBaseTestCase {
         SignatureBuilder sigBuilder = (SignatureBuilder) builderFactory.getBuilder(signatureQName);
         sigBuilder.setSigningContext(signingContext);
         Signature signature = (Signature) sigBuilder.buildObject();
-        signature.setId(ID);
+        signature.setReferenceURI("#" + ID);
         xmlObject.setSignature(signature);
         
         return xmlObject;
