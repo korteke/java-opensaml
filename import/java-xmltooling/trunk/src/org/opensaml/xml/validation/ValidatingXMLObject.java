@@ -14,9 +14,11 @@
  * limitations under the License.
  */
 
-package org.opensaml.xml;
+package org.opensaml.xml.validation;
 
 import java.util.List;
+
+import org.opensaml.xml.XMLObject;
 
 /**
  * A functional interface for XMLObjects that offer the ability

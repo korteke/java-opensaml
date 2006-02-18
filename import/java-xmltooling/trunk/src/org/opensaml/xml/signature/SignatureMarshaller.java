@@ -31,7 +31,6 @@ import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.transforms.Transforms;
 import org.apache.xml.security.transforms.params.InclusiveNamespaces;
 import org.opensaml.xml.Namespace;
-import org.opensaml.xml.SignableXMLObject;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallingException;

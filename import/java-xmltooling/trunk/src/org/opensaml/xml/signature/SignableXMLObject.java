@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package org.opensaml.xml;
+package org.opensaml.xml.signature;
 
-import org.opensaml.xml.signature.Signature;
+import org.opensaml.xml.XMLObject;
 
 /**
  * An XMLObject whose DOM representation can be digitally signed.

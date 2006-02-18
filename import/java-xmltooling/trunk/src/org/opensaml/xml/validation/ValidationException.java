@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.xml;
+package org.opensaml.xml.validation;
 
 /**
  * An exception indicating that a XMLObject is not valid.

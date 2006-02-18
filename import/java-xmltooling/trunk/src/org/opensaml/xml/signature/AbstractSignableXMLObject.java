@@ -17,12 +17,12 @@
 /**
  * 
  */
-package org.opensaml.xml;
+package org.opensaml.xml.signature;
 
-import org.opensaml.xml.signature.Signature;
+import org.opensaml.xml.AbstractDOMCachingXMLObject;
 
 /**
- * Extension to {@link org.opensaml.xml.DOMCachingXMLObject} that implements {@link org.opensaml.xml.SignableXMLObject}.
+ * Extension to {@link org.opensaml.xml.DOMCachingXMLObject} that implements {@link org.opensaml.xml.signature.SignableXMLObject}.
  */
 public abstract class AbstractSignableXMLObject extends AbstractDOMCachingXMLObject implements SignableXMLObject {
 

@@ -14,17 +14,19 @@
  * limitations under the License.
  */
 
-package org.opensaml.xml;
+package org.opensaml.xml.validation;
 
 import java.util.List;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.xml.XMLObject;
+
 /**
  * A collection of validators that can be applied to an XMLObject and it's children. These collections can represent
  * usage specific checks, such as those outlined in things like profiles for specific XML specification.
  * 
- * Implementations of ValidatorSuite and the registered {@link org.opensaml.xml.Validator}s must be stateless. The
+ * Implementations of ValidatorSuite and the registered {@link org.opensaml.xml.validation.Validator}s must be stateless. The
  * xmlObjectTarget used in many methods must, at least, be evaluated against the XMLObject's element QName {i.e.
  * {@link org.opensaml.xml.XMLObject#getElementQName()}).
  */

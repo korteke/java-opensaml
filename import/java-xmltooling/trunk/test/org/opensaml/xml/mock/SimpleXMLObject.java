@@ -23,8 +23,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.opensaml.xml.AbstractSignableXMLObject;
 import org.opensaml.xml.XMLObject;
+import org.opensaml.xml.signature.AbstractSignableXMLObject;
 import org.opensaml.xml.signature.Signature;
 import org.opensaml.xml.util.XMLObjectChildrenList;
 

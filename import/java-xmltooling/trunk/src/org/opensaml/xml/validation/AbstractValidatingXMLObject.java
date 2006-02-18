@@ -18,34 +18,35 @@
  * 
  */
 
-package org.opensaml.xml;
+package org.opensaml.xml.validation;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.opensaml.xml.AbstractXMLObject;
+import org.opensaml.xml.XMLObject;
+
 
 /**
- * Extension of {@link org.opensaml.xml.AbstractDOMCachingXMLObject} that implements
- * {@link org.opensaml.xml.ValidatingXMLObject}
+ * Extension of {@link org.opensaml.xml.AbstractXMLObject} that implements {@link org.opensaml.xml.validation.ValidatingXMLObject}
  */
-public abstract class AbstractValidatingDOMCachingXMLObject extends AbstractDOMCachingXMLObject implements
-        ValidatingXMLObject {
-
+public abstract class AbstractValidatingXMLObject extends AbstractXMLObject implements ValidatingXMLObject {
+    
     /** Logger */
-    private final Logger log = Logger.getLogger(AbstractValidatingDOMCachingXMLObject.class);
+    private final Logger log = Logger.getLogger(AbstractValidatingXMLObject.class);
 
     /** Validators used to validate this XMLObject */
     private ArrayList<Validator> validators = new ArrayList<Validator>();
-
+    
     /**
      * Constructor
      * 
      * @param namespaceURI the namespace the element is in
      * @param elementLocalName the local name of the XML element this Object represents
      */
-    protected AbstractValidatingDOMCachingXMLObject(String namespaceURI, String elementLocalName) {
+    protected AbstractValidatingXMLObject(String namespaceURI, String elementLocalName) {
         super(namespaceURI, elementLocalName);
     }
 

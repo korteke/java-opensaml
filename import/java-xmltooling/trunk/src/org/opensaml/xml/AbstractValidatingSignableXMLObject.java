@@ -25,10 +25,14 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.opensaml.xml.signature.AbstractSignableXMLObject;
+import org.opensaml.xml.validation.ValidatingXMLObject;
+import org.opensaml.xml.validation.ValidationException;
+import org.opensaml.xml.validation.Validator;
 
 /**
- * Extension of {@link org.opensaml.xml.AbstractSignableXMLObject} that implements
- * {@link org.opensaml.xml.ValidatingXMLObject}
+ * Extension of {@link org.opensaml.xml.signature.AbstractSignableXMLObject} that implements
+ * {@link org.opensaml.xml.validation.ValidatingXMLObject}
  */
 public abstract class AbstractValidatingSignableXMLObject extends AbstractSignableXMLObject implements
         ValidatingXMLObject {

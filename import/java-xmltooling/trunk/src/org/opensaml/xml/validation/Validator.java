@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-package org.opensaml.xml;
+package org.opensaml.xml.validation;
+
+import org.opensaml.xml.XMLObject;
 
 /**
  * An interface for classes that implement rules for checking the 
