@@ -40,25 +40,7 @@ public class XMLSecSignatureBuilder implements XMLObjectBuilder {
      * @see org.opensaml.xml.XMLObjectBuilder#buildObject()
      */
     public XMLObject buildObject() {
-        if (context == null) {
-            throw new IllegalStateException("A non-null signing context must be set before a signature can be built");
-        }
         Signature signature = new XMLSecSignatureImpl(context);
         return signature;
-    }
-
-    /*
-     * @see org.opensaml.xml.signature.SignatureBuilder#getSigningContext()
-     */
-    public SigningContext getSigningContext() {
-        return context;
-    }
-
-    /*
-     * 
-     * @see org.opensaml.xml.signature.SignatureBuilder#setSigningContext(org.opensaml.xml.signature.SigningContext)
-     */
-    public void setSigningContext(SigningContext newContext) {
-        context = newContext;
     }
 }

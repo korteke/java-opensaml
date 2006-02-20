@@ -28,7 +28,7 @@ import org.opensaml.xml.signature.impl.XMLSecSignatureImpl;
 import org.w3c.dom.Attr;
 
 /**
- * 
+ * Unmarshaller for {@link org.opensaml.xml.mock.SimpleXMLObject}.
  */
 public class SimpleXMLObjectUnmarshaller extends AbstractXMLObjectUnmarshaller {
 
@@ -58,9 +58,8 @@ public class SimpleXMLObjectUnmarshaller extends AbstractXMLObjectUnmarshaller {
         }
     }
 
-
     /*
-     * 
+     * @see org.opensaml.xml.io.AbstractXMLObjectUnmarshaller#processAttribute(org.opensaml.xml.XMLObject, org.w3c.dom.Attr)
      */
     protected void processAttribute(XMLObject xmlObject, Attr attribute)
             throws UnmarshallingException {
@@ -76,6 +75,8 @@ public class SimpleXMLObjectUnmarshaller extends AbstractXMLObjectUnmarshaller {
      *      java.lang.String)
      */
     protected void processElementContent(XMLObject xmlObject, String elementContent) {
-        // do nothing
+        SimpleXMLObject simpleXMLObject = (SimpleXMLObject) xmlObject;
+        
+        simpleXMLObject.setValue(elementContent);
     }
 }

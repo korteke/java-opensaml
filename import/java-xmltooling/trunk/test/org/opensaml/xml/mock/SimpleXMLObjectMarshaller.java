@@ -23,14 +23,19 @@ import org.w3c.dom.Element;
 
 /**
  * Marshaller for {@link org.opensaml.xml.mock.SimpleXMLObject}
- *
  */
 public class SimpleXMLObjectMarshaller extends AbstractXMLObjectMarshaller {
 
+    /**
+     * Constructor
+     */
     public SimpleXMLObjectMarshaller() {
         super(SimpleXMLObject.NAMESAPACE, SimpleXMLObject.LOCAL_NAME);
     }
     
+    /*
+     * @see org.opensaml.xml.io.AbstractXMLObjectMarshaller#marshallAttributes(org.opensaml.xml.XMLObject, org.w3c.dom.Element)
+     */
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         SimpleXMLObject simpleXMLObject = (SimpleXMLObject)xmlObject;
         
@@ -41,7 +46,12 @@ public class SimpleXMLObjectMarshaller extends AbstractXMLObjectMarshaller {
 
     }
 
+    /*
+     * @see org.opensaml.xml.io.AbstractXMLObjectMarshaller#marshallElementContent(org.opensaml.xml.XMLObject, org.w3c.dom.Element)
+     */
     protected void marshallElementContent(XMLObject xmlObject, Element domElement) throws MarshallingException {
-        // No content
+        SimpleXMLObject simpleXMLObject = (SimpleXMLObject) xmlObject;
+        
+        domElement.setTextContent(simpleXMLObject.getValue());
     }
 }

@@ -143,9 +143,9 @@ public class SignatureTest extends XMLObjectBaseTestCase {
         signingContext.getCertificates().add(certificate);
         
         XMLSecSignatureBuilder sigBuilder = (XMLSecSignatureBuilder) builderFactory.getBuilder(signatureQName);
-        sigBuilder.setSigningContext(signingContext);
         Signature signature = (Signature) sigBuilder.buildObject();
         signature.setReferenceURI("#" + ID);
+        signature.setSigningContext(signingContext);
         xmlObject.setSignature(signature);
         
         // Marshall & sign

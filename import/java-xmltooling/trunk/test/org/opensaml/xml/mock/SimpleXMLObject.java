@@ -25,7 +25,6 @@ import java.util.List;
 
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.signature.AbstractSignableXMLObject;
-import org.opensaml.xml.signature.Signature;
 import org.opensaml.xml.util.XMLObjectChildrenList;
 
 /**
@@ -44,10 +43,11 @@ public class SimpleXMLObject extends AbstractSignableXMLObject {
     /** Name attribute */
     private String id;
     
+    /** Value of the object stored as text content in the element */
+    private String value;
+    
     /** Child SimpleXMLObjects */
     private XMLObjectChildrenList<SimpleXMLObject> simpleXMLObjects;
-    
-    private Signature signature;
     
     /**
      * Constructor
@@ -77,20 +77,30 @@ public class SimpleXMLObject extends AbstractSignableXMLObject {
     }
     
     /**
+     * Gets the value of this object.
+     * 
+     * @return the value of this object
+     */
+    public String getValue(){
+        return value;
+    }
+    
+    /**
+     * Sets the value of this object.
+     * 
+     * @param newValue the value of this object
+     */
+    public void setValue(String newValue){
+        value = prepareForAssignment(value, newValue);
+    }
+    
+    /**
      * Gets the list of child SimpleXMLObjects.
      * 
      * @return the list of child SimpleXMLObjects
      */
     public List<SimpleXMLObject> getSimpleXMLObjects(){
         return simpleXMLObjects;
-    }
-    
-    public Signature getSignature() {
-        return signature;
-    }
-    
-    public void setSignature(Signature signature) {
-        this.signature = prepareForAssignment(this.signature, signature);
     }
 
     /*
@@ -100,7 +110,7 @@ public class SimpleXMLObject extends AbstractSignableXMLObject {
         ArrayList<XMLObject> children = new ArrayList<XMLObject>();
         
         children.addAll(simpleXMLObjects);
-        children.add(signature);
+        children.add(getSignature());
         
         return Collections.unmodifiableList(children);
     }
