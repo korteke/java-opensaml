@@ -248,7 +248,7 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
                 log.debug("Attribute " + XMLHelper.getNodeQName(attribute)
                         + " is neither a schema type nor namespace, calling processAttribute()");
             }
-            processAttribute(xmlObject, attribute.getLocalName(), attribute.getValue());
+            processAttribute(xmlObject, attribute);
         }
     }
 
@@ -350,7 +350,7 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
      * 
      * @throws UnmarshallingException thrown if there is a problem adding the attribute to the XMLObject
      */
-    protected abstract void processAttribute(XMLObject xmlObject, String attributeName, String attributeValue)
+    protected abstract void processAttribute(XMLObject xmlObject, Attr attribute)
             throws UnmarshallingException;
 
     /**
