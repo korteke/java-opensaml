@@ -17,64 +17,62 @@
 /**
  * 
  */
+
 package org.opensaml.xml.mock;
 
-import javax.xml.namespace.QName;
-
 import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.XMLObjectBuilder;
-import org.opensaml.xml.XMLObjectBuilderFactory;
 import org.opensaml.xml.io.AbstractXMLObjectUnmarshaller;
-import org.opensaml.xml.io.Unmarshaller;
-import org.opensaml.xml.io.UnmarshallerFactory;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.signature.Signature;
+import org.opensaml.xml.signature.impl.XMLSecSignatureImpl;
 
 /**
- *
+ * 
  */
 public class SimpleXMLObjectUnmarshaller extends AbstractXMLObjectUnmarshaller {
 
     /**
      * Constructor
-     *
+     * 
      * @param xmlObjectBuilderFactory factory for retrieving XMLObjectBuilders
      * @param unmarshallerFactory factory for retrieving Unmarshallers
      */
-    public SimpleXMLObjectUnmarshaller(XMLObjectBuilderFactory<QName, XMLObjectBuilder> xmlObjectBuilderFactory,
-            UnmarshallerFactory<QName, Unmarshaller> unmarshallerFactory){
-        super(SimpleXMLObject.NAMESAPACE, SimpleXMLObject.LOCAL_NAME, xmlObjectBuilderFactory, unmarshallerFactory);
+    public SimpleXMLObjectUnmarshaller() {
+        super(SimpleXMLObject.NAMESAPACE, SimpleXMLObject.LOCAL_NAME);
     }
-    
+
     /*
-     * @see org.opensaml.xml.io.AbstractXMLObjectUnmarshaller#processChildElement(org.opensaml.xml.XMLObject, org.opensaml.xml.XMLObject)
+     * @see org.opensaml.xml.io.AbstractXMLObjectUnmarshaller#processChildElement(org.opensaml.xml.XMLObject,
+     *      org.opensaml.xml.XMLObject)
      */
     protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
             throws UnmarshallingException {
-        
+
         SimpleXMLObject simpleXMLObject = (SimpleXMLObject) parentXMLObject;
-        
-        if(childXMLObject instanceof SimpleXMLObject){
+
+        if (childXMLObject instanceof SimpleXMLObject) {
             simpleXMLObject.getSimpleXMLObjects().add((SimpleXMLObject) childXMLObject);
-        }else if(childXMLObject instanceof Signature){
+        } else if (childXMLObject instanceof XMLSecSignatureImpl) {
             simpleXMLObject.setSignature((Signature) childXMLObject);
         }
     }
 
     /*
-     * @see org.opensaml.xml.io.AbstractXMLObjectUnmarshaller#processAttribute(org.opensaml.xml.XMLObject, java.lang.String, java.lang.String)
+     * @see org.opensaml.xml.io.AbstractXMLObjectUnmarshaller#processAttribute(org.opensaml.xml.XMLObject,
+     *      java.lang.String, java.lang.String)
      */
     protected void processAttribute(XMLObject xmlObject, String attributeName, String attributeValue)
             throws UnmarshallingException {
         SimpleXMLObject simpleXMLObject = (SimpleXMLObject) xmlObject;
-        
-        if(attributeName.equals(SimpleXMLObject.ID_ATTRIB_NAME)){
+
+        if (attributeName.equals(SimpleXMLObject.ID_ATTRIB_NAME)) {
             simpleXMLObject.setId(attributeValue);
         }
     }
 
     /*
-     * @see org.opensaml.xml.io.AbstractXMLObjectUnmarshaller#processElementContent(org.opensaml.xml.XMLObject, java.lang.String)
+     * @see org.opensaml.xml.io.AbstractXMLObjectUnmarshaller#processElementContent(org.opensaml.xml.XMLObject,
+     *      java.lang.String)
      */
     protected void processElementContent(XMLObject xmlObject, String elementContent) {
         // do nothing

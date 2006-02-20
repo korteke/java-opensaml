@@ -74,8 +74,8 @@ public abstract class AbstractDOMCachingXMLObject extends AbstractXMLObject impl
      * @see org.opensaml.common.SAMLElement#releaseParentDOM(boolean)
      */
     public void releaseParentDOM(boolean propagateRelease) {
-        if (log.isDebugEnabled()) {
-            log.debug("Releasing cached DOM reprsentation for parent of " + getElementQName()
+        if (log.isTraceEnabled()) {
+            log.trace("Releasing cached DOM reprsentation for parent of " + getElementQName()
                     + " with propagation set to " + propagateRelease);
         }
 
@@ -93,8 +93,8 @@ public abstract class AbstractDOMCachingXMLObject extends AbstractXMLObject impl
      * @see org.opensaml.common.SAMLElement#releaseChildrenDOM(boolean)
      */
     public void releaseChildrenDOM(boolean propagateRelease) {
-        if (log.isDebugEnabled()) {
-            log.debug("Releasing cached DOM reprsentation for children of " + getElementQName()
+        if (log.isTraceEnabled()) {
+            log.trace("Releasing cached DOM reprsentation for children of " + getElementQName()
                     + " with propagation set to " + propagateRelease);
         }
 

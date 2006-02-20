@@ -27,8 +27,11 @@
       <param name="DatePattern" value="'.'yyyy-MM-dd"/>
 
       <layout class="org.apache.log4j.PatternLayout">
-         <!-- The default pattern: Date Priority [Category] Message\n -->
-         <param name="ConversionPattern" value="%d %-5p [%c] %m%n"/>
+         <!-- The default pattern: Date Priority [Category] Message -->
+         <!-- param name="ConversionPattern" value="%d %-5p [%c] %m%n"/-->
+         
+         <!-- The debug pattern (very slow): Date Priority [Class#Method:Line Number] Message -->
+         <param name="ConversionPattern" value="%d %-5p [%C{1}#%M:%L] %m%n"/>
       </layout>
       
    </appender>
@@ -41,8 +44,11 @@
       <param name="Target" value="System.out"/>
 
       <layout class="org.apache.log4j.PatternLayout">
-         <!-- The default pattern: Date Priority [Category] Message\n -->
-         <param name="ConversionPattern" value="%d{ABSOLUTE} %-5p [%c{1}] %m%n"/>
+         <!-- The default pattern: Date Priority [Category] Message -->
+         <!-- param name="ConversionPattern" value="%d %-5p [%c] %m%n"/-->
+         
+         <!-- The debug pattern (very slow): Date Priority [Class#Method:Line Number] Message -->
+         <param name="ConversionPattern" value="%d %-5p [%C{1}#%M:%L] %m%n"/>
       </layout>
    </appender>
 

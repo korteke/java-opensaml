@@ -16,15 +16,10 @@
 
 package org.opensaml.xml.io;
 
-import java.security.PublicKey;
-import java.security.cert.X509Certificate;
-import java.util.List;
-
 import javax.xml.namespace.QName;
 
 import org.apache.log4j.Logger;
-import org.apache.xml.security.exceptions.XMLSecurityException;
-import org.apache.xml.security.signature.XMLSignature;
+import org.opensaml.xml.Configuration;
 import org.opensaml.xml.DOMCachingXMLObject;
 import org.opensaml.xml.Namespace;
 import org.opensaml.xml.XMLObject;
@@ -32,6 +27,7 @@ import org.opensaml.xml.XMLObjectBuilder;
 import org.opensaml.xml.XMLObjectBuilderFactory;
 import org.opensaml.xml.signature.SignableXMLObject;
 import org.opensaml.xml.signature.Signature;
+import org.opensaml.xml.signature.SignatureUnmarshaller;
 import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.util.XMLConstants;
 import org.opensaml.xml.util.XMLHelper;
@@ -53,10 +49,10 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
     private QName targetQName;
 
     /** Factory for XMLObjectBuilders */
-    private XMLObjectBuilderFactory<QName, XMLObjectBuilder> xmlObjectBuilderFactory;
+    private XMLObjectBuilderFactory xmlObjectBuilderFactory;
 
     /** Factory for creating unmarshallers for child elements */
-    private UnmarshallerFactory<QName, Unmarshaller> unmarshallerFactory;
+    private UnmarshallerFactory unmarshallerFactory;
 
     /**
      * Constructor.
@@ -65,15 +61,10 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
      *            unmarshaller operates on
      * @param targetLocalName the local name of either the schema type QName or element QName of the elements this
      *            unmarshaller operates on
-     * @param xmlObjectBuilderFactory the factory used to fetch builders for the XMLObjects elements are unmarshalled
-     *            into
-     * @param unmarshallerFactory the factory used to fetch unmarshallers for the XMLObjects
      * 
      * @throws NullPointerException if any of the arguments are null (or empty in the case of String parameters)
      */
-    protected AbstractXMLObjectUnmarshaller(String targetNamespaceURI, String targetLocalName,
-            XMLObjectBuilderFactory<QName, XMLObjectBuilder> xmlObjectBuilderFactory,
-            UnmarshallerFactory<QName, Unmarshaller> unmarshallerFactory) throws IllegalArgumentException,
+    protected AbstractXMLObjectUnmarshaller(String targetNamespaceURI, String targetLocalName) throws IllegalArgumentException,
             NullPointerException {
         if (DatatypeHelper.isEmpty(targetNamespaceURI)) {
             throw new NullPointerException("Target Namespace URI may not be null or an empty");
@@ -84,15 +75,8 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
         }
         targetQName = new QName(targetNamespaceURI, targetLocalName);
 
-        if (xmlObjectBuilderFactory == null) {
-            throw new NullPointerException("XMLObjectBuilderFactory must not be null");
-        }
-        this.xmlObjectBuilderFactory = xmlObjectBuilderFactory;
-
-        if (unmarshallerFactory == null) {
-            throw new NullPointerException("UnmarshallerFactory must not be null");
-        }
-        this.unmarshallerFactory = unmarshallerFactory;
+        xmlObjectBuilderFactory = Configuration.getBuilderFactory();
+        unmarshallerFactory = Configuration.getUnmarshallerFactory();
     }
 
     /*
@@ -118,7 +102,7 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
         unmarshallChildElements(domElement, xmlObject);
 
         if (xmlObject instanceof SignableXMLObject) {
-            verifySignature(xmlObject);
+            verifySignature(domElement, xmlObject);
         }
 
         if (xmlObject instanceof DOMCachingXMLObject) {
@@ -368,71 +352,23 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
      * 
      * @throws UnmarshallingException thrown if ther eis a problem verifying the signature
      */
-    protected void verifySignature(XMLObject xmlObject) throws UnmarshallingException {
+    protected void verifySignature(Element domElement, XMLObject xmlObject) throws UnmarshallingException {
         SignableXMLObject signableXMLObject = (SignableXMLObject) xmlObject;
-        Signature signature = signableXMLObject.getSignature();
 
+        Signature signature = signableXMLObject.getSignature();
+        
         if (signature == null) {
             if (log.isDebugEnabled()) {
                 log
-                        .debug(xmlObject.getElementQName()
+                        .debug(XMLHelper.getNodeQName(domElement)
                                 + " is a signable object but does not contain a Signature child, skipping signature verification");
             }
             return;
         }
-
-        try {
-            XMLSignature xmlSignature = signature.getXMLSignature();
-
-            List<X509Certificate> certs = signature.getSigningContext().getCertificates();
-            if (certs.size() > 0 && log.isDebugEnabled()) {
-                log.debug("Attempting to validate digital signature using certifcates found in the signature");
-            }
-            for (X509Certificate cert : certs) {
-                if (xmlSignature.checkSignatureValue(cert)) {
-                    if (log.isDebugEnabled()) {
-                        log.debug("Signature for XMLObject " + xmlObject.getElementQName()
-                                + " validated with certifcate with subject DN of " + cert.getSubjectDN());
-                    }
-                    signature.getSigningContext().setValidatingCertificate(cert);
-                    return;
-                } else {
-                    if (log.isDebugEnabled()) {
-                        log.debug("Signature for XMLObject " + xmlObject.getElementQName()
-                                + " could not be validated with certifcates found in signature");
-                    }
-                }
-            }
-
-            PublicKey publicKey = signature.getSigningContext().getPublicKey();
-            if (publicKey != null) {
-                if (log.isDebugEnabled()) {
-                    log.debug("Attempting to validate digital signature using public key found in the signature");
-                }
-                if (xmlSignature.checkSignatureValue(publicKey)) {
-                    if (log.isDebugEnabled()) {
-                        log.debug("Signature for XMLObject " + xmlObject.getElementQName()
-                                + " validated with public key found in signature.");
-                    }
-                    return;
-                } else {
-                    if (log.isDebugEnabled()) {
-                        log.debug("Signature for XMLObject " + xmlObject.getElementQName()
-                                + " could not be validated with public key found in signature");
-                    }
-                }
-            }
-
-            String errorMsg = "XMLObject " + xmlObject.getElementQName()
-                    + " could not be validated with any certificates or public key included with the digital signature";
-            log.error(errorMsg);
-            throw new UnmarshallingException(errorMsg);
-        } catch (XMLSecurityException e) {
-            String errorMsg = "Received the following error when attempting to validate the signature for XMLObject "
-                    + xmlObject.getElementQName();
-            log.error(errorMsg, e);
-            throw new UnmarshallingException(errorMsg, e);
-        }
+        
+        QName signatureQName = new QName(XMLConstants.XMLSIG_NS, Signature.LOCAL_NAME);
+        SignatureUnmarshaller unmarshaller = (SignatureUnmarshaller) unmarshallerFactory.getUnmarshaller(signatureQName);
+        unmarshaller.verifySignature(domElement, signature);
     }
 
     /**

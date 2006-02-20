@@ -19,38 +19,50 @@ package org.opensaml.xml.util;
 /**
  * XML related constants.
  */
-public class XMLConstants{
+public class XMLConstants {
 
-    /**  XML core namespace */
+    // ****************************
+    // XML Tooling
+    // ****************************
+    /** Configuration namespace */
+    public final static String XMLTOOLING_CONFIG_NS = "http://www.opensaml.org/xmltooling-config";
+
+    /** Configuration namespace prefix */
+    public final static String XMLTOOLING_CONFIG_PREFIX = "xt";
+
+    // ****************************
+    // Core XML
+    // ****************************
+    /** XML core namespace */
     public final static String XML_NS = "http://www.w3.org/XML/1998/namespace";
 
-    /**  XML namespace for xmlns attributes */
+    /** XML namespace for xmlns attributes */
     public final static String XMLNS_NS = "http://www.w3.org/2000/xmlns/";
-    
+
     /** XML namespace prefix for xmlns attributes */
     public final static String XMLNS_PREFIX = "xmlns";
 
-    /**  XML Schema namespace */
+    /** XML Schema namespace */
     public final static String XSD_NS = "http://www.w3.org/2001/XMLSchema";
-    
-    /**  XML Schema QName prefix */
-    public final static String XSD_PREFIX ="xs";
 
-    /**  XML Schema Instance namespace */
+    /** XML Schema QName prefix */
+    public final static String XSD_PREFIX = "xs";
+
+    /** XML Schema Instance namespace */
     public final static String XSI_NS = "http://www.w3.org/2001/XMLSchema-instance";
-    
-    /**  XML Schema Instance QName prefix */
-    public final static String XSI_PREFIX ="xsi";
-    
-    /**  XML Signature namespace */
+
+    /** XML Schema Instance QName prefix */
+    public final static String XSI_PREFIX = "xsi";
+
+    /** XML XMLSecSignatureImpl namespace */
     public final static String XMLSIG_NS = "http://www.w3.org/2000/09/xmldsig#";
-    
-    /**  XML Signature QName prefix */
+
+    /** XML XMLSecSignatureImpl QName prefix */
     public final static String XMLSIG_PREFIX = "ds";
-    
-    /**  XML Encryption namespace */
+
+    /** XML Encryption namespace */
     public final static String XMLENC_NS = "http://www.w3.org/2001/04/xmlenc#";
-    
-    /**  XML Encryption QName prefix */
+
+    /** XML Encryption QName prefix */
     public final static String XMLENC_PREFIX = "xenc";
 }

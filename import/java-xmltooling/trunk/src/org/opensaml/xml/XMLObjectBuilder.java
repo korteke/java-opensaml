@@ -17,8 +17,6 @@ package org.opensaml.xml;
 
 /**
  * A builder for XMLObjects.
- *
- * @param <T> the XMLObject type this builder produces
  */
 public interface XMLObjectBuilder {
 
@@ -28,10 +26,4 @@ public interface XMLObjectBuilder {
      * @return the empty XMLObject
      */
     public XMLObject buildObject();
-    
-    /**
-     * Resets the state of the builder.  This normally means 
-     * null'ing out any properties that were needed to build an object.
-     */
-    public void resetState();
 }

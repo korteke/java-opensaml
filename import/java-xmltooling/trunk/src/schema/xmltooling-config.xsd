@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" 
+    xmlns:xt="http://www.opensaml.org/xmltooling-config"
+    targetNamespace="http://www.opensaml.org/xmltooling-config">
+
+    <element name="XMLTooling" type="xt:XMLToolingType" />
+    <complexType name="XMLToolingType">
+        <sequence>
+            <element ref="xt:ObjectProviders" />
+        </sequence>
+
+        <attribute name="clock-skew" type="long" use="optional" />
+    </complexType>
+
+    <element name="ObjectProviders" type="xt:ObjectProvidersType" />
+    <complexType name="ObjectProvidersType">
+        <sequence>
+            <element ref="xt:ObjectProvider" maxOccurs="unbounded" />
+        </sequence>
+
+        <attribute name="ignoreUnknownAttributes" type="boolean" use="optional" />
+        <attribute name="ignoreUnknownElements" type="boolean" use="optional" default="false"/>
+    </complexType>
+
+    <element name="ObjectProvider" type="xt:ObjectProviderType" />
+    <complexType name="ObjectProviderType">
+        <sequence>
+            <element ref="xt:BuilderClass" />
+            <element ref="xt:MarshallingClass" />
+            <element ref="xt:UnmarshallingClass" />
+            <any namespace="##other" minOccurs="0" maxOccurs="unbounded" />
+        </sequence>
+
+        <attribute name="qualifiedName" type="QName" use="required" />
+        <anyAttribute namespace="##other" />
+    </complexType>
+
+    <element name="BuilderClass" type="xt:ClassType" />
+    <element name="MarshallingClass" type="xt:ClassType" />
+    <element name="UnmarshallingClass" type="xt:ClassType" />
+    <complexType name="ClassType">
+        <sequence>
+            <any namespace="##other" minOccurs="0" maxOccurs="unbounded" />
+        </sequence>
+
+        <attribute name="className" type="string" use="required" />
+        <anyAttribute namespace="##other" />
+    </complexType>
+
+</schema>

@@ -20,13 +20,17 @@
 package org.opensaml.xml.signature;
 
 import org.opensaml.xml.AbstractDOMCachingXMLObject;
+import org.opensaml.xml.util.XMLConstants;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 /**
  * Extension to {@link org.opensaml.xml.DOMCachingXMLObject} that implements {@link org.opensaml.xml.signature.SignableXMLObject}.
  */
 public abstract class AbstractSignableXMLObject extends AbstractDOMCachingXMLObject implements SignableXMLObject {
 
-    /** Signature */
+    /** XMLSecSignatureImpl */
     private Signature signature;
     
     /**
@@ -43,8 +47,24 @@ public abstract class AbstractSignableXMLObject extends AbstractDOMCachingXMLObj
      * @see org.opensaml.xml.SignableXMLObject#isSigned()
      */
     public boolean isSigned() {
-        if(signature != null && signature.getXMLSignature() != null) {
-            return true;
+        Element domElement = getDOM();
+        
+        if (domElement == null) {
+            return false;
+        }
+
+        NodeList children = domElement.getChildNodes();
+        Element childElement;
+        for (int i = 0; i < children.getLength(); i++) {
+            if (children.item(i).getNodeType() != Node.ELEMENT_NODE) {
+                continue;
+            }
+
+            childElement = (Element) children.item(i);
+            if (childElement.getNamespaceURI().equals(XMLConstants.XMLSIG_NS)
+                    && childElement.getLocalName().equals(Signature.LOCAL_NAME)) {
+                return true;
+            }
         }
         
         return false;
@@ -58,7 +78,7 @@ public abstract class AbstractSignableXMLObject extends AbstractDOMCachingXMLObj
     }
     
     /*
-     * @see org.opensaml.xml.SignableXMLObject#setSignature(org.opensaml.xml.signature.Signature)
+     * @see org.opensaml.xml.SignableXMLObject#setSignature(org.opensaml.xml.signature.XMLSecSignatureImpl)
      */
     public void setSignature(Signature newSignature){
         signature = prepareForAssignment(signature, newSignature);

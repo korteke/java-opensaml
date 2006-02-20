@@ -37,14 +37,15 @@ import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.mock.SimpleXMLObject;
 import org.opensaml.xml.parse.XMLParserException;
 import org.opensaml.xml.signature.Signature;
-import org.opensaml.xml.signature.SignatureBuilder;
 import org.opensaml.xml.signature.SigningContext;
+import org.opensaml.xml.signature.impl.XMLSecSignatureBuilder;
 import org.opensaml.xml.util.XMLConstants;
+import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Element;
 
 public class SignatureTest extends XMLObjectBaseTestCase {
 
-    /** QName for Signature element */
+    /** QName for XMLSecSignatureImpl element */
     private QName signatureQName;
 
     /** QName for SimpleXMLObject */
@@ -55,9 +56,12 @@ public class SignatureTest extends XMLObjectBaseTestCase {
 
     /**
      * Constructor
+     * @throws ConfigurationException 
+     * @throws XMLParserException 
      */
-    public SignatureTest(){
+    public SignatureTest() throws XMLParserException, ConfigurationException{
         super();
+        
         signatureQName = new QName(XMLConstants.XMLSIG_NS, Signature.LOCAL_NAME);
         simpleXMLObjectQName = new QName(SimpleXMLObject.NAMESAPACE, SimpleXMLObject.LOCAL_NAME);
         
@@ -89,7 +93,7 @@ public class SignatureTest extends XMLObjectBaseTestCase {
 
         // Unmarshall and verify
         Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(simpleXMLObjectQName);
-        SimpleXMLObject simpleXMLObject = (SimpleXMLObject) unmarshaller.unmarshall(domElement);
+        unmarshaller.unmarshall(domElement);
     }
     
     /**
@@ -111,7 +115,7 @@ public class SignatureTest extends XMLObjectBaseTestCase {
 
         // Unmarshall and verify
         Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(simpleXMLObjectQName);
-        SimpleXMLObject simpleXMLObject = (SimpleXMLObject) unmarshaller.unmarshall(domElement);
+        unmarshaller.unmarshall(domElement);
     }
     
     /**
@@ -138,7 +142,7 @@ public class SignatureTest extends XMLObjectBaseTestCase {
         signingContext.setSigningKey(signingKey);
         signingContext.getCertificates().add(certificate);
         
-        SignatureBuilder sigBuilder = (SignatureBuilder) builderFactory.getBuilder(signatureQName);
+        XMLSecSignatureBuilder sigBuilder = (XMLSecSignatureBuilder) builderFactory.getBuilder(signatureQName);
         sigBuilder.setSigningContext(signingContext);
         Signature signature = (Signature) sigBuilder.buildObject();
         signature.setReferenceURI("#" + ID);
@@ -147,11 +151,11 @@ public class SignatureTest extends XMLObjectBaseTestCase {
         // Marshall & sign
         Marshaller marshaller = marshallerFactory.getMarshaller(simpleXMLObjectQName);
         Element domElement = marshaller.marshall(xmlObject, parserPool.newDocument());
-        System.out.println(elementToString(domElement));
+        System.out.println(XMLHelper.nodeToString(domElement));
 
         // Unmarshall and verify
         Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(simpleXMLObjectQName);
-        SimpleXMLObject simpleXMLObject = (SimpleXMLObject) unmarshaller.unmarshall(domElement);
+        unmarshaller.unmarshall(domElement);
     }
     
     /**
@@ -169,10 +173,10 @@ public class SignatureTest extends XMLObjectBaseTestCase {
         signingContext.setSigningKey(signingKey);
         signingContext.setPublicKey(publicKey);
         
-        SignatureBuilder sigBuilder = (SignatureBuilder) builderFactory.getBuilder(signatureQName);
-        sigBuilder.setSigningContext(signingContext);
+        XMLObjectBuilder sigBuilder = builderFactory.getBuilder(signatureQName);
         Signature signature = (Signature) sigBuilder.buildObject();
         signature.setReferenceURI("#" + ID);
+        signature.setSigningContext(signingContext);
         xmlObject.setSignature(signature);
         
         return xmlObject;

@@ -18,77 +18,58 @@ package org.opensaml.xml;
 
 import java.util.HashMap;
 
-import javax.xml.namespace.QName;
-
-import org.apache.xml.security.Init;
 import org.custommonkey.xmlunit.XMLTestCase;
-import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallerFactory;
-import org.opensaml.xml.io.Unmarshaller;
 import org.opensaml.xml.io.UnmarshallerFactory;
-import org.opensaml.xml.mock.SimpleXMLObject;
-import org.opensaml.xml.mock.SimpleXMLObjectBuilder;
-import org.opensaml.xml.mock.SimpleXMLObjectMarshaller;
-import org.opensaml.xml.mock.SimpleXMLObjectUnmarshaller;
 import org.opensaml.xml.parse.ParserPool;
 import org.opensaml.xml.parse.XMLParserException;
-import org.opensaml.xml.signature.Signature;
-import org.opensaml.xml.signature.SignatureBuilder;
-import org.opensaml.xml.signature.SignatureMarshaller;
-import org.opensaml.xml.signature.SignatureUnmarshaller;
-import org.opensaml.xml.util.XMLConstants;
-import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.ls.DOMImplementationLS;
-import org.w3c.dom.ls.LSSerializer;
-import org.xml.sax.InputSource;
 
+/**
+ * Base test case class for tests that operate on XMLObjects.
+ */
 public class XMLObjectBaseTestCase extends XMLTestCase {
 
-    protected ParserPool parserPool;
-    
-    protected XMLObjectBuilderFactory<QName, XMLObjectBuilder> builderFactory;
-    
-    protected MarshallerFactory<QName, Marshaller> marshallerFactory;
-    
-    protected UnmarshallerFactory<QName, Unmarshaller> unmarshallerFactory;
-    
-    public XMLObjectBaseTestCase(){
-        Init.init();
-        
+    /** Parser pool */
+    protected static ParserPool parserPool;
+
+    /** XMLObject builder factory */
+    protected static XMLObjectBuilderFactory builderFactory;
+
+    /** XMLObject marshaller factory */
+    protected static MarshallerFactory marshallerFactory;
+
+    /** XMLObject unmarshaller factory */
+    protected static UnmarshallerFactory unmarshallerFactory;
+
+    /**
+     * Constructor
+     * 
+     * @throws XMLParserException thrown if the configuration file can not be parsed
+     * @throws ConfigurationException thrown if the configuration file is invalid or classes referenced within it can't
+     *             be created
+     */
+    public XMLObjectBaseTestCase() throws XMLParserException, ConfigurationException {
+
+    }
+
+    static {
         HashMap<String, Boolean> features = new HashMap<String, Boolean>();
         features.put("http://apache.org/xml/features/validation/schema/normalized-value", Boolean.FALSE);
         features.put("http://apache.org/xml/features/dom/defer-node-expansion", Boolean.FALSE);
-        
-        parserPool = new ParserPool(true, null, features);
-        
-        builderFactory = new XMLObjectBuilderFactory<QName, XMLObjectBuilder>();
-        builderFactory.registerBuilder(new QName(XMLConstants.XMLSIG_NS, Signature.LOCAL_NAME), new SignatureBuilder());
-        builderFactory.registerBuilder(new QName(SimpleXMLObject.NAMESAPACE, SimpleXMLObject.LOCAL_NAME), new SimpleXMLObjectBuilder());
-        
-        marshallerFactory = new MarshallerFactory<QName, Marshaller>();
-        marshallerFactory.registerMarshaller(new QName(XMLConstants.XMLSIG_NS, Signature.LOCAL_NAME), new SignatureMarshaller());
-        marshallerFactory.registerMarshaller(new QName(SimpleXMLObject.NAMESAPACE, SimpleXMLObject.LOCAL_NAME), new SimpleXMLObjectMarshaller(marshallerFactory));
-        
-        unmarshallerFactory = new UnmarshallerFactory<QName, Unmarshaller>();
-        unmarshallerFactory.registerUnmarshaller(new QName(XMLConstants.XMLSIG_NS, Signature.LOCAL_NAME), new SignatureUnmarshaller());
-        unmarshallerFactory.registerUnmarshaller(new QName(SimpleXMLObject.NAMESAPACE, SimpleXMLObject.LOCAL_NAME), new SimpleXMLObjectUnmarshaller(builderFactory, unmarshallerFactory));
-    }
-    
-    protected void setUp() throws Exception {
 
-    }
-    
-    protected Document parse(String resourceID) throws XMLParserException {
-        return parserPool.parse(new InputSource(XMLObjectBaseTestCase.class
-                    .getResourceAsStream(resourceID)));
-    }
-    
-    public String elementToString(Element domElement) {
-        DOMImplementation domImpl = domElement.getOwnerDocument().getImplementation();
-        DOMImplementationLS domImplLS = (DOMImplementationLS) domImpl.getFeature("LS", "3.0");
-        LSSerializer serializer = domImplLS.createLSSerializer();
-        return serializer.writeToString(domElement);
+        parserPool = new ParserPool(true, null, features);
+
+        try {
+            Document configureation = parserPool.parse(XMLObjectBaseTestCase.class
+                    .getResourceAsStream("/conf/xmltooling-config.xml"));
+            Configuration.load(configureation);
+
+            builderFactory = Configuration.getBuilderFactory();
+            marshallerFactory = Configuration.getMarshallerFactory();
+            unmarshallerFactory = Configuration.getUnmarshallerFactory();
+        } catch (Exception e) {
+            System.err.println("Can not initialize XMLObjectBaseTestCase");
+        }
     }
 }

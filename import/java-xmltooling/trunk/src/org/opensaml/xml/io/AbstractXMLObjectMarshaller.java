@@ -22,16 +22,16 @@ import java.util.Set;
 import javax.xml.namespace.QName;
 
 import org.apache.log4j.Logger;
-import org.apache.xml.security.signature.XMLSignature;
-import org.apache.xml.security.signature.XMLSignatureException;
+import org.opensaml.xml.Configuration;
 import org.opensaml.xml.DOMCachingXMLObject;
 import org.opensaml.xml.Namespace;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.signature.SignableXMLObject;
 import org.opensaml.xml.signature.Signature;
-import org.opensaml.xml.signature.SigningContext;
+import org.opensaml.xml.signature.SignatureMarshaller;
 import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.util.XMLConstants;
+import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -44,6 +44,8 @@ import org.w3c.dom.Element;
  * <li>Setting the xsi:type for the element if the element has an explicit type</li>
  * <li>Setting namespaces attributes declared for the element</li>
  * <li>Marshalling of child elements</li>
+ * <li>Digitally signing instance of {@link org.opensaml.xml.signature.SignableXMLObject} that contain a
+ * {@link org.opensaml.xml.signature.Signature}
  * <li>Caching of created DOM for elements that implement {@link org.opensaml.xml.DOMCachingXMLObject}
  * </ul>
  */
@@ -56,7 +58,7 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
     private QName targetQName;
 
     /** Factory for XMLObject Marshallers */
-    private MarshallerFactory<QName, Marshaller> marshallerFactory;
+    private MarshallerFactory marshallerFactory;
 
     /**
      * 
@@ -66,12 +68,11 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
      *            unmarshaller operates on
      * @param targetLocalName the local name of either the schema type QName or element QName of the elements this
      *            unmarshaller operates on
-     * @param marshallerFactory the factory used to create Marshallers for child objects
      * 
      * @throws NullPointerException if any of the arguments are null (or empty in the case of String parameters)
      */
-    protected AbstractXMLObjectMarshaller(String targetNamespaceURI, String targetLocalName,
-            MarshallerFactory<QName, Marshaller> marshallerFactory) throws IllegalArgumentException {
+    protected AbstractXMLObjectMarshaller(String targetNamespaceURI, String targetLocalName)
+            throws IllegalArgumentException {
         if (DatatypeHelper.isEmpty(targetNamespaceURI)) {
             throw new NullPointerException("Target Namespace URI may not be null or an empty");
         }
@@ -81,10 +82,7 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
         }
         targetQName = new QName(targetNamespaceURI, targetLocalName);
 
-        if (marshallerFactory == null) {
-            throw new NullPointerException("Marshaller factory must not be null");
-        }
-        this.marshallerFactory = marshallerFactory;
+        marshallerFactory = Configuration.getMarshallerFactory();
     }
 
     /*
@@ -140,7 +138,7 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
         marshallElementType(xmlObject, domElement);
 
         if (xmlObject instanceof SignableXMLObject) {
-            signElement(xmlObject);
+            signElement(domElement, xmlObject);
         }
 
         if (xmlObject instanceof DOMCachingXMLObject) {
@@ -324,27 +322,25 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
      * 
      * @throws MarshallingException thrown is there is a problem signing the XML
      */
-    protected void signElement(XMLObject xmlObject) throws MarshallingException {
+    protected void signElement(Element domElement, XMLObject xmlObject) throws MarshallingException {
         SignableXMLObject signableXMLObject = (SignableXMLObject) xmlObject;
 
         Signature signature = signableXMLObject.getSignature();
         if (signature == null) {
+            if (log.isDebugEnabled()) {
+                log
+                        .debug(XMLHelper.getNodeQName(domElement)
+                                + " is a signable object but does not contain a Signature child, skipping signature computation");
+            }
             return;
         }
-        
+
         if (log.isDebugEnabled()) {
             log.debug("Computing digital signature for " + xmlObject.getElementQName());
         }
 
-        SigningContext signingCtx = signature.getSigningContext();
-        XMLSignature dsig = signature.getXMLSignature();
-
-        try {
-            dsig.sign(signingCtx.getSigningKey());
-        } catch (XMLSignatureException e) {
-            log.error("Unable compute digital signature for " + xmlObject.getElementQName(), e);
-            throw new MarshallingException("Unable compute digital signature for " + xmlObject.getElementQName(), e);
-        }
+        SignatureMarshaller signatureMarshaller = (SignatureMarshaller) marshallerFactory.getMarshaller(signature);
+        signatureMarshaller.signElement(domElement, signature);
     }
 
     /**

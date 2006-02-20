@@ -33,7 +33,7 @@ import org.opensaml.xml.util.XMLObjectChildrenList;
  */
 public class SimpleXMLObject extends AbstractSignableXMLObject {
     
-    public final static String NAMESAPACE = "http://example.org/ns";
+    public final static String NAMESAPACE = "http://www.example.org/testObjects";
     
     /** Element local name */
     public final static String LOCAL_NAME = "SimpleElement";
@@ -54,7 +54,7 @@ public class SimpleXMLObject extends AbstractSignableXMLObject {
      */
     public SimpleXMLObject() {
         super(NAMESAPACE, LOCAL_NAME);
-        
+        setElementNamespacePrefix("test");
         simpleXMLObjects = new XMLObjectChildrenList<SimpleXMLObject>(this);
     }
     

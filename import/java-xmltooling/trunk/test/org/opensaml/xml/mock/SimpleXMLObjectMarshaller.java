@@ -16,12 +16,8 @@
 
 package org.opensaml.xml.mock;
 
-import javax.xml.namespace.QName;
-
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.AbstractXMLObjectMarshaller;
-import org.opensaml.xml.io.Marshaller;
-import org.opensaml.xml.io.MarshallerFactory;
 import org.opensaml.xml.io.MarshallingException;
 import org.w3c.dom.Element;
 
@@ -31,8 +27,8 @@ import org.w3c.dom.Element;
  */
 public class SimpleXMLObjectMarshaller extends AbstractXMLObjectMarshaller {
 
-    public SimpleXMLObjectMarshaller(MarshallerFactory<QName, Marshaller> marshallerFactory) {
-        super(SimpleXMLObject.NAMESAPACE, SimpleXMLObject.LOCAL_NAME, marshallerFactory);
+    public SimpleXMLObjectMarshaller() {
+        super(SimpleXMLObject.NAMESAPACE, SimpleXMLObject.LOCAL_NAME);
     }
     
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {

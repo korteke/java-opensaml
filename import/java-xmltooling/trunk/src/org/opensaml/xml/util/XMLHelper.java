@@ -22,10 +22,13 @@ import javax.xml.namespace.QName;
 import javax.xml.parsers.FactoryConfigurationError;
 
 import org.w3c.dom.Attr;
+import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
+import org.w3c.dom.ls.DOMImplementationLS;
+import org.w3c.dom.ls.LSSerializer;
 
 /**
  * A helper class for working with W3C DOM objects.
@@ -167,6 +170,20 @@ public class XMLHelper {
         }
 
         parentElement.appendChild(childElement);
+    }
+    
+    /**
+     * Converts a Node into a String using the DOM, level 3, Load/Save Serializer.
+     * 
+     * @param node the node to be written to a string
+     * 
+     * @return the string representation of the node
+     */
+    public static String nodeToString(Node node){
+        DOMImplementation domImpl = node.getOwnerDocument().getImplementation();
+        DOMImplementationLS domImplLS = (DOMImplementationLS) domImpl.getFeature("LS", "3.0");
+        LSSerializer serializer = domImplLS.createLSSerializer();
+        return serializer.writeToString(node);
     }
 
     /**

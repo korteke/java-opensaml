@@ -20,24 +20,28 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.xml.namespace.QName;
+
 import org.apache.log4j.Logger;
+import org.opensaml.xml.util.XMLHelper;
+import org.w3c.dom.Element;
 
 /**
- * A factory for {@link org.opensaml.xml.XMLObjectBuilder}s.
- *
- * @param <KeyType> the object type that will be used as a key to retrieve builders
+ * A factory for {@link org.opensaml.xml.XMLObjectBuilder}s. XMLObjectBuilders are stored and retrieved by a
+ * {@link javax.xml.namespace.QName} key. This key is either the XML Schema Type or element QName of the XML element the
+ * built XMLObject object represents.
  */
-public class XMLObjectBuilderFactory<KeyType, BuilderType extends XMLObjectBuilder> {
+public class XMLObjectBuilderFactory {
 
     /** Logger */
     private final static Logger log = Logger.getLogger(XMLObjectBuilderFactory.class);
 
     /** Registered builders */
-    private Map<KeyType, BuilderType> builders;
+    private Map<QName, XMLObjectBuilder> builders;
 
     /** Constructor */
     public XMLObjectBuilderFactory() {
-        builders = new HashMap<KeyType, BuilderType>();
+        builders = new HashMap<QName, XMLObjectBuilder>();
     }
 
     /**
@@ -47,8 +51,28 @@ public class XMLObjectBuilderFactory<KeyType, BuilderType extends XMLObjectBuild
      * 
      * @return the builder
      */
-    public BuilderType getBuilder(KeyType key) {
+    public XMLObjectBuilder getBuilder(QName key) {
         return builders.get(key);
+    }
+
+    /**
+     * Retrieves the XMLObject builder for the given element. The schema type, if present, is tried first as the key
+     * with the element QName used if no schema type is present or does not have a builder registered under it.
+     * 
+     * @param domElement the element to retrieve the builder for
+     * 
+     * @return the builder for the XMLObject the given element can be unmarshalled into
+     */
+    public XMLObjectBuilder getBuilder(Element domElement) {
+        XMLObjectBuilder builder;
+
+        builder = getBuilder(XMLHelper.getXSIType(domElement));
+
+        if (builder == null) {
+            builder = getBuilder(XMLHelper.getNodeQName(domElement));
+        }
+
+        return builder;
     }
 
     /**
@@ -56,7 +80,7 @@ public class XMLObjectBuilderFactory<KeyType, BuilderType extends XMLObjectBuild
      * 
      * @return list of all the builders currently registered
      */
-    public Map<KeyType, BuilderType> getBuilders() {
+    public Map<QName, XMLObjectBuilder> getBuilders() {
         return Collections.unmodifiableMap(builders);
     }
 
@@ -66,10 +90,9 @@ public class XMLObjectBuilderFactory<KeyType, BuilderType extends XMLObjectBuild
      * @param builderKey the key used to retrieve this builder later
      * @param builder the builder
      */
-    public void registerBuilder(KeyType builderKey, BuilderType builder) {
+    public void registerBuilder(QName builderKey, XMLObjectBuilder builder) {
         if (log.isDebugEnabled()) {
-            log.debug("Registering builder, " + builder.getClass().getCanonicalName() + " under key "
-                    + builderKey);
+            log.debug("Registering builder, " + builder.getClass().getCanonicalName() + " under key " + builderKey);
         }
         synchronized (builders) {
             builders.put(builderKey, builder);
@@ -81,7 +104,7 @@ public class XMLObjectBuilderFactory<KeyType, BuilderType extends XMLObjectBuild
      * 
      * @param builderKey the key for the builder to be deregistered
      */
-    public XMLObjectBuilder deregisterBuilder(KeyType builderKey) {
+    public XMLObjectBuilder unregisterBuilder(QName builderKey) {
         if (log.isDebugEnabled()) {
             log.debug("Deregistering builder for object type " + builderKey);
         }

@@ -20,28 +20,31 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.xml.namespace.QName;
+
 import org.apache.log4j.Logger;
+import org.opensaml.xml.util.XMLHelper;
+import org.w3c.dom.Element;
 
 /**
  * This thread-safe factory creates {@link org.opensaml.xml.io.Unmarshaller}s that can be used to convert W3C DOM
- * elements into {@link org.opensaml.xml.XMLObject}s.
- * 
- * @param <KeyType> the object type of keys used to reference marshallers
- * @param <UnmarshallerType> the object type of the unmarshallers registered
+ * elements into {@link org.opensaml.xml.XMLObject}s. Unmarshallers are stored and retrieved by a
+ * {@link javax.xml.namespace.QName} key. This key is either the XML Schema Type or element QName of the XML element
+ * being unmarshalled.
  */
-public class UnmarshallerFactory<KeyType, UnmarshallerType extends Unmarshaller> {
+public class UnmarshallerFactory {
 
     /** Logger */
     private final static Logger log = Logger.getLogger(UnmarshallerFactory.class);
 
     /** Map of unmarshallers to the elements they are for */
-    private Map<KeyType, UnmarshallerType> unmarshallers;
+    private Map<QName, Unmarshaller> unmarshallers;
 
     /**
      * Constructor
      */
     public UnmarshallerFactory() {
-        unmarshallers = new HashMap<KeyType, UnmarshallerType>();
+        unmarshallers = new HashMap<QName, Unmarshaller>();
     }
 
     /**
@@ -51,8 +54,28 @@ public class UnmarshallerFactory<KeyType, UnmarshallerType extends Unmarshaller>
      * 
      * @return the Unmarshaller
      */
-    public UnmarshallerType getUnmarshaller(KeyType key) {
+    public Unmarshaller getUnmarshaller(QName key) {
         return unmarshallers.get(key);
+    }
+
+    /**
+     * Retrieves the unmarshaller for the given element. The schema type, if present, is tried first as the key with the
+     * element QName used if no schema type is present or does not have a unmarshaller registered under it.
+     * 
+     * @param domElement the element to retrieve the unmarshaller for
+     * 
+     * @return the unmarshaller for the XMLObject the given element can be unmarshalled into
+     */
+    public Unmarshaller getUnmarshaller(Element domElement) {
+        Unmarshaller unmarshaller;
+
+        unmarshaller = getUnmarshaller(XMLHelper.getXSIType(domElement));
+
+        if (unmarshaller == null) {
+            unmarshaller = getUnmarshaller(XMLHelper.getNodeQName(domElement));
+        }
+
+        return unmarshaller;
     }
 
     /**
@@ -60,7 +83,7 @@ public class UnmarshallerFactory<KeyType, UnmarshallerType extends Unmarshaller>
      * 
      * @return a listing of all the Unmarshallers currently registered
      */
-    public Map<KeyType, UnmarshallerType> getUnmarshallers() {
+    public Map<QName, Unmarshaller> getUnmarshallers() {
         return Collections.unmodifiableMap(unmarshallers);
     }
 
@@ -71,7 +94,7 @@ public class UnmarshallerFactory<KeyType, UnmarshallerType extends Unmarshaller>
      * @param key the key the unmarshaller was registered under
      * @param unmarshaller the Unmarshaller
      */
-    public void registerUnmarshaller(KeyType key, UnmarshallerType unmarshaller) {
+    public void registerUnmarshaller(QName key, Unmarshaller unmarshaller) {
         if (log.isDebugEnabled()) {
             log.debug("Registering unmarshaller, " + unmarshaller.getClass().getCanonicalName() + ", for object type "
                     + key);
@@ -88,7 +111,7 @@ public class UnmarshallerFactory<KeyType, UnmarshallerType extends Unmarshaller>
      * 
      * @return the Unmarshaller previously registered or null
      */
-    public UnmarshallerType deregisterUnmarshaller(KeyType key) {
+    public Unmarshaller deregisterUnmarshaller(QName key) {
         if (log.isDebugEnabled()) {
             log.debug("Deregistering marshaller for object type " + key);
         }

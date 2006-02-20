@@ -17,19 +17,21 @@
 /**
  * 
  */
+
 package org.opensaml.xml.mock;
 
-import org.opensaml.xml.AbstractXMLObjectBuilder;
+import org.opensaml.xml.XMLObject;
+import org.opensaml.xml.XMLObjectBuilder;
 
 /**
  * Builder of {@link org.opensaml.xml.mock.SimpleXMLObject}s.
  */
-public class SimpleXMLObjectBuilder extends AbstractXMLObjectBuilder {
+public class SimpleXMLObjectBuilder implements XMLObjectBuilder {
 
     /*
-     * @see org.opensaml.xml.AbstractXMLObjectBuilder#doBuildObject()
+     * @see org.opensaml.xml.XMLObjectBuilder#buildObject()
      */
-    public SimpleXMLObject doBuildObject() {
+    public XMLObject buildObject() {
         return new SimpleXMLObject();
     }
 }

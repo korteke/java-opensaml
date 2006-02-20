@@ -17,6 +17,7 @@
 package org.opensaml.xml.parse;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.ref.SoftReference;
 import java.util.Map;
 import java.util.Stack;
@@ -133,6 +134,19 @@ public class ParserPool {
         } finally {
             checkinBuilder(documentBuilder);
         }
+    }
+    
+    /**
+     * Parses a document using a pooled parser with the proper settings
+     * 
+     * @param in A stream containing the content to be parsed
+     * 
+     * @return The DOM document resulting from the parse
+     * 
+     * @exception XMLParserException thrown if there was a problem reading, parsing, or validating the XML
+     */
+    public Document parse(InputStream in) throws XMLParserException{
+        return parse(new InputSource(in));
     }
 
     /**

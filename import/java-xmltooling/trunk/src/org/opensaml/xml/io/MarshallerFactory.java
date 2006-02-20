@@ -20,28 +20,30 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.xml.namespace.QName;
+
 import org.apache.log4j.Logger;
+import org.opensaml.xml.XMLObject;
 
 /**
  * This thread-safe factory creates {@link org.opensaml.xml.io.Marshaller}s that can be used to convert
- * {@link org.opensaml.xml.XMLObject}s into W3C DOM elements.
- * 
- * @param <KeyType> the object type of keys used to reference marshallers
- * @param <MarshallerType> the object type of the marshallers registered
+ * {@link org.opensaml.xml.XMLObject}s into W3C DOM elements. Marshallers are stored and retrieved by a
+ * {@link javax.xml.namespace.QName} key. This key is either the XML Schema Type or element QName of the XML element the
+ * XMLObject is marshalled into.
  */
-public class MarshallerFactory<KeyType, MarshallerType extends Marshaller> {
+public class MarshallerFactory {
 
     /** Logger */
     private final static Logger log = Logger.getLogger(MarshallerFactory.class);
 
     /** Map of marshallers to the elements they are for */
-    private Map<KeyType, MarshallerType> marshallers;
+    private Map<QName, Marshaller> marshallers;
 
     /**
      * Constructor
      */
     public MarshallerFactory() {
-        marshallers = new HashMap<KeyType, MarshallerType>();
+        marshallers = new HashMap<QName, Marshaller>();
     }
 
     /**
@@ -51,8 +53,28 @@ public class MarshallerFactory<KeyType, MarshallerType extends Marshaller> {
      * 
      * @return the Marshaller or null
      */
-    public MarshallerType getMarshaller(KeyType key) {
+    public Marshaller getMarshaller(QName key) {
         return marshallers.get(key);
+    }
+
+    /**
+     * Retrieves the marshaller for the given XMLObject. The schema type, if present, is tried first as the key with the
+     * element QName used if no schema type is present or does not have a marshaller registered under it.
+     * 
+     * @param xmlObject the XMLObject to retrieve the marshaller for
+     * 
+     * @return the marshaller that can be used for the given XMLObject
+     */
+    public Marshaller getMarshaller(XMLObject xmlObject) {
+        Marshaller marshaller;
+
+        marshaller = getMarshaller(xmlObject.getSchemaType());
+
+        if (marshaller == null) {
+            marshaller = getMarshaller(xmlObject.getElementQName());
+        }
+
+        return marshaller;
     }
 
     /**
@@ -60,7 +82,7 @@ public class MarshallerFactory<KeyType, MarshallerType extends Marshaller> {
      * 
      * @return a listing of all the Marshallers currently registered
      */
-    public Map<KeyType, MarshallerType> getMarshallers() {
+    public Map<QName, Marshaller> getMarshallers() {
         return Collections.unmodifiableMap(marshallers);
     }
 
@@ -71,7 +93,7 @@ public class MarshallerFactory<KeyType, MarshallerType extends Marshaller> {
      * @param key the key the marshaller was registered under
      * @param marshaller the Marshaller
      */
-    public void registerMarshaller(KeyType key, MarshallerType marshaller) {
+    public void registerMarshaller(QName key, Marshaller marshaller) {
         if (log.isDebugEnabled()) {
             log.debug("Registering marshaller, " + marshaller.getClass().getCanonicalName() + ", for object type "
                     + key);
@@ -88,7 +110,7 @@ public class MarshallerFactory<KeyType, MarshallerType extends Marshaller> {
      * 
      * @return the Marshaller previously registered or null
      */
-    public MarshallerType deregisterMarshaller(KeyType key) {
+    public Marshaller deregisterMarshaller(QName key) {
         if (log.isDebugEnabled()) {
             log.debug("Deregistering marshaller for object type " + key);
         }
