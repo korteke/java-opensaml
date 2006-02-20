@@ -183,38 +183,6 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
         }
     }
 
-    protected Marshaller getMarshaller(XMLObject xmlObject) throws MarshallingException {
-        if (log.isDebugEnabled()) {
-            log.debug("Getting Marshalelr for XMLObject " + xmlObject.getElementQName());
-        }
-
-        Marshaller marshaller;
-
-        // Try to get the marshaller based off the schema type
-        marshaller = marshallerFactory.getMarshaller(xmlObject.getSchemaType());
-        if (marshaller != null) {
-            if (log.isDebugEnabled()) {
-                log.debug("Marshaller" + marshaller.getClass() + " located based on schema type "
-                        + xmlObject.getSchemaType());
-            }
-            return marshaller;
-        }
-
-        // Since there was no marshaller registered for the schema type try to get one based off the element QName
-        marshaller = marshallerFactory.getMarshaller(xmlObject.getElementQName());
-        if (marshaller != null) {
-            if (log.isDebugEnabled()) {
-                log.debug("Marshaller" + marshaller.getClass() + " located based on element QName "
-                        + xmlObject.getElementQName());
-            }
-            return marshaller;
-        }
-
-        String errorMsg = "No marshaller registered for XMLObject " + xmlObject.getElementQName();
-        log.error(errorMsg);
-        throw new MarshallingException(errorMsg);
-    }
-
     /**
      * Marshalls the child elements of the given XMLObject.
      * 
@@ -239,7 +207,7 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
                 if (log.isDebugEnabled()) {
                     log.debug("Getting marshaller for child XMLObject " + childXMLObject.getElementQName());
                 }
-                Marshaller marshaller = getMarshaller(childXMLObject);
+                Marshaller marshaller = marshallerFactory.getMarshaller(childXMLObject);
 
                 if (marshaller == null) {
                     if (Configuration.ignoreUnknownElements()) {

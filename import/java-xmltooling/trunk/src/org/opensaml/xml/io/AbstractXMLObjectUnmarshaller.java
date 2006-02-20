@@ -294,7 +294,7 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
             if (childNode.getNodeType() == Node.ELEMENT_NODE) {
 
                 childElement = (Element) childNode;
-                unmarshaller = getUnmarshaller(childElement);
+                unmarshaller = unmarshallerFactory.getUnmarshaller(childElement);
 
                 if (unmarshaller == null) {
                     if (Configuration.ignoreUnknownElements()) {
@@ -313,49 +313,6 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
                 }
             }
         }
-    }
-
-    /**
-     * Gets the Unmarshaller for the given Element from the UnmarshallerFactory provided at construction time. If the
-     * child element has an explicit XML Schema type that is used to fetch get the unmarshaller. If there is no
-     * unmarshaller registered for the schema type, or the element does not have an explicit schema type, the element's
-     * QName is used.
-     * 
-     * @param domElement the DOM Element to get the Unmarshaller for
-     * 
-     * @return the Unmarshaller for the given DOM Element
-     * 
-     * @throws UnmarshallingException thrown if no unmarshaller is available for the given DOM Element
-     */
-    protected Unmarshaller getUnmarshaller(Element domElement) throws UnmarshallingException {
-        if (log.isDebugEnabled()) {
-            log.debug("Getting unmarshaller for Element " + XMLHelper.getNodeQName(domElement));
-        }
-        Unmarshaller unmarshaller;
-
-        // Try to get the unmarshaller based off the schema type
-        QName schemaType = XMLHelper.getXSIType(domElement);
-        unmarshaller = unmarshallerFactory.getUnmarshaller(schemaType);
-        if (unmarshaller != null) {
-            if (log.isDebugEnabled()) {
-                log.debug("Unmarshaller " + unmarshaller.getClass() + " located based on schema type " + schemaType);
-            }
-            return unmarshaller;
-        }
-
-        // Since there was no unmarshaller registered for the schema type try to get one based off the element QName
-        QName elementName = XMLHelper.getNodeQName(domElement);
-        unmarshaller = unmarshallerFactory.getUnmarshaller(elementName);
-        if (unmarshaller != null) {
-            if (log.isDebugEnabled()) {
-                log.debug("Unmarshaller " + unmarshaller.getClass() + " located based on element QName " + elementName);
-            }
-            return unmarshaller;
-        }
-
-        String errorMsg = "No unmarshaller registered for element " + elementName;
-        log.error(errorMsg);
-        throw new UnmarshallingException(errorMsg);
     }
 
     /**
