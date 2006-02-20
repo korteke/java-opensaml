@@ -241,10 +241,21 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
                 }
                 Marshaller marshaller = getMarshaller(childXMLObject);
 
-                if (log.isDebugEnabled()) {
-                    log.debug("Marshalling " + childXMLObject.getElementQName() + " and adding it to DOM");
+                if (marshaller == null) {
+                    if (Configuration.ignoreUnknownElements()) {
+                        if (log.isDebugEnabled()) {
+                            log.debug("No marshaller registered for XMLObject " + childXMLObject.getElementQName()
+                                    + " and Configuration.ignoreUknownElements() is true, ignoring element");
+                        }
+                        continue; // Move on to the next child
+                    }
+                } else {
+
+                    if (log.isDebugEnabled()) {
+                        log.debug("Marshalling " + childXMLObject.getElementQName() + " and adding it to DOM");
+                    }
+                    domElement.appendChild(marshaller.marshall(childXMLObject, domElement.getOwnerDocument()));
                 }
-                domElement.appendChild(marshaller.marshall(childXMLObject, domElement.getOwnerDocument()));
             }
         } else {
             if (log.isDebugEnabled()) {

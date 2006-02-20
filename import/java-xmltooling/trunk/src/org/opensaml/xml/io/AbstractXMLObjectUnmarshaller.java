@@ -64,8 +64,8 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
      * 
      * @throws NullPointerException if any of the arguments are null (or empty in the case of String parameters)
      */
-    protected AbstractXMLObjectUnmarshaller(String targetNamespaceURI, String targetLocalName) throws IllegalArgumentException,
-            NullPointerException {
+    protected AbstractXMLObjectUnmarshaller(String targetNamespaceURI, String targetLocalName)
+            throws IllegalArgumentException, NullPointerException {
         if (DatatypeHelper.isEmpty(targetNamespaceURI)) {
             throw new NullPointerException("Target Namespace URI may not be null or an empty");
         }
@@ -292,12 +292,25 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
         for (int i = 0; i < childNodes.getLength(); i++) {
             childNode = childNodes.item(i);
             if (childNode.getNodeType() == Node.ELEMENT_NODE) {
-                if (log.isDebugEnabled()) {
-                    log.debug("Unmarshalling child element " + XMLHelper.getNodeQName(childNode));
-                }
+
                 childElement = (Element) childNode;
                 unmarshaller = getUnmarshaller(childElement);
-                processChildElement(xmlObject, unmarshaller.unmarshall(childElement));
+
+                if (unmarshaller == null) {
+                    if (Configuration.ignoreUnknownElements()) {
+                        if (log.isDebugEnabled()) {
+                            log.debug("No unmarshaller registered for Element " + XMLHelper.getNodeQName(childNode)
+                                    + " and Configuration.ignoreUknownElements() is true, ignoring element");
+                        }
+                        continue; // Move on to the next child
+                    }
+                } else {
+                    if (log.isDebugEnabled()) {
+                        log.debug("Unmarshalling child element " + XMLHelper.getNodeQName(childNode)
+                                + " with unmarshaller " + unmarshaller.getClass().getName());
+                    }
+                    processChildElement(xmlObject, unmarshaller.unmarshall(childElement));
+                }
             }
         }
     }
@@ -356,7 +369,7 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
         SignableXMLObject signableXMLObject = (SignableXMLObject) xmlObject;
 
         Signature signature = signableXMLObject.getSignature();
-        
+
         if (signature == null) {
             if (log.isDebugEnabled()) {
                 log
@@ -365,9 +378,10 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
             }
             return;
         }
-        
+
         QName signatureQName = new QName(XMLConstants.XMLSIG_NS, Signature.LOCAL_NAME);
-        SignatureUnmarshaller unmarshaller = (SignatureUnmarshaller) unmarshallerFactory.getUnmarshaller(signatureQName);
+        SignatureUnmarshaller unmarshaller = (SignatureUnmarshaller) unmarshallerFactory
+                .getUnmarshaller(signatureQName);
         unmarshaller.verifySignature(domElement, signature);
     }
 
