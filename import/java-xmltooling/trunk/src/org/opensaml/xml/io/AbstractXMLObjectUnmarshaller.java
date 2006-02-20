@@ -169,26 +169,14 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
         }
         XMLObjectBuilder xmlObjectBuilder;
 
-        QName schemaType = XMLHelper.getXSIType(domElement);
-        xmlObjectBuilder = xmlObjectBuilderFactory.getBuilder(schemaType);
-        if (xmlObjectBuilder == null) {
-            QName elementName = XMLHelper.getNodeQName(domElement);
-            xmlObjectBuilder = xmlObjectBuilderFactory.getBuilder(elementName);
-            if (xmlObjectBuilder == null) {
-                log.error("No XMLObjectBuilder was registered for element " + elementName);
-                throw new UnmarshallingException("No XMLObjectBuilder was registered for element " + elementName);
-            } else {
-                if (log.isDebugEnabled()) {
-                    log.debug("Builder located based on element name " + elementName);
-                }
-            }
-        } else {
-            if (log.isDebugEnabled()) {
-                log.debug("Builder located based on schema type " + schemaType);
-            }
+        xmlObjectBuilder = xmlObjectBuilderFactory.getBuilder(domElement);
+        if(xmlObjectBuilder == null){
+            String errorMsg = "Unable to located builder for " + XMLHelper.getNodeQName(domElement);
+            log.error(errorMsg);
+            throw new UnmarshallingException(errorMsg);
         }
-
-        return xmlObjectBuilder.buildObject();
+        
+        return xmlObjectBuilder.buildObject();        
     }
 
     /**
