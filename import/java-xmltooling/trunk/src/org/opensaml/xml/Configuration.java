@@ -117,29 +117,29 @@ public class Configuration {
      * @throws ConfigurationException thrown if the configuration file(s) can not be be read or invalid
      */
     public synchronized static void load(Document configuration) throws ConfigurationException {
-        if(log.isDebugEnabled()){
+        if (log.isDebugEnabled()) {
             log.debug("Loading configuration from XML Document");
         }
-        
-        if(log.isTraceEnabled()){
+
+        if (log.isTraceEnabled()) {
             log.trace("\n" + XMLHelper.nodeToString(configuration.getDocumentElement()));
         }
-        
+
         if (!Init.isInitialized()) {
             if (log.isDebugEnabled()) {
                 log.debug("Initializing XML security library");
             }
             Init.init();
+        }
 
-            if (log.isInfoEnabled()) {
-                log.info("Preparing to load ObjectProviders");
-            }
-            NodeList objectProviders = configuration.getDocumentElement().getElementsByTagNameNS(
-                    XMLConstants.XMLTOOLING_CONFIG_NS, "ObjectProviders");
-            initializeObjectProviders((Element) objectProviders.item(0));
-            if (log.isInfoEnabled()) {
-                log.info("ObjectProviders load complete");
-            }
+        if (log.isInfoEnabled()) {
+            log.info("Preparing to load ObjectProviders");
+        }
+        NodeList objectProviders = configuration.getDocumentElement().getElementsByTagNameNS(
+                XMLConstants.XMLTOOLING_CONFIG_NS, "ObjectProviders");
+        initializeObjectProviders((Element) objectProviders.item(0));
+        if (log.isInfoEnabled()) {
+            log.info("ObjectProviders load complete");
         }
     }
 
@@ -314,8 +314,8 @@ public class Configuration {
         if (log.isDebugEnabled()) {
             log.debug("Initializing builder " + builderClassName + " for object provider" + objectProviderName);
         }
-        
-        if(log.isTraceEnabled()){
+
+        if (log.isTraceEnabled()) {
             log.trace("\n" + XMLHelper.nodeToString(builderConfiguration));
         }
 
@@ -353,8 +353,8 @@ public class Configuration {
         if (log.isDebugEnabled()) {
             log.debug("Initializing marshaller " + marshallerClassName + " for Object " + objectProviderName);
         }
-        
-        if(log.isTraceEnabled()){
+
+        if (log.isTraceEnabled()) {
             log.trace("\n" + XMLHelper.nodeToString(marshallerConfiguration));
         }
 
@@ -392,8 +392,8 @@ public class Configuration {
         if (log.isDebugEnabled()) {
             log.debug("Initializing unmarshaller " + unmarshallerClassName + " for Object " + objectProviderName);
         }
-        
-        if(log.isTraceEnabled()){
+
+        if (log.isTraceEnabled()) {
             log.trace("\n" + XMLHelper.nodeToString(unmarshallerConfiguration));
         }
 
