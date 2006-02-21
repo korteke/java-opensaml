@@ -345,8 +345,7 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
      * Called after an attribute has been unmarshalled so that it can be added to the XMLObject.
      * 
      * @param xmlObject the XMLObject
-     * @param attributeName the attributes name
-     * @param attributeValue the attributes value
+     * @param attribute the attribute
      * 
      * @throws UnmarshallingException thrown if there is a problem adding the attribute to the XMLObject
      */
