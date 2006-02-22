@@ -289,7 +289,8 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
         }
         Set<Namespace> namespaces = xmlObject.getNamespaces();
         for (Namespace namespace : namespaces) {
-            domElement.setAttribute(XMLConstants.XMLNS_PREFIX + ":" + namespace.getNamespacePrefix(), namespace
+            // TODO: this needs to handle setting a default namespace
+            domElement.setAttributeNS(XMLConstants.XMLNS_NS, XMLConstants.XMLNS_PREFIX + ":" + namespace.getNamespacePrefix(), namespace
                     .getNamespaceURI());
         }
     }
