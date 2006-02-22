@@ -152,6 +152,8 @@ public class XMLHelper {
     public static QName constructQName(String namespaceURI, String localName, String prefix) {
         if (DatatypeHelper.isEmpty(prefix)) {
             return new QName(namespaceURI, localName);
+        }else if(DatatypeHelper.isEmpty(namespaceURI)) {
+            return new QName(localName);
         }
 
         return new QName(namespaceURI, localName, prefix);
