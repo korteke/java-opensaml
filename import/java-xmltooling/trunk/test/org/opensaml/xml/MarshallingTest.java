@@ -96,9 +96,6 @@ public class MarshallingTest extends XMLObjectBaseTestCase {
         sxObject.getSimpleXMLObjects().add(sxObjectChild1);
         sxObject.getSimpleXMLObjects().add(sxObjectChild2);
 
-        Marshaller marshaller = marshallerFactory.getMarshaller(simpleXMLObjectQName);
-        System.out.println(XMLHelper.nodeToString(marshaller.marshall(sxObject, parserPool.newDocument())));
-
         assertEquals(expectedDocument, sxObject);
     }
 }
