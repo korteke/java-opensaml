@@ -90,6 +90,8 @@ public class SignatureTest extends XMLObjectBaseTestCase {
         // Marshall & sign
         Marshaller marshaller = marshallerFactory.getMarshaller(simpleXMLObjectQName);
         Element domElement = marshaller.marshall(xmlObject, parserPool.newDocument());
+        
+        System.out.println("\n\n" + XMLHelper.nodeToString(domElement) + "\n\n");
 
         // Unmarshall and verify
         Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(simpleXMLObjectQName);

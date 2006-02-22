@@ -19,11 +19,12 @@ package org.opensaml.xml;
 import java.util.HashMap;
 
 import org.custommonkey.xmlunit.XMLTestCase;
+import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallerFactory;
 import org.opensaml.xml.io.UnmarshallerFactory;
 import org.opensaml.xml.parse.ParserPool;
-import org.opensaml.xml.parse.XMLParserException;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 /**
  * Base test case class for tests that operate on XMLObjects.
@@ -44,13 +45,38 @@ public class XMLObjectBaseTestCase extends XMLTestCase {
 
     /**
      * Constructor
-     * 
-     * @throws XMLParserException thrown if the configuration file can not be parsed
-     * @throws ConfigurationException thrown if the configuration file is invalid or classes referenced within it can't
-     *             be created
      */
-    public XMLObjectBaseTestCase() throws XMLParserException, ConfigurationException {
+    public XMLObjectBaseTestCase() {
 
+    }
+
+    /**
+     * Asserts a given XMLObject is equal to an expected DOM. The XMLObject is marshalled and the resulting DOM object
+     * is compared against the expected DOM object for equality.
+     * 
+     * @param expectedDOM the expected DOM
+     * @param xmlObject the XMLObject to be marshalled and compared against the expected DOM
+     */
+    public void assertEquals(Document expectedDOM, XMLObject xmlObject) {
+        assertEquals("Marshalled DOM was not the same as the expected DOM", expectedDOM, xmlObject);
+    }
+
+    /**
+     * Asserts a given XMLObject is equal to an expected DOM. The XMLObject is marshalled and the resulting DOM object
+     * is compared against the expected DOM object for equality.
+     * 
+     * @param failMessage the message to display if the DOMs are not equal
+     * @param expectedDOM the expected DOM
+     * @param xmlObject the XMLObject to be marshalled and compared against the expected DOM
+     */
+    public void assertEquals(String failMessage, Document expectedDOM, XMLObject xmlObject) {
+        Marshaller marshaller = marshallerFactory.getMarshaller(xmlObject);
+        try {
+            Element generatedDOM = marshaller.marshall(xmlObject, parserPool.newDocument());
+            assertXMLEqual(failMessage, expectedDOM, generatedDOM.getOwnerDocument());
+        } catch (Exception e) {
+            fail("Marshalling failed with the following error: " + e);
+        }
     }
 
     static {

@@ -1,0 +1,104 @@
+/*
+ * Copyright [2006] [University Corporation for Advanced Internet Development, Inc.]
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package org.opensaml.xml;
+
+import javax.xml.namespace.QName;
+
+import org.opensaml.xml.io.Marshaller;
+import org.opensaml.xml.io.MarshallingException;
+import org.opensaml.xml.mock.SimpleXMLObject;
+import org.opensaml.xml.parse.XMLParserException;
+import org.opensaml.xml.util.XMLHelper;
+import org.w3c.dom.Document;
+
+/**
+ * Unit test for marshalling functions.
+ */
+public class MarshallingTest extends XMLObjectBaseTestCase {
+
+    /** QName for SimpleXMLObject */
+    private QName simpleXMLObjectQName;
+
+    /**
+     * Constructor
+     */
+    public MarshallingTest() {
+        super();
+
+        simpleXMLObjectQName = new QName(SimpleXMLObject.NAMESAPACE, SimpleXMLObject.LOCAL_NAME);
+    }
+
+    /**
+     * Tests marshalling an object that has DOM Attrs.
+     * 
+     * @throws XMLParserException
+     * @throws MarshallingException
+     */
+    public void testMarshallingWithAttributes() throws XMLParserException {
+        String expectedId = "Firefly";
+        String expectedDocumentLocation = "/data/org/opensaml/xml/SimpleXMLObjectWithAttribute.xml";
+        Document expectedDocument = parserPool.parse(MarshallingTest.class
+                .getResourceAsStream(expectedDocumentLocation));
+
+        SimpleXMLObject sxObject = (SimpleXMLObject) builderFactory.getBuilder(simpleXMLObjectQName).buildObject();
+        sxObject.setId(expectedId);
+
+        assertEquals(expectedDocument, sxObject);
+    }
+
+    /**
+     * Tests marshalling an object that has DOM Element textual content.
+     * 
+     * @throws XMLParserException
+     */
+    public void testMarshallingWithElementContent() throws XMLParserException {
+        String expectedContent = "Sample Content";
+        String expectedDocumentLocation = "/data/org/opensaml/xml/SimpleXMLObjectWithContent.xml";
+        Document expectedDocument = parserPool.parse(MarshallingTest.class
+                .getResourceAsStream(expectedDocumentLocation));
+
+        SimpleXMLObject sxObject = (SimpleXMLObject) builderFactory.getBuilder(simpleXMLObjectQName).buildObject();
+        sxObject.setValue(expectedContent);
+
+        assertEquals(expectedDocument, sxObject);
+    }
+
+    /**
+     * Tests marshalling an object that has DOM Element children
+     * 
+     * @throws XMLParserException
+     * @throws MarshallingException
+     */
+    public void testMarshallingWithChildElements() throws XMLParserException, MarshallingException {
+        String expectedDocumentLocation = "/data/org/opensaml/xml/SimpleXMLObjectWithChildren.xml";
+        Document expectedDocument = parserPool.parse(MarshallingTest.class
+                .getResourceAsStream(expectedDocumentLocation));
+
+        SimpleXMLObject sxObject = (SimpleXMLObject) builderFactory.getBuilder(simpleXMLObjectQName).buildObject();
+        SimpleXMLObject sxObjectChild1 = (SimpleXMLObject) builderFactory.getBuilder(simpleXMLObjectQName)
+                .buildObject();
+        SimpleXMLObject sxObjectChild2 = (SimpleXMLObject) builderFactory.getBuilder(simpleXMLObjectQName)
+                .buildObject();
+        sxObject.getSimpleXMLObjects().add(sxObjectChild1);
+        sxObject.getSimpleXMLObjects().add(sxObjectChild2);
+
+        Marshaller marshaller = marshallerFactory.getMarshaller(simpleXMLObjectQName);
+        System.out.println(XMLHelper.nodeToString(marshaller.marshall(sxObject, parserPool.newDocument())));
+
+        assertEquals(expectedDocument, sxObject);
+    }
+}

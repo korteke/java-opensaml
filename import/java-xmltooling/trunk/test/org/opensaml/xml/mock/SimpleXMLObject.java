@@ -110,7 +110,10 @@ public class SimpleXMLObject extends AbstractSignableXMLObject {
         ArrayList<XMLObject> children = new ArrayList<XMLObject>();
         
         children.addAll(simpleXMLObjects);
-        children.add(getSignature());
+        
+        if(getSignature() != null) {
+            children.add(getSignature());
+        }
         
         return Collections.unmodifiableList(children);
     }

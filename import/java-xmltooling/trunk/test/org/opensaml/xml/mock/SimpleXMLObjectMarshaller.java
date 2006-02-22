@@ -52,6 +52,8 @@ public class SimpleXMLObjectMarshaller extends AbstractXMLObjectMarshaller {
     protected void marshallElementContent(XMLObject xmlObject, Element domElement) throws MarshallingException {
         SimpleXMLObject simpleXMLObject = (SimpleXMLObject) xmlObject;
         
-        domElement.setTextContent(simpleXMLObject.getValue());
+        if(simpleXMLObject.getValue() != null) {
+            domElement.setTextContent(simpleXMLObject.getValue());
+        }
     }
 }
