@@ -34,43 +34,41 @@ public class UnmarshallingTest extends XMLObjectBaseTestCase {
     public UnmarshallingTest() {
         super();
     }
-    
+
     /**
      * Tests unmarshalling an element that has attributes.
      * 
      * @throws XMLParserException
-     * @throws UnmarshallingException 
+     * @throws UnmarshallingException
      */
     public void testUnmarshallingWithAttributes() throws XMLParserException, UnmarshallingException {
         String expectedId = "Firefly";
         String documentLocation = "/data/org/opensaml/xml/SimpleXMLObjectWithAttribute.xml";
-        Document document = parserPool.parse(UnmarshallingTest.class
-                .getResourceAsStream(documentLocation));
-        
+        Document document = parserPool.parse(UnmarshallingTest.class.getResourceAsStream(documentLocation));
+
         Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(document.getDocumentElement());
         SimpleXMLObject sxObject = (SimpleXMLObject) unmarshaller.unmarshall(document.getDocumentElement());
-        
+
         assertEquals("ID was not expected value", expectedId, sxObject.getId());
     }
-    
+
     /**
      * Tests unmarshalling an element with content.
      * 
      * @throws XMLParserException
-     * @throws UnmarshallingException 
+     * @throws UnmarshallingException
      */
-    public void testUnmarshallingWithElementContent() throws XMLParserException, UnmarshallingException {   
+    public void testUnmarshallingWithElementContent() throws XMLParserException, UnmarshallingException {
         String expectedContent = "Sample Content";
         String documentLocation = "/data/org/opensaml/xml/SimpleXMLObjectWithContent.xml";
-        Document document = parserPool.parse(UnmarshallingTest.class
-                .getResourceAsStream(documentLocation));
-        
+        Document document = parserPool.parse(UnmarshallingTest.class.getResourceAsStream(documentLocation));
+
         Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(document.getDocumentElement());
         SimpleXMLObject sxObject = (SimpleXMLObject) unmarshaller.unmarshall(document.getDocumentElement());
-        
+
         assertEquals("Element content was not expected value", expectedContent, sxObject.getValue());
     }
-    
+
     /**
      * Tests unmarshalling an element with child elements.
      * 
@@ -79,12 +77,11 @@ public class UnmarshallingTest extends XMLObjectBaseTestCase {
      */
     public void testUnmarshallingWithChildElements() throws XMLParserException, UnmarshallingException {
         String documentLocation = "/data/org/opensaml/xml/SimpleXMLObjectWithChildren.xml";
-        Document document = parserPool.parse(UnmarshallingTest.class
-                .getResourceAsStream(documentLocation));
-        
+        Document document = parserPool.parse(UnmarshallingTest.class.getResourceAsStream(documentLocation));
+
         Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(document.getDocumentElement());
         SimpleXMLObject sxObject = (SimpleXMLObject) unmarshaller.unmarshall(document.getDocumentElement());
-        
+
         assertEquals("Number of children elements was not expected value", 2, sxObject.getSimpleXMLObjects().size());
     }
 }

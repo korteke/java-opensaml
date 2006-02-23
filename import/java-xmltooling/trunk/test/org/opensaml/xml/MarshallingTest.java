@@ -18,11 +18,9 @@ package org.opensaml.xml;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.mock.SimpleXMLObject;
 import org.opensaml.xml.parse.XMLParserException;
-import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Document;
 
 /**
