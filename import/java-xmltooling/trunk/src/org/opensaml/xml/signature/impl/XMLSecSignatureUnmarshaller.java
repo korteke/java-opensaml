@@ -25,6 +25,7 @@ import java.security.cert.X509Certificate;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.apache.xml.security.Init;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.keys.KeyInfo;
 import org.apache.xml.security.keys.content.X509Data;
@@ -47,6 +48,18 @@ public class XMLSecSignatureUnmarshaller implements SignatureUnmarshaller {
 
     /** Logger */
     private static Logger log = Logger.getLogger(XMLSecSignatureUnmarshaller.class);
+    
+    /**
+     * Constructor
+     */
+    public XMLSecSignatureUnmarshaller(){
+        if (!Init.isInitialized()) {
+            if (log.isDebugEnabled()) {
+                log.debug("Initializing XML security library");
+            }
+            Init.init();
+        }
+    }
 
     /*
      * @see org.opensaml.xml.io.Unmarshaller#unmarshall(org.w3c.dom.Element)

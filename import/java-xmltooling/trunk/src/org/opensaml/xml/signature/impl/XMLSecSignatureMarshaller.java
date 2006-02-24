@@ -25,6 +25,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.apache.xml.security.Init;
 import org.apache.xml.security.c14n.Canonicalizer;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.signature.XMLSignature;
@@ -55,7 +56,12 @@ public class XMLSecSignatureMarshaller implements SignatureMarshaller {
      * Constructor
      */
     public XMLSecSignatureMarshaller() {
-
+        if (!Init.isInitialized()) {
+            if (log.isDebugEnabled()) {
+                log.debug("Initializing XML security library");
+            }
+            Init.init();
+        }
     }
 
     /*

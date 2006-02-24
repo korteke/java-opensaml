@@ -18,6 +18,7 @@ package org.opensaml.xml;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
@@ -25,9 +26,13 @@ import java.util.HashMap;
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.Source;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
 
 import org.apache.log4j.Logger;
-import org.apache.xml.security.Init;
 import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallerFactory;
 import org.opensaml.xml.io.Unmarshaller;
@@ -41,6 +46,7 @@ import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 /**
  * Class for loading library configuration files and retrieving the configured components.
@@ -49,6 +55,9 @@ public class Configuration {
 
     /** Logger */
     private final static Logger log = Logger.getLogger(Configuration.class);
+
+    /** Schema for validating a configuration file */
+    private static Schema configurationSchema;
 
     /** Whether to ignore unknown attributes when they are encountered */
     private static boolean ignoreUnknownAttributes = true;
@@ -89,7 +98,7 @@ public class Configuration {
      * 
      * @throws ConfigurationException thrown if the configuration file(s) can not be be read or invalid
      */
-    public synchronized static void load(File configurationFile) throws ConfigurationException {
+    public static void load(File configurationFile) throws ConfigurationException {
         try {
             DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             Document configuration;
@@ -124,7 +133,7 @@ public class Configuration {
      * @param configuration the configurationd document
      * @throws ConfigurationException thrown if the configuration file(s) can not be be read or invalid
      */
-    public synchronized static void load(Document configuration) throws ConfigurationException {
+    public static void load(Document configuration) throws ConfigurationException {
         if (log.isDebugEnabled()) {
             log.debug("Loading configuration from XML Document");
         }
@@ -133,11 +142,13 @@ public class Configuration {
             log.trace("\n" + XMLHelper.nodeToString(configuration.getDocumentElement()));
         }
 
-        if (!Init.isInitialized()) {
-            if (log.isDebugEnabled()) {
-                log.debug("Initializing XML security library");
-            }
-            Init.init();
+        // Schema validation
+        if (log.isDebugEnabled()) {
+            log.debug("Schema validating configuration Document");
+        }
+        validateConfiguration(configuration);
+        if (log.isDebugEnabled()) {
+            log.debug("Configuration document validated");
         }
 
         // Initialize object providers
@@ -464,7 +475,7 @@ public class Configuration {
      * @throws ConfigurationException thrown if there is a problem initializing the validator suites, usually because of
      *             malformed elements
      */
-    public static void initializeValidatorSuites(Element validatorSuitesElement) throws ConfigurationException {
+    private static void initializeValidatorSuites(Element validatorSuitesElement) throws ConfigurationException {
         ValidatorSuite validatorSuite;
         Validator validator;
         Element validatorSuiteElement;
@@ -559,5 +570,35 @@ public class Configuration {
         }
 
         return null;
+    }
+
+    /**
+     * Schema validates the given configuration.
+     * 
+     * @param configuration the configuration to validate
+     * 
+     * @throws ConfigurationException thrown if the configuration is not schema-valid
+     */
+    private static void validateConfiguration(Document configuration) throws ConfigurationException {
+        try {
+            if (configurationSchema == null) {
+                SchemaFactory factory = SchemaFactory.newInstance(javax.xml.XMLConstants.W3C_XML_SCHEMA_NS_URI);
+                Source schemaSource = new StreamSource(Configuration.class
+                        .getResourceAsStream("/schema/xmltooling-config.xsd"));
+                configurationSchema = factory.newSchema(schemaSource);
+            }
+
+            javax.xml.validation.Validator schemaValidator = configurationSchema.newValidator();
+            schemaValidator.validate(new DOMSource(configuration));
+        } catch (IOException e) {
+            // Should never get here as the DOM is already in memory
+            String errorMsg = "Unable to read configuration file DOM";
+            log.error(errorMsg, e);
+            throw new ConfigurationException(errorMsg, e);
+        } catch (SAXException e) {
+            String errorMsg = "Configuration file does not validate against schema";
+            log.error(errorMsg, e);
+            throw new ConfigurationException(errorMsg, e);
+        }
     }
 }
