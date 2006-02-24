@@ -31,16 +31,16 @@ public interface SignableXMLObject extends XMLObject {
     public boolean isSigned();
     
     /**
-     * Gets the XMLSecSignatureImpl XMLObject.
+     * Gets the Signature XMLObject.
      * 
-     * @return the XMLSecSignatureImpl XMLObject
+     * @return the Signature XMLObject
      */
     public Signature getSignature();
     
     /**
-     * Sets the XMLSecSignatureImpl XMLObject.
+     * Sets the Signature XMLObject.
      * 
-     * @param newSignature the XMLSecSignatureImpl XMLObject
+     * @param newSignature the Signature XMLObject
      */
     public void setSignature(Signature newSignature);
 }
