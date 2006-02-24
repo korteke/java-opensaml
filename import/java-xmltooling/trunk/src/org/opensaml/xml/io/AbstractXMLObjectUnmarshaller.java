@@ -73,7 +73,7 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
         if (DatatypeHelper.isEmpty(targetLocalName)) {
             throw new NullPointerException("Target Local Name may not be null or an empty");
         }
-        targetQName = new QName(targetNamespaceURI, targetLocalName);
+        targetQName = XMLHelper.constructQName(targetNamespaceURI, targetLocalName, null);
 
         xmlObjectBuilderFactory = Configuration.getBuilderFactory();
         unmarshallerFactory = Configuration.getUnmarshallerFactory();

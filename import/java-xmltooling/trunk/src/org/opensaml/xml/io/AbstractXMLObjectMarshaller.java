@@ -80,7 +80,7 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
         if (DatatypeHelper.isEmpty(targetLocalName)) {
             throw new NullPointerException("Target Local Name may not be null or an empty");
         }
-        targetQName = new QName(targetNamespaceURI, targetLocalName);
+        targetQName = XMLHelper.constructQName(targetNamespaceURI, targetLocalName, null);
 
         marshallerFactory = Configuration.getMarshallerFactory();
     }
@@ -175,12 +175,12 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
                     log.debug(xmlObject.getElementQName() + " element QName matches target");
                 }
                 return;
-            } else {
-                String errorMsg = "This marshaller only operations on " + targetQName + " elements not " + elementQName;
-                log.error(errorMsg);
-                throw new MarshallingException(errorMsg);
             }
         }
+        
+        String errorMsg = "This marshaller only operations on " + targetQName + " elements not " + xmlObject.getElementQName();
+        log.error(errorMsg);
+        throw new MarshallingException(errorMsg);
     }
 
     /**
@@ -247,17 +247,12 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
             if (log.isDebugEnabled()) {
                 log.debug("Setting xsi:type attribute with for XMLObject " + xmlObject.getElementQName());
             }
-            String typeLocalName = type.getLocalPart();
-            String typePrefix = type.getPrefix();
+            String typeLocalName = DatatypeHelper.safeTrimOrNullString(type.getLocalPart());
+            String typePrefix = DatatypeHelper.safeTrimOrNullString(type.getPrefix());
 
             if (typeLocalName == null) {
                 throw new MarshallingException("The type QName on XMLObject " + xmlObject.getElementQName()
                         + " may not have a null local name");
-            }
-
-            if (typePrefix == null) {
-                throw new MarshallingException("The type QName on XMLObject " + xmlObject.getElementQName()
-                        + " may not have a null prefix");
             }
 
             if (type.getNamespaceURI() == null) {
@@ -265,8 +260,14 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
                         + " may not have a null namespace URI");
             }
 
-            domElement.setAttributeNS(XMLConstants.XSI_NS, XMLConstants.XSI_PREFIX + ":type", typePrefix + ":"
-                    + typeLocalName);
+            String attributeValue;
+            if(typePrefix == null){
+                attributeValue = typeLocalName;
+            }else{
+                attributeValue = typePrefix + ":" + typeLocalName;
+            }
+            
+            domElement.setAttributeNS(XMLConstants.XSI_NS, XMLConstants.XSI_PREFIX + ":type", attributeValue);
 
             if (log.isDebugEnabled()) {
                 log
@@ -289,9 +290,24 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
         }
         Set<Namespace> namespaces = xmlObject.getNamespaces();
         for (Namespace namespace : namespaces) {
-            // TODO: this needs to handle setting a default namespace
-            domElement.setAttributeNS(XMLConstants.XMLNS_NS, XMLConstants.XMLNS_PREFIX + ":" + namespace.getNamespacePrefix(), namespace
-                    .getNamespaceURI());
+            String nsURI = DatatypeHelper.safeTrimOrNullString(namespace.getNamespaceURI());
+            String nsPrefix = DatatypeHelper.safeTrimOrNullString(namespace.getNamespacePrefix());
+            
+            String attributeName;
+            if(nsPrefix == null){
+                attributeName = XMLConstants.XMLNS_PREFIX;
+            }else{
+                attributeName = XMLConstants.XMLNS_PREFIX + ":" + nsPrefix;
+            }
+            
+            String attributeValue;
+            if(nsURI == null){
+                attributeValue = "";
+            }else{
+                attributeValue = nsURI;
+            }
+            
+            domElement.setAttributeNS(XMLConstants.XMLNS_NS, attributeName, attributeValue);
         }
     }
 
