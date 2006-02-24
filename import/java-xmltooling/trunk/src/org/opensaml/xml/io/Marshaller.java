@@ -40,11 +40,8 @@ public interface Marshaller {
     public Element marshall(XMLObject xmlObject) throws MarshallingException;
     
 	/**
-	 * Marshall this element, and its children, into a W3C DOM element.  If the given Document already has 
-     * a document (root) element the returned Element and its children are adopted into the document but 
-     * the returned element is not appended to any element already existing in the document.  It is the job 
-     * of the caller to graft the returned element into the existing DOM.  If the given Document does not 
-     * have a document (root) element the returned Element is set as such.
+	 * Marshall this element, and its children, into a W3C DOM element.  If the document does not have a Document Element
+     * the Element resulting from this marshalling will be set as the Document Element.
 	 * 
 	 * @param xmlObject the object to marshall
 	 * @param document the DOM document the marshalled element will be placed in
@@ -54,4 +51,19 @@ public interface Marshaller {
 	 * @throws MarshallingException thrown if there is a problem marshalling the given object
 	 */
 	public Element marshall(XMLObject xmlObject, Document document) throws MarshallingException;
+    
+    /**
+     * Marshall the given XMLObject and append it as a child to the given parent element.
+     * 
+     * <strong>NOTE:</strong> The given Element must be within a DOM tree whose root is the root of 
+     * the Document owning the given Element.
+     * 
+     * @param xmlObject the XMLObject to be marshalled
+     * @param parentElement the parent of the Element resulting from marshalling the given XMLObject
+     * 
+     * @return the marshalled XMLObject
+     * 
+     * @throws MarshallingException thrown if the given XMLObject can not be marshalled.
+     */
+    public Element marshall(XMLObject xmlObject, Element parentElement) throws MarshallingException;
 }

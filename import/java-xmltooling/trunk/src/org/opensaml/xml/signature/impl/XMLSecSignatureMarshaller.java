@@ -78,6 +78,13 @@ public class XMLSecSignatureMarshaller implements SignatureMarshaller {
             throw new MarshallingException("Unable to create Document to place marshalled elements in", e);
         }
     }
+    
+    /*
+     * @see org.opensaml.xml.io.Marshaller#marshall(org.opensaml.xml.XMLObject, org.w3c.dom.Element)
+     */
+    public Element marshall(XMLObject xmlObject, Element parentElement) throws MarshallingException {
+        return marshall(xmlObject, parentElement.getOwnerDocument());
+    }
 
     /*
      * @see org.opensaml.xml.io.Marshaller#marshall(org.opensaml.xml.XMLObject, org.w3c.dom.Document)

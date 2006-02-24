@@ -28,6 +28,8 @@ import org.opensaml.xml.Configuration;
 import org.opensaml.xml.DOMCachingXMLObject;
 import org.opensaml.xml.Namespace;
 import org.opensaml.xml.XMLObject;
+import org.opensaml.xml.encryption.EncryptableXMLObject;
+import org.opensaml.xml.encryption.EncryptableXMLObjectMarshaller;
 import org.opensaml.xml.signature.SignableXMLObject;
 import org.opensaml.xml.signature.Signature;
 import org.opensaml.xml.signature.SignatureMarshaller;
@@ -107,59 +109,130 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
             log.debug("Starting to marshall " + xmlObject.getElementQName());
         }
 
+        checkXMLObjectIsTarget(xmlObject);
+
+        Element domElement = getCachedDOM(xmlObject, document);
+        if(domElement != null){
+            setDocumentElement(document, domElement);
+        }else{
+            if (log.isDebugEnabled()) {
+                log.debug("Creating Element to marshall " + xmlObject.getElementQName() + " into");
+            }
+            domElement = document.createElementNS(xmlObject.getElementQName().getNamespaceURI(), xmlObject
+                    .getElementQName().getLocalPart());
+            setDocumentElement(document, domElement);
+
+            marshallInto(xmlObject, domElement);
+        }
+
+        return domElement;
+    }
+
+    /*
+     * @see org.opensaml.xml.io.Marshaller#marshall(org.opensaml.xml.XMLObject, org.w3c.dom.Document)
+     */
+    public Element marshall(XMLObject xmlObject, Element parentElement) throws MarshallingException {
+        if (log.isDebugEnabled()) {
+            log.debug("Starting to marshall " + xmlObject.getElementQName() + " as child of "
+                    + XMLHelper.getNodeQName(parentElement));
+        }
+
+        checkXMLObjectIsTarget(xmlObject);
+
+        Element domElement = getCachedDOM(xmlObject, parentElement.getOwnerDocument());
+        if (domElement == null) {
+            if (log.isDebugEnabled()) {
+                log.debug("Creating Element to marshall " + xmlObject.getElementQName() + " into");
+            }
+            Document owningDocument = parentElement.getOwnerDocument();
+            domElement = owningDocument.createElementNS(xmlObject.getElementQName().getNamespaceURI(), xmlObject
+                    .getElementQName().getLocalPart());
+
+            marshallInto(xmlObject, domElement);
+            
+        }
+        
+        XMLHelper.appendChildElement(parentElement, domElement);
+        return domElement;
+    }
+    
+    /**
+     * Gets the cached Element representation of given XMLObject if the XMLObject is an instance of {@link DOMCachingXMLObject}.
+     * The returned element is adopted
+     *  
+     * @param xmlObject
+     * @param owningDocument
+     * @return
+     */
+    protected Element getCachedDOM(XMLObject xmlObject, Document owningDocument){
         if (xmlObject instanceof DOMCachingXMLObject) {
             DOMCachingXMLObject domCachingObject = (DOMCachingXMLObject) xmlObject;
+            Element cachedDOM = domCachingObject.getDOM();
             if (domCachingObject.getDOM() != null) {
-                log.debug("XMLObject " + xmlObject.getElementQName() + " has a cached DOM, using it.");
-                return domCachingObject.getDOM();
+                log.debug("XMLObject " + xmlObject.getElementQName() + " has a cached DOM.");
+                XMLHelper.adoptElement(cachedDOM, owningDocument);
             }
         }
+        
+        return null;
+    }
 
-        if (log.isDebugEnabled()) {
-            log.debug("Creating Element to marshall " + xmlObject.getElementQName() + " into");
+    /**
+     * Sets the given element as the Document Element of the given Document. If the document already has a Document
+     * Element it is replaced by the given element.
+     * 
+     * @param document the document
+     * @param element the Element that will serve as the Document Element
+     */
+    protected void setDocumentElement(Document document, Element element) {
+        Element documentRoot = document.getDocumentElement();
+        if (documentRoot != null) {
+            document.replaceChild(documentRoot, element);
+        } else {
+            document.appendChild(element);
         }
-        Element domElement = document.createElementNS(xmlObject.getElementQName().getNamespaceURI(), xmlObject
-                .getElementQName().getLocalPart());
+    }
 
+    /**
+     * Marshalls the given XMLObject into the given DOM Element. The DOM Element must be within a DOM tree whose root is
+     * the Document Element of the Document that owns the given DOM Element.
+     * 
+     * @param xmlObject the XMLObject to marshall
+     * @param targetElement the Element into which the XMLObject is marshalled into
+     * 
+     * @throws MarshallingException thrown if there is a problem marshalling the object
+     */
+    protected void marshallInto(XMLObject xmlObject, Element targetElement) throws MarshallingException {
         if (xmlObject instanceof DOMCachingXMLObject) {
             if (log.isDebugEnabled()) {
                 log.debug("Setting created element to DOM cache for XMLObject " + xmlObject.getElementQName());
             }
-            ((DOMCachingXMLObject) xmlObject).setDOM(domElement);
+            ((DOMCachingXMLObject) xmlObject).setDOM(targetElement);
         }
 
         if (log.isDebugEnabled()) {
             log.debug("Setting namespace prefix for " + xmlObject.getElementQName().getPrefix() + " for XMLObject "
                     + xmlObject.getElementQName());
         }
-        domElement.setPrefix(xmlObject.getElementQName().getPrefix());
+        targetElement.setPrefix(xmlObject.getElementQName().getPrefix());
 
-        // Plant the element as the document root if
-        // this XMLObject is at the top of tree and
-        // the document does not already have a root
-        if (xmlObject.getParent() == null && document.getDocumentElement() == null) {
-            if (log.isDebugEnabled()) {
-                log.debug("Planting XMLObject " + xmlObject.getElementQName() + " as the Document root");
-            }
+        marshallNamespaces(xmlObject, targetElement);
 
-            document.appendChild(domElement);
-        }
+        marshallAttributes(xmlObject, targetElement);
 
-        marshallNamespaces(xmlObject, domElement);
+        marshallChildElements(xmlObject, targetElement);
 
-        marshallAttributes(xmlObject, domElement);
+        marshallElementContent(xmlObject, targetElement);
 
-        marshallChildElements(xmlObject, domElement);
-
-        marshallElementContent(xmlObject, domElement);
-
-        marshallElementType(xmlObject, domElement);
+        marshallElementType(xmlObject, targetElement);
 
         if (xmlObject instanceof SignableXMLObject) {
-            signElement(domElement, xmlObject);
+            signElement(targetElement, xmlObject);
         }
 
-        return domElement;
+        if (xmlObject instanceof EncryptableXMLObject) {
+            encryptElement(targetElement, xmlObject);
+        }
     }
 
     /**
@@ -234,7 +307,7 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
                     if (log.isDebugEnabled()) {
                         log.debug("Marshalling " + childXMLObject.getElementQName() + " and adding it to DOM");
                     }
-                    domElement.appendChild(marshaller.marshall(childXMLObject, domElement.getOwnerDocument()));
+                    marshaller.marshall(childXMLObject, domElement);
                 }
             }
         } else {
@@ -349,6 +422,23 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
 
         SignatureMarshaller signatureMarshaller = (SignatureMarshaller) marshallerFactory.getMarshaller(signature);
         signatureMarshaller.signElement(domElement, signature);
+    }
+
+    /**
+     * Encrypts the given DOM Element which is a representation of the given XMLObject. The given XMLObject MUST be of
+     * type {@link EncryptableXMLObject}
+     * 
+     * @param domElement the Element to be encrypted
+     * @param xmlObject the XMLObject represented by the Element
+     * 
+     * @throws MarshallingException thrown if the element can not be encrypted
+     */
+    protected void encryptElement(Element domElement, XMLObject xmlObject) throws MarshallingException {
+        EncryptableXMLObject encryptableXMLObject = (EncryptableXMLObject) xmlObject;
+
+        EncryptableXMLObjectMarshaller marshaller = (EncryptableXMLObjectMarshaller) marshallerFactory
+                .getMarshaller(encryptableXMLObject);
+        marshaller.encryptElement(domElement, encryptableXMLObject);
     }
 
     /**

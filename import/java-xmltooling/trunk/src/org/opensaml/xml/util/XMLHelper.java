@@ -167,11 +167,21 @@ public class XMLHelper {
      */
     public static void appendChildElement(Element parentElement, Element childElement) {
         Document parentDocument = parentElement.getOwnerDocument();
-        if (!(childElement.getOwnerDocument().equals(parentDocument))) {
-            parentDocument.adoptNode(childElement);
-        }
-
+        adoptElement(childElement, parentDocument);
+        
         parentElement.appendChild(childElement);
+    }
+    
+    /**
+     * Adopts an element into a document if the child is not already in the document.
+     * 
+     * @param adoptee the element to be adopted
+     * @param adopter the document into which the element is adopted
+     */
+    public static void adoptElement(Element adoptee, Document adopter){
+        if (!(adoptee.getOwnerDocument().equals(adopter))) {
+            adopter.adoptNode(adoptee);
+        }
     }
     
     /**
