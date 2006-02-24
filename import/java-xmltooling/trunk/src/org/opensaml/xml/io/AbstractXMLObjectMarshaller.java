@@ -20,6 +20,8 @@ import java.util.List;
 import java.util.Set;
 
 import javax.xml.namespace.QName;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.log4j.Logger;
 import org.opensaml.xml.Configuration;
@@ -72,7 +74,7 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
      * @throws NullPointerException if any of the arguments are null (or empty in the case of String parameters)
      */
     protected AbstractXMLObjectMarshaller(String targetNamespaceURI, String targetLocalName)
-            throws IllegalArgumentException {
+            throws NullPointerException {
         if (DatatypeHelper.isEmpty(targetNamespaceURI)) {
             throw new NullPointerException("Target Namespace URI may not be null or an empty");
         }
@@ -86,7 +88,19 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
     }
 
     /*
-     * @see org.opensaml.xml.io.Marshaller#marshall(T, org.w3c.dom.Document)
+     * @see org.opensaml.xml.io.Marshaller#marshall(org.opensaml.xml.XMLObject)
+     */
+    public Element marshall(XMLObject xmlObject) throws MarshallingException {
+        try {
+            Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+            return marshall(xmlObject, document);
+        } catch (ParserConfigurationException e) {
+            throw new MarshallingException("Unable to create Document to place marshalled elements in", e);
+        }
+    }
+
+    /*
+     * @see org.opensaml.xml.io.Marshaller#marshall(org.opensaml.xml.XMLObject, org.w3c.dom.Document)
      */
     public Element marshall(XMLObject xmlObject, Document document) throws MarshallingException {
         if (log.isDebugEnabled()) {
@@ -107,24 +121,28 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
         Element domElement = document.createElementNS(xmlObject.getElementQName().getNamespaceURI(), xmlObject
                 .getElementQName().getLocalPart());
 
+        if (xmlObject instanceof DOMCachingXMLObject) {
+            if (log.isDebugEnabled()) {
+                log.debug("Setting created element to DOM cache for XMLObject " + xmlObject.getElementQName());
+            }
+            ((DOMCachingXMLObject) xmlObject).setDOM(domElement);
+        }
+
         if (log.isDebugEnabled()) {
             log.debug("Setting namespace prefix for " + xmlObject.getElementQName().getPrefix() + " for XMLObject "
                     + xmlObject.getElementQName());
         }
         domElement.setPrefix(xmlObject.getElementQName().getPrefix());
 
-        // Plant the element as the document root if this XMLObject is at the top of tree
-        if (xmlObject.getParent() == null) {
+        // Plant the element as the document root if
+        // this XMLObject is at the top of tree and
+        // the document does not already have a root
+        if (xmlObject.getParent() == null && document.getDocumentElement() == null) {
             if (log.isDebugEnabled()) {
-                log.debug("XMLObject " + xmlObject.getElementQName()
-                        + " is the root of the tree, planting it at the Document root");
+                log.debug("Planting XMLObject " + xmlObject.getElementQName() + " as the Document root");
             }
-            Element docElement = document.getDocumentElement();
-            if (document.getDocumentElement() != null) {
-                document.replaceChild(domElement, docElement);
-            } else {
-                document.appendChild(domElement);
-            }
+
+            document.appendChild(domElement);
         }
 
         marshallNamespaces(xmlObject, domElement);
@@ -139,13 +157,6 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
 
         if (xmlObject instanceof SignableXMLObject) {
             signElement(domElement, xmlObject);
-        }
-
-        if (xmlObject instanceof DOMCachingXMLObject) {
-            if (log.isDebugEnabled()) {
-                log.debug("Caching DOM for XMLObject " + xmlObject.getElementQName());
-            }
-            ((DOMCachingXMLObject) xmlObject).setDOM(domElement);
         }
 
         return domElement;
@@ -177,8 +188,9 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
                 return;
             }
         }
-        
-        String errorMsg = "This marshaller only operations on " + targetQName + " elements not " + xmlObject.getElementQName();
+
+        String errorMsg = "This marshaller only operations on " + targetQName + " elements not "
+                + xmlObject.getElementQName();
         log.error(errorMsg);
         throw new MarshallingException(errorMsg);
     }
@@ -261,12 +273,12 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
             }
 
             String attributeValue;
-            if(typePrefix == null){
+            if (typePrefix == null) {
                 attributeValue = typeLocalName;
-            }else{
+            } else {
                 attributeValue = typePrefix + ":" + typeLocalName;
             }
-            
+
             domElement.setAttributeNS(XMLConstants.XSI_NS, XMLConstants.XSI_PREFIX + ":type", attributeValue);
 
             if (log.isDebugEnabled()) {
@@ -292,21 +304,21 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
         for (Namespace namespace : namespaces) {
             String nsURI = DatatypeHelper.safeTrimOrNullString(namespace.getNamespaceURI());
             String nsPrefix = DatatypeHelper.safeTrimOrNullString(namespace.getNamespacePrefix());
-            
+
             String attributeName;
-            if(nsPrefix == null){
+            if (nsPrefix == null) {
                 attributeName = XMLConstants.XMLNS_PREFIX;
-            }else{
+            } else {
                 attributeName = XMLConstants.XMLNS_PREFIX + ":" + nsPrefix;
             }
-            
+
             String attributeValue;
-            if(nsURI == null){
+            if (nsURI == null) {
                 attributeValue = "";
-            }else{
+            } else {
                 attributeValue = nsURI;
             }
-            
+
             domElement.setAttributeNS(XMLConstants.XMLNS_NS, attributeName, attributeValue);
         }
     }

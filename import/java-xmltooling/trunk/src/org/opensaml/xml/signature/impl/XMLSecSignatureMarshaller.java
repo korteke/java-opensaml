@@ -24,6 +24,9 @@ import java.security.cert.X509Certificate;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.apache.log4j.Logger;
 import org.apache.xml.security.Init;
 import org.apache.xml.security.c14n.Canonicalizer;
@@ -61,6 +64,18 @@ public class XMLSecSignatureMarshaller implements SignatureMarshaller {
                 log.debug("Initializing XML security library");
             }
             Init.init();
+        }
+    }
+    
+    /*
+     * @see org.opensaml.xml.io.Marshaller#marshall(org.opensaml.xml.XMLObject)
+     */
+    public Element marshall(XMLObject xmlObject) throws MarshallingException{
+        try{
+            Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+            return marshall(xmlObject, document);
+        }catch(ParserConfigurationException e){
+            throw new MarshallingException("Unable to create Document to place marshalled elements in", e);
         }
     }
 

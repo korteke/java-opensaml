@@ -23,18 +23,33 @@ import org.w3c.dom.Element;
 /**
  * Marshallers are used to marshall a {@link org.opensaml.xml.XMLObject} into 
  * a W3C DOM element.
- * 
- * @param <T> object type this marshaller operates on
  */
 public interface Marshaller {
 	
+    /**
+     * Marshall this element, and its children, and root them in a newly created Document.  The Document is 
+     * created by a {@link javax.xml.parsers.DocumentBuilder} obtained from a {@link javax.xml.parsers.DocumentBuilderFactory} 
+     * created without any additional parameters or properties set; that is the system defaults properties are used.
+     * 
+     * @param xmlObject the object to marshall
+     * 
+     * @return the W3C DOM element representing this SAML element
+     * 
+     * @throws MarshallingException thrown if there is a problem marshalling the given object
+     */
+    public Element marshall(XMLObject xmlObject) throws MarshallingException;
+    
 	/**
-	 * Marshall this element, and its children, into a W3C DOM element rooted in the given document.
+	 * Marshall this element, and its children, into a W3C DOM element.  If the given Document already has 
+     * a document (root) element the returned Element and its children are adopted into the document but 
+     * the returned element is not appended to any element already existing in the document.  It is the job 
+     * of the caller to graft the returned element into the existing DOM.  If the given Document does not 
+     * have a document (root) element the returned Element is set as such.
 	 * 
 	 * @param xmlObject the object to marshall
-	 * @param document the DOM document the marshalled element will be rooted in
+	 * @param document the DOM document the marshalled element will be placed in
 	 * 
-	 * @return the W3C DOM element representing this SAML element
+	 * @return the W3C DOM element representing this XMLObject
 	 * 
 	 * @throws MarshallingException thrown if there is a problem marshalling the given object
 	 */
