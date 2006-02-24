@@ -35,6 +35,8 @@ import org.opensaml.xml.io.UnmarshallerFactory;
 import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.util.XMLConstants;
 import org.opensaml.xml.util.XMLHelper;
+import org.opensaml.xml.validation.Validator;
+import org.opensaml.xml.validation.ValidatorSuite;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -57,6 +59,9 @@ public class Configuration {
     /** Object provider configuration elements indexed by QName */
     private static HashMap<QName, Element> configuredObjectProviders = new HashMap<QName, Element>();
 
+    /** Validator suite configuration elements indexed by suite IDs */
+    private static HashMap<String, Element> validatorSuiteConfigurations = new HashMap<String, Element>();
+
     /** Configured XMLObject builder factory */
     private static XMLObjectBuilderFactory builderFactory = new XMLObjectBuilderFactory();
 
@@ -65,6 +70,9 @@ public class Configuration {
 
     /** Configured XMLObject unmarshaller factory */
     private static UnmarshallerFactory unmarshallerFactory = new UnmarshallerFactory();
+
+    /** Configured ValidatorSuites */
+    private static HashMap<String, ValidatorSuite> validatorSuites = new HashMap<String, ValidatorSuite>();
 
     /**
      * Constructor
@@ -132,14 +140,30 @@ public class Configuration {
             Init.init();
         }
 
-        if (log.isInfoEnabled()) {
-            log.info("Preparing to load ObjectProviders");
-        }
+        // Initialize object providers
         NodeList objectProviders = configuration.getDocumentElement().getElementsByTagNameNS(
                 XMLConstants.XMLTOOLING_CONFIG_NS, "ObjectProviders");
-        initializeObjectProviders((Element) objectProviders.item(0));
-        if (log.isInfoEnabled()) {
-            log.info("ObjectProviders load complete");
+        if (objectProviders.getLength() > 0) {
+            if (log.isInfoEnabled()) {
+                log.info("Preparing to load ObjectProviders");
+            }
+            initializeObjectProviders((Element) objectProviders.item(0));
+            if (log.isInfoEnabled()) {
+                log.info("ObjectProviders load complete");
+            }
+        }
+
+        // Initialize validator suites
+        NodeList validatorSuites = configuration.getDocumentElement().getElementsByTagNameNS(
+                XMLConstants.XMLTOOLING_CONFIG_NS, "ValidatorSuites");
+        if (validatorSuites.getLength() > 0) {
+            if (log.isInfoEnabled()) {
+                log.info("Preparing to load ValidatorSuites");
+            }
+            initializeValidatorSuites((Element) validatorSuites.item(0));
+            if (log.isInfoEnabled()) {
+                log.info("ValidatorSuites load complete");
+            }
         }
     }
 
@@ -174,6 +198,19 @@ public class Configuration {
      */
     public static Element getObjectProviderConfiguration(QName qualifedName) {
         return (Element) configuredObjectProviders.get(qualifedName).cloneNode(true);
+    }
+
+    /**
+     * Gets a clone of the ValidatorSuite configuration element for the ID. Note that this configuration reflects the
+     * state of things as they were when the configuration was loaded, applications may have programmatically removed
+     * altered the suite during runtime.
+     * 
+     * @param suiteId the ID of the ValidatorSuite whose configuration is to be retrieved
+     * 
+     * @return the validator suite configuration element or null if no suite is configured with that ID
+     */
+    public static Element getValidatorSuiteConfiguration(String suiteId) {
+        return (Element) validatorSuiteConfigurations.get(suiteId).cloneNode(true);
     }
 
     /**
@@ -216,6 +253,17 @@ public class Configuration {
         builderFactory.unregisterBuilder(key);
         marshallerFactory.deregisterMarshaller(key);
         unmarshallerFactory.deregisterUnmarshaller(key);
+    }
+
+    /**
+     * Gets a configured ValidatorSuite by its ID.
+     * 
+     * @param suiteId the suite's ID
+     * 
+     * @return the ValidatorSuite or null if no suite was registered under that ID
+     */
+    public static ValidatorSuite getValidatorSuite(String suiteId) {
+        return validatorSuites.get(suiteId);
     }
 
     /**
@@ -405,6 +453,74 @@ public class Configuration {
                     + " for object provider " + objectProviderName);
             throw new ConfigurationException("Unable to create instance of unmarshaller class " + unmarshallerClassName
                     + " for object provider " + objectProviderName, e);
+        }
+    }
+
+    /**
+     * Initializes the validator suites specified in the configuration file.
+     * 
+     * @param validatorSuitesElement the ValidatorSuites element from the configuration file
+     * 
+     * @throws ConfigurationException thrown if there is a problem initializing the validator suites, usually because of
+     *             malformed elements
+     */
+    public static void initializeValidatorSuites(Element validatorSuitesElement) throws ConfigurationException {
+        ValidatorSuite validatorSuite;
+        Validator validator;
+        Element validatorSuiteElement;
+        String validatorSuiteId;
+        Element validatorElement;
+        String validatorClassName;
+        QName validatorQName;
+
+        NodeList validatorSuiteList = validatorSuitesElement.getElementsByTagNameNS(XMLConstants.XMLTOOLING_CONFIG_NS,
+                "ValidatorSuite");
+        for (int i = 0; i < validatorSuiteList.getLength(); i++) {
+            validatorSuiteElement = (Element) validatorSuiteList.item(i);
+            validatorSuiteId = validatorSuiteElement.getAttributeNS(null, "id");
+            validatorSuite = new ValidatorSuite(validatorSuiteId);
+
+            if (log.isDebugEnabled()) {
+                log.debug("Initializing ValidatorSuite " + validatorSuiteId);
+            }
+
+            if (log.isTraceEnabled()) {
+                log.trace(XMLHelper.nodeToString(validatorSuiteElement));
+            }
+
+            NodeList validatorList = validatorSuiteElement.getElementsByTagNameNS(XMLConstants.XMLTOOLING_CONFIG_NS,
+                    "Validator");
+            for (int j = 0; j < validatorList.getLength(); j++) {
+                validatorElement = (Element) validatorList.item(j);
+                validatorClassName = validatorElement.getAttributeNS(null, "className");
+                validatorQName = XMLHelper.getAttributeValueAsQName(validatorElement.getAttributeNodeNS(null,
+                        "qualifiedName"));
+
+                try {
+                    if (log.isDebugEnabled()) {
+                        log.debug("Creating instance of validator " + validatorClassName + " for ValidatorSuite "
+                                + validatorSuiteId);
+                    }
+                    validator = (Validator) createClassInstance(validatorClassName);
+
+                    if (log.isDebugEnabled()) {
+                        log.debug("Registering validator " + validatorClassName + " to ValidatorSuite "
+                                + validatorSuiteId + " under QName " + validatorQName);
+                    }
+                    validatorSuite.registerValidator(validatorQName, validator);
+                } catch (InstantiationException e) {
+                    String errorMsg = "Unable to create Validator " + validatorClassName + " for ValidatorSuite "
+                            + validatorSuiteId;
+                    log.error(errorMsg, e);
+                    throw new ConfigurationException(errorMsg, e);
+                }
+            }
+
+            if (log.isDebugEnabled()) {
+                log.debug("ValidtorSuite " + validatorSuiteId + " has been initialized");
+            }
+            validatorSuiteConfigurations.put(validatorSuiteId, validatorSuiteElement);
+            validatorSuites.put(validatorSuiteId, validatorSuite);
         }
     }
 
