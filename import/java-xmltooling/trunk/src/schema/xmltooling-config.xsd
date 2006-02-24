@@ -29,11 +29,11 @@
             <element ref="xt:BuilderClass" />
             <element ref="xt:MarshallingClass" />
             <element ref="xt:UnmarshallingClass" />
-            <any namespace="##other" minOccurs="0" maxOccurs="unbounded" />
+            <any namespace="##other" minOccurs="0" maxOccurs="unbounded" processContents="lax"/>
         </sequence>
 
         <attribute name="qualifiedName" type="QName" use="required" />
-        <anyAttribute namespace="##other" />
+        <anyAttribute namespace="##other" processContents="lax"/>
     </complexType>
 
     <element name="BuilderClass" type="xt:ClassType" />
@@ -41,11 +41,11 @@
     <element name="UnmarshallingClass" type="xt:ClassType" />
     <complexType name="ClassType">
         <sequence>
-            <any namespace="##other" minOccurs="0" maxOccurs="unbounded" />
+            <any namespace="##other" minOccurs="0" maxOccurs="unbounded" processContents="lax"/>
         </sequence>
 
         <attribute name="className" type="string" use="required" />
-        <anyAttribute namespace="##other" />
+        <anyAttribute namespace="##other" processContents="lax"/>
     </complexType>
 
     <element name="ValidatorSuites" type="xt:ValidatorSuitesType" />
@@ -59,10 +59,11 @@
     <complexType name="ValidatorSuiteType">
         <sequence>
             <element ref="xt:Validator" maxOccurs="unbounded" />
+            <any namespace="##other" minOccurs="0" maxOccurs="unbounded" processContents="lax"/>
         </sequence>
         
         <attribute name="id" type="string" use="required" />
-        <anyAttribute namespace="##other" />
+        <anyAttribute namespace="##other" processContents="lax"/>
     </complexType>
     
     <element name="Validator" type="xt:ValidatorType"/>

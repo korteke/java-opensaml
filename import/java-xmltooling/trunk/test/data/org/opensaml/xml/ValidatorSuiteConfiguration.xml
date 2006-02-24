@@ -12,7 +12,7 @@
         </xt:ValidatorSuite>
         
         <xt:ValidatorSuite id="TestSuite2">
-            <xt:Validator qualifiedName="test:SimpleElement" className="org.opensaml.xml.mock.SimpleXMLObjectValidator">
+            <xt:Validator qualifiedName="test:SimpleElement" className="org.opensaml.xml.mock.SimpleXMLObjectValidator" test:attrib1="foo">
                 <test:SomeElement/>
             </xt:Validator>
         </xt:ValidatorSuite>
