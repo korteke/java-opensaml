@@ -29,6 +29,8 @@ import org.opensaml.xml.Configuration;
 import org.opensaml.xml.DOMCachingXMLObject;
 import org.opensaml.xml.Namespace;
 import org.opensaml.xml.XMLObject;
+import org.opensaml.xml.encryption.EncryptableXMLObject;
+import org.opensaml.xml.encryption.EncryptableXMLObjectMarshaller;
 import org.opensaml.xml.signature.SignableXMLObject;
 import org.opensaml.xml.signature.Signature;
 import org.opensaml.xml.signature.SignatureMarshaller;
@@ -240,6 +242,10 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
             signElement(targetElement, xmlObject);
         }
 
+        if (xmlObject instanceof EncryptableXMLObject) {
+            targetElement = encryptElement(targetElement, xmlObject);
+        }
+
         if (xmlObject == AbstractXMLObjectMarshaller.initialXMLObject.get()) {
             finalizeMarshalling(xmlObject, targetElement);
         }
@@ -448,6 +454,33 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
 
         SignatureMarshaller signatureMarshaller = (SignatureMarshaller) marshallerFactory.getMarshaller(signature);
         signatureMarshaller.signElement(domElement, signature);
+    }
+
+    /**
+     * Encrypts the given DOM Element which is a representation of the given XMLObject. The given XMLObject MUST be of
+     * type {@link EncryptableXMLObject}
+     * 
+     * @param domElement the Element to be encrypted
+     * @param xmlObject the XMLObject represented by the Element
+     * 
+     * @return the encrypted element
+     * 
+     * @throws MarshallingException thrown if the element can not be encrypted
+     */
+    protected Element encryptElement(Element domElement, XMLObject xmlObject) throws MarshallingException {
+        EncryptableXMLObject encryptableXMLObject = (EncryptableXMLObject) xmlObject;
+
+        if (encryptableXMLObject.getEncryptionContext() == null) {
+            if (log.isDebugEnabled()) {
+                log.debug(xmlObject.getElementQName()
+                        + " is an encryptable object but does not contain an encryption context, skipping encryption");
+            }
+            return domElement;
+        }
+
+        EncryptableXMLObjectMarshaller marshaller = (EncryptableXMLObjectMarshaller) marshallerFactory
+                .getMarshaller(encryptableXMLObject);
+        return marshaller.encryptElement(domElement, encryptableXMLObject);
     }
 
     /**
