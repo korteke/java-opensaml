@@ -16,6 +16,7 @@
 
 package org.opensaml.xml.io;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -28,8 +29,6 @@ import org.opensaml.xml.Configuration;
 import org.opensaml.xml.DOMCachingXMLObject;
 import org.opensaml.xml.Namespace;
 import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.encryption.EncryptableXMLObject;
-import org.opensaml.xml.encryption.EncryptableXMLObjectMarshaller;
 import org.opensaml.xml.signature.SignableXMLObject;
 import org.opensaml.xml.signature.Signature;
 import org.opensaml.xml.signature.SignatureMarshaller;
@@ -49,14 +48,24 @@ import org.w3c.dom.Element;
  * <li>Setting namespaces attributes declared for the element</li>
  * <li>Marshalling of child elements</li>
  * <li>Digitally signing instance of {@link org.opensaml.xml.signature.SignableXMLObject} that contain a
- * {@link org.opensaml.xml.signature.Signature}
- * <li>Caching of created DOM for elements that implement {@link org.opensaml.xml.DOMCachingXMLObject}
+ * {@link org.opensaml.xml.signature.Signature}</li>
+ * <li>Caching of created DOM for elements that implement {@link org.opensaml.xml.DOMCachingXMLObject}</li>
  * </ul>
  */
 public abstract class AbstractXMLObjectMarshaller implements Marshaller {
 
     /** Logger */
     private static Logger log = Logger.getLogger(AbstractXMLObjectMarshaller.class);
+
+    /** The first XMLObject requested to be marshalled */
+    private static ThreadLocal<XMLObject> initialXMLObject = new ThreadLocal<XMLObject>();
+
+    /** Thread local list of declared namespaces */
+    private static ThreadLocal<Set<Namespace>> declaredNamespaces = new ThreadLocal<Set<Namespace>>() {
+        protected synchronized Set<Namespace> initialValue() {
+            return new HashSet<Namespace>();
+        }
+    };
 
     /** The target name and namespace for this marshaller. */
     private QName targetQName;
@@ -112,17 +121,16 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
         checkXMLObjectIsTarget(xmlObject);
 
         Element domElement = getCachedDOM(xmlObject, document);
-        if(domElement != null){
+        if (domElement != null) {
             setDocumentElement(document, domElement);
-        }else{
+        } else {
             if (log.isDebugEnabled()) {
                 log.debug("Creating Element to marshall " + xmlObject.getElementQName() + " into");
             }
             domElement = document.createElementNS(xmlObject.getElementQName().getNamespaceURI(), xmlObject
                     .getElementQName().getLocalPart());
+            domElement = marshallInto(xmlObject, domElement);
             setDocumentElement(document, domElement);
-
-            marshallInto(xmlObject, domElement);
         }
 
         return domElement;
@@ -147,24 +155,22 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
             Document owningDocument = parentElement.getOwnerDocument();
             domElement = owningDocument.createElementNS(xmlObject.getElementQName().getNamespaceURI(), xmlObject
                     .getElementQName().getLocalPart());
-
-            marshallInto(xmlObject, domElement);
-            
+            domElement = marshallInto(xmlObject, domElement);
         }
-        
+
         XMLHelper.appendChildElement(parentElement, domElement);
         return domElement;
     }
-    
+
     /**
-     * Gets the cached Element representation of given XMLObject if the XMLObject is an instance of {@link DOMCachingXMLObject}.
-     * The returned element is adopted
-     *  
+     * Gets the cached Element representation of given XMLObject if the XMLObject is an instance of
+     * {@link DOMCachingXMLObject}. The returned element is adopted
+     * 
      * @param xmlObject
      * @param owningDocument
      * @return
      */
-    protected Element getCachedDOM(XMLObject xmlObject, Document owningDocument){
+    protected Element getCachedDOM(XMLObject xmlObject, Document owningDocument) {
         if (xmlObject instanceof DOMCachingXMLObject) {
             DOMCachingXMLObject domCachingObject = (DOMCachingXMLObject) xmlObject;
             Element cachedDOM = domCachingObject.getDOM();
@@ -173,7 +179,7 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
                 XMLHelper.adoptElement(cachedDOM, owningDocument);
             }
         }
-        
+
         return null;
     }
 
@@ -202,12 +208,16 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
      * 
      * @throws MarshallingException thrown if there is a problem marshalling the object
      */
-    protected void marshallInto(XMLObject xmlObject, Element targetElement) throws MarshallingException {
+    protected Element marshallInto(XMLObject xmlObject, Element targetElement) throws MarshallingException {
         if (xmlObject instanceof DOMCachingXMLObject) {
             if (log.isDebugEnabled()) {
                 log.debug("Setting created element to DOM cache for XMLObject " + xmlObject.getElementQName());
             }
             ((DOMCachingXMLObject) xmlObject).setDOM(targetElement);
+        }
+
+        if (AbstractXMLObjectMarshaller.initialXMLObject.get() == null) {
+            AbstractXMLObjectMarshaller.initialXMLObject.set(xmlObject);
         }
 
         if (log.isDebugEnabled()) {
@@ -230,9 +240,11 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
             signElement(targetElement, xmlObject);
         }
 
-        if (xmlObject instanceof EncryptableXMLObject) {
-            encryptElement(targetElement, xmlObject);
+        if (xmlObject == AbstractXMLObjectMarshaller.initialXMLObject.get()) {
+            finalizeMarshalling(xmlObject, targetElement);
         }
+
+        return targetElement;
     }
 
     /**
@@ -370,29 +382,43 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
      * @param domElement the DOM element the namespaces will be added to
      */
     protected void marshallNamespaces(XMLObject xmlObject, Element domElement) throws MarshallingException {
+        Set<Namespace> declaredNamespaces = AbstractXMLObjectMarshaller.declaredNamespaces.get();
+
         if (log.isDebugEnabled()) {
             log.debug("Marshalling namespace attributes for XMLObject " + xmlObject.getElementQName());
         }
         Set<Namespace> namespaces = xmlObject.getNamespaces();
+
         for (Namespace namespace : namespaces) {
-            String nsURI = DatatypeHelper.safeTrimOrNullString(namespace.getNamespaceURI());
-            String nsPrefix = DatatypeHelper.safeTrimOrNullString(namespace.getNamespacePrefix());
-
-            String attributeName;
-            if (nsPrefix == null) {
-                attributeName = XMLConstants.XMLNS_PREFIX;
+            if (declaredNamespaces.contains(namespace)) {
+                if (log.isDebugEnabled()) {
+                    log.debug("Namespace " + namespace + " has already been declared on an ancestor of "
+                            + xmlObject.getElementQName() + " no need to add it here");
+                }
             } else {
-                attributeName = XMLConstants.XMLNS_PREFIX + ":" + nsPrefix;
-            }
+                if (log.isDebugEnabled()) {
+                    log.debug("Adding namespace decleration " + namespace + " to " + xmlObject.getElementQName());
+                }
+                String nsURI = DatatypeHelper.safeTrimOrNullString(namespace.getNamespaceURI());
+                String nsPrefix = DatatypeHelper.safeTrimOrNullString(namespace.getNamespacePrefix());
 
-            String attributeValue;
-            if (nsURI == null) {
-                attributeValue = "";
-            } else {
-                attributeValue = nsURI;
-            }
+                String attributeName;
+                if (nsPrefix == null) {
+                    attributeName = XMLConstants.XMLNS_PREFIX;
+                } else {
+                    attributeName = XMLConstants.XMLNS_PREFIX + ":" + nsPrefix;
+                }
 
-            domElement.setAttributeNS(XMLConstants.XMLNS_NS, attributeName, attributeValue);
+                String attributeValue;
+                if (nsURI == null) {
+                    attributeValue = "";
+                } else {
+                    attributeValue = nsURI;
+                }
+
+                domElement.setAttributeNS(XMLConstants.XMLNS_NS, attributeName, attributeValue);
+                declaredNamespaces.add(namespace);
+            }
         }
     }
 
@@ -425,20 +451,18 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
     }
 
     /**
-     * Encrypts the given DOM Element which is a representation of the given XMLObject. The given XMLObject MUST be of
-     * type {@link EncryptableXMLObject}
+     * Invoked as the last step in marshalling a tree to allow for any cleanup of state. At this point the given
+     * XMLObject should be completely marshalled into the given Element.
      * 
-     * @param domElement the Element to be encrypted
-     * @param xmlObject the XMLObject represented by the Element
-     * 
-     * @throws MarshallingException thrown if the element can not be encrypted
+     * @param xmlObject the XMLObject marshalled
+     * @param domElement the resulting DOM Element
      */
-    protected void encryptElement(Element domElement, XMLObject xmlObject) throws MarshallingException {
-        EncryptableXMLObject encryptableXMLObject = (EncryptableXMLObject) xmlObject;
-
-        EncryptableXMLObjectMarshaller marshaller = (EncryptableXMLObjectMarshaller) marshallerFactory
-                .getMarshaller(encryptableXMLObject);
-        marshaller.encryptElement(domElement, encryptableXMLObject);
+    protected void finalizeMarshalling(XMLObject xmlObject, Element domElement) {
+        if(log.isDebugEnabled()){
+            log.debug("Finalizing marshalling process for XMLObject " + xmlObject.getElementQName());
+        }
+        AbstractXMLObjectMarshaller.initialXMLObject.set(null);
+        AbstractXMLObjectMarshaller.declaredNamespaces.get().clear();
     }
 
     /**

@@ -16,6 +16,9 @@
 
 package org.opensaml.xml;
 
+import org.opensaml.xml.util.DatatypeHelper;
+import org.opensaml.xml.util.XMLConstants;
+
 /**
  * Data structure for representing XML namespace attributes
  */
@@ -26,6 +29,9 @@ public class Namespace {
     
     /** Prefix of the namespace */
     private String namespacePrefix;
+    
+    /** String representation of this namespace */
+    private String nsStr;
     
     /**
      * Constructor
@@ -41,8 +47,9 @@ public class Namespace {
      * @param prefix the prefix of the namespace
      */
     public Namespace(String uri, String prefix) {
-        namespaceURI = uri;
-        namespacePrefix = prefix;
+        namespaceURI = DatatypeHelper.safeTrimOrNullString(uri);
+        namespacePrefix = DatatypeHelper.safeTrimOrNullString(prefix);
+        nsStr = null;
     }
 
     /**
@@ -60,7 +67,8 @@ public class Namespace {
      * @param namespacePrefix the prefix of the namespace
      */
     public void setNamespacePrefix(String namespacePrefix) {
-        this.namespacePrefix = namespacePrefix;
+        this.namespacePrefix = DatatypeHelper.safeTrimOrNullString(namespacePrefix);
+        nsStr = null;
     }
 
     /**
@@ -78,7 +86,26 @@ public class Namespace {
      * @param namespaceURI the URI of the namespace
      */
     public void setNamespaceURI(String namespaceURI) {
-        this.namespaceURI = namespaceURI;
+        this.namespaceURI = DatatypeHelper.safeTrimOrNullString(namespaceURI);
+        nsStr = null;
+    }
+    
+    /*
+     * @see java.lang.Object#toString()
+     */
+    public String toString(){
+        if(nsStr == null){
+            constructStringRepresentation();
+        }
+        
+        return nsStr;
+    }
+    
+    /*
+     * @see java.lang.Object#hashCode()
+     */
+    public int hashCode(){
+        return toString().hashCode();
     }
     
     /**
@@ -98,5 +125,29 @@ public class Namespace {
         }
         
         return false;
+    }
+    
+    /**
+     * Constructs an XML namespace declaration string representing this namespace.
+     */
+    protected void constructStringRepresentation(){
+        StringBuffer stringRep = new StringBuffer();
+        
+        stringRep.append(XMLConstants.XMLNS_PREFIX);
+        
+        if (namespacePrefix  != null) {
+            stringRep.append(":");
+            stringRep.append(namespacePrefix);
+        }
+        
+        stringRep.append("=\"");
+
+        if (namespaceURI != null) {
+            stringRep.append(namespaceURI);
+        }
+        
+        stringRep.append("\"");
+        
+        nsStr = stringRep.toString();
     }
 }
