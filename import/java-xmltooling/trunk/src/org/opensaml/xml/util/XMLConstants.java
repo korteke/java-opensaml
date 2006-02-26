@@ -65,4 +65,10 @@ public class XMLConstants {
 
     /** XML Encryption QName prefix */
     public final static String XMLENC_PREFIX = "xenc";
+    
+    /** Local name of EncryptedData element */
+    public final static String XMLENC_ENCDATA_LOCAL_NAME = "EncryptedData";
+    
+    /** Local name of EncryptedKey element */
+    public final static String XMLENC_ENCKEY_LOCAL_NAME = "EncryptedKey";
 }
