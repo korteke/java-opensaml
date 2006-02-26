@@ -65,7 +65,7 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
      * @throws NullPointerException if any of the arguments are null (or empty in the case of String parameters)
      */
     protected AbstractXMLObjectUnmarshaller(String targetNamespaceURI, String targetLocalName)
-            throws IllegalArgumentException, NullPointerException {
+            throws NullPointerException {
         if (DatatypeHelper.isEmpty(targetNamespaceURI)) {
             throw new NullPointerException("Target Namespace URI may not be null or an empty");
         }
