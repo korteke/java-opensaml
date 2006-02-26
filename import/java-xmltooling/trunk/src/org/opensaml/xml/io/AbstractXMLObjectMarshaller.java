@@ -491,11 +491,16 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
      * @param domElement the resulting DOM Element
      */
     protected void finalizeMarshalling(XMLObject xmlObject, Element domElement) {
-        if(log.isDebugEnabled()){
+        if (log.isDebugEnabled()) {
             log.debug("Finalizing marshalling process for XMLObject " + xmlObject.getElementQName());
         }
         AbstractXMLObjectMarshaller.initialXMLObject.set(null);
         AbstractXMLObjectMarshaller.declaredNamespaces.get().clear();
+
+        if (log.isTraceEnabled()) {
+            log.trace("Marshalling of XMLObject " + xmlObject.getElementQName() + " resulting in the following DOM: \n"
+                    + XMLHelper.nodeToString(domElement));
+        }
     }
 
     /**
