@@ -181,10 +181,16 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
             if (cachedDOM != null) {
                 if(log.isDebugEnabled()) {
                     log.debug("XMLObject " + xmlObject.getElementQName() + " has a cached DOM.");
-                    log.debug("Invalidating DOM for parent of XMLObject " + xmlObject.getElementQName() + " and adopting cached DOM into new document");
                 }
-                domCachingObject.releaseParentDOM(true);
-                XMLHelper.adoptElement(cachedDOM, owningDocument);
+                
+                if(cachedDOM.getOwnerDocument() != owningDocument) {
+                    if(log.isDebugEnabled()) {
+                        log.debug("Invalidating DOM for parent of XMLObject " + xmlObject.getElementQName() + " and adopting cached DOM into new document");
+                    }
+                    domCachingObject.releaseParentDOM(true);
+                    XMLHelper.adoptElement(cachedDOM, owningDocument);
+                }
+                
                 return cachedDOM;
             }
         }
