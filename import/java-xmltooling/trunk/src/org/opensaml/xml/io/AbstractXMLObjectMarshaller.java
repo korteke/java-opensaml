@@ -178,9 +178,10 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
         if (xmlObject instanceof DOMCachingXMLObject) {
             DOMCachingXMLObject domCachingObject = (DOMCachingXMLObject) xmlObject;
             Element cachedDOM = domCachingObject.getDOM();
-            if (domCachingObject.getDOM() != null) {
+            if (cachedDOM != null) {
                 log.debug("XMLObject " + xmlObject.getElementQName() + " has a cached DOM.");
                 XMLHelper.adoptElement(cachedDOM, owningDocument);
+                return cachedDOM;
             }
         }
 
@@ -194,7 +195,7 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
      * @param document the document
      * @param element the Element that will serve as the Document Element
      */
-    protected void setDocumentElement(Document document, Element element) {
+    protected void setDocumentElement(Document document, Element element) {     
         Element documentRoot = document.getDocumentElement();
         if (documentRoot != null) {
             document.replaceChild(documentRoot, element);
