@@ -22,8 +22,6 @@ import org.w3c.dom.Element;
 /**
  * Unmarshallers are used to unmarshall a W3C DOM element into a 
  * {@link org.opensaml.xml.XMLObject}.
- * 
- * @param <T> the object type this unmarshaller produces
  */
 public interface Unmarshaller{
 

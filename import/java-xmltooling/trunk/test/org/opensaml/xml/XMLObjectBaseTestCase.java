@@ -18,6 +18,8 @@ package org.opensaml.xml;
 
 import java.util.HashMap;
 
+import javax.xml.namespace.QName;
+
 import org.custommonkey.xmlunit.XMLTestCase;
 import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallerFactory;
@@ -77,6 +79,18 @@ public class XMLObjectBaseTestCase extends XMLTestCase {
         } catch (Exception e) {
             fail("Marshalling failed with the following error: " + e);
         }
+    }
+    
+    /**
+     * Builds the requested XMLObject.
+     * 
+     * @param objectQName name of the XMLObject
+     * 
+     * @return the build XMLObject
+     */
+    public XMLObject buildXMLObject(QName objectQName){
+        XMLObjectBuilder builder = Configuration.getBuilderFactory().getBuilder(objectQName);
+        return builder.buildObject();
     }
 
     static {

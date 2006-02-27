@@ -23,11 +23,14 @@ import java.security.KeyPairGenerator;
 import org.opensaml.xml.encryption.EncryptionContext;
 import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallingException;
+import org.opensaml.xml.io.Unmarshaller;
+import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.mock.SimpleXMLObject;
-import org.opensaml.xml.parse.XMLParserException;
-import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Element;
 
+/**
+ * Tests the encryption support in this library.
+ */
 public class EncryptionTest extends XMLObjectBaseTestCase {
     
     /**
@@ -37,7 +40,14 @@ public class EncryptionTest extends XMLObjectBaseTestCase {
 
     }
     
-    public void testEncryption() throws GeneralSecurityException, MarshallingException, XMLParserException{
+    /**
+     * Tests encryption and then decrypting an XML fragment.
+     * 
+     * @throws GeneralSecurityException
+     * @throws MarshallingException
+     * @throws UnmarshallingException 
+     */
+    public void testEncryption() throws GeneralSecurityException, MarshallingException, UnmarshallingException {
         KeyPair keyPair = KeyPairGenerator.getInstance("RSA").generateKeyPair();
         
         SimpleXMLObject xmlObject = new SimpleXMLObject();
@@ -54,8 +64,10 @@ public class EncryptionTest extends XMLObjectBaseTestCase {
         
         // Marshall & encrypt
         Marshaller marshaller = marshallerFactory.getMarshaller(xmlObject);
-        Element domElement = marshaller.marshall(xmlObject, parserPool.newDocument());
+        Element domElement = marshaller.marshall(xmlObject);
         
-        System.out.println(XMLHelper.nodeToString(domElement));
+        // Unmarshall and decrypt
+        Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(domElement);
+        unmarshaller.unmarshall(domElement);
     }
 }
