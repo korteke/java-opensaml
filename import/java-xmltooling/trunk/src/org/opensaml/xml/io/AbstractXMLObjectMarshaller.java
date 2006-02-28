@@ -128,7 +128,7 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
             DOMCachingXMLObject domCachingObject = (DOMCachingXMLObject) xmlObject;
             Element cachedDOM = domCachingObject.getDOM();
             
-            if(cachedDOM.getOwnerDocument() == document){
+            if(cachedDOM.getOwnerDocument() != document){
                 domCachingObject.releaseParentDOM(true);
                 XMLHelper.adoptElement(cachedDOM, document);
             }
