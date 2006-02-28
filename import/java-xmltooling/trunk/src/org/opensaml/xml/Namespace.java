@@ -26,23 +26,26 @@ public class Namespace {
 
     /** URI of the namespace */
     private String namespaceURI;
-    
+
     /** Prefix of the namespace */
     private String namespacePrefix;
-    
+
+    /** Always declare this namespace while marshalling? */
+    private boolean alwaysDeclare;
+
     /** String representation of this namespace */
     private String nsStr;
-    
+
     /**
      * Constructor
      */
     public Namespace() {
-        
+
     }
-    
+
     /**
      * Constructor
-     *
+     * 
      * @param uri the URI of the namespace
      * @param prefix the prefix of the namespace
      */
@@ -89,65 +92,85 @@ public class Namespace {
         this.namespaceURI = DatatypeHelper.safeTrimOrNullString(namespaceURI);
         nsStr = null;
     }
-    
+
+    /**
+     * Gets wether this namespace should always be declared when marshalling, even if it was already declared on an
+     * ancestral element.
+     * 
+     * @return true if this namespace should always be declared, false if not
+     */
+    public boolean alwaysDeclare() {
+        return alwaysDeclare;
+    }
+
+    /**
+     * Sets wether this namespace should always be declared when marshalling, even if it was already declared on an
+     * ancestral element.
+     * 
+     * @param alwaysDeclare true if this namespace should always be declared, false if not
+     */
+    public void setAlwaysDeclare(boolean alwaysDeclare) {
+        this.alwaysDeclare = alwaysDeclare;
+    }
+
     /*
      * @see java.lang.Object#toString()
      */
-    public String toString(){
-        if(nsStr == null){
+    public String toString() {
+        if (nsStr == null) {
             constructStringRepresentation();
         }
-        
+
         return nsStr;
     }
-    
+
     /*
      * @see java.lang.Object#hashCode()
      */
-    public int hashCode(){
+    public int hashCode() {
         return toString().hashCode();
     }
-    
+
     /**
-     * Checks if the given object is the same as this Namespace.  This is true if:
+     * Checks if the given object is the same as this Namespace. This is true if:
      * <ul>
-     *    <li>The given object is of type {@link Namespace}</li>
-     *    <li>The given object's namespace URI is the same as this object's namespace URI</li>
-     *    <li>The given object's namespace prefix is the same as this object's namespace prefix</li>
+     * <li>The given object is of type {@link Namespace}</li>
+     * <li>The given object's namespace URI is the same as this object's namespace URI</li>
+     * <li>The given object's namespace prefix is the same as this object's namespace prefix</li>
      * </ul>
      */
     public boolean equals(Object obj) {
-        if(obj instanceof Namespace) {
-            Namespace otherNamespace = (Namespace)obj;
-            if(otherNamespace.getNamespaceURI().equals(getNamespaceURI())) {
+        if (obj instanceof Namespace) {
+            Namespace otherNamespace = (Namespace) obj;
+            if (otherNamespace.getNamespaceURI().equals(getNamespaceURI())) {
                 return otherNamespace.getNamespacePrefix().equals(getNamespacePrefix());
             }
         }
-        
+
         return false;
     }
-    
+
     /**
      * Constructs an XML namespace declaration string representing this namespace.
      */
-    protected void constructStringRepresentation(){
+    protected void constructStringRepresentation() {
         StringBuffer stringRep = new StringBuffer();
-        
+
         stringRep.append(XMLConstants.XMLNS_PREFIX);
-        
-        if (namespacePrefix  != null) {
+
+        if (namespacePrefix != null) {
             stringRep.append(":");
             stringRep.append(namespacePrefix);
         }
-        
+
         stringRep.append("=\"");
 
         if (namespaceURI != null) {
             stringRep.append(namespaceURI);
         }
-        
+
         stringRep.append("\"");
-        
+
         nsStr = stringRep.toString();
     }
 }
