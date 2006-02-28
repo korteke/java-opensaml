@@ -48,8 +48,8 @@ public class XMLSecSignatureImpl extends AbstractXMLObject implements Signature 
      * @param signingContext configuration information for computing the signature
      */
     XMLSecSignatureImpl(final SigningContext signingContext) {
-        super(XMLConstants.XMLSIG_NS, LOCAL_NAME);
-        setElementNamespacePrefix(XMLConstants.XMLSIG_PREFIX);
+        super(XMLConstants.XMLSIG_NS, LOCAL_NAME, XMLConstants.XMLSIG_PREFIX);
+
         this.signingContext = signingContext;
     }
     

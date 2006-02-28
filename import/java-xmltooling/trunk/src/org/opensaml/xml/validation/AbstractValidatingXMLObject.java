@@ -45,9 +45,10 @@ public abstract class AbstractValidatingXMLObject extends AbstractXMLObject impl
      * 
      * @param namespaceURI the namespace the element is in
      * @param elementLocalName the local name of the XML element this Object represents
+     * @param namespacePrefix the prefix for the given namespace
      */
-    protected AbstractValidatingXMLObject(String namespaceURI, String elementLocalName) {
-        super(namespaceURI, elementLocalName);
+    protected AbstractValidatingXMLObject(String namespaceURI, String elementLocalName, String namespacePrefix) {
+        super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
     /*

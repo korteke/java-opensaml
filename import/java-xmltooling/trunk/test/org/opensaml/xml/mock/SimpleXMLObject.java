@@ -66,9 +66,8 @@ public class SimpleXMLObject extends AbstractSignableXMLObject implements Encryp
      * Constructor
      */
     public SimpleXMLObject() {
-        super(NAMESAPACE, LOCAL_NAME);
-        setElementNamespacePrefix(NAMESPACE_PREFIX);
-        addNamespace(new Namespace(NAMESAPACE, NAMESPACE_PREFIX));
+        super(NAMESAPACE, LOCAL_NAME, NAMESPACE_PREFIX);
+        
         simpleXMLObjects = new XMLObjectChildrenList<SimpleXMLObject>(this);
     }
     

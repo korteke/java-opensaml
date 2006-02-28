@@ -48,9 +48,10 @@ public abstract class AbstractValidatingSignableXMLObject extends AbstractSignab
      * 
      * @param namespaceURI the namespace the element is in
      * @param elementLocalName the local name of the XML element this Object represents
+     * @param namespacePrefix the prefix for the given namespace
      */
-    protected AbstractValidatingSignableXMLObject(String namespaceURI, String elementLocalName) {
-        super(namespaceURI, elementLocalName);
+    protected AbstractValidatingSignableXMLObject(String namespaceURI, String elementLocalName, String namespacePrefix) {
+        super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
     /*

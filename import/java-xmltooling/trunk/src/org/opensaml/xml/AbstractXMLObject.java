@@ -45,9 +45,12 @@ public abstract class AbstractXMLObject implements XMLObject {
      * 
      * @param namespaceURI the namespace the element is in
      * @param elementLocalName the local name of the XML element this Object represents
+     * @param namespacePrefix the prefix for the given namespace
      */
-    protected AbstractXMLObject(String namespaceURI, String elementLocalName) {
+    protected AbstractXMLObject(String namespaceURI, String elementLocalName, String namespacePrefix) {
         elementQname = new QName(namespaceURI, elementLocalName);
+        addNamespace(new Namespace(namespaceURI, namespacePrefix));
+        setElementNamespacePrefix(namespacePrefix);
     }
     
     /*
