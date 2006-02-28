@@ -128,7 +128,8 @@ public class Namespace {
      * @see java.lang.Object#hashCode()
      */
     public int hashCode() {
-        return toString().hashCode();
+        String hashingString = toString() + Boolean.toString(alwaysDeclare);
+        return hashingString.hashCode();
     }
 
     /**
@@ -143,7 +144,9 @@ public class Namespace {
         if (obj instanceof Namespace) {
             Namespace otherNamespace = (Namespace) obj;
             if (otherNamespace.getNamespaceURI().equals(getNamespaceURI())) {
-                return otherNamespace.getNamespacePrefix().equals(getNamespacePrefix());
+                if(otherNamespace.getNamespacePrefix().equals(getNamespacePrefix())){
+                    return otherNamespace.alwaysDeclare() == alwaysDeclare();
+                }
             }
         }
 
