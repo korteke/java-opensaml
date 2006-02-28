@@ -124,20 +124,27 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
 
         checkXMLObjectIsTarget(xmlObject);
 
-        Element domElement = getCachedDOM(xmlObject, document);
-        if (domElement != null) {
-            setDocumentElement(document, domElement);
+        if (xmlObject instanceof DOMCachingXMLObject) {
+            DOMCachingXMLObject domCachingObject = (DOMCachingXMLObject) xmlObject;
+            Element cachedDOM = domCachingObject.getDOM();
+            
+            if(cachedDOM.getOwnerDocument() == document){
+                domCachingObject.releaseParentDOM(true);
+                XMLHelper.adoptElement(cachedDOM, document);
+            }
+            
+            setDocumentElement(document, cachedDOM);
+            return cachedDOM;
         } else {
             if (log.isDebugEnabled()) {
                 log.debug("Creating Element to marshall " + xmlObject.getElementQName() + " into");
             }
-            domElement = document.createElementNS(xmlObject.getElementQName().getNamespaceURI(), xmlObject
+            Element domElement = document.createElementNS(xmlObject.getElementQName().getNamespaceURI(), xmlObject
                     .getElementQName().getLocalPart());
             domElement = marshallInto(xmlObject, domElement);
             setDocumentElement(document, domElement);
+            return domElement;
         }
-
-        return domElement;
     }
 
     /*
@@ -151,51 +158,23 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
 
         checkXMLObjectIsTarget(xmlObject);
 
-        Element domElement = getCachedDOM(xmlObject, parentElement.getOwnerDocument());
-        if (domElement == null) {
+        if (xmlObject instanceof DOMCachingXMLObject) {
+            DOMCachingXMLObject domCachingObject = (DOMCachingXMLObject) xmlObject;
+            Element cachedDOM = domCachingObject.getDOM();
+            domCachingObject.releaseParentDOM(true);
+            XMLHelper.appendChildElement(cachedDOM, parentElement);
+            return cachedDOM;
+        }else{
             if (log.isDebugEnabled()) {
                 log.debug("Creating Element to marshall " + xmlObject.getElementQName() + " into");
             }
             Document owningDocument = parentElement.getOwnerDocument();
-            domElement = owningDocument.createElementNS(xmlObject.getElementQName().getNamespaceURI(), xmlObject
+            Element domElement = owningDocument.createElementNS(xmlObject.getElementQName().getNamespaceURI(), xmlObject
                     .getElementQName().getLocalPart());
             domElement = marshallInto(xmlObject, domElement);
+            XMLHelper.appendChildElement(parentElement, domElement);
+            return domElement;
         }
-
-        XMLHelper.appendChildElement(parentElement, domElement);
-        return domElement;
-    }
-
-    /**
-     * Gets the cached Element representation of given XMLObject if the XMLObject is an instance of
-     * {@link DOMCachingXMLObject}. The returned element is adopted
-     * 
-     * @param xmlObject
-     * @param owningDocument
-     * @return
-     */
-    protected Element getCachedDOM(XMLObject xmlObject, Document owningDocument) {
-        if (xmlObject instanceof DOMCachingXMLObject) {
-            DOMCachingXMLObject domCachingObject = (DOMCachingXMLObject) xmlObject;
-            Element cachedDOM = domCachingObject.getDOM();
-            if (cachedDOM != null) {
-                if(log.isDebugEnabled()) {
-                    log.debug("XMLObject " + xmlObject.getElementQName() + " has a cached DOM.");
-                }
-                
-                if(cachedDOM.getOwnerDocument() != owningDocument) {
-                    if(log.isDebugEnabled()) {
-                        log.debug("Invalidating DOM for parent of XMLObject " + xmlObject.getElementQName() + " and adopting cached DOM into new document");
-                    }
-                    domCachingObject.releaseParentDOM(true);
-                    XMLHelper.adoptElement(cachedDOM, owningDocument);
-                }
-                
-                return cachedDOM;
-            }
-        }
-
-        return null;
     }
 
     /**
