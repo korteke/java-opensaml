@@ -170,13 +170,13 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
         XMLObjectBuilder xmlObjectBuilder;
 
         xmlObjectBuilder = xmlObjectBuilderFactory.getBuilder(domElement);
-        if(xmlObjectBuilder == null){
+        if (xmlObjectBuilder == null) {
             String errorMsg = "Unable to located builder for " + XMLHelper.getNodeQName(domElement);
             log.error(errorMsg);
             throw new UnmarshallingException(errorMsg);
         }
-        
-        return xmlObjectBuilder.buildObject();        
+
+        return xmlObjectBuilder.buildObject();
     }
 
     /**
@@ -229,7 +229,7 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
                                 + " is a namespace declaration, adding it to the list of namespaces on the XMLObject");
                     }
 
-                    xmlObject.addNamespace(new Namespace(attribute.getValue(), attribute.getLocalName()));
+                    unmarshallNamespaceAttribute(xmlObject, attribute);
                     continue;
                 } else if (attribute.getNamespaceURI().equals(XMLConstants.XSI_NS)
                         && attribute.getLocalName().equals("type")) {
@@ -239,7 +239,7 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
                                 + " is a schema type declaration, setting it as the schema type for the XMLObject");
                     }
 
-                    xmlObject.setSchemaType(XMLHelper.getAttributeValueAsQName(attribute));
+                    unmarshallSchemaTypeAttribute(xmlObject, attribute);
                     continue;
                 }
             }
@@ -248,8 +248,53 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
                 log.debug("Attribute " + XMLHelper.getNodeQName(attribute)
                         + " is neither a schema type nor namespace, calling processAttribute()");
             }
-            processAttribute(xmlObject, attribute);
+            unmarshallAttribute(xmlObject, attribute);
         }
+    }
+
+    /**
+     * Unmarshalls a namespace declaration attribute.
+     * 
+     * @param xmlObject the xmlObject to recieve the namespace decleration
+     * @param attribute the namespace decleration attribute
+     */
+    protected void unmarshallNamespaceAttribute(XMLObject xmlObject, Attr attribute) {
+        Namespace namespace = new Namespace(attribute.getValue(), attribute.getLocalName());
+        namespace.setAlwaysDeclare(true);
+        xmlObject.addNamespace(namespace);
+    }
+
+    /**
+     * Unmarshalls a schema type decleration attribute.
+     * 
+     * @param xmlObject the xmlObject to recieve the schema type decleration
+     * @param attribute the schema type decleration attribute
+     */
+    protected void unmarshallSchemaTypeAttribute(XMLObject xmlObject, Attr attribute) {
+        QName schemaType = XMLHelper.getAttributeValueAsQName(attribute);
+        xmlObject.setSchemaType(schemaType);
+    }
+
+    /**
+     * Unmarshalls a generic attribute, checking to see if it is declared in a specific namespace and if so adding that
+     * to list of namespaces associated with the given XMLObject.
+     * 
+     * @param xmlObject the xmlObject to recieve the attribute
+     * @param attribute the attribute
+     * 
+     * @throws UnmarshallingException thrown if an error occurs unmarshalling the attribute
+     */
+    protected void unmarshallAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
+        String attributeNSURI = attribute.getNamespaceURI();
+        String attributeNSPrefix;
+        if (attributeNSURI != null) {
+            attributeNSPrefix = attribute.lookupPrefix(attributeNSURI);
+            Namespace attributeNS = new Namespace(attributeNSURI, attributeNSPrefix);
+            attributeNS.setAlwaysDeclare(true);
+            xmlObject.addNamespace(attributeNS);
+        }
+
+        processAttribute(xmlObject, attribute);
     }
 
     /**
@@ -349,8 +394,7 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
      * 
      * @throws UnmarshallingException thrown if there is a problem adding the attribute to the XMLObject
      */
-    protected abstract void processAttribute(XMLObject xmlObject, Attr attribute)
-            throws UnmarshallingException;
+    protected abstract void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException;
 
     /**
      * Called if the element being unmarshalled contained textual content so that it can be added to the XMLObject.
