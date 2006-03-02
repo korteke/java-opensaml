@@ -222,8 +222,9 @@ public abstract class AbstractDOMCachingXMLObject extends AbstractXMLObject impl
         if (!oldValue.equals(newValue)) {
             oldValue.setParent(null);
             releaseThisandParentDOM();
-            newValue.setParent(this);
-        }
+            if (newValue != null) {
+                newValue.setParent(this);
+            }
 
         return newValue;
     }
