@@ -95,7 +95,7 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
             unmarshallAttributes(domElement, xmlObject);
         }
 
-        if (domElement.getTextContent() != null) {
+        if (DatatypeHelper.safeTrimOrNullString(domElement.getTextContent()) != null) {
             processElementContent(xmlObject, domElement.getTextContent());
         }
 
