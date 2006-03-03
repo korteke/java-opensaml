@@ -179,7 +179,12 @@ public class XMLObjectChildrenList<ElementType extends XMLObject> extends Abstra
 
         elementRemoved = elements.remove(element);
         if(elementRemoved){
-            element.setParent(null);
+            if (element != null) {
+                if (element instanceof DOMCachingXMLObject) {
+                    ((DOMCachingXMLObject) element).releaseParentDOM(true);
+                }
+                element.setParent(null);
+            }
         }
 
         return elementRemoved;
