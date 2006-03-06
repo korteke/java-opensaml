@@ -16,6 +16,8 @@
 
 package org.opensaml.xml;
 
+import java.util.List;
+
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.io.Unmarshaller;
 import org.opensaml.xml.io.UnmarshallingException;
@@ -59,14 +61,29 @@ public class UnmarshallingTest extends XMLObjectBaseTestCase {
      * @throws UnmarshallingException
      */
     public void testUnmarshallingWithElementContent() throws XMLParserException, UnmarshallingException {
-        String expectedContent = "Sample Content";
         String documentLocation = "/data/org/opensaml/xml/SimpleXMLObjectWithContent.xml";
         Document document = parserPool.parse(UnmarshallingTest.class.getResourceAsStream(documentLocation));
 
         Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(document.getDocumentElement());
         SimpleXMLObject sxObject = (SimpleXMLObject) unmarshaller.unmarshall(document.getDocumentElement());
-
-        assertEquals("Element content was not expected value", expectedContent, sxObject.getValue());
+        
+        List<SimpleXMLObject> children = sxObject.getSimpleXMLObjects();
+        assertEquals("Unexpected number of children", 3, children.size());
+        
+        SimpleXMLObject child1 = children.get(0);
+        assertEquals("Unexpected value (text content) for child 1", "Content1", child1.getValue());
+        
+        SimpleXMLObject child2 = children.get(1);
+        assertEquals("Unexpected value (text content) for child 2", "Content2", child2.getValue());
+        
+        SimpleXMLObject child3 = children.get(2);
+        assertNull("Child had text content when it should not", child3.getValue());
+        
+        List<SimpleXMLObject> grandChildren = child3.getSimpleXMLObjects();
+        assertEquals("Unexpected number of grandchildren (children for child 3)", 1, grandChildren.size());
+        
+        SimpleXMLObject grandChild1 = grandChildren.get(0);
+        assertEquals("Unexpected value (text content) for grandchild 1", "Content3", grandChild1.getValue());
     }
 
     /**
