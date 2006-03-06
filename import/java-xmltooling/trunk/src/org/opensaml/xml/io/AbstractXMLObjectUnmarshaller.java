@@ -36,6 +36,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.w3c.dom.Text;
 
 /**
  * An thread safe abstract unmarshaller.
@@ -84,22 +85,43 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
      */
     public XMLObject unmarshall(Element domElement) throws UnmarshallingException {
         if (log.isDebugEnabled()) {
-            log.debug("Starting to unmarshall DOM element " + domElement.getLocalName());
+            log.debug("Starting to unmarshall DOM element " + XMLHelper.getNodeQName(domElement));
         }
 
         checkElementIsTarget(domElement);
 
         XMLObject xmlObject = buildXMLObject(domElement);
 
-        if (domElement.hasAttributes()) {
-            unmarshallAttributes(domElement, xmlObject);
+        if(log.isDebugEnabled()) {
+            log.debug("Unmarshalling attributes of DOM Element " + XMLHelper.getNodeQName(domElement));
         }
-
-        if (DatatypeHelper.safeTrimOrNullString(domElement.getTextContent()) != null) {
-            processElementContent(xmlObject, domElement.getTextContent());
+        NamedNodeMap attributes = domElement.getAttributes();
+        Node attribute;
+        for(int i = 0; i < attributes.getLength(); i++) {
+            attribute = attributes.item(i);
+            
+            // These should allows be attribute nodes, but just in case...
+            if(attribute.getNodeType() == Node.ATTRIBUTE_NODE) {
+                unmarshallAttribute(xmlObject, (Attr) attribute);
+            }
         }
+        
+        if(log.isDebugEnabled()) {
+            log.debug("Unmarshalling other child nodes of DOM Element " + XMLHelper.getNodeQName(domElement));
+        }
+        NodeList childNodes = domElement.getChildNodes();
+        Node childNode;
+        for (int i = 0; i < childNodes.getLength(); i++) {
+            childNode = childNodes.item(i);
 
-        unmarshallChildElements(domElement, xmlObject);
+            if (childNode.getNodeType() == Node.ATTRIBUTE_NODE) {
+                unmarshallAttribute(xmlObject, (Attr) childNode);
+            } else if (childNode.getNodeType() == Node.ELEMENT_NODE) {
+                unmarshallChildElement(xmlObject, (Element) childNode);
+            } else if (childNode.getNodeType() == Node.TEXT_NODE) {
+                unmarshallTextContent(xmlObject, (Text) childNode);
+            }
+        }
 
         if (xmlObject instanceof SignableXMLObject) {
             verifySignature(domElement, xmlObject);
@@ -180,75 +202,53 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
     }
 
     /**
-     * Unmarshalls the attributes from the given DOM Element into the given XMLObject. If the attribute is an XML
-     * namespace declaration the namespace is added to the given element via {@link XMLObject#addNamespace(Namespace)}.
-     * If it is an schema type (xsi:type) the schema type is added to the element via
-     * {@link XMLObject#setSchemaType(QName)}. All other attributes are passed to the
-     * {@link #processAttribute(XMLObject, String, String)}
+     * Unmarshalls the attributes from the given DOM Attr into the given XMLObject. If the attribute is an XML namespace
+     * declaration the attribute is passed to
+     * {@link AbstractXMLObjectUnmarshaller#unmarshallNamespaceAttribute(XMLObject, Attr)}. If it is an schema type
+     * decleration (xsi:type) it is passed to
+     * {@link AbstractXMLObjectUnmarshaller#unmarshallSchemaTypeAttribute(XMLObject, Attr)}. All other attributes are
+     * passed to the {@link #processAttribute(XMLObject, String, String)}
      * 
-     * @param domElement the DOM Element whose attributes will be unmarshalled
+     * @param attribute the attribute to be unmarshalled
      * @param xmlObject the XMLObject that will recieve information from the DOM attribute
      * 
      * @throws UnmarshallingException thrown if there is a problem unmarshalling an attribute
      */
-    protected void unmarshallAttributes(Element domElement, XMLObject xmlObject) throws UnmarshallingException {
+    protected void unmarshallAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
         if (log.isDebugEnabled()) {
-            log.debug("Unmarshalling attributes for DOM Element " + domElement.getLocalName());
+            log.debug("Pre-processing attribute " + XMLHelper.getNodeQName(attribute));
         }
 
-        NamedNodeMap attributes = domElement.getAttributes();
-        if (attributes == null) {
+        String attributeNamespace = DatatypeHelper.safeTrimOrNullString(attribute.getNamespaceURI());
+        if (DatatypeHelper.safeEquals(attributeNamespace, XMLConstants.XMLNS_NS)) {
             if (log.isDebugEnabled()) {
-                log.debug("No attributes to unmarshall");
+                log.debug(XMLHelper.getNodeQName(attribute)
+                        + " is a namespace declaration, adding it to the list of namespaces on the XMLObject");
             }
-            return;
-        }
+            unmarshallNamespaceAttribute(xmlObject, attribute);
+        } else if (DatatypeHelper.safeEquals(attributeNamespace, XMLConstants.XSI_NS)
+                && attribute.getLocalName().equals("type")) {
 
-        Node childNode;
-        Attr attribute;
-        for (int i = 0; i < attributes.getLength(); i++) {
-            childNode = attributes.item(i);
-
-            // The child node should always be an attribute, but just in case
-            if (childNode.getNodeType() != Node.ATTRIBUTE_NODE) {
-                if (log.isDebugEnabled()) {
-                    log.debug("Encountered child node of type " + childNode.getNodeType()
-                            + " in attribute list.  Ignoring it.");
-                }
-                continue;
-            }
-
-            attribute = (Attr) childNode;
             if (log.isDebugEnabled()) {
-                log.debug("Pre-processing attribute " + XMLHelper.getNodeQName(attribute));
+                log.debug(XMLHelper.getNodeQName(attribute)
+                        + " is a schema type declaration, setting it as the schema type for the XMLObject");
             }
-            if (!DatatypeHelper.isEmpty(attribute.getNamespaceURI())) {
-                if (attribute.getNamespaceURI().equals(XMLConstants.XMLNS_NS)) {
-                    if (log.isDebugEnabled()) {
-                        log.debug(XMLHelper.getNodeQName(attribute)
-                                + " is a namespace declaration, adding it to the list of namespaces on the XMLObject");
-                    }
-
-                    unmarshallNamespaceAttribute(xmlObject, attribute);
-                    continue;
-                } else if (attribute.getNamespaceURI().equals(XMLConstants.XSI_NS)
-                        && attribute.getLocalName().equals("type")) {
-
-                    if (log.isDebugEnabled()) {
-                        log.debug(XMLHelper.getNodeQName(attribute)
-                                + " is a schema type declaration, setting it as the schema type for the XMLObject");
-                    }
-
-                    unmarshallSchemaTypeAttribute(xmlObject, attribute);
-                    continue;
-                }
-            }
-
+            unmarshallSchemaTypeAttribute(xmlObject, attribute);
+        } else {
             if (log.isDebugEnabled()) {
                 log.debug("Attribute " + XMLHelper.getNodeQName(attribute)
                         + " is neither a schema type nor namespace, calling processAttribute()");
             }
-            unmarshallAttribute(xmlObject, attribute);
+            String attributeNSURI = attribute.getNamespaceURI();
+            String attributeNSPrefix;
+            if (attributeNSURI != null) {
+                attributeNSPrefix = attribute.lookupPrefix(attributeNSURI);
+                Namespace attributeNS = new Namespace(attributeNSURI, attributeNSPrefix);
+                attributeNS.setAlwaysDeclare(false);
+                xmlObject.addNamespace(attributeNS);
+            }
+
+            processAttribute(xmlObject, attribute);
         }
     }
 
@@ -276,28 +276,6 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
     }
 
     /**
-     * Unmarshalls a generic attribute, checking to see if it is declared in a specific namespace and if so adding that
-     * to list of namespaces associated with the given XMLObject.
-     * 
-     * @param xmlObject the xmlObject to recieve the attribute
-     * @param attribute the attribute
-     * 
-     * @throws UnmarshallingException thrown if an error occurs unmarshalling the attribute
-     */
-    protected void unmarshallAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
-        String attributeNSURI = attribute.getNamespaceURI();
-        String attributeNSPrefix;
-        if (attributeNSURI != null) {
-            attributeNSPrefix = attribute.lookupPrefix(attributeNSURI);
-            Namespace attributeNS = new Namespace(attributeNSURI, attributeNSPrefix);
-            attributeNS.setAlwaysDeclare(false);
-            xmlObject.addNamespace(attributeNS);
-        }
-
-        processAttribute(xmlObject, attribute);
-    }
-
-    /**
      * Unmarshalls given Element's children. For each child an unmarshaller is retrieved using
      * {@link #getUnmarshaller(Element)}. The unmarshaller is then used to unmarshall the child element and the
      * resultant XMLObject is passed to {@link #processChildElement(XMLObject, XMLObject)} for further processing.
@@ -307,44 +285,43 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
      * 
      * @throws UnmarshallingException thrown if an error occurs unmarshalling the chilren elements
      */
-    protected void unmarshallChildElements(Element domElement, XMLObject xmlObject) throws UnmarshallingException {
+    protected void unmarshallChildElement(XMLObject xmlObject, Element childElement) throws UnmarshallingException {
         if (log.isDebugEnabled()) {
-            log.debug("Unmarshalling child elements of Element " + XMLHelper.getNodeQName(domElement));
-        }
-        NodeList childNodes = domElement.getChildNodes();
-        Node childNode;
-        Element childElement;
-        Unmarshaller unmarshaller;
-        if (childNodes == null || childNodes.getLength() == 0) {
-            if (log.isDebugEnabled()) {
-                log.debug(XMLHelper.getNodeQName(domElement) + " had no children");
-            }
-            return;
+            log.debug("Unmarshalling child elements of XMLObject " + xmlObject.getElementQName());
         }
 
-        for (int i = 0; i < childNodes.getLength(); i++) {
-            childNode = childNodes.item(i);
-            if (childNode.getNodeType() == Node.ELEMENT_NODE) {
+        Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(childElement);
 
-                childElement = (Element) childNode;
-                unmarshaller = unmarshallerFactory.getUnmarshaller(childElement);
-
-                if (unmarshaller == null) {
-                    if (Configuration.ignoreUnknownElements()) {
-                        if (log.isDebugEnabled()) {
-                            log.debug("No unmarshaller registered for Element " + XMLHelper.getNodeQName(childNode)
-                                    + " and Configuration.ignoreUknownElements() is true, ignoring element");
-                        }
-                        continue; // Move on to the next child
-                    }
-                } else {
-                    if (log.isDebugEnabled()) {
-                        log.debug("Unmarshalling child element " + XMLHelper.getNodeQName(childNode)
-                                + " with unmarshaller " + unmarshaller.getClass().getName());
-                    }
-                    processChildElement(xmlObject, unmarshaller.unmarshall(childElement));
+        if (unmarshaller == null) {
+            if (Configuration.ignoreUnknownElements()) {
+                if (log.isDebugEnabled()) {
+                    log.debug("No unmarshaller registered for Element " + XMLHelper.getNodeQName(childElement)
+                            + " and Configuration.ignoreUknownElements() is true, ignoring element");
                 }
             }
+        } else {
+            if (log.isDebugEnabled()) {
+                log.debug("Unmarshalling child element " + XMLHelper.getNodeQName(childElement) + " with unmarshaller "
+                        + unmarshaller.getClass().getName());
+            }
+            processChildElement(xmlObject, unmarshaller.unmarshall(childElement));
+        }
+    }
+
+    /**
+     * Unmarshalls the given Text node into a usable string by way of {@link Text#getWholeText()} and passes it off to
+     * {@link AbstractXMLObjectUnmarshaller#processElementContent(XMLObject, String)} if the string is not null and
+     * contains something other than whitespace.
+     * 
+     * @param xmlObject the XMLObject recieving the element content
+     * @param content the textual content
+     * 
+     * @throws UnmarshallingException thrown if there is a problem unmarshalling the text node
+     */
+    protected void unmarshallTextContent(XMLObject xmlObject, Text content) throws UnmarshallingException {
+        String textContent = DatatypeHelper.safeTrimOrNullString(content.getWholeText());
+        if (textContent != null) {
+            processElementContent(xmlObject, textContent);
         }
     }
 

@@ -20,11 +20,13 @@ import java.util.HashMap;
 
 import javax.xml.namespace.QName;
 
+import org.apache.log4j.Logger;
 import org.custommonkey.xmlunit.XMLTestCase;
 import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallerFactory;
 import org.opensaml.xml.io.UnmarshallerFactory;
 import org.opensaml.xml.parse.ParserPool;
+import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -32,6 +34,9 @@ import org.w3c.dom.Element;
  * Base test case class for tests that operate on XMLObjects.
  */
 public class XMLObjectBaseTestCase extends XMLTestCase {
+    
+    /** Logger */
+    private static Logger log = Logger.getLogger(XMLObjectBaseTestCase.class);
 
     /** Parser pool */
     protected static ParserPool parserPool;
@@ -75,6 +80,9 @@ public class XMLObjectBaseTestCase extends XMLTestCase {
         Marshaller marshaller = marshallerFactory.getMarshaller(xmlObject);
         try {
             Element generatedDOM = marshaller.marshall(xmlObject, parserPool.newDocument());
+            if(log.isDebugEnabled()) {
+                log.debug("Marshalled DOM was " + XMLHelper.nodeToString(generatedDOM));
+            }
             assertXMLEqual(failMessage, expectedDOM, generatedDOM.getOwnerDocument());
         } catch (Exception e) {
             fail("Marshalling failed with the following error: " + e);

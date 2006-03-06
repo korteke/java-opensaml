@@ -20,6 +20,7 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.mock.SimpleXMLObject;
+import org.opensaml.xml.mock.SimpleXMLObjectBuilder;
 import org.opensaml.xml.parse.XMLParserException;
 import org.w3c.dom.Document;
 
@@ -56,6 +57,7 @@ public class MarshallingTest extends XMLObjectBaseTestCase {
         sxObject.setId(expectedId);
 
         assertEquals(expectedDocument, sxObject);
+        assertEquals(expectedDocument, sxObject);
     }
 
     /**
@@ -64,13 +66,28 @@ public class MarshallingTest extends XMLObjectBaseTestCase {
      * @throws XMLParserException
      */
     public void testMarshallingWithElementContent() throws XMLParserException {
-        String expectedContent = "Sample Content";
         String expectedDocumentLocation = "/data/org/opensaml/xml/SimpleXMLObjectWithContent.xml";
         Document expectedDocument = parserPool.parse(MarshallingTest.class
                 .getResourceAsStream(expectedDocumentLocation));
+        
+        SimpleXMLObjectBuilder sxoBuilder = (SimpleXMLObjectBuilder) builderFactory.getBuilder(simpleXMLObjectQName);
 
-        SimpleXMLObject sxObject = (SimpleXMLObject) builderFactory.getBuilder(simpleXMLObjectQName).buildObject();
-        sxObject.setValue(expectedContent);
+        SimpleXMLObject sxObject = (SimpleXMLObject) sxoBuilder.buildObject();
+        
+        SimpleXMLObject child1 = (SimpleXMLObject) sxoBuilder.buildObject();
+        child1.setValue("Content1");
+        sxObject.getSimpleXMLObjects().add(child1);
+        
+        SimpleXMLObject child2 = (SimpleXMLObject) sxoBuilder.buildObject();
+        child2.setValue("Content2");
+        sxObject.getSimpleXMLObjects().add(child2);
+        
+        SimpleXMLObject child3 = (SimpleXMLObject) sxoBuilder.buildObject();
+        sxObject.getSimpleXMLObjects().add(child3);
+        
+        SimpleXMLObject grandchild1 = (SimpleXMLObject) sxoBuilder.buildObject();
+        grandchild1.setValue("Content3");
+        child3.getSimpleXMLObjects().add(grandchild1);
 
         assertEquals(expectedDocument, sxObject);
     }
