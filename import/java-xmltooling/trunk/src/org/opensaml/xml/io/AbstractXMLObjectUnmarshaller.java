@@ -39,7 +39,17 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 
 /**
- * An thread safe abstract unmarshaller.
+ * An thread safe abstract unmarshaller. This unmarshaller will:
+ * <ul>
+ * <li>Unmarshalling namespace decleration attributes</li>
+ * <li>Unmarshalling schema instance type (xsi:type) decleration attributes</li>
+ * <li>Delegating to child classes element, text, and attribute processing</li>
+ * </ul>
+ * 
+ * <strong>NOTE:</strong> In the case of Text nodes this unmarshaller will use {@link org.w3c.dom.Text#getWholeText()}
+ * to retrieve the textual content. This is probably exceptable in almost all cases, if, however, you need to deal with
+ * elements that contain multiple text node children you will need to override
+ * {@link #unmarshallTextContent(XMLObject, Text)} and do "the right thing" for your implementation.
  */
 public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
 
@@ -92,21 +102,21 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
 
         XMLObject xmlObject = buildXMLObject(domElement);
 
-        if(log.isDebugEnabled()) {
+        if (log.isDebugEnabled()) {
             log.debug("Unmarshalling attributes of DOM Element " + XMLHelper.getNodeQName(domElement));
         }
         NamedNodeMap attributes = domElement.getAttributes();
         Node attribute;
-        for(int i = 0; i < attributes.getLength(); i++) {
+        for (int i = 0; i < attributes.getLength(); i++) {
             attribute = attributes.item(i);
-            
+
             // These should allows be attribute nodes, but just in case...
-            if(attribute.getNodeType() == Node.ATTRIBUTE_NODE) {
+            if (attribute.getNodeType() == Node.ATTRIBUTE_NODE) {
                 unmarshallAttribute(xmlObject, (Attr) attribute);
             }
         }
-        
-        if(log.isDebugEnabled()) {
+
+        if (log.isDebugEnabled()) {
             log.debug("Unmarshalling other child nodes of DOM Element " + XMLHelper.getNodeQName(domElement));
         }
         NodeList childNodes = domElement.getChildNodes();
