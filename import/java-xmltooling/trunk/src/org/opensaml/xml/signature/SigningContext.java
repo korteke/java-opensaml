@@ -112,7 +112,7 @@ public class SigningContext {
      * 
      * @param newAlgorithm the canonicalization algorithim used to construct the signature
      */
-    public void setCanonicalizationAlgortihm(String newAlgorithm) {
+    public void setCanonicalizationAlgorithm(String newAlgorithm) {
         canonicalizationMethod = newAlgorithm;
     }
 
@@ -130,8 +130,8 @@ public class SigningContext {
      * 
      * @param digestAlgorithm the digest algorithim used in creating the signature
      */
-    public void setDigestAlgorithm(String digestAlgorithim) {
-        this.digestAlgorithm = digestAlgorithim;
+    public void setDigestAlgorithm(String digestAlgorithm) {
+        this.digestAlgorithm = digestAlgorithm;
     }
 
     /**
@@ -148,8 +148,8 @@ public class SigningContext {
      * 
      * @param signatureAlgorithm the signature algorithim used in creating the signature
      */
-    public void setSignatureAlgorithm(String signatureAlgorithim) {
-        this.signatureAlgorithm = signatureAlgorithim;
+    public void setSignatureAlgorithm(String signatureAlgorithm) {
+        this.signatureAlgorithm = signatureAlgorithm;
     }
     
     /**

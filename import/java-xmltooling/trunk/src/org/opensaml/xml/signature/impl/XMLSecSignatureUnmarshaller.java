@@ -78,7 +78,7 @@ public class XMLSecSignatureUnmarshaller implements SignatureUnmarshaller {
             if (log.isDebugEnabled()) {
                 log.debug("Adding Canonicalization, Digest, and XMLSecSignatureImpl methods to signing context");
             }
-            signatureContext.setCanonicalizationAlgortihm(signedInfo.getCanonicalizationMethodURI());
+            signatureContext.setCanonicalizationAlgorithm(signedInfo.getCanonicalizationMethodURI());
             signatureContext.setSignatureAlgorithm(signedInfo.getSignatureMethodURI());
 
             Reference documentReference = signedInfo.item(0);
