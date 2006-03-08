@@ -40,10 +40,10 @@ public class SigningContext {
     private String canonicalizationMethod;
     
     /** The signature algorithim */
-    private String signatureAlgorithim;
+    private String signatureAlgorithm;
 
     /** The digest algorithim */
-    private String digestAlgorithim;
+    private String digestAlgorithm;
 
     /** The signing key */
     private PrivateKey signingKey;
@@ -65,8 +65,8 @@ public class SigningContext {
      */
     public SigningContext() throws NullPointerException{
         canonicalizationMethod = Canonicalizer.ALGO_ID_C14N_EXCL_OMIT_COMMENTS;
-        signatureAlgorithim = XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA1;
-        digestAlgorithim = MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA1;
+        signatureAlgorithm = XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA1;
+        digestAlgorithm = MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA1;
         transforms = new ArrayList<String>();
         certificates = new ArrayList<X509Certificate>();
     }
@@ -122,16 +122,16 @@ public class SigningContext {
      * @return the digest algorithim used in creating the signature
      */
     public String getDigestAlgorithm() {
-        return digestAlgorithim;
+        return digestAlgorithm;
     }
 
     /**
      * Sets the digest algorithim used in creating the signature.
      * 
-     * @param digestAlgorithim the digest algorithim used in creating the signature
+     * @param digestAlgorithm the digest algorithim used in creating the signature
      */
     public void setDigestAlgorithm(String digestAlgorithim) {
-        this.digestAlgorithim = digestAlgorithim;
+        this.digestAlgorithm = digestAlgorithim;
     }
 
     /**
@@ -140,16 +140,16 @@ public class SigningContext {
      * @return the signature algorithim used in creating the signature
      */
     public String getSignatureAlgorithm() {
-        return signatureAlgorithim;
+        return signatureAlgorithm;
     }
 
     /**
      * Sets the signature algorithim used in creating the signature.
      * 
-     * @param signatureAlgorithim the signature algorithim used in creating the signature
+     * @param signatureAlgorithm the signature algorithim used in creating the signature
      */
     public void setSignatureAlgorithm(String signatureAlgorithim) {
-        this.signatureAlgorithim = signatureAlgorithim;
+        this.signatureAlgorithm = signatureAlgorithim;
     }
     
     /**
