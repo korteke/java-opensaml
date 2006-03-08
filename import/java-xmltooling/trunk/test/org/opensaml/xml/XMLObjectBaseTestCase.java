@@ -25,6 +25,7 @@ import org.custommonkey.xmlunit.XMLTestCase;
 import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallerFactory;
 import org.opensaml.xml.io.UnmarshallerFactory;
+import org.opensaml.xml.mock.SimpleXMLObject;
 import org.opensaml.xml.parse.ParserPool;
 import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Document;
@@ -49,12 +50,15 @@ public class XMLObjectBaseTestCase extends XMLTestCase {
 
     /** XMLObject unmarshaller factory */
     protected static UnmarshallerFactory unmarshallerFactory;
+    
+    /** QName for SimpleXMLObject */
+    protected static QName simpleXMLObjectQName;
 
     /**
      * Constructor
      */
     public XMLObjectBaseTestCase() {
-
+        simpleXMLObjectQName = new QName(SimpleXMLObject.NAMESAPACE, SimpleXMLObject.LOCAL_NAME);
     }
 
     /**

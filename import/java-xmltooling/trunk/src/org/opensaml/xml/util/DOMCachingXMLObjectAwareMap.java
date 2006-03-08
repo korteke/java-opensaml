@@ -16,91 +16,54 @@
 
 package org.opensaml.xml.util;
 
-import java.util.Collection;
-import java.util.Hashtable;
 import java.util.Map;
-import java.util.Set;
 
+import org.apache.commons.collections.map.AbstractHashedMap;
 import org.opensaml.xml.DOMCachingXMLObject;
 
 /**
- * A map that is aware of DOMCachingXMLObjects and will release its cached DOM when modified.  This map 
- * allows supports a null key.
+ * A map that is aware of DOMCachingXMLObjects and will release its cached DOM when modified. This map allows supports a
+ * null key.
  */
-public class DOMCachingXMLObjectAwareMap<KeyType, ValueType> implements Map<KeyType, ValueType>{
+public class DOMCachingXMLObjectAwareMap extends AbstractHashedMap implements Map{
 
     /** The DOM caching XMLObject */
     private DOMCachingXMLObject xmlObject;
-    
-    private Hashtable backingTable;
-    
+
     /**
      * Constructor
-     *
+     * 
      * @param domCachingXMLObject the XMLObject whose DOM will be invalidated upon map modifications
      */
-    public DOMCachingXMLObjectAwareMap(DOMCachingXMLObject domCachingXMLObject){
+    public DOMCachingXMLObjectAwareMap(DOMCachingXMLObject domCachingXMLObject) {
+        super();
         xmlObject = domCachingXMLObject;
     }
 
-    public int size() {
-        // TODO Auto-generated method stub
-        return 0;
-    }
-
-    public boolean isEmpty() {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    public boolean containsKey(Object arg0) {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    public boolean containsValue(Object arg0) {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    public ValueType get(Object arg0) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    public ValueType put(KeyType arg0, ValueType arg1) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    public ValueType remove(Object arg0) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    public void putAll(Map<? extends KeyType, ? extends ValueType> arg0) {
-        // TODO Auto-generated method stub
+    public Object put(Object key, Object value) {
+        Object previousValue = super.put(key, value);
+        if(previousValue != null) {
+            releaseDOM();
+        }
         
+        return previousValue;
     }
 
-    public void clear() {
-        // TODO Auto-generated method stub
+    public Object remove(Object key) {
+        Object removedObject = super.remove(key);
         
+        if(removedObject != null) {
+            releaseDOM();
+        }
+        
+        return removedObject;
     }
 
-    public Set<KeyType> keySet() {
-        // TODO Auto-generated method stub
-        return null;
+    /**
+     * Releases the DOM caching associated XMLObject and its ancestors.
+     */
+    private void releaseDOM() {
+        xmlObject.releaseDOM();
+        xmlObject.releaseParentDOM(true);
     }
-
-    public Collection<ValueType> values() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    public Set<Entry<KeyType, ValueType>> entrySet() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
 }

@@ -21,6 +21,7 @@ import java.util.Map;
 
 import javax.xml.namespace.QName;
 
+import org.apache.commons.collections.map.TypedMap;
 import org.opensaml.xml.util.DOMCachingXMLObjectAwareMap;
 import org.opensaml.xml.util.XMLObjectChildrenList;
 import org.opensaml.xml.validation.AbstractValidatingDOMCachingXMLObject;
@@ -37,7 +38,7 @@ import org.opensaml.xml.validation.AbstractValidatingDOMCachingXMLObject;
 public class ElementProxy extends AbstractValidatingDOMCachingXMLObject implements AttributeExtensibleXMLObject {
 
     /** Attributes of the proxied Element */
-    private DOMCachingXMLObjectAwareMap<QName, String> attributes;
+    private Map attributes;
     
     /** Text content of the proxied Element */
     private String textContent;
@@ -54,7 +55,7 @@ public class ElementProxy extends AbstractValidatingDOMCachingXMLObject implemen
      */
     protected ElementProxy(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        attributes = new DOMCachingXMLObjectAwareMap<QName, String>(this);
+        attributes = TypedMap.decorate(new DOMCachingXMLObjectAwareMap(this), QName.class, String.class);
         children = new XMLObjectChildrenList<XMLObject>(this);
     }
     

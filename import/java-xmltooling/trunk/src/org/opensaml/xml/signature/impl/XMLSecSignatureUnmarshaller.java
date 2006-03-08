@@ -14,10 +14,6 @@
  * limitations under the License.
  */
 
-/**
- * 
- */
-
 package org.opensaml.xml.signature.impl;
 
 import java.security.PublicKey;
