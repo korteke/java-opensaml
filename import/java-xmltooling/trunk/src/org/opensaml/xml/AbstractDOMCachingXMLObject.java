@@ -172,8 +172,10 @@ public abstract class AbstractDOMCachingXMLObject extends AbstractXMLObject impl
         }
         
         if(!oldValue.equals(newValue)) {
-            Namespace newNamespace = new Namespace(newValue.getNamespaceURI(), newValue.getPrefix());
-            addNamespace(newNamespace);
+            if (newValue != null) {
+                Namespace newNamespace = new Namespace(newValue.getNamespaceURI(), newValue.getPrefix());
+                addNamespace(newNamespace);
+            }
             releaseThisandParentDOM();
         }
         
