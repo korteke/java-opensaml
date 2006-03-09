@@ -36,19 +36,26 @@ public class DOMCachingXMLObjectAwareMap extends AbstractHashedMap implements Ma
      * @param domCachingXMLObject the XMLObject whose DOM will be invalidated upon map modifications
      */
     public DOMCachingXMLObjectAwareMap(DOMCachingXMLObject domCachingXMLObject) {
-        super();
+        super(DEFAULT_CAPACITY, DEFAULT_LOAD_FACTOR, DEFAULT_THRESHOLD);
         xmlObject = domCachingXMLObject;
     }
 
+    /*
+     * @see org.apache.commons.collections.map.AbstractHashedMap#put(java.lang.Object, java.lang.Object)
+     */
     public Object put(Object key, Object value) {
         Object previousValue = super.put(key, value);
-        if(previousValue != null) {
+        
+        if(previousValue == null || !previousValue.equals(value)) {
             releaseDOM();
         }
         
         return previousValue;
     }
 
+    /*
+     * @see java.util.Map#remove(java.lang.Object)
+     */
     public Object remove(Object key) {
         Object removedObject = super.remove(key);
         
@@ -57,6 +64,16 @@ public class DOMCachingXMLObjectAwareMap extends AbstractHashedMap implements Ma
         }
         
         return removedObject;
+    }
+    
+    /*
+     * @see java.util.Map#clear()
+     */
+    public void clear() {
+        if(!isEmpty()) {
+            super.clear();
+            releaseDOM();
+        }
     }
 
     /**
