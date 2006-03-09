@@ -20,6 +20,8 @@
 
 package org.opensaml.xml;
 
+import javax.xml.namespace.QName;
+
 import org.apache.log4j.Logger;
 import org.opensaml.xml.util.DatatypeHelper;
 import org.w3c.dom.Element;
@@ -152,6 +154,26 @@ public abstract class AbstractDOMCachingXMLObject extends AbstractXMLObject impl
         }
 
         return newString;
+    }
+    
+    protected QName prepareForAssignment(QName oldValue, QName newValue) {    
+        if(oldValue == null) {
+            if(newValue != null) {
+                Namespace newNamespace = new Namespace(newValue.getNamespaceURI(), newValue.getPrefix());
+                addNamespace(newNamespace);
+                releaseThisandParentDOM();
+            }else {
+                return null;
+            }
+        }
+        
+        if(!oldValue.equals(newValue)) {
+            Namespace newNamespace = new Namespace(newValue.getNamespaceURI(), newValue.getPrefix());
+            addNamespace(newNamespace);
+            releaseThisandParentDOM();
+        }
+        
+        return newValue;
     }
 
     /**

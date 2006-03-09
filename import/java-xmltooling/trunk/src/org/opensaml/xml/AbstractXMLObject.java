@@ -146,4 +146,31 @@ public abstract class AbstractXMLObject implements XMLObject {
         List<? extends XMLObject> children = getOrderedChildren();
         return (children != null && children.size() > 0);
     }
+    
+    /**
+     * A helper function that prepares the XMLObject for the assigned of a new QName value to an attribute.  This includes 
+     * adding a new namespace to the namespace list associated with this Object, if necessary.
+     * 
+     * @param oldValue existing attribute value
+     * @param newValue new attribute value
+     * 
+     * @return the QName value to assinged to that attribute
+     */
+    protected QName prepareForAssignment(QName oldValue, QName newValue) {
+        if(oldValue == null) {
+            if(newValue != null) {
+                Namespace newNamespace = new Namespace(newValue.getNamespaceURI(), newValue.getPrefix());
+                addNamespace(newNamespace);
+            }else {
+                return null;
+            }
+        }
+        
+        if(!oldValue.equals(newValue)) {
+            Namespace newNamespace = new Namespace(newValue.getNamespaceURI(), newValue.getPrefix());
+            addNamespace(newNamespace);
+        }
+        
+        return newValue;
+    }
 }
