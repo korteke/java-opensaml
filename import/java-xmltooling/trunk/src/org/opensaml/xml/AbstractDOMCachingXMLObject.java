@@ -156,6 +156,9 @@ public abstract class AbstractDOMCachingXMLObject extends AbstractXMLObject impl
         return newString;
     }
     
+    /*
+     * @see org.opensaml.xml.AbstractXMLObject#prepareForAssignment(javax.xml.namespace.QName, javax.xml.namespace.QName)
+     */
     protected QName prepareForAssignment(QName oldValue, QName newValue) {    
         if(oldValue == null) {
             if(newValue != null) {
