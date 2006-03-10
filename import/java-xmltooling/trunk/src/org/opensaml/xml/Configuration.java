@@ -58,6 +58,8 @@ public class Configuration {
 
     /** Schema for validating a configuration file */
     private static Schema configurationSchema;
+    
+    private static QName defaultProvider = new QName(XMLConstants.XMLTOOLING_CONFIG_NS, XMLConstants.XMLTOOLING_DEFAULT_OBJECT_PROVIDER);
 
     /** Whether to ignore unknown attributes when they are encountered */
     private static boolean ignoreUnknownAttributes = true;
@@ -177,7 +179,7 @@ public class Configuration {
             }
         }
     }
-
+    
     /**
      * Gets whether unknown attributes should be ignored during unmarshalling. If this is false and an unknown attribute
      * is encountered an {@link UnknownAttributeException} is thrown.
@@ -196,6 +198,15 @@ public class Configuration {
      */
     public static boolean ignoreUnknownElements() {
         return ignoreUnknownElements;
+    }
+
+    /**
+     * Gets the QName for the object provider that will be used for XMLObjects that do not have a registered object provider.
+     * 
+     * @return the QName for the default object provider
+     */
+    public static QName getDefaultProviderQName(){
+        return defaultProvider;
     }
 
     /**

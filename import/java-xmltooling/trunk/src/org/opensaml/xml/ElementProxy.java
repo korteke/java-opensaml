@@ -23,6 +23,7 @@ import javax.xml.namespace.QName;
 
 import org.apache.commons.collections.map.TypedMap;
 import org.opensaml.xml.util.DOMCachingXMLObjectAwareMap;
+import org.opensaml.xml.util.XMLHelper;
 import org.opensaml.xml.util.XMLObjectChildrenList;
 import org.opensaml.xml.validation.AbstractValidatingDOMCachingXMLObject;
 
@@ -48,6 +49,15 @@ public class ElementProxy extends AbstractValidatingDOMCachingXMLObject implemen
     
     /**
      * Constructor
+     */
+    protected ElementProxy(){
+        super();
+        attributes = TypedMap.decorate(new DOMCachingXMLObjectAwareMap(this), QName.class, String.class);
+        children = new XMLObjectChildrenList<XMLObject>(this);
+    }
+    
+    /**
+     * Constructor
      * 
      * @param namespaceURI the namespace the proxied element is in
      * @param elementLocalName the local name of the proxied element
@@ -57,6 +67,18 @@ public class ElementProxy extends AbstractValidatingDOMCachingXMLObject implemen
         super(namespaceURI, elementLocalName, namespacePrefix);
         attributes = TypedMap.decorate(new DOMCachingXMLObjectAwareMap(this), QName.class, String.class);
         children = new XMLObjectChildrenList<XMLObject>(this);
+    }
+    
+    /**
+     * Sets the name of the element this XMLObject is proxying.  This <strong>MUST</strong> must be set before 
+     * marshalling can occur and would ideally be set immediately after it's built.
+     * 
+     * @param namespaceURI the namespace the proxied element is in
+     * @param elementLocalName the local name of the proxied element
+     * @param namespacePrefix the prefix for the given namespace
+     */
+    public void setElementQName(String namespaceURI, String elementLocalName, String namespacePrefix){
+        super.setElementQName(XMLHelper.constructQName(namespacePrefix, elementLocalName, namespacePrefix));
     }
     
     /**

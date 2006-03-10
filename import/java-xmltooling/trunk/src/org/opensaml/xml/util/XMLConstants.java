@@ -29,6 +29,9 @@ public class XMLConstants {
 
     /** Configuration namespace prefix */
     public final static String XMLTOOLING_CONFIG_PREFIX = "xt";
+    
+    /** Name of the object provider used for objects that don't have a registered object provider */
+    public final static String XMLTOOLING_DEFAULT_OBJECT_PROVIDER = "DEFAULT";
 
     // ****************************
     // Core XML

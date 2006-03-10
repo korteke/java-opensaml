@@ -64,17 +64,17 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
 
     /** Factory for creating unmarshallers for child elements */
     private UnmarshallerFactory unmarshallerFactory;
-    
+
     /**
      * Constructor.
      */
-    protected AbstractXMLObjectUnmarshaller(){
+    protected AbstractXMLObjectUnmarshaller() {
         xmlObjectBuilderFactory = Configuration.getBuilderFactory();
         unmarshallerFactory = Configuration.getUnmarshallerFactory();
     }
 
     /**
-     * This constructor supports checking a DOM Element to be unmarshalled, either element name or schema type, against 
+     * This constructor supports checking a DOM Element to be unmarshalled, either element name or schema type, against
      * a given namespace/local name pair.
      * 
      * @param targetNamespaceURI the namespace URI of either the schema type QName or element QName of the elements this
@@ -162,11 +162,14 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
      */
     protected void checkElementIsTarget(Element domElement) throws UnmarshallingException {
         QName elementName = XMLHelper.getNodeQName(domElement);
-        
-        if(targetQName == null){
-            if(log.isDebugEnabled()){
-                log.debug("Targeted QName checking is not available for this unmarshaller, DOM Element " + elementName + " was not verified");
+
+        if (targetQName == null) {
+            if (log.isDebugEnabled()) {
+                log.debug("Targeted QName checking is not available for this unmarshaller, DOM Element " + elementName
+                        + " was not verified");
             }
+            
+            return;
         }
 
         if (log.isDebugEnabled()) {
@@ -218,9 +221,18 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
 
         xmlObjectBuilder = xmlObjectBuilderFactory.getBuilder(domElement);
         if (xmlObjectBuilder == null) {
-            String errorMsg = "Unable to located builder for " + XMLHelper.getNodeQName(domElement);
-            log.error(errorMsg);
-            throw new UnmarshallingException(errorMsg);
+            xmlObjectBuilder = xmlObjectBuilderFactory.getBuilder(Configuration.getDefaultProviderQName());
+            if (xmlObjectBuilder == null) {
+                String errorMsg = "Unable to located builder for " + XMLHelper.getNodeQName(domElement);
+                log.error(errorMsg);
+                throw new UnmarshallingException(errorMsg);
+            } else {
+                if (log.isDebugEnabled()) {
+                    log.debug("No builder was registered for " + XMLHelper.getNodeQName(domElement)
+                            + " but the default builder " + xmlObjectBuilder.getClass().getName()
+                            + " was available, using it.");
+                }
+            }
         }
 
         return xmlObjectBuilder.buildObject();
@@ -318,19 +330,27 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
         Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(childElement);
 
         if (unmarshaller == null) {
-            if (Configuration.ignoreUnknownElements()) {
+            unmarshaller = unmarshallerFactory.getUnmarshaller(Configuration.getDefaultProviderQName());
+            if (unmarshaller == null) {
+                String errorMsg = "No unmarshaller available for " + XMLHelper.getNodeQName(childElement)
+                        + ", child of " + xmlObject.getElementQName();
+                log.error(errorMsg);
+                throw new UnmarshallingException(errorMsg);
+            } else {
                 if (log.isDebugEnabled()) {
-                    log.debug("No unmarshaller registered for Element " + XMLHelper.getNodeQName(childElement)
-                            + " and Configuration.ignoreUknownElements() is true, ignoring element");
+                    log.debug("No unmarshaller was registered for " + XMLHelper.getNodeQName(childElement)
+                            + ", child of " + xmlObject.getElementQName() + " but the default unmarshaller "
+                            + unmarshaller.getClass().getName() + " was available, using it.");
                 }
             }
-        } else {
-            if (log.isDebugEnabled()) {
-                log.debug("Unmarshalling child element " + XMLHelper.getNodeQName(childElement) + " with unmarshaller "
-                        + unmarshaller.getClass().getName());
-            }
-            processChildElement(xmlObject, unmarshaller.unmarshall(childElement));
         }
+        
+        if (log.isDebugEnabled()) {
+            log.debug("Unmarshalling child element " + XMLHelper.getNodeQName(childElement) + " with unmarshaller "
+                    + unmarshaller.getClass().getName());
+        }
+        
+        processChildElement(xmlObject, unmarshaller.unmarshall(childElement));
     }
 
     /**

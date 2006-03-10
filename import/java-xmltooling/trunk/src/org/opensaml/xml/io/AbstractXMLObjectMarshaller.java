@@ -341,20 +341,26 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
                 Marshaller marshaller = marshallerFactory.getMarshaller(childXMLObject);
 
                 if (marshaller == null) {
-                    if (Configuration.ignoreUnknownElements()) {
-                        if (log.isDebugEnabled()) {
-                            log.debug("No marshaller registered for XMLObject " + childXMLObject.getElementQName()
-                                    + " and Configuration.ignoreUknownElements() is true, ignoring element");
-                        }
-                        continue; // Move on to the next child
-                    }
-                } else {
+                    marshaller = marshallerFactory.getMarshaller(Configuration.getDefaultProviderQName());
 
-                    if (log.isDebugEnabled()) {
-                        log.debug("Marshalling " + childXMLObject.getElementQName() + " and adding it to DOM");
+                    if (marshaller == null) {
+                        String errorMsg = "No marshaller available for " + childXMLObject.getElementQName()
+                                + ", child of " + xmlObject.getElementQName();
+                        log.error(errorMsg);
+                        throw new MarshallingException(errorMsg);
+                    } else {
+                        if (log.isDebugEnabled()) {
+                            log.debug("No marshaller was registered for " + childXMLObject.getElementQName()
+                                    + ", child of " + xmlObject.getElementQName() + " but the default marshaller "
+                                    + marshaller.getClass().getName() + " was available, using it.");
+                        }
                     }
-                    marshaller.marshall(childXMLObject, domElement);
                 }
+
+                if (log.isDebugEnabled()) {
+                    log.debug("Marshalling " + childXMLObject.getElementQName() + " and adding it to DOM");
+                }
+                marshaller.marshall(childXMLObject, domElement);
             }
         } else {
             if (log.isDebugEnabled()) {
