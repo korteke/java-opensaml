@@ -187,6 +187,9 @@ public class XMLHelper {
      * @param textContent the content for the text node
      */
     public static void appendTextContent(Element domElement, String textContent) {
+        if (textContent == null) {
+            return;
+        }
         Document parentDocument = domElement.getOwnerDocument();
         Text textNode = parentDocument.createTextNode(textContent);
         domElement.appendChild(textNode);
