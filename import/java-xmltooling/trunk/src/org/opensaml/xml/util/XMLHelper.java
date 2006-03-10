@@ -27,6 +27,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
+import org.w3c.dom.Text;
 import org.w3c.dom.ls.DOMImplementationLS;
 import org.w3c.dom.ls.LSSerializer;
 
@@ -78,7 +79,7 @@ public class XMLHelper {
 
         return null;
     }
-    
+
     /**
      * Gets the ID attribute of a DOM element.
      * 
@@ -87,19 +88,19 @@ public class XMLHelper {
      * @return the ID attribute or null if there isn't one
      */
     public static Attr getIdAttribute(Element domElement) {
-        if(!domElement.hasAttributes()) {
+        if (!domElement.hasAttributes()) {
             return null;
         }
-        
+
         NamedNodeMap attributes = domElement.getAttributes();
         Attr attribute;
-        for(int i = 0; i < attributes.getLength(); i++) {
+        for (int i = 0; i < attributes.getLength(); i++) {
             attribute = (Attr) attributes.item(i);
-            if(attribute.isId()) {
+            if (attribute.isId()) {
                 return attribute;
             }
         }
-        
+
         return null;
     }
 
@@ -152,7 +153,7 @@ public class XMLHelper {
     public static QName constructQName(String namespaceURI, String localName, String prefix) {
         if (DatatypeHelper.isEmpty(prefix)) {
             return new QName(namespaceURI, localName);
-        }else if(DatatypeHelper.isEmpty(namespaceURI)) {
+        } else if (DatatypeHelper.isEmpty(namespaceURI)) {
             return new QName(localName);
         }
 
@@ -168,22 +169,34 @@ public class XMLHelper {
     public static void appendChildElement(Element parentElement, Element childElement) {
         Document parentDocument = parentElement.getOwnerDocument();
         adoptElement(childElement, parentDocument);
-        
+
         parentElement.appendChild(childElement);
     }
-    
+
+    /**
+     * Creates a text node with the given content and appends it as child to the given element.
+     * 
+     * @param domElement the element to recieve the text node
+     * @param textContent the content for the text node
+     */
+    public static void appendTextContent(Element domElement, String textContent) {
+        Document parentDocument = domElement.getOwnerDocument();
+        Text textNode = parentDocument.createTextNode(textContent);
+        domElement.appendChild(textNode);
+    }
+
     /**
      * Adopts an element into a document if the child is not already in the document.
      * 
      * @param adoptee the element to be adopted
      * @param adopter the document into which the element is adopted
      */
-    public static void adoptElement(Element adoptee, Document adopter){
+    public static void adoptElement(Element adoptee, Document adopter) {
         if (!(adoptee.getOwnerDocument().equals(adopter))) {
             adopter.adoptNode(adoptee);
         }
     }
-    
+
     /**
      * Converts a Node into a String using the DOM, level 3, Load/Save Serializer.
      * 
@@ -191,7 +204,7 @@ public class XMLHelper {
      * 
      * @return the string representation of the node
      */
-    public static String nodeToString(Node node){
+    public static String nodeToString(Node node) {
         DOMImplementation domImpl = node.getOwnerDocument().getImplementation();
         DOMImplementationLS domImplLS = (DOMImplementationLS) domImpl.getFeature("LS", "3.0");
         LSSerializer serializer = domImplLS.createLSSerializer();
