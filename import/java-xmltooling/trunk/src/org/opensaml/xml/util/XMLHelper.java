@@ -16,17 +16,24 @@
 
 package org.opensaml.xml.util;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.StringTokenizer;
+import java.util.Map.Entry;
 
 import javax.xml.namespace.QName;
 import javax.xml.parsers.FactoryConfigurationError;
 
+import org.opensaml.xml.parse.XMLParserException;
 import org.w3c.dom.Attr;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 import org.w3c.dom.ls.DOMImplementationLS;
 import org.w3c.dom.ls.LSSerializer;
@@ -186,6 +193,34 @@ public class XMLHelper {
     }
 
     /**
+     * Adds a namespace decleration (xmlns:) attribute to the given element.
+     * 
+     * @param domElement the element to add the attribute to
+     * @param namespaceURI the URI of the namespace
+     * @param prefix the prefix for the namespace
+     */
+    public static void appendNamespaceDecleration(Element domElement, String namespaceURI, String prefix) {
+        String nsURI = DatatypeHelper.safeTrimOrNullString(namespaceURI);
+        String nsPrefix = DatatypeHelper.safeTrimOrNullString(prefix);
+
+        String attributeName;
+        if (nsPrefix == null) {
+            attributeName = XMLConstants.XMLNS_PREFIX;
+        } else {
+            attributeName = XMLConstants.XMLNS_PREFIX + ":" + nsPrefix;
+        }
+
+        String attributeValue;
+        if (nsURI == null) {
+            attributeValue = "";
+        } else {
+            attributeValue = nsURI;
+        }
+
+        domElement.setAttributeNS(XMLConstants.XMLNS_NS, attributeName, attributeValue);
+    }
+
+    /**
      * Adopts an element into a document if the child is not already in the document.
      * 
      * @param adoptee the element to be adopted
@@ -209,6 +244,136 @@ public class XMLHelper {
         DOMImplementationLS domImplLS = (DOMImplementationLS) domImpl.getFeature("LS", "3.0");
         LSSerializer serializer = domImplLS.createLSSerializer();
         return serializer.writeToString(node);
+    }
+
+    /**
+     * Ensures that all the visibly used namespaces referenced by the given Element or its descendants are declared by
+     * the given Element or one of its descendants.
+     * 
+     * <strong>NOTE:</strong> This is a very costly operation.
+     * 
+     * @param domElement the element to act as the root of the namespace declerations
+     * 
+     * @throws XMLParserException thrown if a namespace prefix is encountered that can't be resolved to a namespace URI
+     */
+    public static void rootNamespaces(Element domElement) throws XMLParserException {
+        rootNamespaces(domElement, new HashMap<String, List<String>>());
+    }
+
+    /**
+     * Recursively called function that ensures all the visibly used namespaces referenced by the given Element or its
+     * descendants are declared if they don't appear in the list of already resolved namespaces.
+     * 
+     * @param domElement the Element
+     * @param declaredNamespaces namespaces/prefix pairs declared on an ancestor of the given element
+     * 
+     * @throws XMLParserException thrown if a namespace prefix is encountered that can't be resolved to a namespace URI
+     */
+    private static void rootNamespaces(Element domElement, HashMap<String, List<String>> declaredNamespaces)
+            throws XMLParserException {
+        String namespaceURI = null;
+        String namespacePrefix = null;
+
+        // Make sure this element's namespace is rooted or has been rooted in an ancestor
+        namespacePrefix = domElement.getPrefix();
+        if (DatatypeHelper.isEmpty(namespacePrefix)) {
+            namespaceURI = domElement.lookupNamespaceURI("");
+        } else {
+            namespaceURI = domElement.lookupNamespaceURI(namespacePrefix);
+        }
+        rootNamespace(domElement, namespaceURI, namespacePrefix, declaredNamespaces);
+
+        // Make sure all the attribute URIs are rooted here or have been rooted in an ancestor
+        NamedNodeMap attributes = domElement.getAttributes();
+        Node attributeNode;
+        for (int i = 0; i < attributes.getLength(); i++) {
+            namespacePrefix = null;
+            namespaceURI = null;
+            attributeNode = attributes.item(i);
+
+            // Shouldn't need this check, but just to be safe, we have it
+            if (attributeNode.getNodeType() != Node.ATTRIBUTE_NODE) {
+                continue;
+            }
+
+            namespacePrefix = attributeNode.getPrefix();
+            if (!DatatypeHelper.isEmpty(namespacePrefix)) {
+                namespaceURI = attributeNode.lookupNamespaceURI(namespacePrefix);
+                if (!DatatypeHelper.isEmpty(namespaceURI)) {
+                    rootNamespace(domElement, namespaceURI, namespacePrefix, declaredNamespaces);
+                } else {
+                    throw new XMLParserException("Unable to resolve namespace prefix " + namespacePrefix
+                            + " into a valid namespace URI");
+                }
+            }
+        }
+
+        // Now for the child elements, we pass a copy of the resolved namespace list in order to
+        // maintain proper scoping of namespaces.
+        NodeList childNodes = domElement.getChildNodes();
+        Node childNode;
+        for (int i = 0; i < childNodes.getLength(); i++) {
+            childNode = childNodes.item(i);
+            if (childNode.getNodeType() == Node.ELEMENT_NODE) {
+                rootNamespaces((Element) childNode, deepClone(declaredNamespaces));
+            }
+        }
+    }
+    
+    /**
+     * Checks to see if the given namespace/prefix pair has previously been resolved and, if not, declares the namespace on the given element.
+     * 
+     * @param domElement the element
+     * @param namespaceURI the namespace URI
+     * @param namespacePrefix the namespace prefix
+     * @param declaredNamespaces namespace/prefix pairs already declared on some ancestor of the given element
+     */
+    private static void rootNamespace(Element domElement, String namespaceURI, String namespacePrefix, HashMap<String, List<String>> declaredNamespaces){
+        List<String> namespaceAssociatedPrefixes;
+        if (!DatatypeHelper.isEmpty(namespaceURI)) {
+            if (declaredNamespaces.containsKey(namespaceURI)) {
+                namespaceAssociatedPrefixes = declaredNamespaces.get(namespaceURI);
+                if (!namespaceAssociatedPrefixes.contains(namespaceAssociatedPrefixes)) {
+                    // Namespace was previously declared but with a different prefix
+                    namespaceAssociatedPrefixes.add(namespacePrefix);
+                    declaredNamespaces.put(namespaceURI, namespaceAssociatedPrefixes);
+                }
+            } else {
+                // Namespace has never been declared before
+                namespaceAssociatedPrefixes = new ArrayList<String>();
+                namespaceAssociatedPrefixes.add(namespacePrefix);
+                declaredNamespaces.put(namespaceURI, namespaceAssociatedPrefixes);
+            }
+        }
+    }
+    
+    /**
+     * Deep clones the map of declared namespaces.
+     * 
+     * @param declaredNamespaces the map of declared namespaces
+     * 
+     * @return the deep clone
+     */
+    private static HashMap<String, List<String>> deepClone(HashMap<String, List<String>> declaredNamespaces){
+        HashMap<String, List<String>> deepClone = new HashMap<String, List<String>>();
+
+        Entry<String, List<String>> mapEntry;
+        Iterator<String> values;
+        List<String> cloneValues;
+        Iterator<Entry<String, List<String>>> entryItr = declaredNamespaces.entrySet().iterator();
+        while(entryItr.hasNext()){
+            mapEntry = entryItr.next();
+            values = mapEntry.getValue().iterator();
+            
+            cloneValues = new ArrayList<String>();
+            while(values.hasNext()){
+                cloneValues.add(new String(values.next()));
+            }
+            
+            deepClone.put(new String(mapEntry.getKey()), cloneValues);
+        }
+        
+        return deepClone;
     }
 
     /**
