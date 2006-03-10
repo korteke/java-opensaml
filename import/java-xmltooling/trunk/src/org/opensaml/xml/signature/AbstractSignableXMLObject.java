@@ -14,9 +14,6 @@
  * limitations under the License.
  */
 
-/**
- * 
- */
 package org.opensaml.xml.signature;
 
 import org.opensaml.xml.AbstractDOMCachingXMLObject;
@@ -26,13 +23,23 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 /**
- * Extension to {@link org.opensaml.xml.DOMCachingXMLObject} that implements {@link org.opensaml.xml.signature.SignableXMLObject}.
+ * Extension to {@link org.opensaml.xml.DOMCachingXMLObject} that implements
+ * {@link org.opensaml.xml.signature.SignableXMLObject}.
  */
 public abstract class AbstractSignableXMLObject extends AbstractDOMCachingXMLObject implements SignableXMLObject {
 
     /** XMLSecSignatureImpl */
     private Signature signature;
-    
+
+    /**
+     * A constructor that allows the element QName to be set after construction. <strong>NOTE</strong> great care
+     * should be taken when using this method of construction, very bad things will happen if most code tries to work
+     * with XMLObjects that don't have Element QNames.
+     */
+    public AbstractSignableXMLObject() {
+        super();
+    }
+
     /**
      * Constructor
      * 
@@ -43,13 +50,13 @@ public abstract class AbstractSignableXMLObject extends AbstractDOMCachingXMLObj
     protected AbstractSignableXMLObject(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
-    
+
     /*
      * @see org.opensaml.xml.SignableXMLObject#isSigned()
      */
     public boolean isSigned() {
         Element domElement = getDOM();
-        
+
         if (domElement == null) {
             return false;
         }
@@ -67,21 +74,21 @@ public abstract class AbstractSignableXMLObject extends AbstractDOMCachingXMLObj
                 return true;
             }
         }
-        
+
         return false;
     }
 
     /*
      * @see org.opensaml.xml.SignableXMLObject#getSignature()
      */
-    public Signature getSignature(){
+    public Signature getSignature() {
         return signature;
     }
-    
+
     /*
      * @see org.opensaml.xml.SignableXMLObject#setSignature(org.opensaml.xml.signature.XMLSecSignatureImpl)
      */
-    public void setSignature(Signature newSignature){
+    public void setSignature(Signature newSignature) {
         signature = prepareForAssignment(signature, newSignature);
     }
 }

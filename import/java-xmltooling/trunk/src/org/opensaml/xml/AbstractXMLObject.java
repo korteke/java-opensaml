@@ -23,6 +23,8 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.xml.util.XMLHelper;
+
 /**
  * An abstract implementation of XMLObject.
  */
@@ -41,6 +43,15 @@ public abstract class AbstractXMLObject implements XMLObject {
     private HashSet<Namespace> namespaces = new HashSet<Namespace>();
 
     /**
+     * A constructor that allows the element QName to be set after construction. <strong>NOTE</strong> great care
+     * should be taken when using this method of construction, very bad things will happen if most code tries to work
+     * with XMLObjects that don't have Element QNames.
+     */
+    protected AbstractXMLObject() {
+
+    }
+
+    /**
      * Constructor
      * 
      * @param namespaceURI the namespace the element is in
@@ -52,25 +63,38 @@ public abstract class AbstractXMLObject implements XMLObject {
         addNamespace(new Namespace(namespaceURI, namespacePrefix));
         setElementNamespacePrefix(namespacePrefix);
     }
-    
+
     /*
      * @see org.opensaml.common.SAMLObject#getQName()
      */
     public QName getElementQName() {
         return new QName(elementQname.getNamespaceURI(), elementQname.getLocalPart(), elementQname.getPrefix());
     }
-    
+
+    /**
+     * Sets the element QName.
+     * 
+     * @param elementQName the element's QName
+     * 
+     * @throws NullPointerException thrown if the give QName is null
+     */
+    protected void setElementQName(QName elementQName) throws NullPointerException {
+        this.elementQname = XMLHelper.constructQName(elementQName.getNamespaceURI(), elementQName.getLocalPart(),
+                elementQName.getPrefix());
+        addNamespace(new Namespace(elementQName.getNamespaceURI(), elementQName.getLocalPart()));
+    }
+
     /*
      * @see org.opensaml.common.SAMLObject#setNamespaceAndPrefix(java.lang.String, java.lang.String)
      */
     public void setElementNamespacePrefix(String prefix) {
-        if(prefix == null){
+        if (prefix == null) {
             elementQname = new QName(elementQname.getNamespaceURI(), elementQname.getLocalPart());
-        }else{
+        } else {
             elementQname = new QName(elementQname.getNamespaceURI(), elementQname.getLocalPart(), prefix);
         }
     }
-    
+
     /*
      * @see org.opensaml.common.SAMLObject#getNamespaces()
      */
@@ -93,7 +117,7 @@ public abstract class AbstractXMLObject implements XMLObject {
     public void removeNamespace(Namespace namespace) {
         namespaces.remove(namespace);
     }
-    
+
     /*
      * @see org.opensaml.common.SAMLObject#getType()
      */
@@ -105,12 +129,12 @@ public abstract class AbstractXMLObject implements XMLObject {
      * @see org.opensaml.common.SAMLObject#setType(javax.xml.namespace.QName)
      */
     public void setSchemaType(QName type) {
-        if(type == null){
-            if(typeQname != null){
+        if (type == null) {
+            if (typeQname != null) {
                 removeNamespace(new Namespace(typeQname.getNamespaceURI(), typeQname.getPrefix()));
             }
             typeQname = null;
-        }else{
+        } else {
             typeQname = type;
             addNamespace(new Namespace(type.getNamespaceURI(), type.getPrefix()));
         }
@@ -138,18 +162,18 @@ public abstract class AbstractXMLObject implements XMLObject {
     public boolean hasParent() {
         return getParent() != null;
     }
-    
+
     /*
      * @see org.opensaml.xml.XMLObject#hasChildren()
      */
-    public boolean hasChildren(){
+    public boolean hasChildren() {
         List<? extends XMLObject> children = getOrderedChildren();
         return (children != null && children.size() > 0);
     }
-    
+
     /**
-     * A helper function that prepares the XMLObject for the assigned of a new QName value to an attribute.  This includes 
-     * adding a new namespace to the namespace list associated with this Object, if necessary.
+     * A helper function that prepares the XMLObject for the assigned of a new QName value to an attribute. This
+     * includes adding a new namespace to the namespace list associated with this Object, if necessary.
      * 
      * @param oldValue existing attribute value
      * @param newValue new attribute value
@@ -157,20 +181,20 @@ public abstract class AbstractXMLObject implements XMLObject {
      * @return the QName value to assinged to that attribute
      */
     protected QName prepareForAssignment(QName oldValue, QName newValue) {
-        if(oldValue == null) {
-            if(newValue != null) {
+        if (oldValue == null) {
+            if (newValue != null) {
                 Namespace newNamespace = new Namespace(newValue.getNamespaceURI(), newValue.getPrefix());
                 addNamespace(newNamespace);
-            }else {
+            } else {
                 return null;
             }
         }
-        
-        if(!oldValue.equals(newValue)) {
+
+        if (!oldValue.equals(newValue)) {
             Namespace newNamespace = new Namespace(newValue.getNamespaceURI(), newValue.getPrefix());
             addNamespace(newNamespace);
         }
-        
+
         return newValue;
     }
 }
