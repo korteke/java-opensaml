@@ -64,9 +64,18 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
 
     /** Factory for creating unmarshallers for child elements */
     private UnmarshallerFactory unmarshallerFactory;
-
+    
     /**
      * Constructor.
+     */
+    protected AbstractXMLObjectUnmarshaller(){
+        xmlObjectBuilderFactory = Configuration.getBuilderFactory();
+        unmarshallerFactory = Configuration.getUnmarshallerFactory();
+    }
+
+    /**
+     * This constructor supports checking a DOM Element to be unmarshalled, either element name or schema type, against 
+     * a given namespace/local name pair.
      * 
      * @param targetNamespaceURI the namespace URI of either the schema type QName or element QName of the elements this
      *            unmarshaller operates on
@@ -153,6 +162,12 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
      */
     protected void checkElementIsTarget(Element domElement) throws UnmarshallingException {
         QName elementName = XMLHelper.getNodeQName(domElement);
+        
+        if(targetQName == null){
+            if(log.isDebugEnabled()){
+                log.debug("Targeted QName checking is not available for this unmarshaller, DOM Element " + elementName + " was not verified");
+            }
+        }
 
         if (log.isDebugEnabled()) {
             log.debug("Checking that " + elementName + " meets target criteria.");

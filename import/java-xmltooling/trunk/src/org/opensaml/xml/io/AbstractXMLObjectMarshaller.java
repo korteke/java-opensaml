@@ -60,9 +60,6 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
     /** Logger */
     private static Logger log = Logger.getLogger(AbstractXMLObjectMarshaller.class);
 
-    /** The first XMLObject requested to be marshalled */
-    private static ThreadLocal<XMLObject> initialXMLObject = new ThreadLocal<XMLObject>();
-
     /** The target name and namespace for this marshaller. */
     private QName targetQName;
 
@@ -70,8 +67,16 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
     private MarshallerFactory marshallerFactory;
 
     /**
+     * Constructor.
      * 
-     * Constructor
+     */
+    protected AbstractXMLObjectMarshaller() {
+        marshallerFactory = Configuration.getMarshallerFactory();
+    }
+
+    /**
+     * This constructor supports checking an XMLObject to be marshalled, either element name or schema type, against a
+     * given namespace/local name pair.
      * 
      * @param targetNamespaceURI the namespace URI of either the schema type QName or element QName of the elements this
      *            unmarshaller operates on
@@ -241,10 +246,6 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
      * @throws MarshallingException thrown if there is a problem marshalling the object
      */
     protected Element marshallInto(XMLObject xmlObject, Element targetElement) throws MarshallingException {
-        if (AbstractXMLObjectMarshaller.initialXMLObject.get() == null) {
-            AbstractXMLObjectMarshaller.initialXMLObject.set(xmlObject);
-        }
-
         if (log.isDebugEnabled()) {
             log.debug("Setting namespace prefix for " + xmlObject.getElementQName().getPrefix() + " for XMLObject "
                     + xmlObject.getElementQName());
@@ -269,10 +270,6 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
             targetElement = encryptElement(targetElement, xmlObject);
         }
 
-        if (xmlObject == AbstractXMLObjectMarshaller.initialXMLObject.get()) {
-            finalizeMarshalling(xmlObject, targetElement);
-        }
-
         return targetElement;
     }
 
@@ -283,6 +280,14 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
      * @param xmlObject the XMLObject to marshall
      */
     protected void checkXMLObjectIsTarget(XMLObject xmlObject) throws MarshallingException {
+        if (targetQName == null) {
+            if (log.isDebugEnabled()) {
+                log.debug("Targeted QName checking is not available for this marshaller, XMLObject "
+                        + xmlObject.getElementQName() + " was not verified");
+            }
+            return;
+        }
+
         if (log.isDebugEnabled()) {
             log.debug("Checking that " + xmlObject.getElementQName() + " meets target criteria");
         }
@@ -501,25 +506,6 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
         EncryptableXMLObjectMarshaller marshaller = (EncryptableXMLObjectMarshaller) marshallerFactory
                 .getMarshaller(encryptableXMLObject);
         return marshaller.encryptElement(domElement, encryptableXMLObject);
-    }
-
-    /**
-     * Invoked as the last step in marshalling a tree to allow for any cleanup of state. At this point the given
-     * XMLObject should be completely marshalled into the given Element.
-     * 
-     * @param xmlObject the XMLObject marshalled
-     * @param domElement the resulting DOM Element
-     */
-    protected void finalizeMarshalling(XMLObject xmlObject, Element domElement) {
-        if (log.isDebugEnabled()) {
-            log.debug("Finalizing marshalling process for XMLObject " + xmlObject.getElementQName());
-        }
-        AbstractXMLObjectMarshaller.initialXMLObject.set(null);
-
-        if (log.isTraceEnabled()) {
-            log.trace("Marshalling of XMLObject " + xmlObject.getElementQName() + " resulting in the following DOM: \n"
-                    + XMLHelper.nodeToString(domElement));
-        }
     }
 
     /**
