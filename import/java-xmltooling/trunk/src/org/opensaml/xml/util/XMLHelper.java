@@ -147,6 +147,24 @@ public class XMLHelper {
                     valueComponents[0]);
         }
     }
+    
+    /**
+     * Deconstructs a QName value into a string appropriate for the value of an attribute.
+     * 
+     * @param qname the QName value for the attribute
+     * 
+     * @return the QName as a string for use with an attribute value
+     */
+    public static String getQNameAsAttributeValue(QName qname){
+        StringBuffer buf = new StringBuffer();
+
+        if (qname.getPrefix() != null) {
+            buf.append(qname.getPrefix());
+            buf.append(":");
+        }
+        buf.append(qname.getLocalPart());
+        return buf.toString();
+    }
 
     /**
      * Constructs a QName
