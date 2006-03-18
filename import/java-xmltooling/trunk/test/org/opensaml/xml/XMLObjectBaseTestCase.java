@@ -17,6 +17,7 @@
 package org.opensaml.xml;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.xml.namespace.QName;
 
@@ -99,10 +100,24 @@ public class XMLObjectBaseTestCase extends XMLTestCase {
      * @param objectQName name of the XMLObject
      * 
      * @return the build XMLObject
+     * @deprecated
      */
+    // TODO - this class will disappear when all constructors take a context
     public XMLObject buildXMLObject(QName objectQName){
         XMLObjectBuilder builder = Configuration.getBuilderFactory().getBuilder(objectQName);
         return builder.buildObject();
+    }
+
+    /**
+     * Builds the requested XMLObject.
+     * 
+     * @param objectQName name of the XMLObject
+     * 
+     * @return the build XMLObject
+     */
+    public XMLObject buildXMLObject(QName objectQName, Map<String, Object> context){
+        ExtendedXMLObjectBuilder builder = (ExtendedXMLObjectBuilder) Configuration.getBuilderFactory().getBuilder(objectQName);
+        return builder.buildObject(null, context);
     }
 
     static {
