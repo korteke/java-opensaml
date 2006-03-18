@@ -13,28 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package org.opensaml.xml.io;
+package org.opensaml.xml;
 
 import java.util.Map;
 
-import org.opensaml.xml.XMLObject;
 import org.w3c.dom.Element;
 
 /**
- * Unmarshallers are used to unmarshall a W3C DOM element into a 
- * {@link org.opensaml.xml.XMLObject}.
- */
-public interface Unmarshaller{
-
-	/**
-	 * Unmarshalls the given W3C DOM element into a XMLObject
-	 *  
-	 * @param element the DOM Element
-	 * 
-	 * @return the unmarshalled XMLObject
+ * A builder for XMLObjects.
+ * 
+ * */
+public interface ExtendedXMLObjectBuilder extends XMLObjectBuilder{
+// TODO THIS IS A TEMPORARY HACK SO I CAN Test Builders with child elements 
+    
+    /**
+     * Creates an empty XMLObject.
      * 
-     * @throws UnmarshallingException thrown if an error occurs unmarshalling the DOM element into the XMLObject
-	 */
-	public XMLObject unmarshall(Element element, Map<String, Object> context) throws UnmarshallingException;
+     * @return the empty XMLObject
+     */
+    public XMLObject buildObject(Element domElement, Map<String, Object> context);
 }

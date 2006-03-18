@@ -16,6 +16,8 @@
 
 package org.opensaml.xml;
 
+import java.util.HashMap;
+
 import org.opensaml.xml.io.Unmarshaller;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.parse.XMLParserException;
@@ -29,7 +31,7 @@ public class ElementProxyTest extends XMLObjectBaseTestCase {
         Document document = parserPool.parse(UnmarshallingTest.class.getResourceAsStream(documentLocation));
 
         Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(Configuration.getDefaultProviderQName());
-        XMLObject xmlobject = unmarshaller.unmarshall(document.getDocumentElement());
+        XMLObject xmlobject = unmarshaller.unmarshall(document.getDocumentElement(), new HashMap<String, Object>());
         
         assertEquals("Unexpted root element name", "products", xmlobject.getElementQName().getLocalPart());
         assertEquals("Unexpected number of children", 2, xmlobject.getOrderedChildren().size());

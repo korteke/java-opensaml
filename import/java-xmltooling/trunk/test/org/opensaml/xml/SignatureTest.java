@@ -25,6 +25,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.cert.X509Certificate;
+import java.util.HashMap;
 
 import javax.xml.namespace.QName;
 
@@ -95,7 +96,7 @@ public class SignatureTest extends XMLObjectBaseTestCase {
 
         // Unmarshall and verify
         Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(simpleXMLObjectQName);
-        unmarshaller.unmarshall(domElement);
+        unmarshaller.unmarshall(domElement, new HashMap<String, Object>());
     }
     
     /**
@@ -117,7 +118,7 @@ public class SignatureTest extends XMLObjectBaseTestCase {
 
         // Unmarshall and verify
         Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(simpleXMLObjectQName);
-        unmarshaller.unmarshall(domElement);
+        unmarshaller.unmarshall(domElement, new HashMap<String, Object>());
     }
     
     /**
@@ -157,7 +158,7 @@ public class SignatureTest extends XMLObjectBaseTestCase {
 
         // Unmarshall and verify
         Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(simpleXMLObjectQName);
-        unmarshaller.unmarshall(domElement);
+        unmarshaller.unmarshall(domElement, new HashMap<String, Object>());
     }
     
     /**

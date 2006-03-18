@@ -16,6 +16,8 @@
 
 package org.opensaml.xml;
 
+import java.util.Map;
+
 import javax.xml.namespace.QName;
 
 import org.opensaml.xml.io.AbstractXMLObjectUnmarshaller;
@@ -32,8 +34,8 @@ public class ElementProxyUnmarshaller extends AbstractXMLObjectUnmarshaller {
     /*
      * @see org.opensaml.xml.io.AbstractXMLObjectUnmarshaller#buildXMLObject(org.w3c.dom.Element)
      */
-    protected XMLObject buildXMLObject(Element domElement) throws UnmarshallingException {
-        ElementProxy proxy = (ElementProxy) super.buildXMLObject(domElement);
+    protected XMLObject buildXMLObject(Element domElement, Map<String, Object> context) throws UnmarshallingException {
+        ElementProxy proxy = (ElementProxy) super.buildXMLObject(domElement, context);
         proxy.setElementQName(XMLHelper.getNodeQName(domElement));
         return proxy;
     }
