@@ -24,6 +24,7 @@ public interface XMLObjectBuilder {
      * Creates an empty XMLObject.
      * 
      * @return the empty XMLObject
+     * @deprecated
      */
     public XMLObject buildObject();
 }
