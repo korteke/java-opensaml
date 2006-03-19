@@ -100,9 +100,9 @@ public class XMLObjectBaseTestCase extends XMLTestCase {
      * @param objectQName name of the XMLObject
      * 
      * @return the build XMLObject
-     * @deprecated
+     * 
      */
-    // TODO - this class will disappear when all constructors take a context
+    // TODO - Add a context into this object and use it if possible
     public XMLObject buildXMLObject(QName objectQName){
         XMLObjectBuilder builder = Configuration.getBuilderFactory().getBuilder(objectQName);
         return builder.buildObject();
@@ -116,8 +116,13 @@ public class XMLObjectBaseTestCase extends XMLTestCase {
      * @return the build XMLObject
      */
     public XMLObject buildXMLObject(QName objectQName, Map<String, Object> context){
-        ExtendedXMLObjectBuilder builder = (ExtendedXMLObjectBuilder) Configuration.getBuilderFactory().getBuilder(objectQName);
-        return builder.buildObject(null, context);
+        XMLObjectBuilder builder = Configuration.getBuilderFactory().getBuilder(objectQName);
+        if (builder instanceof ExtendedXMLObjectBuilder) {
+            ExtendedXMLObjectBuilder xBuilder = (ExtendedXMLObjectBuilder) builder;
+            return xBuilder.buildObject(null, context);
+        }
+        
+        return builder.buildObject();
     }
 
     static {
