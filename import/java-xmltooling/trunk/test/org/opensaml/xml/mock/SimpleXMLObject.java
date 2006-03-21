@@ -25,7 +25,6 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.xml.Namespace;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.encryption.EncryptableXMLObject;
 import org.opensaml.xml.encryption.EncryptionContext;
