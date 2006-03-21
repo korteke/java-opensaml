@@ -15,6 +15,8 @@
  */
 package org.opensaml.xml;
 
+import org.w3c.dom.Element;
+
 /**
  * A builder for XMLObjects.
  */
@@ -24,7 +26,16 @@ public interface XMLObjectBuilder {
      * Creates an empty XMLObject.
      * 
      * @return the empty XMLObject
-     * @deprecated
      */
     public XMLObject buildObject();
+    
+    /**
+     * Creates an empty XMLObject using information from the given DOM element.  This method is used 
+     * by abstract unmarshalling code included with xmltooling.
+     * 
+     * @param element the DOM Element containing information about the object to be built.
+     * 
+     * @return the empty XMLObject
+     */
+    public XMLObject buildObject(Element element);
 }
