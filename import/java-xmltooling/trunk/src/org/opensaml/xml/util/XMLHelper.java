@@ -16,12 +16,7 @@
 
 package org.opensaml.xml.util;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 import java.util.StringTokenizer;
-import java.util.Map.Entry;
 
 import javax.xml.namespace.QName;
 import javax.xml.parsers.FactoryConfigurationError;
@@ -280,8 +275,8 @@ public class XMLHelper {
      */
     public static String lookupNamespaceURI(Element startingElement, Element stopingElement, String prefix) {
         String namespaceURI;
-        
-        if(startingElement == stopingElement){
+
+        if (startingElement == stopingElement) {
             return null;
         }
 
@@ -299,23 +294,24 @@ public class XMLHelper {
                     if (prefix == null && attr.getNodeName().equals(XMLConstants.XMLNS_PREFIX)) {
                         // default namespace
                         return value;
-                    } else if (attrPrefix != null && attrPrefix.equals(XMLConstants.XMLNS_PREFIX) && attr.getLocalName().equals(prefix)) {
+                    } else if (attrPrefix != null && attrPrefix.equals(XMLConstants.XMLNS_PREFIX)
+                            && attr.getLocalName().equals(prefix)) {
                         // non default namespace
                         return value;
                     }
                 }
             }
         }
-        
+
         Element ancestor = getElementAncestor(startingElement);
-        
+
         if (ancestor != null) {
             return lookupNamespaceURI(ancestor, stopingElement, prefix);
         }
 
         return null;
     }
-    
+
     /**
      * Looks up the namespace prefix associated with the given URI starting at the given element. This method differs
      * from the {@link Node#lookupPrefix(java.lang.String)} in that it only those namespaces declared by an xmlns
@@ -326,10 +322,10 @@ public class XMLHelper {
      * @param startingElement the starting element
      * @param namespaceURI the uri to look up
      */
-    public static String lookupPrefix(Element startingElement, String namespaceURI){
+    public static String lookupPrefix(Element startingElement, String namespaceURI) {
         return lookupPrefix(startingElement, null, namespaceURI);
     }
-    
+
     /**
      * Looks up the namespace prefix associated with the given URI starting at the given element. This method differs
      * from the {@link Node#lookupPrefix(java.lang.String)} in that it only those namespaces declared by an xmlns
@@ -341,35 +337,34 @@ public class XMLHelper {
      * @param stopingElement the ancestor of the starting element that serves as the upper-bound for the search
      * @param namespaceURI the uri to look up
      */
-    public static String lookupPrefix(Element startingElement, Element stopingElement, String namespaceURI){
+    public static String lookupPrefix(Element startingElement, Element stopingElement, String namespaceURI) {
         String namespace;
-        
-        if(startingElement == stopingElement){
+
+        if (startingElement == stopingElement) {
             return null;
         }
-        
+
         // This code is a modified version of the lookup code within Xerces
         if (startingElement.hasAttributes()) {
             NamedNodeMap map = startingElement.getAttributes();
             int length = map.getLength();
-            for (int i=0;i<length;i++) {
+            for (int i = 0; i < length; i++) {
                 Node attr = map.item(i);
                 String attrPrefix = attr.getPrefix();
                 String value = attr.getNodeValue();
                 namespace = attr.getNamespaceURI();
-                if (namespace !=null && namespace.equals(XMLConstants.XMLNS_NS)) {
+                if (namespace != null && namespace.equals(XMLConstants.XMLNS_NS)) {
                     // DOM Level 2 nodes
-                    if (((attr.getNodeName().equals(XMLConstants.XMLNS_PREFIX)) ||
-                         (attrPrefix !=null && attrPrefix.equals(XMLConstants.XMLNS_PREFIX)) &&
-                         value.equals(namespaceURI))) {
+                    if (((attr.getNodeName().equals(XMLConstants.XMLNS_PREFIX)) || (attrPrefix != null && attrPrefix
+                            .equals(XMLConstants.XMLNS_PREFIX))
+                            && value.equals(namespaceURI))) {
 
-                        String localname= attr.getLocalName();
+                        String localname = attr.getLocalName();
                         String foundNamespace = startingElement.lookupNamespaceURI(localname);
-                        if (foundNamespace !=null && foundNamespace.equals(namespaceURI)) {
+                        if (foundNamespace != null && foundNamespace.equals(namespaceURI)) {
                             return localname;
                         }
                     }
-
 
                 }
             }
@@ -426,7 +421,7 @@ public class XMLHelper {
      * @throws XMLParserException thrown if a namespace prefix is encountered that can't be resolved to a namespace URI
      */
     public static void rootNamespaces(Element domElement) throws XMLParserException {
-        rootNamespaces(domElement, new HashMap<String, List<String>>());
+        rootNamespaces(domElement, domElement);
     }
 
     /**
@@ -434,23 +429,31 @@ public class XMLHelper {
      * descendants are declared if they don't appear in the list of already resolved namespaces.
      * 
      * @param domElement the Element
-     * @param declaredNamespaces namespaces/prefix pairs declared on an ancestor of the given element
+     * @param upperNamespaceSearchBound the "root" element of the fragment where namespaces may be rooted
      * 
      * @throws XMLParserException thrown if a namespace prefix is encountered that can't be resolved to a namespace URI
      */
-    private static void rootNamespaces(Element domElement, HashMap<String, List<String>> declaredNamespaces)
-            throws XMLParserException {
+    private static void rootNamespaces(Element domElement, Element upperNamespaceSearchBound) throws XMLParserException {
         String namespaceURI = null;
         String namespacePrefix = null;
 
         // Make sure this element's namespace is rooted or has been rooted in an ancestor
         namespacePrefix = domElement.getPrefix();
         if (DatatypeHelper.isEmpty(namespacePrefix)) {
-            namespaceURI = domElement.lookupNamespaceURI("");
+            namespaceURI = lookupNamespaceURI(upperNamespaceSearchBound, "");
         } else {
-            namespaceURI = domElement.lookupNamespaceURI(namespacePrefix);
+            namespaceURI = lookupNamespaceURI(upperNamespaceSearchBound, namespacePrefix);
         }
-        rootNamespace(domElement, namespaceURI, namespacePrefix, declaredNamespaces);
+
+        if (namespaceURI == null) {
+            namespaceURI = lookupNamespaceURI(upperNamespaceSearchBound, null, namespacePrefix);
+            if (namespaceURI == null) {
+                throw new XMLParserException("Unable to resolve namespace prefix " + namespacePrefix
+                        + " found on element " + getNodeQName(domElement));
+            }
+
+            appendNamespaceDecleration(domElement, namespaceURI, namespacePrefix);
+        }
 
         // Make sure all the attribute URIs are rooted here or have been rooted in an ancestor
         NamedNodeMap attributes = domElement.getAttributes();
@@ -467,12 +470,17 @@ public class XMLHelper {
 
             namespacePrefix = attributeNode.getPrefix();
             if (!DatatypeHelper.isEmpty(namespacePrefix)) {
-                namespaceURI = attributeNode.lookupNamespaceURI(namespacePrefix);
-                if (!DatatypeHelper.isEmpty(namespaceURI)) {
-                    rootNamespace(domElement, namespaceURI, namespacePrefix, declaredNamespaces);
-                } else {
-                    throw new XMLParserException("Unable to resolve namespace prefix " + namespacePrefix
-                            + " into a valid namespace URI");
+                // check to see if the namespace for the prefix has already been defined within the XML fragment
+                namespaceURI = lookupNamespaceURI(domElement, upperNamespaceSearchBound, namespacePrefix);
+                if (namespaceURI == null) {
+                    namespaceURI = lookupNamespaceURI(upperNamespaceSearchBound, null, namespacePrefix);
+                    if (namespaceURI == null) {
+                        throw new XMLParserException("Unable to resolve namespace prefix " + namespacePrefix
+                                + " found on attribute " + getNodeQName(attributeNode) + " found on element "
+                                + getNodeQName(domElement));
+                    }
+
+                    appendNamespaceDecleration(domElement, namespaceURI, namespacePrefix);
                 }
             }
         }
@@ -484,67 +492,9 @@ public class XMLHelper {
         for (int i = 0; i < childNodes.getLength(); i++) {
             childNode = childNodes.item(i);
             if (childNode.getNodeType() == Node.ELEMENT_NODE) {
-                rootNamespaces((Element) childNode, deepClone(declaredNamespaces));
+                rootNamespaces((Element) childNode, upperNamespaceSearchBound);
             }
         }
-    }
-
-    /**
-     * Checks to see if the given namespace/prefix pair has previously been resolved and, if not, declares the namespace
-     * on the given element.
-     * 
-     * @param domElement the element
-     * @param namespaceURI the namespace URI
-     * @param namespacePrefix the namespace prefix
-     * @param declaredNamespaces namespace/prefix pairs already declared on some ancestor of the given element
-     */
-    private static void rootNamespace(Element domElement, String namespaceURI, String namespacePrefix,
-            HashMap<String, List<String>> declaredNamespaces) {
-        List<String> namespaceAssociatedPrefixes;
-        if (!DatatypeHelper.isEmpty(namespaceURI)) {
-            if (declaredNamespaces.containsKey(namespaceURI)) {
-                namespaceAssociatedPrefixes = declaredNamespaces.get(namespaceURI);
-                if (!namespaceAssociatedPrefixes.contains(namespaceAssociatedPrefixes)) {
-                    // Namespace was previously declared but with a different prefix
-                    namespaceAssociatedPrefixes.add(namespacePrefix);
-                    declaredNamespaces.put(namespaceURI, namespaceAssociatedPrefixes);
-                }
-            } else {
-                // Namespace has never been declared before
-                namespaceAssociatedPrefixes = new ArrayList<String>();
-                namespaceAssociatedPrefixes.add(namespacePrefix);
-                declaredNamespaces.put(namespaceURI, namespaceAssociatedPrefixes);
-            }
-        }
-    }
-
-    /**
-     * Deep clones the map of declared namespaces.
-     * 
-     * @param declaredNamespaces the map of declared namespaces
-     * 
-     * @return the deep clone
-     */
-    private static HashMap<String, List<String>> deepClone(HashMap<String, List<String>> declaredNamespaces) {
-        HashMap<String, List<String>> deepClone = new HashMap<String, List<String>>();
-
-        Entry<String, List<String>> mapEntry;
-        Iterator<String> values;
-        List<String> cloneValues;
-        Iterator<Entry<String, List<String>>> entryItr = declaredNamespaces.entrySet().iterator();
-        while (entryItr.hasNext()) {
-            mapEntry = entryItr.next();
-            values = mapEntry.getValue().iterator();
-
-            cloneValues = new ArrayList<String>();
-            while (values.hasNext()) {
-                cloneValues.add(new String(values.next()));
-            }
-
-            deepClone.put(new String(mapEntry.getKey()), cloneValues);
-        }
-
-        return deepClone;
     }
 
     /**
