@@ -22,6 +22,7 @@ package org.opensaml.xml.mock;
 
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.XMLObjectBuilder;
+import org.w3c.dom.Element;
 
 /**
  * Builder of {@link org.opensaml.xml.mock.SimpleXMLObject}s.
@@ -31,7 +32,14 @@ public class SimpleXMLObjectBuilder implements XMLObjectBuilder {
     /*
      * @see org.opensaml.xml.XMLObjectBuilder#buildObject()
      */
-    public XMLObject buildObject() {
+    public SimpleXMLObject buildObject() {
+        return new SimpleXMLObject();
+    }
+
+    /*
+     * @see org.opensaml.xml.XMLObjectBuilder#buildObject(org.w3c.dom.Element)
+     */
+    public XMLObject buildObject(Element element) {
         return new SimpleXMLObject();
     }
 }

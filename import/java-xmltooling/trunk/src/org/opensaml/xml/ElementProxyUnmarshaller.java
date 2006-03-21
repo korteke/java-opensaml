@@ -16,29 +16,17 @@
 
 package org.opensaml.xml;
 
-import java.util.Map;
-
 import javax.xml.namespace.QName;
 
 import org.opensaml.xml.io.AbstractXMLObjectUnmarshaller;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Attr;
-import org.w3c.dom.Element;
 
 /**
  * A thread-safe unmarshaller for {@link org.apache.xml.security.utils.ElementProxy}s.
  */
 public class ElementProxyUnmarshaller extends AbstractXMLObjectUnmarshaller {
-    
-    /*
-     * @see org.opensaml.xml.io.AbstractXMLObjectUnmarshaller#buildXMLObject(org.w3c.dom.Element)
-     */
-    protected XMLObject buildXMLObject(Element domElement, Map<String, Object> context) throws UnmarshallingException {
-        ElementProxy proxy = (ElementProxy) super.buildXMLObject(domElement, context);
-        proxy.setElementQName(XMLHelper.getNodeQName(domElement));
-        return proxy;
-    }
 
     /*
      * @see org.opensaml.xml.io.AbstractXMLObjectUnmarshaller#processChildElement(org.opensaml.xml.XMLObject,

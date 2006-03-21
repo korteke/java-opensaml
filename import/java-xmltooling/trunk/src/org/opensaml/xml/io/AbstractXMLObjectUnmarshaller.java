@@ -16,15 +16,11 @@
 
 package org.opensaml.xml.io;
 
-import java.util.Collections;
-import java.util.Map;
-
 import javax.xml.namespace.QName;
 
 import org.apache.log4j.Logger;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.DOMCachingXMLObject;
-import org.opensaml.xml.ExtendedXMLObjectBuilder;
 import org.opensaml.xml.Namespace;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.XMLObjectBuilder;
@@ -106,14 +102,14 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
     /*
      * @see org.opensaml.common.io.Unmarshaller#unmarshall(org.w3c.dom.Element)
      */
-    public XMLObject unmarshall(Element domElement, Map<String, Object> context) throws UnmarshallingException {
+    public XMLObject unmarshall(Element domElement) throws UnmarshallingException {
         if (log.isDebugEnabled()) {
             log.debug("Starting to unmarshall DOM element " + XMLHelper.getNodeQName(domElement));
         }
 
         checkElementIsTarget(domElement);
 
-        XMLObject xmlObject = buildXMLObject(domElement, context);
+        XMLObject xmlObject = buildXMLObject(domElement);
 
         if (log.isDebugEnabled()) {
             log.debug("Unmarshalling attributes of DOM Element " + XMLHelper.getNodeQName(domElement));
@@ -128,7 +124,7 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
                 unmarshallAttribute(xmlObject, (Attr) attribute);
             }
         }
-        processContext(xmlObject, context);
+        processContext(xmlObject);
 
         if (log.isDebugEnabled()) {
             log.debug("Unmarshalling other child nodes of DOM Element " + XMLHelper.getNodeQName(domElement));
@@ -141,7 +137,7 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
             if (childNode.getNodeType() == Node.ATTRIBUTE_NODE) {
                 unmarshallAttribute(xmlObject, (Attr) childNode);
             } else if (childNode.getNodeType() == Node.ELEMENT_NODE) {
-                unmarshallChildElement(xmlObject, (Element) childNode, context);
+                unmarshallChildElement(xmlObject, (Element) childNode);
             } else if (childNode.getNodeType() == Node.TEXT_NODE) {
                 unmarshallTextContent(xmlObject, (Text) childNode);
             }
@@ -218,7 +214,7 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
      * 
      * @throws UnmarshallingException thrown if there is now XMLObjectBuilder registered for the given DOM Element
      */
-    protected XMLObject buildXMLObject(Element domElement, Map<String, Object> context) throws UnmarshallingException {
+    protected XMLObject buildXMLObject(Element domElement) throws UnmarshallingException {
         if (log.isDebugEnabled()) {
             log.debug("Building XMLObject for " + XMLHelper.getNodeQName(domElement));
         }
@@ -240,12 +236,7 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
             }
         }
 
-        if (xmlObjectBuilder instanceof ExtendedXMLObjectBuilder) {
-            ExtendedXMLObjectBuilder extended = (ExtendedXMLObjectBuilder) xmlObjectBuilder;
-            return extended.buildObject(domElement, Collections.unmodifiableMap(context));
-        } else {
-            return xmlObjectBuilder.buildObject();
-        }
+        return xmlObjectBuilder.buildObject(domElement);
     }
 
     /**
@@ -332,7 +323,7 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
      * 
      * @throws UnmarshallingException thrown if an error occurs unmarshalling the chilren elements
      */
-    protected void unmarshallChildElement(XMLObject xmlObject, Element childElement, Map<String, Object> context) throws UnmarshallingException {
+    protected void unmarshallChildElement(XMLObject xmlObject, Element childElement) throws UnmarshallingException {
         if (log.isDebugEnabled()) {
             log.debug("Unmarshalling child elements of XMLObject " + xmlObject.getElementQName());
         }
@@ -360,7 +351,7 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
                     + unmarshaller.getClass().getName());
         }
         
-        processChildElement(xmlObject, unmarshaller.unmarshall(childElement, context));
+        processChildElement(xmlObject, unmarshaller.unmarshall(childElement));
     }
 
     /**
@@ -413,7 +404,7 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
      * @param xmlObject the XML object in question
      * @param context the context that will be given to child objects
      */
-    protected void processContext(XMLObject xmlObject, Map<String, Object> context){
+    protected void processContext(XMLObject xmlObject){
         //Nothing
     }
     

@@ -19,7 +19,6 @@ package org.opensaml.xml.signature.impl;
 import java.security.PublicKey;
 import java.security.cert.X509Certificate;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.apache.xml.security.Init;
@@ -61,7 +60,7 @@ public class XMLSecSignatureUnmarshaller implements SignatureUnmarshaller {
     /*
      * @see org.opensaml.xml.io.Unmarshaller#unmarshall(org.w3c.dom.Element)
      */
-    public XMLSecSignatureImpl unmarshall(Element signatureElement, Map<String, Object> context) throws UnmarshallingException {
+    public XMLSecSignatureImpl unmarshall(Element signatureElement) throws UnmarshallingException {
         if (log.isDebugEnabled()) {
             log.debug("Starting to unmarshall XMLSecSignatureImpl element");
         }

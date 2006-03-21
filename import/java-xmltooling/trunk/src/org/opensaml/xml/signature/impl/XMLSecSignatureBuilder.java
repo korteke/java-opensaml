@@ -20,6 +20,7 @@ import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.XMLObjectBuilder;
 import org.opensaml.xml.signature.Signature;
 import org.opensaml.xml.signature.SigningContext;
+import org.w3c.dom.Element;
 
 /**
  * Builder of {@link org.opensaml.xml.signature.impl.XMLSecSignatureImpl}s.
@@ -42,5 +43,13 @@ public class XMLSecSignatureBuilder implements XMLObjectBuilder {
     public XMLObject buildObject() {
         Signature signature = new XMLSecSignatureImpl(context);
         return signature;
+    }
+
+    /*
+     * @see org.opensaml.xml.XMLObjectBuilder#buildObject(org.w3c.dom.Element)
+     */
+    public XMLObject buildObject(Element element) {
+        // TODO Auto-generated method stub
+        return null;
     }
 }

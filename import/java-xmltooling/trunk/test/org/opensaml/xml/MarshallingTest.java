@@ -53,7 +53,8 @@ public class MarshallingTest extends XMLObjectBaseTestCase {
         Document expectedDocument = parserPool.parse(MarshallingTest.class
                 .getResourceAsStream(expectedDocumentLocation));
 
-        SimpleXMLObject sxObject = (SimpleXMLObject) builderFactory.getBuilder(simpleXMLObjectQName).buildObject();
+        SimpleXMLObjectBuilder sxoBuilder = (SimpleXMLObjectBuilder) builderFactory.getBuilder(simpleXMLObjectQName);
+        SimpleXMLObject sxObject = sxoBuilder.buildObject();
         sxObject.setId(expectedId);
 
         assertEquals(expectedDocument, sxObject);

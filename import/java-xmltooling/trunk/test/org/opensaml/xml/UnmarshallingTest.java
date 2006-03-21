@@ -16,7 +16,6 @@
 
 package org.opensaml.xml;
 
-import java.util.HashMap;
 import java.util.List;
 
 import org.opensaml.xml.io.MarshallingException;
@@ -50,7 +49,7 @@ public class UnmarshallingTest extends XMLObjectBaseTestCase {
         Document document = parserPool.parse(UnmarshallingTest.class.getResourceAsStream(documentLocation));
 
         Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(document.getDocumentElement());
-        SimpleXMLObject sxObject = (SimpleXMLObject) unmarshaller.unmarshall(document.getDocumentElement(), new HashMap<String, Object>());
+        SimpleXMLObject sxObject = (SimpleXMLObject) unmarshaller.unmarshall(document.getDocumentElement());
 
         assertEquals("ID was not expected value", expectedId, sxObject.getId());
     }
@@ -66,7 +65,7 @@ public class UnmarshallingTest extends XMLObjectBaseTestCase {
         Document document = parserPool.parse(UnmarshallingTest.class.getResourceAsStream(documentLocation));
 
         Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(document.getDocumentElement());
-        SimpleXMLObject sxObject = (SimpleXMLObject) unmarshaller.unmarshall(document.getDocumentElement(), new HashMap<String, Object>());
+        SimpleXMLObject sxObject = (SimpleXMLObject) unmarshaller.unmarshall(document.getDocumentElement());
         
         List<SimpleXMLObject> children = sxObject.getSimpleXMLObjects();
         assertEquals("Unexpected number of children", 3, children.size());
@@ -98,7 +97,7 @@ public class UnmarshallingTest extends XMLObjectBaseTestCase {
         Document document = parserPool.parse(UnmarshallingTest.class.getResourceAsStream(documentLocation));
 
         Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(document.getDocumentElement());
-        SimpleXMLObject sxObject = (SimpleXMLObject) unmarshaller.unmarshall(document.getDocumentElement(), new HashMap<String, Object>());
+        SimpleXMLObject sxObject = (SimpleXMLObject) unmarshaller.unmarshall(document.getDocumentElement());
 
         assertEquals("Number of children elements was not expected value", 2, sxObject.getSimpleXMLObjects().size());
     }

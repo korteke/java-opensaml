@@ -19,7 +19,6 @@ package org.opensaml.xml;
 import java.security.GeneralSecurityException;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
-import java.util.HashMap;
 
 import org.opensaml.xml.encryption.EncryptionContext;
 import org.opensaml.xml.io.Marshaller;
@@ -69,6 +68,6 @@ public class EncryptionTest extends XMLObjectBaseTestCase {
         
         // Unmarshall and decrypt
         Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(domElement);
-        unmarshaller.unmarshall(domElement, new HashMap<String, Object>());
+        unmarshaller.unmarshall(domElement);
     }
 }

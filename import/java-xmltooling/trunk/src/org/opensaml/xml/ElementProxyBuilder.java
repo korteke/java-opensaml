@@ -16,6 +16,8 @@
 
 package org.opensaml.xml;
 
+import org.w3c.dom.Element;
+
 /**
  * Builder of {@link org.opensaml.xml.ElementProxy} objects.
  */
@@ -33,5 +35,16 @@ public class ElementProxyBuilder implements XMLObjectBuilder {
      */
     public XMLObject buildObject() {
         return new ElementProxy();
+    }
+
+    /*
+     * @see org.opensaml.xml.XMLObjectBuilder#buildObject(org.w3c.dom.Element)
+     */
+    public XMLObject buildObject(Element element) {
+        String localName = element.getLocalName();
+        String nsURI = element.getNamespaceURI();
+        String nsPrefix = element.getPrefix();
+        
+        return new ElementProxy(nsURI, localName, nsPrefix);
     }
 }

@@ -16,8 +16,6 @@
 
 package org.opensaml.xml.io;
 
-import java.util.Map;
-
 import org.opensaml.xml.XMLObject;
 import org.w3c.dom.Element;
 
@@ -36,5 +34,5 @@ public interface Unmarshaller{
      * 
      * @throws UnmarshallingException thrown if an error occurs unmarshalling the DOM element into the XMLObject
 	 */
-	public XMLObject unmarshall(Element element, Map<String, Object> context) throws UnmarshallingException;
+	public XMLObject unmarshall(Element element) throws UnmarshallingException;
 }
