@@ -147,7 +147,7 @@ public class XMLHelper {
                     valueComponents[0]);
         }
     }
-    
+
     /**
      * Deconstructs a QName value into a string appropriate for the value of an attribute.
      * 
@@ -155,7 +155,7 @@ public class XMLHelper {
      * 
      * @return the QName as a string for use with an attribute value
      */
-    public static String getQNameAsAttributeValue(QName qname){
+    public static String getQNameAsAttributeValue(QName qname) {
         StringBuffer buf = new StringBuffer();
 
         if (qname.getPrefix() != null) {
@@ -254,6 +254,154 @@ public class XMLHelper {
     }
 
     /**
+     * Looks up the namespace URI associated with the given prefix starting at the given element. This method differs
+     * from the {@link Node#lookupNamespaceURI(java.lang.String)} in that it only those namespaces declared by an xmlns
+     * attribute are inspected. The Node method also checks the namespace a particular node was created in by way of a
+     * call like {@link Document#createElementNS(java.lang.String, java.lang.String)} even if the resulting element
+     * doesn't have an namespace delcaration attribute.
+     * 
+     * @param startingElement the starting element
+     * @param prefix the prefix to look up
+     */
+    public static String lookupNamespaceURI(Element startingElement, String prefix) {
+        return lookupNamespaceURI(startingElement, null, prefix);
+    }
+
+    /**
+     * Looks up the namespace URI associated with the given prefix starting at the given element. This method differs
+     * from the {@link Node#lookupNamespaceURI(java.lang.String)} in that it only those namespaces declared by an xmlns
+     * attribute are inspected. The Node method also checks the namespace a particular node was created in by way of a
+     * call like {@link Document#createElementNS(java.lang.String, java.lang.String)} even if the resulting element
+     * doesn't have an namespace delcaration attribute.
+     * 
+     * @param startingElement the starting element
+     * @param stopingElement the ancestor of the starting element that serves as the upper-bound for the search
+     * @param prefix the prefix to look up
+     */
+    public static String lookupNamespaceURI(Element startingElement, Element stopingElement, String prefix) {
+        String namespaceURI;
+        
+        if(startingElement == stopingElement){
+            return null;
+        }
+
+        // This code is a modified version of the lookup code within Xerces
+        if (startingElement.hasAttributes()) {
+            NamedNodeMap map = startingElement.getAttributes();
+            int length = map.getLength();
+            for (int i = 0; i < length; i++) {
+                Node attr = map.item(i);
+                String attrPrefix = attr.getPrefix();
+                String value = attr.getNodeValue();
+                namespaceURI = attr.getNamespaceURI();
+                if (namespaceURI != null && namespaceURI.equals(XMLConstants.XMLNS_NS)) {
+                    // at this point we are dealing with DOM Level 2 nodes only
+                    if (prefix == null && attr.getNodeName().equals(XMLConstants.XMLNS_PREFIX)) {
+                        // default namespace
+                        return value;
+                    } else if (attrPrefix != null && attrPrefix.equals(XMLConstants.XMLNS_PREFIX) && attr.getLocalName().equals(prefix)) {
+                        // non default namespace
+                        return value;
+                    }
+                }
+            }
+        }
+        
+        Element ancestor = getElementAncestor(startingElement);
+        
+        if (ancestor != null) {
+            return lookupNamespaceURI(ancestor, stopingElement, prefix);
+        }
+
+        return null;
+    }
+    
+    /**
+     * Looks up the namespace prefix associated with the given URI starting at the given element. This method differs
+     * from the {@link Node#lookupPrefix(java.lang.String)} in that it only those namespaces declared by an xmlns
+     * attribute are inspected. The Node method also checks the namespace a particular node was created in by way of a
+     * call like {@link Document#createElementNS(java.lang.String, java.lang.String)} even if the resulting element
+     * doesn't have an namespace delcaration attribute.
+     * 
+     * @param startingElement the starting element
+     * @param namespaceURI the uri to look up
+     */
+    public static String lookupPrefix(Element startingElement, String namespaceURI){
+        return lookupPrefix(startingElement, null, namespaceURI);
+    }
+    
+    /**
+     * Looks up the namespace prefix associated with the given URI starting at the given element. This method differs
+     * from the {@link Node#lookupPrefix(java.lang.String)} in that it only those namespaces declared by an xmlns
+     * attribute are inspected. The Node method also checks the namespace a particular node was created in by way of a
+     * call like {@link Document#createElementNS(java.lang.String, java.lang.String)} even if the resulting element
+     * doesn't have an namespace delcaration attribute.
+     * 
+     * @param startingElement the starting element
+     * @param stopingElement the ancestor of the starting element that serves as the upper-bound for the search
+     * @param namespaceURI the uri to look up
+     */
+    public static String lookupPrefix(Element startingElement, Element stopingElement, String namespaceURI){
+        String namespace;
+        
+        if(startingElement == stopingElement){
+            return null;
+        }
+        
+        // This code is a modified version of the lookup code within Xerces
+        if (startingElement.hasAttributes()) {
+            NamedNodeMap map = startingElement.getAttributes();
+            int length = map.getLength();
+            for (int i=0;i<length;i++) {
+                Node attr = map.item(i);
+                String attrPrefix = attr.getPrefix();
+                String value = attr.getNodeValue();
+                namespace = attr.getNamespaceURI();
+                if (namespace !=null && namespace.equals(XMLConstants.XMLNS_NS)) {
+                    // DOM Level 2 nodes
+                    if (((attr.getNodeName().equals(XMLConstants.XMLNS_PREFIX)) ||
+                         (attrPrefix !=null && attrPrefix.equals(XMLConstants.XMLNS_PREFIX)) &&
+                         value.equals(namespaceURI))) {
+
+                        String localname= attr.getLocalName();
+                        String foundNamespace = startingElement.lookupNamespaceURI(localname);
+                        if (foundNamespace !=null && foundNamespace.equals(namespaceURI)) {
+                            return localname;
+                        }
+                    }
+
+
+                }
+            }
+        }
+        Element ancestor = getElementAncestor(startingElement);
+
+        if (ancestor != null) {
+            return lookupPrefix(ancestor, stopingElement, namespaceURI);
+        }
+        return null;
+    }
+
+    /**
+     * Gets the ancestor element node to the given node.
+     * 
+     * @param currentNode the node to retrive the ancestor for
+     * 
+     * @return the ancestral element node of the current node, or null
+     */
+    public static Element getElementAncestor(Node currentNode) {
+        Node parent = currentNode.getParentNode();
+        if (parent != null) {
+            short type = parent.getNodeType();
+            if (type == Node.ELEMENT_NODE) {
+                return (Element) parent;
+            }
+            return getElementAncestor(parent);
+        }
+        return null;
+    }
+
+    /**
      * Converts a Node into a String using the DOM, level 3, Load/Save Serializer.
      * 
      * @param node the node to be written to a string
@@ -340,16 +488,18 @@ public class XMLHelper {
             }
         }
     }
-    
+
     /**
-     * Checks to see if the given namespace/prefix pair has previously been resolved and, if not, declares the namespace on the given element.
+     * Checks to see if the given namespace/prefix pair has previously been resolved and, if not, declares the namespace
+     * on the given element.
      * 
      * @param domElement the element
      * @param namespaceURI the namespace URI
      * @param namespacePrefix the namespace prefix
      * @param declaredNamespaces namespace/prefix pairs already declared on some ancestor of the given element
      */
-    private static void rootNamespace(Element domElement, String namespaceURI, String namespacePrefix, HashMap<String, List<String>> declaredNamespaces){
+    private static void rootNamespace(Element domElement, String namespaceURI, String namespacePrefix,
+            HashMap<String, List<String>> declaredNamespaces) {
         List<String> namespaceAssociatedPrefixes;
         if (!DatatypeHelper.isEmpty(namespaceURI)) {
             if (declaredNamespaces.containsKey(namespaceURI)) {
@@ -367,7 +517,7 @@ public class XMLHelper {
             }
         }
     }
-    
+
     /**
      * Deep clones the map of declared namespaces.
      * 
@@ -375,25 +525,25 @@ public class XMLHelper {
      * 
      * @return the deep clone
      */
-    private static HashMap<String, List<String>> deepClone(HashMap<String, List<String>> declaredNamespaces){
+    private static HashMap<String, List<String>> deepClone(HashMap<String, List<String>> declaredNamespaces) {
         HashMap<String, List<String>> deepClone = new HashMap<String, List<String>>();
 
         Entry<String, List<String>> mapEntry;
         Iterator<String> values;
         List<String> cloneValues;
         Iterator<Entry<String, List<String>>> entryItr = declaredNamespaces.entrySet().iterator();
-        while(entryItr.hasNext()){
+        while (entryItr.hasNext()) {
             mapEntry = entryItr.next();
             values = mapEntry.getValue().iterator();
-            
+
             cloneValues = new ArrayList<String>();
-            while(values.hasNext()){
+            while (values.hasNext()) {
                 cloneValues.add(new String(values.next()));
             }
-            
+
             deepClone.put(new String(mapEntry.getKey()), cloneValues);
         }
-        
+
         return deepClone;
     }
 
