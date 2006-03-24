@@ -20,7 +20,6 @@ import javax.xml.namespace.QName;
 
 import org.apache.log4j.Logger;
 import org.opensaml.xml.Configuration;
-import org.opensaml.xml.DOMCachingXMLObject;
 import org.opensaml.xml.Namespace;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.XMLObjectBuilder;
@@ -82,16 +81,16 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
      * @param targetLocalName the local name of either the schema type QName or element QName of the elements this
      *            unmarshaller operates on
      * 
-     * @throws NullPointerException if any of the arguments are null (or empty in the case of String parameters)
+     * @throws IllegalArgumentException if any of the arguments are null (or empty in the case of String parameters)
      */
     protected AbstractXMLObjectUnmarshaller(String targetNamespaceURI, String targetLocalName)
-            throws NullPointerException {
+            throws IllegalArgumentException {
         if (DatatypeHelper.isEmpty(targetNamespaceURI)) {
-            throw new NullPointerException("Target Namespace URI may not be null or an empty");
+            throw new IllegalArgumentException("Target Namespace URI may not be null or an empty");
         }
 
         if (DatatypeHelper.isEmpty(targetLocalName)) {
-            throw new NullPointerException("Target Local Name may not be null or an empty");
+            throw new IllegalArgumentException("Target Local Name may not be null or an empty");
         }
         targetQName = XMLHelper.constructQName(targetNamespaceURI, targetLocalName, null);
 
@@ -147,9 +146,6 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
             verifySignature(domElement, xmlObject);
         }
 
-        if (xmlObject instanceof DOMCachingXMLObject) {
-            ((DOMCachingXMLObject) xmlObject).setDOM(domElement);
-        }
         return xmlObject;
     }
 

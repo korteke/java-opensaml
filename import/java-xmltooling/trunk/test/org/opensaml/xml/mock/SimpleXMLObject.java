@@ -23,18 +23,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import javax.xml.namespace.QName;
-
+import org.opensaml.xml.AbstractDOMCachingXMLObject;
 import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.encryption.EncryptableXMLObject;
-import org.opensaml.xml.encryption.EncryptionContext;
-import org.opensaml.xml.signature.AbstractSignableXMLObject;
 import org.opensaml.xml.util.XMLObjectChildrenList;
 
 /**
  * Simple XMLObject that can be used for testing
  */
-public class SimpleXMLObject extends AbstractSignableXMLObject implements EncryptableXMLObject{
+public class SimpleXMLObject extends AbstractDOMCachingXMLObject {
     
     public final static String NAMESAPACE = "http://www.example.org/testObjects";
     
@@ -54,9 +50,6 @@ public class SimpleXMLObject extends AbstractSignableXMLObject implements Encryp
     
     /** Value of the object stored as text content in the element */
     private String value;
-    
-    /** Encryption context */
-    private EncryptionContext encryptionContext;
     
     /** Child SimpleXMLObjects */
     private XMLObjectChildrenList<SimpleXMLObject> simpleXMLObjects;
@@ -114,27 +107,6 @@ public class SimpleXMLObject extends AbstractSignableXMLObject implements Encryp
     public List<SimpleXMLObject> getSimpleXMLObjects(){
         return simpleXMLObjects;
     }
-    
-    /*
-     * @see org.opensaml.xml.encryption.EncryptableXMLObject#getEncryptedElementName()
-     */
-    public QName getEncryptedElementName(){
-        return new QName(NAMESAPACE, ENCRYPTED_NAME);
-    }
-    
-    /*
-     * @see org.opensaml.xml.encryption.EncryptableXMLObject#getEncryptionContext()
-     */
-    public EncryptionContext getEncryptionContext() {
-        return encryptionContext;
-    }
-
-    /*
-     * @see org.opensaml.xml.encryption.EncryptableXMLObject#setEncryptionContext(org.opensaml.xml.encryption.EncryptionContext)
-     */
-    public void setEncryptionContext(EncryptionContext newContext) {
-        encryptionContext = newContext;
-    }
 
     /*
      * @see org.opensaml.xml.XMLObject#getOrderedChildren()
@@ -143,10 +115,6 @@ public class SimpleXMLObject extends AbstractSignableXMLObject implements Encryp
         ArrayList<XMLObject> children = new ArrayList<XMLObject>();
         
         children.addAll(simpleXMLObjects);
-        
-        if(getSignature() != null) {
-            children.add(getSignature());
-        }
         
         return Collections.unmodifiableList(children);
     }

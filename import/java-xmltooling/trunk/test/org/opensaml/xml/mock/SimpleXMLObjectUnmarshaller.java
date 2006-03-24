@@ -21,16 +21,14 @@
 package org.opensaml.xml.mock;
 
 import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.io.AbstractXMLObjectUnmarshaller;
+import org.opensaml.xml.io.AbstractDOMCachingXMLObjectUnmarshaller;
 import org.opensaml.xml.io.UnmarshallingException;
-import org.opensaml.xml.signature.Signature;
-import org.opensaml.xml.signature.impl.XMLSecSignatureImpl;
 import org.w3c.dom.Attr;
 
 /**
  * Unmarshaller for {@link org.opensaml.xml.mock.SimpleXMLObject}.
  */
-public class SimpleXMLObjectUnmarshaller extends AbstractXMLObjectUnmarshaller {
+public class SimpleXMLObjectUnmarshaller extends AbstractDOMCachingXMLObjectUnmarshaller {
 
     /**
      * Constructor
@@ -53,8 +51,6 @@ public class SimpleXMLObjectUnmarshaller extends AbstractXMLObjectUnmarshaller {
 
         if (childXMLObject instanceof SimpleXMLObject) {
             simpleXMLObject.getSimpleXMLObjects().add((SimpleXMLObject) childXMLObject);
-        } else if (childXMLObject instanceof XMLSecSignatureImpl) {
-            simpleXMLObject.setSignature((Signature) childXMLObject);
         }
     }
 

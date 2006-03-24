@@ -17,14 +17,14 @@
 package org.opensaml.xml.mock;
 
 import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.encryption.impl.XMLSecEncryptableXMLObjectMarshaller;
+import org.opensaml.xml.io.AbstractDOMCachingXMLObjectMarshaller;
 import org.opensaml.xml.io.MarshallingException;
 import org.w3c.dom.Element;
 
 /**
  * Marshaller for {@link org.opensaml.xml.mock.SimpleXMLObject}
  */
-public class SimpleXMLObjectMarshaller extends XMLSecEncryptableXMLObjectMarshaller {
+public class SimpleXMLObjectMarshaller extends AbstractDOMCachingXMLObjectMarshaller {
 
     /**
      * Constructor

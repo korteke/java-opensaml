@@ -25,7 +25,6 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.log4j.Logger;
 import org.opensaml.xml.Configuration;
-import org.opensaml.xml.DOMCachingXMLObject;
 import org.opensaml.xml.Namespace;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.encryption.EncryptableXMLObject;
@@ -83,16 +82,16 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
      * @param targetLocalName the local name of either the schema type QName or element QName of the elements this
      *            unmarshaller operates on
      * 
-     * @throws NullPointerException if any of the arguments are null (or empty in the case of String parameters)
+     * @throws IllegalArgumentException if any of the arguments are null (or empty in the case of String parameters)
      */
     protected AbstractXMLObjectMarshaller(String targetNamespaceURI, String targetLocalName)
-            throws NullPointerException {
+            throws IllegalArgumentException {
         if (DatatypeHelper.isEmpty(targetNamespaceURI)) {
-            throw new NullPointerException("Target Namespace URI may not be null or an empty");
+            throw new IllegalArgumentException("Target Namespace URI may not be null or an empty");
         }
 
         if (DatatypeHelper.isEmpty(targetLocalName)) {
-            throw new NullPointerException("Target Local Name may not be null or an empty");
+            throw new IllegalArgumentException("Target Local Name may not be null or an empty");
         }
         targetQName = XMLHelper.constructQName(targetNamespaceURI, targetLocalName, null);
 
@@ -125,26 +124,10 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
 
         checkXMLObjectIsTarget(xmlObject);
 
-        if (xmlObject instanceof DOMCachingXMLObject) {
-            DOMCachingXMLObject domCachingObject = (DOMCachingXMLObject) xmlObject;
-            Element cachedDOM = domCachingObject.getDOM();
-
-            if (cachedDOM != null) {
-                if (cachedDOM.getOwnerDocument() != document) {
-                    XMLHelper.adoptElement(cachedDOM, document);
-                }
-
-                domCachingObject.releaseParentDOM(true);
-                setDocumentElement(document, cachedDOM);
-                return cachedDOM;
-            }
-        }
-
         if (log.isDebugEnabled()) {
             log.debug("Creating Element to marshall " + xmlObject.getElementQName() + " into");
         }
-        Element domElement = document.createElementNS(xmlObject.getElementQName().getNamespaceURI(), xmlObject
-                .getElementQName().getLocalPart());
+        Element domElement = XMLHelper.constructElement(document, xmlObject.getElementQName());
 
         if (log.isDebugEnabled()) {
             log.debug("Setting created element as document root");
@@ -154,15 +137,6 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
         setDocumentElement(document, domElement);
 
         domElement = marshallInto(xmlObject, domElement);
-
-        if (xmlObject instanceof DOMCachingXMLObject) {
-            DOMCachingXMLObject domCachingObject = (DOMCachingXMLObject) xmlObject;
-            if (log.isDebugEnabled()) {
-                log.debug("Setting created element to DOM cache for XMLObject " + xmlObject.getElementQName());
-            }
-            domCachingObject.setDOM(domElement);
-            domCachingObject.releaseParentDOM(true);
-        }
 
         return domElement;
     }
@@ -182,22 +156,11 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
 
         checkXMLObjectIsTarget(xmlObject);
 
-        if (xmlObject instanceof DOMCachingXMLObject) {
-            DOMCachingXMLObject domCachingObject = (DOMCachingXMLObject) xmlObject;
-            Element cachedDOM = domCachingObject.getDOM();
-            if (cachedDOM != null) {
-                domCachingObject.releaseParentDOM(true);
-                XMLHelper.appendChildElement(cachedDOM, parentElement);
-                return cachedDOM;
-            }
-        }
-
         if (log.isDebugEnabled()) {
             log.debug("Creating Element to marshall " + xmlObject.getElementQName() + " into");
         }
         Document owningDocument = parentElement.getOwnerDocument();
-        Element domElement = owningDocument.createElementNS(xmlObject.getElementQName().getNamespaceURI(), xmlObject
-                .getElementQName().getLocalPart());
+        Element domElement = XMLHelper.constructElement(owningDocument, xmlObject.getElementQName());
 
         if (log.isDebugEnabled()) {
             log.debug("Appending newly created element to given parent element");
@@ -206,15 +169,6 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
         // a path to the document root
         XMLHelper.appendChildElement(parentElement, domElement);
         domElement = marshallInto(xmlObject, domElement);
-
-        if (xmlObject instanceof DOMCachingXMLObject) {
-            DOMCachingXMLObject domCachingObject = (DOMCachingXMLObject) xmlObject;
-            if (log.isDebugEnabled()) {
-                log.debug("Setting created element to DOM cache for XMLObject " + xmlObject.getElementQName());
-            }
-            domCachingObject.setDOM(domElement);
-            domCachingObject.releaseParentDOM(true);
-        }
 
         return domElement;
 

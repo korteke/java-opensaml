@@ -179,6 +179,54 @@ public class XMLHelper {
 
         return new QName(namespaceURI, localName, prefix);
     }
+    
+    /**
+     * Constructs an element, rooted in the given document, with the given name.
+     * 
+     * @param document the document containing the element
+     * @param elementName the name of the element, must contain a local name, may contain a namespace URI and prefix
+     * 
+     * @return the element
+     * 
+     * @throws IllegalArgumentException thrown if the local name is null or empty
+     */
+    public static Element constructElement(Document document, QName elementName) throws IllegalArgumentException{
+        return constructElement(document, elementName.getNamespaceURI(), elementName.getLocalPart(), elementName.getPrefix());
+    }
+    
+    /**
+     * Constructs an element, rooted in the given document, with the given information.
+     * 
+     * @param document the document containing the element
+     * @param namespaceURI the URI of the namespace the element is in
+     * @param localName the element's local name
+     * @param prefix the prefix of the namespace the element is in
+     * 
+     * @return the element
+     * 
+     * @throws IllegalArgumentException thrown if the local name is null or empty
+     */
+    public static Element constructElement(Document document, String namespaceURI, String localName, String prefix) throws IllegalArgumentException{
+        localName = DatatypeHelper.safeTrimOrNullString(localName);
+        
+        if(localName == null){
+            throw new IllegalArgumentException("Local name may not be null or empty");
+        }
+        
+        String qualifiedName;
+        prefix = DatatypeHelper.safeTrimOrNullString(prefix);
+        if(prefix != null){
+            qualifiedName = prefix + ":" + DatatypeHelper.safeTrimOrNullString(localName);
+        }else{
+            qualifiedName = DatatypeHelper.safeTrimOrNullString(localName);
+        }
+        
+        if(!DatatypeHelper.isEmpty(namespaceURI)){
+            return document.createElementNS(namespaceURI, qualifiedName);
+        }else{
+            return document.createElement(qualifiedName);
+        }
+    }
 
     /**
      * Appends the child Element to the parent Element, adopting the child Element into the parent's Document if needed.
