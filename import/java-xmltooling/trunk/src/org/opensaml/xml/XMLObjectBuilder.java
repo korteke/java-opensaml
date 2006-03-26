@@ -21,21 +21,27 @@ import org.w3c.dom.Element;
  * A builder for XMLObjects.
  */
 public interface XMLObjectBuilder {
-
-    /**
-     * Creates an empty XMLObject.
-     * 
-     * @return the empty XMLObject
-     */
-    public XMLObject buildObject();
     
     /**
-     * Creates an empty XMLObject using information from the given DOM element.  This method is used 
-     * by abstract unmarshalling code included with xmltooling.
+     * Creates an XMLObject with a given fully qualified name.
+     * 
+     * @param namespaceURI the URI of the namespace the Element represented by this XMLObject will be in
+     * @param localName the local name of the Element represented by this XMLObject
+     * @param namespacePrefix the namespace prefix of the Element represented by this XMLObject
+     * 
+     * @return the constructed XMLObject
+     */
+    public XMLObject buildObject(String namespaceURI, String localName, String namespacePrefix);
+    
+    /**
+     * Creates an XMLObject using information from the given DOM element.  This method must set the QName for the Element QName within the 
+     * constructed XMLObject.
+     * 
+     * This method is used by {@link org.opensaml.xml.io.AbstractXMLObjectUnmarshaller}.
      * 
      * @param element the DOM Element containing information about the object to be built.
      * 
-     * @return the empty XMLObject
+     * @return the constructed XMLObject
      */
     public XMLObject buildObject(Element element);
 }

@@ -260,14 +260,6 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
                         + " is a namespace declaration, adding it to the list of namespaces on the XMLObject");
             }
             unmarshallNamespaceAttribute(xmlObject, attribute);
-        } else if (DatatypeHelper.safeEquals(attributeNamespace, XMLConstants.XSI_NS)
-                && attribute.getLocalName().equals("type")) {
-
-            if (log.isDebugEnabled()) {
-                log.debug(XMLHelper.getNodeQName(attribute)
-                        + " is a schema type declaration, setting it as the schema type for the XMLObject");
-            }
-            unmarshallSchemaTypeAttribute(xmlObject, attribute);
         } else {
             if (log.isDebugEnabled()) {
                 log.debug("Attribute " + XMLHelper.getNodeQName(attribute)
@@ -296,17 +288,6 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
         Namespace namespace = new Namespace(attribute.getValue(), attribute.getLocalName());
         namespace.setAlwaysDeclare(true);
         xmlObject.addNamespace(namespace);
-    }
-
-    /**
-     * Unmarshalls a schema type decleration attribute.
-     * 
-     * @param xmlObject the xmlObject to recieve the schema type decleration
-     * @param attribute the schema type decleration attribute
-     */
-    protected void unmarshallSchemaTypeAttribute(XMLObject xmlObject, Attr attribute) {
-        QName schemaType = XMLHelper.getAttributeValueAsQName(attribute);
-        xmlObject.setSchemaType(schemaType);
     }
 
     /**

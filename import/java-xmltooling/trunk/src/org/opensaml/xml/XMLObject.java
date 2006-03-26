@@ -24,7 +24,7 @@ import javax.xml.namespace.QName;
 import org.opensaml.xml.Namespace;
 
 /**
- * A object that represents an XML Element that has been unmarshalled into this Java object.
+ * A object that represents an XML element, usually of a specific schema type, that has been unmarshalled into this Java object.
  */
 public interface XMLObject {
     
@@ -38,13 +38,6 @@ public interface XMLObject {
      * @return the QName for this attribute
      */
     public QName getElementQName();
-    
-    /**
-     * Sets the namespace prefix for this element.
-     * 
-     * @param prefix the prefix for this element
-     */
-    public void setElementNamespacePrefix(String prefix);
     
     /**
      * Gets the namespaces that are scoped to this element
@@ -74,14 +67,6 @@ public interface XMLObject {
      * @return XML schema type of this element
      */
     public QName getSchemaType();
-    
-    /**
-     * Sets the XML schema type of this element.  This translates to contents the xsi:type
-     * attribute for the element.
-     * 
-     * @param type XML schema type of this element
-     */
-    public void setSchemaType(QName type);
     
     /**
      * Checks to see if this object has a parent.
@@ -117,5 +102,4 @@ public interface XMLObject {
      * @return ordered list of child elements
      */
     public List<XMLObject> getOrderedChildren();
-    
 }

@@ -29,12 +29,12 @@ public class ElementProxyBuilder implements XMLObjectBuilder {
     public ElementProxyBuilder() {
 
     }
-
+    
     /*
-     * @see org.opensaml.xml.XMLObjectBuilder#buildObject()
+     * @see org.opensaml.xml.XMLObjectBuilder#buildObject(java.lang.String, java.lang.String, java.lang.String)
      */
-    public XMLObject buildObject() {
-        return new ElementProxy();
+    public XMLObject buildObject(String namespaceURI, String localName, String namespacePrefix){
+        return new ElementProxy(namespaceURI, localName, namespacePrefix);
     }
 
     /*
