@@ -16,6 +16,9 @@
 
 package org.opensaml.xml;
 
+import javax.xml.namespace.QName;
+
+import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Element;
 
 /**
@@ -36,15 +39,37 @@ public class ElementProxyBuilder implements XMLObjectBuilder {
     public XMLObject buildObject(String namespaceURI, String localName, String namespacePrefix){
         return new ElementProxy(namespaceURI, localName, namespacePrefix);
     }
+    
+    /**
+     * Creates an XMLObject with a given fully qualified name and schema type.
+     * 
+     * @param namespaceURI the URI of the namespace the Element represented by this XMLObject will be in
+     * @param localName the local name of the Element represented by this XMLObject
+     * @param namespacePrefix the namespace prefix of the Element represented by this XMLObject
+     * @param schemaType the schema type of the Element represented by this XMLObject 
+     * 
+     * @return the constructed XMLObject
+     */
+    public XMLObject buildObject(String namespaceURI, String localName, String namespacePrefix, QName schemaType){
+        ElementProxy eProxy = new ElementProxy(namespaceURI, localName, namespacePrefix);
+        eProxy.setSchemaType(schemaType);
+        
+        return eProxy;
+    }
 
     /*
      * @see org.opensaml.xml.XMLObjectBuilder#buildObject(org.w3c.dom.Element)
      */
     public XMLObject buildObject(Element element) {
+        ElementProxy eProxy;
+        
         String localName = element.getLocalName();
         String nsURI = element.getNamespaceURI();
         String nsPrefix = element.getPrefix();
         
-        return new ElementProxy(nsURI, localName, nsPrefix);
+        eProxy = new ElementProxy(nsURI, localName, nsPrefix);
+        eProxy.setSchemaType(XMLHelper.getXSIType(element));
+        
+        return eProxy; 
     }
 }

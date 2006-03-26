@@ -125,14 +125,15 @@ public abstract class AbstractXMLObject implements XMLObject {
         return typeQname;
     }
 
-    /*
-     * @see org.opensaml.common.SAMLObject#setType(javax.xml.namespace.QName)
+    /**
+     * Sets a given QName as the schema type for the Element represented by this XMLObject. This will add the namespace
+     * to the list of namespaces scoped for this XMLObject. It will not remove any namespaces, for example, if there is
+     * already a schema type set and null is passed in.
+     * 
+     * @param type the schema type
      */
-    public void setSchemaType(QName type) {
+    protected void setSchemaType(QName type) {
         if (type == null) {
-            if (typeQname != null) {
-                removeNamespace(new Namespace(typeQname.getNamespaceURI(), typeQname.getPrefix()));
-            }
             typeQname = null;
         } else {
             typeQname = type;
