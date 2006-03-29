@@ -64,6 +64,15 @@ public class SimpleXMLObject extends AbstractDOMCachingXMLObject {
     }
     
     /**
+     * Constructor
+     */
+    public SimpleXMLObject(String namspaceURI, String localName, String namespacePrefix) {
+        super(namspaceURI, localName, namespacePrefix);
+        
+        simpleXMLObjects = new XMLObjectChildrenList<SimpleXMLObject>(this);
+    }
+    
+    /**
      * Gets the name attribute.
      * 
      * @return the name attribute

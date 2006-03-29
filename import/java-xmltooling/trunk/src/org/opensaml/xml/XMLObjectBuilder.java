@@ -15,6 +15,8 @@
  */
 package org.opensaml.xml;
 
+import javax.xml.namespace.QName;
+
 import org.w3c.dom.Element;
 
 /**
@@ -32,6 +34,18 @@ public interface XMLObjectBuilder {
      * @return the constructed XMLObject
      */
     public XMLObject buildObject(String namespaceURI, String localName, String namespacePrefix);
+    
+    /**
+     * Creates an XMLObject with a given fully qualified name.
+     * 
+     * @param namespaceURI the URI of the namespace the Element represented by this XMLObject will be in
+     * @param localName the local name of the Element represented by this XMLObject
+     * @param namespacePrefix the namespace prefix of the Element represented by this XMLObject
+     * @param schemaType the schema type of the Element represented by this XMLObject
+     * 
+     * @return the constructed XMLObject
+     */
+    public XMLObject buildObject(String namespaceURI, String localName, String namespacePrefix, QName schemaType);
     
     /**
      * Creates an XMLObject using information from the given DOM element.  This method must set the QName for the Element QName within the 
