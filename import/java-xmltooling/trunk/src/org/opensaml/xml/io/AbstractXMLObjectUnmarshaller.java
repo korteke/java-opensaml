@@ -260,6 +260,9 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
                         + " is a namespace declaration, adding it to the list of namespaces on the XMLObject");
             }
             unmarshallNamespaceAttribute(xmlObject, attribute);
+        }else if(DatatypeHelper.safeEquals(attributeNamespace, XMLConstants.XSI_NS) &&
+                DatatypeHelper.safeEquals(attribute.getLocalName(), "type")) {
+            // Skip over schema type declerations as they are handled by the builder
         } else {
             if (log.isDebugEnabled()) {
                 log.debug("Attribute " + XMLHelper.getNodeQName(attribute)

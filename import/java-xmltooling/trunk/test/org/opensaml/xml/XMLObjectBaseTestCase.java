@@ -102,7 +102,7 @@ public class XMLObjectBaseTestCase extends XMLTestCase {
      */
     public XMLObject buildXMLObject(QName objectQName){
         XMLObjectBuilder builder = Configuration.getBuilderFactory().getBuilder(objectQName);
-        return builder.buildObject();
+        return builder.buildObject(objectQName.getNamespaceURI(), objectQName.getLocalPart(), objectQName.getPrefix());
     }
 
     static {

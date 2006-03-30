@@ -104,11 +104,10 @@ public class MarshallingTest extends XMLObjectBaseTestCase {
         Document expectedDocument = parserPool.parse(MarshallingTest.class
                 .getResourceAsStream(expectedDocumentLocation));
 
-        SimpleXMLObject sxObject = (SimpleXMLObject) builderFactory.getBuilder(simpleXMLObjectQName).buildObject();
-        SimpleXMLObject sxObjectChild1 = (SimpleXMLObject) builderFactory.getBuilder(simpleXMLObjectQName)
-                .buildObject();
-        SimpleXMLObject sxObjectChild2 = (SimpleXMLObject) builderFactory.getBuilder(simpleXMLObjectQName)
-                .buildObject();
+        SimpleXMLObjectBuilder sxoBuilder = (SimpleXMLObjectBuilder) builderFactory.getBuilder(simpleXMLObjectQName);
+        SimpleXMLObject sxObject = sxoBuilder.buildObject();
+        SimpleXMLObject sxObjectChild1 = sxoBuilder.buildObject();
+        SimpleXMLObject sxObjectChild2 = sxoBuilder.buildObject();
         sxObject.getSimpleXMLObjects().add(sxObjectChild1);
         sxObject.getSimpleXMLObjects().add(sxObjectChild2);
 

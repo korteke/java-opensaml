@@ -16,6 +16,8 @@
 
 package org.opensaml.xml.signature.impl;
 
+import javax.xml.namespace.QName;
+
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.XMLObjectBuilder;
 import org.opensaml.xml.signature.Signature;
@@ -37,9 +39,6 @@ public class XMLSecSignatureBuilder implements XMLObjectBuilder {
 
     }
 
-    /*
-     * @see org.opensaml.xml.XMLObjectBuilder#buildObject()
-     */
     public XMLObject buildObject() {
         Signature signature = new XMLSecSignatureImpl(context);
         return signature;
@@ -49,7 +48,20 @@ public class XMLSecSignatureBuilder implements XMLObjectBuilder {
      * @see org.opensaml.xml.XMLObjectBuilder#buildObject(org.w3c.dom.Element)
      */
     public XMLObject buildObject(Element element) {
-        // TODO Auto-generated method stub
-        return null;
+        return new XMLSecSignatureImpl(context);
+    }
+
+    /*
+     * @see org.opensaml.xml.XMLObjectBuilder#buildObject(java.lang.String, java.lang.String, java.lang.String)
+     */
+    public XMLObject buildObject(String namespaceURI, String localName, String namespacePrefix) {
+        return new XMLSecSignatureImpl(context);
+    }
+
+    /*
+     * @see org.opensaml.xml.XMLObjectBuilder#buildObject(java.lang.String, java.lang.String, java.lang.String, javax.xml.namespace.QName)
+     */
+    public XMLObject buildObject(String namespaceURI, String localName, String namespacePrefix, QName schemaType) {
+        return new XMLSecSignatureImpl(context);
     }
 }
