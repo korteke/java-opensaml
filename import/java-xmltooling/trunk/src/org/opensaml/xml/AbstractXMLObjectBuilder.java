@@ -25,23 +25,25 @@ import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Element;
 
 /**
- *
+ * Base implementation for XMLObject builders.
+ * 
+ * <strong>Note:</strong> This class only works with {@link org.opensaml.xml.AbstractXMLObject}s
  */
-public abstract class AbstractXMLObjectBuilder implements XMLObjectBuilder {
+public abstract class AbstractXMLObjectBuilder<XMLObjectType extends XMLObject> implements XMLObjectBuilder<XMLObjectType> {
 
     /*
      * @see org.opensaml.xml.XMLObjectBuilder#buildObject(java.lang.String, java.lang.String, java.lang.String)
      */
-    public abstract AbstractXMLObject buildObject(String namespaceURI, String localName, String namespacePrefix);
+    public abstract XMLObjectType buildObject(String namespaceURI, String localName, String namespacePrefix);
 
     /*
      * @see org.opensaml.xml.XMLObjectBuilder#buildObject(java.lang.String, java.lang.String, java.lang.String, javax.xml.namespace.QName)
      */
-    public AbstractXMLObject buildObject(String namespaceURI, String localName, String namespacePrefix, QName schemaType) {
-        AbstractXMLObject xmlObject;
+    public XMLObjectType buildObject(String namespaceURI, String localName, String namespacePrefix, QName schemaType) {
+        XMLObjectType xmlObject;
         
         xmlObject = buildObject(namespaceURI, localName, namespacePrefix);
-        xmlObject.setSchemaType(schemaType);
+        ((AbstractXMLObject)xmlObject).setSchemaType(schemaType);
         
         return xmlObject;
     }
@@ -49,8 +51,8 @@ public abstract class AbstractXMLObjectBuilder implements XMLObjectBuilder {
     /*
      * @see org.opensaml.xml.XMLObjectBuilder#buildObject(org.w3c.dom.Element)
      */
-    public AbstractXMLObject buildObject(Element element) {
-        AbstractXMLObject xmlObject;
+    public XMLObjectType buildObject(Element element) {
+        XMLObjectType xmlObject;
         
         String localName = element.getLocalName();
         String nsURI = element.getNamespaceURI();

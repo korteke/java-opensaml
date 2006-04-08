@@ -19,7 +19,7 @@ package org.opensaml.xml;
 /**
  * Builder of {@link org.opensaml.xml.ElementProxy} objects.
  */
-public class ElementProxyBuilder extends AbstractXMLObjectBuilder {
+public class ElementProxyBuilder extends AbstractXMLObjectBuilder<ElementProxy> {
 
     /**
      * Constructor

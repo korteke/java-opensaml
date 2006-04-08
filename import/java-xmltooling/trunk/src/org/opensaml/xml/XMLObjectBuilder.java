@@ -22,7 +22,7 @@ import org.w3c.dom.Element;
 /**
  * A builder for XMLObjects.
  */
-public interface XMLObjectBuilder {
+public interface XMLObjectBuilder<XMLObjectType extends XMLObject> {
     
     /**
      * Creates an XMLObject with a given fully qualified name.
@@ -33,7 +33,7 @@ public interface XMLObjectBuilder {
      * 
      * @return the constructed XMLObject
      */
-    public XMLObject buildObject(String namespaceURI, String localName, String namespacePrefix);
+    public XMLObjectType buildObject(String namespaceURI, String localName, String namespacePrefix);
     
     /**
      * Creates an XMLObject with a given fully qualified name.
@@ -45,7 +45,7 @@ public interface XMLObjectBuilder {
      * 
      * @return the constructed XMLObject
      */
-    public XMLObject buildObject(String namespaceURI, String localName, String namespacePrefix, QName schemaType);
+    public XMLObjectType buildObject(String namespaceURI, String localName, String namespacePrefix, QName schemaType);
     
     /**
      * Creates an XMLObject using information from the given DOM element.  This method must set the QName for the Element QName within the 
@@ -57,5 +57,5 @@ public interface XMLObjectBuilder {
      * 
      * @return the constructed XMLObject
      */
-    public XMLObject buildObject(Element element);
+    public XMLObjectType buildObject(Element element);
 }
