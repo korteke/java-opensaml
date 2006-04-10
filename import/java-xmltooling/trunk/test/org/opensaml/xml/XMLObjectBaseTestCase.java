@@ -82,6 +82,10 @@ public class XMLObjectBaseTestCase extends XMLTestCase {
      */
     public void assertEquals(String failMessage, Document expectedDOM, XMLObject xmlObject) {
         Marshaller marshaller = marshallerFactory.getMarshaller(xmlObject);
+        if(marshaller == null){
+            fail("Unable to locate marshaller for " + xmlObject.getElementQName() + " can not perform equality check assertion");
+        }
+        
         try {
             Element generatedDOM = marshaller.marshall(xmlObject, parserPool.newDocument());
             if(log.isDebugEnabled()) {
@@ -102,6 +106,9 @@ public class XMLObjectBaseTestCase extends XMLTestCase {
      */
     public XMLObject buildXMLObject(QName objectQName){
         XMLObjectBuilder builder = Configuration.getBuilderFactory().getBuilder(objectQName);
+        if(builder == null){
+            fail("Unable to retrieve builder for object QName " + objectQName);
+        }
         return builder.buildObject(objectQName.getNamespaceURI(), objectQName.getLocalPart(), objectQName.getPrefix());
     }
 
