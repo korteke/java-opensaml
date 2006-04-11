@@ -44,7 +44,7 @@ public class ElementProxyUnmarshaller extends AbstractXMLObjectUnmarshaller {
         ElementProxy elementProxy = (ElementProxy) xmlObject;
         QName attribQName = XMLHelper.constructQName(attribute.getNamespaceURI(), attribute.getLocalName(), attribute
                 .getPrefix());
-        elementProxy.getAttributes().put(attribQName, attribute.getValue());
+        elementProxy.getUnknownAttributes().put(attribQName, attribute.getValue());
     }
 
     /**

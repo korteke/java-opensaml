@@ -34,6 +34,13 @@ public abstract class AbstractDOMCachingXMLObjectMarshaller extends AbstractXMLO
     private static Logger log = Logger.getLogger(AbstractDOMCachingXMLObjectMarshaller.class);
     
     /**
+     * Constructor.
+     */
+    protected AbstractDOMCachingXMLObjectMarshaller() {
+        super();
+    }
+    
+    /**
      * This constructor supports checking an XMLObject to be marshalled, either element name or schema type, against a
      * given namespace/local name pair.
      * 
@@ -49,6 +56,9 @@ public abstract class AbstractDOMCachingXMLObjectMarshaller extends AbstractXMLO
         super(targetNamespaceURI, targetLocalName);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Element marshall(XMLObject xmlObject, Document document) throws MarshallingException {
         DOMCachingXMLObject domCachingObject = (DOMCachingXMLObject) xmlObject;
         Element domElement;
@@ -90,6 +100,9 @@ public abstract class AbstractDOMCachingXMLObjectMarshaller extends AbstractXMLO
         return domElement;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Element marshall(XMLObject xmlObject, Element parentElement) throws MarshallingException {
         DOMCachingXMLObject domCachingObject = (DOMCachingXMLObject) xmlObject;
         Element domElement;

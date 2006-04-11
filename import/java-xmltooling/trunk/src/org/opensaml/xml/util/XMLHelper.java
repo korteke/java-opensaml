@@ -120,6 +120,54 @@ public class XMLHelper {
 
         return null;
     }
+    
+    /**
+     * Constructs an attribute owned by the given document with the given name.
+     * 
+     * @param owningDocument the owning document
+     * @param attributeName the name of that attribute
+     * 
+     * @return the constructed attribute
+     * 
+     * @throws IllegalArgumentException thrown if the local name is name null or empty
+     */
+    public static Attr constructAttribute(Document owningDocument, QName attributeName) throws IllegalArgumentException{
+        return constructAttribute(owningDocument, attributeName.getNamespaceURI(), attributeName.getLocalPart(), attributeName.getPrefix());
+    }
+    
+    /**
+     * Constructs an attribute owned by the given document with the given name.
+     * 
+     * @param document the owning document
+     * @param namespaceURI the URI fo the namespace the attribute is in
+     * @param localName the local name
+     * @param prefix the prefix of the namespace that attribute is in
+     * 
+     * @return the constructed attribute
+     * 
+     * @throws IllegalArgumentException thrown if the local name is name null or empty
+     */
+    public static Attr constructAttribute(Document document, String namespaceURI, String localName, String prefix) throws IllegalArgumentException{
+        localName = DatatypeHelper.safeTrimOrNullString(localName);
+        
+        if(localName == null){
+            throw new IllegalArgumentException("Local name may not be null or empty");
+        }
+        
+        String qualifiedName;
+        prefix = DatatypeHelper.safeTrimOrNullString(prefix);
+        if(prefix != null){
+            qualifiedName = prefix + ":" + DatatypeHelper.safeTrimOrNullString(localName);
+        }else{
+            qualifiedName = DatatypeHelper.safeTrimOrNullString(localName);
+        }
+        
+        if(!DatatypeHelper.isEmpty(namespaceURI)){
+            return document.createAttributeNS(namespaceURI, qualifiedName);
+        }else{
+            return document.createAttribute(qualifiedName);
+        }
+    }
 
     /**
      * Constructs a QName from an attributes value.

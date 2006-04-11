@@ -91,7 +91,7 @@ public class ElementProxy extends AbstractValidatingDOMCachingXMLObject implemen
     /**
      * {@inheritDoc}
      */
-    public Map<QName, String> getAttributes() {
+    public Map<QName, String> getUnknownAttributes() {
         return attributes;
     }
     

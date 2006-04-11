@@ -23,6 +23,10 @@ import org.w3c.dom.Element;
 
 public abstract class AbstractDOMCachingXMLObjectUnmarshaller extends AbstractXMLObjectUnmarshaller {
     
+    public AbstractDOMCachingXMLObjectUnmarshaller(){
+        super();
+    }
+    
     protected AbstractDOMCachingXMLObjectUnmarshaller(String targetNamespaceURI, String targetLocalName) throws IllegalArgumentException{
         super(targetNamespaceURI, targetLocalName);
     }

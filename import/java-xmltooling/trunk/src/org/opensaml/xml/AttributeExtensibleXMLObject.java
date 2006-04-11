@@ -32,5 +32,5 @@ public interface AttributeExtensibleXMLObject extends XMLObject {
      * 
      * @return a map of the attributes
      */
-    public Map<QName, String> getAttributes();
+    public Map<QName, String> getUnknownAttributes();
 }

@@ -37,7 +37,7 @@ public class ElementProxyMarshaller extends AbstractXMLObjectMarshaller {
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         ElementProxy proxy = (ElementProxy) xmlObject;
 
-        Map<QName, String> attributes = proxy.getAttributes();
+        Map<QName, String> attributes = proxy.getUnknownAttributes();
         if (attributes.isEmpty()) {
             return;
         }
