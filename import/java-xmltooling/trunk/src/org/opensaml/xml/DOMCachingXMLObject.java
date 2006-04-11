@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.opensaml.xml;
 
 import org.w3c.dom.Element;
@@ -21,14 +22,14 @@ import org.w3c.dom.Element;
  * An XMLObject that can cached a DOM representation of itself.
  */
 public interface DOMCachingXMLObject extends XMLObject {
-    
+
     /**
      * Gets the DOM representation of this XMLObject, if one exists.
      * 
      * @return the DOM representation of this XMLObject
      */
     public Element getDOM();
-    
+
     /**
      * Sets the DOM representation of this XMLObject.
      * 
@@ -40,14 +41,14 @@ public interface DOMCachingXMLObject extends XMLObject {
      * Releases the DOM representation of this XMLObject, if there is one.
      */
     public void releaseDOM();
-    
+
     /**
      * Releases the DOM representation of this XMLObject's parent.
      * 
      * @param propagateRelease true if all ancestors of this element should release thier DOM
      */
     public void releaseParentDOM(boolean propagateRelease);
-    
+
     /**
      * Releases the DOM representation of this XMLObject's children.
      * 

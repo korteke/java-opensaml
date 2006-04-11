@@ -30,11 +30,13 @@ import org.opensaml.xml.validation.Validator;
  * Extension of {@link org.opensaml.xml.signature.AbstractSignableXMLObject} that implements
  * {@link org.opensaml.xml.validation.ValidatingXMLObject}
  */
-public abstract class AbstractValidatingSignableXMLObject extends AbstractSignableXMLObject implements
-        ValidatingXMLObject {
+public abstract class AbstractValidatingSignableXMLObject
+        extends AbstractSignableXMLObject
+        implements ValidatingXMLObject {
 
     /** Logger */
-    private final Logger log = Logger.getLogger(AbstractValidatingSignableXMLObject.class);
+    private final Logger log = Logger
+            .getLogger(AbstractValidatingSignableXMLObject.class);
 
     /** Validators used to validate this XMLObject */
     private ArrayList<Validator> validators = new ArrayList<Validator>();
@@ -55,16 +57,20 @@ public abstract class AbstractValidatingSignableXMLObject extends AbstractSignab
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected AbstractValidatingSignableXMLObject(String namespaceURI, String elementLocalName, String namespacePrefix) {
-        super(namespaceURI, elementLocalName, namespacePrefix);
+    protected AbstractValidatingSignableXMLObject(
+            String namespaceURI, String elementLocalName, String namespacePrefix) {
+        super(
+                namespaceURI, elementLocalName, namespacePrefix);
     }
 
     /*
      * @see org.opensaml.xml.ValidatingXMLObject#getValidators()
      */
     public List<Validator> getValidators() {
-        if (validators.size() > 0) {
-            return Collections.unmodifiableList(validators);
+        if (validators
+                .size() > 0) {
+            return Collections
+                    .unmodifiableList(validators);
         }
 
         return null;
@@ -73,35 +79,47 @@ public abstract class AbstractValidatingSignableXMLObject extends AbstractSignab
     /*
      * @see org.opensaml.xml.ValidatingXMLObject#registerValidator(org.opensaml.xml.Validator)
      */
-    public void registerValidator(Validator validator) {
+    public void registerValidator(
+            Validator validator) {
         if (validator != null) {
-            validators.add(validator);
+            validators
+                    .add(validator);
         }
     }
 
     /*
      * @see org.opensaml.xml.ValidatingXMLObject#deregisterValidator(org.opensaml.xml.Validator)
      */
-    public void deregisterValidator(Validator validator) {
-        validators.remove(validator);
+    public void deregisterValidator(
+            Validator validator) {
+        validators
+                .remove(validator);
     }
 
     /*
      * @see org.opensaml.xml.ValidatingXMLObject#validate(boolean)
      */
-    public void validate(boolean validateDescendants) throws ValidationException {
+    public void validate(
+            boolean validateDescendants)
+            throws ValidationException {
         for (Validator validator : validators) {
-            if (log.isDebugEnabled()) {
+            if (log
+                    .isDebugEnabled()) {
                 log
-                        .debug("Validating " + getElementQName() + " using Validator class"
-                                + validator.getClass().getName());
+                        .debug("Validating "
+                                + getElementQName() + " using Validator class" + validator
+                                        .getClass().getName());
             }
-            validator.validate(this);
+            validator
+                    .validate(this);
         }
 
         if (validateDescendants) {
-            if (log.isDebugEnabled()) {
-                log.debug("Validating descendants of " + getElementQName());
+            if (log
+                    .isDebugEnabled()) {
+                log
+                        .debug("Validating descendants of "
+                                + getElementQName());
             }
             validateChildren(this);
         }
@@ -115,17 +133,26 @@ public abstract class AbstractValidatingSignableXMLObject extends AbstractSignab
      * 
      * @throws ValidationException
      */
-    protected void validateChildren(XMLObject xmlObject) throws ValidationException {
-        for (XMLObject childObject : xmlObject.getOrderedChildren()) {
+    protected void validateChildren(
+            XMLObject xmlObject)
+            throws ValidationException {
+        for (XMLObject childObject : xmlObject
+                .getOrderedChildren()) {
             if (childObject instanceof ValidatingXMLObject) {
-                ((ValidatingXMLObject) childObject).validate(false);
+                ((ValidatingXMLObject) childObject)
+                        .validate(false);
             } else {
-                if (log.isDebugEnabled()) {
-                    log.debug(childObject.getElementQName() + " does not implement ValidatingXMLObject, ignoring it.");
+                if (log
+                        .isDebugEnabled()) {
+                    log
+                            .debug(childObject
+                                    .getElementQName()
+                                    + " does not implement ValidatingXMLObject, ignoring it.");
                 }
             }
 
-            if (childObject.hasChildren()) {
+            if (childObject
+                    .hasChildren()) {
                 validateChildren(childObject);
             }
         }

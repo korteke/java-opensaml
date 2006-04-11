@@ -31,9 +31,8 @@ import org.w3c.dom.Element;
  */
 public class ElementProxyMarshaller extends AbstractXMLObjectMarshaller {
 
-    /*
-     * @see org.opensaml.xml.io.AbstractXMLObjectMarshaller#marshallAttributes(org.opensaml.xml.XMLObject,
-     *      org.w3c.dom.Element)
+    /**
+     * {@inheritDoc}
      */
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         ElementProxy proxy = (ElementProxy) xmlObject;
@@ -58,9 +57,8 @@ public class ElementProxyMarshaller extends AbstractXMLObjectMarshaller {
         }
     }
 
-    /*
-     * @see org.opensaml.xml.io.AbstractXMLObjectMarshaller#marshallElementContent(org.opensaml.xml.XMLObject,
-     *      org.w3c.dom.Element)
+    /**
+     * {@inheritDoc}
      */
     protected void marshallElementContent(XMLObject xmlObject, Element domElement) throws MarshallingException {
         ElementProxy proxy = (ElementProxy) xmlObject;

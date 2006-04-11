@@ -64,8 +64,8 @@ public abstract class AbstractXMLObject implements XMLObject {
         setElementNamespacePrefix(namespacePrefix);
     }
 
-    /*
-     * @see org.opensaml.common.SAMLObject#getQName()
+    /**
+     * {@inheritDoc}
      */
     public QName getElementQName() {
         return new QName(elementQname.getNamespaceURI(), elementQname.getLocalPart(), elementQname.getPrefix());
@@ -75,17 +75,15 @@ public abstract class AbstractXMLObject implements XMLObject {
      * Sets the element QName.
      * 
      * @param elementQName the element's QName
-     * 
-     * @throws NullPointerException thrown if the give QName is null
      */
-    protected void setElementQName(QName elementQName) throws NullPointerException {
+    protected void setElementQName(QName elementQName) {
         this.elementQname = XMLHelper.constructQName(elementQName.getNamespaceURI(), elementQName.getLocalPart(),
                 elementQName.getPrefix());
         addNamespace(new Namespace(elementQName.getNamespaceURI(), elementQName.getLocalPart()));
     }
 
-    /*
-     * @see org.opensaml.common.SAMLObject#setNamespaceAndPrefix(java.lang.String, java.lang.String)
+    /**
+     * {@inheritDoc}
      */
     public void setElementNamespacePrefix(String prefix) {
         if (prefix == null) {
@@ -95,15 +93,15 @@ public abstract class AbstractXMLObject implements XMLObject {
         }
     }
 
-    /*
-     * @see org.opensaml.common.SAMLObject#getNamespaces()
+    /**
+     * {@inheritDoc}
      */
     public Set<Namespace> getNamespaces() {
         return Collections.unmodifiableSet(namespaces);
     }
 
-    /*
-     * @see org.opensaml.common.SAMLObject#addNamespace(javax.xml.namespace.QName)
+    /**
+     * {@inheritDoc}
      */
     public void addNamespace(Namespace namespace) {
         if (namespace != null) {
@@ -111,15 +109,15 @@ public abstract class AbstractXMLObject implements XMLObject {
         }
     }
 
-    /*
-     * @see org.opensaml.common.SAMLObject#removeNamespace(javax.xml.namespace.QName)
+    /**
+     * {@inheritDoc}
      */
     public void removeNamespace(Namespace namespace) {
         namespaces.remove(namespace);
     }
 
-    /*
-     * @see org.opensaml.common.SAMLObject#getType()
+    /**
+     * {@inheritDoc}
      */
     public QName getSchemaType() {
         return typeQname;
@@ -150,22 +148,22 @@ public abstract class AbstractXMLObject implements XMLObject {
         return parent;
     }
 
-    /*
-     * @see org.opensaml.common.SAMLObject#setParent(org.opensaml.common.SAMLObject)
+    /**
+     * {@inheritDoc}
      */
-    public void setParent(XMLObject parent) {
-        this.parent = parent;
+    public void setParent(XMLObject newParent) {
+        parent = newParent;
     }
 
-    /*
-     * @see org.opensaml.common.SAMLObject#hasParent()
+    /**
+     * {@inheritDoc}
      */
     public boolean hasParent() {
         return getParent() != null;
     }
 
-    /*
-     * @see org.opensaml.xml.XMLObject#hasChildren()
+    /**
+     * {@inheritDoc}
      */
     public boolean hasChildren() {
         List<? extends XMLObject> children = getOrderedChildren();

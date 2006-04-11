@@ -21,81 +21,77 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.xml.Namespace;
-
 /**
- * A object that represents an XML element, usually of a specific schema type, that has been unmarshalled into this Java object.
+ * A object that represents an XML element, usually of a specific schema type, that has been unmarshalled into this Java
+ * object.
  */
 public interface XMLObject {
-    
+
     /**
-     * Gets the QName for this element.  This QName <strong>MUST</strong> 
-     * contain the namespace URI, namespace prefix, and local element name.
-     * Changes made to the returned QName are not reflected by the QName held 
-     * by this element, that is, the returned QName is a copy of the internal 
-     * QName member of this class.
+     * Gets the QName for this element. This QName <strong>MUST</strong> contain the namespace URI, namespace prefix,
+     * and local element name. Changes made to the returned QName are not reflected by the QName held by this element,
+     * that is, the returned QName is a copy of the internal QName member of this class.
      * 
      * @return the QName for this attribute
      */
     public QName getElementQName();
-    
+
     /**
      * Gets the namespaces that are scoped to this element
      * 
      * @return the namespaces that are scoped to this element
      */
     public Set<Namespace> getNamespaces();
-    
+
     /**
      * Adds a namespace to the ones already scoped to this element
      * 
      * @param namespace the namespace to add
      */
     public void addNamespace(Namespace namespace);
-    
+
     /**
      * Removes a namespace from this element
      * 
      * @param namespace the namespace to remove
      */
     public void removeNamespace(Namespace namespace);
-    
+
     /**
-     * Gets the XML schema type of this element.  This translates to contents the xsi:type
-     * attribute for the element.
+     * Gets the XML schema type of this element. This translates to contents the xsi:type attribute for the element.
      * 
      * @return XML schema type of this element
      */
     public QName getSchemaType();
-    
+
     /**
      * Checks to see if this object has a parent.
      * 
      * @return true if the object has a parent, false if not
      */
     public boolean hasParent();
-    
+
     /**
      * Gets the parent of this element or null if there is no parent.
      * 
      * @return the parent of this element or null
      */
     public XMLObject getParent();
-    
+
     /**
      * Sets the parent of this element.
      * 
      * @param parent the parent of this element
      */
     public void setParent(XMLObject parent);
-    
+
     /**
      * Checks if this XMLObject has children.
      * 
      * @return true if this XMLObject has children, false if not
      */
     public boolean hasChildren();
-    
+
     /**
      * Gets an unmodifiable list of child elements in the order that they will appear in the DOM.
      * 

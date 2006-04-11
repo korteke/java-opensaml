@@ -40,22 +40,22 @@ public class ElementProxy extends AbstractValidatingDOMCachingXMLObject implemen
 
     /** Attributes of the proxied Element */
     private Map attributes;
-    
+
     /** Text content of the proxied Element */
     private String textContent;
-    
+
     /** Children of the proxied Element */
     private XMLObjectChildrenList<XMLObject> children;
-    
+
     /**
      * Constructor
      */
-    protected ElementProxy(){
+    protected ElementProxy() {
         super();
         attributes = TypedMap.decorate(new DOMCachingXMLObjectAwareMap(this), QName.class, String.class);
         children = new XMLObjectChildrenList<XMLObject>(this);
     }
-    
+
     /**
      * Constructor
      * 
@@ -68,19 +68,19 @@ public class ElementProxy extends AbstractValidatingDOMCachingXMLObject implemen
         attributes = TypedMap.decorate(new DOMCachingXMLObjectAwareMap(this), QName.class, String.class);
         children = new XMLObjectChildrenList<XMLObject>(this);
     }
-    
+
     /**
-     * Sets the name of the element this XMLObject is proxying.  This <strong>MUST</strong> must be set before 
+     * Sets the name of the element this XMLObject is proxying. This <strong>MUST</strong> must be set before
      * marshalling can occur and would ideally be set immediately after it's built.
      * 
      * @param namespaceURI the namespace the proxied element is in
      * @param elementLocalName the local name of the proxied element
      * @param namespacePrefix the prefix for the given namespace
      */
-    public void setElementQName(String namespaceURI, String elementLocalName, String namespacePrefix){
+    public void setElementQName(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super.setElementQName(XMLHelper.constructQName(namespacePrefix, elementLocalName, namespacePrefix));
     }
-    
+
     /**
      * Gets the text content for the proxied DOM Element.
      * 
@@ -99,8 +99,8 @@ public class ElementProxy extends AbstractValidatingDOMCachingXMLObject implemen
         textContent = prepareForAssignment(textContent, newContent);
     }
 
-    /*
-     * @see org.opensaml.xml.AttributeExtensibleXMLObject#getAttributes()
+    /**
+     * {@inheritDoc}
      */
     public Map<QName, String> getAttributes() {
         return attributes;

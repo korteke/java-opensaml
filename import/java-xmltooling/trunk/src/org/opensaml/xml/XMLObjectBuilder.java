@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.opensaml.xml;
 
 import javax.xml.namespace.QName;
@@ -21,9 +22,11 @@ import org.w3c.dom.Element;
 
 /**
  * A builder for XMLObjects.
+ * 
+ * @param <XMLObjectType> the XMLObject type that this builder produces
  */
 public interface XMLObjectBuilder<XMLObjectType extends XMLObject> {
-    
+
     /**
      * Creates an XMLObject with a given fully qualified name.
      * 
@@ -34,7 +37,7 @@ public interface XMLObjectBuilder<XMLObjectType extends XMLObject> {
      * @return the constructed XMLObject
      */
     public XMLObjectType buildObject(String namespaceURI, String localName, String namespacePrefix);
-    
+
     /**
      * Creates an XMLObject with a given fully qualified name.
      * 
@@ -46,10 +49,10 @@ public interface XMLObjectBuilder<XMLObjectType extends XMLObject> {
      * @return the constructed XMLObject
      */
     public XMLObjectType buildObject(String namespaceURI, String localName, String namespacePrefix, QName schemaType);
-    
+
     /**
-     * Creates an XMLObject using information from the given DOM element.  This method must set the QName for the Element QName within the 
-     * constructed XMLObject.
+     * Creates an XMLObject using information from the given DOM element. This method must set the QName for the Element
+     * QName within the constructed XMLObject.
      * 
      * This method is used by {@link org.opensaml.xml.io.AbstractXMLObjectUnmarshaller}.
      * 

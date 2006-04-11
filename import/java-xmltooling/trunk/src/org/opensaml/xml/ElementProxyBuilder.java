@@ -27,11 +27,11 @@ public class ElementProxyBuilder extends AbstractXMLObjectBuilder<ElementProxy> 
     public ElementProxyBuilder() {
 
     }
-    
-    /*
-     * @see org.opensaml.xml.XMLObjectBuilder#buildObject(java.lang.String, java.lang.String, java.lang.String)
+
+    /**
+     * {@inheritDoc}
      */
-    public ElementProxy buildObject(String namespaceURI, String localName, String namespacePrefix){
+    public ElementProxy buildObject(String namespaceURI, String localName, String namespacePrefix) {
         return new ElementProxy(namespaceURI, localName, namespacePrefix);
     }
 }

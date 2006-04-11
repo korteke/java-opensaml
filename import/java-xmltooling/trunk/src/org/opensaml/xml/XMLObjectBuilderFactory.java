@@ -1,5 +1,5 @@
 /*
- * Copyright [2005] [University Corporation for Advanced Internet Development, Inc.]
+ * Copyright [2006] [University Corporation for Advanced Internet Development, Inc.]
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,7 +34,7 @@ import org.w3c.dom.Element;
 public class XMLObjectBuilderFactory {
 
     /** Logger */
-    private final static Logger log = Logger.getLogger(XMLObjectBuilderFactory.class);
+    private static final Logger LOG = Logger.getLogger(XMLObjectBuilderFactory.class);
 
     /** Registered builders */
     private Map<QName, XMLObjectBuilder> builders;
@@ -91,8 +91,8 @@ public class XMLObjectBuilderFactory {
      * @param builder the builder
      */
     public void registerBuilder(QName builderKey, XMLObjectBuilder builder) {
-        if (log.isDebugEnabled()) {
-            log.debug("Registering builder, " + builder.getClass().getCanonicalName() + " under key " + builderKey);
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Registering builder, " + builder.getClass().getCanonicalName() + " under key " + builderKey);
         }
         synchronized (builders) {
             builders.put(builderKey, builder);
@@ -103,10 +103,12 @@ public class XMLObjectBuilderFactory {
      * Deregisters a builder.
      * 
      * @param builderKey the key for the builder to be deregistered
+     * 
+     * @return the builder that was registered for the given QName
      */
     public XMLObjectBuilder unregisterBuilder(QName builderKey) {
-        if (log.isDebugEnabled()) {
-            log.debug("Deregistering builder for object type " + builderKey);
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Deregistering builder for object type " + builderKey);
         }
         synchronized (builders) {
             return builders.remove(builders.get(builderKey));

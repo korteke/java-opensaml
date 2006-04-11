@@ -129,7 +129,7 @@ public class XMLHelper {
      * @return a QName from an attributes value, or null if the given attribute is null
      */
     public static QName getAttributeValueAsQName(Attr attribute) {
-        if (attribute == null) {
+        if (attribute == null || DatatypeHelper.isEmpty(attribute.getValue())) {
             return null;
         }
 

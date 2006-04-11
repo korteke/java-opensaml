@@ -17,6 +17,7 @@
 /**
  * 
  */
+
 package org.opensaml.xml;
 
 import javax.xml.namespace.QName;
@@ -28,39 +29,42 @@ import org.w3c.dom.Element;
  * Base implementation for XMLObject builders.
  * 
  * <strong>Note:</strong> This class only works with {@link org.opensaml.xml.AbstractXMLObject}s
+ * 
+ * @param <XMLObjectType> the XMLObject type that this builder produces
  */
-public abstract class AbstractXMLObjectBuilder<XMLObjectType extends XMLObject> implements XMLObjectBuilder<XMLObjectType> {
+public abstract class AbstractXMLObjectBuilder<XMLObjectType extends XMLObject> implements
+        XMLObjectBuilder<XMLObjectType> {
 
-    /*
-     * @see org.opensaml.xml.XMLObjectBuilder#buildObject(java.lang.String, java.lang.String, java.lang.String)
+    /**
+     * {@inheritDoc}
      */
     public abstract XMLObjectType buildObject(String namespaceURI, String localName, String namespacePrefix);
 
-    /*
-     * @see org.opensaml.xml.XMLObjectBuilder#buildObject(java.lang.String, java.lang.String, java.lang.String, javax.xml.namespace.QName)
+    /**
+     * {@inheritDoc}
      */
     public XMLObjectType buildObject(String namespaceURI, String localName, String namespacePrefix, QName schemaType) {
         XMLObjectType xmlObject;
-        
+
         xmlObject = buildObject(namespaceURI, localName, namespacePrefix);
-        ((AbstractXMLObject)xmlObject).setSchemaType(schemaType);
-        
+        ((AbstractXMLObject) xmlObject).setSchemaType(schemaType);
+
         return xmlObject;
     }
 
-    /*
-     * @see org.opensaml.xml.XMLObjectBuilder#buildObject(org.w3c.dom.Element)
+    /**
+     * {@inheritDoc}
      */
     public XMLObjectType buildObject(Element element) {
         XMLObjectType xmlObject;
-        
+
         String localName = element.getLocalName();
         String nsURI = element.getNamespaceURI();
         String nsPrefix = element.getPrefix();
         QName schemaType = XMLHelper.getXSIType(element);
-        
+
         xmlObject = buildObject(nsURI, localName, nsPrefix, schemaType);
-        
-        return xmlObject; 
+
+        return xmlObject;
     }
 }

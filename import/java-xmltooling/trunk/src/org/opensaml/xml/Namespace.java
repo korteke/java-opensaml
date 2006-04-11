@@ -67,10 +67,10 @@ public class Namespace {
     /**
      * Sets the prefix of the namespace.
      * 
-     * @param namespacePrefix the prefix of the namespace
+     * @param newPrefix the prefix of the namespace
      */
-    public void setNamespacePrefix(String namespacePrefix) {
-        this.namespacePrefix = DatatypeHelper.safeTrimOrNullString(namespacePrefix);
+    public void setNamespacePrefix(String newPrefix) {
+        namespacePrefix = DatatypeHelper.safeTrimOrNullString(newPrefix);
         nsStr = null;
     }
 
@@ -86,10 +86,10 @@ public class Namespace {
     /**
      * Sets the URI of the namespace.
      * 
-     * @param namespaceURI the URI of the namespace
+     * @param newURI the URI of the namespace
      */
-    public void setNamespaceURI(String namespaceURI) {
-        this.namespaceURI = DatatypeHelper.safeTrimOrNullString(namespaceURI);
+    public void setNamespaceURI(String newURI) {
+        namespaceURI = DatatypeHelper.safeTrimOrNullString(newURI);
         nsStr = null;
     }
 
@@ -107,14 +107,14 @@ public class Namespace {
      * Sets wether this namespace should always be declared when marshalling, even if it was already declared on an
      * ancestral element.
      * 
-     * @param alwaysDeclare true if this namespace should always be declared, false if not
+     * @param shouldAlwaysDeclare true if this namespace should always be declared, false if not
      */
-    public void setAlwaysDeclare(boolean alwaysDeclare) {
-        this.alwaysDeclare = alwaysDeclare;
+    public void setAlwaysDeclare(boolean shouldAlwaysDeclare) {
+        alwaysDeclare = shouldAlwaysDeclare;
     }
 
-    /*
-     * @see java.lang.Object#toString()
+    /**
+     * {@inheritDoc}
      */
     public String toString() {
         if (nsStr == null) {
@@ -124,8 +124,8 @@ public class Namespace {
         return nsStr;
     }
 
-    /*
-     * @see java.lang.Object#hashCode()
+    /**
+     * {@inheritDoc}
      */
     public int hashCode() {
         String hashingString = toString() + Boolean.toString(alwaysDeclare);
@@ -139,12 +139,16 @@ public class Namespace {
      * <li>The given object's namespace URI is the same as this object's namespace URI</li>
      * <li>The given object's namespace prefix is the same as this object's namespace prefix</li>
      * </ul>
+     * 
+     * @param {@inheritDoc}
+     * 
+     * @return {@inheritDoc}
      */
     public boolean equals(Object obj) {
         if (obj instanceof Namespace) {
             Namespace otherNamespace = (Namespace) obj;
             if (otherNamespace.getNamespaceURI().equals(getNamespaceURI())) {
-                if(otherNamespace.getNamespacePrefix().equals(getNamespacePrefix())){
+                if (otherNamespace.getNamespacePrefix().equals(getNamespacePrefix())) {
                     return otherNamespace.alwaysDeclare() == alwaysDeclare();
                 }
             }

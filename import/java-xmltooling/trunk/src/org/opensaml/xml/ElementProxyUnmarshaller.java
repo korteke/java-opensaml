@@ -28,9 +28,8 @@ import org.w3c.dom.Attr;
  */
 public class ElementProxyUnmarshaller extends AbstractXMLObjectUnmarshaller {
 
-    /*
-     * @see org.opensaml.xml.io.AbstractXMLObjectUnmarshaller#processChildElement(org.opensaml.xml.XMLObject,
-     *      org.opensaml.xml.XMLObject)
+    /**
+     * {@inheritDoc}
      */
     protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
             throws UnmarshallingException {
@@ -38,9 +37,8 @@ public class ElementProxyUnmarshaller extends AbstractXMLObjectUnmarshaller {
         elementProxy.getOrderedChildren().add(childXMLObject);
     }
 
-    /*
-     * @see org.opensaml.xml.io.AbstractXMLObjectUnmarshaller#processAttribute(org.opensaml.xml.XMLObject,
-     *      org.w3c.dom.Attr)
+    /**
+     * {@inheritDoc}
      */
     protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
         ElementProxy elementProxy = (ElementProxy) xmlObject;
@@ -49,9 +47,8 @@ public class ElementProxyUnmarshaller extends AbstractXMLObjectUnmarshaller {
         elementProxy.getAttributes().put(attribQName, attribute.getValue());
     }
 
-    /*
-     * @see org.opensaml.xml.io.AbstractXMLObjectUnmarshaller#processElementContent(org.opensaml.xml.XMLObject,
-     *      java.lang.String)
+    /**
+     * {@inheritDoc}
      */
     protected void processElementContent(XMLObject xmlObject, String elementContent) {
         ElementProxy elementProxy = (ElementProxy) xmlObject;

@@ -51,15 +51,17 @@ import org.xml.sax.SAXException;
 /**
  * Class for loading library configuration files and retrieving the configured components.
  */
-public class Configuration {
+public final class Configuration {
 
     /** Logger */
-    private final static Logger log = Logger.getLogger(Configuration.class);
+    private static final Logger LOG = Logger.getLogger(Configuration.class);
 
     /** Schema for validating a configuration file */
     private static Schema configurationSchema;
-    
-    private static QName defaultProvider = new QName(XMLConstants.XMLTOOLING_CONFIG_NS, XMLConstants.XMLTOOLING_DEFAULT_OBJECT_PROVIDER);
+
+    /** Default object provider */
+    private static QName defaultProvider = new QName(XMLConstants.XMLTOOLING_CONFIG_NS,
+            XMLConstants.XMLTOOLING_DEFAULT_OBJECT_PROVIDER);
 
     /** Whether to ignore unknown attributes when they are encountered */
     private static boolean ignoreUnknownAttributes = true;
@@ -108,8 +110,8 @@ public class Configuration {
             if (configurationFile.isDirectory()) {
                 File[] configurations = configurationFile.listFiles();
                 for (int i = 0; i < configurations.length; i++) {
-                    if (log.isDebugEnabled()) {
-                        log.debug("Parsing configuration file " + configurations[i].getAbsolutePath());
+                    if (LOG.isDebugEnabled()) {
+                        LOG.debug("Parsing configuration file " + configurations[i].getAbsolutePath());
                     }
                     configuration = documentBuilder.parse(new FileInputStream(configurations[i]));
                     load(configuration);
@@ -117,13 +119,13 @@ public class Configuration {
             }
 
             // Given file is not a directory so try to load it directly
-            if (log.isDebugEnabled()) {
-                log.debug("Parsing configuration file " + configurationFile.getAbsolutePath());
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Parsing configuration file " + configurationFile.getAbsolutePath());
             }
             configuration = documentBuilder.parse(new FileInputStream(configurationFile));
             load(configuration);
         } catch (Exception e) {
-            log.fatal("Unable to parse configuration file(s) in " + configurationFile.getAbsolutePath(), e);
+            LOG.fatal("Unable to parse configuration file(s) in " + configurationFile.getAbsolutePath(), e);
             throw new ConfigurationException("Unable to parse configuration file(s) in "
                     + configurationFile.getAbsolutePath(), e);
         }
@@ -136,50 +138,50 @@ public class Configuration {
      * @throws ConfigurationException thrown if the configuration file(s) can not be be read or invalid
      */
     public static void load(Document configuration) throws ConfigurationException {
-        if (log.isDebugEnabled()) {
-            log.debug("Loading configuration from XML Document");
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Loading configuration from XML Document");
         }
 
-        if (log.isTraceEnabled()) {
-            log.trace("\n" + XMLHelper.nodeToString(configuration.getDocumentElement()));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace("\n" + XMLHelper.nodeToString(configuration.getDocumentElement()));
         }
 
         // Schema validation
-        if (log.isDebugEnabled()) {
-            log.debug("Schema validating configuration Document");
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Schema validating configuration Document");
         }
         validateConfiguration(configuration);
-        if (log.isDebugEnabled()) {
-            log.debug("Configuration document validated");
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Configuration document validated");
         }
 
         // Initialize object providers
         NodeList objectProviders = configuration.getDocumentElement().getElementsByTagNameNS(
                 XMLConstants.XMLTOOLING_CONFIG_NS, "ObjectProviders");
         if (objectProviders.getLength() > 0) {
-            if (log.isInfoEnabled()) {
-                log.info("Preparing to load ObjectProviders");
+            if (LOG.isInfoEnabled()) {
+                LOG.info("Preparing to load ObjectProviders");
             }
             initializeObjectProviders((Element) objectProviders.item(0));
-            if (log.isInfoEnabled()) {
-                log.info("ObjectProviders load complete");
+            if (LOG.isInfoEnabled()) {
+                LOG.info("ObjectProviders load complete");
             }
         }
 
         // Initialize validator suites
-        NodeList validatorSuites = configuration.getDocumentElement().getElementsByTagNameNS(
+        NodeList validatorSuitesNodes = configuration.getDocumentElement().getElementsByTagNameNS(
                 XMLConstants.XMLTOOLING_CONFIG_NS, "ValidatorSuites");
-        if (validatorSuites.getLength() > 0) {
-            if (log.isInfoEnabled()) {
-                log.info("Preparing to load ValidatorSuites");
+        if (validatorSuitesNodes.getLength() > 0) {
+            if (LOG.isInfoEnabled()) {
+                LOG.info("Preparing to load ValidatorSuites");
             }
-            initializeValidatorSuites((Element) validatorSuites.item(0));
-            if (log.isInfoEnabled()) {
-                log.info("ValidatorSuites load complete");
+            initializeValidatorSuites((Element) validatorSuitesNodes.item(0));
+            if (LOG.isInfoEnabled()) {
+                LOG.info("ValidatorSuites load complete");
             }
         }
     }
-    
+
     /**
      * Gets whether unknown attributes should be ignored during unmarshalling. If this is false and an unknown attribute
      * is encountered an {@link UnknownAttributeException} is thrown.
@@ -201,11 +203,12 @@ public class Configuration {
     }
 
     /**
-     * Gets the QName for the object provider that will be used for XMLObjects that do not have a registered object provider.
+     * Gets the QName for the object provider that will be used for XMLObjects that do not have a registered object
+     * provider.
      * 
      * @return the QName for the default object provider
      */
-    public static QName getDefaultProviderQName(){
+    public static QName getDefaultProviderQName() {
         return defaultProvider;
     }
 
@@ -269,8 +272,8 @@ public class Configuration {
      * @param key the key of the builder, marshaller, and unmarshaller to be removed
      */
     public static void unregisterObjectProvider(QName key) {
-        if (log.isDebugEnabled()) {
-            log.debug("Unregistering builder, marshaller, and unmarshaller for " + key);
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Unregistering builder, marshaller, and unmarshaller for " + key);
         }
         builderFactory.unregisterBuilder(key);
         marshallerFactory.deregisterMarshaller(key);
@@ -300,16 +303,16 @@ public class Configuration {
         String ignoreAttributesAttr = objectProviders.getAttributeNS(null, "ignoreUnknownAttributes");
         if (!DatatypeHelper.isEmpty(ignoreAttributesAttr)) {
             ignoreUnknownAttributes = Boolean.parseBoolean(ignoreAttributesAttr);
-            if (log.isDebugEnabled()) {
-                log.debug("ingoreUnknownAttributes set to " + ignoreUnknownAttributes);
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("ingoreUnknownAttributes set to " + ignoreUnknownAttributes);
             }
         }
 
         String ignoreElementsAttr = objectProviders.getAttributeNS(null, "ignoreUnknownElements");
         if (!DatatypeHelper.isEmpty(ignoreElementsAttr)) {
             ignoreUnknownElements = Boolean.parseBoolean(ignoreElementsAttr);
-            if (log.isDebugEnabled()) {
-                log.debug("ingoreUnknownElements set to " + ignoreUnknownElements);
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("ingoreUnknownElements set to " + ignoreUnknownElements);
             }
         }
 
@@ -330,8 +333,8 @@ public class Configuration {
             qNameAttrib = objectProvider.getAttributeNodeNS(null, "qualifiedName");
             objectProviderName = XMLHelper.getAttributeValueAsQName(qNameAttrib);
 
-            if (log.isDebugEnabled()) {
-                log.debug("Initializing object provider " + objectProviderName);
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Initializing object provider " + objectProviderName);
             }
 
             try {
@@ -349,11 +352,11 @@ public class Configuration {
 
                 configuredObjectProviders.put(objectProviderName, objectProvider);
 
-                if (log.isDebugEnabled()) {
-                    log.debug(objectProviderName + " intialized and configuration cached");
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug(objectProviderName + " intialized and configuration cached");
                 }
             } catch (ConfigurationException e) {
-                log.fatal("Error initializing object provier " + objectProvider, e);
+                LOG.fatal("Error initializing object provier " + objectProvider, e);
                 // clean up any parts of the object provider that might have been registered before the failure
                 unregisterObjectProvider(objectProviderName);
                 throw e;
@@ -375,25 +378,25 @@ public class Configuration {
         builderClassName = DatatypeHelper.safeTrimOrNullString(builderClassName);
 
         if (builderClassName == null) {
-            if (log.isDebugEnabled()) {
-                log.debug("No builder class provided for object provider " + objectProviderName);
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("No builder class provided for object provider " + objectProviderName);
             }
             return;
         }
 
-        if (log.isDebugEnabled()) {
-            log.debug("Initializing builder " + builderClassName + " for object provider" + objectProviderName);
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Initializing builder " + builderClassName + " for object provider" + objectProviderName);
         }
 
-        if (log.isTraceEnabled()) {
-            log.trace("\n" + XMLHelper.nodeToString(builderConfiguration));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace("\n" + XMLHelper.nodeToString(builderConfiguration));
         }
 
         try {
             XMLObjectBuilder objectBuilder = (XMLObjectBuilder) createClassInstance(builderClassName);
             builderFactory.registerBuilder(objectProviderName, objectBuilder);
         } catch (InstantiationException e) {
-            log.fatal("Unable to create instance of builder class " + builderClassName + " for object provider "
+            LOG.fatal("Unable to create instance of builder class " + builderClassName + " for object provider "
                     + objectProviderName);
             throw new ConfigurationException("Unable to create instance of builder class " + builderClassName
                     + " for object provider " + objectProviderName, e);
@@ -414,25 +417,25 @@ public class Configuration {
         marshallerClassName = DatatypeHelper.safeTrimOrNullString(marshallerClassName);
 
         if (marshallerClassName == null) {
-            if (log.isDebugEnabled()) {
-                log.debug("No marshaller class provided for object provider " + objectProviderName);
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("No marshaller class provided for object provider " + objectProviderName);
             }
             return;
         }
 
-        if (log.isDebugEnabled()) {
-            log.debug("Initializing marshaller " + marshallerClassName + " for Object " + objectProviderName);
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Initializing marshaller " + marshallerClassName + " for Object " + objectProviderName);
         }
 
-        if (log.isTraceEnabled()) {
-            log.trace("\n" + XMLHelper.nodeToString(marshallerConfiguration));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace("\n" + XMLHelper.nodeToString(marshallerConfiguration));
         }
 
         try {
             Marshaller objectMarshaller = (Marshaller) createClassInstance(marshallerClassName);
             marshallerFactory.registerMarshaller(objectProviderName, objectMarshaller);
         } catch (InstantiationException e) {
-            log.fatal("Unable to create instance of marshaller class " + marshallerClassName + " for object provider "
+            LOG.fatal("Unable to create instance of marshaller class " + marshallerClassName + " for object provider "
                     + objectProviderName);
             throw new ConfigurationException("Unable to create instance of marshaller class " + marshallerClassName
                     + " for object provider " + objectProviderName, e);
@@ -443,7 +446,7 @@ public class Configuration {
      * Intializes the unmarshaller class for the given object provider.
      * 
      * @param objectProviderName the name of the object provider
-     * @param marshallerClass the Marshaller configuration element
+     * @param unmarshallerConfiguration the Marshaller configuration element
      * 
      * @throws ConfigurationException thrown if the configuration elements are invalid
      */
@@ -453,25 +456,25 @@ public class Configuration {
         unmarshallerClassName = DatatypeHelper.safeTrimOrNullString(unmarshallerClassName);
 
         if (unmarshallerClassName == null) {
-            if (log.isDebugEnabled()) {
-                log.debug("No unmarshaller class provided for object provider " + objectProviderName);
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("No unmarshaller class provided for object provider " + objectProviderName);
             }
             return;
         }
 
-        if (log.isDebugEnabled()) {
-            log.debug("Initializing unmarshaller " + unmarshallerClassName + " for Object " + objectProviderName);
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Initializing unmarshaller " + unmarshallerClassName + " for Object " + objectProviderName);
         }
 
-        if (log.isTraceEnabled()) {
-            log.trace("\n" + XMLHelper.nodeToString(unmarshallerConfiguration));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace("\n" + XMLHelper.nodeToString(unmarshallerConfiguration));
         }
 
         try {
             Unmarshaller objectUnmarshaller = (Unmarshaller) createClassInstance(unmarshallerClassName);
             unmarshallerFactory.registerUnmarshaller(objectProviderName, objectUnmarshaller);
         } catch (InstantiationException e) {
-            log.fatal("Unable to create instance of unmarshaller class " + unmarshallerClassName
+            LOG.fatal("Unable to create instance of unmarshaller class " + unmarshallerClassName
                     + " for object provider " + objectProviderName);
             throw new ConfigurationException("Unable to create instance of unmarshaller class " + unmarshallerClassName
                     + " for object provider " + objectProviderName, e);
@@ -502,12 +505,12 @@ public class Configuration {
             validatorSuiteId = validatorSuiteElement.getAttributeNS(null, "id");
             validatorSuite = new ValidatorSuite(validatorSuiteId);
 
-            if (log.isDebugEnabled()) {
-                log.debug("Initializing ValidatorSuite " + validatorSuiteId);
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Initializing ValidatorSuite " + validatorSuiteId);
             }
 
-            if (log.isTraceEnabled()) {
-                log.trace(XMLHelper.nodeToString(validatorSuiteElement));
+            if (LOG.isTraceEnabled()) {
+                LOG.trace(XMLHelper.nodeToString(validatorSuiteElement));
             }
 
             NodeList validatorList = validatorSuiteElement.getElementsByTagNameNS(XMLConstants.XMLTOOLING_CONFIG_NS,
@@ -519,27 +522,27 @@ public class Configuration {
                         "qualifiedName"));
 
                 try {
-                    if (log.isDebugEnabled()) {
-                        log.debug("Creating instance of validator " + validatorClassName + " for ValidatorSuite "
+                    if (LOG.isDebugEnabled()) {
+                        LOG.debug("Creating instance of validator " + validatorClassName + " for ValidatorSuite "
                                 + validatorSuiteId);
                     }
                     validator = (Validator) createClassInstance(validatorClassName);
 
-                    if (log.isDebugEnabled()) {
-                        log.debug("Registering validator " + validatorClassName + " to ValidatorSuite "
+                    if (LOG.isDebugEnabled()) {
+                        LOG.debug("Registering validator " + validatorClassName + " to ValidatorSuite "
                                 + validatorSuiteId + " under QName " + validatorQName);
                     }
                     validatorSuite.registerValidator(validatorQName, validator);
                 } catch (InstantiationException e) {
                     String errorMsg = "Unable to create Validator " + validatorClassName + " for ValidatorSuite "
                             + validatorSuiteId;
-                    log.error(errorMsg, e);
+                    LOG.error(errorMsg, e);
                     throw new ConfigurationException(errorMsg, e);
                 }
             }
 
-            if (log.isDebugEnabled()) {
-                log.debug("ValidtorSuite " + validatorSuiteId + " has been initialized");
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("ValidtorSuite " + validatorSuiteId + " has been initialized");
             }
             validatorSuiteConfigurations.put(validatorSuiteId, validatorSuiteElement);
             validatorSuites.put(validatorSuiteId, validatorSuite);
@@ -561,21 +564,21 @@ public class Configuration {
             Constructor constructor = clazz.getConstructor();
             return constructor.newInstance();
         } catch (ClassNotFoundException e) {
-            log.error("Can not create instance of " + className + ", class not found on classpath", e);
+            LOG.error("Can not create instance of " + className + ", class not found on classpath", e);
             throw new InstantiationException("Can not create instance of " + className
                     + ", class not found on classpath");
         } catch (NoSuchMethodException e) {
-            log.error(className + " does not have a default constructor, can not create instance", e);
+            LOG.error(className + " does not have a default constructor, can not create instance", e);
             throw new InstantiationException(className
                     + " does not have a default constructor, can not create instance");
         } catch (IllegalArgumentException e) {
             // No arguments in default constructor
         } catch (IllegalAccessException e) {
-            log.error("Unable to execute constructor for " + className + " do to security restriction", e);
+            LOG.error("Unable to execute constructor for " + className + " do to security restriction", e);
             throw new InstantiationException("Unable to execute constructor for " + className
                     + " do to security restriction");
         } catch (InvocationTargetException e) {
-            log.error("Constructor for " + className + " through the following error when executed", e);
+            LOG.error("Constructor for " + className + " through the following error when executed", e);
             throw new InstantiationException("Constructor for " + className
                     + " through the following error when executed" + e);
         }
@@ -604,11 +607,11 @@ public class Configuration {
         } catch (IOException e) {
             // Should never get here as the DOM is already in memory
             String errorMsg = "Unable to read configuration file DOM";
-            log.error(errorMsg, e);
+            LOG.error(errorMsg, e);
             throw new ConfigurationException(errorMsg, e);
         } catch (SAXException e) {
             String errorMsg = "Configuration file does not validate against schema";
-            log.error(errorMsg, e);
+            LOG.error(errorMsg, e);
             throw new ConfigurationException(errorMsg, e);
         }
     }
