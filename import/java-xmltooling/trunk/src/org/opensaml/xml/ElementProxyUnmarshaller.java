@@ -34,7 +34,7 @@ public class ElementProxyUnmarshaller extends AbstractXMLObjectUnmarshaller {
     protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
             throws UnmarshallingException {
         ElementProxy elementProxy = (ElementProxy) parentXMLObject;
-        elementProxy.getOrderedChildren().add(childXMLObject);
+        elementProxy.getUnknownXMLObjects().add(childXMLObject);
     }
 
     /**

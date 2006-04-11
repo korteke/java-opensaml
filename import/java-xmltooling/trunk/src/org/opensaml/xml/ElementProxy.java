@@ -16,6 +16,7 @@
 
 package org.opensaml.xml;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -32,14 +33,11 @@ import org.opensaml.xml.validation.AbstractValidatingDOMCachingXMLObject;
  * own XMLObject representation. Generally this would be used as a catch-all mechanism such as when working with XML
  * documents that contain content that may not be known at the time, such as elements defined in XML Schema that contain
  * &lt;any&gt; constructs.
- * 
- * <strong>NOTE:</strong> the implemention of the method {@link org.opensaml.xml.XMLObject#getOrderedChildren()}
- * <strong>IS</strong> mutable and serves as the mechanism by which child XMLObjects may be added.
  */
-public class ElementProxy extends AbstractValidatingDOMCachingXMLObject implements AttributeExtensibleXMLObject {
+public class ElementProxy extends AbstractValidatingDOMCachingXMLObject implements AttributeExtensibleXMLObject, ElementExtensibleXMLObject {
 
     /** Attributes of the proxied Element */
-    private Map attributes;
+    private Map<QName, String> attributes;
 
     /** Text content of the proxied Element */
     private String textContent;
@@ -96,6 +94,13 @@ public class ElementProxy extends AbstractValidatingDOMCachingXMLObject implemen
     public Map<QName, String> getAttributes() {
         return attributes;
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public List<XMLObject> getUnknownXMLObjects() {
+        return children;
+    }
 
     /**
      * Gets the list of child XMLObjects in insertion order.
@@ -103,6 +108,6 @@ public class ElementProxy extends AbstractValidatingDOMCachingXMLObject implemen
      * @return the list of child XMLObjects in insertion order
      */
     public List<XMLObject> getOrderedChildren() {
-        return children;
+        return Collections.unmodifiableList(children);
     }
 }
