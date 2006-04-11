@@ -36,15 +36,6 @@ public abstract class AbstractDOMCachingXMLObject extends AbstractXMLObject impl
 
     /** DOM Element representation of this object */
     private Element dom;
-    
-    /**
-     * A constructor that allows the element QName to be set after construction.  <strong>NOTE</strong>
-     * great care should be taken when using this method of construction, very bad things will happen if 
-     * most code tries to work with XMLObjects that don't have Element QNames.
-     */
-    public AbstractDOMCachingXMLObject(){
-        super();
-    }
 
     /**
      * Constructor

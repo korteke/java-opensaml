@@ -40,15 +40,6 @@ public abstract class AbstractValidatingDOMCachingXMLObject extends AbstractDOMC
 
     /** Validators used to validate this XMLObject */
     private ArrayList<Validator> validators = new ArrayList<Validator>();
-
-    /**
-     * A constructor that allows the element QName to be set after construction.  <strong>NOTE</strong>
-     * great care should be taken when using this method of construction, very bad things will happen if 
-     * most code tries to work with XMLObjects that don't have Element QNames.
-     */
-    public AbstractValidatingDOMCachingXMLObject(){
-        super();
-    }
     
     /**
      * Constructor

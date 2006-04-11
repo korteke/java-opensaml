@@ -43,15 +43,6 @@ public abstract class AbstractXMLObject implements XMLObject {
     private HashSet<Namespace> namespaces = new HashSet<Namespace>();
 
     /**
-     * A constructor that allows the element QName to be set after construction. <strong>NOTE</strong> great care
-     * should be taken when using this method of construction, very bad things will happen if most code tries to work
-     * with XMLObjects that don't have Element QNames.
-     */
-    protected AbstractXMLObject() {
-
-    }
-
-    /**
      * Constructor
      * 
      * @param namespaceURI the namespace the element is in

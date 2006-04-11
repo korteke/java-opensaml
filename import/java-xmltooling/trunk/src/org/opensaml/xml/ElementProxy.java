@@ -46,16 +46,7 @@ public class ElementProxy extends AbstractValidatingDOMCachingXMLObject implemen
 
     /** Children of the proxied Element */
     private XMLObjectChildrenList<XMLObject> children;
-
-    /**
-     * Constructor
-     */
-    protected ElementProxy() {
-        super();
-        attributes = TypedMap.decorate(new DOMCachingXMLObjectAwareMap(this), QName.class, String.class);
-        children = new XMLObjectChildrenList<XMLObject>(this);
-    }
-
+    
     /**
      * Constructor
      * 
