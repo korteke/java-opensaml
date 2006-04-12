@@ -16,14 +16,14 @@
 
 package org.opensaml.xml;
 
-import java.util.Iterator;
-import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.xml.namespace.QName;
 
 import org.opensaml.xml.io.AbstractXMLObjectMarshaller;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.util.XMLHelper;
+import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
 
 /**
@@ -37,23 +37,11 @@ public class ElementProxyMarshaller extends AbstractXMLObjectMarshaller {
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         ElementProxy proxy = (ElementProxy) xmlObject;
 
-        Map<QName, String> attributes = proxy.getUnknownAttributes();
-        if (attributes.isEmpty()) {
-            return;
-        }
-
-        Iterator<Map.Entry<QName, String>> entryItr = attributes.entrySet().iterator();
-        String qualifiedName;
-        Map.Entry<QName, String> attribute;
-        while (entryItr.hasNext()) {
-            attribute = entryItr.next();
-            if (attribute.getKey().getPrefix() != null) {
-                qualifiedName = attribute.getKey().getPrefix() + ":" + attribute.getKey().getLocalPart();
-            } else {
-                qualifiedName = attribute.getKey().getLocalPart();
-            }
-
-            domElement.setAttributeNS(attribute.getKey().getNamespaceURI(), qualifiedName, attribute.getValue());
+        Attr attribute;
+        for(Entry<QName, String> entry: proxy.getUnknownAttributes().entrySet()){
+            attribute = XMLHelper.constructAttribute(domElement.getOwnerDocument(), entry.getKey());
+            attribute.setValue(entry.getValue());
+            domElement.setAttributeNode(attribute);
         }
     }
 

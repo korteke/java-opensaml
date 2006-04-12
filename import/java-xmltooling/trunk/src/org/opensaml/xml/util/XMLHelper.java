@@ -162,10 +162,10 @@ public class XMLHelper {
             qualifiedName = DatatypeHelper.safeTrimOrNullString(localName);
         }
         
-        if(!DatatypeHelper.isEmpty(namespaceURI)){
-            return document.createAttributeNS(namespaceURI, qualifiedName);
-        }else{
+        if(DatatypeHelper.isEmpty(namespaceURI)){
             return document.createAttribute(qualifiedName);
+        }else{
+            return document.createAttributeNS(namespaceURI, qualifiedName);
         }
     }
 
