@@ -38,6 +38,9 @@ public class XMLConstants {
     // ****************************
     /** XML core namespace */
     public final static String XML_NS = "http://www.w3.org/XML/1998/namespace";
+    
+    /** XML core prefix for xml attributes */
+    public final static String XML_PREFIX = "xml";
 
     /** XML namespace for xmlns attributes */
     public final static String XMLNS_NS = "http://www.w3.org/2000/xmlns/";
