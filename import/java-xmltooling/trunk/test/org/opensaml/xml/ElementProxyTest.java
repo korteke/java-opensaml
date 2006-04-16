@@ -21,9 +21,14 @@ import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.parse.XMLParserException;
 import org.w3c.dom.Document;
 
+/**
+ * Tests the {@link org.opensaml.xml.ElementProxy} class.
+ */
 public class ElementProxyTest extends XMLObjectBaseTestCase {
 
-    
+    /**
+     * Tests unmarshalling unknown content into the element proxy.
+     */
     public void testUnmarshallUnknownContent() throws XMLParserException, UnmarshallingException{
         String documentLocation = "/data/org/opensaml/xml/UnknownContent.xml";
         Document document = parserPool.parse(UnmarshallingTest.class.getResourceAsStream(documentLocation));

@@ -382,7 +382,7 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
         Set<Namespace> namespaces = xmlObject.getNamespaces();
 
         for (Namespace namespace : namespaces) {
-            if (!namespace.alwaysDeclare() && domElement.lookupNamespaceURI(namespace.getNamespacePrefix()) != null) {
+            if (!namespace.alwaysDeclare() && XMLHelper.lookupNamespaceURI(domElement, namespace.getNamespacePrefix()) != null) {
                 if (log.isDebugEnabled()) {
                     log.debug("Namespace " + namespace + " has already been declared on an ancestor of "
                             + xmlObject.getElementQName() + " no need to add it here");
@@ -393,22 +393,8 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
                 }
                 String nsURI = DatatypeHelper.safeTrimOrNullString(namespace.getNamespaceURI());
                 String nsPrefix = DatatypeHelper.safeTrimOrNullString(namespace.getNamespacePrefix());
-
-                String attributeName;
-                if (nsPrefix == null) {
-                    attributeName = XMLConstants.XMLNS_PREFIX;
-                } else {
-                    attributeName = XMLConstants.XMLNS_PREFIX + ":" + nsPrefix;
-                }
-
-                String attributeValue;
-                if (nsURI == null) {
-                    attributeValue = "";
-                } else {
-                    attributeValue = nsURI;
-                }
-
-                domElement.setAttributeNS(XMLConstants.XMLNS_NS, attributeName, attributeValue);
+                
+                XMLHelper.appendNamespaceDecleration(domElement, nsURI, nsPrefix);
             }
         }
     }

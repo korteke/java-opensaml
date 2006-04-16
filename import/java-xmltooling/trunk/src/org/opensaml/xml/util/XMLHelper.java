@@ -288,6 +288,18 @@ public class XMLHelper {
 
         parentElement.appendChild(childElement);
     }
+    
+    /**
+     * Adopts an element into a document if the child is not already in the document.
+     * 
+     * @param adoptee the element to be adopted
+     * @param adopter the document into which the element is adopted
+     */
+    public static void adoptElement(Element adoptee, Document adopter) {
+        if (!(adoptee.getOwnerDocument().equals(adopter))) {
+            adopter.adoptNode(adoptee);
+        }
+    }
 
     /**
      * Creates a text node with the given content and appends it as child to the given element.
@@ -332,17 +344,6 @@ public class XMLHelper {
         domElement.setAttributeNS(XMLConstants.XMLNS_NS, attributeName, attributeValue);
     }
 
-    /**
-     * Adopts an element into a document if the child is not already in the document.
-     * 
-     * @param adoptee the element to be adopted
-     * @param adopter the document into which the element is adopted
-     */
-    public static void adoptElement(Element adoptee, Document adopter) {
-        if (!(adoptee.getOwnerDocument().equals(adopter))) {
-            adopter.adoptNode(adoptee);
-        }
-    }
 
     /**
      * Looks up the namespace URI associated with the given prefix starting at the given element. This method differs

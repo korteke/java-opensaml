@@ -30,7 +30,7 @@ public class SimpleXMLObjectMarshaller extends AbstractDOMCachingXMLObjectMarsha
      * Constructor
      */
     public SimpleXMLObjectMarshaller() {
-        super(SimpleXMLObject.NAMESAPACE, SimpleXMLObject.LOCAL_NAME);
+        super();
     }
     
     /*

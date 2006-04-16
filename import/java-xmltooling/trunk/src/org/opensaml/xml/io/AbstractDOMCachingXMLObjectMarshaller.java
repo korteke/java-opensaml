@@ -19,6 +19,7 @@ package org.opensaml.xml.io;
 import org.apache.log4j.Logger;
 import org.opensaml.xml.DOMCachingXMLObject;
 import org.opensaml.xml.XMLObject;
+import org.opensaml.xml.parse.XMLParserException;
 import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -32,14 +33,14 @@ public abstract class AbstractDOMCachingXMLObjectMarshaller extends AbstractXMLO
 
     /** Logger */
     private static Logger log = Logger.getLogger(AbstractDOMCachingXMLObjectMarshaller.class);
-    
+
     /**
      * Constructor.
      */
     protected AbstractDOMCachingXMLObjectMarshaller() {
         super();
     }
-    
+
     /**
      * This constructor supports checking an XMLObject to be marshalled, either element name or schema type, against a
      * given namespace/local name pair.
@@ -70,19 +71,23 @@ public abstract class AbstractDOMCachingXMLObjectMarshaller extends AbstractXMLO
         if (log.isDebugEnabled()) {
             log.debug("Checking if " + xmlObject.getElementQName() + " contains a cached DOM representation");
         }
-        domElement= domCachingObject.getDOM();
+        domElement = domCachingObject.getDOM();
         if (domElement != null) {
-            if (log.isDebugEnabled()) {
-                log.debug(xmlObject.getElementQName()
-                        + " contains a cached DOM representation, ensuring it is the root element of the document");
-            }
+            
+            prepareForAdoption(domCachingObject);
 
             if (domElement.getOwnerDocument() != document) {
+                if(log.isDebugEnabled()){
+                    log.debug("Adopting DOM of XMLObject into given Document");
+                }
                 XMLHelper.adoptElement(domElement, document);
             }
-
-            domCachingObject.releaseParentDOM(true);
+            
+            if(log.isDebugEnabled()){
+                log.debug("Setting DOM of XMLObject as document element of given Document");
+            }
             setDocumentElement(document, domElement);
+            
             return domElement;
         }
 
@@ -108,7 +113,7 @@ public abstract class AbstractDOMCachingXMLObjectMarshaller extends AbstractXMLO
         Element domElement;
 
         if (parentElement == null) {
-            throw new MarshallingException("parentElement may not be null");
+            throw new MarshallingException("Can not marshalli into a null parent element");
         }
 
         if (log.isDebugEnabled()) {
@@ -117,12 +122,17 @@ public abstract class AbstractDOMCachingXMLObjectMarshaller extends AbstractXMLO
         domElement = domCachingObject.getDOM();
         if (domElement != null) {
             if (log.isDebugEnabled()) {
-                log.debug(xmlObject.getElementQName()
-                        + " contains a cached DOM representation, appending it to parent element "
+                log.debug(xmlObject.getElementQName() + " contains a cached DOM representation");
+            }
+
+            prepareForAdoption(domCachingObject);
+
+            if (log.isDebugEnabled()) {
+                log.debug("Appending DOM of XMLObject " + xmlObject.getElementQName() + " as child of parent element "
                         + XMLHelper.getNodeQName(parentElement));
             }
-            domCachingObject.releaseParentDOM(true);
-            XMLHelper.appendChildElement(domElement, parentElement);
+            XMLHelper.appendChildElement(parentElement, domElement);
+            
             return domElement;
         }
 
@@ -138,5 +148,35 @@ public abstract class AbstractDOMCachingXMLObjectMarshaller extends AbstractXMLO
         domCachingObject.releaseParentDOM(true);
 
         return domElement;
+    }
+    
+    /**
+     * Prepares the given DOM caching XMLObject for adoption into another document.  If the XMLObject has a parent 
+     * then all visible namespaces used by the given XMLObject and its descendants are declared within that subtree 
+     * and the parent's DOM is invalidated. 
+     * 
+     * @param domCachingObject the XMLObject to prepare for adoption
+     * 
+     * @throws MarshallingException thrown if a namespace within the XMLObject's DOM subtree can not be resolved.
+     */
+    private void prepareForAdoption(DOMCachingXMLObject domCachingObject) throws MarshallingException{        
+        if (domCachingObject.getParent() != null) {
+            if (log.isDebugEnabled()) {
+                log.debug("Rooting all visible namespaces of XMLObject " + domCachingObject.getElementQName()
+                        + " before adding it to new parent Element");
+            }
+            try {
+                XMLHelper.rootNamespaces(domCachingObject.getDOM());
+            } catch (XMLParserException e) {
+                String errorMsg = "Unable to root namespaces of cached DOM element, " + domCachingObject.getElementQName();
+                log.error(errorMsg, e);
+                throw new MarshallingException(errorMsg, e);
+            }
+            
+            if (log.isDebugEnabled()) {
+                log.debug("Release DOM of XMLObject parent");
+            }
+            domCachingObject.releaseParentDOM(true);
+        }
     }
 }
