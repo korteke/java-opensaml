@@ -18,8 +18,8 @@ package org.opensaml.xml.signature.impl;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.xml.AbstractXMLObjectBuilder;
 import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.XMLObjectBuilder;
 import org.opensaml.xml.signature.Signature;
 import org.opensaml.xml.signature.SigningContext;
 import org.w3c.dom.Element;
@@ -27,7 +27,7 @@ import org.w3c.dom.Element;
 /**
  * Builder of {@link org.opensaml.xml.signature.impl.XMLSecSignatureImpl}s.
  */
-public class XMLSecSignatureBuilder implements XMLObjectBuilder {
+public class XMLSecSignatureBuilder extends AbstractXMLObjectBuilder<Signature> {
 
     /** Signing context used when creating a XMLSecSignatureImpl */
     private SigningContext context;
@@ -47,21 +47,21 @@ public class XMLSecSignatureBuilder implements XMLObjectBuilder {
     /*
      * @see org.opensaml.xml.XMLObjectBuilder#buildObject(org.w3c.dom.Element)
      */
-    public XMLObject buildObject(Element element) {
+    public Signature buildObject(Element element) {
         return new XMLSecSignatureImpl(context);
     }
 
     /*
      * @see org.opensaml.xml.XMLObjectBuilder#buildObject(java.lang.String, java.lang.String, java.lang.String)
      */
-    public XMLObject buildObject(String namespaceURI, String localName, String namespacePrefix) {
+    public Signature buildObject(String namespaceURI, String localName, String namespacePrefix) {
         return new XMLSecSignatureImpl(context);
     }
 
     /*
      * @see org.opensaml.xml.XMLObjectBuilder#buildObject(java.lang.String, java.lang.String, java.lang.String, javax.xml.namespace.QName)
      */
-    public XMLObject buildObject(String namespaceURI, String localName, String namespacePrefix, QName schemaType) {
+    public Signature buildObject(String namespaceURI, String localName, String namespacePrefix, QName schemaType) {
         return new XMLSecSignatureImpl(context);
     }
 }

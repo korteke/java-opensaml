@@ -38,6 +38,20 @@ public abstract class AbstractXMLObjectBuilder<XMLObjectType extends XMLObject> 
     /**
      * {@inheritDoc}
      */
+    public XMLObjectType buildObject(QName objectName){
+        return buildObject(objectName.getNamespaceURI(), objectName.getLocalPart(), objectName.getPrefix());
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public XMLObjectType buildObject(QName objectName, QName schemaType){
+        return buildObject(objectName.getNamespaceURI(), objectName.getLocalPart(), objectName.getPrefix(), schemaType);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
     public abstract XMLObjectType buildObject(String namespaceURI, String localName, String namespacePrefix);
 
     /**

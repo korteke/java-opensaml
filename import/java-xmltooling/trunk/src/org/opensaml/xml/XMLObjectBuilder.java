@@ -26,6 +26,25 @@ import org.w3c.dom.Element;
  * @param <XMLObjectType> the XMLObject type that this builder produces
  */
 public interface XMLObjectBuilder<XMLObjectType extends XMLObject> {
+    
+    /**
+     * Creates an XMLObject with a given fully qualified name.
+     * 
+     * @param objectName fully qualified name of the object
+     * 
+     * @return the constructed XMLObject
+     */
+    public XMLObjectType buildObject(QName objectName);
+    
+    /**
+     * Creates an XMLObject with a given fully qualified name and schema type.
+     * 
+     * @param objectName fully qualified name of the object
+     * @param schemaType the schema type of the Element represented by this XMLObject
+     * 
+     * @return the constructed XMLObject
+     */
+    public XMLObjectType buildObject(QName objectName, QName schemaType);
 
     /**
      * Creates an XMLObject with a given fully qualified name.
