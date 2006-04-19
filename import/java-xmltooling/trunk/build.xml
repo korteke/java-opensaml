@@ -16,11 +16,11 @@
 
     <property name="jdk.target" value="1.5" />
 
-    <property name="version" value="20060226-prealpha" />
+    <property name="version" value="1.0-TP1" />
 	<property name="jar.name" value="xmltooling-${version}-jdk-${jdk.target}.jar" />
 	<property name="src-dist.name" value="xmltooling-${version}-jdk-${jdk.target}-src" />
 	<property name="bin-dist.name" value="xmltooling-${version}-jdk-${jdk.target}-bin" />
-    <property name="year" value="2002-2005" />
+    <property name="year" value="2002-2006" />
     <property name="copyright" value="Copyright &#169; ${year} UCAID. All Rights Reserved." />
 
     <!-- Load ant-contrib tasks -->
@@ -94,7 +94,14 @@
     <!-- Javadoc core (non-test) classes -->
     <target name="javadoc">
         <mkdir dir="${javadoc.dir}" />
-        <javadoc packagenames="org.opensaml.*" sourcepath="${core-src.dir}" destdir="${javadoc.dir}" author="false" version="true" windowtitle="XML Tooling ${version} Java API" doctitle="XML Tooling ${version} Java API" bottom="${copyright}">
+        <javadoc packagenames="org.opensaml.*" 
+        	     sourcepath="${core-src.dir}" 
+        	     destdir="${javadoc.dir}" 
+        	     author="false" version="true" 
+        	     windowtitle="XML Tooling ${version} Java API" 
+        	     doctitle="XML Tooling ${version} Java API" 
+        	     bottom="${copyright}"
+        	     overview="${core-src.dir}/overview.html">
             <classpath refid="build-path" />
         </javadoc>
     </target>

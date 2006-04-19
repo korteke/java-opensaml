@@ -39,7 +39,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
- * A thread safe, abstract implementation of the {@link org.opensaml.xml.io.Marshaller} interface that handles most of
+ * A thread safe, abstract implementation of the {@link org.opensaml.xml.io.Marshaller} interface. This class handles most of
  * the boilerplate code:
  * <ul>
  * <li>Ensuring elements to be marshalled are of either the correct xsi:type or element QName</li>
@@ -51,7 +51,6 @@ import org.w3c.dom.Element;
  * {@link org.opensaml.xml.signature.Signature}</li>
  * <li>Encrypting instances of {@link org.opensaml.xml.encryption.EncryptableXMLObject} that contain an
  * {@link org.opensaml.xml.encryption.EncryptionContext}</li>
- * <li>Caching of created DOM for elements that implement {@link org.opensaml.xml.DOMCachingXMLObject}</li>
  * </ul>
  */
 public abstract class AbstractXMLObjectMarshaller implements Marshaller {

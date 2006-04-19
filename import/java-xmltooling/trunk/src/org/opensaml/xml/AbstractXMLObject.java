@@ -74,7 +74,9 @@ public abstract class AbstractXMLObject implements XMLObject {
     }
 
     /**
-     * {@inheritDoc}
+     * Sets the prefix for this element's namespace.
+     * 
+     * @param prefix the prefix for this element's namespace
      */
     public void setElementNamespacePrefix(String prefix) {
         if (prefix == null) {

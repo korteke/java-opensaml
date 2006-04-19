@@ -20,21 +20,25 @@ import org.opensaml.xml.DOMCachingXMLObject;
 import org.opensaml.xml.XMLObject;
 import org.w3c.dom.Element;
 
-
+/**
+ * A thread-safe unmarshaller that extends {@link org.opensaml.xml.io.AbstractXMLObjectMarshaller} by adding support for
+ * DOM caching.
+ */
 public abstract class AbstractDOMCachingXMLObjectUnmarshaller extends AbstractXMLObjectUnmarshaller {
-    
-    public AbstractDOMCachingXMLObjectUnmarshaller(){
+
+    public AbstractDOMCachingXMLObjectUnmarshaller() {
         super();
     }
-    
-    protected AbstractDOMCachingXMLObjectUnmarshaller(String targetNamespaceURI, String targetLocalName) throws IllegalArgumentException{
+
+    protected AbstractDOMCachingXMLObjectUnmarshaller(String targetNamespaceURI, String targetLocalName)
+            throws IllegalArgumentException {
         super(targetNamespaceURI, targetLocalName);
     }
 
     public XMLObject unmarshall(Element domElement) throws UnmarshallingException {
         DOMCachingXMLObject dcXMLObject = (DOMCachingXMLObject) super.unmarshall(domElement);
         dcXMLObject.setDOM(domElement);
-        
+
         return dcXMLObject;
     }
 }

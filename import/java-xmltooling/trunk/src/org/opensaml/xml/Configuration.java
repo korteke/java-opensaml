@@ -183,8 +183,7 @@ public final class Configuration {
     }
 
     /**
-     * Gets whether unknown attributes should be ignored during unmarshalling. If this is false and an unknown attribute
-     * is encountered an {@link UnknownAttributeException} is thrown.
+     * Gets whether unknown attributes should be ignored during unmarshalling.
      * 
      * @return whether unknown attributes should be ignored during unmarshalling
      */
@@ -193,8 +192,7 @@ public final class Configuration {
     }
 
     /**
-     * Gets whether unknown elements should be ignored during unmarshalling. If this is false and an unknown element is
-     * encountered an {@link UnknownElementException} is thrown.
+     * Gets whether unknown elements should be ignored during unmarshalling.
      * 
      * @return whether unknown elements should be ignored during unmarshalling
      */

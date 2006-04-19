@@ -140,7 +140,7 @@ public class Namespace {
      * <li>The given object's namespace prefix is the same as this object's namespace prefix</li>
      * </ul>
      * 
-     * @param {@inheritDoc}
+     * @param obj {@inheritDoc}
      * 
      * @return {@inheritDoc}
      */

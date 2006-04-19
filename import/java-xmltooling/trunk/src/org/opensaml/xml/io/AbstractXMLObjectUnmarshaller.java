@@ -141,7 +141,7 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
                 unmarshallTextContent(xmlObject, (Text) childNode);
             }
         }
-        
+
         if (xmlObject instanceof SignableXMLObject) {
             verifySignature(domElement, xmlObject);
         }
@@ -165,7 +165,7 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
                 log.debug("Targeted QName checking is not available for this unmarshaller, DOM Element " + elementName
                         + " was not verified");
             }
-            
+
             return;
         }
 
@@ -200,9 +200,9 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
      * Schema type defined this method will attempt to retrieve an XMLObjectBuilder, from the factory given at
      * construction time, using the schema type. If no schema type is present or no builder is registered with the
      * factory for the schema type, the elements QName is used. Once the builder is found the XMLObject is create by
-     * invoking {@link XMLObjectBuilder#buildObject()}. Extending classes may wish to override this logic if more than
-     * just schema type or element name (e.g. element attributes or content) need to be used to determine which
-     * XMLObjectBuilder should be used to create the XMLObject.
+     * invoking {@link XMLObjectBuilder#buildObject(String, String, String)}. Extending classes may wish to override
+     * this logic if more than just schema type or element name (e.g. element attributes or content) need to be used to
+     * determine which XMLObjectBuilder should be used to create the XMLObject.
      * 
      * @param domElement the DOM Element the created XMLObject will represent
      * 
@@ -239,9 +239,8 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
      * Unmarshalls the attributes from the given DOM Attr into the given XMLObject. If the attribute is an XML namespace
      * declaration the attribute is passed to
      * {@link AbstractXMLObjectUnmarshaller#unmarshallNamespaceAttribute(XMLObject, Attr)}. If it is an schema type
-     * decleration (xsi:type) it is passed to
-     * {@link AbstractXMLObjectUnmarshaller#unmarshallSchemaTypeAttribute(XMLObject, Attr)}. All other attributes are
-     * passed to the {@link #processAttribute(XMLObject, String, String)}
+     * decleration (xsi:type) it is ignored because this attribute is handled by {@link #buildXMLObject(Element)}. All
+     * other attributes are passed to the {@link #processAttribute(XMLObject, Attr)}
      * 
      * @param attribute the attribute to be unmarshalled
      * @param xmlObject the XMLObject that will recieve information from the DOM attribute
@@ -260,8 +259,8 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
                         + " is a namespace declaration, adding it to the list of namespaces on the XMLObject");
             }
             unmarshallNamespaceAttribute(xmlObject, attribute);
-        }else if(DatatypeHelper.safeEquals(attributeNamespace, XMLConstants.XSI_NS) &&
-                DatatypeHelper.safeEquals(attribute.getLocalName(), "type")) {
+        } else if (DatatypeHelper.safeEquals(attributeNamespace, XMLConstants.XSI_NS)
+                && DatatypeHelper.safeEquals(attribute.getLocalName(), "type")) {
             // Skip over schema type declerations as they are handled by the builder
         } else {
             if (log.isDebugEnabled()) {
@@ -295,11 +294,12 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
 
     /**
      * Unmarshalls given Element's children. For each child an unmarshaller is retrieved using
-     * {@link #getUnmarshaller(Element)}. The unmarshaller is then used to unmarshall the child element and the
-     * resultant XMLObject is passed to {@link #processChildElement(XMLObject, XMLObject)} for further processing.
+     * {@link UnmarshallerFactory#getUnmarshaller(Element)}. The unmarshaller is then used to unmarshall the child
+     * element and the resultant XMLObject is passed to {@link #processChildElement(XMLObject, XMLObject)} for further
+     * processing.
      * 
-     * @param domElement the DOM Element whose children will be unmarshalled
      * @param xmlObject the parent object of the unmarshalled children
+     * @param childElement the child element to be unmarshalled
      * 
      * @throws UnmarshallingException thrown if an error occurs unmarshalling the chilren elements
      */
@@ -325,12 +325,12 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
                 }
             }
         }
-        
+
         if (log.isDebugEnabled()) {
             log.debug("Unmarshalling child element " + XMLHelper.getNodeQName(childElement) + " with unmarshaller "
                     + unmarshaller.getClass().getName());
         }
-        
+
         processChildElement(xmlObject, unmarshaller.unmarshall(childElement));
     }
 
@@ -377,17 +377,17 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
                 .getUnmarshaller(signatureQName);
         unmarshaller.verifySignature(domElement, signature);
     }
-    /** 
-     * Called after all the attributes have been processed to allow the object to affect the context
-     * that child elements will be built with.  By default affect nothing.
+
+    /**
+     * Called after all the attributes have been processed to allow the object to affect the context that child elements
+     * will be built with. By default affect nothing.
      * 
      * @param xmlObject the XML object in question
-     * @param context the context that will be given to child objects
      */
-    protected void processContext(XMLObject xmlObject){
-        //Nothing
+    protected void processContext(XMLObject xmlObject) {
+        // Nothing
     }
-    
+
     /**
      * Called after a child element has been unmarshalled so that it can be added to the parent XMLObject.
      * 
