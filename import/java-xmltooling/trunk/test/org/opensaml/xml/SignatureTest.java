@@ -83,7 +83,7 @@ public class SignatureTest extends XMLObjectBaseTestCase {
      * @throws XMLParserException thrown if a document can not be created to root the marshalled XMLObject in
      * @throws NoSuchAlgorithmException thrown if RSA keys are not supporter
      */
-//    public void testRSAPublicKeySignature() throws MarshallingException, UnmarshallingException, XMLParserException, NoSuchAlgorithmException {
+    public void testRSAPublicKeySignature() throws MarshallingException, UnmarshallingException, XMLParserException, NoSuchAlgorithmException {
 //        KeyPair keyPair = KeyPairGenerator.getInstance("RSA").generateKeyPair();
 //        SimpleXMLObject xmlObject = getXMLSignableObject(keyPair.getPrivate(), keyPair.getPublic());
 //        
@@ -96,7 +96,7 @@ public class SignatureTest extends XMLObjectBaseTestCase {
 //        // Unmarshall and verify
 //        Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(simpleXMLObjectQName);
 //        unmarshaller.unmarshall(domElement);
-//    }
+    }
     
     /**
      * Tests that a signature can be created and verified with an DSA key pair.
