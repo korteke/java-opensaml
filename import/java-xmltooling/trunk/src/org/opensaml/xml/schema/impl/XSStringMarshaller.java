@@ -19,14 +19,14 @@ package org.opensaml.xml.schema.impl;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.AbstractDOMCachingXMLObjectMarshaller;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.schema.XSIString;
+import org.opensaml.xml.schema.XSString;
 import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Element;
 
 /**
- * Thread-safe marshaller of {@link org.opensaml.xml.schema.XSIString} objects.
+ * Thread-safe marshaller of {@link org.opensaml.xml.schema.XSString} objects.
  */
-public class XSIStringMarshaller extends AbstractDOMCachingXMLObjectMarshaller {
+public class XSStringMarshaller extends AbstractDOMCachingXMLObjectMarshaller {
 
     /**
      * {@inheritDoc}
@@ -39,7 +39,7 @@ public class XSIStringMarshaller extends AbstractDOMCachingXMLObjectMarshaller {
      * {@inheritDoc}
      */
     protected void marshallElementContent(XMLObject xmlObject, Element domElement) throws MarshallingException {
-        XSIString xsiString = (XSIString) xmlObject;
+        XSString xsiString = (XSString) xmlObject;
         
         XMLHelper.appendTextContent(domElement, xsiString.getValue());
     }

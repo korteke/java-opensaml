@@ -17,17 +17,17 @@
 package org.opensaml.xml.schema.impl;
 
 import org.opensaml.xml.AbstractXMLObjectBuilder;
-import org.opensaml.xml.schema.XSIString;
+import org.opensaml.xml.schema.XSString;
 
 /**
- * Builder of {@link org.opensaml.xml.schema.impl.XSIStringImpl} objects.
+ * Builder of {@link org.opensaml.xml.schema.impl.XSStringImpl} objects.
  */
-public class XSIStringBuilder extends AbstractXMLObjectBuilder<XSIString> {
+public class XSStringBuilder extends AbstractXMLObjectBuilder<XSString> {
 
     /**
      * {@inheritDoc}
      */
-    public XSIString buildObject(String namespaceURI, String localName, String namespacePrefix) {
-        return new XSIStringImpl(namespaceURI, localName, namespacePrefix);
+    public XSString buildObject(String namespaceURI, String localName, String namespacePrefix) {
+        return new XSStringImpl(namespaceURI, localName, namespacePrefix);
     }
 }

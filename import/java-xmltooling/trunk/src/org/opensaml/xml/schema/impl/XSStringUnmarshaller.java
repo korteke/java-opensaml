@@ -19,13 +19,13 @@ package org.opensaml.xml.schema.impl;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.AbstractDOMCachingXMLObjectUnmarshaller;
 import org.opensaml.xml.io.UnmarshallingException;
-import org.opensaml.xml.schema.XSIString;
+import org.opensaml.xml.schema.XSString;
 import org.w3c.dom.Attr;
 
 /**
- * Thread-safe unmarshaller for {@link org.opensaml.xml.schema.XSIString} objects.
+ * Thread-safe unmarshaller for {@link org.opensaml.xml.schema.XSString} objects.
  */
-public class XSIStringUnmarshaller extends AbstractDOMCachingXMLObjectUnmarshaller {
+public class XSStringUnmarshaller extends AbstractDOMCachingXMLObjectUnmarshaller {
 
     /**
      * {@inheritDoc}
@@ -46,7 +46,7 @@ public class XSIStringUnmarshaller extends AbstractDOMCachingXMLObjectUnmarshall
      * {@inheritDoc}
      */
     protected void processElementContent(XMLObject xmlObject, String elementContent) {
-        XSIString xsiString = (XSIString) xmlObject;
+        XSString xsiString = (XSString) xmlObject;
         
         xsiString.setValue(elementContent);
     }

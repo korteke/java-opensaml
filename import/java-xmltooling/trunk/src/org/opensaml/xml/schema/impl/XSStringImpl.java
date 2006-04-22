@@ -19,13 +19,13 @@ package org.opensaml.xml.schema.impl;
 import java.util.List;
 
 import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.schema.XSIString;
+import org.opensaml.xml.schema.XSString;
 import org.opensaml.xml.validation.AbstractValidatingDOMCachingXMLObject;
 
 /**
- * Concrete implementation of {@link org.opensaml.xml.schema.XSIString}.
+ * Concrete implementation of {@link org.opensaml.xml.schema.XSString}.
  */
-public class XSIStringImpl extends AbstractValidatingDOMCachingXMLObject implements XSIString {
+public class XSStringImpl extends AbstractValidatingDOMCachingXMLObject implements XSString {
 
     /** Value of this string element */
     private String value;
@@ -37,7 +37,7 @@ public class XSIStringImpl extends AbstractValidatingDOMCachingXMLObject impleme
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected XSIStringImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
+    protected XSStringImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
     

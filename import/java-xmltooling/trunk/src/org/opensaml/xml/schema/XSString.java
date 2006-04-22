@@ -24,13 +24,13 @@ import org.opensaml.xml.util.XMLConstants;
 /**
  * XMLObject that represents an XML Schema String.
  */
-public interface XSIString extends XMLObject {
+public interface XSString extends XMLObject {
 
     /** Local name of the XSI type */
     public final static String TYPE_LOCAL_NAME = "String"; 
         
     /** QName of the XSI type */
-    public final static QName TYPE_NAME = new QName(XMLConstants.XSI_NS, TYPE_LOCAL_NAME, XMLConstants.XSI_PREFIX);
+    public final static QName TYPE_NAME = new QName(XMLConstants.XSD_NS, TYPE_LOCAL_NAME, XMLConstants.XSD_PREFIX);
     
     /**
      * Gets the string.
