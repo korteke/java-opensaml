@@ -1,12 +1,13 @@
 XMLTooling-J version 1.0 Technology Preview 1
 =============================================
 
-XMLTooling-J is a low-level library that may be used to construct libraries that
-allow developers to work with XML in a Java beans manner.
+XMLTooling-J is a low-level library that may be used to construct libraries 
+that allow developers to work with XML in a Java beans manner.
 
 This technology preview is meant as an early release to allow developers to 
-comment on the structure and APIs.  No guarentee about the stability of the
-APIs are made; they will likely change.
+comment on the structure and APIs.  No guarantee about the stability of the
+APIs are made; they will likely change.  This release should NEVER be used in a
+production system.
 
 XMLTooling-J requires working JAXP 1.3 and DOM Level 3 compliant parsers, 
 which means if you are using Sun's JRE you will need to endorse JAXP complaint

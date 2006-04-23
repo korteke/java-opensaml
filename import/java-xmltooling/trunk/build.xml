@@ -121,16 +121,17 @@
     <!-- Removes all build generated content -->
     <target name="clean" depends="clean-compile">
         <delete dir="${javadoc.dir}" />
+    	<delete dir="${test-report.dir}" />
         <delete dir="${test-results.dir}" />
         <delete dir="${dist.dir}" />
     </target>
 
     <!-- Create JAR file -->
-    <target name="package" depends="compile-core">
+    <target name="package" depends="compile-core, test">
         <mkdir dir="${dist.dir}" />
 
         <if>
-            <equals arg1="${target.jdk}" arg2="1.4" />
+            <equals arg1="${jdk.target}" arg2="1.4" />
             <then>
                 <java classname="com.rc.retroweaver.Weaver">
                     <arg value="-source" />
@@ -163,7 +164,7 @@
     <!-- **************************************************************** -->
 	
     <!-- Create TGZ source distribution -->
-    <target name="tgz-src-dist" depends="package, javadoc, test">
+    <target name="tgz-src-dist" depends="package, javadoc">
         <tar tarfile="${dist.dir}/${src-dist.name}.tgz" compression="gzip">
         	<tarfileset dir="${build-lib.dir}" prefix="/build-lib/"/>
         	<tarfileset dir="${lib.dir}" prefix="/lib/"/>
@@ -177,7 +178,7 @@
     </target>
 
     <!-- Create TGZ binary distribution -->
-    <target name="tgz-bin-dist" depends="package, javadoc, test">
+    <target name="tgz-bin-dist" depends="package, javadoc">
         <tar tarfile="${dist.dir}/${bin-dist.name}.tgz" compression="gzip">
         	<tarfileset dir="${lib.dir}" prefix="/lib/"/>
         	<tarfileset dir="${doc.dir}" prefix="/doc/"/>
@@ -187,7 +188,7 @@
     </target>
 
     <!-- Create ZIP source distribution -->
-    <target name="zip-src-dist" depends="package, javadoc, test">
+    <target name="zip-src-dist" depends="package, javadoc">
         <zip zipfile="${dist.dir}/${src-dist.name}.zip" whenempty="fail">
         	<zipfileset dir="${build-lib.dir}" prefix="build-lib/"/>
         	<zipfileset dir="${lib.dir}" prefix="lib/"/>
@@ -201,7 +202,7 @@
     </target>
 
     <!-- Create ZIP binary distribution -->
-    <target name="zip-bin-dist" depends="package, javadoc, test">
+    <target name="zip-bin-dist" depends="package, javadoc">
         <zip zipfile="${dist.dir}/${bin-dist.name}.zip" whenempty="fail">
         	<zipfileset dir="${lib.dir}" prefix="lib/"/>
         	<zipfileset dir="${doc.dir}" prefix="doc/"/>
