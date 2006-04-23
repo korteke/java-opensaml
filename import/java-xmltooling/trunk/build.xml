@@ -4,6 +4,7 @@
 
     <property name="lib.dir" value="${basedir}/lib" />
     <property name="core-src.dir" value="${basedir}/src" />
+	<property name="core-schema.dir" value="${basedir}/src/schema" />
     <property name="test-src.dir" value="${basedir}/test" />
     <property name="doc.dir" value="${basedir}/doc" />
     <property name="javadoc.dir" value="${doc.dir}/javadoc" />
@@ -153,7 +154,9 @@
             </then>
         </if>
 
-        <jar destfile="${dist.dir}/${jar.name}" basedir="${core-classes.dir}" whenempty="fail" />
+        <jar destfile="${dist.dir}/${jar.name}" basedir="${core-classes.dir}" whenempty="fail">
+        	<zipfileset dir="${core-schema.dir}" prefix="schema"/>
+    	</jar>
 
     </target>
 
