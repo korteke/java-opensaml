@@ -10,7 +10,7 @@ APIs are made; they will likely change.  This release should NEVER be used in a
 production system.
 
 XMLTooling-J requires working JAXP 1.3 and DOM Level 3 compliant parsers, 
-which means if you are using Sun's JRE you will need to endorse JAXP complaint
+which means if you are using Sun's JRE you will need to endorse JAXP compliant
 libraries such as Xerces and Xalan.  XMLTooling, to date, has only been tested
 on JDK 1.5 but support for 1.4 is planned for the final 1.0 release.
 
