@@ -27,7 +27,7 @@ import org.opensaml.xml.util.XMLConstants;
 public interface XSString extends XMLObject {
 
     /** Local name of the XSI type */
-    public final static String TYPE_LOCAL_NAME = "String"; 
+    public final static String TYPE_LOCAL_NAME = "string"; 
         
     /** QName of the XSI type */
     public final static QName TYPE_NAME = new QName(XMLConstants.XSD_NS, TYPE_LOCAL_NAME, XMLConstants.XSD_PREFIX);
