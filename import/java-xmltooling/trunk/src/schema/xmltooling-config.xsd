@@ -18,9 +18,6 @@
         <sequence>
             <element ref="xt:ObjectProvider" maxOccurs="unbounded" />
         </sequence>
-
-        <attribute name="ignoreUnknownAttributes" type="boolean" use="optional" />
-        <attribute name="ignoreUnknownElements" type="boolean" use="optional" default="false"/>
     </complexType>
 
     <element name="ObjectProvider" type="xt:ObjectProviderType" />

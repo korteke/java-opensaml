@@ -63,12 +63,6 @@ public final class Configuration {
     private static QName defaultProvider = new QName(XMLConstants.XMLTOOLING_CONFIG_NS,
             XMLConstants.XMLTOOLING_DEFAULT_OBJECT_PROVIDER);
 
-    /** Whether to ignore unknown attributes when they are encountered */
-    private static boolean ignoreUnknownAttributes = true;
-
-    /** Whether to ignore unknown elements when they are ecnountered */
-    private static boolean ignoreUnknownElements = true;
-
     /** Object provider configuration elements indexed by QName */
     private static HashMap<QName, Element> configuredObjectProviders = new HashMap<QName, Element>();
 
@@ -116,14 +110,14 @@ public final class Configuration {
                     configuration = documentBuilder.parse(new FileInputStream(configurations[i]));
                     load(configuration);
                 }
+            } else {
+                // Given file is not a directory so try to load it directly
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("Parsing configuration file " + configurationFile.getAbsolutePath());
+                }
+                configuration = documentBuilder.parse(new FileInputStream(configurationFile));
+                load(configuration);
             }
-
-            // Given file is not a directory so try to load it directly
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Parsing configuration file " + configurationFile.getAbsolutePath());
-            }
-            configuration = documentBuilder.parse(new FileInputStream(configurationFile));
-            load(configuration);
         } catch (Exception e) {
             LOG.fatal("Unable to parse configuration file(s) in " + configurationFile.getAbsolutePath(), e);
             throw new ConfigurationException("Unable to parse configuration file(s) in "
@@ -180,24 +174,6 @@ public final class Configuration {
                 LOG.info("ValidatorSuites load complete");
             }
         }
-    }
-
-    /**
-     * Gets whether unknown attributes should be ignored during unmarshalling.
-     * 
-     * @return whether unknown attributes should be ignored during unmarshalling
-     */
-    public static boolean ignoreUnknownAttributes() {
-        return ignoreUnknownAttributes;
-    }
-
-    /**
-     * Gets whether unknown elements should be ignored during unmarshalling.
-     * 
-     * @return whether unknown elements should be ignored during unmarshalling
-     */
-    public static boolean ignoreUnknownElements() {
-        return ignoreUnknownElements;
     }
 
     /**
