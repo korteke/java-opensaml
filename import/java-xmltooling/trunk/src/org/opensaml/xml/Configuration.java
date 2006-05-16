@@ -274,22 +274,6 @@ public final class Configuration {
      */
     private static void initializeObjectProviders(Element objectProviders) throws ConfigurationException {
 
-        String ignoreAttributesAttr = objectProviders.getAttributeNS(null, "ignoreUnknownAttributes");
-        if (!DatatypeHelper.isEmpty(ignoreAttributesAttr)) {
-            ignoreUnknownAttributes = Boolean.parseBoolean(ignoreAttributesAttr);
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("ingoreUnknownAttributes set to " + ignoreUnknownAttributes);
-            }
-        }
-
-        String ignoreElementsAttr = objectProviders.getAttributeNS(null, "ignoreUnknownElements");
-        if (!DatatypeHelper.isEmpty(ignoreElementsAttr)) {
-            ignoreUnknownElements = Boolean.parseBoolean(ignoreElementsAttr);
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("ingoreUnknownElements set to " + ignoreUnknownElements);
-            }
-        }
-
         // Process ObjectProvider child elements
         Element objectProvider;
         Attr qNameAttrib;
