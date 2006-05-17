@@ -16,13 +16,16 @@
 
 package org.opensaml.xml.signature.impl;
 
+import java.security.Key;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.xml.security.signature.XMLSignature;
 import org.opensaml.xml.AbstractXMLObject;
 import org.opensaml.xml.XMLObject;
+import org.opensaml.xml.signature.ContentReference;
+import org.opensaml.xml.signature.KeyInfo;
 import org.opensaml.xml.signature.Signature;
-import org.opensaml.xml.signature.SigningContext;
 import org.opensaml.xml.util.XMLConstants;
 
 /**
@@ -32,78 +35,100 @@ import org.opensaml.xml.util.XMLConstants;
  */
 public class XMLSecSignatureImpl extends AbstractXMLObject implements Signature {
     
-    /** The reference URI to the content to be signed */
-    private String referenceURI;
-    
-    /** Signing information */
-    private SigningContext signingContext;
-    
     /** XML XMLSecSignatureImpl construct */
     private XMLSignature signature;
     
+    /** Canonicalization algorithm used in signature */
+    private String canonicalizationAlgorithm;
+    
+    /** Algorithm used to generate the signature */
+    private String signatureAlgorithm;
+    
+    /** Key used to sign the signature */
+    private Key signingKey;
+    
+    /** Public key information to embed in the signature */
+    private KeyInfo keyInfo;
+    
+    /** References to content to be signed */
+    private List<ContentReference> contentReferences;
+    
     /**
-     * Constructor.  Note, the provided signing context is NOT altered by this class and thus 
-     * can be reused if deemed appropriate.
+     * Constructor.
      * 
      * @param signingContext configuration information for computing the signature
      */
-    XMLSecSignatureImpl(final SigningContext signingContext) {
+    protected XMLSecSignatureImpl() {
         super(XMLConstants.XMLSIG_NS, LOCAL_NAME, XMLConstants.XMLSIG_PREFIX);
-
-        this.signingContext = signingContext;
-    }
-    
-    /*
-     * @see org.opensaml.xml.signature.Signature#getSigningContext()
-     */
-    public SigningContext getSigningContext(){
-        return signingContext;
-    }
-    
-    /*
-     * @see org.opensaml.xml.signature.Signature#setSigningContext(org.opensaml.xml.signature.SigningContext)
-     */
-    public void setSigningContext(SigningContext newContext){
-        signingContext = newContext;
-    }
-    
-    /*
-     * @see org.opensaml.xml.signature.Signature#getReferenceURI()
-     */
-    public String getReferenceURI() {
-        return referenceURI;
-    }
-    
-    /*
-     * @see org.opensaml.xml.signature.Signature#setReferenceURI(java.lang.String)
-     */
-    public void setReferenceURI(String newID) {
-        referenceURI = newID;
+        contentReferences = new ArrayList<ContentReference>();
     }
 
+    /** {@inheritDoc} */
+    public String getCanonicalizationAlgorithm() {
+        return canonicalizationAlgorithm;
+    }
+
+    /** {@inheritDoc} */
+    public void setCanonicalizationAlgorithm(String newAlgorithm) {
+        canonicalizationAlgorithm = newAlgorithm;
+    }
+
+    /** {@inheritDoc} */
+    public String getSignatureAlgorithm() {
+        return signatureAlgorithm;
+    }
+
+    /** {@inheritDoc} */
+    public void setSignatureAlgorithm(String newAlgorithm) {
+        signatureAlgorithm  = newAlgorithm;
+    }
+
+    /** {@inheritDoc} */
+    public Key getSigningKey() {
+        return signingKey;
+    }
+
+    /** {@inheritDoc} */
+    public void setSigningKey(Key newKey) {
+        signingKey = newKey;
+    }
+
+    /** {@inheritDoc} */
+    public KeyInfo getKeyInfo() {
+        return keyInfo;
+    }
+
+    /** {@inheritDoc} */
+    public void setKeyInfo(KeyInfo newKeyInfo) {
+        keyInfo = newKeyInfo;
+    }
+
+    /** {@inheritDoc} */
+    public List<ContentReference> getContentReferences() {
+        return contentReferences;
+    }
+
+    /** {@inheritDoc} */
+    public List<XMLObject> getOrderedChildren() {
+        // Children
+        return null;
+    }
+    
     /**
-     * Gets the XML signature construct.
+     * Gets the Apache XMLSec signature object backing this signature.
      * 
-     * @return the XML signature construct
+     * @return the Apache XMLSec signature object backing this signature
      */
-    public XMLSignature getXMLSignature() {
+    protected XMLSignature getXMLSignature(){
         return signature;
     }
     
     /**
-     * Sets the XML signature construct.
+     * Sets the Apache XMLSec signature object backing this signature.
      * 
-     * @param xmlSignature the XML signature construct
+     * @param newSignature the Apache XMLSec signature object backing this signature
      */
-    protected void setXMLSignature(XMLSignature xmlSignature) {
-        signature = xmlSignature;
-    }
-    
-    /*
-     * @see org.opensaml.xml.XMLObject#getOrderedChildren()
-     */
-    public List<XMLObject> getOrderedChildren() {
-        //No children
-        return null;
+    protected void setXMLSignature(XMLSignature newSignature){
+        signature = newSignature;
     }
 }

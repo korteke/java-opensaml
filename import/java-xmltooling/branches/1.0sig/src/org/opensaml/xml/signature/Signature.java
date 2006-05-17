@@ -16,6 +16,9 @@
 
 package org.opensaml.xml.signature;
 
+import java.security.Key;
+import java.util.List;
+
 import org.opensaml.xml.XMLObject;
 
 /**
@@ -27,30 +30,65 @@ public interface Signature extends XMLObject {
     public final static String LOCAL_NAME = "Signature";
     
     /**
-     * Gets the information need to construct the digital signature for this element.
+     * Gets the canonicalization algorithim used to construct the signature.
      * 
-     * @return the information need to construct the digital signature for this element
+     * @return the canonicalization algorithim used to construct the signature
      */
-    public SigningContext getSigningContext();
+    public String getCanonicalizationAlgorithm();
+
+    /**
+     * Sets the canonicalization algorithim used to construct the signature.
+     * 
+     * @param newAlgorithm the canonicalization algorithim used to construct the signature
+     */
+    public void setCanonicalizationAlgorithm(String newAlgorithm);
+
+    /**
+     * Gets the signature algorithim used in creating the signature.
+     * 
+     * @return the signature algorithim used in creating the signature
+     */
+    public String getSignatureAlgorithm();
+
+    /**
+     * Sets the signature algorithim used in creating the signature.
+     * 
+     * @param signatureAlgorithm the signature algorithim used in creating the signature
+     */
+    public void setSignatureAlgorithm(String signatureAlgorithm);
+
+    /**
+     * Gets the signing key used to create the signature.
+     * 
+     * @return the signing key used to create the signature
+     */
+    public Key getSigningKey();
+
+    /**
+     * Sets the signing key used to create the signature.
+     * 
+     * @param newKey the signing key used to create the signature
+     */
+    public void setSigningKey(Key newKey);
+
+    /**
+     * Gets the key information to be added to the signature.
+     * 
+     * @return the key information to be added to the signature
+     */
+    public KeyInfo getKeyInfo();
+
+    /**
+     * Sets the key information to be added to the signature.
+     * 
+     * @param newKeyInfo the key information to be added to the signature
+     */
+    public void setKeyInfo(KeyInfo newKeyInfo);
     
     /**
-     * Sets the information need to construct the digital signature for this element.
+     * Gets the references to the list of content that will be signed.
      * 
-     * @param newContext the information need to construct the digital signature for this element
+     * @return the references to the list of content that will be signed
      */
-    public void setSigningContext(SigningContext newContext);
-    
-    /**
-     * Gets reference URI to the content to be signed.
-     * 
-     * @return reference URI to the content to be signed
-     */
-    public String getReferenceURI();
-    
-    /**
-     * Sets reference URI to the content to be signed.
-     * 
-     * @param newID reference URI to the content to be signed
-     */
-    public void setReferenceURI(String newID);
+    public List<ContentReference> getContentReferences();
 }

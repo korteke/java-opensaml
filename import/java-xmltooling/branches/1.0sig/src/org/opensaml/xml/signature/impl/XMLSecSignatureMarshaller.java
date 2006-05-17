@@ -20,28 +20,24 @@
 
 package org.opensaml.xml.signature.impl;
 
+import java.security.PublicKey;
 import java.security.cert.X509Certificate;
-import java.util.HashSet;
-import java.util.Set;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.log4j.Logger;
 import org.apache.xml.security.Init;
-import org.apache.xml.security.c14n.Canonicalizer;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.signature.XMLSignatureException;
-import org.apache.xml.security.transforms.Transforms;
-import org.apache.xml.security.transforms.params.InclusiveNamespaces;
-import org.opensaml.xml.Namespace;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
+import org.opensaml.xml.signature.ContentReference;
+import org.opensaml.xml.signature.KeyInfo;
 import org.opensaml.xml.signature.SignableXMLObject;
 import org.opensaml.xml.signature.Signature;
 import org.opensaml.xml.signature.SignatureMarshaller;
-import org.opensaml.xml.signature.SigningContext;
 import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -66,19 +62,19 @@ public class XMLSecSignatureMarshaller implements SignatureMarshaller {
             Init.init();
         }
     }
-    
+
     /*
      * @see org.opensaml.xml.io.Marshaller#marshall(org.opensaml.xml.XMLObject)
      */
-    public Element marshall(XMLObject xmlObject) throws MarshallingException{
-        try{
+    public Element marshall(XMLObject xmlObject) throws MarshallingException {
+        try {
             Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
             return marshall(xmlObject, document);
-        }catch(ParserConfigurationException e){
+        } catch (ParserConfigurationException e) {
             throw new MarshallingException("Unable to create Document to place marshalled elements in", e);
         }
     }
-    
+
     /*
      * @see org.opensaml.xml.io.Marshaller#marshall(org.opensaml.xml.XMLObject, org.w3c.dom.Element)
      */
@@ -102,65 +98,44 @@ public class XMLSecSignatureMarshaller implements SignatureMarshaller {
                     "Parent XMLObject was not an instance of SignableXMLObject, can not create digital signature");
         }
 
-        SigningContext signatureContext = signature.getSigningContext();
-
         try {
             if (log.isDebugEnabled()) {
                 log.debug("Creating XMLSignature object");
             }
-            XMLSignature dsig = new XMLSignature(document, "", signatureContext.getSignatureAlgorithm(),
-                    Canonicalizer.ALGO_ID_C14N_EXCL_OMIT_COMMENTS);
+            XMLSignature dsig = new XMLSignature(document, "", signature.getSignatureAlgorithm(), signature
+                    .getCanonicalizationAlgorithm());
 
-            if (signatureContext.getPublicKey() != null) {
-                if (log.isDebugEnabled()) {
-                    log.debug("Adding public keys to signature key info");
+            KeyInfo keyInfo = signature.getKeyInfo();
+            if (signature.getKeyInfo() != null) {
+                if (keyInfo.getKeys() != null) {
+                    if (log.isDebugEnabled()) {
+                        log.debug("Adding public keys to signature key info");
+                    }
+                    for (PublicKey key : keyInfo.getKeys()) {
+                        dsig.addKeyInfo(key);
+                    }
                 }
-                dsig.addKeyInfo(signatureContext.getPublicKey());
-            }
 
-            if (signatureContext.getCertificates() != null) {
-                if (log.isDebugEnabled()) {
-                    log.debug("Adding X.509 certifiacte(s) into signature's X509 data");
-                }
-                for (X509Certificate cert : signatureContext.getCertificates()) {
-                    dsig.addKeyInfo(cert);
+                if (keyInfo.getCertificates() != null) {
+                    if (log.isDebugEnabled()) {
+                        log.debug("Adding X.509 certifiacte(s) into signature's X509 data");
+                    }
+                    for (X509Certificate cert : keyInfo.getCertificates()) {
+                        dsig.addKeyInfo(cert);
+                    }
                 }
             }
 
             if (log.isDebugEnabled()) {
-                log.debug("Adding content transforms to XMLSignature.");
+                log.debug("Adding content to XMLSignature.");
             }
-            Transforms dsigTransforms = new Transforms(dsig.getDocument());
-            for (String transform : signatureContext.getTransforms()) {
-                if (log.isDebugEnabled()) {
-                    log.debug("Adding content transform " + transform);
-                }
-                dsigTransforms.addTransform(transform);
+            for (ContentReference contentReference : signature.getContentReferences()) {
+                contentReference.createReference(dsig);
             }
 
-            // Namespaces that aren't visibly used, such as those used in QName attribute values, would
-            // be stripped out by exclusive canonicalization. Need to make sure they aren't by explicitly
-            // telling the transformer about them.
             if (log.isDebugEnabled()) {
-                log.debug("Adding namespaces to list of inclusive namespaces for signature");
+                log.debug("Added XMLSignature to Signature XMLObject");
             }
-            Set<String> inclusiveNamespacePrefixes = new HashSet<String>();
-            for (Namespace namespace : parentXMLObject.getNamespaces()) {
-                inclusiveNamespacePrefixes.add(namespace.getNamespacePrefix());
-            }
-
-            if (inclusiveNamespacePrefixes != null && inclusiveNamespacePrefixes.size() > 0) {
-                InclusiveNamespaces inclusiveNamespaces = new InclusiveNamespaces(document, inclusiveNamespacePrefixes);
-                Element transformElem = dsigTransforms.item(1).getElement();
-                transformElem.appendChild(inclusiveNamespaces.getElement());
-            }
-
-            // Add a reference to the document to be signed
-            if (log.isDebugEnabled()) {
-                log.debug("Adding in-document URI ID based reference to content being signed");
-            }
-            dsig.addDocument(signature.getReferenceURI(), dsigTransforms, signatureContext.getDigestAlgorithm());
-
             signature.setXMLSignature(dsig);
 
             if (log.isDebugEnabled()) {
@@ -180,11 +155,10 @@ public class XMLSecSignatureMarshaller implements SignatureMarshaller {
      */
     public void signElement(Element domElement, Signature signature) throws MarshallingException {
         XMLSecSignatureImpl xmlsecSignature = (XMLSecSignatureImpl) signature;
-        SigningContext signingCtx = xmlsecSignature.getSigningContext();
         XMLSignature dsig = xmlsecSignature.getXMLSignature();
 
         try {
-            dsig.sign(signingCtx.getSigningKey());
+            dsig.sign(xmlsecSignature.getSigningKey());
         } catch (XMLSignatureException e) {
             log.error("Unable compute digital signature for " + XMLHelper.getNodeQName(domElement), e);
             throw new MarshallingException(
