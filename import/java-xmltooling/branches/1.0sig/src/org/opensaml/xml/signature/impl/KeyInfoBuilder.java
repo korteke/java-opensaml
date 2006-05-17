@@ -18,18 +18,17 @@ package org.opensaml.xml.signature.impl;
 
 import org.opensaml.xml.AbstractXMLObjectBuilder;
 import org.opensaml.xml.signature.KeyInfo;
-import org.opensaml.xml.signature.KeyInfoBuilder;
 import org.opensaml.xml.util.XMLConstants;
 
 /**
- * Builder of {@link org.opensaml.xml.signature.impl.XMLSecKeyInfoImpl} objects.
+ * Builder of {@link org.opensaml.xml.signature.impl.KeyInfoImpl} objects.
  */
-public class XMLSecKeyInfoBuilder extends AbstractXMLObjectBuilder<KeyInfo> implements KeyInfoBuilder {
+public class KeyInfoBuilder extends AbstractXMLObjectBuilder<KeyInfo> {
 
     /**
      * Constructor
      */
-    public XMLSecKeyInfoBuilder() {
+    public KeyInfoBuilder() {
 
     }
 
@@ -37,13 +36,13 @@ public class XMLSecKeyInfoBuilder extends AbstractXMLObjectBuilder<KeyInfo> impl
      * {@inheritDoc}
      */
     public KeyInfo buildObject() {
-        return buildObject(XMLConstants.XMLSIG_NS, KeyInfo.LOCAL_NAME, XMLConstants.XMLSIG_PREFIX);
+        return buildObject(XMLConstants.XMLSIG_NS, KeyInfo.DEFAULT_ELEMENT_LOCAL_NAME, XMLConstants.XMLSIG_PREFIX);
     }
 
     /**
      * {@inheritDoc}
      */
     public KeyInfo buildObject(String namespaceURI, String localName, String namespacePrefix) {
-        return new XMLSecKeyInfoImpl(namespaceURI, localName, namespacePrefix);
+        return new KeyInfoImpl(namespaceURI, localName, namespacePrefix);
     }
 }

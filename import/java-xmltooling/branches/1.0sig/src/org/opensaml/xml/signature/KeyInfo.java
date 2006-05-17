@@ -20,7 +20,10 @@ import java.security.PublicKey;
 import java.security.cert.X509Certificate;
 import java.util.List;
 
+import javax.xml.namespace.QName;
+
 import org.opensaml.xml.XMLObject;
+import org.opensaml.xml.util.XMLConstants;
 
 /**
  * XMLObject representing XML Digital Signature, version 20020212, KeyInfo element.
@@ -30,7 +33,16 @@ import org.opensaml.xml.XMLObject;
 public interface KeyInfo extends XMLObject {
     
     /** Element local name */
-    public static String LOCAL_NAME = "KeyInfo";
+    public static String DEFAULT_ELEMENT_LOCAL_NAME = "KeyInfo";
+    
+    /** Default element name */
+    public final static QName DEFAULT_ELEMENT_NAME = new QName(XMLConstants.XMLSIG_NS, DEFAULT_ELEMENT_LOCAL_NAME, XMLConstants.XMLSIG_PREFIX);
+    
+    /** Local name of the XSI type */
+    public final static String TYPE_LOCAL_NAME = "KeyInfoType"; 
+        
+    /** QName of the XSI type */
+    public final static QName TYPE_NAME = new QName(XMLConstants.XMLSIG_NS, TYPE_LOCAL_NAME, XMLConstants.XMLSIG_PREFIX);
 
     /**
      * Gets the list of key names within the key info.

@@ -28,7 +28,7 @@ import org.opensaml.xml.signature.KeyInfo;
 /**
  * Concrete implement of {@link org.opensaml.xml.signature.KeyInfo} based on the Apache XML Security library.
  */
-public class XMLSecKeyInfoImpl extends AbstractXMLObject implements KeyInfo{
+public class KeyInfoImpl extends AbstractXMLObject implements KeyInfo{
     
     /** Key names within this info */
     private final ArrayList<String> keyNames;
@@ -46,7 +46,7 @@ public class XMLSecKeyInfoImpl extends AbstractXMLObject implements KeyInfo{
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected XMLSecKeyInfoImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
+    protected KeyInfoImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         
         keyNames = new ArrayList<String>();

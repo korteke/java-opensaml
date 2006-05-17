@@ -26,14 +26,13 @@ import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.signature.ContentReference;
 import org.opensaml.xml.signature.KeyInfo;
 import org.opensaml.xml.signature.Signature;
-import org.opensaml.xml.util.XMLConstants;
 
 /**
  * XMLObject representing XML Digital XMLSecSignatureImpl, version 20020212, Signature element.  
  * This class, along with it's respective marshaller and unmarshaller use the Apache XMLSec 1.3 
  * APIs to perform signing and verification.
  */
-public class XMLSecSignatureImpl extends AbstractXMLObject implements Signature {
+public class SignatureImpl extends AbstractXMLObject implements Signature {
     
     /** XML XMLSecSignatureImpl construct */
     private XMLSignature signature;
@@ -54,12 +53,14 @@ public class XMLSecSignatureImpl extends AbstractXMLObject implements Signature 
     private List<ContentReference> contentReferences;
     
     /**
-     * Constructor.
+     * Constructor
      * 
-     * @param signingContext configuration information for computing the signature
+     * @param namespaceURI the namespace the element is in
+     * @param elementLocalName the local name of the XML element this Object represents
+     * @param namespacePrefix the prefix for the given namespace
      */
-    protected XMLSecSignatureImpl() {
-        super(XMLConstants.XMLSIG_NS, LOCAL_NAME, XMLConstants.XMLSIG_PREFIX);
+    protected SignatureImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
+        super(namespaceURI, elementLocalName, namespacePrefix);
         contentReferences = new ArrayList<ContentReference>();
     }
 

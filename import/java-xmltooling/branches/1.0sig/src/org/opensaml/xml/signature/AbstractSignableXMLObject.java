@@ -61,7 +61,7 @@ public abstract class AbstractSignableXMLObject extends AbstractDOMCachingXMLObj
 
             childElement = (Element) children.item(i);
             if (childElement.getNamespaceURI().equals(XMLConstants.XMLSIG_NS)
-                    && childElement.getLocalName().equals(Signature.LOCAL_NAME)) {
+                    && childElement.getLocalName().equals(Signature.DEFAULT_ELEMENT_LOCAL_NAME)) {
                 return true;
             }
         }

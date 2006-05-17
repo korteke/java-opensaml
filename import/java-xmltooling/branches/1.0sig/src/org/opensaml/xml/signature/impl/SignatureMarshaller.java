@@ -37,24 +37,23 @@ import org.opensaml.xml.signature.ContentReference;
 import org.opensaml.xml.signature.KeyInfo;
 import org.opensaml.xml.signature.SignableXMLObject;
 import org.opensaml.xml.signature.Signature;
-import org.opensaml.xml.signature.SignatureMarshaller;
 import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
- * A marshaller for {@link org.opensaml.xml.signature.impl.XMLSecSignatureImpl} objects. This class, along with it's
+ * A marshaller for {@link org.opensaml.xml.signature.impl.SignatureImpl} objects. This class, along with it's
  * respective builder and unmarshaller use the Apache XMLSec 1.3 APIs to perform signing and verification.
  */
-public class XMLSecSignatureMarshaller implements SignatureMarshaller {
+public class SignatureMarshaller implements org.opensaml.xml.signature.SignatureMarshaller {
 
     /** Logger */
-    private static Logger log = Logger.getLogger(XMLSecSignatureMarshaller.class);
+    private static Logger log = Logger.getLogger(SignatureMarshaller.class);
 
     /**
      * Constructor
      */
-    public XMLSecSignatureMarshaller() {
+    public SignatureMarshaller() {
         if (!Init.isInitialized()) {
             if (log.isDebugEnabled()) {
                 log.debug("Initializing XML security library");
@@ -86,7 +85,7 @@ public class XMLSecSignatureMarshaller implements SignatureMarshaller {
      * @see org.opensaml.xml.io.Marshaller#marshall(org.opensaml.xml.XMLObject, org.w3c.dom.Document)
      */
     public Element marshall(XMLObject xmlObject, Document document) throws MarshallingException {
-        XMLSecSignatureImpl signature = (XMLSecSignatureImpl) xmlObject;
+        SignatureImpl signature = (SignatureImpl) xmlObject;
 
         if (log.isDebugEnabled()) {
             log.debug("Starting to marshall " + xmlObject.getElementQName());
@@ -154,7 +153,7 @@ public class XMLSecSignatureMarshaller implements SignatureMarshaller {
      *      org.opensaml.xml.signature.Signature)
      */
     public void signElement(Element domElement, Signature signature) throws MarshallingException {
-        XMLSecSignatureImpl xmlsecSignature = (XMLSecSignatureImpl) signature;
+        SignatureImpl xmlsecSignature = (SignatureImpl) signature;
         XMLSignature dsig = xmlsecSignature.getXMLSignature();
 
         try {

@@ -19,15 +19,27 @@ package org.opensaml.xml.signature;
 import java.security.Key;
 import java.util.List;
 
+import javax.xml.namespace.QName;
+
 import org.opensaml.xml.XMLObject;
+import org.opensaml.xml.util.XMLConstants;
 
 /**
- * XMLObject representing XML Digital Signature, version 20020212, Signature element.
+ * XMLObject representing an enveloped or detached XML Digital Signature, version 20020212, Signature element.
  */
 public interface Signature extends XMLObject {
 
     /** Element local name */
-    public final static String LOCAL_NAME = "Signature";
+    public final static String DEFAULT_ELEMENT_LOCAL_NAME = "Signature";
+    
+    /** Default element name */
+    public final static QName DEFAULT_ELEMENT_NAME = new QName(XMLConstants.XMLSIG_NS, DEFAULT_ELEMENT_LOCAL_NAME, XMLConstants.XMLSIG_PREFIX);
+    
+    /** Local name of the XSI type */
+    public final static String TYPE_LOCAL_NAME = "SignatureType"; 
+        
+    /** QName of the XSI type */
+    public final static QName TYPE_NAME = new QName(XMLConstants.XMLSIG_NS, TYPE_LOCAL_NAME, XMLConstants.XMLSIG_PREFIX);
     
     /**
      * Gets the canonicalization algorithim used to construct the signature.
