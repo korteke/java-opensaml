@@ -26,28 +26,28 @@ import org.opensaml.xml.validation.ValidationException;
 import org.opensaml.xml.validation.Validator;
 
 /**
- * A validator that verifys an {@link org.opensaml.xml.signature.impl.SignatureImpl} against a given key.
+ * A validator that verifies an {@link org.opensaml.xml.signature.impl.SignatureImpl} against a given key.
  */
 public class SignatureValidator implements Validator {
-    
+
     /** Logger */
     private static Logger log = Logger.getLogger(SignatureValidator.class);
 
-    /** Key used to verify the signature*/
+    /** Key used to verify the signature */
     private Key verificationKey;
-    
+
     /**
      * Constructor
      * 
      * @throws IllegalArgumentException thrown if the verification key is null
      */
-    public SignatureValidator(Key verificationKey) throws IllegalArgumentException{
-        if(verificationKey == null){
+    public SignatureValidator(Key verificationKey) throws IllegalArgumentException {
+        if (verificationKey == null) {
             throw new IllegalArgumentException("Verification key may not be null");
         }
         this.verificationKey = verificationKey;
     }
-    
+
     /** {@inheritDoc} */
     public void validate(XMLObject xmlObject) throws ValidationException {
         SignatureImpl signature = (SignatureImpl) xmlObject;
@@ -57,19 +57,19 @@ public class SignatureValidator implements Validator {
             if (log.isDebugEnabled()) {
                 log.debug("Attempting to validate digital signature using provided key");
             }
-            try{
-            if(xmlSignature.checkSignatureValue(verificationKey)){
-                if(log.isDebugEnabled()){
-                    log.debug("Digital signature validated successfully");
+            try {
+                if (xmlSignature.checkSignatureValue(verificationKey)) {
+                    if (log.isDebugEnabled()) {
+                        log.debug("Digital signature validated successfully");
+                    }
+                } else {
+                    if (log.isDebugEnabled()) {
+                        log.debug("Digital signature could not be validated with given key");
+                    }
+                    throw new ValidationException("Digital signature does not validate with the given key");
                 }
-            }else{
-                if(log.isDebugEnabled()){
-                    log.debug("Digital signature could not be validated with given key");
-                }
-                throw new ValidationException("Digital signature does not validate with the given key");
-            }
-            }catch(XMLSignatureException e){
-                if(log.isDebugEnabled()){
+            } catch (XMLSignatureException e) {
+                if (log.isDebugEnabled()) {
                     log.debug("Digital signature could not be validated with given key", e);
                 }
                 throw new ValidationException("Digital signature does not validate with the given key", e);
