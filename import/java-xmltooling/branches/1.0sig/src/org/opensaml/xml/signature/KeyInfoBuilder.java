@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-package org.opensaml.xml.signature.impl;
+package org.opensaml.xml.signature;
 
 import org.opensaml.xml.AbstractXMLObjectBuilder;
-import org.opensaml.xml.signature.KeyInfo;
 import org.opensaml.xml.util.XMLConstants;
 
 /**
@@ -43,6 +42,6 @@ public class KeyInfoBuilder extends AbstractXMLObjectBuilder<KeyInfo> {
      * {@inheritDoc}
      */
     public KeyInfo buildObject(String namespaceURI, String localName, String namespacePrefix) {
-        return new KeyInfoImpl(namespaceURI, localName, namespacePrefix);
+        return new KeyInfo(namespaceURI, localName, namespacePrefix);
     }
 }

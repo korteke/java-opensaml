@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.xml.signature.impl;
+package org.opensaml.xml.signature;
 
 import org.apache.log4j.Logger;
 import org.apache.xml.security.Init;
@@ -24,12 +24,10 @@ import org.apache.xml.security.signature.XMLSignature;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.io.Unmarshaller;
 import org.opensaml.xml.io.UnmarshallingException;
-import org.opensaml.xml.signature.KeyInfo;
 import org.w3c.dom.Element;
 
 /**
- * An unmarshaller for {@link org.opensaml.xml.signature.impl.SignatureImpl} objects. This class, along with it's
- * respective builder and marshaller use the Apache XMLSec 1.3 APIs to perform signing and verification.
+ * An unmarshaller for {@link org.opensaml.xml.signature.Signature} objects.
  */
 public class SignatureUnmarshaller implements Unmarshaller {
 
@@ -51,12 +49,12 @@ public class SignatureUnmarshaller implements Unmarshaller {
     /*
      * @see org.opensaml.xml.io.Unmarshaller#unmarshall(org.w3c.dom.Element)
      */
-    public SignatureImpl unmarshall(Element signatureElement) throws UnmarshallingException {
+    public Signature unmarshall(Element signatureElement) throws UnmarshallingException {
         if (log.isDebugEnabled()) {
             log.debug("Starting to unmarshall XMLSecSignatureImpl element");
         }
-        SignatureImpl signature = new SignatureImpl(signatureElement.getNamespaceURI(), signatureElement
-                .getLocalName(), signatureElement.getPrefix());
+        Signature signature = new Signature(signatureElement.getNamespaceURI(), signatureElement.getLocalName(),
+                signatureElement.getPrefix());
 
         try {
             if (log.isDebugEnabled()) {

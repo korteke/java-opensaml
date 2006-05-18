@@ -130,7 +130,7 @@ public class Signature extends AbstractDOMCachingXMLObject {
      * 
      * @return the Apache XMLSec signature object backing this signature
      */
-    public XMLSignature getXMLSignature(){
+    protected XMLSignature getXMLSignature(){
         return signature;
     }
     
@@ -139,7 +139,7 @@ public class Signature extends AbstractDOMCachingXMLObject {
      * 
      * @param newSignature the Apache XMLSec signature object backing this signature
      */
-    public void setXMLSignature(XMLSignature newSignature){
+    protected void setXMLSignature(XMLSignature newSignature){
         signature = newSignature;
     }
 }

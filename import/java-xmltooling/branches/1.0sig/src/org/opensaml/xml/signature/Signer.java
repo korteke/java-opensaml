@@ -21,6 +21,7 @@ import java.security.cert.X509Certificate;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.apache.xml.security.Init;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.signature.XMLSignature;
 import org.w3c.dom.Element;
@@ -113,6 +114,18 @@ public class Signer {
 
         } catch (XMLSecurityException e) {
             log.error("Unable to construct signature Element " + signableXMLObject.getElementQName(), e);
+        }
+    }
+    
+    /*
+     * Initialize the Apache XML security library if it hasn't been already
+     */
+    static {
+        if (!Init.isInitialized()) {
+            if (log.isDebugEnabled()) {
+                log.debug("Initializing XML security library");
+            }
+            Init.init();
         }
     }
 }

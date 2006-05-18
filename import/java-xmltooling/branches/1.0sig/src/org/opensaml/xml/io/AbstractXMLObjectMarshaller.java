@@ -29,9 +29,6 @@ import org.opensaml.xml.Namespace;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.encryption.EncryptableXMLObject;
 import org.opensaml.xml.encryption.EncryptableXMLObjectMarshaller;
-import org.opensaml.xml.signature.SignableXMLObject;
-import org.opensaml.xml.signature.Signature;
-import org.opensaml.xml.signature.SignatureMarshaller;
 import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.util.XMLConstants;
 import org.opensaml.xml.util.XMLHelper;
@@ -215,10 +212,6 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
 
         marshallElementContent(xmlObject, targetElement);
 
-        if (xmlObject instanceof SignableXMLObject) {
-            signElement(targetElement, xmlObject);
-        }
-
         if (xmlObject instanceof EncryptableXMLObject) {
             targetElement = encryptElement(targetElement, xmlObject);
         }
@@ -396,34 +389,6 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
                 XMLHelper.appendNamespaceDecleration(domElement, nsURI, nsPrefix);
             }
         }
-    }
-
-    /**
-     * Signs the DOM representation of the given XMLObject.
-     * 
-     * @param xmlObject the XMLObject whose XML representation will be signed
-     * 
-     * @throws MarshallingException thrown is there is a problem signing the XML
-     */
-    protected void signElement(Element domElement, XMLObject xmlObject) throws MarshallingException {
-        SignableXMLObject signableXMLObject = (SignableXMLObject) xmlObject;
-
-        Signature signature = signableXMLObject.getSignature();
-        if (signature == null) {
-            if (log.isDebugEnabled()) {
-                log
-                        .debug(XMLHelper.getNodeQName(domElement)
-                                + " is a signable object but does not contain a Signature child, skipping signature computation");
-            }
-            return;
-        }
-
-        if (log.isDebugEnabled()) {
-            log.debug("Computing digital signature for " + xmlObject.getElementQName());
-        }
-
-        SignatureMarshaller signatureMarshaller = (SignatureMarshaller) marshallerFactory.getMarshaller(signature);
-        signatureMarshaller.signElement(domElement, signature);
     }
 
     /**

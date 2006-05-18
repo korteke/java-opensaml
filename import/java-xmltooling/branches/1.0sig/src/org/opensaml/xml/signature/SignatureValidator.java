@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.xml.signature.impl;
+package org.opensaml.xml.signature;
 
 import java.security.Key;
 
@@ -50,7 +50,7 @@ public class SignatureValidator implements Validator {
 
     /** {@inheritDoc} */
     public void validate(XMLObject xmlObject) throws ValidationException {
-        SignatureImpl signature = (SignatureImpl) xmlObject;
+        Signature signature = (Signature) xmlObject;
 
         if (signature == null) {
             XMLSignature xmlSignature = signature.getXMLSignature();

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.xml.signature.impl;
+package org.opensaml.xml.signature;
 
 import java.security.PublicKey;
 import java.security.cert.X509Certificate;
@@ -30,7 +30,6 @@ import org.apache.xml.security.keys.content.X509Data;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.signature.KeyInfo;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 

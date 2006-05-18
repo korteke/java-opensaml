@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.xml.signature.impl;
+package org.opensaml.xml.signature;
 
 import org.apache.log4j.Logger;
 import org.apache.xml.security.Init;
@@ -23,7 +23,6 @@ import org.apache.xml.security.keys.content.X509Data;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.Unmarshaller;
 import org.opensaml.xml.io.UnmarshallingException;
-import org.opensaml.xml.signature.KeyInfo;
 import org.w3c.dom.Element;
 
 /**
@@ -51,7 +50,7 @@ public class KeyInfoUnmarshaller implements Unmarshaller {
      * {@inheritDoc}
      */
     public XMLObject unmarshall(Element element) throws UnmarshallingException {
-        KeyInfo keyInfoObj = new KeyInfoImpl(element.getNamespaceURI(), element.getLocalName(), element
+        KeyInfo keyInfoObj = new KeyInfo(element.getNamespaceURI(), element.getLocalName(), element
                 .getPrefix());
 
         try {
