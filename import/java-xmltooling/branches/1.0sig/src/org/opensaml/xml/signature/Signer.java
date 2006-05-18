@@ -41,14 +41,14 @@ public class Signer {
 
     /** Logger */
     private static Logger log = Logger.getLogger(Signer.class);
-    
+
     /**
      * Signs the given XMLObject in the order provided.
      * 
      * @param xmlObjects an orderded list of XMLObject to be signed
      */
     public static void signObjects(List<SignableXMLObject> xmlObjects) {
-        for(SignableXMLObject xmlObject : xmlObjects){
+        for (SignableXMLObject xmlObject : xmlObjects) {
             signObject(xmlObject);
         }
     }
@@ -70,8 +70,8 @@ public class Signer {
             if (log.isDebugEnabled()) {
                 log.debug("Creating XMLSignature object");
             }
-            XMLSignature xmlSignature = new XMLSignature(signableDOM.getOwnerDocument(), "", signatureXMLObject.getSignatureAlgorithm(), signatureXMLObject
-                    .getCanonicalizationAlgorithm());
+            XMLSignature xmlSignature = new XMLSignature(signableDOM.getOwnerDocument(), "", signatureXMLObject
+                    .getSignatureAlgorithm(), signatureXMLObject.getCanonicalizationAlgorithm());
 
             KeyInfo keyInfo = signatureXMLObject.getKeyInfo();
             if (signatureXMLObject.getKeyInfo() != null) {
@@ -107,16 +107,15 @@ public class Signer {
             signatureXMLObject.setXMLSignature(xmlSignature);
 
             if (log.isDebugEnabled()) {
-                log.debug("Creating XMLSecSignatureImpl DOM element");
+                log.debug("Creating signing DOM element");
             }
-
             xmlSignature.sign(signatureXMLObject.getSigningKey());
 
         } catch (XMLSecurityException e) {
             log.error("Unable to construct signature Element " + signableXMLObject.getElementQName(), e);
         }
     }
-    
+
     /*
      * Initialize the Apache XML security library if it hasn't been already
      */
