@@ -16,7 +16,14 @@
 
 package org.opensaml.xml.signature;
 
+import java.security.PublicKey;
+import java.security.cert.X509Certificate;
 import java.util.List;
+
+import org.apache.log4j.Logger;
+import org.apache.xml.security.exceptions.XMLSecurityException;
+import org.apache.xml.security.signature.XMLSignature;
+import org.w3c.dom.Element;
 
 /**
  * This class is responsible for creating the digital signatures for the given signable XMLObjects.
@@ -31,6 +38,9 @@ import java.util.List;
  */
 public class Signer {
 
+    /** Logger */
+    private static Logger log = Logger.getLogger(Signer.class);
+    
     /**
      * Signs the given XMLObject in the order provided.
      * 
@@ -45,9 +55,64 @@ public class Signer {
     /**
      * Signs a single XMLObject.
      * 
-     * @param xmlObject the object to be signed
+     * @param signableXMLObject the object to be signed
      */
-    public static void signObject(SignableXMLObject xmlObject) {
+    public static void signObject(SignableXMLObject signableXMLObject) {
+        Element signableDOM = signableXMLObject.getDOM();
+        Signature signatureXMLObject = signableXMLObject.getSignature();
 
+        if (log.isDebugEnabled()) {
+            log.debug("Starting to digitally sign " + signableXMLObject.getElementQName());
+        }
+
+        try {
+            if (log.isDebugEnabled()) {
+                log.debug("Creating XMLSignature object");
+            }
+            XMLSignature xmlSignature = new XMLSignature(signableDOM.getOwnerDocument(), "", signatureXMLObject.getSignatureAlgorithm(), signatureXMLObject
+                    .getCanonicalizationAlgorithm());
+
+            KeyInfo keyInfo = signatureXMLObject.getKeyInfo();
+            if (signatureXMLObject.getKeyInfo() != null) {
+                if (keyInfo.getKeys() != null) {
+                    if (log.isDebugEnabled()) {
+                        log.debug("Adding public keys to signature key info");
+                    }
+                    for (PublicKey key : keyInfo.getKeys()) {
+                        xmlSignature.addKeyInfo(key);
+                    }
+                }
+
+                if (keyInfo.getCertificates() != null) {
+                    if (log.isDebugEnabled()) {
+                        log.debug("Adding X.509 certifiacte(s) into signature's X509 data");
+                    }
+                    for (X509Certificate cert : keyInfo.getCertificates()) {
+                        xmlSignature.addKeyInfo(cert);
+                    }
+                }
+            }
+
+            if (log.isDebugEnabled()) {
+                log.debug("Adding content to XMLSignature.");
+            }
+            for (ContentReference contentReference : signatureXMLObject.getContentReferences()) {
+                contentReference.createReference(xmlSignature);
+            }
+
+            if (log.isDebugEnabled()) {
+                log.debug("Added XMLSignature to Signature XMLObject");
+            }
+            signatureXMLObject.setXMLSignature(xmlSignature);
+
+            if (log.isDebugEnabled()) {
+                log.debug("Creating XMLSecSignatureImpl DOM element");
+            }
+
+            xmlSignature.sign(signatureXMLObject.getSigningKey());
+
+        } catch (XMLSecurityException e) {
+            log.error("Unable to construct signature Element " + signableXMLObject.getElementQName(), e);
+        }
     }
 }

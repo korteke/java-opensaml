@@ -14,14 +14,13 @@
  * limitations under the License.
  */
 
-package org.opensaml.xml.signature.impl;
+package org.opensaml.xml.signature;
 
 import org.opensaml.xml.AbstractXMLObjectBuilder;
-import org.opensaml.xml.signature.Signature;
 import org.opensaml.xml.util.XMLConstants;
 
 /**
- * Builder of {@link org.opensaml.xml.signature.impl.SignatureImpl}s.
+ * Builder of {@link org.opensaml.xml.signature.Signature}s.
  */
 public class SignatureBuilder extends AbstractXMLObjectBuilder<Signature> {
 
@@ -39,6 +38,6 @@ public class SignatureBuilder extends AbstractXMLObjectBuilder<Signature> {
 
     /** {@inheritDoc} */
     public Signature buildObject(String namespaceURI, String localName, String namespacePrefix) {
-        return new SignatureImpl(namespaceURI, localName, namespacePrefix);
+        return new Signature(namespaceURI, localName, namespacePrefix);
     }
 }

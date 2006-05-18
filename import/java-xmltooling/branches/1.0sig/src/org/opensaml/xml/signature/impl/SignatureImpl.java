@@ -120,7 +120,7 @@ public class SignatureImpl extends AbstractXMLObject implements Signature {
      * 
      * @return the Apache XMLSec signature object backing this signature
      */
-    protected XMLSignature getXMLSignature(){
+    public XMLSignature getXMLSignature(){
         return signature;
     }
     
@@ -129,7 +129,7 @@ public class SignatureImpl extends AbstractXMLObject implements Signature {
      * 
      * @param newSignature the Apache XMLSec signature object backing this signature
      */
-    protected void setXMLSignature(XMLSignature newSignature){
+    public void setXMLSignature(XMLSignature newSignature){
         signature = newSignature;
     }
 }
