@@ -16,28 +16,15 @@
 
 package org.opensaml.xml.signature;
 
-import java.util.List;
-
 import org.apache.xml.security.signature.XMLSignature;
 
 /**
  * Interface for representing the references to the content that is digitally signed.
+ * 
+ * Individual implementations of this may with to expose properties, such as the ability to 
+ * set the digest algorithm if it may vary based on runtime information.
  */
 public interface ContentReference {
-
-    /**
-     * Gets the list of transforms applied to the referenced content.
-     * 
-     * @return list of transforms applied to the referenced conten
-     */
-    public List<String> getTransforms(); 
-    
-    /**
-     * Gets the digest algorithm applied to the transformed content.
-     * 
-     * @return the digest algorithm applied to the transformed content
-     */
-    public String getDigestAlgorithm();
     
     /**
      * Called by the signature marshaller to allow references to be added to the signature. 
