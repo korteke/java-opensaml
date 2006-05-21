@@ -18,38 +18,84 @@ package org.opensaml.xml.signature;
 
 import java.security.PublicKey;
 import java.security.cert.X509Certificate;
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.namespace.QName;
+
+import org.opensaml.xml.AbstractDOMCachingXMLObject;
 import org.opensaml.xml.XMLObject;
+import org.opensaml.xml.util.XMLConstants;
 
 /**
  * XMLObject representing XML Digital Signature, version 20020212, KeyInfo element.
  * 
  * Note that this does not support every possible key information type, only the ones most commonly used.
  */
-public interface KeyInfo extends XMLObject {
+public class KeyInfo extends AbstractDOMCachingXMLObject {
     
     /** Element local name */
-    public static String LOCAL_NAME = "KeyInfo";
+    public static String DEFAULT_ELEMENT_LOCAL_NAME = "KeyInfo";
+    
+    /** Default element name */
+    public final static QName DEFAULT_ELEMENT_NAME = new QName(XMLConstants.XMLSIG_NS, DEFAULT_ELEMENT_LOCAL_NAME, XMLConstants.XMLSIG_PREFIX);
+    
+    /** Local name of the XSI type */
+    public final static String TYPE_LOCAL_NAME = "KeyInfoType"; 
+        
+    /** QName of the XSI type */
+    public final static QName TYPE_NAME = new QName(XMLConstants.XMLSIG_NS, TYPE_LOCAL_NAME, XMLConstants.XMLSIG_PREFIX);
+    
+    /** Key names within this info */
+    private final ArrayList<String> keyNames;
+    
+    /** Keys within this info */
+    private final ArrayList<PublicKey> keys;
+    
+    /** Certificates within this info */
+    private final ArrayList<X509Certificate> certificates;
+    
+    /**
+     * Constructor
+     * 
+     * @param namespaceURI the namespace the element is in
+     * @param elementLocalName the local name of the XML element this Object represents
+     * @param namespacePrefix the prefix for the given namespace
+     */
+    protected KeyInfo(String namespaceURI, String elementLocalName, String namespacePrefix) {
+        super(namespaceURI, elementLocalName, namespacePrefix);
+        
+        keyNames = new ArrayList<String>();
+        keys = new ArrayList<PublicKey>();
+        certificates = new ArrayList<X509Certificate>();
+    }
 
     /**
-     * Gets the list of key names within the key info.
-     * 
-     * @return the list of key names within the key info
+     * {@inheritDoc}
      */
-    public List<String> getKeyNames();
-    
+    public List<String> getKeyNames() {
+        return keyNames;
+    }
+
     /**
-     * Gets the list of public keys within the key info.
-     * 
-     * @return the list of key names within the key info
+     * {@inheritDoc}
      */
-    public List<PublicKey> getKeys();
-    
+    public List<PublicKey> getKeys() {
+        return keys;
+    }
+
     /**
-     * Gets the list of X509 certificates within the key info.
-     * 
-     * @return the list of X509 certificates within the key info
+     * {@inheritDoc}
      */
-    public List<X509Certificate> getCertificates();
+    public List<X509Certificate> getCertificates() {
+        return certificates;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public List<XMLObject> getOrderedChildren() {
+        // No children
+        return null;
+    }
 }

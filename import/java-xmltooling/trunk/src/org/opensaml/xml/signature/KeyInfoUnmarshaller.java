@@ -14,34 +14,30 @@
  * limitations under the License.
  */
 
-package org.opensaml.xml.signature.impl;
+package org.opensaml.xml.signature;
 
 import org.apache.log4j.Logger;
 import org.apache.xml.security.Init;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.keys.content.X509Data;
-import org.opensaml.xml.Configuration;
 import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.XMLObjectBuilderFactory;
 import org.opensaml.xml.io.Unmarshaller;
 import org.opensaml.xml.io.UnmarshallingException;
-import org.opensaml.xml.signature.KeyInfo;
-import org.opensaml.xml.signature.KeyInfoBuilder;
 import org.w3c.dom.Element;
 
 /**
- * A marshaller for {@link org.opensaml.xml.signature.impl.XMLSecKeyInfoImpl} objects. This class, along with it's
+ * A marshaller for {@link org.opensaml.xml.signature.impl.KeyInfoImpl} objects. This class, along with it's
  * respective builder and unmarshaller use the Apache XMLSec 1.3 APIs to perform signing and verification.
  */
-public class XMLSecKeyInfoUnmarshaller implements Unmarshaller {
+public class KeyInfoUnmarshaller implements Unmarshaller {
 
     /** Logger */
-    private static final Logger LOG = Logger.getLogger(XMLSecKeyInfoUnmarshaller.class);
+    private static final Logger LOG = Logger.getLogger(KeyInfoUnmarshaller.class);
 
     /**
      * Constructor
      */
-    public XMLSecKeyInfoUnmarshaller() {
+    public KeyInfoUnmarshaller() {
         if (!Init.isInitialized()) {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Initializing XML security library");
@@ -54,9 +50,8 @@ public class XMLSecKeyInfoUnmarshaller implements Unmarshaller {
      * {@inheritDoc}
      */
     public XMLObject unmarshall(Element element) throws UnmarshallingException {
-        XMLObjectBuilderFactory builderFactory = Configuration.getBuilderFactory();
-        KeyInfoBuilder keyInfoBuilder = (KeyInfoBuilder) builderFactory.getBuilder(element);
-        KeyInfo keyInfoObj = keyInfoBuilder.buildObject();
+        KeyInfo keyInfoObj = new KeyInfo(element.getNamespaceURI(), element.getLocalName(), element
+                .getPrefix());
 
         try {
             org.apache.xml.security.keys.KeyInfo keyInfoElem = new org.apache.xml.security.keys.KeyInfo(element, "#");

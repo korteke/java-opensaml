@@ -24,9 +24,6 @@ import org.opensaml.xml.Namespace;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.XMLObjectBuilder;
 import org.opensaml.xml.XMLObjectBuilderFactory;
-import org.opensaml.xml.signature.SignableXMLObject;
-import org.opensaml.xml.signature.Signature;
-import org.opensaml.xml.signature.SignatureUnmarshaller;
 import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.util.XMLConstants;
 import org.opensaml.xml.util.XMLHelper;
@@ -140,10 +137,6 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
             } else if (childNode.getNodeType() == Node.TEXT_NODE) {
                 unmarshallTextContent(xmlObject, (Text) childNode);
             }
-        }
-
-        if (xmlObject instanceof SignableXMLObject) {
-            verifySignature(domElement, xmlObject);
         }
 
         return xmlObject;
@@ -349,33 +342,6 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
         if (textContent != null) {
             processElementContent(xmlObject, textContent);
         }
-    }
-
-    /**
-     * Verifies the digital signature on DOM representation of the given XMLObject.
-     * 
-     * @param xmlObject the XMLObject whose DOM representation contains the signature to verify
-     * 
-     * @throws UnmarshallingException thrown if ther eis a problem verifying the signature
-     */
-    protected void verifySignature(Element domElement, XMLObject xmlObject) throws UnmarshallingException {
-        SignableXMLObject signableXMLObject = (SignableXMLObject) xmlObject;
-
-        Signature signature = signableXMLObject.getSignature();
-
-        if (signature == null) {
-            if (log.isDebugEnabled()) {
-                log
-                        .debug(XMLHelper.getNodeQName(domElement)
-                                + " is a signable object but does not contain a Signature child, skipping signature verification");
-            }
-            return;
-        }
-
-        QName signatureQName = new QName(XMLConstants.XMLSIG_NS, Signature.LOCAL_NAME);
-        SignatureUnmarshaller unmarshaller = (SignatureUnmarshaller) unmarshallerFactory
-                .getUnmarshaller(signatureQName);
-        unmarshaller.verifySignature(domElement, signature);
     }
 
     /**

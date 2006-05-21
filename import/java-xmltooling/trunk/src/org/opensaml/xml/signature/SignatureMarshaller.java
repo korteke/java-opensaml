@@ -14,25 +14,50 @@
  * limitations under the License.
  */
 
+/**
+ * 
+ */
+
 package org.opensaml.xml.signature;
 
+import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallingException;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
- * A marshaller for {@link org.opensaml.xml.signature.Signature} objects that creates the enveloped XML Digital
- * Signature element and its children and signs the DOM.
+ * A marshaller for {@link org.opensaml.xml.signature.Signature} objects.  This marshaller is really a no-op
+ * class.  All the creation of the signature DOM elements is handled by {@link org.opensaml.xml.signature.Signer} 
+ * when it signs the object.
  */
-public interface SignatureMarshaller extends Marshaller {
+public class SignatureMarshaller implements Marshaller {
 
     /**
-     * Signs the given DOM element using the information provided in the Signature.
-     * 
-     * @param domElement the DOM element to be signed
-     * @param signature information necessary to perform the signing
-     * 
-     * @throws MarshallingException thrown if the signature can not be performed
+     * Constructor
      */
-    public void signElement(Element domElement, Signature signature) throws MarshallingException;
+    public SignatureMarshaller() {
+        
+    }
+
+    /*
+     * @see org.opensaml.xml.io.Marshaller#marshall(org.opensaml.xml.XMLObject)
+     */
+    public Element marshall(XMLObject xmlObject) throws MarshallingException {
+        return null;
+    }
+
+    /*
+     * @see org.opensaml.xml.io.Marshaller#marshall(org.opensaml.xml.XMLObject, org.w3c.dom.Element)
+     */
+    public Element marshall(XMLObject xmlObject, Element parentElement) throws MarshallingException {
+        return null;
+    }
+
+    /*
+     * @see org.opensaml.xml.io.Marshaller#marshall(org.opensaml.xml.XMLObject, org.w3c.dom.Document)
+     */
+    public Element marshall(XMLObject xmlObject, Document document) throws MarshallingException {
+        return null;
+    }
 }

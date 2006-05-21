@@ -16,41 +16,130 @@
 
 package org.opensaml.xml.signature;
 
+import java.security.Key;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.xml.namespace.QName;
+
+import org.apache.xml.security.signature.XMLSignature;
+import org.opensaml.xml.AbstractDOMCachingXMLObject;
 import org.opensaml.xml.XMLObject;
+import org.opensaml.xml.util.XMLConstants;
 
 /**
- * XMLObject representing XML Digital Signature, version 20020212, Signature element.
+ * XMLObject representing an enveloped or detached XML Digital Signature, version 20020212, Signature element.
  */
-public interface Signature extends XMLObject {
+public class Signature extends AbstractDOMCachingXMLObject {
 
     /** Element local name */
-    public final static String LOCAL_NAME = "Signature";
+    public final static String DEFAULT_ELEMENT_LOCAL_NAME = "Signature";
+    
+    /** Default element name */
+    public final static QName DEFAULT_ELEMENT_NAME = new QName(XMLConstants.XMLSIG_NS, DEFAULT_ELEMENT_LOCAL_NAME, XMLConstants.XMLSIG_PREFIX);
+    
+    /** Local name of the XSI type */
+    public final static String TYPE_LOCAL_NAME = "SignatureType"; 
+        
+    /** QName of the XSI type */
+    public final static QName TYPE_NAME = new QName(XMLConstants.XMLSIG_NS, TYPE_LOCAL_NAME, XMLConstants.XMLSIG_PREFIX);
+    
+    /** XML XMLSecSignatureImpl construct */
+    private XMLSignature signature;
+    
+    /** Canonicalization algorithm used in signature */
+    private String canonicalizationAlgorithm;
+    
+    /** Algorithm used to generate the signature */
+    private String signatureAlgorithm;
+    
+    /** Key used to sign the signature */
+    private Key signingKey;
+    
+    /** Public key information to embed in the signature */
+    private KeyInfo keyInfo;
+    
+    /** References to content to be signed */
+    private List<ContentReference> contentReferences;
     
     /**
-     * Gets the information need to construct the digital signature for this element.
+     * Constructor
      * 
-     * @return the information need to construct the digital signature for this element
+     * @param namespaceURI the namespace the element is in
+     * @param elementLocalName the local name of the XML element this Object represents
+     * @param namespacePrefix the prefix for the given namespace
      */
-    public SigningContext getSigningContext();
+    protected Signature(String namespaceURI, String elementLocalName, String namespacePrefix) {
+        super(namespaceURI, elementLocalName, namespacePrefix);
+        contentReferences = new ArrayList<ContentReference>();
+    }
+
+    /** {@inheritDoc} */
+    public String getCanonicalizationAlgorithm() {
+        return canonicalizationAlgorithm;
+    }
+
+    /** {@inheritDoc} */
+    public void setCanonicalizationAlgorithm(String newAlgorithm) {
+        canonicalizationAlgorithm = newAlgorithm;
+    }
+
+    /** {@inheritDoc} */
+    public String getSignatureAlgorithm() {
+        return signatureAlgorithm;
+    }
+
+    /** {@inheritDoc} */
+    public void setSignatureAlgorithm(String newAlgorithm) {
+        signatureAlgorithm  = newAlgorithm;
+    }
+
+    /** {@inheritDoc} */
+    public Key getSigningKey() {
+        return signingKey;
+    }
+
+    /** {@inheritDoc} */
+    public void setSigningKey(Key newKey) {
+        signingKey = newKey;
+    }
+
+    /** {@inheritDoc} */
+    public KeyInfo getKeyInfo() {
+        return keyInfo;
+    }
+
+    /** {@inheritDoc} */
+    public void setKeyInfo(KeyInfo newKeyInfo) {
+        keyInfo = newKeyInfo;
+    }
+
+    /** {@inheritDoc} */
+    public List<ContentReference> getContentReferences() {
+        return contentReferences;
+    }
+
+    /** {@inheritDoc} */
+    public List<XMLObject> getOrderedChildren() {
+        // Children
+        return null;
+    }
     
     /**
-     * Sets the information need to construct the digital signature for this element.
+     * Gets the Apache XMLSec signature object backing this signature.
      * 
-     * @param newContext the information need to construct the digital signature for this element
+     * @return the Apache XMLSec signature object backing this signature
      */
-    public void setSigningContext(SigningContext newContext);
+    protected XMLSignature getXMLSignature(){
+        return signature;
+    }
     
     /**
-     * Gets reference URI to the content to be signed.
+     * Sets the Apache XMLSec signature object backing this signature.
      * 
-     * @return reference URI to the content to be signed
+     * @param newSignature the Apache XMLSec signature object backing this signature
      */
-    public String getReferenceURI();
-    
-    /**
-     * Sets reference URI to the content to be signed.
-     * 
-     * @param newID reference URI to the content to be signed
-     */
-    public void setReferenceURI(String newID);
+    protected void setXMLSignature(XMLSignature newSignature){
+        signature = newSignature;
+    }
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.xml.signature.impl;
+package org.opensaml.xml.signature;
 
 import java.security.PublicKey;
 import java.security.cert.X509Certificate;
@@ -30,23 +30,22 @@ import org.apache.xml.security.keys.content.X509Data;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.signature.KeyInfo;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
- * A marshaller for {@link org.opensaml.xml.signature.impl.XMLSecKeyInfoImpl} objects. This class, along with it's
+ * A marshaller for {@link org.opensaml.xml.signature.impl.KeyInfoImpl} objects. This class, along with it's
  * respective builder and unmarshaller use the Apache XMLSec 1.3 APIs to perform signing and verification.
  */
-public class XMLSecKeyInfoMarshaller implements Marshaller {
+public class KeyInfoMarshaller implements Marshaller {
 
     /** Logger */
-    private static final Logger LOG = Logger.getLogger(XMLSecKeyInfoMarshaller.class);
+    private static final Logger LOG = Logger.getLogger(KeyInfoMarshaller.class);
 
     /**
      * Constructor
      */
-    public XMLSecKeyInfoMarshaller() {
+    public KeyInfoMarshaller() {
         if (!Init.isInitialized()) {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Initializing XML security library");

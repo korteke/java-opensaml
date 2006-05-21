@@ -16,32 +16,20 @@
 
 package org.opensaml.xml.signature;
 
-import org.opensaml.xml.AbstractXMLObjectBuilder;
-import org.opensaml.xml.util.XMLConstants;
+import org.apache.xml.security.signature.XMLSignature;
 
 /**
- * Builder of {@link org.opensaml.xml.signature.impl.KeyInfoImpl} objects.
+ * Interface for representing the references to the content that is digitally signed.
+ * 
+ * Individual implementations of this may with to expose properties, such as the ability to 
+ * set the digest algorithm if it may vary based on runtime information.
  */
-public class KeyInfoBuilder extends AbstractXMLObjectBuilder<KeyInfo> {
-
+public interface ContentReference {
+    
     /**
-     * Constructor
+     * Called by the signature marshaller to allow references to be added to the signature. 
+     *
+     * @param signature the signature object
      */
-    public KeyInfoBuilder() {
-
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public KeyInfo buildObject() {
-        return buildObject(XMLConstants.XMLSIG_NS, KeyInfo.DEFAULT_ELEMENT_LOCAL_NAME, XMLConstants.XMLSIG_PREFIX);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public KeyInfo buildObject(String namespaceURI, String localName, String namespacePrefix) {
-        return new KeyInfo(namespaceURI, localName, namespacePrefix);
-    }
+    public void createReference(XMLSignature signature);
 }

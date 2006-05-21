@@ -14,36 +14,30 @@
  * limitations under the License.
  */
 
-package org.opensaml.xml.signature.impl;
+package org.opensaml.xml.signature;
 
 import org.opensaml.xml.AbstractXMLObjectBuilder;
-import org.opensaml.xml.signature.KeyInfo;
-import org.opensaml.xml.signature.KeyInfoBuilder;
 import org.opensaml.xml.util.XMLConstants;
 
 /**
- * Builder of {@link org.opensaml.xml.signature.impl.XMLSecKeyInfoImpl} objects.
+ * Builder of {@link org.opensaml.xml.signature.Signature}s.
  */
-public class XMLSecKeyInfoBuilder extends AbstractXMLObjectBuilder<KeyInfo> implements KeyInfoBuilder {
+public class SignatureBuilder extends AbstractXMLObjectBuilder<Signature> {
 
     /**
      * Constructor
      */
-    public XMLSecKeyInfoBuilder() {
+    public SignatureBuilder() {
 
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    public KeyInfo buildObject() {
-        return buildObject(XMLConstants.XMLSIG_NS, KeyInfo.LOCAL_NAME, XMLConstants.XMLSIG_PREFIX);
+    
+    /** {@inheritDoc} */
+    public Signature buildObject() {
+        return buildObject(XMLConstants.XMLSIG_NS, Signature.DEFAULT_ELEMENT_LOCAL_NAME, XMLConstants.XMLSIG_PREFIX);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public KeyInfo buildObject(String namespaceURI, String localName, String namespacePrefix) {
-        return new XMLSecKeyInfoImpl(namespaceURI, localName, namespacePrefix);
+    /** {@inheritDoc} */
+    public Signature buildObject(String namespaceURI, String localName, String namespacePrefix) {
+        return new Signature(namespaceURI, localName, namespacePrefix);
     }
 }
