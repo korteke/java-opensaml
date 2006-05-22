@@ -16,13 +16,10 @@
 
 package org.opensaml.xml.signature;
 
-import java.io.InputStream;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.PrivateKey;
 import java.security.PublicKey;
-import java.util.HashMap;
-import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.apache.xml.security.algorithms.MessageDigestAlgorithm;
@@ -33,21 +30,13 @@ import org.opensaml.xml.Configuration;
 import org.opensaml.xml.XMLObjectBaseTestCase;
 import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.io.Unmarshaller;
-import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.mock.SimpleXMLObject;
 import org.opensaml.xml.mock.SimpleXMLObjectBuilder;
-import org.opensaml.xml.parse.ParserPool;
-import org.opensaml.xml.parse.XMLParserException;
 import org.opensaml.xml.util.XMLHelper;
 import org.opensaml.xml.validation.ValidationException;
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-/**
- * Test to verify {@link org.opensaml.xml.signature.Signature} and its marshallers and unmarshallers
- */
-public class EnvelopedSignatureTest extends XMLObjectBaseTestCase {
+public class DetachedSignatureTest extends XMLObjectBaseTestCase {
 
     /** Logger */
     private static Logger log = Logger.getLogger(EnvelopedSignatureTest.class);
@@ -67,12 +56,6 @@ public class EnvelopedSignatureTest extends XMLObjectBaseTestCase {
     /** Builder of Signature XML objects */
     private SignatureBuilder sigBuilder;
 
-    /** Builder of KeyInfo XML objects */
-    private KeyInfoBuilder keyInfoBuilder;
-
-    /** Parser pool used to parse example config files */
-    private ParserPool parserPool;
-
     /** {@inheritDoc} */
     protected void setUp() throws Exception {
         super.setUp();
@@ -89,36 +72,24 @@ public class EnvelopedSignatureTest extends XMLObjectBaseTestCase {
 
         sxoBuilder = new SimpleXMLObjectBuilder();
         sigBuilder = new SignatureBuilder();
-        keyInfoBuilder = new KeyInfoBuilder();
-
-        HashMap<String, Boolean> features = new HashMap<String, Boolean>();
-        features.put("http://apache.org/xml/features/validation/schema/normalized-value", Boolean.FALSE);
-        features.put("http://apache.org/xml/features/dom/defer-node-expansion", Boolean.FALSE);
-
-        parserPool = new ParserPool(true, null, features);
     }
 
     /**
-     * Tests creating an enveloped signature and then verifying it.
+     * Tests creating a detached signature within the same document as the element signed and then verifying it.
      * 
      * @throws MarshallingException thrown if the XMLObject tree can not be marshalled
      * @throws ValidationException thrown if the signature verification fails
      */
-    public void testSigningAndVerification() throws MarshallingException, ValidationException {
+    public void testInternalSignatureAndVerification() throws MarshallingException, ValidationException {
         SimpleXMLObject sxo = getXMLObjectWithSignature();
         Signature signature = sxo.getSignature();
-
-        KeyInfo keyInfo = keyInfoBuilder.buildObject();
-        keyInfo.getKeys().add(verificationKey);
-        signature.setKeyInfo(keyInfo);
 
         Marshaller marshaller = Configuration.getMarshallerFactory().getMarshaller(sxo);
         Element signedElement = marshaller.marshall(sxo);
 
         Signer.signObject(signature);
-
         if (log.isDebugEnabled()) {
-            log.debug("Marshalled Signature: \n" + XMLHelper.nodeToString(signedElement));
+            log.debug("Marshalled deatched Signature: \n" + XMLHelper.nodeToString(signedElement));
         }
 
         SignatureValidator signatureValidator = new SignatureValidator(verificationKey);
@@ -134,53 +105,66 @@ public class EnvelopedSignatureTest extends XMLObjectBaseTestCase {
     }
 
     /**
-     * Tests unmarshalling an enveloped signature.
+     * Tests creating a detached signature within a different document as the element signed and then verifying it. The
+     * external references used are the InCommon and InQueue metadata files.
      * 
-     * @throws XMLParserException thrown if the XML can not be parsed
-     * @throws UnmarshallingException thrown if the DOM can not be unmarshalled
+     * @throws MarshallingException thrown if the XMLObject tree can not be marshalled
+     * @throws ValidationException thrown if the signature verification fails
      */
-    public void testUnmarshallSignature() throws XMLParserException, UnmarshallingException {
-        String envelopedSignatureFile = "/data/org/opensaml/xml/signature/envelopedSignature.xml";
-        InputStream ins = EnvelopedSignatureTest.class.getResourceAsStream(envelopedSignatureFile);
-        Document envelopedSignatureDoc = parserPool.parse(ins);
-        Element rootElement = envelopedSignatureDoc.getDocumentElement();
+    public void testExternalSignatureAndVerification() throws MarshallingException, ValidationException {
+        Signature signature = sigBuilder.buildObject();
+        signature.setSigningKey(signingKey);
+        signature.setCanonicalizationAlgorithm(Canonicalizer.ALGO_ID_C14N_EXCL_OMIT_COMMENTS);
+        signature.setSignatureAlgorithm(XMLSignature.ALGO_ID_SIGNATURE_RSA);
 
-        Unmarshaller unmarshaller = Configuration.getUnmarshallerFactory().getUnmarshaller(rootElement);
-        SimpleXMLObject sxo = (SimpleXMLObject) unmarshaller.unmarshall(rootElement);
+        String incommonMetadata = "http://wayf.incommonfederation.org/InCommon/InCommon-metadata.xml";
+        URIContentReference contentReference = new URIContentReference(incommonMetadata);
+        contentReference.getTransforms().add(Transforms.TRANSFORM_C14N_EXCL_OMIT_COMMENTS);
+        contentReference.setDigestAlgorithm(MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA256);
+        signature.getContentReferences().add(contentReference);
 
-        assertEquals("Id attribute was not expected value", "FOO", sxo.getId());
+        String inqueueMetadata = "http://wayf.internet2.edu/InQueue/IQ-metadata.xml";
+        contentReference = new URIContentReference(inqueueMetadata);
+        contentReference.getTransforms().add(Transforms.TRANSFORM_C14N_EXCL_OMIT_COMMENTS);
+        contentReference.setDigestAlgorithm(MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA256);
+        signature.getContentReferences().add(contentReference);
 
-        Signature signature = sxo.getSignature();
-        assertNotNull("Signature was null", signature);
+        Marshaller marshaller = Configuration.getMarshallerFactory().getMarshaller(signature);
+        Element signatureElement = marshaller.marshall(signature);
 
-        KeyInfo keyInfo = signature.getKeyInfo();
-        assertNotNull("Signature's KeyInfo was null", keyInfo);
+        Signer.signObject(signature);
+        if (log.isDebugEnabled()) {
+            log.debug("Marshalled deatched Signature: \n" + XMLHelper.nodeToString(signatureElement));
+        }
 
-        List<PublicKey> keys = keyInfo.getKeys();
-        assertTrue("KeyInfo did not contain the verification key", keys != null && keys.size() == 1);
+        SignatureValidator signatureValidator = new SignatureValidator(verificationKey);
+        signatureValidator.validate(signature);
     }
 
     /**
-     * Creates a XMLObject that has a Signature child element.
+     * Creates a XMLObject that has another XMLObject and a Signature as children. The Signature is is a detached
+     * signature of its sibling.
      * 
-     * @return a XMLObject that has a Signature child element
+     * @return the XMLObject
      */
     private SimpleXMLObject getXMLObjectWithSignature() {
-        SimpleXMLObject sxo = sxoBuilder.buildObject();
-        sxo.setId("FOO");
+        SimpleXMLObject rootSXO = sxoBuilder.buildObject();
+
+        SimpleXMLObject childSXO = sxoBuilder.buildObject();
+        childSXO.setId("FOO");
+        rootSXO.getSimpleXMLObjects().add(childSXO);
 
         Signature sig = sigBuilder.buildObject();
         sig.setSigningKey(signingKey);
         sig.setCanonicalizationAlgorithm(Canonicalizer.ALGO_ID_C14N_EXCL_OMIT_COMMENTS);
         sig.setSignatureAlgorithm(XMLSignature.ALGO_ID_SIGNATURE_RSA);
-        
+
         DocumentInternalIDContentReference contentReference = new DocumentInternalIDContentReference("FOO");
-        contentReference.getTransforms().add(Transforms.TRANSFORM_ENVELOPED_SIGNATURE);
         contentReference.getTransforms().add(Transforms.TRANSFORM_C14N_EXCL_OMIT_COMMENTS);
         contentReference.setDigestAlgorithm(MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA256);
         sig.getContentReferences().add(contentReference);
 
-        sxo.setSignature(sig);
-        return sxo;
+        rootSXO.setSignature(sig);
+        return rootSXO;
     }
 }

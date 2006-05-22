@@ -43,9 +43,6 @@ public class ConfigurationTest extends TestCase {
     /** SimpleElement QName */
     private QName simpleXMLObjectQName;
     
-    /** Signature QName */
-    private QName signatureQName;
-    
     /**
      * Constructor
      */
@@ -56,7 +53,6 @@ public class ConfigurationTest extends TestCase {
 
         parserPool = new ParserPool(true, null, features);
         simpleXMLObjectQName = new QName("http://www.example.org/testObjects", "SimpleElement");
-        signatureQName = new QName("http://www.w3.org/2000/09/xmldsig#", "Signature");
     }
 
     /**
@@ -77,20 +73,6 @@ public class ConfigurationTest extends TestCase {
         
         Unmarshaller sxUnmarshaller = Configuration.getUnmarshallerFactory().getUnmarshaller(simpleXMLObjectQName);
         assertNotNull("SimpleXMLObject did not have a registered unmarshaller", sxUnmarshaller);
-        
-        // Test loading the Signature configuration
-        InputStream sigConfig = Configuration.class.getResourceAsStream("/data/org/opensaml/xml/SignatureConfiguration.xml");
-        Document sigConfigDoc = parserPool.parse(sigConfig);
-        Configuration.load(sigConfigDoc);
-        
-        XMLObjectBuilder sigBuilder = Configuration.getBuilderFactory().getBuilder(signatureQName);
-        assertNotNull("Signature did not have a registered builder", sigBuilder);
-        
-        Marshaller sigMarshaller = Configuration.getMarshallerFactory().getMarshaller(signatureQName);
-        assertNotNull("Signature did not have a registered marshaller", sigMarshaller);
-        
-        Unmarshaller sigUnmarshaller = Configuration.getUnmarshallerFactory().getUnmarshaller(signatureQName);
-        assertNotNull("Signature did not have a registered unmarshaller", sigUnmarshaller);
         
         // Test loading a configuration with bogus classes
         InputStream nonConfig = Configuration.class.getResourceAsStream("/data/org/opensaml/xml/NonexistantClassConfiguration.xml");
