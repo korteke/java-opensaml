@@ -25,6 +25,7 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.xml.ElementExtensibleXMLObject;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.signature.AbstractSignableXMLObject;
 import org.opensaml.xml.util.XMLObjectChildrenList;
@@ -32,7 +33,7 @@ import org.opensaml.xml.util.XMLObjectChildrenList;
 /**
  * Simple XMLObject that can be used for testing
  */
-public class SimpleXMLObject extends AbstractSignableXMLObject {
+public class SimpleXMLObject extends AbstractSignableXMLObject implements ElementExtensibleXMLObject {
     
     /** Default namespace */
     public final static String NAMESPACE = "http://www.example.org/testObjects";
@@ -61,6 +62,9 @@ public class SimpleXMLObject extends AbstractSignableXMLObject {
     /** Child SimpleXMLObjects */
     private XMLObjectChildrenList<SimpleXMLObject> simpleXMLObjects;
     
+    /** Other children */
+    private XMLObjectChildrenList<XMLObject> unknownXMLObjects;
+    
     /**
      * Constructor
      */
@@ -68,6 +72,7 @@ public class SimpleXMLObject extends AbstractSignableXMLObject {
         super(namspaceURI, localName, namespacePrefix);
         
         simpleXMLObjects = new XMLObjectChildrenList<SimpleXMLObject>(this);
+        unknownXMLObjects = new XMLObjectChildrenList<XMLObject>(this);
     }
     
     /**
@@ -114,6 +119,11 @@ public class SimpleXMLObject extends AbstractSignableXMLObject {
     public List<SimpleXMLObject> getSimpleXMLObjects(){
         return simpleXMLObjects;
     }
+    
+    /** {@inheritDoc} */
+    public List<XMLObject> getUnknownXMLObjects() {
+        return unknownXMLObjects;
+    }
 
     /*
      * @see org.opensaml.xml.XMLObject#getOrderedChildren()
@@ -122,6 +132,7 @@ public class SimpleXMLObject extends AbstractSignableXMLObject {
         ArrayList<XMLObject> children = new ArrayList<XMLObject>();
         
         children.addAll(simpleXMLObjects);
+        children.addAll(unknownXMLObjects);
         
         return Collections.unmodifiableList(children);
     }

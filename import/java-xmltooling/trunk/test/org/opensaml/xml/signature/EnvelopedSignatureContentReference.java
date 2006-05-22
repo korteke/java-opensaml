@@ -38,7 +38,7 @@ public class EnvelopedSignatureContentReference implements ContentReference {
      * @param referenceID the reference ID of the element to be signed
      */
     public EnvelopedSignatureContentReference(String referenceID) {
-        this.referenceID = referenceID;
+        this.referenceID = "#" + referenceID;
     }
 
     /** {@inheritDoc} */

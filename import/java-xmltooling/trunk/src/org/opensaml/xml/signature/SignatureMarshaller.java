@@ -29,6 +29,7 @@ import org.apache.xml.security.signature.XMLSignature;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallingException;
+import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -70,23 +71,30 @@ public class SignatureMarshaller implements Marshaller {
      * @see org.opensaml.xml.io.Marshaller#marshall(org.opensaml.xml.XMLObject, org.w3c.dom.Element)
      */
     public Element marshall(XMLObject xmlObject, Element parentElement) throws MarshallingException {
-        return marshall(xmlObject, parentElement.getOwnerDocument());
+        Element signatureElement = createSignatureElement((Signature) xmlObject, parentElement.getOwnerDocument());
+        XMLHelper.appendChildElement(parentElement, signatureElement);
+        return signatureElement;
     }
 
     /*
      * @see org.opensaml.xml.io.Marshaller#marshall(org.opensaml.xml.XMLObject, org.w3c.dom.Document)
      */
     public Element marshall(XMLObject xmlObject, Document document) throws MarshallingException {
-        Signature signature = (Signature) xmlObject;
-
-        if (log.isDebugEnabled()) {
-            log.debug("Starting to marshall " + xmlObject.getElementQName());
+        Element signatureElement = createSignatureElement((Signature) xmlObject, document);
+        
+        Element documentRoot = document.getDocumentElement();
+        if (documentRoot != null) {
+            document.replaceChild(documentRoot, signatureElement);
+        } else {
+            document.appendChild(signatureElement);
         }
-
-        XMLObject parentXMLObject = xmlObject.getParent();
-        if (!(parentXMLObject instanceof SignableXMLObject)) {
-            throw new MarshallingException(
-                    "Parent XMLObject was not an instance of SignableXMLObject, can not create digital signature");
+        
+        return signatureElement;
+    }
+    
+    private Element createSignatureElement(Signature signature, Document document) throws MarshallingException {
+        if (log.isDebugEnabled()) {
+            log.debug("Starting to marshall " + signature.getElementQName());
         }
 
         try {
@@ -125,18 +133,14 @@ public class SignatureMarshaller implements Marshaller {
             }
 
             if (log.isDebugEnabled()) {
-                log.debug("Added XMLSignature to Signature XMLObject");
+                log.debug("Creating Signature DOM element");
             }
             signature.setXMLSignature(dsig);
-
-            if (log.isDebugEnabled()) {
-                log.debug("Creating XMLSecSignatureImpl DOM element");
-            }
             return dsig.getElement();
 
         } catch (XMLSecurityException e) {
-            log.error("Unable to construct signature Element " + xmlObject.getElementQName(), e);
-            throw new MarshallingException("Unable to construct signature Element " + xmlObject.getElementQName(), e);
+            log.error("Unable to construct signature Element " + signature.getElementQName(), e);
+            throw new MarshallingException("Unable to construct signature Element " + signature.getElementQName(), e);
         }
     }
 }

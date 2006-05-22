@@ -21,24 +21,26 @@ import java.security.KeyPairGenerator;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 
-import javax.xml.namespace.QName;
-
+import org.apache.log4j.Logger;
 import org.apache.xml.security.c14n.Canonicalizer;
 import org.apache.xml.security.signature.XMLSignature;
 import org.opensaml.xml.Configuration;
-import org.opensaml.xml.ElementProxy;
-import org.opensaml.xml.ElementProxyBuilder;
 import org.opensaml.xml.XMLObjectBaseTestCase;
 import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.mock.SimpleXMLObject;
+import org.opensaml.xml.mock.SimpleXMLObjectBuilder;
 import org.opensaml.xml.util.XMLHelper;
+import org.opensaml.xml.validation.ValidationException;
 import org.w3c.dom.Element;
 
 /**
  * Test to verify {@link org.opensaml.xml.signature.Signature} and its marshallers and unmarshallers
  */
 public class EnvelopedSignatureTest extends XMLObjectBaseTestCase {
+    
+    /** Logger */
+    private static Logger log = Logger.getLogger(EnvelopedSignatureTest.class);
 
     /** Key used for signing */
     private PrivateKey signingKey;
@@ -46,8 +48,11 @@ public class EnvelopedSignatureTest extends XMLObjectBaseTestCase {
     /** Key used for verification */
     private PublicKey verificationKey;
     
+    /** Verification key that should fail to verify signature */
+    private PublicKey badVerificationKey;
+    
     /** Builder of mock XML objects */
-    private ElementProxyBuilder epBuilder;
+    private SimpleXMLObjectBuilder sxoBuilder;
     
     /** Builder of Signature XML objects */
     private SignatureBuilder sigBuilder;
@@ -62,22 +67,40 @@ public class EnvelopedSignatureTest extends XMLObjectBaseTestCase {
         signingKey = keyPair.getPrivate();
         verificationKey = keyPair.getPublic();
         
-        epBuilder = new ElementProxyBuilder();
+        keyGen.initialize(1024);
+        keyPair = keyGen.generateKeyPair();
+        badVerificationKey = keyPair.getPublic();
+        
+        sxoBuilder = new SimpleXMLObjectBuilder();
         sigBuilder = new SignatureBuilder();
     }
 
     /**
      * Tests creating an enveloped signature and then verifying it
      * @throws MarshallingException 
+     * @throws ValidationException 
      */
-    public void testSigningAndVerification() throws MarshallingException{
-        ElementProxy elementProxy = getXMLObjectWithSignature();
-        Marshaller marshaller = Configuration.getMarshallerFactory().getMarshaller(elementProxy);
-        Element signedElement = marshaller.marshall(elementProxy);
+    public void testSigningAndVerification() throws MarshallingException, ValidationException{
+        SimpleXMLObject sxo = getXMLObjectWithSignature();
+        Marshaller marshaller = Configuration.getMarshallerFactory().getMarshaller(sxo);
+        Element signedElement = marshaller.marshall(sxo);
         
-        Signer.signObject((Signature) elementProxy.getUnknownXMLObjects().get(0));
+        Signer.signObject((Signature) sxo.getUnknownXMLObjects().get(0));
         
-        XMLHelper.nodeToString(signedElement);
+        if(log.isDebugEnabled()){
+            log.debug("Marshalled Signature: \n" + XMLHelper.nodeToString(signedElement));
+        }
+        
+        SignatureValidator signatureValidator = new SignatureValidator(verificationKey);
+        signatureValidator.validate(sxo.getUnknownXMLObjects().get(0));
+        
+        try{
+            signatureValidator = new SignatureValidator(badVerificationKey);
+            signatureValidator.validate(sxo.getUnknownXMLObjects().get(0));
+            fail("Signature validated with an incorrect public key");
+        }catch(ValidationException e){
+            // this is supposed to fail
+        }
     }
     
     /**
@@ -92,16 +115,17 @@ public class EnvelopedSignatureTest extends XMLObjectBaseTestCase {
      * 
      * @return a ElementProxy that has a Signature child element
      */
-    private ElementProxy getXMLObjectWithSignature(){
-        ElementProxy elementProxy = epBuilder.buildObject("FOOSPACE", "FOO", );
-        elementProxy.getUnknownAttributes().put(new QName("ID"), "foo");
+    private SimpleXMLObject getXMLObjectWithSignature(){
+        SimpleXMLObject sxo = sxoBuilder.buildObject();
+        sxo.setId("FOO");
         
         Signature sig = sigBuilder.buildObject();
         sig.setSigningKey(signingKey);
         sig.setCanonicalizationAlgorithm(Canonicalizer.ALGO_ID_C14N_EXCL_OMIT_COMMENTS);
         sig.setSignatureAlgorithm(XMLSignature.ALGO_ID_SIGNATURE_RSA);
+        sig.getContentReferences().add(new EnvelopedSignatureContentReference("FOO"));
         
-        elementProxy.getUnknownXMLObjects().add(sig);
-        return elementProxy;
+        sxo.getUnknownXMLObjects().add(sig);
+        return sxo;
     }
 }

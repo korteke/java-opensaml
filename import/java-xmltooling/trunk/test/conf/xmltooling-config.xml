@@ -15,7 +15,7 @@
         </ObjectProvider>
         
         <!-- XML Digital Signature KeyInfo -->
-        <ObjectProvider qualifiedName="ds:Signature">
+        <ObjectProvider qualifiedName="ds:KeyInfo">
             <BuilderClass className="org.opensaml.xml.signature.KeyInfoBuilder" />
             <MarshallingClass className="org.opensaml.xml.signature.KeyInfoMarshaller" />
             <UnmarshallingClass className="org.opensaml.xml.signature.KeyInfoUnmarshaller" />

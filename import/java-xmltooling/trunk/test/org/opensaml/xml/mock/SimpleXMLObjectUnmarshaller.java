@@ -51,6 +51,8 @@ public class SimpleXMLObjectUnmarshaller extends AbstractDOMCachingXMLObjectUnma
 
         if (childXMLObject instanceof SimpleXMLObject) {
             simpleXMLObject.getSimpleXMLObjects().add((SimpleXMLObject) childXMLObject);
+        }else{
+            simpleXMLObject.getUnknownXMLObjects().add(childXMLObject);
         }
     }
 

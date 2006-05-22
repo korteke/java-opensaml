@@ -52,7 +52,7 @@ public class SignatureValidator implements Validator {
     public void validate(XMLObject xmlObject) throws ValidationException {
         Signature signature = (Signature) xmlObject;
 
-        if (signature == null) {
+        if (signature != null) {
             XMLSignature xmlSignature = signature.getXMLSignature();
             if (log.isDebugEnabled()) {
                 log.debug("Attempting to validate digital signature using provided key");
