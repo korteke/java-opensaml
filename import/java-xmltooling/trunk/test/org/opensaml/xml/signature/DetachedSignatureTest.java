@@ -16,10 +16,15 @@
 
 package org.opensaml.xml.signature;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.util.HashMap;
 
 import org.apache.log4j.Logger;
 import org.apache.xml.security.algorithms.MessageDigestAlgorithm;
@@ -30,8 +35,12 @@ import org.opensaml.xml.Configuration;
 import org.opensaml.xml.XMLObjectBaseTestCase;
 import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallingException;
+import org.opensaml.xml.io.Unmarshaller;
+import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.mock.SimpleXMLObject;
 import org.opensaml.xml.mock.SimpleXMLObjectBuilder;
+import org.opensaml.xml.parse.ParserPool;
+import org.opensaml.xml.parse.XMLParserException;
 import org.opensaml.xml.util.XMLHelper;
 import org.opensaml.xml.validation.ValidationException;
 import org.w3c.dom.Element;
@@ -56,6 +65,9 @@ public class DetachedSignatureTest extends XMLObjectBaseTestCase {
     /** Builder of Signature XML objects */
     private SignatureBuilder sigBuilder;
 
+    /** Parser pool used to parse example config files */
+    private ParserPool parserPool;
+
     /** {@inheritDoc} */
     protected void setUp() throws Exception {
         super.setUp();
@@ -72,6 +84,11 @@ public class DetachedSignatureTest extends XMLObjectBaseTestCase {
 
         sxoBuilder = new SimpleXMLObjectBuilder();
         sigBuilder = new SignatureBuilder();
+
+        HashMap<String, Boolean> features = new HashMap<String, Boolean>();
+        features.put("http://apache.org/xml/features/validation/schema/normalized-value", Boolean.FALSE);
+        features.put("http://apache.org/xml/features/dom/defer-node-expansion", Boolean.FALSE);
+        parserPool = new ParserPool(true, null, features);
     }
 
     /**
@@ -137,6 +154,30 @@ public class DetachedSignatureTest extends XMLObjectBaseTestCase {
             log.debug("Marshalled deatched Signature: \n" + XMLHelper.nodeToString(signatureElement));
         }
 
+        SignatureValidator signatureValidator = new SignatureValidator(verificationKey);
+        signatureValidator.validate(signature);
+    }
+
+    /**
+     * Unmarshalls the XML DSIG spec RSA example signature and verifies it with the key contained in the KeyInfo.
+     * 
+     * @throws IOException thrown if the signature can not be fetched from the W3C site
+     * @throws MalformedURLException thrown if the signature can not be fetched from the W3C site
+     * @throws XMLParserException thrown if the signature is not valid XML
+     * @throws UnmarshallingException thrown if the signature DOM can not be unmarshalled
+     * @throws ValidationException thrown if the Signature does not validate against the key
+     * 
+     */
+    public void testUnmarshallExternalSignatureAndVerification() throws MalformedURLException, IOException,
+            XMLParserException, UnmarshallingException, ValidationException {
+        String signatureLocation = "http://www.w3.org/TR/xmldsig-core/signature-example-rsa.xml";
+        InputStream ins = new URL(signatureLocation).openStream();
+        Element signatureElement = parserPool.parse(ins).getDocumentElement();
+
+        Unmarshaller unmarshaller = Configuration.getUnmarshallerFactory().getUnmarshaller(signatureElement);
+        Signature signature = (Signature) unmarshaller.unmarshall(signatureElement);
+
+        PublicKey verificationKey = signature.getKeyInfo().getPublicKey();
         SignatureValidator signatureValidator = new SignatureValidator(verificationKey);
         signatureValidator.validate(signature);
     }
