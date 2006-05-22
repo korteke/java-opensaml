@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-package org.opensaml.xml;
+package org.opensaml.xml.encryption;
 
 import java.security.GeneralSecurityException;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 
+import org.opensaml.xml.XMLObjectBaseTestCase;
 import org.opensaml.xml.encryption.EncryptionContext;
 import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallingException;

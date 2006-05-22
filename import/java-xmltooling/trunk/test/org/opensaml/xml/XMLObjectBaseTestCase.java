@@ -58,7 +58,7 @@ public class XMLObjectBaseTestCase extends XMLTestCase {
      * Constructor
      */
     public XMLObjectBaseTestCase() {
-        simpleXMLObjectQName = new QName(SimpleXMLObject.NAMESAPACE, SimpleXMLObject.LOCAL_NAME);
+        simpleXMLObjectQName = new QName(SimpleXMLObject.NAMESPACE, SimpleXMLObject.LOCAL_NAME);
     }
 
     /**

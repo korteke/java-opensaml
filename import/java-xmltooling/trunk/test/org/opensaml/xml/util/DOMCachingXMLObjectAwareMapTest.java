@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.xml;
+package org.opensaml.xml.util;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -22,6 +22,7 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.xml.XMLObjectBaseTestCase;
 import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.mock.SimpleXMLObject;

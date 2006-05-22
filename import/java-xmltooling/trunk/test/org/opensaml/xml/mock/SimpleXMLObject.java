@@ -23,21 +23,28 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.opensaml.xml.AbstractDOMCachingXMLObject;
+import javax.xml.namespace.QName;
+
 import org.opensaml.xml.XMLObject;
+import org.opensaml.xml.signature.AbstractSignableXMLObject;
 import org.opensaml.xml.util.XMLObjectChildrenList;
 
 /**
  * Simple XMLObject that can be used for testing
  */
-public class SimpleXMLObject extends AbstractDOMCachingXMLObject {
+public class SimpleXMLObject extends AbstractSignableXMLObject {
     
-    public final static String NAMESAPACE = "http://www.example.org/testObjects";
+    /** Default namespace */
+    public final static String NAMESPACE = "http://www.example.org/testObjects";
     
+    /** Default namespace prefix */
     public final static String NAMESPACE_PREFIX = "test";
     
     /** Element local name */
     public final static String LOCAL_NAME = "SimpleElement";
+    
+    /** Default element name */
+    public final static QName ELEMENT_NAME = new QName(NAMESPACE, LOCAL_NAME, NAMESPACE_PREFIX);
     
     /** Local name of encrypted element */
     public final static String ENCRYPTED_NAME = "Encrypted" + LOCAL_NAME;
@@ -53,15 +60,6 @@ public class SimpleXMLObject extends AbstractDOMCachingXMLObject {
     
     /** Child SimpleXMLObjects */
     private XMLObjectChildrenList<SimpleXMLObject> simpleXMLObjects;
-    
-    /**
-     * Constructor
-     */
-    public SimpleXMLObject() {
-        super(NAMESAPACE, LOCAL_NAME, NAMESPACE_PREFIX);
-        
-        simpleXMLObjects = new XMLObjectChildrenList<SimpleXMLObject>(this);
-    }
     
     /**
      * Constructor

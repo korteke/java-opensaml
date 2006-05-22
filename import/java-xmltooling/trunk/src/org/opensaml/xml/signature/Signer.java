@@ -16,15 +16,12 @@
 
 package org.opensaml.xml.signature;
 
-import java.security.PublicKey;
-import java.security.cert.X509Certificate;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.apache.xml.security.Init;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.signature.XMLSignature;
-import org.w3c.dom.Element;
 
 /**
  * This class is responsible for creating the digital signatures for the given signable XMLObjects.
@@ -47,8 +44,8 @@ public class Signer {
      * 
      * @param xmlObjects an orderded list of XMLObject to be signed
      */
-    public static void signObjects(List<SignableXMLObject> xmlObjects) {
-        for (SignableXMLObject xmlObject : xmlObjects) {
+    public static void signObjects(List<Signature> xmlObjects) {
+        for (Signature xmlObject : xmlObjects) {
             signObject(xmlObject);
         }
     }
@@ -58,61 +55,20 @@ public class Signer {
      * 
      * @param signableXMLObject the object to be signed
      */
-    public static void signObject(SignableXMLObject signableXMLObject) {
-        Element signableDOM = signableXMLObject.getDOM();
-        Signature signatureXMLObject = signableXMLObject.getSignature();
+    public static void signObject(Signature signature) {
+        XMLSignature xmlSignature = signature.getXMLSignature();
 
-        if (log.isDebugEnabled()) {
-            log.debug("Starting to digitally sign " + signableXMLObject.getElementQName());
+        if(xmlSignature == null){
+            log.warn("Unable to compute signature, Signature XMLObject does not have the XMLSignature created during marshalling.");
         }
 
         try {
             if (log.isDebugEnabled()) {
                 log.debug("Creating XMLSignature object");
             }
-            XMLSignature xmlSignature = new XMLSignature(signableDOM.getOwnerDocument(), "", signatureXMLObject
-                    .getSignatureAlgorithm(), signatureXMLObject.getCanonicalizationAlgorithm());
-
-            KeyInfo keyInfo = signatureXMLObject.getKeyInfo();
-            if (signatureXMLObject.getKeyInfo() != null) {
-                if (keyInfo.getKeys() != null) {
-                    if (log.isDebugEnabled()) {
-                        log.debug("Adding public keys to signature key info");
-                    }
-                    for (PublicKey key : keyInfo.getKeys()) {
-                        xmlSignature.addKeyInfo(key);
-                    }
-                }
-
-                if (keyInfo.getCertificates() != null) {
-                    if (log.isDebugEnabled()) {
-                        log.debug("Adding X.509 certifiacte(s) into signature's X509 data");
-                    }
-                    for (X509Certificate cert : keyInfo.getCertificates()) {
-                        xmlSignature.addKeyInfo(cert);
-                    }
-                }
-            }
-
-            if (log.isDebugEnabled()) {
-                log.debug("Adding content to XMLSignature.");
-            }
-            for (ContentReference contentReference : signatureXMLObject.getContentReferences()) {
-                contentReference.createReference(xmlSignature);
-            }
-
-            if (log.isDebugEnabled()) {
-                log.debug("Added XMLSignature to Signature XMLObject");
-            }
-            signatureXMLObject.setXMLSignature(xmlSignature);
-
-            if (log.isDebugEnabled()) {
-                log.debug("Creating signing DOM element");
-            }
-            xmlSignature.sign(signatureXMLObject.getSigningKey());
-
+            xmlSignature.sign(signature.getSigningKey());
         } catch (XMLSecurityException e) {
-            log.error("Unable to construct signature Element " + signableXMLObject.getElementQName(), e);
+            log.error("An error occured computing the digital signature", e);
         }
     }
 

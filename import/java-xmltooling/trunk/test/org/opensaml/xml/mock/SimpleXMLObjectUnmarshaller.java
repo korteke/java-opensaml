@@ -37,7 +37,7 @@ public class SimpleXMLObjectUnmarshaller extends AbstractDOMCachingXMLObjectUnma
      * @param unmarshallerFactory factory for retrieving Unmarshallers
      */
     public SimpleXMLObjectUnmarshaller() {
-        super(SimpleXMLObject.NAMESAPACE, SimpleXMLObject.LOCAL_NAME);
+        super(SimpleXMLObject.NAMESPACE, SimpleXMLObject.LOCAL_NAME);
     }
 
     /*

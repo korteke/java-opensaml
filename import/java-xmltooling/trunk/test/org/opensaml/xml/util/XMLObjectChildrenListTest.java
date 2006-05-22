@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-package org.opensaml.xml;
+package org.opensaml.xml.util;
 
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 
 import org.opensaml.xml.mock.SimpleXMLObject;
+import org.opensaml.xml.mock.SimpleXMLObjectBuilder;
 import org.opensaml.xml.util.XMLObjectChildrenList;
 
 import junit.framework.TestCase;
@@ -30,11 +31,13 @@ import junit.framework.TestCase;
  */
 public class XMLObjectChildrenListTest extends TestCase {
 
+    private SimpleXMLObjectBuilder sxoBuilder = new SimpleXMLObjectBuilder();
+    
     /**
      * Tests the add methods of ths list.
      */
     public void testAdd() {
-        SimpleXMLObject parentObject = new SimpleXMLObject();
+        SimpleXMLObject parentObject = sxoBuilder.buildObject();
 
         XMLObjectChildrenList<SimpleXMLObject> objectList = new XMLObjectChildrenList<SimpleXMLObject>(parentObject);
         assertEquals("XMLObject list was supposed to be empty but instead had " + objectList.size() + " elements", 0,
@@ -44,7 +47,7 @@ public class XMLObjectChildrenListTest extends TestCase {
         assertEquals("XMLObject list allowed a null element to be added", 0, objectList.size());
 
         // Test adding a single element
-        SimpleXMLObject child1 = new SimpleXMLObject();
+        SimpleXMLObject child1 = sxoBuilder.buildObject();
         objectList.add(child1);
         assertEquals("XMLObject list was supposed to have 1 element but instead had " + objectList.size(), 1,
                 objectList.size());
@@ -52,9 +55,9 @@ public class XMLObjectChildrenListTest extends TestCase {
 
         // Test adding an collection of children
         ArrayList<SimpleXMLObject> childList = new ArrayList<SimpleXMLObject>();
-        SimpleXMLObject child2 = new SimpleXMLObject();
+        SimpleXMLObject child2 = sxoBuilder.buildObject();
         childList.add(child2);
-        SimpleXMLObject child3 = new SimpleXMLObject();
+        SimpleXMLObject child3 = sxoBuilder.buildObject();
         childList.add(child3);
 
         objectList.addAll(childList);
@@ -68,14 +71,14 @@ public class XMLObjectChildrenListTest extends TestCase {
      * Tests the set method of the list.
      */
     public void testSet() {
-        SimpleXMLObject parentObject = new SimpleXMLObject();
+        SimpleXMLObject parentObject = sxoBuilder.buildObject();
 
         XMLObjectChildrenList<SimpleXMLObject> objectList = new XMLObjectChildrenList<SimpleXMLObject>(parentObject);
         assertEquals("XMLObject list was supposed to be empty but instead had " + objectList.size() + " elements", 0,
                 objectList.size());
 
         // Test adding a single element
-        SimpleXMLObject child1 = new SimpleXMLObject();
+        SimpleXMLObject child1 = sxoBuilder.buildObject();
         objectList.add(child1);
         assertEquals("XMLObject list was supposed to have 1 element but instead had " + objectList.size(), 1,
                 objectList.size());
@@ -84,7 +87,7 @@ public class XMLObjectChildrenListTest extends TestCase {
         objectList.set(0, null);
         assertNotNull("XMLObject list allowed a null element to be set", objectList.get(0));
 
-        SimpleXMLObject child2 = new SimpleXMLObject();
+        SimpleXMLObject child2 = sxoBuilder.buildObject();
         SimpleXMLObject replacedChild = objectList.set(0, child2);
         assertEquals("XMLObject list was supposed to have 1 element but instead had " + objectList.size(), 1,
                 objectList.size());
@@ -103,11 +106,11 @@ public class XMLObjectChildrenListTest extends TestCase {
      * Test the remove methods of the list.
      */
     public void testRemove() {
-        SimpleXMLObject parentObject = new SimpleXMLObject();
+        SimpleXMLObject parentObject = sxoBuilder.buildObject();
         XMLObjectChildrenList<SimpleXMLObject> objectList = new XMLObjectChildrenList<SimpleXMLObject>(parentObject);
 
         // Test removing a single element
-        SimpleXMLObject child1 = new SimpleXMLObject();
+        SimpleXMLObject child1 = sxoBuilder.buildObject();
         objectList.add(child1);
         assertEquals("XMLObject list was supposed to have 1 element but instead had " + objectList.size(), 1,
                 objectList.size());
@@ -119,9 +122,9 @@ public class XMLObjectChildrenListTest extends TestCase {
 
         // Test removing an collection of children
         ArrayList<SimpleXMLObject> childList = new ArrayList<SimpleXMLObject>();
-        SimpleXMLObject child2 = new SimpleXMLObject();
+        SimpleXMLObject child2 = sxoBuilder.buildObject();
         childList.add(child2);
-        SimpleXMLObject child3 = new SimpleXMLObject();
+        SimpleXMLObject child3 = sxoBuilder.buildObject();
         childList.add(child3);
 
         objectList.addAll(childList);
@@ -139,13 +142,13 @@ public class XMLObjectChildrenListTest extends TestCase {
      * Test the iterator methods of the list.
      */
     public void testIterator() {
-        SimpleXMLObject parentObject = new SimpleXMLObject();
+        SimpleXMLObject parentObject = sxoBuilder.buildObject();
         XMLObjectChildrenList<SimpleXMLObject> objectList = new XMLObjectChildrenList<SimpleXMLObject>(parentObject);
-        SimpleXMLObject child1 = new SimpleXMLObject();
+        SimpleXMLObject child1 = sxoBuilder.buildObject();
         objectList.add(child1);
-        SimpleXMLObject child2 = new SimpleXMLObject();
+        SimpleXMLObject child2 = sxoBuilder.buildObject();
         objectList.add(child2);
-        SimpleXMLObject child3 = new SimpleXMLObject();
+        SimpleXMLObject child3 = sxoBuilder.buildObject();
         objectList.add(child3);
 
         Iterator<SimpleXMLObject> itr = objectList.iterator();
@@ -160,7 +163,7 @@ public class XMLObjectChildrenListTest extends TestCase {
         assertEquals("Third iterator object should have been child 3 but was not", child3, thirdObject);
         assertNull("Child 2 parent was not null", child2.getParent());
 
-        SimpleXMLObject child4 = new SimpleXMLObject();
+        SimpleXMLObject child4 = sxoBuilder.buildObject();
         objectList.add(child4);
 
         try {
@@ -175,15 +178,15 @@ public class XMLObjectChildrenListTest extends TestCase {
      * Test the clear method of the list.
      */
     public void testClear() {
-        SimpleXMLObject parentObject = new SimpleXMLObject();
+        SimpleXMLObject parentObject = sxoBuilder.buildObject();
         XMLObjectChildrenList<SimpleXMLObject> objectList = new XMLObjectChildrenList<SimpleXMLObject>(parentObject);
 
         ArrayList<SimpleXMLObject> childList = new ArrayList<SimpleXMLObject>();
-        SimpleXMLObject child1 = new SimpleXMLObject();
+        SimpleXMLObject child1 = sxoBuilder.buildObject();
         childList.add(child1);
-        SimpleXMLObject child2 = new SimpleXMLObject();
+        SimpleXMLObject child2 = sxoBuilder.buildObject();
         childList.add(child2);
-        SimpleXMLObject child3 = new SimpleXMLObject();
+        SimpleXMLObject child3 = sxoBuilder.buildObject();
         childList.add(child3);
         objectList.addAll(childList);
 

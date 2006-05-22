@@ -25,10 +25,10 @@ import org.opensaml.xml.AbstractXMLObjectBuilder;
 /**
  * Builder of {@link org.opensaml.xml.mock.SimpleXMLObject}s.
  */
-public class SimpleXMLObjectBuilder extends AbstractXMLObjectBuilder {
+public class SimpleXMLObjectBuilder extends AbstractXMLObjectBuilder<SimpleXMLObject> {
     
     public SimpleXMLObject buildObject(){
-        return new SimpleXMLObject();
+        return buildObject(SimpleXMLObject.NAMESPACE, SimpleXMLObject.LOCAL_NAME, SimpleXMLObject.NAMESPACE_PREFIX);
     }
 
     /*

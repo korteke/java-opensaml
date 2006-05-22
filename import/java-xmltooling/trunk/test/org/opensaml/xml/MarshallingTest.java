@@ -23,7 +23,6 @@ import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.mock.SimpleXMLObject;
 import org.opensaml.xml.mock.SimpleXMLObjectBuilder;
 import org.opensaml.xml.parse.XMLParserException;
-import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -41,7 +40,7 @@ public class MarshallingTest extends XMLObjectBaseTestCase {
     public MarshallingTest() {
         super();
 
-        simpleXMLObjectQName = new QName(SimpleXMLObject.NAMESAPACE, SimpleXMLObject.LOCAL_NAME);
+        simpleXMLObjectQName = new QName(SimpleXMLObject.NAMESPACE, SimpleXMLObject.LOCAL_NAME);
     }
 
     /**
@@ -131,8 +130,8 @@ public class MarshallingTest extends XMLObjectBaseTestCase {
         
         SimpleXMLObjectBuilder sxoBuilder = (SimpleXMLObjectBuilder) builderFactory.getBuilder(simpleXMLObjectQName);
         
-        SimpleXMLObject response = sxoBuilder.buildObject(SimpleXMLObject.NAMESAPACE, "Response", SimpleXMLObject.NAMESPACE_PREFIX);
-        SimpleXMLObject statement = sxoBuilder.buildObject(SimpleXMLObject.NAMESAPACE, "Statement", SimpleXMLObject.NAMESPACE_PREFIX);
+        SimpleXMLObject response = sxoBuilder.buildObject(SimpleXMLObject.NAMESPACE, "Response", SimpleXMLObject.NAMESPACE_PREFIX);
+        SimpleXMLObject statement = sxoBuilder.buildObject(SimpleXMLObject.NAMESPACE, "Statement", SimpleXMLObject.NAMESPACE_PREFIX);
         response.getSimpleXMLObjects().add(statement);
         
         // Marshall it once so the DOM is cached
