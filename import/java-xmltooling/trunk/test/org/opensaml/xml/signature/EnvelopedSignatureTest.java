@@ -22,7 +22,6 @@ import java.security.KeyPairGenerator;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.HashMap;
-import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.apache.xml.security.algorithms.MessageDigestAlgorithm;
@@ -109,7 +108,7 @@ public class EnvelopedSignatureTest extends XMLObjectBaseTestCase {
         Signature signature = sxo.getSignature();
 
         KeyInfo keyInfo = keyInfoBuilder.buildObject();
-        keyInfo.getKeys().add(verificationKey);
+        keyInfo.setPublicKey(verificationKey);
         signature.setKeyInfo(keyInfo);
 
         Marshaller marshaller = Configuration.getMarshallerFactory().getMarshaller(sxo);
@@ -156,8 +155,8 @@ public class EnvelopedSignatureTest extends XMLObjectBaseTestCase {
         KeyInfo keyInfo = signature.getKeyInfo();
         assertNotNull("Signature's KeyInfo was null", keyInfo);
 
-        List<PublicKey> keys = keyInfo.getKeys();
-        assertTrue("KeyInfo did not contain the verification key", keys != null && keys.size() == 1);
+        PublicKey pubKey = keyInfo.getPublicKey();
+        assertNotNull("KeyInfo did not contain the verification key", pubKey);
     }
 
     /**

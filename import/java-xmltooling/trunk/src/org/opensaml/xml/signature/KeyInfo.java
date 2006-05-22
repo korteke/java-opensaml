@@ -50,7 +50,7 @@ public class KeyInfo extends AbstractDOMCachingXMLObject {
     private final ArrayList<String> keyNames;
     
     /** Keys within this info */
-    private final ArrayList<PublicKey> keys;
+    private PublicKey publicKey;
     
     /** Certificates within this info */
     private final ArrayList<X509Certificate> certificates;
@@ -66,7 +66,6 @@ public class KeyInfo extends AbstractDOMCachingXMLObject {
         super(namespaceURI, elementLocalName, namespacePrefix);
         
         keyNames = new ArrayList<String>();
-        keys = new ArrayList<PublicKey>();
         certificates = new ArrayList<X509Certificate>();
     }
 
@@ -80,8 +79,12 @@ public class KeyInfo extends AbstractDOMCachingXMLObject {
     /**
      * {@inheritDoc}
      */
-    public List<PublicKey> getKeys() {
-        return keys;
+    public PublicKey getPublicKey() {
+        return publicKey;
+    }
+    
+    public void setPublicKey(PublicKey newKey){
+        publicKey = newKey;
     }
 
     /**

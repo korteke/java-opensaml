@@ -16,7 +16,6 @@
 
 package org.opensaml.xml.signature;
 
-import java.security.PublicKey;
 import java.security.cert.X509Certificate;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -89,8 +88,8 @@ public class KeyInfoMarshaller implements Marshaller {
             keyInfoElem.add(new KeyName(document, keyName));
         }
 
-        for (PublicKey key : keyInfoObj.getKeys()) {
-            keyInfoElem.add(key);
+        if(keyInfoObj.getPublicKey() != null){
+            keyInfoElem.add(keyInfoObj.getPublicKey());
         }
 
         X509Data x509Data;

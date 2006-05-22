@@ -62,9 +62,10 @@ public class KeyInfoUnmarshaller implements Unmarshaller {
             }
 
             int numOfKeys = keyInfoElem.lengthKeyValue();
-            for (int i = 0; i < numOfKeys; i++) {
-                keyInfoObj.getKeys().add(keyInfoElem.itemKeyValue(i).getPublicKey());
+            if(numOfKeys > 1){
+                LOG.warn("KeyInfo element contains more than one public key, only the first one will be used");
             }
+            keyInfoObj.setPublicKey(keyInfoElem.itemKeyValue(0).getPublicKey());
 
             int numOfX509Data = keyInfoElem.lengthX509Data();
             int numOfCerts;
