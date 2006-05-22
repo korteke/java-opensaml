@@ -29,7 +29,7 @@ import org.apache.xml.security.transforms.Transforms;
 public class URIContentReference implements ContentReference {
 
     /** Logger */
-    private static Logger log = Logger.getLogger(DocumentInternalIDContentReference.class);
+    private static Logger log = Logger.getLogger(URIContentReference.class);
 
     /** Element reference ID */
     private String referenceID;
