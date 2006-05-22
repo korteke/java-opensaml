@@ -23,6 +23,7 @@ package org.opensaml.xml.mock;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.AbstractDOMCachingXMLObjectUnmarshaller;
 import org.opensaml.xml.io.UnmarshallingException;
+import org.opensaml.xml.signature.Signature;
 import org.w3c.dom.Attr;
 
 /**
@@ -51,6 +52,8 @@ public class SimpleXMLObjectUnmarshaller extends AbstractDOMCachingXMLObjectUnma
 
         if (childXMLObject instanceof SimpleXMLObject) {
             simpleXMLObject.getSimpleXMLObjects().add((SimpleXMLObject) childXMLObject);
+        }else if(childXMLObject instanceof Signature){
+            simpleXMLObject.setSignature((Signature) childXMLObject);
         }else{
             simpleXMLObject.getUnknownXMLObjects().add(childXMLObject);
         }

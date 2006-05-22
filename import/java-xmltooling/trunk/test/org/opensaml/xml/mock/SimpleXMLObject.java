@@ -133,6 +133,7 @@ public class SimpleXMLObject extends AbstractSignableXMLObject implements Elemen
         
         children.addAll(simpleXMLObjects);
         children.addAll(unknownXMLObjects);
+        children.add(getSignature());
         
         return Collections.unmodifiableList(children);
     }

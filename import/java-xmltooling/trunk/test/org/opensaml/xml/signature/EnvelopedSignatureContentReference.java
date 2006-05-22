@@ -45,8 +45,8 @@ public class EnvelopedSignatureContentReference implements ContentReference {
     public void createReference(XMLSignature signature) {
         try{
         Transforms dsigTransforms = new Transforms(signature.getDocument());
-        dsigTransforms.addTransform(Transforms.TRANSFORM_C14N_EXCL_OMIT_COMMENTS);
         dsigTransforms.addTransform(Transforms.TRANSFORM_ENVELOPED_SIGNATURE);
+        dsigTransforms.addTransform(Transforms.TRANSFORM_C14N_EXCL_OMIT_COMMENTS);
 
         signature.addDocument(referenceID, dsigTransforms, MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA256);
         }catch(Exception e){

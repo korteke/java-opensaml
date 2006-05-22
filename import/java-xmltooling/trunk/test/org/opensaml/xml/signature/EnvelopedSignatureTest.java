@@ -85,18 +85,18 @@ public class EnvelopedSignatureTest extends XMLObjectBaseTestCase {
         Marshaller marshaller = Configuration.getMarshallerFactory().getMarshaller(sxo);
         Element signedElement = marshaller.marshall(sxo);
         
-        Signer.signObject((Signature) sxo.getUnknownXMLObjects().get(0));
+        Signer.signObject(sxo.getSignature());
         
         if(log.isDebugEnabled()){
             log.debug("Marshalled Signature: \n" + XMLHelper.nodeToString(signedElement));
         }
         
         SignatureValidator signatureValidator = new SignatureValidator(verificationKey);
-        signatureValidator.validate(sxo.getUnknownXMLObjects().get(0));
+        signatureValidator.validate(sxo.getSignature());
         
         try{
             signatureValidator = new SignatureValidator(badVerificationKey);
-            signatureValidator.validate(sxo.getUnknownXMLObjects().get(0));
+            signatureValidator.validate(sxo.getSignature());
             fail("Signature validated with an incorrect public key");
         }catch(ValidationException e){
             // this is supposed to fail
@@ -125,7 +125,7 @@ public class EnvelopedSignatureTest extends XMLObjectBaseTestCase {
         sig.setSignatureAlgorithm(XMLSignature.ALGO_ID_SIGNATURE_RSA);
         sig.getContentReferences().add(new EnvelopedSignatureContentReference("FOO"));
         
-        sxo.getUnknownXMLObjects().add(sig);
+        sxo.setSignature(sig);
         return sxo;
     }
 }

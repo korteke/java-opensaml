@@ -136,7 +136,9 @@ public class SignatureMarshaller implements Marshaller {
                 log.debug("Creating Signature DOM element");
             }
             signature.setXMLSignature(dsig);
-            return dsig.getElement();
+            Element signatureElement = dsig.getElement();
+            signature.setDOM(signatureElement);
+            return signatureElement;
 
         } catch (XMLSecurityException e) {
             log.error("Unable to construct signature Element " + signature.getElementQName(), e);
