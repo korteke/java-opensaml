@@ -249,6 +249,7 @@ public final class Configuration {
         if (LOG.isDebugEnabled()) {
             LOG.debug("Unregistering builder, marshaller, and unmarshaller for " + key);
         }
+        configuredObjectProviders.remove(key);
         builderFactory.unregisterBuilder(key);
         marshallerFactory.deregisterMarshaller(key);
         unmarshallerFactory.deregisterUnmarshaller(key);
@@ -296,6 +297,8 @@ public final class Configuration {
             }
 
             try {
+                configuredObjectProviders.put(objectProviderName, objectProvider);
+                
                 builderConfiguration = (Element) objectProvider.getElementsByTagNameNS(
                         XMLConstants.XMLTOOLING_CONFIG_NS, "BuilderClass").item(0);
                 initalizeObjectProviderBuilderClass(objectProviderName, builderConfiguration);
@@ -307,8 +310,6 @@ public final class Configuration {
                 unmarshallerConfiguration = (Element) objectProvider.getElementsByTagNameNS(
                         XMLConstants.XMLTOOLING_CONFIG_NS, "UnmarshallingClass").item(0);
                 initalizeObjectProviderUnmarshallerClass(objectProviderName, unmarshallerConfiguration);
-
-                configuredObjectProviders.put(objectProviderName, objectProvider);
 
                 if (LOG.isDebugEnabled()) {
                     LOG.debug(objectProviderName + " intialized and configuration cached");
