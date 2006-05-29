@@ -26,6 +26,7 @@ import java.util.HashMap;
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Source;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamSource;
@@ -298,7 +299,7 @@ public final class Configuration {
 
             try {
                 configuredObjectProviders.put(objectProviderName, objectProvider);
-                
+
                 builderConfiguration = (Element) objectProvider.getElementsByTagNameNS(
                         XMLConstants.XMLTOOLING_CONFIG_NS, "BuilderClass").item(0);
                 initalizeObjectProviderBuilderClass(objectProviderName, builderConfiguration);
@@ -572,6 +573,25 @@ public final class Configuration {
             String errorMsg = "Configuration file does not validate against schema";
             LOG.error(errorMsg, e);
             throw new ConfigurationException(errorMsg, e);
+        }
+    }
+
+    static {
+        DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
+        try {
+            DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
+            if (docBuilder.getClass().getName().startsWith("com.sun")) {
+                String errorMsg = "The JVM is currently configured to use the Sun XML parser.  "
+                        + "This parser is extremely buggy and can not be used with this library.  "
+                        + "Please endorse a functional JAXP parser such as Xerces.";
+
+                LOG.fatal(errorMsg);
+                throw new RuntimeException(errorMsg);
+            }
+        } catch (ParserConfigurationException e) {
+            String errorMsg = "Unable to determine XML parser class that will be used.  Unable to proceed.";
+            LOG.fatal(errorMsg);
+            throw new RuntimeException(errorMsg);
         }
     }
 }
