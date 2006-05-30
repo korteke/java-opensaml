@@ -16,12 +16,12 @@
 
 package org.opensaml.xml.signature;
 
-import org.opensaml.xml.DOMCachingXMLObject;
+import org.opensaml.xml.XMLObject;
 
 /**
  * An XMLObject whose DOM representation can be digitally signed.
  */
-public interface SignableXMLObject extends DOMCachingXMLObject {
+public interface SignableXMLObject extends XMLObject {
         
     /**
      * Checks to see if the element has been signed.

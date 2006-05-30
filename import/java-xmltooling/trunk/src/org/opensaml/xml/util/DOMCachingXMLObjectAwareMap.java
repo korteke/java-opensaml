@@ -19,7 +19,7 @@ package org.opensaml.xml.util;
 import java.util.Map;
 
 import org.apache.commons.collections.map.AbstractHashedMap;
-import org.opensaml.xml.DOMCachingXMLObject;
+import org.opensaml.xml.XMLObject;
 
 /**
  * A map that is aware of DOMCachingXMLObjects and will release its cached DOM when modified. This map allows supports a
@@ -28,14 +28,14 @@ import org.opensaml.xml.DOMCachingXMLObject;
 public class DOMCachingXMLObjectAwareMap extends AbstractHashedMap implements Map{
 
     /** The DOM caching XMLObject */
-    private DOMCachingXMLObject xmlObject;
+    private XMLObject xmlObject;
 
     /**
      * Constructor
      * 
      * @param domCachingXMLObject the XMLObject whose DOM will be invalidated upon map modifications
      */
-    public DOMCachingXMLObjectAwareMap(DOMCachingXMLObject domCachingXMLObject) {
+    public DOMCachingXMLObjectAwareMap(XMLObject domCachingXMLObject) {
         super(DEFAULT_CAPACITY, DEFAULT_LOAD_FACTOR, DEFAULT_THRESHOLD);
         xmlObject = domCachingXMLObject;
     }

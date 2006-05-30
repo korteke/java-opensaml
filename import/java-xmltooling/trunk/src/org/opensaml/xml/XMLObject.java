@@ -21,6 +21,8 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
+import org.w3c.dom.Element;
+
 /**
  * A object that represents an XML element, usually of a specific schema type, that has been unmarshalled into this Java
  * object.
@@ -98,4 +100,37 @@ public interface XMLObject {
      * @return ordered list of child elements
      */
     public List<XMLObject> getOrderedChildren();
+    
+    /**
+     * Gets the DOM representation of this XMLObject, if one exists.
+     * 
+     * @return the DOM representation of this XMLObject
+     */
+    public Element getDOM();
+
+    /**
+     * Sets the DOM representation of this XMLObject.
+     * 
+     * @param dom DOM representation of this XMLObject
+     */
+    public void setDOM(Element dom);
+
+    /**
+     * Releases the DOM representation of this XMLObject, if there is one.
+     */
+    public void releaseDOM();
+
+    /**
+     * Releases the DOM representation of this XMLObject's parent.
+     * 
+     * @param propagateRelease true if all ancestors of this element should release thier DOM
+     */
+    public void releaseParentDOM(boolean propagateRelease);
+
+    /**
+     * Releases the DOM representation of this XMLObject's children.
+     * 
+     * @param propagateRelease true if all descendants of this element should release thier DOM
+     */
+    public void releaseChildrenDOM(boolean propagateRelease);
 }

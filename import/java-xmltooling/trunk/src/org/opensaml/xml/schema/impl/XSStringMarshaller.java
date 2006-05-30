@@ -17,7 +17,7 @@
 package org.opensaml.xml.schema.impl;
 
 import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.io.AbstractDOMCachingXMLObjectMarshaller;
+import org.opensaml.xml.io.AbstractXMLObjectMarshaller;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.schema.XSString;
 import org.opensaml.xml.util.XMLHelper;
@@ -26,7 +26,7 @@ import org.w3c.dom.Element;
 /**
  * Thread-safe marshaller of {@link org.opensaml.xml.schema.XSString} objects.
  */
-public class XSStringMarshaller extends AbstractDOMCachingXMLObjectMarshaller {
+public class XSStringMarshaller extends AbstractXMLObjectMarshaller {
 
     /**
      * {@inheritDoc}

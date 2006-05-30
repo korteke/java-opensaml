@@ -21,7 +21,7 @@
 package org.opensaml.xml.mock;
 
 import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.io.AbstractDOMCachingXMLObjectUnmarshaller;
+import org.opensaml.xml.io.AbstractXMLObjectUnmarshaller;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.signature.Signature;
 import org.w3c.dom.Attr;
@@ -29,7 +29,7 @@ import org.w3c.dom.Attr;
 /**
  * Unmarshaller for {@link org.opensaml.xml.mock.SimpleXMLObject}.
  */
-public class SimpleXMLObjectUnmarshaller extends AbstractDOMCachingXMLObjectUnmarshaller {
+public class SimpleXMLObjectUnmarshaller extends AbstractXMLObjectUnmarshaller {
 
     /**
      * Constructor

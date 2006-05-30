@@ -20,12 +20,12 @@ import java.util.List;
 
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.schema.XSString;
-import org.opensaml.xml.validation.AbstractValidatingDOMCachingXMLObject;
+import org.opensaml.xml.validation.AbstractValidatingXMLObject;
 
 /**
  * Concrete implementation of {@link org.opensaml.xml.schema.XSString}.
  */
-public class XSStringImpl extends AbstractValidatingDOMCachingXMLObject implements XSString {
+public class XSStringImpl extends AbstractValidatingXMLObject implements XSString {
 
     /** Value of this string element */
     private String value;

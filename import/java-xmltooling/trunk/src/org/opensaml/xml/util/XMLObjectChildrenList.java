@@ -20,7 +20,6 @@ import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.opensaml.xml.DOMCachingXMLObject;
 import org.opensaml.xml.XMLObject;
 
 /**
@@ -157,9 +156,7 @@ public class XMLObjectChildrenList<ElementType extends XMLObject> extends Abstra
         ElementType element = elements.remove(index);
 
         if (element != null) {
-            if (element instanceof DOMCachingXMLObject) {
-                ((DOMCachingXMLObject) element).releaseParentDOM(true);
-            }
+            element.releaseParentDOM(true);
             element.setParent(null);
         }
 
@@ -178,11 +175,9 @@ public class XMLObjectChildrenList<ElementType extends XMLObject> extends Abstra
         boolean elementRemoved = false;
 
         elementRemoved = elements.remove(element);
-        if(elementRemoved){
+        if (elementRemoved) {
             if (element != null) {
-                if (element instanceof DOMCachingXMLObject) {
-                    ((DOMCachingXMLObject) element).releaseParentDOM(true);
-                }
+                element.releaseParentDOM(true);
                 element.setParent(null);
             }
         }
@@ -207,8 +202,6 @@ public class XMLObjectChildrenList<ElementType extends XMLObject> extends Abstra
         }
 
         element.setParent(parent);
-        if (element instanceof DOMCachingXMLObject) {
-            ((DOMCachingXMLObject) element).releaseParentDOM(true);
-        }
+        element.releaseParentDOM(true);
     }
 }

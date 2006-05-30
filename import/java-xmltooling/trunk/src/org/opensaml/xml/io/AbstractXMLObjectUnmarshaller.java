@@ -138,6 +138,8 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
                 unmarshallTextContent(xmlObject, (Text) childNode);
             }
         }
+        
+        xmlObject.setDOM(domElement);
 
         return xmlObject;
     }

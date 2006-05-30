@@ -23,14 +23,14 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.apache.xml.security.signature.XMLSignature;
-import org.opensaml.xml.AbstractDOMCachingXMLObject;
+import org.opensaml.xml.AbstractXMLObject;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.util.XMLConstants;
 
 /**
  * XMLObject representing an enveloped or detached XML Digital Signature, version 20020212, Signature element.
  */
-public class Signature extends AbstractDOMCachingXMLObject {
+public class Signature extends AbstractXMLObject {
 
     /** Element local name */
     public final static String DEFAULT_ELEMENT_LOCAL_NAME = "Signature";

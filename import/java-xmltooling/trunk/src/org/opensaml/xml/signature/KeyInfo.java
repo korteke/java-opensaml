@@ -23,7 +23,7 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.xml.AbstractDOMCachingXMLObject;
+import org.opensaml.xml.AbstractXMLObject;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.util.XMLConstants;
 
@@ -32,7 +32,7 @@ import org.opensaml.xml.util.XMLConstants;
  * 
  * Note that this does not support every possible key information type, only the ones most commonly used.
  */
-public class KeyInfo extends AbstractDOMCachingXMLObject {
+public class KeyInfo extends AbstractXMLObject {
     
     /** Element local name */
     public static String DEFAULT_ELEMENT_LOCAL_NAME = "KeyInfo";

@@ -26,7 +26,7 @@ import org.apache.commons.collections.map.TypedMap;
 import org.opensaml.xml.util.DOMCachingXMLObjectAwareMap;
 import org.opensaml.xml.util.XMLHelper;
 import org.opensaml.xml.util.XMLObjectChildrenList;
-import org.opensaml.xml.validation.AbstractValidatingDOMCachingXMLObject;
+import org.opensaml.xml.validation.AbstractValidatingXMLObject;
 
 /**
  * An XMLObject that proxies a DOM element. This can be used represent the content of elements that do not have their
@@ -34,7 +34,7 @@ import org.opensaml.xml.validation.AbstractValidatingDOMCachingXMLObject;
  * documents that contain content that may not be known at the time, such as elements defined in XML Schema that contain
  * &lt;any&gt; constructs.
  */
-public class ElementProxy extends AbstractValidatingDOMCachingXMLObject implements AttributeExtensibleXMLObject, ElementExtensibleXMLObject {
+public class ElementProxy extends AbstractValidatingXMLObject implements AttributeExtensibleXMLObject, ElementExtensibleXMLObject {
 
     /** Attributes of the proxied Element */
     private Map<QName, String> attributes;

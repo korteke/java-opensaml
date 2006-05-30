@@ -23,12 +23,18 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
+import org.apache.log4j.Logger;
+import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.util.XMLHelper;
+import org.w3c.dom.Element;
 
 /**
  * An abstract implementation of XMLObject.
  */
 public abstract class AbstractXMLObject implements XMLObject {
+
+    /** Logger */
+    private final Logger log = Logger.getLogger(AbstractXMLObject.class);
 
     /** Parent of this element */
     private XMLObject parent;
@@ -41,6 +47,9 @@ public abstract class AbstractXMLObject implements XMLObject {
 
     /** Namespaces declared on this element */
     private HashSet<Namespace> namespaces = new HashSet<Namespace>();
+
+    /** DOM Element representation of this object */
+    private Element dom;
 
     /**
      * Constructor
@@ -164,27 +173,213 @@ public abstract class AbstractXMLObject implements XMLObject {
     }
 
     /**
-     * A helper function that prepares the XMLObject for the assigned of a new QName value to an attribute. This
-     * includes adding a new namespace to the namespace list associated with this Object, if necessary.
+     * {@inheritDoc}
+     */
+    public Element getDOM() {
+        return dom;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setDOM(Element dom) {
+        this.dom = dom;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void releaseDOM() {
+        if (log.isDebugEnabled()) {
+            log.debug("Releasing cached DOM reprsentation for " + getElementQName());
+        }
+
+        setDOM(null);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void releaseParentDOM(boolean propagateRelease) {
+        if (log.isTraceEnabled()) {
+            log.trace("Releasing cached DOM reprsentation for parent of " + getElementQName()
+                    + " with propagation set to " + propagateRelease);
+        }
+
+        XMLObject parentElement = getParent();
+        if (parentElement != null) {
+            parent.releaseDOM();
+            if (propagateRelease) {
+                parent.releaseParentDOM(propagateRelease);
+            }
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void releaseChildrenDOM(boolean propagateRelease) {
+        if (log.isTraceEnabled()) {
+            log.trace("Releasing cached DOM reprsentation for children of " + getElementQName()
+                    + " with propagation set to " + propagateRelease);
+        }
+
+        if (getOrderedChildren() != null) {
+            for (XMLObject child : getOrderedChildren()) {
+                child.releaseDOM();
+                if (propagateRelease) {
+                    child.releaseChildrenDOM(propagateRelease);
+                }
+            }
+        }
+    }
+
+    /**
+     * A convience method that is equal to calling {@link #releaseDOM()} then {@link #releaseParentDOM(boolean)} with
+     * the release being propogated.
+     */
+    public void releaseThisandParentDOM() {
+        if (getDOM() != null) {
+            releaseDOM();
+            releaseParentDOM(true);
+        }
+    }
+
+    /**
+     * A convience method that is equal to calling {@link #releaseDOM()} then {@link #releaseChildrenDOM(boolean)} with
+     * the release being propogated.
+     */
+    public void releaseThisAndChildrenDOM() {
+        if (getDOM() != null) {
+            releaseDOM();
+            releaseChildrenDOM(true);
+        }
+    }
+
+    /**
+     * A helper function for derived classes. This 'nornmalizes' newString and then if it is different from oldString
+     * invalidates the DOM. It returns the normalized value so subclasses just have to go. this.foo =
+     * prepareForAssignment(this.foo, foo);
      * 
-     * @param oldValue existing attribute value
-     * @param newValue new attribute value
+     * @param oldValue - the current value
+     * @param newValue - the new value
      * 
-     * @return the QName value to assinged to that attribute
+     * @return the value that should be assigned
+     */
+    protected String prepareForAssignment(String oldValue, String newValue) {
+        String newString = DatatypeHelper.safeTrimOrNullString(newValue);
+
+        if (!DatatypeHelper.safeEquals(oldValue, newString)) {
+            releaseThisandParentDOM();
+        }
+
+        return newString;
+    }
+
+    /**
+     * A helper function for derived classes. This checks for semantic equality between two QNames if it they are
+     * different invalidates the DOM. It returns the normalized value so subclasses just have to go. this.foo =
+     * prepareForAssignment(this.foo, foo);
+     * 
+     * @param oldValue - the current value
+     * @param newValue - the new value
+     * 
+     * @return the value that should be assigned
      */
     protected QName prepareForAssignment(QName oldValue, QName newValue) {
         if (oldValue == null) {
             if (newValue != null) {
                 Namespace newNamespace = new Namespace(newValue.getNamespaceURI(), newValue.getPrefix());
                 addNamespace(newNamespace);
+                releaseThisandParentDOM();
+                return newValue;
             } else {
                 return null;
             }
         }
 
         if (!oldValue.equals(newValue)) {
-            Namespace newNamespace = new Namespace(newValue.getNamespaceURI(), newValue.getPrefix());
-            addNamespace(newNamespace);
+            if (newValue != null) {
+                Namespace newNamespace = new Namespace(newValue.getNamespaceURI(), newValue.getPrefix());
+                addNamespace(newNamespace);
+            }
+            releaseThisandParentDOM();
+        }
+
+        return newValue;
+    }
+
+    /**
+     * A helper function for derived classes that checks to see if the old and new value are equal and if so releases
+     * the cached dom. Derived classes are expected to use this thus: <code>
+     *   this.foo = prepareForAssignment(this.foo, foo);
+     *   </code>
+     * 
+     * This method will do a (null) safe compare of the objects and will also invalidate the DOM if appropriate
+     * 
+     * @param oldValue - current value
+     * @param newValue - proposed new value
+     * 
+     * @return The value to assign to the saved Object.
+     * 
+     * @throws IllegalAddException if the child already has a parent.
+     */
+    protected <T extends Object> T prepareForAssignment(T oldValue, T newValue) {
+        if (oldValue == null) {
+            if (newValue != null) {
+                releaseThisandParentDOM();
+                return newValue;
+            } else {
+                return null;
+            }
+        }
+
+        if (!oldValue.equals(newValue)) {
+            releaseThisandParentDOM();
+        }
+
+        return newValue;
+    }
+
+    /**
+     * A helper function for derived classes, similar to assignString, but for (singleton) SAML objects. It is
+     * indifferent to whether either the old or the new version of the value is null. Derived classes are expected to
+     * use this thus: <code>
+     *   this.foo = prepareForAssignment(this.foo, foo);
+     *   </code>
+     * 
+     * This method will do a (null) safe compare of the objects and will also invalidate the DOM if appropriate
+     * 
+     * @param oldValue - current value
+     * @param newValue - proposed new value
+     * @return The value to assign to the saved Object.
+     * 
+     * @throws IllegalArgumentException if the child already has a parent.
+     */
+    protected <T extends XMLObject> T prepareForAssignment(T oldValue, T newValue) throws IllegalArgumentException {
+
+        if (newValue != null && newValue.hasParent()) {
+            throw new IllegalArgumentException(newValue.getClass().getName()
+                    + " cannot be added - it is already the child of another SAML Object");
+        }
+
+        if (oldValue == null) {
+            if (newValue != null) {
+                releaseThisandParentDOM();
+                newValue.setParent(this);
+                return newValue;
+
+            } else {
+                return null;
+            }
+        }
+
+        if (!oldValue.equals(newValue)) {
+            oldValue.setParent(null);
+            releaseThisandParentDOM();
+            if (newValue != null) {
+                newValue.setParent(this);
+            }
         }
 
         return newValue;

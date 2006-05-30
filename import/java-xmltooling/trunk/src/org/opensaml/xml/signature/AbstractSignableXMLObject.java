@@ -16,7 +16,7 @@
 
 package org.opensaml.xml.signature;
 
-import org.opensaml.xml.AbstractDOMCachingXMLObject;
+import org.opensaml.xml.AbstractXMLObject;
 import org.opensaml.xml.util.XMLConstants;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -26,7 +26,7 @@ import org.w3c.dom.NodeList;
  * Extension to {@link org.opensaml.xml.DOMCachingXMLObject} that implements
  * {@link org.opensaml.xml.signature.SignableXMLObject}.
  */
-public abstract class AbstractSignableXMLObject extends AbstractDOMCachingXMLObject implements SignableXMLObject {
+public abstract class AbstractSignableXMLObject extends AbstractXMLObject implements SignableXMLObject {
 
     /** XMLSecSignatureImpl */
     private Signature signature;
