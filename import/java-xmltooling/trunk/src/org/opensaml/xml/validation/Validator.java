@@ -22,7 +22,7 @@ import org.opensaml.xml.XMLObject;
  * An interface for classes that implement rules for checking the 
  * validity of a XMLObjects.
  */
-public interface Validator {
+public interface Validator<XMLObjectType extends XMLObject> {
 
     /**
      * Checks to see if a XMLObject is valid.
@@ -31,5 +31,5 @@ public interface Validator {
      * 
      * @throws ValidationException thrown if the element is not valid
      */
-    public void validate(XMLObject xmlObject) throws ValidationException;
+    public void validate(XMLObjectType xmlObject) throws ValidationException;
 }

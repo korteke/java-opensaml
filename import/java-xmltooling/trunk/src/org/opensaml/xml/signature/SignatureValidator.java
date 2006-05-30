@@ -21,14 +21,13 @@ import java.security.Key;
 import org.apache.log4j.Logger;
 import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.signature.XMLSignatureException;
-import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.validation.ValidationException;
 import org.opensaml.xml.validation.Validator;
 
 /**
  * A validator that verifies an {@link org.opensaml.xml.signature.impl.SignatureImpl} against a given key.
  */
-public class SignatureValidator implements Validator {
+public class SignatureValidator implements Validator<Signature> {
 
     /** Logger */
     private static Logger log = Logger.getLogger(SignatureValidator.class);
@@ -49,7 +48,7 @@ public class SignatureValidator implements Validator {
     }
 
     /** {@inheritDoc} */
-    public void validate(XMLObject xmlObject) throws ValidationException {
+    public void validate(Signature xmlObject) throws ValidationException {
         Signature signature = (Signature) xmlObject;
 
         if (signature != null) {

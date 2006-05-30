@@ -19,14 +19,13 @@
  */
 package org.opensaml.xml.mock;
 
-import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.validation.ValidationException;
 import org.opensaml.xml.validation.Validator;
 
 /**
  * A very simple validator that ensures an XMLObject is of type {@link org.opensaml.xml.mock.SimpleXMLObject}.
  */
-public class SimpleXMLObjectValidator implements Validator {
+public class SimpleXMLObjectValidator implements Validator<SimpleXMLObject> {
     
     /**
      * Constructor
@@ -38,7 +37,7 @@ public class SimpleXMLObjectValidator implements Validator {
     /*
      * @see org.opensaml.xml.validation.Validator#validate(org.opensaml.xml.XMLObject)
      */
-    public void validate(XMLObject xmlObject) throws ValidationException {
+    public void validate(SimpleXMLObject xmlObject) throws ValidationException {
         if(xmlObject instanceof SimpleXMLObject){
             return;
         }else{
