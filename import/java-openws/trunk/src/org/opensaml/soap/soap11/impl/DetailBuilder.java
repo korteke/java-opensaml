@@ -16,26 +16,23 @@
 
 package org.opensaml.soap.soap11.impl;
 
-import org.opensaml.soap.soap11.Header;
+import org.opensaml.soap.soap11.Detail;
 import org.opensaml.soap.util.SOAPConstants;
 import org.opensaml.xml.AbstractXMLObjectBuilder;
 
-/**
- * Builder of {@link org.opensaml.soap.soap11.impl.HeaderImpl} objects.
- */
-public class HeaderBuilder extends AbstractXMLObjectBuilder<Header> {
+public class DetailBuilder extends AbstractXMLObjectBuilder<Detail> {
 
     /**
-     * Creates an envelope object with the default SOAP 1.1 namespace, prefix and "Header" as the element local name.
+     * Creates an envelope object with the default SOAP 1.1 namespace, prefix and "Detail" as the element local name.
      * 
      * @return the build Envelope object
      */
-    public Header buildObject() {
-        return buildObject(SOAPConstants.SOAP11_NS, Header.DEFAULT_ELEMENT_LOCAL_NAME, SOAPConstants.SOAP11_PREFIX);
+    public Detail buildObject(){
+        return buildObject(SOAPConstants.SOAP11_NS, Detail.DEFAULT_ELEMENT_LOCAL_NAME, SOAPConstants.SOAP11_PREFIX);
     }
-
+    
     /** {@inheritDoc} */
-    public Header buildObject(String namespaceURI, String localName, String namespacePrefix) {
-        return new HeaderImpl(namespaceURI, localName, namespacePrefix);
+    public Detail buildObject(String namespaceURI, String localName, String namespacePrefix) {
+        return new DetailImpl(namespaceURI, localName, namespacePrefix);
     }
 }

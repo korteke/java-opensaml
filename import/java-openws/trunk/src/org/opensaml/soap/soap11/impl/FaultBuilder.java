@@ -16,26 +16,26 @@
 
 package org.opensaml.soap.soap11.impl;
 
-import org.opensaml.soap.soap11.Header;
+import org.opensaml.soap.soap11.Fault;
 import org.opensaml.soap.util.SOAPConstants;
 import org.opensaml.xml.AbstractXMLObjectBuilder;
 
 /**
- * Builder of {@link org.opensaml.soap.soap11.impl.HeaderImpl} objects.
+ * Builder of {@link org.opensaml.soap.soap11.impl.FaultImpl} objects.
  */
-public class HeaderBuilder extends AbstractXMLObjectBuilder<Header> {
+public class FaultBuilder extends AbstractXMLObjectBuilder<Fault> {
 
     /**
-     * Creates an envelope object with the default SOAP 1.1 namespace, prefix and "Header" as the element local name.
+     * Creates an envelope object with the default SOAP 1.1 namespace, prefix and "Fault" as the element local name.
      * 
      * @return the build Envelope object
      */
-    public Header buildObject() {
-        return buildObject(SOAPConstants.SOAP11_NS, Header.DEFAULT_ELEMENT_LOCAL_NAME, SOAPConstants.SOAP11_PREFIX);
+    public Fault buildObject() {
+        return buildObject(SOAPConstants.SOAP11_NS, Fault.DEFAULT_ELEMENT_LOCAL_NAME, SOAPConstants.SOAP11_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public Header buildObject(String namespaceURI, String localName, String namespacePrefix) {
-        return new HeaderImpl(namespaceURI, localName, namespacePrefix);
+    public Fault buildObject(String namespaceURI, String localName, String namespacePrefix) {
+        return new FaultImpl(namespaceURI, localName, namespacePrefix);
     }
 }
