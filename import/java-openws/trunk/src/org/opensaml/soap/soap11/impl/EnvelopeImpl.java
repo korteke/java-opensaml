@@ -19,17 +19,12 @@ package org.opensaml.soap.soap11.impl;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
-import javax.xml.namespace.QName;
-
-import org.apache.commons.collections.map.TypedMap;
 import org.opensaml.soap.soap11.Body;
 import org.opensaml.soap.soap11.Envelope;
 import org.opensaml.soap.soap11.Header;
 import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.util.DOMCachingXMLObjectAwareMap;
-import org.opensaml.xml.util.IndexedXMLObjectChildrenList;
+import org.opensaml.xml.util.AttributeMap;
 import org.opensaml.xml.util.XMLObjectChildrenList;
 import org.opensaml.xml.validation.AbstractValidatingXMLObject;
 
@@ -37,29 +32,29 @@ import org.opensaml.xml.validation.AbstractValidatingXMLObject;
  * Concrete implementation of {@link org.opensaml.soap.soap11.Envelope}.
  */
 public class EnvelopeImpl extends AbstractValidatingXMLObject implements Envelope {
-    
+
     /** SOAP header */
     private Header header;
-    
+
     /** SOAP body */
     private Body body;
-    
+
     /** "Any" type children */
     private XMLObjectChildrenList<XMLObject> unknownXMLObject;
-    
+
     /** Attributes of the proxied Element */
-    private Map<QName, String> attributes;
-    
+    private AttributeMap attributes;
+
     /**
      * Constructor
-     *
+     * 
      * @param namespaceURI namespace of the element
      * @param elementLocalName name of the element
      * @param namespacePrefix namespace prefix of the element
      */
     protected EnvelopeImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        attributes = TypedMap.decorate(new DOMCachingXMLObjectAwareMap(this), QName.class, String.class);
+        attributes = new AttributeMap(this);
         unknownXMLObject = new XMLObjectChildrenList<XMLObject>(this);
     }
 
@@ -86,11 +81,11 @@ public class EnvelopeImpl extends AbstractValidatingXMLObject implements Envelop
     /** {@inheritDoc } */
     public List<XMLObject> getOrderedChildren() {
         ArrayList<XMLObject> children = new ArrayList<XMLObject>();
-        
+
         children.add(header);
         children.add(body);
         children.addAll(unknownXMLObject);
-        
+
         return Collections.unmodifiableList(children);
     }
 
@@ -100,7 +95,7 @@ public class EnvelopeImpl extends AbstractValidatingXMLObject implements Envelop
     }
 
     /** {@inheritDoc } */
-    public Map<QName, String> getUnknownAttributes() {
+    public AttributeMap getUnknownAttributes() {
         return attributes;
     }
 }
