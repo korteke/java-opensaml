@@ -19,13 +19,13 @@ package org.opensaml.xml.util;
 import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.xml.namespace.QName;
 
+import javolution.util.FastMap;
+
 import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.util.XMLObjectChildrenList;
 
 /**
  * A list which indexes XMLObjects by their schema type and element QName for quick retrival based on those items. This
@@ -34,14 +34,14 @@ import org.opensaml.xml.util.XMLObjectChildrenList;
 public class IndexedXMLObjectChildrenList<ElementType extends XMLObject> extends XMLObjectChildrenList<ElementType> {
 
     /** Index of objects by type and name */
-    private HashMap<QName, ArrayList<ElementType>> objectIndex;
+    private FastMap<QName, ArrayList<ElementType>> objectIndex;
 
     /**
      * Constructor
      */
     public IndexedXMLObjectChildrenList(XMLObject parent) {
         super(parent);
-        objectIndex = new HashMap<QName, ArrayList<ElementType>>();
+        objectIndex = new FastMap<QName, ArrayList<ElementType>>();
     }
 
     /**
@@ -51,7 +51,7 @@ public class IndexedXMLObjectChildrenList<ElementType extends XMLObject> extends
      */
     public IndexedXMLObjectChildrenList(XMLObject parent, Collection<ElementType> col) {
         super(parent);
-        objectIndex = new HashMap<QName, ArrayList<ElementType>>();
+        objectIndex = new FastMap<QName, ArrayList<ElementType>>();
         addAll(col);
     }
     

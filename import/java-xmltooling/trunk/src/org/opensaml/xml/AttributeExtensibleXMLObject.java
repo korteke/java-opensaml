@@ -16,9 +16,7 @@
 
 package org.opensaml.xml;
 
-import java.util.Map;
-
-import javax.xml.namespace.QName;
+import org.opensaml.xml.util.AttributeMap;
 
 /**
  * An interface for XMLObjects that represent DOM elements that support 
@@ -32,5 +30,5 @@ public interface AttributeExtensibleXMLObject extends XMLObject {
      * 
      * @return a map of the attributes
      */
-    public Map<QName, String> getUnknownAttributes();
+    public AttributeMap getUnknownAttributes();
 }

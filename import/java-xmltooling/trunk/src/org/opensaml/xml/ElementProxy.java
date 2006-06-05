@@ -18,12 +18,8 @@ package org.opensaml.xml;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
-import javax.xml.namespace.QName;
-
-import org.apache.commons.collections.map.TypedMap;
-import org.opensaml.xml.util.DOMCachingXMLObjectAwareMap;
+import org.opensaml.xml.util.AttributeMap;
 import org.opensaml.xml.util.XMLHelper;
 import org.opensaml.xml.util.XMLObjectChildrenList;
 import org.opensaml.xml.validation.AbstractValidatingXMLObject;
@@ -37,7 +33,7 @@ import org.opensaml.xml.validation.AbstractValidatingXMLObject;
 public class ElementProxy extends AbstractValidatingXMLObject implements AttributeExtensibleXMLObject, ElementExtensibleXMLObject {
 
     /** Attributes of the proxied Element */
-    private Map<QName, String> attributes;
+    private AttributeMap attributes;
 
     /** Text content of the proxied Element */
     private String textContent;
@@ -54,7 +50,7 @@ public class ElementProxy extends AbstractValidatingXMLObject implements Attribu
      */
     protected ElementProxy(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        attributes = TypedMap.decorate(new DOMCachingXMLObjectAwareMap(this), QName.class, String.class);
+        attributes = new AttributeMap(this);
         children = new XMLObjectChildrenList<XMLObject>(this);
     }
 
@@ -91,7 +87,7 @@ public class ElementProxy extends AbstractValidatingXMLObject implements Attribu
     /**
      * {@inheritDoc}
      */
-    public Map<QName, String> getUnknownAttributes() {
+    public AttributeMap getUnknownAttributes() {
         return attributes;
     }
     

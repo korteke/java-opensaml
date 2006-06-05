@@ -20,6 +20,8 @@ import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javolution.util.FastList;
+
 import org.opensaml.xml.XMLObject;
 
 /**
@@ -36,7 +38,7 @@ public class XMLObjectChildrenList<ElementType extends XMLObject> extends Abstra
     private XMLObject parent;
 
     /** List of elements */
-    private ArrayList<ElementType> elements;
+    private FastList<ElementType> elements;
 
     /**
      * Constructs an empty list with all added XMLObjects being assigned the given parent XMLObject.
@@ -51,7 +53,7 @@ public class XMLObjectChildrenList<ElementType extends XMLObject> extends Abstra
         }
 
         this.parent = parent;
-        elements = new ArrayList<ElementType>(5);
+        elements = new FastList<ElementType>(5);
     }
 
     /**
