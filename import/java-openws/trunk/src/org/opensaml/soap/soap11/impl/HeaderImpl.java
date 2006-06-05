@@ -21,8 +21,6 @@ import java.util.List;
 
 import javolution.util.FastList;
 
-import org.opensaml.soap.soap11.Body;
-import org.opensaml.soap.soap11.Envelope;
 import org.opensaml.soap.soap11.Header;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.util.AttributeMap;
@@ -30,15 +28,10 @@ import org.opensaml.xml.util.XMLObjectChildrenList;
 import org.opensaml.xml.validation.AbstractValidatingXMLObject;
 
 /**
- * Concrete implementation of {@link org.opensaml.soap.soap11.Envelope}.
+ * Concrete implementation of {@link org.opensaml.soap.soap11.Header}.
  */
-public class EnvelopeImpl extends AbstractValidatingXMLObject implements Envelope {
-
-    /** SOAP header */
-    private Header header;
-
-    /** SOAP body */
-    private Body body;
+public class HeaderImpl extends AbstractValidatingXMLObject implements Header {
+    
 
     /** "Any" type children */
     private XMLObjectChildrenList<XMLObject> unknownXMLObject;
@@ -53,38 +46,16 @@ public class EnvelopeImpl extends AbstractValidatingXMLObject implements Envelop
      * @param elementLocalName name of the element
      * @param namespacePrefix namespace prefix of the element
      */
-    protected EnvelopeImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
+    protected HeaderImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         attributes = new AttributeMap(this);
         unknownXMLObject = new XMLObjectChildrenList<XMLObject>(this);
     }
 
     /** {@inheritDoc } */
-    public Header getHeader() {
-        return header;
-    }
-
-    /** {@inheritDoc } */
-    public void setHeader(Header newHeader) {
-        header = prepareForAssignment(header, newHeader);
-    }
-
-    /** {@inheritDoc } */
-    public Body getBody() {
-        return body;
-    }
-
-    /** {@inheritDoc } */
-    public void setBody(Body newBody) {
-        body = prepareForAssignment(body, newBody);
-    }
-
-    /** {@inheritDoc } */
     public List<XMLObject> getOrderedChildren() {
         FastList<XMLObject> children = new FastList<XMLObject>();
 
-        children.add(header);
-        children.add(body);
         children.addAll(unknownXMLObject);
 
         return Collections.unmodifiableList(children);
