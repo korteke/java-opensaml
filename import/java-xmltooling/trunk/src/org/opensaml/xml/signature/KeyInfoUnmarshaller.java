@@ -26,8 +26,8 @@ import org.opensaml.xml.io.UnmarshallingException;
 import org.w3c.dom.Element;
 
 /**
- * A marshaller for {@link org.opensaml.xml.signature.impl.KeyInfoImpl} objects. This class, along with it's
- * respective builder and unmarshaller use the Apache XMLSec 1.3 APIs to perform signing and verification.
+ * A marshaller for {@link org.opensaml.xml.signature.impl.KeyInfoImpl} objects. This class, along with it's respective
+ * builder and unmarshaller use the Apache XMLSec 1.3 APIs to perform signing and verification.
  */
 public class KeyInfoUnmarshaller implements Unmarshaller {
 
@@ -50,8 +50,7 @@ public class KeyInfoUnmarshaller implements Unmarshaller {
      * {@inheritDoc}
      */
     public XMLObject unmarshall(Element element) throws UnmarshallingException {
-        KeyInfo keyInfoObj = new KeyInfo(element.getNamespaceURI(), element.getLocalName(), element
-                .getPrefix());
+        KeyInfo keyInfoObj = new KeyInfo(element.getNamespaceURI(), element.getLocalName(), element.getPrefix());
 
         try {
             org.apache.xml.security.keys.KeyInfo keyInfoElem = new org.apache.xml.security.keys.KeyInfo(element, "#");
@@ -62,10 +61,12 @@ public class KeyInfoUnmarshaller implements Unmarshaller {
             }
 
             int numOfKeys = keyInfoElem.lengthKeyValue();
-            if(numOfKeys > 1){
-                LOG.warn("KeyInfo element contains more than one public key, only the first one will be used");
+            if (numOfKeys > 0) {
+                if (numOfKeys > 1) {
+                    LOG.warn("KeyInfo element contains more than one public key, only the first one will be used");
+                }
+                keyInfoObj.setPublicKey(keyInfoElem.itemKeyValue(0).getPublicKey());
             }
-            keyInfoObj.setPublicKey(keyInfoElem.itemKeyValue(0).getPublicKey());
 
             int numOfX509Data = keyInfoElem.lengthX509Data();
             int numOfCerts;
