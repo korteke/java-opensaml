@@ -36,6 +36,6 @@ public class XSQNameMarshaller extends AbstractXMLObjectMarshaller {
     /** {@inheritDoc} */
     protected void marshallElementContent(XMLObject xmlObject, Element domElement) throws MarshallingException {
         XSQName qname = (XSQName) xmlObject;
-        XMLHelper.appendTextContent(domElement, qname.getValue().toString());
+        XMLHelper.appendTextContent(domElement, XMLHelper.qnameToContentString(qname.getValue()));
     }
 }

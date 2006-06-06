@@ -190,8 +190,8 @@ public abstract class AbstractXMLObject implements XMLObject {
      * {@inheritDoc}
      */
     public void releaseDOM() {
-        if (log.isDebugEnabled()) {
-            log.debug("Releasing cached DOM reprsentation for " + getElementQName());
+        if (log.isTraceEnabled()) {
+            log.trace("Releasing cached DOM reprsentation for " + getElementQName());
         }
 
         setDOM(null);
@@ -226,9 +226,11 @@ public abstract class AbstractXMLObject implements XMLObject {
 
         if (getOrderedChildren() != null) {
             for (XMLObject child : getOrderedChildren()) {
-                child.releaseDOM();
-                if (propagateRelease) {
-                    child.releaseChildrenDOM(propagateRelease);
+                if (child != null) {
+                    child.releaseDOM();
+                    if (propagateRelease) {
+                        child.releaseChildrenDOM(propagateRelease);
+                    }
                 }
             }
         }

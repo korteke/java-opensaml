@@ -192,24 +192,6 @@ public class XMLHelper {
     }
 
     /**
-     * Deconstructs a QName value into a string appropriate for the value of an attribute.
-     * 
-     * @param qname the QName value for the attribute
-     * 
-     * @return the QName as a string for use with an attribute value
-     */
-    public static String getQNameAsAttributeValue(QName qname) {
-        StringBuffer buf = new StringBuffer();
-
-        if (qname.getPrefix() != null) {
-            buf.append(qname.getPrefix());
-            buf.append(":");
-        }
-        buf.append(qname.getLocalPart());
-        return buf.toString();
-    }
-
-    /**
      * Constructs a QName
      * 
      * @param namespaceURI the namespace of the QName
@@ -299,7 +281,7 @@ public class XMLHelper {
         if(!DatatypeHelper.isEmpty(namespaceURI)){
             return document.createElementNS(namespaceURI, qualifiedName);
         }else{
-            return document.createElement(qualifiedName);
+            return document.createElementNS(null, qualifiedName);
         }
     }
 
@@ -532,6 +514,24 @@ public class XMLHelper {
         DOMImplementationLS domImplLS = (DOMImplementationLS) domImpl.getFeature("LS", "3.0");
         LSSerializer serializer = domImplLS.createLSSerializer();
         return serializer.writeToString(node);
+    }
+    
+    /**
+     * Converts a QName into a string that can be used for attribute values or element content;
+     * 
+     * @param qname the QName to convert to a string
+     * 
+     * @return the string value of the QName
+     */
+    public static String qnameToContentString(QName qname){
+        StringBuffer buf = new StringBuffer();
+
+        if (qname.getPrefix() != null) {
+            buf.append(qname.getPrefix());
+            buf.append(":");
+        }
+        buf.append(qname.getLocalPart());
+        return buf.toString();
     }
 
     /**

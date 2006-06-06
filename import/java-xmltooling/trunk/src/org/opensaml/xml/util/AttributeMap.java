@@ -53,6 +53,7 @@ public class AttributeMap implements Map<QName, String> {
             throw new NullPointerException("Attribute owner XMLObject may not be null");
         }
 
+        this.attributeOwner = attributeOwner;
         attributes = new FastMap<QName, String>();
     }
 

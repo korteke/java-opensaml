@@ -262,7 +262,8 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
             log.debug("Setting namespace prefix for " + xmlObject.getElementQName().getPrefix() + " for XMLObject "
                     + xmlObject.getElementQName());
         }
-        targetElement.setPrefix(xmlObject.getElementQName().getPrefix());
+        
+        marshallNamespacePrefix(xmlObject, targetElement);
 
         marshallElementType(xmlObject, targetElement);
 
@@ -320,6 +321,21 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
                 + xmlObject.getElementQName();
         log.error(errorMsg);
         throw new MarshallingException(errorMsg);
+    }
+    
+    /**
+     * Marshalls the namespace prefix of the XMLObject into the DOM element.
+     * 
+     * @param xmlObject the XMLObject being marshalled
+     * @param domElement the DOM element the XMLObject is being marshalled into
+     */
+    protected void marshallNamespacePrefix(XMLObject xmlObject, Element domElement){
+        String prefix = xmlObject.getElementQName().getPrefix();
+        prefix = DatatypeHelper.safeTrimOrNullString(prefix);
+        
+        if(prefix != null){
+            domElement.setPrefix(prefix);
+        }
     }
 
     /**

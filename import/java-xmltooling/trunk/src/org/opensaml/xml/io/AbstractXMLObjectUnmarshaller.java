@@ -106,6 +106,7 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
         checkElementIsTarget(domElement);
 
         XMLObject xmlObject = buildXMLObject(domElement);
+        xmlObject.setDOM(domElement);
 
         if (log.isDebugEnabled()) {
             log.debug("Unmarshalling attributes of DOM Element " + XMLHelper.getNodeQName(domElement));
@@ -120,7 +121,6 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
                 unmarshallAttribute(xmlObject, (Attr) attribute);
             }
         }
-        processContext(xmlObject);
 
         if (log.isDebugEnabled()) {
             log.debug("Unmarshalling other child nodes of DOM Element " + XMLHelper.getNodeQName(domElement));
@@ -138,8 +138,6 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
                 unmarshallTextContent(xmlObject, (Text) childNode);
             }
         }
-        
-        xmlObject.setDOM(domElement);
 
         return xmlObject;
     }
@@ -344,16 +342,6 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
         if (textContent != null) {
             processElementContent(xmlObject, textContent);
         }
-    }
-
-    /**
-     * Called after all the attributes have been processed to allow the object to affect the context that child elements
-     * will be built with. By default affect nothing.
-     * 
-     * @param xmlObject the XML object in question
-     */
-    protected void processContext(XMLObject xmlObject) {
-        // Nothing
     }
 
     /**
