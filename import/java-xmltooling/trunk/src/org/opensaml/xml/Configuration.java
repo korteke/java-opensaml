@@ -581,9 +581,11 @@ public final class Configuration {
         try {
             DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
             if (docBuilder.getClass().getName().startsWith("com.sun")) {
-                String errorMsg = "The JVM is currently configured to use the Sun XML parser.  "
-                        + "This parser is extremely buggy and can not be used with this library.  "
-                        + "Please endorse a functional JAXP parser such as Xerces.";
+                String errorMsg = "OpenSAML requires an xml parser that supports DOM3 calls. "
+                    + "The JVM is currently configured to use the Sun XML parser, which is known "
+                    + "to be extremly buggy and can not be used with OpenSAML.  Please endorse a "
+                    + "a functional JAXP parser such as Xerces.  For instructions on how to endorse "
+                    + "a new parser see http://java.sun.com/j2se/1.5.0/docs/guide/standards/index.html";
 
                 LOG.fatal(errorMsg);
                 throw new RuntimeException(errorMsg);

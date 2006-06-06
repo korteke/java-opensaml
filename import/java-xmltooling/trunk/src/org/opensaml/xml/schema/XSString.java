@@ -18,13 +18,13 @@ package org.opensaml.xml.schema;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.util.XMLConstants;
+import org.opensaml.xml.validation.ValidatingXMLObject;
 
 /**
  * XMLObject that represents an XML Schema String.
  */
-public interface XSString extends XMLObject {
+public interface XSString extends ValidatingXMLObject {
 
     /** Local name of the XSI type */
     public final static String TYPE_LOCAL_NAME = "string"; 

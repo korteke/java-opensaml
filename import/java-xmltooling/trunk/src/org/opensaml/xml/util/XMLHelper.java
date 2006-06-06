@@ -19,8 +19,8 @@ package org.opensaml.xml.util;
 import java.util.StringTokenizer;
 
 import javax.xml.namespace.QName;
-import javax.xml.parsers.FactoryConfigurationError;
 
+import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.parse.XMLParserException;
 import org.w3c.dom.Attr;
 import org.w3c.dom.DOMImplementation;
@@ -226,6 +226,33 @@ public class XMLHelper {
         }
 
         return new QName(namespaceURI, localName, prefix);
+    }
+    
+    /**
+     * Constructs a QName from a string (attribtue or element content) value.
+     * 
+     * @param qname the QName string
+     * @param owningObject XMLObject, with cached DOM, owning the QName
+     *  
+     * @return the QName respresented by the string
+     */
+    public static QName constructQName(String qname, XMLObject owningObject){
+        Element objectDOM = owningObject.getDOM();
+        String nsURI;
+        String nsPrefix;
+        String name;
+        
+        if(qname.indexOf(":") > -1){
+            StringTokenizer qnameTokens = new StringTokenizer(qname, ":");
+            nsPrefix = qnameTokens.nextToken();
+            name = qnameTokens.nextToken();
+        }else {
+            nsPrefix = "";
+            name = qname;
+        }
+        
+        nsURI = lookupNamespaceURI(objectDOM, nsPrefix);
+        return constructQName(nsURI, name, nsPrefix);
     }
     
     /**
@@ -591,29 +618,6 @@ public class XMLHelper {
             if (childNode.getNodeType() == Node.ELEMENT_NODE) {
                 rootNamespaces((Element) childNode, upperNamespaceSearchBound);
             }
-        }
-    }
-
-    /**
-     * Verifies that the XML parser used by the JVM supports DOM level 3 and JAXP 1.3.
-     */
-    public static void verifyUsableXmlParser() {
-        try {
-            Class.forName("javax.xml.validation.SchemaFactory");
-            Element.class.getDeclaredMethod("setIdAttributeNS", new Class[] { String.class, String.class,
-                    java.lang.Boolean.TYPE });
-        } catch (NoSuchMethodException e) {
-            throw new FactoryConfigurationError("OpenSAML requires an xml parser that supports DOM3 calls. "
-                    + "Sun JAXP 1.3 has been included with this release and is strongly recommended. "
-                    + "If you are using Java 1.4, make sure that you have enabled the Endorsed "
-                    + "Standards Override Mechanism for this parser "
-                    + "(see http://java.sun.com/j2se/1.4.2/docs/guide/standards/ for details).");
-        } catch (ClassNotFoundException e) {
-            throw new FactoryConfigurationError("OpenSAML requires an xml parser that supports JAXP 1.3. "
-                    + "Sun JAXP 1.3 has been included with this release and is strongly recommended. "
-                    + "If you are using Java 1.4, make sure that you have enabled the Endorsed "
-                    + "Standards Override Mechanism for this parser "
-                    + "(see http://java.sun.com/j2se/1.4.2/docs/guide/standards/ for details).");
         }
     }
 }
