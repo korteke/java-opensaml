@@ -60,6 +60,7 @@ public class Signer {
 
         if(xmlSignature == null){
             log.warn("Unable to compute signature, Signature XMLObject does not have the XMLSignature created during marshalling.");
+            return;
         }
 
         try {
