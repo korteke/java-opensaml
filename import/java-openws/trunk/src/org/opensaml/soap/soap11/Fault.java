@@ -18,16 +18,13 @@ package org.opensaml.soap.soap11;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.soap.common.SOAPObject;
 import org.opensaml.soap.util.SOAPConstants;
-import org.opensaml.xml.schema.XSQName;
-import org.opensaml.xml.schema.XSString;
-import org.opensaml.xml.schema.XSURI;
-import org.opensaml.xml.validation.ValidatingXMLObject;
 
 /**
  * SOAP 1.1 Fault
  */
-public interface Fault extends ValidatingXMLObject {
+public interface Fault extends SOAPObject {
     
     /** Element local name */
     public final static String DEFAULT_ELEMENT_LOCAL_NAME = "Fault";
@@ -46,42 +43,42 @@ public interface Fault extends ValidatingXMLObject {
      * 
      * @return the fault code for this fault
      */
-    public XSQName getCode();
+    public FaultCode getCode();
     
     /**
      * Sets the fault code for this fault.
      * 
      * @param newFaultCode the fault code for this fault
      */
-    public void setCode(XSQName newFaultCode);
+    public void setCode(FaultCode newFaultCode);
     
     /**
      * Gets the fault string for this fault.
      * 
      * @return the fault string for this fault
      */
-    public XSString getMessage();
+    public FaultString getMessage();
     
     /**
      * Sets the fault string for this fault.
      * 
      * @param newMessage the fault string for this fault
      */
-    public void setMessage(XSString newMessage);
+    public void setMessage(FaultString newMessage);
     
     /**
      * Gets the URI of the fault actor for this fault.
      * 
      * @return the URI of the fault actor for this fault
      */
-    public XSURI getActor();
+    public FaultActor getActor();
     
     /**
      * Sets the URI of the fault actor for this fault.
      * 
      * @param newActor the URI of the fault actor for this fault
      */
-    public void setActor(XSURI newActor);
+    public void setActor(FaultActor newActor);
     
     /**
      * Gets details of this fault.

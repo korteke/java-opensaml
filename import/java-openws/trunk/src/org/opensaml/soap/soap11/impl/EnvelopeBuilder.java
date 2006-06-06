@@ -16,6 +16,7 @@
 
 package org.opensaml.soap.soap11.impl;
 
+import org.opensaml.soap.common.SOAPObjectBuilder;
 import org.opensaml.soap.soap11.Envelope;
 import org.opensaml.soap.util.SOAPConstants;
 import org.opensaml.xml.AbstractXMLObjectBuilder;
@@ -23,7 +24,7 @@ import org.opensaml.xml.AbstractXMLObjectBuilder;
 /**
  * Builder of {@link org.opensaml.soap.soap11.impl.EnvelopeImpl} objects.
  */
-public class EnvelopeBuilder extends AbstractXMLObjectBuilder<Envelope> {
+public class EnvelopeBuilder extends AbstractXMLObjectBuilder<Envelope> implements SOAPObjectBuilder<Envelope> {
 
     /**
      * Creates an envelope object with the default SOAP 1.1 namespace, prefix and "Envelope" as the element local name.

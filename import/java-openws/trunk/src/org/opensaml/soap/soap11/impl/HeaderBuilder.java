@@ -16,6 +16,7 @@
 
 package org.opensaml.soap.soap11.impl;
 
+import org.opensaml.soap.common.SOAPObjectBuilder;
 import org.opensaml.soap.soap11.Header;
 import org.opensaml.soap.util.SOAPConstants;
 import org.opensaml.xml.AbstractXMLObjectBuilder;
@@ -23,7 +24,7 @@ import org.opensaml.xml.AbstractXMLObjectBuilder;
 /**
  * Builder of {@link org.opensaml.soap.soap11.impl.HeaderImpl} objects.
  */
-public class HeaderBuilder extends AbstractXMLObjectBuilder<Header> {
+public class HeaderBuilder extends AbstractXMLObjectBuilder<Header> implements SOAPObjectBuilder<Header>{
 
     /**
      * Creates an envelope object with the default SOAP 1.1 namespace, prefix and "Header" as the element local name.

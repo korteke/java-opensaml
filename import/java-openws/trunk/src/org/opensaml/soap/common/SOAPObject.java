@@ -14,24 +14,13 @@
  * limitations under the License.
  */
 
-package org.opensaml.soap.soap11.impl;
+package org.opensaml.soap.common;
 
-import org.opensaml.soap.common.AbstractExtensibleSOAPObject;
-import org.opensaml.soap.soap11.Body;
+import org.opensaml.xml.validation.ValidatingXMLObject;
 
 /**
- * Concrete implemenation of {@link org.opensaml.soap.soap11.Body}.
+ * Base interface for all SOAP objects.
  */
-public class BodyImpl extends AbstractExtensibleSOAPObject implements Body {
+public interface SOAPObject extends ValidatingXMLObject {
 
-    /**
-     * Constructor
-     * 
-     * @param namespaceURI namespace of the element
-     * @param elementLocalName name of the element
-     * @param namespacePrefix namespace prefix of the element
-     */
-    protected BodyImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
-        super(namespaceURI, elementLocalName, namespacePrefix);
-    }
 }

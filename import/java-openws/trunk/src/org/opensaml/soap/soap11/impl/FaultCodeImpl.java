@@ -16,22 +16,22 @@
 
 package org.opensaml.soap.soap11.impl;
 
-import org.opensaml.soap.common.AbstractExtensibleSOAPObject;
-import org.opensaml.soap.soap11.Header;
+import org.opensaml.soap.soap11.FaultCode;
+import org.opensaml.xml.schema.impl.XSQNameImpl;
 
 /**
- * Concrete implementation of {@link org.opensaml.soap.soap11.Header}.
+ * Concrete implementation of {@link org.opensaml.soap.soap11.FaultCode}.
  */
-public class HeaderImpl extends AbstractExtensibleSOAPObject implements Header {
+public class FaultCodeImpl extends XSQNameImpl implements FaultCode {
 
     /**
      * Constructor
      * 
-     * @param namespaceURI namespace of the element
-     * @param elementLocalName name of the element
-     * @param namespacePrefix namespace prefix of the element
+     * @param namespaceURI the namespace the element is in
+     * @param elementLocalName the local name of the XML element this Object represents
+     * @param namespacePrefix the prefix for the given namespace
      */
-    protected HeaderImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
+    protected FaultCodeImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 }

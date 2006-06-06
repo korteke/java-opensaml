@@ -18,15 +18,15 @@ package org.opensaml.soap.soap11;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.soap.common.SOAPObject;
 import org.opensaml.soap.util.SOAPConstants;
 import org.opensaml.xml.AttributeExtensibleXMLObject;
 import org.opensaml.xml.ElementExtensibleXMLObject;
-import org.opensaml.xml.validation.ValidatingXMLObject;
 
 /**
  * SOAP 1.1 Body
  */
-public interface Body extends ValidatingXMLObject, ElementExtensibleXMLObject, AttributeExtensibleXMLObject{
+public interface Body extends SOAPObject, ElementExtensibleXMLObject, AttributeExtensibleXMLObject{
     
     /** Element local name */
     public final static String DEFAULT_ELEMENT_LOCAL_NAME = "Body";

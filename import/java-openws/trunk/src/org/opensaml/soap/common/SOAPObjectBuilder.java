@@ -14,24 +14,21 @@
  * limitations under the License.
  */
 
-package org.opensaml.soap.soap11.impl;
+package org.opensaml.soap.common;
 
-import org.opensaml.soap.common.AbstractExtensibleSOAPObject;
-import org.opensaml.soap.soap11.Header;
+import org.opensaml.xml.XMLObjectBuilder;
 
 /**
- * Concrete implementation of {@link org.opensaml.soap.soap11.Header}.
+ * Builder for SOAPObjects
+ *
+ * @param <SOAPObjectType> the type of SOAPObject being built
  */
-public class HeaderImpl extends AbstractExtensibleSOAPObject implements Header {
+public interface SOAPObjectBuilder<SOAPObjectType extends SOAPObject> extends XMLObjectBuilder<SOAPObjectType> {
 
     /**
-     * Constructor
+     * Builds a SOAPObject using the default name and namespace information provided SOAP specifications.
      * 
-     * @param namespaceURI namespace of the element
-     * @param elementLocalName name of the element
-     * @param namespacePrefix namespace prefix of the element
+     * @return built SAMLObject
      */
-    protected HeaderImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
-        super(namespaceURI, elementLocalName, namespacePrefix);
-    }
+    public SOAPObjectType buildObject();
 }

@@ -16,6 +16,7 @@
 
 package org.opensaml.soap.soap11.impl;
 
+import org.opensaml.soap.common.SOAPObjectBuilder;
 import org.opensaml.soap.soap11.Body;
 import org.opensaml.soap.util.SOAPConstants;
 import org.opensaml.xml.AbstractXMLObjectBuilder;
@@ -23,7 +24,7 @@ import org.opensaml.xml.AbstractXMLObjectBuilder;
 /**
  * Builder of {@link org.opensaml.soap.soap11.impl.BodyImpl} objects.
  */
-public class BodyBuilder extends AbstractXMLObjectBuilder<Body> {
+public class BodyBuilder extends AbstractXMLObjectBuilder<Body> implements SOAPObjectBuilder<Body> {
 
     /**
      * Creates an envelope object with the default SOAP 1.1 namespace, prefix and "Body" as the element local name.

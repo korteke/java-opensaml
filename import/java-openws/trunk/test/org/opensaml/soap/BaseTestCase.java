@@ -22,6 +22,7 @@ import javax.xml.namespace.QName;
 
 import org.apache.log4j.Logger;
 import org.custommonkey.xmlunit.XMLTestCase;
+import org.custommonkey.xmlunit.XMLUnit;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.XMLObjectBuilder;
@@ -53,6 +54,12 @@ public abstract class BaseTestCase extends XMLTestCase {
 
     /** XMLObject unmarshaller factory */
     protected static UnmarshallerFactory unmarshallerFactory;
+    
+    /** {@inheritDoc} */
+    protected void setUp() throws Exception {
+        super.setUp();
+        XMLUnit.setIgnoreWhitespace(true);
+    }
 
     /**
      * Asserts a given XMLObject is equal to an expected DOM. The XMLObject is marshalled and the resulting DOM object

@@ -18,6 +18,9 @@ package org.opensaml.soap.soap11.impl;
 
 import org.opensaml.soap.soap11.Detail;
 import org.opensaml.soap.soap11.Fault;
+import org.opensaml.soap.soap11.FaultActor;
+import org.opensaml.soap.soap11.FaultCode;
+import org.opensaml.soap.soap11.FaultString;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.AbstractXMLObjectUnmarshaller;
 import org.opensaml.xml.io.UnmarshallingException;
@@ -37,11 +40,11 @@ public class FaultUnmarshaller extends AbstractXMLObjectUnmarshaller {
         Fault fault = (Fault) parentXMLObject;
         
         if(childXMLObject instanceof XSQName){
-            fault.setCode((XSQName) childXMLObject);
+            fault.setCode((FaultCode) childXMLObject);
         }else if(childXMLObject instanceof XSString){
-            fault.setMessage((XSString) childXMLObject);
+            fault.setMessage((FaultString) childXMLObject);
         }else if(childXMLObject instanceof XSURI){
-            fault.setActor((XSURI) childXMLObject);
+            fault.setActor((FaultActor) childXMLObject);
         }else if(childXMLObject instanceof Detail){
             fault.setDetail((Detail) childXMLObject);
         }

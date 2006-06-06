@@ -20,23 +20,16 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.soap.common.SOAPObject;
 import org.opensaml.soap.util.SOAPConstants;
-import org.opensaml.xml.AttributeExtensibleXMLObject;
-import org.opensaml.xml.ElementExtensibleXMLObject;
+import org.opensaml.xml.schema.XSQName;
 
 /**
- * SOAP 1.1 Header
+ * SOAP 1.1 faultcode
  */
-public interface Header extends SOAPObject, ElementExtensibleXMLObject, AttributeExtensibleXMLObject {
-
+public interface FaultCode extends SOAPObject, XSQName {
+    
     /** Element local name */
-    public final static String DEFAULT_ELEMENT_LOCAL_NAME = "Header";
+    public final static String DEFAULT_ELEMENT_LOCAL_NAME = "faultcode";
     
     /** Default element name */
     public final static QName DEFAULT_ELEMENT_NAME = new QName(SOAPConstants.SOAP11_NS, DEFAULT_ELEMENT_LOCAL_NAME, SOAPConstants.SOAP11_PREFIX);
-    
-    /** Local name of the XSI type */
-    public final static String TYPE_LOCAL_NAME = "Header"; 
-        
-    /** QName of the XSI type */
-    public final static QName TYPE_NAME = new QName(SOAPConstants.SOAP11_NS, TYPE_LOCAL_NAME, SOAPConstants.SOAP11_PREFIX);
 }

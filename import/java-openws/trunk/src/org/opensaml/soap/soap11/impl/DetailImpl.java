@@ -16,27 +16,13 @@
 
 package org.opensaml.soap.soap11.impl;
 
-import java.util.Collections;
-import java.util.List;
-
-import javolution.util.FastList;
-
+import org.opensaml.soap.common.AbstractExtensibleSOAPObject;
 import org.opensaml.soap.soap11.Detail;
-import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.util.AttributeMap;
-import org.opensaml.xml.util.XMLObjectChildrenList;
-import org.opensaml.xml.validation.AbstractValidatingXMLObject;
 
 /**
  * Concrete implementation of {@link org.opensaml.soap.soap11.Detail}.
  */
-public class DetailImpl extends AbstractValidatingXMLObject implements Detail {
-
-    /** "Any" type children */
-    private XMLObjectChildrenList<XMLObject> unknownXMLObject;
-
-    /** Attributes of the proxied Element */
-    private AttributeMap attributes;
+public class DetailImpl extends AbstractExtensibleSOAPObject implements Detail {
 
     /**
      * Constructor
@@ -47,26 +33,5 @@ public class DetailImpl extends AbstractValidatingXMLObject implements Detail {
      */
     protected DetailImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        attributes = new AttributeMap(this);
-        unknownXMLObject = new XMLObjectChildrenList<XMLObject>(this);
-    }
-
-    /** {@inheritDoc } */
-    public List<XMLObject> getOrderedChildren() {
-        FastList<XMLObject> children = new FastList<XMLObject>();
-
-        children.addAll(unknownXMLObject);
-
-        return Collections.unmodifiableList(children);
-    }
-
-    /** {@inheritDoc } */
-    public List<XMLObject> getUnknownXMLObjects() {
-        return unknownXMLObject;
-    }
-
-    /** {@inheritDoc } */
-    public AttributeMap getUnknownAttributes() {
-        return attributes;
     }
 }

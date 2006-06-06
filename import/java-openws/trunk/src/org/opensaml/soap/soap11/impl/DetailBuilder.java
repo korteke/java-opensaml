@@ -16,11 +16,12 @@
 
 package org.opensaml.soap.soap11.impl;
 
+import org.opensaml.soap.common.SOAPObjectBuilder;
 import org.opensaml.soap.soap11.Detail;
 import org.opensaml.soap.util.SOAPConstants;
 import org.opensaml.xml.AbstractXMLObjectBuilder;
 
-public class DetailBuilder extends AbstractXMLObjectBuilder<Detail> {
+public class DetailBuilder extends AbstractXMLObjectBuilder<Detail> implements SOAPObjectBuilder<Detail>{
 
     /**
      * Creates an envelope object with the default SOAP 1.1 namespace, prefix and "Detail" as the element local name.

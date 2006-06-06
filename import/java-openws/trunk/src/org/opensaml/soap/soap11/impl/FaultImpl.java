@@ -22,10 +22,10 @@ import javolution.util.FastList;
 
 import org.opensaml.soap.soap11.Detail;
 import org.opensaml.soap.soap11.Fault;
+import org.opensaml.soap.soap11.FaultActor;
+import org.opensaml.soap.soap11.FaultCode;
+import org.opensaml.soap.soap11.FaultString;
 import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.schema.XSQName;
-import org.opensaml.xml.schema.XSString;
-import org.opensaml.xml.schema.XSURI;
 import org.opensaml.xml.validation.AbstractValidatingXMLObject;
 
 /**
@@ -34,13 +34,13 @@ import org.opensaml.xml.validation.AbstractValidatingXMLObject;
 public class FaultImpl extends AbstractValidatingXMLObject implements Fault {
     
     /** Fault code */
-    private XSQName faultCode;
+    private FaultCode faultCode;
     
     /** Fault message */
-    private XSString message;
+    private FaultString message;
     
     /** Actor that faulted */
-    private XSURI actor;
+    private FaultActor actor;
     
     /** Details of the fault */
     private Detail detail;
@@ -57,32 +57,32 @@ public class FaultImpl extends AbstractValidatingXMLObject implements Fault {
     }
 
     /** {@inheritDoc } */
-    public XSQName getCode() {
+    public FaultCode getCode() {
         return faultCode;
     }
 
     /** {@inheritDoc } */
-    public void setCode(XSQName newFaultCode) {
+    public void setCode(FaultCode newFaultCode) {
         faultCode = prepareForAssignment(faultCode, newFaultCode);
     }
 
     /** {@inheritDoc } */
-    public XSString getMessage() {
+    public FaultString getMessage() {
         return message;
     }
 
     /** {@inheritDoc } */
-    public void setMessage(XSString newMessage) {
+    public void setMessage(FaultString newMessage) {
         message = prepareForAssignment(message, newMessage);
     }
 
     /** {@inheritDoc } */
-    public XSURI getActor() {
+    public FaultActor getActor() {
         return actor;
     }
 
     /** {@inheritDoc } */
-    public void setActor(XSURI newActor) {
+    public void setActor(FaultActor newActor) {
         actor = prepareForAssignment(actor, newActor);
     }
 

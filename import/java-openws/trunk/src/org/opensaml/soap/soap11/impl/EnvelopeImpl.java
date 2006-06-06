@@ -16,35 +16,26 @@
 
 package org.opensaml.soap.soap11.impl;
 
-import java.util.Collections;
 import java.util.List;
 
 import javolution.util.FastList;
 
+import org.opensaml.soap.common.AbstractExtensibleSOAPObject;
 import org.opensaml.soap.soap11.Body;
 import org.opensaml.soap.soap11.Envelope;
 import org.opensaml.soap.soap11.Header;
 import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.util.AttributeMap;
-import org.opensaml.xml.util.XMLObjectChildrenList;
-import org.opensaml.xml.validation.AbstractValidatingXMLObject;
 
 /**
  * Concrete implementation of {@link org.opensaml.soap.soap11.Envelope}.
  */
-public class EnvelopeImpl extends AbstractValidatingXMLObject implements Envelope {
+public class EnvelopeImpl extends AbstractExtensibleSOAPObject implements Envelope {
 
     /** SOAP header */
     private Header header;
 
     /** SOAP body */
     private Body body;
-
-    /** "Any" type children */
-    private XMLObjectChildrenList<XMLObject> unknownXMLObject;
-
-    /** Attributes of the proxied Element */
-    private AttributeMap attributes;
 
     /**
      * Constructor
@@ -55,8 +46,6 @@ public class EnvelopeImpl extends AbstractValidatingXMLObject implements Envelop
      */
     protected EnvelopeImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        attributes = new AttributeMap(this);
-        unknownXMLObject = new XMLObjectChildrenList<XMLObject>(this);
     }
 
     /** {@inheritDoc } */
@@ -85,18 +74,8 @@ public class EnvelopeImpl extends AbstractValidatingXMLObject implements Envelop
 
         children.add(header);
         children.add(body);
-        children.addAll(unknownXMLObject);
+        children.addAll(super.getOrderedChildren());
 
-        return Collections.unmodifiableList(children);
-    }
-
-    /** {@inheritDoc } */
-    public List<XMLObject> getUnknownXMLObjects() {
-        return unknownXMLObject;
-    }
-
-    /** {@inheritDoc } */
-    public AttributeMap getUnknownAttributes() {
-        return attributes;
+        return children.unmodifiable();
     }
 }

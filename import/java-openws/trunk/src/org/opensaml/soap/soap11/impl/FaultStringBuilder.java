@@ -17,26 +17,22 @@
 package org.opensaml.soap.soap11.impl;
 
 import org.opensaml.soap.common.SOAPObjectBuilder;
-import org.opensaml.soap.soap11.Fault;
+import org.opensaml.soap.soap11.FaultString;
 import org.opensaml.soap.util.SOAPConstants;
 import org.opensaml.xml.AbstractXMLObjectBuilder;
 
 /**
- * Builder of {@link org.opensaml.soap.soap11.impl.FaultImpl} objects.
+ * Builder of {@link org.opensaml.soap.soap11.impl.FaultStringImpl} objects.
  */
-public class FaultBuilder extends AbstractXMLObjectBuilder<Fault> implements SOAPObjectBuilder<Fault>{
+public class FaultStringBuilder extends AbstractXMLObjectBuilder<FaultString> implements SOAPObjectBuilder<FaultString> {
 
-    /**
-     * Creates an envelope object with the default SOAP 1.1 namespace, prefix and "Fault" as the element local name.
-     * 
-     * @return the build Envelope object
-     */
-    public Fault buildObject() {
-        return buildObject(SOAPConstants.SOAP11_NS, Fault.DEFAULT_ELEMENT_LOCAL_NAME, SOAPConstants.SOAP11_PREFIX);
+    /** {@inheritDoc} */
+    public FaultString buildObject(String namespaceURI, String localName, String namespacePrefix) {
+        return new FaultStringImpl(namespaceURI, localName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public Fault buildObject(String namespaceURI, String localName, String namespacePrefix) {
-        return new FaultImpl(namespaceURI, localName, namespacePrefix);
+    public FaultString buildObject() {
+        return buildObject(SOAPConstants.SOAP11_NS, FaultString.DEFAULT_ELEMENT_LOCAL_NAME, SOAPConstants.SOAP11_PREFIX);
     }
 }
