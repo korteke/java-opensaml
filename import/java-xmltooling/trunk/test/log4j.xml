@@ -71,8 +71,9 @@
    <!-- ======================= -->
 
    <root>
-      <priority value="WARN"/>
+      <priority value="DEBUG"/>
       <appender-ref ref="CONSOLE"/>
+      <appender-ref ref="FILE"/>
    </root>
 
 </log4j:configuration>
