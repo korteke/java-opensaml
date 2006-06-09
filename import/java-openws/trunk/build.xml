@@ -67,10 +67,6 @@
         <javac srcdir="${test-src.dir}" destdir="${test-classes.dir}" includes="**/*.java" debug="on" source="1.5">
             <classpath refid="test-path" />
         </javac>
-
-        <copy toDir="${test-classes.dir}/conf">
-            <fileset dir="${test-src.dir}/conf" />
-        </copy>
         
         <copy toDir="${test-classes.dir}/data">
             <fileset dir="${test-src.dir}/data" />
