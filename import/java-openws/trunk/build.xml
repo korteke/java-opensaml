@@ -1,3 +1,4 @@
+<!-- OpenWS project build file -->
 <project name="OpenWS" basedir="." default="package">
 
     <property file="build.properties" />
