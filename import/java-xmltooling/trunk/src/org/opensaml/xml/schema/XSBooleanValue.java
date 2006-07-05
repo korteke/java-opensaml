@@ -95,7 +95,7 @@ public class XSBooleanValue {
     /**
      * Converts a boolean value into a string. If using the numeric representations and the value is true then "1" is
      * returned or "0" if the value is false. If lexical representation is used "true" and "false" will be returned. If
-     * the given value is null, then null is returned.
+     * the given value is null, then "false" is returned.
      * 
      * @param value the boolean value
      * @param numericRepresentation whether to use numeric of lexical representation
@@ -104,7 +104,7 @@ public class XSBooleanValue {
      */
     public static String toString(Boolean value, boolean numericRepresentation) {
         if (value == null) {
-            return null;
+            return "false";
         }
 
         if (numericRepresentation) {
