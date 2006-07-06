@@ -96,7 +96,7 @@ public class UnmarshallerFactory {
      */
     public void registerUnmarshaller(QName key, Unmarshaller unmarshaller) {
         if (log.isDebugEnabled()) {
-            log.debug("Registering unmarshaller, " + unmarshaller.getClass().getCanonicalName() + ", for object type "
+            log.debug("Registering unmarshaller, " + unmarshaller.getClass().getName() + ", for object type "
                     + key);
         }
         synchronized (unmarshallers) {

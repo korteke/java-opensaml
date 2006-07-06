@@ -95,7 +95,7 @@ public class MarshallerFactory {
      */
     public void registerMarshaller(QName key, Marshaller marshaller) {
         if (log.isDebugEnabled()) {
-            log.debug("Registering marshaller, " + marshaller.getClass().getCanonicalName() + ", for object type "
+            log.debug("Registering marshaller, " + marshaller.getClass().getName() + ", for object type "
                     + key);
         }
         synchronized (marshallers) {

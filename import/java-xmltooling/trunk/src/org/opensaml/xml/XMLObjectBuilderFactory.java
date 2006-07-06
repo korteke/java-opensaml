@@ -92,7 +92,7 @@ public class XMLObjectBuilderFactory {
      */
     public void registerBuilder(QName builderKey, XMLObjectBuilder builder) {
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Registering builder, " + builder.getClass().getCanonicalName() + " under key " + builderKey);
+            LOG.debug("Registering builder, " + builder.getClass().getName() + " under key " + builderKey);
         }
         synchronized (builders) {
             builders.put(builderKey, builder);
