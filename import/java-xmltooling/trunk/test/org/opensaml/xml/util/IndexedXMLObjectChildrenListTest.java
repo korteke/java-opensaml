@@ -110,9 +110,6 @@ public class IndexedXMLObjectChildrenListTest extends TestCase {
         SimpleXMLObject parentObject = sxoBuilder.buildObject();
         IndexedXMLObjectChildrenList<XMLObject> indexedList = new IndexedXMLObjectChildrenList<XMLObject>(
                 parentObject);
-
-        QName type1 = new QName("example.org/ns/type1", "Type1");
-        QName type2 = new QName("example.org/ns/type2", "Type2");
         
         SimpleXMLObject child1 = sxoBuilder.buildObject(SimpleXMLObject.ELEMENT_NAME, type1);
         indexedList.add(child1);
