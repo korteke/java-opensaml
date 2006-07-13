@@ -84,6 +84,41 @@ public class XSBooleanValue {
     public void setNumericRepresentation(boolean numericRepresentation) {
         this.numericRepresentation = numericRepresentation;
     }
+    
+    /** {@inheritDoc} */
+    public int hashCode(){
+        if(numericRepresentation){
+            if(value == null){
+                return 0;
+            }else if(value.booleanValue()){
+                return 1;
+            }else {
+                return 3;
+            }
+        }else{
+            if(value == null){
+                return 4;
+            }else if(value.booleanValue()){
+                return 5;
+            }else {
+                return 6;
+            }
+        }
+    }
+    
+    /** {@inheritDoc} */
+    public boolean equals(Object obj){
+        if(obj == null){
+            return false;
+        }
+        
+        if(obj instanceof XSBooleanValue){
+            XSBooleanValue otherValue = (XSBooleanValue) obj;
+            return hashCode() == otherValue.hashCode();
+        }
+        
+        return false;
+    }
 
     /**
      * Converts this to a string. See {@link #toString(Boolean, boolean)}.
