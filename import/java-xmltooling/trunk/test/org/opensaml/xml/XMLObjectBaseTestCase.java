@@ -22,6 +22,7 @@ import javax.xml.namespace.QName;
 
 import org.apache.log4j.Logger;
 import org.custommonkey.xmlunit.XMLTestCase;
+import org.custommonkey.xmlunit.XMLUnit;
 import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallerFactory;
 import org.opensaml.xml.io.UnmarshallerFactory;
@@ -35,7 +36,7 @@ import org.w3c.dom.Element;
  * Base test case class for tests that operate on XMLObjects.
  */
 public class XMLObjectBaseTestCase extends XMLTestCase {
-    
+
     /** Logger */
     private static Logger log = Logger.getLogger(XMLObjectBaseTestCase.class);
 
@@ -50,7 +51,7 @@ public class XMLObjectBaseTestCase extends XMLTestCase {
 
     /** XMLObject unmarshaller factory */
     protected static UnmarshallerFactory unmarshallerFactory;
-    
+
     /** QName for SimpleXMLObject */
     protected static QName simpleXMLObjectQName;
 
@@ -59,6 +60,14 @@ public class XMLObjectBaseTestCase extends XMLTestCase {
      */
     public XMLObjectBaseTestCase() {
         simpleXMLObjectQName = new QName(SimpleXMLObject.NAMESPACE, SimpleXMLObject.LOCAL_NAME);
+    }
+    
+    /*
+     * @see junit.framework.TestCase#setUp()
+     */
+    protected void setUp() throws Exception {
+        super.setUp();
+        XMLUnit.setIgnoreWhitespace(true);
     }
 
     /**
@@ -82,13 +91,14 @@ public class XMLObjectBaseTestCase extends XMLTestCase {
      */
     public void assertEquals(String failMessage, Document expectedDOM, XMLObject xmlObject) {
         Marshaller marshaller = marshallerFactory.getMarshaller(xmlObject);
-        if(marshaller == null){
-            fail("Unable to locate marshaller for " + xmlObject.getElementQName() + " can not perform equality check assertion");
+        if (marshaller == null) {
+            fail("Unable to locate marshaller for " + xmlObject.getElementQName()
+                    + " can not perform equality check assertion");
         }
-        
+
         try {
             Element generatedDOM = marshaller.marshall(xmlObject, parserPool.newDocument());
-            if(log.isDebugEnabled()) {
+            if (log.isDebugEnabled()) {
                 log.debug("Marshalled DOM was " + XMLHelper.nodeToString(generatedDOM));
             }
             assertXMLEqual(failMessage, expectedDOM, generatedDOM.getOwnerDocument());
@@ -96,7 +106,7 @@ public class XMLObjectBaseTestCase extends XMLTestCase {
             fail("Marshalling failed with the following error: " + e);
         }
     }
-    
+
     /**
      * Builds the requested XMLObject.
      * 
@@ -104,9 +114,9 @@ public class XMLObjectBaseTestCase extends XMLTestCase {
      * 
      * @return the build XMLObject
      */
-    public XMLObject buildXMLObject(QName objectQName){
+    public XMLObject buildXMLObject(QName objectQName) {
         XMLObjectBuilder builder = Configuration.getBuilderFactory().getBuilder(objectQName);
-        if(builder == null){
+        if (builder == null) {
             fail("Unable to retrieve builder for object QName " + objectQName);
         }
         return builder.buildObject(objectQName.getNamespaceURI(), objectQName.getLocalPart(), objectQName.getPrefix());
@@ -120,9 +130,13 @@ public class XMLObjectBaseTestCase extends XMLTestCase {
         parserPool = new ParserPool(true, null, features);
 
         try {
-            Document configureation = parserPool.parse(XMLObjectBaseTestCase.class
-                    .getResourceAsStream("/conf/xmltooling-config.xml"));
-            Configuration.load(configureation);
+            Class clazz = XMLObjectBaseTestCase.class;
+            
+            Document generalConfig = parserPool.parse(clazz.getResourceAsStream("/conf/xmltooling-config.xml"));
+            Configuration.load(generalConfig);
+
+            Document schemaConfig = parserPool.parse(clazz.getResourceAsStream("/conf/schema-config.xml"));
+            Configuration.load(schemaConfig);
 
             builderFactory = Configuration.getBuilderFactory();
             marshallerFactory = Configuration.getMarshallerFactory();
