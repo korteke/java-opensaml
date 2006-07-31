@@ -18,8 +18,6 @@ package org.opensaml.xml.signature;
 
 import java.io.ByteArrayInputStream;
 import java.security.GeneralSecurityException;
-import java.security.cert.CRLException;
-import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509CRL;
 
