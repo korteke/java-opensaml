@@ -17,6 +17,7 @@
 package org.opensaml.xml.signature;
 
 import java.security.PublicKey;
+import java.security.cert.X509CRL;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
@@ -55,6 +56,9 @@ public class KeyInfo extends AbstractXMLObject {
     /** Certificates within this info */
     private final ArrayList<X509Certificate> certificates;
     
+    /** Certificate Revocation Lists within this info */
+    private final ArrayList<X509CRL> crls;
+    
     /**
      * Constructor
      * 
@@ -67,6 +71,7 @@ public class KeyInfo extends AbstractXMLObject {
         
         keyNames = new ArrayList<String>();
         certificates = new ArrayList<X509Certificate>();
+        crls = new ArrayList<X509CRL>();
     }
 
     /**
@@ -92,6 +97,10 @@ public class KeyInfo extends AbstractXMLObject {
      */
     public List<X509Certificate> getCertificates() {
         return certificates;
+    }
+    
+    public List<X509CRL> getCRLs() {
+        return crls;
     }
 
     /**

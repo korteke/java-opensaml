@@ -16,6 +16,8 @@
 
 package org.opensaml.xml.signature;
 
+import java.security.GeneralSecurityException;
+import java.security.cert.X509CRL;
 import java.security.cert.X509Certificate;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -92,18 +94,34 @@ public class KeyInfoMarshaller implements Marshaller {
             keyInfoElem.add(keyInfoObj.getPublicKey());
         }
 
-        X509Data x509Data;
+        // Add X509 Certificates to X509Data
+        X509Data x509Data = null;
         for (X509Certificate cert : keyInfoObj.getCertificates()) {
             try {
                 x509Data = new X509Data(document);
                 x509Data.addCertificate(cert);
-                keyInfoElem.add(x509Data);
             } catch (XMLSecurityException e) {
                 throw new MarshallingException("Error adding X509 certificate " + cert.getSubjectDN() + " to KeyInfo",
                         e);
             }
         }
-
+        // Add X509 CRLs to X509Data
+        for (X509CRL crl : keyInfoObj.getCRLs()) {
+            try {
+                if (x509Data == null) {
+                    x509Data = new X509Data(document);
+                }
+                x509Data.addCRL(crl.getEncoded());
+            } catch (GeneralSecurityException e) {
+                throw new MarshallingException("Error adding X509 CRL to KeyInfo", e);
+            }
+        }
+        
+        // If we do have some X509Data, add it
+        if (x509Data != null) {
+            keyInfoElem.add(x509Data);
+        }
+        
         return keyInfoElem.getElement();
     }
 }

@@ -16,6 +16,13 @@
 
 package org.opensaml.xml.signature;
 
+import java.io.ByteArrayInputStream;
+import java.security.GeneralSecurityException;
+import java.security.cert.CRLException;
+import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
+import java.security.cert.X509CRL;
+
 import org.apache.log4j.Logger;
 import org.apache.xml.security.Init;
 import org.apache.xml.security.exceptions.XMLSecurityException;
@@ -26,7 +33,7 @@ import org.opensaml.xml.io.UnmarshallingException;
 import org.w3c.dom.Element;
 
 /**
- * A marshaller for {@link org.opensaml.xml.signature.impl.KeyInfoImpl} objects. This class, along with it's respective
+ * An unmarshaller for {@link org.opensaml.xml.signature.impl.KeyInfoImpl} objects. This class, along with it's respective
  * builder and unmarshaller use the Apache XMLSec 1.3 APIs to perform signing and verification.
  */
 public class KeyInfoUnmarshaller implements Unmarshaller {
@@ -69,18 +76,26 @@ public class KeyInfoUnmarshaller implements Unmarshaller {
             }
 
             int numOfX509Data = keyInfoElem.lengthX509Data();
-            int numOfCerts;
             X509Data x509Data;
             for (int i = 0; i < numOfX509Data; i++) {
+                // Add X509 Certificates
                 x509Data = keyInfoElem.itemX509Data(i);
-                numOfCerts = x509Data.lengthCertificate();
-                for (int j = 0; j < numOfCerts; j++) {
+                for (int j = 0; j < x509Data.lengthCertificate(); j++) {
                     keyInfoObj.getCertificates().add(x509Data.itemCertificate(j).getX509Certificate());
+                }
+                // Add X509 CRLs
+                for (int j = 0; j < x509Data.lengthCRL(); j++) {
+                    keyInfoObj.getCRLs().add(
+                            (X509CRL) CertificateFactory.getInstance("X.509").generateCRL(
+                                    new ByteArrayInputStream(x509Data.itemCRL(j).getCRLBytes())));
                 }
             }
 
             return keyInfoObj;
+            
         } catch (XMLSecurityException e) {
+            throw new UnmarshallingException("Unable to build XMLSec KeyInfo object from KeyInfo XML element");
+        } catch (GeneralSecurityException e) {
             throw new UnmarshallingException("Unable to build XMLSec KeyInfo object from KeyInfo XML element");
         }
     }
