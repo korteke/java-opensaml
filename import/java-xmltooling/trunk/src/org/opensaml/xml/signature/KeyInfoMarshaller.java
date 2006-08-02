@@ -71,7 +71,10 @@ public class KeyInfoMarshaller implements Marshaller {
      * {@inheritDoc}
      */
     public Element marshall(XMLObject xmlObject, Element parentElement) throws MarshallingException {
-        return marshall(xmlObject, parentElement.getOwnerDocument());
+        Element marshalledElement = marshall(xmlObject, parentElement.getOwnerDocument());
+        parentElement.appendChild(marshalledElement);
+        xmlObject.setDOM(marshalledElement);
+        return marshalledElement;
     }
 
     /**
