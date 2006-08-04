@@ -36,6 +36,9 @@ import org.w3c.dom.Document;
  * Test case for the library configuration mechanism.
  */
 public class ConfigurationTest extends TestCase {
+    
+    /** System configuration utility */
+    private XMLConfigurator configurator;
 
     /** Parser pool used to parse example config files */
     private ParserPool parserPool;
@@ -45,8 +48,11 @@ public class ConfigurationTest extends TestCase {
     
     /**
      * Constructor
+     * @throws ConfigurationException 
      */
-    public ConfigurationTest() {
+    public ConfigurationTest() throws ConfigurationException {
+        configurator = new XMLConfigurator();
+        
         HashMap<String, Boolean> features = new HashMap<String, Boolean>();
         features.put("http://apache.org/xml/features/validation/schema/normalized-value", Boolean.FALSE);
         features.put("http://apache.org/xml/features/dom/defer-node-expansion", Boolean.FALSE);
@@ -63,7 +69,7 @@ public class ConfigurationTest extends TestCase {
         // Test loading the SimpleXMLObject configuration where builder contains additional children
         InputStream sxConfig = Configuration.class.getResourceAsStream("/data/org/opensaml/xml/SimpleXMLObjectConfiguration.xml");
         Document sxConfigDoc = parserPool.parse(sxConfig);
-        Configuration.load(sxConfigDoc);
+        configurator.load(sxConfigDoc);
         
         XMLObjectBuilder sxBuilder = Configuration.getBuilderFactory().getBuilder(simpleXMLObjectQName);
         assertNotNull("SimpleXMLObject did not have a registered builder", sxBuilder);
@@ -78,7 +84,7 @@ public class ConfigurationTest extends TestCase {
         InputStream nonConfig = Configuration.class.getResourceAsStream("/data/org/opensaml/xml/NonexistantClassConfiguration.xml");
         Document nonConfigDoc = parserPool.parse(nonConfig);
         try {
-            Configuration.load(nonConfigDoc);
+            configurator.load(nonConfigDoc);
             fail("Configuration loaded file that contained invalid classes");
         }catch(ConfigurationException e){
             // this is supposed to fail
@@ -98,7 +104,7 @@ public class ConfigurationTest extends TestCase {
         InputStream validatorConfig = Configuration.class
                 .getResourceAsStream("/data/org/opensaml/xml/ValidatorSuiteConfiguration.xml");
         Document validatorConfigDoc = parserPool.parse(validatorConfig);
-        Configuration.load(validatorConfigDoc);
+        configurator.load(validatorConfigDoc);
 
         ValidatorSuite suite1 = Configuration.getValidatorSuite(suite1Id);
         assertNotNull("ValidatorSuite TestSuite1 was not configured", suite1);

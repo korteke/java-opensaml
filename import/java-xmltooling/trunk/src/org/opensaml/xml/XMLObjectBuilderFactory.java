@@ -106,7 +106,7 @@ public class XMLObjectBuilderFactory {
      * 
      * @return the builder that was registered for the given QName
      */
-    public XMLObjectBuilder unregisterBuilder(QName builderKey) {
+    public XMLObjectBuilder deregisterBuilder(QName builderKey) {
         if (LOG.isDebugEnabled()) {
             LOG.debug("Deregistering builder for object type " + builderKey);
         }

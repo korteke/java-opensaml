@@ -61,7 +61,7 @@ public class XMLObjectBaseTestCase extends XMLTestCase {
     public XMLObjectBaseTestCase() {
         simpleXMLObjectQName = new QName(SimpleXMLObject.NAMESPACE, SimpleXMLObject.LOCAL_NAME);
     }
-    
+
     /*
      * @see junit.framework.TestCase#setUp()
      */
@@ -123,20 +123,22 @@ public class XMLObjectBaseTestCase extends XMLTestCase {
     }
 
     static {
-        HashMap<String, Boolean> features = new HashMap<String, Boolean>();
-        features.put("http://apache.org/xml/features/validation/schema/normalized-value", Boolean.FALSE);
-        features.put("http://apache.org/xml/features/dom/defer-node-expansion", Boolean.FALSE);
-
-        parserPool = new ParserPool(true, null, features);
-
         try {
+            XMLConfigurator configurator = new XMLConfigurator();
+
+            HashMap<String, Boolean> features = new HashMap<String, Boolean>();
+            features.put("http://apache.org/xml/features/validation/schema/normalized-value", Boolean.FALSE);
+            features.put("http://apache.org/xml/features/dom/defer-node-expansion", Boolean.FALSE);
+
+            parserPool = new ParserPool(true, null, features);
+
             Class clazz = XMLObjectBaseTestCase.class;
-            
+
             Document generalConfig = parserPool.parse(clazz.getResourceAsStream("/conf/xmltooling-config.xml"));
-            Configuration.load(generalConfig);
+            configurator.load(generalConfig);
 
             Document schemaConfig = parserPool.parse(clazz.getResourceAsStream("/conf/schema-config.xml"));
-            Configuration.load(schemaConfig);
+            configurator.load(schemaConfig);
 
             builderFactory = Configuration.getBuilderFactory();
             marshallerFactory = Configuration.getMarshallerFactory();

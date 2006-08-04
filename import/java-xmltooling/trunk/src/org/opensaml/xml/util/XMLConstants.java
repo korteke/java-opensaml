@@ -32,6 +32,9 @@ public class XMLConstants {
     
     /** Name of the object provider used for objects that don't have a registered object provider */
     public final static String XMLTOOLING_DEFAULT_OBJECT_PROVIDER = "DEFAULT";
+    
+    /** Location, on the classpath, of the XMLTooling configuration schema */
+    public final static String XMLTOOLING_SCHEMA_LOCATION = "/schema/xmltooling-config.xsd";
 
     // ****************************
     // Core XML

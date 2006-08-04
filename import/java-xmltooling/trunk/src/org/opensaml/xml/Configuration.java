@@ -16,38 +16,21 @@
 
 package org.opensaml.xml;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.Source;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamSource;
-import javax.xml.validation.Schema;
-import javax.xml.validation.SchemaFactory;
 
 import org.apache.log4j.Logger;
 import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallerFactory;
 import org.opensaml.xml.io.Unmarshaller;
 import org.opensaml.xml.io.UnmarshallerFactory;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.util.XMLConstants;
-import org.opensaml.xml.util.XMLHelper;
-import org.opensaml.xml.validation.Validator;
 import org.opensaml.xml.validation.ValidatorSuite;
-import org.w3c.dom.Attr;
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 
 /**
  * Class for loading library configuration files and retrieving the configured components.
@@ -56,9 +39,6 @@ public final class Configuration {
 
     /** Logger */
     private static final Logger LOG = Logger.getLogger(Configuration.class);
-
-    /** Schema for validating a configuration file */
-    private static Schema configurationSchema;
 
     /** Default object provider */
     private static QName defaultProvider = new QName(XMLConstants.XMLTOOLING_CONFIG_NS,
@@ -90,94 +70,6 @@ public final class Configuration {
     }
 
     /**
-     * Loads the configurtion file(s) from the given file. If the file is a directory each file within the directory is
-     * loaded.
-     * 
-     * @param configurationFile the configuration file(s) to be loaded
-     * 
-     * @throws ConfigurationException thrown if the configuration file(s) can not be be read or invalid
-     */
-    public static void load(File configurationFile) throws ConfigurationException {
-        try {
-            DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            Document configuration;
-
-            if (configurationFile.isDirectory()) {
-                File[] configurations = configurationFile.listFiles();
-                for (int i = 0; i < configurations.length; i++) {
-                    if (LOG.isDebugEnabled()) {
-                        LOG.debug("Parsing configuration file " + configurations[i].getAbsolutePath());
-                    }
-                    configuration = documentBuilder.parse(new FileInputStream(configurations[i]));
-                    load(configuration);
-                }
-            } else {
-                // Given file is not a directory so try to load it directly
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("Parsing configuration file " + configurationFile.getAbsolutePath());
-                }
-                configuration = documentBuilder.parse(new FileInputStream(configurationFile));
-                load(configuration);
-            }
-        } catch (Exception e) {
-            LOG.fatal("Unable to parse configuration file(s) in " + configurationFile.getAbsolutePath(), e);
-            throw new ConfigurationException("Unable to parse configuration file(s) in "
-                    + configurationFile.getAbsolutePath(), e);
-        }
-    }
-
-    /**
-     * Loads the configuration docuement.
-     * 
-     * @param configuration the configurationd document
-     * @throws ConfigurationException thrown if the configuration file(s) can not be be read or invalid
-     */
-    public static void load(Document configuration) throws ConfigurationException {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Loading configuration from XML Document");
-        }
-
-        if (LOG.isTraceEnabled()) {
-            LOG.trace("\n" + XMLHelper.nodeToString(configuration.getDocumentElement()));
-        }
-
-        // Schema validation
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Schema validating configuration Document");
-        }
-        validateConfiguration(configuration);
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Configuration document validated");
-        }
-
-        // Initialize object providers
-        NodeList objectProviders = configuration.getDocumentElement().getElementsByTagNameNS(
-                XMLConstants.XMLTOOLING_CONFIG_NS, "ObjectProviders");
-        if (objectProviders.getLength() > 0) {
-            if (LOG.isInfoEnabled()) {
-                LOG.info("Preparing to load ObjectProviders");
-            }
-            initializeObjectProviders((Element) objectProviders.item(0));
-            if (LOG.isInfoEnabled()) {
-                LOG.info("ObjectProviders load complete");
-            }
-        }
-
-        // Initialize validator suites
-        NodeList validatorSuitesNodes = configuration.getDocumentElement().getElementsByTagNameNS(
-                XMLConstants.XMLTOOLING_CONFIG_NS, "ValidatorSuites");
-        if (validatorSuitesNodes.getLength() > 0) {
-            if (LOG.isInfoEnabled()) {
-                LOG.info("Preparing to load ValidatorSuites");
-            }
-            initializeValidatorSuites((Element) validatorSuitesNodes.item(0));
-            if (LOG.isInfoEnabled()) {
-                LOG.info("ValidatorSuites load complete");
-            }
-        }
-    }
-
-    /**
      * Gets the QName for the object provider that will be used for XMLObjects that do not have a registered object
      * provider.
      * 
@@ -185,6 +77,43 @@ public final class Configuration {
      */
     public static QName getDefaultProviderQName() {
         return defaultProvider;
+    }
+
+    /**
+     * Adds an object provider to this configuration.
+     * 
+     * @param providerName the name of the object provider, corresponding to the element name or type name that the
+     *            builder, marshaller, and unmarshaller operate on
+     * @param builder the builder for that given provider
+     * @param marshaller the marshaller for the provider
+     * @param unmarshaller the unmarshaller for the provider
+     * @param configuration optional XML configuration snippet
+     */
+    public static void registerObjectProvider(QName providerName, XMLObjectBuilder builder, Marshaller marshaller,
+            Unmarshaller unmarshaller, Element configuration) {
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Registering new builder, marshaller, and unmarshaller for " + providerName);
+        }
+
+        configuredObjectProviders.put(providerName, configuration);
+        builderFactory.registerBuilder(providerName, builder);
+        marshallerFactory.registerMarshaller(providerName, marshaller);
+        unmarshallerFactory.registerUnmarshaller(providerName, unmarshaller);
+    }
+
+    /**
+     * Removes the builder, marshaller, and unmarshaller registered to the given key.
+     * 
+     * @param key the key of the builder, marshaller, and unmarshaller to be removed
+     */
+    public static void deregisterObjectProvider(QName key) {
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Unregistering builder, marshaller, and unmarshaller for " + key);
+        }
+        configuredObjectProviders.remove(key);
+        builderFactory.deregisterBuilder(key);
+        marshallerFactory.deregisterMarshaller(key);
+        unmarshallerFactory.deregisterUnmarshaller(key);
     }
 
     /**
@@ -198,19 +127,6 @@ public final class Configuration {
      */
     public static Element getObjectProviderConfiguration(QName qualifedName) {
         return (Element) configuredObjectProviders.get(qualifedName).cloneNode(true);
-    }
-
-    /**
-     * Gets a clone of the ValidatorSuite configuration element for the ID. Note that this configuration reflects the
-     * state of things as they were when the configuration was loaded, applications may have programmatically removed
-     * altered the suite during runtime.
-     * 
-     * @param suiteId the ID of the ValidatorSuite whose configuration is to be retrieved
-     * 
-     * @return the validator suite configuration element or null if no suite is configured with that ID
-     */
-    public static Element getValidatorSuiteConfiguration(String suiteId) {
-        return (Element) validatorSuiteConfigurations.get(suiteId).cloneNode(true);
     }
 
     /**
@@ -240,22 +156,43 @@ public final class Configuration {
     public static UnmarshallerFactory getUnmarshallerFactory() {
         return unmarshallerFactory;
     }
+    
+    /**
+     * Registers a configured validator suite.
+     * 
+     * @param suiteId the ID of the suite
+     * @param suite the configured suite
+     * @param configuration optional XML configuration information
+     */
+    public static void registerValidatorSuite(String suiteId, ValidatorSuite suite, Element configuration){
+        validatorSuiteConfigurations.put(suiteId, configuration);
+        validatorSuites.put(suiteId, suite);
+    }
+    
+    /**
+     * Removes a registered validator suite.
+     * 
+     * @param suiteId the ID of the suite
+     */
+    public static void deregisterValidatorSuite(String suiteId){
+        validatorSuiteConfigurations.remove(suiteId);
+        validatorSuites.remove(suiteId);
+    }
+    
 
     /**
-     * Removes the builder, marshaller, and unmarshaller registered to the given key.
+     * Gets a clone of the ValidatorSuite configuration element for the ID. Note that this configuration reflects the
+     * state of things as they were when the configuration was loaded, applications may have programmatically removed
+     * altered the suite during runtime.
      * 
-     * @param key the key of the builder, marshaller, and unmarshaller to be removed
+     * @param suiteId the ID of the ValidatorSuite whose configuration is to be retrieved
+     * 
+     * @return the validator suite configuration element or null if no suite is configured with that ID
      */
-    public static void unregisterObjectProvider(QName key) {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Unregistering builder, marshaller, and unmarshaller for " + key);
-        }
-        configuredObjectProviders.remove(key);
-        builderFactory.unregisterBuilder(key);
-        marshallerFactory.deregisterMarshaller(key);
-        unmarshallerFactory.deregisterUnmarshaller(key);
+    public static Element getValidatorSuiteConfiguration(String suiteId) {
+        return (Element) validatorSuiteConfigurations.get(suiteId).cloneNode(true);
     }
-
+    
     /**
      * Gets a configured ValidatorSuite by its ID.
      * 
@@ -266,316 +203,7 @@ public final class Configuration {
     public static ValidatorSuite getValidatorSuite(String suiteId) {
         return validatorSuites.get(suiteId);
     }
-
-    /**
-     * Intializes the object providers defined in the configuration file.
-     * 
-     * @param objectProviders the configuration for the various object providers
-     * 
-     * @throws ConfigurationException thrown if the configuration elements are invalid
-     */
-    private static void initializeObjectProviders(Element objectProviders) throws ConfigurationException {
-
-        // Process ObjectProvider child elements
-        Element objectProvider;
-        Attr qNameAttrib;
-        QName objectProviderName;
-        Element builderConfiguration;
-        Element marshallerConfiguration;
-        Element unmarshallerConfiguration;
-
-        NodeList providerList = objectProviders.getElementsByTagNameNS(XMLConstants.XMLTOOLING_CONFIG_NS,
-                "ObjectProvider");
-        for (int i = 0; i < providerList.getLength(); i++) {
-            objectProvider = (Element) providerList.item(i);
-
-            // Get the element name of type this object provider is for
-            qNameAttrib = objectProvider.getAttributeNodeNS(null, "qualifiedName");
-            objectProviderName = XMLHelper.getAttributeValueAsQName(qNameAttrib);
-
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Initializing object provider " + objectProviderName);
-            }
-
-            try {
-                configuredObjectProviders.put(objectProviderName, objectProvider);
-
-                builderConfiguration = (Element) objectProvider.getElementsByTagNameNS(
-                        XMLConstants.XMLTOOLING_CONFIG_NS, "BuilderClass").item(0);
-                initalizeObjectProviderBuilderClass(objectProviderName, builderConfiguration);
-
-                marshallerConfiguration = (Element) objectProvider.getElementsByTagNameNS(
-                        XMLConstants.XMLTOOLING_CONFIG_NS, "MarshallingClass").item(0);
-                initalizeObjectProviderMarshallerClass(objectProviderName, marshallerConfiguration);
-
-                unmarshallerConfiguration = (Element) objectProvider.getElementsByTagNameNS(
-                        XMLConstants.XMLTOOLING_CONFIG_NS, "UnmarshallingClass").item(0);
-                initalizeObjectProviderUnmarshallerClass(objectProviderName, unmarshallerConfiguration);
-
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug(objectProviderName + " intialized and configuration cached");
-                }
-            } catch (ConfigurationException e) {
-                LOG.fatal("Error initializing object provier " + objectProvider, e);
-                // clean up any parts of the object provider that might have been registered before the failure
-                unregisterObjectProvider(objectProviderName);
-                throw e;
-            }
-        }
-    }
-
-    /**
-     * Intializes the builder class for the given object provider.
-     * 
-     * @param objectProviderName the name of the object provider
-     * @param builderConfiguration the BuilderClass configuration element
-     * 
-     * @throws ConfigurationException thrown if the configuration elements are invalid
-     */
-    private static void initalizeObjectProviderBuilderClass(QName objectProviderName, Element builderConfiguration)
-            throws ConfigurationException {
-        String builderClassName = builderConfiguration.getAttributeNS(null, "className");
-        builderClassName = DatatypeHelper.safeTrimOrNullString(builderClassName);
-
-        if (builderClassName == null) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("No builder class provided for object provider " + objectProviderName);
-            }
-            return;
-        }
-
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Initializing builder " + builderClassName + " for object provider" + objectProviderName);
-        }
-
-        if (LOG.isTraceEnabled()) {
-            LOG.trace("\n" + XMLHelper.nodeToString(builderConfiguration));
-        }
-
-        try {
-            XMLObjectBuilder objectBuilder = (XMLObjectBuilder) createClassInstance(builderClassName);
-            builderFactory.registerBuilder(objectProviderName, objectBuilder);
-        } catch (InstantiationException e) {
-            LOG.fatal("Unable to create instance of builder class " + builderClassName + " for object provider "
-                    + objectProviderName);
-            throw new ConfigurationException("Unable to create instance of builder class " + builderClassName
-                    + " for object provider " + objectProviderName, e);
-        }
-    }
-
-    /**
-     * Intializes the marshaller class for the given object provider.
-     * 
-     * @param objectProviderName the name of the object provider
-     * @param marshallerConfiguration the Marshaller configuration element
-     * 
-     * @throws ConfigurationException thrown if the configuration elements are invalid
-     */
-    private static void initalizeObjectProviderMarshallerClass(QName objectProviderName, Element marshallerConfiguration)
-            throws ConfigurationException {
-        String marshallerClassName = marshallerConfiguration.getAttributeNS(null, "className");
-        marshallerClassName = DatatypeHelper.safeTrimOrNullString(marshallerClassName);
-
-        if (marshallerClassName == null) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("No marshaller class provided for object provider " + objectProviderName);
-            }
-            return;
-        }
-
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Initializing marshaller " + marshallerClassName + " for Object " + objectProviderName);
-        }
-
-        if (LOG.isTraceEnabled()) {
-            LOG.trace("\n" + XMLHelper.nodeToString(marshallerConfiguration));
-        }
-
-        try {
-            Marshaller objectMarshaller = (Marshaller) createClassInstance(marshallerClassName);
-            marshallerFactory.registerMarshaller(objectProviderName, objectMarshaller);
-        } catch (InstantiationException e) {
-            LOG.fatal("Unable to create instance of marshaller class " + marshallerClassName + " for object provider "
-                    + objectProviderName);
-            throw new ConfigurationException("Unable to create instance of marshaller class " + marshallerClassName
-                    + " for object provider " + objectProviderName, e);
-        }
-    }
-
-    /**
-     * Intializes the unmarshaller class for the given object provider.
-     * 
-     * @param objectProviderName the name of the object provider
-     * @param unmarshallerConfiguration the Marshaller configuration element
-     * 
-     * @throws ConfigurationException thrown if the configuration elements are invalid
-     */
-    private static void initalizeObjectProviderUnmarshallerClass(QName objectProviderName,
-            Element unmarshallerConfiguration) throws ConfigurationException {
-        String unmarshallerClassName = unmarshallerConfiguration.getAttributeNS(null, "className");
-        unmarshallerClassName = DatatypeHelper.safeTrimOrNullString(unmarshallerClassName);
-
-        if (unmarshallerClassName == null) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("No unmarshaller class provided for object provider " + objectProviderName);
-            }
-            return;
-        }
-
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Initializing unmarshaller " + unmarshallerClassName + " for Object " + objectProviderName);
-        }
-
-        if (LOG.isTraceEnabled()) {
-            LOG.trace("\n" + XMLHelper.nodeToString(unmarshallerConfiguration));
-        }
-
-        try {
-            Unmarshaller objectUnmarshaller = (Unmarshaller) createClassInstance(unmarshallerClassName);
-            unmarshallerFactory.registerUnmarshaller(objectProviderName, objectUnmarshaller);
-        } catch (InstantiationException e) {
-            LOG.fatal("Unable to create instance of unmarshaller class " + unmarshallerClassName
-                    + " for object provider " + objectProviderName);
-            throw new ConfigurationException("Unable to create instance of unmarshaller class " + unmarshallerClassName
-                    + " for object provider " + objectProviderName, e);
-        }
-    }
-
-    /**
-     * Initializes the validator suites specified in the configuration file.
-     * 
-     * @param validatorSuitesElement the ValidatorSuites element from the configuration file
-     * 
-     * @throws ConfigurationException thrown if there is a problem initializing the validator suites, usually because of
-     *             malformed elements
-     */
-    private static void initializeValidatorSuites(Element validatorSuitesElement) throws ConfigurationException {
-        ValidatorSuite validatorSuite;
-        Validator validator;
-        Element validatorSuiteElement;
-        String validatorSuiteId;
-        Element validatorElement;
-        String validatorClassName;
-        QName validatorQName;
-
-        NodeList validatorSuiteList = validatorSuitesElement.getElementsByTagNameNS(XMLConstants.XMLTOOLING_CONFIG_NS,
-                "ValidatorSuite");
-        for (int i = 0; i < validatorSuiteList.getLength(); i++) {
-            validatorSuiteElement = (Element) validatorSuiteList.item(i);
-            validatorSuiteId = validatorSuiteElement.getAttributeNS(null, "id");
-            validatorSuite = new ValidatorSuite(validatorSuiteId);
-
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Initializing ValidatorSuite " + validatorSuiteId);
-            }
-
-            if (LOG.isTraceEnabled()) {
-                LOG.trace(XMLHelper.nodeToString(validatorSuiteElement));
-            }
-
-            NodeList validatorList = validatorSuiteElement.getElementsByTagNameNS(XMLConstants.XMLTOOLING_CONFIG_NS,
-                    "Validator");
-            for (int j = 0; j < validatorList.getLength(); j++) {
-                validatorElement = (Element) validatorList.item(j);
-                validatorClassName = validatorElement.getAttributeNS(null, "className");
-                validatorQName = XMLHelper.getAttributeValueAsQName(validatorElement.getAttributeNodeNS(null,
-                        "qualifiedName"));
-
-                try {
-                    if (LOG.isDebugEnabled()) {
-                        LOG.debug("Creating instance of validator " + validatorClassName + " for ValidatorSuite "
-                                + validatorSuiteId);
-                    }
-                    validator = (Validator) createClassInstance(validatorClassName);
-
-                    if (LOG.isDebugEnabled()) {
-                        LOG.debug("Registering validator " + validatorClassName + " to ValidatorSuite "
-                                + validatorSuiteId + " under QName " + validatorQName);
-                    }
-                    validatorSuite.registerValidator(validatorQName, validator);
-                } catch (InstantiationException e) {
-                    String errorMsg = "Unable to create Validator " + validatorClassName + " for ValidatorSuite "
-                            + validatorSuiteId;
-                    LOG.error(errorMsg, e);
-                    throw new ConfigurationException(errorMsg, e);
-                }
-            }
-
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("ValidtorSuite " + validatorSuiteId + " has been initialized");
-            }
-            validatorSuiteConfigurations.put(validatorSuiteId, validatorSuiteElement);
-            validatorSuites.put(validatorSuiteId, validatorSuite);
-        }
-    }
-
-    /**
-     * Constructs an instance of the given class.
-     * 
-     * @param className the class's name
-     * 
-     * @return an instance of the given class
-     * 
-     * @throws InstantiationException thrown if the class can not be instaniated
-     */
-    private static Object createClassInstance(String className) throws InstantiationException {
-        try {
-            Class clazz = Class.forName(className);
-            Constructor constructor = clazz.getConstructor();
-            return constructor.newInstance();
-        } catch (ClassNotFoundException e) {
-            LOG.error("Can not create instance of " + className + ", class not found on classpath", e);
-            throw new InstantiationException("Can not create instance of " + className
-                    + ", class not found on classpath");
-        } catch (NoSuchMethodException e) {
-            LOG.error(className + " does not have a default constructor, can not create instance", e);
-            throw new InstantiationException(className
-                    + " does not have a default constructor, can not create instance");
-        } catch (IllegalArgumentException e) {
-            // No arguments in default constructor
-        } catch (IllegalAccessException e) {
-            LOG.error("Unable to execute constructor for " + className + " do to security restriction", e);
-            throw new InstantiationException("Unable to execute constructor for " + className
-                    + " do to security restriction");
-        } catch (InvocationTargetException e) {
-            LOG.error("Constructor for " + className + " through the following error when executed", e);
-            throw new InstantiationException("Constructor for " + className
-                    + " through the following error when executed" + e);
-        }
-
-        return null;
-    }
-
-    /**
-     * Schema validates the given configuration.
-     * 
-     * @param configuration the configuration to validate
-     * 
-     * @throws ConfigurationException thrown if the configuration is not schema-valid
-     */
-    private static void validateConfiguration(Document configuration) throws ConfigurationException {
-        try {
-            if (configurationSchema == null) {
-                SchemaFactory factory = SchemaFactory.newInstance(javax.xml.XMLConstants.W3C_XML_SCHEMA_NS_URI);
-                Source schemaSource = new StreamSource(Configuration.class
-                        .getResourceAsStream("/schema/xmltooling-config.xsd"));
-                configurationSchema = factory.newSchema(schemaSource);
-            }
-
-            javax.xml.validation.Validator schemaValidator = configurationSchema.newValidator();
-            schemaValidator.validate(new DOMSource(configuration));
-        } catch (IOException e) {
-            // Should never get here as the DOM is already in memory
-            String errorMsg = "Unable to read configuration file DOM";
-            LOG.error(errorMsg, e);
-            throw new ConfigurationException(errorMsg, e);
-        } catch (SAXException e) {
-            String errorMsg = "Configuration file does not validate against schema";
-            LOG.error(errorMsg, e);
-            throw new ConfigurationException(errorMsg, e);
-        }
-    }
-
+    
     static {
         DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
         try {

@@ -58,7 +58,7 @@
    <!-- ================ -->
 
    <category name="org.opensaml.xml">
-      <priority value="DEBUG"/>
+      <priority value="WARN"/>
    </category>
    
    <category name="org.apache.xml.security">
