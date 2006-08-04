@@ -24,6 +24,7 @@ import org.apache.log4j.Logger;
 import org.custommonkey.xmlunit.XMLTestCase;
 import org.custommonkey.xmlunit.XMLUnit;
 import org.opensaml.xml.Configuration;
+import org.opensaml.xml.XMLConfigurator;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.XMLObjectBuilder;
 import org.opensaml.xml.XMLObjectBuilderFactory;
@@ -127,7 +128,9 @@ public abstract class BaseTestCase extends XMLTestCase {
 
             // SOAP 1.1 Configuration
             Document soap11Config = parserPool.parse(clazz.getResourceAsStream("/soap11-config.xml"));
-            Configuration.load(soap11Config);
+            
+            XMLConfigurator configurator = new XMLConfigurator();
+            configurator.load(soap11Config);
 
             builderFactory = Configuration.getBuilderFactory();
             marshallerFactory = Configuration.getMarshallerFactory();
