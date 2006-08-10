@@ -35,7 +35,7 @@ import org.w3c.dom.Element;
 /**
  * Class for loading library configuration files and retrieving the configured components.
  */
-public final class Configuration {
+public class Configuration {
 
     /** Logger */
     private static final Logger LOG = Logger.getLogger(Configuration.class);
@@ -61,13 +61,6 @@ public final class Configuration {
 
     /** Configured ValidatorSuites */
     private static HashMap<String, ValidatorSuite> validatorSuites = new HashMap<String, ValidatorSuite>();
-
-    /**
-     * Constructor
-     */
-    private Configuration() {
-
-    }
 
     /**
      * Gets the QName for the object provider that will be used for XMLObjects that do not have a registered object
