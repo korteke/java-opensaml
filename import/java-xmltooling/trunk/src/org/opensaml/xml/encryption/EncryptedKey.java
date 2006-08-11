@@ -16,18 +16,14 @@
 
 package org.opensaml.xml.encryption;
 
-import java.util.List;
-
 import javax.xml.namespace.QName;
 
-import org.opensaml.xml.AbstractXMLObject;
-import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.util.XMLConstants;
 
 /**
  * XMLObject representing XML Encryption, version 20021210, EncryptedKey element.
  */
-public class EncryptedKey extends AbstractXMLObject {
+public class EncryptedKey extends EncryptedType {
 
     /** Element local name */
     public final static String DEFAULT_ELEMENT_LOCAL_NAME = "EncryptedKey";
@@ -41,16 +37,56 @@ public class EncryptedKey extends AbstractXMLObject {
     /** QName of the XSI type */
     public final static QName TYPE_NAME = new QName(XMLConstants.XMLENC_NS, TYPE_LOCAL_NAME, XMLConstants.XMLENC_PREFIX);
     
+    /** Hint about who the encrypted key is intended for */
+    private String recipient;
+    
+    /** Human readable name for this key */
+    private String carriedKeyName;
+    
     /**
      * Constructor
+     * 
+     * @param namespaceURI the namespace the element is in
+     * @param elementLocalName the local name of the XML element this Object represents
+     * @param namespacePrefix the prefix for the given namespace
      */
     protected EncryptedKey(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
     
-    /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        // no children
-        return null;
+    /**
+     * Gets the hint about who this encrypted key is inteded for.
+     * 
+     * @return the hint about who this encrypted key is inteded for
+     */
+    public String getRecipient(){
+        return recipient;
+    }
+    
+    /**
+     * Sets the hint about who this encrypted key is inteded for.
+     * 
+     * @param newRecipient the hint about who this encrypted key is inteded for
+     */
+    public void setRecipient(String newRecipient){
+        recipient = prepareForAssignment(recipient, newRecipient);
+    }
+    
+    /**
+     * Gets the human readable name for this key.
+     * 
+     * @return the human readable name for this key
+     */
+    public String getCarriedKeyName(){
+        return carriedKeyName;
+    }
+    
+    /**
+     * Sets the human readable name for this key.
+     * 
+     * @param newKeyName the human readable name for this key
+     */
+    public void setCarriedKeyName(String newKeyName){
+        carriedKeyName = prepareForAssignment(carriedKeyName, newKeyName);
     }
 }

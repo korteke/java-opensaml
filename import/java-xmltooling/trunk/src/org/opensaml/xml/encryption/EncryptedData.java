@@ -16,17 +16,14 @@
 
 package org.opensaml.xml.encryption;
 
-import java.util.List;
-
 import javax.xml.namespace.QName;
 
-import org.opensaml.xml.AbstractXMLObject;
-import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.util.XMLConstants;
+
 /**
  * XMLObject representing XML Encryption, version 20021210, EncryptedData element.
  */
-public class EncryptedData extends AbstractXMLObject {
+public class EncryptedData extends EncryptedType {
 
     /** Element local name */
     public final static String DEFAULT_ELEMENT_LOCAL_NAME = "EncryptedData";
@@ -42,14 +39,12 @@ public class EncryptedData extends AbstractXMLObject {
     
     /**
      * Constructor
+     * 
+     * @param namespaceURI the namespace the element is in
+     * @param elementLocalName the local name of the XML element this Object represents
+     * @param namespacePrefix the prefix for the given namespace
      */
     protected EncryptedData(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-    }
-    
-    /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        // no children
-        return null;
     }
 }
