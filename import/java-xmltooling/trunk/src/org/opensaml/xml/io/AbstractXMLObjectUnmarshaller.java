@@ -106,7 +106,6 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
         checkElementIsTarget(domElement);
 
         XMLObject xmlObject = buildXMLObject(domElement);
-        xmlObject.setDOM(domElement);
 
         if (log.isDebugEnabled()) {
             log.debug("Unmarshalling attributes of DOM Element " + XMLHelper.getNodeQName(domElement));
@@ -139,6 +138,7 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
             }
         }
 
+        xmlObject.setDOM(domElement);
         return xmlObject;
     }
 
