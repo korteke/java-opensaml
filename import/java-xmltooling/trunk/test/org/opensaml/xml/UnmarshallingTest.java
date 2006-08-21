@@ -51,6 +51,7 @@ public class UnmarshallingTest extends XMLObjectBaseTestCase {
         Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(document.getDocumentElement());
         SimpleXMLObject sxObject = (SimpleXMLObject) unmarshaller.unmarshall(document.getDocumentElement());
 
+        assertNotNull("DOM was not cached after unmarshalling", sxObject.getDOM());
         assertEquals("ID was not expected value", expectedId, sxObject.getId());
     }
 
@@ -66,6 +67,8 @@ public class UnmarshallingTest extends XMLObjectBaseTestCase {
 
         Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(document.getDocumentElement());
         SimpleXMLObject sxObject = (SimpleXMLObject) unmarshaller.unmarshall(document.getDocumentElement());
+        
+        assertNotNull("DOM was not cached after unmarshalling", sxObject.getDOM());
         
         List<SimpleXMLObject> children = sxObject.getSimpleXMLObjects();
         assertEquals("Unexpected number of children", 3, children.size());
@@ -99,6 +102,8 @@ public class UnmarshallingTest extends XMLObjectBaseTestCase {
         Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(document.getDocumentElement());
         SimpleXMLObject sxObject = (SimpleXMLObject) unmarshaller.unmarshall(document.getDocumentElement());
 
+        assertNotNull("DOM was not cached after unmarshalling", sxObject.getDOM());
+        
         assertEquals("Number of children elements was not expected value", 2, sxObject.getSimpleXMLObjects().size());
     }
 }

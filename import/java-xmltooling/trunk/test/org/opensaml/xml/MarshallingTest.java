@@ -60,7 +60,7 @@ public class MarshallingTest extends XMLObjectBaseTestCase {
         sxObject.setId(expectedId);
 
         assertEquals(expectedDocument, sxObject);
-        assertEquals(expectedDocument, sxObject);
+        assertNotNull("DOM was not cached after marshalling", sxObject.getDOM());
     }
 
     /**
@@ -93,6 +93,7 @@ public class MarshallingTest extends XMLObjectBaseTestCase {
         child3.getSimpleXMLObjects().add(grandchild1);
 
         assertEquals(expectedDocument, sxObject);
+        assertNotNull("DOM was not cached after marshalling", sxObject.getDOM());
     }
 
     /**
@@ -114,6 +115,7 @@ public class MarshallingTest extends XMLObjectBaseTestCase {
         sxObject.getSimpleXMLObjects().add(sxObjectChild2);
 
         assertEquals(expectedDocument, sxObject);
+        assertNotNull("DOM was not cached after marshalling", sxObject.getDOM());
     }
 
     /**
@@ -137,10 +139,13 @@ public class MarshallingTest extends XMLObjectBaseTestCase {
         // Marshall it once so the DOM is cached
         Marshaller marshaller = marshallerFactory.getMarshaller(simpleXMLObjectQName);
         marshaller.marshall(response);
+        assertNotNull("DOM was not cached after marshalling", response.getDOM());
         
         // Marshall statement (with cached DOM) into SOAP Body element child
         Document expectedDocument = parserPool.parse(MarshallingTest.class.getResourceAsStream(expectedDocumentLocation));
         Element statementElem = marshaller.marshall(statement, soapBody);
         assertXMLEqual(expectedDocument, statementElem.getOwnerDocument());
+        assertNull("Parent of XML fragment DOM was not invalidated during marshalling", response.getDOM());
+        assertNotNull("XML fragment DOM was invalidated during marshalling", statement.getDOM());
     }
 }
