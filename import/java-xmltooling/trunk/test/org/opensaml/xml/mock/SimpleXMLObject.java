@@ -125,9 +125,7 @@ public class SimpleXMLObject extends AbstractSignableXMLObject implements Elemen
         return unknownXMLObjects;
     }
 
-    /*
-     * @see org.opensaml.xml.XMLObject#getOrderedChildren()
-     */
+    /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
         ArrayList<XMLObject> children = new ArrayList<XMLObject>();
         

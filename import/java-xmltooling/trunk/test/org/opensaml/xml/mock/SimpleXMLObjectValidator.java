@@ -34,9 +34,7 @@ public class SimpleXMLObjectValidator implements Validator<SimpleXMLObject> {
         
     }
 
-    /*
-     * @see org.opensaml.xml.validation.Validator#validate(org.opensaml.xml.XMLObject)
-     */
+    /** {@inheritDoc} */
     public void validate(SimpleXMLObject xmlObject) throws ValidationException {
         if(xmlObject instanceof SimpleXMLObject){
             return;

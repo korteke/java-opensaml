@@ -95,9 +95,7 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
         unmarshallerFactory = Configuration.getUnmarshallerFactory();
     }
 
-    /*
-     * @see org.opensaml.common.io.Unmarshaller#unmarshall(org.w3c.dom.Element)
-     */
+    /** {@inheritDoc} */
     public XMLObject unmarshall(Element domElement) throws UnmarshallingException {
         if (log.isDebugEnabled()) {
             log.debug("Starting to unmarshall DOM element " + XMLHelper.getNodeQName(domElement));

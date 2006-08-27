@@ -41,10 +41,7 @@ public class SimpleXMLObjectUnmarshaller extends AbstractXMLObjectUnmarshaller {
         super(SimpleXMLObject.NAMESPACE, SimpleXMLObject.LOCAL_NAME);
     }
 
-    /*
-     * @see org.opensaml.xml.io.AbstractXMLObjectUnmarshaller#processChildElement(org.opensaml.xml.XMLObject,
-     *      org.opensaml.xml.XMLObject)
-     */
+    /** {@inheritDoc} */
     protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
             throws UnmarshallingException {
 
@@ -59,9 +56,7 @@ public class SimpleXMLObjectUnmarshaller extends AbstractXMLObjectUnmarshaller {
         }
     }
 
-    /*
-     * @see org.opensaml.xml.io.AbstractXMLObjectUnmarshaller#processAttribute(org.opensaml.xml.XMLObject, org.w3c.dom.Attr)
-     */
+    /** {@inheritDoc} */
     protected void processAttribute(XMLObject xmlObject, Attr attribute)
             throws UnmarshallingException {
         SimpleXMLObject simpleXMLObject = (SimpleXMLObject) xmlObject;
@@ -71,10 +66,7 @@ public class SimpleXMLObjectUnmarshaller extends AbstractXMLObjectUnmarshaller {
         }
     }
 
-    /*
-     * @see org.opensaml.xml.io.AbstractXMLObjectUnmarshaller#processElementContent(org.opensaml.xml.XMLObject,
-     *      java.lang.String)
-     */
+    /** {@inheritDoc} */
     protected void processElementContent(XMLObject xmlObject, String elementContent) {
         SimpleXMLObject simpleXMLObject = (SimpleXMLObject) xmlObject;
         

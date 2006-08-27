@@ -33,9 +33,7 @@ public class SimpleXMLObjectMarshaller extends AbstractXMLObjectMarshaller {
         super();
     }
     
-    /*
-     * @see org.opensaml.xml.io.AbstractXMLObjectMarshaller#marshallAttributes(org.opensaml.xml.XMLObject, org.w3c.dom.Element)
-     */
+    /** {@inheritDoc} */
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         SimpleXMLObject simpleXMLObject = (SimpleXMLObject)xmlObject;
         
@@ -46,9 +44,7 @@ public class SimpleXMLObjectMarshaller extends AbstractXMLObjectMarshaller {
 
     }
 
-    /*
-     * @see org.opensaml.xml.io.AbstractXMLObjectMarshaller#marshallElementContent(org.opensaml.xml.XMLObject, org.w3c.dom.Element)
-     */
+    /** {@inheritDoc} */
     protected void marshallElementContent(XMLObject xmlObject, Element domElement) throws MarshallingException {
         SimpleXMLObject simpleXMLObject = (SimpleXMLObject) xmlObject;
         

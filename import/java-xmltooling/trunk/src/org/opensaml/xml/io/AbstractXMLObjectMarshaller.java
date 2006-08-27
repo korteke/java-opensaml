@@ -89,9 +89,7 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
         marshallerFactory = Configuration.getMarshallerFactory();
     }
 
-    /*
-     * @see org.opensaml.xml.io.Marshaller#marshall(org.opensaml.xml.XMLObject)
-     */
+    /** {@inheritDoc} */
     public Element marshall(XMLObject xmlObject) throws MarshallingException {
         try {
             Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
@@ -101,9 +99,7 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
         }
     }
 
-    /*
-     * @see org.opensaml.xml.io.Marshaller#marshall(org.opensaml.xml.XMLObject, org.w3c.dom.Document)
-     */
+    /** {@inheritDoc} */
     public Element marshall(XMLObject xmlObject, Document document) throws MarshallingException {
         Element domElement;
         
@@ -164,9 +160,7 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
         return domElement;
     }
 
-    /*
-     * @see org.opensaml.xml.io.Marshaller#marshall(org.opensaml.xml.XMLObject, org.w3c.dom.Document)
-     */
+    /** {@inheritDoc} */
     public Element marshall(XMLObject xmlObject, Element parentElement) throws MarshallingException {
         Element domElement;
         

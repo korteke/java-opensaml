@@ -31,9 +31,7 @@ public class SimpleXMLObjectBuilder extends AbstractXMLObjectBuilder<SimpleXMLOb
         return buildObject(SimpleXMLObject.NAMESPACE, SimpleXMLObject.LOCAL_NAME, SimpleXMLObject.NAMESPACE_PREFIX);
     }
 
-    /*
-     * @see org.opensaml.xml.XMLObjectBuilder#buildObject(java.lang.String, java.lang.String, java.lang.String)
-     */
+    /** {@inheritDoc} */
     public SimpleXMLObject buildObject(String namespaceURI, String localName, String namespacePrefix) {
         return new SimpleXMLObject(namespaceURI, localName, namespacePrefix);
     }
