@@ -18,7 +18,7 @@
 
     <property name="jdk.target" value="1.5" />
 
-    <property name="version" value="1.0-TP1" />
+    <property name="version" value="1.0-TP2" />
 	<property name="jar.name" value="xmltooling-${version}-jdk-${jdk.target}.jar" />
 	<property name="src-dist.name" value="xmltooling-${version}-jdk-${jdk.target}-src" />
 	<property name="bin-dist.name" value="xmltooling-${version}-jdk-${jdk.target}-bin" />

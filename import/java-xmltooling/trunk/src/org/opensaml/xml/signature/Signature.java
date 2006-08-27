@@ -17,10 +17,11 @@
 package org.opensaml.xml.signature;
 
 import java.security.Key;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.namespace.QName;
+
+import javolution.util.FastList;
 
 import org.apache.xml.security.signature.XMLSignature;
 import org.opensaml.xml.AbstractXMLObject;
@@ -71,50 +72,87 @@ public class Signature extends AbstractXMLObject {
      */
     protected Signature(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        contentReferences = new ArrayList<ContentReference>();
+        contentReferences = new FastList<ContentReference>();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Gets the canonicalization algorithm used to create the signature content.
+     * 
+     * @return the canonicalization algorithm used to create the signature content
+     */
     public String getCanonicalizationAlgorithm() {
         return canonicalizationAlgorithm;
     }
 
-    /** {@inheritDoc} */
+
+    /**
+     * Sets the canonicalization algorithm used to create the signature content.
+     * 
+     * @param newAlgorithm the canonicalization algorithm used to create the signature content
+     */
     public void setCanonicalizationAlgorithm(String newAlgorithm) {
         canonicalizationAlgorithm = newAlgorithm;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Gets the algorithm used to compute the signature.
+     * 
+     * @return the algorithm used to compute the signature
+     */
     public String getSignatureAlgorithm() {
         return signatureAlgorithm;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Sets the algorithm used to compute the signature.
+     * 
+     * @param newAlgorithm the algorithm used to compute the signature
+     */
     public void setSignatureAlgorithm(String newAlgorithm) {
         signatureAlgorithm  = newAlgorithm;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Gets the signature signing key.
+     * 
+     * @return the signature signing key
+     */
     public Key getSigningKey() {
         return signingKey;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Sets the signature signing key.
+     * 
+     * @param newKey the signature signing key
+     */
     public void setSigningKey(Key newKey) {
         signingKey = newKey;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Gets the key info added to this signature.
+     * 
+     * @return the key info added to this signature
+     */
     public KeyInfo getKeyInfo() {
         return keyInfo;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Sets the key info added to this signature.
+     * 
+     * @param newKeyInfo  the key info added to this signature
+     */
     public void setKeyInfo(KeyInfo newKeyInfo) {
         keyInfo = newKeyInfo;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Gets the list of signature content references.
+     * 
+     * @return the list of signature content references
+     */
     public List<ContentReference> getContentReferences() {
         return contentReferences;
     }

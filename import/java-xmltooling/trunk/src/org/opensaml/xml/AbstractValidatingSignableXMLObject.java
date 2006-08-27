@@ -16,9 +16,10 @@
 
 package org.opensaml.xml;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import javolution.util.FastList;
 
 import org.apache.log4j.Logger;
 import org.opensaml.xml.signature.AbstractSignableXMLObject;
@@ -37,7 +38,7 @@ public abstract class AbstractValidatingSignableXMLObject extends AbstractSignab
     private final Logger log = Logger.getLogger(AbstractValidatingSignableXMLObject.class);
 
     /** Validators used to validate this XMLObject */
-    private ArrayList<Validator> validators = new ArrayList<Validator>();
+    private FastList<Validator> validators;
 
     /**
      * Constructor
@@ -48,11 +49,10 @@ public abstract class AbstractValidatingSignableXMLObject extends AbstractSignab
      */
     protected AbstractValidatingSignableXMLObject(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
+        validators = new FastList<Validator>();
     }
 
-    /*
-     * @see org.opensaml.xml.ValidatingXMLObject#getValidators()
-     */
+    /** {@inheritDoc} */
     public List<Validator> getValidators() {
         if (validators.size() > 0) {
             return Collections.unmodifiableList(validators);
@@ -61,25 +61,19 @@ public abstract class AbstractValidatingSignableXMLObject extends AbstractSignab
         return null;
     }
 
-    /*
-     * @see org.opensaml.xml.ValidatingXMLObject#registerValidator(org.opensaml.xml.Validator)
-     */
+    /** {@inheritDoc} */
     public void registerValidator(Validator validator) {
         if (validator != null) {
             validators.add(validator);
         }
     }
 
-    /*
-     * @see org.opensaml.xml.ValidatingXMLObject#deregisterValidator(org.opensaml.xml.Validator)
-     */
+    /** {@inheritDoc} */
     public void deregisterValidator(Validator validator) {
         validators.remove(validator);
     }
 
-    /*
-     * @see org.opensaml.xml.ValidatingXMLObject#validate(boolean)
-     */
+    /** {@inheritDoc} */
     public void validate(boolean validateDescendants) throws ValidationException {
         for (Validator validator : validators) {
             if (log.isDebugEnabled()) {

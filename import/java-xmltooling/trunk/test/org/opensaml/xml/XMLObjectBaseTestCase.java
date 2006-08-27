@@ -62,9 +62,7 @@ public class XMLObjectBaseTestCase extends XMLTestCase {
         simpleXMLObjectQName = new QName(SimpleXMLObject.NAMESPACE, SimpleXMLObject.LOCAL_NAME);
     }
 
-    /*
-     * @see junit.framework.TestCase#setUp()
-     */
+    /** {@inheritDoc} */
     protected void setUp() throws Exception {
         super.setUp();
         XMLUnit.setIgnoreWhitespace(true);

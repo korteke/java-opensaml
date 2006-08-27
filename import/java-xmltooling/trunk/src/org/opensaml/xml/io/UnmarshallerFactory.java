@@ -16,11 +16,11 @@
 
 package org.opensaml.xml.io;
 
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.xml.namespace.QName;
+
+import javolution.util.FastMap;
 
 import org.apache.log4j.Logger;
 import org.opensaml.xml.util.XMLHelper;
@@ -38,13 +38,13 @@ public class UnmarshallerFactory {
     private final static Logger log = Logger.getLogger(UnmarshallerFactory.class);
 
     /** Map of unmarshallers to the elements they are for */
-    private Map<QName, Unmarshaller> unmarshallers;
+    private FastMap<QName, Unmarshaller> unmarshallers;
 
     /**
      * Constructor
      */
     public UnmarshallerFactory() {
-        unmarshallers = new HashMap<QName, Unmarshaller>();
+        unmarshallers = new FastMap<QName, Unmarshaller>();
     }
 
     /**
@@ -55,6 +55,10 @@ public class UnmarshallerFactory {
      * @return the Unmarshaller
      */
     public Unmarshaller getUnmarshaller(QName key) {
+        if(key == null){
+            return null;
+        }
+        
         return unmarshallers.get(key);
     }
 
@@ -84,7 +88,7 @@ public class UnmarshallerFactory {
      * @return a listing of all the Unmarshallers currently registered
      */
     public Map<QName, Unmarshaller> getUnmarshallers() {
-        return Collections.unmodifiableMap(unmarshallers);
+        return unmarshallers.unmodifiable();
     }
 
     /**
@@ -99,9 +103,7 @@ public class UnmarshallerFactory {
             log.debug("Registering unmarshaller, " + unmarshaller.getClass().getName() + ", for object type "
                     + key);
         }
-        synchronized (unmarshallers) {
-            unmarshallers.put(key, unmarshaller);
-        }
+        unmarshallers.put(key, unmarshaller);
     }
 
     /**
@@ -115,8 +117,6 @@ public class UnmarshallerFactory {
         if (log.isDebugEnabled()) {
             log.debug("Deregistering marshaller for object type " + key);
         }
-        synchronized (unmarshallers) {
-            return unmarshallers.remove(key);
-        }
+        return unmarshallers.remove(key);
     }
 }

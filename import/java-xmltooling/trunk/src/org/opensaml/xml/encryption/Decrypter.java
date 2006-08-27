@@ -16,13 +16,9 @@
 
 package org.opensaml.xml.encryption;
 
+/**
+ * Decrypts XMLObject and their keys.
+ */
 public class Decrypter {
 
-    public void decryptData(){
-        
-    }
-    
-    public void decryptKey(){
-        
-    }
 }

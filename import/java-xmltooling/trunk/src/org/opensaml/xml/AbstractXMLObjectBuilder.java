@@ -14,10 +14,6 @@
  * limitations under the License.
  */
 
-/**
- * 
- */
-
 package org.opensaml.xml;
 
 import javax.xml.namespace.QName;
@@ -35,28 +31,20 @@ import org.w3c.dom.Element;
 public abstract class AbstractXMLObjectBuilder<XMLObjectType extends XMLObject> implements
         XMLObjectBuilder<XMLObjectType> {
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public XMLObjectType buildObject(QName objectName){
         return buildObject(objectName.getNamespaceURI(), objectName.getLocalPart(), objectName.getPrefix());
     }
     
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public XMLObjectType buildObject(QName objectName, QName schemaType){
         return buildObject(objectName.getNamespaceURI(), objectName.getLocalPart(), objectName.getPrefix(), schemaType);
     }
     
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public abstract XMLObjectType buildObject(String namespaceURI, String localName, String namespacePrefix);
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public XMLObjectType buildObject(String namespaceURI, String localName, String namespacePrefix, QName schemaType) {
         XMLObjectType xmlObject;
 
@@ -66,9 +54,7 @@ public abstract class AbstractXMLObjectBuilder<XMLObjectType extends XMLObject> 
         return xmlObject;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public XMLObjectType buildObject(Element element) {
         XMLObjectType xmlObject;
 

@@ -46,9 +46,7 @@ public class SignatureUnmarshaller implements Unmarshaller {
         }
     }
 
-    /*
-     * @see org.opensaml.xml.io.Unmarshaller#unmarshall(org.w3c.dom.Element)
-     */
+    /** {@inheritDoc} */
     public Signature unmarshall(Element signatureElement) throws UnmarshallingException {
         if (log.isDebugEnabled()) {
             log.debug("Starting to unmarshall XMLSecSignatureImpl element");

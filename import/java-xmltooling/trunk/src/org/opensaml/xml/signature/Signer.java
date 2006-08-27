@@ -53,7 +53,7 @@ public class Signer {
     /**
      * Signs a single XMLObject.
      * 
-     * @param signableXMLObject the object to be signed
+     * @param signature the signature to computer the signature on
      */
     public static void signObject(Signature signature) {
         XMLSignature xmlSignature = signature.getXMLSignature();

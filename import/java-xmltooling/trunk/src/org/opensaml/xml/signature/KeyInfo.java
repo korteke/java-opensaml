@@ -75,37 +75,51 @@ public class KeyInfo extends AbstractXMLObject {
     }
 
     /**
-     * {@inheritDoc}
+     * Gets the key names in this key info.
+     * 
+     * @return the key names in this key info
      */
     public List<String> getKeyNames() {
         return keyNames;
     }
 
     /**
-     * {@inheritDoc}
+     * Gets the public key in this key info.
+     * 
+     * @return the public key in this key info
      */
     public PublicKey getPublicKey() {
         return publicKey;
     }
     
+    /**
+     * Sets the public key in this key info.
+     * 
+     * @param newKey the public key in this key info
+     */
     public void setPublicKey(PublicKey newKey){
         publicKey = newKey;
     }
 
     /**
-     * {@inheritDoc}
+     * Gets the X.509 certificates in this key info.
+     * 
+     * @return the X.509 certificates in this key info
      */
     public List<X509Certificate> getCertificates() {
         return certificates;
     }
     
+    /**
+     * Gets the certificate revocation lists in this key info.
+     * 
+     * @return the certificate revocation lists in this key info
+     */
     public List<X509CRL> getCRLs() {
         return crls;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
         // No children
         return null;

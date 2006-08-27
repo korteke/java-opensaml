@@ -27,24 +27,18 @@ import org.w3c.dom.Attr;
  */
 public class XSStringUnmarshaller extends AbstractXMLObjectUnmarshaller {
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
             throws UnmarshallingException {
         // no children
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
         //no attributes
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     protected void processElementContent(XMLObject xmlObject, String elementContent) {
         XSString xsiString = (XSString) xmlObject;
         

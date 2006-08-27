@@ -24,22 +24,18 @@ import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Attr;
 
 /**
- * A thread-safe unmarshaller for {@link org.apache.xml.security.utils.ElementProxy}s.
+ * A thread-safe unmarshaller for {@link ElementProxy}s.
  */
 public class ElementProxyUnmarshaller extends AbstractXMLObjectUnmarshaller {
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
             throws UnmarshallingException {
         ElementProxy elementProxy = (ElementProxy) parentXMLObject;
         elementProxy.getUnknownXMLObjects().add(childXMLObject);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
         ElementProxy elementProxy = (ElementProxy) xmlObject;
         QName attribQName = XMLHelper.constructQName(attribute.getNamespaceURI(), attribute.getLocalName(), attribute
@@ -47,9 +43,7 @@ public class ElementProxyUnmarshaller extends AbstractXMLObjectUnmarshaller {
         elementProxy.getUnknownAttributes().put(attribQName, attribute.getValue());
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     protected void processElementContent(XMLObject xmlObject, String elementContent) {
         ElementProxy elementProxy = (ElementProxy) xmlObject;
         elementProxy.setTextContent(elementContent);

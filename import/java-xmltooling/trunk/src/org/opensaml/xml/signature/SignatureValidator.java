@@ -25,7 +25,7 @@ import org.opensaml.xml.validation.ValidationException;
 import org.opensaml.xml.validation.Validator;
 
 /**
- * A validator that verifies an {@link org.opensaml.xml.signature.impl.SignatureImpl} against a given key.
+ * A validator that verifies an {@link Signature} against a given key.
  */
 public class SignatureValidator implements Validator<Signature> {
 

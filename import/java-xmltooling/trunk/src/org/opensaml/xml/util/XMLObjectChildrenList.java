@@ -27,10 +27,7 @@ import org.opensaml.xml.XMLObject;
 /**
  * Resizable list for the children of XMLObjects. This list implements all optional List operations and does not all for
  * null elements. XMLObjects added to, or removed from, this list will have their parent object appropriately set and,
- * if the XMLObject is of type {@link org.opensaml.xml.DOMCachingXMLObject} the underlying DOM will be released during
- * mutation opertions.
- * 
- * This list is unsynchronized.
+ * the underlying DOM will be released during mutation opertions.
  */
 public class XMLObjectChildrenList<ElementType extends XMLObject> extends AbstractList<ElementType> {
 
@@ -79,9 +76,7 @@ public class XMLObjectChildrenList<ElementType extends XMLObject> extends Abstra
         addAll(elements);
     }
 
-    /*
-     * @see java.util.AbstractCollection#size()
-     */
+    /** {@inheritDoc} */
     public int size() {
         return elements.size();
     }
@@ -97,9 +92,7 @@ public class XMLObjectChildrenList<ElementType extends XMLObject> extends Abstra
         return elements.contains(element);
     }
 
-    /*
-     * @see java.util.AbstractList#get(int)
-     */
+    /** {@inheritDoc} */
     public ElementType get(int index) {
         return elements.get(index);
     }
@@ -151,9 +144,7 @@ public class XMLObjectChildrenList<ElementType extends XMLObject> extends Abstra
         elements.add(index, element);
     }
 
-    /*
-     * @see java.util.List#remove(int)
-     */
+    /** {@inheritDoc} */
     public ElementType remove(int index) {
         ElementType element = elements.remove(index);
 

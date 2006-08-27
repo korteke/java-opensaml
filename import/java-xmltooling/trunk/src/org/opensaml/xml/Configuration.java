@@ -16,12 +16,12 @@
 
 package org.opensaml.xml;
 
-import java.util.HashMap;
-
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+
+import javolution.util.FastMap;
 
 import org.apache.log4j.Logger;
 import org.opensaml.xml.io.Marshaller;
@@ -45,10 +45,10 @@ public class Configuration {
             XMLConstants.XMLTOOLING_DEFAULT_OBJECT_PROVIDER);
 
     /** Object provider configuration elements indexed by QName */
-    private static HashMap<QName, Element> configuredObjectProviders = new HashMap<QName, Element>();
+    private static FastMap<QName, Element> configuredObjectProviders = new FastMap<QName, Element>();
 
     /** Validator suite configuration elements indexed by suite IDs */
-    private static HashMap<String, Element> validatorSuiteConfigurations = new HashMap<String, Element>();
+    private static FastMap<String, Element> validatorSuiteConfigurations = new FastMap<String, Element>();
 
     /** Configured XMLObject builder factory */
     private static XMLObjectBuilderFactory builderFactory = new XMLObjectBuilderFactory();
@@ -60,7 +60,7 @@ public class Configuration {
     private static UnmarshallerFactory unmarshallerFactory = new UnmarshallerFactory();
 
     /** Configured ValidatorSuites */
-    private static HashMap<String, ValidatorSuite> validatorSuites = new HashMap<String, ValidatorSuite>();
+    private static FastMap<String, ValidatorSuite> validatorSuites = new FastMap<String, ValidatorSuite>();
 
     /**
      * Gets the QName for the object provider that will be used for XMLObjects that do not have a registered object

@@ -43,10 +43,6 @@ import org.w3c.dom.Element;
  * <li>Setting the xsi:type for the element if the element has an explicit type</li>
  * <li>Setting namespaces attributes declared for the element</li>
  * <li>Marshalling of child elements</li>
- * <li>Digitally signing instance of {@link org.opensaml.xml.signature.SignableXMLObject} that contain a
- * {@link org.opensaml.xml.signature.Signature}</li>
- * <li>Encrypting instances of {@link org.opensaml.xml.encryption.EncryptableXMLObject} that contain an
- * {@link org.opensaml.xml.encryption.EncryptionContext}</li>
  * </ul>
  */
 public abstract class AbstractXMLObjectMarshaller implements Marshaller {

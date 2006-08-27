@@ -20,7 +20,7 @@ import org.opensaml.xml.AbstractXMLObjectBuilder;
 import org.opensaml.xml.util.XMLConstants;
 
 /**
- * Builder of {@link org.opensaml.xml.signature.impl.KeyInfoImpl} objects.
+ * Builder of {@link KeyInfo} objects.
  */
 public class KeyInfoBuilder extends AbstractXMLObjectBuilder<KeyInfo> {
 
@@ -32,15 +32,15 @@ public class KeyInfoBuilder extends AbstractXMLObjectBuilder<KeyInfo> {
     }
 
     /**
-     * {@inheritDoc}
+     * Creates an XMLObject with the default namespace prefix and local name.
+     * 
+     * @return the KeyInfo XMLObject
      */
     public KeyInfo buildObject() {
         return buildObject(XMLConstants.XMLSIG_NS, KeyInfo.DEFAULT_ELEMENT_LOCAL_NAME, XMLConstants.XMLSIG_PREFIX);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public KeyInfo buildObject(String namespaceURI, String localName, String namespacePrefix) {
         return new KeyInfo(namespaceURI, localName, namespacePrefix);
     }

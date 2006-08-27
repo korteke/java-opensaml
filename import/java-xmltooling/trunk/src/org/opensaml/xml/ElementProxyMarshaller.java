@@ -27,13 +27,11 @@ import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
 
 /**
- * A thread-safe marshaller for {@link org.apache.xml.security.utils.ElementProxy}s.
+ * A thread-safe marshaller for {@link ElementProxy}s.
  */
 public class ElementProxyMarshaller extends AbstractXMLObjectMarshaller {
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         ElementProxy proxy = (ElementProxy) xmlObject;
 
@@ -45,9 +43,7 @@ public class ElementProxyMarshaller extends AbstractXMLObjectMarshaller {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     protected void marshallElementContent(XMLObject xmlObject, Element domElement) throws MarshallingException {
         ElementProxy proxy = (ElementProxy) xmlObject;
 

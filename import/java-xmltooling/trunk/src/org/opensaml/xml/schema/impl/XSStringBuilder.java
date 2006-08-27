@@ -24,9 +24,7 @@ import org.opensaml.xml.schema.XSString;
  */
 public class XSStringBuilder extends AbstractXMLObjectBuilder<XSString> {
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public XSString buildObject(String namespaceURI, String localName, String namespacePrefix) {
         return new XSStringImpl(namespaceURI, localName, namespacePrefix);
     }

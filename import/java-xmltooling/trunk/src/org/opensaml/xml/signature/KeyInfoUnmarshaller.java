@@ -31,7 +31,7 @@ import org.opensaml.xml.io.UnmarshallingException;
 import org.w3c.dom.Element;
 
 /**
- * An unmarshaller for {@link org.opensaml.xml.signature.impl.KeyInfoImpl} objects. This class, along with it's respective
+ * An unmarshaller for {@link KeyInfo} objects. This class, along with it's respective
  * builder and unmarshaller use the Apache XMLSec 1.3 APIs to perform signing and verification.
  */
 public class KeyInfoUnmarshaller implements Unmarshaller {
@@ -51,9 +51,7 @@ public class KeyInfoUnmarshaller implements Unmarshaller {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public XMLObject unmarshall(Element element) throws UnmarshallingException {
         KeyInfo keyInfoObj = new KeyInfo(element.getNamespaceURI(), element.getLocalName(), element.getPrefix());
 

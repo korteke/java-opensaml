@@ -14,20 +14,16 @@
  * limitations under the License.
  */
 
-/**
- * 
- */
-
 package org.opensaml.xml.validation;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import javolution.util.FastList;
 
 import org.apache.log4j.Logger;
 import org.opensaml.xml.AbstractXMLObject;
 import org.opensaml.xml.XMLObject;
-
 
 /**
  * Extension of {@link org.opensaml.xml.AbstractXMLObject} that implements {@link org.opensaml.xml.validation.ValidatingXMLObject}
@@ -38,7 +34,7 @@ public abstract class AbstractValidatingXMLObject extends AbstractXMLObject impl
     private final Logger log = Logger.getLogger(AbstractValidatingXMLObject.class);
 
     /** Validators used to validate this XMLObject */
-    private ArrayList<Validator> validators = new ArrayList<Validator>();
+    private FastList<Validator> validators;
     
     /**
      * Constructor
@@ -49,11 +45,10 @@ public abstract class AbstractValidatingXMLObject extends AbstractXMLObject impl
      */
     protected AbstractValidatingXMLObject(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
+        validators = new FastList<Validator>();
     }
 
-    /*
-     * @see org.opensaml.xml.ValidatingXMLObject#getValidators()
-     */
+    /** {@inheritDoc} */
     public List<Validator> getValidators() {
         if (validators.size() > 0) {
             return Collections.unmodifiableList(validators);
@@ -62,25 +57,19 @@ public abstract class AbstractValidatingXMLObject extends AbstractXMLObject impl
         return null;
     }
 
-    /*
-     * @see org.opensaml.xml.ValidatingXMLObject#registerValidator(org.opensaml.xml.Validator)
-     */
+    /** {@inheritDoc} */
     public void registerValidator(Validator validator) {
         if (validator != null) {
             validators.add(validator);
         }
     }
 
-    /*
-     * @see org.opensaml.xml.ValidatingXMLObject#deregisterValidator(org.opensaml.xml.Validator)
-     */
+    /** {@inheritDoc} */
     public void deregisterValidator(Validator validator) {
         validators.remove(validator);
     }
 
-    /*
-     * @see org.opensaml.xml.ValidatingXMLObject#validate(boolean)
-     */
+    /** {@inheritDoc} */
     public void validate(boolean validateDescendants) throws ValidationException {
         for (Validator validator : validators) {
             if (log.isDebugEnabled()) {

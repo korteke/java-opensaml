@@ -16,11 +16,11 @@
 
 package org.opensaml.xml;
 
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.xml.namespace.QName;
+
+import javolution.util.FastMap;
 
 import org.apache.log4j.Logger;
 import org.opensaml.xml.util.XMLHelper;
@@ -37,11 +37,11 @@ public class XMLObjectBuilderFactory {
     private static final Logger LOG = Logger.getLogger(XMLObjectBuilderFactory.class);
 
     /** Registered builders */
-    private Map<QName, XMLObjectBuilder> builders;
+    private FastMap<QName, XMLObjectBuilder> builders;
 
     /** Constructor */
     public XMLObjectBuilderFactory() {
-        builders = new HashMap<QName, XMLObjectBuilder>();
+        builders = new FastMap<QName, XMLObjectBuilder>();
     }
 
     /**
@@ -52,6 +52,9 @@ public class XMLObjectBuilderFactory {
      * @return the builder
      */
     public XMLObjectBuilder getBuilder(QName key) {
+        if(key == null){
+            return null;
+        }
         return builders.get(key);
     }
 
@@ -81,7 +84,7 @@ public class XMLObjectBuilderFactory {
      * @return list of all the builders currently registered
      */
     public Map<QName, XMLObjectBuilder> getBuilders() {
-        return Collections.unmodifiableMap(builders);
+        return builders.unmodifiable();
     }
 
     /**
@@ -94,9 +97,7 @@ public class XMLObjectBuilderFactory {
         if (LOG.isDebugEnabled()) {
             LOG.debug("Registering builder, " + builder.getClass().getName() + " under key " + builderKey);
         }
-        synchronized (builders) {
-            builders.put(builderKey, builder);
-        }
+        builders.put(builderKey, builder);
     }
 
     /**
@@ -110,8 +111,6 @@ public class XMLObjectBuilderFactory {
         if (LOG.isDebugEnabled()) {
             LOG.debug("Deregistering builder for object type " + builderKey);
         }
-        synchronized (builders) {
-            return builders.remove(builders.get(builderKey));
-        }
+        return builders.remove(builders.get(builderKey));
     }
 }

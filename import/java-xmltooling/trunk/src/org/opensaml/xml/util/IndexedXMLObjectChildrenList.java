@@ -28,8 +28,7 @@ import javolution.util.FastMap;
 import org.opensaml.xml.XMLObject;
 
 /**
- * A list which indexes XMLObjects by their schema type and element QName for quick retrival based on those items. This
- * list does not allow null elements and is <strong>not</strong> synchronized.
+ * A list which indexes XMLObjects by their schema type and element QName for quick retrival based on those items.
  */
 public class IndexedXMLObjectChildrenList<ElementType extends XMLObject> extends XMLObjectChildrenList<ElementType> {
 
@@ -55,9 +54,7 @@ public class IndexedXMLObjectChildrenList<ElementType extends XMLObject> extends
         addAll(col);
     }
     
-    /*
-     * @see java.util.Collection#clear()
-     */
+    /** {@inheritDoc} */
     public void clear() {
         super.clear();
         objectIndex.clear();
@@ -263,23 +260,17 @@ class ListView<ElementType extends XMLObject> extends AbstractList<ElementType>{
         return indexList.contains(element);
     }
     
-    /*
-     * @see java.util.List#get(int)
-     */
+    /** {@inheritDoc} */
     public ElementType get(int index) {
         return indexList.get(index);
     }
 
-    /*
-     * @see java.util.Collection#size()
-     */
+    /** {@inheritDoc} */
     public int size() {
         return indexList.size();
     }
     
-    /*
-     * @see java.util.List#set(int, Object)
-     */
+    /** {@inheritDoc} */
     public ElementType set(int index, ElementType element) {
         
         if(index < 0 && index > indexList.size()) {
@@ -296,17 +287,13 @@ class ListView<ElementType extends XMLObject> extends AbstractList<ElementType>{
         return replacedElement;
     }
     
-    /*
-     *  @see java.util.List#add(int, Object)
-     */
+    /** {@inheritDoc} */
     public void add(int index, ElementType element) {
         indexCheck(element);
         backingList.add(element);
     }
     
-    /*
-     * @see java.util.List#remove(int)
-     */
+    /** {@inheritDoc} */
     public ElementType remove(int index) {
         return backingList.remove(index);
     }

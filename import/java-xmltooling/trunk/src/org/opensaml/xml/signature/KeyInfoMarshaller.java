@@ -35,29 +35,27 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
- * A marshaller for {@link org.opensaml.xml.signature.impl.KeyInfoImpl} objects. This class, along with it's
+ * A marshaller for {@link KeyInfo} objects. This class, along with it's
  * respective builder and unmarshaller use the Apache XMLSec 1.3 APIs to perform signing and verification.
  */
 public class KeyInfoMarshaller implements Marshaller {
 
     /** Logger */
-    private static final Logger LOG = Logger.getLogger(KeyInfoMarshaller.class);
+    private static final Logger log = Logger.getLogger(KeyInfoMarshaller.class);
 
     /**
      * Constructor
      */
     public KeyInfoMarshaller() {
         if (!Init.isInitialized()) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Initializing XML security library");
+            if (log.isDebugEnabled()) {
+                log.debug("Initializing XML security library");
             }
             Init.init();
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public Element marshall(XMLObject xmlObject) throws MarshallingException {
         try {
             Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
@@ -67,9 +65,7 @@ public class KeyInfoMarshaller implements Marshaller {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public Element marshall(XMLObject xmlObject, Element parentElement) throws MarshallingException {
         Element marshalledElement = marshall(xmlObject, parentElement.getOwnerDocument());
         parentElement.appendChild(marshalledElement);
@@ -77,14 +73,12 @@ public class KeyInfoMarshaller implements Marshaller {
         return marshalledElement;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public Element marshall(XMLObject xmlObject, Document document) throws MarshallingException {
         KeyInfo keyInfoObj = (KeyInfo) xmlObject;
 
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Starting to marshall " + xmlObject.getElementQName());
+        if (log.isDebugEnabled()) {
+            log.debug("Starting to marshall " + xmlObject.getElementQName());
         }
 
         org.apache.xml.security.keys.KeyInfo keyInfoElem = new org.apache.xml.security.keys.KeyInfo(document);

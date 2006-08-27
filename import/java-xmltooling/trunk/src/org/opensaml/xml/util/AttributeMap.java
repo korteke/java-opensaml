@@ -82,32 +82,32 @@ public class AttributeMap implements Map<QName, String> {
         return Collections.unmodifiableSet(attributes.keySet());
     }
 
-    /** {@inheritDoc */
+    /** {@inheritDoc} */
     public int size() {
         return attributes.size();
     }
 
-    /** {@inheritDoc */
+    /** {@inheritDoc} */
     public boolean isEmpty() {
         return attributes.isEmpty();
     }
 
-    /** {@inheritDoc */
+    /** {@inheritDoc} */
     public boolean containsKey(Object key) {
         return attributes.containsKey(key);
     }
 
-    /** {@inheritDoc */
+    /** {@inheritDoc} */
     public boolean containsValue(Object value) {
         return attributes.containsValue(value);
     }
 
-    /** {@inheritDoc */
+    /** {@inheritDoc} */
     public String get(Object key) {
         return attributes.get(key);
     }
 
-    /** {@inheritDoc */
+    /** {@inheritDoc} */
     public String remove(Object key) {
         String removedValue = attributes.remove(key);
         if (removedValue != null) {
@@ -117,7 +117,7 @@ public class AttributeMap implements Map<QName, String> {
         return removedValue;
     }
 
-    /** {@inheritDoc */
+    /** {@inheritDoc} */
     public void putAll(Map<? extends QName, ? extends String> t) {
         if (t != null && t.size() > 0) {
             for (Entry<? extends QName, ? extends String> entry : t.entrySet()) {

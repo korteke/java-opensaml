@@ -54,9 +54,7 @@ public class SignatureMarshaller implements Marshaller {
         }
     }
 
-    /*
-     * @see org.opensaml.xml.io.Marshaller#marshall(org.opensaml.xml.XMLObject)
-     */
+    /** {@inheritDoc} */
     public Element marshall(XMLObject xmlObject) throws MarshallingException {
         try {
             Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
@@ -66,18 +64,14 @@ public class SignatureMarshaller implements Marshaller {
         }
     }
 
-    /*
-     * @see org.opensaml.xml.io.Marshaller#marshall(org.opensaml.xml.XMLObject, org.w3c.dom.Element)
-     */
+    /** {@inheritDoc} */
     public Element marshall(XMLObject xmlObject, Element parentElement) throws MarshallingException {
         Element signatureElement = createSignatureElement((Signature) xmlObject, parentElement.getOwnerDocument());
         XMLHelper.appendChildElement(parentElement, signatureElement);
         return signatureElement;
     }
 
-    /*
-     * @see org.opensaml.xml.io.Marshaller#marshall(org.opensaml.xml.XMLObject, org.w3c.dom.Document)
-     */
+    /** {@inheritDoc} */
     public Element marshall(XMLObject xmlObject, Document document) throws MarshallingException {
         Element signatureElement = createSignatureElement((Signature) xmlObject, document);
         
@@ -91,6 +85,16 @@ public class SignatureMarshaller implements Marshaller {
         return signatureElement;
     }
     
+    /**
+     * Creates the signature elements but does not compute the signatuer.
+     * 
+     * @param signature the XMLObject to be signed
+     * @param document the owning document
+     * 
+     * @return the Signature element
+     * 
+     * @throws MarshallingException thrown if the signature can not be constructed
+     */
     private Element createSignatureElement(Signature signature, Document document) throws MarshallingException {
         if (log.isDebugEnabled()) {
             log.debug("Starting to marshall " + signature.getElementQName());

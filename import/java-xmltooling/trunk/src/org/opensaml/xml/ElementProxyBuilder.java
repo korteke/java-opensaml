@@ -28,9 +28,7 @@ public class ElementProxyBuilder extends AbstractXMLObjectBuilder<ElementProxy> 
 
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public ElementProxy buildObject(String namespaceURI, String localName, String namespacePrefix) {
         return new ElementProxy(namespaceURI, localName, namespacePrefix);
     }

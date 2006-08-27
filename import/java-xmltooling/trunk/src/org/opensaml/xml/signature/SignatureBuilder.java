@@ -31,7 +31,11 @@ public class SignatureBuilder extends AbstractXMLObjectBuilder<Signature> {
 
     }
     
-    /** {@inheritDoc} */
+    /**
+     * Creates the XMLObject with the default prefix and local name.
+     * 
+     * @return the Signature object
+     */
     public Signature buildObject() {
         return buildObject(XMLConstants.XMLSIG_NS, Signature.DEFAULT_ELEMENT_LOCAL_NAME, XMLConstants.XMLSIG_PREFIX);
     }

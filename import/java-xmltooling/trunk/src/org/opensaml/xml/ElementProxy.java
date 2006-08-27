@@ -84,16 +84,12 @@ public class ElementProxy extends AbstractValidatingXMLObject implements Attribu
         textContent = prepareForAssignment(textContent, newContent);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public AttributeMap getUnknownAttributes() {
         return attributes;
     }
     
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public List<XMLObject> getUnknownXMLObjects() {
         return children;
     }

@@ -28,16 +28,12 @@ import org.w3c.dom.Element;
  */
 public class XSStringMarshaller extends AbstractXMLObjectMarshaller {
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         // no attributes
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     protected void marshallElementContent(XMLObject xmlObject, Element domElement) throws MarshallingException {
         XSString xsiString = (XSString) xmlObject;
         

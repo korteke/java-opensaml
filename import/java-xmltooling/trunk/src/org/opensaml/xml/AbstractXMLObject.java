@@ -17,11 +17,12 @@
 package org.opensaml.xml;
 
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import javax.xml.namespace.QName;
+
+import javolution.util.FastSet;
 
 import org.apache.log4j.Logger;
 import org.opensaml.xml.util.DatatypeHelper;
@@ -46,7 +47,7 @@ public abstract class AbstractXMLObject implements XMLObject {
     private QName typeQname;
 
     /** Namespaces declared on this element */
-    private HashSet<Namespace> namespaces = new HashSet<Namespace>();
+    private FastSet<Namespace> namespaces;
 
     /** DOM Element representation of this object */
     private Element dom;
@@ -59,14 +60,13 @@ public abstract class AbstractXMLObject implements XMLObject {
      * @param namespacePrefix the prefix for the given namespace
      */
     protected AbstractXMLObject(String namespaceURI, String elementLocalName, String namespacePrefix) {
+        namespaces = new FastSet<Namespace>();
         elementQname = XMLHelper.constructQName(namespaceURI, elementLocalName, namespacePrefix);
         addNamespace(new Namespace(namespaceURI, namespacePrefix));
         setElementNamespacePrefix(namespacePrefix);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public QName getElementQName() {
         return new QName(elementQname.getNamespaceURI(), elementQname.getLocalPart(), elementQname.getPrefix());
     }
@@ -95,32 +95,24 @@ public abstract class AbstractXMLObject implements XMLObject {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public Set<Namespace> getNamespaces() {
         return Collections.unmodifiableSet(namespaces);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public void addNamespace(Namespace namespace) {
         if (namespace != null) {
             namespaces.add(namespace);
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public void removeNamespace(Namespace namespace) {
         namespaces.remove(namespace);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public QName getSchemaType() {
         return typeQname;
     }
@@ -150,45 +142,33 @@ public abstract class AbstractXMLObject implements XMLObject {
         return parent;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public void setParent(XMLObject newParent) {
         parent = newParent;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public boolean hasParent() {
         return getParent() != null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public boolean hasChildren() {
         List<? extends XMLObject> children = getOrderedChildren();
         return (children != null && children.size() > 0);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public Element getDOM() {
         return dom;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public void setDOM(Element dom) {
         this.dom = dom;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public void releaseDOM() {
         if (log.isTraceEnabled()) {
             log.trace("Releasing cached DOM reprsentation for " + getElementQName());
@@ -197,9 +177,7 @@ public abstract class AbstractXMLObject implements XMLObject {
         setDOM(null);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public void releaseParentDOM(boolean propagateRelease) {
         if (log.isTraceEnabled()) {
             log.trace("Releasing cached DOM reprsentation for parent of " + getElementQName()
@@ -215,9 +193,7 @@ public abstract class AbstractXMLObject implements XMLObject {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public void releaseChildrenDOM(boolean propagateRelease) {
         if (log.isTraceEnabled()) {
             log.trace("Releasing cached DOM reprsentation for children of " + getElementQName()

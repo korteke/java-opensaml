@@ -23,8 +23,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 /**
- * Extension to {@link org.opensaml.xml.DOMCachingXMLObject} that implements
- * {@link org.opensaml.xml.signature.SignableXMLObject}.
+ * Base for signable XMLObjects.
  */
 public abstract class AbstractSignableXMLObject extends AbstractXMLObject implements SignableXMLObject {
 
@@ -42,9 +41,7 @@ public abstract class AbstractSignableXMLObject extends AbstractXMLObject implem
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
-    /*
-     * @see org.opensaml.xml.SignableXMLObject#isSigned()
-     */
+    /** {@inheritDoc} */
     public boolean isSigned() {
         Element domElement = getDOM();
 
@@ -69,16 +66,12 @@ public abstract class AbstractSignableXMLObject extends AbstractXMLObject implem
         return false;
     }
 
-    /*
-     * @see org.opensaml.xml.SignableXMLObject#getSignature()
-     */
+    /** {@inheritDoc} */
     public Signature getSignature() {
         return signature;
     }
 
-    /*
-     * @see org.opensaml.xml.SignableXMLObject#setSignature(org.opensaml.xml.signature.XMLSecSignatureImpl)
-     */
+    /** {@inheritDoc} */
     public void setSignature(Signature newSignature) {
         signature = prepareForAssignment(signature, newSignature);
     }

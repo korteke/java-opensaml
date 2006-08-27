@@ -113,9 +113,7 @@ public class Namespace {
         alwaysDeclare = shouldAlwaysDeclare;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public String toString() {
         if (nsStr == null) {
             constructStringRepresentation();
@@ -124,9 +122,7 @@ public class Namespace {
         return nsStr;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public int hashCode() {
         String hashingString = toString() + Boolean.toString(alwaysDeclare);
         return hashingString.hashCode();

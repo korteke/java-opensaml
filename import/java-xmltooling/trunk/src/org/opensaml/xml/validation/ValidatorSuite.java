@@ -18,11 +18,12 @@ package org.opensaml.xml.validation;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.xml.namespace.QName;
+
+import javolution.util.FastMap;
 
 import org.apache.log4j.Logger;
 import org.opensaml.xml.XMLObject;
@@ -52,7 +53,7 @@ public class ValidatorSuite {
      * @param suiteId unique ID for this suite
      */
     public ValidatorSuite(String suiteId) {
-        validators = new HashMap<QName, List<Validator>>();
+        validators = new FastMap<QName, List<Validator>>();
         id = suiteId;
     }
 

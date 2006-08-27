@@ -44,10 +44,13 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+/**
+ * Reads in an XML configuration and configures the XMLTooling library accordingly.
+ */
 public class XMLConfigurator {
 
     /** Logger */
-    private static final Logger LOG = Logger.getLogger(XMLConfigurator.class);
+    private static final Logger log = Logger.getLogger(XMLConfigurator.class);
 
     /** Schema used to validate configruation files */
     private Schema configurationSchema;
@@ -84,22 +87,22 @@ public class XMLConfigurator {
             if (configurationFile.isDirectory()) {
                 File[] configurations = configurationFile.listFiles();
                 for (int i = 0; i < configurations.length; i++) {
-                    if (LOG.isDebugEnabled()) {
-                        LOG.debug("Parsing configuration file " + configurations[i].getAbsolutePath());
+                    if (log.isDebugEnabled()) {
+                        log.debug("Parsing configuration file " + configurations[i].getAbsolutePath());
                     }
                     configuration = documentBuilder.parse(new FileInputStream(configurations[i]));
                     load(configuration);
                 }
             } else {
                 // Given file is not a directory so try to load it directly
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("Parsing configuration file " + configurationFile.getAbsolutePath());
+                if (log.isDebugEnabled()) {
+                    log.debug("Parsing configuration file " + configurationFile.getAbsolutePath());
                 }
                 configuration = documentBuilder.parse(new FileInputStream(configurationFile));
                 load(configuration);
             }
         } catch (Exception e) {
-            LOG.fatal("Unable to parse configuration file(s) in " + configurationFile.getAbsolutePath(), e);
+            log.fatal("Unable to parse configuration file(s) in " + configurationFile.getAbsolutePath(), e);
             throw new ConfigurationException("Unable to parse configuration file(s) in "
                     + configurationFile.getAbsolutePath(), e);
         }
@@ -112,33 +115,33 @@ public class XMLConfigurator {
      * @throws ConfigurationException thrown if the configuration file(s) can not be be read or invalid
      */
     public void load(Document configuration) throws ConfigurationException {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Loading configuration from XML Document");
+        if (log.isDebugEnabled()) {
+            log.debug("Loading configuration from XML Document");
         }
 
-        if (LOG.isTraceEnabled()) {
-            LOG.trace("\n" + XMLHelper.nodeToString(configuration.getDocumentElement()));
+        if (log.isTraceEnabled()) {
+            log.trace("\n" + XMLHelper.nodeToString(configuration.getDocumentElement()));
         }
 
         // Schema validation
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Schema validating configuration Document");
+        if (log.isDebugEnabled()) {
+            log.debug("Schema validating configuration Document");
         }
         validateConfiguration(configuration);
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Configuration document validated");
+        if (log.isDebugEnabled()) {
+            log.debug("Configuration document validated");
         }
 
         // Initialize object providers
         NodeList objectProviders = configuration.getDocumentElement().getElementsByTagNameNS(
                 XMLConstants.XMLTOOLING_CONFIG_NS, "ObjectProviders");
         if (objectProviders.getLength() > 0) {
-            if (LOG.isInfoEnabled()) {
-                LOG.info("Preparing to load ObjectProviders");
+            if (log.isInfoEnabled()) {
+                log.info("Preparing to load ObjectProviders");
             }
             initializeObjectProviders((Element) objectProviders.item(0));
-            if (LOG.isInfoEnabled()) {
-                LOG.info("ObjectProviders load complete");
+            if (log.isInfoEnabled()) {
+                log.info("ObjectProviders load complete");
             }
         }
 
@@ -146,12 +149,12 @@ public class XMLConfigurator {
         NodeList validatorSuitesNodes = configuration.getDocumentElement().getElementsByTagNameNS(
                 XMLConstants.XMLTOOLING_CONFIG_NS, "ValidatorSuites");
         if (validatorSuitesNodes.getLength() > 0) {
-            if (LOG.isInfoEnabled()) {
-                LOG.info("Preparing to load ValidatorSuites");
+            if (log.isInfoEnabled()) {
+                log.info("Preparing to load ValidatorSuites");
             }
             initializeValidatorSuites((Element) validatorSuitesNodes.item(0));
-            if (LOG.isInfoEnabled()) {
-                LOG.info("ValidatorSuites load complete");
+            if (log.isInfoEnabled()) {
+                log.info("ValidatorSuites load complete");
             }
         }
     }
@@ -182,8 +185,8 @@ public class XMLConfigurator {
             qNameAttrib = objectProvider.getAttributeNodeNS(null, "qualifiedName");
             objectProviderName = XMLHelper.getAttributeValueAsQName(qNameAttrib);
 
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Initializing object provider " + objectProviderName);
+            if (log.isDebugEnabled()) {
+                log.debug("Initializing object provider " + objectProviderName);
             }
 
             try {
@@ -202,11 +205,11 @@ public class XMLConfigurator {
                 Configuration.registerObjectProvider(objectProviderName, builder, marshaller, unmarshaller,
                         objectProvider);
 
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug(objectProviderName + " intialized and configuration cached");
+                if (log.isDebugEnabled()) {
+                    log.debug(objectProviderName + " intialized and configuration cached");
                 }
             } catch (ConfigurationException e) {
-                LOG.fatal("Error initializing object provier " + objectProvider, e);
+                log.fatal("Error initializing object provier " + objectProvider, e);
                 // clean up any parts of the object provider that might have been registered before the failure
                 Configuration.deregisterObjectProvider(objectProviderName);
                 throw e;
@@ -237,12 +240,12 @@ public class XMLConfigurator {
             validatorSuiteId = validatorSuiteElement.getAttributeNS(null, "id");
             validatorSuite = new ValidatorSuite(validatorSuiteId);
 
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Initializing ValidatorSuite " + validatorSuiteId);
+            if (log.isDebugEnabled()) {
+                log.debug("Initializing ValidatorSuite " + validatorSuiteId);
             }
 
-            if (LOG.isTraceEnabled()) {
-                LOG.trace(XMLHelper.nodeToString(validatorSuiteElement));
+            if (log.isTraceEnabled()) {
+                log.trace(XMLHelper.nodeToString(validatorSuiteElement));
             }
 
             NodeList validatorList = validatorSuiteElement.getElementsByTagNameNS(XMLConstants.XMLTOOLING_CONFIG_NS,
@@ -256,8 +259,8 @@ public class XMLConfigurator {
                 validatorSuite.registerValidator(validatorQName, validator);
             }
 
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("ValidtorSuite " + validatorSuiteId + " has been initialized");
+            if (log.isDebugEnabled()) {
+                log.debug("ValidtorSuite " + validatorSuiteId + " has been initialized");
             }
             Configuration.registerValidatorSuite(validatorSuiteId, validatorSuite, validatorSuiteElement);
         }
@@ -266,7 +269,7 @@ public class XMLConfigurator {
     /**
      * Constructs an instance of the given class.
      * 
-     * @param className the class's name
+     * @param configuration the current configuration element
      * 
      * @return an instance of the given class
      * 
@@ -281,14 +284,14 @@ public class XMLConfigurator {
         }
 
         try {
-            if(LOG.isDebugEnabled()){
-                LOG.debug("Creating instance of " + className);
+            if(log.isDebugEnabled()){
+                log.debug("Creating instance of " + className);
             }
             Class clazz = Class.forName(className);
             Constructor constructor = clazz.getConstructor();
             return constructor.newInstance();
         } catch (Exception e) {
-            LOG.error("Can not create instance of " + className, e);
+            log.error("Can not create instance of " + className, e);
             throw new ConfigurationException("Can not create instance of " + className, e);
         }
     }
@@ -307,11 +310,11 @@ public class XMLConfigurator {
         } catch (IOException e) {
             // Should never get here as the DOM is already in memory
             String errorMsg = "Unable to read configuration file DOM";
-            LOG.error(errorMsg, e);
+            log.error(errorMsg, e);
             throw new ConfigurationException(errorMsg, e);
         } catch (SAXException e) {
             String errorMsg = "Configuration file does not validate against schema";
-            LOG.error(errorMsg, e);
+            log.error(errorMsg, e);
             throw new ConfigurationException(errorMsg, e);
         }
     }

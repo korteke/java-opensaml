@@ -31,10 +31,13 @@ import org.xml.sax.InputSource;
  * signals URI resolution.
  */
 public class NoOpEntityResolver implements EntityResolver {
+    
+    /** Constructor */
     public NoOpEntityResolver() {
 
     }
 
+    /** {@inheritDoc} */
     public InputSource resolveEntity(String publicId, String systemId){
         return new InputSource();
         // Hopefully this will fail the parser

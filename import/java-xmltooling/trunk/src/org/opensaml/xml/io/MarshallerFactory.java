@@ -16,11 +16,11 @@
 
 package org.opensaml.xml.io;
 
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.xml.namespace.QName;
+
+import javolution.util.FastMap;
 
 import org.apache.log4j.Logger;
 import org.opensaml.xml.XMLObject;
@@ -37,13 +37,13 @@ public class MarshallerFactory {
     private final static Logger log = Logger.getLogger(MarshallerFactory.class);
 
     /** Map of marshallers to the elements they are for */
-    private Map<QName, Marshaller> marshallers;
+    private FastMap<QName, Marshaller> marshallers;
 
     /**
      * Constructor
      */
     public MarshallerFactory() {
-        marshallers = new HashMap<QName, Marshaller>();
+        marshallers = new FastMap<QName, Marshaller>();
     }
 
     /**
@@ -54,6 +54,10 @@ public class MarshallerFactory {
      * @return the Marshaller or null
      */
     public Marshaller getMarshaller(QName key) {
+        if(key == null){
+            return null;
+        }
+        
         return marshallers.get(key);
     }
 
@@ -83,7 +87,7 @@ public class MarshallerFactory {
      * @return a listing of all the Marshallers currently registered
      */
     public Map<QName, Marshaller> getMarshallers() {
-        return Collections.unmodifiableMap(marshallers);
+        return marshallers.unmodifiable();
     }
 
     /**
@@ -97,10 +101,8 @@ public class MarshallerFactory {
         if (log.isDebugEnabled()) {
             log.debug("Registering marshaller, " + marshaller.getClass().getName() + ", for object type "
                     + key);
-        }
-        synchronized (marshallers) {
-            marshallers.put(key, marshaller);
-        }
+        }        
+        marshallers.put(key, marshaller);
     }
 
     /**
@@ -114,8 +116,6 @@ public class MarshallerFactory {
         if (log.isDebugEnabled()) {
             log.debug("Deregistering marshaller for object type " + key);
         }
-        synchronized (marshallers) {
-            return marshallers.remove(key);
-        }
+        return marshallers.remove(key);
     }
 }
