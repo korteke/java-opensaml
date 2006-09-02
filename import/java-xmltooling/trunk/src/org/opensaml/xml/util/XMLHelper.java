@@ -566,7 +566,7 @@ public class XMLHelper {
         if (DatatypeHelper.isEmpty(namespacePrefix)) {
             namespaceURI = lookupNamespaceURI(upperNamespaceSearchBound, "");
         } else {
-            namespaceURI = lookupNamespaceURI(upperNamespaceSearchBound, namespacePrefix);
+            namespaceURI = lookupNamespaceURI(domElement, upperNamespaceSearchBound, namespacePrefix);
         }
 
         if (namespaceURI == null) {
@@ -594,6 +594,12 @@ public class XMLHelper {
 
             namespacePrefix = attributeNode.getPrefix();
             if (!DatatypeHelper.isEmpty(namespacePrefix)) {
+                // If it's the "xmlns" prefix then it is the namespace decleration, 
+                // don't try to look it up and redeclare it
+                if(namespacePrefix.equals(XMLConstants.XMLNS_PREFIX)){
+                    continue;
+                }
+                
                 // check to see if the namespace for the prefix has already been defined within the XML fragment
                 namespaceURI = lookupNamespaceURI(domElement, upperNamespaceSearchBound, namespacePrefix);
                 if (namespaceURI == null) {
