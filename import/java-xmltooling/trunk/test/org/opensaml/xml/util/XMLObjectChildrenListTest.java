@@ -16,7 +16,6 @@
 
 package org.opensaml.xml.util;
 
-import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 
