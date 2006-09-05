@@ -123,9 +123,7 @@
 
     <!-- Removes all build generated content -->
     <target name="clean" depends="clean-compile">
-        <delete dir="${javadoc.dir}" />
-    	<delete dir="${test-report.dir}" />
-        <delete dir="${test-results.dir}" />
+        <delete dir="${doc.dir}" />
         <delete dir="${dist.dir}" />
     </target>
 
@@ -147,7 +145,7 @@
                 </java>
 
                 <echo message="**************************************************************" />
-                <echo message="    Remember, you must include the retroweaver-rt-1.2.3.jar" />
+                <echo message="    Remember, you must include the retroweaver-rt jar" />
                 <echo message="    file, located in the lib directory, along with the" />
                 <echo message="    ${jar.name} on your" />
                 <echo message="    classpath in order to use this with JDK 1.4" />
