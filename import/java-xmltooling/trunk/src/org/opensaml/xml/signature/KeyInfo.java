@@ -19,10 +19,11 @@ package org.opensaml.xml.signature;
 import java.security.PublicKey;
 import java.security.cert.X509CRL;
 import java.security.cert.X509Certificate;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.namespace.QName;
+
+import javolution.util.FastList;
 
 import org.opensaml.xml.AbstractXMLObject;
 import org.opensaml.xml.XMLObject;
@@ -48,16 +49,16 @@ public class KeyInfo extends AbstractXMLObject {
     public final static QName TYPE_NAME = new QName(XMLConstants.XMLSIG_NS, TYPE_LOCAL_NAME, XMLConstants.XMLSIG_PREFIX);
     
     /** Key names within this info */
-    private final ArrayList<String> keyNames;
+    private final FastList<String> keyNames;
     
     /** Keys within this info */
     private PublicKey publicKey;
     
     /** Certificates within this info */
-    private final ArrayList<X509Certificate> certificates;
+    private final FastList<X509Certificate> certificates;
     
     /** Certificate Revocation Lists within this info */
-    private final ArrayList<X509CRL> crls;
+    private final FastList<X509CRL> crls;
     
     /**
      * Constructor
@@ -69,9 +70,9 @@ public class KeyInfo extends AbstractXMLObject {
     protected KeyInfo(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         
-        keyNames = new ArrayList<String>();
-        certificates = new ArrayList<X509Certificate>();
-        crls = new ArrayList<X509CRL>();
+        keyNames = new FastList<String>();
+        certificates = new FastList<X509Certificate>();
+        crls = new FastList<X509CRL>();
     }
 
     /**

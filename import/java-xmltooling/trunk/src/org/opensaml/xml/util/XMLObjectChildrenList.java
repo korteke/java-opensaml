@@ -71,7 +71,7 @@ public class XMLObjectChildrenList<ElementType extends XMLObject> extends Abstra
         }
 
         this.parent = parent;
-        elements = new ArrayList<ElementType>(5);
+        elements = new FastList<ElementType>(5);
 
         addAll(elements);
     }

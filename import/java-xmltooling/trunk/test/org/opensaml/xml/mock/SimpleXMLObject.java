@@ -19,11 +19,12 @@
  */
 package org.opensaml.xml.mock;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import javax.xml.namespace.QName;
+
+import javolution.util.FastList;
 
 import org.opensaml.xml.ElementExtensibleXMLObject;
 import org.opensaml.xml.XMLObject;
@@ -127,7 +128,7 @@ public class SimpleXMLObject extends AbstractSignableXMLObject implements Elemen
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        FastList<XMLObject> children = new FastList<XMLObject>();
         
         children.addAll(simpleXMLObjects);
         children.addAll(unknownXMLObjects);
