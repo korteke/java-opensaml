@@ -616,7 +616,7 @@ public class XMLHelper {
             if (!DatatypeHelper.isEmpty(namespacePrefix)) {
                 // If it's the "xmlns" prefix then it is the namespace decleration, 
                 // don't try to look it up and redeclare it
-                if(namespacePrefix.equals(XMLConstants.XMLNS_PREFIX)){
+                if(namespacePrefix.equals(XMLConstants.XMLNS_PREFIX) || namespacePrefix.equals(XMLConstants.XML_PREFIX)){
                     continue;
                 }
                 
