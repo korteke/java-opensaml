@@ -16,6 +16,7 @@
 
 package org.opensaml.xml.util;
 
+import java.io.Writer;
 import java.util.StringTokenizer;
 
 import javax.xml.namespace.QName;
@@ -31,6 +32,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 import org.w3c.dom.ls.DOMImplementationLS;
+import org.w3c.dom.ls.LSOutput;
 import org.w3c.dom.ls.LSSerializer;
 
 /**
@@ -503,7 +505,7 @@ public class XMLHelper {
     }
 
     /**
-     * Converts a Node into a String using the DOM, level 3, Load/Save Serializer.
+     * Converts a Node into a String using the DOM, level 3, Load/Save serializer.
      * 
      * @param node the node to be written to a string
      * 
@@ -517,7 +519,25 @@ public class XMLHelper {
     }
     
     /**
-     * Converts a QName into a string that can be used for attribute values or element content;
+     * Writes a Node out to a Writer using the DOM, level 3, Load/Save serializer.  The writen content 
+     * is encoded using the encoding specified in the writer configuration.
+     * 
+     * @param node the node to write out
+     * @param output the writer to write the XML to
+     */
+    public static void writeNode(Node node, Writer output){
+        DOMImplementation domImpl = node.getOwnerDocument().getImplementation();
+        DOMImplementationLS domImplLS = (DOMImplementationLS) domImpl.getFeature("LS", "3.0");
+        LSSerializer serializer = domImplLS.createLSSerializer();
+        
+        LSOutput serializerOut = domImplLS.createLSOutput();
+        serializerOut.setCharacterStream(output);
+        
+        serializer.write(node, serializerOut);
+    }
+    
+    /**
+     * Converts a QName into a string that can be used for attribute values or element content.
      * 
      * @param qname the QName to convert to a string
      * 
