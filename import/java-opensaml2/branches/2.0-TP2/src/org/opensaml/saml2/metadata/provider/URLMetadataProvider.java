@@ -76,12 +76,13 @@ public class URLMetadataProvider extends AbstractObservableMetadataProvider {
      * @param metadataURL the URL to fetch the metadata
      * @param requestTimeout the time, in milliseconds, to wait for the metadata server to respond
      * 
-     * @throws MetadataProviderException thrown if the URL is not a valid URL or the metadata can not be retrieved from the URL
+     * @throws MetadataProviderException thrown if the URL is not a valid URL or the metadata can not be retrieved from
+     *             the URL
      */
     public URLMetadataProvider(String metadataURL, int requestTimeout) throws MetadataProviderException {
         this(metadataURL, requestTimeout, true);
     }
-    
+
     /**
      * Constructor
      * 
@@ -89,9 +90,11 @@ public class URLMetadataProvider extends AbstractObservableMetadataProvider {
      * @param requestTimeout the time, in milliseconds, to wait for the metadata server to respond
      * @param fetchMetadata whether to fetch the metadata during construction or not
      * 
-     * @throws MetadataProviderException thrown if the URL is not a valid URL or the metadata can not be retrieved from the URL
+     * @throws MetadataProviderException thrown if the URL is not a valid URL or the metadata can not be retrieved from
+     *             the URL
      */
-    protected URLMetadataProvider(String metadataURL, int requestTimeout, boolean fetchMetadata) throws MetadataProviderException {
+    protected URLMetadataProvider(String metadataURL, int requestTimeout, boolean fetchMetadata)
+            throws MetadataProviderException {
         super();
         try {
             metadataURI = new URI(metadataURL);
@@ -104,7 +107,7 @@ public class URLMetadataProvider extends AbstractObservableMetadataProvider {
 
             maxCacheDuration = 1000 * 60 * 60 * 24; // 24 hours
 
-            if(fetchMetadata){
+            if (fetchMetadata) {
                 refreshMetadata();
             }
         } catch (URISyntaxException e) {
@@ -165,9 +168,9 @@ public class URLMetadataProvider extends AbstractObservableMetadataProvider {
     }
 
     /**
-     * Sets the socket factory used to create sockets to the HTTP server. See
-     * {@linkplain http://jakarta.apache.org/commons/httpclient/sslguide.html} for how to use this to perform SSL/TLS
-     * client cert authentication to the server.
+     * Sets the socket factory used to create sockets to the HTTP server.
+     * 
+     * @see <a href="http://jakarta.apache.org/commons/httpclient/sslguide.html">HttpClient SSL Guide</a>
      * 
      * @param newSocketFactory the socket factory used to produce sockets used to connect to the server
      */
@@ -236,7 +239,7 @@ public class URLMetadataProvider extends AbstractObservableMetadataProvider {
             cachedMetadata = fetchMetadata();
 
             filterMetadata(cachedMetadata);
-            
+
             releaseMetadataDOM(cachedMetadata);
 
             if (log.isDebugEnabled()) {
@@ -249,7 +252,7 @@ public class URLMetadataProvider extends AbstractObservableMetadataProvider {
             if (log.isDebugEnabled()) {
                 log.debug("Metadata cache expires on " + mdExpirationTime);
             }
-            
+
             emitChangeEvent();
         } catch (IOException e) {
             String errorMsg = "Unable to read metadata from server";
@@ -265,7 +268,7 @@ public class URLMetadataProvider extends AbstractObservableMetadataProvider {
             throw new MetadataProviderException(errorMsg, e);
         }
     }
-    
+
     /**
      * Fetches the metadata from the remote server and unmarshalls it.
      * 
@@ -274,7 +277,7 @@ public class URLMetadataProvider extends AbstractObservableMetadataProvider {
      * @throws IOException thrown if the metadata can not be fetched from the remote server
      * @throws UnmarshallingException thrown if the metadata can not be unmarshalled
      */
-    protected XMLObject fetchMetadata() throws IOException, UnmarshallingException{
+    protected XMLObject fetchMetadata() throws IOException, UnmarshallingException {
         if (log.isDebugEnabled()) {
             log.debug("Fetching metadata document from remote server");
         }
@@ -286,18 +289,17 @@ public class URLMetadataProvider extends AbstractObservableMetadataProvider {
             getMethod.setDoAuthentication(true);
         }
         httpClient.executeMethod(getMethod);
-        
-        
+
         if (log.isTraceEnabled()) {
             log.trace("Retrieved the following metadata document\n" + getMethod.getResponseBodyAsString());
         }
-        
+
         XMLObject metadata = unmarshallMetadata(getMethod.getResponseBodyAsStream());
-        
-        if(log.isDebugEnabled()){
+
+        if (log.isDebugEnabled()) {
             log.debug("Unmarshalled metadata from remote server");
         }
         return metadata;
-        
+
     }
 }
