@@ -83,7 +83,7 @@
         <mkdir dir="${test-results.dir}" />
 
     	<echo message="Excuting unit tests using endorsed directory ${java.endorsed.dirs}" />
-        <junit printsummary="off" fork="yes" haltonerror="true" haltonfailure="true" dir="${basedir}">
+        <junit printsummary="off" fork="yes" forkmode="once" haltonerror="false" haltonfailure="true" dir="${basedir}">
         	<jvmarg line="-Djava.endorsed.dirs=${java.endorsed.dirs}" />
             <classpath refid="test-path" />
             <formatter type="xml" />
