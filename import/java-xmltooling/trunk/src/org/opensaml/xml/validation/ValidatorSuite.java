@@ -74,6 +74,10 @@ public class ValidatorSuite {
      * @throws ValidationException thrown if the element is not valid
      */
     public void validate(XMLObject xmlObject) throws ValidationException {
+        if(xmlObject == null){
+            return;
+        }
+        
         if(log.isDebugEnabled()){
             log.debug("Beginning to verify XMLObject " + xmlObject.getElementQName() + " and its children");
         }
@@ -81,8 +85,10 @@ public class ValidatorSuite {
         performValidation(xmlObject);
         
         List<XMLObject> children = xmlObject.getOrderedChildren();
-        for(XMLObject child : children){
-            validate(child);
+        if(children != null){
+            for(XMLObject child : children){
+                validate(child);
+            }
         }
     }
 
