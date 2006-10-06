@@ -178,7 +178,7 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
                 }
                 return;
             } else {
-                String errorMsg = "This unmarshaller only operations on " + targetQName + " elements not "
+                String errorMsg = "This unmarshaller only operates on " + targetQName + " elements not "
                         + elementName;
                 log.error(errorMsg);
                 throw new UnmarshallingException(errorMsg);
