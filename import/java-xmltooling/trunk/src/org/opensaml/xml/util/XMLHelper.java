@@ -646,4 +646,49 @@ public class XMLHelper {
             }
         }
     }
+    
+    /**
+     *  Shortcut for checking a DOM element node's namespace and local name
+     *
+     * @param  e            An element to compare against
+     * @param  ns           An XML namespace to compare
+     * @param  localName    A local name to compare
+     * @return              true iff the element's local name and namespace match the
+     *                          parameters
+     */
+    public static boolean isElementNamed(Element e, String ns, String localName) {
+        return (e != null && DatatypeHelper.safeEquals(ns, e.getNamespaceURI()) && DatatypeHelper.safeEquals(localName, e.getLocalName()));
+    }
+    
+    /**
+     *  Gets the first child Element of the node, skipping any Text nodes such as whitespace.
+     * 
+     * @param n     The parent in which to search for children
+     * @return      The first child Element of n, or null if none
+     */
+    public static Element getFirstChildElement(Node n) {
+        Node child = n.getFirstChild();
+        while (child != null && child.getNodeType() != Node.ELEMENT_NODE)
+            child = child.getNextSibling();
+        if (child != null)
+            return (Element)child;
+        else
+            return null;
+    }
+    
+    /**
+     *  Gets the next sibling Element of the node, skipping any Text nodes such as whitespace.
+     * 
+     * @param n     The sibling to start with
+     * @return      The next sibling Element of n, or null if none
+     */
+    public static Element getNextSiblingElement(Node n) {
+        Node sib = n.getNextSibling();
+        while (sib != null && sib.getNodeType() != Node.ELEMENT_NODE)
+            sib = sib.getNextSibling();
+        if (sib != null)
+            return (Element)sib;
+        else
+            return null;
+    }
 }
