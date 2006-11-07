@@ -16,39 +16,31 @@
 
 package org.opensaml.xml.encryption;
 
-import org.apache.xml.security.encryption.XMLCipher;
+import org.opensaml.xml.XMLObject;
+import org.opensaml.xml.io.Unmarshaller;
+import org.opensaml.xml.io.UnmarshallingException;
+import org.w3c.dom.Element;
 
 /**
- * Parameters for encrypting keys.
+ *
  */
-public class KeyEncryptionParameters extends EncryptionParameters {
-
-    /** Recipient of the key */
-    private String recipient;
+public class EncryptedDataUnmarshaller implements Unmarshaller {
 
     /**
      * Constructor
+     *
      */
-    public KeyEncryptionParameters() {
+    public EncryptedDataUnmarshaller() {
         super();
-        this.setAlgorithm(XMLCipher.RSA_v1dot5);
+        // TODO Auto-generated constructor stub
     }
 
-    /**
-     * Gets the recipient of the key.
-     * 
-     * @return the recipient of the key
+    /*
+     * @see org.opensaml.xml.io.Unmarshaller#unmarshall(org.w3c.dom.Element)
      */
-    public String getRecipient() {
-        return recipient;
+    public XMLObject unmarshall(Element element) throws UnmarshallingException {
+        // TODO Auto-generated method stub
+        return null;
     }
 
-    /**
-     * Sets the recipient of the key.
-     * 
-     * @param recipient the recipient of the key
-     */
-    public void setRecipient(String recipient) {
-        this.recipient = recipient;
-    }
 }

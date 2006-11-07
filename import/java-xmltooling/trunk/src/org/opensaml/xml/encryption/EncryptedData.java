@@ -37,6 +37,10 @@ public class EncryptedData extends EncryptedType {
     /** QName of the XSI type */
     public final static QName TYPE_NAME = new QName(XMLConstants.XMLENC_NS, TYPE_LOCAL_NAME, XMLConstants.XMLENC_PREFIX);
     
+    /** Apache XML Security {@link org.apache.xml.security.encryption.EncryptedData} object 
+     * which this XMLObject is wrapping */
+    org.apache.xml.security.encryption.EncryptedData xmlEncData;
+    
     /**
      * Constructor
      * 
@@ -46,5 +50,21 @@ public class EncryptedData extends EncryptedType {
      */
     protected EncryptedData(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
+    }
+    
+    //TODO this will all change when schema XMLObjects are implemented.
+
+    /**
+     * @return Returns the {@link org.apache.xml.security.encryption.EncryptedData} object that this object is wrapping
+     */
+    public org.apache.xml.security.encryption.EncryptedData getXMLEncData() {
+        return xmlEncData;
+    }
+
+    /**
+     * @param xmlEncData  Sets the {@link org.apache.xml.security.encryption.EncryptedData} object that this object is wrapping
+     */
+    public void setXMLEncData(org.apache.xml.security.encryption.EncryptedData xmlEncData) {
+        this.xmlEncData = xmlEncData;
     }
 }
