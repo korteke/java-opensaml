@@ -16,21 +16,36 @@
 
 package org.opensaml.xml;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.util.HashMap;
 
 import javax.xml.namespace.QName;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.TransformerFactoryConfigurationError;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 import org.apache.log4j.Logger;
 import org.custommonkey.xmlunit.XMLTestCase;
 import org.custommonkey.xmlunit.XMLUnit;
 import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallerFactory;
+import org.opensaml.xml.io.Unmarshaller;
 import org.opensaml.xml.io.UnmarshallerFactory;
+import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.mock.SimpleXMLObject;
 import org.opensaml.xml.parse.ParserPool;
+import org.opensaml.xml.parse.XMLParserException;
 import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.xml.sax.InputSource;
 
 /**
  * Base test case class for tests that operate on XMLObjects.
@@ -119,7 +134,66 @@ public class XMLObjectBaseTestCase extends XMLTestCase {
         }
         return builder.buildObject(objectQName.getNamespaceURI(), objectQName.getLocalPart(), objectQName.getPrefix());
     }
+    
+    /**
+     * Unmarshalls an element file into its XMLObject.
+     * 
+     * @return the XMLObject from the file
+     */
+    protected XMLObject unmarshallElement(String elementFile) {
+        try {
+            Document doc = parserPool.parse(new InputSource(XMLObjectBaseTestCase.class.getResourceAsStream(elementFile)));
+            Element samlElement = doc.getDocumentElement();
 
+            Unmarshaller unmarshaller = Configuration.getUnmarshallerFactory().getUnmarshaller(samlElement);
+            if (unmarshaller == null) {
+                fail("Unable to retrieve unmarshaller by DOM Element");
+            }
+
+            return unmarshaller.unmarshall(samlElement);
+        } catch (XMLParserException e) {
+            fail("Unable to parse element file " + elementFile);
+        } catch (UnmarshallingException e) {
+            fail("Unmarshalling failed when parsing element file " + elementFile + ": " + e);
+        }
+
+        return null;
+    }
+    
+    /**
+     * For convenience when testing, pretty-print the specified DOM node to a file, or to 
+     * the console if filename is null.
+     * 
+     * @return the SAMLObject from the file
+     */
+    public void printXML(Node node, String filename) {
+        Transformer tr = null;
+        try {
+            tr = TransformerFactory.newInstance().newTransformer();
+        } catch (TransformerConfigurationException e) {
+            e.printStackTrace();
+        } catch (TransformerFactoryConfigurationError e) {
+            e.printStackTrace();
+        }
+        tr.setOutputProperty(OutputKeys.METHOD,"xml");
+        tr.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+        tr.setOutputProperty(OutputKeys.INDENT, "yes");
+        tr.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "3");
+
+        try {
+            if (filename == null || filename.equals("")) {
+                tr.transform( new DOMSource(node),new StreamResult(System.out));
+            } else {
+                tr.transform( new DOMSource(node),new StreamResult(new FileOutputStream(filename)));
+            }
+        } catch (TransformerException e) {
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        
+    }
+    
     static {
         try {
             XMLConfigurator configurator = new XMLConfigurator();
