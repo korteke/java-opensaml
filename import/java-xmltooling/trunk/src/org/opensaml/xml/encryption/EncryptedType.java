@@ -16,19 +16,17 @@
 
 package org.opensaml.xml.encryption;
 
-import java.util.List;
-
 import javax.xml.namespace.QName;
 
-import org.opensaml.xml.AbstractXMLObject;
-import org.opensaml.xml.XMLObject;
+import org.opensaml.xml.signature.KeyInfo;
 import org.opensaml.xml.util.XMLConstants;
+import org.opensaml.xml.validation.ValidatingXMLObject;
 
 /**
  * XMLObject representing XML Encryption, version 20021210, EncryptedType type. This is the base type for
  * {@link EncryptedData} and {@link EncryptedKey} types.
  */
-public abstract class EncryptedType extends AbstractXMLObject {
+public interface EncryptedType extends ValidatingXMLObject {
     
     /** Local name of the XSI type */
     public final static String TYPE_LOCAL_NAME = "EncryptedType"; 
@@ -36,125 +34,128 @@ public abstract class EncryptedType extends AbstractXMLObject {
     /** QName of the XSI type */
     public final static QName TYPE_NAME = new QName(XMLConstants.XMLENC_NS, TYPE_LOCAL_NAME, XMLConstants.XMLENC_PREFIX);
 
-    /** Unique ID for the encrypted element */
-    private String id;
+    /** Id attribute name */
+    public final static String ID_ATTRIB_NAME = "Id";
 
-    /** Unencrypted content type information */
-    private String type;
+    /** Type attribute name */
+    public final static String TYPE_ATTRIB_NAME = "Type";
 
-    /** MIME type of plaintext content */
-    private String mimeType;
+    /** MimeType attribute name */
+    public final static String MIMETYPE_ATTRIB_NAME = "MimeType";
 
-    /** Encoding applied to plaintext prior to encryption */
-    private String encoding;
-
-    /** Parameters for encrypting the plaintext content */
-    private EncryptionParameters encParams;
-
-    /**
-     * Constructor
-     * 
-     * @param namespaceURI the namespace the element is in
-     * @param elementLocalName the local name of the XML element this Object represents
-     * @param namespacePrefix the prefix for the given namespace
-     */
-    protected EncryptedType(String namespaceURI, String elementLocalName, String namespacePrefix) {
-        super(namespaceURI, elementLocalName, namespacePrefix);
-    }
+    /** Encoding attribute name */
+    public final static String ENCODING_ATTRIB_NAME = "Encoding";
 
     /**
      * Gets the unique ID for the XML element.
      * 
      * @return the unique ID for the XML element
      */
-    public String getID() {
-        return id;
-    }
+    public String getID();
 
     /**
      * Sets the unique ID for the XML element.
      * 
      * @param newID the unique ID for the XML element
      */
-    public void setID(String newID) {
-        id = prepareForAssignment(id, newID);
-    }
+    public void setID(String newID);
 
     /**
      * Gets the type information for the plaintext content.
      * 
      * @return the type information for the plaintext content
      */
-    public String getType() {
-        return type;
-    }
+    public String getType();
 
     /**
      * Sets the type information for the plaintext content.
      * 
      * @param newType the type information for the plaintext content
      */
-    public void setType(String newType) {
-        type = prepareForAssignment(type, newType);
-    }
+    public void setType(String newType);
 
     /**
      * Gets the MIME type of the plaintext content.
      * 
      * @return the MIME type of the plaintext content
      */
-    public String getMimeType() {
-        return mimeType;
-    }
+    public String getMimeType();
 
     /**
      * Sets the MIME type of the plaintext content.
      * 
      * @param newType the MIME type of the plaintext content
      */
-    public void setMimeType(String newType) {
-        mimeType = prepareForAssignment(mimeType, newType);
-    }
+    public void setMimeType(String newType);
 
     /**
      * Gets the encoding applied to the plaintext content prior to encryption.
      * 
      * @return the encoding applied to the plaintext content prior to encryption
      */
-    public String getEncoding() {
-        return encoding;
-    }
+    public String getEncoding();
 
     /**
      * Sets the encoding applied to the plaintext content prior to encryption.
      * 
      * @param newEncoding the encoding applied to the plaintext content prior to encryption
      */
-    public void setEncoding(String newEncoding) {
-        encoding = prepareForAssignment(encoding, newEncoding);
-    }
-
-    /**
-     * Gets the parameters for encrypting the plaintext content.
-     * 
-     * @return the parameters for encrypting the plaintext content
-     */
-    public EncryptionParameters getEncryptionParameters() {
-        return encParams;
-    }
-
-    /**
-     * Sets the parameters for encrypting the plaintext content.
-     * 
-     * @param newParams the parameters for encrypting the plaintext content
-     */
-    public void setEncryptionParameters(EncryptionParameters newParams) {
-        encParams = prepareForAssignment(encParams, newParams);
-    }
+    public void setEncoding(String newEncoding);
     
-    /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        // Children are created and managed by the XML security library
-        return null;
-    }
+    /**
+     * Gets the EncryptionMethod child element.
+     * 
+     * @return the EncryptionMethod child element
+     */
+    public EncryptionMethod getEncryptionMethod();
+    
+     /**
+     * Sets the EncryptionMethod child element.
+     * 
+     * @param newEncryptionMethod the new EncryptionMethod child element
+     */
+    public void setEncryptionMethod(EncryptionMethod newEncryptionMethod);
+    
+    /**
+     * Gets the KeyInfo child element.
+     * 
+     * @return the KeyInfo child element
+     */
+    public KeyInfo getKeyInfo();
+    
+    /**
+     * Sets the KeyInfo child element.
+     * 
+     * @param newKeyInfo the new KeyInfo child element
+     */
+    public void setKeyInfo(KeyInfo newKeyInfo);
+    
+    /**
+     * Gets the CipherData child element.
+     * 
+     * @return the CipherData child element
+     */
+    public CipherData getCipherData();
+    
+    /**
+     * Sets the CipherData child element.
+     * 
+     * @param newCipherData the new CipherData child element
+     */
+    public void setCipherData(CipherData newCipherData);
+    
+    /**
+     * Gets the EncryptionProperties child element.
+     * 
+     * @return the EncryptionProperties child element
+     */
+    public EncryptionProperties getEncryptionProperties();
+    
+    /**
+     * Sets the EncryptionProperties child element.
+     * 
+     * @param newEncryptionProperties the new EncryptionProperties child element
+     */
+    public void setEncryptionProperties(EncryptionProperties newEncryptionProperties);
+    
 }

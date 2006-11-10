@@ -19,22 +19,31 @@ package org.opensaml.xml.encryption;
 import javax.xml.namespace.QName;
 
 import org.opensaml.xml.util.XMLConstants;
+import org.opensaml.xml.validation.ValidatingXMLObject;
 
 /**
- * XMLObject representing XML Encryption, version 20021210, EncryptedData element.
+ * XMLObject representing XML Encryption, version 20021210, CipherValue element.
  */
-public interface EncryptedData extends EncryptedType {
-
+public interface CipherValue extends ValidatingXMLObject {
+    
     /** Element local name */
-    public final static String DEFAULT_ELEMENT_LOCAL_NAME = "EncryptedData";
+    public final static String DEFAULT_ELEMENT_LOCAL_NAME = "CipherValue";
     
     /** Default element name */
     public final static QName DEFAULT_ELEMENT_NAME = new QName(XMLConstants.XMLENC_NS, DEFAULT_ELEMENT_LOCAL_NAME, XMLConstants.XMLENC_PREFIX);
     
-    /** Local name of the XSI type */
-    public final static String TYPE_LOCAL_NAME = "EncryptedDataType"; 
-        
-    /** QName of the XSI type */
-    public final static QName TYPE_NAME = new QName(XMLConstants.XMLENC_NS, TYPE_LOCAL_NAME, XMLConstants.XMLENC_PREFIX);
+    /**
+     * Get the base64-encoded value of the element's content.
+     * 
+     * @return base64-encoded encrypted data
+     */
+    public String getValue();
     
+    /**
+     * Set te base64-encoded value of the element's content
+     * 
+     * @param newValue the new base64-encoded encrypted value
+     */
+    public void setValue(String newValue);
+
 }
