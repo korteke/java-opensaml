@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<XMLTooling xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://www.opensaml.org/xmltooling-config ../../src/schema/xmltooling-config.xsd"
+ xmlns:xenc="http://www.w3.org/2001/04/xmlenc#"
+ xmlns="http://www.opensaml.org/xmltooling-config">
+    
+    <ObjectProviders>
+    
+        <!-- XML Encryption EncryptedData -->
+        <ObjectProvider qualifiedName="xenc:EncryptedData">
+            <BuilderClass className="org.opensaml.xml.encryption.impl.EncryptedDataBuilder" />
+            <MarshallingClass className="org.opensaml.xml.encryption.impl.EncryptedDataMarshaller" />
+            <UnmarshallingClass className="org.opensaml.xml.encryption.impl.EncryptedDataUnmarshaller" />
+        </ObjectProvider>
+        
+        <!-- XML Encryption EncryptedKey -->
+        <ObjectProvider qualifiedName="xenc:EncryptedKey">
+            <BuilderClass className="org.opensaml.xml.encryption.impl.EncryptedKeyBuilder" />
+            <MarshallingClass className="org.opensaml.xml.encryption.impl.EncryptedKeyMarshaller" />
+            <UnmarshallingClass className="org.opensaml.xml.encryption.impl.EncryptedKeyUnmarshaller" />
+        </ObjectProvider>
+        
+    </ObjectProviders>
+
+</XMLTooling>
