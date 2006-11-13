@@ -14,25 +14,31 @@
  * limitations under the License.
  */
 
-package org.opensaml.xml.encryption;
+package org.opensaml.xml.encryption.impl;
 
-import org.opensaml.xml.AbstractXMLObjectBuilder;
+import org.opensaml.xml.encryption.EncryptedData;
 import org.opensaml.xml.util.XMLConstants;
 
 /**
- * Builder of {@link EncryptedData} objects.
+ * Builder of {@link org.opensaml.xml.encryption.EncryptedData}
  */
-public class EncryptedDataBuilder extends AbstractXMLObjectBuilder<EncryptedData>{
+public class EncryptedDataBuilder extends AbstractXMLEncryptionBuilder<EncryptedData> {
 
     /**
      * Constructor
+     *
      */
-    public EncryptedDataBuilder(){
-        
+    public EncryptedDataBuilder() {
     }
-    
-    /** {@inheritDoc} */
+
+    /** {@inheritDoc */
+    public EncryptedData buildObject() {
+        return buildObject(XMLConstants.XMLENC_NS, EncryptedData.DEFAULT_ELEMENT_LOCAL_NAME, XMLConstants.XMLENC_PREFIX);
+    }
+
+    /** {@inheritDoc */
     public EncryptedData buildObject(String namespaceURI, String localName, String namespacePrefix) {
-        return new EncryptedData(XMLConstants.XMLENC_NS, EncryptedData.DEFAULT_ELEMENT_LOCAL_NAME, XMLConstants.XMLENC_PREFIX);
+        return new EncryptedDataImpl(namespaceURI, localName, namespacePrefix);
     }
+
 }

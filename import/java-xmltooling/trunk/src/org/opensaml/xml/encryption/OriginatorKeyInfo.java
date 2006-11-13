@@ -16,23 +16,20 @@
 
 package org.opensaml.xml.encryption;
 
-import org.opensaml.xml.AbstractXMLObjectBuilder;
+import javax.xml.namespace.QName;
+
+import org.opensaml.xml.signature.KeyInfoType;
 import org.opensaml.xml.util.XMLConstants;
 
 /**
- * Builder of {@link EncryptedKey} objects.
+ * XMLObject representing XML Encryption, version 20021210, OriginatorKeyInfo element.
  */
-public class EncryptedKeyBuilder extends AbstractXMLObjectBuilder<EncryptedKey> {
-
-    /**
-     * Constructor
-     */
-    public EncryptedKeyBuilder(){
-        
-    }
+public interface OriginatorKeyInfo extends KeyInfoType {
     
-    /** {@inheritDoc} */
-    public EncryptedKey buildObject(String namespaceURI, String localName, String namespacePrefix) {
-        return new EncryptedKey(XMLConstants.XMLENC_NS, EncryptedKey.DEFAULT_ELEMENT_LOCAL_NAME, XMLConstants.XMLENC_PREFIX);
-    }
+    /** Element local name */
+    public final static String DEFAULT_ELEMENT_LOCAL_NAME = "OriginatorKeyInfo";
+    
+    /** Default element name */
+    public final static QName DEFAULT_ELEMENT_NAME = new QName(XMLConstants.XMLENC_NS, DEFAULT_ELEMENT_LOCAL_NAME, XMLConstants.XMLENC_PREFIX);
+
 }

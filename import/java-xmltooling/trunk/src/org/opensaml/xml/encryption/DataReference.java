@@ -16,31 +16,20 @@
 
 package org.opensaml.xml.encryption;
 
-import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.io.Unmarshaller;
-import org.opensaml.xml.io.UnmarshallingException;
-import org.w3c.dom.Element;
+import javax.xml.namespace.QName;
+
+import org.opensaml.xml.util.XMLConstants;
+
 
 /**
- *
+ * XMLObject representing XML Encryption, version 20021210, DataReference element.
  */
-public class EncryptedDataUnmarshaller implements Unmarshaller {
-
-    /**
-     * Constructor
-     *
-     */
-    public EncryptedDataUnmarshaller() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
-
-    /*
-     * @see org.opensaml.xml.io.Unmarshaller#unmarshall(org.w3c.dom.Element)
-     */
-    public XMLObject unmarshall(Element element) throws UnmarshallingException {
-        // TODO Auto-generated method stub
-        return null;
-    }
+public interface DataReference extends ReferenceType {
+    
+    /** Element local name */
+    public final static String DEFAULT_ELEMENT_LOCAL_NAME = "DataReference";
+    
+    /** Default element name */
+    public final static QName DEFAULT_ELEMENT_NAME = new QName(XMLConstants.XMLENC_NS, DEFAULT_ELEMENT_LOCAL_NAME, XMLConstants.XMLENC_PREFIX);
 
 }

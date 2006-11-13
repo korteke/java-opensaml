@@ -23,7 +23,7 @@ import org.opensaml.xml.util.XMLConstants;
 /**
  * XMLObject representing XML Encryption, version 20021210, EncryptedKey element.
  */
-public class EncryptedKey extends EncryptedType {
+public interface EncryptedKey extends EncryptedType {
 
     /** Element local name */
     public final static String DEFAULT_ELEMENT_LOCAL_NAME = "EncryptedKey";
@@ -37,56 +37,51 @@ public class EncryptedKey extends EncryptedType {
     /** QName of the XSI type */
     public final static QName TYPE_NAME = new QName(XMLConstants.XMLENC_NS, TYPE_LOCAL_NAME, XMLConstants.XMLENC_PREFIX);
     
-    /** Hint about who the encrypted key is intended for */
-    private String recipient;
-    
-    /** Human readable name for this key */
-    private String carriedKeyName;
+    /** Recipient attribute name */
+    public final static String RECIPIENT_ATTRIB_NAME = "Recipient";
     
     /**
-     * Constructor
-     * 
-     * @param namespaceURI the namespace the element is in
-     * @param elementLocalName the local name of the XML element this Object represents
-     * @param namespacePrefix the prefix for the given namespace
-     */
-    protected EncryptedKey(String namespaceURI, String elementLocalName, String namespacePrefix) {
-        super(namespaceURI, elementLocalName, namespacePrefix);
-    }
-    
-    /**
-     * Gets the hint about who this encrypted key is inteded for.
+     * Gets the hint about for whom this encrypted key is intended
      * 
      * @return the hint about who this encrypted key is inteded for
      */
-    public String getRecipient(){
-        return recipient;
-    }
+    public String getRecipient();
     
     /**
-     * Sets the hint about who this encrypted key is inteded for.
+     * Sets the hint about for whom this encrypted key is intended
      * 
      * @param newRecipient the hint about who this encrypted key is inteded for
      */
-    public void setRecipient(String newRecipient){
-        recipient = prepareForAssignment(recipient, newRecipient);
-    }
+    public void setRecipient(String newRecipient);
     
     /**
-     * Gets the human readable name for this key.
+     * Gets the child element containing pointers to EncryptedData and EncryptedKey elements
+     * encrypted using this key.
+     * 
+     * @return the element containing a list of pointers to encrypted elements
+     */
+    public ReferenceList getReferenceList();
+    
+    /**
+     * Sets the child element containing pointers to EncryptedData and EncryptedKey elements
+     * encrypted using this key.
+     * 
+     * @param newReferenceList the new reference list for this encrypted key
+     */
+    public void setReferenceList(ReferenceList newReferenceList);
+    
+    /**
+     * Gets the child element carrying the human readable name for this key.
      * 
      * @return the human readable name for this key
      */
-    public String getCarriedKeyName(){
-        return carriedKeyName;
-    }
+    public CarriedKeyName getCarriedKeyName();
     
     /**
-     * Sets the human readable name for this key.
+     * Sets the child element carrying the human readable name for this key.
      * 
-     * @param newKeyName the human readable name for this key
+     * @param newCarriedKeyName the human readable name for this key
      */
-    public void setCarriedKeyName(String newKeyName){
-        carriedKeyName = prepareForAssignment(carriedKeyName, newKeyName);
-    }
+    public void setCarriedKeyName(CarriedKeyName newCarriedKeyName);
+    
 }

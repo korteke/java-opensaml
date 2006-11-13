@@ -2,18 +2,10 @@
 <XMLTooling xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:schemaLocation="http://www.opensaml.org/xmltooling-config ../../src/schema/xmltooling-config.xsd"
  xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
- xmlns:xenc="http://www.w3.org/2001/04/xmlenc#"
  xmlns:test="http://www.example.org/testObjects"
  xmlns="http://www.opensaml.org/xmltooling-config">
     
     <ObjectProviders>
-    
-        <!-- XML Encryption EncryptedData -->
-        <ObjectProvider qualifiedName="xenc:EncryptedData">
-            <BuilderClass className="org.opensaml.xml.encryption.EncryptedDataBuilder" />
-            <MarshallingClass className="org.opensaml.xml.encryption.EncryptedDataMarshaller" />
-            <UnmarshallingClass className="org.opensaml.xml.encryption.EncryptedDataUnmarshaller" />
-        </ObjectProvider>
         
         <!-- XML Digital Signature -->
         <ObjectProvider qualifiedName="ds:Signature">

@@ -72,7 +72,7 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
         
         KeyInfo keyInfo = new KeyInfo(sxo.getDOM().getOwnerDocument());
         keyInfo.addKeyName("BrentKeyName");
-        encData.getXMLEncData().setKeyInfo(keyInfo);
+        //encData.getXMLEncData().setKeyInfo(keyInfo);
         
         Marshaller marshaller = Configuration.getMarshallerFactory().getMarshaller(encData);
         Element encDataElement = null;

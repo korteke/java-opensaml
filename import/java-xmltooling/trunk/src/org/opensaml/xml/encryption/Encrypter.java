@@ -145,7 +145,7 @@ public class Encrypter {
         
         XMLObjectBuilder builder = Configuration.getBuilderFactory().getBuilder(EncryptedData.DEFAULT_ELEMENT_NAME);
         EncryptedData encDataXMLObject = (EncryptedData) builder.buildObject(EncryptedData.DEFAULT_ELEMENT_NAME);
-        encDataXMLObject.setXMLEncData(encryptedData);
+        //encDataXMLObject.setXMLEncData(encryptedData);
         
         return encDataXMLObject;
         
