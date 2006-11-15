@@ -90,6 +90,27 @@
             <UnmarshallingClass className="org.opensaml.xml.encryption.impl.ReferenceListUnmarshaller" />
         </ObjectProvider>
         
+        <!-- XML Encryption CarriedKeyName -->
+        <ObjectProvider qualifiedName="xenc:CarriedKeyName">
+            <BuilderClass className="org.opensaml.xml.encryption.impl.CarriedKeyNameBuilder" />
+            <MarshallingClass className="org.opensaml.xml.schema.impl.XSStringMarshaller" />
+            <UnmarshallingClass className="org.opensaml.xml.schema.impl.XSStringUnmarshaller" />
+        </ObjectProvider>
+        
+        <!-- XML Encryption EncryptionProperty -->
+        <ObjectProvider qualifiedName="xenc:EncryptionProperty">
+            <BuilderClass className="org.opensaml.xml.encryption.impl.EncryptionPropertyBuilder" />
+            <MarshallingClass className="org.opensaml.xml.encryption.impl.EncryptionPropertyMarshaller" />
+            <UnmarshallingClass className="org.opensaml.xml.encryption.impl.EncryptionPropertyUnmarshaller" />
+        </ObjectProvider>
+        
+        <!-- XML Encryption EncryptionProperties -->
+        <ObjectProvider qualifiedName="xenc:EncryptionProperties">
+            <BuilderClass className="org.opensaml.xml.encryption.impl.EncryptionPropertiesBuilder" />
+            <MarshallingClass className="org.opensaml.xml.encryption.impl.EncryptionPropertiesMarshaller" />
+            <UnmarshallingClass className="org.opensaml.xml.encryption.impl.EncryptionPropertiesUnmarshaller" />
+        </ObjectProvider>
+        
     </ObjectProviders>
 
 </XMLTooling>
