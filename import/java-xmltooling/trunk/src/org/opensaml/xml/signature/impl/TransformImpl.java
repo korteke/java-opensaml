@@ -35,7 +35,7 @@ public class TransformImpl extends AbstractValidatingXMLObject implements Transf
     
     private String algorithm;
     
-    private IndexedXMLObjectChildrenList indexedChildren;
+    private final IndexedXMLObjectChildrenList indexedChildren;
 
     /**
      * Constructor
