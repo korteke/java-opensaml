@@ -18,13 +18,13 @@ package org.opensaml.xml.encryption;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.xml.schema.XSInteger;
 import org.opensaml.xml.util.XMLConstants;
-import org.opensaml.xml.validation.ValidatingXMLObject;
 
 /**
  * XMLObject representing XML Encryption, version 20021210, KeySize element.
  */
-public interface KeySize extends ValidatingXMLObject {
+public interface KeySize extends XSInteger  {
     
     /** Element local name */
     public final static String DEFAULT_ELEMENT_LOCAL_NAME = "KeySize";
@@ -37,19 +37,5 @@ public interface KeySize extends ValidatingXMLObject {
         
     /** QName of the XSI type */
     public final static QName TYPE_NAME = new QName(XMLConstants.XMLENC_NS, TYPE_LOCAL_NAME, XMLConstants.XMLENC_PREFIX);
-    
-    /**
-     * Gets the integer key size content of the KeySize element
-     * 
-     * @return  the integer key size content of the KeySize element
-     */
-    public Integer getKeySize();
-    
-    /**
-     * Sets the integer key size content of the KeySize element
-     * 
-     * @param newKeySize the new integer key size
-     */
-    public void setKeySize(Integer newKeySize);
     
 }

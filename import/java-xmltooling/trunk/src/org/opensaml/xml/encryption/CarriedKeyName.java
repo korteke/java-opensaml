@@ -18,13 +18,13 @@ package org.opensaml.xml.encryption;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.xml.schema.XSString;
 import org.opensaml.xml.util.XMLConstants;
-import org.opensaml.xml.validation.ValidatingXMLObject;
 
 /**
  * XMLObject representing XML Encryption, version 20021210, CarriedKeyName element.
  */
-public interface CarriedKeyName extends ValidatingXMLObject {
+public interface CarriedKeyName extends XSString {
     
     /** Element local name */
     public final static String DEFAULT_ELEMENT_LOCAL_NAME = "CarriedKeyName";

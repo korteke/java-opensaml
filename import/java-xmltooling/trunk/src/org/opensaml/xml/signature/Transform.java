@@ -17,16 +17,18 @@
 package org.opensaml.xml.signature;
 
 
+import java.util.List;
+
 import javax.xml.namespace.QName;
 
-import org.opensaml.xml.ElementExtensibleXMLObject;
+import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.util.XMLConstants;
 import org.opensaml.xml.validation.ValidatingXMLObject;
 
 /**
  * XMLObject representing XML Digital Signature, version 20020212, Transform element.
  */
-public interface Transform extends ValidatingXMLObject, ElementExtensibleXMLObject {
+public interface Transform extends ValidatingXMLObject {
     
     /** Element local name */
     public final static String DEFAULT_ELEMENT_LOCAL_NAME = "Transform";
@@ -43,28 +45,42 @@ public interface Transform extends ValidatingXMLObject, ElementExtensibleXMLObje
     /** Algorithm attribute name */
     public final static String ALGORITHM_ATTRIB_NAME = "Algorithm";
     
-    /** TODO
-     * 
-     * @return
+    /**
+     * Get the Algorithm URI attribute value
+     *  
+     * @return the Algorithm URI attribute value
      */
     public String getAlgorithm();
     
-    /** TODO
+    /**
      * 
-     * @param newAlgorithm
+     * Set the Algorithm URI attribute value
+     *  
+     * @param newAlgorithm the new Algorithm URI attribute value
      */
     public void setAlgorithm(String newAlgorithm);
     
-    /** TODO
+    /** 
+     * Get the list of XMLObject children that match a particular QName
+     *
+     * @param typeOrName the QName of the statements to return
      * 
-     * @return
+     * @return the list of XMLObject children that match the given QName
      */
-    public XPath getXPath();
+    public List<XMLObject> getXMLObjects(QName typeOrName);
     
-    /** TODO
+    /** 
+     * Get the list of XPath child elements
      * 
-     * @param newXPath
+     * @return list of XPath child elements
      */
-    public void setXPath(XPath newXPath);
+    public List<XPath> getXPaths();
+    
+    /**
+     * Gets the ordered list of all XMLObject child elements of this element.
+     * 
+     * @return list of XMLObject children
+     */
+    public List<XMLObject> getAllChildren();
     
 }

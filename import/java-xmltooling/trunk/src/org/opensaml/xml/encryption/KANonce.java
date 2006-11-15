@@ -18,13 +18,13 @@ package org.opensaml.xml.encryption;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.xml.schema.XSBase64Binary;
 import org.opensaml.xml.util.XMLConstants;
-import org.opensaml.xml.validation.ValidatingXMLObject;
 
 /**
  * XMLObject representing XML Encryption, version 20021210, KA-Nonce element.
  */
-public interface KANonce extends ValidatingXMLObject {
+public interface KANonce extends XSBase64Binary {
     
     /** Element local name */
     public final static String DEFAULT_ELEMENT_LOCAL_NAME = "KA-Nonce";
@@ -32,18 +32,4 @@ public interface KANonce extends ValidatingXMLObject {
     /** Default element name */
     public final static QName DEFAULT_ELEMENT_NAME = new QName(XMLConstants.XMLENC_NS, DEFAULT_ELEMENT_LOCAL_NAME, XMLConstants.XMLENC_PREFIX);
     
-    /**
-     * Get the base64-encoded nonce value that is used to introduce variability into the key generation process.
-     * 
-     * @return the base64-encoded nonce value
-     */
-    public String getNonce();
-    
-    /**
-     * Set the base64-encoded nonce value that is used to introduce variability into the key generation process.
-     * 
-     * @param newNonce the new base64-encoded nonce value
-     */
-    public void setNonce(String newNonce);
-
 }

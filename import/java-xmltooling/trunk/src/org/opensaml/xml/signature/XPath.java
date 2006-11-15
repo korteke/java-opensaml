@@ -18,30 +18,18 @@ package org.opensaml.xml.signature;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.xml.schema.XSString;
 import org.opensaml.xml.util.XMLConstants;
-import org.opensaml.xml.validation.ValidatingXMLObject;
 
 /**
  * XMLObject representing XML Digital Signature, version 20020212, Transform element.
  */
-public interface XPath extends ValidatingXMLObject {
+public interface XPath extends XSString {
     
     /** Element local name */
     public final static String DEFAULT_ELEMENT_LOCAL_NAME = "XPath";
     
     /** Default element name */
     public final static QName DEFAULT_ELEMENT_NAME = new QName(XMLConstants.XMLSIG_NS, DEFAULT_ELEMENT_LOCAL_NAME, XMLConstants.XMLSIG_PREFIX);
-    
-    /** TODO
-     * 
-     * @return
-     */
-    public String getValue();
-    
-    /** TODO
-     * 
-     * @param newValue
-     */
-    public void setValue(String newValue);
 
 }

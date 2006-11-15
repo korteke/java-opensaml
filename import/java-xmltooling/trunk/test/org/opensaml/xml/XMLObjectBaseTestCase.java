@@ -35,6 +35,7 @@ import org.custommonkey.xmlunit.XMLTestCase;
 import org.custommonkey.xmlunit.XMLUnit;
 import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallerFactory;
+import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.io.Unmarshaller;
 import org.opensaml.xml.io.UnmarshallerFactory;
 import org.opensaml.xml.io.UnmarshallingException;
@@ -164,7 +165,6 @@ public class XMLObjectBaseTestCase extends XMLTestCase {
      * For convenience when testing, pretty-print the specified DOM node to a file, or to 
      * the console if filename is null.
      * 
-     * @return the SAMLObject from the file
      */
     public void printXML(Node node, String filename) {
         Transformer tr = null;
@@ -194,6 +194,21 @@ public class XMLObjectBaseTestCase extends XMLTestCase {
         
     }
     
+    /**
+     * For convenience when testing, pretty-print the specified XMLObject to a file, or to 
+     * the console if filename is null.
+     * 
+     */
+    public void printXML(XMLObject xmlObject, String filename) {
+        Element elem = null;
+        try {
+            elem = marshallerFactory.getMarshaller(xmlObject).marshall(xmlObject);
+        } catch (MarshallingException e) {
+            e.printStackTrace();
+        }
+        printXML(elem, filename);
+    }
+    
     static {
         try {
             XMLConfigurator configurator = new XMLConfigurator();
@@ -215,11 +230,14 @@ public class XMLObjectBaseTestCase extends XMLTestCase {
             Document encryptionConfig = parserPool.parse(clazz.getResourceAsStream("/conf/encryption-config.xml"));
             configurator.load(encryptionConfig);
 
+            Document signatureConfig = parserPool.parse(clazz.getResourceAsStream("/conf/signature-config.xml"));
+            configurator.load(signatureConfig);
+
             builderFactory = Configuration.getBuilderFactory();
             marshallerFactory = Configuration.getMarshallerFactory();
             unmarshallerFactory = Configuration.getUnmarshallerFactory();
         } catch (Exception e) {
-            System.err.println("Can not initialize XMLObjectBaseTestCase");
+            System.err.println("Can not initialize XMLObjectBaseTestCase" + e);
         }
     }
 }

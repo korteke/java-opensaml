@@ -18,33 +18,18 @@ package org.opensaml.xml.encryption;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.xml.schema.XSBase64Binary;
 import org.opensaml.xml.util.XMLConstants;
-import org.opensaml.xml.validation.ValidatingXMLObject;
 
 /**
  * XMLObject representing XML Encryption, version 20021210, OAEPparams element.
  */
-public interface OAEPparams extends ValidatingXMLObject {
+public interface OAEPparams extends XSBase64Binary {
     
     /** Element local name */
     public final static String DEFAULT_ELEMENT_LOCAL_NAME = "OAEPparams";
     
     /** Default element name */
     public final static QName DEFAULT_ELEMENT_NAME = new QName(XMLConstants.XMLENC_NS, DEFAULT_ELEMENT_LOCAL_NAME, XMLConstants.XMLENC_PREFIX);
-    
-    /**
-     * Gets the base64-encoded content of the element
-     * 
-     * @return  the base64-encoded content
-     */
-    public String getParams();
-    
-    /**
-     * Sets the base64-encoded content of the element
-     * 
-     * @param newParams the base64-encoded content
-     */
-    public void setParams(String newParams);
-    
     
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright [2005] [University Corporation for Advanced Internet Development, Inc.]
+ * Copyright [2006] [University Corporation for Advanced Internet Development, Inc.]
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,22 +14,23 @@
  * limitations under the License.
  */
 
-package org.opensaml.xml.encryption.impl;
+package org.opensaml.xml.encryption;
 
-import org.opensaml.xml.AbstractXMLObjectBuilder;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.XMLObjectBuilder;
 
 /**
- * Base builder for {@link org.opensaml.common.SAMLObject}s.
+ * Builder for XMLObjects from {@link org.opensaml.xml.encryption}
+ * 
+ * @param <XMLEncryptionType> the type of XMLObject being built
  */
-public abstract class AbstractXMLEncryptionBuilder<XMLEncryptionType extends XMLObject> extends
-        AbstractXMLObjectBuilder<XMLEncryptionType> implements XMLObjectBuilder<XMLEncryptionType> {
-
+public interface XMLEncryptionBuilder<XMLEncryptionType extends XMLObject> extends XMLObjectBuilder<XMLEncryptionType> {
+    
     /**
      * Builds an XMLObject using the default name and namespace information provided XML Encryption specifications.
      * 
      * @return built XMLObject
      */
-    public abstract XMLEncryptionType buildObject();
+    public XMLEncryptionType buildObject();
+
 }

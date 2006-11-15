@@ -16,13 +16,16 @@
 
 package org.opensaml.xml.encryption.impl;
 
+import org.opensaml.xml.AbstractXMLObjectBuilder;
 import org.opensaml.xml.encryption.EncryptedData;
+import org.opensaml.xml.encryption.XMLEncryptionBuilder;
 import org.opensaml.xml.util.XMLConstants;
 
 /**
  * Builder of {@link org.opensaml.xml.encryption.EncryptedData}
  */
-public class EncryptedDataBuilder extends AbstractXMLEncryptionBuilder<EncryptedData> {
+public class EncryptedDataBuilder extends AbstractXMLObjectBuilder<EncryptedData> 
+    implements XMLEncryptionBuilder<EncryptedData> {
 
     /**
      * Constructor

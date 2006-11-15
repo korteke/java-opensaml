@@ -23,6 +23,13 @@ import org.opensaml.xml.encryption.EncryptedData;
  */
 public class EncryptedDataImpl extends EncryptedTypeImpl implements EncryptedData {
 
+    /**
+     * Constructor
+     *
+     * @param namespaceURI
+     * @param elementLocalName
+     * @param namespacePrefix
+     */
     protected EncryptedDataImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }

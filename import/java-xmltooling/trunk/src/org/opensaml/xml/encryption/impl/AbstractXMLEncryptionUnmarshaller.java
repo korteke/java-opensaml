@@ -43,17 +43,17 @@ public abstract class AbstractXMLEncryptionUnmarshaller extends AbstractXMLObjec
     /**
      * {@inheritDoc}
      */
-    protected void processChildElement(XMLObject parentSAMLObject, XMLObject childSAMLObject)
+    protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
             throws UnmarshallingException {
         if (log.isDebugEnabled()) {
-            log.debug("Ignoring unknown element " + childSAMLObject.getElementQName());
+            log.debug("Ignoring unknown element " + childXMLObject.getElementQName());
         }
     }
 
     /**
      * {@inheritDoc}
      */
-    protected void processAttribute(XMLObject samlObject, Attr attribute) throws UnmarshallingException {
+    protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
         if (log.isDebugEnabled()) {
             log.debug("Ignorning unknown attribute " + attribute.getLocalName());
         }
@@ -62,7 +62,7 @@ public abstract class AbstractXMLEncryptionUnmarshaller extends AbstractXMLObjec
     /**
      * {@inheritDoc}
      */
-    protected void processElementContent(XMLObject samlObject, String elementContent) {
+    protected void processElementContent(XMLObject xmlObject, String elementContent) {
         if (log.isDebugEnabled()) {
             log.debug("Ignoring element content " + elementContent);
         }
