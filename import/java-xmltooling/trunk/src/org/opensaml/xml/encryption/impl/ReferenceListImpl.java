@@ -34,7 +34,7 @@ import org.opensaml.xml.validation.AbstractValidatingXMLObject;
 public class ReferenceListImpl extends AbstractValidatingXMLObject implements ReferenceList {
     
     /** ReferenceType child elements */
-    private IndexedXMLObjectChildrenList indexedChildren;
+    private final IndexedXMLObjectChildrenList indexedChildren;
     
     /**
      * Constructor

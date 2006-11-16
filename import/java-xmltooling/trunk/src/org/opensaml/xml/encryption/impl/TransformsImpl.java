@@ -31,7 +31,7 @@ import org.opensaml.xml.validation.AbstractValidatingXMLObject;
  */
 public class TransformsImpl extends AbstractValidatingXMLObject implements Transforms {
     
-    private XMLObjectChildrenList transforms;
+    private final XMLObjectChildrenList transforms;
 
     /**
      * Constructor
