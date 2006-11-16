@@ -22,7 +22,7 @@ import org.opensaml.xml.util.XMLConstants;
 import org.opensaml.xml.validation.ValidatingXMLObject;
 
 /**
- *
+ * XMLObject representing XML Digital Signature, version 20020212, SPKIData element.
  */
 public interface SPKIData extends ValidatingXMLObject {
     

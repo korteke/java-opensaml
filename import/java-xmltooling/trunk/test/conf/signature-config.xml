@@ -24,16 +24,46 @@
         </ObjectProvider>
         -->
         
+        <!-- XML Digital Signature XPath -->
         <ObjectProvider qualifiedName="ds:XPath">
             <BuilderClass className="org.opensaml.xml.signature.impl.XPathBuilder" />
             <MarshallingClass className="org.opensaml.xml.schema.impl.XSStringMarshaller" />
             <UnmarshallingClass className="org.opensaml.xml.schema.impl.XSStringUnmarshaller" />
         </ObjectProvider>
         
+        <!-- XML Digital Signature Transform -->
         <ObjectProvider qualifiedName="ds:Transform">
             <BuilderClass className="org.opensaml.xml.signature.impl.TransformBuilder" />
             <MarshallingClass className="org.opensaml.xml.signature.impl.TransformMarshaller" />
             <UnmarshallingClass className="org.opensaml.xml.signature.impl.TransformUnmarshaller" />
+        </ObjectProvider>
+        
+        <!-- XML Digital Signature Transforms -->
+        <ObjectProvider qualifiedName="ds:Transforms">
+            <BuilderClass className="org.opensaml.xml.signature.impl.TransformsBuilder" />
+            <MarshallingClass className="org.opensaml.xml.signature.impl.TransformsMarshaller" />
+            <UnmarshallingClass className="org.opensaml.xml.signature.impl.TransformsUnmarshaller" />
+        </ObjectProvider>
+        
+        <!-- XML Digital Signature KeyName -->
+        <ObjectProvider qualifiedName="ds:KeyName">
+            <BuilderClass className="org.opensaml.xml.signature.impl.KeyNameBuilder" />
+            <MarshallingClass className="org.opensaml.xml.schema.impl.XSStringMarshaller" />
+            <UnmarshallingClass className="org.opensaml.xml.schema.impl.XSStringUnmarshaller" />
+        </ObjectProvider>
+        
+        <!-- XML Digital Signature MgmtData -->
+        <ObjectProvider qualifiedName="ds:MgmtData">
+            <BuilderClass className="org.opensaml.xml.signature.impl.MgmtDataBuilder" />
+            <MarshallingClass className="org.opensaml.xml.schema.impl.XSStringMarshaller" />
+            <UnmarshallingClass className="org.opensaml.xml.schema.impl.XSStringUnmarshaller" />
+        </ObjectProvider>
+        
+        <!-- XML Digital Signature RetrievalMethod -->
+        <ObjectProvider qualifiedName="ds:RetrievalMethod">
+            <BuilderClass className="org.opensaml.xml.signature.impl.RetrievalMethodBuilder" />
+            <MarshallingClass className="org.opensaml.xml.signature.impl.RetrievalMethodMarshaller" />
+            <UnmarshallingClass className="org.opensaml.xml.signature.impl.RetrievalMethodUnmarshaller" />
         </ObjectProvider>
         
     </ObjectProviders>

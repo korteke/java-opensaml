@@ -22,7 +22,7 @@ import org.opensaml.xml.schema.XSString;
 import org.opensaml.xml.util.XMLConstants;
 
 /**
- *
+ * XMLObject representing XML Digital Signature, version 20020212, MgmtData element.
  */
 public interface MgmtData extends XSString {
     
@@ -31,7 +31,5 @@ public interface MgmtData extends XSString {
     
     /** Default element name */
     public final static QName DEFAULT_ELEMENT_NAME = new QName(XMLConstants.XMLSIG_NS, DEFAULT_ELEMENT_LOCAL_NAME, XMLConstants.XMLSIG_PREFIX);
-    
-    //TODO
 
 }

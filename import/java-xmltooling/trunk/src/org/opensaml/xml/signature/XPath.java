@@ -22,7 +22,7 @@ import org.opensaml.xml.schema.XSString;
 import org.opensaml.xml.util.XMLConstants;
 
 /**
- * XMLObject representing XML Digital Signature, version 20020212, Transform element.
+ * XMLObject representing XML Digital Signature, version 20020212, XPath element.
  */
 public interface XPath extends XSString {
     

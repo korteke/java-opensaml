@@ -14,22 +14,25 @@
  * limitations under the License.
  */
 
-package org.opensaml.xml.signature;
+package org.opensaml.xml.signature.impl;
 
-import javax.xml.namespace.QName;
-
-import org.opensaml.xml.schema.XSString;
-import org.opensaml.xml.util.XMLConstants;
+import org.opensaml.xml.schema.impl.XSStringImpl;
+import org.opensaml.xml.signature.MgmtData;
 
 /**
- * XMLObject representing XML Digital Signature, version 20020212, KeyName element.
+ * Concrete implementation of {@link org.opensaml.xml.signature.MgmtData}
  */
-public interface KeyName extends XSString {
-    
-    /** Element local name */
-    public final static String DEFAULT_ELEMENT_LOCAL_NAME = "KeyName";
-    
-    /** Default element name */
-    public final static QName DEFAULT_ELEMENT_NAME = new QName(XMLConstants.XMLSIG_NS, DEFAULT_ELEMENT_LOCAL_NAME, XMLConstants.XMLSIG_PREFIX);
+public class MgmtDataImpl extends XSStringImpl implements MgmtData {
+
+    /**
+     * Constructor
+     *
+     * @param namespaceURI
+     * @param elementLocalName
+     * @param namespacePrefix
+     */
+    protected MgmtDataImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
+        super(namespaceURI, elementLocalName, namespacePrefix);
+    }
 
 }

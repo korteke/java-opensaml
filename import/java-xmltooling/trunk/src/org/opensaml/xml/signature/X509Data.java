@@ -22,7 +22,7 @@ import org.opensaml.xml.util.XMLConstants;
 import org.opensaml.xml.validation.ValidatingXMLObject;
 
 /**
- *
+ * XMLObject representing XML Digital Signature, version 20020212, X509Data element.
  */
 public interface X509Data extends ValidatingXMLObject {
     
