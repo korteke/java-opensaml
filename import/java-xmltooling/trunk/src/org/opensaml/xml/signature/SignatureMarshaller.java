@@ -16,8 +16,6 @@
 
 package org.opensaml.xml.signature;
 
-import java.security.cert.X509Certificate;
-
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -108,6 +106,7 @@ public class SignatureMarshaller implements Marshaller {
                     .getCanonicalizationAlgorithm());
 
             KeyInfo keyInfo = signature.getKeyInfo();
+            /* TODO - temporarily broken by KeyInfo changes
             if (signature.getKeyInfo() != null) {
                 if (keyInfo.getPublicKey() != null) {
                     if (log.isDebugEnabled()) {
@@ -125,6 +124,7 @@ public class SignatureMarshaller implements Marshaller {
                     }
                 }
             }
+            */
 
             if (log.isDebugEnabled()) {
                 log.debug("Adding content to XMLSignature.");

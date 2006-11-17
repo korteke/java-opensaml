@@ -38,6 +38,7 @@ import org.opensaml.xml.mock.SimpleXMLObject;
 import org.opensaml.xml.mock.SimpleXMLObjectBuilder;
 import org.opensaml.xml.parse.ParserPool;
 import org.opensaml.xml.parse.XMLParserException;
+import org.opensaml.xml.signature.impl.KeyInfoBuilder;
 import org.opensaml.xml.util.XMLHelper;
 import org.opensaml.xml.validation.ValidationException;
 import org.w3c.dom.Document;
@@ -108,7 +109,8 @@ public class EnvelopedSignatureTest extends XMLObjectBaseTestCase {
         Signature signature = sxo.getSignature();
 
         KeyInfo keyInfo = keyInfoBuilder.buildObject();
-        keyInfo.setPublicKey(verificationKey);
+        //TODO temp broken by KeyInfo changes
+        //keyInfo.setPublicKey(verificationKey);
         signature.setKeyInfo(keyInfo);
 
         Marshaller marshaller = Configuration.getMarshallerFactory().getMarshaller(sxo);
@@ -154,8 +156,10 @@ public class EnvelopedSignatureTest extends XMLObjectBaseTestCase {
 
         KeyInfo keyInfo = signature.getKeyInfo();
         assertNotNull("Signature's KeyInfo was null", keyInfo);
-
-        PublicKey pubKey = keyInfo.getPublicKey();
+        
+        //TODO temp broken by KeyInfo changes
+        //PublicKey pubKey = keyInfo.getPublicKey();
+        PublicKey pubKey = null;
         assertNotNull("KeyInfo did not contain the verification key", pubKey);
     }
 
