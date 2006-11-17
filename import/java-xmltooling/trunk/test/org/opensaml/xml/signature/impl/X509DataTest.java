@@ -50,6 +50,7 @@ public class X509DataTest extends XMLObjectProviderBaseTestCase {
         X509Data x509Data = (X509Data) unmarshallElement(singleElementFile);
         
         assertNotNull("X509Data", x509Data);
+        assertEquals("Total # of XMLObject child elements", 0, x509Data.getXMLObjects().size());
     }
 
     /** {@inheritDoc} */

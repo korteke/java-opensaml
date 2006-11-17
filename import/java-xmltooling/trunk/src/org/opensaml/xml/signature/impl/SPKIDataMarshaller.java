@@ -16,15 +16,21 @@
 
 package org.opensaml.xml.signature.impl;
 
-import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.signature.KeyInfoType;
-import org.w3c.dom.Element;
+import org.opensaml.xml.signature.SPKIData;
+import org.opensaml.xml.util.XMLConstants;
 
 /**
- * A thread-safe Marshaller for {@link org.opensaml.xml.signature.KeyInfoType} objects.
+ * A thread-safe Marshaller for {@link org.opensaml.xml.signature.SPKIData} objects.
  */
-public class KeyInfoTypeMarshaller extends AbstractXMLSignatureMarshaller {
+public class SPKIDataMarshaller extends AbstractXMLSignatureMarshaller {
+    
+    /**
+     * Constructor
+     *
+     */
+    public SPKIDataMarshaller() {
+        super(XMLConstants.XMLSIG_NS, SPKIData.DEFAULT_ELEMENT_LOCAL_NAME);
+    }
 
     /**
      * Constructor
@@ -33,18 +39,8 @@ public class KeyInfoTypeMarshaller extends AbstractXMLSignatureMarshaller {
      * @param targetLocalName
      * @throws NullPointerException
      */
-    protected KeyInfoTypeMarshaller(String targetNamespaceURI, String targetLocalName) throws NullPointerException {
+    protected SPKIDataMarshaller(String targetNamespaceURI, String targetLocalName) throws NullPointerException {
         super(targetNamespaceURI, targetLocalName);
-    }
-
-    /** {@inheritDoc} */
-    protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
-        KeyInfoType keyInfo = (KeyInfoType) xmlObject;
-        
-        if (keyInfo.getID() != null) {
-            domElement.setAttributeNS(null, KeyInfoType.ID_ATTRIB_NAME, keyInfo.getID());
-            domElement.setIdAttributeNS(null, KeyInfoType.ID_ATTRIB_NAME, true);
-        }
     }
 
 }

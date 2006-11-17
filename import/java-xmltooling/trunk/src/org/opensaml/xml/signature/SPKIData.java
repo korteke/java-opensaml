@@ -16,8 +16,11 @@
 
 package org.opensaml.xml.signature;
 
+import java.util.List;
+
 import javax.xml.namespace.QName;
 
+import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.util.XMLConstants;
 import org.opensaml.xml.validation.ValidatingXMLObject;
 
@@ -38,6 +41,28 @@ public interface SPKIData extends ValidatingXMLObject {
     /** QName of the XSI type */
     public final static QName TYPE_NAME = new QName(XMLConstants.XMLSIG_NS, TYPE_LOCAL_NAME, XMLConstants.XMLSIG_PREFIX);
     
-    //TODO
+    /**
+     * Get the list of all XMLObject children
+     * 
+     * @return the list of XMLObject children
+     */
+    public List<XMLObject> getXMLObjects();
+    
+    /**
+     * Get the list of XMLObject children whose type or element
+     * QName matches the specified QName
+     * 
+     * @param typeOrName the QName of the desired elements
+     * 
+     * @return the matching list of XMLObject children
+     */
+    public List<XMLObject> getXMLObjects(QName typeOrName);
+    
+    /**
+     * Get the list of SPKISexp child elements
+     * 
+     * @return the list of SPKISexp child elements
+     */ 
+    public List<SPKISexp> getSPKISexps();
 
 }

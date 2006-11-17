@@ -59,10 +59,12 @@ public class KeyInfoTypeImpl extends AbstractValidatingXMLObject implements KeyI
         indexedChildren = new IndexedXMLObjectChildrenList(this);
     }
     
+    /** {@inheritDoc} */
     public String getID() {
         return this.id;
     }
 
+    /** {@inheritDoc} */
     public void setID(String newID) {
         this.id = prepareForAssignment(this.id, newID);
     }

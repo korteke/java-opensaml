@@ -206,6 +206,48 @@
             <UnmarshallingClass className="org.opensaml.xml.signature.impl.X509DataUnmarshaller" />
         </ObjectProvider>
         
+        <!-- XML Digital Signature PGPKeyID -->
+        <ObjectProvider qualifiedName="ds:PGPKeyID">
+            <BuilderClass className="org.opensaml.xml.signature.impl.PGPKeyIDBuilder" />
+            <MarshallingClass className="org.opensaml.xml.schema.impl.XSBase64BinaryMarshaller" />
+            <UnmarshallingClass className="org.opensaml.xml.schema.impl.XSBase64BinaryUnmarshaller" />
+        </ObjectProvider>
+        
+        <!-- XML Digital Signature PGPKeyPacket -->
+        <ObjectProvider qualifiedName="ds:PGPKeyPacket">
+            <BuilderClass className="org.opensaml.xml.signature.impl.PGPKeyPacketBuilder" />
+            <MarshallingClass className="org.opensaml.xml.schema.impl.XSBase64BinaryMarshaller" />
+            <UnmarshallingClass className="org.opensaml.xml.schema.impl.XSBase64BinaryUnmarshaller" />
+        </ObjectProvider>
+        
+        <!-- XML Digital Signature PGPData -->
+        <ObjectProvider qualifiedName="ds:PGPData">
+            <BuilderClass className="org.opensaml.xml.signature.impl.PGPDataBuilder" />
+            <MarshallingClass className="org.opensaml.xml.signature.impl.PGPDataMarshaller" />
+            <UnmarshallingClass className="org.opensaml.xml.signature.impl.PGPDataUnmarshaller" />
+        </ObjectProvider>
+        
+        <!-- XML Digital Signature SPKISexp -->
+        <ObjectProvider qualifiedName="ds:SPKISexp">
+            <BuilderClass className="org.opensaml.xml.signature.impl.SPKISexpBuilder" />
+            <MarshallingClass className="org.opensaml.xml.schema.impl.XSBase64BinaryMarshaller" />
+            <UnmarshallingClass className="org.opensaml.xml.schema.impl.XSBase64BinaryUnmarshaller" />
+        </ObjectProvider>
+        
+        <!-- XML Digital Signature SPKIData -->
+        <ObjectProvider qualifiedName="ds:SPKIData">
+            <BuilderClass className="org.opensaml.xml.signature.impl.SPKIDataBuilder" />
+            <MarshallingClass className="org.opensaml.xml.signature.impl.SPKIDataMarshaller" />
+            <UnmarshallingClass className="org.opensaml.xml.signature.impl.SPKIDataUnmarshaller" />
+        </ObjectProvider>
+        
+        <!-- XML Digital Signature KeyInfo -->
+        <ObjectProvider qualifiedName="ds:KeyInfo">
+            <BuilderClass className="org.opensaml.xml.signature.impl.KeyInfoBuilder" />
+            <MarshallingClass className="org.opensaml.xml.signature.impl.KeyInfoMarshaller" />
+            <UnmarshallingClass className="org.opensaml.xml.signature.impl.KeyInfoUnmarshaller" />
+        </ObjectProvider>
+        
     </ObjectProviders>
     
 </XMLTooling>
