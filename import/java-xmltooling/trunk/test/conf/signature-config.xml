@@ -66,6 +66,146 @@
             <UnmarshallingClass className="org.opensaml.xml.signature.impl.RetrievalMethodUnmarshaller" />
         </ObjectProvider>
         
+        <!-- XML Digital Signature Exponent -->
+        <ObjectProvider qualifiedName="ds:Exponent">
+            <BuilderClass className="org.opensaml.xml.signature.impl.ExponentBuilder" />
+            <MarshallingClass className="org.opensaml.xml.signature.impl.CryptoBinaryMarshaller" />
+            <UnmarshallingClass className="org.opensaml.xml.signature.impl.CryptoBinaryUnmarshaller" />
+        </ObjectProvider>        
+    
+        <!-- XML Digital Signature Modulus -->
+        <ObjectProvider qualifiedName="ds:Modulus">
+            <BuilderClass className="org.opensaml.xml.signature.impl.ModulusBuilder" />
+            <MarshallingClass className="org.opensaml.xml.signature.impl.CryptoBinaryMarshaller" />
+            <UnmarshallingClass className="org.opensaml.xml.signature.impl.CryptoBinaryUnmarshaller" />
+        </ObjectProvider>        
+    
+        <!-- XML Digital Signature P -->
+        <ObjectProvider qualifiedName="ds:P">
+            <BuilderClass className="org.opensaml.xml.signature.impl.PBuilder" />
+            <MarshallingClass className="org.opensaml.xml.signature.impl.CryptoBinaryMarshaller" />
+            <UnmarshallingClass className="org.opensaml.xml.signature.impl.CryptoBinaryUnmarshaller" />
+        </ObjectProvider>        
+    
+        <!-- XML Digital Signature Q -->
+        <ObjectProvider qualifiedName="ds:Q">
+            <BuilderClass className="org.opensaml.xml.signature.impl.QBuilder" />
+            <MarshallingClass className="org.opensaml.xml.signature.impl.CryptoBinaryMarshaller" />
+            <UnmarshallingClass className="org.opensaml.xml.signature.impl.CryptoBinaryUnmarshaller" />
+        </ObjectProvider>        
+    
+        <!-- XML Digital Signature G -->
+        <ObjectProvider qualifiedName="ds:G">
+            <BuilderClass className="org.opensaml.xml.signature.impl.GBuilder" />
+            <MarshallingClass className="org.opensaml.xml.signature.impl.CryptoBinaryMarshaller" />
+            <UnmarshallingClass className="org.opensaml.xml.signature.impl.CryptoBinaryUnmarshaller" />
+        </ObjectProvider>        
+    
+        <!-- XML Digital Signature Y -->
+        <ObjectProvider qualifiedName="ds:Y">
+            <BuilderClass className="org.opensaml.xml.signature.impl.YBuilder" />
+            <MarshallingClass className="org.opensaml.xml.signature.impl.CryptoBinaryMarshaller" />
+            <UnmarshallingClass className="org.opensaml.xml.signature.impl.CryptoBinaryUnmarshaller" />
+        </ObjectProvider>        
+    
+        <!-- XML Digital Signature J -->
+        <ObjectProvider qualifiedName="ds:J">
+            <BuilderClass className="org.opensaml.xml.signature.impl.JBuilder" />
+            <MarshallingClass className="org.opensaml.xml.signature.impl.CryptoBinaryMarshaller" />
+            <UnmarshallingClass className="org.opensaml.xml.signature.impl.CryptoBinaryUnmarshaller" />
+        </ObjectProvider>        
+    
+        <!-- XML Digital Signature Seed -->
+        <ObjectProvider qualifiedName="ds:Seed">
+            <BuilderClass className="org.opensaml.xml.signature.impl.SeedBuilder" />
+            <MarshallingClass className="org.opensaml.xml.signature.impl.CryptoBinaryMarshaller" />
+            <UnmarshallingClass className="org.opensaml.xml.signature.impl.CryptoBinaryUnmarshaller" />
+        </ObjectProvider>        
+    
+        <!-- XML Digital Signature PgenCounter -->
+        <ObjectProvider qualifiedName="ds:PgenCounter">
+            <BuilderClass className="org.opensaml.xml.signature.impl.PgenCounterBuilder" />
+            <MarshallingClass className="org.opensaml.xml.signature.impl.CryptoBinaryMarshaller" />
+            <UnmarshallingClass className="org.opensaml.xml.signature.impl.CryptoBinaryUnmarshaller" />
+        </ObjectProvider>        
+        
+        <!-- XML Digital Signature DSAKeyValue -->
+        <ObjectProvider qualifiedName="ds:DSAKeyValue">
+            <BuilderClass className="org.opensaml.xml.signature.impl.DSAKeyValueBuilder" />
+            <MarshallingClass className="org.opensaml.xml.signature.impl.DSAKeyValueMarshaller" />
+            <UnmarshallingClass className="org.opensaml.xml.signature.impl.DSAKeyValueUnmarshaller" />
+        </ObjectProvider>
+        
+        <!-- XML Digital Signature RSAKeyValue -->
+        <ObjectProvider qualifiedName="ds:RSAKeyValue">
+            <BuilderClass className="org.opensaml.xml.signature.impl.RSAKeyValueBuilder" />
+            <MarshallingClass className="org.opensaml.xml.signature.impl.RSAKeyValueMarshaller" />
+            <UnmarshallingClass className="org.opensaml.xml.signature.impl.RSAKeyValueUnmarshaller" />
+        </ObjectProvider>
+        
+        <!-- XML Digital Signature KeyValue -->
+        <ObjectProvider qualifiedName="ds:KeyValue">
+            <BuilderClass className="org.opensaml.xml.signature.impl.KeyValueBuilder" />
+            <MarshallingClass className="org.opensaml.xml.signature.impl.KeyValueMarshaller" />
+            <UnmarshallingClass className="org.opensaml.xml.signature.impl.KeyValueUnmarshaller" />
+        </ObjectProvider>
+        
+        <!-- XML Digital Signature X509SubjectName -->
+        <ObjectProvider qualifiedName="ds:X509SubjectName">
+            <BuilderClass className="org.opensaml.xml.signature.impl.X509SubjectNameBuilder" />
+            <MarshallingClass className="org.opensaml.xml.schema.impl.XSStringMarshaller" />
+            <UnmarshallingClass className="org.opensaml.xml.schema.impl.XSStringUnmarshaller" />
+        </ObjectProvider>
+        
+        <!-- XML Digital Signature X509IssuerName -->
+        <ObjectProvider qualifiedName="ds:X509IssuerName">
+            <BuilderClass className="org.opensaml.xml.signature.impl.X509IssuerNameBuilder" />
+            <MarshallingClass className="org.opensaml.xml.schema.impl.XSStringMarshaller" />
+            <UnmarshallingClass className="org.opensaml.xml.schema.impl.XSStringUnmarshaller" />
+        </ObjectProvider>
+        
+        <!-- XML Digital Signature X509SerialNumber -->
+        <ObjectProvider qualifiedName="ds:X509SerialNumber">
+            <BuilderClass className="org.opensaml.xml.signature.impl.X509SerialNumberBuilder" />
+            <MarshallingClass className="org.opensaml.xml.schema.impl.XSIntegerMarshaller" />
+            <UnmarshallingClass className="org.opensaml.xml.schema.impl.XSIntegerUnmarshaller" />
+        </ObjectProvider>
+        
+        <!-- XML Digital Signature X509SKI -->
+        <ObjectProvider qualifiedName="ds:X509SKI">
+            <BuilderClass className="org.opensaml.xml.signature.impl.X509SKIBuilder" />
+            <MarshallingClass className="org.opensaml.xml.schema.impl.XSBase64BinaryMarshaller" />
+            <UnmarshallingClass className="org.opensaml.xml.schema.impl.XSBase64BinaryUnmarshaller" />
+        </ObjectProvider>
+        
+        <!-- XML Digital Signature X509Certificate -->
+        <ObjectProvider qualifiedName="ds:X509Certificate">
+            <BuilderClass className="org.opensaml.xml.signature.impl.X509CertificateBuilder" />
+            <MarshallingClass className="org.opensaml.xml.schema.impl.XSBase64BinaryMarshaller" />
+            <UnmarshallingClass className="org.opensaml.xml.schema.impl.XSBase64BinaryUnmarshaller" />
+        </ObjectProvider>
+        
+        <!-- XML Digital Signature X509CRL -->
+        <ObjectProvider qualifiedName="ds:X509CRL">
+            <BuilderClass className="org.opensaml.xml.signature.impl.X509CRLBuilder" />
+            <MarshallingClass className="org.opensaml.xml.schema.impl.XSBase64BinaryMarshaller" />
+            <UnmarshallingClass className="org.opensaml.xml.schema.impl.XSBase64BinaryUnmarshaller" />
+        </ObjectProvider>
+        
+        <!-- XML Digital Signature X509IssuerSerial -->
+        <ObjectProvider qualifiedName="ds:X509IssuerSerial">
+            <BuilderClass className="org.opensaml.xml.signature.impl.X509IssuerSerialBuilder" />
+            <MarshallingClass className="org.opensaml.xml.signature.impl.X509IssuerSerialMarshaller" />
+            <UnmarshallingClass className="org.opensaml.xml.signature.impl.X509IssuerSerialUnmarshaller" />
+        </ObjectProvider>
+        
+        <!-- XML Digital Signature X509Data -->
+        <ObjectProvider qualifiedName="ds:X509Data">
+            <BuilderClass className="org.opensaml.xml.signature.impl.X509DataBuilder" />
+            <MarshallingClass className="org.opensaml.xml.signature.impl.X509DataMarshaller" />
+            <UnmarshallingClass className="org.opensaml.xml.signature.impl.X509DataUnmarshaller" />
+        </ObjectProvider>
+        
     </ObjectProviders>
-
+    
 </XMLTooling>

@@ -16,8 +16,11 @@
 
 package org.opensaml.xml.signature;
 
+import java.util.List;
+
 import javax.xml.namespace.QName;
 
+import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.util.XMLConstants;
 import org.opensaml.xml.validation.ValidatingXMLObject;
 
@@ -38,6 +41,56 @@ public interface X509Data extends ValidatingXMLObject {
     /** QName of the XSI type */
     public final static QName TYPE_NAME = new QName(XMLConstants.XMLSIG_NS, TYPE_LOCAL_NAME, XMLConstants.XMLSIG_PREFIX);
     
-    //TODO
+    /**
+     * Get the list of all XMLObject children
+     * 
+     * @return the list of XMLObject children
+     */
+    public List<XMLObject> getXMLObjects();
+    
+    /**
+     * Get the list of XMLObject children whose type or element
+     * QName matches the specified QName
+     * 
+     * @param typeOrName the QName of the desired elements
+     * 
+     * @return the matching list of XMLObject children
+     */
+    public List<XMLObject> getXMLObjects(QName typeOrName);
+    
+    /**
+     * Get the list of X509IssuerSerial child elements
+     * 
+     * @return the list of X509IssuerSerial child elements
+     */ 
+    public List<X509IssuerSerial> getX509IssuerSerials();
+    
+    /**
+     * Get the list of X509SKI child elements
+     * 
+     * @return the list of X509SKI child elements
+     */ 
+    public List<X509SKI> getX509SKIs();
+    
+    /**
+     * Get the list of X509SubjectName child elements
+     * 
+     * @return the list of X509SubjectName child elements
+     */ 
+    public List<X509SubjectName> getX509SubjectNames();
+    
+    /**
+     * Get the list of X509Certificate child elements
+     * 
+     * @return the list of X509Certificate child elements
+     */ 
+    public List<X509Certificate> getX509Certificates();
+    
+    /**
+     * Get the list of X509CRL child elements
+     * 
+     * @return the list of X509CRL child elements
+     */ 
+    public List<X509CRL> getX509CRLs();
 
 }

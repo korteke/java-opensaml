@@ -18,66 +18,52 @@ package org.opensaml.xml.signature;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.util.XMLConstants;
 import org.opensaml.xml.validation.ValidatingXMLObject;
 
 /**
- * XMLObject representing XML Digital Signature, version 20020212, KeyValue element.
+ * XMLObject representing XML Digital Signature, version 20020212, X509IssuerSerial element.
  */
-public interface KeyValue extends ValidatingXMLObject {
+public interface X509IssuerSerial extends ValidatingXMLObject {
     
     /** Element local name */
-    public final static String DEFAULT_ELEMENT_LOCAL_NAME = "KeyValue";
+    public final static String DEFAULT_ELEMENT_LOCAL_NAME = "X509IssuerSerial";
     
     /** Default element name */
     public final static QName DEFAULT_ELEMENT_NAME = new QName(XMLConstants.XMLSIG_NS, DEFAULT_ELEMENT_LOCAL_NAME, XMLConstants.XMLSIG_PREFIX);
     
     /** Local name of the XSI type */
-    public final static String TYPE_LOCAL_NAME = "KeyValueType"; 
+    public final static String TYPE_LOCAL_NAME = "X509IssuerSerialType"; 
         
     /** QName of the XSI type */
     public final static QName TYPE_NAME = new QName(XMLConstants.XMLSIG_NS, TYPE_LOCAL_NAME, XMLConstants.XMLSIG_PREFIX);
     
     /**
-     * Get the DSAKeyValue child element
+     * Get the X509IssuerName child element
      * 
-     * @return DSAKeyValue child element
+     * @return the X509Issuername child element
      */
-    public DSAKeyValue getDSAKeyValue();
+    public X509IssuerName getX509IssuerName();
     
     /**
-     * Set the DSAKeyValue child element
+     * Set the X509IssuerName child element
      * 
-     * @param newDSAKeyValue the new DSAKeyValue child element
+     * @param newX509IssuerName the new X509IssuerName child element
      */
-    public void setDSAKeyValue(DSAKeyValue newDSAKeyValue);
+    public void setX509IssuerName(X509IssuerName newX509IssuerName);
     
     /**
-     * Get the RSAKeyValue child element
+     * Get the X509SerialNumber child element
      * 
-     * @return
+     * @return the X509SerialNumber child element
      */
-    public RSAKeyValue getRSAKeyValue();
+    public X509SerialNumber getX509SerialNumber();
     
     /**
-     * Set the RSAKeyValue child element
+     * Set the X509SerialNumber child element
      * 
-     * @param newRSAKeyValue the new RSAKeyValue child element
+     * @param newX509SerialNumber the new X509SerialNumber child element
      */
-    public void setRSAKeyValue(RSAKeyValue newRSAKeyValue);
+    public void setX509SerialNumber(X509SerialNumber newX509SerialNumber);
     
-    /**
-     * Get the wildcard <any> XMLObject child element
-     * 
-     * @return the wildcard XMLObject child element
-     */
-    public XMLObject getUnknownXMLObject();
-    
-    /**
-     * Set the wildcard <any> XMLObject child element
-     * 
-     * @param newXMLObject the wildcard XMLObject child element
-     */
-    public void setUnknownXMLObject(XMLObject newXMLObject);
 }

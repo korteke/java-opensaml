@@ -18,66 +18,50 @@ package org.opensaml.xml.signature;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.util.XMLConstants;
 import org.opensaml.xml.validation.ValidatingXMLObject;
 
 /**
- * XMLObject representing XML Digital Signature, version 20020212, KeyValue element.
+ * XMLObject representing XML Digital Signature, version 20020212, RSAKeyValue element.
  */
-public interface KeyValue extends ValidatingXMLObject {
+public interface RSAKeyValue extends ValidatingXMLObject {
     
     /** Element local name */
-    public final static String DEFAULT_ELEMENT_LOCAL_NAME = "KeyValue";
+    public final static String DEFAULT_ELEMENT_LOCAL_NAME = "RSAKeyValue";
     
     /** Default element name */
     public final static QName DEFAULT_ELEMENT_NAME = new QName(XMLConstants.XMLSIG_NS, DEFAULT_ELEMENT_LOCAL_NAME, XMLConstants.XMLSIG_PREFIX);
     
     /** Local name of the XSI type */
-    public final static String TYPE_LOCAL_NAME = "KeyValueType"; 
+    public final static String TYPE_LOCAL_NAME = "RSAKeyValueType"; 
         
     /** QName of the XSI type */
     public final static QName TYPE_NAME = new QName(XMLConstants.XMLSIG_NS, TYPE_LOCAL_NAME, XMLConstants.XMLSIG_PREFIX);
     
     /**
-     * Get the DSAKeyValue child element
+     * Get the Modulus child element
      * 
-     * @return DSAKeyValue child element
+     * @return the Modulus child element
      */
-    public DSAKeyValue getDSAKeyValue();
+    public Modulus getModulus();
     
-    /**
-     * Set the DSAKeyValue child element
+    /** Set the Modulus child element
      * 
-     * @param newDSAKeyValue the new DSAKeyValue child element
+     * @param newModulus the new Modulus child element
      */
-    public void setDSAKeyValue(DSAKeyValue newDSAKeyValue);
+    public void setModulus(Modulus newModulus);
+
+    /**
+     * Get the Exponent child element
+     * 
+     * @return the Exponent child element
+     */
+    public Exponent getExponent();
     
-    /**
-     * Get the RSAKeyValue child element
+    /** Set the Exponent child element
      * 
-     * @return
+     * @param newExponent the new Exponent child element
      */
-    public RSAKeyValue getRSAKeyValue();
-    
-    /**
-     * Set the RSAKeyValue child element
-     * 
-     * @param newRSAKeyValue the new RSAKeyValue child element
-     */
-    public void setRSAKeyValue(RSAKeyValue newRSAKeyValue);
-    
-    /**
-     * Get the wildcard <any> XMLObject child element
-     * 
-     * @return the wildcard XMLObject child element
-     */
-    public XMLObject getUnknownXMLObject();
-    
-    /**
-     * Set the wildcard <any> XMLObject child element
-     * 
-     * @param newXMLObject the wildcard XMLObject child element
-     */
-    public void setUnknownXMLObject(XMLObject newXMLObject);
+    public void setExponent(Exponent newExponent);
+
 }
