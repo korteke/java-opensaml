@@ -26,7 +26,6 @@ import org.opensaml.xml.signature.MgmtData;
 import org.opensaml.xml.signature.PGPData;
 import org.opensaml.xml.signature.RetrievalMethod;
 import org.opensaml.xml.signature.SPKIData;
-import org.opensaml.xml.signature.X509CRL;
 import org.opensaml.xml.signature.X509Data;
 
 /**
@@ -34,18 +33,23 @@ import org.opensaml.xml.signature.X509Data;
  */
 public class KeyInfoTest extends XMLObjectProviderBaseTestCase {
     
+    private String expectedID;
+    
     /**
      * Constructor
      *
      */
     public KeyInfoTest() {
         singleElementFile = "/data/org/opensaml/xml/signature/impl/KeyInfo.xml";
+        singleElementOptionalAttributesFile = "/data/org/opensaml/xml/signature/impl/KeyInfoOptionalAttributes.xml";
         childElementsFile = "/data/org/opensaml/xml/signature/impl/KeyInfoChildElements.xml";
     }
 
     /** {@inheritDoc} */
     protected void setUp() throws Exception {
         super.setUp();
+        
+        expectedID = "abc123";
     }
 
     /** {@inheritDoc} */
@@ -53,6 +57,16 @@ public class KeyInfoTest extends XMLObjectProviderBaseTestCase {
         KeyInfo keyInfo = (KeyInfo) unmarshallElement(singleElementFile);
         
         assertNotNull("KeyInfo", keyInfo);
+        assertNull("Id attribute", keyInfo.getID());
+        assertEquals("Total # of XMLObject child elements", 0, keyInfo.getXMLObjects().size());
+    }
+
+    /** {@inheritDoc} */
+    public void testSingleElementOptionalAttributesUnmarshall() {
+        KeyInfo keyInfo = (KeyInfo) unmarshallElement(singleElementOptionalAttributesFile);
+        
+        assertNotNull("KeyInfo", keyInfo);
+        assertEquals("Id attribute", expectedID, keyInfo.getID());
         assertEquals("Total # of XMLObject child elements", 0, keyInfo.getXMLObjects().size());
     }
 
@@ -77,6 +91,15 @@ public class KeyInfoTest extends XMLObjectProviderBaseTestCase {
         KeyInfo keyInfo = (KeyInfo) buildXMLObject(KeyInfo.DEFAULT_ELEMENT_NAME);
         
         assertEquals(expectedDOM, keyInfo);
+    }
+
+    /** {@inheritDoc} */
+    public void testSingleElementOptionalAttributesMarshall() {
+        KeyInfo keyInfo = (KeyInfo) buildXMLObject(KeyInfo.DEFAULT_ELEMENT_NAME);
+        
+        keyInfo.setID(expectedID);
+        
+        assertEquals(expectedOptionalAttributesDOM, keyInfo);
     }
 
     /** {@inheritDoc} */
