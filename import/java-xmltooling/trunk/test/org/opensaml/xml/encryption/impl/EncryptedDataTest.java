@@ -18,7 +18,11 @@ package org.opensaml.xml.encryption.impl;
 
 
 import org.opensaml.xml.XMLObjectProviderBaseTestCase;
+import org.opensaml.xml.encryption.CipherData;
 import org.opensaml.xml.encryption.EncryptedData;
+import org.opensaml.xml.encryption.EncryptionMethod;
+import org.opensaml.xml.encryption.EncryptionProperties;
+import org.opensaml.xml.signature.KeyInfo;
 
 /**
  *
@@ -70,7 +74,10 @@ public class EncryptedDataTest extends XMLObjectProviderBaseTestCase {
         EncryptedData ed = (EncryptedData) unmarshallElement(childElementsFile);
         
         assertNotNull("EncryptedData", ed);
-        // TODO need child objects to finish
+        assertNotNull("EncryptionMethod child", ed.getEncryptionMethod());
+        assertNotNull("KeyInfo child", ed.getKeyInfo());
+        assertNotNull("CipherData child", ed.getCipherData());
+        assertNotNull("EncryptionProperties child", ed.getEncryptionProperties());
     }
 
     /** {@inheritDoc} */
@@ -95,8 +102,12 @@ public class EncryptedDataTest extends XMLObjectProviderBaseTestCase {
     public void testChildElementsMarshall() {
         EncryptedData ed = (EncryptedData) buildXMLObject(EncryptedData.DEFAULT_ELEMENT_NAME);
         
-        //assertEquals(expectedChildElementsDOM, ed);
-        // TODO need child objects to finish
+        ed.setEncryptionMethod((EncryptionMethod) buildXMLObject(EncryptionMethod.DEFAULT_ELEMENT_NAME));
+        ed.setKeyInfo((KeyInfo) buildXMLObject(KeyInfo.DEFAULT_ELEMENT_NAME));
+        ed.setCipherData((CipherData) buildXMLObject(CipherData.DEFAULT_ELEMENT_NAME));
+        ed.setEncryptionProperties((EncryptionProperties) buildXMLObject(EncryptionProperties.DEFAULT_ELEMENT_NAME));
+        
+        assertEquals(expectedChildElementsDOM, ed);
     }
 
     /** {@inheritDoc} */

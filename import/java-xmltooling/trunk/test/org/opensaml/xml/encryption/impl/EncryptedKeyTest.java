@@ -18,7 +18,13 @@ package org.opensaml.xml.encryption.impl;
 
 
 import org.opensaml.xml.XMLObjectProviderBaseTestCase;
+import org.opensaml.xml.encryption.CarriedKeyName;
+import org.opensaml.xml.encryption.CipherData;
 import org.opensaml.xml.encryption.EncryptedKey;
+import org.opensaml.xml.encryption.EncryptionMethod;
+import org.opensaml.xml.encryption.EncryptionProperties;
+import org.opensaml.xml.encryption.ReferenceList;
+import org.opensaml.xml.signature.KeyInfo;
 
 /**
  *
@@ -74,7 +80,12 @@ public class EncryptedKeyTest extends XMLObjectProviderBaseTestCase {
         EncryptedKey ek = (EncryptedKey) unmarshallElement(childElementsFile);
         
         assertNotNull("EncryptedKey", ek);
-        // TODO need child objects to finish
+        assertNotNull("EncryptionMethod child", ek.getEncryptionMethod());
+        assertNotNull("KeyInfo child", ek.getKeyInfo());
+        assertNotNull("CipherData child", ek.getCipherData());
+        assertNotNull("EncryptionProperties child", ek.getEncryptionProperties());
+        assertNotNull("ReferenceList child", ek.getReferenceList());
+        assertNotNull("CarriedKeyName child", ek.getCarriedKeyName());
     }
 
     /** {@inheritDoc} */
@@ -100,8 +111,15 @@ public class EncryptedKeyTest extends XMLObjectProviderBaseTestCase {
     public void testChildElementsMarshall() {
         EncryptedKey ek = (EncryptedKey) buildXMLObject(EncryptedKey.DEFAULT_ELEMENT_NAME);
         
-        //assertEquals(expectedChildElementsDOM, ek);
-        // TODO need child objects to finish
+        
+        ek.setEncryptionMethod((EncryptionMethod) buildXMLObject(EncryptionMethod.DEFAULT_ELEMENT_NAME));
+        ek.setKeyInfo((KeyInfo) buildXMLObject(KeyInfo.DEFAULT_ELEMENT_NAME));
+        ek.setCipherData((CipherData) buildXMLObject(CipherData.DEFAULT_ELEMENT_NAME));
+        ek.setEncryptionProperties((EncryptionProperties) buildXMLObject(EncryptionProperties.DEFAULT_ELEMENT_NAME));
+        ek.setReferenceList((ReferenceList) buildXMLObject(ReferenceList.DEFAULT_ELEMENT_NAME));
+        ek.setCarriedKeyName((CarriedKeyName) buildXMLObject(CarriedKeyName.DEFAULT_ELEMENT_NAME));
+        
+        assertEquals(expectedChildElementsDOM, ek);
     }
 
     /** {@inheritDoc} */
@@ -116,7 +134,5 @@ public class EncryptedKeyTest extends XMLObjectProviderBaseTestCase {
         
         assertEquals(expectedOptionalAttributesDOM, ek);
     }
-    
-    
 
 }

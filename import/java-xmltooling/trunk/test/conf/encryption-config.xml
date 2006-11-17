@@ -69,6 +69,13 @@
             <UnmarshallingClass className="org.opensaml.xml.encryption.impl.CipherReferenceUnmarshaller" />
         </ObjectProvider>
         
+        <!-- XML Encryption CipherData -->
+        <ObjectProvider qualifiedName="xenc:CipherData">
+            <BuilderClass className="org.opensaml.xml.encryption.impl.CipherDataBuilder" />
+            <MarshallingClass className="org.opensaml.xml.encryption.impl.CipherDataMarshaller" />
+            <UnmarshallingClass className="org.opensaml.xml.encryption.impl.CipherDataUnmarshaller" />
+        </ObjectProvider>
+        
         <!-- XML Encryption DataReference -->
         <ObjectProvider qualifiedName="xenc:DataReference">
             <BuilderClass className="org.opensaml.xml.encryption.impl.DataReferenceBuilder" />
@@ -109,6 +116,27 @@
             <BuilderClass className="org.opensaml.xml.encryption.impl.EncryptionPropertiesBuilder" />
             <MarshallingClass className="org.opensaml.xml.encryption.impl.EncryptionPropertiesMarshaller" />
             <UnmarshallingClass className="org.opensaml.xml.encryption.impl.EncryptionPropertiesUnmarshaller" />
+        </ObjectProvider>
+        
+        <!-- XML Encryption OriginatorKeyInfo -->
+        <ObjectProvider qualifiedName="xenc:OriginatorKeyInfo">
+            <BuilderClass className="org.opensaml.xml.encryption.impl.OriginatorKeyInfoBuilder" />
+            <MarshallingClass className="org.opensaml.xml.encryption.impl.OriginatorKeyInfoMarshaller" />
+            <UnmarshallingClass className="org.opensaml.xml.encryption.impl.OriginatorKeyInfoUnmarshaller" />
+        </ObjectProvider>
+        
+        <!-- XML Encryption RecipientKeyInfo -->
+        <ObjectProvider qualifiedName="xenc:RecipientKeyInfo">
+            <BuilderClass className="org.opensaml.xml.encryption.impl.RecipientKeyInfoBuilder" />
+            <MarshallingClass className="org.opensaml.xml.encryption.impl.RecipientKeyInfoMarshaller" />
+            <UnmarshallingClass className="org.opensaml.xml.encryption.impl.RecipientKeyInfoUnmarshaller" />
+        </ObjectProvider>
+        
+        <!-- XML Encryption AgreementMethod -->
+        <ObjectProvider qualifiedName="xenc:AgreementMethod">
+            <BuilderClass className="org.opensaml.xml.encryption.impl.AgreementMethodBuilder" />
+            <MarshallingClass className="org.opensaml.xml.encryption.impl.AgreementMethodMarshaller" />
+            <UnmarshallingClass className="org.opensaml.xml.encryption.impl.AgreementMethodUnmarshaller" />
         </ObjectProvider>
         
     </ObjectProviders>
