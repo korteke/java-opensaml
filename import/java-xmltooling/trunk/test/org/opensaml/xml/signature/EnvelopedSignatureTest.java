@@ -109,8 +109,8 @@ public class EnvelopedSignatureTest extends XMLObjectBaseTestCase {
         Signature signature = sxo.getSignature();
 
         KeyInfo keyInfo = keyInfoBuilder.buildObject();
-        //TODO temp broken by KeyInfo changes
-        //keyInfo.setPublicKey(verificationKey);
+        //TODO this currently broken b/c helper not completed
+        KeyInfoHelper.addPublicKey(keyInfo, verificationKey);
         signature.setKeyInfo(keyInfo);
 
         Marshaller marshaller = Configuration.getMarshallerFactory().getMarshaller(sxo);
@@ -157,9 +157,8 @@ public class EnvelopedSignatureTest extends XMLObjectBaseTestCase {
         KeyInfo keyInfo = signature.getKeyInfo();
         assertNotNull("Signature's KeyInfo was null", keyInfo);
         
-        //TODO temp broken by KeyInfo changes
-        //PublicKey pubKey = keyInfo.getPublicKey();
-        PublicKey pubKey = null;
+        //TODO this currently broken b/c helper not completed
+        PublicKey pubKey = KeyInfoHelper.getPublicKeys(keyInfo).get(0);
         assertNotNull("KeyInfo did not contain the verification key", pubKey);
     }
 

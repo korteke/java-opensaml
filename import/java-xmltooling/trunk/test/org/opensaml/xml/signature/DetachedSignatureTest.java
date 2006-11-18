@@ -177,9 +177,9 @@ public class DetachedSignatureTest extends XMLObjectBaseTestCase {
         Unmarshaller unmarshaller = Configuration.getUnmarshallerFactory().getUnmarshaller(signatureElement);
         Signature signature = (Signature) unmarshaller.unmarshall(signatureElement);
         
-        //TODO temp broken by keyinfo changes
-        //PublicKey verificationKey = signature.getKeyInfo().getPublicKey();
-        PublicKey verificationKey = null;
+        //TODO this currently broken b/c helper not finished
+        //TODO KeyInfo can in theory have multiple public key reps, so what to do ?
+        PublicKey verificationKey = KeyInfoHelper.getPublicKeys(signature.getKeyInfo()).get(0);
         SignatureValidator signatureValidator = new SignatureValidator(verificationKey);
         signatureValidator.validate(signature);
     }
