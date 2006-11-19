@@ -83,4 +83,9 @@ public class Pair<T1, T2> {
         
         return false;
     }
+    
+    /** {@inheritDoc} */
+    public String toString(){
+        return "(" + getFirst() + "," + getSecond() + ")";
+    }
 }
