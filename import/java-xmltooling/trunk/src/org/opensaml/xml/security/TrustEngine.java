@@ -16,19 +16,58 @@
 
 package org.opensaml.xml.security;
 
+import org.opensaml.xml.signature.KeyInfo;
+
 /**
- * Evaluates the trustworthiness and validity of an entity's credential against implementation-specific requirements.
+ * Evaluates the trustworthiness and validity of a token against implementation-specific requirements.
  */
-public interface TrustEngine<CredentialType extends EntityCredential> {
+public interface TrustEngine<TokenType> {
+
+    /**
+     * Gets the default source of keying information to validate the token against.
+     * 
+     * @return default source of keying information to validate the token against
+     */
+    public KeyInfoSource getDefaultKeyInfoSource();
     
     /**
-     * Validates the given entity credential against keying information expressed in the given key info source.
+     * Sets the default source of keying information to validate the token against.
      * 
-     * @param credential credential to validate
-     * @param keyInfo keying information source
-     * @param keyResolver key resolver used to extracts keys from keying information
-     * 
-     * @return true if the given credential is valid, false if not
+     * @param keyInfo default source of keying information to validate the token against
      */
-    public boolean validate(EntityCredential credential, KeyInfoSource keyInfo, KeyResolver keyResolver);
+    public void setDefaultkeyInfoSource(KeyInfoSource keyInfo);
+    
+    /**
+     * Gets the default key resolver to use when extracting keying information from the {@link KeyInfoSource}.
+     * 
+     * @return default key resolver to use when extracting keying information from the {@link KeyInfoSource}
+     */
+    public KeyResolver getDefaultKeyResolver();
+    
+    /**
+     * Sets the default key resolver to use when extracting keying information from the {@link KeyInfoSource}.
+     * 
+     * @param keyResolver default key resolver to use when extracting keying information from the {@link KeyInfoSource}
+     */
+    public void setDefaultKeyResolver(KeyResolver keyResolver);
+    
+    /**
+     * Validates the token against the default key info using the default key resolver.
+     * 
+     * @param token the security token to validate
+     * 
+     * @return true if the token is trusted and valid, false if not
+     */
+    public boolean validate(TokenType token);
+
+    /**
+     * Validates the token against the given key info using the default key resolver.
+     * 
+     * @param token the security token to validate
+     * @param keyInfo source of keying information
+     * @param keyResolver resolver used to extract keys from {@link KeyInfo}s
+     * 
+     * @return true if the token is trusted and valid, false if not
+     */
+    public boolean validate(TokenType token, KeyInfoSource keyInfo, KeyResolver keyResolver);
 }

@@ -18,22 +18,12 @@ package org.opensaml.xml.signature;
 
 import org.opensaml.xml.security.KeyInfoSource;
 import org.opensaml.xml.security.KeyResolver;
+import org.opensaml.xml.security.TrustEngine;
 
 /**
  * Evaluates the trustworthiness and validity of XML or raw Signatures against implementation-specific requirements.
  */
-public interface SignatureTrustEngine {
-
-    /**
-     * Verifies that the given signable object are valid.
-     * 
-     * @param xmlObject the singable XML object
-     * @param keyInfo keying information source
-     * @param keyResolver resolver to extract keys from keying information
-     * 
-     * @return true if the xmlObject contained a valid signature
-     */
-    public boolean validate(SignableXMLObject xmlObject, KeyInfoSource keyInfo, KeyResolver keyResolver);
+public interface SignatureTrustEngine extends TrustEngine<SignableXMLObject>{
 
     /**
      * Determines whether a raw signature is correct and valid with respect to the source of KeyInfo data supplied. It

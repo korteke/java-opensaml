@@ -19,16 +19,6 @@ package org.opensaml.xml.security;
 /**
  * Evaluates the trustworthiness and validity of an entity's credential against implementation-specific requirements.
  */
-public interface EntityCredentialTrustEngine<CredentialType extends EntityCredential> {
-    
-    /**
-     * Validates the given entity credential against keying information expressed in the given key info source.
-     * 
-     * @param credential credential to validate
-     * @param keyInfo keying information source
-     * @param keyResolver key resolver used to extracts keys from keying information
-     * 
-     * @return true if the given credential is valid, false if not
-     */
-    public boolean validate(EntityCredential credential, KeyInfoSource keyInfo, KeyResolver keyResolver);
+public interface EntityCredentialTrustEngine<CredentialType extends EntityCredential> extends TrustEngine<CredentialType> {
+
 }
