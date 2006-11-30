@@ -23,7 +23,7 @@ import org.opensaml.xml.security.TrustEngine;
 /**
  * Evaluates the trustworthiness and validity of XML or raw Signatures against implementation-specific requirements.
  */
-public interface SignatureTrustEngine extends TrustEngine<SignableXMLObject>{
+public interface SignatureTrustEngine extends TrustEngine<Signature>{
 
     /**
      * Determines whether a raw signature is correct and valid with respect to the source of KeyInfo data supplied. It
