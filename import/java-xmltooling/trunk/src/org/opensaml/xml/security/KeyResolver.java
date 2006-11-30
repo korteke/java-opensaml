@@ -16,6 +16,7 @@
 
 package org.opensaml.xml.security;
 
+import java.security.GeneralSecurityException;
 import java.security.Key;
 import java.util.List;
 
@@ -24,7 +25,7 @@ import org.opensaml.xml.signature.KeyInfo;
 /**
  * Resolves information about a key into the referenced key.
  */
-public interface KeyResolver {
+public interface KeyResolver<KeyType extends Key> {
 
     /**
      * A convience method for getting the primary key referenced by a KeyInfo.  If a KeyInfo element 
@@ -34,8 +35,10 @@ public interface KeyResolver {
      * @param keyInfo the key information
      * 
      * @return the primary key referenced
+     * 
+     * @throws GeneralSecurityException thrown if there is a problem resolving the key
      */
-    public Key resolveKey(KeyInfo keyInfo);
+    public KeyType resolveKey(KeyInfo keyInfo) throws GeneralSecurityException;
     
     /**
      * Gets all the keys referenced by the given KeyInfo.
@@ -43,6 +46,8 @@ public interface KeyResolver {
      * @param keyInfo key information
      * 
      * @return keys referenced by the given KeyInfo
+     * 
+     * @throws GeneralSecurityException thrown if there is a problem resolving the key
      */
-    public List<Key> resolveKeys(KeyInfo keyInfo);
+    public List<KeyType> resolveKeys(KeyInfo keyInfo) throws GeneralSecurityException;
 }
