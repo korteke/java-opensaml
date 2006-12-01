@@ -181,7 +181,7 @@ public class KeyInfoHelper {
      * Convert an XMLTooling X509CRL object into a native Java representation.
      * 
      * @param xmlCRL
-     * @return
+     * @return a native Java security X509CRL object
      * @throws CertificateException
      * @throws CRLException
      */
@@ -230,7 +230,7 @@ public class KeyInfoHelper {
     }
     
     /**
-     * @param keyInfo
+     * @param x509Data
      * @param crl
      */
     public static void addCRL(X509Data x509Data, X509CRL crl) {
@@ -250,7 +250,7 @@ public class KeyInfoHelper {
     /** TODO
      * 
      * @param keyInfo
-     * @return
+     * @return a list of native Java security PublicKey objects
      */
     public static List<PublicKey> getPublicKeys(KeyInfo keyInfo) {
         FastList<PublicKey> pkList = new FastList<PublicKey>();
@@ -268,7 +268,7 @@ public class KeyInfoHelper {
     /** TODO
      * 
      * @param keyValue
-     * @return
+     * @return a native Java security PublicKey object
      */
     public PublicKey getPublicKey(KeyValue keyValue) {
         //TODO
@@ -279,7 +279,7 @@ public class KeyInfoHelper {
     /** TODO
      * 
      * @param keyValue
-     * @return
+     * @return a native Java security Key object
      */
     public Key getKey(KeyValue keyValue) {
         //TODO

@@ -20,7 +20,7 @@ import org.opensaml.xml.encryption.CarriedKeyName;
 import org.opensaml.xml.schema.impl.XSStringImpl;
 
 /**
- * Concrete implementation of {@link org.opensaml.xml.encryption.CarriedKeyname}
+ * Concrete implementation of {@link org.opensaml.xml.encryption.CarriedKeyName}
  */
 public class CarriedKeyNameImpl extends XSStringImpl implements CarriedKeyName {
 

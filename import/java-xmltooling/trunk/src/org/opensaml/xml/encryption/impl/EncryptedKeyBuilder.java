@@ -34,12 +34,12 @@ public class EncryptedKeyBuilder extends AbstractXMLObjectBuilder<EncryptedKey>
     public EncryptedKeyBuilder() {
     }
 
-    /** {@inheritDoc */
+    /** {@inheritDoc} */
     public EncryptedKey buildObject() {
         return buildObject(XMLConstants.XMLENC_NS, EncryptedKey.DEFAULT_ELEMENT_LOCAL_NAME, XMLConstants.XMLENC_PREFIX);
     }
 
-    /** {@inheritDoc */
+    /** {@inheritDoc} */
     public EncryptedKey buildObject(String namespaceURI, String localName, String namespacePrefix) {
         return new EncryptedKeyImpl(namespaceURI, localName, namespacePrefix);
     }

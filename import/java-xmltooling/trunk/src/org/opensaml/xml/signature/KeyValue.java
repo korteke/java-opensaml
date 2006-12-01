@@ -56,7 +56,7 @@ public interface KeyValue extends ValidatingXMLObject {
     /**
      * Get the RSAKeyValue child element
      * 
-     * @return
+     * @return the RSAKeyValue child element
      */
     public RSAKeyValue getRSAKeyValue();
     
@@ -68,14 +68,14 @@ public interface KeyValue extends ValidatingXMLObject {
     public void setRSAKeyValue(RSAKeyValue newRSAKeyValue);
     
     /**
-     * Get the wildcard <any> XMLObject child element
+     * Get the wildcard &lt;any&gt; XMLObject child element
      * 
      * @return the wildcard XMLObject child element
      */
     public XMLObject getUnknownXMLObject();
     
     /**
-     * Set the wildcard <any> XMLObject child element
+     * Set the wildcard &lt;any&gt; XMLObject child element
      * 
      * @param newXMLObject the wildcard XMLObject child element
      */

@@ -45,7 +45,7 @@ public class AgreementMethodImpl extends AbstractValidatingXMLObject implements 
     /** RecipientKeyInfo child element value */
     private RecipientKeyInfo recipientKeyInfo;
     
-    /** List of wildcard <any> XMLObject children */
+    /** List of wildcard &lt;any&gt; XMLObject children */
     private XMLObjectChildrenList xmlChildren;
 
     /**

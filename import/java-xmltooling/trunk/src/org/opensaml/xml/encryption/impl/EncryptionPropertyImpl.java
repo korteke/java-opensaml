@@ -37,7 +37,7 @@ public class EncryptionPropertyImpl extends AbstractValidatingXMLObject implemen
     /** Id attribute value */
     private String id;
     
-    /** Child elements from the <any> content model */
+    /** Child elements from the &lt;any&gt; content model */
     private final XMLObjectChildrenList unknownChildren;
     
     /** "anyAttribute" attributes */

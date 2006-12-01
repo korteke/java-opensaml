@@ -84,7 +84,7 @@ public interface EncryptedType extends ValidatingXMLObject {
     /**
      * Sets the MIME type of the plaintext content.
      * 
-     * @param newType the MIME type of the plaintext content
+     * @param newMimeType the MIME type of the plaintext content
      */
     public void setMimeType(String newMimeType);
 

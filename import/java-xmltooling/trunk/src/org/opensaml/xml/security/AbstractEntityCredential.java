@@ -19,7 +19,7 @@ package org.opensaml.xml.security;
 import java.security.Key;
 
 /**
- * Base class for {@link org.opensaml.security.EntityCredential} implementations.
+ * Base class for {@link org.opensaml.xml.security.EntityCredential} implementations.
  */
 public abstract class AbstractEntityCredential implements EntityCredential {
 

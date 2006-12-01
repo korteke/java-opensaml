@@ -32,9 +32,7 @@ public abstract class AbstractXMLEncryptionUnmarshaller extends AbstractXMLObjec
      */
     private static Logger log = Logger.getLogger(AbstractXMLEncryptionUnmarshaller.class);
 
-    /** 
-     * {@inheritDoc} 
-     */
+    /** Constructor */
     protected AbstractXMLEncryptionUnmarshaller(String targetNamespaceURI, String targetLocalName)
             throws IllegalArgumentException {
         super(targetNamespaceURI, targetLocalName);

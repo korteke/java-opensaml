@@ -32,10 +32,8 @@ public abstract class AbstractXMLSignatureUnmarshaller extends AbstractXMLObject
      */
     private static Logger log = Logger.getLogger(AbstractXMLSignatureUnmarshaller.class);
 
-    /** 
-     * {@inheritDoc} 
-     */
-    protected AbstractXMLSignatureUnmarshaller(String targetNamespaceURI, String targetLocalName)
+   /** Constructor */
+   protected AbstractXMLSignatureUnmarshaller(String targetNamespaceURI, String targetLocalName)
             throws IllegalArgumentException {
         super(targetNamespaceURI, targetLocalName);
     }

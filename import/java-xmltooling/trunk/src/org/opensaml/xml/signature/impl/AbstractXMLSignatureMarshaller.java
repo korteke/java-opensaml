@@ -26,7 +26,7 @@ import org.w3c.dom.Element;
  */
 public abstract class AbstractXMLSignatureMarshaller extends AbstractXMLObjectMarshaller {
 
-     /** {@inheritDoc} */
+    /** Constructor */
     protected AbstractXMLSignatureMarshaller(String targetNamespaceURI, String targetLocalName) throws NullPointerException {
         super(targetNamespaceURI, targetLocalName);
     }

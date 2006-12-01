@@ -22,7 +22,7 @@ import java.util.List;
 import javolution.util.FastList;
 
 /**
- * Base class for {@link org.opensaml.security.X509EntityCredential} implementations.
+ * Base class for {@link org.opensaml.xml.security.X509EntityCredential} implementations.
  */
 public abstract class AbstractX509EntityCredential extends AbstractEntityCredential implements X509EntityCredential {
 

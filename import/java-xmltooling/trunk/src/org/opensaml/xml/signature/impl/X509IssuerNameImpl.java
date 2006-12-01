@@ -20,7 +20,7 @@ import org.opensaml.xml.schema.impl.XSStringImpl;
 import org.opensaml.xml.signature.X509IssuerName;
 
 /**
- * Concrete implementation of {@link org.opensaml.xml.signature.X509Issuername}
+ * Concrete implementation of {@link org.opensaml.xml.signature.X509IssuerName}
  */
 public class X509IssuerNameImpl extends XSStringImpl implements X509IssuerName {
 

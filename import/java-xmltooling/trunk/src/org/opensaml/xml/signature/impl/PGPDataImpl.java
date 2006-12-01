@@ -38,7 +38,7 @@ public class PGPDataImpl extends AbstractValidatingXMLObject implements PGPData 
     /** PGPKeyPacket child element value */
     private PGPKeyPacket pgpKeyPacket;
     
-    /** List of <any> wildcard XMLObject children */
+    /** List of &lt;any&gt; wildcard XMLObject children */
     private final XMLObjectChildrenList xmlChildren;
 
     /**

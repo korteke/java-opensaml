@@ -26,7 +26,7 @@ import javolution.util.FastList;
 import org.opensaml.xml.util.DatatypeHelper;
 
 /**
- * A basic implementation of {@link org.opensaml.security.X509EntityCredential}.
+ * A basic implementation of {@link org.opensaml.xml.security.X509EntityCredential}.
  */
 public class SimpleX509EntityCredential extends AbstractX509EntityCredential {
 

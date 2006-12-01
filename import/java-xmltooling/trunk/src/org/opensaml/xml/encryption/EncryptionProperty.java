@@ -63,7 +63,8 @@ public interface EncryptionProperty extends ValidatingXMLObject, AttributeExtens
     
     /**
      * Get the ID attribute which uniquely identifies this element
-     * @return
+	 *
+     * @return the ID attribute value
      */
     public String getID();
     

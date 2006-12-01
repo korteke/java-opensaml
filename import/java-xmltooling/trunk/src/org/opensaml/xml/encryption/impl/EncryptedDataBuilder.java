@@ -34,12 +34,12 @@ public class EncryptedDataBuilder extends AbstractXMLObjectBuilder<EncryptedData
     public EncryptedDataBuilder() {
     }
 
-    /** {@inheritDoc */
+    /** {@inheritDoc} */
     public EncryptedData buildObject() {
         return buildObject(XMLConstants.XMLENC_NS, EncryptedData.DEFAULT_ELEMENT_LOCAL_NAME, XMLConstants.XMLENC_PREFIX);
     }
 
-    /** {@inheritDoc */
+    /** {@inheritDoc} */
     public EncryptedData buildObject(String namespaceURI, String localName, String namespacePrefix) {
         return new EncryptedDataImpl(namespaceURI, localName, namespacePrefix);
     }

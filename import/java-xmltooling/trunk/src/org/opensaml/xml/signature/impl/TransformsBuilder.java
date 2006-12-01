@@ -22,7 +22,7 @@ import org.opensaml.xml.signature.XMLSignatureBuilder;
 import org.opensaml.xml.util.XMLConstants;
 
 /**
- * Builder of {@link org.opensaml.xml.signature.Transforms
+ * Builder of {@link org.opensaml.xml.signature.Transforms}
  */
 public class TransformsBuilder extends AbstractXMLObjectBuilder<Transforms> implements XMLSignatureBuilder<Transforms> {
 

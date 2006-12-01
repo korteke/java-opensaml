@@ -50,37 +50,37 @@ public class EncryptedKeyImpl extends EncryptedTypeImpl implements EncryptedKey 
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
-    /** {@inheritDoc */
+    /** {@inheritDoc} */
     public String getRecipient() {
         return this.recipient;
     }
 
-    /** {@inheritDoc */
+    /** {@inheritDoc} */
     public void setRecipient(String newRecipient) {
         this.recipient = prepareForAssignment(this.recipient, newRecipient);
     }
 
-    /** {@inheritDoc */
+    /** {@inheritDoc} */
     public ReferenceList getReferenceList() {
         return this.referenceList;
     }
 
-    /** {@inheritDoc */
+    /** {@inheritDoc} */
     public void setReferenceList(ReferenceList newReferenceList) {
         this.referenceList = prepareForAssignment(this.referenceList, newReferenceList);
     }
 
-    /** {@inheritDoc */
+    /** {@inheritDoc} */
     public CarriedKeyName getCarriedKeyName() {
         return this.carriedKeyName;
     }
 
-    /** {@inheritDoc */
+    /** {@inheritDoc} */
     public void setCarriedKeyName(CarriedKeyName newCarriedKeyName) {
         this.carriedKeyName = prepareForAssignment(this.carriedKeyName, newCarriedKeyName);
     }
 
-    /** {@inheritDoc */
+    /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
         ArrayList<XMLObject> children = new ArrayList<XMLObject>();
         

@@ -20,7 +20,7 @@ import org.opensaml.xml.schema.impl.XSIntegerImpl;
 import org.opensaml.xml.signature.X509SerialNumber;
 
 /**
- * Concrete implementation of {@link org.opensaml.xml.signature.X509Issuername}
+ * Concrete implementation of {@link org.opensaml.xml.signature.X509SerialNumber}
  */
 public class X509SerialNumberImpl extends XSIntegerImpl implements X509SerialNumber {
 

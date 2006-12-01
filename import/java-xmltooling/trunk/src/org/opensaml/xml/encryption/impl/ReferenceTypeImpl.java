@@ -33,7 +33,7 @@ public class ReferenceTypeImpl extends AbstractValidatingXMLObject implements Re
     /** URI attribute value */
     private String uri;
     
-    /** List of <any> XML child elements */
+    /** List of &lt;any&gt; XML child elements */
     private final XMLObjectChildrenList<XMLObject> xmlChildren;
 
     /**

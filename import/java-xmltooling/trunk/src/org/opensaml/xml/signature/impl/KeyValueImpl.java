@@ -37,7 +37,7 @@ public class KeyValueImpl extends AbstractValidatingXMLObject implements KeyValu
     /** RSAKeyValue child element */
     private RSAKeyValue rsaKeyValue;
     
-    /** Wildcard <any> XMLObject child element */
+    /** Wildcard &lt;any&gt; XMLObject child element */
     private XMLObject unknownXMLObject;
 
     /**

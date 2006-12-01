@@ -22,7 +22,7 @@ import org.opensaml.xml.encryption.XMLEncryptionBuilder;
 import org.opensaml.xml.util.XMLConstants;
 
 /**
- * Builder of {@link org.opensaml.xml.encryption.Transforms
+ * Builder of {@link org.opensaml.xml.encryption.Transforms}
  */
 public class TransformsBuilder extends AbstractXMLObjectBuilder<Transforms> implements XMLEncryptionBuilder<Transforms> {
 
