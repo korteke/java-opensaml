@@ -30,11 +30,11 @@ import java.util.List;
 import javolution.util.FastList;
 
 import org.apache.log4j.Logger;
-import org.bouncycastle.util.encoders.Base64;
 import org.opensaml.xml.signature.DSAKeyValue;
 import org.opensaml.xml.signature.KeyInfo;
 import org.opensaml.xml.signature.KeyValue;
 import org.opensaml.xml.signature.RSAKeyValue;
+import org.opensaml.xml.util.Base64;
 
 /**
  * A simple key resolver that extracts either public DSA or RSA key from the KeyInfo's KeyValue element. Key value
