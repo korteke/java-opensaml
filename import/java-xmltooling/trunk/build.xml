@@ -19,8 +19,8 @@
     <property name="core-classes.dir" value="${build.dir}/core" />
     <property name="test-classes.dir" value="${build.dir}/test" />
     <property name="test-results.dir" value="${build.dir}/test-results" />
-	<property name="test-report.dir" value="${doc.dir}/test-report" />
 	<property name="reports.dir" value="${doc.dir}/reports" />
+	<property name="test-report.dir" value="${reports.dir}/unit-test" />
     <property name="dist.dir" value="${basedir}/dist" />
 
     <property name="jdk.target" value="1.5" />
@@ -36,8 +36,7 @@
     <taskdef resource="net/sf/antcontrib/antlib.xml" />
 	
 	<!-- Load Checkstyle tasks -->
-	<taskdef resource="checkstyletask.properties"
-	         classpath="{${build-lib.dir}/checkstyle-all-4.2.jar"/>
+	<taskdef resource="checkstyletask.properties" />
 
     <!-- Classpath for building core classes-->
     <path id="build-path">
