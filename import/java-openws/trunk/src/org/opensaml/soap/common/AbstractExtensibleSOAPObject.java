@@ -34,14 +34,14 @@ import org.opensaml.xml.validation.AbstractValidatingXMLObject;
 public class AbstractExtensibleSOAPObject extends AbstractValidatingXMLObject implements SOAPObject,
         AttributeExtensibleXMLObject, ElementExtensibleXMLObject {
 
-    /** "Any" type children */
+    /** "Any" type children. */
     private XMLObjectChildrenList<XMLObject> unknownXMLObject;
 
-    /** Attributes of the proxied Element */
+    /** Attributes of the proxied Element. */
     private AttributeMap attributes;
 
     /**
-     * Constructor
+     * Constructor.
      * 
      * @param namespaceURI namespace of the element
      * @param elementLocalName name of the element

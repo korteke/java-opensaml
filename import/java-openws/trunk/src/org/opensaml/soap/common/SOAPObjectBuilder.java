@@ -19,7 +19,7 @@ package org.opensaml.soap.common;
 import org.opensaml.xml.XMLObjectBuilder;
 
 /**
- * Builder for SOAPObjects
+ * Builder for SOAPObjects.
  *
  * @param <SOAPObjectType> the type of SOAPObject being built
  */
