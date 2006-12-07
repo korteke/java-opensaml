@@ -22,21 +22,23 @@ import org.opensaml.soap.common.SOAPObject;
 import org.opensaml.soap.util.SOAPConstants;
 
 /**
- * SOAP 1.1 Fault
+ * SOAP 1.1 Fault.
  */
 public interface Fault extends SOAPObject {
     
-    /** Element local name */
-    public final static String DEFAULT_ELEMENT_LOCAL_NAME = "Fault";
+    /** Element local name. */
+    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Fault";
     
-    /** Default element name */
-    public final static QName DEFAULT_ELEMENT_NAME = new QName(SOAPConstants.SOAP11_NS, DEFAULT_ELEMENT_LOCAL_NAME, SOAPConstants.SOAP11_PREFIX);
+    /** Default element name. */
+    public static final QName DEFAULT_ELEMENT_NAME = 
+        new QName(SOAPConstants.SOAP11_NS, DEFAULT_ELEMENT_LOCAL_NAME, SOAPConstants.SOAP11_PREFIX);
     
-    /** Local name of the XSI type */
-    public final static String TYPE_LOCAL_NAME = "Fault"; 
+    /** Local name of the XSI type. */
+    public static final String TYPE_LOCAL_NAME = "Fault"; 
         
-    /** QName of the XSI type */
-    public final static QName TYPE_NAME = new QName(SOAPConstants.SOAP11_NS, TYPE_LOCAL_NAME, SOAPConstants.SOAP11_PREFIX);
+    /** QName of the XSI type. */
+    public static final QName TYPE_NAME = 
+        new QName(SOAPConstants.SOAP11_NS, TYPE_LOCAL_NAME, SOAPConstants.SOAP11_PREFIX);
 
     /**
      * Gets the fault code for this fault.

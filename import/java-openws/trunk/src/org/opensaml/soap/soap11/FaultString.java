@@ -23,13 +23,14 @@ import org.opensaml.soap.util.SOAPConstants;
 import org.opensaml.xml.schema.XSString;
 
 /**
- * SOAP 1.1 faultstring
+ * SOAP 1.1 faultstring.
  */
 public interface FaultString extends SOAPObject, XSString {
 
-    /** Element local name */
-    public final static String DEFAULT_ELEMENT_LOCAL_NAME = "faultString";
+    /** Element local name. */
+    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "faultString";
     
-    /** Default element name */
-    public final static QName DEFAULT_ELEMENT_NAME = new QName(SOAPConstants.SOAP11_NS, DEFAULT_ELEMENT_LOCAL_NAME, SOAPConstants.SOAP11_PREFIX);
+    /** Default element name. */
+    public static final QName DEFAULT_ELEMENT_NAME = 
+        new QName(SOAPConstants.SOAP11_NS, DEFAULT_ELEMENT_LOCAL_NAME, SOAPConstants.SOAP11_PREFIX);
 }

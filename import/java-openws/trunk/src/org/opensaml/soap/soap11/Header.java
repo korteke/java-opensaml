@@ -24,19 +24,21 @@ import org.opensaml.xml.AttributeExtensibleXMLObject;
 import org.opensaml.xml.ElementExtensibleXMLObject;
 
 /**
- * SOAP 1.1 Header
+ * SOAP 1.1 Header.
  */
 public interface Header extends SOAPObject, ElementExtensibleXMLObject, AttributeExtensibleXMLObject {
 
-    /** Element local name */
-    public final static String DEFAULT_ELEMENT_LOCAL_NAME = "Header";
+    /** Element local name. */
+    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Header";
     
-    /** Default element name */
-    public final static QName DEFAULT_ELEMENT_NAME = new QName(SOAPConstants.SOAP11_NS, DEFAULT_ELEMENT_LOCAL_NAME, SOAPConstants.SOAP11_PREFIX);
+    /** Default element name. */
+    public static final QName DEFAULT_ELEMENT_NAME = 
+        new QName(SOAPConstants.SOAP11_NS, DEFAULT_ELEMENT_LOCAL_NAME, SOAPConstants.SOAP11_PREFIX);
     
-    /** Local name of the XSI type */
-    public final static String TYPE_LOCAL_NAME = "Header"; 
+    /** Local name of the XSI type. */
+    public static final String TYPE_LOCAL_NAME = "Header"; 
         
-    /** QName of the XSI type */
-    public final static QName TYPE_NAME = new QName(SOAPConstants.SOAP11_NS, TYPE_LOCAL_NAME, SOAPConstants.SOAP11_PREFIX);
+    /** QName of the XSI type. */
+    public static final QName TYPE_NAME = 
+        new QName(SOAPConstants.SOAP11_NS, TYPE_LOCAL_NAME, SOAPConstants.SOAP11_PREFIX);
 }
