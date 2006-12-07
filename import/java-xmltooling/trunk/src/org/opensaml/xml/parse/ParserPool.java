@@ -38,17 +38,21 @@ import org.xml.sax.SAXException;
  */
 public class ParserPool {
 
-    /** logger */
+    /** Class logger. */
     private static Logger log = Logger.getLogger(ParserPool.class);
 
-    /** JAXP factory used to create DocumentBuilders */
-    private DocumentBuilderFactory docBuilderFactory = null;
+    /** JAXP factory used to create DocumentBuilders. */
+    private DocumentBuilderFactory docBuilderFactory;
 
-    /** FIFO stack for parsers */
+    /** FIFO stack for parsers. */
     private Stack<SoftReference<DocumentBuilder>> parserPool;
 
     /**
-     * Constructor
+     * Constructor.
+     * 
+     * @param namespaceAware whether the parser should be namespace aware
+     * @param schema the schema to validate parsed XML against
+     * @param features XML parser features
      */
     public ParserPool(boolean namespaceAware, Schema schema, Map<String, Boolean> features) {
 
@@ -114,7 +118,7 @@ public class ParserPool {
     }
 
     /**
-     * Parses a document using a pooled parser with the proper settings
+     * Parses a document using a pooled parser with the proper settings.
      * 
      * @param in A stream containing the content to be parsed
      * 
@@ -135,9 +139,9 @@ public class ParserPool {
             checkinBuilder(documentBuilder);
         }
     }
-    
+
     /**
-     * Parses a document using a pooled parser with the proper settings
+     * Parses a document using a pooled parser with the proper settings.
      * 
      * @param in A stream containing the content to be parsed
      * 
@@ -145,16 +149,16 @@ public class ParserPool {
      * 
      * @exception XMLParserException thrown if there was a problem reading, parsing, or validating the XML
      */
-    public Document parse(InputStream in) throws XMLParserException{
+    public Document parse(InputStream in) throws XMLParserException {
         return parse(new InputSource(in));
     }
 
     /**
      * Gets a DocumentBuilder from the pool.
      * 
-     * @return
+     * @return returns a document builder from the pool
      * 
-     * @throws XMLParserException
+     * @throws XMLParserException thrown if a document builder can not be created when needed
      */
     private DocumentBuilder checkoutBuilder() throws XMLParserException {
         DocumentBuilder builder = null;
@@ -187,8 +191,6 @@ public class ParserPool {
     /**
      * Creates a new {@link DocumentBuilder} that validates documents against the schema for the given SAML version and
      * any registered extensions or without validation if no version is given.
-     * 
-     * @param samlVersion the SAML version to validate against or null for no validation
      * 
      * @return the DocumentBuilder
      * 

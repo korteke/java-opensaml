@@ -17,24 +17,23 @@
 package org.opensaml.xml.parse;
 
 /**
- * An exception thrown when there is a problem creating an XML parser or
- * parsing XML with on.
+ * An exception thrown when there is a problem creating an XML parser or parsing XML with on.
  */
 public class XMLParserException extends Exception {
 
     /**
-     * Serial version UID
+     * Serial version UID.
      */
     private static final long serialVersionUID = 7260425832643941776L;
 
-	/**
+    /**
      * Constructor.
      */
-	public XMLParserException() {
-        
+    public XMLParserException() {
+
     }
-    
-	/**
+
+    /**
      * Constructor.
      * 
      * @param message exception message
@@ -42,7 +41,7 @@ public class XMLParserException extends Exception {
     public XMLParserException(String message) {
         super(message);
     }
-    
+
     /**
      * Constructor.
      * 
@@ -51,7 +50,7 @@ public class XMLParserException extends Exception {
     public XMLParserException(Exception wrappedException) {
         super(wrappedException);
     }
-    
+
     /**
      * Constructor.
      * 

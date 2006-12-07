@@ -26,18 +26,18 @@ import org.xml.sax.SAXParseException;
  */
 public class SAXErrorHandler implements ErrorHandler {
 
-    /** logger */
+    /** Class logger. */
     private static Logger log = Logger.getLogger(SAXErrorHandler.class);
 
     /**
-     * Constructor
+     * Constructor.
      */
     public SAXErrorHandler() {
 
     }
 
     /**
-     * Called by parser if a fatal error is detected, does nothing
+     * Called by parser if a fatal error is detected, does nothing.
      * 
      * @param e caught exception
      * 
@@ -48,7 +48,7 @@ public class SAXErrorHandler implements ErrorHandler {
     }
 
     /**
-     * Called by parser if an error is detected, currently just throws e
+     * Called by parser if an error is detected, currently just throws e.
      * 
      * @param e caught exception
      * 
@@ -59,11 +59,9 @@ public class SAXErrorHandler implements ErrorHandler {
     }
 
     /**
-     * Called by parser if a warning is issued, currently logs the condition
+     * Called by parser if a warning is issued, currently logs the condition.
      * 
      * @param e caught exception
-     * 
-     * @throws SAXParseException Can be raised to indicate an explicit error
      */
     public void warning(SAXParseException e) {
         log.warn("Parser warning: line = " + e.getLineNumber() + " : uri = " + e.getSystemId());

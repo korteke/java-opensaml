@@ -32,7 +32,7 @@ import org.xml.sax.InputSource;
  */
 public class NoOpEntityResolver implements EntityResolver {
     
-    /** Constructor */
+    /** Constructor. */
     public NoOpEntityResolver() {
 
     }
