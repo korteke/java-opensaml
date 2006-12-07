@@ -25,7 +25,7 @@ import org.opensaml.soap.soap11.Header;
 public class HeaderImpl extends AbstractExtensibleSOAPObject implements Header {
 
     /**
-     * Constructor
+     * Constructor.
      * 
      * @param namespaceURI namespace of the element
      * @param elementLocalName name of the element

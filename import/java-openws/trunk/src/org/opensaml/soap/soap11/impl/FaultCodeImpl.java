@@ -25,7 +25,7 @@ import org.opensaml.xml.schema.impl.XSQNameImpl;
 public class FaultCodeImpl extends XSQNameImpl implements FaultCode {
 
     /**
-     * Constructor
+     * Constructor.
      * 
      * @param namespaceURI the namespace the element is in
      * @param elementLocalName the local name of the XML element this Object represents

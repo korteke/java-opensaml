@@ -21,9 +21,15 @@ import java.util.List;
 import org.opensaml.xml.AttributeExtensibleXMLObject;
 
 /**
- * Helper methods for working with SOAP
+ * Helper methods for working with SOAP.
  */
 public class SOAPHelper {
+
+    /**
+     * Privatae constructor.
+     */
+    private SOAPHelper() {
+    }
 
     /**
      * Adds a "mustUnderstand" attribute to the given SOAP object.

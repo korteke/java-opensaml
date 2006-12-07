@@ -33,20 +33,20 @@ import org.opensaml.xml.validation.AbstractValidatingXMLObject;
  */
 public class FaultImpl extends AbstractValidatingXMLObject implements Fault {
     
-    /** Fault code */
+    /** Fault code. */
     private FaultCode faultCode;
     
-    /** Fault message */
+    /** Fault message. */
     private FaultString message;
     
-    /** Actor that faulted */
+    /** Actor that faulted. */
     private FaultActor actor;
     
-    /** Details of the fault */
+    /** Details of the fault. */
     private Detail detail;
     
     /**
-     * Constructor
+     * Constructor.
      * 
      * @param namespaceURI namespace of the element
      * @param elementLocalName name of the element

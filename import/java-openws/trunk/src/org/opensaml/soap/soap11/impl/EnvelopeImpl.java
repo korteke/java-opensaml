@@ -31,14 +31,14 @@ import org.opensaml.xml.XMLObject;
  */
 public class EnvelopeImpl extends AbstractExtensibleSOAPObject implements Envelope {
 
-    /** SOAP header */
+    /** SOAP header. */
     private Header header;
 
-    /** SOAP body */
+    /** SOAP body. */
     private Body body;
 
     /**
-     * Constructor
+     * Constructor.
      * 
      * @param namespaceURI namespace of the element
      * @param elementLocalName name of the element

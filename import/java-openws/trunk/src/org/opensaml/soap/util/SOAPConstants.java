@@ -18,13 +18,13 @@ package org.opensaml.soap.util;
 
 
 /**
- * SOAP Related Constants
+ * SOAP Related Constants.
  */
 public class SOAPConstants {
 
-    /** XML core namespace */
-    public final static String SOAP11_NS = "http://schemas.xmlsoap.org/soap/envelope/";
+    /** XML core namespace. */
+    public static final String SOAP11_NS = "http://schemas.xmlsoap.org/soap/envelope/";
     
-    /** XML core prefix for xml attributes */
-    public final static String SOAP11_PREFIX = "soap11";
+    /** XML core prefix for xml attributes. */
+    public static final String SOAP11_PREFIX = "soap11";
 }

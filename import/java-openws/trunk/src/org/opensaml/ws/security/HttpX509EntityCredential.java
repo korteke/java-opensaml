@@ -33,11 +33,11 @@ import org.opensaml.xml.security.AbstractX509EntityCredential;
  */
 public class HttpX509EntityCredential extends AbstractX509EntityCredential {
 
-    /** HTTP header to pull certificate info from */
-    public final static String X509_HEADER = "javax.servlet.request.X509Certificate";
+    /** HTTP header to pull certificate info from. */
+    public static final String X509_HEADER = "javax.servlet.request.X509Certificate";
 
     /**
-     * Constructor
+     * Constructor.
      * 
      * @param httpRequest the HTTP request
      */

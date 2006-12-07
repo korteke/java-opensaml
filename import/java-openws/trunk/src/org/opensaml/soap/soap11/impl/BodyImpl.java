@@ -25,7 +25,7 @@ import org.opensaml.soap.soap11.Body;
 public class BodyImpl extends AbstractExtensibleSOAPObject implements Body {
 
     /**
-     * Constructor
+     * Constructor.
      * 
      * @param namespaceURI namespace of the element
      * @param elementLocalName name of the element
