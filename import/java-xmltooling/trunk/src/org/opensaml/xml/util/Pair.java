@@ -18,74 +18,79 @@ package org.opensaml.xml.util;
 
 /**
  * Container for a pair of objects.
+ * 
+ * @param <T1> type of the first object in the pair
+ * @param <T2> type of the second object in the pair
  */
 public class Pair<T1, T2> {
 
-    /** First object in pair */
+    /** First object in pair. */
     private T1 first;
-    
-    /** Second object in pair */
+
+    /** Second object in pair. */
     private T2 second;
-    
+
     /**
-     * Constructor
-     *
-     * @param first first object in the pair
-     * @param second second object in the pair
+     * Constructor.
+     * 
+     * @param newFirst first object in the pair
+     * @param newSecond second object in the pair
      */
-    public Pair(T1 first, T2 second){
-        this.first = first;
-        this.second = second;
+    public Pair(T1 newFirst, T2 newSecond) {
+        first = newFirst;
+        second = newSecond;
     }
-    
+
     /**
      * Gets the first object in the pair.
      * 
      * @return first object in the pair
      */
-    public T1 getFirst(){
+    public T1 getFirst() {
         return first;
     }
-    
+
     /**
      * Sets the first object in the pair.
      * 
      * @param newFirst first object in the pair
      */
-    public void setFirst(T1 newFirst){
+    public void setFirst(T1 newFirst) {
         first = newFirst;
     }
-    
+
     /**
      * Gets the second object in the pair.
      * 
      * @return second object in the pair
      */
-    public T2 getSecond(){
+    public T2 getSecond() {
         return second;
     }
-    
+
     /**
      * Sets the second object in the pair.
      * 
      * @param newSecond second object in the pair
      */
-    public void setSecond(T2 newSecond){
+    public void setSecond(T2 newSecond) {
         second = newSecond;
     }
-    
+
     /** {@inheritDoc} */
-    public boolean equals(Object o){
-        if(o instanceof Pair){
-            Pair<T1, T2> otherPair = (Pair<T1, T2>)o;            
-            return DatatypeHelper.safeEquals(getFirst(), otherPair.getFirst()) && DatatypeHelper.safeEquals(getSecond(), otherPair.getSecond());
+    @SuppressWarnings("unchecked")
+    public boolean equals(Object o) {
+        if (o instanceof Pair) {
+            Pair<T1, T2> otherPair = (Pair<T1, T2>) o;
+            return DatatypeHelper.safeEquals(getFirst(), otherPair.getFirst())
+                    && DatatypeHelper.safeEquals(getSecond(), otherPair.getSecond());
         }
-        
+
         return false;
     }
-    
+
     /** {@inheritDoc} */
-    public String toString(){
+    public String toString() {
         return "(" + getFirst() + "," + getSecond() + ")";
     }
 }

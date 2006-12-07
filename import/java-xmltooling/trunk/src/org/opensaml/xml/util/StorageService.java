@@ -27,6 +27,9 @@ import org.joda.time.DateTime;
  * Keys need to be unique only within a given context, so multiple
  * components can share a single storage service safely as long as they
  * use different labels.
+ * 
+ * @param <KeyType> object type of the keys
+ * @param <ValueType> object type of the values
  */
 public interface StorageService<KeyType, ValueType> {
 

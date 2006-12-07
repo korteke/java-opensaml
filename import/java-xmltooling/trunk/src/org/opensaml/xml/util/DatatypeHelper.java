@@ -27,8 +27,13 @@ import javax.xml.datatype.Duration;
  */
 public class DatatypeHelper {
 
-    /** JAXP DatatypeFactory */
+    /** JAXP DatatypeFactory. */
     private static DatatypeFactory dataTypeFactory;
+
+    /** Constructor. */
+    private DatatypeHelper() {
+
+    }
 
     /**
      * Gets a static instance of a JAXP DatatypeFactory.
@@ -56,8 +61,8 @@ public class DatatypeHelper {
      */
     public static boolean isEmpty(String s) {
         if (s != null) {
-            s = s.trim();
-            if (s.length() > 0) {
+            String sTrimmed = s.trim();
+            if (sTrimmed.length() > 0) {
                 return false;
             }
         }
@@ -66,8 +71,9 @@ public class DatatypeHelper {
     }
 
     /**
-     * Compares two strings for equality, allowing for nulls
+     * Compares two strings for equality, allowing for nulls.
      * 
+     * @param <T> type of object to compare
      * @param s1 The first operand
      * @param s2 The second operand
      * 
@@ -106,8 +112,8 @@ public class DatatypeHelper {
      */
     public static String safeTrimOrNullString(String s) {
         if (s != null) {
-            s = s.trim();
-            if (s.length() > 0) {
+            String sTrimmed = s.trim();
+            if (sTrimmed.length() > 0) {
                 return s;
             }
         }

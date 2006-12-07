@@ -29,14 +29,18 @@ import org.opensaml.xml.XMLObject;
 
 /**
  * A list which indexes XMLObjects by their schema type and element QName for quick retrival based on those items.
+ * 
+ * @param <ElementType> the type of element added to the list
  */
 public class IndexedXMLObjectChildrenList<ElementType extends XMLObject> extends XMLObjectChildrenList<ElementType> {
 
-    /** Index of objects by type and name */
+    /** Index of objects by type and name. */
     private FastMap<QName, ArrayList<ElementType>> objectIndex;
 
     /**
-     * Constructor
+     * Constructor.
+     * 
+     * @param parent the parent of the {@link XMLObject}s added to the list
      */
     public IndexedXMLObjectChildrenList(XMLObject parent) {
         super(parent);
@@ -44,7 +48,8 @@ public class IndexedXMLObjectChildrenList<ElementType extends XMLObject> extends
     }
 
     /**
-     * Constructor
+     * Constructor.
+     * 
      * @param parent the parent of all elements
      * @param col collection to add to this list
      */
@@ -53,7 +58,7 @@ public class IndexedXMLObjectChildrenList<ElementType extends XMLObject> extends
         objectIndex = new FastMap<QName, ArrayList<ElementType>>();
         addAll(col);
     }
-    
+
     /** {@inheritDoc} */
     public void clear() {
         super.clear();
@@ -61,7 +66,7 @@ public class IndexedXMLObjectChildrenList<ElementType extends XMLObject> extends
     }
 
     /**
-     * Retrieves all the SAMLObjects that have given schema type or element name
+     * Retrieves all the SAMLObjects that have given schema type or element name.
      * 
      * @param typeOrName the schema type or element name
      * 
@@ -105,6 +110,8 @@ public class IndexedXMLObjectChildrenList<ElementType extends XMLObject> extends
      * one from their indices). Returns the element that was removed from the list
      * 
      * @param index the index of the element to remove
+     * 
+     * @return the element removed from the list
      */
     public ElementType remove(int index) {
         ElementType returnValue = super.remove(index);
@@ -113,7 +120,7 @@ public class IndexedXMLObjectChildrenList<ElementType extends XMLObject> extends
 
         return returnValue;
     }
-    
+
     /**
      * Removes a given element from the list and index.
      * 
@@ -125,24 +132,24 @@ public class IndexedXMLObjectChildrenList<ElementType extends XMLObject> extends
         boolean elementRemoved = false;
 
         elementRemoved = super.remove(element);
-        if(elementRemoved) {
+        if (elementRemoved) {
             removeElementFromIndex(element);
         }
-        
+
         return elementRemoved;
     }
-    
+
     /**
-     * Returns a view of the list that only contains elements stored under the given index.  The returned list is 
-     * backed by this list so and supports all optional operations, so changes made to the returned list are reflected 
-     * in this list.
+     * Returns a view of the list that only contains elements stored under the given index. The returned list is backed
+     * by this list so and supports all optional operations, so changes made to the returned list are reflected in this
+     * list.
      * 
      * @param index index of the elements returned in the list view
      * 
      * @return a view of this list that contains only the elements stored under the given index
      */
-    public List<? extends ElementType> subList(QName index){
-        if(!objectIndex.containsKey(index)) {
+    public List<? extends ElementType> subList(QName index) {
+        if (!objectIndex.containsKey(index)) {
             objectIndex.put(index, new ArrayList<ElementType>());
         }
 
@@ -220,35 +227,34 @@ public class IndexedXMLObjectChildrenList<ElementType extends XMLObject> extends
 }
 
 /**
- * A special list that works as a view of an IndexedXMLObjectChildrenList showing only the 
- * sublist associated with a given index.  Operations performed on this sublist are reflected 
- * in the backing list.
- *
+ * A special list that works as a view of an IndexedXMLObjectChildrenList showing only the sublist associated with a
+ * given index. Operations performed on this sublist are reflected in the backing list.
+ * 
  * @param <ElementType> the XMLObject type that this list operates on
  */
-class ListView<ElementType extends XMLObject> extends AbstractList<ElementType>{
+class ListView<ElementType extends XMLObject> extends AbstractList<ElementType> {
 
-    /** List that backs this view */
+    /** List that backs this view. */
     private IndexedXMLObjectChildrenList<ElementType> backingList;
-    
-    /** Index that points to the list, in the backing list, that this view operates on */
+
+    /** Index that points to the list, in the backing list, that this view operates on. */
     private QName index;
-    
-    /** List, in the backing list, that the given index points to */
-    private List<ElementType>  indexList;
-    
+
+    /** List, in the backing list, that the given index points to. */
+    private List<ElementType> indexList;
+
     /**
-     * Constructor
-     *
-     * @param backingList the list that backs this view
-     * @param index the element schema type or name of the sublist this view operates on
+     * Constructor.
+     * 
+     * @param newBackingList the list that backs this view
+     * @param newIndex the element schema type or name of the sublist this view operates on
      */
-    public ListView(IndexedXMLObjectChildrenList<ElementType> backingList, QName index) {
-        this.backingList = backingList;
-        this.index = index;
+    public ListView(IndexedXMLObjectChildrenList<ElementType> newBackingList, QName newIndex) {
+        backingList = newBackingList;
+        index = newIndex;
         indexList = backingList.get(index);
     }
-    
+
     /**
      * Checks to see if the given element is contained in this list.
      * 
@@ -259,56 +265,56 @@ class ListView<ElementType extends XMLObject> extends AbstractList<ElementType>{
     public boolean contains(ElementType element) {
         return indexList.contains(element);
     }
-    
+
     /** {@inheritDoc} */
-    public ElementType get(int index) {
-        return indexList.get(index);
+    public ElementType get(int newIndex) {
+        return indexList.get(newIndex);
     }
 
     /** {@inheritDoc} */
     public int size() {
         return indexList.size();
     }
-    
+
     /** {@inheritDoc} */
-    public ElementType set(int index, ElementType element) {
-        
-        if(index < 0 && index > indexList.size()) {
+    public ElementType set(int newIndex, ElementType element) {
+
+        if (newIndex < 0 && newIndex > indexList.size()) {
             throw new IndexOutOfBoundsException();
         }
-        
+
         ElementType replacedElement;
         int elementIndex;
-        
-        replacedElement = indexList.get(index);
+
+        replacedElement = indexList.get(newIndex);
         elementIndex = backingList.indexOf(replacedElement);
         backingList.set(elementIndex, element);
-        
+
         return replacedElement;
     }
-    
+
     /** {@inheritDoc} */
-    public void add(int index, ElementType element) {
+    public void add(int newIndex, ElementType element) {
         indexCheck(element);
         backingList.add(element);
     }
-    
+
     /** {@inheritDoc} */
-    public ElementType remove(int index) {
-        return backingList.remove(index);
+    public ElementType remove(int newIndex) {
+        return backingList.remove(newIndex);
     }
-    
+
     /**
-     * Checks to make sure the given element schema type or name matches the index given at construction time
+     * Checks to make sure the given element schema type or name matches the index given at construction time.
      * 
      * @param element the element to check
      * 
      * @throws IllegalArgumentException thrown if the element schema type or name does not match the index
      */
-    protected void indexCheck(ElementType element) throws IllegalArgumentException{
-        if(index.equals(element.getSchemaType()) || index.equals(element.getElementQName())){
+    protected void indexCheck(ElementType element) throws IllegalArgumentException {
+        if (index.equals(element.getSchemaType()) || index.equals(element.getElementQName())) {
             return;
-        }else {
+        } else {
             throw new IllegalArgumentException("Element " + element.getElementQName() + " is not of type " + index);
         }
     }

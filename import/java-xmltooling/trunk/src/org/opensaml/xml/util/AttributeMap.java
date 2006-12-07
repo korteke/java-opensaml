@@ -38,11 +38,11 @@ public class AttributeMap implements Map<QName, String> {
     /** XMLObject owning the attributes. */
     private XMLObject attributeOwner;
 
-    /** Map of attributes */
+    /** Map of attributes. */
     private FastMap<QName, String> attributes;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param attributeOwner the XMLObject that owns these attributes
      * 
