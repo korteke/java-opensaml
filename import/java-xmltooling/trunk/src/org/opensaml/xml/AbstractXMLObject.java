@@ -299,8 +299,6 @@ public abstract class AbstractXMLObject implements XMLObject {
      * @param newValue - proposed new value
      * 
      * @return The value to assign to the saved Object.
-     * 
-     * @throws IllegalAddException if the child already has a parent.
      */
     protected <T extends Object> T prepareForAssignment(T oldValue, T newValue) {
         if (oldValue == null) {

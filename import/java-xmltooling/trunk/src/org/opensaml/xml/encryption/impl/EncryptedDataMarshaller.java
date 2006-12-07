@@ -17,6 +17,7 @@
 package org.opensaml.xml.encryption.impl;
 
 import org.opensaml.xml.encryption.EncryptedData;
+import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.util.XMLConstants;
 
 /**
@@ -28,7 +29,7 @@ public class EncryptedDataMarshaller extends EncryptedTypeMarshaller {
      * Constructor
      *
      */
-    public EncryptedDataMarshaller() {
+    public EncryptedDataMarshaller() throws MarshallingException{
        super(XMLConstants.XMLENC_NS, EncryptedData.DEFAULT_ELEMENT_LOCAL_NAME);
     }
 
@@ -39,7 +40,7 @@ public class EncryptedDataMarshaller extends EncryptedTypeMarshaller {
      * @param targetLocalName
      * @throws IllegalArgumentException
      */
-    protected EncryptedDataMarshaller(String targetNamespaceURI, String targetLocalName) throws IllegalArgumentException {
+    protected EncryptedDataMarshaller(String targetNamespaceURI, String targetLocalName) throws MarshallingException {
         super(targetNamespaceURI, targetLocalName);
     }
 

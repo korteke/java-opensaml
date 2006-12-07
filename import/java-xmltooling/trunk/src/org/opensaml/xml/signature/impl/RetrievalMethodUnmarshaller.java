@@ -32,7 +32,7 @@ public class RetrievalMethodUnmarshaller extends AbstractXMLSignatureUnmarshalle
      * Constructor
      *
      */
-    public RetrievalMethodUnmarshaller() {
+    public RetrievalMethodUnmarshaller() throws UnmarshallingException{
         super(XMLConstants.XMLSIG_NS, RetrievalMethod.DEFAULT_ELEMENT_LOCAL_NAME);
     }
 
@@ -44,7 +44,7 @@ public class RetrievalMethodUnmarshaller extends AbstractXMLSignatureUnmarshalle
      * @throws IllegalArgumentException
      */
     protected RetrievalMethodUnmarshaller(String targetNamespaceURI, String targetLocalName)
-            throws IllegalArgumentException {
+            throws UnmarshallingException {
         super(targetNamespaceURI, targetLocalName);
     }
 

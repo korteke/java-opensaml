@@ -31,7 +31,7 @@ public class EncryptedKeyMarshaller extends EncryptedTypeMarshaller {
      * Constructor
      *
      */
-    public EncryptedKeyMarshaller() {
+    public EncryptedKeyMarshaller() throws MarshallingException{
         super(XMLConstants.XMLENC_NS, EncryptedKey.DEFAULT_ELEMENT_LOCAL_NAME);
     }
 
@@ -42,7 +42,7 @@ public class EncryptedKeyMarshaller extends EncryptedTypeMarshaller {
      * @param targetLocalName
      * @throws IllegalArgumentException
      */
-    protected EncryptedKeyMarshaller(String targetNamespaceURI, String targetLocalName) throws IllegalArgumentException {
+    protected EncryptedKeyMarshaller(String targetNamespaceURI, String targetLocalName) throws MarshallingException {
         super(targetNamespaceURI, targetLocalName);
     }
 

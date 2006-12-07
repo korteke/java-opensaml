@@ -27,30 +27,31 @@ import org.opensaml.xml.util.XMLConstants;
  * A thread-safe Unmarshaller for {@link org.opensaml.xml.encryption.CipherData} objects.
  */
 public class CipherDataUnmarshaller extends AbstractXMLEncryptionUnmarshaller {
-    
+
     /**
      * Constructor
-     *
+     * 
      */
-    public CipherDataUnmarshaller() {
+    public CipherDataUnmarshaller() throws UnmarshallingException {
         super(XMLConstants.XMLENC_NS, CipherData.DEFAULT_ELEMENT_LOCAL_NAME);
     }
 
     /**
      * Constructor
-     *
+     * 
      * @param targetNamespaceURI
      * @param targetLocalName
-     * @throws IllegalArgumentException
+     * @throws UnmarshallingException
      */
-    public CipherDataUnmarshaller(String targetNamespaceURI, String targetLocalName) throws IllegalArgumentException {
+    public CipherDataUnmarshaller(String targetNamespaceURI, String targetLocalName) throws UnmarshallingException {
         super(targetNamespaceURI, targetLocalName);
     }
 
     /** {@inheritDoc} */
-    protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject) throws UnmarshallingException {
+    protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
+            throws UnmarshallingException {
         CipherData cipherData = (CipherData) parentXMLObject;
-        
+
         if (childXMLObject instanceof CipherValue) {
             cipherData.setCipherValue((CipherValue) childXMLObject);
         } else if (childXMLObject instanceof CipherReference) {

@@ -27,31 +27,30 @@ import org.w3c.dom.Attr;
  * A thread-safe Unmarshaller for {@link org.opensaml.xml.encryption.CipherReference} objects.
  */
 public class CipherReferenceUnmarshaller extends AbstractXMLEncryptionUnmarshaller {
-    
+
     /**
      * Constructor
-     *
+     * 
      */
-    public CipherReferenceUnmarshaller() {
+    public CipherReferenceUnmarshaller() throws UnmarshallingException {
         super(XMLConstants.XMLENC_NS, CipherReference.DEFAULT_ELEMENT_LOCAL_NAME);
     }
 
     /**
      * Constructor
-     *
+     * 
      * @param targetNamespaceURI
      * @param targetLocalName
      * @throws IllegalArgumentException
      */
-    public CipherReferenceUnmarshaller(String targetNamespaceURI, String targetLocalName)
-            throws IllegalArgumentException {
+    public CipherReferenceUnmarshaller(String targetNamespaceURI, String targetLocalName) throws UnmarshallingException {
         super(targetNamespaceURI, targetLocalName);
     }
 
     /** {@inheritDoc} */
     protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
         CipherReference cr = (CipherReference) xmlObject;
-        
+
         if (attribute.getLocalName().equals(CipherReference.URI_ATTRIB_NAME)) {
             cr.setURI(attribute.getValue());
         } else {
@@ -60,9 +59,10 @@ public class CipherReferenceUnmarshaller extends AbstractXMLEncryptionUnmarshall
     }
 
     /** {@inheritDoc} */
-    protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject) throws UnmarshallingException {
+    protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
+            throws UnmarshallingException {
         CipherReference cr = (CipherReference) parentXMLObject;
-        
+
         if (childXMLObject instanceof Transforms) {
             cr.setTransforms((Transforms) childXMLObject);
         } else {

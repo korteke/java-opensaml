@@ -32,7 +32,7 @@ public class KeyValueUnmarshaller extends AbstractXMLSignatureUnmarshaller {
      * Constructor
      *
      */
-    public KeyValueUnmarshaller() {
+    public KeyValueUnmarshaller() throws UnmarshallingException{
         super(XMLConstants.XMLSIG_NS, KeyValue.DEFAULT_ELEMENT_LOCAL_NAME);
     }
 
@@ -43,7 +43,7 @@ public class KeyValueUnmarshaller extends AbstractXMLSignatureUnmarshaller {
      * @param targetLocalName
      * @throws IllegalArgumentException
      */
-    protected KeyValueUnmarshaller(String targetNamespaceURI, String targetLocalName) throws IllegalArgumentException {
+    protected KeyValueUnmarshaller(String targetNamespaceURI, String targetLocalName) throws UnmarshallingException {
         super(targetNamespaceURI, targetLocalName);
     }
 

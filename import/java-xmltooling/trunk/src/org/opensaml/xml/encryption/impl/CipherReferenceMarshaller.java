@@ -19,6 +19,7 @@ package org.opensaml.xml.encryption.impl;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.encryption.CipherReference;
 import org.opensaml.xml.io.MarshallingException;
+import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.util.XMLConstants;
 import org.w3c.dom.Element;
 
@@ -31,7 +32,7 @@ public class CipherReferenceMarshaller extends AbstractXMLEncryptionMarshaller {
      * Constructor
      *
      */
-    public CipherReferenceMarshaller() {
+    public CipherReferenceMarshaller() throws MarshallingException{
         super(XMLConstants.XMLENC_NS, CipherReference.DEFAULT_ELEMENT_LOCAL_NAME);
     }
 
@@ -42,7 +43,7 @@ public class CipherReferenceMarshaller extends AbstractXMLEncryptionMarshaller {
      * @param targetLocalName
      * @throws NullPointerException
      */
-    public CipherReferenceMarshaller(String targetNamespaceURI, String targetLocalName) throws NullPointerException {
+    public CipherReferenceMarshaller(String targetNamespaceURI, String targetLocalName) throws MarshallingException {
         super(targetNamespaceURI, targetLocalName);
     }
 

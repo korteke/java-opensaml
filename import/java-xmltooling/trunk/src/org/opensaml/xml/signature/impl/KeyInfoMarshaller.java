@@ -16,6 +16,7 @@
 
 package org.opensaml.xml.signature.impl;
 
+import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.signature.KeyInfo;
 import org.opensaml.xml.util.XMLConstants;
 
@@ -28,7 +29,7 @@ public class KeyInfoMarshaller extends KeyInfoTypeMarshaller {
      * Constructor
      *
      */
-    public KeyInfoMarshaller() {
+    public KeyInfoMarshaller() throws MarshallingException{
         super(XMLConstants.XMLSIG_NS, KeyInfo.DEFAULT_ELEMENT_LOCAL_NAME);
     }
 
@@ -39,7 +40,7 @@ public class KeyInfoMarshaller extends KeyInfoTypeMarshaller {
      * @param targetLocalName
      * @throws NullPointerException
      */
-    protected KeyInfoMarshaller(String targetNamespaceURI, String targetLocalName) throws NullPointerException {
+    protected KeyInfoMarshaller(String targetNamespaceURI, String targetLocalName) throws MarshallingException {
         super(targetNamespaceURI, targetLocalName);
     }
 

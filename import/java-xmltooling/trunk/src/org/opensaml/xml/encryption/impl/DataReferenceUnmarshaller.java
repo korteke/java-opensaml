@@ -17,6 +17,7 @@
 package org.opensaml.xml.encryption.impl;
 
 import org.opensaml.xml.encryption.DataReference;
+import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.util.XMLConstants;
 
 /**
@@ -28,7 +29,7 @@ public class DataReferenceUnmarshaller extends ReferenceTypeUnmarshaller {
      * Constructor
      *
      */
-    public DataReferenceUnmarshaller() {
+    public DataReferenceUnmarshaller() throws UnmarshallingException{
         super(XMLConstants.XMLENC_NS, DataReference.DEFAULT_ELEMENT_LOCAL_NAME);
     }
 
@@ -39,7 +40,7 @@ public class DataReferenceUnmarshaller extends ReferenceTypeUnmarshaller {
      * @param targetLocalName
      * @throws IllegalArgumentException
      */
-    public DataReferenceUnmarshaller(String targetNamespaceURI, String targetLocalName) throws IllegalArgumentException {
+    public DataReferenceUnmarshaller(String targetNamespaceURI, String targetLocalName) throws UnmarshallingException {
         super(targetNamespaceURI, targetLocalName);
     }
 

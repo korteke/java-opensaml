@@ -17,6 +17,7 @@
 package org.opensaml.xml.encryption.impl;
 
 import org.opensaml.xml.encryption.EncryptedData;
+import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.util.XMLConstants;
 
 /**
@@ -24,7 +25,7 @@ import org.opensaml.xml.util.XMLConstants;
  */
 public class EncryptedDataUnmarshaller extends EncryptedTypeUnmarshaller {
     
-    public EncryptedDataUnmarshaller() {
+    public EncryptedDataUnmarshaller() throws UnmarshallingException{
       super(XMLConstants.XMLENC_NS, EncryptedData.DEFAULT_ELEMENT_LOCAL_NAME);
     }
 
@@ -35,7 +36,7 @@ public class EncryptedDataUnmarshaller extends EncryptedTypeUnmarshaller {
      * @param targetLocalName
      * @throws IllegalArgumentException
      */
-    protected EncryptedDataUnmarshaller(String targetNamespaceURI, String targetLocalName) throws IllegalArgumentException {
+    protected EncryptedDataUnmarshaller(String targetNamespaceURI, String targetLocalName) throws UnmarshallingException {
         super(targetNamespaceURI, targetLocalName);
     }
 

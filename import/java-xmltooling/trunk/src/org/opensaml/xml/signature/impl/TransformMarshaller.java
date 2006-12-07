@@ -31,7 +31,7 @@ public class TransformMarshaller extends AbstractXMLSignatureMarshaller {
      * Constructor
      *
      */
-    public TransformMarshaller() {
+    public TransformMarshaller() throws MarshallingException{
         super(XMLConstants.XMLSIG_NS, Transform.DEFAULT_ELEMENT_LOCAL_NAME);
     }
 
@@ -42,7 +42,7 @@ public class TransformMarshaller extends AbstractXMLSignatureMarshaller {
      * @param targetLocalName
      * @throws NullPointerException
      */
-    protected TransformMarshaller(String targetNamespaceURI, String targetLocalName) throws NullPointerException {
+    protected TransformMarshaller(String targetNamespaceURI, String targetLocalName) throws MarshallingException {
         super(targetNamespaceURI, targetLocalName);
     }
 

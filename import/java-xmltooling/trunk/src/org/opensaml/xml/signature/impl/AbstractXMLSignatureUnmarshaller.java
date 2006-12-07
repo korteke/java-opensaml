@@ -34,7 +34,7 @@ public abstract class AbstractXMLSignatureUnmarshaller extends AbstractXMLObject
 
    /** Constructor */
    protected AbstractXMLSignatureUnmarshaller(String targetNamespaceURI, String targetLocalName)
-            throws IllegalArgumentException {
+            throws UnmarshallingException {
         super(targetNamespaceURI, targetLocalName);
     }
 

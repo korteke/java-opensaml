@@ -17,6 +17,7 @@
 package org.opensaml.xml.encryption.impl;
 
 import org.opensaml.xml.encryption.KeyReference;
+import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.util.XMLConstants;
 
 /**
@@ -28,7 +29,7 @@ public class KeyReferenceMarshaller extends ReferenceTypeMarshaller {
      * Constructor
      *
      */
-    public KeyReferenceMarshaller() {
+    public KeyReferenceMarshaller() throws MarshallingException{
         super(XMLConstants.XMLENC_NS, KeyReference.DEFAULT_ELEMENT_LOCAL_NAME);
     }
 
@@ -39,7 +40,7 @@ public class KeyReferenceMarshaller extends ReferenceTypeMarshaller {
      * @param targetLocalName
      * @throws NullPointerException
      */
-    public KeyReferenceMarshaller(String targetNamespaceURI, String targetLocalName) throws NullPointerException {
+    public KeyReferenceMarshaller(String targetNamespaceURI, String targetLocalName) throws MarshallingException {
         super(targetNamespaceURI, targetLocalName);
     }
 

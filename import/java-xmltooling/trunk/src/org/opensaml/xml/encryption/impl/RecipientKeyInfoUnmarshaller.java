@@ -17,6 +17,7 @@
 package org.opensaml.xml.encryption.impl;
 
 import org.opensaml.xml.encryption.RecipientKeyInfo;
+import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.signature.impl.KeyInfoTypeUnmarshaller;
 import org.opensaml.xml.util.XMLConstants;
 
@@ -29,7 +30,7 @@ public class RecipientKeyInfoUnmarshaller extends KeyInfoTypeUnmarshaller {
      * Constructor
      *
      */
-    public RecipientKeyInfoUnmarshaller() {
+    public RecipientKeyInfoUnmarshaller() throws UnmarshallingException{
         super(XMLConstants.XMLENC_NS, RecipientKeyInfo.DEFAULT_ELEMENT_LOCAL_NAME);
     }
 
@@ -40,7 +41,7 @@ public class RecipientKeyInfoUnmarshaller extends KeyInfoTypeUnmarshaller {
      * @param targetLocalName
      * @throws NullPointerException
      */
-    protected RecipientKeyInfoUnmarshaller(String targetNamespaceURI, String targetLocalName) throws NullPointerException {
+    protected RecipientKeyInfoUnmarshaller(String targetNamespaceURI, String targetLocalName) throws UnmarshallingException {
         super(targetNamespaceURI, targetLocalName);
     }
 

@@ -19,6 +19,7 @@ package org.opensaml.xml.encryption.impl;
 import org.apache.log4j.Logger;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.AbstractXMLObjectUnmarshaller;
+import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.w3c.dom.Attr;
 
@@ -34,7 +35,7 @@ public abstract class AbstractXMLEncryptionUnmarshaller extends AbstractXMLObjec
 
     /** Constructor */
     protected AbstractXMLEncryptionUnmarshaller(String targetNamespaceURI, String targetLocalName)
-            throws IllegalArgumentException {
+            throws UnmarshallingException {
         super(targetNamespaceURI, targetLocalName);
     }
 

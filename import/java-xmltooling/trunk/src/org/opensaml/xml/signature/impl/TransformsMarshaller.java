@@ -16,6 +16,7 @@
 
 package org.opensaml.xml.signature.impl;
 
+import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.signature.Transforms;
 import org.opensaml.xml.util.XMLConstants;
 
@@ -28,7 +29,7 @@ public class TransformsMarshaller extends AbstractXMLSignatureMarshaller {
      * Constructor
      *
      */
-    public TransformsMarshaller() {
+    public TransformsMarshaller() throws MarshallingException{
         super(XMLConstants.XMLSIG_NS, Transforms.DEFAULT_ELEMENT_LOCAL_NAME);
     }
 
@@ -39,7 +40,7 @@ public class TransformsMarshaller extends AbstractXMLSignatureMarshaller {
      * @param targetLocalName
      * @throws NullPointerException
      */
-    protected TransformsMarshaller(String targetNamespaceURI, String targetLocalName) throws NullPointerException {
+    protected TransformsMarshaller(String targetNamespaceURI, String targetLocalName) throws MarshallingException {
         super(targetNamespaceURI, targetLocalName);
     }
 

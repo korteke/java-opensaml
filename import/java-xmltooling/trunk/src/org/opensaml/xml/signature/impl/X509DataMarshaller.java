@@ -16,6 +16,7 @@
 
 package org.opensaml.xml.signature.impl;
 
+import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.signature.X509Data;
 import org.opensaml.xml.util.XMLConstants;
 
@@ -28,7 +29,7 @@ public class X509DataMarshaller extends AbstractXMLSignatureMarshaller {
      * Constructor
      *
      */
-    public X509DataMarshaller() {
+    public X509DataMarshaller() throws MarshallingException{
         super(XMLConstants.XMLSIG_NS, X509Data.DEFAULT_ELEMENT_LOCAL_NAME);
     }
 
@@ -39,7 +40,7 @@ public class X509DataMarshaller extends AbstractXMLSignatureMarshaller {
      * @param targetLocalName
      * @throws NullPointerException
      */
-    protected X509DataMarshaller(String targetNamespaceURI, String targetLocalName) throws NullPointerException {
+    protected X509DataMarshaller(String targetNamespaceURI, String targetLocalName) throws MarshallingException {
         super(targetNamespaceURI, targetLocalName);
     }
 

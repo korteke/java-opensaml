@@ -17,6 +17,7 @@
 package org.opensaml.xml.encryption.impl;
 
 import org.opensaml.xml.encryption.OriginatorKeyInfo;
+import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.signature.impl.KeyInfoTypeMarshaller;
 import org.opensaml.xml.util.XMLConstants;
 
@@ -29,7 +30,7 @@ public class OriginatorKeyInfoMarshaller extends KeyInfoTypeMarshaller {
      * Constructor
      *
      */
-    public OriginatorKeyInfoMarshaller() {
+    public OriginatorKeyInfoMarshaller() throws MarshallingException{
         super(XMLConstants.XMLENC_NS, OriginatorKeyInfo.DEFAULT_ELEMENT_LOCAL_NAME);
     }
 
@@ -40,7 +41,7 @@ public class OriginatorKeyInfoMarshaller extends KeyInfoTypeMarshaller {
      * @param targetLocalName
      * @throws NullPointerException
      */
-    protected OriginatorKeyInfoMarshaller(String targetNamespaceURI, String targetLocalName) throws NullPointerException {
+    protected OriginatorKeyInfoMarshaller(String targetNamespaceURI, String targetLocalName) throws MarshallingException {
         super(targetNamespaceURI, targetLocalName);
     }
 

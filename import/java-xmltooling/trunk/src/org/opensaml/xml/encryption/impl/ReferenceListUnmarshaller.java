@@ -33,7 +33,7 @@ public class ReferenceListUnmarshaller extends AbstractXMLEncryptionUnmarshaller
      * Constructor
      *
      */
-    public ReferenceListUnmarshaller() {
+    public ReferenceListUnmarshaller() throws UnmarshallingException {
        super(XMLConstants.XMLENC_NS, ReferenceList.DEFAULT_ELEMENT_LOCAL_NAME);
     }
 
@@ -44,7 +44,7 @@ public class ReferenceListUnmarshaller extends AbstractXMLEncryptionUnmarshaller
      * @param targetLocalName
      * @throws IllegalArgumentException
      */
-    public ReferenceListUnmarshaller(String targetNamespaceURI, String targetLocalName) throws IllegalArgumentException {
+    public ReferenceListUnmarshaller(String targetNamespaceURI, String targetLocalName) throws UnmarshallingException {
         super(targetNamespaceURI, targetLocalName);
     }
 

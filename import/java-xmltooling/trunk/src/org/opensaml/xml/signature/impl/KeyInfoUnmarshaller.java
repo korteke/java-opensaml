@@ -16,6 +16,7 @@
 
 package org.opensaml.xml.signature.impl;
 
+import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.signature.KeyInfo;
 import org.opensaml.xml.util.XMLConstants;
 
@@ -28,7 +29,7 @@ public class KeyInfoUnmarshaller extends KeyInfoTypeUnmarshaller {
      * Constructor
      *
      */
-    public KeyInfoUnmarshaller() {
+    public KeyInfoUnmarshaller() throws UnmarshallingException{
         super(XMLConstants.XMLSIG_NS, KeyInfo.DEFAULT_ELEMENT_LOCAL_NAME);
     }
 
@@ -39,7 +40,7 @@ public class KeyInfoUnmarshaller extends KeyInfoTypeUnmarshaller {
      * @param targetLocalName
      * @throws NullPointerException
      */
-    protected KeyInfoUnmarshaller(String targetNamespaceURI, String targetLocalName) throws NullPointerException {
+    protected KeyInfoUnmarshaller(String targetNamespaceURI, String targetLocalName) throws UnmarshallingException {
         super(targetNamespaceURI, targetLocalName);
     }
 

@@ -37,7 +37,7 @@ public class DSAKeyValueUnmarshaller extends AbstractXMLSignatureUnmarshaller {
      * Constructor
      *
      */
-    public DSAKeyValueUnmarshaller() {
+    public DSAKeyValueUnmarshaller() throws UnmarshallingException{
         super(XMLConstants.XMLSIG_NS, DSAKeyValue.DEFAULT_ELEMENT_LOCAL_NAME);
     }
 
@@ -48,7 +48,7 @@ public class DSAKeyValueUnmarshaller extends AbstractXMLSignatureUnmarshaller {
      * @param targetLocalName
      * @throws IllegalArgumentException
      */
-    protected DSAKeyValueUnmarshaller(String targetNamespaceURI, String targetLocalName) throws IllegalArgumentException {
+    protected DSAKeyValueUnmarshaller(String targetNamespaceURI, String targetLocalName) throws UnmarshallingException {
         super(targetNamespaceURI, targetLocalName);
     }
 

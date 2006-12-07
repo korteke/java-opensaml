@@ -27,7 +27,7 @@ import org.w3c.dom.Element;
 public abstract class AbstractXMLEncryptionMarshaller extends AbstractXMLObjectMarshaller {
 
      /** Constructor */
-    protected AbstractXMLEncryptionMarshaller(String targetNamespaceURI, String targetLocalName) throws NullPointerException {
+    protected AbstractXMLEncryptionMarshaller(String targetNamespaceURI, String targetLocalName) throws MarshallingException {
         super(targetNamespaceURI, targetLocalName);
     }
 

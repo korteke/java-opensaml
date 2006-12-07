@@ -31,7 +31,7 @@ public class AgreementMethodMarshaller extends AbstractXMLEncryptionMarshaller {
      * Constructor
      *
      */
-    public AgreementMethodMarshaller() {
+    public AgreementMethodMarshaller() throws MarshallingException {
         super(XMLConstants.XMLENC_NS, AgreementMethod.DEFAULT_ELEMENT_LOCAL_NAME);
     }
 
@@ -42,7 +42,7 @@ public class AgreementMethodMarshaller extends AbstractXMLEncryptionMarshaller {
      * @param targetLocalName
      * @throws NullPointerException
      */
-    public AgreementMethodMarshaller(String targetNamespaceURI, String targetLocalName) throws NullPointerException {
+    public AgreementMethodMarshaller(String targetNamespaceURI, String targetLocalName) throws MarshallingException {
         super(targetNamespaceURI, targetLocalName);
     }
 

@@ -31,7 +31,7 @@ public class TransformsUnmarshaller extends AbstractXMLSignatureUnmarshaller {
      * Constructor
      *
      */
-    public TransformsUnmarshaller() {
+    public TransformsUnmarshaller() throws UnmarshallingException{
         super(XMLConstants.XMLSIG_NS, Transforms.DEFAULT_ELEMENT_LOCAL_NAME);
     }
 
@@ -42,7 +42,7 @@ public class TransformsUnmarshaller extends AbstractXMLSignatureUnmarshaller {
      * @param targetLocalName
      * @throws IllegalArgumentException
      */
-    protected TransformsUnmarshaller(String targetNamespaceURI, String targetLocalName) throws IllegalArgumentException {
+    protected TransformsUnmarshaller(String targetNamespaceURI, String targetLocalName) throws UnmarshallingException {
         super(targetNamespaceURI, targetLocalName);
     }
 

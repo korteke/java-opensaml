@@ -16,6 +16,7 @@
 
 package org.opensaml.xml.signature.impl;
 
+import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.signature.KeyValue;
 import org.opensaml.xml.util.XMLConstants;
 
@@ -28,7 +29,7 @@ public class KeyValueMarshaller extends AbstractXMLSignatureMarshaller {
      * Constructor
      *
      */
-    public KeyValueMarshaller() {
+    public KeyValueMarshaller() throws MarshallingException{
         super(XMLConstants.XMLSIG_NS, KeyValue.DEFAULT_ELEMENT_LOCAL_NAME);
     }
 
@@ -39,7 +40,7 @@ public class KeyValueMarshaller extends AbstractXMLSignatureMarshaller {
      * @param targetLocalName
      * @throws NullPointerException
      */
-    protected KeyValueMarshaller(String targetNamespaceURI, String targetLocalName) throws NullPointerException {
+    protected KeyValueMarshaller(String targetNamespaceURI, String targetLocalName) throws MarshallingException {
         super(targetNamespaceURI, targetLocalName);
     }
 

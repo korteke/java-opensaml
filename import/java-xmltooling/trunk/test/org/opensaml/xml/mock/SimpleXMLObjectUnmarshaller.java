@@ -37,7 +37,7 @@ public class SimpleXMLObjectUnmarshaller extends AbstractXMLObjectUnmarshaller {
      * @param xmlObjectBuilderFactory factory for retrieving XMLObjectBuilders
      * @param unmarshallerFactory factory for retrieving Unmarshallers
      */
-    public SimpleXMLObjectUnmarshaller() {
+    public SimpleXMLObjectUnmarshaller() throws UnmarshallingException{
         super(SimpleXMLObject.NAMESPACE, SimpleXMLObject.LOCAL_NAME);
     }
 

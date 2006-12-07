@@ -17,6 +17,7 @@
 package org.opensaml.xml.encryption.impl;
 
 import org.opensaml.xml.encryption.DataReference;
+import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.util.XMLConstants;
 
 /**
@@ -28,7 +29,7 @@ public class DataReferenceMarshaller extends ReferenceTypeMarshaller {
      * Constructor
      *
      */
-    public DataReferenceMarshaller() {
+    public DataReferenceMarshaller() throws MarshallingException{
         super(XMLConstants.XMLENC_NS, DataReference.DEFAULT_ELEMENT_LOCAL_NAME);
     }
 
@@ -39,7 +40,7 @@ public class DataReferenceMarshaller extends ReferenceTypeMarshaller {
      * @param targetLocalName
      * @throws NullPointerException
      */
-    public DataReferenceMarshaller(String targetNamespaceURI, String targetLocalName) throws NullPointerException {
+    public DataReferenceMarshaller(String targetNamespaceURI, String targetLocalName) throws MarshallingException {
         super(targetNamespaceURI, targetLocalName);
     }
 

@@ -17,6 +17,7 @@
 package org.opensaml.xml.signature.impl;
 
 import org.opensaml.xml.XMLObject;
+import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.signature.KeyInfoType;
 import org.w3c.dom.Attr;
@@ -33,7 +34,7 @@ public class KeyInfoTypeUnmarshaller extends AbstractXMLSignatureUnmarshaller {
      * @param targetLocalName
      * @throws IllegalArgumentException
      */
-    protected KeyInfoTypeUnmarshaller(String targetNamespaceURI, String targetLocalName) throws IllegalArgumentException {
+    protected KeyInfoTypeUnmarshaller(String targetNamespaceURI, String targetLocalName) throws UnmarshallingException {
         super(targetNamespaceURI, targetLocalName);
     }
 

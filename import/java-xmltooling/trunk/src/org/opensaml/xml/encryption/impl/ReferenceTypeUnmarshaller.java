@@ -33,7 +33,7 @@ public class ReferenceTypeUnmarshaller extends AbstractXMLEncryptionUnmarshaller
      * @param targetLocalName
      * @throws IllegalArgumentException
      */
-    protected ReferenceTypeUnmarshaller(String targetNamespaceURI, String targetLocalName) throws IllegalArgumentException {
+    protected ReferenceTypeUnmarshaller(String targetNamespaceURI, String targetLocalName) throws UnmarshallingException {
         super(targetNamespaceURI, targetLocalName);
     }
 

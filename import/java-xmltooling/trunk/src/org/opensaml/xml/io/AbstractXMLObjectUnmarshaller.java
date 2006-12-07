@@ -81,13 +81,13 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
      * @throws MarshallingException if any of the arguments are null (or empty in the case of String parameters)
      */
     protected AbstractXMLObjectUnmarshaller(String targetNamespaceURI, String targetLocalName)
-            throws MarshallingException {
+            throws UnmarshallingException {
         if (DatatypeHelper.isEmpty(targetNamespaceURI)) {
-            throw new MarshallingException("Target Namespace URI may not be null or an empty");
+            throw new UnmarshallingException("Target Namespace URI may not be null or an empty");
         }
 
         if (DatatypeHelper.isEmpty(targetLocalName)) {
-            throw new MarshallingException("Target Local Name may not be null or an empty");
+            throw new UnmarshallingException("Target Local Name may not be null or an empty");
         }
         targetQName = XMLHelper.constructQName(targetNamespaceURI, targetLocalName, null);
 
