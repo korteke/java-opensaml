@@ -44,16 +44,16 @@ public class AttributeMap implements Map<QName, String> {
     /**
      * Constructor.
      *
-     * @param attributeOwner the XMLObject that owns these attributes
+     * @param newOwner the XMLObject that owns these attributes
      * 
      * @throws NullPointerException thrown if the given XMLObject is null
      */
-    public AttributeMap(XMLObject attributeOwner) throws NullPointerException {
+    public AttributeMap(XMLObject newOwner) throws NullPointerException {
         if (attributeOwner == null) {
             throw new NullPointerException("Attribute owner XMLObject may not be null");
         }
 
-        this.attributeOwner = attributeOwner;
+        attributeOwner = newOwner;
         attributes = new FastMap<QName, String>();
     }
 

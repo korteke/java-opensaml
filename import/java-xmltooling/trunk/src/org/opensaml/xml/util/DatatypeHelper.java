@@ -25,7 +25,7 @@ import javax.xml.datatype.Duration;
 /**
  * Helper class for working with various datatypes.
  */
-public class DatatypeHelper {
+public final class DatatypeHelper {
 
     /** JAXP DatatypeFactory. */
     private static DatatypeFactory dataTypeFactory;

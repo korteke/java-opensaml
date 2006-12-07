@@ -27,28 +27,30 @@ import org.opensaml.xml.XMLObject;
  * Resizable list for the children of XMLObjects. This list implements all optional List operations and does not all for
  * null elements. XMLObjects added to, or removed from, this list will have their parent object appropriately set and,
  * the underlying DOM will be released during mutation opertions.
+ * 
+ * @param <ElementType> type of elements added to the list
  */
 public class XMLObjectChildrenList<ElementType extends XMLObject> extends AbstractList<ElementType> {
 
-    /** Parent to the elements in this list */
+    /** Parent to the elements in this list. */
     private XMLObject parent;
 
-    /** List of elements */
+    /** List of elements. */
     private FastList<ElementType> elements;
 
     /**
      * Constructs an empty list with all added XMLObjects being assigned the given parent XMLObject.
      * 
-     * @param parent the parent for all the added XMLObjects
+     * @param newParent the parent for all the added XMLObjects
      * 
      * @throws NullPointerException thrown if the parent is null
      */
-    public XMLObjectChildrenList(XMLObject parent) throws NullPointerException {
-        if (parent == null) {
+    public XMLObjectChildrenList(XMLObject newParent) throws NullPointerException {
+        if (newParent == null) {
             throw new NullPointerException("Parent may not be null");
         }
 
-        this.parent = parent;
+        parent = newParent;
         elements = new FastList<ElementType>(5);
     }
 
@@ -56,23 +58,22 @@ public class XMLObjectChildrenList<ElementType extends XMLObject> extends Abstra
      * Constructs a list containing the elements in the specified collection, in the order they are returned by the
      * collection's iterator, with each added XMLObject assigned the given parent XMLObject.
      * 
-     * @param parent the parent for all the added XMLObjects
-     * @param elements the elements to be added
+     * @param newParent the parent for all the added XMLObjects
+     * @param newElements the elements to be added
      * 
      * @throws NullPointerException thrown if the parent is null
      * @throws IllegalArgumentException thrown if any of the XMLObjects in the given collection already have a parent
      *             that is different from the given parent
      */
-    public XMLObjectChildrenList(XMLObject parent, Collection<ElementType> elements) throws NullPointerException,
-            IllegalArgumentException {
-        if (parent == null) {
+    public XMLObjectChildrenList(XMLObject newParent, Collection<ElementType> newElements) throws NullPointerException {
+        if (newParent == null) {
             throw new NullPointerException("Parent may not be null");
         }
 
-        this.parent = parent;
-        elements = new FastList<ElementType>(5);
+        parent = newParent;
+        elements = new FastList<ElementType>(newElements.size() + 5);
 
-        addAll(elements);
+        addAll(newElements);
     }
 
     /** {@inheritDoc} */

@@ -24,60 +24,60 @@ public class XMLConstants {
     // ****************************
     // XML Tooling
     // ****************************
-    /** Configuration namespace */
-    public final static String XMLTOOLING_CONFIG_NS = "http://www.opensaml.org/xmltooling-config";
+    /** Configuration namespace. */
+    public static final String XMLTOOLING_CONFIG_NS = "http://www.opensaml.org/xmltooling-config";
 
-    /** Configuration namespace prefix */
-    public final static String XMLTOOLING_CONFIG_PREFIX = "xt";
-    
-    /** Name of the object provider used for objects that don't have a registered object provider */
-    public final static String XMLTOOLING_DEFAULT_OBJECT_PROVIDER = "DEFAULT";
-    
-    /** Location, on the classpath, of the XMLTooling configuration schema */
-    public final static String XMLTOOLING_SCHEMA_LOCATION = "/schema/xmltooling-config.xsd";
+    /** Configuration namespace prefix. */
+    public static final String XMLTOOLING_CONFIG_PREFIX = "xt";
+
+    /** Name of the object provider used for objects that don't have a registered object provider. */
+    public static final String XMLTOOLING_DEFAULT_OBJECT_PROVIDER = "DEFAULT";
+
+    /** Location, on the classpath, of the XMLTooling configuration schema. */
+    public static final String XMLTOOLING_SCHEMA_LOCATION = "/schema/xmltooling-config.xsd";
 
     // ****************************
     // Core XML
     // ****************************
-    /** XML core namespace */
-    public final static String XML_NS = "http://www.w3.org/XML/1998/namespace";
-    
-    /** XML core prefix for xml attributes */
-    public final static String XML_PREFIX = "xml";
+    /** XML core namespace. */
+    public static final String XML_NS = "http://www.w3.org/XML/1998/namespace";
 
-    /** XML namespace for xmlns attributes */
-    public final static String XMLNS_NS = "http://www.w3.org/2000/xmlns/";
+    /** XML core prefix for xml attributes. */
+    public static final String XML_PREFIX = "xml";
 
-    /** XML namespace prefix for xmlns attributes */
-    public final static String XMLNS_PREFIX = "xmlns";
+    /** XML namespace for xmlns attributes. */
+    public static final String XMLNS_NS = "http://www.w3.org/2000/xmlns/";
 
-    /** XML Schema namespace */
-    public final static String XSD_NS = "http://www.w3.org/2001/XMLSchema";
+    /** XML namespace prefix for xmlns attributes. */
+    public static final String XMLNS_PREFIX = "xmlns";
 
-    /** XML Schema QName prefix */
-    public final static String XSD_PREFIX = "xs";
+    /** XML Schema namespace. */
+    public static final String XSD_NS = "http://www.w3.org/2001/XMLSchema";
 
-    /** XML Schema Instance namespace */
-    public final static String XSI_NS = "http://www.w3.org/2001/XMLSchema-instance";
+    /** XML Schema QName prefix. */
+    public static final String XSD_PREFIX = "xs";
 
-    /** XML Schema Instance QName prefix */
-    public final static String XSI_PREFIX = "xsi";
+    /** XML Schema Instance namespace. */
+    public static final String XSI_NS = "http://www.w3.org/2001/XMLSchema-instance";
 
-    /** XML XMLSecSignatureImpl namespace */
-    public final static String XMLSIG_NS = "http://www.w3.org/2000/09/xmldsig#";
+    /** XML Schema Instance QName prefix. */
+    public static final String XSI_PREFIX = "xsi";
 
-    /** XML XMLSecSignatureImpl QName prefix */
-    public final static String XMLSIG_PREFIX = "ds";
+    /** XML XMLSecSignatureImpl namespace. */
+    public static final String XMLSIG_NS = "http://www.w3.org/2000/09/xmldsig#";
 
-    /** XML Encryption namespace */
-    public final static String XMLENC_NS = "http://www.w3.org/2001/04/xmlenc#";
+    /** XML XMLSecSignatureImpl QName prefix. */
+    public static final String XMLSIG_PREFIX = "ds";
 
-    /** XML Encryption QName prefix */
-    public final static String XMLENC_PREFIX = "xenc";
-    
-    /** Local name of EncryptedData element */
-    public final static String XMLENC_ENCDATA_LOCAL_NAME = "EncryptedData";
-    
-    /** Local name of EncryptedKey element */
-    public final static String XMLENC_ENCKEY_LOCAL_NAME = "EncryptedKey";
+    /** XML Encryption namespace. */
+    public static final String XMLENC_NS = "http://www.w3.org/2001/04/xmlenc#";
+
+    /** XML Encryption QName prefix. */
+    public static final String XMLENC_PREFIX = "xenc";
+
+    /** Local name of EncryptedData element. */
+    public static final String XMLENC_ENCDATA_LOCAL_NAME = "EncryptedData";
+
+    /** Local name of EncryptedKey element. */
+    public static final String XMLENC_ENCKEY_LOCAL_NAME = "EncryptedKey";
 }

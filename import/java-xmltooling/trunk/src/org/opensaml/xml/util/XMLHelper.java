@@ -38,10 +38,15 @@ import org.w3c.dom.ls.LSSerializer;
 /**
  * A helper class for working with W3C DOM objects.
  */
-public class XMLHelper {
+public final class XMLHelper {
+    
+    /** Constructor. */
+    private XMLHelper(){
+        
+    }
 
     /**
-     * Checks if the given element has an xsi:type defined for it
+     * Checks if the given element has an xsi:type defined for it.
      * 
      * @param e the DOM element
      * 
@@ -122,7 +127,7 @@ public class XMLHelper {
 
         return null;
     }
-    
+
     /**
      * Constructs an attribute owned by the given document with the given name.
      * 
@@ -133,10 +138,11 @@ public class XMLHelper {
      * 
      * @throws IllegalArgumentException thrown if the local name is name null or empty
      */
-    public static Attr constructAttribute(Document owningDocument, QName attributeName) throws IllegalArgumentException{
-        return constructAttribute(owningDocument, attributeName.getNamespaceURI(), attributeName.getLocalPart(), attributeName.getPrefix());
+    public static Attr constructAttribute(Document owningDocument, QName attributeName) throws IllegalArgumentException {
+        return constructAttribute(owningDocument, attributeName.getNamespaceURI(), attributeName.getLocalPart(),
+                attributeName.getPrefix());
     }
-    
+
     /**
      * Constructs an attribute owned by the given document with the given name.
      * 
@@ -149,24 +155,25 @@ public class XMLHelper {
      * 
      * @throws IllegalArgumentException thrown if the local name is name null or empty
      */
-    public static Attr constructAttribute(Document document, String namespaceURI, String localName, String prefix) throws IllegalArgumentException{
-        localName = DatatypeHelper.safeTrimOrNullString(localName);
-        
-        if(localName == null){
+    public static Attr constructAttribute(Document document, String namespaceURI, String localName, String prefix)
+            throws IllegalArgumentException {
+        String trimmedLocalName = DatatypeHelper.safeTrimOrNullString(localName);
+
+        if (trimmedLocalName == null) {
             throw new IllegalArgumentException("Local name may not be null or empty");
         }
-        
+
         String qualifiedName;
-        prefix = DatatypeHelper.safeTrimOrNullString(prefix);
-        if(prefix != null){
-            qualifiedName = prefix + ":" + DatatypeHelper.safeTrimOrNullString(localName);
-        }else{
-            qualifiedName = DatatypeHelper.safeTrimOrNullString(localName);
+        String trimmedPrefix = DatatypeHelper.safeTrimOrNullString(prefix);
+        if (trimmedPrefix != null) {
+            qualifiedName = trimmedPrefix + ":" + DatatypeHelper.safeTrimOrNullString(trimmedLocalName);
+        } else {
+            qualifiedName = DatatypeHelper.safeTrimOrNullString(trimmedLocalName);
         }
-        
-        if(DatatypeHelper.isEmpty(namespaceURI)){
+
+        if (DatatypeHelper.isEmpty(namespaceURI)) {
             return document.createAttribute(qualifiedName);
-        }else{
+        } else {
             return document.createAttributeNS(namespaceURI, qualifiedName);
         }
     }
@@ -194,7 +201,7 @@ public class XMLHelper {
     }
 
     /**
-     * Constructs a QName
+     * Constructs a QName.
      * 
      * @param namespaceURI the namespace of the QName
      * @param localName the local name of the QName
@@ -211,34 +218,34 @@ public class XMLHelper {
 
         return new QName(namespaceURI, localName, prefix);
     }
-    
+
     /**
      * Constructs a QName from a string (attribtue or element content) value.
      * 
      * @param qname the QName string
      * @param owningObject XMLObject, with cached DOM, owning the QName
-     *  
+     * 
      * @return the QName respresented by the string
      */
-    public static QName constructQName(String qname, XMLObject owningObject){
+    public static QName constructQName(String qname, XMLObject owningObject) {
         Element objectDOM = owningObject.getDOM();
         String nsURI;
         String nsPrefix;
         String name;
-        
-        if(qname.indexOf(":") > -1){
+
+        if (qname.indexOf(":") > -1) {
             StringTokenizer qnameTokens = new StringTokenizer(qname, ":");
             nsPrefix = qnameTokens.nextToken();
             name = qnameTokens.nextToken();
-        }else {
+        } else {
             nsPrefix = "";
             name = qname;
         }
-        
+
         nsURI = lookupNamespaceURI(objectDOM, nsPrefix);
         return constructQName(nsURI, name, nsPrefix);
     }
-    
+
     /**
      * Constructs an element, rooted in the given document, with the given name.
      * 
@@ -249,10 +256,11 @@ public class XMLHelper {
      * 
      * @throws IllegalArgumentException thrown if the local name is null or empty
      */
-    public static Element constructElement(Document document, QName elementName) throws IllegalArgumentException{
-        return constructElement(document, elementName.getNamespaceURI(), elementName.getLocalPart(), elementName.getPrefix());
+    public static Element constructElement(Document document, QName elementName) throws IllegalArgumentException {
+        return constructElement(document, elementName.getNamespaceURI(), elementName.getLocalPart(), elementName
+                .getPrefix());
     }
-    
+
     /**
      * Constructs an element, rooted in the given document, with the given information.
      * 
@@ -265,24 +273,25 @@ public class XMLHelper {
      * 
      * @throws IllegalArgumentException thrown if the local name is null or empty
      */
-    public static Element constructElement(Document document, String namespaceURI, String localName, String prefix) throws IllegalArgumentException{
-        localName = DatatypeHelper.safeTrimOrNullString(localName);
-        
-        if(localName == null){
+    public static Element constructElement(Document document, String namespaceURI, String localName, String prefix)
+            throws IllegalArgumentException {
+        String trimmedLocalName = DatatypeHelper.safeTrimOrNullString(localName);
+
+        if (trimmedLocalName == null) {
             throw new IllegalArgumentException("Local name may not be null or empty");
         }
-        
+
         String qualifiedName;
-        prefix = DatatypeHelper.safeTrimOrNullString(prefix);
-        if(prefix != null){
-            qualifiedName = prefix + ":" + DatatypeHelper.safeTrimOrNullString(localName);
-        }else{
-            qualifiedName = DatatypeHelper.safeTrimOrNullString(localName);
+        String trimmedPrefix = DatatypeHelper.safeTrimOrNullString(prefix);
+        if (trimmedPrefix != null) {
+            qualifiedName = trimmedPrefix + ":" + DatatypeHelper.safeTrimOrNullString(trimmedLocalName);
+        } else {
+            qualifiedName = DatatypeHelper.safeTrimOrNullString(trimmedLocalName);
         }
-        
-        if(!DatatypeHelper.isEmpty(namespaceURI)){
+
+        if (!DatatypeHelper.isEmpty(namespaceURI)) {
             return document.createElementNS(namespaceURI, qualifiedName);
-        }else{
+        } else {
             return document.createElementNS(null, qualifiedName);
         }
     }
@@ -299,7 +308,7 @@ public class XMLHelper {
 
         parentElement.appendChild(childElement);
     }
-    
+
     /**
      * Adopts an element into a document if the child is not already in the document.
      * 
@@ -355,7 +364,6 @@ public class XMLHelper {
         domElement.setAttributeNS(XMLConstants.XMLNS_NS, attributeName, attributeValue);
     }
 
-
     /**
      * Looks up the namespace URI associated with the given prefix starting at the given element. This method differs
      * from the {@link Node#lookupNamespaceURI(java.lang.String)} in that it only those namespaces declared by an xmlns
@@ -365,6 +373,8 @@ public class XMLHelper {
      * 
      * @param startingElement the starting element
      * @param prefix the prefix to look up
+     * 
+     * @return the namespace URI for the given prefix
      */
     public static String lookupNamespaceURI(Element startingElement, String prefix) {
         return lookupNamespaceURI(startingElement, null, prefix);
@@ -380,6 +390,8 @@ public class XMLHelper {
      * @param startingElement the starting element
      * @param stopingElement the ancestor of the starting element that serves as the upper-bound for the search
      * @param prefix the prefix to look up
+     * 
+     * @return the namespace URI for the given prefer or null
      */
     public static String lookupNamespaceURI(Element startingElement, Element stopingElement, String prefix) {
         String namespaceURI;
@@ -429,6 +441,8 @@ public class XMLHelper {
      * 
      * @param startingElement the starting element
      * @param namespaceURI the uri to look up
+     * 
+     * @return the prefix for the given namespace URI
      */
     public static String lookupPrefix(Element startingElement, String namespaceURI) {
         return lookupPrefix(startingElement, null, namespaceURI);
@@ -444,6 +458,8 @@ public class XMLHelper {
      * @param startingElement the starting element
      * @param stopingElement the ancestor of the starting element that serves as the upper-bound for the search
      * @param namespaceURI the uri to look up
+     * 
+     * @return the prefix for the given namespace URI
      */
     public static String lookupPrefix(Element startingElement, Element stopingElement, String namespaceURI) {
         String namespace;
@@ -463,9 +479,9 @@ public class XMLHelper {
                 namespace = attr.getNamespaceURI();
                 if (namespace != null && namespace.equals(XMLConstants.XMLNS_NS)) {
                     // DOM Level 2 nodes
-                    if (((attr.getNodeName().equals(XMLConstants.XMLNS_PREFIX)) || (attrPrefix != null && attrPrefix
-                            .equals(XMLConstants.XMLNS_PREFIX))
-                            && value.equals(namespaceURI))) {
+                    if (attr.getNodeName().equals(XMLConstants.XMLNS_PREFIX)
+                            || (attrPrefix != null && attrPrefix.equals(XMLConstants.XMLNS_PREFIX))
+                            && value.equals(namespaceURI)) {
 
                         String localname = attr.getLocalName();
                         String foundNamespace = startingElement.lookupNamespaceURI(localname);
@@ -517,25 +533,25 @@ public class XMLHelper {
         LSSerializer serializer = domImplLS.createLSSerializer();
         return serializer.writeToString(node);
     }
-    
+
     /**
-     * Writes a Node out to a Writer using the DOM, level 3, Load/Save serializer.  The writen content 
-     * is encoded using the encoding specified in the writer configuration.
+     * Writes a Node out to a Writer using the DOM, level 3, Load/Save serializer. The writen content is encoded using
+     * the encoding specified in the writer configuration.
      * 
      * @param node the node to write out
      * @param output the writer to write the XML to
      */
-    public static void writeNode(Node node, Writer output){
+    public static void writeNode(Node node, Writer output) {
         DOMImplementation domImpl = node.getOwnerDocument().getImplementation();
         DOMImplementationLS domImplLS = (DOMImplementationLS) domImpl.getFeature("LS", "3.0");
         LSSerializer serializer = domImplLS.createLSSerializer();
-        
+
         LSOutput serializerOut = domImplLS.createLSOutput();
         serializerOut.setCharacterStream(output);
-        
+
         serializer.write(node, serializerOut);
     }
-    
+
     /**
      * Converts a QName into a string that can be used for attribute values or element content.
      * 
@@ -543,7 +559,7 @@ public class XMLHelper {
      * 
      * @return the string value of the QName
      */
-    public static String qnameToContentString(QName qname){
+    public static String qnameToContentString(QName qname) {
         StringBuffer buf = new StringBuffer();
 
         if (qname.getPrefix() != null) {
@@ -614,12 +630,13 @@ public class XMLHelper {
 
             namespacePrefix = attributeNode.getPrefix();
             if (!DatatypeHelper.isEmpty(namespacePrefix)) {
-                // If it's the "xmlns" prefix then it is the namespace decleration, 
+                // If it's the "xmlns" prefix then it is the namespace decleration,
                 // don't try to look it up and redeclare it
-                if(namespacePrefix.equals(XMLConstants.XMLNS_PREFIX) || namespacePrefix.equals(XMLConstants.XML_PREFIX)){
+                if (namespacePrefix.equals(XMLConstants.XMLNS_PREFIX)
+                        || namespacePrefix.equals(XMLConstants.XML_PREFIX)) {
                     continue;
                 }
-                
+
                 // check to see if the namespace for the prefix has already been defined within the XML fragment
                 namespaceURI = lookupNamespaceURI(domElement, upperNamespaceSearchBound, namespacePrefix);
                 if (namespaceURI == null) {
@@ -646,49 +663,55 @@ public class XMLHelper {
             }
         }
     }
-    
+
     /**
-     *  Shortcut for checking a DOM element node's namespace and local name
-     *
-     * @param  e            An element to compare against
-     * @param  ns           An XML namespace to compare
-     * @param  localName    A local name to compare
-     * @return              true iff the element's local name and namespace match the
-     *                          parameters
+     * Shortcut for checking a DOM element node's namespace and local name.
+     * 
+     * @param e An element to compare against
+     * @param ns An XML namespace to compare
+     * @param localName A local name to compare
+     * @return true iff the element's local name and namespace match the parameters
      */
     public static boolean isElementNamed(Element e, String ns, String localName) {
-        return (e != null && DatatypeHelper.safeEquals(ns, e.getNamespaceURI()) && DatatypeHelper.safeEquals(localName, e.getLocalName()));
+        return e != null && DatatypeHelper.safeEquals(ns, e.getNamespaceURI()) && DatatypeHelper.safeEquals(localName,
+                e.getLocalName());
     }
-    
+
     /**
-     *  Gets the first child Element of the node, skipping any Text nodes such as whitespace.
+     * Gets the first child Element of the node, skipping any Text nodes such as whitespace.
      * 
-     * @param n     The parent in which to search for children
-     * @return      The first child Element of n, or null if none
+     * @param n The parent in which to search for children
+     * @return The first child Element of n, or null if none
      */
     public static Element getFirstChildElement(Node n) {
         Node child = n.getFirstChild();
-        while (child != null && child.getNodeType() != Node.ELEMENT_NODE)
+        while (child != null && child.getNodeType() != Node.ELEMENT_NODE) {
             child = child.getNextSibling();
-        if (child != null)
-            return (Element)child;
-        else
+        }
+
+        if (child != null) {
+            return (Element) child;
+        } else {
             return null;
+        }
     }
-    
+
     /**
-     *  Gets the next sibling Element of the node, skipping any Text nodes such as whitespace.
+     * Gets the next sibling Element of the node, skipping any Text nodes such as whitespace.
      * 
-     * @param n     The sibling to start with
-     * @return      The next sibling Element of n, or null if none
+     * @param n The sibling to start with
+     * @return The next sibling Element of n, or null if none
      */
     public static Element getNextSiblingElement(Node n) {
         Node sib = n.getNextSibling();
-        while (sib != null && sib.getNodeType() != Node.ELEMENT_NODE)
+        while (sib != null && sib.getNodeType() != Node.ELEMENT_NODE) {
             sib = sib.getNextSibling();
-        if (sib != null)
-            return (Element)sib;
-        else
+        }
+
+        if (sib != null) {
+            return (Element) sib;
+        } else {
             return null;
+        }
     }
 }
