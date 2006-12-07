@@ -20,19 +20,18 @@ import org.opensaml.xml.XMLObject;
 import org.w3c.dom.Element;
 
 /**
- * Unmarshallers are used to unmarshall a W3C DOM element into a 
- * {@link org.opensaml.xml.XMLObject}.
+ * Unmarshallers are used to unmarshall a W3C DOM element into a {@link org.opensaml.xml.XMLObject}.
  */
-public interface Unmarshaller{
+public interface Unmarshaller {
 
-	/**
-	 * Unmarshalls the given W3C DOM element into a XMLObject
-	 *  
-	 * @param element the DOM Element
-	 * 
-	 * @return the unmarshalled XMLObject
+    /**
+     * Unmarshalls the given W3C DOM element into a XMLObject.
+     * 
+     * @param element the DOM Element
+     * 
+     * @return the unmarshalled XMLObject
      * 
      * @throws UnmarshallingException thrown if an error occurs unmarshalling the DOM element into the XMLObject
-	 */
-	public XMLObject unmarshall(Element element) throws UnmarshallingException;
+     */
+    public XMLObject unmarshall(Element element) throws UnmarshallingException;
 }

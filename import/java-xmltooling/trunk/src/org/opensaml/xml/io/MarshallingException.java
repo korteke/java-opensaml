@@ -21,9 +21,7 @@ package org.opensaml.xml.io;
  */
 public class MarshallingException extends Exception {
 
-    /**
-     * Serial version UID
-     */
+    /** Serial version UID. */
     private static final long serialVersionUID = 7381813529926476459L;
 
     /**

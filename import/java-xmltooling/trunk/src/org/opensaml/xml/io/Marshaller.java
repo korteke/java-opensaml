@@ -21,14 +21,13 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
- * Marshallers are used to marshall a {@link org.opensaml.xml.XMLObject} into 
- * a W3C DOM element.
+ * Marshallers are used to marshall a {@link org.opensaml.xml.XMLObject} into a W3C DOM element.
  */
 public interface Marshaller {
-	
+
     /**
-     * Marshall this element, and its children, and root them in a newly created Document.  The Document is 
-     * created by a {@link javax.xml.parsers.DocumentBuilder} obtained from a {@link javax.xml.parsers.DocumentBuilderFactory} 
+     * Marshall this element, and its children, and root them in a newly created Document. The Document is created by a
+     * {@link javax.xml.parsers.DocumentBuilder} obtained from a {@link javax.xml.parsers.DocumentBuilderFactory}
      * created without any additional parameters or properties set; that is the system defaults properties are used.
      * 
      * @param xmlObject the object to marshall
@@ -38,25 +37,25 @@ public interface Marshaller {
      * @throws MarshallingException thrown if there is a problem marshalling the given object
      */
     public Element marshall(XMLObject xmlObject) throws MarshallingException;
-    
-	/**
-	 * Marshall this element, and its children, into a W3C DOM element.  If the document does not have a Document Element
+
+    /**
+     * Marshall this element, and its children, into a W3C DOM element. If the document does not have a Document Element
      * the Element resulting from this marshalling will be set as the Document Element.
-	 * 
-	 * @param xmlObject the object to marshall
-	 * @param document the DOM document the marshalled element will be placed in
-	 * 
-	 * @return the W3C DOM element representing this XMLObject
-	 * 
-	 * @throws MarshallingException thrown if there is a problem marshalling the given object
-	 */
-	public Element marshall(XMLObject xmlObject, Document document) throws MarshallingException;
-    
+     * 
+     * @param xmlObject the object to marshall
+     * @param document the DOM document the marshalled element will be placed in
+     * 
+     * @return the W3C DOM element representing this XMLObject
+     * 
+     * @throws MarshallingException thrown if there is a problem marshalling the given object
+     */
+    public Element marshall(XMLObject xmlObject, Document document) throws MarshallingException;
+
     /**
      * Marshall the given XMLObject and append it as a child to the given parent element.
      * 
-     * <strong>NOTE:</strong> The given Element must be within a DOM tree whose root is the root of 
-     * the Document owning the given Element.
+     * <strong>NOTE:</strong> The given Element must be within a DOM tree whose root is the root of the Document owning
+     * the given Element.
      * 
      * @param xmlObject the XMLObject to be marshalled
      * @param parentElement the parent of the Element resulting from marshalling the given XMLObject

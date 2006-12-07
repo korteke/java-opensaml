@@ -49,16 +49,16 @@ import org.w3c.dom.Text;
  */
 public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
 
-    /** Logger */
+    /** Class logger. */
     private static Logger log = Logger.getLogger(AbstractXMLObjectUnmarshaller.class);
 
     /** The target name and namespace for this unmarshaller. */
     private QName targetQName;
 
-    /** Factory for XMLObjectBuilders */
+    /** Factory for XMLObjectBuilders. */
     private XMLObjectBuilderFactory xmlObjectBuilderFactory;
 
-    /** Factory for creating unmarshallers for child elements */
+    /** Factory for creating unmarshallers for child elements. */
     private UnmarshallerFactory unmarshallerFactory;
 
     /**
@@ -78,16 +78,16 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
      * @param targetLocalName the local name of either the schema type QName or element QName of the elements this
      *            unmarshaller operates on
      * 
-     * @throws IllegalArgumentException if any of the arguments are null (or empty in the case of String parameters)
+     * @throws MarshallingException if any of the arguments are null (or empty in the case of String parameters)
      */
     protected AbstractXMLObjectUnmarshaller(String targetNamespaceURI, String targetLocalName)
-            throws IllegalArgumentException {
+            throws MarshallingException {
         if (DatatypeHelper.isEmpty(targetNamespaceURI)) {
-            throw new IllegalArgumentException("Target Namespace URI may not be null or an empty");
+            throw new MarshallingException("Target Namespace URI may not be null or an empty");
         }
 
         if (DatatypeHelper.isEmpty(targetLocalName)) {
-            throw new IllegalArgumentException("Target Local Name may not be null or an empty");
+            throw new MarshallingException("Target Local Name may not be null or an empty");
         }
         targetQName = XMLHelper.constructQName(targetNamespaceURI, targetLocalName, null);
 

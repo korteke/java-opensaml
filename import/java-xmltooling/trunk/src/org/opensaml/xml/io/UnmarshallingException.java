@@ -22,7 +22,7 @@ package org.opensaml.xml.io;
 public class UnmarshallingException extends Exception {
 
     /**
-     * Serial version UID
+     * Serial version UID.
      */
     private static final long serialVersionUID = 7512624219806550152L;
 

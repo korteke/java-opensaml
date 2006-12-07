@@ -34,14 +34,14 @@ import org.w3c.dom.Element;
  */
 public class UnmarshallerFactory {
 
-    /** Logger */
-    private final static Logger log = Logger.getLogger(UnmarshallerFactory.class);
+    /** Class logger. */
+    private static Logger log = Logger.getLogger(UnmarshallerFactory.class);
 
-    /** Map of unmarshallers to the elements they are for */
+    /** Map of unmarshallers to the elements they are for. */
     private FastMap<QName, Unmarshaller> unmarshallers;
 
     /**
-     * Constructor
+     * Constructor.
      */
     public UnmarshallerFactory() {
         unmarshallers = new FastMap<QName, Unmarshaller>();
@@ -55,10 +55,10 @@ public class UnmarshallerFactory {
      * @return the Unmarshaller
      */
     public Unmarshaller getUnmarshaller(QName key) {
-        if(key == null){
+        if (key == null) {
             return null;
         }
-        
+
         return unmarshallers.get(key);
     }
 
@@ -100,8 +100,7 @@ public class UnmarshallerFactory {
      */
     public void registerUnmarshaller(QName key, Unmarshaller unmarshaller) {
         if (log.isDebugEnabled()) {
-            log.debug("Registering unmarshaller, " + unmarshaller.getClass().getName() + ", for object type "
-                    + key);
+            log.debug("Registering unmarshaller, " + unmarshaller.getClass().getName() + ", for object type " + key);
         }
         unmarshallers.put(key, unmarshaller);
     }

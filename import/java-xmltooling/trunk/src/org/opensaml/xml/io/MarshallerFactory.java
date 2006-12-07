@@ -33,14 +33,14 @@ import org.opensaml.xml.XMLObject;
  */
 public class MarshallerFactory {
 
-    /** Logger */
-    private final static Logger log = Logger.getLogger(MarshallerFactory.class);
+    /** Class logger. */
+    private static Logger log = Logger.getLogger(MarshallerFactory.class);
 
-    /** Map of marshallers to the elements they are for */
+    /** Map of marshallers to the elements they are for. */
     private FastMap<QName, Marshaller> marshallers;
 
     /**
-     * Constructor
+     * Constructor.
      */
     public MarshallerFactory() {
         marshallers = new FastMap<QName, Marshaller>();
@@ -54,10 +54,10 @@ public class MarshallerFactory {
      * @return the Marshaller or null
      */
     public Marshaller getMarshaller(QName key) {
-        if(key == null){
+        if (key == null) {
             return null;
         }
-        
+
         return marshallers.get(key);
     }
 
@@ -99,9 +99,8 @@ public class MarshallerFactory {
      */
     public void registerMarshaller(QName key, Marshaller marshaller) {
         if (log.isDebugEnabled()) {
-            log.debug("Registering marshaller, " + marshaller.getClass().getName() + ", for object type "
-                    + key);
-        }        
+            log.debug("Registering marshaller, " + marshaller.getClass().getName() + ", for object type " + key);
+        }
         marshallers.put(key, marshaller);
     }
 
