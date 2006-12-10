@@ -30,7 +30,7 @@ public class OriginatorKeyInfoMarshaller extends KeyInfoTypeMarshaller {
      * Constructor
      *
      */
-    public OriginatorKeyInfoMarshaller() throws MarshallingException{
+    public OriginatorKeyInfoMarshaller(){
         super(XMLConstants.XMLENC_NS, OriginatorKeyInfo.DEFAULT_ELEMENT_LOCAL_NAME);
     }
 
@@ -39,9 +39,8 @@ public class OriginatorKeyInfoMarshaller extends KeyInfoTypeMarshaller {
      *
      * @param targetNamespaceURI
      * @param targetLocalName
-     * @throws NullPointerException
      */
-    protected OriginatorKeyInfoMarshaller(String targetNamespaceURI, String targetLocalName) throws MarshallingException {
+    protected OriginatorKeyInfoMarshaller(String targetNamespaceURI, String targetLocalName) {
         super(targetNamespaceURI, targetLocalName);
     }
 

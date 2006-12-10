@@ -32,7 +32,7 @@ public class CipherReferenceMarshaller extends AbstractXMLEncryptionMarshaller {
      * Constructor
      *
      */
-    public CipherReferenceMarshaller() throws MarshallingException{
+    public CipherReferenceMarshaller(){
         super(XMLConstants.XMLENC_NS, CipherReference.DEFAULT_ELEMENT_LOCAL_NAME);
     }
 
@@ -41,9 +41,8 @@ public class CipherReferenceMarshaller extends AbstractXMLEncryptionMarshaller {
      *
      * @param targetNamespaceURI
      * @param targetLocalName
-     * @throws NullPointerException
      */
-    public CipherReferenceMarshaller(String targetNamespaceURI, String targetLocalName) throws MarshallingException {
+    public CipherReferenceMarshaller(String targetNamespaceURI, String targetLocalName){
         super(targetNamespaceURI, targetLocalName);
     }
 

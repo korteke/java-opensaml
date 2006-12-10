@@ -29,7 +29,7 @@ public class RSAKeyValueMarshaller extends AbstractXMLSignatureMarshaller {
      * Constructor
      *
      */
-    public RSAKeyValueMarshaller() throws MarshallingException{
+    public RSAKeyValueMarshaller(){
         super(XMLConstants.XMLSIG_NS, RSAKeyValue.DEFAULT_ELEMENT_LOCAL_NAME);
     }
 
@@ -40,7 +40,7 @@ public class RSAKeyValueMarshaller extends AbstractXMLSignatureMarshaller {
      * @param targetLocalName
      * @throws NullPointerException
      */
-    protected RSAKeyValueMarshaller(String targetNamespaceURI, String targetLocalName) throws MarshallingException {
+    protected RSAKeyValueMarshaller(String targetNamespaceURI, String targetLocalName){
         super(targetNamespaceURI, targetLocalName);
     }
 

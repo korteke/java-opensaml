@@ -20,31 +20,29 @@ import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.util.XMLConstants;
 
 /**
- * Data structure for representing XML namespace attributes
+ * Data structure for representing XML namespace attributes.
  */
 public class Namespace {
 
-    /** URI of the namespace */
+    /** URI of the namespace. */
     private String namespaceURI;
 
-    /** Prefix of the namespace */
+    /** Prefix of the namespace. */
     private String namespacePrefix;
 
     /** Always declare this namespace while marshalling? */
     private boolean alwaysDeclare;
 
-    /** String representation of this namespace */
+    /** String representation of this namespace. */
     private String nsStr;
 
-    /**
-     * Constructor
-     */
+    /** Constructor. */
     public Namespace() {
 
     }
 
     /**
-     * Constructor
+     * Constructor.
      * 
      * @param uri the URI of the namespace
      * @param prefix the prefix of the namespace

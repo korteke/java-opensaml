@@ -29,7 +29,7 @@ public class PGPDataMarshaller extends AbstractXMLSignatureMarshaller {
      * Constructor
      *
      */
-    public PGPDataMarshaller() throws MarshallingException{
+    public PGPDataMarshaller(){
         super(XMLConstants.XMLSIG_NS, PGPData.DEFAULT_ELEMENT_LOCAL_NAME);
     }
 
@@ -38,9 +38,8 @@ public class PGPDataMarshaller extends AbstractXMLSignatureMarshaller {
      *
      * @param targetNamespaceURI
      * @param targetLocalName
-     * @throws NullPointerException
      */
-    protected PGPDataMarshaller(String targetNamespaceURI, String targetLocalName) throws MarshallingException {
+    protected PGPDataMarshaller(String targetNamespaceURI, String targetLocalName){
         super(targetNamespaceURI, targetLocalName);
     }
 

@@ -30,7 +30,7 @@ public class CipherDataMarshaller extends AbstractXMLEncryptionMarshaller {
      * Constructor
      *
      */
-    public CipherDataMarshaller() throws MarshallingException{
+    public CipherDataMarshaller(){
         super(XMLConstants.XMLENC_NS, CipherData.DEFAULT_ELEMENT_LOCAL_NAME);
     }
 
@@ -39,9 +39,8 @@ public class CipherDataMarshaller extends AbstractXMLEncryptionMarshaller {
      *
      * @param targetNamespaceURI
      * @param targetLocalName
-     * @throws NullPointerException
      */
-    public CipherDataMarshaller(String targetNamespaceURI, String targetLocalName) throws MarshallingException {
+    public CipherDataMarshaller(String targetNamespaceURI, String targetLocalName){
         super(targetNamespaceURI, targetLocalName);
     }
 

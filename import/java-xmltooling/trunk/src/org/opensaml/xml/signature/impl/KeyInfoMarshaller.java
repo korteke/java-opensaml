@@ -29,7 +29,7 @@ public class KeyInfoMarshaller extends KeyInfoTypeMarshaller {
      * Constructor
      *
      */
-    public KeyInfoMarshaller() throws MarshallingException{
+    public KeyInfoMarshaller(){
         super(XMLConstants.XMLSIG_NS, KeyInfo.DEFAULT_ELEMENT_LOCAL_NAME);
     }
 
@@ -38,9 +38,8 @@ public class KeyInfoMarshaller extends KeyInfoTypeMarshaller {
      *
      * @param targetNamespaceURI
      * @param targetLocalName
-     * @throws NullPointerException
      */
-    protected KeyInfoMarshaller(String targetNamespaceURI, String targetLocalName) throws MarshallingException {
+    protected KeyInfoMarshaller(String targetNamespaceURI, String targetLocalName){
         super(targetNamespaceURI, targetLocalName);
     }
 

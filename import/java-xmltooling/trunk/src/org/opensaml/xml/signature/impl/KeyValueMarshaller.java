@@ -29,7 +29,7 @@ public class KeyValueMarshaller extends AbstractXMLSignatureMarshaller {
      * Constructor
      *
      */
-    public KeyValueMarshaller() throws MarshallingException{
+    public KeyValueMarshaller(){
         super(XMLConstants.XMLSIG_NS, KeyValue.DEFAULT_ELEMENT_LOCAL_NAME);
     }
 
@@ -38,9 +38,8 @@ public class KeyValueMarshaller extends AbstractXMLSignatureMarshaller {
      *
      * @param targetNamespaceURI
      * @param targetLocalName
-     * @throws NullPointerException
      */
-    protected KeyValueMarshaller(String targetNamespaceURI, String targetLocalName) throws MarshallingException {
+    protected KeyValueMarshaller(String targetNamespaceURI, String targetLocalName){
         super(targetNamespaceURI, targetLocalName);
     }
 

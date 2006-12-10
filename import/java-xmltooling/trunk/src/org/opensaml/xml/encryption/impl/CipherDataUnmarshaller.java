@@ -32,7 +32,7 @@ public class CipherDataUnmarshaller extends AbstractXMLEncryptionUnmarshaller {
      * Constructor
      * 
      */
-    public CipherDataUnmarshaller() throws UnmarshallingException {
+    public CipherDataUnmarshaller(){
         super(XMLConstants.XMLENC_NS, CipherData.DEFAULT_ELEMENT_LOCAL_NAME);
     }
 
@@ -41,9 +41,8 @@ public class CipherDataUnmarshaller extends AbstractXMLEncryptionUnmarshaller {
      * 
      * @param targetNamespaceURI
      * @param targetLocalName
-     * @throws UnmarshallingException
      */
-    public CipherDataUnmarshaller(String targetNamespaceURI, String targetLocalName) throws UnmarshallingException {
+    public CipherDataUnmarshaller(String targetNamespaceURI, String targetLocalName){
         super(targetNamespaceURI, targetLocalName);
     }
 

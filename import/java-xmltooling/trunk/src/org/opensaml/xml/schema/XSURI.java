@@ -22,15 +22,15 @@ import org.opensaml.xml.util.XMLConstants;
 import org.opensaml.xml.validation.ValidatingXMLObject;
 
 /**
- * XMLObject that represents an XML schema URI content bearing element;
+ * XMLObject that represents an XML schema URI content bearing element.
  */
 public interface XSURI extends ValidatingXMLObject {
     
-    /** Local name of the XSI type */
-    public final static String TYPE_LOCAL_NAME = "anyURI"; 
+    /** Local name of the XSI type. */
+    public static final String TYPE_LOCAL_NAME = "anyURI"; 
         
-    /** QName of the XSI type */
-    public final static QName TYPE_NAME = new QName(XMLConstants.XSD_NS, TYPE_LOCAL_NAME, XMLConstants.XSD_PREFIX);
+    /** QName of the XSI type. */
+    public static final QName TYPE_NAME = new QName(XMLConstants.XSD_NS, TYPE_LOCAL_NAME, XMLConstants.XSD_PREFIX);
     
     /**
      * Gets the URI content of the element.

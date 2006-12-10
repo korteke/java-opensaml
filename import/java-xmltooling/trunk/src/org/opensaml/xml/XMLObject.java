@@ -39,21 +39,21 @@ public interface XMLObject {
     public QName getElementQName();
 
     /**
-     * Gets the namespaces that are scoped to this element
+     * Gets the namespaces that are scoped to this element.
      * 
      * @return the namespaces that are scoped to this element
      */
     public Set<Namespace> getNamespaces();
 
     /**
-     * Adds a namespace to the ones already scoped to this element
+     * Adds a namespace to the ones already scoped to this element.
      * 
      * @param namespace the namespace to add
      */
     public void addNamespace(Namespace namespace);
 
     /**
-     * Removes a namespace from this element
+     * Removes a namespace from this element.
      * 
      * @param namespace the namespace to remove
      */

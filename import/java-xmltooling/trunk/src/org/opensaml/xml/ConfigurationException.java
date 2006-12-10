@@ -17,13 +17,11 @@
 package org.opensaml.xml;
 
 /**
- * An exception thrown when an error occurs loading information into {@link org.opensaml.xml.Configuration}
+ * An exception thrown when an error occurs loading information into {@link org.opensaml.xml.Configuration}.
  */
 public class ConfigurationException extends Exception {
 
-    /**
-     * Serial version UID
-     */
+    /** Serial version UID. */
     private static final long serialVersionUID = -6777602050296807774L;
 
     /**

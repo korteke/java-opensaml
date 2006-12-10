@@ -31,7 +31,7 @@ public class RetrievalMethodMarshaller extends AbstractXMLSignatureMarshaller {
      * Constructor
      *
      */
-    public RetrievalMethodMarshaller() throws MarshallingException{
+    public RetrievalMethodMarshaller(){
         super(XMLConstants.XMLSIG_NS, RetrievalMethod.DEFAULT_ELEMENT_LOCAL_NAME);
     }
 
@@ -40,9 +40,8 @@ public class RetrievalMethodMarshaller extends AbstractXMLSignatureMarshaller {
      *
      * @param targetNamespaceURI
      * @param targetLocalName
-     * @throws NullPointerException
      */
-    protected RetrievalMethodMarshaller(String targetNamespaceURI, String targetLocalName) throws MarshallingException {
+    protected RetrievalMethodMarshaller(String targetNamespaceURI, String targetLocalName){
         super(targetNamespaceURI, targetLocalName);
     }
 

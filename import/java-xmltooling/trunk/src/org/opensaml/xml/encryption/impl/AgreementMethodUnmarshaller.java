@@ -34,7 +34,7 @@ public class AgreementMethodUnmarshaller extends AbstractXMLEncryptionUnmarshall
      * Constructor
      *
      */
-    public AgreementMethodUnmarshaller() throws UnmarshallingException{
+    public AgreementMethodUnmarshaller(){
         super(XMLConstants.XMLENC_NS, AgreementMethod.DEFAULT_ELEMENT_LOCAL_NAME);
     }
 
@@ -43,10 +43,8 @@ public class AgreementMethodUnmarshaller extends AbstractXMLEncryptionUnmarshall
      *
      * @param targetNamespaceURI
      * @param targetLocalName
-     * @throws IllegalArgumentException
      */
-    public AgreementMethodUnmarshaller(String targetNamespaceURI, String targetLocalName)
-            throws UnmarshallingException {
+    public AgreementMethodUnmarshaller(String targetNamespaceURI, String targetLocalName){
         super(targetNamespaceURI, targetLocalName);
     }
 

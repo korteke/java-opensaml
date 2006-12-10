@@ -29,7 +29,7 @@ public class SPKIDataMarshaller extends AbstractXMLSignatureMarshaller {
      * Constructor
      *
      */
-    public SPKIDataMarshaller() throws MarshallingException{
+    public SPKIDataMarshaller(){
         super(XMLConstants.XMLSIG_NS, SPKIData.DEFAULT_ELEMENT_LOCAL_NAME);
     }
 
@@ -40,7 +40,7 @@ public class SPKIDataMarshaller extends AbstractXMLSignatureMarshaller {
      * @param targetLocalName
      * @throws NullPointerException
      */
-    protected SPKIDataMarshaller(String targetNamespaceURI, String targetLocalName) throws MarshallingException {
+    protected SPKIDataMarshaller(String targetNamespaceURI, String targetLocalName){
         super(targetNamespaceURI, targetLocalName);
     }
 

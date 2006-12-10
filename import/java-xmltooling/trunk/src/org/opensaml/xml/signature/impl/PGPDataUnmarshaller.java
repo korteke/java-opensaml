@@ -32,7 +32,7 @@ public class PGPDataUnmarshaller extends AbstractXMLSignatureUnmarshaller {
      * Constructor
      *
      */
-    public PGPDataUnmarshaller() throws UnmarshallingException{
+    public PGPDataUnmarshaller(){
         super(XMLConstants.XMLSIG_NS, PGPData.DEFAULT_ELEMENT_LOCAL_NAME);
     }
 
@@ -41,9 +41,8 @@ public class PGPDataUnmarshaller extends AbstractXMLSignatureUnmarshaller {
      *
      * @param targetNamespaceURI
      * @param targetLocalName
-     * @throws IllegalArgumentException
      */
-    protected PGPDataUnmarshaller(String targetNamespaceURI, String targetLocalName) throws UnmarshallingException {
+    protected PGPDataUnmarshaller(String targetNamespaceURI, String targetLocalName){
         super(targetNamespaceURI, targetLocalName);
     }
 

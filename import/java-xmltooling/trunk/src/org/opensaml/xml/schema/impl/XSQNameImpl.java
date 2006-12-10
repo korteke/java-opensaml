@@ -28,15 +28,15 @@ import org.opensaml.xml.schema.XSQName;
 import org.opensaml.xml.validation.AbstractValidatingXMLObject;
 
 /**
- * Concrete implementation of {@link org.opensaml.xml.schema.XSQName}
+ * Concrete implementation of {@link org.opensaml.xml.schema.XSQName}.
  */
 public class XSQNameImpl extends AbstractValidatingXMLObject implements XSQName {
 
-    /** QName value */
+    /** QName value. */
     private QName value;
     
     /**
-     * Constructor
+     * Constructor.
      * 
      * @param namespaceURI the namespace the element is in
      * @param elementLocalName the local name of the XML element this Object represents

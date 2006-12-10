@@ -77,18 +77,8 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
      *            unmarshaller operates on
      * @param targetLocalName the local name of either the schema type QName or element QName of the elements this
      *            unmarshaller operates on
-     * 
-     * @throws MarshallingException if any of the arguments are null (or empty in the case of String parameters)
      */
-    protected AbstractXMLObjectUnmarshaller(String targetNamespaceURI, String targetLocalName)
-            throws UnmarshallingException {
-        if (DatatypeHelper.isEmpty(targetNamespaceURI)) {
-            throw new UnmarshallingException("Target Namespace URI may not be null or an empty");
-        }
-
-        if (DatatypeHelper.isEmpty(targetLocalName)) {
-            throw new UnmarshallingException("Target Local Name may not be null or an empty");
-        }
+    protected AbstractXMLObjectUnmarshaller(String targetNamespaceURI, String targetLocalName){
         targetQName = XMLHelper.constructQName(targetNamespaceURI, targetLocalName, null);
 
         xmlObjectBuilderFactory = Configuration.getBuilderFactory();

@@ -30,19 +30,20 @@ import org.opensaml.xml.validation.AbstractValidatingXMLObject;
  * documents that contain content that may not be known at the time, such as elements defined in XML Schema that contain
  * &lt;any&gt; constructs.
  */
-public class ElementProxy extends AbstractValidatingXMLObject implements AttributeExtensibleXMLObject, ElementExtensibleXMLObject {
+public class ElementProxy extends AbstractValidatingXMLObject implements AttributeExtensibleXMLObject,
+        ElementExtensibleXMLObject {
 
-    /** Attributes of the proxied Element */
+    /** Attributes of the proxied Element. */
     private AttributeMap attributes;
 
-    /** Text content of the proxied Element */
+    /** Text content of the proxied Element. */
     private String textContent;
 
-    /** Children of the proxied Element */
+    /** Children of the proxied Element. */
     private XMLObjectChildrenList<XMLObject> children;
-    
+
     /**
-     * Constructor
+     * Constructor.
      * 
      * @param namespaceURI the namespace the proxied element is in
      * @param elementLocalName the local name of the proxied element
@@ -88,7 +89,7 @@ public class ElementProxy extends AbstractValidatingXMLObject implements Attribu
     public AttributeMap getUnknownAttributes() {
         return attributes;
     }
-    
+
     /** {@inheritDoc} */
     public List<XMLObject> getUnknownXMLObjects() {
         return children;

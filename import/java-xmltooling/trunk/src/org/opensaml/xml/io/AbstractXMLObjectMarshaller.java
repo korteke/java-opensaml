@@ -72,18 +72,8 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
      *            unmarshaller operates on
      * @param targetLocalName the local name of either the schema type QName or element QName of the elements this
      *            unmarshaller operates on
-     * 
-     * @throws MarshallingException if any of the arguments are null (or empty in the case of String parameters)
      */
-    protected AbstractXMLObjectMarshaller(String targetNamespaceURI, String targetLocalName)
-            throws MarshallingException {
-        if (DatatypeHelper.isEmpty(targetNamespaceURI)) {
-            throw new MarshallingException("Target Namespace URI may not be null or an empty");
-        }
-
-        if (DatatypeHelper.isEmpty(targetLocalName)) {
-            throw new MarshallingException("Target Local Name may not be null or an empty");
-        }
+    protected AbstractXMLObjectMarshaller(String targetNamespaceURI, String targetLocalName){
         targetQName = XMLHelper.constructQName(targetNamespaceURI, targetLocalName, null);
 
         marshallerFactory = Configuration.getMarshallerFactory();

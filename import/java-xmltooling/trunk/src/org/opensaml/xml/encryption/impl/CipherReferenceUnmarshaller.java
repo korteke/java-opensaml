@@ -32,7 +32,7 @@ public class CipherReferenceUnmarshaller extends AbstractXMLEncryptionUnmarshall
      * Constructor
      * 
      */
-    public CipherReferenceUnmarshaller() throws UnmarshallingException {
+    public CipherReferenceUnmarshaller(){
         super(XMLConstants.XMLENC_NS, CipherReference.DEFAULT_ELEMENT_LOCAL_NAME);
     }
 
@@ -41,9 +41,8 @@ public class CipherReferenceUnmarshaller extends AbstractXMLEncryptionUnmarshall
      * 
      * @param targetNamespaceURI
      * @param targetLocalName
-     * @throws IllegalArgumentException
      */
-    public CipherReferenceUnmarshaller(String targetNamespaceURI, String targetLocalName) throws UnmarshallingException {
+    public CipherReferenceUnmarshaller(String targetNamespaceURI, String targetLocalName){
         super(targetNamespaceURI, targetLocalName);
     }
 

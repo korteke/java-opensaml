@@ -33,13 +33,13 @@ import org.w3c.dom.Element;
  */
 public class XMLObjectBuilderFactory {
 
-    /** Logger */
-    private static final Logger LOG = Logger.getLogger(XMLObjectBuilderFactory.class);
+    /** Class logger. */
+    private static Logger log = Logger.getLogger(XMLObjectBuilderFactory.class);
 
-    /** Registered builders */
+    /** Registered builders. */
     private FastMap<QName, XMLObjectBuilder> builders;
 
-    /** Constructor */
+    /** Constructor. */
     public XMLObjectBuilderFactory() {
         builders = new FastMap<QName, XMLObjectBuilder>();
     }
@@ -94,8 +94,8 @@ public class XMLObjectBuilderFactory {
      * @param builder the builder
      */
     public void registerBuilder(QName builderKey, XMLObjectBuilder builder) {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Registering builder, " + builder.getClass().getName() + " under key " + builderKey);
+        if (log.isDebugEnabled()) {
+            log.debug("Registering builder, " + builder.getClass().getName() + " under key " + builderKey);
         }
         builders.put(builderKey, builder);
     }
@@ -108,8 +108,8 @@ public class XMLObjectBuilderFactory {
      * @return the builder that was registered for the given QName
      */
     public XMLObjectBuilder deregisterBuilder(QName builderKey) {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Deregistering builder for object type " + builderKey);
+        if (log.isDebugEnabled()) {
+            log.debug("Deregistering builder for object type " + builderKey);
         }
         return builders.remove(builders.get(builderKey));
     }

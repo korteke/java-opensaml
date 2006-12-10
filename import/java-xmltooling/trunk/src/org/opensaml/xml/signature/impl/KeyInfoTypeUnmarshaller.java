@@ -32,9 +32,8 @@ public class KeyInfoTypeUnmarshaller extends AbstractXMLSignatureUnmarshaller {
      *
      * @param targetNamespaceURI
      * @param targetLocalName
-     * @throws IllegalArgumentException
      */
-    protected KeyInfoTypeUnmarshaller(String targetNamespaceURI, String targetLocalName) throws UnmarshallingException {
+    protected KeyInfoTypeUnmarshaller(String targetNamespaceURI, String targetLocalName){
         super(targetNamespaceURI, targetLocalName);
     }
 

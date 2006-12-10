@@ -29,7 +29,7 @@ public class EncryptedDataMarshaller extends EncryptedTypeMarshaller {
      * Constructor
      *
      */
-    public EncryptedDataMarshaller() throws MarshallingException{
+    public EncryptedDataMarshaller(){
        super(XMLConstants.XMLENC_NS, EncryptedData.DEFAULT_ELEMENT_LOCAL_NAME);
     }
 
@@ -38,9 +38,8 @@ public class EncryptedDataMarshaller extends EncryptedTypeMarshaller {
      *
      * @param targetNamespaceURI
      * @param targetLocalName
-     * @throws IllegalArgumentException
      */
-    protected EncryptedDataMarshaller(String targetNamespaceURI, String targetLocalName) throws MarshallingException {
+    protected EncryptedDataMarshaller(String targetNamespaceURI, String targetLocalName){
         super(targetNamespaceURI, targetLocalName);
     }
 

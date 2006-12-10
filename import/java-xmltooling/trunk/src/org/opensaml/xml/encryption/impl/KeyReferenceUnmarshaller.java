@@ -29,7 +29,7 @@ public class KeyReferenceUnmarshaller extends ReferenceTypeUnmarshaller {
      * Constructor
      *
      */
-    public KeyReferenceUnmarshaller() throws UnmarshallingException{
+    public KeyReferenceUnmarshaller(){
         super(XMLConstants.XMLENC_NS, KeyReference.DEFAULT_ELEMENT_LOCAL_NAME);
     }
 
@@ -38,9 +38,8 @@ public class KeyReferenceUnmarshaller extends ReferenceTypeUnmarshaller {
      *
      * @param targetNamespaceURI
      * @param targetLocalName
-     * @throws IllegalArgumentException
      */
-    public KeyReferenceUnmarshaller(String targetNamespaceURI, String targetLocalName) throws UnmarshallingException {
+    public KeyReferenceUnmarshaller(String targetNamespaceURI, String targetLocalName){
         super(targetNamespaceURI, targetLocalName);
     }
 

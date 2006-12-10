@@ -24,9 +24,6 @@ import java.security.Key;
  */
 public interface EntityCredential {
     
-    /** Credential usage types */
-    public static enum UsageType {ENCRYPTION, SIGNING};
-
     /**
      * The unique ID of the entity this credential is for.
      * 

@@ -27,11 +27,11 @@ import org.opensaml.xml.validation.AbstractValidatingXMLObject;
  */
 public class XSBase64BinaryImpl extends AbstractValidatingXMLObject implements XSBase64Binary {
 
-    /** Value of this base64Binary element */
+    /** Value of this base64Binary element. */
     private String value;
     
     /**
-     * Constructor
+     * Constructor.
      * 
      * @param namespaceURI the namespace the element is in
      * @param elementLocalName the local name of the XML element this Object represents

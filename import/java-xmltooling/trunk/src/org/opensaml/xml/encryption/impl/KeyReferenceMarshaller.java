@@ -29,7 +29,7 @@ public class KeyReferenceMarshaller extends ReferenceTypeMarshaller {
      * Constructor
      *
      */
-    public KeyReferenceMarshaller() throws MarshallingException{
+    public KeyReferenceMarshaller(){
         super(XMLConstants.XMLENC_NS, KeyReference.DEFAULT_ELEMENT_LOCAL_NAME);
     }
 
@@ -38,9 +38,8 @@ public class KeyReferenceMarshaller extends ReferenceTypeMarshaller {
      *
      * @param targetNamespaceURI
      * @param targetLocalName
-     * @throws NullPointerException
      */
-    public KeyReferenceMarshaller(String targetNamespaceURI, String targetLocalName) throws MarshallingException {
+    public KeyReferenceMarshaller(String targetNamespaceURI, String targetLocalName){
         super(targetNamespaceURI, targetLocalName);
     }
 

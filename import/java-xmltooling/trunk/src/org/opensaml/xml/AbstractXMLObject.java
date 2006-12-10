@@ -34,26 +34,26 @@ import org.w3c.dom.Element;
  */
 public abstract class AbstractXMLObject implements XMLObject {
 
-    /** Logger */
+    /** Class logger. */
     private final Logger log = Logger.getLogger(AbstractXMLObject.class);
 
-    /** Parent of this element */
+    /** Parent of this element. */
     private XMLObject parent;
 
-    /** The name of this element with namespace and prefix information */
+    /** The name of this element with namespace and prefix information. */
     private QName elementQname;
 
-    /** The schema type of this element with namespace and prefix information */
+    /** The schema type of this element with namespace and prefix information. */
     private QName typeQname;
 
-    /** Namespaces declared on this element */
+    /** Namespaces declared on this element. */
     private FastSet<Namespace> namespaces;
 
-    /** DOM Element representation of this object */
+    /** DOM Element representation of this object. */
     private Element dom;
 
     /**
-     * Constructor
+     * Constructor.
      * 
      * @param namespaceURI the namespace the element is in
      * @param elementLocalName the local name of the XML element this Object represents
@@ -134,7 +134,7 @@ public abstract class AbstractXMLObject implements XMLObject {
     }
 
     /**
-     * Gets the parent of this element
+     * Gets the parent of this element.
      * 
      * @return the parent of this element
      */
@@ -155,7 +155,7 @@ public abstract class AbstractXMLObject implements XMLObject {
     /** {@inheritDoc} */
     public boolean hasChildren() {
         List<? extends XMLObject> children = getOrderedChildren();
-        return (children != null && children.size() > 0);
+        return children != null && children.size() > 0;
     }
 
     /** {@inheritDoc} */
@@ -164,8 +164,8 @@ public abstract class AbstractXMLObject implements XMLObject {
     }
 
     /** {@inheritDoc} */
-    public void setDOM(Element dom) {
-        this.dom = dom;
+    public void setDOM(Element newDom) {
+        dom = newDom;
     }
 
     /** {@inheritDoc} */
@@ -295,6 +295,7 @@ public abstract class AbstractXMLObject implements XMLObject {
      * 
      * This method will do a (null) safe compare of the objects and will also invalidate the DOM if appropriate
      * 
+     * @param <T> - type of object being compared and assigned
      * @param oldValue - current value
      * @param newValue - proposed new value
      * 
@@ -326,13 +327,13 @@ public abstract class AbstractXMLObject implements XMLObject {
      * 
      * This method will do a (null) safe compare of the objects and will also invalidate the DOM if appropriate
      * 
-     * @param oldValue - current value
-     * @param newValue - proposed new value
-     * @return The value to assign to the saved Object.
+     * @param <T> type of object being compared and assigned
+     * @param oldValue current value
+     * @param newValue proposed new value
      * 
-     * @throws IllegalArgumentException if the child already has a parent.
+     * @return The value to assign to the saved Object.
      */
-    protected <T extends XMLObject> T prepareForAssignment(T oldValue, T newValue) throws IllegalArgumentException {
+    protected <T extends XMLObject> T prepareForAssignment(T oldValue, T newValue) {
 
         if (newValue != null && newValue.hasParent()) {
             throw new IllegalArgumentException(newValue.getClass().getName()

@@ -37,7 +37,7 @@ public class EncryptionPropertyMarshaller extends AbstractXMLEncryptionMarshalle
      * Constructor
      *
      */
-    public EncryptionPropertyMarshaller() throws MarshallingException{
+    public EncryptionPropertyMarshaller(){
         super(XMLConstants.XMLENC_NS, EncryptionProperty.DEFAULT_ELEMENT_LOCAL_NAME);
     }
 
@@ -48,7 +48,7 @@ public class EncryptionPropertyMarshaller extends AbstractXMLEncryptionMarshalle
      * @param targetLocalName
      * @throws NullPointerException
      */
-    protected EncryptionPropertyMarshaller(String targetNamespaceURI, String targetLocalName) throws MarshallingException  {
+    protected EncryptionPropertyMarshaller(String targetNamespaceURI, String targetLocalName){
         super(targetNamespaceURI, targetLocalName);
     }
 

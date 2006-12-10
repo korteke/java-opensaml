@@ -21,9 +21,7 @@ package org.opensaml.xml;
  */
 public class ElementProxyBuilder extends AbstractXMLObjectBuilder<ElementProxy> {
 
-    /**
-     * Constructor
-     */
+    /** Constructor. */
     public ElementProxyBuilder() {
 
     }

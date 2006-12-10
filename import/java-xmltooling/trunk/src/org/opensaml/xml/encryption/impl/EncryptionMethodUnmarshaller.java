@@ -33,7 +33,7 @@ public class EncryptionMethodUnmarshaller extends AbstractXMLEncryptionUnmarshal
      * Constructor
      *
      */
-    public EncryptionMethodUnmarshaller() throws UnmarshallingException{
+    public EncryptionMethodUnmarshaller(){
         super(XMLConstants.XMLENC_NS, EncryptionMethod.DEFAULT_ELEMENT_LOCAL_NAME);
     }
 
@@ -44,8 +44,7 @@ public class EncryptionMethodUnmarshaller extends AbstractXMLEncryptionUnmarshal
      * @param targetLocalName
      * @throws IllegalArgumentException
      */
-    public EncryptionMethodUnmarshaller(String targetNamespaceURI, String targetLocalName)
-            throws UnmarshallingException {
+    public EncryptionMethodUnmarshaller(String targetNamespaceURI, String targetLocalName){
         super(targetNamespaceURI, targetLocalName);
     }
 

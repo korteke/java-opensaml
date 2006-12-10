@@ -24,29 +24,29 @@ import org.opensaml.xml.util.DatatypeHelper;
  */
 public class XSBooleanValue {
 
-    /** Whether to use the numeric representation of the lexical one */
-    private boolean numericRepresentation;
+    /** Whether to use the numeric representation of the lexical one. */
+    private boolean numeric;
 
-    /** Value of this boolean */
+    /** Value of this boolean. */
     private Boolean value;
 
     /**
      * Constructor. Uses lexical representation and sets value to null.
      */
     public XSBooleanValue() {
-        numericRepresentation = false;
+        numeric = false;
         value = null;
     }
 
     /**
-     * Constructor
+     * Constructor.
      * 
-     * @param value the value
+     * @param newValue the value
      * @param numericRepresentation whether to use a numeric or lexical representation
      */
-    public XSBooleanValue(Boolean value, boolean numericRepresentation) {
-        this.numericRepresentation = numericRepresentation;
-        this.value = value;
+    public XSBooleanValue(Boolean newValue, boolean numericRepresentation) {
+        numeric = numericRepresentation;
+        value = newValue;
     }
 
     /**
@@ -61,10 +61,10 @@ public class XSBooleanValue {
     /**
      * Sets the boolean value.
      * 
-     * @param value the boolean value
+     * @param newValue the boolean value
      */
-    public void setValue(Boolean value) {
-        this.value = value;
+    public void setValue(Boolean newValue) {
+        value = newValue;
     }
 
     /**
@@ -73,7 +73,7 @@ public class XSBooleanValue {
      * @return whether to use the numeric or lexical representation
      */
     public boolean isNumericRepresentation() {
-        return numericRepresentation;
+        return numeric;
     }
 
     /**
@@ -82,28 +82,31 @@ public class XSBooleanValue {
      * @param numericRepresentation whether to use the numeric or lexical representation
      */
     public void setNumericRepresentation(boolean numericRepresentation) {
-        this.numericRepresentation = numericRepresentation;
+        this.numeric = numericRepresentation;
     }
     
     /** {@inheritDoc} */
     public int hashCode(){
-        if(numericRepresentation){
+        int hash;
+        if(numeric){
             if(value == null){
-                return 0;
+                hash = 0;
             }else if(value.booleanValue()){
-                return 1;
+                hash = 1;
             }else {
-                return 3;
+                hash = 3;
             }
         }else{
             if(value == null){
-                return 4;
+                hash = 4;
             }else if(value.booleanValue()){
-                return 5;
+                hash = 5;
             }else {
-                return 6;
+                hash = 6;
             }
         }
+        
+        return hash;
     }
     
     /** {@inheritDoc} */
@@ -120,11 +123,9 @@ public class XSBooleanValue {
         return false;
     }
 
-    /**
-     * Converts this to a string. See {@link #toString(Boolean, boolean)}.
-     */
+    /** {@inheritDoc} */
     public String toString() {
-        return toString(value, numericRepresentation);
+        return toString(value, numeric);
     }
 
     /**
@@ -164,13 +165,13 @@ public class XSBooleanValue {
      * @return the boolean value
      */
     public static XSBooleanValue valueOf(String booleanString) {
-        booleanString = DatatypeHelper.safeTrimOrNullString(booleanString);
-        if (booleanString != null) {
-            if (booleanString.equals("1")) {
+        String trimmedBooleanString = DatatypeHelper.safeTrimOrNullString(booleanString);
+        if (trimmedBooleanString != null) {
+            if (trimmedBooleanString.equals("1")) {
                 return new XSBooleanValue(Boolean.TRUE, true);
-            } else if (booleanString.equals("0")) {
+            } else if (trimmedBooleanString.equals("0")) {
                 return new XSBooleanValue(Boolean.FALSE, true);
-            } else if (booleanString.equals("true")) {
+            } else if (trimmedBooleanString.equals("true")) {
                 return new XSBooleanValue(Boolean.TRUE, false);
             }
         }

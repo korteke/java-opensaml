@@ -29,11 +29,11 @@ import org.opensaml.xml.validation.AbstractValidatingXMLObject;
  */
 public class XSURIImpl extends AbstractValidatingXMLObject implements XSURI {
 
-    /** URI value */
+    /** URI value. */
     private String value;
 
     /**
-     * Constructor
+     * Constructor.
      * 
      * @param namespaceURI the namespace the element is in
      * @param elementLocalName the local name of the XML element this Object represents

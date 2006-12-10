@@ -33,7 +33,7 @@ public class EncryptedKeyUnmarshaller extends EncryptedTypeUnmarshaller {
      * Constructor
      *
      */
-    public EncryptedKeyUnmarshaller() throws UnmarshallingException{
+    public EncryptedKeyUnmarshaller(){
        super(XMLConstants.XMLENC_NS, EncryptedKey.DEFAULT_ELEMENT_LOCAL_NAME);
     }
 
@@ -42,9 +42,8 @@ public class EncryptedKeyUnmarshaller extends EncryptedTypeUnmarshaller {
      *
      * @param targetNamespaceURI
      * @param targetLocalName
-     * @throws IllegalArgumentException
      */
-    protected EncryptedKeyUnmarshaller(String targetNamespaceURI, String targetLocalName) throws UnmarshallingException {
+    protected EncryptedKeyUnmarshaller(String targetNamespaceURI, String targetLocalName){
         super(targetNamespaceURI, targetLocalName);
     }
 

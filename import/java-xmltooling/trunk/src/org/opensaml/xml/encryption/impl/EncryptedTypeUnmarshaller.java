@@ -37,7 +37,7 @@ public abstract class EncryptedTypeUnmarshaller extends AbstractXMLEncryptionUnm
      * @param targetLocalName
      * @throws IllegalArgumentException
      */
-    public EncryptedTypeUnmarshaller(String targetNamespaceURI, String targetLocalName) throws UnmarshallingException {
+    public EncryptedTypeUnmarshaller(String targetNamespaceURI, String targetLocalName){
         super(targetNamespaceURI, targetLocalName);
     }
 

@@ -29,7 +29,7 @@ public class ReferenceListMarshaller extends AbstractXMLEncryptionMarshaller {
      * Constructor
      *
      */
-    public ReferenceListMarshaller() throws MarshallingException{
+    public ReferenceListMarshaller(){
         super(XMLConstants.XMLENC_NS, ReferenceList.DEFAULT_ELEMENT_LOCAL_NAME);
     }
 
@@ -40,7 +40,7 @@ public class ReferenceListMarshaller extends AbstractXMLEncryptionMarshaller {
      * @param targetLocalName
      * @throws NullPointerException
      */
-    public ReferenceListMarshaller(String targetNamespaceURI, String targetLocalName) throws MarshallingException {
+    public ReferenceListMarshaller(String targetNamespaceURI, String targetLocalName){
         super(targetNamespaceURI, targetLocalName);
     }
 

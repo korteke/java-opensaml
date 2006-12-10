@@ -32,7 +32,7 @@ public class X509IssuerSerialUnmarshaller extends AbstractXMLSignatureUnmarshall
      * Constructor
      *
      */
-    public X509IssuerSerialUnmarshaller() throws UnmarshallingException{
+    public X509IssuerSerialUnmarshaller(){
         super(XMLConstants.XMLSIG_NS, X509IssuerSerial.DEFAULT_ELEMENT_LOCAL_NAME);
     }
 
@@ -41,9 +41,8 @@ public class X509IssuerSerialUnmarshaller extends AbstractXMLSignatureUnmarshall
      *
      * @param targetNamespaceURI
      * @param targetLocalName
-     * @throws IllegalArgumentException
      */
-    protected X509IssuerSerialUnmarshaller(String targetNamespaceURI, String targetLocalName) throws UnmarshallingException {
+    protected X509IssuerSerialUnmarshaller(String targetNamespaceURI, String targetLocalName){
         super(targetNamespaceURI, targetLocalName);
     }
 

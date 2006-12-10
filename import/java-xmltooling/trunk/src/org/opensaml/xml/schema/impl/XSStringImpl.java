@@ -27,11 +27,11 @@ import org.opensaml.xml.validation.AbstractValidatingXMLObject;
  */
 public class XSStringImpl extends AbstractValidatingXMLObject implements XSString {
 
-    /** Value of this string element */
+    /** Value of this string element. */
     private String value;
     
     /**
-     * Constructor
+     * Constructor.
      * 
      * @param namespaceURI the namespace the element is in
      * @param elementLocalName the local name of the XML element this Object represents

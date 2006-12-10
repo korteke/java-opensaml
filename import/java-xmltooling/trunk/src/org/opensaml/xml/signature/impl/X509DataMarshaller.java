@@ -29,7 +29,7 @@ public class X509DataMarshaller extends AbstractXMLSignatureMarshaller {
      * Constructor
      *
      */
-    public X509DataMarshaller() throws MarshallingException{
+    public X509DataMarshaller(){
         super(XMLConstants.XMLSIG_NS, X509Data.DEFAULT_ELEMENT_LOCAL_NAME);
     }
 
@@ -38,9 +38,8 @@ public class X509DataMarshaller extends AbstractXMLSignatureMarshaller {
      *
      * @param targetNamespaceURI
      * @param targetLocalName
-     * @throws NullPointerException
      */
-    protected X509DataMarshaller(String targetNamespaceURI, String targetLocalName) throws MarshallingException {
+    protected X509DataMarshaller(String targetNamespaceURI, String targetLocalName){
         super(targetNamespaceURI, targetLocalName);
     }
 

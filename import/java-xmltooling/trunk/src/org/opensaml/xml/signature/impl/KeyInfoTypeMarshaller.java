@@ -31,9 +31,8 @@ public class KeyInfoTypeMarshaller extends AbstractXMLSignatureMarshaller {
      *
      * @param targetNamespaceURI
      * @param targetLocalName
-     * @throws NullPointerException
      */
-    protected KeyInfoTypeMarshaller(String targetNamespaceURI, String targetLocalName) throws MarshallingException {
+    protected KeyInfoTypeMarshaller(String targetNamespaceURI, String targetLocalName){
         super(targetNamespaceURI, targetLocalName);
     }
 

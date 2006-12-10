@@ -29,7 +29,7 @@ public class DSAKeyValueMarshaller extends AbstractXMLSignatureMarshaller {
      * Constructor
      *
      */
-    public DSAKeyValueMarshaller() throws MarshallingException{
+    public DSAKeyValueMarshaller(){
         super(XMLConstants.XMLSIG_NS, DSAKeyValue.DEFAULT_ELEMENT_LOCAL_NAME);
     }
 
@@ -38,9 +38,8 @@ public class DSAKeyValueMarshaller extends AbstractXMLSignatureMarshaller {
      *
      * @param targetNamespaceURI
      * @param targetLocalName
-     * @throws NullPointerException
      */
-    protected DSAKeyValueMarshaller(String targetNamespaceURI, String targetLocalName) throws MarshallingException {
+    protected DSAKeyValueMarshaller(String targetNamespaceURI, String targetLocalName){
         super(targetNamespaceURI, targetLocalName);
     }
 

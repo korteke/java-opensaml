@@ -33,7 +33,7 @@ public abstract class EncryptedTypeMarshaller extends AbstractXMLEncryptionMarsh
      * @param targetLocalName
      * @throws IllegalArgumentException
      */
-    public EncryptedTypeMarshaller(String targetNamespaceURI, String targetLocalName) throws MarshallingException {
+    public EncryptedTypeMarshaller(String targetNamespaceURI, String targetLocalName){
         super(targetNamespaceURI, targetLocalName);
     }
 

@@ -49,14 +49,14 @@ import org.xml.sax.SAXException;
  */
 public class XMLConfigurator {
 
-    /** Logger */
-    private static final Logger log = Logger.getLogger(XMLConfigurator.class);
+    /** Class logger. */
+    private static Logger log = Logger.getLogger(XMLConfigurator.class);
 
-    /** Schema used to validate configruation files */
+    /** Schema used to validate configruation files. */
     private Schema configurationSchema;
 
     /**
-     * Constructor
+     * Constructor.
      * 
      * @throws ConfigurationException thrown if the validation schema for configuration files can not be created
      */
@@ -273,7 +273,7 @@ public class XMLConfigurator {
      * 
      * @return an instance of the given class
      * 
-     * @throws InstantiationException thrown if the class can not be instaniated
+     * @throws ConfigurationException thrown if the class can not be instaniated
      */
     protected Object createClassInstance(Element configuration) throws ConfigurationException {
         String className = configuration.getAttributeNS(null, "className");

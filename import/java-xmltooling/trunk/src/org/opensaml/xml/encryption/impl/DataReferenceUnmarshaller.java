@@ -29,7 +29,7 @@ public class DataReferenceUnmarshaller extends ReferenceTypeUnmarshaller {
      * Constructor
      *
      */
-    public DataReferenceUnmarshaller() throws UnmarshallingException{
+    public DataReferenceUnmarshaller(){
         super(XMLConstants.XMLENC_NS, DataReference.DEFAULT_ELEMENT_LOCAL_NAME);
     }
 
@@ -38,9 +38,8 @@ public class DataReferenceUnmarshaller extends ReferenceTypeUnmarshaller {
      *
      * @param targetNamespaceURI
      * @param targetLocalName
-     * @throws IllegalArgumentException
      */
-    public DataReferenceUnmarshaller(String targetNamespaceURI, String targetLocalName) throws UnmarshallingException {
+    public DataReferenceUnmarshaller(String targetNamespaceURI, String targetLocalName){
         super(targetNamespaceURI, targetLocalName);
     }
 

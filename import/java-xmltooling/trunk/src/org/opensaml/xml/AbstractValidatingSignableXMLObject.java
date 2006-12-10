@@ -29,25 +29,26 @@ import org.opensaml.xml.validation.Validator;
 
 /**
  * Extension of {@link org.opensaml.xml.signature.AbstractSignableXMLObject} that implements
- * {@link org.opensaml.xml.validation.ValidatingXMLObject}
+ * {@link org.opensaml.xml.validation.ValidatingXMLObject}.
  */
 public abstract class AbstractValidatingSignableXMLObject extends AbstractSignableXMLObject implements
         ValidatingXMLObject {
 
-    /** Logger */
+    /** Class logger. */
     private final Logger log = Logger.getLogger(AbstractValidatingSignableXMLObject.class);
 
-    /** Validators used to validate this XMLObject */
+    /** Validators used to validate this XMLObject. */
     private FastList<Validator> validators;
 
     /**
-     * Constructor
+     * Constructor.
      * 
      * @param namespaceURI the namespace the element is in
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected AbstractValidatingSignableXMLObject(String namespaceURI, String elementLocalName, String namespacePrefix) {
+    protected AbstractValidatingSignableXMLObject(String namespaceURI, String elementLocalName, 
+            String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         validators = new FastList<Validator>();
     }
@@ -74,6 +75,7 @@ public abstract class AbstractValidatingSignableXMLObject extends AbstractSignab
     }
 
     /** {@inheritDoc} */
+    @SuppressWarnings("unchecked")
     public void validate(boolean validateDescendants) throws ValidationException {
         for (Validator validator : validators) {
             if (log.isDebugEnabled()) {
@@ -98,7 +100,7 @@ public abstract class AbstractValidatingSignableXMLObject extends AbstractSignab
      * 
      * @param xmlObject xmlObject whose descendants should be validated
      * 
-     * @throws ValidationException
+     * @throws ValidationException thrown if one of the child objects do not validate
      */
     protected void validateChildren(XMLObject xmlObject) throws ValidationException {
         for (XMLObject childObject : xmlObject.getOrderedChildren()) {

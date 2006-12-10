@@ -30,7 +30,7 @@ public class SPKIDataUnmarshaller extends AbstractXMLSignatureUnmarshaller {
      * Constructor
      *
      */
-    public SPKIDataUnmarshaller() throws UnmarshallingException{
+    public SPKIDataUnmarshaller(){
         super(XMLConstants.XMLSIG_NS, SPKIData.DEFAULT_ELEMENT_LOCAL_NAME);
     }
 
@@ -39,9 +39,8 @@ public class SPKIDataUnmarshaller extends AbstractXMLSignatureUnmarshaller {
      *
      * @param targetNamespaceURI
      * @param targetLocalName
-     * @throws IllegalArgumentException
      */
-    protected SPKIDataUnmarshaller(String targetNamespaceURI, String targetLocalName) throws UnmarshallingException {
+    protected SPKIDataUnmarshaller(String targetNamespaceURI, String targetLocalName){
         super(targetNamespaceURI, targetLocalName);
     }
 

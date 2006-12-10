@@ -34,8 +34,7 @@ public abstract class AbstractXMLEncryptionUnmarshaller extends AbstractXMLObjec
     private static Logger log = Logger.getLogger(AbstractXMLEncryptionUnmarshaller.class);
 
     /** Constructor */
-    protected AbstractXMLEncryptionUnmarshaller(String targetNamespaceURI, String targetLocalName)
-            throws UnmarshallingException {
+    protected AbstractXMLEncryptionUnmarshaller(String targetNamespaceURI, String targetLocalName){
         super(targetNamespaceURI, targetLocalName);
     }
 

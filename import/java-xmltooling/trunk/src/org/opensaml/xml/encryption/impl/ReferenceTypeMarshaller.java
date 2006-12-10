@@ -31,9 +31,8 @@ public class ReferenceTypeMarshaller extends AbstractXMLEncryptionMarshaller {
      *
      * @param targetNamespaceURI
      * @param targetLocalName
-     * @throws NullPointerException
      */
-    protected ReferenceTypeMarshaller(String targetNamespaceURI, String targetLocalName) throws MarshallingException {
+    protected ReferenceTypeMarshaller(String targetNamespaceURI, String targetLocalName){
         super(targetNamespaceURI, targetLocalName);
     }
 

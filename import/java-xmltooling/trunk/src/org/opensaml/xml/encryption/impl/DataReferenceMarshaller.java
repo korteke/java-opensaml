@@ -29,7 +29,7 @@ public class DataReferenceMarshaller extends ReferenceTypeMarshaller {
      * Constructor
      *
      */
-    public DataReferenceMarshaller() throws MarshallingException{
+    public DataReferenceMarshaller(){
         super(XMLConstants.XMLENC_NS, DataReference.DEFAULT_ELEMENT_LOCAL_NAME);
     }
 
@@ -38,9 +38,8 @@ public class DataReferenceMarshaller extends ReferenceTypeMarshaller {
      *
      * @param targetNamespaceURI
      * @param targetLocalName
-     * @throws NullPointerException
      */
-    public DataReferenceMarshaller(String targetNamespaceURI, String targetLocalName) throws MarshallingException {
+    public DataReferenceMarshaller(String targetNamespaceURI, String targetLocalName){
         super(targetNamespaceURI, targetLocalName);
     }
 

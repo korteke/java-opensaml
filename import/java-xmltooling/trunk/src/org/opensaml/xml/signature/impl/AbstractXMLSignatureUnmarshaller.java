@@ -33,8 +33,7 @@ public abstract class AbstractXMLSignatureUnmarshaller extends AbstractXMLObject
     private static Logger log = Logger.getLogger(AbstractXMLSignatureUnmarshaller.class);
 
    /** Constructor */
-   protected AbstractXMLSignatureUnmarshaller(String targetNamespaceURI, String targetLocalName)
-            throws UnmarshallingException {
+   protected AbstractXMLSignatureUnmarshaller(String targetNamespaceURI, String targetLocalName){
         super(targetNamespaceURI, targetLocalName);
     }
 

@@ -27,7 +27,7 @@ import org.w3c.dom.Element;
 public abstract class AbstractXMLSignatureMarshaller extends AbstractXMLObjectMarshaller {
 
     /** Constructor */
-    protected AbstractXMLSignatureMarshaller(String targetNamespaceURI, String targetLocalName) throws MarshallingException {
+    protected AbstractXMLSignatureMarshaller(String targetNamespaceURI, String targetLocalName){
         super(targetNamespaceURI, targetLocalName);
     }
 

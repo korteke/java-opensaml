@@ -30,7 +30,7 @@ public class OriginatorKeyInfoUnmarshaller extends KeyInfoTypeUnmarshaller {
      * Constructor
      *
      */
-    public OriginatorKeyInfoUnmarshaller() throws UnmarshallingException{
+    public OriginatorKeyInfoUnmarshaller(){
         super(XMLConstants.XMLENC_NS, OriginatorKeyInfo.DEFAULT_ELEMENT_LOCAL_NAME);
     }
 
@@ -39,9 +39,8 @@ public class OriginatorKeyInfoUnmarshaller extends KeyInfoTypeUnmarshaller {
      *
      * @param targetNamespaceURI
      * @param targetLocalName
-     * @throws NullPointerException
      */
-    protected OriginatorKeyInfoUnmarshaller(String targetNamespaceURI, String targetLocalName) throws UnmarshallingException {
+    protected OriginatorKeyInfoUnmarshaller(String targetNamespaceURI, String targetLocalName){
         super(targetNamespaceURI, targetLocalName);
     }
 

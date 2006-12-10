@@ -30,7 +30,7 @@ public class RecipientKeyInfoUnmarshaller extends KeyInfoTypeUnmarshaller {
      * Constructor
      *
      */
-    public RecipientKeyInfoUnmarshaller() throws UnmarshallingException{
+    public RecipientKeyInfoUnmarshaller(){
         super(XMLConstants.XMLENC_NS, RecipientKeyInfo.DEFAULT_ELEMENT_LOCAL_NAME);
     }
 
@@ -39,9 +39,8 @@ public class RecipientKeyInfoUnmarshaller extends KeyInfoTypeUnmarshaller {
      *
      * @param targetNamespaceURI
      * @param targetLocalName
-     * @throws NullPointerException
      */
-    protected RecipientKeyInfoUnmarshaller(String targetNamespaceURI, String targetLocalName) throws UnmarshallingException {
+    protected RecipientKeyInfoUnmarshaller(String targetNamespaceURI, String targetLocalName){
         super(targetNamespaceURI, targetLocalName);
     }
 

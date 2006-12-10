@@ -28,10 +28,9 @@ import org.w3c.dom.Element;
 public class AgreementMethodMarshaller extends AbstractXMLEncryptionMarshaller {
     
     /**
-     * Constructor
-     *
+     * Constructor.
      */
-    public AgreementMethodMarshaller() throws MarshallingException {
+    public AgreementMethodMarshaller(){
         super(XMLConstants.XMLENC_NS, AgreementMethod.DEFAULT_ELEMENT_LOCAL_NAME);
     }
 
@@ -40,9 +39,8 @@ public class AgreementMethodMarshaller extends AbstractXMLEncryptionMarshaller {
      *
      * @param targetNamespaceURI
      * @param targetLocalName
-     * @throws NullPointerException
      */
-    public AgreementMethodMarshaller(String targetNamespaceURI, String targetLocalName) throws MarshallingException {
+    public AgreementMethodMarshaller(String targetNamespaceURI, String targetLocalName){
         super(targetNamespaceURI, targetLocalName);
     }
 

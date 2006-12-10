@@ -32,7 +32,7 @@ public class RSAKeyValueUnmarshaller extends AbstractXMLSignatureUnmarshaller {
      * Constructor
      *
      */
-    public RSAKeyValueUnmarshaller() throws UnmarshallingException{
+    public RSAKeyValueUnmarshaller(){
         super(XMLConstants.XMLSIG_NS, RSAKeyValue.DEFAULT_ELEMENT_LOCAL_NAME);
     }
 
@@ -41,9 +41,8 @@ public class RSAKeyValueUnmarshaller extends AbstractXMLSignatureUnmarshaller {
      *
      * @param targetNamespaceURI
      * @param targetLocalName
-     * @throws IllegalArgumentException
      */
-    protected RSAKeyValueUnmarshaller(String targetNamespaceURI, String targetLocalName) throws UnmarshallingException {
+    protected RSAKeyValueUnmarshaller(String targetNamespaceURI, String targetLocalName){
         super(targetNamespaceURI, targetLocalName);
     }
 

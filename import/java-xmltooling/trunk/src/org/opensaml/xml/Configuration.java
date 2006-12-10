@@ -37,30 +37,35 @@ import org.w3c.dom.Element;
  */
 public class Configuration {
 
-    /** Logger */
+    /** Class logger. */
     private static final Logger LOG = Logger.getLogger(Configuration.class);
 
-    /** Default object provider */
+    /** Default object provider. */
     private static QName defaultProvider = new QName(XMLConstants.XMLTOOLING_CONFIG_NS,
             XMLConstants.XMLTOOLING_DEFAULT_OBJECT_PROVIDER);
 
-    /** Object provider configuration elements indexed by QName */
+    /** Object provider configuration elements indexed by QName. */
     private static FastMap<QName, Element> configuredObjectProviders = new FastMap<QName, Element>();
 
-    /** Validator suite configuration elements indexed by suite IDs */
+    /** Validator suite configuration elements indexed by suite IDs. */
     private static FastMap<String, Element> validatorSuiteConfigurations = new FastMap<String, Element>();
 
-    /** Configured XMLObject builder factory */
+    /** Configured XMLObject builder factory. */
     private static XMLObjectBuilderFactory builderFactory = new XMLObjectBuilderFactory();
 
-    /** Configured XMLObject marshaller factory */
+    /** Configured XMLObject marshaller factory. */
     private static MarshallerFactory marshallerFactory = new MarshallerFactory();
 
-    /** Configured XMLObject unmarshaller factory */
+    /** Configured XMLObject unmarshaller factory. */
     private static UnmarshallerFactory unmarshallerFactory = new UnmarshallerFactory();
 
-    /** Configured ValidatorSuites */
+    /** Configured ValidatorSuites. */
     private static FastMap<String, ValidatorSuite> validatorSuites = new FastMap<String, ValidatorSuite>();
+    
+    /** Constructor. */
+    protected Configuration(){
+        
+    }
 
     /**
      * Gets the QName for the object provider that will be used for XMLObjects that do not have a registered object

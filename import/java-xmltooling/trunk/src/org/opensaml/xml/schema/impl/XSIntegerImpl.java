@@ -27,11 +27,11 @@ import org.opensaml.xml.validation.AbstractValidatingXMLObject;
  */
 public class XSIntegerImpl extends AbstractValidatingXMLObject implements XSInteger {
 
-    /** Value of this integer element */
+    /** Value of this integer element. */
     private Integer value;
     
     /**
-     * Constructor
+     * Constructor.
      * 
      * @param namespaceURI the namespace the element is in
      * @param elementLocalName the local name of the XML element this Object represents

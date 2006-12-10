@@ -30,7 +30,7 @@ public class X509DataUnmarshaller extends AbstractXMLSignatureUnmarshaller {
      * Constructor
      *
      */
-    public X509DataUnmarshaller() throws UnmarshallingException{
+    public X509DataUnmarshaller(){
         super(XMLConstants.XMLSIG_NS, X509Data.DEFAULT_ELEMENT_LOCAL_NAME);
     }
 
@@ -39,9 +39,8 @@ public class X509DataUnmarshaller extends AbstractXMLSignatureUnmarshaller {
      *
      * @param targetNamespaceURI
      * @param targetLocalName
-     * @throws IllegalArgumentException
      */
-    protected X509DataUnmarshaller(String targetNamespaceURI, String targetLocalName) throws UnmarshallingException {
+    protected X509DataUnmarshaller(String targetNamespaceURI, String targetLocalName){
         super(targetNamespaceURI, targetLocalName);
     }
 
