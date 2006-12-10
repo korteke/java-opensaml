@@ -35,5 +35,6 @@
 			<attribute name="javadoc_location" value="http://xmlunit.sourceforge.net/doc/"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry exported="true" kind="lib" path="thirdparty-lib/bouncycastle/bcprov-jdk15-134.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

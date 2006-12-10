@@ -16,6 +16,7 @@
 
 package org.opensaml.xml.signature;
 
+import java.security.KeyException;
 import java.security.PublicKey;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
@@ -42,12 +43,10 @@ import org.w3c.dom.Element;
  */
 public class SignatureMarshaller implements Marshaller {
 
-    /** Logger */
+    /** Class logger. */
     private static Logger log = Logger.getLogger(SignatureMarshaller.class);
 
-    /**
-     * Constructor
-     */
+    /** Constructor. */
     public SignatureMarshaller() {
         if (!Init.isInitialized()) {
             if (log.isDebugEnabled()) {
@@ -156,6 +155,9 @@ public class SignatureMarshaller implements Marshaller {
             log.error("Unable to construct signature Element " + signature.getElementQName(), e);
             throw new MarshallingException("Unable to construct signature Element " + signature.getElementQName(), e);
         } catch (CertificateException e) {
+            log.error("Unable to construct signature Element " + signature.getElementQName(), e);
+            throw new MarshallingException("Unable to construct signature Element " + signature.getElementQName(), e);
+        } catch(KeyException e){
             log.error("Unable to construct signature Element " + signature.getElementQName(), e);
             throw new MarshallingException("Unable to construct signature Element " + signature.getElementQName(), e);
         }

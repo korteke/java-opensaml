@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.security.KeyException;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.PrivateKey;
@@ -166,10 +167,11 @@ public class DetachedSignatureTest extends XMLObjectBaseTestCase {
      * @throws XMLParserException thrown if the signature is not valid XML
      * @throws UnmarshallingException thrown if the signature DOM can not be unmarshalled
      * @throws ValidationException thrown if the Signature does not validate against the key
+     * @throws KeyException 
      * 
      */
     public void testUnmarshallExternalSignatureAndVerification() throws MalformedURLException, IOException,
-            XMLParserException, UnmarshallingException, ValidationException {
+            XMLParserException, UnmarshallingException, ValidationException, KeyException {
         String signatureLocation = "http://www.w3.org/TR/xmldsig-core/signature-example-rsa.xml";
         InputStream ins = new URL(signatureLocation).openStream();
         Element signatureElement = parserPool.parse(ins).getDocumentElement();
@@ -177,8 +179,6 @@ public class DetachedSignatureTest extends XMLObjectBaseTestCase {
         Unmarshaller unmarshaller = Configuration.getUnmarshallerFactory().getUnmarshaller(signatureElement);
         Signature signature = (Signature) unmarshaller.unmarshall(signatureElement);
         
-        //TODO this currently broken b/c helper not finished
-        //TODO KeyInfo can in theory have multiple public key reps, so what to do ?
         PublicKey verificationKey = KeyInfoHelper.getPublicKeys(signature.getKeyInfo()).get(0);
         SignatureValidator signatureValidator = new SignatureValidator(verificationKey);
         signatureValidator.validate(signature);

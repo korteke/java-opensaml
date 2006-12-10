@@ -17,6 +17,7 @@
 package org.opensaml.xml.signature;
 
 import java.io.InputStream;
+import java.security.KeyException;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.PrivateKey;
@@ -139,8 +140,9 @@ public class EnvelopedSignatureTest extends XMLObjectBaseTestCase {
      * 
      * @throws XMLParserException thrown if the XML can not be parsed
      * @throws UnmarshallingException thrown if the DOM can not be unmarshalled
+     * @throws KeyException 
      */
-    public void testUnmarshallSignature() throws XMLParserException, UnmarshallingException {
+    public void testUnmarshallSignature() throws XMLParserException, UnmarshallingException, KeyException {
         String envelopedSignatureFile = "/data/org/opensaml/xml/signature/envelopedSignature.xml";
         InputStream ins = EnvelopedSignatureTest.class.getResourceAsStream(envelopedSignatureFile);
         Document envelopedSignatureDoc = parserPool.parse(ins);
@@ -157,7 +159,6 @@ public class EnvelopedSignatureTest extends XMLObjectBaseTestCase {
         KeyInfo keyInfo = signature.getKeyInfo();
         assertNotNull("Signature's KeyInfo was null", keyInfo);
         
-        //TODO this currently broken b/c helper not completed
         PublicKey pubKey = KeyInfoHelper.getPublicKeys(keyInfo).get(0);
         assertNotNull("KeyInfo did not contain the verification key", pubKey);
     }

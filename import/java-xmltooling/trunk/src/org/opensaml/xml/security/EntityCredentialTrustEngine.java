@@ -16,9 +16,15 @@
 
 package org.opensaml.xml.security;
 
+import org.opensaml.xml.signature.KeyInfo;
+
 /**
  * Evaluates the trustworthiness and validity of an entity's credential against implementation-specific requirements.
+ * 
+ * @param <CredentialType> entity credential types this trust engine evaluates
+ * @param <KeyInfoResolverType> resolver used to extract keying information from {@link KeyInfo}.
  */
-public interface EntityCredentialTrustEngine<CredentialType extends EntityCredential> extends TrustEngine<CredentialType> {
+public interface EntityCredentialTrustEngine<CredentialType extends EntityCredential, KeyInfoResolverType extends KeyInfoResolver>
+        extends TrustEngine<CredentialType, KeyInfoResolverType> {
 
 }

@@ -16,12 +16,13 @@
 
 package org.opensaml.xml.security;
 
-import org.opensaml.xml.signature.KeyInfo;
-
 /**
  * Evaluates the trustworthiness and validity of a token against implementation-specific requirements.
+ * 
+ * @param <TokenType> the token type this trust engine evaluates
+ * @param <KeyInfoResolverType> KeyInfo information resolver type
  */
-public interface TrustEngine<TokenType> {
+public interface TrustEngine<TokenType, KeyInfoResolverType extends KeyInfoResolver> {
 
     /**
      * Gets the default source of keying information to validate the token against.
@@ -29,36 +30,38 @@ public interface TrustEngine<TokenType> {
      * @return default source of keying information to validate the token against
      */
     public KeyInfoSource getDefaultKeyInfoSource();
-    
+
     /**
      * Sets the default source of keying information to validate the token against.
      * 
      * @param keyInfo default source of keying information to validate the token against
      */
     public void setDefaultkeyInfoSource(KeyInfoSource keyInfo);
-    
+
     /**
      * Gets the default key resolver to use when extracting keying information from the {@link KeyInfoSource}.
      * 
      * @return default key resolver to use when extracting keying information from the {@link KeyInfoSource}
      */
-    public KeyResolver getDefaultKeyResolver();
-    
+    public KeyInfoResolverType getDefaultKeyResolver();
+
     /**
      * Sets the default key resolver to use when extracting keying information from the {@link KeyInfoSource}.
      * 
      * @param keyResolver default key resolver to use when extracting keying information from the {@link KeyInfoSource}
      */
-    public void setDefaultKeyResolver(KeyResolver keyResolver);
-    
+    public void setDefaultKeyResolver(KeyInfoResolverType keyResolver);
+
     /**
      * Validates the token against the default key info using the default key resolver.
      * 
      * @param token the security token to validate
      * 
      * @return true if the token is trusted and valid, false if not
+     * 
+     * @throws SecurityException thrown if there is a problem validating the security token
      */
-    public boolean validate(TokenType token);
+    public boolean validate(TokenType token) throws SecurityException;
 
     /**
      * Validates the token against the given key info using the default key resolver.
@@ -68,6 +71,9 @@ public interface TrustEngine<TokenType> {
      * @param keyResolver resolver used to extract keys from {@link KeyInfo}s
      * 
      * @return true if the token is trusted and valid, false if not
+     * 
+     * @throws SecurityException thrown if there is a problem validating the security token
      */
-    public boolean validate(TokenType token, KeyInfoSource keyInfo, KeyResolver keyResolver);
+    public boolean validate(TokenType token, KeyInfoSource keyInfo, KeyInfoResolverType keyResolver)
+            throws SecurityException;
 }

@@ -16,14 +16,18 @@
 
 package org.opensaml.xml.signature;
 
+import org.opensaml.xml.security.KeyInfoResolver;
 import org.opensaml.xml.security.KeyInfoSource;
-import org.opensaml.xml.security.KeyResolver;
 import org.opensaml.xml.security.TrustEngine;
 
 /**
  * Evaluates the trustworthiness and validity of XML or raw Signatures against implementation-specific requirements.
+ * 
+ * @param <KeyInfoResolverType> the {@link KeyInfoResolver} type used to extract keying information from 
+ *      {@link KeyInfo}s
  */
-public interface SignatureTrustEngine extends TrustEngine<Signature>{
+public interface SignatureTrustEngine<KeyInfoResolverType extends KeyInfoResolver> extends
+        TrustEngine<Signature, KeyInfoResolverType> {
 
     /**
      * Determines whether a raw signature is correct and valid with respect to the source of KeyInfo data supplied. It
@@ -42,5 +46,5 @@ public interface SignatureTrustEngine extends TrustEngine<Signature>{
      * @return true if the signature was valid for the provided content
      */
     public boolean validate(byte[] signature, byte[] content, String sigAlg, KeyInfoSource keyInfo,
-            KeyResolver keyResolver);
+            KeyInfoResolverType keyResolver);
 }
