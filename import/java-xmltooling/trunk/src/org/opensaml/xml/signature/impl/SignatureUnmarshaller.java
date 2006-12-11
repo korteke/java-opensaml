@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.xml.signature;
+package org.opensaml.xml.signature.impl;
 
 import org.apache.log4j.Logger;
 import org.apache.xml.security.Init;
@@ -24,6 +24,8 @@ import org.apache.xml.security.signature.XMLSignature;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.io.Unmarshaller;
 import org.opensaml.xml.io.UnmarshallingException;
+import org.opensaml.xml.signature.KeyInfo;
+import org.opensaml.xml.signature.Signature;
 import org.w3c.dom.Element;
 
 /**
@@ -31,12 +33,10 @@ import org.w3c.dom.Element;
  */
 public class SignatureUnmarshaller implements Unmarshaller {
 
-    /** Logger */
+    /** Class logger. */
     private static Logger log = Logger.getLogger(SignatureUnmarshaller.class);
 
-    /**
-     * Constructor
-     */
+    /** Constructor. */
     public SignatureUnmarshaller() {
         if (!Init.isInitialized()) {
             if (log.isDebugEnabled()) {
@@ -51,7 +51,7 @@ public class SignatureUnmarshaller implements Unmarshaller {
         if (log.isDebugEnabled()) {
             log.debug("Starting to unmarshall XMLSecSignatureImpl element");
         }
-        Signature signature = new Signature(signatureElement.getNamespaceURI(), signatureElement.getLocalName(),
+        SignatureImpl signature = new SignatureImpl(signatureElement.getNamespaceURI(), signatureElement.getLocalName(),
                 signatureElement.getPrefix());
 
         try {
@@ -75,13 +75,7 @@ public class SignatureUnmarshaller implements Unmarshaller {
                 KeyInfo keyInfo = (KeyInfo) unmarshaller.unmarshall(xmlSecKeyInfo.getElement());
                 signature.setKeyInfo(keyInfo);
             }
-
-            if (log.isDebugEnabled()) {
-                log
-                        .debug("Creating new XMLSecSignatureImpl XMLObject with created SigningContext and XMLSignature objects");
-            }
-            signature.setXMLSignature(xmlSignature);
-
+            ((SignatureImpl)signature).setXMLSignature(xmlSignature);
             return signature;
         } catch (XMLSecurityException e) {
             throw new UnmarshallingException("Unable to unmarshall XMLSecSignatureImpl", e);

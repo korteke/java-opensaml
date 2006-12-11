@@ -24,6 +24,8 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.HashMap;
 
+import javolution.util.FastList;
+
 import org.apache.log4j.Logger;
 import org.apache.xml.security.algorithms.MessageDigestAlgorithm;
 import org.apache.xml.security.c14n.Canonicalizer;
@@ -39,63 +41,74 @@ import org.opensaml.xml.mock.SimpleXMLObject;
 import org.opensaml.xml.mock.SimpleXMLObjectBuilder;
 import org.opensaml.xml.parse.ParserPool;
 import org.opensaml.xml.parse.XMLParserException;
+import org.opensaml.xml.security.DirectKeyInfoResolver;
+import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.signature.impl.KeyInfoBuilder;
+import org.opensaml.xml.signature.impl.SignatureBuilder;
 import org.opensaml.xml.util.XMLHelper;
 import org.opensaml.xml.validation.ValidationException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
- * Test to verify {@link org.opensaml.xml.signature.Signature} and its marshallers and unmarshallers
+ * Test to verify {@link org.opensaml.xml.signature.Signature} and its marshallers and unmarshallers.
  */
 public class EnvelopedSignatureTest extends XMLObjectBaseTestCase {
 
-    /** Logger */
+    /** Class logger. */
     private static Logger log = Logger.getLogger(EnvelopedSignatureTest.class);
 
-    /** Key used for signing */
+    /** Key used for signing. */
     private PrivateKey signingKey;
 
-    /** Key used for verification */
-    private PublicKey verificationKey;
+    /** Trust engine used to verify signatures. */
+    private BasicSignatureTrustEngine trustEngine;
+    
+    /** Key resolver containing proper verification key. */
+    private DirectKeyInfoResolver verificationKeyResolver;
+    
+    /** Key resolver containing invalid verification key. */
+    private DirectKeyInfoResolver badKeyResolver;
 
-    /** Verification key that should fail to verify signature */
-    private PublicKey badVerificationKey;
-
-    /** Builder of mock XML objects */
+    /** Builder of mock XML objects. */
     private SimpleXMLObjectBuilder sxoBuilder;
 
-    /** Builder of Signature XML objects */
+    /** Builder of Signature XML objects. */
     private SignatureBuilder sigBuilder;
 
-    /** Builder of KeyInfo XML objects */
+    /** Builder of KeyInfo XML objects. */
     private KeyInfoBuilder keyInfoBuilder;
 
-    /** Parser pool used to parse example config files */
+    /** Parser pool used to parse example config files. */
     private ParserPool parserPool;
 
     /** {@inheritDoc} */
     protected void setUp() throws Exception {
         super.setUp();
 
+        trustEngine = new BasicSignatureTrustEngine();
+        
         KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
         keyGen.initialize(1024);
         KeyPair keyPair = keyGen.generateKeyPair();
         signingKey = keyPair.getPrivate();
-        verificationKey = keyPair.getPublic();
+        
+        FastList<PublicKey> verificationKey = new FastList<PublicKey>();
+        verificationKey.add(keyPair.getPublic());
+        verificationKeyResolver = new DirectKeyInfoResolver(verificationKey, null, null);
 
         keyGen.initialize(1024);
         keyPair = keyGen.generateKeyPair();
-        badVerificationKey = keyPair.getPublic();
+        FastList<PublicKey> badKey = new FastList<PublicKey>();
+        badKey.add(keyPair.getPublic());
+        badKeyResolver = new DirectKeyInfoResolver(badKey, null, null);
 
         sxoBuilder = new SimpleXMLObjectBuilder();
         sigBuilder = new SignatureBuilder();
-        keyInfoBuilder = new KeyInfoBuilder();
 
         HashMap<String, Boolean> features = new HashMap<String, Boolean>();
         features.put("http://apache.org/xml/features/validation/schema/normalized-value", Boolean.FALSE);
         features.put("http://apache.org/xml/features/dom/defer-node-expansion", Boolean.FALSE);
-
         parserPool = new ParserPool(true, null, features);
     }
 
@@ -103,16 +116,12 @@ public class EnvelopedSignatureTest extends XMLObjectBaseTestCase {
      * Tests creating an enveloped signature and then verifying it.
      * 
      * @throws MarshallingException thrown if the XMLObject tree can not be marshalled
+     * @throws SecurityException 
      * @throws ValidationException thrown if the signature verification fails
      */
-    public void testSigningAndVerification() throws MarshallingException, ValidationException {
+    public void testSigningAndVerification() throws MarshallingException, SecurityException {
         SimpleXMLObject sxo = getXMLObjectWithSignature();
         Signature signature = sxo.getSignature();
-
-        KeyInfo keyInfo = keyInfoBuilder.buildObject();
-        //TODO this currently broken b/c helper not completed
-        KeyInfoHelper.addPublicKey(keyInfo, verificationKey);
-        signature.setKeyInfo(keyInfo);
 
         Marshaller marshaller = Configuration.getMarshallerFactory().getMarshaller(sxo);
         Element signedElement = marshaller.marshall(sxo);
@@ -122,16 +131,9 @@ public class EnvelopedSignatureTest extends XMLObjectBaseTestCase {
         if (log.isDebugEnabled()) {
             log.debug("Marshalled Signature: \n" + XMLHelper.nodeToString(signedElement));
         }
-
-        SignatureValidator signatureValidator = new SignatureValidator(verificationKey);
-        signatureValidator.validate(signature);
-
-        try {
-            signatureValidator = new SignatureValidator(badVerificationKey);
-            signatureValidator.validate(sxo.getSignature());
-            fail("Signature validated with an incorrect public key");
-        } catch (ValidationException e) {
-            // this is supposed to fail
+        
+        if(!trustEngine.validate(signature, null, verificationKeyResolver)){
+            fail("Failed to validate signature with proper public key");
         }
     }
 

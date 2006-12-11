@@ -16,8 +16,11 @@
 
 package org.opensaml.xml.signature;
 
+import java.security.InvalidKeyException;
 import java.security.KeyException;
+import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
+import java.security.SignatureException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.Iterator;
@@ -28,18 +31,15 @@ import javolution.util.FastList;
 import javolution.util.FastSet;
 
 import org.apache.log4j.Logger;
-import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.signature.XMLSignatureException;
-import org.opensaml.xml.Configuration;
-import org.opensaml.xml.io.Marshaller;
-import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.security.InlineX509KeyInfoResolver;
 import org.opensaml.xml.security.KeyInfoSource;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.X509KeyInfoResolver;
 import org.opensaml.xml.security.X509Util;
-import org.w3c.dom.Element;
+import org.opensaml.xml.signature.impl.SignatureImpl;
+import org.opensaml.xml.util.DatatypeHelper;
 
 /**
  * A signature validation and trust engine that checks the signature against keys embedded within KeyInfo elements but
@@ -49,9 +49,9 @@ public class BasicSignatureTrustEngine implements SignatureTrustEngine<X509KeyIn
 
     /** Class logger. */
     private static Logger log = Logger.getLogger(BasicSignatureTrustEngine.class);
-    
+
     /** Subject Alt Names types (DNS, URI) used during peer name matching. */
-    private static Integer[] altNameTypes = {X509Util.DNS_ALT_NAME, X509Util.URI_ALT_NAME};
+    private static Integer[] altNameTypes = { X509Util.DNS_ALT_NAME, X509Util.URI_ALT_NAME };
 
     /** KeyInfoSource to use if no other one is given. */
     private KeyInfoSource defaultKeyInfoSource;
@@ -93,18 +93,14 @@ public class BasicSignatureTrustEngine implements SignatureTrustEngine<X509KeyIn
     public boolean validate(Signature token, KeyInfoSource keyInfoSource, X509KeyInfoResolver keyResolver)
             throws SecurityException {
         if (log.isDebugEnabled()) {
-            log.debug("Verify digital signature with against keying information from: " + keyInfoSource.getName());
+            log.debug("Verify digital signature with against keying information");
         }
 
         XMLSignature signature = buildSignature(token);
 
-        Iterator<KeyInfo> keyInfoItr = keyInfoSource.getKeyInfo();
-        List<PublicKey> keys;
-        while (keyInfoItr.hasNext()) {
-            keys = getKeys(keyInfoItr.next(), keyInfoSource.getName(), keyResolver);
-            if (validate(signature, keys)) {
-                return true;
-            }
+        List<PublicKey> keys = getKeys(keyInfoSource, keyResolver);
+        if (validate(signature, keys)) {
+            return true;
         }
 
         return false;
@@ -112,8 +108,28 @@ public class BasicSignatureTrustEngine implements SignatureTrustEngine<X509KeyIn
 
     /** {@inheritDoc} */
     public boolean validate(byte[] signature, byte[] content, String sigAlg, KeyInfoSource keyInfo,
-            X509KeyInfoResolver keyResolver) {
-        // TODO Auto-generated method stub
+            X509KeyInfoResolver keyResolver) throws SecurityException {
+
+        List<PublicKey> keys = getKeys(keyInfo, keyResolver);
+        try {
+            if (keys != null) {
+                for (PublicKey key : keys) {
+                    java.security.Signature signatureVerifier = java.security.Signature.getInstance(sigAlg);
+                    signatureVerifier.update(content);
+                    signatureVerifier.initVerify(key);
+                    if (signatureVerifier.verify(signature)) {
+                        return true;
+                    }
+                }
+            }
+        } catch (SignatureException e) {
+            throw new SecurityException("Error evaluating signature", e);
+        } catch (NoSuchAlgorithmException e) {
+            throw new SecurityException("Signature algorithm, " + sigAlg + ", is not supported", e);
+        } catch (InvalidKeyException e) {
+            throw new SecurityException("Unsupported public key", e);
+        }
+
         return false;
     }
 
@@ -130,50 +146,86 @@ public class BasicSignatureTrustEngine implements SignatureTrustEngine<X509KeyIn
         if (log.isDebugEnabled()) {
             log.debug("Creating XMLSignature object");
         }
-        try {
-            Marshaller sigMarshaller = Configuration.getMarshallerFactory().getMarshaller(
-                    Signature.DEFAULT_ELEMENT_NAME);
-            Element signatureElem = sigMarshaller.marshall(signature);
-            return new XMLSignature(signatureElem, "");
-        } catch (MarshallingException e) {
-            throw new SecurityException("Unable to marshall signature", e);
-        } catch (XMLSecurityException e) {
-            throw new SecurityException("Unable to create XMLSignature", e);
-        }
+        return ((SignatureImpl) signature).getXMLSignature();
     }
 
     /**
      * Gets the list of public keys from the given key info. The complete list of keys include any raw keys expresed at
      * KeyValue elements and the public key from any certificate who DN or subjectAltName matches the given peer name.
      * 
-     * @param keyInfo the key info to extract the keys from
-     * @param peerName the name of the peer that produced the signature
-     * @param keyResolver the resolver used to extract keys and certificates from the key info
+     * @param keyInfoSrc the key info to extract the keys from, may be null
+     * @param keyResolver the resolver used to extract keys and certificates from the key info, must not be null
      * 
      * @return list of public keys given in the key info
      * 
      * @throws SecurityException thrown if the keys or certificate within the key info can not be resolved
      */
-    protected List<PublicKey> getKeys(KeyInfo keyInfo, String peerName, X509KeyInfoResolver keyResolver)
+    protected List<PublicKey> getKeys(KeyInfoSource keyInfoSrc, X509KeyInfoResolver keyResolver)
             throws SecurityException {
-        FastList<PublicKey> keys = new FastList<PublicKey>();
 
         try {
-            keys.addAll(keyResolver.resolveKeys(keyInfo));
-            
-            Set<String> commonNames;
-            for (X509Certificate cert : keyResolver.resolveCertificates(keyInfo)) {
-                commonNames = new FastSet<String>();
-                commonNames.addAll(X509Util.getCommonNames(cert.getSubjectX500Principal()));
-                commonNames.addAll(X509Util.getAltNames(cert, altNameTypes));
-                if(commonNames.contains(peerName)){
-                    keys.add(cert.getPublicKey());
+            if (keyInfoSrc == null) {
+                if (log.isDebugEnabled()) {
+                    log.debug("KeyInfo source was null, attempting to resolve raw keys from resolver");
                 }
+                return keyResolver.resolveKeys(null);
             }
+
+            if (log.isDebugEnabled()) {
+                log.debug("Extracting keying information from KeyInfoSource for peer " + keyInfoSrc.getName());
+            }
+            FastList<PublicKey> keys = new FastList<PublicKey>();
+            Iterator<KeyInfo> keyInfoItr = keyInfoSrc.getKeyInfo();
+            KeyInfo keyInfo;
+            while (keyInfoItr.hasNext()) {
+                keyInfo = keyInfoItr.next();
+
+                if (log.isDebugEnabled()) {
+                    log.debug("Extracting raw keys from key info");
+                }
+                keys.addAll(keyResolver.resolveKeys(keyInfo));
+
+                List<X509Certificate> certs = keyResolver.resolveCertificates(keyInfo);
+                keys.addAll(getKeys(certs, keyInfoSrc.getName()));
+            }
+            return keys;
         } catch (KeyException e) {
             throw new SecurityException("Unable to parse raw key information", e);
         } catch (CertificateException e) {
             throw new SecurityException("Unable to parse ceritificate information", e);
+        }
+    }
+
+    /**
+     * Gets the public keys from a list of certificates. If the given peer name is not null only those certificates
+     * whose CN component of their DN, DNS subjectAltName, or URI subjectAltName will be used.
+     * 
+     * @param certs certificate list to extract keys from
+     * @param peerName peer name used to filter certificates
+     * 
+     * @return extracted public keys
+     */
+    protected List<PublicKey> getKeys(List<X509Certificate> certs, String peerName) {
+        String trimmedPeerName = DatatypeHelper.safeTrimOrNullString(peerName);
+        FastList<PublicKey> keys = new FastList<PublicKey>();
+        Set<String> commonNames;
+
+        if (certs != null) {
+            if (log.isDebugEnabled()) {
+                log.debug("Extracting public keys from certificates from key info");
+            }
+            for (X509Certificate cert : certs) {
+                commonNames = new FastSet<String>();
+                commonNames.addAll(X509Util.getCommonNames(cert.getSubjectX500Principal()));
+                commonNames.addAll(X509Util.getAltNames(cert, altNameTypes));
+                if (trimmedPeerName == null || commonNames.contains(trimmedPeerName)) {
+                    keys.add(cert.getPublicKey());
+                } else {
+                    if (log.isDebugEnabled()) {
+                        log.debug("Ignoring certificate that does not match the peer name:" + commonNames.toString());
+                    }
+                }
+            }
         }
 
         return keys;
@@ -203,6 +255,9 @@ public class BasicSignatureTrustEngine implements SignatureTrustEngine<X509KeyIn
             throw new SecurityException("Unable to evaluate key against signature", e);
         }
 
+        if (log.isDebugEnabled()) {
+            log.debug("Signature did not validate against any public key");
+        }
         return false;
     }
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.xml.signature;
+package org.opensaml.xml.signature.impl;
 
 import java.security.KeyException;
 import java.security.PublicKey;
@@ -32,6 +32,10 @@ import org.apache.xml.security.signature.XMLSignature;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallingException;
+import org.opensaml.xml.signature.ContentReference;
+import org.opensaml.xml.signature.KeyInfo;
+import org.opensaml.xml.signature.KeyInfoHelper;
+import org.opensaml.xml.signature.Signature;
 import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -68,14 +72,14 @@ public class SignatureMarshaller implements Marshaller {
 
     /** {@inheritDoc} */
     public Element marshall(XMLObject xmlObject, Element parentElement) throws MarshallingException {
-        Element signatureElement = createSignatureElement((Signature) xmlObject, parentElement.getOwnerDocument());
+        Element signatureElement = createSignatureElement((SignatureImpl) xmlObject, parentElement.getOwnerDocument());
         XMLHelper.appendChildElement(parentElement, signatureElement);
         return signatureElement;
     }
 
     /** {@inheritDoc} */
     public Element marshall(XMLObject xmlObject, Document document) throws MarshallingException {
-        Element signatureElement = createSignatureElement((Signature) xmlObject, document);
+        Element signatureElement = createSignatureElement((SignatureImpl) xmlObject, document);
         
         Element documentRoot = document.getDocumentElement();
         if (documentRoot != null) {
@@ -146,7 +150,7 @@ public class SignatureMarshaller implements Marshaller {
             if (log.isDebugEnabled()) {
                 log.debug("Creating Signature DOM element");
             }
-            signature.setXMLSignature(dsig);
+            ((SignatureImpl)signature).setXMLSignature(dsig);
             Element signatureElement = dsig.getElement();
             signature.setDOM(signatureElement);
             return signatureElement;

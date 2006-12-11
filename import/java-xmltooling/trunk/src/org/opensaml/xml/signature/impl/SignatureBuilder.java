@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.xml.signature;
+package org.opensaml.xml.signature.impl;
 
 import org.opensaml.xml.AbstractXMLObjectBuilder;
 import org.opensaml.xml.util.XMLConstants;
@@ -22,7 +22,7 @@ import org.opensaml.xml.util.XMLConstants;
 /**
  * Builder of {@link org.opensaml.xml.signature.Signature}s.
  */
-public class SignatureBuilder extends AbstractXMLObjectBuilder<Signature> {
+public class SignatureBuilder extends AbstractXMLObjectBuilder<SignatureImpl> {
 
     /**
      * Constructor
@@ -36,12 +36,12 @@ public class SignatureBuilder extends AbstractXMLObjectBuilder<Signature> {
      * 
      * @return the Signature object
      */
-    public Signature buildObject() {
-        return buildObject(XMLConstants.XMLSIG_NS, Signature.DEFAULT_ELEMENT_LOCAL_NAME, XMLConstants.XMLSIG_PREFIX);
+    public SignatureImpl buildObject() {
+        return buildObject(XMLConstants.XMLSIG_NS, SignatureImpl.DEFAULT_ELEMENT_LOCAL_NAME, XMLConstants.XMLSIG_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public Signature buildObject(String namespaceURI, String localName, String namespacePrefix) {
-        return new Signature(namespaceURI, localName, namespacePrefix);
+    public SignatureImpl buildObject(String namespaceURI, String localName, String namespacePrefix) {
+        return new SignatureImpl(namespaceURI, localName, namespacePrefix);
     }
 }

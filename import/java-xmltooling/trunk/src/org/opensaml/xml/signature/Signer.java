@@ -22,6 +22,11 @@ import org.apache.log4j.Logger;
 import org.apache.xml.security.Init;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.signature.XMLSignature;
+import org.opensaml.xml.Configuration;
+import org.opensaml.xml.io.Marshaller;
+import org.opensaml.xml.io.MarshallingException;
+import org.opensaml.xml.signature.impl.SignatureImpl;
+import org.w3c.dom.Element;
 
 /**
  * This class is responsible for creating the digital signatures for the given signable XMLObjects.
@@ -36,7 +41,7 @@ import org.apache.xml.security.signature.XMLSignature;
  */
 public class Signer {
 
-    /** Logger */
+    /** Class logger. */
     private static Logger log = Logger.getLogger(Signer.class);
 
     /**
@@ -56,14 +61,13 @@ public class Signer {
      * @param signature the signature to computer the signature on
      */
     public static void signObject(Signature signature) {
-        XMLSignature xmlSignature = signature.getXMLSignature();
+        try{
+        XMLSignature xmlSignature = ((SignatureImpl)signature).getXMLSignature();
 
         if(xmlSignature == null){
             log.warn("Unable to compute signature, Signature XMLObject does not have the XMLSignature created during marshalling.");
             return;
         }
-
-        try {
             if (log.isDebugEnabled()) {
                 log.debug("Creating XMLSignature object");
             }

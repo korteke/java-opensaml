@@ -49,7 +49,7 @@ public class AttributeMap implements Map<QName, String> {
      * @throws NullPointerException thrown if the given XMLObject is null
      */
     public AttributeMap(XMLObject newOwner) throws NullPointerException {
-        if (attributeOwner == null) {
+        if (newOwner == null) {
             throw new NullPointerException("Attribute owner XMLObject may not be null");
         }
 

@@ -18,6 +18,7 @@ package org.opensaml.xml.signature;
 
 import org.opensaml.xml.security.KeyInfoResolver;
 import org.opensaml.xml.security.KeyInfoSource;
+import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.TrustEngine;
 
 /**
@@ -44,7 +45,10 @@ public interface SignatureTrustEngine<KeyInfoResolverType extends KeyInfoResolve
      * @param keyResolver resolver to convert KeyInfo objects into keys used to validate the signature
      * 
      * @return true if the signature was valid for the provided content
+     * 
+     * @throws SecurityException thrown if there is a problem attempting to verify the signature such as the signature
+     *             algorithim not being supported
      */
     public boolean validate(byte[] signature, byte[] content, String sigAlg, KeyInfoSource keyInfo,
-            KeyInfoResolverType keyResolver);
+            KeyInfoResolverType keyResolver) throws SecurityException;
 }
