@@ -99,9 +99,7 @@ Code standard checking for Internet 2 code
         <module name="ThrowsCount">
             <property name="max" value="3"/>
         </module>
-        <module name="CyclomaticComplexity">
-            <property name="max" value="7"/>
-        </module>
+        <module name="CyclomaticComplexity"/>
         <module name="TrailingComment"/>
     </module>
     <module name="PackageHtml">
