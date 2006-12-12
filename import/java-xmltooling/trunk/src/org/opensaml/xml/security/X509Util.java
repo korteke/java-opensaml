@@ -16,7 +16,12 @@
 
 package org.opensaml.xml.security;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.security.Key;
 import java.security.cert.CertificateParsingException;
 import java.security.cert.X509Certificate;
 import java.util.Collection;
@@ -39,9 +44,9 @@ import org.bouncycastle.asn1.DERString;
  * Utility class for working with X509 objects.
  */
 public class X509Util {
-
-    /** Class logger. */
-    private static Logger log = Logger.getLogger(X509Util.class);
+    
+    /** Encoding used to store a key or certificate in a file. */
+    public static enum ENCODING_FORMAT { PEM, DER}; 
 
     /** Common Name (CN) OID. */
     public static final String CN_OID = "2.5.4.3";
@@ -72,6 +77,9 @@ public class X509Util {
     
     /** RFC 2459 Registered ID Subject Alt Name type. */
     public static final Integer REGISTERED_ID_ALT_NAME = new Integer(8);
+    
+    /** Class logger. */
+    private static Logger log = Logger.getLogger(X509Util.class);
     
     /** Constructed. */
     protected X509Util(){
@@ -181,4 +189,41 @@ public class X509Util {
         return names;
     }
 
+    /**
+     * Reads a PEM or DER encoded RSA or DSA key from a file.
+     * 
+     * @param <KeyType> the type of key returned
+     * @param keyFile the file containing the encoded key
+     * @param passphrase the passphrase to unlock the key or null
+     * 
+     * @return the key
+     * 
+     * @throws SecurityException thrown if the file can not be read or a key created from its content
+     */
+    public static <KeyType extends Key> KeyType getKey(File keyFile, String passphrase) throws SecurityException{
+        if(keyFile.exists() && keyFile.canRead()){
+            try{
+                return getKey(new FileInputStream(keyFile), passphrase);
+            }catch(FileNotFoundException e){
+                throw new SecurityException("Key file " + keyFile.getAbsolutePath() + " does not exist", e);
+            }
+        }
+        
+        return null;
+    }
+    
+    /**
+     * Reads a PEM or DER encoded RSA or DSA key from a stream.
+     * 
+     * @param <KeyType> the type of key returned
+     * @param keyStream the stream containing the encoded key
+     * @param passphrase the passphrase to unlock the key or null
+     * 
+     * @return the key
+     */
+    public static <KeyType extends Key> KeyType getKey(InputStream keyStream, String passphrase){
+        return null;
+    }
+    
+    
 }
