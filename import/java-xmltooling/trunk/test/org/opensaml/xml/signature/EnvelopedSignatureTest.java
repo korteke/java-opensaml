@@ -62,7 +62,7 @@ public class EnvelopedSignatureTest extends XMLObjectBaseTestCase {
     private PrivateKey signingKey;
 
     /** Trust engine used to verify signatures. */
-    private BasicSignatureTrustEngine trustEngine;
+    private BasicX509SignatureTrustEngine trustEngine;
     
     /** Key resolver containing proper verification key. */
     private DirectKeyInfoResolver verificationKeyResolver;
@@ -86,7 +86,7 @@ public class EnvelopedSignatureTest extends XMLObjectBaseTestCase {
     protected void setUp() throws Exception {
         super.setUp();
 
-        trustEngine = new BasicSignatureTrustEngine();
+        trustEngine = new BasicX509SignatureTrustEngine();
         
         KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
         keyGen.initialize(1024);

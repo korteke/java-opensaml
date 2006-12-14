@@ -24,11 +24,11 @@ import java.util.List;
  */
 public interface X509EntityCredential extends EntityCredential {
 
-    /** DSA key algorithim identifier */
-    public final static String DSA_KEY_ALGORITHM = "DSA";
+    /** DSA key algorithim identifier. */
+    public static final String DSA_KEY_ALGORITHM = "DSA";
 
-    /** RSA key algorithim identifier */
-    public final static String RSA_KEY_ALGORITHM = "RSA";
+    /** RSA key algorithim identifier. */
+    public static final String RSA_KEY_ALGORITHM = "RSA";
     
     /**
      * Gets the public certificate for the entity.

@@ -60,15 +60,15 @@ public class SimpleX509EntityCredential extends AbstractX509EntityCredential {
      * @param entityCertificateChain the certificate chain for this entity, the entity cert must be the first element in
      *            the list
      * 
-     * @throws IllegalArgumentException thrown if the entityID or entity certificate is null
+     * @throws SecurityException thrown if the entityID or entity certificate is null
      */
     public SimpleX509EntityCredential(String entityID, PrivateKey privateKey,
-            List<X509Certificate> entityCertificateChain) throws IllegalArgumentException {
+            List<X509Certificate> entityCertificateChain) throws SecurityException {
 
         setEntityID(entityID);
 
         if (entityCertificateChain == null || entityCertificateChain.size() < 1) {
-            throw new IllegalArgumentException("Entity certificate chain may not be null or empty");
+            throw new SecurityException("Entity certificate chain may not be null or empty");
         }
         this.entityCertificate = entityCertificateChain.get(0);
 
@@ -82,20 +82,20 @@ public class SimpleX509EntityCredential extends AbstractX509EntityCredential {
     }
 
     /**
-     * Constructor
+     * Constructor.
      * 
      * @param entityID the ID of the entity this credential is for, may not be null
      * @param privateKey the entity's private key
      * @param publicKey the entity's public key, may not be null
      * 
-     * @throws IllegalArgumentException thrown if the entity ID or public key is null or empty
+     * @throws SecurityException thrown if the entity ID or public key is null or empty
      */
     public SimpleX509EntityCredential(String entityID, PrivateKey privateKey, PublicKey publicKey)
-            throws IllegalArgumentException {
+            throws SecurityException {
         setEntityID(entityID);
 
         if (publicKey == null) {
-            throw new IllegalArgumentException("Public key may not be null");
+            throw new SecurityException("Public key may not be null");
         }
         this.publicKey = publicKey;
         this.privateKey = privateKey;
@@ -116,13 +116,13 @@ public class SimpleX509EntityCredential extends AbstractX509EntityCredential {
      * 
      * @param newEntityID the new entity id
      * 
-     * @throws IllegalArgumentException thrown if the entityID is null or empty
+     * @throws SecurityException thrown if the entityID is null or empty
      */
-    protected void setEntityID(String newEntityID) throws IllegalArgumentException {
+    protected void setEntityID(String newEntityID) throws SecurityException {
         if (DatatypeHelper.isEmpty(entityID)) {
             entityID = new String(newEntityID);
         } else {
-            throw new IllegalArgumentException("Entity ID may not be null or empty");
+            throw new SecurityException("Entity ID may not be null or empty");
         }
     }
 }

@@ -16,24 +16,25 @@
 
 package org.opensaml.xml.security;
 
-import java.security.Key;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 
 /**
  * Base class for {@link org.opensaml.xml.security.EntityCredential} implementations.
  */
 public abstract class AbstractEntityCredential implements EntityCredential {
 
-    /** ID of the entity owning this credential */
+    /** ID of the entity owning this credential. */
     protected String entityID;
     
-    /** Usage type of this credential */
+    /** Usage type of this credential. */
     protected UsageType usageType;
     
-    /** Public key of the entity */
-    protected Key publicKey;
+    /** Public key of the entity. */
+    protected PublicKey publicKey;
     
-    /** Private key of the entity */
-    protected Key privateKey;
+    /** Private key of the entity. */
+    protected PrivateKey privateKey;
     
     /** {@inheritDoc}  */
     public String getEntityID() {
@@ -51,12 +52,12 @@ public abstract class AbstractEntityCredential implements EntityCredential {
     }
 
     /** {@inheritDoc}  */
-    public Key getPublicKey() {
+    public PublicKey getPublicKey() {
         return publicKey;
     }
 
     /** {@inheritDoc}  */
-    public Key getPrivateKey() {
+    public PrivateKey getPrivateKey() {
         return privateKey;
     }
 }

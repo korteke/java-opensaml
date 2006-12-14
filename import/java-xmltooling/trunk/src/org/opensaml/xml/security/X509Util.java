@@ -46,7 +46,7 @@ import org.bouncycastle.asn1.DERString;
 public class X509Util {
     
     /** Encoding used to store a key or certificate in a file. */
-    public static enum ENCODING_FORMAT { PEM, DER}; 
+    public static enum ENCODING_FORMAT { PEM, DER }; 
 
     /** Common Name (CN) OID. */
     public static final String CN_OID = "2.5.4.3";

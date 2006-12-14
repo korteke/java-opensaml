@@ -34,9 +34,9 @@ public interface TrustEngine<TokenType, KeyInfoResolverType extends KeyInfoResol
     /**
      * Sets the default source of keying information to validate the token against.
      * 
-     * @param keyInfo default source of keying information to validate the token against
+     * @param keyInfoSource default source of keying information to validate the token against
      */
-    public void setDefaultkeyInfoSource(KeyInfoSource keyInfo);
+    public void setDefaultkeyInfoSource(KeyInfoSource keyInfoSource);
 
     /**
      * Gets the default key resolver to use when extracting keying information from the {@link KeyInfoSource}.
@@ -67,13 +67,13 @@ public interface TrustEngine<TokenType, KeyInfoResolverType extends KeyInfoResol
      * Validates the token against the given key info using the default key resolver.
      * 
      * @param token the security token to validate
-     * @param keyInfo source of keying information
+     * @param keyInfoSource source of keying information
      * @param keyResolver resolver used to extract keys from {@link KeyInfo}s
      * 
      * @return true if the token is trusted and valid, false if not
      * 
      * @throws SecurityException thrown if there is a problem validating the security token
      */
-    public boolean validate(TokenType token, KeyInfoSource keyInfo, KeyInfoResolverType keyResolver)
+    public boolean validate(TokenType token, KeyInfoSource keyInfoSource, KeyInfoResolverType keyResolver)
             throws SecurityException;
 }

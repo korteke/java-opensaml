@@ -25,68 +25,37 @@ import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import javolution.util.FastList;
-import javolution.util.FastSet;
 
 import org.apache.log4j.Logger;
 import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.signature.XMLSignatureException;
+import org.opensaml.xml.security.BaseTrustEngine;
 import org.opensaml.xml.security.InlineX509KeyInfoResolver;
 import org.opensaml.xml.security.KeyInfoSource;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.X509KeyInfoResolver;
-import org.opensaml.xml.security.X509Util;
 import org.opensaml.xml.signature.impl.SignatureImpl;
-import org.opensaml.xml.util.DatatypeHelper;
 
 /**
  * A signature validation and trust engine that checks the signature against keys embedded within KeyInfo elements but
  * does not perform full PKIX validation.
  */
-public class BasicSignatureTrustEngine implements SignatureTrustEngine<X509KeyInfoResolver> {
+public class BasicX509SignatureTrustEngine extends BaseTrustEngine<Signature, X509KeyInfoResolver> implements
+        SignatureTrustEngine<X509KeyInfoResolver> {
 
     /** Class logger. */
-    private static Logger log = Logger.getLogger(BasicSignatureTrustEngine.class);
-
-    /** Subject Alt Names types (DNS, URI) used during peer name matching. */
-    private static Integer[] altNameTypes = { X509Util.DNS_ALT_NAME, X509Util.URI_ALT_NAME };
-
-    /** KeyInfoSource to use if no other one is given. */
-    private KeyInfoSource defaultKeyInfoSource;
-
-    /** KeyResolver to use if none is given. */
-    private X509KeyInfoResolver defaultKeyResolver;
+    private static Logger log = Logger.getLogger(BasicX509SignatureTrustEngine.class);
 
     /** Constructor. */
-    public BasicSignatureTrustEngine() {
-        defaultKeyResolver = new InlineX509KeyInfoResolver();
-    }
-
-    /** {@inheritDoc} */
-    public KeyInfoSource getDefaultKeyInfoSource() {
-        return defaultKeyInfoSource;
-    }
-
-    /** {@inheritDoc} */
-    public X509KeyInfoResolver getDefaultKeyResolver() {
-        return defaultKeyResolver;
-    }
-
-    /** {@inheritDoc} */
-    public void setDefaultKeyResolver(X509KeyInfoResolver keyResolver) {
-        defaultKeyResolver = keyResolver;
-    }
-
-    /** {@inheritDoc} */
-    public void setDefaultkeyInfoSource(KeyInfoSource keyInfo) {
-        defaultKeyInfoSource = keyInfo;
+    public BasicX509SignatureTrustEngine() {
+       setDefaultKeyResolver(new InlineX509KeyInfoResolver());
     }
 
     /** {@inheritDoc} */
     public boolean validate(Signature token) throws SecurityException {
-        return validate(token, defaultKeyInfoSource, defaultKeyResolver);
+        return validate(token, getDefaultKeyInfoSource(), getDefaultKeyResolver());
     }
 
     /** {@inheritDoc} */
@@ -186,7 +155,7 @@ public class BasicSignatureTrustEngine implements SignatureTrustEngine<X509KeyIn
                 keys.addAll(keyResolver.resolveKeys(keyInfo));
 
                 List<X509Certificate> certs = keyResolver.resolveCertificates(keyInfo);
-                keys.addAll(getKeys(certs, keyInfoSrc.getName()));
+                keys.addAll(getKeys(certs));
             }
             return keys;
         } catch (KeyException e) {
@@ -201,30 +170,18 @@ public class BasicSignatureTrustEngine implements SignatureTrustEngine<X509KeyIn
      * whose CN component of their DN, DNS subjectAltName, or URI subjectAltName will be used.
      * 
      * @param certs certificate list to extract keys from
-     * @param peerName peer name used to filter certificates
      * 
      * @return extracted public keys
      */
-    protected List<PublicKey> getKeys(List<X509Certificate> certs, String peerName) {
-        String trimmedPeerName = DatatypeHelper.safeTrimOrNullString(peerName);
+    protected List<PublicKey> getKeys(List<X509Certificate> certs) {
         FastList<PublicKey> keys = new FastList<PublicKey>();
-        Set<String> commonNames;
 
         if (certs != null) {
             if (log.isDebugEnabled()) {
                 log.debug("Extracting public keys from certificates from key info");
             }
             for (X509Certificate cert : certs) {
-                commonNames = new FastSet<String>();
-                commonNames.addAll(X509Util.getCommonNames(cert.getSubjectX500Principal()));
-                commonNames.addAll(X509Util.getAltNames(cert, altNameTypes));
-                if (trimmedPeerName == null || commonNames.contains(trimmedPeerName)) {
-                    keys.add(cert.getPublicKey());
-                } else {
-                    if (log.isDebugEnabled()) {
-                        log.debug("Ignoring certificate that does not match the peer name:" + commonNames.toString());
-                    }
-                }
+                keys.add(cert.getPublicKey());
             }
         }
 

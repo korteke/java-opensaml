@@ -26,10 +26,10 @@ import javolution.util.FastList;
  */
 public abstract class AbstractX509EntityCredential extends AbstractEntityCredential implements X509EntityCredential {
 
-    /** Public certificate of the entity */
+    /** Public certificate of the entity. */
     protected X509Certificate entityCertificate;
     
-    /** Certificate chain for the entity, includes entity certificate */
+    /** Certificate chain for the entity, includes entity certificate. */
     protected FastList<X509Certificate> certificateChain;
 
     /** {@inheritDoc}  */

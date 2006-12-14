@@ -17,7 +17,9 @@
 package org.opensaml.xml.security;
 
 import java.util.Iterator;
-import java.util.NoSuchElementException;
+import java.util.List;
+
+import javolution.util.FastList;
 
 import org.opensaml.xml.signature.KeyInfo;
 
@@ -26,73 +28,43 @@ import org.opensaml.xml.signature.KeyInfo;
  */
 public class WrapperKeyInfoSource implements KeyInfoSource {
 
-    /** Name of this source */
+    /** Name of this source. */
     private String name;
     
-    /** KeyInfo to wrap as a source */
-    private KeyInfo wrappedKeyInfo;
+    /** KeyInfo to wrap as a source. */
+    private List<KeyInfo> wrappedKeyInfos;
     
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param name name of this key source
+     * @param peerName name of this key source
      * @param keyInfo keyInfo to wrap
      */
-    public WrapperKeyInfoSource(String name, KeyInfo keyInfo){
-        this.name = name;
-        wrappedKeyInfo = keyInfo;
+    public WrapperKeyInfoSource(String peerName, KeyInfo keyInfo){
+        name = peerName;
+        wrappedKeyInfos = new FastList<KeyInfo>();
+        wrappedKeyInfos.add(keyInfo);
+    }
+    
+    /**
+     * Constructor.
+     *
+     * @param peerName name of this key source
+     * @param keyInfos key infos to wrap
+     */
+    public WrapperKeyInfoSource(String peerName, List<KeyInfo> keyInfos){
+        name = peerName;
+        wrappedKeyInfos = new FastList<KeyInfo>();
+        wrappedKeyInfos.addAll(keyInfos);
     }
     
     /** {@inheritDoc} */
     public Iterator<KeyInfo> getKeyInfo() {
-        return new KeyInfoIterator(wrappedKeyInfo);
+        return wrappedKeyInfos.iterator();
     }
 
     /** {@inheritDoc} */
     public String getName() {
         return name;
-    }
-    
-    /**
-     * Simple iterator that "iterates" over the single wrapped key.
-     */
-    protected class KeyInfoIterator implements Iterator<KeyInfo>{
-        
-        /** KeyInfo to iterate over */
-        private KeyInfo keyInfo;
-        
-        /** Whether the single key info has been travered */
-        private boolean traversed;
-        
-        /**
-         * Constructor
-         *
-         * @param keyInfo 
-         */
-        public KeyInfoIterator(KeyInfo keyInfo){
-            this.keyInfo = keyInfo;
-            traversed = false;
-        }
-
-        /** {@inheritDoc} */
-        public boolean hasNext() {
-            return !traversed;
-        }
-
-        /** {@inheritDoc} */
-        public KeyInfo next() {
-            if(!traversed){
-                traversed = true;
-                return keyInfo;
-                
-            }else{
-                throw new NoSuchElementException();
-            }
-        }
-
-        /** {@inheritDoc} */
-        public void remove() {
-            throw new UnsupportedOperationException();
-        }
     }
 }

@@ -16,7 +16,8 @@
 
 package org.opensaml.xml.security;
 
-import java.security.Key;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 
 /**
  * A credential for an entity, such as an Identity provider or Service provider. A credential must contain a public
@@ -50,12 +51,12 @@ public interface EntityCredential {
      * 
      * @return the public key for the entity
      */
-    public Key getPublicKey();
+    public PublicKey getPublicKey();
 
     /**
      * Gets the private key for the entity if there is one.
      * 
      * @return the private key for the entity
      */
-    public Key getPrivateKey();
+    public PrivateKey getPrivateKey();
 }
