@@ -19,7 +19,15 @@ package org.opensaml.soap.soap11;
 import javax.xml.namespace.QName;
 
 import org.opensaml.soap.BaseTestCase;
-import org.opensaml.soap.util.SOAPConstants;
+import org.opensaml.ws.soap.soap11.Body;
+import org.opensaml.ws.soap.soap11.Detail;
+import org.opensaml.ws.soap.soap11.Envelope;
+import org.opensaml.ws.soap.soap11.Fault;
+import org.opensaml.ws.soap.soap11.FaultActor;
+import org.opensaml.ws.soap.soap11.FaultCode;
+import org.opensaml.ws.soap.soap11.FaultString;
+import org.opensaml.ws.soap.soap11.Header;
+import org.opensaml.ws.soap.util.SOAPConstants;
 import org.opensaml.xml.io.Unmarshaller;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.parse.XMLParserException;

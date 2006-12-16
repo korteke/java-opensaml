@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import javolution.util.FastList;
 
 import org.opensaml.xml.security.AbstractX509EntityCredential;
+import org.opensaml.xml.security.UsageType;
 
 /**
  * An adapter that exposes the X.509 certificates contained in the HTTP request header as an
