@@ -17,19 +17,19 @@
 package org.opensaml.xml.encryption;
 
 /**
- * Exception thrown when an error occurs during encryption operations.
+ * Exception thrown when an error occurs during decryption operations.
  */
-public class EncryptionException extends Exception {
+public class DecryptionException extends Exception {
 
     /**
      * Serial version UID.
      */
-    private static final long serialVersionUID = -3196546983060216532L;
+    private static final long serialVersionUID = 7785660781162212790L;
 
     /**
      * Constructor.
      */
-    public EncryptionException() {
+    public DecryptionException() {
         super();
     }
 
@@ -38,7 +38,7 @@ public class EncryptionException extends Exception {
      *
      * @param message exception message
      */
-    public EncryptionException(String message) {
+    public DecryptionException(String message) {
         super(message);
     }
     
@@ -47,7 +47,7 @@ public class EncryptionException extends Exception {
      * 
      * @param wrappedException exception to be wrapped by this one
      */
-    public EncryptionException(Exception wrappedException) {
+    public DecryptionException(Exception wrappedException) {
         super(wrappedException);
     }
 
@@ -57,7 +57,7 @@ public class EncryptionException extends Exception {
      * @param message exception message
      * @param wrappedException exception to be wrapped by this one
      */
-    public EncryptionException(String message, Exception wrappedException) {
+    public DecryptionException(String message, Exception wrappedException) {
         super(message, wrappedException);
     }
 

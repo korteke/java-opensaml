@@ -18,7 +18,6 @@ package org.opensaml.xml.encryption;
 
 import java.security.Key;
 
-import org.apache.xml.security.encryption.XMLCipher;
 import org.opensaml.xml.signature.KeyInfo;
 
 /**
@@ -26,20 +25,20 @@ import org.opensaml.xml.signature.KeyInfo;
  */
 public class EncryptionParameters {
 
-    /** Key used to encrypt */
+    /** Key used to encrypt. */
     private Key encryptionKey;
 
-    /** Algorithm used to encrypt */
+    /** Algorithm used to encrypt. */
     private String algorithm;
 
-    /** Information about the decryption key */
+    /** Information about the decryption key. */
     private KeyInfo keyInfo;
 
     /**
-     * Constructor
+     * Constructor.
      */
     public EncryptionParameters() {
-        algorithm = XMLCipher.AES_128;
+        algorithm = EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128;
     }
 
     /**
@@ -48,16 +47,16 @@ public class EncryptionParameters {
      * @return the algorithm used to encrypt
      */
     public String getAlgorithm() {
-        return algorithm;
+        return this.algorithm;
     }
 
     /**
      * Sets the algorithm used to encrypt.
      * 
-     * @param algorithm the algorithm used to encrypt
+     * @param newAlgorithm the algorithm used to encrypt
      */
-    public void setAlgorithm(String algorithm) {
-        this.algorithm = algorithm;
+    public void setAlgorithm(String newAlgorithm) {
+        this.algorithm = newAlgorithm;
     }
 
     /**
@@ -66,16 +65,16 @@ public class EncryptionParameters {
      * @return the key used to encrypt
      */
     public Key getEncryptionKey() {
-        return encryptionKey;
+        return this.encryptionKey;
     }
 
     /**
      * Sets the key used to encrypt.
      * 
-     * @param encryptionKey the key used to encrypt
+     * @param newEncryptionKey the key used to encrypt
      */
-    public void setEncryptionKey(Key encryptionKey) {
-        this.encryptionKey = encryptionKey;
+    public void setEncryptionKey(Key newEncryptionKey) {
+        this.encryptionKey = newEncryptionKey;
     }
 
     /**
@@ -84,15 +83,15 @@ public class EncryptionParameters {
      * @return the information about the decryption key
      */
     public KeyInfo getKeyInfo() {
-        return keyInfo;
+        return this.keyInfo;
     }
 
     /**
      * Sets the information about the decryption key.
      * 
-     * @param keyInfo the information about the decryption key
+     * @param newKeyInfo the information about the decryption key
      */
-    public void setKeyInfo(KeyInfo keyInfo) {
-        this.keyInfo = keyInfo;
+    public void setKeyInfo(KeyInfo newKeyInfo) {
+        this.keyInfo = newKeyInfo;
     }
 }

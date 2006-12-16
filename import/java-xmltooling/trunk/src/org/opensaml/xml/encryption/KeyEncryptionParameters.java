@@ -16,22 +16,21 @@
 
 package org.opensaml.xml.encryption;
 
-import org.apache.xml.security.encryption.XMLCipher;
 
 /**
  * Parameters for encrypting keys.
  */
 public class KeyEncryptionParameters extends EncryptionParameters {
 
-    /** Recipient of the key */
+    /** Recipient of the key. */
     private String recipient;
 
     /**
-     * Constructor
+     * Constructor.
      */
     public KeyEncryptionParameters() {
         super();
-        this.setAlgorithm(XMLCipher.RSA_v1dot5);
+        this.setAlgorithm(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSA15);
     }
 
     /**
@@ -46,9 +45,9 @@ public class KeyEncryptionParameters extends EncryptionParameters {
     /**
      * Sets the recipient of the key.
      * 
-     * @param recipient the recipient of the key
+     * @param newRecipient the recipient of the key
      */
-    public void setRecipient(String recipient) {
-        this.recipient = recipient;
+    public void setRecipient(String newRecipient) {
+        this.recipient = newRecipient;
     }
 }
