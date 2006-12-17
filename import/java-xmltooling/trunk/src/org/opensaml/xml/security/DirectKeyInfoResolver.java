@@ -30,27 +30,38 @@ import org.opensaml.xml.signature.KeyInfo;
  * A resolver that always returns a specified set of keying information.
  */
 public class DirectKeyInfoResolver implements X509KeyInfoResolver {
-    
+
+    /** Keys names to resolve into. */
+    private List<String> keyNames;
+
     /** Public keys to resolve into. */
     private List<PublicKey> keys;
-    
+
     /** X509 certificated to resolve into. */
     private List<X509Certificate> certs;
-    
+
     /** X509 CRLs to resolve into. */
     private List<X509CRL> crls;
-    
+
     /**
      * Constructor.
-     *
+     * 
+     * @param newNames key names to returing during a resolve
      * @param newKeys public keys to return during a resolve
      * @param newCerts certificates to return during a resolve
      * @param newCRLs CRLs to return during a resolve
      */
-    public DirectKeyInfoResolver(List<PublicKey> newKeys, List<X509Certificate> newCerts, List<X509CRL> newCRLs){
+    public DirectKeyInfoResolver(List<String> newNames, List<PublicKey> newKeys, List<X509Certificate> newCerts,
+            List<X509CRL> newCRLs) {
+        keyNames = newNames;
         keys = newKeys;
         certs = newCerts;
         crls = newCRLs;
+    }
+
+    /** {@inheritDoc} */
+    public List<String> resolveKeyNames(KeyInfo keyInfo) {
+        return keyNames;
     }
 
     /** {@inheritDoc} */
@@ -65,10 +76,10 @@ public class DirectKeyInfoResolver implements X509KeyInfoResolver {
 
     /** {@inheritDoc} */
     public PublicKey resolveKey(KeyInfo keyInfo) throws KeyException {
-        if(keys != null && keys.size() > 0){
+        if (keys != null && keys.size() > 0) {
             return keys.get(0);
         }
-        
+
         return null;
     }
 

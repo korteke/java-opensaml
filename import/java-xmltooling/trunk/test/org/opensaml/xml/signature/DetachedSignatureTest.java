@@ -92,13 +92,13 @@ public class DetachedSignatureTest extends XMLObjectBaseTestCase {
         
         FastList<PublicKey> verificationKey = new FastList<PublicKey>();
         verificationKey.add(keyPair.getPublic());
-        verificationKeyResolver = new DirectKeyInfoResolver(verificationKey, null, null);
+        verificationKeyResolver = new DirectKeyInfoResolver(null, verificationKey, null, null);
 
         keyGen.initialize(1024);
         keyPair = keyGen.generateKeyPair();
         FastList<PublicKey> badKey = new FastList<PublicKey>();
         badKey.add(keyPair.getPublic());
-        badKeyResolver = new DirectKeyInfoResolver(badKey, null, null);
+        badKeyResolver = new DirectKeyInfoResolver(null, badKey, null, null);
 
         sxoBuilder = new SimpleXMLObjectBuilder();
         sigBuilder = new SignatureBuilder();

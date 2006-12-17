@@ -50,4 +50,9 @@ public abstract class BaseTrustEngine<TokenType, KeyInfoResolverType extends Key
     public void setDefaultkeyInfoSource(KeyInfoSource keyInfo) {
         defaultKeyInfoSource = keyInfo;
     }
+    
+    /** {@inheritDoc} */
+    public boolean validate(TokenType token) throws SecurityException {
+        return validate(token, getDefaultKeyInfoSource(), getDefaultKeyResolver());
+    }
 }

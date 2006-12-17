@@ -51,6 +51,11 @@ public class InlineX509KeyInfoResolver implements X509KeyInfoResolver {
 
         return keys.get(0);
     }
+    
+    /** {@inheritDoc} */
+    public List<String> resolveKeyNames(KeyInfo keyInfo) {
+        return KeyInfoHelper.getKeyNames(keyInfo);
+    }
 
     /** {@inheritDoc} */
     public List<PublicKey> resolveKeys(KeyInfo keyInfo) throws KeyException {

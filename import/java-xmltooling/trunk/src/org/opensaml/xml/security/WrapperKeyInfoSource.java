@@ -59,7 +59,7 @@ public class WrapperKeyInfoSource implements KeyInfoSource {
     }
     
     /** {@inheritDoc} */
-    public Iterator<KeyInfo> getKeyInfo() {
+    public Iterator<KeyInfo> iterator() {
         return wrappedKeyInfos.iterator();
     }
 

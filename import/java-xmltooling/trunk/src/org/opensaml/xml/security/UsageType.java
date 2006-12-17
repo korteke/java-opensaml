@@ -17,5 +17,10 @@ package org.opensaml.xml.security;
 
 /** Credential usage types. */
 public enum UsageType {
-    ENCRYPTION, SIGNING
+    
+    /** Key used for encryption processes. */
+    ENCRYPTION,
+    
+    /** Key used for signature processes including TLS/SSL. */
+    SIGNING
 }

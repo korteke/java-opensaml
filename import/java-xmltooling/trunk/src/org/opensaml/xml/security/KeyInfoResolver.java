@@ -52,4 +52,13 @@ public interface KeyInfoResolver<KeyType extends Key> {
      * @throws KeyException thrown if there is a problem resolving the key
      */
     public List<KeyType> resolveKeys(KeyInfo keyInfo) throws KeyException;
+    
+    /**
+     * Gets all the key names within the given KeyInfo.
+     * 
+     * @param keyInfo key information
+     * 
+     * @return key names within the key info
+     */
+    public List<String> resolveKeyNames(KeyInfo keyInfo);
 }

@@ -24,7 +24,7 @@ import org.opensaml.xml.signature.KeyInfo;
  * A source for key information.  Implementations may collect the information from any 
  * source and may do so in a lazy manner.
  */
-public interface KeyInfoSource {
+public interface KeyInfoSource extends Iterable<KeyInfo>{
 
     /**
      * Returns the name of this source of keys, for example a peer entity name
@@ -42,5 +42,5 @@ public interface KeyInfoSource {
      * 
      * @return iterator over key info elements
      */
-    public Iterator<KeyInfo> getKeyInfo();
+    public Iterator<KeyInfo> iterator();
 }

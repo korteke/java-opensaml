@@ -23,7 +23,6 @@ import java.security.PublicKey;
 import java.security.SignatureException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
-import java.util.Iterator;
 import java.util.List;
 
 import javolution.util.FastList;
@@ -51,11 +50,6 @@ public class BasicX509SignatureTrustEngine extends BaseTrustEngine<Signature, X5
     /** Constructor. */
     public BasicX509SignatureTrustEngine() {
        setDefaultKeyResolver(new InlineX509KeyInfoResolver());
-    }
-
-    /** {@inheritDoc} */
-    public boolean validate(Signature token) throws SecurityException {
-        return validate(token, getDefaultKeyInfoSource(), getDefaultKeyResolver());
     }
 
     /** {@inheritDoc} */
@@ -144,10 +138,7 @@ public class BasicX509SignatureTrustEngine extends BaseTrustEngine<Signature, X5
                 log.debug("Extracting keying information from KeyInfoSource for peer " + keyInfoSrc.getName());
             }
             FastList<PublicKey> keys = new FastList<PublicKey>();
-            Iterator<KeyInfo> keyInfoItr = keyInfoSrc.getKeyInfo();
-            KeyInfo keyInfo;
-            while (keyInfoItr.hasNext()) {
-                keyInfo = keyInfoItr.next();
+            for(KeyInfo keyInfo : keyInfoSrc){
 
                 if (log.isDebugEnabled()) {
                     log.debug("Extracting raw keys from key info");

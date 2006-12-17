@@ -51,5 +51,9 @@ public class DirectEncryptionKeyInfoResolver implements KeyInfoResolver{
         list.add(this.key);
         return list;
     }
-    
+ 
+    /** {@inheritDoc} */
+    public List<String> resolveKeyNames(KeyInfo keyInfo) {
+        return null;
+    }
 }

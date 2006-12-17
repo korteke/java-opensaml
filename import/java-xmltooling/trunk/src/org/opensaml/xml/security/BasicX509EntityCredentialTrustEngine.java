@@ -20,7 +20,6 @@ import java.security.KeyException;
 import java.security.PublicKey;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
-import java.util.Iterator;
 import java.util.List;
 
 import javolution.util.FastList;
@@ -38,11 +37,6 @@ public class BasicX509EntityCredentialTrustEngine extends BaseTrustEngine<X509En
 
     /** Class logger. */
     private static Logger log = Logger.getLogger(BasicX509EntityCredentialTrustEngine.class);
-
-    /** {@inheritDoc} */
-    public boolean validate(X509EntityCredential token) throws SecurityException {
-        return validate(token, getDefaultKeyInfoSource(), getDefaultKeyResolver());
-    }
 
     /** {@inheritDoc} */
     public boolean validate(X509EntityCredential token, KeyInfoSource keyInfoSource, X509KeyInfoResolver keyResolver)
@@ -109,11 +103,7 @@ public class BasicX509EntityCredentialTrustEngine extends BaseTrustEngine<X509En
                 log.debug("Extracting keying information from KeyInfoSource for peer " + keyInfoSource.getName());
             }
             FastList<PublicKey> keys = new FastList<PublicKey>();
-            Iterator<KeyInfo> keyInfoItr = keyInfoSource.getKeyInfo();
-            KeyInfo keyInfo;
-            while (keyInfoItr.hasNext()) {
-                keyInfo = keyInfoItr.next();
-
+            for(KeyInfo keyInfo : keyInfoSource){
                 if (log.isDebugEnabled()) {
                     log.debug("Extracting raw keys from key info");
                 }
