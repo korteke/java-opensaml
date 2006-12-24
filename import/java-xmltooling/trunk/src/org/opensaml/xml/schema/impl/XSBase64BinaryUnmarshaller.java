@@ -42,6 +42,8 @@ public class XSBase64BinaryUnmarshaller extends AbstractXMLObjectUnmarshaller {
     protected void processElementContent(XMLObject xmlObject, String elementContent) {
         XSBase64Binary xsBase64Binary = (XSBase64Binary) xmlObject;
         
-        xsBase64Binary.setValue(elementContent);
+        if(elementContent != null){
+            xsBase64Binary.setValue(elementContent.trim());
+        }
     }
 }

@@ -22,5 +22,8 @@ public enum UsageType {
     ENCRYPTION,
     
     /** Key used for signature processes including TLS/SSL. */
-    SIGNING
+    SIGNING,
+    
+    /** Denotes that the purpose of the key was not specified. */
+    UNSPECIFIED
 }

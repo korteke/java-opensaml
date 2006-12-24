@@ -42,6 +42,8 @@ public class XSIntegerUnmarshaller extends AbstractXMLObjectUnmarshaller {
     protected void processElementContent(XMLObject xmlObject, String elementContent) {
         XSInteger xsiInteger = (XSInteger) xmlObject;
         
-        xsiInteger.setValue(Integer.valueOf(elementContent));
+        if(elementContent != null){
+            xsiInteger.setValue(Integer.valueOf(elementContent.trim()));
+        }
     }
 }

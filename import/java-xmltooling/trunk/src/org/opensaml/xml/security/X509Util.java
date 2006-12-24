@@ -188,6 +188,25 @@ public class X509Util {
         
         return names;
     }
+    
+    /**
+     * Gets the common name components of the issuer and all the subject alt names of a given type.
+     * 
+     * @param certificate certificate to extract names from
+     * @param altNameTypes type of alt names to extract
+     * 
+     * @return list of subject names in the certificate
+     */
+    @SuppressWarnings("unchecked")
+    public static List getSubjectNames(X509Certificate certificate, Integer[] altNameTypes){
+        FastList issuerNames = new FastList();
+
+        List<String> entityCertCNs = X509Util.getCommonNames(certificate.getSubjectX500Principal());
+        issuerNames.add(entityCertCNs.get(0));
+        issuerNames.addAll(X509Util.getAltNames(certificate, altNameTypes));
+
+        return issuerNames;
+    }
 
     /**
      * Reads a PEM or DER encoded RSA or DSA key from a file.
@@ -200,7 +219,7 @@ public class X509Util {
      * 
      * @throws SecurityException thrown if the file can not be read or a key created from its content
      */
-    public static <KeyType extends Key> KeyType getKey(File keyFile, String passphrase) throws SecurityException{
+    public static Key getKey(File keyFile, String passphrase) throws SecurityException{
         if(keyFile.exists() && keyFile.canRead()){
             try{
                 return getKey(new FileInputStream(keyFile), passphrase);
@@ -221,9 +240,8 @@ public class X509Util {
      * 
      * @return the key
      */
-    public static <KeyType extends Key> KeyType getKey(InputStream keyStream, String passphrase){
+    public static Key getKey(InputStream keyStream, String passphrase){
+        //TODO move IdP file system based credential provider code to here
         return null;
     }
-    
-    
 }
