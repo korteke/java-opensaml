@@ -38,7 +38,7 @@ import org.w3c.dom.Element;
 public class Configuration {
 
     /** Class logger. */
-    private static final Logger LOG = Logger.getLogger(Configuration.class);
+    private static Logger log = Logger.getLogger(Configuration.class);
 
     /** Default object provider. */
     private static QName defaultProvider = new QName(XMLConstants.XMLTOOLING_CONFIG_NS,
@@ -89,8 +89,8 @@ public class Configuration {
      */
     public static void registerObjectProvider(QName providerName, XMLObjectBuilder builder, Marshaller marshaller,
             Unmarshaller unmarshaller, Element configuration) {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Registering new builder, marshaller, and unmarshaller for " + providerName);
+        if (log.isDebugEnabled()) {
+            log.debug("Registering new builder, marshaller, and unmarshaller for " + providerName);
         }
 
         configuredObjectProviders.put(providerName, configuration);
@@ -105,8 +105,8 @@ public class Configuration {
      * @param key the key of the builder, marshaller, and unmarshaller to be removed
      */
     public static void deregisterObjectProvider(QName key) {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Unregistering builder, marshaller, and unmarshaller for " + key);
+        if (log.isDebugEnabled()) {
+            log.debug("Unregistering builder, marshaller, and unmarshaller for " + key);
         }
         configuredObjectProviders.remove(key);
         builderFactory.deregisterBuilder(key);
@@ -206,8 +206,8 @@ public class Configuration {
         DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
         try {
             DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
-            if(LOG.isDebugEnabled()){
-                LOG.debug("VM using JAXP parser " + docBuilder.getClass().getName());
+            if(log.isDebugEnabled()){
+                log.debug("VM using JAXP parser " + docBuilder.getClass().getName());
             }
 
             if (docBuilder.getClass().getName().startsWith("com.sun")) {
@@ -217,12 +217,12 @@ public class Configuration {
                     + "a functional JAXP parser such as Xerces.  For instructions on how to endorse\n"
                     + "a new parser see http://java.sun.com/j2se/1.5.0/docs/guide/standards/index.html\n\n\n";
 
-                LOG.fatal(errorMsg);
+                log.fatal(errorMsg);
                 throw new RuntimeException(errorMsg);
             }
         } catch (ParserConfigurationException e) {
             String errorMsg = "Unable to determine XML parser class that will be used.  Unable to proceed.";
-            LOG.fatal(errorMsg);
+            log.fatal(errorMsg);
             throw new RuntimeException(errorMsg);
         }
     }
