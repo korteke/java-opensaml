@@ -68,6 +68,8 @@ public class KeyInfoTest extends XMLObjectProviderBaseTestCase {
         assertNotNull("KeyInfo", keyInfo);
         assertEquals("Id attribute", expectedID, keyInfo.getID());
         assertEquals("Total # of XMLObject child elements", 0, keyInfo.getXMLObjects().size());
+        
+        assertEquals("ID lookup failed", keyInfo, keyInfo.resolveID(expectedID));
     }
 
     /** {@inheritDoc} */

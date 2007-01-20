@@ -27,6 +27,8 @@ import javolution.util.FastMap;
 
 import org.opensaml.xml.XMLObject;
 
+//TODO add support for ID-to-XMLObject mapping, here and also in unmarshallers of providers that use this class
+
 /**
  * A map of attribute names and attribute values that invalidates the DOM of the attribute owning XMLObject when the
  * attributes change.

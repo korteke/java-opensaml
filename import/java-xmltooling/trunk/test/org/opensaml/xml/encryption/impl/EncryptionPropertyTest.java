@@ -86,6 +86,8 @@ public class EncryptionPropertyTest extends XMLObjectProviderBaseTestCase {
         assertEquals("Unknown children", 0, ep.getUnknownXMLObjects().size());
         assertEquals("Unknown attribute 1", expectedAttribValue1, ep.getUnknownAttributes().get(expectedAttribName1));
         assertEquals("Unknown attribute 2", expectedAttribValue2, ep.getUnknownAttributes().get(expectedAttribName2));
+        
+        assertEquals("ID lookup failed", ep, ep.resolveID(expectedID));
     }
 
     /** {@inheritDoc} */

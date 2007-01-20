@@ -18,10 +18,12 @@ package org.opensaml.xml;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.xml.namespace.QName;
 
+import javolution.util.FastMap;
 import javolution.util.FastSet;
 
 import org.apache.log4j.Logger;
@@ -51,6 +53,10 @@ public abstract class AbstractXMLObject implements XMLObject {
 
     /** DOM Element representation of this object. */
     private Element dom;
+    
+    /** Mapping of ID attributes to XMLObjects in the subtree rooted at this object.
+     * This allows constant-time dereferencing of ID-typed attributes within the subtree.  */
+    private Map<String, XMLObject> idMappings;
 
     /**
      * Constructor.
@@ -60,6 +66,7 @@ public abstract class AbstractXMLObject implements XMLObject {
      * @param namespacePrefix the prefix for the given namespace
      */
     protected AbstractXMLObject(String namespaceURI, String elementLocalName, String namespacePrefix) {
+        idMappings = new FastMap<String, XMLObject>();
         namespaces = new FastSet<Namespace>();
         elementQname = XMLHelper.constructQName(namespaceURI, elementLocalName, namespacePrefix);
         addNamespace(new Namespace(namespaceURI, namespacePrefix));
@@ -344,6 +351,7 @@ public abstract class AbstractXMLObject implements XMLObject {
             if (newValue != null) {
                 releaseThisandParentDOM();
                 newValue.setParent(this);
+                registerIDMappings(newValue.getIDMappings());
                 return newValue;
 
             } else {
@@ -354,11 +362,95 @@ public abstract class AbstractXMLObject implements XMLObject {
         if (!oldValue.equals(newValue)) {
             oldValue.setParent(null);
             releaseThisandParentDOM();
+            deregisterIDMappings(oldValue.getIDMappings());
             if (newValue != null) {
                 newValue.setParent(this);
+                registerIDMappings(newValue.getIDMappings());
             }
         }
 
         return newValue;
     }
+    
+    /** A helper function for derived classes.  The mutator/setter method for any ID-typed
+     * attributes should call this method in order to handle getting the old value removed
+     * from the ID-to-XMLObject mapping, and the new value added to the mapping.  
+     * 
+     * @param oldID the old value of the ID-typed attribute
+     * @param newID the new value of the ID-typed attribute
+     */
+    protected void registerOwnID(String oldID, String newID) {
+        String newString = DatatypeHelper.safeTrimOrNullString(newID);
+        
+        if (!DatatypeHelper.safeEquals(oldID, newString)) {
+            if (oldID != null) {
+                deregisterIDMapping(oldID);
+            }
+            
+            if (newString != null) {
+                registerIDMapping(newString, this);
+            }
+        }
+    }
+    
+    /** {@inheritDoc} */
+    public Map<String, XMLObject> getIDMappings() {
+        return Collections.unmodifiableMap(idMappings);
+    }
+    
+    /** {@inheritDoc} */
+    public void registerIDMapping(String id, XMLObject referent) {
+        if (id == null) {
+            return;
+        }
+        
+        idMappings.put(id, referent);
+        if (hasParent()) {
+            getParent().registerIDMapping(id, referent);
+        }
+    }
+    
+    /** {@inheritDoc} */
+    public void registerIDMappings(Map<String, XMLObject> idMap) {
+        if (idMap == null || idMap.isEmpty()) {
+            return;
+        }
+        
+        idMappings.putAll(idMap);
+        if (hasParent()) {
+            getParent().registerIDMappings(idMap);
+        }
+    }
+    
+    /** {@inheritDoc} */
+    public void deregisterIDMapping(String id) {
+        if (id == null) {
+            return;
+        }
+        
+        idMappings.remove(id);
+        if (hasParent()) {
+            getParent().deregisterIDMapping(id);
+        }
+    }
+    
+    /** {@inheritDoc} */
+    public void deregisterIDMappings(Map<String, XMLObject> idMap) {
+        if (idMap == null || idMap.isEmpty()) {
+            return;
+        }
+        
+        for (String id : idMap.keySet()) {
+            idMappings.remove(id);
+        }
+        if (hasParent()) {
+            getParent().deregisterIDMappings(idMap);
+        }
+    }
+
+    /** {@inheritDoc} */
+    public XMLObject resolveID(String id) {
+        return idMappings.get(id);
+    }
+    
 }

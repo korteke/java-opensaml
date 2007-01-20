@@ -21,6 +21,7 @@
 package org.opensaml.xml.mock;
 
 import org.opensaml.xml.XMLObject;
+import org.opensaml.xml.encryption.EncryptedData;
 import org.opensaml.xml.io.AbstractXMLObjectUnmarshaller;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.signature.Signature;
@@ -49,6 +50,8 @@ public class SimpleXMLObjectUnmarshaller extends AbstractXMLObjectUnmarshaller {
 
         if (childXMLObject instanceof SimpleXMLObject) {
             simpleXMLObject.getSimpleXMLObjects().add((SimpleXMLObject) childXMLObject);
+        }else if(childXMLObject instanceof EncryptedData){
+            simpleXMLObject.setEncryptedData((EncryptedData) childXMLObject);
         }else if(childXMLObject instanceof Signature){
             simpleXMLObject.setSignature((Signature) childXMLObject);
         }else{

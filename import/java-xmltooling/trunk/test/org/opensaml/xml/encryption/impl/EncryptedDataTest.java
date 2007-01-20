@@ -89,6 +89,8 @@ public class EncryptedDataTest extends XMLObjectProviderBaseTestCase {
         assertEquals("Type attribute", expectedType, ed.getType());
         assertEquals("MimeType attribute", expectedMimeType, ed.getMimeType());
         assertEquals("Encoding attribute", expectedEncoding, ed.getEncoding());
+        
+        assertEquals("ID lookup failed", ed, ed.resolveID(expectedId));
     }
 
     /** {@inheritDoc} */
