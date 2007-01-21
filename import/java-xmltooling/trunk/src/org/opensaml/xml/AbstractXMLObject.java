@@ -381,6 +381,15 @@ public abstract class AbstractXMLObject implements XMLObject {
         return idIndex.lookup(id);
     }
     
+    /** {@inheritDoc} */
+    public XMLObject resolveIDFromRoot(String id) {
+        XMLObject root = this;
+        while (root.hasParent()) {
+            root = root.getParent();
+        }
+        return root.resolveID(id);
+    }
+
     /** A helper function for derived classes.  The mutator/setter method for any ID-typed
      * attributes should call this method in order to handle getting the old value removed
      * from the ID-to-XMLObject mapping, and the new value added to the mapping.  

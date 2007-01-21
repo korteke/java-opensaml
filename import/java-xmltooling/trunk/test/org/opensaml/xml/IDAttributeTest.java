@@ -51,10 +51,12 @@ public class IDAttributeTest extends XMLObjectBaseTestCase {
         SimpleXMLObject sxObject =  (SimpleXMLObject) unmarshallElement("/data/org/opensaml/xml/IDAttribute.xml");
 
         assertEquals("ID lookup failed", sxObject, sxObject.resolveID("IDLevel1"));
+        assertEquals("ID lookup failed", sxObject, sxObject.resolveIDFromRoot("IDLevel1"));
         assertNull("Lookup of non-existent ID didn't return null", sxObject.resolveID("NonExistent"));
         
         sxObject.setId(null);
         assertNull("Lookup of removed ID (formerly extant) didn't return null", sxObject.resolveID("IDLevel1"));
+        assertNull("Lookup of removed ID (formerly extant) didn't return null", sxObject.resolveIDFromRoot("IDLevel1"));
     }
     
     /**
@@ -75,6 +77,13 @@ public class IDAttributeTest extends XMLObjectBaseTestCase {
                 sxObject.resolveID("KeyInfoID"));
         assertEquals("ID lookup failed", sxObject.getEncryptedData().getKeyInfo().getEncryptedKeys().get(0), 
                 sxObject.resolveID("EncryptedKeyID"));
+        
+        EncryptedData encData = sxObject.getEncryptedData();
+        EncryptedKey encKey = sxObject.getEncryptedData().getKeyInfo().getEncryptedKeys().get(0);
+        
+        // testing resolveIDFromRoot
+        assertNull("Lookup of ID not in this object's subtree didn't return null", encKey.resolveID("EncryptedDataID"));
+        assertEquals("ID lookup failed", encData, encKey.resolveIDFromRoot("EncryptedDataID"));
     }
     
     /**
@@ -130,6 +139,7 @@ public class IDAttributeTest extends XMLObjectBaseTestCase {
             (SimpleXMLObject) unmarshallElement("/data/org/opensaml/xml/IDAttributeWithChildrenList.xml");
         
         assertNull("Lookup of non-existent ID didn't return null", sxObject.resolveID("NonExistent"));
+        assertNull("Lookup of non-existent ID didn't return null", sxObject.resolveIDFromRoot("NonExistent"));
         
         // Resolving from top-level root
         assertEquals("ID lookup failed", sxObject, 
@@ -164,6 +174,12 @@ public class IDAttributeTest extends XMLObjectBaseTestCase {
                 sxObject.getSimpleXMLObjects().get(0).resolveID("IDLevel4A"));
         assertNull("Lookup of non-existent ID didn't return null", 
                 sxObject.getSimpleXMLObjects().get(0).resolveID("IDLevel1"));
+        
+        // Resolving from lower-level child to a non-ancestor object using resolveIDFromRoot.
+        SimpleXMLObject sxoIDLevel4A = sxObject.getSimpleXMLObjects().get(0)
+            .getSimpleXMLObjects().get(0).getSimpleXMLObjects().get(0); 
+        SimpleXMLObject sxoIDLevel2C = sxObject.getSimpleXMLObjects().get(3);
+        assertEquals("ID lookup failed", sxoIDLevel2C, sxoIDLevel4A.resolveIDFromRoot("IDLevel2C"));
     }
         
         
@@ -249,6 +265,7 @@ public class IDAttributeTest extends XMLObjectBaseTestCase {
     /**
      * Tests registering ID-to-XMLObject mapping when unmarshalling unknown content,
      * using the AttributeMap supplied by way of the AttributeExtensibleXMLObject interface.
+     * This tests general AttributeMap functionality on unmarshalling.
      * 
      * For purposes of this test, the attribute in the control XML file with
      * local name "id" on element "product" will be treated as an ID type.
@@ -269,11 +286,49 @@ public class IDAttributeTest extends XMLObjectBaseTestCase {
         ElementProxy epChild0 = (ElementProxy) epParent.getUnknownXMLObjects().get(0);
         assertNotNull("Cast of child 0 to ElementProxy failed", epChild0);
         
+        ElementProxy epChild1 = (ElementProxy) epParent.getUnknownXMLObjects().get(1);
+        assertNotNull("Cast of child 1 to ElementProxy failed", epChild1);
+        
         // Since not doing schema validation, etc, the parser won't register the ID type in the DOM
         // (i.e. DOM Attribute.isId() will fail) and so the unmarshaller won't be able to register 
         // the "id" attribute as an ID type. This is expected.
         assertNull("Lookup of non-existent ID mapping didn't return null", epParent.resolveID("1144"));
         assertNull("Lookup of non-existent ID mapping didn't return null", epParent.resolveID("1166"));
+        
+        // Now manually register the "id" attribute in the AttributeMap of child 0 as being an ID type.
+        // This should cause the expected ID-to-XMLObject mapping behaviour to take place.
+        QName idName = XMLHelper.constructQName(null, "id", null);
+        epChild0.getUnknownAttributes().registerID(idName);
+        assertEquals("Lookup of ID mapping failed", epChild0, epParent.resolveID("1144"));
+        
+        // Resolving from child1 to child0, which is not an ancestor of child1, using resolveIDFromRoot
+        assertNull("Lookup of non-existent ID mapping didn't return null", epChild1.resolveID("1144"));
+        assertEquals("Lookup of ID mapping failed", epChild0, epChild1.resolveIDFromRoot("1144"));
+    }
+    
+    /**
+     * Tests registering ID-to-XMLObject mapping when unmarshalling unknown content,
+     * using the AttributeMap supplied by way of the AttributeExtensibleXMLObject interface.
+     * This test tests propagation of changes on the various AttributeMap operations.
+     * 
+     * For purposes of this test, the attribute in the control XML file with
+     * local name "id" on element "product" will be treated as an ID type.
+     * 
+     * @throws XMLParserException when parser encounters an error
+     * @throws UnmarshallingException when unmarshaller encounters an error
+     */
+    public void testAttributeMapOps() throws XMLParserException, UnmarshallingException{
+        String documentLocation = "/data/org/opensaml/xml/IDAttributeWithAttributeMap.xml";
+        Document document = parserPool.parse(IDAttributeTest.class.getResourceAsStream(documentLocation));
+
+        Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(Configuration.getDefaultProviderQName());
+        XMLObject xmlobject = unmarshaller.unmarshall(document.getDocumentElement());
+        
+        ElementProxy epParent = (ElementProxy) xmlobject;
+        assertNotNull("Cast of parent to ElementProxy failed", epParent);
+        
+        ElementProxy epChild0 = (ElementProxy) epParent.getUnknownXMLObjects().get(0);
+        assertNotNull("Cast of child 0 to ElementProxy failed", epChild0);
         
         // Now manually register the "id" attribute in the AttributeMap of child 0 as being an ID type.
         // This should cause the expected ID-to-XMLObject mapping behaviour to take place.

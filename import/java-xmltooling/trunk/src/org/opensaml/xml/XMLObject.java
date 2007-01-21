@@ -137,14 +137,23 @@ public interface XMLObject {
     public void releaseChildrenDOM(boolean propagateRelease);
     
     /**
-     * Using this XMLObject as the root of a tree of XMLObjects, find the XMLObject
-     * child which is identified by the specified ID attribute.
+     * Find the XMLObject which is identified by the specified ID attribute,
+     * within the subtree of XMLObjects which has this XMLObject as its root.
      * 
      * @param id  the ID attribute to resolve to an XMLObject
-     * @return the XMLObject child identified by the specified ID attribute value
+     * @return the XMLObject identified by the specified ID attribute value
      */
     public XMLObject resolveID(String id);
     
+    /**
+     * Find the XMLObject which is identified by the specified ID attribute,
+     * from the root of the tree of XMLObjects in which this XMLObject 
+     * is a member.
+     * 
+     * @param id  the ID attribute to resolve to an XMLObject
+     * @return the XMLObject identified by the specified ID attribute value
+     */
+    public XMLObject resolveIDFromRoot(String id);
     
     /**
      * Get the IDIndex holding the ID-to-XMLObject index mapping, rooted
