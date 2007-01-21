@@ -22,6 +22,7 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.xml.util.IDIndex;
 import org.w3c.dom.Element;
 
 /**
@@ -144,48 +145,14 @@ public interface XMLObject {
      */
     public XMLObject resolveID(String id);
     
-    /**
-     * Get the ID-to-XMLObject mappings for this object's children.
-     * This is normally not used by client code, only by XMLTooling library classes.
-     * 
-     * @return the ID-to-XMLObject mapping
-     */
-    public Map<String, XMLObject> getIDMappings();
-
     
     /**
-     * Register an ID-to-XMLObject mapping for one of this object's children.
-     * This is normally not used by client code, only by XMLTooling library classes.
+     * Get the IDIndex holding the ID-to-XMLObject index mapping, rooted
+     * at this XMLObject's subtree.
      * 
-     * @param id the XMLObject child's ID attribute value
-     * @param referent the XMLObject child
+     * @return the IDIndex owned by this XMLObject
      */
-    public void registerIDMapping(String id, XMLObject referent);
+    public IDIndex getIDIndex();
+ 
 
-    
-    /**
-     * Register multiple ID-to-XMLObject mappings for this object's children.
-     * This is normally not used by client code, only by XMLTooling library classes.
-     * 
-     * @param idMap the ID-to-XMLObject mapping to register
-     */
-    public void registerIDMappings(Map<String, XMLObject> idMap);
-
-    
-    /**
-     * Deregister an ID-to-XMLObject mapping for one of this object's children.
-     * This is normally not used by client code, only by XMLTooling library classes.
-     * 
-     * @param id the ID attribute value of the XMLObject child to deregister
-     */
-    public void deregisterIDMapping(String id);
-
-    
-    /**
-     * Deregister multiple ID-to-XMLObject mappings for this object's children.
-     * This is normally not used by client code, only by XMLTooling library classes.
-     * 
-     * @param idMap the ID-to-XMLObject mappings to deregister
-     */
-    public void deregisterIDMappings(Map<String, XMLObject> idMap);
 }

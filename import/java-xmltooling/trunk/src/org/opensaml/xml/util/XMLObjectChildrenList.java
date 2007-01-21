@@ -118,13 +118,13 @@ public class XMLObjectChildrenList<ElementType extends XMLObject> extends Abstra
         ElementType removedElement = elements.set(index, element);
         if (removedElement != null) {
             removedElement.setParent(null);
-            parent.deregisterIDMappings(removedElement.getIDMappings());
+            parent.getIDIndex().deregisterIDMappings(removedElement.getIDIndex());
         }
         
         // Note: to avoid ordering problems, this needs to be called after
         // the deregistration, in case the added element has a same ID string 
         // value as the removed one, else you will lose it.
-        parent.registerIDMappings(element.getIDMappings());
+        parent.getIDIndex().registerIDMappings(element.getIDIndex());
 
         modCount++;
         return removedElement;
@@ -145,7 +145,7 @@ public class XMLObjectChildrenList<ElementType extends XMLObject> extends Abstra
         }
 
         setParent(element);
-        parent.registerIDMappings(element.getIDMappings());
+        parent.getIDIndex().registerIDMappings(element.getIDIndex());
 
         modCount++;
         elements.add(index, element);
@@ -158,7 +158,7 @@ public class XMLObjectChildrenList<ElementType extends XMLObject> extends Abstra
         if (element != null) {
             element.releaseParentDOM(true);
             element.setParent(null);
-            parent.deregisterIDMappings(element.getIDMappings());
+            parent.getIDIndex().deregisterIDMappings(element.getIDIndex());
         }
 
         modCount++;
@@ -180,7 +180,7 @@ public class XMLObjectChildrenList<ElementType extends XMLObject> extends Abstra
             if (element != null) {
                 element.releaseParentDOM(true);
                 element.setParent(null);
-                parent.deregisterIDMappings(element.getIDMappings());
+                parent.getIDIndex().deregisterIDMappings(element.getIDIndex());
             }
         }
 

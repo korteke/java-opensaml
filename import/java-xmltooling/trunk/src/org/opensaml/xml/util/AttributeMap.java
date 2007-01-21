@@ -69,8 +69,8 @@ public class AttributeMap implements Map<QName, String> {
             releaseDOM();
             attributes.put(attributeName, value);
             if (isIDAttribute(attributeName)) {
-                attributeOwner.deregisterIDMapping(oldValue);
-                attributeOwner.registerIDMapping(value, attributeOwner);
+                attributeOwner.getIDIndex().deregisterIDMapping(oldValue);
+                attributeOwner.getIDIndex().registerIDMapping(value, attributeOwner);
             }
         }
         // TODO bug here?  shouldn't this always return the old value?
@@ -82,7 +82,7 @@ public class AttributeMap implements Map<QName, String> {
     public void clear() {
         for (QName attributeName : attributes.keySet()) {
             if (isIDAttribute(attributeName)) {
-                attributeOwner.deregisterIDMapping(get(attributeName));
+                attributeOwner.getIDIndex().deregisterIDMapping(get(attributeName));
             }
             remove(attributeName);
         }
@@ -127,7 +127,7 @@ public class AttributeMap implements Map<QName, String> {
         String removedValue = attributes.remove(key);
         if (removedValue != null) {
             releaseDOM();
-            attributeOwner.deregisterIDMapping(removedValue);
+            attributeOwner.getIDIndex().deregisterIDMapping(removedValue);
         }
 
         return removedValue;
@@ -139,7 +139,7 @@ public class AttributeMap implements Map<QName, String> {
             for (Entry<? extends QName, ? extends String> entry : t.entrySet()) {
                 put(entry.getKey(), entry.getValue());
                 if (isIDAttribute(entry.getKey())) {
-                    attributeOwner.registerIDMapping(entry.getValue(), attributeOwner);
+                    attributeOwner.getIDIndex().registerIDMapping(entry.getValue(), attributeOwner);
                 }
             }
         }
@@ -176,7 +176,7 @@ public class AttributeMap implements Map<QName, String> {
         // In case attribute already has a value,
         // register the current value mapping with the XMLObject owner.
         if (containsKey(attributeName)) {
-            attributeOwner.registerIDMapping(get(attributeName), attributeOwner);
+            attributeOwner.getIDIndex().registerIDMapping(get(attributeName), attributeOwner);
         }
     }
     
@@ -193,7 +193,7 @@ public class AttributeMap implements Map<QName, String> {
         // In case attribute already has a value,
         // deregister the current value mapping with the XMLObject owner.
         if (containsKey(attributeName)) {
-            attributeOwner.deregisterIDMapping(get(attributeName));
+            attributeOwner.getIDIndex().deregisterIDMapping(get(attributeName));
         }
     }
     
