@@ -16,6 +16,8 @@
 
 package org.opensaml.xml.encryption.impl;
 
+import javax.xml.namespace.QName;
+
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.encryption.EncryptionProperty;
 import org.opensaml.xml.io.UnmarshallingException;
@@ -55,7 +57,11 @@ public class EncryptionPropertyUnmarshaller extends AbstractXMLEncryptionUnmarsh
         } else if (attribute.getLocalName().equals(EncryptionProperty.TARGET_ATTRIB_NAME)) {
             ep.setTarget(attribute.getValue());
         } else {
-           ep.getUnknownAttributes().put(XMLHelper.getNodeQName(attribute), attribute.getValue()); 
+            QName attributeName = XMLHelper.getNodeQName(attribute);
+            if (attribute.isId()) {
+                ep.getUnknownAttributes().registerID(attributeName);
+            }
+           ep.getUnknownAttributes().put(attributeName, attribute.getValue()); 
         }
     }
 

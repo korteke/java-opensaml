@@ -24,10 +24,9 @@ import java.util.Set;
 import javax.xml.namespace.QName;
 
 import javolution.util.FastMap;
+import javolution.util.FastSet;
 
 import org.opensaml.xml.XMLObject;
-
-//TODO add support for ID-to-XMLObject mapping, here and also in unmarshallers of providers that use this class
 
 /**
  * A map of attribute names and attribute values that invalidates the DOM of the attribute owning XMLObject when the
@@ -42,6 +41,9 @@ public class AttributeMap implements Map<QName, String> {
 
     /** Map of attributes. */
     private FastMap<QName, String> attributes;
+    
+    /** Set of attribute QNames which have been registered as having an ID type. */
+    private FastSet<QName> idAttribNames;
 
     /**
      * Constructor.
@@ -57,20 +59,31 @@ public class AttributeMap implements Map<QName, String> {
 
         attributeOwner = newOwner;
         attributes = new FastMap<QName, String>();
+        idAttribNames = new FastSet<QName>();
     }
 
     /** {@inheritDoc} */
     public String put(QName attributeName, String value) {
-        if (value != get(attributeName)) {
+        String oldValue = get(attributeName);
+        if (value != oldValue) {
             releaseDOM();
             attributes.put(attributeName, value);
+            if (isIDAttribute(attributeName)) {
+                attributeOwner.deregisterIDMapping(oldValue);
+                attributeOwner.registerIDMapping(value, attributeOwner);
+            }
         }
+        // TODO bug here?  shouldn't this always return the old value?
+        // Doesn't conform to the documented Map interface behavior. Ask Chad why he did it this way.
         return null;
     }
 
     /** {@inheritDoc} */
     public void clear() {
         for (QName attributeName : attributes.keySet()) {
+            if (isIDAttribute(attributeName)) {
+                attributeOwner.deregisterIDMapping(get(attributeName));
+            }
             remove(attributeName);
         }
     }
@@ -114,6 +127,7 @@ public class AttributeMap implements Map<QName, String> {
         String removedValue = attributes.remove(key);
         if (removedValue != null) {
             releaseDOM();
+            attributeOwner.deregisterIDMapping(removedValue);
         }
 
         return removedValue;
@@ -124,6 +138,9 @@ public class AttributeMap implements Map<QName, String> {
         if (t != null && t.size() > 0) {
             for (Entry<? extends QName, ? extends String> entry : t.entrySet()) {
                 put(entry.getKey(), entry.getValue());
+                if (isIDAttribute(entry.getKey())) {
+                    attributeOwner.registerIDMapping(entry.getValue(), attributeOwner);
+                }
             }
         }
     }
@@ -145,7 +162,51 @@ public class AttributeMap implements Map<QName, String> {
     public Set<Entry<QName, String>> entrySet() {
         return Collections.unmodifiableSet(attributes.entrySet());
     }
-
+    
+    /**
+     * Register an attribute as having a type of ID.
+     * 
+     * @param attributeName the QName of the ID attribute to be registered
+     */
+    public void registerID(QName attributeName) {
+        if (! idAttribNames.contains(attributeName)) {
+            idAttribNames.add(attributeName);
+        }
+        
+        // In case attribute already has a value,
+        // register the current value mapping with the XMLObject owner.
+        if (containsKey(attributeName)) {
+            attributeOwner.registerIDMapping(get(attributeName), attributeOwner);
+        }
+    }
+    
+    /**
+     * Deregister an attribute as having a type of ID.
+     * 
+     * @param attributeName the QName of the ID attribute to be de-registered
+     */
+    public void deregisterID(QName attributeName) {
+        if (idAttribNames.contains(attributeName)) {
+            idAttribNames.remove(attributeName);
+        }
+        
+        // In case attribute already has a value,
+        // deregister the current value mapping with the XMLObject owner.
+        if (containsKey(attributeName)) {
+            attributeOwner.deregisterIDMapping(get(attributeName));
+        }
+    }
+    
+    /**
+     * Check whether a given attribute is registered as having an ID type.
+     * 
+     * @param attributeName the QName of the attribute to be checked for ID type.
+     * @return true if attribute is registered as having an ID type.
+     */
+    public boolean isIDAttribute(QName attributeName) {
+        return idAttribNames.contains(attributeName);
+    }
+    
     /**
      * Releases the DOM caching associated XMLObject and its ancestors.
      */

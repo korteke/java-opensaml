@@ -16,10 +16,21 @@
 
 package org.opensaml.xml;
 
+import java.util.Map;
+
+import javax.xml.namespace.QName;
+
+import javolution.util.FastMap;
+
 import org.opensaml.xml.encryption.EncryptedData;
 import org.opensaml.xml.encryption.EncryptedKey;
+import org.opensaml.xml.io.Unmarshaller;
+import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.mock.SimpleXMLObject;
+import org.opensaml.xml.parse.XMLParserException;
 import org.opensaml.xml.signature.KeyInfo;
+import org.opensaml.xml.util.XMLHelper;
+import org.w3c.dom.Document;
 
 /**
  * Unit test for unmarshalling functions.
@@ -233,5 +244,63 @@ public class IDAttributeTest extends XMLObjectBaseTestCase {
         assertNull("Lookup of non-existent ID didn't return null", sxObject.resolveID("IDLevel3B"));
         assertNull("Lookup of non-existent ID didn't return null", sxObject.resolveID("IDLevel3C"));
         assertNull("Lookup of non-existent ID didn't return null", sxObject.resolveID("IDLevel4A"));
+    }
+    
+    /**
+     * Tests registering ID-to-XMLObject mapping when unmarshalling unknown content,
+     * using the AttributeMap supplied by way of the AttributeExtensibleXMLObject interface.
+     * 
+     * For purposes of this test, the attribute in the control XML file with
+     * local name "id" on element "product" will be treated as an ID type.
+     * 
+     * @throws XMLParserException when parser encounters an error
+     * @throws UnmarshallingException when unmarshaller encounters an error
+     */
+    public void testAttributeMap() throws XMLParserException, UnmarshallingException{
+        String documentLocation = "/data/org/opensaml/xml/IDAttributeWithAttributeMap.xml";
+        Document document = parserPool.parse(IDAttributeTest.class.getResourceAsStream(documentLocation));
+
+        Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(Configuration.getDefaultProviderQName());
+        XMLObject xmlobject = unmarshaller.unmarshall(document.getDocumentElement());
+        
+        ElementProxy epParent = (ElementProxy) xmlobject;
+        assertNotNull("Cast of parent to ElementProxy failed", epParent);
+        
+        ElementProxy epChild0 = (ElementProxy) epParent.getUnknownXMLObjects().get(0);
+        assertNotNull("Cast of child 0 to ElementProxy failed", epChild0);
+        
+        // Since not doing schema validation, etc, the parser won't register the ID type in the DOM
+        // (i.e. DOM Attribute.isId() will fail) and so the unmarshaller won't be able to register 
+        // the "id" attribute as an ID type. This is expected.
+        assertNull("Lookup of non-existent ID mapping didn't return null", epParent.resolveID("1144"));
+        assertNull("Lookup of non-existent ID mapping didn't return null", epParent.resolveID("1166"));
+        
+        // Now manually register the "id" attribute in the AttributeMap of child 0 as being an ID type.
+        // This should cause the expected ID-to-XMLObject mapping behaviour to take place.
+        QName idName = XMLHelper.constructQName(null, "id", null);
+        epChild0.getUnknownAttributes().registerID(idName);
+        assertEquals("Lookup of ID mapping failed", epChild0, epParent.resolveID("1144"));
+        
+        // AttributeMap op tests
+        // put
+        epChild0.getUnknownAttributes().put(idName, "9999");
+        assertNull("Lookup of non-existent ID mapping didn't return null", epParent.resolveID("1144"));
+        assertEquals("Lookup of ID mapping failed", epChild0, epParent.resolveID("9999"));
+        // remove
+        epChild0.getUnknownAttributes().remove(idName);
+        assertNull("Lookup of non-existent ID mapping didn't return null", epParent.resolveID("9999"));
+        // putAll
+        Map<QName, String> attribs = new FastMap<QName, String>();
+        attribs.put(idName, "1967");
+        epChild0.getUnknownAttributes().putAll(attribs);
+        assertEquals("Lookup of ID mapping failed", epChild0, epParent.resolveID("1967"));
+        // clear
+        epChild0.getUnknownAttributes().clear();
+        assertNull("Lookup of non-existent ID mapping didn't return null", epParent.resolveID("1967"));
+        // deregisterID
+        epChild0.getUnknownAttributes().put(idName, "abc123");
+        assertEquals("Lookup of ID mapping failed", epChild0, epParent.resolveID("abc123"));
+        epChild0.getUnknownAttributes().deregisterID(idName);
+        assertNull("Lookup of non-existent ID mapping didn't return null", epParent.resolveID("abc123"));
     }
 }
