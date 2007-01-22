@@ -53,7 +53,7 @@ public class AbstractExtensibleSOAPObject extends AbstractValidatingXMLObject im
         unknownXMLObject = new XMLObjectChildrenList<XMLObject>(this);
     }
 
-    /** {@inheritDoc } */
+    /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
         FastList<XMLObject> children = new FastList<XMLObject>();
 
@@ -62,12 +62,12 @@ public class AbstractExtensibleSOAPObject extends AbstractValidatingXMLObject im
         return Collections.unmodifiableList(children);
     }
 
-    /** {@inheritDoc } */
+    /** {@inheritDoc} */
     public List<XMLObject> getUnknownXMLObjects() {
         return unknownXMLObject;
     }
 
-    /** {@inheritDoc } */
+    /** {@inheritDoc} */
     public AttributeMap getUnknownAttributes() {
         return attributes;
     }
