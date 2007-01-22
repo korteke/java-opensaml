@@ -42,6 +42,9 @@ public class HeaderUnmarshaller extends AbstractXMLObjectUnmarshaller {
         Header header = (Header) xmlObject;
         QName attribQName = XMLHelper.constructQName(attribute.getNamespaceURI(), attribute.getLocalName(), attribute
                 .getPrefix());
+        if (attribute.isId()) {
+            header.getUnknownAttributes().registerID(attribQName);
+        }
         header.getUnknownAttributes().put(attribQName, attribute.getValue());
     }
 

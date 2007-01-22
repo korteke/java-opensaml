@@ -51,6 +51,9 @@ public class EnvelopeUnmarshaller extends AbstractXMLObjectUnmarshaller {
         Envelope envelope = (Envelope) xmlObject;
         QName attribQName = XMLHelper.constructQName(attribute.getNamespaceURI(), attribute.getLocalName(), attribute
                 .getPrefix());
+        if (attribute.isId()) {
+            envelope.getUnknownAttributes().registerID(attribQName);
+        }
         envelope.getUnknownAttributes().put(attribQName, attribute.getValue());
     }
 

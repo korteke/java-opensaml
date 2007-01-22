@@ -42,6 +42,9 @@ public class BodyUnmarshaller extends AbstractXMLObjectUnmarshaller {
         Body body = (Body) xmlObject;
         QName attribQName = XMLHelper.constructQName(attribute.getNamespaceURI(), attribute.getLocalName(), attribute
                 .getPrefix());
+        if (attribute.isId()) {
+            body.getUnknownAttributes().registerID(attribQName);
+        }
         body.getUnknownAttributes().put(attribQName, attribute.getValue());
     }
 

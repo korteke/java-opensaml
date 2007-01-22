@@ -42,6 +42,9 @@ public class DetailUnmarshaller extends AbstractXMLObjectUnmarshaller {
         Detail detail = (Detail) xmlObject;
         QName attribQName = XMLHelper.constructQName(attribute.getNamespaceURI(), attribute.getLocalName(), attribute
                 .getPrefix());
+        if (attribute.isId()) {
+            detail.getUnknownAttributes().registerID(attribQName);
+        }
         detail.getUnknownAttributes().put(attribQName, attribute.getValue());
     }
 
