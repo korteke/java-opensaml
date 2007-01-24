@@ -26,6 +26,7 @@ import javax.xml.namespace.QName;
 import javolution.util.FastMap;
 import javolution.util.FastSet;
 
+import org.opensaml.xml.Configuration;
 import org.opensaml.xml.XMLObject;
 
 /**
@@ -42,7 +43,8 @@ public class AttributeMap implements Map<QName, String> {
     /** Map of attributes. */
     private FastMap<QName, String> attributes;
     
-    /** Set of attribute QNames which have been registered as having an ID type. */
+    /** Set of attribute QNames which have been locally registered as having an ID type within this 
+     * AttributeMap instance. */
     private FastSet<QName> idAttribNames;
 
     /**
@@ -68,7 +70,7 @@ public class AttributeMap implements Map<QName, String> {
         if (value != oldValue) {
             releaseDOM();
             attributes.put(attributeName, value);
-            if (isIDAttribute(attributeName)) {
+            if (isIDAttribute(attributeName) || Configuration.isIDAttribute(attributeName)) {
                 attributeOwner.getIDIndex().deregisterIDMapping(oldValue);
                 attributeOwner.getIDIndex().registerIDMapping(value, attributeOwner);
             }
@@ -81,9 +83,6 @@ public class AttributeMap implements Map<QName, String> {
     /** {@inheritDoc} */
     public void clear() {
         for (QName attributeName : attributes.keySet()) {
-            if (isIDAttribute(attributeName)) {
-                attributeOwner.getIDIndex().deregisterIDMapping(get(attributeName));
-            }
             remove(attributeName);
         }
     }
@@ -127,7 +126,10 @@ public class AttributeMap implements Map<QName, String> {
         String removedValue = attributes.remove(key);
         if (removedValue != null) {
             releaseDOM();
-            attributeOwner.getIDIndex().deregisterIDMapping(removedValue);
+            QName attributeName = (QName) key;
+            if (isIDAttribute(attributeName) || Configuration.isIDAttribute(attributeName)) {
+                attributeOwner.getIDIndex().deregisterIDMapping(removedValue);
+            }
         }
 
         return removedValue;
@@ -138,9 +140,6 @@ public class AttributeMap implements Map<QName, String> {
         if (t != null && t.size() > 0) {
             for (Entry<? extends QName, ? extends String> entry : t.entrySet()) {
                 put(entry.getKey(), entry.getValue());
-                if (isIDAttribute(entry.getKey())) {
-                    attributeOwner.getIDIndex().registerIDMapping(entry.getValue(), attributeOwner);
-                }
             }
         }
     }
@@ -198,7 +197,8 @@ public class AttributeMap implements Map<QName, String> {
     }
     
     /**
-     * Check whether a given attribute is registered as having an ID type.
+     * Check whether a given attribute is locally registered as having an ID type within
+     * this AttributeMap instance.
      * 
      * @param attributeName the QName of the attribute to be checked for ID type.
      * @return true if attribute is registered as having an ID type.

@@ -118,4 +118,19 @@ public class ConfigurationTest extends TestCase {
         List<Validator> suite2Validators = suite2.getValidators(simpleXMLObjectQName);
         assertEquals("Suite2 did not have expected number of validators", 1, suite2Validators.size());
     }
+    
+    /**
+     * Tests that global ID attribute registration/deregistration is functioning properly.
+     */
+    public void testIDAttributeRegistration() {
+        QName attribQname = new QName("http://example.org", "someIDAttribName", "test");
+        
+        assertFalse("Non-registered ID attribute check returned true", Configuration.isIDAttribute(attribQname));
+        
+        Configuration.registerIDAttribute(attribQname);
+        assertTrue("Registered ID attribute check returned false", Configuration.isIDAttribute(attribQname));
+        
+        Configuration.deregisterIDAttribute(attribQname);
+        assertFalse("Non-registered ID attribute check returned true", Configuration.isIDAttribute(attribQname));
+    }
 }

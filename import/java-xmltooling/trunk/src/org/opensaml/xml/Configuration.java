@@ -22,6 +22,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import javolution.util.FastMap;
+import javolution.util.FastSet;
 
 import org.apache.log4j.Logger;
 import org.opensaml.xml.io.Marshaller;
@@ -61,6 +62,9 @@ public class Configuration {
 
     /** Configured ValidatorSuites. */
     private static FastMap<String, ValidatorSuite> validatorSuites = new FastMap<String, ValidatorSuite>();
+    
+    /** Configured set of attribute QNames which have been globally registered as having an ID type. */
+    private static FastSet<QName> idAttributeNames = new FastSet<QName>();
     
     /** Constructor. */
     protected Configuration(){
@@ -200,6 +204,38 @@ public class Configuration {
      */
     public static ValidatorSuite getValidatorSuite(String suiteId) {
         return validatorSuites.get(suiteId);
+    }
+    
+    /**
+     * Register an attribute as having a type of ID.
+     * 
+     * @param attributeName the QName of the ID attribute to be registered
+     */
+    public static void registerIDAttribute(QName attributeName) {
+        if (! idAttributeNames.contains(attributeName)) {
+            idAttributeNames.add(attributeName);
+        }
+    }
+    
+    /**
+     * Deregister an attribute as having a type of ID.
+     * 
+     * @param attributeName the QName of the ID attribute to be de-registered
+     */
+    public static void deregisterIDAttribute(QName attributeName) {
+        if (idAttributeNames.contains(attributeName)) {
+            idAttributeNames.remove(attributeName);
+        }
+    }
+    
+    /**
+     * Determine whether a given attribute is registered as having an ID type.
+     * 
+     * @param attributeName the QName of the attribute to be checked for ID type.
+     * @return true if attribute is registered as having an ID type.
+     */
+    public static boolean isIDAttribute(QName attributeName) {
+        return idAttributeNames.contains(attributeName);
     }
     
     static {

@@ -358,4 +358,38 @@ public class IDAttributeTest extends XMLObjectBaseTestCase {
         epChild0.getUnknownAttributes().deregisterID(idName);
         assertNull("Lookup of non-existent ID mapping didn't return null", epParent.resolveID("abc123"));
     }
+    
+    /**
+     * Tests that attributes registered globally on {@link org.opensaml.xml.Configuration} are being
+     * handled properly in the AttributeMap.
+     * @throws XMLParserException 
+     * @throws UnmarshallingException 
+     */
+    public void testGlobalIDRegistration() throws XMLParserException, UnmarshallingException {
+        XMLObject xmlObject;
+        QName attribQName = new QName("http://www.example.org", "id", "test");
+        
+        String documentLocation = "/data/org/opensaml/xml/IDAttributeGlobal.xml";
+        Document document = parserPool.parse(IDAttributeTest.class.getResourceAsStream(documentLocation));
+        Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(Configuration.getDefaultProviderQName());
+        
+        // With no registration
+        xmlObject = unmarshaller.unmarshall(document.getDocumentElement());
+        assertNull("Lookup of non-existent ID mapping didn't return null", xmlObject.resolveID("GlobalID1"));
+        assertNull("Lookup of non-existent ID mapping didn't return null", xmlObject.resolveID("GlobalID2"));
+        
+        // Now register the attribute QName in the global config
+        Configuration.registerIDAttribute(attribQName);
+        xmlObject = unmarshaller.unmarshall(document.getDocumentElement());
+        assertEquals("Lookup of ID mapping failed", xmlObject, xmlObject.resolveID("GlobalID1"));
+        assertEquals("Lookup of ID mapping failed", ((ElementProxy) xmlObject).getUnknownXMLObjects().get(0),
+                xmlObject.resolveID("GlobalID2"));
+        
+        // After deregistration
+        Configuration.deregisterIDAttribute(attribQName);
+        xmlObject = unmarshaller.unmarshall(document.getDocumentElement());
+        assertNull("Lookup of non-existent ID mapping didn't return null", xmlObject.resolveID("GlobalID1"));
+        assertNull("Lookup of non-existent ID mapping didn't return null", xmlObject.resolveID("GlobalID2"));
+    }
+        
 }
