@@ -8,6 +8,7 @@
         <sequence>
             <element ref="xt:ObjectProviders" minOccurs="0"/>
             <element ref="xt:ValidatorSuites" minOccurs="0" />
+            <element ref="xt:IDAttributes" minOccurs="0" />
         </sequence>
 
         <attribute name="clock-skew" type="long" use="optional" />
@@ -72,4 +73,11 @@
         </complexContent>
     </complexType>
     
+    <element name="IDAttributes" type="xt:IDAttributesType" />
+    <complexType name="IDAttributesType">
+        <sequence>
+            <element ref="xt:IDAttribute" maxOccurs="unbounded"/>
+        </sequence>
+    </complexType>
+    <element name="IDAttribute" type="QName"/>
 </schema>

@@ -157,6 +157,19 @@ public class XMLConfigurator {
                 log.info("ValidatorSuites load complete");
             }
         }
+        
+        // Initialize ID attributes
+        NodeList idAttributesNodes = configuration.getDocumentElement().getElementsByTagNameNS(
+                XMLConstants.XMLTOOLING_CONFIG_NS, "IDAttributes");
+        if (idAttributesNodes.getLength() > 0) {
+            if (log.isInfoEnabled()) {
+                log.info("Preparing to load IDAttributes");
+            }
+            initializeIDAttributes((Element) idAttributesNodes.item(0));
+            if (log.isInfoEnabled()) {
+                log.info("IDAttributes load complete");
+            }
+        }
     }
 
     /**
@@ -263,6 +276,35 @@ public class XMLConfigurator {
                 log.debug("ValidtorSuite " + validatorSuiteId + " has been initialized");
             }
             Configuration.registerValidatorSuite(validatorSuiteId, validatorSuite, validatorSuiteElement);
+        }
+    }
+    
+    /**
+     * Registers the global ID attributes specified in the configuration file.
+     * 
+     * @param idAttributesElement the IDAttributes element from the configuration file
+     * 
+     * @throws ConfigurationException thrown if there is a problem with a parsing or registering the
+     *          the ID attribute
+     */
+    protected void initializeIDAttributes(Element idAttributesElement) throws ConfigurationException {
+        Element idAttributeElement;
+        QName attributeQName;
+        
+        NodeList idAttributeList = idAttributesElement.getElementsByTagNameNS(XMLConstants.XMLTOOLING_CONFIG_NS,
+                "IDAttribute");
+        
+        for (int i=0; i < idAttributeList.getLength(); i++) {
+            idAttributeElement = (Element) idAttributeList.item(i);
+            attributeQName = XMLHelper.getElementContentAsQName(idAttributeElement);
+            if (attributeQName == null) {
+                log.info("IDAttribute element was empty, no registration performed");
+            } else {
+                Configuration.registerIDAttribute(attributeQName);
+                if (log.isDebugEnabled()) {
+                    log.debug("IDAttribute " + attributeQName + " has been registered");
+                }
+            }
         }
     }
 

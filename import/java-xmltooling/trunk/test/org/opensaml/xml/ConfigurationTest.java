@@ -20,6 +20,7 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
 import junit.framework.TestCase;
@@ -132,5 +133,35 @@ public class ConfigurationTest extends TestCase {
         
         Configuration.deregisterIDAttribute(attribQname);
         assertFalse("Non-registered ID attribute check returned true", Configuration.isIDAttribute(attribQname));
+        
+        // Check xml:id, which is hardcoded in the Configuration static initializer
+        QName xmlIDQName = new QName(XMLConstants.XML_NS_URI, "id");
+        assertTrue("Registered ID attribute check returned false", Configuration.isIDAttribute(xmlIDQName));
+    }
+    
+    /**
+     * Tests that global ID attribute registration/deregistration via the XMLTooling
+     * config file is functioning properly.
+     * 
+     * @throws XMLParserException thrown if the XML config file can not be read
+     * @throws ConfigurationException  thrown if the ID attributes can not be registered
+     */
+    public void testIDAttributeConfiguration() throws XMLParserException, ConfigurationException {
+        QName fooQName = new QName("http://www.example.org/testObjects", "foo", "test");
+        QName barQName = new QName("http://www.example.org/testObjects", "bar", "test");
+        QName bazQName = new QName("http://www.example.org/testObjects", "baz", "test");
+        
+        InputStream idAttributeConfig = Configuration.class
+            .getResourceAsStream("/data/org/opensaml/xml/IDAttributeConfiguration.xml");
+        Document idAttributeConfigDoc = parserPool.parse(idAttributeConfig);
+        configurator.load(idAttributeConfigDoc);
+        
+        assertTrue("Registered ID attribute check returned false", Configuration.isIDAttribute(fooQName));
+        assertTrue("Registered ID attribute check returned false", Configuration.isIDAttribute(barQName));
+        assertTrue("Registered ID attribute check returned false", Configuration.isIDAttribute(bazQName));
+        
+        Configuration.deregisterIDAttribute(fooQName);
+        Configuration.deregisterIDAttribute(barQName);
+        Configuration.deregisterIDAttribute(bazQName);
     }
 }

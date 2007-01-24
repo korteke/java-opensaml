@@ -261,5 +261,8 @@ public class Configuration {
             log.fatal(errorMsg);
             throw new RuntimeException(errorMsg);
         }
+        
+        // Default to registering the xml:id attribute as an ID type for all configurations
+        registerIDAttribute(new QName(javax.xml.XMLConstants.XML_NS_URI, "id"));
     }
 }
