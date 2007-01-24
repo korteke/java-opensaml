@@ -75,9 +75,8 @@ public class AttributeMap implements Map<QName, String> {
                 attributeOwner.getIDIndex().registerIDMapping(value, attributeOwner);
             }
         }
-        // TODO bug here?  shouldn't this always return the old value?
-        // Doesn't conform to the documented Map interface behavior. Ask Chad why he did it this way.
-        return null;
+        
+        return oldValue;
     }
 
     /** {@inheritDoc} */
