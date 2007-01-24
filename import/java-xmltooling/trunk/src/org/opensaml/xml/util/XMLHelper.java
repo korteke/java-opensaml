@@ -199,6 +199,41 @@ public final class XMLHelper {
                     valueComponents[0]);
         }
     }
+    
+    /**
+     * Constructs a QName from an element's adjacent Text child nodes.
+     * 
+     * @param element the element with a QName value
+     * 
+     * @return a QName from an element's value, or null if the given element is empty
+     */
+    public static QName getElementContentAsQName(Element element) {
+        if (element == null) {
+            return null;
+        }
+        
+        String elementContent = null;
+        NodeList nodeList = element.getChildNodes();
+        for (int i=0; i<nodeList.getLength(); i++) {
+            Node node = nodeList.item(i);
+            if (node.getNodeType() == Node.TEXT_NODE) {
+                elementContent = DatatypeHelper.safeTrimOrNullString(((Text) node).getWholeText());
+                break;
+            }
+        }
+        
+        if (elementContent == null) {
+            return null;
+        }
+
+        String[] valueComponents = elementContent.split(":");
+        if (valueComponents.length == 1) {
+            return constructQName(element.lookupNamespaceURI(null), valueComponents[0], null);
+        } else {
+            return constructQName(element.lookupNamespaceURI(valueComponents[0]), valueComponents[1],
+                    valueComponents[0]);
+        }
+    }
 
     /**
      * Constructs a QName.
