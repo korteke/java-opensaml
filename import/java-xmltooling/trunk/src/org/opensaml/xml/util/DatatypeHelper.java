@@ -114,7 +114,7 @@ public final class DatatypeHelper {
         if (s != null) {
             String sTrimmed = s.trim();
             if (sTrimmed.length() > 0) {
-                return s;
+                return sTrimmed;
             }
         }
 
