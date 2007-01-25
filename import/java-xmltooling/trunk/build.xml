@@ -4,33 +4,34 @@
 		<format property="build-date" pattern="ddMMyyyy'T'kkmmss" timezone="GMT"/>
 	</tstamp>
 
+	<property file="${user.name}-build.properties"/>
     <property file="build.properties" />
 
+    <property name="build-lib.dir" value="${basedir}/build-lib" />
     <property name="lib.dir" value="${basedir}/lib" />
 	<property name="thirdpaty-lib.dir" value="${basedir}/thirdparty-lib" />
+
+	<property name="resources.dir" value="${basedir}/resources" />
+	<property name="classpathres.dir" value="${resources.dir}/classpath" />
+		
     <property name="core-src.dir" value="${basedir}/src" />
-	<property name="core-schema.dir" value="${basedir}/src/schema" />
-	<property name="conf.dir" value="${basedir}/conf" />
     <property name="test-src.dir" value="${basedir}/test" />
+    	
     <property name="doc.dir" value="${basedir}/doc" />
     <property name="javadoc.dir" value="${doc.dir}/javadoc" />
-    <property name="build-lib.dir" value="${basedir}/build-lib" />
+	<property name="reports.dir" value="${doc.dir}/reports" />
+	<property name="test-report.dir" value="${reports.dir}/unit-test" />
+
     <property name="build.dir" value="${basedir}/build" />
     <property name="core-classes.dir" value="${build.dir}/core" />
     <property name="test-classes.dir" value="${build.dir}/test" />
     <property name="test-results.dir" value="${build.dir}/test-results" />
-	<property name="reports.dir" value="${doc.dir}/reports" />
-	<property name="test-report.dir" value="${reports.dir}/unit-test" />
+
     <property name="dist.dir" value="${basedir}/dist" />
-
-    <property name="jdk.target" value="1.5" />
-
     <property name="version" value="${build-date}" />
 	<property name="jar.name" value="xmltooling-${version}-jdk-${jdk.target}.jar" />
 	<property name="src-dist.name" value="xmltooling-${version}-jdk-${jdk.target}-src" />
 	<property name="bin-dist.name" value="xmltooling-${version}-jdk-${jdk.target}-bin" />
-    <property name="year" value="2002-2006" />
-    <property name="copyright" value="Copyright &#169; ${year} UCAID. All Rights Reserved." />
 
     <!-- Load ant-contrib tasks -->
     <taskdef resource="net/sf/antcontrib/antlib.xml" />
@@ -51,7 +52,7 @@
         <pathelement location="${core-src.dir}" />
         <pathelement location="${test-classes.dir}" />
         <pathelement location="${test-src.dir}" />
-        <pathelement location="${conf.dir}" />
+        <pathelement location="${classpathres.dir}" />
     </path>
 
     <!-- Prepare directory structure for build -->
@@ -132,7 +133,8 @@
 
     <!-- Removes all build generated content -->
     <target name="clean" depends="clean-compile">
-        <delete dir="${doc.dir}" />
+        <delete dir="${javadoc.dir}" />
+    	<delete dir="${reports.dir}" />
         <delete dir="${dist.dir}" />
     </target>
 
@@ -164,15 +166,14 @@
         </if>
 
         <jar destfile="${dist.dir}/${jar.name}" basedir="${core-classes.dir}" whenempty="fail">
-        	<zipfileset dir="${core-schema.dir}" prefix="schema"/>
-        	<zipfileset dir="${conf.dir}"/>
+        	<fileset dir="${classpathres.dir}" />
     	</jar>
 
     </target>
 
     <!-- **************************************************************** -->
     <!-- ***                                                          *** -->
-    <!-- ***                     Developer Tasks                      *** -->
+    <!-- ***                     Developer Tasks                *** -->
     <!-- ***                                                          *** -->
     <!-- **************************************************************** -->
 	
@@ -184,8 +185,7 @@
 					failOnViolation="false"
 	                classpathref="build-path">
 			<fileset dir="src" includes="**/*.java"/>
-			<formatter type="plain"
-					   toFile="${reports.dir}/checkstyle-report.txt" />
+			<formatter type="plain" toFile="${reports.dir}/checkstyle-report.txt" />
 		</checkstyle>
 	</target>
 	

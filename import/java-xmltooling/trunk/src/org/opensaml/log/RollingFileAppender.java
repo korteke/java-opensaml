@@ -31,8 +31,7 @@ import org.apache.log4j.spi.LoggingEvent;
  * 
  * @author Chad La Joie
  */
-public class RollingFileAppender
-        extends FileAppender {
+public class RollingFileAppender extends FileAppender {
 
     // The code assumes that the following constants are in a increasing
     // sequence.
@@ -110,7 +109,7 @@ public class RollingFileAppender
     public RollingFileAppender() {
 
     }
-    
+
     /**
      * Constructor.
      * 
@@ -275,8 +274,7 @@ public class RollingFileAppender
             // This will also close the file. This is OK since multiple
             // close operations are safe.
             this.setFile(fileName, false, this.bufferedIO, this.bufferSize);
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             errorHandler.error("setFile(" + fileName + ", false) call failed.");
         }
         scheduledFilename = datedFilename;
@@ -304,14 +302,13 @@ public class RollingFileAppender
  * RollingCalendar is a helper class to DailyRollingFileAppender. Given a periodicity type and the current time, it
  * computes the start of the next interval.
  */
-class RollingCalendar
-        extends GregorianCalendar {
+class RollingCalendar extends GregorianCalendar {
 
     /**
      * Serial Number
      */
     private static final long serialVersionUID = -1818276930015758128L;
-    
+
     int type = RollingFileAppender.TOP_OF_TROUBLE;
 
     RollingCalendar() {
