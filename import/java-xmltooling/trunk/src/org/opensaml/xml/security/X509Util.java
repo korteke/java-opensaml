@@ -211,7 +211,6 @@ public class X509Util {
     /**
      * Reads a PEM or DER encoded RSA or DSA key from a file.
      * 
-     * @param <KeyType> the type of key returned
      * @param keyFile the file containing the encoded key
      * @param passphrase the passphrase to unlock the key or null
      * 
@@ -234,7 +233,6 @@ public class X509Util {
     /**
      * Reads a PEM or DER encoded RSA or DSA key from a stream.
      * 
-     * @param <KeyType> the type of key returned
      * @param keyStream the stream containing the encoded key
      * @param passphrase the passphrase to unlock the key or null
      * 

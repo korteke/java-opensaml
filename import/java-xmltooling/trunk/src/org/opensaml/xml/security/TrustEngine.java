@@ -16,6 +16,8 @@
 
 package org.opensaml.xml.security;
 
+import org.opensaml.xml.signature.KeyInfo;
+
 /**
  * Evaluates the trustworthiness and validity of a token against implementation-specific requirements.
  * 
