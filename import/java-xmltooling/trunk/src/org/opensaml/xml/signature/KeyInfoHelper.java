@@ -23,10 +23,15 @@ import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
 import java.security.cert.CRLException;
+import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509CRL;
 import java.security.cert.X509Certificate;
+import java.security.interfaces.DSAParams;
+import java.security.interfaces.DSAPublicKey;
+import java.security.interfaces.RSAPublicKey;
+import java.security.spec.DSAParameterSpec;
 import java.security.spec.DSAPublicKeySpec;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
@@ -36,20 +41,24 @@ import java.util.List;
 import javolution.util.FastList;
 
 import org.apache.log4j.Logger;
+import org.opensaml.xml.Configuration;
+import org.opensaml.xml.XMLObjectBuilderFactory;
 import org.opensaml.xml.util.Base64;
+import org.opensaml.xml.util.DatatypeHelper;
 
 /**
  * Utility class for working with data inside a KeyInfo object.
  * 
- * Methods are provided for converting the representation stored in the XMLTooling KeyInfo to java.security native
- * types, and for storing java.security native types inside a KeyInfo.
+ * Methods are provided for converting the representation stored in the XMLTooling KeyInfo to Java
+ * java.security native types, and for storing these Java native types inside a KeyInfo.
  */
 public class KeyInfoHelper {
 
     /** Class logger. */
     private static Logger log = Logger.getLogger(KeyInfoHelper.class);
     
-    /** Factory for X509Certificate and X509CRL creation. */
+    /** Factory for {@link java.security.cert.X509Certificate} and
+     * {@link java.security.cert.X509CRL} creation. */
     private static CertificateFactory x509CertFactory;
     
     /** Constructor. */
@@ -58,9 +67,9 @@ public class KeyInfoHelper {
     }    
 
     /**
-     * Get the set of KeyNames inside the specified KeyInfo as a list of strings.
+     * Get the set of key names inside the specified {@link KeyInfo} as a list of strings.
      * 
-     * @param keyInfo KeyInfo to retrieve key names from
+     * @param keyInfo {@link KeyInfo} to retrieve key names from
      * 
      * @return a list of key name strings
      */
@@ -82,13 +91,14 @@ public class KeyInfoHelper {
     }
 
     /**
-     * Get a List of the Java X509Certificates within the given KeyInfo.
+     * Get a list of the Java {@link java.security.cert.X509Certificate} within the given KeyInfo.
      * 
      * @param keyInfo key info to extract the certificates from
      * 
-     * @return a list of Java X509Certificates
+     * @return a list of Java {@link java.security.cert.X509Certificate}s
      * 
-     * @throws CertificateException thrown if there is a problem converting the X509 data into {@link X509Certificate}s.
+     * @throws CertificateException thrown if there is a problem converting the 
+     *          X509 data into {@link java.security.cert.X509Certificate}s.
      */
     public static List<X509Certificate> getCertificates(KeyInfo keyInfo) throws CertificateException {
         FastList<X509Certificate> certList = new FastList<X509Certificate>();
@@ -108,13 +118,14 @@ public class KeyInfoHelper {
     }
 
     /**
-     * Get a List of the Java X509Certificates within the given X509Data.
+     * Get a list of the Java {@link java.security.cert.X509Certificate} within the given {@link X509Data}.
      * 
-     * @param x509Data X509 data to extract the certificate from
+     * @param x509Data {@link X509Data} from which to extract the certificate
      * 
-     * @return a list of Java X509Certificates
+     * @return a list of Java {@link java.security.cert.X509Certificate}s
      * 
-     * @throws CertificateException thrown if there is a problem converting the X509 data into {@link X509Certificate}s.
+     * @throws CertificateException thrown if there is a problem converting the 
+     *          X509 data into {@link java.security.cert.X509Certificate}s.
      */
     public static List<X509Certificate> getCertificates(X509Data x509Data) throws CertificateException {
         FastList<X509Certificate> certList = new FastList<X509Certificate>();
@@ -134,13 +145,14 @@ public class KeyInfoHelper {
     }
 
     /**
-     * Convert an XMLTooling X509Certifcate object into a native Java representation.
+     * Convert an {@link org.opensaml.xml.signature.X509Certificate} into a native Java representation.
      * 
-     * @param xmlCert the XML object representing the X509 certificate
+     * @param xmlCert an {@link org.opensaml.xml.signature.X509Certificate}
      * 
-     * @return a Java X509Certificate
+     * @return a {@link java.security.cert.X509Certificate}
      * 
-     * @throws CertificateException thrown if there is a problem converting the X509 data into {@link X509Certificate}s.
+     * @throws CertificateException thrown if there is a problem converting the 
+     *           X509 data into {@link java.security.cert.X509Certificate}s.
      */
     public static X509Certificate getCertificate(org.opensaml.xml.signature.X509Certificate xmlCert)
             throws CertificateException {
@@ -158,13 +170,14 @@ public class KeyInfoHelper {
     }
 
     /**
-     * Get a List of the Java X509CRLs within the given KeyInfo.
+     * Get a list of the Java {@link java.security.cert.X509CRL}s within the given {@link KeyInfo}.
      * 
-     * @param keyInfo the key info to extract the CRLs from
+     * @param keyInfo the {@link KeyInfo} to extract the CRL's from
      * 
-     * @return a list Java X509CRLs
+     * @return a list of Java {@link java.security.cert.X509CRL}s
      * 
-     * @throws CRLException thrown if there is a problem converting the CRL data into {@link X509CRL}s
+     * @throws CRLException thrown if there is a problem converting the 
+     *          CRL data into {@link java.security.cert.X509CRL}s
      */
     public static List<X509CRL> getCRLs(KeyInfo keyInfo) throws CRLException {
         FastList<X509CRL> crlList = new FastList<X509CRL>();
@@ -184,13 +197,14 @@ public class KeyInfoHelper {
     }
 
     /**
-     * Get a List of the Java X509CRLs within the given X509Data.
+     * Get a list of the Java {@link java.security.cert.X509CRL}s within the given {@link X509Data}.
      * 
-     * @param x509Data X509 data to extract the CRLs from
+     * @param x509Data {@link X509Data} to extract the CRLs from
      * 
-     * @return a list of Java X509CRLs
+     * @return a list of Java {@link java.security.cert.X509CRL}s
      * 
-     * @throws CRLException thrown if there is a problem converting the CRL data into {@link X509CRL}s
+     * @throws CRLException thrown if there is a problem converting the 
+     *          CRL data into {@link java.security.cert.X509CRL}s
      */
     public static List<X509CRL> getCRLs(X509Data x509Data) throws CRLException {
         FastList<X509CRL> crlList = new FastList<X509CRL>();
@@ -210,13 +224,14 @@ public class KeyInfoHelper {
     }
 
     /**
-     * Convert an XMLTooling X509CRL object into a native Java representation.
+     * Convert an {@link org.opensaml.xml.signature.X509CRL} into a native Java representation.
      * 
      * @param xmlCRL object to extract the CRL from
      * 
-     * @return a native Java security X509CRL object
+     * @return a native Java {@link java.security.cert.X509CRL} object
      * 
-     * @throws CRLException thrown if there is a problem converting the CRL data into {@link X509CRL}s
+     * @throws CRLException thrown if there is a problem converting the 
+     *          CRL data into {@link java.security.cert.X509CRL}s
      */
     public static X509CRL getCRL(org.opensaml.xml.signature.X509CRL xmlCRL) throws CRLException {
 
@@ -236,63 +251,185 @@ public class KeyInfoHelper {
     }
 
     /**
-     * TODO
+     * Converts a native Java {@link java.security.cert.X509Certificate} into the corresponding 
+     * XMLObject and stores it in a {@link KeyInfo} in the first {@link X509Data} element. 
+     * The X509Data element will be created if necessary.
      * 
-     * @param keyInfo
-     * @param cert
+     * @param keyInfo the {@link KeyInfo} object into which to add the certificate
+     * @param cert the Java {@link java.security.cert.X509Certificate} to add
+     * @throws CertificateEncodingException thrown when there is an error converting the Java 
+     *           certificate representation to the XMLObject representation
      */
-    public static void addCertificate(KeyInfo keyInfo, X509Certificate cert) {
-        // TODO
-        // if an X509Data child exists, add to it (if multiple the first?),
-        // else create a new one
+    public static void addCertificate(KeyInfo keyInfo, X509Certificate cert) throws CertificateEncodingException {
+        X509Data x509Data = keyInfo.getX509Datas().get(0);
+        if (x509Data == null) {
+            x509Data = (X509Data) Configuration.getBuilderFactory()
+                .getBuilder(X509Data.DEFAULT_ELEMENT_NAME)
+                .buildObject(X509Data.DEFAULT_ELEMENT_NAME);
+            keyInfo.getX509Datas().add(x509Data);
+            
+        }
+        x509Data.getX509Certificates().add(buildX509Certificate(cert));
     }
 
     /**
-     * TODO
+     * Converts a native Java {@link java.security.cert.X509CRL} into the corresponding XMLObject and stores it
+     * in a {@link KeyInfo} in the first {@link X509Data} element.  The X509Data element
+     * will be created if necessary.
      * 
-     * @param x509Data
-     * @param cert
+     * @param keyInfo the {@link KeyInfo} object into which to add the CRL
+     * @param crl the Java {@link java.security.cert.X509CRL} to add
+     * @throws CRLException thrown when there is an error converting the Java 
+     *           CRL representation to the XMLObject representation
      */
-    public static void addCertificate(X509Data x509Data, X509Certificate cert) {
-        // TODO
+    public static void addCRL(KeyInfo keyInfo, X509CRL crl) throws CRLException {
+        X509Data x509Data = keyInfo.getX509Datas().get(0);
+        if (x509Data == null) {
+            x509Data = (X509Data) Configuration.getBuilderFactory()
+                .getBuilder(X509Data.DEFAULT_ELEMENT_NAME)
+                .buildObject(X509Data.DEFAULT_ELEMENT_NAME);
+            keyInfo.getX509Datas().add(x509Data);
+            
+        }
+        x509Data.getX509CRLs().add(buildX509CRL(crl));
     }
-
+    
     /**
-     * TODO
+     * Builds an {@link org.opensaml.xml.signature.X509Certificate} XMLObject from a native 
+     * Java {@link java.security.cert.X509Certificate}.
      * 
-     * @param keyInfo
-     * @param crl
+     * @param cert the Java {@link java.security.cert.X509Certificate} to convert
+     * @return a {@link org.opensaml.xml.signature.X509Certificate} XMLObject
+     * @throws CertificateEncodingException thrown when there is an error converting the Java 
+     *           certificate representation to the XMLObject representation
      */
-    public static void addCRL(KeyInfo keyInfo, X509CRL crl) {
-        // TODO
+    public static org.opensaml.xml.signature.X509Certificate 
+    buildX509Certificate(X509Certificate cert) throws CertificateEncodingException {
+        org.opensaml.xml.signature.X509Certificate xmlCert =
+            (org.opensaml.xml.signature.X509Certificate) Configuration.getBuilderFactory()
+            .getBuilder(org.opensaml.xml.signature.X509Certificate.DEFAULT_ELEMENT_NAME)
+            .buildObject(org.opensaml.xml.signature.X509Certificate.DEFAULT_ELEMENT_NAME);
+        
+        xmlCert.setValue(Base64.encodeBytes(cert.getEncoded()));
+        
+        return xmlCert;
     }
-
+    
     /**
-     * @param x509Data
-     * @param crl
-     */
-    public static void addCRL(X509Data x509Data, X509CRL crl) {
-        // TODO
-    }
-
-    /**
-     * TODO
+     * Builds an {@link org.opensaml.xml.signature.X509CRL} XMLObject from
+     * a native Java {@link java.security.cert.X509CRL}.
      * 
-     * @param keyInfo
-     * @param pk
+     * @param crl the Java {@link java.security.cert.X509CRL} to convert
+     * @return a {@link org.opensaml.xml.signature.X509CRL} XMLObject
+     * @throws CRLException thrown when there is an error converting the Java 
+     *           CRL representation to the XMLObject representation
      */
-    public static void addPublicKey(KeyInfo keyInfo, PublicKey pk) {
-        // TODO
-        // differentiate between RSA and DSA keys, and add to KeyValue
+    public static org.opensaml.xml.signature.X509CRL buildX509CRL(X509CRL crl) throws CRLException {
+        org.opensaml.xml.signature.X509CRL xmlCRL =
+            (org.opensaml.xml.signature.X509CRL) Configuration.getBuilderFactory()
+            .getBuilder(org.opensaml.xml.signature.X509CRL.DEFAULT_ELEMENT_NAME)
+            .buildObject(org.opensaml.xml.signature.X509CRL.DEFAULT_ELEMENT_NAME);
+        
+        xmlCRL.setValue(Base64.encodeBytes(crl.getEncoded()));
+        
+        return xmlCRL;
     }
 
     /**
-     * Extracts all the public keys within the given KeyInfo's {@link KeyValue}s.  This method only
+     * Converts a Java DSA or RSA public key into the corresponding XMLObject and stores it
+     * in a {@link KeyInfo} in a new {@link KeyValue} element.
+     * 
+     * As input, only supports {@link PublicKey}s which are instances of either
+     * {@link java.security.interfaces.DSAPublicKey} or
+     * {@link java.security.interfaces.RSAPublicKey}
+     * 
+     * @param keyInfo the {@link KeyInfo} element to which to add the key
+     * @param pk the native Java {@link PublicKey} to add
+     * @throws IllegalArgumentException thrown if an unsupported public key
+     *          type is passed
+     */
+    public static void addPublicKey(KeyInfo keyInfo, PublicKey pk) throws IllegalArgumentException {
+        KeyValue keyValue = (KeyValue) Configuration.getBuilderFactory()
+            .getBuilder(KeyValue.DEFAULT_ELEMENT_NAME)
+            .buildObject(KeyValue.DEFAULT_ELEMENT_NAME);
+        
+        if (pk instanceof RSAPublicKey) {
+            keyValue.setRSAKeyValue(buildRSAKeyValue((RSAPublicKey) pk));
+        } else if (pk instanceof DSAPublicKey) {
+            keyValue.setDSAKeyValue(buildDSAKeyValue((DSAPublicKey) pk));
+        } else {
+           throw new IllegalArgumentException("Only RSAPublicKey and DSAPublicKey are supported");
+        }
+        
+        keyInfo.getKeyValues().add(keyValue);
+    }
+    
+    /**
+     * Builds an {@link RSAKeyValue} XMLObject from the Java security RSA public key type.
+     * 
+     * @param rsaPubKey a native Java {@link RSAPublicKey}
+     * @return an {@link RSAKeyValue} XMLObject
+     */
+    public static RSAKeyValue buildRSAKeyValue(RSAPublicKey rsaPubKey) {
+        XMLObjectBuilderFactory builderFactory = Configuration.getBuilderFactory();
+        RSAKeyValue rsaKeyValue = (RSAKeyValue) builderFactory
+            .getBuilder(RSAKeyValue.DEFAULT_ELEMENT_NAME)
+            .buildObject(RSAKeyValue.DEFAULT_ELEMENT_NAME);
+        Modulus modulus = (Modulus) builderFactory
+            .getBuilder(Modulus.DEFAULT_ELEMENT_NAME)
+            .buildObject(Modulus.DEFAULT_ELEMENT_NAME);
+        Exponent exponent = (Exponent) builderFactory
+            .getBuilder(Exponent.DEFAULT_ELEMENT_NAME)
+            .buildObject(Exponent.DEFAULT_ELEMENT_NAME);
+        
+        modulus.setValue(Base64.encodeBytes(rsaPubKey.getModulus().toByteArray()));
+        rsaKeyValue.setModulus(modulus);
+        
+        exponent.setValue(Base64.encodeBytes(rsaPubKey.getPublicExponent().toByteArray()));
+        rsaKeyValue.setExponent(exponent);
+        
+        return rsaKeyValue;
+    }
+    
+    /**
+     * Builds a {@link DSAKeyValue} XMLObject from the Java security DSA public key type.
+     * 
+     * @param dsaPubKey a native Java {@link DSAPublicKey}
+     * @return an {@link DSAKeyValue} XMLObject
+     */
+    public static DSAKeyValue buildDSAKeyValue(DSAPublicKey dsaPubKey) {
+        XMLObjectBuilderFactory builderFactory = Configuration.getBuilderFactory();
+        DSAKeyValue dsaKeyValue = (DSAKeyValue) builderFactory
+            .getBuilder(DSAKeyValue.DEFAULT_ELEMENT_NAME)
+            .buildObject(DSAKeyValue.DEFAULT_ELEMENT_NAME);
+        Y y = (Y) builderFactory.getBuilder(Y.DEFAULT_ELEMENT_NAME).buildObject(Y.DEFAULT_ELEMENT_NAME);
+        G g = (G) builderFactory.getBuilder(G.DEFAULT_ELEMENT_NAME).buildObject(G.DEFAULT_ELEMENT_NAME);
+        P p = (P) builderFactory.getBuilder(P.DEFAULT_ELEMENT_NAME).buildObject(P.DEFAULT_ELEMENT_NAME);
+        Q q = (Q) builderFactory.getBuilder(Q.DEFAULT_ELEMENT_NAME).buildObject(Q.DEFAULT_ELEMENT_NAME);
+        
+        y.setValue(Base64.encodeBytes(dsaPubKey.getY().toByteArray()));
+        dsaKeyValue.setY(y);
+        
+        g.setValue(Base64.encodeBytes(dsaPubKey.getParams().getG().toByteArray()));
+        dsaKeyValue.setG(g);
+        
+        p.setValue(Base64.encodeBytes(dsaPubKey.getParams().getP().toByteArray()));
+        dsaKeyValue.setP(p);
+        
+        q.setValue(Base64.encodeBytes(dsaPubKey.getParams().getQ().toByteArray()));
+        dsaKeyValue.setQ(q);
+        
+        return dsaKeyValue;
+    }
+
+
+    /**
+     * Extracts all the public keys within the given {@link KeyInfo}'s {@link KeyValue}s.  This method only
      * supports DSA and RSA key types.
      * 
-     * @param keyInfo key info to extract the keys out of
+     * @param keyInfo {@link KeyInfo} to extract the keys out of
      * 
-     * @return a list of native Java security PublicKey objects
+     * @return a list of native Java {@link PublicKey} objects
      * 
      * @throws KeyException thrown if the given key data can not be converted into {@link PublicKey}
      */
@@ -311,11 +448,11 @@ public class KeyInfoHelper {
     }
 
     /**
-     * Extracts the DSA or RSA public key within the KeyValue.
+     * Extracts the DSA or RSA public key within the {@link KeyValue}.
      * 
-     * @param keyValue the key value to extract the key from
+     * @param keyValue the {@link KeyValue} to extract the key from
      * 
-     * @return a native Java security Key object
+     * @return a native Java security {@link java.security.Key} object
      * 
      * @throws KeyException thrown if the given key data can not be converted into {@link PublicKey}
      */
@@ -330,16 +467,22 @@ public class KeyInfoHelper {
     }
     
     /**
-     * Builds an DSA key from an DSAKeyValue element.
+     * Builds an DSA key from a {@link DSAKeyValue} element.  The element must contain values
+     * for all required DSA public key parameters, including values for shared key family
+     * values P, Q and G.
      * 
-     * @param keyDescriptor the key descriptor
+     * @param keyDescriptor the {@link DSAKeyValue} key descriptor
      * 
-     * @return the key described
+     * @return a new {@link DSAPublicKey} instance of {@link PublicKey}
      * 
      * @throws KeyException thrown if the key algorithm is not supported by the JCE or the key spec does not
      *             contain valid information
      */
     public static PublicKey getDSAKey(DSAKeyValue keyDescriptor) throws KeyException {
+        if (! hasCompleteDSAParams(keyDescriptor)) {
+            throw new KeyException("DSAKeyValue element did not contain at least one of DSA parameters P, Q or G");
+        }
+        
         String encodedG = keyDescriptor.getG().getValue();
         BigInteger gComponent = new BigInteger(Base64.decode(encodedG));
 
@@ -349,19 +492,55 @@ public class KeyInfoHelper {
         String encodedQ = keyDescriptor.getQ().getValue();
         BigInteger qComponent = new BigInteger(Base64.decode(encodedQ));
 
+        DSAParams  dsaParams = new DSAParameterSpec(pComponent, qComponent, gComponent);
+        return getDSAKey(keyDescriptor, dsaParams);
+    }
+    
+    /**
+     * Builds a DSA key from an {@link DSAKeyValue} element and the supplied Java {@link DSAParams},
+     * which supplies key material from a shared key family.
+     * 
+     * @param keyDescriptor the {@link DSAKeyValue} key descriptor
+     * @param dsaParams the {@link DSAParams} DSA key family parameters
+     * 
+     * @return a new {@link DSAPublicKey} instance of {@link PublicKey}
+     * 
+     * @throws KeyException thrown if the key algorithm is not supported by the JCE or the key spec does not
+     *             contain valid information
+     */
+    public static PublicKey getDSAKey(DSAKeyValue keyDescriptor, DSAParams dsaParams) throws KeyException {
         String encodedY = keyDescriptor.getY().getValue();
         BigInteger yComponent = new BigInteger(Base64.decode(encodedY));
 
-        DSAPublicKeySpec keySpec = new DSAPublicKeySpec(yComponent, pComponent, qComponent, gComponent);
+        DSAPublicKeySpec keySpec = 
+            new DSAPublicKeySpec(yComponent, dsaParams.getP(), dsaParams.getQ(), dsaParams.getG());
         return buildKey(keySpec, "DSA");
+    }
+    
+    /**
+     * Check whether the specified {@link DSAKeyValue} element has the all optional DSA
+     * values which can be shared amongst many keys in a DSA "key family", and
+     * are presumed to be known from context.
+     * 
+     * @param keyDescriptor the {@link DSAKeyValue} element to check
+     * @return true if all parameters are present and non-empty, false otherwise
+     */
+    public static boolean hasCompleteDSAParams(DSAKeyValue keyDescriptor) {
+        if (       keyDescriptor.getG() == null || DatatypeHelper.isEmpty(keyDescriptor.getG().getValue())
+                || keyDescriptor.getP() == null || DatatypeHelper.isEmpty(keyDescriptor.getP().getValue())
+                || keyDescriptor.getQ() == null || DatatypeHelper.isEmpty(keyDescriptor.getQ().getValue())
+        ) {
+            return false;
+        }
+        return true;
     }
 
     /**
-     * Builds an RSA key from an RSAKeyValue element.
+     * Builds an RSA key from an {@link RSAKeyValue} element.
      * 
-     * @param keyDescriptor the key descriptor
+     * @param keyDescriptor the {@link RSAKeyValue} key descriptor
      * 
-     * @return the key described
+     * @return a new {@link RSAPublicKey} instance of {@link PublicKey}
      * 
      * @throws KeyException thrown if the key algorithm is not supported by the JCE or the key spec does not
      *             contain valid information
@@ -380,10 +559,10 @@ public class KeyInfoHelper {
     /**
      * Generates a public key from the given key spec.
      * 
-     * @param keySpec specification for the key
+     * @param keySpec {@link KeySpec} specification for the key
      * @param keyAlgorithm key generation algorithm, only DSA and RSA supported
      * 
-     * @return the generated key
+     * @return the generated {@link PublicKey}
      * 
      * @throws KeyException thrown if the key algorithm is not supported by the JCE or the key spec does not
      *             contain valid information
@@ -394,7 +573,7 @@ public class KeyInfoHelper {
             return keyFactory.generatePublic(keySpec);
         } catch (NoSuchAlgorithmException e) {
             log.error(keyAlgorithm + " algorithm is not supported by this VM", e);
-            throw new KeyException(keyAlgorithm + "RSA algorithm is not supported by the JCE", e);
+            throw new KeyException(keyAlgorithm + "algorithm is not supported by the JCE", e);
         } catch (InvalidKeySpecException e) {
             log.error("Invalid key information", e);
             throw new KeyException("Invalid key information", e);
@@ -404,7 +583,7 @@ public class KeyInfoHelper {
     /**
      * Get the Java certificate factory singleton.
      * 
-     * @return CertificateFactory the factory used to create X509 certificate objects
+     * @return {@link CertificateFactory} the factory used to create X509 certificate objects
      * 
      * @throws CertificateException thrown if the factory can not be created
      */
