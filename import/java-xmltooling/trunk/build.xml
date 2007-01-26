@@ -4,7 +4,10 @@
 		<format property="build-date" pattern="ddMMyyyy'T'kkmmss" timezone="GMT"/>
 	</tstamp>
 
+	<!-- User based property file that overrides any property below -->
 	<property file="${user.name}-build.properties"/>
+		
+	<!-- Project based property file -->
     <property file="build.properties" />
 
     <property name="build-lib.dir" value="${basedir}/build-lib" />
@@ -29,9 +32,9 @@
 
     <property name="dist.dir" value="${basedir}/dist" />
     <property name="version" value="${build-date}" />
-	<property name="jar.name" value="xmltooling-${version}-jdk-${jdk.target}.jar" />
-	<property name="src-dist.name" value="xmltooling-${version}-jdk-${jdk.target}-src" />
-	<property name="bin-dist.name" value="xmltooling-${version}-jdk-${jdk.target}-bin" />
+	<property name="jar.name" value="${project.name}-${version}-jdk-${jdk.target}.jar" />
+	<property name="src-dist.name" value="${project.name}-${version}-jdk-${jdk.target}-src" />
+	<property name="bin-dist.name" value="${project.name}-${version}-jdk-${jdk.target}-bin" />
 
     <!-- Load ant-contrib tasks -->
     <taskdef resource="net/sf/antcontrib/antlib.xml" />
@@ -51,6 +54,8 @@
         <pathelement location="${core-classes.dir}" />
         <pathelement location="${core-src.dir}" />
         <pathelement location="${test-classes.dir}" />
+    	<pathelement location="${test-classes.dir}/data" />
+    	<pathelement location="${test-classes.dir}/log4j.xml" />
         <pathelement location="${test-src.dir}" />
         <pathelement location="${classpathres.dir}" />
     </path>
@@ -77,17 +82,11 @@
         <javac srcdir="${test-src.dir}" destdir="${test-classes.dir}" includes="**/*.java" debug="on" source="1.5">
             <classpath refid="test-path" />
         </javac>
-        
-        <copy toDir="${test-classes.dir}/data">
-            <fileset dir="${test-src.dir}/data" />
-        </copy>
-
-        <copy file="${test-src.dir}/log4j.xml" tofile="${test-classes.dir}/log4j.xml"/>
 
     </target>
 
     <!-- Compile and run unit tests -->
-    <target name="test" depends="compile-core, compile-test">
+    <target name="test" depends="compile-core, compile-test" description="Runs the unit tests for the project.">
         <mkdir dir="${test-results.dir}" />
 
     	<echo message="Excuting unit tests using endorsed directory ${java.endorsed.dirs}" />
@@ -108,18 +107,19 @@
     	  <report format="frames" todir="${test-report.dir}"/>
     	</junitreport>
     	
-    	<fail if="testFailed" message="Test failure; see ${test-report.dir} for more information."/>
+    	<echo message="Test report available at ${test-report.dir}/index.html" />
+    	<fail if="testFailed" message="Test failure; see ${test-report.dir}/index.html for more information."/>
     </target>
 
     <!-- Javadoc core (non-test) classes -->
-    <target name="javadoc">
+    <target name="javadoc" description="Creates the JavaDoc documentatin for the project.">
         <mkdir dir="${javadoc.dir}" />
         <javadoc packagenames="org.opensaml.*" 
         	     sourcepath="${core-src.dir}" 
         	     destdir="${javadoc.dir}" 
         	     author="false" version="true" 
-        	     windowtitle="XML Tooling ${version} Java API" 
-        	     doctitle="XML Tooling ${version} Java API" 
+        	     windowtitle="${ant.project.name} ${version} Java API" 
+        	     doctitle="${ant.project.name} ${version} Java API" 
         	     bottom="${copyright}"
         	     overview="${core-src.dir}/overview.html">
             <classpath refid="build-path" />
@@ -132,14 +132,14 @@
     </target>
 
     <!-- Removes all build generated content -->
-    <target name="clean" depends="clean-compile">
+    <target name="clean" depends="clean-compile" description="Removes any artifact produced by the build process.">
         <delete dir="${javadoc.dir}" />
     	<delete dir="${reports.dir}" />
         <delete dir="${dist.dir}" />
     </target>
 
     <!-- Create JAR file -->
-    <target name="package" depends="compile-core, test">
+    <target name="package" depends="compile-core, test" description="Creates the project library jar file.">
         <mkdir dir="${dist.dir}" />
 
         <if>
@@ -178,7 +178,7 @@
     <!-- **************************************************************** -->
 	
 	<!-- Checks code against style guidelines -->
-	<target name="checkstyle" >
+	<target name="checkstyle" description="Developer task: Produces coding standard compliance report.">
 		<mkdir dir="${reports.dir}" />
 		
 		<checkstyle config="${basedir}/checkstyle.xml"
@@ -190,7 +190,7 @@
 	</target>
 	
     <!-- Create TGZ source distribution -->
-    <target name="tgz-src-dist" depends="package, javadoc">
+    <target name="tgz-src-dist" depends="package, javadoc" description="Developer task: Creates the tar, gzipped source distribution.">
         <tar tarfile="${dist.dir}/${src-dist.name}.tgz" compression="gzip">
         	<tarfileset dir="${build-lib.dir}" prefix="/build-lib/"/>
         	<tarfileset dir="${lib.dir}" prefix="/lib/"/>
@@ -205,7 +205,7 @@
     </target>
 
     <!-- Create TGZ binary distribution -->
-    <target name="tgz-bin-dist" depends="package, javadoc">
+    <target name="tgz-bin-dist" depends="package, javadoc" description="Developer task: Creates the tar, gzipped binary distribution.">
         <tar tarfile="${dist.dir}/${bin-dist.name}.tgz" compression="gzip">
         	<tarfileset dir="${lib.dir}" prefix="/lib/"/>
         	<tarfileset dir="${conf.dir}" prefix="/conf/"/>
@@ -216,7 +216,7 @@
     </target>
 
     <!-- Create ZIP source distribution -->
-    <target name="zip-src-dist" depends="package, javadoc">
+    <target name="zip-src-dist" depends="package, javadoc" description="Developer task: Creates the zipped source distribution.">
         <zip zipfile="${dist.dir}/${src-dist.name}.zip" whenempty="fail">
         	<zipfileset dir="${build-lib.dir}" prefix="build-lib/"/>
         	<zipfileset dir="${lib.dir}" prefix="lib/"/>
@@ -231,7 +231,7 @@
     </target>
 
     <!-- Create ZIP binary distribution -->
-    <target name="zip-bin-dist" depends="package, javadoc">
+    <target name="zip-bin-dist" depends="package, javadoc"  description="Developer task: Creates the zipped binary distribution.">
         <zip zipfile="${dist.dir}/${bin-dist.name}.zip" whenempty="fail">
         	<zipfileset dir="${lib.dir}" prefix="lib/"/>
         	<zipfileset dir="${conf.dir}" prefix="conf/"/>
