@@ -1,41 +1,46 @@
-<project name="OpenWS" basedir="." default="package">
+<project name="Open WebServices" basedir="." default="package">
 	
 	<tstamp>
 		<format property="build-date" pattern="ddMMyyyy'T'kkmmss" timezone="GMT"/>
 	</tstamp>
 
+	<!-- User based property file that overrides any property below -->
+	<property file="${user.name}-build.properties"/>
+		
+	<!-- Project based property file -->
     <property file="build.properties" />
 
+    <property name="build-lib.dir" value="${basedir}/build-lib" />
     <property name="lib.dir" value="${basedir}/lib" />
+	<property name="thirdpaty-lib.dir" value="${basedir}/thirdparty-lib" />
+
+	<property name="resources.dir" value="${basedir}/resources" />
+	<property name="classpathres.dir" value="${resources.dir}/classpath" />
+		
     <property name="core-src.dir" value="${basedir}/src" />
-	<property name="core-schema.dir" value="${basedir}/src/schema" />
-	<property name="conf.dir" value="${basedir}/conf" />
     <property name="test-src.dir" value="${basedir}/test" />
+    	
     <property name="doc.dir" value="${basedir}/doc" />
     <property name="javadoc.dir" value="${doc.dir}/javadoc" />
-    <property name="build-lib.dir" value="${basedir}/build-lib" />
+	<property name="reports.dir" value="${doc.dir}/reports" />
+	<property name="test-report.dir" value="${reports.dir}/unit-test" />
+
     <property name="build.dir" value="${basedir}/build" />
     <property name="core-classes.dir" value="${build.dir}/core" />
     <property name="test-classes.dir" value="${build.dir}/test" />
     <property name="test-results.dir" value="${build.dir}/test-results" />
-	<property name="reports.dir" value="${doc.dir}/reports" />
-	<property name="test-report.dir" value="${reports.dir}/unit-test" />
+
     <property name="dist.dir" value="${basedir}/dist" />
-
-    <property name="jdk.target" value="1.5" />
-
     <property name="version" value="${build-date}" />
-	<property name="jar.name" value="openws-${version}-jdk-${jdk.target}.jar" />
-	<property name="src-dist.name" value="openws-${version}-jdk-${jdk.target}-src" />
-	<property name="bin-dist.name" value="openws-${version}-jdk-${jdk.target}-bin" />
-    <property name="year" value="2002-2006" />
-    <property name="copyright" value="Copyright &#169; ${year} UCAID. All Rights Reserved." />
+	<property name="jar.name" value="${project.name}-${version}-jdk-${jdk.target}.jar" />
+	<property name="src-dist.name" value="${project.name}-${version}-jdk-${jdk.target}-src" />
+	<property name="bin-dist.name" value="${project.name}-${version}-jdk-${jdk.target}-bin" />
 
     <!-- Load ant-contrib tasks -->
     <taskdef resource="net/sf/antcontrib/antlib.xml" />
 	
 	<!-- Load Checkstyle tasks -->
-		<taskdef resource="checkstyletask.properties" />
+	<taskdef resource="checkstyletask.properties" />
 
     <!-- Classpath for building core classes-->
     <path id="build-path">
@@ -49,8 +54,10 @@
         <pathelement location="${core-classes.dir}" />
         <pathelement location="${core-src.dir}" />
         <pathelement location="${test-classes.dir}" />
+    	<pathelement location="${test-classes.dir}/data" />
+    	<pathelement location="${test-classes.dir}/log4j.xml" />
         <pathelement location="${test-src.dir}" />
-    	<pathelement location="${conf.dir}" />
+        <pathelement location="${classpathres.dir}" />
     </path>
 
     <!-- Prepare directory structure for build -->
@@ -75,20 +82,16 @@
         <javac srcdir="${test-src.dir}" destdir="${test-classes.dir}" includes="**/*.java" debug="on" source="1.5">
             <classpath refid="test-path" />
         </javac>
-        
-        <copy toDir="${test-classes.dir}/data">
-            <fileset dir="${test-src.dir}/data" />
-        </copy>
-
-        <copy file="${test-src.dir}/log4j.xml" tofile="${test-classes.dir}/log4j.xml"/>
 
     </target>
 
     <!-- Compile and run unit tests -->
-    <target name="test" depends="compile-core, compile-test">
+    <target name="test" depends="compile-core, compile-test" description="Runs the unit tests for the project.">
         <mkdir dir="${test-results.dir}" />
 
-        <junit printsummary="off" fork="yes" haltonerror="true" haltonfailure="false" dir="${basedir}" errorproperty="testFailed">
+    	<echo message="Excuting unit tests using endorsed directory ${java.endorsed.dirs}" />
+        <junit printsummary="off" fork="yes" forkmode="once" haltonerror="false" haltonfailure="false" dir="${basedir}" errorproperty="testFailed">
+        	<jvmarg value="-Djava.endorsed.dirs=${java.endorsed.dirs}" />
             <classpath refid="test-path" />
             <formatter type="xml" />
             <batchtest todir="${test-results.dir}">
@@ -104,18 +107,19 @@
     	  <report format="frames" todir="${test-report.dir}"/>
     	</junitreport>
     	
-    	<fail if="testFailed" message="Test failure; see ${test-report.dir} for more information."/>
+    	<echo message="Test report available at ${test-report.dir}/index.html" />
+    	<fail if="testFailed" message="Test failure; see ${test-report.dir}/index.html for more information."/>
     </target>
 
     <!-- Javadoc core (non-test) classes -->
-    <target name="javadoc">
+    <target name="javadoc" description="Creates the JavaDoc documentatin for the project.">
         <mkdir dir="${javadoc.dir}" />
         <javadoc packagenames="org.opensaml.*" 
         	     sourcepath="${core-src.dir}" 
         	     destdir="${javadoc.dir}" 
         	     author="false" version="true" 
-        	     windowtitle="OpenWS ${version} Java API" 
-        	     doctitle="OpenWS ${version} Java API" 
+        	     windowtitle="${ant.project.name} ${version} Java API" 
+        	     doctitle="${ant.project.name} ${version} Java API" 
         	     bottom="${copyright}"
         	     overview="${core-src.dir}/overview.html">
             <classpath refid="build-path" />
@@ -128,15 +132,14 @@
     </target>
 
     <!-- Removes all build generated content -->
-    <target name="clean" depends="clean-compile">
+    <target name="clean" depends="clean-compile" description="Removes any artifact produced by the build process.">
         <delete dir="${javadoc.dir}" />
-    	<delete dir="${test-report.dir}" />
-        <delete dir="${test-results.dir}" />
+    	<delete dir="${reports.dir}" />
         <delete dir="${dist.dir}" />
     </target>
 
     <!-- Create JAR file -->
-    <target name="package" depends="compile-core, test">
+    <target name="package" depends="compile-core, test" description="Creates the project library jar file.">
         <mkdir dir="${dist.dir}" />
 
         <if>
@@ -146,15 +149,15 @@
                     <arg value="-source" />
                     <arg value="${core-classes.dir}" />
                     <classpath>
-                        <fileset dir="${build-lib.dir}">
+                        <fileset dir="${thirdpaty-lib.dir}">
                             <include name="**/*.jar" />
                         </fileset>
                     </classpath>
                 </java>
 
                 <echo message="**************************************************************" />
-                <echo message="    Remember, you must include the retroweaver-rt-1.2.2.jar" />
-                <echo message="    file, located in the lib directory, along with the" />
+                <echo message="    Remember, you must include the retroweaver-rt jar" />
+                <echo message="    file, located in the thirdparty-lib directory, along with the" />
                 <echo message="    ${jar.name} on your" />
                 <echo message="    classpath in order to use this with JDK 1.4" />
                 <echo message="**************************************************************" />
@@ -163,74 +166,77 @@
         </if>
 
         <jar destfile="${dist.dir}/${jar.name}" basedir="${core-classes.dir}" whenempty="fail">
-        	<zipfileset dir="${core-schema.dir}" prefix="schema"/>
+        	<fileset dir="${classpathres.dir}" />
     	</jar>
 
     </target>
 
     <!-- **************************************************************** -->
     <!-- ***                                                          *** -->
-    <!-- ***                     Developer Tasks                      *** -->
+    <!-- ***                     Developer Tasks                *** -->
     <!-- ***                                                          *** -->
     <!-- **************************************************************** -->
 	
 	<!-- Checks code against style guidelines -->
-	<target name="checkstyle" >
+	<target name="checkstyle" description="Developer task: Produces coding standard compliance report.">
 		<mkdir dir="${reports.dir}" />
 		
 		<checkstyle config="${basedir}/checkstyle.xml"
 					failOnViolation="false"
 	                classpathref="build-path">
 			<fileset dir="src" includes="**/*.java"/>
-			<formatter type="plain"
-					   toFile="${reports.dir}/checkstyle-report.txt" />
+			<formatter type="plain" toFile="${reports.dir}/checkstyle-report.txt" />
 		</checkstyle>
 	</target>
 	
     <!-- Create TGZ source distribution -->
-    <target name="tgz-src-dist" depends="package, javadoc">
+    <target name="tgz-src-dist" depends="package, javadoc" description="Developer task: Creates the tar, gzipped source distribution.">
         <tar tarfile="${dist.dir}/${src-dist.name}.tgz" compression="gzip">
         	<tarfileset dir="${build-lib.dir}" prefix="/build-lib/"/>
         	<tarfileset dir="${lib.dir}" prefix="/lib/"/>
+        	<tarfileset dir="${conf.dir}" prefix="/conf/"/>
         	<tarfileset dir="${core-src.dir}" prefix="/src/"/>
     		<tarfileset dir="${test-src.dir}" prefix="/test/"/>
         	<tarfileset dir="${doc.dir}" prefix="/doc/"/>
-        	<tarfileset dir="${dist.dir}" prefix="/dist/"/>
+        	<tarfileset file="${dist.dir}/${jar.name}" prefix="/dist/"/>
         	<tarfileset file="${basedir}/*.*" prefix="/"/>
         </tar>
     	<checksum file="${dist.dir}/${src-dist.name}.tgz" />
     </target>
 
     <!-- Create TGZ binary distribution -->
-    <target name="tgz-bin-dist" depends="package, javadoc">
+    <target name="tgz-bin-dist" depends="package, javadoc" description="Developer task: Creates the tar, gzipped binary distribution.">
         <tar tarfile="${dist.dir}/${bin-dist.name}.tgz" compression="gzip">
         	<tarfileset dir="${lib.dir}" prefix="/lib/"/>
+        	<tarfileset dir="${conf.dir}" prefix="/conf/"/>
         	<tarfileset dir="${doc.dir}" prefix="/doc/"/>
-        	<tarfileset dir="${dist.dir}" prefix="/dist/"/>
+        	<tarfileset file="${dist.dir}/${jar.name}" prefix="/dist/"/>
         </tar>
     	<checksum file="${dist.dir}/${bin-dist.name}.tgz" />
     </target>
 
     <!-- Create ZIP source distribution -->
-    <target name="zip-src-dist" depends="package, javadoc">
+    <target name="zip-src-dist" depends="package, javadoc" description="Developer task: Creates the zipped source distribution.">
         <zip zipfile="${dist.dir}/${src-dist.name}.zip" whenempty="fail">
         	<zipfileset dir="${build-lib.dir}" prefix="build-lib/"/>
         	<zipfileset dir="${lib.dir}" prefix="lib/"/>
+        	<zipfileset dir="${conf.dir}" prefix="conf/"/>
         	<zipfileset dir="${core-src.dir}" prefix="src/"/>
     		<zipfileset dir="${test-src.dir}" prefix="test/"/>
         	<zipfileset dir="${doc.dir}" prefix="doc/"/>
-        	<zipfileset dir="${dist.dir}" prefix="dist/"/>
+        	<zipfileset file="${dist.dir}/${jar.name}" prefix="/dist/"/>
         	<zipfileset file="${basedir}/*.*" prefix=""/>
         </zip>
     	<checksum file="${dist.dir}/${src-dist.name}.zip" />
     </target>
 
     <!-- Create ZIP binary distribution -->
-    <target name="zip-bin-dist" depends="package, javadoc">
+    <target name="zip-bin-dist" depends="package, javadoc"  description="Developer task: Creates the zipped binary distribution.">
         <zip zipfile="${dist.dir}/${bin-dist.name}.zip" whenempty="fail">
         	<zipfileset dir="${lib.dir}" prefix="lib/"/>
+        	<zipfileset dir="${conf.dir}" prefix="conf/"/>
         	<zipfileset dir="${doc.dir}" prefix="doc/"/>
-        	<zipfileset dir="${dist.dir}" prefix="dist/"/>
+        	<zipfileset file="${dist.dir}/${jar.name}" prefix="/dist/"/>
         </zip>
     	<checksum file="${dist.dir}/${bin-dist.name}.zip" />
     </target>
