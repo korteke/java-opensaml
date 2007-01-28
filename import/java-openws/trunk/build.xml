@@ -1,4 +1,4 @@
-<project name="Open WebServicesß" basedir="." default="package">
+<project name="Open WebServices" basedir="." default="package">
 	
 	<tstamp>
 		<format property="build-date" pattern="ddMMyyyy'T'kkmmss" timezone="GMT"/>
