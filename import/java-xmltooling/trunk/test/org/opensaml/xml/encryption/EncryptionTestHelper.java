@@ -17,6 +17,8 @@
 package org.opensaml.xml.encryption;
 
 import java.security.Key;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 
 import javax.crypto.KeyGenerator;
@@ -54,6 +56,26 @@ public class EncryptionTestHelper {
             e.printStackTrace();
         }
         return key;
+    }
+    
+    /**
+     * Randomly generates a Java JCE KeyPair object from the specified XML Encryption algorithm URI.
+     * 
+     * @param algoURI  The XML Encryption algorithm URI
+     * @param keyLength  the length of key to generate
+     * @return a randomly-generated KeyPair
+     */
+    public static KeyPair generateKeyPair(String algoURI, int keyLength) {
+        String jceAlgorithmName = JCEMapper.getJCEKeyAlgorithmFromURI(algoURI);
+        KeyPair keyPair = null;
+        try {
+            KeyPairGenerator keyGenerator = KeyPairGenerator.getInstance(jceAlgorithmName);
+            keyGenerator.initialize(keyLength);
+            keyPair = keyGenerator.generateKeyPair();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return keyPair;
     }
 
 }

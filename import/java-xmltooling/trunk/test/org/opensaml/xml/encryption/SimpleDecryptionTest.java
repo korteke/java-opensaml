@@ -138,6 +138,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
         XMLObject decryptedXMLObject = null;
         try {
             decryptedXMLObject = decrypter.decryptData(encryptedContent);
+            fail("This should have failed, decryption of element content not yet supported");
         } catch (DecryptionException e) {
             //fail("Error on decryption of EncryptedData to element content: " + e);
             //Currently this will fail, not yet supporting decryption of element content.

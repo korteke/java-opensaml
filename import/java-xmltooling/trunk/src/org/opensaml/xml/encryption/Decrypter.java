@@ -17,10 +17,13 @@
 package org.opensaml.xml.encryption;
 
 import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.security.Key;
 import java.security.KeyException;
 import java.util.HashMap;
 import java.util.List;
+
+import javolution.util.FastList;
 
 import org.apache.log4j.Logger;
 import org.apache.xml.security.encryption.XMLCipher;
@@ -29,21 +32,30 @@ import org.opensaml.xml.Configuration;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.io.Unmarshaller;
+import org.opensaml.xml.io.UnmarshallerFactory;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.parse.ParserPool;
 import org.opensaml.xml.parse.XMLParserException;
 import org.opensaml.xml.security.KeyInfoResolver;
 import org.w3c.dom.Document;
+import org.w3c.dom.DocumentFragment;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 /**
  * Decrypts XMLObject and their keys.
  */
 public class Decrypter {
     
-    /** Parser pool, used in decryption od EncryptedData objects. */
-    private static ParserPool parserPool;
+    /** ParserPool used in parsing decrypted data. */
+    private static final ParserPool parserPool;
+    
+    /** Unmarshaller factory, used in decryption of EncryptedData objects. */
+    private UnmarshallerFactory unmarshallerFactory;
+    
+    /** Load-and-Save DOM Implementation singleton. */
+    //private DOMImplementationLS domImplLS;
     
     /** Class logger. */
     private Logger log = Logger.getLogger(Decrypter.class);
@@ -63,6 +75,10 @@ public class Decrypter {
     public Decrypter(KeyInfoResolver newKEKResolver, KeyInfoResolver newResolver) {
         this.kekResolver = newKEKResolver;
         this.resolver = newResolver; 
+        
+        unmarshallerFactory = Configuration.getUnmarshallerFactory();
+        
+        //domImplLS = null;
     }
     
     /**
@@ -86,16 +102,80 @@ public class Decrypter {
     /**
      * Decrypts the supplied EncryptedData and returns the resulting XMLObject.
      * 
+     * This will only succeed if the decrypted EncryptedData contains exactly one
+     * DOM node of type Element.
+     * 
      * @param encryptedData encrypted data element containing the data to be decrypted
      * @return the decrypted XMLObject
-     * @throws DecryptionException exception indicating a decryption error
+     * @throws DecryptionException exception indicating a decryption error, possibly because
+     *          the decrypted data contained more than one top-level Element, or some
+     *          non-Element Node type.
      */
     public XMLObject decryptData(EncryptedData encryptedData) throws DecryptionException {
+        
+        List<XMLObject> xmlObjects = decryptDataToList(encryptedData);
+        if (xmlObjects.size() != 1) {
+            throw new DecryptionException("The decrypted data contained more than one XMLObject child");
+        }
+        
+        return xmlObjects.get(0);
+    }
+    
+    /**
+     * Decrypts the supplied EncryptedData and returns the resulting list of XMLObjects.
+     * 
+     * This will only succeed if the decrypted EncryptedData contains at the top-level
+     * only DOM Elements (not other types of DOM Nodes).
+     * 
+     * @param encryptedData encrypted data element containing the data to be decrypted
+     * @return the list decrypted top-level XMLObjects
+     * @throws DecryptionException exception indicating a decryption error, possibly because
+     *          the decrypted data contained DOM nodes other than type of Element
+     */
+    public List<XMLObject> decryptDataToList(EncryptedData encryptedData) throws DecryptionException {
+        List<XMLObject> xmlObjects = new FastList<XMLObject>();
+        
+        DocumentFragment docFragment = decryptDataToDOM(encryptedData);
+        
+        XMLObject xmlObject;
+        Node node;
+        Element element;
+        
+        NodeList children = docFragment.getChildNodes();
+        for (int i=0; i<children.getLength(); i++) {
+            node = children.item(i);
+            if (node.getNodeType() != Node.ELEMENT_NODE) {
+                throw new DecryptionException("Top-level node was not of type Element: " + node.getNodeType());
+            } else {
+                element = (Element) node;
+            }
+            
+            try {
+                xmlObject = unmarshallerFactory.getUnmarshaller(element).unmarshall(element);
+            } catch (UnmarshallingException e) {
+                throw new DecryptionException("Unmarshalling error during decryption", e);
+            }
+            
+            xmlObjects.add(xmlObject);
+        }
+        
+        return xmlObjects;
+    }
+    /**
+     * Decrypts the supplied EncryptedData and returns the resulting DOM {@link DocumentFragment}.
+     * 
+     * @param encryptedData encrypted data element containing the data to be decrypted
+     * @return the decrypted DOM {@link DocumentFragment}
+     * @throws DecryptionException exception indicating a decryption error
+     */
+    public DocumentFragment decryptDataToDOM(EncryptedData encryptedData) throws DecryptionException {
         if (resolver == null && kekResolver == null) {
             throw new DecryptionException("Unable to decrypt EncryptedData, no key resolvers are set");
         }
         
-        //TODO - see below
+        // TODO - Until Xerces supports LSParser.parseWithContext(), or we come up with another solution
+        // to parse a bytestream into a DocumentFragment, we can only support encryption of Elements,
+        // not content.
         if (encryptedData.getType().equals(EncryptionConstants.TYPE_CONTENT)) {
             throw new DecryptionException("Decryption of EncryptedData elements of type 'Content' " 
                     + "is not currently supported");
@@ -136,35 +216,12 @@ public class Decrypter {
         if (bytes == null) {
             throw new DecryptionException("EncryptedData could not be decrypted");
         }
-        
-        // TODO
-        // We really want to handle parsing into a DocumentFragment rather than
-        // a Document so that we can handle EncryptedData with type of 'Content'.
-        // And then unmarshall the 1 to N top-level Element nodes into a List of XMLObjects
-        // and return that, or something along those lines.
-        // Maybe need to use an LSParser.parseWithContext ... ?
-        ByteArrayInputStream input = new ByteArrayInputStream(bytes);
-        Document document;
-        try {
-            document = parserPool.parse(input);
-        } catch (XMLParserException e) {
-            throw new DecryptionException("XML parsing error on decrypted byte array", e);
-        }
-        
-        Unmarshaller unmarshaller = 
-            Configuration.getUnmarshallerFactory().getUnmarshaller(document.getDocumentElement());
-        XMLObject xmlObject;
-        try {
-            xmlObject = unmarshaller.unmarshall(document.getDocumentElement());
-        } catch (UnmarshallingException e) {
-            throw new DecryptionException("Error unmarshalling decrypted data", e);
-        }
-        
-        return xmlObject;
-        
-    }
-    
  
+        ByteArrayInputStream input = new ByteArrayInputStream(bytes);
+        DocumentFragment docFragment = parseInputStream(input, encryptedData.getDOM().getOwnerDocument());
+        
+        return docFragment;
+    }
     
     /**
      * Decrypts the supplied EncryptedKey and returns the resulting Java security Key object.
@@ -294,14 +351,109 @@ public class Decrypter {
         
         return dataEncKey;
     }
+
+    /* NOTE: this currently won't work because Xerces doesn't implement LSParser.parseWithContext().
+     * Hopefully they will in the future.
+     */
+    /*
+    private DocumentFragment parseInputStreamLS(InputStream input, Document owningDocument)
+            throws DecryptionException {
+        
+        DOMImplementationLS domImpl = getDOMImplemenationLS();
+        
+        LSParser parser = domImpl.createLSParser(DOMImplementationLS.MODE_SYNCHRONOUS, null);
+        if (parser == null) {
+            throw new DecryptionException("LSParser was null");
+        }
+        
+        //DOMConfiguration config=parser.getDomConfig();
+        //DOMErrorHandlerImpl errorHandler=new DOMErrorHandlerImpl();
+        //config.setParameter("error-handler", errorHandler);
+        
+        LSInput lsInput = domImpl.createLSInput();
+        if (lsInput == null) {
+            throw new DecryptionException("LSInput was null");
+        }
+        lsInput.setByteStream(input);
+        
+        DocumentFragment container = owningDocument.createDocumentFragment();
+        //TODO Xerces currently doesn't support LSParser.parseWithContext()
+        parser.parseWithContext(lsInput, container, LSParser.ACTION_REPLACE_CHILDREN);
+        
+        return container;
+    }
+    */
+    
+    /*
+    private DOMImplementationLS getDOMImplemenationLS() throws DecryptionException {
+        if (domImplLS != null) {
+            return domImplLS;
+        }
+
+        // get an instance of the DOMImplementation registry
+        DOMImplementationRegistry registry;
+        try {
+            registry = DOMImplementationRegistry.newInstance();
+        } catch (ClassCastException e) {
+            throw new DecryptionException("Error creating new error of DOMImplementationRegistry", e);
+        } catch (ClassNotFoundException e) {
+            throw new DecryptionException("Error creating new error of DOMImplementationRegistry", e);
+        } catch (InstantiationException e) {
+            throw new DecryptionException("Error creating new error of DOMImplementationRegistry", e);
+        } catch (IllegalAccessException e) {
+            throw new DecryptionException("Error creating new error of DOMImplementationRegistry", e);
+        }
+
+        // get a new instance of the DOM Level 3 Load/Save implementation
+        DOMImplementationLS newDOMImplLS = (DOMImplementationLS) registry.getDOMImplementation("LS 3.0");
+        if (newDOMImplLS == null) {
+            throw new DecryptionException("No LS DOMImplementation could be found");
+        } else {
+            domImplLS = newDOMImplLS;
+        }
+
+        return domImplLS;
+    }
+    */
+
+    
+    /**
+     * Parse the specified input stream in a DOM DocumentFragment, owned by the specified
+     * Document.
+     * 
+     * @param input the InputStream to parse
+     * @param owningDocument the Document which will own the returned DocumentFragment
+     * @return a DocumentFragment
+     * @throws DecryptionException thrown if there is an error parsing the input stream
+     */
+    private DocumentFragment parseInputStream(InputStream input, Document owningDocument) throws DecryptionException {
+        // Since Xerces currently seems not to handle parsing into a DocumentFragment
+        // without a bit hackery,  use this to simulate, so we can keep the API 
+        // the way it hopefully will look in the future.  Obviously this only works for 
+        // input streams containing valid XML instances, not fragments.
+        
+        Document newDocument = null;
+        try {
+            newDocument = parserPool.parse(input);
+        } catch (XMLParserException e) {
+            throw new DecryptionException("Error parsing decrypted input stream", e);
+        }
+        
+        Element element = newDocument.getDocumentElement();
+        owningDocument.adoptNode(element);
+        
+        DocumentFragment container = owningDocument.createDocumentFragment();
+        container.appendChild(element);
+
+        return container;
+    }
     
     static {
         // Create the parser pool used in decryption of EncryptedData elements
         HashMap<String, Boolean> features = new HashMap<String, Boolean>();
         features.put("http://apache.org/xml/features/validation/schema/normalized-value", Boolean.FALSE);
         features.put("http://apache.org/xml/features/dom/defer-node-expansion", Boolean.FALSE);
-
+        
         parserPool = new ParserPool(true, null, features);
     }
-
 }
