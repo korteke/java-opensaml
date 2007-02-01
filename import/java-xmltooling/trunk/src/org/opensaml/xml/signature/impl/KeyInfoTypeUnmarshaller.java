@@ -43,6 +43,7 @@ public class KeyInfoTypeUnmarshaller extends AbstractXMLSignatureUnmarshaller {
         
         if (attribute.getLocalName().equals(KeyInfoType.ID_ATTRIB_NAME)) {
             keyInfo.setID(attribute.getValue());
+            attribute.getOwnerElement().setIdAttributeNode(attribute, true);
         } else {
             super.processAttribute(xmlObject, attribute);
         }

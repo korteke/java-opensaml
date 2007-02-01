@@ -380,6 +380,7 @@ public class IDAttributeTest extends XMLObjectBaseTestCase {
         
         // Now register the attribute QName in the global config
         Configuration.registerIDAttribute(attribQName);
+        document = parserPool.parse(IDAttributeTest.class.getResourceAsStream(documentLocation));
         xmlObject = unmarshaller.unmarshall(document.getDocumentElement());
         assertEquals("Lookup of ID mapping failed", xmlObject, xmlObject.resolveID("GlobalID1"));
         assertEquals("Lookup of ID mapping failed", ((ElementProxy) xmlObject).getUnknownXMLObjects().get(0),
@@ -387,6 +388,7 @@ public class IDAttributeTest extends XMLObjectBaseTestCase {
         
         // After deregistration
         Configuration.deregisterIDAttribute(attribQName);
+        document = parserPool.parse(IDAttributeTest.class.getResourceAsStream(documentLocation));
         xmlObject = unmarshaller.unmarshall(document.getDocumentElement());
         assertNull("Lookup of non-existent ID mapping didn't return null", xmlObject.resolveID("GlobalID1"));
         assertNull("Lookup of non-existent ID mapping didn't return null", xmlObject.resolveID("GlobalID2"));

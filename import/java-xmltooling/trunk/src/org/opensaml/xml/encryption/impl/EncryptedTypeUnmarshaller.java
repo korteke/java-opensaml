@@ -65,6 +65,7 @@ public abstract class EncryptedTypeUnmarshaller extends AbstractXMLEncryptionUnm
         
         if (attribute.getLocalName().equals(EncryptedType.ID_ATTRIB_NAME)) {
             et.setID(attribute.getValue());
+            attribute.getOwnerElement().setIdAttributeNode(attribute, true);
         } else if (attribute.getLocalName().equals(EncryptedType.TYPE_ATTRIB_NAME)) {
             et.setType(attribute.getValue());
         } else if (attribute.getLocalName().equals(EncryptedType.MIMETYPE_ATTRIB_NAME)) {

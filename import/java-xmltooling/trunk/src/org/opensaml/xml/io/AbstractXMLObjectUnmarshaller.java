@@ -256,8 +256,27 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
                 attributeNS.setAlwaysDeclare(false);
                 xmlObject.addNamespace(attributeNS);
             }
+            
+            checkIDAttribute(attribute);
 
             processAttribute(xmlObject, attribute);
+        }
+    }
+    
+    /**
+     * Check whether the attribute's QName is registered in the global ID attribute registry.
+     * If it is, and the specified attribute's DOM Level 3 Attr.isId() is false (due to
+     * lack of schema validation, for example), then declare the attribute as an ID type in the DOM 
+     * on the attribute's owning element.  This is to handle cases where the underlying DOM 
+     * needs to accurately reflect an attribute's ID-ness, for example ID reference 
+     * resolution within the Apache XML Security library.
+     * 
+     * @param attribute the DOM attribute to be checked
+     */
+    protected void checkIDAttribute(Attr attribute) {
+        QName attribName = XMLHelper.getNodeQName(attribute);
+        if (Configuration.isIDAttribute(attribName) && !attribute.isId()) {
+            attribute.getOwnerElement().setIdAttributeNode(attribute, true);
         }
     }
 

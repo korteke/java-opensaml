@@ -53,6 +53,7 @@ public class EncryptionPropertiesUnmarshaller extends AbstractXMLEncryptionUnmar
         
         if (attribute.getLocalName().equals(EncryptionProperties.ID_ATTRIB_NAME)) {
             ep.setID(attribute.getValue());
+            attribute.getOwnerElement().setIdAttributeNode(attribute, true);
         } else {
             super.processAttribute(xmlObject, attribute);
         }

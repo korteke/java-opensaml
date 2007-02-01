@@ -40,6 +40,10 @@ public class ElementProxyMarshaller extends AbstractXMLObjectMarshaller {
             attribute = XMLHelper.constructAttribute(domElement.getOwnerDocument(), entry.getKey());
             attribute.setValue(entry.getValue());
             domElement.setAttributeNode(attribute);
+            if (Configuration.isIDAttribute(entry.getKey()) 
+                    || proxy.getUnknownAttributes().isIDAttribute(entry.getKey())) {
+                attribute.getOwnerElement().setIdAttributeNode(attribute, true);
+            }
         }
     }
 
