@@ -17,13 +17,14 @@
 package org.opensaml.xml.encryption;
 
 import java.security.KeyException;
+import java.security.PublicKey;
 
 import org.opensaml.xml.security.KeyInfoResolver;
 
 /**
  * Resolves encrypted keys based on EncryptedData information or other external factors.
  */
-public interface EncryptedKeyInfoResolver extends KeyInfoResolver {
+public interface EncryptedKeyInfoResolver extends KeyInfoResolver<PublicKey> {
 
     /**
      * Returns an encrypted key based on a particular EncryptedData context.
