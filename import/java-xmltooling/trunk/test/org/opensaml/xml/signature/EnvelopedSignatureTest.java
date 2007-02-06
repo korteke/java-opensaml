@@ -33,6 +33,7 @@ import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.transforms.Transforms;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.XMLObjectBaseTestCase;
+import org.opensaml.xml.encryption.EncryptionConstants;
 import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.io.Unmarshaller;
@@ -105,6 +106,7 @@ public class EnvelopedSignatureTest extends XMLObjectBaseTestCase {
 
         sxoBuilder = new SimpleXMLObjectBuilder();
         sigBuilder = new SignatureBuilder();
+        keyInfoBuilder = new KeyInfoBuilder();
 
         HashMap<String, Boolean> features = new HashMap<String, Boolean>();
         features.put("http://apache.org/xml/features/validation/schema/normalized-value", Boolean.FALSE);
@@ -117,17 +119,19 @@ public class EnvelopedSignatureTest extends XMLObjectBaseTestCase {
      * 
      * @throws MarshallingException thrown if the XMLObject tree can not be marshalled
      * @throws SecurityException 
+     * @throws KeyException 
+     * @throws IllegalArgumentException 
      * @throws ValidationException thrown if the signature verification fails
      */
-    public void testSigningAndVerification() throws MarshallingException, SecurityException {
+    public void testSigningAndVerification() throws MarshallingException, SecurityException, IllegalArgumentException, KeyException {
         SimpleXMLObject sxo = getXMLObjectWithSignature();
         Signature signature = sxo.getSignature();
 
         Marshaller marshaller = Configuration.getMarshallerFactory().getMarshaller(sxo);
         Element signedElement = marshaller.marshall(sxo);
-
+        
         Signer.signObject(signature);
-
+        
         if (log.isDebugEnabled()) {
             log.debug("Marshalled Signature: \n" + XMLHelper.nodeToString(signedElement));
         }
@@ -169,21 +173,27 @@ public class EnvelopedSignatureTest extends XMLObjectBaseTestCase {
      * Creates a XMLObject that has a Signature child element.
      * 
      * @return a XMLObject that has a Signature child element
+     * @throws KeyException 
+     * @throws IllegalArgumentException 
      */
-    private SimpleXMLObject getXMLObjectWithSignature() {
+    private SimpleXMLObject getXMLObjectWithSignature() throws IllegalArgumentException, KeyException {
         SimpleXMLObject sxo = sxoBuilder.buildObject();
         sxo.setId("FOO");
 
         Signature sig = sigBuilder.buildObject();
         sig.setSigningKey(signingKey);
-        sig.setCanonicalizationAlgorithm(Canonicalizer.ALGO_ID_C14N_EXCL_OMIT_COMMENTS);
-        sig.setSignatureAlgorithm(XMLSignature.ALGO_ID_SIGNATURE_RSA);
+        sig.setCanonicalizationAlgorithm(SignatureConstants.ALGO_ID_C14N_EXCL_OMIT_COMMENTS);
+        sig.setSignatureAlgorithm(SignatureConstants.ALGO_ID_SIGNATURE_RSA);
         
         DocumentInternalIDContentReference contentReference = new DocumentInternalIDContentReference("FOO");
-        contentReference.getTransforms().add(Transforms.TRANSFORM_ENVELOPED_SIGNATURE);
-        contentReference.getTransforms().add(Transforms.TRANSFORM_C14N_EXCL_OMIT_COMMENTS);
-        contentReference.setDigestAlgorithm(MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA256);
+        contentReference.getTransforms().add(SignatureConstants.TRANSFORM_ENVELOPED_SIGNATURE);
+        contentReference.getTransforms().add(SignatureConstants.TRANSFORM_C14N_EXCL_OMIT_COMMENTS);
+        contentReference.setDigestAlgorithm(EncryptionConstants.ALGO_ID_DIGEST_SHA256);
         sig.getContentReferences().add(contentReference);
+        
+        KeyInfo keyInfo = keyInfoBuilder.buildObject();
+        KeyInfoHelper.addPublicKey(keyInfo, verificationKeyResolver.resolveKey(null));
+        sig.setKeyInfo(keyInfo);
 
         sxo.setSignature(sig);
         return sxo;

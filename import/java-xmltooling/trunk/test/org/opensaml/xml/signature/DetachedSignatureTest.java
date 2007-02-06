@@ -36,6 +36,7 @@ import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.transforms.Transforms;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.XMLObjectBaseTestCase;
+import org.opensaml.xml.encryption.EncryptionConstants;
 import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.io.Unmarshaller;
@@ -151,13 +152,13 @@ public class DetachedSignatureTest extends XMLObjectBaseTestCase {
     public void testExternalSignatureAndVerification() throws MarshallingException, ValidationException, SecurityException {
         Signature signature = sigBuilder.buildObject();
         signature.setSigningKey(signingKey);
-        signature.setCanonicalizationAlgorithm(Canonicalizer.ALGO_ID_C14N_EXCL_OMIT_COMMENTS);
-        signature.setSignatureAlgorithm(XMLSignature.ALGO_ID_SIGNATURE_RSA);
+        signature.setCanonicalizationAlgorithm(SignatureConstants.ALGO_ID_C14N_EXCL_OMIT_COMMENTS);
+        signature.setSignatureAlgorithm(SignatureConstants.ALGO_ID_SIGNATURE_RSA);
 
         String incommonMetadata = "http://wayf.incommonfederation.org/InCommon/InCommon-metadata.xml";
         URIContentReference contentReference = new URIContentReference(incommonMetadata);
-        contentReference.getTransforms().add(Transforms.TRANSFORM_C14N_EXCL_OMIT_COMMENTS);
-        contentReference.setDigestAlgorithm(MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA256);
+        contentReference.getTransforms().add(SignatureConstants.TRANSFORM_C14N_EXCL_OMIT_COMMENTS);
+        contentReference.setDigestAlgorithm(EncryptionConstants.ALGO_ID_DIGEST_SHA256);
         signature.getContentReferences().add(contentReference);
 
         Marshaller marshaller = Configuration.getMarshallerFactory().getMarshaller(signature);
@@ -215,12 +216,12 @@ public class DetachedSignatureTest extends XMLObjectBaseTestCase {
 
         Signature sig = sigBuilder.buildObject();
         sig.setSigningKey(signingKey);
-        sig.setCanonicalizationAlgorithm(Canonicalizer.ALGO_ID_C14N_EXCL_OMIT_COMMENTS);
-        sig.setSignatureAlgorithm(XMLSignature.ALGO_ID_SIGNATURE_RSA);
+        sig.setCanonicalizationAlgorithm(SignatureConstants.ALGO_ID_C14N_EXCL_OMIT_COMMENTS);
+        sig.setSignatureAlgorithm(SignatureConstants.ALGO_ID_SIGNATURE_RSA);
 
         DocumentInternalIDContentReference contentReference = new DocumentInternalIDContentReference("FOO");
-        contentReference.getTransforms().add(Transforms.TRANSFORM_C14N_EXCL_OMIT_COMMENTS);
-        contentReference.setDigestAlgorithm(MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA256);
+        contentReference.getTransforms().add(SignatureConstants.TRANSFORM_C14N_EXCL_OMIT_COMMENTS);
+        contentReference.setDigestAlgorithm(EncryptionConstants.ALGO_ID_DIGEST_SHA256);
         sig.getContentReferences().add(contentReference);
 
         rootSXO.setSignature(sig);
