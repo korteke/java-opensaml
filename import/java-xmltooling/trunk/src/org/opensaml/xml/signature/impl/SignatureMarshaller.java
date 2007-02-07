@@ -16,12 +16,6 @@
 
 package org.opensaml.xml.signature.impl;
 
-import java.security.KeyException;
-import java.security.PublicKey;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
-import java.util.List;
-
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -29,12 +23,12 @@ import org.apache.log4j.Logger;
 import org.apache.xml.security.Init;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.signature.XMLSignature;
+import org.opensaml.xml.Configuration;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.signature.ContentReference;
 import org.opensaml.xml.signature.KeyInfo;
-import org.opensaml.xml.signature.KeyInfoHelper;
 import org.opensaml.xml.signature.Signature;
 import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Document;
@@ -113,33 +107,6 @@ public class SignatureMarshaller implements Marshaller {
             XMLSignature dsig = new XMLSignature(document, "", signature.getSignatureAlgorithm(), signature
                     .getCanonicalizationAlgorithm());
 
-            KeyInfo keyInfo = signature.getKeyInfo();
-            if (keyInfo != null) {
-                //TODO broken until KeyInfoHelper completed
-                List<PublicKey> publicKeys = KeyInfoHelper.getPublicKeys(keyInfo);
-                if (publicKeys.size() > 0) {
-                    if (log.isDebugEnabled()) {
-                        log.debug("Adding public keys to signature key info");
-                    }
-                    /* TODO KeyInfo can in theory have multiple public key reps, so what to do ?
-                    for (PublicKey pk: publicKeys) {
-                        dsig.addKeyInfo(pk);
-                    }
-                    */
-                    dsig.addKeyInfo(publicKeys.get(0));
-                }
-
-                List<X509Certificate> certs = KeyInfoHelper.getCertificates(keyInfo);
-                if (certs.size() > 0) {
-                    if (log.isDebugEnabled()) {
-                        log.debug("Adding X.509 certifiacte(s) into signature's X509 data");
-                    }
-                    for (X509Certificate cert : certs) {
-                        dsig.addKeyInfo(cert);
-                    }
-                }
-            }
-
             if (log.isDebugEnabled()) {
                 log.debug("Adding content to XMLSignature.");
             }
@@ -152,16 +119,17 @@ public class SignatureMarshaller implements Marshaller {
             }
             ((SignatureImpl)signature).setXMLSignature(dsig);
             Element signatureElement = dsig.getElement();
+            
+            if (signature.getKeyInfo() != null) {
+                Marshaller keyInfoMarshaller = 
+                    Configuration.getMarshallerFactory().getMarshaller(KeyInfo.DEFAULT_ELEMENT_NAME);
+                keyInfoMarshaller.marshall(signature.getKeyInfo(), signatureElement);
+            }
+            
             signature.setDOM(signatureElement);
             return signatureElement;
 
         } catch (XMLSecurityException e) {
-            log.error("Unable to construct signature Element " + signature.getElementQName(), e);
-            throw new MarshallingException("Unable to construct signature Element " + signature.getElementQName(), e);
-        } catch (CertificateException e) {
-            log.error("Unable to construct signature Element " + signature.getElementQName(), e);
-            throw new MarshallingException("Unable to construct signature Element " + signature.getElementQName(), e);
-        } catch(KeyException e){
             log.error("Unable to construct signature Element " + signature.getElementQName(), e);
             throw new MarshallingException("Unable to construct signature Element " + signature.getElementQName(), e);
         }
