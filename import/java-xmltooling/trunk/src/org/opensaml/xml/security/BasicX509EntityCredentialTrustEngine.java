@@ -46,9 +46,7 @@ public class BasicX509EntityCredentialTrustEngine extends BaseTrustEngine<X509En
             log.debug("Validating X509 credential for entity " + token.getEntityID());
         }
 
-        List<PublicKey> credentialKeys = new FastList<PublicKey>();
-        credentialKeys.add(token.getPublicKey());
-        credentialKeys.add(token.getEntityCertificate().getPublicKey());
+        List<PublicKey> credentialKeys = getKeys(token);
 
         List<PublicKey> trustedKeys = getKeys(keyInfoSource, keyResolver);
         if (trustedKeys == null) {
@@ -59,14 +57,15 @@ public class BasicX509EntityCredentialTrustEngine extends BaseTrustEngine<X509En
         }
 
         for (PublicKey trustedKey : trustedKeys) {
-            if (trustedKey.equals(token.getPublicKey())
-                    || trustedKey.equals(token.getEntityCertificate().getPublicKey())) {
-                if (log.isDebugEnabled()) {
-                    log.debug("Validated X509 credential for entity " + token.getEntityID()
-                            + " against trusted public keys");
+            for (PublicKey credentialKey : credentialKeys) {
+                if (trustedKey.equals(credentialKey)) {
+                    if (log.isDebugEnabled()) {
+                        log.debug("Validated X509 credential for entity " + token.getEntityID()
+                                + " against trusted public keys");
+                    }
+                    return true;
                 }
-                return true;
-            }
+            }            
         }
 
         if (log.isDebugEnabled()) {
@@ -75,6 +74,19 @@ public class BasicX509EntityCredentialTrustEngine extends BaseTrustEngine<X509En
         }
 
         return false;
+    }
+
+    /**
+     * Gets the list public keys contained within an X509EntityCredential.
+     * 
+     * @param token an X509EntityCredential
+     * @return a list of public keys contained within the credential
+     */
+    protected List<PublicKey> getKeys(X509EntityCredential token) {
+        List<PublicKey> credentialKeys = new FastList<PublicKey>();
+        credentialKeys.add(token.getPublicKey());
+        credentialKeys.add(token.getEntityCertificate().getPublicKey());
+        return credentialKeys;
     }
 
     /**
