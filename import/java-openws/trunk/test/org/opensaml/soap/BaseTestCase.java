@@ -118,19 +118,19 @@ public abstract class BaseTestCase extends XMLTestCase {
      * Initialize the library
      */
     static {
-        HashMap<String, Boolean> features = new HashMap<String, Boolean>();
-        features.put("http://apache.org/xml/features/validation/schema/normalized-value", Boolean.FALSE);
-        features.put("http://apache.org/xml/features/dom/defer-node-expansion", Boolean.FALSE);
-        parserPool = new ParserPool(true, null, features);
+        parserPool = new ParserPool();
+        parserPool.setNamespaceAware(true);
 
         Class clazz = BaseTestCase.class;
         try {
 
             // SOAP 1.1 Configuration
             Document soap11Config = parserPool.parse(clazz.getResourceAsStream("/soap11-config.xml"));
+            Document defaulfConfig = parserPool.parse(clazz.getResourceAsStream("/default-config.xml"));
             
             XMLConfigurator configurator = new XMLConfigurator();
             configurator.load(soap11Config);
+            configurator.load(defaulfConfig);
 
             builderFactory = Configuration.getBuilderFactory();
             marshallerFactory = Configuration.getMarshallerFactory();
