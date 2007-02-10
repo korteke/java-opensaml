@@ -18,7 +18,6 @@ package org.opensaml.xml;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.util.HashMap;
 
 import javax.xml.namespace.QName;
 import javax.xml.transform.OutputKeys;
@@ -46,7 +45,6 @@ import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-import org.xml.sax.InputSource;
 
 /**
  * Base test case class for tests that operate on XMLObjects.
@@ -143,7 +141,7 @@ public class XMLObjectBaseTestCase extends XMLTestCase {
      */
     protected XMLObject unmarshallElement(String elementFile) {
         try {
-            Document doc = parserPool.parse(new InputSource(XMLObjectBaseTestCase.class.getResourceAsStream(elementFile)));
+            Document doc = parserPool.parse(XMLObjectBaseTestCase.class.getResourceAsStream(elementFile));
             Element samlElement = doc.getDocumentElement();
 
             Unmarshaller unmarshaller = Configuration.getUnmarshallerFactory().getUnmarshaller(samlElement);
@@ -211,13 +209,10 @@ public class XMLObjectBaseTestCase extends XMLTestCase {
     
     static {
         try {
-            XMLConfigurator configurator = new XMLConfigurator();
+            XMLConfigurator configurator = new XMLConfigurator();;
 
-            HashMap<String, Boolean> features = new HashMap<String, Boolean>();
-            features.put("http://apache.org/xml/features/validation/schema/normalized-value", Boolean.FALSE);
-            features.put("http://apache.org/xml/features/dom/defer-node-expansion", Boolean.FALSE);
-
-            parserPool = new ParserPool(true, null, features);
+            parserPool = new ParserPool();
+            parserPool.setNamespaceAware(true);
 
             Class clazz = XMLObjectBaseTestCase.class;
 

@@ -108,10 +108,8 @@ public class EnvelopedSignatureTest extends XMLObjectBaseTestCase {
         sigBuilder = new SignatureBuilder();
         keyInfoBuilder = new KeyInfoBuilder();
 
-        HashMap<String, Boolean> features = new HashMap<String, Boolean>();
-        features.put("http://apache.org/xml/features/validation/schema/normalized-value", Boolean.FALSE);
-        features.put("http://apache.org/xml/features/dom/defer-node-expansion", Boolean.FALSE);
-        parserPool = new ParserPool(true, null, features);
+        parserPool = new ParserPool();
+        parserPool.setNamespaceAware(true);
     }
 
     /**

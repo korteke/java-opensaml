@@ -17,7 +17,6 @@
 package org.opensaml.xml;
 
 import org.w3c.dom.Document;
-import org.xml.sax.InputSource;
 
 /**
  * Base test case for {@link org.opensaml.xml.XMLObject}s in XMLTooling for which we need a full set
@@ -49,18 +48,18 @@ public abstract class XMLObjectProviderBaseTestCase extends XMLObjectBaseTestCas
         super.setUp();
 
         if (singleElementFile != null) {
-            expectedDOM = parserPool.parse(new InputSource(XMLObjectProviderBaseTestCase.class
-                    .getResourceAsStream(singleElementFile)));
+            expectedDOM = parserPool.parse(XMLObjectProviderBaseTestCase.class
+                    .getResourceAsStream(singleElementFile));
         }
 
         if (singleElementOptionalAttributesFile != null) {
-            expectedOptionalAttributesDOM = parserPool.parse(new InputSource(XMLObjectProviderBaseTestCase.class
-                    .getResourceAsStream(singleElementOptionalAttributesFile)));
+            expectedOptionalAttributesDOM = parserPool.parse(XMLObjectProviderBaseTestCase.class
+                    .getResourceAsStream(singleElementOptionalAttributesFile));
         }
 
         if (childElementsFile != null) {
-            expectedChildElementsDOM = parserPool.parse(new InputSource(XMLObjectProviderBaseTestCase.class
-                    .getResourceAsStream(childElementsFile)));
+            expectedChildElementsDOM = parserPool.parse(XMLObjectProviderBaseTestCase.class
+                    .getResourceAsStream(childElementsFile));
         }
     }
 

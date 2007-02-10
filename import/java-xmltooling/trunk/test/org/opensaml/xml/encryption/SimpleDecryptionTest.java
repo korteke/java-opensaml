@@ -24,7 +24,6 @@ import org.opensaml.xml.mock.SimpleXMLObject;
 import org.opensaml.xml.security.DirectEncryptionKeyInfoResolver;
 import org.opensaml.xml.security.KeyInfoResolver;
 import org.w3c.dom.Document;
-import org.xml.sax.InputSource;
 
 /**
  * Simple tests for decryption.
@@ -84,7 +83,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
         encryptedKey = encrypter.encryptKey(encKey, kekParams, parserPool.newDocument());
         
         
-        targetDOM = parserPool.parse(new InputSource(SimpleEncryptionTest.class.getResourceAsStream(targetFile)));
+        targetDOM = parserPool.parse(SimpleEncryptionTest.class.getResourceAsStream(targetFile));
         targetObject = (SimpleXMLObject) unmarshallElement(targetFile);
         try {
             encryptedData = encrypter.encryptElement(targetObject, encParams, null);

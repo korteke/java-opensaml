@@ -20,7 +20,6 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.security.Key;
 import java.security.KeyException;
-import java.util.HashMap;
 import java.util.List;
 
 import javolution.util.FastList;
@@ -49,7 +48,7 @@ import org.w3c.dom.NodeList;
 public class Decrypter {
     
     /** ParserPool used in parsing decrypted data. */
-    private static final ParserPool parserPool;
+    private final ParserPool parserPool;
     
     /** Unmarshaller factory, used in decryption of EncryptedData objects. */
     private UnmarshallerFactory unmarshallerFactory;
@@ -73,12 +72,17 @@ public class Decrypter {
      * @param newResolver resolver for data encryption keys.
      */
     public Decrypter(KeyInfoResolver newKEKResolver, KeyInfoResolver newResolver) {
-        this.kekResolver = newKEKResolver;
-        this.resolver = newResolver; 
+        kekResolver = newKEKResolver;
+        resolver = newResolver;
+        parserPool = new ParserPool();
         
         unmarshallerFactory = Configuration.getUnmarshallerFactory();
-        
-        //domImplLS = null;
+    }
+    
+    public Decrypter(KeyInfoResolver newKEKResolver, KeyInfoResolver newResolver, ParserPool pool){
+        kekResolver = newKEKResolver;
+        resolver = newResolver;
+        parserPool = pool;
     }
     
     /**
@@ -446,14 +450,5 @@ public class Decrypter {
         container.appendChild(element);
 
         return container;
-    }
-    
-    static {
-        // Create the parser pool used in decryption of EncryptedData elements
-        HashMap<String, Boolean> features = new HashMap<String, Boolean>();
-        features.put("http://apache.org/xml/features/validation/schema/normalized-value", Boolean.FALSE);
-        features.put("http://apache.org/xml/features/dom/defer-node-expansion", Boolean.FALSE);
-        
-        parserPool = new ParserPool(true, null, features);
     }
 }

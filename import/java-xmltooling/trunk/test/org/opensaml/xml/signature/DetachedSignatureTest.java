@@ -25,7 +25,6 @@ import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.PrivateKey;
 import java.security.PublicKey;
-import java.util.HashMap;
 
 import javolution.util.FastList;
 
@@ -104,10 +103,8 @@ public class DetachedSignatureTest extends XMLObjectBaseTestCase {
         sxoBuilder = new SimpleXMLObjectBuilder();
         sigBuilder = new SignatureBuilder();
 
-        HashMap<String, Boolean> features = new HashMap<String, Boolean>();
-        features.put("http://apache.org/xml/features/validation/schema/normalized-value", Boolean.FALSE);
-        features.put("http://apache.org/xml/features/dom/defer-node-expansion", Boolean.FALSE);
-        parserPool = new ParserPool(true, null, features);
+        parserPool = new ParserPool();
+        parserPool.setNamespaceAware(true);
     }
 
     /**
