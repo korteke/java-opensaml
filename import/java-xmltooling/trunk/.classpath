@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
+        <classpathentry kind="src" path="test"/>
 	<classpathentry kind="src" path="resources/classpath"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="build-lib/junit-3.8.1.jar">
@@ -14,7 +15,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry exported="true" kind="lib" path="lib/xmlsec-1.4.0-commons-logging.jar"/>
-	<classpathentry kind="src" path="test"/>
 	<classpathentry exported="true" kind="lib" path="lib/joda-time-1.4.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="http://joda-time.sourceforge.net/apidocs/"/>
