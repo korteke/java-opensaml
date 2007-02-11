@@ -18,12 +18,12 @@ package org.opensaml.xml;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Constructor;
 
 import javax.xml.namespace.QName;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.Source;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamSource;
@@ -33,6 +33,8 @@ import javax.xml.validation.SchemaFactory;
 import org.apache.log4j.Logger;
 import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.Unmarshaller;
+import org.opensaml.xml.parse.ParserPool;
+import org.opensaml.xml.parse.XMLParserException;
 import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.util.XMLConstants;
 import org.opensaml.xml.util.XMLHelper;
@@ -52,8 +54,12 @@ public class XMLConfigurator {
     /** Class logger. */
     private static Logger log = Logger.getLogger(XMLConfigurator.class);
 
+    /** Pool of parsers used to read and validate configurations. */
+    private ParserPool parserPool;
+    
     /** Schema used to validate configruation files. */
     private Schema configurationSchema;
+    
 
     /**
      * Constructor.
@@ -61,11 +67,16 @@ public class XMLConfigurator {
      * @throws ConfigurationException thrown if the validation schema for configuration files can not be created
      */
     public XMLConfigurator() throws ConfigurationException {
+        parserPool = new ParserPool();
         SchemaFactory factory = SchemaFactory.newInstance(javax.xml.XMLConstants.W3C_XML_SCHEMA_NS_URI);
         Source schemaSource = new StreamSource(XMLConfigurator.class
                 .getResourceAsStream(XMLConstants.XMLTOOLING_SCHEMA_LOCATION));
         try {
             configurationSchema = factory.newSchema(schemaSource);
+            
+            parserPool.setIgnoreComments(true);
+            parserPool.setIgnoreElementContentWhitespace(true);
+            parserPool.setSchema(configurationSchema);
         } catch (SAXException e) {
             throw new ConfigurationException("Unable to read XMLTooling configuration schema", e);
         }
@@ -80,32 +91,47 @@ public class XMLConfigurator {
      * @throws ConfigurationException thrown if the configuration file(s) can not be be read or invalid
      */
     public void load(File configurationFile) throws ConfigurationException {
-        try {
-            DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            Document configuration;
-
+        if(configurationFile == null || !configurationFile.canRead()){
+            log.error("Unable to read configuration file " + configurationFile);
+        }
+        
+        try{
             if (configurationFile.isDirectory()) {
                 File[] configurations = configurationFile.listFiles();
                 for (int i = 0; i < configurations.length; i++) {
                     if (log.isDebugEnabled()) {
                         log.debug("Parsing configuration file " + configurations[i].getAbsolutePath());
                     }
-                    configuration = documentBuilder.parse(new FileInputStream(configurations[i]));
-                    load(configuration);
+                    load(new FileInputStream(configurations[i]));
                 }
             } else {
                 // Given file is not a directory so try to load it directly
                 if (log.isDebugEnabled()) {
                     log.debug("Parsing configuration file " + configurationFile.getAbsolutePath());
                 }
-                configuration = documentBuilder.parse(new FileInputStream(configurationFile));
-                load(configuration);
+                load(new FileInputStream(configurationFile));
             }
-        } catch (Exception e) {
-            log.fatal("Unable to parse configuration file(s) in " + configurationFile.getAbsolutePath(), e);
-            throw new ConfigurationException("Unable to parse configuration file(s) in "
-                    + configurationFile.getAbsolutePath(), e);
+        }catch(FileNotFoundException e){
+            // ignore, we already have the files
         }
+    }
+    
+    /**
+     * Loads a configuration file from an input stream.
+     * 
+     * @param configurationStream configuration stream
+     * 
+     * @throws ConfigurationException thrown if the given configuration is invalid or can not be read
+     */
+    public void load(InputStream configurationStream) throws ConfigurationException{        
+        try{
+            Document configuration = parserPool.parse(configurationStream);
+            load(configuration);
+        }catch(XMLParserException e){
+            log.error("Invalid configuration file", e);
+            throw new ConfigurationException("Unable to create DocumentBuilder", e);
+        }
+        
     }
 
     /**
@@ -131,9 +157,20 @@ public class XMLConfigurator {
         if (log.isDebugEnabled()) {
             log.debug("Configuration document validated");
         }
-
+        
+        load(configuration.getDocumentElement());
+    }
+    
+    /**
+     * Loads a configuration after it's been schema validated.
+     * 
+     * @param configurationRoot root of the configuration
+     * 
+     * @throws ConfigurationException thrown if there is a problem processing the configuration
+     */
+    protected void load(Element configurationRoot) throws ConfigurationException{
         // Initialize object providers
-        NodeList objectProviders = configuration.getDocumentElement().getElementsByTagNameNS(
+        NodeList objectProviders = configurationRoot.getElementsByTagNameNS(
                 XMLConstants.XMLTOOLING_CONFIG_NS, "ObjectProviders");
         if (objectProviders.getLength() > 0) {
             if (log.isInfoEnabled()) {
@@ -146,7 +183,7 @@ public class XMLConfigurator {
         }
 
         // Initialize validator suites
-        NodeList validatorSuitesNodes = configuration.getDocumentElement().getElementsByTagNameNS(
+        NodeList validatorSuitesNodes = configurationRoot.getElementsByTagNameNS(
                 XMLConstants.XMLTOOLING_CONFIG_NS, "ValidatorSuites");
         if (validatorSuitesNodes.getLength() > 0) {
             if (log.isInfoEnabled()) {
@@ -159,7 +196,7 @@ public class XMLConfigurator {
         }
         
         // Initialize ID attributes
-        NodeList idAttributesNodes = configuration.getDocumentElement().getElementsByTagNameNS(
+        NodeList idAttributesNodes = configurationRoot.getElementsByTagNameNS(
                 XMLConstants.XMLTOOLING_CONFIG_NS, "IDAttributes");
         if (idAttributesNodes.getLength() > 0) {
             if (log.isInfoEnabled()) {

@@ -10,8 +10,6 @@
             <element ref="xt:ValidatorSuites" minOccurs="0" />
             <element ref="xt:IDAttributes" minOccurs="0" />
         </sequence>
-
-        <attribute name="clock-skew" type="long" use="optional" />
     </complexType>
 
     <element name="ObjectProviders" type="xt:ObjectProvidersType" />

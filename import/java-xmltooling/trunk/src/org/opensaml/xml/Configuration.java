@@ -17,9 +17,7 @@
 package org.opensaml.xml;
 
 import javax.xml.namespace.QName;
-import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 
 import javolution.util.FastMap;
 import javolution.util.FastSet;
@@ -238,29 +236,29 @@ public class Configuration {
         return idAttributeNames.contains(attributeName);
     }
     
-    static {
-        DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
-        try {
-            DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
-            if(log.isDebugEnabled()){
-                log.debug("VM using JAXP parser " + docBuilder.getClass().getName());
-            }
-
-            if (docBuilder.getClass().getName().startsWith("com.sun")) {
-                String errorMsg = "\n\n\nOpenSAML requires an xml parser that supports DOM3 calls.\n"
-                    + "The JVM is currently configured to use the Sun XML parser, which is known\n"
-                    + "to be buggy and can not be used with OpenSAML.  Please endorse a\n"
-                    + "a functional JAXP parser such as Xerces.  For instructions on how to endorse\n"
-                    + "a new parser see http://java.sun.com/j2se/1.5.0/docs/guide/standards/index.html\n\n\n";
-
-                log.fatal(errorMsg);
-                throw new RuntimeException(errorMsg);
-            }
-        } catch (ParserConfigurationException e) {
-            String errorMsg = "Unable to determine XML parser class that will be used.  Unable to proceed.";
-            log.fatal(errorMsg);
-            throw new RuntimeException(errorMsg);
+    /**
+     * Validates that the system is not using the horribly buggy Sun JAXP implementation. 
+     */
+    public static void validateNonSunJAXP(){
+        String builderFactoryClass = DocumentBuilderFactory.newInstance().getClass().getName();
+        if(log.isDebugEnabled()){
+            log.debug("VM using JAXP parser " + builderFactoryClass);
         }
+
+        if (builderFactoryClass.startsWith("com.sun")) {
+            String errorMsg = "\n\n\nOpenSAML requires an xml parser that supports JAXP 1.3 and DOM3.\n"
+                + "The JVM is currently configured to use the Sun XML parser, which is known\n"
+                + "to be buggy and can not be used with OpenSAML.  Please endorse a functional\n"
+                + "JAXP library(ies) such as Xerces and Xalan.  For instructions on how to endorse\n"
+                + "a new parser see http://java.sun.com/j2se/1.5.0/docs/guide/standards/index.html\n\n\n";
+
+            log.fatal(errorMsg);
+            throw new Error(errorMsg);
+        }
+    }
+    
+    static {
+        validateNonSunJAXP();
         
         // Default to registering the xml:id attribute as an ID type for all configurations
         registerIDAttribute(new QName(javax.xml.XMLConstants.XML_NS_URI, "id"));

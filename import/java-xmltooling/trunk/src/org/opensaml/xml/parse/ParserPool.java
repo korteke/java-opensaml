@@ -31,6 +31,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.validation.Schema;
 
 import org.apache.log4j.Logger;
+import org.opensaml.xml.Configuration;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
@@ -56,7 +57,7 @@ import org.xml.sax.SAXException;
 public class ParserPool {
 
     /** Class logger. */
-    private final Logger log = Logger.getLogger(ParserPool.class);
+    private static Logger log = Logger.getLogger(ParserPool.class);
 
     /** Current version of the pool. */
     private long poolVersion;
@@ -114,6 +115,7 @@ public class ParserPool {
 
     /** Constructor. */
     public ParserPool() {
+        Configuration.validateNonSunJAXP();
         maxPoolSize = 5;
         builderPool = new Stack<SoftReference<DocumentBuilder>>();
         builderAttributes = new HashMap<String, Object>();
@@ -413,8 +415,8 @@ public class ParserPool {
      * <ul>
      * <li>Invoking {@link #setValidating(boolean)} with a value of <code>true</code></li>
      * <li>Invoking {@link #setNamespaceAware(boolean)} with a value of <code>true</code></li>
-     * <li>Add the builder attribute <code>http://java.sun.com/xml/jaxp/properties/schemaLanguage</code> with a value
-     * of <code>http://www.w3.org/2001/XMLSchema</code>
+     * <li>Builder attribute <code>http://java.sun.com/xml/jaxp/properties/schemaSource</code> is unset</li>
+     * <li>Builder attribute <code>http://java.sun.com/xml/jaxp/properties/schemaLanguage</code> is unset</li>
      * </ul>
      * 
      * @param newSchema the schema builders use to validate
@@ -422,10 +424,9 @@ public class ParserPool {
     public void setSchema(Schema newSchema) {
         schema = newSchema;
         if (schema != null) {
-            setValidating(true);
             setNamespaceAware(true);
-            builderAttributes.put("http://java.sun.com/xml/jaxp/properties/schemaLanguage",
-                    "http://www.w3.org/2001/XMLSchema");
+            builderAttributes.remove("http://java.sun.com/xml/jaxp/properties/schemaSource");
+            builderAttributes.remove("http://java.sun.com/xml/jaxp/properties/schemaLanguage");
         }
 
         dirtyBuilderConfiguration = true;
