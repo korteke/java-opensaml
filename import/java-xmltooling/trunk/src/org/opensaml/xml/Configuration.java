@@ -16,6 +16,10 @@
 
 package org.opensaml.xml;
 
+import java.security.NoSuchAlgorithmException;
+
+import javax.crypto.Cipher;
+import javax.crypto.NoSuchPaddingException;
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -257,8 +261,49 @@ public class Configuration {
         }
     }
     
+    /**
+     *  Validates that the set of security providers configured in the JVM supports required
+     *  cryptographic capabilities, for example for the XML Encryption and XML Signature 
+     *  specifications.
+     *  
+     *  Depending on the requirements of the calling code, failure to fully support 
+     *  encryption and signature requirements may or may not be significant, so return
+     *  a status flag to let the caller make that determination.
+     *  
+     *  @return false if one or more capablities are not present, otherwise true
+     */
+    public static boolean validateJCEProviders() {
+        boolean ret = true;
+        
+        // XML Encryption spec requires AES support (128 and 256).
+        // Some JRE's are known to ship with no JCE's that support
+        // the ISO10126Padding padding scheme.
+       
+        String errorMsgAESPadding = "The JCE providers currently configured in the JVM do not support\n"
+            + "required capabilities for XML Encryption, either the 'AES' cipher algorithm\n"
+            + "or the 'ISO10126Padding' padding scheme\n";
+        
+        try {
+            Cipher.getInstance("AES/CBC/ISO10126Padding");
+        } catch (NoSuchAlgorithmException e) {
+            // IBM JCE returns this as the top-level exception even for the unsupported padding case. :-(
+            // Otherwise would be nice to make the error msg more specific.
+            log.warn(errorMsgAESPadding);
+            ret = false;
+        } catch (NoSuchPaddingException e) {
+            log.warn(errorMsgAESPadding);
+            ret = false;
+        }
+        
+        // Could do more tests here as needed.
+        
+        return ret;
+    }
+    
     static {
         validateNonSunJAXP();
+        
+        validateJCEProviders();
         
         // Default to registering the xml:id attribute as an ID type for all configurations
         registerIDAttribute(new QName(javax.xml.XMLConstants.XML_NS_URI, "id"));
