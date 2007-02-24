@@ -20,6 +20,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.ref.SoftReference;
+import java.util.Collections;
 import java.util.EmptyStackException;
 import java.util.HashMap;
 import java.util.Map;
@@ -80,7 +81,7 @@ public class ParserPool {
     /** Builder attributes. */
     private Map<String, Object> builderAttributes;
 
-    /** Whether the builders are coalescing. Default value: false */
+    /** Whether the builders are coalescing. Default value: true */
     private boolean coalescing;
 
     /** Whether the builders expand entity references. Default value: true */
@@ -89,13 +90,13 @@ public class ParserPool {
     /** Builder features. */
     private Map<String, Boolean> builderFeatures;
 
-    /** Whether the builders ignore comments. Default value: false */
+    /** Whether the builders ignore comments. Default value: true */
     private boolean ignoreComments;
 
-    /** Whether the builders ignore element content whitespace. Default value: false */
+    /** Whether the builders ignore element content whitespace. Default value: true */
     private boolean ignoreElementContentWhitespace;
 
-    /** Whether the builders are namespace aware. Default value: false */
+    /** Whether the builders are namespace aware. Default value: true */
     private boolean namespaceAware;
 
     /** Schema used to validate parsed content. */
@@ -119,12 +120,12 @@ public class ParserPool {
         maxPoolSize = 5;
         builderPool = new Stack<SoftReference<DocumentBuilder>>();
         builderAttributes = new HashMap<String, Object>();
-        coalescing = false;
+        coalescing = true;
         expandEntityReferences = true;
         builderFeatures = new HashMap<String, Boolean>();
-        ignoreComments = false;
-        ignoreElementContentWhitespace = false;
-        namespaceAware = false;
+        ignoreComments = true;
+        ignoreElementContentWhitespace = true;
+        namespaceAware = true;
         schema = null;
         validating = false;
         xincludeAware = false;
@@ -267,12 +268,12 @@ public class ParserPool {
     }
 
     /**
-     * Gets the builder attributes used when creating builders.
+     * Gets the builder attributes used when creating builders. This collection is unmodifiable.
      * 
-     * @return Returnsbuilder attributes used when creating builders
+     * @return builder attributes used when creating builders
      */
     public Map<String, Object> getBuilderAttributes() {
-        return builderAttributes;
+        return Collections.unmodifiableMap(builderAttributes);
     }
 
     /**
@@ -324,12 +325,12 @@ public class ParserPool {
     }
 
     /**
-     * Gets the builders' features.
+     * Gets the builders' features. This collection is unmodifiable.
      * 
      * @return the builders' features
      */
     public Map<String, Boolean> getFeatures() {
-        return builderFeatures;
+        return Collections.unmodifiableMap(builderFeatures);
     }
 
     /**
@@ -337,7 +338,7 @@ public class ParserPool {
      * 
      * @param newFeatures the builders' features
      */
-    public void setFeatures(Map<String, Boolean> newFeatures) {
+    public void setFeatures(Map<String, Boolean> newFeatures){
         builderFeatures = newFeatures;
         dirtyBuilderConfiguration = true;
     }

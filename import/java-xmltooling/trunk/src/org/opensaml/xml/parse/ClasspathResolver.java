@@ -77,7 +77,8 @@ public class ClasspathResolver implements EntityResolver, LSResourceResolver {
                 log.debug("Attempting to resolve, within the classpath, the entity with the following system id: "
                         + systemId);
             }
-
+            
+            resource = systemId.replaceFirst("classpath:", "");
             resourceIns = getClass().getResourceAsStream(resource);
         }
 
