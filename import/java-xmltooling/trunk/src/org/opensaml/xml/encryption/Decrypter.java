@@ -20,6 +20,7 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.security.Key;
 import java.security.KeyException;
+import java.util.HashMap;
 import java.util.List;
 
 import javolution.util.FastList;
@@ -74,7 +75,14 @@ public class Decrypter {
     public Decrypter(KeyInfoResolver newKEKResolver, KeyInfoResolver newResolver) {
         kekResolver = newKEKResolver;
         resolver = newResolver;
+        
         parserPool = new ParserPool();
+        parserPool.setNamespaceAware(true);
+        
+        HashMap<String, Boolean> features = new HashMap<String, Boolean>();
+        features.put("http://apache.org/xml/features/dom/defer-node-expansion", Boolean.FALSE); 
+        parserPool.setFeatures(features);
+        
         
         unmarshallerFactory = Configuration.getUnmarshallerFactory();
     }
