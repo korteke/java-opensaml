@@ -38,17 +38,17 @@ import org.opensaml.xml.XMLObject;
  */
 public class ValidatorSuite {
 
-    /** Logger */
-    private final Logger log = Logger.getLogger(ValidatorSuite.class);
+    /** Class logger. */
+    private static Logger log = Logger.getLogger(ValidatorSuite.class);
 
-    /** Unique ID for this suite */
+    /** Unique ID for this suite. */
     private String id;
 
-    /** Validators registered in this suite */
+    /** Validators registered in this suite. */
     private Map<QName, List<Validator>> validators;
 
     /**
-     * Constructor
+     * Constructor.
      * 
      * @param suiteId unique ID for this suite
      */
@@ -74,19 +74,19 @@ public class ValidatorSuite {
      * @throws ValidationException thrown if the element is not valid
      */
     public void validate(XMLObject xmlObject) throws ValidationException {
-        if(xmlObject == null){
+        if (xmlObject == null) {
             return;
         }
-        
-        if(log.isDebugEnabled()){
+
+        if (log.isDebugEnabled()) {
             log.debug("Beginning to verify XMLObject " + xmlObject.getElementQName() + " and its children");
         }
-        
+
         performValidation(xmlObject);
-        
+
         List<XMLObject> children = xmlObject.getOrderedChildren();
-        if(children != null){
-            for(XMLObject child : children){
+        if (children != null) {
+            for (XMLObject child : children) {
                 validate(child);
             }
         }
@@ -150,12 +150,12 @@ public class ValidatorSuite {
             }
             performValidation(schemaType, xmlObject);
         }
-        
+
         if (log.isDebugEnabled()) {
             log.debug("Validating XMLObject " + xmlObject.getElementQName()
                     + " against validators registered under its element QName");
         }
-        
+
         performValidation(xmlObject.getElementQName(), xmlObject);
     }
 
@@ -170,15 +170,17 @@ public class ValidatorSuite {
     private void performValidation(QName validatorSetKey, XMLObject xmlObject) throws ValidationException {
         List<Validator> elementQNameValidators = validators.get(validatorSetKey);
         if (elementQNameValidators != null) {
-            for(Validator validator : elementQNameValidators){
-                if(log.isDebugEnabled()){
-                    log.debug("Validating XMLObject " + xmlObject.getElementQName() + " against Validator " + validator.getClass().getName());
+            for (Validator validator : elementQNameValidators) {
+                if (log.isDebugEnabled()) {
+                    log.debug("Validating XMLObject " + xmlObject.getElementQName() + " against Validator "
+                            + validator.getClass().getName());
                 }
                 validator.validate(xmlObject);
             }
         } else {
             if (log.isDebugEnabled()) {
-                log.debug("No validators registered for XMLObject " + xmlObject.getElementQName() + " under QName " + validatorSetKey);
+                log.debug("No validators registered for XMLObject " + xmlObject.getElementQName() + " under QName "
+                        + validatorSetKey);
             }
         }
     }

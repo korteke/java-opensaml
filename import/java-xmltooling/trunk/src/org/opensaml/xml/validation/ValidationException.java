@@ -21,9 +21,7 @@ package org.opensaml.xml.validation;
  */
 public class ValidationException extends Exception {
 
-	/**
-	 * Serial Version UID.
-	 */
+    /** Serial Version UID. */
     private static final long serialVersionUID = -8268522315645892798L;
 
     /**
@@ -32,7 +30,7 @@ public class ValidationException extends Exception {
     public ValidationException() {
         super();
     }
-    
+
     /**
      * Constructor.
      * 
@@ -41,7 +39,7 @@ public class ValidationException extends Exception {
     public ValidationException(String message) {
         super(message);
     }
-    
+
     /**
      * Constructor.
      * 
@@ -50,7 +48,7 @@ public class ValidationException extends Exception {
     public ValidationException(Exception wrappedException) {
         super(wrappedException);
     }
-    
+
     /**
      * Constructor.
      * 

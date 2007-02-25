@@ -21,6 +21,8 @@ import org.opensaml.xml.XMLObject;
 /**
  * An interface for classes that implement rules for checking the 
  * validity of a XMLObjects.
+ * 
+ * @param <XMLObjectType> type of XML object that will be validated
  */
 public interface Validator<XMLObjectType extends XMLObject> {
 
