@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.xml.security;
+package org.opensaml.xml.security.x509;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -39,6 +39,7 @@ import org.bouncycastle.asn1.DERObjectIdentifier;
 import org.bouncycastle.asn1.DERSequence;
 import org.bouncycastle.asn1.DERSet;
 import org.bouncycastle.asn1.DERString;
+import org.opensaml.xml.security.SecurityException;
 
 /**
  * Utility class for working with X509 objects.

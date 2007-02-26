@@ -28,13 +28,13 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.signature.XMLSignatureException;
-import org.opensaml.xml.security.BasePKIXTrustEngine;
 import org.opensaml.xml.security.KeyInfoSource;
-import org.opensaml.xml.security.PKIXValidationInformation;
 import org.opensaml.xml.security.SecurityException;
-import org.opensaml.xml.security.SimpleX509EntityCredential;
-import org.opensaml.xml.security.X509EntityCredential;
 import org.opensaml.xml.security.X509KeyInfoResolver;
+import org.opensaml.xml.security.x509.BasePKIXTrustEngine;
+import org.opensaml.xml.security.x509.PKIXValidationInformation;
+import org.opensaml.xml.security.x509.SimpleX509EntityCredential;
+import org.opensaml.xml.security.x509.X509Credential;
 import org.opensaml.xml.signature.impl.SignatureImpl;
 
 /**
@@ -51,7 +51,7 @@ public class PKIXSignatureTrustEngine extends BasePKIXTrustEngine<Signature, X50
     public boolean validate(byte[] signature, byte[] content, String sigAlg, KeyInfoSource keyInfoSource,
             X509KeyInfoResolver keyResolver) throws SecurityException {
 
-            X509EntityCredential entityCredential = validateSignature(signature, content, sigAlg, keyInfoSource, keyResolver);
+            X509Credential entityCredential = validateSignature(signature, content, sigAlg, keyInfoSource, keyResolver);
             for (PKIXValidationInformation validationInfo : getPKIXValidationInformation(keyInfoSource.getName())) {
                 if (pkixValidate(entityCredential, validationInfo)) {
                     return true;
@@ -65,7 +65,7 @@ public class PKIXSignatureTrustEngine extends BasePKIXTrustEngine<Signature, X50
     public boolean validate(Signature token, KeyInfoSource keyInfoSource, X509KeyInfoResolver keyResolver)
             throws SecurityException {
 
-        X509EntityCredential credential = validateSignature(token, keyInfoSource, keyResolver);
+        X509Credential credential = validateSignature(token, keyInfoSource, keyResolver);
         for (PKIXValidationInformation validationInfo : getPKIXValidationInformation(keyInfoSource.getName())) {
             if (pkixValidate(credential, validationInfo)) {
                 return true;
@@ -75,7 +75,7 @@ public class PKIXSignatureTrustEngine extends BasePKIXTrustEngine<Signature, X50
         return false;
     }
 
-    protected X509EntityCredential validateSignature(byte[] signature, byte[] content, String sigAlg,
+    protected X509Credential validateSignature(byte[] signature, byte[] content, String sigAlg,
             KeyInfoSource keyInfoSource, X509KeyInfoResolver keyResolver) throws SecurityException {
         try {
             List<PublicKey> publicKeys = null;
@@ -129,7 +129,7 @@ public class PKIXSignatureTrustEngine extends BasePKIXTrustEngine<Signature, X50
         }
     }
 
-    protected X509EntityCredential validateSignature(Signature signature, KeyInfoSource keyInfoSource,
+    protected X509Credential validateSignature(Signature signature, KeyInfoSource keyInfoSource,
             X509KeyInfoResolver keyResolver) throws SecurityException {
         XMLSignature xmlSignature = ((SignatureImpl) signature).getXMLSignature();
 

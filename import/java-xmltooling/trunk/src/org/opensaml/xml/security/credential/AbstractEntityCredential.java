@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package org.opensaml.xml.security;
+package org.opensaml.xml.security.credential;
 
 import java.security.PrivateKey;
 import java.security.PublicKey;
 
 /**
- * Base class for {@link org.opensaml.xml.security.EntityCredential} implementations.
+ * Base class for {@link org.opensaml.xml.security.credential.Credential} implementations.
  */
-public abstract class AbstractEntityCredential implements EntityCredential {
+public abstract class AbstractEntityCredential implements Credential {
 
     /** ID of the entity owning this credential. */
     protected String entityID;

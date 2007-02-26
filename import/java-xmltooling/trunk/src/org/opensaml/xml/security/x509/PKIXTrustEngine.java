@@ -14,28 +14,16 @@
  * limitations under the License.
  */
 
-package org.opensaml.xml.security;
+package org.opensaml.xml.security.x509;
+
+import org.opensaml.xml.security.trust.TrustEngine;
 
 /**
  * Trust engine that validates security tokens using PKIX validation.
  * 
  * @param <TokenType> token to validate
- * @param <KeyInfoResolverType> source of key information
+ * @param <TrustedCredentialType> trusted credential information the given token will be checked against
  */
-public interface PKIXTrustEngine<TokenType, KeyInfoResolverType extends X509KeyInfoResolver> extends
-        TrustEngine<TokenType, KeyInfoResolverType> {
-
-    /**
-     * Gets the information necessary to perform the PKIX validation.
-     * 
-     * @return information necessary to perform the PKIX validation
-     */
-    public PKIXValidationInformation getValidationInformation();
-
-    /**
-     * Sets the information necessary to perform the PKIX validation.
-     * 
-     * @param validationInformation information necessary to perform the PKIX validation
-     */
-    public void setValidationInformation(PKIXValidationInformation validationInformation);
+public interface PKIXTrustEngine<TokenType, TrustedCredentialType extends X509Credential> extends
+        TrustEngine<TokenType, TrustedCredentialType> {
 }

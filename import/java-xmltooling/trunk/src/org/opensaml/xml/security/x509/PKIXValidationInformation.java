@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package org.opensaml.xml.security;
+package org.opensaml.xml.security.x509;
 
 import java.security.cert.X509CRL;
 import java.security.cert.X509Certificate;
-import java.util.Set;
+import java.util.Collection;
 
 /**
  * Source of PKIX validation information such as trust anchors and CRLs.
@@ -37,12 +37,12 @@ public interface PKIXValidationInformation {
      * 
      * @return trust anchors used during PKIX validation
      */
-    public Set<X509Certificate> getTrustChain();
+    public Collection<X509Certificate> getTrustChain();
 
     /**
      * Gets the CRLs used during PKIX validation.
      * 
      * @return CRLs used during PKIX validation
      */
-    public Set<X509CRL> getCRLs();
+    public Collection<X509CRL> getCRLs();
 }

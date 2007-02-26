@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.opensaml.xml.security;
+package org.opensaml.xml.security.credential;
 
 /** Credential usage types. */
 public enum UsageType {

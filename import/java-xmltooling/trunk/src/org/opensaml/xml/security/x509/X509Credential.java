@@ -14,22 +14,25 @@
  * limitations under the License.
  */
 
-package org.opensaml.xml.security;
+package org.opensaml.xml.security.x509;
 
+import java.security.cert.X509CRL;
 import java.security.cert.X509Certificate;
-import java.util.List;
+import java.util.Collection;
+
+import org.opensaml.xml.security.credential.Credential;
 
 /**
  * An entity credential based on PKI.
  */
-public interface X509EntityCredential extends EntityCredential {
+public interface X509Credential extends Credential {
 
     /** DSA key algorithim identifier. */
     public static final String DSA_KEY_ALGORITHM = "DSA";
 
     /** RSA key algorithim identifier. */
     public static final String RSA_KEY_ALGORITHM = "RSA";
-    
+
     /**
      * Gets the public certificate for the entity.
      * 
@@ -38,12 +41,17 @@ public interface X509EntityCredential extends EntityCredential {
     public X509Certificate getEntityCertificate();
 
     /**
-     * Gets an unmutable list of certificates in the entity's trust chain. The entity certificate is contained within
-     * this list. No specific ordering of the certificates is guaranteed, however a suggested ordering would be for the
-     * entity certificate to be the first element in the list, the signer of the entity certificate as the next element,
-     * the signer of that previous signer as the third, etc.
+     * Gets an immutable collection of certificates in the entity's trust chain. The entity certificate is contained
+     * within this list. No specific ordering of the certificates is guaranteed.
      * 
-     * @return the public certificate for the entity
+     * @return entities certificate chain
      */
-    public List<X509Certificate> getEntityCertificateChain();
+    public Collection<X509Certificate> getEntityCertificateChain();
+
+    /**
+     * Gets a collection of CRLs associated with the credential.
+     * 
+     * @return CRLs associated with the credential
+     */
+    public Collection<X509CRL> getCRLs();
 }

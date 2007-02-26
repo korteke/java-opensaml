@@ -14,16 +14,17 @@
  * limitations under the License.
  */
 
-package org.opensaml.xml.security;
+package org.opensaml.xml.security.credential;
 
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.util.Collection;
 
 /**
- * A credential for an entity, such as an Identity provider or Service provider. A credential must contain a public
- * key, and in the event that symmetric keys are used the public and private key may be identical.
+ * A credential for an entity.  Local entity credentials will usually contain a private key while 
+ * peer credentails will normally contain only a public key.
  */
-public interface EntityCredential {
+public interface Credential {
     
     /**
      * The unique ID of the entity this credential is for.
@@ -40,6 +41,16 @@ public interface EntityCredential {
     public UsageType getUsageType();
     
     /**
+     * Gets key names for this credential.  These names may be used to reference a key(s) exchanged 
+     * through an out-of-band aggreement.  Implementations may or may not implement means to resolve 
+     * these names into keys retrievable through the {@link #getPublicKeys()} or {@link #getPrivateKey()} 
+     * methods.
+     * 
+     * @return key names for this credential
+     */
+    public Collection<String> getKeyNames();
+    
+    /**
      * Gets the algorithim used to generate the key, some examples would be DSA or RSA.
      * 
      * @return the algorithim used to generate the key
@@ -47,11 +58,11 @@ public interface EntityCredential {
     public String getKeyAlgorithm();
 
     /**
-     * Gets the public key for the entity.
+     * Gets the public keys for the entity.
      * 
-     * @return the public key for the entity
+     * @return public keys for the entity
      */
-    public PublicKey getPublicKey();
+    public Collection<PublicKey> getPublicKeys();
 
     /**
      * Gets the private key for the entity if there is one.

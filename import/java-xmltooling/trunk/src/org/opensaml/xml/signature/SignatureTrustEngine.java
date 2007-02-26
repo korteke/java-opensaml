@@ -16,19 +16,17 @@
 
 package org.opensaml.xml.signature;
 
-import org.opensaml.xml.security.KeyInfoResolver;
-import org.opensaml.xml.security.KeyInfoSource;
 import org.opensaml.xml.security.SecurityException;
-import org.opensaml.xml.security.TrustEngine;
+import org.opensaml.xml.security.credential.Credential;
+import org.opensaml.xml.security.trust.TrustEngine;
 
 /**
  * Evaluates the trustworthiness and validity of XML or raw Signatures against implementation-specific requirements.
  * 
- * @param <KeyInfoResolverType> the {@link KeyInfoResolver} type used to extract keying information from 
- *      {@link KeyInfo}s
+ * @param <TrustedCredentialType> type of credential to validate the signature against
  */
-public interface SignatureTrustEngine<KeyInfoResolverType extends KeyInfoResolver> extends
-        TrustEngine<Signature, KeyInfoResolverType> {
+public interface SignatureTrustEngine<TrustedCredentialType extends Credential> extends
+        TrustEngine<Signature, TrustedCredentialType> {
 
     /**
      * Determines whether a raw signature is correct and valid with respect to the source of KeyInfo data supplied. It
@@ -41,14 +39,13 @@ public interface SignatureTrustEngine<KeyInfoResolverType extends KeyInfoResolve
      * @param signature the signature value
      * @param content the content that was signed
      * @param sigAlg the signature algorithm used
-     * @param keyInfo information about the key to use to validate the signature
-     * @param keyResolver resolver to convert KeyInfo objects into keys used to validate the signature
+     * @param trustedCredential credential information to validate signature against
      * 
      * @return true if the signature was valid for the provided content
      * 
      * @throws SecurityException thrown if there is a problem attempting to verify the signature such as the signature
      *             algorithim not being supported
      */
-    public boolean validate(byte[] signature, byte[] content, String sigAlg, KeyInfoSource keyInfo,
-            KeyInfoResolverType keyResolver) throws SecurityException;
+    public boolean validate(byte[] signature, byte[] content, String sigAlg, TrustedCredentialType trustedCredential)
+            throws SecurityException;
 }
