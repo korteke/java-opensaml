@@ -31,7 +31,7 @@ public interface Credential {
      * 
      * @return unique ID of the entity this credential is for
      */
-    public String getEntityID();
+    public String getEntityId();
     
     /**
      * Gets usage type of this credential.
@@ -49,13 +49,6 @@ public interface Credential {
      * @return key names for this credential
      */
     public Collection<String> getKeyNames();
-    
-    /**
-     * Gets the algorithim used to generate the key, some examples would be DSA or RSA.
-     * 
-     * @return the algorithim used to generate the key
-     */
-    public String getKeyAlgorithm();
 
     /**
      * Gets the public keys for the entity.

@@ -45,7 +45,7 @@ public class BasicX509CredentialTrustEngine implements TrustEngine<X509Credentia
         }
 
         if (log.isDebugEnabled()) {
-            log.debug("Validating X509 credential for entity " + untrustedCredential.getEntityID());
+            log.debug("Validating X509 credential for entity " + untrustedCredential.getEntityId());
         }
 
         Collection<PublicKey> trustedKeys = getKeys(trustedCredential);
@@ -54,7 +54,7 @@ public class BasicX509CredentialTrustEngine implements TrustEngine<X509Credentia
             for (PublicKey credentialKey : credentialKeys) {
                 if (trustedKey.equals(credentialKey)) {
                     if (log.isDebugEnabled()) {
-                        log.debug("Validated X509 credential for entity " + untrustedCredential.getEntityID()
+                        log.debug("Validated X509 credential for entity " + untrustedCredential.getEntityId()
                                 + " against trusted public keys");
                     }
                     return true;
@@ -63,7 +63,7 @@ public class BasicX509CredentialTrustEngine implements TrustEngine<X509Credentia
         }
 
         if (log.isDebugEnabled()) {
-            log.debug("X509 credential for entity " + untrustedCredential.getEntityID()
+            log.debug("X509 credential for entity " + untrustedCredential.getEntityId()
                     + " did not validated against any trusted keys");
         }
 

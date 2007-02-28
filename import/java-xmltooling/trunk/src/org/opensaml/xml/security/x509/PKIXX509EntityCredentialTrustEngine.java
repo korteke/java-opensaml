@@ -44,7 +44,7 @@ public class PKIXX509EntityCredentialTrustEngine extends BasePKIXTrustEngine<X50
     public boolean validate(X509Credential untrustedCredential, X509Credential trustedCredential)
             throws SecurityException {
         if (log.isDebugEnabled()) {
-            log.debug("PKIX validating credential for entity " + untrustedCredential.getEntityID());
+            log.debug("PKIX validating credential for entity " + untrustedCredential.getEntityId());
         }
 
         if (untrustedCredential == null) {

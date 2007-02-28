@@ -16,7 +16,7 @@
 
 package org.opensaml.xml.security.credential;
 
-import java.util.Set;
+import org.opensaml.xml.security.SecurityException;
 
 /**
  * A manager for looking up credentials for a given entity.
@@ -29,17 +29,11 @@ public interface CredentialResolver<CredentialType extends Credential> {
      * Gets the credential for the given entity.
      * 
      * @param entity ID of the entity
+     * @param usage usage type of the credential
      * 
      * @return entity's credential or null
-     */
-    public CredentialType resolveCredential(String entity);
-    
-    /**
-     * Gets a list of all the entities this resolver can produce credentials for.
      * 
-     * <strong>NOTE:</strong> In most cases this will be a rather costly operation.
-     * 
-     * @return all the entities this resolver can produce credentials for
+     * @throws SecurityException thrown if the credential can not be resolved
      */
-    public Set<String> getEntities();
+    public CredentialType resolveCredential(String entity, UsageType usage) throws SecurityException;
 }

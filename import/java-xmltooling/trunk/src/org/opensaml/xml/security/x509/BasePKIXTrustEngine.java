@@ -96,7 +96,7 @@ public abstract class BasePKIXTrustEngine<TokenType, TrustedCredentialType exten
         }
 
         if (log.isDebugEnabled()) {
-            log.debug("Checking untrusted " + untrustedCredential.getEntityID()
+            log.debug("Checking untrusted " + untrustedCredential.getEntityId()
                     + " credential against trusted entity ID and key names");
         }
         Integer[] altNameTypes = { X509Util.DNS_ALT_NAME, X509Util.URI_ALT_NAME };
@@ -104,16 +104,16 @@ public abstract class BasePKIXTrustEngine<TokenType, TrustedCredentialType exten
                 .getEntityCertificate(), altNameTypes));
 
         HashSet<String> trustedNames = new HashSet<String>(trustedCredential.getKeyNames());
-        trustedNames.add(trustedCredential.getEntityID());
+        trustedNames.add(trustedCredential.getEntityId());
 
         if (Collections.disjoint(possibleKeyNames, trustedNames)) {
             log
-                    .error("Untrusted credential for entity " + untrustedCredential.getEntityID()
+                    .error("Untrusted credential for entity " + untrustedCredential.getEntityId()
                             + " failed name checking.");
             return false;
         } else {
             if (log.isDebugEnabled()) {
-                log.debug("Untrusted credential for entity " + untrustedCredential.getEntityID()
+                log.debug("Untrusted credential for entity " + untrustedCredential.getEntityId()
                         + " passed name checking.");
             }
             return true;
@@ -134,7 +134,7 @@ public abstract class BasePKIXTrustEngine<TokenType, TrustedCredentialType exten
     protected boolean pkixValidate(PKIXValidationInformation validationInfo, X509Credential untrustedCredential)
             throws SecurityException {
         if (log.isDebugEnabled()) {
-            log.debug("Attempting PKIX path validation on untrusted credential " + untrustedCredential.getEntityID());
+            log.debug("Attempting PKIX path validation on untrusted credential " + untrustedCredential.getEntityId());
         }
 
         try {
@@ -154,7 +154,7 @@ public abstract class BasePKIXTrustEngine<TokenType, TrustedCredentialType exten
             validator.validate(certificatePath, params);
 
             if (log.isDebugEnabled()) {
-                log.debug("PKIX validation of credentials for " + untrustedCredential.getEntityID() + " successful");
+                log.debug("PKIX validation of credentials for " + untrustedCredential.getEntityId() + " successful");
             }
             return true;
 

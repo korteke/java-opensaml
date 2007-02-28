@@ -62,7 +62,7 @@ public class BasicX509SignatureTrustEngine implements SignatureTrustEngine<X509C
                 if (signature.checkSignatureValue(trustedKey)) {
                     if (log.isDebugEnabled()) {
                         log.debug("Signature validated with public key from credential for entity "
-                                + trustedCredential.getEntityID());
+                                + trustedCredential.getEntityId());
                     }
                     return true;
                 }
@@ -72,7 +72,7 @@ public class BasicX509SignatureTrustEngine implements SignatureTrustEngine<X509C
         }
 
         if (log.isDebugEnabled()) {
-            log.debug("Signature did not validate against any public keyfor entity " + trustedCredential.getEntityID());
+            log.debug("Signature did not validate against any public keyfor entity " + trustedCredential.getEntityId());
         }
         return false;
     }

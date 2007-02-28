@@ -37,9 +37,6 @@ public class BasicX509Credential implements X509Credential {
     /** Usage the credential is meant for. */
     private UsageType credentialUsage;
     
-    /** Key algorithm used. */
-    private String keyAlogrithm;
-    
     /** Key names. */
     private Collection<String> keyNames;
     
@@ -74,7 +71,7 @@ public class BasicX509Credential implements X509Credential {
     }
     
     /** {@inheritDoc} */
-    public String getEntityID() {
+    public String getEntityId() {
         return entityId;
     }
 
@@ -119,20 +116,6 @@ public class BasicX509Credential implements X509Credential {
      */
     public void setEntityCertificateChain(Collection<X509Certificate> certs){
         certChain = new ArrayList<X509Certificate>(certs);
-    }
-
-    /** {@inheritDoc} */
-    public String getKeyAlgorithm() {
-        return keyAlogrithm;
-    }
-    
-    /**
-     * Sets the key algorithm used to generate the keys for this credential.
-     * 
-     * @param algorithm key algorithm used to generate the keys for this credential
-     */
-    public void setKeyAlgorithm(String algorithm){
-        keyAlogrithm = DatatypeHelper.safeTrimOrNullString(algorithm);
     }
 
     /** {@inheritDoc} */

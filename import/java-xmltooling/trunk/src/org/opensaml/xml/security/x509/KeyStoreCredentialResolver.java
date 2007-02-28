@@ -23,16 +23,17 @@ import java.security.PublicKey;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Enumeration;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.opensaml.xml.security.credential.CredentialResolver;
+import org.opensaml.xml.security.credential.UsageType;
 
 /**
  * A {@link CredentialResolver} that extracts {@link X509Credential} from a key store.
+ * 
+ * If no key usage type is presented at construction time this resolver will return the key, if available, regardless of
+ * the usage type provided to its resolve method.
  */
 public class KeyStoreCredentialResolver implements CredentialResolver<X509Credential> {
 
@@ -45,6 +46,9 @@ public class KeyStoreCredentialResolver implements CredentialResolver<X509Creden
     /** Passwords for keys. The key must be the entity ID, the value the password. */
     private Map<String, String> keyPasswords;
 
+    /** Usage type of all keys in the store. */
+    private UsageType keyUsage;
+
     /**
      * Constructor.
      * 
@@ -54,6 +58,20 @@ public class KeyStoreCredentialResolver implements CredentialResolver<X509Creden
      * @throws IllegalArgumentException thrown if the given keystore is null
      */
     public KeyStoreCredentialResolver(KeyStore store, Map<String, String> passwords) throws IllegalArgumentException {
+        this(store, passwords, null);
+    }
+
+    /**
+     * Constructor.
+     * 
+     * @param store key store credentials are retrieved from
+     * @param passwords for key entries, map key is the entity id, map value is the password
+     * @param usage usage type of all keys in the store
+     * 
+     * @throws IllegalArgumentException thrown if the given keystore is null
+     */
+    public KeyStoreCredentialResolver(KeyStore store, Map<String, String> passwords, UsageType usage)
+            throws IllegalArgumentException {
         if (store == null) {
             throw new IllegalArgumentException("Provided key store may not be null.");
         }
@@ -65,28 +83,16 @@ public class KeyStoreCredentialResolver implements CredentialResolver<X509Creden
         }
 
         keyStore = store;
+
+        keyUsage = usage;
     }
 
     /** {@inheritDoc} */
-    public Set<String> getEntities() {
-        Set<String> entities = new HashSet<String>();
-
-        try {
-            String entity;
-            Enumeration<String> entitiesEnum = keyStore.aliases();
-            while (entitiesEnum.hasMoreElements()) {
-                entity = entitiesEnum.nextElement();
-                entities.add(entity);
-            }
-        } catch (KeyStoreException e) {
-            // already checked for the store being initialized
+    public X509Credential resolveCredential(String entity, UsageType usage) {
+        if (keyUsage != null && keyUsage != usage) {
+            return null;
         }
 
-        return entities;
-    }
-
-    /** {@inheritDoc} */
-    public X509Credential resolveCredential(String entity) {
         KeyStore.PasswordProtection keyPassword = null;
 
         if (keyPasswords.containsKey(entity)) {
@@ -101,7 +107,6 @@ public class KeyStoreCredentialResolver implements CredentialResolver<X509Creden
             if (keyEntry instanceof KeyStore.PrivateKeyEntry) {
                 KeyStore.PrivateKeyEntry privateKeyEntry = (KeyStore.PrivateKeyEntry) keyEntry;
                 credential.setPrivateKey(privateKeyEntry.getPrivateKey());
-                credential.setKeyAlgorithm(privateKeyEntry.getPrivateKey().getAlgorithm());
 
                 ArrayList<PublicKey> publicKeys = new ArrayList<PublicKey>();
                 publicKeys.add(privateKeyEntry.getCertificate().getPublicKey());
@@ -114,7 +119,6 @@ public class KeyStoreCredentialResolver implements CredentialResolver<X509Creden
                 KeyStore.TrustedCertificateEntry trustedCertEntry = (KeyStore.TrustedCertificateEntry) keyEntry;
                 X509Certificate cert = (X509Certificate) trustedCertEntry.getTrustedCertificate();
 
-                credential.setKeyAlgorithm(cert.getPublicKey().getAlgorithm());
                 ArrayList<PublicKey> publicKeys = new ArrayList<PublicKey>();
                 publicKeys.add(cert.getPublicKey());
                 credential.setPublicKeys(publicKeys);

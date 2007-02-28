@@ -37,7 +37,7 @@ public abstract class AbstractEntityCredential implements Credential {
     protected PrivateKey privateKey;
     
     /** {@inheritDoc}  */
-    public String getEntityID() {
+    public String getEntityId() {
         return entityID;
     }
 

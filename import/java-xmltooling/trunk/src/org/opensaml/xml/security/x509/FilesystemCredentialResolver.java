@@ -16,38 +16,40 @@
 
 package org.opensaml.xml.security.x509;
 
-import java.util.Set;
+import java.util.Map;
 
 import org.opensaml.xml.security.credential.CredentialResolver;
+import org.opensaml.xml.security.credential.UsageType;
 
 /**
  * A {@link CredentialResolver} that pulls credential information from the file system.
  * 
- * TODO
+ * This credential resolver attempts to retrieve credential information from the file system. Specifically it will
+ * attempt to find key, cert, and crl information from files within the given directory. The filename must start with
+ * the entity ID and be followed by one of the follow extensions:
+ * 
+ * <ul>
+ * <li>.name - for key names. File must contain a carriage return seperated list of key names</li>
+ * <li>.priv - for private key. File must contain one PEM or DER encoded private key</li>
+ * <li>.pub - for public keys. File must contain one or more PEM or DER encoded private key</li>
+ * <li>.crt - for public certificates. File must contain one or more PEM or DER encoded X.509 certificates</li>
+ * <li>.crl - for certificate revocation lists. File must contain one or more CRLs</li>
+ * </ul>
  */
 public class FilesystemCredentialResolver implements CredentialResolver<X509Credential> {
 
     /**
      * Constructor.
      * 
-     * @param entityId ID of the entity this credential is for
-     * @param keyPath path to private key
-     * @param keyPass private key password
-     * @param certPath path to the certificate file or directory
-     * @param crlPath path to the CRL file or directory
+     * @param credentialDirectory directory credential information can be found in
+     * @param passwords passwords for encrypted private keys, key is the entity ID, value is the password
      */
-    public FilesystemCredentialResolver(String entityId, String keyPath, String keyPass, String certPath, String crlPath) {
+    public FilesystemCredentialResolver(String credentialDirectory, Map<String, String> passwords) {
 
     }
 
     /** {@inheritDoc} */
-    public Set<String> getEntities() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    /** {@inheritDoc} */
-    public X509Credential resolveCredential(String entity) {
+    public X509Credential resolveCredential(String entity, UsageType usage) {
         // TODO Auto-generated method stub
         return null;
     }
