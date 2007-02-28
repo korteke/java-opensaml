@@ -20,6 +20,8 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.Collection;
 
+import javax.crypto.SecretKey;
+
 /**
  * A credential for an entity.  Local entity credentials will usually contain a private key while 
  * peer credentails will normally contain only a public key.
@@ -56,6 +58,13 @@ public interface Credential {
      * @return public keys for the entity
      */
     public Collection<PublicKey> getPublicKeys();
+    
+    /**
+     * Gets the secret key for this entity.
+     * 
+     * @return secret key for this entity
+     */
+    public SecretKey getSecretyKey();
 
     /**
      * Gets the private key for the entity if there is one.

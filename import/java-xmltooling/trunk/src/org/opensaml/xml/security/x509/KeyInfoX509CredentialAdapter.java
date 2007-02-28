@@ -23,6 +23,8 @@ import java.security.cert.X509CRL;
 import java.security.cert.X509Certificate;
 import java.util.Collection;
 
+import javax.crypto.SecretKey;
+
 import org.opensaml.xml.security.credential.UsageType;
 import org.opensaml.xml.signature.KeyInfo;
 import org.opensaml.xml.signature.KeyInfoHelper;
@@ -109,6 +111,11 @@ public class KeyInfoX509CredentialAdapter implements X509Credential {
 
     /** {@inheritDoc} */
     public PrivateKey getPrivateKey() {
+        return null;
+    }
+    
+    /** {@inheritDoc} */
+    public SecretKey getSecretyKey() {
         return null;
     }
 

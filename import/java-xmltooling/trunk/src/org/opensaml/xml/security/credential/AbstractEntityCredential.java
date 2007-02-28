@@ -19,6 +19,8 @@ package org.opensaml.xml.security.credential;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 
+import javax.crypto.SecretKey;
+
 /**
  * Base class for {@link org.opensaml.xml.security.credential.Credential} implementations.
  */
@@ -32,6 +34,9 @@ public abstract class AbstractEntityCredential implements Credential {
     
     /** Public key of the entity. */
     protected PublicKey publicKey;
+    
+    /** Secret key for this entity. */
+    protected SecretKey secretKey;
     
     /** Private key of the entity. */
     protected PrivateKey privateKey;
@@ -54,6 +59,11 @@ public abstract class AbstractEntityCredential implements Credential {
     /** {@inheritDoc}  */
     public PublicKey getPublicKey() {
         return publicKey;
+    }
+    
+    /** {@inheritDoc} */
+    public SecretKey getSecretyKey() {
+        return secretKey;
     }
 
     /** {@inheritDoc}  */

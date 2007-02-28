@@ -23,6 +23,8 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.crypto.SecretKey;
+
 import org.opensaml.xml.security.credential.UsageType;
 import org.opensaml.xml.util.DatatypeHelper;
 
@@ -42,6 +44,9 @@ public class BasicX509Credential implements X509Credential {
     
     /** Public keys. */
     private Collection<PublicKey> publicKeys;
+    
+    /** Secret key for the entity. */
+    private SecretKey secretKey;
     
     /** Private key. */
     private PrivateKey privateKey;
@@ -136,7 +141,7 @@ public class BasicX509Credential implements X509Credential {
     public PrivateKey getPrivateKey() {
         return privateKey;
     }
-    
+   
     /**
      * Sets the private key for this credential.
      * 
@@ -144,6 +149,20 @@ public class BasicX509Credential implements X509Credential {
      */
     public void setPrivateKey(PrivateKey key){
         privateKey = key;
+    }
+    
+    /** {@inheritDoc} */
+    public SecretKey getSecretyKey() {
+        return secretKey;
+    }
+    
+    /**
+     * Sets the secret key for this credential.
+     * 
+     * @param key secret key for this credential
+     */
+    public void setSecretKey(SecretKey key){
+        secretKey = key;
     }
 
     /** {@inheritDoc} */
