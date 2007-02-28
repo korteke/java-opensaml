@@ -24,6 +24,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import javax.crypto.SecretKey;
 import javax.servlet.http.HttpServletRequest;
 
 import org.opensaml.xml.security.credential.UsageType;
@@ -97,6 +98,11 @@ public class HttpRequestX509CredentialAdapter implements X509Credential {
 
     /** {@inheritDoc} */
     public PrivateKey getPrivateKey() {
+        return null;
+    }
+    
+    /** {@inheritDoc} */
+    public SecretKey getSecretyKey() {
         return null;
     }
 
