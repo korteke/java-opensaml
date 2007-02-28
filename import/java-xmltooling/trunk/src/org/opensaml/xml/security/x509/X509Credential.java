@@ -34,7 +34,8 @@ public interface X509Credential extends Credential {
     public static final String RSA_KEY_ALGORITHM = "RSA";
 
     /**
-     * Gets the public certificate for the entity.
+     * Gets the public certificate for the entity. The public key of this certificate must be included in the list of
+     * public keys gotten from {@link Credential#getPublicKeys()}.
      * 
      * @return the public certificate for the entity
      */
