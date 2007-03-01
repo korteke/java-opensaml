@@ -64,7 +64,7 @@ public interface Credential {
      * 
      * @return secret key for this entity
      */
-    public SecretKey getSecretyKey();
+    public SecretKey getSecretKey();
 
     /**
      * Gets the private key for the entity if there is one.

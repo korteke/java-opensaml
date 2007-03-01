@@ -66,7 +66,7 @@ public abstract class AbstractCredential implements Credential {
     }
     
     /** {@inheritDoc} */
-    public SecretKey getSecretyKey() {
+    public SecretKey getSecretKey() {
         return secretKey;
     }
 
