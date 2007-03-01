@@ -20,19 +20,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.security.KeyException;
+import java.security.GeneralSecurityException;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
-import java.security.PrivateKey;
-import java.security.PublicKey;
-
-import javolution.util.FastList;
 
 import org.apache.log4j.Logger;
-import org.apache.xml.security.algorithms.MessageDigestAlgorithm;
-import org.apache.xml.security.c14n.Canonicalizer;
-import org.apache.xml.security.signature.XMLSignature;
-import org.apache.xml.security.transforms.Transforms;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.XMLObjectBaseTestCase;
 import org.opensaml.xml.encryption.EncryptionConstants;
@@ -44,10 +36,10 @@ import org.opensaml.xml.mock.SimpleXMLObject;
 import org.opensaml.xml.mock.SimpleXMLObjectBuilder;
 import org.opensaml.xml.parse.ParserPool;
 import org.opensaml.xml.parse.XMLParserException;
-import org.opensaml.xml.security.DirectKeyInfoResolver;
-import org.opensaml.xml.security.InlineX509KeyInfoResolver;
-import org.opensaml.xml.security.SecurityException;
-import org.opensaml.xml.security.WrapperKeyInfoSource;
+import org.opensaml.xml.security.credential.BasicCredential;
+import org.opensaml.xml.security.credential.Credential;
+import org.opensaml.xml.security.x509.KeyInfoX509CredentialAdapter;
+import org.opensaml.xml.security.x509.SignatureValidator;
 import org.opensaml.xml.signature.impl.SignatureBuilder;
 import org.opensaml.xml.util.XMLHelper;
 import org.opensaml.xml.validation.ValidationException;
@@ -58,17 +50,11 @@ public class DetachedSignatureTest extends XMLObjectBaseTestCase {
     /** Class logger. */
     private static Logger log = Logger.getLogger(EnvelopedSignatureTest.class);
 
-    /** Key used for signing. */
-    private PrivateKey signingKey;
-    
-    /** Trust engine used to verify signatures. */
-    private BasicX509SignatureTrustEngine trustEngine;
-    
     /** Key resolver containing proper verification key. */
-    private DirectKeyInfoResolver verificationKeyResolver;
-    
+    private BasicCredential goodCredential;
+
     /** Key resolver containing invalid verification key. */
-    private DirectKeyInfoResolver badKeyResolver;
+    private BasicCredential badCredential;
 
     /** Builder of mock XML objects. */
     private SimpleXMLObjectBuilder sxoBuilder;
@@ -82,23 +68,19 @@ public class DetachedSignatureTest extends XMLObjectBaseTestCase {
     /** {@inheritDoc} */
     protected void setUp() throws Exception {
         super.setUp();
-        
-        trustEngine = new BasicX509SignatureTrustEngine();
 
         KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
         keyGen.initialize(1024);
         KeyPair keyPair = keyGen.generateKeyPair();
-        signingKey = keyPair.getPrivate();
-        
-        FastList<PublicKey> verificationKey = new FastList<PublicKey>();
-        verificationKey.add(keyPair.getPublic());
-        verificationKeyResolver = new DirectKeyInfoResolver(null, verificationKey, null, null);
+
+        goodCredential = new BasicCredential();
+        goodCredential.setPrivateKey(keyPair.getPrivate());
+        goodCredential.getPublicKeys().add(keyPair.getPublic());
 
         keyGen.initialize(1024);
         keyPair = keyGen.generateKeyPair();
-        FastList<PublicKey> badKey = new FastList<PublicKey>();
-        badKey.add(keyPair.getPublic());
-        badKeyResolver = new DirectKeyInfoResolver(null, badKey, null, null);
+        badCredential = new BasicCredential();
+        badCredential.getPublicKeys().add(keyPair.getPublic());
 
         sxoBuilder = new SimpleXMLObjectBuilder();
         sigBuilder = new SignatureBuilder();
@@ -111,10 +93,11 @@ public class DetachedSignatureTest extends XMLObjectBaseTestCase {
      * Tests creating a detached signature within the same document as the element signed and then verifying it.
      * 
      * @throws MarshallingException thrown if the XMLObject tree can not be marshalled
-     * @throws SecurityException thrown if there is a problem attempting to validate the signature
-     * @throws UnmarshallingException 
+     * @throws ValidationException thrown if there is a problem attempting to validate the signature
+     * @throws UnmarshallingException thrown if the signature can not be unmarshalled
      */
-    public void testInternalSignatureAndVerification() throws MarshallingException, SecurityException, UnmarshallingException {
+    public void testInternalSignatureAndVerification() throws MarshallingException, UnmarshallingException,
+            ValidationException {
         SimpleXMLObject sxo = getXMLObjectWithSignature();
         Signature signature = sxo.getSignature();
 
@@ -129,12 +112,16 @@ public class DetachedSignatureTest extends XMLObjectBaseTestCase {
         Unmarshaller unmarshaller = Configuration.getUnmarshallerFactory().getUnmarshaller(signedElement);
         sxo = (SimpleXMLObject) unmarshaller.unmarshall(signedElement);
         signature = (Signature) sxo.getOrderedChildren().get(1);
-        if(!trustEngine.validate(signature, null, verificationKeyResolver)){
-            fail("Failed to validate signature with proper public key");
-        }
-        
-        if(trustEngine.validate(signature, null, badKeyResolver)){
-            fail("Validate signature with improper public key");
+
+        SignatureValidator sigValidator = new SignatureValidator(goodCredential);
+        sigValidator.validate(signature);
+
+        try {
+            sigValidator = new SignatureValidator(badCredential);
+            sigValidator.validate(signature);
+            fail("Validated signature with improper public key");
+        } catch (ValidationException e) {
+            // expected
         }
     }
 
@@ -144,11 +131,10 @@ public class DetachedSignatureTest extends XMLObjectBaseTestCase {
      * 
      * @throws MarshallingException thrown if the XMLObject tree can not be marshalled
      * @throws ValidationException thrown if the signature verification fails
-     * @throws SecurityException 
      */
-    public void testExternalSignatureAndVerification() throws MarshallingException, ValidationException, SecurityException {
+    public void testExternalSignatureAndVerification() throws MarshallingException, ValidationException {
         Signature signature = sigBuilder.buildObject();
-        signature.setSigningKey(signingKey);
+        signature.setSigningKey(goodCredential.getPrivateKey());
         signature.setCanonicalizationAlgorithm(SignatureConstants.ALGO_ID_C14N_EXCL_OMIT_COMMENTS);
         signature.setSignatureAlgorithm(SignatureConstants.ALGO_ID_SIGNATURE_RSA);
 
@@ -166,9 +152,8 @@ public class DetachedSignatureTest extends XMLObjectBaseTestCase {
             log.debug("Marshalled deatched Signature: \n" + XMLHelper.nodeToString(signatureElement));
         }
 
-        if(!trustEngine.validate(signature, null, verificationKeyResolver)){
-            fail("Failed to validate signature with proper public key");
-        }
+        SignatureValidator sigValidator = new SignatureValidator(goodCredential);
+        sigValidator.validate(signature);
     }
 
     /**
@@ -179,23 +164,20 @@ public class DetachedSignatureTest extends XMLObjectBaseTestCase {
      * @throws XMLParserException thrown if the signature is not valid XML
      * @throws UnmarshallingException thrown if the signature DOM can not be unmarshalled
      * @throws ValidationException thrown if the Signature does not validate against the key
-     * @throws KeyException 
-     * @throws SecurityException 
-     * 
+     * @throws GeneralSecurityException
      */
-    public void testUnmarshallExternalSignatureAndVerification() throws MalformedURLException, IOException,
-            XMLParserException, UnmarshallingException, SecurityException {
+    public void testUnmarshallExternalSignatureAndVerification() throws IOException, XMLParserException,
+            UnmarshallingException, ValidationException, GeneralSecurityException {
         String signatureLocation = "http://www.w3.org/TR/xmldsig-core/signature-example-rsa.xml";
         InputStream ins = new URL(signatureLocation).openStream();
         Element signatureElement = parserPool.parse(ins).getDocumentElement();
 
         Unmarshaller unmarshaller = Configuration.getUnmarshallerFactory().getUnmarshaller(signatureElement);
         Signature signature = (Signature) unmarshaller.unmarshall(signatureElement);
-        
-        WrapperKeyInfoSource keyInfoSource = new WrapperKeyInfoSource(null, signature.getKeyInfo());
-        if(!trustEngine.validate(signature, keyInfoSource, new InlineX509KeyInfoResolver())){
-            fail("Failed to validate signature with proper public key");
-        }
+
+        Credential credential = new KeyInfoX509CredentialAdapter(signature.getKeyInfo());
+        SignatureValidator sigValidator = new SignatureValidator(credential);
+        sigValidator.validate(signature);
     }
 
     /**
@@ -212,7 +194,7 @@ public class DetachedSignatureTest extends XMLObjectBaseTestCase {
         rootSXO.getSimpleXMLObjects().add(childSXO);
 
         Signature sig = sigBuilder.buildObject();
-        sig.setSigningKey(signingKey);
+        sig.setSigningKey(goodCredential.getPrivateKey());
         sig.setCanonicalizationAlgorithm(SignatureConstants.ALGO_ID_C14N_EXCL_OMIT_COMMENTS);
         sig.setSignatureAlgorithm(SignatureConstants.ALGO_ID_SIGNATURE_RSA);
 

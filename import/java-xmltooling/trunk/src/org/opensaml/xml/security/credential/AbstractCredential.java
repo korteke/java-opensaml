@@ -18,13 +18,14 @@ package org.opensaml.xml.security.credential;
 
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.util.Collection;
 
 import javax.crypto.SecretKey;
 
 /**
  * Base class for {@link org.opensaml.xml.security.credential.Credential} implementations.
  */
-public abstract class AbstractEntityCredential implements Credential {
+public abstract class AbstractCredential implements Credential {
 
     /** ID of the entity owning this credential. */
     protected String entityID;
@@ -32,13 +33,16 @@ public abstract class AbstractEntityCredential implements Credential {
     /** Usage type of this credential. */
     protected UsageType usageType;
     
-    /** Public key of the entity. */
-    protected PublicKey publicKey;
+    /** Key names for this credential. */
+    protected Collection<String> keyNames;
     
-    /** Secret key for this entity. */
+    /** Public key of this credential. */
+    protected Collection<PublicKey> publicKeys;
+    
+    /** Secret key for this credential. */
     protected SecretKey secretKey;
     
-    /** Private key of the entity. */
+    /** Private key of this credential. */
     protected PrivateKey privateKey;
     
     /** {@inheritDoc}  */
@@ -50,15 +54,15 @@ public abstract class AbstractEntityCredential implements Credential {
     public UsageType getUsageType() {
         return usageType;
     }
+
+    /** {@inheritDoc} */
+    public Collection<String> getKeyNames() {
+        return keyNames;
+    }
     
     /** {@inheritDoc}  */
-    public String getKeyAlgorithm() {
-        return publicKey.getAlgorithm();
-    }
-
-    /** {@inheritDoc}  */
-    public PublicKey getPublicKey() {
-        return publicKey;
+    public Collection<PublicKey> getPublicKeys() {
+        return publicKeys;
     }
     
     /** {@inheritDoc} */

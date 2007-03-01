@@ -31,23 +31,14 @@ public class XMLSignatureX509CredentialAdapter extends KeyInfoX509CredentialAdap
     /**
      * Constructor.
      * 
-     * @param entity the entity that issued the signature
      * @param sig the siganture
      * 
-     * @throws IllegalArgumentException throw if either the entity is null or empty, if the signature or its key info is
-     *             null
      * @throws GeneralSecurityException thrown if the key, certificate, or CRL information is represented in an
      *             unsupported format
      */
-    public XMLSignatureX509CredentialAdapter(String entity, Signature sig) throws IllegalArgumentException,
-            GeneralSecurityException {
-        setEntityId(entity);
-
-        if (sig == null) {
-            throw new IllegalArgumentException("Signature may not be null");
-        }
+    public XMLSignatureX509CredentialAdapter(Signature sig) throws GeneralSecurityException {
+        super(sig.getKeyInfo());
         signature = sig;
-        parseKeyInfo(sig.getKeyInfo());
     }
 
     /**

@@ -102,7 +102,8 @@ public class KeyStoreCredentialResolver implements CredentialResolver<X509Creden
         BasicX509Credential credential = null;
         try {
             KeyStore.Entry keyEntry = keyStore.getEntry(entity, keyPassword);
-            credential = new BasicX509Credential(entity);
+            credential = new BasicX509Credential();
+            credential.setEntityId(entity);
 
             if (keyEntry instanceof KeyStore.PrivateKeyEntry) {
                 KeyStore.PrivateKeyEntry privateKeyEntry = (KeyStore.PrivateKeyEntry) keyEntry;

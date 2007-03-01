@@ -16,10 +16,12 @@
 
 package org.opensaml.xml.signature;
 
+import java.io.InputStream;
+import java.security.GeneralSecurityException;
+import java.security.KeyException;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.PublicKey;
-import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
 import org.opensaml.xml.Configuration;
@@ -27,13 +29,20 @@ import org.opensaml.xml.XMLObjectBaseTestCase;
 import org.opensaml.xml.encryption.EncryptionConstants;
 import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallingException;
+import org.opensaml.xml.io.Unmarshaller;
+import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.mock.SimpleXMLObject;
 import org.opensaml.xml.mock.SimpleXMLObjectBuilder;
 import org.opensaml.xml.parse.ParserPool;
-import org.opensaml.xml.security.SecurityException;
-import org.opensaml.xml.security.x509.BasicX509Credential;
+import org.opensaml.xml.parse.XMLParserException;
+import org.opensaml.xml.security.credential.BasicCredential;
+import org.opensaml.xml.security.credential.Credential;
+import org.opensaml.xml.security.x509.KeyInfoX509CredentialAdapter;
+import org.opensaml.xml.security.x509.SignatureValidator;
 import org.opensaml.xml.signature.impl.SignatureBuilder;
 import org.opensaml.xml.util.XMLHelper;
+import org.opensaml.xml.validation.ValidationException;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
@@ -45,13 +54,10 @@ public class EnvelopedSignatureTest extends XMLObjectBaseTestCase {
     private static Logger log = Logger.getLogger(EnvelopedSignatureTest.class);
 
     /** Credential used to sign and verify. */
-    private BasicX509Credential credential;
+    private BasicCredential goodCredential;
     
     /** Invalid credential for verification. */
-    private BasicX509Credential badCredential;
-
-    /** Trust engine used to verify signatures. */
-    private BasicX509SignatureTrustEngine trustEngine;
+    private BasicCredential badCredential;
 
     /** Builder of mock XML objects. */
     private SimpleXMLObjectBuilder sxoBuilder;
@@ -59,33 +65,22 @@ public class EnvelopedSignatureTest extends XMLObjectBaseTestCase {
     /** Builder of Signature XML objects. */
     private SignatureBuilder sigBuilder;
 
-    /** Parser pool used to parse example config files. */
-    private ParserPool parserPool;
-
     /** {@inheritDoc} */
     protected void setUp() throws Exception {
         super.setUp();
-
-        trustEngine = new BasicX509SignatureTrustEngine();
-        credential = new BasicX509Credential("testcred");
-        badCredential = new BasicX509Credential("badcred");
-        
-        ArrayList<PublicKey> pubKeys;
         
         KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
         keyGen.initialize(1024);
         KeyPair keyPair = keyGen.generateKeyPair();
-        credential.setPrivateKey(keyPair.getPrivate());
-        pubKeys = new ArrayList<PublicKey>();
-        pubKeys.add(keyPair.getPublic());
-        credential.setPublicKeys(pubKeys);
+        goodCredential = new BasicCredential();
+        goodCredential.setPrivateKey(keyPair.getPrivate());
+        goodCredential.getPublicKeys().add(keyPair.getPublic());
         
         keyGen = KeyPairGenerator.getInstance("RSA");
         keyGen.initialize(1024);
         keyPair = keyGen.generateKeyPair();
-        pubKeys = new ArrayList<PublicKey>();
-        pubKeys.add(keyPair.getPublic());
-        badCredential.setPublicKeys(pubKeys);
+        badCredential = new BasicCredential();
+        badCredential.getPublicKeys().add(keyPair.getPublic());
 
         sxoBuilder = new SimpleXMLObjectBuilder();
         sigBuilder = new SignatureBuilder();
@@ -98,9 +93,9 @@ public class EnvelopedSignatureTest extends XMLObjectBaseTestCase {
      * Tests creating an enveloped signature and then verifying it.
      * 
      * @throws MarshallingException thrown if the XMLObject tree can not be marshalled
-     * @throws SecurityException 
+     * @throws ValidationException 
      */
-    public void testSigningAndVerification() throws MarshallingException, SecurityException{
+    public void testSigningAndVerification() throws MarshallingException, ValidationException{
         SimpleXMLObject sxo = getXMLObjectWithSignature();
         Signature signature = sxo.getSignature();
 
@@ -113,12 +108,15 @@ public class EnvelopedSignatureTest extends XMLObjectBaseTestCase {
             log.debug("Marshalled Signature: \n" + XMLHelper.nodeToString(signedElement));
         }
         
-        if(!trustEngine.validate(signature, credential)){
-            fail("Failed to validate signature with proper public key");
-        }
-        
-        if(trustEngine.validate(signature, badCredential)){
-            fail("Signature validated with bad credentials");
+        SignatureValidator sigValidator = new SignatureValidator(goodCredential);
+        sigValidator.validate(signature);
+
+        try {
+            sigValidator = new SignatureValidator(badCredential);
+            sigValidator.validate(signature);
+            fail("Validated signature with improper public key");
+        } catch (ValidationException e) {
+            // expected
         }
     }
 
@@ -127,28 +125,28 @@ public class EnvelopedSignatureTest extends XMLObjectBaseTestCase {
      * 
      * @throws XMLParserException thrown if the XML can not be parsed
      * @throws UnmarshallingException thrown if the DOM can not be unmarshalled
-     * @throws KeyException 
+     * @throws GeneralSecurityException 
      */
-//    public void testUnmarshallSignature() throws XMLParserException, UnmarshallingException, KeyException {
-//        String envelopedSignatureFile = "/data/org/opensaml/xml/signature/envelopedSignature.xml";
-//        InputStream ins = EnvelopedSignatureTest.class.getResourceAsStream(envelopedSignatureFile);
-//        Document envelopedSignatureDoc = parserPool.parse(ins);
-//        Element rootElement = envelopedSignatureDoc.getDocumentElement();
-//
-//        Unmarshaller unmarshaller = Configuration.getUnmarshallerFactory().getUnmarshaller(rootElement);
-//        SimpleXMLObject sxo = (SimpleXMLObject) unmarshaller.unmarshall(rootElement);
-//
-//        assertEquals("Id attribute was not expected value", "FOO", sxo.getId());
-//
-//        Signature signature = sxo.getSignature();
-//        assertNotNull("Signature was null", signature);
-//
-//        KeyInfo keyInfo = signature.getKeyInfo();
-//        assertNotNull("Signature's KeyInfo was null", keyInfo);
-//        
-//        PublicKey pubKey = KeyInfoHelper.getPublicKeys(keyInfo).get(0);
-//        assertNotNull("KeyInfo did not contain the verification key", pubKey);
-//    }
+    public void testUnmarshall() throws XMLParserException, UnmarshallingException, GeneralSecurityException {
+        String envelopedSignatureFile = "/data/org/opensaml/xml/signature/envelopedSignature.xml";
+        InputStream ins = EnvelopedSignatureTest.class.getResourceAsStream(envelopedSignatureFile);
+        Document envelopedSignatureDoc = parserPool.parse(ins);
+        Element rootElement = envelopedSignatureDoc.getDocumentElement();
+
+        Unmarshaller unmarshaller = Configuration.getUnmarshallerFactory().getUnmarshaller(rootElement);
+        SimpleXMLObject sxo = (SimpleXMLObject) unmarshaller.unmarshall(rootElement);
+
+        assertEquals("Id attribute was not expected value", "FOO", sxo.getId());
+
+        Signature signature = sxo.getSignature();
+        assertNotNull("Signature was null", signature);
+
+        KeyInfo keyInfo = signature.getKeyInfo();
+        assertNotNull("Signature's KeyInfo was null", keyInfo);
+        
+        PublicKey pubKey = KeyInfoHelper.getPublicKeys(keyInfo).get(0);
+        assertNotNull("KeyInfo did not contain the verification key", pubKey);
+    }
 
     /**
      * Creates a XMLObject that has a Signature child element.
@@ -160,7 +158,7 @@ public class EnvelopedSignatureTest extends XMLObjectBaseTestCase {
         sxo.setId("FOO");
 
         Signature sig = sigBuilder.buildObject();
-        sig.setSigningKey(credential.getPrivateKey());
+        sig.setSigningKey(goodCredential.getPrivateKey());
         sig.setCanonicalizationAlgorithm(SignatureConstants.ALGO_ID_C14N_EXCL_OMIT_COMMENTS);
         sig.setSignatureAlgorithm(SignatureConstants.ALGO_ID_SIGNATURE_RSA);
         

@@ -22,6 +22,7 @@ import java.util.Collection;
 import org.apache.log4j.Logger;
 import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.signature.XMLSignatureException;
+import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.signature.Signature;
 import org.opensaml.xml.signature.impl.SignatureImpl;
 import org.opensaml.xml.validation.ValidationException;
@@ -36,14 +37,14 @@ public class SignatureValidator implements Validator<Signature> {
     private static Logger log = Logger.getLogger(SignatureValidator.class);
 
     /** Credential used to validate signature. */
-    private X509Credential validationCredential;
+    private Credential validationCredential;
 
     /**
      * Constructor.
      * 
      * @param validatingCredential credential used to validate the signature
      */
-    public SignatureValidator(X509Credential validatingCredential) {
+    public SignatureValidator(Credential validatingCredential) {
         validationCredential = validatingCredential;
     }
 
@@ -76,7 +77,7 @@ public class SignatureValidator implements Validator<Signature> {
         if (log.isDebugEnabled()) {
             log.debug("Signature did not validate against any public keys from credential");
         }
-        return;
+        throw new ValidationException("Signature did not validate against any public keys from credential");
     }
 
     /**

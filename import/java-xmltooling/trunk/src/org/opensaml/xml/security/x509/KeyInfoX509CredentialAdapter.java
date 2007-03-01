@@ -17,61 +17,31 @@
 package org.opensaml.xml.security.x509;
 
 import java.security.GeneralSecurityException;
-import java.security.PrivateKey;
 import java.security.PublicKey;
-import java.security.cert.X509CRL;
 import java.security.cert.X509Certificate;
-import java.util.Collection;
+import java.util.HashSet;
 
-import javax.crypto.SecretKey;
-
-import org.opensaml.xml.security.credential.UsageType;
 import org.opensaml.xml.signature.KeyInfo;
 import org.opensaml.xml.signature.KeyInfoHelper;
-import org.opensaml.xml.util.DatatypeHelper;
 
 /**
  * An adapter class capable of exposing an {@link KeyInfo} as an {@link X509Credential}.
  */
-public class KeyInfoX509CredentialAdapter implements X509Credential {
+public class KeyInfoX509CredentialAdapter extends BasicX509Credential implements X509Credential {
 
-    /** ID of the entity that issued the signature. */
-    private String entityId;
-
-    /** The adapted key info. */
+    /** Adapted KeyInfo. */
     private KeyInfo keyInfo;
-
-    /** Key names in the signature. */
-    private Collection<String> keyNames;
-
-    /** Public keys in the signature. */
-    private Collection<PublicKey> publicKeys;
-
-    /** X509 certificated in the signature. */
-    private Collection<X509Certificate> certs;
-
-    /** X509 CRLs in the signature. */
-    private Collection<X509CRL> crls;
 
     /**
      * Constructor.
      * 
-     * @param entity entity that the key information applies to
      * @param info the key information
      * 
-     * @throws IllegalArgumentException thrown if the entity id or key info is empty or null
      * @throws GeneralSecurityException thrown if the key, certificate, or CRL information is represented in an
      *             unsupported format
      */
-    public KeyInfoX509CredentialAdapter(String entity, KeyInfo info) throws IllegalArgumentException,
-            GeneralSecurityException {
-        setEntityId(entity);
+    public KeyInfoX509CredentialAdapter(KeyInfo info) throws GeneralSecurityException {
         parseKeyInfo(info);
-    }
-
-    /** Constructor. */
-    protected KeyInfoX509CredentialAdapter() {
-
     }
 
     /**
@@ -81,67 +51,6 @@ public class KeyInfoX509CredentialAdapter implements X509Credential {
      */
     public KeyInfo getKeyInfo() {
         return keyInfo;
-    }
-
-    /** {@inheritDoc} */
-    public Collection<X509CRL> getCRLs() {
-        return crls;
-    }
-
-    /** {@inheritDoc} */
-    public X509Certificate getEntityCertificate() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    /** {@inheritDoc} */
-    public Collection<X509Certificate> getEntityCertificateChain() {
-        return certs;
-    }
-
-    /** {@inheritDoc} */
-    public String getEntityId() {
-        return entityId;
-    }
-
-    /** {@inheritDoc} */
-    public Collection<String> getKeyNames() {
-        return keyNames;
-    }
-
-    /** {@inheritDoc} */
-    public PrivateKey getPrivateKey() {
-        return null;
-    }
-    
-    /** {@inheritDoc} */
-    public SecretKey getSecretyKey() {
-        return null;
-    }
-
-    /** {@inheritDoc} */
-    public Collection<PublicKey> getPublicKeys() {
-        return publicKeys;
-    }
-
-    /** {@inheritDoc} */
-    public UsageType getUsageType() {
-        return UsageType.SIGNING;
-    }
-
-    /**
-     * Sets the entity ID.
-     * 
-     * @param entity id of the entity the key info describes
-     * 
-     * @throws IllegalArgumentException thrown if the given entity ID is null or empty
-     */
-    protected void setEntityId(String entity) throws IllegalArgumentException {
-        if (DatatypeHelper.isEmpty(entity)) {
-            throw new IllegalArgumentException("Entity ID may not be null or empty");
-        }
-
-        entityId = DatatypeHelper.safeTrim(entity);
     }
 
     /**
@@ -158,8 +67,16 @@ public class KeyInfoX509CredentialAdapter implements X509Credential {
         }
 
         keyNames = KeyInfoHelper.getKeyNames(info);
+        certChain = KeyInfoHelper.getCertificates(info);
         publicKeys = KeyInfoHelper.getPublicKeys(info);
-        certs = KeyInfoHelper.getCertificates(info);
+        if (certChain != null) {
+            for (X509Certificate cert : certChain) {
+                if (publicKeys == null) {
+                    publicKeys = new HashSet<PublicKey>();
+                }
+                publicKeys.add(cert.getPublicKey());
+            }
+        }
         crls = KeyInfoHelper.getCRLs(info);
     }
 }
