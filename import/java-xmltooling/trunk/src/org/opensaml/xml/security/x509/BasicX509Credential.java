@@ -34,10 +34,22 @@ public class BasicX509Credential extends BasicCredential implements X509Credenti
     protected X509Certificate entityCert;
 
     /** Entity certificate chain, must include entity certificate. */
-    protected Collection<X509Certificate> certChain;
+    protected Collection<X509Certificate> entityCertChain;
 
     /** CRLs for this credential. */
     protected Collection<X509CRL> crls;
+
+    /** {@inheritDoc} */
+    public Collection<PublicKey> getPublicKeys() {
+        HashSet<PublicKey> keys = new HashSet<PublicKey>(super.getPublicKeys());
+        Collection<X509Certificate> certChain = getEntityCertificateChain();
+        if (certChain != null) {
+            for (X509Certificate cert : certChain) {
+                keys.add(cert.getPublicKey());
+            }
+        }
+        return keys;
+    }
 
     /** {@inheritDoc} */
     public Collection<X509CRL> getCRLs() {
@@ -65,23 +77,17 @@ public class BasicX509Credential extends BasicCredential implements X509Credenti
      */
     public void setEntityCertificate(X509Certificate cert) {
         entityCert = cert;
-        if (cert != null) {
-
-            if (certChain != null) {
-                certChain = new HashSet<X509Certificate>();
-            }
-            certChain.add(cert);
-
-            if (publicKeys != null) {
-                publicKeys = new HashSet<PublicKey>();
-            }
-            publicKeys.add(cert.getPublicKey());
-        }
     }
 
     /** {@inheritDoc} */
     public Collection<X509Certificate> getEntityCertificateChain() {
-        return certChain;
+        if (entityCertChain == null && entityCert != null) {
+            HashSet<X509Certificate> constructedChain = new HashSet<X509Certificate>();
+            constructedChain.add(entityCert);
+            return constructedChain;
+        }
+
+        return entityCertChain;
     }
 
     /**
@@ -91,6 +97,6 @@ public class BasicX509Credential extends BasicCredential implements X509Credenti
      * @param certs ntity certificate chain for this credential
      */
     public void setEntityCertificateChain(Collection<X509Certificate> certs) {
-        certChain = new ArrayList<X509Certificate>(certs);
+        entityCertChain = new ArrayList<X509Certificate>(certs);
     }
 }

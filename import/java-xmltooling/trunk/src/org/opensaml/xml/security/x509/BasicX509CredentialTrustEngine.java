@@ -18,8 +18,6 @@ package org.opensaml.xml.security.x509;
 
 import java.security.PublicKey;
 import java.util.Collection;
-import java.util.HashSet;
-
 import org.apache.log4j.Logger;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.trust.TrustEngine;
@@ -48,8 +46,11 @@ public class BasicX509CredentialTrustEngine implements TrustEngine<X509Credentia
             log.debug("Validating X509 credential for entity " + untrustedCredential.getEntityId());
         }
 
-        Collection<PublicKey> trustedKeys = getKeys(trustedCredential);
-        Collection<PublicKey> credentialKeys = getKeys(untrustedCredential);
+        Collection<PublicKey> trustedKeys = trustedCredential.getPublicKeys();
+        Collection<PublicKey> credentialKeys = untrustedCredential.getPublicKeys();
+        if (trustedKeys == null || credentialKeys == null) {
+            return false;
+        }
         for (PublicKey trustedKey : trustedKeys) {
             for (PublicKey credentialKey : credentialKeys) {
                 if (trustedKey.equals(credentialKey)) {
@@ -68,21 +69,5 @@ public class BasicX509CredentialTrustEngine implements TrustEngine<X509Credentia
         }
 
         return false;
-    }
-
-    /**
-     * Gets the public keys from the credential, including those found in its entity certificate.
-     * 
-     * @param credential credential to extract the public keys from
-     * 
-     * @return public keys from the credential
-     */
-    protected Collection<PublicKey> getKeys(X509Credential credential) {
-        HashSet<PublicKey> keys = new HashSet<PublicKey>(credential.getPublicKeys());
-        if (credential.getEntityCertificate() != null) {
-            keys.add(credential.getEntityCertificate().getPublicKey());
-        }
-
-        return keys;
     }
 }

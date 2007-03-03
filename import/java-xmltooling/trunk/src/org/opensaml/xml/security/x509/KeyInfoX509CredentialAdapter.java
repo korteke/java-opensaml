@@ -67,10 +67,10 @@ public class KeyInfoX509CredentialAdapter extends BasicX509Credential implements
         }
 
         keyNames = KeyInfoHelper.getKeyNames(info);
-        certChain = KeyInfoHelper.getCertificates(info);
+        entityCertChain = KeyInfoHelper.getCertificates(info);
         publicKeys = KeyInfoHelper.getPublicKeys(info);
-        if (certChain != null) {
-            for (X509Certificate cert : certChain) {
+        if (entityCertChain != null) {
+            for (X509Certificate cert : entityCertChain) {
                 if (publicKeys == null) {
                     publicKeys = new HashSet<PublicKey>();
                 }
