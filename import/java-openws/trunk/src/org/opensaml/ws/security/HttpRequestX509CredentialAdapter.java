@@ -47,7 +47,7 @@ public class HttpRequestX509CredentialAdapter extends BasicX509Credential implem
         }
 
         entityCert = chain[0];
-        certChain = Arrays.asList(chain);
+        entityCertChain = Arrays.asList(chain);
         usageType = UsageType.SIGNING;
     }
 }

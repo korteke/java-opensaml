@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-package org.opensaml.ws.soap.common;
+package org.opensaml.ws.soap.client;
 
 import javax.xml.validation.Schema;
 
 import org.opensaml.ws.security.SecurityPolicy;
+import org.opensaml.ws.soap.common.SOAPObject;
 
 /**
  * A client for sending and receiving SOAP messages.

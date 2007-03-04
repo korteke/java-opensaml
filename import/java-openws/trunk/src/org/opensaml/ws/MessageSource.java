@@ -28,6 +28,13 @@ import java.io.InputStream;
 public interface MessageSource {
 
     /**
+     * Gets whether the communication peer was authenticated.
+     * 
+     * @return whether the communication peer was authenticated
+     */
+    public boolean isPeerAuthenticated();
+    
+    /**
      * Gets the character encoding of the message, if known.
      * 
      * @return character encoding of the message

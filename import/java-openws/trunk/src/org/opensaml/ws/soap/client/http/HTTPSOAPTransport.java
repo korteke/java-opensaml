@@ -14,18 +14,30 @@
  * limitations under the License.
  */
 
-package org.opensaml.ws.soap.common;
+package org.opensaml.ws.soap.client.http;
+
+import org.opensaml.ws.soap.client.SOAPTransport;
+import org.opensaml.xml.security.x509.X509Credential;
 
 /**
  * A transport for moving SOAP messages over HTTP.
  * 
- * TODO TLS client auth
+ * Note, the authentication credentials provided by this interface are credentials used to authenticate the entity to
+ * the HTTP server. The {@link SOAPTransport} connection authentication credentials are used when performing mutual TLS
+ * authentication with the server.
  */
-public interface HTTPSOAPTransport extends SOAPTransport {
+public interface HTTPSOAPTransport extends SOAPTransport<X509Credential> {
 
     /** Authentication schemes supported by HTTP transports. */
     public static enum AuthenticationScheme {
-        Basic, Digest, NTLM
+        /** HTTP BASIC authentication. */
+        Basic,
+        
+        /** HTTP Digest authentication. */
+        Digest,
+        
+        /** HTTP NTML authentication. */
+        NTLM
     };
 
     /**
@@ -49,47 +61,40 @@ public interface HTTPSOAPTransport extends SOAPTransport {
      * 
      * @return type of authentication to perform with the HTTP server
      */
-    public AuthenticationScheme getAuthenticationScheme();
+    public AuthenticationScheme getEntityAuthenticationScheme();
 
     /**
      * Sets the type of authentication to perform with the HTTP server.
      * 
      * @param authnScheme type of authentication to perform with the HTTP server
      */
-    public void setAuthenticationScheme(AuthenticationScheme authnScheme);
+    public void setEntityAuthenticationScheme(AuthenticationScheme authnScheme);
 
     /**
      * Gets the credentials to use to authenticate to the HTTP server.
      * 
      * @return credentials to use to authenticate to the HTTP server
      */
-    public Credentials getAuthenticationCredentials();
+    public HTTPEntityCredential getEntityAuthenticationCredential();
 
     /**
      * Sets the credentials to use to authenticate to the HTTP server.
      * 
      * @param credentials credentials to use to authenticate to the HTTP server
      */
-    public void setAuthenticationCredentials(Credentials credentials);
-
-    /**
-     * Gets the status code of the request.
-     * 
-     * @return status code of the request
-     */
-    public int getStatusCode();
+    public void setEntityAuthenticationCredentials(HTTPEntityCredential credentials);
 
     /**
      * Marker interface for HTTP connection credentials.
      */
-    public interface Credentials {
+    public interface HTTPEntityCredential {
 
     }
 
     /**
      * User name and password credentals.
      */
-    public interface UsernamePasswordCredentials extends Credentials {
+    public interface UsernamePasswordCredentials extends HTTPEntityCredential {
 
         /**
          * Gets the user name.

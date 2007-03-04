@@ -40,6 +40,13 @@ public interface HTTPMessageSource extends MessageSource {
     public HTTP_VERSION getVersion();
     
     /**
+     * Gets the status code of the request.
+     * 
+     * @return status code of the request
+     */
+    public int getStatusCode();
+    
+    /**
      * Gets the list of HTTP header names.
      * 
      * @return HTTP header names
