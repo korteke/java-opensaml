@@ -103,7 +103,7 @@ public class ParserPool {
     private Schema schema;
 
     /** Whether the builder should validate. Default value: false */
-    private boolean validating;
+    private boolean dtdValidating;
 
     /** Whether the builders are XInclude aware. Default value: false */
     private boolean xincludeAware;
@@ -127,7 +127,7 @@ public class ParserPool {
         ignoreElementContentWhitespace = true;
         namespaceAware = true;
         schema = null;
-        validating = false;
+        dtdValidating = false;
         xincludeAware = false;
         errorHandler = new LoggingErrorHandler(log);
 
@@ -186,8 +186,9 @@ public class ParserPool {
             return;
         }
 
-        SoftReference<DocumentBuilder> builderReference = new SoftReference<DocumentBuilder>(proxiedBuilder
-                .getProxiedBuilder());
+        DocumentBuilder unwrappedBuilder = proxiedBuilder.getProxiedBuilder();
+        unwrappedBuilder.reset();
+        SoftReference<DocumentBuilder> builderReference = new SoftReference<DocumentBuilder>(unwrappedBuilder);
 
         if (builderPool.size() < maxPoolSize) {
             builderPool.push(builderReference);
@@ -338,7 +339,7 @@ public class ParserPool {
      * 
      * @param newFeatures the builders' features
      */
-    public void setFeatures(Map<String, Boolean> newFeatures){
+    public void setFeatures(Map<String, Boolean> newFeatures) {
         builderFeatures = newFeatures;
         dirtyBuilderConfiguration = true;
     }
@@ -414,7 +415,6 @@ public class ParserPool {
      * steps:
      * 
      * <ul>
-     * <li>Invoking {@link #setValidating(boolean)} with a value of <code>true</code></li>
      * <li>Invoking {@link #setNamespaceAware(boolean)} with a value of <code>true</code></li>
      * <li>Builder attribute <code>http://java.sun.com/xml/jaxp/properties/schemaSource</code> is unset</li>
      * <li>Builder attribute <code>http://java.sun.com/xml/jaxp/properties/schemaLanguage</code> is unset</li>
@@ -438,8 +438,8 @@ public class ParserPool {
      * 
      * @return whether the builders are validating
      */
-    public boolean isValidating() {
-        return validating;
+    public boolean isDTDValidating() {
+        return dtdValidating;
     }
 
     /**
@@ -447,8 +447,8 @@ public class ParserPool {
      * 
      * @param isValidating whether the builders are validating
      */
-    public void setValidating(boolean isValidating) {
-        validating = isValidating;
+    public void setDTDValidating(boolean isValidating) {
+        dtdValidating = isValidating;
         dirtyBuilderConfiguration = true;
     }
 
@@ -505,7 +505,7 @@ public class ParserPool {
             newFactory.setIgnoringElementContentWhitespace(ignoreElementContentWhitespace);
             newFactory.setNamespaceAware(namespaceAware);
             newFactory.setSchema(schema);
-            newFactory.setValidating(validating);
+            newFactory.setValidating(dtdValidating);
             newFactory.setXIncludeAware(xincludeAware);
 
             synchronized (this) {
