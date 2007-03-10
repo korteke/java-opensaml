@@ -29,7 +29,7 @@ public abstract class AbstractHTTPSOAPTransport extends AbstractSOAPTransport<X5
     private HTTPEntityCredential entityCredential;
     
     /** Scheme used to authenticate entity. */
-    private AuthenticationScheme authenticationScheme;
+    private AuthenticationScheme authenticationScheme = AuthenticationScheme.Basic;
     
     /** Whether to chunk encode data. */
     private boolean chunkEncoding;

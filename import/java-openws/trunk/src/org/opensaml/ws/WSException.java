@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.ws.soap.common;
+package org.opensaml.ws;
 
 /**
  * General OpenWS exception class.
@@ -60,5 +60,4 @@ public class WSException extends Exception {
     public WSException(String message, Exception wrappedException) {
         super(message, wrappedException);
     }
-
 }

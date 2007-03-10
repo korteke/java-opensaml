@@ -36,28 +36,28 @@ import org.opensaml.xml.util.Pair;
  */
 public class URLBuilder {
 
-    /** URL schema (http, https, etc) */
+    /** URL schema (http, https, etc). */
     private String scheme;
 
-    /** User name in the URL */
+    /** User name in the URL. */
     private String username;
 
-    /** Password in the URL */
+    /** Password in the URL. */
     private String password;
 
-    /** Host for the URL */
+    /** Host for the URL. */
     private String host;
 
-    /** URL port number */
+    /** URL port number. */
     private int port;
 
-    /** URL path */
+    /** URL path. */
     private String path;
 
-    /** Parameters in the query string */
+    /** Parameters in the query string. */
     private List<Pair<String, String>> queryParams;
 
-    /** URL fragment */
+    /** URL fragment. */
     private String fragement;
 
     /**
@@ -348,7 +348,6 @@ public class URLBuilder {
         } catch (UnsupportedEncodingException e) {
             // UTF-8 encoding is required to be supported by all JVMs
         }
-        
         
         return null;
     }

@@ -85,6 +85,8 @@ public interface SOAPTransport<CredentialType extends Credential> {
      * @param message the message to send
      * 
      * @return response of the message sent
+     * 
+     * @throws SOAPTransportException thrown if there is a problem sending the message or receiving the response
      */
-    public MessageSource send(String endpointURI, InputStream message);
+    public MessageSource send(String endpointURI, InputStream message) throws SOAPTransportException;
 }

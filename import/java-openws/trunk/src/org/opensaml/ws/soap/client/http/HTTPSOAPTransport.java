@@ -94,7 +94,7 @@ public interface HTTPSOAPTransport extends SOAPTransport<X509Credential> {
     /**
      * User name and password credentals.
      */
-    public interface UsernamePasswordCredentials extends HTTPEntityCredential {
+    public interface UsernamePasswordCredential extends HTTPEntityCredential {
 
         /**
          * Gets the user name.
@@ -114,7 +114,7 @@ public interface HTTPSOAPTransport extends SOAPTransport<X509Credential> {
     /**
      * NTLM credentials.
      */
-    public interface NTLMCredentials extends UsernamePasswordCredentials {
+    public interface NTLMCredential extends UsernamePasswordCredential {
 
         /**
          * Gets the host name of the computer the request originates.

@@ -16,7 +16,7 @@
 
 package org.opensaml.ws.security;
 
-import org.opensaml.ws.soap.common.WSException;
+import org.opensaml.ws.WSException;
 
 /**
  * Exception indicating a security policy failure.
