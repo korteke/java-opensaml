@@ -43,6 +43,11 @@ public class KeyInfoX509CredentialAdapter extends BasicX509Credential implements
     public KeyInfoX509CredentialAdapter(KeyInfo info) throws GeneralSecurityException {
         parseKeyInfo(info);
     }
+    
+    /** Constructor. */
+    protected KeyInfoX509CredentialAdapter() {
+        
+    }
 
     /**
      * Gets the adapted key info.
