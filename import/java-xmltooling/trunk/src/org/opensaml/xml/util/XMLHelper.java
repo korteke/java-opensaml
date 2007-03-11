@@ -17,6 +17,10 @@
 package org.opensaml.xml.util;
 
 import java.io.Writer;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 import javax.xml.namespace.QName;
@@ -39,10 +43,10 @@ import org.w3c.dom.ls.LSSerializer;
  * A helper class for working with W3C DOM objects.
  */
 public final class XMLHelper {
-    
+
     /** Constructor. */
-    private XMLHelper(){
-        
+    private XMLHelper() {
+
     }
 
     /**
@@ -199,7 +203,7 @@ public final class XMLHelper {
                     valueComponents[0]);
         }
     }
-    
+
     /**
      * Constructs a QName from an element's adjacent Text child nodes.
      * 
@@ -211,17 +215,17 @@ public final class XMLHelper {
         if (element == null) {
             return null;
         }
-        
+
         String elementContent = null;
         NodeList nodeList = element.getChildNodes();
-        for (int i=0; i<nodeList.getLength(); i++) {
+        for (int i = 0; i < nodeList.getLength(); i++) {
             Node node = nodeList.item(i);
             if (node.getNodeType() == Node.TEXT_NODE) {
                 elementContent = DatatypeHelper.safeTrimOrNullString(((Text) node).getWholeText());
                 break;
             }
         }
-        
+
         if (elementContent == null) {
             return null;
         }
@@ -537,6 +541,70 @@ public final class XMLHelper {
     }
 
     /**
+     * Gets the child nodes with the given namespace qualified tag name. If you need to retrieve multiple, named,
+     * children consider using {@link #getChildElements(Element)}.
+     * 
+     * @param root element to retrieve the children from
+     * @param namespaceURI namespace URI of the child element
+     * @param localName local, tag, name of the child element
+     * 
+     * @return list of child elements, never null
+     */
+    public static List<Element> getChildElementsByTagNameNS(Element root, String namespaceURI, String localName) {
+        ArrayList<Element> children = new ArrayList<Element>();
+        NodeList childNodes = root.getChildNodes();
+
+        int numOfNodes = childNodes.getLength();
+        Node childNode;
+        Element e;
+        for (int i = 0; i < numOfNodes; i++) {
+            childNode = childNodes.item(i);
+            if (childNode.getNodeType() == Node.ELEMENT_NODE) {
+                e = (Element) childNode;
+                if (e.getNamespaceURI().equals(namespaceURI) && e.getLocalName().equals(localName)) {
+                    children.add(e);
+                }
+            }
+        }
+
+        return children;
+    }
+
+    /**
+     * Gets the child elements of the given element in a single iteration.
+     * 
+     * @param root element to get the child elements of
+     * 
+     * @return child elements indexed by namespace qualifed tag name, never null
+     */
+    public static Map<QName, List<Element>> getChildElements(Element root) {
+        Map<QName, List<Element>> children = new HashMap<QName, List<Element>>();
+        NodeList childNodes = root.getChildNodes();
+
+        int numOfNodes = childNodes.getLength();
+        Node childNode;
+        Element e;
+        QName qname;
+        List<Element> elements;
+        for (int i = 0; i < numOfNodes; i++) {
+            childNode = childNodes.item(i);
+            if (childNode.getNodeType() == Node.ELEMENT_NODE) {
+                e = (Element) childNode;
+                qname = getNodeQName(e);
+                elements = children.get(qname);
+                if (elements == null) {
+                    elements = new ArrayList<Element>();
+                    children.put(qname, elements);
+                }
+
+                elements.add(e);
+            }
+        }
+
+        return children;
+    }
+
+    /**
      * Gets the ancestor element node to the given node.
      * 
      * @param currentNode the node to retrive the ancestor for
@@ -708,8 +776,8 @@ public final class XMLHelper {
      * @return true iff the element's local name and namespace match the parameters
      */
     public static boolean isElementNamed(Element e, String ns, String localName) {
-        return e != null && DatatypeHelper.safeEquals(ns, e.getNamespaceURI()) && DatatypeHelper.safeEquals(localName,
-                e.getLocalName());
+        return e != null && DatatypeHelper.safeEquals(ns, e.getNamespaceURI())
+                && DatatypeHelper.safeEquals(localName, e.getLocalName());
     }
 
     /**
