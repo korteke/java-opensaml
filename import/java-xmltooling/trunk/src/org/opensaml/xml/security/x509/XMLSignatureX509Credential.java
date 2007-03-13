@@ -16,37 +16,32 @@
 
 package org.opensaml.xml.security.x509;
 
-import java.security.GeneralSecurityException;
-
+import org.opensaml.xml.signature.KeyInfo;
 import org.opensaml.xml.signature.Signature;
 
 /**
- * An adapter class capable of exposing {@link Signature}s as an {@link X509Credential}.
+ * A credential class which represents a {@link KeyInfoX509Credential} which was resolved based on a 
+ * {@link KeyInfo} that was found within an XML {@link Signature} element.
  */
-public class XMLSignatureX509CredentialAdapter extends KeyInfoX509CredentialAdapter {
+public class XMLSignatureX509Credential extends KeyInfoX509Credential {
 
-    /** The signature. */
+    /** The Signature element which contains the KeyInfo resolution context. */
     private Signature signature;
 
     /**
-     * Constructor.
-     * 
-     * @param sig the siganture
-     * 
-     * @throws GeneralSecurityException thrown if the key, certificate, or CRL information is represented in an
-     *             unsupported format
-     */
-    public XMLSignatureX509CredentialAdapter(Signature sig) throws GeneralSecurityException {
-        super(sig.getKeyInfo());
-        signature = sig;
-    }
-
-    /**
-     * Gets the signature being adapted.
+     * Gets the Signature element which contains the KeyInfo resolution context.
      * 
      * @return signature being adapted
      */
     public Signature getSignature() {
         return signature;
     }
+    
+    /** {@inheritDoc} */
+    public void setKeyInfo(KeyInfo info) {
+        super.setKeyInfo(info);
+        // KeyInfo -> Signature
+        signature = (Signature) info.getParent();
+    }
+    
 }

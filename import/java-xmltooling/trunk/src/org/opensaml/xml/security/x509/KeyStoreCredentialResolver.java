@@ -19,13 +19,17 @@ package org.opensaml.xml.security.x509;
 import java.security.GeneralSecurityException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
-import java.security.PublicKey;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
+import java.util.Set;
+
+import javolution.util.FastSet;
 
 import org.apache.log4j.Logger;
+import org.opensaml.xml.security.credential.AbstractCredentialResolver;
+import org.opensaml.xml.security.credential.CredentialCriteria;
 import org.opensaml.xml.security.credential.CredentialResolver;
 import org.opensaml.xml.security.credential.UsageType;
 
@@ -35,7 +39,8 @@ import org.opensaml.xml.security.credential.UsageType;
  * If no key usage type is presented at construction time this resolver will return the key, if available, regardless of
  * the usage type provided to its resolve method.
  */
-public class KeyStoreCredentialResolver implements CredentialResolver<X509Credential> {
+public class KeyStoreCredentialResolver extends AbstractCredentialResolver<X509Credential> 
+    implements CredentialResolver<X509Credential> {
 
     /** Class logger. */
     private static Logger log = Logger.getLogger(KeyStoreCredentialResolver.class);
@@ -88,7 +93,9 @@ public class KeyStoreCredentialResolver implements CredentialResolver<X509Creden
     }
 
     /** {@inheritDoc} */
-    public X509Credential resolveCredential(String entity, UsageType usage) {
+    public Iterable<X509Credential> resolveCredentials(CredentialCriteria criteria) {
+        UsageType usage = criteria.getUsage();
+        String entity = criteria.getEntityID();
         if (keyUsage != null && keyUsage != usage) {
             return null;
         }
@@ -109,9 +116,7 @@ public class KeyStoreCredentialResolver implements CredentialResolver<X509Creden
                 KeyStore.PrivateKeyEntry privateKeyEntry = (KeyStore.PrivateKeyEntry) keyEntry;
                 credential.setPrivateKey(privateKeyEntry.getPrivateKey());
 
-                ArrayList<PublicKey> publicKeys = new ArrayList<PublicKey>();
-                publicKeys.add(privateKeyEntry.getCertificate().getPublicKey());
-                credential.setPublicKeys(publicKeys);
+                credential.setPublicKey( privateKeyEntry.getCertificate().getPublicKey() );
 
                 credential.setEntityCertificate((X509Certificate) privateKeyEntry.getCertificate());
                 credential.setEntityCertificateChain(Arrays.asList((X509Certificate[]) privateKeyEntry
@@ -120,9 +125,7 @@ public class KeyStoreCredentialResolver implements CredentialResolver<X509Creden
                 KeyStore.TrustedCertificateEntry trustedCertEntry = (KeyStore.TrustedCertificateEntry) keyEntry;
                 X509Certificate cert = (X509Certificate) trustedCertEntry.getTrustedCertificate();
 
-                ArrayList<PublicKey> publicKeys = new ArrayList<PublicKey>();
-                publicKeys.add(cert.getPublicKey());
-                credential.setPublicKeys(publicKeys);
+                credential.setPublicKey(cert.getPublicKey());
 
                 credential.setEntityCertificate(cert);
 
@@ -133,7 +136,9 @@ public class KeyStoreCredentialResolver implements CredentialResolver<X509Creden
         } catch (GeneralSecurityException e) {
             log.error("Unable to retrieve key for entity " + entity, e);
         }
-
-        return credential;
+        
+        Set<X509Credential> credentials = new FastSet<X509Credential>();
+        credentials.add(credential);
+        return credentials;
     }
 }

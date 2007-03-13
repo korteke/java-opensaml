@@ -17,7 +17,7 @@
 package org.opensaml.xml.security.x509;
 
 import java.security.PublicKey;
-import java.util.Collection;
+
 import org.apache.log4j.Logger;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.trust.TrustEngine;
@@ -46,21 +46,18 @@ public class BasicX509CredentialTrustEngine implements TrustEngine<X509Credentia
             log.debug("Validating X509 credential for entity " + untrustedCredential.getEntityId());
         }
 
-        Collection<PublicKey> trustedKeys = trustedCredential.getPublicKeys();
-        Collection<PublicKey> credentialKeys = untrustedCredential.getPublicKeys();
-        if (trustedKeys == null || credentialKeys == null) {
+        PublicKey trustedKey = trustedCredential.getPublicKey();
+        PublicKey credentialKey = untrustedCredential.getPublicKey();
+        if (trustedKey == null || credentialKey == null) {
             return false;
         }
-        for (PublicKey trustedKey : trustedKeys) {
-            for (PublicKey credentialKey : credentialKeys) {
-                if (trustedKey.equals(credentialKey)) {
-                    if (log.isDebugEnabled()) {
-                        log.debug("Validated X509 credential for entity " + untrustedCredential.getEntityId()
-                                + " against trusted public keys");
-                    }
-                    return true;
-                }
+        
+        if (trustedKey.equals(credentialKey)) {
+            if (log.isDebugEnabled()) {
+                log.debug("Validated X509 credential for entity " + untrustedCredential.getEntityId()
+                        + " against trusted public keys");
             }
+            return true;
         }
 
         if (log.isDebugEnabled()) {

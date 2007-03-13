@@ -16,7 +16,6 @@
 
 package org.opensaml.xml.security.x509;
 
-import java.security.PublicKey;
 import java.security.cert.X509CRL;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
@@ -31,25 +30,13 @@ import org.opensaml.xml.security.credential.BasicCredential;
 public class BasicX509Credential extends BasicCredential implements X509Credential {
 
     /** Entity certificate. */
-    protected X509Certificate entityCert;
+    private X509Certificate entityCert;
 
     /** Entity certificate chain, must include entity certificate. */
-    protected Collection<X509Certificate> entityCertChain;
+    private Collection<X509Certificate> entityCertChain;
 
     /** CRLs for this credential. */
-    protected Collection<X509CRL> crls;
-
-    /** {@inheritDoc} */
-    public Collection<PublicKey> getPublicKeys() {
-        HashSet<PublicKey> keys = new HashSet<PublicKey>(super.getPublicKeys());
-        Collection<X509Certificate> certChain = getEntityCertificateChain();
-        if (certChain != null) {
-            for (X509Certificate cert : certChain) {
-                keys.add(cert.getPublicKey());
-            }
-        }
-        return keys;
-    }
+    private Collection<X509CRL> crls;
 
     /** {@inheritDoc} */
     public Collection<X509CRL> getCRLs() {
@@ -77,6 +64,11 @@ public class BasicX509Credential extends BasicCredential implements X509Credenti
      */
     public void setEntityCertificate(X509Certificate cert) {
         entityCert = cert;
+        if (cert != null) {
+            setPublicKey(cert.getPublicKey());
+        } else {
+            setPublicKey(null);
+        }
     }
 
     /** {@inheritDoc} */

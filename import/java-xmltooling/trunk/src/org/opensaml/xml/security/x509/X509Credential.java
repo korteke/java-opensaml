@@ -26,16 +26,10 @@ import org.opensaml.xml.security.credential.Credential;
  * An entity credential based on PKI.
  */
 public interface X509Credential extends Credential {
-
-    /** DSA key algorithim identifier. */
-    public static final String DSA_KEY_ALGORITHM = "DSA";
-
-    /** RSA key algorithim identifier. */
-    public static final String RSA_KEY_ALGORITHM = "RSA";
-
+    
     /**
-     * Gets the public certificate for the entity. The public key of this certificate must be included in the list of
-     * public keys gotten from {@link Credential#getPublicKeys()}.
+     * Gets the public certificate for the entity. The public key of this certificate must be 
+     * the same keys gotten from {@link Credential#getPublicKey()}.
      * 
      * @return the public certificate for the entity
      */

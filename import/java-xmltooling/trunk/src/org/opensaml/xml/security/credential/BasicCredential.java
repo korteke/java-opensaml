@@ -33,7 +33,6 @@ public class BasicCredential extends AbstractCredential {
     /** Constructor. */
     public BasicCredential() {
         keyNames = new HashSet<String>();
-        publicKeys = new HashSet<PublicKey>();
         usageType = UsageType.UNSPECIFIED;
     }
 
@@ -65,12 +64,12 @@ public class BasicCredential extends AbstractCredential {
     }
 
     /**
-     * Sets the public keys for this credential.
+     * Sets the public key for this credential.
      * 
-     * @param keys public keys for this credential
+     * @param key public key for this credential
      */
-    public void setPublicKeys(Collection<PublicKey> keys) {
-        publicKeys = keys;
+    public void setPublicKey(PublicKey key) {
+        publicKey = key;
     }
 
     /**

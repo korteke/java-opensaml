@@ -37,7 +37,7 @@ public abstract class AbstractCredential implements Credential {
     protected Collection<String> keyNames;
     
     /** Public key of this credential. */
-    protected Collection<PublicKey> publicKeys;
+    protected PublicKey publicKey;
     
     /** Secret key for this credential. */
     protected SecretKey secretKey;
@@ -61,8 +61,8 @@ public abstract class AbstractCredential implements Credential {
     }
     
     /** {@inheritDoc}  */
-    public Collection<PublicKey> getPublicKeys() {
-        return publicKeys;
+    public PublicKey getPublicKey() {
+        return publicKey;
     }
     
     /** {@inheritDoc} */

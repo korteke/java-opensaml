@@ -28,6 +28,19 @@ import javax.crypto.SecretKey;
  */
 public interface Credential {
     
+    /** DSA key algorithim identifier. */
+    public static final String DSA_KEY_ALGORITHM = "DSA";
+
+    /** RSA key algorithim identifier. */
+    public static final String RSA_KEY_ALGORITHM = "RSA";
+
+    /** AES key algorithim identifier. */
+    public static final String AES_KEY_ALGORITHM = "AES";
+
+    /** Triple DES key algorithim identifier. */
+    public static final String TRIPLEDES_KEY_ALGORITHM = "DESede";
+
+    
     /**
      * The unique ID of the entity this credential is for.
      * 
@@ -45,26 +58,19 @@ public interface Credential {
     /**
      * Gets key names for this credential.  These names may be used to reference a key(s) exchanged 
      * through an out-of-band aggreement.  Implementations may or may not implement means to resolve 
-     * these names into keys retrievable through the {@link #getPublicKeys()} or {@link #getPrivateKey()} 
-     * methods.
+     * these names into keys retrievable through the {@link #getPublicKey()}, {@link #getPrivateKey()} 
+     * or {@link #getSecretKey()} methods.
      * 
      * @return key names for this credential
      */
     public Collection<String> getKeyNames();
 
     /**
-     * Gets the public keys for the entity.
+     * Gets the public key for the entity.
      * 
-     * @return public keys for the entity
+     * @return public key for the entity
      */
-    public Collection<PublicKey> getPublicKeys();
-    
-    /**
-     * Gets the secret key for this entity.
-     * 
-     * @return secret key for this entity
-     */
-    public SecretKey getSecretKey();
+    public PublicKey getPublicKey();
 
     /**
      * Gets the private key for the entity if there is one.
@@ -72,4 +78,11 @@ public interface Credential {
      * @return the private key for the entity
      */
     public PrivateKey getPrivateKey();
+    
+    /**
+     * Gets the secret key for this entity.
+     * 
+     * @return secret key for this entity
+     */
+    public SecretKey getSecretKey();
 }

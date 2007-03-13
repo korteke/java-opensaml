@@ -17,7 +17,6 @@
 package org.opensaml.xml.security.x509;
 
 import java.security.PublicKey;
-import java.util.Collection;
 
 import org.apache.log4j.Logger;
 import org.apache.xml.security.signature.XMLSignature;
@@ -27,6 +26,9 @@ import org.opensaml.xml.signature.Signature;
 import org.opensaml.xml.signature.impl.SignatureImpl;
 import org.opensaml.xml.validation.ValidationException;
 import org.opensaml.xml.validation.Validator;
+
+// TODO need to check for and support HMAC validation with symmetric key
+// from Credential.getSecretKey()
 
 /**
  * A validator that validates an XML Signature on its content.
@@ -56,19 +58,21 @@ public class SignatureValidator implements Validator<Signature> {
 
         XMLSignature xmlSig = buildSignature(signature);
 
-        Collection<PublicKey> validationKeys = validationCredential.getPublicKeys();
-        if (validationKeys == null || validationKeys.size() < 1) {
-            throw new ValidationException("No public keys available to validate signature");
+        PublicKey validationKey = validationCredential.getPublicKey();
+        if (validationKey == null) {
+            throw new ValidationException("No public key available to validate signature");
         }
+        
+        // TODO - investigate whether need to look at the signature signing algorithm before
+        // blinding trying the key - DSA vs. RSA, public key vs. HMAC. I think using wrong
+        // one might throw exception rather than just causing checkSignatureValue to return false.
 
         try {
-            for (PublicKey trustedKey : validationKeys) {
-                if (xmlSig.checkSignatureValue(trustedKey)) {
-                    if (log.isDebugEnabled()) {
-                        log.debug("Signature validated with public keys from credential");
-                    }
-                    return;
+            if (xmlSig.checkSignatureValue(validationKey)) {
+                if (log.isDebugEnabled()) {
+                    log.debug("Signature validated with public key from credential");
                 }
+                return;
             }
         } catch (XMLSignatureException e) {
             throw new ValidationException("Unable to evaluate key against signature", e);

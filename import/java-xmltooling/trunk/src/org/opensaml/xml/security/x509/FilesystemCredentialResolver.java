@@ -18,8 +18,9 @@ package org.opensaml.xml.security.x509;
 
 import java.util.Map;
 
+import org.opensaml.xml.security.credential.AbstractCredentialResolver;
+import org.opensaml.xml.security.credential.CredentialCriteria;
 import org.opensaml.xml.security.credential.CredentialResolver;
-import org.opensaml.xml.security.credential.UsageType;
 
 /**
  * A {@link CredentialResolver} that pulls credential information from the file system.
@@ -36,7 +37,8 @@ import org.opensaml.xml.security.credential.UsageType;
  * <li>.crl - for certificate revocation lists. File must contain one or more CRLs</li>
  * </ul>
  */
-public class FilesystemCredentialResolver implements CredentialResolver<X509Credential> {
+public class FilesystemCredentialResolver extends AbstractCredentialResolver<X509Credential> 
+    implements CredentialResolver<X509Credential> {
 
     /**
      * Constructor.
@@ -49,7 +51,7 @@ public class FilesystemCredentialResolver implements CredentialResolver<X509Cred
     }
 
     /** {@inheritDoc} */
-    public X509Credential resolveCredential(String entity, UsageType usage) {
+    public Iterable<X509Credential> resolveCredentials(CredentialCriteria criteria) {
         // TODO Auto-generated method stub
         return null;
     }

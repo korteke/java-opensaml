@@ -16,6 +16,7 @@
 
 package org.opensaml.xml.security.credential;
 
+
 import org.opensaml.xml.security.SecurityException;
 
 /**
@@ -26,14 +27,29 @@ import org.opensaml.xml.security.SecurityException;
 public interface CredentialResolver<CredentialType extends Credential> {
 
     /**
-     * Gets the credential for the given entity.
+     * Gets a set of credentials that satisfy the specified credential criteria.
      * 
-     * @param entity ID of the entity
-     * @param usage usage type of the credential
+     * @param criteria  the criteria used for resolving the credential
      * 
-     * @return entity's credential or null
+     * @return an {@link Iterable} of credentials, possibly empty if no credentials were found that
+     *          satisfy the given criteria
+     * 
+     * @throws SecurityException thrown if no credentials can be resolved
+     */
+    public Iterable<CredentialType> resolveCredentials(CredentialCriteria criteria) throws SecurityException;
+    
+    /**
+     * Gets a single credential which satisfies the specified credential criteria.
+     * 
+     * If multiple credentials are found which satisfy the criteria, the resolver
+     * may choose any mechanism to select the one to return.  Implementations should
+     * override this method to meet their specific needs.
+     * 
+     * @param criteria  the criteria used for resolving the credential
+     * 
+     * @return a credential, or null if no credential was found that satisfies the given criteria
      * 
      * @throws SecurityException thrown if the credential can not be resolved
      */
-    public CredentialType resolveCredential(String entity, UsageType usage) throws SecurityException;
+    public CredentialType resolveCredential(CredentialCriteria criteria) throws SecurityException;
 }

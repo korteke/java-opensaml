@@ -38,7 +38,7 @@ import org.opensaml.xml.parse.ParserPool;
 import org.opensaml.xml.parse.XMLParserException;
 import org.opensaml.xml.security.credential.BasicCredential;
 import org.opensaml.xml.security.credential.Credential;
-import org.opensaml.xml.security.x509.KeyInfoX509CredentialAdapter;
+import org.opensaml.xml.security.x509.KeyInfoX509Credential;
 import org.opensaml.xml.security.x509.SignatureValidator;
 import org.opensaml.xml.signature.impl.SignatureBuilder;
 import org.opensaml.xml.util.XMLHelper;
@@ -75,12 +75,12 @@ public class DetachedSignatureTest extends XMLObjectBaseTestCase {
 
         goodCredential = new BasicCredential();
         goodCredential.setPrivateKey(keyPair.getPrivate());
-        goodCredential.getPublicKeys().add(keyPair.getPublic());
+        goodCredential.setPublicKey(keyPair.getPublic());
 
         keyGen.initialize(1024);
         keyPair = keyGen.generateKeyPair();
         badCredential = new BasicCredential();
-        badCredential.getPublicKeys().add(keyPair.getPublic());
+        badCredential.setPublicKey(keyPair.getPublic());
 
         sxoBuilder = new SimpleXMLObjectBuilder();
         sigBuilder = new SignatureBuilder();
@@ -175,7 +175,7 @@ public class DetachedSignatureTest extends XMLObjectBaseTestCase {
         Unmarshaller unmarshaller = Configuration.getUnmarshallerFactory().getUnmarshaller(signatureElement);
         Signature signature = (Signature) unmarshaller.unmarshall(signatureElement);
 
-        Credential credential = new KeyInfoX509CredentialAdapter(signature.getKeyInfo());
+        Credential credential = new KeyInfoX509Credential(signature.getKeyInfo());
         SignatureValidator sigValidator = new SignatureValidator(credential);
         sigValidator.validate(signature);
     }
