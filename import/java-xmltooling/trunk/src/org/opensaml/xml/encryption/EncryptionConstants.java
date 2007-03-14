@@ -32,11 +32,15 @@ public class EncryptionConstants {
     /** URI for Element. */
     public static final String TYPE_ELEMENT                = XMLConstants.XMLENC_NS + "Element";
     
+    /** URI for EncryptionProperties. */
+    public static final String TYPE_ENCRYPTION_PROPERTIES =  XMLConstants.XMLENC_NS + "EncryptionProperties";
+    
     /** URI for EncryptedKey. */
     public static final String TYPE_ENCRYPTED_KEY          = XMLConstants.XMLENC_NS + "EncryptedKey";
     
-    /** URI for EncryptionProperties. */
-    public static final String TYPE_ENCRYPTION_PROPERTIES =  XMLConstants.XMLENC_NS + "EncryptionProperties";
+    /** URI for DHKeyValue. */
+    public static final String TYPE_KEYINFO_DH_KEYVALUE =  XMLConstants.XMLENC_NS + "DHKeyValue";
+    
 
     // *************************************************
     // Block encryption algorithms

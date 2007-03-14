@@ -158,7 +158,8 @@
         <sequence>
             <element ref="ds:Transforms" minOccurs="0" />
         </sequence>
-        <attribute name="URI" type="anyURI" />
+        <!-- Note: URI amended with 'use=required' per DSig spec errata 'E08 2003-11-18 (Error)' -->
+        <attribute name="URI" type="anyURI" use="required"/>
         <attribute name="Type" type="anyURI" use="optional" />
     </complexType>
 
