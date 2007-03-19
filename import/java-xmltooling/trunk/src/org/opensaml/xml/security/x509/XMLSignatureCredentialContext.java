@@ -16,32 +16,44 @@
 
 package org.opensaml.xml.security.x509;
 
+import org.opensaml.xml.security.keyinfo.KeyInfoCredentialContext;
 import org.opensaml.xml.signature.KeyInfo;
 import org.opensaml.xml.signature.Signature;
 
 /**
- * A credential class which represents a {@link KeyInfoX509Credential} which was resolved based on a 
- * {@link KeyInfo} that was found within an XML {@link Signature} element.
+ * A credential context for credentials resolved from a {@link KeyInfo} that was found in 
+ * in XML Signature {@link Signature} element.
  */
-public class XMLSignatureX509Credential extends KeyInfoX509Credential {
+public class XMLSignatureCredentialContext extends KeyInfoCredentialContext {
 
-    /** The Signature element which contains the KeyInfo resolution context. */
+    /** The Signature element context. */ 
     private Signature signature;
-
-    /**
-     * Gets the Signature element which contains the KeyInfo resolution context.
-     * 
-     * @return signature being adapted
-     */
-    public Signature getSignature() {
-        return signature;
-    }
     
     /** {@inheritDoc} */
     public void setKeyInfo(KeyInfo info) {
         super.setKeyInfo(info);
         // KeyInfo -> Signature
-        signature = (Signature) info.getParent();
+        if (info != null) {
+            signature = (Signature) info.getParent();
+        }
+    }
+
+    /**
+     * Gets the Signature element context.
+     * 
+     * @return signature context
+     */
+    public Signature getSignature() {
+        return signature;
+    }
+    
+    /**
+     * Sets the Signature element context.
+     * 
+     * @param newSignature context
+     */
+    public void setSignature(Signature newSignature) {
+        signature = newSignature;
     }
     
 }

@@ -16,27 +16,83 @@
 
 package org.opensaml.xml.security.credential;
 
+import java.security.Key;
+
 import org.opensaml.xml.security.SecurityException;
 
 /**
  * Abstract base class for {@link CredentialResolver} implementations.
  * 
- * @param <CredentialType> the type of credential produced by this resolver
+ * @param <ContextType> the type of {@link CredentialContext} associated with the resolver
  */
-public abstract class AbstractCredentialResolver<CredentialType extends Credential> 
-    implements CredentialResolver<CredentialType> {
+public abstract class AbstractCredentialResolver<ContextType extends CredentialContext>
+    implements CredentialResolver<ContextType> {
+    
+    /** The Class of the credential context that will be produced by the resolver. */
+    private Class<? extends ContextType> contextClass;
+    
+    /** {@inheritDoc} */
+    public Class<? extends ContextType> getContextClass() {
+        return contextClass;
+    }
 
     /** {@inheritDoc} */
-    public CredentialType resolveCredential(CredentialCriteria criteria) throws SecurityException {
-        Iterable<CredentialType> creds = resolveCredentials(criteria);
+    public void setContextClass(Class<? extends ContextType> newContextClass) {
+       contextClass = newContextClass; 
+    }
+
+    /** {@inheritDoc} */
+    public Credential resolveCredential(CredentialCriteria criteria) throws SecurityException {
+        Iterable<Credential> creds = resolveCredentials(criteria);
         if (creds.iterator().hasNext()) {
             return creds.iterator().next();
         } else {
             return null;
         }
     }
+    
+    /**
+     * Create and return a new instance of the {@link CredentialContext} type currently defined
+     * for this class instance.
+     * 
+     * @return a new instance of CredentialContext
+     * @throws SecurityException thrown if the context object can not be instantiated
+     */
+    public ContextType newCredentialContext() throws SecurityException {
+        ContextType context = null;
+        
+        try {
+            context = contextClass.newInstance();
+        } catch (InstantiationException e) {
+            throw new SecurityException("Could not instantiate instance of CredentialContext", e);
+        } catch (IllegalAccessException e) {
+            throw new SecurityException("Error creating instance of CredentialContext", e);
+        }
+        
+        return context;
+    }
+    
+    /**
+     * Check whether the resolved key meets the specified key criteria.
+     * 
+     * @param key the Key to evaluate 
+     * @param criteria the credential criteria to use to evaluate the key
+     * @return true if the key meets the criteria, otherwise false
+     */
+    protected boolean evaluateKey(Key key, CredentialCriteria criteria) {
+        // If key was null, or no key algo specified, define this to be 'true'
+        if (criteria.getKeyAlgorithm() == null || key == null) {
+            return true;
+        }
+        if (criteria.getKeyAlgorithm().equals(key.getAlgorithm())) {
+            return true;
+        }
+        return false;
+    }
+
+    
 
     /** {@inheritDoc} */
-    public abstract Iterable<CredentialType> resolveCredentials(CredentialCriteria criteria) throws SecurityException;
+    public abstract Iterable<Credential> resolveCredentials(CredentialCriteria criteria) throws SecurityException;
 
 }

@@ -14,38 +14,34 @@
  * limitations under the License.
  */
 
-package org.opensaml.xml.security.credential;
+package org.opensaml.xml.security.keyinfo;
 
+import org.opensaml.xml.security.credential.CredentialContext;
 import org.opensaml.xml.signature.KeyInfo;
 
 /**
- * A class for representing credential resolution criteria which is based primarily
- * on the contents of a {@link KeyInfo} element.
+ * Context for credentials resolved from a {@link KeyInfo} element.
  */
-public class KeyInfoCredentialCriteria extends CredentialCriteria {
+public class KeyInfoCredentialContext implements CredentialContext {
     
-    /** The KeyInfo which serves as the source for credential criteria. */
+    /** The KeyInfo context. */
     private KeyInfo keyInfo;
     
     /**
-     * Constructor.
-     *
-     * @param newKeyInfo the KeyInfo credential criteria to use
-     */
-    public KeyInfoCredentialCriteria(KeyInfo newKeyInfo) {
-       if (newKeyInfo == null) {
-           throw new IllegalArgumentException("KeyInfo parameter must be specified");
-       }
-       keyInfo = newKeyInfo;
-    }
-    
-    /**
-     * Gets the KeyInfo which is the source of credential criteria.
+     * Get the KeyInfo context from which the credential was derived.
      * 
-     * @return the KeyInfo credential criteria
+     * @return the KeyInfo context
      */
     public KeyInfo getKeyInfo() {
         return keyInfo;
     }
 
+    /**
+     * Set the KeyInfo context from which the credential was derived.
+     * 
+     * @param newKeyInfo the KeyInfo context
+     */
+    public void setKeyInfo(KeyInfo newKeyInfo) {
+        keyInfo = newKeyInfo;
+    }
 }

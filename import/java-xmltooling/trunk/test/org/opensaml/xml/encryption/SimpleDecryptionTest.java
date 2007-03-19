@@ -18,11 +18,14 @@ package org.opensaml.xml.encryption;
 
 import java.security.Key;
 
+import javax.crypto.SecretKey;
+
+import org.opensaml.xml.StaticKeyInfoCredentialResolver;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.XMLObjectBaseTestCase;
 import org.opensaml.xml.mock.SimpleXMLObject;
-import org.opensaml.xml.security.DirectEncryptionKeyInfoResolver;
-import org.opensaml.xml.security.KeyInfoResolver;
+import org.opensaml.xml.security.credential.BasicCredential;
+import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
 import org.w3c.dom.Document;
 
 /**
@@ -30,8 +33,8 @@ import org.w3c.dom.Document;
  */
 public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
     
-    private KeyInfoResolver keyResolver;
-    private KeyInfoResolver kekResolver;
+    private KeyInfoCredentialResolver keyResolver;
+    private KeyInfoCredentialResolver kekResolver;
     
     private String encURI;
     private Key encKey;
@@ -68,13 +71,17 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
         // TODO perhaps should be retrieving control keys and encrypted elements
         // from a keystore and files, etc, but for now just generate on the fly
         encKey = EncryptionTestHelper.generateKey(encURI);
-        keyResolver = new DirectEncryptionKeyInfoResolver(encKey);
+        BasicCredential encCred = new BasicCredential();
+        encCred.setSecretKey((SecretKey) encKey);
+        keyResolver = new StaticKeyInfoCredentialResolver(encCred);
         encParams = new EncryptionParameters();
         encParams.setAlgorithm(encURI);
         encParams.setEncryptionKey(encKey);
         
         kekKey = EncryptionTestHelper.generateKey(kekURI);
-        kekResolver = new DirectEncryptionKeyInfoResolver(kekKey);
+        BasicCredential kekCred = new BasicCredential();
+        kekCred.setSecretKey((SecretKey) kekKey);
+        kekResolver = new StaticKeyInfoCredentialResolver(kekCred);
         kekParams = new KeyEncryptionParameters();
         kekParams.setAlgorithm(kekURI);
         kekParams.setEncryptionKey(kekKey);

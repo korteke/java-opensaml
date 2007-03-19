@@ -36,10 +36,13 @@ import org.opensaml.xml.mock.SimpleXMLObject;
 import org.opensaml.xml.mock.SimpleXMLObjectBuilder;
 import org.opensaml.xml.parse.ParserPool;
 import org.opensaml.xml.parse.XMLParserException;
+import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.credential.BasicCredential;
 import org.opensaml.xml.security.credential.Credential;
-import org.opensaml.xml.security.x509.KeyInfoX509Credential;
+import org.opensaml.xml.security.keyinfo.KeyInfoCredentialCriteria;
+import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xml.security.x509.SignatureValidator;
+import org.opensaml.xml.security.x509.XMLSignatureCredentialContext;
 import org.opensaml.xml.signature.impl.SignatureBuilder;
 import org.opensaml.xml.util.XMLHelper;
 import org.opensaml.xml.validation.ValidationException;
@@ -165,17 +168,22 @@ public class DetachedSignatureTest extends XMLObjectBaseTestCase {
      * @throws UnmarshallingException thrown if the signature DOM can not be unmarshalled
      * @throws ValidationException thrown if the Signature does not validate against the key
      * @throws GeneralSecurityException
+     * @throws SecurityException 
      */
     public void testUnmarshallExternalSignatureAndVerification() throws IOException, XMLParserException,
-            UnmarshallingException, ValidationException, GeneralSecurityException {
+            UnmarshallingException, ValidationException, GeneralSecurityException, SecurityException {
         String signatureLocation = "http://www.w3.org/TR/xmldsig-core/signature-example-rsa.xml";
         InputStream ins = new URL(signatureLocation).openStream();
         Element signatureElement = parserPool.parse(ins).getDocumentElement();
 
         Unmarshaller unmarshaller = Configuration.getUnmarshallerFactory().getUnmarshaller(signatureElement);
         Signature signature = (Signature) unmarshaller.unmarshall(signatureElement);
-
-        Credential credential = new KeyInfoX509Credential(signature.getKeyInfo());
+        
+        KeyInfoCredentialResolver resolver = new KeyInfoCredentialResolver();
+        resolver.setContextClass(XMLSignatureCredentialContext.class);
+        
+        KeyInfoCredentialCriteria criteria = new KeyInfoCredentialCriteria(signature.getKeyInfo());
+        Credential credential = resolver.resolveCredential(criteria);
         SignatureValidator sigValidator = new SignatureValidator(credential);
         sigValidator.validate(signature);
     }

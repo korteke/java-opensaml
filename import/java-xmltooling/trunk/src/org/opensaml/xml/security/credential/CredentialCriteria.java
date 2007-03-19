@@ -16,13 +16,19 @@
 
 package org.opensaml.xml.security.credential;
 
-import java.math.BigInteger;
 import java.security.PublicKey;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Class for specifying criteria by which a {@link CredentialResolver} should resolve credentials.
  */
 public class CredentialCriteria {
+    
+    // TODO need to think about this a little more
+    // - maybe all criteria should just be stored in the extensible map
+    // - provide key constants with well-defined semantics
     
     /** EntityID for which to resolve credential. */
     private String entityID;
@@ -39,16 +45,45 @@ public class CredentialCriteria {
     /** Specifier of public key associated with resolved credentials. */
     private PublicKey publicKey;
     
-    /** Specifier of X.509 certificate subject name (DN) associated with resolved credentials. */
-    private String x509SubjectName;
+    /** Extensible set of criteria which can be used by credential-type specific resolvers. */
+    private Map<String, Object> extensionProperties;
+
+    /** Constructor. */
+    public CredentialCriteria() {
+        extensionProperties = new HashMap<String, Object>();
+    }
     
-    /** Specifier of X.509 certificate issuername (DN) associated with resolved credentials. */
-    private String x509IssuerName;
+    /**
+     * Get the extension criteria specified.
+     * 
+     * @param key name of the extension criteria to return
+     * 
+     * @return extension criteria value
+     */
+    public Object getExtension(String key) {
+       return extensionProperties.get(key); 
+    }
     
-    /** Specifier of X.509 certificate serial number associated with resolved credentials. */
-    private BigInteger x509SerialNumber;
+    /**
+     * Set the extension criteria specified.
+     * 
+     * @param key name of the extension criteria 
+     * @param value value of the extension criteria 
+     * 
+     * @return old value of the extension criteria key
+     */
+    public Object setExtension(String key, Object value) {
+       return extensionProperties.put(key, value); 
+    }
     
-    // TODO - X509 SubjectKeyIdentifier format/type can vary, need to clarify
+    /**
+     * Get the key names of all extension criteria.
+     * 
+     * @return set of extension criteria names
+     */
+    public Set<String> getExtensionNames() {
+       return extensionProperties.keySet(); 
+    }
 
     /**
      * Get the entity ID criteria.
@@ -139,61 +174,5 @@ public class CredentialCriteria {
     public void setUsage(UsageType usage) {
         this.usage = usage;
     }
-
-    /**
-     * Get the X.509 issuer name criteria.
-     * 
-     * @return Returns the x509IssuerName.
-     */
-    public String getX509IssuerName() {
-        return x509IssuerName;
-    }
-
-    /**
-     * Set the X.509 issuer name criteria.
-     * 
-     * @param issuerName The x509IssuerName to set.
-     */
-    public void setX509IssuerName(String issuerName) {
-        x509IssuerName = issuerName;
-    }
-
-    /**
-     * Get the X.509 serial number criteria.
-     * 
-     * @return Returns the x509SerialNumber.
-     */
-    public BigInteger getX509SerialNumber() {
-        return x509SerialNumber;
-    }
-
-    /**
-     * Set the X.509 serial number criteria.
-     * 
-     * @param serialNumber The x509SerialNumber to set.
-     */
-    public void setX509SerialNumber(BigInteger serialNumber) {
-        x509SerialNumber = serialNumber;
-    }
-
-    /**
-     * Get the X.509 subject name criteria.
-     * 
-     * @return Returns the x509SubjectName.
-     */
-    public String getX509SubjectName() {
-        return x509SubjectName;
-    }
-
-    /**
-     * Set the X.509 subject name criteria.
-     * 
-     * @param subjectDN The x509SubjectDN to set.
-     */
-    public void setX509SubjectName(String subjectDN) {
-        x509SubjectName = subjectDN;
-    }
-    
- 
 
 }

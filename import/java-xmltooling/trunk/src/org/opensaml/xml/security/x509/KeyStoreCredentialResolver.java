@@ -22,25 +22,24 @@ import java.security.KeyStoreException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import javolution.util.FastSet;
-
 import org.apache.log4j.Logger;
 import org.opensaml.xml.security.credential.AbstractCredentialResolver;
+import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.credential.CredentialCriteria;
 import org.opensaml.xml.security.credential.CredentialResolver;
 import org.opensaml.xml.security.credential.UsageType;
 
 /**
- * A {@link CredentialResolver} that extracts {@link X509Credential} from a key store.
+ * A {@link CredentialResolver} that extracts {@link Credential}'s from a key store.
  * 
  * If no key usage type is presented at construction time this resolver will return the key, if available, regardless of
  * the usage type provided to its resolve method.
  */
-public class KeyStoreCredentialResolver extends AbstractCredentialResolver<X509Credential> 
-    implements CredentialResolver<X509Credential> {
+public class KeyStoreCredentialResolver extends AbstractCredentialResolver  implements CredentialResolver {
 
     /** Class logger. */
     private static Logger log = Logger.getLogger(KeyStoreCredentialResolver.class);
@@ -93,7 +92,7 @@ public class KeyStoreCredentialResolver extends AbstractCredentialResolver<X509C
     }
 
     /** {@inheritDoc} */
-    public Iterable<X509Credential> resolveCredentials(CredentialCriteria criteria) {
+    public Iterable<Credential> resolveCredentials(CredentialCriteria criteria) {
         UsageType usage = criteria.getUsage();
         String entity = criteria.getEntityID();
         if (keyUsage != null && keyUsage != usage) {
@@ -137,7 +136,7 @@ public class KeyStoreCredentialResolver extends AbstractCredentialResolver<X509C
             log.error("Unable to retrieve key for entity " + entity, e);
         }
         
-        Set<X509Credential> credentials = new FastSet<X509Credential>();
+        Set<Credential> credentials = new HashSet<Credential>();
         credentials.add(credential);
         return credentials;
     }

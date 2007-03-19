@@ -28,19 +28,6 @@ import javax.crypto.SecretKey;
  */
 public interface Credential {
     
-    /** DSA key algorithim identifier. */
-    public static final String DSA_KEY_ALGORITHM = "DSA";
-
-    /** RSA key algorithim identifier. */
-    public static final String RSA_KEY_ALGORITHM = "RSA";
-
-    /** AES key algorithim identifier. */
-    public static final String AES_KEY_ALGORITHM = "AES";
-
-    /** Triple DES key algorithim identifier. */
-    public static final String TRIPLEDES_KEY_ALGORITHM = "DESede";
-
-    
     /**
      * The unique ID of the entity this credential is for.
      * 
@@ -85,4 +72,12 @@ public interface Credential {
      * @return secret key for this entity
      */
     public SecretKey getSecretKey();
+    
+    /**
+     * Get the credential context information, which provides additional information
+     * specific to the context in which the credential was resolved.
+     * 
+     * @return resolution context of the credential
+     */
+    public CredentialContext getCredentalContext();
 }

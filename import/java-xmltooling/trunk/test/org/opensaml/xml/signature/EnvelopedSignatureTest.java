@@ -18,7 +18,6 @@ package org.opensaml.xml.signature;
 
 import java.io.InputStream;
 import java.security.GeneralSecurityException;
-import java.security.KeyException;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.PublicKey;
@@ -36,8 +35,6 @@ import org.opensaml.xml.mock.SimpleXMLObjectBuilder;
 import org.opensaml.xml.parse.ParserPool;
 import org.opensaml.xml.parse.XMLParserException;
 import org.opensaml.xml.security.credential.BasicCredential;
-import org.opensaml.xml.security.credential.Credential;
-import org.opensaml.xml.security.x509.KeyInfoX509Credential;
 import org.opensaml.xml.security.x509.SignatureValidator;
 import org.opensaml.xml.signature.impl.SignatureBuilder;
 import org.opensaml.xml.util.XMLHelper;

@@ -45,6 +45,9 @@ public abstract class AbstractCredential implements Credential {
     /** Private key of this credential. */
     protected PrivateKey privateKey;
     
+    /** Credential context of this credential. */
+    protected CredentialContext credentialContext;
+    
     /** {@inheritDoc}  */
     public String getEntityId() {
         return entityID;
@@ -74,4 +77,10 @@ public abstract class AbstractCredential implements Credential {
     public PrivateKey getPrivateKey() {
         return privateKey;
     }
+
+    /** {@inheritDoc} */
+    public CredentialContext getCredentalContext() {
+        return credentialContext;
+    }
+    
 }

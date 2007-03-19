@@ -36,7 +36,10 @@ import org.opensaml.xml.io.UnmarshallerFactory;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.parse.ParserPool;
 import org.opensaml.xml.parse.XMLParserException;
-import org.opensaml.xml.security.KeyInfoResolver;
+import org.opensaml.xml.security.SecurityException;
+import org.opensaml.xml.security.credential.Credential;
+import org.opensaml.xml.security.keyinfo.KeyInfoCredentialCriteria;
+import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
 import org.w3c.dom.Document;
 import org.w3c.dom.DocumentFragment;
 import org.w3c.dom.Element;
@@ -61,10 +64,10 @@ public class Decrypter {
     private Logger log = Logger.getLogger(Decrypter.class);
     
     /** Resolver for data encryption keys. */
-    private KeyInfoResolver resolver;
+    private KeyInfoCredentialResolver resolver;
     
     /** Resolver for key encryption keys. */
-    private KeyInfoResolver kekResolver;
+    private KeyInfoCredentialResolver kekResolver;
     
     /**
      * Constructor.
@@ -72,7 +75,7 @@ public class Decrypter {
      * @param newKEKResolver resolver for key encryption keys.
      * @param newResolver resolver for data encryption keys.
      */
-    public Decrypter(KeyInfoResolver newKEKResolver, KeyInfoResolver newResolver) {
+    public Decrypter(KeyInfoCredentialResolver newKEKResolver, KeyInfoCredentialResolver newResolver) {
         kekResolver = newKEKResolver;
         resolver = newResolver;
         
@@ -87,27 +90,27 @@ public class Decrypter {
         unmarshallerFactory = Configuration.getUnmarshallerFactory();
     }
     
-    public Decrypter(KeyInfoResolver newKEKResolver, KeyInfoResolver newResolver, ParserPool pool){
+    public Decrypter(KeyInfoCredentialResolver newKEKResolver, KeyInfoCredentialResolver newResolver, ParserPool pool){
         kekResolver = newKEKResolver;
         resolver = newResolver;
         parserPool = pool;
     }
     
     /**
-     * Set a new key encryption key resolver.
+     * Set a new key encryption key credential resolver.
      * 
      * @param newKEKResolver the new key encryption key resolver
      */
-    public void setKEKREsolver(KeyInfoResolver newKEKResolver) {
+    public void setKEKREsolver(KeyInfoCredentialResolver newKEKResolver) {
         this.kekResolver = newKEKResolver;
     }
     
     /**
-     * Set a new data encryption key resolver.
+     * Set a new data encryption key credential resolver.
      * 
      * @param newResolver the new data encryption key resolver
      */
-    public void setKeyResolver(KeyInfoResolver newResolver) {
+    public void setKeyResolver(KeyInfoCredentialResolver newResolver) {
         this.resolver = newResolver;
     }
     
@@ -261,11 +264,18 @@ public class Decrypter {
            }
         }
         
+        //TODO new credential-based algo needs to be reevaluated, for now just getting code to compile again
         Key kek = null;
+        Credential kekCred = null;
         try {
-            kek = kekResolver.resolveKey(encryptedKey.getKeyInfo());
-        } catch (KeyException e) {
-            throw new DecryptionException("Error resolving the key encryption key", e);
+            kekCred = kekResolver.resolveCredential(new KeyInfoCredentialCriteria(encryptedKey.getKeyInfo()));
+        } catch (SecurityException e) {
+            throw new DecryptionException("Error resolving the key encryption key credential", e);
+        }
+        if (kekCred.getPrivateKey() != null) {
+            kek = kekCred.getPrivateKey();
+        } else if (kekCred.getSecretKey() != null) {
+            kek = kekCred.getSecretKey();
         }
         if (kek == null) {
             throw new DecryptionException("Failed to resolve key encryption key");
@@ -307,14 +317,19 @@ public class Decrypter {
      */
     private Key resolveDataDecryptionKey(EncryptedData encryptedData) throws DecryptionException {
         Key dataEncKey = null;
+        Credential dataEncKeyCred = null;
+        
+        //TODO this needs work and re-eval based on new credential-based resolvers,
+        // just getting the code to compile again for now.
         
         // This logic is pretty much straight from the C++ decrypter...
         
         // First try and resolve the data encryption key directly
         if (resolver != null) {
             try {
-                dataEncKey = resolver.resolveKey(encryptedData.getKeyInfo());
-            } catch (KeyException e) {
+                dataEncKeyCred = resolver.resolveCredential(new KeyInfoCredentialCriteria(encryptedData.getKeyInfo()));
+                dataEncKey = dataEncKeyCred.getSecretKey();
+            } catch (SecurityException e) {
                 throw new DecryptionException("Error resolving data encryption key", e);
             }
         }
@@ -341,8 +356,10 @@ public class Decrypter {
                 }
             }
             
+            //TODO rewrite based on credential resolver.
             // If no key was resolved, and our data encryption key resolver is an EncryptedKey resolver
             // specialization capable of resolving EncryptedKey's from another context, try that.
+            /*
             if (dataEncKey == null && resolver instanceof EncryptedKeyInfoResolver) {
                 EncryptedKeyInfoResolver ekr = (EncryptedKeyInfoResolver) resolver;
                 EncryptedKey encryptedKey = null;
@@ -359,6 +376,7 @@ public class Decrypter {
                     }
                 }
             }
+            */
         }
         
         return dataEncKey;

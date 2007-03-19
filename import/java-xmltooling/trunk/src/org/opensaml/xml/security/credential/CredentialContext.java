@@ -17,11 +17,9 @@
 package org.opensaml.xml.security.credential;
 
 /**
- * Specialized credential resovlver interface which resolves credentials based on a {@link KeyInfo}  element.
- * 
- * @param <CredentialType> the type of credential produced by this resolver
+ * Marker interface for implementations which hold information specific to a a particular context within 
+ * which a {@link CredentialResolver} resolves a {@link Credential}.
  */
-public interface KeyInfoCredentialResolver<CredentialType extends KeyInfoCredential> 
-    extends CredentialResolver<CredentialType> {
+public interface CredentialContext {
 
 }
