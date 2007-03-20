@@ -203,6 +203,25 @@ public final class XMLHelper {
                     valueComponents[0]);
         }
     }
+    
+    /**
+     * Parses the attribute's value. If the value is 0 or "false" then false is returned, if the value is 1 or "true"
+     * then true is returned, if the value is anything else then null returned.
+     * 
+     * @param attribute attribute whose value will be converted to a boolean
+     * 
+     * @return boolean value of the attribute or null
+     */
+    public static Boolean getAttributeValueAsBoolean(Attr attribute) {
+        String valueStr = attribute.getValue();
+        if (valueStr.equals("0") || valueStr.equals("false")) {
+            return Boolean.FALSE;
+        } else if (valueStr.equals("1") || valueStr.equals("true")) {
+            return Boolean.TRUE;
+        } else {
+            return null;
+        }
+    }
 
     /**
      * Constructs a QName from an element's adjacent Text child nodes.
