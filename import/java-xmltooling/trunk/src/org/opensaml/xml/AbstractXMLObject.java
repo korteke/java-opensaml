@@ -44,6 +44,12 @@ public abstract class AbstractXMLObject implements XMLObject {
     /** The name of this element with namespace and prefix information. */
     private QName elementQname;
 
+    /** Schema locations for this XML object. */
+    private String schemaLocation;
+    
+    /** No-namespace schema locations for this XML object. */
+    private String noNamespaceSchemaLocation;
+    
     /** The schema type of this element with namespace and prefix information. */
     private QName typeQname;
 
@@ -116,6 +122,26 @@ public abstract class AbstractXMLObject implements XMLObject {
     /** {@inheritDoc} */
     public void removeNamespace(Namespace namespace) {
         namespaces.remove(namespace);
+    }
+    
+    /** {@inheritDoc} */
+    public String getSchemaLocation(){
+        return schemaLocation;
+    }
+    
+    /** {@inheritDoc} */
+    public void setSchemaLocation(String location){
+        schemaLocation = DatatypeHelper.safeTrimOrNullString(location);
+    }
+    
+    /** {@inheritDoc} */
+    public String getNoNamespaceSchemaLocation(){
+        return noNamespaceSchemaLocation;
+    }
+    
+    /** {@inheritDoc} */
+    public void setNoNamespaceSchemaLocation(String location){
+        noNamespaceSchemaLocation = DatatypeHelper.safeTrimOrNullString(location);
     }
 
     /** {@inheritDoc} */

@@ -61,6 +61,34 @@ public interface XMLObject {
     public void removeNamespace(Namespace namespace);
 
     /**
+     * Gets the value of the XML Schema schemaLocation attribute for this object.
+     * 
+     * @return schema location defined for this object
+     */
+    public String getSchemaLocation();
+    
+    /**
+     * Sets the value of the XML Schema schemaLocation attribute for this object.
+     * 
+     * @param location value of the XML Schema schemaLocation attribute for this object
+     */
+    public void setSchemaLocation(String location);
+    
+    /**
+     * Gets the value of the XML Schema noNamespaceSchemaLocation attribute for this object.
+     * 
+     * @return value of the XML Schema noNamespaceSchemaLocation attribute for this object
+     */
+    public String getNoNamespaceSchemaLocation();
+    
+    /**
+     * Sets the value of the XML Schema noNamespaceSchemaLocation attribute for this object.
+     * 
+     * @param location value of the XML Schema noNamespaceSchemaLocation attribute for this object
+     */
+    public void setNoNamespaceSchemaLocation(String location);
+    
+    /**
      * Gets the XML schema type of this element. This translates to contents the xsi:type attribute for the element.
      * 
      * @return XML schema type of this element

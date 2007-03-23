@@ -235,14 +235,9 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
 
         String attributeNamespace = DatatypeHelper.safeTrimOrNullString(attribute.getNamespaceURI());
         if (DatatypeHelper.safeEquals(attributeNamespace, XMLConstants.XMLNS_NS)) {
-            if (log.isDebugEnabled()) {
-                log.debug(XMLHelper.getNodeQName(attribute)
-                        + " is a namespace declaration, adding it to the list of namespaces on the XMLObject");
-            }
             unmarshallNamespaceAttribute(xmlObject, attribute);
-        } else if (DatatypeHelper.safeEquals(attributeNamespace, XMLConstants.XSI_NS)
-                && DatatypeHelper.safeEquals(attribute.getLocalName(), "type")) {
-            // Skip over schema type declerations as they are handled by the builder
+        } else if (DatatypeHelper.safeEquals(attributeNamespace, XMLConstants.XSI_NS)) {
+            unmarshallSchemaInstanceAttributes(xmlObject, attribute);
         } else {
             if (log.isDebugEnabled()) {
                 log.debug("Attribute " + XMLHelper.getNodeQName(attribute)
@@ -262,6 +257,38 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
             processAttribute(xmlObject, attribute);
         }
     }
+
+    /**
+     * Unmarshalls a namespace declaration attribute.
+     * 
+     * @param xmlObject the xmlObject to recieve the namespace decleration
+     * @param attribute the namespace decleration attribute
+     */
+    protected void unmarshallNamespaceAttribute(XMLObject xmlObject, Attr attribute) {
+        if (log.isDebugEnabled()) {
+            log.debug(XMLHelper.getNodeQName(attribute)
+                    + " is a namespace declaration, adding it to the list of namespaces on the XMLObject");
+        }
+        Namespace namespace = new Namespace(attribute.getValue(), attribute.getLocalName());
+        namespace.setAlwaysDeclare(true);
+        xmlObject.addNamespace(namespace);
+    }
+    
+    /**
+     * Unmarshalls the XSI type, schemaLocation, and noNamespaceSchemaLocation attributes.
+     * 
+     * @param xmlObject the xmlObject to recieve the namespace decleration
+     * @param attribute the namespace decleration attribute
+     */
+    protected void unmarshallSchemaInstanceAttributes(XMLObject xmlObject, Attr attribute){
+        if(DatatypeHelper.safeEquals(attribute.getLocalName(), "type")){
+            //ignore, this is handled by the builder
+        }else if(DatatypeHelper.safeEquals(attribute.getLocalName(), "schemaLocation")){
+            xmlObject.setSchemaLocation(attribute.getValue());
+        }else if(DatatypeHelper.safeEquals(attribute.getLocalName(), "noNamespaceSchemaLocation")){
+            xmlObject.setNoNamespaceSchemaLocation(attribute.getValue());
+        }
+    }
     
     /**
      * Check whether the attribute's QName is registered in the global ID attribute registry.
@@ -278,18 +305,6 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
         if (Configuration.isIDAttribute(attribName) && !attribute.isId()) {
             attribute.getOwnerElement().setIdAttributeNode(attribute, true);
         }
-    }
-
-    /**
-     * Unmarshalls a namespace declaration attribute.
-     * 
-     * @param xmlObject the xmlObject to recieve the namespace decleration
-     * @param attribute the namespace decleration attribute
-     */
-    protected void unmarshallNamespaceAttribute(XMLObject xmlObject, Attr attribute) {
-        Namespace namespace = new Namespace(attribute.getValue(), attribute.getLocalName());
-        namespace.setAlwaysDeclare(true);
-        xmlObject.addNamespace(namespace);
     }
 
     /**

@@ -31,6 +31,7 @@ import org.opensaml.xml.parse.XMLParserException;
 import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.util.XMLConstants;
 import org.opensaml.xml.util.XMLHelper;
+import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -73,7 +74,7 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
      * @param targetLocalName the local name of either the schema type QName or element QName of the elements this
      *            unmarshaller operates on
      */
-    protected AbstractXMLObjectMarshaller(String targetNamespaceURI, String targetLocalName){
+    protected AbstractXMLObjectMarshaller(String targetNamespaceURI, String targetLocalName) {
         targetQName = XMLHelper.constructQName(targetNamespaceURI, targetLocalName, null);
 
         marshallerFactory = Configuration.getMarshallerFactory();
@@ -245,7 +246,7 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
 
         marshallNamespacePrefix(xmlObject, targetElement);
 
-        marshallElementType(xmlObject, targetElement);
+        marshallSchemaInstanceAttributes(xmlObject, targetElement);
 
         marshallNamespaces(xmlObject, targetElement);
 
@@ -372,52 +373,6 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
     }
 
     /**
-     * Creates an xsi:type attribute, corresponding to the given type of the XMLObject, on the DOM element.
-     * 
-     * @param xmlObject the XMLObject
-     * @param domElement the DOM element
-     * 
-     * @throws MarshallingException thrown if the type on the XMLObject is does contain a local name, local name prefix,
-     *             and namespace URI
-     */
-    protected void marshallElementType(XMLObject xmlObject, Element domElement) throws MarshallingException {
-        QName type = xmlObject.getSchemaType();
-        if (type != null) {
-            if (log.isDebugEnabled()) {
-                log.debug("Setting xsi:type attribute with for XMLObject " + xmlObject.getElementQName());
-            }
-            String typeLocalName = DatatypeHelper.safeTrimOrNullString(type.getLocalPart());
-            String typePrefix = DatatypeHelper.safeTrimOrNullString(type.getPrefix());
-
-            if (typeLocalName == null) {
-                throw new MarshallingException("The type QName on XMLObject " + xmlObject.getElementQName()
-                        + " may not have a null local name");
-            }
-
-            if (type.getNamespaceURI() == null) {
-                throw new MarshallingException("The type URI QName on XMLObject " + xmlObject.getElementQName()
-                        + " may not have a null namespace URI");
-            }
-
-            String attributeValue;
-            if (typePrefix == null) {
-                attributeValue = typeLocalName;
-            } else {
-                attributeValue = typePrefix + ":" + typeLocalName;
-            }
-
-            domElement.setAttributeNS(XMLConstants.XSI_NS, XMLConstants.XSI_PREFIX + ":type", attributeValue);
-
-            if (log.isDebugEnabled()) {
-                log
-                        .debug("Adding XSI namespace to list of namespaces used by XMLObject "
-                                + xmlObject.getElementQName());
-            }
-            xmlObject.addNamespace(new Namespace(XMLConstants.XSI_NS, XMLConstants.XSI_PREFIX));
-        }
-    }
-
-    /**
      * Creates the xmlns attributes for any namespaces set on the given XMLObject.
      * 
      * @param xmlObject the XMLObject
@@ -446,6 +401,70 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
                 XMLHelper.appendNamespaceDecleration(domElement, nsURI, nsPrefix);
             }
         }
+    }
+
+    /**
+     * Creates the XSI type, schemaLocation, and noNamespaceSchemaLocation attributes for an XMLObject.
+     * 
+     * @param xmlObject the XMLObject
+     * @param domElement the DOM element the namespaces will be added to
+     * 
+     * @throws MarshallingException thrown if the schema type information is invalid
+     */
+    protected void marshallSchemaInstanceAttributes(XMLObject xmlObject, Element domElement)
+            throws MarshallingException {
+        
+        if (!DatatypeHelper.isEmpty(xmlObject.getSchemaLocation())) {
+            if (log.isDebugEnabled()) {
+                log.debug("Setting xsi:schemaLocation for XMLObject " + xmlObject.getElementQName() + " to "
+                        + xmlObject.getSchemaLocation());
+            }
+            domElement.setAttributeNS(XMLConstants.XSI_NS, XMLConstants.XSI_PREFIX + ":schemaLocation", xmlObject
+                    .getSchemaLocation());
+        }
+
+        if (!DatatypeHelper.isEmpty(xmlObject.getNoNamespaceSchemaLocation())) {
+            if (log.isDebugEnabled()) {
+                log.debug("Setting xsi:noNamespaceSchemaLocation for XMLObject " + xmlObject.getElementQName() + " to "
+                        + xmlObject.getNoNamespaceSchemaLocation());
+            }
+            domElement.setAttributeNS(XMLConstants.XSI_NS, XMLConstants.XSI_PREFIX + ":noNamespaceSchemaLocation",
+                    xmlObject.getNoNamespaceSchemaLocation());
+        }
+
+        QName type = xmlObject.getSchemaType();
+        if (type == null) {
+            return;
+        }
+        if (log.isDebugEnabled()) {
+            log.debug("Setting xsi:type attribute with for XMLObject " + xmlObject.getElementQName());
+        }
+        String typeLocalName = DatatypeHelper.safeTrimOrNullString(type.getLocalPart());
+        String typePrefix = DatatypeHelper.safeTrimOrNullString(type.getPrefix());
+
+        if (typeLocalName == null) {
+            throw new MarshallingException("The type QName on XMLObject " + xmlObject.getElementQName()
+                    + " may not have a null local name");
+        }
+
+        if (type.getNamespaceURI() == null) {
+            throw new MarshallingException("The type URI QName on XMLObject " + xmlObject.getElementQName()
+                    + " may not have a null namespace URI");
+        }
+
+        String attributeValue;
+        if (typePrefix == null) {
+            attributeValue = typeLocalName;
+        } else {
+            attributeValue = typePrefix + ":" + typeLocalName;
+        }
+
+        domElement.setAttributeNS(XMLConstants.XSI_NS, XMLConstants.XSI_PREFIX + ":type", attributeValue);
+
+        if (log.isDebugEnabled()) {
+            log.debug("Adding XSI namespace to list of namespaces used by XMLObject " + xmlObject.getElementQName());
+        }
+        xmlObject.addNamespace(new Namespace(XMLConstants.XSI_NS, XMLConstants.XSI_PREFIX));
     }
 
     /**
