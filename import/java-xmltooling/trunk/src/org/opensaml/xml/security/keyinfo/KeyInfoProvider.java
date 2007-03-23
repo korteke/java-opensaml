@@ -23,7 +23,7 @@ import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver.KeyInfoResolu
 
 /**
  * Interface for providers which support extracting a {@link Credential} from 
- * a child element of {@link KeyInfo}.
+ * a child element of XML KeyInfo elements.
  */
 public interface KeyInfoProvider {
     

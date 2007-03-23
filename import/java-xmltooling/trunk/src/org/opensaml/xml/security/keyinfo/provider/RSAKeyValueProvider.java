@@ -25,6 +25,7 @@ import org.opensaml.xml.security.credential.BasicCredential;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialCriteria;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
+import org.opensaml.xml.security.keyinfo.KeyInfoProvider;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver.KeyInfoResolutionContext;
 import org.opensaml.xml.signature.KeyInfoHelper;
 import org.opensaml.xml.signature.KeyValue;
