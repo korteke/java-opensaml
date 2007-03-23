@@ -76,167 +76,169 @@ public class HTTPClientSOAPTransport extends AbstractHTTPSOAPTransport {
     public MessageSource send(String peerURL, InputStream message) throws SOAPTransportException {
         URLBuilder endpoint = new URLBuilder(peerURL);
 
-        BasicHTTPMessageSource response;
-        if (requestMethod == HTTP_REQUEST_METHOD.GET) {
-            response = sendByGet(endpoint);
-        } else {
-            response = sendByPost(endpoint, message);
-        }
-
-        if (getPeerConnectionAuthenticatingTrustEngine() != null) {
-            response.setPeerAuthenticated(true);
-        }
-        return response;
-    }
-
-    /**
-     * Gets the HTTP client used to make the request.
-     * 
-     * @param endpoint endpoint to send the message to
-     * 
-     * @return HTTP client used to make the request
-     */
-    protected HttpClient getHttpClient(URLBuilder endpoint) {
-        HttpClient httpClient = new HttpClient();
-
-        HostConfiguration hostConfig = new HostConfiguration();
-        if (endpoint.getScheme().equalsIgnoreCase("https")) {
-            ProtocolSocketFactory socketFactory = new TLSSocketFactory(getConnectionAuthenticationCredential(),
-                    getPeerConnectionAuthenticatingTrustEngine());
-            Protocol https = new Protocol("https", socketFactory, endpoint.getPort());
-            hostConfig = new HostConfiguration();
-            hostConfig.setHost(endpoint.getHost(), endpoint.getPort(), https);
-        } else {
-            hostConfig.setHost(endpoint.getHost(), endpoint.getPort());
-        }
-
-        if (getEntityAuthenticationCredential() != null) {
-            httpClient.getParams().setAuthenticationPreemptive(true);
-            AuthScope authnScope = new AuthScope(endpoint.getHost(), endpoint.getPort());
-            httpClient.getState().setCredentials(authnScope, getCredentials());
-        }
-
-        httpClient.setHostConfiguration(hostConfig);
-        return httpClient;
-    }
-
-    /**
-     * Translates the transport implementation agnostic entity credentials into HTTPClient credentials.
-     * 
-     * @return entity authentication credentials
-     */
-    protected Credentials getCredentials() {
-        if (getEntityAuthenticationScheme() == AuthenticationScheme.Basic
-                || getEntityAuthenticationScheme() == AuthenticationScheme.Digest) {
-            UsernamePasswordCredential authnCredential = (UsernamePasswordCredential) getEntityAuthenticationCredential();
-            return new UsernamePasswordCredentials(authnCredential.getUsername(), authnCredential.getPassword());
-        } else if (getEntityAuthenticationScheme() == AuthenticationScheme.NTLM) {
-            NTLMCredential authnCredential = (NTLMCredential) getEntityAuthenticationCredential();
-            return new NTCredentials(authnCredential.getUsername(), authnCredential.getPassword(), authnCredential
-                    .getHost(), authnCredential.getDomain());
-        } else {
-            return null;
-        }
-    }
-
-    /**
-     * Sends a request to the given endpoint by HTTP GET.
-     * 
-     * @param endpoint endpoint to send the request to
-     * 
-     * @return the response to the request
-     * 
-     * @throws SOAPTransportException Thrown if there is a problem sending the request or receiving the response, for
-     *             example, if TLS or entity credentials were incorrect of the server is offline
-     */
-    protected BasicHTTPMessageSource sendByGet(URLBuilder endpoint) throws SOAPTransportException {
-        HttpClient httpClient = getHttpClient(endpoint);
-        GetMethod httpMethod = new GetMethod(endpoint.buildURL());
-
-        try {
-            httpClient.executeMethod(httpMethod);
-            return buildMessageSourceFromResponse(httpMethod);
-        } catch (IOException e) {
-            throw new SOAPTransportException("Unable to send GET request to " + endpoint.getHost() + ":"
-                    + endpoint.getPort(), e);
-        }
-    }
-
-    /**
-     * Sends a request to the given endpoint by HTTP POST.
-     * 
-     * @param endpoint endpoint to send the request to
-     * @param message message to send
-     * 
-     * @return the response to the request
-     * 
-     * @throws SOAPTransportException Thrown if there is a problem sending the request or receiving the response, for
-     *             example, if TLS or entity credentials were incorrect of the server is offline
-     */
-    protected BasicHTTPMessageSource sendByPost(URLBuilder endpoint, InputStream message) throws SOAPTransportException {
-        HttpClient httpClient = getHttpClient(endpoint);
-        PostMethod httpMethod = new PostMethod(endpoint.buildURL());
-
-        httpMethod.setRequestEntity(new InputStreamRequestEntity(message));
-        try {
-            httpClient.executeMethod(httpMethod);
-            return buildMessageSourceFromResponse(httpMethod);
-        } catch (IOException e) {
-            throw new SOAPTransportException("Unable to send GET request to " + endpoint.getHost() + ":"
-                    + endpoint.getPort(), e);
-        }
-    }
-
-    protected BasicHTTPMessageSource buildMessageSourceFromResponse(HttpMethod httpMethod) {
-        BasicHTTPMessageSource response = new BasicHTTPMessageSource();
-    }
-
-    /**
-     * A factory used to create sockets that validate a server's X509 information and optionally 
-     * authenticate this transport using X509 credentials.
-     */
-    protected class TLSSocketFactory implements SecureProtocolSocketFactory {
+//        BasicHTTPMessageSource response;
+//        if (requestMethod == HTTP_REQUEST_METHOD.GET) {
+//            response = sendByGet(endpoint);
+//        } else {
+//            response = sendByPost(endpoint, message);
+//        }
+//
+//        if (getPeerConnectionAuthenticatingTrustEngine() != null) {
+//            response.setPeerAuthenticated(true);
+//        }
+//        return response;
         
-        /**
-         * Constructor.
-         *
-         * @param authenticationCredential credentials to use to authenticate to the peer, may be null
-         * @param peerAuthenticator trust engine used to evaluate peer's credentials, may not be null
-         */
-        public TLSSocketFactory(X509Credential authenticationCredential,
-                TrustEngine<X509Credential, X509Credential> peerAuthenticator) {
-            if(peerAuthenticator == null){
-                throw new IllegalArgumentException("Trust engine used to authenticate peer may not be null");
-            }
-        }
-
-        /** {@inheritDoc} */
-        public Socket createSocket(Socket arg0, String arg1, int arg2, boolean arg3) throws IOException,
-                UnknownHostException {
-            // TODO Auto-generated method stub
-            return null;
-        }
-
-        /** {@inheritDoc} */
-        public Socket createSocket(String arg0, int arg1) throws IOException, UnknownHostException {
-            // TODO Auto-generated method stub
-            return null;
-        }
-
-        /** {@inheritDoc} */
-        public Socket createSocket(String arg0, int arg1, InetAddress arg2, int arg3) throws IOException,
-                UnknownHostException {
-            // TODO Auto-generated method stub
-            return null;
-        }
-
-        /** {@inheritDoc} */
-        public Socket createSocket(String arg0, int arg1, InetAddress arg2, int arg3, HttpConnectionParams arg4)
-                throws IOException, UnknownHostException, ConnectTimeoutException {
-            // TODO Auto-generated method stub
-            return null;
-        }
+        return null;
     }
+
+//    /**
+//     * Gets the HTTP client used to make the request.
+//     * 
+//     * @param endpoint endpoint to send the message to
+//     * 
+//     * @return HTTP client used to make the request
+//     */
+//    protected HttpClient getHttpClient(URLBuilder endpoint) {
+//        HttpClient httpClient = new HttpClient();
+//
+//        HostConfiguration hostConfig = new HostConfiguration();
+//        if (endpoint.getScheme().equalsIgnoreCase("https")) {
+//            ProtocolSocketFactory socketFactory = new TLSSocketFactory(getConnectionAuthenticationCredential(),
+//                    getPeerConnectionAuthenticatingTrustEngine());
+//            Protocol https = new Protocol("https", socketFactory, endpoint.getPort());
+//            hostConfig = new HostConfiguration();
+//            hostConfig.setHost(endpoint.getHost(), endpoint.getPort(), https);
+//        } else {
+//            hostConfig.setHost(endpoint.getHost(), endpoint.getPort());
+//        }
+//
+//        if (getEntityAuthenticationCredential() != null) {
+//            httpClient.getParams().setAuthenticationPreemptive(true);
+//            AuthScope authnScope = new AuthScope(endpoint.getHost(), endpoint.getPort());
+//            httpClient.getState().setCredentials(authnScope, getCredentials());
+//        }
+//
+//        httpClient.setHostConfiguration(hostConfig);
+//        return httpClient;
+//    }
+//
+//    /**
+//     * Translates the transport implementation agnostic entity credentials into HTTPClient credentials.
+//     * 
+//     * @return entity authentication credentials
+//     */
+//    protected Credentials getCredentials() {
+//        if (getEntityAuthenticationScheme() == AuthenticationScheme.Basic
+//                || getEntityAuthenticationScheme() == AuthenticationScheme.Digest) {
+//            UsernamePasswordCredential authnCredential = (UsernamePasswordCredential) getEntityAuthenticationCredential();
+//            return new UsernamePasswordCredentials(authnCredential.getUsername(), authnCredential.getPassword());
+//        } else if (getEntityAuthenticationScheme() == AuthenticationScheme.NTLM) {
+//            NTLMCredential authnCredential = (NTLMCredential) getEntityAuthenticationCredential();
+//            return new NTCredentials(authnCredential.getUsername(), authnCredential.getPassword(), authnCredential
+//                    .getHost(), authnCredential.getDomain());
+//        } else {
+//            return null;
+//        }
+//    }
+//
+//    /**
+//     * Sends a request to the given endpoint by HTTP GET.
+//     * 
+//     * @param endpoint endpoint to send the request to
+//     * 
+//     * @return the response to the request
+//     * 
+//     * @throws SOAPTransportException Thrown if there is a problem sending the request or receiving the response, for
+//     *             example, if TLS or entity credentials were incorrect of the server is offline
+//     */
+//    protected BasicHTTPMessageSource sendByGet(URLBuilder endpoint) throws SOAPTransportException {
+//        HttpClient httpClient = getHttpClient(endpoint);
+//        GetMethod httpMethod = new GetMethod(endpoint.buildURL());
+//
+//        try {
+//            httpClient.executeMethod(httpMethod);
+//            return buildMessageSourceFromResponse(httpMethod);
+//        } catch (IOException e) {
+//            throw new SOAPTransportException("Unable to send GET request to " + endpoint.getHost() + ":"
+//                    + endpoint.getPort(), e);
+//        }
+//    }
+//
+//    /**
+//     * Sends a request to the given endpoint by HTTP POST.
+//     * 
+//     * @param endpoint endpoint to send the request to
+//     * @param message message to send
+//     * 
+//     * @return the response to the request
+//     * 
+//     * @throws SOAPTransportException Thrown if there is a problem sending the request or receiving the response, for
+//     *             example, if TLS or entity credentials were incorrect of the server is offline
+//     */
+//    protected BasicHTTPMessageSource sendByPost(URLBuilder endpoint, InputStream message) throws SOAPTransportException {
+//        HttpClient httpClient = getHttpClient(endpoint);
+//        PostMethod httpMethod = new PostMethod(endpoint.buildURL());
+//
+//        httpMethod.setRequestEntity(new InputStreamRequestEntity(message));
+//        try {
+//            httpClient.executeMethod(httpMethod);
+//            return buildMessageSourceFromResponse(httpMethod);
+//        } catch (IOException e) {
+//            throw new SOAPTransportException("Unable to send GET request to " + endpoint.getHost() + ":"
+//                    + endpoint.getPort(), e);
+//        }
+//    }
+//
+//    protected BasicHTTPMessageSource buildMessageSourceFromResponse(HttpMethod httpMethod) {
+//        BasicHTTPMessageSource response = new BasicHTTPMessageSource();
+//    }
+//
+//    /**
+//     * A factory used to create sockets that validate a server's X509 information and optionally 
+//     * authenticate this transport using X509 credentials.
+//     */
+//    protected class TLSSocketFactory implements SecureProtocolSocketFactory {
+//        
+//        /**
+//         * Constructor.
+//         *
+//         * @param authenticationCredential credentials to use to authenticate to the peer, may be null
+//         * @param peerAuthenticator trust engine used to evaluate peer's credentials, may not be null
+//         */
+//        public TLSSocketFactory(X509Credential authenticationCredential,
+//                TrustEngine<X509Credential, X509Credential> peerAuthenticator) {
+//            if(peerAuthenticator == null){
+//                throw new IllegalArgumentException("Trust engine used to authenticate peer may not be null");
+//            }
+//        }
+//
+//        /** {@inheritDoc} */
+//        public Socket createSocket(Socket arg0, String arg1, int arg2, boolean arg3) throws IOException,
+//                UnknownHostException {
+//            // TODO Auto-generated method stub
+//            return null;
+//        }
+//
+//        /** {@inheritDoc} */
+//        public Socket createSocket(String arg0, int arg1) throws IOException, UnknownHostException {
+//            // TODO Auto-generated method stub
+//            return null;
+//        }
+//
+//        /** {@inheritDoc} */
+//        public Socket createSocket(String arg0, int arg1, InetAddress arg2, int arg3) throws IOException,
+//                UnknownHostException {
+//            // TODO Auto-generated method stub
+//            return null;
+//        }
+//
+//        /** {@inheritDoc} */
+//        public Socket createSocket(String arg0, int arg1, InetAddress arg2, int arg3, HttpConnectionParams arg4)
+//                throws IOException, UnknownHostException, ConnectTimeoutException {
+//            // TODO Auto-generated method stub
+//            return null;
+//        }
+//    }
 
     
 }
