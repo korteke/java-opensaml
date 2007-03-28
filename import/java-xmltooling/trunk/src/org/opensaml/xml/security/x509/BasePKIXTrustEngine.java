@@ -35,8 +35,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javolution.util.FastSet;
-
 import org.apache.log4j.Logger;
 
 /**
@@ -223,7 +221,7 @@ public abstract class BasePKIXTrustEngine<TokenType, TrustedCredentialType exten
         if (log.isDebugEnabled()) {
             log.debug("Constructring trust anchors");
         }
-        Set<TrustAnchor> trustAnchors = new FastSet<TrustAnchor>();
+        Set<TrustAnchor> trustAnchors = new HashSet<TrustAnchor>();
         for (X509Certificate cert : trustChain) {
             trustAnchors.add(new TrustAnchor(cert, null));
         }

@@ -21,9 +21,8 @@ import java.io.InputStream;
 import java.security.Key;
 import java.security.KeyException;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
-
-import javolution.util.FastList;
 
 import org.apache.log4j.Logger;
 import org.apache.xml.security.encryption.XMLCipher;
@@ -148,7 +147,7 @@ public class Decrypter {
      *          the decrypted data contained DOM nodes other than type of Element
      */
     public List<XMLObject> decryptDataToList(EncryptedData encryptedData) throws DecryptionException {
-        List<XMLObject> xmlObjects = new FastList<XMLObject>();
+        List<XMLObject> xmlObjects = new LinkedList<XMLObject>();
         
         DocumentFragment docFragment = decryptDataToDOM(encryptedData);
         

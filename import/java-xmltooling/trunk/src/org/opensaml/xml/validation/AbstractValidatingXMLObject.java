@@ -17,9 +17,8 @@
 package org.opensaml.xml.validation;
 
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
-
-import javolution.util.FastList;
 
 import org.apache.log4j.Logger;
 import org.opensaml.xml.AbstractXMLObject;
@@ -35,7 +34,7 @@ public abstract class AbstractValidatingXMLObject extends AbstractXMLObject impl
     private static Logger log = Logger.getLogger(AbstractValidatingXMLObject.class);
 
     /** Validators used to validate this XMLObject. */
-    private FastList<Validator> validators;
+    private List<Validator> validators;
 
     /**
      * Constructor.
@@ -46,7 +45,7 @@ public abstract class AbstractValidatingXMLObject extends AbstractXMLObject impl
      */
     protected AbstractValidatingXMLObject(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        validators = new FastList<Validator>();
+        validators = new LinkedList<Validator>();
     }
 
     /** {@inheritDoc} */

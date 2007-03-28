@@ -16,11 +16,10 @@
 
 package org.opensaml.xml;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.xml.namespace.QName;
-
-import javolution.util.FastMap;
 
 import org.opensaml.xml.encryption.EncryptedData;
 import org.opensaml.xml.encryption.EncryptedKey;
@@ -345,7 +344,7 @@ public class IDAttributeTest extends XMLObjectBaseTestCase {
         epChild0.getUnknownAttributes().remove(idName);
         assertNull("Lookup of non-existent ID mapping didn't return null", epParent.resolveID("9999"));
         // putAll
-        Map<QName, String> attribs = new FastMap<QName, String>();
+        Map<QName, String> attribs = new HashMap<QName, String>();
         attribs.put(idName, "1967");
         epChild0.getUnknownAttributes().putAll(attribs);
         assertEquals("Lookup of ID mapping failed", epChild0, epParent.resolveID("1967"));

@@ -16,9 +16,9 @@
 
 package org.opensaml.xml.schema.impl;
 
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
-
-import javolution.util.FastList;
 
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.schema.XSURI;
@@ -55,6 +55,6 @@ public class XSURIImpl extends AbstractValidatingXMLObject implements XSURI {
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        return new FastList<XMLObject>().unmodifiable();
+        return Collections.unmodifiableList(new LinkedList<XMLObject>());
     }
 }

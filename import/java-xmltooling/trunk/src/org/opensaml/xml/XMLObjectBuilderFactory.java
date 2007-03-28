@@ -16,11 +16,11 @@
 
 package org.opensaml.xml;
 
+import java.util.Collections;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.xml.namespace.QName;
-
-import javolution.util.FastMap;
 
 import org.apache.log4j.Logger;
 import org.opensaml.xml.util.XMLHelper;
@@ -37,11 +37,11 @@ public class XMLObjectBuilderFactory {
     private static Logger log = Logger.getLogger(XMLObjectBuilderFactory.class);
 
     /** Registered builders. */
-    private FastMap<QName, XMLObjectBuilder> builders;
+    private Map<QName, XMLObjectBuilder> builders;
 
     /** Constructor. */
     public XMLObjectBuilderFactory() {
-        builders = new FastMap<QName, XMLObjectBuilder>();
+        builders = new ConcurrentHashMap<QName, XMLObjectBuilder>();
     }
 
     /**
@@ -84,7 +84,7 @@ public class XMLObjectBuilderFactory {
      * @return list of all the builders currently registered
      */
     public Map<QName, XMLObjectBuilder> getBuilders() {
-        return builders.unmodifiable();
+        return Collections.unmodifiableMap(builders);
     }
 
     /**

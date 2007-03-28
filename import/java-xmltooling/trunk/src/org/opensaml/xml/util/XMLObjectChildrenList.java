@@ -18,8 +18,8 @@ package org.opensaml.xml.util;
 
 import java.util.AbstractList;
 import java.util.Collection;
-
-import javolution.util.FastList;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.opensaml.xml.XMLObject;
 
@@ -36,7 +36,7 @@ public class XMLObjectChildrenList<ElementType extends XMLObject> extends Abstra
     private XMLObject parent;
 
     /** List of elements. */
-    private FastList<ElementType> elements;
+    private List<ElementType> elements;
 
     /**
      * Constructs an empty list with all added XMLObjects being assigned the given parent XMLObject.
@@ -51,7 +51,7 @@ public class XMLObjectChildrenList<ElementType extends XMLObject> extends Abstra
         }
 
         parent = newParent;
-        elements = new FastList<ElementType>(5);
+        elements = new LinkedList<ElementType>();
     }
 
     /**
@@ -71,7 +71,7 @@ public class XMLObjectChildrenList<ElementType extends XMLObject> extends Abstra
         }
 
         parent = newParent;
-        elements = new FastList<ElementType>(newElements.size() + 5);
+        elements = new LinkedList<ElementType>();
 
         addAll(newElements);
     }

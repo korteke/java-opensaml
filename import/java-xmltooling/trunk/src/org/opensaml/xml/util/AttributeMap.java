@@ -20,11 +20,10 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 import javax.xml.namespace.QName;
-
-import javolution.util.FastMap;
-import javolution.util.FastSet;
 
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.XMLObject;
@@ -41,11 +40,11 @@ public class AttributeMap implements Map<QName, String> {
     private XMLObject attributeOwner;
 
     /** Map of attributes. */
-    private FastMap<QName, String> attributes;
+    private Map<QName, String> attributes;
     
     /** Set of attribute QNames which have been locally registered as having an ID type within this 
      * AttributeMap instance. */
-    private FastSet<QName> idAttribNames;
+    private Set<QName> idAttribNames;
 
     /**
      * Constructor.
@@ -60,8 +59,8 @@ public class AttributeMap implements Map<QName, String> {
         }
 
         attributeOwner = newOwner;
-        attributes = new FastMap<QName, String>();
-        idAttribNames = new FastSet<QName>();
+        attributes = new ConcurrentHashMap<QName, String>();
+        idAttribNames = new CopyOnWriteArraySet<QName>();
     }
 
     /** {@inheritDoc} */

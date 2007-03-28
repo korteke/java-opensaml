@@ -36,9 +36,8 @@ import java.security.spec.DSAPublicKeySpec;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 import java.security.spec.RSAPublicKeySpec;
+import java.util.LinkedList;
 import java.util.List;
-
-import javolution.util.FastList;
 
 import org.apache.log4j.Logger;
 import org.opensaml.xml.Configuration;
@@ -74,7 +73,7 @@ public class KeyInfoHelper {
      * @return a list of key name strings
      */
     public static List<String> getKeyNames(KeyInfo keyInfo) {
-        FastList<String> keynameList = new FastList<String>();
+        List<String> keynameList = new LinkedList<String>();
 
         if (keyInfo == null) {
             return keynameList;
@@ -101,7 +100,7 @@ public class KeyInfoHelper {
      *          X509 data into {@link java.security.cert.X509Certificate}s.
      */
     public static List<X509Certificate> getCertificates(KeyInfo keyInfo) throws CertificateException {
-        FastList<X509Certificate> certList = new FastList<X509Certificate>();
+        List<X509Certificate> certList = new LinkedList<X509Certificate>();
 
         if (keyInfo == null) {
             return certList;
@@ -128,7 +127,7 @@ public class KeyInfoHelper {
      *          X509 data into {@link java.security.cert.X509Certificate}s.
      */
     public static List<X509Certificate> getCertificates(X509Data x509Data) throws CertificateException {
-        FastList<X509Certificate> certList = new FastList<X509Certificate>();
+        List<X509Certificate> certList = new LinkedList<X509Certificate>();
 
         if (x509Data == null) {
             return certList;
@@ -180,7 +179,7 @@ public class KeyInfoHelper {
      *          CRL data into {@link java.security.cert.X509CRL}s
      */
     public static List<X509CRL> getCRLs(KeyInfo keyInfo) throws CRLException {
-        FastList<X509CRL> crlList = new FastList<X509CRL>();
+        List<X509CRL> crlList = new LinkedList<X509CRL>();
 
         if (keyInfo == null) {
             return crlList;
@@ -207,7 +206,7 @@ public class KeyInfoHelper {
      *          CRL data into {@link java.security.cert.X509CRL}s
      */
     public static List<X509CRL> getCRLs(X509Data x509Data) throws CRLException {
-        FastList<X509CRL> crlList = new FastList<X509CRL>();
+        List<X509CRL> crlList = new LinkedList<X509CRL>();
 
         if (x509Data == null) {
             return crlList;
@@ -434,7 +433,7 @@ public class KeyInfoHelper {
      * @throws KeyException thrown if the given key data can not be converted into {@link PublicKey}
      */
     public static List<PublicKey> getPublicKeys(KeyInfo keyInfo) throws KeyException{
-        FastList<PublicKey> keys = new FastList<PublicKey>();
+        List<PublicKey> keys = new LinkedList<PublicKey>();
 
         if (keyInfo == null || keyInfo.getKeyValues() == null) {
             return keys;

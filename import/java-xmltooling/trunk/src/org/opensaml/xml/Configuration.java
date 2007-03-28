@@ -17,14 +17,15 @@
 package org.opensaml.xml;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
-
-import javolution.util.FastMap;
-import javolution.util.FastSet;
 
 import org.apache.log4j.Logger;
 import org.opensaml.xml.io.Marshaller;
@@ -48,10 +49,10 @@ public class Configuration {
             XMLConstants.XMLTOOLING_DEFAULT_OBJECT_PROVIDER);
 
     /** Object provider configuration elements indexed by QName. */
-    private static FastMap<QName, Element> configuredObjectProviders = new FastMap<QName, Element>();
+    private static Map<QName, Element> configuredObjectProviders = new ConcurrentHashMap<QName, Element>();
 
     /** Validator suite configuration elements indexed by suite IDs. */
-    private static FastMap<String, Element> validatorSuiteConfigurations = new FastMap<String, Element>();
+    private static Map<String, Element> validatorSuiteConfigurations = new ConcurrentHashMap<String, Element>();
 
     /** Configured XMLObject builder factory. */
     private static XMLObjectBuilderFactory builderFactory = new XMLObjectBuilderFactory();
@@ -63,10 +64,10 @@ public class Configuration {
     private static UnmarshallerFactory unmarshallerFactory = new UnmarshallerFactory();
 
     /** Configured ValidatorSuites. */
-    private static FastMap<String, ValidatorSuite> validatorSuites = new FastMap<String, ValidatorSuite>();
+    private static Map<String, ValidatorSuite> validatorSuites = new ConcurrentHashMap<String, ValidatorSuite>();
     
     /** Configured set of attribute QNames which have been globally registered as having an ID type. */
-    private static FastSet<QName> idAttributeNames = new FastSet<QName>();
+    private static Set<QName> idAttributeNames = new CopyOnWriteArraySet<QName>();
     
     /** Constructor. */
     protected Configuration(){

@@ -26,11 +26,10 @@ import java.security.cert.CertificateParsingException;
 import java.security.cert.X509Certificate;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.security.auth.x500.X500Principal;
-
-import javolution.util.FastList;
 
 import org.apache.log4j.Logger;
 import org.bouncycastle.asn1.ASN1InputStream;
@@ -104,7 +103,7 @@ public class X509Util {
             log.debug("Extracting CNs from the following DN: " + dn.toString());
         }
 
-        FastList<String> commonNames = new FastList<String>();
+        List<String> commonNames = new LinkedList<String>();
         try {
             ASN1InputStream asn1Stream = new ASN1InputStream(dn.getEncoded());
             DERObject parent = asn1Stream.readObject();
@@ -165,7 +164,7 @@ public class X509Util {
             return null;
         }
         
-        FastList<Object> names = new FastList<Object>();
+        List<Object> names = new LinkedList<Object>();
         try {
             Collection<List<?>> altNames = certificate.getSubjectAlternativeNames();
             if (altNames != null) {
@@ -200,7 +199,7 @@ public class X509Util {
      */
     @SuppressWarnings("unchecked")
     public static List getSubjectNames(X509Certificate certificate, Integer[] altNameTypes){
-        FastList issuerNames = new FastList();
+        List issuerNames = new LinkedList();
 
         List<String> entityCertCNs = X509Util.getCommonNames(certificate.getSubjectX500Principal());
         issuerNames.add(entityCertCNs.get(0));

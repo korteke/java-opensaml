@@ -19,8 +19,7 @@ package org.opensaml.xml.util;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
-
-import javolution.util.FastMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.opensaml.xml.XMLObject;
 
@@ -34,7 +33,7 @@ public class IDIndex {
     
     /** Mapping of ID attributes to XMLObjects in the subtree rooted at this object's owner.
      * This allows constant-time dereferencing of ID-typed attributes within the subtree.  */
-    private FastMap<String, XMLObject> idMappings;
+    private Map<String, XMLObject> idMappings;
 
     /**
      * Constructor.
@@ -49,7 +48,7 @@ public class IDIndex {
         }
         
         owner = newOwner;
-        idMappings = new FastMap<String, XMLObject>();
+        idMappings = new ConcurrentHashMap<String, XMLObject>();
     }
     
 

@@ -71,7 +71,7 @@ public interface StorageService<KeyType, ValueType> {
      * Removes an item from storage.
      * 
      * @param context the storage context
-     * @param key the key to the valye to remove
+     * @param key the key to the value to remove
      * 
      * @return the value that was removed
      */

@@ -17,8 +17,7 @@
 package org.opensaml.xml.signature;
 
 import java.util.List;
-
-import javolution.util.FastList;
+import java.util.LinkedList;
 
 import org.apache.log4j.Logger;
 import org.apache.xml.security.signature.XMLSignature;
@@ -48,7 +47,7 @@ public class URIContentReference implements ContentReference {
      */
     public URIContentReference(String referenceID) {
         this.referenceID = referenceID;
-        transforms = new FastList<String>();
+        transforms = new LinkedList<String>();
     }
 
     /**

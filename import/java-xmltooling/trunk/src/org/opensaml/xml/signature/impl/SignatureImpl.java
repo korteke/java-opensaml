@@ -17,9 +17,8 @@
 package org.opensaml.xml.signature.impl;
 
 import java.security.Key;
+import java.util.LinkedList;
 import java.util.List;
-
-import javolution.util.FastList;
 
 import org.apache.xml.security.signature.XMLSignature;
 import org.opensaml.xml.AbstractXMLObject;
@@ -60,7 +59,7 @@ public class SignatureImpl extends AbstractXMLObject implements Signature {
      */
     protected SignatureImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        contentReferences = new FastList<ContentReference>();
+        contentReferences = new LinkedList<ContentReference>();
     }
 
     /**

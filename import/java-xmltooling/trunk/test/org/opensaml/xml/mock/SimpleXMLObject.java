@@ -20,11 +20,10 @@
 package org.opensaml.xml.mock;
 
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.xml.namespace.QName;
-
-import javolution.util.FastList;
 
 import org.opensaml.xml.ElementExtensibleXMLObject;
 import org.opensaml.xml.XMLObject;
@@ -151,7 +150,7 @@ public class SimpleXMLObject extends AbstractSignableXMLObject implements Elemen
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        FastList<XMLObject> children = new FastList<XMLObject>();
+        List<XMLObject> children = new LinkedList<XMLObject>();
         
         children.addAll(simpleXMLObjects);
         if (encryptedData != null) {

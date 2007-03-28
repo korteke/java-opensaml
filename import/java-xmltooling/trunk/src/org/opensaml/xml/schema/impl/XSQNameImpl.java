@@ -16,11 +16,11 @@
 
 package org.opensaml.xml.schema.impl;
 
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.xml.namespace.QName;
-
-import javolution.util.FastList;
 
 import org.opensaml.xml.Namespace;
 import org.opensaml.xml.XMLObject;
@@ -59,6 +59,6 @@ public class XSQNameImpl extends AbstractValidatingXMLObject implements XSQName 
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        return new FastList<XMLObject>().unmodifiable();
+        return Collections.unmodifiableList(new LinkedList<XMLObject>());
     }
 }

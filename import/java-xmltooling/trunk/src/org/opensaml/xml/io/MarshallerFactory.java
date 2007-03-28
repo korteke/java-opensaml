@@ -16,11 +16,11 @@
 
 package org.opensaml.xml.io;
 
+import java.util.Collections;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.xml.namespace.QName;
-
-import javolution.util.FastMap;
 
 import org.apache.log4j.Logger;
 import org.opensaml.xml.XMLObject;
@@ -37,13 +37,13 @@ public class MarshallerFactory {
     private static Logger log = Logger.getLogger(MarshallerFactory.class);
 
     /** Map of marshallers to the elements they are for. */
-    private FastMap<QName, Marshaller> marshallers;
+    private Map<QName, Marshaller> marshallers;
 
     /**
      * Constructor.
      */
     public MarshallerFactory() {
-        marshallers = new FastMap<QName, Marshaller>();
+        marshallers = new ConcurrentHashMap<QName, Marshaller>();
     }
 
     /**
@@ -87,7 +87,7 @@ public class MarshallerFactory {
      * @return a listing of all the Marshallers currently registered
      */
     public Map<QName, Marshaller> getMarshallers() {
-        return marshallers.unmodifiable();
+        return Collections.unmodifiableMap(marshallers);
     }
 
     /**

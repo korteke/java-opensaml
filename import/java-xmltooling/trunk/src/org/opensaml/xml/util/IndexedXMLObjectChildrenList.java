@@ -20,10 +20,10 @@ import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.xml.namespace.QName;
-
-import javolution.util.FastMap;
 
 import org.opensaml.xml.XMLObject;
 
@@ -35,7 +35,7 @@ import org.opensaml.xml.XMLObject;
 public class IndexedXMLObjectChildrenList<ElementType extends XMLObject> extends XMLObjectChildrenList<ElementType> {
 
     /** Index of objects by type and name. */
-    private FastMap<QName, ArrayList<ElementType>> objectIndex;
+    private Map<QName, ArrayList<ElementType>> objectIndex;
 
     /**
      * Constructor.
@@ -44,7 +44,7 @@ public class IndexedXMLObjectChildrenList<ElementType extends XMLObject> extends
      */
     public IndexedXMLObjectChildrenList(XMLObject parent) {
         super(parent);
-        objectIndex = new FastMap<QName, ArrayList<ElementType>>();
+        objectIndex = new ConcurrentHashMap<QName, ArrayList<ElementType>>();
     }
 
     /**
@@ -55,7 +55,7 @@ public class IndexedXMLObjectChildrenList<ElementType extends XMLObject> extends
      */
     public IndexedXMLObjectChildrenList(XMLObject parent, Collection<ElementType> col) {
         super(parent);
-        objectIndex = new FastMap<QName, ArrayList<ElementType>>();
+        objectIndex = new ConcurrentHashMap<QName, ArrayList<ElementType>>();
         addAll(col);
     }
 

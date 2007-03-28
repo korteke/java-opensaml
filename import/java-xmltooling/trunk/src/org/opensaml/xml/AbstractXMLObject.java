@@ -18,11 +18,10 @@ package org.opensaml.xml;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.xml.namespace.QName;
-
-import javolution.util.FastSet;
 
 import org.apache.log4j.Logger;
 import org.opensaml.xml.util.DatatypeHelper;
@@ -54,7 +53,7 @@ public abstract class AbstractXMLObject implements XMLObject {
     private QName typeQname;
 
     /** Namespaces declared on this element. */
-    private FastSet<Namespace> namespaces;
+    private Set<Namespace> namespaces;
 
     /** DOM Element representation of this object. */
     private Element dom;
@@ -72,7 +71,7 @@ public abstract class AbstractXMLObject implements XMLObject {
      */
     protected AbstractXMLObject(String namespaceURI, String elementLocalName, String namespacePrefix) {
         idIndex = new IDIndex(this);
-        namespaces = new FastSet<Namespace>();
+        namespaces = new HashSet<Namespace>();
         elementQname = XMLHelper.constructQName(namespaceURI, elementLocalName, namespacePrefix);
         addNamespace(new Namespace(namespaceURI, namespacePrefix));
         setElementNamespacePrefix(namespacePrefix);

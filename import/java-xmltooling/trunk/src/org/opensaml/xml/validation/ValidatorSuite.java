@@ -20,10 +20,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.xml.namespace.QName;
-
-import javolution.util.FastMap;
 
 import org.apache.log4j.Logger;
 import org.opensaml.xml.XMLObject;
@@ -53,7 +52,7 @@ public class ValidatorSuite {
      * @param suiteId unique ID for this suite
      */
     public ValidatorSuite(String suiteId) {
-        validators = new FastMap<QName, List<Validator>>();
+        validators = new ConcurrentHashMap<QName, List<Validator>>();
         id = suiteId;
     }
 

@@ -16,11 +16,11 @@
 
 package org.opensaml.xml.io;
 
+import java.util.Collections;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.xml.namespace.QName;
-
-import javolution.util.FastMap;
 
 import org.apache.log4j.Logger;
 import org.opensaml.xml.util.XMLHelper;
@@ -38,13 +38,13 @@ public class UnmarshallerFactory {
     private static Logger log = Logger.getLogger(UnmarshallerFactory.class);
 
     /** Map of unmarshallers to the elements they are for. */
-    private FastMap<QName, Unmarshaller> unmarshallers;
+    private Map<QName, Unmarshaller> unmarshallers;
 
     /**
      * Constructor.
      */
     public UnmarshallerFactory() {
-        unmarshallers = new FastMap<QName, Unmarshaller>();
+        unmarshallers = new ConcurrentHashMap<QName, Unmarshaller>();
     }
 
     /**
@@ -88,7 +88,7 @@ public class UnmarshallerFactory {
      * @return a listing of all the Unmarshallers currently registered
      */
     public Map<QName, Unmarshaller> getUnmarshallers() {
-        return unmarshallers.unmodifiable();
+        return Collections.unmodifiableMap(unmarshallers);
     }
 
     /**

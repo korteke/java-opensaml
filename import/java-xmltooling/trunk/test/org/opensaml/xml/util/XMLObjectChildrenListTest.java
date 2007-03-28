@@ -18,8 +18,9 @@ package org.opensaml.xml.util;
 
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
-import javolution.util.FastList;
 import junit.framework.TestCase;
 
 import org.opensaml.xml.mock.SimpleXMLObject;
@@ -53,7 +54,7 @@ public class XMLObjectChildrenListTest extends TestCase {
         assertEquals("Child 1 did not have the correct parent object", parentObject, child1.getParent());
 
         // Test adding an collection of children
-        FastList<SimpleXMLObject> childList = new FastList<SimpleXMLObject>();
+        List<SimpleXMLObject> childList = new LinkedList<SimpleXMLObject>();
         SimpleXMLObject child2 = sxoBuilder.buildObject();
         childList.add(child2);
         SimpleXMLObject child3 = sxoBuilder.buildObject();
@@ -120,7 +121,7 @@ public class XMLObjectChildrenListTest extends TestCase {
         assertNull("Child 1 parent was not null", child1.getParent());
 
         // Test removing an collection of children
-        FastList<SimpleXMLObject> childList = new FastList<SimpleXMLObject>();
+        List<SimpleXMLObject> childList = new LinkedList<SimpleXMLObject>();
         SimpleXMLObject child2 = sxoBuilder.buildObject();
         childList.add(child2);
         SimpleXMLObject child3 = sxoBuilder.buildObject();
@@ -180,7 +181,7 @@ public class XMLObjectChildrenListTest extends TestCase {
         SimpleXMLObject parentObject = sxoBuilder.buildObject();
         XMLObjectChildrenList<SimpleXMLObject> objectList = new XMLObjectChildrenList<SimpleXMLObject>(parentObject);
 
-        FastList<SimpleXMLObject> childList = new FastList<SimpleXMLObject>();
+        List<SimpleXMLObject> childList = new LinkedList<SimpleXMLObject>();
         SimpleXMLObject child1 = sxoBuilder.buildObject();
         childList.add(child1);
         SimpleXMLObject child2 = sxoBuilder.buildObject();
