@@ -35,6 +35,6 @@ public class DOMNodeRenderer implements ObjectRenderer {
         }
      
         Node node = (Node) arg0;
-        return XMLHelper.nodeToString(node);
+        return XMLHelper.prettyPrintXML(node);
     }
 }

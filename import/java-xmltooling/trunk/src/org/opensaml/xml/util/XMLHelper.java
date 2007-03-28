@@ -16,6 +16,7 @@
 
 package org.opensaml.xml.util;
 
+import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,6 +25,12 @@ import java.util.Map;
 import java.util.StringTokenizer;
 
 import javax.xml.namespace.QName;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.parse.XMLParserException;
@@ -654,6 +661,32 @@ public final class XMLHelper {
         DOMImplementationLS domImplLS = (DOMImplementationLS) domImpl.getFeature("LS", "3.0");
         LSSerializer serializer = domImplLS.createLSSerializer();
         return serializer.writeToString(node);
+    }
+    
+    /**
+     * Pretty prints the XML node.
+     * 
+     * @param node xml node to print
+     * 
+     * @return pretty-printed xml
+     */
+    public static String prettyPrintXML(Node node){
+        TransformerFactory tfactory = TransformerFactory.newInstance();
+        Transformer serializer;
+        try {
+            serializer = tfactory.newTransformer();
+            serializer.setOutputProperty(OutputKeys.INDENT, "yes");
+            serializer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "3");
+            
+            StringWriter output = new StringWriter();
+            serializer.transform(new DOMSource(node.getOwnerDocument()), new StreamResult(output));
+            return output.toString();
+        } catch (TransformerException e) {
+            // this is fatal, just dump the stack and throw a runtime exception
+            e.printStackTrace();
+            
+            throw new RuntimeException(e);
+        }
     }
 
     /**
