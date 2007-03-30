@@ -114,7 +114,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
             fail("Error on decryption of EncryptedKey: " + e);
         }
         
-        assertEquals("Decrypted EncryptedKey", encKey, decryptedKey);
+        assertEquals("Decrypted EncryptedKey", decryptedKey, encKey);
         
     }
     
