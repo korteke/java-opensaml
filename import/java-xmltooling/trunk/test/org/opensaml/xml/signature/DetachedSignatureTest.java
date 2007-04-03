@@ -34,7 +34,7 @@ import org.opensaml.xml.io.Unmarshaller;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.mock.SimpleXMLObject;
 import org.opensaml.xml.mock.SimpleXMLObjectBuilder;
-import org.opensaml.xml.parse.ParserPool;
+import org.opensaml.xml.parse.BasicParserPool;
 import org.opensaml.xml.parse.XMLParserException;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.credential.BasicCredential;
@@ -66,7 +66,7 @@ public class DetachedSignatureTest extends XMLObjectBaseTestCase {
     private SignatureBuilder sigBuilder;
 
     /** Parser pool used to parse example config files. */
-    private ParserPool parserPool;
+    private BasicParserPool parserPool;
 
     /** {@inheritDoc} */
     protected void setUp() throws Exception {
@@ -88,7 +88,7 @@ public class DetachedSignatureTest extends XMLObjectBaseTestCase {
         sxoBuilder = new SimpleXMLObjectBuilder();
         sigBuilder = new SignatureBuilder();
 
-        parserPool = new ParserPool();
+        parserPool = new BasicParserPool();
         parserPool.setNamespaceAware(true);
     }
 

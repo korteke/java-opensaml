@@ -33,7 +33,7 @@ import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.io.UnmarshallerFactory;
 import org.opensaml.xml.io.UnmarshallingException;
-import org.opensaml.xml.parse.ParserPool;
+import org.opensaml.xml.parse.BasicParserPool;
 import org.opensaml.xml.parse.XMLParserException;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.credential.Credential;
@@ -51,7 +51,7 @@ import org.w3c.dom.NodeList;
 public class Decrypter {
     
     /** ParserPool used in parsing decrypted data. */
-    private final ParserPool parserPool;
+    private final BasicParserPool parserPool;
     
     /** Unmarshaller factory, used in decryption of EncryptedData objects. */
     private UnmarshallerFactory unmarshallerFactory;
@@ -78,7 +78,7 @@ public class Decrypter {
         kekResolver = newKEKResolver;
         resolver = newResolver;
         
-        parserPool = new ParserPool();
+        parserPool = new BasicParserPool();
         parserPool.setNamespaceAware(true);
         
         HashMap<String, Boolean> features = new HashMap<String, Boolean>();
@@ -89,7 +89,7 @@ public class Decrypter {
         unmarshallerFactory = Configuration.getUnmarshallerFactory();
     }
     
-    public Decrypter(KeyInfoCredentialResolver newKEKResolver, KeyInfoCredentialResolver newResolver, ParserPool pool){
+    public Decrypter(KeyInfoCredentialResolver newKEKResolver, KeyInfoCredentialResolver newResolver, BasicParserPool pool){
         kekResolver = newKEKResolver;
         resolver = newResolver;
         parserPool = pool;

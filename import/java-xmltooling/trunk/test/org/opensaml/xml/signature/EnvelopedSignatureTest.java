@@ -32,7 +32,7 @@ import org.opensaml.xml.io.Unmarshaller;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.mock.SimpleXMLObject;
 import org.opensaml.xml.mock.SimpleXMLObjectBuilder;
-import org.opensaml.xml.parse.ParserPool;
+import org.opensaml.xml.parse.BasicParserPool;
 import org.opensaml.xml.parse.XMLParserException;
 import org.opensaml.xml.security.credential.BasicCredential;
 import org.opensaml.xml.security.x509.SignatureValidator;
@@ -82,7 +82,7 @@ public class EnvelopedSignatureTest extends XMLObjectBaseTestCase {
         sxoBuilder = new SimpleXMLObjectBuilder();
         sigBuilder = new SignatureBuilder();
 
-        parserPool = new ParserPool();
+        parserPool = new BasicParserPool();
         parserPool.setNamespaceAware(true);
     }
 

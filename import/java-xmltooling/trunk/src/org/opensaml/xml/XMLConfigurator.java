@@ -33,7 +33,7 @@ import javax.xml.validation.SchemaFactory;
 import org.apache.log4j.Logger;
 import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.Unmarshaller;
-import org.opensaml.xml.parse.ParserPool;
+import org.opensaml.xml.parse.BasicParserPool;
 import org.opensaml.xml.parse.XMLParserException;
 import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.util.XMLConstants;
@@ -55,7 +55,7 @@ public class XMLConfigurator {
     private static Logger log = Logger.getLogger(XMLConfigurator.class);
 
     /** Pool of parsers used to read and validate configurations. */
-    private ParserPool parserPool;
+    private BasicParserPool parserPool;
     
     /** Schema used to validate configruation files. */
     private Schema configurationSchema;
@@ -67,7 +67,7 @@ public class XMLConfigurator {
      * @throws ConfigurationException thrown if the validation schema for configuration files can not be created
      */
     public XMLConfigurator() throws ConfigurationException {
-        parserPool = new ParserPool();
+        parserPool = new BasicParserPool();
         SchemaFactory factory = SchemaFactory.newInstance(javax.xml.XMLConstants.W3C_XML_SCHEMA_NS_URI);
         Source schemaSource = new StreamSource(XMLConfigurator.class
                 .getResourceAsStream(XMLConstants.XMLTOOLING_SCHEMA_LOCATION));

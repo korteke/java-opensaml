@@ -26,7 +26,7 @@ import junit.framework.TestCase;
 
 import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.Unmarshaller;
-import org.opensaml.xml.parse.ParserPool;
+import org.opensaml.xml.parse.BasicParserPool;
 import org.opensaml.xml.parse.XMLParserException;
 import org.opensaml.xml.validation.Validator;
 import org.opensaml.xml.validation.ValidatorSuite;
@@ -40,7 +40,7 @@ public class ConfigurationTest extends TestCase {
     private XMLConfigurator configurator;
 
     /** Parser pool used to parse example config files */
-    private ParserPool parserPool;
+    private BasicParserPool parserPool;
 
     /** SimpleElement QName */
     private QName simpleXMLObjectQName;
@@ -53,7 +53,7 @@ public class ConfigurationTest extends TestCase {
     public ConfigurationTest() throws ConfigurationException {
         configurator = new XMLConfigurator();
 
-        parserPool = new ParserPool();
+        parserPool = new BasicParserPool();
         parserPool.setNamespaceAware(true);
         simpleXMLObjectQName = new QName("http://www.example.org/testObjects", "SimpleElement");
     }
