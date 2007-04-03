@@ -201,8 +201,8 @@ public abstract class AbstractXMLObject implements XMLObject {
 
     /** {@inheritDoc} */
     public void releaseDOM() {
-        if (log.isTraceEnabled()) {
-            log.trace("Releasing cached DOM reprsentation for " + getElementQName());
+        if (log.isDebugEnabled()) {
+            log.debug("Releasing cached DOM reprsentation for " + getElementQName());
         }
 
         setDOM(null);
@@ -210,8 +210,8 @@ public abstract class AbstractXMLObject implements XMLObject {
 
     /** {@inheritDoc} */
     public void releaseParentDOM(boolean propagateRelease) {
-        if (log.isTraceEnabled()) {
-            log.trace("Releasing cached DOM reprsentation for parent of " + getElementQName()
+        if (log.isDebugEnabled()) {
+            log.debug("Releasing cached DOM reprsentation for parent of " + getElementQName()
                     + " with propagation set to " + propagateRelease);
         }
 
@@ -226,8 +226,8 @@ public abstract class AbstractXMLObject implements XMLObject {
 
     /** {@inheritDoc} */
     public void releaseChildrenDOM(boolean propagateRelease) {
-        if (log.isTraceEnabled()) {
-            log.trace("Releasing cached DOM reprsentation for children of " + getElementQName()
+        if (log.isDebugEnabled()) {
+            log.debug("Releasing cached DOM reprsentation for children of " + getElementQName()
                     + " with propagation set to " + propagateRelease);
         }
 

@@ -145,8 +145,8 @@ public class XMLConfigurator {
             log.debug("Loading configuration from XML Document");
         }
 
-        if (log.isTraceEnabled()) {
-            log.trace("\n" + XMLHelper.nodeToString(configuration.getDocumentElement()));
+        if (log.isDebugEnabled()) {
+            log.debug("\n" + XMLHelper.nodeToString(configuration.getDocumentElement()));
         }
 
         // Schema validation
@@ -294,8 +294,8 @@ public class XMLConfigurator {
                 log.debug("Initializing ValidatorSuite " + validatorSuiteId);
             }
 
-            if (log.isTraceEnabled()) {
-                log.trace(XMLHelper.nodeToString(validatorSuiteElement));
+            if (log.isDebugEnabled()) {
+                log.debug(XMLHelper.nodeToString(validatorSuiteElement));
             }
 
             NodeList validatorList = validatorSuiteElement.getElementsByTagNameNS(XMLConstants.XMLTOOLING_CONFIG_NS,
