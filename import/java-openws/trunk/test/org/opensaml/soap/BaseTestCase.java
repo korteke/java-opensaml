@@ -31,7 +31,7 @@ import org.opensaml.xml.XMLObjectBuilderFactory;
 import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallerFactory;
 import org.opensaml.xml.io.UnmarshallerFactory;
-import org.opensaml.xml.parse.ParserPool;
+import org.opensaml.xml.parse.BasicParserPool;
 import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -45,7 +45,7 @@ public abstract class BaseTestCase extends XMLTestCase {
     private static Logger log = Logger.getLogger(BaseTestCase.class);
 
     /** Parser pool */
-    protected static ParserPool parserPool;
+    protected static BasicParserPool parserPool;
 
     /** XMLObject builder factory */
     protected static XMLObjectBuilderFactory builderFactory;
@@ -118,7 +118,7 @@ public abstract class BaseTestCase extends XMLTestCase {
      * Initialize the library
      */
     static {
-        parserPool = new ParserPool();
+        parserPool = new BasicParserPool();
         parserPool.setNamespaceAware(true);
 
         Class clazz = BaseTestCase.class;
