@@ -20,10 +20,10 @@ import org.opensaml.xml.security.credential.CredentialCriteria;
 import org.opensaml.xml.signature.KeyInfo;
 
 /**
- * A class for representing credential resolution criteria which is based primarily
+ * An implementation of {@link CredentialCriteria} which specifies criteria based
  * on the contents of a {@link KeyInfo} element.
  */
-public class KeyInfoCredentialCriteria extends CredentialCriteria {
+public final class KeyInfoCredentialCriteria implements CredentialCriteria {
     
     /** The KeyInfo which serves as the source for credential criteria. */
     private KeyInfo keyInfo;
@@ -34,16 +34,9 @@ public class KeyInfoCredentialCriteria extends CredentialCriteria {
      * @param newKeyInfo the KeyInfo credential criteria to use
      */
     public KeyInfoCredentialCriteria(KeyInfo newKeyInfo) {
-        //TODO re-eval, this probably shouldn't be mandatory
-        // If is null, KeyInfo resolver needs to use some app & context specfic logic to resolve
-        /*
-       if (newKeyInfo == null) {
-           throw new IllegalArgumentException("KeyInfo parameter must be specified");
-       }
-       */
-       keyInfo = newKeyInfo;
+       setKeyInfo(newKeyInfo);
     }
-    
+
     /**
      * Gets the KeyInfo which is the source of credential criteria.
      * 
@@ -51,6 +44,18 @@ public class KeyInfoCredentialCriteria extends CredentialCriteria {
      */
     public KeyInfo getKeyInfo() {
         return keyInfo;
+    }
+    
+    /**
+     * Sets the KeyInfo which is the source of credential criteria.
+     * 
+     * @param newKeyInfo the KeyInfo to use as credential criteria
+     * 
+     */
+    public void setKeyInfo(KeyInfo newKeyInfo) {
+        // Note: we allow KeyInfo to be null to handle case where application context,
+        // other accompanying criteria, etc should be used to resolve credentials.
+        keyInfo = newKeyInfo;
     }
 
 }

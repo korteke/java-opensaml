@@ -17,6 +17,8 @@
 package org.opensaml.xml.security.keyinfo.provider;
 
 import java.security.Key;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.credential.Credential;
@@ -71,6 +73,18 @@ public abstract class AbstractKeyInfoProvider implements KeyInfoProvider {
             return cred.getPrivateKey(); 
         }
         return null;
+    }
+    
+    /**
+     * Convenience method to create a credential set out of a single credential.
+     * 
+     * @param credential the credential to return
+     * @return a set containing the supplied credential
+     */
+    protected Set<Credential> singletonSet(Credential credential) {
+        HashSet<Credential> set = new HashSet<Credential>(1);
+        set.add(credential);
+        return set;
     }
 
 }

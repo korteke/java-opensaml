@@ -18,11 +18,14 @@ package org.opensaml.xml.security.keyinfo.provider;
 
 import java.security.KeyException;
 import java.security.PublicKey;
+import java.util.Collection;
 
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.credential.BasicCredential;
 import org.opensaml.xml.security.credential.Credential;
+import org.opensaml.xml.security.credential.CredentialCriteriaSet;
+import org.opensaml.xml.security.credential.KeyCredentialCriteria;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialCriteria;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xml.security.keyinfo.KeyInfoProvider;
@@ -42,10 +45,14 @@ public class RSAKeyValueProvider extends AbstractKeyInfoProvider {
     }
 
     /** {@inheritDoc} */
-    public Credential process(KeyInfoCredentialResolver resolver, XMLObject keyInfoChild, 
-            KeyInfoCredentialCriteria criteria, KeyInfoResolutionContext kiContext) throws SecurityException {
+    public Collection<Credential> process(KeyInfoCredentialResolver resolver, XMLObject keyInfoChild, 
+            CredentialCriteriaSet criteriaSet, KeyInfoResolutionContext kiContext) throws SecurityException {
         
-        if (criteria.getKeyAlgorithm() != null && ! criteria.getKeyAlgorithm().equals("RSA")) {
+        KeyCredentialCriteria keyCriteria = criteriaSet.getCriteria(KeyCredentialCriteria.class);
+        
+        if (keyCriteria != null 
+                && keyCriteria.getKeyAlgorithm() != null 
+                && ! keyCriteria.getKeyAlgorithm().equals("RSA")) {
             return null;
         }
         
@@ -62,10 +69,11 @@ public class RSAKeyValueProvider extends AbstractKeyInfoProvider {
         }
         BasicCredential cred = new BasicCredential();
         cred.setPublicKey(pubKey);
-        cred.setKeyNames(kiContext.getKeyNames());
-        cred.setCredentialContext(buildContext(criteria.getKeyInfo(), resolver));
+        cred.getKeyNames().addAll(kiContext.getKeyNames());
+        cred.setCredentialContext(buildContext(criteriaSet.getCriteria(KeyInfoCredentialCriteria.class).getKeyInfo(),
+                resolver));
         
-        return cred;
+        return singletonSet(cred);
     }
     
     /**

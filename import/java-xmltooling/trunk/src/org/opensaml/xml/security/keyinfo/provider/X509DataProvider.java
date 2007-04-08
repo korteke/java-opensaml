@@ -23,6 +23,7 @@ import java.security.cert.CRLException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509CRL;
 import java.security.cert.X509Certificate;
+import java.util.Collection;
 import java.util.List;
 
 import javax.security.auth.x500.X500Principal;
@@ -30,6 +31,7 @@ import javax.security.auth.x500.X500Principal;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.credential.Credential;
+import org.opensaml.xml.security.credential.CredentialCriteriaSet;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialCriteria;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xml.security.keyinfo.KeyInfoProvider;
@@ -51,8 +53,8 @@ public class X509DataProvider extends AbstractKeyInfoProvider {
     }
 
     /** {@inheritDoc} */
-    public Credential process(KeyInfoCredentialResolver resolver, XMLObject keyInfoChild, 
-            KeyInfoCredentialCriteria criteria, KeyInfoResolutionContext kiContext) throws SecurityException {
+    public Collection<Credential> process(KeyInfoCredentialResolver resolver, XMLObject keyInfoChild, 
+            CredentialCriteriaSet criteriaSet, KeyInfoResolutionContext kiContext) throws SecurityException {
         
         if (! handles(keyInfoChild)) {
             return null;
@@ -83,7 +85,7 @@ public class X509DataProvider extends AbstractKeyInfoProvider {
         
         BasicX509Credential cred = new BasicX509Credential();
         if (entityCert != null) {
-           cred.setPublicKey(entityCert.getPublicKey());
+           cred.setEntityCertificate(entityCert);
         } else {
             //TODO should do this? - have previously resolved KeyValue key, but no entity cert.
             // This cast is potentially dangerous, although in reality probably not
@@ -92,10 +94,13 @@ public class X509DataProvider extends AbstractKeyInfoProvider {
         cred.setCRLs(crls);
         cred.setEntityCertificateChain(certs);
         
-        cred.setKeyNames(kiContext.getKeyNames());
-        cred.setCredentialContext(buildContext(criteria.getKeyInfo(), resolver));
+        // TODO should alt names, CN, etc be a part of the credential-supplied key names, 
+        // or do we expect the caller to retrieve from the cert directly?
+        cred.getKeyNames().addAll(kiContext.getKeyNames());
+        cred.setCredentialContext(buildContext(criteriaSet.getCriteria(KeyInfoCredentialCriteria.class).getKeyInfo(),
+                resolver));
         
-        return cred;
+        return singletonSet(cred);
     }
 
     /**

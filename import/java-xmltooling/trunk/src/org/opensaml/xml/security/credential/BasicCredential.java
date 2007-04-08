@@ -18,7 +18,6 @@ package org.opensaml.xml.security.credential;
 
 import java.security.PrivateKey;
 import java.security.PublicKey;
-import java.util.Collection;
 import java.util.HashSet;
 
 import javax.crypto.SecretKey;
@@ -52,15 +51,6 @@ public class BasicCredential extends AbstractCredential {
      */
     public void setUsageType(UsageType usage) {
         usageType = usage;
-    }
-
-    /**
-     * Sets the key names for this credential.
-     * 
-     * @param names key names for this credential
-     */
-    public void setKeyNames(Collection<String> names) {
-        keyNames = names;
     }
 
     /**

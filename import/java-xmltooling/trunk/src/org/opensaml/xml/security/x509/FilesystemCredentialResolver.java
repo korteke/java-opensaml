@@ -20,7 +20,7 @@ import java.util.Map;
 
 import org.opensaml.xml.security.credential.AbstractCredentialResolver;
 import org.opensaml.xml.security.credential.Credential;
-import org.opensaml.xml.security.credential.CredentialCriteria;
+import org.opensaml.xml.security.credential.CredentialCriteriaSet;
 import org.opensaml.xml.security.credential.CredentialResolver;
 
 /**
@@ -51,7 +51,7 @@ public class FilesystemCredentialResolver extends AbstractCredentialResolver imp
     }
 
     /** {@inheritDoc} */
-    public Iterable<Credential> resolveCredentials(CredentialCriteria criteria) {
+    public Iterable<Credential> resolveCredentials(CredentialCriteriaSet criteriaSet) {
         // TODO Auto-generated method stub
         return null;
     }

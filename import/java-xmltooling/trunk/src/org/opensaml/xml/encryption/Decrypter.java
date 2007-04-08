@@ -37,6 +37,7 @@ import org.opensaml.xml.parse.BasicParserPool;
 import org.opensaml.xml.parse.XMLParserException;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.credential.Credential;
+import org.opensaml.xml.security.credential.CredentialCriteriaSet;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialCriteria;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
 import org.w3c.dom.Document;
@@ -267,7 +268,10 @@ public class Decrypter {
         Key kek = null;
         Credential kekCred = null;
         try {
-            kekCred = kekResolver.resolveCredential(new KeyInfoCredentialCriteria(encryptedKey.getKeyInfo()));
+            
+            CredentialCriteriaSet criteriaSet = 
+                new CredentialCriteriaSet( new KeyInfoCredentialCriteria(encryptedKey.getKeyInfo()) );
+            kekCred = kekResolver.resolveCredential(criteriaSet);
         } catch (SecurityException e) {
             throw new DecryptionException("Error resolving the key encryption key credential", e);
         }
@@ -326,7 +330,9 @@ public class Decrypter {
         // First try and resolve the data encryption key directly
         if (resolver != null) {
             try {
-                dataEncKeyCred = resolver.resolveCredential(new KeyInfoCredentialCriteria(encryptedData.getKeyInfo()));
+                CredentialCriteriaSet criteriaSet = 
+                    new CredentialCriteriaSet( new KeyInfoCredentialCriteria(encryptedData.getKeyInfo()) );
+                dataEncKeyCred = resolver.resolveCredential(criteriaSet);
                 dataEncKey = dataEncKeyCred.getSecretKey();
             } catch (SecurityException e) {
                 throw new DecryptionException("Error resolving data encryption key", e);

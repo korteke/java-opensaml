@@ -39,6 +39,7 @@ import org.opensaml.xml.parse.XMLParserException;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.credential.BasicCredential;
 import org.opensaml.xml.security.credential.Credential;
+import org.opensaml.xml.security.credential.CredentialCriteriaSet;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialCriteria;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xml.security.x509.SignatureValidator;
@@ -183,7 +184,8 @@ public class DetachedSignatureTest extends XMLObjectBaseTestCase {
         resolver.setContextClass(XMLSignatureCredentialContext.class);
         
         KeyInfoCredentialCriteria criteria = new KeyInfoCredentialCriteria(signature.getKeyInfo());
-        Credential credential = resolver.resolveCredential(criteria);
+        CredentialCriteriaSet criteriaSet = new CredentialCriteriaSet(criteria);
+        Credential credential = resolver.resolveCredential(criteriaSet);
         SignatureValidator sigValidator = new SignatureValidator(credential);
         sigValidator.validate(signature);
     }

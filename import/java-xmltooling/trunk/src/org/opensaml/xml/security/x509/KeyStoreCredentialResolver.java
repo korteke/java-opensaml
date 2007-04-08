@@ -27,9 +27,11 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.credential.AbstractCredentialResolver;
+import org.opensaml.xml.security.credential.EntityCredentialCriteria;
 import org.opensaml.xml.security.credential.Credential;
-import org.opensaml.xml.security.credential.CredentialCriteria;
+import org.opensaml.xml.security.credential.CredentialCriteriaSet;
 import org.opensaml.xml.security.credential.CredentialResolver;
 import org.opensaml.xml.security.credential.UsageType;
 
@@ -92,11 +94,18 @@ public class KeyStoreCredentialResolver extends AbstractCredentialResolver  impl
     }
 
     /** {@inheritDoc} */
-    public Iterable<Credential> resolveCredentials(CredentialCriteria criteria) {
-        UsageType usage = criteria.getUsage();
-        String entity = criteria.getEntityID();
+    public Iterable<Credential> resolveCredentials(CredentialCriteriaSet criteriaSet) throws SecurityException {
+        Set<Credential> credentials = new HashSet<Credential>();
+        
+        EntityCredentialCriteria entityCriteria = criteriaSet.getCriteria(EntityCredentialCriteria.class);
+        if (entityCriteria == null) {
+            log.error("Basic criteria not specified, resolution can not be attempted");
+            throw new SecurityException("No basic criteria was specified in criteria set");
+        }
+        UsageType usage = entityCriteria.getUsage();
+        String entity = entityCriteria.getOwnerID();
         if (keyUsage != null && keyUsage != usage) {
-            return null;
+            return credentials;
         }
 
         KeyStore.PasswordProtection keyPassword = null;
@@ -105,39 +114,63 @@ public class KeyStoreCredentialResolver extends AbstractCredentialResolver  impl
             keyPassword = new KeyStore.PasswordProtection(keyPasswords.get(entity).toCharArray());
         }
 
-        BasicX509Credential credential = null;
+        BasicX509Credential credential = new BasicX509Credential();
+        credential.setEntityId(entity);
         try {
             KeyStore.Entry keyEntry = keyStore.getEntry(entity, keyPassword);
-            credential = new BasicX509Credential();
-            credential.setEntityId(entity);
+            // alias doesn't exist
+            if (keyEntry == null) {
+                return credentials;
+            }
 
             if (keyEntry instanceof KeyStore.PrivateKeyEntry) {
-                KeyStore.PrivateKeyEntry privateKeyEntry = (KeyStore.PrivateKeyEntry) keyEntry;
-                credential.setPrivateKey(privateKeyEntry.getPrivateKey());
-
-                credential.setPublicKey( privateKeyEntry.getCertificate().getPublicKey() );
-
-                credential.setEntityCertificate((X509Certificate) privateKeyEntry.getCertificate());
-                credential.setEntityCertificateChain(Arrays.asList((X509Certificate[]) privateKeyEntry
-                        .getCertificateChain()));
+                processPrivateKeyEntry(credential, (KeyStore.PrivateKeyEntry) keyEntry);
             } else if (keyEntry instanceof KeyStore.TrustedCertificateEntry) {
-                KeyStore.TrustedCertificateEntry trustedCertEntry = (KeyStore.TrustedCertificateEntry) keyEntry;
-                X509Certificate cert = (X509Certificate) trustedCertEntry.getTrustedCertificate();
-
-                credential.setPublicKey(cert.getPublicKey());
-
-                credential.setEntityCertificate(cert);
-
-                ArrayList<X509Certificate> certChain = new ArrayList<X509Certificate>();
-                certChain.add(cert);
-                credential.setEntityCertificateChain(certChain);
+                processTrustedCertificateEntry(credential, (KeyStore.TrustedCertificateEntry) keyEntry);
+            } else {
+                throw new SecurityException("KeyStore entry was of an unsupported type: " 
+                        + keyEntry.getClass().getName());
             }
         } catch (GeneralSecurityException e) {
             log.error("Unable to retrieve key for entity " + entity, e);
+            return credentials;
         }
         
-        Set<Credential> credentials = new HashSet<Credential>();
         credentials.add(credential);
         return credentials;
+    }
+
+    /** Extract X509Credential info from a keystore trusted certificate entry.
+     * 
+     * @param credential the credential being built
+     * @param trustedCertEntry the entry being processed
+     */
+    protected void processTrustedCertificateEntry(BasicX509Credential credential, 
+            KeyStore.TrustedCertificateEntry trustedCertEntry) {
+        X509Certificate cert = (X509Certificate) trustedCertEntry.getTrustedCertificate();
+
+        credential.setPublicKey(cert.getPublicKey());
+
+        credential.setEntityCertificate(cert);
+
+        ArrayList<X509Certificate> certChain = new ArrayList<X509Certificate>();
+        certChain.add(cert);
+        credential.setEntityCertificateChain(certChain);
+    }
+
+    /**
+     * Extract X509Credential info from a keystore private key entry.
+     * 
+     * @param credential the credential being built
+     * @param privateKeyEntry the entry being processed
+     */
+    protected void processPrivateKeyEntry(BasicX509Credential credential, KeyStore.PrivateKeyEntry privateKeyEntry) {
+        credential.setPrivateKey(privateKeyEntry.getPrivateKey());
+
+        credential.setPublicKey( privateKeyEntry.getCertificate().getPublicKey() );
+
+        credential.setEntityCertificate((X509Certificate) privateKeyEntry.getCertificate());
+        credential.setEntityCertificateChain(Arrays.asList((X509Certificate[]) privateKeyEntry
+                .getCertificateChain()));
     }
 }

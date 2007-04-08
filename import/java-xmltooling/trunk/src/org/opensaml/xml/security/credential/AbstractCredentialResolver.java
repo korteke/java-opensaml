@@ -16,8 +16,6 @@
 
 package org.opensaml.xml.security.credential;
 
-import java.security.Key;
-
 import org.opensaml.xml.security.SecurityException;
 
 /**
@@ -42,8 +40,8 @@ public abstract class AbstractCredentialResolver<ContextType extends CredentialC
     }
 
     /** {@inheritDoc} */
-    public Credential resolveCredential(CredentialCriteria criteria) throws SecurityException {
-        Iterable<Credential> creds = resolveCredentials(criteria);
+    public Credential resolveCredential(CredentialCriteriaSet criteriaSet) throws SecurityException {
+        Iterable<Credential> creds = resolveCredentials(criteriaSet);
         if (creds.iterator().hasNext()) {
             return creds.iterator().next();
         } else {
@@ -71,28 +69,8 @@ public abstract class AbstractCredentialResolver<ContextType extends CredentialC
         
         return context;
     }
-    
-    /**
-     * Check whether the resolved key meets the specified key criteria.
-     * 
-     * @param key the Key to evaluate 
-     * @param criteria the credential criteria to use to evaluate the key
-     * @return true if the key meets the criteria, otherwise false
-     */
-    protected boolean evaluateKey(Key key, CredentialCriteria criteria) {
-        // If key was null, or no key algo specified, define this to be 'true'
-        if (criteria.getKeyAlgorithm() == null || key == null) {
-            return true;
-        }
-        if (criteria.getKeyAlgorithm().equals(key.getAlgorithm())) {
-            return true;
-        }
-        return false;
-    }
-
-    
 
     /** {@inheritDoc} */
-    public abstract Iterable<Credential> resolveCredentials(CredentialCriteria criteria) throws SecurityException;
+    public abstract Iterable<Credential> resolveCredentials(CredentialCriteriaSet criteriaSet) throws SecurityException;
 
 }

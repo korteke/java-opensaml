@@ -50,7 +50,7 @@ public class StaticCredentialResolver extends AbstractCredentialResolver {
     }
 
     /** {@inheritDoc} */
-    public Iterable resolveCredentials(CredentialCriteria criteria) throws SecurityException {
+    public Iterable resolveCredentials(CredentialCriteriaSet criteria) throws SecurityException {
         return creds;
     }
 
