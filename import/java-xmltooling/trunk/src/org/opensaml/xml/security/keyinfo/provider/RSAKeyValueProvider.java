@@ -20,6 +20,7 @@ import java.security.KeyException;
 import java.security.PublicKey;
 import java.util.Collection;
 
+import org.apache.log4j.Logger;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.credential.BasicCredential;
@@ -38,6 +39,9 @@ import org.opensaml.xml.signature.RSAKeyValue;
  * Implementation of {@link KeyInfoProvider} which supports {@link RSAKeyValue}.
  */
 public class RSAKeyValueProvider extends AbstractKeyInfoProvider {
+    
+    /** Class logger. */
+    private static Logger log = Logger.getLogger(RSAKeyValueProvider.class);
 
     /** {@inheritDoc} */
     public boolean handles(XMLObject keyInfoChild) {
@@ -48,23 +52,26 @@ public class RSAKeyValueProvider extends AbstractKeyInfoProvider {
     public Collection<Credential> process(KeyInfoCredentialResolver resolver, XMLObject keyInfoChild, 
             CredentialCriteriaSet criteriaSet, KeyInfoResolutionContext kiContext) throws SecurityException {
         
-        KeyCredentialCriteria keyCriteria = criteriaSet.getCriteria(KeyCredentialCriteria.class);
-        
-        if (keyCriteria != null 
-                && keyCriteria.getKeyAlgorithm() != null 
-                && ! keyCriteria.getKeyAlgorithm().equals("RSA")) {
-            return null;
-        }
-        
         RSAKeyValue keyValue = getRSAKeyValue(keyInfoChild);
         if (keyValue == null) {
             return null;
         }
         
+        KeyCredentialCriteria keyCriteria = criteriaSet.getCriteria(KeyCredentialCriteria.class);
+        if (keyCriteria != null 
+                && keyCriteria.getKeyAlgorithm() != null 
+                && ! keyCriteria.getKeyAlgorithm().equals("RSA")) {
+            log.debug("Criteria specified non-RSA key algorithm, skipping");
+            return null;
+        }
+        
+        log.debug("Attempting to extract credential from an RSAKeyValue");
+        
         PublicKey pubKey = null;
         try {
             pubKey = KeyInfoHelper.getRSAKey(keyValue);
         } catch (KeyException e) {
+            log.error("Error extracting RSA key value", e);
             throw new SecurityException("Error extracting RSA key value", e);
         }
         BasicCredential cred = new BasicCredential();
@@ -73,6 +80,7 @@ public class RSAKeyValueProvider extends AbstractKeyInfoProvider {
         cred.setCredentialContext(buildContext(criteriaSet.getCriteria(KeyInfoCredentialCriteria.class).getKeyInfo(),
                 resolver));
         
+        log.debug("Credential successfully extracted from RSAKeyValue");
         return singletonSet(cred);
     }
     

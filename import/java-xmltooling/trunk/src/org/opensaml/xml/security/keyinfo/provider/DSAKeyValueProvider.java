@@ -20,6 +20,7 @@ import java.security.KeyException;
 import java.security.PublicKey;
 import java.util.Collection;
 
+import org.apache.log4j.Logger;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.credential.BasicCredential;
@@ -38,6 +39,9 @@ import org.opensaml.xml.signature.KeyValue;
  * Implementation of {@link KeyInfoProvider} which supports {@link DSAKeyValue}.
  */
 public class DSAKeyValueProvider extends AbstractKeyInfoProvider {
+    
+    /** Class logger. */
+    private static Logger log = Logger.getLogger(DSAKeyValueProvider.class);
 
     /** {@inheritDoc} */
     public boolean handles(XMLObject keyInfoChild) {
@@ -48,24 +52,27 @@ public class DSAKeyValueProvider extends AbstractKeyInfoProvider {
     public Collection<Credential> process(KeyInfoCredentialResolver resolver, XMLObject keyInfoChild, 
             CredentialCriteriaSet criteriaSet, KeyInfoResolutionContext kiContext) throws SecurityException {
         
-        KeyCredentialCriteria keyCriteria = criteriaSet.getCriteria(KeyCredentialCriteria.class);
-        
-        if (keyCriteria != null 
-                && keyCriteria.getKeyAlgorithm() != null 
-                && ! keyCriteria.getKeyAlgorithm().equals("DSA")) {
-            return null;
-        }
-        
         DSAKeyValue keyValue = getDSAKeyValue(keyInfoChild);
         if (keyValue == null) {
             return null;
         }
+        
+        KeyCredentialCriteria keyCriteria = criteriaSet.getCriteria(KeyCredentialCriteria.class);
+        if (keyCriteria != null 
+                && keyCriteria.getKeyAlgorithm() != null 
+                && ! keyCriteria.getKeyAlgorithm().equals("DSA")) {
+            log.debug("Criteria specified non-DSA key algorithm, skipping");
+            return null;
+        }
+        
+        log.debug("Attempting to extract credential from a DSAKeyValue");
         
         PublicKey pubKey = null;
         try {
             //TODO deal with case of incomplete DSAParams, need hook to resolve those
             pubKey = KeyInfoHelper.getDSAKey(keyValue);
         } catch (KeyException e) {
+            log.error("Error extracting DSA key value", e);
             throw new SecurityException("Error extracting DSA key value", e);
         }
         BasicCredential cred = new BasicCredential();
@@ -74,6 +81,7 @@ public class DSAKeyValueProvider extends AbstractKeyInfoProvider {
         cred.setCredentialContext(buildContext(criteriaSet.getCriteria(KeyInfoCredentialCriteria.class).getKeyInfo(),
                 resolver));
         
+        log.debug("Credential successfully extracted from DSAKeyValue");
         return singletonSet(cred);
     }
     
@@ -95,7 +103,4 @@ public class DSAKeyValueProvider extends AbstractKeyInfoProvider {
         }
         return null;
     }
-    
-    
-
 }

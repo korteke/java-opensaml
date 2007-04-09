@@ -17,7 +17,6 @@
 package org.opensaml.xml.security.keyinfo.provider;
 
 import java.math.BigInteger;
-import java.security.Key;
 import java.security.PublicKey;
 import java.security.cert.CRLException;
 import java.security.cert.CertificateException;
@@ -28,6 +27,7 @@ import java.util.List;
 
 import javax.security.auth.x500.X500Principal;
 
+import org.apache.log4j.Logger;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.credential.Credential;
@@ -37,15 +37,31 @@ import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xml.security.keyinfo.KeyInfoProvider;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver.KeyInfoResolutionContext;
 import org.opensaml.xml.security.x509.BasicX509Credential;
+import org.opensaml.xml.security.x509.X509Credential;
 import org.opensaml.xml.signature.KeyInfoHelper;
+import org.opensaml.xml.signature.KeyValue;
 import org.opensaml.xml.signature.X509Data;
 import org.opensaml.xml.signature.X509IssuerSerial;
+import org.opensaml.xml.signature.X509SKI;
 import org.opensaml.xml.signature.X509SubjectName;
 
 /**
- * Implementation of {@link KeyInfoProvider} which supports {@link X509Data}.
+ * Implementation of {@link KeyInfoProvider} which provides basic support for extracting a {@link X509Credential} 
+ * from an {@link X509Data} child of KeyInfo.
+ * 
+ * This provider supports only inline {@link X509Certificate}'s and  {@link X509CRL}'s.
+ * If only one certificate is present, it is assumed to be the end-entity certificate containing
+ * the public key represented by this KeyInfo.  If multiple certificates are present, and any instances
+ * of {@link X509SubjectName}, {@link X509IssuerSerial}, or {@link X509SKI} are also present, they
+ * will be used to identify the end-entity certificate, in accordance with the XML Signature specification.
+ * If a public key from a previously resolved {@link KeyValue} is available in the resolution context,
+ * it will also be used to identify the end-entity certificate.
+ * 
  */
 public class X509DataProvider extends AbstractKeyInfoProvider {
+    
+    /** Class logger. */
+    private static Logger log = Logger.getLogger(X509DataProvider.class);
 
     /** {@inheritDoc} */
     public boolean handles(XMLObject keyInfoChild) {
@@ -62,35 +78,27 @@ public class X509DataProvider extends AbstractKeyInfoProvider {
         
         X509Data x509Data = (X509Data) keyInfoChild;
         
-        List<X509Certificate> certs = null;
-        try {
-            certs = KeyInfoHelper.getCertificates(x509Data);
-        } catch (CertificateException e) {
-            throw new SecurityException("Error extracting certificates from KeyInfo", e);
+        log.debug("Attempting to extract credential from an X509Data");
+        
+        List<X509Certificate> certs = extractCertificates(x509Data);
+        if (certs.isEmpty()) {
+            log.info("The X509Data contained no X509Certificate elements, skipping credential extraction");
+            return null;
         }
+        List<X509CRL> crls = extractCRLs(x509Data);
         
-        List<X509CRL> crls = null;
-        try {
-            crls = KeyInfoHelper.getCRLs(x509Data);
-        } catch (CRLException e) {
-            throw new SecurityException("Error extracting CRL's from KeyInfo", e);
+        PublicKey resolvedPublicKey = null;
+        if (kiContext.getKeyValueCredential() != null) {
+            resolvedPublicKey = kiContext.getKeyValueCredential().getPublicKey();
         }
-        
-        Key resolvedKey = extractKeyValue(kiContext.getKeyValueCredential());
-        X509Certificate entityCert = findEntityCert(certs, x509Data, resolvedKey);
-        
-        if (entityCert == null && resolvedKey == null) {
+        X509Certificate entityCert = findEntityCert(certs, x509Data, resolvedPublicKey);
+        if (entityCert == null) {
+            log.warn("The end-entity cert could not be identified, skipping credential extraction");
             return null;
         }
         
         BasicX509Credential cred = new BasicX509Credential();
-        if (entityCert != null) {
-           cred.setEntityCertificate(entityCert);
-        } else {
-            //TODO should do this? - have previously resolved KeyValue key, but no entity cert.
-            // This cast is potentially dangerous, although in reality probably not
-            cred.setPublicKey((PublicKey) resolvedKey);
-        }
+        cred.setEntityCertificate(entityCert);
         cred.setCRLs(crls);
         cred.setEntityCertificateChain(certs);
         
@@ -104,6 +112,48 @@ public class X509DataProvider extends AbstractKeyInfoProvider {
     }
 
     /**
+     * Extract CRL's from the X509Data.
+     * 
+     * @param x509Data the X509Data element
+     * @return a list of X509CRLs
+     * @throws SecurityException thrown if there is an error extracting CRL's
+     */
+    private List<X509CRL> extractCRLs(X509Data x509Data) throws SecurityException {
+        List<X509CRL> crls = null;
+        try {
+            crls = KeyInfoHelper.getCRLs(x509Data);
+        } catch (CRLException e) {
+            log.error("Error extracting CRL's from X509Data", e);
+            throw new SecurityException("Error extracting CRL's from X509Data", e);
+        }
+        if (log.isDebugEnabled()) {
+            log.debug("Found " + crls.size() + " X509CRLs");
+        }
+        return crls;
+    }
+
+    /**
+     * Extract certificates from the X509Data.
+     * 
+     * @param x509Data the X509Data element
+     * @return a list of X509Certificates
+     * @throws SecurityException thrown if there is an error extracting certificates
+     */
+    private List<X509Certificate> extractCertificates(X509Data x509Data) throws SecurityException {
+        List<X509Certificate> certs = null;
+        try {
+            certs = KeyInfoHelper.getCertificates(x509Data);
+        } catch (CertificateException e) {
+            log.error("Error extracting certificates from X509Data", e);
+            throw new SecurityException("Error extracting certificates from X509Data", e);
+        }
+        if (log.isDebugEnabled()) {
+            log.debug("Found " + certs.size() + " X509Certificates");
+        }
+        return certs;
+    }
+
+    /**
      * Find the end-entity cert in the list of certs contained in the X509Data.
      * 
      * @param certs list of {@link java.security.cert.X509Certificate}
@@ -111,27 +161,37 @@ public class X509DataProvider extends AbstractKeyInfoProvider {
      * @param resolvedKey a key which might have previously been resolved from a KeyValue
      * @return the end-entity certificate, if found
      */
-    protected X509Certificate findEntityCert(List<X509Certificate> certs, X509Data x509Data, Key resolvedKey) {
+    protected X509Certificate findEntityCert(List<X509Certificate> certs, X509Data x509Data, PublicKey resolvedKey) {
         if (certs == null || certs.isEmpty()) {
             return null;
         }
+        
+        // If there is only 1 certificate, treat it as the end-entity certificate
+        if (certs.size() == 1) {
+            log.debug("Single certificate was present, treating as end-entity certificate");
+            return certs.get(0);
+        }
+        
         X509Certificate cert = null;
         
-        //Check against key already resolved
+        //Check against public key already resolved in resolution context
         cert = findCertFromKey(certs, resolvedKey);
         if (cert != null) {
+            log.debug("End-entity certificate resolved by matching previously resolved public key");
             return cert;
         }
  
         //Check against any subject names
         cert = findCertFromSubjectNames(certs, x509Data.getX509SubjectNames());
         if (cert != null) {
+            log.debug("End-entity certificate resolved by matching X509SubjectName");
             return cert;
         }
 
         //Check against issuer serial
         cert = findCertFromIssuerSerials(certs, x509Data.getX509IssuerSerials());
         if (cert != null) {
+            log.debug("End-entity certificate resolved by matching X509IssuerSerial");
             return cert;
         }
 
@@ -149,7 +209,7 @@ public class X509DataProvider extends AbstractKeyInfoProvider {
      * @param key key to use as search criteria
      * @return the matching certificate, or null
      */
-    protected X509Certificate findCertFromKey(List<X509Certificate> certs, Key key) {
+    protected X509Certificate findCertFromKey(List<X509Certificate> certs, PublicKey key) {
         if (key != null) {
             for (X509Certificate cert : certs) {
                 if (cert.getPublicKey().equals(key)) {

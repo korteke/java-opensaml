@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.credential.AbstractCredentialResolver;
@@ -44,10 +45,13 @@ import org.opensaml.xml.signature.KeyValue;
  */
 public class KeyInfoCredentialResolver extends AbstractCredentialResolver<KeyInfoCredentialContext>
     implements CredentialResolver<KeyInfoCredentialContext> {
-
+    
     /** The default credential context class to use in resolved credentials.  */
     public static final Class<KeyInfoCredentialContext> DEFAULT_CONTEXT_CLASS = KeyInfoCredentialContext.class;
     
+    /** Class logger. */
+    private static Logger log = Logger.getLogger(KeyInfoCredentialResolver.class);
+
     /** List of KeyInfo providers that are registered on this instance.  */
     private List<KeyInfoProvider> providers;
     
@@ -70,6 +74,7 @@ public class KeyInfoCredentialResolver extends AbstractCredentialResolver<KeyInf
     public Iterable<Credential> resolveCredentials(CredentialCriteriaSet criteriaSet) throws SecurityException {
         KeyInfoCredentialCriteria kiCriteria = criteriaSet.getCriteria(KeyInfoCredentialCriteria.class);
         if (kiCriteria == null) {
+            log.error("No KeyInfo criteria supplied, resolver could not process");
             throw new SecurityException("Credential criteria set did not contain an instance of" 
                     + "KeyInfoCredentialCriteria");
         }
@@ -93,9 +98,13 @@ public class KeyInfoCredentialResolver extends AbstractCredentialResolver<KeyInf
             if (credentials.isEmpty()) {
                 // Add the credential based on plain KeyValue if no more specifc cred type was found
                 if (kiContext.getKeyValueCredential() != null) {
+                    log.debug("No credentials extracted by registered non-KeyValue handling providers, " 
+                            + "adding KeyValue credential to returned credential set");
                     credentials.add(kiContext.getKeyValueCredential());
                 }
             }
+        } else {
+            log.info("KeyInfo was null, any credentials will be resolved by post-processing hooks only");
         }
         
         // Postprocessing hook
@@ -103,9 +112,13 @@ public class KeyInfoCredentialResolver extends AbstractCredentialResolver<KeyInf
         
         // Final empty credential hook
         if (credentials.isEmpty()) {
+            log.debug("No credentials were found, calling empty credentials post-processing hook");
             postProcessEmptyCredentials(kiContext, keyInfo, criteriaSet, credentials);
         }
         
+        if (log.isDebugEnabled()) {
+            log.debug("A total of " + credentials.size() + " credentials were resolved");
+        }
         return credentials;
     }
 
@@ -160,17 +173,64 @@ public class KeyInfoCredentialResolver extends AbstractCredentialResolver<KeyInf
             CredentialCriteriaSet criteriaSet, List<Credential> credentials) throws SecurityException {
         
         for (XMLObject keyInfoChild : keyInfo.getXMLObjects()) {
+            
             if (keyInfoChild instanceof KeyName || keyInfoChild instanceof KeyValue) {
                 continue;
             }
-            for (KeyInfoProvider provider : providers) {
-                Collection<Credential> creds = provider.process(this, keyInfoChild, criteriaSet, kiContext);
-                if (creds != null && ! creds.isEmpty()) {
-                    credentials.addAll(creds);
-                    continue;
-                }
+            
+            if (log.isDebugEnabled()) {
+                log.debug("Processing KeyInfo child with qname: " + keyInfoChild.getElementQName());
+            }
+            
+            Collection<Credential> childCreds = processKeyInfoChild(kiContext, criteriaSet, keyInfoChild);
+            
+            if (childCreds != null && ! childCreds.isEmpty()) {
+               credentials.addAll(childCreds);
+            } else {
+                log.warn("No credentials could be extracted from KeyInfo child with qname " 
+                        + keyInfoChild.getElementQName() + " by any registered provider");
             }
         }
+    }
+
+    /**
+     * Process the given KeyInfo child with the registered providers.
+     * 
+     * @param kiContext KeyInfo resolution context containing 
+     * @param criteriaSet the credential criteria used to resolve credentials
+     * @param keyInfoChild the KeyInfo to evaluate
+     * @return the collection of resolved credentials, or null
+     * @throws SecurityException thrown if there is a provider error processing the KeyInfo child
+     */
+    private Collection<Credential> processKeyInfoChild(KeyInfoResolutionContext kiContext, 
+            CredentialCriteriaSet criteriaSet, XMLObject keyInfoChild) throws SecurityException {
+        
+        for (KeyInfoProvider provider : providers) {
+            
+            if (!provider.handles(keyInfoChild)) {
+                if (log.isDebugEnabled()) {
+                   log.debug("Provider " + provider.getClass().getName() + " doesn't handle objects of type " 
+                           + keyInfoChild.getElementQName() + ", skipping") ;
+                }
+                continue;
+            }
+            
+            if (log.isDebugEnabled()) {
+                log.debug("Processing KeyInfo child " + keyInfoChild.getElementQName() 
+                        + " with provider " + provider.getClass().getName());
+            }
+            
+            Collection<Credential> creds = provider.process(this, keyInfoChild, criteriaSet, kiContext);
+            
+            if (creds != null && ! creds.isEmpty()) {
+                if (log.isDebugEnabled()) {
+                    log.debug("Credentials (count = " + creds.size() + ") successfully extracted from child " 
+                            + keyInfoChild.getElementQName() + " by provider " + provider.getClass().getName());
+                }
+                return creds;
+            }
+        }
+        return null;
     }
     
     /**
@@ -185,6 +245,10 @@ public class KeyInfoCredentialResolver extends AbstractCredentialResolver<KeyInf
             CredentialCriteriaSet criteriaSet) throws SecurityException {
         // Extract all KeyNames
         kiContext.setKeyNames(KeyInfoHelper.getKeyNames(keyInfo));
+        if (log.isDebugEnabled()) {
+            log.debug("Found " + kiContext.getKeyNames().size() + " key names: " + kiContext.getKeyNames());
+        }
+        
         // Extract the Credential based on the (singular) key from an existing KeyValue(s).
         resolveKeyValue(kiContext, keyInfo.getKeyValues(), criteriaSet);
     }
@@ -213,6 +277,10 @@ public class KeyInfoCredentialResolver extends AbstractCredentialResolver<KeyInf
                 Collection<Credential> creds = provider.process(this, keyValue, criteriaSet, kiContext);
                 if (creds != null && ! creds.isEmpty()) {
                     kiContext.setKeyValueCredential( creds.iterator().next() );
+                    if (log.isDebugEnabled()) {
+                        log.debug("Found a credential based on a KeyValue having public key type: " 
+                                + kiContext.getKeyValueCredential().getPublicKey().getAlgorithm());
+                    }
                     return;
                 }
             }
