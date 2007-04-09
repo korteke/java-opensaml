@@ -17,10 +17,13 @@
 package org.opensaml.xml.encryption;
 
 import java.security.Key;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 
 import org.opensaml.xml.XMLObjectBaseTestCase;
 import org.opensaml.xml.mock.SimpleXMLObject;
 import org.opensaml.xml.parse.XMLParserException;
+import org.opensaml.xml.security.SecurityTestHelper;
 import org.opensaml.xml.signature.KeyInfo;
 import org.opensaml.xml.signature.KeyName;
 
@@ -70,12 +73,14 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
     /**
      *  Test basic encryption with symmetric key, no key wrap,
      *  set key name in passed KeyInfo object.
+     * @throws NoSuchProviderException 
+     * @throws NoSuchAlgorithmException 
      */
-    public void testSymmetricWithKeyNameNoWrap() {
+    public void testSymmetricWithKeyNameNoWrap() throws NoSuchAlgorithmException, NoSuchProviderException {
         SimpleXMLObject sxo = (SimpleXMLObject) unmarshallElement(targetFile);
         
         String algoURI = EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128;
-        Key encKey = EncryptionTestHelper.generateKey(algoURI);
+        Key encKey = SecurityTestHelper.generateKeyFromURI(algoURI);
         encParams.setAlgorithm(algoURI);
         encParams.setEncryptionKey(encKey);
         
@@ -104,18 +109,20 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
     /**
      *  Test basic encryption with a symmetric key, with a symmetric key wrap,
      *  set key encrypting key name in passed KeyInfo object.
+     * @throws NoSuchProviderException 
+     * @throws NoSuchAlgorithmException 
      */
-    public void testSymmetricWithSymmetricWrap() {
+    public void testSymmetricWithSymmetricWrap() throws NoSuchAlgorithmException, NoSuchProviderException {
         SimpleXMLObject sxo = (SimpleXMLObject) unmarshallElement(targetFile);
         
         String algoURI = EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128;
-        Key encKey = EncryptionTestHelper.generateKey(algoURI);
+        Key encKey = SecurityTestHelper.generateKeyFromURI(algoURI);
         
         encParams.setAlgorithm(algoURI);
         encParams.setEncryptionKey(encKey);
         
         String kekURI = EncryptionConstants.ALGO_ID_KEYWRAP_AES128;
-        Key kek = EncryptionTestHelper.generateKey(kekURI);
+        Key kek = SecurityTestHelper.generateKeyFromURI(kekURI);
         
         kekParams.setAlgorithm(kekURI);
         kekParams.setEncryptionKey(kek);
@@ -147,12 +154,14 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
     
     /**
      *  Test basic encryption of element content with symmetric key, no KeyInfo.
+     * @throws NoSuchProviderException 
+     * @throws NoSuchAlgorithmException 
      */
-    public void testElementContent() {
+    public void testElementContent() throws NoSuchAlgorithmException, NoSuchProviderException {
         SimpleXMLObject sxo = (SimpleXMLObject) unmarshallElement(targetFile);
         
         String algoURI = EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128;
-        Key encKey = EncryptionTestHelper.generateKey(algoURI);
+        Key encKey = SecurityTestHelper.generateKeyFromURI(algoURI);
         encParams.setAlgorithm(algoURI);
         encParams.setEncryptionKey(encKey);
         
@@ -172,13 +181,15 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
     /**
      *  Test basic encryption of a symmetric key into an EncryptedKey,
      *  set key encrypting key name in passed KeyInfo object.
+     * @throws NoSuchProviderException 
+     * @throws NoSuchAlgorithmException 
      */
-    public void testEncryptKey() {
+    public void testEncryptKey() throws NoSuchAlgorithmException, NoSuchProviderException {
         String algoURI = EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128;
-        Key encKey = EncryptionTestHelper.generateKey(algoURI);
+        Key encKey = SecurityTestHelper.generateKeyFromURI(algoURI);
         
         String kekURI = EncryptionConstants.ALGO_ID_KEYWRAP_AES128;
-        Key kek = EncryptionTestHelper.generateKey(kekURI);
+        Key kek = SecurityTestHelper.generateKeyFromURI(kekURI);
         
         kekParams.setAlgorithm(kekURI);
         kekParams.setEncryptionKey(kek);

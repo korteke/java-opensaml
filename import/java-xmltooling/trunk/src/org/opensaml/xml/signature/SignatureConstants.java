@@ -24,6 +24,10 @@ import org.opensaml.xml.util.XMLConstants;
  */
 public class SignatureConstants {
     
+    /** Namespace URI defined by RFC 4051. */
+    public static final String MORE_ALGO_NS = "http://www.w3.org/2001/04/xmldsig-more#";
+    
+    
     // *********************************************************
     // Algorithm URI's 
     // *********************************************************
@@ -80,6 +84,32 @@ public class SignatureConstants {
 
     /** Type - Signature SignatureProperties. */
     //public static final String TYPE_SIGNATURE_SIGNATURE_PROPERTIES = XMLConstants.XMLSIG_NS + "SignatureProperties";
+    
+    // These are additional type URI's defined by RFC 4051
+    
+    /** Type - KeyInfo KeyValue. */
+    public static final String TYPE_KEYINFO_KEYVALUE = MORE_ALGO_NS + "KeyValue";
+    
+    /** Type - KeyInfo RetrievalMethod. */
+    public static final String TYPE_KEYINFO_RETRIEVAL_METHOD = MORE_ALGO_NS + "RetrievalMethod";
+    
+    /** Type - KeyInfo KeyName. */
+    public static final String TYPE_KEYINFO_KEYNAME = MORE_ALGO_NS + "KeyName";
+    
+    /** Type - A binary X.509 CRL. */
+    public static final String TYPE_KEYINFO_RAW_X509CRL = MORE_ALGO_NS + "rawX509CRL";
+    
+    /** Type - A binary PGP key packet. */
+    public static final String TYPE_KEYINFO_RAW_PGP_KEYPACKET = MORE_ALGO_NS + "rawPGPKeyPacket";
+    
+    /** Type - A raw SPKI S-expression. */
+    public static final String TYPE_KEYINFO_RAW_SPKI_SEXP = MORE_ALGO_NS + "rawSPKISexp";
+    
+    /** Type -  A PKCS7signedData element. */
+    public static final String TYPE_KEYINFO_PKCS7_SIGNED_DATA = MORE_ALGO_NS + "PKCS7signedData";
+    
+    /** Type - Binary PKCS7 signed data. */
+    public static final String TYPE_KEYINFO_RAW_PKCS7_SIGNED_DATA = MORE_ALGO_NS + "rawPKCS7signedData"; 
 
     
     // *********************************************************
@@ -137,9 +167,6 @@ public class SignatureConstants {
     // *********************************************************
     // Some additional algorithm URI's from RFC 4051
     // *********************************************************
-    /** Namespace URI defined by RFC 4051. */
-    public static final String MORE_ALGO_NS = "http://www.w3.org/2001/04/xmldsig-more#";
-    
     /** Signature - NOT Recommended RSAwithMD5. */
     public static final String ALGO_ID_SIGNATURE_NOT_RECOMMENDED_RSA_MD5 = MORE_ALGO_NS + "rsa-md5";
     
@@ -170,9 +197,17 @@ public class SignatureConstants {
     /** HMAC - Optional HMAC-SHA512. */
     public static final String ALGO_ID_MAC_HMAC_SHA512 = MORE_ALGO_NS + "hmac-sha512";
     
-    /**Signature - Optional ECDSAwithSHA1. */
+    /** Signature - Optional ECDSAwithSHA1. */
     public static final String ALGO_ID_SIGNATURE_ECDSA_SHA1 = MORE_ALGO_NS + "ecdsa-sha1";
     
-
+    /** Digest - Optional MD5. */
+    public static final String ALGO_ID_DIGEST_NOT_RECOMMENDED_MD5 = MORE_ALGO_NS + "md5";
+    
+    /** Digest - Optional SHA224. */
+    // Apache XML-Security doesn't support this
+    //public static final String ALGO_ID_DIGEST_SHA224 = MORE_ALGO_NS + "sha224";
+    
+    /** Digest - Optional SHA384. */
+    public static final String ALGO_ID_DIGEST_SHA384 = MORE_ALGO_NS + "sha384";
 
 }

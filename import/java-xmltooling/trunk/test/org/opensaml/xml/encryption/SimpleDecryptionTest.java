@@ -24,6 +24,7 @@ import org.opensaml.xml.StaticKeyInfoCredentialResolver;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.XMLObjectBaseTestCase;
 import org.opensaml.xml.mock.SimpleXMLObject;
+import org.opensaml.xml.security.SecurityTestHelper;
 import org.opensaml.xml.security.credential.BasicCredential;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
 import org.w3c.dom.Document;
@@ -70,7 +71,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
         
         // TODO perhaps should be retrieving control keys and encrypted elements
         // from a keystore and files, etc, but for now just generate on the fly
-        encKey = EncryptionTestHelper.generateKey(encURI);
+        encKey = SecurityTestHelper.generateKeyFromURI(encURI);
         BasicCredential encCred = new BasicCredential();
         encCred.setSecretKey((SecretKey) encKey);
         keyResolver = new StaticKeyInfoCredentialResolver(encCred);
@@ -78,7 +79,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
         encParams.setAlgorithm(encURI);
         encParams.setEncryptionKey(encKey);
         
-        kekKey = EncryptionTestHelper.generateKey(kekURI);
+        kekKey = SecurityTestHelper.generateKeyFromURI(kekURI);
         BasicCredential kekCred = new BasicCredential();
         kekCred.setSecretKey((SecretKey) kekKey);
         kekResolver = new StaticKeyInfoCredentialResolver(kekCred);
