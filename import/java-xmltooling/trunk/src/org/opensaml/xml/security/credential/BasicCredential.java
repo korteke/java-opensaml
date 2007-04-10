@@ -31,6 +31,7 @@ public class BasicCredential extends AbstractCredential {
 
     /** Constructor. */
     public BasicCredential() {
+        super();
         keyNames = new HashSet<String>();
         usageType = UsageType.UNSPECIFIED;
     }
@@ -78,15 +79,5 @@ public class BasicCredential extends AbstractCredential {
      */
     public void setPrivateKey(PrivateKey key) {
         privateKey = key;
-    }
-    
-    /**
-     * Set the credential context information, which provides additional information
-     * specific to the context in which the credential was resolved.
-     * 
-     * @param context resolution context of the credential
-     */
-    public void setCredentialContext(CredentialContext context) {
-        credentialContext = context;
     }
 }

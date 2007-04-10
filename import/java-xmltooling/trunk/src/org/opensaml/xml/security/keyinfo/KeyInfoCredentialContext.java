@@ -28,20 +28,20 @@ public class KeyInfoCredentialContext implements CredentialContext {
     private KeyInfo keyInfo;
     
     /**
+     * Constructor.
+     *
+     * @param ki the KeyInfo context 
+     */
+    public KeyInfoCredentialContext(KeyInfo ki) {
+       keyInfo = ki; 
+    }
+    
+    /**
      * Get the KeyInfo context from which the credential was derived.
      * 
      * @return the KeyInfo context
      */
     public KeyInfo getKeyInfo() {
         return keyInfo;
-    }
-
-    /**
-     * Set the KeyInfo context from which the credential was derived.
-     * 
-     * @param newKeyInfo the KeyInfo context
-     */
-    public void setKeyInfo(KeyInfo newKeyInfo) {
-        keyInfo = newKeyInfo;
     }
 }

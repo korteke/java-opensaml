@@ -74,10 +74,10 @@ public interface Credential {
     public SecretKey getSecretKey();
     
     /**
-     * Get the credential context information, which provides additional information
-     * specific to the context in which the credential was resolved.
+     * Get the set of credential context information, which provides additional information
+     * specific to the contexts in which the credential was resolved.
      * 
-     * @return resolution context of the credential
+     * @return set of resolution contexts of the credential
      */
-    public CredentialContext getCredentalContext();
+    public CredentialContextSet getCredentalContextSet();
 }

@@ -32,7 +32,6 @@ import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.credential.CredentialCriteriaSet;
-import org.opensaml.xml.security.keyinfo.KeyInfoCredentialCriteria;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xml.security.keyinfo.KeyInfoProvider;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver.KeyInfoResolutionContext;
@@ -105,8 +104,8 @@ public class X509DataProvider extends AbstractKeyInfoProvider {
         // TODO should alt names, CN, etc be a part of the credential-supplied key names, 
         // or do we expect the caller to retrieve from the cert directly?
         cred.getKeyNames().addAll(kiContext.getKeyNames());
-        cred.setCredentialContext(buildContext(criteriaSet.get(KeyInfoCredentialCriteria.class).getKeyInfo(),
-                resolver));
+        
+        cred.getCredentalContextSet().add( resolver.buildCredentialContext(kiContext) );
         
         return singletonSet(cred);
     }

@@ -46,9 +46,6 @@ import org.opensaml.xml.signature.KeyValue;
 public class KeyInfoCredentialResolver extends AbstractCredentialResolver<KeyInfoCredentialContext>
     implements CredentialResolver<KeyInfoCredentialContext> {
     
-    /** The default credential context class to use in resolved credentials.  */
-    public static final Class<KeyInfoCredentialContext> DEFAULT_CONTEXT_CLASS = KeyInfoCredentialContext.class;
-    
     /** Class logger. */
     private static Logger log = Logger.getLogger(KeyInfoCredentialResolver.class);
 
@@ -57,7 +54,6 @@ public class KeyInfoCredentialResolver extends AbstractCredentialResolver<KeyInf
     
     /** Constructor. */
     public KeyInfoCredentialResolver() {
-        setContextClass(DEFAULT_CONTEXT_CLASS);
         providers = new ArrayList<KeyInfoProvider>();
         
         //TODO decide how/where providers will be registered
@@ -93,7 +89,7 @@ public class KeyInfoCredentialResolver extends AbstractCredentialResolver<KeyInf
             initResolutionContext(kiContext, keyInfo, criteriaSet);
             
             // Now process all other non-KeyName  and non-KeyValue children
-            processKeyInfoChildren(kiContext, keyInfo, criteriaSet, credentials);
+            processKeyInfoChildren(kiContext, criteriaSet, credentials);
             
             if (credentials.isEmpty()) {
                 // Add the credential based on plain KeyValue if no more specifc cred type was found
@@ -108,12 +104,12 @@ public class KeyInfoCredentialResolver extends AbstractCredentialResolver<KeyInf
         }
         
         // Postprocessing hook
-        postProcess(kiContext, keyInfo, criteriaSet, credentials);
+        postProcess(kiContext, criteriaSet, credentials);
         
         // Final empty credential hook
         if (credentials.isEmpty()) {
             log.debug("No credentials were found, calling empty credentials post-processing hook");
-            postProcessEmptyCredentials(kiContext, keyInfo, criteriaSet, credentials);
+            postProcessEmptyCredentials(kiContext, criteriaSet, credentials);
         }
         
         if (log.isDebugEnabled()) {
@@ -130,49 +126,48 @@ public class KeyInfoCredentialResolver extends AbstractCredentialResolver<KeyInf
      * extracted from the KeyInfo.
      * 
      * @param kiContext KeyInfo resolution context containing 
-     * @param keyInfo the KeyInfo to evaluate
      * @param criteriaSet the credential criteria used to resolve credentials
      * @param credentials the list which will store the resolved credentials
      * @throws SecurityException thrown if there is an error during processing
      */
-    protected void postProcess(KeyInfoResolutionContext kiContext, KeyInfo keyInfo, 
-            CredentialCriteriaSet criteriaSet, List<Credential> credentials) throws SecurityException { }
+    protected void postProcess(KeyInfoResolutionContext kiContext, CredentialCriteriaSet criteriaSet, 
+            List<Credential> credentials) throws SecurityException {
+        
+    }
 
     /**
      * Hook for processing the case where no credentials were returned by any resolution method
      * by any provider, nor by the processing of the postProcess() hook.
      * 
      * @param kiContext KeyInfo resolution context containing 
-     * @param keyInfo the KeyInfo to evaluate
      * @param criteriaSet the credential criteria used to resolve credentials
      * @param credentials the list which will store the resolved credentials
      * 
      * @throws SecurityException thrown if there is an error during processing
      */
-    protected void postProcessEmptyCredentials(KeyInfoResolutionContext kiContext, KeyInfo keyInfo, 
+    protected void postProcessEmptyCredentials(KeyInfoResolutionContext kiContext,
             CredentialCriteriaSet criteriaSet, List<Credential> credentials) throws SecurityException {
         /* TODO probably move this specific code up to a SAML specific subclass 
          *      - are there other non-SAML PKIX use cases for name-only creds ?
         // Return a credential consisting only of key names - e.g. the SAML MD PKIX use case
         if (kiContext.getKeyNames() != null & ! kiContext.getKeyNames().isEmpty()) {
-           credentials.add( buildKeyNameOnlyCredential(kiContext.getKeyNames(), keyInfo) );
+           credentials.add( buildKeyNameOnlyCredential(kiContext) );
         }
-        */
+         */
     }
 
     /**
      * Use registered providers to process the non-KeyValue and non-KeyName children of KeyInfo.
      * 
      * @param kiContext KeyInfo resolution context containing 
-     * @param keyInfo the KeyInfo to evaluate
      * @param criteriaSet the credential criteria used to resolve credentials
      * @param credentials the list which will store the resolved credentials
      * @throws SecurityException thrown if there is a provider error processing the KeyInfo children
      */
-    private void processKeyInfoChildren(KeyInfoResolutionContext kiContext, KeyInfo keyInfo, 
-            CredentialCriteriaSet criteriaSet, List<Credential> credentials) throws SecurityException {
+    private void processKeyInfoChildren(KeyInfoResolutionContext kiContext, CredentialCriteriaSet criteriaSet,
+            List<Credential> credentials) throws SecurityException {
         
-        for (XMLObject keyInfoChild : keyInfo.getXMLObjects()) {
+        for (XMLObject keyInfoChild : kiContext.getKeyInfo().getXMLObjects()) {
             
             if (keyInfoChild instanceof KeyName || keyInfoChild instanceof KeyValue) {
                 continue;
@@ -243,6 +238,9 @@ public class KeyInfoCredentialResolver extends AbstractCredentialResolver<KeyInf
      */
     private void initResolutionContext(KeyInfoResolutionContext kiContext, KeyInfo keyInfo, 
             CredentialCriteriaSet criteriaSet) throws SecurityException {
+        
+        kiContext.setKeyInfo(keyInfo);
+        
         // Extract all KeyNames
         kiContext.setKeyNames(KeyInfoHelper.getKeyNames(keyInfo));
         if (log.isDebugEnabled()) {
@@ -288,30 +286,31 @@ public class KeyInfoCredentialResolver extends AbstractCredentialResolver<KeyInf
     }
     
     /**
-     * Build a new credential context based on the KeyInfo being processed.
+     * Build a credential context based on the current KeyInfo context, for return 
+     * in a resolved credential.
      * 
-     * @param keyInfo the KeyInfo element being processed
-     * @return a new KeyInfoCredentialContext 
-     * @throws SecurityException if the new credential context could not be built
+     * @param kiContext the current KeyInfo resolution context
+     * 
+     * @return a new KeyInfo credential context
      */
-    protected KeyInfoCredentialContext buildContext(KeyInfo keyInfo) throws SecurityException {
-       KeyInfoCredentialContext context = (KeyInfoCredentialContext) newCredentialContext(); 
-       context.setKeyInfo(keyInfo);
-       return context;
+    public KeyInfoCredentialContext buildCredentialContext(KeyInfoResolutionContext kiContext) {
+        // Simple for now, might do other stuff later.
+        // Just want to provide a single place to build credential contexts for
+        // the resolver and providers.
+        return new KeyInfoCredentialContext(kiContext.getKeyInfo());
     }
     
     /**
      * Build a BasicCredential consisting only of the values from KeyName.
      * 
-     * @param keyNames the names to represent in the credential
-     * @param keyInfo the KeyInfo context for the credential
+     * @param kiContext the current KeyInfo resolution context
      * @return a key name-only basic credential
-     * @throws SecurityException  thrown if there is an error building the credential context
+     * @throws SecurityException  thrown if there is an error building the credential 
      */
-    protected Credential buildKeyNameOnlyCredential(List<String> keyNames, KeyInfo keyInfo) throws SecurityException {
+    protected Credential buildKeyNameOnlyCredential(KeyInfoResolutionContext kiContext) throws SecurityException {
         BasicCredential basicCredential = new BasicCredential();
-        basicCredential.getKeyNames().addAll(keyNames);
-        basicCredential.setCredentialContext(buildContext(keyInfo));
+        basicCredential.getKeyNames().addAll(kiContext.getKeyNames());
+        basicCredential.getCredentalContextSet().add( buildCredentialContext(kiContext) );
         return basicCredential;
     }
 
@@ -345,6 +344,9 @@ public class KeyInfoCredentialResolver extends AbstractCredentialResolver<KeyInf
      */
     public class KeyInfoResolutionContext {
         
+        /** The KeyInfo being processed. */
+        private KeyInfo keyInfo;
+        
         /** List of key names. */
         private List<String> names;
         
@@ -368,6 +370,24 @@ public class KeyInfoCredentialResolver extends AbstractCredentialResolver<KeyInf
             //TODO should we make access to previously resolved creds modifiable by provider plugins?
             resolvedCredentials = Collections.unmodifiableCollection(credentials);
             properties = new HashMap<String, Object>();
+        }
+
+        /**
+         * Gets the KeyInfo being processed.
+         * 
+         * @return Returns the keyInfo.
+         */
+        public KeyInfo getKeyInfo() {
+            return keyInfo;
+        }
+
+        /**
+         * Sets the KeyInfo being processed.
+         * 
+         * @param newKeyInfo The keyInfo to set.
+         */
+        public void setKeyInfo(KeyInfo newKeyInfo) {
+            keyInfo = newKeyInfo;
         }
 
         /**

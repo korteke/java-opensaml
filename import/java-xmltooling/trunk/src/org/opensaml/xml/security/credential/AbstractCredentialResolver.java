@@ -25,19 +25,6 @@ import org.opensaml.xml.security.SecurityException;
  */
 public abstract class AbstractCredentialResolver<ContextType extends CredentialContext>
     implements CredentialResolver<ContextType> {
-    
-    /** The Class of the credential context that will be produced by the resolver. */
-    private Class<? extends ContextType> contextClass;
-    
-    /** {@inheritDoc} */
-    public Class<? extends ContextType> getContextClass() {
-        return contextClass;
-    }
-
-    /** {@inheritDoc} */
-    public void setContextClass(Class<? extends ContextType> newContextClass) {
-       contextClass = newContextClass; 
-    }
 
     /** {@inheritDoc} */
     public Credential resolveCredential(CredentialCriteriaSet criteriaSet) throws SecurityException {
@@ -47,27 +34,6 @@ public abstract class AbstractCredentialResolver<ContextType extends CredentialC
         } else {
             return null;
         }
-    }
-    
-    /**
-     * Create and return a new instance of the {@link CredentialContext} type currently defined
-     * for this class instance.
-     * 
-     * @return a new instance of CredentialContext
-     * @throws SecurityException thrown if the context object can not be instantiated
-     */
-    public ContextType newCredentialContext() throws SecurityException {
-        ContextType context = null;
-        
-        try {
-            context = contextClass.newInstance();
-        } catch (InstantiationException e) {
-            throw new SecurityException("Could not instantiate instance of CredentialContext", e);
-        } catch (IllegalAccessException e) {
-            throw new SecurityException("Error creating instance of CredentialContext", e);
-        }
-        
-        return context;
     }
 
     /** {@inheritDoc} */

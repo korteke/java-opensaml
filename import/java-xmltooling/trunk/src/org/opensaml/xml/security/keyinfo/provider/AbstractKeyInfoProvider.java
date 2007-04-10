@@ -20,36 +20,13 @@ import java.security.Key;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.credential.Credential;
-import org.opensaml.xml.security.keyinfo.KeyInfoCredentialContext;
-import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xml.security.keyinfo.KeyInfoProvider;
-import org.opensaml.xml.signature.KeyInfo;
 
 /**
  * Abstract super class for {@link KeyInfoProvider} implementations.
  */
 public abstract class AbstractKeyInfoProvider implements KeyInfoProvider {
-    
-    /**
-     * Build a new credential context based on the KeyInfo being processed.
-     * 
-     * @param keyInfo the KeyInfo element being processed
-     * @param resolver the KeyInfoCredentialResolver that is invoking the provider
-     * @return a new KeyInfoCredentialContext 
-     * @throws SecurityException if the new credential context could not be built
-     */
-    protected KeyInfoCredentialContext buildContext(KeyInfo keyInfo, KeyInfoCredentialResolver resolver) 
-        throws SecurityException {
-        if (resolver == null) {
-            throw new SecurityException("Can't create new KeyInfo credential context" 
-                    + " because invoking resolver reference was null");
-        }
-        KeyInfoCredentialContext context = resolver.newCredentialContext();
-        context.setKeyInfo(keyInfo);
-        return context;
-    }
     
     /**
      * Utility method to extract any key that might be present in the specified Credential.
