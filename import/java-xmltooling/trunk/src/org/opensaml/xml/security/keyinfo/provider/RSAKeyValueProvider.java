@@ -57,7 +57,7 @@ public class RSAKeyValueProvider extends AbstractKeyInfoProvider {
             return null;
         }
         
-        KeyCredentialCriteria keyCriteria = criteriaSet.getCriteria(KeyCredentialCriteria.class);
+        KeyCredentialCriteria keyCriteria = criteriaSet.get(KeyCredentialCriteria.class);
         if (keyCriteria != null 
                 && keyCriteria.getKeyAlgorithm() != null 
                 && ! keyCriteria.getKeyAlgorithm().equals("RSA")) {
@@ -77,7 +77,7 @@ public class RSAKeyValueProvider extends AbstractKeyInfoProvider {
         BasicCredential cred = new BasicCredential();
         cred.setPublicKey(pubKey);
         cred.getKeyNames().addAll(kiContext.getKeyNames());
-        cred.setCredentialContext(buildContext(criteriaSet.getCriteria(KeyInfoCredentialCriteria.class).getKeyInfo(),
+        cred.setCredentialContext(buildContext(criteriaSet.get(KeyInfoCredentialCriteria.class).getKeyInfo(),
                 resolver));
         
         log.debug("Credential successfully extracted from RSAKeyValue");

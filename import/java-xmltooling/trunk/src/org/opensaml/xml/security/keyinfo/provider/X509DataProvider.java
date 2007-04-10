@@ -105,7 +105,7 @@ public class X509DataProvider extends AbstractKeyInfoProvider {
         // TODO should alt names, CN, etc be a part of the credential-supplied key names, 
         // or do we expect the caller to retrieve from the cert directly?
         cred.getKeyNames().addAll(kiContext.getKeyNames());
-        cred.setCredentialContext(buildContext(criteriaSet.getCriteria(KeyInfoCredentialCriteria.class).getKeyInfo(),
+        cred.setCredentialContext(buildContext(criteriaSet.get(KeyInfoCredentialCriteria.class).getKeyInfo(),
                 resolver));
         
         return singletonSet(cred);

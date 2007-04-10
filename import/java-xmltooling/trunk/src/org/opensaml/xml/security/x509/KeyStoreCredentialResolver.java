@@ -97,7 +97,7 @@ public class KeyStoreCredentialResolver extends AbstractCredentialResolver  impl
     public Iterable<Credential> resolveCredentials(CredentialCriteriaSet criteriaSet) throws SecurityException {
         Set<Credential> credentials = new HashSet<Credential>();
         
-        EntityCredentialCriteria entityCriteria = criteriaSet.getCriteria(EntityCredentialCriteria.class);
+        EntityCredentialCriteria entityCriteria = criteriaSet.get(EntityCredentialCriteria.class);
         if (entityCriteria == null) {
             log.error("Basic criteria not specified, resolution can not be attempted");
             throw new SecurityException("No basic criteria was specified in criteria set");
