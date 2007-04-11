@@ -148,4 +148,44 @@ public class MarshallingTest extends XMLObjectBaseTestCase {
         assertNull("Parent of XML fragment DOM was not invalidated during marshalling", response.getDOM());
         assertNotNull("XML fragment DOM was invalidated during marshalling", statement.getDOM());
     }
+    
+    /**
+     * Tests marshalling into an existing new empty document. Marshalled DOM should become the 
+     * new root element of the document.
+     * 
+     * @throws XMLParserException
+     * @throws MarshallingException 
+     */
+    public void testMarshallingExistingEmptyDocument() throws XMLParserException, MarshallingException {
+        Document document = parserPool.newDocument();
+        assertNull("Incorrect document root", document.getDocumentElement());
+        
+        SimpleXMLObject sxo = (SimpleXMLObject) buildXMLObject(SimpleXMLObject.ELEMENT_NAME);
+        sxo.setId("idValue");
+        
+        marshallerFactory.getMarshaller(sxo).marshall(sxo, document);
+        assertNotNull("Incorrect document root", document.getDocumentElement());
+        assertTrue("Incorrect document root", document.getDocumentElement().isSameNode(sxo.getDOM()));
+    }
+    
+    /**
+     * Tests marshalling into an existing document which already has a document root element.  Existing
+     * root element should be replaced.
+     * 
+     * @throws XMLParserException
+     * @throws MarshallingException 
+     */
+    public void testMarshallingReplaceDocumentRoot() throws XMLParserException, MarshallingException {
+        Document document = parserPool.newDocument();
+        Element element = document.createElementNS(null, "Foo");
+        document.appendChild(element);
+        assertTrue("Incorrect document root", document.getDocumentElement().isSameNode(element));
+        
+        SimpleXMLObject sxo = (SimpleXMLObject) buildXMLObject(SimpleXMLObject.ELEMENT_NAME);
+        sxo.setId("idValue");
+        
+        marshallerFactory.getMarshaller(sxo).marshall(sxo, document);
+        assertFalse("Document root should have been replaced", document.getDocumentElement().isSameNode(element));
+        assertTrue("Incorrect document root", document.getDocumentElement().isSameNode(sxo.getDOM()));
+    }
 }

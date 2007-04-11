@@ -220,7 +220,7 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
     protected void setDocumentElement(Document document, Element element) {
         Element documentRoot = document.getDocumentElement();
         if (documentRoot != null) {
-            document.replaceChild(documentRoot, element);
+            document.replaceChild(element, documentRoot);
         } else {
             document.appendChild(element);
         }
