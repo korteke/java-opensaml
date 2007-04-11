@@ -43,8 +43,7 @@ import org.opensaml.xml.signature.KeyValue;
 /**
  * Specialized credential resolver interface which resolves credentials based on a {@link KeyInfo}  element.
  */
-public class KeyInfoCredentialResolver extends AbstractCredentialResolver<KeyInfoCredentialContext>
-    implements CredentialResolver<KeyInfoCredentialContext> {
+public class KeyInfoCredentialResolver extends AbstractCredentialResolver implements CredentialResolver {
     
     /** Class logger. */
     private static Logger log = Logger.getLogger(KeyInfoCredentialResolver.class);

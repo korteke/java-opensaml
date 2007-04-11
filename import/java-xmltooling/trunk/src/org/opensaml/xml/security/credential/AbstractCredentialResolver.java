@@ -20,11 +20,8 @@ import org.opensaml.xml.security.SecurityException;
 
 /**
  * Abstract base class for {@link CredentialResolver} implementations.
- * 
- * @param <ContextType> the type of {@link CredentialContext} associated with the resolver
  */
-public abstract class AbstractCredentialResolver<ContextType extends CredentialContext>
-    implements CredentialResolver<ContextType> {
+public abstract class AbstractCredentialResolver implements CredentialResolver {
 
     /** {@inheritDoc} */
     public Credential resolveCredential(CredentialCriteriaSet criteriaSet) throws SecurityException {

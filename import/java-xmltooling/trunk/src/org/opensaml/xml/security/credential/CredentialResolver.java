@@ -21,10 +21,8 @@ import org.opensaml.xml.security.SecurityException;
 
 /**
  * A manager for looking up credentials for a given entity.
- * 
- * @param <ContextType> the type of {@link CredentialContext} associated with the resolver
  */
-public interface CredentialResolver<ContextType extends CredentialContext> {
+public interface CredentialResolver {
 
     /**
      * Gets a set of credentials that satisfy the specified credential criteria.
