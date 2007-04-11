@@ -36,6 +36,7 @@ import java.security.spec.KeySpec;
 import java.security.spec.X509EncodedKeySpec;
 
 import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
 
 import org.apache.xml.security.algorithms.JCEMapper;
 import org.opensaml.xml.util.Base64;
@@ -151,11 +152,12 @@ public class SecurityTestHelper {
      * Randomly generates a Java JCE symmetric Key object from the specified XML Encryption algorithm URI.
      * 
      * @param algoURI  The XML Encryption algorithm URI
-     * @return a randomly-generated Key
+     * @return a randomly-generated symmteric key
      * @throws NoSuchProviderException  provider not found
      * @throws NoSuchAlgorithmException algorithm not found
      */
-    public static Key generateKeyFromURI(String algoURI) throws NoSuchAlgorithmException, NoSuchProviderException {
+    public static SecretKey generateKeyFromURI(String algoURI) 
+        throws NoSuchAlgorithmException, NoSuchProviderException {
         String jceAlgorithmName = JCEMapper.getJCEKeyAlgorithmFromURI(algoURI);
         int keyLength = JCEMapper.getKeyLengthFromURI(algoURI);
         return generateKey(jceAlgorithmName, keyLength, null);
@@ -182,13 +184,13 @@ public class SecurityTestHelper {
      * @param algo key algorithm
      * @param keyLength key length
      * @param provider JCA provider
-     * @return randomly generated key
+     * @return randomly generated symmetric key
      * @throws NoSuchAlgorithmException algorithm not found
      * @throws NoSuchProviderException provider not found
      */
-    public static Key generateKey(String algo, int keyLength, String provider) 
+    public static SecretKey generateKey(String algo, int keyLength, String provider) 
         throws NoSuchAlgorithmException, NoSuchProviderException {
-        Key key = null;
+        SecretKey key = null;
         KeyGenerator keyGenerator = null;
         if (provider != null) {
             keyGenerator = KeyGenerator.getInstance(algo, provider);

@@ -33,10 +33,8 @@ import org.w3c.dom.Attr;
 public class SimpleXMLObjectUnmarshaller extends AbstractXMLObjectUnmarshaller {
 
     /**
-     * Constructor
+     * Constructor.
      * 
-     * @param xmlObjectBuilderFactory factory for retrieving XMLObjectBuilders
-     * @param unmarshallerFactory factory for retrieving Unmarshallers
      */
     public SimpleXMLObjectUnmarshaller(){
         super(SimpleXMLObject.NAMESPACE, SimpleXMLObject.LOCAL_NAME);
@@ -66,6 +64,7 @@ public class SimpleXMLObjectUnmarshaller extends AbstractXMLObjectUnmarshaller {
 
         if (attribute.getLocalName().equals(SimpleXMLObject.ID_ATTRIB_NAME)) {
             simpleXMLObject.setId(attribute.getValue());
+            attribute.getOwnerElement().setIdAttributeNode(attribute, true);
         }
     }
 
