@@ -77,7 +77,7 @@ public class SignatureMarshaller implements Marshaller {
         
         Element documentRoot = document.getDocumentElement();
         if (documentRoot != null) {
-            document.replaceChild(documentRoot, signatureElement);
+            document.replaceChild(signatureElement, documentRoot);
         } else {
             document.appendChild(signatureElement);
         }
