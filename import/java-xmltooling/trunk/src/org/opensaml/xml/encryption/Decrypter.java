@@ -19,7 +19,6 @@ package org.opensaml.xml.encryption;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.security.Key;
-import java.security.KeyException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -47,7 +46,60 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 /**
- * Decrypts XMLObject and their keys.
+ * Supports decryption of XMLObjects which represent data encrypted according to the 
+ * XML Encryption specification, version 20021210.
+ * 
+ * <p>XML Encryption can encrypt either a single {@link Element} or the contents of an Element.  The caller
+ * of this class must select the decryption method which is most appropriate for their specific use case.</p>
+ * 
+ * <p>Note that the type of plaintext data contained by an {@link EncryptedData} can be checked prior to decryption
+ * by examining that element's <code>type</code> attribute ({@link EncryptedData#getType}).  This (optional)
+ * attribute may contain one of the following two constant values to aid in the decryption process:
+ * {@link EncryptionConstants#TYPE_ELEMENT} or {@link EncryptionConstants#TYPE_CONTENT}.</p>
+ * 
+ * <p>By nature the fundamental output of XML decryption is a DOM {@link DocumentFragment} with 1 or more
+ * immediate top-level DOM {@link Node} children.  This case is reflected in the method
+ * {@link #decryptDataToDOM(EncryptedData)}.  It is up to the caller to properly process 
+ * the DOM Nodes which are the children of this document fragment. The DocumentFragment 
+ * and its Node children will be owned by the DOM {@link Document} which owned the 
+ * original EncryptedData before decryption.  Note, however, that the Node children will not be a part
+ * of the tree of Nodes rooted at that Document's document element.</p>
+ * 
+ * <p>A typical use case will be that the content which was encrypted contained solely {@link Element}
+ * nodes.  For this use case a convenience method is provided as {@link #decryptDataToList(EncryptedData)},
+ * which returns a list of {@link XMLObject}'s which are the result of unmarshalling each of the child Elements
+ * of the decrypted DocumentFragment.</p>
+ * 
+ * <p>Another typical use case is that the content which was encrypted was a single Element.  For this use 
+ * case a convenience method is provided as {@link #decryptData(EncryptedData)}, which returns a single
+ * XMLObject which was the result of unmarshalling this decrypted Element.</p>
+ * 
+ * <p>In both of these cases the underlying DOM Element which is represented by each of the returned XMLObjects
+ * will be owned by the DOM Document which also owns the original EncrytpedData Element.  However, note that
+ * these cached DOM Elements are <strong>not</strong> part of the tree of Nodes rooted at that 
+ * Document's document element.  If these returned XMLObjects are then inserted as the children 
+ * of other XMLObjects, it is up to the caller to ensure that the XMLObject tree is then remarshalled 
+ * if the relationship of the cached DOM nodes is important (e.g. resolution of ID-typed attributes
+ * via {@link Document#getElementById(String)}).</p>
+ * 
+ * <p>For some use cases where the returned XMLObjects will not necessarily be stored back as children of
+ * another parent XMLObject, it may still necessary for the DOM Elements of the resultant XMLObjects 
+ * to exist within the tree of Nodes rooted at a DOM Document's document element (e.g. signature verification 
+ * on the standalone decrypted XMLObject).  For these cases these method variants may be used:
+ * {@link #decryptDataToList(EncryptedData, boolean)} and {@link #decryptData(EncryptedData, boolean)}.
+ * If the boolean parameter <code>rootInNewDocument</code> is true, then for each top-level child Element of the
+ * decrypted DocumentFragment, the following will occur:
+ * 
+ * <ol>
+ *  <li>A new DOM Document will be created.</li> 
+ *  <li>The Element will be adopted into that Document.</li> 
+ *  <li>The Element will be made the root element of the Document.</li>
+ *  <li>The Element will be unmarshalled into an XMLObject as in the single argument variant.</li>
+ * </ol>
+ * 
+ * <p>Note that new Document creation, node adoption and rooting the new document element are 
+ * potentially very expensive. This should only be done where the caller's use case really requires it.</p>
+ * 
  */
 public class Decrypter {
     
@@ -118,7 +170,7 @@ public class Decrypter {
      * Decrypts the supplied EncryptedData and returns the resulting XMLObject.
      * 
      * This will only succeed if the decrypted EncryptedData contains exactly one
-     * DOM node of type Element.
+     * DOM Node of type Element.
      * 
      * @param encryptedData encrypted data element containing the data to be decrypted
      * @return the decrypted XMLObject
@@ -127,8 +179,26 @@ public class Decrypter {
      *          non-Element Node type.
      */
     public XMLObject decryptData(EncryptedData encryptedData) throws DecryptionException {
+        return decryptData(encryptedData, false);
+    }
+    
+    /**
+     * Decrypts the supplied EncryptedData and returns the resulting XMLObject.
+     * 
+     * This will only succeed if the decrypted EncryptedData contains exactly one
+     * DOM Node of type Element.
+     * 
+     * @param encryptedData encrypted data element containing the data to be decrypted
+     * @param rootInNewDocument if true, root the underlying Element of the returned XMLObject
+     *           in a new Document as described in {@link Decrypter}
+     * @return the decrypted XMLObject
+     * @throws DecryptionException exception indicating a decryption error, possibly because
+     *          the decrypted data contained more than one top-level Element, or some
+     *          non-Element Node type.
+     */
+    public XMLObject decryptData(EncryptedData encryptedData, boolean rootInNewDocument) throws DecryptionException {
         
-        List<XMLObject> xmlObjects = decryptDataToList(encryptedData);
+        List<XMLObject> xmlObjects = decryptDataToList(encryptedData, rootInNewDocument);
         if (xmlObjects.size() != 1) {
             throw new DecryptionException("The decrypted data contained more than one XMLObject child");
         }
@@ -139,7 +209,7 @@ public class Decrypter {
     /**
      * Decrypts the supplied EncryptedData and returns the resulting list of XMLObjects.
      * 
-     * This will only succeed if the decrypted EncryptedData contains at the top-level
+     * This will succeed only if the decrypted EncryptedData contains at the top-level
      * only DOM Elements (not other types of DOM Nodes).
      * 
      * @param encryptedData encrypted data element containing the data to be decrypted
@@ -148,6 +218,24 @@ public class Decrypter {
      *          the decrypted data contained DOM nodes other than type of Element
      */
     public List<XMLObject> decryptDataToList(EncryptedData encryptedData) throws DecryptionException {
+        return decryptDataToList(encryptedData, false);
+    }
+    
+    /**
+     * Decrypts the supplied EncryptedData and returns the resulting list of XMLObjects.
+     * 
+     * This will succeed only if the decrypted EncryptedData contains at the top-level
+     * only DOM Elements (not other types of DOM Nodes).
+     * 
+     * @param encryptedData encrypted data element containing the data to be decrypted
+     * @param rootInNewDocument if true, root the underlying Elements of the returned XMLObjects
+     *           in a new Document as described in {@link Decrypter}
+     * @return the list decrypted top-level XMLObjects
+     * @throws DecryptionException exception indicating a decryption error, possibly because
+     *          the decrypted data contained DOM nodes other than type of Element
+     */
+    public List<XMLObject> decryptDataToList(EncryptedData encryptedData, boolean rootInNewDocument)
+        throws DecryptionException {
         List<XMLObject> xmlObjects = new LinkedList<XMLObject>();
         
         DocumentFragment docFragment = decryptDataToDOM(encryptedData);
@@ -163,6 +251,16 @@ public class Decrypter {
                 throw new DecryptionException("Top-level node was not of type Element: " + node.getNodeType());
             } else {
                 element = (Element) node;
+                if (rootInNewDocument) {
+                    Document newDoc = null;
+                    try {
+                        newDoc = parserPool.newDocument();
+                    } catch (XMLParserException e) {
+                        throw new DecryptionException("Error creating new DOM Document", e);
+                    }
+                    newDoc.adoptNode(element);
+                    newDoc.appendChild(element);
+                }
             }
             
             try {
