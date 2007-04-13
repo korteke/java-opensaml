@@ -75,7 +75,8 @@ public class SignatureUnmarshaller implements Unmarshaller {
                 KeyInfo keyInfo = (KeyInfo) unmarshaller.unmarshall(xmlSecKeyInfo.getElement());
                 signature.setKeyInfo(keyInfo);
             }
-            ((SignatureImpl)signature).setXMLSignature(xmlSignature);
+            signature.setXMLSignature(xmlSignature);
+            signature.setDOM(signatureElement);
             return signature;
         } catch (XMLSecurityException e) {
             throw new UnmarshallingException("Unable to unmarshall XMLSecSignatureImpl", e);
