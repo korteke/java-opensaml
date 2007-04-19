@@ -17,6 +17,7 @@
 package org.opensaml.xml.parse;
 
 import java.io.InputStream;
+import java.io.Reader;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.validation.Schema;
@@ -64,6 +65,18 @@ public interface ParserPool {
      *             or the XML was invalid
      */
     public Document parse(InputStream input) throws XMLParserException;
+    
+    /**
+     * Convience method for parsing an XML file using a pooled builder.
+     * 
+     * @param input XML to parse
+     * 
+     * @return parsed document
+     * 
+     * @throws XMLParserException thrown if there is a problem retrieving a builder, the input stream can not be read,
+     *             or the XML was invalid
+     */
+    public Document parse(Reader input) throws XMLParserException;
 
     /**
      * Gets the schema builders use to validate.

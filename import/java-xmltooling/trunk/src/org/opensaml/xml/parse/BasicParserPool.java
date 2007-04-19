@@ -19,6 +19,7 @@ package org.opensaml.xml.parse;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Reader;
 import java.lang.ref.SoftReference;
 import java.util.Collections;
 import java.util.EmptyStackException;
@@ -198,6 +199,20 @@ public class BasicParserPool implements ParserPool {
         DocumentBuilder builder = getBuilder();
         try {
             Document document = builder.parse(input);
+            returnBuilder(builder);
+            return document;
+        } catch (SAXException e) {
+            throw new XMLParserException("Invalid XML", e);
+        } catch (IOException e) {
+            throw new XMLParserException("Unable to read XML from input stream", e);
+        }
+    }
+    
+    /** {@inheritDoc} */
+    public Document parse(Reader input) throws XMLParserException {
+        DocumentBuilder builder = getBuilder();
+        try {
+            Document document = builder.parse(new InputSource(input));
             returnBuilder(builder);
             return document;
         } catch (SAXException e) {
