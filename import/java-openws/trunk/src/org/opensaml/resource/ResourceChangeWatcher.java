@@ -24,7 +24,6 @@ import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.opensaml.resource.ResourceChangeListener.ResourceChange;
 
-
 /**
  * A watcher that invokes a callback when a resource update/deletion has been detected.
  */
@@ -35,7 +34,7 @@ public class ResourceChangeWatcher extends TimerTask {
 
     /** Default maximum retry attempts, 0. */
     public static final int DEFAULT_MAX_RETRY_ATTEMPTS = 0;
-    
+
     /** Class logger. */
     private static Logger log = Logger.getLogger(ResourceChangeWatcher.class);
 
@@ -97,11 +96,11 @@ public class ResourceChangeWatcher extends TimerTask {
             throw new NullPointerException("Watched resource is null");
         }
 
-        if (pollFrequency <= 0) {
+        if (pollingFrequency <= 0) {
             throw new IllegalArgumentException("Polling frequency must be greater than zero");
         }
 
-        if (maxRetryAttempts < 0) {
+        if (retryAttempts < 0) {
             throw new IllegalArgumentException("Max retry attempts must be greater than, or equal to, zero");
         }
 
@@ -118,6 +117,10 @@ public class ResourceChangeWatcher extends TimerTask {
         }
 
         resourceListeners = new ArrayList<ResourceChangeListener>();
+        if (log.isDebugEnabled()) {
+            log.debug("Watching resource: " + watchedResource.getLocation() + ", polling frequency: " + pollFrequency
+                    + "ms, max retry attempts: " + maxRetryAttempts);
+        }
     }
 
     /**
@@ -142,8 +145,12 @@ public class ResourceChangeWatcher extends TimerTask {
     /** {@inheritDoc} */
     public void run() {
         try {
+            if (log.isDebugEnabled()) {
+                log.debug("Checking resource for changes: " + watchedResource.getLocation());
+            }
             if (watchedResource.exists()) {
                 if (!resourceExist) {
+                    resourceExist = true;
                     signalListeners(ResourceChange.CREATION);
                     lastModification = watchedResource.getLastModifiedTime();
                 } else {
@@ -154,17 +161,18 @@ public class ResourceChangeWatcher extends TimerTask {
                 }
             } else {
                 if (resourceExist) {
+                    resourceExist = false;
                     signalListeners(ResourceChange.DELETE);
                 }
             }
+            currentRetryAttempts = 0;
         } catch (ResourceException e) {
             log.warn("Resource " + watchedResource.getLocation() + " could not be accessed", e);
             currentRetryAttempts++;
             if (currentRetryAttempts >= maxRetryAttempts) {
                 cancel();
-                log.error("Resource "
-                    + watchedResource.getLocation()
-                    + " was not accessible for max number of retry attempts.  This resource will no longer be watched");
+                log.error("Resource " + watchedResource.getLocation()
+                            + " was not accessible for max number of retry attempts.  This resource will no longer be watched");
             }
         }
     }
@@ -178,16 +186,25 @@ public class ResourceChangeWatcher extends TimerTask {
         synchronized (resourceListeners) {
             switch (changeType) {
                 case CREATION:
+                    if (log.isDebugEnabled()) {
+                        log.debug("Publishing creation event for resource: " + watchedResource.getLocation());
+                    }
                     for (ResourceChangeListener listener : resourceListeners) {
                         listener.onResourceCreate(watchedResource);
                     }
                     break;
                 case UPDATE:
+                    if (log.isDebugEnabled()) {
+                        log.debug("Publishing update event for resource: " + watchedResource.getLocation());
+                    }
                     for (ResourceChangeListener listener : resourceListeners) {
                         listener.onResourceUpdate(watchedResource);
                     }
                     break;
                 case DELETE:
+                    if (log.isDebugEnabled()) {
+                        log.debug("Publishing delete event for resource: " + watchedResource.getLocation());
+                    }
                     for (ResourceChangeListener listener : resourceListeners) {
                         listener.onResourceDelete(watchedResource);
                     }
