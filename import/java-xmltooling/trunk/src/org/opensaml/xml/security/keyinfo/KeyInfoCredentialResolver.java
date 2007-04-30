@@ -42,6 +42,8 @@ import org.opensaml.xml.signature.KeyValue;
 
 /**
  * Specialized credential resolver interface which resolves credentials based on a {@link KeyInfo}  element.
+ * 
+ * TODO document processing model and hooks in detail, suggested usage, etc
  */
 public class KeyInfoCredentialResolver extends AbstractCredentialResolver implements CredentialResolver {
     
@@ -87,7 +89,7 @@ public class KeyInfoCredentialResolver extends AbstractCredentialResolver implem
             // This processes the KeyName and the KeyValue children, if either are present.
             initResolutionContext(kiContext, keyInfo, criteriaSet);
             
-            // Now process all other non-KeyName  and non-KeyValue children
+            // Now process all (non-KeyValue) children
             processKeyInfoChildren(kiContext, criteriaSet, credentials);
             
             if (credentials.isEmpty()) {
@@ -120,7 +122,7 @@ public class KeyInfoCredentialResolver extends AbstractCredentialResolver implem
     /**
      * Hook for subclasses to do post-processing of the credential set after all KeyInfo children have been processed.
      * 
-     * For example, the previoulsy resolved credentials might be used to index into a store
+     * For example, the previously resolved credentials might be used to index into a store
      * of local credentials, where the index is a key name or the public half of a key pair
      * extracted from the KeyInfo.
      * 
@@ -156,7 +158,7 @@ public class KeyInfoCredentialResolver extends AbstractCredentialResolver implem
     }
 
     /**
-     * Use registered providers to process the non-KeyValue and non-KeyName children of KeyInfo.
+     * Use registered providers to process the non-KeyValue children of KeyInfo.
      * 
      * @param kiContext KeyInfo resolution context containing 
      * @param criteriaSet the credential criteria used to resolve credentials
@@ -168,7 +170,7 @@ public class KeyInfoCredentialResolver extends AbstractCredentialResolver implem
         
         for (XMLObject keyInfoChild : kiContext.getKeyInfo().getXMLObjects()) {
             
-            if (keyInfoChild instanceof KeyName || keyInfoChild instanceof KeyValue) {
+            if (keyInfoChild instanceof KeyValue) {
                 continue;
             }
             
@@ -181,8 +183,17 @@ public class KeyInfoCredentialResolver extends AbstractCredentialResolver implem
             if (childCreds != null && ! childCreds.isEmpty()) {
                credentials.addAll(childCreds);
             } else {
-                log.warn("No credentials could be extracted from KeyInfo child with qname " 
-                        + keyInfoChild.getElementQName() + " by any registered provider");
+                // Not really an error or warning if KeyName doesn't produce a credential
+                if (keyInfoChild instanceof KeyName) {
+                    if (log.isDebugEnabled()) {
+                        log.debug("KeyName with value '" + ((KeyName) keyInfoChild).getValue() 
+                                + "' did not independently produce a credential based on any registered providers");
+                    }
+                    
+                } else {
+                    log.warn("No credentials could be extracted from KeyInfo child with qname " 
+                            + keyInfoChild.getElementQName() + " by any registered provider");
+                }
             }
         }
     }
@@ -247,39 +258,35 @@ public class KeyInfoCredentialResolver extends AbstractCredentialResolver implem
         }
         
         // Extract the Credential based on the (singular) key from an existing KeyValue(s).
-        resolveKeyValue(kiContext, keyInfo.getKeyValues(), criteriaSet);
+        resolveKeyValue(kiContext, criteriaSet, keyInfo.getKeyValues());
     }
 
     /**
-     * Resolve the key from any KeyValue element that may be present.
+     * Resolve the key from any KeyValue element that may be present, and store the resulting 
+     * credential in the  resolution context.
      * 
      * Note: this assumes that KeyInfo/KeyValue will not be abused via-a-vis the Signature specificiation,
      * and that therefore all KeyValue elements (if there is even more than one) will all resolve to the same
      * key value. Therefore, only the first credential derived from a KeyValue will be be utilized.
      * 
-     * @param kiContext KeyInfo resolution context containing 
-     * @param keyValues the KeyValue children to evaluate
+     * @param kiContext KeyInfo resolution context 
      * @param criteriaSet the credential criteria used to resolve credentials
-     * 
+     * @param keyValues the KeyValue children to evaluate
      * @throws SecurityException  thrown if there is an error resolving the key from the KeyValue
      */
-    protected void resolveKeyValue(KeyInfoResolutionContext kiContext, List<KeyValue> keyValues, 
-            CredentialCriteriaSet criteriaSet)  throws SecurityException {
+    protected void resolveKeyValue(KeyInfoResolutionContext kiContext, CredentialCriteriaSet criteriaSet, 
+            List<KeyValue> keyValues)  throws SecurityException {
         
         for (KeyValue keyValue : keyValues) {
-            for (KeyInfoProvider provider : providers) {
-                if (! provider.handles(keyValue)) {
-                    continue;
+            Collection<Credential> creds = processKeyInfoChild(kiContext, criteriaSet, keyValue);
+            if (creds != null && ! creds.isEmpty()) {
+                kiContext.setKeyValueCredential( creds.iterator().next() );
+                if (log.isDebugEnabled()) {
+                    Key key = extractKeyValue(kiContext.getKeyValueCredential());
+                    log.debug("Found a credential based on a KeyValue having key type: " 
+                            + key.getAlgorithm());
                 }
-                Collection<Credential> creds = provider.process(this, keyValue, criteriaSet, kiContext);
-                if (creds != null && ! creds.isEmpty()) {
-                    kiContext.setKeyValueCredential( creds.iterator().next() );
-                    if (log.isDebugEnabled()) {
-                        log.debug("Found a credential based on a KeyValue having public key type: " 
-                                + kiContext.getKeyValueCredential().getPublicKey().getAlgorithm());
-                    }
-                    return;
-                }
+                return;
             }
         }
     }
@@ -356,7 +363,7 @@ public class KeyInfoCredentialResolver extends AbstractCredentialResolver implem
          * may have already been resolved by a plugin earlier in the chain. */
         private Collection<Credential> resolvedCredentials;
         
-        /** Extensible map of properties. */
+        /** Extensible map of properties used to share state amongst providers and/or post-processing hooks. */
         private final Map<String, Object> properties;
         
         /**
