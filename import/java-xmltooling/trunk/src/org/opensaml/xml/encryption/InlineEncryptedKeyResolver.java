@@ -39,8 +39,6 @@ public class InlineEncryptedKeyResolver extends AbstractEncryptedKeyResolver {
             }
         }
         
-        //TODO support RetrievalMethod here or in separate resolver ?
-        
         return resolvedEncKeys;
     }
 
