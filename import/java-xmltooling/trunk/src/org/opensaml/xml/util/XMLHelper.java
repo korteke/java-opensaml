@@ -19,11 +19,13 @@ package org.opensaml.xml.util;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
+import javax.xml.datatype.Duration;
 import javax.xml.namespace.QName;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
@@ -868,5 +870,29 @@ public final class XMLHelper {
         } else {
             return null;
         }
+    }
+
+    /**
+     * Converts a lexical duration, as defined by XML Schema 1.0, into milliseconds.
+     * 
+     * @param duration lexical duration representation
+     * 
+     * @return duration in milliseconds
+     */
+    public static long durationToLong(String duration) {
+        Duration xmlDuration = DatatypeHelper.getDataTypeFactory().newDuration(duration);
+        return xmlDuration.getTimeInMillis(new GregorianCalendar());
+    }
+
+    /**
+     * Converts a duration in milliseconds to a lexical duration, as defined by XML Schema 1.0.
+     * 
+     * @param duration the duration
+     * 
+     * @return the lexical representation
+     */
+    public static String longToDuration(long duration) {
+        Duration xmlDuration = DatatypeHelper.getDataTypeFactory().newDuration(duration);
+        return xmlDuration.toString();
     }
 }

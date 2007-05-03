@@ -16,11 +16,16 @@
 
 package org.opensaml.xml.util;
 
-import java.util.GregorianCalendar;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
+import java.nio.charset.CharsetDecoder;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.Duration;
 
 /**
  * Helper class for working with various datatypes.
@@ -120,28 +125,33 @@ public final class DatatypeHelper {
 
         return null;
     }
-
+    
     /**
-     * Converts a lexical duration, as defined by XML Schema 1.0, into milliseconds.
+     * Reads an input stream into a string.  The provide stream is <strong>not</strong> closed.
      * 
-     * @param duration lexical duration representation
+     * @param input the input stream to read
+     * @param decoder character decoder to use, if null, system default character set is used
      * 
-     * @return duration in milliseconds
+     * @return the string read from the stream
+     * 
+     * @throws IOException thrown if there is a problem reading from the stream and decoding it
      */
-    public static long durationToLong(String duration) {
-        Duration xmlDuration = getDataTypeFactory().newDuration(duration);
-        return xmlDuration.getTimeInMillis(new GregorianCalendar());
-    }
+    public static String inputstreamToString(InputStream input, CharsetDecoder decoder) throws IOException{
+        if(decoder == null){
+            decoder = Charset.defaultCharset().newDecoder();
+        }
+        
+        StringBuffer stringBuffer = new StringBuffer(1024);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(input, decoder));
+                
+        char[] chars = new char[1024];
+        int numRead = 0;
+        while( (numRead = reader.read(chars)) > -1){
+            stringBuffer.append(String.valueOf(chars));   
+        }
 
-    /**
-     * Converts a duration in milliseconds to a lexical duration, as defined by XML Schema 1.0.
-     * 
-     * @param duration the duration
-     * 
-     * @return the lexical representation
-     */
-    public static String longToDuration(long duration) {
-        Duration xmlDuration = getDataTypeFactory().newDuration(duration);
-        return xmlDuration.toString();
+        reader.close();
+
+        return stringBuffer.toString();
     }
 }
