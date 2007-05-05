@@ -49,7 +49,7 @@ public class ClasspathResource implements Resource {
             throw new ResourceException("Resource path may not be null or empty");
         }
 
-        resource = getClass().getClassLoader().getResource(path);
+        resource = getClass().getResource(path);
         if (resource == null) {
             throw new ResourceException("Classpath resource does not exist: " + path);
         }
