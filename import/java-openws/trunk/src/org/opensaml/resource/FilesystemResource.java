@@ -77,14 +77,14 @@ public class FilesystemResource implements Resource {
         try{
             return new FileInputStream(resource);
         }catch(FileNotFoundException e){
-            throw new ResourceException("Resource file does not exist");
+            throw new ResourceException("Resource file does not exist: " + resource.getAbsolutePath());
         }
     }
 
     /** {@inheritDoc} */
     public DateTime getLastModifiedTime() throws ResourceException {
         if(!resource.exists()){
-            throw new ResourceException("Resource file does not exist");
+            throw new ResourceException("Resource file does not exist: " + resource.getAbsolutePath());
         }
         
         return new DateTime(resource.lastModified());
