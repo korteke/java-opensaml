@@ -37,7 +37,7 @@ import org.opensaml.xml.util.DatatypeHelper;
 public class SimpleRetrievalMethodEncryptedKeyResolver extends AbstractEncryptedKeyResolver {
     
     /** Class logger. */
-    private Logger log = Logger.getLogger(SimpleRetrievalMethodEncryptedKeyResolverTest.class); 
+    private Logger log = Logger.getLogger(SimpleRetrievalMethodEncryptedKeyResolver.class); 
 
     /** {@inheritDoc} */
     public Iterable<EncryptedKey> resolve(EncryptedData encryptedData) {
