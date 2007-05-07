@@ -21,15 +21,20 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import org.apache.log4j.Logger;
+
 /**
  * An implementation of {@link EncryptedKeyResolver} which chains multiple other
- * resolvers implementations together, calling them in the order specified in
+ * resolver implementations together, calling them in the order specified in
  * the resolver list.
  */
 public class ChainingEncryptedKeyResolver extends AbstractEncryptedKeyResolver {
     
     /** The list of resolvers which form the resolution chain. */
     private final List<EncryptedKeyResolver> resolvers;
+    
+    /** Class logger. */
+    private Logger log = Logger.getLogger(ChainingEncryptedKeyResolver.class); 
     
     /** Constructor. */
     public ChainingEncryptedKeyResolver() {
@@ -47,6 +52,10 @@ public class ChainingEncryptedKeyResolver extends AbstractEncryptedKeyResolver {
 
     /** {@inheritDoc} */
     public Iterable<EncryptedKey> resolve(EncryptedData encryptedData) {
+        if (resolvers.isEmpty()) {
+            log.warn("Chaining encrypted key resolver resolution was attempted with an empty resolver chain");
+            throw new IllegalStateException("The resolver chain is empty");
+        }
         return new ChainingIterable(this, encryptedData);
     }
     
@@ -86,6 +95,9 @@ public class ChainingEncryptedKeyResolver extends AbstractEncryptedKeyResolver {
      *
      */
     public class ChainingIterator implements Iterator<EncryptedKey> {
+        
+        /** Class logger. */
+        private Logger log = Logger.getLogger(ChainingEncryptedKeyResolver.ChainingIterator.class); 
 
         /** The chaining encrypted key resolver which owns this instance. */
         private ChainingEncryptedKeyResolver parent;
@@ -133,12 +145,15 @@ public class ChainingEncryptedKeyResolver extends AbstractEncryptedKeyResolver {
 
         /** {@inheritDoc} */
         public EncryptedKey next() {
+            EncryptedKey tempKey;
             if (nextKey != null) {
-                return nextKey;
+                tempKey = nextKey;
+                nextKey = null;
+                return tempKey;
             }
             nextKey = getNextKey();
             if (nextKey != null) {
-                EncryptedKey tempKey = nextKey;
+                tempKey = nextKey;
                 nextKey = null;
                 return tempKey;
             } else {
@@ -159,33 +174,45 @@ public class ChainingEncryptedKeyResolver extends AbstractEncryptedKeyResolver {
         private Iterator<EncryptedKey> getNextKeyIterator() {
             if (resolverIterator.hasNext()) {
                 currentResolver  = resolverIterator.next();
+                if (log.isDebugEnabled()) {
+                    log.debug("Getting key iterator from next resolver: " + currentResolver.getClass().toString());
+                }
                 return currentResolver.resolve(encryptedData).iterator();
             } else {
+                log.debug("No more resolvers available in the resolver chain");
                 currentResolver = null; 
                 return null;
             }
         }
         
         /**
-         * Get the next encrypted key that would be returned by the iterator.
+         * Get the next encrypted key that will be returned by this iterator.
          * 
          * @return the next encrypted key to return
          */
         private EncryptedKey getNextKey() {
             EncryptedKey tempKey;
             
-            while (keyIterator.hasNext()) {
-                tempKey = keyIterator.next();
-                if ( parent.matchRecipient(tempKey.getRecipient()) ) {
-                    return tempKey;
+            if (keyIterator != null) {
+                while (keyIterator.hasNext()) {
+                    tempKey = keyIterator.next();
+                    if (parent.matchRecipient(tempKey.getRecipient())) {
+                        if (log.isDebugEnabled()) {
+                            log.debug("Found matching encrypted key: " + tempKey.toString());
+                        }
+                        return tempKey;
+                    }
                 }
-            }
+            }            
             
             keyIterator = getNextKeyIterator();
             while (keyIterator != null) {
                 while (keyIterator.hasNext()) {
                     tempKey = keyIterator.next();
                     if ( parent.matchRecipient(tempKey.getRecipient()) ) {
+                        if (log.isDebugEnabled()) {
+                            log.debug("Found matching encrypted key: " + tempKey.toString());
+                        }
                         return tempKey;
                     }
                 }
