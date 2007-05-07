@@ -95,8 +95,8 @@ public final class XMLHelper {
             } else {
                 localPart = tokenizer.nextToken();
             }
-
-            return new QName(e.lookupNamespaceURI(prefix), localPart, prefix);
+            
+            return constructQName(e.lookupNamespaceURI(prefix), localPart, prefix);
         }
 
         return null;
