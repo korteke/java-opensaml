@@ -17,6 +17,7 @@
 package org.opensaml.xml.encryption;
 
 import java.security.Key;
+import java.security.KeyPair;
 
 import javax.crypto.SecretKey;
 
@@ -44,7 +45,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
     private EncryptedData encryptedContent;
     
     private String kekURI;
-    private Key kekKey;
+    private KeyPair kekKeyPair;
     private KeyEncryptionParameters kekParams;
     private EncryptedKey encryptedKey;
     
@@ -60,7 +61,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
         super();
         
         encURI = EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128;
-        kekURI = EncryptionConstants.ALGO_ID_KEYWRAP_AES128;
+        kekURI = EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSA15;
         
         targetFile = "/data/org/opensaml/xml/encryption/SimpleDecryptionTest.xml";
     }
@@ -69,8 +70,6 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
     protected void setUp() throws Exception {
         super.setUp();
         
-        // TODO perhaps should be retrieving control keys and encrypted elements
-        // from a keystore and files, etc, but for now just generate on the fly
         encKey = SecurityTestHelper.generateKeyFromURI(encURI);
         BasicCredential encCred = new BasicCredential();
         encCred.setSecretKey((SecretKey) encKey);
@@ -79,19 +78,20 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
         encParams.setAlgorithm(encURI);
         encParams.setEncryptionKey(encKey);
         
-        kekKey = SecurityTestHelper.generateKeyFromURI(kekURI);
+        kekKeyPair = SecurityTestHelper.generateKeyPairFromURI(kekURI, 1024);
         BasicCredential kekCred = new BasicCredential();
-        kekCred.setSecretKey((SecretKey) kekKey);
+        kekCred.setPublicKey(kekKeyPair.getPublic());
+        kekCred.setPrivateKey(kekKeyPair.getPrivate());
         kekResolver = new StaticKeyInfoCredentialResolver(kekCred);
         kekParams = new KeyEncryptionParameters();
         kekParams.setAlgorithm(kekURI);
-        kekParams.setEncryptionKey(kekKey);
+        kekParams.setEncryptionKey(kekKeyPair.getPublic());
         
         Encrypter encrypter = new Encrypter();
         encryptedKey = encrypter.encryptKey(encKey, kekParams, parserPool.newDocument());
         
         
-        targetDOM = parserPool.parse(SimpleEncryptionTest.class.getResourceAsStream(targetFile));
+        targetDOM = parserPool.parse(SimpleDecryptionTest.class.getResourceAsStream(targetFile));
         targetObject = (SimpleXMLObject) unmarshallElement(targetFile);
         try {
             encryptedData = encrypter.encryptElement(targetObject, encParams, null);
@@ -106,7 +106,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
      * Test simple decryption of an EncryptedKey object.
      */
     public void testEncryptedKey() {
-        Decrypter decrypter = new Decrypter(kekResolver, null);
+        Decrypter decrypter = new Decrypter(null, kekResolver, null);
        
         Key decryptedKey = null;
         try {
@@ -123,7 +123,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
      *  Test simple decryption of an EncryptedData object which is of type Element.
      */
     public void testEncryptedElement() {
-        Decrypter decrypter = new Decrypter(null, keyResolver);
+        Decrypter decrypter = new Decrypter(keyResolver, null, null);
         
         XMLObject decryptedXMLObject = null;
         try {
@@ -140,7 +140,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
      *  Test simple decryption of an EncryptedData object which is of type Content.
      */
     public void testEncryptedContent() {
-        Decrypter decrypter = new Decrypter(null, keyResolver);
+        Decrypter decrypter = new Decrypter(keyResolver, null, null);
         
         XMLObject decryptedXMLObject = null;
         try {

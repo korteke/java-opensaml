@@ -123,7 +123,7 @@ public class DecryptionSignedContentTest extends XMLObjectBaseTestCase {
         
         // Decrypt object. Use 2-arg variant to make decrypted element 
         // the root of a new Document.
-        Decrypter decrypter = new Decrypter(null, encKeyResolver);
+        Decrypter decrypter = new Decrypter(encKeyResolver, null, null);
         XMLObject decryptedXMLObject = decrypter.decryptData(encryptedData2, true);
         assertTrue(decryptedXMLObject instanceof SimpleXMLObject);
         SimpleXMLObject decryptedSXO = (SimpleXMLObject) decryptedXMLObject;

@@ -24,6 +24,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.apache.xml.security.algorithms.JCEMapper;
 import org.apache.xml.security.encryption.XMLCipher;
 import org.apache.xml.security.encryption.XMLEncryptionException;
 import org.opensaml.xml.Configuration;
@@ -37,8 +38,10 @@ import org.opensaml.xml.parse.XMLParserException;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.credential.CredentialCriteriaSet;
+import org.opensaml.xml.security.credential.KeyCredentialCriteria;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialCriteria;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
+import org.opensaml.xml.util.DatatypeHelper;
 import org.w3c.dom.Document;
 import org.w3c.dom.DocumentFragment;
 import org.w3c.dom.Element;
@@ -121,41 +124,51 @@ public class Decrypter {
     /** Resolver for key encryption keys. */
     private KeyInfoCredentialResolver kekResolver;
     
+    /** Resolver for EncryptedKey instances which contain the encrypted data encryption key. */
+    private EncryptedKeyResolver encKeyResolver;
+    
+    /** Additional criteria to use when resolving credentials based on an EncryptedData's KeyInfo. */
+    private CredentialCriteriaSet resolverCriteria;
+    
+    /** Additional criteria to use when resolving credentials based on an EncryptedKey's KeyInfo. */
+    private CredentialCriteriaSet kekResolverCriteria;
+    
+    
     /**
      * Constructor.
-     *
-     * @param newKEKResolver resolver for key encryption keys.
      * @param newResolver resolver for data encryption keys.
+     * @param newKEKResolver resolver for key encryption keys.
+     * @param newEncKeyResolver resolver for EncryptedKey elements
      */
-    public Decrypter(KeyInfoCredentialResolver newKEKResolver, KeyInfoCredentialResolver newResolver) {
-        kekResolver = newKEKResolver;
+    public Decrypter(KeyInfoCredentialResolver newResolver, KeyInfoCredentialResolver newKEKResolver, 
+            EncryptedKeyResolver newEncKeyResolver) {
         resolver = newResolver;
+        kekResolver = newKEKResolver;
+        encKeyResolver = newEncKeyResolver;
         
+        resolverCriteria = null;
+        kekResolverCriteria = null;
+        
+        //Note: this is hopefully only temporary, until Xerces implements DOM 3 LSParser.parseWithContext().
         parserPool = new BasicParserPool();
         parserPool.setNamespaceAware(true);
         
+        //Note: this is necessary due to an unresolved Xerces deferred DOM issue/bug
         HashMap<String, Boolean> features = new HashMap<String, Boolean>();
         features.put("http://apache.org/xml/features/dom/defer-node-expansion", Boolean.FALSE); 
         parserPool.setFeatures(features);
         
-        
         unmarshallerFactory = Configuration.getUnmarshallerFactory();
     }
     
-    public Decrypter(KeyInfoCredentialResolver newKEKResolver, KeyInfoCredentialResolver newResolver, BasicParserPool pool){
-        kekResolver = newKEKResolver;
-        resolver = newResolver;
-        parserPool = pool;
-    }
-    
     /**
-     * Set a new key encryption key credential resolver.
+     * Get the data encryption key credential resolver.
      * 
-     * @param newKEKResolver the new key encryption key resolver
+     * @return the data encryption key resolver
      */
-    public void setKEKREsolver(KeyInfoCredentialResolver newKEKResolver) {
-        this.kekResolver = newKEKResolver;
-    }
+    public KeyInfoCredentialResolver getKeyResolver() {
+        return resolver;
+    } 
     
     /**
      * Set a new data encryption key credential resolver.
@@ -163,7 +176,83 @@ public class Decrypter {
      * @param newResolver the new data encryption key resolver
      */
     public void setKeyResolver(KeyInfoCredentialResolver newResolver) {
-        this.resolver = newResolver;
+        resolver = newResolver;
+    }
+    
+    /**
+     * Get the key encryption key credential resolver.
+     * 
+     * @return the key encryption key resolver
+     */
+    public KeyInfoCredentialResolver getKEKResolver() {
+        return kekResolver;
+    } 
+    
+    /**
+     * Set a new key encryption key credential resolver.
+     * 
+     * @param newKEKResolver the new key encryption key resolver
+     */
+    public void setKEKResolver(KeyInfoCredentialResolver newKEKResolver) {
+        kekResolver = newKEKResolver;
+    }
+    
+    /**
+     * Get the encrypted key resolver.
+     * 
+     * @return the encrypted key resolver
+     */
+    public EncryptedKeyResolver getEncryptedKeyResolver() {
+        return encKeyResolver;
+    }
+    
+    /**
+     * Set a new encrypted key resolver.
+     * 
+     * @param newResolver the new encrypted key resolver
+     */
+    public void setEncryptedKeyResolver(EncryptedKeyResolver newResolver) {
+        encKeyResolver = newResolver;
+    }
+    
+    /**
+     * Get the optional static set of criteria used when resolving credentials based
+     * on the KeyInfo of an EncryptedData element.
+     * 
+     * @return the static criteria set to use
+     */
+    public CredentialCriteriaSet setKeyResolverCriteria() {
+        return resolverCriteria;
+    }
+    
+    /**
+     * Set the optional static set of criteria used when resolving credentials based
+     * on the KeyInfo of an EncryptedData element.
+     * 
+     * @param newCriteria the static criteria set to use
+     */
+    public void setKeyResolverCriteria(CredentialCriteriaSet newCriteria) {
+        resolverCriteria = newCriteria;
+    }
+    
+    /**
+     * Get the optional static set of criteria used when resolving credentials based
+     * on the KeyInfo of an EncryptedKey element.
+     * 
+     * @return the static criteria set to use
+     */
+    public CredentialCriteriaSet getKEKResolverCriteria() {
+        return kekResolverCriteria;
+    }
+    
+    /**
+     * Set the optional static set of criteria used when resolving credentials based
+     * on the KeyInfo of an EncryptedKey element.
+     * 
+     * @param newCriteria the static criteria set to use
+     */
+    public void setKEKResolverCriteria(CredentialCriteriaSet newCriteria) {
+        kekResolverCriteria = newCriteria;
     }
     
     /**
@@ -200,6 +289,7 @@ public class Decrypter {
         
         List<XMLObject> xmlObjects = decryptDataToList(encryptedData, rootInNewDocument);
         if (xmlObjects.size() != 1) {
+            log.error("The decrypted data contained more than one top-level XMLObject child");
             throw new DecryptionException("The decrypted data contained more than one XMLObject child");
         }
         
@@ -248,7 +338,9 @@ public class Decrypter {
         for (int i=0; i<children.getLength(); i++) {
             node = children.item(i);
             if (node.getNodeType() != Node.ELEMENT_NODE) {
-                throw new DecryptionException("Top-level node was not of type Element: " + node.getNodeType());
+                log.error("Decryption returned a top-level node that was not of type Element: " + 
+                        node.getNodeType());
+                throw new DecryptionException("Top-level node was not of type Element");
             } else {
                 element = (Element) node;
                 if (rootInNewDocument) {
@@ -256,6 +348,7 @@ public class Decrypter {
                     try {
                         newDoc = parserPool.newDocument();
                     } catch (XMLParserException e) {
+                        log.error("There was an error creating a new DOM Document", e);
                         throw new DecryptionException("Error creating new DOM Document", e);
                     }
                     newDoc.adoptNode(element);
@@ -266,6 +359,7 @@ public class Decrypter {
             try {
                 xmlObject = unmarshallerFactory.getUnmarshaller(element).unmarshall(element);
             } catch (UnmarshallingException e) {
+                log.error("There was an error during unmarshalling of the decrypted element", e);
                 throw new DecryptionException("Unmarshalling error during decryption", e);
             }
             
@@ -274,6 +368,7 @@ public class Decrypter {
         
         return xmlObjects;
     }
+    
     /**
      * Decrypts the supplied EncryptedData and returns the resulting DOM {@link DocumentFragment}.
      * 
@@ -282,23 +377,70 @@ public class Decrypter {
      * @throws DecryptionException exception indicating a decryption error
      */
     public DocumentFragment decryptDataToDOM(EncryptedData encryptedData) throws DecryptionException {
-        if (resolver == null && kekResolver == null) {
+        if (resolver == null && encKeyResolver == null) {
             throw new DecryptionException("Unable to decrypt EncryptedData, no key resolvers are set");
         }
         
-        // TODO - Until Xerces supports LSParser.parseWithContext(), or we come up with another solution
-        // to parse a bytestream into a DocumentFragment, we can only support encryption of Elements,
-        // not content.
-        if (encryptedData.getType().equals(EncryptionConstants.TYPE_CONTENT)) {
-            throw new DecryptionException("Decryption of EncryptedData elements of type 'Content' " 
-                    + "is not currently supported");
+        if (resolver != null) {
+            CredentialCriteriaSet criteriaSet = buildCredentialCriteria(encryptedData, resolverCriteria);
+            try {
+                for (Credential cred : resolver.resolveCredentials(criteriaSet)) {
+                    try {
+                        return decryptDataToDOM(encryptedData, extractDecryptionKey(cred));
+                    } catch (DecryptionException e) {
+                        log.warn("Decryption attempt using credential from standard KeyInfo resolver failed", e);
+                        continue;
+                    }
+                }
+            } catch (SecurityException e) {
+                log.error("Error resolving credentials from EncryptedData KeyInfo", e);
+            }
         }
         
-        // This is the key that will ultimately be used to decrypt the EncryptedData
-        Key dataEncKey = resolveDataDecryptionKey(encryptedData);
+        String algorithm = encryptedData.getEncryptionMethod().getAlgorithm();
+        if (DatatypeHelper.isEmpty(algorithm)) {
+            log.warn("EncryptedData EncryptionMethod/@Algorithm was empty, key decryption could not be attempted");
+        }
+        
+        if (encKeyResolver != null) {
+            for (EncryptedKey encryptedKey : encKeyResolver.resolve(encryptedData)) {
+                try {
+                    Key decryptedKey = decryptKey(encryptedKey, algorithm);
+                    return decryptDataToDOM(encryptedData, decryptedKey);
+                } catch (DecryptionException e) {
+                    log.warn("Attempt to decrypt EncryptedData using key extracted from EncryptedKey failed", e);
+                    continue;
+                }
+            }
+        }
+        
+        log.error("Failed to decrypt EncryptedData, valid decryption key could not be resolved");
+        throw new DecryptionException("Valid decryption key for EncryptedData could not be resolved");
+    }
+    
+    /**
+     * Decrypts the supplied EncryptedData using the specified key, 
+     * and returns the resulting DOM {@link DocumentFragment}.
+     * 
+     * @param encryptedData encrypted data element containing the data to be decrypted
+     * @param dataEncKey Java Key with which to attempt decryption of the encrypted data
+     * @return the decrypted DOM {@link DocumentFragment}
+     * @throws DecryptionException exception indicating a decryption error
+     */
+    public DocumentFragment decryptDataToDOM(EncryptedData encryptedData, Key dataEncKey) 
+        throws DecryptionException {
+        
+        // TODO Until Xerces supports LSParser.parseWithContext(), or we come up with another solution
+        // to parse a bytestream into a DocumentFragment, we can only support encryption of type
+        // Element (i.e. a single Element), not content.
+        if (! EncryptionConstants.TYPE_ELEMENT.equals(encryptedData.getType())) {
+            log.error("EncrytpedData was of unsupported type '" + encryptedData.getType() 
+                    + "', could not attempt decryption");
+            throw new DecryptionException("EncryptedData of unsupported type was encountered");
+        }
         
         if (dataEncKey == null) {
-            throw new DecryptionException("Unable to resolve the data encryption key");
+            throw new IllegalArgumentException("Data encryption key may not be null");
         }
         
         Element targetElement = encryptedData.getDOM();
@@ -335,9 +477,10 @@ public class Decrypter {
         
         return docFragment;
     }
+
     
     /**
-     * Decrypts the supplied EncryptedKey and returns the resulting Java security Key object.
+     * Attempts to decrypt the supplied EncryptedKey and returns the resulting Java security Key object.
      * The algorithm of the decrypted key must be supplied by the caller based on knowledge of
      * the associated EncryptedData information.
      * 
@@ -348,7 +491,50 @@ public class Decrypter {
      */
     public Key decryptKey(EncryptedKey encryptedKey, String algorithm) throws DecryptionException {
         if (kekResolver == null) {
-            throw new DecryptionException("Unable to decrypt EncryptedKey, no key encryption key resolver is set");
+            log.warn("No KEK KeyInfo credential resolver is available, can not attempt EncryptedKey decryption");
+            throw new DecryptionException("No KEK KeyInfo resolver is available for EncryptedKey decryption");
+        }
+        
+        if (DatatypeHelper.isEmpty(algorithm)) {
+            throw new DecryptionException("Algorithm of encrypted key not supplied, key decryption cannot proceed.");
+        }
+        
+        CredentialCriteriaSet criteriaSet = buildCredentialCriteria(encryptedKey, kekResolverCriteria);
+        try {
+            for (Credential cred : kekResolver.resolveCredentials(criteriaSet)) {
+                try {
+                    return decryptKey(encryptedKey, algorithm, extractDecryptionKey(cred));
+                } catch (DecryptionException e) {
+                    log.warn("Attempt to decrypt EncryptedKey using credential from KEK KeyInfo resolver failed", e);
+                    continue;
+                }
+            }
+        } catch (SecurityException e) {
+            log.error("Error resolving credentials from EncryptedKey KeyInfo", e);
+        }
+        
+        log.error("Failed to decrypt EncryptedKey, valid decryption key could not be resolved");
+        throw new DecryptionException("Valid decryption key for EncryptedKey could not be resolved");
+    }
+
+    /**
+     * Decrypts the supplied EncryptedKey and returns the resulting Java security Key object.
+     * The algorithm of the decrypted key must be supplied by the caller based on knowledge of
+     * the associated EncryptedData information.
+     * 
+     * @param encryptedKey encrypted key element containing the encrypted key to be decrypted
+     * @param algorithm  the algorithm associated with the decrypted key
+     * @param kek  the key encryption key with which to attempt decryption of the encrypted key
+     * @return the decrypted key
+     * @throws DecryptionException exception indicating a decryption error
+     */
+    public Key decryptKey(EncryptedKey encryptedKey, String algorithm, Key kek) throws DecryptionException {
+        if (kek == null) {
+            throw new IllegalArgumentException("Data encryption key may not be null");
+        }
+        
+        if (DatatypeHelper.isEmpty(algorithm)) {
+            throw new DecryptionException("Algorithm of encrypted key not supplied, key decryption cannot proceed.");
         }
         
         Element targetElement = encryptedKey.getDOM();
@@ -360,26 +546,6 @@ public class Decrypter {
            } catch (MarshallingException e) {
                throw new DecryptionException("Error marshalling EncryptedKey for decryption", e);
            }
-        }
-        
-        //TODO new credential-based algo needs to be reevaluated, for now just getting code to compile again
-        Key kek = null;
-        Credential kekCred = null;
-        try {
-            
-            CredentialCriteriaSet criteriaSet = 
-                new CredentialCriteriaSet( new KeyInfoCredentialCriteria(encryptedKey.getKeyInfo()) );
-            kekCred = kekResolver.resolveCredential(criteriaSet);
-        } catch (SecurityException e) {
-            throw new DecryptionException("Error resolving the key encryption key credential", e);
-        }
-        if (kekCred.getPrivateKey() != null) {
-            kek = kekCred.getPrivateKey();
-        } else if (kekCred.getSecretKey() != null) {
-            kek = kekCred.getSecretKey();
-        }
-        if (kek == null) {
-            throw new DecryptionException("Failed to resolve key encryption key");
         }
         
         XMLCipher xmlCipher;
@@ -410,81 +576,129 @@ public class Decrypter {
     }
     
     /**
-     * Resolve the data decryption key for the specified EncryptedData element.
+     * Utility method to extract the decryption key from a credential.
      * 
-     * @param encryptedData the EncryptedData which is to be decrypted
-     * @return the data decryption key
-     * @throws DecryptionException exception indicating a decryption error
+     * @param credential the credential holding either a private key from a key pair, 
+     *          or a shared symmetric key.
+     * @return the private or symmetric key contained by the credential, or null
      */
-    private Key resolveDataDecryptionKey(EncryptedData encryptedData) throws DecryptionException {
-        Key dataEncKey = null;
-        Credential dataEncKeyCred = null;
+    private Key extractDecryptionKey(Credential credential) {
+        if (credential.getPrivateKey() != null) {
+            return credential.getPrivateKey();
+        } else if (credential.getSecretKey() != null) {
+            return credential.getSecretKey();
+        } else {
+            return null;
+        }
+    }
+    
+    /**
+     * Parse the specified input stream in a DOM DocumentFragment, owned by the specified
+     * Document.
+     * 
+     * @param input the InputStream to parse
+     * @param owningDocument the Document which will own the returned DocumentFragment
+     * @return a DocumentFragment
+     * @throws DecryptionException thrown if there is an error parsing the input stream
+     */
+    private DocumentFragment parseInputStream(InputStream input, Document owningDocument) throws DecryptionException {
+        // Since Xerces currently seems not to handle parsing into a DocumentFragment
+        // without a bit hackery,  use this to simulate, so we can keep the API 
+        // the way it hopefully will look in the future.  Obviously this only works for 
+        // input streams containing valid XML instances, not fragments.
         
-        //TODO this needs work and re-eval based on new credential-based resolvers,
-        // just getting the code to compile again for now.
-        
-        // This logic is pretty much straight from the C++ decrypter...
-        
-        // First try and resolve the data encryption key directly
-        if (resolver != null) {
-            try {
-                CredentialCriteriaSet criteriaSet = 
-                    new CredentialCriteriaSet( new KeyInfoCredentialCriteria(encryptedData.getKeyInfo()) );
-                dataEncKeyCred = resolver.resolveCredential(criteriaSet);
-                dataEncKey = dataEncKeyCred.getSecretKey();
-            } catch (SecurityException e) {
-                throw new DecryptionException("Error resolving data encryption key", e);
-            }
+        Document newDocument = null;
+        try {
+            newDocument = parserPool.parse(input);
+        } catch (XMLParserException e) {
+            throw new DecryptionException("Error parsing decrypted input stream", e);
         }
         
-        // If no key was resolved and have a KEK resolver, try to resolve keys from
-        // KeyInfo/EncryptedKey's obtained from directly within this EncryptedData.
-        if (dataEncKey == null && kekResolver != null) {
-            String algorithm = encryptedData.getEncryptionMethod().getAlgorithm();
-            if (algorithm == null || algorithm.equals("")) {
-                throw new DecryptionException("No EncryptionMethod/@Algorithm set, key decryption cannot proceed.");
-            }
-           
-            if (encryptedData.getKeyInfo() != null) {
-                List<EncryptedKey> encryptedKeys = encryptedData.getKeyInfo().getEncryptedKeys();
-                for (EncryptedKey encryptedKey: encryptedKeys) {
+        Element element = newDocument.getDocumentElement();
+        owningDocument.adoptNode(element);
+        
+        DocumentFragment container = owningDocument.createDocumentFragment();
+        container.appendChild(element);
+
+        return container;
+    }
+    
+    /**
+     * Utility method to build a new set of credential criteria based on the KeyInfo of an 
+     * EncryptedData or EncryptedKey, and any additional static criteria which might have been
+     * supplied to the decrypter.
+     * 
+     * @param encryptedType an EncryptedData or EncryptedKey for which to resolve decryption credentials
+     * @param staticCriteria static set of credential criteria to add to the new criteria set
+     * @return the new credential criteria set
+     */
+    private CredentialCriteriaSet buildCredentialCriteria(EncryptedType encryptedType, 
+            CredentialCriteriaSet staticCriteria) {
+        
+        CredentialCriteriaSet newCriteria = new CredentialCriteriaSet();
+        
+        // This is the main criteria based on the encrypted type's KeyInfo
+        newCriteria.add( new KeyInfoCredentialCriteria(encryptedType.getKeyInfo()) );
+        
+        // Also attemtpt to dynamically construct a criteria based on the encryption key's
+        // JCE algorithm and key length, if applicable
+        KeyCredentialCriteria keyCriteria = buildKeyCriteria(encryptedType);
+        if (keyCriteria != null) {
+            newCriteria.add(keyCriteria);
+        }
+        
+        // TODO set criteria usage = ENCRYPTION, need to re-examine EntityCredentialCriteria
+        
+        // Finally, add any static criteria which may have been supplied to the decrypter
+        if (staticCriteria != null && ! staticCriteria.isEmpty() ) {
+            newCriteria.addAll(staticCriteria);
+        }
+        
+        return newCriteria;
+    }
+    
+    /**
+     * Dynamically construct key credential criteria based on the encryption method used
+     * on an {@link EncryptedType}.
+     * 
+     * @param encryptedType the encrypted type element which is the be decrypted
+     * @return a new key credential criteria instance, or null if criteria could not be determined
+     *          from the encrypted type element
+     */
+    private KeyCredentialCriteria buildKeyCriteria(EncryptedType encryptedType) {
+        String encAlgorithmURI = 
+            DatatypeHelper.safeTrimOrNullString(encryptedType.getEncryptionMethod().getAlgorithm());
+        
+        if (! DatatypeHelper.isEmpty(encAlgorithmURI)) {
+            KeyCredentialCriteria keyCriteria = null;
+        
+            String jceKeyAlgorithm = 
+                DatatypeHelper.safeTrimOrNullString(JCEMapper.getJCEKeyAlgorithmFromURI(encAlgorithmURI));
+            
+            if (! DatatypeHelper.isEmpty(jceKeyAlgorithm)) {
+                keyCriteria = new KeyCredentialCriteria(null, jceKeyAlgorithm, 0, null);
+                
+                String algoClass = 
+                    DatatypeHelper.safeTrimOrNullString(JCEMapper.getAlgorithmClassFromURI(encAlgorithmURI));
+                
+                if ("BlockEncryption".equals(algoClass) || "SymmetricKeyWrap".equals(algoClass))  {
                     try {
-                        dataEncKey = decryptKey(encryptedKey, algorithm);
-                        if (dataEncKey != null) {
-                            break;
-                        }
-                    } catch (DecryptionException e) {
-                       log.warn(e.getMessage());
-                    }
+                        int keyLength = JCEMapper.getKeyLengthFromURI(encAlgorithmURI);
+                        keyCriteria.setKeyLength(keyLength);
+                    } catch (NumberFormatException e) {
+                        log.warn("XML Security config contained invalid key length value for algorithm URI: "
+                                + encAlgorithmURI);
+                    }                   
                 }
             }
             
-            //TODO rewrite based on credential resolver.
-            // If no key was resolved, and our data encryption key resolver is an EncryptedKey resolver
-            // specialization capable of resolving EncryptedKey's from another context, try that.
-            /*
-            if (dataEncKey == null && resolver instanceof EncryptedKeyInfoResolver) {
-                EncryptedKeyInfoResolver ekr = (EncryptedKeyInfoResolver) resolver;
-                EncryptedKey encryptedKey = null;
-                try {
-                    encryptedKey = ekr.resolveKey(encryptedData);
-                } catch (KeyException e) {
-                    throw new DecryptionException("Error in EncryptedKeyInfoResolver", e);
-                }
-                if (encryptedKey != null) {
-                    try {
-                        dataEncKey = decryptKey(encryptedKey, algorithm); 
-                    } catch (DecryptionException e) {
-                        log.warn(e.getMessage());
-                    }
-                }
-            }
-            */
+           return keyCriteria;
+        } else {
+            return null;
         }
         
-        return dataEncKey;
     }
-
+    
     /* NOTE: this currently won't work because Xerces doesn't implement LSParser.parseWithContext().
      * Hopefully they will in the future.
      */
@@ -549,35 +763,4 @@ public class Decrypter {
     }
     */
 
-    
-    /**
-     * Parse the specified input stream in a DOM DocumentFragment, owned by the specified
-     * Document.
-     * 
-     * @param input the InputStream to parse
-     * @param owningDocument the Document which will own the returned DocumentFragment
-     * @return a DocumentFragment
-     * @throws DecryptionException thrown if there is an error parsing the input stream
-     */
-    private DocumentFragment parseInputStream(InputStream input, Document owningDocument) throws DecryptionException {
-        // Since Xerces currently seems not to handle parsing into a DocumentFragment
-        // without a bit hackery,  use this to simulate, so we can keep the API 
-        // the way it hopefully will look in the future.  Obviously this only works for 
-        // input streams containing valid XML instances, not fragments.
-        
-        Document newDocument = null;
-        try {
-            newDocument = parserPool.parse(input);
-        } catch (XMLParserException e) {
-            throw new DecryptionException("Error parsing decrypted input stream", e);
-        }
-        
-        Element element = newDocument.getDocumentElement();
-        owningDocument.adoptNode(element);
-        
-        DocumentFragment container = owningDocument.createDocumentFragment();
-        container.appendChild(element);
-
-        return container;
-    }
 }
