@@ -18,6 +18,8 @@ package org.opensaml.xml.encryption;
 
 import java.security.Key;
 import java.security.KeyPair;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 
 import javax.crypto.SecretKey;
 
@@ -28,6 +30,7 @@ import org.opensaml.xml.mock.SimpleXMLObject;
 import org.opensaml.xml.security.SecurityTestHelper;
 import org.opensaml.xml.security.credential.BasicCredential;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
+import org.opensaml.xml.signature.KeyInfo;
 import org.w3c.dom.Document;
 
 /**
@@ -133,6 +136,95 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
         }
         
         assertEquals(targetDOM, decryptedXMLObject);
+        
+    }
+    
+    /**
+     *  Test decryption of an EncryptedData object which is of type Element, where the decryption
+     *  key is found as an inline EncryptedKey within EncryptedData/KeyInfo.
+     */
+    public void testEncryptedElementWithEncryptedKeyInline() {
+        KeyInfo keyInfo = (KeyInfo) buildXMLObject(KeyInfo.DEFAULT_ELEMENT_NAME);
+        keyInfo.getEncryptedKeys().add(encryptedKey);
+        encryptedData.setKeyInfo(keyInfo);
+        
+        EncryptedKeyResolver ekr = new InlineEncryptedKeyResolver();
+        
+        Decrypter decrypter = new Decrypter(null, kekResolver, ekr);
+        
+        XMLObject decryptedXMLObject = null;
+        try {
+            decryptedXMLObject = decrypter.decryptData(encryptedData);
+        } catch (DecryptionException e) {
+            fail("Error on decryption of EncryptedData to element: " + e);
+        }
+        
+        assertEquals(targetDOM, decryptedXMLObject);
+        
+    }
+    
+    /**
+     *  Test error condition of no resolvers configured.
+     */
+    public void testErrorNoResolvers() {
+        Decrypter decrypter = new Decrypter(null, null, null);
+        
+        XMLObject decryptedXMLObject = null;
+        try {
+            decryptedXMLObject = decrypter.decryptData(encryptedData);
+            fail("Decryption should have failed, no resolvers configured");
+        } catch (DecryptionException e) {
+            // do nothing, should fail
+        }
+        
+    }
+    
+    /**
+     *  Test error condition of invalid data decryption key.
+     *  
+     * @throws NoSuchProviderException 
+     * @throws NoSuchAlgorithmException 
+     */
+    public void testErrorInvalidDataDecryptionKey() throws NoSuchAlgorithmException, NoSuchProviderException {
+        Key badKey = SecurityTestHelper.generateKeyFromURI(encURI);
+        BasicCredential encCred = new BasicCredential();
+        encCred.setSecretKey((SecretKey) badKey);
+        KeyInfoCredentialResolver badEncResolver = new StaticKeyInfoCredentialResolver(encCred);
+        
+        Decrypter decrypter = new Decrypter(badEncResolver, null, null);
+        
+        XMLObject decryptedXMLObject = null;
+        try {
+            decryptedXMLObject = decrypter.decryptData(encryptedData);
+            fail("Decryption should have failed, invalid data decryption key");
+        } catch (DecryptionException e) {
+            // do nothing, should fail
+        }
+        
+    }
+    
+    /**
+     *  Test error condition of invalid key decryption key.
+     *  
+     * @throws NoSuchProviderException 
+     * @throws NoSuchAlgorithmException 
+     */
+    public void testErrorInvalidKeyDecryptionKey() throws NoSuchAlgorithmException, NoSuchProviderException {
+        KeyPair badKeyPair = SecurityTestHelper.generateKeyPairFromURI(kekURI, 1024);
+        BasicCredential kekCred = new BasicCredential();
+        kekCred.setPublicKey(badKeyPair.getPublic());
+        kekCred.setPrivateKey(badKeyPair.getPrivate());
+        KeyInfoCredentialResolver badKEKResolver = new StaticKeyInfoCredentialResolver(kekCred);
+        
+        Decrypter decrypter = new Decrypter(null, badKEKResolver, null);
+        
+        Key decryptedKey = null;
+        try {
+            decryptedKey = decrypter.decryptKey(encryptedKey, encURI);
+            fail("Decryption should have failed, invalid key decryption key");
+        } catch (DecryptionException e) {
+            // do nothing, should fail
+        }
         
     }
     

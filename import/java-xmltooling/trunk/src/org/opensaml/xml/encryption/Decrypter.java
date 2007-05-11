@@ -382,43 +382,38 @@ public class Decrypter {
             throw new DecryptionException("Unable to decrypt EncryptedData, no key resolvers are set");
         }
         
+        DocumentFragment docFrag = null;
+        
         if (resolver != null) {
-            CredentialCriteriaSet criteriaSet = buildCredentialCriteria(encryptedData, resolverCriteria);
-            try {
-                for (Credential cred : resolver.resolveCredentials(criteriaSet)) {
-                    try {
-                        return decryptDataToDOM(encryptedData, extractDecryptionKey(cred));
-                    } catch (DecryptionException e) {
-                        log.warn("Decryption attempt using credential from standard KeyInfo resolver failed", e);
-                        continue;
-                    }
-                }
-            } catch (SecurityException e) {
-                log.error("Error resolving credentials from EncryptedData KeyInfo", e);
+            docFrag = decryptUsingResolvedKey(encryptedData);
+            if (docFrag != null) {
+                return docFrag;
+            } else {
+                log.debug("Failed to decrypt EncryptedData using standard resolver");
             }
         }
         
         String algorithm = encryptedData.getEncryptionMethod().getAlgorithm();
         if (DatatypeHelper.isEmpty(algorithm)) {
-            log.warn("EncryptedData EncryptionMethod/@Algorithm was empty, key decryption could not be attempted");
+            String msg = "EncryptedData's EncryptionMethod Algorithm attribute was empty";
+            log.error(msg +  "key decryption could not be attempted");
+            throw new DecryptionException(msg);
         }
         
         if (encKeyResolver != null) {
-            for (EncryptedKey encryptedKey : encKeyResolver.resolve(encryptedData)) {
-                try {
-                    Key decryptedKey = decryptKey(encryptedKey, algorithm);
-                    return decryptDataToDOM(encryptedData, decryptedKey);
-                } catch (DecryptionException e) {
-                    log.warn("Attempt to decrypt EncryptedData using key extracted from EncryptedKey failed", e);
-                    continue;
-                }
+            docFrag = decryptUsingResolvedEncryptedKey(encryptedData, algorithm);
+            if (docFrag != null) {
+                return docFrag;
+            } else {
+                log.debug("Failed to decrypt EncryptedData using EncryptedKeyResolver");
             }
         }
         
-        log.error("Failed to decrypt EncryptedData, valid decryption key could not be resolved");
+        log.error("Failed to decrypt EncryptedData using either standard credential resolver " 
+                + "or encrypted key resolver");
         throw new DecryptionException("Valid decryption key for EncryptedData could not be resolved");
     }
-    
+
     /**
      * Decrypts the supplied EncryptedData using the specified key, 
      * and returns the resulting DOM {@link DocumentFragment}.
@@ -435,7 +430,7 @@ public class Decrypter {
         // to parse a bytestream into a DocumentFragment, we can only support encryption of type
         // Element (i.e. a single Element), not content.
         if (! EncryptionConstants.TYPE_ELEMENT.equals(encryptedData.getType())) {
-            log.error("EncrytpedData was of unsupported type '" + encryptedData.getType() 
+            log.error("EncryptedData was of unsupported type '" + encryptedData.getType() 
                     + "', could not attempt decryption");
             throw new DecryptionException("EncryptedData of unsupported type was encountered");
         }
@@ -478,7 +473,6 @@ public class Decrypter {
         
         return docFragment;
     }
-
     
     /**
      * Attempts to decrypt the supplied EncryptedKey and returns the resulting Java security Key object.
@@ -506,7 +500,12 @@ public class Decrypter {
                 try {
                     return decryptKey(encryptedKey, algorithm, extractDecryptionKey(cred));
                 } catch (DecryptionException e) {
-                    log.warn("Attempt to decrypt EncryptedKey using credential from KEK KeyInfo resolver failed", e);
+                    String msg = "Attempt to decrypt EncryptedKey using credential from KEK KeyInfo resolver failed: ";
+                    if (log.isDebugEnabled()) {
+                        log.debug(msg, e);
+                    } else {
+                        log.warn(msg + e.getMessage());
+                    }
                     continue;
                 }
             }
@@ -568,13 +567,72 @@ public class Decrypter {
         try {
             key = xmlCipher.decryptKey(encKey, algorithm);
         } catch (XMLEncryptionException e) {
-            throw new DecryptionException("Error decrypting kek encryption key", e);
+            throw new DecryptionException("Error decrypting encrypted key", e);
         }
         if (key == null) {
             throw new DecryptionException("Key could not be decrypted");
         }
         return key;
     }
+    
+    /**
+     * Attempt to decrypt by resolving the decryption key using the standard credential resolver.
+     * 
+     * @param encryptedData the encrypted data to decrypt
+     * @return the decrypted document fragment, or null if decryption key could not be resolved or decryption failed
+     */
+    private DocumentFragment decryptUsingResolvedKey(EncryptedData encryptedData) {
+        if (resolver != null) {
+            CredentialCriteriaSet criteriaSet = buildCredentialCriteria(encryptedData, resolverCriteria);
+            try {
+                for (Credential cred : resolver.resolveCredentials(criteriaSet)) {
+                    try {
+                        return decryptDataToDOM(encryptedData, extractDecryptionKey(cred));
+                    } catch (DecryptionException e) {
+                        String msg = "Decryption attempt using credential from standard KeyInfo resolver failed: ";
+                        if (log.isDebugEnabled()) {
+                            log.debug(msg, e);
+                        } else {
+                            log.warn(msg + e.getMessage());
+                        }
+                        continue;
+                    }
+                }
+            } catch (SecurityException e) {
+                log.error("Error resolving credentials from EncryptedData KeyInfo", e);
+            }
+        }
+        return null;
+    }
+    
+    /**
+     * Attempt to decrypt by resolving the decryption key by first resolving EncryptedKeys, and using the 
+     * KEK credential resolver to resolve the key decryption for each.
+     * 
+     * @param encryptedData the encrypted data to decrypt
+     * @param algorithm the algorithm of the key to be decrypted
+     * @return the decrypted document fragment, or null if decryption key could not be resolved or decryption failed
+     */
+    private DocumentFragment decryptUsingResolvedEncryptedKey(EncryptedData encryptedData, String algorithm) {
+        if (encKeyResolver != null) {
+            for (EncryptedKey encryptedKey : encKeyResolver.resolve(encryptedData)) {
+                try {
+                    Key decryptedKey = decryptKey(encryptedKey, algorithm);
+                    return decryptDataToDOM(encryptedData, decryptedKey);
+                } catch (DecryptionException e) {
+                    String msg = "Attempt to decrypt EncryptedData using key extracted from EncryptedKey failed: ";
+                    if (log.isDebugEnabled()) {
+                        log.debug(msg, e);
+                    } else {
+                        log.warn(msg + e.getMessage());
+                    }
+                    continue;
+                }
+            }
+        }
+        return null;
+    }
+    
     
     /**
      * Utility method to extract the decryption key from a credential.
