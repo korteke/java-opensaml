@@ -24,6 +24,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.apache.xml.security.Init;
 import org.apache.xml.security.algorithms.JCEMapper;
 import org.apache.xml.security.encryption.XMLCipher;
 import org.apache.xml.security.encryption.XMLEncryptionException;
@@ -762,5 +763,14 @@ public class Decrypter {
         return domImplLS;
     }
     */
+    
+    /*
+     * Initialize the Apache XML security library if it hasn't been already
+     */
+    static {
+        if (!Init.isInitialized()) {
+            Init.init();
+        }
+    }
 
 }
