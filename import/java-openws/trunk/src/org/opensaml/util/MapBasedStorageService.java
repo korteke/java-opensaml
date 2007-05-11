@@ -16,6 +16,7 @@
 
 package org.opensaml.util;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,6 +34,11 @@ public class MapBasedStorageService<KeyType, ValueType> implements StorageServic
     /** Constructor. */
     public MapBasedStorageService() {
         store = new HashMap<KeyType, ValueType>();
+    }
+    
+    /** {@inheritDoc} */
+    public Collection<KeyType> getKeys() {
+        return store.keySet();
     }
 
     /** {@inheritDoc} */

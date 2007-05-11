@@ -16,6 +16,8 @@
 
 package org.opensaml.util;
 
+import java.util.Collection;
+
 /**
  * Generic data storage facility for use by services that require some degree of persistence. Implementations will vary
  * in how much persistence they can supply.
@@ -33,6 +35,15 @@ public interface StorageService<KeyType, ValueType> {
      * @return true of the given key exists, false if not
      */
     public boolean contains(KeyType key);
+
+    /**
+     * Gets the keys for entries in the storage service.
+     * 
+     * <strong>Note:</strong> this operation may be very expensive
+     * 
+     * @return list of keys currently within the store
+     */
+    public Collection<KeyType> getKeys();
 
     /**
      * Gets the value stored under a particular key.
