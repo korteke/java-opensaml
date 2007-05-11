@@ -16,17 +16,9 @@
 
 package org.opensaml.util;
 
-import org.joda.time.DateTime;
-
 /**
- * Generic data storage facility for use by services that require
- * some degree of persistence. Implementations will vary in how much
- * persistence they can supply.
- * 
- * Storage is divided into "contexts" identified by a string label.
- * Keys need to be unique only within a given context, so multiple
- * components can share a single storage service safely as long as they
- * use different labels.
+ * Generic data storage facility for use by services that require some degree of persistence. Implementations will vary
+ * in how much persistence they can supply.
  * 
  * @param <KeyType> object type of the keys
  * @param <ValueType> object type of the values
@@ -34,45 +26,40 @@ import org.joda.time.DateTime;
 public interface StorageService<KeyType, ValueType> {
 
     /**
-     * Checks to see if a value exists for a given key.
+     * Checks if a given key exists.
      * 
-     * @param context the storage context
-     * @param key the key
+     * @param key the key to check
      * 
-     * @return true if there is at least one cache value corresponding to the key, false if not
+     * @return true of the given key exists, false if not
      */
-    public boolean exists(String context, KeyType key);
-    
+    public boolean contains(KeyType key);
+
     /**
      * Gets the value stored under a particular key.
      * 
-     * @param context the storage context
      * @param key the key
      * 
      * @return the value for that key, or null if there is no value for the given key
      */
-    public ValueType get(String context, KeyType key);
-    
+    public ValueType get(KeyType key);
+
     /**
-     * Adds a value, indexed by a key, in to storage.  Note that implementations of this 
-     * service may determine, on its own, when to evict items from storage, the expiration 
-     * time given here is meant only as a system provided hint.
+     * Adds a value, indexed by a key, in to storage. Note that implementations of this service may determine, on its
+     * own, when to evict items from storage, the expiration time given here is meant only as a system provided hint.
      * 
-     * @param context the storage context
      * @param key the key
      * @param value the value
      * 
      * @return the value that was registered under that key previously, if there was a previous value
      */
-    public ValueType put(String context, KeyType key, ValueType value);
-    
+    public ValueType put(KeyType key, ValueType value);
+
     /**
      * Removes an item from storage.
      * 
-     * @param context the storage context
      * @param key the key to the value to remove
      * 
      * @return the value that was removed
      */
-    public ValueType remove(String context, KeyType key);
+    public ValueType remove(KeyType key);
 }

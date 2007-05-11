@@ -16,66 +16,108 @@
 
 package org.opensaml.util;
 
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+
 import org.joda.time.DateTime;
 
 /**
- * Class that uses an underlying {@link StorageService} to track state associated with
- * replay of messages of varying kinds.
+ * Class that uses an underlying {@link StorageService} to track information associated with messages in order to detect
+ * message replays.
+ * 
+ * This class is thread-safre and uses a basic read/write lock to ensure consistency of the underlying store.
  */
 public class ReplayCache {
-    
+
     /** Backing storage for the replay cache. */
-    private StorageService<String, Boolean> storage;
-    
-    /** StorageService storage context to use for this replay cache. */
-    private String context;
-    
+    private StorageService<String, DateTime> storage;
+
+    /** Default time, in milliseconds, that message state is valid. */
+    private long defaultDuration;
+
+    /** Read/Write lock. */
+    private ReentrantReadWriteLock rwLock;
+
     /**
      * Constructor.
-     *
-     * @param storageContext name of the StorageService storage context to use
+     * 
      * @param storageService the StorageService which serves as the backing store for the cache
+     * @param duration default length of time that message state is valid
      */
-    public ReplayCache(String storageContext, StorageService<String, Boolean> storageService) {
-        context = storageContext;
+    public ReplayCache(StorageService<String, DateTime> storageService, long duration) {
         storage = storageService;
-    }
-    
-    /**
-     * Get the storage context identifier used by this replay cache.
-     * 
-     * @return the storage context identifier
-     */
-    public String getStorageContext() {
-        return context;
-    }
-    
-    /**
-     * Get the storage service instance used by this replay cache.
-     * 
-     * @return the storage service instance
-     */
-    public StorageService<String, Boolean> getStorageService() {
-        return storage;
-    }
-    
-    /**
-     * Check whether the message identified by the given string key is currently 
-     * considered to be replayed.  If message is not in the cache, store it along
-     * with expiration information.
-     * 
-     * @param key message identifier string
-     * @param expires  time at which a new cached message identifier should expire
-     * @return false if message identifier is already present in the cache, otherwise true
-     */
-    public boolean check(String key, DateTime expires) {
-        if (storage.get(context, key)) {
-            return false;
-        } else {
-            //TODO
-            //storage.put(context, key, Boolean.TRUE, expires);
-            return true;
-        }
+        defaultDuration = duration;
+        rwLock = new ReentrantReadWriteLock(true);
     }
 
+    /**
+     * Checks if the message has been replayed. If the message has not been seen before then it is added to the list of
+     * seen of messages for the default duration.
+     * 
+     * @param messageId unique ID of the message
+     * 
+     * @return true if the given message ID has been seen before
+     */
+    public boolean isReplay(String messageId) {
+        return isReplay(messageId, defaultDuration);
+    }
+
+    /**
+     * Checks if the message has been replayed. If the message has not been seen before then it is added to the list of
+     * seen of messages for the given duration.
+     * 
+     * @param messageId unique ID of the message
+     * @param duration length of time, in milliseconds, to keep the message state
+     * 
+     * @return true if the given message ID has been seen before
+     */
+    public boolean isReplay(String messageId, long duration) {
+        boolean replayed = true;
+        Lock readLock = rwLock.readLock();
+        readLock.lock();
+        DateTime currentExpiration = storage.get(messageId);
+        if (currentExpiration == null || currentExpiration.isBeforeNow()) {
+            replayed = false;
+            addMessageID(messageId, new DateTime().plus(duration));
+        }
+        readLock.unlock();
+
+        return replayed;
+    }
+
+    /**
+     * Checks if the message has been replayed. If the message has not been seen before then it is added until the given
+     * expiration.
+     * 
+     * @param messageId unique ID of the message
+     * @param expiration time the message state expires
+     * 
+     * @return true if the given message ID has been seen before
+     */
+    public boolean isReplay(String messageId, DateTime expiration) {
+        boolean replayed = true;
+        Lock readLock = rwLock.readLock();
+        readLock.lock();
+        DateTime currentExpiration = storage.get(messageId);
+        if (currentExpiration == null || currentExpiration.isBeforeNow()) {
+            replayed = false;
+            addMessageID(messageId, expiration);
+        }
+        readLock.unlock();
+
+        return replayed;
+    }
+
+    /**
+     * Accquires a write lock and adds the message state to the underlying storage service.
+     * 
+     * @param messageId unique ID of the message
+     * @param expiration time the message state expires
+     */
+    protected void addMessageID(String messageId, DateTime expiration) {
+        Lock writeLock = rwLock.writeLock();
+        writeLock.lock();
+        storage.put(messageId, expiration);
+        writeLock.unlock();
+    }
 }
