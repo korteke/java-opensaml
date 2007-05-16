@@ -17,7 +17,7 @@
 package org.opensaml.xml.encryption;
 
 import org.opensaml.xml.security.credential.Credential;
-import org.opensaml.xml.signature.KeyInfo;
+import org.opensaml.xml.security.keyinfo.KeyInfoGenerator;
 
 /**
  * Parameters for encrypting content. 
@@ -31,12 +31,14 @@ public class EncryptionParameters {
     private String algorithm;
 
     /** Information about the decryption key. */
-    private KeyInfo keyInfo;
+    private KeyInfoGenerator keyInfoGenerator;
 
     /**
      * Constructor.
      */
     public EncryptionParameters() {
+        // This will be the default for auto encryption key generation
+        setAlgorithm(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256);
     }
 
     /**
@@ -76,20 +78,22 @@ public class EncryptionParameters {
     }
 
     /**
-     * Gets the information about the decryption key.
+     * Gets the instance which will be used to generate a KeyInfo
+     * object from the encryption credential.
      * 
-     * @return the information about the decryption key
+     * @return the generator instance
      */
-    public KeyInfo getKeyInfo() {
-        return this.keyInfo;
+    public KeyInfoGenerator getKeyInfoGenerator() {
+        return this.keyInfoGenerator;
     }
 
     /**
-     * Sets the information about the decryption key.
+     * Sets the instance which will be used to generate a KeyInfo
+     * object from the encryption credential.
      * 
-     * @param newKeyInfo the information about the decryption key
+     * @param newKeyInfoGenerator the new generator instance
      */
-    public void setKeyInfo(KeyInfo newKeyInfo) {
-        this.keyInfo = newKeyInfo;
+    public void setKeyInfoGenerator(KeyInfoGenerator newKeyInfoGenerator) {
+        this.keyInfoGenerator = newKeyInfoGenerator;
     }
 }

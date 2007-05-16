@@ -37,7 +37,9 @@ import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.io.Unmarshaller;
 import org.opensaml.xml.io.UnmarshallerFactory;
 import org.opensaml.xml.io.UnmarshallingException;
+import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.credential.Credential;
+import org.opensaml.xml.security.keyinfo.KeyInfoGenerator;
 import org.opensaml.xml.signature.KeyInfo;
 import org.opensaml.xml.signature.impl.KeyInfoBuilder;
 import org.opensaml.xml.util.DatatypeHelper;
@@ -221,8 +223,13 @@ public class Encrypter {
         
         EncryptedKey encryptedKey = encryptKey(key, encryptionKey, encryptionAlgorithmURI, containingDocument);
         
-        if (kekParams.getKeyInfo() != null) {
-            encryptedKey.setKeyInfo(kekParams.getKeyInfo());
+        if (kekParams.getKeyInfoGenerator() != null) {
+            KeyInfoGenerator generator = kekParams.getKeyInfoGenerator();
+            try {
+                encryptedKey.setKeyInfo( generator.generate(kekParams.getEncryptionCredential()) );
+            } catch (SecurityException e) {
+                throw new EncryptionException("Error generating EncryptedKey KeyInfo", e);
+            }
         }
         
         if (kekParams.getRecipient() != null) {
@@ -340,8 +347,13 @@ public class Encrypter {
         EncryptedData encryptedData =  
             encryptElement(xmlObject, encryptionKey, encryptionAlgorithmURI, encryptContentMode);
         
-        if (encParams.getKeyInfo() != null) {
-            encryptedData.setKeyInfo(encParams.getKeyInfo());
+        if (encParams.getKeyInfoGenerator() != null) {
+            KeyInfoGenerator generator = encParams.getKeyInfoGenerator();
+            try {
+                encryptedData.setKeyInfo( generator.generate(encParams.getEncryptionCredential()) );
+            } catch (SecurityException e) {
+                throw new EncryptionException("Error generating EncryptedData KeyInfo", e);
+            }
         }
         
         checkAndMarshall(encryptedData); //TODO temp

@@ -26,6 +26,7 @@ import org.opensaml.xml.XMLObjectBaseTestCase;
 import org.opensaml.xml.mock.SimpleXMLObject;
 import org.opensaml.xml.parse.XMLParserException;
 import org.opensaml.xml.security.SecurityTestHelper;
+import org.opensaml.xml.security.keyinfo.StaticKeyInfoGenerator;
 import org.opensaml.xml.signature.KeyInfo;
 import org.opensaml.xml.signature.KeyName;
 import org.w3c.dom.Document;
@@ -124,7 +125,7 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
     public void testEncryptDataWithKeyNameNoKEK() {
         SimpleXMLObject sxo = (SimpleXMLObject) unmarshallElement(targetFile);
         
-        encParams.setKeyInfo(keyInfo);
+        encParams.setKeyInfoGenerator(new StaticKeyInfoGenerator(keyInfo));
         
         EncryptedData encData = null;
         try {
@@ -148,7 +149,7 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
     public void testEncryptDataSingleKEK() {
         SimpleXMLObject sxo = (SimpleXMLObject) unmarshallElement(targetFile);
         
-        kekParamsRSA.setKeyInfo(kekKeyInfoRSA);
+        kekParamsRSA.setKeyInfoGenerator(new StaticKeyInfoGenerator(kekKeyInfoRSA));
         
         EncryptedData encData = null;
         try {
@@ -173,8 +174,8 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
     public void testEncryptDataMultipleKEK() {
         SimpleXMLObject sxo = (SimpleXMLObject) unmarshallElement(targetFile);
         
-        kekParamsAES.setKeyInfo(kekKeyInfoAES);
-        kekParamsRSA.setKeyInfo(kekKeyInfoRSA);
+        kekParamsRSA.setKeyInfoGenerator(new StaticKeyInfoGenerator(kekKeyInfoRSA));
+        kekParamsAES.setKeyInfoGenerator(new StaticKeyInfoGenerator(kekKeyInfoAES));
         
         kekParamsList.add(kekParamsRSA);
         kekParamsList.add(kekParamsAES);
@@ -204,7 +205,7 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
     public void testEncryptContentWithKeyNameNoKEK() {
         SimpleXMLObject sxo = (SimpleXMLObject) unmarshallElement(targetFile);
         
-        encParams.setKeyInfo(keyInfo);
+        encParams.setKeyInfoGenerator(new StaticKeyInfoGenerator(keyInfo));
         
         EncryptedData encData = null;
         try {
@@ -228,7 +229,7 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
     public void testEncryptContentSingleKEK() {
         SimpleXMLObject sxo = (SimpleXMLObject) unmarshallElement(targetFile);
         
-        kekParamsRSA.setKeyInfo(kekKeyInfoRSA);
+        kekParamsRSA.setKeyInfoGenerator(new StaticKeyInfoGenerator(kekKeyInfoRSA));
         
         EncryptedData encData = null;
         try {
@@ -253,8 +254,8 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
     public void testEncryptContentMultipleKEK() {
         SimpleXMLObject sxo = (SimpleXMLObject) unmarshallElement(targetFile);
         
-        kekParamsAES.setKeyInfo(kekKeyInfoAES);
-        kekParamsRSA.setKeyInfo(kekKeyInfoRSA);
+        kekParamsAES.setKeyInfoGenerator(new StaticKeyInfoGenerator(kekKeyInfoAES));
+        kekParamsRSA.setKeyInfoGenerator(new StaticKeyInfoGenerator(kekKeyInfoRSA));
         
         kekParamsList.add(kekParamsRSA);
         kekParamsList.add(kekParamsAES);
@@ -289,7 +290,7 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
         
         Key targetKey = SecurityTestHelper.generateKeyFromURI(algoURI);
         
-        kekParamsRSA.setKeyInfo(kekKeyInfoRSA);
+        kekParamsRSA.setKeyInfoGenerator(new StaticKeyInfoGenerator(kekKeyInfoRSA));
         
         EncryptedKey encKey = null;
         Document ownerDocument = parserPool.newDocument();
@@ -314,8 +315,8 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
         
         Key targetKey = SecurityTestHelper.generateKeyFromURI(algoURI);
         
-        kekParamsAES.setKeyInfo(kekKeyInfoAES);
-        kekParamsRSA.setKeyInfo(kekKeyInfoRSA);
+        kekParamsAES.setKeyInfoGenerator(new StaticKeyInfoGenerator(kekKeyInfoAES));
+        kekParamsRSA.setKeyInfoGenerator(new StaticKeyInfoGenerator(kekKeyInfoRSA));
         
         kekParamsList.add(kekParamsAES);
         kekParamsList.add(kekParamsRSA);

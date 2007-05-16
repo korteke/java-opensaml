@@ -30,6 +30,10 @@ public class KeyEncryptionParameters extends EncryptionParameters {
      */
     public KeyEncryptionParameters() {
         super();
+        // The default supplied by the super class doesn't make sense,
+        // can't autogenerate a key encryption key, always needs to be derived
+        // from the key in the (for KEK, mandatory) encryption credential.
+        setAlgorithm(null);
     }
 
     /**
