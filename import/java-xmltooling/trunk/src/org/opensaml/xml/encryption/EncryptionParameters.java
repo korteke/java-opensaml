@@ -16,8 +16,7 @@
 
 package org.opensaml.xml.encryption;
 
-import java.security.Key;
-
+import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.signature.KeyInfo;
 
 /**
@@ -26,7 +25,7 @@ import org.opensaml.xml.signature.KeyInfo;
 public class EncryptionParameters {
 
     /** Key used to encrypt. */
-    private Key encryptionKey;
+    private Credential encryptionCredential;
 
     /** Algorithm used to encrypt. */
     private String algorithm;
@@ -38,7 +37,6 @@ public class EncryptionParameters {
      * Constructor.
      */
     public EncryptionParameters() {
-        algorithm = EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128;
     }
 
     /**
@@ -60,21 +58,21 @@ public class EncryptionParameters {
     }
 
     /**
-     * Gets the key used to encrypt.
+     * Gets the credential used to encrypt.
      * 
-     * @return the key used to encrypt
+     * @return the credential used to encrypt
      */
-    public Key getEncryptionKey() {
-        return this.encryptionKey;
+    public Credential getEncryptionCredential() {
+        return this.encryptionCredential;
     }
 
     /**
-     * Sets the key used to encrypt.
+     * Sets the credential used to encrypt.
      * 
-     * @param newEncryptionKey the key used to encrypt
+     * @param newEncryptionCredential the credential used to encrypt
      */
-    public void setEncryptionKey(Key newEncryptionKey) {
-        this.encryptionKey = newEncryptionKey;
+    public void setEncryptionCredential(Credential newEncryptionCredential) {
+        this.encryptionCredential = newEncryptionCredential;
     }
 
     /**

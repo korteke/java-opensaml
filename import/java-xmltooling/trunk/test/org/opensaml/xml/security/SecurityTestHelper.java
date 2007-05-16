@@ -39,6 +39,8 @@ import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 
 import org.apache.xml.security.algorithms.JCEMapper;
+import org.opensaml.xml.security.credential.BasicCredential;
+import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.util.Base64;
 
 /**
@@ -225,6 +227,42 @@ public class SecurityTestHelper {
         keyPair = keyGenerator.generateKeyPair();
         return keyPair;
     }
-
-
+    
+    /**
+     * Generate a random symmetric key and return in a BasicCredential.
+     * 
+     * @param algorithmURI The XML Encryption algorithm URI
+     * @return a basic credential containing a randomly generated symmetric key
+     * @throws NoSuchAlgorithmException algorithm not found
+     * @throws NoSuchProviderException provider not found
+     */
+    public static Credential generateKeyAndCredential(String algorithmURI) 
+        throws NoSuchAlgorithmException, NoSuchProviderException {
+        SecretKey key = SecurityTestHelper.generateKeyFromURI(algorithmURI);
+        BasicCredential credential = new BasicCredential();
+        credential.setSecretKey(key);
+        return credential;
+    }
+    
+    /**
+     * Generate a random asymmetric key pair and return in a BasicCredential.
+     * 
+     * @param algorithmURI The XML Encryption algorithm URI
+     * @param keyLength key length
+     * @param includePrivate if true, the private key will be included as well
+     * @return a basic credential containing a randomly generated asymmetric key pair
+     * @throws NoSuchAlgorithmException algorithm not found
+     * @throws NoSuchProviderException provider not found
+     */
+    public static Credential generateKeyPairAndCredential(String algorithmURI, int keyLength, boolean includePrivate) 
+        throws NoSuchAlgorithmException, NoSuchProviderException {
+        KeyPair keyPair = SecurityTestHelper.generateKeyPairFromURI(algorithmURI, keyLength);
+        BasicCredential credential = new BasicCredential();
+        credential.setPublicKey(keyPair.getPublic());
+        if (includePrivate) {
+            credential.setPrivateKey(keyPair.getPrivate());
+        }
+        return credential;
+    }
+    
 }

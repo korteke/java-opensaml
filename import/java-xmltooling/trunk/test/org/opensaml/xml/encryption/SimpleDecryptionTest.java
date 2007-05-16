@@ -29,6 +29,7 @@ import org.opensaml.xml.XMLObjectBaseTestCase;
 import org.opensaml.xml.mock.SimpleXMLObject;
 import org.opensaml.xml.security.SecurityTestHelper;
 import org.opensaml.xml.security.credential.BasicCredential;
+import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xml.signature.KeyInfo;
 import org.w3c.dom.Document;
@@ -48,7 +49,6 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
     private EncryptedData encryptedContent;
     
     private String kekURI;
-    private KeyPair kekKeyPair;
     private KeyEncryptionParameters kekParams;
     private EncryptedKey encryptedKey;
     
@@ -73,22 +73,19 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
     protected void setUp() throws Exception {
         super.setUp();
         
-        encKey = SecurityTestHelper.generateKeyFromURI(encURI);
-        BasicCredential encCred = new BasicCredential();
-        encCred.setSecretKey((SecretKey) encKey);
+        Credential encCred = SecurityTestHelper.generateKeyAndCredential(encURI);
+        encKey = encCred.getSecretKey();
         keyResolver = new StaticKeyInfoCredentialResolver(encCred);
         encParams = new EncryptionParameters();
         encParams.setAlgorithm(encURI);
-        encParams.setEncryptionKey(encKey);
+        encParams.setEncryptionCredential(encCred);
         
-        kekKeyPair = SecurityTestHelper.generateKeyPairFromURI(kekURI, 1024);
-        BasicCredential kekCred = new BasicCredential();
-        kekCred.setPublicKey(kekKeyPair.getPublic());
-        kekCred.setPrivateKey(kekKeyPair.getPrivate());
+        
+        Credential kekCred = SecurityTestHelper.generateKeyPairAndCredential(kekURI, 1024, true);
         kekResolver = new StaticKeyInfoCredentialResolver(kekCred);
         kekParams = new KeyEncryptionParameters();
         kekParams.setAlgorithm(kekURI);
-        kekParams.setEncryptionKey(kekKeyPair.getPublic());
+        kekParams.setEncryptionCredential(kekCred);
         
         Encrypter encrypter = new Encrypter();
         encryptedKey = encrypter.encryptKey(encKey, kekParams, parserPool.newDocument());
@@ -97,8 +94,8 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
         targetDOM = parserPool.parse(SimpleDecryptionTest.class.getResourceAsStream(targetFile));
         targetObject = (SimpleXMLObject) unmarshallElement(targetFile);
         try {
-            encryptedData = encrypter.encryptElement(targetObject, encParams, null);
-            encryptedContent = encrypter.encryptElementContent(targetObject, encParams, null);
+            encryptedData = encrypter.encryptElement(targetObject, encParams);
+            encryptedContent = encrypter.encryptElementContent(targetObject, encParams);
         } catch (EncryptionException e) {
             fail("Object encryption failed: " + e);
         }

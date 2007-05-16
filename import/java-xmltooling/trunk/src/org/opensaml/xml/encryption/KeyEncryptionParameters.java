@@ -30,7 +30,6 @@ public class KeyEncryptionParameters extends EncryptionParameters {
      */
     public KeyEncryptionParameters() {
         super();
-        this.setAlgorithm(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSA15);
     }
 
     /**

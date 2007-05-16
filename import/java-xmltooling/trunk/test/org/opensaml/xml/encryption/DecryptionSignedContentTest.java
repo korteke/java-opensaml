@@ -22,8 +22,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.security.KeyPair;
 
-import javax.crypto.SecretKey;
-
 import org.apache.log4j.Logger;
 import org.apache.xml.security.utils.IdResolver;
 import org.opensaml.xml.Configuration;
@@ -37,6 +35,7 @@ import org.opensaml.xml.mock.SimpleXMLObject;
 import org.opensaml.xml.parse.XMLParserException;
 import org.opensaml.xml.security.SecurityTestHelper;
 import org.opensaml.xml.security.credential.BasicCredential;
+import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xml.security.x509.SignatureValidator;
 import org.opensaml.xml.signature.DocumentInternalIDContentReference;
@@ -77,13 +76,11 @@ public class DecryptionSignedContentTest extends XMLObjectBaseTestCase {
         signingCredential.setPrivateKey(keyPair.getPrivate());
         signingCredential.setPublicKey(keyPair.getPublic());
         
-        SecretKey encKey = SecurityTestHelper.generateKeyFromURI(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128);
+        String encURI = EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128;
+        Credential encCred = SecurityTestHelper.generateKeyAndCredential(encURI);
         encParams = new EncryptionParameters();
-        encParams.setAlgorithm(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128);
-        encParams.setEncryptionKey(encKey);
-        
-        BasicCredential encCred = new BasicCredential();
-        encCred.setSecretKey(encKey);
+        encParams.setAlgorithm(encURI);
+        encParams.setEncryptionCredential(encCred);
         encKeyResolver = new StaticKeyInfoCredentialResolver(encCred);
         
         idValue = "IDValueFoo";
@@ -106,7 +103,7 @@ public class DecryptionSignedContentTest extends XMLObjectBaseTestCase {
         
         // Encrypt object
         Encrypter encrypter = new Encrypter();
-        EncryptedData encryptedData = encrypter.encryptElement(sxo, encParams, null);
+        EncryptedData encryptedData = encrypter.encryptElement(sxo, encParams);
         
         // Dump EncryptedData to temp file and reparse and unmarshall, just to eliminate any possible side effects
         // or error possibilities re: accidentially reusing the existing cached DOM
