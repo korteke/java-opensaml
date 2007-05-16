@@ -98,7 +98,8 @@ public class StaticKeyInfoGenerator implements KeyInfoGenerator {
     private KeyInfo clone(KeyInfo origKeyInfo) throws SecurityException {
         // A brute force approach to cloning:
         //   1) marshall the original (if necessary)
-        //   2) unmarshall a new object around the original's cached DOM.
+        //   2) unmarshall a new object around the cached or newly marshalled DOM.
+        //   3) ensure only one of them caches the DOM (original or marshalled)
         Element origDOM = origKeyInfo.getDOM();
         if (origDOM == null) {
             try {
@@ -115,10 +116,14 @@ public class StaticKeyInfoGenerator implements KeyInfoGenerator {
             throw new SecurityException("Error unmarshalling the new KeyInfo during cloning", e);
         }
         
-        // If the original had no cached DOM, go ahead and drop so this operation doesn't have any side effects
+        // If the original had no cached DOM, go ahead and drop so this operation doesn't have any side effects.
+        // If it did have, then drop it on the new one, so isn't cached by two objects.
         if (origDOM == null) {
             origKeyInfo.releaseChildrenDOM(true);
             origKeyInfo.releaseDOM();
+        } else {
+            newKeyInfo.releaseChildrenDOM(true);
+            newKeyInfo.releaseDOM();
         }
         
         return newKeyInfo;

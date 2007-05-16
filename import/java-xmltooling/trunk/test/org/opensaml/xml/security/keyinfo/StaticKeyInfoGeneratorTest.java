@@ -117,8 +117,9 @@ public class StaticKeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         keyInfo = generator.generate(null);
         checkKeyInfo(keyInfo);
         assertFalse("KeyInfo instances should have differed due to cloning", origKeyInfo == keyInfo);
+        assertNotNull("Generated KeyInfo should have a cached DOM", keyInfo.getDOM());
         
-        assertNull("KeyInfo marshalled DOM should have been cleared after cloning", origKeyInfo.getDOM());
+        assertNull("Original KeyInfo marshalled DOM should have been cleared after cloning", origKeyInfo.getDOM());
     }
     
     /**
@@ -145,6 +146,7 @@ public class StaticKeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         keyInfo = generator.generate(null);
         checkKeyInfo(keyInfo);
         assertFalse("KeyInfo instances should have differed due to cloning", origKeyInfo == keyInfo);
+        assertNull("Generated KeyInfo should NOT have a cached DOM", keyInfo.getDOM());
         
         assertNotNull("KeyInfo cached DOM should NOT have been cleared after cloning", origKeyInfo.getDOM());
         assertTrue("DOM Elements were not the same", origDOM.isSameNode(origKeyInfo.getDOM()));
