@@ -23,13 +23,17 @@ import java.util.Collection;
 import org.opensaml.xml.security.credential.Credential;
 
 /**
- * An entity credential based on PKI.
+ * An entity credential based on key material and other information (e.g. certificates and certificate
+ * revocation lists) associated with X.509 Public Key Infrastructure.
+ * 
+ * Note that this type of credential may not contain a symmetric (secret) key, and hence 
+ * {@link Credential#getSecretKey()} should always return null.  
  */
 public interface X509Credential extends Credential {
     
     /**
-     * Gets the public certificate for the entity. The public key of this certificate must be 
-     * the same keys gotten from {@link Credential#getPublicKey()}.
+     * Gets the public certificate for the entity. The public key of this certificate will be 
+     * the same key obtained from {@link Credential#getPublicKey()}.
      * 
      * @return the public certificate for the entity
      */

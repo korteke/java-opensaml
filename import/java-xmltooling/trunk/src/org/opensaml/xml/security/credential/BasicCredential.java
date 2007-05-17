@@ -61,6 +61,9 @@ public class BasicCredential extends AbstractCredential {
      */
     public void setPublicKey(PublicKey key) {
         publicKey = key;
+        if (key != null) {
+            setSecretKey(null);
+        }
     }
 
     /**
@@ -70,6 +73,10 @@ public class BasicCredential extends AbstractCredential {
      */
     public void setSecretKey(SecretKey key) {
         secretKey = key;
+        if (key != null) {
+            setPublicKey(null);
+            setPrivateKey(null);
+        }
     }
 
     /**
@@ -79,5 +86,8 @@ public class BasicCredential extends AbstractCredential {
      */
     public void setPrivateKey(PrivateKey key) {
         privateKey = key;
+        if (key != null) {
+            setSecretKey(null);
+        }
     }
 }

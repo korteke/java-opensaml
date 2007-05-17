@@ -16,11 +16,14 @@
 
 package org.opensaml.xml.security.x509;
 
+import java.security.PublicKey;
 import java.security.cert.X509CRL;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+
+import javax.crypto.SecretKey;
 
 import org.opensaml.xml.security.credential.BasicCredential;
 
@@ -91,4 +94,29 @@ public class BasicX509Credential extends BasicCredential implements X509Credenti
     public void setEntityCertificateChain(Collection<X509Certificate> certs) {
         entityCertChain = new ArrayList<X509Certificate>(certs);
     }
+
+    /** {@inheritDoc} */
+    public void setPublicKey(PublicKey key) {
+        if (entityCert != null) {
+            if (! entityCert.getPublicKey().equals(key)) {
+                throw new IllegalArgumentException("X509Credential already contains a certificate " 
+                        + "with a different public key");
+            }
+        }
+        super.setPublicKey(key);
+    }
+
+    /** {@inheritDoc} */
+    public void setSecretKey(SecretKey key) {
+        if (key != null) {
+            throw new UnsupportedOperationException("Secret (symmetric) key may not be set " 
+                    + "on an X509Credential instance");
+        }
+    }
+
+    /** {@inheritDoc} */
+    public SecretKey getSecretKey() {
+        return null;
+    }
+    
 }
