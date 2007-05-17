@@ -88,6 +88,20 @@ public class KeyInfoHelper {
 
         return keynameList;
     }
+    
+    /**
+     * Add a new {@link KeyName} value to a KeyInfo.
+     * 
+     * @param keyInfo the KeyInfo to which to add the new value
+     * @param keyNameValue the new key name value to add
+     */
+    public static void addKeyName(KeyInfo keyInfo, String keyNameValue) {
+        KeyName keyName = (KeyName) Configuration.getBuilderFactory()
+            .getBuilder(KeyName.DEFAULT_ELEMENT_NAME)
+            .buildObject(KeyName.DEFAULT_ELEMENT_NAME);
+        keyName.setValue(keyNameValue);
+        keyInfo.getKeyNames().add(keyName);
+    }
 
     /**
      * Get a list of the Java {@link java.security.cert.X509Certificate} within the given KeyInfo.
