@@ -47,7 +47,7 @@ public class SignatureImpl extends AbstractXMLObject implements Signature {
     /** References to content to be signed. */
     private List<ContentReference> contentReferences;
     
-    /** Constructed Apache XMLSec signature object */
+    /** Constructed Apache XMLSec signature object. */
     private XMLSignature xmlSignature;
     
     /**
@@ -150,10 +150,20 @@ public class SignatureImpl extends AbstractXMLObject implements Signature {
         return null;
     }
     
+    /**
+     * Get the Apache XML Security signature instance held by this object.
+     * 
+     * @return an Apache XML Security signature object
+     */
     public XMLSignature getXMLSignature(){
         return xmlSignature;
     }
     
+    /**
+     * Set the Apache XML Security signature instance held by this object.
+     * 
+     * @param signature an Apache XML Security signature object
+     */
     public void setXMLSignature(XMLSignature signature){
         xmlSignature = signature;
     }
