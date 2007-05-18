@@ -29,11 +29,12 @@ import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.credential.CredentialCriteriaSet;
 import org.opensaml.xml.security.x509.X509Credential;
 import org.opensaml.xml.signature.KeyInfo;
-import org.opensaml.xml.signature.KeyInfoHelper;
 
 
 /**
- * Test resolution of credentials from RSAKeyValue child of KeyInfo.
+ * Test resolution of credentials from X509Data child of KeyInfo,
+ * where the X509Data contains various identifiers for the entity cert
+ * within a cert chain.
  */
 public class CertChainX509DataTest extends XMLObjectBaseTestCase {
     

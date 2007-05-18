@@ -30,7 +30,8 @@ import org.opensaml.xml.signature.KeyInfo;
 
 
 /**
- * Test resolution of credentials from RSAKeyValue child of KeyInfo.
+ * Test resolution of credentials from X509Data child of KeyInfo,
+ * where the X509Data contains a single certificate.
  */
 public class SingleCertX509DataTest extends XMLObjectBaseTestCase {
     

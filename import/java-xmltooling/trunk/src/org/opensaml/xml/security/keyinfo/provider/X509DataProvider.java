@@ -33,16 +33,15 @@ import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.credential.CredentialCriteriaSet;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
-import org.opensaml.xml.security.keyinfo.KeyInfoProvider;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver.KeyInfoResolutionContext;
 import org.opensaml.xml.security.x509.BasicX509Credential;
-import org.opensaml.xml.security.x509.X509Credential;
+import org.opensaml.xml.security.x509.InternalX500DNHandler;
+import org.opensaml.xml.security.x509.X500DNHandler;
 import org.opensaml.xml.signature.KeyInfoHelper;
-import org.opensaml.xml.signature.KeyValue;
 import org.opensaml.xml.signature.X509Data;
 import org.opensaml.xml.signature.X509IssuerSerial;
-import org.opensaml.xml.signature.X509SKI;
 import org.opensaml.xml.signature.X509SubjectName;
+import org.opensaml.xml.util.DatatypeHelper;
 
 /**
  * Implementation of {@link KeyInfoProvider} which provides basic support for extracting a {@link X509Credential} 
@@ -61,6 +60,34 @@ public class X509DataProvider extends AbstractKeyInfoProvider {
     
     /** Class logger. */
     private static Logger log = Logger.getLogger(X509DataProvider.class);
+    
+    /** Responsible for parsing and serializing X.500 names to/from {@link X500Principal} instances. */
+    private X500DNHandler x500DNHandler;
+    
+    /**
+     * Constructor.
+     */
+    public X509DataProvider() {
+        x500DNHandler = new InternalX500DNHandler();
+    }
+
+    /**
+     * Get the handler which process X.500 distinguished names.
+     * 
+     * @return returns the X500DNHandler instance
+     */
+    public X500DNHandler getX500DNHandler() {
+        return x500DNHandler;
+    }
+
+    /**
+     * Set the handler which process X.500 distinguished names.
+     * 
+     * @param handler the new X500DNHandler instance
+     */
+    public void setX500DNHandler(X500DNHandler handler) {
+        x500DNHandler = handler;
+    }
 
     /** {@inheritDoc} */
     public boolean handles(XMLObject keyInfoChild) {
@@ -101,8 +128,6 @@ public class X509DataProvider extends AbstractKeyInfoProvider {
         cred.setCRLs(crls);
         cred.setEntityCertificateChain(certs);
         
-        // TODO should alt names, CN, etc be a part of the credential-supplied key names, 
-        // or do we expect the caller to retrieve from the cert directly?
         cred.getKeyNames().addAll(kiContext.getKeyNames());
         
         cred.getCredentalContextSet().add( resolver.buildCredentialContext(kiContext) );
@@ -231,10 +256,12 @@ public class X509DataProvider extends AbstractKeyInfoProvider {
             return null;
         }
         for (X509SubjectName subjectName : names) {
-            X500Principal subjectX500Principal = new X500Principal(subjectName.getValue());
-            for (X509Certificate cert : certs) {
-                if (cert.getSubjectX500Principal().equals(subjectX500Principal)) {
-                    return cert;
+            if (! DatatypeHelper.isEmpty(subjectName.getValue())) {
+                X500Principal subjectX500Principal = x500DNHandler.parse(subjectName.getValue());
+                for (X509Certificate cert : certs) {
+                    if (cert.getSubjectX500Principal().equals(subjectX500Principal)) {
+                        return cert;
+                    }
                 }
             }
         }
@@ -250,16 +277,21 @@ public class X509DataProvider extends AbstractKeyInfoProvider {
      */
     protected X509Certificate findCertFromIssuerSerials(List<X509Certificate> certs, List<X509IssuerSerial> serials) {
         for (X509IssuerSerial issuerSerial : serials) {
-            X500Principal issuerX500Principal = new X500Principal(issuerSerial.getX509IssuerName().getValue());
+            if (issuerSerial.getX509IssuerName() == null || issuerSerial.getX509SerialNumber() == null) {
+                continue;
+            }
+            String issuerNameValue = issuerSerial.getX509IssuerName().getValue();
             BigInteger serialNumber  = new BigInteger(issuerSerial.getX509SerialNumber().getValue().toString());
-            for (X509Certificate cert : certs) {
-                if (cert.getIssuerX500Principal().equals(issuerX500Principal) &&
-                        cert.getSerialNumber().equals(serialNumber)) {
-                    return cert;
+            if (! DatatypeHelper.isEmpty(issuerNameValue)) {
+                X500Principal issuerX500Principal = x500DNHandler.parse(issuerNameValue);
+                for (X509Certificate cert : certs) {
+                    if (cert.getIssuerX500Principal().equals(issuerX500Principal) &&
+                            cert.getSerialNumber().equals(serialNumber)) {
+                        return cert;
+                    }
                 }
             }
         }
         return null;
     }
-    
 }
