@@ -287,7 +287,7 @@ public class X509DataProvider extends AbstractKeyInfoProvider {
                 continue;
             }
             String issuerNameValue = issuerSerial.getX509IssuerName().getValue();
-            BigInteger serialNumber  = new BigInteger(issuerSerial.getX509SerialNumber().getValue().toString());
+            BigInteger serialNumber  = issuerSerial.getX509SerialNumber().getValue();
             if (! DatatypeHelper.isEmpty(issuerNameValue)) {
                 X500Principal issuerX500Principal = x500DNHandler.parse(issuerNameValue);
                 for (X509Certificate cert : certs) {

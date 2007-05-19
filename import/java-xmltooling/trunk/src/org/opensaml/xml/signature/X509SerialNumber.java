@@ -16,20 +16,43 @@
 
 package org.opensaml.xml.signature;
 
+import java.math.BigInteger;
+
 import javax.xml.namespace.QName;
 
-import org.opensaml.xml.schema.XSInteger;
 import org.opensaml.xml.util.XMLConstants;
+import org.opensaml.xml.validation.ValidatingXMLObject;
 
 /**
  * XMLObject representing XML Digital Signature, version 20020212, X509SerialNumber element.
  */
-public interface X509SerialNumber extends XSInteger {
+public interface X509SerialNumber extends ValidatingXMLObject {
     
-    /** Element local name */
-    public final static String DEFAULT_ELEMENT_LOCAL_NAME = "X509SerialNumber";
+    /** Element local name. */
+    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "X509SerialNumber";
     
-    /** Default element name */
-    public final static QName DEFAULT_ELEMENT_NAME = new QName(XMLConstants.XMLSIG_NS, DEFAULT_ELEMENT_LOCAL_NAME, XMLConstants.XMLSIG_PREFIX);
+    /** Default element name. */
+    public static final QName DEFAULT_ELEMENT_NAME = 
+        new QName(XMLConstants.XMLSIG_NS, DEFAULT_ELEMENT_LOCAL_NAME, XMLConstants.XMLSIG_PREFIX);
+    
+    /** Local name of the XSI type. */
+    public static final String TYPE_LOCAL_NAME = "integer"; 
+        
+    /** QName of the XSI type. */
+    public static final QName TYPE_NAME = new QName(XMLConstants.XSD_NS, TYPE_LOCAL_NAME, XMLConstants.XSD_PREFIX);
+    
+    /**
+     * Gets the integer.
+     * 
+     * @return the integer
+     */
+    public BigInteger getValue();
+    
+    /**
+     * Sets the integer.
+     * 
+     * @param newValue the integer value
+     */
+    public void setValue(BigInteger newValue);
 
 }

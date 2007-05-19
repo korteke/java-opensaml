@@ -217,8 +217,8 @@
         <!-- X509SerialNumber -->
         <ObjectProvider qualifiedName="ds:X509SerialNumber">
             <BuilderClass className="org.opensaml.xml.signature.impl.X509SerialNumberBuilder" />
-            <MarshallingClass className="org.opensaml.xml.schema.impl.XSIntegerMarshaller" />
-            <UnmarshallingClass className="org.opensaml.xml.schema.impl.XSIntegerUnmarshaller" />
+            <MarshallingClass className="org.opensaml.xml.signature.impl.X509SerialNumberMarshaller" />
+            <UnmarshallingClass className="org.opensaml.xml.signature.impl.X509SerialNumberUnmarshaller" />
         </ObjectProvider>
         
         <!-- X509SKI -->

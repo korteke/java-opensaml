@@ -379,7 +379,7 @@ public class KeyInfoHelper {
         X509SerialNumber xmlSerialNumber = (X509SerialNumber) Configuration.getBuilderFactory()
             .getBuilder(X509SerialNumber.DEFAULT_ELEMENT_NAME)
             .buildObject(X509SerialNumber.DEFAULT_ELEMENT_NAME);
-        xmlSerialNumber.setValue(new Integer(serialNumber.toString())); //TODO fix for type
+        xmlSerialNumber.setValue(serialNumber);
         
         X509IssuerSerial xmlIssuerSerial = (X509IssuerSerial) Configuration.getBuilderFactory()
             .getBuilder(X509IssuerSerial.DEFAULT_ELEMENT_NAME)

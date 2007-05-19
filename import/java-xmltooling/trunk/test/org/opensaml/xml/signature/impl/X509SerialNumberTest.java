@@ -17,6 +17,8 @@
 package org.opensaml.xml.signature.impl;
 
 
+import java.math.BigInteger;
+
 import org.opensaml.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.xml.signature.X509SerialNumber;
 
@@ -25,10 +27,10 @@ import org.opensaml.xml.signature.X509SerialNumber;
  */
 public class X509SerialNumberTest extends XMLObjectProviderBaseTestCase {
     
-    private Integer expectedIntegerContent;
+    private BigInteger expectedBigIntegerContent;
 
     /**
-     * Constructor
+     * Constructor.
      *
      */
     public X509SerialNumberTest() {
@@ -40,7 +42,7 @@ public class X509SerialNumberTest extends XMLObjectProviderBaseTestCase {
     protected void setUp() throws Exception {
         super.setUp();
         
-        expectedIntegerContent = 123456789;
+        expectedBigIntegerContent = new BigInteger("123456789");
     }
 
     /** {@inheritDoc} */
@@ -48,13 +50,13 @@ public class X509SerialNumberTest extends XMLObjectProviderBaseTestCase {
         X509SerialNumber x509Element = (X509SerialNumber) unmarshallElement(singleElementFile);
         
         assertNotNull("X509SerialNumber", x509Element);
-        assertEquals("X509SerialNumber value", x509Element.getValue(), expectedIntegerContent);
+        assertEquals("X509SerialNumber value", x509Element.getValue(), expectedBigIntegerContent);
     }
 
     /** {@inheritDoc} */
     public void testSingleElementMarshall() {
         X509SerialNumber x509Element = (X509SerialNumber) buildXMLObject(X509SerialNumber.DEFAULT_ELEMENT_NAME);
-        x509Element.setValue(expectedIntegerContent);
+        x509Element.setValue(expectedBigIntegerContent);
         
         assertEquals(expectedDOM, x509Element);
     }

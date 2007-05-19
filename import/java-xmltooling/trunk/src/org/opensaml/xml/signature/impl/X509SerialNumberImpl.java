@@ -16,23 +16,48 @@
 
 package org.opensaml.xml.signature.impl;
 
-import org.opensaml.xml.schema.impl.XSIntegerImpl;
+import java.math.BigInteger;
+import java.util.List;
+
+import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.signature.X509SerialNumber;
+import org.opensaml.xml.validation.AbstractValidatingXMLObject;
 
 /**
- * Concrete implementation of {@link org.opensaml.xml.signature.X509SerialNumber}
+ * Concrete implementation of {@link org.opensaml.xml.signature.X509SerialNumber}.
  */
-public class X509SerialNumberImpl extends XSIntegerImpl implements X509SerialNumber {
+public class X509SerialNumberImpl extends AbstractValidatingXMLObject implements X509SerialNumber {
+    
+    /** The serial number value. */
+    private BigInteger value;
 
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param namespaceURI
-     * @param elementLocalName
-     * @param namespacePrefix
+     * @param namespaceURI the namespace the element is in
+     * @param elementLocalName the local name of the XML element this Object represents
+     * @param namespacePrefix the prefix for the given namespace
      */
     protected X509SerialNumberImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
+    }
+
+    /** {@inheritDoc} */
+    public BigInteger getValue() {
+        return value;
+    }
+
+    /** {@inheritDoc} */
+    public void setValue(BigInteger newValue) {
+        value = prepareForAssignment(value, newValue);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public List<XMLObject> getOrderedChildren() {
+        // no children
+        return null;
     }
 
 }

@@ -529,8 +529,7 @@ public class KeyInfoHelperTest extends XMLObjectBaseTestCase {
         assertEquals("Unexpected issuer name value", name, xmlIssuerSerial.getX509IssuerName().getValue());
         
         assertNotNull("Constructed X509SerialNumber was null", xmlIssuerSerial.getX509SerialNumber());
-        assertEquals("Unexpected serial number", serialNumber, 
-                new BigInteger(xmlIssuerSerial.getX509SerialNumber().getValue().toString()) );
+        assertEquals("Unexpected serial number", serialNumber, xmlIssuerSerial.getX509SerialNumber().getValue());
     }
     
     /** Tests building a new X509SKI from a certificate containing an SKI value.
