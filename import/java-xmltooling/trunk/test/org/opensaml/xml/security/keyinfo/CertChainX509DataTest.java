@@ -29,6 +29,7 @@ import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.credential.CredentialCriteriaSet;
 import org.opensaml.xml.security.x509.X509Credential;
 import org.opensaml.xml.signature.KeyInfo;
+import org.opensaml.xml.util.Base64;
 
 
 /**
@@ -71,6 +72,8 @@ public class CertChainX509DataTest extends XMLObjectBaseTestCase {
         "2uH/ywAOFFSnoBzGHAfScHMfj8asZ6THosYsklII7FSU8j49GV2utkvGB3mcu4ST" +
         "uLdeRCZmi93vq1D4JVGsXC4UaHjg114+a+9q0XZdz6a1UW4pt1ryXIPotCS62M71" +
         "pkJf5neHUinKAqgoRfPXowudZg1Zl8DjzoOBn+MNHRrR5KYbVGvdHcxoJLCwVB/v";
+    
+    private String entityCertSKIBase64 = "OBGBOSNoqgroOhl9RniD0sMlRa4=";
 
 
     private X509Certificate caCert;
@@ -98,6 +101,7 @@ public class CertChainX509DataTest extends XMLObjectBaseTestCase {
     private X500Principal subjectName;
     private X500Principal issuerName;
     private int serialNumber;
+    private byte[] subjectKeyIdentifier;
 
 
 
@@ -114,6 +118,7 @@ public class CertChainX509DataTest extends XMLObjectBaseTestCase {
         subjectName = new X500Principal("cn=foobar.example.org, O=Internet2");
         issuerName = new X500Principal("cn=ca.example.org, O=Internet2");
         serialNumber = 42;
+        subjectKeyIdentifier = Base64.decode(entityCertSKIBase64);
     }
     
     /**
@@ -221,6 +226,39 @@ public class CertChainX509DataTest extends XMLObjectBaseTestCase {
         assertTrue("Cert not found in cert chain", x509Credential.getEntityCertificateChain().contains(caCert));
     }
     
-    //TODO test X509SKI when other SKI stuff is ready
+    /**
+     * Test resolution with multiple certs, end-entity cert identified by X509SubjectName.
+     * 
+     * @throws SecurityException on error resolving credentials
+     */
+    public void testResolutionWithSubjectKeyIdentifier() throws SecurityException {
+        KeyInfo keyInfo = 
+            (KeyInfo) unmarshallElement("/data/org/opensaml/xml/security/keyinfo/X509CertificatesWithSKI.xml");
+        CredentialCriteriaSet criteriaSet = new CredentialCriteriaSet( new KeyInfoCredentialCriteria(keyInfo) );
+        Iterator<Credential> iter = resolver.resolveCredentials(criteriaSet).iterator();
+        
+        assertTrue("No credentials were found", iter.hasNext());
+        
+        Credential credential = iter.next();
+        assertNotNull("Credential was null", credential);
+        assertFalse("Too many credentials returned", iter.hasNext());
+        
+        assertTrue("Credential is not of the expected type", credential instanceof X509Credential);
+        X509Credential x509Credential = (X509Credential) credential;
+        
+        assertNotNull("Public key was null", x509Credential.getPublicKey());
+        assertEquals("Expected public key value not found", pubKey, x509Credential.getPublicKey());
+        
+        assertEquals("Wrong number of key names", 2, x509Credential.getKeyNames().size());
+        assertTrue("Expected key name value not found", x509Credential.getKeyNames().contains("Foo"));
+        assertTrue("Expected key name value not found", x509Credential.getKeyNames().contains("Bar"));
+        
+        assertNotNull("Entity certificate was null", x509Credential.getEntityCertificate());
+        assertEquals("Expected X509Certificate value not found", entityCert, x509Credential.getEntityCertificate());
+        
+        assertEquals("Wrong number of certs in cert chain found", 2, x509Credential.getEntityCertificateChain().size());
+        assertTrue("Cert not found in cert chain", x509Credential.getEntityCertificateChain().contains(entityCert));
+        assertTrue("Cert not found in cert chain", x509Credential.getEntityCertificateChain().contains(caCert));
+    }
 
 }

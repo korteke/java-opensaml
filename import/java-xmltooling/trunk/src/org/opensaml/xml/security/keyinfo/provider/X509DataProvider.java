@@ -22,6 +22,7 @@ import java.security.cert.CRLException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509CRL;
 import java.security.cert.X509Certificate;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -37,10 +38,13 @@ import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver.KeyInfoResolu
 import org.opensaml.xml.security.x509.BasicX509Credential;
 import org.opensaml.xml.security.x509.InternalX500DNHandler;
 import org.opensaml.xml.security.x509.X500DNHandler;
+import org.opensaml.xml.security.x509.X509Util;
 import org.opensaml.xml.signature.KeyInfoHelper;
 import org.opensaml.xml.signature.X509Data;
 import org.opensaml.xml.signature.X509IssuerSerial;
+import org.opensaml.xml.signature.X509SKI;
 import org.opensaml.xml.signature.X509SubjectName;
+import org.opensaml.xml.util.Base64;
 import org.opensaml.xml.util.DatatypeHelper;
 
 /**
@@ -219,7 +223,12 @@ public class X509DataProvider extends AbstractKeyInfoProvider {
             return cert;
         }
 
-        // TODO Check against subject key identifier (SKI) - need to clarify format and encoding
+        //Check against any subject key identifiers
+        cert = findCertFromSubjectKeyIdentifier(certs, x509Data.getX509SKIs());
+        if (cert != null) {
+            log.debug("End-entity certificate resolved by matching X509SKI");
+            return cert;
+        }
         
         // TODO use some heuristic algorithm to try and figure it out based on the cert list alone.
         //      This would be in X509Utils or somewhere else external to this class.
@@ -252,9 +261,6 @@ public class X509DataProvider extends AbstractKeyInfoProvider {
      * @return the matching certificate, or null
      */
     protected X509Certificate findCertFromSubjectNames(List<X509Certificate> certs, List<X509SubjectName> names) {
-        if (names.isEmpty()) {
-            return null;
-        }
         for (X509SubjectName subjectName : names) {
             if (! DatatypeHelper.isEmpty(subjectName.getValue())) {
                 X500Principal subjectX500Principal = x500DNHandler.parse(subjectName.getValue());
@@ -294,4 +300,26 @@ public class X509DataProvider extends AbstractKeyInfoProvider {
         }
         return null;
     }
+    
+    /**
+     * Find the certificate from the chain that contains one of the specified subject key identifiers.
+     * 
+     * @param certs list of certificates to evaluate
+     * @param skis X509 subject key identifiers to use as search criteria
+     * @return the matching certificate, or null
+     */
+    protected X509Certificate findCertFromSubjectKeyIdentifier(List<X509Certificate> certs, List<X509SKI> skis) {
+        for (X509SKI ski : skis) {
+            if (! DatatypeHelper.isEmpty(ski.getValue())) {
+                byte[] xmlValue = Base64.decode(ski.getValue());
+                for (X509Certificate cert : certs) {
+                    byte[] certValue = X509Util.getSubjectKeyIdentifier(cert);
+                    if (certValue != null && Arrays.equals(xmlValue, certValue)) {
+                        return cert;
+                    }
+                }
+            }
+        }
+        return null;
+    } 
 }

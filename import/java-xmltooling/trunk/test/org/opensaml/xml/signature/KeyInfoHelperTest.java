@@ -16,6 +16,7 @@
 
 package org.opensaml.xml.signature;
 
+import java.math.BigInteger;
 import java.security.KeyException;
 import java.security.PublicKey;
 import java.security.cert.CRLException;
@@ -24,6 +25,7 @@ import java.security.cert.CertificateException;
 import java.security.interfaces.DSAParams;
 import java.security.interfaces.DSAPublicKey;
 import java.security.interfaces.RSAPublicKey;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.security.auth.x500.X500Principal;
@@ -31,6 +33,7 @@ import javax.security.auth.x500.X500Principal;
 import org.opensaml.xml.XMLObjectBaseTestCase;
 import org.opensaml.xml.security.SecurityTestHelper;
 import org.opensaml.xml.util.Base64;
+import org.opensaml.xml.util.DatatypeHelper;
 
 /**
  * Test to exercise the KeyInfoHelper methods to convert
@@ -38,6 +41,22 @@ import org.opensaml.xml.util.Base64;
  * Java security native types.
  */
 public class KeyInfoHelperTest extends XMLObjectBaseTestCase {
+    
+    /** No-extensions test cert subject name. */
+    private final String certNoExtensionSubjectDN = "CN=noextensions.example.org";
+    /** Cert which contains no X.509 v3 extensions. */
+    private final String certNoExtensions =
+        "MIIBwjCCASugAwIBAgIJAMrW6QSeKNBJMA0GCSqGSIb3DQEBBAUAMCMxITAfBgNV" +
+        "BAMTGG5vZXh0ZW5zaW9ucy5leGFtcGxlLm9yZzAeFw0wNzA1MTkxNzU2NTVaFw0w" +
+        "NzA2MTgxNzU2NTVaMCMxITAfBgNVBAMTGG5vZXh0ZW5zaW9ucy5leGFtcGxlLm9y" +
+        "ZzCBnzANBgkqhkiG9w0BAQEFAAOBjQAwgYkCgYEAw8xxu6TLqEdmnyXVZjiUoRHN" +
+        "6yHyobZaRK+tBEmWkD4nTlOVmTKWBCO/F4OnugaJbSTH+7Jk37l8/XYYBSIkW0+L" +
+        "2BglzQ2JCux/uoRu146QDIk9f5PIFs+Fxy7VRVUUZiOsonB/PNVqA7OVbPxzr1SK" +
+        "PSE0s9CHaDjCaEs2BnMCAwEAATANBgkqhkiG9w0BAQQFAAOBgQAuI/l80wb8K6RT" +
+        "1EKrAcfr9JAlJR4jmVnCK7j3Ulx++U98ze2G6/cluLxrbnqwXmxJNC3nt6xkQVJU" +
+        "X1UFg+zkmRrst2Nv8TTrR7S30az068BHfrZLRSUConG9jXXj+hJq+w/ojmrq8Mzv" +
+        "JSczkA2BvsEUBARYo53na7RMgk+xWg==";
+
     
     /* These test examples are from the NIST PKI path processing test suite:
      * http://csrc.nist.gov/pki/testing/x509paths.html
@@ -48,6 +67,12 @@ public class KeyInfoHelperTest extends XMLObjectBaseTestCase {
     /* certs/BasicSelfIssuedNewKeyCACert.crt */
     /** Test cert subject DN 1. */
     private final String cert1SubjectDN = "CN=Basic Self-Issued New Key CA,O=Test Certificates,C=US";
+    /** 
+     * Test cert 1 SKI value.
+     * Base64 encoded version of cert's plain (non-DER encoded) subject key identifier, which is:
+     * AF:B9:F9:1D:C2:45:18:CC:B8:21:E2:A7:47:BC:49:BD:19:B5:78:28
+     */
+    private final String cert1SKIPlainBase64 = "r7n5HcJFGMy4IeKnR7xJvRm1eCg=";
     /** Test cert 1. */
     private final String cert1 = 
         "MIICgjCCAeugAwIBAgIBEzANBgkqhkiG9w0BAQUFADBAMQswCQYDVQQGEwJVUzEa" +
@@ -132,6 +157,7 @@ public class KeyInfoHelperTest extends XMLObjectBaseTestCase {
         "BkhuSKX/2PbljnmIdGV7mJK9/XUHnyKgZBxXEul2mlvGkrgUvyv+qYsCFsKSSrkB" +
         "1Mj2Ql5xmTMaePMEmvOr6fDAP0OH8cvADEZjx0s/5vvoBFPGGmPrHJluEVS0Fu8I" +
         "9sROg9YjyuhRV0b8xHo=";
+
     
 
     private X509Certificate xmlCert1, xmlCert2;
@@ -484,4 +510,44 @@ public class KeyInfoHelperTest extends XMLObjectBaseTestCase {
         keyInfo.getKeyValues().clear();
     }
     
+    /** Tests building a new X509SubjectName.*/
+    public void testBuildSubjectName() {
+        String name = "cn=foobar.example.org, o=Internet2";
+        X509SubjectName xmlSubjectName = KeyInfoHelper.buildX509SubjectName(name);
+        assertNotNull("Constructed X509SubjectName was null", xmlSubjectName);
+        assertEquals("Unexpected subject name value", name, xmlSubjectName.getValue());
+    }
+    
+    /** Tests building a new X509IssuerSerial.*/
+    public void testBuildIssuerSerial() {
+        String name = "cn=CA.example.org, o=Internet2";
+        BigInteger serialNumber = new BigInteger("42");
+        X509IssuerSerial xmlIssuerSerial = KeyInfoHelper.buildX509IssuerSerial(name, serialNumber);
+        assertNotNull("Constructed X509IssuerSerial was null", xmlIssuerSerial);
+        
+        assertNotNull("Constructed X509IssuerName was null", xmlIssuerSerial.getX509IssuerName());
+        assertEquals("Unexpected issuer name value", name, xmlIssuerSerial.getX509IssuerName().getValue());
+        
+        assertNotNull("Constructed X509SerialNumber was null", xmlIssuerSerial.getX509SerialNumber());
+        assertEquals("Unexpected serial number", serialNumber, 
+                new BigInteger(xmlIssuerSerial.getX509SerialNumber().getValue().toString()) );
+    }
+    
+    /** Tests building a new X509SKI from a certificate containing an SKI value.
+     * @throws CertificateException */
+    public void testBuildSubjectKeyIdentifier() throws CertificateException {
+        byte[] skiValue = Base64.decode(cert1SKIPlainBase64);
+        X509SKI xmlSKI = KeyInfoHelper.buildX509SKI(javaCert1);
+        assertNotNull("Constructed X509SKI was null", xmlSKI);
+        assertFalse("SKI value was empty", DatatypeHelper.isEmpty(xmlSKI.getValue()));
+        byte[] xmlValue = Base64.decode(xmlSKI.getValue());
+        assertNotNull("Decoded XML SKI value was null", xmlValue);
+        assertTrue("Incorrect SKI value", Arrays.equals(skiValue, xmlValue) );
+        
+        //Test that a cert with no SKI produces null
+        java.security.cert.X509Certificate noExtCert = SecurityTestHelper.buildJavaX509Cert(certNoExtensions);
+        assertNotNull(noExtCert);
+        X509SKI noExtXMLSKI = KeyInfoHelper.buildX509SKI(noExtCert);
+        assertNull("Building X509SKI from cert without SKI should have generated null", noExtXMLSKI);
+    }
 }

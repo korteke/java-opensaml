@@ -38,6 +38,9 @@ import org.bouncycastle.asn1.DERObjectIdentifier;
 import org.bouncycastle.asn1.DERSequence;
 import org.bouncycastle.asn1.DERSet;
 import org.bouncycastle.asn1.DERString;
+import org.bouncycastle.asn1.x509.SubjectKeyIdentifier;
+import org.bouncycastle.asn1.x509.X509Extensions;
+import org.bouncycastle.x509.extension.SubjectKeyIdentifierStructure;
 import org.opensaml.xml.security.SecurityException;
 
 /**
@@ -206,6 +209,36 @@ public class X509Util {
         issuerNames.addAll(X509Util.getAltNames(certificate, altNameTypes));
 
         return issuerNames;
+    }
+    
+    /**
+     * Get the plain (non-DER encoded) value of the Subject Key Identifier extension of an 
+     * X.509 certificate, if present.
+     * 
+     * @param certificate an X.509 certificate possibly containing a subject key identifier
+     * @return the plain (non-DER encoded) value of the Subject Key Identifier extension,
+     *          or null if the certificate does not contain the extension
+     * @throws IOException
+     */
+    public static byte[] getSubjectKeyIdentifier(X509Certificate certificate) {
+        byte[] derValue = certificate.getExtensionValue(X509Extensions.SubjectKeyIdentifier.getId());
+        if (derValue == null || derValue.length == 0) {
+            return null;
+        }
+        
+        SubjectKeyIdentifier ski = null;
+        try {
+            ski = new SubjectKeyIdentifierStructure(derValue);
+        } catch (IOException e) {
+            log.error("Unable to extract subject key identifier from certificate: ASN.1 parsing failed: " + e);
+            return null;
+        }
+        
+        if (ski != null) {
+            return ski.getKeyIdentifier();
+        } else {
+            return null;
+        }
     }
 
     /**

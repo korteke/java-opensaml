@@ -42,6 +42,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.XMLObjectBuilderFactory;
+import org.opensaml.xml.security.x509.X509Util;
 import org.opensaml.xml.util.Base64;
 import org.opensaml.xml.util.DatatypeHelper;
 
@@ -346,6 +347,68 @@ public class KeyInfoHelper {
         xmlCRL.setValue(Base64.encodeBytes(crl.getEncoded()));
         
         return xmlCRL;
+    }
+    
+    /**
+     * Build an {@link X509SubjectName} containing a given subject name.
+     * 
+     * @param subjectName the name content
+     * @return the new X509SubjectName
+     */
+    public static X509SubjectName buildX509SubjectName(String subjectName) {
+        X509SubjectName xmlSubjectName = (X509SubjectName) Configuration.getBuilderFactory()
+            .getBuilder(X509SubjectName.DEFAULT_ELEMENT_NAME)
+            .buildObject(X509SubjectName.DEFAULT_ELEMENT_NAME);
+        xmlSubjectName.setValue(subjectName); 
+        return xmlSubjectName;
+    }
+    
+    /**
+     * Build an {@link X509IssuerSerial} containing a given issuer name and serial number.
+     * 
+     * @param issuerName the name content
+     * @param serialNumber the serial number content
+     * @return the new X509IssuerSerial
+     */
+    public static X509IssuerSerial buildX509IssuerSerial(String issuerName, BigInteger serialNumber) {
+        X509IssuerName xmlIssuerName = (X509IssuerName) Configuration.getBuilderFactory()
+            .getBuilder(X509IssuerName.DEFAULT_ELEMENT_NAME)
+        .buildObject(X509IssuerName.DEFAULT_ELEMENT_NAME);
+        xmlIssuerName.setValue(issuerName);
+        
+        X509SerialNumber xmlSerialNumber = (X509SerialNumber) Configuration.getBuilderFactory()
+            .getBuilder(X509SerialNumber.DEFAULT_ELEMENT_NAME)
+            .buildObject(X509SerialNumber.DEFAULT_ELEMENT_NAME);
+        xmlSerialNumber.setValue(new Integer(serialNumber.toString())); //TODO fix for type
+        
+        X509IssuerSerial xmlIssuerSerial = (X509IssuerSerial) Configuration.getBuilderFactory()
+            .getBuilder(X509IssuerSerial.DEFAULT_ELEMENT_NAME)
+            .buildObject(X509IssuerSerial.DEFAULT_ELEMENT_NAME);
+        xmlIssuerSerial.setX509IssuerName(xmlIssuerName);
+        xmlIssuerSerial.setX509SerialNumber(xmlSerialNumber);
+        
+        return xmlIssuerSerial;
+    }
+    
+    /**
+     * Build an {@link X509SKI} containing the subject key identifier extension value contained within
+     * a certificate.
+     * 
+     * @param javaCert the Java X509Certificate from which to extract the subject key identifier value.
+     * @return a new X509SKI object, or null if the certificate did not contain the subject key identifier extension
+     */
+    public static X509SKI buildX509SKI(X509Certificate javaCert) {
+        byte[] skiPlainValue = X509Util.getSubjectKeyIdentifier(javaCert);
+        if (skiPlainValue == null || skiPlainValue.length == 0) {
+            return null;
+        }
+        
+        X509SKI xmlSKI = (X509SKI) Configuration.getBuilderFactory()
+            .getBuilder(X509SKI.DEFAULT_ELEMENT_NAME)
+            .buildObject(X509SKI.DEFAULT_ELEMENT_NAME);
+        xmlSKI.setValue(Base64.encodeBytes(skiPlainValue));
+        
+        return xmlSKI;
     }
 
     /**
