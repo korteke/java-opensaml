@@ -35,6 +35,11 @@ public class BasicCredential extends AbstractCredential {
         keyNames = new HashSet<String>();
         usageType = UsageType.UNSPECIFIED;
     }
+    
+    /** {@inheritDoc} */
+    public Class<? extends Credential> getCredentialType() {
+        return Credential.class;
+    }
 
     /**
      * Sets the ID of the entity this credential is for.

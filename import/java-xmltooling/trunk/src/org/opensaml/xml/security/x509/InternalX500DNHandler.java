@@ -64,4 +64,10 @@ public class InternalX500DNHandler implements X500DNHandler {
         return new X500Principal(name);
     }
 
+    /** {@inheritDoc} */
+    public X500DNHandler clone() {
+        // We don't have any state, just return a new instance to maintain the clone() contract.
+        return new InternalX500DNHandler();
+    }
+
 }

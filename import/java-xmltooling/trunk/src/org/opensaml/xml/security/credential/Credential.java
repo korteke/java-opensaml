@@ -82,4 +82,12 @@ public interface Credential {
      * @return set of resolution contexts of the credential
      */
     public CredentialContextSet getCredentalContextSet();
+    
+    /**
+     * Get the primary type of the credential instance. This will usually be the primary sub-interface
+     * of {@link Credential} implemented by an implementation.
+     * 
+     * @return the credential type
+     */
+    public Class<? extends Credential> getCredentialType();
 }

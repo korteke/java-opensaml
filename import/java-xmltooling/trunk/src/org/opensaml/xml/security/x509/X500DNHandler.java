@@ -80,5 +80,13 @@ public interface X500DNHandler {
      * @return the serialized name in ASN.1 DER encoded form
      */
     public byte[] getEncoded(X500Principal principal);
+    
+    /**
+     * Clone the handler. Implementations which maintain instance-specific configuration data, etc,
+     * should implement this appropriately, possibly also implementing {@link Cloneable}.
+     * 
+     * @return the cloned handler
+     */
+    public X500DNHandler clone();
 
 }

@@ -26,6 +26,7 @@ import java.util.HashSet;
 import javax.crypto.SecretKey;
 
 import org.opensaml.xml.security.credential.BasicCredential;
+import org.opensaml.xml.security.credential.Credential;
 
 /**
  * A basic implementation of {@link X509Credential}.
@@ -40,6 +41,11 @@ public class BasicX509Credential extends BasicCredential implements X509Credenti
 
     /** CRLs for this credential. */
     private Collection<X509CRL> crls;
+
+    /** {@inheritDoc} */
+    public Class<? extends Credential> getCredentialType() {
+        return X509Credential.class;
+    }
 
     /** {@inheritDoc} */
     public Collection<X509CRL> getCRLs() {
