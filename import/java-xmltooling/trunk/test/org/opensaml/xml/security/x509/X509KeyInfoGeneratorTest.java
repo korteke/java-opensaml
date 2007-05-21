@@ -60,27 +60,28 @@ public class X509KeyInfoGeneratorTest extends XMLObjectBaseTestCase {
     
     private X509Certificate entityCert;
     private String entityCertBase64 = 
-        "MIIDyjCCArKgAwIBAgIBLDANBgkqhkiG9w0BAQUFADAtMRIwEAYDVQQKEwlJbnRl" +
-        "cm5ldDIxFzAVBgNVBAMTDmNhLmV4YW1wbGUub3JnMB4XDTA3MDUyMTA0NDQzOVoX" +
-        "DTE3MDUxODA0NDQzOVowMTESMBAGA1UEChMJSW50ZXJuZXQyMRswGQYDVQQDExJm" +
+        "MIIDzjCCAragAwIBAgIBMTANBgkqhkiG9w0BAQUFADAtMRIwEAYDVQQKEwlJbnRl" +
+        "cm5ldDIxFzAVBgNVBAMTDmNhLmV4YW1wbGUub3JnMB4XDTA3MDUyMTE4MjM0MFoX" +
+        "DTE3MDUxODE4MjM0MFowMTESMBAGA1UEChMJSW50ZXJuZXQyMRswGQYDVQQDExJm" +
         "b29iYXIuZXhhbXBsZS5vcmcwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIB" +
         "AQDNWnkFmhy1vYa6gN/xBRKkZxFy3sUq2V0LsYb6Q3pe9Qlb6+BzaM5DrN8uIqqr" +
         "oBE3Wp0LtrgKuQTpDpNFBdS2p5afiUtOYLWBDtizTOzs3Z36MGMjIPUYQ4s03IP3" +
         "yPh2ud6EKpDPiYqzNbkRaiIwmYSit5r+RMYvd6fuKvTOn6h7PZI5AD7Rda7VWh5O" +
         "VSoZXlRx3qxFho+mZhW0q4fUfTi5lWwf4EhkfBlzgw/k5gf4cOi6rrGpRS1zxmbt" +
         "X1RAg+I20z6d04g0N2WsK5stszgYKoIROJCiXwjraa8/SoFcILolWQpttVHBIUYl" +
-        "yDlm8mIFleZf4ReFpfm+nUYxAgMBAAGjgfAwge0wCQYDVR0TBAIwADAsBglghkgB" +
+        "yDlm8mIFleZf4ReFpfm+nUYxAgMBAAGjgfQwgfEwCQYDVR0TBAIwADAsBglghkgB" +
         "hvhCAQ0EHxYdT3BlblNTTCBHZW5lcmF0ZWQgQ2VydGlmaWNhdGUwHQYDVR0OBBYE" +
         "FDgRgTkjaKoK6DoZfUZ4g9LDJUWuMFUGA1UdIwROMEyAFNXuZVPeUdqHrULqQW7y" +
         "r9buRpQLoTGkLzAtMRIwEAYDVQQKEwlJbnRlcm5ldDIxFzAVBgNVBAMTDmNhLmV4" +
-        "YW1wbGUub3JnggEBMDwGA1UdEQQ1MDOCEmFzaW1vdi5leGFtcGxlLm9yZ4YXdXJu" +
-        "OmZvbzpleGFtcGxlLm9yZzppZHCHBAoBAgMwDQYJKoZIhvcNAQEFBQADggEBAH7L" +
-        "RnOWJbP5p50lLvBaW6G0593OMChQIXVim9kf6Um4HQjC8/3BZPltyNMxn+xtUnRY" +
-        "AaKPDjbpr0CkM5lggJd8Q69XJiPTch9UQlcX+Ry7CXV+GsTnn6kgE5IW0ULqrp/i" +
-        "vVQVu6Af/dBS1+K+TddYOatNnABLr0lco5ppZ4v9HFIsoLljTrkdW4XrlYmW1Hx0" +
-        "SUVrYsbv2uRP3n1jEEYldvZOdhEGoEADSt46zE+HCG/ytfTYSDyola6OErB09e/o" +
-        "FDzzWGsOve69UV11bdeFgaMQJYloFHXq9MRKOCaKQLWxjwMd1MRJLJX6WpwZS600" +
-        "t2pJYMLFu19LDRfgX4M=";
+        "YW1wbGUub3JnggEBMEAGA1UdEQQ5MDeCEmFzaW1vdi5leGFtcGxlLm9yZ4YbaHR0" +
+        "cDovL2hlaW5sZWluLmV4YW1wbGUub3JnhwQKAQIDMA0GCSqGSIb3DQEBBQUAA4IB" +
+        "AQBLiDMyQ60ldIytVO1GCpp1S1sKJyTF56GVxHh/82hiRFbyPu+2eSl7UcJfH4ZN" +
+        "bAfHL1vDKTRJ9zoD8WRzpOCUtT0IPIA/Ex+8lFzZmujO10j3TMpp8Ii6+auYwi/T" +
+        "osrfw1YCxF+GI5KO49CfDRr6yxUbMhbTN+ssK4UzFf36UbkeJ3EfDwB0WU70jnlk" +
+        "yO8f97X6mLd5QvRcwlkDMftP4+MB+inTlxDZ/w8NLXQoDW6p/8r91bupXe0xwuyE" +
+        "vow2xjxlzVcux2BZsUZYjBa07ZmNNBtF7WaQqH7l2OBCAdnBhvme5i/e0LK3Ivys" +
+        "+hcVyvCXs5XtFTFWDAVYvzQ6";
+
 
     
     private String entityCertSKIBase64 = "OBGBOSNoqgroOhl9RniD0sMlRa4=";
@@ -146,12 +147,12 @@ public class X509KeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         subjectCN = "foobar.example.org";
         subjectName = new X500Principal("cn=foobar.example.org, O=Internet2");
         issuerName = new X500Principal("cn=ca.example.org, O=Internet2");
-        serialNumber = new BigInteger("44");
+        serialNumber = new BigInteger("49");
         subjectKeyIdentifier = Base64.decode(entityCertSKIBase64);
         
         altName1 = "asimov.example.org";
         altName1Type = X509Util.DNS_ALT_NAME;
-        altName2 = "urn:foo:example.org:idp";
+        altName2 = "http://heinlein.example.org";
         altName2Type = X509Util.URI_ALT_NAME;
         altName3 = "10.1.2.3";
         altName3Type = X509Util.IP_ADDRESS_ALT_NAME;
@@ -444,10 +445,7 @@ public class X509KeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         // Haven't set any alt name types yet, so expect no output
         assertNull("Generated KeyInfo was not null", keyInfo);
         
-        // TODO Java doesn't like the alt names in the cert.  OpenSSL, Windows and Firefox all see them fine...
-        //       Maybe problem with Java X509Certificate#getSubjectAlternativeNames().
         // Just a sanity check
-        /*
         assertNotNull("Credential entity cert's Java native getSubjectAltenativeNames() was null", 
                 credential.getEntityCertificate().getSubjectAlternativeNames());
         
@@ -477,7 +475,6 @@ public class X509KeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         assertTrue("Failed to find expected KeyName value", keyNames.contains(altName1));
         assertTrue("Failed to find expected KeyName value", keyNames.contains(altName2));
         assertTrue("Failed to find expected KeyName value", keyNames.contains(altName3));
-        */
     }
     
     /**
@@ -489,11 +486,10 @@ public class X509KeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         factory.setEmitEntityIDAsKeyName(true);
         factory.setEmitSubjectCNAsKeyName(true);
         
-        //TODO not working, Java doesn't like the cert alt names, see above
-        //factory.setEmitSubjectAltNamesAsKeyNames(true);
-        //factory.getSubjectAltNames().add(altName1Type);
-        //factory.getSubjectAltNames().add(altName2Type);
-        //factory.getSubjectAltNames().add(altName3Type);
+        factory.setEmitSubjectAltNamesAsKeyNames(true);
+        factory.getSubjectAltNames().add(altName1Type);
+        factory.getSubjectAltNames().add(altName2Type);
+        factory.getSubjectAltNames().add(altName3Type);
         
         generator = factory.newInstance();
         KeyInfo keyInfo = generator.generate(credential);
@@ -501,16 +497,15 @@ public class X509KeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         assertNotNull("Generated KeyInfo was null", keyInfo);
         assertNotNull("Generated KeyInfo children list was null", keyInfo.getOrderedChildren());
         
-        //assertEquals("Unexpected number of KeyName elements", 7, keyInfo.getKeyNames().size());
-        assertEquals("Unexpected number of KeyName elements", 4, keyInfo.getKeyNames().size());
+        assertEquals("Unexpected number of KeyName elements", 7, keyInfo.getKeyNames().size());
         List<String> keyNames = KeyInfoHelper.getKeyNames(keyInfo);
         assertTrue("Failed to find expected KeyName value", keyNames.contains(keyNameFoo));
         assertTrue("Failed to find expected KeyName value", keyNames.contains(keyNameBar));
         assertTrue("Failed to find expected KeyName value", keyNames.contains(entityID));
         assertTrue("Failed to find expected KeyName value", keyNames.contains(subjectCN));
-        //assertTrue("Failed to find expected KeyName value", keyNames.contains(altName1));
-        //assertTrue("Failed to find expected KeyName value", keyNames.contains(altName2));
-        //assertTrue("Failed to find expected KeyName value", keyNames.contains(altName3));
+        assertTrue("Failed to find expected KeyName value", keyNames.contains(altName1));
+        assertTrue("Failed to find expected KeyName value", keyNames.contains(altName2));
+        assertTrue("Failed to find expected KeyName value", keyNames.contains(altName3));
     }
     
     /** Test that the options passed to the generator are really cloned. 
