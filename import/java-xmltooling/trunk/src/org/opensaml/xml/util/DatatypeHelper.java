@@ -137,17 +137,18 @@ public final class DatatypeHelper {
      * @throws IOException thrown if there is a problem reading from the stream and decoding it
      */
     public static String inputstreamToString(InputStream input, CharsetDecoder decoder) throws IOException{
+        CharsetDecoder charsetDecoder = decoder;
         if(decoder == null){
-            decoder = Charset.defaultCharset().newDecoder();
+            charsetDecoder = Charset.defaultCharset().newDecoder();
         }
         
-        StringBuffer stringBuffer = new StringBuffer(1024);
-        BufferedReader reader = new BufferedReader(new InputStreamReader(input, decoder));
+        StringBuffer stringBuffer = new StringBuffer(2048);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(input, charsetDecoder));
                 
         char[] chars = new char[1024];
-        int numRead = 0;
-        while( (numRead = reader.read(chars)) > -1){
-            stringBuffer.append(String.valueOf(chars));   
+        while(reader.read(chars) > -1){
+            stringBuffer.append(String.valueOf(chars));
+            chars = new char[1024];
         }
 
         reader.close();
