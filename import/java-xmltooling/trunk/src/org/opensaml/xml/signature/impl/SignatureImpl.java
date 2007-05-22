@@ -38,6 +38,9 @@ public class SignatureImpl extends AbstractXMLObject implements Signature {
     /** Algorithm used to generate the signature. */
     private String signatureAlgorithm;
     
+    /** Optional HMAC output length parameter to the signature algorithm. */
+    private Integer hmacOutputLength;
+    
     /** Key used to sign the signature. */
     private Key signingKey;
     
@@ -47,7 +50,7 @@ public class SignatureImpl extends AbstractXMLObject implements Signature {
     /** References to content to be signed. */
     private List<ContentReference> contentReferences;
     
-    /** Constructed Apache XMLSec signature object. */
+    /** Constructed Apache XML Security signature object. */
     private XMLSignature xmlSignature;
     
     /**
@@ -62,84 +65,57 @@ public class SignatureImpl extends AbstractXMLObject implements Signature {
         contentReferences = new LinkedList<ContentReference>();
     }
 
-    /**
-     * Gets the canonicalization algorithm used to create the signature content.
-     * 
-     * @return the canonicalization algorithm used to create the signature content
-     */
+    /** {@inheritDoc} */
     public String getCanonicalizationAlgorithm() {
         return canonicalizationAlgorithm;
     }
 
-
-    /**
-     * Sets the canonicalization algorithm used to create the signature content.
-     * 
-     * @param newAlgorithm the canonicalization algorithm used to create the signature content
-     */
+    /** {@inheritDoc} */
     public void setCanonicalizationAlgorithm(String newAlgorithm) {
         canonicalizationAlgorithm = newAlgorithm;
     }
 
-    /**
-     * Gets the algorithm used to compute the signature.
-     * 
-     * @return the algorithm used to compute the signature
-     */
+    /** {@inheritDoc} */
     public String getSignatureAlgorithm() {
         return signatureAlgorithm;
     }
 
-    /**
-     * Sets the algorithm used to compute the signature.
-     * 
-     * @param newAlgorithm the algorithm used to compute the signature
-     */
+    /** {@inheritDoc} */
     public void setSignatureAlgorithm(String newAlgorithm) {
         signatureAlgorithm  = newAlgorithm;
     }
 
-    /**
-     * Gets the signature signing key.
-     * 
-     * @return the signature signing key
-     */
+    /** {@inheritDoc} */
+    public Integer getHMACOutputLength() {
+        return hmacOutputLength;
+    }
+
+    /** {@inheritDoc} */
+    public void setHMACOutputLength(Integer length) {
+        hmacOutputLength = length;
+    }
+
+    /** {@inheritDoc} */
     public Key getSigningKey() {
         return signingKey;
     }
 
-    /**
-     * Sets the signature signing key.
-     * 
-     * @param newKey the signature signing key
-     */
+    /** {@inheritDoc} */
     public void setSigningKey(Key newKey) {
         signingKey = newKey;
     }
 
-    /**
-     * Gets the key info added to this signature.
-     * 
-     * @return the key info added to this signature
-     */
+    /** {@inheritDoc} */
     public KeyInfo getKeyInfo() {
         return keyInfo;
     }
 
-    /**
-     * Sets the key info added to this signature.
-     * 
-     * @param newKeyInfo  the key info added to this signature
-     */
+    /** {@inheritDoc} */
     public void setKeyInfo(KeyInfo newKeyInfo) {
         keyInfo = newKeyInfo;
     }
 
-    /**
-     * Gets the list of signature content references.
-     * 
-     * @return the list of signature content references
-     */
+    /** {@inheritDoc} */
     public List<ContentReference> getContentReferences() {
         return contentReferences;
     }

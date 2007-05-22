@@ -27,6 +27,7 @@ import org.opensaml.xml.Configuration;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallingException;
+import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.signature.ContentReference;
 import org.opensaml.xml.signature.KeyInfo;
 import org.opensaml.xml.signature.Signature;
@@ -104,8 +105,14 @@ public class SignatureMarshaller implements Marshaller {
             if (log.isDebugEnabled()) {
                 log.debug("Creating XMLSignature object");
             }
-            XMLSignature dsig = new XMLSignature(document, "", signature.getSignatureAlgorithm(), signature
-                    .getCanonicalizationAlgorithm());
+            XMLSignature dsig = null;
+            if (signature.getHMACOutputLength() != null && SecurityHelper.isHMAC(signature.getSignatureAlgorithm())) {
+                dsig = new XMLSignature(document, "", signature.getSignatureAlgorithm(),
+                        signature.getHMACOutputLength(), signature.getCanonicalizationAlgorithm());
+            } else {
+                dsig = new XMLSignature(document, "", signature.getSignatureAlgorithm(),
+                        signature.getCanonicalizationAlgorithm());
+            }
 
             if (log.isDebugEnabled()) {
                 log.debug("Adding content to XMLSignature.");
@@ -134,4 +141,5 @@ public class SignatureMarshaller implements Marshaller {
             throw new MarshallingException("Unable to construct signature Element " + signature.getElementQName(), e);
         }
     }
+ 
 }

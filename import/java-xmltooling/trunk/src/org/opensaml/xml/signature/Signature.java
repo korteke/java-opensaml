@@ -70,6 +70,22 @@ public interface Signature extends XMLObject {
      * @param newAlgorithm the algorithm used to compute the signature
      */
     public void setSignatureAlgorithm(String newAlgorithm);
+    
+    /**
+     * Gets the HMAC output length value, optionally used when signing
+     * with an HMAC signature algorithm.
+     * 
+     * @return the HMACOutputLength value
+     */
+    public Integer getHMACOutputLength();
+    
+    /**
+     * Sets the HMAC output length value, optionally used when signing
+     * with an HMAC signature algorithm.
+     * 
+     * @param length the new HMACOutputLength value
+     */
+    public void setHMACOutputLength(Integer length);
 
     /**
      * Gets the signature signing key.

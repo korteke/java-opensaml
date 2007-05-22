@@ -16,6 +16,8 @@
 
 package org.opensaml.xml.signature.impl;
 
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.apache.xml.security.Init;
 import org.apache.xml.security.exceptions.XMLSecurityException;
@@ -26,6 +28,9 @@ import org.opensaml.xml.io.Unmarshaller;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.signature.KeyInfo;
 import org.opensaml.xml.signature.Signature;
+import org.opensaml.xml.util.DatatypeHelper;
+import org.opensaml.xml.util.XMLConstants;
+import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Element;
 
 /**
@@ -67,6 +72,7 @@ public class SignatureUnmarshaller implements Unmarshaller {
             }
             signature.setCanonicalizationAlgorithm(signedInfo.getCanonicalizationMethodURI());
             signature.setSignatureAlgorithm(signedInfo.getSignatureMethodURI());
+            signature.setHMACOutputLength(getHMACOutputLengthValue(signedInfo.getSignatureMethodElement()));
 
             org.apache.xml.security.keys.KeyInfo xmlSecKeyInfo = xmlSignature.getKeyInfo();
             if (xmlSecKeyInfo != null) {
@@ -81,5 +87,28 @@ public class SignatureUnmarshaller implements Unmarshaller {
         } catch (XMLSecurityException e) {
             throw new UnmarshallingException("Unable to unmarshall XMLSecSignatureImpl", e);
         }
+    }
+
+    /**
+     * Find and return the integer value contained within the HMACOutputLength element, if present.
+     * 
+     * @param signatureMethodElement the ds:SignatureMethod element
+     * @return the HMAC output length value, or null if not present
+     */
+    private Integer getHMACOutputLengthValue(Element signatureMethodElement) {
+        if (signatureMethodElement == null) {
+            return null;
+        }
+        // Should be at most one element
+        List<Element> children = XMLHelper.getChildElementsByTagNameNS(signatureMethodElement, 
+                XMLConstants.XMLSIG_NS, "HMACOutputLength");
+        if (! children.isEmpty()) {
+            Element hmacElement = children.get(0);
+            String value = DatatypeHelper.safeTrimOrNullString(hmacElement.getTextContent());
+            if (value != null) {
+                return new Integer(value);
+            }
+        }
+        return null;
     }
 }

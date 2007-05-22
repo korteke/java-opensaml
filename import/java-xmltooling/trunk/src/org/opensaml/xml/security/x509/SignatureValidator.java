@@ -16,19 +16,17 @@
 
 package org.opensaml.xml.security.x509;
 
-import java.security.PublicKey;
+import java.security.Key;
 
 import org.apache.log4j.Logger;
 import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.signature.XMLSignatureException;
+import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.signature.Signature;
 import org.opensaml.xml.signature.impl.SignatureImpl;
 import org.opensaml.xml.validation.ValidationException;
 import org.opensaml.xml.validation.Validator;
-
-// TODO need to check for and support HMAC validation with symmetric key
-// from Credential.getSecretKey()
 
 /**
  * A validator that validates an XML Signature on its content.
@@ -58,9 +56,9 @@ public class SignatureValidator implements Validator<Signature> {
 
         XMLSignature xmlSig = buildSignature(signature);
 
-        PublicKey validationKey = validationCredential.getPublicKey();
+        Key validationKey = SecurityHelper.extractVerificationKey(validationCredential);
         if (validationKey == null) {
-            throw new ValidationException("No public key available to validate signature");
+            throw new ValidationException("No key available to validate signature");
         }
         
         // TODO - investigate whether need to look at the signature signing algorithm before
@@ -70,7 +68,7 @@ public class SignatureValidator implements Validator<Signature> {
         try {
             if (xmlSig.checkSignatureValue(validationKey)) {
                 if (log.isDebugEnabled()) {
-                    log.debug("Signature validated with public key from credential");
+                    log.debug("Signature validated with key from credential");
                 }
                 return;
             }
@@ -79,9 +77,9 @@ public class SignatureValidator implements Validator<Signature> {
         }
 
         if (log.isDebugEnabled()) {
-            log.debug("Signature did not validate against any public keys from credential");
+            log.debug("Signature did not validate against the credential's key");
         }
-        throw new ValidationException("Signature did not validate against any public keys from credential");
+        throw new ValidationException("Signature did not validate against the credential's key");
     }
 
     /**
@@ -97,4 +95,5 @@ public class SignatureValidator implements Validator<Signature> {
         }
         return ((SignatureImpl) signature).getXMLSignature();
     }
+
 }

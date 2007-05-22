@@ -66,7 +66,8 @@ public class Signer {
             XMLSignature xmlSignature = ((SignatureImpl) signature).getXMLSignature();
 
             if (xmlSignature == null) {
-                log.warn("Unable to compute signature, Signature XMLObject does not have the XMLSignature created during marshalling.");
+                log.warn("Unable to compute signature, Signature XMLObject does not have the XMLSignature " 
+                        + "created during marshalling.");
                 return;
             }
             if (log.isDebugEnabled()) {
