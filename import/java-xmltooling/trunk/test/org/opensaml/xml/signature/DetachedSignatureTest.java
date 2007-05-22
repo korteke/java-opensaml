@@ -36,6 +36,7 @@ import org.opensaml.xml.mock.SimpleXMLObjectBuilder;
 import org.opensaml.xml.parse.BasicParserPool;
 import org.opensaml.xml.parse.XMLParserException;
 import org.opensaml.xml.security.SecurityException;
+import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.SecurityTestHelper;
 import org.opensaml.xml.security.credential.BasicCredential;
 import org.opensaml.xml.security.credential.Credential;
@@ -43,7 +44,6 @@ import org.opensaml.xml.security.credential.CredentialCriteriaSet;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialCriteria;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xml.security.x509.SignatureValidator;
-import org.opensaml.xml.security.x509.XMLSignatureCredentialContext;
 import org.opensaml.xml.signature.impl.SignatureBuilder;
 import org.opensaml.xml.util.XMLHelper;
 import org.opensaml.xml.validation.ValidationException;
@@ -68,20 +68,19 @@ public class DetachedSignatureTest extends XMLObjectBaseTestCase {
 
     /** Parser pool used to parse example config files. */
     private BasicParserPool parserPool;
+    
+    /** Signature algorithm URI. */
+    private String algoURI = SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1;
 
     /** {@inheritDoc} */
     protected void setUp() throws Exception {
         super.setUp();
-
+        
         KeyPair keyPair = SecurityTestHelper.generateKeyPair("RSA", 1024, null);
-
-        goodCredential = new BasicCredential();
-        goodCredential.setPrivateKey(keyPair.getPrivate());
-        goodCredential.setPublicKey(keyPair.getPublic());
+        goodCredential = SecurityHelper.getSimpleCredential(keyPair.getPublic(), keyPair.getPrivate());
 
         keyPair = SecurityTestHelper.generateKeyPair("RSA", 1024, null);
-        badCredential = new BasicCredential();
-        badCredential.setPublicKey(keyPair.getPublic());
+        badCredential = SecurityHelper.getSimpleCredential(keyPair.getPublic(), null);
 
         sxoBuilder = new SimpleXMLObjectBuilder();
         sigBuilder = new SignatureBuilder();
@@ -135,7 +134,7 @@ public class DetachedSignatureTest extends XMLObjectBaseTestCase {
      */
     public void testExternalSignatureAndVerification() throws MarshallingException, ValidationException {
         Signature signature = sigBuilder.buildObject();
-        signature.setSigningKey(goodCredential.getPrivateKey());
+        signature.setSigningCredential(goodCredential);
         signature.setCanonicalizationAlgorithm(SignatureConstants.ALGO_ID_C14N_EXCL_OMIT_COMMENTS);
         signature.setSignatureAlgorithm(SignatureConstants.ALGO_ID_SIGNATURE_RSA);
 
@@ -200,9 +199,9 @@ public class DetachedSignatureTest extends XMLObjectBaseTestCase {
         rootSXO.getSimpleXMLObjects().add(childSXO);
 
         Signature sig = sigBuilder.buildObject();
-        sig.setSigningKey(goodCredential.getPrivateKey());
+        sig.setSigningCredential(goodCredential);
         sig.setCanonicalizationAlgorithm(SignatureConstants.ALGO_ID_C14N_EXCL_OMIT_COMMENTS);
-        sig.setSignatureAlgorithm(SignatureConstants.ALGO_ID_SIGNATURE_RSA);
+        sig.setSignatureAlgorithm(algoURI);
 
         DocumentInternalIDContentReference contentReference = new DocumentInternalIDContentReference("FOO");
         contentReference.getTransforms().add(SignatureConstants.TRANSFORM_C14N_EXCL_OMIT_COMMENTS);

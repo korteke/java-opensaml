@@ -33,8 +33,8 @@ import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.mock.SimpleXMLObject;
 import org.opensaml.xml.parse.XMLParserException;
+import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.SecurityTestHelper;
-import org.opensaml.xml.security.credential.BasicCredential;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xml.security.x509.SignatureValidator;
@@ -55,7 +55,7 @@ public class DecryptionSignedContentTest extends XMLObjectBaseTestCase {
     private static Logger log = Logger.getLogger(DecryptionSignedContentTest.class);
     
     /** Credential used to sign and verify. */
-    private BasicCredential signingCredential;
+    private Credential signingCredential;
     
     /** The data encryption parameters object. */
     private EncryptionParameters encParams;
@@ -72,9 +72,7 @@ public class DecryptionSignedContentTest extends XMLObjectBaseTestCase {
         super.setUp();
         
         KeyPair keyPair = SecurityTestHelper.generateKeyPair("RSA", 1024, null);
-        signingCredential = new BasicCredential();
-        signingCredential.setPrivateKey(keyPair.getPrivate());
-        signingCredential.setPublicKey(keyPair.getPublic());
+        signingCredential = SecurityHelper.getSimpleCredential(keyPair.getPublic(), keyPair.getPrivate());
         
         String encURI = EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128;
         Credential encCred = SecurityTestHelper.generateKeyAndCredential(encURI);
@@ -167,7 +165,7 @@ public class DecryptionSignedContentTest extends XMLObjectBaseTestCase {
         sxo.setId(idValue);
 
         Signature sig = (Signature) buildXMLObject(Signature.DEFAULT_ELEMENT_NAME);
-        sig.setSigningKey(signingCredential.getPrivateKey());
+        sig.setSigningCredential(signingCredential);
         sig.setCanonicalizationAlgorithm(SignatureConstants.ALGO_ID_C14N_EXCL_OMIT_COMMENTS);
         sig.setSignatureAlgorithm(SignatureConstants.ALGO_ID_SIGNATURE_RSA);
         

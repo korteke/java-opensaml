@@ -35,8 +35,9 @@ import org.opensaml.xml.mock.SimpleXMLObject;
 import org.opensaml.xml.mock.SimpleXMLObjectBuilder;
 import org.opensaml.xml.parse.BasicParserPool;
 import org.opensaml.xml.parse.XMLParserException;
+import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.SecurityTestHelper;
-import org.opensaml.xml.security.credential.BasicCredential;
+import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.x509.SignatureValidator;
 import org.opensaml.xml.signature.impl.KeyInfoBuilder;
 import org.opensaml.xml.signature.impl.SignatureBuilder;
@@ -57,10 +58,10 @@ public class HMACSignatureTest extends XMLObjectBaseTestCase {
     private static Logger log = Logger.getLogger(HMACSignatureTest.class);
 
     /** Credential used to sign and verify. */
-    private BasicCredential goodCredential;
+    private Credential goodCredential;
     
     /** Invalid credential for verification. */
-    private BasicCredential badCredential;
+    private Credential badCredential;
 
     /** Builder of mock XML objects. */
     private SimpleXMLObjectBuilder sxoBuilder;
@@ -76,6 +77,9 @@ public class HMACSignatureTest extends XMLObjectBaseTestCase {
     
     /** Expected key name value in KeyInfo. */
     private String expectedKeyName;
+    
+    /** Signature algorithm URI. */
+    private String algoURI = SignatureConstants.ALGO_ID_MAC_HMAC_SHA1;
 
     /** {@inheritDoc} */
     protected void setUp() throws Exception {
@@ -85,12 +89,10 @@ public class HMACSignatureTest extends XMLObjectBaseTestCase {
         expectedKeyName = "KeyFoo123";
         
         SecretKey key = SecurityTestHelper.generateKey("AES", 128, null);
-        goodCredential = new BasicCredential();
-        goodCredential.setSecretKey(key);
+        goodCredential = SecurityHelper.getSimpleCredential(key);
         
         key = SecurityTestHelper.generateKey("AES", 128, null);
-        badCredential = new BasicCredential();
-        badCredential.setSecretKey(key);
+        badCredential = SecurityHelper.getSimpleCredential(key);
 
         sxoBuilder = new SimpleXMLObjectBuilder();
         sigBuilder = new SignatureBuilder();
@@ -287,9 +289,9 @@ public class HMACSignatureTest extends XMLObjectBaseTestCase {
         sxo.setId("FOO");
 
         Signature sig = sigBuilder.buildObject();
-        sig.setSigningKey(goodCredential.getSecretKey());
+        sig.setSigningCredential(goodCredential);
         sig.setCanonicalizationAlgorithm(SignatureConstants.ALGO_ID_C14N_EXCL_OMIT_COMMENTS);
-        sig.setSignatureAlgorithm(SignatureConstants.ALGO_ID_MAC_HMAC_SHA1);
+        sig.setSignatureAlgorithm(algoURI);
         if (useHMACOutputLength) {
             sig.setHMACOutputLength(hmacOutputLength);
         }

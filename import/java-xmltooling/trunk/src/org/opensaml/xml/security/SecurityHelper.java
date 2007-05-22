@@ -18,11 +18,14 @@ package org.opensaml.xml.security;
 
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 
 import org.apache.xml.security.algorithms.JCEMapper;
+import org.opensaml.xml.security.credential.BasicCredential;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.util.DatatypeHelper;
 
@@ -132,5 +135,36 @@ public final class SecurityHelper {
             return credential.getSecretKey();
         }
     }
-
+    
+    /**
+     * Get a simple, minimal credential containing a secret (symmetric) key.
+     * 
+     * @param secretKey the symmetric key to wrap
+     * @return a credential containing the secret key specified
+     */
+    public static BasicCredential getSimpleCredential(SecretKey secretKey) {
+        if (secretKey == null) {
+            throw new IllegalArgumentException("A secret key is required");
+        }
+        BasicCredential cred = new BasicCredential();
+        cred.setSecretKey(secretKey);
+        return cred;
+    }
+    
+    /**
+     * Get a simple, minimal credential containing a public key, and optionally a private key.
+     * 
+     * @param publicKey the public key to wrap
+     * @param privateKey the private key to wrap, which may be null
+     * @return a credential containing the key(s) specified
+     */
+    public static BasicCredential getSimpleCredential(PublicKey publicKey, PrivateKey privateKey) {
+        if (publicKey == null) {
+            throw new IllegalArgumentException("A public key is required");
+        }
+        BasicCredential cred = new BasicCredential();
+        cred.setPublicKey(publicKey);
+        cred.setPrivateKey(privateKey);
+        return cred;
+    }
 }

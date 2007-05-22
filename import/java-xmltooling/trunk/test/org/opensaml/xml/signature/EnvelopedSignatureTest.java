@@ -19,7 +19,6 @@ package org.opensaml.xml.signature;
 import java.io.InputStream;
 import java.security.GeneralSecurityException;
 import java.security.KeyPair;
-import java.security.KeyPairGenerator;
 import java.security.PublicKey;
 
 import org.apache.log4j.Logger;
@@ -34,8 +33,9 @@ import org.opensaml.xml.mock.SimpleXMLObject;
 import org.opensaml.xml.mock.SimpleXMLObjectBuilder;
 import org.opensaml.xml.parse.BasicParserPool;
 import org.opensaml.xml.parse.XMLParserException;
+import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.SecurityTestHelper;
-import org.opensaml.xml.security.credential.BasicCredential;
+import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.x509.SignatureValidator;
 import org.opensaml.xml.signature.impl.SignatureBuilder;
 import org.opensaml.xml.util.XMLHelper;
@@ -52,29 +52,29 @@ public class EnvelopedSignatureTest extends XMLObjectBaseTestCase {
     private static Logger log = Logger.getLogger(EnvelopedSignatureTest.class);
 
     /** Credential used to sign and verify. */
-    private BasicCredential goodCredential;
+    private Credential goodCredential;
     
     /** Invalid credential for verification. */
-    private BasicCredential badCredential;
+    private Credential badCredential;
 
     /** Builder of mock XML objects. */
     private SimpleXMLObjectBuilder sxoBuilder;
 
     /** Builder of Signature XML objects. */
     private SignatureBuilder sigBuilder;
+    
+    /** Signature algorithm URI. */
+    private String algoURI = SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1;
 
     /** {@inheritDoc} */
     protected void setUp() throws Exception {
         super.setUp();
         
         KeyPair keyPair = SecurityTestHelper.generateKeyPair("RSA", 1024, null);
-        goodCredential = new BasicCredential();
-        goodCredential.setPrivateKey(keyPair.getPrivate());
-        goodCredential.setPublicKey(keyPair.getPublic());
-        
+        goodCredential = SecurityHelper.getSimpleCredential(keyPair.getPublic(), keyPair.getPrivate());
+
         keyPair = SecurityTestHelper.generateKeyPair("RSA", 1024, null);
-        badCredential = new BasicCredential();
-        badCredential.setPublicKey(keyPair.getPublic());
+        badCredential = SecurityHelper.getSimpleCredential(keyPair.getPublic(), null);
 
         sxoBuilder = new SimpleXMLObjectBuilder();
         sigBuilder = new SignatureBuilder();
@@ -152,9 +152,9 @@ public class EnvelopedSignatureTest extends XMLObjectBaseTestCase {
         sxo.setId("FOO");
 
         Signature sig = sigBuilder.buildObject();
-        sig.setSigningKey(goodCredential.getPrivateKey());
+        sig.setSigningCredential(goodCredential);
         sig.setCanonicalizationAlgorithm(SignatureConstants.ALGO_ID_C14N_EXCL_OMIT_COMMENTS);
-        sig.setSignatureAlgorithm(SignatureConstants.ALGO_ID_SIGNATURE_RSA);
+        sig.setSignatureAlgorithm(algoURI);
         
         DocumentInternalIDContentReference contentReference = new DocumentInternalIDContentReference("FOO");
         contentReference.getTransforms().add(SignatureConstants.TRANSFORM_ENVELOPED_SIGNATURE);

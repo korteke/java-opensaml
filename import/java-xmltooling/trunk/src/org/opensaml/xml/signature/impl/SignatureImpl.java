@@ -16,13 +16,13 @@
 
 package org.opensaml.xml.signature.impl;
 
-import java.security.Key;
 import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.xml.security.signature.XMLSignature;
 import org.opensaml.xml.AbstractXMLObject;
 import org.opensaml.xml.XMLObject;
+import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.signature.ContentReference;
 import org.opensaml.xml.signature.KeyInfo;
 import org.opensaml.xml.signature.Signature;
@@ -42,7 +42,7 @@ public class SignatureImpl extends AbstractXMLObject implements Signature {
     private Integer hmacOutputLength;
     
     /** Key used to sign the signature. */
-    private Key signingKey;
+    private Credential signingCredential;
     
     /** Public key information to embed in the signature. */
     private KeyInfo keyInfo;
@@ -96,13 +96,13 @@ public class SignatureImpl extends AbstractXMLObject implements Signature {
     }
 
     /** {@inheritDoc} */
-    public Key getSigningKey() {
-        return signingKey;
+    public Credential getSigningCredential() {
+        return signingCredential;
     }
 
     /** {@inheritDoc} */
-    public void setSigningKey(Key newKey) {
-        signingKey = newKey;
+    public void setSigningCredential(Credential newCredential) {
+        signingCredential = newCredential;
     }
 
     /** {@inheritDoc} */

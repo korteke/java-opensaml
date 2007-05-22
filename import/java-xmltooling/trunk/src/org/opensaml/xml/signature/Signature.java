@@ -16,12 +16,12 @@
 
 package org.opensaml.xml.signature;
 
-import java.security.Key;
 import java.util.List;
 
 import javax.xml.namespace.QName;
 
 import org.opensaml.xml.XMLObject;
+import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.util.XMLConstants;
 
 /**
@@ -88,18 +88,18 @@ public interface Signature extends XMLObject {
     public void setHMACOutputLength(Integer length);
 
     /**
-     * Gets the signature signing key.
+     * Gets the signature signing credential.
      * 
-     * @return the signature signing key
+     * @return the signature signing credential
      */
-    public Key getSigningKey();
+    public Credential getSigningCredential();
 
     /**
-     * Sets the signature signing key.
+     * Sets the signature signing credential.
      * 
-     * @param newKey the signature signing key
+     * @param newCredential the signature signing credential
      */
-    public void setSigningKey(Key newKey);
+    public void setSigningCredential(Credential newCredential);
 
     /**
      * Gets the key info added to this signature.

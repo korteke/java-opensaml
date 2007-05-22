@@ -22,6 +22,7 @@ import org.apache.log4j.Logger;
 import org.apache.xml.security.Init;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.signature.XMLSignature;
+import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.signature.impl.SignatureImpl;
 
 /**
@@ -73,7 +74,7 @@ public class Signer {
             if (log.isDebugEnabled()) {
                 log.debug("Creating XMLSignature object");
             }
-            xmlSignature.sign(signature.getSigningKey());
+            xmlSignature.sign(SecurityHelper.extractSigningKey(signature.getSigningCredential()));
         } catch (XMLSecurityException e) {
             log.error("An error occured computing the digital signature", e);
         }
