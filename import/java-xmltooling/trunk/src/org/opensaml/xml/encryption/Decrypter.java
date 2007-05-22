@@ -37,6 +37,7 @@ import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.parse.BasicParserPool;
 import org.opensaml.xml.parse.XMLParserException;
 import org.opensaml.xml.security.SecurityException;
+import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.credential.CredentialCriteriaSet;
 import org.opensaml.xml.security.credential.KeyCredentialCriteria;
@@ -498,7 +499,7 @@ public class Decrypter {
         try {
             for (Credential cred : kekResolver.resolveCredentials(criteriaSet)) {
                 try {
-                    return decryptKey(encryptedKey, algorithm, extractDecryptionKey(cred));
+                    return decryptKey(encryptedKey, algorithm, SecurityHelper.extractDecryptionKey(cred));
                 } catch (DecryptionException e) {
                     String msg = "Attempt to decrypt EncryptedKey using credential from KEK KeyInfo resolver failed: ";
                     if (log.isDebugEnabled()) {
@@ -587,7 +588,7 @@ public class Decrypter {
             try {
                 for (Credential cred : resolver.resolveCredentials(criteriaSet)) {
                     try {
-                        return decryptDataToDOM(encryptedData, extractDecryptionKey(cred));
+                        return decryptDataToDOM(encryptedData, SecurityHelper.extractDecryptionKey(cred));
                     } catch (DecryptionException e) {
                         String msg = "Decryption attempt using credential from standard KeyInfo resolver failed: ";
                         if (log.isDebugEnabled()) {
@@ -631,24 +632,6 @@ public class Decrypter {
             }
         }
         return null;
-    }
-    
-    
-    /**
-     * Utility method to extract the decryption key from a credential.
-     * 
-     * @param credential the credential holding either a private key from a key pair, 
-     *          or a shared symmetric key.
-     * @return the private or symmetric key contained by the credential, or null
-     */
-    private Key extractDecryptionKey(Credential credential) {
-        if (credential.getPrivateKey() != null) {
-            return credential.getPrivateKey();
-        } else if (credential.getSecretKey() != null) {
-            return credential.getSecretKey();
-        } else {
-            return null;
-        }
     }
     
     /**

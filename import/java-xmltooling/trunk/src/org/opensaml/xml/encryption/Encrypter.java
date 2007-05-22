@@ -38,6 +38,7 @@ import org.opensaml.xml.io.Unmarshaller;
 import org.opensaml.xml.io.UnmarshallerFactory;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.security.SecurityException;
+import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.keyinfo.KeyInfoGenerator;
 import org.opensaml.xml.signature.KeyInfo;
@@ -218,7 +219,7 @@ public class Encrypter {
         
         checkParams(kekParams, false);
         
-        Key encryptionKey = extractEncryptionKey(kekParams.getEncryptionCredential()); 
+        Key encryptionKey = SecurityHelper.extractEncryptionKey(kekParams.getEncryptionCredential()); 
         String encryptionAlgorithmURI = kekParams.getAlgorithm();
         
         EncryptedKey encryptedKey = encryptKey(key, encryptionKey, encryptionAlgorithmURI, containingDocument);
@@ -339,7 +340,7 @@ public class Encrypter {
         checkParams(encParams, kekParamsList);
         
         String encryptionAlgorithmURI = encParams.getAlgorithm();
-        Key encryptionKey = extractEncryptionKey(encParams.getEncryptionCredential());
+        Key encryptionKey = SecurityHelper.extractEncryptionKey(encParams.getEncryptionCredential());
         if (encryptionKey == null) {
             encryptionKey = generateEncryptionKey(encryptionAlgorithmURI);
         }
@@ -374,49 +375,7 @@ public class Encrypter {
         
         return encryptedData;
     }
-    
-    /**
-     * Randomly generates a Java JCE symmetric Key object from the specified XML Encryption algorithm URI.
-     * 
-     * @param algoURI  The XML Encryption algorithm URI
-     * @return a randomly-generated symmetric Key
-     * @throws EncryptionException thrown if there is a problem generating the key
-     */
-    protected SecretKey generateEncryptionKey(String algoURI) throws EncryptionException {
-        String jceAlgorithmName = JCEMapper.getJCEKeyAlgorithmFromURI(algoURI);
-        int keyLength = JCEMapper.getKeyLengthFromURI(algoURI);
-        SecretKey key = null;
-        try {
-            KeyGenerator keyGenerator = KeyGenerator.getInstance(jceAlgorithmName);
-            keyGenerator.init(keyLength);
-            key = keyGenerator.generateKey();
-        } catch (NoSuchAlgorithmException e) {
-                throw new EncryptionException("Algorithm URI not found when generating encryption key: " 
-                        + algoURI);
-        }
-        return key;
-    }
-    
-    /**
-     * Utility method to extract the encryption key from a credential.
-     * 
-     * @param credential the credential holding either a public key from a key pair, 
-     *          or a shared symmetric key.
-     * @return the public or symmetric key contained by the credential, or null
-     */
-    protected Key extractEncryptionKey(Credential credential) {
-        if (credential == null) {
-            return null;
-        } else if (credential.getPublicKey() != null) {
-            return credential.getPublicKey();
-        } else if (credential.getSecretKey() != null) {
-            return credential.getSecretKey();
-        } else {
-            return null;
-        }
-    }
-    
-    
+
     /**
      * Ensure that the XMLObject is marshalled.
      * 
@@ -470,7 +429,7 @@ public class Encrypter {
         if (DatatypeHelper.isEmpty(kekParams.getAlgorithm())) {
             throw new EncryptionException("Key encryption algorithm URI is required");
         }
-        if (extractEncryptionKey(kekParams.getEncryptionCredential()) == null) {
+        if (SecurityHelper.extractEncryptionKey(kekParams.getEncryptionCredential()) == null) {
             throw new EncryptionException("Key encryption credential and contained key are required");
         }
     }
@@ -510,12 +469,30 @@ public class Encrypter {
         checkParams(encParams);
         checkParams(kekParamsList, true);
         
-        if (extractEncryptionKey(encParams.getEncryptionCredential()) == null 
+        if (SecurityHelper.extractEncryptionKey(encParams.getEncryptionCredential()) == null 
                 && (kekParamsList == null || kekParamsList.isEmpty())) {
             throw new EncryptionException("Using a generated encryption key "
                     + "requires a KeyEncryptionParameters object and key encryption key");
         }
     }
+    
+    /**
+     * Generate a random symmetric encryption key.
+     * 
+     * @param encryptionAlgorithmURI the encryption algorithm URI
+     * @return a randomly generated symmetric key
+     * @throws EncryptionException  thrown if the key can not be generated based on the specified
+     *          algorithm URI
+     */
+    protected SecretKey generateEncryptionKey(String encryptionAlgorithmURI) throws EncryptionException {
+        try {
+            return SecurityHelper.generateSymmetricKey(encryptionAlgorithmURI);
+        } catch (NoSuchAlgorithmException e) {
+            throw new EncryptionException("Could not generate encryption key from algorithm URI: " 
+                    + encryptionAlgorithmURI);
+        }
+    }
+
  
     /*
      * Initialize the Apache XML security library if it hasn't been already
