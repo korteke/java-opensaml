@@ -72,7 +72,7 @@ public class SignatureImpl extends AbstractXMLObject implements Signature {
 
     /** {@inheritDoc} */
     public void setCanonicalizationAlgorithm(String newAlgorithm) {
-        canonicalizationAlgorithm = newAlgorithm;
+        canonicalizationAlgorithm = prepareForAssignment(canonicalizationAlgorithm, newAlgorithm);
     }
 
     /** {@inheritDoc} */
@@ -82,7 +82,7 @@ public class SignatureImpl extends AbstractXMLObject implements Signature {
 
     /** {@inheritDoc} */
     public void setSignatureAlgorithm(String newAlgorithm) {
-        signatureAlgorithm  = newAlgorithm;
+        signatureAlgorithm  = prepareForAssignment(signatureAlgorithm, newAlgorithm);
     }
 
     /** {@inheritDoc} */
@@ -92,7 +92,7 @@ public class SignatureImpl extends AbstractXMLObject implements Signature {
 
     /** {@inheritDoc} */
     public void setHMACOutputLength(Integer length) {
-        hmacOutputLength = length;
+        hmacOutputLength = prepareForAssignment(hmacOutputLength, length);
     }
 
     /** {@inheritDoc} */
@@ -102,7 +102,7 @@ public class SignatureImpl extends AbstractXMLObject implements Signature {
 
     /** {@inheritDoc} */
     public void setSigningCredential(Credential newCredential) {
-        signingCredential = newCredential;
+        signingCredential = prepareForAssignment(signingCredential, newCredential);
     }
 
     /** {@inheritDoc} */
@@ -112,11 +112,13 @@ public class SignatureImpl extends AbstractXMLObject implements Signature {
 
     /** {@inheritDoc} */
     public void setKeyInfo(KeyInfo newKeyInfo) {
-        keyInfo = newKeyInfo;
+        keyInfo = prepareForAssignment(keyInfo, newKeyInfo);
     }
 
     /** {@inheritDoc} */
     public List<ContentReference> getContentReferences() {
+        // TODO worry about detecting changes and releasing this object's and parent's DOM?
+        // would need something like an Observable list/collection impl or something similar
         return contentReferences;
     }
 
@@ -126,6 +128,12 @@ public class SignatureImpl extends AbstractXMLObject implements Signature {
         return null;
     }
     
+    /** {@inheritDoc} */
+    public void releaseDOM() {
+        super.releaseDOM();
+        xmlSignature = null;
+    }
+
     /**
      * Get the Apache XML Security signature instance held by this object.
      * 
@@ -141,6 +149,6 @@ public class SignatureImpl extends AbstractXMLObject implements Signature {
      * @param signature an Apache XML Security signature object
      */
     public void setXMLSignature(XMLSignature signature){
-        xmlSignature = signature;
+        xmlSignature = prepareForAssignment(xmlSignature, signature);
     }
 }

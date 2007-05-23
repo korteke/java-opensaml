@@ -124,7 +124,6 @@ public class SignatureMarshaller implements Marshaller {
             if (log.isDebugEnabled()) {
                 log.debug("Creating Signature DOM element");
             }
-            ((SignatureImpl)signature).setXMLSignature(dsig);
             Element signatureElement = dsig.getElement();
             
             if (signature.getKeyInfo() != null) {
@@ -133,7 +132,9 @@ public class SignatureMarshaller implements Marshaller {
                 keyInfoMarshaller.marshall(signature.getKeyInfo(), signatureElement);
             }
             
+            ((SignatureImpl)signature).setXMLSignature(dsig);
             signature.setDOM(signatureElement);
+            signature.releaseParentDOM(true);
             return signatureElement;
 
         } catch (XMLSecurityException e) {
