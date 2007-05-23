@@ -26,7 +26,7 @@ import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.credential.BasicCredential;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.credential.CredentialCriteriaSet;
-import org.opensaml.xml.security.credential.KeyCredentialCriteria;
+import org.opensaml.xml.security.credential.KeyConstraintCredentialCriteria;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xml.security.keyinfo.KeyInfoProvider;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver.KeyInfoResolutionContext;
@@ -56,7 +56,7 @@ public class DSAKeyValueProvider extends AbstractKeyInfoProvider {
             return null;
         }
         
-        KeyCredentialCriteria keyCriteria = criteriaSet.get(KeyCredentialCriteria.class);
+        KeyConstraintCredentialCriteria keyCriteria = criteriaSet.get(KeyConstraintCredentialCriteria.class);
         if (keyCriteria != null 
                 && keyCriteria.getKeyAlgorithm() != null 
                 && ! keyCriteria.getKeyAlgorithm().equals("DSA")) {

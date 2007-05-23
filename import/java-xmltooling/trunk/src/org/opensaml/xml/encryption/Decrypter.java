@@ -36,11 +36,14 @@ import org.opensaml.xml.io.UnmarshallerFactory;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.parse.BasicParserPool;
 import org.opensaml.xml.parse.XMLParserException;
+import org.opensaml.xml.security.ApacheXMLSecurityConstants;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.credential.CredentialCriteriaSet;
-import org.opensaml.xml.security.credential.KeyCredentialCriteria;
+import org.opensaml.xml.security.credential.KeyConstraintCredentialCriteria;
+import org.opensaml.xml.security.credential.UsageCredentialCriteria;
+import org.opensaml.xml.security.credential.UsageType;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialCriteria;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xml.util.DatatypeHelper;
@@ -684,16 +687,19 @@ public class Decrypter {
         
         // Also attemtpt to dynamically construct a criteria based on the encryption key's
         // JCE algorithm and key length, if applicable
-        KeyCredentialCriteria keyCriteria = buildKeyCriteria(encryptedType);
+        KeyConstraintCredentialCriteria keyCriteria = buildKeyConstraintCriteria(encryptedType);
         if (keyCriteria != null) {
             newCriteria.add(keyCriteria);
         }
         
-        // TODO set criteria usage = ENCRYPTION, need to re-examine EntityCredentialCriteria
-        
-        // Finally, add any static criteria which may have been supplied to the decrypter
+        // Add any static criteria which may have been supplied to the decrypter
         if (staticCriteria != null && ! staticCriteria.isEmpty() ) {
             newCriteria.addAll(staticCriteria);
+        }
+        
+        // If don't have a usage criteria yet from static criteria, add encryption usage
+        if ( ! newCriteria.contains(UsageCredentialCriteria.class)) {
+            newCriteria.add( new UsageCredentialCriteria(UsageType.ENCRYPTION) );
         }
         
         return newCriteria;
@@ -707,23 +713,24 @@ public class Decrypter {
      * @return a new key credential criteria instance, or null if criteria could not be determined
      *          from the encrypted type element
      */
-    private KeyCredentialCriteria buildKeyCriteria(EncryptedType encryptedType) {
+    private KeyConstraintCredentialCriteria buildKeyConstraintCriteria(EncryptedType encryptedType) {
         String encAlgorithmURI = 
             DatatypeHelper.safeTrimOrNullString(encryptedType.getEncryptionMethod().getAlgorithm());
         
         if (! DatatypeHelper.isEmpty(encAlgorithmURI)) {
-            KeyCredentialCriteria keyCriteria = null;
+            KeyConstraintCredentialCriteria keyCriteria = null;
         
             String jceKeyAlgorithm = 
                 DatatypeHelper.safeTrimOrNullString(JCEMapper.getJCEKeyAlgorithmFromURI(encAlgorithmURI));
             
             if (! DatatypeHelper.isEmpty(jceKeyAlgorithm)) {
-                keyCriteria = new KeyCredentialCriteria(null, jceKeyAlgorithm, 0, null);
+                keyCriteria = new KeyConstraintCredentialCriteria(jceKeyAlgorithm, null);
                 
                 String algoClass = 
                     DatatypeHelper.safeTrimOrNullString(JCEMapper.getAlgorithmClassFromURI(encAlgorithmURI));
                 
-                if ("BlockEncryption".equals(algoClass) || "SymmetricKeyWrap".equals(algoClass))  {
+                if (ApacheXMLSecurityConstants.ALGO_CLASS_BLOCK_ENCRYPTION.equals(algoClass) 
+                        || ApacheXMLSecurityConstants.ALGO_CLASS_SYMMETRIC_KEY_WRAP.equals(algoClass))  {
                     try {
                         int keyLength = JCEMapper.getKeyLengthFromURI(encAlgorithmURI);
                         keyCriteria.setKeyLength(keyLength);

@@ -20,7 +20,7 @@ import org.opensaml.xml.util.DatatypeHelper;
 
 /**
  * An implementation of {@link CredentialCriteria} which specifies criteria pertaining 
- * to the owner and peer entity IDs and usage of the resolved credential. 
+ * to the owner and peer entity IDs the resolved credential. 
  * 
  * The owner entity ID is the entity which owns the resolved credential.  The peer entity ID is the 
  * entity which is the remote peer, relative to the resolution process.  The owner ID and peer ID may be the 
@@ -34,20 +34,15 @@ public final class EntityCredentialCriteria implements CredentialCriteria {
     /** Peer entity ID for which to resolve credential. This may be the same as the owner entity.  */
     private String peerID;
     
-    /** Key usage type of resolved credentials. */
-    private UsageType credUsage;
-    
     /**
     * Constructor.
      *
      * @param owner the entity ID which owns the resolved credential
      * @param peer the entity ID which is the peer relative to the credential resolution process
-     * @param usage the usage for which a credential is intended
      */
-    public EntityCredentialCriteria(String owner, String peer, UsageType usage) {
+    public EntityCredentialCriteria(String owner, String peer) {
         setOwnerID(owner);
         setPeerID(peer);
-        setUsage(usage);
     }
 
     /**
@@ -88,24 +83,6 @@ public final class EntityCredentialCriteria implements CredentialCriteria {
      */
     public void setPeerID(String peer) {
         peerID = peer;
-    }
-
-    /**
-     * Get the key usage criteria.
-     * 
-     * @return Returns the usage.
-     */
-    public UsageType getUsage() {
-        return credUsage;
-    }
-
-    /**
-     * Set the key usage criteria.
-     * 
-     * @param usage The usage to set.
-     */
-    public void setUsage(UsageType usage) {
-        credUsage = usage;
     }
 
 }

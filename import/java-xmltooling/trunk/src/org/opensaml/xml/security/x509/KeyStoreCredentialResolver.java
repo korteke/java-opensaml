@@ -33,7 +33,9 @@ import org.opensaml.xml.security.credential.EntityCredentialCriteria;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.credential.CredentialCriteriaSet;
 import org.opensaml.xml.security.credential.CredentialResolver;
+import org.opensaml.xml.security.credential.UsageCredentialCriteria;
 import org.opensaml.xml.security.credential.UsageType;
+import org.opensaml.xml.util.DatatypeHelper;
 
 /**
  * A {@link CredentialResolver} that extracts {@link Credential}'s from a key store.
@@ -90,21 +92,26 @@ public class KeyStoreCredentialResolver extends AbstractCredentialResolver  impl
 
         keyStore = store;
 
-        keyUsage = usage;
+        if (usage != null) {
+            keyUsage = usage;
+        } else {
+            keyUsage = UsageType.UNSPECIFIED;
+        }
     }
 
     /** {@inheritDoc} */
     public Iterable<Credential> resolveCredentials(CredentialCriteriaSet criteriaSet) throws SecurityException {
         Set<Credential> credentials = new HashSet<Credential>();
         
+        checkCriteriaRequirements(criteriaSet);
         EntityCredentialCriteria entityCriteria = criteriaSet.get(EntityCredentialCriteria.class);
-        if (entityCriteria == null) {
-            log.error("Basic criteria not specified, resolution can not be attempted");
-            throw new SecurityException("No basic criteria was specified in criteria set");
-        }
-        UsageType usage = entityCriteria.getUsage();
+        UsageCredentialCriteria usageCriteria = criteriaSet.get(UsageCredentialCriteria.class);
         String entity = entityCriteria.getOwnerID();
-        if (keyUsage != null && keyUsage != usage) {
+        if (usageCriteria == null) {
+            usageCriteria = new UsageCredentialCriteria(UsageType.UNSPECIFIED);
+        }
+        UsageType usage = usageCriteria.getUsage();
+        if (keyUsage != usage && usage != UsageType.UNSPECIFIED) {
             return credentials;
         }
 
@@ -138,6 +145,19 @@ public class KeyStoreCredentialResolver extends AbstractCredentialResolver  impl
         
         credentials.add(credential);
         return credentials;
+    }
+    
+    /**
+     * Check that required credential criteria are available.
+     * 
+     * @param criteriaSet the credential criteria set to evaluate
+     */
+    protected void checkCriteriaRequirements(CredentialCriteriaSet criteriaSet) {
+        EntityCredentialCriteria entityCriteria = criteriaSet.get(EntityCredentialCriteria.class);
+        if (entityCriteria == null || DatatypeHelper.isEmpty(entityCriteria.getOwnerID())) {
+            log.error("Entity criteria or owner ID not specified, resolution can not be attempted");
+            throw new IllegalArgumentException("No entity owner ID criteria was available in criteria set");
+        } 
     }
 
     /** Extract X509Credential info from a keystore trusted certificate entry.

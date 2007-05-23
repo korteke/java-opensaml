@@ -22,16 +22,10 @@ import org.opensaml.xml.util.DatatypeHelper;
 
 /**
  * An implementation of {@link CredentialCriteria} which specifies criteria pertaining 
- * to characteristics of a key to be resolved.
+ * to identifiers of a key to be resolved.
  */
-public final class KeyCredentialCriteria implements CredentialCriteria {
-    
-    /** Key algorithm type of resolved credentials. */
-    private String keyAlgorithm;
-    
-    /** Key length of resolved credentials. */
-    private int keyLength;
-    
+public final class KeyIdentifierCredentialCriteria implements CredentialCriteria {
+
     /** Key name of resolved credentials.  */
     private String keyName;
     
@@ -42,33 +36,11 @@ public final class KeyCredentialCriteria implements CredentialCriteria {
      * Constructor.
      *
      * @param name key name
-     * @param algorithm key algorithm
-     * @param length key length 
      * @param pubKey public key
      */
-    public KeyCredentialCriteria(String name, String algorithm, int length, PublicKey pubKey) {
+    public KeyIdentifierCredentialCriteria(String name, PublicKey pubKey) {
         setKeyName(name);
-        setKeyAlgorithm(algorithm);
-        setKeyLength(length);
         setPublicKey(pubKey);
-    }
- 
-    /**
-     * Get the key algorithm criteria.
-     * 
-     * @return returns the keyAlgorithm.
-     */
-    public String getKeyAlgorithm() {
-        return keyAlgorithm;
-    }
-
-    /**
-     * Set the key algorithm criteria.
-     * 
-     * @param algorithm The keyAlgorithm to set.
-     */
-    public void setKeyAlgorithm(String algorithm) {
-        keyAlgorithm = DatatypeHelper.safeTrimOrNullString(algorithm);
     }
 
     /**
@@ -105,24 +77,6 @@ public final class KeyCredentialCriteria implements CredentialCriteria {
      */
     public void setPublicKey(PublicKey key) {
         publicKey = key;
-    }
-
-    /**
-     * Get the key length.
-     * 
-     * @return Returns the keyLength.
-     */
-    public int getKeyLength() {
-        return keyLength;
-    }
-
-    /**
-     * Set the key length.
-     * 
-     * @param length The keyLength to set.
-     */
-    public void setKeyLength(int length) {
-        keyLength = length;
     }
 
 }
