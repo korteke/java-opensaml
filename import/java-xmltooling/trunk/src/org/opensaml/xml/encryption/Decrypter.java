@@ -25,7 +25,6 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.apache.xml.security.Init;
-import org.apache.xml.security.algorithms.JCEMapper;
 import org.apache.xml.security.encryption.XMLCipher;
 import org.apache.xml.security.encryption.XMLEncryptionException;
 import org.opensaml.xml.Configuration;
@@ -36,7 +35,6 @@ import org.opensaml.xml.io.UnmarshallerFactory;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.parse.BasicParserPool;
 import org.opensaml.xml.parse.XMLParserException;
-import org.opensaml.xml.security.ApacheXMLSecurityConstants;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.credential.Credential;
@@ -383,6 +381,7 @@ public class Decrypter {
      */
     public DocumentFragment decryptDataToDOM(EncryptedData encryptedData) throws DecryptionException {
         if (resolver == null && encKeyResolver == null) {
+            log.error("Decryption can not be attempted, no key resolvers are set");
             throw new DecryptionException("Unable to decrypt EncryptedData, no key resolvers are set");
         }
         
@@ -438,27 +437,25 @@ public class Decrypter {
                     + "', could not attempt decryption");
             throw new DecryptionException("EncryptedData of unsupported type was encountered");
         }
-        
         if (dataEncKey == null) {
-            throw new IllegalArgumentException("Data encryption key may not be null");
+            log.error("Data decryption key was null");
+            throw new IllegalArgumentException("Data decryption key may not be null");
         }
         
-        Element targetElement = encryptedData.getDOM();
-        if (targetElement == null) {
-           Marshaller marshaller = 
-               Configuration.getMarshallerFactory().getMarshaller(EncryptedData.DEFAULT_ELEMENT_NAME);
-           try {
-               targetElement = marshaller.marshall(encryptedData);
-           } catch (MarshallingException e) {
-               throw new DecryptionException("Error marshalling EncryptedData for decryption", e);
-           }
+        try {
+            checkAndMarshall(encryptedData);
+        } catch (DecryptionException e) {
+            log.error("Error marshalling EncryptedData for decryption", e);
+            throw e;
         }
+        Element targetElement = encryptedData.getDOM();
         
         XMLCipher xmlCipher;
         try {
             xmlCipher = XMLCipher.getInstance();
             xmlCipher.init(XMLCipher.DECRYPT_MODE, dataEncKey);
         } catch (XMLEncryptionException e) {
+            log.error("Error initialzing cipher instance on data decryption", e);
             throw new DecryptionException("Error initialzing cipher instance on data decryption", e);
         }
         
@@ -466,15 +463,14 @@ public class Decrypter {
         try {
             bytes = xmlCipher.decryptToByteArray(targetElement);
         } catch (XMLEncryptionException e) {
+            log.error("Error decrypting the encrypted data element", e);
             throw new DecryptionException("Error decrypting the encrypted data element", e);
         }
         if (bytes == null) {
             throw new DecryptionException("EncryptedData could not be decrypted");
         }
- 
         ByteArrayInputStream input = new ByteArrayInputStream(bytes);
         DocumentFragment docFragment = parseInputStream(input, encryptedData.getDOM().getOwnerDocument());
-        
         return docFragment;
     }
     
@@ -495,6 +491,7 @@ public class Decrypter {
         }
         
         if (DatatypeHelper.isEmpty(algorithm)) {
+            log.error("Algorithm of encrypted key not supplied, key decryption cannot proceed.");
             throw new DecryptionException("Algorithm of encrypted key not supplied, key decryption cannot proceed.");
         }
         
@@ -534,29 +531,28 @@ public class Decrypter {
      */
     public Key decryptKey(EncryptedKey encryptedKey, String algorithm, Key kek) throws DecryptionException {
         if (kek == null) {
+            log.error("Data encryption key was null");
             throw new IllegalArgumentException("Data encryption key may not be null");
         }
-        
         if (DatatypeHelper.isEmpty(algorithm)) {
+            log.error("Algorithm of encrypted key not supplied, key decryption cannot proceed.");
             throw new DecryptionException("Algorithm of encrypted key not supplied, key decryption cannot proceed.");
         }
         
-        Element targetElement = encryptedKey.getDOM();
-        if (targetElement == null) {
-           Marshaller marshaller = 
-               Configuration.getMarshallerFactory().getMarshaller(EncryptedKey.DEFAULT_ELEMENT_NAME);
-           try {
-               targetElement = marshaller.marshall(encryptedKey);
-           } catch (MarshallingException e) {
-               throw new DecryptionException("Error marshalling EncryptedKey for decryption", e);
-           }
+        try {
+            checkAndMarshall(encryptedKey);
+        } catch (DecryptionException e) {
+            log.error("Error marshalling EncryptedKey for decryption", e);
+            throw e;
         }
+        Element targetElement = encryptedKey.getDOM();
         
         XMLCipher xmlCipher;
         try {
             xmlCipher = XMLCipher.getInstance();
             xmlCipher.init(XMLCipher.UNWRAP_MODE, kek);
         } catch (XMLEncryptionException e) {
+            log.error("Error initialzing cipher instance on key decryption", e);
             throw new DecryptionException("Error initialzing cipher instance on key decryption", e);
         }
         
@@ -564,6 +560,7 @@ public class Decrypter {
         try {
             encKey = xmlCipher.loadEncryptedKey(targetElement.getOwnerDocument(), targetElement);
         } catch (XMLEncryptionException e) {
+            log.error("Error when loading library native encrypted key representation", e);
             throw new DecryptionException("Error when loading library native encrypted key representation", e);
         }
         
@@ -571,6 +568,7 @@ public class Decrypter {
         try {
             key = xmlCipher.decryptKey(encKey, algorithm);
         } catch (XMLEncryptionException e) {
+            log.error("Error decrypting encrypted key", e);
             throw new DecryptionException("Error decrypting encrypted key", e);
         }
         if (key == null) {
@@ -656,7 +654,8 @@ public class Decrypter {
         try {
             newDocument = parserPool.parse(input);
         } catch (XMLParserException e) {
-            throw new DecryptionException("Error parsing decrypted input stream", e);
+            log.error("Error parsing decrypted input stream", e);
+            throw new DecryptionException("Error parsing input stream", e);
         }
         
         Element element = newDocument.getDocumentElement();
@@ -720,32 +719,37 @@ public class Decrypter {
         if (! DatatypeHelper.isEmpty(encAlgorithmURI)) {
             KeyConstraintCredentialCriteria keyCriteria = null;
         
-            String jceKeyAlgorithm = 
-                DatatypeHelper.safeTrimOrNullString(JCEMapper.getJCEKeyAlgorithmFromURI(encAlgorithmURI));
+            String jceKeyAlgorithm = SecurityHelper.getKeyAlgorithmFromURI(encAlgorithmURI);
             
             if (! DatatypeHelper.isEmpty(jceKeyAlgorithm)) {
-                keyCriteria = new KeyConstraintCredentialCriteria(jceKeyAlgorithm, null);
-                
-                String algoClass = 
-                    DatatypeHelper.safeTrimOrNullString(JCEMapper.getAlgorithmClassFromURI(encAlgorithmURI));
-                
-                if (ApacheXMLSecurityConstants.ALGO_CLASS_BLOCK_ENCRYPTION.equals(algoClass) 
-                        || ApacheXMLSecurityConstants.ALGO_CLASS_SYMMETRIC_KEY_WRAP.equals(algoClass))  {
-                    try {
-                        int keyLength = JCEMapper.getKeyLengthFromURI(encAlgorithmURI);
-                        keyCriteria.setKeyLength(keyLength);
-                    } catch (NumberFormatException e) {
-                        log.warn("XML Security config contained invalid key length value for algorithm URI: "
-                                + encAlgorithmURI);
-                    }                   
-                }
+                Integer keyLength = SecurityHelper.getKeyLengthFromURI(encAlgorithmURI);
+                keyCriteria = new KeyConstraintCredentialCriteria(jceKeyAlgorithm, keyLength);
             }
             
-           return keyCriteria;
+            return keyCriteria;
         } else {
             return null;
         }
         
+    }
+    
+    /**
+     * Ensure that the XMLObject is marshalled.
+     * 
+     * @param xmlObject the object to check and marshall
+     * @throws DecryptionException thrown if there is an error when marshalling the XMLObject
+     */
+    protected void checkAndMarshall(XMLObject xmlObject) throws DecryptionException {
+        Element targetElement = xmlObject.getDOM();
+        if(targetElement == null){
+            Marshaller marshaller = Configuration.getMarshallerFactory().getMarshaller(xmlObject);
+            try {
+                targetElement = marshaller.marshall(xmlObject);
+            } catch (MarshallingException e) {
+                log.error("Error marshalling target XMLObject", e);
+                throw new DecryptionException("Error marshalling target XMLObject", e);
+            }
+        }
     }
     
     /* NOTE: this currently won't work because Xerces doesn't implement LSParser.parseWithContext().

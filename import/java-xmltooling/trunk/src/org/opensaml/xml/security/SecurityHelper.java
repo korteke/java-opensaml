@@ -17,6 +17,7 @@
 package org.opensaml.xml.security;
 
 import java.security.Key;
+import java.security.KeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -24,6 +25,7 @@ import java.security.PublicKey;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 
+import org.apache.log4j.Logger;
 import org.apache.xml.security.algorithms.JCEMapper;
 import org.opensaml.xml.security.credential.BasicCredential;
 import org.opensaml.xml.security.credential.Credential;
@@ -33,6 +35,9 @@ import org.opensaml.xml.util.DatatypeHelper;
  * Helper methods for security-related requirements.
  */
 public final class SecurityHelper {
+    
+    /** Class logger. */
+    private static Logger log = Logger.getLogger(SecurityHelper.class);
     
     /** Constructor. */
     private SecurityHelper() {}
@@ -50,19 +55,64 @@ public final class SecurityHelper {
     }
     
     /**
+     * Get the Java security JCA/JCE key algorithm specifier associated with an algorithm URI.
+     * 
+     * @param algorithmURI the algorithm URI to evaluate
+     * @return the Java key algorithm specifier, or null if the mapping is unavailable
+     *          or indeterminable from the URI
+     */
+    public static String getKeyAlgorithmFromURI(String algorithmURI) {
+            return DatatypeHelper.safeTrimOrNullString(JCEMapper.getJCEKeyAlgorithmFromURI(algorithmURI)); 
+    }
+    
+    /**
+     * Get the length of the key indicated by the algorithm URI, if applicable and available.
+     * 
+     * @param algorithmURI the algorithm URI to evaluate
+     * @return the length of the key indicated by the algorithm URI, or null if the length is either
+     *          unavailable or indeterminable from the URI
+     */
+    public static Integer getKeyLengthFromURI(String algorithmURI) {
+        String algoClass = 
+            DatatypeHelper.safeTrimOrNullString(JCEMapper.getAlgorithmClassFromURI(algorithmURI));
+        
+        if (ApacheXMLSecurityConstants.ALGO_CLASS_BLOCK_ENCRYPTION.equals(algoClass) 
+                || ApacheXMLSecurityConstants.ALGO_CLASS_SYMMETRIC_KEY_WRAP.equals(algoClass))  {
+            
+            try {
+                int keyLength = JCEMapper.getKeyLengthFromURI(algorithmURI);
+                return new Integer(keyLength);
+            } catch (NumberFormatException e) {
+                log.warn("XML Security config contained invalid key length value for algorithm URI: "
+                        + algorithmURI);
+            }                   
+        } 
+        if (log.isInfoEnabled()) {
+            log.info("Mapping from algorithm URI '" + algorithmURI + "' to key length not available");
+        }
+        return null;
+    }
+    
+    /**
      * Generates a random Java JCE symmetric Key object from the specified XML Encryption algorithm URI.
      * 
      * @param algoURI  The XML Encryption algorithm URI
      * @return a randomly-generated symmetric Key
      * @throws NoSuchAlgorithmException thrown if the specified algorithm is invalid
+     * @throws KeyException thrown if the length of the key to generate could not be determined
      */
-    public static SecretKey generateSymmetricKey(String algoURI) throws NoSuchAlgorithmException {
-        String jceAlgorithmName = 
-            DatatypeHelper.safeTrimOrNullString(JCEMapper.getJCEKeyAlgorithmFromURI(algoURI));
+    public static SecretKey generateSymmetricKey(String algoURI) throws NoSuchAlgorithmException, KeyException {
+        String jceAlgorithmName = getKeyAlgorithmFromURI(algoURI);
         if (DatatypeHelper.isEmpty(jceAlgorithmName)) {
-            throw new NoSuchAlgorithmException("Algorithm URI'" + algoURI + "' is invalid");
+            log.error("Mapping from algorithm URI '" + algoURI 
+                    + "' to key algorithm not available, key generation failed");
+            throw new NoSuchAlgorithmException("Algorithm URI'" + algoURI + "' is invalid for key generation");
         }
-        int keyLength = JCEMapper.getKeyLengthFromURI(algoURI);
+        Integer keyLength = getKeyLengthFromURI(algoURI);
+        if (keyLength == null) {
+            log.error("Key length could not be determined from algorithm URI, can't generate key");
+            throw new KeyException("Key length not determinable from algorithm URI, could not generate new key");
+        }
         KeyGenerator keyGenerator = KeyGenerator.getInstance(jceAlgorithmName);
         keyGenerator.init(keyLength);
         return keyGenerator.generateKey();

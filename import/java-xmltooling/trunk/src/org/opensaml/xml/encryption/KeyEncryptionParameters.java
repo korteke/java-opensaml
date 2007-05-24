@@ -39,6 +39,8 @@ public class KeyEncryptionParameters extends EncryptionParameters {
     /**
      * Gets the recipient of the key.
      * 
+     * When generating an EncryptedKey, this will be used as the value of the Recipient attribute.
+     * 
      * @return the recipient of the key
      */
     public String getRecipient() {
@@ -47,6 +49,8 @@ public class KeyEncryptionParameters extends EncryptionParameters {
 
     /**
      * Sets the recipient of the key.
+     * 
+     * When generating an EncryptedKey, this will be used as the value of the Recipient attribute.
      * 
      * @param newRecipient the recipient of the key
      */

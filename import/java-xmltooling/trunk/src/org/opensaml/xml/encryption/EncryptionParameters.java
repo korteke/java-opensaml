@@ -20,17 +20,18 @@ import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.keyinfo.KeyInfoGenerator;
 
 /**
- * Parameters for encrypting content. 
+ * Parameters for encrypting XMLObjects.
  */
 public class EncryptionParameters {
 
-    /** Key used to encrypt. */
+    /** Credential used to encrypt. */
     private Credential encryptionCredential;
 
-    /** Algorithm used to encrypt. */
+    /** XML Encryption algorithm URI used to encrypt. */
     private String algorithm;
 
-    /** Information about the decryption key. */
+    /** Generator for dynamically generating a KeyInfo instance containing information
+     * from the encryption credential. */
     private KeyInfoGenerator keyInfoGenerator;
 
     /**
@@ -42,18 +43,18 @@ public class EncryptionParameters {
     }
 
     /**
-     * Gets the algorithm used to encrypt.
+     * Gets the XML Encryption algorithm URI used to encrypt.
      * 
-     * @return the algorithm used to encrypt
+     * @return the algorithm URI used to encrypt
      */
     public String getAlgorithm() {
         return this.algorithm;
     }
 
     /**
-     * Sets the algorithm used to encrypt.
+     * Sets the XML Encryption algorithm URI used to encrypt.
      * 
-     * @param newAlgorithm the algorithm used to encrypt
+     * @param newAlgorithm the algorithm URI used to encrypt
      */
     public void setAlgorithm(String newAlgorithm) {
         this.algorithm = newAlgorithm;
