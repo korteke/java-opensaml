@@ -59,7 +59,11 @@ public class ClasspathResource implements Resource {
 
     /** {@inheritDoc} */
     public boolean exists() throws ResourceException {
-        return resource == null;
+        if(resource != null){
+            return true;
+        }
+        
+        return false;
     }
 
     /** {@inheritDoc} */
