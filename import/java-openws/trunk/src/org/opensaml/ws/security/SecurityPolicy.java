@@ -16,39 +16,52 @@
 
 package org.opensaml.ws.security;
 
+import java.util.List;
+
 import javax.servlet.ServletRequest;
 
 import org.opensaml.xml.XMLObject;
 
 /**
- * A policy used to verify the security of an incoming request.  Its security mechanisms may be used to 
- * check transport layer items (e.g client certificates and basic auth passwords) and the payload valiators 
- * may be used to check the payload of a request to ensure it meets certain criteria (e.g. valid digital signature).
+ * A policy used to verify the security of an incoming request. Its security mechanisms may be used to check transport
+ * layer items (e.g client certificates and basic auth passwords) and the payload valiators may be used to check the
+ * payload of a request to ensure it meets certain criteria (e.g. valid digital signature).
  * 
  * @param <RequestType> type of incoming protocol request
- * @param <IssuerType> the message issuer type
- * 
  */
-public interface SecurityPolicy<RequestType extends ServletRequest, IssuerType> {
-    
+public interface SecurityPolicy<RequestType extends ServletRequest> {
+
     /**
-     * Get the {@link SecurityPolicyContext} instance which stores various
-     * items of state related to the evaluation of this policy.
+     * Get the {@link SecurityPolicyContext} instance which stores various items of state related to the evaluation of
+     * this policy.
      * 
-     * @return security policy context information as determined by the registered 
-     *          security policy rules
+     * @return security policy context information as determined by the registered security policy rules
      */
-    public SecurityPolicyContext<IssuerType> getSecurityPolicyContext();
-    
+    public SecurityPolicyContext getSecurityPolicyContext();
+
     /**
-     * Convenience method for getting the issuer of the message as determined by the registered validators,
-     * from the security policy context.
+     * Convenience method for getting the issuer of the message as determined by the registered validators, from the
+     * security policy context.
      * 
      * @return issuer of the message as determined by the registered validators
      */
-    public IssuerType getIssuer();
-    
-   
+    public String getIssuer();
+
+    /**
+     * Gets whether the message issuer was authenticated.
+     * 
+     * @return {@link Boolean#TRUE} if the issuer was authenticated, {@link Boolean#FALSE} if the issuer failed
+     *         authentication, or null if no authentication was attempted
+     */
+    public Boolean isIssuerAuthenticated();
+
+    /**
+     * Gets the rules that are evaluated for this policy.
+     * 
+     * @return rules that are evaluated for this policy
+     */
+    public List<SecurityPolicyRule<RequestType>> getPolicyRules();
+
     /**
      * Evaluates this policy.
      * 

@@ -22,11 +22,10 @@ import org.opensaml.xml.XMLObject;
 
 /**
  * A rule that a protocol request and message must meet in order to be valid and secure.
- *
+ * 
  * @param <RequestType> the protocol request type
- * @param <IssuerType> the message issuer type
  */
-public interface SecurityPolicyRule<RequestType extends ServletRequest, IssuerType> {
+public interface SecurityPolicyRule<RequestType extends ServletRequest> {
 
     /**
      * Evaluates the rule against the given request and message.
@@ -37,6 +36,6 @@ public interface SecurityPolicyRule<RequestType extends ServletRequest, IssuerTy
      * 
      * @throws SecurityPolicyException thrown if the request/message do not meet the requirements of this rule
      */
-    public void evaluate(RequestType request, XMLObject message, SecurityPolicyContext<IssuerType> context) 
-        throws SecurityPolicyException;
+    public void evaluate(RequestType request, XMLObject message, SecurityPolicyContext context)
+            throws SecurityPolicyException;
 }

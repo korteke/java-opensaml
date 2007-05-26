@@ -22,14 +22,13 @@ import javax.servlet.ServletRequest;
  * A factory that creates instances of a security rule.
  *
  * @param <RequestType> type of incoming protocol request
- * @param <IssuerType> the message issuer type
  */
-public interface SecurityPolicyRuleFactory<RequestType extends ServletRequest, IssuerType> {
+public interface SecurityPolicyRuleFactory<RequestType extends ServletRequest> {
 
     /**
      * Creates an instance of a policy rule.
      * 
      * @return an instance of a policy rule
      */
-    public SecurityPolicyRule<RequestType, IssuerType> createRuleInstance();
+    public SecurityPolicyRule<RequestType> createRuleInstance();
 }

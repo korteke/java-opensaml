@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.ws.security.impl;
+package org.opensaml.ws.security.provider;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -36,11 +36,9 @@ import org.opensaml.xml.XMLObject;
  * <li>Request used a secure transport (SSL, TLS) if it was required to be secure</li>
  * </ul>
  * 
- * Any option that is not set is not evaluated.
- * 
- * @param <IssuerType> the message issuer type
+ * Any option that is not set is not evaluated. No Issuer is determined or authenticated by this rule.
  */
-public class HTTPRuleFactory<IssuerType> implements SecurityPolicyRuleFactory<HttpServletRequest, IssuerType> {
+public class HTTPRuleFactory implements SecurityPolicyRuleFactory<HttpServletRequest> {
 
     /** Expected content type of the request. */
     private String contentType;
@@ -69,10 +67,10 @@ public class HTTPRuleFactory<IssuerType> implements SecurityPolicyRuleFactory<Ht
     /**
      * Sets the expected content type of the request.
      * 
-     * @param characterEncoding expected content type of the request
+     * @param encoding expected content type of the request
      */
-    public void setCharacterEncoding(String characterEncoding) {
-        this.characterEncoding = characterEncoding;
+    public void setCharacterEncoding(String encoding) {
+        characterEncoding = encoding;
     }
 
     /**
@@ -87,10 +85,10 @@ public class HTTPRuleFactory<IssuerType> implements SecurityPolicyRuleFactory<Ht
     /**
      * Sets the expected content type of the request.
      * 
-     * @param contentType expected content type of the request
+     * @param type expected content type of the request
      */
-    public void setContentType(String contentType) {
-        this.contentType = contentType;
+    public void setContentType(String type) {
+        contentType = type;
     }
 
     /**
@@ -105,10 +103,10 @@ public class HTTPRuleFactory<IssuerType> implements SecurityPolicyRuleFactory<Ht
     /**
      * Sets expected method of the request.
      * 
-     * @param requestMethod expected method of the request
+     * @param method expected method of the request
      */
-    public void setRequestMethod(String requestMethod) {
-        this.requestMethod = requestMethod;
+    public void setRequestMethod(String method) {
+        requestMethod = method;
     }
 
     /**
@@ -123,10 +121,10 @@ public class HTTPRuleFactory<IssuerType> implements SecurityPolicyRuleFactory<Ht
     /**
      * Sets the expected scheme of the request.
      * 
-     * @param requestScheme expected scheme of the request
+     * @param scheme expected scheme of the request
      */
-    public void setRequestScheme(String requestScheme) {
-        this.requestScheme = requestScheme;
+    public void setRequestScheme(String scheme) {
+        requestScheme = scheme;
     }
 
     /**
@@ -141,14 +139,14 @@ public class HTTPRuleFactory<IssuerType> implements SecurityPolicyRuleFactory<Ht
     /**
      * Sets whether a secure request is required.
      * 
-     * @param requireSecured whether a secure request is required
+     * @param secured whether a secure request is required
      */
-    public void setRequireSecured(boolean requireSecured) {
-        this.requireSecured = requireSecured;
+    public void setRequireSecured(boolean secured) {
+        requireSecured = secured;
     }
 
     /** {@inheritDoc} */
-    public SecurityPolicyRule<HttpServletRequest, IssuerType> createRuleInstance() {
+    public SecurityPolicyRule<HttpServletRequest> createRuleInstance() {
         return new HTTPRule(getContentType(), getCharacterEncoding(), getRequestScheme(), getRequestMethod(),
                 isRequireSecured());
     }
@@ -156,7 +154,7 @@ public class HTTPRuleFactory<IssuerType> implements SecurityPolicyRuleFactory<Ht
     /**
      * Policy rule for checking basic HTTP request requirements.
      */
-    protected class HTTPRule implements SecurityPolicyRule<HttpServletRequest, IssuerType> {
+    protected class HTTPRule implements SecurityPolicyRule<HttpServletRequest> {
 
         /** Expected content type of the request. */
         private String contentType;
@@ -176,56 +174,46 @@ public class HTTPRuleFactory<IssuerType> implements SecurityPolicyRuleFactory<Ht
         /**
          * Constructor.
          * 
-         * @param contentType expected content type
-         * @param characterEncoding expected character encoding
-         * @param requestScheme expected scheme
-         * @param requestMethod expected request method
-         * @param requiredSecured whether the request must be secured
+         * @param type expected content type
+         * @param encoding expected character encoding
+         * @param scheme expected scheme
+         * @param method expected request method
+         * @param secured whether the request must be secured
          */
-        public HTTPRule(String contentType, String characterEncoding, String requestScheme, String requestMethod,
-                boolean requiredSecured) {
-            this.contentType = contentType;
-            this.characterEncoding = characterEncoding;
-            this.requestScheme = requestScheme;
-            this.requestMethod = requestMethod;
-            this.requireSecured = requiredSecured;
+        public HTTPRule(String type, String encoding, String scheme, String method, boolean secured) {
+            contentType = type;
+            characterEncoding = encoding;
+            requestScheme = scheme;
+            requestMethod = method;
+            requireSecured = secured;
         }
 
         /** {@inheritDoc} */
-        public void evaluate(HttpServletRequest request, XMLObject message, SecurityPolicyContext<IssuerType> context) 
+        public void evaluate(HttpServletRequest request, XMLObject message, SecurityPolicyContext context)
                 throws SecurityPolicyException {
-            if (contentType != null) {
-                if (!request.getContentType().contains(contentType)) {
-                    throw new SecurityPolicyException("Invalid content type, expected " + contentType + " but was "
-                            + request.getContentType());
-                }
+
+            if (contentType != null && !request.getContentType().contains(contentType)) {
+                throw new SecurityPolicyException("Invalid content type, expected " + contentType + " but was "
+                        + request.getContentType());
             }
 
-            if (characterEncoding != null) {
-                if (!request.getCharacterEncoding().equals(characterEncoding)) {
-                    throw new SecurityPolicyException("Invalid character encoding, expected " + characterEncoding
-                            + " but was " + request.getCharacterEncoding());
-                }
+            if (characterEncoding != null && !request.getCharacterEncoding().equals(characterEncoding)) {
+                throw new SecurityPolicyException("Invalid character encoding, expected " + characterEncoding
+                        + " but was " + request.getCharacterEncoding());
             }
 
-            if (requestScheme != null) {
-                if (!request.getScheme().equals(requestScheme)) {
-                    throw new SecurityPolicyException("Invalid request scheme, expected " + requestScheme + " but was "
-                            + request.getScheme());
-                }
+            if (requestScheme != null && !request.getScheme().equals(requestScheme)) {
+                throw new SecurityPolicyException("Invalid request scheme, expected " + requestScheme + " but was "
+                        + request.getScheme());
             }
 
-            if (requestMethod != null) {
-                if (!request.getMethod().equals(requestMethod)) {
-                    throw new SecurityPolicyException("Invalid request method, expected " + requestMethod + " but was "
-                            + request.getMethod());
-                }
+            if (requestMethod != null && !request.getMethod().equals(requestMethod)) {
+                throw new SecurityPolicyException("Invalid request method, expected " + requestMethod + " but was "
+                        + request.getMethod());
             }
 
-            if (requireSecured) {
-                if (!request.isSecure()) {
-                    throw new SecurityPolicyException("Request was required to be secured but was not");
-                }
+            if (requireSecured && !request.isSecure()) {
+                throw new SecurityPolicyException("Request was required to be secured but was not");
             }
         }
     }

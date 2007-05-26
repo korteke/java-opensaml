@@ -16,35 +16,55 @@
 
 package org.opensaml.ws.security;
 
+import org.opensaml.xml.util.DatatypeHelper;
 
 /**
- * Stores state that is maintained by {@link SecurityPolicy} instances, and which is
- * used in the evaluation of {@link SecurityPolicyRule}'s.
- * 
- * @param <IssuerType> the message issuer type
+ * Stores state that is maintained by {@link SecurityPolicy} instances, and which is used in the evaluation of
+ * {@link SecurityPolicyRule}'s.
  */
-public class SecurityPolicyContext<IssuerType> {
-    
+public class SecurityPolicyContext {
+
     /** Message issuer, as determined by security policy rules. */
-    private IssuerType issuer;
-  
-    
+    private String issuer;
+
+    /** Whether the issuer was authenticated. */
+    private Boolean issuerAuthenticated;
+
     /**
      * Get the issuer as determined by the security policy evaluation.
      * 
      * @return the issuer of the message
      */
-    public IssuerType getIssuer() {
+    public String getIssuer() {
         return issuer;
     }
-    
+
     /**
      * Set the issuer as determined by the security policy evaluation.
      * 
      * @param newIssuer the new issuer value to store
      */
-    public void setIssuer(IssuerType newIssuer) {
-        issuer = newIssuer;
+    public void setIssuer(String newIssuer) {
+        issuer = DatatypeHelper.safeTrimOrNullString(newIssuer);
     }
 
+    /**
+     * Gets whether the message issuer was authenticated.
+     * 
+     * @return {@link Boolean#TRUE} if the issuer was authenticated, {@link Boolean#FALSE} if the issuer failed
+     *         authentication, or null if no authentication was attempted
+     */
+    public Boolean isIssuerAuthenticated() {
+        return issuerAuthenticated;
+    }
+
+    /**
+     * Sets whether the message issuer was authenticated.
+     * 
+     * @param authenticated <code>true</code> if the issuer was authenticated, <code>false</code> if the issuer
+     *            failed authentication
+     */
+    public void setIssuerAuthenticated(boolean authenticated) {
+        issuerAuthenticated = authenticated;
+    }
 }
