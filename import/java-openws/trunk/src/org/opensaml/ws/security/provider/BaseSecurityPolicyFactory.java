@@ -47,6 +47,18 @@ public abstract class BaseSecurityPolicyFactory<RequestType extends ServletReque
     }
 
     /**
+     * Sets the factories for the security policy rules for the security policy produced by this factory.
+     * 
+     * @param ruleFactories Factories for the security policy rules for the security policy produced by this factory
+     */
+    public void setPolicyRuleFactories(List<SecurityPolicyRuleFactory<RequestType>> ruleFactories) {
+        if(ruleFactories == null){
+            throw new IllegalArgumentException("Security policy rule factory list may not be null");
+        }
+        policyRuleFactories = ruleFactories;
+    }
+
+    /**
      * Gets a set of newly built {@link SecurityPolicyRule}s from the registered factories. Created rules are in the
      * same order as the registered factories.
      * 
