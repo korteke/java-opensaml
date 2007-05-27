@@ -32,8 +32,7 @@ public interface SecurityPolicyFactory<RequestType extends ServletRequest> {
      * 
      * @return list of security policy rule factories used to create the rules within a security policy
      */
-    public List<SecurityPolicyRuleFactory<RequestType>> getPolicyRules();
-    
+    public List<SecurityPolicyRuleFactory<RequestType>> getPolicyRuleFactories();
     
     /**
      * Creates an instance of a policy.
