@@ -118,9 +118,23 @@ public class HttpResource implements Resource {
     public String getLocation() {
         return resourceUrl;
     }
-    
+
     /** {@inheritDoc} */
     public String toString() {
         return getLocation();
+    }
+
+    /** {@inheritDoc} */
+    public int hashCode() {
+        return getLocation().hashCode();
+    }
+
+    /** {@inheritDoc} */
+    public boolean equals(Object o) {
+        if (o instanceof HttpResource) {
+            return getLocation().equals(((ClasspathResource) o).getLocation());
+        }
+
+        return false;
     }
 }

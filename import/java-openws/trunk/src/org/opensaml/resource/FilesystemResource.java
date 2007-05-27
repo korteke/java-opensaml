@@ -99,4 +99,18 @@ public class FilesystemResource implements Resource {
     public String toString() {
         return getLocation();
     }
+    
+    /** {@inheritDoc} */
+    public int hashCode() {
+        return getLocation().hashCode();
+    }
+    
+    /** {@inheritDoc} */
+    public boolean equals(Object o) {
+        if(o instanceof FilesystemResource){
+            return getLocation().equals(((ClasspathResource)o).getLocation());
+        }
+        
+        return false;
+    }
 }
