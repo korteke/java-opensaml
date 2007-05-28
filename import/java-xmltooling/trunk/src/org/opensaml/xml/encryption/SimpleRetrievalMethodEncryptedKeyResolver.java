@@ -21,6 +21,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.opensaml.xml.XMLObject;
+import org.opensaml.xml.signature.KeyInfo;
 import org.opensaml.xml.signature.RetrievalMethod;
 import org.opensaml.xml.util.DatatypeHelper;
 
