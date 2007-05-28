@@ -46,26 +46,6 @@ public class FilesystemResource implements Resource {
         
         resource = new File(resourcePath);
     }
-    
-    /**
-     * Constructor.  A reference to the given file object is not kept instead 
-     * another file object is created pointing to the same file.
-     *
-     * @param resourceFile the file represented by this resource
-     * 
-     * @throws ResourceException thrown if the given file is null or a directory
-     */
-    public FilesystemResource(File resourceFile) throws ResourceException{
-        if(resourceFile == null){
-            throw new ResourceException("Resource file is null");
-        }
-        
-        if(!resourceFile.isFile()){
-            throw new ResourceException("Resource file is not a file");
-        }
-        
-        this.resource = new File(resourceFile.getAbsolutePath());
-    }
 
     /** {@inheritDoc} */
     public boolean exists() throws ResourceException {
