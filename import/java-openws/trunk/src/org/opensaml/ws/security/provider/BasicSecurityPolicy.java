@@ -76,7 +76,6 @@ public class BasicSecurityPolicy<RequestType extends ServletRequest> implements 
     public BasicSecurityPolicy(boolean authenticatedIssuer) {
         requireAuthenticatedIssuer = authenticatedIssuer;
         securityRules = new ArrayList<SecurityPolicyRule<RequestType>>();
-        policyContext = createNewContext();
     }
 
     /** {@inheritDoc} */
@@ -101,6 +100,7 @@ public class BasicSecurityPolicy<RequestType extends ServletRequest> implements 
 
     /** {@inheritDoc} */
     public void evaluate(RequestType request, XMLObject message) throws SecurityPolicyException {
+        policyContext = createNewContext();
         ArrayList<Boolean> issuerAuthenticationTracker = new ArrayList<Boolean>(securityRules.size());
         for (SecurityPolicyRule<RequestType> rule : securityRules) {
             rule.evaluate(request, message, policyContext);
