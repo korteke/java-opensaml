@@ -30,7 +30,7 @@ import org.opensaml.xml.security.trust.TrustEngine;
  * A tranport may authenticate its peer. If it chooses to do so the retrieval of the credentials presented by the peer,
  * through the transport, is a transport implementation specific task as is the type of credential(s) supported. The
  * retrieved credential is then validated using the provided {@link TrustEngine} against a trusted credential retrieved
- * from the given {@link CredentialResolver}. The {@link CredentialCriteria} that may be created by the transport is,
+ * from the given {@link CredentialResolver}. The criteria that may be created by the transport is,
  * again, implementation specific. If some criteria information is known prior to the invocation of the transport it may
  * be added to the criteria set returned by {@link #getTrustedCredentialCriteria()} any point prior to the establishment
  * of the connection (after which it may still be added but will not effect the established connection).

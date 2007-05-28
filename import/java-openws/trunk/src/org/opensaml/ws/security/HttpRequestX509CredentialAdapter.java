@@ -26,8 +26,7 @@ import org.opensaml.xml.security.x509.BasicX509Credential;
 import org.opensaml.xml.security.x509.X509Credential;
 
 /**
- * An adapter that exposes the X.509 certificates contained in the HTTP request attribute as an
- * {@link X509Credentiall}.
+ * An adapter that exposes the X.509 certificates contained in the HTTP request attribute.
  */
 public class HttpRequestX509CredentialAdapter extends BasicX509Credential implements X509Credential {
 
