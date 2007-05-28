@@ -25,7 +25,7 @@ import org.opensaml.ws.soap.soap11.Detail;
 public class DetailImpl extends AbstractExtensibleSOAPObject implements Detail {
 
     /**
-     * Constructor
+     * Constructor.
      * 
      * @param namespaceURI namespace of the element
      * @param elementLocalName name of the element

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.util;
+package org.opensaml.util.storage;
 
 import java.io.Serializable;
 import java.util.concurrent.locks.Lock;

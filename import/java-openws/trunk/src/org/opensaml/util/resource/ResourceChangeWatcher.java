@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.resource;
+package org.opensaml.util.resource;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +22,7 @@ import java.util.TimerTask;
 
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
-import org.opensaml.resource.ResourceChangeListener.ResourceChange;
+import org.opensaml.util.resource.ResourceChangeListener.ResourceChange;
 
 /**
  * A watcher that invokes a callback when a resource update/deletion has been detected.
@@ -172,7 +172,7 @@ public class ResourceChangeWatcher extends TimerTask {
             if (currentRetryAttempts >= maxRetryAttempts) {
                 cancel();
                 log.error("Resource " + watchedResource.getLocation()
-                            + " was not accessible for max number of retry attempts.  This resource will no longer be watched");
+                   + " was not accessible for max number of retry attempts.  This resource will no longer be watched");
             }
         }
     }

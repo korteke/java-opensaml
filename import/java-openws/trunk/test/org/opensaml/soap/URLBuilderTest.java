@@ -16,7 +16,7 @@
 
 package org.opensaml.soap;
 
-import org.opensaml.ws.util.URLBuilder;
+import org.opensaml.util.URLBuilder;
 
 import junit.framework.TestCase;
 

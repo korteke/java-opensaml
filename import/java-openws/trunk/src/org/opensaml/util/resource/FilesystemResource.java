@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.resource;
+package org.opensaml.util.resource;
 
 import java.io.File;
 import java.io.FileInputStream;

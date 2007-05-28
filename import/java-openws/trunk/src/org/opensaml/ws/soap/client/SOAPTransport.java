@@ -20,7 +20,6 @@ import java.io.InputStream;
 
 import org.opensaml.ws.MessageSource;
 import org.opensaml.xml.security.credential.Credential;
-import org.opensaml.xml.security.credential.CredentialCriteria;
 import org.opensaml.xml.security.credential.CredentialCriteriaSet;
 import org.opensaml.xml.security.credential.CredentialResolver;
 import org.opensaml.xml.security.trust.TrustEngine;

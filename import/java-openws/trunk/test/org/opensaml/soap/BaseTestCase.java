@@ -41,19 +41,19 @@ import org.w3c.dom.Element;
  */
 public abstract class BaseTestCase extends XMLTestCase {
 
-    /** Logger */
+    /** Logger. */
     private static Logger log = Logger.getLogger(BaseTestCase.class);
 
-    /** Parser pool */
+    /** Parser pool. */
     protected static BasicParserPool parserPool;
 
-    /** XMLObject builder factory */
+    /** XMLObject builder factory. */
     protected static XMLObjectBuilderFactory builderFactory;
 
-    /** XMLObject marshaller factory */
+    /** XMLObject marshaller factory. */
     protected static MarshallerFactory marshallerFactory;
 
-    /** XMLObject unmarshaller factory */
+    /** XMLObject unmarshaller factory. */
     protected static UnmarshallerFactory unmarshallerFactory;
     
     /** {@inheritDoc} */

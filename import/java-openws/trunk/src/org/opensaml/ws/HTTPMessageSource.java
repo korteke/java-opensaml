@@ -20,7 +20,7 @@ import java.util.List;
 
 import javax.servlet.http.Cookie;
 
-import org.opensaml.ws.util.URLBuilder;
+import org.opensaml.util.URLBuilder;
 
 /**
  * A source of messages delivered by HTTP.

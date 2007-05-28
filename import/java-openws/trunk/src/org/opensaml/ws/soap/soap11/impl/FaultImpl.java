@@ -56,47 +56,47 @@ public class FaultImpl extends AbstractValidatingXMLObject implements Fault {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
-    /** {@inheritDoc } */
+    /** {@inheritDoc} */
     public FaultCode getCode() {
         return faultCode;
     }
 
-    /** {@inheritDoc } */
+    /** {@inheritDoc} */
     public void setCode(FaultCode newFaultCode) {
         faultCode = prepareForAssignment(faultCode, newFaultCode);
     }
 
-    /** {@inheritDoc } */
+    /** {@inheritDoc} */
     public FaultString getMessage() {
         return message;
     }
 
-    /** {@inheritDoc } */
+    /** {@inheritDoc} */
     public void setMessage(FaultString newMessage) {
         message = prepareForAssignment(message, newMessage);
     }
 
-    /** {@inheritDoc } */
+    /** {@inheritDoc} */
     public FaultActor getActor() {
         return actor;
     }
 
-    /** {@inheritDoc } */
+    /** {@inheritDoc} */
     public void setActor(FaultActor newActor) {
         actor = prepareForAssignment(actor, newActor);
     }
 
-    /** {@inheritDoc } */
+    /** {@inheritDoc} */
     public Detail getDetail() {
         return detail;
     }
 
-    /** {@inheritDoc } */
+    /** {@inheritDoc} */
     public void setDetail(Detail newDetail) {
         detail = prepareForAssignment(detail, newDetail);
     }
 
-    /** {@inheritDoc } */
+    /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
         FastList<XMLObject> children = new FastList<XMLObject>();
         

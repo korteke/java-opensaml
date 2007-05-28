@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-package org.opensaml.ws.util;
+package org.opensaml.util;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URI;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
@@ -61,21 +60,20 @@ public class URLBuilder {
     private String fragement;
 
     /**
-     * Constructor
+     * Constructor.
      */
     public URLBuilder() {
         queryParams = new FastList<Pair<String, String>>();
     }
 
     /**
-     * Constructor. The provided URL will be decoded using {@link URI}. Further processing will then be done in order
-     * to extract additional information.
+     * Constructor.
      * 
      * @param baseURL URL to parse and use as basis for creating other URLs
      * 
      * @throws IllegalArgumentException thrown if the given base URL is not well formed
      */
-    public URLBuilder(String baseURL) throws IllegalArgumentException {
+    public URLBuilder(String baseURL) {
         try {
             URL url = new URL(baseURL);
 
@@ -136,10 +134,10 @@ public class URLBuilder {
     /**
      * Sets the URL fragment in its decoded form.
      * 
-     * @param fragement URL fragment in its decoded form
+     * @param newFragement URL fragment in its decoded form
      */
-    public void setFragement(String fragement) {
-        this.fragement = DatatypeHelper.safeTrimOrNullString(fragement);
+    public void setFragement(String newFragement) {
+        fragement = DatatypeHelper.safeTrimOrNullString(newFragement);
     }
 
     /**
@@ -154,10 +152,10 @@ public class URLBuilder {
     /**
      * Sets the host component of the URL.
      * 
-     * @param host host component of the URL
+     * @param newHost host component of the URL
      */
-    public void setHost(String host) {
-        this.host = DatatypeHelper.safeTrimOrNullString(host);
+    public void setHost(String newHost) {
+        host = DatatypeHelper.safeTrimOrNullString(newHost);
     }
 
     /**
@@ -172,10 +170,10 @@ public class URLBuilder {
     /**
      * Sets the user's password in the URL.
      * 
-     * @param password user's password in the URL
+     * @param newPassword user's password in the URL
      */
-    public void setPassword(String password) {
-        this.password = DatatypeHelper.safeTrimOrNullString(password);
+    public void setPassword(String newPassword) {
+        password = DatatypeHelper.safeTrimOrNullString(newPassword);
     }
 
     /**
@@ -190,10 +188,10 @@ public class URLBuilder {
     /**
      * Sets the path component of the URL.
      * 
-     * @param path path component of the URL
+     * @param newPath path component of the URL
      */
-    public void setPath(String path) {
-        this.path = DatatypeHelper.safeTrimOrNullString(path);
+    public void setPath(String newPath) {
+        path = DatatypeHelper.safeTrimOrNullString(newPath);
     }
 
     /**
@@ -208,10 +206,10 @@ public class URLBuilder {
     /**
      * Sets the port component of the URL.
      * 
-     * @param port port component of the URL
+     * @param newPort port component of the URL
      */
-    public void setPort(int port) {
-        this.port = port;
+    public void setPort(int newPort) {
+        port = newPort;
     }
 
     /**
@@ -235,10 +233,10 @@ public class URLBuilder {
     /**
      * Sets the URL scheme (http, https, etc).
      * 
-     * @param scheme URL scheme (http, https, etc)
+     * @param newScheme URL scheme (http, https, etc)
      */
-    public void setScheme(String scheme) {
-        this.scheme = DatatypeHelper.safeTrimOrNullString(scheme);
+    public void setScheme(String newScheme) {
+        scheme = DatatypeHelper.safeTrimOrNullString(newScheme);
     }
 
     /**
@@ -253,10 +251,10 @@ public class URLBuilder {
     /**
      * Sets the user name component of the URL.
      * 
-     * @param username user name component of the URL
+     * @param newUsername user name component of the URL
      */
-    public void setUsername(String username) {
-        this.username = DatatypeHelper.safeTrimOrNullString(username);
+    public void setUsername(String newUsername) {
+        username = DatatypeHelper.safeTrimOrNullString(newUsername);
     }
 
     /**

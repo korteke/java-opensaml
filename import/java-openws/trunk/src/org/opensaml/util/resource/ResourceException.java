@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.resource;
+package org.opensaml.util.resource;
 
 /**
  * Indicates a problem accessing a resource.

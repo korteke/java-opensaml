@@ -39,10 +39,10 @@ import org.w3c.dom.Element;
  */
 public class SOAPTest extends BaseTestCase {
     
-    /** Path, on classpath, to SOAP message test document */
+    /** Path, on classpath, to SOAP message test document. */
     private String soapMessage;
     
-    /** Path, on classpath, to SOAP fault test document */
+    /** Path, on classpath, to SOAP fault test document. */
     private String soapFault;
     
     private QName expectedFaultCode;

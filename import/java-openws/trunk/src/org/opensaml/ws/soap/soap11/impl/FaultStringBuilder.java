@@ -33,6 +33,7 @@ public class FaultStringBuilder extends AbstractXMLObjectBuilder<FaultString> im
 
     /** {@inheritDoc} */
     public FaultString buildObject() {
-        return buildObject(SOAPConstants.SOAP11_NS, FaultString.DEFAULT_ELEMENT_LOCAL_NAME, SOAPConstants.SOAP11_PREFIX);
+        return buildObject(SOAPConstants.SOAP11_NS, FaultString.DEFAULT_ELEMENT_LOCAL_NAME,
+                SOAPConstants.SOAP11_PREFIX);
     }
 }

@@ -21,6 +21,9 @@ import org.opensaml.ws.soap.soap11.Detail;
 import org.opensaml.ws.soap.util.SOAPConstants;
 import org.opensaml.xml.AbstractXMLObjectBuilder;
 
+/**
+ * Builder of {@link DetailImpl} objects.
+ */
 public class DetailBuilder extends AbstractXMLObjectBuilder<Detail> implements SOAPObjectBuilder<Detail>{
 
     /**

@@ -48,27 +48,27 @@ public class EnvelopeImpl extends AbstractExtensibleSOAPObject implements Envelo
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
-    /** {@inheritDoc } */
+    /** {@inheritDoc} */
     public Header getHeader() {
         return header;
     }
 
-    /** {@inheritDoc } */
+    /** {@inheritDoc} */
     public void setHeader(Header newHeader) {
         header = prepareForAssignment(header, newHeader);
     }
 
-    /** {@inheritDoc } */
+    /** {@inheritDoc} */
     public Body getBody() {
         return body;
     }
 
-    /** {@inheritDoc } */
+    /** {@inheritDoc} */
     public void setBody(Body newBody) {
         body = prepareForAssignment(body, newBody);
     }
 
-    /** {@inheritDoc } */
+    /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
         FastList<XMLObject> children = new FastList<XMLObject>();
 
