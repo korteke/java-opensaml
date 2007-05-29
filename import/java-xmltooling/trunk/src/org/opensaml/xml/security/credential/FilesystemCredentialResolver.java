@@ -14,14 +14,12 @@
  * limitations under the License.
  */
 
-package org.opensaml.xml.security.x509;
+package org.opensaml.xml.security.credential;
 
 import java.util.Map;
 
-import org.opensaml.xml.security.credential.AbstractCredentialResolver;
-import org.opensaml.xml.security.credential.Credential;
-import org.opensaml.xml.security.credential.CredentialCriteriaSet;
-import org.opensaml.xml.security.credential.CredentialResolver;
+//TODO amend docs (and impl) for symmetric key storage and retrieval
+
 
 /**
  * A {@link CredentialResolver} that pulls credential information from the file system.

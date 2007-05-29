@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.xml.security.x509;
+package org.opensaml.xml.security.credential;
 
 import java.security.GeneralSecurityException;
 import java.security.KeyStore;
@@ -28,13 +28,7 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.opensaml.xml.security.SecurityException;
-import org.opensaml.xml.security.credential.AbstractCredentialResolver;
-import org.opensaml.xml.security.credential.EntityCredentialCriteria;
-import org.opensaml.xml.security.credential.Credential;
-import org.opensaml.xml.security.credential.CredentialCriteriaSet;
-import org.opensaml.xml.security.credential.CredentialResolver;
-import org.opensaml.xml.security.credential.UsageCredentialCriteria;
-import org.opensaml.xml.security.credential.UsageType;
+import org.opensaml.xml.security.x509.BasicX509Credential;
 import org.opensaml.xml.util.DatatypeHelper;
 
 /**
@@ -56,6 +50,8 @@ public class KeyStoreCredentialResolver extends AbstractCredentialResolver  impl
 
     /** Usage type of all keys in the store. */
     private UsageType keyUsage;
+    
+    //TODO implement support for SecretKey retrieval, returning BasicCredential
 
     /**
      * Constructor.

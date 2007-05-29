@@ -36,7 +36,6 @@ import org.opensaml.xml.parse.XMLParserException;
 import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.SecurityTestHelper;
 import org.opensaml.xml.security.credential.Credential;
-import org.opensaml.xml.security.x509.SignatureValidator;
 import org.opensaml.xml.signature.impl.SignatureBuilder;
 import org.opensaml.xml.util.XMLHelper;
 import org.opensaml.xml.validation.ValidationException;

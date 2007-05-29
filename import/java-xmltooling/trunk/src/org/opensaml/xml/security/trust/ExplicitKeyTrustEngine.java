@@ -14,13 +14,16 @@
  * limitations under the License.
  */
 
-package org.opensaml.xml.security.x509;
+package org.opensaml.xml.security.trust;
 
 import java.security.PublicKey;
 
+
 import org.apache.log4j.Logger;
 import org.opensaml.xml.security.SecurityException;
-import org.opensaml.xml.security.trust.TrustEngine;
+import org.opensaml.xml.security.x509.X509Credential;
+
+//TODO refactor for Key equality (and for new interface)
 
 /**
  * Trust engine that evaluates X509 credentials aginst key expressed within a given trusted credential.
@@ -29,10 +32,10 @@ import org.opensaml.xml.security.trust.TrustEngine;
  * public keys produced by the given key resolver or the public keys of any of the certificates produced by the key
  * resolver.
  */
-public class BasicX509CredentialTrustEngine implements TrustEngine<X509Credential, X509Credential> {
+public class ExplicitKeyTrustEngine implements TrustEngine<X509Credential, X509Credential> {
 
     /** Class logger. */
-    private static Logger log = Logger.getLogger(BasicX509CredentialTrustEngine.class);
+    private static Logger log = Logger.getLogger(ExplicitKeyTrustEngine.class);
 
     /** {@inheritDoc} */
     public boolean validate(X509Credential untrustedCredential, X509Credential trustedCredential)

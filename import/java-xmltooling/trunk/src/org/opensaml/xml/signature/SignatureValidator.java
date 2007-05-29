@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.xml.security.x509;
+package org.opensaml.xml.signature;
 
 import java.security.Key;
 
@@ -23,7 +23,6 @@ import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.signature.XMLSignatureException;
 import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.credential.Credential;
-import org.opensaml.xml.signature.Signature;
 import org.opensaml.xml.signature.impl.SignatureImpl;
 import org.opensaml.xml.validation.ValidationException;
 import org.opensaml.xml.validation.Validator;
