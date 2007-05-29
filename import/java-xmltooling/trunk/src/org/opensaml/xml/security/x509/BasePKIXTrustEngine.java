@@ -36,9 +36,10 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.opensaml.xml.security.trust.AbstractTrustEngine;
 
 /**
- * Base class for trust engines that validate tokens using PKIX validation.
+ * Base class for trust engines that validate X.509 credentials using PKIX validation.
  * 
  * Name checking is enabled by default. If it is enabled during a validation then the trust engine will verify that the
  * untrusted credential's entity certificate's CN component of the subject DN, DNS subjectAltName, or URI subjectAltName
@@ -47,11 +48,8 @@ import org.apache.log4j.Logger;
  * engine will assume the untrusted credential is not a valid credential for validation against the trusted credential
  * information and will abort the validation.
  * 
- * @param <TokenType> token to be validated
- * @param <TrustedCredentialType> trusted credential information the given token will be checked against
  */
-public abstract class BasePKIXTrustEngine<TokenType, TrustedCredentialType extends X509Credential> implements
-        PKIXTrustEngine<TokenType, TrustedCredentialType> {
+public abstract class BasePKIXTrustEngine extends AbstractTrustEngine<X509Credential> implements PKIXTrustEngine {
 
     /** Class logger. */
     private static Logger log = Logger.getLogger(BasePKIXTrustEngine.class);

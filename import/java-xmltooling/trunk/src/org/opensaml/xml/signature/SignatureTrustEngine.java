@@ -18,34 +18,41 @@ package org.opensaml.xml.signature;
 
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.credential.Credential;
+import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xml.security.trust.TrustEngine;
 
 /**
  * Evaluates the trustworthiness and validity of XML or raw Signatures against implementation-specific requirements.
- * 
- * @param <TrustedCredentialType> type of credential to validate the signature against
  */
-public interface SignatureTrustEngine<TrustedCredentialType extends Credential> extends
-        TrustEngine<Signature, TrustedCredentialType> {
+public interface SignatureTrustEngine extends TrustEngine<Signature> {
+    
+    /**
+     * Get the KeyInfoCredentialResolver instance used to resolve (advisory) signing credential information
+     * from KeyInfo elements contained within a Signature element.
+     * 
+     * Note that credential(s) obtained via this resolver are not themselves trusted.  They must be evaluated
+     * against the trusted credential information obtained from the trusted credential resolver.
+     * 
+     * @return a KeyInfoCredentialResolver instance
+     */
+    public KeyInfoCredentialResolver getKeyInfoResolver();
 
     /**
-     * Determines whether a raw signature is correct and valid with respect to the source of KeyInfo data supplied. It
-     * is the responsibility of the application to ensure that the KeyInfo information supplied is in fact associated
-     * with the peer who created the signature.
+     * Determines whether a raw signature is valid with respect to the Credential data supplied.
      * 
-     * Note that the keyInfo parameter is not part of the implicitly trusted set of key information supplied via the
-     * KeyInfoSource, but rather advisory data that may have accompanied the signature itself.
+     * It is the responsibility of the application to ensure that the Credential information supplied is in
+     * fact associated with the peer who created the signature.
      * 
      * @param signature the signature value
      * @param content the content that was signed
-     * @param sigAlg the signature algorithm used
-     * @param trustedCredential credential information to validate signature against
+     * @param algorithm the signature algorithm used
+     * @param credential credential containing the validation key for the signature
      * 
      * @return true if the signature was valid for the provided content
      * 
      * @throws SecurityException thrown if there is a problem attempting to verify the signature such as the signature
      *             algorithim not being supported
      */
-    public boolean validate(byte[] signature, byte[] content, String sigAlg, TrustedCredentialType trustedCredential)
-            throws SecurityException;
+    public boolean validate(byte[] signature, byte[] content, String algorithm, Credential credential) 
+        throws SecurityException;
 }

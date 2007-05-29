@@ -16,58 +16,99 @@
 
 package org.opensaml.xml.security.trust;
 
-import java.security.PublicKey;
-
+import java.security.Key;
 
 import org.apache.log4j.Logger;
 import org.opensaml.xml.security.SecurityException;
-import org.opensaml.xml.security.x509.X509Credential;
-
-//TODO refactor for Key equality (and for new interface)
+import org.opensaml.xml.security.credential.Credential;
+import org.opensaml.xml.security.credential.CredentialCriteriaSet;
+import org.opensaml.xml.security.credential.CredentialResolver;
 
 /**
- * Trust engine that evaluates X509 credentials aginst key expressed within a given trusted credential.
+ * Trust engine that evaluates a credential's key against key(s) expressed within a set of trusted credentials
+ * obtained from a credential resolver.
  * 
- * The credential being tested is valid if its public key or the public key of its entity certificate matches any of the
- * public keys produced by the given key resolver or the public keys of any of the certificates produced by the key
- * resolver.
+ * The credential being tested is valid if its public key or secret key matches the
+ * public key, or secret key respectively, contained within any of the trusted credentials produced
+ * by the given credential resolver.
  */
-public class ExplicitKeyTrustEngine implements TrustEngine<X509Credential, X509Credential> {
+public class ExplicitKeyTrustEngine extends AbstractTrustEngine<Credential> implements TrustEngine<Credential> {
 
     /** Class logger. */
     private static Logger log = Logger.getLogger(ExplicitKeyTrustEngine.class);
+    
+    /**
+     * Constructor.
+     * 
+     * @param credentialResolver credential resolver which is used to resolve trusted credentials
+     */
+    public ExplicitKeyTrustEngine(CredentialResolver credentialResolver) {
+        if (credentialResolver == null) {
+            throw new IllegalArgumentException("Credential resolver may not be null");
+        }
+        setCredentialResolver(credentialResolver); 
+    }
 
     /** {@inheritDoc} */
-    public boolean validate(X509Credential untrustedCredential, X509Credential trustedCredential)
+    protected boolean validate(Credential untrustedCredential, Credential trustedCredential)
             throws SecurityException {
-
-        if (untrustedCredential == null) {
+        
+        Key untrustedKey = null;
+        Key trustedKey = null;
+        if (untrustedCredential.getPublicKey() != null) {
+            untrustedKey = untrustedCredential.getPublicKey();
+            trustedKey = trustedCredential.getPublicKey();
+        } else {
+            untrustedKey = untrustedCredential.getSecretKey();
+            trustedKey = trustedCredential.getSecretKey();
+        }
+        if (untrustedKey == null) {
+            if (log.isDebugEnabled()) {
+                log.debug("Untrusted credential contained no key, unable to evaluate");
+            }
             return false;
-        }
-
-        if (log.isDebugEnabled()) {
-            log.debug("Validating X509 credential for entity " + untrustedCredential.getEntityId());
-        }
-
-        PublicKey trustedKey = trustedCredential.getPublicKey();
-        PublicKey credentialKey = untrustedCredential.getPublicKey();
-        if (trustedKey == null || credentialKey == null) {
+        } else if (trustedKey == null) {
+            if (log.isDebugEnabled()) {
+                log.debug("Trusted credential contained no key of the appropriate type, unable to evaluate");
+            }
             return false;
         }
         
-        if (trustedKey.equals(credentialKey)) {
+        if (untrustedKey.equals(trustedKey)) {
             if (log.isDebugEnabled()) {
-                log.debug("Validated X509 credential for entity " + untrustedCredential.getEntityId()
-                        + " against trusted public keys");
+                log.debug("Validated credential for entity " + untrustedCredential.getEntityId()
+                        + " against trusted key");
             }
             return true;
         }
 
         if (log.isDebugEnabled()) {
-            log.debug("X509 credential for entity " + untrustedCredential.getEntityId()
-                    + " did not validated against any trusted keys");
+            log.debug("Credential for entity " + untrustedCredential.getEntityId()
+                    + " did not validate against trusted key");
         }
 
         return false;
     }
+
+    /** {@inheritDoc} */
+    public boolean validate(Credential untrustedCredential, CredentialCriteriaSet trustedCredentialCriteria) 
+            throws SecurityException {
+        
+        if (untrustedCredential == null) {
+            return false;
+        }
+
+        if (log.isDebugEnabled()) {
+            log.debug("Validating credential for entity " + untrustedCredential.getEntityId());
+        }
+        
+        for (Credential trustedCredential : getCredentialResolver().resolveCredentials(trustedCredentialCriteria)) {
+            if (validate(untrustedCredential, trustedCredential)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+    
 }

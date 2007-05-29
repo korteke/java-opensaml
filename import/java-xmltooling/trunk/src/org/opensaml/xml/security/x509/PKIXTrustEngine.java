@@ -19,11 +19,7 @@ package org.opensaml.xml.security.x509;
 import org.opensaml.xml.security.trust.TrustEngine;
 
 /**
- * Trust engine that validates security tokens using PKIX validation.
- * 
- * @param <TokenType> token to validate
- * @param <TrustedCredentialType> trusted credential information the given token will be checked against
+ * Trust engine that validates X.509 credentials using PKIX validation.
  */
-public interface PKIXTrustEngine<TokenType, TrustedCredentialType extends X509Credential> extends
-        TrustEngine<TokenType, TrustedCredentialType> {
+public interface PKIXTrustEngine extends TrustEngine<X509Credential> {
 }
