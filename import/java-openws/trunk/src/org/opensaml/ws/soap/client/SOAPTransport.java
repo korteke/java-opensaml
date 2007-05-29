@@ -103,14 +103,14 @@ public interface SOAPTransport<CredentialType extends Credential> {
      * 
      * @return trust engine to use to evaluate a peer's connection credentials
      */
-    public TrustEngine<CredentialType, CredentialType> getPeerConnectionAuthenticatingTrustEngine();
+    public TrustEngine<CredentialType> getPeerConnectionAuthenticatingTrustEngine();
 
     /**
      * Sets the trust engine to use to evaluate a peer's connection credentials.
      * 
      * @param trustEngine trust engine to use to evaluate a peer's connection credentials
      */
-    public void setPeerConnectionAuthenticatingTrustEngine(TrustEngine<CredentialType, CredentialType> trustEngine);
+    public void setPeerConnectionAuthenticatingTrustEngine(TrustEngine<CredentialType> trustEngine);
 
     /**
      * Sends the SOAP message over this transport.

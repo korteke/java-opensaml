@@ -39,7 +39,7 @@ public abstract class AbstractSOAPTransport<CredentialType extends Credential>
     private CredentialCriteriaSet trustedCredentialCriteria;
 
     /** Trust engine used to validate peer's connection authentication credential. */
-    private TrustEngine<CredentialType, CredentialType> peerCtxAuthnTrustEngine;
+    private TrustEngine<CredentialType> peerCtxAuthnTrustEngine;
     
     /** Connection timeout in milliseconds. */
     private long requestTimeout;
@@ -55,7 +55,7 @@ public abstract class AbstractSOAPTransport<CredentialType extends Credential>
     }
 
     /** {@inheritDoc} */
-    public TrustEngine<CredentialType, CredentialType> getPeerConnectionAuthenticatingTrustEngine() {
+    public TrustEngine<CredentialType> getPeerConnectionAuthenticatingTrustEngine() {
         return peerCtxAuthnTrustEngine;
     }
 
@@ -70,7 +70,7 @@ public abstract class AbstractSOAPTransport<CredentialType extends Credential>
     }
 
     /** {@inheritDoc} */
-    public void setPeerConnectionAuthenticatingTrustEngine(TrustEngine<CredentialType, CredentialType> trustEngine) {
+    public void setPeerConnectionAuthenticatingTrustEngine(TrustEngine<CredentialType> trustEngine) {
         peerCtxAuthnTrustEngine = trustEngine;
     }
 
