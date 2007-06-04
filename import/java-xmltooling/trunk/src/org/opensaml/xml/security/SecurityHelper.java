@@ -187,6 +187,22 @@ public final class SecurityHelper {
     }
     
     /**
+     * Get the key length in bits of the specified key.
+     * 
+     * @param key the key to evaluate
+     * @return length of the key in bits, or null if the length can not be determined
+     */
+    public static Integer getKeyLength(Key key) {
+        // TODO investigate techniques (and use cases) to determine length in other cases,
+        // e.g. RSA and DSA keys, and non-RAW format symmetric keys
+        if (key instanceof SecretKey && "RAW".equals(key.getFormat())) {
+            return key.getEncoded().length;
+        }
+        log.debug("Unable to determine length in bits of specified Key instance");
+        return null;
+    }
+    
+    /**
      * Get a simple, minimal credential containing a secret (symmetric) key.
      * 
      * @param secretKey the symmetric key to wrap

@@ -60,7 +60,9 @@ import org.opensaml.xml.util.DatatypeHelper;
  * of {@link X509SubjectName}, {@link X509IssuerSerial}, or {@link X509SKI} are also present, they
  * will be used to identify the end-entity certificate, in accordance with the XML Signature specification.
  * If a public key from a previously resolved {@link KeyValue} is available in the resolution context,
- * it will also be used to identify the end-entity certificate.
+ * it will also be used to identify the end-entity certificate. If the end-entity certificate can not
+ * otherwise be identified, the cert contained in the first X509Certificate element will be treated as
+ * the end-entity certificate.
  * 
  */
 public class X509DataProvider extends AbstractKeyInfoProvider {
@@ -93,6 +95,9 @@ public class X509DataProvider extends AbstractKeyInfoProvider {
      * @param handler the new X500DNHandler instance
      */
     public void setX500DNHandler(X500DNHandler handler) {
+        if (handler == null) {
+            throw new IllegalArgumentException("X500DNHandler may not be null");
+        }
         x500DNHandler = handler;
     }
 
@@ -235,7 +240,10 @@ public class X509DataProvider extends AbstractKeyInfoProvider {
         
         // TODO use some heuristic algorithm to try and figure it out based on the cert list alone.
         //      This would be in X509Utils or somewhere else external to this class.
-        return null;
+        
+        // As a final fallback, treat the first cert in the X509Data element as the entity cert
+        log.debug("Treating the first certificate in the X509Data as the end-entity certificate");
+        return certs.get(0);
     }
     
     /**

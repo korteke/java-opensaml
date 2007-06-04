@@ -272,6 +272,9 @@ public class X509KeyInfoGeneratorFactory extends BasicKeyInfoGeneratorFactory {
      * @param handler the new X500DNHandler instance
      */
     public void setX500DNHandler(X500DNHandler handler) {
+        if (handler == null) {
+            throw new IllegalArgumentException("X500DNHandler may not be null");
+        }
         options.x500DNHandler = handler;
     }
     
