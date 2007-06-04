@@ -32,6 +32,7 @@ import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallerFactory;
 import org.opensaml.xml.io.Unmarshaller;
 import org.opensaml.xml.io.UnmarshallerFactory;
+import org.opensaml.xml.security.SecurityConfiguration;
 import org.opensaml.xml.util.XMLConstants;
 import org.opensaml.xml.validation.ValidatorSuite;
 import org.w3c.dom.Element;
@@ -68,6 +69,9 @@ public class Configuration {
     
     /** Configured set of attribute QNames which have been globally registered as having an ID type. */
     private static Set<QName> idAttributeNames = new CopyOnWriteArraySet<QName>();
+    
+    /** Configured global security configuration information. */
+    private static SecurityConfiguration globalSecurityConfig;
     
     /** Constructor. */
     protected Configuration(){
@@ -239,6 +243,24 @@ public class Configuration {
      */
     public static boolean isIDAttribute(QName attributeName) {
         return idAttributeNames.contains(attributeName);
+    }
+    
+    /**
+     * Get the global security configuration.
+     * 
+     * @return the global security configuration instance
+     */
+    public static SecurityConfiguration getGlobalSecurityConfiguration() {
+        return globalSecurityConfig;
+    }
+    
+    /**
+     * Set the global security configuration.
+     * 
+     * @param config the new global security configuration instance
+     */
+    public static void setGlobalSecurityConfiguration(SecurityConfiguration config) {
+        globalSecurityConfig = config;
     }
     
     /**
