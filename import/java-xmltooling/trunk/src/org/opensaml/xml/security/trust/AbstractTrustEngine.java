@@ -39,6 +39,9 @@ public abstract class AbstractTrustEngine<TokenType> implements TrustEngine<Toke
      * @param resolver trust credential resolver
      */
     protected void setCredentialResolver(CredentialResolver resolver) {
+        if (resolver == null) {
+            throw new IllegalArgumentException("Credential resolver may not be null");
+        }
        credentialResolver = resolver; 
     }
 

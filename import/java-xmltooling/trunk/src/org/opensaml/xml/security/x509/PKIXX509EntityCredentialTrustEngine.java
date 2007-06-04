@@ -16,11 +16,14 @@
 
 package org.opensaml.xml.security.x509;
 
+import java.util.HashSet;
+
 import org.apache.log4j.Logger;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.credential.CredentialCriteriaSet;
 import org.opensaml.xml.security.credential.CredentialResolver;
+import org.opensaml.xml.util.DatatypeHelper;
 
 /**
  * A trust engine that uses the X509 certificate and CRLs associated with a role to perform PKIX validation on security
@@ -47,24 +50,7 @@ public class PKIXX509EntityCredentialTrustEngine extends BasePKIXTrustEngine {
         setCredentialResolver(credentialResolver);
         verificationDepth = depth;
     }
-
-    /** {@inheritDoc} */
-    protected boolean validate(X509Credential untrustedCredential, X509Credential trustedCredential)
-            throws SecurityException {
-        
-        if (!checkName(untrustedCredential, trustedCredential)) {
-            return false;
-        }
-
-        if (log.isDebugEnabled()) {
-            log.debug("Beginning PKIX validation process");
-        }
-
-        PKIXValidationInformation validationInfo = new BasicPKIXValdiationInformation(trustedCredential
-                .getEntityCertificateChain(), trustedCredential.getCRLs(), verificationDepth);
-        return pkixValidate(validationInfo, untrustedCredential);
-    }
-
+ 
     /** {@inheritDoc} */
     public boolean validate(X509Credential untrustedCredential, CredentialCriteriaSet trustedCredentialCriteria) 
             throws SecurityException {
@@ -81,26 +67,59 @@ public class PKIXX509EntityCredentialTrustEngine extends BasePKIXTrustEngine {
             return false;
         }
         
-        for (Credential trustedCredential : getCredentialResolver().resolveCredentials(trustedCredentialCriteria)) {
+        return validate(untrustedCredential, getCredentialResolver().resolveCredentials(trustedCredentialCriteria));
+    }
+    
+    public boolean validate(X509Credential untrustedX509Credential, Iterable<Credential> trustedCredentials) 
+            throws SecurityException {
+        
+        for (Credential trustedCredential : trustedCredentials) {
             if ( ! (trustedCredential instanceof X509Credential)) {
                 if (log.isDebugEnabled()) {
                     log.debug("Skipping evaluation against trusted, non-X509Credential");
                 }
                 continue;
             }
-            
             X509Credential trustedX509Credential = (X509Credential) trustedCredential;
-            if (trustedX509Credential.getEntityCertificate() == null) {
-                log.error("Trusted X.509 credential's entity certificate was null, unable to perform validation");
-                continue;
-            }
-            
-            if (validate(untrustedCredential, trustedX509Credential)) {
+            if (validate(untrustedX509Credential, trustedX509Credential)) {
                 return true;
             }
         }
-
+        
         return false;
+    }
+    
+    public boolean validate(X509Credential untrustedCredential, X509Credential trustedCredential)
+            throws SecurityException {
+        
+        if (!checkName(untrustedCredential, trustedCredential)) {
+            return false;
+        }
+
+        log.debug("Beginning PKIX validation process");
+
+        PKIXValidationInformation validationInfo = new BasicPKIXValdiationInformation(trustedCredential
+                .getEntityCertificateChain(), trustedCredential.getCRLs(), verificationDepth);
+        return pkixValidate(validationInfo, untrustedCredential);
+    }
+
+    /**
+     * Checks whether any of the supported name values contained within the entity certificate of
+     * the specified credential matches any of the trusted key names or the entity ID from the 
+     * trusted credential.
+     * 
+     * @param untrustedCredential the credential for the entity to validate
+     * @param trustedCredential the trusted credential containing the trusted names and entity ID against
+     *        which the untrusted credential will be evaluated
+     * 
+     * @return true if the name check succeeds, false if not
+     */
+    protected boolean checkName(X509Credential untrustedCredential, X509Credential trustedCredential) {
+        HashSet<String> trustedNames = new HashSet<String>(trustedCredential.getKeyNames());
+        if (! DatatypeHelper.isEmpty(trustedCredential.getEntityId())) {
+            trustedNames.add(trustedCredential.getEntityId());
+        }
+        return super.checkName(untrustedCredential, trustedNames);
     }
     
 }
