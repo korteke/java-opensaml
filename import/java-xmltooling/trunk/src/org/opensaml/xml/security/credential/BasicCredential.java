@@ -56,7 +56,11 @@ public class BasicCredential extends AbstractCredential {
      * @param usage usage type for this credential
      */
     public void setUsageType(UsageType usage) {
-        usageType = usage;
+        if (usage != null) {
+            usageType = usage;
+        } else {
+            usageType = UsageType.UNSPECIFIED;
+        }
     }
 
     /**
