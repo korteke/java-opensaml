@@ -16,8 +16,6 @@
 
 package org.opensaml.xml.security.trust;
 
-import java.security.Key;
-
 import org.apache.log4j.Logger;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.credential.Credential;
@@ -26,78 +24,40 @@ import org.opensaml.xml.security.credential.CredentialResolver;
 
 /**
  * Trust engine that evaluates a credential's key against key(s) expressed within a set of trusted credentials
- * obtained from a credential resolver.
+ * obtained from a trusted credential resolver.
  * 
  * The credential being tested is valid if its public key or secret key matches the
  * public key, or secret key respectively, contained within any of the trusted credentials produced
  * by the given credential resolver.
  */
-public class ExplicitKeyTrustEngine extends AbstractTrustEngine<Credential> implements TrustEngine<Credential> {
+public class ExplicitKeyTrustEngine implements TrustedCredentialTrustEngine<Credential> {
 
     /** Class logger. */
     private static Logger log = Logger.getLogger(ExplicitKeyTrustEngine.class);
     
+    /** Resolver used for resolving trusted credentials. */
+    private CredentialResolver credentialResolver;
+    
+    /** Trust evaluator. */
+    private ExplicitKeyTrustEvaluator trustEvaluator;
+    
     /**
      * Constructor.
      * 
-     * @param credentialResolver credential resolver which is used to resolve trusted credentials
+     * @param resolver credential resolver which is used to resolve trusted credentials
      */
-    public ExplicitKeyTrustEngine(CredentialResolver credentialResolver) {
-        if (credentialResolver == null) {
+    public ExplicitKeyTrustEngine(CredentialResolver resolver) {
+        if (resolver == null) {
             throw new IllegalArgumentException("Credential resolver may not be null");
         }
-        setCredentialResolver(credentialResolver); 
+        credentialResolver = resolver;
+        
+        trustEvaluator = new ExplicitKeyTrustEvaluator();
     }
 
-    public boolean validate(Credential untrustedCredential, Credential trustedCredential)
-            throws SecurityException {
-        
-        Key untrustedKey = null;
-        Key trustedKey = null;
-        if (untrustedCredential.getPublicKey() != null) {
-            untrustedKey = untrustedCredential.getPublicKey();
-            trustedKey = trustedCredential.getPublicKey();
-        } else {
-            untrustedKey = untrustedCredential.getSecretKey();
-            trustedKey = trustedCredential.getSecretKey();
-        }
-        if (untrustedKey == null) {
-            if (log.isDebugEnabled()) {
-                log.debug("Untrusted credential contained no key, unable to evaluate");
-            }
-            return false;
-        } else if (trustedKey == null) {
-            if (log.isDebugEnabled()) {
-                log.debug("Trusted credential contained no key of the appropriate type, unable to evaluate");
-            }
-            return false;
-        }
-        
-        if (untrustedKey.equals(trustedKey)) {
-            if (log.isDebugEnabled()) {
-                log.debug("Validated credential for entity " + untrustedCredential.getEntityId()
-                        + " against trusted key");
-            }
-            return true;
-        }
-
-        if (log.isDebugEnabled()) {
-            log.debug("Credential for entity " + untrustedCredential.getEntityId()
-                    + " did not validate against trusted key");
-        }
-
-        return false;
-    }
-    
-    public boolean validate(Credential untrustedCredential, Iterable<Credential> trustedCredentials) 
-            throws SecurityException {
-        
-        for (Credential trustedCredential : trustedCredentials) {
-            if (validate(untrustedCredential, trustedCredential)) {
-                return true;
-            }
-        }
-        return false;
+    /** {@inheritDoc} */
+    public CredentialResolver getCredentialResolver() {
+        return credentialResolver;
     }
 
     /** {@inheritDoc} */
@@ -112,7 +72,8 @@ public class ExplicitKeyTrustEngine extends AbstractTrustEngine<Credential> impl
             log.debug("Validating credential for entity " + untrustedCredential.getEntityId());
         }
         
-        return validate(untrustedCredential, getCredentialResolver().resolveCredentials(trustedCredentialCriteria));
+        return trustEvaluator.validate(untrustedCredential, 
+                getCredentialResolver().resolveCredentials(trustedCredentialCriteria));
     }
     
 }

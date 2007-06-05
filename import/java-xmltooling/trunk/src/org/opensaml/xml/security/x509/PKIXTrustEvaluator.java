@@ -37,27 +37,25 @@ import java.util.Set;
 import javax.security.auth.x500.X500Principal;
 
 import org.apache.log4j.Logger;
-import org.opensaml.xml.security.trust.AbstractTrustEngine;
 import org.opensaml.xml.util.DatatypeHelper;
 
 /**
- * Base class for trust engines that validate X.509 credentials using PKIX validation.
+ * Auxillary trust evaluator that validates X.509 credentials using PKIX validation.
  * 
- * <p>The main entry point for trust engine implementations based on this class is:
- * {@link #pkixValidate(PKIXValidationInformation, X509Credential)}.  Subclasses should construct
+ * <p>The main entry point for calling implementations is:
+ * {@link #pkixValidate(PKIXValidationInformation, X509Credential)}.  Callers should construct
  * an appropriate set of PKIX validation information from a source of trusted information.</p>
  * 
- * <p>Subclasses may perform optional name checking using {@link #checkName(X509Credential, Set)}.
+ * <p>Callers may perform optional trusted key name checking using {@link #checkName(X509Credential, Set)}.
  * This name check can be used to verify that at least one of the supported name type values contained 
  * within the untrusted credential's entity certificate matches at least one value from the set of trusted 
  * key names supplied from trusted credential information. If the supplied set of trusted key names
  * is null or empty, the match is considered successful.</p>
  * 
- * <p>Name checking may be performed automatically by using the overloaded method 
+ * <p>Name checking may be performed in conjunction with PKIX validation by using the overloaded method 
  * {@link #pkixValidate(PKIXValidationInformation, Set, X509Credential)}. If there is a match, the trust engine 
  * will procceed with the more costly PKIX validation. If there is no match, the engine will assume 
- * the untrusted credential is not a valid credential for validation against the trusted credential 
- * information and will abort the validation.</p>
+ * the untrusted credential is not a valid credential and will abort the validation.</p>
  * 
  * <p>Supported types of certificate-derived names for name checking purposes are:
  * <ol>
@@ -79,10 +77,10 @@ import org.opensaml.xml.util.DatatypeHelper;
  * used is {@link InternalX500DNHandler}.</p>
  * 
  */
-public abstract class BasePKIXTrustEngine extends AbstractTrustEngine<X509Credential> implements PKIXTrustEngine {
+public class PKIXTrustEvaluator {
 
     /** Class logger. */
-    private static Logger log = Logger.getLogger(BasePKIXTrustEngine.class);
+    private static Logger log = Logger.getLogger(PKIXTrustEvaluator.class);
     
     /** Flag as to whether to perform name checking using untrusted credential's subject alt names. */
     private boolean checkSubjectAltNames;
@@ -98,18 +96,20 @@ public abstract class BasePKIXTrustEngine extends AbstractTrustEngine<X509Creden
     
     /** Responsible for parsing and serializing X.500 names to/from {@link X500Principal} instances. */
     private X500DNHandler x500DNHandler;
+
     
     /** Constructor. */
-    protected BasePKIXTrustEngine() {
-       x500DNHandler = new InternalX500DNHandler();
-       subjectAltNameTypes = new HashSet<Integer>();
+    public PKIXTrustEvaluator() {
+
+        x500DNHandler = new InternalX500DNHandler();
+        subjectAltNameTypes = new HashSet<Integer>();
        
-       // Add some defaults
-       setCheckSubjectAltNames(true);
-       setCheckSubjectDNCommonName(true);
-       setCheckSubjectDN(true);
-       subjectAltNameTypes.add(X509Util.DNS_ALT_NAME);
-       subjectAltNameTypes.add(X509Util.URI_ALT_NAME);
+        // Add some defaults
+        setCheckSubjectAltNames(true);
+        setCheckSubjectDNCommonName(true);
+        setCheckSubjectDN(true);
+        subjectAltNameTypes.add(X509Util.DNS_ALT_NAME);
+        subjectAltNameTypes.add(X509Util.URI_ALT_NAME);
     }
 
     /**
@@ -391,7 +391,7 @@ public abstract class BasePKIXTrustEngine extends AbstractTrustEngine<X509Creden
      * @throws SecurityException thrown if there is a problem attempting the validation
      */
     @SuppressWarnings("unchecked")
-    protected boolean pkixValidate(PKIXValidationInformation validationInfo, Set<String> trustedNames,
+    public boolean pkixValidate(PKIXValidationInformation validationInfo, Set<String> trustedNames,
             X509Credential untrustedCredential) throws SecurityException {
         
         if (! checkName(untrustedCredential, trustedNames)) {
@@ -413,7 +413,7 @@ public abstract class BasePKIXTrustEngine extends AbstractTrustEngine<X509Creden
      * @throws SecurityException thrown if there is a problem attempting the validation
      */
     @SuppressWarnings("unchecked")
-    protected boolean pkixValidate(PKIXValidationInformation validationInfo, X509Credential untrustedCredential)
+    public boolean pkixValidate(PKIXValidationInformation validationInfo, X509Credential untrustedCredential)
             throws SecurityException {
         if (log.isDebugEnabled()) {
             log.debug("Attempting PKIX path validation on untrusted credential " + untrustedCredential.getEntityId());

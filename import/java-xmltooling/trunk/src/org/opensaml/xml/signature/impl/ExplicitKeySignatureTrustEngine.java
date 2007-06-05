@@ -22,25 +22,31 @@ import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.credential.CredentialCriteriaSet;
 import org.opensaml.xml.security.credential.CredentialResolver;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
-import org.opensaml.xml.security.trust.ExplicitKeyTrustEngine;
+import org.opensaml.xml.security.trust.ExplicitKeyTrustEvaluator;
+import org.opensaml.xml.security.trust.TrustedCredentialTrustEngine;
 import org.opensaml.xml.signature.Signature;
+import org.opensaml.xml.signature.SignatureTrustEngine;
 
 /**
  * An implementation of {@link SignatureTrustEngine} which evaluates the validity and trustworthiness
  * of XML and raw signatures.
  * 
  * <p>Processing is first performed as described in {@link BaseSignatureTrustEngine}. If based on this processing,
- * it is determined that the Signature's KeyInfo is not present or does not contain a valid (and trusted)
+ * it is determined that the Signature's KeyInfo is not present or does not contain a resolveable valid (and trusted)
  * signing key, then all trusted credentials obtained by the trusted credential resolver will be used 
  * to attempt to validate the signature.</p>
  */
-public class ExplicitKeySignatureTrustEngine extends BaseSignatureTrustEngine {
+public class ExplicitKeySignatureTrustEngine extends BaseSignatureTrustEngine<Iterable<Credential>>
+    implements TrustedCredentialTrustEngine<Signature>{
     
     /** Class logger. */
     private static Logger log = Logger.getLogger(ExplicitKeySignatureTrustEngine.class);
     
+    /** Resolver used for resolving trusted credentials. */
+    private CredentialResolver credentialResolver;
+    
     /** The external explicit key trust engine to use as a basis for trust in this implementation. */
-    private ExplicitKeyTrustEngine keyTrustEngine;
+    private ExplicitKeyTrustEvaluator keyTrust;
     
     /**
      * Constructor.
@@ -50,9 +56,18 @@ public class ExplicitKeySignatureTrustEngine extends BaseSignatureTrustEngine {
      *          from a Signature's KeyInfo element.
      */
     public ExplicitKeySignatureTrustEngine(CredentialResolver resolver, KeyInfoCredentialResolver keyInfoResolver) {
-        super(resolver, keyInfoResolver);
+        super(keyInfoResolver);
+        if (resolver == null) {
+            throw new IllegalArgumentException("Credential resolver may not be null");
+        }
+        credentialResolver = resolver;
         
-        keyTrustEngine = new ExplicitKeyTrustEngine(resolver);
+        keyTrust = new ExplicitKeyTrustEvaluator();
+    }
+    
+    /** {@inheritDoc} */
+    public CredentialResolver getCredentialResolver() {
+        return credentialResolver;
     }
 
     /** {@inheritDoc} */
@@ -85,7 +100,7 @@ public class ExplicitKeySignatureTrustEngine extends BaseSignatureTrustEngine {
     protected boolean evaluateTrust(Credential untrustedCredential, Iterable<Credential> trustedCredentials) 
             throws SecurityException {
         
-        return keyTrustEngine.validate(untrustedCredential, trustedCredentials);
+        return keyTrust.validate(untrustedCredential, trustedCredentials);
             
     }
 

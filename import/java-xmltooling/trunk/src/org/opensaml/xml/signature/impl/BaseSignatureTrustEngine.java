@@ -20,12 +20,10 @@ import org.apache.log4j.Logger;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.credential.CredentialCriteriaSet;
-import org.opensaml.xml.security.credential.CredentialResolver;
 import org.opensaml.xml.security.credential.UsageCredentialCriteria;
 import org.opensaml.xml.security.credential.UsageType;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialCriteria;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
-import org.opensaml.xml.security.trust.AbstractTrustEngine;
 import org.opensaml.xml.signature.Signature;
 import org.opensaml.xml.signature.SignatureTrustEngine;
 import org.opensaml.xml.signature.SignatureValidator;
@@ -37,14 +35,17 @@ import org.opensaml.xml.validation.ValidationException;
  * 
  * <p>When processing XML signatures, the supplied KeyInfoCredentialResolver will be used to resolve credential(s)
  * containing the (advisory) signing key from the KeyInfo element of the Signature, if present.  If any of these
- * credentials do contain the valid signing key, they will be evaluated for trustworthiness against the 
- * set of trusted credentials supplied by the trusted credential resolver.</p>
+ * credentials do contain the valid signing key, they will be evaluated for trustworthiness against 
+ * trusted information, which will be resolved in an implementation-specific manner.
  * 
- * <p>Subclasses are required to implement {@link #evaluateTrust(Credential, Iterable)} using an
+ * <p>Subclasses are required to implement {@link #evaluateTrust(Credential, Object)} using an
  * implementation-specific trust model.</p>
  * 
+ * @param <TrustBasisType> the type of trusted information which has been resolved and which will
+ *          serve as the basis for trust evaluation
+ * 
  */
-public abstract class BaseSignatureTrustEngine extends AbstractTrustEngine<Signature> implements SignatureTrustEngine {
+public abstract class BaseSignatureTrustEngine<TrustBasisType> implements SignatureTrustEngine {
     
     /** Class logger. */
     private static Logger log = Logger.getLogger(BaseSignatureTrustEngine.class);
@@ -55,19 +56,14 @@ public abstract class BaseSignatureTrustEngine extends AbstractTrustEngine<Signa
     /**
      * Constructor.
      *
-     * @param resolver credential resolver used to resolve trusted credentials.
      * @param keyInfoResolver KeyInfo credential resolver used to obtain the (advisory) signing credential 
      *          from a Signature's KeyInfo element.
      */
-    public BaseSignatureTrustEngine(CredentialResolver resolver, KeyInfoCredentialResolver keyInfoResolver) {
-        if (resolver == null) {
-            throw new IllegalArgumentException("Credential resolver may not be null");
-        }
+    public BaseSignatureTrustEngine(KeyInfoCredentialResolver keyInfoResolver) {
         if (keyInfoResolver == null) {
             throw new IllegalArgumentException("KeyInfo credential resolver may not be null");
         }
         
-        setCredentialResolver(resolver);
         keyInfoCredentialResolver = keyInfoResolver;
     }
 
@@ -86,16 +82,16 @@ public abstract class BaseSignatureTrustEngine extends AbstractTrustEngine<Signa
     /**
      * Attempt to establish trust by resolving signature verification credentials from the Signature's KeyInfo.
      * If any credentials so resolved correctly verify the signature, attempt to establish trust
-     * using subclass-specific trust logic against each trusted credential as implemented in 
-     * {@link #evaluateTrust(Credential, Credential)}.
+     * using subclass-specific trust logic against trusted information as implemented in 
+     * {@link #evaluateTrust(Credential, Object)}.
      * 
      * @param signature the Signature to evaluate
-     * @param trustedCredentials previously resolved trusted credentials
+     * @param trustBasis the information which serves as the basis for trust evaluation
      * @return true if the signature is verified by any KeyInfo-derived credential which can
      *          be established as trusted, otherwise false
      * @throws SecurityException if an error occurs during signature verification or trust processing
      */
-    protected boolean validate(Signature signature, Iterable<Credential> trustedCredentials) throws SecurityException {
+    protected boolean validate(Signature signature, TrustBasisType trustBasis) throws SecurityException {
         
         log.debug("Attempting to verify signature and establish trust using KeyInfo-derived credentials");
         
@@ -108,7 +104,7 @@ public abstract class BaseSignatureTrustEngine extends AbstractTrustEngine<Signa
                 if (verifySignature(signature, kiCred)) {
                     log.debug("Successfully verified signature using KeyInfo-derived credential");
                     log.debug("Attempting to establish trust of KeyInfo-derived credential");
-                    if (evaluateTrust(kiCred, trustedCredentials)) {
+                    if (evaluateTrust(kiCred, trustBasis)) {
                         log.debug("Successfully established trust of KeyInfo-derived credential");
                         return true;
                     } else {
@@ -125,16 +121,16 @@ public abstract class BaseSignatureTrustEngine extends AbstractTrustEngine<Signa
     }
     
     /**
-     * Evaluate the untrusted credential with respect to the specified trusted credential.
+     * Evaluate the untrusted KeyInfo-derived credential with respect to the specified trusted information.
      * 
      * @param untrustedCredential the untrusted credential being evaluated
-     * @param trustedCredentials the credentials which serve as a basis for trust evaluation
+     * @param trustBasis the information which serves as the basis for trust evaluation
      * 
      * @return true if the trust can be established for the untrusted credential, otherwise false
      * 
      * @throws SecurityException if an error occurs during trust processing
      */
-    protected abstract boolean evaluateTrust(Credential untrustedCredential, Iterable<Credential> trustedCredentials)
+    protected abstract boolean evaluateTrust(Credential untrustedCredential, TrustBasisType trustBasis)
             throws SecurityException;
 
     /**

@@ -30,7 +30,7 @@ import org.opensaml.xml.security.credential.CredentialCriteriaSet;
  * 
  * @param <TokenType> the token type this trust engine evaluates
  */
-public class ChainingTrustEngine<TokenType> extends AbstractTrustEngine<TokenType> implements TrustEngine<TokenType> {
+public class ChainingTrustEngine<TokenType> implements TrustEngine<TokenType> {
     
     /** Class logger. */
     private static Logger log = Logger.getLogger(ChainingTrustEngine.class);
