@@ -32,7 +32,7 @@ public class BasicPKIXValdiationInformation implements PKIXValidationInformation
     private Collection<X509CRL> trustedCRLs;
 
     /** Max verification depth during PKIX validation. */
-    private int verificationDepth;
+    private Integer verificationDepth;
 
     /**
      * Constructor.
@@ -41,7 +41,9 @@ public class BasicPKIXValdiationInformation implements PKIXValidationInformation
      * @param crls CRLs used during validation
      * @param depth max verification path depth
      */
-    public BasicPKIXValdiationInformation(Collection<X509Certificate> anchors, Collection<X509CRL> crls, int depth) {
+    public BasicPKIXValdiationInformation(Collection<X509Certificate> anchors, Collection<X509CRL> crls,
+            Integer depth) {
+        
         trustAnchors = anchors;
         trustedCRLs = crls;
         verificationDepth = depth;
@@ -58,7 +60,7 @@ public class BasicPKIXValdiationInformation implements PKIXValidationInformation
     }
 
     /** {@inheritDoc} */
-    public int getVerificationDepth() {
+    public Integer getVerificationDepth() {
         return verificationDepth;
     }
 }

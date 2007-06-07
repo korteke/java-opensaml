@@ -130,7 +130,7 @@ public class CertChainX509DataTest extends XMLObjectBaseTestCase {
         KeyInfo keyInfo = 
             (KeyInfo) unmarshallElement("/data/org/opensaml/xml/security/keyinfo/X509CertificatesWithKeyValue.xml");
         CredentialCriteriaSet criteriaSet = new CredentialCriteriaSet( new KeyInfoCredentialCriteria(keyInfo) );
-        Iterator<Credential> iter = resolver.resolveCredentials(criteriaSet).iterator();
+        Iterator<Credential> iter = resolver.resolve(criteriaSet).iterator();
         
         assertTrue("No credentials were found", iter.hasNext());
         
@@ -165,7 +165,7 @@ public class CertChainX509DataTest extends XMLObjectBaseTestCase {
         KeyInfo keyInfo = 
             (KeyInfo) unmarshallElement("/data/org/opensaml/xml/security/keyinfo/X509CertificatesWithSubjectName.xml");
         CredentialCriteriaSet criteriaSet = new CredentialCriteriaSet( new KeyInfoCredentialCriteria(keyInfo) );
-        Iterator<Credential> iter = resolver.resolveCredentials(criteriaSet).iterator();
+        Iterator<Credential> iter = resolver.resolve(criteriaSet).iterator();
         
         assertTrue("No credentials were found", iter.hasNext());
         
@@ -200,7 +200,7 @@ public class CertChainX509DataTest extends XMLObjectBaseTestCase {
         KeyInfo keyInfo = 
             (KeyInfo) unmarshallElement("/data/org/opensaml/xml/security/keyinfo/X509CertificatesWithIssuerSerial.xml");
         CredentialCriteriaSet criteriaSet = new CredentialCriteriaSet( new KeyInfoCredentialCriteria(keyInfo) );
-        Iterator<Credential> iter = resolver.resolveCredentials(criteriaSet).iterator();
+        Iterator<Credential> iter = resolver.resolve(criteriaSet).iterator();
         
         assertTrue("No credentials were found", iter.hasNext());
         
@@ -235,7 +235,7 @@ public class CertChainX509DataTest extends XMLObjectBaseTestCase {
         KeyInfo keyInfo = 
             (KeyInfo) unmarshallElement("/data/org/opensaml/xml/security/keyinfo/X509CertificatesWithSKI.xml");
         CredentialCriteriaSet criteriaSet = new CredentialCriteriaSet( new KeyInfoCredentialCriteria(keyInfo) );
-        Iterator<Credential> iter = resolver.resolveCredentials(criteriaSet).iterator();
+        Iterator<Credential> iter = resolver.resolve(criteriaSet).iterator();
         
         assertTrue("No credentials were found", iter.hasNext());
         

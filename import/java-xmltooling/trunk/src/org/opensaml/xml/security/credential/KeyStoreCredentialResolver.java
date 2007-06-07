@@ -96,7 +96,7 @@ public class KeyStoreCredentialResolver extends AbstractCredentialResolver  impl
     }
 
     /** {@inheritDoc} */
-    public Iterable<Credential> resolveCredentials(CredentialCriteriaSet criteriaSet) throws SecurityException {
+    public Iterable<Credential> resolve(CredentialCriteriaSet criteriaSet) throws SecurityException {
         Set<Credential> credentials = new HashSet<Credential>();
         
         checkCriteriaRequirements(criteriaSet);
@@ -117,6 +117,7 @@ public class KeyStoreCredentialResolver extends AbstractCredentialResolver  impl
             keyPassword = new KeyStore.PasswordProtection(keyPasswords.get(entity).toCharArray());
         }
 
+        //TODO cleanup processing, set entity ID, usage
         BasicX509Credential credential = new BasicX509Credential();
         credential.setEntityId(entity);
         try {

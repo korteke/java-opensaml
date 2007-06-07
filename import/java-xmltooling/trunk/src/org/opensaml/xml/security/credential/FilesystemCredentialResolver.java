@@ -49,7 +49,7 @@ public class FilesystemCredentialResolver extends AbstractCredentialResolver imp
     }
 
     /** {@inheritDoc} */
-    public Iterable<Credential> resolveCredentials(CredentialCriteriaSet criteriaSet) {
+    public Iterable<Credential> resolve(CredentialCriteriaSet criteriaSet) {
         // TODO Auto-generated method stub
         return null;
     }

@@ -17,10 +17,14 @@
 package org.opensaml.xml.signature.impl;
 
 import org.apache.log4j.Logger;
+import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
+import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.credential.CredentialCriteriaSet;
 import org.opensaml.xml.security.credential.CredentialResolver;
+import org.opensaml.xml.security.credential.UsageCredentialCriteria;
+import org.opensaml.xml.security.credential.UsageType;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xml.security.trust.ExplicitKeyTrustEvaluator;
 import org.opensaml.xml.security.trust.TrustedCredentialTrustEngine;
@@ -71,13 +75,16 @@ public class ExplicitKeySignatureTrustEngine extends BaseSignatureTrustEngine<It
     }
 
     /** {@inheritDoc} */
-    public boolean validate(Signature signature, CredentialCriteriaSet trustedCredentialCriteria) 
+    public boolean validate(Signature signature, CriteriaSet trustBasisCriteria) 
             throws SecurityException {
         
-        checkParams(signature, trustedCredentialCriteria);
+        checkParams(signature, trustBasisCriteria);
+        CredentialCriteriaSet credentialCriteria = SecurityHelper.getCredentialCriteria(trustBasisCriteria);
+        if (! credentialCriteria.contains(UsageCredentialCriteria.class)) {
+            credentialCriteria.add( new UsageCredentialCriteria(UsageType.SIGNING));
+        }
         
-        Iterable<Credential> trustedCredentials = 
-            getCredentialResolver().resolveCredentials(trustedCredentialCriteria);
+        Iterable<Credential> trustedCredentials = getCredentialResolver().resolve(credentialCriteria);
         
         if (validate(signature, trustedCredentials)) {
             return true;
@@ -101,7 +108,6 @@ public class ExplicitKeySignatureTrustEngine extends BaseSignatureTrustEngine<It
             throws SecurityException {
         
         return keyTrust.validate(untrustedCredential, trustedCredentials);
-            
     }
 
 }

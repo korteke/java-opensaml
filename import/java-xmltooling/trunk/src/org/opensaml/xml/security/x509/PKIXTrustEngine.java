@@ -16,11 +16,20 @@
 
 package org.opensaml.xml.security.x509;
 
-import org.opensaml.xml.security.trust.TrustedCredentialTrustEngine;
+import org.opensaml.xml.security.trust.TrustEngine;
 
 /**
- * Trust engine that validates X.509 credentials using PKIX validation.
+ * Trust engine that validates tokens using PKIX validation.
+ * 
+ * @param <TokenType> the token type this trust engine evaluates
  */
-public interface PKIXTrustEngine extends TrustedCredentialTrustEngine<X509Credential> {
+public interface PKIXTrustEngine<TokenType> extends TrustEngine<TokenType> {
+    
+    /**
+     * Get the resolver instance which will be used to resolve PKIX validation information.
+     * 
+     * @return the currently configured resolver instance
+     */
+    public PKIXValidationInformationResolver getPKIXResolver();
     
 }

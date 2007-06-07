@@ -1,7 +1,7 @@
 package org.opensaml.xml.security.trust;
 
+import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
-import org.opensaml.xml.security.credential.CredentialCriteriaSet;
 
 /**
  * Evaluates the trustworthiness and validity of a token against 
@@ -23,6 +23,5 @@ public interface TrustEngine<TokenType> {
      *
      * @throws SecurityException thrown if there is a problem validating the security token
      */
-    public boolean validate(TokenType token, CredentialCriteriaSet trustBasisCriteria) 
-           throws SecurityException;
+    public boolean validate(TokenType token, CriteriaSet trustBasisCriteria) throws SecurityException;
 }

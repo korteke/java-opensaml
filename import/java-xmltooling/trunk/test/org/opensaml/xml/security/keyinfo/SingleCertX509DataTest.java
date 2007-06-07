@@ -89,7 +89,7 @@ public class SingleCertX509DataTest extends XMLObjectBaseTestCase {
         KeyInfo keyInfo = 
             (KeyInfo) unmarshallElement("/data/org/opensaml/xml/security/keyinfo/SingleX509Certificate.xml");
         CredentialCriteriaSet criteriaSet = new CredentialCriteriaSet( new KeyInfoCredentialCriteria(keyInfo) );
-        Iterator<Credential> iter = resolver.resolveCredentials(criteriaSet).iterator();
+        Iterator<Credential> iter = resolver.resolve(criteriaSet).iterator();
         
         assertTrue("No credentials were found", iter.hasNext());
         

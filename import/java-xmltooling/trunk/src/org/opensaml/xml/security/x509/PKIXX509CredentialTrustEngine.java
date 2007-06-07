@@ -16,30 +16,25 @@
 
 package org.opensaml.xml.security.x509;
 
-import java.util.HashSet;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
-import org.opensaml.xml.security.credential.Credential;
-import org.opensaml.xml.security.credential.CredentialCriteriaSet;
-import org.opensaml.xml.security.credential.CredentialResolver;
-import org.opensaml.xml.util.DatatypeHelper;
+import org.opensaml.xml.security.SecurityHelper;
 
 /**
  * Trust engine implementation which evaluates an X509Credential token based on PKIX validation processing
  * using validation information from a trusted source.
  * 
  */
-public class PKIXX509CredentialTrustEngine implements PKIXTrustEngine {
+public class PKIXX509CredentialTrustEngine implements PKIXTrustEngine<X509Credential> {
 
     /** Class logger. */
     private static Logger log = Logger.getLogger(PKIXX509CredentialTrustEngine.class);
 
-    /** Max path depth during validation. */
-    private int verificationDepth;
-    
     /** Resolver used for resolving trusted credentials. */
-    private CredentialResolver credentialResolver;
+    private PKIXValidationInformationResolver pkixResolver;
     
     /** The external PKIX trust evaluator used to establish trust. */
     private PKIXTrustEvaluator pkixTrustEvaluator;
@@ -47,22 +42,20 @@ public class PKIXX509CredentialTrustEngine implements PKIXTrustEngine {
     /**
      * Constructor.
      * 
-     * @param depth max path depth that can be reached during validation, a value of -1 indicates an unlimited depth
      * @param resolver credential resolver used to resolve trusted credentials
      */
-    public PKIXX509CredentialTrustEngine(int depth, CredentialResolver resolver) {
+    public PKIXX509CredentialTrustEngine(PKIXValidationInformationResolver resolver) {
         if (resolver == null) {
             throw new IllegalArgumentException("PKIX trust information resolver may not be null");
         }
-        credentialResolver = resolver;
-        verificationDepth = depth;
+        pkixResolver = resolver;
         
         pkixTrustEvaluator = new PKIXTrustEvaluator();
     }
     
     /** {@inheritDoc} */
-    public CredentialResolver getCredentialResolver() {
-        return credentialResolver;
+    public PKIXValidationInformationResolver getPKIXResolver() {
+        return pkixResolver;
     }
     
     /**
@@ -76,7 +69,7 @@ public class PKIXX509CredentialTrustEngine implements PKIXTrustEngine {
     }
 
     /** {@inheritDoc} */
-    public boolean validate(X509Credential untrustedCredential, CredentialCriteriaSet trustedCredentialCriteria) 
+    public boolean validate(X509Credential untrustedCredential, CriteriaSet trustBasisCriteria) 
             throws SecurityException {
         
         if (log.isDebugEnabled()) {
@@ -91,7 +84,18 @@ public class PKIXX509CredentialTrustEngine implements PKIXTrustEngine {
             return false;
         }
         
-        return validate(untrustedCredential, getCredentialResolver().resolveCredentials(trustedCredentialCriteria));
+        PKIXCriteriaSet pkixCriteria = SecurityHelper.getPKIXCriteria(trustBasisCriteria);
+        
+        Set<String> trustedNames = null;
+        if (pkixTrustEvaluator.isNameChecking()) {
+            if (pkixResolver.supportsTrustedNameResolution()) {
+                trustedNames = pkixResolver.resolveTrustedNames(pkixCriteria);
+            } else {
+                log.debug("PKIX resolver does not support resolution of trusted names, skipping name checking");
+            }
+        }
+        
+        return validate(untrustedCredential, trustedNames, pkixResolver.resolve(pkixCriteria));
     }
     
     /**
@@ -99,38 +103,24 @@ public class PKIXX509CredentialTrustEngine implements PKIXTrustEngine {
      * on the supplied set of trusted credentials.
      * 
      * @param untrustedX509Credential the credential to evaluate
-     * @param trustedCredentials the set of trusted credentials which serve as ths basis for trust evaluation
+     * @param validationInfoSet the set of validation information which serves as ths basis for trust evaluation
+     * @param trustedNames the set of trusted names for name checking purposes
+     * 
      * @return true if PKIX validation of the untrusted credential is successful, otherwise false
      * @throws SecurityException
      */
-    protected boolean validate(X509Credential untrustedX509Credential, Iterable<Credential> trustedCredentials) {
+    protected boolean validate(X509Credential untrustedX509Credential, Set<String> trustedNames,
+            Iterable<PKIXValidationInformation> validationInfoSet) {
         
-        log.debug("Beginning PKIX validation using trusted credentials");
+        log.debug("Beginning PKIX validation using trusted validation information");
         
-        for (Credential trustedCredential : trustedCredentials) {
-            if ( ! (trustedCredential instanceof X509Credential)) {
-                if (log.isDebugEnabled()) {
-                    log.debug("Skipping evaluation against trusted, non-X509Credential");
-                }
-                continue;
-            }
-            X509Credential trustedX509Credential = (X509Credential) trustedCredential;
-            
-            PKIXValidationInformation validationInfo = 
-                new BasicPKIXValdiationInformation(trustedX509Credential.getEntityCertificateChain(), 
-                        trustedX509Credential.getCRLs(), verificationDepth);
-            
-            HashSet<String> trustedNames = new HashSet<String>(trustedX509Credential.getKeyNames());
-            if (! DatatypeHelper.isEmpty(trustedX509Credential.getEntityId())) {
-                trustedNames.add(trustedX509Credential.getEntityId());
-            }
-            
+        for (PKIXValidationInformation validationInfo : validationInfoSet) {
             if (pkixTrustEvaluator.pkixValidate(validationInfo, trustedNames, untrustedX509Credential)) {
                 return true;
             }
         }
-        
         return false;
     }
     
+
 }

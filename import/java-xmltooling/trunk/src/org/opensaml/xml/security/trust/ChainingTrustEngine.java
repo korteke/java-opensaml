@@ -20,8 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
-import org.opensaml.xml.security.credential.CredentialCriteriaSet;
 
 /**
  * Evaluate a token in sequence using a chain of subordinate trust engines.  If the token may be established as
@@ -53,9 +53,9 @@ public class ChainingTrustEngine<TokenType> implements TrustEngine<TokenType> {
     }
     
     /** {@inheritDoc} */
-    public boolean validate(TokenType token, CredentialCriteriaSet trustedCredentialCriteria) throws SecurityException {
+    public boolean validate(TokenType token, CriteriaSet trustBasisCriteria) throws SecurityException {
         for (TrustEngine<TokenType> engine : engines) {
-            if (engine.validate(token, trustedCredentialCriteria)) {
+            if (engine.validate(token, trustBasisCriteria)) {
                 if (log.isDebugEnabled()) {
                     log.debug("Token was trusted by chain member: " + engine.getClass().getName());
                 }

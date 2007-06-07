@@ -14,14 +14,15 @@
  * limitations under the License.
  */
 
-package org.opensaml.xml.security.credential;
+package org.opensaml.xml.security.x509;
 
 import org.opensaml.xml.security.ResolverCriteria;
 
 
 /**
- * Interface which represents criteria by which a {@link CredentialResolver} should resolve credentials.
+ * Interface which represents criteria by which a {@link PKIXValidationInformationResolver} should resolve 
+ * {@link PKIXValidationInformation} as well as (optionally) trusted names.
  */
-public interface CredentialCriteria extends ResolverCriteria {
+public interface PKIXCriteria extends ResolverCriteria {
  
 }

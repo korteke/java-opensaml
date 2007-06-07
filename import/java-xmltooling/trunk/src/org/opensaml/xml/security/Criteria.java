@@ -14,14 +14,11 @@
  * limitations under the License.
  */
 
-package org.opensaml.xml.security.credential;
-
-import org.opensaml.xml.security.ResolverCriteria;
-
+package org.opensaml.xml.security;
 
 /**
- * Interface which represents criteria by which a {@link CredentialResolver} should resolve credentials.
+ * A generic marker interface for representing criteria used in resolution or evaluation operations.
  */
-public interface CredentialCriteria extends ResolverCriteria {
- 
+public interface Criteria {
+
 }

@@ -16,22 +16,22 @@
 
 package org.opensaml.xml.signature.impl;
 
-import java.util.HashSet;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
+import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.credential.Credential;
-import org.opensaml.xml.security.credential.CredentialCriteriaSet;
-import org.opensaml.xml.security.credential.CredentialResolver;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
-import org.opensaml.xml.security.trust.TrustedCredentialTrustEngine;
+import org.opensaml.xml.security.x509.PKIXCriteriaSet;
+import org.opensaml.xml.security.x509.PKIXTrustEngine;
 import org.opensaml.xml.security.x509.PKIXTrustEvaluator;
-import org.opensaml.xml.security.x509.BasicPKIXValdiationInformation;
 import org.opensaml.xml.security.x509.PKIXValidationInformation;
+import org.opensaml.xml.security.x509.PKIXValidationInformationResolver;
 import org.opensaml.xml.security.x509.X509Credential;
 import org.opensaml.xml.signature.Signature;
-import org.opensaml.xml.signature.SignatureTrustEngine;
-import org.opensaml.xml.util.DatatypeHelper;
+import org.opensaml.xml.util.Pair;
 
 /**
  * An implementation of {@link SignatureTrustEngine} which evaluates the validity and trustworthiness
@@ -43,35 +43,34 @@ import org.opensaml.xml.util.DatatypeHelper;
  * trusted signing keys are not known in advance, the signing key must be present in, or derivable from,
  * the information in the Signature's KeyInfo element.</p>
  */
-public class PKIXSignatureTrustEngine extends BaseSignatureTrustEngine<Iterable<Credential>> 
-    implements TrustedCredentialTrustEngine<Signature> {
+public class PKIXSignatureTrustEngine 
+    extends BaseSignatureTrustEngine<Pair<Set<String>, Iterable<PKIXValidationInformation>>>
+    implements PKIXTrustEngine<Signature> {
     
     /** Class logger. */
     private static Logger log = Logger.getLogger(PKIXSignatureTrustEngine.class);
     
+    /** Resolver used for resolving trusted credentials. */
+    private PKIXValidationInformationResolver pkixResolver;
+    
     /** The external PKIX trust evaluator used to establish trust. */
     private PKIXTrustEvaluator pkixTrustEvaluator;
-    
-    /** Resolver used for resolving trusted credentials. */
-    private CredentialResolver credentialResolver;
-    
-    /** Default PKIX path validation depth to use. */
-    private int defaultVerificationDepth;
     
     /**
      * Constructor.
      *
-     * @param verificationDepth  max path depth that can be reached during validation, 
-     *          a value of -1 indicates an unlimited depth
      * @param resolver credential resolver used to resolve trusted credentials.
      * @param keyInfoResolver KeyInfo credential resolver used to obtain the (advisory) signing credential 
      *          from a Signature's KeyInfo element.
      */
-    public PKIXSignatureTrustEngine(int verificationDepth, CredentialResolver resolver,
+    public PKIXSignatureTrustEngine(PKIXValidationInformationResolver resolver,
             KeyInfoCredentialResolver keyInfoResolver) {
+        
         super(keyInfoResolver);
-        credentialResolver = resolver;
-        defaultVerificationDepth = -1;
+        if (resolver == null) {
+            throw new IllegalArgumentException("PKIX trust information resolver may not be null");
+        }
+        pkixResolver = resolver;
         
         pkixTrustEvaluator = new PKIXTrustEvaluator();
     }
@@ -87,20 +86,30 @@ public class PKIXSignatureTrustEngine extends BaseSignatureTrustEngine<Iterable<
     }
     
     /** {@inheritDoc} */
-    public CredentialResolver getCredentialResolver() {
-        return credentialResolver;
+    public PKIXValidationInformationResolver getPKIXResolver() {
+        return pkixResolver;
     }
 
     /** {@inheritDoc} */
-    public boolean validate(Signature signature, CredentialCriteriaSet trustedCredentialCriteria) 
-            throws SecurityException {
+    public boolean validate(Signature signature, CriteriaSet trustBasisCriteria) throws SecurityException {
         
-        checkParams(signature, trustedCredentialCriteria);
+        checkParams(signature, trustBasisCriteria);
+        PKIXCriteriaSet pkixCriteria = SecurityHelper.getPKIXCriteria(trustBasisCriteria);
         
-        Iterable<Credential> trustedCredentials = 
-            getCredentialResolver().resolveCredentials(trustedCredentialCriteria);
+        Set<String> trustedNames = null;
+        if (pkixTrustEvaluator.isNameChecking()) {
+            if (pkixResolver.supportsTrustedNameResolution()) {
+                trustedNames = pkixResolver.resolveTrustedNames(pkixCriteria);
+            } else {
+                log.debug("PKIX resolver does not support resolution of trusted names, skipping name checking");
+            }
+        }
+        Iterable<PKIXValidationInformation> validationInfoSet = pkixResolver.resolve(pkixCriteria);
         
-        if (validate(signature, trustedCredentials)) {
+        Pair<Set<String>, Iterable<PKIXValidationInformation>> validationPair = 
+            new Pair<Set<String>, Iterable<PKIXValidationInformation>>(trustedNames, validationInfoSet);
+        
+        if (validate(signature, validationPair)) {
             return true;
         }
         
@@ -109,8 +118,8 @@ public class PKIXSignatureTrustEngine extends BaseSignatureTrustEngine<Iterable<
     }
     
     /** {@inheritDoc} */
-    protected boolean evaluateTrust(Credential untrustedCredential, Iterable<Credential> trustedCredentials) 
-            throws SecurityException {
+    protected boolean evaluateTrust(Credential untrustedCredential,
+            Pair<Set<String>,Iterable<PKIXValidationInformation>> validationPair) throws SecurityException {
         
         if (! (untrustedCredential instanceof X509Credential)) {
             log.info("Can not evaluate trust of non-X509Credential");
@@ -118,29 +127,17 @@ public class PKIXSignatureTrustEngine extends BaseSignatureTrustEngine<Iterable<
         }
         X509Credential untrustedX509Credential = (X509Credential) untrustedCredential;
         
-        for (Credential trustedCredential : trustedCredentials) {
-            if (! (trustedCredential instanceof X509Credential)) {
-                log.debug("Skippking evaluation against non-X509Credential");
-                continue;
-            }
-            X509Credential trustedX509Credential = (X509Credential) trustedCredential;
-            
-            PKIXValidationInformation validationInfo = 
-                new BasicPKIXValdiationInformation(trustedX509Credential.getEntityCertificateChain(),
-                        trustedX509Credential.getCRLs(), defaultVerificationDepth);
-            
-            HashSet<String> trustedNames  = new HashSet<String>(trustedX509Credential.getKeyNames());
-            if (! DatatypeHelper.isEmpty(trustedX509Credential.getEntityId())) {
-                trustedNames.add(trustedX509Credential.getEntityId());
-            }
-            
+        Set<String> trustedNames = validationPair.getFirst();
+        Iterable<PKIXValidationInformation> validationInfoSet = validationPair.getSecond();
+        
+        for (PKIXValidationInformation validationInfo : validationInfoSet) {
             if (pkixTrustEvaluator.pkixValidate(validationInfo, trustedNames, untrustedX509Credential)) {
                 log.debug("Signature trust established via PKIX validation of signing credential");
                 return true;
             }
         }
-        return false;
         
+        return false;
     }
 
 }

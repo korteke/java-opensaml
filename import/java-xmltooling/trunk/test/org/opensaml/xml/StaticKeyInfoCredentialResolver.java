@@ -54,7 +54,7 @@ public class StaticKeyInfoCredentialResolver extends KeyInfoCredentialResolver {
     }
 
     /** {@inheritDoc} */
-    public Iterable resolveCredentials(CredentialCriteriaSet criteria) throws SecurityException {
+    public Iterable resolve(CredentialCriteriaSet criteria) throws SecurityException {
         return creds;
     }
 

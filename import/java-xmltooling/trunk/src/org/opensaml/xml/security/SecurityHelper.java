@@ -21,6 +21,7 @@ import java.security.KeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.util.Set;
 
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
@@ -29,6 +30,10 @@ import org.apache.log4j.Logger;
 import org.apache.xml.security.algorithms.JCEMapper;
 import org.opensaml.xml.security.credential.BasicCredential;
 import org.opensaml.xml.security.credential.Credential;
+import org.opensaml.xml.security.credential.CredentialCriteria;
+import org.opensaml.xml.security.credential.CredentialCriteriaSet;
+import org.opensaml.xml.security.x509.PKIXCriteria;
+import org.opensaml.xml.security.x509.PKIXCriteriaSet;
 import org.opensaml.xml.util.DatatypeHelper;
 
 /**
@@ -233,4 +238,39 @@ public final class SecurityHelper {
         cred.setPrivateKey(privateKey);
         return cred;
     }
+    
+    /**
+     * Get the CredentialCriteria from the general more general criteria set and return as a 
+     * type-specific set.
+     * 
+     * @param generalCriteria set of criteria
+     * @return a new set containing only CredentialCriteria
+     */
+    public static CredentialCriteriaSet getCredentialCriteria(Set<Criteria> generalCriteria) {
+        CredentialCriteriaSet criteriaSet = new CredentialCriteriaSet();
+        for (Criteria criteria : generalCriteria) {
+            if (criteria instanceof CredentialCriteria) {
+               criteriaSet.add((CredentialCriteria) criteria) ;
+            }
+        }
+        return criteriaSet;
+    } 
+    
+    /**
+     * Get the PKIXCriteria from the general more general criteria set and return as a 
+     * type-specific set.
+     * 
+     * @param generalCriteria set of criteria
+     * @return a new set containing only PKIXCriteria
+     */
+    public static PKIXCriteriaSet getPKIXCriteria(Set<Criteria> generalCriteria) {
+        PKIXCriteriaSet criteriaSet = new PKIXCriteriaSet();
+        for (Criteria criteria : generalCriteria) {
+            if (criteria instanceof PKIXCriteria) {
+               criteriaSet.add((PKIXCriteria) criteria) ;
+            }
+        }
+        return criteriaSet;
+    }
+
 }

@@ -14,14 +14,32 @@
  * limitations under the License.
  */
 
-package org.opensaml.xml.security.credential;
+package org.opensaml.xml.security;
 
-import org.opensaml.xml.security.ResolverCriteria;
-
+import org.opensaml.xml.util.ClassIndexedSet;
 
 /**
- * Interface which represents criteria by which a {@link CredentialResolver} should resolve credentials.
+ * This class holds instances of {@link Criteria} which are used 
+ * in resolution or evaluation operations.
  */
-public interface CredentialCriteria extends ResolverCriteria {
- 
+public class CriteriaSet extends ClassIndexedSet<Criteria> {
+    
+    /**
+     * Constructor.
+     *
+     */
+    public CriteriaSet() {
+        super();
+    }
+    
+    /**
+     * A convenience constructor for constructing and adding a single criteria.
+     *
+     * @param criteria a single criteria 
+     */
+    public CriteriaSet(Criteria criteria) {
+        super();
+        add(criteria);
+    }
+
 }

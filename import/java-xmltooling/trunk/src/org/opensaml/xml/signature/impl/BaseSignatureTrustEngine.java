@@ -17,11 +17,10 @@
 package org.opensaml.xml.signature.impl;
 
 import org.apache.log4j.Logger;
+import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.credential.CredentialCriteriaSet;
-import org.opensaml.xml.security.credential.UsageCredentialCriteria;
-import org.opensaml.xml.security.credential.UsageType;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialCriteria;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xml.signature.Signature;
@@ -100,7 +99,7 @@ public abstract class BaseSignatureTrustEngine<TrustBasisType> implements Signat
             KeyInfoCredentialCriteria keyInfoCriteria = new KeyInfoCredentialCriteria(signature.getKeyInfo());
             CredentialCriteriaSet keyInfoCriteriaSet = new CredentialCriteriaSet(keyInfoCriteria);
             
-            for (Credential kiCred : getKeyInfoResolver().resolveCredentials(keyInfoCriteriaSet)) {
+            for (Credential kiCred : getKeyInfoResolver().resolve(keyInfoCriteriaSet)) {
                 if (verifySignature(signature, kiCred)) {
                     log.debug("Successfully verified signature using KeyInfo-derived credential");
                     log.debug("Attempting to establish trust of KeyInfo-derived credential");
@@ -160,22 +159,21 @@ public abstract class BaseSignatureTrustEngine<TrustBasisType> implements Signat
      * Check the signature and credential criteria for required values.
      * 
      * @param signature the signature to be evaluated
-     * @param trustedCredentialCriteria the set of trusted credential criteria
+     * @param trustBasisCriteria the set of trusted credential criteria
      * @throws SecurityException thrown if required values are absent or otherwise invalid
      */
-    protected void checkParams(Signature signature, CredentialCriteriaSet trustedCredentialCriteria) 
+    protected void checkParams(Signature signature, CriteriaSet trustBasisCriteria) 
             throws SecurityException {
         
         if (signature == null) {
             throw new SecurityException("Signature was null");
         }
-        if (trustedCredentialCriteria == null) {
-            throw new SecurityException("Trusted credential criteria set was null");
+        if (trustBasisCriteria == null) {
+            throw new SecurityException("Trust basis criteria set was null");
         }
-        if (! trustedCredentialCriteria.contains(UsageCredentialCriteria.class)) {
-            trustedCredentialCriteria.add( new UsageCredentialCriteria(UsageType.SIGNING) ); 
+        if (trustBasisCriteria.isEmpty() ) {
+            throw new SecurityException("Trust basis criteria set was empty");
         }
-        
     }
 
 }

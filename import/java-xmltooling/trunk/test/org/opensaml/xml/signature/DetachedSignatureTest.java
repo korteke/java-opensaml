@@ -179,7 +179,7 @@ public class DetachedSignatureTest extends XMLObjectBaseTestCase {
         
         KeyInfoCredentialCriteria criteria = new KeyInfoCredentialCriteria(signature.getKeyInfo());
         CredentialCriteriaSet criteriaSet = new CredentialCriteriaSet(criteria);
-        Credential credential = resolver.resolveCredential(criteriaSet);
+        Credential credential = resolver.resolveSingle(criteriaSet);
         SignatureValidator sigValidator = new SignatureValidator(credential);
         sigValidator.validate(signature);
     }

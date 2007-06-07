@@ -77,7 +77,7 @@ public class DSAKeyValueTest extends XMLObjectBaseTestCase {
     public void testCredResolution() throws SecurityException {
         KeyInfo keyInfo = (KeyInfo) unmarshallElement(keyInfoFile);
         CredentialCriteriaSet criteriaSet = new CredentialCriteriaSet( new KeyInfoCredentialCriteria(keyInfo) );
-        Iterator<Credential> iter = resolver.resolveCredentials(criteriaSet).iterator();
+        Iterator<Credential> iter = resolver.resolve(criteriaSet).iterator();
         
         assertTrue("No credentials were found", iter.hasNext());
         

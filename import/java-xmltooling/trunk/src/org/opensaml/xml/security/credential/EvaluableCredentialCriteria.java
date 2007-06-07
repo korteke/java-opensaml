@@ -16,24 +16,11 @@
 
 package org.opensaml.xml.security.credential;
 
-import org.opensaml.xml.security.SecurityException;
+import org.opensaml.xml.security.EvaluableCriteria;
 
 /**
- * Abstract base class for {@link CredentialResolver} implementations.
+ * Marker interface for evaluable credential resolver criteria.
  */
-public abstract class AbstractCredentialResolver implements CredentialResolver {
-
-    /** {@inheritDoc} */
-    public Credential resolveSingle(CredentialCriteriaSet criteriaSet) throws SecurityException {
-        Iterable<Credential> creds = resolve(criteriaSet);
-        if (creds.iterator().hasNext()) {
-            return creds.iterator().next();
-        } else {
-            return null;
-        }
-    }
-
-    /** {@inheritDoc} */
-    public abstract Iterable<Credential> resolve(CredentialCriteriaSet criteriaSet) throws SecurityException;
+public interface EvaluableCredentialCriteria extends CredentialCriteria, EvaluableCriteria<Credential> {
 
 }

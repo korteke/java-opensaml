@@ -497,7 +497,7 @@ public class Decrypter {
         
         CredentialCriteriaSet criteriaSet = buildCredentialCriteria(encryptedKey, kekResolverCriteria);
         try {
-            for (Credential cred : kekResolver.resolveCredentials(criteriaSet)) {
+            for (Credential cred : kekResolver.resolve(criteriaSet)) {
                 try {
                     return decryptKey(encryptedKey, algorithm, SecurityHelper.extractDecryptionKey(cred));
                 } catch (DecryptionException e) {
@@ -587,7 +587,7 @@ public class Decrypter {
         if (resolver != null) {
             CredentialCriteriaSet criteriaSet = buildCredentialCriteria(encryptedData, resolverCriteria);
             try {
-                for (Credential cred : resolver.resolveCredentials(criteriaSet)) {
+                for (Credential cred : resolver.resolve(criteriaSet)) {
                     try {
                         return decryptDataToDOM(encryptedData, SecurityHelper.extractDecryptionKey(cred));
                     } catch (DecryptionException e) {

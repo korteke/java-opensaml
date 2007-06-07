@@ -30,7 +30,7 @@ public interface PKIXValidationInformation {
      * 
      * @return maximum allowable trust chain verification depth
      */
-    public int getVerificationDepth();
+    public Integer getVerificationDepth();
 
     /**
      * Gets the trust anchors used during PKIX validation.

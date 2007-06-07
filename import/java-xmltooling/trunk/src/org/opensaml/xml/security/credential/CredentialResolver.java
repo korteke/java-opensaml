@@ -17,38 +17,11 @@
 package org.opensaml.xml.security.credential;
 
 
-import org.opensaml.xml.security.SecurityException;
+import org.opensaml.xml.security.Resolver;
 
 /**
- * A manager for looking up credentials for a given entity.
+ * A resolver which uses {@link CredentialCriteria} to resolve and return instances of {@link Credential}.
  */
-public interface CredentialResolver {
-
-    /**
-     * Gets a set of credentials that satisfy the specified credential criteria.
-     * 
-     * @param criteriaSet  the criteria set used for resolving the credential
-     * 
-     * @return an {@link Iterable} of credentials, possibly empty if no credentials were found that
-     *          satisfy the given criteria
-     * 
-     * @throws SecurityException thrown if no credentials can be resolved
-     */
-    public Iterable<Credential> resolveCredentials(CredentialCriteriaSet criteriaSet) throws SecurityException;
-    
-    /**
-     * Gets a single credential which satisfies the specified credential criteria.
-     * 
-     * If multiple credentials are found which satisfy the criteria, the resolver
-     * may choose any mechanism to select the one to return.  Implementations should
-     * override this method to meet their specific needs.
-     * 
-     * @param criteriaSet  the criteria set used for resolving the credential
-     * 
-     * @return a credential, or null if no credential was found that satisfies the given criteria
-     * 
-     * @throws SecurityException thrown if the credential can not be resolved
-     */
-    public Credential resolveCredential(CredentialCriteriaSet criteriaSet) throws SecurityException;
+public interface CredentialResolver extends Resolver<Credential, CredentialCriteriaSet>{
     
 }

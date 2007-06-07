@@ -68,7 +68,7 @@ public class KeyInfoCredentialResolver extends AbstractCredentialResolver implem
     }
 
     /** {@inheritDoc} */
-    public Iterable<Credential> resolveCredentials(CredentialCriteriaSet criteriaSet) throws SecurityException {
+    public Iterable<Credential> resolve(CredentialCriteriaSet criteriaSet) throws SecurityException {
         KeyInfoCredentialCriteria kiCriteria = criteriaSet.get(KeyInfoCredentialCriteria.class);
         if (kiCriteria == null) {
             log.error("No KeyInfo criteria supplied, resolver could not process");
