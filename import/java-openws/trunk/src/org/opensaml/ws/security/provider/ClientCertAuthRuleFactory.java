@@ -309,12 +309,13 @@ public class ClientCertAuthRuleFactory extends BaseTrustEngineRuleFactory<X509Cr
          * <p>Configured certificate name types are derived as candidate issuers and processed 
          * in the following order:
          * <ol>
-         *   <li>The first common name (CN) value appearing in the certificate subject DN.</li>
-         *   <li>Subject alternative names of the types configured via 
-         *       {@link ClientCertAuthRuleFactory#getSubjectAltNames()}.</li>
          *   <li>The certificate subject DN string as serialized by the X500DNHandler configured 
          *       via {@link ClientCertAuthRuleFactory#getX500DNHandler()} and using the output format 
          *       indicated by {@link ClientCertAuthRuleFactory#getX500SubjectDNFormat()}.</li>
+         *   <li>Subject alternative names of the types configured via 
+         *       {@link ClientCertAuthRuleFactory#getSubjectAltNames()}. Note that this
+         *       is a LinkedHashSet, so the order of evaluation is the order or insertion.</li>
+         *   <li>The first common name (CN) value appearing in the certificate subject DN.</li>
          * </ol>
          * </p>
          * 
@@ -335,8 +336,8 @@ public class ClientCertAuthRuleFactory extends BaseTrustEngineRuleFactory<X509Cr
             
             String candidateIssuer = null;
             
-            if (certNameOptions.evaluateSubjectCommonName) {
-                candidateIssuer = evaluateSubjectCommonName(requestCredential, request, message, context);
+            if (certNameOptions.evaluateSubjectDN) {
+                candidateIssuer = evaluateSubjectDN(requestCredential, request, message, context);
                 if (candidateIssuer != null) {
                     return candidateIssuer;
                 }
@@ -349,8 +350,8 @@ public class ClientCertAuthRuleFactory extends BaseTrustEngineRuleFactory<X509Cr
                 }
             }
             
-            if (certNameOptions.evaluateSubjectDN) {
-                candidateIssuer = evaluateSubjectDN(requestCredential, request, message, context);
+            if (certNameOptions.evaluateSubjectCommonName) {
+                candidateIssuer = evaluateSubjectCommonName(requestCredential, request, message, context);
                 if (candidateIssuer != null) {
                     return candidateIssuer;
                 }
