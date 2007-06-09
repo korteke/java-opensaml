@@ -129,7 +129,7 @@ public class CertChainX509DataTest extends XMLObjectBaseTestCase {
     public void testResolutionWithKeyValue() throws SecurityException {
         KeyInfo keyInfo = 
             (KeyInfo) unmarshallElement("/data/org/opensaml/xml/security/keyinfo/X509CertificatesWithKeyValue.xml");
-        CredentialCriteriaSet criteriaSet = new CredentialCriteriaSet( new KeyInfoCredentialCriteria(keyInfo) );
+        CredentialCriteriaSet criteriaSet = new CredentialCriteriaSet( new KeyInfoCriteria(keyInfo) );
         Iterator<Credential> iter = resolver.resolve(criteriaSet).iterator();
         
         assertTrue("No credentials were found", iter.hasNext());
@@ -164,7 +164,7 @@ public class CertChainX509DataTest extends XMLObjectBaseTestCase {
     public void testResolutionWithSubjectName() throws SecurityException {
         KeyInfo keyInfo = 
             (KeyInfo) unmarshallElement("/data/org/opensaml/xml/security/keyinfo/X509CertificatesWithSubjectName.xml");
-        CredentialCriteriaSet criteriaSet = new CredentialCriteriaSet( new KeyInfoCredentialCriteria(keyInfo) );
+        CredentialCriteriaSet criteriaSet = new CredentialCriteriaSet( new KeyInfoCriteria(keyInfo) );
         Iterator<Credential> iter = resolver.resolve(criteriaSet).iterator();
         
         assertTrue("No credentials were found", iter.hasNext());
@@ -199,7 +199,7 @@ public class CertChainX509DataTest extends XMLObjectBaseTestCase {
     public void testResolutionWithIssuerSerial() throws SecurityException {
         KeyInfo keyInfo = 
             (KeyInfo) unmarshallElement("/data/org/opensaml/xml/security/keyinfo/X509CertificatesWithIssuerSerial.xml");
-        CredentialCriteriaSet criteriaSet = new CredentialCriteriaSet( new KeyInfoCredentialCriteria(keyInfo) );
+        CredentialCriteriaSet criteriaSet = new CredentialCriteriaSet( new KeyInfoCriteria(keyInfo) );
         Iterator<Credential> iter = resolver.resolve(criteriaSet).iterator();
         
         assertTrue("No credentials were found", iter.hasNext());
@@ -234,7 +234,7 @@ public class CertChainX509DataTest extends XMLObjectBaseTestCase {
     public void testResolutionWithSubjectKeyIdentifier() throws SecurityException {
         KeyInfo keyInfo = 
             (KeyInfo) unmarshallElement("/data/org/opensaml/xml/security/keyinfo/X509CertificatesWithSKI.xml");
-        CredentialCriteriaSet criteriaSet = new CredentialCriteriaSet( new KeyInfoCredentialCriteria(keyInfo) );
+        CredentialCriteriaSet criteriaSet = new CredentialCriteriaSet( new KeyInfoCriteria(keyInfo) );
         Iterator<Credential> iter = resolver.resolve(criteriaSet).iterator();
         
         assertTrue("No credentials were found", iter.hasNext());

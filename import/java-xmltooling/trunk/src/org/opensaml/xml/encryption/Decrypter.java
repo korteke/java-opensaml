@@ -39,10 +39,10 @@ import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.credential.CredentialCriteriaSet;
-import org.opensaml.xml.security.credential.KeyConstraintCredentialCriteria;
-import org.opensaml.xml.security.credential.UsageCredentialCriteria;
+import org.opensaml.xml.security.credential.KeyConstraintCriteria;
+import org.opensaml.xml.security.credential.UsageCriteria;
 import org.opensaml.xml.security.credential.UsageType;
-import org.opensaml.xml.security.keyinfo.KeyInfoCredentialCriteria;
+import org.opensaml.xml.security.keyinfo.KeyInfoCriteria;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xml.util.DatatypeHelper;
 import org.w3c.dom.Document;
@@ -682,11 +682,11 @@ public class Decrypter {
         CredentialCriteriaSet newCriteria = new CredentialCriteriaSet();
         
         // This is the main criteria based on the encrypted type's KeyInfo
-        newCriteria.add( new KeyInfoCredentialCriteria(encryptedType.getKeyInfo()) );
+        newCriteria.add( new KeyInfoCriteria(encryptedType.getKeyInfo()) );
         
         // Also attemtpt to dynamically construct a criteria based on the encryption key's
         // JCE algorithm and key length, if applicable
-        KeyConstraintCredentialCriteria keyCriteria = buildKeyConstraintCriteria(encryptedType);
+        KeyConstraintCriteria keyCriteria = buildKeyConstraintCriteria(encryptedType);
         if (keyCriteria != null) {
             newCriteria.add(keyCriteria);
         }
@@ -697,8 +697,8 @@ public class Decrypter {
         }
         
         // If don't have a usage criteria yet from static criteria, add encryption usage
-        if ( ! newCriteria.contains(UsageCredentialCriteria.class)) {
-            newCriteria.add( new UsageCredentialCriteria(UsageType.ENCRYPTION) );
+        if ( ! newCriteria.contains(UsageCriteria.class)) {
+            newCriteria.add( new UsageCriteria(UsageType.ENCRYPTION) );
         }
         
         return newCriteria;
@@ -712,18 +712,18 @@ public class Decrypter {
      * @return a new key credential criteria instance, or null if criteria could not be determined
      *          from the encrypted type element
      */
-    private KeyConstraintCredentialCriteria buildKeyConstraintCriteria(EncryptedType encryptedType) {
+    private KeyConstraintCriteria buildKeyConstraintCriteria(EncryptedType encryptedType) {
         String encAlgorithmURI = 
             DatatypeHelper.safeTrimOrNullString(encryptedType.getEncryptionMethod().getAlgorithm());
         
         if (! DatatypeHelper.isEmpty(encAlgorithmURI)) {
-            KeyConstraintCredentialCriteria keyCriteria = null;
+            KeyConstraintCriteria keyCriteria = null;
         
             String jceKeyAlgorithm = SecurityHelper.getKeyAlgorithmFromURI(encAlgorithmURI);
             
             if (! DatatypeHelper.isEmpty(jceKeyAlgorithm)) {
                 Integer keyLength = SecurityHelper.getKeyLengthFromURI(encAlgorithmURI);
-                keyCriteria = new KeyConstraintCredentialCriteria(jceKeyAlgorithm, keyLength);
+                keyCriteria = new KeyConstraintCriteria(jceKeyAlgorithm, keyLength);
             }
             
             return keyCriteria;

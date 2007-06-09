@@ -24,7 +24,7 @@ import org.opensaml.xml.util.DatatypeHelper;
  * An implementation of {@link CredentialCriteria} which specifies criteria pertaining 
  * to identifiers of a key to be resolved.
  */
-public final class KeyIdentifierCredentialCriteria implements CredentialCriteria {
+public final class KeyIdentifierCriteria implements CredentialCriteria {
 
     /** Key name of resolved credentials.  */
     private String keyName;
@@ -38,7 +38,7 @@ public final class KeyIdentifierCredentialCriteria implements CredentialCriteria
      * @param name key name
      * @param pubKey public key
      */
-    public KeyIdentifierCredentialCriteria(String name, PublicKey pubKey) {
+    public KeyIdentifierCriteria(String name, PublicKey pubKey) {
         setKeyName(name);
         setPublicKey(pubKey);
     }

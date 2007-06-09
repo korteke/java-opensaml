@@ -26,7 +26,7 @@ import org.opensaml.xml.security.credential.CredentialCriteria;
  * An implementation of {@link CredentialCriteria} which specifies criteria pertaining 
  * to characteristics of an X.509 certificate to be resolved.
  */
-public final class X509CertificateCredentialCriteria implements CredentialCriteria {
+public final class X509CertificateCriteria implements CredentialCriteria {
     
     /** X.509 certificate subject name. */
     private X500Principal subjectName;
@@ -48,7 +48,7 @@ public final class X509CertificateCredentialCriteria implements CredentialCriter
      * @param serial certificate serial number
      * @param ski certificate subject key identifier
      */
-    public X509CertificateCredentialCriteria(X500Principal subject, byte[] ski, 
+    public X509CertificateCriteria(X500Principal subject, byte[] ski, 
             X500Principal issuer, BigInteger serial) {
         setSubjectName(subject);
         setIssuerName(issuer);

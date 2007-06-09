@@ -21,7 +21,7 @@ import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.credential.CredentialCriteriaSet;
-import org.opensaml.xml.security.keyinfo.KeyInfoCredentialCriteria;
+import org.opensaml.xml.security.keyinfo.KeyInfoCriteria;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xml.signature.Signature;
 import org.opensaml.xml.signature.SignatureTrustEngine;
@@ -96,7 +96,7 @@ public abstract class BaseSignatureTrustEngine<TrustBasisType> implements Signat
         
         if (signature.getKeyInfo() != null) {
             
-            KeyInfoCredentialCriteria keyInfoCriteria = new KeyInfoCredentialCriteria(signature.getKeyInfo());
+            KeyInfoCriteria keyInfoCriteria = new KeyInfoCriteria(signature.getKeyInfo());
             CredentialCriteriaSet keyInfoCriteriaSet = new CredentialCriteriaSet(keyInfoCriteria);
             
             for (Credential kiCred : getKeyInfoResolver().resolve(keyInfoCriteriaSet)) {

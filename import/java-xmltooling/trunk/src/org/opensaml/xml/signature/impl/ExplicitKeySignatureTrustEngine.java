@@ -23,7 +23,7 @@ import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.credential.CredentialCriteriaSet;
 import org.opensaml.xml.security.credential.CredentialResolver;
-import org.opensaml.xml.security.credential.UsageCredentialCriteria;
+import org.opensaml.xml.security.credential.UsageCriteria;
 import org.opensaml.xml.security.credential.UsageType;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xml.security.trust.ExplicitKeyTrustEvaluator;
@@ -80,8 +80,8 @@ public class ExplicitKeySignatureTrustEngine extends BaseSignatureTrustEngine<It
         
         checkParams(signature, trustBasisCriteria);
         CredentialCriteriaSet credentialCriteria = SecurityHelper.getCredentialCriteria(trustBasisCriteria);
-        if (! credentialCriteria.contains(UsageCredentialCriteria.class)) {
-            credentialCriteria.add( new UsageCredentialCriteria(UsageType.SIGNING));
+        if (! credentialCriteria.contains(UsageCriteria.class)) {
+            credentialCriteria.add( new UsageCriteria(UsageType.SIGNING));
         }
         
         Iterable<Credential> trustedCredentials = getCredentialResolver().resolve(credentialCriteria);

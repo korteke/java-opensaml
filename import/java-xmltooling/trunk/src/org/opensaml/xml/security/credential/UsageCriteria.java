@@ -21,7 +21,7 @@ package org.opensaml.xml.security.credential;
  * An implementation of {@link CredentialCriteria} which specifies criteria pertaining 
  * usage of the resolved credential. 
  */
-public final class UsageCredentialCriteria implements CredentialCriteria {
+public final class UsageCriteria implements CredentialCriteria {
    
     /** Key usage type of resolved credentials. */
     private UsageType credUsage;
@@ -31,7 +31,7 @@ public final class UsageCredentialCriteria implements CredentialCriteria {
      *
      * @param usage the usage for which a credential is intended
      */
-    public UsageCredentialCriteria(UsageType usage) {
+    public UsageCriteria(UsageType usage) {
         setUsage(usage);
     }
 

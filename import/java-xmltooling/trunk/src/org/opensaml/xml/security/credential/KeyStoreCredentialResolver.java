@@ -100,11 +100,11 @@ public class KeyStoreCredentialResolver extends AbstractCredentialResolver  impl
         Set<Credential> credentials = new HashSet<Credential>();
         
         checkCriteriaRequirements(criteriaSet);
-        EntityCredentialCriteria entityCriteria = criteriaSet.get(EntityCredentialCriteria.class);
-        UsageCredentialCriteria usageCriteria = criteriaSet.get(UsageCredentialCriteria.class);
-        String entity = entityCriteria.getOwnerID();
+        EntityCriteria entityCriteria = criteriaSet.get(EntityCriteria.class);
+        UsageCriteria usageCriteria = criteriaSet.get(UsageCriteria.class);
+        String entity = entityCriteria.getEntityID();
         if (usageCriteria == null) {
-            usageCriteria = new UsageCredentialCriteria(UsageType.UNSPECIFIED);
+            usageCriteria = new UsageCriteria(UsageType.UNSPECIFIED);
         }
         UsageType usage = usageCriteria.getUsage();
         if (keyUsage != usage && usage != UsageType.UNSPECIFIED) {
@@ -150,8 +150,8 @@ public class KeyStoreCredentialResolver extends AbstractCredentialResolver  impl
      * @param criteriaSet the credential criteria set to evaluate
      */
     protected void checkCriteriaRequirements(CredentialCriteriaSet criteriaSet) {
-        EntityCredentialCriteria entityCriteria = criteriaSet.get(EntityCredentialCriteria.class);
-        if (entityCriteria == null || DatatypeHelper.isEmpty(entityCriteria.getOwnerID())) {
+        EntityCriteria entityCriteria = criteriaSet.get(EntityCriteria.class);
+        if (entityCriteria == null || DatatypeHelper.isEmpty(entityCriteria.getEntityID())) {
             log.error("Entity criteria or owner ID not specified, resolution can not be attempted");
             throw new IllegalArgumentException("No entity owner ID criteria was available in criteria set");
         } 

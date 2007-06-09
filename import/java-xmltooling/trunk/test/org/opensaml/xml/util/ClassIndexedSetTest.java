@@ -23,10 +23,10 @@ import java.util.NoSuchElementException;
 import junit.framework.TestCase;
 
 import org.opensaml.xml.security.credential.CredentialCriteria;
-import org.opensaml.xml.security.credential.EntityCredentialCriteria;
-import org.opensaml.xml.security.credential.KeyConstraintCredentialCriteria;
-import org.opensaml.xml.security.keyinfo.KeyInfoCredentialCriteria;
-import org.opensaml.xml.security.x509.X509CertificateCredentialCriteria;
+import org.opensaml.xml.security.credential.EntityCriteria;
+import org.opensaml.xml.security.credential.KeyConstraintCriteria;
+import org.opensaml.xml.security.keyinfo.KeyInfoCriteria;
+import org.opensaml.xml.security.x509.X509CertificateCriteria;
 
 /**
  * Tests the ClassIndexedSet, using CredentialCriteria as the underlying type.
@@ -46,7 +46,7 @@ public class ClassIndexedSetTest extends TestCase {
      *  Test failure of adding a duplicate instance.
      */
     public void testDupInstance() {
-        EntityCredentialCriteria  entityCriteria = new EntityCredentialCriteria("owner", "peer");
+        EntityCriteria  entityCriteria = new EntityCriteria("owner", "peer");
         criteriaSet.add(entityCriteria);
         
         try {
@@ -61,10 +61,10 @@ public class ClassIndexedSetTest extends TestCase {
      *  Test failure of adding a duplicate criteria type.
      */
     public void testDupType() {
-        EntityCredentialCriteria  entityCriteria1 = 
-            new EntityCredentialCriteria("owner", "peer");
-        EntityCredentialCriteria  entityCriteria2 = 
-            new EntityCredentialCriteria("owner#2", "peer#2");
+        EntityCriteria  entityCriteria1 = 
+            new EntityCriteria("owner", "peer");
+        EntityCriteria  entityCriteria2 = 
+            new EntityCriteria("owner#2", "peer#2");
         criteriaSet.add(entityCriteria1);
         
         try {
@@ -79,10 +79,10 @@ public class ClassIndexedSetTest extends TestCase {
      *  Test success of adding a duplicate criteria type with replacement.
      */
     public void testDupTypeWithReplacement() {
-        EntityCredentialCriteria  entityCriteria1 = 
-            new EntityCredentialCriteria("owner", "peer");
-        EntityCredentialCriteria  entityCriteria2 = 
-            new EntityCredentialCriteria("owner#2", "peer#2");
+        EntityCriteria  entityCriteria1 = 
+            new EntityCriteria("owner", "peer");
+        EntityCriteria  entityCriteria2 = 
+            new EntityCriteria("owner#2", "peer#2");
         criteriaSet.add(entityCriteria1);
         
         try {
@@ -92,9 +92,9 @@ public class ClassIndexedSetTest extends TestCase {
         }
         
         assertFalse("Did not find the expected criteria instance",
-                entityCriteria1 == criteriaSet.get(EntityCredentialCriteria.class) );
+                entityCriteria1 == criteriaSet.get(EntityCriteria.class) );
         assertTrue("Did not find the expected criteria instance",
-                entityCriteria2 == criteriaSet.get(EntityCredentialCriteria.class) );
+                entityCriteria2 == criteriaSet.get(EntityCriteria.class) );
         
     }
     
@@ -102,42 +102,42 @@ public class ClassIndexedSetTest extends TestCase {
      *  Test getting criteria instance from set by type.
      */
     public void testGetType() {
-        EntityCredentialCriteria  entityCriteria = new EntityCredentialCriteria("owner", "peer");
+        EntityCriteria  entityCriteria = new EntityCriteria("owner", "peer");
         criteriaSet.add(entityCriteria);
-        KeyConstraintCredentialCriteria  keyCriteria = new KeyConstraintCredentialCriteria("algorithm", 256);
+        KeyConstraintCriteria  keyCriteria = new KeyConstraintCriteria("algorithm", 256);
         criteriaSet.add(keyCriteria);
         
         assertTrue("Did not find the expected criteria instance",
-                entityCriteria == criteriaSet.get(EntityCredentialCriteria.class) );
+                entityCriteria == criteriaSet.get(EntityCriteria.class) );
         assertTrue("Did not find the expected criteria instance",
-                keyCriteria == criteriaSet.get(KeyConstraintCredentialCriteria.class) );
+                keyCriteria == criteriaSet.get(KeyConstraintCriteria.class) );
         assertTrue("Did not find the expected (null) criteria instance",
-                null == criteriaSet.get(KeyInfoCredentialCriteria.class) );
+                null == criteriaSet.get(KeyInfoCriteria.class) );
     }
     
     /** Tests removing criteria from set by instance. */
     public void testRemove() {
-        EntityCredentialCriteria  entityCriteria = new EntityCredentialCriteria("owner", "peer");
+        EntityCriteria  entityCriteria = new EntityCriteria("owner", "peer");
         criteriaSet.add(entityCriteria);
-        KeyConstraintCredentialCriteria  keyCriteria = new KeyConstraintCredentialCriteria("algorithm", 256);
+        KeyConstraintCriteria  keyCriteria = new KeyConstraintCriteria("algorithm", 256);
         criteriaSet.add(keyCriteria);
         
         assertEquals("Set had unexpected size", 2, criteriaSet.size());
         
         criteriaSet.remove(keyCriteria);
         assertEquals("Set had unexpected size", 1, criteriaSet.size());
-        assertNull("Set returned removed value", criteriaSet.get(KeyConstraintCredentialCriteria.class));
+        assertNull("Set returned removed value", criteriaSet.get(KeyConstraintCriteria.class));
         
         criteriaSet.remove(entityCriteria);
         assertEquals("Set had unexpected size", 0, criteriaSet.size());
-        assertNull("Set returned removed value", criteriaSet.get(EntityCredentialCriteria.class));
+        assertNull("Set returned removed value", criteriaSet.get(EntityCriteria.class));
     }
     
     /** Tests clearing the set. */
     public void testClear() {
-        EntityCredentialCriteria  entityCriteria = new EntityCredentialCriteria("owner", "peer");
+        EntityCriteria  entityCriteria = new EntityCriteria("owner", "peer");
         criteriaSet.add(entityCriteria);
-        KeyConstraintCredentialCriteria  keyCriteria = new KeyConstraintCredentialCriteria("algorithm", 256);
+        KeyConstraintCriteria  keyCriteria = new KeyConstraintCriteria("algorithm", 256);
         criteriaSet.add(keyCriteria);
         
         assertEquals("Set had unexpected size", 2, criteriaSet.size());
@@ -145,17 +145,17 @@ public class ClassIndexedSetTest extends TestCase {
         criteriaSet.clear();
         assertEquals("Set had unexpected size", 0, criteriaSet.size());
         
-        assertNull("Set returned removed value", criteriaSet.get(KeyConstraintCredentialCriteria.class));
-        assertNull("Set returned removed value", criteriaSet.get(EntityCredentialCriteria.class));
+        assertNull("Set returned removed value", criteriaSet.get(KeyConstraintCriteria.class));
+        assertNull("Set returned removed value", criteriaSet.get(EntityCriteria.class));
     }
     
     /** Tests proper iterator iterating behavior. */
     public void testIterator() {
-        EntityCredentialCriteria  entityCriteria = new EntityCredentialCriteria("owner", "peer");
+        EntityCriteria  entityCriteria = new EntityCriteria("owner", "peer");
         criteriaSet.add(entityCriteria);
-        KeyConstraintCredentialCriteria  keyCriteria = new KeyConstraintCredentialCriteria("algorithm", 256);
+        KeyConstraintCriteria  keyCriteria = new KeyConstraintCriteria("algorithm", 256);
         criteriaSet.add(keyCriteria);
-        KeyInfoCredentialCriteria keyInfoCriteria = new KeyInfoCredentialCriteria(null);
+        KeyInfoCriteria keyInfoCriteria = new KeyInfoCriteria(null);
         criteriaSet.add(keyInfoCriteria);
         
         assertEquals("Set had unexpected size", 3, criteriaSet.size());
@@ -188,13 +188,13 @@ public class ClassIndexedSetTest extends TestCase {
     /** Tests proper iterator remove() behavior. */
     public void testIteratorRemove() {
         criteriaSet = new ClassIndexedSet<CredentialCriteria>();
-        EntityCredentialCriteria  entityCriteria = new EntityCredentialCriteria("owner", "peer");
+        EntityCriteria  entityCriteria = new EntityCriteria("owner", "peer");
         criteriaSet.add(entityCriteria);
-        KeyConstraintCredentialCriteria  keyCriteria = new KeyConstraintCredentialCriteria("algorithm", 256);
+        KeyConstraintCriteria  keyCriteria = new KeyConstraintCriteria("algorithm", 256);
         criteriaSet.add(keyCriteria);
-        KeyInfoCredentialCriteria keyInfoCriteria = new KeyInfoCredentialCriteria(null);
+        KeyInfoCriteria keyInfoCriteria = new KeyInfoCriteria(null);
         criteriaSet.add(keyInfoCriteria);
-        X509CertificateCredentialCriteria x509Criteria = new X509CertificateCredentialCriteria(null, null, null, null);
+        X509CertificateCriteria x509Criteria = new X509CertificateCriteria(null, null, null, null);
         criteriaSet.add(x509Criteria);
         
         assertEquals("Set had unexpected size", 4, criteriaSet.size());
@@ -203,7 +203,7 @@ public class ClassIndexedSetTest extends TestCase {
         CredentialCriteria criteria = null;
         while ( iterator.hasNext() ) {
             criteria = iterator.next();
-            if (criteria instanceof KeyConstraintCredentialCriteria) {
+            if (criteria instanceof KeyConstraintCriteria) {
                 iterator.remove();
             }
         }
@@ -215,25 +215,25 @@ public class ClassIndexedSetTest extends TestCase {
         assertFalse("Set contained unexpected instance", criteriaSet.contains(keyCriteria));
         
         assertTrue("Set did not contain expected class type", 
-                criteriaSet.contains(EntityCredentialCriteria.class));
+                criteriaSet.contains(EntityCriteria.class));
         assertTrue("Set did not contain expected class type", 
-                criteriaSet.contains(KeyInfoCredentialCriteria.class));
+                criteriaSet.contains(KeyInfoCriteria.class));
         assertTrue("Set did not contain expected class type", 
-                criteriaSet.contains(X509CertificateCredentialCriteria.class));
+                criteriaSet.contains(X509CertificateCriteria.class));
         assertFalse("Set contained unexpected class type", 
-                criteriaSet.contains(KeyConstraintCredentialCriteria.class));
+                criteriaSet.contains(KeyConstraintCriteria.class));
     }
         
     /** Tests proper iterator remove() behavior when called illegally. */
     public void testIteratorRemoveIllegal() {
         criteriaSet = new ClassIndexedSet<CredentialCriteria>();
-        EntityCredentialCriteria  entityCriteria = new EntityCredentialCriteria("owner", "peer");
+        EntityCriteria  entityCriteria = new EntityCriteria("owner", "peer");
         criteriaSet.add(entityCriteria);
-        KeyConstraintCredentialCriteria  keyCriteria = new KeyConstraintCredentialCriteria("algorithm", 256);
+        KeyConstraintCriteria  keyCriteria = new KeyConstraintCriteria("algorithm", 256);
         criteriaSet.add(keyCriteria);
-        KeyInfoCredentialCriteria keyInfoCriteria = new KeyInfoCredentialCriteria(null);
+        KeyInfoCriteria keyInfoCriteria = new KeyInfoCriteria(null);
         criteriaSet.add(keyInfoCriteria);
-        X509CertificateCredentialCriteria x509Criteria = new X509CertificateCredentialCriteria(null, null, null, null);
+        X509CertificateCriteria x509Criteria = new X509CertificateCriteria(null, null, null, null);
         criteriaSet.add(x509Criteria);
         
         assertEquals("Set had unexpected size", 4, criteriaSet.size());

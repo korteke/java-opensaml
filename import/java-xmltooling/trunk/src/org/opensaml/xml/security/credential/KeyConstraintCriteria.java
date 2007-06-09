@@ -22,7 +22,7 @@ import org.opensaml.xml.util.DatatypeHelper;
  * An implementation of {@link CredentialCriteria} which specifies criteria pertaining 
  * to characteristics of a key to be resolved.
  */
-public final class KeyConstraintCredentialCriteria implements CredentialCriteria {
+public final class KeyConstraintCriteria implements CredentialCriteria {
     
     /** Key algorithm type of resolved credentials. */
     private String keyAlgorithm;
@@ -36,7 +36,7 @@ public final class KeyConstraintCredentialCriteria implements CredentialCriteria
      * @param algorithm key algorithm
      * @param length key length 
      */
-    public KeyConstraintCredentialCriteria(String algorithm, Integer length) {
+    public KeyConstraintCriteria(String algorithm, Integer length) {
         setKeyAlgorithm(algorithm);
         setKeyLength(length);
     }
