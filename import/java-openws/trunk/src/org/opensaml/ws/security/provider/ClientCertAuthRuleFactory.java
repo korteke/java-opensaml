@@ -22,16 +22,19 @@ import java.util.LinkedHashSet;
 import java.util.List;
 
 import javax.security.auth.x500.X500Principal;
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
-import org.opensaml.ws.security.HttpRequestX509CredentialAdapter;
+import org.opensaml.ws.security.ServletRequestX509CredentialAdapter;
 import org.opensaml.ws.security.SecurityPolicyContext;
 import org.opensaml.ws.security.SecurityPolicyException;
 import org.opensaml.ws.security.SecurityPolicyRule;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.credential.EntityCriteria;
+import org.opensaml.xml.security.credential.UsageCriteria;
+import org.opensaml.xml.security.credential.UsageType;
 import org.opensaml.xml.security.trust.TrustEngine;
 import org.opensaml.xml.security.x509.InternalX500DNHandler;
 import org.opensaml.xml.security.x509.X500DNHandler;
@@ -43,7 +46,7 @@ import org.opensaml.xml.util.DatatypeHelper;
  * Factory for policy rules which check if the client cert used to authenticate the request is valid and trusted.
  * 
  */
-public class ClientCertAuthRuleFactory extends BaseTrustEngineRuleFactory<X509Credential, HttpServletRequest> {
+public class ClientCertAuthRuleFactory extends BaseTrustEngineRuleFactory<X509Credential, ServletRequest> {
     
     /** Options for derving issuer names from an X.509 certificate. */
     private CertificateNameOptions certNameOptions;
@@ -66,7 +69,7 @@ public class ClientCertAuthRuleFactory extends BaseTrustEngineRuleFactory<X509Cr
     }
 
     /** {@inheritDoc} */
-    public SecurityPolicyRule<HttpServletRequest> createRuleInstance() {
+    public SecurityPolicyRule<ServletRequest> createRuleInstance() {
         return new ClientCertAuthRule(getTrustEngine(), getCertificateNameOptions());
     }
     
@@ -198,7 +201,7 @@ public class ClientCertAuthRuleFactory extends BaseTrustEngineRuleFactory<X509Cr
      * If the method returns null, the context issuer and issuer authentication state 
      * will remain unmodified.</p>
      */
-    protected class ClientCertAuthRule extends BaseTrustEngineRule<X509Credential, HttpServletRequest> {
+    protected class ClientCertAuthRule extends BaseTrustEngineRule<X509Credential, ServletRequest> {
         
         /** Logger. */
         private Logger log = Logger.getLogger(ClientCertAuthRule.class);
@@ -219,14 +222,14 @@ public class ClientCertAuthRuleFactory extends BaseTrustEngineRuleFactory<X509Cr
         }
 
         /** {@inheritDoc} */
-        public void evaluate(HttpServletRequest request, XMLObject message, SecurityPolicyContext context)
+        public void evaluate(ServletRequest request, XMLObject message, SecurityPolicyContext context)
                 throws SecurityPolicyException {
             
             X509Credential requestCredential = null;
             try {
-                requestCredential = new HttpRequestX509CredentialAdapter(request);
+                requestCredential = new ServletRequestX509CredentialAdapter(request);
             } catch (IllegalArgumentException e) {
-                log.info("HTTP request did not contain a certificate, skipping client certificate authentication");
+                log.info("Request did not contain a certificate, skipping client certificate authentication");
                 return;
             }
             
@@ -269,13 +272,16 @@ public class ClientCertAuthRuleFactory extends BaseTrustEngineRuleFactory<X509Cr
         }
 
         /** {@inheritDoc} */
-        protected CriteriaSet buildCriteriaSet(String entityID, HttpServletRequest request, 
+        protected CriteriaSet buildCriteriaSet(String entityID, ServletRequest request, 
                 XMLObject message, SecurityPolicyContext context){
             
             CriteriaSet criteriaSet = new CriteriaSet();
             if (! DatatypeHelper.isEmpty(entityID)) {
                 criteriaSet.add(new EntityCriteria(entityID, null));
             }
+            
+            criteriaSet.add( new UsageCriteria(UsageType.SIGNING) );
+            
             return criteriaSet;
         }
         
@@ -296,7 +302,7 @@ public class ClientCertAuthRuleFactory extends BaseTrustEngineRuleFactory<X509Cr
          * @return an issuer entity ID which was successfully evaluated by the trust engine
          * @throws SecurityPolicyException thrown if there is error during processing
          */
-        protected String evaluateDerivedIssuers(X509Credential requestCredential, HttpServletRequest request, 
+        protected String evaluateDerivedIssuers(X509Credential requestCredential, ServletRequest request, 
                 XMLObject message, SecurityPolicyContext context) throws SecurityPolicyException {
             
             return null;
@@ -331,7 +337,7 @@ public class ClientCertAuthRuleFactory extends BaseTrustEngineRuleFactory<X509Cr
          * @throws SecurityPolicyException thrown if there is error during processing
          */
         protected String evaluateCertificateNameDerivedIssuers(X509Credential requestCredential, 
-                HttpServletRequest request, XMLObject message, SecurityPolicyContext context)
+                ServletRequest request, XMLObject message, SecurityPolicyContext context)
                 throws SecurityPolicyException {
             
             String candidateIssuer = null;
@@ -373,7 +379,7 @@ public class ClientCertAuthRuleFactory extends BaseTrustEngineRuleFactory<X509Cr
          * @throws SecurityPolicyException thrown if there is error during processing
          */
         protected String evaluateSubjectCommonName(X509Credential requestCredential, 
-                HttpServletRequest request, XMLObject message, SecurityPolicyContext context)
+                ServletRequest request, XMLObject message, SecurityPolicyContext context)
                 throws SecurityPolicyException {
             
             log.debug("Evaluating client cert by deriving issuer as cert CN");
@@ -401,7 +407,7 @@ public class ClientCertAuthRuleFactory extends BaseTrustEngineRuleFactory<X509Cr
          * @throws SecurityPolicyException thrown if there is error during processing
          */
         protected String evaluateSubjectDN(X509Credential requestCredential, 
-                HttpServletRequest request, XMLObject message, SecurityPolicyContext context)
+                ServletRequest request, XMLObject message, SecurityPolicyContext context)
                 throws SecurityPolicyException {
             
             log.debug("Evaluating client cert by deriving issuer as cert subject DN");
@@ -430,7 +436,7 @@ public class ClientCertAuthRuleFactory extends BaseTrustEngineRuleFactory<X509Cr
          * @throws SecurityPolicyException thrown if there is error during processing
          */
         protected String evaluateSubjectAltNames(X509Credential requestCredential, 
-                HttpServletRequest request, XMLObject message, SecurityPolicyContext context)
+                ServletRequest request, XMLObject message, SecurityPolicyContext context)
                 throws SecurityPolicyException {
             
             log.debug("Evaluating client cert by deriving issuer from subject alt names");

@@ -19,30 +19,30 @@ package org.opensaml.ws.security;
 import java.security.cert.X509Certificate;
 import java.util.Arrays;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.ServletRequest;
 
 import org.opensaml.xml.security.credential.UsageType;
 import org.opensaml.xml.security.x509.BasicX509Credential;
 import org.opensaml.xml.security.x509.X509Credential;
 
 /**
- * An adapter that exposes the X.509 certificates contained in the HTTP request attribute.
+ * An adapter that exposes the X.509 certificates contained in the servlet request attribute.
  */
-public class HttpRequestX509CredentialAdapter extends BasicX509Credential implements X509Credential {
+public class ServletRequestX509CredentialAdapter extends BasicX509Credential implements X509Credential {
 
-    /** HTTP header to pull certificate info from. */
-    public static final String X509_CERT_HTTP_HEADER = "javax.servlet.request.X509Certificate";
+    /** Servlet request attribute to pull certificate info from. */
+    public static final String X509_CERT_REQUEST_ATTRIBUTE = "javax.servlet.request.X509Certificate";
 
     /**
      * Constructor.
      *
-     * @param httpRequest the HTTP request
+     * @param request the servlet request
      */
-    public HttpRequestX509CredentialAdapter(HttpServletRequest httpRequest) {
-        X509Certificate[] chain = (X509Certificate[]) httpRequest.getAttribute(X509_CERT_HTTP_HEADER);
+    public ServletRequestX509CredentialAdapter(ServletRequest request) {
+        X509Certificate[] chain = (X509Certificate[]) request.getAttribute(X509_CERT_REQUEST_ATTRIBUTE);
         if (chain == null | chain.length == 0) {
-            throw new IllegalArgumentException("HTTP Request does not contain X.509 certificates in header "
-                    + X509_CERT_HTTP_HEADER);
+            throw new IllegalArgumentException("Servlet request does not contain X.509 certificates in attribute "
+                    + X509_CERT_REQUEST_ATTRIBUTE);
         }
 
         setEntityCertificate(chain[0]);
