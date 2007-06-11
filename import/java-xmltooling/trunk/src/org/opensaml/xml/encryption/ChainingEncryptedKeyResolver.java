@@ -151,10 +151,8 @@ public class ChainingEncryptedKeyResolver extends AbstractEncryptedKeyResolver {
                 nextKey = null;
                 return tempKey;
             }
-            nextKey = getNextKey();
-            if (nextKey != null) {
-                tempKey = nextKey;
-                nextKey = null;
+            tempKey = getNextKey();
+            if (tempKey != null) {
                 return tempKey;
             } else {
                throw new NoSuchElementException("No more EncryptedKey elements are available");
