@@ -36,7 +36,7 @@ import java.util.Map;
  * <li>.crl - for certificate revocation lists. File must contain one or more CRLs</li>
  * </ul>
  */
-public class FilesystemCredentialResolver extends AbstractCredentialResolver implements CredentialResolver {
+public class FilesystemCredentialResolver extends AbstractCriteriaFilteringCredentialResolver {
 
     /**
      * Constructor.
@@ -45,11 +45,12 @@ public class FilesystemCredentialResolver extends AbstractCredentialResolver imp
      * @param passwords passwords for encrypted private keys, key is the entity ID, value is the password
      */
     public FilesystemCredentialResolver(String credentialDirectory, Map<String, String> passwords) {
-        
+        super();
+        // TODO
     }
 
     /** {@inheritDoc} */
-    public Iterable<Credential> resolve(CredentialCriteriaSet criteriaSet) {
+    protected Iterable<Credential> resolveFromSource(CredentialCriteriaSet criteriaSet) {
         // TODO Auto-generated method stub
         return null;
     }

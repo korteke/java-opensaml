@@ -27,11 +27,10 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.security.SecurityException;
-import org.opensaml.xml.security.credential.AbstractCredentialResolver;
+import org.opensaml.xml.security.credential.AbstractCriteriaFilteringCredentialResolver;
 import org.opensaml.xml.security.credential.BasicCredential;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.credential.CredentialCriteriaSet;
-import org.opensaml.xml.security.credential.CredentialResolver;
 import org.opensaml.xml.security.keyinfo.provider.DSAKeyValueProvider;
 import org.opensaml.xml.security.keyinfo.provider.RSAKeyValueProvider;
 import org.opensaml.xml.security.keyinfo.provider.X509DataProvider;
@@ -45,7 +44,7 @@ import org.opensaml.xml.signature.KeyValue;
  * 
  * TODO document processing model and hooks in detail, suggested usage, etc
  */
-public class KeyInfoCredentialResolver extends AbstractCredentialResolver implements CredentialResolver {
+public class KeyInfoCredentialResolver extends AbstractCriteriaFilteringCredentialResolver {
     
     /** Class logger. */
     private static Logger log = Logger.getLogger(KeyInfoCredentialResolver.class);
@@ -55,6 +54,7 @@ public class KeyInfoCredentialResolver extends AbstractCredentialResolver implem
     
     /** Constructor. */
     public KeyInfoCredentialResolver() {
+        super();
         providers = new ArrayList<KeyInfoProvider>();
         
         //TODO decide how/where providers will be registered
@@ -68,7 +68,7 @@ public class KeyInfoCredentialResolver extends AbstractCredentialResolver implem
     }
 
     /** {@inheritDoc} */
-    public Iterable<Credential> resolve(CredentialCriteriaSet criteriaSet) throws SecurityException {
+    protected Iterable<Credential> resolveFromSource(CredentialCriteriaSet criteriaSet) throws SecurityException {
         KeyInfoCriteria kiCriteria = criteriaSet.get(KeyInfoCriteria.class);
         if (kiCriteria == null) {
             log.error("No KeyInfo criteria supplied, resolver could not process");

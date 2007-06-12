@@ -37,7 +37,7 @@ import org.opensaml.xml.util.DatatypeHelper;
  * If no key usage type is presented at construction time this resolver will return the key, if available, regardless of
  * the usage type provided to its resolve method.
  */
-public class KeyStoreCredentialResolver extends AbstractCredentialResolver  implements CredentialResolver {
+public class KeyStoreCredentialResolver extends AbstractCriteriaFilteringCredentialResolver {
 
     /** Class logger. */
     private static Logger log = Logger.getLogger(KeyStoreCredentialResolver.class);
@@ -76,6 +76,8 @@ public class KeyStoreCredentialResolver extends AbstractCredentialResolver  impl
      */
     public KeyStoreCredentialResolver(KeyStore store, Map<String, String> passwords, UsageType usage)
             throws IllegalArgumentException {
+        super();
+        
         if (store == null) {
             throw new IllegalArgumentException("Provided key store may not be null.");
         }
@@ -96,7 +98,7 @@ public class KeyStoreCredentialResolver extends AbstractCredentialResolver  impl
     }
 
     /** {@inheritDoc} */
-    public Iterable<Credential> resolve(CredentialCriteriaSet criteriaSet) throws SecurityException {
+    protected Iterable<Credential> resolveFromSource(CredentialCriteriaSet criteriaSet) throws SecurityException {
         Set<Credential> credentials = new HashSet<Credential>();
         
         checkCriteriaRequirements(criteriaSet);
