@@ -38,6 +38,7 @@ public class CollectionCredentialResolver extends AbstractCriteriaFilteringCrede
      *
      */
     public CollectionCredentialResolver() {
+        super();
         collection = new ArrayList<Credential>();
     }
     
@@ -47,6 +48,7 @@ public class CollectionCredentialResolver extends AbstractCriteriaFilteringCrede
      * @param credentials the credential collection which is the backing store for the resolver
      */
     public CollectionCredentialResolver(Collection<Credential> credentials) {
+        super();
         collection = credentials;
     }
     

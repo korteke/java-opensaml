@@ -42,6 +42,7 @@ public abstract class AbstractCriteriaFilteringCredentialResolver extends Abstra
      *
      */
     public AbstractCriteriaFilteringCredentialResolver() {
+        super();
         meetAllCriteria = true;
         unevaluableSatisfies = true;
     }
