@@ -16,31 +16,23 @@
 
 package org.opensaml.xml.security.credential;
 
-import java.security.PublicKey;
-
 import org.opensaml.xml.util.DatatypeHelper;
 
 /**
- * An implementation of {@link CredentialCriteria} which specifies criteria pertaining 
- * to identifiers of a key to be resolved.
+ * An implementation of {@link CredentialCriteria} which specifies key name criteria.
  */
-public final class KeyIdentifierCriteria implements CredentialCriteria {
+public class KeyNameCriteria implements CredentialCriteria {
 
     /** Key name of resolved credentials.  */
     private String keyName;
-    
-    /** Specifier of public key associated with resolved credentials. */
-    private PublicKey publicKey;
     
     /**
      * Constructor.
      *
      * @param name key name
-     * @param pubKey public key
      */
-    public KeyIdentifierCriteria(String name, PublicKey pubKey) {
+    public KeyNameCriteria(String name) {
         setKeyName(name);
-        setPublicKey(pubKey);
     }
 
     /**
@@ -58,25 +50,10 @@ public final class KeyIdentifierCriteria implements CredentialCriteria {
      * @param name The keyName to set.
      */
     public void setKeyName(String name) {
+        if (DatatypeHelper.isEmpty(name)) {
+            throw new IllegalArgumentException("Key name criteria value must be supplied");
+        }
         keyName = DatatypeHelper.safeTrimOrNullString(keyName);
-    }
-
-    /**
-     * Get the public key criteria.
-     * 
-     * @return Returns the publicKey.
-     */
-    public PublicKey getPublicKey() {
-        return publicKey;
-    }
-
-    /**
-     * Set the public key criteria. 
-     * 
-     * @param key The publicKey to set.
-     */
-    public void setPublicKey(PublicKey key) {
-        publicKey = key;
     }
 
 }

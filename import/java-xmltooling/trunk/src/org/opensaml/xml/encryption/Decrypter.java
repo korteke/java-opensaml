@@ -19,9 +19,12 @@ package org.opensaml.xml.encryption;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.security.Key;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.apache.xml.security.Init;
@@ -38,8 +41,10 @@ import org.opensaml.xml.parse.XMLParserException;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.credential.Credential;
+import org.opensaml.xml.security.credential.CredentialCriteria;
 import org.opensaml.xml.security.credential.CredentialCriteriaSet;
-import org.opensaml.xml.security.credential.KeyConstraintCriteria;
+import org.opensaml.xml.security.credential.KeyAlgorithmCriteria;
+import org.opensaml.xml.security.credential.KeyLengthCriteria;
 import org.opensaml.xml.security.credential.UsageCriteria;
 import org.opensaml.xml.security.credential.UsageType;
 import org.opensaml.xml.security.keyinfo.KeyInfoCriteria;
@@ -679,58 +684,115 @@ public class Decrypter {
     private CredentialCriteriaSet buildCredentialCriteria(EncryptedType encryptedType, 
             CredentialCriteriaSet staticCriteria) {
         
-        CredentialCriteriaSet newCriteria = new CredentialCriteriaSet();
+        CredentialCriteriaSet newCriteriaSet = new CredentialCriteriaSet();
         
         // This is the main criteria based on the encrypted type's KeyInfo
-        newCriteria.add( new KeyInfoCriteria(encryptedType.getKeyInfo()) );
+        newCriteriaSet.add( new KeyInfoCriteria(encryptedType.getKeyInfo()) );
         
-        // Also attemtpt to dynamically construct a criteria based on the encryption key's
-        // JCE algorithm and key length, if applicable
-        KeyConstraintCriteria keyCriteria = buildKeyConstraintCriteria(encryptedType);
-        if (keyCriteria != null) {
-            newCriteria.add(keyCriteria);
+        // Also attemtpt to dynamically construct key criteria based on information
+        // in the encrypted object
+        Set<CredentialCriteria> keyCriteria = buildKeyCriteria(encryptedType);
+        if (keyCriteria != null && ! keyCriteria.isEmpty() ) {
+            newCriteriaSet.addAll(keyCriteria);
         }
         
         // Add any static criteria which may have been supplied to the decrypter
         if (staticCriteria != null && ! staticCriteria.isEmpty() ) {
-            newCriteria.addAll(staticCriteria);
+            newCriteriaSet.addAll(staticCriteria);
         }
         
         // If don't have a usage criteria yet from static criteria, add encryption usage
-        if ( ! newCriteria.contains(UsageCriteria.class)) {
-            newCriteria.add( new UsageCriteria(UsageType.ENCRYPTION) );
+        if ( ! newCriteriaSet.contains(UsageCriteria.class)) {
+            newCriteriaSet.add( new UsageCriteria(UsageType.ENCRYPTION) );
         }
         
-        return newCriteria;
+        return newCriteriaSet;
     }
     
     /**
-     * Dynamically construct key credential criteria based on the encryption method used
-     * on an {@link EncryptedType}.
+     * Build decryption key credential criteria according to information in the encrypted type object.
      * 
-     * @param encryptedType the encrypted type element which is the be decrypted
-     * @return a new key credential criteria instance, or null if criteria could not be determined
-     *          from the encrypted type element
+     * @param encryptedType the encrypted type from which to deduce decryption key criteria
+     * @return a set of credential criteria pertaining to the decryption key
      */
-    private KeyConstraintCriteria buildKeyConstraintCriteria(EncryptedType encryptedType) {
-        String encAlgorithmURI = 
-            DatatypeHelper.safeTrimOrNullString(encryptedType.getEncryptionMethod().getAlgorithm());
+    private Set<CredentialCriteria> buildKeyCriteria(EncryptedType encryptedType) {
+        EncryptionMethod encMethod = encryptedType.getEncryptionMethod();
+        if (encMethod == null) {
+            // This element is optional
+            return Collections.emptySet();
+        }
+        String encAlgorithmURI = DatatypeHelper.safeTrimOrNullString(encMethod.getAlgorithm());
+        if (encAlgorithmURI == null) {
+            return Collections.emptySet();
+        }
         
-        if (! DatatypeHelper.isEmpty(encAlgorithmURI)) {
-            KeyConstraintCriteria keyCriteria = null;
+        Set<CredentialCriteria> critSet = new HashSet<CredentialCriteria>(2);
         
-            String jceKeyAlgorithm = SecurityHelper.getKeyAlgorithmFromURI(encAlgorithmURI);
-            
-            if (! DatatypeHelper.isEmpty(jceKeyAlgorithm)) {
-                Integer keyLength = SecurityHelper.getKeyLengthFromURI(encAlgorithmURI);
-                keyCriteria = new KeyConstraintCriteria(jceKeyAlgorithm, keyLength);
+        KeyAlgorithmCriteria algoCrit = buildKeyAlgorithmCriteria(encAlgorithmURI);
+        if (algoCrit != null) {
+            critSet.add(algoCrit);
+            if (log.isDebugEnabled()) {
+                log.debug("Added decryption key algorithm criteria: " + algoCrit.getKeyAlgorithm());
             }
-            
-            return keyCriteria;
+        }
+        
+        KeyLengthCriteria lengthCrit = buildKeyLengthCriteria(encAlgorithmURI);
+        if (lengthCrit != null) {
+            critSet.add(lengthCrit);
+            if (log.isDebugEnabled()) {
+                log.debug("Added decryption key length criteria from EncryptionMethod algorithm URI: " 
+                        + lengthCrit.getKeyLength());
+            }
         } else {
+            if (encMethod.getKeySize() != null && encMethod.getKeySize().getValue() != null) {
+                lengthCrit = new KeyLengthCriteria(encMethod.getKeySize().getValue());
+                critSet.add(lengthCrit);
+                if (log.isDebugEnabled()) {
+                    log.debug("Added decryption key length criteria from EncryptionMethod/KeySize: " 
+                            + lengthCrit.getKeyLength());
+                }
+            }
+        }
+        
+        return critSet;
+    }
+    
+    /**
+     * Dynamically construct key algorithm credential criteria based on the specified algorithm URI.
+     * 
+     * @param encAlgorithmURI the algorithm URI
+     * @return a new key algorithm credential criteria instance, or null if criteria could not be determined
+     */
+    private KeyAlgorithmCriteria buildKeyAlgorithmCriteria(String encAlgorithmURI) {
+        if (DatatypeHelper.isEmpty(encAlgorithmURI)) {
             return null;
         }
         
+        String jcaKeyAlgorithm = SecurityHelper.getKeyAlgorithmFromURI(encAlgorithmURI);
+        if (! DatatypeHelper.isEmpty(jcaKeyAlgorithm)) {
+            return new KeyAlgorithmCriteria(jcaKeyAlgorithm);
+        }
+        
+        return null;
+    }
+    
+    /**
+     * Dynamically construct key length credential criteria based on the specified algorithm URI.
+     * 
+     * @param encAlgorithmURI the algorithm URI
+     * @return a new key length credential criteria instance, or null if the value could not be determined
+     */
+    private KeyLengthCriteria buildKeyLengthCriteria(String encAlgorithmURI) {
+        if (! DatatypeHelper.isEmpty(encAlgorithmURI)) {
+            return null;
+        }
+            
+        Integer keyLength = SecurityHelper.getKeyLengthFromURI(encAlgorithmURI);
+        if (keyLength != null) {
+            return new KeyLengthCriteria(keyLength);
+        }
+            
+        return null;
     }
     
     /**

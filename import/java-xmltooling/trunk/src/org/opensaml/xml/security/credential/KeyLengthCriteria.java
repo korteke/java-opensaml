@@ -16,45 +16,42 @@
 
 package org.opensaml.xml.security.credential;
 
-
 /**
- * An implementation of {@link CredentialCriteria} which specifies criteria pertaining 
- * usage of the resolved credential. 
+ * An implementation of {@link CredentialCriteria} which specifies key length criteria.
  */
-public class UsageCriteria implements CredentialCriteria {
-   
-    /** Key usage type of resolved credentials. */
-    private UsageType credUsage;
+public class KeyLengthCriteria implements CredentialCriteria {
+    
+    /** Key length of resolved credentials. */
+    private Integer keyLength;
     
     /**
-    * Constructor.
+     * Constructor.
      *
-     * @param usage the usage for which a credential is intended
+     * @param length key length 
      */
-    public UsageCriteria(UsageType usage) {
-        setUsage(usage);
+    public KeyLengthCriteria(Integer length) {
+        setKeyLength(length);
     }
 
     /**
-     * Get the key usage criteria.
+     * Get the key length.
      * 
-     * @return Returns the usage.
+     * @return Returns the keyLength.
      */
-    public UsageType getUsage() {
-        return credUsage;
+    public Integer getKeyLength() {
+        return keyLength;
     }
 
     /**
-     * Set the key usage criteria.
+     * Set the key length.
      * 
-     * @param usage The usage to set.
+     * @param length The keyLength to set.
      */
-    public void setUsage(UsageType usage) {
-        if (usage != null) {
-            credUsage = usage;
-        } else {
-            credUsage = UsageType.UNSPECIFIED;
+    public void setKeyLength(Integer length) {
+        if (length == null) {
+            throw new IllegalArgumentException("Key length criteria value must be supplied");
         }
+        keyLength = length;
     }
 
 }

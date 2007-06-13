@@ -26,7 +26,7 @@ import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.credential.BasicCredential;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.credential.CredentialCriteriaSet;
-import org.opensaml.xml.security.credential.KeyConstraintCriteria;
+import org.opensaml.xml.security.credential.KeyAlgorithmCriteria;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xml.security.keyinfo.KeyInfoProvider;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver.KeyInfoResolutionContext;
@@ -56,10 +56,10 @@ public class RSAKeyValueProvider extends AbstractKeyInfoProvider {
             return null;
         }
         
-        KeyConstraintCriteria keyCriteria = criteriaSet.get(KeyConstraintCriteria.class);
-        if (keyCriteria != null 
-                && keyCriteria.getKeyAlgorithm() != null 
-                && ! keyCriteria.getKeyAlgorithm().equals("RSA")) {
+        KeyAlgorithmCriteria algorithmCriteria = criteriaSet.get(KeyAlgorithmCriteria.class);
+        if (algorithmCriteria != null 
+                && algorithmCriteria.getKeyAlgorithm() != null 
+                && ! algorithmCriteria.getKeyAlgorithm().equals("RSA")) {
             log.debug("Criteria specified non-RSA key algorithm, skipping");
             return null;
         }

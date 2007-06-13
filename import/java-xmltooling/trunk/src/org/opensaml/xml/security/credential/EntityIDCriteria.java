@@ -20,35 +20,33 @@ import org.opensaml.xml.security.x509.PKIXCriteria;
 import org.opensaml.xml.util.DatatypeHelper;
 
 /**
- * An implementation of {@link Criteria} which specifies criteria pertaining 
- * to primary and remote peer entity IDs.
+ * An implementation of {@link Criteria} which specifies criteria identifying a
+ * particular entity.
  * 
- * When used as a {@link CredentialCriteria}, the entity ID is the entity which owns 
- * the resolved credential.  The peer entity ID is the entity which is the remote peer, 
- * relative to the resolution process.  The entity ID and peer ID may be the 
- * same, depending on the particular use case for resolving credentials.
+ * Note that when used as a {@link CredentialCriteria}, the entity ID is the entity which owns 
+ * the resolved credential. This entity ID may represent either a local entity (self) or remote entity, depending
+ * on the use case, e.g. in resolution of signature verification credentials, the owner entity ID
+ * would be a remote peer; in resolution of decryption credentials, the owner entity ID would be
+ * a local entity ID.
+ * 
+ * See also {@link PeerEntityIDCriteria}.
  */
-public final class EntityCriteria implements CredentialCriteria, PKIXCriteria {
+public class EntityIDCriteria implements CredentialCriteria, PKIXCriteria {
     
     /** Primary entity ID criteria. */
     private String entityID;
     
-    /** Peer entity ID criteria. */
-    private String peerID;
-    
     /**
     * Constructor.
      *
-     * @param entity the primary entity ID represented by the criteria
-     * @param peer the entity ID which is the remote peer relative to the primary entity ID
+     * @param entity the entity ID represented by the criteria
      */
-    public EntityCriteria(String entity, String peer) {
+    public EntityIDCriteria(String entity) {
         setEntityID(entity);
-        setPeerID(peer);
     }
 
     /**
-     * Get the primary entity ID represented by the criteria.
+     * Get the entity ID represented by the criteria.
      * 
      * @return the primary entity ID.
      */
@@ -57,7 +55,7 @@ public final class EntityCriteria implements CredentialCriteria, PKIXCriteria {
     }
 
     /**
-     * Set the primary entity ID represented by the criteria.
+     * Set the entity ID represented by the criteria.
      * 
      * @param entity The entityID to set.
      */
@@ -67,24 +65,6 @@ public final class EntityCriteria implements CredentialCriteria, PKIXCriteria {
             throw new IllegalArgumentException("Primary entity ID criteria must be supplied");
         }
         entityID = trimmed;
-    }
-
-    /**
-     * Get the entity ID which is the remote peer relative to the primary entity ID.
-     * 
-     * @return the peer entity ID.
-     */
-    public String getPeerID() {
-        return peerID;
-    }
-
-    /**
-     * Set the entity ID which is the remote peer relative to the primary entity ID.
-     * 
-     * @param peer The peerID to set.
-     */
-    public void setPeerID(String peer) {
-        peerID = peer;
     }
 
 }

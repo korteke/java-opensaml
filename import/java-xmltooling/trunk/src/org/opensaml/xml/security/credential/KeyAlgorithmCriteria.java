@@ -19,26 +19,20 @@ package org.opensaml.xml.security.credential;
 import org.opensaml.xml.util.DatatypeHelper;
 
 /**
- * An implementation of {@link CredentialCriteria} which specifies criteria pertaining 
- * to characteristics of a key to be resolved.
+ * An implementation of {@link CredentialCriteria} which specifies key algorithm criteria.
  */
-public final class KeyConstraintCriteria implements CredentialCriteria {
+public class KeyAlgorithmCriteria implements CredentialCriteria {
     
     /** Key algorithm type of resolved credentials. */
     private String keyAlgorithm;
-    
-    /** Key length of resolved credentials. */
-    private Integer keyLength;
     
     /**
      * Constructor.
      *
      * @param algorithm key algorithm
-     * @param length key length 
      */
-    public KeyConstraintCriteria(String algorithm, Integer length) {
+    public KeyAlgorithmCriteria(String algorithm) {
         setKeyAlgorithm(algorithm);
-        setKeyLength(length);
     }
  
     /**
@@ -56,25 +50,10 @@ public final class KeyConstraintCriteria implements CredentialCriteria {
      * @param algorithm The keyAlgorithm to set.
      */
     public void setKeyAlgorithm(String algorithm) {
+        if (DatatypeHelper.isEmpty(algorithm)) {
+            throw new IllegalArgumentException("Key algorithm criteria value must be supplied");
+        }
         keyAlgorithm = DatatypeHelper.safeTrimOrNullString(algorithm);
-    }
-
-    /**
-     * Get the key length.
-     * 
-     * @return Returns the keyLength.
-     */
-    public Integer getKeyLength() {
-        return keyLength;
-    }
-
-    /**
-     * Set the key length.
-     * 
-     * @param length The keyLength to set.
-     */
-    public void setKeyLength(Integer length) {
-        keyLength = length;
     }
 
 }

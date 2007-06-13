@@ -23,7 +23,7 @@ import org.opensaml.xml.signature.KeyInfo;
  * An implementation of {@link CredentialCriteria} which specifies criteria based
  * on the contents of a {@link KeyInfo} element.
  */
-public final class KeyInfoCriteria implements CredentialCriteria {
+public class KeyInfoCriteria implements CredentialCriteria {
     
     /** The KeyInfo which serves as the source for credential criteria. */
     private KeyInfo keyInfo;

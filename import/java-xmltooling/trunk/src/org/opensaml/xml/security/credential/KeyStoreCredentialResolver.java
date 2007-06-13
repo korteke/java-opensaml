@@ -102,7 +102,7 @@ public class KeyStoreCredentialResolver extends AbstractCriteriaFilteringCredent
         Set<Credential> credentials = new HashSet<Credential>();
         
         checkCriteriaRequirements(criteriaSet);
-        EntityCriteria entityCriteria = criteriaSet.get(EntityCriteria.class);
+        EntityIDCriteria entityCriteria = criteriaSet.get(EntityIDCriteria.class);
         UsageCriteria usageCriteria = criteriaSet.get(UsageCriteria.class);
         String entity = entityCriteria.getEntityID();
         if (usageCriteria == null) {
@@ -152,7 +152,7 @@ public class KeyStoreCredentialResolver extends AbstractCriteriaFilteringCredent
      * @param criteriaSet the credential criteria set to evaluate
      */
     protected void checkCriteriaRequirements(CredentialCriteriaSet criteriaSet) {
-        EntityCriteria entityCriteria = criteriaSet.get(EntityCriteria.class);
+        EntityIDCriteria entityCriteria = criteriaSet.get(EntityIDCriteria.class);
         if (entityCriteria == null || DatatypeHelper.isEmpty(entityCriteria.getEntityID())) {
             log.error("Entity criteria or owner ID not specified, resolution can not be attempted");
             throw new IllegalArgumentException("No entity owner ID criteria was available in criteria set");

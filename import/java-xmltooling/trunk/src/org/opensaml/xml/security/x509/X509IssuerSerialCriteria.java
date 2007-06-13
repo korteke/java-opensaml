@@ -23,13 +23,10 @@ import javax.security.auth.x500.X500Principal;
 import org.opensaml.xml.security.credential.CredentialCriteria;
 
 /**
- * An implementation of {@link CredentialCriteria} which specifies criteria pertaining 
- * to characteristics of an X.509 certificate to be resolved.
+ * An implementation of {@link CredentialCriteria} which specifies criteria based on
+ * X.509 certificate issuer name and serial number.
  */
-public final class X509CertificateCriteria implements CredentialCriteria {
-    
-    /** X.509 certificate subject name. */
-    private X500Principal subjectName;
+public class X509IssuerSerialCriteria implements CredentialCriteria {
     
     /** X.509 certificate issuer name. */
     private X500Principal issuerName;
@@ -37,23 +34,15 @@ public final class X509CertificateCriteria implements CredentialCriteria {
     /** X.509 certificate serial number. */
     private BigInteger serialNumber;
     
-    /** X.509 certificate subject key identifier. */
-    private byte[] subjectKeyIdentifier;
-    
     /**
      * Constructor.
      *
-     * @param subject certificate subject name
      * @param issuer certificate issuer name
      * @param serial certificate serial number
-     * @param ski certificate subject key identifier
      */
-    public X509CertificateCriteria(X500Principal subject, byte[] ski, 
-            X500Principal issuer, BigInteger serial) {
-        setSubjectName(subject);
+    public X509IssuerSerialCriteria(X500Principal issuer, BigInteger serial) {
         setIssuerName(issuer);
         setSerialNumber(serial);
-        setSubjectKeyIdentifier(ski);
     }
     
     /** Get the issuer name.
@@ -70,6 +59,9 @@ public final class X509CertificateCriteria implements CredentialCriteria {
      * @param issuer The issuer name to set.
      */
     public void setIssuerName(X500Principal issuer) {
+        if (issuer == null) {
+            throw new IllegalArgumentException("Issuer principal criteria value may not be null");
+        }
         this.issuerName = issuer;
     }
 
@@ -88,46 +80,10 @@ public final class X509CertificateCriteria implements CredentialCriteria {
      * @param serial The serial number to set.
      */
     public void setSerialNumber(BigInteger serial) {
+        if (serial == null) {
+            throw new IllegalArgumentException("Serial number criteria value may not be null");
+        }
         this.serialNumber = serial;
     }
-
-    /**
-     * Get the subject name.
-     * 
-     * @return Returns the subject name
-     */
-    public X500Principal getSubjectName() {
-        return subjectName;
-    }
-
-    /**
-     * Set the serial number.
-     * 
-     * @param subject The subject name
-     */
-    public void setSubjectName(X500Principal subject) {
-        this.subjectName = subject;
-    }
-    
-    /**
-     * Get the subject key identifier.
-     * 
-     * @return Returns the subject key identifier
-     */
-    public byte[] getSubjectKeyIdentifier() {
-        return subjectKeyIdentifier;
-    }
-
-    /**
-     * Set the subject key identifier.
-     * 
-     * @param ski The subject key identifier to set.
-     */
-    public void setSubjectKeyIdentifier(byte[] ski) {
-        subjectKeyIdentifier = ski;
-    }
-    
-    
-    
 
 }
