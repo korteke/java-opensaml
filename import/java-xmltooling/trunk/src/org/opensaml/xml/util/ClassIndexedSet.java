@@ -68,17 +68,18 @@ public class ClassIndexedSet<T> extends AbstractSet<T> implements Set<T> {
             throw new NullPointerException("Null elements are not allowed");
         }
         boolean replacing = false;
-        T existing = get((Class< ? extends T>) o.getClass());
+        Class<? extends T> indexClass = getIndexClass(o);
+        T existing = get(indexClass);
         if (existing != null) {
             replacing = true;
             if (replace) {
                 remove(existing);
             } else {
-                throw new IllegalArgumentException("Set already contains a member of class " 
-                        + o.getClass().getName());
+                throw new IllegalArgumentException("Set already contains a member of index class " 
+                        + indexClass.getName());
             }
         }
-        index.put((Class<? extends T>) o.getClass(), o);
+        index.put(indexClass, o);
         set.add(o);
         return replacing;
     }
@@ -90,9 +91,10 @@ public class ClassIndexedSet<T> extends AbstractSet<T> implements Set<T> {
     }
 
     /** {@inheritDoc} */
+    @SuppressWarnings("unchecked")
     public boolean remove(Object o) {
         if  (set.contains(o)) {
-            index.remove(o.getClass());
+            removeFromIndex((T) o);
             set.remove(o);
             return true;
         }
@@ -132,12 +134,24 @@ public class ClassIndexedSet<T> extends AbstractSet<T> implements Set<T> {
     }
     
     /**
+     * Get the index class of the specified object. Subclasses may override to use
+     * a class index other than the main runtime class of the object.
+     * 
+     * @param o the object whose class index to determine
+     * @return the class index value associated with the object instance
+     */
+    @SuppressWarnings("unchecked")
+    protected Class<? extends T> getIndexClass(Object o) {
+        return (Class<? extends T>) o.getClass();
+    }
+    
+    /**
      * Remove the specified object from the index.
      * 
      * @param o the object to remove
      */
     private void removeFromIndex(T o) {
-       index.remove(o.getClass());
+       index.remove(getIndexClass(o));
     }
     
     /**
