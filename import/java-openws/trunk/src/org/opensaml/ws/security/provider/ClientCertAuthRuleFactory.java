@@ -26,13 +26,13 @@ import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
-import org.opensaml.ws.security.ServletRequestX509CredentialAdapter;
 import org.opensaml.ws.security.SecurityPolicyContext;
 import org.opensaml.ws.security.SecurityPolicyException;
 import org.opensaml.ws.security.SecurityPolicyRule;
+import org.opensaml.ws.security.ServletRequestX509CredentialAdapter;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.security.CriteriaSet;
-import org.opensaml.xml.security.credential.EntityCriteria;
+import org.opensaml.xml.security.credential.EntityIDCriteria;
 import org.opensaml.xml.security.credential.UsageCriteria;
 import org.opensaml.xml.security.credential.UsageType;
 import org.opensaml.xml.security.trust.TrustEngine;
@@ -277,7 +277,7 @@ public class ClientCertAuthRuleFactory extends BaseTrustEngineRuleFactory<X509Cr
             
             CriteriaSet criteriaSet = new CriteriaSet();
             if (! DatatypeHelper.isEmpty(entityID)) {
-                criteriaSet.add(new EntityCriteria(entityID, null));
+                criteriaSet.add(new EntityIDCriteria(entityID) );
             }
             
             criteriaSet.add( new UsageCriteria(UsageType.SIGNING) );
