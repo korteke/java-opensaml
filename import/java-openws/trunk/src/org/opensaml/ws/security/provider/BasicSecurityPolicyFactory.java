@@ -16,12 +16,17 @@
 
 package org.opensaml.ws.security.provider;
 
+import javax.servlet.ServletRequest;
+
 import org.opensaml.ws.security.SecurityPolicy;
 
 /**
  * Factory that produces {@link BasicSecurityPolicy} instances.
+ * 
+ * @param <RequestType> the message request type
  */
-public class BasicSecurityPolicyFactory extends BaseSecurityPolicyFactory {
+public class BasicSecurityPolicyFactory<RequestType extends ServletRequest>
+        extends BaseSecurityPolicyFactory<RequestType> {
 
     /** Whether the issuer of the message must be authenticated in order to pass this policy. */
     private boolean requireAuthenticatedIssuer;
@@ -45,7 +50,9 @@ public class BasicSecurityPolicyFactory extends BaseSecurityPolicyFactory {
     }
 
     /** {@inheritDoc} */
-    public SecurityPolicy createPolicyInstance() {
-        return new BasicSecurityPolicy(requireAuthenticatedIssuer);
+    public SecurityPolicy<RequestType> createPolicyInstance() {
+        SecurityPolicy<RequestType> securityPolicy = new BasicSecurityPolicy<RequestType>(requireAuthenticatedIssuer);
+        securityPolicy.getPolicyRules().addAll(getPolicyRuleInstances());
+        return securityPolicy;
     }
 }
