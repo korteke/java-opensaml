@@ -329,7 +329,7 @@ public class ClientCertAuthRule extends BaseTrustEngineRule<X509Credential, Serv
      * @return the first CN value, or null if there are none
      */
     protected String getCommonName(X509Certificate cert) {
-        List<String> names = X509Util.getCommonNames(cert.getIssuerX500Principal());
+        List<String> names = X509Util.getCommonNames(cert.getSubjectX500Principal());
         if (names != null && ! names.isEmpty()) {
             String name = names.get(0);
             if (log.isDebugEnabled()) {
