@@ -40,7 +40,7 @@ public class ServletRequestX509CredentialAdapter extends BasicX509Credential imp
      */
     public ServletRequestX509CredentialAdapter(ServletRequest request) {
         X509Certificate[] chain = (X509Certificate[]) request.getAttribute(X509_CERT_REQUEST_ATTRIBUTE);
-        if (chain == null | chain.length == 0) {
+        if (chain == null || chain.length == 0) {
             throw new IllegalArgumentException("Servlet request does not contain X.509 certificates in attribute "
                     + X509_CERT_REQUEST_ATTRIBUTE);
         }
