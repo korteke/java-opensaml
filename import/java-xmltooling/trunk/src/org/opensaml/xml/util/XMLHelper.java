@@ -95,7 +95,7 @@ public final class XMLHelper {
             } else {
                 localPart = tokenizer.nextToken();
             }
-            
+
             return constructQName(e.lookupNamespaceURI(prefix), localPart, prefix);
         }
 
@@ -148,10 +148,8 @@ public final class XMLHelper {
      * @param attributeName the name of that attribute
      * 
      * @return the constructed attribute
-     * 
-     * @throws IllegalArgumentException thrown if the local name is name null or empty
      */
-    public static Attr constructAttribute(Document owningDocument, QName attributeName) throws IllegalArgumentException {
+    public static Attr constructAttribute(Document owningDocument, QName attributeName) {
         return constructAttribute(owningDocument, attributeName.getNamespaceURI(), attributeName.getLocalPart(),
                 attributeName.getPrefix());
     }
@@ -165,11 +163,8 @@ public final class XMLHelper {
      * @param prefix the prefix of the namespace that attribute is in
      * 
      * @return the constructed attribute
-     * 
-     * @throws IllegalArgumentException thrown if the local name is name null or empty
      */
-    public static Attr constructAttribute(Document document, String namespaceURI, String localName, String prefix)
-            throws IllegalArgumentException {
+    public static Attr constructAttribute(Document document, String namespaceURI, String localName, String prefix) {
         String trimmedLocalName = DatatypeHelper.safeTrimOrNullString(localName);
 
         if (trimmedLocalName == null) {
@@ -212,7 +207,7 @@ public final class XMLHelper {
                     valueComponents[0]);
         }
     }
-    
+
     /**
      * Parses the attribute's value. If the value is 0 or "false" then false is returned, if the value is 1 or "true"
      * then true is returned, if the value is anything else then null returned.
@@ -320,10 +315,8 @@ public final class XMLHelper {
      * @param elementName the name of the element, must contain a local name, may contain a namespace URI and prefix
      * 
      * @return the element
-     * 
-     * @throws IllegalArgumentException thrown if the local name is null or empty
      */
-    public static Element constructElement(Document document, QName elementName) throws IllegalArgumentException {
+    public static Element constructElement(Document document, QName elementName) {
         return constructElement(document, elementName.getNamespaceURI(), elementName.getLocalPart(), elementName
                 .getPrefix());
     }
@@ -337,11 +330,8 @@ public final class XMLHelper {
      * @param prefix the prefix of the namespace the element is in
      * 
      * @return the element
-     * 
-     * @throws IllegalArgumentException thrown if the local name is null or empty
      */
-    public static Element constructElement(Document document, String namespaceURI, String localName, String prefix)
-            throws IllegalArgumentException {
+    public static Element constructElement(Document document, String namespaceURI, String localName, String prefix) {
         String trimmedLocalName = DatatypeHelper.safeTrimOrNullString(localName);
 
         if (trimmedLocalName == null) {
@@ -599,6 +589,35 @@ public final class XMLHelper {
     }
 
     /**
+     * Gets the child nodes with the given local tag name. If you need to retrieve multiple, named, children consider
+     * using {@link #getChildElements(Element)}.
+     * 
+     * @param root element to retrieve the children from
+     * @param localName local, tag, name of the child element
+     * 
+     * @return list of child elements, never null
+     */
+    public static List<Element> getChildElementsByTagName(Element root, String localName) {
+        ArrayList<Element> children = new ArrayList<Element>();
+        NodeList childNodes = root.getChildNodes();
+
+        int numOfNodes = childNodes.getLength();
+        Node childNode;
+        Element e;
+        for (int i = 0; i < numOfNodes; i++) {
+            childNode = childNodes.item(i);
+            if (childNode.getNodeType() == Node.ELEMENT_NODE) {
+                e = (Element) childNode;
+                if (e.getLocalName().equals(localName)) {
+                    children.add(e);
+                }
+            }
+        }
+
+        return children;
+    }
+
+    /**
      * Gets the child elements of the given element in a single iteration.
      * 
      * @param root element to get the child elements of
@@ -659,12 +678,11 @@ public final class XMLHelper {
      * @return the string representation of the node
      */
     public static String nodeToString(Node node) {
-        DOMImplementation domImpl = node.getOwnerDocument().getImplementation();
-        DOMImplementationLS domImplLS = (DOMImplementationLS) domImpl.getFeature("LS", "3.0");
-        LSSerializer serializer = domImplLS.createLSSerializer();
-        return serializer.writeToString(node);
+        StringWriter writer = new StringWriter();
+        writeNode(node, writer);
+        return writer.toString();
     }
-    
+
     /**
      * Pretty prints the XML node.
      * 
@@ -672,21 +690,21 @@ public final class XMLHelper {
      * 
      * @return pretty-printed xml
      */
-    public static String prettyPrintXML(Node node){
+    public static String prettyPrintXML(Node node) {
         TransformerFactory tfactory = TransformerFactory.newInstance();
         Transformer serializer;
         try {
             serializer = tfactory.newTransformer();
             serializer.setOutputProperty(OutputKeys.INDENT, "yes");
             serializer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "3");
-            
+
             StringWriter output = new StringWriter();
             serializer.transform(new DOMSource(node.getOwnerDocument()), new StreamResult(output));
             return output.toString();
         } catch (TransformerException e) {
             // this is fatal, just dump the stack and throw a runtime exception
             e.printStackTrace();
-            
+
             throw new RuntimeException(e);
         }
     }
