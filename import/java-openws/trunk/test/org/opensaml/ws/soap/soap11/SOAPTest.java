@@ -14,19 +14,11 @@
  * limitations under the License.
  */
 
-package org.opensaml.soap.soap11;
+package org.opensaml.ws.soap.soap11;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.soap.BaseTestCase;
-import org.opensaml.ws.soap.soap11.Body;
-import org.opensaml.ws.soap.soap11.Detail;
-import org.opensaml.ws.soap.soap11.Envelope;
-import org.opensaml.ws.soap.soap11.Fault;
-import org.opensaml.ws.soap.soap11.FaultActor;
-import org.opensaml.ws.soap.soap11.FaultCode;
-import org.opensaml.ws.soap.soap11.FaultString;
-import org.opensaml.ws.soap.soap11.Header;
+import org.opensaml.ws.BaseTestCase;
 import org.opensaml.ws.soap.util.SOAPConstants;
 import org.opensaml.xml.io.Unmarshaller;
 import org.opensaml.xml.io.UnmarshallingException;
@@ -53,8 +45,8 @@ public class SOAPTest extends BaseTestCase {
     protected void setUp() throws Exception {
         super.setUp();
         
-        soapMessage = "/data/org/opensaml/soap/soap11/SOAP.xml";
-        soapFault = "/data/org/opensaml/soap/soap11/SOAPFault.xml";
+        soapMessage = "/data/org/opensaml/ws/soap/soap11/SOAP.xml";
+        soapFault = "/data/org/opensaml/ws/soap/soap11/SOAPFault.xml";
         
         expectedFaultCode = new QName(SOAPConstants.SOAP11_NS, "Server", SOAPConstants.SOAP11_PREFIX);
         expectedFaultString = "Server Error";

@@ -16,9 +16,6 @@
 
 package org.opensaml.ws.security.provider;
 
-import javax.servlet.ServletRequest;
-import javax.servlet.http.HttpServletRequest;
-
 import org.opensaml.ws.security.BaseSecurityPolicyTest;
 import org.opensaml.ws.security.SecurityPolicyRuleFactory;
 import org.springframework.mock.web.MockHttpServletRequest;

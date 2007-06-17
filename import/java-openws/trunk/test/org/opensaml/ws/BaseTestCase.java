@@ -14,9 +14,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.soap;
-
-import java.util.HashMap;
+package org.opensaml.ws;
 
 import javax.xml.namespace.QName;
 

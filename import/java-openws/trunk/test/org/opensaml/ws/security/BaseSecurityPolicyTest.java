@@ -21,7 +21,7 @@ import java.util.List;
 
 import javax.servlet.ServletRequest;
 
-import org.opensaml.soap.BaseTestCase;
+import org.opensaml.ws.BaseTestCase;
 import org.opensaml.ws.security.provider.BasicSecurityPolicyFactory;
 import org.opensaml.xml.XMLObject;
 import org.springframework.mock.web.MockHttpServletRequest;

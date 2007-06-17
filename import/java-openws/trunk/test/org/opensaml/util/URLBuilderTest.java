@@ -14,9 +14,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.soap;
-
-import org.opensaml.util.URLBuilder;
+package org.opensaml.util;
 
 import junit.framework.TestCase;
 
