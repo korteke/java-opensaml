@@ -17,18 +17,22 @@
 package org.opensaml.util.storage;
 
 import java.io.Serializable;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.concurrent.locks.ReentrantLock;
 
+import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 
 /**
  * Class that uses an underlying {@link StorageService} to track information associated with messages in order to detect
  * message replays.
  * 
- * This class is thread-safre and uses a basic read/write lock to ensure consistency of the underlying store.
+ * This class is thread-safe and uses a basic reentrant lock to avoid corruption of the underlying store, as 
+ * well as to prevent race conditions with respect to replay checking.
  */
 public class ReplayCache {
+    
+    /** Logger. */
+    private static Logger log = Logger.getLogger(ReplayCache.class);
 
     /** Backing storage for the replay cache. */
     private StorageService<String, ReplayCacheEntry> storage;
@@ -37,7 +41,7 @@ public class ReplayCache {
     private long defaultDuration;
 
     /** Read/Write lock. */
-    private ReentrantReadWriteLock rwLock;
+    private ReentrantLock lock;
 
     /**
      * Constructor.
@@ -48,7 +52,7 @@ public class ReplayCache {
     public ReplayCache(StorageService<String, ReplayCacheEntry> storageService, long duration) {
         storage = storageService;
         defaultDuration = duration;
-        rwLock = new ReentrantReadWriteLock(true);
+        lock = new ReentrantLock(true);
     }
 
     /**
@@ -73,17 +77,7 @@ public class ReplayCache {
      * @return true if the given message ID has been seen before
      */
     public boolean isReplay(String messageId, long duration) {
-        boolean replayed = true;
-        Lock readLock = rwLock.readLock();
-        readLock.lock();
-        ReplayCacheEntry cacheEntry = storage.get(messageId);
-        if (cacheEntry == null || cacheEntry.isExpired()) {
-            replayed = false;
-            addMessageID(messageId, new DateTime().plus(duration));
-        }
-        readLock.unlock();
-
-        return replayed;
+        return isReplay(messageId, new DateTime().plus(duration));
     }
 
     /**
@@ -97,14 +91,34 @@ public class ReplayCache {
      */
     public boolean isReplay(String messageId, DateTime expiration) {
         boolean replayed = true;
-        Lock readLock = rwLock.readLock();
-        readLock.lock();
-        ReplayCacheEntry cacheEntry = storage.get(messageId);
-        if (cacheEntry == null || cacheEntry.isExpired()) {
-            replayed = false;
-            addMessageID(messageId, expiration);
+        
+        log.debug("Attempting to acquire lock for replay cache check");
+        lock.lock();
+        log.debug("Lock acquired");
+        
+        try {
+            ReplayCacheEntry cacheEntry = storage.get(messageId);
+            if (cacheEntry == null || cacheEntry.isExpired()) {
+                if (log.isDebugEnabled()) {
+                    if (cacheEntry == null) {
+                        log.debug(String.format("Message ID '%s' was not a replay", messageId));
+                    } else if (cacheEntry.isExpired()){
+                        log.debug(String.format("Message ID '%s' expired in replay cache at '%s'", messageId, 
+                                cacheEntry.getExpirationTime().toString()));
+                    }
+                }
+                replayed = false;
+                addMessageID(messageId, expiration);
+            } else {
+                if (log.isDebugEnabled()) {
+                    log.debug(String.format("Replay of message ID '%s' detected in replay cache, will expire at '%s'",
+                            messageId, cacheEntry.getExpirationTime().toString()));
+                }
+            }
+        } finally {
+            lock.unlock();
+            log.debug("Lock released for replay cache check");
         }
-        readLock.unlock();
 
         return replayed;
     }
@@ -116,14 +130,25 @@ public class ReplayCache {
      * @param expiration time the message state expires
      */
     protected void addMessageID(String messageId, DateTime expiration) {
-        Lock writeLock = rwLock.writeLock();
-        writeLock.lock();
-        storage.put(messageId, new ReplayCacheEntry(expiration));
-        writeLock.unlock();
+        log.debug("Attempting to acquire lock for replay cache write");
+        lock.lock();
+        log.debug("Lock acquired");
+        
+        try {
+            if (log.isDebugEnabled()) {
+                log.debug(String.format("Writing message ID '%s' to replay cache with expiration time '%s'",
+                        messageId, expiration.toString()) );
+            }
+            storage.put(messageId, new ReplayCacheEntry(expiration));
+        } finally {
+            lock.unlock();
+            log.debug("Lock released for replay cache write");
+        }
+        
     }
     
     /** Replay cache storage service entry. */
-    protected class ReplayCacheEntry implements ExpiringObject, Serializable{
+    public class ReplayCacheEntry implements ExpiringObject, Serializable{
         
         /** Serial version UID. */
         private static final long serialVersionUID = 2398693920546938083L;
