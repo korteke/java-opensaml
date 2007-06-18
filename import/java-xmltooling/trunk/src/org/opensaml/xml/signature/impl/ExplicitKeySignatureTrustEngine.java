@@ -83,6 +83,7 @@ public class ExplicitKeySignatureTrustEngine extends BaseSignatureTrustEngine<It
         if (! credentialCriteria.contains(UsageCriteria.class)) {
             credentialCriteria.add( new UsageCriteria(UsageType.SIGNING));
         }
+        //TODO construct other criteria based on info from Signature
         
         Iterable<Credential> trustedCredentials = getCredentialResolver().resolve(credentialCriteria);
         
@@ -93,6 +94,8 @@ public class ExplicitKeySignatureTrustEngine extends BaseSignatureTrustEngine<It
         // If the credentials extracted from Signature's KeyInfo did not verify the
         // signature and/or establish trust, as a fall back attempt to verify the signature with
         // the trusted credentials directly.
+        log.debug("Attempting to verify signature using trusted credentials");
+        
         for (Credential trustedCredential : trustedCredentials) {
             if (verifySignature(signature, trustedCredential)) {
                 log.debug("Successfully verified signature using resolved trusted credential");

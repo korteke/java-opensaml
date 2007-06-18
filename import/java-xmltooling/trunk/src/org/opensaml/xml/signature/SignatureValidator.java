@@ -49,14 +49,13 @@ public class SignatureValidator implements Validator<Signature> {
 
     /** {@inheritDoc} */
     public void validate(Signature signature) throws ValidationException {
-        if (log.isDebugEnabled()) {
-            log.debug("Verify digital signature with against keying information");
-        }
+        log.debug("Attempting to validate signature using key from supplied credential");
 
         XMLSignature xmlSig = buildSignature(signature);
 
         Key validationKey = SecurityHelper.extractVerificationKey(validationCredential);
         if (validationKey == null) {
+            log.debug("Supplied credential contained no key suitable for signature validation");
             throw new ValidationException("No key available to validate signature");
         }
         
@@ -66,18 +65,15 @@ public class SignatureValidator implements Validator<Signature> {
 
         try {
             if (xmlSig.checkSignatureValue(validationKey)) {
-                if (log.isDebugEnabled()) {
-                    log.debug("Signature validated with key from credential");
-                }
+                log.debug("Signature validated with key from supplied credential");
                 return;
             }
         } catch (XMLSignatureException e) {
             throw new ValidationException("Unable to evaluate key against signature", e);
         }
 
-        if (log.isDebugEnabled()) {
-            log.debug("Signature did not validate against the credential's key");
-        }
+        log.debug("Signature did not validate against the credential's key");
+        
         throw new ValidationException("Signature did not validate against the credential's key");
     }
 
@@ -89,9 +85,8 @@ public class SignatureValidator implements Validator<Signature> {
      * @return the constructed XMLSignature
      */
     protected XMLSignature buildSignature(Signature signature) {
-        if (log.isDebugEnabled()) {
-            log.debug("Creating XMLSignature object");
-        }
+        log.debug("Creating XMLSignature object");
+        
         return ((SignatureImpl) signature).getXMLSignature();
     }
 
