@@ -28,6 +28,14 @@ public class StaticIssuerRuleFactory implements SecurityPolicyRuleFactory<Servle
     /** The issuer to set in the security policy context. */
     private String issuer;
     
+    /** State of issuer authentication. */
+    private Boolean issuerAuthenticated;
+    
+    /** Constructor. */
+    public StaticIssuerRuleFactory() {
+        issuerAuthenticated = null;
+    }
+    
     /**
      * Get the issuer.
      * 
@@ -46,9 +54,27 @@ public class StaticIssuerRuleFactory implements SecurityPolicyRuleFactory<Servle
         this.issuer = newIssuer;
     }
     
+    /**
+     * Get the issuer authenticated state.
+     * 
+     * @return Returns the issuerAuthenticated.
+     */
+    public Boolean getIssuerAuthenticated() {
+        return issuerAuthenticated;
+    }
+
+    /**
+     * Set the issuer authenticated state.
+     * 
+     * @param newIssuerAuthenticated The issuerAuthenticated to set.
+     */
+    public void setIssuerAuthenticated(Boolean newIssuerAuthenticated) {
+        this.issuerAuthenticated = newIssuerAuthenticated;
+    }
+    
     /** {@inheritDoc} */
     public SecurityPolicyRule<ServletRequest> createRuleInstance() {
-        return new StaticIssuerRule(issuer);
+        return new StaticIssuerRule(getIssuer(), getIssuerAuthenticated());
     }
     
     /**
@@ -59,13 +85,18 @@ public class StaticIssuerRuleFactory implements SecurityPolicyRuleFactory<Servle
         /** The issuer to set in the security policy context. */
         private String issuer;
         
+        /** State of issuer authentication. */
+        private Boolean issuerAuthenticated;
+        
         /**
          * Constructor.
          *
          * @param newIssuer the issuer to set in the context
+         * @param newIssuerAuthenticated the issuer authenticated state to set
          */
-        protected StaticIssuerRule(String newIssuer) {
+        protected StaticIssuerRule(String newIssuer, Boolean newIssuerAuthenticated) {
             issuer = newIssuer;
+            issuerAuthenticated = newIssuerAuthenticated;
         }
         
         /** {@inheritDoc} */
@@ -73,6 +104,12 @@ public class StaticIssuerRuleFactory implements SecurityPolicyRuleFactory<Servle
             throws SecurityPolicyException {
             
             context.setIssuer(issuer);
+            
+            if (issuerAuthenticated == Boolean.TRUE) {
+                context.setIssuerAuthenticated(true);
+            } else if (issuerAuthenticated == Boolean.FALSE) {
+                context.setIssuerAuthenticated(false);
+            }
             
         }
         
