@@ -30,9 +30,11 @@ import java.security.cert.CRLException;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.interfaces.DSAPublicKey;
+import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
+import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 
 import javax.crypto.KeyGenerator;
@@ -115,6 +117,25 @@ public class SecurityTestHelper {
         RSAPublicKey key = null;
         key = (RSAPublicKey) buildKey(keySpec, "RSA");
         return key;
+    }
+    
+    /**
+     * Build Java RSA private key from base64 encoding.
+     * 
+     * @param base64EncodedKey base64-encoded RSA private key
+     * @return a native Java RSAPrivateKey
+     * @throws KeyException thrown if there is an error constructing key
+     */
+    public static RSAPrivateKey buildJavaRSAPrivateKey(String base64EncodedKey)  throws KeyException {
+        PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(Base64.decode(base64EncodedKey));
+        try {
+            KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+            return (RSAPrivateKey) keyFactory.generatePrivate(keySpec);
+        } catch (NoSuchAlgorithmException e) {
+            throw new KeyException("RSA algorithm is not supported by the JCE", e);
+        } catch (InvalidKeySpecException e) {
+            throw new KeyException("Invalid key information", e);
+        }
     }
     
     
