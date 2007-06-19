@@ -31,6 +31,7 @@ import org.opensaml.xml.security.x509.PKIXValidationInformation;
 import org.opensaml.xml.security.x509.PKIXValidationInformationResolver;
 import org.opensaml.xml.security.x509.X509Credential;
 import org.opensaml.xml.signature.Signature;
+import org.opensaml.xml.signature.SignatureTrustEngine;
 import org.opensaml.xml.util.Pair;
 
 /**

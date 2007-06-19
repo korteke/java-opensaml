@@ -16,6 +16,7 @@
 
 package org.opensaml.xml.security.credential;
 
+import org.opensaml.xml.security.Criteria;
 import org.opensaml.xml.util.DatatypeHelper;
 
 /**
