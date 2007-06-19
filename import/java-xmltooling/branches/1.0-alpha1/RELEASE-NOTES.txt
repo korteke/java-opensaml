@@ -1,4 +1,4 @@
-XMLTooling-J version 1.0 Technology Preview 2
+XMLTooling-J version 1.0 Alpha 1
 =============================================
 
 XMLTooling-J is a low-level library that may be used to construct libraries 
@@ -20,3 +20,9 @@ Feedback
 --------
 Feedback may be provided through the OpenSAML mailing list.
 http://www.opensaml.org/index.html#mailing
+
+Issues, Suggestions
+--------
+Issues or suggestions for improvement may submitted to the XMLTooling - Java
+projact at:
+http://bugs.internet2.edu
