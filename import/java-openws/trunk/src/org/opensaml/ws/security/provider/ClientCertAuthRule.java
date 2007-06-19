@@ -182,10 +182,10 @@ public class ClientCertAuthRule extends BaseTrustEngineRule<X509Credential, Serv
      * in the following order:
      * <ol>
      *   <li>The certificate subject DN string as serialized by the X500DNHandler configured 
-     *       via {@link ClientCertAuthRule#getX500DNHandler()} and using the output format 
-     *       indicated by {@link ClientCertAuthRule#getX500SubjectDNFormat()}.</li>
+     *       via {@link ClientCertAuthRuleFactory#getX500DNHandler()} and using the output format 
+     *       indicated by {@link ClientCertAuthRuleFactory#getX500SubjectDNFormat()}.</li>
      *   <li>Subject alternative names of the types configured via 
-     *       {@link ClientCertAuthRule#getSubjectAltNames()}. Note that this
+     *       {@link ClientCertAuthRuleFactory#getSubjectAltNames()}. Note that this
      *       is a LinkedHashSet, so the order of evaluation is the order or insertion.</li>
      *   <li>The first common name (CN) value appearing in the certificate subject DN.</li>
      * </ol>
@@ -289,7 +289,7 @@ public class ClientCertAuthRule extends BaseTrustEngineRule<X509Credential, Serv
     
     /**
      * Evaluate the issuer entity ID as derived from the cert subject alternative names
-     * specified by types enumerated in {@link ClientCertAuthRule#getSubjectAltNames()}.
+     * specified by types enumerated in {@link ClientCertAuthRuleFactory#getSubjectAltNames()}.
      * 
      * @param requestCredential the X509Credential derived from the request
      * @param request the protocol request
