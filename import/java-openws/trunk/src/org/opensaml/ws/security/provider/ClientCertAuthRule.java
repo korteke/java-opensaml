@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletRequest;
-import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
 import org.opensaml.ws.security.SecurityPolicyContext;
@@ -44,14 +43,14 @@ import org.opensaml.xml.util.DatatypeHelper;
  * Policy rule that checks if the client cert used to authenticate the request is valid and trusted.
  * 
  * <p>If the issuer has been previously set in the security policy context by another rule, then that issuer
- * is used to build a criteria set via {@link #buildCriteriaSet(String, HttpServletRequest, XMLObject, 
- * SecurityPolicyContext)}, and then evaluated via {@link #evaluate(X509Credential, CriteriaSet)}.
+ * is used to build a criteria set via {@link #buildCriteriaSet(String, ServletRequest, XMLObject, 
+ * SecurityPolicyContext)}, and then evaluated via {@link #evaluate(Object, CriteriaSet)}.
  * If this trust evaluation is successful, the context issuer authentication state will be set to
  * <code>true</code>, otherwise it will be set to <code>false</code>.  In either case, rule processing
  * is then terminated.</p>
  * 
  * <p>If no context issuer was previously set, then rule evaluation will proceed as described in
- * {@link #evaluateCertificateNameDerivedIssuers(X509Credential, HttpServletRequest, XMLObject, 
+ * {@link #evaluateCertificateNameDerivedIssuers(X509Credential, ServletRequest, XMLObject, 
  * SecurityPolicyContext)}, based on the currently configured certificate name evaluation options.
  * If this method returns a non-null issuer entity ID, it will be set as
  * the issuer in the context, the context's issuer authentication 
@@ -60,7 +59,7 @@ import org.opensaml.xml.util.DatatypeHelper;
  * will remain unmodified and rule processing continues.</p>
  * 
  * <p>Finally rule evaluation will proceed as described in
- * {@link #evaluateDerivedIssuers(X509Credential, HttpServletRequest, XMLObject, SecurityPolicyContext)}.
+ * {@link #evaluateDerivedIssuers(X509Credential, ServletRequest, XMLObject, SecurityPolicyContext)}.
  * This is primarily an extension point by which subclasses may implement specific custom logic.
  * If this method returns a non-null issuer entity ID, it will be set as
  * the issuer in the context, the context's issuer authentication 
@@ -183,10 +182,10 @@ public class ClientCertAuthRule extends BaseTrustEngineRule<X509Credential, Serv
      * in the following order:
      * <ol>
      *   <li>The certificate subject DN string as serialized by the X500DNHandler configured 
-     *       via {@link ClientCertAuthRuleXXX#getX500DNHandler()} and using the output format 
-     *       indicated by {@link ClientCertAuthRuleXXX#getX500SubjectDNFormat()}.</li>
+     *       via {@link ClientCertAuthRule#getX500DNHandler()} and using the output format 
+     *       indicated by {@link ClientCertAuthRule#getX500SubjectDNFormat()}.</li>
      *   <li>Subject alternative names of the types configured via 
-     *       {@link ClientCertAuthRuleXXX#getSubjectAltNames()}. Note that this
+     *       {@link ClientCertAuthRule#getSubjectAltNames()}. Note that this
      *       is a LinkedHashSet, so the order of evaluation is the order or insertion.</li>
      *   <li>The first common name (CN) value appearing in the certificate subject DN.</li>
      * </ol>
@@ -290,7 +289,7 @@ public class ClientCertAuthRule extends BaseTrustEngineRule<X509Credential, Serv
     
     /**
      * Evaluate the issuer entity ID as derived from the cert subject alternative names
-     * specified by types enumerated in {@link ClientCertAuthRuleXXX#getSubjectAltNames()}.
+     * specified by types enumerated in {@link ClientCertAuthRule#getSubjectAltNames()}.
      * 
      * @param requestCredential the X509Credential derived from the request
      * @param request the protocol request
