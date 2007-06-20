@@ -19,10 +19,13 @@ package org.opensaml.ws.soap.client;
 import java.io.InputStream;
 
 import org.opensaml.ws.MessageSource;
+import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.credential.Credential;
-import org.opensaml.xml.security.credential.CredentialCriteriaSet;
 import org.opensaml.xml.security.credential.CredentialResolver;
 import org.opensaml.xml.security.trust.TrustEngine;
+
+//TODO fix - think this should work purely off a TrustEngine<CredentialType>, rather than assumption
+// of a trusted credential resolver, etc
 
 /**
  * A transport used to send and receive SOAP messages.
@@ -96,7 +99,7 @@ public interface SOAPTransport<CredentialType extends Credential> {
      * 
      * @return criteria that will be used, or was used, to retrieve the credential from the trusted credential resolver
      */
-    public CredentialCriteriaSet getTrustedCredentialCriteria();
+    public CriteriaSet getTrustedCredentialCriteria();
 
     /**
      * Gets the trust engine to use to evaluate a peer's connection credentials.

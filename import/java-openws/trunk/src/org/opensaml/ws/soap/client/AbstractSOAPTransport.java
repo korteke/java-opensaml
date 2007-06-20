@@ -16,8 +16,8 @@
 
 package org.opensaml.ws.soap.client;
 
+import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.credential.Credential;
-import org.opensaml.xml.security.credential.CredentialCriteriaSet;
 import org.opensaml.xml.security.credential.CredentialResolver;
 import org.opensaml.xml.security.trust.TrustEngine;
 
@@ -36,7 +36,7 @@ public abstract class AbstractSOAPTransport<CredentialType extends Credential>
     private CredentialResolver trustedCredentialResolver;
     
     /** Criteria describing trusted credentials. */
-    private CredentialCriteriaSet trustedCredentialCriteria;
+    private CriteriaSet trustedCredentialCriteria;
 
     /** Trust engine used to validate peer's connection authentication credential. */
     private TrustEngine<CredentialType> peerCtxAuthnTrustEngine;
@@ -46,7 +46,7 @@ public abstract class AbstractSOAPTransport<CredentialType extends Credential>
 
     /** Constructor. */
     protected AbstractSOAPTransport(){
-        trustedCredentialCriteria = new CredentialCriteriaSet();
+        trustedCredentialCriteria = new CriteriaSet();
     }
 
     /** {@inheritDoc} */
@@ -80,7 +80,7 @@ public abstract class AbstractSOAPTransport<CredentialType extends Credential>
     }
     
     /** {@inheritDoc} */
-    public CredentialCriteriaSet getTrustedCredentialCriteria(){
+    public CriteriaSet getTrustedCredentialCriteria(){
         return trustedCredentialCriteria;
     }
     
