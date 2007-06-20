@@ -19,9 +19,9 @@ package org.opensaml.xml;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.credential.Credential;
-import org.opensaml.xml.security.credential.CredentialCriteriaSet;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
 
 /**
@@ -54,7 +54,7 @@ public class StaticKeyInfoCredentialResolver extends KeyInfoCredentialResolver {
     }
 
     /** {@inheritDoc} */
-    public Iterable resolve(CredentialCriteriaSet criteria) throws SecurityException {
+    public Iterable<Credential> resolve(CriteriaSet criteria) throws SecurityException {
         return creds;
     }
 

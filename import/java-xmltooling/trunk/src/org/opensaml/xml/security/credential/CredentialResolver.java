@@ -17,11 +17,13 @@
 package org.opensaml.xml.security.credential;
 
 
+import org.opensaml.xml.security.Criteria;
+import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.Resolver;
 
 /**
- * A resolver which uses {@link CredentialCriteria} to resolve and return instances of {@link Credential}.
+ * A resolver which uses {@link Criteria} to resolve and return instances of {@link Credential}.
  */
-public interface CredentialResolver extends Resolver<Credential, CredentialCriteriaSet>{
+public interface CredentialResolver extends Resolver<Credential, CriteriaSet>{
     
 }

@@ -20,13 +20,13 @@ import java.math.BigInteger;
 
 import javax.security.auth.x500.X500Principal;
 
-import org.opensaml.xml.security.credential.CredentialCriteria;
+import org.opensaml.xml.security.Criteria;
 
 /**
- * An implementation of {@link CredentialCriteria} which specifies criteria based on
+ * An implementation of {@link Criteria} which specifies criteria based on
  * X.509 certificate issuer name and serial number.
  */
-public class X509IssuerSerialCriteria implements CredentialCriteria {
+public final class X509IssuerSerialCriteria implements Criteria {
     
     /** X.509 certificate issuer name. */
     private X500Principal issuerName;

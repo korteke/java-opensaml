@@ -19,9 +19,7 @@ package org.opensaml.xml.security.trust;
 import org.apache.log4j.Logger;
 import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
-import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.credential.Credential;
-import org.opensaml.xml.security.credential.CredentialCriteriaSet;
 import org.opensaml.xml.security.credential.CredentialResolver;
 import org.opensaml.xml.security.x509.X509Credential;
 
@@ -67,13 +65,12 @@ public class ExplicitX509CertificateTrustEngine implements TrustedCredentialTrus
             throws SecurityException {
         
         checkParams(untrustedCredential, trustBasisCriteria);
-        CredentialCriteriaSet credentialCriteria = SecurityHelper.getCredentialCriteria(trustBasisCriteria);
         
         if (log.isDebugEnabled()) {
             log.debug("Validating credential for entity " + untrustedCredential.getEntityId());
         }
         
-        Iterable<Credential> trustedCredentials = getCredentialResolver().resolve(credentialCriteria);
+        Iterable<Credential> trustedCredentials = getCredentialResolver().resolve(trustBasisCriteria);
         
         return trustEvaluator.validate(untrustedCredential, trustedCredentials);
     }

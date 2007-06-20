@@ -20,13 +20,12 @@ import java.security.interfaces.DSAPublicKey;
 import java.util.Iterator;
 
 import org.opensaml.xml.XMLObjectBaseTestCase;
+import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.SecurityTestHelper;
 import org.opensaml.xml.security.credential.BasicCredential;
 import org.opensaml.xml.security.credential.Credential;
-import org.opensaml.xml.security.credential.CredentialCriteriaSet;
 import org.opensaml.xml.signature.KeyInfo;
-import org.opensaml.xml.signature.KeyInfoHelper;
 
 
 /**
@@ -76,7 +75,7 @@ public class DSAKeyValueTest extends XMLObjectBaseTestCase {
      */
     public void testCredResolution() throws SecurityException {
         KeyInfo keyInfo = (KeyInfo) unmarshallElement(keyInfoFile);
-        CredentialCriteriaSet criteriaSet = new CredentialCriteriaSet( new KeyInfoCriteria(keyInfo) );
+        CriteriaSet criteriaSet = new CriteriaSet( new KeyInfoCriteria(keyInfo) );
         Iterator<Credential> iter = resolver.resolve(criteriaSet).iterator();
         
         assertTrue("No credentials were found", iter.hasNext());

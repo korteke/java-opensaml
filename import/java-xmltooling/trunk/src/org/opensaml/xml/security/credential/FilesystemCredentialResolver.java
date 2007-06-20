@@ -18,6 +18,8 @@ package org.opensaml.xml.security.credential;
 
 import java.util.Map;
 
+import org.opensaml.xml.security.CriteriaSet;
+
 //TODO amend docs (and impl) for symmetric key storage and retrieval
 
 
@@ -50,7 +52,7 @@ public class FilesystemCredentialResolver extends AbstractCriteriaFilteringCrede
     }
 
     /** {@inheritDoc} */
-    protected Iterable<Credential> resolveFromSource(CredentialCriteriaSet criteriaSet) {
+    protected Iterable<Credential> resolveFromSource(CriteriaSet criteriaSet) {
         // TODO Auto-generated method stub
         return null;
     }

@@ -30,9 +30,9 @@ import javax.security.auth.x500.X500Principal;
 
 import org.apache.log4j.Logger;
 import org.opensaml.xml.XMLObject;
+import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.credential.Credential;
-import org.opensaml.xml.security.credential.CredentialCriteriaSet;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xml.security.keyinfo.KeyInfoProvider;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver.KeyInfoResolutionContext;
@@ -108,7 +108,7 @@ public class X509DataProvider extends AbstractKeyInfoProvider {
 
     /** {@inheritDoc} */
     public Collection<Credential> process(KeyInfoCredentialResolver resolver, XMLObject keyInfoChild, 
-            CredentialCriteriaSet criteriaSet, KeyInfoResolutionContext kiContext) throws SecurityException {
+            CriteriaSet criteriaSet, KeyInfoResolutionContext kiContext) throws SecurityException {
         
         if (! handles(keyInfoChild)) {
             return null;

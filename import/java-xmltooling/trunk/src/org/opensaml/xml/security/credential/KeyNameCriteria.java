@@ -16,12 +16,13 @@
 
 package org.opensaml.xml.security.credential;
 
+import org.opensaml.xml.security.Criteria;
 import org.opensaml.xml.util.DatatypeHelper;
 
 /**
- * An implementation of {@link CredentialCriteria} which specifies key name criteria.
+ * An implementation of {@link Criteria} which specifies key name criteria.
  */
-public class KeyNameCriteria implements CredentialCriteria {
+public final class KeyNameCriteria implements Criteria {
 
     /** Key name of resolved credentials.  */
     private String keyName;

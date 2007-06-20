@@ -19,13 +19,13 @@ package org.opensaml.xml.security.keyinfo;
 import java.util.Collection;
 
 import org.opensaml.xml.XMLObject;
+import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.credential.Credential;
-import org.opensaml.xml.security.credential.CredentialCriteriaSet;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver.KeyInfoResolutionContext;
 
 /**
- * Interface for providers which support extracting a {@link Credential} from 
+ * Interface for providers of {@link KeyInfoCredentialResolver} which support extracting a {@link Credential} from 
  * a child element of XML KeyInfo elements.
  */
 public interface KeyInfoProvider {
@@ -44,7 +44,7 @@ public interface KeyInfoProvider {
      *          Note: failure to resolve a credential is not an error.
      */
     public Collection<Credential> process(KeyInfoCredentialResolver resolver, XMLObject keyInfoChild, 
-            CredentialCriteriaSet criteriaSet, KeyInfoResolutionContext kiContext) throws SecurityException;
+            CriteriaSet criteriaSet, KeyInfoResolutionContext kiContext) throws SecurityException;
     
     /**
      * Evaluate whether the given provider can attempt to resolve a credential from the specified KeyInfo child.

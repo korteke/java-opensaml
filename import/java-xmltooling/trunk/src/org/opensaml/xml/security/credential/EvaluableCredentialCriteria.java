@@ -21,6 +21,6 @@ import org.opensaml.xml.security.EvaluableCriteria;
 /**
  * Marker interface for evaluable credential resolver criteria.
  */
-public interface EvaluableCredentialCriteria extends CredentialCriteria, EvaluableCriteria<Credential> {
+public interface EvaluableCredentialCriteria extends EvaluableCriteria<Credential> {
 
 }

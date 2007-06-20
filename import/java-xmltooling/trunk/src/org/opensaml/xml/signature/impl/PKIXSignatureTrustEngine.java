@@ -21,10 +21,8 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
-import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
-import org.opensaml.xml.security.x509.PKIXCriteriaSet;
 import org.opensaml.xml.security.x509.PKIXTrustEngine;
 import org.opensaml.xml.security.x509.PKIXTrustEvaluator;
 import org.opensaml.xml.security.x509.PKIXValidationInformation;
@@ -95,17 +93,16 @@ public class PKIXSignatureTrustEngine
     public boolean validate(Signature signature, CriteriaSet trustBasisCriteria) throws SecurityException {
         
         checkParams(signature, trustBasisCriteria);
-        PKIXCriteriaSet pkixCriteria = SecurityHelper.getPKIXCriteria(trustBasisCriteria);
         
         Set<String> trustedNames = null;
         if (pkixTrustEvaluator.isNameChecking()) {
             if (pkixResolver.supportsTrustedNameResolution()) {
-                trustedNames = pkixResolver.resolveTrustedNames(pkixCriteria);
+                trustedNames = pkixResolver.resolveTrustedNames(trustBasisCriteria);
             } else {
                 log.debug("PKIX resolver does not support resolution of trusted names, skipping name checking");
             }
         }
-        Iterable<PKIXValidationInformation> validationInfoSet = pkixResolver.resolve(pkixCriteria);
+        Iterable<PKIXValidationInformation> validationInfoSet = pkixResolver.resolve(trustBasisCriteria);
         
         Pair<Set<String>, Iterable<PKIXValidationInformation>> validationPair = 
             new Pair<Set<String>, Iterable<PKIXValidationInformation>>(trustedNames, validationInfoSet);

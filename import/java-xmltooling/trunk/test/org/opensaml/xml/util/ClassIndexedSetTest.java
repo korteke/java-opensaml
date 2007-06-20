@@ -22,24 +22,24 @@ import java.util.NoSuchElementException;
 
 import junit.framework.TestCase;
 
-import org.opensaml.xml.security.credential.CredentialCriteria;
+import org.opensaml.xml.security.Criteria;
 import org.opensaml.xml.security.credential.EntityIDCriteria;
 import org.opensaml.xml.security.credential.KeyAlgorithmCriteria;
 import org.opensaml.xml.security.credential.KeyLengthCriteria;
 import org.opensaml.xml.security.keyinfo.KeyInfoCriteria;
 
 /**
- * Tests the ClassIndexedSet, using CredentialCriteria as the underlying type.
+ * Tests the ClassIndexedSet, using Criteria as the underlying type.
  */
 public class ClassIndexedSetTest extends TestCase {
     
     /** Criteria set to use as target for tests. */
-    private ClassIndexedSet<CredentialCriteria> criteriaSet;
+    private ClassIndexedSet<Criteria> criteriaSet;
 
     /** {@inheritDoc} */
     protected void setUp() throws Exception {
         super.setUp();
-        criteriaSet = new ClassIndexedSet<CredentialCriteria>();
+        criteriaSet = new ClassIndexedSet<Criteria>();
     }
     
     /**
@@ -161,14 +161,14 @@ public class ClassIndexedSetTest extends TestCase {
         assertEquals("Set had unexpected size", 3, criteriaSet.size());
         
         int count = 0;
-        HashSet<CredentialCriteria> unique = new HashSet<CredentialCriteria>();
-        for ( CredentialCriteria criteria : criteriaSet) {
+        HashSet<Criteria> unique = new HashSet<Criteria>();
+        for ( Criteria criteria : criteriaSet) {
             count++;
             assertTrue("Duplicate was returned by iterator", unique.add(criteria));
         }
         assertEquals("Set iteration had unexpected count", 3, count);
         
-        Iterator<CredentialCriteria> iterator = criteriaSet.iterator();
+        Iterator<Criteria> iterator = criteriaSet.iterator();
         assertTrue("Iterator should have more elements", iterator.hasNext());
         iterator.next();
         assertTrue("Iterator should have more elements", iterator.hasNext());
@@ -187,7 +187,7 @@ public class ClassIndexedSetTest extends TestCase {
     
     /** Tests proper iterator remove() behavior. */
     public void testIteratorRemove() {
-        criteriaSet = new ClassIndexedSet<CredentialCriteria>();
+        criteriaSet = new ClassIndexedSet<Criteria>();
         EntityIDCriteria  entityCriteria = new EntityIDCriteria("owner");
         criteriaSet.add(entityCriteria);
         KeyAlgorithmCriteria  algorithmCriteria = new KeyAlgorithmCriteria("algorithm");
@@ -199,8 +199,8 @@ public class ClassIndexedSetTest extends TestCase {
         
         assertEquals("Set had unexpected size", 4, criteriaSet.size());
         
-        Iterator<CredentialCriteria> iterator = criteriaSet.iterator();
-        CredentialCriteria criteria = null;
+        Iterator<Criteria> iterator = criteriaSet.iterator();
+        Criteria criteria = null;
         while ( iterator.hasNext() ) {
             criteria = iterator.next();
             if (criteria instanceof KeyAlgorithmCriteria) {
@@ -226,7 +226,7 @@ public class ClassIndexedSetTest extends TestCase {
         
     /** Tests proper iterator remove() behavior when called illegally. */
     public void testIteratorRemoveIllegal() {
-        criteriaSet = new ClassIndexedSet<CredentialCriteria>();
+        criteriaSet = new ClassIndexedSet<Criteria>();
         EntityIDCriteria  entityCriteria = new EntityIDCriteria("owner");
         criteriaSet.add(entityCriteria);
         KeyAlgorithmCriteria  keyCriteria = new KeyAlgorithmCriteria("algorithm");
@@ -238,7 +238,7 @@ public class ClassIndexedSetTest extends TestCase {
         
         assertEquals("Set had unexpected size", 4, criteriaSet.size());
         
-        Iterator<CredentialCriteria> iterator = criteriaSet.iterator();
+        Iterator<Criteria> iterator = criteriaSet.iterator();
         try {
             iterator.remove();
             fail("Should have seen a iterator exception, remove() called before first next()");

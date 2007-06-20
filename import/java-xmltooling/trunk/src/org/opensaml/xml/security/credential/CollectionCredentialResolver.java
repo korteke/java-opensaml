@@ -19,6 +19,7 @@ package org.opensaml.xml.security.credential;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
 
 /**
@@ -62,7 +63,7 @@ public class CollectionCredentialResolver extends AbstractCriteriaFilteringCrede
     }
 
     /** {@inheritDoc} */
-    protected Iterable<Credential> resolveFromSource(CredentialCriteriaSet criteriaSet) throws SecurityException {
+    protected Iterable<Credential> resolveFromSource(CriteriaSet criteriaSet) throws SecurityException {
         return collection;
     }
 

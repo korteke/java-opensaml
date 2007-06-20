@@ -19,8 +19,10 @@ package org.opensaml.xml.security.credential;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.opensaml.xml.security.Criteria;
 import org.opensaml.xml.security.CriteriaFilteringIterable;
 import org.opensaml.xml.security.CriteriaFilteringIterator;
+import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.EvaluableCriteria;
 import org.opensaml.xml.security.SecurityException;
 
@@ -48,7 +50,7 @@ public abstract class AbstractCriteriaFilteringCredentialResolver extends Abstra
     }
 
     /** {@inheritDoc} */
-    public Iterable<Credential> resolve(CredentialCriteriaSet criteriaSet) throws SecurityException {
+    public Iterable<Credential> resolve(CriteriaSet criteriaSet) throws SecurityException {
         Iterable<Credential> storeCandidates = resolveFromSource(criteriaSet);
         Set<EvaluableCriteria<Credential>> evaluableCriteria = getEvaluableCriteria(criteriaSet);
         return new CriteriaFilteringIterable<Credential>(storeCandidates, evaluableCriteria, 
@@ -109,11 +111,11 @@ public abstract class AbstractCriteriaFilteringCredentialResolver extends Abstra
      * Subclasses are required to implement this method to resolve credentials from the 
      * implementation-specific type of underlying credential source.
      * 
-     * @param criteriaSet the set of credential criteria used to resolve credentials from the credential source
+     * @param criteriaSet the set of criteria used to resolve credentials from the credential source
      * @return an Iterable for the resolved set of credentials
      * @throws SecurityException thrown if there is an error resolving credentials from the credential source
      */
-    protected abstract Iterable<Credential> resolveFromSource(CredentialCriteriaSet criteriaSet)
+    protected abstract Iterable<Credential> resolveFromSource(CriteriaSet criteriaSet)
         throws SecurityException;
 
     /**
@@ -122,9 +124,9 @@ public abstract class AbstractCriteriaFilteringCredentialResolver extends Abstra
      * @param criteriaSet the set of credential criteria to process.
      * @return a set of evaluable Credential criteria
      */
-    private Set<EvaluableCriteria<Credential>> getEvaluableCriteria(CredentialCriteriaSet criteriaSet) {
+    private Set<EvaluableCriteria<Credential>> getEvaluableCriteria(CriteriaSet criteriaSet) {
         Set<EvaluableCriteria<Credential>> evaluable = new HashSet<EvaluableCriteria<Credential>>();
-        for (CredentialCriteria criteria : criteriaSet) {
+        for (Criteria criteria : criteriaSet) {
             if (criteria instanceof EvaluableCredentialCriteria) {
                 evaluable.add((EvaluableCriteria<Credential>) criteria);
             }

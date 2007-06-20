@@ -18,10 +18,12 @@ package org.opensaml.xml.security.credential;
 
 import java.security.PublicKey;
 
+import org.opensaml.xml.security.Criteria;
+
 /**
- * An implementation of {@link CredentialCriteria} which specifies public key criteria.
+ * An implementation of {@link Criteria} which specifies public key criteria.
  */
-public class PublicKeyCriteria implements CredentialCriteria {
+public final class PublicKeyCriteria implements Criteria {
 
     /** Specifier of public key associated with resolved credentials. */
     private PublicKey publicKey;

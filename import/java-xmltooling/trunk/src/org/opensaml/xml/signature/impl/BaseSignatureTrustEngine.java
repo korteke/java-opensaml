@@ -20,9 +20,8 @@ import org.apache.log4j.Logger;
 import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.credential.Credential;
-import org.opensaml.xml.security.credential.CredentialCriteriaSet;
-import org.opensaml.xml.security.keyinfo.KeyInfoCriteria;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
+import org.opensaml.xml.security.keyinfo.KeyInfoCriteria;
 import org.opensaml.xml.signature.Signature;
 import org.opensaml.xml.signature.SignatureTrustEngine;
 import org.opensaml.xml.signature.SignatureValidator;
@@ -97,7 +96,7 @@ public abstract class BaseSignatureTrustEngine<TrustBasisType> implements Signat
         if (signature.getKeyInfo() != null) {
             
             KeyInfoCriteria keyInfoCriteria = new KeyInfoCriteria(signature.getKeyInfo());
-            CredentialCriteriaSet keyInfoCriteriaSet = new CredentialCriteriaSet(keyInfoCriteria);
+            CriteriaSet keyInfoCriteriaSet = new CriteriaSet(keyInfoCriteria);
             
             for (Credential kiCred : getKeyInfoResolver().resolve(keyInfoCriteriaSet)) {
                 if (verifySignature(signature, kiCred)) {

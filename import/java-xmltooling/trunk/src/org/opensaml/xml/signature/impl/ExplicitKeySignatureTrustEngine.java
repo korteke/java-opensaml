@@ -19,9 +19,7 @@ package org.opensaml.xml.signature.impl;
 import org.apache.log4j.Logger;
 import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
-import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.credential.Credential;
-import org.opensaml.xml.security.credential.CredentialCriteriaSet;
 import org.opensaml.xml.security.credential.CredentialResolver;
 import org.opensaml.xml.security.credential.UsageCriteria;
 import org.opensaml.xml.security.credential.UsageType;
@@ -79,13 +77,17 @@ public class ExplicitKeySignatureTrustEngine extends BaseSignatureTrustEngine<It
             throws SecurityException {
         
         checkParams(signature, trustBasisCriteria);
-        CredentialCriteriaSet credentialCriteria = SecurityHelper.getCredentialCriteria(trustBasisCriteria);
-        if (! credentialCriteria.contains(UsageCriteria.class)) {
-            credentialCriteria.add( new UsageCriteria(UsageType.SIGNING));
+        CriteriaSet criteriaSet = null;
+        if (! trustBasisCriteria.contains(UsageCriteria.class)) {
+            criteriaSet = new CriteriaSet();
+            criteriaSet.addAll(trustBasisCriteria);
+            criteriaSet.add( new UsageCriteria(UsageType.SIGNING));
+        } else {
+            criteriaSet = trustBasisCriteria;
         }
         //TODO construct other criteria based on info from Signature
         
-        Iterable<Credential> trustedCredentials = getCredentialResolver().resolve(credentialCriteria);
+        Iterable<Credential> trustedCredentials = getCredentialResolver().resolve(criteriaSet);
         
         if (validate(signature, trustedCredentials)) {
             return true;

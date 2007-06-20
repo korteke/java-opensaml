@@ -21,7 +21,6 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
-import org.opensaml.xml.security.SecurityHelper;
 
 /**
  * Trust engine implementation which evaluates an X509Credential token based on PKIX validation processing
@@ -84,18 +83,16 @@ public class PKIXX509CredentialTrustEngine implements PKIXTrustEngine<X509Creden
             return false;
         }
         
-        PKIXCriteriaSet pkixCriteria = SecurityHelper.getPKIXCriteria(trustBasisCriteria);
-        
         Set<String> trustedNames = null;
         if (pkixTrustEvaluator.isNameChecking()) {
             if (pkixResolver.supportsTrustedNameResolution()) {
-                trustedNames = pkixResolver.resolveTrustedNames(pkixCriteria);
+                trustedNames = pkixResolver.resolveTrustedNames(trustBasisCriteria);
             } else {
                 log.debug("PKIX resolver does not support resolution of trusted names, skipping name checking");
             }
         }
         
-        return validate(untrustedCredential, trustedNames, pkixResolver.resolve(pkixCriteria));
+        return validate(untrustedCredential, trustedNames, pkixResolver.resolve(trustBasisCriteria));
     }
     
     /**

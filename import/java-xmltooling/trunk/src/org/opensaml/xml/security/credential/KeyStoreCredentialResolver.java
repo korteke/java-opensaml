@@ -28,6 +28,7 @@ import java.util.Collections;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.x509.BasicX509Credential;
 import org.opensaml.xml.security.x509.X509Credential;
@@ -97,7 +98,7 @@ public class KeyStoreCredentialResolver extends AbstractCriteriaFilteringCredent
     }
 
     /** {@inheritDoc} */
-    protected Iterable<Credential> resolveFromSource(CredentialCriteriaSet criteriaSet) throws SecurityException {
+    protected Iterable<Credential> resolveFromSource(CriteriaSet criteriaSet) throws SecurityException {
         
         checkCriteriaRequirements(criteriaSet);
         
@@ -151,7 +152,7 @@ public class KeyStoreCredentialResolver extends AbstractCriteriaFilteringCredent
      * 
      * @param criteriaSet the credential criteria set to evaluate
      */
-    protected void checkCriteriaRequirements(CredentialCriteriaSet criteriaSet) {
+    protected void checkCriteriaRequirements(CriteriaSet criteriaSet) {
         EntityIDCriteria entityCriteria = criteriaSet.get(EntityIDCriteria.class);
         if (entityCriteria == null) {
             log.error("EntityIDCriteria was not specified in the criteria set, resolution can not be attempted");

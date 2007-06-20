@@ -38,17 +38,17 @@ import org.opensaml.xml.io.UnmarshallerFactory;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.parse.BasicParserPool;
 import org.opensaml.xml.parse.XMLParserException;
+import org.opensaml.xml.security.Criteria;
+import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.credential.Credential;
-import org.opensaml.xml.security.credential.CredentialCriteria;
-import org.opensaml.xml.security.credential.CredentialCriteriaSet;
 import org.opensaml.xml.security.credential.KeyAlgorithmCriteria;
 import org.opensaml.xml.security.credential.KeyLengthCriteria;
 import org.opensaml.xml.security.credential.UsageCriteria;
 import org.opensaml.xml.security.credential.UsageType;
-import org.opensaml.xml.security.keyinfo.KeyInfoCriteria;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
+import org.opensaml.xml.security.keyinfo.KeyInfoCriteria;
 import org.opensaml.xml.util.DatatypeHelper;
 import org.w3c.dom.Document;
 import org.w3c.dom.DocumentFragment;
@@ -136,10 +136,10 @@ public class Decrypter {
     private EncryptedKeyResolver encKeyResolver;
     
     /** Additional criteria to use when resolving credentials based on an EncryptedData's KeyInfo. */
-    private CredentialCriteriaSet resolverCriteria;
+    private CriteriaSet resolverCriteria;
     
     /** Additional criteria to use when resolving credentials based on an EncryptedKey's KeyInfo. */
-    private CredentialCriteriaSet kekResolverCriteria;
+    private CriteriaSet kekResolverCriteria;
     
     
     /**
@@ -229,7 +229,7 @@ public class Decrypter {
      * 
      * @return the static criteria set to use
      */
-    public CredentialCriteriaSet setKeyResolverCriteria() {
+    public CriteriaSet setKeyResolverCriteria() {
         return resolverCriteria;
     }
     
@@ -239,7 +239,7 @@ public class Decrypter {
      * 
      * @param newCriteria the static criteria set to use
      */
-    public void setKeyResolverCriteria(CredentialCriteriaSet newCriteria) {
+    public void setKeyResolverCriteria(CriteriaSet newCriteria) {
         resolverCriteria = newCriteria;
     }
     
@@ -249,7 +249,7 @@ public class Decrypter {
      * 
      * @return the static criteria set to use
      */
-    public CredentialCriteriaSet getKEKResolverCriteria() {
+    public CriteriaSet getKEKResolverCriteria() {
         return kekResolverCriteria;
     }
     
@@ -259,7 +259,7 @@ public class Decrypter {
      * 
      * @param newCriteria the static criteria set to use
      */
-    public void setKEKResolverCriteria(CredentialCriteriaSet newCriteria) {
+    public void setKEKResolverCriteria(CriteriaSet newCriteria) {
         kekResolverCriteria = newCriteria;
     }
     
@@ -500,7 +500,7 @@ public class Decrypter {
             throw new DecryptionException("Algorithm of encrypted key not supplied, key decryption cannot proceed.");
         }
         
-        CredentialCriteriaSet criteriaSet = buildCredentialCriteria(encryptedKey, kekResolverCriteria);
+        CriteriaSet criteriaSet = buildCredentialCriteria(encryptedKey, kekResolverCriteria);
         try {
             for (Credential cred : kekResolver.resolve(criteriaSet)) {
                 try {
@@ -590,7 +590,7 @@ public class Decrypter {
      */
     private DocumentFragment decryptUsingResolvedKey(EncryptedData encryptedData) {
         if (resolver != null) {
-            CredentialCriteriaSet criteriaSet = buildCredentialCriteria(encryptedData, resolverCriteria);
+            CriteriaSet criteriaSet = buildCredentialCriteria(encryptedData, resolverCriteria);
             try {
                 for (Credential cred : resolver.resolve(criteriaSet)) {
                     try {
@@ -681,17 +681,17 @@ public class Decrypter {
      * @param staticCriteria static set of credential criteria to add to the new criteria set
      * @return the new credential criteria set
      */
-    private CredentialCriteriaSet buildCredentialCriteria(EncryptedType encryptedType, 
-            CredentialCriteriaSet staticCriteria) {
+    private CriteriaSet buildCredentialCriteria(EncryptedType encryptedType, 
+            CriteriaSet staticCriteria) {
         
-        CredentialCriteriaSet newCriteriaSet = new CredentialCriteriaSet();
+        CriteriaSet newCriteriaSet = new CriteriaSet();
         
         // This is the main criteria based on the encrypted type's KeyInfo
         newCriteriaSet.add( new KeyInfoCriteria(encryptedType.getKeyInfo()) );
         
         // Also attemtpt to dynamically construct key criteria based on information
         // in the encrypted object
-        Set<CredentialCriteria> keyCriteria = buildKeyCriteria(encryptedType);
+        Set<Criteria> keyCriteria = buildKeyCriteria(encryptedType);
         if (keyCriteria != null && ! keyCriteria.isEmpty() ) {
             newCriteriaSet.addAll(keyCriteria);
         }
@@ -715,7 +715,7 @@ public class Decrypter {
      * @param encryptedType the encrypted type from which to deduce decryption key criteria
      * @return a set of credential criteria pertaining to the decryption key
      */
-    private Set<CredentialCriteria> buildKeyCriteria(EncryptedType encryptedType) {
+    private Set<Criteria> buildKeyCriteria(EncryptedType encryptedType) {
         EncryptionMethod encMethod = encryptedType.getEncryptionMethod();
         if (encMethod == null) {
             // This element is optional
@@ -726,7 +726,7 @@ public class Decrypter {
             return Collections.emptySet();
         }
         
-        Set<CredentialCriteria> critSet = new HashSet<CredentialCriteria>(2);
+        Set<Criteria> critSet = new HashSet<Criteria>(2);
         
         KeyAlgorithmCriteria algoCrit = buildKeyAlgorithmCriteria(encAlgorithmURI);
         if (algoCrit != null) {

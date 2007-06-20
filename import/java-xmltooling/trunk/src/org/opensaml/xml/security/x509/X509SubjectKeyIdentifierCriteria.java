@@ -16,13 +16,13 @@
 
 package org.opensaml.xml.security.x509;
 
-import org.opensaml.xml.security.credential.CredentialCriteria;
+import org.opensaml.xml.security.Criteria;
 
 /**
- * An implementation of {@link CredentialCriteria} which specifies criteria based on
+ * An implementation of {@link Criteria} which specifies criteria based on
  * X.509 certificate subject key identifier.
  */
-public class X509SubjectKeyIdentifierCriteria implements CredentialCriteria {
+public final class X509SubjectKeyIdentifierCriteria implements Criteria {
     
     /** X.509 certificate subject key identifier. */
     private byte[] subjectKeyIdentifier;

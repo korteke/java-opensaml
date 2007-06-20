@@ -17,14 +17,13 @@
 package org.opensaml.xml.security.credential;
 
 import org.opensaml.xml.security.Criteria;
-import org.opensaml.xml.security.x509.PKIXCriteria;
 import org.opensaml.xml.util.DatatypeHelper;
 
 /**
  * An implementation of {@link Criteria} which specifies criteria identifying a
  * particular entity.
  * 
- * Note that when used as a {@link CredentialCriteria}, the entity ID is the entity which owns 
+ * Note that when used as a credential criteria for a credential resolver, the entity ID is the entity which owns 
  * the resolved credential. This entity ID may represent either a local entity (self) or remote entity, depending
  * on the use case, e.g. in resolution of signature verification credentials, the owner entity ID
  * would be a remote peer; in resolution of decryption credentials, the owner entity ID would be
@@ -32,9 +31,9 @@ import org.opensaml.xml.util.DatatypeHelper;
  * 
  * See also {@link PeerEntityIDCriteria}.
  */
-public class EntityIDCriteria implements CredentialCriteria, PKIXCriteria {
+public final class EntityIDCriteria implements Criteria {
     
-    /** Primary entity ID criteria. */
+    /** Entity ID criteria. */
     private String entityID;
     
     /**
@@ -63,7 +62,7 @@ public class EntityIDCriteria implements CredentialCriteria, PKIXCriteria {
     public void setEntityID(String entity) {
         String trimmed = DatatypeHelper.safeTrimOrNullString(entity);
         if (trimmed == null) {
-            throw new IllegalArgumentException("Primary entity ID criteria must be supplied");
+            throw new IllegalArgumentException("Entity ID criteria must be supplied");
         }
         entityID = trimmed;
     }

@@ -16,14 +16,14 @@
 
 package org.opensaml.xml.security.keyinfo;
 
-import org.opensaml.xml.security.credential.CredentialCriteria;
+import org.opensaml.xml.security.Criteria;
 import org.opensaml.xml.signature.KeyInfo;
 
 /**
- * An implementation of {@link CredentialCriteria} which specifies criteria based
+ * An implementation of {@link Criteria} which specifies criteria based
  * on the contents of a {@link KeyInfo} element.
  */
-public class KeyInfoCriteria implements CredentialCriteria {
+public final class KeyInfoCriteria implements Criteria {
     
     /** The KeyInfo which serves as the source for credential criteria. */
     private KeyInfo keyInfo;

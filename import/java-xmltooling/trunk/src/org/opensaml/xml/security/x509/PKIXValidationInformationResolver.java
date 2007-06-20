@@ -18,19 +18,21 @@ package org.opensaml.xml.security.x509;
 
 import java.util.Set;
 
+import org.opensaml.xml.security.Criteria;
+import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.Resolver;
 import org.opensaml.xml.security.SecurityException;
 
 /**
- * A resolver which uses {@link PKIXCriteria} to resolve {@link PKIXValidationInformation}, which will typically be used
+ * A resolver which uses {@link Criteria} to resolve {@link PKIXValidationInformation}, which will typically be used
  * PKIX-based trust engines.
  * 
- * Implementations may also optionally implement {@link #resolveTrustedNames(PKIXCriteriaSet)}, which will 
+ * Implementations may also optionally implement {@link #resolveTrustedNames(CriteriaSet)}, which will 
  * return a set of trusted names associated with the entity implied by the criteria.  These trusted names
  * may be used to validate (in an application-specific manner) that an entity is trusted to wield a particular
  * certificate.
  */
-public interface PKIXValidationInformationResolver extends Resolver<PKIXValidationInformation, PKIXCriteriaSet> {
+public interface PKIXValidationInformationResolver extends Resolver<PKIXValidationInformation, CriteriaSet> {
     
     /**
      * Resolve a set of trusted names associated with the entity indicated by the criteria.  This method
@@ -41,7 +43,7 @@ public interface PKIXValidationInformationResolver extends Resolver<PKIXValidati
      * @throws SecurityException thrown if there is an error resolving the trusted names
      * @throws UnsupportedOperationException thrown if this optional method is not supported by the implementation
      */
-    public Set<String> resolveTrustedNames(PKIXCriteriaSet criteriaSet) 
+    public Set<String> resolveTrustedNames(CriteriaSet criteriaSet)
         throws SecurityException, UnsupportedOperationException;
     
     /**

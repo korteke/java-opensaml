@@ -16,6 +16,7 @@
 
 package org.opensaml.xml.security.credential;
 
+import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
 
 /**
@@ -24,7 +25,7 @@ import org.opensaml.xml.security.SecurityException;
 public abstract class AbstractCredentialResolver implements CredentialResolver {
 
     /** {@inheritDoc} */
-    public Credential resolveSingle(CredentialCriteriaSet criteriaSet) throws SecurityException {
+    public Credential resolveSingle(CriteriaSet criteriaSet) throws SecurityException {
         Iterable<Credential> creds = resolve(criteriaSet);
         if (creds.iterator().hasNext()) {
             return creds.iterator().next();
@@ -34,6 +35,6 @@ public abstract class AbstractCredentialResolver implements CredentialResolver {
     }
 
     /** {@inheritDoc} */
-    public abstract Iterable<Credential> resolve(CredentialCriteriaSet criteriaSet) throws SecurityException;
+    public abstract Iterable<Credential> resolve(CriteriaSet criteriaSet) throws SecurityException;
 
 }

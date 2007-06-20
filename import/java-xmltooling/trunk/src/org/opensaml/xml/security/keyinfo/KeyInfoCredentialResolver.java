@@ -26,11 +26,10 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.opensaml.xml.XMLObject;
+import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.credential.AbstractCriteriaFilteringCredentialResolver;
-import org.opensaml.xml.security.credential.BasicCredential;
 import org.opensaml.xml.security.credential.Credential;
-import org.opensaml.xml.security.credential.CredentialCriteriaSet;
 import org.opensaml.xml.security.keyinfo.provider.DSAKeyValueProvider;
 import org.opensaml.xml.security.keyinfo.provider.RSAKeyValueProvider;
 import org.opensaml.xml.security.keyinfo.provider.X509DataProvider;
@@ -68,7 +67,7 @@ public class KeyInfoCredentialResolver extends AbstractCriteriaFilteringCredenti
     }
 
     /** {@inheritDoc} */
-    protected Iterable<Credential> resolveFromSource(CredentialCriteriaSet criteriaSet) throws SecurityException {
+    protected Iterable<Credential> resolveFromSource(CriteriaSet criteriaSet) throws SecurityException {
         KeyInfoCriteria kiCriteria = criteriaSet.get(KeyInfoCriteria.class);
         if (kiCriteria == null) {
             log.error("No KeyInfo criteria supplied, resolver could not process");
@@ -131,7 +130,7 @@ public class KeyInfoCredentialResolver extends AbstractCriteriaFilteringCredenti
      * @param credentials the list which will store the resolved credentials
      * @throws SecurityException thrown if there is an error during processing
      */
-    protected void postProcess(KeyInfoResolutionContext kiContext, CredentialCriteriaSet criteriaSet, 
+    protected void postProcess(KeyInfoResolutionContext kiContext, CriteriaSet criteriaSet, 
             List<Credential> credentials) throws SecurityException {
         
     }
@@ -147,14 +146,8 @@ public class KeyInfoCredentialResolver extends AbstractCriteriaFilteringCredenti
      * @throws SecurityException thrown if there is an error during processing
      */
     protected void postProcessEmptyCredentials(KeyInfoResolutionContext kiContext,
-            CredentialCriteriaSet criteriaSet, List<Credential> credentials) throws SecurityException {
-        /* TODO probably move this specific code up to a SAML specific subclass 
-         *      - are there other non-SAML PKIX use cases for name-only creds ?
-        // Return a credential consisting only of key names - e.g. the SAML MD PKIX use case
-        if (kiContext.getKeyNames() != null & ! kiContext.getKeyNames().isEmpty()) {
-           credentials.add( buildKeyNameOnlyCredential(kiContext) );
-        }
-         */
+            CriteriaSet criteriaSet, List<Credential> credentials) throws SecurityException {
+        
     }
 
     /**
@@ -165,7 +158,7 @@ public class KeyInfoCredentialResolver extends AbstractCriteriaFilteringCredenti
      * @param credentials the list which will store the resolved credentials
      * @throws SecurityException thrown if there is a provider error processing the KeyInfo children
      */
-    private void processKeyInfoChildren(KeyInfoResolutionContext kiContext, CredentialCriteriaSet criteriaSet,
+    private void processKeyInfoChildren(KeyInfoResolutionContext kiContext, CriteriaSet criteriaSet,
             List<Credential> credentials) throws SecurityException {
         
         for (XMLObject keyInfoChild : kiContext.getKeyInfo().getXMLObjects()) {
@@ -208,7 +201,7 @@ public class KeyInfoCredentialResolver extends AbstractCriteriaFilteringCredenti
      * @throws SecurityException thrown if there is a provider error processing the KeyInfo child
      */
     private Collection<Credential> processKeyInfoChild(KeyInfoResolutionContext kiContext, 
-            CredentialCriteriaSet criteriaSet, XMLObject keyInfoChild) throws SecurityException {
+            CriteriaSet criteriaSet, XMLObject keyInfoChild) throws SecurityException {
         
         for (KeyInfoProvider provider : providers) {
             
@@ -247,7 +240,7 @@ public class KeyInfoCredentialResolver extends AbstractCriteriaFilteringCredenti
      * @throws SecurityException thrown if there is an error processing the KeyValue children
      */
     private void initResolutionContext(KeyInfoResolutionContext kiContext, KeyInfo keyInfo, 
-            CredentialCriteriaSet criteriaSet) throws SecurityException {
+            CriteriaSet criteriaSet) throws SecurityException {
         
         kiContext.setKeyInfo(keyInfo);
         
@@ -274,7 +267,7 @@ public class KeyInfoCredentialResolver extends AbstractCriteriaFilteringCredenti
      * @param keyValues the KeyValue children to evaluate
      * @throws SecurityException  thrown if there is an error resolving the key from the KeyValue
      */
-    protected void resolveKeyValue(KeyInfoResolutionContext kiContext, CredentialCriteriaSet criteriaSet, 
+    protected void resolveKeyValue(KeyInfoResolutionContext kiContext, CriteriaSet criteriaSet, 
             List<KeyValue> keyValues)  throws SecurityException {
         
         for (KeyValue keyValue : keyValues) {
@@ -304,20 +297,6 @@ public class KeyInfoCredentialResolver extends AbstractCriteriaFilteringCredenti
         // Just want to provide a single place to build credential contexts for
         // the resolver and providers.
         return new KeyInfoCredentialContext(kiContext.getKeyInfo());
-    }
-    
-    /**
-     * Build a BasicCredential consisting only of the values from KeyName.
-     * 
-     * @param kiContext the current KeyInfo resolution context
-     * @return a key name-only basic credential
-     * @throws SecurityException  thrown if there is an error building the credential 
-     */
-    protected Credential buildKeyNameOnlyCredential(KeyInfoResolutionContext kiContext) throws SecurityException {
-        BasicCredential basicCredential = new BasicCredential();
-        basicCredential.getKeyNames().addAll(kiContext.getKeyNames());
-        basicCredential.getCredentalContextSet().add( buildCredentialContext(kiContext) );
-        return basicCredential;
     }
 
     /**

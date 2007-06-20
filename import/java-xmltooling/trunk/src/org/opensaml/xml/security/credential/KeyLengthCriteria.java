@@ -16,10 +16,12 @@
 
 package org.opensaml.xml.security.credential;
 
+import org.opensaml.xml.security.Criteria;
+
 /**
- * An implementation of {@link CredentialCriteria} which specifies key length criteria.
+ * An implementation of {@link Criteria} which specifies key length criteria.
  */
-public class KeyLengthCriteria implements CredentialCriteria {
+public final class KeyLengthCriteria implements Criteria {
     
     /** Key length of resolved credentials. */
     private Integer keyLength;

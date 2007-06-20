@@ -28,7 +28,7 @@ import org.opensaml.xml.util.DatatypeHelper;
  * Note that the peer entity ID may be either local or remote,
  * depending on whether the associated primary entity ID is remote or local.
  */
-public class PeerEntityIDCriteria implements CredentialCriteria {
+public final class PeerEntityIDCriteria implements Criteria {
     
     /** Peer entity ID criteria. */
     private String peerID;
