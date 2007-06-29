@@ -95,6 +95,8 @@ public class KeyStoreCredentialResolver extends AbstractCriteriaFilteringCredent
         } else {
             keystoreUsage = UsageType.UNSPECIFIED;
         }
+        
+        keyPasswords = passwords;
     }
 
     /** {@inheritDoc} */
