@@ -15,20 +15,39 @@
  */
 package org.opensaml.log;
 
-/** Critical logging level for items that are not errors but still important. */
+/**
+ * Additional logging levels. 
+ * 
+ * <ul>
+ * <li>CRITIAL - for messages that should always be logged but not be errors</li>
+ * <li>TRAIL - equivalent to TRACE introduced in later versions of Log4j</li>
+ * </ul>
+ */
 public class Level extends org.apache.log4j.Level {
 
-    /** Integer representation of logging level. */
+    /** Integer representation of CRITICIAL logging level. */
     public static final int CRITICAL_INT = 60000;
     
+    /** Integer representation of TRAIL logging level. */
+    public static final int TRAIL_INT = 5000;
+    
     /** Critical logging level. */
-    public static final Level CRITICAL = new Level();
+    public static final Level CRITICAL = new Level(CRITICAL_INT, "CRITICAL", 0);
+    
+    /** Trail logging level. */
+    public static final Level TRAIL = new Level(TRAIL_INT, "TRACE", 7);
     
     /** Serial version UID. */
-    private static final long serialVersionUID = -104586023689772363L;
+    private static final long serialVersionUID = -8920329210711643389L;
         
-    /** Constructor. */
-    protected Level(){
-        super(CRITICAL_INT, "CRITICAL", 0);
+    /**
+     * Constructor.
+     *
+     * @param level integer representation of the logging level
+     * @param name human readable name for the logging level
+     * @param sysLogLevel corresponding syslog level
+     */
+    protected Level(int level, String name, int sysLogLevel){
+        super(level, name, sysLogLevel);
     }
 }
