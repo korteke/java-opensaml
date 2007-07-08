@@ -228,6 +228,27 @@ public final class XMLHelper {
     }
 
     /**
+     * Gets the value of a list-type attribute as a list.
+     * 
+     * @param attribute attribute whose value will be turned into a list
+     * 
+     * @return list of values, never null
+     */
+    public static List<String> getAttributeValueAsList(Attr attribute) {
+        ArrayList<String> values = new ArrayList<String>();
+        if (attribute == null) {
+            return values;
+        }
+
+        StringTokenizer valueTokens = new StringTokenizer(DatatypeHelper.safeTrimOrNullString(attribute.getValue()));
+        while (valueTokens.hasMoreTokens()) {
+            values.add(valueTokens.nextToken());
+        }
+
+        return values;
+    }
+
+    /**
      * Constructs a QName from an element's adjacent Text child nodes.
      * 
      * @param element the element with a QName value
@@ -260,6 +281,28 @@ public final class XMLHelper {
             return constructQName(element.lookupNamespaceURI(valueComponents[0]), valueComponents[1],
                     valueComponents[0]);
         }
+    }
+
+    /**
+     * Gets the value of a list-type element as a list.
+     * 
+     * @param element element whose value will be turned into a list
+     * 
+     * @return list of values, never null
+     */
+    public static List<String> getElementContentAsList(Element element) {
+        ArrayList<String> values = new ArrayList<String>();
+        if (element == null) {
+            return values;
+        }
+
+        String elementContent = DatatypeHelper.safeTrimOrNullString(element.getTextContent());
+        StringTokenizer valueTokens = new StringTokenizer(elementContent);
+        while (valueTokens.hasMoreTokens()) {
+            values.add(valueTokens.nextToken());
+        }
+
+        return values;
     }
 
     /**
