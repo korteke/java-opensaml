@@ -36,6 +36,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry exported="true" kind="lib" path="lib/bcprov-jdk14-135.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/not-yet-commons-ssl-0.3.7.jar"/>
+	<classpathentry kind="lib" path="lib/not-yet-commons-ssl-0.3.8.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
