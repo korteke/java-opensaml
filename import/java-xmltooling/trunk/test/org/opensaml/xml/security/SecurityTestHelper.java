@@ -18,7 +18,6 @@ package org.opensaml.xml.security;
 
 import java.io.ByteArrayInputStream;
 import java.math.BigInteger;
-import java.security.Key;
 import java.security.KeyException;
 import java.security.KeyFactory;
 import java.security.KeyPair;

@@ -16,10 +16,12 @@
 
 package org.opensaml.xml.security.x509;
 
+import java.io.InputStream;
 import java.math.BigInteger;
 import java.security.cert.CertificateParsingException;
 import java.security.cert.X509CRL;
 import java.security.cert.X509Certificate;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -153,7 +155,6 @@ public class X509UtilTest extends XMLObjectBaseTestCase {
         "eXUY9lfn7SR3afmHOeDuovoa+sPZnyBmtsWcllmI328ZkSukaOXhLDLFLt2UA55L" +
         "uy4/1cWTxEqyuizzTvjbHvvw7HF4/yBkNggcumQqr9gWqxNvvXFsNw==";
 
-
     private X509Certificate entityCert1AltNameIP;
     private String entityCert1AltNameIPBase64 = 
         "MIIDnTCCAoWgAwIBAgIBLzANBgkqhkiG9w0BAQUFADAtMRIwEAYDVQQKEwlJbnRl" +
@@ -177,11 +178,7 @@ public class X509UtilTest extends XMLObjectBaseTestCase {
         "GMRjrI9Q4WynZ2IOcnG1hMjCU6L4uk4JfryIw4IBHGa8uUtskHqJ7TFJ/4taWyV/" +
         "UB0djqOPjMACQpMBhEVRSBU=";
 
-
-
-    
     private String entityCertSKIBase64 = "OBGBOSNoqgroOhl9RniD0sMlRa4=";
-
 
     private X509Certificate caCert;
     private String caCertBase64 = 
@@ -228,7 +225,18 @@ public class X509UtilTest extends XMLObjectBaseTestCase {
     
     private static String subjectAltNameExtensionOID = "2.5.29.17";
 
-
+    /** A PEM encoded cert. */
+    private String certPEM = "/data/certificate.pem"; 
+    
+    /** A PEM encoded cert. */
+    private String certDER = "/data/certificate.der"; 
+   
+    /** A PEM encoded CRL. */
+    private String crlPEM = "/data/crl.pem"; 
+    
+    /** A PEM encoded CRL. */
+    private String crlDER = "/data/crl.der"; 
+    
     /** {@inheritDoc} */
     protected void setUp() throws Exception {
         super.setUp();
@@ -417,6 +425,54 @@ public class X509UtilTest extends XMLObjectBaseTestCase {
     }
     */
     
+    /** Test decoding a PEM encoded cert. */
+    public void testDecodeCertPEM() throws Exception{
+        InputStream certInS = X509UtilTest.class.getResourceAsStream(certPEM);
+        
+        byte[] certBytes = new byte[certInS.available()];
+        certInS.read(certBytes);
+        
+        Collection<X509Certificate> certs = X509Util.decodeCertificate(certBytes);
+        assertNotNull(certs);
+        assertEquals(2, certs.size());
+    }
+    
+    /** Test decoding a DER encoded cert. */
+    public void testDecodeCertPDER() throws Exception{
+        InputStream certInS = X509UtilTest.class.getResourceAsStream(certDER);
+        
+        byte[] certBytes = new byte[certInS.available()];
+        certInS.read(certBytes);
+        
+        Collection<X509Certificate> certs = X509Util.decodeCertificate(certBytes);
+        assertNotNull(certs);
+        assertEquals(1, certs.size());
+    }
+    
+    /** Test decoding a PEM encoded CRL. */
+    public void testDecodeCRLPEM() throws Exception{
+        InputStream crlInS = X509UtilTest.class.getResourceAsStream(crlPEM);
+        
+        byte[] crlBytes = new byte[crlInS.available()];
+        crlInS.read(crlBytes);
+        
+        Collection<X509CRL> crls = X509Util.decodeCRLs(crlBytes);
+        assertNotNull(crls);
+        assertEquals(1, crls.size());
+    }
+    
+    /** Test decoding a DER encoded CRL. */
+    public void testDecodeCRLDER() throws Exception{
+        InputStream crlInS = X509UtilTest.class.getResourceAsStream(crlDER);
+        
+        byte[] crlBytes = new byte[crlInS.available()];
+        crlInS.read(crlBytes);
+        
+        Collection<X509CRL> crls = X509Util.decodeCRLs(crlBytes);
+        assertNotNull(crls);
+        assertEquals(1, crls.size());
+    }
+    
     /**
      * Get the alt names from the certificate.
      * 
@@ -429,5 +485,4 @@ public class X509UtilTest extends XMLObjectBaseTestCase {
         nameTypes.toArray(array);
         return X509Util.getAltNames(cert, array);
     }
-
 }

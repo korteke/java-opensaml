@@ -18,32 +18,20 @@ package org.opensaml.xml.security.x509;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.math.BigInteger;
 import java.security.GeneralSecurityException;
-import java.security.KeyException;
-import java.security.KeyFactory;
-import java.security.PrivateKey;
-import java.security.PublicKey;
 import java.security.cert.CRLException;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.CertificateParsingException;
 import java.security.cert.X509CRL;
 import java.security.cert.X509Certificate;
-import java.security.interfaces.DSAParams;
-import java.security.interfaces.DSAPrivateKey;
-import java.security.interfaces.RSAPrivateCrtKey;
-import java.security.spec.DSAPublicKeySpec;
-import java.security.spec.RSAPublicKeySpec;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.crypto.SecretKey;
 import javax.security.auth.x500.X500Principal;
 
-import org.apache.commons.ssl.PKCS8Key;
 import org.apache.commons.ssl.TrustMaterial;
 import org.apache.log4j.Logger;
 import org.bouncycastle.asn1.ASN1InputStream;
@@ -256,83 +244,6 @@ public class X509Util {
         }
     }
 
-    public static SecretKey decodeSecretKey(byte[] key, char[] password) throws KeyException {
-        // TODO
-        throw new UnsupportedOperationException("This method is not yet supported");
-    }
-
-    /**
-     * Decodes RSA/DSA public keys in DER or PEM formats.
-     * 
-     * @param key encoded key
-     * 
-     * @return deocded key
-     * 
-     * @throws KeyException thrown if the key can not be decoded
-     */
-    public static PublicKey decodePublicKey(byte[] key) throws KeyException {
-        // TODO
-        throw new UnsupportedOperationException("This method is not yet supported");
-    }
-
-    /**
-     * Derives the public key from either a DSA or RSA private key.
-     * 
-     * @param key the private key to derive the public key from
-     * 
-     * @return the derived public key
-     * 
-     * @throws KeyException thrown if the given private key is not a DSA or RSA key or there is a problem generating the
-     *             public key
-     */
-    public static PublicKey derivePublicKey(PrivateKey key) throws KeyException {
-        KeyFactory factory;
-        if (key instanceof DSAPrivateKey) {
-            DSAPrivateKey dsaKey = (DSAPrivateKey) key;
-            DSAParams keyParams = dsaKey.getParams();
-            BigInteger y = keyParams.getQ().modPow(dsaKey.getX(), keyParams.getP());
-            DSAPublicKeySpec pubKeySpec = new DSAPublicKeySpec(y, keyParams.getP(), keyParams.getQ(), keyParams.getG());
-
-            try {
-                factory = KeyFactory.getInstance("DSA");
-                return factory.generatePublic(pubKeySpec);
-            } catch (GeneralSecurityException e) {
-                throw new KeyException("Unable to derive public key from DSA private key", e);
-            }
-        } else if (key instanceof RSAPrivateCrtKey) {
-            RSAPrivateCrtKey rsaKey = (RSAPrivateCrtKey) key;
-            RSAPublicKeySpec pubKeySpec = new RSAPublicKeySpec(rsaKey.getModulus(), rsaKey.getPublicExponent());
-
-            try {
-                factory = KeyFactory.getInstance("RSA");
-                return factory.generatePublic(pubKeySpec);
-            } catch (GeneralSecurityException e) {
-                throw new KeyException("Unable to derive public key from RSA private key", e);
-            }
-        } else {
-            throw new KeyException("Private key was not a DSA or RSA key");
-        }
-    }
-
-    /**
-     * Decodes RSA/DSA private keys in DER, PEM, or PKCS#8 (encrypted or unencrypted) formats.
-     * 
-     * @param key encoded key
-     * @param password decryption password or null if the key is not encrypted
-     * 
-     * @return deocded private key
-     * 
-     * @throws KeyException thrown if the key can not be decoded
-     */
-    public static PrivateKey decodePrivateKey(byte[] key, char[] password) throws KeyException {
-        try {
-            PKCS8Key deocodedKey = new PKCS8Key(key, password);
-            return deocodedKey.getPrivateKey();
-        } catch (GeneralSecurityException e) {
-            throw new KeyException("Unable to decode private key", e);
-        }
-    }
-
     /**
      * Decodes X.509 certificates in DER or PEM format.
      * 
@@ -363,7 +274,7 @@ public class X509Util {
      * @throws CRLException thrown if the CRLs can not be decoded
      */
     @SuppressWarnings("unchecked")
-    public static Collection<X509CRL> deocdeCRLs(byte[] crls) throws CRLException {
+    public static Collection<X509CRL> decodeCRLs(byte[] crls) throws CRLException {
         try {
             CertificateFactory cf = CertificateFactory.getInstance("X.509");
             return (Collection<X509CRL>) cf.generateCRLs(new ByteArrayInputStream(crls));
