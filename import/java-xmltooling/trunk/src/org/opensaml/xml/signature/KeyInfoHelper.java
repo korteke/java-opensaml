@@ -36,12 +36,14 @@ import java.security.spec.DSAPublicKeySpec;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 import java.security.spec.RSAPublicKeySpec;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.XMLObjectBuilderFactory;
+import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.x509.X509Util;
 import org.opensaml.xml.util.Base64;
 import org.opensaml.xml.util.DatatypeHelper;
@@ -175,12 +177,8 @@ public class KeyInfoHelper {
             return null;
         }
 
-        CertificateFactory cf = getX509CertFactory();
-
-        ByteArrayInputStream input = new ByteArrayInputStream(Base64.decode(xmlCert.getValue()));
-        X509Certificate newCert = (X509Certificate) cf.generateCertificate(input);
-
-        return newCert;
+        Collection<X509Certificate> certs = X509Util.decodeCertificate(Base64.decode(xmlCert.getValue()));
+        return certs.iterator().next();
     }
 
     /**
@@ -252,16 +250,9 @@ public class KeyInfoHelper {
         if (xmlCRL == null || xmlCRL.getValue() == null) {
             return null;
         }
-        try {
-            CertificateFactory cf = getX509CertFactory();
-
-            ByteArrayInputStream input = new ByteArrayInputStream(Base64.decode(xmlCRL.getValue()));
-            X509CRL newCRL = (X509CRL) cf.generateCRL(input);
-
-            return newCRL;
-        } catch (CertificateException e) {
-            throw new CRLException("Unable to create X509 certificate factory", e);
-        }
+        
+        Collection<X509CRL> crls = X509Util.decodeCRLs(Base64.decode(xmlCRL.getValue()));
+        return crls.iterator().next();
     }
 
     /**
