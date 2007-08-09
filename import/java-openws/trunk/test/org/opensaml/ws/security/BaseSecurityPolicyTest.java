@@ -22,7 +22,6 @@ import java.util.List;
 import javax.servlet.ServletRequest;
 
 import org.opensaml.ws.BaseTestCase;
-import org.opensaml.ws.security.provider.BasicSecurityPolicyFactory;
 import org.opensaml.xml.XMLObject;
 import org.springframework.mock.web.MockHttpServletRequest;
 
@@ -31,108 +30,108 @@ import org.springframework.mock.web.MockHttpServletRequest;
  */
 public abstract class BaseSecurityPolicyTest extends BaseTestCase {
     
-    /** HTTP servlet request. */
-    protected MockHttpServletRequest httpRequest;
-    
-    /** The message to be passed into the security policy rule for evaluation. */
-    protected XMLObject message;
-    
-    /** The list of rule factories.  Modifications are reflected in policy that is run. */
-    protected List<SecurityPolicyRuleFactory<ServletRequest>> ruleFactories;
-    
-    /** The factory which produces the policy that will be evaled. */
-    protected BasicSecurityPolicyFactory<ServletRequest> policyFactory;
-    
-    /** The most recently executed policy from the evalPolicy*() methods. Reset after each test via setup(). */
-    protected SecurityPolicy<ServletRequest> policy;
-
-    /** {@inheritDoc} */
-    protected void setUp() throws Exception {
-        super.setUp();
-        httpRequest = buildServletRequest();
-        message = buildMessage();
-        ruleFactories = getPolicyRuleFactories();
-        policyFactory = getSecurityPolicyFactory();
-        policy = null;
-    }
-    
-    /**
-     * Build a mock servlet request. Subclasses may override.
-     * 
-     * @return mock servlet request
-     */
-    protected MockHttpServletRequest buildServletRequest() {
-        return new MockHttpServletRequest();
-    }
-    
-    /**
-     * Build the message to be evaled.  Subclasses should override
-     * if they will be testing/manipulating message content.
-     * 
-     * @return a newly constructed message object
-     */
-    protected XMLObject buildMessage() {
-       return null; 
-    }
-
-    /**
-     * Get the factory for the security policy.
-     * 
-     * @return security policy factory
-     */
-    protected BasicSecurityPolicyFactory<ServletRequest> getSecurityPolicyFactory() {
-        if (policyFactory == null) {
-            BasicSecurityPolicyFactory<ServletRequest> factory = 
-                new BasicSecurityPolicyFactory<ServletRequest>();
-            factory.setPolicyRuleFactories( getPolicyRuleFactories() );
-            policyFactory = factory;
-        }
-        return policyFactory;
-    }
-    
-    /**
-     * Create and set the list of rule factories.  Subclasses should add rule(s) to be
-     * tested to this list.
-     * 
-     * @return the current, possibly newly constructed list, of rule factories
-     */
-    protected List<SecurityPolicyRuleFactory<ServletRequest>> getPolicyRuleFactories() {
-        if (ruleFactories == null) {
-            ruleFactories = new ArrayList<SecurityPolicyRuleFactory<ServletRequest>>();
-        }
-        return ruleFactories;
-    }
-    
-    /**
-     * Evaluate a policy obtained from the current factory, against the
-     * current request and message, using the current rule list.
-     * Success is expected.
-     * 
-     * @param msg message to include in fail() messages
-     */
-    protected void assertPolicySuccess(String msg) {
-        policy = policyFactory.createPolicyInstance();
-        try {
-            policy.evaluate(httpRequest, message);
-        } catch (SecurityPolicyException e) {
-            fail("Security policy failed, expected success: " + msg + ": " + e);
-        }
-    }
-    
-    /**
-     * Evaluate a policy obtained from the current factory, against the
-     * current request and message, using the current rule list.
-     * Failure is expected.
-     * 
-     * @param msg message to include in fail() messages
-     */
-    protected void assertPolicyFail(String msg) {
-        policy = policyFactory.createPolicyInstance();
-        try {
-            policy.evaluate(httpRequest, message);
-            fail("Security policy succeeded, expected failure: " + msg);
-        } catch (SecurityPolicyException e) {
-            //do nothing, failure expected
-        }
-    }
+//    /** HTTP servlet request. */
+//    protected MockHttpServletRequest httpRequest;
+//    
+//    /** The message to be passed into the security policy rule for evaluation. */
+//    protected XMLObject message;
+//    
+//    /** The list of rule factories.  Modifications are reflected in policy that is run. */
+//    protected List<SecurityPolicyRuleFactory<ServletRequest>> ruleFactories;
+//    
+//    /** The factory which produces the policy that will be evaled. */
+//    protected BasicSecurityPolicyFactory<ServletRequest> policyFactory;
+//    
+//    /** The most recently executed policy from the evalPolicy*() methods. Reset after each test via setup(). */
+//    protected SecurityPolicy<ServletRequest> policy;
+//
+//    /** {@inheritDoc} */
+//    protected void setUp() throws Exception {
+//        super.setUp();
+//        httpRequest = buildServletRequest();
+//        message = buildMessage();
+//        ruleFactories = getPolicyRuleFactories();
+//        policyFactory = getSecurityPolicyFactory();
+//        policy = null;
+//    }
+//    
+//    /**
+//     * Build a mock servlet request. Subclasses may override.
+//     * 
+//     * @return mock servlet request
+//     */
+//    protected MockHttpServletRequest buildServletRequest() {
+//        return new MockHttpServletRequest();
+//    }
+//    
+//    /**
+//     * Build the message to be evaled.  Subclasses should override
+//     * if they will be testing/manipulating message content.
+//     * 
+//     * @return a newly constructed message object
+//     */
+//    protected XMLObject buildMessage() {
+//       return null; 
+//    }
+//
+//    /**
+//     * Get the factory for the security policy.
+//     * 
+//     * @return security policy factory
+//     */
+//    protected BasicSecurityPolicyFactory<ServletRequest> getSecurityPolicyFactory() {
+//        if (policyFactory == null) {
+//            BasicSecurityPolicyFactory<ServletRequest> factory = 
+//                new BasicSecurityPolicyFactory<ServletRequest>();
+//            factory.setPolicyRuleFactories( getPolicyRuleFactories() );
+//            policyFactory = factory;
+//        }
+//        return policyFactory;
+//    }
+//    
+//    /**
+//     * Create and set the list of rule factories.  Subclasses should add rule(s) to be
+//     * tested to this list.
+//     * 
+//     * @return the current, possibly newly constructed list, of rule factories
+//     */
+//    protected List<SecurityPolicyRuleFactory<ServletRequest>> getPolicyRuleFactories() {
+//        if (ruleFactories == null) {
+//            ruleFactories = new ArrayList<SecurityPolicyRuleFactory<ServletRequest>>();
+//        }
+//        return ruleFactories;
+//    }
+//    
+//    /**
+//     * Evaluate a policy obtained from the current factory, against the
+//     * current request and message, using the current rule list.
+//     * Success is expected.
+//     * 
+//     * @param msg message to include in fail() messages
+//     */
+//    protected void assertPolicySuccess(String msg) {
+//        policy = policyFactory.createPolicyInstance();
+//        try {
+//            policy.evaluate(httpRequest, message);
+//        } catch (SecurityPolicyException e) {
+//            fail("Security policy failed, expected success: " + msg + ": " + e);
+//        }
+//    }
+//    
+//    /**
+//     * Evaluate a policy obtained from the current factory, against the
+//     * current request and message, using the current rule list.
+//     * Failure is expected.
+//     * 
+//     * @param msg message to include in fail() messages
+//     */
+//    protected void assertPolicyFail(String msg) {
+//        policy = policyFactory.createPolicyInstance();
+//        try {
+//            policy.evaluate(httpRequest, message);
+//            fail("Security policy succeeded, expected failure: " + msg);
+//        } catch (SecurityPolicyException e) {
+//            //do nothing, failure expected
+//        }
+//    }
 }

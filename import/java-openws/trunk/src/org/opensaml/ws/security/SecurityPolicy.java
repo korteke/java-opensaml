@@ -18,57 +18,32 @@ package org.opensaml.ws.security;
 
 import java.util.List;
 
-import javax.servlet.ServletRequest;
-
-import org.opensaml.xml.XMLObject;
+import org.opensaml.ws.message.MessageContext;
 
 /**
- * A policy used to verify the security of an incoming request. Its security mechanisms may be used to check transport
- * layer items (e.g client certificates and basic auth passwords) and the payload valiators may be used to check the
- * payload of a request to ensure it meets certain criteria (e.g. valid digital signature).
+ * A security policy is a collection of {@link SecurityPolicyRule}, evaluated against an {@link MessageContext}, that
+ * are meant to determine if a message is well-formed, valid, and otherwise okay to process.
  * 
- * @param <RequestType> type of incoming protocol request
+ * Security policies <strong>MUST</strong> be thread safe and stateless.
  */
-public interface SecurityPolicy<RequestType extends ServletRequest> {
-
-    /**
-     * Get the {@link SecurityPolicyContext} instance which stores various items of state related to the evaluation of
-     * this policy.
-     * 
-     * @return security policy context information as determined by the registered security policy rules
-     */
-    public SecurityPolicyContext getSecurityPolicyContext();
-
-    /**
-     * Convenience method for getting the issuer of the message as determined by the registered validators, from the
-     * security policy context.
-     * 
-     * @return issuer of the message as determined by the registered validators
-     */
-    public String getIssuer();
-
-    /**
-     * Gets whether the message issuer was authenticated.
-     * 
-     * @return {@link Boolean#TRUE} if the issuer was authenticated, {@link Boolean#FALSE} if the issuer failed
-     *         authentication, or null if no authentication was attempted
-     */
-    public Boolean isIssuerAuthenticated();
+public interface SecurityPolicy {
 
     /**
      * Gets the rules that are evaluated for this policy.
      * 
      * @return rules that are evaluated for this policy
      */
-    public List<SecurityPolicyRule<RequestType>> getPolicyRules();
+    public List<SecurityPolicyRule> getPolicyRules();
 
     /**
-     * Evaluates this policy.
+     * Evaluates this policy.  Rules are evaluated in the order returned by {@link #getPolicyRules()}.
      * 
-     * @param request the protocol request
-     * @param message the incoming message
+     * @param messageContext the message context being evaluated
      * 
-     * @throws SecurityPolicyException thrown if the request does not meet the requirements of this policy
+     * @return true if the message context meets are requirements of the policy
+     * 
+     * @throws SecurityPolicyException thrown if the security policy, or any of its rules, encounter an error during
+     *             evaluation
      */
-    public void evaluate(RequestType request, XMLObject message) throws SecurityPolicyException;
+    public boolean evaluate(MessageContext messageContext) throws SecurityPolicyException;
 }

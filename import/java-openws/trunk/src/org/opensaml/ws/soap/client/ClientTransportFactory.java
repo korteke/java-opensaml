@@ -1,5 +1,5 @@
 /*
- * Copyright [2006] [University Corporation for Advanced Internet Development, Inc.]
+ * Copyright [2007] [University Corporation for Advanced Internet Development, Inc.]
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,21 +14,20 @@
  * limitations under the License.
  */
 
-package org.opensaml.ws.security;
+package org.opensaml.ws.soap.client;
 
-import javax.servlet.ServletRequest;
 
 /**
- * A factory that creates instances of a security rule.
- *
- * @param <RequestType> type of incoming protocol request
+ * A factory for {@link ClientTransport} instances.
+ * 
+ * @param <TransportType> the type of transport created by this factory
  */
-public interface SecurityPolicyRuleFactory<RequestType extends ServletRequest> {
+public interface ClientTransportFactory<TransportType extends ClientTransport> {
 
     /**
-     * Creates an instance of a policy rule.
+     * Creates a new transport instance.
      * 
-     * @return an instance of a policy rule
+     * @return the newly created transport
      */
-    public SecurityPolicyRule<RequestType> createRuleInstance();
+    public TransportType createTransport();
 }

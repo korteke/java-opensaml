@@ -19,120 +19,39 @@ package org.opensaml.ws.security.provider;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.ServletRequest;
-
+import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.security.SecurityPolicy;
-import org.opensaml.ws.security.SecurityPolicyContext;
 import org.opensaml.ws.security.SecurityPolicyException;
 import org.opensaml.ws.security.SecurityPolicyRule;
-import org.opensaml.xml.XMLObject;
 
 /**
  * Basic security policy implementation which evaluates a given set of {@link SecurityPolicyRule} in an ordered manner.
  * 
- * A policy evaluates succesfully if, and only if:
- * <ul>
- * <li>All policy rules evaluate succesfully</li>
- * <li>If an issuer is provided by a policy rule it is equal to the ID of the issuer provided by all previous rule</li>
- * <li>If issuer authentication is required, at least one rule must authenticate the issuer and the issuer may not fail
- * authentication with any rule</li>
- * </ul>
- * 
- * @param <RequestType> the message request type
+ * A policy evaluates succesfully if, and only if, all policy rules evaluate succesfully.
  */
-public class BasicSecurityPolicy<RequestType extends ServletRequest> implements SecurityPolicy<RequestType> {
-
-    /** Whether the issuer of the message must be authenticated in order to pass this policy. */
-    private boolean requireAuthenticatedIssuer;
-
-    /** Issuer of the message. */
-    private String issuer;
-
-    /** Whether the issuer was authenticated. */
-    private Boolean issuerAuthenticated;
-
-    /** Security policy context which stores state for use in evaluation. */
-    private SecurityPolicyContext policyContext;
-
-    /** Security policy rules which will be evaluated by this policy. */
-    private List<SecurityPolicyRule<RequestType>> securityRules;
-
-    /**
-     * Constructor.
-     * 
-     * Message issuer is required to be authenticated.
-     */
-    public BasicSecurityPolicy() {
-        requireAuthenticatedIssuer = true;
-        securityRules = new ArrayList<SecurityPolicyRule<RequestType>>();
-        policyContext = createNewContext();
+public class BasicSecurityPolicy implements SecurityPolicy {
+    
+    /** Registered security rules. */
+    private ArrayList<SecurityPolicyRule> rules;
+    
+    /** Constructor. */
+    public BasicSecurityPolicy(){
+        rules = new ArrayList<SecurityPolicyRule>();
     }
-
-    /**
-     * Constructor.
-     * 
-     * @param authenticatedIssuer indicates whether the issuer must be authenticated
-     */
-    public BasicSecurityPolicy(boolean authenticatedIssuer) {
-        requireAuthenticatedIssuer = authenticatedIssuer;
-        securityRules = new ArrayList<SecurityPolicyRule<RequestType>>();
+    
+    /** {@inheritDoc} */
+    public List<SecurityPolicyRule> getPolicyRules() {
+        return rules;
     }
 
     /** {@inheritDoc} */
-    public SecurityPolicyContext getSecurityPolicyContext() {
-        return policyContext;
-    }
-
-    /** {@inheritDoc} */
-    public String getIssuer() {
-        return issuer;
-    }
-
-    /** {@inheritDoc} */
-    public Boolean isIssuerAuthenticated() {
-        return issuerAuthenticated;
-    }
-
-    /** {@inheritDoc} */
-    public List<SecurityPolicyRule<RequestType>> getPolicyRules() {
-        return securityRules;
-    }
-
-    /** {@inheritDoc} */
-    public void evaluate(RequestType request, XMLObject message) throws SecurityPolicyException {
-        policyContext = createNewContext();
-        ArrayList<Boolean> issuerAuthenticationTracker = new ArrayList<Boolean>(securityRules.size());
-        for (SecurityPolicyRule<RequestType> rule : securityRules) {
-            rule.evaluate(request, message, policyContext);
-            issuerAuthenticationTracker.add(policyContext.isIssuerAuthenticated());
-            if (issuer != null && policyContext.getIssuer() != null && !issuer.equals(policyContext.getIssuer())) {
-                throw new SecurityPolicyException("Policy rules presented two or more, different, issuer IDs");
-            } else {
-                issuer = policyContext.getIssuer();
+    public boolean evaluate(MessageContext messageContext) throws SecurityPolicyException {
+        for(SecurityPolicyRule rule : getPolicyRules()){
+            if(!rule.evaluate(messageContext)){
+                return false;
             }
         }
-
-        if (issuerAuthenticationTracker.contains(Boolean.FALSE)) {
-            issuerAuthenticated = Boolean.FALSE;
-        } else if (issuerAuthenticationTracker.contains(Boolean.TRUE)) {
-            issuerAuthenticated = Boolean.TRUE;
-        } else {
-            issuerAuthenticated = null;
-        }
-
-        if (requireAuthenticatedIssuer && issuerAuthenticated != Boolean.TRUE) {
-            throw new SecurityPolicyException("Issuer was not authenticated by security policy rules.");
-        }
-    }
-
-    /**
-     * Get a new instance of {@link SecurityPolicyContext} to use for a given policy evaluation.
-     * 
-     * Subclasses may choose to override this method to create a context of the appropriate subtype.
-     * 
-     * @return a new security policy context instance
-     */
-    protected SecurityPolicyContext createNewContext() {
-        return new SecurityPolicyContext();
+        
+        return true;
     }
 }

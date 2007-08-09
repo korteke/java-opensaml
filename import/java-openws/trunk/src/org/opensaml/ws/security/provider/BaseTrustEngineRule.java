@@ -16,27 +16,20 @@
 
 package org.opensaml.ws.security.provider;
 
-import javax.servlet.ServletRequest;
-
 import org.apache.log4j.Logger;
-import org.opensaml.ws.security.SecurityPolicyContext;
 import org.opensaml.ws.security.SecurityPolicyException;
 import org.opensaml.ws.security.SecurityPolicyRule;
-import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.trust.TrustEngine;
 
 /**
- * Base rule which uses a trust engine to evaluate a token extracted from the request
- * or message.
+ * Base rule which uses a trust engine to evaluate a token extracted from the request or message.
  * 
- * @param <RequestType> type of request being processed
  * @param <TokenType> type of token which is being evaluated by the underlying trust engine
  */
-public abstract class BaseTrustEngineRule<TokenType, RequestType extends ServletRequest> 
-        implements SecurityPolicyRule<RequestType> {
-    
+public abstract class BaseTrustEngineRule<TokenType> implements SecurityPolicyRule {
+
     /** Logger. */
     private static Logger log = Logger.getLogger(BaseTrustEngineRule.class);
 
@@ -57,26 +50,9 @@ public abstract class BaseTrustEngineRule<TokenType, RequestType extends Servlet
      * 
      * @return engine engine used to validate the untrusted token
      */
-    public TrustEngine<TokenType> getTrustEngine() {
+    protected TrustEngine<TokenType> getTrustEngine() {
         return trustEngine;
     }
-
-    /** {@inheritDoc} */
-    public abstract void evaluate(RequestType request, XMLObject message, SecurityPolicyContext context)
-            throws SecurityPolicyException;
-    
-    /**
-     * Subclasses are required to implement this method to build a criteria set for the trust engine
-     * according to trust engine and application-specific needs.
-     * 
-     * @param entityID the candidate issuer entity ID which is being evaluated 
-     * @param request the protocol request
-     * @param message the incoming message
-     * @param context the security policy context to use for evaluation and storage of related state info
-     * @return a newly constructly set of criteria suitable for the configured trust engine
-     */
-    protected abstract CriteriaSet buildCriteriaSet(String entityID, RequestType request, XMLObject message, 
-            SecurityPolicyContext context);
 
     /**
      * Evaluate the token against the specified criteria using the configured trust engine.

@@ -14,45 +14,42 @@
  * limitations under the License.
  */
 
-package org.opensaml.ws;
+package org.opensaml.ws.transport.http;
 
 import java.util.List;
 
 import javax.servlet.http.Cookie;
 
-import org.opensaml.util.URLBuilder;
+import org.opensaml.ws.transport.Transport;
 
 /**
- * A source of messages delivered by HTTP.
- * 
- * This message source is synchronous.
+ * An HTTP based transport.
  */
-public interface HTTPMessageSource extends MessageSource {
-    
+public interface HTTPTransport extends Transport {
+
     /** HTTP version identifier. */
-    public static enum HTTP_VERSION{ HTTP1_1, HTTP1_0};
-    
+    public static enum HTTP_VERSION {
+        /** HTTP version 1.0. */
+        HTTP1_0,
+
+        /** HTTP version 1.1. */
+        HTTP1_1,
+    };
+
     /**
-     * Gets the HTTP version used to receive the message.
+     * Gets the cookies received with the message.
      * 
-     * @return HTTP version used to receive the message
+     * @return cookies received with the message
      */
-    public HTTP_VERSION getVersion();
-    
-    /**
-     * Gets the status code of the request.
-     * 
-     * @return status code of the request
-     */
-    public int getStatusCode();
-    
+    public List<Cookie> getCookies();
+
     /**
      * Gets the list of HTTP header names.
      * 
      * @return HTTP header names
      */
     public List<String> getHeaderNames();
-    
+
     /**
      * Gets the first value of the header with the given name.
      * 
@@ -61,7 +58,7 @@ public interface HTTPMessageSource extends MessageSource {
      * @return first value of the header with the given name, or null
      */
     public String getHeaderValue(String name);
-    
+
     /**
      * Gets all the values of the header with the given name.
      * 
@@ -70,18 +67,35 @@ public interface HTTPMessageSource extends MessageSource {
      * @return header values or null
      */
     public List<String> getHeaderValues(String name);
-    
+
     /**
-     * Gets information about the URL from which the message was received.
+     * Gets the HTTP method (POST, GET, etc) used.
      * 
-     * @return  information about the URL from which the message was received
+     * @return HTTP method used
      */
-    public URLBuilder getURLInformation();
-    
+    public String getHTTPMethod();
+
     /**
-     * Gets the cookies received with the message.
+     * Gets the status code of the request.
      * 
-     * @return cookies received with the message
+     * @return status code of the request
      */
-    public List<Cookie> getCookies();
+    public int getStatusCode();
+
+    /**
+     * Gets the named parameter. If the request is GET this is a decoded URL parameter, if the request is POST based its
+     * a parameter from the POST body.
+     * 
+     * @param name parameter name
+     * 
+     * @return parameter value
+     */
+    public String getParameter(String name);
+
+    /**
+     * Gets the HTTP version used to receive the message.
+     * 
+     * @return HTTP version used to receive the message
+     */
+    public HTTP_VERSION getVersion();
 }

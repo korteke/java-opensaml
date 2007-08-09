@@ -14,40 +14,40 @@
  * limitations under the License.
  */
 
-package org.opensaml.ws.soap.client;
+package org.opensaml.ws.message.encoder;
 
-import org.opensaml.ws.soap.common.SOAPException;
+import org.opensaml.ws.message.MessageException;
 
 /**
- * Exception indicating an error in the underlying {@link SOAPTransport}.
+ * Exception thrown when a problem occurs encoding a message from to an output transport.
  */
-public class SOAPTransportException extends SOAPException {
+public class MessageEncodingException extends MessageException {
 
     /** Serial version UID. */
-    private static final long serialVersionUID = -7689133957106152213L;
+    private static final long serialVersionUID = 5394876087412894874L;
 
     /**
      * Constructor.
      */
-    public SOAPTransportException() {
+    public MessageEncodingException() {
         super();
     }
 
     /**
      * Constructor.
-     *
+     * 
      * @param message exception message
      */
-    public SOAPTransportException(String message) {
+    public MessageEncodingException(String message) {
         super(message);
     }
-    
+
     /**
      * Constructor.
      * 
      * @param wrappedException exception to be wrapped by this one
      */
-    public SOAPTransportException(Exception wrappedException) {
+    public MessageEncodingException(Exception wrappedException) {
         super(wrappedException);
     }
 
@@ -57,7 +57,7 @@ public class SOAPTransportException extends SOAPException {
      * @param message exception message
      * @param wrappedException exception to be wrapped by this one
      */
-    public SOAPTransportException(String message, Exception wrappedException) {
+    public MessageEncodingException(String message, Exception wrappedException) {
         super(message, wrappedException);
     }
 }

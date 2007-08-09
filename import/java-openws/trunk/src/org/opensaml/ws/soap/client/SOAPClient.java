@@ -16,88 +16,74 @@
 
 package org.opensaml.ws.soap.client;
 
-import javax.xml.validation.Schema;
+import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
 
-import org.opensaml.ws.security.SecurityPolicy;
-import org.opensaml.ws.soap.common.SOAPObject;
+import org.opensaml.ws.soap.common.SOAPMessageContext;
+import org.opensaml.ws.transport.Transport;
+import org.opensaml.ws.transport.TransportException;
+import org.opensaml.xml.security.credential.CredentialResolver;
 
 /**
  * A client for sending and receiving SOAP messages.
  * 
- * Clients are not re-usable or thread safe.
+ * When a client sends a message it will create a {@link Transport} instance, based on the endpoint's scheme, marshall
+ * and bind the message to the transport, receive, decode, and umarshall the response, evaluate the message security
+ * policy, and finally return the response. After this process is complete the response message and transport will be
+ * added to the message context.
  */
 public class SOAPClient {
     
-    /** Transport used to send and receive messages. */
-    private SOAPTransport soapTransport;
+    /** Registered transport factories. */
+    private HashMap<String, ClientTransportFactory> transportFactories;
     
-    /** Schema used to validate messages if validation is enabled. */
-    private Schema validationSchema;
-    
-    /** Security policy to use to evaluate. */
-    private SecurityPolicy securityPolicy;
-    
+    /** Resolver used to look up local credentials used to connect to the peer. */
+    private CredentialResolver credentialResolver;
+
     /**
      * Constructor.
-     *
-     * @param transport transport used to send and receive messages
+     * 
+     * @param credentials resolver used to look up local credentials used to connect to the peer
      */
-    public SOAPClient(SOAPTransport transport){
-        soapTransport = transport;
+    public SOAPClient(CredentialResolver credentials){
+        transportFactories = new HashMap<String, ClientTransportFactory>();
+        credentialResolver = credentials;
     }
     
     /**
-     * Gets the schema used to validate incoming messages.
+     * Gets the transports registered with this client.
      * 
-     * @return schema used to validate incoming messages
+     * @return mutable list of transports registered with this client
      */
-    public Schema getValidationSchema(){
-        return validationSchema;
-    }
-    
-    /**
-     * Sets the schema used to validate incoming messages.
-     * 
-     * @param schema schema used to validate incoming messages
-     */
-    public void setValidationSchema(Schema schema){
-        validationSchema = schema;
-    }
-    
-    /**
-     * Gets the security policy received messages will be evaluated against.
-     * 
-     * @return security policy received messages will be evaluated against
-     */
-    public SecurityPolicy getSecurityPolicy(){
-        return securityPolicy;
-    }
-    
-    /**
-     * Sets the security policy received messages will be evaluated against.
-     * 
-     * @param policy security policy received messages will be evaluated against
-     */
-    public void setSecurityPolicy(SecurityPolicy policy){
-        securityPolicy = policy;
+    public Map<String, ClientTransportFactory> getRegisteredTransports(){
+        return transportFactories;
     }
     
     /**
      * Sends a SOAP message to the given endpoint.
      * 
      * @param endpointURI endpoint to send the SOAP message to
-     * @param soapMessage SOAP message to send
-     */
-    public void send(String endpointURI, SOAPObject soapMessage){
-        // Add trust stuff
-    }
-    
-    /**
-     * Receives and incoming SOAP message.
+     * @param messageContext context of the message to send
      * 
-     * @return the SOAP message received
+     * @throws TransportException thrown if there is a problem creating or using the {@link Transport}
      */
-    public SOAPObject receive(){
-        return null;
+    public void send(URI endpointURI, SOAPMessageContext messageContext) throws TransportException{
+        String transportScheme = endpointURI.getScheme();
+        ClientTransportFactory transFactory = transportFactories.get(transportScheme);
+        
+        if(transFactory == null){
+            throw new TransportException("No transport registered for URI scheme: " + transportScheme);
+        }
+        
+        ClientTransport transport = transFactory.createTransport();
+        
+        // lookup and add credential
+        // connect
+        // marshall and bind message
+        // unmarshall response
+        // evaluate security policy
+        // update message context
+        // return
     }
 }

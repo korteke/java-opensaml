@@ -16,26 +16,28 @@
 
 package org.opensaml.ws.security;
 
-import javax.servlet.ServletRequest;
-
-import org.opensaml.xml.XMLObject;
+import org.opensaml.ws.message.MessageContext;
 
 /**
- * A rule that a protocol request and message must meet in order to be valid and secure.
+ * An individual rule that a message context is required to meet in order to be considered valid.
  * 
- * @param <RequestType> the protocol request type
+ * Rules <strong>MUST</strong> be thread safe and stateless.
  */
-public interface SecurityPolicyRule<RequestType extends ServletRequest> {
+public interface SecurityPolicyRule {
 
     /**
-     * Evaluates the rule against the given request and message.
+     * Evaluates the message context against the rule.
      * 
-     * @param request the protocol request
-     * @param message the incoming message
-     * @param context the security policy context to use for evaluation and storage of related state info
+     * During evaluation a rule should first, and as quickly as possible, determine if it can evaluate the message
+     * context (for example and HTTP-transport based rule would not be able to evaluate a message context based an
+     * SMTP-transport). If the rule can be evaluated it should then throw a {@link SecurityPolicyException} if the rule
+     * is not met.
      * 
-     * @throws SecurityPolicyException thrown if the request/message do not meet the requirements of this rule
+     * @param messageContext the message context being evaluated
+     * 
+     * @return true if the rule was evaluated, false if not
+     * 
+     * @throws SecurityPolicyException thrown if the message context does not meet the requirements of an evaluated rule
      */
-    public void evaluate(RequestType request, XMLObject message, SecurityPolicyContext context)
-            throws SecurityPolicyException;
+    public boolean evaluate(MessageContext messageContext) throws SecurityPolicyException;
 }
