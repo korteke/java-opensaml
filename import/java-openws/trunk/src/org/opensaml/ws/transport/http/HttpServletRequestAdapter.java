@@ -1,0 +1,140 @@
+/*
+ * Copyright [2007] [University Corporation for Advanced Internet Development, Inc.]
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package org.opensaml.ws.transport.http;
+
+import java.io.IOException;
+import java.io.InputStream;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.log4j.Logger;
+import org.opensaml.xml.security.credential.Credential;
+
+/**
+ * Adapts an {@link HttpServletRequest} to an {@link HTTPInTransport}.
+ */
+public class HttpServletRequestAdapter implements HTTPInTransport {
+
+    /** Class logger. */
+    private final Logger log = Logger.getLogger(HttpServletRequestAdapter.class);
+
+    /** Adapted servlet request. */
+    private HttpServletRequest httpServletRequest;
+
+    /** Whether the peer endpoint has been authenticated. */
+    private boolean peerAuthenticated;
+
+    /**
+     * Constructor.
+     * 
+     * @param request servlet request to adap
+     */
+    public HttpServletRequestAdapter(HttpServletRequest request) {
+        httpServletRequest = request;
+    }
+
+    /** {@inheritDoc} */
+    public InputStream getIncomingStream() {
+        try {
+            return httpServletRequest.getInputStream();
+        } catch (IOException e) {
+            log.error("Unable to recover input stream from adapted HttpServletRequest", e);
+            return null;
+        }
+    }
+
+    /** {@inheritDoc} */
+    public Object getAttribute(String name) {
+        return httpServletRequest.getAttribute(name);
+    }
+
+    /** {@inheritDoc} */
+    public String getCharacterEncoding() {
+        return httpServletRequest.getCharacterEncoding();
+    }
+
+    /** {@inheritDoc} */
+    public Credential getLocalCredential() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /** {@inheritDoc} */
+    public Credential getPeerCredential() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /** {@inheritDoc} */
+    public boolean isAuthenticated() {
+        return peerAuthenticated;
+    }
+
+    /** {@inheritDoc} */
+    public void setAuthenticated(boolean isAuthenticated) {
+        peerAuthenticated = isAuthenticated;
+    }
+
+    /** {@inheritDoc} */
+    public boolean isConfidential() {
+        return httpServletRequest.isSecure();
+    }
+
+    /**
+     * {@inheritDoc}
+     * 
+     * This method is not supported for this transport implementation.
+     */
+    public void setConfidentail(boolean isConfidential) {
+        // TODO Auto-generated method stub
+
+    }
+
+    /** {@inheritDoc} */
+    public String getHTTPMethod() {
+        return httpServletRequest.getMethod();
+    }
+
+    /** {@inheritDoc} */
+    public String getHeaderValue(String name) {
+        return httpServletRequest.getHeader(name);
+    }
+
+    /** {@inheritDoc} */
+    public String getParameter(String name) {
+        return getParameter(name);
+    }
+
+    /**
+     * {@inheritDoc}
+     * 
+     * This method is not supported for this transport implementation. It always returns -1;
+     */
+    public int getStatusCode() {
+        return 1;
+    }
+
+    /**
+     * {@inheritDoc}
+     * 
+     * This method is not supported for this transport implementation. It always returns null;
+     */
+    public HTTP_VERSION getVersion() {
+        // unsupported options
+        return null;
+    }
+}

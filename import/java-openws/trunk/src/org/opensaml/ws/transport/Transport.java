@@ -24,6 +24,22 @@ import org.opensaml.xml.security.credential.Credential;
 public interface Transport {
 
     /**
+     * Gets a transport specific attribute.
+     * 
+     * @param name name of the attribute
+     * 
+     * @return attribute value
+     */
+    public Object getAttribute(String name);
+
+    /**
+     * Gets the character encoding of the transport.
+     * 
+     * @return character encoding of the transport
+     */
+    public String getCharacterEncoding();
+
+    /**
      * Gets the local credential used to authenticate to the peer.
      * 
      * @return local credential used to authenticate to the peer
@@ -38,18 +54,18 @@ public interface Transport {
     public Credential getPeerCredential();
 
     /**
-     * Gets the endpoint the transport is connected to.
-     * 
-     * @return endpoint the transport is connected to
-     */
-    public String getPeerEndpoint();
-
-    /**
      * Gets whether the peer is authenticated.
      * 
      * @return whether the peer is authenticated
      */
     public boolean isAuthenticated();
+    
+    /**
+     * Sets whether the peer is authenticated.
+     * 
+     * @param isAuthenticated whether the peer is authenticated
+     */
+    public void setAuthenticated(boolean isAuthenticated);
 
     /**
      * Gets whether the transport represents a confidential connection (e.g. an SSL connection).
@@ -57,4 +73,11 @@ public interface Transport {
      * @return whether the transport represents a confidential connection
      */
     public boolean isConfidential();
+    
+    /**
+     * Sets whether the transport represents a confidential connection.
+     * 
+     * @param isConfidential whether the transport represents a confidential connection
+     */
+    public void setConfidentail(boolean isConfidential);
 }

@@ -23,4 +23,33 @@ import org.opensaml.ws.transport.OutTransport;
  */
 public interface HTTPOutTransport extends OutTransport, HTTPTransport {
 
+    /**
+     * Sets the HTTP version to use for outgoing messages.
+     * 
+     * @param version HTTP version to use for outgoing messages
+     */
+    public void setVersion(HTTP_VERSION version);
+
+    /**
+     * Sets the given header with the given value.
+     * 
+     * @param name header name
+     * @param value header value
+     */
+    public void setHeader(String name, String value);
+
+    /**
+     * Sets the given parameter with the given value.
+     * 
+     * @param name parameter name
+     * @param value parameter value
+     */
+    public void setParameter(String name, String value);
+
+    /**
+     * Sets the status code for this transport.
+     * 
+     * @param code status code for this transport
+     */
+    public void setStatusCode(int code);
 }

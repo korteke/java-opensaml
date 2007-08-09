@@ -16,10 +16,6 @@
 
 package org.opensaml.ws.transport.http;
 
-import java.util.List;
-
-import javax.servlet.http.Cookie;
-
 import org.opensaml.ws.transport.Transport;
 
 /**
@@ -37,20 +33,6 @@ public interface HTTPTransport extends Transport {
     };
 
     /**
-     * Gets the cookies received with the message.
-     * 
-     * @return cookies received with the message
-     */
-    public List<Cookie> getCookies();
-
-    /**
-     * Gets the list of HTTP header names.
-     * 
-     * @return HTTP header names
-     */
-    public List<String> getHeaderNames();
-
-    /**
      * Gets the first value of the header with the given name.
      * 
      * @param name header name
@@ -58,15 +40,6 @@ public interface HTTPTransport extends Transport {
      * @return first value of the header with the given name, or null
      */
     public String getHeaderValue(String name);
-
-    /**
-     * Gets all the values of the header with the given name.
-     * 
-     * @param name header name
-     * 
-     * @return header values or null
-     */
-    public List<String> getHeaderValues(String name);
 
     /**
      * Gets the HTTP method (POST, GET, etc) used.

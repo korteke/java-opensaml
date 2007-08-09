@@ -24,6 +24,21 @@ import java.io.OutputStream;
 public interface OutTransport extends Transport {
 
     /**
+     * Sets a transport specific attribute.
+     * 
+     * @param name attribute name
+     * @param value attribute value
+     */
+    public void setAttribute(String name, Object value);
+
+    /**
+     * Sets the character encoding of the transport.
+     * 
+     * @param encoding character encoding of the transport
+     */
+    public void setCharacterEncoding(String encoding);
+
+    /**
      * Gets the outgoing data stream to the peer.
      * 
      * @return outgoing data stream to the peer
