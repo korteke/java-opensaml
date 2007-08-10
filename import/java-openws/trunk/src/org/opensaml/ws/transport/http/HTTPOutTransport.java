@@ -52,4 +52,11 @@ public interface HTTPOutTransport extends OutTransport, HTTPTransport {
      * @param code status code for this transport
      */
     public void setStatusCode(int code);
+    
+    /**
+     * Sends an HTTP 3XX redirect message back to the client.
+     * 
+     * @param location location to redirect the client to
+     */
+    public void sendRedirect(String location);
 }

@@ -49,6 +49,17 @@ public class HttpServletResponseAdapter implements HTTPOutTransport {
 
     /** {@inheritDoc} */
     public void setHeader(String name, String value) {
+        if(name == null){
+            return;
+        }
+        
+        // HttpServletRequest requires certain headers be set by special methods
+        if(name.equalsIgnoreCase("Content-Type")){
+            httpServletResponse.setContentType(value);
+        }else if(name.equalsIgnoreCase("Content-Length")){
+            httpServletResponse.setContentLength(Integer.parseInt(value));
+        }
+        
         httpServletResponse.setHeader(name, value);
     }
 
@@ -195,5 +206,14 @@ public class HttpServletResponseAdapter implements HTTPOutTransport {
      */
     public HTTP_VERSION getVersion() {
         return null;
+    }
+
+    /** {@inheritDoc} */
+    public void sendRedirect(String location) {
+        try{
+            httpServletResponse.sendRedirect(location);
+        }catch(IOException e){
+            log.error("Unable to send redirect message", e);
+        }
     }
 }
