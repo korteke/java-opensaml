@@ -116,7 +116,7 @@ public class HttpServletRequestAdapter implements HTTPInTransport {
 
     /** {@inheritDoc} */
     public String getParameter(String name) {
-        return getParameter(name);
+        return httpServletRequest.getParameter(name);
     }
 
     /**

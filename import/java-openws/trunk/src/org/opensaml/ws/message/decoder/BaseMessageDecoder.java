@@ -86,10 +86,12 @@ public abstract class BaseMessageDecoder implements MessageDecoder {
         }
         doDecode(messageContext);
 
-        if (log.isDebugEnabled()) {
-            log.debug("Evaluating securit policy for decoded message");
+        if (securityPolicy != null) {
+            if (log.isDebugEnabled()) {
+                log.debug("Evaluating securit policy for decoded message");
+            }
+            securityPolicy.evaluate(messageContext);
         }
-        securityPolicy.evaluate(messageContext);
 
         if (log.isDebugEnabled()) {
             log.debug("Successfully decoded message.");
@@ -181,7 +183,7 @@ public abstract class BaseMessageDecoder implements MessageDecoder {
             throw new MessageDecodingException("Encountered error parsing message into its DOM representation", e);
         } catch (UnmarshallingException e) {
             log.error("Encountered error unmarshalling message from its DOM representation", e);
-            throw new MessageDecodingException("Encountered error unmarshalling message from its DOM representation",
+            throw new MessageDecodingException("Encountered error unmarshalling message from its DOM representation", 
                     e);
         }
     }
