@@ -89,9 +89,19 @@ public class HttpServletRequestAdapter implements HTTPInTransport {
     }
 
     /** {@inheritDoc} */
+    public String getPeerAddress() {
+        return httpServletRequest.getRemoteAddr();
+    }
+
+    /** {@inheritDoc} */
     public Credential getPeerCredential() {
         // TODO Auto-generated method stub
         return null;
+    }
+
+    /** {@inheritDoc} */
+    public String getPeerDomainName() {
+        return httpServletRequest.getRemoteHost();
     }
 
     /**
@@ -131,19 +141,18 @@ public class HttpServletRequestAdapter implements HTTPInTransport {
     public boolean isConfidential() {
         return httpServletRequest.isSecure();
     }
-
+    
     /** {@inheritDoc} */
     public void setAuthenticated(boolean isAuthenticated) {
         peerAuthenticated = isAuthenticated;
     }
-
+    
     /**
      * {@inheritDoc}
      * 
      * This method is not supported for this transport implementation.
      */
     public void setConfidentail(boolean isConfidential) {
-        // TODO Auto-generated method stub
-
+        
     }
 }

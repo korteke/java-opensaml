@@ -25,4 +25,17 @@ import org.opensaml.ws.transport.InTransport;
  */
 public interface HTTPInTransport extends InTransport, HTTPTransport {
 
+    /**
+     * Gets the IP address of the peer.
+     * 
+     * @return IP address of the peer
+     */
+    public String getPeerAddress();
+    
+    /**
+     * Gets the domain name of the peer.
+     * 
+     * @return domain name of the peer
+     */
+    public String getPeerDomainName();
 }
