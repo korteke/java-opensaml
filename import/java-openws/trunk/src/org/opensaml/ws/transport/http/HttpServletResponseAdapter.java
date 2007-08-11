@@ -29,11 +29,11 @@ import org.opensaml.xml.security.credential.Credential;
  */
 public class HttpServletResponseAdapter implements HTTPOutTransport {
 
-    /** Class logger. */
-    private final Logger log = Logger.getLogger(HttpServletResponseAdapter.class);
-
     /** Adapted servlet response. */
     private HttpServletResponse httpServletResponse;
+
+    /** Class logger. */
+    private final Logger log = Logger.getLogger(HttpServletResponseAdapter.class);
 
     /** Whether the peer endpoint has been authenticated. */
     private boolean peerAuthenticated;
@@ -45,6 +45,148 @@ public class HttpServletResponseAdapter implements HTTPOutTransport {
      */
     public HttpServletResponseAdapter(HttpServletResponse response) {
         httpServletResponse = response;
+    }
+    
+    /**
+     * {@inheritDoc}
+     * 
+     * This method is not supported for this transport implementation and always returns null.
+     */
+    public Object getAttribute(String name) {
+        return null;
+    }
+
+    /** {@inheritDoc} */
+    public String getCharacterEncoding() {
+        return httpServletResponse.getCharacterEncoding();
+    }
+
+    /**
+     * {@inheritDoc}
+     * 
+     * This method is not supported for this transport implementation.
+     * 
+     */
+    public String getHeaderValue(String name) {
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     * 
+     * This method is not supported for this transport implementation.
+     */
+    public String getHTTPMethod() {
+        return null;
+    }
+
+    /** {@inheritDoc} */
+    public Credential getLocalCredential() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /** {@inheritDoc} */
+    public OutputStream getOutgoingStream() {
+        try {
+            return httpServletResponse.getOutputStream();
+        } catch (IOException e) {
+            log.error("Unable to recover input stream from adapted HttpServletResponse", e);
+            return null;
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     * 
+     * This method is not supported for this transport implementation.
+     */
+    public String getParameter(String name) {
+        return null;
+    }
+
+    /** {@inheritDoc} */
+    public Credential getPeerCredential() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     * 
+     * This method is not supported for this transport implementation.
+     */
+    public int getStatusCode() {
+        return -1;
+    }
+
+    /**
+     * {@inheritDoc}
+     * 
+     * This method is not supported for this transport implementation.
+     */
+    public HTTP_VERSION getVersion() {
+        return null;
+    }
+
+    /**
+     * Gets the adapated response.
+     * 
+     * @return adapated response
+     */
+    public HttpServletResponse getWrappedResponse(){
+        return httpServletResponse;
+    }
+
+    /** {@inheritDoc} */
+    public boolean isAuthenticated() {
+        return peerAuthenticated;
+    }
+
+    /**
+     * {@inheritDoc}
+     * 
+     * This method is not supported for this transport implementation and always returns false.
+     */
+    public boolean isConfidential() {
+        return false;
+    }
+
+    /** {@inheritDoc} */
+    public void sendRedirect(String location) {
+        try{
+            httpServletResponse.sendRedirect(location);
+        }catch(IOException e){
+            log.error("Unable to send redirect message", e);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     * 
+     * This method is not supported for this transport implementation.
+     */
+    public void setAttribute(String name, Object value) {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setAuthenticated(boolean isAuthenticated) {
+        peerAuthenticated = isAuthenticated;
+    }
+
+    /** {@inheritDoc} */
+    public void setCharacterEncoding(String encoding) {
+        httpServletResponse.setCharacterEncoding(encoding);
+    }
+
+    /**
+     * {@inheritDoc}
+     * 
+     * This method is not supported for this transport implementation.
+     */
+    public void setConfidentail(boolean isConfidential) {
     }
 
     /** {@inheritDoc} */
@@ -82,138 +224,5 @@ public class HttpServletResponseAdapter implements HTTPOutTransport {
      * This method is not supported for this transport implementation.
      */
     public void setVersion(HTTP_VERSION version) {
-    }
-
-    /** {@inheritDoc} */
-    public OutputStream getOutgoingStream() {
-        try {
-            return httpServletResponse.getOutputStream();
-        } catch (IOException e) {
-            log.error("Unable to recover input stream from adapted HttpServletResponse", e);
-            return null;
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     * 
-     * This method is not supported for this transport implementation.
-     */
-    public void setAttribute(String name, Object value) {
-    }
-
-    /** {@inheritDoc} */
-    public void setCharacterEncoding(String encoding) {
-        httpServletResponse.setCharacterEncoding(encoding);
-    }
-
-    /**
-     * {@inheritDoc}
-     * 
-     * This method is not supported for this transport implementation and always returns null.
-     */
-    public Object getAttribute(String name) {
-        return null;
-    }
-
-    /** {@inheritDoc} */
-    public String getCharacterEncoding() {
-        return httpServletResponse.getCharacterEncoding();
-    }
-
-    /** {@inheritDoc} */
-    public Credential getLocalCredential() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    /** {@inheritDoc} */
-    public Credential getPeerCredential() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    /** {@inheritDoc} */
-    public boolean isAuthenticated() {
-        return peerAuthenticated;
-    }
-
-    /**
-     * {@inheritDoc}
-     * 
-     * This method is not supported for this transport implementation and always returns false.
-     */
-    public boolean isConfidential() {
-        return false;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void setAuthenticated(boolean isAuthenticated) {
-        peerAuthenticated = isAuthenticated;
-    }
-
-    /**
-     * {@inheritDoc}
-     * 
-     * This method is not supported for this transport implementation.
-     */
-    public void setConfidentail(boolean isConfidential) {
-    }
-
-    /**
-     * {@inheritDoc}
-     * 
-     * This method is not supported for this transport implementation.
-     */
-    public String getHTTPMethod() {
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     * 
-     * This method is not supported for this transport implementation.
-     * 
-     */
-    public String getHeaderValue(String name) {
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     * 
-     * This method is not supported for this transport implementation.
-     */
-    public String getParameter(String name) {
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     * 
-     * This method is not supported for this transport implementation.
-     */
-    public int getStatusCode() {
-        return -1;
-    }
-
-    /**
-     * {@inheritDoc}
-     * 
-     * This method is not supported for this transport implementation.
-     */
-    public HTTP_VERSION getVersion() {
-        return null;
-    }
-
-    /** {@inheritDoc} */
-    public void sendRedirect(String location) {
-        try{
-            httpServletResponse.sendRedirect(location);
-        }catch(IOException e){
-            log.error("Unable to send redirect message", e);
-        }
     }
 }

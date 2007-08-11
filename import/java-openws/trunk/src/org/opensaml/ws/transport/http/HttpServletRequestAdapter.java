@@ -29,11 +29,11 @@ import org.opensaml.xml.security.credential.Credential;
  */
 public class HttpServletRequestAdapter implements HTTPInTransport {
 
-    /** Class logger. */
-    private final Logger log = Logger.getLogger(HttpServletRequestAdapter.class);
-
     /** Adapted servlet request. */
     private HttpServletRequest httpServletRequest;
+
+    /** Class logger. */
+    private final Logger log = Logger.getLogger(HttpServletRequestAdapter.class);
 
     /** Whether the peer endpoint has been authenticated. */
     private boolean peerAuthenticated;
@@ -45,6 +45,26 @@ public class HttpServletRequestAdapter implements HTTPInTransport {
      */
     public HttpServletRequestAdapter(HttpServletRequest request) {
         httpServletRequest = request;
+    }
+    
+    /** {@inheritDoc} */
+    public Object getAttribute(String name) {
+        return httpServletRequest.getAttribute(name);
+    }
+
+    /** {@inheritDoc} */
+    public String getCharacterEncoding() {
+        return httpServletRequest.getCharacterEncoding();
+    }
+
+    /** {@inheritDoc} */
+    public String getHeaderValue(String name) {
+        return httpServletRequest.getHeader(name);
+    }
+
+    /** {@inheritDoc} */
+    public String getHTTPMethod() {
+        return httpServletRequest.getMethod();
     }
 
     /** {@inheritDoc} */
@@ -58,65 +78,20 @@ public class HttpServletRequestAdapter implements HTTPInTransport {
     }
 
     /** {@inheritDoc} */
-    public Object getAttribute(String name) {
-        return httpServletRequest.getAttribute(name);
-    }
-
-    /** {@inheritDoc} */
-    public String getCharacterEncoding() {
-        return httpServletRequest.getCharacterEncoding();
-    }
-
-    /** {@inheritDoc} */
     public Credential getLocalCredential() {
         // TODO Auto-generated method stub
         return null;
     }
 
     /** {@inheritDoc} */
+    public String getParameter(String name) {
+        return httpServletRequest.getParameter(name);
+    }
+
+    /** {@inheritDoc} */
     public Credential getPeerCredential() {
         // TODO Auto-generated method stub
         return null;
-    }
-
-    /** {@inheritDoc} */
-    public boolean isAuthenticated() {
-        return peerAuthenticated;
-    }
-
-    /** {@inheritDoc} */
-    public void setAuthenticated(boolean isAuthenticated) {
-        peerAuthenticated = isAuthenticated;
-    }
-
-    /** {@inheritDoc} */
-    public boolean isConfidential() {
-        return httpServletRequest.isSecure();
-    }
-
-    /**
-     * {@inheritDoc}
-     * 
-     * This method is not supported for this transport implementation.
-     */
-    public void setConfidentail(boolean isConfidential) {
-        // TODO Auto-generated method stub
-
-    }
-
-    /** {@inheritDoc} */
-    public String getHTTPMethod() {
-        return httpServletRequest.getMethod();
-    }
-
-    /** {@inheritDoc} */
-    public String getHeaderValue(String name) {
-        return httpServletRequest.getHeader(name);
-    }
-
-    /** {@inheritDoc} */
-    public String getParameter(String name) {
-        return httpServletRequest.getParameter(name);
     }
 
     /**
@@ -136,5 +111,39 @@ public class HttpServletRequestAdapter implements HTTPInTransport {
     public HTTP_VERSION getVersion() {
         // unsupported options
         return null;
+    }
+
+    /**
+     * Gets the adapated request.
+     * 
+     * @return adapated request
+     */
+    public HttpServletRequest getWrappedRequest(){
+        return httpServletRequest;
+    }
+
+    /** {@inheritDoc} */
+    public boolean isAuthenticated() {
+        return peerAuthenticated;
+    }
+
+    /** {@inheritDoc} */
+    public boolean isConfidential() {
+        return httpServletRequest.isSecure();
+    }
+
+    /** {@inheritDoc} */
+    public void setAuthenticated(boolean isAuthenticated) {
+        peerAuthenticated = isAuthenticated;
+    }
+
+    /**
+     * {@inheritDoc}
+     * 
+     * This method is not supported for this transport implementation.
+     */
+    public void setConfidentail(boolean isConfidential) {
+        // TODO Auto-generated method stub
+
     }
 }
