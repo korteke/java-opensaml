@@ -20,10 +20,11 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.opensaml.ws.message.decoder.MessageDecodingException;
+import org.opensaml.ws.security.SecurityPolicyException;
 import org.opensaml.ws.soap.common.SOAPMessageContext;
 import org.opensaml.ws.transport.Transport;
 import org.opensaml.ws.transport.TransportException;
-import org.opensaml.xml.security.credential.CredentialResolver;
 
 /**
  * A client for sending and receiving SOAP messages.
@@ -34,32 +35,25 @@ import org.opensaml.xml.security.credential.CredentialResolver;
  * added to the message context.
  */
 public class SOAPClient {
-    
+
     /** Registered transport factories. */
     private HashMap<String, ClientTransportFactory> transportFactories;
-    
-    /** Resolver used to look up local credentials used to connect to the peer. */
-    private CredentialResolver credentialResolver;
 
     /**
      * Constructor.
-     * 
-     * @param credentials resolver used to look up local credentials used to connect to the peer
      */
-    public SOAPClient(CredentialResolver credentials){
-        transportFactories = new HashMap<String, ClientTransportFactory>();
-        credentialResolver = credentials;
+    public SOAPClient() {
     }
-    
+
     /**
      * Gets the transports registered with this client.
      * 
      * @return mutable list of transports registered with this client
      */
-    public Map<String, ClientTransportFactory> getRegisteredTransports(){
+    public Map<String, ClientTransportFactory> getRegisteredTransports() {
         return transportFactories;
     }
-    
+
     /**
      * Sends a SOAP message to the given endpoint.
      * 
@@ -67,23 +61,19 @@ public class SOAPClient {
      * @param messageContext context of the message to send
      * 
      * @throws TransportException thrown if there is a problem creating or using the {@link Transport}
+     * @throws MessageDecodingException thrown if there is a problem decoding the response
+     * @throws SecurityPolicyException thrown if there is a problem evaluating the decoder's security policy
      */
-    public void send(URI endpointURI, SOAPMessageContext messageContext) throws TransportException{
+    public void send(URI endpointURI, SOAPMessageContext messageContext) throws TransportException,
+            MessageDecodingException, SecurityPolicyException {
         String transportScheme = endpointURI.getScheme();
         ClientTransportFactory transFactory = transportFactories.get(transportScheme);
-        
-        if(transFactory == null){
+
+        if (transFactory == null) {
             throw new TransportException("No transport registered for URI scheme: " + transportScheme);
         }
-        
+
         ClientTransport transport = transFactory.createTransport();
-        
-        // lookup and add credential
-        // connect
-        // marshall and bind message
-        // unmarshall response
-        // evaluate security policy
-        // update message context
-        // return
+        transport.send(endpointURI, messageContext);
     }
 }

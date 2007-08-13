@@ -18,44 +18,21 @@ package org.opensaml.ws.soap.client;
 
 import java.net.URI;
 
-import org.opensaml.ws.transport.InTransport;
-import org.opensaml.ws.transport.OutTransport;
+import org.opensaml.ws.soap.common.SOAPMessageContext;
 import org.opensaml.ws.transport.TransportException;
 
 /**
  * Transport used by the {@link SOAPClient} to connect to a peer and send data.
  */
 public interface ClientTransport {
-    
-    /**
-     * Opens a connection to the peer. Any connection parameter changed after the connection is established will be
-     * ignored.
-     * 
-     * @param endpoint peer endpoint to connect to
-     * 
-     * @throws TransportException thrown if there is a problem connecting to the peer
-     */
-    public void connect(URI endpoint) throws TransportException;
 
     /**
-     * Disconnects from the peer, closing the connection but not destroying any currently held resources (such as
-     * buffered data).
+     * Sends the given SOAP message to the provided peer endpoint.
      * 
-     * @throws TransportException thrown if there is a problem connecting to the peer
-     */
-    public void disconnect() throws TransportException;
-
-    /**
-     * Gets the transport used to send outbound data.
+     * @param endpointURI peer endpoint
+     * @param messageContext message context
      * 
-     * @return transport used to send outbound data
+     * @throws TransportException thrown if there is a problem sending the message
      */
-    public OutTransport getOutboudTransport();
-
-    /**
-     * Gets the transport used to receive incomming data.
-     * 
-     * @return transport used to receive incomming data
-     */
-    public InTransport getInTransport();
+    public void send(URI endpointURI, SOAPMessageContext messageContext) throws TransportException;
 }
