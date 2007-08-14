@@ -23,6 +23,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.opensaml.xml.security.credential.Credential;
+import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xml.security.keyinfo.NamedKeyInfoGeneratorManager;
 import org.opensaml.xml.util.DatatypeHelper;
 
@@ -30,6 +31,9 @@ import org.opensaml.xml.util.DatatypeHelper;
  * Basic in-memory implementation of {@link SecurityConfiguration}.
  */
 public class BasicSecurityConfiguration implements SecurityConfiguration {
+    
+    /** The name of the KeyInfoCredentialResolver default config. */
+    public static final String KEYINFO_RESOLVER_DEFAULT_CONFIG = "_KEYINFO_RESOLVER_DEFAULT_";
     
     /** Class logger. */
     private static Logger log = Logger.getLogger(BasicSecurityConfiguration.class);
@@ -58,6 +62,9 @@ public class BasicSecurityConfiguration implements SecurityConfiguration {
     /** Manager for named KeyInfoGenerator instances. */
     private NamedKeyInfoGeneratorManager keyInfoGeneratorManager;
     
+    /** Set of named KeyInfoCredentialResolvers. */
+    private Map<String, KeyInfoCredentialResolver> keyInfoCredentialResolvers;
+    
     /** Default DSA key family parameters. */
     private DSAParams dsaParams;
     
@@ -66,6 +73,7 @@ public class BasicSecurityConfiguration implements SecurityConfiguration {
         signatureAlgorithms = new HashMap<String, String>();
         dataEncryptionAlgorithms = new HashMap<DataEncryptionIndex, String>();
         keyTransportEncryptionAlgorithms = new HashMap<KeyTransportEncryptionIndex, String>();
+        keyInfoCredentialResolvers = new HashMap<String, KeyInfoCredentialResolver>();
     }
     
     // Signature-related config
@@ -320,8 +328,43 @@ public class BasicSecurityConfiguration implements SecurityConfiguration {
         keyInfoGeneratorManager = keyInfoManager;
     }
     
-    //TODO KeyInfoCredentialResolver config 
- 
+    /** {@inheritDoc} */
+    public KeyInfoCredentialResolver getDefaultKeyInfoCredentialResolver() {
+        return keyInfoCredentialResolvers.get(KEYINFO_RESOLVER_DEFAULT_CONFIG);
+    }
+    
+    /**
+     * Set the default KeyInfoCredentialResolver config.
+     * 
+     * @param resolver the default KeyInfoCredentialResolver
+     */
+    public void setDefaultKeyInfoCredentialResolver(KeyInfoCredentialResolver resolver) {
+        keyInfoCredentialResolvers.put(KEYINFO_RESOLVER_DEFAULT_CONFIG, resolver);
+    }
+
+    /** {@inheritDoc} */
+    public KeyInfoCredentialResolver getKeyInfoCredentialResolver(String name) {
+        return keyInfoCredentialResolvers.get(name);
+    }
+    
+    /**
+     * Register a named KeyInfoCredentialResolver configuration.
+     * 
+     * @param name the name of the configuration
+     * @param resolver the KeyInfoCredentialResolver to register
+     */
+    public void registerKeyInfoCredentialResolver(String name, KeyInfoCredentialResolver resolver) {
+        keyInfoCredentialResolvers.put(name, resolver);
+    }
+    
+    /**
+     * Deregister a named KeyInfoCredentialResolver configuration.
+     * 
+     * @param name the name of the configuration
+     */
+    public void deregisterKeyInfoCredentialResolver(String name) {
+        keyInfoCredentialResolvers.remove(name);
+    }
  
     // Miscellaneous config
 
