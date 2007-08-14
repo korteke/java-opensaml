@@ -23,23 +23,34 @@ import org.opensaml.xml.XMLObject;
 /**
  * Base class for message context implementations.
  */
-public abstract class BaseMessageContext implements MessageContext {
+public class BaseMessageContext implements MessageContext {
 
     /** The inbound message. */
     private XMLObject inboundMessage;
 
+    /** Issuer of the inbound message. */
+    private String inboundMessageIssuer;
+
     /** Inbound message transport. */
     private InTransport inboundTransport;
-
-    /** Outbound message transport. */
-    private OutTransport outboundTransport;
 
     /** Outbound message. */
     private XMLObject outboundMessage;
 
+    /** Issuer of the outbound message. */
+    private String outboundMessageIssuer;
+
+    /** Outbound message transport. */
+    private OutTransport outboundTransport;
+
     /** {@inheritDoc} */
     public XMLObject getInboundMessage() {
         return inboundMessage;
+    }
+
+    /** {@inheritDoc} */
+    public String getInboundMessageIssuer() {
+        return inboundMessageIssuer;
     }
 
     /** {@inheritDoc} */
@@ -58,8 +69,18 @@ public abstract class BaseMessageContext implements MessageContext {
     }
 
     /** {@inheritDoc} */
+    public String getOutboundMessageIssuer() {
+        return outboundMessageIssuer;
+    }
+
+    /** {@inheritDoc} */
     public void setInboundMessage(XMLObject message) {
         inboundMessage = message;
+    }
+
+    /** {@inheritDoc} */
+    public void setInboundMessageIssuer(String issuer) {
+        inboundMessageIssuer = issuer;
     }
 
     /** {@inheritDoc} */
@@ -75,5 +96,10 @@ public abstract class BaseMessageContext implements MessageContext {
     /** {@inheritDoc} */
     public void setOutboundMessage(XMLObject message) {
         outboundMessage = message;
+    }
+
+    /** {@inheritDoc} */
+    public void setOutboundMessageIssuer(String issuer) {
+        outboundMessageIssuer = issuer;
     }
 }

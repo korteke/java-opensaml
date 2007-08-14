@@ -36,6 +36,13 @@ public interface MessageContext {
     public XMLObject getInboundMessage();
 
     /**
+     * Gets the issuer of the inbound message.
+     * 
+     * @return issuer of the inbound message
+     */
+    public String getInboundMessageIssuer();
+
+    /**
      * Gets the transport used to receive the message.
      * 
      * @return transport used to receive the message
@@ -57,11 +64,25 @@ public interface MessageContext {
     public XMLObject getOutboundMessage();
 
     /**
+     * Gets the issuer of the outbound message.
+     * 
+     * @return issuer of the outbound message
+     */
+    public String getOutboundMessageIssuer();
+
+    /**
      * Sets the inbound message.
      * 
      * @param message the inbound message
      */
     public void setInboundMessage(XMLObject message);
+
+    /**
+     * Sets the issuer of the inbound message.
+     * 
+     * @param issuer issuer of the inbound message
+     */
+    public void setInboundMessageIssuer(String issuer);
 
     /**
      * Sets the transport used to used to receive the message.
@@ -83,4 +104,12 @@ public interface MessageContext {
      * @param message the outbound message
      */
     public void setOutboundMessage(XMLObject message);
+
+    /**
+     * Sets the issuer of the outbound message.
+     * 
+     * @param issuer issuer of the outbound message
+     */
+    public void setOutboundMessageIssuer(String issuer);
+
 }
