@@ -202,7 +202,7 @@ public final class SecurityHelper {
         // TODO investigate techniques (and use cases) to determine length in other cases,
         // e.g. RSA and DSA keys, and non-RAW format symmetric keys
         if (key instanceof SecretKey && "RAW".equals(key.getFormat())) {
-            return key.getEncoded().length;
+            return key.getEncoded().length * 8;
         }
         log.debug("Unable to determine length in bits of specified Key instance");
         return null;
