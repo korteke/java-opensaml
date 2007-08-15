@@ -16,23 +16,29 @@
 
 package org.opensaml.xml.security.credential.criteria;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.PublicKey;
+
 import junit.framework.TestCase;
 
 import org.opensaml.xml.security.SecurityException;
+import org.opensaml.xml.security.SecurityTestHelper;
 import org.opensaml.xml.security.credential.BasicCredential;
-import org.opensaml.xml.security.criteria.EntityIDCriteria;
+import org.opensaml.xml.security.criteria.PublicKeyCriteria;
 
 /**
  *
  */
-public class EvaluableEntityIDCredentialCriteriaTest extends TestCase {
+public class EvaluablePublicKeyCredentialCriteriaTest extends TestCase {
     
     private BasicCredential credential;
-    private String entityID;
-    private EntityIDCriteria criteria;
+    private String keyAlgo;
+    PublicKey pubKey;
+    private PublicKeyCriteria criteria;
     
-    public EvaluableEntityIDCredentialCriteriaTest() {
-        entityID = "someEntityID";
+    public EvaluablePublicKeyCredentialCriteriaTest() {
+        keyAlgo = "RSA";
     }
 
     /** {@inheritDoc} */
@@ -40,26 +46,33 @@ public class EvaluableEntityIDCredentialCriteriaTest extends TestCase {
         super.setUp();
         
         credential = new BasicCredential();
-        credential.setEntityId(entityID);
+        pubKey = SecurityTestHelper.generateKeyPair(keyAlgo, 1024, null).getPublic();
+        credential.setPublicKey(pubKey);
         
-        criteria = new EntityIDCriteria(entityID);
+        criteria = new PublicKeyCriteria(pubKey);
     }
     
     public void testSatifsy() {
-        EvaluableEntityIDCredentialCriteria evalCrit = new EvaluableEntityIDCredentialCriteria(criteria);
+        EvaluablePublicKeyCredentialCriteria evalCrit = new EvaluablePublicKeyCredentialCriteria(criteria);
         assertTrue("Credential should have matched the evaluable criteria", evalCrit.evaluate(credential));
     }
 
-    public void testNotSatisfy() {
-        criteria.setEntityID("OTHER");
-        EvaluableEntityIDCredentialCriteria evalCrit = new EvaluableEntityIDCredentialCriteria(criteria);
+    public void testNotSatisfyDifferentKey() throws NoSuchAlgorithmException, NoSuchProviderException {
+        criteria.setPublicKey(SecurityTestHelper.generateKeyPair(keyAlgo, 1024, null).getPublic());
+        EvaluablePublicKeyCredentialCriteria evalCrit = new EvaluablePublicKeyCredentialCriteria(criteria);
+        assertFalse("Credential should NOT have matched the evaluable criteria", evalCrit.evaluate(credential));
+    }
+    
+    public void testNotSatisfyNoPublicKey() {
+        credential.setPublicKey(null);
+        EvaluablePublicKeyCredentialCriteria evalCrit = new EvaluablePublicKeyCredentialCriteria(criteria);
         assertFalse("Credential should NOT have matched the evaluable criteria", evalCrit.evaluate(credential));
     }
     
     public void testCanNotEvaluate() {
-        credential.setEntityId(null);
-        EvaluableEntityIDCredentialCriteria evalCrit = new EvaluableEntityIDCredentialCriteria(criteria);
-        assertNull("Credential should have been unevaluable against the criteria", evalCrit.evaluate(credential));
+        //Only unevaluable case is null credential
+        EvaluablePublicKeyCredentialCriteria evalCrit = new EvaluablePublicKeyCredentialCriteria(criteria);
+        assertNull("Credential should have been unevaluable against the criteria", evalCrit.evaluate(null));
     }
     
     public void testRegistry() throws SecurityException {

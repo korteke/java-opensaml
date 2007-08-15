@@ -20,19 +20,21 @@ import junit.framework.TestCase;
 
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.credential.BasicCredential;
+import org.opensaml.xml.security.credential.UsageType;
 import org.opensaml.xml.security.criteria.EntityIDCriteria;
+import org.opensaml.xml.security.criteria.UsageCriteria;
 
 /**
  *
  */
-public class EvaluableEntityIDCredentialCriteriaTest extends TestCase {
+public class EvaluableUsageCredentialCriteriaTest extends TestCase {
     
     private BasicCredential credential;
-    private String entityID;
-    private EntityIDCriteria criteria;
+    private UsageType usage;
+    private UsageCriteria criteria;
     
-    public EvaluableEntityIDCredentialCriteriaTest() {
-        entityID = "someEntityID";
+    public EvaluableUsageCredentialCriteriaTest() {
+        usage = UsageType.SIGNING;
     }
 
     /** {@inheritDoc} */
@@ -40,27 +42,41 @@ public class EvaluableEntityIDCredentialCriteriaTest extends TestCase {
         super.setUp();
         
         credential = new BasicCredential();
-        credential.setEntityId(entityID);
+        credential.setUsageType(usage);
         
-        criteria = new EntityIDCriteria(entityID);
+        criteria = new UsageCriteria(usage);
     }
     
-    public void testSatifsy() {
-        EvaluableEntityIDCredentialCriteria evalCrit = new EvaluableEntityIDCredentialCriteria(criteria);
+    public void testSatifsyExactMatch() {
+        EvaluableUsageCredentialCriteria evalCrit = new EvaluableUsageCredentialCriteria(criteria);
+        assertTrue("Credential should have matched the evaluable criteria", evalCrit.evaluate(credential));
+    }
+    
+    public void testSatisfyWithUnspecifiedCriteria() {
+        criteria.setUsage(UsageType.UNSPECIFIED);
+        EvaluableUsageCredentialCriteria evalCrit = new EvaluableUsageCredentialCriteria(criteria);
+        assertTrue("Credential should have matched the evaluable criteria", evalCrit.evaluate(credential));
+    }
+    
+    public void testSatisfyWithUnspecifiedCredential() {
+        credential.setUsageType(UsageType.UNSPECIFIED);
+        EvaluableUsageCredentialCriteria evalCrit = new EvaluableUsageCredentialCriteria(criteria);
         assertTrue("Credential should have matched the evaluable criteria", evalCrit.evaluate(credential));
     }
 
     public void testNotSatisfy() {
-        criteria.setEntityID("OTHER");
-        EvaluableEntityIDCredentialCriteria evalCrit = new EvaluableEntityIDCredentialCriteria(criteria);
+        criteria.setUsage(UsageType.ENCRYPTION);
+        EvaluableUsageCredentialCriteria evalCrit = new EvaluableUsageCredentialCriteria(criteria);
         assertFalse("Credential should NOT have matched the evaluable criteria", evalCrit.evaluate(credential));
     }
     
+    /* With BasicCredential, can't set UsageType to null, so can't really test.
     public void testCanNotEvaluate() {
-        credential.setEntityId(null);
-        EvaluableEntityIDCredentialCriteria evalCrit = new EvaluableEntityIDCredentialCriteria(criteria);
+        credential.setUsageType(null);
+        EvaluableUsageCredentialCriteria evalCrit = new EvaluableUsageCredentialCriteria(criteria);
         assertNull("Credential should have been unevaluable against the criteria", evalCrit.evaluate(credential));
     }
+    */
     
     public void testRegistry() throws SecurityException {
         EvaluableCredentialCriteria evalCrit = EvaluableCredentialCriteriaRegistry.getEvaluator(criteria);
