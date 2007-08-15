@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package org.opensaml.xml.security.credential;
+package org.opensaml.xml.security.credential.criteria;
 
 import org.opensaml.xml.security.EvaluableCriteria;
+import org.opensaml.xml.security.credential.Credential;
 
 /**
  * Marker interface for evaluable credential resolver criteria.

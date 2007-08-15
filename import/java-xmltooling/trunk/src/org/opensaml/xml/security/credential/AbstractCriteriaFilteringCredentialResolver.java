@@ -25,11 +25,13 @@ import org.opensaml.xml.security.CriteriaFilteringIterator;
 import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.EvaluableCriteria;
 import org.opensaml.xml.security.SecurityException;
+import org.opensaml.xml.security.credential.criteria.EvaluableCredentialCriteria;
+import org.opensaml.xml.security.credential.criteria.EvaluableCredentialCriteriaRegistry;
 
 /**
  * An abstract implementation of {@link CredentialResolver} which filters the returned Credentials
  * based on the instances of {@link EvaluableCredentialCriteria} which are present in the set of
- * criteria.
+ * criteria, or which are obtained via lookup in the {@link EvaluableCredentialCriteriaRegistry}.
  */
 public abstract class AbstractCriteriaFilteringCredentialResolver extends AbstractCredentialResolver {
     
@@ -123,12 +125,20 @@ public abstract class AbstractCriteriaFilteringCredentialResolver extends Abstra
      * 
      * @param criteriaSet the set of credential criteria to process.
      * @return a set of evaluable Credential criteria
+     * @throws SecurityException thrown if there is an error obtaining an instance of EvaluableCredentialCriteria
+     *                           from the EvaluableCredentialCriteriaRegistry
      */
-    private Set<EvaluableCriteria<Credential>> getEvaluableCriteria(CriteriaSet criteriaSet) {
+    private Set<EvaluableCriteria<Credential>> getEvaluableCriteria(CriteriaSet criteriaSet) throws SecurityException {
         Set<EvaluableCriteria<Credential>> evaluable = new HashSet<EvaluableCriteria<Credential>>();
         for (Criteria criteria : criteriaSet) {
             if (criteria instanceof EvaluableCredentialCriteria) {
-                evaluable.add((EvaluableCriteria<Credential>) criteria);
+                evaluable.add((EvaluableCredentialCriteria) criteria);
+            } else {
+                EvaluableCredentialCriteria evaluableCriteria = 
+                    EvaluableCredentialCriteriaRegistry.getEvaluator(criteria);
+                if (evaluableCriteria != null) {
+                    evaluable.add(evaluableCriteria);
+                }
             }
         }
         return evaluable;

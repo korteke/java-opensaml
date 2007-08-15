@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.xml.security.credential;
+package org.opensaml.xml.security.criteria;
 
 import org.opensaml.xml.security.Criteria;
 import org.opensaml.xml.util.DatatypeHelper;

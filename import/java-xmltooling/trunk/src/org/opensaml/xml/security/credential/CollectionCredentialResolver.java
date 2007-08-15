@@ -21,11 +21,14 @@ import java.util.Collection;
 
 import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
+import org.opensaml.xml.security.credential.criteria.EvaluableCredentialCriteria;
+import org.opensaml.xml.security.credential.criteria.EvaluableCredentialCriteriaRegistry;
 
 /**
  * An implementation of {@link CredentialResolver} which uses a {@link Collection} as the
  * underlying credential source.  The credentials returned are filtered based on any
- * {@link EvaluableCredentialCriteria} which may have been present in the specified criteria set.
+ * {@link EvaluableCredentialCriteria} which may have been present in the specified criteria set, or
+ * which are resolved by lookup in the {@link EvaluableCredentialCriteriaRegistry}.
  */
 public class CollectionCredentialResolver extends AbstractCriteriaFilteringCredentialResolver {
     

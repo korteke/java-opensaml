@@ -30,8 +30,8 @@ import org.opensaml.xml.security.SecurityTestHelper;
 import org.opensaml.xml.security.credential.BasicCredential;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.credential.CredentialResolver;
-import org.opensaml.xml.security.credential.EntityIDCriteria;
 import org.opensaml.xml.security.credential.StaticCredentialResolver;
+import org.opensaml.xml.security.criteria.EntityIDCriteria;
 import org.opensaml.xml.security.x509.BasicX509Credential;
 
 /**

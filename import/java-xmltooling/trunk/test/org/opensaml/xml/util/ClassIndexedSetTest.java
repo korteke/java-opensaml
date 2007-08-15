@@ -23,9 +23,9 @@ import java.util.NoSuchElementException;
 import junit.framework.TestCase;
 
 import org.opensaml.xml.security.Criteria;
-import org.opensaml.xml.security.credential.EntityIDCriteria;
-import org.opensaml.xml.security.credential.KeyAlgorithmCriteria;
-import org.opensaml.xml.security.credential.KeyLengthCriteria;
+import org.opensaml.xml.security.criteria.EntityIDCriteria;
+import org.opensaml.xml.security.criteria.KeyAlgorithmCriteria;
+import org.opensaml.xml.security.criteria.KeyLengthCriteria;
 import org.opensaml.xml.security.keyinfo.KeyInfoCriteria;
 
 /**

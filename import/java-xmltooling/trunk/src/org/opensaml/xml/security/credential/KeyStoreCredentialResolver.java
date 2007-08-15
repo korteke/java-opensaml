@@ -30,6 +30,8 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
+import org.opensaml.xml.security.criteria.EntityIDCriteria;
+import org.opensaml.xml.security.criteria.UsageCriteria;
 import org.opensaml.xml.security.x509.BasicX509Credential;
 import org.opensaml.xml.security.x509.X509Credential;
 
