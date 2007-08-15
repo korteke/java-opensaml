@@ -68,7 +68,7 @@ public class EvaluableX509SubjectKeyIdentifierCredentialCriteria implements Eval
             return null;
         }
         if (! (target instanceof X509Credential)) {
-            log.info("Credential is not an X509Credential, does not satisfy issuer name and serial number criteria");
+            log.info("Credential is not an X509Credential, does not satisfy subject key identifier criteria");
             return Boolean.FALSE;
         }
         X509Credential x509Cred = (X509Credential) target;
