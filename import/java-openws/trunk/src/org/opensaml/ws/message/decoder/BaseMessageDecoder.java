@@ -42,9 +42,6 @@ public abstract class BaseMessageDecoder implements MessageDecoder {
     /** Class logger. */
     private Logger log = Logger.getLogger(BaseMessageDecoder.class);
 
-    /** Security policy used to check the decoded message. */
-    private SecurityPolicy securityPolicy;
-
     /** Parser pool used to deserialize the message. */
     private ParserPool parserPool;
 
@@ -56,25 +53,13 @@ public abstract class BaseMessageDecoder implements MessageDecoder {
     /**
      * Constructor.
      * 
-     * @param policy security policy to evaluate a message context against
-     */
-    public BaseMessageDecoder(SecurityPolicy policy) {
-        securityPolicy = policy;
-        parserPool = new BasicParserPool();
-    }
-
-    /**
-     * Constructor.
-     * 
-     * @param policy security policy to evaluate a message context against
      * @param pool parser pool used to deserialize messages
      */
-    public BaseMessageDecoder(SecurityPolicy policy, ParserPool pool) {
+    public BaseMessageDecoder(ParserPool pool) {
         if (pool == null) {
             throw new IllegalArgumentException("Parser pool may not be null");
         }
 
-        securityPolicy = policy;
         parserPool = pool;
     }
 
@@ -86,6 +71,7 @@ public abstract class BaseMessageDecoder implements MessageDecoder {
         }
         doDecode(messageContext);
 
+        SecurityPolicy securityPolicy = messageContext.getSecurityPolicy();
         if (securityPolicy != null) {
             if (log.isDebugEnabled()) {
                 log.debug("Evaluating securit policy for decoded message");
@@ -106,20 +92,6 @@ public abstract class BaseMessageDecoder implements MessageDecoder {
      * @throws MessageDecodingException thrown if there is a problem decoding the message
      */
     protected abstract void doDecode(MessageContext messageContext) throws MessageDecodingException;
-
-    /** {@inheritDoc} */
-    public SecurityPolicy getSecurityPolicy() {
-        return securityPolicy;
-    }
-
-    /**
-     * Sets the security policy that message contexts are evaluated against.
-     * 
-     * @param policy security policy that message contexts are evaluated against
-     */
-    protected void setSecurityPolicy(SecurityPolicy policy) {
-        securityPolicy = policy;
-    }
 
     /**
      * Gets the parser pool used to deserialize incomming messages.
@@ -183,8 +155,7 @@ public abstract class BaseMessageDecoder implements MessageDecoder {
             throw new MessageDecodingException("Encountered error parsing message into its DOM representation", e);
         } catch (UnmarshallingException e) {
             log.error("Encountered error unmarshalling message from its DOM representation", e);
-            throw new MessageDecodingException("Encountered error unmarshalling message from its DOM representation", 
-                    e);
+            throw new MessageDecodingException("Encountered error unmarshalling message from its DOM representation", e);
         }
     }
 }

@@ -17,7 +17,6 @@
 package org.opensaml.ws.message.decoder;
 
 import org.opensaml.ws.message.MessageContext;
-import org.opensaml.ws.security.SecurityPolicy;
 import org.opensaml.ws.security.SecurityPolicyException;
 
 /**
@@ -39,12 +38,5 @@ public interface MessageDecoder {
      * @throws SecurityPolicyException thrown if the decoded message does not meet the required security policy
      */
     public void decode(MessageContext messageContext) throws MessageDecodingException, SecurityPolicyException;
-
-    /**
-     * Gets the security policy to apply to the decoded message.
-     * 
-     * @return security policy to apply to the decoded message
-     */
-    public SecurityPolicy getSecurityPolicy();
 
 }

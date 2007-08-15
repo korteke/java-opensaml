@@ -33,6 +33,11 @@ public abstract class BaseMessageEncoder implements MessageEncoder {
 
     /** Class logger. */
     private Logger log = Logger.getLogger(BaseMessageEncoder.class);
+    
+    /** Constructor. */
+    public BaseMessageEncoder(){
+        
+    }
 
     /** {@inheritDoc} */
     public void encode(MessageContext messageContext) throws MessageEncodingException {

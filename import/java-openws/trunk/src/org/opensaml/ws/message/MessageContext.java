@@ -16,6 +16,7 @@
 
 package org.opensaml.ws.message;
 
+import org.opensaml.ws.security.SecurityPolicy;
 import org.opensaml.ws.transport.InTransport;
 import org.opensaml.ws.transport.OutTransport;
 import org.opensaml.xml.XMLObject;
@@ -71,6 +72,13 @@ public interface MessageContext {
     public String getOutboundMessageIssuer();
 
     /**
+     * Gets the security policy applied, or to be applied, to this message context.
+     * 
+     * @return security policy applied, or to be applied, to this message context
+     */
+    public SecurityPolicy getSecurityPolicy();
+
+    /**
      * Sets the inbound message.
      * 
      * @param message the inbound message
@@ -112,4 +120,10 @@ public interface MessageContext {
      */
     public void setOutboundMessageIssuer(String issuer);
 
+    /**
+     * Sets the security policy applied, or to be applied, to this message context.
+     * 
+     * @param policy security policy applied, or to be applied, to this message context
+     */
+    public void setSecurityPolicy(SecurityPolicy policy);
 }

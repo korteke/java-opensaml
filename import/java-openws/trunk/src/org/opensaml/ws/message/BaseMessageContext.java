@@ -16,6 +16,7 @@
 
 package org.opensaml.ws.message;
 
+import org.opensaml.ws.security.SecurityPolicy;
 import org.opensaml.ws.transport.InTransport;
 import org.opensaml.ws.transport.OutTransport;
 import org.opensaml.xml.XMLObject;
@@ -42,6 +43,9 @@ public class BaseMessageContext implements MessageContext {
 
     /** Outbound message transport. */
     private OutTransport outboundTransport;
+
+    /** Security policy for this message context. */
+    private SecurityPolicy securityPolicy;
 
     /** {@inheritDoc} */
     public XMLObject getInboundMessage() {
@@ -74,6 +78,11 @@ public class BaseMessageContext implements MessageContext {
     }
 
     /** {@inheritDoc} */
+    public SecurityPolicy getSecurityPolicy() {
+        return securityPolicy;
+    }
+
+    /** {@inheritDoc} */
     public void setInboundMessage(XMLObject message) {
         inboundMessage = message;
     }
@@ -101,5 +110,10 @@ public class BaseMessageContext implements MessageContext {
     /** {@inheritDoc} */
     public void setOutboundMessageIssuer(String issuer) {
         outboundMessageIssuer = issuer;
+    }
+
+    /** {@inheritDoc} */
+    public void setSecurityPolicy(SecurityPolicy policy) {
+        securityPolicy = policy;
     }
 }
