@@ -54,7 +54,7 @@ public final class KeyNameCriteria implements Criteria {
         if (DatatypeHelper.isEmpty(name)) {
             throw new IllegalArgumentException("Key name criteria value must be supplied");
         }
-        keyName = DatatypeHelper.safeTrimOrNullString(keyName);
+        keyName = DatatypeHelper.safeTrimOrNullString(name);
     }
 
 }
