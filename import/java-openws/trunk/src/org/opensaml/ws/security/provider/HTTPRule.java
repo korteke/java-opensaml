@@ -67,7 +67,7 @@ public class HTTPRule implements SecurityPolicyRule {
     }
 
     /**
-     * Evaluates if the message context transport, gaurenteed to be of type {@link HTTPTransport}, meets all
+     * Evaluates if the message context transport, guaranteed to be of type {@link HTTPTransport}, meets all
      * requirements.
      * 
      * @param messageContext message context being evaluated

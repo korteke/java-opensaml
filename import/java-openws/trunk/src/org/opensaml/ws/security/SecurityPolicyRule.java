@@ -29,7 +29,7 @@ public interface SecurityPolicyRule {
      * Evaluates the message context against the rule.
      * 
      * During evaluation a rule should first, and as quickly as possible, determine if it can evaluate the message
-     * context (for example and HTTP-transport based rule would not be able to evaluate a message context based an
+     * context (for example an HTTP-transport based rule would not be able to evaluate a message context based on an
      * SMTP-transport). If the rule can be evaluated it should then throw a {@link SecurityPolicyException} if the rule
      * is not met.
      * 

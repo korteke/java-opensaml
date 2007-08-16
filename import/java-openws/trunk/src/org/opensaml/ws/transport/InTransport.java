@@ -19,7 +19,7 @@ package org.opensaml.ws.transport;
 import java.io.InputStream;
 
 /**
- * Represents an inbound transport, that is the transport used to recieve information.
+ * Represents an inbound transport, that is the transport used to receive information.
  */
 public interface InTransport extends Transport {
 

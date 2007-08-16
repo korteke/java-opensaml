@@ -130,9 +130,9 @@ public class HttpServletResponseAdapter implements HTTPOutTransport {
     }
 
     /**
-     * Gets the adapated response.
+     * Gets the adapted response.
      * 
-     * @return adapated response
+     * @return adapted response
      */
     public HttpServletResponse getWrappedResponse(){
         return httpServletResponse;
@@ -186,7 +186,7 @@ public class HttpServletResponseAdapter implements HTTPOutTransport {
      * 
      * This method is not supported for this transport implementation.
      */
-    public void setConfidentail(boolean isConfidential) {
+    public void setConfidential(boolean isConfidential) {
     }
 
     /** {@inheritDoc} */

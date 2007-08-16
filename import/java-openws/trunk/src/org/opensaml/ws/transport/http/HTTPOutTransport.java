@@ -19,7 +19,7 @@ package org.opensaml.ws.transport.http;
 import org.opensaml.ws.transport.OutTransport;
 
 /**
- * HTTP based outbound transport.
+ * HTTP-based outbound transport.
  */
 public interface HTTPOutTransport extends OutTransport, HTTPTransport {
 

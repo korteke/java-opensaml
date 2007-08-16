@@ -26,7 +26,7 @@ import org.opensaml.ws.message.encoder.MessageEncoder;
 import org.opensaml.ws.transport.http.HTTPTransport.HTTP_VERSION;
 
 /**
- * HTTP based SOAP transport factory.
+ * HTTP-based SOAP transport factory.
  */
 public class HTTPSOAPTransportFactory implements ClientTransportFactory {
 

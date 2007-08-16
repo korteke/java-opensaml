@@ -19,7 +19,7 @@ package org.opensaml.ws.transport.http;
 import org.opensaml.ws.transport.InTransport;
 
 /**
- * HTTP based inbound transport.
+ * HTTP-based inbound transport.
  * 
  * The stream returned by {@link InTransport#getIncomingStream()} represents the body of the HTTP message.
  */

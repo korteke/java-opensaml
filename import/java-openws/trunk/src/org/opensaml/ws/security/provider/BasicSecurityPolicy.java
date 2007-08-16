@@ -27,7 +27,7 @@ import org.opensaml.ws.security.SecurityPolicyRule;
 /**
  * Basic security policy implementation which evaluates a given set of {@link SecurityPolicyRule} in an ordered manner.
  * 
- * A policy evaluates succesfully if, and only if, all policy rules evaluate succesfully.
+ * A policy evaluates successfully if, and only if, all policy rules evaluate successfully.
  */
 public class BasicSecurityPolicy implements SecurityPolicy {
     

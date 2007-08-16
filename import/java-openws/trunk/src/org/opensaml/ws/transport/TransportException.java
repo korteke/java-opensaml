@@ -19,7 +19,7 @@ package org.opensaml.ws.transport;
 import org.opensaml.ws.WSException;
 
 /**
- * Base exception for transport related errors.
+ * Base exception for transport-related errors.
  */
 public class TransportException extends WSException {
 

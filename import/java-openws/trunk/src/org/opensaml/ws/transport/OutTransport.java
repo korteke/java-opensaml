@@ -24,7 +24,7 @@ import java.io.OutputStream;
 public interface OutTransport extends Transport {
 
     /**
-     * Sets a transport specific attribute.
+     * Sets a transport-specific attribute.
      * 
      * @param name attribute name
      * @param value attribute value

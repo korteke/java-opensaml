@@ -20,6 +20,9 @@ package org.opensaml.ws.transport.http;
  * Utilities for working with HTTP transports.
  */
 public class HTTPTransportUtils {
+    
+    /** Constructor. */
+    protected HTTPTransportUtils() {}
 
     /**
      * Adds Cache-Control and Pragma headers meant to disable caching.

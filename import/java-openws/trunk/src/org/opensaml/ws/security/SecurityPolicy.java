@@ -21,8 +21,8 @@ import java.util.List;
 import org.opensaml.ws.message.MessageContext;
 
 /**
- * A security policy is a collection of {@link SecurityPolicyRule}, evaluated against an {@link MessageContext}, that
- * are meant to determine if a message is well-formed, valid, and otherwise okay to process.
+ * A security policy is a collection of {@link SecurityPolicyRule}, evaluated against a {@link MessageContext}, that
+ * is meant to determine if a message is well-formed, valid, and otherwise okay to process.
  * 
  * Security policies <strong>MUST</strong> be thread safe and stateless.
  */
@@ -40,7 +40,7 @@ public interface SecurityPolicy {
      * 
      * @param messageContext the message context being evaluated
      * 
-     * @return true if the message context meets are requirements of the policy
+     * @return true if the message context meets all requirements of the policy
      * 
      * @throws SecurityPolicyException thrown if the security policy, or any of its rules, encounter an error during
      *             evaluation

@@ -19,12 +19,12 @@ package org.opensaml.ws.transport;
 import org.opensaml.xml.security.credential.Credential;
 
 /**
- * Base interface for inbound and outboud transports.
+ * Base interface for inbound and outbound transports.
  */
 public interface Transport {
 
     /**
-     * Gets a transport specific attribute.
+     * Gets a transport-specific attribute.
      * 
      * @param name name of the attribute
      * 
@@ -79,5 +79,5 @@ public interface Transport {
      * 
      * @param isConfidential whether the transport represents a confidential connection
      */
-    public void setConfidentail(boolean isConfidential);
+    public void setConfidential(boolean isConfidential);
 }

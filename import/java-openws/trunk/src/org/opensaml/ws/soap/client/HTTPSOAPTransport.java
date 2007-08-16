@@ -254,7 +254,7 @@ public class HTTPSOAPTransport implements ClientTransport {
         }
 
         /** {@inheritDoc} */
-        public void setConfidentail(boolean isConfidential) {
+        public void setConfidential(boolean isConfidential) {
             transportConfidential = isConfidential;
         }
 
@@ -403,7 +403,7 @@ public class HTTPSOAPTransport implements ClientTransport {
         }
 
         /** {@inheritDoc} */
-        public void setConfidentail(boolean isConfidential) {
+        public void setConfidential(boolean isConfidential) {
             transportConfidential = isConfidential;
         }
 

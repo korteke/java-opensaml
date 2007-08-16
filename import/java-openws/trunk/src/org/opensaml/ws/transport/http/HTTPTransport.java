@@ -19,7 +19,7 @@ package org.opensaml.ws.transport.http;
 import org.opensaml.ws.transport.Transport;
 
 /**
- * An HTTP based transport.
+ * An HTTP-based transport.
  */
 public interface HTTPTransport extends Transport {
 
@@ -56,8 +56,8 @@ public interface HTTPTransport extends Transport {
     public int getStatusCode();
 
     /**
-     * Gets the named parameter. If the request is GET this is a decoded URL parameter, if the request is POST based its
-     * a parameter from the POST body.
+     * Gets the named parameter. If the request is GET, this is a decoded URL parameter.
+     * If the request is POST-based, it is a parameter from the POST body.
      * 
      * @param name parameter name
      * 

@@ -124,9 +124,9 @@ public class HttpServletRequestAdapter implements HTTPInTransport {
     }
 
     /**
-     * Gets the adapated request.
+     * Gets the adapted request.
      * 
-     * @return adapated request
+     * @return adapted request
      */
     public HttpServletRequest getWrappedRequest(){
         return httpServletRequest;
@@ -152,7 +152,7 @@ public class HttpServletRequestAdapter implements HTTPInTransport {
      * 
      * This method is not supported for this transport implementation.
      */
-    public void setConfidentail(boolean isConfidential) {
+    public void setConfidential(boolean isConfidential) {
         
     }
 }
