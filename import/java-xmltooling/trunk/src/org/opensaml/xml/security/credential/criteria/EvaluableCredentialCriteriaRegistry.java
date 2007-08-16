@@ -99,8 +99,10 @@ public final class EvaluableCredentialCriteriaRegistry {
             }
             
         } else {
-           log.warn(String.format("Registry could not locate evaluable criteria by criteria class '%s'",
-                   criteria.getClass().getName())); 
+            if (log.isDebugEnabled()) {
+                log.debug(String.format("Registry could not locate evaluable criteria for criteria class '%s'",
+                        criteria.getClass().getName())); 
+            }
         }
         return null;
     }
