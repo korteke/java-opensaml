@@ -55,8 +55,12 @@ public abstract class AbstractCriteriaFilteringCredentialResolver extends Abstra
     public Iterable<Credential> resolve(CriteriaSet criteriaSet) throws SecurityException {
         Iterable<Credential> storeCandidates = resolveFromSource(criteriaSet);
         Set<EvaluableCriteria<Credential>> evaluableCriteria = getEvaluableCriteria(criteriaSet);
-        return new CriteriaFilteringIterable<Credential>(storeCandidates, evaluableCriteria, 
-                meetAllCriteria, unevaluableSatisfies);
+        if (evaluableCriteria.isEmpty()) {
+            return storeCandidates;
+        } else {
+            return new CriteriaFilteringIterable<Credential>(storeCandidates, evaluableCriteria, 
+                    meetAllCriteria, unevaluableSatisfies);
+        }
     }
     
     /**
