@@ -16,8 +16,6 @@
 
 package org.opensaml.xml.signature;
 
-import java.io.FileWriter;
-import java.io.IOException;
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
@@ -32,13 +30,12 @@ import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.SecurityTestHelper;
 import org.opensaml.xml.security.credential.CollectionCredentialResolver;
 import org.opensaml.xml.security.credential.Credential;
-import org.opensaml.xml.security.credential.EntityIDCriteria;
+import org.opensaml.xml.security.criteria.EntityIDCriteria;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xml.security.trust.TrustEngine;
 import org.opensaml.xml.security.x509.BasicX509Credential;
 import org.opensaml.xml.security.x509.X509KeyInfoGeneratorFactory;
 import org.opensaml.xml.signature.impl.ExplicitKeySignatureTrustEngine;
-import org.opensaml.xml.util.XMLHelper;
 
 /**
  * Test explicit key signature trust engine.
@@ -163,7 +160,7 @@ public class ExplicitKeySignatureTrustEngineTest extends XMLObjectBaseTestCase {
         
         //KeyInfoCredentialResolver kiResolver = new StaticKeyInfoCredentialResolver(new ArrayList<Credential>());
         //Testing with inline cert
-        KeyInfoCredentialResolver kiResolver = new KeyInfoCredentialResolver();
+        KeyInfoCredentialResolver kiResolver = SecurityTestHelper.buildBasicInlineKeyInfoResolver();
         engine = new ExplicitKeySignatureTrustEngine(credResolver, kiResolver);
         
         criteriaSet = new CriteriaSet();

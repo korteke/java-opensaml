@@ -18,7 +18,9 @@ package org.opensaml.xml.security.keyinfo;
 
 import java.security.cert.X509Certificate;
 import java.security.interfaces.RSAPublicKey;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.security.auth.x500.X500Principal;
 
@@ -27,6 +29,8 @@ import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.SecurityTestHelper;
 import org.opensaml.xml.security.credential.Credential;
+import org.opensaml.xml.security.keyinfo.provider.RSAKeyValueProvider;
+import org.opensaml.xml.security.keyinfo.provider.X509DataProvider;
 import org.opensaml.xml.security.x509.X509Credential;
 import org.opensaml.xml.signature.KeyInfo;
 import org.opensaml.xml.util.Base64;
@@ -109,7 +113,10 @@ public class CertChainX509DataTest extends XMLObjectBaseTestCase {
     protected void setUp() throws Exception {
         super.setUp();
         
-        resolver = new KeyInfoCredentialResolver();
+        List<KeyInfoProvider> providers = new ArrayList<KeyInfoProvider>();
+        providers.add(new X509DataProvider());
+        providers.add(new RSAKeyValueProvider());
+        resolver = new KeyInfoCredentialResolver(providers);
         
         pubKey = SecurityTestHelper.buildJavaRSAPublicKey(rsaBase64);
         entityCert = SecurityTestHelper.buildJavaX509Cert(entityCertBase64);

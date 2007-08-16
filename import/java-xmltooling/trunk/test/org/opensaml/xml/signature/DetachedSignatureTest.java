@@ -175,7 +175,7 @@ public class DetachedSignatureTest extends XMLObjectBaseTestCase {
         Unmarshaller unmarshaller = Configuration.getUnmarshallerFactory().getUnmarshaller(signatureElement);
         Signature signature = (Signature) unmarshaller.unmarshall(signatureElement);
         
-        KeyInfoCredentialResolver resolver = new KeyInfoCredentialResolver();
+        KeyInfoCredentialResolver resolver = SecurityTestHelper.buildBasicInlineKeyInfoResolver();
         
         KeyInfoCriteria criteria = new KeyInfoCriteria(signature.getKeyInfo());
         CriteriaSet criteriaSet = new CriteriaSet(criteria);

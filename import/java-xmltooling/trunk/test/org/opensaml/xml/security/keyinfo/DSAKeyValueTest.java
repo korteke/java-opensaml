@@ -17,7 +17,9 @@
 package org.opensaml.xml.security.keyinfo;
 
 import java.security.interfaces.DSAPublicKey;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import org.opensaml.xml.XMLObjectBaseTestCase;
 import org.opensaml.xml.security.CriteriaSet;
@@ -25,6 +27,7 @@ import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.SecurityTestHelper;
 import org.opensaml.xml.security.credential.BasicCredential;
 import org.opensaml.xml.security.credential.Credential;
+import org.opensaml.xml.security.keyinfo.provider.DSAKeyValueProvider;
 import org.opensaml.xml.signature.KeyInfo;
 
 
@@ -63,7 +66,9 @@ public class DSAKeyValueTest extends XMLObjectBaseTestCase {
     protected void setUp() throws Exception {
         super.setUp();
         
-        resolver = new KeyInfoCredentialResolver();
+        List<KeyInfoProvider> providers = new ArrayList<KeyInfoProvider>();
+        providers.add(new DSAKeyValueProvider());
+        resolver = new KeyInfoCredentialResolver(providers);
         keyInfoFile = "/data/org/opensaml/xml/security/keyinfo/DSAKeyValue.xml";
         pubKey = SecurityTestHelper.buildJavaDSAPublicKey(dsaBase64);
     }

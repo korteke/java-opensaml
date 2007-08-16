@@ -17,7 +17,9 @@
 package org.opensaml.xml.security.keyinfo;
 
 import java.security.interfaces.RSAPublicKey;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import org.opensaml.xml.XMLObjectBaseTestCase;
 import org.opensaml.xml.security.CriteriaSet;
@@ -25,6 +27,7 @@ import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.SecurityTestHelper;
 import org.opensaml.xml.security.credential.BasicCredential;
 import org.opensaml.xml.security.credential.Credential;
+import org.opensaml.xml.security.keyinfo.provider.RSAKeyValueProvider;
 import org.opensaml.xml.signature.KeyInfo;
 
 
@@ -52,7 +55,9 @@ public class RSAKeyValueTest extends XMLObjectBaseTestCase {
     protected void setUp() throws Exception {
         super.setUp();
         
-        resolver = new KeyInfoCredentialResolver();
+        List<KeyInfoProvider> providers = new ArrayList<KeyInfoProvider>();
+        providers.add(new RSAKeyValueProvider());
+        resolver = new KeyInfoCredentialResolver(providers);
         keyInfoFile = "/data/org/opensaml/xml/security/keyinfo/RSAKeyValue.xml";
         pubKey = SecurityTestHelper.buildJavaRSAPublicKey(rsaBase64);
     }

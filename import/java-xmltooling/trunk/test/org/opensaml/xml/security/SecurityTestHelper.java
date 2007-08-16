@@ -35,6 +35,8 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
@@ -42,6 +44,11 @@ import javax.crypto.SecretKey;
 import org.apache.xml.security.algorithms.JCEMapper;
 import org.opensaml.xml.security.credential.BasicCredential;
 import org.opensaml.xml.security.credential.Credential;
+import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
+import org.opensaml.xml.security.keyinfo.KeyInfoProvider;
+import org.opensaml.xml.security.keyinfo.provider.DSAKeyValueProvider;
+import org.opensaml.xml.security.keyinfo.provider.RSAKeyValueProvider;
+import org.opensaml.xml.security.keyinfo.provider.X509DataProvider;
 import org.opensaml.xml.util.Base64;
 
 /**
@@ -283,6 +290,20 @@ public class SecurityTestHelper {
             credential.setPrivateKey(keyPair.getPrivate());
         }
         return credential;
+    }
+    
+    /**
+     * Get a basic KeyInfo credential resolver which can process standard inline
+     * data.
+     * 
+     * @return a new KeyInfoCredentialResolver instance
+     */
+    public static KeyInfoCredentialResolver buildBasicInlineKeyInfoResolver() {
+        List<KeyInfoProvider> providers = new ArrayList<KeyInfoProvider>();
+        providers.add( new RSAKeyValueProvider() );
+        providers.add( new DSAKeyValueProvider() );
+        providers.add( new X509DataProvider() );
+        return new KeyInfoCredentialResolver(providers);
     }
     
 }

@@ -23,6 +23,7 @@ import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
+import org.opensaml.xml.security.keyinfo.KeyInfoProvider;
 
 /**
  * Simple extension of {@link KeyInfoCredentialResolver} which just stores a static set of credentials.
@@ -39,6 +40,7 @@ public class StaticKeyInfoCredentialResolver extends KeyInfoCredentialResolver {
      * @param credentials collection of credentials to be held by this resolver
      */
     public StaticKeyInfoCredentialResolver(List<Credential> credentials) {
+        super(new ArrayList<KeyInfoProvider>());
         creds = new ArrayList<Credential>();
         creds.addAll(credentials);
     }
@@ -49,6 +51,7 @@ public class StaticKeyInfoCredentialResolver extends KeyInfoCredentialResolver {
      * @param credential a single credential to be held by this resolver
      */
     public StaticKeyInfoCredentialResolver(Credential credential) {
+        super(new ArrayList<KeyInfoProvider>());
         creds = new ArrayList<Credential>();
         creds.add(credential);
     }

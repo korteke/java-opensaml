@@ -30,18 +30,16 @@ import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.credential.AbstractCriteriaFilteringCredentialResolver;
 import org.opensaml.xml.security.credential.Credential;
-import org.opensaml.xml.security.keyinfo.provider.DSAKeyValueProvider;
-import org.opensaml.xml.security.keyinfo.provider.RSAKeyValueProvider;
-import org.opensaml.xml.security.keyinfo.provider.X509DataProvider;
 import org.opensaml.xml.signature.KeyInfo;
 import org.opensaml.xml.signature.KeyInfoHelper;
 import org.opensaml.xml.signature.KeyName;
 import org.opensaml.xml.signature.KeyValue;
 
+// TODO document processing model and hooks in detail, suggested usage, etc
+ 
 /**
  * Specialized credential resolver interface which resolves credentials based on a {@link KeyInfo}  element.
  * 
- * TODO document processing model and hooks in detail, suggested usage, etc
  */
 public class KeyInfoCredentialResolver extends AbstractCriteriaFilteringCredentialResolver {
     
@@ -51,19 +49,25 @@ public class KeyInfoCredentialResolver extends AbstractCriteriaFilteringCredenti
     /** List of KeyInfo providers that are registered on this instance.  */
     private List<KeyInfoProvider> providers;
     
-    /** Constructor. */
-    public KeyInfoCredentialResolver() {
+    /**
+     * Constructor.
+     *
+     * @param keyInfoProviders the list of KeyInfoProvider's to use in this resolver
+     */
+    public KeyInfoCredentialResolver(List<KeyInfoProvider> keyInfoProviders) {
         super();
+        
         providers = new ArrayList<KeyInfoProvider>();
-        
-        //TODO decide how/where providers will be registered
-        // - programatically and/or declaratively
-        // - global vs. instance local distinction
-        
-        //TODO TEMP just to do some testing 
-        providers.add(new RSAKeyValueProvider());
-        providers.add(new DSAKeyValueProvider());
-        providers.add(new X509DataProvider());
+        providers.addAll(keyInfoProviders);
+    }
+    
+    /**
+     * Return the list of the KeyInfoProvider instances used in this resolver configuration.
+     * 
+     * @return the list of providers configured for this resolver instance
+     */
+    protected List<KeyInfoProvider> getProviders() {
+        return providers;
     }
 
     /** {@inheritDoc} */
@@ -203,7 +207,7 @@ public class KeyInfoCredentialResolver extends AbstractCriteriaFilteringCredenti
     private Collection<Credential> processKeyInfoChild(KeyInfoResolutionContext kiContext, 
             CriteriaSet criteriaSet, XMLObject keyInfoChild) throws SecurityException {
         
-        for (KeyInfoProvider provider : providers) {
+        for (KeyInfoProvider provider : getProviders()) {
             
             if (!provider.handles(keyInfoChild)) {
                 if (log.isDebugEnabled()) {
