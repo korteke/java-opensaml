@@ -44,11 +44,10 @@ public class HTTPRule implements SecurityPolicyRule {
      * Constructor.
      * 
      * @param type expected content type
-     * @param scheme expected scheme
      * @param method expected request method
      * @param secured whether the request must be secured
      */
-    public HTTPRule(String type, String scheme, String method, boolean secured) {
+    public HTTPRule(String type, String method, boolean secured) {
         requiredContentType = DatatypeHelper.safeTrimOrNullString(type);
         requiredRequestMethod = DatatypeHelper.safeTrimOrNullString(method);
         requireSecured = secured;
@@ -121,7 +120,7 @@ public class HTTPRule implements SecurityPolicyRule {
      * @throws SecurityPolicyException thrown if the transport is not secure and was required to be
      */
     protected void evaluateSecured(HTTPTransport transport) throws SecurityPolicyException {
-        if (requireSecured && transport.isConfidential()) {
+        if (requireSecured && !transport.isConfidential()) {
             log.error("Request was required to be secured but was not");
             throw new SecurityPolicyException("Request was required to be secured but was not");
         }
