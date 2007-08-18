@@ -63,7 +63,7 @@ public class HttpServletRequestAdapter implements HTTPInTransport {
         if(name.equalsIgnoreCase("Content-Type")){
             return httpServletRequest.getContentType();
         }else if(name.equalsIgnoreCase("Content-Length")){
-            httpServletRequest.getContentLength();
+            return Integer.toString(httpServletRequest.getContentLength());
         }
         return httpServletRequest.getHeader(name);
     }
