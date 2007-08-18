@@ -17,6 +17,7 @@
 package org.opensaml.ws.security.provider;
 
 import org.apache.log4j.Logger;
+import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.security.SecurityPolicyException;
 import org.opensaml.ws.security.SecurityPolicyRule;
 import org.opensaml.xml.security.CriteriaSet;
@@ -53,7 +54,41 @@ public abstract class BaseTrustEngineRule<TokenType> implements SecurityPolicyRu
     protected TrustEngine<TokenType> getTrustEngine() {
         return trustEngine;
     }
+    
+    /**
+     * Subclasses are required to implement this method to build a criteria set for the trust engine
+     * according to trust engine and application-specific needs.
+     * 
+     * @param entityID the candidate issuer entity ID which is being evaluated 
+     * @param messageContext the message context which is being evaluated
+     * @return a newly constructly set of criteria suitable for the configured trust engine
+     * @throws SecurityPolicyException thrown if criteria set can not be constructed
+     */
+    protected abstract CriteriaSet buildCriteriaSet(String entityID, MessageContext messageContext)
+        throws SecurityPolicyException;
 
+    /**
+     * Evaluate the token using the configured trust engine against criteria built using
+     * the specified candidate issuer entity ID and message context information.
+     * 
+     * @param token the token to be evaluated
+     * @param entityID the candidate issuer entity ID which is being evaluated 
+     * @param messageContext the message context which is being evaluated
+     * @return true if the token satisfies the criteria as determined by the trust engine, otherwise false
+     * @throws SecurityPolicyException thrown if there is a fatal error during trust engine evaluation
+     */
+    protected boolean evaluate(TokenType token, String entityID, MessageContext messageContext)
+        throws SecurityPolicyException {
+        
+        CriteriaSet criteriaSet = buildCriteriaSet(entityID, messageContext);
+        if (criteriaSet == null) {
+            log.error("Returned criteria set was null, can not perform trust engine evaluation of token");
+            throw new SecurityPolicyException("Returned criteria set was null");
+        }
+        
+        return evaluate(token, criteriaSet);
+    }
+    
     /**
      * Evaluate the token against the specified criteria using the configured trust engine.
      * 
@@ -67,7 +102,7 @@ public abstract class BaseTrustEngineRule<TokenType> implements SecurityPolicyRu
             return getTrustEngine().validate(token, criteriaSet);
         } catch (SecurityException e) {
             log.error("There was an error evaluating the request's token using the trust engine", e);
-            return false;
+            throw new SecurityPolicyException("Error during trust engine evaluation of the token", e);
         }
     }
 
