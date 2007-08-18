@@ -75,13 +75,13 @@ public class HTTPSOAPTransport implements ClientTransport {
         try {
             PostMethod postMethod = new PostMethod(endpointURI.toASCIIString());
             PostMethodHttpOutTransport outTransport = new PostMethodHttpOutTransport(postMethod);
-            messageContext.setMessageOutTransport(outTransport);
+            messageContext.setOutboundMessageTransport(outTransport);
             messageEncoder.encode(messageContext);
 
             httpClient.executeMethod(postMethod);
 
             PostMethodHttpInTransport inTransport = new PostMethodHttpInTransport(postMethod);
-            messageContext.setMessageInTransport(inTransport);
+            messageContext.setInboundMessageTransport(inTransport);
             messageDecoder.decode(messageContext);
         } catch (IOException e) {
             throw new TransportException("Unable to establish connection to peer", e);

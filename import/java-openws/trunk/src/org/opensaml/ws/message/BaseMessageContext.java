@@ -58,12 +58,12 @@ public class BaseMessageContext implements MessageContext {
     }
 
     /** {@inheritDoc} */
-    public InTransport getMessageInTransport() {
+    public InTransport getInboundMessageTransport() {
         return inboundTransport;
     }
 
     /** {@inheritDoc} */
-    public OutTransport getMessageOutTransport() {
+    public OutTransport getOutboundMessageTransport() {
         return outboundTransport;
     }
 
@@ -93,12 +93,12 @@ public class BaseMessageContext implements MessageContext {
     }
 
     /** {@inheritDoc} */
-    public void setMessageInTransport(InTransport transport) {
+    public void setInboundMessageTransport(InTransport transport) {
         inboundTransport = transport;
     }
 
     /** {@inheritDoc} */
-    public void setMessageOutTransport(OutTransport transport) {
+    public void setOutboundMessageTransport(OutTransport transport) {
         outboundTransport = transport;
     }
 

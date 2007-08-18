@@ -56,7 +56,7 @@ public class HTTPRule implements SecurityPolicyRule {
     /** {@inheritDoc} */
     public boolean evaluate(MessageContext messageContext) throws SecurityPolicyException {
 
-        if (!(messageContext.getMessageInTransport() instanceof HTTPTransport)) {
+        if (!(messageContext.getInboundMessageTransport() instanceof HTTPTransport)) {
             log.debug("Message context was did not contain an HTTP transport, unable to evaluate security rule");
             return false;
         }
@@ -74,7 +74,7 @@ public class HTTPRule implements SecurityPolicyRule {
      * @throws SecurityPolicyException thrown if the message context does not meet the requirements of an evaluated rule
      */
     protected void doEvaluate(MessageContext messageContext) throws SecurityPolicyException {
-        HTTPTransport transport = (HTTPTransport) messageContext.getMessageInTransport();
+        HTTPTransport transport = (HTTPTransport) messageContext.getInboundMessageTransport();
         evaluateContentType(transport);
         evaluateRequestMethod(transport);
         evaluateSecured(transport);

@@ -67,7 +67,7 @@ public abstract class BaseMessageDecoder implements MessageDecoder {
     public void decode(MessageContext messageContext) throws MessageDecodingException, SecurityPolicyException {
         if (log.isDebugEnabled()) {
             log.debug("Beginning to decode message from inbound transport of type: "
-                    + messageContext.getMessageInTransport().getClass().getName());
+                    + messageContext.getInboundMessageTransport().getClass().getName());
         }
         doDecode(messageContext);
 

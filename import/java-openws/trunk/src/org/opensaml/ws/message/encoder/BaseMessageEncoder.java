@@ -43,7 +43,7 @@ public abstract class BaseMessageEncoder implements MessageEncoder {
     public void encode(MessageContext messageContext) throws MessageEncodingException {
         if (log.isDebugEnabled()) {
             log.debug("Beginning encode message to outbound transport of type: "
-                    + messageContext.getMessageOutTransport().getClass().getName());
+                    + messageContext.getOutboundMessageTransport().getClass().getName());
         }
 
         doEncode(messageContext);

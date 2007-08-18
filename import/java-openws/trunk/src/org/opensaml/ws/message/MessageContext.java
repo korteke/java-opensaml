@@ -48,14 +48,7 @@ public interface MessageContext {
      * 
      * @return transport used to receive the message
      */
-    public InTransport getMessageInTransport();
-
-    /**
-     * Gets the transport used to respond to the message.
-     * 
-     * @return transport used to respond to the message
-     */
-    public OutTransport getMessageOutTransport();
+    public InTransport getInboundMessageTransport();
 
     /**
      * Gets the outbound message.
@@ -70,6 +63,13 @@ public interface MessageContext {
      * @return issuer of the outbound message
      */
     public String getOutboundMessageIssuer();
+
+    /**
+     * Gets the transport used to respond to the message.
+     * 
+     * @return transport used to respond to the message
+     */
+    public OutTransport getOutboundMessageTransport();
 
     /**
      * Gets the security policy applied, or to be applied, to this message context.
@@ -97,14 +97,7 @@ public interface MessageContext {
      * 
      * @param transport the transport used to receive the message
      */
-    public void setMessageInTransport(InTransport transport);
-
-    /**
-     * Sets the transport used to respond to the message.
-     * 
-     * @param transport the transport used to respond to the message
-     */
-    public void setMessageOutTransport(OutTransport transport);
+    public void setInboundMessageTransport(InTransport transport);
 
     /**
      * Sets the outbound message.
@@ -119,6 +112,13 @@ public interface MessageContext {
      * @param issuer issuer of the outbound message
      */
     public void setOutboundMessageIssuer(String issuer);
+
+    /**
+     * Sets the transport used to respond to the message.
+     * 
+     * @param transport the transport used to respond to the message
+     */
+    public void setOutboundMessageTransport(OutTransport transport);
 
     /**
      * Sets the security policy applied, or to be applied, to this message context.
