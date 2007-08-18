@@ -22,6 +22,7 @@ import java.io.InputStream;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
+import org.opensaml.ws.security.ServletRequestX509CredentialAdapter;
 import org.opensaml.xml.security.credential.Credential;
 
 /**
@@ -37,6 +38,9 @@ public class HttpServletRequestAdapter implements HTTPInTransport {
 
     /** Whether the peer endpoint has been authenticated. */
     private boolean peerAuthenticated;
+    
+    /** Storage for peer credential adapted from HTTP servlet request. */
+    private Credential peerCredential;
 
     /**
      * Constructor.
@@ -101,8 +105,14 @@ public class HttpServletRequestAdapter implements HTTPInTransport {
 
     /** {@inheritDoc} */
     public Credential getPeerCredential() {
-        // TODO Auto-generated method stub
-        return null;
+        if (peerCredential == null) {
+            try {
+                peerCredential = new ServletRequestX509CredentialAdapter(httpServletRequest);
+            } catch (IllegalArgumentException e) {
+                log.info("Wrapped HTTP servlet request did not contain a client certificate");
+            }
+        }
+        return peerCredential;
     }
 
     /** {@inheritDoc} */
