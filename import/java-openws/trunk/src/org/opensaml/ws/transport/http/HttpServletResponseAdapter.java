@@ -18,6 +18,7 @@ package org.opensaml.ws.transport.http;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -101,13 +102,17 @@ public class HttpServletResponseAdapter implements HTTPOutTransport {
      * 
      * This method is not supported for this transport implementation.
      */
-    public String getParameter(String name) {
+    public String getParameterValue(String name) {
+        return null;
+    }
+    
+    /** {@inheritDoc} */
+    public List<String> getParameterValues(String name) {
         return null;
     }
 
     /** {@inheritDoc} */
     public Credential getPeerCredential() {
-        // TODO Auto-generated method stub
         return null;
     }
 
@@ -210,7 +215,7 @@ public class HttpServletResponseAdapter implements HTTPOutTransport {
      * 
      * This method is not supported for this transport implementation.
      */
-    public void setParameter(String name, String value) {
+    public void addParameter(String name, String value) {
     }
 
     /** {@inheritDoc} */

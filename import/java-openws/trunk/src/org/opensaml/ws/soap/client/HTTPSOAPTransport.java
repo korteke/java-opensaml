@@ -22,9 +22,12 @@ import java.io.OutputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpVersion;
+import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.URIException;
 import org.apache.commons.httpclient.methods.InputStreamRequestEntity;
 import org.apache.commons.httpclient.methods.PostMethod;
@@ -136,7 +139,7 @@ public class HTTPSOAPTransport implements ClientTransport {
          * 
          * This method is not supported for this transport implementation.
          */
-        public void setParameter(String name, String value) {
+        public void addParameter(String name, String value) {
 
         }
 
@@ -269,8 +272,23 @@ public class HTTPSOAPTransport implements ClientTransport {
         }
 
         /** {@inheritDoc} */
-        public String getParameter(String name) {
+        public String getParameterValue(String name) {
             return postMethod.getParameter(name).getValue();
+        }
+        
+        /** {@inheritDoc} */
+        public List<String> getParameterValues(String name) {
+            ArrayList<String> valueList = new ArrayList<String>();
+            NameValuePair[] parameters = postMethod.getParameters();
+            if(parameters != null){
+                for(NameValuePair parameter : parameters){
+                    if(parameter.getName().equals(name)){
+                        valueList.add(parameter.getValue());
+                    }
+                }
+            }
+
+            return valueList;
         }
 
         /**
@@ -422,7 +440,12 @@ public class HTTPSOAPTransport implements ClientTransport {
          * 
          * This method is not supported for this transport implementation.
          */
-        public String getParameter(String name) {
+        public String getParameterValue(String name) {
+            return null;
+        }
+        
+        /** {@inheritDoc} */
+        public List<String> getParameterValues(String name) {
             return null;
         }
 

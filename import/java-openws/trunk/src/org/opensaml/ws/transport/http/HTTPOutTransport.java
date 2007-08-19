@@ -44,7 +44,7 @@ public interface HTTPOutTransport extends OutTransport, HTTPTransport {
      * @param name parameter name
      * @param value parameter value
      */
-    public void setParameter(String name, String value);
+    public void addParameter(String name, String value);
 
     /**
      * Sets the status code for this transport.

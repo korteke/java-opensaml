@@ -18,6 +18,9 @@ package org.opensaml.ws.transport.http;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -94,8 +97,21 @@ public class HttpServletRequestAdapter implements HTTPInTransport {
     }
 
     /** {@inheritDoc} */
-    public String getParameter(String name) {
+    public String getParameterValue(String name) {
         return httpServletRequest.getParameter(name);
+    }
+    
+    /** {@inheritDoc} */
+    public List<String> getParameterValues(String name) {
+        ArrayList<String> valuesList = new ArrayList<String>();
+        String[] values = httpServletRequest.getParameterValues(name);
+        if(values != null){
+            for(String value : values){
+                valuesList.add(value);
+            }
+        }
+        
+        return valuesList;
     }
 
     /** {@inheritDoc} */

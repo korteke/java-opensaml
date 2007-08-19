@@ -16,6 +16,8 @@
 
 package org.opensaml.ws.transport.http;
 
+import java.util.List;
+
 import org.opensaml.ws.transport.Transport;
 
 /**
@@ -56,14 +58,24 @@ public interface HTTPTransport extends Transport {
     public int getStatusCode();
 
     /**
-     * Gets the named parameter. If the request is GET, this is a decoded URL parameter.
+     * Gets the first value of the named parameter. If the request is GET, this is a decoded URL parameter.
      * If the request is POST-based, it is a parameter from the POST body.
      * 
      * @param name parameter name
      * 
      * @return parameter value
      */
-    public String getParameter(String name);
+    public String getParameterValue(String name);
+    
+    /**
+     * Gets the values of the named parameter. If the request is GET, this is a decoded URL parameter.
+     * If the request is POST-based, it is a parameter from the POST body.
+     * 
+     * @param name parameter name
+     * 
+     * @return parameter values
+     */
+    public List<String> getParameterValues(String name);
 
     /**
      * Gets the HTTP version used to receive the message.
