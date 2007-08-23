@@ -36,4 +36,10 @@ public interface ExpiringObject {
      * @return true if the expiration time has passed, false if not
      */
     public boolean isExpired();
+
+    /**
+     * A callback method invoked when this object is expiring. Note, this method may not be invoked at the exact instant
+     * of expiration but may, instead, be invoked the next time the object is read and noticed to have expired.
+     */
+    public void onExpire();
 }

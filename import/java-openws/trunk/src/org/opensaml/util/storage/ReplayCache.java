@@ -197,5 +197,10 @@ public class ReplayCache {
         public boolean isExpired() {
             return expirationTime.isBeforeNow();
         }
+        
+        /** {@inheritDoc} */
+        public void onExpire() {
+            
+        }
     }
 }
