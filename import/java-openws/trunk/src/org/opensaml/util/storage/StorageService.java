@@ -19,8 +19,10 @@ package org.opensaml.util.storage;
 import java.util.Collection;
 
 /**
- * Generic data storage facility for use by services that require some degree of persistence. Implementations will vary
- * in how much persistence they can supply.
+ * Generic data storage facility for use by services that require some degree of persistence.
+ * 
+ * The storage service is partitioned. This is to allow different objects to use the service, each with its own
+ * partition, without the worry of conflicting keys.
  * 
  * @param <KeyType> object type of the keys
  * @param <ValueType> object type of the values
@@ -30,47 +32,60 @@ public interface StorageService<KeyType, ValueType> {
     /**
      * Checks if a given key exists.
      * 
+     * @param partition partition on which to operate
      * @param key the key to check
      * 
      * @return true of the given key exists, false if not
      */
-    public boolean contains(KeyType key);
+    public boolean contains(String partition, KeyType key);
+    
+    /**
+     * Gets the partitions within the service.
+     * 
+     * @return partitions within the service
+     */
+    public Collection<String> getPartitions();
 
     /**
      * Gets the keys for entries in the storage service.
      * 
      * <strong>Note:</strong> this operation may be very expensive
      * 
+     * @param partition partition on which to operate
+     * 
      * @return list of keys currently within the store
      */
-    public Collection<KeyType> getKeys();
+    public Collection<KeyType> getKeys(String partition);
 
     /**
      * Gets the value stored under a particular key.
      * 
+     * @param partition partition on which to operate
      * @param key the key
      * 
      * @return the value for that key, or null if there is no value for the given key
      */
-    public ValueType get(KeyType key);
+    public ValueType get(String partition, KeyType key);
 
     /**
      * Adds a value, indexed by a key, in to storage. Note that implementations of this service may determine, on its
      * own, when to evict items from storage, the expiration time given here is meant only as a system provided hint.
      * 
+     * @param partition partition on which to operate
      * @param key the key
      * @param value the value
      * 
      * @return the value that was registered under that key previously, if there was a previous value
      */
-    public ValueType put(KeyType key, ValueType value);
+    public ValueType put(String partition, KeyType key, ValueType value);
 
     /**
      * Removes an item from storage.
      * 
+     * @param partition partition on which to operate
      * @param key the key to the value to remove
      * 
      * @return the value that was removed
      */
-    public ValueType remove(KeyType key);
+    public ValueType remove(String partition, KeyType key);
 }

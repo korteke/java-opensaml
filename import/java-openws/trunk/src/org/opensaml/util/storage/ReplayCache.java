@@ -21,6 +21,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
+import org.opensaml.xml.util.DatatypeHelper;
 
 /**
  * Class that uses an underlying {@link StorageService} to track information associated with messages in order to detect
@@ -36,6 +37,9 @@ public class ReplayCache {
 
     /** Backing storage for the replay cache. */
     private StorageService<String, ReplayCacheEntry> storage;
+    
+    /** Storage service partition used by this cache. default: replay */
+    private String partition;
 
     /** Default time, in milliseconds, that message state is valid. */
     private long defaultDuration;
@@ -52,6 +56,25 @@ public class ReplayCache {
     public ReplayCache(StorageService<String, ReplayCacheEntry> storageService, long duration) {
         storage = storageService;
         defaultDuration = duration;
+        partition = "replay";
+        lock = new ReentrantLock(true);
+    }
+    
+    /**
+     * Constructor.
+     * 
+     * @param storageService the StorageService which serves as the backing store for the cache
+     * @param storageParition name of storage service partition to use
+     * @param duration default length of time that message state is valid
+     */
+    public ReplayCache(StorageService<String, ReplayCacheEntry> storageService, String storageParition, long duration) {
+        storage = storageService;
+        defaultDuration = duration;
+        if(!DatatypeHelper.isEmpty(storageParition)){
+            partition = DatatypeHelper.safeTrim(storageParition);
+        }else{
+            partition = "replay";
+        }
         lock = new ReentrantLock(true);
     }
 
@@ -97,7 +120,7 @@ public class ReplayCache {
         log.debug("Lock acquired");
         
         try {
-            ReplayCacheEntry cacheEntry = storage.get(messageId);
+            ReplayCacheEntry cacheEntry = storage.get(partition, messageId);
             if (cacheEntry == null || cacheEntry.isExpired()) {
                 if (log.isDebugEnabled()) {
                     if (cacheEntry == null) {
@@ -139,7 +162,7 @@ public class ReplayCache {
                 log.debug(String.format("Writing message ID '%s' to replay cache with expiration time '%s'",
                         messageId, expiration.toString()) );
             }
-            storage.put(messageId, new ReplayCacheEntry(expiration));
+            storage.put(partition, messageId, new ReplayCacheEntry(expiration));
         } finally {
             lock.unlock();
             log.debug("Lock released for replay cache write");

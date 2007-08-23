@@ -17,6 +17,8 @@
 package org.opensaml.util.storage;
 
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -26,30 +28,64 @@ import java.util.TimerTask;
 public class ExpiringObjectStorageServiceSweeper extends TimerTask {
 
     /** Storage service whose entries will be periodically checked. */
-    private StorageService<Object, ? extends ExpiringObject> store;
+    private StorageService store;
+
+    /** Storage paritiotns to sweep. */
+    private Set<String> partitions;
 
     /**
      * Constructor. Registers this task with the given timer.
      * 
      * @param taskTimer timer that will sweep the given storage service
-     * @param sweptStore storage service that will be swept
      * @param sweepInterval interval, in milliseconds, that the storage service will be swept
+     * @param sweptStore storage service that will be swept
      */
-    public ExpiringObjectStorageServiceSweeper(Timer taskTimer,
-            StorageService<Object, ? extends ExpiringObject> sweptStore, long sweepInterval) {
+    public ExpiringObjectStorageServiceSweeper(Timer taskTimer, long sweepInterval, StorageService sweptStore) {
         store = sweptStore;
+        taskTimer.schedule(this, sweepInterval);
+    }
+
+    /**
+     * Constructor. Registers this task with the given timer.
+     * 
+     * @param taskTimer timer that will sweep the given storage service
+     * @param sweepInterval interval, in milliseconds, that the storage service will be swept
+     * @param sweptStore storage service that will be swept
+     * @param sweptParitions the partitions to sweep, if null or empty all partitions are swept
+     */
+    public ExpiringObjectStorageServiceSweeper(Timer taskTimer, long sweepInterval, StorageService sweptStore,
+            Set<String> sweptParitions) {
+        store = sweptStore;
+        if (sweptParitions != null || sweptParitions.isEmpty()) {
+            partitions = sweptParitions;
+        }
         taskTimer.schedule(this, sweepInterval);
     }
 
     /** {@inheritDoc} */
     public void run() {
-        Collection<Object> storeKeys = store.getKeys();
-        if (storeKeys != null) {
-            ExpiringObject value;
-            for (Object key : storeKeys) {
-                value = store.get(key);
-                if (value.isExpired()) {
-                    store.remove(key);
+        Iterator<String> sweepPartitions;
+        if (partitions != null) {
+            sweepPartitions = partitions.iterator();
+        } else {
+            sweepPartitions = store.getPartitions().iterator();
+        }
+
+        String currentParition;
+        Collection<Object> partitionKeys;
+        Object partitionValue;
+        while (sweepPartitions.hasNext()) {
+            currentParition = sweepPartitions.next();
+            partitionKeys = store.getKeys(currentParition);
+
+            if (partitionKeys != null && !partitionKeys.isEmpty()) {
+                for (Object partitionKey : partitionKeys) {
+                    partitionValue = store.get(currentParition, partitionKey);
+                    if (partitionValue instanceof ExpiringObject) {
+                        if (((ExpiringObject) partitionValue).isExpired()) {
+                            store.remove(currentParition, partitionKey);
+                        }
+                    }
                 }
             }
         }

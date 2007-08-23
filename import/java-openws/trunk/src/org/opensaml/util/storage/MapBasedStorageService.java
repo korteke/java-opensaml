@@ -29,35 +29,65 @@ import java.util.Map;
 public class MapBasedStorageService<KeyType, ValueType> implements StorageService<KeyType, ValueType> {
 
     /** Backing map. */
-    private Map<KeyType, ValueType> store;
+    private Map<String, Map<KeyType, ValueType>> store;
 
     /** Constructor. */
     public MapBasedStorageService() {
-        store = new Hashtable<KeyType, ValueType>();
+        store = new Hashtable<String, Map<KeyType, ValueType>>();
     }
 
     /** {@inheritDoc} */
-    public Collection<KeyType> getKeys() {
+    public Collection<String> getPartitions() {
         return store.keySet();
     }
-
+    
     /** {@inheritDoc} */
-    public boolean contains(KeyType key) {
-        return store.containsKey(key);
+    public Collection<KeyType> getKeys(String partition) {
+        if(store.containsKey(partition)){
+            return store.get(partition).keySet();
+        }
+        
+        return null;
     }
 
     /** {@inheritDoc} */
-    public ValueType get(KeyType key) {
-        return store.get(key);
+    public boolean contains(String partition, KeyType key) {
+        if(store.containsKey(partition)){
+            return store.get(partition).containsKey(key);
+        }
+        
+        return false;
     }
 
     /** {@inheritDoc} */
-    public ValueType put(KeyType key, ValueType value) {
-        return store.put(key, value);
+    public ValueType get(String partition, KeyType key) {
+        if(store.containsKey(partition)){
+            return store.get(partition).get(key);
+        }
+        
+        return null;
     }
 
     /** {@inheritDoc} */
-    public ValueType remove(KeyType key) {
-        return store.remove(key);
+    public ValueType put(String partition, KeyType key, ValueType value) {
+        Map<KeyType, ValueType> partitionMap;
+        synchronized (store) {
+            partitionMap = store.get(partition);
+            if(partitionMap == null){
+                partitionMap = new Hashtable<KeyType, ValueType>();
+            }
+            store.put(partition, partitionMap);
+        }
+
+        return partitionMap.put(key, value);
+    }
+
+    /** {@inheritDoc} */
+    public ValueType remove(String partition, KeyType key) {
+        if(store.containsKey(partition)){
+            return store.get(partition).remove(key);
+        }
+        
+        return null;
     }
 }
