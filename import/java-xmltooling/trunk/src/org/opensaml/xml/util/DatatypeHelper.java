@@ -16,7 +16,6 @@
 
 package org.opensaml.xml.util;
 
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,37 +23,14 @@ import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
-
 /**
  * Helper class for working with various datatypes.
  */
 public final class DatatypeHelper {
 
-    /** JAXP DatatypeFactory. */
-    private static DatatypeFactory dataTypeFactory;
-
     /** Constructor. */
     private DatatypeHelper() {
 
-    }
-
-    /**
-     * Gets a static instance of a JAXP DatatypeFactory.
-     * 
-     * @return the factory or null if the factory could not be created
-     */
-    public static DatatypeFactory getDataTypeFactory() {
-        if (dataTypeFactory == null) {
-            try {
-                dataTypeFactory = DatatypeFactory.newInstance();
-            } catch (DatatypeConfigurationException e) {
-                // do nothing
-            }
-        }
-
-        return dataTypeFactory;
     }
 
     /**
@@ -127,7 +103,24 @@ public final class DatatypeHelper {
     }
     
     /**
-     * Reads an input stream into a string.  The provide stream is <strong>not</strong> closed.
+     * Converts an integer into an unsigned 4-byte array.
+     * 
+     * @param integer integer to convert
+     * 
+     * @return 4-byte array representing integer
+     */
+    public static byte[] intToByteArray(int integer){
+        byte[] intBytes = new byte[4];
+        intBytes[0]=(byte)((integer & 0xff000000)>>>24);
+        intBytes[1]=(byte)((integer & 0x00ff0000)>>>16);
+        intBytes[2]=(byte)((integer & 0x0000ff00)>>>8);
+        intBytes[3]=(byte)((integer & 0x000000ff));
+
+        return intBytes;
+    }
+
+    /**
+     * Reads an input stream into a string. The provide stream is <strong>not</strong> closed.
      * 
      * @param input the input stream to read
      * @param decoder character decoder to use, if null, system default character set is used
@@ -136,17 +129,17 @@ public final class DatatypeHelper {
      * 
      * @throws IOException thrown if there is a problem reading from the stream and decoding it
      */
-    public static String inputstreamToString(InputStream input, CharsetDecoder decoder) throws IOException{
+    public static String inputstreamToString(InputStream input, CharsetDecoder decoder) throws IOException {
         CharsetDecoder charsetDecoder = decoder;
-        if(decoder == null){
+        if (decoder == null) {
             charsetDecoder = Charset.defaultCharset().newDecoder();
         }
-        
+
         StringBuffer stringBuffer = new StringBuffer(2048);
         BufferedReader reader = new BufferedReader(new InputStreamReader(input, charsetDecoder));
-                
+
         char[] chars = new char[1024];
-        while(reader.read(chars) > -1){
+        while (reader.read(chars) > -1) {
             stringBuffer.append(String.valueOf(chars));
             chars = new char[1024];
         }

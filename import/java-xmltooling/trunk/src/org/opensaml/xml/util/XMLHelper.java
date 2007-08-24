@@ -25,6 +25,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.Duration;
 import javax.xml.namespace.QName;
 import javax.xml.transform.OutputKeys;
@@ -53,9 +55,29 @@ import org.w3c.dom.ls.LSSerializer;
  */
 public final class XMLHelper {
 
+    /** JAXP DatatypeFactory. */
+    private static DatatypeFactory dataTypeFactory;
+
     /** Constructor. */
     private XMLHelper() {
 
+    }
+
+    /**
+     * Gets a static instance of a JAXP DatatypeFactory.
+     * 
+     * @return the factory or null if the factory could not be created
+     */
+    public static DatatypeFactory getDataTypeFactory() {
+        if (dataTypeFactory == null) {
+            try {
+                dataTypeFactory = DatatypeFactory.newInstance();
+            } catch (DatatypeConfigurationException e) {
+                // do nothing
+            }
+        }
+
+        return dataTypeFactory;
     }
 
     /**
@@ -941,7 +963,7 @@ public final class XMLHelper {
      * @return duration in milliseconds
      */
     public static long durationToLong(String duration) {
-        Duration xmlDuration = DatatypeHelper.getDataTypeFactory().newDuration(duration);
+        Duration xmlDuration = getDataTypeFactory().newDuration(duration);
         return xmlDuration.getTimeInMillis(new GregorianCalendar());
     }
 
@@ -953,7 +975,7 @@ public final class XMLHelper {
      * @return the lexical representation
      */
     public static String longToDuration(long duration) {
-        Duration xmlDuration = DatatypeHelper.getDataTypeFactory().newDuration(duration);
+        Duration xmlDuration = getDataTypeFactory().newDuration(duration);
         return xmlDuration.toString();
     }
 }
