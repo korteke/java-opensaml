@@ -20,9 +20,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.List;
-
-import javolution.util.FastList;
 
 import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.util.Pair;
@@ -63,7 +62,7 @@ public class URLBuilder {
      * Constructor.
      */
     public URLBuilder() {
-        queryParams = new FastList<Pair<String, String>>();
+        queryParams = new ArrayList<Pair<String, String>>();
     }
 
     /**
@@ -94,7 +93,7 @@ public class URLBuilder {
             setPort(url.getPort());
             setPath(url.getPath());
 
-            queryParams = new FastList<Pair<String, String>>();
+            queryParams = new ArrayList<Pair<String, String>>();
             String queryString = url.getQuery();
             if (!DatatypeHelper.isEmpty(queryString)) {
                 String[] queryComps = queryString.split("&");

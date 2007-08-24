@@ -16,9 +16,8 @@
 
 package org.opensaml.ws.soap.soap11.impl;
 
+import java.util.ArrayList;
 import java.util.List;
-
-import javolution.util.FastList;
 
 import org.opensaml.ws.soap.common.AbstractExtensibleSOAPObject;
 import org.opensaml.ws.soap.soap11.Body;
@@ -70,7 +69,7 @@ public class EnvelopeImpl extends AbstractExtensibleSOAPObject implements Envelo
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        FastList<XMLObject> children = new FastList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
 
         children.add(header);
         children.add(body);

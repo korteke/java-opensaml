@@ -16,9 +16,8 @@
 
 package org.opensaml.ws.soap.soap11.impl;
 
+import java.util.ArrayList;
 import java.util.List;
-
-import javolution.util.FastList;
 
 import org.opensaml.ws.soap.soap11.Detail;
 import org.opensaml.ws.soap.soap11.Fault;
@@ -98,7 +97,7 @@ public class FaultImpl extends AbstractValidatingXMLObject implements Fault {
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        FastList<XMLObject> children = new FastList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
         
         children.add(faultCode);
         children.add(message);

@@ -16,10 +16,9 @@
 
 package org.opensaml.ws.soap.common;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import javolution.util.FastList;
 
 import org.opensaml.xml.AttributeExtensibleXMLObject;
 import org.opensaml.xml.ElementExtensibleXMLObject;
@@ -55,7 +54,7 @@ public class AbstractExtensibleSOAPObject extends AbstractValidatingXMLObject im
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        FastList<XMLObject> children = new FastList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
 
         children.addAll(unknownXMLObject);
 
