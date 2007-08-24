@@ -17,6 +17,7 @@
 package org.opensaml.ws.soap.soap11.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.opensaml.ws.soap.soap11.Detail;
@@ -31,19 +32,19 @@ import org.opensaml.xml.validation.AbstractValidatingXMLObject;
  * Concrete implemenation of {@link org.opensaml.ws.soap.soap11.Fault}.
  */
 public class FaultImpl extends AbstractValidatingXMLObject implements Fault {
-    
+
     /** Fault code. */
     private FaultCode faultCode;
-    
+
     /** Fault message. */
     private FaultString message;
-    
+
     /** Actor that faulted. */
     private FaultActor actor;
-    
+
     /** Details of the fault. */
     private Detail detail;
-    
+
     /**
      * Constructor.
      * 
@@ -98,12 +99,12 @@ public class FaultImpl extends AbstractValidatingXMLObject implements Fault {
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
         ArrayList<XMLObject> children = new ArrayList<XMLObject>();
-        
+
         children.add(faultCode);
         children.add(message);
         children.add(actor);
         children.add(detail);
-        
-        return children.unmodifiable();
+
+        return Collections.unmodifiableList(children);
     }
 }

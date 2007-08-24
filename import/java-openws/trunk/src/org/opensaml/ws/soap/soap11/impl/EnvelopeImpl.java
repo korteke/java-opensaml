@@ -17,6 +17,7 @@
 package org.opensaml.ws.soap.soap11.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.opensaml.ws.soap.common.AbstractExtensibleSOAPObject;
@@ -75,6 +76,6 @@ public class EnvelopeImpl extends AbstractExtensibleSOAPObject implements Envelo
         children.add(body);
         children.addAll(super.getOrderedChildren());
 
-        return children.unmodifiable();
+        return Collections.unmodifiableList(children);
     }
 }
