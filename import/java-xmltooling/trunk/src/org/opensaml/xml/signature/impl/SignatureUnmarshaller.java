@@ -44,38 +44,33 @@ public class SignatureUnmarshaller implements Unmarshaller {
     /** Constructor. */
     public SignatureUnmarshaller() {
         if (!Init.isInitialized()) {
-            if (log.isDebugEnabled()) {
-                log.debug("Initializing XML security library");
-            }
+            log.debug("Initializing XML security library");
             Init.init();
         }
     }
 
     /** {@inheritDoc} */
     public Signature unmarshall(Element signatureElement) throws UnmarshallingException {
-        if (log.isDebugEnabled()) {
-            log.debug("Starting to unmarshall XMLSecSignatureImpl element");
-        }
+        log.debug("Starting to unmarshall Apache XML-Security-based SignatureImpl element");
+        
         SignatureImpl signature = new SignatureImpl(signatureElement.getNamespaceURI(), signatureElement.getLocalName(),
                 signatureElement.getPrefix());
 
         try {
-            if (log.isDebugEnabled()) {
-                log.debug("Constructing XMLSignature object");
-            }
+            log.debug("Constructing Apache XMLSignature object");
 
             XMLSignature xmlSignature = new XMLSignature(signatureElement, "");
 
             SignedInfo signedInfo = xmlSignature.getSignedInfo();
-            if (log.isDebugEnabled()) {
-                log.debug("Adding Canonicalization, Digest, and XMLSecSignatureImpl methods to signing context");
-            }
+            
+            log.debug("Adding canonicalization and signing algorithms, and HMAC output length to Signature");
             signature.setCanonicalizationAlgorithm(signedInfo.getCanonicalizationMethodURI());
             signature.setSignatureAlgorithm(signedInfo.getSignatureMethodURI());
             signature.setHMACOutputLength(getHMACOutputLengthValue(signedInfo.getSignatureMethodElement()));
 
             org.apache.xml.security.keys.KeyInfo xmlSecKeyInfo = xmlSignature.getKeyInfo();
             if (xmlSecKeyInfo != null) {
+                log.debug("Adding KeyInfo to Signature");
                 Unmarshaller unmarshaller = Configuration.getUnmarshallerFactory().getUnmarshaller(
                         xmlSecKeyInfo.getElement());
                 KeyInfo keyInfo = (KeyInfo) unmarshaller.unmarshall(xmlSecKeyInfo.getElement());
