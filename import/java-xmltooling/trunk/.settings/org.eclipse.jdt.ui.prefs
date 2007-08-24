@@ -1,7 +1,8 @@
-#Thu Feb 08 11:26:24 EST 2007
+#Wed Aug 15 17:00:37 GMT-05:00 2007
 eclipse.preferences.version=1
 formatter_profile=_Internet2 Format
 formatter_settings_version=10
+instance/org.eclipse.core.net/org.eclipse.core.net.hasMigrated=true
 internal.default.compliance=default
 org.eclipse.jdt.ui.exception.name=e
 org.eclipse.jdt.ui.gettersetter.use.is=true

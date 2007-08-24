@@ -25,11 +25,6 @@
 			<attribute name="javadoc_location" value="http://logging.apache.org/log4j/docs/api/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry exported="true" kind="lib" path="lib/javolution-4.1.0.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="http://javolution.org/api/"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="lib" path="build-lib/xmlunit-1.0.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="http://xmlunit.sourceforge.net/doc/"/>

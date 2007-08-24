@@ -1,5 +1,6 @@
-#Wed Dec 06 06:47:55 CST 2006
+#Wed Aug 15 17:00:37 GMT-05:00 2007
 eclipse.preferences.version=1
+instance/org.eclipse.core.net/org.eclipse.core.net.hasMigrated=true
 org.eclipse.jdt.core.codeComplete.argumentPrefixes=
 org.eclipse.jdt.core.codeComplete.argumentSuffixes=
 org.eclipse.jdt.core.codeComplete.fieldPrefixes=
