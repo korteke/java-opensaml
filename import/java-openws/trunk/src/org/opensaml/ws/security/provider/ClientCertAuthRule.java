@@ -90,26 +90,24 @@ public class ClientCertAuthRule extends BaseTrustEngineRule<X509Credential> {
     }
 
      /** {@inheritDoc} */
-    public boolean evaluate(MessageContext messageContext) throws SecurityPolicyException {
+    public void evaluate(MessageContext messageContext) throws SecurityPolicyException {
 
         Credential peerCredential = messageContext.getInboundMessageTransport().getPeerCredential();
         
         if (peerCredential == null) {
             log.info("Inbound message transport did not contain a peer credential, " 
                     + "skipping client certificate authentication");
-            return false;
+            return;
         }
         if (!(peerCredential instanceof X509Credential)) {
             log.info("Inbound message transport did not contain an X509Credential, " 
                     + "skipping client certificate authentication");
-            return false;
+            return;
         }
         
         X509Credential requestCredential = (X509Credential) peerCredential;
 
         doEvaluate(requestCredential, messageContext);
-        
-        return true;
     }
     
     /**
@@ -155,6 +153,7 @@ public class ClientCertAuthRule extends BaseTrustEngineRule<X509Credential> {
                     + derivedIssuer + "'");
             messageContext.setInboundMessageIssuer(derivedIssuer);
             messageContext.getInboundMessageTransport().setAuthenticated(true);
+            return;
         }
 
         derivedIssuer = evaluateDerivedIssuers(requestCredential, messageContext);
@@ -163,6 +162,7 @@ public class ClientCertAuthRule extends BaseTrustEngineRule<X509Credential> {
                     + "'");
             messageContext.setInboundMessageIssuer(derivedIssuer);
             messageContext.getInboundMessageTransport().setAuthenticated(true);
+            return;
         }
     }
 

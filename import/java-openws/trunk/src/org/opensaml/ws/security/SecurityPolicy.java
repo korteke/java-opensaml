@@ -40,10 +40,9 @@ public interface SecurityPolicy {
      * 
      * @param messageContext the message context being evaluated
      * 
-     * @return true if the message context meets all requirements of the policy
-     * 
-     * @throws SecurityPolicyException thrown if the security policy, or any of its rules, encounter an error during
-     *             evaluation
+     * @throws SecurityPolicyException thrown if the requirements of the security policy, including those of
+     *          any of its rules, are not satisified by the given message context.  Also thrown if any error 
+     *          is encountered during evaluation
      */
-    public boolean evaluate(MessageContext messageContext) throws SecurityPolicyException;
+    public void evaluate(MessageContext messageContext) throws SecurityPolicyException;
 }

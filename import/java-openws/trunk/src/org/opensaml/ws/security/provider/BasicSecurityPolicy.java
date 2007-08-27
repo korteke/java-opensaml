@@ -45,13 +45,9 @@ public class BasicSecurityPolicy implements SecurityPolicy {
     }
 
     /** {@inheritDoc} */
-    public boolean evaluate(MessageContext messageContext) throws SecurityPolicyException {
+    public void evaluate(MessageContext messageContext) throws SecurityPolicyException {
         for(SecurityPolicyRule rule : getPolicyRules()){
-            if(!rule.evaluate(messageContext)){
-                return false;
-            }
+            rule.evaluate(messageContext);
         }
-        
-        return true;
     }
 }

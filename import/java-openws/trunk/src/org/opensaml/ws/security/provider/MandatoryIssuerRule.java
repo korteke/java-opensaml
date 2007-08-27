@@ -33,13 +33,13 @@ public class MandatoryIssuerRule implements SecurityPolicyRule {
     private final Logger log = Logger.getLogger(MandatoryIssuerRule.class);
 
     /** {@inheritDoc} */
-    public boolean evaluate(MessageContext messageContext) throws SecurityPolicyException {
+    public void evaluate(MessageContext messageContext) throws SecurityPolicyException {
 
         if (DatatypeHelper.isEmpty(messageContext.getInboundMessageIssuer())) {
             log.error("Mandatory inbound message context issuer was not present");
             throw new SecurityPolicyException("Mandatory inbound message context issuer not present");
         }
-        return true;
+        
     }
 
 }

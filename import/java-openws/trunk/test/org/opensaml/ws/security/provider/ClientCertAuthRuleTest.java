@@ -251,17 +251,6 @@ public class ClientCertAuthRuleTest extends BaseSecurityPolicyRuleTest {
                 messageContext.getInboundMessageTransport().isAuthenticated());
     }
     
-    /**
-     * Test no client cert in request, rule should be unevaluated.
-     */
-    public void testNoClientCert() {
-        httpRequest.removeAttribute(ServletRequestX509CredentialAdapter.X509_CERT_REQUEST_ATTRIBUTE);
-        
-        assertRuleUnevaluated("Rule should have been unevaluated, no client cert");
-        assertFalse("Transport authentication should have been false", 
-                messageContext.getInboundMessageTransport().isAuthenticated());
-    }
-    
     /** {@inheritDoc} */
     protected MockHttpServletRequest buildServletRequest() {
         MockHttpServletRequest request =  new MockHttpServletRequest();

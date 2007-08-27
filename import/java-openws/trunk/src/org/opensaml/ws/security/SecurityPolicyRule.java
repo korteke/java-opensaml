@@ -28,16 +28,10 @@ public interface SecurityPolicyRule {
     /**
      * Evaluates the message context against the rule.
      * 
-     * During evaluation a rule should first, and as quickly as possible, determine if it can evaluate the message
-     * context (for example an HTTP-transport based rule would not be able to evaluate a message context based on an
-     * SMTP-transport). If the rule can be evaluated it should then throw a {@link SecurityPolicyException} if the rule
-     * is not met.
-     * 
      * @param messageContext the message context being evaluated
      * 
-     * @return true if the rule was evaluated, false if not
-     * 
-     * @throws SecurityPolicyException thrown if the message context does not meet the requirements of an evaluated rule
+     * @throws SecurityPolicyException thrown if the message context does not meet the requirements of the rule,
+     *          or if there is a non-recoverable error during evaluation
      */
-    public boolean evaluate(MessageContext messageContext) throws SecurityPolicyException;
+    public void evaluate(MessageContext messageContext) throws SecurityPolicyException;
 }

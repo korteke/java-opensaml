@@ -31,7 +31,7 @@ public class MandatoryIssuerRuleTest extends BaseSecurityPolicyRuleTest {
     }
 
     /**
-     * Test non-null issuer;
+     * Test non-null issuer.
      */
     public void testSuccess() {
         messageContext.setInboundMessageIssuer("foo");
