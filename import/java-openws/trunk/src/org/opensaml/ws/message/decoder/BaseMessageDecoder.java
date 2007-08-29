@@ -142,6 +142,9 @@ public abstract class BaseMessageDecoder implements MessageDecoder {
             if (unmarshaller == null) {
                 log.error("Unable to unmarshall message, no unmarshaller registered for message element "
                         + XMLHelper.getNodeQName(messageElem));
+                throw new MessageDecodingException(
+                        "Unable to unmarshall message, no unmarshaller registered for message element "
+                                + XMLHelper.getNodeQName(messageElem));
             }
 
             XMLObject message = unmarshaller.unmarshall(messageElem);
