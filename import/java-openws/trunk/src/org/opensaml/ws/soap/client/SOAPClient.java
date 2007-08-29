@@ -20,9 +20,10 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.message.decoder.MessageDecodingException;
 import org.opensaml.ws.security.SecurityPolicyException;
-import org.opensaml.ws.soap.common.SOAPMessageContext;
+import org.opensaml.ws.soap.soap11.Envelope;
 import org.opensaml.ws.transport.Transport;
 import org.opensaml.ws.transport.TransportException;
 
@@ -64,8 +65,13 @@ public class SOAPClient {
      * @throws MessageDecodingException thrown if there is a problem decoding the response
      * @throws SecurityPolicyException thrown if there is a problem evaluating the decoder's security policy
      */
-    public void send(URI endpointURI, SOAPMessageContext messageContext) throws TransportException,
+    public void send(URI endpointURI, MessageContext messageContext) throws TransportException,
             MessageDecodingException, SecurityPolicyException {
+        
+        if(!(messageContext.getOutboundMessage() instanceof Envelope)){
+            throw new TransportException("Outbound message must be a SOAP Envelope");
+        }
+        
         String transportScheme = endpointURI.getScheme();
         ClientTransportFactory transFactory = transportFactories.get(transportScheme);
 

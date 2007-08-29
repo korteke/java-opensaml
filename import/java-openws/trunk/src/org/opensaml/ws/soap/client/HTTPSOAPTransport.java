@@ -32,12 +32,12 @@ import org.apache.commons.httpclient.URIException;
 import org.apache.commons.httpclient.methods.InputStreamRequestEntity;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.log4j.Logger;
+import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.message.decoder.MessageDecoder;
 import org.opensaml.ws.message.decoder.MessageDecodingException;
 import org.opensaml.ws.message.encoder.MessageEncoder;
 import org.opensaml.ws.message.encoder.MessageEncodingException;
 import org.opensaml.ws.security.SecurityPolicyException;
-import org.opensaml.ws.soap.common.SOAPMessageContext;
 import org.opensaml.ws.transport.TransportException;
 import org.opensaml.ws.transport.http.HTTPInTransport;
 import org.opensaml.ws.transport.http.HTTPOutTransport;
@@ -74,7 +74,7 @@ public class HTTPSOAPTransport implements ClientTransport {
     }
 
     /** {@inheritDoc} */
-    public void send(URI endpointURI, SOAPMessageContext messageContext) throws TransportException {
+    public void send(URI endpointURI, MessageContext messageContext) throws TransportException {
         try {
             PostMethod postMethod = new PostMethod(endpointURI.toASCIIString());
             PostMethodHttpOutTransport outTransport = new PostMethodHttpOutTransport(postMethod);

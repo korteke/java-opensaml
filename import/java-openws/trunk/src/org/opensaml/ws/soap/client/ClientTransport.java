@@ -18,7 +18,7 @@ package org.opensaml.ws.soap.client;
 
 import java.net.URI;
 
-import org.opensaml.ws.soap.common.SOAPMessageContext;
+import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.transport.TransportException;
 
 /**
@@ -34,5 +34,5 @@ public interface ClientTransport {
      * 
      * @throws TransportException thrown if there is a problem sending the message
      */
-    public void send(URI endpointURI, SOAPMessageContext messageContext) throws TransportException;
+    public void send(URI endpointURI, MessageContext messageContext) throws TransportException;
 }
