@@ -60,6 +60,16 @@ public final class SecurityHelper {
     /** Constructor. */
     private SecurityHelper() {
     }
+    
+    /**
+     * Get the Java security JCA/JCE algorithm identifier associated with an algorithm URI.
+     * 
+     * @param algorithmURI the algorithm URI to evaluate
+     * @return the Java algorithm identifier, or null if the mapping is unavailable or indeterminable from the URI
+     */
+    public static String getAlgorithmIDFromURI(String algorithmURI) {
+        return DatatypeHelper.safeTrimOrNullString(JCEMapper.translateURItoJCEID(algorithmURI));
+    }
 
     /**
      * Check whether the signature method algorithm URI indicates HMAC.
