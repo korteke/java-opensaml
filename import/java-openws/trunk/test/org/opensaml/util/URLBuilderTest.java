@@ -36,7 +36,7 @@ public class URLBuilderTest extends TestCase {
         assertEquals(-1, builder1.getPort());
         assertEquals(null, builder1.getPath());
         assertEquals(0, builder1.getQueryParams().size());
-        assertEquals(null, builder1.getFragement());
+        assertEquals(null, builder1.getFragment());
         
         assertEquals(url, builder1.buildURL());
     }
@@ -54,7 +54,7 @@ public class URLBuilderTest extends TestCase {
         assertEquals(-1, builder1.getPort());
         assertEquals("/foo/index.html", builder1.getPath());
         assertEquals(0, builder1.getQueryParams().size());
-        assertEquals(null, builder1.getFragement());
+        assertEquals(null, builder1.getFragment());
         
         assertEquals(url, builder1.buildURL());
     }
@@ -72,7 +72,7 @@ public class URLBuilderTest extends TestCase {
         assertEquals(8080, builder1.getPort());
         assertEquals("/index.html", builder1.getPath());
         assertEquals(3, builder1.getQueryParams().size());
-        assertEquals(null, builder1.getFragement());
+        assertEquals(null, builder1.getFragment());
         
         assertEquals(url, builder1.buildURL());
     }
@@ -90,7 +90,7 @@ public class URLBuilderTest extends TestCase {
         assertEquals(-1, builder1.getPort());
         assertEquals(null, builder1.getPath());
         assertEquals(0, builder1.getQueryParams().size());
-        assertEquals("anchor", builder1.getFragement());
+        assertEquals("anchor", builder1.getFragment());
         
         assertEquals(url, builder1.buildURL());
     }
@@ -108,7 +108,7 @@ public class URLBuilderTest extends TestCase {
         assertEquals(-1, builder1.getPort());
         assertEquals("/index.html", builder1.getPath());
         assertEquals(3, builder1.getQueryParams().size());
-        assertEquals("anchor", builder1.getFragement());
+        assertEquals("anchor", builder1.getFragment());
         
         assertEquals(url, builder1.buildURL());
     }
@@ -126,7 +126,7 @@ public class URLBuilderTest extends TestCase {
         assertEquals(-1, builder1.getPort());
         assertEquals(null, builder1.getPath());
         assertEquals(0, builder1.getQueryParams().size());
-        assertEquals(null, builder1.getFragement());
+        assertEquals(null, builder1.getFragment());
         
         assertEquals(url, builder1.buildURL());
     }
@@ -144,7 +144,7 @@ public class URLBuilderTest extends TestCase {
         assertEquals(-1, builder1.getPort());
         assertEquals(null, builder1.getPath());
         assertEquals(0, builder1.getQueryParams().size());
-        assertEquals(null, builder1.getFragement());
+        assertEquals(null, builder1.getFragment());
         
         assertEquals(url, builder1.buildURL());
     }

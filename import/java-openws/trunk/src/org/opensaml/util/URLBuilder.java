@@ -115,28 +115,28 @@ public class URLBuilder {
                 }
             }
 
-            setFragement(url.getRef());
+            setFragment(url.getRef());
         } catch (Exception e) {
             throw new IllegalArgumentException("Given URL is not well formed", e);
         }
     }
 
     /**
-     * Gets the URL fragment in its decode form.
+     * Gets the URL fragment in its decoded form.
      * 
      * @return URL fragment in its decoded form
      */
-    public String getFragement() {
+    public String getFragment() {
         return fragement;
     }
 
     /**
      * Sets the URL fragment in its decoded form.
      * 
-     * @param newFragement URL fragment in its decoded form
+     * @param newFragment URL fragment in its decoded form
      */
-    public void setFragement(String newFragement) {
-        fragement = DatatypeHelper.safeTrimOrNullString(newFragement);
+    public void setFragment(String newFragment) {
+        fragement = DatatypeHelper.safeTrimOrNullString(newFragment);
     }
 
     /**
