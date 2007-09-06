@@ -18,104 +18,66 @@ package org.opensaml.util.storage;
 
 import junit.framework.TestCase;
 
-import org.joda.time.DateTime;
-import org.opensaml.util.storage.MapBasedStorageService;
-import org.opensaml.util.storage.ReplayCache;
 import org.opensaml.util.storage.ReplayCache.ReplayCacheEntry;
 
 /**
  * Testing SAML message replay security policy rule.
  */
 public class ReplayCacheTest extends TestCase {
-    
-    private DateTime now;
+
     private String messageID;
-    
-    private long defaultExpire;
-    
-    private ReplayCache replayCache;
-    
+
+    private MapBasedStorageService<String, ReplayCacheEntry> storageEngine;
 
     /** {@inheritDoc} */
     protected void setUp() throws Exception {
         super.setUp();
-        
+
         messageID = "abc123";
-        defaultExpire = 60*10*1000;
-        now = new DateTime();
-        
-        MapBasedStorageService<String, ReplayCacheEntry> storage = 
-            new MapBasedStorageService<String, ReplayCacheEntry>();
-        replayCache = new ReplayCache(storage, defaultExpire);
+
+        storageEngine = new MapBasedStorageService<String, ReplayCacheEntry>();
     }
-    
+
     /**
      * Test valid non-replayed message ID.
      */
     public void testNonReplayEmptyCache() {
-        assertFalse("Message was not replay, insert into empty cache", replayCache.isReplay(messageID));
+        ReplayCache replayCache = new ReplayCache(storageEngine, 10000);
+        assertFalse("Message was not replay, insert into empty cache", replayCache.isReplay("test", messageID));
     }
-    
+
     /**
      * Test valid non-replayed message ID.
      */
     public void testNonReplayDistinctIDs() {
-        assertFalse("Message was not replay, insert into empty cache", replayCache.isReplay(messageID));
-        assertFalse("Message was not replay, insert into empty cache",
-                replayCache.isReplay("IDWhichIsNot" + messageID));
+        ReplayCache replayCache = new ReplayCache(storageEngine, 10000);
+        assertFalse("Message was not replay, insert into empty cache", replayCache.isReplay("test", messageID));
+        assertFalse("Message was not replay, insert into empty cache", replayCache.isReplay("test", "IDWhichIsNot"
+                + messageID));
     }
-    
+
     /**
      * Test invalid replayed message ID, using replay cache default expiration duration.
      */
     public void testReplay() {
-        assertFalse("Message was not replay, insert into empty cache", replayCache.isReplay(messageID));
-        assertTrue("Message was replay", replayCache.isReplay(messageID));
+        ReplayCache replayCache = new ReplayCache(storageEngine, 10000);
+        assertFalse("Message was not replay, insert into empty cache", replayCache.isReplay("test", messageID));
+        assertTrue("Message was replay", replayCache.isReplay("test", messageID));
     }
-    
-    /**
-     * Test invalid replayed message ID, setting expiration by millisecond duration.
-     */
-    public void testReplayByMillisecondExpiration() {
-        // Expiration set to 5 minutes in the future
-        assertFalse("Message was not replay, insert into empty cache", 
-                replayCache.isReplay(messageID, 1000*60*5));
-        assertTrue("Message was replay", replayCache.isReplay(messageID));
-    }
-    
-    /**
-     * Test invalid replayed message ID, setting expiration by future Datetime.
-     */
-    public void testReplayByDatetimeExpiration() {
-        // Expiration set to 5 minutes in the future
-        assertFalse("Message was not replay, insert into empty cache", 
-                replayCache.isReplay(messageID, now.plusMinutes(5)));
-        assertTrue("Message was replay", replayCache.isReplay(messageID));
-    }
-    
+
     /**
      * Test valid replayed message ID, setting expriation by millisecond duration.
-     * @throws InterruptedException 
+     * 
+     * @throws InterruptedException
      */
     public void testNonReplayValidByMillisecondExpiriation() throws InterruptedException {
+        ReplayCache replayCache = new ReplayCache(storageEngine, 5);
+
         // Expiration set to 5 milliseconds in the future
-        assertFalse("Message was not replay, insert into empty cache",
-                replayCache.isReplay(messageID, 5));
+        assertFalse("Message was not replay, insert into empty cache", replayCache.isReplay("test", messageID));
         // Sleep for 500 milliseconds to make sure replay cache entry has expired
         Thread.sleep(500);
-        assertFalse("Message was not replay, previous cache entry should have expired", 
-                replayCache.isReplay(messageID));
+        assertFalse("Message was not replay, previous cache entry should have expired", replayCache.isReplay("test",
+                messageID));
     }
-
-    /**
-     * Test valid replayed message ID, setting expriation by Datetime duration.
-     */
-    public void testNonReplayValidByDatetimeExpiriation() {
-        // Expiration set to 5 seconds in the past
-        assertFalse("Message was not replay, insert into empty cache", 
-                replayCache.isReplay(messageID, now.minusSeconds(5)));
-        assertFalse("Message was not replay, previous cache entry should have expired", 
-                replayCache.isReplay(messageID));
-    }
-
 }

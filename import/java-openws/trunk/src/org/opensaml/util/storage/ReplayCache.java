@@ -17,7 +17,9 @@
 package org.opensaml.util.storage;
 
 import java.io.Serializable;
-import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -41,11 +43,11 @@ public class ReplayCache {
     /** Storage service partition used by this cache. default: replay */
     private String partition;
 
-    /** Default time, in milliseconds, that message state is valid. */
-    private long defaultDuration;
+    /** Time, in milliseconds, that message state is valid. */
+    private long entryDuration;
 
     /** Read/Write lock. */
-    private ReentrantLock lock;
+    private ReadWriteLock readWriteLock;
 
     /**
      * Constructor.
@@ -55,9 +57,9 @@ public class ReplayCache {
      */
     public ReplayCache(StorageService<String, ReplayCacheEntry> storageService, long duration) {
         storage = storageService;
-        defaultDuration = duration;
+        entryDuration = duration;
         partition = "replay";
-        lock = new ReentrantLock(true);
+        readWriteLock = new ReentrantReadWriteLock(true);
     }
     
     /**
@@ -69,78 +71,54 @@ public class ReplayCache {
      */
     public ReplayCache(StorageService<String, ReplayCacheEntry> storageService, String storageParition, long duration) {
         storage = storageService;
-        defaultDuration = duration;
+        entryDuration = duration;
         if(!DatatypeHelper.isEmpty(storageParition)){
             partition = DatatypeHelper.safeTrim(storageParition);
         }else{
             partition = "replay";
         }
-        lock = new ReentrantLock(true);
+        readWriteLock = new ReentrantReadWriteLock(true);
     }
 
     /**
      * Checks if the message has been replayed. If the message has not been seen before then it is added to the list of
      * seen of messages for the default duration.
      * 
+     * @param issuerId unique ID of the message issuer
      * @param messageId unique ID of the message
      * 
      * @return true if the given message ID has been seen before
      */
-    public boolean isReplay(String messageId) {
-        return isReplay(messageId, defaultDuration);
-    }
-
-    /**
-     * Checks if the message has been replayed. If the message has not been seen before then it is added to the list of
-     * seen of messages for the given duration.
-     * 
-     * @param messageId unique ID of the message
-     * @param duration length of time, in milliseconds, to keep the message state
-     * 
-     * @return true if the given message ID has been seen before
-     */
-    public boolean isReplay(String messageId, long duration) {
-        return isReplay(messageId, new DateTime().plus(duration));
-    }
-
-    /**
-     * Checks if the message has been replayed. If the message has not been seen before then it is added until the given
-     * expiration.
-     * 
-     * @param messageId unique ID of the message
-     * @param expiration time the message state expires
-     * 
-     * @return true if the given message ID has been seen before
-     */
-    public boolean isReplay(String messageId, DateTime expiration) {
-        boolean replayed = true;
-        
+    public boolean isReplay(String issuerId, String messageId) {
         log.debug("Attempting to acquire lock for replay cache check");
-        lock.lock();
+        Lock readLock = readWriteLock.readLock();
+
         log.debug("Lock acquired");
         
-        try {
-            ReplayCacheEntry cacheEntry = storage.get(partition, messageId);
-            if (cacheEntry == null || cacheEntry.isExpired()) {
-                if (log.isDebugEnabled()) {
-                    if (cacheEntry == null) {
-                        log.debug(String.format("Message ID '%s' was not a replay", messageId));
-                    } else if (cacheEntry.isExpired()){
-                        log.debug(String.format("Message ID '%s' expired in replay cache at '%s'", messageId, 
-                                cacheEntry.getExpirationTime().toString()));
-                    }
-                }
-                replayed = false;
-                addMessageID(messageId, expiration);
-            } else {
-                if (log.isDebugEnabled()) {
-                    log.debug(String.format("Replay of message ID '%s' detected in replay cache, will expire at '%s'",
-                            messageId, cacheEntry.getExpirationTime().toString()));
+        boolean replayed = true;
+        String entryHash = issuerId + messageId;
+        
+        readLock.lock();
+        ReplayCacheEntry cacheEntry = storage.get(partition, entryHash);
+        readLock.unlock();
+        
+        if (cacheEntry == null || cacheEntry.isExpired()) {
+            if (log.isDebugEnabled()) {
+                if (cacheEntry == null) {
+                    log.debug(String.format("Message ID '%s' was not a replay", messageId));
+                } else if (cacheEntry.isExpired()){
+                    log.debug(String.format("Message ID '%s' expired in replay cache at '%s'", messageId, 
+                            cacheEntry.getExpirationTime().toString()));
+                    storage.remove(partition, entryHash);
                 }
             }
-        } finally {
-            lock.unlock();
-            log.debug("Lock released for replay cache check");
+            replayed = false;
+            addMessageID(entryHash, new DateTime().plus(entryDuration));
+        } else {
+            if (log.isDebugEnabled()) {
+                log.debug(String.format("Replay of message ID '%s' detected in replay cache, will expire at '%s'",
+                        messageId, cacheEntry.getExpirationTime().toString()));
+            }
         }
 
         return replayed;
@@ -154,7 +132,8 @@ public class ReplayCache {
      */
     protected void addMessageID(String messageId, DateTime expiration) {
         log.debug("Attempting to acquire lock for replay cache write");
-        lock.lock();
+        Lock writeLock = readWriteLock.writeLock();
+        writeLock.lock();
         log.debug("Lock acquired");
         
         try {
@@ -164,7 +143,7 @@ public class ReplayCache {
             }
             storage.put(partition, messageId, new ReplayCacheEntry(expiration));
         } finally {
-            lock.unlock();
+            writeLock.unlock();
             log.debug("Lock released for replay cache write");
         }
         
