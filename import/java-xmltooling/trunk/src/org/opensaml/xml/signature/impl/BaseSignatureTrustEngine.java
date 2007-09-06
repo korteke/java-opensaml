@@ -25,6 +25,7 @@ import org.opensaml.xml.security.keyinfo.KeyInfoCriteria;
 import org.opensaml.xml.signature.Signature;
 import org.opensaml.xml.signature.SignatureTrustEngine;
 import org.opensaml.xml.signature.SignatureValidator;
+import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.validation.ValidationException;
 
 /**
@@ -68,13 +69,6 @@ public abstract class BaseSignatureTrustEngine<TrustBasisType> implements Signat
     /** {@inheritDoc} */
     public KeyInfoCredentialResolver getKeyInfoResolver() {
         return keyInfoCredentialResolver;
-    }
-
-    /** {@inheritDoc} */
-    public boolean validate(byte[] signature, byte[] content, String sigAlg, Credential credential)
-            throws SecurityException {
-        // TODO Auto-generated method stub
-        return false;
     }
 
     /**
@@ -166,6 +160,35 @@ public abstract class BaseSignatureTrustEngine<TrustBasisType> implements Signat
         
         if (signature == null) {
             throw new SecurityException("Signature was null");
+        }
+        if (trustBasisCriteria == null) {
+            throw new SecurityException("Trust basis criteria set was null");
+        }
+        if (trustBasisCriteria.isEmpty() ) {
+            throw new SecurityException("Trust basis criteria set was empty");
+        }
+    }
+    
+    /**
+     * Check the signature and credential criteria for required values.
+     * 
+     * @param signature the signature to be evaluated
+     * @param content the data over which the signature was computed
+     * @param algorithmURI the signing algorithm URI which was used
+     * @param trustBasisCriteria the set of trusted credential criteria
+     * @throws SecurityException thrown if required values are absent or otherwise invalid
+     */
+    protected void checkParamsRaw(byte[] signature, byte[] content, String algorithmURI,
+            CriteriaSet trustBasisCriteria) throws SecurityException {
+        
+        if (signature == null || signature.length == 0) {
+            throw new SecurityException("Signature byte array was null or empty");
+        }
+        if (content == null || content.length == 0) {
+            throw new SecurityException("Content byte array was null or empty");
+        }
+        if (DatatypeHelper.isEmpty(algorithmURI)) {
+            throw new SecurityException("Signature algorithm was null or empty");
         }
         if (trustBasisCriteria == null) {
             throw new SecurityException("Trust basis criteria set was null");

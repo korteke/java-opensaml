@@ -16,6 +16,7 @@
 
 package org.opensaml.xml.signature;
 
+import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
@@ -38,21 +39,32 @@ public interface SignatureTrustEngine extends TrustEngine<Signature> {
     public KeyInfoCredentialResolver getKeyInfoResolver();
 
     /**
-     * Determines whether a raw signature is valid with respect to the Credential data supplied.
+     * Determines whether a raw signature over specified content is valid and signed by a trusted credential.
      * 
-     * It is the responsibility of the application to ensure that the Credential information supplied is in
-     * fact associated with the peer who created the signature.
+     * <p>A candidate verification credential may optionally be supplied.  If one is supplied and is
+     * determined to successfully verify the signature, an attempt will be made to establish
+     * trust on this basis.</p>
+     * 
+     * <p>If a candidate credential is not supplied, or it does not successfully verify the signature,
+     * some implementations may be able to resolve candidate verification credential(s) in an
+     * implementation-specific manner based on the trusted criteria supplied, and then attempt 
+     * to verify the signature and establish trust on this basis.</p>
      * 
      * @param signature the signature value
      * @param content the content that was signed
-     * @param algorithm the signature algorithm used
-     * @param credential credential containing the validation key for the signature
+     * @param algorithmURI the signature algorithm URI which was used to sign the content
+     * @param trustBasisCriteria criteria used to describe and/or resolve the information
+     *          which serves as the basis for trust evaluation
+     * @param candidateCredential the untrusted candidate credential containing the validation key
+     *          for the signature (optional)
      * 
-     * @return true if the signature was valid for the provided content
+     * @return true if the signature was valid for the provided content and was signed by a key
+     *          contained within a credential established as trusted based on the supplied criteria,
+     *          otherwise false
      * 
      * @throws SecurityException thrown if there is a problem attempting to verify the signature such as the signature
      *             algorithim not being supported
      */
-    public boolean validate(byte[] signature, byte[] content, String algorithm, Credential credential) 
-        throws SecurityException;
+    public boolean validate(byte[] signature, byte[] content, String algorithmURI, CriteriaSet trustBasisCriteria,
+            Credential candidateCredential) throws SecurityException;
 }

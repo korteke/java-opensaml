@@ -21,6 +21,8 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
+import org.opensaml.xml.security.SecurityHelper;
+import org.opensaml.xml.security.SigningUtil;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xml.security.x509.PKIXTrustEngine;
@@ -94,18 +96,8 @@ public class PKIXSignatureTrustEngine
         
         checkParams(signature, trustBasisCriteria);
         
-        Set<String> trustedNames = null;
-        if (pkixTrustEvaluator.isNameChecking()) {
-            if (pkixResolver.supportsTrustedNameResolution()) {
-                trustedNames = pkixResolver.resolveTrustedNames(trustBasisCriteria);
-            } else {
-                log.debug("PKIX resolver does not support resolution of trusted names, skipping name checking");
-            }
-        }
-        Iterable<PKIXValidationInformation> validationInfoSet = pkixResolver.resolve(trustBasisCriteria);
-        
         Pair<Set<String>, Iterable<PKIXValidationInformation>> validationPair = 
-            new Pair<Set<String>, Iterable<PKIXValidationInformation>>(trustedNames, validationInfoSet);
+            resolveValidationInfo(trustBasisCriteria);
         
         if (validate(signature, validationPair)) {
             return true;
@@ -115,6 +107,38 @@ public class PKIXSignatureTrustEngine
         return false;
     }
     
+    /** {@inheritDoc} */
+    public boolean validate(byte[] signature, byte[] content, String algorithmURI, CriteriaSet trustBasisCriteria,
+            Credential candidateCredential) throws SecurityException {
+        
+        if (candidateCredential == null || SecurityHelper.extractVerificationKey(candidateCredential) == null) {
+            if (log.isDebugEnabled()) {
+                log.debug("Candidate credential was either not supplied or did not contain verification key");
+                log.debug("PKIX trust engine requires supplied key, skipping PKIX trust evaluation");
+            }
+            return false;
+        }
+        
+        checkParamsRaw(signature, content, algorithmURI, trustBasisCriteria);
+        
+        Pair<Set<String>, Iterable<PKIXValidationInformation>> validationPair = 
+            resolveValidationInfo(trustBasisCriteria);
+        
+        if (SigningUtil.verifyWithURI(candidateCredential, algorithmURI, signature, content)) {
+            log.debug("Successfully verified signature using supplied candidate credential");
+            log.debug("Attempting to establish trust of supplied candidate credential");
+            if (evaluateTrust(candidateCredential, validationPair)) {
+                log.debug("Successfully established trust of supplied candidate credential");
+                return true;
+            } else {
+                log.debug("Failed to establish trust of supplied candidate credential");
+            }
+        }
+        
+        log.error("PKIX validation of signature failed, unable to establish trust of supplied verification credential");
+        return false;
+    }
+
     /** {@inheritDoc} */
     protected boolean evaluateTrust(Credential untrustedCredential,
             Pair<Set<String>,Iterable<PKIXValidationInformation>> validationPair) throws SecurityException {
@@ -136,6 +160,35 @@ public class PKIXSignatureTrustEngine
         }
         
         return false;
+    }
+    
+    /**
+     * Resolve and return a set of trusted validation information.
+     * 
+     * @param trustBasisCriteria criteria used to describe and/or resolve the information
+     *          which serves as the basis for trust evaluation
+     * @return a pair consisting of an optional set of trusted names, and an iterable of
+     *          trusted PKIXValidationInformation
+     * @throws SecurityException thrown if there is an error resolving the information from the 
+     *          trusted resolver
+     */
+    protected Pair<Set<String>, Iterable<PKIXValidationInformation>>
+    resolveValidationInfo(CriteriaSet trustBasisCriteria) throws SecurityException {
+        
+        Set<String> trustedNames = null;
+        if (pkixTrustEvaluator.isNameChecking()) {
+            if (pkixResolver.supportsTrustedNameResolution()) {
+                trustedNames = pkixResolver.resolveTrustedNames(trustBasisCriteria);
+            } else {
+                log.debug("PKIX resolver does not support resolution of trusted names, skipping name checking");
+            }
+        }
+        Iterable<PKIXValidationInformation> validationInfoSet = pkixResolver.resolve(trustBasisCriteria);
+        
+        Pair<Set<String>, Iterable<PKIXValidationInformation>> validationPair = 
+            new Pair<Set<String>, Iterable<PKIXValidationInformation>>(trustedNames, validationInfoSet);
+        
+        return validationPair;
     }
 
 }

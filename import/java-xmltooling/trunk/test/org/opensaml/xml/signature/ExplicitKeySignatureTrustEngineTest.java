@@ -42,6 +42,8 @@ import org.opensaml.xml.signature.impl.ExplicitKeySignatureTrustEngine;
  */
 public class ExplicitKeySignatureTrustEngineTest extends XMLObjectBaseTestCase {
     
+    // TODO test simple/raw signing support
+    
     private X509Certificate signingCert;
     private String signingCertBase64 = 
         "MIIDzjCCAragAwIBAgIBMTANBgkqhkiG9w0BAQUFADAtMRIwEAYDVQQKEwlJbnRl" +

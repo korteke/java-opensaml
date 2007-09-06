@@ -19,15 +19,19 @@ package org.opensaml.xml.signature.impl;
 import org.apache.log4j.Logger;
 import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
+import org.opensaml.xml.security.SecurityHelper;
+import org.opensaml.xml.security.SigningUtil;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.credential.CredentialResolver;
 import org.opensaml.xml.security.credential.UsageType;
+import org.opensaml.xml.security.criteria.KeyAlgorithmCriteria;
 import org.opensaml.xml.security.criteria.UsageCriteria;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xml.security.trust.ExplicitKeyTrustEvaluator;
 import org.opensaml.xml.security.trust.TrustedCredentialTrustEngine;
 import org.opensaml.xml.signature.Signature;
 import org.opensaml.xml.signature.SignatureTrustEngine;
+import org.opensaml.xml.util.DatatypeHelper;
 
 /**
  * An implementation of {@link SignatureTrustEngine} which evaluates the validity and trustworthiness
@@ -77,15 +81,16 @@ public class ExplicitKeySignatureTrustEngine extends BaseSignatureTrustEngine<It
             throws SecurityException {
         
         checkParams(signature, trustBasisCriteria);
-        CriteriaSet criteriaSet = null;
-        if (! trustBasisCriteria.contains(UsageCriteria.class)) {
-            criteriaSet = new CriteriaSet();
-            criteriaSet.addAll(trustBasisCriteria);
+        
+        CriteriaSet criteriaSet = new CriteriaSet();
+        criteriaSet.addAll(trustBasisCriteria);
+        if (! criteriaSet.contains(UsageCriteria.class)) {
             criteriaSet.add( new UsageCriteria(UsageType.SIGNING));
-        } else {
-            criteriaSet = trustBasisCriteria;
         }
-        //TODO construct other criteria based on info from Signature
+        String jcaAlgorithm = SecurityHelper.getKeyAlgorithmFromURI(signature.getSignatureAlgorithm());
+        if (!DatatypeHelper.isEmpty(jcaAlgorithm)) {
+            criteriaSet.add(new KeyAlgorithmCriteria(jcaAlgorithm),true);
+        }
         
         Iterable<Credential> trustedCredentials = getCredentialResolver().resolve(criteriaSet);
         
@@ -93,7 +98,7 @@ public class ExplicitKeySignatureTrustEngine extends BaseSignatureTrustEngine<It
             return true;
         }
         
-        // If the credentials extracted from Signature's KeyInfo did not verify the
+        // If the credentials extracted from Signature's KeyInfo (if any) did not verify the
         // signature and/or establish trust, as a fall back attempt to verify the signature with
         // the trusted credentials directly.
         log.debug("Attempting to verify signature using trusted credentials");
@@ -109,10 +114,59 @@ public class ExplicitKeySignatureTrustEngine extends BaseSignatureTrustEngine<It
     }
     
     /** {@inheritDoc} */
+    public boolean validate(byte[] signature, byte[] content, String algorithmURI, CriteriaSet trustBasisCriteria,
+            Credential candidateCredential) throws SecurityException {
+        
+        checkParamsRaw(signature, content, algorithmURI, trustBasisCriteria);
+        
+        CriteriaSet criteriaSet = new CriteriaSet();
+        criteriaSet.addAll(trustBasisCriteria);
+        if (! criteriaSet.contains(UsageCriteria.class)) {
+            criteriaSet.add( new UsageCriteria(UsageType.SIGNING));
+        }
+        String jcaAlgorithm = SecurityHelper.getKeyAlgorithmFromURI(algorithmURI);
+        if (!DatatypeHelper.isEmpty(jcaAlgorithm)) {
+            criteriaSet.add(new KeyAlgorithmCriteria(jcaAlgorithm),true);
+        }
+        
+        Iterable<Credential> trustedCredentials = getCredentialResolver().resolve(criteriaSet);
+        
+        // First try the optional supplied candidate credential
+        if (candidateCredential != null) {
+            if (SigningUtil.verifyWithURI(candidateCredential, algorithmURI, signature, content)) {
+                log.debug("Successfully verified signature using supplied candidate credential");
+                log.debug("Attempting to establish trust of supplied candidate credential");
+                if (evaluateTrust(candidateCredential, trustedCredentials)) {
+                    log.debug("Successfully established trust of supplied candidate credential");
+                    return true;
+                } else {
+                    log.debug("Failed to establish trust of supplied candidate credential");
+                }
+            }
+        }
+        
+        // If the candidate verification credential did not verify the
+        // signature and/or establish trust, or if no candidate was supplied,
+        // as a fall back attempt to verify the signature with the trusted credentials directly.
+        log.debug("Attempting to verify signature using trusted credentials");
+        
+        for (Credential trustedCredential : trustedCredentials) {
+            if (SigningUtil.verifyWithURI(trustedCredential, algorithmURI, signature, content)) {
+                log.debug("Successfully verified signature using resolved trusted credential");
+                return true;
+            }
+        }
+        log.error("Failed to verify signature using either supplied candidate credential or directly trusted credentials");
+        return false;
+    }
+    
+    /** {@inheritDoc} */
     protected boolean evaluateTrust(Credential untrustedCredential, Iterable<Credential> trustedCredentials) 
             throws SecurityException {
         
         return keyTrust.validate(untrustedCredential, trustedCredentials);
     }
+
+
 
 }

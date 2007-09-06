@@ -89,6 +89,8 @@ public final class SecurityHelper {
      * @return the Java key algorithm specifier, or null if the mapping is unavailable or indeterminable from the URI
      */
     public static String getKeyAlgorithmFromURI(String algorithmURI) {
+        // TODO support signature and other algorithm URI's which have implied key algorithms.
+        // The default Apache config file only includes the key algorithm for the block ciphers and key wrap URI's
         return DatatypeHelper.safeTrimOrNullString(JCEMapper.getJCEKeyAlgorithmFromURI(algorithmURI));
     }
 
