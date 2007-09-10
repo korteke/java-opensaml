@@ -221,8 +221,8 @@ public final class SigningUtil {
         } else if (verificationKey instanceof PublicKey) {
             return verify((PublicKey) verificationKey, jcaAlgorithmID, signature, input);
         } else {
-            log.error("No PrivateKey present in signing credential for signature computation");
-            throw new SecurityException("No PrivateKey supplied for signing");
+            log.error("No PublicKey present in verification credential for signature verification");
+            throw new SecurityException("No PublicKey supplied for signature verification");
         }
     }
     
@@ -277,6 +277,11 @@ public final class SigningUtil {
      */
     public static boolean verifyMAC(Key verificationKey, String jcaAlgorithmID, byte[] signature, byte[] input) 
         throws SecurityException {
+        
+        if (log.isDebugEnabled()) {
+            log.debug(String.format("Verifying MAC over input using key of type '%s' and JCA algorithm ID '%s'",
+                    verificationKey.getAlgorithm(), jcaAlgorithmID));
+        }
         
         // Java JCA/JCE Mac interface doesn't have a verification op,
         // so have to compute the Mac and compare the byte arrays manually.
