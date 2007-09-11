@@ -97,7 +97,7 @@ public class HttpServletRequestAdapter implements HTTPInTransport {
 
     /** {@inheritDoc} */
     public String getParameterValue(String name) {
-        return HTTPTransportUtils.urlDecode(httpServletRequest.getParameter(name));
+        return httpServletRequest.getParameter(name);
 
     }
 
@@ -107,7 +107,7 @@ public class HttpServletRequestAdapter implements HTTPInTransport {
         String[] values = httpServletRequest.getParameterValues(name);
         if (values != null) {
             for (String value : values) {
-                valuesList.add(HTTPTransportUtils.urlDecode(value));
+                valuesList.add(value);
             }
         }
 
