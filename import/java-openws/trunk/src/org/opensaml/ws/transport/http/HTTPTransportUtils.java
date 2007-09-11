@@ -16,13 +16,18 @@
 
 package org.opensaml.ws.transport.http;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+
 /**
  * Utilities for working with HTTP transports.
  */
 public class HTTPTransportUtils {
-    
+
     /** Constructor. */
-    protected HTTPTransportUtils() {}
+    protected HTTPTransportUtils() {
+    }
 
     /**
      * Adds Cache-Control and Pragma headers meant to disable caching.
@@ -51,5 +56,35 @@ public class HTTPTransportUtils {
      */
     public static void setContentType(HTTPOutTransport transport, String contentType) {
         transport.setHeader("Content-Type", contentType);
+    }
+
+    /**
+     * URL Decode the given string.
+     * 
+     * @param value the string to decode
+     * @return the decoded string
+     */
+    public static String urlDecode(String value) {
+        try {
+            return URLDecoder.decode(value, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            // UTF-8 encoding is required to be supported by all JVMs
+            return null;
+        }
+    }
+
+    /**
+     * URL Encode the given string.
+     * 
+     * @param value the string to encode
+     * @return the encoded string
+     */
+    public static String urlEncode(String value) {
+        try {
+            return URLEncoder.encode(value, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            // UTF-8 encoding is required to be supported by all JVMs
+            return null;
+        }
     }
 }

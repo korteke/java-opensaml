@@ -19,7 +19,6 @@ package org.opensaml.ws.transport.http;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -41,7 +40,7 @@ public class HttpServletRequestAdapter implements HTTPInTransport {
 
     /** Whether the peer endpoint has been authenticated. */
     private boolean peerAuthenticated;
-    
+
     /** Storage for peer credential adapted from HTTP servlet request. */
     private Credential peerCredential;
 
@@ -53,7 +52,7 @@ public class HttpServletRequestAdapter implements HTTPInTransport {
     public HttpServletRequestAdapter(HttpServletRequest request) {
         httpServletRequest = request;
     }
-    
+
     /** {@inheritDoc} */
     public Object getAttribute(String name) {
         return httpServletRequest.getAttribute(name);
@@ -67,9 +66,9 @@ public class HttpServletRequestAdapter implements HTTPInTransport {
     /** {@inheritDoc} */
     public String getHeaderValue(String name) {
         // This appears to be necessary for at least some HttpServletRequest impls
-        if(name.equalsIgnoreCase("Content-Type")){
+        if (name.equalsIgnoreCase("Content-Type")) {
             return httpServletRequest.getContentType();
-        }else if(name.equalsIgnoreCase("Content-Length")){
+        } else if (name.equalsIgnoreCase("Content-Length")) {
             return Integer.toString(httpServletRequest.getContentLength());
         }
         return httpServletRequest.getHeader(name);
@@ -98,19 +97,20 @@ public class HttpServletRequestAdapter implements HTTPInTransport {
 
     /** {@inheritDoc} */
     public String getParameterValue(String name) {
-        return httpServletRequest.getParameter(name);
+        return HTTPTransportUtils.urlDecode(httpServletRequest.getParameter(name));
+
     }
-    
+
     /** {@inheritDoc} */
     public List<String> getParameterValues(String name) {
         ArrayList<String> valuesList = new ArrayList<String>();
         String[] values = httpServletRequest.getParameterValues(name);
-        if(values != null){
-            for(String value : values){
-                valuesList.add(value);
+        if (values != null) {
+            for (String value : values) {
+                valuesList.add(HTTPTransportUtils.urlDecode(value));
             }
         }
-        
+
         return valuesList;
     }
 
@@ -160,7 +160,7 @@ public class HttpServletRequestAdapter implements HTTPInTransport {
      * 
      * @return adapted request
      */
-    public HttpServletRequest getWrappedRequest(){
+    public HttpServletRequest getWrappedRequest() {
         return httpServletRequest;
     }
 
@@ -173,18 +173,18 @@ public class HttpServletRequestAdapter implements HTTPInTransport {
     public boolean isConfidential() {
         return httpServletRequest.isSecure();
     }
-    
+
     /** {@inheritDoc} */
     public void setAuthenticated(boolean isAuthenticated) {
         peerAuthenticated = isAuthenticated;
     }
-    
+
     /**
      * {@inheritDoc}
      * 
      * This method is not supported for this transport implementation.
      */
     public void setConfidential(boolean isConfidential) {
-        
+
     }
 }
