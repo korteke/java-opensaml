@@ -19,6 +19,7 @@ package org.opensaml.xml;
 import java.util.Collections;
 import java.util.List;
 
+import org.opensaml.xml.schema.XSAny;
 import org.opensaml.xml.util.AttributeMap;
 import org.opensaml.xml.util.XMLHelper;
 import org.opensaml.xml.util.XMLObjectChildrenList;
@@ -29,6 +30,8 @@ import org.opensaml.xml.validation.AbstractValidatingXMLObject;
  * own XMLObject representation. Generally this would be used as a catch-all mechanism such as when working with XML
  * documents that contain content that may not be known at the time, such as elements defined in XML Schema that contain
  * &lt;any&gt; constructs.
+ * 
+ * @deprecated use {@link XSAny}
  */
 public class ElementProxy extends AbstractValidatingXMLObject implements AttributeExtensibleXMLObject,
         ElementExtensibleXMLObject {

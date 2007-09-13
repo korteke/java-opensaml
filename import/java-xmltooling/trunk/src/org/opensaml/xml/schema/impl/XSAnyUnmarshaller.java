@@ -14,44 +14,48 @@
  * limitations under the License.
  */
 
-package org.opensaml.xml;
+package org.opensaml.xml.schema.impl;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.AbstractXMLObjectUnmarshaller;
 import org.opensaml.xml.io.UnmarshallingException;
-import org.opensaml.xml.schema.impl.XSAnyUnmarshaller;
+import org.opensaml.xml.schema.XSAny;
 import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Attr;
 
 /**
  * A thread-safe unmarshaller for {@link ElementProxy}s.
- * 
- * @deprecated use {@link XSAnyUnmarshaller}
  */
-public class ElementProxyUnmarshaller extends AbstractXMLObjectUnmarshaller {
+public class XSAnyUnmarshaller extends AbstractXMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
     protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
             throws UnmarshallingException {
-        ElementProxy elementProxy = (ElementProxy) parentXMLObject;
-        elementProxy.getUnknownXMLObjects().add(childXMLObject);
+        XSAny xsAny = (XSAny) parentXMLObject;
+
+        xsAny.getUnknownXMLObjects().add(childXMLObject);
     }
 
     /** {@inheritDoc} */
     protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
-        ElementProxy elementProxy = (ElementProxy) xmlObject;
+        XSAny xsAny = (XSAny) xmlObject;
+
         QName attribQName = XMLHelper.constructQName(attribute.getNamespaceURI(), attribute.getLocalName(), attribute
                 .getPrefix());
+
         if (attribute.isId()) {
-            elementProxy.getUnknownAttributes().registerID(attribQName);
+            xsAny.getUnknownAttributes().registerID(attribQName);
         }
-        elementProxy.getUnknownAttributes().put(attribQName, attribute.getValue());
+
+        xsAny.getUnknownAttributes().put(attribQName, attribute.getValue());
     }
 
     /** {@inheritDoc} */
     protected void processElementContent(XMLObject xmlObject, String elementContent) {
-        ElementProxy elementProxy = (ElementProxy) xmlObject;
-        elementProxy.setTextContent(elementContent);
+        XSAny xsAny = (XSAny) xmlObject;
+
+        xsAny.setTextContent(elementContent);
     }
 }

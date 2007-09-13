@@ -22,12 +22,15 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.xml.io.AbstractXMLObjectMarshaller;
 import org.opensaml.xml.io.MarshallingException;
+import org.opensaml.xml.schema.impl.XSAnyMarshaller;
 import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
 
 /**
  * A thread-safe marshaller for {@link ElementProxy}s.
+ * 
+ * @deprecated use {@link XSAnyMarshaller}
  */
 public class ElementProxyMarshaller extends AbstractXMLObjectMarshaller {
 

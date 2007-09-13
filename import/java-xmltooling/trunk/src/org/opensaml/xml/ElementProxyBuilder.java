@@ -16,8 +16,12 @@
 
 package org.opensaml.xml;
 
+import org.opensaml.xml.schema.impl.XSAnyBuilder;
+
 /**
  * Builder of {@link org.opensaml.xml.ElementProxy} objects.
+ * 
+ * @deprecated use {@link XSAnyBuilder}
  */
 public class ElementProxyBuilder extends AbstractXMLObjectBuilder<ElementProxy> {
 
