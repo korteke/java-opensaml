@@ -87,4 +87,32 @@ public class HTTPTransportUtils {
             return null;
         }
     }
+    
+    /**
+     * Get the first raw (i.e. non URL-decoded) query string component with the specified parameter name.
+     * 
+     * The component will be returned as a string in the form 'paramName=paramValue' (minus the quotes).
+     * 
+     * @param queryString the raw HTTP URL query string
+     * @param paramName the name of the parameter to find
+     * @return the found component, or null if not found
+     */
+    public static String getRawQueryStringParameter(String queryString, String paramName) {
+        if (queryString == null) {
+            return null;
+        }
+        
+        String paramPrefix = paramName + "=";
+        int start = queryString.indexOf(paramPrefix);
+        if (start == -1) {
+            return null;
+        }
+        
+        int end = queryString.indexOf('&', start);
+        if (end == -1) {
+            return queryString.substring(start);
+        } else {
+            return queryString.substring(start, end);
+        }
+    }
 }
