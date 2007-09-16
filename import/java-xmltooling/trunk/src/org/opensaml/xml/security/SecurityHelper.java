@@ -598,13 +598,26 @@ public final class SecurityHelper {
      * of the security configuration's named generator manager will be used.
      * </p>
      * 
+     * <p>
+     * The generator is determined by the specified {@link SecurityConfiguration}.  If a security configuration
+     * is not supplied, the global security configuration ({@link Configuration#getGlobalSecurityConfiguration()})
+     * will be used.
+     * </p>
+     * 
      * @param credential the credential for which a generator is desired
-     * @param secConfig the SecurityConfiguration to use
+     * @param config the SecurityConfiguration to use (may be null)
      * @param keyInfoGenName the named KeyInfoGeneratorManager configuration to use (may be null)
      * @return a KeyInfoGenerator appropriate for the specified credential
      */
-    public static KeyInfoGenerator getKeyInfoGenerator(Credential credential, SecurityConfiguration secConfig,
+    public static KeyInfoGenerator getKeyInfoGenerator(Credential credential, SecurityConfiguration config,
             String keyInfoGenName) {
+        
+        SecurityConfiguration secConfig;
+        if (config != null) {
+            secConfig = config;
+        } else {
+            secConfig = Configuration.getGlobalSecurityConfiguration();
+        }
         
         NamedKeyInfoGeneratorManager kiMgr = secConfig.getKeyInfoGeneratorManager();
         if (kiMgr != null) {
