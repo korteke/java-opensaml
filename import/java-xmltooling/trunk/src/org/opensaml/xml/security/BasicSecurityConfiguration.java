@@ -373,6 +373,7 @@ public class BasicSecurityConfiguration implements SecurityConfiguration {
     public DSAParams getDSAParams(int keyLength) {
         return dsaParams.get(keyLength);
     }
+    
     /**
      * Set a DSA parameters instance which defines the default DSA key information to be used 
      * within a DSA "key family".
@@ -421,12 +422,11 @@ public class BasicSecurityConfiguration implements SecurityConfiguration {
                 return false;
             }
             if (this.keyLength == null) {
-                if (other.keyLength != null) {
-                    return false;
-                }
+                return other.keyLength == null;
+            } else {
+                return this.keyLength.equals(other.keyLength);
             }
             
-            return this.keyLength.equals(other.keyLength);
         }
 
         /** {@inheritDoc} */
@@ -478,7 +478,7 @@ public class BasicSecurityConfiguration implements SecurityConfiguration {
         
         /** {@inheritDoc} */
         public boolean equals(Object obj) {
-            if (! (obj instanceof DataEncryptionIndex)) {
+            if (! (obj instanceof KeyTransportEncryptionIndex)) {
                 return false;
             }
             KeyTransportEncryptionIndex other = (KeyTransportEncryptionIndex) obj;
@@ -496,11 +496,10 @@ public class BasicSecurityConfiguration implements SecurityConfiguration {
                 }
             }
             if (this.wrappedAlgorithm == null) {
-                if (other.wrappedAlgorithm != null) {
-                    return false;
-                }
+                return other.wrappedAlgorithm == null;
+            } else {
+                return this.wrappedAlgorithm.equals(other.wrappedAlgorithm);
             }
-            return this.wrappedAlgorithm.equals(other.wrappedAlgorithm);
         }
 
         /** {@inheritDoc} */
