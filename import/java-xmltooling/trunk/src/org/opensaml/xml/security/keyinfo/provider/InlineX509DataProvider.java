@@ -65,10 +65,10 @@ import org.opensaml.xml.util.DatatypeHelper;
  * the end-entity certificate.
  * 
  */
-public class X509DataProvider extends AbstractKeyInfoProvider {
+public class InlineX509DataProvider extends AbstractKeyInfoProvider {
     
     /** Class logger. */
-    private static Logger log = Logger.getLogger(X509DataProvider.class);
+    private static Logger log = Logger.getLogger(InlineX509DataProvider.class);
     
     /** Responsible for parsing and serializing X.500 names to/from {@link X500Principal} instances. */
     private X500DNHandler x500DNHandler;
@@ -76,7 +76,7 @@ public class X509DataProvider extends AbstractKeyInfoProvider {
     /**
      * Constructor.
      */
-    public X509DataProvider() {
+    public InlineX509DataProvider() {
         x500DNHandler = new InternalX500DNHandler();
     }
 

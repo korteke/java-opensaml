@@ -27,7 +27,7 @@ import org.opensaml.xml.security.keyinfo.NamedKeyInfoGeneratorManager;
 import org.opensaml.xml.security.keyinfo.provider.DSAKeyValueProvider;
 import org.opensaml.xml.security.keyinfo.provider.DocumentFragmentRetrievalMethodProvider;
 import org.opensaml.xml.security.keyinfo.provider.RSAKeyValueProvider;
-import org.opensaml.xml.security.keyinfo.provider.X509DataProvider;
+import org.opensaml.xml.security.keyinfo.provider.InlineX509DataProvider;
 import org.opensaml.xml.security.x509.X509KeyInfoGeneratorFactory;
 import org.opensaml.xml.signature.SignatureConstants;
 
@@ -118,7 +118,7 @@ public class DefaultSecurityConfigurationBootstrap {
         ArrayList<KeyInfoProvider> providers = new ArrayList<KeyInfoProvider>();
         providers.add( new RSAKeyValueProvider() );
         providers.add( new DSAKeyValueProvider() );
-        providers.add( new X509DataProvider() );
+        providers.add( new InlineX509DataProvider() );
         providers.add( new DocumentFragmentRetrievalMethodProvider() );
         
         KeyInfoCredentialResolver resolver = new KeyInfoCredentialResolver(providers);

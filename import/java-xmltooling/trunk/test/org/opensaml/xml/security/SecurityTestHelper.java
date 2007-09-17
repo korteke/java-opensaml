@@ -48,7 +48,7 @@ import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xml.security.keyinfo.KeyInfoProvider;
 import org.opensaml.xml.security.keyinfo.provider.DSAKeyValueProvider;
 import org.opensaml.xml.security.keyinfo.provider.RSAKeyValueProvider;
-import org.opensaml.xml.security.keyinfo.provider.X509DataProvider;
+import org.opensaml.xml.security.keyinfo.provider.InlineX509DataProvider;
 import org.opensaml.xml.util.Base64;
 
 /**
@@ -302,7 +302,7 @@ public class SecurityTestHelper {
         List<KeyInfoProvider> providers = new ArrayList<KeyInfoProvider>();
         providers.add( new RSAKeyValueProvider() );
         providers.add( new DSAKeyValueProvider() );
-        providers.add( new X509DataProvider() );
+        providers.add( new InlineX509DataProvider() );
         return new KeyInfoCredentialResolver(providers);
     }
     
