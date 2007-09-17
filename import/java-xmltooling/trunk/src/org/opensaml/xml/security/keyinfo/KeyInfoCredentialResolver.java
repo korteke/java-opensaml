@@ -35,10 +35,62 @@ import org.opensaml.xml.signature.KeyInfoHelper;
 import org.opensaml.xml.signature.KeyName;
 import org.opensaml.xml.signature.KeyValue;
 
-// TODO document processing model and hooks in detail, suggested usage, etc
- 
 /**
  * Specialized credential resolver interface which resolves credentials based on a {@link KeyInfo}  element.
+ * 
+ * <p>
+ * This resolver requires a {@link KeyInfoCriteria} to be supplied as the resolution criteria.
+ * It is permissible, however, for the criteria's KeyInfo to be null.  This allows for more
+ * convenient processing logic for example when a parent element allows an optional KeyInfo
+ * and in fact a given instance does not contain one.  Specialized subclasses of this resolver
+ * may still attempt to return credentials in an implementation or context-specific manner,
+ * as described below.
+ * </p>
+ * 
+ * <p>
+ * Most of the processing of the KeyInfo and extraction of {@link Credential}'s from the KeyInfo
+ * is handled by instances of {@link KeyInfoProvider}.  An ordered list of KeyInfoProviders must be
+ * supplied to the resolver when it is constructed.
+ * </p>
+ * 
+ * <p>
+ * Processing of the supplied KeyInfo element proceeds as follows:
+ * <ol>
+ *   <li>A {@link KeyInfoResolutionContext} is instantiated.  This resolution context is used to hold state shared
+ *       amongst all the providers and processing hooks which run within the resolver.</li>
+ *   <li>This resolution context is initialized and populated with the actual KeyInfo object being processed as
+ *       well as the values of any {@link KeyName} child elements present.</li>
+ *   <li>An attempt is then made to resolve a credential from any {@link KeyValue} child elements as described for
+ *       {@link #resolveKeyValue(org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver.KeyInfoResolutionContext, CriteriaSet, List)
+ *       If a credential is so resolved, it will also be placed in the resolution context</li>
+ *   <li>The remaining (non-KeyValue) children are then processed in document order.  Each child element is
+ *       processed by the registered providers in provider list order. The credential or credentials resolved by the
+ *       first provider to successfully do so are added to the effective set of credentials returned by the resolver,
+ *       and processing of that child element terminates.  Processing continues with the next child element.</li>
+ *   <li>At this point all KeyInfo children have been processed.  If the effective set of credentials to return 
+ *       is empty, if a credential was resolved from a KeyValue element and available in the resolution context,
+ *       it is added to the effective set. Since the KeyInfo may have a plain KeyValue representation of the key
+ *       represented by the KeyInfo, in addition to a more specific key type/container (and hence credential)
+ *       representation, this technique avoids the unnecessary return of duplicate keys, returning only the more
+ *       specific credential representation of the key.</li>
+ *   <li>A post-processing hook is then called: {@link #postProcess(org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver.KeyInfoResolutionContext, CriteriaSet, List)}.
+ *       The default implementation is a no-op.  This is an extension point by which subclasses may implement custom
+ *       post-processing of the effective credential set to be returned.  One example use case is when the KeyInfo
+ *       being processed represents the public aspects (e.g. public key, or a key name or other identifier) of an
+ *       encryption key belonging to the resolving entity.  The resolved public keys and other resolution context
+ *       information may be used to further resolve the credential or credentials containing the associated decryption
+ *       key (i.e. a private or symmetric key). For an example of such an implementation,
+ *       see {@link LocalKeyInfoCredentialResolver}</li>
+ *   <li>Finally, if no credentials have been otherwise resolved, a final post-processing hook is called: 
+ *       {@link #postProcessEmptyCredentials(org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver.KeyInfoResolutionContext, CriteriaSet, List)}.
+ *       The default implementation is a no-op.  This is an extension point by which subclasses may implement
+ *       custom logic to resolve credentials in an implementation or context-specific manner, if no other
+ *       mechanism has succeeded.  Example usages might be to return a default set of credentials,
+ *       or to use non-KeyInfo-derived criteria or contextual information to determine the credential
+ *       or credentials to return.</li>
+ *   <li></li>
+ * </ol>
+ * </p>
  * 
  */
 public class KeyInfoCredentialResolver extends AbstractCriteriaFilteringCredentialResolver {
@@ -141,7 +193,9 @@ public class KeyInfoCredentialResolver extends AbstractCriteriaFilteringCredenti
 
     /**
      * Hook for processing the case where no credentials were returned by any resolution method
-     * by any provider, nor by the processing of the postProcess() hook.
+     * by any provider, nor by the processing of the
+     * {@link #postProcess(org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver.KeyInfoResolutionContext, CriteriaSet, List)}
+     * hook.
      * 
      * @param kiContext KeyInfo resolution context containing 
      * @param criteriaSet the credential criteria used to resolve credentials
@@ -156,6 +210,11 @@ public class KeyInfoCredentialResolver extends AbstractCriteriaFilteringCredenti
 
     /**
      * Use registered providers to process the non-KeyValue children of KeyInfo.
+     * 
+     * Each child element is processed in document order. Each child element is processed
+     * by each provider in the ordered list of providers.  The credential or credentials
+     * resolved by the first provider to successfully do so are added to the effective set
+     * resolved by the KeyInfo resolver.
      * 
      * @param kiContext KeyInfo resolution context containing 
      * @param criteriaSet the credential criteria used to resolve credentials
@@ -198,6 +257,10 @@ public class KeyInfoCredentialResolver extends AbstractCriteriaFilteringCredenti
     /**
      * Process the given KeyInfo child with the registered providers.
      * 
+     * The child element is processed by each provider in the ordered list of providers.
+     * The credential or credentials resolved by the first provider to successfully do so are
+     * returned and processing of the child element is terminated.
+     * 
      * @param kiContext KeyInfo resolution context containing 
      * @param criteriaSet the credential criteria used to resolve credentials
      * @param keyInfoChild the KeyInfo to evaluate
@@ -238,6 +301,12 @@ public class KeyInfoCredentialResolver extends AbstractCriteriaFilteringCredenti
     /**
      * Initialize the resolution context that will be used by the providers.
      * 
+     * The supplied KeyInfo object is stored in the context, as well as
+     * the values of any {@link KeyName} children present.  Finally
+     * if a credential is resolveble by any registered provider from a
+     * plain {@link KeyValue} child, that credential is also stored
+     * in the context.
+     * 
      * @param kiContext KeyInfo resolution context containing 
      * @param keyInfo the KeyInfo to evaluate
      * @param criteriaSet the credential criteria used to resolve credentials
@@ -260,11 +329,17 @@ public class KeyInfoCredentialResolver extends AbstractCriteriaFilteringCredenti
 
     /**
      * Resolve the key from any KeyValue element that may be present, and store the resulting 
-     * credential in the  resolution context.
+     * credential in the resolution context.
      * 
-     * Note: this assumes that KeyInfo/KeyValue will not be abused via-a-vis the Signature specificiation,
-     * and that therefore all KeyValue elements (if there is even more than one) will all resolve to the same
-     * key value. Therefore, only the first credential derived from a KeyValue will be be utilized.
+     * Each KeyValue element is processed in turn in document order. Each Keyvalue will be processed 
+     * by each provider in the ordered list of registered providers. The first credential successfully
+     * resolved from a KeyValue will be stored in the resolution context.
+     * 
+     * Note: This resolver implementation assumes that KeyInfo/KeyValue will not be abused via-a-vis the Signature
+     * specificiation, and that therefore all KeyValue elements (if there is even more than one) will all resolve to
+     * the same key value. The KeyInfo might, for example have multiple KeyValue children, containing different
+     * representations of the same key.  Therefore, only the first credential derived from a KeyValue will be be
+     * utilized.
      * 
      * @param kiContext KeyInfo resolution context 
      * @param criteriaSet the credential criteria used to resolve credentials
@@ -328,8 +403,22 @@ public class KeyInfoCredentialResolver extends AbstractCriteriaFilteringCredenti
     }
     
     /**
-     *  Resolution context class that can be used to supply information to the providers within
-     *  a given invocation of the resolver.
+     *  Resolution context class that can be used to supply information to the providers and processing
+     *  hooks within a given invocation of the resolver.
+     *  
+     *  <p>
+     *  This resolution context is used to hold state shared amongst all the providers and processing hooks
+     *  which run within the resolver.
+     *  </p>
+     *  
+     *  <p>
+     *  The extensible properties map available from {@link #getProperties()} may for example used to communicate
+     *  state between two or more providers, or between a provider and custom logic in one of the resolver's
+     *  post-processing hooks. It is recommended that providers and/or hooks define and use property names
+     *  in such a way as to avoid collistions with those used by other providers and hooks, and to also
+     *  clearly define the data type stored for each propery name.
+     *  </p>
+     *  
      */
     public class KeyInfoResolutionContext {
         
@@ -407,6 +496,15 @@ public class KeyInfoCredentialResolver extends AbstractCriteriaFilteringCredenti
         }
 
         /**
+         * Set the credential holding the key obtained from a KeyValue, if any.
+         * 
+         * @param keyValueCredential The credential to set.
+         */
+        public void setKeyValueCredential(Credential keyValueCredential) {
+            this.credential = keyValueCredential;
+        }
+        
+        /**
          * Get the set of credentials already resolved by other providers.
          * 
          * @return Returns the keyValueCredential.
@@ -416,14 +514,6 @@ public class KeyInfoCredentialResolver extends AbstractCriteriaFilteringCredenti
         }
         
         /**
-         * Set the credential holding the key obtained from a KeyValue, if any.
-         * 
-         * @param keyValueCredential The credential to set.
-         */
-        public void setKeyValueCredential(Credential keyValueCredential) {
-            this.credential = keyValueCredential;
-        }
-        /**
          * Get the extensible properties map.
          * 
          * @return Returns the properties.
@@ -431,7 +521,6 @@ public class KeyInfoCredentialResolver extends AbstractCriteriaFilteringCredenti
         public Map<String, Object> getProperties() {
             return properties;
         }
-
     }
 
 }

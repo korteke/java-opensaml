@@ -26,7 +26,7 @@ import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver.KeyInfoResolu
 
 /**
  * Interface for providers of {@link KeyInfoCredentialResolver} which support extracting a {@link Credential} from 
- * a child element of XML KeyInfo elements.
+ * a child element of {@link KeyInfo} elements.
  */
 public interface KeyInfoProvider {
     
@@ -47,11 +47,15 @@ public interface KeyInfoProvider {
             CriteriaSet criteriaSet, KeyInfoResolutionContext kiContext) throws SecurityException;
     
     /**
-     * Evaluate whether the given provider can attempt to resolve a credential from the specified KeyInfo child.
+     * Evaluate whether the given provider should attempt to handle resolving a credential
+     * from the specified KeyInfo child.
+     * 
+     * An evaluation of <code>true</code> does not guarantee that a credential can or will be 
+     * extracted form the particular KeyInfo child, only that processing should be attempted.
      * 
      * @param keyInfoChild the KeyInfo child object to consider
      * 
-     * @return true if the provider an attempt to resolve, false otherwise
+     * @return true if the provider should attempt to resolve credentials, false otherwise
      */
     public boolean handles(XMLObject keyInfoChild);
 

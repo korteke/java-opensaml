@@ -49,7 +49,7 @@ import org.opensaml.xml.util.DatatypeHelper;
  * <li><code>http://www.w3.org/2000/09/xmldsig#RSAKeyValue</code></li>
  * <li><code>http://www.w3.org/2000/09/xmldsig#X509Data</code></li>
  * </ul>
- * If type is absent, any credentials resolved from the referenced KeyInfo will be returned.
+ * If type is absent, any credentials resolved from the dereferenced KeyInfo will be returned.
  * If type is present, only credentials consistent with that type will be returned,
  * that is they will be a non-{@link X509Credential} containing either a DSA key or an RSA key,
  * or will be an instance of {@link X509Credential}, respectively.
