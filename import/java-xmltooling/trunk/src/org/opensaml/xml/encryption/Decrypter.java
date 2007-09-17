@@ -141,6 +141,9 @@ public class Decrypter {
     /** Additional criteria to use when resolving credentials based on an EncryptedKey's KeyInfo. */
     private CriteriaSet kekResolverCriteria;
     
+    /** The name of the JCA security provider to use. */
+    private String jcaProviderName;
+    
     
     /**
      * Constructor.
@@ -167,6 +170,32 @@ public class Decrypter {
         parserPool.setFeatures(features);
         
         unmarshallerFactory = Configuration.getUnmarshallerFactory();
+    }
+    
+    /**
+     * Get the Java Cryptography Architecture (JCA) security provider name that should be
+     * used to provide the decryption support.
+     * 
+     * Defaults to <code>null</code>, which means that the first registered provider
+     * which supports the indicated encryption algorithm URI will be used.
+     *
+     * @return the JCA provider name to use
+     */
+    public String getJCAProviderName() {
+        return jcaProviderName;
+    }
+    
+    /**
+     * Set the Java Cryptography Architecture (JCA) security provider name that should be
+     * used to provide the decryption support.
+     * 
+     * Defaults to <code>null</code>, which means that the first registered provider
+     * which supports the indicated encryption algorithm URI will be used.
+     *
+     * @param providerName the JCA provider name to use
+     */
+    public void setJCAProviderName(String providerName) {
+        jcaProviderName = providerName;
     }
     
     /**
@@ -457,7 +486,11 @@ public class Decrypter {
         
         XMLCipher xmlCipher;
         try {
-            xmlCipher = XMLCipher.getInstance();
+            if (getJCAProviderName() != null) {
+                xmlCipher = XMLCipher.getProviderInstance(getJCAProviderName());
+            } else {
+                xmlCipher = XMLCipher.getInstance();
+            }
             xmlCipher.init(XMLCipher.DECRYPT_MODE, dataEncKey);
         } catch (XMLEncryptionException e) {
             log.error("Error initialzing cipher instance on data decryption", e);
@@ -554,7 +587,11 @@ public class Decrypter {
         
         XMLCipher xmlCipher;
         try {
-            xmlCipher = XMLCipher.getInstance();
+            if (getJCAProviderName() != null) {
+                xmlCipher = XMLCipher.getProviderInstance(getJCAProviderName());
+            } else {
+                xmlCipher = XMLCipher.getInstance();
+            }
             xmlCipher.init(XMLCipher.UNWRAP_MODE, kek);
         } catch (XMLEncryptionException e) {
             log.error("Error initialzing cipher instance on key decryption", e);

@@ -81,6 +81,9 @@ public class Encrypter {
     /** Builder instance for building KeyInfo objects. */
     private KeyInfoBuilder keyInfoBuilder;
     
+    /** The name of the JCA security provider to use. */
+    private String jcaProviderName;
+    
     /**
      * Constructor.
      * 
@@ -92,6 +95,34 @@ public class Encrypter {
         
         XMLObjectBuilderFactory  builderFactory = Configuration.getBuilderFactory();
         keyInfoBuilder = (KeyInfoBuilder) builderFactory.getBuilder(KeyInfo.DEFAULT_ELEMENT_NAME);
+        
+        jcaProviderName = null;
+    }
+    
+    /**
+     * Get the Java Cryptography Architecture (JCA) security provider name that should be
+     * used to provide the encryption support.
+     * 
+     * Defaults to <code>null</code>, which means that the first registered provider
+     * which supports the requested encryption algorithm URI will be used.
+     *
+     * @return the JCA provider name to use
+     */
+    public String getJCAProviderName() {
+        return jcaProviderName;
+    }
+    
+    /**
+     * Set the Java Cryptography Architecture (JCA) security provider name that should be
+     * used to provide the encryption support.
+     * 
+     * Defaults to <code>null</code>, which means that the first registered provider
+     * which supports the requested encryption algorithm URI will be used.
+     *
+     * @param providerName the JCA provider name to use
+     */
+    public void setJCAProviderName(String providerName) {
+        jcaProviderName = providerName;
     }
     
     /**
@@ -292,7 +323,11 @@ public class Encrypter {
         
         XMLCipher xmlCipher;
         try {
-            xmlCipher = XMLCipher.getInstance(encryptionAlgorithmURI);
+            if (getJCAProviderName() != null) {
+                xmlCipher = XMLCipher.getProviderInstance(encryptionAlgorithmURI, getJCAProviderName());
+            } else {
+                xmlCipher = XMLCipher.getInstance(encryptionAlgorithmURI);
+            }
             xmlCipher.init(XMLCipher.WRAP_MODE, encryptionKey);
         } catch (XMLEncryptionException e) {
             log.error("Error initializing cipher instance on key encryption", e);
@@ -353,7 +388,11 @@ public class Encrypter {
         
         XMLCipher xmlCipher;
         try {
-            xmlCipher = XMLCipher.getInstance(encryptionAlgorithmURI);
+            if (getJCAProviderName() != null) {
+                xmlCipher = XMLCipher.getProviderInstance(encryptionAlgorithmURI, getJCAProviderName());
+            } else {
+                xmlCipher = XMLCipher.getInstance(encryptionAlgorithmURI);
+            }
             xmlCipher.init(XMLCipher.ENCRYPT_MODE, encryptionKey);
         } catch (XMLEncryptionException e) {
             log.error("Error initializing cipher instance on XMLObject encryption", e);
