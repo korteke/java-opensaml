@@ -20,11 +20,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.xml.namespace.QName;
+
 import org.opensaml.xml.AttributeExtensibleXMLObject;
 import org.opensaml.xml.ElementExtensibleXMLObject;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.util.AttributeMap;
-import org.opensaml.xml.util.XMLObjectChildrenList;
+import org.opensaml.xml.util.IndexedXMLObjectChildrenList;
 import org.opensaml.xml.validation.AbstractValidatingXMLObject;
 
 /**
@@ -34,7 +36,7 @@ public class AbstractExtensibleSOAPObject extends AbstractValidatingXMLObject im
         AttributeExtensibleXMLObject, ElementExtensibleXMLObject {
 
     /** "Any" type children. */
-    private XMLObjectChildrenList<XMLObject> unknownXMLObject;
+    private IndexedXMLObjectChildrenList<XMLObject> unknownXMLObjects;
 
     /** Attributes of the proxied Element. */
     private AttributeMap attributes;
@@ -49,21 +51,26 @@ public class AbstractExtensibleSOAPObject extends AbstractValidatingXMLObject im
     protected AbstractExtensibleSOAPObject(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         attributes = new AttributeMap(this);
-        unknownXMLObject = new XMLObjectChildrenList<XMLObject>(this);
+        unknownXMLObjects = new IndexedXMLObjectChildrenList<XMLObject>(this);
     }
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
         ArrayList<XMLObject> children = new ArrayList<XMLObject>();
 
-        children.addAll(unknownXMLObject);
+        children.addAll(unknownXMLObjects);
 
         return Collections.unmodifiableList(children);
     }
 
     /** {@inheritDoc} */
     public List<XMLObject> getUnknownXMLObjects() {
-        return unknownXMLObject;
+        return unknownXMLObjects;
+    }
+    
+    /** {@inheritDoc} */
+    public List<XMLObject> getUnknownXMLObjects(QName typeOrName) {
+        return (List<XMLObject>) unknownXMLObjects.subList(typeOrName);
     }
 
     /** {@inheritDoc} */
