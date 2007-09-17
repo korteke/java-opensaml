@@ -153,8 +153,7 @@ public class DefaultSecurityConfigurationBootstrap {
      * @param config the security configuration to populate
      */
     protected static void populateKeyParams(BasicSecurityConfiguration config) {
-        // This probably only makes sense for context-specific configs, not a global one
-        config.setDSAParams(null);
+        // Maybe populate some DSA parameters here, if there are commonly accepcted default values
     }
 
 }

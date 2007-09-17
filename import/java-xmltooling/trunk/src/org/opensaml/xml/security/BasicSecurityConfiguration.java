@@ -66,7 +66,7 @@ public class BasicSecurityConfiguration implements SecurityConfiguration {
     private Map<String, KeyInfoCredentialResolver> keyInfoCredentialResolvers;
     
     /** Default DSA key family parameters. */
-    private DSAParams dsaParams;
+    private Map<Integer, DSAParams> dsaParams;
     
     /** Constructor. */
     public BasicSecurityConfiguration() {
@@ -74,6 +74,7 @@ public class BasicSecurityConfiguration implements SecurityConfiguration {
         dataEncryptionAlgorithms = new HashMap<DataEncryptionIndex, String>();
         keyTransportEncryptionAlgorithms = new HashMap<KeyTransportEncryptionIndex, String>();
         keyInfoCredentialResolvers = new HashMap<String, KeyInfoCredentialResolver>();
+        dsaParams = new HashMap<Integer, DSAParams>();
     }
     
     // Signature-related config
@@ -369,17 +370,18 @@ public class BasicSecurityConfiguration implements SecurityConfiguration {
     // Miscellaneous config
 
     /** {@inheritDoc} */
-    public DSAParams getDSAParams() {
-        return dsaParams;
+    public DSAParams getDSAParams(int keyLength) {
+        return dsaParams.get(keyLength);
     }
     /**
      * Set a DSA parameters instance which defines the default DSA key information to be used 
      * within a DSA "key family".
      * 
-     * @param params the default DSA parameters instance, or null if no default is available
+     * @param keyLength the key length of the DSA parameters 
+     * @param params the default DSA parameters instance
      */
-    public void setDSAParams(DSAParams params) {
-        dsaParams = params;
+    public void setDSAParams(int keyLength, DSAParams params) {
+        dsaParams.put(keyLength, params);
     }
     
     
