@@ -29,6 +29,7 @@ import org.opensaml.xml.ElementExtensibleXMLObject;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.encryption.EncryptedData;
 import org.opensaml.xml.signature.AbstractSignableXMLObject;
+import org.opensaml.xml.util.IndexedXMLObjectChildrenList;
 import org.opensaml.xml.util.XMLObjectChildrenList;
 
 /**
@@ -64,7 +65,7 @@ public class SimpleXMLObject extends AbstractSignableXMLObject implements Elemen
     private XMLObjectChildrenList<SimpleXMLObject> simpleXMLObjects;
     
     /** Other children */
-    private XMLObjectChildrenList<XMLObject> unknownXMLObjects;
+    private IndexedXMLObjectChildrenList<XMLObject> unknownXMLObjects;
     
     /** EncryptedData child */
     private EncryptedData encryptedData;
@@ -76,7 +77,7 @@ public class SimpleXMLObject extends AbstractSignableXMLObject implements Elemen
         super(namspaceURI, localName, namespacePrefix);
         
         simpleXMLObjects = new XMLObjectChildrenList<SimpleXMLObject>(this);
-        unknownXMLObjects = new XMLObjectChildrenList<XMLObject>(this);
+        unknownXMLObjects = new IndexedXMLObjectChildrenList<XMLObject>(this);
     }
     
     /**
@@ -146,6 +147,11 @@ public class SimpleXMLObject extends AbstractSignableXMLObject implements Elemen
     /** {@inheritDoc} */
     public List<XMLObject> getUnknownXMLObjects() {
         return unknownXMLObjects;
+    }
+    
+    /** {@inheritDoc} */
+    public List<XMLObject> getUnknownXMLObjects(QName typeOrName) {
+        return (List<XMLObject>) unknownXMLObjects.subList(typeOrName);
     }
 
     /** {@inheritDoc} */

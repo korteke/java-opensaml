@@ -20,8 +20,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.xml.namespace.QName;
+
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.util.AttributeMap;
+import org.opensaml.xml.util.IndexedXMLObjectChildrenList;
 import org.opensaml.xml.util.XMLObjectChildrenList;
 import org.opensaml.xml.validation.AbstractValidatingXMLObject;
 
@@ -38,7 +41,7 @@ public class EncryptionPropertyImpl extends AbstractValidatingXMLObject implemen
     private String id;
     
     /** Child elements from the &lt;any&gt; content model */
-    private final XMLObjectChildrenList unknownChildren;
+    private final IndexedXMLObjectChildrenList unknownChildren;
     
     /** "anyAttribute" attributes */
     private final AttributeMap unknownAttributes;
@@ -52,7 +55,7 @@ public class EncryptionPropertyImpl extends AbstractValidatingXMLObject implemen
      */
     protected EncryptionPropertyImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        unknownChildren = new XMLObjectChildrenList<XMLObject>(this);
+        unknownChildren = new IndexedXMLObjectChildrenList<XMLObject>(this);
         unknownAttributes =  new AttributeMap(this);
     }
 
@@ -86,6 +89,10 @@ public class EncryptionPropertyImpl extends AbstractValidatingXMLObject implemen
     /** {@inheritDoc} */
     public List<XMLObject> getUnknownXMLObjects() {
         return (List<XMLObject>) unknownChildren;
+    }
+    /** {@inheritDoc} */
+    public List<XMLObject> getUnknownXMLObjects(QName typeOrName) {
+        return (List<XMLObject>) unknownChildren.subList(typeOrName);
     }
 
     /** {@inheritDoc} */

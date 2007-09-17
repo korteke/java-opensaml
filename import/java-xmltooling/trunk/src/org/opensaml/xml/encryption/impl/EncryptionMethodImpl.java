@@ -20,11 +20,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.xml.namespace.QName;
+
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.encryption.EncryptionMethod;
 import org.opensaml.xml.encryption.KeySize;
 import org.opensaml.xml.encryption.OAEPparams;
-import org.opensaml.xml.util.XMLObjectChildrenList;
+import org.opensaml.xml.util.IndexedXMLObjectChildrenList;
 import org.opensaml.xml.validation.AbstractValidatingXMLObject;
 
 /**
@@ -42,7 +44,7 @@ public class EncryptionMethodImpl extends AbstractValidatingXMLObject implements
     private OAEPparams oaepParams;
     
     /** "any" children */
-    private final XMLObjectChildrenList<XMLObject> unknownChildren;
+    private final IndexedXMLObjectChildrenList<XMLObject> unknownChildren;
     
     /**
      * Constructor
@@ -54,7 +56,7 @@ public class EncryptionMethodImpl extends AbstractValidatingXMLObject implements
     protected EncryptionMethodImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         
-        unknownChildren = new XMLObjectChildrenList<XMLObject>(this);
+        unknownChildren = new IndexedXMLObjectChildrenList<XMLObject>(this);
     }
 
     /** {@inheritDoc} */
@@ -90,6 +92,10 @@ public class EncryptionMethodImpl extends AbstractValidatingXMLObject implements
     /** {@inheritDoc} */
     public List<XMLObject> getUnknownXMLObjects() {
         return this.unknownChildren;
+    }
+    /** {@inheritDoc} */
+    public List<XMLObject> getUnknownXMLObjects(QName typeOrName) {
+        return (List<XMLObject>) unknownChildren.subList(typeOrName);
     }
 
     /** {@inheritDoc} */

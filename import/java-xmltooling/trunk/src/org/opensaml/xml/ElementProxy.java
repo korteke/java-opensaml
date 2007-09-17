@@ -19,10 +19,12 @@ package org.opensaml.xml;
 import java.util.Collections;
 import java.util.List;
 
+import javax.xml.namespace.QName;
+
 import org.opensaml.xml.schema.XSAny;
 import org.opensaml.xml.util.AttributeMap;
+import org.opensaml.xml.util.IndexedXMLObjectChildrenList;
 import org.opensaml.xml.util.XMLHelper;
-import org.opensaml.xml.util.XMLObjectChildrenList;
 import org.opensaml.xml.validation.AbstractValidatingXMLObject;
 
 /**
@@ -43,7 +45,7 @@ public class ElementProxy extends AbstractValidatingXMLObject implements Attribu
     private String textContent;
 
     /** Children of the proxied Element. */
-    private XMLObjectChildrenList<XMLObject> children;
+    private IndexedXMLObjectChildrenList<XMLObject> children;
 
     /**
      * Constructor.
@@ -55,7 +57,7 @@ public class ElementProxy extends AbstractValidatingXMLObject implements Attribu
     protected ElementProxy(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         attributes = new AttributeMap(this);
-        children = new XMLObjectChildrenList<XMLObject>(this);
+        children = new IndexedXMLObjectChildrenList<XMLObject>(this);
     }
 
     /**
@@ -96,6 +98,11 @@ public class ElementProxy extends AbstractValidatingXMLObject implements Attribu
     /** {@inheritDoc} */
     public List<XMLObject> getUnknownXMLObjects() {
         return children;
+    }
+
+    /** {@inheritDoc} */
+    public List<XMLObject> getUnknownXMLObjects(QName typeOrName) {
+        return (List<XMLObject>) children.subList(typeOrName);
     }
 
     /**

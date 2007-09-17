@@ -20,12 +20,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.xml.namespace.QName;
+
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.encryption.AgreementMethod;
 import org.opensaml.xml.encryption.KANonce;
 import org.opensaml.xml.encryption.OriginatorKeyInfo;
 import org.opensaml.xml.encryption.RecipientKeyInfo;
-import org.opensaml.xml.util.XMLObjectChildrenList;
+import org.opensaml.xml.util.IndexedXMLObjectChildrenList;
 import org.opensaml.xml.validation.AbstractValidatingXMLObject;
 
 /**
@@ -46,7 +48,7 @@ public class AgreementMethodImpl extends AbstractValidatingXMLObject implements 
     private RecipientKeyInfo recipientKeyInfo;
     
     /** List of wildcard &lt;any&gt; XMLObject children */
-    private XMLObjectChildrenList xmlChildren;
+    private IndexedXMLObjectChildrenList xmlChildren;
 
     /**
      * Constructor
@@ -57,7 +59,7 @@ public class AgreementMethodImpl extends AbstractValidatingXMLObject implements 
      */
     protected AgreementMethodImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        xmlChildren = new XMLObjectChildrenList(this);
+        xmlChildren = new IndexedXMLObjectChildrenList(this);
     }
 
     /** {@inheritDoc} */
@@ -103,6 +105,10 @@ public class AgreementMethodImpl extends AbstractValidatingXMLObject implements 
     /** {@inheritDoc} */
     public List<XMLObject> getUnknownXMLObjects() {
         return (List<XMLObject>) this.xmlChildren;
+    }
+    /** {@inheritDoc} */
+    public List<XMLObject> getUnknownXMLObjects(QName typeOrName) {
+        return (List<XMLObject>) this.xmlChildren.subList(typeOrName);
     }
 
     /** {@inheritDoc} */

@@ -18,6 +18,8 @@ package org.opensaml.xml;
 
 import java.util.List;
 
+import javax.xml.namespace.QName;
+
 /**
  * An XMLObject whose content model contains "any" child elements.
  */
@@ -29,4 +31,13 @@ public interface ElementExtensibleXMLObject extends XMLObject {
      * @return list of XMLObjects added to this XMLObject as part of the "any" content model
      */
     public List<XMLObject> getUnknownXMLObjects();
+    
+    /**
+     * Gets the list of XMLObjects added to this XMLObject as part of the "any" content model,
+     * and which match the specified QName.
+     * 
+     * @param typeOrName the QName of the statements to return
+     * @return list of XMLObjects added to this XMLObject as part of the "any" content model
+     */
+    public List<XMLObject> getUnknownXMLObjects(QName typeOrName);
 }

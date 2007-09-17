@@ -20,9 +20,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.xml.namespace.QName;
+
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.encryption.ReferenceType;
-import org.opensaml.xml.util.XMLObjectChildrenList;
+import org.opensaml.xml.util.IndexedXMLObjectChildrenList;
 import org.opensaml.xml.validation.AbstractValidatingXMLObject;
 
 /**
@@ -34,7 +36,7 @@ public class ReferenceTypeImpl extends AbstractValidatingXMLObject implements Re
     private String uri;
     
     /** List of &lt;any&gt; XML child elements */
-    private final XMLObjectChildrenList<XMLObject> xmlChildren;
+    private final IndexedXMLObjectChildrenList<XMLObject> xmlChildren;
 
     /**
      * Constructor
@@ -45,7 +47,7 @@ public class ReferenceTypeImpl extends AbstractValidatingXMLObject implements Re
      */
     protected ReferenceTypeImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        xmlChildren = new XMLObjectChildrenList<XMLObject>(this);
+        xmlChildren = new IndexedXMLObjectChildrenList<XMLObject>(this);
     }
 
     /** {@inheritDoc} */
@@ -62,8 +64,13 @@ public class ReferenceTypeImpl extends AbstractValidatingXMLObject implements Re
     public List<XMLObject> getUnknownXMLObjects() {
         return xmlChildren;
     }
+    
+    /** {@inheritDoc} */
+    public List<XMLObject> getUnknownXMLObjects(QName typeOrName) {
+        return (List<XMLObject>) xmlChildren.subList(typeOrName);
+    }
 
-    /** {@inheritDoc} */ /** {@inheritDoc} */
+    /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
         ArrayList<XMLObject> children = new ArrayList<XMLObject>();
         

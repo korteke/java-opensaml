@@ -19,11 +19,13 @@ package org.opensaml.xml.schema.impl;
 import java.util.Collections;
 import java.util.List;
 
+import javax.xml.namespace.QName;
+
 import org.opensaml.xml.AbstractXMLObject;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.schema.XSAny;
 import org.opensaml.xml.util.AttributeMap;
-import org.opensaml.xml.util.XMLObjectChildrenList;
+import org.opensaml.xml.util.IndexedXMLObjectChildrenList;
 
 /**
  * Concrete implementation of {@link XSAny}.
@@ -31,7 +33,7 @@ import org.opensaml.xml.util.XMLObjectChildrenList;
 public class XSAnyImpl extends AbstractXMLObject implements XSAny {
 
     /** Child XMLObjects. */
-    private XMLObjectChildrenList<XMLObject> unknownXMLObjects;
+    private IndexedXMLObjectChildrenList<XMLObject> unknownXMLObjects;
 
     /** Attributes for this element. */
     private AttributeMap unknownAttributes;
@@ -49,7 +51,7 @@ public class XSAnyImpl extends AbstractXMLObject implements XSAny {
     protected XSAnyImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
 
-        unknownXMLObjects = new XMLObjectChildrenList<XMLObject>(this);
+        unknownXMLObjects = new IndexedXMLObjectChildrenList<XMLObject>(this);
         unknownAttributes = new AttributeMap(this);
     }
 
@@ -66,6 +68,11 @@ public class XSAnyImpl extends AbstractXMLObject implements XSAny {
     /** {@inheritDoc} */
     public List<XMLObject> getUnknownXMLObjects() {
         return unknownXMLObjects;
+    }
+    
+    /** {@inheritDoc} */
+    public List<XMLObject> getUnknownXMLObjects(QName typeOrName) {
+        return (List<XMLObject>) unknownXMLObjects.subList(typeOrName);
     }
 
     /** {@inheritDoc} */

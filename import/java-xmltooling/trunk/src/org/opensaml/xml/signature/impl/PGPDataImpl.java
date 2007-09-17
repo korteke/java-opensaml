@@ -20,10 +20,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.xml.namespace.QName;
+
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.signature.PGPData;
 import org.opensaml.xml.signature.PGPKeyID;
 import org.opensaml.xml.signature.PGPKeyPacket;
+import org.opensaml.xml.util.IndexedXMLObjectChildrenList;
 import org.opensaml.xml.util.XMLObjectChildrenList;
 import org.opensaml.xml.validation.AbstractValidatingXMLObject;
 
@@ -39,7 +42,7 @@ public class PGPDataImpl extends AbstractValidatingXMLObject implements PGPData 
     private PGPKeyPacket pgpKeyPacket;
     
     /** List of &lt;any&gt; wildcard XMLObject children */
-    private final XMLObjectChildrenList xmlChildren;
+    private final IndexedXMLObjectChildrenList xmlChildren;
 
     /**
      * Constructor
@@ -50,7 +53,7 @@ public class PGPDataImpl extends AbstractValidatingXMLObject implements PGPData 
      */
     protected PGPDataImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        xmlChildren = new XMLObjectChildrenList(this);
+        xmlChildren = new IndexedXMLObjectChildrenList(this);
     }
 
     /** {@inheritDoc} */
@@ -76,6 +79,10 @@ public class PGPDataImpl extends AbstractValidatingXMLObject implements PGPData 
     /** {@inheritDoc} */
     public List<XMLObject> getUnknownXMLObjects() {
         return (List<XMLObject>) xmlChildren;
+    }
+    /** {@inheritDoc} */
+    public List<XMLObject> getUnknownXMLObjects(QName typeOrName) {
+        return (List<XMLObject>) xmlChildren.subList(typeOrName);
     }
 
     /** {@inheritDoc} */
