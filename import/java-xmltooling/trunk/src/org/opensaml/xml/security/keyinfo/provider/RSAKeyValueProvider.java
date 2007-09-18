@@ -26,10 +26,11 @@ import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.credential.BasicCredential;
 import org.opensaml.xml.security.credential.Credential;
+import org.opensaml.xml.security.credential.CredentialContext;
 import org.opensaml.xml.security.criteria.KeyAlgorithmCriteria;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xml.security.keyinfo.KeyInfoProvider;
-import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver.KeyInfoResolutionContext;
+import org.opensaml.xml.security.keyinfo.KeyInfoResolutionContext;
 import org.opensaml.xml.signature.KeyInfoHelper;
 import org.opensaml.xml.signature.KeyValue;
 import org.opensaml.xml.signature.RSAKeyValue;
@@ -75,9 +76,14 @@ public class RSAKeyValueProvider extends AbstractKeyInfoProvider {
         }
         BasicCredential cred = new BasicCredential();
         cred.setPublicKey(pubKey);
-        cred.getKeyNames().addAll(kiContext.getKeyNames());
+        if (kiContext != null) {
+            cred.getKeyNames().addAll(kiContext.getKeyNames());
+        }
         
-        cred.getCredentalContextSet().add( resolver.buildCredentialContext(kiContext) );
+        CredentialContext credContext = buildCredentialContext(kiContext);
+        if (credContext != null) {
+            cred.getCredentalContextSet().add(credContext);
+        }
         
         log.debug("Credential successfully extracted from RSAKeyValue");
         return singletonSet(cred);

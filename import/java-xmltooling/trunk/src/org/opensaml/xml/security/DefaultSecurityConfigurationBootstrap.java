@@ -20,6 +20,7 @@ import java.util.ArrayList;
 
 import org.opensaml.xml.encryption.EncryptionConstants;
 import org.opensaml.xml.security.credential.BasicKeyInfoGeneratorFactory;
+import org.opensaml.xml.security.keyinfo.BasicProviderKeyInfoCredentialResolver;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xml.security.keyinfo.KeyInfoGeneratorManager;
 import org.opensaml.xml.security.keyinfo.KeyInfoProvider;
@@ -121,7 +122,7 @@ public class DefaultSecurityConfigurationBootstrap {
         providers.add( new InlineX509DataProvider() );
         providers.add( new DocumentFragmentRetrievalMethodProvider() );
         
-        KeyInfoCredentialResolver resolver = new KeyInfoCredentialResolver(providers);
+        KeyInfoCredentialResolver resolver = new BasicProviderKeyInfoCredentialResolver(providers);
         config.setDefaultKeyInfoCredentialResolver(resolver);
     }
 

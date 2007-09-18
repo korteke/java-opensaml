@@ -25,10 +25,11 @@ import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.credential.Credential;
+import org.opensaml.xml.security.keyinfo.KeyInfoCredentialContext;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xml.security.keyinfo.KeyInfoCriteria;
 import org.opensaml.xml.security.keyinfo.KeyInfoProvider;
-import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver.KeyInfoResolutionContext;
+import org.opensaml.xml.security.keyinfo.KeyInfoResolutionContext;
 import org.opensaml.xml.security.x509.X509Credential;
 import org.opensaml.xml.signature.KeyInfo;
 import org.opensaml.xml.signature.RetrievalMethod;
@@ -92,6 +93,11 @@ public class DocumentFragmentRetrievalMethodProvider extends AbstractKeyInfoProv
             return null;
         }
         
+        if (resolver == null) {
+            log.error("RetrievalMethod provider was called without a KeyInfoCredentialResolver to which to delegate");
+            throw new SecurityException("RetrievalMethod provider requires a KeyInfoCredentialResolver to be supplied");
+        }
+        
         RetrievalMethod rm = (RetrievalMethod) keyInfoChild;
         
         KeyInfo keyInfo = dereferenceURI(rm);
@@ -103,6 +109,10 @@ public class DocumentFragmentRetrievalMethodProvider extends AbstractKeyInfoProv
         ArrayList<Credential> resolvedCreds = new ArrayList<Credential>();
         for (Credential cred : resolver.resolve(targetCriteriaSet)) {
             if (checkType(cred, DatatypeHelper.safeTrimOrNullString(rm.getType()))) {
+                KeyInfoCredentialContext kiCredContext = buildCredentialContext(kiContext);
+                if (kiCredContext != null) {
+                    cred.getCredentalContextSet().add(kiCredContext, true);
+                }
                 resolvedCreds.add(cred);
             }
             

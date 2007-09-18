@@ -31,9 +31,9 @@ import org.opensaml.xml.security.criteria.PublicKeyCriteria;
 import org.opensaml.xml.signature.KeyInfo;
 
 /**
- * A simple specialization of {@link KeyInfoCredentialResolver} which is capable of
- * using information from a {@link KeyInfo} to resolve local credentials from
- * a supplied {@link CredentialResolver} which manages local credentials.
+ * A simple specialization of {@link BasicProviderKeyInfoCredentialResolver}
+ * which is capable of using information from a {@link KeyInfo} to resolve
+ * local credentials from a supplied {@link CredentialResolver} which manages local credentials.
  * 
  * <p>
  * The local credential resolver supplied should manage and return credentials
@@ -49,7 +49,7 @@ import org.opensaml.xml.signature.KeyInfo;
  * <p>
  * Resolution proceeds as follows:
  * <ol>
- *   <li>Any credential resolved via the standard {@link KeyInfoCredentialResolver}
+ *   <li>Any credential resolved via the standard {@link BasicProviderKeyInfoCredentialResolver}
  *       resolution process which is not a local credential will be removed
  *       from the effective set of credentials to be returned.  Note that a configured
  *       {@link KeyInfoProvider} may have itself already resolved local credentials using a
@@ -63,7 +63,7 @@ import org.opensaml.xml.signature.KeyInfo;
  * </ol>
  * </p>
  */
-public class LocalKeyInfoCredentialResolver extends KeyInfoCredentialResolver {
+public class LocalKeyInfoCredentialResolver extends BasicProviderKeyInfoCredentialResolver {
     
     /** The resovler which is used to resolve local credentials. */
     private CredentialResolver localCredResolver;

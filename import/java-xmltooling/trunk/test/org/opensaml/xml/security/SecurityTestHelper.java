@@ -44,6 +44,7 @@ import javax.crypto.SecretKey;
 import org.apache.xml.security.algorithms.JCEMapper;
 import org.opensaml.xml.security.credential.BasicCredential;
 import org.opensaml.xml.security.credential.Credential;
+import org.opensaml.xml.security.keyinfo.BasicProviderKeyInfoCredentialResolver;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xml.security.keyinfo.KeyInfoProvider;
 import org.opensaml.xml.security.keyinfo.provider.DSAKeyValueProvider;
@@ -294,7 +295,7 @@ public class SecurityTestHelper {
     
     /**
      * Get a basic KeyInfo credential resolver which can process standard inline
-     * data.
+     * data - RSAKeyValue, DSAKeyValue, X509Data.
      * 
      * @return a new KeyInfoCredentialResolver instance
      */
@@ -303,7 +304,7 @@ public class SecurityTestHelper {
         providers.add( new RSAKeyValueProvider() );
         providers.add( new DSAKeyValueProvider() );
         providers.add( new InlineX509DataProvider() );
-        return new KeyInfoCredentialResolver(providers);
+        return new BasicProviderKeyInfoCredentialResolver(providers);
     }
     
 }

@@ -22,22 +22,21 @@ import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.credential.Credential;
-import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver.KeyInfoResolutionContext;
 import org.opensaml.xml.signature.KeyInfo;
 
 /**
- * Interface for providers of {@link KeyInfoCredentialResolver} which support extracting a {@link Credential} from 
- * a child element of {@link KeyInfo} elements.
+ * Interface for providers used in conjunction with a {@link KeyInfoCredentialResolver} which 
+ * support resolving {@link Credential}s based on a child element of {@link KeyInfo}.
  */
 public interface KeyInfoProvider {
     
     /**
      * Process a specified KeyInfo child (XMLobject) and attempt to resolve a credential from it.
      * 
-     * @param resolver reference to the resolver which is calling the provider
+     * @param resolver reference to a resolver which is calling the provider
      * @param keyInfoChild the KeyInfo child being processed
      * @param criteriaSet the credential criteria the credential must satisfy
-     * @param kiContext the resolution context, used for sharing state between the resolver and the providers
+     * @param kiContext the resolution context, used for sharing state amongst resolvers and providers
      * 
      * @return a resolved Credential collection, or null
      * 

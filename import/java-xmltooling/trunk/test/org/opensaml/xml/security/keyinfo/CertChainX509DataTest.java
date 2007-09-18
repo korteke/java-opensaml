@@ -116,7 +116,7 @@ public class CertChainX509DataTest extends XMLObjectBaseTestCase {
         List<KeyInfoProvider> providers = new ArrayList<KeyInfoProvider>();
         providers.add(new InlineX509DataProvider());
         providers.add(new RSAKeyValueProvider());
-        resolver = new KeyInfoCredentialResolver(providers);
+        resolver = new BasicProviderKeyInfoCredentialResolver(providers);
         
         pubKey = SecurityTestHelper.buildJavaRSAPublicKey(rsaBase64);
         entityCert = SecurityTestHelper.buildJavaX509Cert(entityCertBase64);

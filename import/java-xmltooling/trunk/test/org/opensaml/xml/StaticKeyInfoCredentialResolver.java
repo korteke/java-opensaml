@@ -21,15 +21,16 @@ import java.util.List;
 
 import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
+import org.opensaml.xml.security.credential.AbstractCredentialResolver;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
-import org.opensaml.xml.security.keyinfo.KeyInfoProvider;
 
 /**
- * Simple extension of {@link KeyInfoCredentialResolver} which just stores a static set of credentials.
- * Just for testing purposes where don't need real KeyInfo resolver.
+ * Simple implementation of {@link KeyInfoCredentialResolver} which just stores and returns
+ * a static set of credentials.
  */
-public class StaticKeyInfoCredentialResolver extends KeyInfoCredentialResolver {
+public class StaticKeyInfoCredentialResolver extends AbstractCredentialResolver
+        implements KeyInfoCredentialResolver {
     
     /** List of credentials held by this resolver. */
     private List<Credential> creds;
@@ -40,7 +41,6 @@ public class StaticKeyInfoCredentialResolver extends KeyInfoCredentialResolver {
      * @param credentials collection of credentials to be held by this resolver
      */
     public StaticKeyInfoCredentialResolver(List<Credential> credentials) {
-        super(new ArrayList<KeyInfoProvider>());
         creds = new ArrayList<Credential>();
         creds.addAll(credentials);
     }
@@ -51,7 +51,6 @@ public class StaticKeyInfoCredentialResolver extends KeyInfoCredentialResolver {
      * @param credential a single credential to be held by this resolver
      */
     public StaticKeyInfoCredentialResolver(Credential credential) {
-        super(new ArrayList<KeyInfoProvider>());
         creds = new ArrayList<Credential>();
         creds.add(credential);
     }

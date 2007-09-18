@@ -48,7 +48,7 @@ public class DocumentFragmentRetrievalMethodProviderTest extends XMLObjectBaseTe
         providers.add( new InlineX509DataProvider() );
         providers.add( new DocumentFragmentRetrievalMethodProvider() );
         
-        resolver = new KeyInfoCredentialResolver(providers);
+        resolver = new BasicProviderKeyInfoCredentialResolver(providers);
     }
     
     public void testRSAReference() throws SecurityException {

@@ -68,7 +68,7 @@ public class DSAKeyValueTest extends XMLObjectBaseTestCase {
         
         List<KeyInfoProvider> providers = new ArrayList<KeyInfoProvider>();
         providers.add(new DSAKeyValueProvider());
-        resolver = new KeyInfoCredentialResolver(providers);
+        resolver = new BasicProviderKeyInfoCredentialResolver(providers);
         keyInfoFile = "/data/org/opensaml/xml/security/keyinfo/DSAKeyValue.xml";
         pubKey = SecurityTestHelper.buildJavaDSAPublicKey(dsaBase64);
     }

@@ -33,9 +33,10 @@ import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.credential.Credential;
+import org.opensaml.xml.security.credential.CredentialContext;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xml.security.keyinfo.KeyInfoProvider;
-import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver.KeyInfoResolutionContext;
+import org.opensaml.xml.security.keyinfo.KeyInfoResolutionContext;
 import org.opensaml.xml.security.x509.BasicX509Credential;
 import org.opensaml.xml.security.x509.InternalX500DNHandler;
 import org.opensaml.xml.security.x509.X500DNHandler;
@@ -126,8 +127,8 @@ public class InlineX509DataProvider extends AbstractKeyInfoProvider {
         List<X509CRL> crls = extractCRLs(x509Data);
         
         PublicKey resolvedPublicKey = null;
-        if (kiContext.getKeyValueCredential() != null) {
-            resolvedPublicKey = kiContext.getKeyValueCredential().getPublicKey();
+        if (kiContext != null && kiContext.getKey() != null && kiContext.getKey() instanceof PublicKey) {
+            resolvedPublicKey = (PublicKey) kiContext.getKey();
         }
         X509Certificate entityCert = findEntityCert(certs, x509Data, resolvedPublicKey);
         if (entityCert == null) {
@@ -140,9 +141,14 @@ public class InlineX509DataProvider extends AbstractKeyInfoProvider {
         cred.setCRLs(crls);
         cred.setEntityCertificateChain(certs);
         
-        cred.getKeyNames().addAll(kiContext.getKeyNames());
+        if (kiContext != null) {
+            cred.getKeyNames().addAll(kiContext.getKeyNames());
+        }
         
-        cred.getCredentalContextSet().add( resolver.buildCredentialContext(kiContext) );
+        CredentialContext credContext = buildCredentialContext(kiContext);
+        if (credContext != null) {
+            cred.getCredentalContextSet().add(credContext);
+        }
         
         return singletonSet(cred);
     }

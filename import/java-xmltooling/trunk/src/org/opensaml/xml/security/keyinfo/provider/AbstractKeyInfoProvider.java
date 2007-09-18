@@ -21,7 +21,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.opensaml.xml.security.credential.Credential;
+import org.opensaml.xml.security.keyinfo.KeyInfoCredentialContext;
 import org.opensaml.xml.security.keyinfo.KeyInfoProvider;
+import org.opensaml.xml.security.keyinfo.KeyInfoResolutionContext;
 
 /**
  * Abstract super class for {@link KeyInfoProvider} implementations.
@@ -62,6 +64,25 @@ public abstract class AbstractKeyInfoProvider implements KeyInfoProvider {
         HashSet<Credential> set = new HashSet<Credential>(1);
         set.add(credential);
         return set;
+    }
+    
+    /**
+     * Build a credential context based on the current KeyInfo context, for return 
+     * in a resolved credential.
+     * 
+     * @param kiContext the current KeyInfo resolution context
+     * 
+     * @return a new KeyInfo credential context
+     */
+    protected KeyInfoCredentialContext buildCredentialContext(KeyInfoResolutionContext kiContext) {
+        // Simple for now, might do other stuff later.
+        // Just want to provide a single place to build credential contexts for
+        // a provider.
+        if (kiContext != null) {
+            return new KeyInfoCredentialContext(kiContext.getKeyInfo());
+        } else {
+            return null;
+        }
     }
 
 }
