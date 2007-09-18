@@ -26,7 +26,7 @@ import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Attr;
 
 /**
- * A thread-safe unmarshaller for {@link ElementProxy}s.
+ * A thread-safe unmarshaller for {@link XSAny}s.
  */
 public class XSAnyUnmarshaller extends AbstractXMLObjectUnmarshaller {
 

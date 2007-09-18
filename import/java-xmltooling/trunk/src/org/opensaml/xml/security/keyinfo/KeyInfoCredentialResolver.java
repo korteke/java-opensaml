@@ -61,7 +61,7 @@ import org.opensaml.xml.signature.KeyValue;
  *   <li>This resolution context is initialized and populated with the actual KeyInfo object being processed as
  *       well as the values of any {@link KeyName} child elements present.</li>
  *   <li>An attempt is then made to resolve a credential from any {@link KeyValue} child elements as described for
- *       {@link #resolveKeyValue(org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver.KeyInfoResolutionContext, CriteriaSet, List)
+ *       {@link #resolveKeyValue(org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver.KeyInfoResolutionContext, CriteriaSet, List)}
  *       If a credential is so resolved, it will also be placed in the resolution context</li>
  *   <li>The remaining (non-KeyValue) children are then processed in document order.  Each child element is
  *       processed by the registered providers in provider list order. The credential or credentials resolved by the

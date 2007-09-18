@@ -27,6 +27,7 @@ import java.util.Properties;
 import org.apache.log4j.Logger;
 import org.opensaml.xml.security.Criteria;
 import org.opensaml.xml.security.SecurityException;
+import org.opensaml.xml.security.credential.Credential;
 
 /**
  * A registry which manages mappings from types of {@link Criteria} to the class type which can evaluate that 
