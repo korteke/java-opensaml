@@ -23,6 +23,7 @@ import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver.KeyInfoResolutionContext;
+import org.opensaml.xml.signature.KeyInfo;
 
 /**
  * Interface for providers of {@link KeyInfoCredentialResolver} which support extracting a {@link Credential} from 
