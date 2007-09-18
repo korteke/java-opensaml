@@ -29,10 +29,10 @@ import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.credential.CredentialContext;
 import org.opensaml.xml.security.criteria.KeyAlgorithmCriteria;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
+import org.opensaml.xml.security.keyinfo.KeyInfoHelper;
 import org.opensaml.xml.security.keyinfo.KeyInfoProvider;
 import org.opensaml.xml.security.keyinfo.KeyInfoResolutionContext;
 import org.opensaml.xml.signature.DSAKeyValue;
-import org.opensaml.xml.signature.KeyInfoHelper;
 import org.opensaml.xml.signature.KeyValue;
 
 /**

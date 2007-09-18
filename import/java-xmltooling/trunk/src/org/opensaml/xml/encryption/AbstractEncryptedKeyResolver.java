@@ -19,7 +19,7 @@ package org.opensaml.xml.encryption;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.opensaml.xml.signature.KeyInfoHelper;
+import org.opensaml.xml.security.keyinfo.KeyInfoHelper;
 import org.opensaml.xml.util.DatatypeHelper;
 
 /**

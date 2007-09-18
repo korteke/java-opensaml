@@ -26,7 +26,6 @@ import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.SecurityTestHelper;
 import org.opensaml.xml.signature.KeyInfo;
-import org.opensaml.xml.signature.KeyInfoHelper;
 import org.opensaml.xml.signature.KeyName;
 import org.w3c.dom.Element;
 

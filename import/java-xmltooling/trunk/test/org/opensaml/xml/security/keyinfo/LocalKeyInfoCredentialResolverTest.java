@@ -30,7 +30,6 @@ import org.opensaml.xml.security.credential.CollectionCredentialResolver;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.keyinfo.provider.RSAKeyValueProvider;
 import org.opensaml.xml.signature.KeyInfo;
-import org.opensaml.xml.signature.KeyInfoHelper;
 
 /**
  * Test the local credential resolver specialization of the KeyInfo credential resolver.

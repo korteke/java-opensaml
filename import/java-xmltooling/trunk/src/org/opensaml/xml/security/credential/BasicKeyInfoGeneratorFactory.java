@@ -23,8 +23,8 @@ import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.keyinfo.KeyInfoGenerator;
 import org.opensaml.xml.security.keyinfo.KeyInfoGeneratorFactory;
+import org.opensaml.xml.security.keyinfo.KeyInfoHelper;
 import org.opensaml.xml.signature.KeyInfo;
-import org.opensaml.xml.signature.KeyInfoHelper;
 import org.opensaml.xml.signature.impl.KeyInfoBuilder;
 import org.opensaml.xml.util.DatatypeHelper;
 

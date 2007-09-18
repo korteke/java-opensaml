@@ -32,6 +32,7 @@ import javax.security.auth.x500.X500Principal;
 
 import org.opensaml.xml.XMLObjectBaseTestCase;
 import org.opensaml.xml.security.SecurityTestHelper;
+import org.opensaml.xml.security.keyinfo.KeyInfoHelper;
 import org.opensaml.xml.util.Base64;
 import org.opensaml.xml.util.DatatypeHelper;
 

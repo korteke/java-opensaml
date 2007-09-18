@@ -24,8 +24,8 @@ import org.opensaml.xml.XMLObjectBaseTestCase;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.SecurityTestHelper;
 import org.opensaml.xml.security.keyinfo.KeyInfoGenerator;
+import org.opensaml.xml.security.keyinfo.KeyInfoHelper;
 import org.opensaml.xml.signature.KeyInfo;
-import org.opensaml.xml.signature.KeyInfoHelper;
 
 /**
  * Tests the factory and impl for BasicKeyInfoGenerator.

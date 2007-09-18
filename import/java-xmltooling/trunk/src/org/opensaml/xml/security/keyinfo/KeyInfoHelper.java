@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-package org.opensaml.xml.signature;
+package org.opensaml.xml.security.keyinfo;
 
-import java.io.ByteArrayInputStream;
 import java.math.BigInteger;
 import java.security.KeyException;
 import java.security.KeyFactory;
@@ -43,8 +42,24 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.XMLObjectBuilderFactory;
-import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.x509.X509Util;
+import org.opensaml.xml.signature.DSAKeyValue;
+import org.opensaml.xml.signature.Exponent;
+import org.opensaml.xml.signature.G;
+import org.opensaml.xml.signature.KeyInfo;
+import org.opensaml.xml.signature.KeyName;
+import org.opensaml.xml.signature.KeyValue;
+import org.opensaml.xml.signature.Modulus;
+import org.opensaml.xml.signature.P;
+import org.opensaml.xml.signature.Q;
+import org.opensaml.xml.signature.RSAKeyValue;
+import org.opensaml.xml.signature.X509Data;
+import org.opensaml.xml.signature.X509IssuerName;
+import org.opensaml.xml.signature.X509IssuerSerial;
+import org.opensaml.xml.signature.X509SKI;
+import org.opensaml.xml.signature.X509SerialNumber;
+import org.opensaml.xml.signature.X509SubjectName;
+import org.opensaml.xml.signature.Y;
 import org.opensaml.xml.util.Base64;
 import org.opensaml.xml.util.DatatypeHelper;
 
