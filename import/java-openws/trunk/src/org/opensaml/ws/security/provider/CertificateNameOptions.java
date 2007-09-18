@@ -18,6 +18,8 @@ package org.opensaml.ws.security.provider;
 
 import java.util.LinkedHashSet;
 
+import javax.security.auth.x500.X500Principal;
+
 import org.opensaml.xml.security.x509.InternalX500DNHandler;
 import org.opensaml.xml.security.x509.X500DNHandler;
 
