@@ -35,10 +35,10 @@ public class AgreementMethodMarshaller extends AbstractXMLEncryptionMarshaller {
     }
 
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param targetNamespaceURI
-     * @param targetLocalName
+     * @param targetNamespaceURI namespace URI
+     * @param targetLocalName local name
      */
     public AgreementMethodMarshaller(String targetNamespaceURI, String targetLocalName){
         super(targetNamespaceURI, targetLocalName);

@@ -20,16 +20,16 @@ import org.opensaml.xml.encryption.CarriedKeyName;
 import org.opensaml.xml.schema.impl.XSStringImpl;
 
 /**
- * Concrete implementation of {@link org.opensaml.xml.encryption.CarriedKeyName}
+ * Concrete implementation of {@link org.opensaml.xml.encryption.CarriedKeyName}.
  */
 public class CarriedKeyNameImpl extends XSStringImpl implements CarriedKeyName {
 
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param namespaceURI
-     * @param elementLocalName
-     * @param namespacePrefix
+     * @param namespaceURI namespace URI
+     * @param elementLocalName local name
+     * @param namespacePrefix namespace prefix
      */
     protected CarriedKeyNameImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);

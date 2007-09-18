@@ -26,25 +26,25 @@ import org.opensaml.xml.encryption.EncryptedKey;
 import org.opensaml.xml.encryption.ReferenceList;
 
 /**
- * Concrete implementation of {@link org.opensaml.xml.encryption.EncryptedKey}
+ * Concrete implementation of {@link org.opensaml.xml.encryption.EncryptedKey}.
  */
 public class EncryptedKeyImpl extends EncryptedTypeImpl implements EncryptedKey {
     
-    /** Recipient value */
+    /** Recipient value. */
     private String recipient;
     
-    /** CarriedKeyName value */
+    /** CarriedKeyName value. */
     private CarriedKeyName carriedKeyName;
     
-    /** ReferenceList value */
+    /** ReferenceList value. */
     private ReferenceList referenceList;
 
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param namespaceURI
-     * @param elementLocalName
-     * @param namespacePrefix
+     * @param namespaceURI namespace URI
+     * @param elementLocalName local name
+     * @param namespacePrefix namespace prefix
      */
     protected EncryptedKeyImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);

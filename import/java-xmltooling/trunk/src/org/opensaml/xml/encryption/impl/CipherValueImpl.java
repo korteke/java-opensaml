@@ -20,16 +20,16 @@ import org.opensaml.xml.encryption.CipherValue;
 import org.opensaml.xml.schema.impl.XSBase64BinaryImpl;
 
 /**
- * Concrete implementation of {@link org.opensaml.xml.encryption.CipherValue}
+ * Concrete implementation of {@link org.opensaml.xml.encryption.CipherValue}.
  */
 public class CipherValueImpl extends XSBase64BinaryImpl implements CipherValue {
 
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param namespaceURI
-     * @param elementLocalName
-     * @param namespacePrefix
+     * @param namespaceURI namespace URI
+     * @param elementLocalName local name
+     * @param namespacePrefix namespace prefix
      */
     protected CipherValueImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);

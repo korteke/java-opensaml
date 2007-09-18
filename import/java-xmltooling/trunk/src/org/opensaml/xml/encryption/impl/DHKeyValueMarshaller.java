@@ -24,19 +24,16 @@ import org.opensaml.xml.util.XMLConstants;
  */
 public class DHKeyValueMarshaller extends AbstractXMLEncryptionMarshaller {
     
-    /**
-     * Constructor
-     *
-     */
+    /** Constructor. */
     public DHKeyValueMarshaller(){
         super(XMLConstants.XMLENC_NS, DHKeyValue.DEFAULT_ELEMENT_LOCAL_NAME);
     }
 
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param targetNamespaceURI
-     * @param targetLocalName
+     * @param targetNamespaceURI namespace URI
+     * @param targetLocalName local name
      */
     protected DHKeyValueMarshaller(String targetNamespaceURI, String targetLocalName){
         super(targetNamespaceURI, targetLocalName);

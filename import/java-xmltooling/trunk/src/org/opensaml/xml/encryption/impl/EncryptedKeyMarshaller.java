@@ -27,19 +27,16 @@ import org.w3c.dom.Element;
  */
 public class EncryptedKeyMarshaller extends EncryptedTypeMarshaller {
     
-    /**
-     * Constructor
-     *
-     */
+    /** Constructor. */
     public EncryptedKeyMarshaller(){
         super(XMLConstants.XMLENC_NS, EncryptedKey.DEFAULT_ELEMENT_LOCAL_NAME);
     }
 
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param targetNamespaceURI
-     * @param targetLocalName
+     * @param targetNamespaceURI namespace URI
+     * @param targetLocalName local name
      * @throws IllegalArgumentException
      */
     protected EncryptedKeyMarshaller(String targetNamespaceURI, String targetLocalName){

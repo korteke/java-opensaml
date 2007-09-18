@@ -19,21 +19,25 @@ package org.opensaml.xml.encryption.impl;
 import org.apache.log4j.Logger;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.AbstractXMLObjectUnmarshaller;
-import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.w3c.dom.Attr;
 
 /**
- * An abstract unmarshaller implementation for XMLObjects from {@link org.opensaml.xml.encryption}
+ * An abstract unmarshaller implementation for XMLObjects from {@link org.opensaml.xml.encryption}.
  */
 public abstract class AbstractXMLEncryptionUnmarshaller extends AbstractXMLObjectUnmarshaller {
 
     /**
-     * Logger
+     * Logger.
      */
     private static Logger log = Logger.getLogger(AbstractXMLEncryptionUnmarshaller.class);
 
-    /** Constructor */
+    /**
+     * Constructor.
+     *
+     * @param targetNamespaceURI namespace URI
+     * @param targetLocalName local name
+     */
     protected AbstractXMLEncryptionUnmarshaller(String targetNamespaceURI, String targetLocalName){
         super(targetNamespaceURI, targetLocalName);
     }

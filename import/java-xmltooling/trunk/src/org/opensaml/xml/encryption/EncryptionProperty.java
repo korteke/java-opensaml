@@ -16,7 +16,6 @@
 
 package org.opensaml.xml.encryption;
 
-
 import javax.xml.namespace.QName;
 
 import org.opensaml.xml.AttributeExtensibleXMLObject;
@@ -27,49 +26,52 @@ import org.opensaml.xml.validation.ValidatingXMLObject;
 /**
  * XMLObject representing XML Encryption, version 20021210, EncryptionProperty element.
  */
-public interface EncryptionProperty extends ValidatingXMLObject, AttributeExtensibleXMLObject, ElementExtensibleXMLObject {
-    
-    /** Element local name */
-    public final static String DEFAULT_ELEMENT_LOCAL_NAME = "EncryptionProperty";
-    
-    /** Default element name */
-    public final static QName DEFAULT_ELEMENT_NAME = new QName(XMLConstants.XMLENC_NS, DEFAULT_ELEMENT_LOCAL_NAME, XMLConstants.XMLENC_PREFIX);
-    
-    /** Local name of the XSI type */
-    public final static String TYPE_LOCAL_NAME = "EncryptionPropertyType"; 
-        
-    /** QName of the XSI type */
-    public final static QName TYPE_NAME = new QName(XMLConstants.XMLENC_NS, TYPE_LOCAL_NAME, XMLConstants.XMLENC_PREFIX);
-    
-    /** Target attribute name */
-    public final static String TARGET_ATTRIB_NAME = "Target";
+public interface EncryptionProperty extends ValidatingXMLObject, AttributeExtensibleXMLObject,
+        ElementExtensibleXMLObject {
 
-    /** Id attribute name */
-    public final static String ID_ATTRIB_NAME = "Id";
-    
-    /** Get the target URI attribute which specifies to which element this 
-     * property applies
+    /** Element local name. */
+    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "EncryptionProperty";
+
+    /** Default element name. */
+    public static final QName DEFAULT_ELEMENT_NAME = new QName(XMLConstants.XMLENC_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+            XMLConstants.XMLENC_PREFIX);
+
+    /** Local name of the XSI type. */
+    public static final String TYPE_LOCAL_NAME = "EncryptionPropertyType";
+
+    /** QName of the XSI type. */
+    public static final QName TYPE_NAME = new QName(XMLConstants.XMLENC_NS, TYPE_LOCAL_NAME, 
+            XMLConstants.XMLENC_PREFIX);
+
+    /** Target attribute name. */
+    public static final String TARGET_ATTRIB_NAME = "Target";
+
+    /** Id attribute name. */
+    public static final String ID_ATTRIB_NAME = "Id";
+
+    /**
+     * Get the target URI attribute which specifies to which element this. property applies
      * 
      * @return the target URI attribute
      */
     public String getTarget();
-    
-    /** Set the target URI attribute which specifies to which element this 
-     * property applies
+
+    /**
+     * Set the target URI attribute which specifies to which element this property applies.
      * 
      * @param newTarget the new target URI attribute
      */
     public void setTarget(String newTarget);
-    
+
     /**
-     * Get the ID attribute which uniquely identifies this element
-	 *
+     * Get the ID attribute which uniquely identifies this element.
+     * 
      * @return the ID attribute value
      */
     public String getID();
-    
+
     /**
-     * Set the ID attribute which uniquely identifies this element
+     * Set the ID attribute which uniquely identifies this element.
      * 
      * @param newID the new ID attribute
      */

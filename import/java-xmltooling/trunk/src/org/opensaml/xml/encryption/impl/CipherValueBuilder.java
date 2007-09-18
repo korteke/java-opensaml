@@ -22,14 +22,12 @@ import org.opensaml.xml.encryption.XMLEncryptionBuilder;
 import org.opensaml.xml.util.XMLConstants;
 
 /**
- * Builder of {@link org.opensaml.xml.encryption.CipherValue}
+ * Builder of {@link org.opensaml.xml.encryption.CipherValue}.
  */
-public class CipherValueBuilder extends AbstractXMLObjectBuilder<CipherValue> implements XMLEncryptionBuilder<CipherValue> {
+public class CipherValueBuilder extends AbstractXMLObjectBuilder<CipherValue> implements
+        XMLEncryptionBuilder<CipherValue> {
 
-    /**
-     * Constructor
-     *
-     */
+    /** Constructor. */
     public CipherValueBuilder() {
     }
 

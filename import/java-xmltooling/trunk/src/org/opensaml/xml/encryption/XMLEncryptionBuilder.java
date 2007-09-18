@@ -20,7 +20,7 @@ import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.XMLObjectBuilder;
 
 /**
- * Builder for XMLObjects from {@link org.opensaml.xml.encryption}
+ * Builder for XMLObjects from {@link org.opensaml.xml.encryption}.
  * 
  * @param <XMLEncryptionType> the type of XMLObject being built
  */

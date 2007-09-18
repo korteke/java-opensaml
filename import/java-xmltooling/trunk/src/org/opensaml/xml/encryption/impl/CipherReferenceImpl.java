@@ -26,22 +26,22 @@ import org.opensaml.xml.encryption.Transforms;
 import org.opensaml.xml.validation.AbstractValidatingXMLObject;
 
 /**
- * Concrete implementation of {@link org.opensaml.xml.encryption.CipherReference}
+ * Concrete implementation of {@link org.opensaml.xml.encryption.CipherReference}.
  */
 public class CipherReferenceImpl extends AbstractValidatingXMLObject implements CipherReference {
-    
-    /** URI attribute value */
+
+    /** URI attribute value. */
     private String uri;
-    
-    /** Transforms child element value */
+
+    /** Transforms child element value. */
     private Transforms transforms;
 
     /**
-     * Constructor
-     *
-     * @param namespaceURI
-     * @param elementLocalName
-     * @param namespacePrefix
+     * Constructor.
+     * 
+     * @param namespaceURI namespace URI
+     * @param elementLocalName local name
+     * @param namespacePrefix namespace prefix
      */
     protected CipherReferenceImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
@@ -70,16 +70,16 @@ public class CipherReferenceImpl extends AbstractValidatingXMLObject implements 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
         ArrayList<XMLObject> children = new ArrayList<XMLObject>();
-        
+
         if (transforms != null) {
             children.add(transforms);
         }
-        
+
         if (children.size() == 0) {
             return null;
         }
-        
+
         return Collections.unmodifiableList(children);
     }
-    
+
 }

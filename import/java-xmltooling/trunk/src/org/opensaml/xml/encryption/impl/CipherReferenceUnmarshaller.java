@@ -28,21 +28,18 @@ import org.w3c.dom.Attr;
  */
 public class CipherReferenceUnmarshaller extends AbstractXMLEncryptionUnmarshaller {
 
-    /**
-     * Constructor
-     * 
-     */
-    public CipherReferenceUnmarshaller(){
+    /** Constructor. */
+    public CipherReferenceUnmarshaller() {
         super(XMLConstants.XMLENC_NS, CipherReference.DEFAULT_ELEMENT_LOCAL_NAME);
     }
 
     /**
-     * Constructor
+     * Constructor.
      * 
-     * @param targetNamespaceURI
-     * @param targetLocalName
+     * @param targetNamespaceURI namespace URI
+     * @param targetLocalName local name
      */
-    public CipherReferenceUnmarshaller(String targetNamespaceURI, String targetLocalName){
+    public CipherReferenceUnmarshaller(String targetNamespaceURI, String targetLocalName) {
         super(targetNamespaceURI, targetLocalName);
     }
 

@@ -19,7 +19,6 @@ package org.opensaml.xml.encryption.impl;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.encryption.CipherReference;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.util.XMLConstants;
 import org.w3c.dom.Element;
 
@@ -27,29 +26,26 @@ import org.w3c.dom.Element;
  * A thread-safe Marshaller for {@link org.opensaml.xml.encryption.CipherReference} objects.
  */
 public class CipherReferenceMarshaller extends AbstractXMLEncryptionMarshaller {
-    
-    /**
-     * Constructor
-     *
-     */
-    public CipherReferenceMarshaller(){
+
+    /** Constructor. */
+    public CipherReferenceMarshaller() {
         super(XMLConstants.XMLENC_NS, CipherReference.DEFAULT_ELEMENT_LOCAL_NAME);
     }
 
     /**
-     * Constructor
-     *
-     * @param targetNamespaceURI
-     * @param targetLocalName
+     * Constructor.
+     * 
+     * @param targetNamespaceURI namespace URI
+     * @param targetLocalName local name
      */
-    public CipherReferenceMarshaller(String targetNamespaceURI, String targetLocalName){
+    public CipherReferenceMarshaller(String targetNamespaceURI, String targetLocalName) {
         super(targetNamespaceURI, targetLocalName);
     }
 
     /** {@inheritDoc} */
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         CipherReference cr = (CipherReference) xmlObject;
-        
+
         if (cr.getURI() != null) {
             domElement.setAttributeNS(null, CipherReference.URI_ATTRIB_NAME, cr.getURI());
         } else {

@@ -25,11 +25,12 @@ import org.opensaml.xml.util.XMLConstants;
  * XMLObject representing XML Encryption, version 20021210, CarriedKeyName element.
  */
 public interface CarriedKeyName extends XSString {
-    
-    /** Element local name */
-    public final static String DEFAULT_ELEMENT_LOCAL_NAME = "CarriedKeyName";
-    
-    /** Default element name */
-    public final static QName DEFAULT_ELEMENT_NAME = new QName(XMLConstants.XMLENC_NS, DEFAULT_ELEMENT_LOCAL_NAME, XMLConstants.XMLENC_PREFIX);
-    
+
+    /** Element local name. */
+    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "CarriedKeyName";
+
+    /** Default element name. */
+    public static final QName DEFAULT_ELEMENT_NAME = new QName(XMLConstants.XMLENC_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+            XMLConstants.XMLENC_PREFIX);
+
 }

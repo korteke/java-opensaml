@@ -22,21 +22,19 @@ import org.opensaml.xml.encryption.XMLEncryptionBuilder;
 import org.opensaml.xml.util.XMLConstants;
 
 /**
- * Builder of {@link org.opensaml.xml.encryption.EncryptedData}
+ * Builder of {@link org.opensaml.xml.encryption.EncryptedData}.
  */
-public class EncryptedDataBuilder extends AbstractXMLObjectBuilder<EncryptedData> 
-    implements XMLEncryptionBuilder<EncryptedData> {
+public class EncryptedDataBuilder extends AbstractXMLObjectBuilder<EncryptedData> implements
+        XMLEncryptionBuilder<EncryptedData> {
 
-    /**
-     * Constructor
-     *
-     */
+    /** Constructor. */
     public EncryptedDataBuilder() {
     }
 
     /** {@inheritDoc} */
     public EncryptedData buildObject() {
-        return buildObject(XMLConstants.XMLENC_NS, EncryptedData.DEFAULT_ELEMENT_LOCAL_NAME, XMLConstants.XMLENC_PREFIX);
+        return buildObject(XMLConstants.XMLENC_NS, EncryptedData.DEFAULT_ELEMENT_LOCAL_NAME, 
+                XMLConstants.XMLENC_PREFIX);
     }
 
     /** {@inheritDoc} */

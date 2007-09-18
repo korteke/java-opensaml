@@ -26,11 +26,12 @@ import org.opensaml.xml.util.XMLConstants;
  */
 public interface Generator extends CryptoBinary {
     
-    /** Element local name */
-    public final static String DEFAULT_ELEMENT_LOCAL_NAME = "Generator";
+    /** Element local name. */
+    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Generator";
     
-    /** Default element name */
-    public final static QName DEFAULT_ELEMENT_NAME = new QName(XMLConstants.XMLENC_NS, DEFAULT_ELEMENT_LOCAL_NAME, XMLConstants.XMLENC_PREFIX);
+    /** Default element name. */
+    public static final QName DEFAULT_ELEMENT_NAME = new QName(XMLConstants.XMLENC_NS, DEFAULT_ELEMENT_LOCAL_NAME, 
+            XMLConstants.XMLENC_PREFIX);
     
 
 }

@@ -27,24 +27,25 @@ import org.opensaml.xml.validation.ValidatingXMLObject;
  * {@link EncryptedData} and {@link EncryptedKey} types.
  */
 public interface EncryptedType extends ValidatingXMLObject {
-    
-    /** Local name of the XSI type */
-    public final static String TYPE_LOCAL_NAME = "EncryptedType"; 
-        
-    /** QName of the XSI type */
-    public final static QName TYPE_NAME = new QName(XMLConstants.XMLENC_NS, TYPE_LOCAL_NAME, XMLConstants.XMLENC_PREFIX);
 
-    /** Id attribute name */
-    public final static String ID_ATTRIB_NAME = "Id";
+    /** Local name of the XSI type. */
+    public static final String TYPE_LOCAL_NAME = "EncryptedType";
 
-    /** Type attribute name */
-    public final static String TYPE_ATTRIB_NAME = "Type";
+    /** QName of the XSI type. */
+    public static final QName TYPE_NAME = new QName(XMLConstants.XMLENC_NS, TYPE_LOCAL_NAME, 
+            XMLConstants.XMLENC_PREFIX);
 
-    /** MimeType attribute name */
-    public final static String MIMETYPE_ATTRIB_NAME = "MimeType";
+    /** Id attribute name. */
+    public static final String ID_ATTRIB_NAME = "Id";
 
-    /** Encoding attribute name */
-    public final static String ENCODING_ATTRIB_NAME = "Encoding";
+    /** Type attribute name. */
+    public static final String TYPE_ATTRIB_NAME = "Type";
+
+    /** MimeType attribute name. */
+    public static final String MIMETYPE_ATTRIB_NAME = "MimeType";
+
+    /** Encoding attribute name. */
+    public static final String ENCODING_ATTRIB_NAME = "Encoding";
 
     /**
      * Gets the unique ID for the XML element.
@@ -101,61 +102,61 @@ public interface EncryptedType extends ValidatingXMLObject {
      * @param newEncoding the encoding applied to the plaintext content prior to encryption
      */
     public void setEncoding(String newEncoding);
-    
+
     /**
      * Gets the EncryptionMethod child element.
      * 
      * @return the EncryptionMethod child element
      */
     public EncryptionMethod getEncryptionMethod();
-    
-     /**
+
+    /**
      * Sets the EncryptionMethod child element.
      * 
      * @param newEncryptionMethod the new EncryptionMethod child element
      */
     public void setEncryptionMethod(EncryptionMethod newEncryptionMethod);
-    
+
     /**
      * Gets the KeyInfo child element.
      * 
      * @return the KeyInfo child element
      */
     public KeyInfo getKeyInfo();
-    
+
     /**
      * Sets the KeyInfo child element.
      * 
      * @param newKeyInfo the new KeyInfo child element
      */
     public void setKeyInfo(KeyInfo newKeyInfo);
-    
+
     /**
      * Gets the CipherData child element.
      * 
      * @return the CipherData child element
      */
     public CipherData getCipherData();
-    
+
     /**
      * Sets the CipherData child element.
      * 
      * @param newCipherData the new CipherData child element
      */
     public void setCipherData(CipherData newCipherData);
-    
+
     /**
      * Gets the EncryptionProperties child element.
      * 
      * @return the EncryptionProperties child element
      */
     public EncryptionProperties getEncryptionProperties();
-    
+
     /**
      * Sets the EncryptionProperties child element.
      * 
      * @param newEncryptionProperties the new EncryptionProperties child element
      */
     public void setEncryptionProperties(EncryptionProperties newEncryptionProperties);
-    
+
 }

@@ -22,15 +22,12 @@ import org.opensaml.xml.encryption.XMLEncryptionBuilder;
 import org.opensaml.xml.util.XMLConstants;
 
 /**
- * Builder of {@link org.opensaml.xml.encryption.EncryptedKey}
+ * Builder of {@link org.opensaml.xml.encryption.EncryptedKey}.
  */
 public class EncryptedKeyBuilder extends AbstractXMLObjectBuilder<EncryptedKey> 
     implements XMLEncryptionBuilder<EncryptedKey> {
 
-    /**
-     * Constructor
-     *
-     */
+    /** Constructor. */
     public EncryptedKeyBuilder() {
     }
 

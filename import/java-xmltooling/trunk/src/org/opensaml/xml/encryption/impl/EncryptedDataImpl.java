@@ -19,16 +19,16 @@ package org.opensaml.xml.encryption.impl;
 import org.opensaml.xml.encryption.EncryptedData;
 
 /**
- * Concrete implementation of {@link org.opensaml.xml.encryption.EncryptedData}
+ * Concrete implementation of {@link org.opensaml.xml.encryption.EncryptedData}.
  */
 public class EncryptedDataImpl extends EncryptedTypeImpl implements EncryptedData {
 
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param namespaceURI
-     * @param elementLocalName
-     * @param namespacePrefix
+     * @param namespaceURI namespace URI
+     * @param elementLocalName local name
+     * @param namespacePrefix namespace prefix
      */
     protected EncryptedDataImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);

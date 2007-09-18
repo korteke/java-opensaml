@@ -17,7 +17,6 @@
 package org.opensaml.xml.encryption.impl;
 
 import org.opensaml.xml.encryption.EncryptedData;
-import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.util.XMLConstants;
 
 /**
@@ -25,19 +24,16 @@ import org.opensaml.xml.util.XMLConstants;
  */
 public class EncryptedDataMarshaller extends EncryptedTypeMarshaller {
     
-    /**
-     * Constructor
-     *
-     */
+    /** Constructor. */
     public EncryptedDataMarshaller(){
        super(XMLConstants.XMLENC_NS, EncryptedData.DEFAULT_ELEMENT_LOCAL_NAME);
     }
 
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param targetNamespaceURI
-     * @param targetLocalName
+     * @param targetNamespaceURI namespace URI
+     * @param targetLocalName local name
      */
     protected EncryptedDataMarshaller(String targetNamespaceURI, String targetLocalName){
         super(targetNamespaceURI, targetLocalName);

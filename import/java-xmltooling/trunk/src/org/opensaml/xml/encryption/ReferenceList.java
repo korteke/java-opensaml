@@ -28,11 +28,12 @@ import org.opensaml.xml.validation.ValidatingXMLObject;
  */
 public interface ReferenceList extends ValidatingXMLObject {
     
-    /** Element local name */
-    public final static String DEFAULT_ELEMENT_LOCAL_NAME = "ReferenceList";
+    /** Element local name. */
+    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "ReferenceList";
     
-    /** Default element name */
-    public final static QName DEFAULT_ELEMENT_NAME = new QName(XMLConstants.XMLENC_NS, DEFAULT_ELEMENT_LOCAL_NAME, XMLConstants.XMLENC_PREFIX);
+    /** Default element name. */
+    public static final QName DEFAULT_ELEMENT_NAME = new QName(XMLConstants.XMLENC_NS, DEFAULT_ELEMENT_LOCAL_NAME, 
+            XMLConstants.XMLENC_PREFIX);
     
     /**
      * Get the list of reference child elements.

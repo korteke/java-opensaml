@@ -31,31 +31,31 @@ import org.opensaml.xml.util.IndexedXMLObjectChildrenList;
 import org.opensaml.xml.validation.AbstractValidatingXMLObject;
 
 /**
- * Concrete implementation of {@link org.opensaml.xml.encryption.AgreementMethod}
+ * Concrete implementation of {@link org.opensaml.xml.encryption.AgreementMethod}.
  */
 public class AgreementMethodImpl extends AbstractValidatingXMLObject implements AgreementMethod {
     
-    /** Algorithm attribute value */
+    /** Algorithm attribute value. */
     private String algorithm;
     
-    /** KA-Nonce child element value */
+    /** KA-Nonce child element value. */
     private KANonce kaNonce;
     
-    /** OriginatorKeyInfo child element value */
+    /** OriginatorKeyInfo child element value. */
     private OriginatorKeyInfo originatorKeyInfo;
     
-    /** RecipientKeyInfo child element value */
+    /** RecipientKeyInfo child element value. */
     private RecipientKeyInfo recipientKeyInfo;
     
-    /** List of wildcard &lt;any&gt; XMLObject children */
+    /** List of wildcard &lt;any&gt; XMLObject children. */
     private IndexedXMLObjectChildrenList xmlChildren;
 
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param namespaceURI
-     * @param elementLocalName
-     * @param namespacePrefix
+     * @param namespaceURI namespace URI
+     * @param elementLocalName element local name
+     * @param namespacePrefix namespace prefix
      */
     protected AgreementMethodImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);

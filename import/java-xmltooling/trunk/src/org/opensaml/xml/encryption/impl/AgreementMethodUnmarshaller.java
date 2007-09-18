@@ -29,29 +29,26 @@ import org.w3c.dom.Attr;
  * A thread-safe Unmarshaller for {@link org.opensaml.xml.encryption.AgreementMethod} objects.
  */
 public class AgreementMethodUnmarshaller extends AbstractXMLEncryptionUnmarshaller {
-    
-    /**
-     * Constructor
-     *
-     */
-    public AgreementMethodUnmarshaller(){
+
+    /** Constructor. */
+    public AgreementMethodUnmarshaller() {
         super(XMLConstants.XMLENC_NS, AgreementMethod.DEFAULT_ELEMENT_LOCAL_NAME);
     }
 
     /**
-     * Constructor
-     *
-     * @param targetNamespaceURI
-     * @param targetLocalName
+     * Constructor.
+     * 
+     * @param targetNamespaceURI namespace URI
+     * @param targetLocalName local name
      */
-    public AgreementMethodUnmarshaller(String targetNamespaceURI, String targetLocalName){
+    public AgreementMethodUnmarshaller(String targetNamespaceURI, String targetLocalName) {
         super(targetNamespaceURI, targetLocalName);
     }
 
     /** {@inheritDoc} */
     protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
         AgreementMethod am = (AgreementMethod) xmlObject;
-        
+
         if (attribute.getLocalName().equals(AgreementMethod.ALGORITHM_ATTRIBUTE_NAME)) {
             am.setAlgorithm(attribute.getValue());
         } else {
@@ -60,9 +57,10 @@ public class AgreementMethodUnmarshaller extends AbstractXMLEncryptionUnmarshall
     }
 
     /** {@inheritDoc} */
-    protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject) throws UnmarshallingException {
+    protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
+            throws UnmarshallingException {
         AgreementMethod am = (AgreementMethod) parentXMLObject;
-        
+
         if (childXMLObject instanceof KANonce) {
             am.setKANonce((KANonce) childXMLObject);
         } else if (childXMLObject instanceof OriginatorKeyInfo) {
@@ -70,7 +68,7 @@ public class AgreementMethodUnmarshaller extends AbstractXMLEncryptionUnmarshall
         } else if (childXMLObject instanceof RecipientKeyInfo) {
             am.setRecipientKeyInfo((RecipientKeyInfo) childXMLObject);
         } else {
-           am.getUnknownXMLObjects().add(childXMLObject);
+            am.getUnknownXMLObjects().add(childXMLObject);
         }
     }
 

@@ -31,29 +31,27 @@ import org.opensaml.xml.util.XMLConstants;
  * A thread-safe Unmarshaller for {@link org.opensaml.xml.encryption.DHKeyValue} objects.
  */
 public class DHKeyValueUnmarshaller extends AbstractXMLEncryptionUnmarshaller {
-    
-    /**
-     * Constructor
-     *
-     */
-    public DHKeyValueUnmarshaller(){
+
+    /** Constructor. */
+    public DHKeyValueUnmarshaller() {
         super(XMLConstants.XMLENC_NS, DHKeyValue.DEFAULT_ELEMENT_LOCAL_NAME);
     }
 
     /**
-     * Constructor
-     *
-     * @param targetNamespaceURI
-     * @param targetLocalName
+     * Constructor.
+     * 
+     * @param targetNamespaceURI namespace URI
+     * @param targetLocalName local name
      */
-    protected DHKeyValueUnmarshaller(String targetNamespaceURI, String targetLocalName){
+    protected DHKeyValueUnmarshaller(String targetNamespaceURI, String targetLocalName) {
         super(targetNamespaceURI, targetLocalName);
     }
 
     /** {@inheritDoc} */
-    protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject) throws UnmarshallingException {
+    protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
+            throws UnmarshallingException {
         DHKeyValue keyValue = (DHKeyValue) parentXMLObject;
-        
+
         if (childXMLObject instanceof P) {
             keyValue.setP((P) childXMLObject);
         } else if (childXMLObject instanceof Q) {

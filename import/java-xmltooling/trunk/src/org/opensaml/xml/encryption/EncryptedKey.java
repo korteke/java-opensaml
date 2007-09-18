@@ -25,32 +25,34 @@ import org.opensaml.xml.util.XMLConstants;
  */
 public interface EncryptedKey extends EncryptedType {
 
-    /** Element local name */
-    public final static String DEFAULT_ELEMENT_LOCAL_NAME = "EncryptedKey";
+    /** Element local name. */
+    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "EncryptedKey";
     
-    /** Default element name */
-    public final static QName DEFAULT_ELEMENT_NAME = new QName(XMLConstants.XMLENC_NS, DEFAULT_ELEMENT_LOCAL_NAME, XMLConstants.XMLENC_PREFIX);
+    /** Default element name. */
+    public static final QName DEFAULT_ELEMENT_NAME = new QName(XMLConstants.XMLENC_NS, DEFAULT_ELEMENT_LOCAL_NAME, 
+            XMLConstants.XMLENC_PREFIX);
     
-    /** Local name of the XSI type */
-    public final static String TYPE_LOCAL_NAME = "EncryptedKeyType"; 
+    /** Local name of the XSI type. */
+    public static final String TYPE_LOCAL_NAME = "EncryptedKeyType"; 
         
-    /** QName of the XSI type */
-    public final static QName TYPE_NAME = new QName(XMLConstants.XMLENC_NS, TYPE_LOCAL_NAME, XMLConstants.XMLENC_PREFIX);
+    /** QName of the XSI type. */
+    public static final QName TYPE_NAME = new QName(XMLConstants.XMLENC_NS, TYPE_LOCAL_NAME, 
+            XMLConstants.XMLENC_PREFIX);
     
-    /** Recipient attribute name */
-    public final static String RECIPIENT_ATTRIB_NAME = "Recipient";
+    /** Recipient attribute name. */
+    public static final String RECIPIENT_ATTRIB_NAME = "Recipient";
     
     /**
-     * Gets the hint about for whom this encrypted key is intended
+     * Gets the hint about for whom this encrypted key is intended.
      * 
-     * @return the hint about who this encrypted key is inteded for
+     * @return the hint about who this encrypted key is intended for
      */
     public String getRecipient();
     
     /**
-     * Sets the hint about for whom this encrypted key is intended
+     * Sets the hint about for whom this encrypted key is intended.
      * 
-     * @param newRecipient the hint about who this encrypted key is inteded for
+     * @param newRecipient the hint about who this encrypted key is intended for
      */
     public void setRecipient(String newRecipient);
     

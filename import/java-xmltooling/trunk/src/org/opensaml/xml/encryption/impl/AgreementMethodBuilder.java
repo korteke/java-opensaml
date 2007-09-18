@@ -22,13 +22,14 @@ import org.opensaml.xml.encryption.XMLEncryptionBuilder;
 import org.opensaml.xml.util.XMLConstants;
 
 /**
- * Builder of {@link org.opensaml.xml.encryption.AgreementMethod}
+ * Builder of {@link org.opensaml.xml.encryption.AgreementMethod}.
  */
-public class AgreementMethodBuilder extends AbstractXMLObjectBuilder<AgreementMethod> implements XMLEncryptionBuilder<AgreementMethod> {
+public class AgreementMethodBuilder extends AbstractXMLObjectBuilder<AgreementMethod> implements
+        XMLEncryptionBuilder<AgreementMethod> {
 
     /**
-     * Constructor
-     *
+     * Constructor.
+     * 
      */
     public AgreementMethodBuilder() {
     }
@@ -40,7 +41,8 @@ public class AgreementMethodBuilder extends AbstractXMLObjectBuilder<AgreementMe
 
     /** {@inheritDoc} */
     public AgreementMethod buildObject() {
-        return buildObject(XMLConstants.XMLENC_NS, AgreementMethod.DEFAULT_ELEMENT_LOCAL_NAME, XMLConstants.XMLENC_PREFIX);
+        return buildObject(XMLConstants.XMLENC_NS, AgreementMethod.DEFAULT_ELEMENT_LOCAL_NAME,
+                XMLConstants.XMLENC_PREFIX);
     }
 
 }

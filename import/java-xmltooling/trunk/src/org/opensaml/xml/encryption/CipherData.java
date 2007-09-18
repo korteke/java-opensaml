@@ -22,45 +22,47 @@ import org.opensaml.xml.util.XMLConstants;
 import org.opensaml.xml.validation.ValidatingXMLObject;
 
 /**
- * XMLObject representing XML Encryption, version 20021210, CipherData element
+ * XMLObject representing XML Encryption, version 20021210, CipherData element.
  */
 public interface CipherData extends ValidatingXMLObject {
-    
-    /** Element local name */
-    public final static String DEFAULT_ELEMENT_LOCAL_NAME = "CipherData";
-    
-    /** Default element name */
-    public final static QName DEFAULT_ELEMENT_NAME = new QName(XMLConstants.XMLENC_NS, DEFAULT_ELEMENT_LOCAL_NAME, XMLConstants.XMLENC_PREFIX);
-    
-    /** Local name of the XSI type */
-    public final static String TYPE_LOCAL_NAME = "CipherDataType"; 
-        
-    /** QName of the XSI type */
-    public final static QName TYPE_NAME = new QName(XMLConstants.XMLENC_NS, TYPE_LOCAL_NAME, XMLConstants.XMLENC_PREFIX);
-    
+
+    /** Element local name. */
+    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "CipherData";
+
+    /** Default element name. */
+    public static final QName DEFAULT_ELEMENT_NAME = new QName(XMLConstants.XMLENC_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+            XMLConstants.XMLENC_PREFIX);
+
+    /** Local name of the XSI type. */
+    public static final String TYPE_LOCAL_NAME = "CipherDataType";
+
+    /** QName of the XSI type. */
+    public static final QName TYPE_NAME = new QName(XMLConstants.XMLENC_NS, TYPE_LOCAL_NAME, 
+            XMLConstants.XMLENC_PREFIX);
+
     /**
      * Get the base64-encoded data representing the the encrypted form of the plaintext data.
      * 
      * @return base64-encoded encrypted value
      */
     public CipherValue getCipherValue();
-    
+
     /**
      * Set the base64-encoded data representing the the encrypted form of the plaintext data.
      * 
      * @param newCipherValue the new base64-encoded encrypted data
      */
     public void setCipherValue(CipherValue newCipherValue);
-    
+
     /**
-     * Get the CipherReference which points to the location encrypted data
+     * Get the CipherReference which points to the location encrypted data.
      * 
      * @return CipherReference child element representing the encrypted data
      */
     public CipherReference getCipherReference();
 
     /**
-     * Get the CipherReference which points to the location encrypted data
+     * Get the CipherReference which points to the location encrypted data.
      * 
      * @param newCipherReference the new CipherReference child element
      */

@@ -28,31 +28,33 @@ import org.opensaml.xml.validation.ValidatingXMLObject;
  */
 public interface EncryptionMethod extends ValidatingXMLObject, ElementExtensibleXMLObject {
     
-    /** Element local name */
-    public final static String DEFAULT_ELEMENT_LOCAL_NAME = "EncryptionMethod";
+    /** Element local name. */
+    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "EncryptionMethod";
     
-    /** Default element name */
-    public final static QName DEFAULT_ELEMENT_NAME = new QName(XMLConstants.XMLENC_NS, DEFAULT_ELEMENT_LOCAL_NAME, XMLConstants.XMLENC_PREFIX);
+    /** Default element name. */
+    public static final QName DEFAULT_ELEMENT_NAME = new QName(XMLConstants.XMLENC_NS, DEFAULT_ELEMENT_LOCAL_NAME, 
+            XMLConstants.XMLENC_PREFIX);
     
-    /** Local name of the XSI type */
-    public final static String TYPE_LOCAL_NAME = "EncryptionMethodType"; 
+    /** Local name of the XSI type. */
+    public static final String TYPE_LOCAL_NAME = "EncryptionMethodType"; 
         
-    /** QName of the XSI type */
-    public final static QName TYPE_NAME = new QName(XMLConstants.XMLENC_NS, TYPE_LOCAL_NAME, XMLConstants.XMLENC_PREFIX);
+    /** QName of the XSI type. */
+    public static final QName TYPE_NAME = new QName(XMLConstants.XMLENC_NS, TYPE_LOCAL_NAME, 
+            XMLConstants.XMLENC_PREFIX);
     
-    /** Algorithm attribute name */
-    public final static String ALGORITHM_ATTRIB_NAME = "Algorithm";
+    /** Algorithm attribute name. */
+    public static final String ALGORITHM_ATTRIB_NAME = "Algorithm";
     
    
     /**
-     * Gets the algorithm URI attribute used in this EncryptionMethod
+     * Gets the algorithm URI attribute used in this EncryptionMethod.
      * 
      * @return the Algorithm attribute URI attribute string
      */
     public String getAlgorithm();
  
     /**
-     * Sets the algorithm URI attribute used in this EncryptionMethod
+     * Sets the algorithm URI attribute used in this EncryptionMethod.
      * 
      * @param newAlgorithm the new Algorithm URI attribute string
      */

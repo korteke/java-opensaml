@@ -22,15 +22,16 @@ import org.opensaml.xml.signature.KeyInfoType;
 import org.opensaml.xml.util.XMLConstants;
 
 /**
- * XMLObject representing XML Encryption, version 20021210, RecipientKeyInfo element
+ * XMLObject representing XML Encryption, version 20021210, RecipientKeyInfo element.
  */
 public interface RecipientKeyInfo extends KeyInfoType {
     
-    /** Element local name */
-    public final static String DEFAULT_ELEMENT_LOCAL_NAME = "RecipientKeyInfo";
+    /** Element local name. */
+    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "RecipientKeyInfo";
     
-    /** Default element name */
-    public final static QName DEFAULT_ELEMENT_NAME = new QName(XMLConstants.XMLENC_NS, DEFAULT_ELEMENT_LOCAL_NAME, XMLConstants.XMLENC_PREFIX);
+    /** Default element name. */
+    public static final QName DEFAULT_ELEMENT_NAME = new QName(XMLConstants.XMLENC_NS, DEFAULT_ELEMENT_LOCAL_NAME, 
+            XMLConstants.XMLENC_PREFIX);
     
 
 }

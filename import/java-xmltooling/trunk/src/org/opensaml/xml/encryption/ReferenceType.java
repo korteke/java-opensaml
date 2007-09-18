@@ -28,24 +28,25 @@ import org.opensaml.xml.validation.ValidatingXMLObject;
  */
 public interface ReferenceType extends ValidatingXMLObject, ElementExtensibleXMLObject {
     
-    /** Local name of the XSI type */
-    public final static String TYPE_LOCAL_NAME = "ReferenceType"; 
+    /** Local name of the XSI type. */
+    public static final String TYPE_LOCAL_NAME = "ReferenceType"; 
         
-    /** QName of the XSI type */
-    public final static QName TYPE_NAME = new QName(XMLConstants.XMLENC_NS, TYPE_LOCAL_NAME, XMLConstants.XMLENC_PREFIX);
+    /** QName of the XSI type. */
+    public static final QName TYPE_NAME = new QName(XMLConstants.XMLENC_NS, TYPE_LOCAL_NAME, 
+            XMLConstants.XMLENC_PREFIX);
     
-    /** URI attribute name */
-    public final static String URI_ATTRIB_NAME = "URI";
+    /** URI attribute name. */
+    public static final String URI_ATTRIB_NAME = "URI";
     
     /**
-     * Get the URI attribute which indicates the referent of this reference
+     * Get the URI attribute which indicates the referent of this reference.
      * 
      * @return the URI referent attribute value
      */
     public String getURI();
     
     /**
-     * Set the URI attribute which indicates the referent of this reference
+     * Set the URI attribute which indicates the referent of this reference.
      * 
      * @param newURI the new URI attribute value
      */

@@ -31,34 +31,34 @@ import org.opensaml.xml.encryption.Seed;
 import org.opensaml.xml.validation.AbstractValidatingXMLObject;
 
 /**
- * Concrete implementation of {@link org.opensaml.xml.encryption.DHKeyValue}
+ * Concrete implementation of {@link org.opensaml.xml.encryption.DHKeyValue}.
  */
 public class DHKeyValueImpl extends AbstractValidatingXMLObject implements DHKeyValue {
     
-    /** P child element */
+    /** P child element. */
     private P p;
     
-    /** Q child element */
+    /** Q child element. */
     private Q q;
     
-    /** Generator child element */
+    /** Generator child element. */
     private Generator generator;
     
-    /** Public element */
+    /** Public element. */
     private Public publicChild;
     
-    /** seed child element */
+    /** seed child element. */
     private Seed seed;
     
-    /** pgenCounter child element */
+    /** pgenCounter child element. */
     private PgenCounter pgenCounter;
 
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param namespaceURI
-     * @param elementLocalName
-     * @param namespacePrefix
+     * @param namespaceURI namespace URI
+     * @param elementLocalName local name
+     * @param namespacePrefix namespace prefix
      */
     protected DHKeyValueImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);

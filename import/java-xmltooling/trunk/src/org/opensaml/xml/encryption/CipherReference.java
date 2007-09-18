@@ -25,47 +25,47 @@ import org.opensaml.xml.validation.ValidatingXMLObject;
  * XMLObject representing XML Encryption, version 20021210, CipherReference element.
  */
 public interface CipherReference extends ValidatingXMLObject {
-    
-    /** Element local name */
-    public final static String DEFAULT_ELEMENT_LOCAL_NAME = "CipherReference";
-    
-    /** Default element name */
-    public final static QName DEFAULT_ELEMENT_NAME = new QName(XMLConstants.XMLENC_NS, DEFAULT_ELEMENT_LOCAL_NAME, XMLConstants.XMLENC_PREFIX);
-    
-    /** Local name of the XSI type */
-    public final static String TYPE_LOCAL_NAME = "CipherReferenceType"; 
-        
-    /** QName of the XSI type */
-    public final static QName TYPE_NAME = new QName(XMLConstants.XMLENC_NS, TYPE_LOCAL_NAME, XMLConstants.XMLENC_PREFIX);
-    
-    /** URI attribute name */
-    public final static String URI_ATTRIB_NAME = "URI";
-    
+
+    /** Element local name. */
+    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "CipherReference";
+
+    /** Default element name. */
+    public static final QName DEFAULT_ELEMENT_NAME = new QName(XMLConstants.XMLENC_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+            XMLConstants.XMLENC_PREFIX);
+
+    /** Local name of the XSI type. */
+    public static final String TYPE_LOCAL_NAME = "CipherReferenceType";
+
+    /** QName of the XSI type. */
+    public static final QName TYPE_NAME = new QName(XMLConstants.XMLENC_NS, TYPE_LOCAL_NAME, 
+            XMLConstants.XMLENC_PREFIX);
+
+    /** URI attribute name. */
+    public static final String URI_ATTRIB_NAME = "URI";
+
     /**
-     * Get the URI attribute that describes from where to deference the encrypted data
+     * Get the URI attribute that describes from where to deference the encrypted data.
      * 
      * @return the URI attribute string
      */
     public String getURI();
-    
+
     /**
-     * Set the URI attribute that describes from where to deference the encrypted data
+     * Set the URI attribute that describes from where to deference the encrypted data.
      * 
      * @param newURI the new URI attribute string value
      */
     public void setURI(String newURI);
-    
+
     /**
-     * Get the Transforms child element, which describes which transformations to apply 
-     * when dereferencing the data
+     * Get the Transforms child element, which describes which transformations to apply when dereferencing the data.
      * 
      * @return the Transforms child element
      */
     public Transforms getTransforms();
-    
+
     /**
-     * Set the Transforms child element, which describes which transformations to apply 
-     * when dereferencing the data
+     * Set the Transforms child element, which describes which transformations to apply when dereferencing the data.
      * 
      * @param newTransforms the new Transforms child element
      */

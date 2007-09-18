@@ -27,22 +27,22 @@ import org.opensaml.xml.encryption.CipherValue;
 import org.opensaml.xml.validation.AbstractValidatingXMLObject;
 
 /**
- * Concrete implementation of {@link org.opensaml.xml.encryption.CipherData}
+ * Concrete implementation of {@link org.opensaml.xml.encryption.CipherData}.
  */
 public class CipherDataImpl extends AbstractValidatingXMLObject implements CipherData {
     
-    /** CipherValue child element */
+    /** CipherValue child element. */
     private CipherValue cipherValue;
     
-    /** CipherReference child element */
+    /** CipherReference child element. */
     private CipherReference cipherReference;
 
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param namespaceURI
-     * @param elementLocalName
-     * @param namespacePrefix
+     * @param namespaceURI namespace URI
+     * @param elementLocalName local name
+     * @param namespacePrefix namespace prefix
      */
     protected  CipherDataImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);

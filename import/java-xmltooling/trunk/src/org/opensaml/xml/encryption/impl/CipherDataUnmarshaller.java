@@ -28,19 +28,16 @@ import org.opensaml.xml.util.XMLConstants;
  */
 public class CipherDataUnmarshaller extends AbstractXMLEncryptionUnmarshaller {
 
-    /**
-     * Constructor
-     * 
-     */
+    /** Constructor. */
     public CipherDataUnmarshaller(){
         super(XMLConstants.XMLENC_NS, CipherData.DEFAULT_ELEMENT_LOCAL_NAME);
     }
 
     /**
-     * Constructor
+     * Constructor.
      * 
-     * @param targetNamespaceURI
-     * @param targetLocalName
+     * @param targetNamespaceURI namespace URI
+     * @param targetLocalName local name
      */
     public CipherDataUnmarshaller(String targetNamespaceURI, String targetLocalName){
         super(targetNamespaceURI, targetLocalName);

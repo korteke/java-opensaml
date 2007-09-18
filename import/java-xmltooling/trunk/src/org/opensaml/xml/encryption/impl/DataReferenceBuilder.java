@@ -22,14 +22,12 @@ import org.opensaml.xml.encryption.XMLEncryptionBuilder;
 import org.opensaml.xml.util.XMLConstants;
 
 /**
- * Builder of {@link org.opensaml.xml.encryption.DataReference}
+ * Builder of {@link org.opensaml.xml.encryption.DataReference}.
  */
-public class DataReferenceBuilder extends AbstractXMLObjectBuilder<DataReference> implements XMLEncryptionBuilder<DataReference> {
+public class DataReferenceBuilder extends AbstractXMLObjectBuilder<DataReference> implements
+        XMLEncryptionBuilder<DataReference> {
 
-    /**
-     * Constructor
-     *
-     */
+    /** Constructor. */
     public DataReferenceBuilder() {
     }
 
@@ -40,7 +38,8 @@ public class DataReferenceBuilder extends AbstractXMLObjectBuilder<DataReference
 
     /** {@inheritDoc} */
     public DataReference buildObject() {
-        return buildObject(XMLConstants.XMLENC_NS, DataReference.DEFAULT_ELEMENT_LOCAL_NAME, XMLConstants.XMLENC_PREFIX);
+        return buildObject(XMLConstants.XMLENC_NS, DataReference.DEFAULT_ELEMENT_LOCAL_NAME, 
+                XMLConstants.XMLENC_PREFIX);
     }
 
 }

@@ -22,14 +22,12 @@ import org.opensaml.xml.encryption.XMLEncryptionBuilder;
 import org.opensaml.xml.util.XMLConstants;
 
 /**
- * Builder of {@link org.opensaml.xml.encryption.DHKeyValue}
+ * Builder of {@link org.opensaml.xml.encryption.DHKeyValue}.
  */
-public class DHKeyValueBuilder extends AbstractXMLObjectBuilder<DHKeyValue> implements XMLEncryptionBuilder<DHKeyValue> {
+public class DHKeyValueBuilder extends AbstractXMLObjectBuilder<DHKeyValue> implements 
+        XMLEncryptionBuilder<DHKeyValue> {
 
-    /**
-     * Constructor
-     *
-     */
+    /** Constructor. */
     public DHKeyValueBuilder() {
     }
 
