@@ -35,6 +35,7 @@ import javax.crypto.SecretKey;
 
 import org.apache.commons.ssl.PKCS8Key;
 import org.apache.log4j.Logger;
+import org.apache.xml.security.Init;
 import org.apache.xml.security.algorithms.JCEMapper;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.encryption.Encrypter;
@@ -632,5 +633,13 @@ public final class SecurityHelper {
             }
         }
         return null;
+    }
+    
+    static {
+        // We use some Apache XML Security utility functions, so need to make sure library
+        // is initialized.
+        if (! Init.isInitialized()) {
+            Init.init();
+        }
     }
 }
