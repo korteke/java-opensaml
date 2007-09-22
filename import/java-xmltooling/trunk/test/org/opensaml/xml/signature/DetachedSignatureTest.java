@@ -140,7 +140,7 @@ public class DetachedSignatureTest extends XMLObjectBaseTestCase {
         String incommonMetadata = "http://wayf.incommonfederation.org/InCommon/InCommon-metadata.xml";
         URIContentReference contentReference = new URIContentReference(incommonMetadata);
         contentReference.getTransforms().add(SignatureConstants.TRANSFORM_C14N_EXCL_OMIT_COMMENTS);
-        contentReference.setDigestAlgorithm(EncryptionConstants.ALGO_ID_DIGEST_SHA256);
+        contentReference.setDigestAlgorithm(SignatureConstants.ALGO_ID_DIGEST_SHA1);
         signature.getContentReferences().add(contentReference);
 
         Marshaller marshaller = Configuration.getMarshallerFactory().getMarshaller(signature);
@@ -204,7 +204,7 @@ public class DetachedSignatureTest extends XMLObjectBaseTestCase {
 
         DocumentInternalIDContentReference contentReference = new DocumentInternalIDContentReference("FOO");
         contentReference.getTransforms().add(SignatureConstants.TRANSFORM_C14N_EXCL_OMIT_COMMENTS);
-        contentReference.setDigestAlgorithm(EncryptionConstants.ALGO_ID_DIGEST_SHA256);
+        contentReference.setDigestAlgorithm(SignatureConstants.ALGO_ID_DIGEST_SHA1);
         sig.getContentReferences().add(contentReference);
 
         rootSXO.setSignature(sig);

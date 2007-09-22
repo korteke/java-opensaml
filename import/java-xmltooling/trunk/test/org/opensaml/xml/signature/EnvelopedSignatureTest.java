@@ -159,7 +159,7 @@ public class EnvelopedSignatureTest extends XMLObjectBaseTestCase {
         DocumentInternalIDContentReference contentReference = new DocumentInternalIDContentReference("FOO");
         contentReference.getTransforms().add(SignatureConstants.TRANSFORM_ENVELOPED_SIGNATURE);
         contentReference.getTransforms().add(SignatureConstants.TRANSFORM_C14N_EXCL_OMIT_COMMENTS);
-        contentReference.setDigestAlgorithm(EncryptionConstants.ALGO_ID_DIGEST_SHA256);
+        contentReference.setDigestAlgorithm(SignatureConstants.ALGO_ID_DIGEST_SHA1);
         sig.getContentReferences().add(contentReference);
 
         sxo.setSignature(sig);
