@@ -422,16 +422,14 @@ public class PKIXTrustEvaluator {
         try {
             PKIXBuilderParameters params = getPKIXBuilderParameters(validationInfo, untrustedCredential);
 
-            if (log.isDebugEnabled()) {
-                log.debug("Building certificate validation path");
-            }
+            log.debug("Building certificate validation path");
+            
             CertPathBuilder builder = CertPathBuilder.getInstance("PKIX");
             PKIXCertPathBuilderResult buildResult = (PKIXCertPathBuilderResult) builder.build(params);
             CertPath certificatePath = buildResult.getCertPath();
 
-            if (log.isDebugEnabled()) {
-                log.debug("Validating given entity credentials using built PKIX validator");
-            }
+            log.debug("Validating the entity credential using the PKIX CertPathValidator");
+            
             CertPathValidator validator = CertPathValidator.getInstance("PKIX");
             validator.validate(certificatePath, params);
 
@@ -441,7 +439,7 @@ public class PKIXTrustEvaluator {
             return true;
 
         } catch (CertPathValidatorException e) {
-            log.error("PKIX validation of credentials for entity " + untrustedCredential + " failed.", e);
+            log.error("PKIX validation of credentials for entity " + untrustedCredential.getEntityId() + " failed.", e);
             return false;
         } catch (GeneralSecurityException e) {
             log.error("Unable to create PKIX validator", e);
@@ -462,7 +460,7 @@ public class PKIXTrustEvaluator {
     protected PKIXBuilderParameters getPKIXBuilderParameters(PKIXValidationInformation validationInfo,
             X509Credential untrustedCredential) throws GeneralSecurityException {
         Set<TrustAnchor> trustAnchors = getTrustAnchors(validationInfo);
-        if (trustAnchors.size() < 1) {
+        if (trustAnchors == null || trustAnchors.isEmpty()) {
             throw new GeneralSecurityException(
                     "Unable to validate signature, no trust anchors found in the PKIX validation information");
         }
@@ -470,9 +468,8 @@ public class PKIXTrustEvaluator {
         X509CertSelector selector = new X509CertSelector();
         selector.setCertificate(untrustedCredential.getEntityCertificate());
 
-        if (log.isDebugEnabled()) {
-            log.debug("Adding trust anchors to PKIX validator parameters");
-        }
+        log.debug("Adding trust anchors to PKIX validator parameters");
+        
         PKIXBuilderParameters params = new PKIXBuilderParameters(trustAnchors, selector);
 
         if (log.isDebugEnabled()) {
@@ -482,10 +479,8 @@ public class PKIXTrustEvaluator {
 
         params.addCertStore(buildCertStore(validationInfo, untrustedCredential));
 
-        if (validationInfo.getCRLs() == null || validationInfo.getCRLs().size() > 0) {
-            if (log.isDebugEnabled()) {
-                log.debug("No CRLs available in PKIX validation information, disable revocation checking");
-            }
+        if (validationInfo.getCRLs() == null || validationInfo.getCRLs().isEmpty()) {
+            log.debug("No CRLs available in PKIX validation information, disabling revocation checking");
             params.setRevocationEnabled(false);
         }
 
@@ -502,9 +497,7 @@ public class PKIXTrustEvaluator {
     protected Set<TrustAnchor> getTrustAnchors(PKIXValidationInformation validationInfo) {
         Collection<X509Certificate> trustChain = validationInfo.getTrustChain();
 
-        if (log.isDebugEnabled()) {
-            log.debug("Constructring trust anchors");
-        }
+        log.debug("Constructing trust anchors for PKIX validation");
         Set<TrustAnchor> trustAnchors = new HashSet<TrustAnchor>();
         for (X509Certificate cert : trustChain) {
             trustAnchors.add(new TrustAnchor(cert, null));
