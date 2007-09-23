@@ -225,8 +225,14 @@ public class XMLObjectBaseTestCase extends XMLTestCase {
             Document encryptionConfig = parserPool.parse(clazz.getResourceAsStream("/encryption-config.xml"));
             configurator.load(encryptionConfig);
 
+            Document encryptionValidationConfig = parserPool.parse(clazz.getResourceAsStream("/encryption-validation-config.xml"));
+            configurator.load(encryptionValidationConfig);
+
             Document signatureConfig = parserPool.parse(clazz.getResourceAsStream("/signature-config.xml"));
             configurator.load(signatureConfig);
+            
+            Document signatureValidationConfig = parserPool.parse(clazz.getResourceAsStream("/signature-validation-config.xml"));
+            configurator.load(signatureValidationConfig);
 
             builderFactory = Configuration.getBuilderFactory();
             marshallerFactory = Configuration.getMarshallerFactory();

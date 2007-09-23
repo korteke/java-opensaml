@@ -6,6 +6,13 @@
     
     <ObjectProviders>
         
+        <!-- CryptoBinary type -->
+        <ObjectProvider qualifiedName="ds:CryptoBinary">
+            <BuilderClass className="org.opensaml.xml.signature.impl.CryptoBinaryBuilder" />
+            <MarshallingClass className="org.opensaml.xml.signature.impl.CryptoBinaryMarshaller" />
+            <UnmarshallingClass className="org.opensaml.xml.signature.impl.CryptoBinaryUnmarshaller" />
+        </ObjectProvider>    
+        
         <!-- DSAKeyValue -->
         <ObjectProvider qualifiedName="ds:DSAKeyValue">
             <BuilderClass className="org.opensaml.xml.signature.impl.DSAKeyValueBuilder" />
