@@ -26,6 +26,7 @@ import java.security.cert.CollectionCertStoreParameters;
 import java.security.cert.PKIXBuilderParameters;
 import java.security.cert.PKIXCertPathBuilderResult;
 import java.security.cert.TrustAnchor;
+import java.security.cert.X509CRL;
 import java.security.cert.X509CertSelector;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
@@ -477,7 +478,8 @@ public class PKIXTrustEvaluator {
         }
         params.setMaxPathLength(validationInfo.getVerificationDepth());
 
-        params.addCertStore(buildCertStore(validationInfo, untrustedCredential));
+        CertStore certStore = buildCertStore(validationInfo, untrustedCredential);
+        params.addCertStore(certStore);
 
         if (validationInfo.getCRLs() == null || validationInfo.getCRLs().isEmpty()) {
             log.debug("No CRLs available in PKIX validation information, disabling revocation checking");
@@ -500,10 +502,28 @@ public class PKIXTrustEvaluator {
         log.debug("Constructing trust anchors for PKIX validation");
         Set<TrustAnchor> trustAnchors = new HashSet<TrustAnchor>();
         for (X509Certificate cert : trustChain) {
-            trustAnchors.add(new TrustAnchor(cert, null));
+            trustAnchors.add(buildTrustAnchor(cert));
+        }
+        
+        if (log.isDebugEnabled()) {
+            for (TrustAnchor anchor : trustAnchors) {
+                log.debug("TrustAnchor: " + anchor.toString());
+            }
         }
 
         return trustAnchors;
+    }
+
+    /**
+     * Build a trust anchor from the given X509 certificate.
+     * 
+     * This could for example be extended by subclasses to add custom name constraints, if desired.
+     * 
+     * @param cert the certificate which serves as the trust anchor
+     * @return the newly constructed TrustAnchor
+     */
+    protected TrustAnchor buildTrustAnchor(X509Certificate cert) {
+        return new TrustAnchor(cert, null);
     }
 
     /**
@@ -519,12 +539,43 @@ public class PKIXTrustEvaluator {
      */
     protected CertStore buildCertStore(PKIXValidationInformation validationInfo, X509Credential untrustedCredential)
             throws GeneralSecurityException {
-        if (log.isDebugEnabled()) {
-            log.debug("Creating cert store to use during path validation");
-            log.debug("Adding entity ceritifcate chain to certificate store");
-        }
+        
+        log.debug("Creating cert store to use during path validation");
+        
+        log.debug("Adding entity certificate chain to cert store");
         List<Object> storeMaterial = new ArrayList<Object>(untrustedCredential.getEntityCertificateChain());
+        if (log.isDebugEnabled()) {
+            for (X509Certificate cert : untrustedCredential.getEntityCertificateChain()) {
+                log.debug(String.format("Added X509Certificate from entity cert chain to cert store " +
+                        "with subject name '%s' issued by '%s' with serial number '%s'", 
+                        x500DNHandler.getName(cert.getSubjectX500Principal()),
+                        x500DNHandler.getName(cert.getIssuerX500Principal()),
+                        cert.getSerialNumber().toString() ));
+            }
+        }
+        
         storeMaterial.addAll(validationInfo.getTrustChain());
+        if (log.isDebugEnabled()) {
+            for (X509Certificate cert : validationInfo.getTrustChain()) {
+                log.debug(String.format("Added X509Certificate from validation info trust chain to cert store " +
+                        "with subject name '%s' issued by '%s' with serial number '%s'", 
+                        x500DNHandler.getName(cert.getSubjectX500Principal()),
+                        x500DNHandler.getName(cert.getIssuerX500Principal()),
+                        cert.getSerialNumber().toString() ));
+            }
+        }
+        
+        for (X509CRL crl : validationInfo.getCRLs()) {
+            if (crl.getRevokedCertificates() != null && ! crl.getRevokedCertificates().isEmpty()) {
+                storeMaterial.add(crl);
+                
+                if (log.isDebugEnabled()) {
+                   log.debug(String.format("Added X509CRL to cert store from issuer '%s' dated '%s'", 
+                           x500DNHandler.getName(crl.getIssuerX500Principal()), crl.getThisUpdate())) ;
+                }
+            }
+        }
+        
         return CertStore.getInstance("Collection", new CollectionCertStoreParameters(storeMaterial));
     }
 }
