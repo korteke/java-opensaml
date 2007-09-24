@@ -237,7 +237,7 @@ public class PKIXTrustEvaluator {
      * @return if true the name check succeeds, false if not
      */
     @SuppressWarnings("unchecked")
-    protected boolean checkName(X509Credential untrustedCredential, Set<String> trustedNames) {
+    public boolean checkName(X509Credential untrustedCredential, Set<String> trustedNames) {
         if (! isNameChecking() || trustedNames == null || trustedNames.isEmpty()) {
             return true;
         }
