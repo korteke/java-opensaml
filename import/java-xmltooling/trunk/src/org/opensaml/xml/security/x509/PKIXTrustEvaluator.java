@@ -248,6 +248,17 @@ public class PKIXTrustEvaluator {
             log.debug("Trusted names being evaluated are: " + trustedNames.toString());
         }
         
+        return processNameChecks(untrustedCredential, trustedNames);
+    }
+
+    /**
+     * Process any name checks that are enabled.
+     * 
+     * @param untrustedCredential the credential for the entity to validate
+     * @param trustedNames trusted names against which the credential will be evaluated
+     * @return if true the name check succeeds, false if not
+     */
+    protected boolean processNameChecks(X509Credential untrustedCredential, Set<String> trustedNames) {
         X509Certificate entityCertificate = untrustedCredential.getEntityCertificate();
         
         if (checkSubjectAltNames()) {
@@ -470,13 +481,13 @@ public class PKIXTrustEvaluator {
         selector.setCertificate(untrustedCredential.getEntityCertificate());
 
         log.debug("Adding trust anchors to PKIX validator parameters");
-        
         PKIXBuilderParameters params = new PKIXBuilderParameters(trustAnchors, selector);
-
+        
+        Integer effectiveVerifyDepth = getEffectiveVerificationDepth(validationInfo);
         if (log.isDebugEnabled()) {
-            log.debug("Setting verification depth to " + validationInfo.getVerificationDepth());
+            log.debug("Setting verification depth to " + effectiveVerifyDepth);
         }
-        params.setMaxPathLength(validationInfo.getVerificationDepth());
+        params.setMaxPathLength(effectiveVerifyDepth);
 
         CertStore certStore = buildCertStore(validationInfo, untrustedCredential);
         params.addCertStore(certStore);
@@ -487,6 +498,21 @@ public class PKIXTrustEvaluator {
         }
 
         return params;
+    }
+
+    /**
+     * Get the effective maximum path depth to use when constructing 
+     * PKIX cert path builder parameters.
+     * 
+     * @param validationInfo PKIX validation information
+     * @return the effective max verification depth to use
+     */
+    protected Integer getEffectiveVerificationDepth(PKIXValidationInformation validationInfo) {
+        Integer effectiveVerifyDepth = validationInfo.getVerificationDepth();
+        if (effectiveVerifyDepth == null) {
+            effectiveVerifyDepth = -1;
+        }
+        return effectiveVerifyDepth;
     }
 
     /**
