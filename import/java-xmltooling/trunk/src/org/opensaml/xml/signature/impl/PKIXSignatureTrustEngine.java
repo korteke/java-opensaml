@@ -125,7 +125,7 @@ public class PKIXSignatureTrustEngine
             resolveValidationInfo(trustBasisCriteria);
         
         if (SigningUtil.verifyWithURI(candidateCredential, algorithmURI, signature, content)) {
-            log.debug("Successfully verified signature using supplied candidate credential");
+            log.debug("Successfully verified raw signature using supplied candidate credential");
             log.debug("Attempting to establish trust of supplied candidate credential");
             if (evaluateTrust(candidateCredential, validationPair)) {
                 log.debug("Successfully established trust of supplied candidate credential");
@@ -135,7 +135,8 @@ public class PKIXSignatureTrustEngine
             }
         }
         
-        log.error("PKIX validation of signature failed, unable to establish trust of supplied verification credential");
+        log.error("PKIX validation of raw signature failed, " +
+                "unable to establish trust of supplied verification credential");
         return false;
     }
 
@@ -153,12 +154,18 @@ public class PKIXSignatureTrustEngine
         Iterable<PKIXValidationInformation> validationInfoSet = validationPair.getSecond();
         
         for (PKIXValidationInformation validationInfo : validationInfoSet) {
-            if (pkixTrustEvaluator.pkixValidate(validationInfo, trustedNames, untrustedX509Credential)) {
-                log.debug("Signature trust established via PKIX validation of signing credential");
-                return true;
+            try {
+                if (pkixTrustEvaluator.pkixValidate(validationInfo, trustedNames, untrustedX509Credential)) {
+                    log.debug("Signature trust established via PKIX validation of signing credential");
+                    return true;
+                }
+            } catch (SecurityException e) {
+                // log the operational error, but allow other validation info sets to be tried
+                log.error("Error performing PKIX validation on untrusted credential", e);
             }
         }
         
+        log.debug("Signature trust could not be established via PKIX validation of signing credential");
         return false;
     }
     

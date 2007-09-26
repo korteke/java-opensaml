@@ -19,9 +19,11 @@ package org.opensaml.xml.security.x509;
 import java.security.GeneralSecurityException;
 import java.security.cert.CertPath;
 import java.security.cert.CertPathBuilder;
+import java.security.cert.CertPathBuilderException;
 import java.security.cert.CertPathValidator;
 import java.security.cert.CertPathValidatorException;
 import java.security.cert.CertStore;
+import java.security.cert.Certificate;
 import java.security.cert.CollectionCertStoreParameters;
 import java.security.cert.PKIXBuilderParameters;
 import java.security.cert.PKIXCertPathBuilderResult;
@@ -38,6 +40,7 @@ import java.util.Set;
 import javax.security.auth.x500.X500Principal;
 
 import org.apache.log4j.Logger;
+import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.util.DatatypeHelper;
 
 /**
@@ -243,8 +246,7 @@ public class PKIXTrustEvaluator {
         }
 
         if (log.isDebugEnabled()) {
-            log.debug("Checking untrusted " + untrustedCredential.getEntityId()
-                    + " credential against trusted names");
+            log.debug("Checking trusted names against untrusted credential: " + getLoggingToken(untrustedCredential));
             log.debug("Trusted names being evaluated are: " + trustedNames.toString());
         }
         
@@ -264,8 +266,9 @@ public class PKIXTrustEvaluator {
         if (checkSubjectAltNames()) {
             if (processSubjectAltNames(entityCertificate, trustedNames) ) {
                 if (log.isDebugEnabled()) {
-                    log.debug("Untrusted credential for entity " + untrustedCredential.getEntityId()
-                            + " passed name checking based on subject alt names.");
+                    log.debug(
+                            String.format("Untrusted credential '%s' passed name check based on subject alt names.",
+                            getLoggingToken(untrustedCredential)) );
                 }
                 return true;
             }
@@ -274,8 +277,9 @@ public class PKIXTrustEvaluator {
         if (checkSubjectDNCommonName()) {
             if (processSubjectDNCommonName(entityCertificate, trustedNames)) {
                 if (log.isDebugEnabled()) {
-                    log.debug("Untrusted credential for entity " + untrustedCredential.getEntityId()
-                            + " passed name checking based on subject DN's common name.");
+                    log.debug(
+                            String.format("Untrusted credential '%s' passed name check based on subject common name.",
+                            getLoggingToken(untrustedCredential)) );
                 }
                 return true;
             }
@@ -284,15 +288,16 @@ public class PKIXTrustEvaluator {
         if (checkSubjectDN()) {
             if (processSubjectDN(entityCertificate, trustedNames)) {
                 if (log.isDebugEnabled()) {
-                    log.debug("Untrusted credential for entity " + untrustedCredential.getEntityId()
-                            + " passed name checking based on matching subject DN.");
+                    log.debug(
+                            String.format("Untrusted credential '%s' passed name check based on subject DN.",
+                            getLoggingToken(untrustedCredential)) );
                 }
                 return true;
             }
         }
         
        
-        log.error("Untrusted credential for entity " + untrustedCredential.getEntityId() + " failed name checking.");
+        log.error("Untrusted credential failed name check: " + getLoggingToken(untrustedCredential));
         return false;
     }
 
@@ -407,7 +412,8 @@ public class PKIXTrustEvaluator {
             X509Credential untrustedCredential) throws SecurityException {
         
         if (! checkName(untrustedCredential, trustedNames)) {
-            log.debug("Name checking failed, aborting PKIX validation");
+            log.error("Name checking failed, aborting PKIX validation for untrusted credential: "
+                    + getLoggingToken(untrustedCredential));
             return false;
         }
         return pkixValidate(validationInfo, untrustedCredential);
@@ -428,7 +434,8 @@ public class PKIXTrustEvaluator {
     public boolean pkixValidate(PKIXValidationInformation validationInfo, X509Credential untrustedCredential)
             throws SecurityException {
         if (log.isDebugEnabled()) {
-            log.debug("Attempting PKIX path validation on untrusted credential " + untrustedCredential.getEntityId());
+            log.debug("Attempting PKIX path validation on untrusted credential: " 
+                    + getLoggingToken(untrustedCredential));
         }
 
         try {
@@ -438,20 +445,37 @@ public class PKIXTrustEvaluator {
             
             CertPathBuilder builder = CertPathBuilder.getInstance("PKIX");
             PKIXCertPathBuilderResult buildResult = (PKIXCertPathBuilderResult) builder.build(params);
-            CertPath certificatePath = buildResult.getCertPath();
+            if (log.isDebugEnabled()) {
+                logCertPathDebug(buildResult, untrustedCredential.getEntityCertificate());
+            }
 
+            // TODO based on the docs, this is unnecessary.  The constructed
+            // path is also supposed to be valid wrt the PKIX path validation algorithm.
+            // In other words, it only returns valid PKIX paths.
+            // Should test before removing permanently, esp b/c the Shib 1.3 IdP ShibbolethTrust impl
+            // does this also.  
+            // So unless the docs are wrong or the JRE impl is broken, we're doing double work,
+            // here and in Shib 1.3.
             log.debug("Validating the entity credential using the PKIX CertPathValidator");
             
+            CertPath certificatePath = buildResult.getCertPath();
             CertPathValidator validator = CertPathValidator.getInstance("PKIX");
             validator.validate(certificatePath, params);
 
             if (log.isDebugEnabled()) {
-                log.debug("PKIX validation of credentials for " + untrustedCredential.getEntityId() + " successful");
+                log.debug("PKIX validation succeeded for untrusted credential: " 
+                        + getLoggingToken(untrustedCredential));
             }
             return true;
 
+        } catch (CertPathBuilderException e) {
+            //TODO if above TODO is correct, then builder will throw this on failure to construct valid path.
+            log.error("PKIX path construction failed for untrusted credential: " 
+                        + getLoggingToken(untrustedCredential), e);
+            return false;
         } catch (CertPathValidatorException e) {
-            log.error("PKIX validation of credentials for entity " + untrustedCredential.getEntityId() + " failed.", e);
+            log.error("PKIX validation failed for untrusted credential: " 
+                        + getLoggingToken(untrustedCredential), e);
             return false;
         } catch (GeneralSecurityException e) {
             log.error("Unable to create PKIX validator", e);
@@ -580,6 +604,9 @@ public class PKIXTrustEvaluator {
             }
         }
         
+        // TODO This probably isn't really necessary.  All of these are already trust anchors, and a valid path(s)
+        // can be constructed on that basis. More certs in the store = more things to process = more work
+        // = less efficient. Shib 1.3 did NOT do this.  Check before removing.
         storeMaterial.addAll(validationInfo.getTrustChain());
         if (log.isDebugEnabled()) {
             for (X509Certificate cert : validationInfo.getTrustChain()) {
@@ -604,4 +631,55 @@ public class PKIXTrustEvaluator {
         
         return CertStore.getInstance("Collection", new CollectionCertStoreParameters(storeMaterial));
     }
+    
+    /**
+     * Gets a formatted string representing information from the supplied credential, appropriate for use in
+     * logging messages.
+     * 
+     * Often it will be the case that the untrusted credential that is being evaluated will
+     * NOT have a value for the entity ID property.  So extract the subject DN,
+     * and if present, the entity ID also.
+     * 
+     * @param credential the credential for which to produce a token.
+     * 
+     * @return a formatted string containing identifier information present in the credential
+     */
+    protected String getLoggingToken(X509Credential credential) {
+        X500Principal x500Principal = credential.getEntityCertificate().getSubjectX500Principal();
+        StringBuilder builder = new StringBuilder();
+        builder.append('[');
+        builder.append(String.format("subjectName='%s'", x500DNHandler.getName(x500Principal)));
+        if (!DatatypeHelper.isEmpty(credential.getEntityId())) {
+            builder.append(String.format(" |credential entityID='%s'",
+                    DatatypeHelper.safeTrimOrNullString(credential.getEntityId())));
+        }
+        builder.append(']');
+        return builder.toString();
+    }
+    
+    /**
+     * Log information from the constructed cert path at level debug.
+     * 
+     * @param buildResult the PKIX cert path builder result containing the 
+     *          cert path and trust anchor
+     * @param targetCert the cert untrusted certificate that was being evaluated
+     */
+    private void logCertPathDebug(PKIXCertPathBuilderResult buildResult, X509Certificate targetCert) {
+        log.debug("Built PKIX cert path");
+        log.debug("Target certificate: " + x500DNHandler.getName(targetCert.getSubjectX500Principal()));
+        for (Certificate cert : buildResult.getCertPath().getCertificates()) {
+            log.debug("CertPath certificate: " 
+                    + x500DNHandler.getName(((X509Certificate) cert).getSubjectX500Principal()));
+        }
+        TrustAnchor ta = buildResult.getTrustAnchor();
+        if (ta.getTrustedCert() != null) {
+            log.debug("TrustAnchor: " 
+                    + x500DNHandler.getName(ta.getTrustedCert().getSubjectX500Principal()));
+        } else if (ta.getCA() != null){
+            log.debug("TrustAnchor: " + x500DNHandler.getName(ta.getCA()));
+        } else {
+            log.debug("TrustAnchor: " + ta.getCAName());
+        }
+    }
+
 }

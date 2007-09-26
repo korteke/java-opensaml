@@ -112,10 +112,17 @@ public class PKIXX509CredentialTrustEngine implements PKIXTrustEngine<X509Creden
         log.debug("Beginning PKIX validation using trusted validation information");
         
         for (PKIXValidationInformation validationInfo : validationInfoSet) {
-            if (pkixTrustEvaluator.pkixValidate(validationInfo, trustedNames, untrustedX509Credential)) {
-                return true;
+            try {
+                if (pkixTrustEvaluator.pkixValidate(validationInfo, trustedNames, untrustedX509Credential)) {
+                    log.debug("Credential trust established via PKIX validation");
+                    return true;
+                }
+            } catch (SecurityException e) {
+                // log the operational error, but allow other validation info sets to be tried
+                log.error("Error performing PKIX validation on untrusted credential", e);
             }
         }
+        log.debug("Trust of untrusted credential could not be established via PKIX validation");
         return false;
     }
     
