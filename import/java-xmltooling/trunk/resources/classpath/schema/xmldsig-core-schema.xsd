@@ -63,7 +63,7 @@
     <element name="CanonicalizationMethod" type="ds:CanonicalizationMethodType" />
     <complexType name="CanonicalizationMethodType" mixed="true">
         <sequence>
-            <any namespace="##any" minOccurs="0" maxOccurs="unbounded" />
+            <any namespace="##any" minOccurs="0" maxOccurs="unbounded" processContents="lax" />
             <!-- (0,unbounded) elements from (1,1) namespace -->
         </sequence>
         <attribute name="Algorithm" type="anyURI" use="required" />
@@ -73,7 +73,7 @@
     <complexType name="SignatureMethodType" mixed="true">
         <sequence>
             <element name="HMACOutputLength" minOccurs="0" type="ds:HMACOutputLengthType" />
-            <any namespace="##other" minOccurs="0" maxOccurs="unbounded" />
+            <any namespace="##other" minOccurs="0" maxOccurs="unbounded" processContents="lax" />
             <!-- (0,unbounded) elements from (1,1) external namespace -->
         </sequence>
         <attribute name="Algorithm" type="anyURI" use="required" />
