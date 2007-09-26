@@ -26,9 +26,13 @@ import org.opensaml.xml.security.credential.criteria.EvaluableCredentialCriteria
 
 /**
  * An implementation of {@link CredentialResolver} which uses a {@link Collection} as the
- * underlying credential source.  The credentials returned are filtered based on any
+ * underlying credential source.
+ * 
+ * <p>
+ * The credentials returned are filtered based on any
  * {@link EvaluableCredentialCriteria} which may have been present in the specified criteria set, or
  * which are resolved by lookup in the {@link EvaluableCredentialCriteriaRegistry}.
+ * </p>
  */
 public class CollectionCredentialResolver extends AbstractCriteriaFilteringCredentialResolver {
     

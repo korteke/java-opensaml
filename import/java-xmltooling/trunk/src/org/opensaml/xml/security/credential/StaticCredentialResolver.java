@@ -25,9 +25,11 @@ import org.opensaml.xml.security.SecurityException;
 /**
  * Simple implementation of {@link CredentialResolver} which just stores and returns a static set of credentials.
  * 
+ * <p>
  * Note: no filtering or other evaluation of the credentials is performed.  Any Criteria
  * specified are ignored.  For a similar Collection-based CredentialResolver implementation which does support 
  * evaluation and filtering based on supplied evaluable criteria, see {@link CollectionCredentialResolver}.
+ * </p>
  */
 public class StaticCredentialResolver extends AbstractCredentialResolver {
     
