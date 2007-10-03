@@ -24,6 +24,7 @@ import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.security.cert.X509Certificate;
 import java.security.interfaces.DSAParams;
 import java.security.interfaces.DSAPrivateKey;
 import java.security.interfaces.RSAPrivateCrtKey;
@@ -46,6 +47,7 @@ import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.keyinfo.KeyInfoGenerator;
 import org.opensaml.xml.security.keyinfo.KeyInfoGeneratorFactory;
 import org.opensaml.xml.security.keyinfo.NamedKeyInfoGeneratorManager;
+import org.opensaml.xml.security.x509.BasicX509Credential;
 import org.opensaml.xml.signature.KeyInfo;
 import org.opensaml.xml.signature.Signature;
 import org.opensaml.xml.util.DatatypeHelper;
@@ -258,6 +260,24 @@ public final class SecurityHelper {
         }
         BasicCredential cred = new BasicCredential();
         cred.setPublicKey(publicKey);
+        cred.setPrivateKey(privateKey);
+        return cred;
+    }
+    
+    /**
+     * Get a simple, minimal credential containing an end-entity X.509 certificate,
+     * and optionally a private key.
+     * 
+     * @param cert the end-entity certificate to wrap
+     * @param privateKey the private key to wrap, which may be null
+     * @return a credential containing the certificate and key specified
+     */
+    public static BasicX509Credential getSimpleCredential(X509Certificate cert, PrivateKey privateKey) {
+        if (cert == null) {
+            throw new IllegalArgumentException("A certificate is required");
+        }
+        BasicX509Credential cred = new BasicX509Credential();
+        cred.setEntityCertificate(cert);
         cred.setPrivateKey(privateKey);
         return cred;
     }
