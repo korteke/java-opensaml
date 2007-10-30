@@ -37,10 +37,10 @@ import org.opensaml.ws.message.decoder.MessageDecoder;
 import org.opensaml.ws.message.decoder.MessageDecodingException;
 import org.opensaml.ws.message.encoder.MessageEncoder;
 import org.opensaml.ws.message.encoder.MessageEncodingException;
-import org.opensaml.ws.security.SecurityPolicyException;
 import org.opensaml.ws.transport.TransportException;
 import org.opensaml.ws.transport.http.HTTPInTransport;
 import org.opensaml.ws.transport.http.HTTPOutTransport;
+import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.credential.Credential;
 
 /**
@@ -92,7 +92,7 @@ public class HTTPSOAPTransport implements ClientTransport {
             throw new TransportException("Unable to encode message onto outbound transport", e);
         } catch (MessageDecodingException e) {
             throw new TransportException("Unable to decode message from inbound transport", e);
-        } catch (SecurityPolicyException e){
+        } catch (SecurityException e){
             throw new TransportException("Inbound transport and response did not meet security policy requirements", e);
         }
     }

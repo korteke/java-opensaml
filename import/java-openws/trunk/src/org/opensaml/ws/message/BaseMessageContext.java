@@ -17,14 +17,19 @@
 package org.opensaml.ws.message;
 
 import org.opensaml.ws.security.SecurityPolicy;
+import org.opensaml.ws.security.SecurityPolicyResolver;
 import org.opensaml.ws.transport.InTransport;
 import org.opensaml.ws.transport.OutTransport;
 import org.opensaml.xml.XMLObject;
+import org.opensaml.xml.util.DatatypeHelper;
 
 /**
  * Base class for message context implementations.
  */
 public class BaseMessageContext implements MessageContext {
+    
+    /** Unique id of the communication profile in use. */
+    private String communicationProfile;
 
     /** The inbound message. */
     private XMLObject inboundMessage;
@@ -46,25 +51,28 @@ public class BaseMessageContext implements MessageContext {
 
     /** Security policy for this message context. */
     private SecurityPolicy securityPolicy;
-
+    
+    /** Resolver used to determine active security policy. */
+    private SecurityPolicyResolver securityPolicyResolver;
+    
+    /** {@inheritDoc} */
+    public String getCommunicationProfileId() {
+        return communicationProfile;
+    }
+    
     /** {@inheritDoc} */
     public XMLObject getInboundMessage() {
         return inboundMessage;
     }
-
+    
     /** {@inheritDoc} */
     public String getInboundMessageIssuer() {
         return inboundMessageIssuer;
     }
-
+    
     /** {@inheritDoc} */
     public InTransport getInboundMessageTransport() {
         return inboundTransport;
-    }
-
-    /** {@inheritDoc} */
-    public OutTransport getOutboundMessageTransport() {
-        return outboundTransport;
     }
 
     /** {@inheritDoc} */
@@ -78,8 +86,23 @@ public class BaseMessageContext implements MessageContext {
     }
 
     /** {@inheritDoc} */
+    public OutTransport getOutboundMessageTransport() {
+        return outboundTransport;
+    }
+
+    /** {@inheritDoc} */
     public SecurityPolicy getSecurityPolicy() {
         return securityPolicy;
+    }
+
+    /** {@inheritDoc} */
+    public SecurityPolicyResolver getSecurityPolicyResolver() {
+        return securityPolicyResolver;
+    }
+
+    /** {@inheritDoc} */
+    public void setCommunicationProfileId(String id) {
+        communicationProfile = DatatypeHelper.safeTrimOrNullString(id);
     }
 
     /** {@inheritDoc} */
@@ -98,11 +121,6 @@ public class BaseMessageContext implements MessageContext {
     }
 
     /** {@inheritDoc} */
-    public void setOutboundMessageTransport(OutTransport transport) {
-        outboundTransport = transport;
-    }
-
-    /** {@inheritDoc} */
     public void setOutboundMessage(XMLObject message) {
         outboundMessage = message;
     }
@@ -113,7 +131,17 @@ public class BaseMessageContext implements MessageContext {
     }
 
     /** {@inheritDoc} */
+    public void setOutboundMessageTransport(OutTransport transport) {
+        outboundTransport = transport;
+    }
+
+    /** {@inheritDoc} */
     public void setSecurityPolicy(SecurityPolicy policy) {
         securityPolicy = policy;
+    }
+
+    /** {@inheritDoc} */
+    public void setSecurityPolicyResolver(SecurityPolicyResolver resolver) {
+        securityPolicyResolver = resolver;
     }
 }

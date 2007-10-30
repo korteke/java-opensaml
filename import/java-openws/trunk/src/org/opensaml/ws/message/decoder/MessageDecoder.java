@@ -17,7 +17,7 @@
 package org.opensaml.ws.message.decoder;
 
 import org.opensaml.ws.message.MessageContext;
-import org.opensaml.ws.security.SecurityPolicyException;
+import org.opensaml.xml.security.SecurityException;
 
 /**
  * Decodes a message, from an inbound transport, in a binding specific mannger. As the decode proceeds information is
@@ -35,8 +35,8 @@ public interface MessageDecoder {
      * @param messageContext current message context
      * 
      * @throws MessageDecodingException thrown if the message can not be decoded
-     * @throws SecurityPolicyException thrown if the decoded message does not meet the required security policy
+     * @throws SecurityException thrown if the decoded message does not meet the required security constraints
      */
-    public void decode(MessageContext messageContext) throws MessageDecodingException, SecurityPolicyException;
+    public void decode(MessageContext messageContext) throws MessageDecodingException, SecurityException;
 
 }

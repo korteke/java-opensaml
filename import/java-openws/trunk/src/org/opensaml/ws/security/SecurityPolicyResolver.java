@@ -16,12 +16,12 @@
 
 package org.opensaml.ws.security;
 
-import org.opensaml.xml.security.CriteriaSet;
+import org.opensaml.ws.message.MessageContext;
 import org.opensaml.xml.security.Resolver;
 
 /**
  * A resolver which uses different criteria to resolve and return instances of {@link SecurityPolicy}.
  */
-public interface SecurityPolicyResolver extends Resolver<SecurityPolicy, CriteriaSet> {
+public interface SecurityPolicyResolver extends Resolver<SecurityPolicy, MessageContext> {
 
 }

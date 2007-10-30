@@ -16,12 +16,12 @@
 
 package org.opensaml.ws.security;
 
-import org.opensaml.ws.WSException;
+import org.opensaml.xml.security.SecurityException;
 
 /**
  * Exception indicating a security policy failure.
  */
-public class SecurityPolicyException extends WSException {
+public class SecurityPolicyException extends SecurityException {
 
     /**
      * Serial version UID.

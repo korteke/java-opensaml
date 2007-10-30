@@ -22,7 +22,7 @@ import org.apache.log4j.Logger;
 import org.opensaml.log.Level;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.security.SecurityPolicy;
-import org.opensaml.ws.security.SecurityPolicyException;
+import org.opensaml.ws.security.SecurityPolicyResolver;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.Unmarshaller;
@@ -30,6 +30,7 @@ import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.parse.BasicParserPool;
 import org.opensaml.xml.parse.ParserPool;
 import org.opensaml.xml.parse.XMLParserException;
+import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -64,19 +65,24 @@ public abstract class BaseMessageDecoder implements MessageDecoder {
     }
 
     /** {@inheritDoc} */
-    public void decode(MessageContext messageContext) throws MessageDecodingException, SecurityPolicyException {
+    public void decode(MessageContext messageContext) throws MessageDecodingException, SecurityException {
         if (log.isDebugEnabled()) {
             log.debug("Beginning to decode message from inbound transport of type: "
                     + messageContext.getInboundMessageTransport().getClass().getName());
         }
         doDecode(messageContext);
 
-        SecurityPolicy securityPolicy = messageContext.getSecurityPolicy();
-        if (securityPolicy != null) {
-            if (log.isDebugEnabled()) {
-                log.debug("Evaluating securit policy for decoded message");
+        SecurityPolicyResolver policyResolver = messageContext.getSecurityPolicyResolver();
+        if (policyResolver != null) {
+            SecurityPolicy securityPolicy = policyResolver.resolveSingle(messageContext);
+            messageContext.setSecurityPolicy(securityPolicy);
+            if (securityPolicy != null) {
+                if (log.isDebugEnabled()) {
+                    log.debug("Evaluating securit policy  of type " + securityPolicy.getClass().getName()
+                            + " for decoded message");
+                }
+                securityPolicy.evaluate(messageContext);
             }
-            securityPolicy.evaluate(messageContext);
         }
 
         if (log.isDebugEnabled()) {

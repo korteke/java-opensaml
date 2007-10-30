@@ -17,6 +17,7 @@
 package org.opensaml.ws.message;
 
 import org.opensaml.ws.security.SecurityPolicy;
+import org.opensaml.ws.security.SecurityPolicyResolver;
 import org.opensaml.ws.transport.InTransport;
 import org.opensaml.ws.transport.OutTransport;
 import org.opensaml.xml.XMLObject;
@@ -28,7 +29,14 @@ import org.opensaml.xml.XMLObject;
  * Message contexts are <strong>NOT</strong> thread safe.
  */
 public interface MessageContext {
-
+    
+    /**
+     * Gets the unique id of the communication profile in use.
+     * 
+     * @return unique id of the communication profile in use
+     */
+    public String getCommunicationProfileId();
+    
     /**
      * Gets the inbound message.
      * 
@@ -77,6 +85,20 @@ public interface MessageContext {
      * @return security policy applied, or to be applied, to this message context
      */
     public SecurityPolicy getSecurityPolicy();
+    
+    /**
+     * Gets the resolver used to determine active {@link SecurityPolicy}.
+     * 
+     * @return resolver used to determine active {@link SecurityPolicy}
+     */
+    public SecurityPolicyResolver getSecurityPolicyResolver();
+    
+    /**
+     * Sets the unique id of the communication profile in use.
+     * 
+     * @param id unique id of the communication profile in use
+     */
+    public void setCommunicationProfileId(String id);
 
     /**
      * Sets the inbound message.
@@ -126,4 +148,11 @@ public interface MessageContext {
      * @param policy security policy applied, or to be applied, to this message context
      */
     public void setSecurityPolicy(SecurityPolicy policy);
+
+    /**
+     * Sets the resolver used to determine active {@link SecurityPolicy}.
+     * 
+     * @param resolver resolver used to determine active {@link SecurityPolicy}
+     */
+    public void setSecurityPolicyResolver(SecurityPolicyResolver resolver);
 }
