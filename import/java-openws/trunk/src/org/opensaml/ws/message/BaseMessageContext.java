@@ -16,7 +16,6 @@
 
 package org.opensaml.ws.message;
 
-import org.opensaml.ws.security.SecurityPolicy;
 import org.opensaml.ws.security.SecurityPolicyResolver;
 import org.opensaml.ws.transport.InTransport;
 import org.opensaml.ws.transport.OutTransport;
@@ -48,9 +47,6 @@ public class BaseMessageContext implements MessageContext {
 
     /** Outbound message transport. */
     private OutTransport outboundTransport;
-
-    /** Security policy for this message context. */
-    private SecurityPolicy securityPolicy;
     
     /** Resolver used to determine active security policy. */
     private SecurityPolicyResolver securityPolicyResolver;
@@ -91,11 +87,6 @@ public class BaseMessageContext implements MessageContext {
     }
 
     /** {@inheritDoc} */
-    public SecurityPolicy getSecurityPolicy() {
-        return securityPolicy;
-    }
-
-    /** {@inheritDoc} */
     public SecurityPolicyResolver getSecurityPolicyResolver() {
         return securityPolicyResolver;
     }
@@ -133,11 +124,6 @@ public class BaseMessageContext implements MessageContext {
     /** {@inheritDoc} */
     public void setOutboundMessageTransport(OutTransport transport) {
         outboundTransport = transport;
-    }
-
-    /** {@inheritDoc} */
-    public void setSecurityPolicy(SecurityPolicy policy) {
-        securityPolicy = policy;
     }
 
     /** {@inheritDoc} */

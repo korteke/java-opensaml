@@ -16,7 +16,6 @@
 
 package org.opensaml.ws.message;
 
-import org.opensaml.ws.security.SecurityPolicy;
 import org.opensaml.ws.security.SecurityPolicyResolver;
 import org.opensaml.ws.transport.InTransport;
 import org.opensaml.ws.transport.OutTransport;
@@ -78,18 +77,11 @@ public interface MessageContext {
      * @return transport used to respond to the message
      */
     public OutTransport getOutboundMessageTransport();
-
-    /**
-     * Gets the security policy applied, or to be applied, to this message context.
-     * 
-     * @return security policy applied, or to be applied, to this message context
-     */
-    public SecurityPolicy getSecurityPolicy();
     
     /**
-     * Gets the resolver used to determine active {@link SecurityPolicy}.
+     * Gets the resolver used to determine active SecurityPolicy.
      * 
-     * @return resolver used to determine active {@link SecurityPolicy}
+     * @return resolver used to determine active SecurityPolicy
      */
     public SecurityPolicyResolver getSecurityPolicyResolver();
     
@@ -143,16 +135,9 @@ public interface MessageContext {
     public void setOutboundMessageTransport(OutTransport transport);
 
     /**
-     * Sets the security policy applied, or to be applied, to this message context.
+     * Sets the resolver used to determine active SecurityPolicy.
      * 
-     * @param policy security policy applied, or to be applied, to this message context
-     */
-    public void setSecurityPolicy(SecurityPolicy policy);
-
-    /**
-     * Sets the resolver used to determine active {@link SecurityPolicy}.
-     * 
-     * @param resolver resolver used to determine active {@link SecurityPolicy}
+     * @param resolver resolver used to determine active SecurityPolicy
      */
     public void setSecurityPolicyResolver(SecurityPolicyResolver resolver);
 }
