@@ -18,11 +18,12 @@ package org.opensaml.xml.schema;
 
 import org.opensaml.xml.AttributeExtensibleXMLObject;
 import org.opensaml.xml.ElementExtensibleXMLObject;
+import org.opensaml.xml.validation.ValidatingXMLObject;
 
 /**
  * Represents the schema Any type.
  */
-public interface XSAny extends ElementExtensibleXMLObject, AttributeExtensibleXMLObject {
+public interface XSAny extends ElementExtensibleXMLObject, AttributeExtensibleXMLObject, ValidatingXMLObject {
 
     /**
      * Gets the text content for the DOM Element.

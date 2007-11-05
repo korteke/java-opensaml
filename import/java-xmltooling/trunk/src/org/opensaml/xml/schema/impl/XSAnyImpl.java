@@ -21,16 +21,16 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.xml.AbstractXMLObject;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.schema.XSAny;
 import org.opensaml.xml.util.AttributeMap;
 import org.opensaml.xml.util.IndexedXMLObjectChildrenList;
+import org.opensaml.xml.validation.AbstractValidatingXMLObject;
 
 /**
  * Concrete implementation of {@link XSAny}.
  */
-public class XSAnyImpl extends AbstractXMLObject implements XSAny {
+public class XSAnyImpl extends AbstractValidatingXMLObject implements XSAny {
 
     /** Child XMLObjects. */
     private IndexedXMLObjectChildrenList<XMLObject> unknownXMLObjects;
