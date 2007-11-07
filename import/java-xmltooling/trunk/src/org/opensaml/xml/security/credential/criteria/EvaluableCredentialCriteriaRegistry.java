@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
+import org.opensaml.xml.Configuration;
 import org.opensaml.xml.security.Criteria;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.credential.Credential;
@@ -222,9 +223,10 @@ public final class EvaluableCredentialCriteriaRegistry {
             String criteriaName = (String) key;
             String evaluatorName = mappings.getProperty(criteriaName);
             
+            ClassLoader classLoader = Configuration.class.getClassLoader();
             Class criteriaClass = null;
             try {
-                criteriaClass = Class.forName(criteriaName);
+                criteriaClass = classLoader.loadClass(criteriaName);
             } catch (ClassNotFoundException e) {
                 log.error(String.format("Could not find criteria class name '%s', skipping registration", 
                         criteriaName), e);
@@ -233,7 +235,7 @@ public final class EvaluableCredentialCriteriaRegistry {
             
             Class evaluableClass = null;
             try {
-                evaluableClass = Class.forName(evaluatorName);
+                evaluableClass = classLoader.loadClass(evaluatorName);
             } catch (ClassNotFoundException e) {
                 log.error(String.format("Could not find evaluator class name '%s', skipping registration", 
                         criteriaName), e);

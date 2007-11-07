@@ -366,7 +366,8 @@ public class XMLConfigurator {
             if(log.isDebugEnabled()){
                 log.debug("Creating instance of " + className);
             }
-            Class clazz = Class.forName(className);
+            ClassLoader classLoader = this.getClass().getClassLoader();
+            Class clazz = classLoader.loadClass(className);
             Constructor constructor = clazz.getConstructor();
             return constructor.newInstance();
         } catch (Exception e) {
