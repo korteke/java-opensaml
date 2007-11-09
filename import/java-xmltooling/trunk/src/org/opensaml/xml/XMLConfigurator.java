@@ -30,7 +30,6 @@ import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
-import org.apache.log4j.Logger;
 import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.Unmarshaller;
 import org.opensaml.xml.parse.BasicParserPool;
@@ -40,6 +39,8 @@ import org.opensaml.xml.util.XMLConstants;
 import org.opensaml.xml.util.XMLHelper;
 import org.opensaml.xml.validation.Validator;
 import org.opensaml.xml.validation.ValidatorSuite;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -52,14 +53,13 @@ import org.xml.sax.SAXException;
 public class XMLConfigurator {
 
     /** Class logger. */
-    private static Logger log = Logger.getLogger(XMLConfigurator.class);
+    private final Logger log = LoggerFactory.getLogger(XMLConfigurator.class);
 
     /** Pool of parsers used to read and validate configurations. */
     private BasicParserPool parserPool;
-    
+
     /** Schema used to validate configruation files. */
     private Schema configurationSchema;
-    
 
     /**
      * Constructor.
@@ -73,7 +73,7 @@ public class XMLConfigurator {
                 .getResourceAsStream(XMLConstants.XMLTOOLING_SCHEMA_LOCATION));
         try {
             configurationSchema = factory.newSchema(schemaSource);
-            
+
             parserPool.setIgnoreComments(true);
             parserPool.setIgnoreElementContentWhitespace(true);
             parserPool.setSchema(configurationSchema);
@@ -91,31 +91,27 @@ public class XMLConfigurator {
      * @throws ConfigurationException thrown if the configuration file(s) can not be be read or invalid
      */
     public void load(File configurationFile) throws ConfigurationException {
-        if(configurationFile == null || !configurationFile.canRead()){
-            log.error("Unable to read configuration file " + configurationFile);
+        if (configurationFile == null || !configurationFile.canRead()) {
+            log.error("Unable to read configuration file {}", configurationFile);
         }
-        
-        try{
+
+        try {
             if (configurationFile.isDirectory()) {
                 File[] configurations = configurationFile.listFiles();
                 for (int i = 0; i < configurations.length; i++) {
-                    if (log.isDebugEnabled()) {
-                        log.debug("Parsing configuration file " + configurations[i].getAbsolutePath());
-                    }
+                    log.debug("Parsing configuration file {}", configurations[i].getAbsolutePath());
                     load(new FileInputStream(configurations[i]));
                 }
             } else {
                 // Given file is not a directory so try to load it directly
-                if (log.isDebugEnabled()) {
-                    log.debug("Parsing configuration file " + configurationFile.getAbsolutePath());
-                }
+                log.debug("Parsing configuration file {}", configurationFile.getAbsolutePath());
                 load(new FileInputStream(configurationFile));
             }
-        }catch(FileNotFoundException e){
+        } catch (FileNotFoundException e) {
             // ignore, we already have the files
         }
     }
-    
+
     /**
      * Loads a configuration file from an input stream.
      * 
@@ -123,15 +119,15 @@ public class XMLConfigurator {
      * 
      * @throws ConfigurationException thrown if the given configuration is invalid or can not be read
      */
-    public void load(InputStream configurationStream) throws ConfigurationException{        
-        try{
+    public void load(InputStream configurationStream) throws ConfigurationException {
+        try {
             Document configuration = parserPool.parse(configurationStream);
             load(configuration);
-        }catch(XMLParserException e){
+        } catch (XMLParserException e) {
             log.error("Invalid configuration file", e);
             throw new ConfigurationException("Unable to create DocumentBuilder", e);
         }
-        
+
     }
 
     /**
@@ -141,26 +137,17 @@ public class XMLConfigurator {
      * @throws ConfigurationException thrown if the configuration file(s) can not be be read or invalid
      */
     public void load(Document configuration) throws ConfigurationException {
-        if (log.isDebugEnabled()) {
-            log.debug("Loading configuration from XML Document");
-        }
-
-        if (log.isDebugEnabled()) {
-            log.debug("\n" + XMLHelper.nodeToString(configuration.getDocumentElement()));
-        }
+        log.debug("Loading configuration from XML Document");
+        log.trace("{}", XMLHelper.nodeToString(configuration.getDocumentElement()));
 
         // Schema validation
-        if (log.isDebugEnabled()) {
-            log.debug("Schema validating configuration Document");
-        }
+        log.debug("Schema validating configuration Document");
         validateConfiguration(configuration);
-        if (log.isDebugEnabled()) {
-            log.debug("Configuration document validated");
-        }
-        
+        log.debug("Configuration document validated");
+
         load(configuration.getDocumentElement());
     }
-    
+
     /**
      * Loads a configuration after it's been schema validated.
      * 
@@ -168,44 +155,32 @@ public class XMLConfigurator {
      * 
      * @throws ConfigurationException thrown if there is a problem processing the configuration
      */
-    protected void load(Element configurationRoot) throws ConfigurationException{
+    protected void load(Element configurationRoot) throws ConfigurationException {
         // Initialize object providers
-        NodeList objectProviders = configurationRoot.getElementsByTagNameNS(
-                XMLConstants.XMLTOOLING_CONFIG_NS, "ObjectProviders");
+        NodeList objectProviders = configurationRoot.getElementsByTagNameNS(XMLConstants.XMLTOOLING_CONFIG_NS,
+                "ObjectProviders");
         if (objectProviders.getLength() > 0) {
-            if (log.isInfoEnabled()) {
-                log.info("Preparing to load ObjectProviders");
-            }
+            log.info("Preparing to load ObjectProviders");
             initializeObjectProviders((Element) objectProviders.item(0));
-            if (log.isInfoEnabled()) {
-                log.info("ObjectProviders load complete");
-            }
+            log.info("ObjectProviders load complete");
         }
 
         // Initialize validator suites
-        NodeList validatorSuitesNodes = configurationRoot.getElementsByTagNameNS(
-                XMLConstants.XMLTOOLING_CONFIG_NS, "ValidatorSuites");
+        NodeList validatorSuitesNodes = configurationRoot.getElementsByTagNameNS(XMLConstants.XMLTOOLING_CONFIG_NS,
+                "ValidatorSuites");
         if (validatorSuitesNodes.getLength() > 0) {
-            if (log.isInfoEnabled()) {
-                log.info("Preparing to load ValidatorSuites");
-            }
+            log.info("Preparing to load ValidatorSuites");
             initializeValidatorSuites((Element) validatorSuitesNodes.item(0));
-            if (log.isInfoEnabled()) {
-                log.info("ValidatorSuites load complete");
-            }
+            log.info("ValidatorSuites load complete");
         }
-        
+
         // Initialize ID attributes
-        NodeList idAttributesNodes = configurationRoot.getElementsByTagNameNS(
-                XMLConstants.XMLTOOLING_CONFIG_NS, "IDAttributes");
+        NodeList idAttributesNodes = configurationRoot.getElementsByTagNameNS(XMLConstants.XMLTOOLING_CONFIG_NS,
+                "IDAttributes");
         if (idAttributesNodes.getLength() > 0) {
-            if (log.isInfoEnabled()) {
-                log.info("Preparing to load IDAttributes");
-            }
+            log.info("Preparing to load IDAttributes");
             initializeIDAttributes((Element) idAttributesNodes.item(0));
-            if (log.isInfoEnabled()) {
-                log.info("IDAttributes load complete");
-            }
+            log.info("IDAttributes load complete");
         }
     }
 
@@ -235,9 +210,7 @@ public class XMLConfigurator {
             qNameAttrib = objectProvider.getAttributeNodeNS(null, "qualifiedName");
             objectProviderName = XMLHelper.getAttributeValueAsQName(qNameAttrib);
 
-            if (log.isDebugEnabled()) {
-                log.debug("Initializing object provider " + objectProviderName);
-            }
+            log.debug("Initializing object provider {}", objectProviderName);
 
             try {
                 configuration = (Element) objectProvider.getElementsByTagNameNS(XMLConstants.XMLTOOLING_CONFIG_NS,
@@ -255,11 +228,9 @@ public class XMLConfigurator {
                 Configuration.registerObjectProvider(objectProviderName, builder, marshaller, unmarshaller,
                         objectProvider);
 
-                if (log.isDebugEnabled()) {
-                    log.debug(objectProviderName + " intialized and configuration cached");
-                }
+                log.debug("{} intialized and configuration cached", objectProviderName);
             } catch (ConfigurationException e) {
-                log.fatal("Error initializing object provier " + objectProvider, e);
+                log.error("Error initializing object provier " + objectProvider, e);
                 // clean up any parts of the object provider that might have been registered before the failure
                 Configuration.deregisterObjectProvider(objectProviderName);
                 throw e;
@@ -290,13 +261,8 @@ public class XMLConfigurator {
             validatorSuiteId = validatorSuiteElement.getAttributeNS(null, "id");
             validatorSuite = new ValidatorSuite(validatorSuiteId);
 
-            if (log.isDebugEnabled()) {
-                log.debug("Initializing ValidatorSuite " + validatorSuiteId);
-            }
-
-            if (log.isDebugEnabled()) {
-                log.debug(XMLHelper.nodeToString(validatorSuiteElement));
-            }
+            log.debug("Initializing ValidatorSuite {}", validatorSuiteId);
+            log.trace(XMLHelper.nodeToString(validatorSuiteElement));
 
             NodeList validatorList = validatorSuiteElement.getElementsByTagNameNS(XMLConstants.XMLTOOLING_CONFIG_NS,
                     "Validator");
@@ -309,38 +275,33 @@ public class XMLConfigurator {
                 validatorSuite.registerValidator(validatorQName, validator);
             }
 
-            if (log.isDebugEnabled()) {
-                log.debug("ValidtorSuite " + validatorSuiteId + " has been initialized");
-            }
+            log.debug("ValidtorSuite {} has been initialized", validatorSuiteId);
             Configuration.registerValidatorSuite(validatorSuiteId, validatorSuite, validatorSuiteElement);
         }
     }
-    
+
     /**
      * Registers the global ID attributes specified in the configuration file.
      * 
      * @param idAttributesElement the IDAttributes element from the configuration file
      * 
-     * @throws ConfigurationException thrown if there is a problem with a parsing or registering the
-     *          the ID attribute
+     * @throws ConfigurationException thrown if there is a problem with a parsing or registering the the ID attribute
      */
     protected void initializeIDAttributes(Element idAttributesElement) throws ConfigurationException {
         Element idAttributeElement;
         QName attributeQName;
-        
+
         NodeList idAttributeList = idAttributesElement.getElementsByTagNameNS(XMLConstants.XMLTOOLING_CONFIG_NS,
                 "IDAttribute");
-        
-        for (int i=0; i < idAttributeList.getLength(); i++) {
+
+        for (int i = 0; i < idAttributeList.getLength(); i++) {
             idAttributeElement = (Element) idAttributeList.item(i);
             attributeQName = XMLHelper.getElementContentAsQName(idAttributeElement);
             if (attributeQName == null) {
                 log.info("IDAttribute element was empty, no registration performed");
             } else {
                 Configuration.registerIDAttribute(attributeQName);
-                if (log.isDebugEnabled()) {
-                    log.debug("IDAttribute " + attributeQName + " has been registered");
-                }
+                log.debug("IDAttribute {} has been registered", attributeQName);
             }
         }
     }
@@ -363,9 +324,7 @@ public class XMLConfigurator {
         }
 
         try {
-            if(log.isDebugEnabled()){
-                log.debug("Creating instance of " + className);
-            }
+            log.trace("Creating instance of {}", className);
             ClassLoader classLoader = this.getClass().getClassLoader();
             Class clazz = classLoader.loadClass(className);
             Constructor constructor = clazz.getConstructor();

@@ -17,16 +17,17 @@
 package org.opensaml.xml;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.xml.namespace.QName;
 
-import org.apache.log4j.Logger;
 import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.util.IDIndex;
 import org.opensaml.xml.util.XMLHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
 
 /**
@@ -35,7 +36,7 @@ import org.w3c.dom.Element;
 public abstract class AbstractXMLObject implements XMLObject {
 
     /** Class logger. */
-    private final Logger log = Logger.getLogger(AbstractXMLObject.class);
+    private final Logger log = LoggerFactory.getLogger(AbstractXMLObject.class);
 
     /** Parent of this element. */
     private XMLObject parent;
@@ -45,10 +46,10 @@ public abstract class AbstractXMLObject implements XMLObject {
 
     /** Schema locations for this XML object. */
     private String schemaLocation;
-    
+
     /** No-namespace schema locations for this XML object. */
     private String noNamespaceSchemaLocation;
-    
+
     /** The schema type of this element with namespace and prefix information. */
     private QName typeQname;
 
@@ -57,9 +58,11 @@ public abstract class AbstractXMLObject implements XMLObject {
 
     /** DOM Element representation of this object. */
     private Element dom;
-    
-    /** Mapping of ID attributes to XMLObjects in the subtree rooted at this object.
-     * This allows constant-time dereferencing of ID-typed attributes within the subtree.  */
+
+    /**
+     * Mapping of ID attributes to XMLObjects in the subtree rooted at this object. This allows constant-time
+     * dereferencing of ID-typed attributes within the subtree.
+     */
     private final IDIndex idIndex;
 
     /**
@@ -122,24 +125,24 @@ public abstract class AbstractXMLObject implements XMLObject {
     public void removeNamespace(Namespace namespace) {
         namespaces.remove(namespace);
     }
-    
+
     /** {@inheritDoc} */
-    public String getSchemaLocation(){
+    public String getSchemaLocation() {
         return schemaLocation;
     }
-    
+
     /** {@inheritDoc} */
-    public void setSchemaLocation(String location){
+    public void setSchemaLocation(String location) {
         schemaLocation = DatatypeHelper.safeTrimOrNullString(location);
     }
-    
+
     /** {@inheritDoc} */
-    public String getNoNamespaceSchemaLocation(){
+    public String getNoNamespaceSchemaLocation() {
         return noNamespaceSchemaLocation;
     }
-    
+
     /** {@inheritDoc} */
-    public void setNoNamespaceSchemaLocation(String location){
+    public void setNoNamespaceSchemaLocation(String location) {
         noNamespaceSchemaLocation = DatatypeHelper.safeTrimOrNullString(location);
     }
 
@@ -201,20 +204,14 @@ public abstract class AbstractXMLObject implements XMLObject {
 
     /** {@inheritDoc} */
     public void releaseDOM() {
-        if (log.isDebugEnabled()) {
-            log.debug("Releasing cached DOM reprsentation for " + getElementQName());
-        }
-
+        log.debug("Releasing cached DOM reprsentation for {}", getElementQName());
         setDOM(null);
     }
 
     /** {@inheritDoc} */
     public void releaseParentDOM(boolean propagateRelease) {
-        if (log.isDebugEnabled()) {
-            log.debug("Releasing cached DOM reprsentation for parent of " + getElementQName()
-                    + " with propagation set to " + propagateRelease);
-        }
-
+        log.debug("Releasing cached DOM reprsentation for parent of {} with propagation set to {}", getElementQName(),
+                propagateRelease);
         XMLObject parentElement = getParent();
         if (parentElement != null) {
             parent.releaseDOM();
@@ -226,11 +223,8 @@ public abstract class AbstractXMLObject implements XMLObject {
 
     /** {@inheritDoc} */
     public void releaseChildrenDOM(boolean propagateRelease) {
-        if (log.isDebugEnabled()) {
-            log.debug("Releasing cached DOM reprsentation for children of " + getElementQName()
-                    + " with propagation set to " + propagateRelease);
-        }
-
+        log.debug("Releasing cached DOM reprsentation for children of {} with propagation set to {}",
+                getElementQName(), propagateRelease);
         if (getOrderedChildren() != null) {
             for (XMLObject child : getOrderedChildren()) {
                 if (child != null) {
@@ -395,17 +389,17 @@ public abstract class AbstractXMLObject implements XMLObject {
 
         return newValue;
     }
-    
+
     /** {@inheritDoc} */
     public IDIndex getIDIndex() {
-       return idIndex; 
+        return idIndex;
     }
 
     /** {@inheritDoc} */
     public XMLObject resolveID(String id) {
         return idIndex.lookup(id);
     }
-    
+
     /** {@inheritDoc} */
     public XMLObject resolveIDFromRoot(String id) {
         XMLObject root = this;
@@ -415,25 +409,26 @@ public abstract class AbstractXMLObject implements XMLObject {
         return root.resolveID(id);
     }
 
-    /** A helper function for derived classes.  The mutator/setter method for any ID-typed
-     * attributes should call this method in order to handle getting the old value removed
-     * from the ID-to-XMLObject mapping, and the new value added to the mapping.  
+    /**
+     * A helper function for derived classes. The mutator/setter method for any ID-typed attributes should call this
+     * method in order to handle getting the old value removed from the ID-to-XMLObject mapping, and the new value added
+     * to the mapping.
      * 
      * @param oldID the old value of the ID-typed attribute
      * @param newID the new value of the ID-typed attribute
      */
     protected void registerOwnID(String oldID, String newID) {
         String newString = DatatypeHelper.safeTrimOrNullString(newID);
-        
+
         if (!DatatypeHelper.safeEquals(oldID, newString)) {
             if (oldID != null) {
                 idIndex.deregisterIDMapping(oldID);
             }
-            
+
             if (newString != null) {
                 idIndex.registerIDMapping(newString, this);
             }
         }
     }
-    
+
 }

@@ -21,11 +21,12 @@ import java.security.interfaces.DSAParams;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xml.security.keyinfo.NamedKeyInfoGeneratorManager;
 import org.opensaml.xml.util.DatatypeHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Basic in-memory implementation of {@link SecurityConfiguration}.
@@ -36,7 +37,7 @@ public class BasicSecurityConfiguration implements SecurityConfiguration {
     public static final String KEYINFO_RESOLVER_DEFAULT_CONFIG = "_KEYINFO_RESOLVER_DEFAULT_";
     
     /** Class logger. */
-    private static Logger log = Logger.getLogger(BasicSecurityConfiguration.class);
+    private final Logger log = LoggerFactory.getLogger(BasicSecurityConfiguration.class);
     
     /** JCA algorithm to signature URI mappings. */
     private Map<String, String> signatureAlgorithms;

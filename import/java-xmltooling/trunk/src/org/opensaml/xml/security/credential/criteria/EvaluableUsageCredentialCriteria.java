@@ -16,26 +16,26 @@
 
 package org.opensaml.xml.security.credential.criteria;
 
-import org.apache.log4j.Logger;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.credential.UsageType;
 import org.opensaml.xml.security.criteria.UsageCriteria;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * Instance of evaluable credential criteria for evaluating whether a credential contains a particular
- * usage specifier.
+ * Instance of evaluable credential criteria for evaluating whether a credential contains a particular usage specifier.
  */
 public class EvaluableUsageCredentialCriteria implements EvaluableCredentialCriteria {
-    
+
     /** Logger. */
-    private static Logger log = Logger.getLogger(EvaluableUsageCredentialCriteria.class);
-    
+    private final Logger log = LoggerFactory.getLogger(EvaluableUsageCredentialCriteria.class);
+
     /** Base criteria. */
     private UsageType usage;
-    
+
     /**
      * Constructor.
-     *
+     * 
      * @param criteria the criteria which is the basis for evaluation
      */
     public EvaluableUsageCredentialCriteria(UsageCriteria criteria) {
@@ -44,10 +44,10 @@ public class EvaluableUsageCredentialCriteria implements EvaluableCredentialCrit
         }
         usage = criteria.getUsage();
     }
-    
+
     /**
      * Constructor.
-     *
+     * 
      * @param newUsage the criteria value which is the basis for evaluation
      */
     public EvaluableUsageCredentialCriteria(UsageType newUsage) {
@@ -68,15 +68,11 @@ public class EvaluableUsageCredentialCriteria implements EvaluableCredentialCrit
             log.info("Could not evaluate criteria, credential contained no usage specifier");
             return null;
         }
-        
+
         Boolean result = matchUsage(credUsage, usage);
-        if (log.isDebugEnabled()) {
-            log.debug(String.format("Evaluation of credential data '%s' against criteria data '%s' was: '%s'",
-                    credUsage, usage, result));
-        }
         return result;
     }
-    
+
     /**
      * Match usage enum type values from credential and criteria.
      * 

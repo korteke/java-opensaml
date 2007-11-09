@@ -39,7 +39,6 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.XMLObjectBuilderFactory;
 import org.opensaml.xml.security.x509.X509Util;
@@ -62,6 +61,8 @@ import org.opensaml.xml.signature.X509SubjectName;
 import org.opensaml.xml.signature.Y;
 import org.opensaml.xml.util.Base64;
 import org.opensaml.xml.util.DatatypeHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Utility class for working with data inside a KeyInfo object.
@@ -72,7 +73,7 @@ import org.opensaml.xml.util.DatatypeHelper;
 public class KeyInfoHelper {
 
     /** Class logger. */
-    private static Logger log = Logger.getLogger(KeyInfoHelper.class);
+    private static Logger log = LoggerFactory.getLogger(KeyInfoHelper.class);
     
     /** Factory for {@link java.security.cert.X509Certificate} and
      * {@link java.security.cert.X509CRL} creation. */

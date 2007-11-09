@@ -18,7 +18,6 @@ package org.opensaml.xml.signature;
 
 import java.security.Key;
 
-import org.apache.log4j.Logger;
 import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.signature.XMLSignatureException;
 import org.opensaml.xml.security.SecurityHelper;
@@ -26,6 +25,8 @@ import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.signature.impl.SignatureImpl;
 import org.opensaml.xml.validation.ValidationException;
 import org.opensaml.xml.validation.Validator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A validator that validates an XML Signature on its content.
@@ -33,7 +34,7 @@ import org.opensaml.xml.validation.Validator;
 public class SignatureValidator implements Validator<Signature> {
 
     /** Class logger. */
-    private static Logger log = Logger.getLogger(SignatureValidator.class);
+    private final Logger log = LoggerFactory.getLogger(SignatureValidator.class);
 
     /** Credential used to validate signature. */
     private Credential validationCredential;
@@ -58,7 +59,7 @@ public class SignatureValidator implements Validator<Signature> {
             log.debug("Supplied credential contained no key suitable for signature validation");
             throw new ValidationException("No key available to validate signature");
         }
-        
+
         // TODO - investigate whether need to look at the signature signing algorithm before
         // blinding trying the key - DSA vs. RSA, public key vs. HMAC. I think using wrong
         // one might throw exception rather than just causing checkSignatureValue to return false.
@@ -73,7 +74,7 @@ public class SignatureValidator implements Validator<Signature> {
         }
 
         log.debug("Signature did not validate against the credential's key");
-        
+
         throw new ValidationException("Signature did not validate against the credential's key");
     }
 
@@ -86,7 +87,7 @@ public class SignatureValidator implements Validator<Signature> {
      */
     protected XMLSignature buildSignature(Signature signature) {
         log.debug("Creating XMLSignature object");
-        
+
         return ((SignatureImpl) signature).getXMLSignature();
     }
 

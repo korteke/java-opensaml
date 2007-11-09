@@ -16,25 +16,26 @@
 
 package org.opensaml.xml.security.credential.criteria;
 
-import org.apache.log4j.Logger;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.criteria.EntityIDCriteria;
 import org.opensaml.xml.util.DatatypeHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Instance of evaluable credential criteria for evaluating a credential's entity ID.
  */
 public class EvaluableEntityIDCredentialCriteria implements EvaluableCredentialCriteria {
-    
+
     /** Logger. */
-    private static Logger log = Logger.getLogger(EvaluableEntityIDCredentialCriteria.class);
-    
+    private final Logger log = LoggerFactory.getLogger(EvaluableEntityIDCredentialCriteria.class);
+
     /** Base criteria. */
     private String entityID;
-    
+
     /**
      * Constructor.
-     *
+     * 
      * @param criteria the criteria which is the basis for evaluation
      */
     public EvaluableEntityIDCredentialCriteria(EntityIDCriteria criteria) {
@@ -43,10 +44,10 @@ public class EvaluableEntityIDCredentialCriteria implements EvaluableCredentialC
         }
         entityID = criteria.getEntityID();
     }
-    
+
     /**
      * Constructor.
-     *
+     * 
      * @param newEntityID the criteria value which is the basis for evaluation
      */
     public EvaluableEntityIDCredentialCriteria(String newEntityID) {
@@ -67,10 +68,6 @@ public class EvaluableEntityIDCredentialCriteria implements EvaluableCredentialC
             return null;
         }
         Boolean result = entityID.equals(target.getEntityId());
-        if (log.isDebugEnabled()) {
-            log.debug(String.format("Evaluation of credential data '%s' against criteria data '%s' was: '%s'",
-                    target.getEntityId(), entityID, result));
-        }
         return result;
     }
 

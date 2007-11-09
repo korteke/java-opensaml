@@ -21,12 +21,10 @@ import java.util.List;
 
 import javax.crypto.SecretKey;
 
-import org.apache.log4j.Logger;
 import org.apache.xml.security.signature.SignedInfo;
 import org.apache.xml.security.signature.XMLSignature;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.XMLObjectBaseTestCase;
-import org.opensaml.xml.encryption.EncryptionConstants;
 import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.io.Unmarshaller;
@@ -46,6 +44,8 @@ import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.util.XMLConstants;
 import org.opensaml.xml.util.XMLHelper;
 import org.opensaml.xml.validation.ValidationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -55,7 +55,7 @@ import org.w3c.dom.Element;
 public class HMACSignatureTest extends XMLObjectBaseTestCase {
 
     /** Class logger. */
-    private static Logger log = Logger.getLogger(HMACSignatureTest.class);
+    private final Logger log = LoggerFactory.getLogger(HMACSignatureTest.class);
 
     /** Credential used to sign and verify. */
     private Credential goodCredential;

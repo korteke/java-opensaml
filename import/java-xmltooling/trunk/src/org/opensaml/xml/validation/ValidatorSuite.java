@@ -24,8 +24,9 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.xml.namespace.QName;
 
-import org.apache.log4j.Logger;
 import org.opensaml.xml.XMLObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A collection of validators that can be applied to an XMLObject and its children. These collections can represent
@@ -38,7 +39,7 @@ import org.opensaml.xml.XMLObject;
 public class ValidatorSuite {
 
     /** Class logger. */
-    private static Logger log = Logger.getLogger(ValidatorSuite.class);
+    private static Logger log = LoggerFactory.getLogger(ValidatorSuite.class);
 
     /** Unique ID for this suite. */
     private String id;
@@ -77,10 +78,7 @@ public class ValidatorSuite {
             return;
         }
 
-        if (log.isDebugEnabled()) {
-            log.debug("Beginning to verify XMLObject " + xmlObject.getElementQName() + " and its children");
-        }
-
+        log.debug("Beginning to verify XMLObject {} and its children", xmlObject.getElementQName());
         performValidation(xmlObject);
 
         List<XMLObject> children = xmlObject.getOrderedChildren();
@@ -143,18 +141,13 @@ public class ValidatorSuite {
     private void performValidation(XMLObject xmlObject) throws ValidationException {
         QName schemaType = xmlObject.getSchemaType();
         if (schemaType != null) {
-            if (log.isDebugEnabled()) {
-                log.debug("Validating XMLObject " + xmlObject.getElementQName()
-                        + " against validators registered under its schema type, " + schemaType);
-            }
+            log.debug("Validating XMLObject {} against validators registered under its schema type {}", xmlObject
+                    .getElementQName(), schemaType);
             performValidation(schemaType, xmlObject);
         }
 
-        if (log.isDebugEnabled()) {
-            log.debug("Validating XMLObject " + xmlObject.getElementQName()
-                    + " against validators registered under its element QName");
-        }
-
+        log.debug("Validating XMLObject {} against validators registered under its element QName", xmlObject
+                .getElementQName());
         performValidation(xmlObject.getElementQName(), xmlObject);
     }
 
@@ -170,17 +163,13 @@ public class ValidatorSuite {
         List<Validator> elementQNameValidators = validators.get(validatorSetKey);
         if (elementQNameValidators != null) {
             for (Validator validator : elementQNameValidators) {
-                if (log.isDebugEnabled()) {
-                    log.debug("Validating XMLObject " + xmlObject.getElementQName() + " against Validator "
-                            + validator.getClass().getName());
-                }
+                log.debug("Validating XMLObject {} against Validator {}", xmlObject.getElementQName(), validator
+                        .getClass().getName());
                 validator.validate(xmlObject);
             }
         } else {
-            if (log.isDebugEnabled()) {
-                log.debug("No validators registered for XMLObject " + xmlObject.getElementQName() + " under QName "
-                        + validatorSetKey);
-            }
+            log.debug("No validators registered for XMLObject {} under QName {}", xmlObject.getElementQName(),
+                    validatorSetKey);
         }
     }
 }

@@ -18,20 +18,21 @@ package org.opensaml.xml.security.trust;
 
 import java.security.Key;
 
-import org.apache.log4j.Logger;
 import org.opensaml.xml.security.credential.Credential;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * Auxillary trust evaluator for evaluating an untrusted key or credential against a trusted
- * key or credential.  Trust is established if the untrusted key (or public key or symmetric key from
- * the untrusted credential) is matches one of the trusted keys supplied.
+ * Auxillary trust evaluator for evaluating an untrusted key or credential against a trusted key or credential. Trust is
+ * established if the untrusted key (or public key or symmetric key from the untrusted credential) is matches one of the
+ * trusted keys supplied.
  * 
  */
 public class ExplicitKeyTrustEvaluator {
 
     /** Class logger. */
-    private static Logger log = Logger.getLogger(ExplicitKeyTrustEvaluator.class);
-    
+    private final Logger log = LoggerFactory.getLogger(ExplicitKeyTrustEvaluator.class);
+
     /**
      * Evaluate trust.
      * 
@@ -42,7 +43,7 @@ public class ExplicitKeyTrustEvaluator {
     public boolean validate(Key untrustedKey, Key trustedKey) {
         return untrustedKey.equals(trustedKey);
     }
-    
+
     /**
      * Evaluate trust.
      * 
@@ -67,7 +68,7 @@ public class ExplicitKeyTrustEvaluator {
      * @return true if trust can be established, false otherwise
      */
     public boolean validate(Credential untrustedCredential, Credential trustedCredential) {
-        
+
         Key untrustedKey = null;
         Key trustedKey = null;
         if (untrustedCredential.getPublicKey() != null) {
@@ -78,33 +79,22 @@ public class ExplicitKeyTrustEvaluator {
             trustedKey = trustedCredential.getSecretKey();
         }
         if (untrustedKey == null) {
-            if (log.isDebugEnabled()) {
-                log.debug("Untrusted credential contained no key, unable to evaluate");
-            }
+            log.debug("Untrusted credential contained no key, unable to evaluate");
             return false;
         } else if (trustedKey == null) {
-            if (log.isDebugEnabled()) {
-                log.debug("Trusted credential contained no key of the appropriate type, unable to evaluate");
-            }
+            log.debug("Trusted credential contained no key of the appropriate type, unable to evaluate");
             return false;
         }
-        
+
         if (validate(untrustedKey, trustedKey)) {
-            if (log.isDebugEnabled()) {
-                log.debug("Validated credential for entity " + untrustedCredential.getEntityId()
-                        + " against trusted key");
-            }
+            log.debug("Validated credential for entity {} against trusted key", untrustedCredential.getEntityId());
             return true;
         }
 
-        if (log.isDebugEnabled()) {
-            log.debug("Credential for entity " + untrustedCredential.getEntityId()
-                    + " did not validate against trusted key");
-        }
-
+        log.debug("Credential for entity {} did not validate against trusted key", untrustedCredential.getEntityId());
         return false;
     }
-    
+
     /**
      * Evaluate trust.
      * 
@@ -113,7 +103,7 @@ public class ExplicitKeyTrustEvaluator {
      * @return true if trust can be established, false otherwise
      */
     public boolean validate(Credential untrustedCredential, Iterable<Credential> trustedCredentials) {
-        
+
         for (Credential trustedCredential : trustedCredentials) {
             if (validate(untrustedCredential, trustedCredential)) {
                 return true;
@@ -121,5 +111,5 @@ public class ExplicitKeyTrustEvaluator {
         }
         return false;
     }
- 
+
 }

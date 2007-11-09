@@ -19,9 +19,10 @@ package org.opensaml.xml.security.credential.criteria;
 import java.security.cert.X509CertSelector;
 import java.security.cert.X509Certificate;
 
-import org.apache.log4j.Logger;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.x509.X509Credential;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Instance of evaluable credential criteria for evaluating whether a credential's certificate meets the criteria
@@ -29,16 +30,16 @@ import org.opensaml.xml.security.x509.X509Credential;
  * 
  */
 public class EvaluableX509CertSelectorCredentialCriteria implements EvaluableCredentialCriteria {
-    
+
     /** Logger. */
-    private static Logger log = Logger.getLogger(EvaluableX509CertSelectorCredentialCriteria.class);
-    
+    private final Logger log = LoggerFactory.getLogger(EvaluableX509CertSelectorCredentialCriteria.class);
+
     /** Base criteria. */
     private X509CertSelector certSelector;
-    
+
     /**
      * Constructor.
-     *
+     * 
      * @param newSelector the new X509 cert selector
      */
     public EvaluableX509CertSelectorCredentialCriteria(X509CertSelector newSelector) {
@@ -54,23 +55,19 @@ public class EvaluableX509CertSelectorCredentialCriteria implements EvaluableCre
             log.error("Credential target was null");
             return null;
         }
-        if (! (target instanceof X509Credential)) {
+        if (!(target instanceof X509Credential)) {
             log.info("Credential is not an X509Credential, can not evaluate X509CertSelector criteria");
             return Boolean.FALSE;
         }
         X509Credential x509Cred = (X509Credential) target;
-        
+
         X509Certificate entityCert = x509Cred.getEntityCertificate();
         if (entityCert == null) {
             log.info("X509Credential did not contain an entity certificate, can not evaluate X509CertSelector criteria");
             return Boolean.FALSE;
         }
-        
+
         Boolean result = certSelector.match(entityCert);
-        if (log.isDebugEnabled()) {
-            log.debug(String.format("Evaluation of credential data '%s' against criteria data '%s' was: '%s'",
-                    entityCert, certSelector, result));
-        }
         return result;
     }
 

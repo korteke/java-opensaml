@@ -22,8 +22,9 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.xml.namespace.QName;
 
-import org.apache.log4j.Logger;
 import org.opensaml.xml.util.XMLHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
 
 /**
@@ -34,7 +35,7 @@ import org.w3c.dom.Element;
 public class XMLObjectBuilderFactory {
 
     /** Class logger. */
-    private static Logger log = Logger.getLogger(XMLObjectBuilderFactory.class);
+    private final Logger log = LoggerFactory.getLogger(XMLObjectBuilderFactory.class);
 
     /** Registered builders. */
     private Map<QName, XMLObjectBuilder> builders;
@@ -94,9 +95,7 @@ public class XMLObjectBuilderFactory {
      * @param builder the builder
      */
     public void registerBuilder(QName builderKey, XMLObjectBuilder builder) {
-        if (log.isDebugEnabled()) {
-            log.debug("Registering builder, " + builder.getClass().getName() + " under key " + builderKey);
-        }
+        log.debug("Registering builder, {} under key {}",  builder.getClass().getName(), builderKey);
         builders.put(builderKey, builder);
     }
 
@@ -108,9 +107,7 @@ public class XMLObjectBuilderFactory {
      * @return the builder that was registered for the given QName
      */
     public XMLObjectBuilder deregisterBuilder(QName builderKey) {
-        if (log.isDebugEnabled()) {
-            log.debug("Deregistering builder for object type " + builderKey);
-        }
+        log.debug("Deregistering builder for object type {}", builderKey);
         return builders.remove(builders.get(builderKey));
     }
 }

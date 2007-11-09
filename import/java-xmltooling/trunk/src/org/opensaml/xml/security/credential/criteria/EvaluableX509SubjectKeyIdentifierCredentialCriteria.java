@@ -19,11 +19,12 @@ package org.opensaml.xml.security.credential.criteria;
 import java.security.cert.X509Certificate;
 import java.util.Arrays;
 
-import org.apache.log4j.Logger;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.x509.X509Credential;
 import org.opensaml.xml.security.x509.X509SubjectKeyIdentifierCriteria;
 import org.opensaml.xml.security.x509.X509Util;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Instance of evaluable credential criteria for evaluating whether a credential's certificate contains a particular
@@ -32,7 +33,7 @@ import org.opensaml.xml.security.x509.X509Util;
 public class EvaluableX509SubjectKeyIdentifierCredentialCriteria implements EvaluableCredentialCriteria {
     
     /** Logger. */
-    private static Logger log = Logger.getLogger(EvaluableX509SubjectKeyIdentifierCredentialCriteria.class);
+    private final Logger log = LoggerFactory.getLogger(EvaluableX509SubjectKeyIdentifierCredentialCriteria.class);
     
     /** Base criteria. */
     private byte[] ski;
@@ -86,11 +87,6 @@ public class EvaluableX509SubjectKeyIdentifierCredentialCriteria implements Eval
         }
         
         Boolean result = Arrays.equals(ski, credSKI);
-        if (log.isDebugEnabled()) {
-            //TODO find hex-encoder to make SKI byte[] values more readable
-            log.debug(String.format("Evaluation of credential data '%s' against criteria data '%s' was: '%s'",
-                    credSKI.toString(), ski.toString(), result));
-        }
         return result;
     }
 

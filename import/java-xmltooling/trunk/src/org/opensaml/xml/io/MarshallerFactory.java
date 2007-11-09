@@ -22,8 +22,9 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.xml.namespace.QName;
 
-import org.apache.log4j.Logger;
 import org.opensaml.xml.XMLObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This thread-safe factory creates {@link org.opensaml.xml.io.Marshaller}s that can be used to convert
@@ -34,7 +35,7 @@ import org.opensaml.xml.XMLObject;
 public class MarshallerFactory {
 
     /** Class logger. */
-    private static Logger log = Logger.getLogger(MarshallerFactory.class);
+    private final Logger log = LoggerFactory.getLogger(MarshallerFactory.class);
 
     /** Map of marshallers to the elements they are for. */
     private Map<QName, Marshaller> marshallers;
@@ -98,9 +99,7 @@ public class MarshallerFactory {
      * @param marshaller the Marshaller
      */
     public void registerMarshaller(QName key, Marshaller marshaller) {
-        if (log.isDebugEnabled()) {
-            log.debug("Registering marshaller, " + marshaller.getClass().getName() + ", for object type " + key);
-        }
+        log.debug("Registering marshaller, {}, for object type {}", marshaller.getClass().getName(), key);
         marshallers.put(key, marshaller);
     }
 
@@ -112,9 +111,7 @@ public class MarshallerFactory {
      * @return the Marshaller previously registered or null
      */
     public Marshaller deregisterMarshaller(QName key) {
-        if (log.isDebugEnabled()) {
-            log.debug("Deregistering marshaller for object type " + key);
-        }
+        log.debug("Deregistering marshaller for object type {}" + key);
         return marshallers.remove(key);
     }
 }

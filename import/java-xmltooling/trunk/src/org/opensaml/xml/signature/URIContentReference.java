@@ -16,28 +16,29 @@
 
 package org.opensaml.xml.signature;
 
-import java.util.List;
 import java.util.LinkedList;
+import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.transforms.Transforms;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A generic content reference that uses a URI to reference the content to be signed.
  */
 public class URIContentReference implements ContentReference {
 
-    /** Logger */
-    private static Logger log = Logger.getLogger(URIContentReference.class);
+    /** Logger. */
+    private final Logger log = LoggerFactory.getLogger(URIContentReference.class);
 
-    /** Element reference ID */
+    /** Element reference ID. */
     private String referenceID;
 
-    /** Algorithm used to digest the content */
+    /** Algorithm used to digest the content . */
     private String digestAlgorithm;
 
-    /** Transforms applied to the content */
+    /** Transforms applied to the content. */
     private List<String> transforms;
 
     /**

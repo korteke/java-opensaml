@@ -22,7 +22,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.ls.LSInput;
 import org.w3c.dom.ls.LSResourceResolver;
 import org.xml.sax.EntityResolver;
@@ -43,7 +44,7 @@ public class ClasspathResolver implements EntityResolver, LSResourceResolver {
     public static final String CLASSPATH_URI_SCHEME = "classpath:";
 
     /** Class logger. */
-    private final Logger log = Logger.getLogger(ClasspathResolver.class);
+    private final Logger log = LoggerFactory.getLogger(ClasspathResolver.class);
 
     /** {@inheritDoc} */
     public InputSource resolveEntity(String publicId, String systemId) throws SAXException, IOException {
@@ -61,7 +62,7 @@ public class ClasspathResolver implements EntityResolver, LSResourceResolver {
     }
 
     /**
-     * Resolves an id against the classpath.  System ID is tried first, then public ID.
+     * Resolves an id against the classpath. System ID is tried first, then public ID.
      * 
      * @param publicId resources public ID
      * @param systemId resources system ID
@@ -73,33 +74,24 @@ public class ClasspathResolver implements EntityResolver, LSResourceResolver {
         InputStream resourceIns = null;
 
         if (systemId.startsWith(CLASSPATH_URI_SCHEME)) {
-            if (log.isDebugEnabled()) {
-                log.debug("Attempting to resolve, within the classpath, the entity with the following system id: "
-                        + systemId);
-            }
-            
+            log.debug("Attempting to resolve, within the classpath, the entity with the following system id: {}",
+                    systemId);
             resource = systemId.replaceFirst("classpath:", "");
             resourceIns = getClass().getResourceAsStream(resource);
         }
 
         if (resourceIns == null && publicId != null && publicId.startsWith(CLASSPATH_URI_SCHEME)) {
-            if (log.isDebugEnabled()) {
-                log.debug("Attempting to resolve, within the classpath, the entity with the following public id: "
-                        + resource);
-            }
+            log.debug("Attempting to resolve, within the classpath, the entity with the following public id: {}",
+                    resource);
             resource = publicId.replaceFirst("classpath:", "");
             resourceIns = getClass().getResourceAsStream(resource);
         }
 
         if (resourceIns == null) {
-            if (log.isDebugEnabled()) {
-                log.debug("Entity was not resolved from classpath");
-            }
+            log.debug("Entity was not resolved from classpath");
             return null;
         } else {
-            if (log.isDebugEnabled()) {
-                log.debug("Entity resolved from classpath");
-            }
+            log.debug("Entity resolved from classpath");
             return resourceIns;
         }
     }
@@ -163,13 +155,13 @@ public class ClasspathResolver implements EntityResolver, LSResourceResolver {
 
         /** {@inheritDoc} */
         public String getStringData() {
-            synchronized(buffInput){
-                try{
+            synchronized (buffInput) {
+                try {
                     buffInput.reset();
                     byte[] input = new byte[buffInput.available()];
                     buffInput.read(input);
                     return new String(input);
-                }catch(IOException e){
+                } catch (IOException e) {
                     return null;
                 }
             }

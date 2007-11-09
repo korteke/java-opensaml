@@ -27,7 +27,6 @@ import javax.crypto.NoSuchPaddingException;
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import org.apache.log4j.Logger;
 import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallerFactory;
 import org.opensaml.xml.io.Unmarshaller;
@@ -35,6 +34,8 @@ import org.opensaml.xml.io.UnmarshallerFactory;
 import org.opensaml.xml.security.SecurityConfiguration;
 import org.opensaml.xml.util.XMLConstants;
 import org.opensaml.xml.validation.ValidatorSuite;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
 
 /**
@@ -43,7 +44,7 @@ import org.w3c.dom.Element;
 public class Configuration {
 
     /** Class logger. */
-    private static Logger log = Logger.getLogger(Configuration.class);
+    private static Logger log = LoggerFactory.getLogger(Configuration.class);
 
     /** Default object provider. */
     private static QName defaultProvider = new QName(XMLConstants.XMLTOOLING_CONFIG_NS,
@@ -66,16 +67,16 @@ public class Configuration {
 
     /** Configured ValidatorSuites. */
     private static Map<String, ValidatorSuite> validatorSuites = new ConcurrentHashMap<String, ValidatorSuite>();
-    
+
     /** Configured set of attribute QNames which have been globally registered as having an ID type. */
     private static Set<QName> idAttributeNames = new CopyOnWriteArraySet<QName>();
-    
+
     /** Configured global security configuration information. */
     private static SecurityConfiguration globalSecurityConfig;
-    
+
     /** Constructor. */
-    protected Configuration(){
-        
+    protected Configuration() {
+
     }
 
     /**
@@ -100,10 +101,7 @@ public class Configuration {
      */
     public static void registerObjectProvider(QName providerName, XMLObjectBuilder builder, Marshaller marshaller,
             Unmarshaller unmarshaller, Element configuration) {
-        if (log.isDebugEnabled()) {
-            log.debug("Registering new builder, marshaller, and unmarshaller for " + providerName);
-        }
-
+        log.debug("Registering new builder, marshaller, and unmarshaller for {}", providerName);
         configuredObjectProviders.put(providerName, configuration);
         builderFactory.registerBuilder(providerName, builder);
         marshallerFactory.registerMarshaller(providerName, marshaller);
@@ -116,9 +114,7 @@ public class Configuration {
      * @param key the key of the builder, marshaller, and unmarshaller to be removed
      */
     public static void deregisterObjectProvider(QName key) {
-        if (log.isDebugEnabled()) {
-            log.debug("Unregistering builder, marshaller, and unmarshaller for " + key);
-        }
+        log.debug("Unregistering builder, marshaller, and unmarshaller for {}", key);
         configuredObjectProviders.remove(key);
         builderFactory.deregisterBuilder(key);
         marshallerFactory.deregisterMarshaller(key);
@@ -165,7 +161,7 @@ public class Configuration {
     public static UnmarshallerFactory getUnmarshallerFactory() {
         return unmarshallerFactory;
     }
-    
+
     /**
      * Registers a configured validator suite.
      * 
@@ -173,21 +169,20 @@ public class Configuration {
      * @param suite the configured suite
      * @param configuration optional XML configuration information
      */
-    public static void registerValidatorSuite(String suiteId, ValidatorSuite suite, Element configuration){
+    public static void registerValidatorSuite(String suiteId, ValidatorSuite suite, Element configuration) {
         validatorSuiteConfigurations.put(suiteId, configuration);
         validatorSuites.put(suiteId, suite);
     }
-    
+
     /**
      * Removes a registered validator suite.
      * 
      * @param suiteId the ID of the suite
      */
-    public static void deregisterValidatorSuite(String suiteId){
+    public static void deregisterValidatorSuite(String suiteId) {
         validatorSuiteConfigurations.remove(suiteId);
         validatorSuites.remove(suiteId);
     }
-    
 
     /**
      * Gets a clone of the ValidatorSuite configuration element for the ID. Note that this configuration reflects the
@@ -201,7 +196,7 @@ public class Configuration {
     public static Element getValidatorSuiteConfiguration(String suiteId) {
         return (Element) validatorSuiteConfigurations.get(suiteId).cloneNode(true);
     }
-    
+
     /**
      * Gets a configured ValidatorSuite by its ID.
      * 
@@ -212,18 +207,18 @@ public class Configuration {
     public static ValidatorSuite getValidatorSuite(String suiteId) {
         return validatorSuites.get(suiteId);
     }
-    
+
     /**
      * Register an attribute as having a type of ID.
      * 
      * @param attributeName the QName of the ID attribute to be registered
      */
     public static void registerIDAttribute(QName attributeName) {
-        if (! idAttributeNames.contains(attributeName)) {
+        if (!idAttributeNames.contains(attributeName)) {
             idAttributeNames.add(attributeName);
         }
     }
-    
+
     /**
      * Deregister an attribute as having a type of ID.
      * 
@@ -234,7 +229,7 @@ public class Configuration {
             idAttributeNames.remove(attributeName);
         }
     }
-    
+
     /**
      * Determine whether a given attribute is registered as having an ID type.
      * 
@@ -244,7 +239,7 @@ public class Configuration {
     public static boolean isIDAttribute(QName attributeName) {
         return idAttributeNames.contains(attributeName);
     }
-    
+
     /**
      * Get the global security configuration.
      * 
@@ -253,7 +248,7 @@ public class Configuration {
     public static SecurityConfiguration getGlobalSecurityConfiguration() {
         return globalSecurityConfig;
     }
-    
+
     /**
      * Set the global security configuration.
      * 
@@ -262,50 +257,46 @@ public class Configuration {
     public static void setGlobalSecurityConfiguration(SecurityConfiguration config) {
         globalSecurityConfig = config;
     }
-    
+
     /**
-     * Validates that the system is not using the horribly buggy Sun JAXP implementation. 
+     * Validates that the system is not using the horribly buggy Sun JAXP implementation.
      */
-    public static void validateNonSunJAXP(){
+    public static void validateNonSunJAXP() {
         String builderFactoryClass = DocumentBuilderFactory.newInstance().getClass().getName();
-        if(log.isDebugEnabled()){
-            log.debug("VM using JAXP parser " + builderFactoryClass);
-        }
+        log.debug("VM using JAXP parser {}", builderFactoryClass);
 
         if (builderFactoryClass.startsWith("com.sun")) {
             String errorMsg = "\n\n\nOpenSAML requires an xml parser that supports JAXP 1.3 and DOM3.\n"
-                + "The JVM is currently configured to use the Sun XML parser, which is known\n"
-                + "to be buggy and can not be used with OpenSAML.  Please endorse a functional\n"
-                + "JAXP library(ies) such as Xerces and Xalan.  For instructions on how to endorse\n"
-                + "a new parser see http://java.sun.com/j2se/1.5.0/docs/guide/standards/index.html\n\n\n";
+                    + "The JVM is currently configured to use the Sun XML parser, which is known\n"
+                    + "to be buggy and can not be used with OpenSAML.  Please endorse a functional\n"
+                    + "JAXP library(ies) such as Xerces and Xalan.  For instructions on how to endorse\n"
+                    + "a new parser see http://java.sun.com/j2se/1.5.0/docs/guide/standards/index.html\n\n\n";
 
-            log.fatal(errorMsg);
+            log.error(errorMsg);
             throw new Error(errorMsg);
         }
     }
-    
+
     /**
-     *  Validates that the set of security providers configured in the JVM supports required
-     *  cryptographic capabilities, for example for the XML Encryption and XML Signature 
-     *  specifications.
-     *  
-     *  Depending on the requirements of the calling code, failure to fully support 
-     *  encryption and signature requirements may or may not be significant, so return
-     *  a status flag to let the caller make that determination.
-     *  
-     *  @return false if one or more capablities are not present, otherwise true
+     * Validates that the set of security providers configured in the JVM supports required cryptographic capabilities,
+     * for example for the XML Encryption and XML Signature specifications.
+     * 
+     * Depending on the requirements of the calling code, failure to fully support encryption and signature requirements
+     * may or may not be significant, so return a status flag to let the caller make that determination.
+     * 
+     * @return false if one or more capablities are not present, otherwise true
      */
     public static boolean validateJCEProviders() {
         boolean ret = true;
-        
+
         // XML Encryption spec requires AES support (128 and 256).
         // Some JRE's are known to ship with no JCE's that support
         // the ISO10126Padding padding scheme.
-       
+
         String errorMsgAESPadding = "The JCE providers currently configured in the JVM do not support\n"
-            + "required capabilities for XML Encryption, either the 'AES' cipher algorithm\n"
-            + "or the 'ISO10126Padding' padding scheme\n";
-        
+                + "required capabilities for XML Encryption, either the 'AES' cipher algorithm\n"
+                + "or the 'ISO10126Padding' padding scheme\n";
+
         try {
             Cipher.getInstance("AES/CBC/ISO10126Padding");
         } catch (NoSuchAlgorithmException e) {
@@ -317,17 +308,17 @@ public class Configuration {
             log.warn(errorMsgAESPadding);
             ret = false;
         }
-        
+
         // Could do more tests here as needed.
-        
+
         return ret;
     }
-    
+
     static {
         validateNonSunJAXP();
-        
+
         validateJCEProviders();
-        
+
         // Default to registering the xml:id attribute as an ID type for all configurations
         registerIDAttribute(new QName(javax.xml.XMLConstants.XML_NS_URI, "id"));
     }

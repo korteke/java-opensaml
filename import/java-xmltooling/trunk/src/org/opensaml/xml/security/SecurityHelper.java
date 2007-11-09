@@ -35,7 +35,6 @@ import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 
 import org.apache.commons.ssl.PKCS8Key;
-import org.apache.log4j.Logger;
 import org.apache.xml.security.Init;
 import org.apache.xml.security.algorithms.JCEMapper;
 import org.opensaml.xml.Configuration;
@@ -51,6 +50,8 @@ import org.opensaml.xml.security.x509.BasicX509Credential;
 import org.opensaml.xml.signature.KeyInfo;
 import org.opensaml.xml.signature.Signature;
 import org.opensaml.xml.util.DatatypeHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Helper methods for security-related requirements.
@@ -58,12 +59,12 @@ import org.opensaml.xml.util.DatatypeHelper;
 public final class SecurityHelper {
 
     /** Class logger. */
-    private static Logger log = Logger.getLogger(SecurityHelper.class);
+    private static Logger log = LoggerFactory.getLogger(SecurityHelper.class);
 
     /** Constructor. */
     private SecurityHelper() {
     }
-    
+
     /**
      * Get the Java security JCA/JCE algorithm identifier associated with an algorithm URI.
      * 
@@ -117,9 +118,8 @@ public final class SecurityHelper {
                 log.warn("XML Security config contained invalid key length value for algorithm URI: " + algorithmURI);
             }
         }
-        if (log.isInfoEnabled()) {
-            log.info("Mapping from algorithm URI '" + algorithmURI + "' to key length not available");
-        }
+
+        log.info("Mapping from algorithm URI {} to key length not available", algorithmURI);
         return null;
     }
 
@@ -263,10 +263,9 @@ public final class SecurityHelper {
         cred.setPrivateKey(privateKey);
         return cred;
     }
-    
+
     /**
-     * Get a simple, minimal credential containing an end-entity X.509 certificate,
-     * and optionally a private key.
+     * Get a simple, minimal credential containing an end-entity X.509 certificate, and optionally a private key.
      * 
      * @param cert the end-entity certificate to wrap
      * @param privateKey the private key to wrap, which may be null
@@ -370,13 +369,13 @@ public final class SecurityHelper {
             throw new KeyException("Unable to decode private key", e);
         }
     }
-    
+
     /**
      * Prepare a {@link Signature} with necessary additional information prior to signing.
      * 
      * <p>
-     * <strong>NOTE:</strong>Since this operation modifies the specified Signature object, it should be
-     * called <strong>prior</strong> to marshalling the Signature object.
+     * <strong>NOTE:</strong>Since this operation modifies the specified Signature object, it should be called
+     * <strong>prior</strong> to marshalling the Signature object.
      * </p>
      * 
      * <p>
@@ -390,9 +389,9 @@ public final class SecurityHelper {
      * </p>
      * 
      * <p>
-     * All values are determined by the specified {@link SecurityConfiguration}.  If a security configuration
-     * is not supplied, the global security configuration ({@link Configuration#getGlobalSecurityConfiguration()})
-     * will be used.
+     * All values are determined by the specified {@link SecurityConfiguration}. If a security configuration is not
+     * supplied, the global security configuration ({@link Configuration#getGlobalSecurityConfiguration()}) will be
+     * used.
      * </p>
      * 
      * <p>
@@ -400,11 +399,10 @@ public final class SecurityHelper {
      * </p>
      * 
      * <p>
-     * The KeyInfo to be generated is based on the {@link NamedKeyInfoGeneratorManager}
-     * defined in the security configuration, and is determined by the type of the signing credential
-     * and an optional KeyInfo generator manager name.  If the latter is ommited, the default 
-     * manager ({@link NamedKeyInfoGeneratorManager#getDefaultManager()}) of the security configuration's
-     * named generator manager will be used.
+     * The KeyInfo to be generated is based on the {@link NamedKeyInfoGeneratorManager} defined in the security
+     * configuration, and is determined by the type of the signing credential and an optional KeyInfo generator manager
+     * name. If the latter is ommited, the default manager ({@link NamedKeyInfoGeneratorManager#getDefaultManager()})
+     * of the security configuration's named generator manager will be used.
      * </p>
      * 
      * @param signature the Signature to be updated
@@ -413,20 +411,20 @@ public final class SecurityHelper {
      * @param keyInfoGenName the named KeyInfoGeneratorManager configuration to use (may be null)
      * @throws SecurityException thrown if there is an error generating the KeyInfo from the signing credential
      */
-    public static void prepareSignatureParams(Signature signature, Credential signingCredential, 
+    public static void prepareSignatureParams(Signature signature, Credential signingCredential,
             SecurityConfiguration config, String keyInfoGenName) throws SecurityException {
-        
+
         SecurityConfiguration secConfig;
         if (config != null) {
             secConfig = config;
         } else {
             secConfig = Configuration.getGlobalSecurityConfiguration();
         }
-        
+
         // The algorithm URI is derived from the credential
         String signAlgo = secConfig.getSignatureAlgorithmURI(signingCredential);
         signature.setSignatureAlgorithm(signAlgo);
-        
+
         // If we're doing HMAC, set the output length, if non-null
         if (SecurityHelper.isHMAC(signAlgo)) {
             Integer hmacOutputLength = secConfig.getSignatureHMACOutputLength();
@@ -434,10 +432,10 @@ public final class SecurityHelper {
                 signature.setHMACOutputLength(hmacOutputLength);
             }
         }
-        
+
         String c14nAlgo = secConfig.getSignatureCanonicalizationAlgorithm();
         signature.setCanonicalizationAlgorithm(c14nAlgo);
-        
+
         KeyInfoGenerator kiGenerator = getKeyInfoGenerator(signingCredential, secConfig, keyInfoGenName);
         if (kiGenerator != null) {
             try {
@@ -448,14 +446,12 @@ public final class SecurityHelper {
                 throw e;
             }
         } else {
-            if (log.isInfoEnabled()) {
-                log.info(String.format("No factory for named KeyInfoGenerator '%s' was found for credential type '%s'",
-                        keyInfoGenName, signingCredential.getCredentialType().getName()));
-                log.info("No KeyInfo will be generated for Signature");
-            }
+            log.info("No factory for named KeyInfoGenerator {} was found for credential type {}", keyInfoGenName,
+                    signingCredential.getCredentialType().getName());
+            log.info("No KeyInfo will be generated for Signature");
         }
     }
-    
+
     /**
      * Build an instance of {@link EncryptionParameters} suitable for passing to an {@link Encrypter}.
      * 
@@ -464,28 +460,27 @@ public final class SecurityHelper {
      * <ul>
      * <li>the encryption credential (optional)</li>
      * <li>encryption algorithm URI</li>
-     * <li>an appropriate {@link KeyInfoGenerator} instance which will be used to generate a {@link KeyInfo}
-     * element from the encryption credential</li>
+     * <li>an appropriate {@link KeyInfoGenerator} instance which will be used to generate a {@link KeyInfo} element
+     * from the encryption credential</li>
      * </ul>
      * </p>
      * 
      * <p>
-     * All values are determined by the specified {@link SecurityConfiguration}.  If a security configuration
-     * is not supplied, the global security configuration ({@link Configuration#getGlobalSecurityConfiguration()})
-     * will be used.
+     * All values are determined by the specified {@link SecurityConfiguration}. If a security configuration is not
+     * supplied, the global security configuration ({@link Configuration#getGlobalSecurityConfiguration()}) will be
+     * used.
      * </p>
      * 
      * <p>
-     * The encryption algorithm URI is derived from the optional supplied encryption credential. If omitted,
-     * the value of {@link SecurityConfiguration#getAutoGeneratedDataEncryptionKeyAlgorithmURI()} will be used.
+     * The encryption algorithm URI is derived from the optional supplied encryption credential. If omitted, the value
+     * of {@link SecurityConfiguration#getAutoGeneratedDataEncryptionKeyAlgorithmURI()} will be used.
      * </p>
      * 
      * <p>
-     * The KeyInfoGenerator to be used is based on the {@link NamedKeyInfoGeneratorManager}
-     * defined in the security configuration, and is determined by the type of the signing credential
-     * and an optional KeyInfo generator manager name.  If the latter is ommited, the default 
-     * manager ({@link NamedKeyInfoGeneratorManager#getDefaultManager()}) of the security configuration's
-     * named generator manager will be used.
+     * The KeyInfoGenerator to be used is based on the {@link NamedKeyInfoGeneratorManager} defined in the security
+     * configuration, and is determined by the type of the signing credential and an optional KeyInfo generator manager
+     * name. If the latter is ommited, the default manager ({@link NamedKeyInfoGeneratorManager#getDefaultManager()})
+     * of the security configuration's named generator manager will be used.
      * </p>
      * 
      * @param encryptionCredential the credential with which the data will be encrypted (may be null)
@@ -495,38 +490,35 @@ public final class SecurityHelper {
      */
     public static EncryptionParameters buildDataEncryptionParams(Credential encryptionCredential,
             SecurityConfiguration config, String keyInfoGenName) {
-        
+
         SecurityConfiguration secConfig;
         if (config != null) {
             secConfig = config;
         } else {
             secConfig = Configuration.getGlobalSecurityConfiguration();
         }
-        
+
         EncryptionParameters encParams = new EncryptionParameters();
         encParams.setEncryptionCredential(encryptionCredential);
-        
+
         if (encryptionCredential == null) {
             encParams.setAlgorithm(secConfig.getAutoGeneratedDataEncryptionKeyAlgorithmURI());
         } else {
             encParams.setAlgorithm(secConfig.getDataEncryptionAlgorithmURI(encryptionCredential));
-            
+
             KeyInfoGenerator kiGenerator = getKeyInfoGenerator(encryptionCredential, secConfig, keyInfoGenName);
             if (kiGenerator != null) {
                 encParams.setKeyInfoGenerator(kiGenerator);
             } else {
-                if (log.isInfoEnabled()) {
-                    log.info(String.format(
-                            "No factory for named KeyInfoGenerator '%s' was found for credential type '%s'",
-                            keyInfoGenName, encryptionCredential.getCredentialType().getName()));
-                    log.info("No KeyInfo will be generated for EncryptedData");
-                }
+                log.info("No factory for named KeyInfoGenerator {} was found for credential type{}", keyInfoGenName,
+                        encryptionCredential.getCredentialType().getName());
+                log.info("No KeyInfo will be generated for EncryptedData");
             }
         }
-        
+
         return encParams;
     }
-    
+
     /**
      * Build an instance of {@link KeyEncryptionParameters} suitable for passing to an {@link Encrypter}.
      * 
@@ -535,37 +527,36 @@ public final class SecurityHelper {
      * <ul>
      * <li>the key encryption credential</li>
      * <li>key transport encryption algorithm URI</li>
-     * <li>an appropriate {@link KeyInfoGenerator} instance which will be used to generate a {@link KeyInfo}
-     * element from the key encryption credential</li>
+     * <li>an appropriate {@link KeyInfoGenerator} instance which will be used to generate a {@link KeyInfo} element
+     * from the key encryption credential</li>
      * <li>intended recipient of the resultant encrypted key (optional)</li>
      * </ul>
      * </p>
      * 
      * <p>
-     * All values are determined by the specified {@link SecurityConfiguration}.  If a security configuration
-     * is not supplied, the global security configuration ({@link Configuration#getGlobalSecurityConfiguration()})
-     * will be used.
+     * All values are determined by the specified {@link SecurityConfiguration}. If a security configuration is not
+     * supplied, the global security configuration ({@link Configuration#getGlobalSecurityConfiguration()}) will be
+     * used.
      * </p>
      * 
      * <p>
-     * The encryption algorithm URI is derived from the optional supplied encryption credential. If omitted,
-     * the value of {@link SecurityConfiguration#getAutoGeneratedDataEncryptionKeyAlgorithmURI()} will be used.
+     * The encryption algorithm URI is derived from the optional supplied encryption credential. If omitted, the value
+     * of {@link SecurityConfiguration#getAutoGeneratedDataEncryptionKeyAlgorithmURI()} will be used.
      * </p>
      * 
      * <p>
-     * The KeyInfoGenerator to be used is based on the {@link NamedKeyInfoGeneratorManager}
-     * defined in the security configuration, and is determined by the type of the signing credential
-     * and an optional KeyInfo generator manager name.  If the latter is ommited, the default 
-     * manager ({@link NamedKeyInfoGeneratorManager#getDefaultManager()}) of the security configuration's
-     * named generator manager will be used.
+     * The KeyInfoGenerator to be used is based on the {@link NamedKeyInfoGeneratorManager} defined in the security
+     * configuration, and is determined by the type of the signing credential and an optional KeyInfo generator manager
+     * name. If the latter is ommited, the default manager ({@link NamedKeyInfoGeneratorManager#getDefaultManager()})
+     * of the security configuration's named generator manager will be used.
      * </p>
      * 
      * @param encryptionCredential the credential with which the key will be encrypted
      * @param wrappedKeyAlgorithm the JCA key algorithm name of the key to be encrypted (may be null)
      * @param config the SecurityConfiguration to use (may be null)
      * @param keyInfoGenName the named KeyInfoGeneratorManager configuration to use (may be null)
-     * @param recipient the intended recipient of the resultant encrypted key, typically the owner 
-     *          of the key encryption key (may be null)
+     * @param recipient the intended recipient of the resultant encrypted key, typically the owner of the key encryption
+     *            key (may be null)
      * @return a new instance of KeyEncryptionParameters
      * @throws SecurityException if encryption credential is not supplied
      * 
@@ -573,56 +564,53 @@ public final class SecurityHelper {
     public static KeyEncryptionParameters buildKeyEncryptionParams(Credential encryptionCredential,
             String wrappedKeyAlgorithm, SecurityConfiguration config, String keyInfoGenName, String recipient)
             throws SecurityException {
-        
+
         SecurityConfiguration secConfig;
         if (config != null) {
             secConfig = config;
         } else {
             secConfig = Configuration.getGlobalSecurityConfiguration();
         }
-        
+
         KeyEncryptionParameters kekParams = new KeyEncryptionParameters();
         kekParams.setEncryptionCredential(encryptionCredential);
-        
+
         if (encryptionCredential == null) {
             throw new SecurityException("Key encryption credential may not be null");
         }
-        
-        kekParams.setAlgorithm(secConfig.getKeyTransportEncryptionAlgorithmURI(encryptionCredential, 
+
+        kekParams.setAlgorithm(secConfig.getKeyTransportEncryptionAlgorithmURI(encryptionCredential,
                 wrappedKeyAlgorithm));
-        
+
         KeyInfoGenerator kiGenerator = getKeyInfoGenerator(encryptionCredential, secConfig, keyInfoGenName);
         if (kiGenerator != null) {
             kekParams.setKeyInfoGenerator(kiGenerator);
         } else {
-            if (log.isInfoEnabled()) {
-                log.info(String.format(
-                        "No factory for named KeyInfoGenerator '%s' was found for credential type '%s'",
-                        keyInfoGenName, encryptionCredential.getCredentialType().getName()));
-                log.info("No KeyInfo will be generated for EncryptedKey");
-            }
+            log.info("No factory for named KeyInfoGenerator {} was found for credential type {}", keyInfoGenName,
+                    encryptionCredential.getCredentialType().getName());
+            log.info("No KeyInfo will be generated for EncryptedKey");
         }
-        
+
         kekParams.setRecipient(recipient);
-        
+
         return kekParams;
     }
-    
+
     /**
      * Obtains a {@link KeyInfoGenerator} for the specified {@link Credential}.
      * 
      * <p>
-     * The KeyInfoGenerator returned is based on the {@link NamedKeyInfoGeneratorManager}
-     * defined by the specified security configuration via {@link SecurityConfiguration#getKeyInfoGeneratorManager()},
-     * and is determined by the type of the signing credential and an optional KeyInfo generator manager name.
-     * If the latter is ommited, the default manager ({@link NamedKeyInfoGeneratorManager#getDefaultManager()})
-     * of the security configuration's named generator manager will be used.
+     * The KeyInfoGenerator returned is based on the {@link NamedKeyInfoGeneratorManager} defined by the specified
+     * security configuration via {@link SecurityConfiguration#getKeyInfoGeneratorManager()}, and is determined by the
+     * type of the signing credential and an optional KeyInfo generator manager name. If the latter is ommited, the
+     * default manager ({@link NamedKeyInfoGeneratorManager#getDefaultManager()}) of the security configuration's
+     * named generator manager will be used.
      * </p>
      * 
      * <p>
-     * The generator is determined by the specified {@link SecurityConfiguration}.  If a security configuration
-     * is not supplied, the global security configuration ({@link Configuration#getGlobalSecurityConfiguration()})
-     * will be used.
+     * The generator is determined by the specified {@link SecurityConfiguration}. If a security configuration is not
+     * supplied, the global security configuration ({@link Configuration#getGlobalSecurityConfiguration()}) will be
+     * used.
      * </p>
      * 
      * @param credential the credential for which a generator is desired
@@ -632,14 +620,14 @@ public final class SecurityHelper {
      */
     public static KeyInfoGenerator getKeyInfoGenerator(Credential credential, SecurityConfiguration config,
             String keyInfoGenName) {
-        
+
         SecurityConfiguration secConfig;
         if (config != null) {
             secConfig = config;
         } else {
             secConfig = Configuration.getGlobalSecurityConfiguration();
         }
-        
+
         NamedKeyInfoGeneratorManager kiMgr = secConfig.getKeyInfoGeneratorManager();
         if (kiMgr != null) {
             KeyInfoGeneratorFactory kiFactory = null;
@@ -654,11 +642,11 @@ public final class SecurityHelper {
         }
         return null;
     }
-    
+
     static {
         // We use some Apache XML Security utility functions, so need to make sure library
         // is initialized.
-        if (! Init.isInitialized()) {
+        if (!Init.isInitialized()) {
             Init.init();
         }
     }

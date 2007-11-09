@@ -16,10 +16,11 @@
 
 package org.opensaml.xml.security.credential.criteria;
 
-import org.apache.log4j.Logger;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.criteria.KeyNameCriteria;
 import org.opensaml.xml.util.DatatypeHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Instance of evaluable credential criteria for evaluating credential key names.
@@ -27,7 +28,7 @@ import org.opensaml.xml.util.DatatypeHelper;
 public class EvaluableKeyNameCredentialCriteria implements EvaluableCredentialCriteria {
     
     /** Logger. */
-    private static Logger log = Logger.getLogger(EvaluableKeyNameCredentialCriteria.class);
+    private final Logger log = LoggerFactory.getLogger(EvaluableKeyNameCredentialCriteria.class);
     
     /** Base criteria. */
     private String keyName;
@@ -67,10 +68,6 @@ public class EvaluableKeyNameCredentialCriteria implements EvaluableCredentialCr
             return null;
         }
         Boolean result = target.getKeyNames().contains(keyName);
-        if (log.isDebugEnabled()) {
-            log.debug(String.format("Evaluation of credential data '%s' against criteria data '%s' was: '%s'",
-                    target.getKeyNames().toString(), keyName, result));
-        }
         return result;
     }
 

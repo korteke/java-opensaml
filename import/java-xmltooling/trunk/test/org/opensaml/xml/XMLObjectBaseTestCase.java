@@ -29,7 +29,6 @@ import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import org.apache.log4j.Logger;
 import org.custommonkey.xmlunit.XMLTestCase;
 import org.custommonkey.xmlunit.XMLUnit;
 import org.opensaml.xml.io.Marshaller;
@@ -42,6 +41,8 @@ import org.opensaml.xml.mock.SimpleXMLObject;
 import org.opensaml.xml.parse.BasicParserPool;
 import org.opensaml.xml.parse.XMLParserException;
 import org.opensaml.xml.util.XMLHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -52,7 +53,7 @@ import org.w3c.dom.Node;
 public class XMLObjectBaseTestCase extends XMLTestCase {
 
     /** Logger */
-    private static Logger log = Logger.getLogger(XMLObjectBaseTestCase.class);
+    private final Logger log = LoggerFactory.getLogger(XMLObjectBaseTestCase.class);
 
     /** Parser pool */
     protected static BasicParserPool parserPool;

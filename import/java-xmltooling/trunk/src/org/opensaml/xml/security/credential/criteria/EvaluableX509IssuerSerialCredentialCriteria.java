@@ -21,29 +21,30 @@ import java.security.cert.X509Certificate;
 
 import javax.security.auth.x500.X500Principal;
 
-import org.apache.log4j.Logger;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.x509.X509Credential;
 import org.opensaml.xml.security.x509.X509IssuerSerialCriteria;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Instance of evaluable credential criteria for evaluating whether a credential's certificate contains a particular
  * issuer name and serial number.
  */
 public class EvaluableX509IssuerSerialCredentialCriteria implements EvaluableCredentialCriteria {
-    
+
     /** Logger. */
-    private static Logger log = Logger.getLogger(EvaluableX509IssuerSerialCredentialCriteria.class);
-    
+    private final Logger log = LoggerFactory.getLogger(EvaluableX509IssuerSerialCredentialCriteria.class);
+
     /** Base criteria. */
     private X500Principal issuer;
-    
+
     /** Base criteria. */
     private BigInteger serialNumber;
-    
+
     /**
      * Constructor.
-     *
+     * 
      * @param criteria the criteria which is the basis for evaluation
      */
     public EvaluableX509IssuerSerialCredentialCriteria(X509IssuerSerialCriteria criteria) {
@@ -53,10 +54,10 @@ public class EvaluableX509IssuerSerialCredentialCriteria implements EvaluableCre
         issuer = criteria.getIssuerName();
         serialNumber = criteria.getSerialNumber();
     }
-    
+
     /**
      * Constructor.
-     *
+     * 
      * @param newIssuer the issuer name criteria value which is the basis for evaluation
      * @param newSerialNumber the serial number criteria value which is the basis for evaluation
      */
@@ -74,31 +75,22 @@ public class EvaluableX509IssuerSerialCredentialCriteria implements EvaluableCre
             log.error("Credential target was null");
             return null;
         }
-        if (! (target instanceof X509Credential)) {
+        if (!(target instanceof X509Credential)) {
             log.info("Credential is not an X509Credential, does not satisfy issuer name and serial number criteria");
             return Boolean.FALSE;
         }
         X509Credential x509Cred = (X509Credential) target;
-        
+
         X509Certificate entityCert = x509Cred.getEntityCertificate();
         if (entityCert == null) {
             log.info("X509Credential did not contain an entity certificate, does not satisfy criteria");
             return Boolean.FALSE;
         }
-        
-        if (! entityCert.getIssuerX500Principal().equals(issuer)) {
-            if (log.isDebugEnabled()) {
-                log.debug(String.format("Evaluation of credential data '%s' against criteria data '%s' was: '%s'",
-                        entityCert.getIssuerX500Principal().getName(X500Principal.RFC2253),
-                        issuer.getName(X500Principal.RFC2253), "false"));
-            }
+
+        if (!entityCert.getIssuerX500Principal().equals(issuer)) {
             return false;
         }
         Boolean result = entityCert.getSerialNumber().equals(serialNumber);
-        if (log.isDebugEnabled()) {
-            log.debug(String.format("Evaluation of credential data '%s' against criteria data '%s' was: '%s'",
-                    entityCert.getSerialNumber(), serialNumber, result));
-        }
         return result;
     }
 

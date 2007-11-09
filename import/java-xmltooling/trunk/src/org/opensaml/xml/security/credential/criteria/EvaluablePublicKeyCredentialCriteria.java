@@ -18,9 +18,10 @@ package org.opensaml.xml.security.credential.criteria;
 
 import java.security.PublicKey;
 
-import org.apache.log4j.Logger;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.criteria.PublicKeyCriteria;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Instance of evaluable credential criteria for evaluating whether a credential contains a particular
@@ -29,7 +30,7 @@ import org.opensaml.xml.security.criteria.PublicKeyCriteria;
 public class EvaluablePublicKeyCredentialCriteria implements EvaluableCredentialCriteria {
     
     /** Logger. */
-    private static Logger log = Logger.getLogger(EvaluablePublicKeyCredentialCriteria.class);
+    private final Logger log = LoggerFactory.getLogger(EvaluablePublicKeyCredentialCriteria.class);
     
     /** Base criteria. */
     private PublicKey publicKey;
@@ -71,10 +72,6 @@ public class EvaluablePublicKeyCredentialCriteria implements EvaluableCredential
         }
         
         Boolean result = publicKey.equals(key);
-        if (log.isDebugEnabled()) {
-            log.debug(String.format("Evaluation of credential data '%s' against criteria data '%s' was: '%s'",
-                    key, publicKey, result));
-        }
         return result;
     }
 

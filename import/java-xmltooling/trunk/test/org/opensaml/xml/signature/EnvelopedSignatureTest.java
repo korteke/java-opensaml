@@ -21,10 +21,8 @@ import java.security.GeneralSecurityException;
 import java.security.KeyPair;
 import java.security.PublicKey;
 
-import org.apache.log4j.Logger;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.XMLObjectBaseTestCase;
-import org.opensaml.xml.encryption.EncryptionConstants;
 import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.io.Unmarshaller;
@@ -40,6 +38,8 @@ import org.opensaml.xml.security.keyinfo.KeyInfoHelper;
 import org.opensaml.xml.signature.impl.SignatureBuilder;
 import org.opensaml.xml.util.XMLHelper;
 import org.opensaml.xml.validation.ValidationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -49,7 +49,7 @@ import org.w3c.dom.Element;
 public class EnvelopedSignatureTest extends XMLObjectBaseTestCase {
 
     /** Class logger. */
-    private static Logger log = Logger.getLogger(EnvelopedSignatureTest.class);
+    private final Logger log = LoggerFactory.getLogger(EnvelopedSignatureTest.class);
 
     /** Credential used to sign and verify. */
     private Credential goodCredential;

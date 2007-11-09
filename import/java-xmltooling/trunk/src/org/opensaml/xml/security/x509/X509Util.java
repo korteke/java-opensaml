@@ -33,7 +33,6 @@ import java.util.List;
 import javax.security.auth.x500.X500Principal;
 
 import org.apache.commons.ssl.TrustMaterial;
-import org.apache.log4j.Logger;
 import org.bouncycastle.asn1.ASN1InputStream;
 import org.bouncycastle.asn1.DERObject;
 import org.bouncycastle.asn1.DERObjectIdentifier;
@@ -43,6 +42,8 @@ import org.bouncycastle.asn1.DERString;
 import org.bouncycastle.asn1.x509.SubjectKeyIdentifier;
 import org.bouncycastle.asn1.x509.X509Extensions;
 import org.bouncycastle.x509.extension.SubjectKeyIdentifierStructure;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Utility class for working with X509 objects.
@@ -85,7 +86,7 @@ public class X509Util {
     public static final Integer REGISTERED_ID_ALT_NAME = new Integer(8);
 
     /** Class logger. */
-    private static Logger log = Logger.getLogger(X509Util.class);
+    private static Logger log = LoggerFactory.getLogger(X509Util.class);
 
     /** Constructed. */
     protected X509Util() {
@@ -105,10 +106,7 @@ public class X509Util {
             return null;
         }
 
-        if (log.isDebugEnabled()) {
-            log.debug("Extracting CNs from the following DN: " + dn.toString());
-        }
-
+        log.debug("Extracting CNs from the following DN: {}", dn.toString());
         List<String> commonNames = new LinkedList<String>();
         try {
             ASN1InputStream asn1Stream = new ASN1InputStream(dn.getEncoded());
@@ -121,9 +119,7 @@ public class X509Util {
             for (int i = 0; i < ((DERSequence) parent).size(); i++) {
                 dnComponent = ((DERSequence) parent).getObjectAt(i).getDERObject();
                 if (!(dnComponent instanceof DERSet)) {
-                    if (log.isDebugEnabled()) {
-                        log.debug("No DN components.");
-                    }
+                    log.debug("No DN components.");
                     continue;
                 }
 

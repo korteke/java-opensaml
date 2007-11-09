@@ -32,8 +32,9 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.validation.Schema;
 
-import org.apache.log4j.Logger;
 import org.opensaml.xml.Configuration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
@@ -59,7 +60,7 @@ import org.xml.sax.SAXException;
 public class BasicParserPool implements ParserPool {
 
     /** Class logger. */
-    private static Logger log = Logger.getLogger(BasicParserPool.class);
+    private final Logger log = LoggerFactory.getLogger(BasicParserPool.class);
 
     /** Current version of the pool. */
     private long poolVersion;

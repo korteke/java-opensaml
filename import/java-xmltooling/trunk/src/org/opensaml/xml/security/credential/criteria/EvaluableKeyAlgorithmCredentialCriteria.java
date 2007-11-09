@@ -18,25 +18,26 @@ package org.opensaml.xml.security.credential.criteria;
 
 import java.security.Key;
 
-import org.apache.log4j.Logger;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.criteria.KeyAlgorithmCriteria;
 import org.opensaml.xml.util.DatatypeHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Instance of evaluable credential criteria for evaluating the credential key algorithm.
  */
 public class EvaluableKeyAlgorithmCredentialCriteria implements EvaluableCredentialCriteria {
-    
+
     /** Logger. */
-    private static Logger log = Logger.getLogger(EvaluableKeyAlgorithmCredentialCriteria.class);
-    
+    private final Logger log = LoggerFactory.getLogger(EvaluableKeyAlgorithmCredentialCriteria.class);
+
     /** Base criteria. */
     private String keyAlgorithm;
-    
+
     /**
      * Constructor.
-     *
+     * 
      * @param criteria the criteria which is the basis for evaluation
      */
     public EvaluableKeyAlgorithmCredentialCriteria(KeyAlgorithmCriteria criteria) {
@@ -45,10 +46,10 @@ public class EvaluableKeyAlgorithmCredentialCriteria implements EvaluableCredent
         }
         keyAlgorithm = criteria.getKeyAlgorithm();
     }
-    
+
     /**
      * Constructor.
-     *
+     * 
      * @param newKeyAlgorithm the criteria value which is the basis for evaluation
      */
     public EvaluableKeyAlgorithmCredentialCriteria(String newKeyAlgorithm) {
@@ -74,15 +75,11 @@ public class EvaluableKeyAlgorithmCredentialCriteria implements EvaluableCredent
             log.info("Could not evaluate criteria, key does not specify an algorithm via getAlgorithm()");
             return null;
         }
-        
+
         Boolean result = keyAlgorithm.equals(algorithm);
-        if (log.isDebugEnabled()) {
-            log.debug(String.format("Evaluation of credential data '%s' against criteria data '%s' was: '%s'",
-                    algorithm, keyAlgorithm, result));
-        }
         return result;
     }
-    
+
     /**
      * Get the key contained within the credential.
      * 
@@ -100,7 +97,7 @@ public class EvaluableKeyAlgorithmCredentialCriteria implements EvaluableCredent
         } else {
             return null;
         }
-        
+
     }
 
 }

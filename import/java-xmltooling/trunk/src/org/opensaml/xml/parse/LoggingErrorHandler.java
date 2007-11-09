@@ -16,7 +16,7 @@
 
 package org.opensaml.xml.parse;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
@@ -24,35 +24,35 @@ import org.xml.sax.SAXParseException;
 /**
  * A SAX error handler that logs errors a {@link Logger} before rethrowing them.
  */
-public class LoggingErrorHandler implements ErrorHandler{
-    
+public class LoggingErrorHandler implements ErrorHandler {
+
     /** Error logger. */
     private Logger log;
-    
+
     /**
      * Constructor.
-     *
+     * 
      * @param logger logger errors will be written to
      */
-    public LoggingErrorHandler(Logger logger){
+    public LoggingErrorHandler(Logger logger) {
         log = logger;
     }
 
     /** {@inheritDoc} */
     public void error(SAXParseException exception) throws SAXException {
-        log.error(exception);
+        log.error("XML Parsing Error:", exception);
         throw exception;
     }
 
     /** {@inheritDoc} */
     public void fatalError(SAXParseException exception) throws SAXException {
-        log.fatal(exception);
+        log.error("XML Parsing Error", exception);
         throw exception;
     }
 
     /** {@inheritDoc} */
     public void warning(SAXParseException exception) throws SAXException {
-        log.warn(exception);
+        log.warn("XML Parsing Error", exception);
         throw exception;
     }
 }

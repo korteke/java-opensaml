@@ -19,39 +19,39 @@ package org.opensaml.xml.signature.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xml.signature.Signature;
 import org.opensaml.xml.signature.SignatureTrustEngine;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * Evaluate a signature in sequence using a chain of subordinate trust engines.  If the signature may be established as
- * trusted by any of the subordinate engines, the token is considered trusted. Otherwise it is considered
- * untrusted.
+ * Evaluate a signature in sequence using a chain of subordinate trust engines. If the signature may be established as
+ * trusted by any of the subordinate engines, the token is considered trusted. Otherwise it is considered untrusted.
  * 
  */
 public class ChainingSignatureTrustEngine implements SignatureTrustEngine {
-    
+
     /** Class logger. */
-    private static Logger log = Logger.getLogger(ChainingSignatureTrustEngine.class);
-    
-    /** The chain of subordinate trust engines.  */
+    private final Logger log = LoggerFactory.getLogger(ChainingSignatureTrustEngine.class);
+
+    /** The chain of subordinate trust engines. */
     private List<SignatureTrustEngine> engines;
-    
+
     /** Constructor. */
     public ChainingSignatureTrustEngine() {
         engines = new ArrayList<SignatureTrustEngine>();
     }
-    
+
     /**
      * Get the list of configured trust engines which constitute the trust evaluation chain.
      * 
      * @return the modifiable list of trust engines in the chain
      */
-    public  List<SignatureTrustEngine> getChain() {
+    public List<SignatureTrustEngine> getChain() {
         return engines;
     }
 
@@ -60,14 +60,12 @@ public class ChainingSignatureTrustEngine implements SignatureTrustEngine {
         // Chaining signature trust engine does not support an attached KeyInfoResolver
         return null;
     }
-    
+
     /** {@inheritDoc} */
     public boolean validate(Signature token, CriteriaSet trustBasisCriteria) throws SecurityException {
         for (SignatureTrustEngine engine : engines) {
             if (engine.validate(token, trustBasisCriteria)) {
-                if (log.isDebugEnabled()) {
-                    log.debug("Signature was trusted by chain member: " + engine.getClass().getName());
-                }
+                log.debug("Signature was trusted by chain member: {}", engine.getClass().getName());
                 return true;
             }
         }
@@ -79,13 +77,11 @@ public class ChainingSignatureTrustEngine implements SignatureTrustEngine {
             Credential candidateCredential) throws SecurityException {
         for (SignatureTrustEngine engine : engines) {
             if (engine.validate(signature, content, algorithmURI, trustBasisCriteria, candidateCredential)) {
-                if (log.isDebugEnabled()) {
-                    log.debug("Signature was trusted by chain member: " + engine.getClass().getName());
-                }
+                log.debug("Signature was trusted by chain member: {}", engine.getClass().getName());
                 return true;
             }
         }
         return false;
     }
-    
+
 }

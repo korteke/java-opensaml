@@ -24,7 +24,6 @@ import java.util.List;
 
 import javax.crypto.SecretKey;
 
-import org.apache.log4j.Logger;
 import org.apache.xml.security.Init;
 import org.apache.xml.security.encryption.XMLCipher;
 import org.apache.xml.security.encryption.XMLEncryptionException;
@@ -42,89 +41,91 @@ import org.opensaml.xml.security.keyinfo.KeyInfoGenerator;
 import org.opensaml.xml.signature.KeyInfo;
 import org.opensaml.xml.signature.impl.KeyInfoBuilder;
 import org.opensaml.xml.util.DatatypeHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
- * Supports encryption of XMLObjects, their content and keys, according to the XML Encryption specification, 
- * version 20021210.
+ * Supports encryption of XMLObjects, their content and keys, according to the XML Encryption specification, version
+ * 20021210.
  * 
  * Various overloaded method variants are supplied for encrypting XMLObjects and their contents (with or without
  * encryption of the associated data encryption key), as well as for encrypting keys separately.
  * 
- * The parameters for data encryption are specified with an instance of {@link EncryptionParameters}.
- * The parameters for key encryption are specified with one or more instances of {@link KeyEncryptionParameters}.
+ * The parameters for data encryption are specified with an instance of {@link EncryptionParameters}. The parameters
+ * for key encryption are specified with one or more instances of {@link KeyEncryptionParameters}.
  * 
- * The data encryption credential supplied by {@link EncryptionParameters#getEncryptionCredential()} is mandatory
- * unless key encryption is also being performed and all associated key encryption parameters contain a valid
- * key encryption credential containing a valid key encryption key. In this case the data encryption key will be
- * randomly generated based on the algorithm URI supplied by {@link EncryptionParameters#getAlgorithm()}.
+ * The data encryption credential supplied by {@link EncryptionParameters#getEncryptionCredential()} is mandatory unless
+ * key encryption is also being performed and all associated key encryption parameters contain a valid key encryption
+ * credential containing a valid key encryption key. In this case the data encryption key will be randomly generated
+ * based on the algorithm URI supplied by {@link EncryptionParameters#getAlgorithm()}.
  * 
- * If encryption of the data encryption key is being performed using the overloaded methods for elements or content,
- * the resulting EncryptedKey(s) will be placed inline within the KeyInfo of the resulting EncryptedData.  If this
- * is not the desired behavior, the XMLObject and the data encryption key should be encrypted separately, and the 
- * placement of EncryptedKey(s) handled by the caller.  Specialized subclasses of this class maybe also handle 
- * key placement in an application-specific manner.
+ * If encryption of the data encryption key is being performed using the overloaded methods for elements or content, the
+ * resulting EncryptedKey(s) will be placed inline within the KeyInfo of the resulting EncryptedData. If this is not the
+ * desired behavior, the XMLObject and the data encryption key should be encrypted separately, and the placement of
+ * EncryptedKey(s) handled by the caller. Specialized subclasses of this class maybe also handle key placement in an
+ * application-specific manner.
  * 
  */
 public class Encrypter {
-    
+
     /** Class logger. */
-    private Logger log = Logger.getLogger(Encrypter.class);
-    
+    private final Logger log = LoggerFactory.getLogger(Encrypter.class);
+
     /** Unmarshaller used to create EncryptedData objects from DOM element. */
     private Unmarshaller encryptedDataUnmarshaller;
-    
+
     /** Unmarshaller used to create EncryptedData objects from DOM element. */
     private Unmarshaller encryptedKeyUnmarshaller;
-    
+
     /** Builder instance for building KeyInfo objects. */
     private KeyInfoBuilder keyInfoBuilder;
-    
+
     /** The name of the JCA security provider to use. */
     private String jcaProviderName;
-    
+
     /**
      * Constructor.
      * 
      */
     public Encrypter() {
         UnmarshallerFactory unmarshallerFactory = Configuration.getUnmarshallerFactory();
-        encryptedDataUnmarshaller =  unmarshallerFactory.getUnmarshaller(EncryptedData.DEFAULT_ELEMENT_NAME);
-        encryptedKeyUnmarshaller =  unmarshallerFactory.getUnmarshaller(EncryptedKey.DEFAULT_ELEMENT_NAME);
-        
-        XMLObjectBuilderFactory  builderFactory = Configuration.getBuilderFactory();
+        encryptedDataUnmarshaller = unmarshallerFactory.getUnmarshaller(EncryptedData.DEFAULT_ELEMENT_NAME);
+        encryptedKeyUnmarshaller = unmarshallerFactory.getUnmarshaller(EncryptedKey.DEFAULT_ELEMENT_NAME);
+
+        XMLObjectBuilderFactory builderFactory = Configuration.getBuilderFactory();
         keyInfoBuilder = (KeyInfoBuilder) builderFactory.getBuilder(KeyInfo.DEFAULT_ELEMENT_NAME);
-        
+
         jcaProviderName = null;
     }
-    
+
     /**
-     * Get the Java Cryptography Architecture (JCA) security provider name that should be
-     * used to provide the encryption support.
+     * Get the Java Cryptography Architecture (JCA) security provider name that should be used to provide the encryption
+     * support.
      * 
-     * Defaults to <code>null</code>, which means that the first registered provider
-     * which supports the requested encryption algorithm URI will be used.
-     *
+     * Defaults to <code>null</code>, which means that the first registered provider which supports the requested
+     * encryption algorithm URI will be used.
+     * 
      * @return the JCA provider name to use
      */
     public String getJCAProviderName() {
         return jcaProviderName;
     }
-    
+
     /**
-     * Set the Java Cryptography Architecture (JCA) security provider name that should be
-     * used to provide the encryption support.
+     * Set the Java Cryptography Architecture (JCA) security provider name that should be used to provide the encryption
+     * support.
      * 
-     * Defaults to <code>null</code>, which means that the first registered provider
-     * which supports the requested encryption algorithm URI will be used.
-     *
+     * Defaults to <code>null</code>, which means that the first registered provider which supports the requested
+     * encryption algorithm URI will be used.
+     * 
      * @param providerName the JCA provider name to use
      */
     public void setJCAProviderName(String providerName) {
         jcaProviderName = providerName;
     }
-    
+
     /**
      * Encrypts the DOM representation of the XMLObject.
      * 
@@ -134,16 +135,14 @@ public class Encrypter {
      * @return the resulting EncryptedData element
      * @throws EncryptionException exception thrown on encryption errors
      */
-    public EncryptedData encryptElement(XMLObject xmlObject, EncryptionParameters encParams) 
-        throws EncryptionException {
+    public EncryptedData encryptElement(XMLObject xmlObject, EncryptionParameters encParams) throws EncryptionException {
         List<KeyEncryptionParameters> emptyKEKParamsList = new ArrayList<KeyEncryptionParameters>();
         return encryptElement(xmlObject, encParams, emptyKEKParamsList, false);
     }
 
     /**
-     * Encrypts the DOM representation of the XMLObject, encrypts the encryption key using the
-     * specified key encryption parameters and places the resulting EncryptedKey within 
-     * the EncryptedData's KeyInfo.
+     * Encrypts the DOM representation of the XMLObject, encrypts the encryption key using the specified key encryption
+     * parameters and places the resulting EncryptedKey within the EncryptedData's KeyInfo.
      * 
      * @param xmlObject the XMLObject to be encrypted
      * @param encParams parameters for encrypting the data
@@ -152,17 +151,16 @@ public class Encrypter {
      * @return the resulting EncryptedData element
      * @throws EncryptionException exception thrown on encryption errors
      */
-    public EncryptedData encryptElement(XMLObject xmlObject, EncryptionParameters encParams, 
-            KeyEncryptionParameters kekParams)  throws EncryptionException {
+    public EncryptedData encryptElement(XMLObject xmlObject, EncryptionParameters encParams,
+            KeyEncryptionParameters kekParams) throws EncryptionException {
         List<KeyEncryptionParameters> kekParamsList = new ArrayList<KeyEncryptionParameters>();
         kekParamsList.add(kekParams);
         return encryptElement(xmlObject, encParams, kekParamsList, false);
     }
-    
+
     /**
-     * Encrypts the DOM representation of the XMLObject, encrypts the encryption key using the
-     * specified key encryption parameters and places the resulting EncryptedKey(s) within 
-     * the EncryptedData's KeyInfo.
+     * Encrypts the DOM representation of the XMLObject, encrypts the encryption key using the specified key encryption
+     * parameters and places the resulting EncryptedKey(s) within the EncryptedData's KeyInfo.
      * 
      * @param xmlObject the XMLObject to be encrypted
      * @param encParams parameters for encrypting the data
@@ -171,11 +169,11 @@ public class Encrypter {
      * @return the resulting EncryptedData element
      * @throws EncryptionException exception thrown on encryption errors
      */
-    public EncryptedData encryptElement(XMLObject xmlObject, EncryptionParameters encParams, 
-            List<KeyEncryptionParameters> kekParamsList)  throws EncryptionException {
+    public EncryptedData encryptElement(XMLObject xmlObject, EncryptionParameters encParams,
+            List<KeyEncryptionParameters> kekParamsList) throws EncryptionException {
         return encryptElement(xmlObject, encParams, kekParamsList, false);
     }
-    
+
     /**
      * Encrypts the DOM representation of the content of an XMLObject.
      * 
@@ -185,16 +183,15 @@ public class Encrypter {
      * @return the resulting EncryptedData element
      * @throws EncryptionException exception thrown on encryption errors
      */
-    public EncryptedData encryptElementContent(XMLObject xmlObject, EncryptionParameters encParams) 
-        throws EncryptionException {
+    public EncryptedData encryptElementContent(XMLObject xmlObject, EncryptionParameters encParams)
+            throws EncryptionException {
         List<KeyEncryptionParameters> emptyKEKParamsList = new ArrayList<KeyEncryptionParameters>();
         return encryptElement(xmlObject, encParams, emptyKEKParamsList, true);
     }
-    
+
     /**
-     * Encrypts the DOM representation of the content of an XMLObject, encrypts the encryption key using the
-     * specified key encryption parameters and places the resulting EncryptedKey within 
-     * the EncryptedData's KeyInfo..
+     * Encrypts the DOM representation of the content of an XMLObject, encrypts the encryption key using the specified
+     * key encryption parameters and places the resulting EncryptedKey within the EncryptedData's KeyInfo..
      * 
      * @param xmlObject the XMLObject to be encrypted
      * @param encParams parameters for encrypting the data
@@ -203,17 +200,16 @@ public class Encrypter {
      * @return the resulting EncryptedData element
      * @throws EncryptionException exception thrown on encryption errors
      */
-    public EncryptedData encryptElementContent(XMLObject xmlObject, EncryptionParameters encParams, 
+    public EncryptedData encryptElementContent(XMLObject xmlObject, EncryptionParameters encParams,
             KeyEncryptionParameters kekParams) throws EncryptionException {
         List<KeyEncryptionParameters> kekParamsList = new ArrayList<KeyEncryptionParameters>();
         kekParamsList.add(kekParams);
         return encryptElement(xmlObject, encParams, kekParamsList, true);
     }
-    
+
     /**
-     * Encrypts the DOM representation of the content of an XMLObject, encrypts the encryption key using the
-     * specified key encryption parameters and places the resulting EncryptedKey(s) within 
-     * the EncryptedData's KeyInfo..
+     * Encrypts the DOM representation of the content of an XMLObject, encrypts the encryption key using the specified
+     * key encryption parameters and places the resulting EncryptedKey(s) within the EncryptedData's KeyInfo..
      * 
      * @param xmlObject the XMLObject to be encrypted
      * @param encParams parameters for encrypting the data
@@ -222,79 +218,76 @@ public class Encrypter {
      * @return the resulting EncryptedData element
      * @throws EncryptionException exception thrown on encryption errors
      */
-    public EncryptedData encryptElementContent(XMLObject xmlObject, EncryptionParameters encParams, 
+    public EncryptedData encryptElementContent(XMLObject xmlObject, EncryptionParameters encParams,
             List<KeyEncryptionParameters> kekParamsList) throws EncryptionException {
         return encryptElement(xmlObject, encParams, kekParamsList, true);
     }
-    
+
     /**
      * Encrypts a key once for each key encryption parameters set that is supplied.
      * 
      * @param key the key to encrypt
      * @param kekParamsList a list parameters for encrypting the key
-     * @param containingDocument the document that will own the DOM element underlying
-     *          the resulting EncryptedKey objects
+     * @param containingDocument the document that will own the DOM element underlying the resulting EncryptedKey
+     *            objects
      * 
      * @return the resulting list of EncryptedKey objects
      * 
-     * @throws EncryptionException  exception thrown on encryption errors
+     * @throws EncryptionException exception thrown on encryption errors
      */
     public List<EncryptedKey> encryptKey(Key key, List<KeyEncryptionParameters> kekParamsList,
             Document containingDocument) throws EncryptionException {
-        
+
         checkParams(kekParamsList, false);
-        
+
         List<EncryptedKey> encKeys = new ArrayList<EncryptedKey>();
-        
+
         for (KeyEncryptionParameters kekParam : kekParamsList) {
-            encKeys.add( encryptKey(key, kekParam, containingDocument) );
+            encKeys.add(encryptKey(key, kekParam, containingDocument));
         }
         return encKeys;
     }
-    
+
     /**
      * Encrypts a key.
      * 
      * @param key the key to encrypt
      * @param kekParams parameters for encrypting the key
-     * @param containingDocument the document that will own the DOM element underlying 
-     *          the resulting EncryptedKey object
+     * @param containingDocument the document that will own the DOM element underlying the resulting EncryptedKey object
      * 
      * @return the resulting EncryptedKey object
      * 
-     * @throws EncryptionException  exception thrown on encryption errors
+     * @throws EncryptionException exception thrown on encryption errors
      */
     public EncryptedKey encryptKey(Key key, KeyEncryptionParameters kekParams, Document containingDocument)
             throws EncryptionException {
-        
+
         checkParams(kekParams, false);
-        
-        Key encryptionKey = SecurityHelper.extractEncryptionKey(kekParams.getEncryptionCredential()); 
+
+        Key encryptionKey = SecurityHelper.extractEncryptionKey(kekParams.getEncryptionCredential());
         String encryptionAlgorithmURI = kekParams.getAlgorithm();
-        
+
         EncryptedKey encryptedKey = encryptKey(key, encryptionKey, encryptionAlgorithmURI, containingDocument);
-        
+
         if (kekParams.getKeyInfoGenerator() != null) {
             KeyInfoGenerator generator = kekParams.getKeyInfoGenerator();
-            if (log.isDebugEnabled()) {
-                log.debug("Dynamically generating KeyInfo from Credential for EncryptedKey using generator: "
-                        + generator.getClass().getName());
-            }
+            log.debug("Dynamically generating KeyInfo from Credential for EncryptedKey using generator: {}", generator
+                    .getClass().getName());
             try {
-                encryptedKey.setKeyInfo( generator.generate(kekParams.getEncryptionCredential()) );
+                encryptedKey.setKeyInfo(generator.generate(kekParams.getEncryptionCredential()));
             } catch (SecurityException e) {
                 log.error("Error during EncryptedKey KeyInfo generation", e);
                 throw new EncryptionException("Error during EncryptedKey KeyInfo generation", e);
             }
         }
-        
+
         if (kekParams.getRecipient() != null) {
             encryptedKey.setRecipient(kekParams.getRecipient());
         }
-        
+
         return encryptedKey;
     }
-    
+
     /**
      * Encrypts a key using the specified encryption key and algorithm URI.
      * 
@@ -305,9 +298,9 @@ public class Encrypter {
      * @return the new EncryptedKey object
      * @throws EncryptionException exception thrown on encryption errors
      */
-    protected EncryptedKey encryptKey(Key targetKey, Key encryptionKey, String encryptionAlgorithmURI, 
+    protected EncryptedKey encryptKey(Key targetKey, Key encryptionKey, String encryptionAlgorithmURI,
             Document containingDocument) throws EncryptionException {
-        
+
         if (targetKey == null) {
             log.error("Target key for key encryption was null");
             throw new EncryptionException("Target key was null");
@@ -316,11 +309,8 @@ public class Encrypter {
             log.error("Encryption key for key encryption was null");
             throw new EncryptionException("Encryption key was null");
         }
-        if (log.isDebugEnabled()) {
-            log.debug("Encrypting key '" + targetKey.getAlgorithm() + "' with key '" + encryptionKey.getAlgorithm() 
-                    + "' with algorithm URI '" + encryptionAlgorithmURI + "'");
-        }
-        
+
+        log.debug("Encrypting encryption key with algorithm: {}", encryptionAlgorithmURI);
         XMLCipher xmlCipher;
         try {
             if (getJCAProviderName() != null) {
@@ -331,9 +321,9 @@ public class Encrypter {
             xmlCipher.init(XMLCipher.WRAP_MODE, encryptionKey);
         } catch (XMLEncryptionException e) {
             log.error("Error initializing cipher instance on key encryption", e);
-            throw new EncryptionException("Error initializing cipher instance on key encryption", e); 
+            throw new EncryptionException("Error initializing cipher instance on key encryption", e);
         }
-        
+
         org.apache.xml.security.encryption.EncryptedKey apacheEncryptedKey;
         try {
             apacheEncryptedKey = xmlCipher.encryptKey(containingDocument, targetKey);
@@ -341,7 +331,7 @@ public class Encrypter {
             log.error("Error encrypting element on key encryption", e);
             throw new EncryptionException("Error encrypting element on key encryption", e);
         }
-        
+
         EncryptedKey encryptedKey;
         try {
             Element encKeyElement = xmlCipher.martial(containingDocument, apacheEncryptedKey);
@@ -350,10 +340,10 @@ public class Encrypter {
             log.error("Error unmarshalling EncryptedKey element", e);
             throw new EncryptionException("Error unmarshalling EncryptedKey element");
         }
-        
+
         return encryptedKey;
     }
-    
+
     /**
      * Encrypts the given XMLObject using the specified encryption key, algorithm URI and content mode flag.
      * 
@@ -364,9 +354,9 @@ public class Encrypter {
      * @return the resulting EncryptedData object
      * @throws EncryptionException exception thrown on encryption errors
      */
-    protected EncryptedData encryptElement(XMLObject xmlObject, Key encryptionKey, 
-            String encryptionAlgorithmURI, boolean encryptContentMode)  throws EncryptionException {
-        
+    protected EncryptedData encryptElement(XMLObject xmlObject, Key encryptionKey, String encryptionAlgorithmURI,
+            boolean encryptContentMode) throws EncryptionException {
+
         if (xmlObject == null) {
             log.error("XMLObject for encryption was null");
             throw new EncryptionException("XMLObject was null");
@@ -375,17 +365,14 @@ public class Encrypter {
             log.error("Encryption key for key encryption was null");
             throw new EncryptionException("Encryption key was null");
         }
-        if (log.isDebugEnabled()) {
-           log.debug("Encrypting XMLObject '" + xmlObject.getElementQName() + " with key '" +
-                   encryptionKey.getAlgorithm() + "' using algorithm URI '" + encryptionAlgorithmURI 
-                   + "' with content mode '" + encryptContentMode + "'");
-        }
-        
+        log.debug("Encrypting XMLObject using algorithm URI {} with content mode {}", encryptionAlgorithmURI,
+                encryptContentMode);
+
         checkAndMarshall(xmlObject);
-        
+
         Element targetElement = xmlObject.getDOM();
         Document ownerDocument = targetElement.getOwnerDocument();
-        
+
         XMLCipher xmlCipher;
         try {
             if (getJCAProviderName() != null) {
@@ -398,7 +385,7 @@ public class Encrypter {
             log.error("Error initializing cipher instance on XMLObject encryption", e);
             throw new EncryptionException("Error initializing cipher instance", e);
         }
-        
+
         org.apache.xml.security.encryption.EncryptedData apacheEncryptedData;
         try {
             apacheEncryptedData = xmlCipher.encryptData(ownerDocument, targetElement, encryptContentMode);
@@ -406,7 +393,7 @@ public class Encrypter {
             log.error("Error encrypting XMLObject", e);
             throw new EncryptionException("Error encrypting XMLObject", e);
         }
-        
+
         EncryptedData encryptedData;
         try {
             Element encDataElement = xmlCipher.martial(ownerDocument, apacheEncryptedData);
@@ -415,10 +402,10 @@ public class Encrypter {
             log.error("Error unmarshalling EncryptedData element", e);
             throw new EncryptionException("Error unmarshalling EncryptedData element", e);
         }
-        
+
         return encryptedData;
     }
-    
+
     /**
      * Encrypts the given XMLObject using the specified encryption key, algorithm URI and content mode flag.
      * EncryptedKeys, if any, are placed inline within the KeyInfo of the resulting EncryptedData.
@@ -431,35 +418,33 @@ public class Encrypter {
      * @return the resulting EncryptedData object
      * @throws EncryptionException exception thrown on encryption errors
      */
-    private EncryptedData encryptElement(XMLObject xmlObject, EncryptionParameters encParams, 
+    private EncryptedData encryptElement(XMLObject xmlObject, EncryptionParameters encParams,
             List<KeyEncryptionParameters> kekParamsList, boolean encryptContentMode) throws EncryptionException {
-        
+
         checkParams(encParams, kekParamsList);
-        
+
         String encryptionAlgorithmURI = encParams.getAlgorithm();
         Key encryptionKey = SecurityHelper.extractEncryptionKey(encParams.getEncryptionCredential());
         if (encryptionKey == null) {
             encryptionKey = generateEncryptionKey(encryptionAlgorithmURI);
         }
-        
-        EncryptedData encryptedData =  
-            encryptElement(xmlObject, encryptionKey, encryptionAlgorithmURI, encryptContentMode);
+
+        EncryptedData encryptedData = encryptElement(xmlObject, encryptionKey, encryptionAlgorithmURI,
+                encryptContentMode);
         Document ownerDocument = encryptedData.getDOM().getOwnerDocument();
-        
+
         if (encParams.getKeyInfoGenerator() != null) {
             KeyInfoGenerator generator = encParams.getKeyInfoGenerator();
-            if (log.isDebugEnabled()) {
-                log.debug("Dynamically generating KeyInfo from Credential for EncryptedData using generator: "
-                        + generator.getClass().getName());
-            } 
+            log.debug("Dynamically generating KeyInfo from Credential for EncryptedData using generator: {}", generator
+                    .getClass().getName());
             try {
-                encryptedData.setKeyInfo( generator.generate(encParams.getEncryptionCredential()) );
+                encryptedData.setKeyInfo(generator.generate(encParams.getEncryptionCredential()));
             } catch (SecurityException e) {
                 log.error("Error during EncryptedData KeyInfo generation", e);
                 throw new EncryptionException("Error during EncryptedData KeyInfo generation", e);
             }
         }
-        
+
         for (KeyEncryptionParameters kekParams : kekParamsList) {
             EncryptedKey encryptedKey = encryptKey(encryptionKey, kekParams, ownerDocument);
             if (encryptedData.getKeyInfo() == null) {
@@ -468,7 +453,7 @@ public class Encrypter {
             }
             encryptedData.getKeyInfo().getEncryptedKeys().add(encryptedKey);
         }
-        
+
         return encryptedData;
     }
 
@@ -480,7 +465,7 @@ public class Encrypter {
      */
     protected void checkAndMarshall(XMLObject xmlObject) throws EncryptionException {
         Element targetElement = xmlObject.getDOM();
-        if(targetElement == null){
+        if (targetElement == null) {
             Marshaller marshaller = Configuration.getMarshallerFactory().getMarshaller(xmlObject);
             try {
                 targetElement = marshaller.marshall(xmlObject);
@@ -490,7 +475,7 @@ public class Encrypter {
             }
         }
     }
-    
+
     /**
      * Check data encryption parameters for consistency and required values.
      * 
@@ -499,7 +484,7 @@ public class Encrypter {
      * @throws EncryptionException thrown if any parameters are missing or have invalid values
      */
     protected void checkParams(EncryptionParameters encParams) throws EncryptionException {
-        if (encParams == null ) {
+        if (encParams == null) {
             log.error("Data encryption parameters are required");
             throw new EncryptionException("Data encryption parameters are required");
         }
@@ -508,7 +493,7 @@ public class Encrypter {
             throw new EncryptionException("Data encryption algorithm URI is required");
         }
     }
-    
+
     /**
      * Check key encryption parameters for consistency and required values.
      * 
@@ -522,8 +507,8 @@ public class Encrypter {
             if (allowEmpty) {
                 return;
             } else {
-               log.error("Key encryption parameters are required");
-               throw new EncryptionException("Key encryption parameters are required");
+                log.error("Key encryption parameters are required");
+                throw new EncryptionException("Key encryption parameters are required");
             }
         }
         if (DatatypeHelper.isEmpty(kekParams.getAlgorithm())) {
@@ -535,7 +520,7 @@ public class Encrypter {
             throw new EncryptionException("Key encryption credential and contained key are required");
         }
     }
-    
+
     /**
      * Check a list of key encryption parameters for consistency and required values.
      * 
@@ -550,15 +535,15 @@ public class Encrypter {
             if (allowEmpty) {
                 return;
             } else {
-               log.error("Key encryption parameters list may not be empty");
-               throw new EncryptionException("Key encryption parameters list may not be empty");
+                log.error("Key encryption parameters list may not be empty");
+                throw new EncryptionException("Key encryption parameters list may not be empty");
             }
         }
         for (KeyEncryptionParameters kekParams : kekParamsList) {
             checkParams(kekParams, false);
         }
     }
-    
+
     /**
      * Check the encryption parameters and key encryption parameters for valid combinations of options.
      * 
@@ -566,13 +551,13 @@ public class Encrypter {
      * @param kekParamsList the key encryption parameters to use
      * @throws EncryptionException exception thrown on encryption errors
      */
-    protected void checkParams(EncryptionParameters encParams, List<KeyEncryptionParameters> kekParamsList) 
-        throws EncryptionException {
-        
+    protected void checkParams(EncryptionParameters encParams, List<KeyEncryptionParameters> kekParamsList)
+            throws EncryptionException {
+
         checkParams(encParams);
         checkParams(kekParamsList, true);
-        
-        if (SecurityHelper.extractEncryptionKey(encParams.getEncryptionCredential()) == null 
+
+        if (SecurityHelper.extractEncryptionKey(encParams.getEncryptionCredential()) == null
                 && (kekParamsList == null || kekParamsList.isEmpty())) {
             log.error("Using a generated encryption key requires a KeyEncryptionParameters "
                     + "object and key encryption key");
@@ -580,30 +565,28 @@ public class Encrypter {
                     + "object and key encryption key");
         }
     }
-    
+
     /**
      * Generate a random symmetric encryption key.
      * 
      * @param encryptionAlgorithmURI the encryption algorithm URI
      * @return a randomly generated symmetric key
-     * @throws EncryptionException  thrown if the key can not be generated based on the specified
-     *          algorithm URI
+     * @throws EncryptionException thrown if the key can not be generated based on the specified algorithm URI
      */
     protected SecretKey generateEncryptionKey(String encryptionAlgorithmURI) throws EncryptionException {
         try {
             return SecurityHelper.generateSymmetricKey(encryptionAlgorithmURI);
         } catch (NoSuchAlgorithmException e) {
             log.error("Could not generate encryption key, algorithm URI was invalid: " + encryptionAlgorithmURI);
-            throw new EncryptionException("Could not generate encryption key, algorithm URI was invalid: " 
+            throw new EncryptionException("Could not generate encryption key, algorithm URI was invalid: "
                     + encryptionAlgorithmURI);
         } catch (KeyException e) {
             log.error("Could not generate encryption key from algorithm URI: " + encryptionAlgorithmURI);
-            throw new EncryptionException("Could not generate encryption key from algorithm URI: " 
+            throw new EncryptionException("Could not generate encryption key from algorithm URI: "
                     + encryptionAlgorithmURI);
         }
     }
 
- 
     /*
      * Initialize the Apache XML security library if it hasn't been already
      */
@@ -612,5 +595,5 @@ public class Encrypter {
             Init.init();
         }
     }
-    
+
 }

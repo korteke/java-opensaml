@@ -20,7 +20,6 @@ import java.security.KeyException;
 import java.security.PublicKey;
 import java.util.Collection;
 
-import org.apache.log4j.Logger;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
@@ -34,6 +33,8 @@ import org.opensaml.xml.security.keyinfo.KeyInfoProvider;
 import org.opensaml.xml.security.keyinfo.KeyInfoResolutionContext;
 import org.opensaml.xml.signature.DSAKeyValue;
 import org.opensaml.xml.signature.KeyValue;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Implementation of {@link KeyInfoProvider} which supports {@link DSAKeyValue}.
@@ -41,7 +42,7 @@ import org.opensaml.xml.signature.KeyValue;
 public class DSAKeyValueProvider extends AbstractKeyInfoProvider {
     
     /** Class logger. */
-    private static Logger log = Logger.getLogger(DSAKeyValueProvider.class);
+    private final Logger log = LoggerFactory.getLogger(DSAKeyValueProvider.class);
 
     /** {@inheritDoc} */
     public boolean handles(XMLObject keyInfoChild) {

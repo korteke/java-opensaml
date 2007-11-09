@@ -18,23 +18,24 @@ package org.opensaml.xml.security.x509;
 
 import java.util.Set;
 
-import org.apache.log4j.Logger;
 import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * Trust engine implementation which evaluates an X509Credential token based on PKIX validation processing
- * using validation information from a trusted source.
+ * Trust engine implementation which evaluates an X509Credential token based on PKIX validation processing using
+ * validation information from a trusted source.
  * 
  */
 public class PKIXX509CredentialTrustEngine implements PKIXTrustEngine<X509Credential> {
 
     /** Class logger. */
-    private static Logger log = Logger.getLogger(PKIXX509CredentialTrustEngine.class);
+    private final Logger log = LoggerFactory.getLogger(PKIXX509CredentialTrustEngine.class);
 
     /** Resolver used for resolving trusted credentials. */
     private PKIXValidationInformationResolver pkixResolver;
-    
+
     /** The external PKIX trust evaluator used to establish trust. */
     private PKIXTrustEvaluator pkixTrustEvaluator;
 
@@ -48,18 +49,18 @@ public class PKIXX509CredentialTrustEngine implements PKIXTrustEngine<X509Creden
             throw new IllegalArgumentException("PKIX trust information resolver may not be null");
         }
         pkixResolver = resolver;
-        
+
         pkixTrustEvaluator = new PKIXTrustEvaluator();
     }
-    
+
     /** {@inheritDoc} */
     public PKIXValidationInformationResolver getPKIXResolver() {
         return pkixResolver;
     }
-    
+
     /**
-     * Get the PKIXTrustEvaluator instance used to evalute trust.  The parameters of this
-     * evaluator may be modified to adjust trust evaluation processing.
+     * Get the PKIXTrustEvaluator instance used to evalute trust. The parameters of this evaluator may be modified to
+     * adjust trust evaluation processing.
      * 
      * @return the PKIX trust evaluator instance that will be used
      */
@@ -68,21 +69,20 @@ public class PKIXX509CredentialTrustEngine implements PKIXTrustEngine<X509Creden
     }
 
     /** {@inheritDoc} */
-    public boolean validate(X509Credential untrustedCredential, CriteriaSet trustBasisCriteria) 
+    public boolean validate(X509Credential untrustedCredential, CriteriaSet trustBasisCriteria)
             throws SecurityException {
-        
-        if (log.isDebugEnabled()) {
-            log.debug("PKIX validating credential for entity " + untrustedCredential.getEntityId());
-        }
+        log.debug("PKIX validating credential for entity {}", untrustedCredential.getEntityId());
+
         if (untrustedCredential == null) {
             log.error("X.509 credential was null, unable to perform validation");
             return false;
         }
+
         if (untrustedCredential.getEntityCertificate() == null) {
             log.error("Untrusted X.509 credential's entity certificate was null, unable to perform validation");
             return false;
         }
-        
+
         Set<String> trustedNames = null;
         if (pkixTrustEvaluator.isNameChecking()) {
             if (pkixResolver.supportsTrustedNameResolution()) {
@@ -91,13 +91,13 @@ public class PKIXX509CredentialTrustEngine implements PKIXTrustEngine<X509Creden
                 log.debug("PKIX resolver does not support resolution of trusted names, skipping name checking");
             }
         }
-        
+
         return validate(untrustedCredential, trustedNames, pkixResolver.resolve(trustBasisCriteria));
     }
-    
+
     /**
-     * Perform PKIX validation on the untrusted credential, using PKIX validation information based
-     * on the supplied set of trusted credentials.
+     * Perform PKIX validation on the untrusted credential, using PKIX validation information based on the supplied set
+     * of trusted credentials.
      * 
      * @param untrustedX509Credential the credential to evaluate
      * @param validationInfoSet the set of validation information which serves as ths basis for trust evaluation
@@ -108,9 +108,9 @@ public class PKIXX509CredentialTrustEngine implements PKIXTrustEngine<X509Creden
      */
     protected boolean validate(X509Credential untrustedX509Credential, Set<String> trustedNames,
             Iterable<PKIXValidationInformation> validationInfoSet) {
-        
+
         log.debug("Beginning PKIX validation using trusted validation information");
-        
+
         for (PKIXValidationInformation validationInfo : validationInfoSet) {
             try {
                 if (pkixTrustEvaluator.pkixValidate(validationInfo, trustedNames, untrustedX509Credential)) {
@@ -125,6 +125,5 @@ public class PKIXX509CredentialTrustEngine implements PKIXTrustEngine<X509Creden
         log.debug("Trust of untrusted credential could not be established via PKIX validation");
         return false;
     }
-    
 
 }

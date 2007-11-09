@@ -19,46 +19,44 @@ package org.opensaml.xml.security.trust;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * Evaluate a token in sequence using a chain of subordinate trust engines.  If the token may be established as
- * trusted by any of the subordinate engines, the token is considered trusted. Otherwise it is considered
- * untrusted.
+ * Evaluate a token in sequence using a chain of subordinate trust engines. If the token may be established as trusted
+ * by any of the subordinate engines, the token is considered trusted. Otherwise it is considered untrusted.
  * 
  * @param <TokenType> the token type this trust engine evaluates
  */
 public class ChainingTrustEngine<TokenType> implements TrustEngine<TokenType> {
-    
+
     /** Class logger. */
-    private static Logger log = Logger.getLogger(ChainingTrustEngine.class);
-    
-    /** The chain of subordinate trust engines.  */
+    private final Logger log = LoggerFactory.getLogger(ChainingTrustEngine.class);
+
+    /** The chain of subordinate trust engines. */
     private List<TrustEngine<TokenType>> engines;
-    
+
     /** Constructor. */
     public ChainingTrustEngine() {
         engines = new ArrayList<TrustEngine<TokenType>>();
     }
-    
+
     /**
      * Get the list of configured trust engines which constitute the trust evaluation chain.
      * 
      * @return the modifiable list of trust engines in the chain
      */
-    public  List<TrustEngine<TokenType>> getChain() {
+    public List<TrustEngine<TokenType>> getChain() {
         return engines;
     }
-    
+
     /** {@inheritDoc} */
     public boolean validate(TokenType token, CriteriaSet trustBasisCriteria) throws SecurityException {
         for (TrustEngine<TokenType> engine : engines) {
             if (engine.validate(token, trustBasisCriteria)) {
-                if (log.isDebugEnabled()) {
-                    log.debug("Token was trusted by chain member: " + engine.getClass().getName());
-                }
+                log.debug("Token was trusted by chain member: {}", engine.getClass().getName());
                 return true;
             }
         }

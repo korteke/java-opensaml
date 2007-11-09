@@ -20,11 +20,12 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.opensaml.xml.signature.AbstractSignableXMLObject;
 import org.opensaml.xml.validation.ValidatingXMLObject;
 import org.opensaml.xml.validation.ValidationException;
 import org.opensaml.xml.validation.Validator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Extension of {@link org.opensaml.xml.signature.AbstractSignableXMLObject} that implements
@@ -34,7 +35,7 @@ public abstract class AbstractValidatingSignableXMLObject extends AbstractSignab
         ValidatingXMLObject {
 
     /** Class logger. */
-    private final Logger log = Logger.getLogger(AbstractValidatingSignableXMLObject.class);
+    private final Logger log = LoggerFactory.getLogger(AbstractValidatingSignableXMLObject.class);
 
     /** Validators used to validate this XMLObject. */
     private List<Validator> validators;
@@ -46,8 +47,7 @@ public abstract class AbstractValidatingSignableXMLObject extends AbstractSignab
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected AbstractValidatingSignableXMLObject(String namespaceURI, String elementLocalName, 
-            String namespacePrefix) {
+    protected AbstractValidatingSignableXMLObject(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         validators = new LinkedList<Validator>();
     }
@@ -77,18 +77,12 @@ public abstract class AbstractValidatingSignableXMLObject extends AbstractSignab
     @SuppressWarnings("unchecked")
     public void validate(boolean validateDescendants) throws ValidationException {
         for (Validator validator : validators) {
-            if (log.isDebugEnabled()) {
-                log
-                        .debug("Validating " + getElementQName() + " using Validator class"
-                                + validator.getClass().getName());
-            }
+            log.debug("Validating {} using Validator class {}", getElementQName(), validator.getClass().getName());
             validator.validate(this);
         }
 
         if (validateDescendants) {
-            if (log.isDebugEnabled()) {
-                log.debug("Validating descendants of " + getElementQName());
-            }
+            log.debug("Validating descendants of {}", getElementQName());
             validateChildren(this);
         }
     }
@@ -106,9 +100,7 @@ public abstract class AbstractValidatingSignableXMLObject extends AbstractSignab
             if (childObject instanceof ValidatingXMLObject) {
                 ((ValidatingXMLObject) childObject).validate(false);
             } else {
-                if (log.isDebugEnabled()) {
-                    log.debug(childObject.getElementQName() + " does not implement ValidatingXMLObject, ignoring it.");
-                }
+                log.debug("{} does not implement ValidatingXMLObject, ignoring it.", childObject.getElementQName());
             }
 
             if (childObject.hasChildren()) {

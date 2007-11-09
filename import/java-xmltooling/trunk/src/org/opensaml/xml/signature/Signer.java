@@ -18,12 +18,13 @@ package org.opensaml.xml.signature;
 
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.apache.xml.security.Init;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.signature.XMLSignature;
 import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.signature.impl.SignatureImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class is responsible for creating the digital signatures for the given signable XMLObjects.
@@ -39,11 +40,11 @@ import org.opensaml.xml.signature.impl.SignatureImpl;
 public class Signer {
 
     /** Class logger. */
-    private static Logger log = Logger.getLogger(Signer.class);
-    
+    private static Logger log = LoggerFactory.getLogger(Signer.class);
+
     /** Constructor. */
-    protected Signer(){
-        
+    protected Signer() {
+
     }
 
     /**
@@ -67,13 +68,11 @@ public class Signer {
             XMLSignature xmlSignature = ((SignatureImpl) signature).getXMLSignature();
 
             if (xmlSignature == null) {
-                log.warn("Unable to compute signature, Signature XMLObject does not have the XMLSignature " 
+                log.warn("Unable to compute signature, Signature XMLObject does not have the XMLSignature "
                         + "created during marshalling.");
                 return;
             }
-            if (log.isDebugEnabled()) {
-                log.debug("Creating XMLSignature object");
-            }
+            log.debug("Creating XMLSignature object");
             xmlSignature.sign(SecurityHelper.extractSigningKey(signature.getSigningCredential()));
         } catch (XMLSecurityException e) {
             log.error("An error occured computing the digital signature", e);
@@ -85,9 +84,7 @@ public class Signer {
      */
     static {
         if (!Init.isInitialized()) {
-            if (log.isDebugEnabled()) {
-                log.debug("Initializing XML security library");
-            }
+            log.debug("Initializing XML security library");
             Init.init();
         }
     }

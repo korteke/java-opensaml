@@ -28,7 +28,6 @@ import java.util.List;
 
 import javax.security.auth.x500.X500Principal;
 
-import org.apache.log4j.Logger;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
@@ -50,6 +49,8 @@ import org.opensaml.xml.signature.X509SKI;
 import org.opensaml.xml.signature.X509SubjectName;
 import org.opensaml.xml.util.Base64;
 import org.opensaml.xml.util.DatatypeHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Implementation of {@link KeyInfoProvider} which provides basic support for extracting a {@link X509Credential} 
@@ -69,7 +70,7 @@ import org.opensaml.xml.util.DatatypeHelper;
 public class InlineX509DataProvider extends AbstractKeyInfoProvider {
     
     /** Class logger. */
-    private static Logger log = Logger.getLogger(InlineX509DataProvider.class);
+    private final Logger log = LoggerFactory.getLogger(InlineX509DataProvider.class);
     
     /** Responsible for parsing and serializing X.500 names to/from {@link X500Principal} instances. */
     private X500DNHandler x500DNHandler;
@@ -168,9 +169,8 @@ public class InlineX509DataProvider extends AbstractKeyInfoProvider {
             log.error("Error extracting CRL's from X509Data", e);
             throw new SecurityException("Error extracting CRL's from X509Data", e);
         }
-        if (log.isDebugEnabled()) {
-            log.debug("Found " + crls.size() + " X509CRLs");
-        }
+        
+        log.debug("Found {} X509CRLs", crls.size());
         return crls;
     }
 
@@ -189,9 +189,7 @@ public class InlineX509DataProvider extends AbstractKeyInfoProvider {
             log.error("Error extracting certificates from X509Data", e);
             throw new SecurityException("Error extracting certificates from X509Data", e);
         }
-        if (log.isDebugEnabled()) {
-            log.debug("Found " + certs.size() + " X509Certificates");
-        }
+        log.debug("Found {} X509Certificates", certs.size());
         return certs;
     }
 

@@ -16,24 +16,25 @@
 
 package org.opensaml.xml.signature.impl;
 
-import org.apache.log4j.Logger;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.AbstractXMLObjectUnmarshaller;
 import org.opensaml.xml.io.UnmarshallingException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Attr;
 
 /**
- * An abstract unmarshaller implementation for XMLObjects from {@link org.opensaml.xml.signature}
+ * An abstract unmarshaller implementation for XMLObjects from {@link org.opensaml.xml.signature}.
  */
 public abstract class AbstractXMLSignatureUnmarshaller extends AbstractXMLObjectUnmarshaller {
 
     /**
-     * Logger
+     * Logger.
      */
-    private static Logger log = Logger.getLogger(AbstractXMLSignatureUnmarshaller.class);
+    private final Logger log = LoggerFactory.getLogger(AbstractXMLSignatureUnmarshaller.class);
 
-   /** Constructor */
-   protected AbstractXMLSignatureUnmarshaller(String targetNamespaceURI, String targetLocalName){
+    /** Constructor. */
+    protected AbstractXMLSignatureUnmarshaller(String targetNamespaceURI, String targetLocalName) {
         super(targetNamespaceURI, targetLocalName);
     }
 
@@ -42,26 +43,20 @@ public abstract class AbstractXMLSignatureUnmarshaller extends AbstractXMLObject
      */
     protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
             throws UnmarshallingException {
-        if (log.isDebugEnabled()) {
-            log.debug("Ignoring unknown element " + childXMLObject.getElementQName());
-        }
+        log.debug("Ignoring unknown element {}", childXMLObject.getElementQName());
     }
 
     /**
      * {@inheritDoc}
      */
     protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
-        if (log.isDebugEnabled()) {
-            log.debug("Ignorning unknown attribute " + attribute.getLocalName());
-        }
+        log.debug("Ignorning unknown attribute {}", attribute.getLocalName());
     }
 
     /**
      * {@inheritDoc}
      */
     protected void processElementContent(XMLObject xmlObject, String elementContent) {
-        if (log.isDebugEnabled()) {
-            log.debug("Ignoring element content " + elementContent);
-        }
+        log.debug("Ignoring element content {}", elementContent);
     }
 }

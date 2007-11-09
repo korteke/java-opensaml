@@ -21,26 +21,26 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * An implementation of {@link EncryptedKeyResolver} which chains multiple other
- * resolver implementations together, calling them in the order specified in
- * the resolver list.
+ * An implementation of {@link EncryptedKeyResolver} which chains multiple other resolver implementations together,
+ * calling them in the order specified in the resolver list.
  */
 public class ChainingEncryptedKeyResolver extends AbstractEncryptedKeyResolver {
-    
+
     /** The list of resolvers which form the resolution chain. */
     private final List<EncryptedKeyResolver> resolvers;
-    
+
     /** Class logger. */
-    private Logger log = Logger.getLogger(ChainingEncryptedKeyResolver.class); 
-    
+    private final Logger log = LoggerFactory.getLogger(ChainingEncryptedKeyResolver.class);
+
     /** Constructor. */
     public ChainingEncryptedKeyResolver() {
         resolvers = new ArrayList<EncryptedKeyResolver>();
     }
-    
+
     /**
      * Get the list of resolvers which form the resolution chain.
      * 
@@ -58,22 +58,21 @@ public class ChainingEncryptedKeyResolver extends AbstractEncryptedKeyResolver {
         }
         return new ChainingIterable(this, encryptedData);
     }
-    
-    
+
     /**
      * Implementation of {@link Iterable} to be returned by {@link ChainingEncryptedKeyResolver}.
      */
     public class ChainingIterable implements Iterable<EncryptedKey> {
-        
+
         /** The chaining encrypted key resolver which owns this instance. */
         private ChainingEncryptedKeyResolver parent;
-        
+
         /** The EncryptedData context for resolution. */
         private EncryptedData encryptedData;
 
         /**
          * Constructor.
-         *
+         * 
          * @param resolver the ChainingEncryptedKeyResolver parent
          * @param encData the EncryptedData context for resolution
          */
@@ -85,41 +84,40 @@ public class ChainingEncryptedKeyResolver extends AbstractEncryptedKeyResolver {
         /** {@inheritDoc} */
         public Iterator<EncryptedKey> iterator() {
             return new ChainingIterator(parent, encryptedData);
-        } 
-        
+        }
+
     }
-    
+
     /**
-     * Implementation of {@link Iterator} to be (indirectly) returned by 
-     * {@link ChainingEncryptedKeyResolver}.
-     *
+     * Implementation of {@link Iterator} to be (indirectly) returned by {@link ChainingEncryptedKeyResolver}.
+     * 
      */
     public class ChainingIterator implements Iterator<EncryptedKey> {
-        
+
         /** Class logger. */
-        private Logger log = Logger.getLogger(ChainingEncryptedKeyResolver.ChainingIterator.class); 
+        private final Logger log = LoggerFactory.getLogger(ChainingEncryptedKeyResolver.ChainingIterator.class);
 
         /** The chaining encrypted key resolver which owns this instance. */
         private ChainingEncryptedKeyResolver parent;
-        
+
         /** The EncryptedData context for resolution. */
         private EncryptedData encryptedData;
-        
+
         /** The iterator over resolvers in the chain. */
         private Iterator<EncryptedKeyResolver> resolverIterator;
 
         /** The iterator over EncryptedKey instances from the current resolver. */
         private Iterator<EncryptedKey> keyIterator;
-        
+
         /** The current resolver which is returning encrypted keys. */
         private EncryptedKeyResolver currentResolver;
-        
+
         /** The next encrypted key that is safe to return. */
         private EncryptedKey nextKey;
-        
+
         /**
          * Constructor.
-         *
+         * 
          * @param resolver the ChainingEncryptedKeyResolver parent
          * @param encData the EncryptedData context for resolution
          */
@@ -155,7 +153,7 @@ public class ChainingEncryptedKeyResolver extends AbstractEncryptedKeyResolver {
             if (tempKey != null) {
                 return tempKey;
             } else {
-               throw new NoSuchElementException("No more EncryptedKey elements are available");
+                throw new NoSuchElementException("No more EncryptedKey elements are available");
             }
         }
 
@@ -163,7 +161,7 @@ public class ChainingEncryptedKeyResolver extends AbstractEncryptedKeyResolver {
         public void remove() {
             throw new UnsupportedOperationException("Remove operation is not supported by this iterator");
         }
-        
+
         /**
          * Get the iterator from the next resolver in the chain.
          * 
@@ -171,18 +169,16 @@ public class ChainingEncryptedKeyResolver extends AbstractEncryptedKeyResolver {
          */
         private Iterator<EncryptedKey> getNextKeyIterator() {
             if (resolverIterator.hasNext()) {
-                currentResolver  = resolverIterator.next();
-                if (log.isDebugEnabled()) {
-                    log.debug("Getting key iterator from next resolver: " + currentResolver.getClass().toString());
-                }
+                currentResolver = resolverIterator.next();
+                log.debug("Getting key iterator from next resolver: {}", currentResolver.getClass().toString());
                 return currentResolver.resolve(encryptedData).iterator();
             } else {
                 log.debug("No more resolvers available in the resolver chain");
-                currentResolver = null; 
+                currentResolver = null;
                 return null;
             }
         }
-        
+
         /**
          * Get the next encrypted key that will be returned by this iterator.
          * 
@@ -190,36 +186,32 @@ public class ChainingEncryptedKeyResolver extends AbstractEncryptedKeyResolver {
          */
         private EncryptedKey getNextKey() {
             EncryptedKey tempKey;
-            
+
             if (keyIterator != null) {
                 while (keyIterator.hasNext()) {
                     tempKey = keyIterator.next();
                     if (parent.matchRecipient(tempKey.getRecipient())) {
-                        if (log.isDebugEnabled()) {
-                            log.debug("Found matching encrypted key: " + tempKey.toString());
-                        }
+                        log.debug("Found matching encrypted key: {}", tempKey.toString());
                         return tempKey;
                     }
                 }
-            }            
-            
+            }
+
             keyIterator = getNextKeyIterator();
             while (keyIterator != null) {
                 while (keyIterator.hasNext()) {
                     tempKey = keyIterator.next();
-                    if ( parent.matchRecipient(tempKey.getRecipient()) ) {
-                        if (log.isDebugEnabled()) {
-                            log.debug("Found matching encrypted key: " + tempKey.toString());
-                        }
+                    if (parent.matchRecipient(tempKey.getRecipient())) {
+                        log.debug("Found matching encrypted key: {}", tempKey.toString());
                         return tempKey;
                     }
                 }
                 keyIterator = getNextKeyIterator();
             }
-            
+
             return null;
         }
-        
+
     }
-    
+
 }

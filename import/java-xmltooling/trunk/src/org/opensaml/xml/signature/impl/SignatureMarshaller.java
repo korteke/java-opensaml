@@ -19,7 +19,6 @@ package org.opensaml.xml.signature.impl;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.apache.log4j.Logger;
 import org.apache.xml.security.Init;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.signature.XMLSignature;
@@ -32,25 +31,25 @@ import org.opensaml.xml.signature.ContentReference;
 import org.opensaml.xml.signature.KeyInfo;
 import org.opensaml.xml.signature.Signature;
 import org.opensaml.xml.util.XMLHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
- * A marshaller for {@link org.opensaml.xml.signature.Signature} objects.  This marshaller is really a no-op
- * class.  All the creation of the signature DOM elements is handled by {@link org.opensaml.xml.signature.Signer} 
- * when it signs the object.
+ * A marshaller for {@link org.opensaml.xml.signature.Signature} objects. This marshaller is really a no-op class. All
+ * the creation of the signature DOM elements is handled by {@link org.opensaml.xml.signature.Signer} when it signs the
+ * object.
  */
 public class SignatureMarshaller implements Marshaller {
 
     /** Class logger. */
-    private static Logger log = Logger.getLogger(SignatureMarshaller.class);
+    private final Logger log = LoggerFactory.getLogger(SignatureMarshaller.class);
 
     /** Constructor. */
     public SignatureMarshaller() {
         if (!Init.isInitialized()) {
-            if (log.isDebugEnabled()) {
-                log.debug("Initializing XML security library");
-            }
+            log.debug("Initializing XML security library");
             Init.init();
         }
     }
@@ -75,17 +74,17 @@ public class SignatureMarshaller implements Marshaller {
     /** {@inheritDoc} */
     public Element marshall(XMLObject xmlObject, Document document) throws MarshallingException {
         Element signatureElement = createSignatureElement((SignatureImpl) xmlObject, document);
-        
+
         Element documentRoot = document.getDocumentElement();
         if (documentRoot != null) {
             document.replaceChild(signatureElement, documentRoot);
         } else {
             document.appendChild(signatureElement);
         }
-        
+
         return signatureElement;
     }
-    
+
     /**
      * Creates the signature elements but does not compute the signatuer.
      * 
@@ -97,42 +96,34 @@ public class SignatureMarshaller implements Marshaller {
      * @throws MarshallingException thrown if the signature can not be constructed
      */
     private Element createSignatureElement(Signature signature, Document document) throws MarshallingException {
-        if (log.isDebugEnabled()) {
-            log.debug("Starting to marshall " + signature.getElementQName());
-        }
+        log.debug("Starting to marshall {}", signature.getElementQName());
 
         try {
-            if (log.isDebugEnabled()) {
-                log.debug("Creating XMLSignature object");
-            }
+            log.debug("Creating XMLSignature object");
             XMLSignature dsig = null;
             if (signature.getHMACOutputLength() != null && SecurityHelper.isHMAC(signature.getSignatureAlgorithm())) {
-                dsig = new XMLSignature(document, "", signature.getSignatureAlgorithm(),
-                        signature.getHMACOutputLength(), signature.getCanonicalizationAlgorithm());
+                dsig = new XMLSignature(document, "", signature.getSignatureAlgorithm(), signature
+                        .getHMACOutputLength(), signature.getCanonicalizationAlgorithm());
             } else {
-                dsig = new XMLSignature(document, "", signature.getSignatureAlgorithm(),
-                        signature.getCanonicalizationAlgorithm());
+                dsig = new XMLSignature(document, "", signature.getSignatureAlgorithm(), signature
+                        .getCanonicalizationAlgorithm());
             }
 
-            if (log.isDebugEnabled()) {
-                log.debug("Adding content to XMLSignature.");
-            }
+            log.debug("Adding content to XMLSignature.");
             for (ContentReference contentReference : signature.getContentReferences()) {
                 contentReference.createReference(dsig);
             }
 
-            if (log.isDebugEnabled()) {
-                log.debug("Creating Signature DOM element");
-            }
+            log.debug("Creating Signature DOM element");
             Element signatureElement = dsig.getElement();
-            
+
             if (signature.getKeyInfo() != null) {
-                Marshaller keyInfoMarshaller = 
-                    Configuration.getMarshallerFactory().getMarshaller(KeyInfo.DEFAULT_ELEMENT_NAME);
+                Marshaller keyInfoMarshaller = Configuration.getMarshallerFactory().getMarshaller(
+                        KeyInfo.DEFAULT_ELEMENT_NAME);
                 keyInfoMarshaller.marshall(signature.getKeyInfo(), signatureElement);
             }
-            
-            ((SignatureImpl)signature).setXMLSignature(dsig);
+
+            ((SignatureImpl) signature).setXMLSignature(dsig);
             signature.setDOM(signatureElement);
             signature.releaseParentDOM(true);
             return signatureElement;
@@ -142,5 +133,5 @@ public class SignatureMarshaller implements Marshaller {
             throw new MarshallingException("Unable to construct signature Element " + signature.getElementQName(), e);
         }
     }
- 
+
 }

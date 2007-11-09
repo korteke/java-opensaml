@@ -18,7 +18,6 @@ package org.opensaml.xml.signature.impl;
 
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.apache.xml.security.Init;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.signature.SignedInfo;
@@ -31,6 +30,8 @@ import org.opensaml.xml.signature.Signature;
 import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.util.XMLConstants;
 import org.opensaml.xml.util.XMLHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
 
 /**
@@ -39,7 +40,7 @@ import org.w3c.dom.Element;
 public class SignatureUnmarshaller implements Unmarshaller {
 
     /** Class logger. */
-    private static Logger log = Logger.getLogger(SignatureUnmarshaller.class);
+    private final Logger log = LoggerFactory.getLogger(SignatureUnmarshaller.class);
 
     /** Constructor. */
     public SignatureUnmarshaller() {
@@ -52,9 +53,9 @@ public class SignatureUnmarshaller implements Unmarshaller {
     /** {@inheritDoc} */
     public Signature unmarshall(Element signatureElement) throws UnmarshallingException {
         log.debug("Starting to unmarshall Apache XML-Security-based SignatureImpl element");
-        
-        SignatureImpl signature = new SignatureImpl(signatureElement.getNamespaceURI(), signatureElement.getLocalName(),
-                signatureElement.getPrefix());
+
+        SignatureImpl signature = new SignatureImpl(signatureElement.getNamespaceURI(),
+                signatureElement.getLocalName(), signatureElement.getPrefix());
 
         try {
             log.debug("Constructing Apache XMLSignature object");
@@ -62,7 +63,7 @@ public class SignatureUnmarshaller implements Unmarshaller {
             XMLSignature xmlSignature = new XMLSignature(signatureElement, "");
 
             SignedInfo signedInfo = xmlSignature.getSignedInfo();
-            
+
             log.debug("Adding canonicalization and signing algorithms, and HMAC output length to Signature");
             signature.setCanonicalizationAlgorithm(signedInfo.getCanonicalizationMethodURI());
             signature.setSignatureAlgorithm(signedInfo.getSignatureMethodURI());
@@ -95,9 +96,9 @@ public class SignatureUnmarshaller implements Unmarshaller {
             return null;
         }
         // Should be at most one element
-        List<Element> children = XMLHelper.getChildElementsByTagNameNS(signatureMethodElement, 
-                XMLConstants.XMLSIG_NS, "HMACOutputLength");
-        if (! children.isEmpty()) {
+        List<Element> children = XMLHelper.getChildElementsByTagNameNS(signatureMethodElement, XMLConstants.XMLSIG_NS,
+                "HMACOutputLength");
+        if (!children.isEmpty()) {
             Element hmacElement = children.get(0);
             String value = DatatypeHelper.safeTrimOrNullString(hmacElement.getTextContent());
             if (value != null) {

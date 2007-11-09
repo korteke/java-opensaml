@@ -18,25 +18,26 @@ package org.opensaml.xml.security.credential.criteria;
 
 import java.security.Key;
 
-import org.apache.log4j.Logger;
 import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.criteria.KeyLengthCriteria;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Instance of evaluable credential criteria for evaluating the credential key length.
  */
 public class EvaluableKeyLengthCredentialCriteria implements EvaluableCredentialCriteria {
-    
+
     /** Logger. */
-    private static Logger log = Logger.getLogger(EvaluableKeyLengthCredentialCriteria.class);
-    
+    private final Logger log = LoggerFactory.getLogger(EvaluableKeyLengthCredentialCriteria.class);
+
     /** Base criteria. */
     private Integer keyLength;
-    
+
     /**
      * Constructor.
-     *
+     * 
      * @param criteria the criteria which is the basis for evaluation
      */
     public EvaluableKeyLengthCredentialCriteria(KeyLengthCriteria criteria) {
@@ -45,10 +46,10 @@ public class EvaluableKeyLengthCredentialCriteria implements EvaluableCredential
         }
         keyLength = criteria.getKeyLength();
     }
-    
+
     /**
      * Constructor.
-     *
+     * 
      * @param newKeyLength the criteria value which is the basis for evaluation
      */
     public EvaluableKeyLengthCredentialCriteria(Integer newKeyLength) {
@@ -74,15 +75,11 @@ public class EvaluableKeyLengthCredentialCriteria implements EvaluableCredential
             log.info("Could not evaluate criteria, can not determine length of key");
             return null;
         }
-        
+
         Boolean result = keyLength.equals(length);
-        if (log.isDebugEnabled()) {
-            log.debug(String.format("Evaluation of credential data '%s' against criteria data '%s' was: '%s'",
-                    length, keyLength, result));
-        }
         return result;
     }
-    
+
     /**
      * Get the key contained within the credential.
      * 
@@ -100,7 +97,7 @@ public class EvaluableKeyLengthCredentialCriteria implements EvaluableCredential
         } else {
             return null;
         }
-        
+
     }
 
 }

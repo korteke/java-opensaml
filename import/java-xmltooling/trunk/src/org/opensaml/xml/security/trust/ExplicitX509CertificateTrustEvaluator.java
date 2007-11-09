@@ -18,21 +18,22 @@ package org.opensaml.xml.security.trust;
 
 import java.security.cert.X509Certificate;
 
-import org.apache.log4j.Logger;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.x509.X509Credential;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * Auxillary trust evaluator for evaluating an untrusted X509 certificate or credential against a trusted
- * certificate or credential.  Trust is established if the untrusted certificate supplied (or the certificate
- * obtained from the untrusted credential's {@link X509Credential#getEntityCertificate()}) matches one 
- * of the trusted certificates supplied.
+ * Auxillary trust evaluator for evaluating an untrusted X509 certificate or credential against a trusted certificate or
+ * credential. Trust is established if the untrusted certificate supplied (or the certificate obtained from the
+ * untrusted credential's {@link X509Credential#getEntityCertificate()}) matches one of the trusted certificates
+ * supplied.
  */
 public class ExplicitX509CertificateTrustEvaluator {
 
     /** Class logger. */
-    private static Logger log = Logger.getLogger(ExplicitX509CertificateTrustEvaluator.class);
-    
+    private final Logger log = LoggerFactory.getLogger(ExplicitX509CertificateTrustEvaluator.class);
+
     /**
      * Evaluate trust.
      * 
@@ -43,7 +44,7 @@ public class ExplicitX509CertificateTrustEvaluator {
     public boolean validate(X509Certificate untrustedCertificate, X509Certificate trustedCertificate) {
         return untrustedCertificate.equals(trustedCertificate);
     }
-    
+
     /**
      * Evaluate trust.
      * 
@@ -59,7 +60,7 @@ public class ExplicitX509CertificateTrustEvaluator {
         }
         return false;
     }
-    
+
     /**
      * Evaluate trust.
      * 
@@ -68,37 +69,28 @@ public class ExplicitX509CertificateTrustEvaluator {
      * @return true if trust can be established, false otherwise
      */
     public boolean validate(X509Credential untrustedCredential, X509Credential trustedCredential) {
-        
+
         X509Certificate untrustedCertificate = untrustedCredential.getEntityCertificate();
         X509Certificate trustedCertificate = trustedCredential.getEntityCertificate();
         if (untrustedCertificate == null) {
-            if (log.isDebugEnabled()) {
-                log.debug("Untrusted credential contained no entity certificate, unable to evaluate");
-            }
+            log.debug("Untrusted credential contained no entity certificate, unable to evaluate");
             return false;
         } else if (trustedCertificate == null) {
-            if (log.isDebugEnabled()) {
-                log.debug("Trusted credential contained no entity certificate, unable to evaluate");
-            }
+            log.debug("Trusted credential contained no entity certificate, unable to evaluate");
             return false;
         }
-        
+
         if (validate(untrustedCertificate, trustedCertificate)) {
-            if (log.isDebugEnabled()) {
-                log.debug("Validated credential for entity " + untrustedCredential.getEntityId()
-                        + " against trusted entity certificate");
-            }
+            log.debug("Validated credential for entity {} against trusted entity certificate", untrustedCredential
+                    .getEntityId());
             return true;
         }
 
-        if (log.isDebugEnabled()) {
-            log.debug("Credential for entity " + untrustedCredential.getEntityId()
-                    + " did not validate against trusted entity certificate");
-        }
-
+        log.debug("Credential for entity {} did not validate against trusted entity certificate", untrustedCredential
+                .getEntityId());
         return false;
     }
-    
+
     /**
      * Evaluate trust.
      * 
@@ -107,12 +99,10 @@ public class ExplicitX509CertificateTrustEvaluator {
      * @return true if trust can be established, false otherwise
      */
     public boolean validate(X509Credential untrustedCredential, Iterable<Credential> trustedCredentials) {
-        
+
         for (Credential trustedCredential : trustedCredentials) {
-            if ( ! (trustedCredential instanceof X509Credential)) {
-                if (log.isDebugEnabled()) {
-                    log.debug("Skipping evaluation against trusted, non-X509Credential");
-                }
+            if (!(trustedCredential instanceof X509Credential)) {
+                log.debug("Skipping evaluation against trusted, non-X509Credential");
                 continue;
             }
             X509Credential trustedX509Credential = (X509Credential) trustedCredential;
@@ -120,8 +110,8 @@ public class ExplicitX509CertificateTrustEvaluator {
                 return true;
             }
         }
-        
+
         return false;
     }
-    
+
 }

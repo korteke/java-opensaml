@@ -23,10 +23,8 @@ import java.net.URL;
 import java.security.GeneralSecurityException;
 import java.security.KeyPair;
 
-import org.apache.log4j.Logger;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.XMLObjectBaseTestCase;
-import org.opensaml.xml.encryption.EncryptionConstants;
 import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.io.Unmarshaller;
@@ -46,12 +44,14 @@ import org.opensaml.xml.security.keyinfo.KeyInfoCriteria;
 import org.opensaml.xml.signature.impl.SignatureBuilder;
 import org.opensaml.xml.util.XMLHelper;
 import org.opensaml.xml.validation.ValidationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
 
 public class DetachedSignatureTest extends XMLObjectBaseTestCase {
 
     /** Class logger. */
-    private static Logger log = Logger.getLogger(EnvelopedSignatureTest.class);
+    private final Logger log = LoggerFactory.getLogger(EnvelopedSignatureTest.class);
 
     /** Key resolver containing proper verification key. */
     private BasicCredential goodCredential;
@@ -67,14 +67,14 @@ public class DetachedSignatureTest extends XMLObjectBaseTestCase {
 
     /** Parser pool used to parse example config files. */
     private BasicParserPool parserPool;
-    
+
     /** Signature algorithm URI. */
     private String algoURI = SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1;
 
     /** {@inheritDoc} */
     protected void setUp() throws Exception {
         super.setUp();
-        
+
         KeyPair keyPair = SecurityTestHelper.generateKeyPair("RSA", 1024, null);
         goodCredential = SecurityHelper.getSimpleCredential(keyPair.getPublic(), keyPair.getPrivate());
 
@@ -164,7 +164,7 @@ public class DetachedSignatureTest extends XMLObjectBaseTestCase {
      * @throws UnmarshallingException thrown if the signature DOM can not be unmarshalled
      * @throws ValidationException thrown if the Signature does not validate against the key
      * @throws GeneralSecurityException
-     * @throws SecurityException 
+     * @throws SecurityException
      */
     public void testUnmarshallExternalSignatureAndVerification() throws IOException, XMLParserException,
             UnmarshallingException, ValidationException, GeneralSecurityException, SecurityException {
@@ -174,9 +174,9 @@ public class DetachedSignatureTest extends XMLObjectBaseTestCase {
 
         Unmarshaller unmarshaller = Configuration.getUnmarshallerFactory().getUnmarshaller(signatureElement);
         Signature signature = (Signature) unmarshaller.unmarshall(signatureElement);
-        
+
         KeyInfoCredentialResolver resolver = SecurityTestHelper.buildBasicInlineKeyInfoResolver();
-        
+
         KeyInfoCriteria criteria = new KeyInfoCriteria(signature.getKeyInfo());
         CriteriaSet criteriaSet = new CriteriaSet(criteria);
         Credential credential = resolver.resolveSingle(criteriaSet);

@@ -16,7 +16,6 @@
 
 package org.opensaml.xml.signature.impl;
 
-import org.apache.log4j.Logger;
 import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.SecurityHelper;
@@ -32,34 +31,38 @@ import org.opensaml.xml.security.trust.TrustedCredentialTrustEngine;
 import org.opensaml.xml.signature.Signature;
 import org.opensaml.xml.signature.SignatureTrustEngine;
 import org.opensaml.xml.util.DatatypeHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * An implementation of {@link SignatureTrustEngine} which evaluates the validity and trustworthiness
- * of XML and raw signatures.
+ * An implementation of {@link SignatureTrustEngine} which evaluates the validity and trustworthiness of XML and raw
+ * signatures.
  * 
- * <p>Processing is first performed as described in {@link BaseSignatureTrustEngine}. If based on this processing,
- * it is determined that the Signature's KeyInfo is not present or does not contain a resolveable valid (and trusted)
- * signing key, then all trusted credentials obtained by the trusted credential resolver will be used 
- * to attempt to validate the signature.</p>
+ * <p>
+ * Processing is first performed as described in {@link BaseSignatureTrustEngine}. If based on this processing, it is
+ * determined that the Signature's KeyInfo is not present or does not contain a resolveable valid (and trusted) signing
+ * key, then all trusted credentials obtained by the trusted credential resolver will be used to attempt to validate the
+ * signature.
+ * </p>
  */
-public class ExplicitKeySignatureTrustEngine extends BaseSignatureTrustEngine<Iterable<Credential>>
-    implements TrustedCredentialTrustEngine<Signature>{
-    
+public class ExplicitKeySignatureTrustEngine extends BaseSignatureTrustEngine<Iterable<Credential>> implements
+        TrustedCredentialTrustEngine<Signature> {
+
     /** Class logger. */
-    private static Logger log = Logger.getLogger(ExplicitKeySignatureTrustEngine.class);
-    
+    private final Logger log = LoggerFactory.getLogger(ExplicitKeySignatureTrustEngine.class);
+
     /** Resolver used for resolving trusted credentials. */
     private CredentialResolver credentialResolver;
-    
+
     /** The external explicit key trust engine to use as a basis for trust in this implementation. */
     private ExplicitKeyTrustEvaluator keyTrust;
-    
+
     /**
      * Constructor.
-     *
+     * 
      * @param resolver credential resolver used to resolve trusted credentials.
-     * @param keyInfoResolver KeyInfo credential resolver used to obtain the (advisory) signing credential 
-     *          from a Signature's KeyInfo element.
+     * @param keyInfoResolver KeyInfo credential resolver used to obtain the (advisory) signing credential from a
+     *            Signature's KeyInfo element.
      */
     public ExplicitKeySignatureTrustEngine(CredentialResolver resolver, KeyInfoCredentialResolver keyInfoResolver) {
         super(keyInfoResolver);
@@ -67,42 +70,41 @@ public class ExplicitKeySignatureTrustEngine extends BaseSignatureTrustEngine<It
             throw new IllegalArgumentException("Credential resolver may not be null");
         }
         credentialResolver = resolver;
-        
+
         keyTrust = new ExplicitKeyTrustEvaluator();
     }
-    
+
     /** {@inheritDoc} */
     public CredentialResolver getCredentialResolver() {
         return credentialResolver;
     }
 
     /** {@inheritDoc} */
-    public boolean validate(Signature signature, CriteriaSet trustBasisCriteria) 
-            throws SecurityException {
-        
+    public boolean validate(Signature signature, CriteriaSet trustBasisCriteria) throws SecurityException {
+
         checkParams(signature, trustBasisCriteria);
-        
+
         CriteriaSet criteriaSet = new CriteriaSet();
         criteriaSet.addAll(trustBasisCriteria);
-        if (! criteriaSet.contains(UsageCriteria.class)) {
-            criteriaSet.add( new UsageCriteria(UsageType.SIGNING));
+        if (!criteriaSet.contains(UsageCriteria.class)) {
+            criteriaSet.add(new UsageCriteria(UsageType.SIGNING));
         }
         String jcaAlgorithm = SecurityHelper.getKeyAlgorithmFromURI(signature.getSignatureAlgorithm());
         if (!DatatypeHelper.isEmpty(jcaAlgorithm)) {
-            criteriaSet.add(new KeyAlgorithmCriteria(jcaAlgorithm),true);
+            criteriaSet.add(new KeyAlgorithmCriteria(jcaAlgorithm), true);
         }
-        
+
         Iterable<Credential> trustedCredentials = getCredentialResolver().resolve(criteriaSet);
-        
+
         if (validate(signature, trustedCredentials)) {
             return true;
         }
-        
+
         // If the credentials extracted from Signature's KeyInfo (if any) did not verify the
         // signature and/or establish trust, as a fall back attempt to verify the signature with
         // the trusted credentials directly.
         log.debug("Attempting to verify signature using trusted credentials");
-        
+
         for (Credential trustedCredential : trustedCredentials) {
             if (verifySignature(signature, trustedCredential)) {
                 log.debug("Successfully verified signature using resolved trusted credential");
@@ -112,25 +114,25 @@ public class ExplicitKeySignatureTrustEngine extends BaseSignatureTrustEngine<It
         log.error("Failed to verify signature using either KeyInfo-derived or directly trusted credentials");
         return false;
     }
-    
+
     /** {@inheritDoc} */
     public boolean validate(byte[] signature, byte[] content, String algorithmURI, CriteriaSet trustBasisCriteria,
             Credential candidateCredential) throws SecurityException {
-        
+
         checkParamsRaw(signature, content, algorithmURI, trustBasisCriteria);
-        
+
         CriteriaSet criteriaSet = new CriteriaSet();
         criteriaSet.addAll(trustBasisCriteria);
-        if (! criteriaSet.contains(UsageCriteria.class)) {
-            criteriaSet.add( new UsageCriteria(UsageType.SIGNING));
+        if (!criteriaSet.contains(UsageCriteria.class)) {
+            criteriaSet.add(new UsageCriteria(UsageType.SIGNING));
         }
         String jcaAlgorithm = SecurityHelper.getKeyAlgorithmFromURI(algorithmURI);
         if (!DatatypeHelper.isEmpty(jcaAlgorithm)) {
-            criteriaSet.add(new KeyAlgorithmCriteria(jcaAlgorithm),true);
+            criteriaSet.add(new KeyAlgorithmCriteria(jcaAlgorithm), true);
         }
-        
+
         Iterable<Credential> trustedCredentials = getCredentialResolver().resolve(criteriaSet);
-        
+
         // First try the optional supplied candidate credential
         if (candidateCredential != null) {
             if (SigningUtil.verifyWithURI(candidateCredential, algorithmURI, signature, content)) {
@@ -144,12 +146,12 @@ public class ExplicitKeySignatureTrustEngine extends BaseSignatureTrustEngine<It
                 }
             }
         }
-        
+
         // If the candidate verification credential did not verify the
         // signature and/or establish trust, or if no candidate was supplied,
         // as a fall back attempt to verify the signature with the trusted credentials directly.
         log.debug("Attempting to verify signature using trusted credentials");
-        
+
         for (Credential trustedCredential : trustedCredentials) {
             if (SigningUtil.verifyWithURI(trustedCredential, algorithmURI, signature, content)) {
                 log.debug("Successfully verified signature using resolved trusted credential");
@@ -159,14 +161,11 @@ public class ExplicitKeySignatureTrustEngine extends BaseSignatureTrustEngine<It
         log.error("Failed to verify signature using either supplied candidate credential or directly trusted credentials");
         return false;
     }
-    
+
     /** {@inheritDoc} */
-    protected boolean evaluateTrust(Credential untrustedCredential, Iterable<Credential> trustedCredentials) 
+    protected boolean evaluateTrust(Credential untrustedCredential, Iterable<Credential> trustedCredentials)
             throws SecurityException {
-        
+
         return keyTrust.validate(untrustedCredential, trustedCredentials);
     }
-
-
-
 }

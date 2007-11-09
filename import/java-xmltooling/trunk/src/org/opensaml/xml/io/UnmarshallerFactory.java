@@ -22,8 +22,9 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.xml.namespace.QName;
 
-import org.apache.log4j.Logger;
 import org.opensaml.xml.util.XMLHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
 
 /**
@@ -35,7 +36,7 @@ import org.w3c.dom.Element;
 public class UnmarshallerFactory {
 
     /** Class logger. */
-    private static Logger log = Logger.getLogger(UnmarshallerFactory.class);
+    private final Logger log = LoggerFactory.getLogger(UnmarshallerFactory.class);
 
     /** Map of unmarshallers to the elements they are for. */
     private Map<QName, Unmarshaller> unmarshallers;
@@ -99,9 +100,7 @@ public class UnmarshallerFactory {
      * @param unmarshaller the Unmarshaller
      */
     public void registerUnmarshaller(QName key, Unmarshaller unmarshaller) {
-        if (log.isDebugEnabled()) {
-            log.debug("Registering unmarshaller, " + unmarshaller.getClass().getName() + ", for object type " + key);
-        }
+        log.debug("Registering unmarshaller, {}, for object type, {}", unmarshaller.getClass().getName(), key);
         unmarshallers.put(key, unmarshaller);
     }
 
@@ -113,9 +112,7 @@ public class UnmarshallerFactory {
      * @return the Unmarshaller previously registered or null
      */
     public Unmarshaller deregisterUnmarshaller(QName key) {
-        if (log.isDebugEnabled()) {
-            log.debug("Deregistering marshaller for object type " + key);
-        }
+        log.debug("Deregistering marshaller for object type {}", key);
         return unmarshallers.remove(key);
     }
 }
