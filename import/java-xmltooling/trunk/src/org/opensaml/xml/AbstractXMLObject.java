@@ -204,13 +204,13 @@ public abstract class AbstractXMLObject implements XMLObject {
 
     /** {@inheritDoc} */
     public void releaseDOM() {
-        log.debug("Releasing cached DOM reprsentation for {}", getElementQName());
+        log.trace("Releasing cached DOM reprsentation for {}", getElementQName());
         setDOM(null);
     }
 
     /** {@inheritDoc} */
     public void releaseParentDOM(boolean propagateRelease) {
-        log.debug("Releasing cached DOM reprsentation for parent of {} with propagation set to {}", getElementQName(),
+        log.trace("Releasing cached DOM reprsentation for parent of {} with propagation set to {}", getElementQName(),
                 propagateRelease);
         XMLObject parentElement = getParent();
         if (parentElement != null) {
@@ -223,7 +223,7 @@ public abstract class AbstractXMLObject implements XMLObject {
 
     /** {@inheritDoc} */
     public void releaseChildrenDOM(boolean propagateRelease) {
-        log.debug("Releasing cached DOM reprsentation for children of {} with propagation set to {}",
+        log.trace("Releasing cached DOM reprsentation for children of {} with propagation set to {}",
                 getElementQName(), propagateRelease);
         if (getOrderedChildren() != null) {
             for (XMLObject child : getOrderedChildren()) {
