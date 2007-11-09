@@ -88,13 +88,13 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
 
     /** {@inheritDoc} */
     public XMLObject unmarshall(Element domElement) throws UnmarshallingException {
-        log.debug("Starting to unmarshall DOM element {}", XMLHelper.getNodeQName(domElement));
+        log.trace("Starting to unmarshall DOM element {}", XMLHelper.getNodeQName(domElement));
 
         checkElementIsTarget(domElement);
 
         XMLObject xmlObject = buildXMLObject(domElement);
 
-        log.debug("Unmarshalling attributes of DOM Element {}", XMLHelper.getNodeQName(domElement));
+        log.trace("Unmarshalling attributes of DOM Element {}", XMLHelper.getNodeQName(domElement));
         NamedNodeMap attributes = domElement.getAttributes();
         Node attribute;
         for (int i = 0; i < attributes.getLength(); i++) {
@@ -106,7 +106,7 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
             }
         }
 
-        log.debug("Unmarshalling other child nodes of DOM Element {}", XMLHelper.getNodeQName(domElement));
+        log.trace("Unmarshalling other child nodes of DOM Element {}", XMLHelper.getNodeQName(domElement));
         NodeList childNodes = domElement.getChildNodes();
         Node childNode;
         for (int i = 0; i < childNodes.getLength(); i++) {
@@ -137,22 +137,22 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
         QName elementName = XMLHelper.getNodeQName(domElement);
 
         if (targetQName == null) {
-            log.debug(
+            log.trace(
                     "Targeted QName checking is not available for this unmarshaller, DOM Element {} was not verified",
                     elementName);
             return;
         }
 
-        log.debug("Checking that {} meets target criteria.", elementName);
+        log.trace("Checking that {} meets target criteria.", elementName);
 
         QName type = XMLHelper.getXSIType(domElement);
 
         if (type != null && type.equals(targetQName)) {
-            log.debug("{} schema type matches target.", elementName);
+            log.trace("{} schema type matches target.", elementName);
             return;
         } else {
             if (elementName.equals(targetQName)) {
-                log.debug("{} element name matches target.", elementName);
+                log.trace("{} element name matches target.", elementName);
                 return;
             } else {
                 String errorMsg = "This unmarshaller only operates on " + targetQName + " elements not " + elementName;
@@ -178,7 +178,7 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
      * @throws UnmarshallingException thrown if there is now XMLObjectBuilder registered for the given DOM Element
      */
     protected XMLObject buildXMLObject(Element domElement) throws UnmarshallingException {
-        log.debug("Building XMLObject for {}", XMLHelper.getNodeQName(domElement));
+        log.trace("Building XMLObject for {}", XMLHelper.getNodeQName(domElement));
         XMLObjectBuilder xmlObjectBuilder;
 
         xmlObjectBuilder = xmlObjectBuilderFactory.getBuilder(domElement);
@@ -189,7 +189,7 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
                 log.error(errorMsg);
                 throw new UnmarshallingException(errorMsg);
             } else {
-                log.debug("No builder was registered for {} but the default builder {} was available, using it.",
+                log.trace("No builder was registered for {} but the default builder {} was available, using it.",
                         XMLHelper.getNodeQName(domElement), xmlObjectBuilder.getClass().getName());
             }
         }
@@ -210,7 +210,7 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
      * @throws UnmarshallingException thrown if there is a problem unmarshalling an attribute
      */
     protected void unmarshallAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
-        log.debug("Pre-processing attribute {}", XMLHelper.getNodeQName(attribute));
+        log.trace("Pre-processing attribute {}", XMLHelper.getNodeQName(attribute));
         String attributeNamespace = DatatypeHelper.safeTrimOrNullString(attribute.getNamespaceURI());
         
         if (DatatypeHelper.safeEquals(attributeNamespace, XMLConstants.XMLNS_NS)) {
@@ -218,7 +218,7 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
         } else if (DatatypeHelper.safeEquals(attributeNamespace, XMLConstants.XSI_NS)) {
             unmarshallSchemaInstanceAttributes(xmlObject, attribute);
         } else {
-            log.debug("Attribute {} is neither a schema type nor namespace, calling processAttribute()", XMLHelper
+            log.trace("Attribute {} is neither a schema type nor namespace, calling processAttribute()", XMLHelper
                     .getNodeQName(attribute));
             String attributeNSURI = attribute.getNamespaceURI();
             String attributeNSPrefix;
@@ -242,7 +242,7 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
      * @param attribute the namespace decleration attribute
      */
     protected void unmarshallNamespaceAttribute(XMLObject xmlObject, Attr attribute) {
-        log.debug("{} is a namespace declaration, adding it to the list of namespaces on the XMLObject", XMLHelper
+        log.trace("{} is a namespace declaration, adding it to the list of namespaces on the XMLObject", XMLHelper
                 .getNodeQName(attribute));
         Namespace namespace = new Namespace(attribute.getValue(), attribute.getLocalName());
         namespace.setAlwaysDeclare(true);
@@ -293,7 +293,7 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
      * @throws UnmarshallingException thrown if an error occurs unmarshalling the chilren elements
      */
     protected void unmarshallChildElement(XMLObject xmlObject, Element childElement) throws UnmarshallingException {
-        log.debug("Unmarshalling child elements of XMLObject {}", xmlObject.getElementQName());
+        log.trace("Unmarshalling child elements of XMLObject {}", xmlObject.getElementQName());
 
         Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(childElement);
 
@@ -305,12 +305,12 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
                 log.error(errorMsg);
                 throw new UnmarshallingException(errorMsg);
             } else {
-                log.debug("No unmarshaller was registered for {}, child of {}. Using default unmarshaller.", XMLHelper
+                log.trace("No unmarshaller was registered for {}, child of {}. Using default unmarshaller.", XMLHelper
                         .getNodeQName(childElement), xmlObject.getElementQName());
             }
         }
 
-        log.debug("Unmarshalling child element {}with unmarshaller {}", XMLHelper.getNodeQName(childElement),
+        log.trace("Unmarshalling child element {}with unmarshaller {}", XMLHelper.getNodeQName(childElement),
                 unmarshaller.getClass().getName());
         processChildElement(xmlObject, unmarshaller.unmarshall(childElement));
     }

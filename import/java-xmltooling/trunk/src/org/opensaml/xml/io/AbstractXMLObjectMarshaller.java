@@ -94,7 +94,7 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
     public Element marshall(XMLObject xmlObject, Document document) throws MarshallingException {
         Element domElement;
 
-        log.debug("Starting to marshall {}", xmlObject.getElementQName());
+        log.trace("Starting to marshall {}", xmlObject.getElementQName());
 
         if (document == null) {
             throw new MarshallingException("Given document may not be null");
@@ -102,35 +102,35 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
 
         checkXMLObjectIsTarget(xmlObject);
 
-        log.debug("Checking if {} contains a cached DOM representation", xmlObject.getElementQName());
+        log.trace("Checking if {} contains a cached DOM representation", xmlObject.getElementQName());
         domElement = xmlObject.getDOM();
         if (domElement != null) {
 
             prepareForAdoption(xmlObject);
 
             if (domElement.getOwnerDocument() != document) {
-                log.debug("Adopting DOM of XMLObject into given Document");
+                log.trace("Adopting DOM of XMLObject into given Document");
                 XMLHelper.adoptElement(domElement, document);
             }
 
-            log.debug("Setting DOM of XMLObject as document element of given Document");
+            log.trace("Setting DOM of XMLObject as document element of given Document");
             setDocumentElement(document, domElement);
 
             return domElement;
         }
 
-        log.debug("{} does not contain a cached DOM representation. Creating Element to marshall into.", xmlObject
+        log.trace("{} does not contain a cached DOM representation. Creating Element to marshall into.", xmlObject
                 .getElementQName());
         domElement = XMLHelper.constructElement(document, xmlObject.getElementQName());
 
-        log.debug("Setting created element as document root");
+        log.trace("Setting created element as document root");
         // we need to do this before the rest of the marshalling so that signing and other ID dependent operations have
         // a path to the document root
         setDocumentElement(document, domElement);
 
         domElement = marshallInto(xmlObject, domElement);
 
-        log.debug("Setting created element to DOM cache for XMLObject {}", xmlObject.getElementQName());
+        log.trace("Setting created element to DOM cache for XMLObject {}", xmlObject.getElementQName());
         xmlObject.setDOM(domElement);
         xmlObject.releaseParentDOM(true);
 
@@ -141,7 +141,7 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
     public Element marshall(XMLObject xmlObject, Element parentElement) throws MarshallingException {
         Element domElement;
 
-        log.debug("Starting to marshall {} as child of {}", xmlObject.getElementQName(), XMLHelper
+        log.trace("Starting to marshall {} as child of {}", xmlObject.getElementQName(), XMLHelper
                 .getNodeQName(parentElement));
 
         if (parentElement == null) {
@@ -150,32 +150,32 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
 
         checkXMLObjectIsTarget(xmlObject);
 
-        log.debug("Checking if {} contains a cached DOM representation", xmlObject.getElementQName());
+        log.trace("Checking if {} contains a cached DOM representation", xmlObject.getElementQName());
         domElement = xmlObject.getDOM();
         if (domElement != null) {
-            log.debug("{} contains a cached DOM representation", xmlObject.getElementQName());
+            log.trace("{} contains a cached DOM representation", xmlObject.getElementQName());
 
             prepareForAdoption(xmlObject);
 
-            log.debug("Appending DOM of XMLObject {} as child of parent element {}", xmlObject.getElementQName(),
+            log.trace("Appending DOM of XMLObject {} as child of parent element {}", xmlObject.getElementQName(),
                     XMLHelper.getNodeQName(parentElement));
             XMLHelper.appendChildElement(parentElement, domElement);
 
             return domElement;
         }
 
-        log.debug("{} does not contain a cached DOM representation. Creating Element to marshall into.", xmlObject
+        log.trace("{} does not contain a cached DOM representation. Creating Element to marshall into.", xmlObject
                 .getElementQName());
         Document owningDocument = parentElement.getOwnerDocument();
         domElement = XMLHelper.constructElement(owningDocument, xmlObject.getElementQName());
 
-        log.debug("Appending newly created element to given parent element");
+        log.trace("Appending newly created element to given parent element");
         // we need to do this before the rest of the marshalling so that signing and other ID dependent operations have
         // a path to the document root
         XMLHelper.appendChildElement(parentElement, domElement);
         domElement = marshallInto(xmlObject, domElement);
 
-        log.debug("Setting created element to DOM cache for XMLObject {}", xmlObject.getElementQName());
+        log.trace("Setting created element to DOM cache for XMLObject {}", xmlObject.getElementQName());
         xmlObject.setDOM(domElement);
         xmlObject.releaseParentDOM(true);
 
@@ -211,7 +211,7 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
      * @throws MarshallingException thrown if there is a problem marshalling the object
      */
     protected Element marshallInto(XMLObject xmlObject, Element targetElement) throws MarshallingException {
-        log.debug("Setting namespace prefix for {} for XMLObject {}", xmlObject.getElementQName().getPrefix(),
+        log.trace("Setting namespace prefix for {} for XMLObject {}", xmlObject.getElementQName().getPrefix(),
                 xmlObject.getElementQName());
 
         marshallNamespacePrefix(xmlObject, targetElement);
@@ -239,20 +239,20 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
      */
     protected void checkXMLObjectIsTarget(XMLObject xmlObject) throws MarshallingException {
         if (targetQName == null) {
-            log.debug("Targeted QName checking is not available for this marshaller, XMLObject {} was not verified",
+            log.trace("Targeted QName checking is not available for this marshaller, XMLObject {} was not verified",
                     xmlObject.getElementQName());
             return;
         }
 
-        log.debug("Checking that {} meets target criteria", xmlObject.getElementQName());
+        log.trace("Checking that {} meets target criteria", xmlObject.getElementQName());
         QName type = xmlObject.getSchemaType();
         if (type != null && type.equals(targetQName)) {
-            log.debug("{} schema type matches target", xmlObject.getElementQName());
+            log.trace("{} schema type matches target", xmlObject.getElementQName());
             return;
         } else {
             QName elementQName = xmlObject.getElementQName();
             if (elementQName.equals(targetQName)) {
-                log.debug("{} element QName matches target", xmlObject.getElementQName());
+                log.trace("{} element QName matches target", xmlObject.getElementQName());
                 return;
             }
         }
@@ -287,7 +287,7 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
      * @throws MarshallingException thrown if there is a problem marshalling a child element
      */
     protected void marshallChildElements(XMLObject xmlObject, Element domElement) throws MarshallingException {
-        log.debug("Marshalling child elements for XMLObject {}", xmlObject.getElementQName());
+        log.trace("Marshalling child elements for XMLObject {}", xmlObject.getElementQName());
 
         List<XMLObject> childXMLObjects = xmlObject.getOrderedChildren();
         if (childXMLObjects != null && childXMLObjects.size() > 0) {
@@ -296,7 +296,7 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
                     continue;
                 }
 
-                log.debug("Getting marshaller for child XMLObject {}", childXMLObject.getElementQName());
+                log.trace("Getting marshaller for child XMLObject {}", childXMLObject.getElementQName());
                 Marshaller marshaller = marshallerFactory.getMarshaller(childXMLObject);
 
                 if (marshaller == null) {
@@ -308,16 +308,16 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
                         log.error(errorMsg);
                         throw new MarshallingException(errorMsg);
                     } else {
-                        log.debug("No marshaller was registered for {}, child of {}. Using default marshaller",
+                        log.trace("No marshaller was registered for {}, child of {}. Using default marshaller",
                                 childXMLObject.getElementQName(), xmlObject.getElementQName());
                     }
                 }
 
-                log.debug("Marshalling {} and adding it to DOM", childXMLObject.getElementQName());
+                log.trace("Marshalling {} and adding it to DOM", childXMLObject.getElementQName());
                 marshaller.marshall(childXMLObject, domElement);
             }
         } else {
-            log.debug("No child elements to marshall for XMLObject {}", xmlObject.getElementQName());
+            log.trace("No child elements to marshall for XMLObject {}", xmlObject.getElementQName());
         }
     }
 
@@ -328,16 +328,16 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
      * @param domElement the DOM element the namespaces will be added to
      */
     protected void marshallNamespaces(XMLObject xmlObject, Element domElement) {
-        log.debug("Marshalling namespace attributes for XMLObject {}", xmlObject.getElementQName());
+        log.trace("Marshalling namespace attributes for XMLObject {}", xmlObject.getElementQName());
         Set<Namespace> namespaces = xmlObject.getNamespaces();
 
         for (Namespace namespace : namespaces) {
             if (!namespace.alwaysDeclare()
                     && XMLHelper.lookupNamespaceURI(domElement, namespace.getNamespacePrefix()) != null) {
-                log.debug("Namespace {} has already been declared on an ancestor of no need to add it here", namespace,
+                log.trace("Namespace {} has already been declared on an ancestor of no need to add it here", namespace,
                         xmlObject.getElementQName());
             } else {
-                log.debug("Adding namespace decleration {} to {}", namespace, xmlObject.getElementQName());
+                log.trace("Adding namespace decleration {} to {}", namespace, xmlObject.getElementQName());
                 String nsURI = DatatypeHelper.safeTrimOrNullString(namespace.getNamespaceURI());
                 String nsPrefix = DatatypeHelper.safeTrimOrNullString(namespace.getNamespacePrefix());
 
@@ -358,14 +358,14 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
             throws MarshallingException {
 
         if (!DatatypeHelper.isEmpty(xmlObject.getSchemaLocation())) {
-            log.debug("Setting xsi:schemaLocation for XMLObject {} to {}", xmlObject.getElementQName(), xmlObject
+            log.trace("Setting xsi:schemaLocation for XMLObject {} to {}", xmlObject.getElementQName(), xmlObject
                     .getSchemaLocation());
             domElement.setAttributeNS(XMLConstants.XSI_NS, XMLConstants.XSI_PREFIX + ":schemaLocation", xmlObject
                     .getSchemaLocation());
         }
 
         if (!DatatypeHelper.isEmpty(xmlObject.getNoNamespaceSchemaLocation())) {
-            log.debug("Setting xsi:noNamespaceSchemaLocation for XMLObject {} to {}", xmlObject.getElementQName(),
+            log.trace("Setting xsi:noNamespaceSchemaLocation for XMLObject {} to {}", xmlObject.getElementQName(),
                     xmlObject.getNoNamespaceSchemaLocation());
             domElement.setAttributeNS(XMLConstants.XSI_NS, XMLConstants.XSI_PREFIX + ":noNamespaceSchemaLocation",
                     xmlObject.getNoNamespaceSchemaLocation());
@@ -376,7 +376,7 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
             return;
         }
 
-        log.debug("Setting xsi:type attribute with for XMLObject {}", xmlObject.getElementQName());
+        log.trace("Setting xsi:type attribute with for XMLObject {}", xmlObject.getElementQName());
         String typeLocalName = DatatypeHelper.safeTrimOrNullString(type.getLocalPart());
         String typePrefix = DatatypeHelper.safeTrimOrNullString(type.getPrefix());
 
@@ -399,7 +399,7 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
 
         domElement.setAttributeNS(XMLConstants.XSI_NS, XMLConstants.XSI_PREFIX + ":type", attributeValue);
 
-        log.debug("Adding XSI namespace to list of namespaces used by XMLObject {}", xmlObject.getElementQName());
+        log.trace("Adding XSI namespace to list of namespaces used by XMLObject {}", xmlObject.getElementQName());
         xmlObject.addNamespace(new Namespace(XMLConstants.XSI_NS, XMLConstants.XSI_PREFIX));
     }
 
@@ -436,7 +436,7 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
      */
     private void prepareForAdoption(XMLObject domCachingObject) throws MarshallingException {
         if (domCachingObject.getParent() != null) {
-            log.debug("Rooting all visible namespaces of XMLObject {} before adding it to new parent Element",
+            log.trace("Rooting all visible namespaces of XMLObject {} before adding it to new parent Element",
                     domCachingObject.getElementQName());
             try {
                 XMLHelper.rootNamespaces(domCachingObject.getDOM());
@@ -447,7 +447,7 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
                 throw new MarshallingException(errorMsg, e);
             }
 
-            log.debug("Release DOM of XMLObject parent");
+            log.trace("Release DOM of XMLObject parent");
             domCachingObject.releaseParentDOM(true);
         }
     }
