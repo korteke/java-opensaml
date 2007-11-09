@@ -20,7 +20,6 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.security.SecurityPolicyException;
 import org.opensaml.ws.transport.Transport;
@@ -33,46 +32,46 @@ import org.opensaml.xml.security.trust.TrustEngine;
 import org.opensaml.xml.security.x509.X509Credential;
 import org.opensaml.xml.security.x509.X509Util;
 import org.opensaml.xml.util.DatatypeHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Policy rule that checks if the client cert used to authenticate the request is valid and trusted.
  * 
  * <p>
- * This rule is only evaluated if the message context contains a peer {@link X509Credential} as 
- * returned from the inbound message context's inbound message transport {@link Transport#getPeerCredential()}.
+ * This rule is only evaluated if the message context contains a peer {@link X509Credential} as returned from the
+ * inbound message context's inbound message transport {@link Transport#getPeerCredential()}.
  * </p>
  * 
  * <p>
- * If the inbound message issuer has been previously set in the message context by another rule,
- * then that issuer is used to evaluate the request's X509Credential.
- * If this trust evaluation is successful, the message context's inbound transport
- * authentication state will be set to <code>true</code> and processing is terminated.
- * If unsuccessful, a {@link SecurityPolicyException} is thrown.
+ * If the inbound message issuer has been previously set in the message context by another rule, then that issuer is
+ * used to evaluate the request's X509Credential. If this trust evaluation is successful, the message context's inbound
+ * transport authentication state will be set to <code>true</code> and processing is terminated. If unsuccessful, a
+ * {@link SecurityPolicyException} is thrown.
  * </p>
  * 
  * <p>
  * If no context issuer was previously set, then rule evaluation will be attempted as described in
- * {@link #evaluateCertificateNameDerivedIssuers(X509Credential, MessageContext)}, based on the currently
- * configured certificate name evaluation options. If this method returns a non-null issuer
- * entity ID, it will be set as the inbound message issuer in the message context, the message context's 
- * inbound transport issuer authentication state will be set to <code>true</code> and rule processing is terminated.
- * If the method returns null, the message context issuer and transport authentication state will remain unmodified
- * and rule processing continues.
+ * {@link #evaluateCertificateNameDerivedIssuers(X509Credential, MessageContext)}, based on the currently configured
+ * certificate name evaluation options. If this method returns a non-null issuer entity ID, it will be set as the
+ * inbound message issuer in the message context, the message context's inbound transport issuer authentication state
+ * will be set to <code>true</code> and rule processing is terminated. If the method returns null, the message context
+ * issuer and transport authentication state will remain unmodified and rule processing continues.
  * </p>
  * 
  * <p>
- * Finally rule evaluation will proceed as described in
- * {@link #evaluateDerivedIssuers(X509Credential, MessageContext)}. This is primarily
- * an extension point by which subclasses may implement specific custom logic. If this method returns a non-null issuer
- * entity ID, it will be set as the inbound message issuer in the message context, the message context's inbound
- * transport authentication state will be set to <code>true</code> and rule processing is terminated.
- * If the method returns null, the message context issuer and transport authentication state will remain unmodified.
+ * Finally rule evaluation will proceed as described in {@link #evaluateDerivedIssuers(X509Credential, MessageContext)}.
+ * This is primarily an extension point by which subclasses may implement specific custom logic. If this method returns
+ * a non-null issuer entity ID, it will be set as the inbound message issuer in the message context, the message
+ * context's inbound transport authentication state will be set to <code>true</code> and rule processing is
+ * terminated. If the method returns null, the message context issuer and transport authentication state will remain
+ * unmodified.
  * </p>
  */
 public class ClientCertAuthRule extends BaseTrustEngineRule<X509Credential> {
 
     /** Logger. */
-    private Logger log = Logger.getLogger(ClientCertAuthRule.class);
+    private final Logger log = LoggerFactory.getLogger(ClientCertAuthRule.class);
 
     /** Options for derving issuer names from an X.509 certificate. */
     private CertificateNameOptions certNameOptions;
@@ -89,27 +88,27 @@ public class ClientCertAuthRule extends BaseTrustEngineRule<X509Credential> {
         certNameOptions = nameOptions;
     }
 
-     /** {@inheritDoc} */
+    /** {@inheritDoc} */
     public void evaluate(MessageContext messageContext) throws SecurityPolicyException {
 
         Credential peerCredential = messageContext.getInboundMessageTransport().getPeerCredential();
-        
+
         if (peerCredential == null) {
-            log.info("Inbound message transport did not contain a peer credential, " 
+            log.info("Inbound message transport did not contain a peer credential, "
                     + "skipping client certificate authentication");
             return;
         }
         if (!(peerCredential instanceof X509Credential)) {
-            log.info("Inbound message transport did not contain an X509Credential, " 
+            log.info("Inbound message transport did not contain an X509Credential, "
                     + "skipping client certificate authentication");
             return;
         }
-        
+
         X509Credential requestCredential = (X509Credential) peerCredential;
 
         doEvaluate(requestCredential, messageContext);
     }
-    
+
     /**
      * Get the currently configured certificate name options.
      * 
@@ -124,33 +123,33 @@ public class ClientCertAuthRule extends BaseTrustEngineRule<X509Credential> {
      * 
      * @param requestCredential the X509Credential derived from the request
      * @param messageContext the message context being evaluated
-     * @throws SecurityPolicyException thrown if a message context issuer is present and the client certificate
-     *          token can not be trusted on that basis, or if there is error during evaluation processing
+     * @throws SecurityPolicyException thrown if a message context issuer is present and the client certificate token
+     *             can not be trusted on that basis, or if there is error during evaluation processing
      */
-    protected void doEvaluate(X509Credential requestCredential, MessageContext messageContext) 
-        throws SecurityPolicyException {
-        
+    protected void doEvaluate(X509Credential requestCredential, MessageContext messageContext)
+            throws SecurityPolicyException {
+
         String contextIssuer = messageContext.getInboundMessageIssuer();
 
         if (contextIssuer != null) {
-            if (log.isDebugEnabled()) {
-                log.debug("Attempting client certificate authentication using context issuer: " + contextIssuer);
-            }
+            log.debug("Attempting client certificate authentication using context issuer: {}", contextIssuer);
             if (evaluate(requestCredential, contextIssuer, messageContext)) {
-                log.info("Authentication via client certificate succeeded for context issuer entity ID '"
-                        + contextIssuer + "'");
+                log.info("Authentication via client certificate succeeded for context issuer entity ID: {}",
+                        contextIssuer);
                 messageContext.getInboundMessageTransport().setAuthenticated(true);
             } else {
-                log.error("Authentication via client certificate failed for context issuer entity ID '" 
-                        + contextIssuer + "'");
-                throw new SecurityPolicyException("Client certificate authentication failed for context issuer entity ID");
+                log
+                        .error("Authentication via client certificate failed for context issuer entity ID {}",
+                                contextIssuer);
+                throw new SecurityPolicyException(
+                        "Client certificate authentication failed for context issuer entity ID");
             }
         }
 
         String derivedIssuer = evaluateCertificateNameDerivedIssuers(requestCredential, messageContext);
         if (derivedIssuer != null) {
-            log.info("Authentication via client certificate succeeded for certificate-derived issuer entity ID '"
-                    + derivedIssuer + "'");
+            log.info("Authentication via client certificate succeeded for certificate-derived issuer entity ID {}",
+                    derivedIssuer);
             messageContext.setInboundMessageIssuer(derivedIssuer);
             messageContext.getInboundMessageTransport().setAuthenticated(true);
             return;
@@ -158,8 +157,7 @@ public class ClientCertAuthRule extends BaseTrustEngineRule<X509Credential> {
 
         derivedIssuer = evaluateDerivedIssuers(requestCredential, messageContext);
         if (derivedIssuer != null) {
-            log.info("Authentication via client certificate succeeded for derived issuer entity ID '" + derivedIssuer
-                    + "'");
+            log.info("Authentication via client certificate succeeded for derived issuer entity ID {}", derivedIssuer);
             messageContext.setInboundMessageIssuer(derivedIssuer);
             messageContext.getInboundMessageTransport().setAuthenticated(true);
             return;
@@ -167,8 +165,8 @@ public class ClientCertAuthRule extends BaseTrustEngineRule<X509Credential> {
     }
 
     /** {@inheritDoc} */
-    protected CriteriaSet buildCriteriaSet(String entityID, MessageContext messageContext) 
-        throws SecurityPolicyException {
+    protected CriteriaSet buildCriteriaSet(String entityID, MessageContext messageContext)
+            throws SecurityPolicyException {
 
         CriteriaSet criteriaSet = new CriteriaSet();
         if (!DatatypeHelper.isEmpty(entityID)) {
@@ -199,7 +197,7 @@ public class ClientCertAuthRule extends BaseTrustEngineRule<X509Credential> {
      * @throws SecurityPolicyException thrown if there is error during processing
      */
     protected String evaluateDerivedIssuers(X509Credential requestCredential, MessageContext messageContext)
-        throws SecurityPolicyException {
+            throws SecurityPolicyException {
 
         return null;
     }
@@ -214,9 +212,8 @@ public class ClientCertAuthRule extends BaseTrustEngineRule<X509Credential> {
      * <li>The certificate subject DN string as serialized by the X500DNHandler obtained via
      * {@link CertificateNameOptions#getX500DNHandler()} and using the output format indicated by
      * {@link CertificateNameOptions#getX500SubjectDNFormat()}.</li>
-     * <li>Subject alternative names of the types configured via {@link CertificateNameOptions#getSubjectAltNames()}.  
-     * Note that this is a LinkedHashSet, so the order of evaluation is
-     * the order of insertion.</li>
+     * <li>Subject alternative names of the types configured via {@link CertificateNameOptions#getSubjectAltNames()}.
+     * Note that this is a LinkedHashSet, so the order of evaluation is the order of insertion.</li>
      * <li>The first common name (CN) value appearing in the certificate subject DN.</li>
      * </ol>
      * </p>
@@ -271,14 +268,14 @@ public class ClientCertAuthRule extends BaseTrustEngineRule<X509Credential> {
      * @throws SecurityPolicyException thrown if there is error during processing
      */
     protected String evaluateSubjectCommonName(X509Credential requestCredential, MessageContext messageContext)
-        throws SecurityPolicyException {
+            throws SecurityPolicyException {
 
         log.debug("Evaluating client cert by deriving issuer as cert CN");
         X509Certificate certificate = requestCredential.getEntityCertificate();
         String candidateIssuer = getCommonName(certificate);
         if (candidateIssuer != null) {
             if (evaluate(requestCredential, candidateIssuer, messageContext)) {
-                log.info("Authentication succeeded for issuer derived from CN'" + candidateIssuer + "'");
+                log.info("Authentication succeeded for issuer derived from CN {}", candidateIssuer);
                 return candidateIssuer;
             }
         }
@@ -294,14 +291,14 @@ public class ClientCertAuthRule extends BaseTrustEngineRule<X509Credential> {
      * @throws SecurityPolicyException thrown if there is error during processing
      */
     protected String evaluateSubjectDN(X509Credential requestCredential, MessageContext messageContext)
-        throws SecurityPolicyException {
+            throws SecurityPolicyException {
 
         log.debug("Evaluating client cert by deriving issuer as cert subject DN");
         X509Certificate certificate = requestCredential.getEntityCertificate();
         String candidateIssuer = getSubjectName(certificate);
         if (candidateIssuer != null) {
             if (evaluate(requestCredential, candidateIssuer, messageContext)) {
-                log.info("Authentication succeeded for issuer derived from subject DN'" + candidateIssuer + "'");
+                log.info("Authentication succeeded for issuer derived from subject DN {}", candidateIssuer);
                 return candidateIssuer;
             }
         }
@@ -318,18 +315,16 @@ public class ClientCertAuthRule extends BaseTrustEngineRule<X509Credential> {
      * @throws SecurityPolicyException thrown if there is error during processing
      */
     protected String evaluateSubjectAltNames(X509Credential requestCredential, MessageContext messageContext)
-        throws SecurityPolicyException {
+            throws SecurityPolicyException {
 
         log.debug("Evaluating client cert by deriving issuer from subject alt names");
         X509Certificate certificate = requestCredential.getEntityCertificate();
         for (Integer altNameType : certNameOptions.getSubjectAltNames()) {
-            if (log.isDebugEnabled()) {
-                log.debug("Evaluating alt names of type: " + altNameType.toString());
-            }
+            log.debug("Evaluating alt names of type: {}", altNameType.toString());
             List<String> altNames = getAltNames(certificate, altNameType);
             for (String altName : altNames) {
                 if (evaluate(requestCredential, altName, messageContext)) {
-                    log.info("Authentication succeeded for issuer derived from subject alt name'" + altName + "'");
+                    log.info("Authentication succeeded for issuer derived from subject alt name {}", altName);
                     return altName;
                 }
             }
@@ -347,9 +342,7 @@ public class ClientCertAuthRule extends BaseTrustEngineRule<X509Credential> {
         List<String> names = X509Util.getCommonNames(cert.getSubjectX500Principal());
         if (names != null && !names.isEmpty()) {
             String name = names.get(0);
-            if (log.isDebugEnabled()) {
-                log.debug("Extracted common name from certificate: " + name);
-            }
+            log.debug("Extracted common name from certificate: {}", name);
             return name;
         }
         return null;
@@ -372,9 +365,7 @@ public class ClientCertAuthRule extends BaseTrustEngineRule<X509Credential> {
         } else {
             name = certNameOptions.getX500DNHandler().getName(cert.getSubjectX500Principal());
         }
-        if (log.isDebugEnabled()) {
-            log.debug("Extracted subject name from certificate: " + name);
-        }
+        log.debug("Extracted subject name from certificate: {}", name);
         return name;
     }
 
@@ -387,9 +378,7 @@ public class ClientCertAuthRule extends BaseTrustEngineRule<X509Credential> {
      * @return the list of certificate subject alt names
      */
     protected List<String> getAltNames(X509Certificate cert, Integer altNameType) {
-        if (log.isDebugEnabled()) {
-            log.debug("Extracting alt names from certificate of type: " + altNameType.toString());
-        }
+        log.debug("Extracting alt names from certificate of type: {}", altNameType.toString());
         Integer[] nameTypes = new Integer[] { altNameType };
         List altNames = X509Util.getAltNames(cert, nameTypes);
         List<String> names = new ArrayList<String>();
@@ -400,9 +389,7 @@ public class ClientCertAuthRule extends BaseTrustEngineRule<X509Credential> {
                 names.add((String) altNameValue);
             }
         }
-        if (log.isDebugEnabled()) {
-            log.debug("Extracted alt names from certificate: " + names.toString());
-        }
+        log.debug("Extracted alt names from certificate: {}", names.toString());
         return names;
     }
 

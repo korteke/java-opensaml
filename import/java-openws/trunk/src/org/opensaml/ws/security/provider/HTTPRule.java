@@ -16,12 +16,13 @@
 
 package org.opensaml.ws.security.provider;
 
-import org.apache.log4j.Logger;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.security.SecurityPolicyException;
 import org.opensaml.ws.security.SecurityPolicyRule;
 import org.opensaml.ws.transport.http.HTTPTransport;
 import org.opensaml.xml.util.DatatypeHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A security rule that checks basic HTTP connection properties.
@@ -29,7 +30,7 @@ import org.opensaml.xml.util.DatatypeHelper;
 public class HTTPRule implements SecurityPolicyRule {
 
     /** Class logger. */
-    private static Logger log = Logger.getLogger(HTTPRule.class);
+    private final Logger log = LoggerFactory.getLogger(HTTPRule.class);
 
     /** Expected content type of the request. */
     private String requiredContentType;

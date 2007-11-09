@@ -20,9 +20,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.TimerTask;
 
-import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.opensaml.util.resource.ResourceChangeListener.ResourceChange;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A watcher that invokes a callback when a resource update/deletion has been detected.
@@ -36,7 +37,7 @@ public class ResourceChangeWatcher extends TimerTask {
     public static final int DEFAULT_MAX_RETRY_ATTEMPTS = 0;
 
     /** Class logger. */
-    private static Logger log = Logger.getLogger(ResourceChangeWatcher.class);
+    private final Logger log = LoggerFactory.getLogger(ResourceChangeWatcher.class);
 
     /** Resource being watched. */
     private Resource watchedResource;
@@ -117,10 +118,8 @@ public class ResourceChangeWatcher extends TimerTask {
         }
 
         resourceListeners = new ArrayList<ResourceChangeListener>();
-        if (log.isDebugEnabled()) {
-            log.debug("Watching resource: " + watchedResource.getLocation() + ", polling frequency: " + pollFrequency
-                    + "ms, max retry attempts: " + maxRetryAttempts);
-        }
+        log.debug("Watching resource: " + watchedResource.getLocation()
+                + ", polling frequency: {}ms, max retry attempts: {}", pollFrequency, maxRetryAttempts);
     }
 
     /**
@@ -145,9 +144,7 @@ public class ResourceChangeWatcher extends TimerTask {
     /** {@inheritDoc} */
     public void run() {
         try {
-            if (log.isDebugEnabled()) {
-                log.debug("Checking resource for changes: " + watchedResource.getLocation());
-            }
+            log.debug("Checking resource for changes: {}", watchedResource.getLocation());
             if (watchedResource.exists()) {
                 if (!resourceExist) {
                     resourceExist = true;
@@ -172,7 +169,7 @@ public class ResourceChangeWatcher extends TimerTask {
             if (currentRetryAttempts >= maxRetryAttempts) {
                 cancel();
                 log.error("Resource " + watchedResource.getLocation()
-                   + " was not accessible for max number of retry attempts.  This resource will no longer be watched");
+                            + " was not accessible for max number of retry attempts.  This resource will no longer be watched");
             }
         }
     }
@@ -186,25 +183,19 @@ public class ResourceChangeWatcher extends TimerTask {
         synchronized (resourceListeners) {
             switch (changeType) {
                 case CREATION:
-                    if (log.isDebugEnabled()) {
-                        log.debug("Publishing creation event for resource: " + watchedResource.getLocation());
-                    }
+                    log.debug("Publishing creation event for resource: {}", watchedResource.getLocation());
                     for (ResourceChangeListener listener : resourceListeners) {
                         listener.onResourceCreate(watchedResource);
                     }
                     break;
                 case UPDATE:
-                    if (log.isDebugEnabled()) {
-                        log.debug("Publishing update event for resource: " + watchedResource.getLocation());
-                    }
+                    log.debug("Publishing update event for resource: {}", watchedResource.getLocation());
                     for (ResourceChangeListener listener : resourceListeners) {
                         listener.onResourceUpdate(watchedResource);
                     }
                     break;
                 case DELETE:
-                    if (log.isDebugEnabled()) {
-                        log.debug("Publishing delete event for resource: " + watchedResource.getLocation());
-                    }
+                    log.debug("Publishing delete event for resource: {}", watchedResource.getLocation());
                     for (ResourceChangeListener listener : resourceListeners) {
                         listener.onResourceDelete(watchedResource);
                     }

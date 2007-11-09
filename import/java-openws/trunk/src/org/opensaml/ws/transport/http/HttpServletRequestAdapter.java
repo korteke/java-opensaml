@@ -23,9 +23,10 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.log4j.Logger;
 import org.opensaml.ws.security.ServletRequestX509CredentialAdapter;
 import org.opensaml.xml.security.credential.Credential;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Adapts an {@link HttpServletRequest} to an {@link HTTPInTransport}.
@@ -36,7 +37,7 @@ public class HttpServletRequestAdapter implements HTTPInTransport {
     private HttpServletRequest httpServletRequest;
 
     /** Class logger. */
-    private final Logger log = Logger.getLogger(HttpServletRequestAdapter.class);
+    private final Logger log = LoggerFactory.getLogger(HttpServletRequestAdapter.class);
 
     /** Whether the peer endpoint has been authenticated. */
     private boolean peerAuthenticated;

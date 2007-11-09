@@ -16,14 +16,16 @@
 
 package org.opensaml.ws.message.encoder;
 
-import org.apache.log4j.Logger;
-import org.opensaml.log.Level;
+import java.util.logging.Level;
+
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.util.XMLHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
 
 /**
@@ -32,25 +34,21 @@ import org.w3c.dom.Element;
 public abstract class BaseMessageEncoder implements MessageEncoder {
 
     /** Class logger. */
-    private Logger log = Logger.getLogger(BaseMessageEncoder.class);
-    
+    private final Logger log = LoggerFactory.getLogger(BaseMessageEncoder.class);
+
     /** Constructor. */
-    public BaseMessageEncoder(){
-        
+    public BaseMessageEncoder() {
+
     }
 
     /** {@inheritDoc} */
     public void encode(MessageContext messageContext) throws MessageEncodingException {
-        if (log.isDebugEnabled()) {
-            log.debug("Beginning encode message to outbound transport of type: "
-                    + messageContext.getOutboundMessageTransport().getClass().getName());
-        }
+        log.debug("Beginning encode message to outbound transport of type: {}", messageContext
+                .getOutboundMessageTransport().getClass().getName());
 
         doEncode(messageContext);
 
-        if (log.isDebugEnabled()) {
-            log.debug("Successfully encoded message.");
-        }
+        log.debug("Successfully encoded message.");
     }
 
     /**
@@ -72,9 +70,7 @@ public abstract class BaseMessageEncoder implements MessageEncoder {
      * @throws MessageEncodingException thrown if the give message can not be marshalled into its DOM representation
      */
     protected Element marshallMessage(XMLObject message) throws MessageEncodingException {
-        if (log.isDebugEnabled()) {
-            log.debug("Marshalling message");
-        }
+        log.debug("Marshalling message");
 
         try {
             Marshaller marshaller = Configuration.getMarshallerFactory().getMarshaller(message);
@@ -83,8 +79,8 @@ public abstract class BaseMessageEncoder implements MessageEncoder {
                         + message.getElementQName());
             }
             Element messageElem = marshaller.marshall(message);
-            if (log.isEnabledFor(Level.TRAIL)) {
-                log.log(Level.TRAIL, "Marshalled message into DOM:\n" + XMLHelper.nodeToString(messageElem));
+            if (log.isTraceEnabled()) {
+                log.trace("Marshalled message into DOM:\n{}", XMLHelper.nodeToString(messageElem));
             }
             return messageElem;
         } catch (MarshallingException e) {

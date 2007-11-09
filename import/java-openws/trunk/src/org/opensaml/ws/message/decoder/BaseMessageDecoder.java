@@ -18,8 +18,6 @@ package org.opensaml.ws.message.decoder;
 
 import java.io.InputStream;
 
-import org.apache.log4j.Logger;
-import org.opensaml.log.Level;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.security.SecurityPolicy;
 import org.opensaml.ws.security.SecurityPolicyResolver;
@@ -32,6 +30,8 @@ import org.opensaml.xml.parse.ParserPool;
 import org.opensaml.xml.parse.XMLParserException;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.util.XMLHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -41,7 +41,7 @@ import org.w3c.dom.Element;
 public abstract class BaseMessageDecoder implements MessageDecoder {
 
     /** Class logger. */
-    private Logger log = Logger.getLogger(BaseMessageDecoder.class);
+    private final Logger log = LoggerFactory.getLogger(BaseMessageDecoder.class);
 
     /** Parser pool used to deserialize the message. */
     private ParserPool parserPool;
@@ -66,35 +66,31 @@ public abstract class BaseMessageDecoder implements MessageDecoder {
 
     /** {@inheritDoc} */
     public void decode(MessageContext messageContext) throws MessageDecodingException, SecurityException {
-        if (log.isDebugEnabled()) {
-            log.debug("Beginning to decode message from inbound transport of type: "
-                    + messageContext.getInboundMessageTransport().getClass().getName());
-        }
+        log.debug("Beginning to decode message from inbound transport of type: {}", messageContext
+                .getInboundMessageTransport().getClass().getName());
         doDecode(messageContext);
 
         SecurityPolicyResolver policyResolver = messageContext.getSecurityPolicyResolver();
         if (policyResolver != null) {
             Iterable<SecurityPolicy> securityPolicies = policyResolver.resolve(messageContext);
             if (securityPolicies != null) {
-                for(SecurityPolicy policy : securityPolicies){
-                    if(policy != null){
-                        if (log.isDebugEnabled()) {
-                            log.debug("Evaluating securit policy  of type " + policy.getClass().getName()
-                                    + " for decoded message");
-                        }
+                for (SecurityPolicy policy : securityPolicies) {
+                    if (policy != null) {
+                        log.debug("Evaluating securit policy  of type {} for decoded message", policy.getClass()
+                                .getName());
                         policy.evaluate(messageContext);
                     }
                 }
-            }else{
-                log.debug("No security policy resolved for this message context, no security policy evaluation attempted");
+            } else {
+                log
+                        .debug("No security policy resolved for this message context, no security policy evaluation attempted");
             }
-        }else{
-            log.debug("No security policy resolver attached to this message context, no security policy evaluation attempted");
+        } else {
+            log
+                    .debug("No security policy resolver attached to this message context, no security policy evaluation attempted");
         }
 
-        if (log.isDebugEnabled()) {
-            log.debug("Successfully decoded message.");
-        }
+        log.debug("Successfully decoded message.");
     }
 
     /**
@@ -137,20 +133,17 @@ public abstract class BaseMessageDecoder implements MessageDecoder {
      * @throws MessageDecodingException thrown if there is a problem deserializing and unmarshalling the message
      */
     protected XMLObject unmarshallMessage(InputStream messageStream) throws MessageDecodingException {
-        if (log.isDebugEnabled()) {
-            log.debug("Parsing message stream into DOM document");
-        }
+        log.debug("Parsing message stream into DOM document");
+
         try {
             Document messageDoc = parserPool.parse(messageStream);
             Element messageElem = messageDoc.getDocumentElement();
 
-            if (log.isEnabledFor(Level.TRAIL)) {
-                log.log(Level.TRAIL, "Resultant DOM message was:\n" + XMLHelper.nodeToString(messageElem));
+            if (log.isTraceEnabled()) {
+                log.trace("Resultant DOM message was:\n{}", XMLHelper.nodeToString(messageElem));
             }
 
-            if (log.isDebugEnabled()) {
-                log.debug("Unmarshalling message DOM");
-            }
+            log.debug("Unmarshalling message DOM");
             Unmarshaller unmarshaller = Configuration.getUnmarshallerFactory().getUnmarshaller(messageElem);
             if (unmarshaller == null) {
                 log.error("Unable to unmarshall message, no unmarshaller registered for message element "
@@ -162,9 +155,7 @@ public abstract class BaseMessageDecoder implements MessageDecoder {
 
             XMLObject message = unmarshaller.unmarshall(messageElem);
 
-            if (log.isDebugEnabled()) {
-                log.debug("Message succesfully unmarshalled");
-            }
+            log.debug("Message succesfully unmarshalled");
             return message;
         } catch (XMLParserException e) {
             log.error("Encountered error parsing message into its DOM representation", e);

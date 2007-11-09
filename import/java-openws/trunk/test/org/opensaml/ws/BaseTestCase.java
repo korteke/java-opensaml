@@ -18,7 +18,6 @@ package org.opensaml.ws;
 
 import javax.xml.namespace.QName;
 
-import org.apache.log4j.Logger;
 import org.custommonkey.xmlunit.XMLTestCase;
 import org.custommonkey.xmlunit.XMLUnit;
 import org.opensaml.xml.Configuration;
@@ -31,6 +30,8 @@ import org.opensaml.xml.io.MarshallerFactory;
 import org.opensaml.xml.io.UnmarshallerFactory;
 import org.opensaml.xml.parse.BasicParserPool;
 import org.opensaml.xml.util.XMLHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -40,7 +41,7 @@ import org.w3c.dom.Element;
 public abstract class BaseTestCase extends XMLTestCase {
 
     /** Logger. */
-    private static Logger log = Logger.getLogger(BaseTestCase.class);
+    private final Logger log = LoggerFactory.getLogger(BaseTestCase.class);
 
     /** Parser pool. */
     protected static BasicParserPool parserPool;

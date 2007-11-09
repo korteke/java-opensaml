@@ -19,9 +19,10 @@ package org.opensaml.util.storage;
 import java.io.Serializable;
 import java.util.concurrent.locks.ReentrantLock;
 
-import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.opensaml.xml.util.DatatypeHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Class that uses an underlying {@link StorageService} to track information associated with messages in order to detect
@@ -33,7 +34,7 @@ import org.opensaml.xml.util.DatatypeHelper;
 public class ReplayCache {
 
     /** Logger. */
-    private static Logger log = Logger.getLogger(ReplayCache.class);
+    private final Logger log = LoggerFactory.getLogger(ReplayCache.class);
 
     /** Backing storage for the replay cache. */
     private StorageService<String, ReplayCacheEntry> storage;
@@ -101,20 +102,18 @@ public class ReplayCache {
             if (cacheEntry == null || cacheEntry.isExpired()) {
                 if (log.isDebugEnabled()) {
                     if (cacheEntry == null) {
-                        log.debug(String.format("Message ID '%s' was not a replay", messageId));
+                        log.debug("Message ID {} was not a replay", messageId);
                     } else if (cacheEntry.isExpired()) {
-                        log.debug(String.format("Message ID '%s' expired in replay cache at '%s'", messageId,
-                                cacheEntry.getExpirationTime().toString()));
+                        log.debug("Message ID {} expired in replay cache at {}", messageId, cacheEntry
+                                .getExpirationTime().toString());
                         storage.remove(partition, entryHash);
                     }
                 }
                 replayed = false;
                 addMessageID(entryHash, new DateTime().plus(entryDuration));
             } else {
-                if (log.isDebugEnabled()) {
-                    log.debug(String.format("Replay of message ID '%s' detected in replay cache, will expire at '%s'",
-                            messageId, cacheEntry.getExpirationTime().toString()));
-                }
+                log.debug("Replay of message ID {} detected in replay cache, will expire at {}", messageId, cacheEntry
+                        .getExpirationTime().toString());
             }
 
             return replayed;
@@ -130,10 +129,7 @@ public class ReplayCache {
      * @param expiration time the message state expires
      */
     protected void addMessageID(String messageId, DateTime expiration) {
-        if (log.isDebugEnabled()) {
-            log.debug(String.format("Writing message ID '%s' to replay cache with expiration time '%s'", messageId,
-                    expiration.toString()));
-        }
+        log.debug("Writing message ID {} to replay cache with expiration time {}", messageId, expiration.toString());
         storage.put(partition, messageId, new ReplayCacheEntry(expiration));
     }
 

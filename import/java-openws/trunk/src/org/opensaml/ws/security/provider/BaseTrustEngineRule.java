@@ -16,13 +16,14 @@
 
 package org.opensaml.ws.security.provider;
 
-import org.apache.log4j.Logger;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.security.SecurityPolicyException;
 import org.opensaml.ws.security.SecurityPolicyRule;
 import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.trust.TrustEngine;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Base rule which uses a trust engine to evaluate a token extracted from the request or message.
@@ -32,7 +33,7 @@ import org.opensaml.xml.security.trust.TrustEngine;
 public abstract class BaseTrustEngineRule<TokenType> implements SecurityPolicyRule {
 
     /** Logger. */
-    private static Logger log = Logger.getLogger(BaseTrustEngineRule.class);
+    private final Logger log = LoggerFactory.getLogger(BaseTrustEngineRule.class);
 
     /** Trust engine used to verify the particular token type. */
     private TrustEngine<TokenType> trustEngine;

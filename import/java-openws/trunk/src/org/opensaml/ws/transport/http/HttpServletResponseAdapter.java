@@ -22,8 +22,9 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
 import org.opensaml.xml.security.credential.Credential;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Adapts an {@link HttpServletResponse} to an {@link HTTPOutTransport}.
@@ -34,7 +35,7 @@ public class HttpServletResponseAdapter implements HTTPOutTransport {
     private HttpServletResponse httpServletResponse;
 
     /** Class logger. */
-    private final Logger log = Logger.getLogger(HttpServletResponseAdapter.class);
+    private final Logger log = LoggerFactory.getLogger(HttpServletResponseAdapter.class);
 
     /** Whether the peer endpoint has been authenticated. */
     private boolean peerAuthenticated;

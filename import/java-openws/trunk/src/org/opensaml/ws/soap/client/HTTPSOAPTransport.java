@@ -31,7 +31,6 @@ import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.URIException;
 import org.apache.commons.httpclient.methods.InputStreamRequestEntity;
 import org.apache.commons.httpclient.methods.PostMethod;
-import org.apache.log4j.Logger;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.message.decoder.MessageDecoder;
 import org.opensaml.ws.message.decoder.MessageDecodingException;
@@ -42,6 +41,8 @@ import org.opensaml.ws.transport.http.HTTPInTransport;
 import org.opensaml.ws.transport.http.HTTPOutTransport;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.credential.Credential;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * SOAP transport using HTTP.
@@ -49,7 +50,7 @@ import org.opensaml.xml.security.credential.Credential;
 public class HTTPSOAPTransport implements ClientTransport {
 
     /** Class logger. */
-    private Logger log = Logger.getLogger(HTTPSOAPTransport.class);
+    private final Logger log = LoggerFactory.getLogger(HTTPSOAPTransport.class);
 
     /** HTTP client used to connect to peers. */
     private HttpClient httpClient;
