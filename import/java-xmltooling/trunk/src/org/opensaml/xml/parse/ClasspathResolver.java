@@ -74,24 +74,24 @@ public class ClasspathResolver implements EntityResolver, LSResourceResolver {
         InputStream resourceIns = null;
 
         if (systemId.startsWith(CLASSPATH_URI_SCHEME)) {
-            log.debug("Attempting to resolve, within the classpath, the entity with the following system id: {}",
+            log.trace("Attempting to resolve, within the classpath, the entity with the following system id: {}",
                     systemId);
             resource = systemId.replaceFirst("classpath:", "");
             resourceIns = getClass().getResourceAsStream(resource);
         }
 
         if (resourceIns == null && publicId != null && publicId.startsWith(CLASSPATH_URI_SCHEME)) {
-            log.debug("Attempting to resolve, within the classpath, the entity with the following public id: {}",
+            log.trace("Attempting to resolve, within the classpath, the entity with the following public id: {}",
                     resource);
             resource = publicId.replaceFirst("classpath:", "");
             resourceIns = getClass().getResourceAsStream(resource);
         }
 
         if (resourceIns == null) {
-            log.debug("Entity was not resolved from classpath");
+            log.trace("Entity was not resolved from classpath");
             return null;
         } else {
-            log.debug("Entity resolved from classpath");
+            log.trace("Entity resolved from classpath");
             return resourceIns;
         }
     }
