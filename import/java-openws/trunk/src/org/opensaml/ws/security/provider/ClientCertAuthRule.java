@@ -138,12 +138,12 @@ public class ClientCertAuthRule extends BaseTrustEngineRule<X509Credential> {
                         contextIssuer);
                 messageContext.getInboundMessageTransport().setAuthenticated(true);
             } else {
-                log
-                        .error("Authentication via client certificate failed for context issuer entity ID {}",
-                                contextIssuer);
+                log.error("Authentication via client certificate failed for context issuer entity ID {}",
+                        contextIssuer);
                 throw new SecurityPolicyException(
                         "Client certificate authentication failed for context issuer entity ID");
             }
+            return;
         }
 
         String derivedIssuer = evaluateCertificateNameDerivedIssuers(requestCredential, messageContext);
