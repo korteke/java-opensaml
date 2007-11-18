@@ -27,8 +27,10 @@ import org.opensaml.xml.mock.SimpleXMLObject;
 import org.opensaml.xml.parse.XMLParserException;
 import org.opensaml.xml.security.SecurityTestHelper;
 import org.opensaml.xml.security.keyinfo.StaticKeyInfoGenerator;
+import org.opensaml.xml.signature.DigestMethod;
 import org.opensaml.xml.signature.KeyInfo;
 import org.opensaml.xml.signature.KeyName;
+import org.opensaml.xml.signature.SignatureConstants;
 import org.w3c.dom.Document;
 
 /**
@@ -397,6 +399,67 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
         } catch (EncryptionException e) {
             // do nothing, should fail
         }
+    }
+    
+    /**
+     * Test code for the Apache XML-Security issue workaround that requires we 
+     * expliclty express SHA-1 DigestMethod on EncryptionMethod,
+     * only when key transport algorithm is RSA-OAEP.
+     *  
+     * @throws NoSuchProviderException bad JCA provider
+     * @throws NoSuchAlgorithmException  bad JCA algorithm
+     * @throws XMLParserException error creating new Document from pool
+     */
+    public void testEncryptKeyDigestMethodsRSAOAEP() throws NoSuchAlgorithmException, NoSuchProviderException, 
+            XMLParserException {
+        
+        Key targetKey = SecurityTestHelper.generateKeyFromURI(algoURI);
+        
+        kekParamsRSA.setAlgorithm(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP);
+        
+        EncryptedKey encKey = null;
+        Document ownerDocument = parserPool.newDocument();
+        try {
+            encKey = encrypter.encryptKey(targetKey, kekParamsRSA, ownerDocument);
+        } catch (EncryptionException e) {
+            fail("Object encryption failed: " + e);
+        } 
+        
+        assertFalse("EncryptedKey/EncryptionMethod/DigestMethod list was empty",
+                encKey.getEncryptionMethod().getUnknownXMLObjects(DigestMethod.DEFAULT_ELEMENT_NAME).isEmpty());
+        DigestMethod dm = 
+                (DigestMethod) encKey.getEncryptionMethod()
+                .getUnknownXMLObjects(DigestMethod.DEFAULT_ELEMENT_NAME).get(0);
+        assertEquals("DigestMethod algorithm URI had unexpected value", 
+                SignatureConstants.ALGO_ID_DIGEST_SHA1, dm.getAlgorithm());
+    }
+    
+    /**
+     * Test code for the Apache XML-Security issue workaround that requires we 
+     * expliclty express SHA-1 DigestMethod on EncryptionMethod,
+     * only when key transport algorithm is RSA-OAEP.
+     *  
+     * @throws NoSuchProviderException bad JCA provider
+     * @throws NoSuchAlgorithmException  bad JCA algorithm
+     * @throws XMLParserException error creating new Document from pool
+     */
+    public void testEncryptKeyDigestMethodsRSAv15() throws NoSuchAlgorithmException, NoSuchProviderException, 
+            XMLParserException {
+        
+        Key targetKey = SecurityTestHelper.generateKeyFromURI(algoURI);
+        
+        kekParamsRSA.setAlgorithm(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSA15);
+        
+        EncryptedKey encKey = null;
+        Document ownerDocument = parserPool.newDocument();
+        try {
+            encKey = encrypter.encryptKey(targetKey, kekParamsRSA, ownerDocument);
+        } catch (EncryptionException e) {
+            fail("Object encryption failed: " + e);
+        } 
+        
+        assertTrue("EncryptedKey/EncryptionMethod/DigestMethod list was NOT empty",
+                encKey.getEncryptionMethod().getUnknownXMLObjects(DigestMethod.DEFAULT_ELEMENT_NAME).isEmpty());
     }
     
     /**

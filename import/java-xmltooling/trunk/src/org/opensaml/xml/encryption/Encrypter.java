@@ -20,6 +20,7 @@ import java.security.Key;
 import java.security.KeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.crypto.SecretKey;
@@ -38,9 +39,13 @@ import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.keyinfo.KeyInfoGenerator;
+import org.opensaml.xml.signature.DigestMethod;
 import org.opensaml.xml.signature.KeyInfo;
+import org.opensaml.xml.signature.SignatureConstants;
 import org.opensaml.xml.signature.impl.KeyInfoBuilder;
 import org.opensaml.xml.util.DatatypeHelper;
+import org.opensaml.xml.util.XMLConstants;
+import org.opensaml.xml.util.XMLHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -327,6 +332,8 @@ public class Encrypter {
         org.apache.xml.security.encryption.EncryptedKey apacheEncryptedKey;
         try {
             apacheEncryptedKey = xmlCipher.encryptKey(containingDocument, targetKey);
+            postProcessApacheEncryptedKey(apacheEncryptedKey, targetKey, encryptionKey,
+                    encryptionAlgorithmURI, containingDocument);
         } catch (XMLEncryptionException e) {
             log.error("Error encrypting element on key encryption", e);
             throw new EncryptionException("Error encrypting element on key encryption", e);
@@ -342,6 +349,48 @@ public class Encrypter {
         }
 
         return encryptedKey;
+    }
+
+    /**
+     *  
+     * Post-process the Apache EncryptedKey, prior to marshalling to DOM and unmarshalling into an XMLObject.
+     *  
+     * @param apacheEncryptedKey the Apache EncryptedKeyObject to post-process
+     * @param targetKey the key to encrypt
+     * @param encryptionKey the key with which to encrypt the target key
+     * @param encryptionAlgorithmURI the XML Encryption algorithm URI corresponding to the encryption key
+     * @param containingDocument the document that will own the resulting element
+     * 
+     * @throws EncryptionException exception thrown on encryption errors
+     */
+    protected void postProcessApacheEncryptedKey(org.apache.xml.security.encryption.EncryptedKey apacheEncryptedKey,
+            Key targetKey, Key encryptionKey, String encryptionAlgorithmURI, Document containingDocument)
+            throws EncryptionException {
+        
+        // Workaround for XML-Security library issue.  To maximize interop, explicitly express the library
+        // default of SHA-1 digest method input parameter to RSA-OAEP key transport algorithm.
+        // Check and only add if the library hasn't already done so, which it currently doesn't.
+        if (EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP.equals(encryptionAlgorithmURI)) {
+            boolean sawDigestMethod = false;
+            Iterator childIter = apacheEncryptedKey.getEncryptionMethod().getEncryptionMethodInformation();
+            while (childIter.hasNext()) {
+                Element child = (Element) childIter.next();
+                if (DigestMethod.DEFAULT_ELEMENT_NAME.equals(XMLHelper.getNodeQName(child))) {
+                    sawDigestMethod = true;
+                    break;
+                }
+            }
+            if (! sawDigestMethod) {
+                Element digestMethodElem = XMLHelper.constructElement(containingDocument,
+                        DigestMethod.DEFAULT_ELEMENT_NAME);
+                XMLHelper.appendNamespaceDecleration(digestMethodElem, 
+                        XMLConstants.XMLSIG_NS, XMLConstants.XMLSIG_PREFIX);
+                digestMethodElem.setAttributeNS(null, DigestMethod.ALGORITHM_ATTRIB_NAME, 
+                        SignatureConstants.ALGO_ID_DIGEST_SHA1);
+                apacheEncryptedKey.getEncryptionMethod().addEncryptionMethodInformation(digestMethodElem);
+            }
+        }
+        
     }
 
     /**

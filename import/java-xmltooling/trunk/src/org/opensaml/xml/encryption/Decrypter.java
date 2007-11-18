@@ -48,6 +48,8 @@ import org.opensaml.xml.security.criteria.KeyLengthCriteria;
 import org.opensaml.xml.security.criteria.UsageCriteria;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xml.security.keyinfo.KeyInfoCriteria;
+import org.opensaml.xml.signature.DigestMethod;
+import org.opensaml.xml.signature.SignatureConstants;
 import org.opensaml.xml.util.DatatypeHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -584,6 +586,9 @@ public class Decrypter {
             log.error("Error marshalling EncryptedKey for decryption", e);
             throw e;
         }
+        
+        preProcessEncryptedKey(encryptedKey, algorithm, kek);
+        
         Element targetElement = encryptedKey.getDOM();
 
         XMLCipher xmlCipher;
@@ -618,6 +623,38 @@ public class Decrypter {
             throw new DecryptionException("Key could not be decrypted");
         }
         return key;
+    }
+
+    /**
+     * Preprocess the EncryptedKey. For example, check for supported algorithms.
+     * 
+     * @param encryptedKey encrypted key element containing the encrypted key to be decrypted
+     * @param algorithm the algorithm associated with the decrypted key
+     * @param kek the key encryption key with which to attempt decryption of the encrypted key
+     * 
+     * @throws DecryptionException exception indicating a decryption error
+     */
+    protected void preProcessEncryptedKey(EncryptedKey encryptedKey, String algorithm, Key kek) 
+            throws DecryptionException {
+        
+        // Apache XML-Security currently only supports an internal, hard-coded default
+        // SHA-1 digest method with RSA-OAEP key transport.
+        String keyTransportAlgorithm = encryptedKey.getEncryptionMethod().getAlgorithm();
+        if (EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP.equals(keyTransportAlgorithm)) {
+            List<XMLObject> digestMethods = 
+                encryptedKey.getEncryptionMethod().getUnknownXMLObjects(DigestMethod.DEFAULT_ELEMENT_NAME);
+            if (!digestMethods.isEmpty()) {
+                DigestMethod dm = (DigestMethod) digestMethods.get(0);
+                if (! SignatureConstants.ALGO_ID_DIGEST_SHA1
+                        .equals(DatatypeHelper.safeTrimOrNullString(dm.getAlgorithm())) ) {
+                    log.error("EncryptedKey/EncryptionMethod/DigestMethod contains unsupported algorithm URI: {}",
+                            dm.getAlgorithm());
+                    throw new DecryptionException(
+                            "EncryptedKey/EncryptionMethod/DigestMethod contains unsupported algorithm URI");
+                }
+            }
+        }
+        
     }
 
     /**
