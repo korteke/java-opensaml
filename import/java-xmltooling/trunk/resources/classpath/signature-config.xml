@@ -13,6 +13,13 @@
             <UnmarshallingClass className="org.opensaml.xml.signature.impl.CryptoBinaryUnmarshaller" />
         </ObjectProvider>    
         
+         <!-- DigestMethod -->
+        <ObjectProvider qualifiedName="ds:DigestMethod">
+            <BuilderClass className="org.opensaml.xml.signature.impl.DigestMethodBuilder" />
+            <MarshallingClass className="org.opensaml.xml.signature.impl.DigestMethodMarshaller" />
+            <UnmarshallingClass className="org.opensaml.xml.signature.impl.DigestMethodUnmarshaller" />
+        </ObjectProvider>
+        
         <!-- DSAKeyValue -->
         <ObjectProvider qualifiedName="ds:DSAKeyValue">
             <BuilderClass className="org.opensaml.xml.signature.impl.DSAKeyValueBuilder" />
