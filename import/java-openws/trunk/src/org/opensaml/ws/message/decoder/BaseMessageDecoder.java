@@ -76,18 +76,16 @@ public abstract class BaseMessageDecoder implements MessageDecoder {
             if (securityPolicies != null) {
                 for (SecurityPolicy policy : securityPolicies) {
                     if (policy != null) {
-                        log.debug("Evaluating securit policy  of type {} for decoded message", policy.getClass()
+                        log.debug("Evaluating security policy  of type '{}' for decoded message", policy.getClass()
                                 .getName());
                         policy.evaluate(messageContext);
                     }
                 }
             } else {
-                log
-                        .debug("No security policy resolved for this message context, no security policy evaluation attempted");
+                log.debug("No security policy resolved for this message context, no security policy evaluation attempted");
             }
         } else {
-            log
-                    .debug("No security policy resolver attached to this message context, no security policy evaluation attempted");
+            log.debug("No security policy resolver attached to this message context, no security policy evaluation attempted");
         }
 
         log.debug("Successfully decoded message.");
