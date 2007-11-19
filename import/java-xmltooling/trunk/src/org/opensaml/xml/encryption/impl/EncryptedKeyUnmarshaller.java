@@ -30,7 +30,7 @@ import org.w3c.dom.Attr;
 public class EncryptedKeyUnmarshaller extends EncryptedTypeUnmarshaller {
     
     /**
-     * Constructor
+     * Constructor.
      *
      */
     public EncryptedKeyUnmarshaller(){
@@ -38,7 +38,7 @@ public class EncryptedKeyUnmarshaller extends EncryptedTypeUnmarshaller {
     }
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param targetNamespaceURI
      * @param targetLocalName

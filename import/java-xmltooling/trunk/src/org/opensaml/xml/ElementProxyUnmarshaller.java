@@ -20,7 +20,6 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.xml.io.AbstractXMLObjectUnmarshaller;
 import org.opensaml.xml.io.UnmarshallingException;
-import org.opensaml.xml.schema.impl.XSAnyUnmarshaller;
 import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Attr;
 

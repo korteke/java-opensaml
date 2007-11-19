@@ -27,18 +27,18 @@ import org.opensaml.xml.util.XMLObjectChildrenList;
 import org.opensaml.xml.validation.AbstractValidatingXMLObject;
 
 /**
- * Concrete implementation of {@link org.opensaml.xml.encryption.EncryptionProperties}
+ * Concrete implementation of {@link org.opensaml.xml.encryption.EncryptionProperties}.
  */
 public class EncryptionPropertiesImpl extends AbstractValidatingXMLObject implements EncryptionProperties {
     
-    /** Id attribute value */
+    /** Id attribute value. */
     private String id;
     
-    /** EncryptionProperty child elements */
+    /** EncryptionProperty child elements. */
     private final XMLObjectChildrenList encryptionProperties;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param namespaceURI
      * @param elementLocalName

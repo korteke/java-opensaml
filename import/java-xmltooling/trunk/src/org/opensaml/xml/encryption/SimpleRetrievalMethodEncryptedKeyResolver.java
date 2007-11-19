@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.signature.KeyInfo;
 import org.opensaml.xml.signature.RetrievalMethod;
 import org.opensaml.xml.util.DatatypeHelper;
 import org.slf4j.Logger;

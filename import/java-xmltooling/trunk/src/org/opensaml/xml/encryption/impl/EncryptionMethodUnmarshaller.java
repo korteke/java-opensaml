@@ -30,7 +30,7 @@ import org.w3c.dom.Attr;
 public class EncryptionMethodUnmarshaller extends AbstractXMLEncryptionUnmarshaller {
     
     /**
-     * Constructor
+     * Constructor.
      *
      */
     public EncryptionMethodUnmarshaller(){
@@ -38,7 +38,7 @@ public class EncryptionMethodUnmarshaller extends AbstractXMLEncryptionUnmarshal
     }
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param targetNamespaceURI
      * @param targetLocalName
@@ -52,7 +52,7 @@ public class EncryptionMethodUnmarshaller extends AbstractXMLEncryptionUnmarshal
     protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
         EncryptionMethod em = (EncryptionMethod) xmlObject;
         
-        if (attribute.getLocalName().equals((EncryptionMethod.ALGORITHM_ATTRIB_NAME))) {
+        if (attribute.getLocalName().equals(EncryptionMethod.ALGORITHM_ATTRIB_NAME)) {
             em.setAlgorithm(attribute.getValue());
         } else {
             super.processAttribute(xmlObject, attribute);

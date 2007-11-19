@@ -30,24 +30,24 @@ import org.opensaml.xml.util.IndexedXMLObjectChildrenList;
 import org.opensaml.xml.validation.AbstractValidatingXMLObject;
 
 /**
- * Concrete implementation of {@link org.opensaml.xml.encryption.EncryptionMethod}
+ * Concrete implementation of {@link org.opensaml.xml.encryption.EncryptionMethod}.
  */
 public class EncryptionMethodImpl extends AbstractValidatingXMLObject implements EncryptionMethod {
     
-    /** Algorithm attribute value */
+    /** Algorithm attribute value. */
     private String algorithm;
     
-    /** KeySize child element value*/
+    /** KeySize child element value. */
     private KeySize keySize;
     
-    /** OAEPparams child element value*/
+    /** OAEPparams child element value. */
     private OAEPparams oaepParams;
     
-    /** "any" children */
+    /** "any" children. */
     private final IndexedXMLObjectChildrenList<XMLObject> unknownChildren;
     
     /**
-     * Constructor
+     * Constructor.
      *
      * @param namespaceURI
      * @param elementLocalName

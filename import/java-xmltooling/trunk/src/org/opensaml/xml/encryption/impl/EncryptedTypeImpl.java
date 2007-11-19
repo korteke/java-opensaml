@@ -29,32 +29,32 @@ import org.opensaml.xml.signature.KeyInfo;
 import org.opensaml.xml.validation.AbstractValidatingXMLObject;
 
 /**
- * Abstract implementation of {@link org.opensaml.xml.encryption.EncryptedType}
+ * Abstract implementation of {@link org.opensaml.xml.encryption.EncryptedType}.
  */
 public abstract class EncryptedTypeImpl extends AbstractValidatingXMLObject implements EncryptedType {
     
-    /** id attribute value */
+    /** id attribute value. */
     private String id;
     
-    /** Type attribute value */
+    /** Type attribute value. */
     private String type;
     
-    /** MimeType attribute value */
+    /** MimeType attribute value. */
     private String mimeType;
     
-    /** Encoding attribute value */
+    /** Encoding attribute value. */
     private String encoding;
     
-    /** EncryptionMethod child element */
+    /** EncryptionMethod child element. */
     private EncryptionMethod encryptionMethod;
     
-    /** EncryptionMethod child element */
+    /** EncryptionMethod child element. */
     private KeyInfo keyInfo;
     
-    /** CipherData child element */
+    /** CipherData child element. */
     private CipherData cipherData;
     
-    /** EncryptionProperties child element */
+    /** EncryptionProperties child element. */
     private EncryptionProperties encryptionProperties;
     
     /**

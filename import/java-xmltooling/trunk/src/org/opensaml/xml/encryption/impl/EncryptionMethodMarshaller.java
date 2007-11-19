@@ -28,7 +28,7 @@ import org.w3c.dom.Element;
 public class EncryptionMethodMarshaller extends AbstractXMLEncryptionMarshaller {
     
     /**
-     * Constructor
+     * Constructor.
      *
      */
     public EncryptionMethodMarshaller(){
@@ -36,7 +36,7 @@ public class EncryptionMethodMarshaller extends AbstractXMLEncryptionMarshaller 
     }
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param targetNamespaceURI
      * @param targetLocalName

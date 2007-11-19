@@ -27,7 +27,7 @@ import org.opensaml.xml.util.XMLConstants;
 public class EncryptionMethodBuilder extends AbstractXMLObjectBuilder<EncryptionMethod> implements XMLEncryptionBuilder<EncryptionMethod> {
 
     /**
-     * Constructor
+     * Constructor.
      *
      */
     public EncryptionMethodBuilder() {

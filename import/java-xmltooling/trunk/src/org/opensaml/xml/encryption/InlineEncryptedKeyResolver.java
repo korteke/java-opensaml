@@ -19,8 +19,6 @@ package org.opensaml.xml.encryption;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.opensaml.xml.signature.KeyInfo;
-
 /**
  * Implementation of {@link EncryptedKeyResolver} which finds {@link EncryptedKey} elements
  * within the {@link KeyInfo} of the {@link EncryptedData} context.

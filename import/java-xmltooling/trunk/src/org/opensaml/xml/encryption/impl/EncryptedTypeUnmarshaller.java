@@ -31,7 +31,7 @@ import org.w3c.dom.Attr;
 public abstract class EncryptedTypeUnmarshaller extends AbstractXMLEncryptionUnmarshaller {
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param targetNamespaceURI
      * @param targetLocalName

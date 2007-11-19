@@ -27,7 +27,7 @@ import org.w3c.dom.Element;
 public abstract class EncryptedTypeMarshaller extends AbstractXMLEncryptionMarshaller {
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param targetNamespaceURI
      * @param targetLocalName
