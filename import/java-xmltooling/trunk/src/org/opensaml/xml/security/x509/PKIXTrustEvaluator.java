@@ -48,7 +48,8 @@ import org.slf4j.LoggerFactory;
  * Auxillary trust evaluator that validates X.509 credentials using PKIX validation.
  * 
  * <p>
- * The main entry point for calling implementations is: {@link #pkixValidate(PKIXValidationInformation, X509Credential)}.
+ * The main entry point for calling implementations is: 
+ * {@link #pkixValidate(PKIXValidationInformation, X509Credential)}.
  * Callers should construct an appropriate set of PKIX validation information from a source of trusted information.
  * </p>
  * 
@@ -79,7 +80,8 @@ import org.slf4j.LoggerFactory;
  * <p>
  * Name checking is enabled by default for all of the supported name types. The types of subject alternative names to
  * process are specified by using the appropriate constant values defined in {@link X509Util}. By default the following
- * types of subject alternative names are checked: DNS ({@link X509Util#DNS_ALT_NAME}) and URI ({@link X509Util#URI_ALT_NAME}).
+ * types of subject alternative names are checked: DNS ({@link X509Util#DNS_ALT_NAME}) 
+ * and URI ({@link X509Util#URI_ALT_NAME}).
  * </p>
  * 
  * <p>
@@ -267,7 +269,7 @@ public class PKIXTrustEvaluator {
 
         if (checkSubjectAltNames()) {
             if (processSubjectAltNames(entityCertificate, trustedNames)) {
-                log.debug("Untrusted credential{} passed name check based on subject alt names.",
+                log.debug("Untrusted credential {} passed name check based on subject alt names.",
                         getLoggingToken(untrustedCredential));
                 return true;
             }

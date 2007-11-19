@@ -70,8 +70,9 @@ public class PKIXX509CredentialTrustEngine implements PKIXTrustEngine<X509Creden
 
     /** {@inheritDoc} */
     public boolean validate(X509Credential untrustedCredential, CriteriaSet trustBasisCriteria)
-            throws SecurityException {
-        log.debug("PKIX validating credential for entity {}", untrustedCredential.getEntityId());
+        throws SecurityException {
+        
+        log.debug("Attempting PKIX validation of untrusted credential");
 
         if (untrustedCredential == null) {
             log.error("X.509 credential was null, unable to perform validation");

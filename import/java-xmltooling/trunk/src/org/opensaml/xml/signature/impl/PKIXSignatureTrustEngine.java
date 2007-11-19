@@ -99,7 +99,8 @@ public class PKIXSignatureTrustEngine extends
 
         checkParams(signature, trustBasisCriteria);
 
-        Pair<Set<String>, Iterable<PKIXValidationInformation>> validationPair = resolveValidationInfo(trustBasisCriteria);
+        Pair<Set<String>, Iterable<PKIXValidationInformation>> validationPair  = 
+            resolveValidationInfo(trustBasisCriteria);
 
         if (validate(signature, validationPair)) {
             return true;
@@ -121,7 +122,8 @@ public class PKIXSignatureTrustEngine extends
 
         checkParamsRaw(signature, content, algorithmURI, trustBasisCriteria);
 
-        Pair<Set<String>, Iterable<PKIXValidationInformation>> validationPair = resolveValidationInfo(trustBasisCriteria);
+        Pair<Set<String>, Iterable<PKIXValidationInformation>> validationPair = 
+            resolveValidationInfo(trustBasisCriteria);
 
         if (SigningUtil.verifyWithURI(candidateCredential, algorithmURI, signature, content)) {
             log.debug("Successfully verified raw signature using supplied candidate credential");
@@ -190,8 +192,8 @@ public class PKIXSignatureTrustEngine extends
         }
         Iterable<PKIXValidationInformation> validationInfoSet = pkixResolver.resolve(trustBasisCriteria);
 
-        Pair<Set<String>, Iterable<PKIXValidationInformation>> validationPair = new Pair<Set<String>, Iterable<PKIXValidationInformation>>(
-                trustedNames, validationInfoSet);
+        Pair<Set<String>, Iterable<PKIXValidationInformation>> validationPair = 
+            new Pair<Set<String>, Iterable<PKIXValidationInformation>>(trustedNames, validationInfoSet);
 
         return validationPair;
     }

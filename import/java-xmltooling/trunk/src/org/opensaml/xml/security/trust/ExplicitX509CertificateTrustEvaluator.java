@@ -81,13 +81,11 @@ public class ExplicitX509CertificateTrustEvaluator {
         }
 
         if (validate(untrustedCertificate, trustedCertificate)) {
-            log.debug("Validated credential for entity {} against trusted entity certificate", untrustedCredential
-                    .getEntityId());
+            log.debug("Successfully validated untrusted credential against trusted certificate");
             return true;
         }
-
-        log.debug("Credential for entity {} did not validate against trusted entity certificate", untrustedCredential
-                .getEntityId());
+        
+        log.debug("Failed to validate untrusted credential against trusted certificate");
         return false;
     }
 

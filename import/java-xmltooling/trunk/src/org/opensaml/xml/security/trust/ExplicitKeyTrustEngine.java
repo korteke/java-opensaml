@@ -65,7 +65,7 @@ public class ExplicitKeyTrustEngine implements TrustedCredentialTrustEngine<Cred
 
         checkParams(untrustedCredential, trustBasisCriteria);
 
-        log.debug("Validating credential for entity {}", untrustedCredential.getEntityId());
+        log.debug("Attempting to validate untrusted credential");
         Iterable<Credential> trustedCredentials = getCredentialResolver().resolve(trustBasisCriteria);
 
         return trustEvaluator.validate(untrustedCredential, trustedCredentials);
@@ -78,7 +78,8 @@ public class ExplicitKeyTrustEngine implements TrustedCredentialTrustEngine<Cred
      * @param trustBasisCriteria the set of trusted credential criteria
      * @throws SecurityException thrown if required values are absent or otherwise invalid
      */
-    protected void checkParams(Credential untrustedCredential, CriteriaSet trustBasisCriteria) throws SecurityException {
+    protected void checkParams(Credential untrustedCredential, CriteriaSet trustBasisCriteria)
+        throws SecurityException {
 
         if (untrustedCredential == null) {
             throw new SecurityException("Untrusted credential was null");

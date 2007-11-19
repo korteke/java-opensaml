@@ -67,7 +67,7 @@ public class ExplicitX509CertificateTrustEngine implements TrustedCredentialTrus
 
         checkParams(untrustedCredential, trustBasisCriteria);
 
-        log.debug("Validating credential for entity {}", untrustedCredential.getEntityId());
+        log.debug("Attempting to validate untrusted credential");
         Iterable<Credential> trustedCredentials = getCredentialResolver().resolve(trustBasisCriteria);
 
         return trustEvaluator.validate(untrustedCredential, trustedCredentials);

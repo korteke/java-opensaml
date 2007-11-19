@@ -158,7 +158,8 @@ public class ExplicitKeySignatureTrustEngine extends BaseSignatureTrustEngine<It
                 return true;
             }
         }
-        log.error("Failed to verify signature using either supplied candidate credential or directly trusted credentials");
+        log.error("Failed to verify signature using either supplied candidate credential"
+                + " or directly trusted credentials");
         return false;
     }
 

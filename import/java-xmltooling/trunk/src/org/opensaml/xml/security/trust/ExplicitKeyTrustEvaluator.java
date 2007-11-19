@@ -87,11 +87,11 @@ public class ExplicitKeyTrustEvaluator {
         }
 
         if (validate(untrustedKey, trustedKey)) {
-            log.debug("Validated credential for entity {} against trusted key", untrustedCredential.getEntityId());
+            log.debug("Successfully validated untrusted credential against trusted key");
             return true;
         }
 
-        log.debug("Credential for entity {} did not validate against trusted key", untrustedCredential.getEntityId());
+        log.debug("Failed to validate untrusted credential against trusted key");
         return false;
     }
 
