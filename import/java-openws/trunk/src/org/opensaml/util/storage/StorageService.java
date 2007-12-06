@@ -17,6 +17,7 @@
 package org.opensaml.util.storage;
 
 import java.util.Collection;
+import java.util.Iterator;
 
 /**
  * Generic data storage facility for use by services that require some degree of persistence.
@@ -38,16 +39,18 @@ public interface StorageService<KeyType, ValueType> {
      * @return true of the given key exists, false if not
      */
     public boolean contains(String partition, KeyType key);
-    
+
     /**
-     * Gets the partitions within the service.
+     * Gets the partitions within the service. Removal of a partition identifier from the iterator removes the partition
+     * from the storage service.
      * 
      * @return partitions within the service
      */
-    public Collection<String> getPartitions();
+    public Iterator<String> getPartitions();
 
     /**
-     * Gets the keys for entries in the storage service.
+     * Gets the keys for entries in the storage service. Removal of a key from the iterator removes the the key and
+     * associated value from the store.
      * 
      * <strong>Note:</strong> this operation may be very expensive
      * 
@@ -55,7 +58,7 @@ public interface StorageService<KeyType, ValueType> {
      * 
      * @return list of keys currently within the store
      */
-    public Collection<KeyType> getKeys(String partition);
+    public Iterator<KeyType> getKeys(String partition);
 
     /**
      * Gets the value stored under a particular key.

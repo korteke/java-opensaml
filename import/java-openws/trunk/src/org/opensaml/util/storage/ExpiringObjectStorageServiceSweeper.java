@@ -16,7 +16,6 @@
 
 package org.opensaml.util.storage;
 
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.Timer;
@@ -30,7 +29,7 @@ public class ExpiringObjectStorageServiceSweeper extends TimerTask {
     /** Storage service whose entries will be periodically checked. */
     private StorageService store;
 
-    /** Storage paritiotns to sweep. */
+    /** Storage partitions to sweep. */
     private Set<String> partitions;
 
     /**
@@ -68,23 +67,26 @@ public class ExpiringObjectStorageServiceSweeper extends TimerTask {
         if (partitions != null) {
             sweepPartitions = partitions.iterator();
         } else {
-            sweepPartitions = store.getPartitions().iterator();
+            sweepPartitions = store.getPartitions();
         }
 
         String currentParition;
-        Collection<Object> partitionKeys;
+        Iterator<?> partitionKeys;
+        Object partitionKey;
         Object partitionValue;
         while (sweepPartitions.hasNext()) {
             currentParition = sweepPartitions.next();
             partitionKeys = store.getKeys(currentParition);
+            if (partitionKeys == null) {
+                continue;
+            }
 
-            if (partitionKeys != null && !partitionKeys.isEmpty()) {
-                for (Object partitionKey : partitionKeys) {
-                    partitionValue = store.get(currentParition, partitionKey);
-                    if (partitionValue instanceof ExpiringObject) {
-                        if (((ExpiringObject) partitionValue).isExpired()) {
-                            store.remove(currentParition, partitionKey);
-                        }
+            while (partitionKeys.hasNext()) {
+                partitionKey = partitionKeys.next();
+                partitionValue = store.get(currentParition, partitionKey);
+                if (partitionValue instanceof ExpiringObject) {
+                    if (((ExpiringObject) partitionValue).isExpired()) {
+                        partitionKeys.remove();
                     }
                 }
             }

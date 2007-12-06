@@ -18,7 +18,9 @@ package org.opensaml.util.storage;
 
 import java.util.Collection;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * A simple {@link Map} based {@link StorageService} implementation.
@@ -37,14 +39,22 @@ public class MapBasedStorageService<KeyType, ValueType> implements StorageServic
     }
 
     /** {@inheritDoc} */
-    public Collection<String> getPartitions() {
-        return store.keySet();
+    public Iterator<String> getPartitions() {
+        Set<String> keys = store.keySet();
+        if(keys != null){
+            return keys.iterator();
+        }
+        
+        return null; 
     }
     
     /** {@inheritDoc} */
-    public Collection<KeyType> getKeys(String partition) {
+    public Iterator<KeyType> getKeys(String partition) {
         if(store.containsKey(partition)){
-            return store.get(partition).keySet();
+            Set<KeyType> keys = store.get(partition).keySet();
+            if(keys != null){
+                return keys.iterator();
+            }
         }
         
         return null;
