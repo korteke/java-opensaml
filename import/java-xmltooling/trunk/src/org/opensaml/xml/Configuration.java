@@ -102,7 +102,9 @@ public class Configuration {
     public static void registerObjectProvider(QName providerName, XMLObjectBuilder builder, Marshaller marshaller,
             Unmarshaller unmarshaller, Element configuration) {
         log.debug("Registering new builder, marshaller, and unmarshaller for {}", providerName);
-        configuredObjectProviders.put(providerName, configuration);
+        if(configuration != null){
+            configuredObjectProviders.put(providerName, configuration);
+        }
         builderFactory.registerBuilder(providerName, builder);
         marshallerFactory.registerMarshaller(providerName, marshaller);
         unmarshallerFactory.registerUnmarshaller(providerName, unmarshaller);
