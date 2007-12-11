@@ -73,17 +73,11 @@ public class HttpResource implements Resource {
 
     /** {@inheritDoc} */
     public InputStream getInputStream() throws ResourceException {
-        GetMethod getMethod = new GetMethod(resourceUrl);
-
-        try {
-            httpClient.executeMethod(getMethod);
-            if (getMethod.getStatusCode() != HttpStatus.SC_OK) {
-                throw new ResourceException("Unable to retrieve resource URL " + resourceUrl
-                        + ", received HTTP status code " + getMethod.getStatusCode());
-            }
+        GetMethod getMethod = getResource();
+        try{
             return getMethod.getResponseBodyAsStream();
-        } catch (IOException e) {
-            throw new ResourceException("Unable to contact resource URL: " + resourceUrl, e);
+        }catch(IOException e){
+            throw new ResourceException("Unable to read response", e);
         }
     }
 
@@ -136,5 +130,27 @@ public class HttpResource implements Resource {
         }
 
         return false;
+    }
+    
+    /**
+     * Gets remote resource.
+     * 
+     * @return the remove resource
+     * 
+     * @throws ResourceException thrown if the resource could not be fetched
+     */
+    protected GetMethod getResource() throws ResourceException{
+        GetMethod getMethod = new GetMethod(resourceUrl);
+
+        try {
+            httpClient.executeMethod(getMethod);
+            if (getMethod.getStatusCode() != HttpStatus.SC_OK) {
+                throw new ResourceException("Unable to retrieve resource URL " + resourceUrl
+                        + ", received HTTP status code " + getMethod.getStatusCode());
+            }
+            return getMethod;
+        } catch (IOException e) {
+            throw new ResourceException("Unable to contact resource URL: " + resourceUrl, e);
+        }
     }
 }
