@@ -76,7 +76,7 @@ public abstract class BaseMessageDecoder implements MessageDecoder {
             if (securityPolicies != null) {
                 for (SecurityPolicy policy : securityPolicies) {
                     if (policy != null) {
-                        log.debug("Evaluating security policy  of type '{}' for decoded message", policy.getClass()
+                        log.debug("Evaluating security policy of type '{}' for decoded message", policy.getClass()
                                 .getName());
                         policy.evaluate(messageContext);
                     }
