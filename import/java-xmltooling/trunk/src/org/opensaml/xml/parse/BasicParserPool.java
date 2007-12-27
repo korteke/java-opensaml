@@ -321,7 +321,7 @@ public class BasicParserPool implements ParserPool {
      * 
      * @return the builders' features
      */
-    public Map<String, Boolean> getFeatures() {
+    public Map<String, Boolean> getBuilderFeatures() {
         return Collections.unmodifiableMap(builderFeatures);
     }
 
@@ -330,7 +330,7 @@ public class BasicParserPool implements ParserPool {
      * 
      * @param newFeatures the builders' features
      */
-    public void setFeatures(Map<String, Boolean> newFeatures) {
+    public void setBuilderFeatures(Map<String, Boolean> newFeatures) {
         builderFeatures = newFeatures;
         dirtyBuilderConfiguration = true;
     }

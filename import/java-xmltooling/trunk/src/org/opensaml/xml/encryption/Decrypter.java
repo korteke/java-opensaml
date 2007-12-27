@@ -181,7 +181,7 @@ public class Decrypter {
         // Note: this is necessary due to an unresolved Xerces deferred DOM issue/bug
         HashMap<String, Boolean> features = new HashMap<String, Boolean>();
         features.put("http://apache.org/xml/features/dom/defer-node-expansion", Boolean.FALSE);
-        parserPool.setFeatures(features);
+        parserPool.setBuilderFeatures(features);
 
         unmarshallerFactory = Configuration.getUnmarshallerFactory();
     }
