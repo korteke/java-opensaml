@@ -16,8 +16,6 @@
 
 package org.opensaml.ws.message.encoder;
 
-import java.util.logging.Level;
-
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.XMLObject;
