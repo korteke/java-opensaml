@@ -28,14 +28,14 @@ import org.opensaml.xml.XMLObject;
  * Message contexts are <strong>NOT</strong> thread safe.
  */
 public interface MessageContext {
-    
+
     /**
      * Gets the unique id of the communication profile in use.
      * 
      * @return unique id of the communication profile in use
      */
     public String getCommunicationProfileId();
-    
+
     /**
      * Gets the inbound message.
      * 
@@ -77,14 +77,29 @@ public interface MessageContext {
      * @return transport used to respond to the message
      */
     public OutTransport getOutboundMessageTransport();
-    
+
     /**
      * Gets the resolver used to determine active SecurityPolicy.
      * 
      * @return resolver used to determine active SecurityPolicy
      */
     public SecurityPolicyResolver getSecurityPolicyResolver();
-    
+
+    /**
+     * Gets whether the messages represented by this context has been authenticated. What it means for a message to be
+     * authenticate will vary by use and employed authentication mechanisms.
+     * 
+     * @return whether the messages represented by this context has been authenticated
+     */
+    public boolean isAuthenticatedMessage();
+
+    /**
+     * Sets whether the messages represented by this context has been authenticated.
+     * 
+     * @param isAuthenticated whether the messages represented by this context has been authenticated
+     */
+    public void setAuthenticatedMessage(boolean isAuthenticated);
+
     /**
      * Sets the unique id of the communication profile in use.
      * 
