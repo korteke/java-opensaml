@@ -239,6 +239,10 @@ public final class XMLHelper {
      * @return boolean value of the attribute or null
      */
     public static Boolean getAttributeValueAsBoolean(Attr attribute) {
+        if(attribute == null){
+            return null;
+        }
+        
         String valueStr = attribute.getValue();
         if (valueStr.equals("0") || valueStr.equals("false")) {
             return Boolean.FALSE;
