@@ -23,7 +23,7 @@
 	<classpathentry exported="true" kind="lib" path="lib/bcprov-jdk14-138.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jcl104-over-slf4j-1.4.3.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/log4j-over-slf4j-1.4.3.jar"/>
-	<classpathentry kind="lib" path="lib/joda-time-1.5.1.jar"/>
-	<classpathentry kind="lib" path="lib/not-yet-commons-ssl-0.3.9.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/joda-time-1.5.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/not-yet-commons-ssl-0.3.9.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
