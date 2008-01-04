@@ -138,11 +138,11 @@ public class Namespace {
      * 
      * @return {@inheritDoc}
      */
-    public boolean equals(Object obj) {
+    public boolean equals(Object obj) {        
         if (obj instanceof Namespace) {
             Namespace otherNamespace = (Namespace) obj;
-            if (otherNamespace.getNamespaceURI().equals(getNamespaceURI())) {
-                if (otherNamespace.getNamespacePrefix().equals(getNamespacePrefix())) {
+            if (DatatypeHelper.safeEquals(otherNamespace.getNamespaceURI(), getNamespaceURI())){
+                if (DatatypeHelper.safeEquals(otherNamespace.getNamespacePrefix(), getNamespacePrefix())){
                     return otherNamespace.alwaysDeclare() == alwaysDeclare();
                 }
             }
