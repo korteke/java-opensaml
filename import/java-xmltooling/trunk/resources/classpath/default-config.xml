@@ -11,9 +11,9 @@
     
         <!-- Default Provider -->
         <ObjectProvider qualifiedName="xt:DEFAULT">
-            <BuilderClass className="org.opensaml.xml.ElementProxyBuilder" />
-            <MarshallingClass className="org.opensaml.xml.ElementProxyMarshaller" />
-            <UnmarshallingClass className="org.opensaml.xml.ElementProxyUnmarshaller" />
+            <BuilderClass className="org.opensaml.xml.schema.impl.XSAnyBuilder" />
+            <MarshallingClass className="org.opensaml.xml.schema.impl.XSAnyMarshaller" />
+            <UnmarshallingClass className="org.opensaml.xml.schema.impl.XSAnyUnmarshaller" />
         </ObjectProvider>
         
     </ObjectProviders>

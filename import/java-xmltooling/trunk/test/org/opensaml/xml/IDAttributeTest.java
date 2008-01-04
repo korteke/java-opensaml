@@ -27,6 +27,7 @@ import org.opensaml.xml.io.Unmarshaller;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.mock.SimpleXMLObject;
 import org.opensaml.xml.parse.XMLParserException;
+import org.opensaml.xml.schema.XSAny;
 import org.opensaml.xml.signature.KeyInfo;
 import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Document;
@@ -279,14 +280,14 @@ public class IDAttributeTest extends XMLObjectBaseTestCase {
         Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(Configuration.getDefaultProviderQName());
         XMLObject xmlobject = unmarshaller.unmarshall(document.getDocumentElement());
         
-        ElementProxy epParent = (ElementProxy) xmlobject;
-        assertNotNull("Cast of parent to ElementProxy failed", epParent);
+        XSAny epParent = (XSAny) xmlobject;
+        assertNotNull("Cast of parent to XSAny failed", epParent);
         
-        ElementProxy epChild0 = (ElementProxy) epParent.getUnknownXMLObjects().get(0);
-        assertNotNull("Cast of child 0 to ElementProxy failed", epChild0);
+        XSAny epChild0 = (XSAny) epParent.getUnknownXMLObjects().get(0);
+        assertNotNull("Cast of child 0 to XSAny failed", epChild0);
         
-        ElementProxy epChild1 = (ElementProxy) epParent.getUnknownXMLObjects().get(1);
-        assertNotNull("Cast of child 1 to ElementProxy failed", epChild1);
+        XSAny epChild1 = (XSAny) epParent.getUnknownXMLObjects().get(1);
+        assertNotNull("Cast of child 1 to XSAny failed", epChild1);
         
         // Since not doing schema validation, etc, the parser won't register the ID type in the DOM
         // (i.e. DOM Attribute.isId() will fail) and so the unmarshaller won't be able to register 
@@ -323,11 +324,11 @@ public class IDAttributeTest extends XMLObjectBaseTestCase {
         Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(Configuration.getDefaultProviderQName());
         XMLObject xmlobject = unmarshaller.unmarshall(document.getDocumentElement());
         
-        ElementProxy epParent = (ElementProxy) xmlobject;
-        assertNotNull("Cast of parent to ElementProxy failed", epParent);
+        XSAny epParent = (XSAny) xmlobject;
+        assertNotNull("Cast of parent to XSAny failed", epParent);
         
-        ElementProxy epChild0 = (ElementProxy) epParent.getUnknownXMLObjects().get(0);
-        assertNotNull("Cast of child 0 to ElementProxy failed", epChild0);
+        XSAny epChild0 = (XSAny) epParent.getUnknownXMLObjects().get(0);
+        assertNotNull("Cast of child 0 to XSAny failed", epChild0);
         
         // Now manually register the "id" attribute in the AttributeMap of child 0 as being an ID type.
         // This should cause the expected ID-to-XMLObject mapping behaviour to take place.
@@ -382,7 +383,7 @@ public class IDAttributeTest extends XMLObjectBaseTestCase {
         document = parserPool.parse(IDAttributeTest.class.getResourceAsStream(documentLocation));
         xmlObject = unmarshaller.unmarshall(document.getDocumentElement());
         assertEquals("Lookup of ID mapping failed", xmlObject, xmlObject.resolveID("GlobalID1"));
-        assertEquals("Lookup of ID mapping failed", ((ElementProxy) xmlObject).getUnknownXMLObjects().get(0),
+        assertEquals("Lookup of ID mapping failed", ((XSAny) xmlObject).getUnknownXMLObjects().get(0),
                 xmlObject.resolveID("GlobalID2"));
         
         // After deregistration
