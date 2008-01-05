@@ -26,6 +26,8 @@ import java.util.EmptyStackException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -68,7 +70,7 @@ public class BasicParserPool implements ParserPool {
     /** Create a new builder when the pool size is reached. Default value: true */
     private boolean createBuildersAtPoolLimit;
 
-    /** Whether a change has been made to the builder configuratiom but has not yet been applied. */
+    /** Whether a change has been made to the builder configuration but has not yet been applied. */
     private boolean dirtyBuilderConfiguration;
 
     /** Factory used to create new builders. */
@@ -76,6 +78,9 @@ public class BasicParserPool implements ParserPool {
 
     /** Cache of document builders. */
     private Stack<SoftReference<DocumentBuilder>> builderPool;
+    
+    /** Lock used when we're performing operations that remove items from the pool. */
+    private Lock builderPoolLock;
 
     /** Max number of builders allowed in the pool. Default value: 5 */
     private int maxPoolSize;
@@ -121,6 +126,7 @@ public class BasicParserPool implements ParserPool {
         Configuration.validateNonSunJAXP();
         maxPoolSize = 5;
         builderPool = new Stack<SoftReference<DocumentBuilder>>();
+        builderPoolLock = new ReentrantLock(true);
         builderAttributes = new HashMap<String, Object>();
         coalescing = true;
         expandEntityReferences = true;
@@ -142,18 +148,23 @@ public class BasicParserPool implements ParserPool {
 
     /** {@inheritDoc} */
     public DocumentBuilder getBuilder() throws XMLParserException {
-        if (dirtyBuilderConfiguration) {
-            initializePool();
-        }
-
         DocumentBuilder builder = null;
 
         try {
+            builderPoolLock.lock();
+            
+            if (dirtyBuilderConfiguration) {
+                initializePool();
+            }
             builder = builderPool.pop().get();
         } catch (EmptyStackException e) {
-            // ignore, we'll deal with it next
+            // we don't take care of this here because we do the same thing whether
+            // we get this exception or if the builder is null because its was 
+            // garbage collected is the same (we're using soft references, remember?)
+        }finally{
+            builderPoolLock.unlock();
         }
-
+        
         if (builder == null) {
             if (builderPool.size() < maxPoolSize || createBuildersAtPoolLimit) {
                 builder = createBuilder();
@@ -200,12 +211,13 @@ public class BasicParserPool implements ParserPool {
         DocumentBuilder builder = getBuilder();
         try {
             Document document = builder.parse(input);
-            returnBuilder(builder);
             return document;
         } catch (SAXException e) {
             throw new XMLParserException("Invalid XML", e);
         } catch (IOException e) {
             throw new XMLParserException("Unable to read XML from input stream", e);
+        }finally{
+            returnBuilder(builder);
         }
     }
     
@@ -214,12 +226,13 @@ public class BasicParserPool implements ParserPool {
         DocumentBuilder builder = getBuilder();
         try {
             Document document = builder.parse(new InputSource(input));
-            returnBuilder(builder);
             return document;
         } catch (SAXException e) {
             throw new XMLParserException("Invalid XML", e);
         } catch (IOException e) {
             throw new XMLParserException("Unable to read XML from input stream", e);
+        }finally{
+            returnBuilder(builder);
         }
     }
 
