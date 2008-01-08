@@ -22,12 +22,22 @@ import org.opensaml.xml.io.MarshallingException;
 import org.w3c.dom.Element;
 
 /**
- * An abstract marshaller implementation for XMLObjects from {@link org.opensaml.xml.signature}
+ * An abstract marshaller implementation for XMLObjects from {@link org.opensaml.xml.signature}.
  */
 public abstract class AbstractXMLSignatureMarshaller extends AbstractXMLObjectMarshaller {
 
-    /** Constructor */
-    protected AbstractXMLSignatureMarshaller(String targetNamespaceURI, String targetLocalName){
+    /** Constructor. */
+    protected AbstractXMLSignatureMarshaller() {
+        super();
+    }
+
+    /**
+     * Constructor.
+     * 
+     * @param targetNamespaceURI namespace URI
+     * @param targetLocalName local name
+     */
+    protected AbstractXMLSignatureMarshaller(String targetNamespaceURI, String targetLocalName) {
         super(targetNamespaceURI, targetLocalName);
     }
 

@@ -26,21 +26,26 @@ import org.w3c.dom.Element;
  */
 public abstract class EncryptedTypeMarshaller extends AbstractXMLEncryptionMarshaller {
 
+    /** Constructor. */
+    protected EncryptedTypeMarshaller() {
+        super();
+    }
+
     /**
      * Constructor.
-     *
+     * 
      * @param targetNamespaceURI
      * @param targetLocalName
      * @throws IllegalArgumentException
      */
-    public EncryptedTypeMarshaller(String targetNamespaceURI, String targetLocalName){
+    public EncryptedTypeMarshaller(String targetNamespaceURI, String targetLocalName) {
         super(targetNamespaceURI, targetLocalName);
     }
 
     /** {@inheritDoc} */
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         EncryptedType et = (EncryptedType) xmlObject;
-        
+
         if (et.getID() != null) {
             domElement.setAttributeNS(null, EncryptedType.ID_ATTRIB_NAME, et.getID());
             domElement.setIdAttributeNS(null, EncryptedType.ID_ATTRIB_NAME, true);

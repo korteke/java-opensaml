@@ -30,21 +30,27 @@ import org.w3c.dom.Attr;
  */
 public abstract class EncryptedTypeUnmarshaller extends AbstractXMLEncryptionUnmarshaller {
 
+    /** Constructor. */
+    protected EncryptedTypeUnmarshaller() {
+        super();
+    }
+
     /**
      * Constructor.
-     *
+     * 
      * @param targetNamespaceURI
      * @param targetLocalName
      * @throws IllegalArgumentException
      */
-    public EncryptedTypeUnmarshaller(String targetNamespaceURI, String targetLocalName){
+    public EncryptedTypeUnmarshaller(String targetNamespaceURI, String targetLocalName) {
         super(targetNamespaceURI, targetLocalName);
     }
 
     /** {@inheritDoc} */
-    protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject) throws UnmarshallingException {
+    protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
+            throws UnmarshallingException {
         EncryptedType et = (EncryptedType) parentXMLObject;
-        
+
         if (childXMLObject instanceof EncryptionMethod) {
             et.setEncryptionMethod((EncryptionMethod) childXMLObject);
         } else if (childXMLObject instanceof KeyInfo) {
@@ -62,7 +68,7 @@ public abstract class EncryptedTypeUnmarshaller extends AbstractXMLEncryptionUnm
     /** {@inheritDoc} */
     protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
         EncryptedType et = (EncryptedType) xmlObject;
-        
+
         if (attribute.getLocalName().equals(EncryptedType.ID_ATTRIB_NAME)) {
             et.setID(attribute.getValue());
             attribute.getOwnerElement().setIdAttributeNode(attribute, true);

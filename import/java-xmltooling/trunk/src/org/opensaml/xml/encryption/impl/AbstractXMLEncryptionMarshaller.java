@@ -26,13 +26,18 @@ import org.w3c.dom.Element;
  */
 public abstract class AbstractXMLEncryptionMarshaller extends AbstractXMLObjectMarshaller {
 
+    /** Constructor. */
+    protected AbstractXMLEncryptionMarshaller() {
+        super();
+    }
+
     /**
      * Constructor.
-     *
+     * 
      * @param targetNamespaceURI namespace URI
      * @param targetLocalName local name
      */
-    protected AbstractXMLEncryptionMarshaller(String targetNamespaceURI, String targetLocalName){
+    protected AbstractXMLEncryptionMarshaller(String targetNamespaceURI, String targetLocalName) {
         super(targetNamespaceURI, targetLocalName);
     }
 

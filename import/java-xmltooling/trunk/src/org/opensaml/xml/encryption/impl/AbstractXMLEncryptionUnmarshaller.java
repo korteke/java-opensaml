@@ -33,6 +33,11 @@ public abstract class AbstractXMLEncryptionUnmarshaller extends AbstractXMLObjec
      */
     private final Logger log = LoggerFactory.getLogger(AbstractXMLEncryptionUnmarshaller.class);
 
+    /** Constructor. */
+    protected AbstractXMLEncryptionUnmarshaller() {
+        super();
+    }
+
     /**
      * Constructor.
      * 
