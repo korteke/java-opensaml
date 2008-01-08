@@ -479,6 +479,10 @@ public class BasicSecurityConfiguration implements SecurityConfiguration {
         
         /** {@inheritDoc} */
         public boolean equals(Object obj) {
+            if(obj == this){
+                return true;
+            }
+            
             if (! (obj instanceof KeyTransportEncryptionIndex)) {
                 return false;
             }

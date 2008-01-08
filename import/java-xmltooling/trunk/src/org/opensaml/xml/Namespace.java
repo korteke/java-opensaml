@@ -122,8 +122,10 @@ public class Namespace {
 
     /** {@inheritDoc} */
     public int hashCode() {
-        String hashingString = toString() + Boolean.toString(alwaysDeclare);
-        return hashingString.hashCode();
+        int hash = 1;
+        hash = hash * 31 + toString().hashCode();
+        hash = hash * 31 + (alwaysDeclare ? 0 : 1);
+        return hash;
     }
 
     /**
@@ -138,7 +140,11 @@ public class Namespace {
      * 
      * @return {@inheritDoc}
      */
-    public boolean equals(Object obj) {        
+    public boolean equals(Object obj) {    
+        if(obj == this){
+            return true;
+        }
+        
         if (obj instanceof Namespace) {
             Namespace otherNamespace = (Namespace) obj;
             if (DatatypeHelper.safeEquals(otherNamespace.getNamespaceURI(), getNamespaceURI())){

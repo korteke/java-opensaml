@@ -111,13 +111,12 @@ public class XSBooleanValue {
     
     /** {@inheritDoc} */
     public boolean equals(Object obj){
-        if(obj == null){
-            return false;
+        if(obj == this){
+            return true;
         }
         
         if(obj instanceof XSBooleanValue){
-            XSBooleanValue otherValue = (XSBooleanValue) obj;
-            return hashCode() == otherValue.hashCode();
+            return hashCode() == obj.hashCode();
         }
         
         return false;

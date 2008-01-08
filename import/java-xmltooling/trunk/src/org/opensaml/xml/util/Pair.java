@@ -80,6 +80,10 @@ public class Pair<T1, T2> {
     /** {@inheritDoc} */
     @SuppressWarnings("unchecked")
     public boolean equals(Object o) {
+        if(o == this){
+            return true;
+        }
+        
         if (o instanceof Pair) {
             Pair<T1, T2> otherPair = (Pair<T1, T2>) o;
             return DatatypeHelper.safeEquals(getFirst(), otherPair.getFirst())
