@@ -144,7 +144,7 @@ public class ResourceChangeWatcher extends TimerTask {
     /** {@inheritDoc} */
     public void run() {
         try {
-            log.debug("Checking resource for changes: {}", watchedResource.getLocation());
+            log.trace("Checking resource for changes: {}", watchedResource.getLocation());
             if (watchedResource.exists()) {
                 if (!resourceExist) {
                     resourceExist = true;
