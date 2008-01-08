@@ -282,13 +282,14 @@ public class KeyInfoHelper {
      *           certificate representation to the XMLObject representation
      */
     public static void addCertificate(KeyInfo keyInfo, X509Certificate cert) throws CertificateEncodingException {
-        X509Data x509Data = keyInfo.getX509Datas().get(0);
-        if (x509Data == null) {
+        X509Data x509Data;
+        if (keyInfo.getX509Datas().size() == 0) {
             x509Data = (X509Data) Configuration.getBuilderFactory()
                 .getBuilder(X509Data.DEFAULT_ELEMENT_NAME)
                 .buildObject(X509Data.DEFAULT_ELEMENT_NAME);
             keyInfo.getX509Datas().add(x509Data);
-            
+        } else {
+            x509Data = keyInfo.getX509Datas().get(0);
         }
         x509Data.getX509Certificates().add(buildX509Certificate(cert));
     }
@@ -304,13 +305,14 @@ public class KeyInfoHelper {
      *           CRL representation to the XMLObject representation
      */
     public static void addCRL(KeyInfo keyInfo, X509CRL crl) throws CRLException {
-        X509Data x509Data = keyInfo.getX509Datas().get(0);
-        if (x509Data == null) {
+        X509Data x509Data;
+        if (keyInfo.getX509Datas().size() == 0) {
             x509Data = (X509Data) Configuration.getBuilderFactory()
                 .getBuilder(X509Data.DEFAULT_ELEMENT_NAME)
                 .buildObject(X509Data.DEFAULT_ELEMENT_NAME);
             keyInfo.getX509Datas().add(x509Data);
-            
+        } else {
+            x509Data = keyInfo.getX509Datas().get(0);
         }
         x509Data.getX509CRLs().add(buildX509CRL(crl));
     }

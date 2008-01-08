@@ -511,6 +511,44 @@ public class KeyInfoHelperTest extends XMLObjectBaseTestCase {
         keyInfo.getKeyValues().clear();
     }
     
+    /** Tests adding a certificate as a X509Data/X509Certificate to KeyInfo. 
+     * @throws CertificateException */
+    public void testAddX509Certificate() throws CertificateException {
+       keyInfo.getX509Datas().clear();
+        
+        KeyInfoHelper.addCertificate(keyInfo, javaCert1);
+        X509Data x509Data = keyInfo.getX509Datas().get(0);
+        assertNotNull("X509Data was null", x509Data);
+        X509Certificate x509Cert = x509Data.getX509Certificates().get(0);
+        assertNotNull("X509Certificate was null", x509Cert);
+        
+        java.security.cert.X509Certificate javaCert = null;
+        javaCert = (java.security.cert.X509Certificate) KeyInfoHelper.getCertificate(x509Cert);
+        
+        assertEquals("Inserted X509Certificate was not the expected value", javaCert1, javaCert);
+        
+        keyInfo.getX509Datas().clear();
+    }
+    
+    /** Tests adding a certificate as a X509Data/X509Certificate to KeyInfo. 
+     * @throws CRLException */
+    public void testAddX509CRL() throws CRLException {
+       keyInfo.getX509Datas().clear();
+        
+        KeyInfoHelper.addCRL(keyInfo, javaCRL1);
+        X509Data x509Data = keyInfo.getX509Datas().get(0);
+        assertNotNull("X509Data was null", x509Data);
+        X509CRL x509CRL = x509Data.getX509CRLs().get(0);
+        assertNotNull("X509CRL was null", x509CRL);
+        
+        java.security.cert.X509CRL javaCRL = null;
+        javaCRL = (java.security.cert.X509CRL) KeyInfoHelper.getCRL(x509CRL);
+        
+        assertEquals("Inserted X509CRL was not the expected value", javaCRL1, javaCRL);
+        
+        keyInfo.getX509Datas().clear();
+    }
+    
     /** Tests building a new X509SubjectName.*/
     public void testBuildSubjectName() {
         String name = "cn=foobar.example.org, o=Internet2";
