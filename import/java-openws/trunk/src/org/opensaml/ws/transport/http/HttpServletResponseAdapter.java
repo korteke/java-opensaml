@@ -40,15 +40,20 @@ public class HttpServletResponseAdapter implements HTTPOutTransport {
     /** Whether the peer endpoint has been authenticated. */
     private boolean peerAuthenticated;
 
+    /** Whether the HTTP connection is over SSL/TLS. */
+    private boolean secure;
+
     /**
      * Constructor.
      * 
      * @param response servlet response to adapt
+     * @param isSecure whether the outbound connection is protected by SSL/TLS
      */
-    public HttpServletResponseAdapter(HttpServletResponse response) {
+    public HttpServletResponseAdapter(HttpServletResponse response, boolean isSecure) {
         httpServletResponse = response;
+        secure = isSecure;
     }
-    
+
     /**
      * {@inheritDoc}
      * 
@@ -106,7 +111,7 @@ public class HttpServletResponseAdapter implements HTTPOutTransport {
     public String getParameterValue(String name) {
         return null;
     }
-    
+
     /** {@inheritDoc} */
     public List<String> getParameterValues(String name) {
         return null;
@@ -140,7 +145,7 @@ public class HttpServletResponseAdapter implements HTTPOutTransport {
      * 
      * @return adapted response
      */
-    public HttpServletResponse getWrappedResponse(){
+    public HttpServletResponse getWrappedResponse() {
         return httpServletResponse;
     }
 
@@ -155,14 +160,14 @@ public class HttpServletResponseAdapter implements HTTPOutTransport {
      * This method is not supported for this transport implementation and always returns false.
      */
     public boolean isConfidential() {
-        return false;
+        return secure;
     }
 
     /** {@inheritDoc} */
     public void sendRedirect(String location) {
-        try{
+        try {
             httpServletResponse.sendRedirect(location);
-        }catch(IOException e){
+        } catch (IOException e) {
             log.error("Unable to send redirect message", e);
         }
     }
@@ -197,17 +202,17 @@ public class HttpServletResponseAdapter implements HTTPOutTransport {
 
     /** {@inheritDoc} */
     public void setHeader(String name, String value) {
-        if(name == null){
+        if (name == null) {
             return;
         }
-        
+
         // HttpServletRequest requires certain headers be set by special methods
-        if(name.equalsIgnoreCase("Content-Type")){
+        if (name.equalsIgnoreCase("Content-Type")) {
             httpServletResponse.setContentType(value);
-        }else if(name.equalsIgnoreCase("Content-Length")){
+        } else if (name.equalsIgnoreCase("Content-Length")) {
             httpServletResponse.setContentLength(Integer.parseInt(value));
         }
-        
+
         httpServletResponse.setHeader(name, value);
     }
 
@@ -230,5 +235,15 @@ public class HttpServletResponseAdapter implements HTTPOutTransport {
      * This method is not supported for this transport implementation.
      */
     public void setVersion(HTTP_VERSION version) {
+    }
+
+    /** {@inheritDoc} */
+    public boolean isIntegrityProtected() {
+        return secure;
+    }
+
+    /** {@inheritDoc} */
+    public void setIntegrityProtected(boolean isIntegrityProtected) {
+
     }
 }

@@ -59,7 +59,7 @@ public interface Transport {
      * @return whether the peer is authenticated
      */
     public boolean isAuthenticated();
-    
+
     /**
      * Sets whether the peer is authenticated.
      * 
@@ -73,11 +73,26 @@ public interface Transport {
      * @return whether the transport represents a confidential connection
      */
     public boolean isConfidential();
-    
+
     /**
      * Sets whether the transport represents a confidential connection.
      * 
      * @param isConfidential whether the transport represents a confidential connection
      */
     public void setConfidential(boolean isConfidential);
+
+    /**
+     * Gets whether the transport represents a connection that protects the integrity of transported content.
+     * 
+     * @return whether the transport represents a connection that protects the integrity of transported content
+     */
+    public boolean isIntegrityProtected();
+
+    /**
+     * Sets whether the transport represents a connection that protects the integrity of transported content.
+     * 
+     * @param isIntegrityProtected whether the transport represents a connection that protects the integrity of
+     *            transported content
+     */
+    public void setIntegrityProtected(boolean isIntegrityProtected);
 }

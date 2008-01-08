@@ -111,6 +111,9 @@ public class HTTPSOAPTransport implements ClientTransport {
 
         /** Whether the transport is confidential. */
         private boolean transportConfidential;
+        
+        /** Whether the transport provides integrity protection. */
+        private boolean transportIntegrityProtected;
 
         /**
          * Constructor.
@@ -313,6 +316,16 @@ public class HTTPSOAPTransport implements ClientTransport {
             }
             return null;
         }
+        
+        /** {@inheritDoc} */
+        public boolean isIntegrityProtected() {
+            return transportIntegrityProtected;
+        }
+        
+        /** {@inheritDoc} */
+        public void setIntegrityProtected(boolean isIntegrityProtected) {
+            transportIntegrityProtected = isIntegrityProtected;
+        }
     }
 
     /**
@@ -328,6 +341,9 @@ public class HTTPSOAPTransport implements ClientTransport {
 
         /** Whether the transport is confidential. */
         private boolean transportConfidential;
+        
+        /** Whether the transport provides integrity protection. */
+        private boolean transportIntegrityProtected;
 
         /**
          * Constructor.
@@ -466,6 +482,16 @@ public class HTTPSOAPTransport implements ClientTransport {
                 return HTTP_VERSION.HTTP1_1;
             }
             return null;
+        }
+        
+        /** {@inheritDoc} */
+        public boolean isIntegrityProtected() {
+            return transportIntegrityProtected;
+        }
+        
+        /** {@inheritDoc} */
+        public void setIntegrityProtected(boolean isIntegrityProtected) {
+            transportIntegrityProtected = isIntegrityProtected;
         }
     }
 }

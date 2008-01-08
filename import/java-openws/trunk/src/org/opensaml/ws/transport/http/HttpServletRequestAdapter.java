@@ -188,4 +188,14 @@ public class HttpServletRequestAdapter implements HTTPInTransport {
     public void setConfidential(boolean isConfidential) {
 
     }
+    
+    /** {@inheritDoc} */
+    public boolean isIntegrityProtected() {
+        return httpServletRequest.isSecure();
+    }
+    
+    /** {@inheritDoc} */
+    public void setIntegrityProtected(boolean isIntegrityProtected) {
+        
+    }
 }

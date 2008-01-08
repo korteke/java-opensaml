@@ -33,4 +33,28 @@ public interface MessageEncoder {
      * @throws MessageEncodingException thrown if the problem can not be encoded
      */
     public void encode(MessageContext messageContext) throws MessageEncodingException;
+
+    /**
+     * Indicates whether this encoder, given the current message context, provides end-to-end message confidentiality.
+     * 
+     * @param messageContext the current message context
+     * 
+     * @return true if the encoder provides end-to-end message confidentiality, false if not
+     * 
+     * @throws MessageEncodingException thrown if the encoder encounter an error while attempt to evaluate its ability
+     *             to provide message confidentiality.
+     */
+    public boolean providesMessageConfidentiality(MessageContext messageContext) throws MessageEncodingException;
+
+    /**
+     * Indicates whether this encoder, given the current message context, provides end-to-end message integrity.
+     * 
+     * @param messageContext the current message context
+     * 
+     * @return true if the encoder provides end-to-end message integrity, false if not
+     * 
+     * @throws MessageEncodingException thrown if the encoder encounter an error while attempt to evaluate its ability
+     *             to provide message integrity.
+     */
+    public boolean providesMessageIntegrity(MessageContext messageContext) throws MessageEncodingException;
 }
