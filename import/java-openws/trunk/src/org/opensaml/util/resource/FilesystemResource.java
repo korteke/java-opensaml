@@ -87,6 +87,10 @@ public class FilesystemResource implements Resource {
     
     /** {@inheritDoc} */
     public boolean equals(Object o) {
+        if(o == this){
+            return true;
+        }
+        
         if(o instanceof FilesystemResource){
             return getLocation().equals(((ClasspathResource)o).getLocation());
         }

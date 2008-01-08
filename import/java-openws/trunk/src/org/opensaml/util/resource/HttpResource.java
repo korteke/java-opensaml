@@ -125,6 +125,10 @@ public class HttpResource implements Resource {
 
     /** {@inheritDoc} */
     public boolean equals(Object o) {
+        if(o == this){
+            return true;
+        }
+        
         if (o instanceof HttpResource) {
             return getLocation().equals(((ClasspathResource) o).getLocation());
         }
