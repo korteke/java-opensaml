@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.xml.signature;
+package org.opensaml.xml.security.keyinfo;
 
 import java.math.BigInteger;
 import java.security.KeyException;
@@ -33,6 +33,22 @@ import javax.security.auth.x500.X500Principal;
 import org.opensaml.xml.XMLObjectBaseTestCase;
 import org.opensaml.xml.security.SecurityTestHelper;
 import org.opensaml.xml.security.keyinfo.KeyInfoHelper;
+import org.opensaml.xml.signature.DSAKeyValue;
+import org.opensaml.xml.signature.Exponent;
+import org.opensaml.xml.signature.G;
+import org.opensaml.xml.signature.KeyInfo;
+import org.opensaml.xml.signature.KeyValue;
+import org.opensaml.xml.signature.Modulus;
+import org.opensaml.xml.signature.P;
+import org.opensaml.xml.signature.Q;
+import org.opensaml.xml.signature.RSAKeyValue;
+import org.opensaml.xml.signature.X509CRL;
+import org.opensaml.xml.signature.X509Certificate;
+import org.opensaml.xml.signature.X509Data;
+import org.opensaml.xml.signature.X509IssuerSerial;
+import org.opensaml.xml.signature.X509SKI;
+import org.opensaml.xml.signature.X509SubjectName;
+import org.opensaml.xml.signature.Y;
 import org.opensaml.xml.util.Base64;
 import org.opensaml.xml.util.DatatypeHelper;
 
