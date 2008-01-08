@@ -546,7 +546,7 @@ public class KeyInfoHelperTest extends XMLObjectBaseTestCase {
         keyInfo.getX509Datas().clear();
     }
     
-    /** Tests adding a certificate as a X509Data/X509Certificate to KeyInfo. 
+    /** Tests adding a CRL as a X509Data/X509CRL to KeyInfo. 
      * @throws CRLException */
     public void testAddX509CRL() throws CRLException {
        keyInfo.getX509Datas().clear();
