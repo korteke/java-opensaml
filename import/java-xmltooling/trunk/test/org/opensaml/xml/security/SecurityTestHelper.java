@@ -24,10 +24,12 @@ import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
+import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.cert.CRLException;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
+import java.security.interfaces.DSAPrivateKey;
 import java.security.interfaces.DSAPublicKey;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
@@ -134,17 +136,38 @@ public class SecurityTestHelper {
      * @throws KeyException thrown if there is an error constructing key
      */
     public static RSAPrivateKey buildJavaRSAPrivateKey(String base64EncodedKey)  throws KeyException {
-        PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(Base64.decode(base64EncodedKey));
-        try {
-            KeyFactory keyFactory = KeyFactory.getInstance("RSA");
-            return (RSAPrivateKey) keyFactory.generatePrivate(keySpec);
-        } catch (NoSuchAlgorithmException e) {
-            throw new KeyException("RSA algorithm is not supported by the JCE", e);
-        } catch (InvalidKeySpecException e) {
-            throw new KeyException("Invalid key information", e);
+        PrivateKey key =  buildJavaPrivateKey(base64EncodedKey);
+        if (! (key instanceof RSAPrivateKey)) {
+            throw new KeyException("Generated key was not an RSAPrivateKey instance");
         }
+        return (RSAPrivateKey) key;
     }
     
+    /**
+     * Build Java DSA private key from base64 encoding.
+     * 
+     * @param base64EncodedKey base64-encoded DSA private key
+     * @return a native Java DSAPrivateKey
+     * @throws KeyException thrown if there is an error constructing key
+     */
+    public static DSAPrivateKey buildJavaDSAPrivateKey(String base64EncodedKey)  throws KeyException {
+        PrivateKey key =  buildJavaPrivateKey(base64EncodedKey);
+        if (! (key instanceof DSAPrivateKey)) {
+            throw new KeyException("Generated key was not a DSAPrivateKey instance");
+        }
+        return (DSAPrivateKey) key;
+    }
+    
+    /**
+     * Build Java private key from base64 encoding. The key should have no password.
+     * 
+     * @param base64EncodedKey base64-encoded private key
+     * @return a native Java PrivateKey
+     * @throws KeyException thrown if there is an error constructing key
+     */
+    public static PrivateKey buildJavaPrivateKey(String base64EncodedKey)  throws KeyException {
+        return SecurityHelper.decodePrivateKey(Base64.decode(base64EncodedKey), null);
+    }
     
     /**
      * Build a Java BigInteger from the base64 encoded string.
