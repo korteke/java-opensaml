@@ -78,7 +78,7 @@ public class BasicParserPool implements ParserPool {
 
     /** Cache of document builders. */
     private Stack<SoftReference<DocumentBuilder>> builderPool;
-    
+
     /** Lock used when we're performing operations that remove items from the pool. */
     private Lock builderPoolLock;
 
@@ -140,6 +140,7 @@ public class BasicParserPool implements ParserPool {
         errorHandler = new LoggingErrorHandler(log);
 
         try {
+            dirtyBuilderConfiguration = true;
             initializePool();
         } catch (XMLParserException e) {
             // default settings, no parsing exception
@@ -151,20 +152,16 @@ public class BasicParserPool implements ParserPool {
         DocumentBuilder builder = null;
 
         try {
-            builderPoolLock.lock();
-            
             if (dirtyBuilderConfiguration) {
                 initializePool();
             }
             builder = builderPool.pop().get();
         } catch (EmptyStackException e) {
             // we don't take care of this here because we do the same thing whether
-            // we get this exception or if the builder is null because its was 
+            // we get this exception or if the builder is null because its was
             // garbage collected is the same (we're using soft references, remember?)
-        }finally{
-            builderPoolLock.unlock();
         }
-        
+
         if (builder == null) {
             if (builderPool.size() < maxPoolSize || createBuildersAtPoolLimit) {
                 builder = createBuilder();
@@ -216,11 +213,11 @@ public class BasicParserPool implements ParserPool {
             throw new XMLParserException("Invalid XML", e);
         } catch (IOException e) {
             throw new XMLParserException("Unable to read XML from input stream", e);
-        }finally{
+        } finally {
             returnBuilder(builder);
         }
     }
-    
+
     /** {@inheritDoc} */
     public Document parse(Reader input) throws XMLParserException {
         DocumentBuilder builder = getBuilder();
@@ -231,7 +228,7 @@ public class BasicParserPool implements ParserPool {
             throw new XMLParserException("Invalid XML", e);
         } catch (IOException e) {
             throw new XMLParserException("Unable to read XML from input stream", e);
-        }finally{
+        } finally {
             returnBuilder(builder);
         }
     }
@@ -474,7 +471,12 @@ public class BasicParserPool implements ParserPool {
      * 
      * @throws XMLParserException thrown if there is a problem initialzing the pool
      */
-    protected void initializePool() throws XMLParserException {
+    protected synchronized void initializePool() throws XMLParserException {
+        if (!dirtyBuilderConfiguration) {
+            // in case the pool was initialized by some other thread
+            return;
+        }
+
         try {
             DocumentBuilderFactory newFactory = DocumentBuilderFactory.newInstance();
 
