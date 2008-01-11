@@ -96,7 +96,11 @@ public class BaseMessageContext implements MessageContext {
 
     /** {@inheritDoc} */
     public boolean isAuthenticatedMessage() {
-        return authenticatedMessage;
+        if (getInboundMessageTransport() == null) {
+            return authenticatedMessage;
+        } else {
+            return authenticatedMessage || getInboundMessageTransport().isAuthenticated();
+        }
     }
 
     /** {@inheritDoc} */
