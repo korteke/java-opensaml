@@ -16,7 +16,6 @@
 
 package org.opensaml.util.storage;
 
-import java.util.Collection;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Map;
@@ -41,49 +40,61 @@ public class MapBasedStorageService<KeyType, ValueType> implements StorageServic
     /** {@inheritDoc} */
     public Iterator<String> getPartitions() {
         Set<String> keys = store.keySet();
-        if(keys != null){
+        if (keys != null) {
             return keys.iterator();
         }
-        
-        return null; 
+
+        return null;
     }
-    
+
     /** {@inheritDoc} */
     public Iterator<KeyType> getKeys(String partition) {
-        if(store.containsKey(partition)){
+        if (store.containsKey(partition)) {
             Set<KeyType> keys = store.get(partition).keySet();
-            if(keys != null){
+            if (keys != null) {
                 return keys.iterator();
             }
         }
-        
+
         return null;
     }
 
     /** {@inheritDoc} */
     public boolean contains(String partition, KeyType key) {
-        if(store.containsKey(partition)){
+        if (key == null) {
+            return false;
+        }
+
+        if (store.containsKey(partition)) {
             return store.get(partition).containsKey(key);
         }
-        
+
         return false;
     }
 
     /** {@inheritDoc} */
     public ValueType get(String partition, KeyType key) {
-        if(store.containsKey(partition)){
+        if (key == null) {
+            return null;
+        }
+
+        if (store.containsKey(partition)) {
             return store.get(partition).get(key);
         }
-        
+
         return null;
     }
 
     /** {@inheritDoc} */
     public ValueType put(String partition, KeyType key, ValueType value) {
+        if (key == null) {
+            return null;
+        }
+
         Map<KeyType, ValueType> partitionMap;
         synchronized (store) {
             partitionMap = store.get(partition);
-            if(partitionMap == null){
+            if (partitionMap == null) {
                 partitionMap = new Hashtable<KeyType, ValueType>();
             }
             store.put(partition, partitionMap);
@@ -94,10 +105,14 @@ public class MapBasedStorageService<KeyType, ValueType> implements StorageServic
 
     /** {@inheritDoc} */
     public ValueType remove(String partition, KeyType key) {
-        if(store.containsKey(partition)){
+        if (key == null) {
+            return null;
+        }
+
+        if (store.containsKey(partition)) {
             return store.get(partition).remove(key);
         }
-        
+
         return null;
     }
 }
