@@ -27,9 +27,6 @@ import org.opensaml.xml.util.DatatypeHelper;
  */
 public class BaseMessageContext implements MessageContext {
     
-    /** Whether the messages represented by this context has been authenticated. */
-    private boolean authenticatedMessage;
-    
     /** Unique id of the communication profile in use. */
     private String communicationProfile;
 
@@ -95,20 +92,6 @@ public class BaseMessageContext implements MessageContext {
     }
 
     /** {@inheritDoc} */
-    public boolean isAuthenticatedMessage() {
-        if (getInboundMessageTransport() == null) {
-            return authenticatedMessage;
-        } else {
-            return authenticatedMessage || getInboundMessageTransport().isAuthenticated();
-        }
-    }
-
-    /** {@inheritDoc} */
-    public void setAuthenticatedMessage(boolean isAuthenticated) {
-        authenticatedMessage = isAuthenticated;
-    }
-
-    /** {@inheritDoc} */
     public void setCommunicationProfileId(String id) {
         communicationProfile = DatatypeHelper.safeTrimOrNullString(id);
     }
@@ -146,5 +129,10 @@ public class BaseMessageContext implements MessageContext {
     /** {@inheritDoc} */
     public void setSecurityPolicyResolver(SecurityPolicyResolver resolver) {
         securityPolicyResolver = resolver;
+    }
+    
+    /** {@inheritDoc} */
+    public boolean isIssuerAuthenticated() {
+            return getInboundMessageTransport().isAuthenticated();
     }
 }

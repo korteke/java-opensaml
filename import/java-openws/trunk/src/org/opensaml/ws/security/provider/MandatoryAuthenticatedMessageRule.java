@@ -32,9 +32,9 @@ public class MandatoryAuthenticatedMessageRule implements SecurityPolicyRule {
 
     /** {@inheritDoc} */
     public void evaluate(MessageContext messageContext) throws SecurityPolicyException {
-        if(!messageContext.isAuthenticatedMessage()){
-            log.error("Inbound message was not authenticated.");
-            throw new SecurityPolicyException("Inbound message was not authenticated.");
+        if(!messageContext.isIssuerAuthenticated()) {
+            log.error("Inbound message issuer was not authenticated.");
+            throw new SecurityPolicyException("Inbound message issuer was not authenticated.");
         }
     }
 }

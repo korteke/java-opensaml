@@ -86,19 +86,13 @@ public interface MessageContext {
     public SecurityPolicyResolver getSecurityPolicyResolver();
 
     /**
-     * Gets whether the messages represented by this context has been authenticated. What it means for a message to be
-     * authenticate will vary by use and employed authentication mechanisms.
+     * Gets whether the issuer of the inbound message represented by this context has been authenticated.
+     * What it means for the message issuer to be authenticate will vary by use and 
+     * employed authentication mechanisms.
      * 
-     * @return whether the messages represented by this context has been authenticated
+     * @return whether the issuer of the inbound message represented by this context has been authenticated
      */
-    public boolean isAuthenticatedMessage();
-
-    /**
-     * Sets whether the messages represented by this context has been authenticated.
-     * 
-     * @param isAuthenticated whether the messages represented by this context has been authenticated
-     */
-    public void setAuthenticatedMessage(boolean isAuthenticated);
+    public boolean isIssuerAuthenticated();
 
     /**
      * Sets the unique id of the communication profile in use.
