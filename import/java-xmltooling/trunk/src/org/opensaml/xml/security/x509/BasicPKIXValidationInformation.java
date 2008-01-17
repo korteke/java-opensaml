@@ -23,7 +23,7 @@ import java.util.Collection;
 /**
  * Basic implementation of {@link PKIXValidationInformation}.
  */
-public class BasicPKIXValdiationInformation implements PKIXValidationInformation {
+public class BasicPKIXValidationInformation implements PKIXValidationInformation {
 
     /** Certs used as the trust anchors. */
     private Collection<X509Certificate> trustAnchors;
@@ -41,7 +41,7 @@ public class BasicPKIXValdiationInformation implements PKIXValidationInformation
      * @param crls CRLs used during validation
      * @param depth max verification path depth
      */
-    public BasicPKIXValdiationInformation(Collection<X509Certificate> anchors, Collection<X509CRL> crls,
+    public BasicPKIXValidationInformation(Collection<X509Certificate> anchors, Collection<X509CRL> crls,
             Integer depth) {
         
         trustAnchors = anchors;
