@@ -55,7 +55,7 @@ public class BasicPKIXValidationInformation implements PKIXValidationInformation
     }
 
     /** {@inheritDoc} */
-    public Collection<X509Certificate> getTrustChain() {
+    public Collection<X509Certificate> getCertificates() {
         return trustAnchors;
     }
 

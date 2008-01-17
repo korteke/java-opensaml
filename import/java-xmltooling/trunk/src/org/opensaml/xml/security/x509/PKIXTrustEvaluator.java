@@ -521,11 +521,11 @@ public class PKIXTrustEvaluator {
      * @return trust anchors to use during validation
      */
     protected Set<TrustAnchor> getTrustAnchors(PKIXValidationInformation validationInfo) {
-        Collection<X509Certificate> trustChain = validationInfo.getTrustChain();
+        Collection<X509Certificate> validationCertificates = validationInfo.getCertificates();
 
         log.debug("Constructing trust anchors for PKIX validation");
         Set<TrustAnchor> trustAnchors = new HashSet<TrustAnchor>();
-        for (X509Certificate cert : trustChain) {
+        for (X509Certificate cert : validationCertificates) {
             trustAnchors.add(buildTrustAnchor(cert));
         }
 
@@ -580,10 +580,10 @@ public class PKIXTrustEvaluator {
         // TODO This probably isn't really necessary. All of these are already trust anchors, and a valid path(s)
         // can be constructed on that basis. More certs in the store = more things to process = more work
         // = less efficient. Shib 1.3 did NOT do this. Check before removing.
-        storeMaterial.addAll(validationInfo.getTrustChain());
+        storeMaterial.addAll(validationInfo.getCertificates());
         if (log.isDebugEnabled()) {
-            for (X509Certificate cert : validationInfo.getTrustChain()) {
-                log.debug(String.format("Added X509Certificate from validation info trust chain to cert store "
+            for (X509Certificate cert : validationInfo.getCertificates()) {
+                log.debug(String.format("Added X509Certificate from validation info certifcate set to cert store "
                         + "with subject name '%s' issued by '%s' with serial number '%s'", x500DNHandler.getName(cert
                         .getSubjectX500Principal()), x500DNHandler.getName(cert.getIssuerX500Principal()), cert
                         .getSerialNumber().toString()));

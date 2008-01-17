@@ -33,11 +33,11 @@ public interface PKIXValidationInformation {
     public Integer getVerificationDepth();
 
     /**
-     * Gets the trust anchors used during PKIX validation.
+     * Gets the certificate trust anchors used during PKIX validation.
      * 
      * @return trust anchors used during PKIX validation
      */
-    public Collection<X509Certificate> getTrustChain();
+    public Collection<X509Certificate> getCertificates();
 
     /**
      * Gets the CRLs used during PKIX validation.
