@@ -101,6 +101,9 @@ public class UnmarshallerFactory {
      */
     public void registerUnmarshaller(QName key, Unmarshaller unmarshaller) {
         log.debug("Registering unmarshaller, {}, for object type, {}", unmarshaller.getClass().getName(), key);
+        if (key == null) {
+            throw new IllegalArgumentException("Unmarshaller key may not be null");
+        }
         unmarshallers.put(key, unmarshaller);
     }
 
@@ -113,6 +116,10 @@ public class UnmarshallerFactory {
      */
     public Unmarshaller deregisterUnmarshaller(QName key) {
         log.debug("Deregistering marshaller for object type {}", key);
-        return unmarshallers.remove(key);
+        if (key != null) {
+            return unmarshallers.remove(key);
+        }
+
+        return null;
     }
 }

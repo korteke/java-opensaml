@@ -100,6 +100,9 @@ public class MarshallerFactory {
      */
     public void registerMarshaller(QName key, Marshaller marshaller) {
         log.debug("Registering marshaller, {}, for object type {}", marshaller.getClass().getName(), key);
+        if(key == null){
+            throw new IllegalArgumentException("Marshaller key may not be null");
+        }
         marshallers.put(key, marshaller);
     }
 
@@ -111,7 +114,11 @@ public class MarshallerFactory {
      * @return the Marshaller previously registered or null
      */
     public Marshaller deregisterMarshaller(QName key) {
-        log.debug("Deregistering marshaller for object type {}" + key);
-        return marshallers.remove(key);
+        log.debug("Deregistering marshaller for object type {}", key);
+        if(key != null){
+            return marshallers.remove(key);
+        }
+        
+        return null;
     }
 }

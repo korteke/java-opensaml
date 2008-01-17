@@ -96,6 +96,9 @@ public class XMLObjectBuilderFactory {
      */
     public void registerBuilder(QName builderKey, XMLObjectBuilder builder) {
         log.debug("Registering builder, {} under key {}",  builder.getClass().getName(), builderKey);
+        if(builderKey == null){
+            throw new IllegalArgumentException("Builder key may not be null");
+        }
         builders.put(builderKey, builder);
     }
 
@@ -108,6 +111,10 @@ public class XMLObjectBuilderFactory {
      */
     public XMLObjectBuilder deregisterBuilder(QName builderKey) {
         log.debug("Deregistering builder for object type {}", builderKey);
-        return builders.remove(builders.get(builderKey));
+        if(builderKey != null){
+            return builders.remove(builderKey);
+        }
+        
+        return null;
     }
 }
