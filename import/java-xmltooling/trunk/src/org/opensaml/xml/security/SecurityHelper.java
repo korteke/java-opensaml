@@ -302,12 +302,13 @@ public final class SecurityHelper {
      * Decodes RSA/DSA public keys in DER or PEM formats.
      * 
      * @param key encoded key
+     * @param password password if the key is encrypted or null if not
      * 
      * @return deocded key
      * 
      * @throws KeyException thrown if the key can not be decoded
      */
-    public static PublicKey decodePublicKey(byte[] key) throws KeyException {
+    public static PublicKey decodePublicKey(byte[] key, char[] password) throws KeyException {
         // TODO
         throw new UnsupportedOperationException("This method is not yet supported");
     }
