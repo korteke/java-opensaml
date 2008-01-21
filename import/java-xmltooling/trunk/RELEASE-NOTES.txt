@@ -1,5 +1,5 @@
-XMLTooling-J version 1.0 Trunk
-=============================================
+XMLTooling-J version 1.0 - Release Candidate 1
+==============================================
 
 XMLTooling-J is a low-level library that may be used to construct libraries 
 that allow developers to work with XML in a Java beans manner.
@@ -24,5 +24,5 @@ http://www.opensaml.org/index.html#mailing
 Issues, Suggestions
 --------
 Issues or suggestions for improvement may submitted to the XMLTooling - Java
-projact at:
+project at:
 http://bugs.internet2.edu
