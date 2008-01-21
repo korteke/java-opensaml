@@ -1,4 +1,4 @@
-OpenWS-J version 1.0 Trunk
+OpenWS-J version 1.0 - Release Candidate 1
 =============================================
 
 The OpenWS library provides a growing set of tools to work with web services at 
@@ -21,5 +21,5 @@ http://www.opensaml.org/index.html#mailing
 Issues, Suggestions
 --------
 Issues or suggestions for improvement may submitted to the OpenWS - Java
-projact at:
+project at:
 http://bugs.internet2.edu
