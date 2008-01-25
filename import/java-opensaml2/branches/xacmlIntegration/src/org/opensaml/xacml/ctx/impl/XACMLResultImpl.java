@@ -85,12 +85,12 @@ public class XACMLResultImpl extends AbstractSAMLObject implements XACMLResult {
 	
 	 /** {@inheritDoc} */
 	public void setDecision(XACMLDecision decision) {
-		this.decision = decision;
+		this.decision = prepareForAssignment(this.decision,decision);
 	}
 
 	 /** {@inheritDoc} */
 	public void setResourceId(String newResourceId) {
-		resourceId = newResourceId;
+		resourceId = prepareForAssignment(this.resourceId,newResourceId);
 	}
 
 	 /** {@inheritDoc} */

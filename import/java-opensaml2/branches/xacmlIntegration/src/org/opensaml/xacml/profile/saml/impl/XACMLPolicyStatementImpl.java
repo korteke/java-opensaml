@@ -63,12 +63,12 @@ public class XACMLPolicyStatementImpl extends AbstractSAMLObject implements XACM
    
     /**{@inheritDoc}*/
     public void setPolicy(XACMLPolicy policy){
-    	this.policy = policy;
+    	this.policy = prepareForAssignment(this.policy,policy);
     }
     
     /**{@inheritDoc}*/
     public void setPolicySet(XACMLPolicySet policyset){
-    	this.policyset = policyset;
+    	this.policyset = prepareForAssignment(this.policyset,policyset);
     }
          
     /** {@inheritDoc} */

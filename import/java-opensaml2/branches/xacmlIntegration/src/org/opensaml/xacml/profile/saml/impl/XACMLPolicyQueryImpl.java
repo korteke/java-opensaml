@@ -21,6 +21,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.swing.text.html.HTMLDocument.HTMLReader.PreAction;
+
 import org.opensaml.saml2.core.impl.RequestAbstractTypeImpl;
 import org.opensaml.xacml.ctx.XACMLRequest;
 import org.opensaml.xacml.policy.XACMLPolicyIdReference;
@@ -70,18 +72,18 @@ public class XACMLPolicyQueryImpl extends RequestAbstractTypeImpl implements
 
 	/** {@inheritDoc} */
 	public void setRequest(XACMLRequest request) {
-		this.request = request;
+		this.request = prepareForAssignment(this.request,request);
 	}
 
 	/** {@inheritDoc} */
 	public void setXACMLPolicyIdReference(XACMLPolicyIdReference policyIdRef) {
-		policyIdReferance = policyIdRef;
+		policyIdReferance = prepareForAssignment(this.policyIdReferance,policyIdRef);
 	}
 
 	/** {@inheritDoc} */
 	public void setXACMLPolicySetIdReference(
 			XACMLPolicySetIdReference policySetIdRef) {
-		policyIdSetReferance = policySetIdRef;
+		policyIdSetReferance = prepareForAssignment(this.policyIdSetReferance,policySetIdRef);
 	}
 	
 	/** {@inheritDoc} */

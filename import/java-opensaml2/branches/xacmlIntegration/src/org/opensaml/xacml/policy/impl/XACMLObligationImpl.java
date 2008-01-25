@@ -72,12 +72,12 @@ public class XACMLObligationImpl extends AbstractSAMLObject implements
 
 	 /** {@inheritDoc} */
 	public void setFulFillOn(String newFulfillOn) {
-		fulFillOn = newFulfillOn;
+		fulFillOn = prepareForAssignment(this.fulFillOn,newFulfillOn);
 	}
 
 	 /** {@inheritDoc} */
 	public void setobligationId(String newObligationId) {
-		obligationId = newObligationId;
+		obligationId = prepareForAssignment(this.obligationId,newObligationId);
 
 	}
 

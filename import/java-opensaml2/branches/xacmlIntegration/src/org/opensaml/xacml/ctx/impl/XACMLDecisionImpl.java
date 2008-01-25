@@ -58,7 +58,7 @@ public class XACMLDecisionImpl extends AbstractSAMLObject implements
 
 	/** {@inheritDoc}  */
 	public void setDecision(String decision) {
-		this.decision = decision;
+		this.decision = prepareForAssignment(this.decision,decision);
 	}
 
 }

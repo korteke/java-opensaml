@@ -74,7 +74,7 @@ public class XACMLStatusCodeImpl extends AbstractSAMLObject implements
 
     /** {@inheritDoc} */
 	public void setValue(String value) {
-		this.value = value;
+		this.value = prepareForAssignment(this.value,value);
 	}
 
 }

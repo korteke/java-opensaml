@@ -75,17 +75,17 @@ public class XACMLAttributeImpl extends AbstractSAMLObject implements XACMLAttri
 
 	 /** {@inheritDoc} */
 	public void setAttributeID(String attributeId) {
-		AttributeID = attributeId;
+		AttributeID = prepareForAssignment(this.AttributeID, attributeId);
 	}
 
 	 /** {@inheritDoc} */
 	public void setDataType(String datatype) {
-		Datatype = datatype;
+		Datatype = prepareForAssignment(this.Datatype,datatype);
 	}
 
 	 /** {@inheritDoc} */
 	public void setIssuer(String issuer) {
-		Issuer = issuer;
+		Issuer = prepareForAssignment(this.Issuer,issuer);
 	}
 
 	 /** {@inheritDoc} */

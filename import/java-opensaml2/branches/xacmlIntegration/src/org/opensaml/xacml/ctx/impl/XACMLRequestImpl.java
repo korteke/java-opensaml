@@ -90,7 +90,7 @@ public class XACMLRequestImpl extends AbstractSAMLObject implements XACMLRequest
 
 	/** {@inheritDoc} */
 	public void setAction(XACMLAction action) {
-		this.action = action;
+		this.action = prepareForAssignment(this.action,action);
 	}
 	
 	 /** {@inheritDoc} */

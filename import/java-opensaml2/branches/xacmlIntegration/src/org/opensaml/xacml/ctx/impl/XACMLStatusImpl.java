@@ -63,7 +63,7 @@ public class XACMLStatusImpl extends AbstractSAMLObject implements XACMLStatus {
 
 	 /** {@inheritDoc} */
 	public void setStatusCode(XACMLStatusCode newStatusCode) {
-		statusCode = newStatusCode;
+		statusCode = prepareForAssignment(this.statusCode, newStatusCode);
 	}
 
 	 /** {@inheritDoc} */
@@ -87,7 +87,7 @@ public class XACMLStatusImpl extends AbstractSAMLObject implements XACMLStatus {
 
 	 /** {@inheritDoc} */
 	public void setStatusMessage(XSString statusMessage) {
-		this.statusMessage = statusMessage;
+		this.statusMessage = prepareForAssignment(this.statusMessage,statusMessage);
 	}
 
 	 /** {@inheritDoc} */
@@ -97,7 +97,7 @@ public class XACMLStatusImpl extends AbstractSAMLObject implements XACMLStatus {
 
 	 /** {@inheritDoc} */
 	public void setStatusDetail(XACMLStatusDetail statusDetail) {
-		this.statusDetail = statusDetail;
+		this.statusDetail = prepareForAssignment(this.statusDetail,statusDetail);
 	}
 
 }

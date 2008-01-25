@@ -74,7 +74,7 @@ public class XACMLAuthzDecisionQueryImpl extends RequestAbstractTypeImpl impleme
 
 	/** {@inheritDoc} */	  
 	public void setRequest(XACMLRequest request) {
-		this.request = request;
+		this.request = prepareForAssignment(this.request,request);
 	}
 
 	/** {@inheritDoc} */
@@ -102,12 +102,12 @@ public class XACMLAuthzDecisionQueryImpl extends RequestAbstractTypeImpl impleme
 	
 	/** {@inheritDoc} */
 	public void setInputContextOnly(boolean inputContextOnly) {
-		InputContextOnly = inputContextOnly;
+		InputContextOnly = prepareForAssignment(this.InputContextOnly,inputContextOnly);
 	}
 	 
 	/** {@inheritDoc} */
 	public void setReturnContext(boolean returnContext) {
-		ReturnContext = returnContext;
+		ReturnContext = prepareForAssignment(this.ReturnContext,returnContext);
 	}
 
 	/** {@inheritDoc} */
@@ -118,7 +118,8 @@ public class XACMLAuthzDecisionQueryImpl extends RequestAbstractTypeImpl impleme
 	/** {@inheritDoc} */
 	public void setInputContextOnlyXSBooleanValue(
 			XSBooleanValue inputContextOnlyXSBooleanValue) {
-		InputContextOnlyXSBooleanValue = inputContextOnlyXSBooleanValue;
+		InputContextOnlyXSBooleanValue = prepareForAssignment(this.InputContextOnlyXSBooleanValue, 
+                inputContextOnlyXSBooleanValue);
 	}
 
 	/** {@inheritDoc} */
@@ -129,17 +130,19 @@ public class XACMLAuthzDecisionQueryImpl extends RequestAbstractTypeImpl impleme
 	/** {@inheritDoc} */
 	public void setReturnContextXSBooleanValue(
 			XSBooleanValue returnContextXSBooleanValue) {
-		ReturnContextXSBooleanValue = returnContextXSBooleanValue;
+		ReturnContextXSBooleanValue = prepareForAssignment(this.ReturnContextXSBooleanValue,
+                returnContextXSBooleanValue);
 	}
 	
 	/** {@inheritDoc} */
 	public void setCombinePoliciesXSBooleanValue(XSBooleanValue combinePolicies){
-		CombinePoliciesXSBooleanValue = combinePolicies;
+		CombinePoliciesXSBooleanValue = prepareForAssignment(this.CombinePoliciesXSBooleanValue,
+                combinePolicies);
 	}
 	
 	/** {@inheritDoc} */
 	public void setCombinePolicies(boolean combinePolicies){
-		CombinePolicies = combinePolicies;
+		CombinePolicies = prepareForAssignment(this.CombinePolicies,combinePolicies);
 	}
 	
 	/** {@inheritDoc} */

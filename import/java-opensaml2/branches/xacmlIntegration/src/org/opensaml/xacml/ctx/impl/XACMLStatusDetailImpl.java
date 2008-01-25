@@ -37,7 +37,7 @@ public class XACMLStatusDetailImpl extends AbstractSAMLObject implements
 		XACMLStatusDetail {
 
 	/** "any" children. */
-    private final IndexedXMLObjectChildrenList<XMLObject> unknownChildren;
+    private IndexedXMLObjectChildrenList<XMLObject> unknownChildren;
     
     /**
      * Constructor.

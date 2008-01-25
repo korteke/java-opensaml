@@ -64,7 +64,7 @@ public class XACMLSubjectImpl extends AbstractSAMLObject implements
 
 	 /** {@inheritDoc} */
 	public void setSubjectCategory(String subjectCategory) {
-		SubjectCategory = subjectCategory;
+		SubjectCategory = prepareForAssignment(this.SubjectCategory,subjectCategory);
 	}
 	
 	/** {@inheritDoc} */

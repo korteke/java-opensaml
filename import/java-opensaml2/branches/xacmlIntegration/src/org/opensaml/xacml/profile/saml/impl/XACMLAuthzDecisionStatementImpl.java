@@ -68,12 +68,12 @@ public class XACMLAuthzDecisionStatementImpl extends AbstractSAMLObject implemen
     
     /** {@inheritDoc} */
     public void setRequest(XACMLRequest request){
-    	this.request = request;
+    	this.request = prepareForAssignment(this.request,request);
     }
     
     /** {@inheritDoc} */
     public void setResponse(XACMLResponse response){
-    	this.response = response;
+    	this.response = prepareForAssignment(this.response,response);
     }
     
     /** {@inheritDoc} */

@@ -61,6 +61,6 @@ public class XACMLResponseImpl extends AbstractSAMLObject implements XACMLRespon
 	}
 
 	public void setResult(XACMLResult result) {
-		this.result = result;
+		this.result = prepareForAssignment(this.result,result);
 	}
 }

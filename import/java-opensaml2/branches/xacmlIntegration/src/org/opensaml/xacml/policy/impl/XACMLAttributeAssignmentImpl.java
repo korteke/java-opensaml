@@ -65,7 +65,7 @@ public class XACMLAttributeAssignmentImpl extends AbstractSAMLObject implements
 
 	 /** {@inheritDoc} */
 	public void setAttributeId(String newAttributeID) {
-		attributeId = newAttributeID;
+		attributeId = prepareForAssignment(this.attributeId,newAttributeID);
 
 	}
 
@@ -81,7 +81,7 @@ public class XACMLAttributeAssignmentImpl extends AbstractSAMLObject implements
 
 	 /** {@inheritDoc} */
 	public void setValue(String newValue) {
-		this.value = prepareForAssignment(value, newValue);
+		this.value = prepareForAssignment(this.value, newValue);
 	}
 	
 	 
