@@ -17,10 +17,11 @@ limitations under the License.
 */
 package org.opensaml.xacml.ctx;
 
+import java.util.List;
+
 import javax.xml.namespace.QName;
 
 import org.opensaml.common.SAMLObject;
-import org.opensaml.xml.util.XMLObjectChildrenList;
 
 public interface XACMLResource extends SAMLObject {
 	
@@ -44,6 +45,6 @@ public interface XACMLResource extends SAMLObject {
      * Returns the list of attributes in the resource
      * @return  the list of attributes in the resource
      */
-    public XMLObjectChildrenList<XACMLAttribute> getAttributes();
+    public List<XACMLAttribute> getAttributes();
 
 }

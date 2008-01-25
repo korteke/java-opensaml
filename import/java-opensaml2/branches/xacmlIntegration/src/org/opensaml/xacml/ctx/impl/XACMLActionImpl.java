@@ -49,7 +49,7 @@ public class XACMLActionImpl extends AbstractSAMLObject implements XACMLAction {
 	}
 	
 	 /** {@inheritDoc} */
-	public XMLObjectChildrenList<XACMLAttribute> getAttributes() {
+	public List<XACMLAttribute> getAttributes(){
 		return attributes;
 	}
 

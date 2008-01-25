@@ -19,12 +19,7 @@ package org.opensaml.xacml.policy.impl;
 
 import org.opensaml.common.impl.AbstractSAMLObjectBuilder;
 import org.opensaml.xacml.policy.XACMLAttributeAssignment;
-import org.opensaml.xacml.policy.impl.XACMLAttributeAssignmentImpl;
 
-/**
- *Builder for {@link org.opensaml.xacml.policy.XACMLAttributeAssignment} 
- *
- */
 public class XACMLAttributeAssignmentBuilder extends AbstractSAMLObjectBuilder<XACMLAttributeAssignment> {
 
 	/**

@@ -48,7 +48,7 @@ public class XACMLResourceImpl extends AbstractSAMLObject implements
 	}
 	
 	 /** {@inheritDoc} */
-	public XMLObjectChildrenList<XACMLAttribute> getAttributes() {
+	public List<XACMLAttribute> getAttributes(){
 		return attributes;
 	}
 

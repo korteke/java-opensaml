@@ -1,3 +1,4 @@
+
 /*
 Copyright 2008 Members of the EGEE Collaboration.
 Copyright 2008 University Corporation for Advanced Internet Development,
@@ -67,19 +68,16 @@ public class XACMLRequestImpl extends AbstractSAMLObject implements XACMLRequest
     }
 
 	/** {@inheritDoc} */
-	public XMLObjectChildrenList<XACMLSubject> getSubjects() {
+	public List<XACMLSubject> getSubjects() {
 		return subjects;
 	}
 
 	
     /** {@inheritDoc} */
-	public XMLObjectChildrenList<XACMLResource> getResources() {
+	public List<XACMLResource> getResources() {
 		return resources;
-	}
-
-	
-    /** {@inheritDoc} */
-	public XMLObjectChildrenList<XACMLEnvironment> getEnvironment() {
+    }
+	public List<XACMLEnvironment> getEnvironment() {
 		return environment;
 	}
 
@@ -109,3 +107,5 @@ public class XACMLRequestImpl extends AbstractSAMLObject implements XACMLRequest
 
 		
 }
+
+

@@ -54,7 +54,7 @@ public class XACMLStatusCodeImpl extends AbstractSAMLObject implements
 	}
 	
     /** {@inheritDoc} */
-	public XMLObjectChildrenList<XACMLStatusCode> getStatusCodes() {
+	public List<XACMLStatusCode> getStatusCodes(){
 		return statusCodes;
 	}
 

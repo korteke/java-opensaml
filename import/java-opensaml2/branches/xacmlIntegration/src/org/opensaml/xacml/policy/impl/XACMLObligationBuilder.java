@@ -20,11 +20,7 @@ package org.opensaml.xacml.policy.impl;
 import org.opensaml.common.impl.AbstractSAMLObjectBuilder;
 import org.opensaml.xacml.ctx.XACMLConstants;
 import org.opensaml.xacml.policy.XACMLObligation;
-import org.opensaml.xacml.policy.impl.XACMLObligationImpl;
-/**
- *Builder for {@link org.opensaml.xacml.policy.XACMLObligation} 
- *
- */
+
 public class XACMLObligationBuilder extends AbstractSAMLObjectBuilder<XACMLObligation> {
 
 	@Override

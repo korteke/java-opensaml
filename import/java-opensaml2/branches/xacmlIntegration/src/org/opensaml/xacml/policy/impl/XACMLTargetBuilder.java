@@ -19,12 +19,7 @@ package org.opensaml.xacml.policy.impl;
 
 import org.opensaml.common.impl.AbstractSAMLObjectBuilder;
 import org.opensaml.xacml.policy.XACMLTarget;
-import org.opensaml.xacml.policy.impl.XACMLTargetImpl;
 
-/**
- * Builder for {@link org.opensaml.xacml.policy.XACMLTarget}
- *
- */
 public class XACMLTargetBuilder extends AbstractSAMLObjectBuilder<XACMLTarget> {
 
 	/**

@@ -56,7 +56,7 @@ public class XACMLObligationImpl extends AbstractSAMLObject implements
 	}
 
 	 /** {@inheritDoc} */
-	public XMLObjectChildrenList<XACMLAttributeAssignment> getAttributesAssignments() {
+	public List<XACMLAttributeAssignment> getAttributesAssignments() {
 		return attributeAssignments;
 	}
 

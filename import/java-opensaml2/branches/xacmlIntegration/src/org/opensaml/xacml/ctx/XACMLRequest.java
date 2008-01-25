@@ -18,10 +18,11 @@ limitations under the License.
 
 package org.opensaml.xacml.ctx;
 
+import java.util.List;
+
 import javax.xml.namespace.QName;
 
 import org.opensaml.common.SAMLObject;
-import org.opensaml.xml.util.XMLObjectChildrenList;
 
 /**
  * Is a xacml-context Request
@@ -48,7 +49,7 @@ public interface XACMLRequest extends SAMLObject {
      * 
      * @return the environment from the request
      */
-    public XMLObjectChildrenList<XACMLEnvironment> getEnvironment();
+    public List<XACMLEnvironment> getEnvironment();
 
     /**
      * Gets the action from the request
@@ -67,12 +68,12 @@ public interface XACMLRequest extends SAMLObject {
      * 
      * @return the subjects from the request
      */
-    public XMLObjectChildrenList<XACMLSubject> getSubjects();
+    public List<XACMLSubject> getSubjects();
 
     /**
      * Gets the resources from the request
      * 
      * @return the resources from the request
      */
-    public XMLObjectChildrenList<XACMLResource> getResources();
+    public List<XACMLResource> getResources();
 }

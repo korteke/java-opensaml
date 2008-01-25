@@ -50,7 +50,7 @@ public class XACMLObligationsImpl extends AbstractSAMLObject implements
 	}
 	
 	 /** {@inheritDoc} */
-	public XMLObjectChildrenList<XACMLObligation> getObligations() {
+	public List<XACMLObligation> getObligations(){
 		return obligations;
 	}
 

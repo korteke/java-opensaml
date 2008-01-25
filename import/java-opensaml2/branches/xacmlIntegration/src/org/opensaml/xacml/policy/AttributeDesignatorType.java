@@ -25,6 +25,13 @@ import org.opensaml.xml.schema.XSBooleanValue;
 /** XACML AttribtueDesignator schema type. */
 public interface AttributeDesignatorType extends ExpressionType {
 
+    /** Local name of the element SubjectAttributeDesignator. */
+    public static final String SUBJECT_ATTRIBUTE_DESIGNATOR_ELEMENT_LOCAL_NAME = "SubjectAttributeDesignator";
+
+    /** QName of the element SubjectAttributeDesignator. */
+    public static final QName SUBJECT_ATTRIBUTE_DESIGNATOR_ELEMENT_NAME = new QName(XACMLConstants.XACML20_NS,
+            SUBJECT_ATTRIBUTE_DESIGNATOR_ELEMENT_LOCAL_NAME, XACMLConstants.XACML_PREFIX);
+
     /** Local name of the element ResourceAttributeDesignator. */
     public static final String RESOURCE_ATTRIBUTE_DESIGNATOR_ELEMENT_LOCAL_NAME = "ResourceAttributeDesignator";
 

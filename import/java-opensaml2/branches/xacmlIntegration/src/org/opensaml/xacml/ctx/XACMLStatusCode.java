@@ -17,10 +17,11 @@ limitations under the License.
 */
 package org.opensaml.xacml.ctx;
 
+import java.util.List;
+
 import javax.xml.namespace.QName;
 
 import org.opensaml.common.SAMLObject;
-import org.opensaml.xml.util.XMLObjectChildrenList;
 
 /**
  * Interface for xacml:context StatusCode 
@@ -53,7 +54,7 @@ public interface XACMLStatusCode extends SAMLObject {
      * Gets the status codes
      * @return The status codes
      */
-    public XMLObjectChildrenList<XACMLStatusCode> getStatusCodes();
+    public List<XACMLStatusCode> getStatusCodes();
 
     /**
      * Gets the value of the atttribute named value of the status element 

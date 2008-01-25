@@ -20,12 +20,7 @@ package org.opensaml.xacml.policy.impl;
 
 import org.opensaml.common.impl.AbstractSAMLObjectBuilder;
 import org.opensaml.xacml.policy.XACMLPolicySet;
-import org.opensaml.xacml.policy.impl.XACMLPolicySetImpl;
 
-/**
- * A builder for {@link org.opensaml.xacml.policy.XACMLPolicySet}
- *
- */
 
 public class XACMLPolicySetBuilder extends AbstractSAMLObjectBuilder<XACMLPolicySet> {
 

@@ -17,11 +17,12 @@ limitations under the License.
 */
 package org.opensaml.xacml.ctx;
 
+import java.util.List;
+
 import javax.xml.namespace.QName;
 
 import org.opensaml.common.SAMLObject;
 import org.opensaml.xacml.policy.XACMLObligations;
-import org.opensaml.xml.util.XMLObjectChildrenList;
 
 /**
  * Interface for xacml:context Result
@@ -80,11 +81,11 @@ public interface XACMLResult extends SAMLObject {
      * Returns the list of Obligations in the result
      * @return  the list of Obligations in the result
      */
-    public XMLObjectChildrenList<XACMLObligations> getObligations();
+    public List<XACMLObligations> getObligations();
   
     /**
      * Returns the status in the result
      * @return  the status in the result
      */
-    public XMLObjectChildrenList<XACMLStatus>  getStatus();    
+    public List<XACMLStatus>  getStatus();    
 }

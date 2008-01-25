@@ -69,7 +69,7 @@ public class XACMLResultImpl extends AbstractSAMLObject implements XACMLResult {
 	}
 
 	 /** {@inheritDoc} */
-	public XMLObjectChildrenList<XACMLObligations> getObligations() {
+	public List<XACMLObligations> getObligations(){
 		return obligations;
 	}
 
@@ -79,7 +79,7 @@ public class XACMLResultImpl extends AbstractSAMLObject implements XACMLResult {
 	}
 
 	 /** {@inheritDoc} */
-	public XMLObjectChildrenList<XACMLStatus> getStatus() {
+	public List<XACMLStatus> getStatus() {
 		return status;
 	}
 	
