@@ -17,10 +17,19 @@
 
 package org.opensaml.xacml.policy;
 
+import javax.xml.namespace.QName;
+
+import org.opensaml.xacml.XACMLConstants;
 import org.opensaml.xacml.XACMLObject;
 import org.opensaml.xml.schema.XSString;
 
 /** XACML Description schema type. */
 public interface DescriptionType extends XSString, XACMLObject {
 
+    /** Local name of the element Description. */
+    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Description";
+
+    /** QName of the element Description. */
+    public static final QName DEFAULT_ELEMENT_NAME = new QName(XACMLConstants.XACML20_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+            XACMLConstants.XACML_PREFIX);
 }

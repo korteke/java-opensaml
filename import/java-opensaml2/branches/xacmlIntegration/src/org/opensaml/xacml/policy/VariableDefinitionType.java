@@ -29,14 +29,14 @@ public interface VariableDefinitionType extends XACMLObject {
     public static final String DEFAULT_ELEMENT_LOCAL_NAME = "VariableDefinition";
 
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME_XACML20 = new QName(XACMLConstants.XACML20_NS,
+    public static final QName DEFAULT_ELEMENT_NAME = new QName(XACMLConstants.XACML20_NS,
             DEFAULT_ELEMENT_LOCAL_NAME, XACMLConstants.XACML_PREFIX);
 
     /** Local name of the XSI type. */
     public static final String TYPE_LOCAL_NAME = "VariableDefinitionType";
 
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME_XACML20 = new QName(XACMLConstants.XACML20_NS, TYPE_LOCAL_NAME,
+    public static final QName TYPE_NAME = new QName(XACMLConstants.XACML20_NS, TYPE_LOCAL_NAME,
             XACMLConstants.XACML_PREFIX);
 
     /** Name of VariableId attribute. */
