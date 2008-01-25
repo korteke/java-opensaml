@@ -25,10 +25,10 @@ import org.opensaml.xacml.XACMLObject;
 /** XACML ResourceMatch schema type. */
 public interface ResourceMatchType extends XACMLObject {
     
-    /** Local name of the element Apply. */
+    /** Local name of the element ResourceMatch. */
     public static final String DEFAULT_ELEMENT_LOCAL_NAME = "ResourceMatch";
 
-    /** QName of the element Apply. */
+    /** QName of the element ResourceMatch. */
     public static final QName DEFAULT_ELEMENT_NAME = new QName(XACMLConstants.XACML20_NS,
             DEFAULT_ELEMENT_LOCAL_NAME, XACMLConstants.XACML_PREFIX);
 

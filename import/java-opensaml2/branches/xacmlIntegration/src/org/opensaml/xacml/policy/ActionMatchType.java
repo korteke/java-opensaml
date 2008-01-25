@@ -25,10 +25,10 @@ import org.opensaml.xacml.XACMLObject;
 /** XACML ActionMatch schema type. */
 public interface ActionMatchType extends XACMLObject {
     
-    /** Local name of the element Apply. */
+    /** Local name of the element ActionMatch. */
     public static final String DEFAULT_ELEMENT_LOCAL_NAME = "ActionMatch";
 
-    /** QName of the element Apply. */
+    /** QName of the element ActionMatch. */
     public static final QName DEFAULT_ELEMENT_NAME = new QName(XACMLConstants.XACML20_NS,
             DEFAULT_ELEMENT_LOCAL_NAME, XACMLConstants.XACML_PREFIX);
 

@@ -17,50 +17,42 @@
 
 package org.opensaml.xacml.policy;
 
-import java.util.List;
-
 import javax.xml.namespace.QName;
 
 import org.opensaml.xacml.XACMLConstants;
+import org.opensaml.xacml.XACMLObject;
 
-/** XACML Apply schema type. */
-public interface ApplyType extends ExpressionType {
+/** XACML PolicySetCombineParameters schema type. */
+public interface PolicySetCombinerParametersType extends XACMLObject {
 
-    /** Local name of the element Apply. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Apply";
+    /** Local name of the element PolicySetCombineParameters. */
+    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "PolicySetCombineParameters";
 
-    /** QName of the element Apply. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(XACMLConstants.XACML20_NS,
-            DEFAULT_ELEMENT_LOCAL_NAME, XACMLConstants.XACML_PREFIX);
+    /** QName of the element PolicySetCombineParameters. */
+    public static final QName DEFAULT_ELEMENT_NAME = new QName(XACMLConstants.XACML20_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+            XACMLConstants.XACML_PREFIX);
 
     /** Local name of the XSI type. */
-    public static final String SCHEMA_TYPE_LOCAL_NAME = "ApplyType";
+    public static final String SCHEMA_TYPE_LOCAL_NAME = "PolicySetCombineParametersType";
 
     /** QName of the XSI type. */
     public static final QName SCHEMA_TYPE_NAME = new QName(XACMLConstants.XACML20_NS, SCHEMA_TYPE_LOCAL_NAME,
             XACMLConstants.XACML_PREFIX);
-    
-    /** FunctionId attribute name. */
-    public static final String FUNCTION_ID_ATTRIB_NAME = "FunctionId";
+
+    /** PolicySetIdRef attribute name. */
+    public static final String POLICY_ID_REF_ATTRIB_NAME = "PolicySetIdRef";
 
     /**
-     * Gets the ID of the function.
+     * Gets the referenced policy set's ID.
      * 
-     * @return ID of the function
+     * @return referenced policy set's ID
      */
-    public String getFunctionId();
+    public String getPolicySetIdRef();
 
     /**
-     * Sets the ID of the function.
+     * Sets the referenced policy set's ID.
      * 
-     * @param id ID of the function
+     * @param ref referenced policy set's ID
      */
-    public void setFunctionId(String id);
-
-    /**
-     * Gets the expressions for this condition.
-     * 
-     * @return expressions for this condition
-     */
-    public List<ExpressionType> getExpressions();
+    public void setPolicySetIdRef(String ref);
 }

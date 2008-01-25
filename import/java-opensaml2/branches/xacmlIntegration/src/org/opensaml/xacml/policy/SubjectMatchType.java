@@ -25,10 +25,10 @@ import org.opensaml.xacml.XACMLObject;
 /** XACML SubjectMatch schema type. */
 public interface SubjectMatchType extends XACMLObject {
     
-    /** Local name of the element Apply. */
+    /** Local name of the element SubjectMatch. */
     public static final String DEFAULT_ELEMENT_LOCAL_NAME = "SubjectMatch";
 
-    /** QName of the element Apply. */
+    /** QName of the element SubjectMatch. */
     public static final QName DEFAULT_ELEMENT_NAME = new QName(XACMLConstants.XACML20_NS,
             DEFAULT_ELEMENT_LOCAL_NAME, XACMLConstants.XACML_PREFIX);
 

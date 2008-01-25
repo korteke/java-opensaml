@@ -48,7 +48,7 @@ public interface VariableReferenceType extends ExpressionType {
      * 
      * @return expressions for this definition
      */
-    public List getExpressions();
+    public List<ExpressionType> getExpressions();
 
     /**
      * Gets the ID of the referenced variable.

@@ -17,50 +17,41 @@
 
 package org.opensaml.xacml.policy;
 
-import java.util.List;
-
 import javax.xml.namespace.QName;
 
 import org.opensaml.xacml.XACMLConstants;
 
-/** XACML Apply schema type. */
-public interface ApplyType extends ExpressionType {
+/** XACML RuleCombinerParameters schema type. */
+public interface RuleCombinerParametersType extends CombinerParametersType {
 
-    /** Local name of the element Apply. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Apply";
+    /** Local name of the element RuleCombinerParameters. */
+    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "RuleCombinerParameters";
 
-    /** QName of the element Apply. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(XACMLConstants.XACML20_NS,
-            DEFAULT_ELEMENT_LOCAL_NAME, XACMLConstants.XACML_PREFIX);
+    /** QName of the element RuleCombinerParameters. */
+    public static final QName DEFAULT_ELEMENT_NAME = new QName(XACMLConstants.XACML20_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+            XACMLConstants.XACML_PREFIX);
 
     /** Local name of the XSI type. */
-    public static final String SCHEMA_TYPE_LOCAL_NAME = "ApplyType";
+    public static final String SCHEMA_TYPE_LOCAL_NAME = "RuleCombinerParametersType";
 
     /** QName of the XSI type. */
     public static final QName SCHEMA_TYPE_NAME = new QName(XACMLConstants.XACML20_NS, SCHEMA_TYPE_LOCAL_NAME,
             XACMLConstants.XACML_PREFIX);
-    
-    /** FunctionId attribute name. */
-    public static final String FUNCTION_ID_ATTRIB_NAME = "FunctionId";
+
+    /** RuleIdRef attribute name. */
+    public static final String RULE_ID_REF_ATTRIB_NAME = "RuleIdRef";
 
     /**
-     * Gets the ID of the function.
+     * Gets the referenced rule's ID.
      * 
-     * @return ID of the function
+     * @return referenced rule's ID
      */
-    public String getFunctionId();
+    public String getRuleIdRef();
 
     /**
-     * Sets the ID of the function.
+     * Sets the referenced rule's ID.
      * 
-     * @param id ID of the function
+     * @param ref referenced rule's ID
      */
-    public void setFunctionId(String id);
-
-    /**
-     * Gets the expressions for this condition.
-     * 
-     * @return expressions for this condition
-     */
-    public List<ExpressionType> getExpressions();
+    public void setRuleIdRef(String ref);
 }

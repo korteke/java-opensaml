@@ -22,45 +22,29 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.opensaml.xacml.XACMLConstants;
+import org.opensaml.xacml.XACMLObject;
 
-/** XACML Apply schema type. */
-public interface ApplyType extends ExpressionType {
+/** XACML CombinerParameters schema type. */
+public interface CombinerParametersType extends XACMLObject {
 
-    /** Local name of the element Apply. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Apply";
+    /** Local name of the element CombinerParameters. */
+    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "CombinerParameters";
 
-    /** QName of the element Apply. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(XACMLConstants.XACML20_NS,
-            DEFAULT_ELEMENT_LOCAL_NAME, XACMLConstants.XACML_PREFIX);
+    /** QName of the element CombinerParameters. */
+    public static final QName DEFAULT_ELEMENT_NAME = new QName(XACMLConstants.XACML20_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+            XACMLConstants.XACML_PREFIX);
 
     /** Local name of the XSI type. */
-    public static final String SCHEMA_TYPE_LOCAL_NAME = "ApplyType";
+    public static final String SCHEMA_TYPE_LOCAL_NAME = "CombinerParametersType";
 
     /** QName of the XSI type. */
     public static final QName SCHEMA_TYPE_NAME = new QName(XACMLConstants.XACML20_NS, SCHEMA_TYPE_LOCAL_NAME,
             XACMLConstants.XACML_PREFIX);
-    
-    /** FunctionId attribute name. */
-    public static final String FUNCTION_ID_ATTRIB_NAME = "FunctionId";
 
     /**
-     * Gets the ID of the function.
+     * Gets the combiner parameters.
      * 
-     * @return ID of the function
+     * @return combiner parameters
      */
-    public String getFunctionId();
-
-    /**
-     * Sets the ID of the function.
-     * 
-     * @param id ID of the function
-     */
-    public void setFunctionId(String id);
-
-    /**
-     * Gets the expressions for this condition.
-     * 
-     * @return expressions for this condition
-     */
-    public List<ExpressionType> getExpressions();
+    public List<CombinerParameterType> getCombinerParameters();
 }
