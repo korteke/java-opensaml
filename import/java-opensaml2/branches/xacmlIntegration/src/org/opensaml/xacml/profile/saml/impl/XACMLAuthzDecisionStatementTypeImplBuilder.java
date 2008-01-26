@@ -14,32 +14,30 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
-*/
-package org.opensaml.xacml.profile.saml.impl;
+ */
 
+package org.opensaml.xacml.profile.saml.impl;
 
 import org.opensaml.common.impl.AbstractSAMLObjectBuilder;
 import org.opensaml.saml2.core.Statement;
-import org.opensaml.xacml.profile.saml.XACMLPolicyStatement;
+import org.opensaml.xacml.profile.saml.XACMLAuthzDecisionStatementType;
 
-/**
- * Builder for {@link org.opensaml.xacml.profile.saml.impl.XACMLPolicyStatementImpl} objects.
- * 
- */
-public class XACMLPolicyStatementBuilder extends AbstractSAMLObjectBuilder<XACMLPolicyStatement> {
-	
-	/** Constructor */
-    public XACMLPolicyStatementBuilder() {
+/** vBuilder for {@link org.opensaml.xacml.profile.saml.impl.XACMLAuthzDecisionStatementTypeImpl} objects. */
+public class XACMLAuthzDecisionStatementTypeImplBuilder extends
+        AbstractSAMLObjectBuilder<XACMLAuthzDecisionStatementType> {
+
+    /** Constructor. */
+    public XACMLAuthzDecisionStatementTypeImplBuilder() {
 
     }
 
     /** {@inheritDoc} */
-    public XACMLPolicyStatement buildObject() {
-       return buildObject(Statement.DEFAULT_ELEMENT_NAME,XACMLPolicyStatement.TYPE_NAME);
+    public XACMLAuthzDecisionStatementType buildObject() {
+        return buildObject(Statement.DEFAULT_ELEMENT_NAME, XACMLAuthzDecisionStatementType.TYPE_NAME);
     }
-    
+
     /** {@inheritDoc} */
-    public XACMLPolicyStatement buildObject(String namespaceURI, String localName, String namespacePrefix) {
-        return new XACMLPolicyStatementImpl(namespaceURI, localName, namespacePrefix);
+    public XACMLAuthzDecisionStatementType buildObject(String namespaceURI, String localName, String namespacePrefix) {
+        return new XACMLAuthzDecisionStatementTypeImpl(namespaceURI, localName, namespacePrefix);
     }
 }

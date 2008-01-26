@@ -14,52 +14,50 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
-*/
+ */
+
 package org.opensaml.xacml.profile.saml.impl;
-
-
 
 import org.opensaml.common.impl.AbstractSAMLObjectUnmarshaller;
 import org.opensaml.xacml.ctx.XACMLRequest;
 import org.opensaml.xacml.ctx.XACMLResponse;
-import org.opensaml.xacml.profile.saml.XACMLAuthzDecisionStatement;
+import org.opensaml.xacml.profile.saml.XACMLAuthzDecisionStatementType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
 
-
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.xacml.profile.saml.XACMLAuthzDecisionStatement}.
+ * A thread-safe Unmarshaller for {@link org.opensaml.xacml.profile.saml.XACMLAuthzDecisionStatementType}.
  */
-public class XACMLAuthzDecisionStatementUnmarshaller extends AbstractSAMLObjectUnmarshaller {
-	
-    /** Constructor */
-	
-    public XACMLAuthzDecisionStatementUnmarshaller() {
+public class XACMLAuthzDecisionStatementTypeUnmarshaller extends AbstractSAMLObjectUnmarshaller {
+
+    /** Constructor. */
+    public XACMLAuthzDecisionStatementTypeUnmarshaller() {
         super();
     }
-    
 
     /**
-     * Constructor
+     * Constructor.
      * 
-     * @param namespaceURI
-     * @param elementLocalName
+     * @param targetNamespaceURI the namespace URI of either the schema type QName or element QName of the elements this
+     *            unmarshaller operates on
+     * @param targetLocalName the local name of either the schema type QName or element QName of the elements this
+     *            unmarshaller operates on
      */
-    protected XACMLAuthzDecisionStatementUnmarshaller(String namespaceURI, String elementLocalName) {
-        super(namespaceURI, elementLocalName);
+    protected XACMLAuthzDecisionStatementTypeUnmarshaller(String targetNamespaceURI, String targetLocalName) {
+        super(targetNamespaceURI, targetLocalName);
     }
 
     /** {@inheritDoc} */
     protected void processChildElement(XMLObject parentObject, XMLObject childObject) throws UnmarshallingException {
-    	XACMLAuthzDecisionStatement xacmlauthzdecisionstatement = (XACMLAuthzDecisionStatement) parentObject;
+        XACMLAuthzDecisionStatementType xacmlauthzdecisionstatement = (XACMLAuthzDecisionStatementType) parentObject;
 
-    	if (childObject instanceof XACMLRequest) {
-    		xacmlauthzdecisionstatement.setRequest((XACMLRequest) childObject);
+        if (childObject instanceof XACMLRequest) {
+            xacmlauthzdecisionstatement.setRequest((XACMLRequest) childObject);
         } else if (childObject instanceof XACMLResponse) {
-        	xacmlauthzdecisionstatement.setResponse((XACMLResponse) childObject);
+            xacmlauthzdecisionstatement.setResponse((XACMLResponse) childObject);
         } else {
             super.processChildElement(parentObject, childObject);
         }
     }
-    
+
 }

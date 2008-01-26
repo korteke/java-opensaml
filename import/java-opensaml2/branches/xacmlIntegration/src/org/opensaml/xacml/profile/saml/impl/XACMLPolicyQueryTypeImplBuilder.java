@@ -14,31 +14,29 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
-*/
+ */
+
 package org.opensaml.xacml.profile.saml.impl;
 
-import org.opensaml.saml2.core.impl.RequestAbstractTypeMarshaller;
+import org.opensaml.common.impl.AbstractSAMLObjectBuilder;
+import org.opensaml.xacml.profile.saml.XACMLPolicyQueryType;
 
-/**
- * Marshaller for  {@link org.opensaml.xacml.profile.saml.XACMLPolicyQuery}.  
- *
- */
-public class XACMLPolicyQueryMarshaller extends RequestAbstractTypeMarshaller {
-	
-	/** Constructor */
+/** Builder for {@link org.opensaml.xacml.profile.saml.XACMLPolicyQueryType} objects. */
+public class XACMLPolicyQueryTypeImplBuilder extends AbstractSAMLObjectBuilder<XACMLPolicyQueryType> {
 
-    public XACMLPolicyQueryMarshaller() {
-        super();
+    /** Constructor. */
+    public XACMLPolicyQueryTypeImplBuilder() {
+
     }
 
-    /**
-     * Constructor
-     * 
-     * @param namespaceURI
-     * @param elementLocalName
-     */
-    protected XACMLPolicyQueryMarshaller(String namespaceURI, String elementLocalName) {
-        super(namespaceURI, elementLocalName);
+    /** {@inheritDoc} */
+    public XACMLPolicyQueryType buildObject() {
+        return null;
+    }
+
+    /** {@inheritDoc} */
+    public XACMLPolicyQueryType buildObject(String namespaceURI, String localName, String namespacePrefix) {
+        return new XACMLPolicyQueryTypeImpl(namespaceURI, localName, namespacePrefix);
     }
 
 }
