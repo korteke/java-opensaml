@@ -22,11 +22,11 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.common.SAMLObject;
 import org.opensaml.xacml.XACMLConstants;
+import org.opensaml.xacml.XACMLObject;
 
 /** XACML context Request schema type. */
-public interface RequestType extends SAMLObject {
+public interface RequestType extends XACMLObject {
 
     /** Element local name. */
     public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Request";
