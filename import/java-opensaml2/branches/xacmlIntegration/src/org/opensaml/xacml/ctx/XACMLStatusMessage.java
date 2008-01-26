@@ -20,6 +20,7 @@ package org.opensaml.xacml.ctx;
 import javax.xml.namespace.QName;
 
 import org.opensaml.common.SAMLObject;
+import org.opensaml.xacml.XACMLConstants;
 
 public interface XACMLStatusMessage extends SAMLObject {
 	

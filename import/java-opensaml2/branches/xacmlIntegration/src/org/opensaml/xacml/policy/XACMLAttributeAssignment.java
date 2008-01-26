@@ -21,8 +21,8 @@ package org.opensaml.xacml.policy;
 import javax.xml.namespace.QName;
 
 import org.opensaml.common.SAMLObject;
+import org.opensaml.xacml.XACMLConstants;
 import org.opensaml.xacml.ctx.XACMLAttributeValue;
-import org.opensaml.xacml.ctx.XACMLConstants;
 
 /**
  * Interface for xacml:policy AttributeAssignment

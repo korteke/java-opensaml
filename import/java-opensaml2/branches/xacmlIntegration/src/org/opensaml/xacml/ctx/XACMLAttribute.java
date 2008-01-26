@@ -22,6 +22,7 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.opensaml.common.SAMLObject;
+import org.opensaml.xacml.XACMLConstants;
 import org.opensaml.xml.XMLObject;
 
 /**
@@ -63,10 +64,11 @@ public interface XACMLAttribute extends SAMLObject {
     public String getAttributeID();
     
     /**
-     * Sets the AttributeId
-     * @param attributeId is the wanted AttributeId
+     * Gets the list of attribute values for this attribute.
+     * 
+     * @return the list of values for this attribute
      */
-    public void setAttributeID(String attributeId);
+    public List<XMLObject> getAttributeValues();
     
     /**
      * Get the datatype of the attribute 
@@ -75,27 +77,26 @@ public interface XACMLAttribute extends SAMLObject {
     public String getDataType();
     
     /**
-     * Sets the datatype of the attribute
-     * @param datatype is the wanted datatype
-     */
-    public void setDataType(String datatype);
-    
-    /**
      * Gets the issuer of the attribute 
      * @return the value of Issuer
      */
     public String getIssuer();
     
     /**
+     * Sets the AttributeId
+     * @param attributeId is the wanted AttributeId
+     */
+    public void setAttributeID(String attributeId);
+    
+    /**
+     * Sets the datatype of the attribute
+     * @param datatype is the wanted datatype
+     */
+    public void setDataType(String datatype);
+    
+    /**
      * Sets the issuer of the attribute
      * @param issuer is the issuer of the attribute
      */
     public void setIssuer(String issuer);
-    
-    /**
-     * Gets the list of attribute values for this attribute.
-     * 
-     * @return the list of values for this attribute
-     */
-    public List<XMLObject> getAttributeValues();
 }

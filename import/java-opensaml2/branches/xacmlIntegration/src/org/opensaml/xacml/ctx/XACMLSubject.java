@@ -22,6 +22,7 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.opensaml.common.SAMLObject;
+import org.opensaml.xacml.XACMLConstants;
 
 /**
  *Interface for xacml:context Subject 
@@ -53,23 +54,23 @@ public interface XACMLSubject extends SAMLObject {
 
     
     /**
+     * Returns the list of attributes in the subject
+     * @return  the list of attributes in the subject
+     */
+    public List<XACMLAttribute> getAttributes();
+    
+    /**
      * Gets the subjectcategory of the subject
      * @return The subjectcategory of the subject
      */
     public String getSubjectCategory();
-    
+   
     /**
      * Sets the subjectcategory
      *@param subjectCategory Sets the subjectcategory
      *
      */
     public void setSubjectCategory(String subjectCategory);
-   
-    /**
-     * Returns the list of attributes in the subject
-     * @return  the list of attributes in the subject
-     */
-    public List<XACMLAttribute> getAttributes();
       
     
 }

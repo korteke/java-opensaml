@@ -20,7 +20,7 @@ package org.opensaml.xacml.policy;
 import javax.xml.namespace.QName;
 
 import org.opensaml.common.SAMLObject;
-import org.opensaml.xacml.ctx.XACMLConstants;
+import org.opensaml.xacml.XACMLConstants;
 
 /**
  *Interface for xacml:policy Policy 

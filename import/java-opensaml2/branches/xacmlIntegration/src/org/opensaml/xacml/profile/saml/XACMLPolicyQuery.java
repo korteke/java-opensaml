@@ -35,40 +35,40 @@ public interface XACMLPolicyQuery extends RequestAbstractType{
     public static final String DEFAULT_ELEMENT_LOCAL_NAME = "XACMLPolicyQuery";
 
     /** Default element name for XACML 1.0*/
-    public static final QName DEFAULT_ELEMENT_NAME_XACML10 = new QName(SAML2XACML2ProfileConstants.SAML20XACML10P_NS, 
-    		DEFAULT_ELEMENT_LOCAL_NAME, SAML2XACML2ProfileConstants.SAML20XACMLPROTOCOl_PREFIX);
+    public static final QName DEFAULT_ELEMENT_NAME_XACML10 = new QName(SAMLProfileConstants.SAML20XACML10P_NS, 
+    		DEFAULT_ELEMENT_LOCAL_NAME, SAMLProfileConstants.SAML20XACMLPROTOCOL_PREFIX);
     
     /** Default element name for XACML 1.1*/
-    public static final QName DEFAULT_ELEMENT_NAME_XACML1_1 = new QName(SAML2XACML2ProfileConstants.SAML20XACML1_1P_NS, 
-    		DEFAULT_ELEMENT_LOCAL_NAME, SAML2XACML2ProfileConstants.SAML20XACMLPROTOCOl_PREFIX);
+    public static final QName DEFAULT_ELEMENT_NAME_XACML1_1 = new QName(SAMLProfileConstants.SAML20XACML1_1P_NS, 
+    		DEFAULT_ELEMENT_LOCAL_NAME, SAMLProfileConstants.SAML20XACMLPROTOCOL_PREFIX);
     
     /** Default element name for XACML 2.0*/
-    public static final QName DEFAULT_ELEMENT_NAME_XACML20 = new QName(SAML2XACML2ProfileConstants.SAML20XACML20P_NS, 
-    		DEFAULT_ELEMENT_LOCAL_NAME, SAML2XACML2ProfileConstants.SAML20XACMLPROTOCOl_PREFIX);
+    public static final QName DEFAULT_ELEMENT_NAME_XACML20 = new QName(SAMLProfileConstants.SAML20XACML20P_NS, 
+    		DEFAULT_ELEMENT_LOCAL_NAME, SAMLProfileConstants.SAML20XACMLPROTOCOL_PREFIX);
 
     /** Default element nam for XACML 3.0*/
-    public static final QName DEFAULT_ELEMENT_NAME_XACML30 = new QName(SAML2XACML2ProfileConstants.SAML20XACML30P_NS,
-    		DEFAULT_ELEMENT_LOCAL_NAME, SAML2XACML2ProfileConstants.SAML20XACMLPROTOCOl_PREFIX);
+    public static final QName DEFAULT_ELEMENT_NAME_XACML30 = new QName(SAMLProfileConstants.SAML20XACML30P_NS,
+    		DEFAULT_ELEMENT_LOCAL_NAME, SAMLProfileConstants.SAML20XACMLPROTOCOL_PREFIX);
     
     /** Local name of the XSI type. */
     public static final String TYPE_LOCAL_NAME = "XACMLPolicyQueryType";
 
     /** QName of the XSI type.XACML1.0 */
-    public static final QName TYPE_NAME_XACML10 = new QName(SAML2XACML2ProfileConstants.SAML20XACML10P_NS, TYPE_LOCAL_NAME,
-    		SAML2XACML2ProfileConstants.SAML20XACMLPROTOCOl_PREFIX);
+    public static final QName TYPE_NAME_XACML10 = new QName(SAMLProfileConstants.SAML20XACML10P_NS, TYPE_LOCAL_NAME,
+    		SAMLProfileConstants.SAML20XACMLPROTOCOL_PREFIX);
     
     /** QName of the XSI type.XACML1.1 */
-    public static final QName TYPE_NAME_XACML1_1 = new QName(SAML2XACML2ProfileConstants.SAML20XACML1_1P_NS, TYPE_LOCAL_NAME,
-    		SAML2XACML2ProfileConstants.SAML20XACMLPROTOCOl_PREFIX);
+    public static final QName TYPE_NAME_XACML1_1 = new QName(SAMLProfileConstants.SAML20XACML1_1P_NS, TYPE_LOCAL_NAME,
+    		SAMLProfileConstants.SAML20XACMLPROTOCOL_PREFIX);
     
     
     /** QName of the XSI type.XACML2.0 */
-    public static final QName TYPE_NAME_XACML20 = new QName(SAML2XACML2ProfileConstants.SAML20XACML20P_NS, TYPE_LOCAL_NAME,
-    		SAML2XACML2ProfileConstants.SAML20XACMLPROTOCOl_PREFIX);
+    public static final QName TYPE_NAME_XACML20 = new QName(SAMLProfileConstants.SAML20XACML20P_NS, TYPE_LOCAL_NAME,
+    		SAMLProfileConstants.SAML20XACMLPROTOCOL_PREFIX);
   
     /** QName of the XSI type.XACML3.0 */
-    public static final QName TYPE_NAME_XACML30 = new QName(SAML2XACML2ProfileConstants.SAML20XACML30P_NS, TYPE_LOCAL_NAME,
-    		SAML2XACML2ProfileConstants.SAML20XACMLPROTOCOl_PREFIX);
+    public static final QName TYPE_NAME_XACML30 = new QName(SAMLProfileConstants.SAML20XACML30P_NS, TYPE_LOCAL_NAME,
+    		SAMLProfileConstants.SAML20XACMLPROTOCOL_PREFIX);
     
     /**
      * Gets the Request inside the policy query

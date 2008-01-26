@@ -19,7 +19,7 @@ package org.opensaml.xacml.ctx.impl;
 
 
 import org.opensaml.common.impl.AbstractSAMLObjectBuilder;
-import org.opensaml.xacml.ctx.XACMLConstants;
+import org.opensaml.xacml.XACMLConstants;
 import org.opensaml.xacml.ctx.XACMLResponse;
 
 /**

@@ -18,7 +18,7 @@ limitations under the License.
 package org.opensaml.xacml.policy.impl;
 
 import org.opensaml.common.impl.AbstractSAMLObjectBuilder;
-import org.opensaml.xacml.ctx.XACMLConstants;
+import org.opensaml.xacml.XACMLConstants;
 import org.opensaml.xacml.policy.XACMLObligations;
 
 public class XACMLObligationsBuilder extends AbstractSAMLObjectBuilder<XACMLObligations> {

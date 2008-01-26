@@ -14,22 +14,24 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
-*/
+ */
+
 package org.opensaml.xacml.ctx.impl;
 
 import org.opensaml.common.impl.AbstractSAMLObjectMarshaller;
-import org.opensaml.xacml.ctx.XACMLConstants;
+import org.opensaml.xacml.XACMLConstants;
 import org.opensaml.xacml.ctx.XACMLStatusDetail;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
 import org.w3c.dom.Element;
+
 /**
- *Marshaller for {@link org.opensaml.xacml.ctx.XACMLStatusDetail} objects.
- *
+ * Marshaller for {@link org.opensaml.xacml.ctx.XACMLStatusDetail} objects.
+ * 
  */
 public class XACMLStatusDetailMarshaller extends AbstractSAMLObjectMarshaller {
 
-	 /** Constructor. */
+    /** Constructor. */
     public XACMLStatusDetailMarshaller() {
         super(XACMLConstants.XACML20CTX_NS, XACMLStatusDetail.DEFAULT_ELEMENT_LOCAL_NAME);
     }
@@ -45,10 +47,10 @@ public class XACMLStatusDetailMarshaller extends AbstractSAMLObjectMarshaller {
     protected XACMLStatusDetailMarshaller(String targetNamespaceURI, String targetLocalName) {
         super(targetNamespaceURI, targetLocalName);
     }
-    
+
     /** {@inheritDoc} */
     protected void marshallAttributes(XMLObject samlObject, Element domElement) throws MarshallingException {
-    	super.marshallAttributes(samlObject, domElement);       
+        super.marshallAttributes(samlObject, domElement);
     }
-	
+
 }

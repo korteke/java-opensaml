@@ -22,6 +22,7 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.opensaml.common.SAMLObject;
+import org.opensaml.xacml.XACMLConstants;
 import org.opensaml.xacml.policy.XACMLObligations;
 
 /**
@@ -53,39 +54,39 @@ public interface XACMLResult extends SAMLObject {
 
     
     /**
-     * Gets the ResourceId of the result
-     * @return The ResourceId of the subject
-     */
-    public String getResourceId();
-    
-    /**
-     * Sets the ResourceId
-     *@param resourceId is the ResourceId
-     *
-     */
-    public void setResourceId(String resourceId);
-   
-    /**
      * Returns the decision in the result
      * @return XACMLDecision the decision in the result
      */
     public XACMLDecision getDecision();
     
     /**
-     * Sets the decision in the result
-     * @param newDecision The decison in the result
-     */
-    public void setDecision(XACMLDecision newDecision);
-    
-    /**
      * Returns the list of Obligations in the result
      * @return  the list of Obligations in the result
      */
     public List<XACMLObligations> getObligations();
-  
+   
+    /**
+     * Gets the ResourceId of the result
+     * @return The ResourceId of the subject
+     */
+    public String getResourceId();
+    
     /**
      * Returns the status in the result
      * @return  the status in the result
      */
-    public List<XACMLStatus>  getStatus();    
+    public List<XACMLStatus>  getStatus();
+    
+    /**
+     * Sets the decision in the result
+     * @param newDecision The decison in the result
+     */
+    public void setDecision(XACMLDecision newDecision);
+  
+    /**
+     * Sets the ResourceId
+     *@param resourceId is the ResourceId
+     *
+     */
+    public void setResourceId(String resourceId);    
 }

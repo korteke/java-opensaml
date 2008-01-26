@@ -23,6 +23,7 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.opensaml.common.SAMLObject;
+import org.opensaml.xacml.XACMLConstants;
 
 /**
  * Is a xacml-context Request
@@ -45,13 +46,6 @@ public interface XACMLRequest extends SAMLObject {
             XACMLConstants.XACMLCONTEXT_PREFIX);
 
     /**
-     * Gets the environment from the request
-     * 
-     * @return the environment from the request
-     */
-    public List<XACMLEnvironment> getEnvironment();
-
-    /**
      * Gets the action from the request
      * 
      * @return the action from the request
@@ -59,9 +53,18 @@ public interface XACMLRequest extends SAMLObject {
     public XACMLAction getAction();
 
     /**
-     * Sets the action of the request
+     * Gets the environment from the request
+     * 
+     * @return the environment from the request
      */
-    public void setAction(XACMLAction newAction);
+    public List<XACMLEnvironment> getEnvironment();
+
+    /**
+     * Gets the resources from the request
+     * 
+     * @return the resources from the request
+     */
+    public List<XACMLResource> getResources();
 
     /**
      * Gets the subjects from the request
@@ -71,9 +74,7 @@ public interface XACMLRequest extends SAMLObject {
     public List<XACMLSubject> getSubjects();
 
     /**
-     * Gets the resources from the request
-     * 
-     * @return the resources from the request
+     * Sets the action of the request
      */
-    public List<XACMLResource> getResources();
+    public void setAction(XACMLAction newAction);
 }

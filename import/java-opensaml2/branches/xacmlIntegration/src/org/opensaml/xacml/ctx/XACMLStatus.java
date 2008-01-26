@@ -20,6 +20,7 @@ package org.opensaml.xacml.ctx;
 import javax.xml.namespace.QName;
 
 import org.opensaml.common.SAMLObject;
+import org.opensaml.xacml.XACMLConstants;
 import org.opensaml.xml.schema.XSString;
 
 /**
@@ -52,10 +53,10 @@ public interface XACMLStatus extends SAMLObject {
     public XACMLStatusCode getStatusCode();
     
     /**
-     * Sets the status code for the Staus
-     * @param newStatusCode The new status code
+     * Gets the status detail of status
+     * @return The status detail of status 
      */
-    public void setStatusCode(XACMLStatusCode newStatusCode);    
+	public XACMLStatusDetail getStatusDetail();    
     
     /**
      * Gets the status message of status
@@ -64,21 +65,21 @@ public interface XACMLStatus extends SAMLObject {
     public XSString getStatusMessage();
     
     /**
-     * Sets the status message for the Staus
-     * @param newStatusMessage The new status message
+     * Sets the status code for the Staus
+     * @param newStatusCode The new status code
      */
-    public void setStatusMessage(XSString newStatusMessage);
+    public void setStatusCode(XACMLStatusCode newStatusCode);
     
-    /**
-     * Gets the status detail of status
-     * @return The status detail of status 
-     */
-	public XACMLStatusDetail getStatusDetail();
-
     /**
      * Sets the status detail for the Staus
      * @param statusDetail The new status message
      */
 	public void setStatusDetail(XACMLStatusDetail statusDetail);
+
+    /**
+     * Sets the status message for the Staus
+     * @param newStatusMessage The new status message
+     */
+    public void setStatusMessage(XSString newStatusMessage);
 	
 }
