@@ -18,12 +18,12 @@ limitations under the License.
 package org.opensaml.xacml.ctx.impl;
 
 import org.opensaml.common.impl.AbstractSAMLObjectUnmarshaller;
-import org.opensaml.xacml.ctx.XACMLStatusCode;
+import org.opensaml.xacml.ctx.StatusCodeType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.w3c.dom.Attr;
 /**
- * Unmarshaller for {@link org.opensaml.xacml.ctx.XACMLStatusCode} objects.
+ * Unmarshaller for {@link org.opensaml.xacml.ctx.StatusCodeType} objects.
  *
  */
 public class XACMLStatusCodeUnmarshaller extends AbstractSAMLObjectUnmarshaller {
@@ -48,9 +48,9 @@ public class XACMLStatusCodeUnmarshaller extends AbstractSAMLObjectUnmarshaller 
     /** {@inheritDoc} */
     protected void processAttribute(XMLObject samlObject, Attr attribute) throws UnmarshallingException {
 
-    	XACMLStatusCode statusCode = (XACMLStatusCode) samlObject;
+    	StatusCodeType statusCode = (StatusCodeType) samlObject;
 
-        if (attribute.getLocalName().equals(XACMLStatusCode.Value_ATTTRIB_NAME)) {
+        if (attribute.getLocalName().equals(StatusCodeType.VALUE_ATTTRIB_NAME)) {
         	statusCode.setValue(attribute.getValue());           
         }
     }
@@ -58,10 +58,10 @@ public class XACMLStatusCodeUnmarshaller extends AbstractSAMLObjectUnmarshaller 
     /** {@inheritDoc} */
     protected void processChildElement(XMLObject parentObject, XMLObject childObject) throws UnmarshallingException {
     	
-    	XACMLStatusCode statuscode = (XACMLStatusCode) parentObject;
+    	StatusCodeType statuscode = (StatusCodeType) parentObject;
     	
-    	if(childObject instanceof XACMLStatusCode){
-    		statuscode.getStatusCodes().add((XACMLStatusCode)childObject);    		
+    	if(childObject instanceof StatusCodeType){
+    		statuscode.getStatusCodes().add((StatusCodeType)childObject);    		
     	}else{
     		super.processChildElement(parentObject, childObject);
     	}

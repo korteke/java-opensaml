@@ -18,12 +18,12 @@ limitations under the License.
 package org.opensaml.xacml.ctx.impl;
 
 import org.opensaml.common.impl.AbstractSAMLObjectBuilder;
-import org.opensaml.xacml.ctx.XACMLEnvironment;
+import org.opensaml.xacml.ctx.EnvironmentType;
 /**
- * Builder for {@link org.opensaml.xacml.ctx.XACMLEnvironment} objects.
+ * Builder for {@link org.opensaml.xacml.ctx.EnvironmentType} objects.
  *
 */
-public class XACMLEnvironmentBuilder extends AbstractSAMLObjectBuilder<XACMLEnvironment> {
+public class XACMLEnvironmentBuilder extends AbstractSAMLObjectBuilder<EnvironmentType> {
 
 	public XACMLEnvironmentBuilder(){
 		
@@ -31,13 +31,13 @@ public class XACMLEnvironmentBuilder extends AbstractSAMLObjectBuilder<XACMLEnvi
 	
 	@Override
 	 /** {@inheritDoc} */
-	public XACMLEnvironment buildObject() {
+	public EnvironmentType buildObject() {
 		return null;
 	}
 
 	@Override
 	 /** {@inheritDoc} */
-	public XACMLEnvironment buildObject(String namespaceURI, String localName,
+	public EnvironmentType buildObject(String namespaceURI, String localName,
 			String namespacePrefix) {
 		return new XACMLEnvironmentImpl(namespaceURI,localName,namespacePrefix);
 	}

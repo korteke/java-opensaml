@@ -18,9 +18,9 @@ limitations under the License.
 package org.opensaml.xacml.ctx.impl;
 
 import org.opensaml.common.impl.AbstractSAMLObjectBuilder;
-import org.opensaml.xacml.ctx.XACMLStatusDetail;
+import org.opensaml.xacml.ctx.StatusDetailType;
 /**
- * Builder for {@link org.opensaml.xacml.ctx.XACMLStatusDetail} objects.
+ * Builder for {@link org.opensaml.xacml.ctx.StatusDetailType} objects.
  *
  */
 public class XACMLStatusDetailBuilder extends AbstractSAMLObjectBuilder {
@@ -30,12 +30,12 @@ public class XACMLStatusDetailBuilder extends AbstractSAMLObjectBuilder {
 	}
 	
 	@Override
-	public XACMLStatusDetail buildObject() {
+	public StatusDetailType buildObject() {
 		return null;
 	}
 
 	@Override
-	public XACMLStatusDetail buildObject(String namespaceURI, String localName,
+	public StatusDetailType buildObject(String namespaceURI, String localName,
 			String namespacePrefix) {
 		return new XACMLStatusDetailImpl(namespaceURI,localName,namespacePrefix);
 	}

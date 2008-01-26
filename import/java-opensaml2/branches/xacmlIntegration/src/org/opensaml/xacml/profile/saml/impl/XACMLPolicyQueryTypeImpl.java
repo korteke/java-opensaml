@@ -24,7 +24,7 @@ import java.util.List;
 
 import org.opensaml.saml2.core.impl.RequestAbstractTypeImpl;
 import org.opensaml.xacml.XACMLObject;
-import org.opensaml.xacml.ctx.XACMLRequest;
+import org.opensaml.xacml.ctx.RequestType;
 import org.opensaml.xacml.policy.IdReferenceType;
 import org.opensaml.xacml.profile.saml.XACMLPolicyQueryType;
 import org.opensaml.xml.XMLObject;
@@ -50,8 +50,8 @@ public class XACMLPolicyQueryTypeImpl extends RequestAbstractTypeImpl implements
     }
 
     /** {@inheritDoc} */
-    public List<XACMLRequest> getRequests() {
-        return (List<XACMLRequest>) choiceGroup.subList(XACMLRequest.DEFAULT_ELEMENT_NAME_XACML20);
+    public List<RequestType> getRequests() {
+        return (List<RequestType>) choiceGroup.subList(RequestType.DEFAULT_ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */

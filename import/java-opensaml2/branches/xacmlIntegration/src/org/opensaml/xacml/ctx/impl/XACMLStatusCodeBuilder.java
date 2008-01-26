@@ -18,12 +18,12 @@ limitations under the License.
 package org.opensaml.xacml.ctx.impl;
 
 import org.opensaml.common.impl.AbstractSAMLObjectBuilder;
-import org.opensaml.xacml.ctx.XACMLStatusCode;
+import org.opensaml.xacml.ctx.StatusCodeType;
 /**
- * Builder for {@link org.opensaml.xacml.ctx.XACMLStatusCode} objects.
+ * Builder for {@link org.opensaml.xacml.ctx.StatusCodeType} objects.
  *
  */
-public class XACMLStatusCodeBuilder extends AbstractSAMLObjectBuilder<XACMLStatusCode> {
+public class XACMLStatusCodeBuilder extends AbstractSAMLObjectBuilder<StatusCodeType> {
 
 	/**
 	 * Constructor
@@ -34,13 +34,13 @@ public class XACMLStatusCodeBuilder extends AbstractSAMLObjectBuilder<XACMLStatu
 	
 	@Override
 	 /** {@inheritDoc} */
-	public XACMLStatusCode buildObject() {
+	public StatusCodeType buildObject() {
 		return null;
 	}
 
 	@Override
 	 /** {@inheritDoc} */
-	public XACMLStatusCode buildObject(String namespaceURI, String localName,
+	public StatusCodeType buildObject(String namespaceURI, String localName,
 			String namespacePrefix) {
 		return new XACMLStatusCodeImpl(namespaceURI,localName,namespacePrefix);
 	}

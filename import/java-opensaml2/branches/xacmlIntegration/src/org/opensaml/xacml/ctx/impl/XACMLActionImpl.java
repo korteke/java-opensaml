@@ -20,21 +20,21 @@ package org.opensaml.xacml.ctx.impl;
 import java.util.List;
 
 import org.opensaml.common.impl.AbstractSAMLObject;
-import org.opensaml.xacml.ctx.XACMLAction;
-import org.opensaml.xacml.ctx.XACMLAttribute;
+import org.opensaml.xacml.ctx.ActionType;
+import org.opensaml.xacml.ctx.AttributeType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.util.XMLObjectChildrenList;
 
 /**
- * Implementation of {@link org.opensaml.xacml.ctx.XACMLAction} objects.
+ * Implementation of {@link org.opensaml.xacml.ctx.ActionType} objects.
  *
  */
 
-public class XACMLActionImpl extends AbstractSAMLObject implements XACMLAction {
+public class XACMLActionImpl extends AbstractSAMLObject implements ActionType {
 
 	
 	/**Lists of the atrributes in the subject*/
-	private XMLObjectChildrenList<XACMLAttribute> attributes;
+	private XMLObjectChildrenList<AttributeType> attributes;
 
 	/**
      * Constructor
@@ -45,11 +45,11 @@ public class XACMLActionImpl extends AbstractSAMLObject implements XACMLAction {
      */
 	protected XACMLActionImpl(String namespaceURI, String elementLocalName, String namespacePrefix){
 		super(namespaceURI,elementLocalName,namespacePrefix);
-		attributes = new XMLObjectChildrenList<XACMLAttribute>(this);
+		attributes = new XMLObjectChildrenList<AttributeType>(this);
 	}
 	
 	 /** {@inheritDoc} */
-	public List<XACMLAttribute> getAttributes(){
+	public List<AttributeType> getAttributes(){
 		return attributes;
 	}
 

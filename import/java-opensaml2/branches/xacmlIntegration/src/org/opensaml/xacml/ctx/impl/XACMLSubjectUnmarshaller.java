@@ -18,13 +18,13 @@ limitations under the License.
 package org.opensaml.xacml.ctx.impl;
 
 import org.opensaml.common.impl.AbstractSAMLObjectUnmarshaller;
-import org.opensaml.xacml.ctx.XACMLAttribute;
-import org.opensaml.xacml.ctx.XACMLSubject;
+import org.opensaml.xacml.ctx.AttributeType;
+import org.opensaml.xacml.ctx.SubjectType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.w3c.dom.Attr;
 /**
- * Unmarshaller for {@link org.opensaml.xacml.ctx.XACMLSubject} objects.
+ * Unmarshaller for {@link org.opensaml.xacml.ctx.SubjectType} objects.
  *
  */
 public class XACMLSubjectUnmarshaller extends AbstractSAMLObjectUnmarshaller {
@@ -49,9 +49,9 @@ public class XACMLSubjectUnmarshaller extends AbstractSAMLObjectUnmarshaller {
     /** {@inheritDoc} */
     protected void processAttribute(XMLObject samlObject, Attr attribute) throws UnmarshallingException {
 
-    	XACMLSubject attrib = (XACMLSubject) samlObject;
+    	SubjectType attrib = (SubjectType) samlObject;
 
-        if (attribute.getLocalName().equals(XACMLSubject.SubjectCategory_ATTTRIB_NAME)) {
+        if (attribute.getLocalName().equals(SubjectType.SUBJECT_CATEGORY_ATTTRIB_NAME)) {
         	attrib.setSubjectCategory(attribute.getValue());                   
         }
     }
@@ -59,10 +59,10 @@ public class XACMLSubjectUnmarshaller extends AbstractSAMLObjectUnmarshaller {
     /** {@inheritDoc} */
     protected void processChildElement(XMLObject parentObject, XMLObject childObject) throws UnmarshallingException {
     	
-    	XACMLSubject subject = (XACMLSubject) parentObject;
+    	SubjectType subject = (SubjectType) parentObject;
     	
-    	if(childObject instanceof XACMLAttribute){
-    		subject.getAttributes().add((XACMLAttribute)childObject);    		
+    	if(childObject instanceof AttributeType){
+    		subject.getAttributes().add((AttributeType)childObject);    		
     	}else{
     		super.processChildElement(parentObject, childObject);
     	}

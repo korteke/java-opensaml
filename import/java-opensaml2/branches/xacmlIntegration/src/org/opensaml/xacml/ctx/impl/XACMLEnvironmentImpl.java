@@ -22,22 +22,22 @@ import java.util.Collections;
 import java.util.List;
 
 import org.opensaml.common.impl.AbstractSAMLObject;
-import org.opensaml.xacml.ctx.XACMLAttribute;
-import org.opensaml.xacml.ctx.XACMLEnvironment;
+import org.opensaml.xacml.ctx.AttributeType;
+import org.opensaml.xacml.ctx.EnvironmentType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.util.XMLObjectChildrenList;
 
 
 /**
- * Implementation of {@link org.opensaml.xacml.ctx.XACMLEnvironment} objects.
+ * Implementation of {@link org.opensaml.xacml.ctx.EnvironmentType} objects.
  *
  */
 
 public class XACMLEnvironmentImpl extends AbstractSAMLObject implements
-		XACMLEnvironment {
+		EnvironmentType {
 
 	/** List of the values in the environment */
-	private XMLObjectChildrenList<XACMLAttribute> attributes;
+	private XMLObjectChildrenList<AttributeType> attributes;
 
 	/**
      * Constructor
@@ -48,11 +48,11 @@ public class XACMLEnvironmentImpl extends AbstractSAMLObject implements
      */
 	protected XACMLEnvironmentImpl(String namespaceURI, String elementLocalName, String namespacePrefix){
 		super(namespaceURI,elementLocalName,namespacePrefix);
-		attributes = new XMLObjectChildrenList<XACMLAttribute>(this);
+		attributes = new XMLObjectChildrenList<AttributeType>(this);
 	}
 	
 	 /** {@inheritDoc} */
-	public List<XACMLAttribute> getAttributes(){
+	public List<AttributeType> getAttributes(){
 		return attributes;
 	}
 

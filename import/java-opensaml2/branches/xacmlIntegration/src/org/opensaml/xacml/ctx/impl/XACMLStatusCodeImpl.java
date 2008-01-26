@@ -22,21 +22,21 @@ import java.util.Collections;
 import java.util.List;
 
 import org.opensaml.common.impl.AbstractSAMLObject;
-import org.opensaml.xacml.ctx.XACMLStatusCode;
+import org.opensaml.xacml.ctx.StatusCodeType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.util.XMLObjectChildrenList;
 
 
 /**
- * Implementation of {@link org.opensaml.xacml.ctx.XACMLStatusCode} objects.
+ * Implementation of {@link org.opensaml.xacml.ctx.StatusCodeType} objects.
  *
  */
 
 public class XACMLStatusCodeImpl extends AbstractSAMLObject implements
-		XACMLStatusCode {
+		StatusCodeType {
 
 	/** List of the statuscodes */
-	private XMLObjectChildrenList<XACMLStatusCode> statusCodes;
+	private XMLObjectChildrenList<StatusCodeType> statusCodes;
 	
 	/** The attribute Value */
 	private String value;
@@ -50,11 +50,11 @@ public class XACMLStatusCodeImpl extends AbstractSAMLObject implements
      */
 	protected XACMLStatusCodeImpl(String namespaceURI, String elementLocalName, String namespacePrefix){
 		super(namespaceURI,elementLocalName,namespacePrefix);
-		statusCodes = new XMLObjectChildrenList<XACMLStatusCode>(this);
+		statusCodes = new XMLObjectChildrenList<StatusCodeType>(this);
 	}
 	
     /** {@inheritDoc} */
-	public List<XACMLStatusCode> getStatusCodes(){
+	public List<StatusCodeType> getStatusCodes(){
 		return statusCodes;
 	}
 

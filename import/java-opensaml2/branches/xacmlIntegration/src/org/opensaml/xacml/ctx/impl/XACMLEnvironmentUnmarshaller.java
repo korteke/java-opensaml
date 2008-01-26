@@ -18,13 +18,13 @@ limitations under the License.
 package org.opensaml.xacml.ctx.impl;
 
 import org.opensaml.common.impl.AbstractSAMLObjectUnmarshaller;
-import org.opensaml.xacml.ctx.XACMLAttribute;
-import org.opensaml.xacml.ctx.XACMLEnvironment;
+import org.opensaml.xacml.ctx.AttributeType;
+import org.opensaml.xacml.ctx.EnvironmentType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
 
 /**
- * Unmarshaller for {@link org.opensaml.xacml.ctx.XACMLAction} objects.
+ * Unmarshaller for {@link org.opensaml.xacml.ctx.ActionType} objects.
  *
  */
 
@@ -51,10 +51,10 @@ public class XACMLEnvironmentUnmarshaller extends
     /** {@inheritDoc} */
     protected void processChildElement(XMLObject parentObject, XMLObject childObject) throws UnmarshallingException {
     	
-    	XACMLEnvironment environment = (XACMLEnvironment) parentObject;
+    	EnvironmentType environment = (EnvironmentType) parentObject;
     	
-    	if(childObject instanceof XACMLAttribute){
-    		environment.getAttributes().add((XACMLAttribute)childObject);    		
+    	if(childObject instanceof AttributeType){
+    		environment.getAttributes().add((AttributeType)childObject);    		
     	}else{
     		super.processChildElement(parentObject, childObject);
     	}

@@ -19,7 +19,7 @@ limitations under the License.
 package org.opensaml.xacml.profile.saml.impl;
 
 import org.opensaml.saml2.core.impl.RequestAbstractTypeUnmarshaller;
-import org.opensaml.xacml.ctx.XACMLRequest;
+import org.opensaml.xacml.ctx.RequestType;
 import org.opensaml.xacml.profile.saml.XACMLAuthzDecisionQueryType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
@@ -52,8 +52,8 @@ public class XACMLAuthzDecisionQueryTypeUnmarshaller extends RequestAbstractType
     protected void processChildElement(XMLObject parentObject, XMLObject childObject) throws UnmarshallingException {
         XACMLAuthzDecisionQueryType xacmlauthzdecisionquery = (XACMLAuthzDecisionQueryType) parentObject;
 
-        if (childObject instanceof XACMLRequest) {
-            xacmlauthzdecisionquery.setRequest((XACMLRequest) childObject);
+        if (childObject instanceof RequestType) {
+            xacmlauthzdecisionquery.setRequest((RequestType) childObject);
         } else {
             super.processChildElement(parentObject, childObject);
         }

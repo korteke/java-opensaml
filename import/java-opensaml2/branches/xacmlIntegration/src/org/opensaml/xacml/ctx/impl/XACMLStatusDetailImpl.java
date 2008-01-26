@@ -23,18 +23,18 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.opensaml.common.impl.AbstractSAMLObject;
-import org.opensaml.xacml.ctx.XACMLStatusDetail;
+import org.opensaml.xacml.ctx.StatusDetailType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.util.IndexedXMLObjectChildrenList;
 
 
 /**
- * Implementation of {@link org.opensaml.xacml.ctx.XACMLStatusDetail} objects.
+ * Implementation of {@link org.opensaml.xacml.ctx.StatusDetailType} objects.
  *
  */
 
 public class XACMLStatusDetailImpl extends AbstractSAMLObject implements
-		XACMLStatusDetail {
+		StatusDetailType {
 
 	/** "any" children. */
     private IndexedXMLObjectChildrenList<XMLObject> unknownChildren;

@@ -18,14 +18,14 @@ limitations under the License.
 package org.opensaml.xacml.ctx.impl;
 
 import org.opensaml.common.impl.AbstractSAMLObjectUnmarshaller;
-import org.opensaml.xacml.ctx.XACMLStatus;
-import org.opensaml.xacml.ctx.XACMLStatusCode;
-import org.opensaml.xacml.ctx.XACMLStatusDetail;
+import org.opensaml.xacml.ctx.StatusType;
+import org.opensaml.xacml.ctx.StatusCodeType;
+import org.opensaml.xacml.ctx.StatusDetailType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.schema.XSString;
 /**
- * Unmarshaller for {@link org.opensaml.xacml.ctx.XACMLStatus} objects.
+ * Unmarshaller for {@link org.opensaml.xacml.ctx.StatusType} objects.
  *
  */
 public class XACMLStatusUnmarshaller extends AbstractSAMLObjectUnmarshaller {
@@ -51,14 +51,14 @@ public class XACMLStatusUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 	  /** {@inheritDoc} */
     protected void processChildElement(XMLObject parentObject, XMLObject childObject) throws UnmarshallingException {
     	
-    	XACMLStatus status = (XACMLStatus) parentObject;
+    	StatusType status = (StatusType) parentObject;
     	
-    	if(childObject instanceof XACMLStatusCode){
-    		status.setStatusCode((XACMLStatusCode)childObject);    		
+    	if(childObject instanceof StatusCodeType){
+    		status.setStatusCode((StatusCodeType)childObject);    		
     	}if(childObject instanceof XSString){
     		status.setStatusMessage((XSString)childObject);    		
-    	}if(childObject instanceof XACMLStatusDetail){
-    		status.setStatusDetail((XACMLStatusDetail)childObject);    		
+    	}if(childObject instanceof StatusDetailType){
+    		status.setStatusDetail((StatusDetailType)childObject);    		
     	}else{
     		super.processChildElement(parentObject, childObject);
     	}

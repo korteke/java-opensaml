@@ -18,13 +18,13 @@ limitations under the License.
 package org.opensaml.xacml.ctx.impl;
 
 import org.opensaml.common.impl.AbstractSAMLObjectBuilder;
-import org.opensaml.xacml.ctx.XACMLAttribute;
+import org.opensaml.xacml.ctx.AttributeType;
 
 /**
- * Builder for {@link org.opensaml.xacml.ctx.XACMLAttribute} objects.
+ * Builder for {@link org.opensaml.xacml.ctx.AttributeType} objects.
  *
  */
-public class XACMLAttributeBuilder extends AbstractSAMLObjectBuilder<XACMLAttribute> {
+public class XACMLAttributeBuilder extends AbstractSAMLObjectBuilder<AttributeType> {
 
 	/**
 	 * Constructor
@@ -36,13 +36,13 @@ public class XACMLAttributeBuilder extends AbstractSAMLObjectBuilder<XACMLAttrib
 	
 	@Override
 	 /** {@inheritDoc} */
-	public XACMLAttribute buildObject() {
+	public AttributeType buildObject() {
 		return null;
 	}
 
 	@Override
 	 /** {@inheritDoc} */
-	public XACMLAttribute buildObject(String namespaceURI, String localName,
+	public AttributeType buildObject(String namespaceURI, String localName,
 			String namespacePrefix) {
 		 return new XACMLAttributeImpl(namespaceURI,localName,namespacePrefix);
 	}

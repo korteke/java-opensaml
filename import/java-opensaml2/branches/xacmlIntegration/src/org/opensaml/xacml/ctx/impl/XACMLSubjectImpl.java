@@ -22,25 +22,25 @@ import java.util.Collections;
 import java.util.List;
 
 import org.opensaml.common.impl.AbstractSAMLObject;
-import org.opensaml.xacml.ctx.XACMLAttribute;
-import org.opensaml.xacml.ctx.XACMLSubject;
+import org.opensaml.xacml.ctx.AttributeType;
+import org.opensaml.xacml.ctx.SubjectType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.util.XMLObjectChildrenList;
 
 
 /**
- * Implementation of {@link org.opensaml.xacml.ctx.XACMLSubject} objects.
+ * Implementation of {@link org.opensaml.xacml.ctx.SubjectType} objects.
  *
  */
 
 public class XACMLSubjectImpl extends AbstractSAMLObject implements
-		XACMLSubject {
+		SubjectType {
 	
 	/** Subject category of the Subject*/
 	private String SubjectCategory;
 	
 	/**Lists of the atrributes in the subject*/
-	private XMLObjectChildrenList<XACMLAttribute> attributes;
+	private XMLObjectChildrenList<AttributeType> attributes;
 
 		 
 	/**
@@ -54,7 +54,7 @@ public class XACMLSubjectImpl extends AbstractSAMLObject implements
 		super(namespaceURI,elementLocalName,namespacePrefix);
 		SubjectCategory = "urn:oasis:names:tc:xacml:1.0:subject-category:access-subject";
 		
-		attributes = new XMLObjectChildrenList<XACMLAttribute>(this);
+		attributes = new XMLObjectChildrenList<AttributeType>(this);
 	}
 	
 	 /** {@inheritDoc} */
@@ -77,7 +77,7 @@ public class XACMLSubjectImpl extends AbstractSAMLObject implements
 	}	
 
 	 /** {@inheritDoc} */
-	public List<XACMLAttribute> getAttributes(){
+	public List<AttributeType> getAttributes(){
 		return attributes;
 	}	
 

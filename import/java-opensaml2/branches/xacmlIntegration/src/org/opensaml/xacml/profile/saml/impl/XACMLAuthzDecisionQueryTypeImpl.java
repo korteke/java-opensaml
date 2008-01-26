@@ -23,7 +23,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.opensaml.saml2.core.impl.RequestAbstractTypeImpl;
-import org.opensaml.xacml.ctx.XACMLRequest;
+import org.opensaml.xacml.ctx.RequestType;
 import org.opensaml.xacml.profile.saml.XACMLAuthzDecisionQueryType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.schema.XSBooleanValue;
@@ -32,7 +32,7 @@ import org.opensaml.xml.schema.XSBooleanValue;
 public class XACMLAuthzDecisionQueryTypeImpl extends RequestAbstractTypeImpl implements XACMLAuthzDecisionQueryType {
 
     /** The xacml-context:Request. */
-    private XACMLRequest request;
+    private RequestType request;
 
     /** InputContextOnly attribute value. */
     private XSBooleanValue inputContextOnly;
@@ -79,7 +79,7 @@ public class XACMLAuthzDecisionQueryTypeImpl extends RequestAbstractTypeImpl imp
     }
 
     /** {@inheritDoc} */
-    public XACMLRequest getRequest() {
+    public RequestType getRequest() {
         return request;
     }
 
@@ -126,7 +126,7 @@ public class XACMLAuthzDecisionQueryTypeImpl extends RequestAbstractTypeImpl imp
     }
 
     /** {@inheritDoc} */
-    public void setRequest(XACMLRequest request) {
+    public void setRequest(RequestType request) {
         this.request = prepareForAssignment(this.request, request);
     }
 

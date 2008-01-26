@@ -24,7 +24,7 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.saml2.core.RequestAbstractType;
 import org.opensaml.xacml.XACMLObject;
-import org.opensaml.xacml.ctx.XACMLRequest;
+import org.opensaml.xacml.ctx.RequestType;
 import org.opensaml.xacml.policy.IdReferenceType;
 
 /** A SAML XACML profile XACMLPolicyQuery schema type. */
@@ -73,7 +73,7 @@ public interface XACMLPolicyQueryType extends RequestAbstractType, XACMLObject {
      * 
      * @return the XACML Request
      */
-    public List<XACMLRequest> getRequests();
+    public List<RequestType> getRequests();
 
     /**
      * Gets the IDs for referenced policy sets.

@@ -19,16 +19,16 @@ package org.opensaml.xacml.ctx.impl;
 
 
 import org.opensaml.common.impl.AbstractSAMLObjectUnmarshaller;
-import org.opensaml.xacml.ctx.XACMLAction;
-import org.opensaml.xacml.ctx.XACMLEnvironment;
-import org.opensaml.xacml.ctx.XACMLRequest;
-import org.opensaml.xacml.ctx.XACMLResource;
-import org.opensaml.xacml.ctx.XACMLSubject;
+import org.opensaml.xacml.ctx.ActionType;
+import org.opensaml.xacml.ctx.EnvironmentType;
+import org.opensaml.xacml.ctx.RequestType;
+import org.opensaml.xacml.ctx.ResourceType;
+import org.opensaml.xacml.ctx.SubjectType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
 
 /**
- * A unmarshaller for {@link org.opensaml.xacml.ctx.XACMLRequest}
+ * A unmarshaller for {@link org.opensaml.xacml.ctx.RequestType}
 */
 
 
@@ -52,16 +52,16 @@ public class XACMLRequestUnmarshaller extends AbstractSAMLObjectUnmarshaller {
     /** {@inheritDoc} */
     protected void processChildElement(XMLObject parentSAMLObject, XMLObject childSAMLObject)
             throws UnmarshallingException {
-    	XACMLRequest request = (XACMLRequest) parentSAMLObject;
+    	RequestType request = (RequestType) parentSAMLObject;
 
-        if (childSAMLObject instanceof XACMLAction)
-            request.setAction((XACMLAction) childSAMLObject);
-        else if (childSAMLObject instanceof XACMLEnvironment)
-            request.getEnvironment().add((XACMLEnvironment)childSAMLObject);
-        else if(childSAMLObject instanceof XACMLSubject)
-        	request.getSubjects().add((XACMLSubject) childSAMLObject);
-        else if(childSAMLObject instanceof XACMLResource)
-        	request.getResources().add((XACMLResource) childSAMLObject);        
+        if (childSAMLObject instanceof ActionType)
+            request.setAction((ActionType) childSAMLObject);
+        else if (childSAMLObject instanceof EnvironmentType)
+            request.getEnvironment().add((EnvironmentType)childSAMLObject);
+        else if(childSAMLObject instanceof SubjectType)
+        	request.getSubjects().add((SubjectType) childSAMLObject);
+        else if(childSAMLObject instanceof ResourceType)
+        	request.getResources().add((ResourceType) childSAMLObject);        
         else
             super.processChildElement(parentSAMLObject, childSAMLObject);
     }

@@ -18,12 +18,12 @@ limitations under the License.
 package org.opensaml.xacml.ctx.impl;
 
 import org.opensaml.common.impl.AbstractSAMLObjectMarshaller;
-import org.opensaml.xacml.ctx.XACMLStatusCode;
+import org.opensaml.xacml.ctx.StatusCodeType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
 import org.w3c.dom.Element;
 /**
- *Marshaller for {@link org.opensaml.xacml.ctx.XACMLStatusCode} objects.
+ *Marshaller for {@link org.opensaml.xacml.ctx.StatusCodeType} objects.
  *
  */
 public class XACMLStatusCodeMarshaller extends AbstractSAMLObjectMarshaller {
@@ -49,10 +49,10 @@ public class XACMLStatusCodeMarshaller extends AbstractSAMLObjectMarshaller {
 
     /** {@inheritDoc} */
     protected void marshallAttributes(XMLObject samlElement, Element domElement) throws MarshallingException {
-    	XACMLStatusCode attribute = (XACMLStatusCode) samlElement;
+    	StatusCodeType attribute = (StatusCodeType) samlElement;
 
         if (attribute.getValue() != null) {
-            domElement.setAttributeNS(null, XACMLStatusCode.Value_ATTTRIB_NAME,attribute.getValue());            		
+            domElement.setAttributeNS(null, StatusCodeType.VALUE_ATTTRIB_NAME,attribute.getValue());            		
         }      
     }
 	

@@ -19,7 +19,7 @@ package org.opensaml.xacml.ctx.impl;
 
 import org.opensaml.common.impl.AbstractSAMLObjectMarshaller;
 /**
- *Marshaller for {@link org.opensaml.xacml.ctx.XACMLResource} objects.
+ *Marshaller for {@link org.opensaml.xacml.ctx.ResourceType} objects.
  *
  */
 public class XACMLResourceMarshaller extends AbstractSAMLObjectMarshaller {

@@ -22,13 +22,13 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.common.SAMLObject;
 import org.opensaml.xacml.XACMLConstants;
-import org.opensaml.xacml.ctx.XACMLAttributeValue;
+import org.opensaml.xacml.ctx.AttributeValueType;
 
 /**
  * Interface for xacml:policy AttributeAssignment
  * 
  */
-public interface XACMLAttributeAssignment extends SAMLObject, XACMLAttributeValue {
+public interface XACMLAttributeAssignment extends SAMLObject, AttributeValueType {
 
     /** Element name */
     public static final String DEFAULT_ELEMENT_LOCAL_NAME = "AttributeAssignment";

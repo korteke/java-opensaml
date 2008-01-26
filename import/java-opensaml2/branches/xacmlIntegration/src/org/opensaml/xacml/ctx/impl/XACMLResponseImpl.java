@@ -22,18 +22,18 @@ import java.util.Collections;
 import java.util.List;
 
 import org.opensaml.common.impl.AbstractSAMLObject;
-import org.opensaml.xacml.ctx.XACMLResponse;
-import org.opensaml.xacml.ctx.XACMLResult;
+import org.opensaml.xacml.ctx.ResponseType;
+import org.opensaml.xacml.ctx.ResultType;
 import org.opensaml.xml.XMLObject;
 
 /**
- * A concrete implementation of {@link org.opensaml.xacml.ctx.XACMLResponse}
+ * A concrete implementation of {@link org.opensaml.xacml.ctx.ResponseType}
  */
 
-public class XACMLResponseImpl extends AbstractSAMLObject implements XACMLResponse {
+public class XACMLResponseImpl extends AbstractSAMLObject implements ResponseType {
 
 	/** The reult of the response */
-	private XACMLResult result;
+	private ResultType result;
 	
     /**
      * Constructor
@@ -56,11 +56,11 @@ public class XACMLResponseImpl extends AbstractSAMLObject implements XACMLRespon
     	return Collections.unmodifiableList(children);
     }
 
-	public XACMLResult getResult() {
+	public ResultType getResult() {
 		return result;
 	}
 
-	public void setResult(XACMLResult result) {
+	public void setResult(ResultType result) {
 		this.result = prepareForAssignment(this.result,result);
 	}
 }

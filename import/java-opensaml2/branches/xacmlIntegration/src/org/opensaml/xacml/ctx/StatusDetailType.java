@@ -14,37 +14,30 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
-*/
+ */
+
 package org.opensaml.xacml.ctx;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.common.SAMLObject;
 import org.opensaml.xacml.XACMLConstants;
+import org.opensaml.xacml.XACMLObject;
 import org.opensaml.xml.ElementExtensibleXMLObject;
 
-/**
- *Interface for xacml:context StatusDetail
- *
- */
-public interface XACMLStatusDetail extends SAMLObject, ElementExtensibleXMLObject
-		 {
+/** XACML context StatusDetail schema type. */
+public interface StatusDetailType extends XACMLObject, ElementExtensibleXMLObject {
 
-	/** Element local name. */
+    /** Element local name. */
     public static final String DEFAULT_ELEMENT_LOCAL_NAME = "StatusDetail";
 
-      /** Default element name XACML20. */
-    public static final QName DEFAULT_ELEMENT_NAME_20 = new QName(
-    		XACMLConstants.XACML20CTX_NS, 
-    		DEFAULT_ELEMENT_LOCAL_NAME,
-    		XACMLConstants.XACMLCONTEXT_PREFIX);
+    /** Default element name. */
+    public static final QName DEFAULT_ELEMENT_NAME = new QName(XACMLConstants.XACML20CTX_NS,
+            DEFAULT_ELEMENT_LOCAL_NAME, XACMLConstants.XACMLCONTEXT_PREFIX);
 
     /** Local name of the XSI type. */
     public static final String TYPE_LOCAL_NAME = "StatusDetailType";
 
-     /** QName of the XSI type XACML20. */
-    public static final QName TYPE_NAME_20 = new QName(
-    		XACMLConstants.XACML20CTX_NS,
-    		TYPE_LOCAL_NAME,
-    		XACMLConstants.XACMLCONTEXT_PREFIX);
+    /** QName of the XSI type. */
+    public static final QName TYPE_NAME = new QName(XACMLConstants.XACML20CTX_NS, TYPE_LOCAL_NAME,
+            XACMLConstants.XACMLCONTEXT_PREFIX);
 }

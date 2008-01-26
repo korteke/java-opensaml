@@ -18,13 +18,13 @@ limitations under the License.
 package org.opensaml.xacml.ctx.impl;
 
 import org.opensaml.common.impl.AbstractSAMLObjectMarshaller;
-import org.opensaml.xacml.ctx.XACMLAttribute;
+import org.opensaml.xacml.ctx.AttributeType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
 import org.w3c.dom.Element;
 
 /**
- *Marshaller for {@link org.opensaml.xacml.ctx.XACMLAttribute} objects.
+ *Marshaller for {@link org.opensaml.xacml.ctx.AttributeType} objects.
  *
  */
 
@@ -49,18 +49,18 @@ public class XACMLAttributeMarshaller extends AbstractSAMLObjectMarshaller {
     
     /** {@inheritDoc} */
     protected void marshallAttributes(XMLObject samlElement, Element domElement) throws MarshallingException {
-    	XACMLAttribute attribute = (XACMLAttribute) samlElement;
+    	AttributeType attribute = (AttributeType) samlElement;
 
         if (attribute.getIssuer() != null) {
-            domElement.setAttributeNS(null, XACMLAttribute.ISSUER_ATTRIB_NAME, attribute.getIssuer());
+            domElement.setAttributeNS(null, AttributeType.ISSUER_ATTRIB_NAME, attribute.getIssuer());
         }
 
         if (attribute.getDataType() != null) {
-            domElement.setAttributeNS(null, XACMLAttribute.DATATYPE_ATTRIB_NAME, attribute.getDataType());
+            domElement.setAttributeNS(null, AttributeType.DATATYPE_ATTRIB_NAME, attribute.getDataType());
         }
 
         if (attribute.getAttributeID() != null) {
-            domElement.setAttributeNS(null, XACMLAttribute.ATTRIBUTEID_ATTTRIB_NAME, attribute.getAttributeID());
+            domElement.setAttributeNS(null, AttributeType.ATTRIBUTEID_ATTTRIB_NAME, attribute.getAttributeID());
         }
     }
 

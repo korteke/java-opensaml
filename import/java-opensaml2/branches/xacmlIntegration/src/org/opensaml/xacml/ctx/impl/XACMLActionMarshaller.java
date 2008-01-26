@@ -21,7 +21,7 @@ import org.opensaml.common.impl.AbstractSAMLObjectMarshaller;
 
 
 /**
- *Marshaller for {@link org.opensaml.xacml.ctx.XACMLAction} objects.
+ *Marshaller for {@link org.opensaml.xacml.ctx.ActionType} objects.
  *
  */
 

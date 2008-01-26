@@ -18,13 +18,13 @@ limitations under the License.
 package org.opensaml.xacml.ctx.impl;
 
 import org.opensaml.common.impl.AbstractSAMLObjectMarshaller;
-import org.opensaml.xacml.ctx.XACMLSubject;
+import org.opensaml.xacml.ctx.SubjectType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
 import org.w3c.dom.Element;
 
 /**
- *Marshaller for {@link org.opensaml.xacml.ctx.XACMLSubject} objects.
+ *Marshaller for {@link org.opensaml.xacml.ctx.SubjectType} objects.
  *
  */
 
@@ -50,10 +50,10 @@ public class XACMLSubjectMarshaller extends AbstractSAMLObjectMarshaller {
 
     /** {@inheritDoc} */
     protected void marshallAttributes(XMLObject samlElement, Element domElement) throws MarshallingException {
-    	XACMLSubject attribute = (XACMLSubject) samlElement;
+    	SubjectType attribute = (SubjectType) samlElement;
 
         if (attribute.getSubjectCategory() != null) {
-            domElement.setAttributeNS(null, XACMLSubject.SubjectCategory_ATTTRIB_NAME,attribute.getSubjectCategory());            		
+            domElement.setAttributeNS(null, SubjectType.SUBJECT_CATEGORY_ATTTRIB_NAME,attribute.getSubjectCategory());            		
         }      
     }
 }

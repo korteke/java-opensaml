@@ -20,17 +20,17 @@ package org.opensaml.xacml.ctx.impl;
 import java.util.List;
 
 import org.opensaml.common.impl.AbstractSAMLObject;
-import org.opensaml.xacml.ctx.XACMLDecision;
+import org.opensaml.xacml.ctx.DecisionType;
 import org.opensaml.xml.XMLObject;
 
 
 /**
- * Implementation of {@link org.opensaml.xacml.ctx.XACMLDecision} objects.
+ * Implementation of {@link org.opensaml.xacml.ctx.DecisionType} objects.
  *
  */
 
 public class XACMLDecisionImpl extends AbstractSAMLObject implements
-		XACMLDecision {
+		DecisionType {
 
 	/**Value for the decision*/
 	private String decision;

@@ -19,13 +19,13 @@ package org.opensaml.xacml.ctx.impl;
 
 
 import org.opensaml.common.impl.AbstractSAMLObjectBuilder;
-import org.opensaml.xacml.ctx.XACMLRequest;
+import org.opensaml.xacml.ctx.RequestType;
 
 /**
- *A builder for {@link org.opensaml.xacml.ctx.XACMLRequest}
+ *A builder for {@link org.opensaml.xacml.ctx.RequestType}
  *
  */
-public class XACMLRequestBuilder extends AbstractSAMLObjectBuilder<XACMLRequest> {
+public class XACMLRequestBuilder extends AbstractSAMLObjectBuilder<RequestType> {
 
     /** Constructor */
     public XACMLRequestBuilder() {
@@ -33,12 +33,12 @@ public class XACMLRequestBuilder extends AbstractSAMLObjectBuilder<XACMLRequest>
     }
 
     /** {@inheritDoc} */
-    public XACMLRequest buildObject() {
+    public RequestType buildObject() {
         return null;
     }
 
     /** {@inheritDoc} */
-    public XACMLRequest buildObject(String namespaceURI, String localName, String namespacePrefix) {
+    public RequestType buildObject(String namespaceURI, String localName, String namespacePrefix) {
         return new XACMLRequestImpl(namespaceURI, localName, namespacePrefix);
     }
 }

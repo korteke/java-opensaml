@@ -20,20 +20,20 @@ package org.opensaml.xacml.ctx.impl;
 import java.util.List;
 
 import org.opensaml.common.impl.AbstractSAMLObject;
-import org.opensaml.xacml.ctx.XACMLAttribute;
-import org.opensaml.xacml.ctx.XACMLResource;
+import org.opensaml.xacml.ctx.AttributeType;
+import org.opensaml.xacml.ctx.ResourceType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.util.XMLObjectChildrenList;
 
 /**
- * Implementation of {@link org.opensaml.xacml.ctx.XACMLResource} objects.
+ * Implementation of {@link org.opensaml.xacml.ctx.ResourceType} objects.
  *
  */
 public class XACMLResourceImpl extends AbstractSAMLObject implements
-		XACMLResource {
+		ResourceType {
 	
 	/**Lists of the atrributes in the subject*/
-	private XMLObjectChildrenList<XACMLAttribute> attributes;
+	private XMLObjectChildrenList<AttributeType> attributes;
 
 	/**
      * Constructor
@@ -44,11 +44,11 @@ public class XACMLResourceImpl extends AbstractSAMLObject implements
      */
 	protected XACMLResourceImpl(String namespaceURI, String elementLocalName, String namespacePrefix){
 		super(namespaceURI,elementLocalName,namespacePrefix);
-		attributes = new XMLObjectChildrenList<XACMLAttribute>(this);
+		attributes = new XMLObjectChildrenList<AttributeType>(this);
 	}
 	
 	 /** {@inheritDoc} */
-	public List<XACMLAttribute> getAttributes(){
+	public List<AttributeType> getAttributes(){
 		return attributes;
 	}
 

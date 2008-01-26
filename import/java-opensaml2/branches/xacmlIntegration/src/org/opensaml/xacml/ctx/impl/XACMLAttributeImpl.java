@@ -22,16 +22,16 @@ import java.util.Collections;
 import java.util.List;
 
 import org.opensaml.common.impl.AbstractSAMLObject;
-import org.opensaml.xacml.ctx.XACMLAttribute;
+import org.opensaml.xacml.ctx.AttributeType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.util.XMLObjectChildrenList;
 
 
 /**
- * Implementation of {@link org.opensaml.xacml.ctx.XACMLAttribute} objects.
+ * Implementation of {@link org.opensaml.xacml.ctx.AttributeType} objects.
  *
  */
-public class XACMLAttributeImpl extends AbstractSAMLObject implements XACMLAttribute {
+public class XACMLAttributeImpl extends AbstractSAMLObject implements AttributeType {
 	
 
     /** Issuer of the attribute */

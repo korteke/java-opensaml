@@ -24,19 +24,19 @@ import java.util.Collections;
 import java.util.List;
 
 import org.opensaml.common.impl.AbstractSAMLObject;
-import org.opensaml.xacml.ctx.XACMLAction;
-import org.opensaml.xacml.ctx.XACMLEnvironment;
-import org.opensaml.xacml.ctx.XACMLRequest;
-import org.opensaml.xacml.ctx.XACMLResource;
-import org.opensaml.xacml.ctx.XACMLSubject;
+import org.opensaml.xacml.ctx.ActionType;
+import org.opensaml.xacml.ctx.EnvironmentType;
+import org.opensaml.xacml.ctx.RequestType;
+import org.opensaml.xacml.ctx.ResourceType;
+import org.opensaml.xacml.ctx.SubjectType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.util.XMLObjectChildrenList;
 
 /**
- * A concrete implementation of {@link org.opensaml.xacml.ctx.XACMLRequest}
+ * A concrete implementation of {@link org.opensaml.xacml.ctx.RequestType}
  */
 
-public class XACMLRequestImpl extends AbstractSAMLObject implements XACMLRequest {
+public class XACMLRequestImpl extends AbstractSAMLObject implements RequestType {
 	
     /**
      * Constructor
@@ -47,47 +47,47 @@ public class XACMLRequestImpl extends AbstractSAMLObject implements XACMLRequest
      */
 	
 	/** The subjects of the request */
-	private XMLObjectChildrenList<XACMLSubject> subjects;
+	private XMLObjectChildrenList<SubjectType> subjects;
 	
 	/** The resources of the request */
-	private XMLObjectChildrenList<XACMLResource> resources;
+	private XMLObjectChildrenList<ResourceType> resources;
 	
 	/** The environment of the request */
-	private XMLObjectChildrenList<XACMLEnvironment> environment;
+	private XMLObjectChildrenList<EnvironmentType> environment;
 	
 	/** The action of the request*/
-	private XACMLAction action;
+	private ActionType action;
 	
 	
 	protected XACMLRequestImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        subjects = new XMLObjectChildrenList<XACMLSubject>(this);
-        resources = new XMLObjectChildrenList<XACMLResource>(this);
-        environment = new XMLObjectChildrenList<XACMLEnvironment>(this);
+        subjects = new XMLObjectChildrenList<SubjectType>(this);
+        resources = new XMLObjectChildrenList<ResourceType>(this);
+        environment = new XMLObjectChildrenList<EnvironmentType>(this);
         
     }
 
 	/** {@inheritDoc} */
-	public List<XACMLSubject> getSubjects() {
+	public List<SubjectType> getSubjects() {
 		return subjects;
 	}
 
 	
     /** {@inheritDoc} */
-	public List<XACMLResource> getResources() {
+	public List<ResourceType> getResources() {
 		return resources;
     }
-	public List<XACMLEnvironment> getEnvironment() {
+	public List<EnvironmentType> getEnvironment() {
 		return environment;
 	}
 
 	/** {@inheritDoc} */
-	public XACMLAction getAction() {
+	public ActionType getAction() {
 		return action;
 	}
 
 	/** {@inheritDoc} */
-	public void setAction(XACMLAction action) {
+	public void setAction(ActionType action) {
 		this.action = prepareForAssignment(this.action,action);
 	}
 	

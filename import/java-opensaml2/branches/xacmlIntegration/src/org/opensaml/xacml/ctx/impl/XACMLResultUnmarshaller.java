@@ -18,16 +18,16 @@ limitations under the License.
 package org.opensaml.xacml.ctx.impl;
 
 import org.opensaml.common.impl.AbstractSAMLObjectUnmarshaller;
-import org.opensaml.xacml.ctx.XACMLDecision;
-import org.opensaml.xacml.ctx.XACMLResult;
-import org.opensaml.xacml.ctx.XACMLStatus;
+import org.opensaml.xacml.ctx.DecisionType;
+import org.opensaml.xacml.ctx.ResultType;
+import org.opensaml.xacml.ctx.StatusType;
 import org.opensaml.xacml.policy.XACMLObligations;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.w3c.dom.Attr;
 
 /**
- * Unmarshaller for {@link org.opensaml.xacml.ctx.XACMLResult} objects.
+ * Unmarshaller for {@link org.opensaml.xacml.ctx.ResultType} objects.
  *
  */
 
@@ -54,9 +54,9 @@ public class XACMLResultUnmarshaller extends AbstractSAMLObjectUnmarshaller {
     /** {@inheritDoc} */
     protected void processAttribute(XMLObject samlObject, Attr attribute) throws UnmarshallingException {
 
-    	XACMLResult result = (XACMLResult) samlObject;
+    	ResultType result = (ResultType) samlObject;
 
-        if (attribute.getLocalName().equals(XACMLResult.ResourceId_ATTTRIB_NAME)) {
+        if (attribute.getLocalName().equals(ResultType.RESOURCE_ID_ATTTRIB_NAME)) {
         	result.setResourceId(attribute.getValue());                   
         }
     }
@@ -64,16 +64,16 @@ public class XACMLResultUnmarshaller extends AbstractSAMLObjectUnmarshaller {
     /** {@inheritDoc} */
     protected void processChildElement(XMLObject parentObject, XMLObject childObject) throws UnmarshallingException {
     	
-    	XACMLResult result = (XACMLResult) parentObject;
+    	ResultType result = (ResultType) parentObject;
     	
     	if(childObject instanceof XACMLObligations){
     		result.getObligations().add((XACMLObligations)childObject);    		
     	}
-    	if(childObject instanceof XACMLStatus){
-    		result.getStatus().add((XACMLStatus)childObject);
+    	if(childObject instanceof StatusType){
+    		result.getStatus().add((StatusType)childObject);
     	}
-    	if(childObject instanceof XACMLDecision){
-    		result.setDecision((XACMLDecision) childObject);
+    	if(childObject instanceof DecisionType){
+    		result.setDecision((DecisionType) childObject);
     	}    	
     	else{
     		super.processChildElement(parentObject, childObject);

@@ -18,14 +18,14 @@ limitations under the License.
 package org.opensaml.xacml.ctx.impl;
 
 import org.opensaml.common.impl.AbstractSAMLObjectMarshaller;
-import org.opensaml.xacml.ctx.XACMLDecision;
+import org.opensaml.xacml.ctx.DecisionType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Element;
 
 /**
- *Marshaller for {@link org.opensaml.xacml.ctx.XACMLDecision} objects.
+ *Marshaller for {@link org.opensaml.xacml.ctx.DecisionType} objects.
  *
  */
 public class XACMLDecisionMarshaller extends AbstractSAMLObjectMarshaller {
@@ -49,7 +49,7 @@ public class XACMLDecisionMarshaller extends AbstractSAMLObjectMarshaller {
     
     /** {@inheritDoc} */
     protected void marshallElementContent(XMLObject samlObject, Element domElement) throws MarshallingException {
-    	XACMLDecision decision = (XACMLDecision) samlObject;
+    	DecisionType decision = (DecisionType) samlObject;
         XMLHelper.appendTextContent(domElement, decision.getDecision());
     }
     

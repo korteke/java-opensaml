@@ -20,14 +20,14 @@ package org.opensaml.xacml.ctx.impl;
 
 import org.opensaml.common.impl.AbstractSAMLObjectBuilder;
 import org.opensaml.xacml.XACMLConstants;
-import org.opensaml.xacml.ctx.XACMLResponse;
+import org.opensaml.xacml.ctx.ResponseType;
 
 /**
- * A builder for {@link org.opensaml.xacml.ctx.XACMLResponse} 
+ * A builder for {@link org.opensaml.xacml.ctx.ResponseType} 
  *
  */
 
-public class XACMLResponseBuilder extends AbstractSAMLObjectBuilder<XACMLResponse> {
+public class XACMLResponseBuilder extends AbstractSAMLObjectBuilder<ResponseType> {
 
     /** Constructor */
     public XACMLResponseBuilder() {
@@ -35,12 +35,12 @@ public class XACMLResponseBuilder extends AbstractSAMLObjectBuilder<XACMLRespons
     }
 
     /** {@inheritDoc} */
-    public XACMLResponse buildObject() {
+    public ResponseType buildObject() {
         return null;
     }
 
     /** {@inheritDoc} */
-    public XACMLResponse buildObject(String namespaceURI, String localName, String namespacePrefix) {
+    public ResponseType buildObject(String namespaceURI, String localName, String namespacePrefix) {
         return new XACMLResponseImpl(namespaceURI, localName, XACMLConstants.XACMLCONTEXT_PREFIX);
     }
 }

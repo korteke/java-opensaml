@@ -20,13 +20,13 @@ package org.opensaml.xacml.ctx.impl;
 import javax.xml.namespace.QName;
 
 import org.opensaml.common.impl.AbstractSAMLObjectUnmarshaller;
-import org.opensaml.xacml.ctx.XACMLAttribute;
+import org.opensaml.xacml.ctx.AttributeType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.w3c.dom.Attr;
 
 /**
- * Unmarshaller for {@link org.opensaml.xacml.ctx.XACMLAttribute} objects.
+ * Unmarshaller for {@link org.opensaml.xacml.ctx.AttributeType} objects.
  *
  */
 
@@ -53,7 +53,7 @@ public class XACMLAttributeUnmarshaller extends AbstractSAMLObjectUnmarshaller {
     protected void processChildElement(XMLObject parentSAMLObject, XMLObject childSAMLObject)
             throws UnmarshallingException {
 
-        XACMLAttribute attribute = (XACMLAttribute) parentSAMLObject;
+        AttributeType attribute = (AttributeType) parentSAMLObject;
 
         QName childQName = childSAMLObject.getElementQName();
         if (childQName.getLocalPart().equals("AttributeValue")) {
@@ -66,13 +66,13 @@ public class XACMLAttributeUnmarshaller extends AbstractSAMLObjectUnmarshaller {
     /** {@inheritDoc} */
     protected void processAttribute(XMLObject samlObject, Attr attribute) throws UnmarshallingException {
 
-    	XACMLAttribute attrib = (XACMLAttribute) samlObject;
+    	AttributeType attrib = (AttributeType) samlObject;
 
-        if (attribute.getLocalName().equals(XACMLAttribute.ATTRIBUTEID_ATTTRIB_NAME)) {
+        if (attribute.getLocalName().equals(AttributeType.ATTRIBUTEID_ATTTRIB_NAME)) {
         	attrib.setAttributeID(attribute.getValue());          
-        } else if (attribute.getLocalName().equals(XACMLAttribute.DATATYPE_ATTRIB_NAME)) {
+        } else if (attribute.getLocalName().equals(AttributeType.DATATYPE_ATTRIB_NAME)) {
         	attrib.setDataType(attribute.getValue());            
-        } else if(attribute.getLocalName().equals(XACMLAttribute.ISSUER_ATTRIB_NAME)){        	
+        } else if(attribute.getLocalName().equals(AttributeType.ISSUER_ATTRIB_NAME)){        	
             attrib.setIssuer(attribute.getValue());
         } 
         super.processAttribute(samlObject, attribute);

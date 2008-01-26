@@ -21,7 +21,7 @@ import org.opensaml.common.impl.AbstractSAMLObjectMarshaller;
 
 /**
  * 
- *A marshaller for {@link org.opensaml.xacml.ctx.XACMLResponse}
+ *A marshaller for {@link org.opensaml.xacml.ctx.ResponseType}
  */
 
 public class XACMLResponseMarshaller extends AbstractSAMLObjectMarshaller {

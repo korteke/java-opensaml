@@ -14,23 +14,25 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
-*/
+ */
+
 package org.opensaml.xacml.ctx;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.common.SAMLObject;
 import org.opensaml.xacml.XACMLConstants;
+import org.opensaml.xacml.XACMLObject;
+import org.opensaml.xml.AttributeExtensibleXMLObject;
+import org.opensaml.xml.ElementExtensibleXMLObject;
 
-public interface XACMLStatusMessage extends SAMLObject {
-	
-	/** Local name of the element. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "StatusMessage";
-           
+/** XACML context AttributeValue schema type. */
+public interface AttributeValueType extends XACMLObject, ElementExtensibleXMLObject, AttributeExtensibleXMLObject {
+
+    /** Element name, no namespace. */
+    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "AttributeValue";
+
     /** Default element name XACML20. */
-    public static final QName DEFAULT_ELEMENT_NAME_20 = new QName(
-    		XACMLConstants.XACML20CTX_NS,
-    		DEFAULT_ELEMENT_LOCAL_NAME,
-    		XACMLConstants.XACMLCONTEXT_PREFIX);
-    
+    public static final QName DEFAULT_ELEMENT_NAME = new QName(XACMLConstants.XACML20CTX_NS,
+            DEFAULT_ELEMENT_LOCAL_NAME, XACMLConstants.XACMLCONTEXT_PREFIX);
+
 }

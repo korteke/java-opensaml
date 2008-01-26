@@ -20,20 +20,20 @@ package org.opensaml.xacml.ctx.impl;
 
 import org.opensaml.common.impl.AbstractSAMLObjectMarshaller;
 import org.opensaml.xacml.XACMLConstants;
-import org.opensaml.xacml.ctx.XACMLStatusDetail;
+import org.opensaml.xacml.ctx.StatusDetailType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
 import org.w3c.dom.Element;
 
 /**
- * Marshaller for {@link org.opensaml.xacml.ctx.XACMLStatusDetail} objects.
+ * Marshaller for {@link org.opensaml.xacml.ctx.StatusDetailType} objects.
  * 
  */
 public class XACMLStatusDetailMarshaller extends AbstractSAMLObjectMarshaller {
 
     /** Constructor. */
     public XACMLStatusDetailMarshaller() {
-        super(XACMLConstants.XACML20CTX_NS, XACMLStatusDetail.DEFAULT_ELEMENT_LOCAL_NAME);
+        super(XACMLConstants.XACML20CTX_NS, StatusDetailType.DEFAULT_ELEMENT_LOCAL_NAME);
     }
 
     /**

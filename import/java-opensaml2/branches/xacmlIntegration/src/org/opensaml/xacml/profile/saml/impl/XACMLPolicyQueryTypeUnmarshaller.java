@@ -19,7 +19,7 @@ limitations under the License.
 package org.opensaml.xacml.profile.saml.impl;
 
 import org.opensaml.saml2.core.impl.RequestAbstractTypeUnmarshaller;
-import org.opensaml.xacml.ctx.XACMLRequest;
+import org.opensaml.xacml.ctx.RequestType;
 import org.opensaml.xacml.policy.IdReferenceType;
 import org.opensaml.xacml.policy.XACMLPolicyIdReference;
 import org.opensaml.xacml.policy.XACMLPolicySetIdReference;
@@ -51,8 +51,8 @@ public class XACMLPolicyQueryTypeUnmarshaller extends RequestAbstractTypeUnmarsh
     protected void processChildElement(XMLObject parentObject, XMLObject childObject) throws UnmarshallingException {
         XACMLPolicyQueryType xacmlpolicyquery = (XACMLPolicyQueryType) parentObject;
 
-        if (childObject instanceof XACMLRequest) {
-            xacmlpolicyquery.getRequests().add((XACMLRequest) childObject);
+        if (childObject instanceof RequestType) {
+            xacmlpolicyquery.getRequests().add((RequestType) childObject);
         } else if (childObject instanceof XACMLPolicyIdReference) {
             xacmlpolicyquery.getPolicyIdReferences().add((IdReferenceType) childObject);
         } else if (childObject instanceof XACMLPolicySetIdReference) {

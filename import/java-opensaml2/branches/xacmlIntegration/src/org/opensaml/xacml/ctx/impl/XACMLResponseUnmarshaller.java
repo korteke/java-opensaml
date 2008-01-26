@@ -19,13 +19,13 @@ package org.opensaml.xacml.ctx.impl;
 
 
 import org.opensaml.common.impl.AbstractSAMLObjectUnmarshaller;
-import org.opensaml.xacml.ctx.XACMLResponse;
-import org.opensaml.xacml.ctx.XACMLResult;
+import org.opensaml.xacml.ctx.ResponseType;
+import org.opensaml.xacml.ctx.ResultType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
 
 /**
- * An unmarshaller for {@link org.opensaml.xacml.ctx.XACMLResponse}
+ * An unmarshaller for {@link org.opensaml.xacml.ctx.ResponseType}
  * 
  *
  */
@@ -50,10 +50,10 @@ public class XACMLResponseUnmarshaller extends AbstractSAMLObjectUnmarshaller {
     /** {@inheritDoc} */
     protected void processChildElement(XMLObject parentSAMLObject, XMLObject childSAMLObject)
             throws UnmarshallingException {
-    	XACMLResponse response = (XACMLResponse) parentSAMLObject;
+    	ResponseType response = (ResponseType) parentSAMLObject;
 
-        if (childSAMLObject instanceof XACMLResult)
-        	response.setResult((XACMLResult) childSAMLObject);            
+        if (childSAMLObject instanceof ResultType)
+        	response.setResult((ResultType) childSAMLObject);            
         else
             super.processChildElement(parentSAMLObject, childSAMLObject);
     }

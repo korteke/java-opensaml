@@ -22,8 +22,8 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.saml2.core.Statement;
 import org.opensaml.xacml.XACMLObject;
-import org.opensaml.xacml.ctx.XACMLRequest;
-import org.opensaml.xacml.ctx.XACMLResponse;
+import org.opensaml.xacml.ctx.RequestType;
+import org.opensaml.xacml.ctx.ResponseType;
 
 /** A SAML XACML profile XACMLAuthzDecisionStatement schema type. */
 public interface XACMLAuthzDecisionStatementType extends Statement, XACMLObject {
@@ -67,30 +67,30 @@ public interface XACMLAuthzDecisionStatementType extends Statement, XACMLObject 
             SAMLProfileConstants.SAML20XACMLASSERTION_PREFIX);
 
     /**
-     * Get's the {@link XACMLRequest} from the <code>XACMLAuthzDecisionStatement</code>.
+     * Get's the {@link RequestType} from the <code>XACMLAuthzDecisionStatement</code>.
      * 
-     * @return the {@link XACMLRequest} inside the <code>XACMLAuthzDecisionStatement</code>
+     * @return the {@link RequestType} inside the <code>XACMLAuthzDecisionStatement</code>
      */
-    public XACMLRequest getRequest();
+    public RequestType getRequest();
 
     /**
-     * Get's the {@link XACMLResponse} from the <code>XACMLAuthzDecisionStatement</code>.
+     * Get's the {@link ResponseType} from the <code>XACMLAuthzDecisionStatement</code>.
      * 
-     * @return the {@link XACMLResponse} inside the <code>XACMLAuthzDecisionStatement</code>
+     * @return the {@link ResponseType} inside the <code>XACMLAuthzDecisionStatement</code>
      */
-    public XACMLResponse getResponse();
+    public ResponseType getResponse();
 
     /**
-     * Sets a {@link XACMLResponse} to the <code>XACMLAuthzDecisionStatement</code>.
+     * Sets a {@link ResponseType} to the <code>XACMLAuthzDecisionStatement</code>.
      * 
-     * @param request {@link XACMLRequest}
+     * @param request {@link RequestType}
      */
-    public void setRequest(XACMLRequest request);
+    public void setRequest(RequestType request);
 
     /**
-     * Sets a {@link XACMLResponse} to the <code>XACMLAuthzDecisionStatement</code>.
+     * Sets a {@link ResponseType} to the <code>XACMLAuthzDecisionStatement</code>.
      * 
-     * @param response {@link XACMLResponse}
+     * @param response {@link ResponseType}
      */
-    public void setResponse(XACMLResponse response);
+    public void setResponse(ResponseType response);
 }

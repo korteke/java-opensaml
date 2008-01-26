@@ -18,12 +18,12 @@ limitations under the License.
 package org.opensaml.xacml.ctx.impl;
 
 import org.opensaml.common.impl.AbstractSAMLObjectBuilder;
-import org.opensaml.xacml.ctx.XACMLDecision;
+import org.opensaml.xacml.ctx.DecisionType;
 /**
- * Builder for {@link org.opensaml.xacml.ctx.XACMLDecision} objects.
+ * Builder for {@link org.opensaml.xacml.ctx.DecisionType} objects.
  *
  */
-public class XACMLDecisionBuilder extends AbstractSAMLObjectBuilder<XACMLDecision> {
+public class XACMLDecisionBuilder extends AbstractSAMLObjectBuilder<DecisionType> {
 
 	/**
 	 * Constructor
@@ -35,13 +35,13 @@ public class XACMLDecisionBuilder extends AbstractSAMLObjectBuilder<XACMLDecisio
 	
 	@Override
 	 /** {@inheritDoc} */
-	public XACMLDecision buildObject() {
+	public DecisionType buildObject() {
 		return null;
 	}
 
 	@Override
 	 /** {@inheritDoc} */
-	public XACMLDecision buildObject(String namespaceURI, String localName,
+	public DecisionType buildObject(String namespaceURI, String localName,
 			String namespacePrefix) {
 		return new XACMLDecisionImpl(namespaceURI,localName,namespacePrefix);
 	}

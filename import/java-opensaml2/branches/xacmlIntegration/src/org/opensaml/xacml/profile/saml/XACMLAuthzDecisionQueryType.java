@@ -22,7 +22,7 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.saml2.core.RequestAbstractType;
 import org.opensaml.xacml.XACMLObject;
-import org.opensaml.xacml.ctx.XACMLRequest;
+import org.opensaml.xacml.ctx.RequestType;
 import org.opensaml.xml.schema.XSBooleanValue;
 
 /** A SAML XACML profile XACMLAuthzDecisionQuery schema type. */
@@ -94,12 +94,12 @@ public interface XACMLAuthzDecisionQueryType extends RequestAbstractType, XACMLO
      * 
      * @return XACMLRequest The request inside the query
      */
-    public XACMLRequest getRequest();
+    public RequestType getRequest();
 
     /**
-     * If true then include the {@link org.opensaml.xacml.ctx.XACMLRequest} in the response.
+     * If true then include the {@link org.opensaml.xacml.ctx.RequestType} in the response.
      * 
-     * @return boolean true if the {@link org.opensaml.xacml.ctx.XACMLRequest} should be included in the response
+     * @return boolean true if the {@link org.opensaml.xacml.ctx.RequestType} should be included in the response
      */
     public XSBooleanValue getReturnContextXSBooleanValue();
 
@@ -118,9 +118,9 @@ public interface XACMLAuthzDecisionQueryType extends RequestAbstractType, XACMLO
     public boolean isInputContextOnly();
 
     /**
-     * If true then include the {@link XACMLRequest} in the response.
+     * If true then include the {@link RequestType} in the response.
      * 
-     * @return boolean if the {@link XACMLRequest} should be included in the response
+     * @return boolean if the {@link RequestType} should be included in the response
      */
     public boolean isReturnContext();
 
@@ -143,12 +143,12 @@ public interface XACMLAuthzDecisionQueryType extends RequestAbstractType, XACMLO
      * 
      * @param request The request of the decision query
      */
-    public void setRequest(XACMLRequest request);
+    public void setRequest(RequestType request);
 
     /**
-     * Set's if the {@link XACMLRequest} should be included inside the request message.
+     * Set's if the {@link RequestType} should be included inside the request message.
      * 
-     * @param returnContext is true if the {@link XACMLRequest} should be included inside the
+     * @param returnContext is true if the {@link RequestType} should be included inside the
      *            request message
      */
     public void setReturnContext(XSBooleanValue returnContext);

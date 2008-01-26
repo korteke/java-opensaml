@@ -19,12 +19,12 @@ package org.opensaml.xacml.ctx.impl;
 
 import org.opensaml.common.impl.AbstractSAMLObjectUnmarshaller;
 import org.opensaml.xacml.XACMLConstants;
-import org.opensaml.xacml.ctx.XACMLStatusDetail;
+import org.opensaml.xacml.ctx.StatusDetailType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.w3c.dom.Attr;
 /**
- * Unmarshaller for {@link org.opensaml.xacml.ctx.XACMLStatusDetail} objects.
+ * Unmarshaller for {@link org.opensaml.xacml.ctx.StatusDetailType} objects.
  *
  */
 public class XACMLStatusDetailUnmarshaller extends
@@ -32,7 +32,7 @@ public class XACMLStatusDetailUnmarshaller extends
 
 	 /** Constructor */
     public XACMLStatusDetailUnmarshaller() {
-        super(XACMLConstants.XACML20CTX_NS, XACMLStatusDetail.DEFAULT_ELEMENT_LOCAL_NAME);
+        super(XACMLConstants.XACML20CTX_NS, StatusDetailType.DEFAULT_ELEMENT_LOCAL_NAME);
     }
 
     /**
@@ -50,7 +50,7 @@ public class XACMLStatusDetailUnmarshaller extends
      */
     protected void processChildElement(XMLObject parentSAMLObject, XMLObject childSAMLObject)
             throws UnmarshallingException {
-    	XACMLStatusDetail statusDetail = (XACMLStatusDetail) parentSAMLObject;
+    	StatusDetailType statusDetail = (StatusDetailType) parentSAMLObject;
 
         statusDetail.getUnknownXMLObjects().add(childSAMLObject);
     }

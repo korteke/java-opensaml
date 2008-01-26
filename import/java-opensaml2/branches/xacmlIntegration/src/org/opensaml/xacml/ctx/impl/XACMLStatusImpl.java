@@ -22,28 +22,28 @@ import java.util.Collections;
 import java.util.List;
 
 import org.opensaml.common.impl.AbstractSAMLObject;
-import org.opensaml.xacml.ctx.XACMLStatus;
-import org.opensaml.xacml.ctx.XACMLStatusCode;
-import org.opensaml.xacml.ctx.XACMLStatusDetail;
+import org.opensaml.xacml.ctx.StatusType;
+import org.opensaml.xacml.ctx.StatusCodeType;
+import org.opensaml.xacml.ctx.StatusDetailType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.schema.XSString;
 
 
 /**
- * Implementation of {@link org.opensaml.xacml.ctx.XACMLStatus} objects.
+ * Implementation of {@link org.opensaml.xacml.ctx.StatusType} objects.
  *
  */
 
-public class XACMLStatusImpl extends AbstractSAMLObject implements XACMLStatus {
+public class XACMLStatusImpl extends AbstractSAMLObject implements StatusType {
 
 	/** Status code*/
-	private XACMLStatusCode statusCode;
+	private StatusCodeType statusCode;
 	
 	/** The staus message */
 	private XSString statusMessage;
 	
 	/**Staus detail element*/
-	private XACMLStatusDetail statusDetail;
+	private StatusDetailType statusDetail;
 	
 	/**
      * Constructor
@@ -57,12 +57,12 @@ public class XACMLStatusImpl extends AbstractSAMLObject implements XACMLStatus {
 	}
 	
 	 /** {@inheritDoc} */
-	public XACMLStatusCode getStatusCode() {
+	public StatusCodeType getStatusCode() {
 		return statusCode;
 	}
 
 	 /** {@inheritDoc} */
-	public void setStatusCode(XACMLStatusCode newStatusCode) {
+	public void setStatusCode(StatusCodeType newStatusCode) {
 		statusCode = prepareForAssignment(this.statusCode, newStatusCode);
 	}
 
@@ -91,12 +91,12 @@ public class XACMLStatusImpl extends AbstractSAMLObject implements XACMLStatus {
 	}
 
 	 /** {@inheritDoc} */
-	public XACMLStatusDetail getStatusDetail() {
+	public StatusDetailType getStatusDetail() {
 		return statusDetail;
 	}
 
 	 /** {@inheritDoc} */
-	public void setStatusDetail(XACMLStatusDetail statusDetail) {
+	public void setStatusDetail(StatusDetailType statusDetail) {
 		this.statusDetail = prepareForAssignment(this.statusDetail,statusDetail);
 	}
 

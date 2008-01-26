@@ -25,56 +25,62 @@ import javax.xml.namespace.QName;
 import org.opensaml.common.SAMLObject;
 import org.opensaml.xacml.XACMLConstants;
 
-/**
- * Is a xacml-context Request
- * 
- */
-public interface XACMLRequest extends SAMLObject {
+/** XACML context Request schema type. */
+public interface RequestType extends SAMLObject {
 
     /** Element local name. */
     public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Request";
 
-    /** Default element name.for XACML 2.0 */
-    public static final QName DEFAULT_ELEMENT_NAME_XACML20 = new QName(XACMLConstants.XACML20CTX_NS,
+    /** Default element name. */
+    public static final QName DEFAULT_ELEMENT_NAME = new QName(XACMLConstants.XACML20CTX_NS,
             DEFAULT_ELEMENT_LOCAL_NAME, XACMLConstants.XACMLCONTEXT_PREFIX);
 
     /** Local name of the XSI type. */
     public static final String TYPE_LOCAL_NAME = "RequestType";
 
-    /** QName of the XSI type.XACML2.0 */
-    public static final QName TYPE_NAME_XACML20 = new QName(XACMLConstants.XACML20CTX_NS, TYPE_LOCAL_NAME,
+    /** QName of the XSI type. */
+    public static final QName TYPE_NAME = new QName(XACMLConstants.XACML20CTX_NS, TYPE_LOCAL_NAME,
             XACMLConstants.XACMLCONTEXT_PREFIX);
 
     /**
-     * Gets the action from the request
-     * 
-     * @return the action from the request
-     */
-    public XACMLAction getAction();
-
-    /**
-     * Gets the environment from the request
-     * 
-     * @return the environment from the request
-     */
-    public List<XACMLEnvironment> getEnvironment();
-
-    /**
-     * Gets the resources from the request
-     * 
-     * @return the resources from the request
-     */
-    public List<XACMLResource> getResources();
-
-    /**
-     * Gets the subjects from the request
+     * Gets the subjects from the request.
      * 
      * @return the subjects from the request
      */
-    public List<XACMLSubject> getSubjects();
+    public List<SubjectType> getSubjects();
 
     /**
-     * Sets the action of the request
+     * Gets the resources from the request.
+     * 
+     * @return the resources from the request
      */
-    public void setAction(XACMLAction newAction);
+    public List<ResourceType> getResources();
+
+    /**
+     * Gets the action from the request.
+     * 
+     * @return the action from the request
+     */
+    public ActionType getAction();
+
+    /**
+     * Sets the action of the request.
+     * 
+     * @param newAction action of the request
+     */
+    public void setAction(ActionType newAction);
+
+    /**
+     * Gets the environment from the request.
+     * 
+     * @return the environment from the request
+     */
+    public EnvironmentType getEnvironment();
+
+    /**
+     * Sets the environment of the request.
+     * 
+     * @param environment environment of the request
+     */
+    public void setEnvironment(EnvironmentType environment);
 }

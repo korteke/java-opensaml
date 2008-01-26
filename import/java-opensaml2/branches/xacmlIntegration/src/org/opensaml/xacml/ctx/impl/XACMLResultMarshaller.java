@@ -18,12 +18,12 @@ limitations under the License.
 package org.opensaml.xacml.ctx.impl;
 
 import org.opensaml.common.impl.AbstractSAMLObjectMarshaller;
-import org.opensaml.xacml.ctx.XACMLResult;
+import org.opensaml.xacml.ctx.ResultType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
 import org.w3c.dom.Element;
 /**
- *Marshaller for {@link org.opensaml.xacml.ctx.XACMLResult} objects.
+ *Marshaller for {@link org.opensaml.xacml.ctx.ResultType} objects.
  *
  */
 public class XACMLResultMarshaller extends AbstractSAMLObjectMarshaller {
@@ -49,10 +49,10 @@ public class XACMLResultMarshaller extends AbstractSAMLObjectMarshaller {
 
 	  /** {@inheritDoc} */
 	  protected void marshallAttributes(XMLObject samlElement, Element domElement) throws MarshallingException {
-		  XACMLResult result = (XACMLResult) samlElement;
+		  ResultType result = (ResultType) samlElement;
 
 		  if (result.getResourceId() != null) {
-			  domElement.setAttributeNS(null, XACMLResult.ResourceId_ATTTRIB_NAME,result.getResourceId());            		
+			  domElement.setAttributeNS(null, ResultType.RESOURCE_ID_ATTTRIB_NAME,result.getResourceId());            		
 		  }		 
 	  }
 }

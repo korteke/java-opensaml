@@ -22,29 +22,29 @@ import java.util.Collections;
 import java.util.List;
 
 import org.opensaml.common.impl.AbstractSAMLObject;
-import org.opensaml.xacml.ctx.XACMLDecision;
-import org.opensaml.xacml.ctx.XACMLResult;
-import org.opensaml.xacml.ctx.XACMLStatus;
+import org.opensaml.xacml.ctx.DecisionType;
+import org.opensaml.xacml.ctx.ResultType;
+import org.opensaml.xacml.ctx.StatusType;
 import org.opensaml.xacml.policy.XACMLObligations;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.util.XMLObjectChildrenList;
 
 
 /**
- * Implementation of {@link org.opensaml.xacml.ctx.XACMLResult} objects.
+ * Implementation of {@link org.opensaml.xacml.ctx.ResultType} objects.
  *
  */
 
-public class XACMLResultImpl extends AbstractSAMLObject implements XACMLResult {
+public class XACMLResultImpl extends AbstractSAMLObject implements ResultType {
 
 	/** Attribute resource id*/
 	private String resourceId;
 	
 	/** The decision of the result*/
-	private XACMLDecision decision;
+	private DecisionType decision;
 	
 	/** List of the status of this result*/
-	private XMLObjectChildrenList<XACMLStatus> status;
+	private XMLObjectChildrenList<StatusType> status;
 	
 	/**The obligations in this Result*/
 	private XMLObjectChildrenList<XACMLObligations> obligations;
@@ -59,12 +59,12 @@ public class XACMLResultImpl extends AbstractSAMLObject implements XACMLResult {
      */
 	protected XACMLResultImpl(String namespaceURI, String elementLocalName, String namespacePrefix){
 		super(namespaceURI,elementLocalName,namespacePrefix);
-		status = new XMLObjectChildrenList<XACMLStatus>(this);
+		status = new XMLObjectChildrenList<StatusType>(this);
 		obligations = new XMLObjectChildrenList<XACMLObligations>(this);
 	}
 	
 	 /** {@inheritDoc} */
-	public XACMLDecision getDecision() {
+	public DecisionType getDecision() {
 		return decision;
 	}
 
@@ -79,12 +79,12 @@ public class XACMLResultImpl extends AbstractSAMLObject implements XACMLResult {
 	}
 
 	 /** {@inheritDoc} */
-	public List<XACMLStatus> getStatus() {
+	public List<StatusType> getStatus() {
 		return status;
 	}
 	
 	 /** {@inheritDoc} */
-	public void setDecision(XACMLDecision decision) {
+	public void setDecision(DecisionType decision) {
 		this.decision = prepareForAssignment(this.decision,decision);
 	}
 

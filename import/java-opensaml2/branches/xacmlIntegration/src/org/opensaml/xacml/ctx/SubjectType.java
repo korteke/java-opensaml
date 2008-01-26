@@ -14,63 +14,55 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
-*/
+ */
+
 package org.opensaml.xacml.ctx;
 
 import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.common.SAMLObject;
 import org.opensaml.xacml.XACMLConstants;
+import org.opensaml.xacml.XACMLObject;
 
-/**
- *Interface for xacml:context Subject 
- *
- */
+/** XACML context Subject schema type. */
+public interface SubjectType extends XACMLObject {
 
-public interface XACMLSubject extends SAMLObject {
-
-	/** Local name of the element. */
+    /** Local name of the element. */
     public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Subject";
 
-    /** Default element name XACML20. */
-    public static final QName DEFAULT_ELEMENT_NAME_20 = new QName(
-    		XACMLConstants.XACML20CTX_NS, 
-    		DEFAULT_ELEMENT_LOCAL_NAME,
-    		XACMLConstants.XACMLCONTEXT_PREFIX);
+    /** Default element name. */
+    public static final QName DEFAULT_ELEMENT_NAME = new QName(XACMLConstants.XACML20CTX_NS,
+            DEFAULT_ELEMENT_LOCAL_NAME, XACMLConstants.XACMLCONTEXT_PREFIX);
 
     /** Local name of the XSI type. */
     public static final String TYPE_LOCAL_NAME = "SubjectType";
 
-    /** QName of the XSI type XACML20. */
-    public static final QName TYPE_NAME_20 = new QName(
-    		XACMLConstants.XACML20CTX_NS, 
-    		TYPE_LOCAL_NAME,
-    		XACMLConstants.XACMLCONTEXT_PREFIX);
-    
-    /** Name of the SubjectCategory attribute. */
-    public static final String SubjectCategory_ATTTRIB_NAME = "SubjectCategory";
+    /** QName of the XSI type. */
+    public static final QName TYPE_NAME = new QName(XACMLConstants.XACML20CTX_NS, TYPE_LOCAL_NAME,
+            XACMLConstants.XACMLCONTEXT_PREFIX);
 
-    
+    /** Name of the SubjectCategory attribute. */
+    public static final String SUBJECT_CATEGORY_ATTTRIB_NAME = "SubjectCategory";
+
     /**
-     * Returns the list of attributes in the subject
-     * @return  the list of attributes in the subject
+     * Returns the list of attributes in the subject.
+     * 
+     * @return the list of attributes in the subject
      */
-    public List<XACMLAttribute> getAttributes();
-    
+    public List<AttributeType> getAttributes();
+
     /**
-     * Gets the subjectcategory of the subject
+     * Gets the subjectcategory of the subject.
+     * 
      * @return The subjectcategory of the subject
      */
     public String getSubjectCategory();
-   
+
     /**
-     * Sets the subjectcategory
-     *@param subjectCategory Sets the subjectcategory
-     *
+     * Sets the subjectcategory.
+     * 
+     * @param subjectCategory Sets the subjectcategory
      */
     public void setSubjectCategory(String subjectCategory);
-      
-    
 }

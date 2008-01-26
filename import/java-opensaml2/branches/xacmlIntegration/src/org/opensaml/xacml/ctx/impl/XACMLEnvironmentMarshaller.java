@@ -20,7 +20,7 @@ package org.opensaml.xacml.ctx.impl;
 import org.opensaml.common.impl.AbstractSAMLObjectMarshaller;
 
 /**
- *Marshaller for {@link org.opensaml.xacml.ctx.XACMLEnvironment} objects.
+ *Marshaller for {@link org.opensaml.xacml.ctx.EnvironmentType} objects.
  *
  */
 

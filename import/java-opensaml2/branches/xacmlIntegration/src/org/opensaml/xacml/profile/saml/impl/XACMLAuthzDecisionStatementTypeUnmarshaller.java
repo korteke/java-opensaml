@@ -19,8 +19,8 @@ limitations under the License.
 package org.opensaml.xacml.profile.saml.impl;
 
 import org.opensaml.common.impl.AbstractSAMLObjectUnmarshaller;
-import org.opensaml.xacml.ctx.XACMLRequest;
-import org.opensaml.xacml.ctx.XACMLResponse;
+import org.opensaml.xacml.ctx.RequestType;
+import org.opensaml.xacml.ctx.ResponseType;
 import org.opensaml.xacml.profile.saml.XACMLAuthzDecisionStatementType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
@@ -51,10 +51,10 @@ public class XACMLAuthzDecisionStatementTypeUnmarshaller extends AbstractSAMLObj
     protected void processChildElement(XMLObject parentObject, XMLObject childObject) throws UnmarshallingException {
         XACMLAuthzDecisionStatementType xacmlauthzdecisionstatement = (XACMLAuthzDecisionStatementType) parentObject;
 
-        if (childObject instanceof XACMLRequest) {
-            xacmlauthzdecisionstatement.setRequest((XACMLRequest) childObject);
-        } else if (childObject instanceof XACMLResponse) {
-            xacmlauthzdecisionstatement.setResponse((XACMLResponse) childObject);
+        if (childObject instanceof RequestType) {
+            xacmlauthzdecisionstatement.setRequest((RequestType) childObject);
+        } else if (childObject instanceof ResponseType) {
+            xacmlauthzdecisionstatement.setResponse((ResponseType) childObject);
         } else {
             super.processChildElement(parentObject, childObject);
         }

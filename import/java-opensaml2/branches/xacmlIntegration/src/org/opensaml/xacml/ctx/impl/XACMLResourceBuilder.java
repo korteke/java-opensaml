@@ -18,12 +18,12 @@ limitations under the License.
 package org.opensaml.xacml.ctx.impl;
 
 import org.opensaml.common.impl.AbstractSAMLObjectBuilder;
-import org.opensaml.xacml.ctx.XACMLResource;
+import org.opensaml.xacml.ctx.ResourceType;
 /**
- * Builder for {@link org.opensaml.xacml.ctx.XACMLResource} objects.
+ * Builder for {@link org.opensaml.xacml.ctx.ResourceType} objects.
  *
  */
-public class XACMLResourceBuilder extends AbstractSAMLObjectBuilder <XACMLResource> {
+public class XACMLResourceBuilder extends AbstractSAMLObjectBuilder <ResourceType> {
 
 	/**
 	 * Constructor
@@ -36,14 +36,14 @@ public class XACMLResourceBuilder extends AbstractSAMLObjectBuilder <XACMLResour
 	
 	@Override
 	 /** {@inheritDoc} */
-	public XACMLResource buildObject() {
+	public ResourceType buildObject() {
 		return null;
 
 	}
 
 	@Override
 	 /** {@inheritDoc} */
-	public XACMLResource buildObject(String namespaceURI, String localName,
+	public ResourceType buildObject(String namespaceURI, String localName,
 			String namespacePrefix) {
 		return new XACMLResourceImpl(namespaceURI,localName,namespacePrefix);
 	}

@@ -18,11 +18,11 @@ limitations under the License.
 package org.opensaml.xacml.ctx.impl;
 
 import org.opensaml.common.impl.AbstractSAMLObjectUnmarshaller;
-import org.opensaml.xacml.ctx.XACMLDecision;
+import org.opensaml.xacml.ctx.DecisionType;
 import org.opensaml.xml.XMLObject;
 
 /**
- * Unmarshaller for {@link org.opensaml.xacml.ctx.XACMLDecision} objects.
+ * Unmarshaller for {@link org.opensaml.xacml.ctx.DecisionType} objects.
  *
  */
 
@@ -45,7 +45,7 @@ public class XACMLDecisionUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
     protected void processElementContent(XMLObject samlObject, String elementContent) {
-    	XACMLDecision decision = (XACMLDecision) samlObject;
+    	DecisionType decision = (DecisionType) samlObject;
     	decision.setDecision(elementContent);
     }
 }

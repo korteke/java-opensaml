@@ -23,8 +23,8 @@ import java.util.Collections;
 import java.util.List;
 
 import org.opensaml.common.impl.AbstractSAMLObject;
-import org.opensaml.xacml.ctx.XACMLRequest;
-import org.opensaml.xacml.ctx.XACMLResponse;
+import org.opensaml.xacml.ctx.RequestType;
+import org.opensaml.xacml.ctx.ResponseType;
 import org.opensaml.xacml.profile.saml.XACMLAuthzDecisionStatementType;
 import org.opensaml.xml.XMLObject;
 
@@ -32,10 +32,10 @@ import org.opensaml.xml.XMLObject;
 public class XACMLAuthzDecisionStatementTypeImpl extends AbstractSAMLObject implements XACMLAuthzDecisionStatementType {
 
     /** The request of the authorization request. */
-    private XACMLRequest request;
+    private RequestType request;
 
     /** The response of the authorization request. */
-    private XACMLResponse response;
+    private ResponseType response;
 
     /**
      * Constructor.
@@ -49,22 +49,22 @@ public class XACMLAuthzDecisionStatementTypeImpl extends AbstractSAMLObject impl
     }
 
     /** {@inheritDoc} */
-    public XACMLRequest getRequest() {
+    public RequestType getRequest() {
         return request;
     }
 
     /** {@inheritDoc} */
-    public XACMLResponse getResponse() {
+    public ResponseType getResponse() {
         return response;
     }
 
     /** {@inheritDoc} */
-    public void setRequest(XACMLRequest request) {
+    public void setRequest(RequestType request) {
         this.request = prepareForAssignment(this.request, request);
     }
 
     /** {@inheritDoc} */
-    public void setResponse(XACMLResponse response) {
+    public void setResponse(ResponseType response) {
         this.response = prepareForAssignment(this.response, response);
     }
 
