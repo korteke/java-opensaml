@@ -18,7 +18,6 @@
 package org.opensaml.xacml.policy.impl;
 
 import org.opensaml.xacml.XACMLObjectBuilder;
-import org.opensaml.xacml.policy.ActionMatchType;
 import org.opensaml.xacml.policy.SubjectMatchType;
 import org.opensaml.xml.AbstractXMLObjectBuilder;
 
@@ -28,7 +27,7 @@ public class SubjectMatchTypeImplBuilder extends AbstractXMLObjectBuilder<Subjec
 
     /** {@inheritDoc} */
     public SubjectMatchType buildObject() {
-        return buildObject(ActionMatchType.DEFAULT_ELEMENT_NAME);
+        return buildObject(SubjectMatchType.DEFAULT_ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
