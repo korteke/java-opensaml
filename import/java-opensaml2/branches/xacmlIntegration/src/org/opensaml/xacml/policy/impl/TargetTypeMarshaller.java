@@ -23,10 +23,10 @@ import org.opensaml.common.impl.AbstractSAMLObjectMarshaller;
 /**
  * A marshaller for the {@link org.opensaml.xacml.policy.XACMLTarget}
  */
-public class XACMLTargetMarshaller extends AbstractSAMLObjectMarshaller {
+public class TargetTypeMarshaller extends AbstractSAMLObjectMarshaller {
 	
 	/** Constructor */
-    public XACMLTargetMarshaller() {
+    public TargetTypeMarshaller() {
         super();
     }
 
@@ -36,7 +36,7 @@ public class XACMLTargetMarshaller extends AbstractSAMLObjectMarshaller {
      * @param namespaceURI
      * @param elementLocalName
      */
-    protected XACMLTargetMarshaller(String namespaceURI, String elementLocalName) {
+    protected TargetTypeMarshaller(String namespaceURI, String elementLocalName) {
         super(namespaceURI, elementLocalName);
     }
 

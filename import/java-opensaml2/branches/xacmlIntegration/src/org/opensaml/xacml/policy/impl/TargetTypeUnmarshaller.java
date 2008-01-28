@@ -17,28 +17,27 @@ limitations under the License.
 */
 package org.opensaml.xacml.policy.impl;
 
-import org.opensaml.common.impl.AbstractSAMLObjectBuilder;
-import org.opensaml.xacml.policy.XACMLTarget;
 
-public class XACMLTargetBuilder extends AbstractSAMLObjectBuilder<XACMLTarget> {
+import org.opensaml.common.impl.AbstractSAMLObjectUnmarshaller;
 
-	/**
-	 * Constructor
-	 */
-	public XACMLTargetBuilder(){
-		
-	}
+/**
+ * A unmarshaller for {@link org.opensaml.xacml.policy.XACMLTarget}
+ */
+public class TargetTypeUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 	
-	/** {@inheritDoc}**/
-	public XACMLTarget buildObject() {
-		return null;
-	}
+    /** Constructor */
+    public TargetTypeUnmarshaller() {
+        super();
+    }
 
-	/** {@inheritDoc}**/
-	@Override
-	public XACMLTarget buildObject(String namespaceURI, String localName,
-			String namespacePrefix) {
-		return new XACMLTargetImpl(namespaceURI, localName, namespacePrefix);
-	}
+    /**
+     * Constructor
+     * 
+     * @param namespaceURI
+     * @param elementLocalName
+     */
+    protected TargetTypeUnmarshaller(String namespaceURI, String elementLocalName) {
+        super(namespaceURI, elementLocalName);
+    }
 
 }
