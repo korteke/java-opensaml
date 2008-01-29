@@ -21,19 +21,19 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.opensaml.xacml.policy.ActionMatchType;
-import org.opensaml.xacml.policy.ActionType;
+import org.opensaml.xacml.policy.CombinerParameterType;
+import org.opensaml.xacml.policy.CombinerParametersType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.util.XMLObjectChildrenList;
 import org.opensaml.xml.validation.AbstractValidatingXMLObject;
 
 /**
- * Implementation for {@link ActionType}.
+ * Implementation of {@link CombinerParametersType}.
  */
-public class ActionTypeImpl extends AbstractValidatingXMLObject implements ActionType {
+public class CombinerParametersTypeImpl extends AbstractValidatingXMLObject implements CombinerParametersType {
 
-    /**List of action matches.*/
-    private XMLObjectChildrenList<ActionMatchType> actionMatch;
+    /**List or the combiner parameters.*/
+    private XMLObjectChildrenList<CombinerParameterType> combinerParameters;
     
     /**
      * Constructor.
@@ -41,22 +41,22 @@ public class ActionTypeImpl extends AbstractValidatingXMLObject implements Actio
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected ActionTypeImpl(String namespaceURI, String elementLocalName, String namespacePrefix){
+    protected CombinerParametersTypeImpl(String namespaceURI, String elementLocalName, String namespacePrefix){
         super(namespaceURI,elementLocalName,namespacePrefix);
-        actionMatch = new XMLObjectChildrenList<ActionMatchType>(this);
+        combinerParameters = new XMLObjectChildrenList<CombinerParameterType>(this);
     }
+    
     /** {@inheritDoc} */
-    public List<ActionMatchType> getActionMatches() {
-        return actionMatch;
+    public List<CombinerParameterType> getCombinerParameters() {
+        return combinerParameters;
     }
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        
         ArrayList<XMLObject> children = new ArrayList<XMLObject>();        
         
-        children.addAll(actionMatch);      
-                
+        children.addAll(combinerParameters);
+                       
         return Collections.unmodifiableList(children);
     }
 

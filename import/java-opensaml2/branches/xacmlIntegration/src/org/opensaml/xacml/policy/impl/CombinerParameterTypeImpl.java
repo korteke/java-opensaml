@@ -21,19 +21,21 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.opensaml.xacml.policy.ActionMatchType;
-import org.opensaml.xacml.policy.ActionType;
+import org.opensaml.xacml.policy.AttributeValueType;
+import org.opensaml.xacml.policy.CombinerParameterType;
 import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.util.XMLObjectChildrenList;
 import org.opensaml.xml.validation.AbstractValidatingXMLObject;
 
 /**
- * Implementation for {@link ActionType}.
+ *Implementation of {@link CombinerParameterType}.
  */
-public class ActionTypeImpl extends AbstractValidatingXMLObject implements ActionType {
+public class CombinerParameterTypeImpl extends AbstractValidatingXMLObject implements CombinerParameterType {
 
-    /**List of action matches.*/
-    private XMLObjectChildrenList<ActionMatchType> actionMatch;
+    /**Parameter name. */
+    private String name;
+    
+    /**Values.*/
+    private AttributeValueType value;
     
     /**
      * Constructor.
@@ -41,22 +43,38 @@ public class ActionTypeImpl extends AbstractValidatingXMLObject implements Actio
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected ActionTypeImpl(String namespaceURI, String elementLocalName, String namespacePrefix){
+    protected CombinerParameterTypeImpl(String namespaceURI, String elementLocalName, String namespacePrefix){
         super(namespaceURI,elementLocalName,namespacePrefix);
-        actionMatch = new XMLObjectChildrenList<ActionMatchType>(this);
     }
+    
     /** {@inheritDoc} */
-    public List<ActionMatchType> getActionMatches() {
-        return actionMatch;
+    public AttributeValueType getAttributeValue() {
+        return value;
+    }
+
+    /** {@inheritDoc} */
+    public String getParameterName() {
+        return name;
+    }
+
+    /** {@inheritDoc} */
+    public void setAttributeValue(AttributeValueType value) {
+        this.value = prepareForAssignment(this.value,value);
+    }
+
+    /** {@inheritDoc} */
+    public void setParameterName(String name){
+        this.name = prepareForAssignment(this.name,name);
     }
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        
         ArrayList<XMLObject> children = new ArrayList<XMLObject>();        
         
-        children.addAll(actionMatch);      
-                
+        if(value != null){
+            children.add(value);
+        }
+                       
         return Collections.unmodifiableList(children);
     }
 
