@@ -27,6 +27,24 @@ import org.w3c.dom.Attr;
  * A thread-safe unmarshaller for {@link org.opensaml.xml.schema.XSQName}s.
  */
 public class XSQNameUnmarshaller extends AbstractXMLObjectUnmarshaller {
+    
+    /** Constructor. */
+    public XSQNameUnmarshaller() {
+        super();
+    }
+
+    /**
+     * This constructor supports checking an XMLObject to be marshalled, either element name or schema type, against a
+     * given namespace/local name pair.
+     * 
+     * @param targetNamespaceURI the namespace URI of either the schema type QName or element QName of the elements this
+     *            unmarshaller operates on
+     * @param targetLocalName the local name of either the schema type QName or element QName of the elements this
+     *            unmarshaller operates on
+     */
+    protected XSQNameUnmarshaller(String targetNamespaceURI, String targetLocalName) {
+        super(targetNamespaceURI, targetLocalName);
+    }
 
     /** {@inheritDoc} */
     protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
