@@ -45,5 +45,5 @@ public interface ObligationsType extends XACMLObject {
      * 
      * @return list of obligations
      */
-    public List<ObligationsType> getObligations();
+    public List<ObligationType> getObligations();
 }
