@@ -20,10 +20,9 @@ package org.opensaml.xacml.policy;
 import javax.xml.namespace.QName;
 
 import org.opensaml.xacml.XACMLConstants;
-import org.opensaml.xacml.XACMLObject;
 
 /** XACML PolicySetCombineParameters schema type. */
-public interface PolicySetCombinerParametersType extends XACMLObject {
+public interface PolicySetCombinerParametersType extends CombinerParametersType {
 
     /** Local name of the element PolicySetCombineParameters. */
     public static final String DEFAULT_ELEMENT_LOCAL_NAME = "PolicySetCombineParameters";
