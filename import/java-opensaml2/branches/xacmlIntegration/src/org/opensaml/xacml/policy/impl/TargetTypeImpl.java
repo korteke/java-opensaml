@@ -29,24 +29,23 @@ import org.opensaml.xacml.policy.ResourcesType;
 import org.opensaml.xacml.policy.SubjectsType;
 import org.opensaml.xacml.policy.TargetType;
 import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.util.XMLObjectChildrenList;
 
 /**
- * Implementing {@link org.opensaml.xacml.policy.TargetType}
+ * Implementing {@link org.opensaml.xacml.policy.TargetType}.
  */
 public class TargetTypeImpl extends AbstractSAMLObject implements TargetType {
 
-    /** List of the actions in the policy. */
-    private XMLObjectChildrenList<ActionsType> actions;
+    /** The actions in the policy. */
+    private ActionsType actions;
 
-    /** List of the environments in the policy. */
-    private XMLObjectChildrenList<EnvironmentsType> environments;
+    /** The environments in the policy. */
+    private EnvironmentsType environments;
 
-    /** List of the subjects in the policy. */
-    private XMLObjectChildrenList<SubjectsType> subjects;
+    /** The subjects in the policy. */
+    private SubjectsType subjects;
 
-    /** List of the resourcese in the policy. */
-    private XMLObjectChildrenList<ResourcesType> resources;
+    /** The resourcese in the policy. */
+    private ResourcesType resources;
 
     /**
      * Constructor.
@@ -56,43 +55,66 @@ public class TargetTypeImpl extends AbstractSAMLObject implements TargetType {
      * @param namespacePrefix the prefix for the given namespace
      */
     protected TargetTypeImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
-        super(namespaceURI, elementLocalName, namespacePrefix);
-        actions = new XMLObjectChildrenList<ActionsType>(this);
-        subjects = new XMLObjectChildrenList<SubjectsType>(this);
-        resources = new XMLObjectChildrenList<ResourcesType>(this);
-        environments = new XMLObjectChildrenList<EnvironmentsType>(this);
+        super(namespaceURI, elementLocalName, namespacePrefix);       
     }
 
-    /** {@inheritDoc}* */
+
+    /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
         ArrayList<XMLObject> children = new ArrayList<XMLObject>();
 
-        children.addAll(subjects);
-        children.addAll(actions);
-        children.addAll(resources);
-        children.addAll(environments);
-
+        if(subjects != null){
+            children.add(subjects);  
+        }
+        if(actions != null){
+            children.add(actions);  
+        }        
+        if(resources != null){
+            children.add(resources);  
+        }
+        if(environments != null){
+            children.add(environments);  
+        }
         return Collections.unmodifiableList(children);
     }
 
-    /** {@inheritDoc}* */
-    public List<SubjectsType> getSubjects() {
+    /** {@inheritDoc}*/
+    public SubjectsType getSubjects() {
         return subjects;
     }
-
-    /** {@inheritDoc}* */
-    public List<ResourcesType> getResources() {
+        
+    /** {@inheritDoc}*/
+    public ResourcesType getResources() {
         return resources;
     }
 
-    /** {@inheritDoc}* */
-    public List<ActionsType> getActions() {
+    /** {@inheritDoc}*/
+    public ActionsType getActions() {
         return actions;
     }
 
-    /** {@inheritDoc}* */
-    public List<EnvironmentsType> getEnvironments() {
+    /**{@inheritDoc}*/
+    public EnvironmentsType getEnvironments() {
         return environments;
     }
 
+    /**{@inheritDoc}*/
+    public void setActions(ActionsType actions) {
+        this.actions = prepareForAssignment(this.actions,actions);
+    }
+
+    /**{@inheritDoc}*/
+    public void setEnvironments(EnvironmentsType environments) {
+        this.environments = prepareForAssignment(this.environments,environments);
+    }
+
+    /**{@inheritDoc}*/
+    public void setResources(ResourcesType resources) {
+        this.resources = prepareForAssignment(this.resources,resources);
+    }
+
+    /**{@inheritDoc}*/
+    public void setSubjects(SubjectsType subjects) {
+        this.subjects = prepareForAssignment(this.subjects,subjects);
+    }
 }

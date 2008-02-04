@@ -48,12 +48,12 @@ public class SubjectMatchTypeUnmarshaller extends AbstractXMLObjectUnmarshaller 
     protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
             throws UnmarshallingException {
         SubjectMatchType matchType = (SubjectMatchType) parentXMLObject;
-        if (childXMLObject.getElementQName().equals(AttributeValueType.DEFAULT_ELEMENT_NAME)) {
+        if (childXMLObject instanceof AttributeValueType) {
             matchType.setAttributeValue((AttributeValueType) childXMLObject);
         } else if (childXMLObject.getElementQName().equals(
                 AttributeDesignatorType.SUBJECT_ATTRIBUTE_DESIGNATOR_ELEMENT_LOCAL_NAME)) {
             matchType.setSubjectAttributeDesignator((AttributeDesignatorType) childXMLObject);
-        } else if (childXMLObject.getElementQName().equals(AttributeSelectorType.DEFAULT_ELEMENT_NAME)) {
+        } else if (childXMLObject instanceof AttributeSelectorType) {
             matchType.setAttributeSelector((AttributeSelectorType) childXMLObject);
         }
     }

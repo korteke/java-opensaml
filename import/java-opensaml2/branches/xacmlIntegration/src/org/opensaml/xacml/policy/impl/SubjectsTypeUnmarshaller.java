@@ -17,6 +17,7 @@
 
 package org.opensaml.xacml.policy.impl;
 
+import org.opensaml.xacml.XACMLConstants;
 import org.opensaml.xacml.policy.SubjectType;
 import org.opensaml.xacml.policy.SubjectsType;
 import org.opensaml.xml.XMLObject;
@@ -29,6 +30,13 @@ import org.w3c.dom.Attr;
  */
 public class SubjectsTypeUnmarshaller extends AbstractXMLObjectUnmarshaller {
 
+
+    /** Constructor. */
+    public SubjectsTypeUnmarshaller() {
+        super(XACMLConstants.XACML20_NS,SubjectsType.DEFAULT_ELEMENT_LOCAL_NAME);
+    }
+    
+    
     /** {@inheritDoc} */
     protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
  
@@ -39,7 +47,7 @@ public class SubjectsTypeUnmarshaller extends AbstractXMLObjectUnmarshaller {
             throws UnmarshallingException {
         SubjectsType subjectsType = (SubjectsType) parentXMLObject;
         
-        if(childXMLObject.getElementQName().equals(SubjectType.DEFAULT_ELEMENT_NAME)){
+        if(childXMLObject instanceof SubjectType){
             subjectsType.getSubjects().add((SubjectType)childXMLObject);
         }
     }

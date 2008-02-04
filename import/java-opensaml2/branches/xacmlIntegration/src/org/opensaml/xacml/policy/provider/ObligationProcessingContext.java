@@ -18,7 +18,7 @@
 package org.opensaml.xacml.policy.provider;
 
 import org.opensaml.xacml.ctx.RequestType;
-import org.opensaml.xacml.policy.XACMLPolicy;
+import org.opensaml.xacml.policy.PolicyType;
 
 /**
  * A context for processing obligations.
@@ -26,7 +26,7 @@ import org.opensaml.xacml.policy.XACMLPolicy;
 public class ObligationProcessingContext {
 
     /** The effective XACML policy. */
-    private XACMLPolicy effectivePolicy;
+    private PolicyType effectivePolicy;
 
     /** XACML request context bearing the obligations. */
     private RequestType requestContext;
@@ -37,7 +37,7 @@ public class ObligationProcessingContext {
      * @param policy effective XACML policy for the given XACML request context
      * @param context XACML request context bearing the obligations
      */
-    public ObligationProcessingContext(XACMLPolicy policy, RequestType context) {
+    public ObligationProcessingContext(PolicyType policy, RequestType context) {
         if(effectivePolicy == null){
             throw new IllegalArgumentException("Effective XACML policy may not be null");
         }
@@ -63,7 +63,7 @@ public class ObligationProcessingContext {
      * 
      * @return effective XACML policy for the given XACML request context
      */
-    public XACMLPolicy getEffectivePolicy() {
+    public PolicyType getEffectivePolicy() {
         return effectivePolicy;
     }
 }

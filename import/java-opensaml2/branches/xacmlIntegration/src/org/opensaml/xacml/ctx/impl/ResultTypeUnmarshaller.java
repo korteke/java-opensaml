@@ -22,7 +22,6 @@ import org.opensaml.xacml.ctx.DecisionType;
 import org.opensaml.xacml.ctx.ResultType;
 import org.opensaml.xacml.ctx.StatusType;
 import org.opensaml.xacml.policy.ObligationsType;
-import org.opensaml.xacml.policy.XACMLObligations;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.AbstractXMLObjectUnmarshaller;
 import org.opensaml.xml.io.UnmarshallingException;
@@ -60,7 +59,7 @@ public class ResultTypeUnmarshaller extends AbstractXMLObjectUnmarshaller {
     protected void processChildElement(XMLObject parentObject, XMLObject childObject) throws UnmarshallingException {
         ResultType result = (ResultType) parentObject;
 
-        if (childObject instanceof XACMLObligations) {
+        if (childObject instanceof ObligationsType) {
             result.setObligations((ObligationsType) childObject);
         }
         if (childObject instanceof StatusType) {

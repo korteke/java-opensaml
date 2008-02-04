@@ -49,12 +49,12 @@ public class ResourceMatchTypeUnmarshaller extends AbstractXMLObjectUnmarshaller
     protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
             throws UnmarshallingException {
         ResourceMatchType matchType = (ResourceMatchType) parentXMLObject;
-        if (childXMLObject.getElementQName().equals(AttributeValueType.DEFAULT_ELEMENT_NAME)) {
+        if (childXMLObject instanceof AttributeValueType) {
             matchType.setAttributeValue((AttributeValueType) childXMLObject);
         } else if (childXMLObject.getElementQName().equals(
                 AttributeDesignatorType.RESOURCE_ATTRIBUTE_DESIGNATOR_ELEMENT_NAME)) {
             matchType.setResourceAttributeDesignator((AttributeDesignatorType) childXMLObject);
-        } else if (childXMLObject.getElementQName().equals(AttributeSelectorType.DEFAULT_ELEMENT_NAME)) {
+        } else if (childXMLObject instanceof AttributeSelectorType) {
             matchType.setAttributeSelector((AttributeSelectorType) childXMLObject);
         }
     }

@@ -39,7 +39,7 @@ public interface PolicySetCombinerParametersType extends CombinerParametersType 
             XACMLConstants.XACML_PREFIX);
 
     /** PolicySetIdRef attribute name. */
-    public static final String POLICY_ID_REF_ATTRIB_NAME = "PolicySetIdRef";
+    public static final String POLICY_SET_ID_REF_ATTRIB_NAME = "PolicySetIdRef";
 
     /**
      * Gets the referenced policy set's ID.

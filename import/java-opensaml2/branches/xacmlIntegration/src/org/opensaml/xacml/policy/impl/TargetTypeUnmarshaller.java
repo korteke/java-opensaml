@@ -18,26 +18,54 @@ limitations under the License.
 package org.opensaml.xacml.policy.impl;
 
 
-import org.opensaml.common.impl.AbstractSAMLObjectUnmarshaller;
+import org.opensaml.xacml.XACMLConstants;
+import org.opensaml.xacml.policy.ActionsType;
+import org.opensaml.xacml.policy.EnvironmentsType;
+import org.opensaml.xacml.policy.ResourcesType;
+import org.opensaml.xacml.policy.SubjectsType;
+import org.opensaml.xacml.policy.TargetType;
+import org.opensaml.xml.XMLObject;
+import org.opensaml.xml.io.AbstractXMLObjectUnmarshaller;
+import org.opensaml.xml.io.UnmarshallingException;
+import org.w3c.dom.Attr;
 
 /**
- * A unmarshaller for {@link org.opensaml.xacml.policy.XACMLTarget}
+ * A unmarshaller for {@link TargetType}.
  */
-public class TargetTypeUnmarshaller extends AbstractSAMLObjectUnmarshaller {
-	
-    /** Constructor */
+public class TargetTypeUnmarshaller extends AbstractXMLObjectUnmarshaller {
+
+    /** Constructor. */
     public TargetTypeUnmarshaller() {
-        super();
+        super(XACMLConstants.XACML20_NS,TargetType.DEFAULT_ELEMENT_LOCAL_NAME);
+    }
+    
+    
+    /** {@inheritDoc} */
+    protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
+             
     }
 
-    /**
-     * Constructor
-     * 
-     * @param namespaceURI
-     * @param elementLocalName
-     */
-    protected TargetTypeUnmarshaller(String namespaceURI, String elementLocalName) {
-        super(namespaceURI, elementLocalName);
+    /** {@inheritDoc} */
+    protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
+            throws UnmarshallingException {
+        TargetType targetType = (TargetType) parentXMLObject;
+        
+        if(childXMLObject.getElementQName().equals(ActionsType.DEFAULT_ELEMENT_NAME)){
+            targetType.setActions((ActionsType)childXMLObject);
+        }
+        if(childXMLObject.getElementQName().equals(EnvironmentsType.DEFAULT_ELEMENT_NAME)){
+            targetType.setEnvironments((EnvironmentsType)childXMLObject);
+        }
+        if(childXMLObject.getElementQName().equals(ResourcesType.DEFAULT_ELEMENT_NAME)){
+            targetType.setResources((ResourcesType)childXMLObject);
+        }
+        if(childXMLObject.getElementQName().equals(SubjectsType.DEFAULT_ELEMENT_NAME)){
+            targetType.setSubjects((SubjectsType)childXMLObject);
+        }        
     }
 
+    /** {@inheritDoc} */
+    protected void processElementContent(XMLObject xmlObject, String elementContent) {
+
+    }
 }

@@ -14,30 +14,25 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
-*/
+ */
+
 package org.opensaml.xacml.policy.impl;
 
+import org.opensaml.xacml.XACMLObjectBuilder;
+import org.opensaml.xacml.policy.ObligationType;
+import org.opensaml.xml.AbstractXMLObjectBuilder;
 
-import org.opensaml.common.impl.AbstractSAMLObjectUnmarshaller;
+/** Builder for {@link ObligationType}. */
+public class ObligationTypeImplBuilder extends AbstractXMLObjectBuilder<ObligationType> implements
+        XACMLObjectBuilder<ObligationType> {
 
-/**
- *A Unmarshaller for {@link org.opensaml.xacml.policy.XACMLPolicySetIdReference}
- */
-public class XACMLPolicySetIdReferenceUnmarshaller extends
-		AbstractSAMLObjectUnmarshaller {
-
-	/** Constructor */
-    public XACMLPolicySetIdReferenceUnmarshaller() {
-        super();
+    /** {@inheritDoc} */
+    public ObligationType buildObject() {
+        return buildObject(ObligationType.DEFAULT_ELEMENT_QNAME);
     }
 
-    /**
-     * Constructor
-     * 
-     * @param namespaceURI
-     * @param elementLocalName
-     */
-    protected XACMLPolicySetIdReferenceUnmarshaller(String namespaceURI, String elementLocalName) {
-        super(namespaceURI, elementLocalName);
+    /** {@inheritDoc} */
+    public ObligationType buildObject(String namespaceURI, String localName, String namespacePrefix) {
+        return new ObligationTypeImpl(namespaceURI, localName, namespacePrefix);
     }
 }

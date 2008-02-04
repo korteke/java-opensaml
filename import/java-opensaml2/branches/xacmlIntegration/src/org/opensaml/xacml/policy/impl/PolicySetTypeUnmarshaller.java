@@ -59,15 +59,15 @@ public class PolicySetTypeUnmarshaller extends AbstractXMLObjectUnmarshaller {
             throws UnmarshallingException {
         PolicySetType policySet = (PolicySetType) parentXMLObject;
 
-        if (childXMLObject.getElementQName().equals(DescriptionType.DEFAULT_ELEMENT_NAME)) {
+        if (childXMLObject instanceof DescriptionType) {
             policySet.setDescription((DescriptionType) childXMLObject);
-        } else if (childXMLObject.getElementQName().equals(DefaultsType.POLICY_DEFAULTS_ELEMENT_NAME)) {
+        } else if (childXMLObject instanceof DefaultsType) {
             policySet.setPolicySetDefaults((DefaultsType) childXMLObject);
-        } else if (childXMLObject.getElementQName().equals(TargetType.DEFAULT_ELEMENT_NAME)) {
-            policySet.setTarget((TargetType) childXMLObject);
-        } else if (childXMLObject.getElementQName().equals(PolicySetType.DEFAULT_ELEMENT_NAME)) {
+        } else if (childXMLObject instanceof TargetType){
+                policySet.setTarget((TargetType) childXMLObject);
+        } else if (childXMLObject instanceof PolicySetType) {
             policySet.getPolicySets().add((PolicySetType) childXMLObject);
-        } else if (childXMLObject.getElementQName().equals(PolicyType.DEFAULT_ELEMENT_NAME)) {
+        } else if (childXMLObject instanceof PolicyType) {
             policySet.getPolicies().add((PolicyType) childXMLObject);
         } else if (childXMLObject.getElementQName().equals(IdReferenceType.POLICY_SET_ID_REFERENCE_ELEMENT_NAME)) {
             policySet.getPolicySetIdReferences().add((IdReferenceType) childXMLObject);
@@ -79,7 +79,7 @@ public class PolicySetTypeUnmarshaller extends AbstractXMLObjectUnmarshaller {
             policySet.getPolicyCombinerParameters().add((PolicyCombinerParametersType) childXMLObject);
         } else if (childXMLObject.getElementQName().equals(PolicySetCombinerParametersType.DEFAULT_ELEMENT_NAME)) {
             policySet.getPolicySetCombinerParameters().add((PolicySetCombinerParametersType) childXMLObject);
-        } else if (childXMLObject.getElementQName().equals(ObligationsType.DEFAULT_ELEMENT_QNAME)) {
+        } else if (childXMLObject instanceof ObligationsType) {
             policySet.setObligations((ObligationsType) childXMLObject);
         }
     }

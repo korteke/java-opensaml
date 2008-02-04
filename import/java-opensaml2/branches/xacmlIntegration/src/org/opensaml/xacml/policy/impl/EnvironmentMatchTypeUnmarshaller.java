@@ -48,12 +48,11 @@ public class EnvironmentMatchTypeUnmarshaller extends AbstractXMLObjectUnmarshal
     protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
             throws UnmarshallingException {
         EnvironmentMatchType matchType = (EnvironmentMatchType) parentXMLObject;
-        if (childXMLObject.getElementQName().equals(AttributeValueType.DEFAULT_ELEMENT_NAME)) {
+        if (childXMLObject instanceof AttributeValueType) {
             matchType.setAttributeValue((AttributeValueType) childXMLObject);
-        } else if (childXMLObject.getElementQName().equals(
-                AttributeDesignatorType.ENVIRONMENT_ATTRIBUTE_DESIGNATOR_ELEMENT_NAME)) {
+        } else if (childXMLObject instanceof AttributeDesignatorType) {
             matchType.setEnvironmentAttributeDesignator((AttributeDesignatorType) childXMLObject);
-        } else if (childXMLObject.getElementQName().equals(AttributeSelectorType.DEFAULT_ELEMENT_NAME)) {
+        } else if (childXMLObject instanceof AttributeSelectorType) {
             matchType.setAttributeSelector((AttributeSelectorType) childXMLObject);
         }
     }

@@ -46,7 +46,7 @@ public class ActionsTypeUnmarshaller extends AbstractXMLObjectUnmarshaller {
             throws UnmarshallingException {
         ActionsType actionType = (ActionsType) parentXMLObject;
         
-        if(childXMLObject.getElementQName().equals(ActionType.DEFAULT_ELEMENT_NAME)){
+        if(childXMLObject instanceof ActionType){
             actionType.getActions().add((ActionType)childXMLObject);
         }
     }

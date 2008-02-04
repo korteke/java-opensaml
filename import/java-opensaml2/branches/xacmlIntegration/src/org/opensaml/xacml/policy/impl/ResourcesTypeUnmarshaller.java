@@ -45,7 +45,7 @@ public class ResourcesTypeUnmarshaller extends AbstractXMLObjectUnmarshaller {
             throws UnmarshallingException {
         ResourcesType resourcesType = (ResourcesType) parentXMLObject;
         
-        if(childXMLObject.getElementQName().equals(ResourceType.DEFAULT_ELEMENT_NAME)){
+        if(childXMLObject instanceof ResourceType){
             resourcesType.getResources().add((ResourceType)childXMLObject);
         }
     }

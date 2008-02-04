@@ -17,7 +17,6 @@
 
 package org.opensaml.xacml.policy;
 
-import java.util.List;
 
 import javax.xml.namespace.QName;
 
@@ -46,26 +45,50 @@ public interface TargetType extends XACMLObject {
      * 
      * @return subjects of this target
      */
-    public List<SubjectsType> getSubjects();
+    public SubjectsType getSubjects();
 
     /**
      * Gets the resources of this target.
      * 
      * @return resources of this target
      */
-    public List<ResourcesType> getResources();
+    public ResourcesType getResources();
 
     /**
      * Gets the actions of this target.
      * 
      * @return actions of this target
      */
-    public List<ActionsType> getActions();
+    public ActionsType getActions();
 
     /**
      * Gets the environments of this target.
      * 
      * @return environments of this target
      */
-    public List<EnvironmentsType> getEnvironments();
+    public EnvironmentsType getEnvironments();
+    
+    /**
+     * Sets the subjects in the target.
+     * @param subjects the subject in the target
+     */
+    public void setSubjects(SubjectsType subjects);
+    
+    /**
+     * Sets the actions in the target.
+     * @param actions the subject in the target
+     */
+    public void setActions(ActionsType actions);
+    
+    /**
+     * Sets the resources in the target.
+     * @param resources the subject in the target
+     */
+    public void setResources(ResourcesType resources);
+    
+    /**
+     * Sets the environments in the target.
+     * @param environments the subject in the target
+     */
+    public void setEnvironments(EnvironmentsType environments);
 }

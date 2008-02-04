@@ -37,6 +37,9 @@ public interface AttributeAssignmentType extends AttributeValueType {
     /** QName of the XSI type. */
     public static final QName SCHEMA_TYPE_NAME = new QName(XACMLConstants.XACML20_NS, SCHEMA_TYPE_LOCAL_NAME,
             XACMLConstants.XACML_PREFIX);
+    
+    /** Id of the attribute to be assign . */
+    public static final String ATTR_ID_ATTRIB_NAME = "AttributeId";
 
     /**
      * Gets the ID of the attribute to be assigned.

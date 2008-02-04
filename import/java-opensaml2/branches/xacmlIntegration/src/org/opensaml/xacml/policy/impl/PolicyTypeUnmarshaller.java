@@ -58,21 +58,21 @@ public class PolicyTypeUnmarshaller extends AbstractXMLObjectUnmarshaller {
             throws UnmarshallingException {
         PolicyType policy = (PolicyType) parentXMLObject;
 
-        if (childXMLObject.getElementQName().equals(DescriptionType.DEFAULT_ELEMENT_NAME)) {
+        if (childXMLObject instanceof DescriptionType) {
             policy.setDescription((DescriptionType) childXMLObject);
         } else if (childXMLObject.getElementQName().equals(DefaultsType.POLICY_DEFAULTS_ELEMENT_NAME)) {
             policy.setPolicyDefaults((DefaultsType) childXMLObject);
-        } else if (childXMLObject.getElementQName().equals(TargetType.DEFAULT_ELEMENT_NAME)) {
+        } else if (childXMLObject instanceof TargetType) {
             policy.setTarget((TargetType) childXMLObject);
-        } else if (childXMLObject.getElementQName().equals(CombinerParametersType.DEFAULT_ELEMENT_NAME)) {
+        } else if (childXMLObject instanceof CombinerParametersType) {
             policy.getCombinerParameters().add((CombinerParametersType) childXMLObject);
-        } else if (childXMLObject.getElementQName().equals(RuleCombinerParametersType.DEFAULT_ELEMENT_NAME)) {
+        } else if (childXMLObject instanceof RuleCombinerParametersType) {
             policy.getRuleCombinerParameters().add((RuleCombinerParametersType) childXMLObject);
-        } else if (childXMLObject.getElementQName().equals(VariableDefinitionType.DEFAULT_ELEMENT_NAME)) {
+        } else if (childXMLObject instanceof VariableDefinitionType) {
             policy.getVariableDefinitions().add((VariableDefinitionType) childXMLObject);
-        } else if (childXMLObject.getElementQName().equals(RuleType.DEFAULT_ELEMENT_NAME)) {
+        } else if (childXMLObject instanceof RuleType) {
             policy.getRules().add((RuleType) childXMLObject);
-        } else if (childXMLObject.getElementQName().equals(ObligationsType.DEFAULT_ELEMENT_QNAME)) {
+        } else if (childXMLObject instanceof ObligationsType) {
             policy.setObligations((ObligationsType) childXMLObject);
         }
     }

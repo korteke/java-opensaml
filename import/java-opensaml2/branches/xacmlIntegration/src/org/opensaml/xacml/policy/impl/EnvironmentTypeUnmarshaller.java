@@ -45,7 +45,7 @@ public class EnvironmentTypeUnmarshaller extends AbstractXMLObjectUnmarshaller {
             throws UnmarshallingException {
         EnvironmentType environmentType = (EnvironmentType) parentXMLObject;
         
-        if(childXMLObject.getElementQName().equals(EnvironmentMatchType.DEFAULT_ELEMENT_QNAME)){
+        if(childXMLObject instanceof EnvironmentMatchType){
             environmentType.getEnvrionmentMatches().add((EnvironmentMatchType)childXMLObject);
         }
     }

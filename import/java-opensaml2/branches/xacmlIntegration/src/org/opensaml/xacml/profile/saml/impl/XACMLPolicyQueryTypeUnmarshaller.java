@@ -21,8 +21,6 @@ package org.opensaml.xacml.profile.saml.impl;
 import org.opensaml.saml2.core.impl.RequestAbstractTypeUnmarshaller;
 import org.opensaml.xacml.ctx.RequestType;
 import org.opensaml.xacml.policy.IdReferenceType;
-import org.opensaml.xacml.policy.XACMLPolicyIdReference;
-import org.opensaml.xacml.policy.XACMLPolicySetIdReference;
 import org.opensaml.xacml.profile.saml.XACMLPolicyQueryType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
@@ -53,9 +51,9 @@ public class XACMLPolicyQueryTypeUnmarshaller extends RequestAbstractTypeUnmarsh
 
         if (childObject instanceof RequestType) {
             xacmlpolicyquery.getRequests().add((RequestType) childObject);
-        } else if (childObject instanceof XACMLPolicyIdReference) {
+        } else if (childObject.getElementQName().equals(IdReferenceType.POLICY_ID_REFERENCE_ELEMENT_NAME)) {
             xacmlpolicyquery.getPolicyIdReferences().add((IdReferenceType) childObject);
-        } else if (childObject instanceof XACMLPolicySetIdReference) {
+        } else if (childObject.getElementQName().equals(IdReferenceType.POLICY_SET_ID_REFERENCE_ELEMENT_NAME)) {
             xacmlpolicyquery.getPolicySetIdReferences().add((IdReferenceType) childObject);
         } else {
             super.processChildElement(parentObject, childObject);

@@ -28,8 +28,8 @@ public interface ConditionType extends ExpressionType {
     public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Condition";
 
     /** QName of the element Condition. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(XACMLConstants.XACML20_NS,
-            DEFAULT_ELEMENT_LOCAL_NAME, XACMLConstants.XACML_PREFIX);
+    public static final QName DEFAULT_ELEMENT_NAME = new QName(XACMLConstants.XACML20_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+            XACMLConstants.XACML_PREFIX);
 
     /** Local name of the XSI type. */
     public static final String SCHEMA_TYPE_LOCAL_NAME = "ConditionType";
@@ -44,4 +44,11 @@ public interface ConditionType extends ExpressionType {
      * @return expression for this condition
      */
     public ExpressionType getExpression();
+
+    /**
+     * Sets the expression for this condition.
+     * 
+     * @param expression for this condition
+     */
+    public void setExpression(ExpressionType expression);
 }
