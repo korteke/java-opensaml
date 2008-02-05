@@ -71,7 +71,7 @@ public class ResourceMatchTypeImpl extends AbstractValidatingXMLObject implement
     /** {@inheritDoc} */
     public AttributeDesignatorType getResourceAttributeDesignator() {
         List<XACMLObject> selectors = attributeChoice
-                .get(AttributeDesignatorType.ENVIRONMENT_ATTRIBUTE_DESIGNATOR_ELEMENT_NAME);
+                .get(AttributeDesignatorType.RESOURCE_ATTRIBUTE_DESIGNATOR_ELEMENT_NAME);
         if (selectors != null && !selectors.isEmpty()) {
             return (AttributeDesignatorType) selectors.get(0);
         }

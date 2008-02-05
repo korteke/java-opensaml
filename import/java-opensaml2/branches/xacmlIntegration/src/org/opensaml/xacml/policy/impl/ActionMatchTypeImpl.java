@@ -71,7 +71,7 @@ public class ActionMatchTypeImpl extends AbstractValidatingXMLObject implements 
     /** {@inheritDoc} */
     public AttributeDesignatorType getActionAttributeDesignator() {
         List<XACMLObject> selectors = attributeChoice
-                .get(AttributeDesignatorType.ENVIRONMENT_ATTRIBUTE_DESIGNATOR_ELEMENT_NAME);
+                .get(AttributeDesignatorType.ACTION_ATTRIBUTE_DESIGNATOR_ELEMENT_NAME);
         if (selectors != null && !selectors.isEmpty()) {
             return (AttributeDesignatorType) selectors.get(0);
         }
