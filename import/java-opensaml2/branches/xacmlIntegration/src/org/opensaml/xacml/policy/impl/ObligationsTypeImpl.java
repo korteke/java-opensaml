@@ -28,7 +28,7 @@ import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.util.XMLObjectChildrenList;
 import org.opensaml.xml.validation.AbstractValidatingXMLObject;
 
-/** Implementation for {@link XACMLObligations}. */
+/** Implementation for {@link ObligationsType}. */
 public class ObligationsTypeImpl extends AbstractValidatingXMLObject implements ObligationsType {
 
     /** A list of the obligations. */

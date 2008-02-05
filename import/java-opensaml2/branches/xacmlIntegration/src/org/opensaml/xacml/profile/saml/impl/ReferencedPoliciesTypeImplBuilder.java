@@ -16,11 +16,9 @@
 
 package org.opensaml.xacml.profile.saml.impl;
 
-import org.opensaml.common.SAMLObject;
 import org.opensaml.common.impl.AbstractSAMLObjectBuilder;
 import org.opensaml.xacml.XACMLObjectBuilder;
 import org.opensaml.xacml.profile.saml.ReferencedPoliciesType;
-import org.opensaml.xml.XMLObject;
 
 /**
  * Builder for {@link ReferencedPoliciesType}.

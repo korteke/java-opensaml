@@ -21,10 +21,10 @@ import org.opensaml.common.impl.AbstractSAMLObjectMarshaller;
 /**
  * Marshaller for {@link ReferencedPoliciesType}.
  */
-public class ReferencedpoliciesTypeMarshaller extends AbstractSAMLObjectMarshaller {
+public class ReferencedPoliciesTypeMarshaller extends AbstractSAMLObjectMarshaller {
 
     /** Constructor. */
-    public ReferencedpoliciesTypeMarshaller() {
+    public ReferencedPoliciesTypeMarshaller() {
         super();
     }
 
@@ -36,7 +36,7 @@ public class ReferencedpoliciesTypeMarshaller extends AbstractSAMLObjectMarshall
      * @param targetLocalName the local name of either the schema type QName or element QName of the elements this
      *            marshaller operates on
      */
-    protected ReferencedpoliciesTypeMarshaller(String targetNamespaceURI, String targetLocalName) {
+    protected ReferencedPoliciesTypeMarshaller(String targetNamespaceURI, String targetLocalName) {
         super(targetNamespaceURI, targetLocalName);
     }
 

@@ -27,7 +27,7 @@ import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.w3c.dom.Attr;
 
-/** UnMarshaller for {@link org.opensaml.xacml.policy.XACMLObligation}. */
+/** UnMarshaller for {@link org.opensaml.xacml.policy.ObligationType}. */
 public class ObligationTypeUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
     /** Constructor. */

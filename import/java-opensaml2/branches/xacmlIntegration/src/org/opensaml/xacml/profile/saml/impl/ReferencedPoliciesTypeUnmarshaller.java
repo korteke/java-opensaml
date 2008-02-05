@@ -28,10 +28,10 @@ import org.opensaml.xml.io.UnmarshallingException;
 /**
  * Unmarshaller for {@link ReferencedPoliciesType}.
  */
-public class ReferencedpoliciesTypeUnmarshaller extends AbstractSAMLObjectUnmarshaller {
+public class ReferencedPoliciesTypeUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
     /** Constructor. */
-    public ReferencedpoliciesTypeUnmarshaller() {
+    public ReferencedPoliciesTypeUnmarshaller() {
         super();
     }
 
@@ -43,7 +43,7 @@ public class ReferencedpoliciesTypeUnmarshaller extends AbstractSAMLObjectUnmars
      * @param targetLocalName the local name of either the schema type QName or element QName of the elements this
      *            unmarshaller operates on
      */
-    protected ReferencedpoliciesTypeUnmarshaller(String targetNamespaceURI, String targetLocalName) {
+    protected ReferencedPoliciesTypeUnmarshaller(String targetNamespaceURI, String targetLocalName) {
         super(targetNamespaceURI, targetLocalName);
     }
 

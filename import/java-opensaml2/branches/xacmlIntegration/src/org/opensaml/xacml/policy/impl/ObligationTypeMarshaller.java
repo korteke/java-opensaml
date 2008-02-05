@@ -27,7 +27,7 @@ import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.util.DatatypeHelper;
 import org.w3c.dom.Element;
 
-/** Marshaller for {@link org.ObligationType}. */
+/** Marshaller for {@link ObligationType}. */
 public class ObligationTypeMarshaller extends AbstractXMLObjectMarshaller {
 
     /** Constructor. */

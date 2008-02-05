@@ -18,13 +18,13 @@ limitations under the License.
 
 package org.opensaml.xacml.policy.impl;
 
+import org.opensaml.xacml.XACMLObjectBuilder;
 import org.opensaml.xacml.policy.ObligationsType;
 import org.opensaml.xml.AbstractXMLObjectBuilder;
-import org.opensaml.xml.XMLObjectBuilder;
 
 /** Builder for {@link ObligationsType}. */
 public class ObligationsTypeImplBuilder extends AbstractXMLObjectBuilder<ObligationsType> implements
-        XMLObjectBuilder<ObligationsType> {
+        XACMLObjectBuilder<ObligationsType> {
 
     /** {@inheritDoc} */
     public ObligationsType buildObject() {
