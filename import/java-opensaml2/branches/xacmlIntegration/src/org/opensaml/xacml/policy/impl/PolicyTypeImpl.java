@@ -75,7 +75,7 @@ public class PolicyTypeImpl extends AbstractValidatingXMLObject implements Polic
 
     /** {@inheritDoc} */
     public List<CombinerParametersType> getCombinerParameters() {
-        return (List<CombinerParametersType>) choiceGroup.get(CombinerParametersType.DEFAULT_ELEMENT_NAME);
+        return (List<CombinerParametersType>) choiceGroup.subList(CombinerParametersType.DEFAULT_ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
@@ -100,7 +100,7 @@ public class PolicyTypeImpl extends AbstractValidatingXMLObject implements Polic
 
     /** {@inheritDoc} */
     public List<RuleCombinerParametersType> getRuleCombinerParameters() {
-        return (List<RuleCombinerParametersType>) choiceGroup.get(RuleCombinerParametersType.DEFAULT_ELEMENT_NAME);
+        return (List<RuleCombinerParametersType>) choiceGroup.subList(RuleCombinerParametersType.DEFAULT_ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
@@ -110,7 +110,7 @@ public class PolicyTypeImpl extends AbstractValidatingXMLObject implements Polic
 
     /** {@inheritDoc} */
     public List<RuleType> getRules() {
-        return (List<RuleType>) choiceGroup.get(RuleType.DEFAULT_ELEMENT_NAME);
+        return (List<RuleType>) choiceGroup.subList(RuleType.DEFAULT_ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
@@ -120,7 +120,7 @@ public class PolicyTypeImpl extends AbstractValidatingXMLObject implements Polic
 
     /** {@inheritDoc} */
     public List<VariableDefinitionType> getVariableDefinitions() {
-        return (List<VariableDefinitionType>) choiceGroup.get(VariableDefinitionType.DEFAULT_ELEMENT_NAME);
+        return (List<VariableDefinitionType>) choiceGroup.subList(VariableDefinitionType.DEFAULT_ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */

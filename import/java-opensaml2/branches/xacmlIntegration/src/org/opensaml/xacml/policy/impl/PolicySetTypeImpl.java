@@ -76,7 +76,7 @@ public class PolicySetTypeImpl extends AbstractValidatingXMLObject implements Po
 
     /** {@inheritDoc} */
     public List<CombinerParametersType> getCombinerParameters() {
-        return (List<CombinerParametersType>) choiceGroup.get(CombinerParametersType.DEFAULT_ELEMENT_NAME);
+        return (List<CombinerParametersType>) choiceGroup.subList(CombinerParametersType.DEFAULT_ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
@@ -120,7 +120,8 @@ public class PolicySetTypeImpl extends AbstractValidatingXMLObject implements Po
 
     /** {@inheritDoc} */
     public List<PolicyCombinerParametersType> getPolicyCombinerParameters() {
-        return (List<PolicyCombinerParametersType>) choiceGroup.get(PolicyCombinerParametersType.DEFAULT_ELEMENT_NAME);
+        return (List<PolicyCombinerParametersType>) choiceGroup
+                .subList(PolicyCombinerParametersType.DEFAULT_ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
@@ -130,13 +131,13 @@ public class PolicySetTypeImpl extends AbstractValidatingXMLObject implements Po
 
     /** {@inheritDoc} */
     public List<IdReferenceType> getPolicyIdReferences() {
-        return (List<IdReferenceType>) choiceGroup.get(IdReferenceType.POLICY_ID_REFERENCE_ELEMENT_NAME);
+        return (List<IdReferenceType>) choiceGroup.subList(IdReferenceType.POLICY_ID_REFERENCE_ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
     public List<PolicySetCombinerParametersType> getPolicySetCombinerParameters() {
         return (List<PolicySetCombinerParametersType>) choiceGroup
-                .get(PolicySetCombinerParametersType.DEFAULT_ELEMENT_NAME);
+                .subList(PolicySetCombinerParametersType.DEFAULT_ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
@@ -151,12 +152,12 @@ public class PolicySetTypeImpl extends AbstractValidatingXMLObject implements Po
 
     /** {@inheritDoc} */
     public List<IdReferenceType> getPolicySetIdReferences() {
-        return (List<IdReferenceType>) choiceGroup.get(IdReferenceType.POLICY_SET_ID_REFERENCE_ELEMENT_NAME);
+        return (List<IdReferenceType>) choiceGroup.subList(IdReferenceType.POLICY_SET_ID_REFERENCE_ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
     public List<PolicySetType> getPolicySets() {
-        return (List<PolicySetType>) choiceGroup.get(PolicySetType.DEFAULT_ELEMENT_NAME);
+        return (List<PolicySetType>) choiceGroup.subList(PolicySetType.DEFAULT_ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */

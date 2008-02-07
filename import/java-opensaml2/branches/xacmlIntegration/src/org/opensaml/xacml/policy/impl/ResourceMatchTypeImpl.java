@@ -55,7 +55,7 @@ public class ResourceMatchTypeImpl extends AbstractValidatingXMLObject implement
 
     /** {@inheritDoc} */
     public AttributeSelectorType getAttributeSelector() {
-        List<XACMLObject> selectors = attributeChoice.get(AttributeSelectorType.DEFAULT_ELEMENT_NAME);
+        List<XACMLObject> selectors = (List<XACMLObject>) attributeChoice.subList(AttributeSelectorType.DEFAULT_ELEMENT_NAME);
         if (selectors != null && !selectors.isEmpty()) {
             return (AttributeSelectorType) selectors.get(0);
         }
@@ -70,8 +70,8 @@ public class ResourceMatchTypeImpl extends AbstractValidatingXMLObject implement
 
     /** {@inheritDoc} */
     public AttributeDesignatorType getResourceAttributeDesignator() {
-        List<XACMLObject> selectors = attributeChoice
-                .get(AttributeDesignatorType.RESOURCE_ATTRIBUTE_DESIGNATOR_ELEMENT_NAME);
+        List<XACMLObject> selectors = (List<XACMLObject>) attributeChoice
+                .subList(AttributeDesignatorType.RESOURCE_ATTRIBUTE_DESIGNATOR_ELEMENT_NAME);
         if (selectors != null && !selectors.isEmpty()) {
             return (AttributeDesignatorType) selectors.get(0);
         }

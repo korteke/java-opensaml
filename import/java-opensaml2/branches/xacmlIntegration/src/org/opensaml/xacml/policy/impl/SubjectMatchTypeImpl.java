@@ -55,7 +55,8 @@ public class SubjectMatchTypeImpl extends AbstractValidatingXMLObject implements
 
     /** {@inheritDoc} */
     public AttributeSelectorType getAttributeSelector() {
-        List<XACMLObject> selectors = attributeChoice.get(AttributeSelectorType.DEFAULT_ELEMENT_NAME);
+        List<XACMLObject> selectors = (List<XACMLObject>) attributeChoice
+                .subList(AttributeSelectorType.DEFAULT_ELEMENT_NAME);
         if (selectors != null && !selectors.isEmpty()) {
             return (AttributeSelectorType) selectors.get(0);
         }
@@ -70,8 +71,8 @@ public class SubjectMatchTypeImpl extends AbstractValidatingXMLObject implements
 
     /** {@inheritDoc} */
     public AttributeDesignatorType getSubjectAttributeDesignator() {
-        List<XACMLObject> selectors = attributeChoice
-                .get(AttributeDesignatorType.SUBJECT_ATTRIBUTE_DESIGNATOR_ELEMENT_NAME);
+        List<XACMLObject> selectors = (List<XACMLObject>) attributeChoice
+                .subList(AttributeDesignatorType.SUBJECT_ATTRIBUTE_DESIGNATOR_ELEMENT_NAME);
         if (selectors != null && !selectors.isEmpty()) {
             return (AttributeDesignatorType) selectors.get(0);
         }
