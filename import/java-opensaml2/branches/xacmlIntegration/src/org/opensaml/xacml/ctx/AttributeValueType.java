@@ -35,4 +35,20 @@ public interface AttributeValueType extends XACMLObject, ElementExtensibleXMLObj
     public static final QName DEFAULT_ELEMENT_NAME = new QName(XACMLConstants.XACML20CTX_NS,
             DEFAULT_ELEMENT_LOCAL_NAME, XACMLConstants.XACMLCONTEXT_PREFIX);
 
+    /**
+     * Gets the text content of the element.
+     * 
+     * @return text content of the element
+     */
+    public String getValue();
+
+    /**
+     * Sets the text content of the element.
+     * 
+     * <strong>NOTE</strong> because the library does not support mixed content setting textual content will prohibit
+     * element content.
+     * 
+     * @param value text content of the element
+     */
+    public void setValue(String value);
 }

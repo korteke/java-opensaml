@@ -23,6 +23,7 @@ import org.opensaml.xacml.ctx.AttributeValueType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.AbstractXMLObjectUnmarshaller;
 import org.opensaml.xml.io.UnmarshallingException;
+import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Attr;
 
@@ -65,5 +66,7 @@ public class AttributeValueTypeUnmarshaller extends AbstractXMLObjectUnmarshalle
 
     /** {@inheritDoc} */
     protected void processElementContent(XMLObject xmlObject, String elementContent) {
+        AttributeValueType attributeValue = (AttributeValueType) xmlObject;
+        attributeValue.setValue(DatatypeHelper.safeTrimOrNullString(elementContent));
     }
 }

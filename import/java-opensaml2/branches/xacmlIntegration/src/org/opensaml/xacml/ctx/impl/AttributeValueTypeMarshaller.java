@@ -56,5 +56,10 @@ public class AttributeValueTypeMarshaller extends AbstractXMLObjectMarshaller {
 
     /** {@inheritDoc} */
     protected void marshallElementContent(XMLObject xmlObject, Element domElement) throws MarshallingException {
+        AttributeValueType attributeValue = (AttributeValueType) xmlObject;
+        
+        if(attributeValue.getValue() != null){
+            XMLHelper.appendTextContent(domElement, attributeValue.getValue());
+        }
     }
 }

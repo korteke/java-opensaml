@@ -31,13 +31,16 @@ import org.opensaml.xml.validation.AbstractValidatingXMLObject;
 
 /** Concrete implementation of {@link AttributeValueType}. */
 public class AttributeValueTypeImpl extends AbstractValidatingXMLObject implements AttributeValueType {
-    
+
     /** "any" elements. */
     private IndexedXMLObjectChildrenList<XMLObject> unknownElements;
-    
+
     /** "any" attributes. */
     private AttributeMap unknownAttributes;
-    
+
+    /** Text content of value element. */
+    private String textContent;
+
     /**
      * Constructor.
      * 
@@ -53,7 +56,12 @@ public class AttributeValueTypeImpl extends AbstractValidatingXMLObject implemen
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>(unknownElements);
+        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+
+        if (textContent == null) {
+            children.addAll(unknownElements);
+        }
+
         return Collections.unmodifiableList(children);
     }
 
@@ -70,5 +78,15 @@ public class AttributeValueTypeImpl extends AbstractValidatingXMLObject implemen
     /** {@inheritDoc} */
     public AttributeMap getUnknownAttributes() {
         return unknownAttributes;
+    }
+
+    /** {@inheritDoc} */
+    public String getValue() {
+        return textContent;
+    }
+
+    /** {@inheritDoc} */
+    public void setValue(String value) {
+        textContent = prepareForAssignment(textContent, value);
     }
 }
