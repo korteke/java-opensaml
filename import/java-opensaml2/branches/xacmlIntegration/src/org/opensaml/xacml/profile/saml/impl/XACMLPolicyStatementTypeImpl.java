@@ -45,6 +45,7 @@ public class XACMLPolicyStatementTypeImpl extends AbstractSAMLObject implements 
      */
     protected XACMLPolicyStatementTypeImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
+        choiceGroup = new IndexedXMLObjectChildrenList<XACMLObject>(this);
     }
 
     /** {@inheritDoc} */

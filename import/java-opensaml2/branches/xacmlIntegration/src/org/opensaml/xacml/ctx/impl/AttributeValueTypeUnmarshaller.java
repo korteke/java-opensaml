@@ -61,8 +61,10 @@ public class AttributeValueTypeUnmarshaller extends AbstractXMLObjectUnmarshalle
     /** {@inheritDoc} */
     protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
             throws UnmarshallingException {
+       
         AttributeValueType attributeValue = (AttributeValueType) parentXMLObject;
-        attributeValue.getUnknownXMLObjects().add(childXMLObject);    }
+        attributeValue.getUnknownXMLObjects().add(childXMLObject);  
+   }
 
     /** {@inheritDoc} */
     protected void processElementContent(XMLObject xmlObject, String elementContent) {

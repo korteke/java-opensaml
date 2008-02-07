@@ -31,7 +31,7 @@ public class AttributeAssignmentTypeMarshaller extends AbstractXMLObjectMarshall
 
     /** Constructor. */
     public AttributeAssignmentTypeMarshaller() {
-        super(XACMLConstants.XACML20_NS, AttributeAssignmentType.DEFAULT_ELEMENT_LOCAL_NAME);
+        super(XACMLConstants.XACML20_NS,AttributeAssignmentType.DEFAULT_ELEMENT_LOCAL_NAME);
     }
 
     /** {@inheritDoc} */
@@ -47,5 +47,6 @@ public class AttributeAssignmentTypeMarshaller extends AbstractXMLObjectMarshall
             domElement.setAttributeNS(null, AttributeAssignmentType.ATTR_ID_ATTRIB_NAME, attributeAssignment
                     .getAttributeId());
         }
+        
     }
 }

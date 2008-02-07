@@ -52,7 +52,10 @@ public class ResourceContentTypeImpl extends AbstractValidatingXMLObject impleme
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>(unknownElements);
+        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        
+        children.addAll(unknownElements);
+        
         return Collections.unmodifiableList(children);
     }
 

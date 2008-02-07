@@ -20,27 +20,20 @@ package org.opensaml.xacml.policy.impl;
 import org.opensaml.xacml.XACMLObjectBuilder;
 import org.opensaml.xacml.policy.TargetType;
 import org.opensaml.xml.AbstractXMLObjectBuilder;
-
+/**
+ * Implementation for {@link TargetType}.
+ *
+ */
 public class TargetTypeImplBuilder extends AbstractXMLObjectBuilder<TargetType> implements 
 XACMLObjectBuilder<TargetType> {
 
-	/**
-	 * Constructor
-	 */
-	public TargetTypeImplBuilder(){
-		
-	}
-	
-	/** {@inheritDoc}**/
-	public TargetType buildObject() {
-		return buildObject(TargetType.DEFAULT_ELEMENT_NAME);
-	}
+    /** {@inheritDoc}**/
+    public TargetType buildObject() {
+        return buildObject(TargetType.DEFAULT_ELEMENT_NAME);
+    }
 
-	/** {@inheritDoc}**/
-	@Override
-	public TargetType buildObject(String namespaceURI, String localName,
-			String namespacePrefix) {
-		return new TargetTypeImpl(namespaceURI, localName, namespacePrefix);
-	}
-
+    /** {@inheritDoc}**/
+    public TargetType buildObject(String namespaceURI, String localName,String namespacePrefix) {
+        return new TargetTypeImpl(namespaceURI, localName, namespacePrefix);
+    }
 }

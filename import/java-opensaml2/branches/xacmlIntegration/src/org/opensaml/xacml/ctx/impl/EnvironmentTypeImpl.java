@@ -53,7 +53,10 @@ public class EnvironmentTypeImpl extends AbstractValidatingXMLObject implements 
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>(attributes);
+        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        
+        children.addAll(attributes);
+        
         return Collections.unmodifiableList(children);
     }
 }

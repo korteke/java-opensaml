@@ -18,6 +18,7 @@
 package org.opensaml.xacml.policy.impl;
 
 import org.opensaml.xacml.XACMLConstants;
+import org.opensaml.xacml.policy.ExpressionType;
 import org.opensaml.xacml.policy.VariableReferenceType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.AbstractXMLObjectUnmarshaller;
@@ -48,6 +49,11 @@ public class VariableReferenceTypeUnmarshaller extends AbstractXMLObjectUnmarsha
     /** {@inheritDoc} */
     protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
             throws UnmarshallingException {
+        
+        if(childXMLObject instanceof ExpressionType){
+            VariableReferenceType variableReferenceType = (VariableReferenceType) parentXMLObject;
+            variableReferenceType.getExpressions().add((ExpressionType)childXMLObject);
+        }
 
     }
 

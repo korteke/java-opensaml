@@ -18,7 +18,6 @@
 package org.opensaml.xacml.policy.impl;
 
 import org.opensaml.xacml.XACMLConstants;
-import org.opensaml.xacml.policy.ActionMatchType;
 import org.opensaml.xacml.policy.AttributeDesignatorType;
 import org.opensaml.xacml.policy.AttributeSelectorType;
 import org.opensaml.xacml.policy.AttributeValueType;
@@ -34,7 +33,7 @@ public class ResourceMatchTypeUnmarshaller extends AbstractXMLObjectUnmarshaller
 
     /** Constructor. */
     public ResourceMatchTypeUnmarshaller() {
-        super(XACMLConstants.XACML20_NS, ActionMatchType.DEFAULT_ELEMENT_LOCAL_NAME);
+        super(XACMLConstants.XACML20_NS, ResourceMatchType.DEFAULT_ELEMENT_LOCAL_NAME);
     }
 
     /** {@inheritDoc} */
@@ -49,14 +48,15 @@ public class ResourceMatchTypeUnmarshaller extends AbstractXMLObjectUnmarshaller
     protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
             throws UnmarshallingException {
         ResourceMatchType matchType = (ResourceMatchType) parentXMLObject;
+        
         if (childXMLObject instanceof AttributeValueType) {
             matchType.setAttributeValue((AttributeValueType) childXMLObject);
-        } else if (childXMLObject.getElementQName().equals(
+        }  else if (childXMLObject instanceof AttributeSelectorType) {
+            matchType.setAttributeSelector((AttributeSelectorType) childXMLObject);
+        }else if (childXMLObject.getElementQName().equals(
                 AttributeDesignatorType.RESOURCE_ATTRIBUTE_DESIGNATOR_ELEMENT_NAME)) {
             matchType.setResourceAttributeDesignator((AttributeDesignatorType) childXMLObject);
-        } else if (childXMLObject instanceof AttributeSelectorType) {
-            matchType.setAttributeSelector((AttributeSelectorType) childXMLObject);
-        }
+        }       
     }
 
     /** {@inheritDoc} */

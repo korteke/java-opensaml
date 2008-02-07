@@ -75,7 +75,10 @@ public class MissingAttributeDetailTypeImpl extends AbstractValidatingXMLObject 
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>(attributeValues);
+        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        
+        children.addAll(attributeValues);
+        
         return Collections.unmodifiableList(children);
     }
 

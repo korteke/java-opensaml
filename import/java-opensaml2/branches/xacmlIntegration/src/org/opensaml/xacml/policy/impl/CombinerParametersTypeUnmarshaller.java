@@ -34,6 +34,18 @@ public class CombinerParametersTypeUnmarshaller extends AbstractXMLObjectUnmarsh
     public CombinerParametersTypeUnmarshaller() {
         super(XACMLConstants.XACML20_NS, CombinerParametersType.DEFAULT_ELEMENT_LOCAL_NAME);
     }
+    
+    /**
+     * Constructor.
+     * 
+     * @param targetNamespaceURI the namespace URI of either the schema type QName or element QName of the elements this
+     *            marshaller operates on
+     * @param targetLocalName the local name of either the schema type QName or element QName of the elements this
+     *            marshaller operates on
+     */
+    public CombinerParametersTypeUnmarshaller(String targetNamespaceURI,String targetLocalName ) {
+        super(targetNamespaceURI,targetLocalName);
+    }
 
     
     /** {@inheritDoc} */
@@ -54,7 +66,4 @@ public class CombinerParametersTypeUnmarshaller extends AbstractXMLObjectUnmarsh
     /** {@inheritDoc} */
     protected void processElementContent(XMLObject xmlObject, String elementContent) {
     }
-
-
-
 }

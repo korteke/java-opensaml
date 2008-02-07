@@ -40,13 +40,11 @@ public class PolicySetTypeMarshaller extends AbstractXMLObjectMarshaller {
         if (!DatatypeHelper.isEmpty(policySet.getPolicySetId())) {
             domElement.setAttribute(PolicySetType.POLICY_SET_ID_ATTRIB_NAME, policySet.getPolicySetId());
         }
-
         if (!DatatypeHelper.isEmpty(policySet.getVersion())) {
             domElement.setAttribute(PolicySetType.VERSION_ATTRIB_NAME, policySet.getVersion());
         }
-
         if (!DatatypeHelper.isEmpty(policySet.getPolicyCombiningAlgoId())) {
-            domElement.setAttribute(PolicySetType.POLICY_COMBINING_ALF_ID_ATTRIB_NAME, policySet
+            domElement.setAttribute(PolicySetType.POLICY_COMBINING_ALG_ID_ATTRIB_NAME, policySet
                     .getPolicyCombiningAlgoId());
         }
     }

@@ -90,3 +90,4 @@ public class AttributeValueTypeImpl extends AbstractValidatingXMLObject implemen
         textContent = prepareForAssignment(textContent, value);
     }
 }
+

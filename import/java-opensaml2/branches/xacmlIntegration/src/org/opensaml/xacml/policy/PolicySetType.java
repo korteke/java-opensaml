@@ -48,7 +48,7 @@ public interface PolicySetType extends XACMLObject {
     public static final String VERSION_ATTRIB_NAME = "Version";
 
     /** PolicyCombiningAlgId attribute name. */
-    public static final String POLICY_COMBINING_ALF_ID_ATTRIB_NAME = "PolicyCombiningAlgId";
+    public static final String POLICY_COMBINING_ALG_ID_ATTRIB_NAME = "PolicyCombiningAlgId";
 
     /**
      * Gets the description for this policy set.

@@ -46,7 +46,7 @@ public class PolicyTypeMarshaller extends AbstractXMLObjectMarshaller {
         }
 
         if (!DatatypeHelper.isEmpty(policy.getRuleCombiningAlgoId())) {
-            domElement.setAttribute(PolicyType.RULE_COMBINING_ALF_ID_ATTRIB_NAME, policy.getRuleCombiningAlgoId());
+            domElement.setAttribute(PolicyType.RULE_COMBINING_ALG_ID_ATTRIB_NAME, policy.getRuleCombiningAlgoId());
         }
     }
 

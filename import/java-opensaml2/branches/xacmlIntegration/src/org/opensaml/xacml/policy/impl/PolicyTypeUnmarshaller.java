@@ -48,7 +48,7 @@ public class PolicyTypeUnmarshaller extends AbstractXMLObjectUnmarshaller {
             policy.setPolicyId(attribute.getValue());
         } else if (attribute.getLocalName().equals(PolicyType.VERSION_ATTRIB_NAME)) {
             policy.setVersion(attribute.getValue());
-        } else if (attribute.getLocalName().equals(PolicyType.RULE_COMBINING_ALF_ID_ATTRIB_NAME)) {
+        } else if (attribute.getLocalName().equals(PolicyType.RULE_COMBINING_ALG_ID_ATTRIB_NAME)) {
             policy.setRuleCombiningAlgoId(attribute.getValue());
         }
     }

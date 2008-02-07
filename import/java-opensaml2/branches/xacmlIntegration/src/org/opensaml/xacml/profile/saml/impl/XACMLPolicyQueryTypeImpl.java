@@ -66,8 +66,13 @@ public class XACMLPolicyQueryTypeImpl extends RequestAbstractTypeImpl implements
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>(super.getOrderedChildren());
-
+                    
+        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        
+        if(super.getOrderedChildren() != null){
+            children.addAll(super.getOrderedChildren());
+        }
+        
         children.addAll(choiceGroup);
 
         return Collections.unmodifiableList(children);

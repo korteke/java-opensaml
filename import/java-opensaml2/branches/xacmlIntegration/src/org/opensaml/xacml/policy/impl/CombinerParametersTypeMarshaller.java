@@ -33,6 +33,18 @@ public class CombinerParametersTypeMarshaller extends AbstractXMLObjectMarshalle
         super(XACMLConstants.XACML20_NS, CombinerParametersType.DEFAULT_ELEMENT_LOCAL_NAME);
     }
     
+    /**
+     * Constructor.
+     * 
+     * @param targetNamespaceURI the namespace URI of either the schema type QName or element QName of the elements this
+     *            marshaller operates on
+     * @param targetLocalName the local name of either the schema type QName or element QName of the elements this
+     *            marshaller operates on
+     */
+    public CombinerParametersTypeMarshaller(String targetNamespaceURI,String targetLocalName ) {
+        super(targetNamespaceURI,targetLocalName);
+    }
+    
     /** {@inheritDoc} */
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
  

@@ -18,6 +18,7 @@ limitations under the License.
 
 package org.opensaml.xacml.ctx.impl;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -49,7 +50,11 @@ public class StatusDetailTypeImpl extends AbstractValidatingXMLObject implements
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        return Collections.unmodifiableList(unknownChildren);
+        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        
+        children.addAll(unknownChildren);
+
+        return Collections.unmodifiableList(children);
     }
 
     /** {@inheritDoc} */

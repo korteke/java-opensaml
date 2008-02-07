@@ -18,6 +18,7 @@
 package org.opensaml.xacml.policy.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.opensaml.xacml.policy.EnvironmentMatchType;
@@ -58,7 +59,7 @@ public class EnvironmentTypeImpl extends AbstractValidatingXMLObject implements 
         
         children.addAll(environmentMatches);      
                 
-        return children;
+        return Collections.unmodifiableList(children);
     }
 
 }

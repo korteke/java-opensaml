@@ -45,11 +45,8 @@ public class RuleTypeUnmarshaller extends AbstractXMLObjectUnmarshaller {
         RuleType ruleType = (RuleType) xmlObject;
       
         if(attribute.getLocalName().equals(RuleType.EFFECT_ATTRIB_NAME)){
-            if(attribute.getValue().equals(EffectType.Deny.toString())){
-                ruleType.setEffect(EffectType.Deny);
-            }else{
-                ruleType.setEffect(EffectType.Permit);
-            }            
+            ruleType.setEffect(EffectType.valueOf(
+                    DatatypeHelper.safeTrimOrNullString(attribute.getValue())));                       
         } else if(attribute.getLocalName().equals(RuleType.RULE_ID_ATTRIB_NAME)){
             ruleType.setRuleId(DatatypeHelper.safeTrimOrNullString(attribute.getValue()));
         }

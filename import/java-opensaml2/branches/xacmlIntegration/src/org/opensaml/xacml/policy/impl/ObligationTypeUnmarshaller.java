@@ -41,8 +41,6 @@ public class ObligationTypeUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
         if (childObject instanceof AttributeAssignmentType) {
             obligation.getAttributeAssignments().add((AttributeAssignmentType) childObject);
-        } else {
-            super.processChildElement(parentObject, childObject);
         }
     }
 

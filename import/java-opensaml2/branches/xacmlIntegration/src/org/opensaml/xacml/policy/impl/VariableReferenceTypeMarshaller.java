@@ -43,7 +43,6 @@ public class VariableReferenceTypeMarshaller extends AbstractXMLObjectMarshaller
             domElement.setAttribute(VariableReferenceType.VARIABLE_ID_ATTRIB_NAME,
                     variableReferenceType.getVariableId());
         }
-
     }
 
     /** {@inheritDoc} */

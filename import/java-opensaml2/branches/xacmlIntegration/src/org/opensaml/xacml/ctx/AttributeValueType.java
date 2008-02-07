@@ -34,7 +34,6 @@ public interface AttributeValueType extends XACMLObject, ElementExtensibleXMLObj
     /** Default element name XACML20. */
     public static final QName DEFAULT_ELEMENT_NAME = new QName(XACMLConstants.XACML20CTX_NS,
             DEFAULT_ELEMENT_LOCAL_NAME, XACMLConstants.XACMLCONTEXT_PREFIX);
-
     /**
      * Gets the text content of the element.
      * 
@@ -51,4 +50,5 @@ public interface AttributeValueType extends XACMLObject, ElementExtensibleXMLObj
      * @param value text content of the element
      */
     public void setValue(String value);
+    
 }

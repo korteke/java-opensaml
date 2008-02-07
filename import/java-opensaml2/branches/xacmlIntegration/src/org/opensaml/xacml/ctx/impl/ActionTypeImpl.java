@@ -53,7 +53,10 @@ public class ActionTypeImpl extends AbstractValidatingXMLObject implements Actio
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>(attributes);
+        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        
+        children.addAll(attributes);
+        
         return Collections.unmodifiableList(children);
     }
 }

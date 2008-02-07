@@ -47,12 +47,12 @@ public class ObligationTypeMarshaller extends AbstractXMLObjectMarshaller {
         if (!DatatypeHelper.isEmpty(obligation.getObligationId())) {
             domElement.setAttributeNS(null, ObligationType.OBLIGATION_ID_ATTRIB_NAME, obligation.getObligationId());
         }
-        if (!DatatypeHelper.isEmpty(obligation.getFulfillOn().toString())) {
+        if (obligation.getFulfillOn() != null) {
             if (obligation.getFulfillOn().equals(EffectType.Deny)) {
                 domElement.setAttributeNS(null, ObligationType.FULFILL_ON_ATTRIB_NAME, EffectType.Deny.toString());
             } else {
                 domElement.setAttributeNS(null, ObligationType.FULFILL_ON_ATTRIB_NAME, EffectType.Permit.toString());
-            }
+            }                     
         }
     }
 }

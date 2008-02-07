@@ -48,6 +48,7 @@ public class ActionMatchTypeUnmarshaller extends AbstractXMLObjectUnmarshaller {
     protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
             throws UnmarshallingException {
         ActionMatchType matchType = (ActionMatchType) parentXMLObject;
+      
         if (childXMLObject instanceof AttributeValueType) {
             matchType.setAttributeValue((AttributeValueType) childXMLObject);
         } else if (childXMLObject instanceof AttributeDesignatorType) {

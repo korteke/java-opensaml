@@ -44,6 +44,7 @@ public class RuleTypeMarshaller extends AbstractXMLObjectMarshaller {
         if (!DatatypeHelper.isEmpty(ruleType.getRuleId())) {
             domElement.setAttribute(RuleType.RULE_ID_ATTRIB_NAME, ruleType.getRuleId());
         }
+        
         if(!DatatypeHelper.isEmpty(ruleType.getEffect().toString())){
             if(ruleType.getEffect().equals(EffectType.Deny)){
                 domElement.setAttribute(RuleType.EFFECT_ATTRIB_NAME,EffectType.Deny.toString());

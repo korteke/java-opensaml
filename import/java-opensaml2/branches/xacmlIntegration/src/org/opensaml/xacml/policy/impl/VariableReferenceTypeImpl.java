@@ -46,6 +46,7 @@ public class VariableReferenceTypeImpl extends AbstractValidatingXMLObject imple
      */
     protected VariableReferenceTypeImpl(String namespaceURI, String elementLocalName, String namespacePrefix){
         super(namespaceURI,elementLocalName,namespacePrefix);
+        expressions = new XMLObjectChildrenList<ExpressionType>(this);
     }
     
     /** {@inheritDoc} */

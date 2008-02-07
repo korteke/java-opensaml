@@ -19,7 +19,7 @@ limitations under the License.
 package org.opensaml.xacml.ctx.impl;
 
 import org.opensaml.xacml.ctx.AttributeType;
-import org.opensaml.xacml.policy.AttributeValueType;
+import org.opensaml.xacml.ctx.AttributeValueType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.AbstractXMLObjectUnmarshaller;
 import org.opensaml.xml.io.UnmarshallingException;
@@ -48,8 +48,9 @@ public class AttributeTypeUnmarshaller extends AbstractXMLObjectUnmarshaller {
     /** {@inheritDoc} */
     protected void processChildElement(XMLObject parentObject, XMLObject childObject) throws UnmarshallingException {
         AttributeType attribute = (AttributeType) parentObject;
+     
         if (childObject instanceof AttributeValueType) {
-            attribute.getAttributeValues().add(childObject);
+            attribute.getAttributeValues().add((AttributeValueType)childObject);
         }
     }
 
