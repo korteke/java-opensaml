@@ -34,6 +34,9 @@ public class AttributeValueTypeImpl extends AbstractValidatingXMLObject implemen
 
     /** Data type. */
     private String dataType;
+    
+    /** Text content of value element. */
+    private String textContent;
 
     /** "any" elements. */
     private IndexedXMLObjectChildrenList<XMLObject> unknownElements;
@@ -68,7 +71,7 @@ public class AttributeValueTypeImpl extends AbstractValidatingXMLObject implemen
     public List<XMLObject> getOrderedChildren() {
         ArrayList<XMLObject> children = new ArrayList<XMLObject>();
 
-        if (!unknownElements.isEmpty()) {
+        if (textContent == null) {
             children.addAll(unknownElements);
         }
 
@@ -90,4 +93,13 @@ public class AttributeValueTypeImpl extends AbstractValidatingXMLObject implemen
         return (List<XMLObject>) unknownElements.subList(typeOrName);
     }
 
+    /** {@inheritDoc} */
+    public String getValue() {
+        return textContent;
+    }
+
+    /** {@inheritDoc} */
+    public void setValue(String value) {
+        textContent = prepareForAssignment(textContent, value);
+    }
 }

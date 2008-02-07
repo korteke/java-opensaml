@@ -56,4 +56,21 @@ public interface AttributeValueType extends ExpressionType, AttributeExtensibleX
      * @param type data type of the designated attribute
      */
     public void setDataType(String type);
+    
+    /**
+     * Gets the text content of the element.
+     * 
+     * @return text content of the element
+     */
+    public String getValue();
+
+    /**
+     * Sets the text content of the element.
+     * 
+     * <strong>NOTE</strong> because the library does not support mixed content setting textual content will prohibit
+     * element content.
+     * 
+     * @param value text content of the element
+     */
+    public void setValue(String value);
 }

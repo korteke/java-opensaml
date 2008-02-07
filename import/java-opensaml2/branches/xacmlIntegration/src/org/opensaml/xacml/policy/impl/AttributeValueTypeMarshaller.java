@@ -39,15 +39,16 @@ public class AttributeValueTypeMarshaller extends AbstractXMLObjectMarshaller {
         super(XACMLConstants.XACML20_NS, AttributeValueType.DEFAULT_ELEMENT_LOCAL_NAME);
     }
 
-    /** Constructor. 
+    /**
+     * Constructor.
      * 
      * @param namespace Target namespace for the type to marshall
      * @param localName Of the element to marshall
      */
-    public AttributeValueTypeMarshaller(String namespace,String localName ) {
-        super(namespace,localName);
+    public AttributeValueTypeMarshaller(String namespace, String localName) {
+        super(namespace, localName);
     }
-    
+
     /** {@inheritDoc} */
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         AttributeValueType attributeValue = (AttributeValueType) xmlObject;
@@ -66,6 +67,10 @@ public class AttributeValueTypeMarshaller extends AbstractXMLObjectMarshaller {
 
     /** {@inheritDoc} */
     protected void marshallElementContent(XMLObject xmlObject, Element domElement) throws MarshallingException {
-    }
+        AttributeValueType attributeValue = (AttributeValueType) xmlObject;
 
+        if (attributeValue.getValue() != null) {
+            XMLHelper.appendTextContent(domElement, attributeValue.getValue());
+        }
+    }
 }

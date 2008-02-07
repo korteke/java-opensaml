@@ -34,10 +34,10 @@ public class AttributeValueTypeUnmarshaller extends AbstractXMLObjectUnmarshalle
     public AttributeValueTypeUnmarshaller() {
         super(XACMLConstants.XACML20_NS, AttributeValueType.DEFAULT_ELEMENT_LOCAL_NAME);
     }
-    
+
     /** Constructor. */
-    public AttributeValueTypeUnmarshaller(String namespace,String localName ) {
-        super(namespace,localName);
+    public AttributeValueTypeUnmarshaller(String namespace, String localName) {
+        super(namespace, localName);
     }
 
     /** {@inheritDoc} */
@@ -60,6 +60,7 @@ public class AttributeValueTypeUnmarshaller extends AbstractXMLObjectUnmarshalle
 
     /** {@inheritDoc} */
     protected void processElementContent(XMLObject xmlObject, String elementContent) {
-
+        AttributeValueType attributeValue = (AttributeValueType) xmlObject;
+        attributeValue.setValue(elementContent);
     }
 }
