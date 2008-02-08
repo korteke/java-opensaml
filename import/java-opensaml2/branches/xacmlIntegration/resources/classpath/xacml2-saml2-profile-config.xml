@@ -6,8 +6,15 @@
  xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
  xmlns="http://www.opensaml.org/xmltooling-config">
 
-       <ObjectProviders>
-	<!-- ReferencedPoliciesType -->
+	<ObjectProviders>
+		<!-- ReferencedPoliciesType -->
+        <ObjectProvider qualifiedName="xacml-saml:ReferencedPolicies">
+            <BuilderClass className="org.opensaml.xacml.profile.saml.impl.ReferencedPoliciesTypeImplBuilder" />
+            <MarshallingClass className="org.opensaml.xacml.profile.saml.impl.ReferencedPoliciesTypeMarshaller" />
+            <UnmarshallingClass className="org.opensaml.xacml.profile.saml.impl.ReferencedPoliciesTypeUnmarshaller" />
+        </ObjectProvider>
+        
+        <!-- ReferencedPoliciesType -->
         <ObjectProvider qualifiedName="xacml-saml:ReferencedPoliciesType">
             <BuilderClass className="org.opensaml.xacml.profile.saml.impl.ReferencedPoliciesTypeImplBuilder" />
             <MarshallingClass className="org.opensaml.xacml.profile.saml.impl.ReferencedPoliciesTypeMarshaller" />
@@ -16,7 +23,7 @@
 	
          
        <!-- XACMLAuthzDecisionStatement -->
-        <ObjectProvider qualifiedName="xacml-saml:XACMLAuthzDecisionStatementType">
+        <ObjectProvider qualifiedName="xacml-saml:XACMLAuthzDecisionStatement">
             <BuilderClass className="org.opensaml.xacml.profile.saml.impl.XACMLAuthzDecisionStatementTypeImplBuilder" />
             <MarshallingClass className="org.opensaml.xacml.profile.saml.impl.XACMLAuthzDecisionStatementTypeMarshaller" />
             <UnmarshallingClass className="org.opensaml.xacml.profile.saml.impl.XACMLAuthzDecisionStatementTypeUnmarshaller" />
@@ -29,7 +36,7 @@
         </ObjectProvider>
         
         <!-- XACMLPolicyStatement -->
-        <ObjectProvider qualifiedName="xacml-saml:XACMLPolicyStatementType">
+        <ObjectProvider qualifiedName="xacml-saml:XACMLPolicyStatement">
             <BuilderClass className="org.opensaml.xacml.profile.saml.impl.XACMLPolicyStatementTypeImplBuilder" />
             <MarshallingClass className="org.opensaml.xacml.profile.saml.impl.XACMLPolicyStatementTypeMarshaller" />
             <UnmarshallingClass className="org.opensaml.xacml.profile.saml.impl.XACMLPolicyStatementTypeUnmarshaller" />
@@ -42,7 +49,7 @@
         </ObjectProvider>
            
        <!-- XACMLAuthzDecisionQuery provider -->
-        <ObjectProvider qualifiedName="xacml-samlp:XACMLAuthzDecisionQueryType">
+        <ObjectProvider qualifiedName="xacml-samlp:XACMLAuthzDecisionQuery">
             <BuilderClass className="org.opensaml.xacml.profile.saml.impl.XACMLAuthzDecisionQueryTypeImplBuilder" />
             <MarshallingClass className="org.opensaml.xacml.profile.saml.impl.XACMLAuthzDecisionQueryTypeMarshaller" />
             <UnmarshallingClass className="org.opensaml.xacml.profile.saml.impl.XACMLAuthzDecisionQueryTypeUnmarshaller" />
@@ -55,7 +62,7 @@
         </ObjectProvider>
         
         <!-- XACMLPolicyQuery provider -->
-        <ObjectProvider qualifiedName="xacml-samlp:XACMLPolicyQueryType">
+        <ObjectProvider qualifiedName="xacml-samlp:XACMLPolicyQuery">
             <BuilderClass className="org.opensaml.xacml.profile.saml.impl.XACMLPolicyQueryTypeImplBuilder" />
             <MarshallingClass className="org.opensaml.xacml.profile.saml.impl.XACMLPolicyQueryTypeMarshaller" />
             <UnmarshallingClass className="org.opensaml.xacml.profile.saml.impl.XACMLPolicyQueryTypeUnmarshaller" />
@@ -67,5 +74,5 @@
             <UnmarshallingClass className="org.opensaml.xacml.profile.saml.impl.XACMLPolicyQueryTypeUnmarshaller" />
         </ObjectProvider>
         
-    </ObjectProviders>    
+    </ObjectProviders> 
  </XMLTooling>
