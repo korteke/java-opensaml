@@ -93,6 +93,10 @@ public abstract class AbstractValidatingXMLObject extends AbstractXMLObject impl
      */
     protected void validateChildren(XMLObject xmlObject) throws ValidationException {
         for (XMLObject childObject : xmlObject.getOrderedChildren()) {
+            if(childObject == null){
+                continue;
+            }
+            
             if (childObject instanceof ValidatingXMLObject) {
                 ((ValidatingXMLObject) childObject).validate(false);
             } else {

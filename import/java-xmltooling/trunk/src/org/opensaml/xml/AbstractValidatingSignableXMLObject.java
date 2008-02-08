@@ -27,6 +27,8 @@ import org.opensaml.xml.validation.Validator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.sun.tools.javac.tree.Tree.If;
+
 /**
  * Extension of {@link org.opensaml.xml.signature.AbstractSignableXMLObject} that implements
  * {@link org.opensaml.xml.validation.ValidatingXMLObject}.
@@ -97,6 +99,10 @@ public abstract class AbstractValidatingSignableXMLObject extends AbstractSignab
      */
     protected void validateChildren(XMLObject xmlObject) throws ValidationException {
         for (XMLObject childObject : xmlObject.getOrderedChildren()) {
+            if(childObject == null){
+                continue;
+            }
+            
             if (childObject instanceof ValidatingXMLObject) {
                 ((ValidatingXMLObject) childObject).validate(false);
             } else {
