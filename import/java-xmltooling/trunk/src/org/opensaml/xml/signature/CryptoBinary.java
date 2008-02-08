@@ -16,6 +16,8 @@
 
 package org.opensaml.xml.signature;
 
+import java.math.BigInteger;
+
 import javax.xml.namespace.QName;
 
 import org.opensaml.xml.schema.XSBase64Binary;
@@ -26,10 +28,25 @@ import org.opensaml.xml.util.XMLConstants;
  */
 public interface CryptoBinary extends XSBase64Binary {
     
-    /** Local name of the XSI type */
-    public final static String TYPE_LOCAL_NAME = "CryptoBinary"; 
+    /** Local name of the XSI type. */
+    public static final String TYPE_LOCAL_NAME = "CryptoBinary"; 
         
-    /** QName of the XSI type */
-    public final static QName TYPE_NAME = new QName(XMLConstants.XMLSIG_NS, TYPE_LOCAL_NAME, XMLConstants.XMLSIG_PREFIX);
-
+    /** QName of the XSI type. */
+    public static final QName TYPE_NAME = 
+        new QName(XMLConstants.XMLSIG_NS, TYPE_LOCAL_NAME, XMLConstants.XMLSIG_PREFIX);
+    
+    /**
+     * Convenience method to get the value of the element as a BigInteger type.
+     * 
+     * @return the BigInteger representation of the element's content
+     */
+    public BigInteger getValueBigInt(); 
+    
+    /**
+     * Convenience method to set the value of the element as a BigInteger type.
+     * 
+     * @param bigInt the new BigInteger representation of the element's content
+     */
+    public void setValueBigInt(BigInteger bigInt); 
+    
 }

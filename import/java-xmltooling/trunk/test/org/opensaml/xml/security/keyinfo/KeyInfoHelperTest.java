@@ -240,8 +240,8 @@ public class KeyInfoHelperTest extends XMLObjectBaseTestCase {
         xmlRSAKeyValue1 = (RSAKeyValue) buildXMLObject(RSAKeyValue.DEFAULT_ELEMENT_NAME);
         Modulus modulus = (Modulus) buildXMLObject(Modulus.DEFAULT_ELEMENT_NAME);
         Exponent exponent = (Exponent) buildXMLObject(Exponent.DEFAULT_ELEMENT_NAME);
-        modulus.setValue(Base64.encodeBytes(javaRSAPubKey1.getModulus().toByteArray()));
-        exponent.setValue(Base64.encodeBytes(javaRSAPubKey1.getPublicExponent().toByteArray()));
+        modulus.setValueBigInt(javaRSAPubKey1.getModulus());
+        exponent.setValueBigInt(javaRSAPubKey1.getPublicExponent());
         xmlRSAKeyValue1.setModulus(modulus);
         xmlRSAKeyValue1.setExponent(exponent);
         
@@ -250,10 +250,10 @@ public class KeyInfoHelperTest extends XMLObjectBaseTestCase {
         Q q = (Q) buildXMLObject(Q.DEFAULT_ELEMENT_NAME);
         G g = (G) buildXMLObject(G.DEFAULT_ELEMENT_NAME);
         Y y1 = (Y) buildXMLObject(Y.DEFAULT_ELEMENT_NAME);
-        p.setValue(Base64.encodeBytes(javaDSAPubKey1.getParams().getP().toByteArray()));
-        q.setValue(Base64.encodeBytes(javaDSAPubKey1.getParams().getQ().toByteArray()));
-        g.setValue(Base64.encodeBytes(javaDSAPubKey1.getParams().getG().toByteArray()));
-        y1.setValue(Base64.encodeBytes(javaDSAPubKey1.getY().toByteArray()));
+        p.setValueBigInt(javaDSAPubKey1.getParams().getP());
+        q.setValueBigInt(javaDSAPubKey1.getParams().getQ());
+        g.setValueBigInt(javaDSAPubKey1.getParams().getG());
+        y1.setValueBigInt(javaDSAPubKey1.getY());
         xmlDSAKeyValue1.setP(p);
         xmlDSAKeyValue1.setQ(q);
         xmlDSAKeyValue1.setG(g);
@@ -261,7 +261,7 @@ public class KeyInfoHelperTest extends XMLObjectBaseTestCase {
         
         xmlDSAKeyValue1NoParams = (DSAKeyValue) buildXMLObject(DSAKeyValue.DEFAULT_ELEMENT_NAME);
         Y y2 = (Y) buildXMLObject(Y.DEFAULT_ELEMENT_NAME);
-        y2.setValue(Base64.encodeBytes(javaDSAPubKey1.getY().toByteArray()));
+        y2.setValueBigInt(javaDSAPubKey1.getY());
         xmlDSAKeyValue1NoParams.setY(y2);
         javaDSAParams1 = javaDSAPubKey1.getParams();
     }
@@ -426,13 +426,13 @@ public class KeyInfoHelperTest extends XMLObjectBaseTestCase {
         DSAKeyValue dsaKeyValue = KeyInfoHelper.buildDSAKeyValue(javaDSAPubKey1);
         assertNotNull("Generated DSAKeyValue was null");
         assertEquals("Generated DSAKeyValue Y component was not the expected value",
-                javaDSAPubKey1.getY(), SecurityTestHelper.getBigInt(dsaKeyValue.getY().getValue()));
+                javaDSAPubKey1.getY(), dsaKeyValue.getY().getValueBigInt());
         assertEquals("Generated DSAKeyValue P component was not the expected value",
-                javaDSAPubKey1.getParams().getP(), SecurityTestHelper.getBigInt(dsaKeyValue.getP().getValue()));
+                javaDSAPubKey1.getParams().getP(), dsaKeyValue.getP().getValueBigInt());
         assertEquals("Generated DSAKeyValue Q component was not the expected value",
-                javaDSAPubKey1.getParams().getQ(), SecurityTestHelper.getBigInt(dsaKeyValue.getQ().getValue()));
+                javaDSAPubKey1.getParams().getQ(), dsaKeyValue.getQ().getValueBigInt());
         assertEquals("Generated DSAKeyValue G component was not the expected value",
-                javaDSAPubKey1.getParams().getG(), SecurityTestHelper.getBigInt(dsaKeyValue.getG().getValue()));
+                javaDSAPubKey1.getParams().getG(), dsaKeyValue.getG().getValueBigInt());
     }
     
     /** Test conversion of RSA public keys from Java security native type to XML. */
@@ -440,9 +440,9 @@ public class KeyInfoHelperTest extends XMLObjectBaseTestCase {
         RSAKeyValue rsaKeyValue = KeyInfoHelper.buildRSAKeyValue(javaRSAPubKey1);
         assertNotNull("Generated RSAKeyValue was null");
         assertEquals("Generated RSAKeyValue modulus component was not the expected value",
-                javaRSAPubKey1.getModulus(), SecurityTestHelper.getBigInt(rsaKeyValue.getModulus().getValue()));
+                javaRSAPubKey1.getModulus(), rsaKeyValue.getModulus().getValueBigInt());
         assertEquals("Generated RSAKeyValue exponent component was not the expected value",
-                javaRSAPubKey1.getPublicExponent(), SecurityTestHelper.getBigInt(rsaKeyValue.getExponent().getValue()));
+                javaRSAPubKey1.getPublicExponent(), rsaKeyValue.getExponent().getValueBigInt());
     }
     
     /** Tests extracting a DSA public key from a KeyValue. */

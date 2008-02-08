@@ -467,10 +467,10 @@ public class KeyInfoHelper {
             .getBuilder(Exponent.DEFAULT_ELEMENT_NAME)
             .buildObject(Exponent.DEFAULT_ELEMENT_NAME);
         
-        modulus.setValue(Base64.encodeBytes(rsaPubKey.getModulus().toByteArray()));
+        modulus.setValueBigInt(rsaPubKey.getModulus());
         rsaKeyValue.setModulus(modulus);
         
-        exponent.setValue(Base64.encodeBytes(rsaPubKey.getPublicExponent().toByteArray()));
+        exponent.setValueBigInt(rsaPubKey.getPublicExponent());
         rsaKeyValue.setExponent(exponent);
         
         return rsaKeyValue;
@@ -492,16 +492,16 @@ public class KeyInfoHelper {
         P p = (P) builderFactory.getBuilder(P.DEFAULT_ELEMENT_NAME).buildObject(P.DEFAULT_ELEMENT_NAME);
         Q q = (Q) builderFactory.getBuilder(Q.DEFAULT_ELEMENT_NAME).buildObject(Q.DEFAULT_ELEMENT_NAME);
         
-        y.setValue(Base64.encodeBytes(dsaPubKey.getY().toByteArray()));
+        y.setValueBigInt(dsaPubKey.getY());
         dsaKeyValue.setY(y);
         
-        g.setValue(Base64.encodeBytes(dsaPubKey.getParams().getG().toByteArray()));
+        g.setValueBigInt(dsaPubKey.getParams().getG());
         dsaKeyValue.setG(g);
         
-        p.setValue(Base64.encodeBytes(dsaPubKey.getParams().getP().toByteArray()));
+        p.setValueBigInt(dsaPubKey.getParams().getP());
         dsaKeyValue.setP(p);
         
-        q.setValue(Base64.encodeBytes(dsaPubKey.getParams().getQ().toByteArray()));
+        q.setValueBigInt(dsaPubKey.getParams().getQ());
         dsaKeyValue.setQ(q);
         
         return dsaKeyValue;
@@ -568,14 +568,9 @@ public class KeyInfoHelper {
             throw new KeyException("DSAKeyValue element did not contain at least one of DSA parameters P, Q or G");
         }
         
-        String encodedG = keyDescriptor.getG().getValue();
-        BigInteger gComponent = new BigInteger(Base64.decode(encodedG));
-
-        String encodedP = keyDescriptor.getP().getValue();
-        BigInteger pComponent = new BigInteger(Base64.decode(encodedP));
-
-        String encodedQ = keyDescriptor.getQ().getValue();
-        BigInteger qComponent = new BigInteger(Base64.decode(encodedQ));
+        BigInteger gComponent = keyDescriptor.getG().getValueBigInt();
+        BigInteger pComponent = keyDescriptor.getP().getValueBigInt();
+        BigInteger qComponent = keyDescriptor.getQ().getValueBigInt();
 
         DSAParams  dsaParams = new DSAParameterSpec(pComponent, qComponent, gComponent);
         return getDSAKey(keyDescriptor, dsaParams);
@@ -594,8 +589,7 @@ public class KeyInfoHelper {
      *             contain valid information
      */
     public static PublicKey getDSAKey(DSAKeyValue keyDescriptor, DSAParams dsaParams) throws KeyException {
-        String encodedY = keyDescriptor.getY().getValue();
-        BigInteger yComponent = new BigInteger(Base64.decode(encodedY));
+        BigInteger yComponent = keyDescriptor.getY().getValueBigInt();
 
         DSAPublicKeySpec keySpec = 
             new DSAPublicKeySpec(yComponent, dsaParams.getP(), dsaParams.getQ(), dsaParams.getG());
@@ -631,14 +625,33 @@ public class KeyInfoHelper {
      *             contain valid information
      */
     public static PublicKey getRSAKey(RSAKeyValue keyDescriptor) throws KeyException {
-        String encodedModulus = keyDescriptor.getModulus().getValue();
-        BigInteger modulus = new BigInteger(Base64.decode(encodedModulus));
-
-        String encodedExponent = keyDescriptor.getExponent().getValue();
-        BigInteger exponent = new BigInteger(Base64.decode(encodedExponent));
+        BigInteger modulus = keyDescriptor.getModulus().getValueBigInt();
+        BigInteger exponent = keyDescriptor.getExponent().getValueBigInt();
 
         RSAPublicKeySpec keySpec = new RSAPublicKeySpec(modulus, exponent);
         return buildKey(keySpec, "RSA");
+    }
+    
+    /**
+     * Decode a base64-encoded ds:CryptoBinary value to a native Java BigInteger type.
+     *
+     * @param base64Value base64-encoded CryptoBinary value
+     * @return the decoded BigInteger
+     */
+    public static final BigInteger decodeBigIntegerFromCryptoBinary(String base64Value) {
+       return new BigInteger(1, Base64.decode(base64Value));
+    }
+    
+    /**
+     * Encode a native Java BigInteger type to a base64-encoded ds:CryptoBinary value.
+     *
+     * @param bigInt the BigInteger value
+     * @return the encoded CryptoBinary value
+     */
+    public static final String encodeCryptoBinaryFromBigInteger(BigInteger bigInt) {
+        // This code is really complicated, for now just use the Apache xmlsec lib code directly.
+        byte[] bigIntBytes = org.apache.xml.security.utils.Base64.encode(bigInt, bigInt.bitLength());
+        return Base64.encodeBytes(bigIntBytes);
     }
 
     /**

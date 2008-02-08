@@ -170,16 +170,6 @@ public class SecurityTestHelper {
     }
     
     /**
-     * Build a Java BigInteger from the base64 encoded string.
-     * 
-     * @param base64Value a base64 encoded large integer
-     * @return a BigInteger instance
-     */
-    public static BigInteger getBigInt(String base64Value) {
-        return new BigInteger(Base64.decode(base64Value));  
-    }
-    
-    /**
      * Generates a public key from the given key spec.
      * 
      * @param keySpec {@link KeySpec} specification for the key

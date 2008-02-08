@@ -16,16 +16,23 @@
 
 package org.opensaml.xml.signature.impl;
 
+import java.math.BigInteger;
+
 import org.opensaml.xml.schema.impl.XSBase64BinaryImpl;
+import org.opensaml.xml.security.keyinfo.KeyInfoHelper;
 import org.opensaml.xml.signature.CryptoBinary;
+import org.opensaml.xml.util.DatatypeHelper;
 
 /**
- * Concrete implementation of {@link org.opensaml.xml.signature.CryptoBinary}
+ * Concrete implementation of {@link org.opensaml.xml.signature.CryptoBinary}.
  */
 public class CryptoBinaryImpl extends XSBase64BinaryImpl implements CryptoBinary {
+    
+    /** The cached BigInteger representation of the element's base64-encoded value. */
+    private BigInteger bigIntValue;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param namespaceURI
      * @param elementLocalName
@@ -33,6 +40,35 @@ public class CryptoBinaryImpl extends XSBase64BinaryImpl implements CryptoBinary
      */
     protected CryptoBinaryImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
+    }
+
+    /** {@inheritDoc} */
+    public BigInteger getValueBigInt() {
+        if (bigIntValue == null && !DatatypeHelper.isEmpty(getValue())) {
+            bigIntValue = KeyInfoHelper.decodeBigIntegerFromCryptoBinary(getValue());
+        }
+        return bigIntValue;
+    }
+
+    /** {@inheritDoc} */
+    public void setValueBigInt(BigInteger bigInt) {
+        if (bigInt == null) {
+            setValue(null);
+        } else {
+            setValue(KeyInfoHelper.encodeCryptoBinaryFromBigInteger(bigInt));
+        }
+        bigIntValue = bigInt;
+    }
+    
+    /** {@inheritDoc} */
+    public void setValue(String newValue) {
+        if (bigIntValue != null 
+                && (!DatatypeHelper.safeEquals(getValue(), newValue) || newValue == null)) {
+            // Just clear the cached value, my not be needed in big int form again,
+            // let it be lazily recreated if necessary
+            bigIntValue = null;
+        }
+        super.setValue(newValue);
     }
 
 }
