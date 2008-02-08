@@ -1,4 +1,4 @@
-OpenWS-J version 1.0 - Release Candidate 1
+OpenWS-J version 1.0 - Release Candidate 2
 =============================================
 
 The OpenWS library provides a growing set of tools to work with web services at 
