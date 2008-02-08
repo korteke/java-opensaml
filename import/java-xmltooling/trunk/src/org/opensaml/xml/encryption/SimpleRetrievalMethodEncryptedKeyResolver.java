@@ -27,7 +27,8 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Implementation of {@link EncryptedKeyResolver} which finds {@link EncryptedKey} elements by dereferencing
- * {@link RetrievalMethod} children of the {@link KeyInfo} of the {@link EncryptedData} context.
+ * {@link RetrievalMethod} children of the {@link org.opensaml.xml.signature.KeyInfo} of the {@link EncryptedData}
+ * context.
  * 
  * The RetrievalMethod must have a <code>Type</code> attribute with the value of
  * {@link EncryptionConstants#TYPE_ENCRYPTED_KEY}. The <code>URI</code> attribute value must be a same-document

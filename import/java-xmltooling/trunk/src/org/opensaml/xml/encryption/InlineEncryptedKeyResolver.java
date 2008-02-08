@@ -21,7 +21,7 @@ import java.util.List;
 
 /**
  * Implementation of {@link EncryptedKeyResolver} which finds {@link EncryptedKey} elements
- * within the {@link KeyInfo} of the {@link EncryptedData} context.
+ * within the {@link org.opensaml.xml.signature.KeyInfo} of the {@link EncryptedData} context.
  */
 public class InlineEncryptedKeyResolver extends AbstractEncryptedKeyResolver {
 
