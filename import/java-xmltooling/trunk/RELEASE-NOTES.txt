@@ -1,4 +1,4 @@
-XMLTooling-J version 1.0 - Release Candidate 1
+XMLTooling-J version 1.0 - Release Candidate 2
 ==============================================
 
 XMLTooling-J is a low-level library that may be used to construct libraries 
