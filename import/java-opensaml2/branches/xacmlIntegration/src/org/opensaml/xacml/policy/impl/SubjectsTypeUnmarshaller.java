@@ -17,7 +17,6 @@
 
 package org.opensaml.xacml.policy.impl;
 
-import org.opensaml.xacml.XACMLConstants;
 import org.opensaml.xacml.policy.SubjectType;
 import org.opensaml.xacml.policy.SubjectsType;
 import org.opensaml.xml.XMLObject;
@@ -33,7 +32,7 @@ public class SubjectsTypeUnmarshaller extends AbstractXMLObjectUnmarshaller {
 
     /** Constructor. */
     public SubjectsTypeUnmarshaller() {
-        super(XACMLConstants.XACML20_NS,SubjectsType.DEFAULT_ELEMENT_LOCAL_NAME);
+        super();
     }
     
     

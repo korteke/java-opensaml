@@ -17,7 +17,6 @@
 
 package org.opensaml.xacml.policy.impl;
 
-import org.opensaml.xacml.XACMLConstants;
 import org.opensaml.xacml.policy.SubjectsType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.AbstractXMLObjectMarshaller;
@@ -31,7 +30,7 @@ public class SubjectsTypeMarshaller extends AbstractXMLObjectMarshaller {
 
     /** Constructor. */
     public SubjectsTypeMarshaller() {
-        super(XACMLConstants.XACML20_NS, SubjectsType.DEFAULT_ELEMENT_LOCAL_NAME);
+        super();
     }
     
     /** {@inheritDoc} */

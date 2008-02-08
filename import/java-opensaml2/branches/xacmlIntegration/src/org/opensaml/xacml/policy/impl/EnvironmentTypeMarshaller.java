@@ -17,7 +17,6 @@
 
 package org.opensaml.xacml.policy.impl;
 
-import org.opensaml.xacml.XACMLConstants;
 import org.opensaml.xacml.policy.EnvironmentType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.AbstractXMLObjectMarshaller;
@@ -31,7 +30,7 @@ public class EnvironmentTypeMarshaller extends AbstractXMLObjectMarshaller {
 
     /**Constructor.*/
     public EnvironmentTypeMarshaller(){
-        super(XACMLConstants.XACML20_NS,EnvironmentType.DEFAULT_ELEMENT_LOCAL_NAME);
+        super();
     }
     
     /** {@inheritDoc} */

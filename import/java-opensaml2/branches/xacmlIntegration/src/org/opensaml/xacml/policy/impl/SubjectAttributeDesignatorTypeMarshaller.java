@@ -29,7 +29,7 @@ public class SubjectAttributeDesignatorTypeMarshaller extends AttributeDesignato
 
     /** Constructor. */
     public SubjectAttributeDesignatorTypeMarshaller() {
-        
+        super();
     }
     
     /** {@inheritDoc} */

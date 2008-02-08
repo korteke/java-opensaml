@@ -19,7 +19,6 @@ limitations under the License.
 package org.opensaml.xacml.policy.impl;
 
 import org.opensaml.common.impl.AbstractSAMLObjectUnmarshaller;
-import org.opensaml.xacml.XACMLConstants;
 import org.opensaml.xacml.policy.AttributeAssignmentType;
 import org.opensaml.xacml.policy.EffectType;
 import org.opensaml.xacml.policy.ObligationType;
@@ -32,7 +31,7 @@ public class ObligationTypeUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
     /** Constructor. */
     public ObligationTypeUnmarshaller() {
-        super(XACMLConstants.XACML20_NS, ObligationType.DEFAULT_ELEMENT_LOCAL_NAME);
+        super();
     }
 
     /** {@inheritDoc} */

@@ -17,7 +17,6 @@
 
 package org.opensaml.xacml.policy.impl;
 
-import org.opensaml.xacml.XACMLConstants;
 import org.opensaml.xacml.policy.CombinerParameterType;
 import org.opensaml.xacml.policy.CombinerParametersType;
 import org.opensaml.xml.XMLObject;
@@ -32,7 +31,7 @@ public class CombinerParametersTypeUnmarshaller extends AbstractXMLObjectUnmarsh
 
     /** Constructor. */
     public CombinerParametersTypeUnmarshaller() {
-        super(XACMLConstants.XACML20_NS, CombinerParametersType.DEFAULT_ELEMENT_LOCAL_NAME);
+        super();
     }
     
     /**

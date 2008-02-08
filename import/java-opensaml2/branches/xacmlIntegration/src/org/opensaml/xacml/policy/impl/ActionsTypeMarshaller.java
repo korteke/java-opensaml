@@ -16,8 +16,6 @@
 
 package org.opensaml.xacml.policy.impl;
 
-import org.opensaml.xacml.XACMLConstants;
-import org.opensaml.xacml.policy.ActionType;
 import org.opensaml.xacml.policy.ActionsType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.AbstractXMLObjectMarshaller;
@@ -31,7 +29,7 @@ public class ActionsTypeMarshaller extends AbstractXMLObjectMarshaller {
 
     /** Constructor. */
     public ActionsTypeMarshaller() {
-        super(XACMLConstants.XACML20_NS, ActionType.DEFAULT_ELEMENT_LOCAL_NAME);
+        super();
     }
     
     /** {@inheritDoc} */

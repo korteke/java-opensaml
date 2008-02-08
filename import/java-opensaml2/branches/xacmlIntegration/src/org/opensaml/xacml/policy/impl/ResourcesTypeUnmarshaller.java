@@ -17,7 +17,6 @@
 
 package org.opensaml.xacml.policy.impl;
 
-import org.opensaml.xacml.XACMLConstants;
 import org.opensaml.xacml.policy.ResourceType;
 import org.opensaml.xacml.policy.ResourcesType;
 import org.opensaml.xml.XMLObject;
@@ -32,7 +31,7 @@ public class ResourcesTypeUnmarshaller extends AbstractXMLObjectUnmarshaller {
 
     /** Constructor. */
     public ResourcesTypeUnmarshaller() {
-        super(XACMLConstants.XACML20_NS, ResourcesType.DEFAULT_ELEMENT_LOCAL_NAME);
+        super();
     }
     
     /** {@inheritDoc} */

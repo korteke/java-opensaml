@@ -18,7 +18,6 @@ limitations under the License.
 
 package org.opensaml.xacml.policy.impl;
 
-import org.opensaml.xacml.XACMLConstants;
 import org.opensaml.xacml.policy.EffectType;
 import org.opensaml.xacml.policy.ObligationType;
 import org.opensaml.xml.XMLObject;
@@ -32,7 +31,7 @@ public class ObligationTypeMarshaller extends AbstractXMLObjectMarshaller {
 
     /** Constructor. */
     public ObligationTypeMarshaller() {
-        super(XACMLConstants.XACML20_NS, ObligationType.DEFAULT_ELEMENT_LOCAL_NAME);
+        super();
     }
 
     /** {@inheritDoc} */

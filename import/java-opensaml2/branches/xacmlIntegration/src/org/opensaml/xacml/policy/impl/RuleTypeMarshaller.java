@@ -17,7 +17,6 @@
 
 package org.opensaml.xacml.policy.impl;
 
-import org.opensaml.xacml.XACMLConstants;
 import org.opensaml.xacml.policy.EffectType;
 import org.opensaml.xacml.policy.RuleType;
 import org.opensaml.xml.XMLObject;
@@ -34,7 +33,7 @@ public class RuleTypeMarshaller extends AbstractXMLObjectMarshaller {
 
     /** Constructor. */
     public RuleTypeMarshaller() {
-        super(XACMLConstants.XACML20_NS, RuleType.DEFAULT_ELEMENT_LOCAL_NAME);
+        super();
     }
 
     /** {@inheritDoc} */

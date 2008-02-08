@@ -17,7 +17,6 @@
 
 package org.opensaml.xacml.policy.impl;
 
-import org.opensaml.xacml.XACMLConstants;
 import org.opensaml.xacml.policy.CombinerParametersType;
 import org.opensaml.xacml.policy.DefaultsType;
 import org.opensaml.xacml.policy.DescriptionType;
@@ -37,7 +36,7 @@ public class PolicyTypeUnmarshaller extends AbstractXMLObjectUnmarshaller {
 
     /** Constructor. */
     public PolicyTypeUnmarshaller() {
-        super(XACMLConstants.XACML20_NS, PolicyType.DEFAULT_ELEMENT_LOCAL_NAME);
+        super();
     }
 
     /** {@inheritDoc} */
@@ -71,7 +70,7 @@ public class PolicyTypeUnmarshaller extends AbstractXMLObjectUnmarshaller {
         } else if (childXMLObject instanceof VariableDefinitionType) {
             policy.getVariableDefinitions().add((VariableDefinitionType) childXMLObject);
         } else if (childXMLObject instanceof RuleType) {
-            policy.getRules().add((RuleType) childXMLObject);
+            policy.getRules().add((RuleType)childXMLObject);
         } else if (childXMLObject instanceof ObligationsType) {
             policy.setObligations((ObligationsType) childXMLObject);
         }

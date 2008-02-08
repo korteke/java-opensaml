@@ -16,7 +16,6 @@
 
 package org.opensaml.xacml.policy.impl;
 
-import org.opensaml.xacml.XACMLConstants;
 import org.opensaml.xacml.policy.ActionType;
 import org.opensaml.xacml.policy.ActionsType;
 import org.opensaml.xml.XMLObject;
@@ -32,7 +31,7 @@ public class ActionsTypeUnmarshaller extends AbstractXMLObjectUnmarshaller {
 
     /** Constructor. */
     public ActionsTypeUnmarshaller() {
-        super(XACMLConstants.XACML20_NS, ActionsType.DEFAULT_ELEMENT_LOCAL_NAME);
+        super();
     }
 
     

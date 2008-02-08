@@ -17,7 +17,6 @@
 
 package org.opensaml.xacml.policy.impl;
 
-import org.opensaml.xacml.XACMLConstants;
 import org.opensaml.xacml.policy.ExpressionType;
 import org.opensaml.xacml.policy.VariableReferenceType;
 import org.opensaml.xml.XMLObject;
@@ -33,7 +32,7 @@ public class VariableReferenceTypeUnmarshaller extends AbstractXMLObjectUnmarsha
 
     /** Constructor. */
     public VariableReferenceTypeUnmarshaller() {
-        super(XACMLConstants.XACML20_NS,VariableReferenceType.DEFAULT_ELEMENT_LOCAL_NAME);
+        super();
     }
     
     /** {@inheritDoc} */

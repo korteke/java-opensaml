@@ -17,7 +17,6 @@
 
 package org.opensaml.xacml.policy.impl;
 
-import org.opensaml.xacml.XACMLConstants;
 import org.opensaml.xacml.policy.VariableDefinitionType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.AbstractXMLObjectMarshaller;
@@ -32,7 +31,7 @@ public class VariableDefinitionTypeMarshaller extends AbstractXMLObjectMarshalle
 
     /** Constructor. */
     public VariableDefinitionTypeMarshaller() {
-        super(XACMLConstants.XACML20_NS, VariableDefinitionType.DEFAULT_ELEMENT_LOCAL_NAME);
+        super();
     }
     
     /** {@inheritDoc} */

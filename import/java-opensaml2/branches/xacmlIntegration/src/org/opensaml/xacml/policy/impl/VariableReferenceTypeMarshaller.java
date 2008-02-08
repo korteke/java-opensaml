@@ -17,7 +17,6 @@
 
 package org.opensaml.xacml.policy.impl;
 
-import org.opensaml.xacml.XACMLConstants;
 import org.opensaml.xacml.policy.VariableReferenceType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.AbstractXMLObjectMarshaller;
@@ -32,7 +31,7 @@ public class VariableReferenceTypeMarshaller extends AbstractXMLObjectMarshaller
 
     /** Constructor. */
     public VariableReferenceTypeMarshaller() {
-        super(XACMLConstants.XACML20_NS, VariableReferenceType.DEFAULT_ELEMENT_LOCAL_NAME);
+        super();
     }
     
     /** {@inheritDoc} */

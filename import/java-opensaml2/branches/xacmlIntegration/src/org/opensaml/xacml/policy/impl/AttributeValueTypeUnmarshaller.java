@@ -19,7 +19,6 @@ package org.opensaml.xacml.policy.impl;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.xacml.XACMLConstants;
 import org.opensaml.xacml.policy.AttributeValueType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.AbstractXMLObjectUnmarshaller;
@@ -32,12 +31,19 @@ public class AttributeValueTypeUnmarshaller extends AbstractXMLObjectUnmarshalle
 
     /** Constructor. */
     public AttributeValueTypeUnmarshaller() {
-        super(XACMLConstants.XACML20_NS, AttributeValueType.DEFAULT_ELEMENT_LOCAL_NAME);
+        super();
     }
 
-    /** Constructor. */
-    public AttributeValueTypeUnmarshaller(String namespace, String localName) {
-        super(namespace, localName);
+    /**
+     * Constructor.
+     * 
+     * @param targetNamespaceURI the namespace URI of either the schema type QName or element QName of the elements this
+     *            unmarshaller operates on
+     * @param targetLocalName the local name of either the schema type QName or element QName of the elements this
+     *            unmarshaller operates on
+     */
+    public AttributeValueTypeUnmarshaller(String targetNamespaceURI, String targetLocalName) {
+        super(targetNamespaceURI, targetLocalName);
     }
 
     /** {@inheritDoc} */

@@ -18,7 +18,6 @@ limitations under the License.
 
 package org.opensaml.xacml.policy.impl;
 
-import org.opensaml.xacml.XACMLConstants;
 import org.opensaml.xacml.policy.AttributeAssignmentType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.AbstractXMLObjectMarshaller;
@@ -31,7 +30,7 @@ public class AttributeAssignmentTypeMarshaller extends AbstractXMLObjectMarshall
 
     /** Constructor. */
     public AttributeAssignmentTypeMarshaller() {
-        super(XACMLConstants.XACML20_NS,AttributeAssignmentType.DEFAULT_ELEMENT_LOCAL_NAME);
+        super();
     }
 
     /** {@inheritDoc} */

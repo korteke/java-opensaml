@@ -19,7 +19,6 @@ package org.opensaml.xacml.policy.impl;
 
 
 import org.opensaml.common.impl.AbstractSAMLObjectMarshaller;
-import org.opensaml.xacml.XACMLConstants;
 import org.opensaml.xacml.policy.TargetType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
@@ -31,7 +30,7 @@ import org.w3c.dom.Element;
 public class TargetTypeMarshaller extends AbstractSAMLObjectMarshaller {
     /** Constructor. */
     public TargetTypeMarshaller() {
-        super(XACMLConstants.XACML20_NS, TargetType.DEFAULT_ELEMENT_LOCAL_NAME);
+        super();
     }
 
     /** {@inheritDoc} */

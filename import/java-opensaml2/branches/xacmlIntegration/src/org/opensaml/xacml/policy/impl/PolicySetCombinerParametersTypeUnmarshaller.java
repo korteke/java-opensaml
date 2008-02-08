@@ -31,7 +31,7 @@ public class PolicySetCombinerParametersTypeUnmarshaller extends CombinerParamet
      * Constructor.
      */
     public PolicySetCombinerParametersTypeUnmarshaller(){
-        
+        super();
     }
     
     /** {@inheritDoc} */

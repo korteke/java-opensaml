@@ -31,7 +31,7 @@ public class IdReferenceTypeUnmarshaller extends XSStringUnmarshaller {
   
     /** Constructor. */
     public IdReferenceTypeUnmarshaller() {
- 
+        super();
     }
     
     

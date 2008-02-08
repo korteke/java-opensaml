@@ -16,7 +16,6 @@
 
 package org.opensaml.xacml.policy.impl;
 
-import org.opensaml.xacml.XACMLConstants;
 import org.opensaml.xacml.policy.CombinerParametersType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.AbstractXMLObjectMarshaller;
@@ -30,7 +29,7 @@ public class CombinerParametersTypeMarshaller extends AbstractXMLObjectMarshalle
 
     /** Constructor. */
     public CombinerParametersTypeMarshaller() {
-        super(XACMLConstants.XACML20_NS, CombinerParametersType.DEFAULT_ELEMENT_LOCAL_NAME);
+        super();
     }
     
     /**

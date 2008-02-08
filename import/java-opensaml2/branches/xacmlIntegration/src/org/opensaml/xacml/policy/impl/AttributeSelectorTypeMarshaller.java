@@ -17,7 +17,6 @@
 
 package org.opensaml.xacml.policy.impl;
 
-import org.opensaml.xacml.XACMLConstants;
 import org.opensaml.xacml.policy.AttributeDesignatorType;
 import org.opensaml.xacml.policy.AttributeSelectorType;
 import org.opensaml.xml.XMLObject;
@@ -33,7 +32,7 @@ public class AttributeSelectorTypeMarshaller extends AbstractXMLObjectMarshaller
 
     /** Constructor. */
     public AttributeSelectorTypeMarshaller() {
-        super(XACMLConstants.XACML20_NS, AttributeSelectorType.DEFAULT_ELEMENT_LOCAL_NAME);
+        super();
     }
     
     /** {@inheritDoc} */

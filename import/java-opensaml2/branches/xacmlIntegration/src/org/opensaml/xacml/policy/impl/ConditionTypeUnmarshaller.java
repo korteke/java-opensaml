@@ -17,7 +17,6 @@
 
 package org.opensaml.xacml.policy.impl;
 
-import org.opensaml.xacml.XACMLConstants;
 import org.opensaml.xacml.policy.ConditionType;
 import org.opensaml.xacml.policy.ExpressionType;
 import org.opensaml.xml.XMLObject;
@@ -32,7 +31,7 @@ public class ConditionTypeUnmarshaller extends AbstractXMLObjectUnmarshaller {
 
     /** Constructor. */
     public ConditionTypeUnmarshaller() {
-        super(XACMLConstants.XACML20_NS, ConditionType.DEFAULT_ELEMENT_LOCAL_NAME);
+        super();
     }
 
     

@@ -17,7 +17,6 @@
 
 package org.opensaml.xacml.policy.impl;
 
-import org.opensaml.xacml.XACMLConstants;
 import org.opensaml.xacml.policy.AttributeDesignatorType;
 import org.opensaml.xacml.policy.AttributeSelectorType;
 import org.opensaml.xacml.policy.AttributeValueType;
@@ -33,7 +32,7 @@ public class ResourceMatchTypeUnmarshaller extends AbstractXMLObjectUnmarshaller
 
     /** Constructor. */
     public ResourceMatchTypeUnmarshaller() {
-        super(XACMLConstants.XACML20_NS, ResourceMatchType.DEFAULT_ELEMENT_LOCAL_NAME);
+        super();
     }
 
     /** {@inheritDoc} */

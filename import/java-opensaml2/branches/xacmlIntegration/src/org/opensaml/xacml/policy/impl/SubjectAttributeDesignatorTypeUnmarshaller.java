@@ -27,7 +27,7 @@ public class SubjectAttributeDesignatorTypeUnmarshaller extends AttributeValueTy
 
     /** Constructor. */
     public SubjectAttributeDesignatorTypeUnmarshaller() {
-       
+       super();
     }  
     /** {@inheritDoc} */
     protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {

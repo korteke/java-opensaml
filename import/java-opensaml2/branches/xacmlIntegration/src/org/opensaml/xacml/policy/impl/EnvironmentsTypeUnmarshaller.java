@@ -17,7 +17,6 @@
 
 package org.opensaml.xacml.policy.impl;
 
-import org.opensaml.xacml.XACMLConstants;
 import org.opensaml.xacml.policy.EnvironmentType;
 import org.opensaml.xacml.policy.EnvironmentsType;
 import org.opensaml.xml.XMLObject;
@@ -32,7 +31,7 @@ public class EnvironmentsTypeUnmarshaller extends AbstractXMLObjectUnmarshaller 
 
     /** Constructor. */
     public EnvironmentsTypeUnmarshaller() {
-        super(XACMLConstants.XACML20_NS, EnvironmentsType.DEFAULT_ELEMENT_LOCAL_NAME);
+        super();
     }
     
     /** {@inheritDoc} */

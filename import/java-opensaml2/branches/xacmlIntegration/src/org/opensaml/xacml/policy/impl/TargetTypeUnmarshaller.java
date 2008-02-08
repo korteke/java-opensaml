@@ -18,7 +18,6 @@ limitations under the License.
 package org.opensaml.xacml.policy.impl;
 
 
-import org.opensaml.xacml.XACMLConstants;
 import org.opensaml.xacml.policy.ActionsType;
 import org.opensaml.xacml.policy.EnvironmentsType;
 import org.opensaml.xacml.policy.ResourcesType;
@@ -36,7 +35,7 @@ public class TargetTypeUnmarshaller extends AbstractXMLObjectUnmarshaller {
 
     /** Constructor. */
     public TargetTypeUnmarshaller() {
-        super(XACMLConstants.XACML20_NS,TargetType.DEFAULT_ELEMENT_LOCAL_NAME);
+        super();
     }
     
     

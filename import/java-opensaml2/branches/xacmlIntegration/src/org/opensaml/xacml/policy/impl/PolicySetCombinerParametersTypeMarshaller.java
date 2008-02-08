@@ -30,7 +30,7 @@ public class PolicySetCombinerParametersTypeMarshaller extends CombinerParameter
 
     /** Constructor. */
     public PolicySetCombinerParametersTypeMarshaller() {
-       
+        super();
     }
     
     /** {@inheritDoc} */

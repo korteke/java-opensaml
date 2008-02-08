@@ -22,7 +22,6 @@ import java.util.Map.Entry;
 import javax.xml.namespace.QName;
 
 import org.opensaml.Configuration;
-import org.opensaml.xacml.XACMLConstants;
 import org.opensaml.xacml.policy.AttributeValueType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.AbstractXMLObjectMarshaller;
@@ -36,17 +35,19 @@ public class AttributeValueTypeMarshaller extends AbstractXMLObjectMarshaller {
 
     /** Constructor. */
     public AttributeValueTypeMarshaller() {
-        super(XACMLConstants.XACML20_NS, AttributeValueType.DEFAULT_ELEMENT_LOCAL_NAME);
+        super();
     }
 
     /**
      * Constructor.
      * 
-     * @param namespace Target namespace for the type to marshall
-     * @param localName Of the element to marshall
+     * @param targetNamespaceURI the namespace URI of either the schema type QName or element QName of the elements this
+     *            marshaller operates on
+     * @param targetLocalName the local name of either the schema type QName or element QName of the elements this
+     *            marshaller operates on
      */
-    public AttributeValueTypeMarshaller(String namespace, String localName) {
-        super(namespace, localName);
+    public AttributeValueTypeMarshaller(String targetNamespaceURI, String targetLocalName) {
+        super(targetNamespaceURI, targetLocalName);
     }
 
     /** {@inheritDoc} */

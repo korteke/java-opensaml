@@ -18,7 +18,6 @@ limitations under the License.
 
 package org.opensaml.xacml.policy.impl;
 
-import org.opensaml.xacml.XACMLConstants;
 import org.opensaml.xacml.policy.AttributeAssignmentType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
@@ -30,12 +29,12 @@ public class AttributeAssignmentTypeUnmarshaller extends AttributeValueTypeUnmar
 
     /** Constructor. */
     public AttributeAssignmentTypeUnmarshaller() {
-        super(XACMLConstants.XACML20_NS,AttributeAssignmentType.DEFAULT_ELEMENT_LOCAL_NAME);
+        super();
     }
 
     /** {@inheritDoc} */
     protected void processElementContent(XMLObject samlObject, String elementContent) {
-
+        super.processElementContent(samlObject, elementContent);
     }
 
     /** {@inheritDoc} */

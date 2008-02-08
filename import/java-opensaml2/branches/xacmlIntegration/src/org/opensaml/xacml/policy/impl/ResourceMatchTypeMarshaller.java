@@ -17,7 +17,6 @@
 
 package org.opensaml.xacml.policy.impl;
 
-import org.opensaml.xacml.XACMLConstants;
 import org.opensaml.xacml.policy.ResourceMatchType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.AbstractXMLObjectMarshaller;
@@ -30,7 +29,7 @@ public class ResourceMatchTypeMarshaller extends AbstractXMLObjectMarshaller {
 
     /** Constructor. */
     public ResourceMatchTypeMarshaller() {
-        super(XACMLConstants.XACML20_NS, ResourceMatchType.DEFAULT_ELEMENT_LOCAL_NAME);
+        super();
     }
 
     /** {@inheritDoc} */

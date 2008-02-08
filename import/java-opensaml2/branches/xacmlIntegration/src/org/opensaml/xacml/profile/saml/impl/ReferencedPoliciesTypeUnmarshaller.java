@@ -17,11 +17,9 @@
 package org.opensaml.xacml.profile.saml.impl;
 
 import org.opensaml.common.impl.AbstractSAMLObjectUnmarshaller;
-import org.opensaml.xacml.ctx.RequestType;
 import org.opensaml.xacml.policy.PolicySetType;
 import org.opensaml.xacml.policy.PolicyType;
 import org.opensaml.xacml.profile.saml.ReferencedPoliciesType;
-import org.opensaml.xacml.profile.saml.XACMLAuthzDecisionQueryType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
 

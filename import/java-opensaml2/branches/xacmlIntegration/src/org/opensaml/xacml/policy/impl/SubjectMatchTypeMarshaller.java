@@ -17,7 +17,6 @@
 
 package org.opensaml.xacml.policy.impl;
 
-import org.opensaml.xacml.XACMLConstants;
 import org.opensaml.xacml.policy.SubjectMatchType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.AbstractXMLObjectMarshaller;
@@ -30,7 +29,7 @@ public class SubjectMatchTypeMarshaller extends AbstractXMLObjectMarshaller {
 
     /** Constructor. */
     public SubjectMatchTypeMarshaller() {
-        super(XACMLConstants.XACML20_NS, SubjectMatchType.DEFAULT_ELEMENT_LOCAL_NAME);
+        super();
     }
 
     /** {@inheritDoc} */

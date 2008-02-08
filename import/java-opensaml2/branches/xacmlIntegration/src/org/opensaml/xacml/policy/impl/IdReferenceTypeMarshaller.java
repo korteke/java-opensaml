@@ -31,7 +31,7 @@ public class IdReferenceTypeMarshaller extends XSStringMarshaller {
 
     /** Constructor. */
     public IdReferenceTypeMarshaller() {
-       
+       super();
     }
     
     /** {@inheritDoc} */
