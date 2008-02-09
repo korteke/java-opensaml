@@ -389,6 +389,9 @@ public final class SecurityHelper {
      * </ul>
      * </p>
      * 
+     * <p>Existing (non-null) values of these parameters on the specified signature
+     * will <strong>NOT</strong> be overwritten, however.</p>
+     * 
      * <p>
      * All values are determined by the specified {@link SecurityConfiguration}. If a security configuration is not
      * supplied, the global security configuration ({@link Configuration#getGlobalSecurityConfiguration()}) will be
@@ -423,34 +426,39 @@ public final class SecurityHelper {
         }
 
         // The algorithm URI is derived from the credential
-        String signAlgo = secConfig.getSignatureAlgorithmURI(signingCredential);
-        signature.setSignatureAlgorithm(signAlgo);
-
-        // If we're doing HMAC, set the output length, if non-null
+        String signAlgo = signature.getSignatureAlgorithm();
+        if (signAlgo == null) {
+            signAlgo = secConfig.getSignatureAlgorithmURI(signingCredential);
+            signature.setSignatureAlgorithm(signAlgo);
+        }        
+        
+        // If we're doing HMAC, set the output length
         if (SecurityHelper.isHMAC(signAlgo)) {
-            Integer hmacOutputLength = secConfig.getSignatureHMACOutputLength();
-            if (hmacOutputLength != null) {
-                signature.setHMACOutputLength(hmacOutputLength);
-            }
+            if (signature.getHMACOutputLength() == null) {
+                signature.setHMACOutputLength(secConfig.getSignatureHMACOutputLength());
+            }            
         }
-
-        String c14nAlgo = secConfig.getSignatureCanonicalizationAlgorithm();
-        signature.setCanonicalizationAlgorithm(c14nAlgo);
-
-        KeyInfoGenerator kiGenerator = getKeyInfoGenerator(signingCredential, secConfig, keyInfoGenName);
-        if (kiGenerator != null) {
-            try {
-                KeyInfo keyInfo = kiGenerator.generate(signingCredential);
-                signature.setKeyInfo(keyInfo);
-            } catch (SecurityException e) {
-                log.error("Error generating KeyInfo from credential", e);
-                throw e;
+        
+        if (signature.getCanonicalizationAlgorithm() == null) {
+            signature.setCanonicalizationAlgorithm(secConfig.getSignatureCanonicalizationAlgorithm());
+        }        
+        
+        if (signature.getKeyInfo() == null) {
+            KeyInfoGenerator kiGenerator = getKeyInfoGenerator(signingCredential, secConfig, keyInfoGenName);
+            if (kiGenerator != null) {
+                try {
+                    KeyInfo keyInfo = kiGenerator.generate(signingCredential);
+                    signature.setKeyInfo(keyInfo);
+                } catch (SecurityException e) {
+                    log.error("Error generating KeyInfo from credential", e);
+                    throw e;
+                }
+            } else {
+                log.info("No factory for named KeyInfoGenerator {} was found for credential type {}", keyInfoGenName,
+                        signingCredential.getCredentialType().getName());
+                log.info("No KeyInfo will be generated for Signature");
             }
-        } else {
-            log.info("No factory for named KeyInfoGenerator {} was found for credential type {}", keyInfoGenName,
-                    signingCredential.getCredentialType().getName());
-            log.info("No KeyInfo will be generated for Signature");
-        }
+        }        
     }
 
     /**
