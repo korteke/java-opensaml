@@ -31,6 +31,5 @@ public interface FaultCode extends SOAPObject, XSQName {
     public static final String DEFAULT_ELEMENT_LOCAL_NAME = "faultcode";
     
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = 
-        new QName(SOAPConstants.SOAP11_NS, DEFAULT_ELEMENT_LOCAL_NAME, SOAPConstants.SOAP11_PREFIX);
+    public static final QName DEFAULT_ELEMENT_NAME = new QName(DEFAULT_ELEMENT_LOCAL_NAME);
 }
