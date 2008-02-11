@@ -15,24 +15,22 @@
  * limitations under the License.
  */
 
-package org.opensaml.xacml.policy.impl;
+package org.opensaml.xacml.policy;
 
-import org.opensaml.xacml.XACMLObjectBuilder;
-import org.opensaml.xacml.policy.DefaultsType;
-import org.opensaml.xml.AbstractXMLObjectBuilder;
+import javax.xml.namespace.QName;
 
-/** Builder for {@link DefaultsType}. */
-public class DefaultsTypeImplBuilder extends AbstractXMLObjectBuilder<DefaultsType> implements
-        XACMLObjectBuilder<DefaultsType> {
+import org.opensaml.xacml.XACMLConstants;
+import org.opensaml.xacml.XACMLObject;
 
-    /** {@inheritDoc} */
-    public DefaultsType buildObject(String namespaceURI, String localName, String namespacePrefix) {
-        return new DefaultsTypeImpl(namespaceURI, localName, namespacePrefix);
+/** XACML XPathVersion schema. */
+public interface XPathVersion extends XACMLObject {
+    
+   
+    /** Local name of the element. */
+    public static final String ELEMENT_LOCAL_NAME = "XPathVersion";
 
-    }
+    /** QName of the element element. */
+    public static final QName DEFAULTS_ELEMENT_NAME = new QName(XACMLConstants.XACML20_NS,
+           ELEMENT_LOCAL_NAME, XACMLConstants.XACML_PREFIX);
 
-    /** {@inheritDoc} */
-    public DefaultsType buildObject() {
-        return null;
-    }
 }

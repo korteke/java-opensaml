@@ -1,6 +1,7 @@
 /*
  * Copyright 2008 University Corporation for Advanced Internet Development, Inc.
- *
+ * Copyright 2008 Members of the EGEE Collaboration.
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -23,7 +24,7 @@ import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.schema.XSString;
 import org.w3c.dom.Attr;
 
-/** Unmarshaller for {@link DefaultType}. */
+/** Unmarshaller for {@link DefaultsType}. */
 public class DefaultsTypeUnmarshaller extends AbstractXMLObjectUnmarshaller {
 
     /** {@inheritDoc} */

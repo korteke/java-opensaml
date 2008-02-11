@@ -26,7 +26,7 @@ import org.opensaml.xml.util.DatatypeHelper;
 import org.w3c.dom.Attr;
 
 /**
- * Unmarshaller for {@link AttributeAttributeDesignatorType}.
+ * Unmarshaller for {@link AttributeDesignatorType}.
  */
 public class AttributeDesignatorTypeUnmarshaller extends AbstractXMLObjectUnmarshaller {
 
