@@ -483,6 +483,11 @@ public final class XMLHelper {
     public static void appendNamespaceDecleration(Element domElement, String namespaceURI, String prefix) {
         String nsURI = DatatypeHelper.safeTrimOrNullString(namespaceURI);
         String nsPrefix = DatatypeHelper.safeTrimOrNullString(prefix);
+        
+        // This results in xmlns="" being emitted, which seems wrong.
+        if (nsURI == null && nsPrefix == null) {
+            return;
+        }
 
         String attributeName;
         if (nsPrefix == null) {
