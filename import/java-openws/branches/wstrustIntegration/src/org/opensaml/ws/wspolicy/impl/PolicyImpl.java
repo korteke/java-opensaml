@@ -14,8 +14,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.opensaml.ws.wspolicy.impl;
 
+package org.opensaml.ws.wspolicy.impl;
 
 import org.opensaml.ws.wspolicy.Policy;
 import org.opensaml.xml.AbstractExtensibleXMLObject;
@@ -29,18 +29,19 @@ import org.opensaml.xml.AbstractExtensibleXMLObject;
 public class PolicyImpl extends AbstractExtensibleXMLObject implements Policy {
 
     /** the wsu:Id attribute value */
-    private String id_= null;
+    private String id_ = null;
 
     /** the wsp:Name attribute value */
-    private String name_= null;
+    private String name_ = null;
 
     /**
      * Constructor.
-     * <p>
-     * {@inheritDoc}
+     * 
+     * @param namespaceURI The namespace of the element
+     * @param elementLocalName The local name of the element
+     * @param namespacePrefix The namespace prefix of the element
      */
-    protected PolicyImpl(String namespaceURI, String elementLocalName,
-            String namespacePrefix) {
+    protected PolicyImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
@@ -59,7 +60,7 @@ public class PolicyImpl extends AbstractExtensibleXMLObject implements Policy {
      * @see org.opensaml.ws.wssecurity.AttributedId#setId(java.lang.String)
      */
     public void setId(String id) {
-        id_= prepareForAssignment(id_, id);
+        id_ = prepareForAssignment(id_, id);
     }
 
     /*
@@ -77,7 +78,7 @@ public class PolicyImpl extends AbstractExtensibleXMLObject implements Policy {
      * @see org.opensaml.ws.wspolicy.Policy#setName(java.lang.String)
      */
     public void setName(String name) {
-        name_= prepareForAssignment(name_, name);
+        name_ = prepareForAssignment(name_, name);
     }
 
 }

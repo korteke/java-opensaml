@@ -14,8 +14,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.opensaml.ws.wspolicy.impl;
 
+package org.opensaml.ws.wspolicy.impl;
 
 import org.opensaml.ws.wspolicy.PolicyReference;
 import org.opensaml.xml.util.AttributeMap;
@@ -26,30 +26,30 @@ import org.opensaml.xml.util.AttributeMap;
  * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
  * @version $Revision$
  */
-public class PolicyReferenceImpl extends AbstractWSPolicyObject implements
-        PolicyReference {
+public class PolicyReferenceImpl extends AbstractWSPolicyObject implements PolicyReference {
 
     /** URI attribute value */
-    private String uri_= null;
+    private String uri_ = null;
 
     /** Digest attribute value */
-    private String digest_= null;
+    private String digest_ = null;
 
     /** DigestAlgorithm attribute value */
-    private String digestAlgorithm_= null;
+    private String digestAlgorithm_ = null;
 
     /** xs:anyAttribute attributes */
     private AttributeMap anyAttributes_;
 
     /**
      * Constructor.
-     * <p>
-     * {@inheritDoc}
+     * 
+     * @param namespaceURI The namespace of the element
+     * @param elementLocalName The local name of the element
+     * @param namespacePrefix The namespace prefix of the element
      */
-    public PolicyReferenceImpl(String namespaceURI, String elementLocalName,
-            String namespacePrefix) {
+    public PolicyReferenceImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        anyAttributes_= new AttributeMap(this);
+        anyAttributes_ = new AttributeMap(this);
     }
 
     /*
@@ -85,7 +85,7 @@ public class PolicyReferenceImpl extends AbstractWSPolicyObject implements
      * @see org.opensaml.ws.wspolicy.PolicyReference#setDigest(java.lang.String)
      */
     public void setDigest(String digest) {
-        digest_= prepareForAssignment(digest_, digest);
+        digest_ = prepareForAssignment(digest_, digest);
     }
 
     /*
@@ -94,8 +94,7 @@ public class PolicyReferenceImpl extends AbstractWSPolicyObject implements
      * @see org.opensaml.ws.wspolicy.PolicyReference#setDigestAlgorithm(java.lang.String)
      */
     public void setDigestAlgorithm(String digestAlgorithm) {
-        digestAlgorithm_= prepareForAssignment(digestAlgorithm_,
-                                               digestAlgorithm);
+        digestAlgorithm_ = prepareForAssignment(digestAlgorithm_, digestAlgorithm);
     }
 
     /*
@@ -104,7 +103,7 @@ public class PolicyReferenceImpl extends AbstractWSPolicyObject implements
      * @see org.opensaml.ws.wspolicy.PolicyReference#setURI(java.lang.String)
      */
     public void setURI(String uri) {
-        uri_= prepareForAssignment(uri_, uri);
+        uri_ = prepareForAssignment(uri_, uri);
     }
 
     /*

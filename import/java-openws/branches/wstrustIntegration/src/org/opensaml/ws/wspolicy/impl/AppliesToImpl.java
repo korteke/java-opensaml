@@ -14,8 +14,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.opensaml.ws.wspolicy.impl;
 
+package org.opensaml.ws.wspolicy.impl;
 
 import org.opensaml.ws.wspolicy.AppliesTo;
 import org.opensaml.xml.AbstractExtensibleXMLObject;
@@ -26,16 +26,16 @@ import org.opensaml.xml.AbstractExtensibleXMLObject;
  * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
  * @version $Revision$
  */
-public class AppliesToImpl extends AbstractExtensibleXMLObject implements
-        AppliesTo {
+public class AppliesToImpl extends AbstractExtensibleXMLObject implements AppliesTo {
 
     /**
      * Constructor.
-     * <p>
-     * {@inheritDoc}
+     * 
+     * @param namespaceURI The namespace of the element
+     * @param elementLocalName The local name of the element
+     * @param namespacePrefix The namespace prefix of the element
      */
-    protected AppliesToImpl(String namespaceURI, String elementLocalName,
-            String namespacePrefix) {
+    protected AppliesToImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 

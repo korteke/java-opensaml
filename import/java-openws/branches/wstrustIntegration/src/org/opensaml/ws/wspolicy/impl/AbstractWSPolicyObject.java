@@ -14,10 +14,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.opensaml.ws.wspolicy.impl;
 
 import java.util.List;
-
 
 import org.opensaml.ws.wspolicy.WSPolicyObject;
 import org.opensaml.xml.XMLObject;
@@ -29,16 +29,16 @@ import org.opensaml.xml.validation.AbstractValidatingXMLObject;
  * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
  * @version $Revision$
  */
-public abstract class AbstractWSPolicyObject extends
-        AbstractValidatingXMLObject implements WSPolicyObject {
+public abstract class AbstractWSPolicyObject extends AbstractValidatingXMLObject implements WSPolicyObject {
 
     /**
      * Constructor.
-     * <p>
-     * {@inheritDoc}
+     * 
+     * @param namespaceURI The namespace of the element
+     * @param elementLocalName The local name of the element
+     * @param namespacePrefix The namespace prefix of the element
      */
-    public AbstractWSPolicyObject(String namespaceURI, String elementLocalName,
-            String namespacePrefix) {
+    public AbstractWSPolicyObject(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
