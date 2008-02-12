@@ -14,8 +14,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.opensaml.ws.wsaddressing.impl;
 
+package org.opensaml.ws.wsaddressing.impl;
 
 import org.opensaml.ws.wsaddressing.Address;
 import org.opensaml.xml.schema.impl.XSURIImpl;
@@ -34,13 +34,14 @@ public class AddressImpl extends XSURIImpl implements Address {
 
     /**
      * Constructor.
-     * <p>
-     * {@inheritDoc}
+     * 
+     * @param namespaceURI The namespace of the element
+     * @param elementLocalName The local name of the element
+     * @param namespacePrefix The namespace prefix of the element
      */
-    public AddressImpl(String namespaceURI, String elementLocalName,
-            String namespacePrefix) {
+    public AddressImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        anyAttributes_= new AttributeMap(this);
+        anyAttributes_ = new AttributeMap(this);
 
     }
 

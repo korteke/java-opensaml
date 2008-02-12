@@ -14,12 +14,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.opensaml.ws.wsaddressing.impl;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 
 import org.opensaml.ws.wsaddressing.Address;
 import org.opensaml.ws.wsaddressing.EndpointReference;
@@ -34,25 +34,25 @@ import org.opensaml.xml.XMLObject;
  * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
  * @version $Revision$
  */
-public class EndpointReferenceImpl extends AbstractExtensibleXMLObject
-        implements EndpointReference {
+public class EndpointReferenceImpl extends AbstractExtensibleXMLObject implements EndpointReference {
 
     /** {@link Address} child element */
-    private Address address_= null;
+    private Address address_ = null;
 
     /** Optional {@link Metadata} child element */
-    private Metadata metadata_= null;
+    private Metadata metadata_ = null;
 
     /** Optional {@link ReferenceParameters} child element */
-    private ReferenceParameters referenceParameters_= null;
+    private ReferenceParameters referenceParameters_ = null;
 
     /**
      * Constructor.
-     * <p>
-     * {@inheritDoc}
+     * 
+     * @param namespaceURI The namespace of the element
+     * @param elementLocalName The local name of the element
+     * @param namespacePrefix The namespace prefix of the element
      */
-    public EndpointReferenceImpl(String namespaceURI, String elementLocalName,
-            String namespacePrefix) {
+    public EndpointReferenceImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
@@ -71,7 +71,7 @@ public class EndpointReferenceImpl extends AbstractExtensibleXMLObject
      * @see org.opensaml.ws.wsaddressing.EndpointReference#setAddress(org.opensaml.ws.wsaddressing.Address)
      */
     public void setAddress(Address address) {
-        address_= prepareForAssignment(address_, address);
+        address_ = prepareForAssignment(address_, address);
     }
 
     /*
@@ -80,7 +80,7 @@ public class EndpointReferenceImpl extends AbstractExtensibleXMLObject
      * @see org.opensaml.xml.XMLObject#getOrderedChildren()
      */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children= new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
         if (address_ != null) {
             children.add(address_);
         }
@@ -114,7 +114,7 @@ public class EndpointReferenceImpl extends AbstractExtensibleXMLObject
      * @see org.opensaml.ws.wsaddressing.EndpointReference#setMetadata(org.opensaml.ws.wsaddressing.Metadata)
      */
     public void setMetadata(Metadata metadata) {
-        metadata_= prepareForAssignment(metadata_, metadata);
+        metadata_ = prepareForAssignment(metadata_, metadata);
     }
 
     /*
@@ -132,8 +132,7 @@ public class EndpointReferenceImpl extends AbstractExtensibleXMLObject
      * @see org.opensaml.ws.wsaddressing.EndpointReference#setReferenceParameters(org.opensaml.ws.wsaddressing.ReferenceParameters)
      */
     public void setReferenceParameters(ReferenceParameters referenceParameters) {
-        referenceParameters_= prepareForAssignment(referenceParameters_,
-                                                   referenceParameters);
+        referenceParameters_ = prepareForAssignment(referenceParameters_, referenceParameters);
     }
 
 }

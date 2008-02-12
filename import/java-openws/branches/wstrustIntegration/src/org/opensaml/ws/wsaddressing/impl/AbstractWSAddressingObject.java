@@ -14,10 +14,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.opensaml.ws.wsaddressing.impl;
 
 import java.util.List;
-
 
 import org.opensaml.ws.wsaddressing.WSAddressingObject;
 import org.opensaml.xml.XMLObject;
@@ -29,16 +29,16 @@ import org.opensaml.xml.validation.AbstractValidatingXMLObject;
  * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
  * @version $Revision$
  */
-public abstract class AbstractWSAddressingObject extends
-        AbstractValidatingXMLObject implements WSAddressingObject {
+public abstract class AbstractWSAddressingObject extends AbstractValidatingXMLObject implements WSAddressingObject {
 
     /**
      * Constructor.
-     * <p>
-     * {@inheritDoc}
+     * 
+     * @param namespaceURI The namespace of the element
+     * @param elementLocalName The local name of the element
+     * @param namespacePrefix The namespace prefix of the element
      */
-    public AbstractWSAddressingObject(String namespaceURI,
-            String elementLocalName, String namespacePrefix) {
+    public AbstractWSAddressingObject(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
