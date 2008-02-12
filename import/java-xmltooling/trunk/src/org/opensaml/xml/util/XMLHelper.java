@@ -474,13 +474,13 @@ public final class XMLHelper {
     }
 
     /**
-     * Adds a namespace decleration (xmlns:) attribute to the given element.
+     * Adds a namespace declaration (xmlns:) attribute to the given element.
      * 
      * @param domElement the element to add the attribute to
      * @param namespaceURI the URI of the namespace
      * @param prefix the prefix for the namespace
      */
-    public static void appendNamespaceDecleration(Element domElement, String namespaceURI, String prefix) {
+    public static void appendNamespaceDeclaration(Element domElement, String namespaceURI, String prefix) {
         String nsURI = DatatypeHelper.safeTrimOrNullString(namespaceURI);
         String nsPrefix = DatatypeHelper.safeTrimOrNullString(prefix);
         
@@ -836,7 +836,7 @@ public final class XMLHelper {
      * 
      * <strong>NOTE:</strong> This is a very costly operation.
      * 
-     * @param domElement the element to act as the root of the namespace declerations
+     * @param domElement the element to act as the root of the namespace declarations
      * 
      * @throws XMLParserException thrown if a namespace prefix is encountered that can't be resolved to a namespace URI
      */
@@ -872,7 +872,7 @@ public final class XMLHelper {
                         + " found on element " + getNodeQName(domElement));
             }
 
-            appendNamespaceDecleration(domElement, namespaceURI, namespacePrefix);
+            appendNamespaceDeclaration(domElement, namespaceURI, namespacePrefix);
         }
 
         // Make sure all the attribute URIs are rooted here or have been rooted in an ancestor
@@ -890,7 +890,7 @@ public final class XMLHelper {
 
             namespacePrefix = attributeNode.getPrefix();
             if (!DatatypeHelper.isEmpty(namespacePrefix)) {
-                // If it's the "xmlns" prefix then it is the namespace decleration,
+                // If it's the "xmlns" prefix then it is the namespace declaration,
                 // don't try to look it up and redeclare it
                 if (namespacePrefix.equals(XMLConstants.XMLNS_PREFIX)
                         || namespacePrefix.equals(XMLConstants.XML_PREFIX)) {
@@ -907,7 +907,7 @@ public final class XMLHelper {
                                 + getNodeQName(domElement));
                     }
 
-                    appendNamespaceDecleration(domElement, namespaceURI, namespacePrefix);
+                    appendNamespaceDeclaration(domElement, namespaceURI, namespacePrefix);
                 }
             }
         }

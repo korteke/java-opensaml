@@ -383,7 +383,7 @@ public class Encrypter {
             if (! sawDigestMethod) {
                 Element digestMethodElem = XMLHelper.constructElement(containingDocument,
                         DigestMethod.DEFAULT_ELEMENT_NAME);
-                XMLHelper.appendNamespaceDecleration(digestMethodElem, 
+                XMLHelper.appendNamespaceDeclaration(digestMethodElem, 
                         XMLConstants.XMLSIG_NS, XMLConstants.XMLSIG_PREFIX);
                 digestMethodElem.setAttributeNS(null, DigestMethod.ALGORITHM_ATTRIB_NAME, 
                         SignatureConstants.ALGO_ID_DIGEST_SHA1);

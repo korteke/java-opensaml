@@ -341,7 +341,7 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
                 String nsURI = DatatypeHelper.safeTrimOrNullString(namespace.getNamespaceURI());
                 String nsPrefix = DatatypeHelper.safeTrimOrNullString(namespace.getNamespacePrefix());
 
-                XMLHelper.appendNamespaceDecleration(domElement, nsURI, nsPrefix);
+                XMLHelper.appendNamespaceDeclaration(domElement, nsURI, nsPrefix);
             }
         }
     }
