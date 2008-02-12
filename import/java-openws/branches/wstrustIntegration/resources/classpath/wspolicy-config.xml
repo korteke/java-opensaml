@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<XMLTooling xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.opensaml.org/xmltooling-config ../../src/schema/xmltooling-config.xsd"
+    xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy"
+    xmlns="http://www.opensaml.org/xmltooling-config">
+
+    <!-- WS-Policy 2004 Object Providers -->
+    <ObjectProviders>
+    
+        <!-- wsp:AppliesTo -->
+        <ObjectProvider qualifiedName="wsp:AppliesTo">
+            <BuilderClass
+                className="org.opensaml.ws.wspolicy.impl.AppliesToBuilder" />
+            <MarshallingClass
+                className="org.opensaml.ws.wspolicy.impl.AppliesMarshaller" />
+            <UnmarshallingClass
+                className="org.opensaml.ws.wspolicy.impl.AppliesUnmarshaller" />
+        </ObjectProvider>
+
+        <!-- wsp:Policy -->
+        <ObjectProvider qualifiedName="wsp:Policy">
+            <BuilderClass
+                className="org.opensaml.ws.wspolicy.impl.PolicyBuilder" />
+            <MarshallingClass
+                className="org.opensaml.ws.wspolicy.impl.PolicyMarshaller" />
+            <UnmarshallingClass
+                className="org.opensaml.ws.wspolicy.impl.PolicyUnmarshaller" />
+        </ObjectProvider>
+
+        <!-- wsp:PolicyReference -->
+        <ObjectProvider qualifiedName="wsp:PolicyReference">
+            <BuilderClass
+                className="org.opensaml.ws.wspolicy.impl.PolicyReferenceBuilder" />
+            <MarshallingClass
+                className="org.opensaml.ws.wspolicy.impl.PolicyReferenceMarshaller" />
+            <UnmarshallingClass
+                className="org.opensaml.ws.wspolicy.impl.PolicyReferenceUnmarshaller" />
+        </ObjectProvider>
+
+    </ObjectProviders>
+
+</XMLTooling>
