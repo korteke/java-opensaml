@@ -4,12 +4,7 @@
             <faultcode>soap11:Server</faultcode>
             <faultstring>Server Error</faultstring>
             <faultactor>http://ws.example.org/someActor</faultactor>
-            <detail>
-                <e:myfaultdetails xmlns:e="Some-URI">
-                    <message>My application didn't work</message>
-                    <errorcode>1001</errorcode>
-                </e:myfaultdetails>
-            </detail>
+            <detail />
         </soap11:Fault>
     </soap11:Body>
 </soap11:Envelope>
