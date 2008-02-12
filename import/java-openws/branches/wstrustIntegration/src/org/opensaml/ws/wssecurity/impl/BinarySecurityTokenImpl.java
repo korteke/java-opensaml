@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.opensaml.ws.wssecurity.impl;
 
 import org.opensaml.ws.wssecurity.BinarySecurityToken;
@@ -24,29 +25,28 @@ import org.opensaml.ws.wssecurity.BinarySecurityToken;
  * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
  * @version $Revision$
  */
-public class BinarySecurityTokenImpl extends AbstractAttributedId implements
-        BinarySecurityToken {
+public class BinarySecurityTokenImpl extends AbstractAttributedId implements BinarySecurityToken {
 
     /** wsse:BinarySecurityToken Base64 content */
-    private String value_= null;
+    private String value_ = null;
 
     /** wsse:BinarySecurityToken/@ValueType attribute */
-    private String valueType_= null;
+    private String valueType_ = null;
 
     /** wsse:BinarySecurityToken/@EncodingType attribute */
-    private String encodingType_= null;
+    private String encodingType_ = null;
 
     /**
-     * Constructor. Default EncodingType is
-     * <code>BinarySecurityToken.ENCODINGTYPE_BASE64_BINARY</code>
-     * <p>
-     * {@inheritDoc}
+     * Constructor. Default EncodingType is <code>BinarySecurityToken.ENCODINGTYPE_BASE64_BINARY</code>
+     * 
+     * @param namespaceURI namespace of the element
+     * @param elementLocalName name of the element
+     * @param namespacePrefix namespace prefix of the element
      */
-    public BinarySecurityTokenImpl(String namespaceURI,
-            String elementLocalName, String namespacePrefix) {
+    public BinarySecurityTokenImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         // default encoding type
-        encodingType_= BinarySecurityToken.ENCODINGTYPE_BASE64_BINARY;
+        encodingType_ = BinarySecurityToken.ENCODINGTYPE_BASE64_BINARY;
     }
 
     /*
@@ -64,7 +64,7 @@ public class BinarySecurityTokenImpl extends AbstractAttributedId implements
      * @see org.opensaml.xml.schema.XSBase64Binary#setValue(java.lang.String)
      */
     public void setValue(String newValue) {
-        value_= prepareForAssignment(value_, newValue);
+        value_ = prepareForAssignment(value_, newValue);
     }
 
     /*
@@ -82,7 +82,7 @@ public class BinarySecurityTokenImpl extends AbstractAttributedId implements
      * @see org.opensaml.ws.wssecurity.AttributedEncodingType#setEncodingType(java.lang.String)
      */
     public void setEncodingType(String encodingType) {
-        encodingType_= prepareForAssignment(encodingType_, encodingType);
+        encodingType_ = prepareForAssignment(encodingType_, encodingType);
     }
 
     /*
@@ -100,7 +100,7 @@ public class BinarySecurityTokenImpl extends AbstractAttributedId implements
      * @see org.opensaml.ws.wssecurity.AttributedValueType#setValueType(java.lang.String)
      */
     public void setValueType(String valueType) {
-        valueType_= prepareForAssignment(valueType_, valueType);
+        valueType_ = prepareForAssignment(valueType_, valueType);
     }
 
 }

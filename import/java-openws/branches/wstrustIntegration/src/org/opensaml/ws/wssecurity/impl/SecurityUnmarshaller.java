@@ -14,13 +14,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.opensaml.ws.wssecurity.impl;
 
+package org.opensaml.ws.wssecurity.impl;
 
 import org.opensaml.ws.wssecurity.Security;
 import org.opensaml.xml.AbstractExtensibleXMLObjectUnmarshaller;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
+import org.opensaml.xml.schema.XSBooleanValue;
 import org.w3c.dom.Attr;
 
 /**
@@ -29,44 +30,35 @@ import org.w3c.dom.Attr;
  * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
  * @version $Revision$
  */
-public class SecurityUnmarshaller extends
-        AbstractExtensibleXMLObjectUnmarshaller {
+public class SecurityUnmarshaller extends AbstractExtensibleXMLObjectUnmarshaller {
 
     /**
      * Default constructor.
      */
     public SecurityUnmarshaller() {
-        super(Security.ELEMENT_NAME.getNamespaceURI(),
-              Security.ELEMENT_NAME.getLocalPart());
+        super(Security.ELEMENT_NAME.getNamespaceURI(), Security.ELEMENT_NAME.getLocalPart());
     }
 
     /**
-     * Unmarshalls the &lt;S11:mustUnderstand&gt;, the &lt;S12:role&gt; and the
-     * &lt;S11:actor&gt; attributes.
+     * Unmarshalls the &lt;S11:mustUnderstand&gt;, the &lt;S12:role&gt; and the &lt;S11:actor&gt; attributes.
      * <p>
      * {@inheritDoc}
      */
-    protected void processAttribute(XMLObject xmlObject, Attr attribute)
-            throws UnmarshallingException {
-        Security security= (Security) xmlObject;
-        String attrName= attribute.getLocalName();
+    protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
+        Security security = (Security) xmlObject;
+        String attrName = attribute.getLocalName();
         if (Security.MUST_UNDERSTAND_ATTR_LOCAL_NAME.equals(attrName)) {
-            String mustUnderstand= attribute.getValue();
-            // TODO: SOAP 1.1 or SOAP 1.2 ???
-            if (mustUnderstand.equals("1")
-                    || mustUnderstand.equalsIgnoreCase("true")) {
-                security.setMustUnderstand(true);
-            }
-        }
-        else if (Security.ACTOR_ATTR_LOCAL_NAME.equals(attrName)) {
-            String actor= attribute.getValue();
+            String value = attribute.getValue();
+            // SOAP 1.1 or SOAP 1.2 ???
+            XSBooleanValue mustUnderstand = XSBooleanValue.valueOf(value);
+            security.setMustUnderstand(mustUnderstand);
+        } else if (Security.ACTOR_ATTR_LOCAL_NAME.equals(attrName)) {
+            String actor = attribute.getValue();
             security.setActor(actor);
-        }
-        else if (Security.ROLE_ATTR_LOCAL_NAME.equals(attrName)) {
-            String role= attribute.getValue();
+        } else if (Security.ROLE_ATTR_LOCAL_NAME.equals(attrName)) {
+            String role = attribute.getValue();
             security.setRole(role);
-        }
-        else {
+        } else {
             super.processAttribute(xmlObject, attribute);
         }
     }

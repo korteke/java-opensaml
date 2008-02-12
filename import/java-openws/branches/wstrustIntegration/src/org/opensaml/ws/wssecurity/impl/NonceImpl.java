@@ -14,8 +14,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.opensaml.ws.wssecurity.impl;
 
+package org.opensaml.ws.wssecurity.impl;
 
 import org.opensaml.ws.wssecurity.Nonce;
 import org.opensaml.xml.schema.impl.XSBase64BinaryImpl;
@@ -29,15 +29,16 @@ import org.opensaml.xml.schema.impl.XSBase64BinaryImpl;
 public class NonceImpl extends XSBase64BinaryImpl implements Nonce {
 
     /** wsse:Nonce/@EncodingType attribute */
-    private String encodingType_= null;
+    private String encodingType_ = null;
 
     /**
      * Constructor.
-     * <p>
-     * {@inheritDoc}
+     * 
+     * @param namespaceURI namespace of the element
+     * @param elementLocalName name of the element
+     * @param namespacePrefix namespace prefix of the element
      */
-    public NonceImpl(String namespaceURI, String elementLocalName,
-            String namespacePrefix) {
+    public NonceImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         // TODO default encoding type ???
     }
@@ -57,7 +58,7 @@ public class NonceImpl extends XSBase64BinaryImpl implements Nonce {
      * @see org.opensaml.ws.wssecurity.AttributedEncodingType#setEncodingType(java.lang.String)
      */
     public void setEncodingType(String encodingType) {
-        encodingType_= prepareForAssignment(encodingType_, encodingType);
+        encodingType_ = prepareForAssignment(encodingType_, encodingType);
     }
 
 }

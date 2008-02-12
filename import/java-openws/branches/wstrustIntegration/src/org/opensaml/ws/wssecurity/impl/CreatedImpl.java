@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.opensaml.ws.wssecurity.impl;
 
 import org.opensaml.ws.wssecurity.Created;
@@ -28,11 +29,12 @@ public class CreatedImpl extends AbstractDateTimeType implements Created {
 
     /**
      * Constructor.
-     * <p>
-     * {@inheritDoc}
+     * 
+     * @param namespaceURI namespace of the element
+     * @param elementLocalName name of the element
+     * @param namespacePrefix namespace prefix of the element
      */
-    public CreatedImpl(String namespaceURI, String elementLocalName,
-            String namespacePrefix) {
+    public CreatedImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 

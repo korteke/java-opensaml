@@ -14,8 +14,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.opensaml.ws.wssecurity.impl;
 
+package org.opensaml.ws.wssecurity.impl;
 
 import org.opensaml.ws.wssecurity.Username;
 import org.opensaml.xml.schema.impl.XSStringImpl;
@@ -30,11 +30,12 @@ public class UsernameImpl extends XSStringImpl implements Username {
 
     /**
      * Constructor.
-     * <p>
-     * {@inheritDoc}
+     * 
+     * @param namespaceURI namespace of the element
+     * @param elementLocalName name of the element
+     * @param namespacePrefix namespace prefix of the elements
      */
-    public UsernameImpl(String namespaceURI, String elementLocalName,
-            String namespacePrefix) {
+    public UsernameImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 

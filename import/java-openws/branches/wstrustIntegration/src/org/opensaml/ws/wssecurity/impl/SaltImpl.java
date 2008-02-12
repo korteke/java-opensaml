@@ -14,8 +14,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.opensaml.ws.wssecurity.impl;
 
+package org.opensaml.ws.wssecurity.impl;
 
 import org.opensaml.ws.wssecurity.Salt;
 import org.opensaml.xml.schema.impl.XSBase64BinaryImpl;
@@ -30,11 +30,12 @@ public class SaltImpl extends XSBase64BinaryImpl implements Salt {
 
     /**
      * Constructor.
-     * <p>
-     * {@inheritDoc}
+     * 
+     * @param namespaceURI namespace of the element
+     * @param elementLocalName name of the element
+     * @param namespacePrefix namespace prefix of the element
      */
-    protected SaltImpl(String namespaceURI, String elementLocalName,
-            String namespacePrefix) {
+    protected SaltImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 

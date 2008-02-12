@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.opensaml.ws.wssecurity.impl;
 
 import org.opensaml.ws.wssecurity.AttributedId;
@@ -24,19 +25,19 @@ import org.opensaml.ws.wssecurity.AttributedId;
  * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
  * @version $Revision$
  */
-public abstract class AbstractAttributedId extends AbstractWSSecurityObject
-        implements AttributedId {
+public abstract class AbstractAttributedId extends AbstractWSSecurityObject implements AttributedId {
 
     /** the &lt;wsu:Id&gt; attribute */
-    private String id_= null;
+    private String id_ = null;
 
     /**
      * Constructor.
-     * <p>
-     * {@inheritDoc}
+     * 
+     * @param namespaceURI namespace of the element
+     * @param elementLocalName name of the element
+     * @param namespacePrefix namespace prefix of the element
      */
-    public AbstractAttributedId(String namespaceURI, String elementLocalName,
-            String namespacePrefix) {
+    public AbstractAttributedId(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
@@ -55,7 +56,7 @@ public abstract class AbstractAttributedId extends AbstractWSSecurityObject
      * @see org.opensaml.ws.wssecurity.AttributedId#setId(java.lang.String)
      */
     public void setId(String id) {
-        id_= prepareForAssignment(id_, id);
+        id_ = prepareForAssignment(id_, id);
     }
 
 }

@@ -14,12 +14,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.opensaml.ws.wssecurity.impl;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 
 import org.opensaml.ws.wssecurity.Embedded;
 import org.opensaml.ws.wssecurity.KeyIdentifier;
@@ -34,36 +34,36 @@ import org.opensaml.xml.XMLObject;
  * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
  * @version $Revision$
  */
-public class SecurityTokenReferenceImpl extends AbstractExtensibleXMLObject
-        implements SecurityTokenReference {
+public class SecurityTokenReferenceImpl extends AbstractExtensibleXMLObject implements SecurityTokenReference {
 
     /** The &lt;wsu:Id&gt; attribute value */
-    private String id_= null;
+    private String id_ = null;
 
     /** List of &lt;wsse:Usage&gt; attribute values */
-    private List<String> usages_= null;
+    private List<String> usages_ = null;
 
     /** The &lt;wsse11:TokenType&gt; attribute value */
-    private String tokenType_= null;
+    private String tokenType_ = null;
 
     /** The &lt;wsse:Embedded&gt; child element */
-    private Embedded embedded_= null;
+    private Embedded embedded_ = null;
 
     /** The &lt;wsse:KeyIdentifier&gt; child element */
-    private KeyIdentifier keyIdentifier_= null;
+    private KeyIdentifier keyIdentifier_ = null;
 
     /** the &lt;wsse:Reference&gt; child element */
-    private Reference reference_= null;
+    private Reference reference_ = null;
 
     /**
      * Constructor.
-     * <p>
-     * {@inheritDoc}
+     * 
+     * @param namespaceURI namespace of the element
+     * @param elementLocalName name of the element
+     * @param namespacePrefix namespace prefix of the element
      */
-    public SecurityTokenReferenceImpl(String namespaceURI,
-            String elementLocalName, String namespacePrefix) {
+    public SecurityTokenReferenceImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        usages_= new ArrayList<String>();
+        usages_ = new ArrayList<String>();
     }
 
     /*
@@ -108,7 +108,7 @@ public class SecurityTokenReferenceImpl extends AbstractExtensibleXMLObject
      * @see org.opensaml.ws.wssecurity.SecurityTokenReference#setEmbedded(org.opensaml.ws.wssecurity.Embedded)
      */
     public void setEmbedded(Embedded embedded) {
-        embedded_= prepareForAssignment(embedded_, embedded);
+        embedded_ = prepareForAssignment(embedded_, embedded);
     }
 
     /*
@@ -117,7 +117,7 @@ public class SecurityTokenReferenceImpl extends AbstractExtensibleXMLObject
      * @see org.opensaml.ws.wssecurity.SecurityTokenReference#setKeyIdentifier(org.opensaml.ws.wssecurity.KeyIdentifier)
      */
     public void setKeyIdentifier(KeyIdentifier keyIdentifier) {
-        keyIdentifier_= prepareForAssignment(keyIdentifier_, keyIdentifier);
+        keyIdentifier_ = prepareForAssignment(keyIdentifier_, keyIdentifier);
     }
 
     /*
@@ -126,7 +126,7 @@ public class SecurityTokenReferenceImpl extends AbstractExtensibleXMLObject
      * @see org.opensaml.ws.wssecurity.SecurityTokenReference#setReference(org.opensaml.ws.wssecurity.Reference)
      */
     public void setReference(Reference reference) {
-        reference_= prepareForAssignment(reference_, reference);
+        reference_ = prepareForAssignment(reference_, reference);
     }
 
     /*
@@ -135,7 +135,7 @@ public class SecurityTokenReferenceImpl extends AbstractExtensibleXMLObject
      * @see org.opensaml.ws.wssecurity.SecurityTokenReference#setUsages(java.util.List)
      */
     public void setUsages(List<String> usages) {
-        usages_= prepareForAssignment(usages_, usages);
+        usages_ = prepareForAssignment(usages_, usages);
     }
 
     /*
@@ -153,7 +153,7 @@ public class SecurityTokenReferenceImpl extends AbstractExtensibleXMLObject
      * @see org.opensaml.ws.wssecurity.AttributedTokenType#setTokenType(java.lang.String)
      */
     public void setTokenType(String tokenType) {
-        tokenType_= prepareForAssignment(tokenType_, tokenType);
+        tokenType_ = prepareForAssignment(tokenType_, tokenType);
     }
 
     /*
@@ -163,7 +163,7 @@ public class SecurityTokenReferenceImpl extends AbstractExtensibleXMLObject
      */
     public List<XMLObject> getOrderedChildren() {
         // TODO check order and eventually add ds:KeyInfo support !!!!
-        List<XMLObject> children= new ArrayList<XMLObject>();
+        List<XMLObject> children = new ArrayList<XMLObject>();
         if (reference_ != null) {
             children.add(reference_);
         }
@@ -194,7 +194,7 @@ public class SecurityTokenReferenceImpl extends AbstractExtensibleXMLObject
      * @see org.opensaml.ws.wssecurity.AttributedId#setId(java.lang.String)
      */
     public void setId(String id) {
-        id_= prepareForAssignment(id_, id);
+        id_ = prepareForAssignment(id_, id);
     }
 
 }

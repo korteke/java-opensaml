@@ -14,12 +14,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.opensaml.ws.wssecurity.impl;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 
 import org.opensaml.ws.wssecurity.Created;
 import org.opensaml.ws.wssecurity.Expires;
@@ -33,25 +33,25 @@ import org.opensaml.xml.XMLObject;
  * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
  * @version $Revision$
  */
-public class TimestampImpl extends AbstractExtensibleXMLObject implements
-        Timestamp {
+public class TimestampImpl extends AbstractExtensibleXMLObject implements Timestamp {
 
     /** wsu:Timestamp/@wsu:Id attribute */
-    private String id_= null;
+    private String id_ = null;
 
     /** wsu:Timestamp/wsu:Created element */
-    private Created created_= null;
+    private Created created_ = null;
 
     /** wsu:Timestamp/wsu:Expires element */
-    private Expires expires_= null;
+    private Expires expires_ = null;
 
     /**
      * Constructor.
-     * <p>
-     * {@inheritDoc}
+     * 
+     * @param namespaceURI namespace of the element
+     * @param elementLocalName name of the element
+     * @param namespacePrefix namespace prefix of the element
      */
-    public TimestampImpl(String namespaceURI, String elementLocalName,
-            String namespacePrefix) {
+    public TimestampImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
@@ -79,7 +79,7 @@ public class TimestampImpl extends AbstractExtensibleXMLObject implements
      * @see org.opensaml.ws.wssecurity.Timestamp#setCreated(org.opensaml.ws.wssecurity.Created)
      */
     public void setCreated(Created created) {
-        created_= prepareForAssignment(created_, created);
+        created_ = prepareForAssignment(created_, created);
     }
 
     /*
@@ -88,7 +88,7 @@ public class TimestampImpl extends AbstractExtensibleXMLObject implements
      * @see org.opensaml.ws.wssecurity.Timestamp#setExpires(org.opensaml.ws.wssecurity.Expires)
      */
     public void setExpires(Expires expires) {
-        expires_= prepareForAssignment(expires_, expires);
+        expires_ = prepareForAssignment(expires_, expires);
     }
 
     /*
@@ -98,7 +98,7 @@ public class TimestampImpl extends AbstractExtensibleXMLObject implements
      */
     @Override
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children= new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
         if (created_ != null) {
             children.add(created_);
         }
@@ -127,7 +127,7 @@ public class TimestampImpl extends AbstractExtensibleXMLObject implements
      * @see org.opensaml.ws.schema.AttributedId#setID(java.lang.String)
      */
     public void setId(String id) {
-        id_= prepareForAssignment(id_, id);
+        id_ = prepareForAssignment(id_, id);
     }
 
 }

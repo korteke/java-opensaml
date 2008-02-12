@@ -14,12 +14,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.opensaml.ws.wssecurity.impl;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 
 import org.opensaml.ws.wssecurity.Created;
 import org.opensaml.ws.wssecurity.Iteration;
@@ -37,37 +37,37 @@ import org.opensaml.xml.XMLObject;
  * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
  * @version $Revision$
  */
-public class UsernameTokenImpl extends AbstractExtensibleXMLObject implements
-        UsernameToken {
+public class UsernameTokenImpl extends AbstractExtensibleXMLObject implements UsernameToken {
 
     /** The &lt;wsu:Id&gt; attribute value */
-    private String id_= null;
+    private String id_ = null;
 
     /** The &lt;wsu:Created&gt; child element */
-    private Created created_= null;
+    private Created created_ = null;
 
     /** The &lt;wsse:Nonce&gt; child element */
-    private Nonce nonce_= null;
+    private Nonce nonce_ = null;
 
     /** The &lt;wsse:Password&gt; child element */
-    private Password password_= null;
+    private Password password_ = null;
 
     /** The &lt;wsse:Username&gt; child element */
-    private Username username_= null;
+    private Username username_ = null;
 
     /** The &lt;wsse11:Salt&gt; child element */
-    private Salt salt_= null;
+    private Salt salt_ = null;
 
     /** The &lt;wsse11:Iteration&gt; child element */
-    private Iteration iteration_= null;
+    private Iteration iteration_ = null;
 
     /**
      * Constructor.
-     * <p>
-     * {@inheritDoc}
+     * 
+     * @param namespaceURI namespace of the element
+     * @param elementLocalName name of the element
+     * @param namespacePrefix namespace prefix of the element
      */
-    public UsernameTokenImpl(String namespaceURI, String elementLocalName,
-            String namespacePrefix) {
+    public UsernameTokenImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
@@ -113,7 +113,7 @@ public class UsernameTokenImpl extends AbstractExtensibleXMLObject implements
      * @see org.glite.xml.security.UsernameToken#setCreated(org.glite.xml.security.Created)
      */
     public void setCreated(Created created) {
-        created_= prepareForAssignment(created_, created);
+        created_ = prepareForAssignment(created_, created);
     }
 
     /*
@@ -122,7 +122,7 @@ public class UsernameTokenImpl extends AbstractExtensibleXMLObject implements
      * @see org.glite.xml.security.UsernameToken#setNonce(org.glite.xml.security.Nonce)
      */
     public void setNonce(Nonce nonce) {
-        nonce_= prepareForAssignment(nonce_, nonce);
+        nonce_ = prepareForAssignment(nonce_, nonce);
 
     }
 
@@ -132,7 +132,7 @@ public class UsernameTokenImpl extends AbstractExtensibleXMLObject implements
      * @see org.glite.xml.security.UsernameToken#setPassword(org.glite.xml.security.Password)
      */
     public void setPassword(Password password) {
-        password_= prepareForAssignment(password_, password);
+        password_ = prepareForAssignment(password_, password);
     }
 
     /*
@@ -141,7 +141,7 @@ public class UsernameTokenImpl extends AbstractExtensibleXMLObject implements
      * @see org.glite.xml.security.UsernameToken#setUsername(org.glite.xml.security.Username)
      */
     public void setUsername(Username username) {
-        username_= prepareForAssignment(username_, username);
+        username_ = prepareForAssignment(username_, username);
     }
 
     /*
@@ -150,7 +150,7 @@ public class UsernameTokenImpl extends AbstractExtensibleXMLObject implements
      * @see org.opensaml.xml.XMLObject#getOrderedChildren()
      */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children= new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
         if (username_ != null) {
             children.add(username_);
         }
@@ -200,7 +200,7 @@ public class UsernameTokenImpl extends AbstractExtensibleXMLObject implements
      * @see org.opensaml.ws.wssecurity.UsernameToken#setIteration(org.opensaml.ws.wssecurity.Iteration)
      */
     public void setIteration(Iteration iteration) {
-        iteration_= prepareForAssignment(iteration_, iteration);
+        iteration_ = prepareForAssignment(iteration_, iteration);
     }
 
     /*
@@ -209,7 +209,7 @@ public class UsernameTokenImpl extends AbstractExtensibleXMLObject implements
      * @see org.opensaml.ws.wssecurity.UsernameToken#setSalt(org.opensaml.ws.wssecurity.Salt)
      */
     public void setSalt(Salt salt) {
-        salt_= prepareForAssignment(salt_, salt);
+        salt_ = prepareForAssignment(salt_, salt);
     }
 
     /*
@@ -227,7 +227,7 @@ public class UsernameTokenImpl extends AbstractExtensibleXMLObject implements
      * @see org.opensaml.ws.wssecurity.AttributedId#setId(java.lang.String)
      */
     public void setId(String id) {
-        id_= prepareForAssignment(id_, id);
+        id_ = prepareForAssignment(id_, id);
     }
 
 }

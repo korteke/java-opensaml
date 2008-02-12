@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.opensaml.ws.wssecurity.impl;
 
 import org.opensaml.ws.wssecurity.Expires;
@@ -28,11 +29,12 @@ public class ExpiresImpl extends AbstractDateTimeType implements Expires {
 
     /**
      * Constructor.
-     * <p>
-     * {@inheritDoc}
+     * 
+     * @param namespaceURI namespace of the element
+     * @param elementLocalName name of the element
+     * @param namespacePrefix namespace prefix of the element
      */
-    public ExpiresImpl(String namespaceURI, String elementLocalName,
-            String namespacePrefix) {
+    public ExpiresImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 

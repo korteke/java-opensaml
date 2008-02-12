@@ -14,12 +14,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.opensaml.ws.wssecurity.impl;
 
 import java.util.List;
 
 import javax.xml.namespace.QName;
-
 
 import org.opensaml.ws.wssecurity.KeyIdentifier;
 import org.opensaml.xml.XMLObject;
@@ -30,31 +30,30 @@ import org.opensaml.xml.XMLObject;
  * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
  * @version $Revision$
  */
-public class KeyIdentifierImpl extends AbstractWSSecurityObject implements
-        KeyIdentifier {
+public class KeyIdentifierImpl extends AbstractWSSecurityObject implements KeyIdentifier {
 
     /** The &lt;wsse:KeyIdentifier/@wsu:Id&gt; attribute value */
-    private String id_= null;
+    private String id_ = null;
 
     /** The Base64 content */
-    private String value_= null;
+    private String value_ = null;
 
     /** The &lt;wsse:KeyIdentifier/@ValueType&gt; attribute value */
-    private String valueType_= null;
+    private String valueType_ = null;
 
     /** &lt;wsse:KeyIdentifier/@EncodingType&gt; attribute value */
-    private String encodingType_= null;
+    private String encodingType_ = null;
 
     /**
-     * Constructor. Default encoding type:
-     * <code>KeyIdentifier.ENCODINGTYPE_BASE64_BINARY</code>
-     * <p>
-     * {@inheritDoc}
+     * Constructor. Default encoding type: <code>KeyIdentifier.ENCODINGTYPE_BASE64_BINARY</code>
+     * 
+     * @param namespaceURI namespace of the element
+     * @param elementLocalName name of the element
+     * @param namespacePrefix namespace prefix of the element
      */
-    public KeyIdentifierImpl(String namespaceURI, String elementLocalName,
-            String namespacePrefix) {
+    public KeyIdentifierImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        encodingType_= KeyIdentifier.ENCODINGTYPE_BASE64_BINARY;
+        encodingType_ = KeyIdentifier.ENCODINGTYPE_BASE64_BINARY;
     }
 
     /*
@@ -72,7 +71,7 @@ public class KeyIdentifierImpl extends AbstractWSSecurityObject implements
      * @see org.opensaml.xml.schema.XSBase64Binary#setValue(java.lang.String)
      */
     public void setValue(String value) {
-        value_= prepareForAssignment(value_, value);
+        value_ = prepareForAssignment(value_, value);
     }
 
     /*
@@ -90,7 +89,7 @@ public class KeyIdentifierImpl extends AbstractWSSecurityObject implements
      * @see org.glite.xml.schema.AttributedEncodingType#setEncodingType(java.lang.String)
      */
     public void setEncodingType(String encodingType) {
-        encodingType_= prepareForAssignment(encodingType_, encodingType);
+        encodingType_ = prepareForAssignment(encodingType_, encodingType);
     }
 
     /*
@@ -108,7 +107,7 @@ public class KeyIdentifierImpl extends AbstractWSSecurityObject implements
      * @see org.opensaml.ws.schema.AttributedValueType#setValueType(java.lang.String)
      */
     public void setValueType(String valueType) {
-        valueType_= prepareForAssignment(valueType_, valueType);
+        valueType_ = prepareForAssignment(valueType_, valueType);
     }
 
     /*
@@ -145,7 +144,7 @@ public class KeyIdentifierImpl extends AbstractWSSecurityObject implements
      * @see org.opensaml.ws.wssecurity.AttributedId#setId(java.lang.String)
      */
     public void setId(String id) {
-        id_= prepareForAssignment(id_, id);
+        id_ = prepareForAssignment(id_, id);
     }
 
 }

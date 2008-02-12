@@ -14,10 +14,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.opensaml.ws.wssecurity.impl;
 
 import java.util.List;
-
 
 import org.opensaml.ws.wssecurity.WSSecurityObject;
 import org.opensaml.xml.XMLObject;
@@ -29,16 +29,16 @@ import org.opensaml.xml.validation.AbstractValidatingXMLObject;
  * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
  * @version $Revision$
  */
-public abstract class AbstractWSSecurityObject extends
-        AbstractValidatingXMLObject implements WSSecurityObject {
+public abstract class AbstractWSSecurityObject extends AbstractValidatingXMLObject implements WSSecurityObject {
 
     /**
      * Constructor.
-     * <p>
-     * {@inheritDoc}
+     * 
+     * @param namespaceURI namespace of the element
+     * @param elementLocalName name of the element
+     * @param namespacePrefix namespace prefix of the element
      */
-    public AbstractWSSecurityObject(String namespaceURI,
-            String elementLocalName, String namespacePrefix) {
+    public AbstractWSSecurityObject(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 

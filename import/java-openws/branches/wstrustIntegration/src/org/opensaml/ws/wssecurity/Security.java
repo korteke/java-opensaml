@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.opensaml.ws.wssecurity;
 
 import javax.xml.namespace.QName;
@@ -21,6 +22,7 @@ import javax.xml.namespace.QName;
 import org.opensaml.ws.soap.util.SOAPConstants;
 import org.opensaml.xml.AttributeExtensibleXMLObject;
 import org.opensaml.xml.ElementExtensibleXMLObject;
+import org.opensaml.xml.schema.XSBooleanValue;
 
 /**
  * The &lt;wsse:Security&gt; header block.
@@ -30,62 +32,53 @@ import org.opensaml.xml.ElementExtensibleXMLObject;
  * @author Valery Tschopp <tschopp@switch.ch>
  * @version $Revision$
  */
-public interface Security extends AttributeExtensibleXMLObject,
-        ElementExtensibleXMLObject, WSSecurityObject {
+public interface Security extends AttributeExtensibleXMLObject, ElementExtensibleXMLObject, WSSecurityObject {
 
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME= "Security";
+    public static final String ELEMENT_LOCAL_NAME = "Security";
 
     /** Qualified element name */
-    public final static QName ELEMENT_NAME= new QName(WSSecurityConstants.WSSE_NS,
-                                                      ELEMENT_LOCAL_NAME,
-                                                      WSSecurityConstants.WSSE_PREFIX);
+    public final static QName ELEMENT_NAME = new QName(WSSecurityConstants.WSSE_NS, ELEMENT_LOCAL_NAME,
+            WSSecurityConstants.WSSE_PREFIX);
 
     /**
-     * The wsse:Security/@S11:mustUnderstand (1 or 0) or
-     * wsse:Security/@S12:mustUnderstand (1, true or 0, false) attribute local
-     * name
+     * The wsse:Security/@S11:mustUnderstand (1 or 0) or wsse:Security/@S12:mustUnderstand (1, true or 0, false)
+     * attribute local name
      */
-    public final static String MUST_UNDERSTAND_ATTR_LOCAL_NAME= "mustUnderstand";
+    public final static String MUST_UNDERSTAND_ATTR_LOCAL_NAME = "mustUnderstand";
 
     /** The wsse:Security/@S11:mustUnderstand qualified attribute name */
-    public final static QName MUST_UNDERSTAND_ATTR_NAME= new QName(SOAPConstants.SOAP11_NS,
-                                                                   MUST_UNDERSTAND_ATTR_LOCAL_NAME,
-                                                                   SOAPConstants.SOAP11_PREFIX);
+    public final static QName MUST_UNDERSTAND_ATTR_NAME = new QName(SOAPConstants.SOAP11_NS,
+            MUST_UNDERSTAND_ATTR_LOCAL_NAME, SOAPConstants.SOAP11_PREFIX);
 
     /** The wsse:Security/@S12:role attribute local name */
-    public final static String ROLE_ATTR_LOCAL_NAME= "role";
+    public final static String ROLE_ATTR_LOCAL_NAME = "role";
 
     /** The wsse:Security/@S12:role attribute local name */
-    // FIXME: add the SOAP12 constants in SOAPConstants
-    // public final static QName ROLE_ATTR_NAME= new
-    // QName(SOAPConstants.SOAP12_NS,
-    // ROLE_ATTR_LOCAL_NAME,
-    // SOAPConstants.SOAP12_PREFIX);
+    public final static QName ROLE_ATTR_NAME = new QName(SOAPConstants.SOAP12_NS, ROLE_ATTR_LOCAL_NAME,
+            SOAPConstants.SOAP12_PREFIX);
+
     /** The wsse:Security/@S11:actor attribute local name */
-    public final static String ACTOR_ATTR_LOCAL_NAME= "actor";
+    public final static String ACTOR_ATTR_LOCAL_NAME = "actor";
 
     /** The wsse:Security/@S11:actor qualified attribute name */
-    public final static QName ACTOR_ATTR_NAME= new QName(SOAPConstants.SOAP11_NS,
-                                                         ACTOR_ATTR_LOCAL_NAME,
-                                                         SOAPConstants.SOAP11_PREFIX);
+    public final static QName ACTOR_ATTR_NAME = new QName(SOAPConstants.SOAP11_NS, ACTOR_ATTR_LOCAL_NAME,
+            SOAPConstants.SOAP11_PREFIX);
 
     /**
-     * Returns the &lt;wsse:Security/@S11:mustUnderstand&gt; or
-     * wsse:Security/@S12:mustUnderstand attribute value
+     * Returns the &lt;wsse:Security/@S11:mustUnderstand&gt; or &lt;wsse:Security/@S12:mustUnderstand&gt; attribute
+     * value.
      * 
-     * @return <code>true</code> if the <code>mustUnderstand</code>
-     *         attribute value is <code>true</code> or <code>1</code>,
-     *         <code>false</code> otherwise.
+     * @return the effective {@link XSBooleanValue} or by default the FALSE value.
      */
-    public boolean getMustUnderstand();
+    public XSBooleanValue getMustUnderstand();
 
     /**
-     * Sets the wsse:Security/@S11:mustUnderstand attribute value.
+     * Sets the &lt;wsse:Security/@S11:mustUnderstand&gt; or &lt;wsse:Security/@S12:mustUnderstand&gt; attribute value.
      * 
-     * @param mustUnderstand
+     * @param mustUnderstand the {@link XSBooleanValue} attribute value to set.
      */
-    public void setMustUnderstand(boolean mustUnderstand);
+    public void setMustUnderstand(XSBooleanValue mustUnderstand);
 
     /**
      * Returns the wsse:Security/@S12:role attribute value.
@@ -97,8 +90,7 @@ public interface Security extends AttributeExtensibleXMLObject,
     /**
      * Sets the wsse:Security/@S12:role attribute value.
      * 
-     * @param role
-     *            the attribute value.
+     * @param role the attribute value.
      */
     public void setRole(String role);
 
@@ -112,8 +104,7 @@ public interface Security extends AttributeExtensibleXMLObject,
     /**
      * Sets the wsse:Security/@S11:actor attribute value.
      * 
-     * @param actor
-     *            the attribute value.
+     * @param actor the attribute value.
      */
     public void setActor(String actor);
 

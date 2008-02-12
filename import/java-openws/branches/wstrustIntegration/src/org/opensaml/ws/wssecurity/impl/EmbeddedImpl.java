@@ -14,8 +14,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.opensaml.ws.wssecurity.impl;
 
+package org.opensaml.ws.wssecurity.impl;
 
 import org.opensaml.ws.wssecurity.Embedded;
 import org.opensaml.xml.AbstractExtensibleXMLObject;
@@ -26,19 +26,19 @@ import org.opensaml.xml.AbstractExtensibleXMLObject;
  * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
  * @version $Revision$
  */
-public class EmbeddedImpl extends AbstractExtensibleXMLObject implements
-        Embedded {
+public class EmbeddedImpl extends AbstractExtensibleXMLObject implements Embedded {
 
     /** wsse:Embedded/@wsse:ValueType attribute */
-    private String valueType_= null;
+    private String valueType_ = null;
 
     /**
      * Constructor.
-     * <p>
-     * {@inheritDoc}
+     * 
+     * @param namespaceURI namespace of the element
+     * @param elementLocalName name of the element
+     * @param namespacePrefix namespace prefix of the element
      */
-    protected EmbeddedImpl(String namespaceURI, String elementLocalName,
-            String namespacePrefix) {
+    protected EmbeddedImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
@@ -57,7 +57,7 @@ public class EmbeddedImpl extends AbstractExtensibleXMLObject implements
      * @see org.opensaml.ws.wssecurity.AttributedValueType#setValueType(java.lang.String)
      */
     public void setValueType(String valueType) {
-        valueType_= prepareForAssignment(valueType_, valueType);
+        valueType_ = prepareForAssignment(valueType_, valueType);
     }
 
 }

@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.opensaml.ws.wssecurity.impl;
 
 import org.opensaml.ws.wssecurity.Reference;
@@ -24,21 +25,21 @@ import org.opensaml.ws.wssecurity.Reference;
  * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
  * @version $Revision$
  */
-public class ReferenceImpl extends AbstractWSSecurityObject implements
-        Reference {
+public class ReferenceImpl extends AbstractWSSecurityObject implements Reference {
     /** wsse:Reference/@URI attribute */
-    private String uri_= null;
+    private String uri_ = null;
 
     /** wsse:Reference/@ValueType attribute */
-    private String valueType_= null;
+    private String valueType_ = null;
 
     /**
      * Constructor.
-     * <p>
-     * {@inheritDoc}
+     * 
+     * @param namespaceURI namespace of the element
+     * @param elementLocalName name of the element
+     * @param namespacePrefix namespace prefix of the element
      */
-    public ReferenceImpl(String namespaceURI, String elementLocalName,
-            String namespacePrefix) {
+    public ReferenceImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
@@ -57,7 +58,7 @@ public class ReferenceImpl extends AbstractWSSecurityObject implements
      * @see org.opensaml.ws.wssecurity.Reference#setURI(java.lang.String)
      */
     public void setURI(String uri) {
-        uri_= prepareForAssignment(uri_, uri);
+        uri_ = prepareForAssignment(uri_, uri);
     }
 
     /*
@@ -75,7 +76,7 @@ public class ReferenceImpl extends AbstractWSSecurityObject implements
      * @see org.opensaml.ws.schema.AttributedValueType#setValueType(java.lang.String)
      */
     public void setValueType(String valueType) {
-        valueType_= prepareForAssignment(valueType_, valueType);
+        valueType_ = prepareForAssignment(valueType_, valueType);
     }
 
 }

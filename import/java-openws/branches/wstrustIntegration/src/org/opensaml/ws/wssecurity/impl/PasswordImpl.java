@@ -14,8 +14,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.opensaml.ws.wssecurity.impl;
 
+package org.opensaml.ws.wssecurity.impl;
 
 import org.opensaml.ws.wssecurity.Password;
 import org.opensaml.xml.schema.impl.XSStringImpl;
@@ -29,22 +29,22 @@ import org.opensaml.xml.schema.impl.XSStringImpl;
 public class PasswordImpl extends XSStringImpl implements Password {
 
     /** wsu:Password/@wsu:Id attribute */
-    private String id_= null;
+    private String id_ = null;
 
     /** wsse:Password/@Type attribute */
     private String type_;
 
     /**
-     * Constructor. Default Type attribute:
-     * <code>Password.TYPE_PASSWORD_TEXT</code>
-     * <p>
-     * {@inheritDoc}
+     * Constructor. Default Type attribute: <code>Password.TYPE_PASSWORD_TEXT</code>
+     * 
+     * @param namespaceURI namespace of the element
+     * @param elementLocalName name of the element
+     * @param namespacePrefix namespace prefix of the element
      */
-    public PasswordImpl(String namespaceURI, String elementLocalName,
-            String namespacePrefix) {
+    public PasswordImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         // set default type
-        type_= Password.TYPE_PASSWORD_TEXT;
+        type_ = Password.TYPE_PASSWORD_TEXT;
     }
 
     /*
@@ -62,7 +62,7 @@ public class PasswordImpl extends XSStringImpl implements Password {
      * @see org.glite.xml.security.Password#setType(java.lang.String)
      */
     public void setType(String type) {
-        type_= prepareForAssignment(type_, type);
+        type_ = prepareForAssignment(type_, type);
 
     }
 
@@ -81,7 +81,7 @@ public class PasswordImpl extends XSStringImpl implements Password {
      * @see org.opensaml.ws.schema.AttributedId#setID(java.lang.String)
      */
     public void setId(String id) {
-        id_= prepareForAssignment(id_, id);
+        id_ = prepareForAssignment(id_, id);
     }
 
 }

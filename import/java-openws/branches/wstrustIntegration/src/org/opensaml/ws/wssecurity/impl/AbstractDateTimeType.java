@@ -14,8 +14,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.opensaml.ws.wssecurity.impl;
 
+package org.opensaml.ws.wssecurity.impl;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -28,25 +28,25 @@ import org.opensaml.ws.wssecurity.DateTimeType;
  * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
  * @version $Revision$
  */
-public abstract class AbstractDateTimeType extends AbstractWSSecurityObject
-        implements DateTimeType {
+public abstract class AbstractDateTimeType extends AbstractWSSecurityObject implements DateTimeType {
 
     /** DateTime formatter */
-    static protected DateTimeFormatter FORMATTER= DateTimeFormat.forPattern(DateTimeType.DEFAULT_DATETIME_FORMAT);
+    static protected DateTimeFormatter FORMATTER = DateTimeFormat.forPattern(DateTimeType.DEFAULT_DATETIME_FORMAT);
 
     /** DateTime object */
-    private DateTime dateTime_= null;
+    private DateTime dateTime_ = null;
 
     /** XSString content */
-    private String value_= null;
+    private String value_ = null;
 
     /**
      * Constructor.
-     * <p>
-     * {@inheritDoc}
+     * 
+     * @param namespaceURI namespace of the element
+     * @param elementLocalName name of the element
+     * @param namespacePrefix namespace prefix of the element
      */
-    public AbstractDateTimeType(String namespaceURI, String elementLocalName,
-            String namespacePrefix) {
+    public AbstractDateTimeType(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
@@ -65,9 +65,9 @@ public abstract class AbstractDateTimeType extends AbstractWSSecurityObject
      * @see org.opensaml.ws.wssecurity.DateTimeType#setDateTime(org.joda.time.DateTime)
      */
     public void setDateTime(DateTime dateTime) {
-        dateTime_= dateTime;
-        String formattedDateTime= FORMATTER.print(dateTime_);
-        value_= prepareForAssignment(value_, formattedDateTime);
+        dateTime_ = dateTime;
+        String formattedDateTime = FORMATTER.print(dateTime_);
+        value_ = prepareForAssignment(value_, formattedDateTime);
     }
 
     /*
@@ -85,8 +85,8 @@ public abstract class AbstractDateTimeType extends AbstractWSSecurityObject
      * @see org.opensaml.xml.schema.XSString#setValue(java.lang.String)
      */
     public void setValue(String newValue) {
-        value_= prepareForAssignment(value_, newValue);
-        dateTime_= FORMATTER.parseDateTime(newValue);
+        value_ = prepareForAssignment(value_, newValue);
+        dateTime_ = FORMATTER.parseDateTime(newValue);
     }
 
 }

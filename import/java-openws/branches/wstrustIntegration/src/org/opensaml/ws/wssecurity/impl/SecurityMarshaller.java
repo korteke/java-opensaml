@@ -14,13 +14,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.opensaml.ws.wssecurity.impl;
 
+package org.opensaml.ws.wssecurity.impl;
 
 import org.opensaml.ws.wssecurity.Security;
 import org.opensaml.xml.AbstractExtensibleXMLObjectMarshaller;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
+import org.opensaml.xml.schema.XSBooleanValue;
 import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
@@ -38,43 +39,39 @@ public class SecurityMarshaller extends AbstractExtensibleXMLObjectMarshaller {
      * Default constructor
      */
     public SecurityMarshaller() {
-        super(Security.ELEMENT_NAME.getNamespaceURI(),
-              Security.ELEMENT_NAME.getLocalPart());
+        super(Security.ELEMENT_NAME.getNamespaceURI(), Security.ELEMENT_NAME.getLocalPart());
     }
 
     /**
-     * Marshalls the &lt;S11:mustUnderstand&gt;, the &lt;S12:role&gt; and the
-     * &lt;S11:actor&gt; attributes.
+     * Marshalls the &lt;S11:mustUnderstand&gt;, the &lt;S12:role&gt; and the &lt;S11:actor&gt; attributes.
      * <p>
      * {@inheritDoc}
      */
     @Override
-    protected void marshallAttributes(XMLObject xmlObject, Element domElement)
-            throws MarshallingException {
-        Document document= domElement.getOwnerDocument();
-        Security security= (Security) xmlObject;
-        boolean mustUnderstand= security.getMustUnderstand();
-        if (mustUnderstand) {
-            Attr attribute= XMLHelper.constructAttribute(document,
-                                                         Security.MUST_UNDERSTAND_ATTR_NAME);
-            // FIXME: SOAP 1.1 uses 1 or 0 and SOAP 1.2 uses true, 1, false or 0
-            // ???
-            attribute.setValue("1");
-            domElement.setAttributeNode(attribute);
+    protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
+        Document document = domElement.getOwnerDocument();
+        Security security = (Security) xmlObject;
+        XSBooleanValue mustUnderstand = security.getMustUnderstand();
+        if (mustUnderstand != null) {
+            // FIXME: SOAP 1.1 or SOAP 1.2 mustUnderstand ?
+            Attr attribute = XMLHelper.constructAttribute(document, Security.MUST_UNDERSTAND_ATTR_NAME);
+            String value = mustUnderstand.toString();
+            attribute.setValue(value);
+            domElement.setAttributeNodeNS(attribute);
         }
-        String actor= security.getActor();
+        String actor = security.getActor();
         if (actor != null) {
-            Attr attribute= XMLHelper.constructAttribute(document,
-                                                         Security.ACTOR_ATTR_NAME);
+            Attr attribute = XMLHelper.constructAttribute(document, Security.ACTOR_ATTR_NAME);
             attribute.setValue(actor);
-            domElement.setAttributeNode(attribute);
+            domElement.setAttributeNodeNS(attribute);
         }
-        // FIXME: role attribute is only SOAP 1.2 !!!
-        /*
-         * String role= security.getRole(); if (role != null) { Attr attribute=
-         * XMLHelper.constructAttribute(document, Security.ROLE_ATTR_NAME);
-         * attribute.setValue(role); domElement.setAttributeNode(attribute); }
-         */
+        String role = security.getRole();
+        if (role != null) {
+            Attr attribute = XMLHelper.constructAttribute(document, Security.ROLE_ATTR_NAME);
+            attribute.setValue(role);
+            domElement.setAttributeNodeNS(attribute);
+        }
+
         super.marshallAttributes(xmlObject, domElement);
     }
 
