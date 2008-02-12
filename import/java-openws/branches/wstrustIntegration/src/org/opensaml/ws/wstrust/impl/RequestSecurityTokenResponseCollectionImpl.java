@@ -14,12 +14,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.opensaml.ws.wstrust.impl;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 
 import org.opensaml.ws.wstrust.RequestSecurityTokenResponse;
 import org.opensaml.ws.wstrust.RequestSecurityTokenResponseCollection;
@@ -34,25 +34,28 @@ import org.opensaml.xml.util.AttributeMap;
  * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
  * @version $Revision$
  */
-public class RequestSecurityTokenResponseCollectionImpl extends
-        AbstractWSTrustObject implements RequestSecurityTokenResponseCollection {
+public class RequestSecurityTokenResponseCollectionImpl extends AbstractWSTrustObject implements
+        RequestSecurityTokenResponseCollection {
 
     /** xs:anyAttribute for this element. */
     private AttributeMap anyAttributes_;
 
     /** The list of &lt;wst:RequestSecurityTokenResponse&gt; child elements */
-    private List<RequestSecurityTokenResponse> requestSecurityTokenResponses_= null;
+    private List<RequestSecurityTokenResponse> requestSecurityTokenResponses_ = null;
 
     /**
-     * Constructor. Initializes the list of RSTR elements.
-     * <p>
-     * {@inheritDoc}
+     * Constructor.
+     * 
+     * @param namespaceURI The namespace of the element
+     * @param elementLocalName The local name of the element
+     * @param namespacePrefix The namespace prefix of the element
+     * 
      */
-    public RequestSecurityTokenResponseCollectionImpl(String namespaceURI,
-            String elementLocalName, String namespacePrefix) {
+    public RequestSecurityTokenResponseCollectionImpl(String namespaceURI, String elementLocalName,
+            String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        anyAttributes_= new AttributeMap(this);
-        requestSecurityTokenResponses_= new ArrayList<RequestSecurityTokenResponse>();
+        anyAttributes_ = new AttributeMap(this);
+        requestSecurityTokenResponses_ = new ArrayList<RequestSecurityTokenResponse>();
     }
 
     /*
@@ -69,10 +72,9 @@ public class RequestSecurityTokenResponseCollectionImpl extends
      * 
      * @see org.opensaml.ws.wstrust.RequestSecurityTokenResponseCollection#setRequestSecurityTokenResponses(java.util.List)
      */
-    public void setRequestSecurityTokenResponses(
-            List<RequestSecurityTokenResponse> requestSecurityTokenResponses) {
-        requestSecurityTokenResponses_= prepareForAssignment(requestSecurityTokenResponses_,
-                                                             requestSecurityTokenResponses);
+    public void setRequestSecurityTokenResponses(List<RequestSecurityTokenResponse> requestSecurityTokenResponses) {
+        requestSecurityTokenResponses_ = prepareForAssignment(requestSecurityTokenResponses_,
+                requestSecurityTokenResponses);
     }
 
     /**
@@ -81,7 +83,7 @@ public class RequestSecurityTokenResponseCollectionImpl extends
      * {@inheritDoc}
      */
     public List<XMLObject> getOrderedChildren() {
-        List<XMLObject> children= new ArrayList<XMLObject>();
+        List<XMLObject> children = new ArrayList<XMLObject>();
         for (XMLObject rstr : requestSecurityTokenResponses_) {
             children.add(rstr);
         }

@@ -14,8 +14,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.opensaml.ws.wstrust.impl;
 
+package org.opensaml.ws.wstrust.impl;
 
 import org.opensaml.ws.wstrust.AuthenticationType;
 import org.opensaml.xml.schema.impl.XSURIImpl;
@@ -26,16 +26,16 @@ import org.opensaml.xml.schema.impl.XSURIImpl;
  * @author Valery Tschopp <tschopp@switch.ch>
  * @version $Revision$
  */
-public class AuthenticationTypeImpl extends XSURIImpl implements
-        AuthenticationType {
+public class AuthenticationTypeImpl extends XSURIImpl implements AuthenticationType {
 
     /**
      * Constructor.
-     * <p>
-     * {@inheritDoc}
+     * 
+     * @param namespaceURI namespace of the element
+     * @param elementLocalName name of the element
+     * @param namespacePrefix namespace prefix of the element
      */
-    public AuthenticationTypeImpl(String namespaceURI, String elementLocalName,
-            String namespacePrefix) {
+    public AuthenticationTypeImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 

@@ -14,12 +14,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.opensaml.ws.wstrust.impl;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 
 import org.opensaml.ws.wstrust.Authenticator;
 import org.opensaml.ws.wstrust.CombinedHash;
@@ -32,19 +32,19 @@ import org.opensaml.xml.XMLObject;
  * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
  * @version $Revision$
  */
-public class AuthenticatorImpl extends AbstractElementExtensibleXMLObject
-        implements Authenticator {
+public class AuthenticatorImpl extends AbstractElementExtensibleXMLObject implements Authenticator {
 
     /** the wst:Authenticator/wst:CombinedHash child element */
-    private CombinedHash combinedHash_= null;
+    private CombinedHash combinedHash_ = null;
 
     /**
      * Constructor.
-     * <p>
-     * {@inheritDoc}
+     * 
+     * @param namespaceURI namespace of the element
+     * @param elementLocalName name of the element
+     * @param namespacePrefix namespace prefix of the element
      */
-    public AuthenticatorImpl(String namespaceURI, String elementLocalName,
-            String namespacePrefix) {
+    public AuthenticatorImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
@@ -63,7 +63,7 @@ public class AuthenticatorImpl extends AbstractElementExtensibleXMLObject
      * @see org.opensaml.ws.wstrust.Authenticator#setCombinedHash(org.opensaml.ws.wstrust.CombinedHash)
      */
     public void setCombinedHash(CombinedHash combinedHash) {
-        combinedHash_= prepareForAssignment(combinedHash_, combinedHash);
+        combinedHash_ = prepareForAssignment(combinedHash_, combinedHash);
     }
 
     /*
@@ -72,7 +72,7 @@ public class AuthenticatorImpl extends AbstractElementExtensibleXMLObject
      * @see org.glite.xml.AbstractElementExtensibleXMLObject#getOrderedChildren()
      */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children= new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
         if (combinedHash_ != null) {
             children.add(combinedHash_);
         }

@@ -14,8 +14,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.opensaml.ws.wstrust.impl;
 
+package org.opensaml.ws.wstrust.impl;
 
 import org.opensaml.ws.wstrust.BinaryExchange;
 import org.opensaml.xml.util.AttributeMap;
@@ -26,30 +26,30 @@ import org.opensaml.xml.util.AttributeMap;
  * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
  * @version $Revision$
  */
-public class BinaryExchangeImpl extends AbstractWSTrustObject implements
-        BinaryExchange {
+public class BinaryExchangeImpl extends AbstractWSTrustObject implements BinaryExchange {
 
     /** The wst:BinaryExchange Base64 encoded binary content */
-    String base64Binary_= null;
+    String base64Binary_ = null;
 
     /** The wst:BinaryExchange/@ValueType attribute value */
-    String valueType_= null;
+    String valueType_ = null;
 
     /** The wst:BinaryExchange/@EncodingType attribute value */
-    String encodingType_= null;
+    String encodingType_ = null;
 
     /** xs:anyAttribute for this element. */
     private AttributeMap anyAttributes_;
 
     /**
      * Constructor.
-     * <p>
-     * {@inheritDoc}
+     * 
+     * @param namespaceURI namespace of the element
+     * @param elementLocalName name of the element
+     * @param namespacePrefix namespace prefix of the element
      */
-    public BinaryExchangeImpl(String namespaceURI, String elementLocalName,
-            String namespacePrefix) {
+    public BinaryExchangeImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        anyAttributes_= new AttributeMap(this);
+        anyAttributes_ = new AttributeMap(this);
     }
 
     /*
@@ -67,7 +67,7 @@ public class BinaryExchangeImpl extends AbstractWSTrustObject implements
      * @see org.opensaml.xml.schema.XSBase64Binary#setValue(java.lang.String)
      */
     public void setValue(String newValue) {
-        base64Binary_= prepareForAssignment(base64Binary_, newValue);
+        base64Binary_ = prepareForAssignment(base64Binary_, newValue);
     }
 
     /*
@@ -85,7 +85,7 @@ public class BinaryExchangeImpl extends AbstractWSTrustObject implements
      * @see org.opensaml.ws.wssecurity.AttributedEncodingType#setEncodingType(java.lang.String)
      */
     public void setEncodingType(String encodingType) {
-        encodingType_= prepareForAssignment(encodingType_, encodingType);
+        encodingType_ = prepareForAssignment(encodingType_, encodingType);
     }
 
     /*
@@ -103,7 +103,7 @@ public class BinaryExchangeImpl extends AbstractWSTrustObject implements
      * @see org.opensaml.ws.wssecurity.AttributedValueType#setValueType(java.lang.String)
      */
     public void setValueType(String valueType) {
-        valueType_= prepareForAssignment(valueType_, valueType);
+        valueType_ = prepareForAssignment(valueType_, valueType);
     }
 
     /*

@@ -14,11 +14,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.opensaml.ws.wstrust.impl;
 
 import java.util.Collections;
 import java.util.List;
-
 
 import org.opensaml.ws.wstrust.Authenticator;
 import org.opensaml.ws.wstrust.RequestSecurityTokenResponse;
@@ -37,35 +37,35 @@ import org.opensaml.xml.XMLObject;
  * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
  * @version $Revision$
  */
-public class RequestSecurityTokenResponseImpl extends
-        AbstractRequestSecurityTokenType implements
+public class RequestSecurityTokenResponseImpl extends AbstractRequestSecurityTokenType implements
         RequestSecurityTokenResponse {
 
     /** the &lt;wst:Authenticator&gt; child element */
-    private Authenticator authenticator_= null;
+    private Authenticator authenticator_ = null;
 
     /** the &lt;wst:RequestedAttachedReference&gt; child element */
-    private RequestedAttachedReference requestedAttachedReference_= null;
+    private RequestedAttachedReference requestedAttachedReference_ = null;
 
     /** the &lt;wst:RequestedProofToken&gt; child element */
-    private RequestedProofToken requestedProofToken_= null;
+    private RequestedProofToken requestedProofToken_ = null;
 
     /** the &lt;wst:RequestedSecurityToken&gt; child element */
-    private RequestedSecurityToken requestedSecurityToken_= null;
+    private RequestedSecurityToken requestedSecurityToken_ = null;
 
     /** the &lt;wst:RequestedUnattachedReference&gt; child element */
-    private RequestedUnattachedReference requestedUnattachedReference_= null;
+    private RequestedUnattachedReference requestedUnattachedReference_ = null;
 
     /** the &lt;wst:Status&gt; child element */
-    private Status status_= null;
+    private Status status_ = null;
 
     /**
      * Constructor.
-     * <p>
-     * {@inheritDoc}
+     * 
+     * @param namespaceURI The namespace of the element
+     * @param elementLocalName The local name of the element
+     * @param namespacePrefix The namespace prefix of the element
      */
-    public RequestSecurityTokenResponseImpl(String namespaceURI,
-            String elementLocalName, String namespacePrefix) {
+    public RequestSecurityTokenResponseImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
@@ -129,7 +129,7 @@ public class RequestSecurityTokenResponseImpl extends
      * @see org.opensaml.ws.wstrust.RequestSecurityTokenResponse#setAuthenticator(org.opensaml.ws.wstrust.Authenticator)
      */
     public void setAuthenticator(Authenticator authenticator) {
-        authenticator_= prepareForAssignment(authenticator_, authenticator);
+        authenticator_ = prepareForAssignment(authenticator_, authenticator);
     }
 
     /*
@@ -137,10 +137,8 @@ public class RequestSecurityTokenResponseImpl extends
      * 
      * @see org.opensaml.ws.wstrust.RequestSecurityTokenResponse#setRequestedAttachedReference(org.opensaml.ws.wstrust.RequestedAttachedReference)
      */
-    public void setRequestedAttachedReference(
-            RequestedAttachedReference requestedAttachedReference) {
-        requestedAttachedReference_= prepareForAssignment(requestedAttachedReference_,
-                                                          requestedAttachedReference);
+    public void setRequestedAttachedReference(RequestedAttachedReference requestedAttachedReference) {
+        requestedAttachedReference_ = prepareForAssignment(requestedAttachedReference_, requestedAttachedReference);
     }
 
     /*
@@ -149,8 +147,7 @@ public class RequestSecurityTokenResponseImpl extends
      * @see org.opensaml.ws.wstrust.RequestSecurityTokenResponse#setRequestedProofToken(org.opensaml.ws.wstrust.RequestedProofToken)
      */
     public void setRequestedProofToken(RequestedProofToken requestedProofToken) {
-        requestedProofToken_= prepareForAssignment(requestedProofToken_,
-                                                   requestedProofToken);
+        requestedProofToken_ = prepareForAssignment(requestedProofToken_, requestedProofToken);
     }
 
     /*
@@ -158,10 +155,8 @@ public class RequestSecurityTokenResponseImpl extends
      * 
      * @see org.opensaml.ws.wstrust.RequestSecurityTokenResponse#setRequestedSecurityToken(org.opensaml.ws.wstrust.RequestedSecurityToken)
      */
-    public void setRequestedSecurityToken(
-            RequestedSecurityToken requestedSecurityToken) {
-        requestedSecurityToken_= prepareForAssignment(requestedSecurityToken_,
-                                                      requestedSecurityToken);
+    public void setRequestedSecurityToken(RequestedSecurityToken requestedSecurityToken) {
+        requestedSecurityToken_ = prepareForAssignment(requestedSecurityToken_, requestedSecurityToken);
     }
 
     /*
@@ -169,10 +164,9 @@ public class RequestSecurityTokenResponseImpl extends
      * 
      * @see org.opensaml.ws.wstrust.RequestSecurityTokenResponse#setRequestedUnattachedReference(org.opensaml.ws.wstrust.RequestedUnattachedReference)
      */
-    public void setRequestedUnattachedReference(
-            RequestedUnattachedReference requestedUnattachedReference) {
-        requestedUnattachedReference_= prepareForAssignment(requestedUnattachedReference_,
-                                                            requestedUnattachedReference);
+    public void setRequestedUnattachedReference(RequestedUnattachedReference requestedUnattachedReference) {
+        requestedUnattachedReference_ = prepareForAssignment(requestedUnattachedReference_,
+                requestedUnattachedReference);
     }
 
     /*
@@ -181,7 +175,7 @@ public class RequestSecurityTokenResponseImpl extends
      * @see org.opensaml.ws.wstrust.RequestSecurityTokenResponse#setStatus(org.opensaml.ws.wstrust.Status)
      */
     public void setStatus(Status status) {
-        status_= prepareForAssignment(status_, status);
+        status_ = prepareForAssignment(status_, status);
 
     }
 
@@ -191,7 +185,7 @@ public class RequestSecurityTokenResponseImpl extends
      * @see org.opensaml.xml.XMLObject#getOrderedChildren()
      */
     public List<XMLObject> getOrderedChildren() {
-        List<XMLObject> children= getCommonChildren();
+        List<XMLObject> children = getCommonChildren();
         if (authenticator_ != null) {
             children.add(authenticator_);
         }

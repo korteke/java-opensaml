@@ -14,8 +14,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.opensaml.ws.wstrust.impl;
 
+package org.opensaml.ws.wstrust.impl;
 
 import org.opensaml.ws.wstrust.CancelTarget;
 import org.opensaml.xml.AbstractElementExtensibleXMLObject;
@@ -26,16 +26,16 @@ import org.opensaml.xml.AbstractElementExtensibleXMLObject;
  * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
  * @version $Revision$
  */
-public class CancelTargetImpl extends AbstractElementExtensibleXMLObject
-        implements CancelTarget {
+public class CancelTargetImpl extends AbstractElementExtensibleXMLObject implements CancelTarget {
 
     /**
      * Constructor.
-     * <p>
-     * {@inheritDoc}
+     * 
+     * @param namespaceURI namespace of the element
+     * @param elementLocalName name of the element
+     * @param namespacePrefix namespace prefix of the element
      */
-    public CancelTargetImpl(String namespaceURI, String elementLocalName,
-            String namespacePrefix) {
+    public CancelTargetImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 

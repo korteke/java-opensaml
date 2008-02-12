@@ -14,8 +14,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.opensaml.ws.wstrust.impl;
 
+package org.opensaml.ws.wstrust.impl;
 
 import org.opensaml.ws.wstrust.Code;
 import org.opensaml.xml.schema.impl.XSURIImpl;
@@ -30,11 +30,12 @@ public class CodeImpl extends XSURIImpl implements Code {
 
     /**
      * Constructor.
-     * <p>
-     * {@inheritDoc}
+     * 
+     * @param namespaceURI The namespace of the element
+     * @param elementLocalName The local name of the element
+     * @param namespacePrefix The namespace prefix of the element
      */
-    public CodeImpl(String namespaceURI, String elementLocalName,
-            String namespacePrefix) {
+    public CodeImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 

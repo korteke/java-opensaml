@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.opensaml.ws.wstrust.impl;
 
 import org.opensaml.ws.wstrust.Participant;
@@ -24,16 +25,16 @@ import org.opensaml.ws.wstrust.Participant;
  * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
  * @version $Revision$
  */
-public class ParticipantImpl extends AbstractParticipantType implements
-        Participant {
+public class ParticipantImpl extends AbstractParticipantType implements Participant {
 
     /**
      * Constructor.
-     * <p>
-     * {@inheritDoc}
+     * 
+     * @param namespaceURI The namespace of the element
+     * @param elementLocalName The local name of the element
+     * @param namespacePrefix The namespace prefix of the element
      */
-    public ParticipantImpl(String namespaceURI, String elementLocalName,
-            String namespacePrefix) {
+    public ParticipantImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 

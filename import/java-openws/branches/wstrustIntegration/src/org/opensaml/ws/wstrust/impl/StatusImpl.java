@@ -14,12 +14,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.opensaml.ws.wstrust.impl;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 
 import org.opensaml.ws.wstrust.Code;
 import org.opensaml.ws.wstrust.Reason;
@@ -35,18 +35,19 @@ import org.opensaml.xml.XMLObject;
 public class StatusImpl extends AbstractWSTrustObject implements Status {
 
     /** The {@link Code} child element */
-    private Code code_= null;
+    private Code code_ = null;
 
     /** The {@link Reason} child element */
-    private Reason reason_= null;
+    private Reason reason_ = null;
 
     /**
      * Constructor.
-     * <p>
-     * {@inheritDoc}
+     * 
+     * @param namespaceURI The namespace of the element
+     * @param elementLocalName The local name of the element
+     * @param namespacePrefix The namespace prefix of the element
      */
-    public StatusImpl(String namespaceURI, String elementLocalName,
-            String namespacePrefix) {
+    public StatusImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
@@ -74,7 +75,7 @@ public class StatusImpl extends AbstractWSTrustObject implements Status {
      * @see org.glite.xml.trust.Status#setCode(org.glite.xml.trust.Code)
      */
     public void setCode(Code code) {
-        code_= prepareForAssignment(code_, code);
+        code_ = prepareForAssignment(code_, code);
     }
 
     /*
@@ -83,7 +84,7 @@ public class StatusImpl extends AbstractWSTrustObject implements Status {
      * @see org.glite.xml.trust.Status#setReason(org.glite.xml.trust.Reason)
      */
     public void setReason(Reason reason) {
-        reason_= prepareForAssignment(reason_, reason);
+        reason_ = prepareForAssignment(reason_, reason);
     }
 
     /*
@@ -92,7 +93,7 @@ public class StatusImpl extends AbstractWSTrustObject implements Status {
      * @see org.opensaml.xml.XMLObject#getOrderedChildren()
      */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children= new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
         if (code_ != null) {
             children.add(code_);
         }

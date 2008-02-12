@@ -14,8 +14,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.opensaml.ws.wstrust.impl;
 
+package org.opensaml.ws.wstrust.impl;
 
 import org.opensaml.ws.wstrust.Forwardable;
 import org.opensaml.xml.schema.XSBooleanValue;
@@ -26,21 +26,21 @@ import org.opensaml.xml.schema.XSBooleanValue;
  * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
  * @version $Revision$
  */
-public class ForwardableImpl extends AbstractWSTrustObject implements
-        Forwardable {
+public class ForwardableImpl extends AbstractWSTrustObject implements Forwardable {
 
     /** The wst:Forwardable content. */
-    private XSBooleanValue forwardable_= null;
+    private XSBooleanValue forwardable_ = null;
 
     /**
-     * Constructor. Default value is <code>true</code>.
-     * <p>
-     * {@inheritDoc}
+     * Constructor. Default value is <code>TRUE</code>.
+     * 
+     * @param namespaceURI The namespace of the element
+     * @param elementLocalName The local name of the element
+     * @param namespacePrefix The namespace prefix of the element
      */
-    public ForwardableImpl(String namespaceURI, String elementLocalName,
-            String namespacePrefix) {
+    public ForwardableImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        forwardable_= new XSBooleanValue(true, false);
+        forwardable_ = new XSBooleanValue(true, false);
     }
 
     /*
@@ -58,7 +58,7 @@ public class ForwardableImpl extends AbstractWSTrustObject implements
      * @see org.glite.xml.schema.XSBoolean#setValue(org.opensaml.xml.schema.XSBooleanValue)
      */
     public void setValue(XSBooleanValue value) {
-        forwardable_= prepareForAssignment(forwardable_, value);
+        forwardable_ = prepareForAssignment(forwardable_, value);
     }
 
 }

@@ -14,10 +14,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.opensaml.ws.wstrust.impl;
 
 import java.util.List;
-
 
 import org.opensaml.ws.wstrust.WSTrustObject;
 import org.opensaml.xml.XMLObject;
@@ -29,16 +29,16 @@ import org.opensaml.xml.validation.AbstractValidatingXMLObject;
  * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
  * @version $Revision$
  */
-public abstract class AbstractWSTrustObject extends AbstractValidatingXMLObject
-        implements WSTrustObject {
+public abstract class AbstractWSTrustObject extends AbstractValidatingXMLObject implements WSTrustObject {
 
     /**
      * Constructor.
-     * <p>
-     * {@inheritDoc}
+     * 
+     * @param namespaceURI namespace of the element
+     * @param elementLocalName name of the element
+     * @param namespacePrefix namespace prefix of the element
      */
-    public AbstractWSTrustObject(String namespaceURI, String elementLocalName,
-            String namespacePrefix) {
+    public AbstractWSTrustObject(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 

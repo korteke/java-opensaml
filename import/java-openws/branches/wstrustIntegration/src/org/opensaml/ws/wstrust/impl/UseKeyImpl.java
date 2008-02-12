@@ -14,8 +14,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.opensaml.ws.wstrust.impl;
 
+package org.opensaml.ws.wstrust.impl;
 
 import org.opensaml.ws.wstrust.UseKey;
 import org.opensaml.xml.AbstractElementExtensibleXMLObject;
@@ -26,19 +26,19 @@ import org.opensaml.xml.AbstractElementExtensibleXMLObject;
  * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
  * @version $Revision$
  */
-public class UseKeyImpl extends AbstractElementExtensibleXMLObject implements
-        UseKey {
+public class UseKeyImpl extends AbstractElementExtensibleXMLObject implements UseKey {
 
     /** wst:UseKey/@Sig attribute value */
-    private String sig_= null;
+    private String sig_ = null;
 
     /**
      * Constructor.
-     * <p>
-     * {@inheritDoc}
+     * 
+     * @param namespaceURI The namespace of the element
+     * @param elementLocalName The local name of the element
+     * @param namespacePrefix The namespace prefix of the element
      */
-    public UseKeyImpl(String namespaceURI, String elementLocalName,
-            String namespacePrefix) {
+    public UseKeyImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
@@ -57,7 +57,7 @@ public class UseKeyImpl extends AbstractElementExtensibleXMLObject implements
      * @see org.opensaml.ws.wstrust.UseKey#setSig(java.lang.String)
      */
     public void setSig(String sig) {
-        sig_= prepareForAssignment(sig_, sig);
+        sig_ = prepareForAssignment(sig_, sig);
     }
 
 }

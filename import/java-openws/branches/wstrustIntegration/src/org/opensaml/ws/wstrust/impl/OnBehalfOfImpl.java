@@ -14,12 +14,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.opensaml.ws.wstrust.impl;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 
 import org.opensaml.ws.wsaddressing.EndpointReference;
 import org.opensaml.ws.wssecurity.SecurityTokenReference;
@@ -33,22 +33,22 @@ import org.opensaml.xml.XMLObject;
  * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
  * @version $Revision$
  */
-public class OnBehalfOfImpl extends AbstractElementExtensibleXMLObject
-        implements OnBehalfOf {
+public class OnBehalfOfImpl extends AbstractElementExtensibleXMLObject implements OnBehalfOf {
 
     /** the {@link SecurityTokenReference} child element */
-    private SecurityTokenReference securityTokenReference_= null;
+    private SecurityTokenReference securityTokenReference_ = null;
 
     /** the {@link EndpointReference} child element */
-    private EndpointReference endpointReference_= null;
+    private EndpointReference endpointReference_ = null;
 
     /**
      * Constructor.
-     * <p>
-     * {@inheritDoc}
+     * 
+     * @param namespaceURI The namespace of the element
+     * @param elementLocalName The local name of the element
+     * @param namespacePrefix The namespace prefix of the element
      */
-    public OnBehalfOfImpl(String namespaceURI, String elementLocalName,
-            String namespacePrefix) {
+    public OnBehalfOfImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
@@ -67,8 +67,7 @@ public class OnBehalfOfImpl extends AbstractElementExtensibleXMLObject
      * @see org.opensaml.ws.wstrust.OnBehalfOf#setEndpointReference(org.opensaml.ws.wsaddressing.EndpointReference)
      */
     public void setEndpointReference(EndpointReference endpointReference) {
-        endpointReference_= prepareForAssignment(endpointReference_,
-                                                 endpointReference);
+        endpointReference_ = prepareForAssignment(endpointReference_, endpointReference);
     }
 
     /*
@@ -85,10 +84,8 @@ public class OnBehalfOfImpl extends AbstractElementExtensibleXMLObject
      * 
      * @see org.opensaml.ws.wstrust.OnBehalfOf#setSecurityTokenReference(org.opensaml.ws.wssecurity.SecurityTokenReference)
      */
-    public void setSecurityTokenReference(
-            SecurityTokenReference securityTokenReference) {
-        securityTokenReference_= prepareForAssignment(securityTokenReference_,
-                                                      securityTokenReference);
+    public void setSecurityTokenReference(SecurityTokenReference securityTokenReference) {
+        securityTokenReference_ = prepareForAssignment(securityTokenReference_, securityTokenReference);
 
     }
 
@@ -99,14 +96,12 @@ public class OnBehalfOfImpl extends AbstractElementExtensibleXMLObject
      */
     @Override
     public List<XMLObject> getOrderedChildren() {
-        List<XMLObject> children= new ArrayList<XMLObject>();
+        List<XMLObject> children = new ArrayList<XMLObject>();
         if (endpointReference_ != null) {
             children.add(endpointReference_);
-        }
-        else if (securityTokenReference_ != null) {
+        } else if (securityTokenReference_ != null) {
             children.add(securityTokenReference_);
-        }
-        else {
+        } else {
             // xs:any element: security token
             if (!getUnknownXMLObjects().isEmpty()) {
                 children.addAll(getUnknownXMLObjects());

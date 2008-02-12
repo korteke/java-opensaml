@@ -14,12 +14,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.opensaml.ws.wstrust.impl;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 
 import org.opensaml.ws.wstrust.RequestSecurityToken;
 import org.opensaml.ws.wstrust.RequestSecurityTokenCollection;
@@ -34,21 +34,21 @@ import org.opensaml.xml.signature.Signature;
  * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
  * @version $Revision$
  */
-public class RequestSecurityTokenCollectionImpl extends AbstractWSTrustObject
-        implements RequestSecurityTokenCollection {
+public class RequestSecurityTokenCollectionImpl extends AbstractWSTrustObject implements RequestSecurityTokenCollection {
 
     /** The list of &lt;wst:RequestSecurityToken&gt; child elements */
-    private List<RequestSecurityToken> requestSecurityTokens_= null;
+    private List<RequestSecurityToken> requestSecurityTokens_ = null;
 
     /**
-     * Constructor. Initializes the list of RST elements.
-     * <p>
-     * {@inheritDoc}
+     * Constructor.
+     * 
+     * @param namespaceURI The namespace of the element
+     * @param elementLocalName The local name of the element
+     * @param namespacePrefix The namespace prefix of the element
      */
-    public RequestSecurityTokenCollectionImpl(String namespaceURI,
-            String elementLocalName, String namespacePrefix) {
+    public RequestSecurityTokenCollectionImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        requestSecurityTokens_= new ArrayList<RequestSecurityToken>();
+        requestSecurityTokens_ = new ArrayList<RequestSecurityToken>();
     }
 
     /*
@@ -61,13 +61,12 @@ public class RequestSecurityTokenCollectionImpl extends AbstractWSTrustObject
     }
 
     /**
-     * Returns the list of {@link RequestSecurityToken} child elements and the
-     * {@link Signature} child element.
+     * Returns the list of {@link RequestSecurityToken} child elements and the {@link Signature} child element.
      * 
      * {@inheritDoc}
      */
     public List<XMLObject> getOrderedChildren() {
-        List<XMLObject> children= new ArrayList<XMLObject>();
+        List<XMLObject> children = new ArrayList<XMLObject>();
         for (XMLObject rst : requestSecurityTokens_) {
             children.add(rst);
         }
@@ -82,10 +81,8 @@ public class RequestSecurityTokenCollectionImpl extends AbstractWSTrustObject
      * 
      * @see org.opensaml.ws.wstrust.RequestSecurityTokenCollection#setRequestSecurityTokens(java.util.List)
      */
-    public void setRequestSecurityTokens(
-            List<RequestSecurityToken> requestSecurityTokens) {
-        requestSecurityTokens_= prepareForAssignment(requestSecurityTokens_,
-                                                     requestSecurityTokens);
+    public void setRequestSecurityTokens(List<RequestSecurityToken> requestSecurityTokens) {
+        requestSecurityTokens_ = prepareForAssignment(requestSecurityTokens_, requestSecurityTokens);
     }
 
 }

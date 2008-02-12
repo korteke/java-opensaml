@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.opensaml.ws.wstrust.impl;
 
 import org.opensaml.ws.wstrust.Renewing;
@@ -27,18 +28,19 @@ import org.opensaml.ws.wstrust.Renewing;
 public class RenewingImpl extends AbstractWSTrustObject implements Renewing {
 
     /** Allow attribute value */
-    private Boolean allow_= null;
+    private Boolean allow_ = null;
 
     /** OK attribute value */
-    private Boolean ok_= null;
+    private Boolean ok_ = null;
 
     /**
      * Constructor.
-     * <p>
-     * {@inheritDoc}
+     * 
+     * @param namespaceURI The namespace of the element
+     * @param elementLocalName The local name of the element
+     * @param namespacePrefix The namespace prefix of the element
      */
-    public RenewingImpl(String namespaceURI, String elementLocalName,
-            String namespacePrefix) {
+    public RenewingImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
@@ -66,7 +68,7 @@ public class RenewingImpl extends AbstractWSTrustObject implements Renewing {
      * @see org.opensaml.ws.wstrust.Renewing#setAllow(Boolean)
      */
     public void setAllow(Boolean allow) {
-        allow_= prepareForAssignment(allow_, allow);
+        allow_ = prepareForAssignment(allow_, allow);
     }
 
     /*
@@ -75,7 +77,7 @@ public class RenewingImpl extends AbstractWSTrustObject implements Renewing {
      * @see org.opensaml.ws.wstrust.Renewing#setOK(Boolean)
      */
     public void setOK(Boolean ok) {
-        ok_= prepareForAssignment(ok_, ok);
+        ok_ = prepareForAssignment(ok_, ok);
     }
 
 }

@@ -14,8 +14,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.opensaml.ws.wstrust.impl;
 
+package org.opensaml.ws.wstrust.impl;
 
 import org.opensaml.ws.wstrust.BinarySecret;
 import org.opensaml.xml.util.AttributeMap;
@@ -26,27 +26,27 @@ import org.opensaml.xml.util.AttributeMap;
  * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
  * @version $Revision$
  */
-public class BinarySecretImpl extends AbstractWSTrustObject implements
-        BinarySecret {
+public class BinarySecretImpl extends AbstractWSTrustObject implements BinarySecret {
 
     /** The &lt;wst:Type&gt; attribute value */
-    private String type_= null;
+    private String type_ = null;
 
     /** xs:anyAttribute for this element. */
     private AttributeMap anyAttributes_;
 
     /** The base64 content */
-    private String value_= null;
+    private String value_ = null;
 
     /**
      * Constructor.
-     * <p>
-     * {@inheritDoc}
+     * 
+     * @param namespaceURI namespace of the element
+     * @param elementLocalName name of the element
+     * @param namespacePrefix namespace prefix of the element
      */
-    public BinarySecretImpl(String namespaceURI, String elementLocalName,
-            String namespacePrefix) {
+    public BinarySecretImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        anyAttributes_= new AttributeMap(this);
+        anyAttributes_ = new AttributeMap(this);
     }
 
     /*
@@ -64,7 +64,7 @@ public class BinarySecretImpl extends AbstractWSTrustObject implements
      * @see org.opensaml.ws.wstrust.BinarySecret#setType(java.lang.String)
      */
     public void setType(String type) {
-        type_= prepareForAssignment(type_, type);
+        type_ = prepareForAssignment(type_, type);
     }
 
     /*
@@ -82,7 +82,7 @@ public class BinarySecretImpl extends AbstractWSTrustObject implements
      * @see org.opensaml.xml.schema.XSBase64Binary#setValue(java.lang.String)
      */
     public void setValue(String value) {
-        value_= prepareForAssignment(value_, value);
+        value_ = prepareForAssignment(value_, value);
     }
 
     /*

@@ -14,8 +14,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.opensaml.ws.wstrust.impl;
 
+package org.opensaml.ws.wstrust.impl;
 
 import org.opensaml.ws.wstrust.Delegatable;
 import org.opensaml.xml.schema.XSBooleanValue;
@@ -26,21 +26,21 @@ import org.opensaml.xml.schema.XSBooleanValue;
  * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
  * @version $Revision$
  */
-public class DelegatableImpl extends AbstractWSTrustObject implements
-        Delegatable {
+public class DelegatableImpl extends AbstractWSTrustObject implements Delegatable {
 
     /** The wst:Delegatable content. */
-    private XSBooleanValue delegatable_= null;
+    private XSBooleanValue delegatable_ = null;
 
     /**
-     * Constructor. Default value is <code>false</code>.
-     * <p>
-     * {@inheritDoc}
+     * Constructor. Default value is <code>FALSE</code>.
+     * 
+     * @param namespaceURI The namespace of the element
+     * @param elementLocalName The local name of the element
+     * @param namespacePrefix The namespace prefix of the element
      */
-    public DelegatableImpl(String namespaceURI, String elementLocalName,
-            String namespacePrefix) {
+    public DelegatableImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        delegatable_= new XSBooleanValue(false, false);
+        delegatable_ = new XSBooleanValue(false, false);
     }
 
     /*
@@ -58,7 +58,7 @@ public class DelegatableImpl extends AbstractWSTrustObject implements
      * @see org.glite.xml.schema.XSBoolean#setValue(org.opensaml.xml.schema.XSBooleanValue)
      */
     public void setValue(XSBooleanValue value) {
-        delegatable_= prepareForAssignment(delegatable_, value);
+        delegatable_ = prepareForAssignment(delegatable_, value);
     }
 
 }

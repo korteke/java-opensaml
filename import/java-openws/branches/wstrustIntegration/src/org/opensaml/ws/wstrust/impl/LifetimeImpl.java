@@ -14,12 +14,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.opensaml.ws.wstrust.impl;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 
 import org.opensaml.ws.wssecurity.Created;
 import org.opensaml.ws.wssecurity.Expires;
@@ -35,18 +35,19 @@ import org.opensaml.xml.XMLObject;
 public class LifetimeImpl extends AbstractWSTrustObject implements Lifetime {
 
     /** The wsu:Created child element */
-    private Created created_= null;
+    private Created created_ = null;
 
     /** The wsu:Expires child element */
-    private Expires expires_= null;
+    private Expires expires_ = null;
 
     /**
      * Constructor.
-     * <p>
-     * {@inheritDoc}
+     * 
+     * @param namespaceURI The namespace of the element
+     * @param elementLocalName The local name of the element
+     * @param namespacePrefix The namespace prefix of the element
      */
-    public LifetimeImpl(String namespaceURI, String elementLocalName,
-            String namespacePrefix) {
+    public LifetimeImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
@@ -74,7 +75,7 @@ public class LifetimeImpl extends AbstractWSTrustObject implements Lifetime {
      * @see org.glite.xml.trust.Lifetime#setCreated(org.glite.xml.security.Created)
      */
     public void setCreated(Created created) {
-        created_= prepareForAssignment(created_, created);
+        created_ = prepareForAssignment(created_, created);
     }
 
     /*
@@ -83,7 +84,7 @@ public class LifetimeImpl extends AbstractWSTrustObject implements Lifetime {
      * @see org.glite.xml.trust.Lifetime#setExpires(org.glite.xml.security.Expires)
      */
     public void setExpires(Expires expires) {
-        expires_= prepareForAssignment(expires_, expires);
+        expires_ = prepareForAssignment(expires_, expires);
     }
 
     /*
@@ -92,7 +93,7 @@ public class LifetimeImpl extends AbstractWSTrustObject implements Lifetime {
      * @see org.glite.xml.trust.impl.AbstractWSTrustObject#getOrderedChildren()
      */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children= new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
         if (created_ != null) {
             children.add(created_);
         }

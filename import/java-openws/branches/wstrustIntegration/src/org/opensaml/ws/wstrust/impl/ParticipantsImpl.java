@@ -14,12 +14,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.opensaml.ws.wstrust.impl;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 
 import org.opensaml.ws.wstrust.Participant;
 import org.opensaml.ws.wstrust.Participants;
@@ -33,22 +33,22 @@ import org.opensaml.xml.XMLObject;
  * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
  * @version $Revision$
  */
-public class ParticipantsImpl extends AbstractElementExtensibleXMLObject
-        implements Participants {
+public class ParticipantsImpl extends AbstractElementExtensibleXMLObject implements Participants {
 
     /** The {@link Primary} child element */
-    private Primary primary_= null;
+    private Primary primary_ = null;
 
     /** The {@link Participant} child element */
-    private Participant participant_= null;
+    private Participant participant_ = null;
 
     /**
      * Constructor.
-     * <p>
-     * {@inheritDoc}
+     * 
+     * @param namespaceURI The namespace of the element
+     * @param elementLocalName The local name of the element
+     * @param namespacePrefix The namespace prefix of the element
      */
-    public ParticipantsImpl(String namespaceURI, String elementLocalName,
-            String namespacePrefix) {
+    public ParticipantsImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
@@ -76,7 +76,7 @@ public class ParticipantsImpl extends AbstractElementExtensibleXMLObject
      * @see org.opensaml.ws.wstrust.Participants#setParticipant(org.opensaml.ws.wstrust.Participant)
      */
     public void setParticipant(Participant participant) {
-        participant_= prepareForAssignment(participant_, participant);
+        participant_ = prepareForAssignment(participant_, participant);
     }
 
     /*
@@ -85,7 +85,7 @@ public class ParticipantsImpl extends AbstractElementExtensibleXMLObject
      * @see org.opensaml.ws.wstrust.Participants#setPrimary(org.opensaml.ws.wstrust.Primary)
      */
     public void setPrimary(Primary primary) {
-        primary_= prepareForAssignment(primary_, primary);
+        primary_ = prepareForAssignment(primary_, primary);
     }
 
     /*
@@ -95,7 +95,7 @@ public class ParticipantsImpl extends AbstractElementExtensibleXMLObject
      */
     @Override
     public List<XMLObject> getOrderedChildren() {
-        List<XMLObject> children= new ArrayList<XMLObject>();
+        List<XMLObject> children = new ArrayList<XMLObject>();
         if (primary_ != null) {
             children.add(primary_);
         }

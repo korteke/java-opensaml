@@ -14,12 +14,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.opensaml.ws.wstrust.impl;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 
 import org.opensaml.ws.wstrust.BinarySecret;
 import org.opensaml.ws.wstrust.Entropy;
@@ -36,18 +36,19 @@ import org.opensaml.xml.encryption.EncryptedKey;
 public class EntropyImpl extends AbstractExtensibleXMLObject implements Entropy {
 
     /** the &lt;wst:BinarySecret&gt; child element */
-    private BinarySecret binarySecret_= null;
+    private BinarySecret binarySecret_ = null;
 
     /** the &lt;xenc:EncryptedKey&gt; child element */
-    private EncryptedKey encryptedKey_= null;
+    private EncryptedKey encryptedKey_ = null;
 
     /**
      * Constructor.
-     * <p>
-     * {@inheritDoc}
+     * 
+     * @param namespaceURI The namespace of the element
+     * @param elementLocalName The local name of the element
+     * @param namespacePrefix The namespace prefix of the element
      */
-    public EntropyImpl(String namespaceURI, String elementLocalName,
-            String namespacePrefix) {
+    public EntropyImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
@@ -75,7 +76,7 @@ public class EntropyImpl extends AbstractExtensibleXMLObject implements Entropy 
      * @see org.opensaml.ws.wstrust.Entropy#setBinarySecret(org.opensaml.ws.wstrust.BinarySecret)
      */
     public void setBinarySecret(BinarySecret binarySecret) {
-        binarySecret_= prepareForAssignment(binarySecret_, binarySecret);
+        binarySecret_ = prepareForAssignment(binarySecret_, binarySecret);
     }
 
     /*
@@ -84,7 +85,7 @@ public class EntropyImpl extends AbstractExtensibleXMLObject implements Entropy 
      * @see org.opensaml.ws.wstrust.Entropy#setEncryptedKey(org.opensaml.xml.encryption.EncryptedKey)
      */
     public void setEncryptedKey(EncryptedKey encryptedKey) {
-        encryptedKey_= prepareForAssignment(encryptedKey_, encryptedKey);
+        encryptedKey_ = prepareForAssignment(encryptedKey_, encryptedKey);
     }
 
     /*
@@ -94,7 +95,7 @@ public class EntropyImpl extends AbstractExtensibleXMLObject implements Entropy 
      */
     @Override
     public List<XMLObject> getOrderedChildren() {
-        List<XMLObject> children= getChildren();
+        List<XMLObject> children = getChildren();
         // xs:any elements
         if (!getUnknownXMLObjects().isEmpty()) {
             children.addAll(getUnknownXMLObjects());
@@ -108,7 +109,7 @@ public class EntropyImpl extends AbstractExtensibleXMLObject implements Entropy 
      * @return list of children elements.
      */
     protected List<XMLObject> getChildren() {
-        List<XMLObject> children= new ArrayList<XMLObject>();
+        List<XMLObject> children = new ArrayList<XMLObject>();
         if (encryptedKey_ != null) {
             children.add(encryptedKey_);
         }

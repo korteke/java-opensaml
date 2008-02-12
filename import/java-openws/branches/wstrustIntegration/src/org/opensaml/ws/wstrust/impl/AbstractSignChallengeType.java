@@ -14,12 +14,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.opensaml.ws.wstrust.impl;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 
 import org.opensaml.ws.wstrust.Challenge;
 import org.opensaml.ws.wstrust.SignChallengeType;
@@ -32,19 +32,19 @@ import org.opensaml.xml.XMLObject;
  * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
  * @version $Revision$
  */
-abstract class AbstractSignChallengeType extends AbstractExtensibleXMLObject
-        implements SignChallengeType {
+abstract class AbstractSignChallengeType extends AbstractExtensibleXMLObject implements SignChallengeType {
 
     /** {@link Challenge} child element */
-    protected Challenge challenge_= null;
+    protected Challenge challenge_ = null;
 
     /**
      * Constructor.
-     * <p>
-     * {@inheritDoc}
+     * 
+     * @param namespaceURI namespace of the element
+     * @param elementLocalName name of the element
+     * @param namespacePrefix namespace prefix of the element
      */
-    public AbstractSignChallengeType(String namespaceURI,
-            String elementLocalName, String namespacePrefix) {
+    public AbstractSignChallengeType(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
@@ -63,7 +63,7 @@ abstract class AbstractSignChallengeType extends AbstractExtensibleXMLObject
      * @see org.opensaml.ws.wstrust.SignChallengeType#setChallenge(org.opensaml.ws.wstrust.Challenge)
      */
     public void setChallenge(Challenge challenge) {
-        challenge_= prepareForAssignment(challenge_, challenge);
+        challenge_ = prepareForAssignment(challenge_, challenge);
     }
 
     /*
@@ -73,7 +73,7 @@ abstract class AbstractSignChallengeType extends AbstractExtensibleXMLObject
      */
     @Override
     public List<XMLObject> getOrderedChildren() {
-        List<XMLObject> children= new ArrayList<XMLObject>();
+        List<XMLObject> children = new ArrayList<XMLObject>();
         if (challenge_ != null) {
             children.add(challenge_);
         }

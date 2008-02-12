@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.opensaml.ws.wstrust.impl;
 
 import org.opensaml.ws.wstrust.AllowPostdating;
@@ -24,16 +25,16 @@ import org.opensaml.ws.wstrust.AllowPostdating;
  * @author Valery Tschopp <tschopp@switch.ch>
  * @version $Revision$
  */
-public class AllowPostdatingImpl extends AbstractWSTrustObject implements
-        AllowPostdating {
+public class AllowPostdatingImpl extends AbstractWSTrustObject implements AllowPostdating {
 
     /**
      * Constructor.
-     * <p>
-     * {@inheritDoc}
+     * 
+     * @param namespaceURI namespace of the element
+     * @param elementLocalName name of the element
+     * @param namespacePrefix namespace prefix of the element
      */
-    public AllowPostdatingImpl(String namespaceURI, String elementLocalName,
-            String namespacePrefix) {
+    public AllowPostdatingImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 

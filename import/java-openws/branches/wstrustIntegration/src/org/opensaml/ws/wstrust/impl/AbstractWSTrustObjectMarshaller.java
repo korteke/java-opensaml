@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.opensaml.ws.wstrust.impl;
 
 import org.opensaml.xml.XMLObject;
@@ -24,52 +25,46 @@ import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
 
 /**
- * An abstract marshaller implementation for XMLObjects from
- * {@link org.opensaml.ws.wstrust}.
+ * An abstract marshaller implementation for XMLObjects from {@link org.opensaml.ws.wstrust}.
  * 
  * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
  * @version $Revision$
  */
-public abstract class AbstractWSTrustObjectMarshaller extends
-        AbstractXMLObjectMarshaller {
+public abstract class AbstractWSTrustObjectMarshaller extends AbstractXMLObjectMarshaller {
 
     /** Logger */
-    private final Logger log= LoggerFactory.getLogger(AbstractWSTrustObjectMarshaller.class);
+    private final Logger log = LoggerFactory.getLogger(AbstractWSTrustObjectMarshaller.class);
 
     /**
      * Constructor.
-     * <p>
-     * {@inheritDoc}
+     * 
+     * @param targetNamespaceURI The namespace of the element
+     * @param targetLocalName The local name of the element
      */
-    protected AbstractWSTrustObjectMarshaller(String targetNamespaceURI,
-            String targetLocalName) {
+    protected AbstractWSTrustObjectMarshaller(String targetNamespaceURI, String targetLocalName) {
         super(targetNamespaceURI, targetLocalName);
     }
 
     /*
-     * No-op method. Extending implementations should override this method if
-     * they have attributes to marshall into the Element.
+     * No-op method. Extending implementations should override this method if they have attributes to marshall into the
+     * Element.
      * 
      * @see org.opensaml.xml.io.AbstractXMLObjectMarshaller#marshallAttributes(org.opensaml.xml.XMLObject,
      *      org.w3c.dom.Element)
      */
-    protected void marshallAttributes(XMLObject xmlObject, Element domElement)
-            throws MarshallingException {
-        log.debug("{} has no more attribute to marshall.",
-                  xmlObject.getElementQName().getLocalPart());
+    protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
+        log.debug("{} has no more attribute to marshall.", xmlObject.getElementQName().getLocalPart());
 
     }
 
     /*
-     * No-op method. Extending implementations should override this method if
-     * they have text content to marshall into the Element.
+     * No-op method. Extending implementations should override this method if they have text content to marshall into
+     * the Element.
      * 
      * @see org.opensaml.xml.io.AbstractXMLObjectMarshaller#marshallElementContent(org.opensaml.xml.XMLObject,
      *      org.w3c.dom.Element)
      */
-    protected void marshallElementContent(XMLObject xmlObject,
-            Element domElement) throws MarshallingException {
-        log.debug("{} has no content to marshall.",
-                  xmlObject.getElementQName().getLocalPart());
+    protected void marshallElementContent(XMLObject xmlObject, Element domElement) throws MarshallingException {
+        log.debug("{} has no content to marshall.", xmlObject.getElementQName().getLocalPart());
     }
 }

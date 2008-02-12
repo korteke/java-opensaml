@@ -14,8 +14,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.opensaml.ws.wstrust.impl;
 
+package org.opensaml.ws.wstrust.impl;
 
 import org.opensaml.ws.wstrust.ComputedKeyAlgorithm;
 import org.opensaml.xml.schema.impl.XSURIImpl;
@@ -26,16 +26,16 @@ import org.opensaml.xml.schema.impl.XSURIImpl;
  * @author Valery Tschopp <tschopp@switch.ch>
  * @version $Revision$
  */
-public class ComputedKeyAlgorithmImpl extends XSURIImpl implements
-        ComputedKeyAlgorithm {
+public class ComputedKeyAlgorithmImpl extends XSURIImpl implements ComputedKeyAlgorithm {
 
     /**
      * Constructor.
-     * <p>
-     * {@inheritDoc}
+     * 
+     * @param namespaceURI The namespace of the element
+     * @param elementLocalName The local name of the element
+     * @param namespacePrefix The namespace prefix of the element
      */
-    public ComputedKeyAlgorithmImpl(String namespaceURI,
-            String elementLocalName, String namespacePrefix) {
+    public ComputedKeyAlgorithmImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 

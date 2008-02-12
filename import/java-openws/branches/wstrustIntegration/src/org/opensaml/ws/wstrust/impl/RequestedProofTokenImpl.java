@@ -14,12 +14,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.opensaml.ws.wstrust.impl;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 
 import org.opensaml.ws.wstrust.ComputedKey;
 import org.opensaml.ws.wstrust.RequestedProofToken;
@@ -32,19 +32,19 @@ import org.opensaml.xml.XMLObject;
  * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
  * @version $Revision$
  */
-public class RequestedProofTokenImpl extends AbstractElementExtensibleXMLObject
-        implements RequestedProofToken {
+public class RequestedProofTokenImpl extends AbstractElementExtensibleXMLObject implements RequestedProofToken {
 
     /** {@link ComputedKey} child element */
-    private ComputedKey computedKey_= null;
+    private ComputedKey computedKey_ = null;
 
     /**
      * Constructor.
-     * <p>
-     * {@inheritDoc}
+     * 
+     * @param namespaceURI The namespace of the element
+     * @param elementLocalName The local name of the element
+     * @param namespacePrefix The namespace prefix of the element
      */
-    public RequestedProofTokenImpl(String namespaceURI,
-            String elementLocalName, String namespacePrefix) {
+    public RequestedProofTokenImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
@@ -63,7 +63,7 @@ public class RequestedProofTokenImpl extends AbstractElementExtensibleXMLObject
      * @see org.opensaml.ws.wstrust.RequestedProofToken#setComputedKey(org.opensaml.ws.wstrust.ComputedKey)
      */
     public void setComputedKey(ComputedKey computedKey) {
-        computedKey_= prepareForAssignment(computedKey_, computedKey);
+        computedKey_ = prepareForAssignment(computedKey_, computedKey);
     }
 
     /*
@@ -73,7 +73,7 @@ public class RequestedProofTokenImpl extends AbstractElementExtensibleXMLObject
      */
     @Override
     public List<XMLObject> getOrderedChildren() {
-        List<XMLObject> children= new ArrayList<XMLObject>();
+        List<XMLObject> children = new ArrayList<XMLObject>();
         if (computedKey_ != null) {
             children.add(computedKey_);
         }

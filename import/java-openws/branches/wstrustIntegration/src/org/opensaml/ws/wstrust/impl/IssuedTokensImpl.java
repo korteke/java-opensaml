@@ -14,12 +14,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.opensaml.ws.wstrust.impl;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 
 import org.opensaml.ws.wstrust.IssuedTokens;
 import org.opensaml.ws.wstrust.RequestSecurityTokenResponse;
@@ -31,21 +31,21 @@ import org.opensaml.xml.XMLObject;
  * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
  * @version $Revision$
  */
-public class IssuedTokensImpl extends AbstractWSTrustObject implements
-        IssuedTokens {
+public class IssuedTokensImpl extends AbstractWSTrustObject implements IssuedTokens {
 
     /** List of RequestSecurityTokenReponse */
-    private List<RequestSecurityTokenResponse> requestSecurityTokenResponses_= null;
+    private List<RequestSecurityTokenResponse> requestSecurityTokenResponses_ = null;
 
     /**
      * Constructor.
-     * <p>
-     * {@inheritDoc}
+     * 
+     * @param namespaceURI The namespace of the element
+     * @param elementLocalName The local name of the element
+     * @param namespacePrefix The namespace prefix of the element
      */
-    public IssuedTokensImpl(String namespaceURI, String elementLocalName,
-            String namespacePrefix) {
+    public IssuedTokensImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        requestSecurityTokenResponses_= new ArrayList<RequestSecurityTokenResponse>();
+        requestSecurityTokenResponses_ = new ArrayList<RequestSecurityTokenResponse>();
     }
 
     /*
@@ -62,10 +62,9 @@ public class IssuedTokensImpl extends AbstractWSTrustObject implements
      * 
      * @see org.opensaml.ws.wstrust.IssuedTokens#setSecurityTokenResponses(java.util.List)
      */
-    public void setRequestSecurityTokenResponses(
-            List<RequestSecurityTokenResponse> requestSecurityTokenResponses) {
-        requestSecurityTokenResponses_= prepareForAssignment(requestSecurityTokenResponses_,
-                                                             requestSecurityTokenResponses);
+    public void setRequestSecurityTokenResponses(List<RequestSecurityTokenResponse> requestSecurityTokenResponses) {
+        requestSecurityTokenResponses_ = prepareForAssignment(requestSecurityTokenResponses_,
+                requestSecurityTokenResponses);
     }
 
     /*
@@ -75,7 +74,7 @@ public class IssuedTokensImpl extends AbstractWSTrustObject implements
      */
     @Override
     public List<XMLObject> getOrderedChildren() {
-        List<XMLObject> rstrs= new ArrayList<XMLObject>(requestSecurityTokenResponses_.size());
+        List<XMLObject> rstrs = new ArrayList<XMLObject>(requestSecurityTokenResponses_.size());
         for (XMLObject rstr : requestSecurityTokenResponses_) {
             rstrs.add(rstr);
         }

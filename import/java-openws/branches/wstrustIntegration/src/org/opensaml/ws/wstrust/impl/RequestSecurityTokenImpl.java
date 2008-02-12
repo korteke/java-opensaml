@@ -14,11 +14,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.opensaml.ws.wstrust.impl;
 
 import java.util.Collections;
 import java.util.List;
-
 
 import org.opensaml.ws.wstrust.Claims;
 import org.opensaml.ws.wstrust.RequestSecurityToken;
@@ -30,19 +30,19 @@ import org.opensaml.xml.XMLObject;
  * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
  * @version $Revision$
  */
-public class RequestSecurityTokenImpl extends AbstractRequestSecurityTokenType
-        implements RequestSecurityToken {
+public class RequestSecurityTokenImpl extends AbstractRequestSecurityTokenType implements RequestSecurityToken {
 
     /** The &lt;wst:Claims&gt; child element */
-    private Claims claims_= null;
+    private Claims claims_ = null;
 
     /**
      * Constructor.
-     * <p>
-     * {@inheritDoc}
+     * 
+     * @param namespaceURI The namespace of the element
+     * @param elementLocalName The local name of the element
+     * @param namespacePrefix The namespace prefix of the element
      */
-    public RequestSecurityTokenImpl(String namespaceURI,
-            String elementLocalName, String namespacePrefix) {
+    public RequestSecurityTokenImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
@@ -61,7 +61,7 @@ public class RequestSecurityTokenImpl extends AbstractRequestSecurityTokenType
      * @see org.opensaml.ws.wstrust.RequestSecurityToken#setClaims(org.opensaml.ws.wstrust.Claims)
      */
     public void setClaims(Claims claims) {
-        claims_= prepareForAssignment(claims_, claims);
+        claims_ = prepareForAssignment(claims_, claims);
     }
 
     /*
@@ -70,7 +70,7 @@ public class RequestSecurityTokenImpl extends AbstractRequestSecurityTokenType
      * @see org.opensaml.xml.XMLObject#getOrderedChildren()
      */
     public List<XMLObject> getOrderedChildren() {
-        List<XMLObject> children= getCommonChildren();
+        List<XMLObject> children = getCommonChildren();
         // TODO add all possible children, in which order ???
         if (claims_ != null) {
             children.add(claims_);

@@ -14,11 +14,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.opensaml.ws.wstrust.impl;
 
 import java.util.ArrayList;
 import java.util.List;
-
 
 import org.opensaml.ws.wspolicy.AppliesTo;
 import org.opensaml.ws.wspolicy.Policy;
@@ -53,9 +53,8 @@ import org.opensaml.xml.AbstractExtensibleXMLObject;
 import org.opensaml.xml.XMLObject;
 
 /**
- * AbstractRequestSecurityTokenType is an abstract validating
- * &lt;wst:RequestSecurityToken&gt; or &lt;wst:RequestSecurityTokenResponse&gt;
- * element, with a &lt;wst:Context&gt; attribute.
+ * AbstractRequestSecurityTokenType is an abstract validating &lt;wst:RequestSecurityToken&gt; or
+ * &lt;wst:RequestSecurityTokenResponse&gt; element, with a &lt;wst:Context&gt; attribute.
  * 
  * @see RequestSecurityTokenType
  * @see RequestSecurityToken
@@ -64,97 +63,98 @@ import org.opensaml.xml.XMLObject;
  * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
  * @version $Revision$
  */
-public abstract class AbstractRequestSecurityTokenType extends
-        AbstractExtensibleXMLObject implements RequestSecurityTokenType {
+public abstract class AbstractRequestSecurityTokenType extends AbstractExtensibleXMLObject implements
+        RequestSecurityTokenType {
 
     /** The &lt;wst:Context&gt; attribute value */
-    private String context_= null;
+    private String context_ = null;
 
     /** The &lt;wst:TokenType&gt; child element */
-    private TokenType tokenType_= null;
+    private TokenType tokenType_ = null;
 
     /** The &lt;wst:RequestType&gt; child element */
-    private RequestType requestType_= null;
+    private RequestType requestType_ = null;
 
     /** The &lt;wst:AllowPostdating&gt; child element */
-    private AllowPostdating allowPostdating_= null;
+    private AllowPostdating allowPostdating_ = null;
 
     /** The &lt;wsp:AppliesTo&gt; child element */
-    private AppliesTo appliesTo_= null;
+    private AppliesTo appliesTo_ = null;
 
     /** The &lt;wst:AuthenticationType&gt; child element */
-    private AuthenticationType authenticationType_= null;
+    private AuthenticationType authenticationType_ = null;
 
     /** The &lt;wst:CanonicalizationAlgorithm&gt; child element */
-    private CanonicalizationAlgorithm canonicalizationAlgorithm_= null;
+    private CanonicalizationAlgorithm canonicalizationAlgorithm_ = null;
 
     /** The &lt;wst:Delegatable&gt; child element */
-    private Delegatable delegatable_= null;
+    private Delegatable delegatable_ = null;
 
     /** The &lt;wst:DelegateTo&gt; child element */
-    private DelegateTo delegateTo_= null;
+    private DelegateTo delegateTo_ = null;
 
     /** The &lt;wst:Encryption&gt; child element */
-    private Encryption encryption_= null;
+    private Encryption encryption_ = null;
 
     /** The &lt;wst:EncryptionAlgorithm&gt; child element */
-    private EncryptionAlgorithm encryptionAlgorithm_= null;
+    private EncryptionAlgorithm encryptionAlgorithm_ = null;
 
     /** The &lt;wst:EncryptWith&gt; child element */
-    private EncryptWith encryptWith_= null;
+    private EncryptWith encryptWith_ = null;
 
     /** The &lt;wst:Entropy&gt; child element */
-    private Entropy entropy_= null;
+    private Entropy entropy_ = null;
 
     /** The &lt;wst:Forwardable&gt; child element */
-    private Forwardable forwardable_= null;
+    private Forwardable forwardable_ = null;
 
     /** The &lt;wst:Issuer&gt; child element */
-    private Issuer issuer_= null;
+    private Issuer issuer_ = null;
 
     /** The &lt;wst:KeySize&gt; child element */
-    private KeySize keySize_= null;
+    private KeySize keySize_ = null;
 
     /** The &lt;wst:KeyType&gt; child element */
-    private KeyType keyType_= null;
+    private KeyType keyType_ = null;
 
     /** The &lt;wst:Lifetime&gt; child element */
-    private Lifetime lifetime_= null;
+    private Lifetime lifetime_ = null;
 
     /** The &lt;wst:OnBehalfOf&gt; child element */
-    private OnBehalfOf onBehalfOf_= null;
+    private OnBehalfOf onBehalfOf_ = null;
 
     /** The &lt;wsp:Policy&gt; child element */
-    private Policy policy_= null;
+    private Policy policy_ = null;
 
     /** The &lt;wsp:PolicyReference&gt; child element */
-    private PolicyReference policyReference_= null;
+    private PolicyReference policyReference_ = null;
 
     /** The &lt;wst:ProofEncryption&gt; child element */
-    private ProofEncryption proofEncryption_= null;
+    private ProofEncryption proofEncryption_ = null;
 
     /** The &lt;wst:Renewing&gt; child element */
-    private Renewing renewing_= null;
+    private Renewing renewing_ = null;
 
     /** The &lt;wst:SignatureAlgorithm&gt; child element */
-    private SignatureAlgorithm signatureAlgorithm_= null;
+    private SignatureAlgorithm signatureAlgorithm_ = null;
 
     /** The &lt;wst:SignWith&gt; child element */
-    private SignWith signWith_= null;
+    private SignWith signWith_ = null;
 
     /** The &lt;wst:UseKey&gt; child element */
-    private UseKey useKey_= null;
+    private UseKey useKey_ = null;
 
     /** The &lt;wsu:Timestamp&gt; child element */
-    private Timestamp timestamp_= null;
+    private Timestamp timestamp_ = null;
 
     /**
      * Constructor.
-     * <p>
-     * {@inheritDoc}
+     * 
+     * @param namespaceURI namespace of the element
+     * @param elementLocalName name of the element
+     * @param namespacePrefix namespace prefix of the element
      */
-    public AbstractRequestSecurityTokenType(String namespaceURI,
-            String elementLocalName, String namespacePrefix) {
+    public AbstractRequestSecurityTokenType(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
@@ -407,8 +407,7 @@ public abstract class AbstractRequestSecurityTokenType extends
      * @see org.opensaml.ws.wstrust.WSTrustMessage#setAllowPostdating(org.opensaml.ws.wstrust.AllowPostdating)
      */
     public void setAllowPostdating(AllowPostdating allowPostdating) {
-        allowPostdating_= prepareForAssignment(allowPostdating_,
-                                               allowPostdating);
+        allowPostdating_ = prepareForAssignment(allowPostdating_, allowPostdating);
     }
 
     /*
@@ -417,7 +416,7 @@ public abstract class AbstractRequestSecurityTokenType extends
      * @see org.opensaml.ws.wstrust.WSTrustMessage#setAppliesTo(org.opensaml.ws.wspolicy.AppliesTo)
      */
     public void setAppliesTo(AppliesTo appliesTo) {
-        appliesTo_= prepareForAssignment(appliesTo_, appliesTo);
+        appliesTo_ = prepareForAssignment(appliesTo_, appliesTo);
     }
 
     /*
@@ -426,8 +425,7 @@ public abstract class AbstractRequestSecurityTokenType extends
      * @see org.opensaml.ws.wstrust.WSTrustMessage#setAuthenticationType(org.opensaml.ws.wstrust.AuthenticationType)
      */
     public void setAuthenticationType(AuthenticationType authenticationType) {
-        authenticationType_= prepareForAssignment(authenticationType_,
-                                                  authenticationType);
+        authenticationType_ = prepareForAssignment(authenticationType_, authenticationType);
     }
 
     /*
@@ -435,10 +433,8 @@ public abstract class AbstractRequestSecurityTokenType extends
      * 
      * @see org.opensaml.ws.wstrust.WSTrustMessage#setCanonicalizationAlgorithm(org.opensaml.ws.wstrust.CanonicalizationAlgorithm)
      */
-    public void setCanonicalizationAlgorithm(
-            CanonicalizationAlgorithm canonicalizationAlgorithm) {
-        canonicalizationAlgorithm_= prepareForAssignment(canonicalizationAlgorithm_,
-                                                         canonicalizationAlgorithm);
+    public void setCanonicalizationAlgorithm(CanonicalizationAlgorithm canonicalizationAlgorithm) {
+        canonicalizationAlgorithm_ = prepareForAssignment(canonicalizationAlgorithm_, canonicalizationAlgorithm);
     }
 
     /*
@@ -447,7 +443,7 @@ public abstract class AbstractRequestSecurityTokenType extends
      * @see org.opensaml.ws.wstrust.WSTrustMessage#setContext(java.lang.String)
      */
     public void setContext(String context) {
-        context_= prepareForAssignment(context_, context);
+        context_ = prepareForAssignment(context_, context);
     }
 
     /*
@@ -456,7 +452,7 @@ public abstract class AbstractRequestSecurityTokenType extends
      * @see org.opensaml.ws.wstrust.WSTrustMessage#setDelegatable(org.opensaml.ws.wstrust.Delegatable)
      */
     public void setDelegatable(Delegatable delegatable) {
-        delegatable_= prepareForAssignment(delegatable_, delegatable);
+        delegatable_ = prepareForAssignment(delegatable_, delegatable);
     }
 
     /*
@@ -465,7 +461,7 @@ public abstract class AbstractRequestSecurityTokenType extends
      * @see org.opensaml.ws.wstrust.WSTrustMessage#setDelegateTo(org.opensaml.ws.wstrust.DelegateTo)
      */
     public void setDelegateTo(DelegateTo delegateTo) {
-        delegateTo_= prepareForAssignment(delegateTo_, delegateTo);
+        delegateTo_ = prepareForAssignment(delegateTo_, delegateTo);
     }
 
     /*
@@ -474,7 +470,7 @@ public abstract class AbstractRequestSecurityTokenType extends
      * @see org.opensaml.ws.wstrust.WSTrustMessage#setEncryption(org.opensaml.ws.wstrust.Encryption)
      */
     public void setEncryption(Encryption encryption) {
-        encryption_= prepareForAssignment(encryption_, encryption);
+        encryption_ = prepareForAssignment(encryption_, encryption);
     }
 
     /*
@@ -483,8 +479,7 @@ public abstract class AbstractRequestSecurityTokenType extends
      * @see org.opensaml.ws.wstrust.WSTrustMessage#setEncryptionAlgorithm(org.opensaml.ws.wstrust.EncryptionAlgorithm)
      */
     public void setEncryptionAlgorithm(EncryptionAlgorithm encryptionAlgorithm) {
-        encryptionAlgorithm_= prepareForAssignment(encryptionAlgorithm_,
-                                                   encryptionAlgorithm);
+        encryptionAlgorithm_ = prepareForAssignment(encryptionAlgorithm_, encryptionAlgorithm);
     }
 
     /*
@@ -493,7 +488,7 @@ public abstract class AbstractRequestSecurityTokenType extends
      * @see org.opensaml.ws.wstrust.WSTrustMessage#setEncryptWith(org.opensaml.ws.wstrust.EncryptWith)
      */
     public void setEncryptWith(EncryptWith encryptWith) {
-        encryptWith_= prepareForAssignment(encryptWith_, encryptWith);
+        encryptWith_ = prepareForAssignment(encryptWith_, encryptWith);
     }
 
     /*
@@ -502,7 +497,7 @@ public abstract class AbstractRequestSecurityTokenType extends
      * @see org.opensaml.ws.wstrust.WSTrustMessage#setEntropy(org.opensaml.ws.wstrust.Entropy)
      */
     public void setEntropy(Entropy entropy) {
-        entropy_= prepareForAssignment(entropy_, entropy);
+        entropy_ = prepareForAssignment(entropy_, entropy);
     }
 
     /*
@@ -511,7 +506,7 @@ public abstract class AbstractRequestSecurityTokenType extends
      * @see org.opensaml.ws.wstrust.WSTrustMessage#setForwardable(org.opensaml.ws.wstrust.Forwardable)
      */
     public void setForwardable(Forwardable forwardable) {
-        forwardable_= prepareForAssignment(forwardable_, forwardable);
+        forwardable_ = prepareForAssignment(forwardable_, forwardable);
     }
 
     /*
@@ -520,7 +515,7 @@ public abstract class AbstractRequestSecurityTokenType extends
      * @see org.opensaml.ws.wstrust.WSTrustMessage#setIssuer(org.opensaml.ws.wstrust.Issuer)
      */
     public void setIssuer(Issuer issuer) {
-        issuer_= prepareForAssignment(issuer_, issuer);
+        issuer_ = prepareForAssignment(issuer_, issuer);
     }
 
     /*
@@ -529,7 +524,7 @@ public abstract class AbstractRequestSecurityTokenType extends
      * @see org.opensaml.ws.wstrust.WSTrustMessage#setKeySize(org.opensaml.ws.wstrust.KeySize)
      */
     public void setKeySize(KeySize keySize) {
-        keySize_= prepareForAssignment(keySize_, keySize);
+        keySize_ = prepareForAssignment(keySize_, keySize);
     }
 
     /*
@@ -538,7 +533,7 @@ public abstract class AbstractRequestSecurityTokenType extends
      * @see org.opensaml.ws.wstrust.WSTrustMessage#setKeyType(org.opensaml.ws.wstrust.KeyType)
      */
     public void setKeyType(KeyType keyType) {
-        keyType_= prepareForAssignment(keyType_, keyType);
+        keyType_ = prepareForAssignment(keyType_, keyType);
     }
 
     /*
@@ -547,7 +542,7 @@ public abstract class AbstractRequestSecurityTokenType extends
      * @see org.opensaml.ws.wstrust.WSTrustMessage#setLifetime(org.opensaml.ws.wstrust.Lifetime)
      */
     public void setLifetime(Lifetime lifetime) {
-        lifetime_= prepareForAssignment(lifetime_, lifetime);
+        lifetime_ = prepareForAssignment(lifetime_, lifetime);
     }
 
     /*
@@ -556,7 +551,7 @@ public abstract class AbstractRequestSecurityTokenType extends
      * @see org.opensaml.ws.wstrust.WSTrustMessage#setOnBehalfOf(org.opensaml.ws.wstrust.OnBehalfOf)
      */
     public void setOnBehalfOf(OnBehalfOf onBehalfOf) {
-        onBehalfOf_= prepareForAssignment(onBehalfOf_, onBehalfOf);
+        onBehalfOf_ = prepareForAssignment(onBehalfOf_, onBehalfOf);
     }
 
     /*
@@ -565,7 +560,7 @@ public abstract class AbstractRequestSecurityTokenType extends
      * @see org.opensaml.ws.wstrust.WSTrustMessage#setPolicy(org.opensaml.ws.wspolicy.Policy)
      */
     public void setPolicy(Policy policy) {
-        policy_= prepareForAssignment(policy_, policy);
+        policy_ = prepareForAssignment(policy_, policy);
     }
 
     /*
@@ -574,8 +569,7 @@ public abstract class AbstractRequestSecurityTokenType extends
      * @see org.opensaml.ws.wstrust.WSTrustMessage#setPolicyReference(org.opensaml.ws.wspolicy.PolicyReference)
      */
     public void setPolicyReference(PolicyReference policyReference) {
-        policyReference_= prepareForAssignment(policyReference_,
-                                               policyReference);
+        policyReference_ = prepareForAssignment(policyReference_, policyReference);
     }
 
     /*
@@ -584,8 +578,7 @@ public abstract class AbstractRequestSecurityTokenType extends
      * @see org.opensaml.ws.wstrust.WSTrustMessage#setProofEncryption(org.opensaml.ws.wstrust.ProofEncryption)
      */
     public void setProofEncryption(ProofEncryption proofEncryption) {
-        proofEncryption_= prepareForAssignment(proofEncryption_,
-                                               proofEncryption);
+        proofEncryption_ = prepareForAssignment(proofEncryption_, proofEncryption);
     }
 
     /*
@@ -594,7 +587,7 @@ public abstract class AbstractRequestSecurityTokenType extends
      * @see org.opensaml.ws.wstrust.WSTrustMessage#setRenewing(org.opensaml.ws.wstrust.Renewing)
      */
     public void setRenewing(Renewing renewing) {
-        renewing_= prepareForAssignment(renewing_, renewing);
+        renewing_ = prepareForAssignment(renewing_, renewing);
     }
 
     /*
@@ -603,7 +596,7 @@ public abstract class AbstractRequestSecurityTokenType extends
      * @see org.opensaml.ws.wstrust.WSTrustMessage#setRequestType(org.opensaml.ws.wstrust.RequestType)
      */
     public void setRequestType(RequestType requestType) {
-        requestType_= prepareForAssignment(requestType_, requestType);
+        requestType_ = prepareForAssignment(requestType_, requestType);
     }
 
     /*
@@ -612,8 +605,7 @@ public abstract class AbstractRequestSecurityTokenType extends
      * @see org.opensaml.ws.wstrust.WSTrustMessage#setSignatureAlgorithm(org.opensaml.ws.wstrust.SignatureAlgorithm)
      */
     public void setSignatureAlgorithm(SignatureAlgorithm signatureAlgorithm) {
-        signatureAlgorithm_= prepareForAssignment(signatureAlgorithm_,
-                                                  signatureAlgorithm);
+        signatureAlgorithm_ = prepareForAssignment(signatureAlgorithm_, signatureAlgorithm);
     }
 
     /*
@@ -622,7 +614,7 @@ public abstract class AbstractRequestSecurityTokenType extends
      * @see org.opensaml.ws.wstrust.WSTrustMessage#setSignWith(org.opensaml.ws.wstrust.SignWith)
      */
     public void setSignWith(SignWith signWith) {
-        signWith_= prepareForAssignment(signWith_, signWith);
+        signWith_ = prepareForAssignment(signWith_, signWith);
     }
 
     /*
@@ -631,7 +623,7 @@ public abstract class AbstractRequestSecurityTokenType extends
      * @see org.opensaml.ws.wstrust.WSTrustMessage#setTimestamp(org.opensaml.ws.wssecurity.Timestamp)
      */
     public void setTimestamp(Timestamp timestamp) {
-        timestamp_= prepareForAssignment(timestamp_, timestamp);
+        timestamp_ = prepareForAssignment(timestamp_, timestamp);
     }
 
     /*
@@ -640,7 +632,7 @@ public abstract class AbstractRequestSecurityTokenType extends
      * @see org.opensaml.ws.wstrust.WSTrustMessage#setTokenType(org.opensaml.ws.wstrust.TokenType)
      */
     public void setTokenType(TokenType tokenType) {
-        tokenType_= prepareForAssignment(tokenType_, tokenType);
+        tokenType_ = prepareForAssignment(tokenType_, tokenType);
     }
 
     /*
@@ -649,17 +641,16 @@ public abstract class AbstractRequestSecurityTokenType extends
      * @see org.opensaml.ws.wstrust.WSTrustMessage#setUseKey(org.opensaml.ws.wstrust.UseKey)
      */
     public void setUseKey(UseKey useKey) {
-        useKey_= prepareForAssignment(useKey_, useKey);
+        useKey_ = prepareForAssignment(useKey_, useKey);
     }
 
     /**
-     * Returns an ordered list of the common child elements and the
-     * <code>xs:any</code> unknown elements.
+     * Returns an ordered list of the common child elements and the <code>xs:any</code> unknown elements.
      * 
      * @return the ordered {@link List} of child elements.
      */
     protected List<XMLObject> getCommonChildren() {
-        List<XMLObject> children= new ArrayList<XMLObject>();
+        List<XMLObject> children = new ArrayList<XMLObject>();
         // FIXME: CHECK ORDER of the child elements.
         if (tokenType_ != null) {
             children.add(tokenType_);

@@ -14,12 +14,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.opensaml.ws.wstrust.impl;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 
 import org.opensaml.ws.wssecurity.SecurityTokenReference;
 import org.opensaml.ws.wstrust.RequestedReferenceType;
@@ -31,21 +31,21 @@ import org.opensaml.xml.XMLObject;
  * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
  * @version $Revision$
  */
-abstract class AbstractRequestedReferenceType extends AbstractWSTrustObject
-        implements RequestedReferenceType {
+abstract class AbstractRequestedReferenceType extends AbstractWSTrustObject implements RequestedReferenceType {
 
     /**
      * Constructor.
-     * <p>
-     * {@inheritDoc}
+     * 
+     * @param namespaceURI namespace of the element
+     * @param elementLocalName name of the element
+     * @param namespacePrefix namespace prefix of the element
      */
-    public AbstractRequestedReferenceType(String namespaceURI,
-            String elementLocalName, String namespacePrefix) {
+    public AbstractRequestedReferenceType(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
     /** SecurityTokenReference child element */
-    protected SecurityTokenReference securityTokenReference_= null;
+    protected SecurityTokenReference securityTokenReference_ = null;
 
     /*
      * (non-Javadoc)
@@ -61,10 +61,8 @@ abstract class AbstractRequestedReferenceType extends AbstractWSTrustObject
      * 
      * @see org.opensaml.ws.wstrust.RequestedReferenceType#setSecurityTokenReference(org.opensaml.ws.wssecurity.SecurityTokenReference)
      */
-    public void setSecurityTokenReference(
-            SecurityTokenReference securityTokenReference) {
-        securityTokenReference_= prepareForAssignment(securityTokenReference_,
-                                                      securityTokenReference);
+    public void setSecurityTokenReference(SecurityTokenReference securityTokenReference) {
+        securityTokenReference_ = prepareForAssignment(securityTokenReference_, securityTokenReference);
     }
 
     /*
@@ -74,7 +72,7 @@ abstract class AbstractRequestedReferenceType extends AbstractWSTrustObject
      */
     @Override
     public List<XMLObject> getOrderedChildren() {
-        List<XMLObject> children= new ArrayList<XMLObject>();
+        List<XMLObject> children = new ArrayList<XMLObject>();
         if (securityTokenReference_ != null) {
             children.add(securityTokenReference_);
         }

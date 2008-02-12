@@ -14,8 +14,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.opensaml.ws.wstrust.impl;
 
+package org.opensaml.ws.wstrust.impl;
 
 import org.opensaml.ws.wstrust.Claims;
 import org.opensaml.xml.AbstractExtensibleXMLObject;
@@ -29,15 +29,16 @@ import org.opensaml.xml.AbstractExtensibleXMLObject;
 public class ClaimsImpl extends AbstractExtensibleXMLObject implements Claims {
 
     /** The wst:Claims/@Dialect attribute value */
-    String dialect_= null;
+    String dialect_ = null;
 
     /**
      * Constructor.
-     * <p>
-     * {@inheritDoc}
+     * 
+     * @param namespaceURI The namespace of the element
+     * @param elementLocalName The local name of the element
+     * @param namespacePrefix The namespace prefix of the element
      */
-    public ClaimsImpl(String namespaceURI, String elementLocalName,
-            String namespacePrefix) {
+    public ClaimsImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
@@ -56,7 +57,7 @@ public class ClaimsImpl extends AbstractExtensibleXMLObject implements Claims {
      * @see org.opensaml.ws.wstrust.Claims#setDialect(java.lang.String)
      */
     public void setDialect(String dialect) {
-        dialect_= prepareForAssignment(dialect_, dialect);
+        dialect_ = prepareForAssignment(dialect_, dialect);
     }
 
 }

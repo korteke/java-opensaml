@@ -14,8 +14,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.opensaml.ws.wstrust.impl;
 
+package org.opensaml.ws.wstrust.impl;
 
 import org.opensaml.ws.wstrust.KeyWrapAlgorithm;
 import org.opensaml.xml.schema.impl.XSStringImpl;
@@ -26,16 +26,16 @@ import org.opensaml.xml.schema.impl.XSStringImpl;
  * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
  * @version $Revision$
  */
-public class KeyWrapAlgorithmImpl extends XSStringImpl implements
-        KeyWrapAlgorithm {
+public class KeyWrapAlgorithmImpl extends XSStringImpl implements KeyWrapAlgorithm {
 
     /**
      * Constructor.
-     * <p>
-     * {@inheritDoc}
+     * 
+     * @param namespaceURI The namespace of the element
+     * @param elementLocalName The local name of the element
+     * @param namespacePrefix The namespace prefix of the element
      */
-    public KeyWrapAlgorithmImpl(String namespaceURI, String elementLocalName,
-            String namespacePrefix) {
+    public KeyWrapAlgorithmImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
