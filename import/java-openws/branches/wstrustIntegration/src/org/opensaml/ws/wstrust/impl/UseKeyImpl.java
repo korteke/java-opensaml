@@ -1,0 +1,63 @@
+/*
+ * Copyright 2008 Members of the EGEE Collaboration.
+ * Copyright 2008 University Corporation for Advanced Internet Development, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.opensaml.ws.wstrust.impl;
+
+
+import org.opensaml.ws.wstrust.UseKey;
+import org.opensaml.xml.AbstractElementExtensibleXMLObject;
+
+/**
+ * UseKeyImpl
+ * 
+ * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
+ * @version $Revision$
+ */
+public class UseKeyImpl extends AbstractElementExtensibleXMLObject implements
+        UseKey {
+
+    /** wst:UseKey/@Sig attribute value */
+    private String sig_= null;
+
+    /**
+     * Constructor.
+     * <p>
+     * {@inheritDoc}
+     */
+    public UseKeyImpl(String namespaceURI, String elementLocalName,
+            String namespacePrefix) {
+        super(namespaceURI, elementLocalName, namespacePrefix);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.opensaml.ws.wstrust.UseKey#getSig()
+     */
+    public String getSig() {
+        return sig_;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.opensaml.ws.wstrust.UseKey#setSig(java.lang.String)
+     */
+    public void setSig(String sig) {
+        sig_= prepareForAssignment(sig_, sig);
+    }
+
+}
