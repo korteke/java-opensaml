@@ -19,6 +19,13 @@
             <UnmarshallingClass className="org.opensaml.xml.schema.impl.XSStringUnmarshaller" />
         </ObjectProvider>
         
+        <!-- XML Schema QName -->
+        <ObjectProvider qualifiedName="xs:QName">
+            <BuilderClass className="org.opensaml.xml.schema.impl.XSQNameBuilder" />
+            <MarshallingClass className="org.opensaml.xml.schema.impl.XSQNameMarshaller" />
+            <UnmarshallingClass className="org.opensaml.xml.schema.impl.XSQNameUnmarshaller" />
+        </ObjectProvider>
+        
         <!-- XML Schema base64Binary -->
         <ObjectProvider qualifiedName="xs:base64Binary">
             <BuilderClass className="org.opensaml.xml.schema.impl.XSBase64BinaryBuilder" />

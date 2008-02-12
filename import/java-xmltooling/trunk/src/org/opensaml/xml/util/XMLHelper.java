@@ -351,7 +351,7 @@ public final class XMLHelper {
     }
 
     /**
-     * Constructs a QName from a string (attribtue or element content) value.
+     * Constructs a QName from a string (attribute or element content) value.
      * 
      * @param qname the QName string
      * @param owningObject XMLObject, with cached DOM, owning the QName
@@ -359,7 +359,18 @@ public final class XMLHelper {
      * @return the QName respresented by the string
      */
     public static QName constructQName(String qname, XMLObject owningObject) {
-        Element objectDOM = owningObject.getDOM();
+        return constructQName(qname, owningObject.getDOM());
+    }
+    
+    /**
+     * Constructs a QName from a string (attribute element content) value.
+     * 
+     * @param qname the QName string
+     * @param owningElement parent DOM element of the Node which contains the QName value
+     * 
+     * @return the QName respresented by the string
+     */
+    public static QName constructQName(String qname, Element owningElement) {
         String nsURI;
         String nsPrefix;
         String name;
@@ -373,7 +384,7 @@ public final class XMLHelper {
             name = qname;
         }
 
-        nsURI = lookupNamespaceURI(objectDOM, nsPrefix);
+        nsURI = lookupNamespaceURI(owningElement, nsPrefix);
         return constructQName(nsURI, name, nsPrefix);
     }
 
