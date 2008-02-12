@@ -16,12 +16,12 @@
 
 package org.opensaml.ws.security.provider;
 
-import org.opensaml.ws.security.BaseSecurityPolicyRuleTest;
+import org.opensaml.ws.security.BaseSecurityPolicyRuleTestCase;
 
 /**
  * Test the mandatory issuer rule.
  */
-public class MandatoryIssuerRuleTest extends BaseSecurityPolicyRuleTest {
+public class MandatoryIssuerRuleTest extends BaseSecurityPolicyRuleTestCase {
 
     /** {@inheritDoc} */
     protected void setUp() throws Exception {
