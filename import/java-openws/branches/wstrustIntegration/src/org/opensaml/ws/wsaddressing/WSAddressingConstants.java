@@ -17,7 +17,7 @@
 package org.opensaml.ws.wsaddressing;
 
 /**
- * WS-Addressing constants
+ * WS-Addressing 1.0 constants
  * 
  * @see "WS-Addressing 1.0 - Core"
  * 

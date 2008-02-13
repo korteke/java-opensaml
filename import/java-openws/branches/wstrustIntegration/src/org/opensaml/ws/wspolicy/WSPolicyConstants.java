@@ -17,7 +17,7 @@
 package org.opensaml.ws.wspolicy;
 
 /**
- * WS-Policy constants
+ * WS-Policy 1.2 constants
  * 
  * @see "WS-Policy (http://schemas.xmlsoap.org/ws/2004/09/policy)"
  * 
