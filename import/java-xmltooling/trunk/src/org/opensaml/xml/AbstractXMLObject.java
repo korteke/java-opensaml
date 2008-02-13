@@ -89,7 +89,7 @@ public abstract class AbstractXMLObject implements XMLObject {
 
     /** {@inheritDoc} */
     public void detach(){
-        releaseParentDOM(false);
+        releaseParentDOM(true);
         parent = null;
     }
 
