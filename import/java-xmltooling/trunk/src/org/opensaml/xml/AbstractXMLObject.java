@@ -79,41 +79,7 @@ public abstract class AbstractXMLObject implements XMLObject {
         addNamespace(new Namespace(namespaceURI, namespacePrefix));
         setElementNamespacePrefix(namespacePrefix);
     }
-
-    /** {@inheritDoc} */
-    public QName getElementQName() {
-        return new QName(elementQname.getNamespaceURI(), elementQname.getLocalPart(), elementQname.getPrefix());
-    }
-
-    /**
-     * Sets the element QName.
-     * 
-     * @param elementQName the element's QName
-     */
-    protected void setElementQName(QName elementQName) {
-        this.elementQname = XMLHelper.constructQName(elementQName.getNamespaceURI(), elementQName.getLocalPart(),
-                elementQName.getPrefix());
-        addNamespace(new Namespace(elementQName.getNamespaceURI(), elementQName.getLocalPart()));
-    }
-
-    /**
-     * Sets the prefix for this element's namespace.
-     * 
-     * @param prefix the prefix for this element's namespace
-     */
-    public void setElementNamespacePrefix(String prefix) {
-        if (prefix == null) {
-            elementQname = new QName(elementQname.getNamespaceURI(), elementQname.getLocalPart());
-        } else {
-            elementQname = new QName(elementQname.getNamespaceURI(), elementQname.getLocalPart(), prefix);
-        }
-    }
-
-    /** {@inheritDoc} */
-    public Set<Namespace> getNamespaces() {
-        return Collections.unmodifiableSet(namespaces);
-    }
-
+    
     /** {@inheritDoc} */
     public void addNamespace(Namespace namespace) {
         if (namespace != null) {
@@ -122,49 +88,34 @@ public abstract class AbstractXMLObject implements XMLObject {
     }
 
     /** {@inheritDoc} */
-    public void removeNamespace(Namespace namespace) {
-        namespaces.remove(namespace);
+    public void detach(){
+        releaseParentDOM(false);
+        parent = null;
     }
 
     /** {@inheritDoc} */
-    public String getSchemaLocation() {
-        return schemaLocation;
+    public Element getDOM() {
+        return dom;
     }
 
     /** {@inheritDoc} */
-    public void setSchemaLocation(String location) {
-        schemaLocation = DatatypeHelper.safeTrimOrNullString(location);
+    public QName getElementQName() {
+        return new QName(elementQname.getNamespaceURI(), elementQname.getLocalPart(), elementQname.getPrefix());
+    }
+
+    /** {@inheritDoc} */
+    public IDIndex getIDIndex() {
+        return idIndex;
+    }
+
+    /** {@inheritDoc} */
+    public Set<Namespace> getNamespaces() {
+        return Collections.unmodifiableSet(namespaces);
     }
 
     /** {@inheritDoc} */
     public String getNoNamespaceSchemaLocation() {
         return noNamespaceSchemaLocation;
-    }
-
-    /** {@inheritDoc} */
-    public void setNoNamespaceSchemaLocation(String location) {
-        noNamespaceSchemaLocation = DatatypeHelper.safeTrimOrNullString(location);
-    }
-
-    /** {@inheritDoc} */
-    public QName getSchemaType() {
-        return typeQname;
-    }
-
-    /**
-     * Sets a given QName as the schema type for the Element represented by this XMLObject. This will add the namespace
-     * to the list of namespaces scoped for this XMLObject. It will not remove any namespaces, for example, if there is
-     * already a schema type set and null is passed in.
-     * 
-     * @param type the schema type
-     */
-    protected void setSchemaType(QName type) {
-        if (type == null) {
-            typeQname = null;
-        } else {
-            typeQname = type;
-            addNamespace(new Namespace(type.getNamespaceURI(), type.getPrefix()));
-        }
     }
 
     /**
@@ -177,13 +128,13 @@ public abstract class AbstractXMLObject implements XMLObject {
     }
 
     /** {@inheritDoc} */
-    public void setParent(XMLObject newParent) {
-        parent = newParent;
+    public String getSchemaLocation() {
+        return schemaLocation;
     }
 
     /** {@inheritDoc} */
-    public boolean hasParent() {
-        return getParent() != null;
+    public QName getSchemaType() {
+        return typeQname;
     }
 
     /** {@inheritDoc} */
@@ -193,90 +144,8 @@ public abstract class AbstractXMLObject implements XMLObject {
     }
 
     /** {@inheritDoc} */
-    public Element getDOM() {
-        return dom;
-    }
-
-    /** {@inheritDoc} */
-    public void setDOM(Element newDom) {
-        dom = newDom;
-    }
-
-    /** {@inheritDoc} */
-    public void releaseDOM() {
-        log.trace("Releasing cached DOM reprsentation for {}", getElementQName());
-        setDOM(null);
-    }
-
-    /** {@inheritDoc} */
-    public void releaseParentDOM(boolean propagateRelease) {
-        log.trace("Releasing cached DOM reprsentation for parent of {} with propagation set to {}", getElementQName(),
-                propagateRelease);
-        XMLObject parentElement = getParent();
-        if (parentElement != null) {
-            parent.releaseDOM();
-            if (propagateRelease) {
-                parent.releaseParentDOM(propagateRelease);
-            }
-        }
-    }
-
-    /** {@inheritDoc} */
-    public void releaseChildrenDOM(boolean propagateRelease) {
-        log.trace("Releasing cached DOM reprsentation for children of {} with propagation set to {}",
-                getElementQName(), propagateRelease);
-        if (getOrderedChildren() != null) {
-            for (XMLObject child : getOrderedChildren()) {
-                if (child != null) {
-                    child.releaseDOM();
-                    if (propagateRelease) {
-                        child.releaseChildrenDOM(propagateRelease);
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * A convience method that is equal to calling {@link #releaseDOM()} then {@link #releaseParentDOM(boolean)} with
-     * the release being propogated.
-     */
-    public void releaseThisandParentDOM() {
-        if (getDOM() != null) {
-            releaseDOM();
-            releaseParentDOM(true);
-        }
-    }
-
-    /**
-     * A convience method that is equal to calling {@link #releaseDOM()} then {@link #releaseChildrenDOM(boolean)} with
-     * the release being propogated.
-     */
-    public void releaseThisAndChildrenDOM() {
-        if (getDOM() != null) {
-            releaseDOM();
-            releaseChildrenDOM(true);
-        }
-    }
-
-    /**
-     * A helper function for derived classes. This 'nornmalizes' newString and then if it is different from oldString
-     * invalidates the DOM. It returns the normalized value so subclasses just have to go. this.foo =
-     * prepareForAssignment(this.foo, foo);
-     * 
-     * @param oldValue - the current value
-     * @param newValue - the new value
-     * 
-     * @return the value that should be assigned
-     */
-    protected String prepareForAssignment(String oldValue, String newValue) {
-        String newString = DatatypeHelper.safeTrimOrNullString(newValue);
-
-        if (!DatatypeHelper.safeEquals(oldValue, newString)) {
-            releaseThisandParentDOM();
-        }
-
-        return newString;
+    public boolean hasParent() {
+        return getParent() != null;
     }
 
     /**
@@ -310,6 +179,26 @@ public abstract class AbstractXMLObject implements XMLObject {
         }
 
         return newValue;
+    }
+
+    /**
+     * A helper function for derived classes. This 'nornmalizes' newString and then if it is different from oldString
+     * invalidates the DOM. It returns the normalized value so subclasses just have to go. this.foo =
+     * prepareForAssignment(this.foo, foo);
+     * 
+     * @param oldValue - the current value
+     * @param newValue - the new value
+     * 
+     * @return the value that should be assigned
+     */
+    protected String prepareForAssignment(String oldValue, String newValue) {
+        String newString = DatatypeHelper.safeTrimOrNullString(newValue);
+
+        if (!DatatypeHelper.safeEquals(oldValue, newString)) {
+            releaseThisandParentDOM();
+        }
+
+        return newString;
     }
 
     /**
@@ -390,25 +279,6 @@ public abstract class AbstractXMLObject implements XMLObject {
         return newValue;
     }
 
-    /** {@inheritDoc} */
-    public IDIndex getIDIndex() {
-        return idIndex;
-    }
-
-    /** {@inheritDoc} */
-    public XMLObject resolveID(String id) {
-        return idIndex.lookup(id);
-    }
-
-    /** {@inheritDoc} */
-    public XMLObject resolveIDFromRoot(String id) {
-        XMLObject root = this;
-        while (root.hasParent()) {
-            root = root.getParent();
-        }
-        return root.resolveID(id);
-    }
-
     /**
      * A helper function for derived classes. The mutator/setter method for any ID-typed attributes should call this
      * method in order to handle getting the old value removed from the ID-to-XMLObject mapping, and the new value added
@@ -428,6 +298,142 @@ public abstract class AbstractXMLObject implements XMLObject {
             if (newString != null) {
                 idIndex.registerIDMapping(newString, this);
             }
+        }
+    }
+
+    /** {@inheritDoc} */
+    public void releaseChildrenDOM(boolean propagateRelease) {
+        log.trace("Releasing cached DOM reprsentation for children of {} with propagation set to {}",
+                getElementQName(), propagateRelease);
+        if (getOrderedChildren() != null) {
+            for (XMLObject child : getOrderedChildren()) {
+                if (child != null) {
+                    child.releaseDOM();
+                    if (propagateRelease) {
+                        child.releaseChildrenDOM(propagateRelease);
+                    }
+                }
+            }
+        }
+    }
+
+    /** {@inheritDoc} */
+    public void releaseDOM() {
+        log.trace("Releasing cached DOM reprsentation for {}", getElementQName());
+        setDOM(null);
+    }
+
+    /** {@inheritDoc} */
+    public void releaseParentDOM(boolean propagateRelease) {
+        log.trace("Releasing cached DOM reprsentation for parent of {} with propagation set to {}", getElementQName(),
+                propagateRelease);
+        XMLObject parentElement = getParent();
+        if (parentElement != null) {
+            parent.releaseDOM();
+            if (propagateRelease) {
+                parent.releaseParentDOM(propagateRelease);
+            }
+        }
+    }
+
+    /**
+     * A convience method that is equal to calling {@link #releaseDOM()} then {@link #releaseChildrenDOM(boolean)} with
+     * the release being propogated.
+     */
+    public void releaseThisAndChildrenDOM() {
+        if (getDOM() != null) {
+            releaseDOM();
+            releaseChildrenDOM(true);
+        }
+    }
+
+    /**
+     * A convience method that is equal to calling {@link #releaseDOM()} then {@link #releaseParentDOM(boolean)} with
+     * the release being propogated.
+     */
+    public void releaseThisandParentDOM() {
+        if (getDOM() != null) {
+            releaseDOM();
+            releaseParentDOM(true);
+        }
+    }
+
+    /** {@inheritDoc} */
+    public void removeNamespace(Namespace namespace) {
+        namespaces.remove(namespace);
+    }
+
+    /** {@inheritDoc} */
+    public XMLObject resolveID(String id) {
+        return idIndex.lookup(id);
+    }
+
+    /** {@inheritDoc} */
+    public XMLObject resolveIDFromRoot(String id) {
+        XMLObject root = this;
+        while (root.hasParent()) {
+            root = root.getParent();
+        }
+        return root.resolveID(id);
+    }
+
+    /** {@inheritDoc} */
+    public void setDOM(Element newDom) {
+        dom = newDom;
+    }
+
+    /**
+     * Sets the prefix for this element's namespace.
+     * 
+     * @param prefix the prefix for this element's namespace
+     */
+    public void setElementNamespacePrefix(String prefix) {
+        if (prefix == null) {
+            elementQname = new QName(elementQname.getNamespaceURI(), elementQname.getLocalPart());
+        } else {
+            elementQname = new QName(elementQname.getNamespaceURI(), elementQname.getLocalPart(), prefix);
+        }
+    }
+
+    /**
+     * Sets the element QName.
+     * 
+     * @param elementQName the element's QName
+     */
+    protected void setElementQName(QName elementQName) {
+        this.elementQname = XMLHelper.constructQName(elementQName.getNamespaceURI(), elementQName.getLocalPart(),
+                elementQName.getPrefix());
+        addNamespace(new Namespace(elementQName.getNamespaceURI(), elementQName.getLocalPart()));
+    }
+
+    /** {@inheritDoc} */
+    public void setNoNamespaceSchemaLocation(String location) {
+        noNamespaceSchemaLocation = DatatypeHelper.safeTrimOrNullString(location);
+    }
+
+    /** {@inheritDoc} */
+    public void setParent(XMLObject newParent) {
+        parent = newParent;
+    }
+
+    /** {@inheritDoc} */
+    public void setSchemaLocation(String location) {
+        schemaLocation = DatatypeHelper.safeTrimOrNullString(location);
+    }
+
+    /**
+     * Sets a given QName as the schema type for the Element represented by this XMLObject. This will add the namespace
+     * to the list of namespaces scoped for this XMLObject. It will not remove any namespaces, for example, if there is
+     * already a schema type set and null is passed in.
+     * 
+     * @param type the schema type
+     */
+    protected void setSchemaType(QName type) {
+        if (type == null) {
+            typeQname = null;
+        } else {
+            typeQname = type;
+            addNamespace(new Namespace(type.getNamespaceURI(), type.getPrefix()));
         }
     }
 

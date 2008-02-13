@@ -31,6 +31,28 @@ import org.w3c.dom.Element;
 public interface XMLObject {
 
     /**
+     * Adds a namespace to the ones already scoped to this element.
+     * 
+     * @param namespace the namespace to add
+     */
+    public void addNamespace(Namespace namespace);
+
+    /**
+     * Detaches the XMLObject from its parent. This will release the parent's cached DOM (if it has one) and set this
+     * object's parent to null. It does not remove this object from its parent, that's the responsibility of the invoker
+     * of this method, nor does it re-root the cached DOM node (if there is one) in a new document. This is handled at
+     * marshalling time.
+     */
+    public void detach();
+
+    /**
+     * Gets the DOM representation of this XMLObject, if one exists.
+     * 
+     * @return the DOM representation of this XMLObject
+     */
+    public Element getDOM();
+
+    /**
      * Gets the QName for this element. This QName <strong>MUST</strong> contain the namespace URI, namespace prefix,
      * and local element name. Changes made to the returned QName are not reflected by the QName held by this element,
      * that is, the returned QName is a copy of the internal QName member of this class.
@@ -40,6 +62,13 @@ public interface XMLObject {
     public QName getElementQName();
 
     /**
+     * Get the IDIndex holding the ID-to-XMLObject index mapping, rooted at this XMLObject's subtree.
+     * 
+     * @return the IDIndex owned by this XMLObject
+     */
+    public IDIndex getIDIndex();
+
+    /**
      * Gets the namespaces that are scoped to this element.
      * 
      * @return the namespaces that are scoped to this element
@@ -47,60 +76,18 @@ public interface XMLObject {
     public Set<Namespace> getNamespaces();
 
     /**
-     * Adds a namespace to the ones already scoped to this element.
-     * 
-     * @param namespace the namespace to add
-     */
-    public void addNamespace(Namespace namespace);
-
-    /**
-     * Removes a namespace from this element.
-     * 
-     * @param namespace the namespace to remove
-     */
-    public void removeNamespace(Namespace namespace);
-
-    /**
-     * Gets the value of the XML Schema schemaLocation attribute for this object.
-     * 
-     * @return schema location defined for this object
-     */
-    public String getSchemaLocation();
-    
-    /**
-     * Sets the value of the XML Schema schemaLocation attribute for this object.
-     * 
-     * @param location value of the XML Schema schemaLocation attribute for this object
-     */
-    public void setSchemaLocation(String location);
-    
-    /**
      * Gets the value of the XML Schema noNamespaceSchemaLocation attribute for this object.
      * 
      * @return value of the XML Schema noNamespaceSchemaLocation attribute for this object
      */
     public String getNoNamespaceSchemaLocation();
-    
-    /**
-     * Sets the value of the XML Schema noNamespaceSchemaLocation attribute for this object.
-     * 
-     * @param location value of the XML Schema noNamespaceSchemaLocation attribute for this object
-     */
-    public void setNoNamespaceSchemaLocation(String location);
-    
-    /**
-     * Gets the XML schema type of this element. This translates to contents the xsi:type attribute for the element.
-     * 
-     * @return XML schema type of this element
-     */
-    public QName getSchemaType();
 
     /**
-     * Checks to see if this object has a parent.
+     * Gets an unmodifiable list of child elements in the order that they will appear in the DOM.
      * 
-     * @return true if the object has a parent, false if not
+     * @return ordered list of child elements
      */
-    public boolean hasParent();
+    public List<XMLObject> getOrderedChildren();
 
     /**
      * Gets the parent of this element or null if there is no parent.
@@ -110,11 +97,18 @@ public interface XMLObject {
     public XMLObject getParent();
 
     /**
-     * Sets the parent of this element.
+     * Gets the value of the XML Schema schemaLocation attribute for this object.
      * 
-     * @param parent the parent of this element
+     * @return schema location defined for this object
      */
-    public void setParent(XMLObject parent);
+    public String getSchemaLocation();
+
+    /**
+     * Gets the XML schema type of this element. This translates to contents the xsi:type attribute for the element.
+     * 
+     * @return XML schema type of this element
+     */
+    public QName getSchemaType();
 
     /**
      * Checks if this XMLObject has children.
@@ -124,25 +118,18 @@ public interface XMLObject {
     public boolean hasChildren();
 
     /**
-     * Gets an unmodifiable list of child elements in the order that they will appear in the DOM.
+     * Checks to see if this object has a parent.
      * 
-     * @return ordered list of child elements
+     * @return true if the object has a parent, false if not
      */
-    public List<XMLObject> getOrderedChildren();
-    
-    /**
-     * Gets the DOM representation of this XMLObject, if one exists.
-     * 
-     * @return the DOM representation of this XMLObject
-     */
-    public Element getDOM();
+    public boolean hasParent();
 
     /**
-     * Sets the DOM representation of this XMLObject.
+     * Releases the DOM representation of this XMLObject's children.
      * 
-     * @param dom DOM representation of this XMLObject
+     * @param propagateRelease true if all descendants of this element should release their DOM
      */
-    public void setDOM(Element dom);
+    public void releaseChildrenDOM(boolean propagateRelease);
 
     /**
      * Releases the DOM representation of this XMLObject, if there is one.
@@ -152,43 +139,61 @@ public interface XMLObject {
     /**
      * Releases the DOM representation of this XMLObject's parent.
      * 
-     * @param propagateRelease true if all ancestors of this element should release thier DOM
+     * @param propagateRelease true if all ancestors of this element should release their DOM
      */
     public void releaseParentDOM(boolean propagateRelease);
 
     /**
-     * Releases the DOM representation of this XMLObject's children.
+     * Removes a namespace from this element.
      * 
-     * @param propagateRelease true if all descendants of this element should release thier DOM
+     * @param namespace the namespace to remove
      */
-    public void releaseChildrenDOM(boolean propagateRelease);
-    
+    public void removeNamespace(Namespace namespace);
+
     /**
-     * Find the XMLObject which is identified by the specified ID attribute,
-     * within the subtree of XMLObjects which has this XMLObject as its root.
+     * Find the XMLObject which is identified by the specified ID attribute, within the subtree of XMLObjects which has
+     * this XMLObject as its root.
      * 
-     * @param id  the ID attribute to resolve to an XMLObject
+     * @param id the ID attribute to resolve to an XMLObject
      * @return the XMLObject identified by the specified ID attribute value
      */
     public XMLObject resolveID(String id);
-    
+
     /**
-     * Find the XMLObject which is identified by the specified ID attribute,
-     * from the root of the tree of XMLObjects in which this XMLObject 
-     * is a member.
+     * Find the XMLObject which is identified by the specified ID attribute, from the root of the tree of XMLObjects in
+     * which this XMLObject is a member.
      * 
-     * @param id  the ID attribute to resolve to an XMLObject
+     * @param id the ID attribute to resolve to an XMLObject
      * @return the XMLObject identified by the specified ID attribute value
      */
     public XMLObject resolveIDFromRoot(String id);
-    
+
     /**
-     * Get the IDIndex holding the ID-to-XMLObject index mapping, rooted
-     * at this XMLObject's subtree.
+     * Sets the DOM representation of this XMLObject.
      * 
-     * @return the IDIndex owned by this XMLObject
+     * @param dom DOM representation of this XMLObject
      */
-    public IDIndex getIDIndex();
- 
+    public void setDOM(Element dom);
+
+    /**
+     * Sets the value of the XML Schema noNamespaceSchemaLocation attribute for this object.
+     * 
+     * @param location value of the XML Schema noNamespaceSchemaLocation attribute for this object
+     */
+    public void setNoNamespaceSchemaLocation(String location);
+
+    /**
+     * Sets the parent of this element.
+     * 
+     * @param parent the parent of this element
+     */
+    public void setParent(XMLObject parent);
+
+    /**
+     * Sets the value of the XML Schema schemaLocation attribute for this object.
+     * 
+     * @param location value of the XML Schema schemaLocation attribute for this object
+     */
+    public void setSchemaLocation(String location);
 
 }
