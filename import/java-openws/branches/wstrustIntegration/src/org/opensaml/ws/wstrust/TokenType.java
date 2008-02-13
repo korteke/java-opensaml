@@ -39,14 +39,23 @@ public interface TokenType extends XSURI, WSTrustObject {
                                                       WSTrustConstants.WST_PREFIX);
 
     /** Username Token identifier URI */
-    public static final String USERNAME_TOKEN_URI= WSSecurityConstants.WSSE_USERNAME_TOKEN_PROFILE_NS;
+    public static final String USERNAME_TOKEN= WSSecurityConstants.WSSE_USERNAME_TOKEN_PROFILE_NS;
 
     /** X509 Token identifier URI */
-    public static final String X509_TOKEN_URI= WSSecurityConstants.WSSE_X509_TOKEN_PROFILE_NS
+    public static final String X509_TOKEN= WSSecurityConstants.WSSE_X509_TOKEN_PROFILE_NS
             + "#X509v3";
 
-    /** SAML 2 Token identifier URI */
-    public static final String SAML2_TOKEN_URI= WSSecurityConstants.WSSE11_SAML_TOKEN_PROFILE_NS
+    /** SAML 1.1 Token identifier URI */
+    public static final String SAML11_TOKEN= WSSecurityConstants.WSSE11_SAML_TOKEN_PROFILE_NS
+            + "#SAMLV1.1";
+
+    /** SAML 2.0 Token identifier URI */
+    public static final String SAML2_TOKEN= WSSecurityConstants.WSSE11_SAML_TOKEN_PROFILE_NS
             + "#SAMLV2.0";
 
+    /** Kerberos Token identifier URI */
+    public static final String KERBEROS_TOKEN= WSSecurityConstants.WSSE_KERBEROS_TOKEN_PROFILE_NS
+            + "#Kerberosv5_AP_REQ";
+    
+    
 }
