@@ -51,8 +51,9 @@ public class Signer {
      * Signs the given XMLObject in the order provided.
      * 
      * @param xmlObjects an orderded list of XMLObject to be signed
+     * @throws SignatureException  thrown if there is an error computing the signature
      */
-    public static void signObjects(List<Signature> xmlObjects) {
+    public static void signObjects(List<Signature> xmlObjects) throws SignatureException {
         for (Signature xmlObject : xmlObjects) {
             signObject(xmlObject);
         }
@@ -62,20 +63,22 @@ public class Signer {
      * Signs a single XMLObject.
      * 
      * @param signature the signature to computer the signature on
+     * @throws SignatureException thrown if there is an error computing the signature
      */
-    public static void signObject(Signature signature) {
+    public static void signObject(Signature signature) throws SignatureException {
         try {
             XMLSignature xmlSignature = ((SignatureImpl) signature).getXMLSignature();
 
             if (xmlSignature == null) {
-                log.warn("Unable to compute signature, Signature XMLObject does not have the XMLSignature "
+                log.error("Unable to compute signature, Signature XMLObject does not have the XMLSignature "
                         + "created during marshalling.");
-                return;
+                throw new SignatureException("XMLObject does not have an XMLSignature instance, unable to compute signature");
             }
-            log.debug("Creating XMLSignature object");
+            log.debug("Computing signature over XMLSignature object");
             xmlSignature.sign(SecurityHelper.extractSigningKey(signature.getSigningCredential()));
         } catch (XMLSecurityException e) {
             log.error("An error occured computing the digital signature", e);
+            throw new SignatureException("Signature computation error", e);
         }
     }
 

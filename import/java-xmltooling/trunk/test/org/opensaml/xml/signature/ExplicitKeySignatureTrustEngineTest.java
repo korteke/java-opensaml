@@ -232,8 +232,9 @@ public class ExplicitKeySignatureTrustEngineTest extends XMLObjectBaseTestCase {
      * Build a signed object.
      * 
      * @return a signed object
+     * @throws SignatureException 
      */
-    protected SignableXMLObject buildSignedObject() {
+    protected SignableXMLObject buildSignedObject() throws SignatureException {
         SimpleXMLObject sxo = (SimpleXMLObject) buildXMLObject(SimpleXMLObject.ELEMENT_NAME);
         sxo.setId("abc123");
         

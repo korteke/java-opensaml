@@ -94,9 +94,10 @@ public class DetachedSignatureTest extends XMLObjectBaseTestCase {
      * @throws MarshallingException thrown if the XMLObject tree can not be marshalled
      * @throws ValidationException thrown if there is a problem attempting to validate the signature
      * @throws UnmarshallingException thrown if the signature can not be unmarshalled
+     * @throws SignatureException 
      */
     public void testInternalSignatureAndVerification() throws MarshallingException, UnmarshallingException,
-            ValidationException {
+            ValidationException, SignatureException {
         SimpleXMLObject sxo = getXMLObjectWithSignature();
         Signature signature = sxo.getSignature();
 
@@ -130,8 +131,9 @@ public class DetachedSignatureTest extends XMLObjectBaseTestCase {
      * 
      * @throws MarshallingException thrown if the XMLObject tree can not be marshalled
      * @throws ValidationException thrown if the signature verification fails
+     * @throws SignatureException 
      */
-    public void testExternalSignatureAndVerification() throws MarshallingException, ValidationException {
+    public void testExternalSignatureAndVerification() throws MarshallingException, ValidationException, SignatureException {
         Signature signature = sigBuilder.buildObject();
         signature.setSigningCredential(goodCredential);
         signature.setCanonicalizationAlgorithm(SignatureConstants.ALGO_ID_C14N_EXCL_OMIT_COMMENTS);

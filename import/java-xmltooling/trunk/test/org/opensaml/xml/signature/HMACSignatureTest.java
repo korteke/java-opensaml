@@ -107,8 +107,9 @@ public class HMACSignatureTest extends XMLObjectBaseTestCase {
      * 
      * @throws MarshallingException thrown if the XMLObject tree can not be marshalled
      * @throws ValidationException thrown if signature validator fails to validate the signature
+     * @throws SignatureException 
      */
-    public void testSigningAndVerificationNoOutputLength() throws MarshallingException, ValidationException {
+    public void testSigningAndVerificationNoOutputLength() throws MarshallingException, ValidationException, SignatureException {
         SimpleXMLObject sxo = getXMLObjectWithSignature(false);
         Signature signature = sxo.getSignature();
 
@@ -138,8 +139,9 @@ public class HMACSignatureTest extends XMLObjectBaseTestCase {
      * 
      * @throws MarshallingException thrown if the XMLObject tree can not be marshalled
      * @throws ValidationException thrown if signature validator fails to validate the signature
+     * @throws SignatureException 
      */
-    public void testSigningAndVerificationWithOutputLength() throws MarshallingException, ValidationException {
+    public void testSigningAndVerificationWithOutputLength() throws MarshallingException, ValidationException, SignatureException {
         SimpleXMLObject sxo = getXMLObjectWithSignature(true);
         Signature signature = sxo.getSignature();
 

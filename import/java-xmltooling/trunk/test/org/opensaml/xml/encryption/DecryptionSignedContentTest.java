@@ -39,6 +39,7 @@ import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xml.signature.DocumentInternalIDContentReference;
 import org.opensaml.xml.signature.Signature;
 import org.opensaml.xml.signature.SignatureConstants;
+import org.opensaml.xml.signature.SignatureException;
 import org.opensaml.xml.signature.SignatureValidator;
 import org.opensaml.xml.signature.Signer;
 import org.opensaml.xml.validation.ValidationException;
@@ -88,9 +89,10 @@ public class DecryptionSignedContentTest extends XMLObjectBaseTestCase {
      * Test decryption of signed object and then verify signature.
      * 
      * @throws IOException
+     * @throws SignatureException 
      */
     public void testDecryptAndVerifySignedElement() throws MarshallingException, ValidationException,
-            UnmarshallingException, EncryptionException, DecryptionException, XMLParserException, IOException {
+            UnmarshallingException, EncryptionException, DecryptionException, XMLParserException, IOException, SignatureException {
         // Get signed element
         Element signedElement = getSignedElement();
 
@@ -138,8 +140,9 @@ public class DecryptionSignedContentTest extends XMLObjectBaseTestCase {
         sigValidator.validate(decryptedSignature);
     }
 
-    /** Just a sanity check that unit test is set up correctly. */
-    public void testPlainRoundTripSignature() throws MarshallingException, UnmarshallingException {
+    /** Just a sanity check that unit test is set up correctly. 
+     * @throws SignatureException */
+    public void testPlainRoundTripSignature() throws MarshallingException, UnmarshallingException, SignatureException {
         Element signedElement = getSignedElement();
 
         XMLObject xmlObject = unmarshallerFactory.getUnmarshaller(signedElement).unmarshall(signedElement);
@@ -159,8 +162,9 @@ public class DecryptionSignedContentTest extends XMLObjectBaseTestCase {
      * 
      * @return a XMLObject that has a Signature child element
      * @throws MarshallingException
+     * @throws SignatureException 
      */
-    private Element getSignedElement() throws MarshallingException {
+    private Element getSignedElement() throws MarshallingException, SignatureException {
         SimpleXMLObject sxo = (SimpleXMLObject) buildXMLObject(SimpleXMLObject.ELEMENT_NAME);
         sxo.setId(idValue);
 
