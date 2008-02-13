@@ -62,6 +62,10 @@ public class WSSecurityConstants {
     /** WS-Security X509 Token Profile 1.0 namespace */
     public static final String WSSE_X509_TOKEN_PROFILE_NS= "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-x509-token-profile-1.0";
 
+    /** WS-Security Kerberos Token Profile 1.1 namespace */
+    public static final String WSSE_KERBEROS_TOKEN_PROFILE_NS= "http://docs.oasis-open.org/wss/oasis-wss-kerberos-token-profile-1.1";
+
+    
     /**
      * Prevents instantiation.
      */
