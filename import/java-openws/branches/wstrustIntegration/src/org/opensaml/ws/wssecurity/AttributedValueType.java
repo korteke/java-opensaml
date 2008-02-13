@@ -14,13 +14,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.opensaml.ws.wssecurity;
 
 import javax.xml.namespace.QName;
 
 /**
- * Interface AttributedValueType for element having a &lt;@wsse:ValueType&gt;
- * attribute.
+ * Interface AttributedValueType for element having a &lt;@wsse:ValueType&gt; attribute.
  * 
  * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
  * @version $Revision$
@@ -28,79 +28,122 @@ import javax.xml.namespace.QName;
 public abstract interface AttributedValueType {
 
     /** the wsse:ValueType attribute local name */
-    public final static String VALUE_TYPE_ATTR_LOCAL_NAME= "ValueType";
+    public final static String VALUE_TYPE_ATTR_LOCAL_NAME = "ValueType";
 
     /** the wsse:ValueType qualified attribute name */
-    public final QName VALUE_TYPE_ATTR_NAME= new QName(WSSecurityConstants.WSSE_NS,
-                                                       VALUE_TYPE_ATTR_LOCAL_NAME,
-                                                       WSSecurityConstants.WSSE_PREFIX);
+    public final QName VALUE_TYPE_ATTR_NAME = new QName(WSSecurityConstants.WSSE_NS, VALUE_TYPE_ATTR_LOCAL_NAME,
+            WSSecurityConstants.WSSE_PREFIX);
 
     /**
-     * The wsse:Reference/@ValueType attribute URI value
-     * <code>#UsernameToken</code>
+     * The &lt;wsse:ValueType&gt; attribute UsernameToken URI value <code>#UsernameToken</code>.
+     * 
+     * @see Reference
      */
-    public static final String VALUETYPE_USERNAME_TOKEN= WSSecurityConstants.WSSE_USERNAME_TOKEN_PROFILE_NS
+    public static final String VALUETYPE_USERNAME_TOKEN = WSSecurityConstants.WSSE_USERNAME_TOKEN_PROFILE_NS
             + "#UsernameToken";
 
     /**
-     * The wsse:BinarySecurityToken/@wsse:ValueType attribute URI value
-     * <code>#X509v3</code>.
+     * The &lt;wsse:ValueType&gt; attribute X.509 URI value <code>#X509v3</code>.
      * <p>
      * A X.509 v3 certificate capable of signature-verification at a minimum.
+     * 
+     * @see BinarySecurityToken
      */
-    public final static String VALUETYPE_X509_V3= WSSecurityConstants.WSSE_X509_TOKEN_PROFILE_NS
-            + "#X509v3";
+    public final static String VALUETYPE_X509_V3 = WSSecurityConstants.WSSE_X509_TOKEN_PROFILE_NS + "#X509v3";
 
     /**
-     * The wsse:BinarySecurityToken/@wsse:ValueType attribute URI value
-     * <code>#X509v1</code>
+     * The &lt;wsse:ValueType&gt; attribute X.509 URI value <code>#X509v1</code>
      * <p>
      * A X.509 v1 certificate capable of signature-verification at a minimum.
+     * 
+     * @see BinarySecurityToken
      */
-    public final static String VALUETYPE_X509_V1= WSSecurityConstants.WSSE_X509_TOKEN_PROFILE_NS
-            + "#X509v1";
+    public final static String VALUETYPE_X509_V1 = WSSecurityConstants.WSSE_X509_TOKEN_PROFILE_NS + "#X509v1";
 
     /**
-     * The wsse:BinarySecurityToken/@wsse:ValueType attribute URI value
-     * <code>#X509PKIPathv1</code>
+     * The &lt;wsse:ValueType&gt; attribute X.509 URI value <code>#X509PKIPathv1</code>
      * <p>
      * An ordered list of X.509 certificates packaged in a PKIPath.
+     * 
+     * @see BinarySecurityToken
      */
-    public final static String VALUETYPE_X509_PKI_PATH_V1= WSSecurityConstants.WSSE_X509_TOKEN_PROFILE_NS
+    public final static String VALUETYPE_X509_PKI_PATH_V1 = WSSecurityConstants.WSSE_X509_TOKEN_PROFILE_NS
             + "#X509PKIPathv1";
 
     /**
-     * The wsse:BinarySecurityToken/@wsse:ValueType attribute URI value
-     * <code>#PKCS7</code>
+     * The &lt;wsse:ValueType&gt; attribute X.509 URI value <code>#PKCS7</code>
      * <P>
-     * A list of X.509 certificates and (optionally) CRLs packaged in a PKCS#7
-     * wrapper.
+     * A list of X.509 certificates and (optionally) CRLs packaged in a PKCS#7 wrapper.
+     * 
+     * @see BinarySecurityToken
      */
-    public final static String VALUETYPE_X509_PKCS7= WSSecurityConstants.WSSE_X509_TOKEN_PROFILE_NS
-            + "#PKCS7";
+    public final static String VALUETYPE_X509_PKCS7 = WSSecurityConstants.WSSE_X509_TOKEN_PROFILE_NS + "#PKCS7";
 
     /**
-     * The wsse:KeyIdentifier/@wsse:ValueType attribute URI value
-     * <code>#X509SubjectKeyIdentifier</code>
+     * The &lt;wsse:ValueType&gt; attribute Kerberos URI value <code>#Kerberosv5_AP_REQ</code>
+     * <p>
+     * Kerberos v5 AP-REQ as defined in the in the Kerberos specification.
+     * 
+     * @see BinarySecurityToken
+     */
+    public final static String VALUETYPE_KERBEROS_AP_REQ = WSSecurityConstants.WSSE_KERBEROS_TOKEN_PROFILE_NS
+            + "#Kerberosv5_AP_REQ";
+
+    /**
+     * The &lt;wsse:ValueType&gt; attribute Kerberos URI value <code>#GSS_Kerberosv5_AP_REQ</code>
+     * <p>
+     * A GSS-API Kerberos v5 mechanism token containing an KRB_AP_REQ message as defined in the in RFC-1964, Sec 1.1 and
+     * its successor RFC-4121, Sec 4.1.
+     * 
+     * @see BinarySecurityToken
+     */
+    public final static String VALUETYPE_GSS_KERBEROS_AP_REQ = WSSecurityConstants.WSSE_KERBEROS_TOKEN_PROFILE_NS
+            + "#GSS_Kerberosv5_AP_REQ";
+
+    /**
+     * The &lt;wsse:ValueType&gt; attribute Kerberos URI value <code>#Kerberosv5_AP_REQ1510</code>
+     * <p>
+     * Kerberos v5 AP-REQ as defined in RFC-1510.
+     * 
+     * @see BinarySecurityToken
+     */
+    public final static String VALUETYPE_KERBEROS_AP_REQ_1510 = WSSecurityConstants.WSSE_KERBEROS_TOKEN_PROFILE_NS
+            + "#Kerberosv5_AP_REQ1510";
+
+    /**
+     * The &lt;wsse:ValueType&gt; attribute Kerberos URI value <code>#GSS_Kerberosv5_AP_REQ1510</code>
+     * <p>
+     * A GSS-API Kerberos v5 mechanism token containing an KRB_AP_REQ message as defined in the in RFC-1964, Sec 1.1 and
+     * its successor RFC-4121, Sec 4.1. Per RFC-1510.
+     * 
+     * @see BinarySecurityToken
+     */
+    public final static String VALUETYPE_GSS_KERBEROS_AP_REQ_1510 = WSSecurityConstants.WSSE_KERBEROS_TOKEN_PROFILE_NS
+            + "#GSS_Kerberosv5_AP_REQ1510";
+
+    /**
+     * The &lt;wsse:ValueType&gt; attribute X.509 URI value <code>#X509SubjectKeyIdentifier</code>
      * <p>
      * Value of the certificate's X.509 SubjectKeyIdentifier.
+     * 
+     * @see KeyIdentifier
      */
-    public final static String VALUETYPE_X509_SUBJECT_KEY_IDENTIFIER= WSSecurityConstants.WSSE_X509_TOKEN_PROFILE_NS
+    public final static String VALUETYPE_X509_SUBJECT_KEY_IDENTIFIER = WSSecurityConstants.WSSE_X509_TOKEN_PROFILE_NS
             + "#X509SubjectKeyIdentifier";
 
     /**
-     * The wsse:KeyIdentifier/@wsse:ValueType attribute URI value
-     * <code>#ThumbPrintSHA1</code>
+     * The &lt;wsse:ValueType&gt; attribute URI value <code>#ThumbPrintSHA1</code>
+     * 
+     * @see KeyIdentifier
      */
-    public final static String VALUETYPE_THUMB_PRINT_SHA1= WSSecurityConstants.WS_SECURITY_NS
-            + "#ThumbPrintSHA1";
+    public final static String VALUETYPE_THUMB_PRINT_SHA1 = WSSecurityConstants.WS_SECURITY_NS + "#ThumbPrintSHA1";
 
     /**
-     * The wsse:KeyIdentifier/@wsse:ValueType attribute URI value
-     * <code>#EncyptedKeySHA1</code>
+     * The &lt;wsse:ValueType&gt; attribute URI value <code>#EncyptedKeySHA1</code>
+     * 
+     * @see KeyIdentifier
      */
-    public final static String VALUETYPE_ENCRYPTED_KEY_SHA1= WSSecurityConstants.WS_SECURITY_NS
-            + "#EncryptedKeySHA1";
+    public final static String VALUETYPE_ENCRYPTED_KEY_SHA1 = WSSecurityConstants.WS_SECURITY_NS + "#EncryptedKeySHA1";
 
     /**
      * Returns the &lt;@wsse:ValueType&gt; attribute URI value.
@@ -112,8 +155,7 @@ public abstract interface AttributedValueType {
     /**
      * Sets the &lt;@wsse:ValueType&gt; attribute URI value.
      * 
-     * @param valueType
-     *            the ValueType attribute value.
+     * @param valueType the ValueType attribute value.
      */
     public void setValueType(String valueType);
 

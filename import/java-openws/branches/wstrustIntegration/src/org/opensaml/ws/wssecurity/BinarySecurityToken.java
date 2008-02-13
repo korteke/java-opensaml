@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.opensaml.ws.wssecurity;
 
 import javax.xml.namespace.QName;
@@ -21,21 +22,22 @@ import javax.xml.namespace.QName;
 import org.opensaml.xml.schema.XSBase64Binary;
 
 /**
- * The &lt;wsse:BinarySecurityToken&gt; element.
+ * The &lt;wsse:BinarySecurityToken&gt; element. The binary security token normally contains a X.509 certificate token
+ * or a Kerberos token.
+ * 
+ * @see AttributedValueType for the &lt;wsse:ValueType&gt; attribute values
  * 
  * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
  * @version $Revision$
  */
-public interface BinarySecurityToken extends XSBase64Binary,
-        AttributedEncodingType, AttributedValueType, AttributedId,
+public interface BinarySecurityToken extends XSBase64Binary, AttributedEncodingType, AttributedValueType, AttributedId,
         WSSecurityObject {
 
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME= "BinarySecurityToken";
+    public static final String ELEMENT_LOCAL_NAME = "BinarySecurityToken";
 
     /** Qualified element name */
-    public final static QName ELEMENT_NAME= new QName(WSSecurityConstants.WSSE_NS,
-                                                      ELEMENT_LOCAL_NAME,
-                                                      WSSecurityConstants.WSSE_PREFIX);
+    public final static QName ELEMENT_NAME = new QName(WSSecurityConstants.WSSE_NS, ELEMENT_LOCAL_NAME,
+            WSSecurityConstants.WSSE_PREFIX);
 
 }
