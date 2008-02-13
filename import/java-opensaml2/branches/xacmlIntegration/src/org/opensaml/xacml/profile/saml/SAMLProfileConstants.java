@@ -17,6 +17,8 @@
 
 package org.opensaml.xacml.profile.saml;
 
+import javax.xml.namespace.QName;
+
 import org.opensaml.xacml.XACMLConstants;
 
 /** Defines the constants for this XACML SAML2.0 profile. */
@@ -51,4 +53,9 @@ public class SAMLProfileConstants extends XACMLConstants {
 
     /** The namespaces for use of XACML 3.0 SAML 2.0 assertion. */
     public static final String SAML20XACML30_NS = "urn:oasis:names:tc:xacml:3.0:profile:saml2.0:v2:schema:assertion";
+
+    /** QName of the DataType attribute that must be on SAML attributes that meet the XACML attribute profile spec. */
+    public static final QName SAML_DATATYPE_ATTRIB = new QName(
+            "urn:oasis:names:tc:SAML:2.0:profiles:attribute:XACML", "DataType", "xacmlprof");
+
 }

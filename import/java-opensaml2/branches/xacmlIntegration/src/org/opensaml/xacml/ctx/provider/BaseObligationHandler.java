@@ -15,8 +15,9 @@
  * limitations under the License.
  */
 
-package org.opensaml.xacml.policy.provider;
+package org.opensaml.xacml.ctx.provider;
 
+import org.opensaml.xacml.policy.ObligationType;
 import org.opensaml.xml.util.DatatypeHelper;
 
 /**
@@ -81,10 +82,12 @@ public abstract class BaseObligationHandler {
      * Evaluates the obligation represented by this handler.
      * 
      * @param context current processing context
+     * @param obligation the obligation as returned by the PDP
      * 
      * @throws ObligationProcessingException thrown if there is a problem evaluating this handler
      */
-    public abstract void evaluateObligation(ObligationProcessingContext context) throws ObligationProcessingException;
+    public abstract void evaluateObligation(ObligationProcessingContext context, ObligationType obligation)
+            throws ObligationProcessingException;
 
     /** {@inheritDoc} */
     public int hashCode() {

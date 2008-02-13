@@ -15,14 +15,19 @@
  * limitations under the License.
  */
 
-package org.opensaml.xacml.policy.provider;
+package org.opensaml.xacml.ctx.provider;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+
+import org.opensaml.xacml.ctx.DecisionType.DECISION;
+import org.opensaml.xacml.policy.EffectType;
+import org.opensaml.xacml.policy.ObligationType;
+import org.opensaml.xacml.policy.ObligationsType;
 
 /** A service for evaluating the obligations within a context. */
 public class ObligationService {
@@ -43,30 +48,49 @@ public class ObligationService {
      * @throws ObligationProcessingException thrown if there is a problem evaluating an obligation
      */
     public void processObligations(ObligationProcessingContext context) throws ObligationProcessingException {
-        Collection<String> obligationIds = extractObligationIDs(context);
         Iterator<BaseObligationHandler> handlerItr = obligationHandlers.iterator();
+        Map<String, ObligationType> effectiveObligations = preprocessObligations(context);
+
         BaseObligationHandler handler;
         while (handlerItr.hasNext()) {
             handler = handlerItr.next();
-            if (obligationIds.contains(handler.getObligationId())) {
-                handler.evaluateObligation(context);
+            if (effectiveObligations.containsKey(handler.getObligationId())) {
+                handler.evaluateObligation(context, effectiveObligations.get(handler.getObligationId()));
             }
         }
     }
 
     /**
-     * Extracts ID of the obligations within the effective XACML policy.
+     * Preprocesses the obligations returned within the result. This preprocessing determines the active effect, based
+     * on {@link org.opensaml.xacml.ctx.ResultType#getDecision()}, and creates an index that maps obligation IDs to the
+     * {@link ObligationType} returned by the PDP.
      * 
-     * @param context current processing context.
+     * @param context current processing context
      * 
-     * @return obligation IDs within the effect XACML policy
+     * @return preprocessed obligations
      */
-    protected Collection<String> extractObligationIDs(ObligationProcessingContext context) {
-        ArrayList<String> obligationIds = new ArrayList<String>();
+    protected Map<String, ObligationType> preprocessObligations(ObligationProcessingContext context) {
+        HashMap<String, ObligationType> effectiveObligations = new HashMap<String, ObligationType>();
 
-        // TODO
+        ObligationsType obligations = context.getAuthorizationDecisionResult().getObligations();
+        if (obligations == null || obligations.getObligations() == null) {
+            return effectiveObligations;
+        }
 
-        return obligationIds;
+        EffectType activeEffect;
+        if (context.getAuthorizationDecisionResult().getDecision().getDecision() == DECISION.Permit) {
+            activeEffect = EffectType.Permit;
+        } else {
+            activeEffect = EffectType.Deny;
+        }
+
+        for (ObligationType obligation : obligations.getObligations()) {
+            if (obligation != null && obligation.getFulfillOn() == activeEffect) {
+                effectiveObligations.put(obligation.getObligationId(), obligation);
+            }
+        }
+
+        return effectiveObligations;
     }
 
     /** Comparator used to order obligation handlers by precedence. */
