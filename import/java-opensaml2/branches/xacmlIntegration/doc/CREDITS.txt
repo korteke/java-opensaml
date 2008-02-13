@@ -33,3 +33,6 @@ OpenSAML2 Java Stack Implementation Team
    University of Washington
    
 Additional Contributions by:
+
+     Hakon Sagehaug (Parallab, UNIFOB, UiB), Yuri Demchenko (UvA), and EGEE for their work on
+        and funding of the contribute XACML code
