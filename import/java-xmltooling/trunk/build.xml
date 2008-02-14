@@ -25,9 +25,12 @@
         <pathelement location="${core-src.dir}" />
         <pathelement location="${test-classes.dir}" />
     	<pathelement location="${test-classes.dir}/data" />
-    	<pathelement location="${test-classes.dir}/log4j.xml" />
         <pathelement location="${test-src.dir}" />
         <pathelement location="${classpathres.dir}" />
+        <fileset dir="${thirdpaty-lib.dir}">
+            <include name="slf4j/logback-classic-0.9.8.jar"/>
+            <include name="slf4j/logback-core-0.9.8.jar"/>
+        </fileset>
     </path>
 
     <!-- Prepare directory structure for build -->
