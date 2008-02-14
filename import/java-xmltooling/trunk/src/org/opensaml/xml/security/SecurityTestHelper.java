@@ -17,7 +17,6 @@
 package org.opensaml.xml.security;
 
 import java.io.ByteArrayInputStream;
-import java.math.BigInteger;
 import java.security.KeyException;
 import java.security.KeyFactory;
 import java.security.KeyPair;
@@ -35,7 +34,6 @@ import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
-import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +41,7 @@ import java.util.List;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 
+import org.apache.xml.security.Init;
 import org.apache.xml.security.algorithms.JCEMapper;
 import org.opensaml.xml.security.credential.BasicCredential;
 import org.opensaml.xml.security.credential.Credential;
@@ -50,19 +49,17 @@ import org.opensaml.xml.security.keyinfo.BasicProviderKeyInfoCredentialResolver;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xml.security.keyinfo.KeyInfoProvider;
 import org.opensaml.xml.security.keyinfo.provider.DSAKeyValueProvider;
-import org.opensaml.xml.security.keyinfo.provider.RSAKeyValueProvider;
 import org.opensaml.xml.security.keyinfo.provider.InlineX509DataProvider;
+import org.opensaml.xml.security.keyinfo.provider.RSAKeyValueProvider;
 import org.opensaml.xml.util.Base64;
 
 /**
- * Some utility methods for doing security, credential, key and JCE related tests.
+ * Some utility methods for doing security, credential, key and crypto-related tests.
  */
-public class SecurityTestHelper {
+public final class SecurityTestHelper {
     
-    /**
-     * Constructor.
-     */
-    protected SecurityTestHelper() { }
+    /** Constructor. */
+    private SecurityTestHelper() { }
     
     /**
      * Build Java certificate from base64 encoding.
@@ -72,13 +69,9 @@ public class SecurityTestHelper {
      * @throws CertificateException thrown if there is an error constructing certificate
      */
     public static java.security.cert.X509Certificate buildJavaX509Cert(String base64Cert) throws CertificateException {
-        CertificateFactory  cf = null;
-        cf = CertificateFactory.getInstance("X.509");
-        
+        CertificateFactory  cf = CertificateFactory.getInstance("X.509");
         ByteArrayInputStream input = new ByteArrayInputStream(Base64.decode(base64Cert));
-        java.security.cert.X509Certificate newCert = null;
-        newCert = (java.security.cert.X509Certificate) cf.generateCertificate(input);
-        return newCert;
+        return (java.security.cert.X509Certificate) cf.generateCertificate(input);
     }
     
     /**
@@ -89,15 +82,11 @@ public class SecurityTestHelper {
      * @throws CertificateException thrown if there is an error constructing certificate
      * @throws CRLException  thrown if there is an error constructing CRL
      */
-    public static java.security.cert.X509CRL buildJavaX509CRL(String base64CRL) 
-        throws CertificateException, CRLException {
-        CertificateFactory  cf = null;
-        cf = CertificateFactory.getInstance("X.509");
-        
+    public static java.security.cert.X509CRL buildJavaX509CRL(String base64CRL)
+            throws CertificateException, CRLException {
+        CertificateFactory  cf = CertificateFactory.getInstance("X.509");
         ByteArrayInputStream input = new ByteArrayInputStream(Base64.decode(base64CRL));
-        java.security.cert.X509CRL newCRL = null;
-        newCRL = (java.security.cert.X509CRL) cf.generateCRL(input);
-        return newCRL;
+        return (java.security.cert.X509CRL) cf.generateCRL(input);
     }
     
     /**
@@ -109,9 +98,7 @@ public class SecurityTestHelper {
      */
     public static DSAPublicKey buildJavaDSAPublicKey(String base64EncodedKey) throws KeyException {
         X509EncodedKeySpec keySpec = new X509EncodedKeySpec(Base64.decode(base64EncodedKey));
-        DSAPublicKey key = null;
-        key = (DSAPublicKey) buildKey(keySpec, "DSA");
-        return key;
+        return (DSAPublicKey) buildKey(keySpec, "DSA");
     }
     
     /**
@@ -123,9 +110,7 @@ public class SecurityTestHelper {
      */
     public static RSAPublicKey buildJavaRSAPublicKey(String base64EncodedKey) throws KeyException {
         X509EncodedKeySpec keySpec = new X509EncodedKeySpec(Base64.decode(base64EncodedKey));
-        RSAPublicKey key = null;
-        key = (RSAPublicKey) buildKey(keySpec, "RSA");
-        return key;
+        return (RSAPublicKey) buildKey(keySpec, "RSA");
     }
     
     /**
@@ -200,7 +185,7 @@ public class SecurityTestHelper {
      * @throws NoSuchAlgorithmException algorithm not found
      */
     public static SecretKey generateKeyFromURI(String algoURI) 
-        throws NoSuchAlgorithmException, NoSuchProviderException {
+            throws NoSuchAlgorithmException, NoSuchProviderException {
         String jceAlgorithmName = JCEMapper.getJCEKeyAlgorithmFromURI(algoURI);
         int keyLength = JCEMapper.getKeyLengthFromURI(algoURI);
         return generateKey(jceAlgorithmName, keyLength, null);
@@ -216,7 +201,7 @@ public class SecurityTestHelper {
      * @throws NoSuchAlgorithmException  algorithm not found
      */
     public static KeyPair generateKeyPairFromURI(String algoURI, int keyLength) 
-        throws NoSuchAlgorithmException, NoSuchProviderException {
+            throws NoSuchAlgorithmException, NoSuchProviderException {
         String jceAlgorithmName = JCEMapper.getJCEKeyAlgorithmFromURI(algoURI);
         return generateKeyPair(jceAlgorithmName, keyLength, null);
     }
@@ -232,7 +217,7 @@ public class SecurityTestHelper {
      * @throws NoSuchProviderException provider not found
      */
     public static SecretKey generateKey(String algo, int keyLength, String provider) 
-        throws NoSuchAlgorithmException, NoSuchProviderException {
+            throws NoSuchAlgorithmException, NoSuchProviderException {
         SecretKey key = null;
         KeyGenerator keyGenerator = null;
         if (provider != null) {
@@ -256,8 +241,7 @@ public class SecurityTestHelper {
      * @throws NoSuchProviderException provider not found
      */
     public static KeyPair generateKeyPair(String algo, int keyLength, String provider) 
-        throws NoSuchAlgorithmException, NoSuchProviderException {
-        KeyPair keyPair = null;
+            throws NoSuchAlgorithmException, NoSuchProviderException {
         KeyPairGenerator keyGenerator = null;
         if (provider != null) {
             keyGenerator = KeyPairGenerator.getInstance(algo, provider);
@@ -265,8 +249,7 @@ public class SecurityTestHelper {
             keyGenerator = KeyPairGenerator.getInstance(algo);
         }
         keyGenerator.initialize(keyLength);
-        keyPair = keyGenerator.generateKeyPair();
-        return keyPair;
+        return keyGenerator.generateKeyPair();
     }
     
     /**
@@ -278,7 +261,7 @@ public class SecurityTestHelper {
      * @throws NoSuchProviderException provider not found
      */
     public static Credential generateKeyAndCredential(String algorithmURI) 
-        throws NoSuchAlgorithmException, NoSuchProviderException {
+            throws NoSuchAlgorithmException, NoSuchProviderException {
         SecretKey key = SecurityTestHelper.generateKeyFromURI(algorithmURI);
         BasicCredential credential = new BasicCredential();
         credential.setSecretKey(key);
@@ -296,7 +279,7 @@ public class SecurityTestHelper {
      * @throws NoSuchProviderException provider not found
      */
     public static Credential generateKeyPairAndCredential(String algorithmURI, int keyLength, boolean includePrivate) 
-        throws NoSuchAlgorithmException, NoSuchProviderException {
+            throws NoSuchAlgorithmException, NoSuchProviderException {
         KeyPair keyPair = SecurityTestHelper.generateKeyPairFromURI(algorithmURI, keyLength);
         BasicCredential credential = new BasicCredential();
         credential.setPublicKey(keyPair.getPublic());
@@ -320,4 +303,11 @@ public class SecurityTestHelper {
         return new BasicProviderKeyInfoCredentialResolver(providers);
     }
     
+    static {
+        // We use some Apache XML Security utility functions, so need to make sure library
+        // is initialized.
+        if (!Init.isInitialized()) {
+            Init.init();
+        }
+    }
 }
