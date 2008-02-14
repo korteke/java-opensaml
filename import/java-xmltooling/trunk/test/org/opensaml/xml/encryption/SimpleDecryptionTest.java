@@ -23,7 +23,6 @@ import java.security.NoSuchProviderException;
 
 import javax.crypto.SecretKey;
 
-import org.opensaml.xml.StaticKeyInfoCredentialResolver;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.XMLObjectBaseTestCase;
 import org.opensaml.xml.mock.SimpleXMLObject;
@@ -31,6 +30,7 @@ import org.opensaml.xml.security.SecurityTestHelper;
 import org.opensaml.xml.security.credential.BasicCredential;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
+import org.opensaml.xml.security.keyinfo.StaticKeyInfoCredentialResolver;
 import org.opensaml.xml.signature.KeyInfo;
 import org.w3c.dom.Document;
 

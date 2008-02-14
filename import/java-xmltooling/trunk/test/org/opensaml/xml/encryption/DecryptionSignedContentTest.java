@@ -24,7 +24,6 @@ import java.security.KeyPair;
 
 import org.apache.xml.security.utils.IdResolver;
 import org.opensaml.xml.Configuration;
-import org.opensaml.xml.StaticKeyInfoCredentialResolver;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.XMLObjectBaseTestCase;
 import org.opensaml.xml.io.Marshaller;
@@ -36,6 +35,7 @@ import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.SecurityTestHelper;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
+import org.opensaml.xml.security.keyinfo.StaticKeyInfoCredentialResolver;
 import org.opensaml.xml.signature.DocumentInternalIDContentReference;
 import org.opensaml.xml.signature.Signature;
 import org.opensaml.xml.signature.SignatureConstants;
