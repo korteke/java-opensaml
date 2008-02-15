@@ -183,7 +183,7 @@ public class WSTrustObjectsTestCase extends WSBaseTestCase {
         requestType.setValue(RequestType.ISSUE);
         rst.setRequestType(requestType);
         TokenType tokenType= buildXMLObject(TokenType.ELEMENT_NAME);
-        tokenType.setValue(TokenType.SAML2_TOKEN_URI);
+        tokenType.setValue(TokenType.SAML2_TOKEN);
         rst.setTokenType(tokenType);
         Claims claims= buildXMLObject(Claims.ELEMENT_NAME);
         claims.getUnknownXMLObjects().add(createUsernameToken("myuser",
