@@ -147,7 +147,7 @@ public class WSSecurityObjectsTestCase extends WSBaseTestCase {
         // unmarshallXML("/data/usernametoken.xml");
         // Document refDocument= refUsernameToken.getDOM().getOwnerDocument();
         // refUsernameToken.releaseDOM();
-        Document refDocument= parseXMLDocument("/data/usernametoken.xml");
+        Document refDocument= parseXMLDocument("/data/org/opensaml/ws/wssecurity/UsernameToken.xml");
         System.out.println("XXX: "
                 + XMLHelper.nodeToString(refDocument.getDocumentElement()));
 
@@ -159,7 +159,7 @@ public class WSSecurityObjectsTestCase extends WSBaseTestCase {
         assertXMLEqual(refDocument, document);
 
         // unmarshall directly from file
-        UsernameToken ut= unmarshallXML("/data/usernametoken.xml");
+        UsernameToken ut= unmarshallXML("/data/org/opensaml/ws/wssecurity/UsernameToken.xml");
         assertEquals("test", ut.getUsername().getValue());
         assertEquals("test", ut.getPassword().getValue());
         DateTime created= ut.getCreated().getDateTime();
