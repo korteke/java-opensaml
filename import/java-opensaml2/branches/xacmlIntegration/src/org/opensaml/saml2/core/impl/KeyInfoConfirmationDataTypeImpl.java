@@ -1,5 +1,5 @@
 /*
- * Copyright [2006] [University Corporation for Advanced Internet Development, Inc.]
+ * Copyright 2008 University Corporation for Advanced Internet Development, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,21 +14,21 @@
  * limitations under the License.
  */
 
-package org.opensaml.samlext.saml2mdquery.impl;
+package org.opensaml.saml2.core.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.namespace.QName;
-
-import org.opensaml.saml2.metadata.Endpoint;
-import org.opensaml.samlext.saml2mdquery.AuthnQueryDescriptor;
+import org.opensaml.saml2.core.SubjectConfirmationData;
+import org.opensaml.saml2.core.KeyInfoConfirmationDataType;
+import org.opensaml.xml.XMLObject;
+import org.opensaml.xml.signature.KeyInfo;
 
 /**
- * Concrete implementation of {@link AuthnQueryDescriptor}.
+ * Concrete implementation of {@link org.opensaml.saml2.core.SubjectConfirmationData}.
  */
-public class AuthnQueryDescriptorImpl extends QueryDescriptorTypeImpl implements AuthnQueryDescriptor{
-    
+public class KeyInfoConfirmationDataTypeImpl extends SubjectConfirmationDataImpl 
+        implements KeyInfoConfirmationDataType {
+
     /**
      * Constructor.
      * 
@@ -36,17 +36,13 @@ public class AuthnQueryDescriptorImpl extends QueryDescriptorTypeImpl implements
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected AuthnQueryDescriptorImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
+    protected KeyInfoConfirmationDataTypeImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
-    
+
     /** {@inheritDoc} */
-    public List<Endpoint> getEndpoints() {
-        return new ArrayList<Endpoint>();
+    public List<XMLObject> getKeyInfos() {
+        return getUnknownXMLObjects(KeyInfo.DEFAULT_ELEMENT_NAME);
     }
-    
-    /** {@inheritDoc} */
-    public List<Endpoint> getEndpoints(QName type) {
-        return null;
-    }
+
 }

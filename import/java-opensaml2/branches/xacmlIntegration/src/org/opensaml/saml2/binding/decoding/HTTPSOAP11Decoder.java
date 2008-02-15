@@ -70,6 +70,11 @@ public class HTTPSOAP11Decoder extends BaseSAML2MessageDecoder {
         return SAMLConstants.SAML2_SOAP11_BINDING_URI;
     }
 
+    /** {@inheritDoc} */
+    protected boolean isDestinationRequired(SAMLMessageContext samlMsgCtx) {
+        return false;
+    }
+
     /**
      * Gets the SOAP header names that are understood by the application.
      * 

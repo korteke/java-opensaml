@@ -19,7 +19,7 @@ package org.opensaml.saml2.binding.decoding;
 import org.opensaml.common.xml.SAMLConstants;
 import org.opensaml.xml.parse.ParserPool;
 
-/** Message decoder implementing the SAML 2.0 HTTP POST-SimpleSign profile. */
+/** Message decoder implementing the SAML 2.0 HTTP POST-SimpleSign binding. */
 public class HTTPPostSimpleSignDecoder extends HTTPPostDecoder {
 
     /**

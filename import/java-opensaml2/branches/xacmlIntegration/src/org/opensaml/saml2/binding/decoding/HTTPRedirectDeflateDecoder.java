@@ -63,6 +63,11 @@ public class HTTPRedirectDeflateDecoder extends BaseSAML2MessageDecoder {
     }
 
     /** {@inheritDoc} */
+    protected boolean isDestinationRequired(SAMLMessageContext samlMsgCtx) {
+        return isMessageSigned(samlMsgCtx);
+    }
+
+    /** {@inheritDoc} */
     protected void doDecode(MessageContext messageContext) throws MessageDecodingException {
         if (!(messageContext instanceof SAMLMessageContext)) {
             log.error("Invalid message context type, this decoder only support SAMLMessageContext");
@@ -103,6 +108,13 @@ public class HTTPRedirectDeflateDecoder extends BaseSAML2MessageDecoder {
         log.debug("Decoded SAML message");
 
         populateMessageContext(samlMsgCtx);
+    }
+    
+    /** {@inheritDoc} */
+    protected boolean isMessageSigned(SAMLMessageContext messageContext) {
+        HTTPInTransport inTransport = (HTTPInTransport) messageContext.getInboundMessageTransport();
+        String sigParam = inTransport.getParameterValue("Signature");
+        return (!DatatypeHelper.isEmpty(sigParam)) || super.isMessageSigned(messageContext);
     }
 
     /**
