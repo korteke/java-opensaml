@@ -193,7 +193,7 @@ public class WSTrustObjectsTestCase extends WSBaseTestCase {
         rst.setTimestamp(timestamp);
         marshallAndUnmarshall(rst);
 
-        rst= unmarshallXML("/data/RequestSecurityToken.xml");
+        rst= unmarshallXML("/data/org/opensaml/ws/wstrust/RequestSecurityToken.xml");
         rst.releaseDOM();
         marshallAndUnmarshall(rst);
     }
