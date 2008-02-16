@@ -194,7 +194,11 @@ public class KeyInfoHelper {
         }
 
         Collection<X509Certificate> certs = X509Util.decodeCertificate(Base64.decode(xmlCert.getValue()));
-        return certs.iterator().next();
+        if (certs != null && certs.iterator().hasNext()) {
+            return certs.iterator().next();
+        } else {
+            return null;
+        }
     }
 
     /**
