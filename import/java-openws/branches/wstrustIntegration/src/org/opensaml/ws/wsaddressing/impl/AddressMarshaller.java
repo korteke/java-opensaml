@@ -16,19 +16,7 @@
  */
 package org.opensaml.ws.wsaddressing.impl;
 
-import java.util.Map.Entry;
-
-import javax.xml.namespace.QName;
-
-
 import org.opensaml.ws.wsaddressing.Address;
-import org.opensaml.xml.AttributeExtensibleXMLObject;
-import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.util.XMLHelper;
-import org.w3c.dom.Attr;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 /**
  * Marshaller for the &lt;wsa:Address&gt; element.
@@ -38,7 +26,7 @@ import org.w3c.dom.Element;
  * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
  * @version $Revision$
  */
-public class AddressMarshaller extends AbstractWSAddressingObjectMarshaller {
+public class AddressMarshaller extends AbstractAttributedURITypeMarshaller {
 
     /**
      * Default constructor.
@@ -48,35 +36,5 @@ public class AddressMarshaller extends AbstractWSAddressingObjectMarshaller {
     public AddressMarshaller() {
         super(Address.ELEMENT_NAME.getNamespaceURI(),
               Address.ELEMENT_NAME.getLocalPart());
-    }
-
-    /**
-     * Marshalls the &lt;wsa:Address&gt; element URI content.
-     * <p>
-     * {@inheritDoc}
-     */
-    @Override
-    protected void marshallElementContent(XMLObject xmlObject,
-            Element domElement) throws MarshallingException {
-        Address intf= (Address) xmlObject;
-        XMLHelper.appendTextContent(domElement, intf.getValue());
-    }
-
-    /**
-     * Marshalls the xs:anyAttributes.
-     * <p>
-     * {@inheritDoc}
-     */
-    @Override
-    protected void marshallAttributes(XMLObject xmlObject, Element domElement)
-            throws MarshallingException {
-        AttributeExtensibleXMLObject anyAttribute= (AttributeExtensibleXMLObject) xmlObject;
-        Document document= domElement.getOwnerDocument();
-        Attr attribute;
-        for (Entry<QName, String> entry : anyAttribute.getUnknownAttributes().entrySet()) {
-            attribute= XMLHelper.constructAttribute(document, entry.getKey());
-            attribute.setValue(entry.getValue());
-            domElement.setAttributeNodeNS(attribute);
-        }
     }
 }

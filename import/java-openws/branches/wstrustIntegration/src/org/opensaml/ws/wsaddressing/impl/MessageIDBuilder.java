@@ -14,28 +14,36 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.opensaml.ws.wsaddressing.impl;
 
-import org.opensaml.ws.wsaddressing.Action;
+import org.opensaml.ws.wsaddressing.MessageID;
 
 /**
- * ActionImpl is the concrete implementation of {@link Action}.
+ * MessageIDBuilder
  * 
  * @author Valery Tschopp <tschopp@switch.ch>
  * @version $Revision$
  */
-public class ActionImpl extends AbstractAttributedURIType implements Action {
+public class MessageIDBuilder extends AbstractWSAddressingObjectBuilder<MessageID> {
 
-    /**
-     * Constructor.
+    /*
+     * (non-Javadoc)
      * 
-     * @param namespaceURI The namespace of the element
-     * @param elementLocalName The local name of the element
-     * @param namespacePrefix The namespace prefix of the element
+     * @see org.opensaml.ws.wsaddressing.impl.AbstractWSAddressObjectBuilder#buildObject()
      */
-    public ActionImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
-        super(namespaceURI, elementLocalName, namespacePrefix);
+    public MessageID buildObject() {
+        return buildObject(MessageID.ELEMENT_NAME);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.opensaml.xml.AbstractXMLObjectBuilder#buildObject(java.lang.String,
+     *      java.lang.String, java.lang.String)
+     */
+    public MessageID buildObject(String namespaceURI, String localName,
+            String namespacePrefix) {
+        return new MessageIDImpl(namespaceURI, localName, namespacePrefix);
     }
 
 }

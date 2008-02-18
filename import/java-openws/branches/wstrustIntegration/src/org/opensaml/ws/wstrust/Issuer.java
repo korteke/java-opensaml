@@ -18,7 +18,7 @@ package org.opensaml.ws.wstrust;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.ws.wsaddressing.EndpointReference;
+import org.opensaml.ws.wsaddressing.EndpointReferenceType;
 
 /**
  * The &lt;wst:Issuer&gt; element.
@@ -28,7 +28,7 @@ import org.opensaml.ws.wsaddressing.EndpointReference;
  * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
  * @version $Revision$
  */
-public interface Issuer extends EndpointReference, WSTrustObject {
+public interface Issuer extends EndpointReferenceType, WSTrustObject {
 
     /** Element local name. */
     public static final String ELEMENT_LOCAL_NAME= "Issuer";

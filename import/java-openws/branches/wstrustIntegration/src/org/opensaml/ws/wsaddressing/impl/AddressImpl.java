@@ -18,8 +18,6 @@
 package org.opensaml.ws.wsaddressing.impl;
 
 import org.opensaml.ws.wsaddressing.Address;
-import org.opensaml.xml.schema.impl.XSURIImpl;
-import org.opensaml.xml.util.AttributeMap;
 
 /**
  * AddressImpl is the concrete implementation of {@link Address}.
@@ -27,10 +25,7 @@ import org.opensaml.xml.util.AttributeMap;
  * @author Valery Tschopp <tschopp@switch.ch>
  * @version $Revision$
  */
-public class AddressImpl extends XSURIImpl implements Address {
-
-    /** xs:anyAttribute for this element. */
-    private AttributeMap anyAttributes_;
+public class AddressImpl extends AbstractAttributedURIType implements Address {
 
     /**
      * Constructor.
@@ -41,17 +36,6 @@ public class AddressImpl extends XSURIImpl implements Address {
      */
     public AddressImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        anyAttributes_ = new AttributeMap(this);
-
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AttributeExtensibleXMLObject#getUnknownAttributes()
-     */
-    public AttributeMap getUnknownAttributes() {
-        return anyAttributes_;
     }
 
 }

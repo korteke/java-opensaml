@@ -14,16 +14,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.opensaml.ws.wsaddressing.impl;
 
-
-import org.opensaml.ws.wsaddressing.Address;
 import org.opensaml.ws.wsaddressing.EndpointReference;
-import org.opensaml.ws.wsaddressing.Metadata;
-import org.opensaml.ws.wsaddressing.ReferenceParameters;
-import org.opensaml.xml.AbstractExtensibleXMLObjectUnmarshaller;
-import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.io.UnmarshallingException;
 
 /**
  * Unmarshaller for the &lt;wsa:EndpointReference&gt; element.
@@ -33,8 +27,7 @@ import org.opensaml.xml.io.UnmarshallingException;
  * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
  * @version $Revision$
  */
-public class EndpointReferenceUnmarshaller extends
-        AbstractExtensibleXMLObjectUnmarshaller {
+public class EndpointReferenceUnmarshaller extends AbstractEndpointReferenceTypeUnmarshaller {
 
     /**
      * Default constructor.
@@ -42,45 +35,7 @@ public class EndpointReferenceUnmarshaller extends
      * {@inheritDoc}
      */
     public EndpointReferenceUnmarshaller() {
-        this(EndpointReference.ELEMENT_NAME.getNamespaceURI(),
-             EndpointReference.ELEMENT_NAME.getLocalPart());
-    }
-
-    /**
-     * Constructor for sub-classes.
-     * <p>
-     * {@inheritDoc}
-     */
-    protected EndpointReferenceUnmarshaller(String namespaceURI,
-            String localPart) {
-        super(namespaceURI, localPart);
-    }
-
-    /**
-     * Unmarshalls the &lt;wsa:Address&gt;, the &lt;wsa:Metadata&gt; and the
-     * &lt;wsa:ReferenceParameters&gt; child elements.
-     * <p>
-     * {@inheritDoc}
-     */
-    @Override
-    protected void processChildElement(XMLObject parentXMLObject,
-            XMLObject childXMLObject) throws UnmarshallingException {
-        EndpointReference epr= (EndpointReference) parentXMLObject;
-        if (childXMLObject instanceof Address) {
-            Address address= (Address) childXMLObject;
-            epr.setAddress(address);
-        }
-        else if (childXMLObject instanceof Metadata) {
-            Metadata metadata= (Metadata) childXMLObject;
-            epr.setMetadata(metadata);
-        }
-        else if (childXMLObject instanceof ReferenceParameters) {
-            ReferenceParameters ref= (ReferenceParameters) childXMLObject;
-            epr.setReferenceParameters(ref);
-        }
-        else {
-            super.processChildElement(parentXMLObject, childXMLObject);
-        }
+        super(EndpointReference.ELEMENT_NAME.getNamespaceURI(), EndpointReference.ELEMENT_NAME.getLocalPart());
     }
 
 }

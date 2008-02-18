@@ -18,9 +18,6 @@ package org.opensaml.ws.wsaddressing;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.xml.AttributeExtensibleXMLObject;
-import org.opensaml.xml.schema.XSURI;
-
 /**
  * The &lt;wsa:Address&gt; element.
  * 
@@ -29,7 +26,7 @@ import org.opensaml.xml.schema.XSURI;
  * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
  * @version $Revision$
  */
-public interface Address extends XSURI, AttributeExtensibleXMLObject,
+public interface Address extends AttributedURIType,
         WSAddressingObject {
 
     /** Element local name. */

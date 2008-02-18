@@ -17,25 +17,25 @@
 
 package org.opensaml.ws.wsaddressing.impl;
 
-import org.opensaml.ws.wsaddressing.Action;
+import org.opensaml.ws.wsaddressing.MessageID;
 
 /**
- * ActionImpl is the concrete implementation of {@link Action}.
+ * Unmarshaller for the &lt;wsa:MessageID&gt; element.
  * 
- * @author Valery Tschopp <tschopp@switch.ch>
+ * @see MessageID
+ * 
+ * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
  * @version $Revision$
  */
-public class ActionImpl extends AbstractAttributedURIType implements Action {
+public class MessageIDUnmarshaller extends AbstractAttributedURITypeUnmarshaller {
 
     /**
-     * Constructor.
-     * 
-     * @param namespaceURI The namespace of the element
-     * @param elementLocalName The local name of the element
-     * @param namespacePrefix The namespace prefix of the element
+     * Default constructor.
+     * <p>
+     * {@inheritDoc}
      */
-    public ActionImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
-        super(namespaceURI, elementLocalName, namespacePrefix);
+    public MessageIDUnmarshaller() {
+        super(MessageID.ELEMENT_NAME.getNamespaceURI(), MessageID.ELEMENT_NAME.getLocalPart());
     }
 
 }

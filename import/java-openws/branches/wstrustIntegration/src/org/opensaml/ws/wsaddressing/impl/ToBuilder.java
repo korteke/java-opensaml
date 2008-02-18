@@ -17,25 +17,32 @@
 
 package org.opensaml.ws.wsaddressing.impl;
 
-import org.opensaml.ws.wsaddressing.Action;
+import org.opensaml.ws.wsaddressing.To;
 
 /**
- * ActionImpl is the concrete implementation of {@link Action}.
+ * Builder for the {@link To} element.
  * 
  * @author Valery Tschopp <tschopp@switch.ch>
  * @version $Revision$
  */
-public class ActionImpl extends AbstractAttributedURIType implements Action {
+public class ToBuilder extends AbstractWSAddressingObjectBuilder<To> {
 
-    /**
-     * Constructor.
+    /*
+     * (non-Javadoc)
      * 
-     * @param namespaceURI The namespace of the element
-     * @param elementLocalName The local name of the element
-     * @param namespacePrefix The namespace prefix of the element
+     * @see org.opensaml.ws.wsaddressing.impl.AbstractWSAddressObjectBuilder#buildObject()
      */
-    public ActionImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
-        super(namespaceURI, elementLocalName, namespacePrefix);
+    public To buildObject() {
+        return buildObject(To.ELEMENT_NAME);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.opensaml.xml.AbstractXMLObjectBuilder#buildObject(java.lang.String, java.lang.String, java.lang.String)
+     */
+    public To buildObject(String namespaceURI, String localName, String namespacePrefix) {
+        return new ToImpl(namespaceURI, localName, namespacePrefix);
     }
 
 }

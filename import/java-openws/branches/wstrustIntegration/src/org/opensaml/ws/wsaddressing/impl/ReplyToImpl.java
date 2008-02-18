@@ -17,15 +17,15 @@
 
 package org.opensaml.ws.wsaddressing.impl;
 
-import org.opensaml.ws.wsaddressing.Action;
+import org.opensaml.ws.wsaddressing.ReplyTo;
 
 /**
- * ActionImpl is the concrete implementation of {@link Action}.
+ * Concrete implementation of element {@link ReplyTo}.
  * 
- * @author Valery Tschopp <tschopp@switch.ch>
+ * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
  * @version $Revision$
  */
-public class ActionImpl extends AbstractAttributedURIType implements Action {
+public class ReplyToImpl extends AbstractEndpointReferenceType implements ReplyTo {
 
     /**
      * Constructor.
@@ -34,7 +34,7 @@ public class ActionImpl extends AbstractAttributedURIType implements Action {
      * @param elementLocalName The local name of the element
      * @param namespacePrefix The namespace prefix of the element
      */
-    public ActionImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
+    public ReplyToImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 

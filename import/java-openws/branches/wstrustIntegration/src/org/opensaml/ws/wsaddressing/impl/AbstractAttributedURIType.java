@@ -17,15 +17,20 @@
 
 package org.opensaml.ws.wsaddressing.impl;
 
-import org.opensaml.ws.wsaddressing.Action;
+import org.opensaml.ws.wsaddressing.AttributedURIType;
+import org.opensaml.xml.schema.impl.XSURIImpl;
+import org.opensaml.xml.util.AttributeMap;
 
 /**
- * ActionImpl is the concrete implementation of {@link Action}.
+ * AbstractAttributedURIType is the abstract implementation of {@link AttributedURIType}.
  * 
  * @author Valery Tschopp <tschopp@switch.ch>
  * @version $Revision$
  */
-public class ActionImpl extends AbstractAttributedURIType implements Action {
+public abstract class AbstractAttributedURIType extends XSURIImpl implements AttributedURIType {
+
+    /** xs:anyAttribute for this element. */
+    private AttributeMap anyAttributes_;
 
     /**
      * Constructor.
@@ -34,8 +39,19 @@ public class ActionImpl extends AbstractAttributedURIType implements Action {
      * @param elementLocalName The local name of the element
      * @param namespacePrefix The namespace prefix of the element
      */
-    public ActionImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
+    public AbstractAttributedURIType(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
+        anyAttributes_ = new AttributeMap(this);
+
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.opensaml.xml.AttributeExtensibleXMLObject#getUnknownAttributes()
+     */
+    public AttributeMap getUnknownAttributes() {
+        return anyAttributes_;
     }
 
 }

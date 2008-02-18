@@ -6,7 +6,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,15 +17,12 @@
 
 package org.opensaml.ws.wsaddressing.impl;
 
-import org.opensaml.ws.wsaddressing.Action;
+import org.opensaml.ws.wsaddressing.MessageID;
 
 /**
- * ActionImpl is the concrete implementation of {@link Action}.
- * 
- * @author Valery Tschopp <tschopp@switch.ch>
- * @version $Revision$
+ * Concrete implementation for the {@link MessageID} element.
  */
-public class ActionImpl extends AbstractAttributedURIType implements Action {
+public class MessageIDImpl extends AbstractAttributedURIType implements MessageID {
 
     /**
      * Constructor.
@@ -34,7 +31,7 @@ public class ActionImpl extends AbstractAttributedURIType implements Action {
      * @param elementLocalName The local name of the element
      * @param namespacePrefix The namespace prefix of the element
      */
-    public ActionImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
+    public MessageIDImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 

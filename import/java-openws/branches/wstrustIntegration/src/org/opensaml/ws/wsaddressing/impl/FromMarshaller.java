@@ -17,25 +17,21 @@
 
 package org.opensaml.ws.wsaddressing.impl;
 
-import org.opensaml.ws.wsaddressing.Action;
+import org.opensaml.ws.wsaddressing.From;
 
 /**
- * ActionImpl is the concrete implementation of {@link Action}.
+ * Marshaller for the {@link From} element.
  * 
- * @author Valery Tschopp <tschopp@switch.ch>
+ * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
  * @version $Revision$
  */
-public class ActionImpl extends AbstractAttributedURIType implements Action {
+public class FromMarshaller extends AbstractEndpointReferenceTypeMarshaller {
 
     /**
-     * Constructor.
-     * 
-     * @param namespaceURI The namespace of the element
-     * @param elementLocalName The local name of the element
-     * @param namespacePrefix The namespace prefix of the element
+     * Default constructor.
      */
-    public ActionImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
-        super(namespaceURI, elementLocalName, namespacePrefix);
+    public FromMarshaller() {
+        super(From.ELEMENT_NAME.getNamespaceURI(), From.ELEMENT_NAME.getLocalPart());
     }
 
 }

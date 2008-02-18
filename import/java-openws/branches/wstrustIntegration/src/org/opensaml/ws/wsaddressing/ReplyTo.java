@@ -15,27 +15,24 @@
  * limitations under the License.
  */
 
-package org.opensaml.ws.wsaddressing.impl;
+package org.opensaml.ws.wsaddressing;
 
-import org.opensaml.ws.wsaddressing.Action;
+import javax.xml.namespace.QName;
 
 /**
- * ActionImpl is the concrete implementation of {@link Action}.
+ * The &lt;wsa:ReplyTo&gt; element.
  * 
- * @author Valery Tschopp <tschopp@switch.ch>
+ * @see "WS-Addressing 1.0 - Core"
+ * 
+ * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
  * @version $Revision$
  */
-public class ActionImpl extends AbstractAttributedURIType implements Action {
+public interface ReplyTo extends EndpointReferenceType, WSAddressingObject {
 
-    /**
-     * Constructor.
-     * 
-     * @param namespaceURI The namespace of the element
-     * @param elementLocalName The local name of the element
-     * @param namespacePrefix The namespace prefix of the element
-     */
-    public ActionImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
-        super(namespaceURI, elementLocalName, namespacePrefix);
-    }
+    /** Element local name. */
+    public static final String ELEMENT_LOCAL_NAME = "ReplyTo";
 
+    /** Default element name */
+    public final static QName ELEMENT_NAME = new QName(WSAddressingConstants.WSA_NS, ELEMENT_LOCAL_NAME,
+            WSAddressingConstants.WSA_PREFIX);
 }

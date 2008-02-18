@@ -14,12 +14,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.opensaml.ws.wsaddressing;
 
 import javax.xml.namespace.QName;
-
-import org.opensaml.xml.AttributeExtensibleXMLObject;
-import org.opensaml.xml.ElementExtensibleXMLObject;
 
 /**
  * The &lt;wsa:EndpointReference&gt; element.
@@ -32,61 +30,12 @@ import org.opensaml.xml.ElementExtensibleXMLObject;
  * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
  * @version $Revision$
  */
-public interface EndpointReference extends AttributeExtensibleXMLObject,
-        ElementExtensibleXMLObject, WSAddressingObject {
+public interface EndpointReference extends EndpointReferenceType, WSAddressingObject {
 
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME= "EndpointReference";
+    public static final String ELEMENT_LOCAL_NAME = "EndpointReference";
 
     /** Default element name */
-    public final static QName ELEMENT_NAME= new QName(WSAddressingConstants.WSA_NS,
-                                                      ELEMENT_LOCAL_NAME,
-                                                      WSAddressingConstants.WSA_PREFIX);
-
-    /**
-     * Returns the &lt;wsa:Address&gt; child element.
-     * 
-     * @return the {@link Address} child element or <code>null</code>
-     */
-    public Address getAddress();
-
-    /**
-     * Sets the &lt;wsa:Address&gt; child element.
-     * 
-     * @param address
-     *            the {@link Address} child element to set.
-     */
-    public void setAddress(Address address);
-
-    /**
-     * Returns the optional &lt;wsa:Metadata&gt; child element.
-     * 
-     * @return the {@link Metadata} child element or <code>null</code>.
-     */
-    public Metadata getMetadata();
-
-    /**
-     * Sets the &lt;wsa:Metadata&gt; child element.
-     * 
-     * @param metadata
-     *            the {@link Metadata} child element to set.
-     */
-    public void setMetadata(Metadata metadata);
-
-    /**
-     * Returns the optional &lt;wsa:ReferenceParameters&gt; child element.
-     * 
-     * @return the {@link ReferenceParameters} child element or
-     *         <code>null</code>.
-     */
-    public ReferenceParameters getReferenceParameters();
-
-    /**
-     * Sets the &lt;wsa:ReferenceParameters&gt; child element.
-     * 
-     * @param referenceParameters
-     *            the {@link ReferenceParameters} child element to set.
-     */
-    public void setReferenceParameters(ReferenceParameters referenceParameters);
-
+    public final static QName ELEMENT_NAME = new QName(WSAddressingConstants.WSA_NS, ELEMENT_LOCAL_NAME,
+            WSAddressingConstants.WSA_PREFIX);
 }

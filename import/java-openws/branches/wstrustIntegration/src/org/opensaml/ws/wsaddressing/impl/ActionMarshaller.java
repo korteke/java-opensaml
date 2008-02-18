@@ -14,14 +14,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.opensaml.ws.wsaddressing.impl;
 
-
 import org.opensaml.ws.wsaddressing.Action;
-import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.util.XMLHelper;
-import org.w3c.dom.Element;
 
 /**
  * Marshaller for the &lt;wsa:Action&gt; element.
@@ -31,7 +27,7 @@ import org.w3c.dom.Element;
  * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
  * @version $Revision$
  */
-public class ActionMarshaller extends AbstractWSAddressingObjectMarshaller {
+public class ActionMarshaller extends AbstractAttributedURITypeMarshaller {
 
     /**
      * Default constructor.
@@ -39,20 +35,7 @@ public class ActionMarshaller extends AbstractWSAddressingObjectMarshaller {
      * {@inheritDoc}
      */
     public ActionMarshaller() {
-        super(Action.ELEMENT_NAME.getNamespaceURI(),
-              Action.ELEMENT_NAME.getLocalPart());
-    }
-
-    /**
-     * Marshalls the &lt;wsa:Action&gt; element URI content.
-     * <p>
-     * {@inheritDoc}
-     */
-    @Override
-    protected void marshallElementContent(XMLObject xmlObject,
-            Element domElement) throws MarshallingException {
-        Action intf= (Action) xmlObject;
-        XMLHelper.appendTextContent(domElement, intf.getValue());
+        super(Action.ELEMENT_NAME.getNamespaceURI(), Action.ELEMENT_NAME.getLocalPart());
     }
 
 }

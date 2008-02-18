@@ -14,11 +14,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.opensaml.ws.wsaddressing.impl;
 
-
 import org.opensaml.ws.wsaddressing.Action;
-import org.opensaml.xml.XMLObject;
 
 /**
  * Unmarshaller for the &lt;wsa:Action&gt; element.
@@ -28,7 +27,7 @@ import org.opensaml.xml.XMLObject;
  * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
  * @version $Revision$
  */
-public class ActionUnmarshaller extends AbstractWSAddressingObjectUnmarshaller {
+public class ActionUnmarshaller extends AbstractAttributedURITypeUnmarshaller {
 
     /**
      * Default constructor.
@@ -36,22 +35,7 @@ public class ActionUnmarshaller extends AbstractWSAddressingObjectUnmarshaller {
      * {@inheritDoc}
      */
     public ActionUnmarshaller() {
-        super(Action.ELEMENT_NAME.getNamespaceURI(),
-              Action.ELEMENT_NAME.getLocalPart());
-    }
-
-    /**
-     * Unmarshalls the &lt;wsa:Action&gt; element content.
-     * <p>
-     * {@inheritDoc}
-     */
-    @Override
-    protected void processElementContent(XMLObject xmlObject,
-            String elementContent) {
-        if (elementContent != null) {
-            Action action= (Action) xmlObject;
-            action.setValue(elementContent);
-        }
+        super(Action.ELEMENT_NAME.getNamespaceURI(), Action.ELEMENT_NAME.getLocalPart());
     }
 
 }

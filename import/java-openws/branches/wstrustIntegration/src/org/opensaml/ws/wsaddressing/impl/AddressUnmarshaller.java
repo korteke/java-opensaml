@@ -14,18 +14,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.opensaml.ws.wsaddressing.impl;
 
-import javax.xml.namespace.QName;
-
-
 import org.opensaml.ws.wsaddressing.Address;
-import org.opensaml.xml.AttributeExtensibleXMLObject;
-import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.io.UnmarshallingException;
-import org.opensaml.xml.schema.XSURI;
-import org.opensaml.xml.util.XMLHelper;
-import org.w3c.dom.Attr;
 
 /**
  * Unmarshaller for the &lt;wsa:Address&gt; element.
@@ -35,7 +27,7 @@ import org.w3c.dom.Attr;
  * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
  * @version $Revision$
  */
-public class AddressUnmarshaller extends AbstractWSAddressingObjectUnmarshaller {
+public class AddressUnmarshaller extends AbstractAttributedURITypeUnmarshaller {
 
     /**
      * Default constructor.
@@ -43,40 +35,7 @@ public class AddressUnmarshaller extends AbstractWSAddressingObjectUnmarshaller 
      * {@inheritDoc}
      */
     public AddressUnmarshaller() {
-        super(Address.ELEMENT_NAME.getNamespaceURI(),
-              Address.ELEMENT_NAME.getLocalPart());
-    }
-
-    /**
-     * Unmarshalls the &lt;wsa:Address&gt; element URI content.
-     * <p>
-     * {@inheritDoc}
-     */
-    @Override
-    protected void processElementContent(XMLObject xmlObject,
-            String elementContent) {
-        if (elementContent != null) {
-            XSURI xsUri= (XSURI) xmlObject;
-            xsUri.setValue(elementContent);
-        }
-    }
-
-    /**
-     * Unmarshalls the xs:anyAttributes.
-     * <p>
-     * {@inheritDoc}
-     */
-    @Override
-    protected void processAttribute(XMLObject xmlObject, Attr attribute)
-            throws UnmarshallingException {
-        AttributeExtensibleXMLObject anyAttribute= (AttributeExtensibleXMLObject) xmlObject;
-        QName attrQName= XMLHelper.constructQName(attribute.getNamespaceURI(),
-                                                  attribute.getLocalName(),
-                                                  attribute.getPrefix());
-        if (attribute.isId()) {
-            anyAttribute.getUnknownAttributes().registerID(attrQName);
-        }
-        anyAttribute.getUnknownAttributes().put(attrQName, attribute.getValue());
+        super(Address.ELEMENT_NAME.getNamespaceURI(), Address.ELEMENT_NAME.getLocalPart());
     }
 
 }

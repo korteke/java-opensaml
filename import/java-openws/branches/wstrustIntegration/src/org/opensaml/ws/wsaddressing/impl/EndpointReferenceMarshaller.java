@@ -14,11 +14,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.opensaml.ws.wsaddressing.impl;
 
-
 import org.opensaml.ws.wsaddressing.EndpointReference;
-import org.opensaml.xml.AbstractExtensibleXMLObjectMarshaller;
 
 /**
  * Marshaller for the &lt;wsa:EndpointReference&gt; element.
@@ -28,8 +27,7 @@ import org.opensaml.xml.AbstractExtensibleXMLObjectMarshaller;
  * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
  * @version $Revision$
  */
-public class EndpointReferenceMarshaller extends
-        AbstractExtensibleXMLObjectMarshaller {
+public class EndpointReferenceMarshaller extends AbstractEndpointReferenceTypeMarshaller {
 
     /**
      * Default constructor.
@@ -37,17 +35,7 @@ public class EndpointReferenceMarshaller extends
      * {@inheritDoc}
      */
     public EndpointReferenceMarshaller() {
-        this(EndpointReference.ELEMENT_NAME.getNamespaceURI(),
-             EndpointReference.ELEMENT_NAME.getLocalPart());
-    }
-
-    /**
-     * Constructor for sub classes.
-     * <p>
-     * {@inheritDoc}
-     */
-    protected EndpointReferenceMarshaller(String namespaceURI, String localPart) {
-        super(namespaceURI, localPart);
+        super(EndpointReference.ELEMENT_NAME.getNamespaceURI(), EndpointReference.ELEMENT_NAME.getLocalPart());
     }
 
 }

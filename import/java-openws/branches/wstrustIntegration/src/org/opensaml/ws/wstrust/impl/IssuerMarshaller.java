@@ -14,10 +14,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.opensaml.ws.wstrust.impl;
 
-
-import org.opensaml.ws.wsaddressing.impl.EndpointReferenceMarshaller;
+import org.opensaml.ws.wsaddressing.impl.AbstractEndpointReferenceTypeMarshaller;
 import org.opensaml.ws.wstrust.Issuer;
 
 /**
@@ -28,14 +28,13 @@ import org.opensaml.ws.wstrust.Issuer;
  * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
  * @version $Revision$
  */
-public class IssuerMarshaller extends EndpointReferenceMarshaller {
+public class IssuerMarshaller extends AbstractEndpointReferenceTypeMarshaller {
 
     /**
      * Default constructor.
      */
     public IssuerMarshaller() {
-        super(Issuer.ELEMENT_NAME.getNamespaceURI(),
-              Issuer.ELEMENT_NAME.getLocalPart());
+        super(Issuer.ELEMENT_NAME.getNamespaceURI(), Issuer.ELEMENT_NAME.getLocalPart());
     }
 
 }

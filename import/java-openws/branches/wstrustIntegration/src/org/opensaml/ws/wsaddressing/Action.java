@@ -18,8 +18,6 @@ package org.opensaml.ws.wsaddressing;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.xml.schema.XSURI;
-
 /**
  * The &lt;wsa:Action&gt; element.
  * 
@@ -28,7 +26,7 @@ import org.opensaml.xml.schema.XSURI;
  * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
  * @version $Revision$
  */
-public interface Action extends XSURI, WSAddressingObject {
+public interface Action extends AttributedURIType, WSAddressingObject {
 
     /** Element local name. */
     public static final String ELEMENT_LOCAL_NAME= "Action";

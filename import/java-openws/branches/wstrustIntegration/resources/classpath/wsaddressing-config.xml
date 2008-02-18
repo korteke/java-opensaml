@@ -57,6 +57,48 @@
                 className="org.opensaml.ws.wsaddressing.impl.ReferenceParametersUnmarshaller" />
         </ObjectProvider>
 
+        <!-- wsa:From -->
+        <ObjectProvider qualifiedName="wsa:From">
+            <BuilderClass
+                className="org.opensaml.ws.wsaddressing.impl.FromBuilder" />
+            <MarshallingClass
+                className="org.opensaml.ws.wsaddressing.impl.FromMarshaller" />
+            <UnmarshallingClass
+                className="org.opensaml.ws.wsaddressing.impl.FromUnmarshaller" />
+        </ObjectProvider>
+
+        <!-- wsa:To -->
+        <ObjectProvider qualifiedName="wsa:To">
+            <BuilderClass
+                className="org.opensaml.ws.wsaddressing.impl.ToBuilder" />
+            <MarshallingClass
+                className="org.opensaml.ws.wsaddressing.impl.ToMarshaller" />
+            <UnmarshallingClass
+                className="org.opensaml.ws.wsaddressing.impl.ToUnmarshaller" />
+        </ObjectProvider>
+
+        <!-- wsa:MessageID -->
+        <ObjectProvider qualifiedName="wsa:MessageID">
+            <BuilderClass
+                className="org.opensaml.ws.wsaddressing.impl.MessageIDBuilder" />
+            <MarshallingClass
+                className="org.opensaml.ws.wsaddressing.impl.MessageIDMarshaller" />
+            <UnmarshallingClass
+                className="org.opensaml.ws.wsaddressing.impl.MessageIDUnmarshaller" />
+        </ObjectProvider>
+
+        <!-- wsa:ReplyTo -->
+        <ObjectProvider qualifiedName="wsa:ReplyTo">
+            <BuilderClass
+                className="org.opensaml.ws.wsaddressing.impl.ReplyToBuilder" />
+            <MarshallingClass
+                className="org.opensaml.ws.wsaddressing.impl.ReplyToMarshaller" />
+            <UnmarshallingClass
+                className="org.opensaml.ws.wsaddressing.impl.ReplyToUnmarshaller" />
+        </ObjectProvider>
+
+        
+
     </ObjectProviders>
 
 </XMLTooling>

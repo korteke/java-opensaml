@@ -17,25 +17,25 @@
 
 package org.opensaml.ws.wsaddressing.impl;
 
-import org.opensaml.ws.wsaddressing.Action;
+import org.opensaml.ws.wsaddressing.EndpointReferenceType;
+import org.opensaml.xml.AbstractExtensibleXMLObjectMarshaller;
 
 /**
- * ActionImpl is the concrete implementation of {@link Action}.
+ * Abstract marshaller for the element of type {@link EndpointReferenceType}.
  * 
- * @author Valery Tschopp <tschopp@switch.ch>
+ * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
  * @version $Revision$
  */
-public class ActionImpl extends AbstractAttributedURIType implements Action {
+public abstract class AbstractEndpointReferenceTypeMarshaller extends AbstractExtensibleXMLObjectMarshaller {
 
     /**
-     * Constructor.
+     * Constructor
      * 
-     * @param namespaceURI The namespace of the element
-     * @param elementLocalName The local name of the element
-     * @param namespacePrefix The namespace prefix of the element
+     * @param targetNamespaceURI
+     * @param targetLocalName
      */
-    public ActionImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
-        super(namespaceURI, elementLocalName, namespacePrefix);
+    public AbstractEndpointReferenceTypeMarshaller(String targetNamespaceURI, String targetLocalName) {
+        super(targetNamespaceURI, targetLocalName);
     }
 
 }
