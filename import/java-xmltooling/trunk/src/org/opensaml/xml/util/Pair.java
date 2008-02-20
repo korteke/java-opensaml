@@ -94,6 +94,18 @@ public class Pair<T1, T2> {
     }
 
     /** {@inheritDoc} */
+    public int hashCode() {
+        int result = 17;
+        if (first != null) {
+            result = 37 * result + first.hashCode();
+        }
+        if (second != null) {
+            result = 37 * result + second.hashCode();
+        }
+        return result;
+    }
+
+    /** {@inheritDoc} */
     public String toString() {
         return "(" + getFirst() + "," + getSecond() + ")";
     }
