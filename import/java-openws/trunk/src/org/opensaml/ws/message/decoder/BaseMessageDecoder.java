@@ -93,7 +93,7 @@ public abstract class BaseMessageDecoder implements MessageDecoder {
 
         log.debug("Successfully decoded message.");
         if(protocolMessageLog.isDebugEnabled() && messageContext.getInboundMessage() != null){
-            protocolMessageLog.debug(XMLHelper.prettyPrintXML(messageContext.getInboundMessage().getDOM()));
+            protocolMessageLog.debug("\n" + XMLHelper.prettyPrintXML(messageContext.getInboundMessage().getDOM()));
         }
     }
 
