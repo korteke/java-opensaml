@@ -18,11 +18,8 @@ package org.opensaml.xml.security.x509;
 
 import java.security.GeneralSecurityException;
 import java.security.cert.CRL;
-import java.security.cert.CertPath;
 import java.security.cert.CertPathBuilder;
 import java.security.cert.CertPathBuilderException;
-import java.security.cert.CertPathValidator;
-import java.security.cert.CertPathValidatorException;
 import java.security.cert.CertStore;
 import java.security.cert.CertStoreException;
 import java.security.cert.Certificate;
@@ -451,43 +448,17 @@ public class PKIXTrustEvaluator {
             PKIXCertPathBuilderResult buildResult = (PKIXCertPathBuilderResult) builder.build(params);
             if (log.isDebugEnabled()) {
                 logCertPathDebug(buildResult, untrustedCredential.getEntityCertificate());
-            }
-
-            // TODO based on the docs, this is unnecessary. The constructed
-            // path is also supposed to be valid wrt the PKIX path validation algorithm.
-            // In other words, it only returns valid PKIX paths.
-            // Should test before removing permanently, esp b/c the Shib 1.3 IdP ShibbolethTrust impl
-            // does this also.
-            // So unless the docs are wrong or the JRE impl is broken, we're doing double work,
-            // here and in Shib 1.3.
-            log.trace("Validating the entity credential using the PKIX CertPathValidator");
-
-            CertPath certificatePath = buildResult.getCertPath();
-            CertPathValidator validator = CertPathValidator.getInstance("PKIX");
-            validator.validate(certificatePath, params);
-
-            if (log.isDebugEnabled()) {
                 log.debug("PKIX validation succeeded for untrusted credential: {}",
                         getLoggingToken(untrustedCredential));
             }            
             return true;
 
         } catch (CertPathBuilderException e) {
-            // TODO if above TODO is correct, then builder will throw this on failure to construct valid path.
             if (log.isTraceEnabled()) {
                 log.trace("PKIX path construction failed for untrusted credential: " 
                         + getLoggingToken(untrustedCredential), e);
             } else {
                 log.error("PKIX path construction failed for untrusted credential: " 
-                        + getLoggingToken(untrustedCredential) + ": " + e.getMessage());
-            }
-            return false;
-        } catch (CertPathValidatorException e) {
-            if (log.isTraceEnabled()) {
-                log.trace("PKIX validation failed for untrusted credential: " 
-                        + getLoggingToken(untrustedCredential), e);
-            } else {
-                log.error("PKIX validation failed for untrusted credential: " 
                         + getLoggingToken(untrustedCredential) + ": " + e.getMessage());
             }
             return false;
@@ -633,20 +604,6 @@ public class PKIXTrustEvaluator {
         if (log.isTraceEnabled()) {
             for (X509Certificate cert : untrustedCredential.getEntityCertificateChain()) {
                 log.trace(String.format("Added X509Certificate from entity cert chain to cert store "
-                        + "with subject name '%s' issued by '%s' with serial number '%s'",
-                        x500DNHandler.getName(cert.getSubjectX500Principal()),
-                        x500DNHandler.getName(cert.getIssuerX500Principal()),
-                        cert.getSerialNumber().toString()));
-            }
-        }
-
-        // TODO This probably isn't really necessary. All of these are already trust anchors, and a valid path(s)
-        // can be constructed on that basis. More certs in the store = more things to process = more work
-        // = less efficient. Shib 1.3 did NOT do this. Check before removing.
-        storeMaterial.addAll(validationInfo.getCertificates());
-        if (log.isTraceEnabled()) {
-            for (X509Certificate cert : validationInfo.getCertificates()) {
-                log.trace(String.format("Added X509Certificate from validation info certifcate set to cert store "
                         + "with subject name '%s' issued by '%s' with serial number '%s'",
                         x500DNHandler.getName(cert.getSubjectX500Principal()),
                         x500DNHandler.getName(cert.getIssuerX500Principal()),
