@@ -257,7 +257,7 @@ public class PKIXTrustEvaluator {
 
         if (log.isDebugEnabled()) {
             log.debug("Checking trusted names against untrusted credential: {}",
-                    getLoggingToken(untrustedCredential));
+                    X509Util.getIdentifiersToken(untrustedCredential, x500DNHandler));
             log.debug("Trusted names being evaluated are: {}",
                     trustedNames.toString());
         }        
@@ -278,7 +278,7 @@ public class PKIXTrustEvaluator {
             if (processSubjectAltNames(entityCertificate, trustedNames)) {
                 if (log.isDebugEnabled()) {
                     log.debug("Untrusted credential {} passed name check based on subject alt names.",
-                            getLoggingToken(untrustedCredential));
+                            X509Util.getIdentifiersToken(untrustedCredential, x500DNHandler));
                 }                
                 return true;
             }
@@ -288,7 +288,7 @@ public class PKIXTrustEvaluator {
             if (processSubjectDNCommonName(entityCertificate, trustedNames)) {
                 if (log.isDebugEnabled()) {
                     log.debug("Untrusted credential {} passed name check based on subject common name.",
-                            getLoggingToken(untrustedCredential));
+                            X509Util.getIdentifiersToken(untrustedCredential, x500DNHandler));
                 }                
                 return true;
             }
@@ -298,13 +298,14 @@ public class PKIXTrustEvaluator {
             if (processSubjectDN(entityCertificate, trustedNames)) {
                 if (log.isDebugEnabled()) {
                     log.debug("Untrusted credential {} passed name check based on subject DN.",
-                            getLoggingToken(untrustedCredential));
+                            X509Util.getIdentifiersToken(untrustedCredential, x500DNHandler));
                 }                
             }
             return true;
         }
 
-        log.error("Untrusted credential failed name check: " + getLoggingToken(untrustedCredential));
+        log.error("Untrusted credential failed name check: " 
+                + X509Util.getIdentifiersToken(untrustedCredential, x500DNHandler));
         return false;
     }
 
@@ -414,7 +415,7 @@ public class PKIXTrustEvaluator {
 
         if (!checkName(untrustedCredential, trustedNames)) {
             log.error("Name checking failed, aborting PKIX validation for untrusted credential: "
-                    + getLoggingToken(untrustedCredential));
+                    + X509Util.getIdentifiersToken(untrustedCredential, x500DNHandler));
             return false;
         }
         return pkixValidate(validationInfo, untrustedCredential);
@@ -436,7 +437,7 @@ public class PKIXTrustEvaluator {
         
         if (log.isDebugEnabled()) {
             log.debug("Attempting PKIX path validation on untrusted credential: {}",
-                    getLoggingToken(untrustedCredential));
+                    X509Util.getIdentifiersToken(untrustedCredential, x500DNHandler));
         }        
         
         try {
@@ -449,17 +450,17 @@ public class PKIXTrustEvaluator {
             if (log.isDebugEnabled()) {
                 logCertPathDebug(buildResult, untrustedCredential.getEntityCertificate());
                 log.debug("PKIX validation succeeded for untrusted credential: {}",
-                        getLoggingToken(untrustedCredential));
+                        X509Util.getIdentifiersToken(untrustedCredential, x500DNHandler));
             }            
             return true;
 
         } catch (CertPathBuilderException e) {
             if (log.isTraceEnabled()) {
                 log.trace("PKIX path construction failed for untrusted credential: " 
-                        + getLoggingToken(untrustedCredential), e);
+                        + X509Util.getIdentifiersToken(untrustedCredential, x500DNHandler), e);
             } else {
                 log.error("PKIX path construction failed for untrusted credential: " 
-                        + getLoggingToken(untrustedCredential) + ": " + e.getMessage());
+                        + X509Util.getIdentifiersToken(untrustedCredential, x500DNHandler) + ": " + e.getMessage());
             }
             return false;
         } catch (GeneralSecurityException e) {
@@ -632,30 +633,6 @@ public class PKIXTrustEvaluator {
         }
 
         return CertStore.getInstance("Collection", new CollectionCertStoreParameters(storeMaterial));
-    }
-
-    /**
-     * Gets a formatted string representing information from the supplied credential, appropriate for use in logging
-     * messages.
-     * 
-     * Often it will be the case that the untrusted credential that is being evaluated will NOT have a value for the
-     * entity ID property. So extract the subject DN, and if present, the entity ID also.
-     * 
-     * @param credential the credential for which to produce a token.
-     * 
-     * @return a formatted string containing identifier information present in the credential
-     */
-    protected String getLoggingToken(X509Credential credential) {
-        X500Principal x500Principal = credential.getEntityCertificate().getSubjectX500Principal();
-        StringBuilder builder = new StringBuilder();
-        builder.append('[');
-        builder.append(String.format("subjectName='%s'", x500DNHandler.getName(x500Principal)));
-        if (!DatatypeHelper.isEmpty(credential.getEntityId())) {
-            builder.append(String.format(" |credential entityID='%s'", DatatypeHelper.safeTrimOrNullString(credential
-                    .getEntityId())));
-        }
-        builder.append(']');
-        return builder.toString();
     }
 
     /**

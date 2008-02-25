@@ -42,6 +42,7 @@ import org.bouncycastle.asn1.DERString;
 import org.bouncycastle.asn1.x509.SubjectKeyIdentifier;
 import org.bouncycastle.asn1.x509.X509Extensions;
 import org.bouncycastle.x509.extension.SubjectKeyIdentifierStructure;
+import org.opensaml.xml.util.DatatypeHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -277,5 +278,38 @@ public class X509Util {
         } catch (GeneralSecurityException e) {
             throw new CRLException("Unable to decode X.509 certificates");
         }
+    }
+
+    /**
+     * Gets a formatted string representing identifier information from the supplied credential.
+     * 
+     * <p>This could for example be used in logging messages.</p>
+     * 
+     * <p>Often it will be the case that a given credential that is being evaluated will NOT have a value for the
+     * entity ID property. So extract the certificate subject DN, and if present, the credential's entity ID.</p>
+     * 
+     * @param credential the credential for which to produce a token.
+     * @param handler the X.500 DN handler to use.  If null, a new instance of 
+     *          {@link InternalX500DNHandler} will be used.
+     * 
+     * @return a formatted string containing identifier information present in the credential
+     */
+    public static String getIdentifiersToken(X509Credential credential, X500DNHandler handler) {
+        X500DNHandler x500DNHandler;
+        if (handler != null) {
+            x500DNHandler = handler;
+        } else {
+            x500DNHandler = new InternalX500DNHandler();
+        }
+        X500Principal x500Principal = credential.getEntityCertificate().getSubjectX500Principal();
+        StringBuilder builder = new StringBuilder();
+        builder.append('[');
+        builder.append(String.format("subjectName='%s'", x500DNHandler.getName(x500Principal)));
+        if (!DatatypeHelper.isEmpty(credential.getEntityId())) {
+            builder.append(String.format(" |credential entityID='%s'", DatatypeHelper.safeTrimOrNullString(credential
+                    .getEntityId())));
+        }
+        builder.append(']');
+        return builder.toString();
     }
 }
