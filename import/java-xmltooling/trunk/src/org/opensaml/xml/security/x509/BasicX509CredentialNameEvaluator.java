@@ -212,7 +212,11 @@ public class BasicX509CredentialNameEvaluator implements X509CredentialNameEvalu
      */
     @SuppressWarnings("unchecked")
     public boolean evaluate(X509Credential credential, Set<String> trustedNames) throws SecurityException {
-        if (!isNameCheckingActive() || trustedNames == null || trustedNames.isEmpty()) {
+        if (!isNameCheckingActive()) {
+            log.debug("No trusted name options are active, skipping name evaluation");
+            return true;
+        } else if (trustedNames == null || trustedNames.isEmpty()) {
+            log.debug("Supplied trusted names are null or empty, skipping name evaluation");
             return true;
         }
 
