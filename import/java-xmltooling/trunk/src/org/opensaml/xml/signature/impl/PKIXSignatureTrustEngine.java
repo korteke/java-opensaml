@@ -186,6 +186,8 @@ public class PKIXSignatureTrustEngine extends
             } else {
                 log.debug("Failed to establish trust of supplied candidate credential");
             }
+        } else {
+            log.error("Cryptographic verification of raw signature failed with candidate credential");
         }
 
         log.error("PKIX validation of raw signature failed, "

@@ -28,11 +28,11 @@ import org.opensaml.xml.mock.SimpleXMLObject;
 import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.SecurityTestHelper;
+import org.opensaml.xml.security.SigningUtil;
 import org.opensaml.xml.security.credential.CollectionCredentialResolver;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.criteria.EntityIDCriteria;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
-import org.opensaml.xml.security.trust.TrustEngine;
 import org.opensaml.xml.security.x509.BasicX509Credential;
 import org.opensaml.xml.security.x509.X509KeyInfoGeneratorFactory;
 import org.opensaml.xml.signature.impl.ExplicitKeySignatureTrustEngine;
@@ -41,8 +41,6 @@ import org.opensaml.xml.signature.impl.ExplicitKeySignatureTrustEngine;
  * Test explicit key signature trust engine.
  */
 public class ExplicitKeySignatureTrustEngineTest extends XMLObjectBaseTestCase {
-    
-    // TODO test simple/raw signing support
     
     private X509Certificate signingCert;
     private String signingCertBase64 = 
@@ -126,9 +124,13 @@ public class ExplicitKeySignatureTrustEngineTest extends XMLObjectBaseTestCase {
     private List<Credential> trustedCredentials;
     private BasicX509Credential signingX509Cred;
     
-    private TrustEngine<Signature> engine;
+    private ExplicitKeySignatureTrustEngine engine;
     private CriteriaSet criteriaSet;
     private String signingEntityID;
+    
+    private String rawAlgorithmURI;
+    private String rawData;
+    private byte[] rawControlSignature;
     
     
     /** Constructor. */
@@ -167,6 +169,10 @@ public class ExplicitKeySignatureTrustEngineTest extends XMLObjectBaseTestCase {
         
         criteriaSet = new CriteriaSet();
         criteriaSet.add( new EntityIDCriteria(signingEntityID) );
+        
+        rawData = "Hello, here is some secret data that is to be signed";
+        rawAlgorithmURI = SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1;
+        rawControlSignature = SigningUtil.signWithURI(signingX509Cred, rawAlgorithmURI, rawData.getBytes());
     }
     
     /**
@@ -205,6 +211,54 @@ public class ExplicitKeySignatureTrustEngineTest extends XMLObjectBaseTestCase {
         Signature signature = signableXO.getSignature();
         assertFalse("Signature was invalid due to document modification", engine.validate(signature, criteriaSet));
         
+    }
+    
+    /**
+     * Test valid raw signature, trusted signing credential.
+     * 
+     * @throws SecurityException
+     */
+    public void testRawSuccess() throws SecurityException {
+        trustedCredentials.add(signingX509Cred);
+        
+        assertTrue("Raw Signature was valid and supplied candidate signing cred was trusted", 
+                engine.validate(rawControlSignature, rawData.getBytes(), rawAlgorithmURI, 
+                        criteriaSet, signingX509Cred));
+        
+        assertTrue("Raw Signature was valid and non-supplied candidate signing cred was in trusted set", 
+                engine.validate(rawControlSignature, rawData.getBytes(), rawAlgorithmURI, 
+                        criteriaSet, null));
+    }
+    
+    /**
+     * Test valid raw signature, untrusted signing credential.
+     * 
+     * @throws SecurityException
+     */
+    public void testRawUntrustedCredential() throws SecurityException {
+        
+        assertFalse("Raw Signature was valid, but supplied candidate signing cred was untrusted", 
+                engine.validate(rawControlSignature, rawData.getBytes(), rawAlgorithmURI, 
+                        criteriaSet, signingX509Cred));
+        
+        assertFalse("Raw Signature was valid and the signing cred was not present in trusted set", 
+                engine.validate(rawControlSignature, rawData.getBytes(), rawAlgorithmURI, 
+                        criteriaSet, null));
+    }
+    
+    /**
+     * Test invalid raw signature, trusted signing credential.
+     * 
+     * @throws SecurityException
+     */
+    public void testRawInvalidSignature() throws SecurityException {
+        trustedCredentials.add(signingX509Cred);
+        
+        String tamperedData = rawData + "HAHA All your base are belong to us";
+        
+        assertFalse("Raw Signature was invalid due to data tampering, supplied candidate signing cred was trusted", 
+                engine.validate(rawControlSignature, tamperedData.getBytes(), rawAlgorithmURI, 
+                        criteriaSet, signingX509Cred));
     }
     
     /**

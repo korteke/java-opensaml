@@ -35,20 +35,23 @@ import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.SecurityTestHelper;
+import org.opensaml.xml.security.SigningUtil;
+import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.criteria.EntityIDCriteria;
 import org.opensaml.xml.security.x509.BasicPKIXValidationInformation;
 import org.opensaml.xml.security.x509.BasicX509Credential;
 import org.opensaml.xml.security.x509.PKIXValidationInformation;
-import org.opensaml.xml.security.x509.PKIXX509CredentialTrustEngine;
 import org.opensaml.xml.security.x509.StaticPKIXValidationInformationResolver;
 import org.opensaml.xml.security.x509.X509Credential;
 import org.opensaml.xml.security.x509.X509KeyInfoGeneratorFactory;
 import org.opensaml.xml.security.x509.X509Util;
 import org.opensaml.xml.signature.impl.PKIXSignatureTrustEngine;
 import org.opensaml.xml.util.XMLHelper;
+import org.w3c.dom.Element;
+import org.w3c.dom.Text;
 
 /**
- * Tests the {@link PKIXX509CredentialTrustEngine} implementation.
+ * Tests the {@link PKIXSignatureTrustEngine} implementation.
  */
 public class PKIXSignatureTrustEngineTest extends XMLObjectBaseTestCase {
     
@@ -67,6 +70,16 @@ public class PKIXSignatureTrustEngineTest extends XMLObjectBaseTestCase {
     private CriteriaSet criteriaSet;
     
     private String subjectCN;
+    
+    private boolean tamperDocumentPostSigning;
+    private boolean emitKeyInfo;
+    private boolean emitKeyValueOnly;
+    
+    private String rawData;
+    private byte[] rawSignedContent;
+    private String rawAlgorithmURI;
+    private byte[] rawSignature;
+    private Credential rawCandidateCred;
 
     /** {@inheritDoc} */
     protected void setUp() throws Exception {
@@ -75,6 +88,17 @@ public class PKIXSignatureTrustEngineTest extends XMLObjectBaseTestCase {
         subjectCN = "foo.example.org";
         
         criteriaSet = new CriteriaSet( new EntityIDCriteria("dummy-entity-id") );
+        
+        // Used to test the tampered data case
+        tamperDocumentPostSigning = false;
+        
+        // These toggle how the signing cred is represented in the Document's KeyInfo.
+        emitKeyInfo = true;
+        emitKeyValueOnly = false;
+        
+        rawData = "Hello, here is some secret data that is to be signed";
+        rawSignedContent = rawData.getBytes();
+        rawAlgorithmURI = SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1;
     }
     
     public void testGoodPathInAnchors() {
@@ -170,6 +194,177 @@ public class PKIXSignatureTrustEngineTest extends XMLObjectBaseTestCase {
         testValidateFailure("No trust anchors at all in validation set");
     }
     
+    public void testTamperedData() throws SecurityException {
+        tamperDocumentPostSigning = true;
+        signature = getSignature("foo-1A1-good.crt", "foo-1A1-good.key");
+        engine = getEngine(
+                getCertificates("root1-ca.crt", "inter1A-ca.crt", "inter1A1-ca.crt"),
+                EMPTY_CRLS,
+                MAX_DEPTH,
+                subjectCN );
+        
+        testValidateFailure("Entity cert was good, data was tampered with");
+    }
+    
+    public void testNoCandidateCred() throws SecurityException {
+        emitKeyInfo = false;
+        signature = getSignature("foo-1A1-good.crt", "foo-1A1-good.key");
+        engine = getEngine(
+                getCertificates("root1-ca.crt", "inter1A-ca.crt", "inter1A1-ca.crt"),
+                EMPTY_CRLS,
+                MAX_DEPTH,
+                subjectCN );
+        
+        testValidateFailure("Entity cert was good, but validation credential was not present in Signature's KeyInfo");
+    }
+    
+    public void testWrongCredType() throws SecurityException {
+        emitKeyValueOnly = true;
+        signature = getSignature("foo-1A1-good.crt", "foo-1A1-good.key");
+        engine = getEngine(
+                getCertificates("root1-ca.crt", "inter1A-ca.crt", "inter1A1-ca.crt"),
+                EMPTY_CRLS,
+                MAX_DEPTH,
+                subjectCN );
+        
+        testValidateFailure("Entity cert was good, but validation credential in KeyInfo was not an X509Credential");
+    }
+    
+    public void testRawGoodPathInAnchors() throws SecurityException {
+        rawCandidateCred = getCredential("foo-1A1-good.crt", "foo-1A1-good.key");
+        rawSignature = SigningUtil.signWithURI(rawCandidateCred, rawAlgorithmURI, rawSignedContent);
+        engine = getEngine(
+                getCertificates("root1-ca.crt", "inter1A-ca.crt", "inter1A1-ca.crt"),
+                EMPTY_CRLS,
+                MAX_DEPTH,
+                subjectCN );
+        
+        testRawValidateSuccess("Entity cert was good, path in trust anchors set");
+    }
+    
+    public void testRawGoodPathInCred() throws SecurityException {
+        rawCandidateCred = getCredential("foo-1A1-good.crt", "foo-1A1-good.key", "inter1A-ca.crt", "inter1A1-ca.crt");
+        rawSignature = SigningUtil.signWithURI(rawCandidateCred, rawAlgorithmURI, rawSignedContent);
+        engine = getEngine(
+                getCertificates("root1-ca.crt"),
+                EMPTY_CRLS,
+                MAX_DEPTH,
+                subjectCN );
+        
+        testRawValidateSuccess("Entity cert was good, path in cred set");
+    }
+    
+    public void testRawGoodPathNoTrustedNames() throws SecurityException {
+        rawCandidateCred = getCredential("foo-1A1-good.crt", "foo-1A1-good.key", "inter1A-ca.crt", "inter1A1-ca.crt");
+        rawSignature = SigningUtil.signWithURI(rawCandidateCred, rawAlgorithmURI, rawSignedContent);
+        engine = getEngine(
+                getCertificates("root1-ca.crt"),
+                EMPTY_CRLS,
+                MAX_DEPTH
+                );
+        
+        testRawValidateSuccess("Entity cert was good, empty trusted names");
+    }
+    
+    public void testRawGoodPathBadTrustedName() throws SecurityException {
+        rawCandidateCred = getCredential("foo-1A1-good.crt", "foo-1A1-good.key", "inter1A-ca.crt", "inter1A1-ca.crt");
+        rawSignature = SigningUtil.signWithURI(rawCandidateCred, rawAlgorithmURI, rawSignedContent);
+        engine = getEngine(
+                getCertificates("root1-ca.crt"),
+                EMPTY_CRLS,
+                MAX_DEPTH,
+                "NOT"+subjectCN);
+        
+        testRawValidateFailure("Entity cert was good, bad trusted names");
+    }
+    
+    public void testRawCertRevoked() throws SecurityException {
+        rawCandidateCred = getCredential("foo-1A1-revoked.crt", "foo-1A1-good.key", "inter1A-ca.crt", "inter1A1-ca.crt");
+        rawSignature = SigningUtil.signWithURI(rawCandidateCred, rawAlgorithmURI, rawSignedContent);
+        engine = getEngine(
+                getCertificates("root1-ca.crt"),
+                getCRLS("inter1A1-v1.crl"),
+                MAX_DEPTH,
+                subjectCN);
+        
+        testRawValidateFailure("Entity cert was revoked");
+    }
+    
+    public void testRawCertExpired() throws SecurityException {
+        rawCandidateCred = getCredential("foo-1A1-expired.crt", "foo-1A1-good.key", "inter1A-ca.crt", "inter1A1-ca.crt");
+        rawSignature = SigningUtil.signWithURI(rawCandidateCred, rawAlgorithmURI, rawSignedContent);
+        engine = getEngine(
+                getCertificates("root1-ca.crt"),
+                EMPTY_CRLS,
+                MAX_DEPTH,
+                subjectCN);
+        
+        testRawValidateFailure("Entity cert was expired");
+    }
+    
+    public void testRawCertMissingAnchor() throws SecurityException {
+        rawCandidateCred = getCredential("foo-1A1-good.crt", "foo-1A1-good.key", "inter1A-ca.crt", "inter1A1-ca.crt");
+        rawSignature = SigningUtil.signWithURI(rawCandidateCred, rawAlgorithmURI, rawSignedContent);
+        engine = getEngine(
+                getCertificates("root2-ca.crt", "inter2A-ca.crt", "inter2B-ca.crt"),
+                EMPTY_CRLS,
+                MAX_DEPTH,
+                subjectCN);
+        
+        testRawValidateFailure("No path to entity cert, root CA trust anchor missing");
+    }
+    
+    public void testRawCertNoAnchors() throws SecurityException {
+        rawCandidateCred = getCredential("foo-1A1-good.crt", "foo-1A1-good.key", "inter1A-ca.crt", "inter1A1-ca.crt");
+        rawSignature = SigningUtil.signWithURI(rawCandidateCred, rawAlgorithmURI, rawSignedContent);
+        engine = getEngine(
+                EMPTY_ANCHORS,
+                EMPTY_CRLS,
+                MAX_DEPTH,
+                subjectCN);
+        
+        testRawValidateFailure("No trust anchors at all in validation set");
+    }
+    
+    public void testRawTamperedData() throws SecurityException {
+        rawCandidateCred = getCredential("foo-1A1-good.crt", "foo-1A1-good.key");
+        rawSignature = SigningUtil.signWithURI(rawCandidateCred, rawAlgorithmURI, rawSignedContent);
+        rawSignedContent = (rawData + "HAHA All your base are belong to us").getBytes();
+        engine = getEngine(
+                getCertificates("root1-ca.crt", "inter1A-ca.crt", "inter1A1-ca.crt"),
+                EMPTY_CRLS,
+                MAX_DEPTH,
+                subjectCN );
+        
+        testRawValidateFailure("Entity cert was good, data was tampered with");
+    }
+    
+    public void testRawNoCandidateCred() throws SecurityException {
+        rawCandidateCred = getCredential("foo-1A1-good.crt", "foo-1A1-good.key");
+        rawSignature = SigningUtil.signWithURI(rawCandidateCred, rawAlgorithmURI, rawSignedContent);
+        rawCandidateCred = null;
+        engine = getEngine(
+                getCertificates("root1-ca.crt", "inter1A-ca.crt", "inter1A1-ca.crt"),
+                EMPTY_CRLS,
+                MAX_DEPTH,
+                subjectCN );
+        
+        testRawValidateFailure("Entity cert was good, but candidate credential was not supplied to engine");
+    }
+    
+    public void testRawWrongCredType() throws SecurityException {
+        rawCandidateCred = getCredential("foo-1A1-good.crt", "foo-1A1-good.key");
+        rawSignature = SigningUtil.signWithURI(rawCandidateCred, rawAlgorithmURI, rawSignedContent);
+        rawCandidateCred = SecurityHelper.getSimpleCredential(rawCandidateCred.getPublicKey(), null);
+        engine = getEngine(
+                getCertificates("root1-ca.crt", "inter1A-ca.crt", "inter1A1-ca.crt"),
+                EMPTY_CRLS,
+                MAX_DEPTH,
+                subjectCN );
+        
+        testRawValidateFailure("Entity cert was good, but candidate credential was not an X509Credential");
+    }
+    
     
     /********************
      * Helper methods.  *
@@ -220,12 +415,23 @@ public class PKIXSignatureTrustEngineTest extends XMLObjectBaseTestCase {
         //System.out.println(XMLHelper.prettyPrintXML(sxo.getDOM()));
         
         //Unmarshall a new XMLObject tree around the DOM, just to avoid any xmlsec bugs or side effects.
+        Element signedDOM = sxo.getDOM();
+        if (tamperDocumentPostSigning) {
+            Element newChild = signedDOM.getOwnerDocument().createElementNS(SimpleXMLObject.NAMESPACE, 
+                    SimpleXMLObject.NAMESPACE_PREFIX + ":" + SimpleXMLObject.LOCAL_NAME);
+            Text text = signedDOM.getOwnerDocument().createTextNode("HAHA, now you are tampered with");
+            newChild.appendChild(text);
+            signedDOM.insertBefore(newChild, signedDOM.getFirstChild());
+        }
+        
         SignableXMLObject verifiableSXO = null;
         try {
-            verifiableSXO = (SignableXMLObject) unmarshallerFactory.getUnmarshaller(sxo.getDOM()).unmarshall(sxo.getDOM());
+            verifiableSXO = (SignableXMLObject) unmarshallerFactory.getUnmarshaller(signedDOM).unmarshall(signedDOM);
         } catch (UnmarshallingException e) {
             fail("Error unmarshalling new signed object: " + e.getMessage());
         }
+        
+        //System.out.println(XMLHelper.prettyPrintXML(verifiableSXO.getDOM()));
         
         return verifiableSXO.getSignature();
     }
@@ -331,7 +537,7 @@ public class PKIXSignatureTrustEngineTest extends XMLObjectBaseTestCase {
         return  PKIXSignatureTrustEngineTest.class.getResourceAsStream(DATA_PATH + fileName);
     }
     
-    protected SignableXMLObject buildSignedObject(X509Credential signingX509Cred) throws SignatureException {
+    private SignableXMLObject buildSignedObject(X509Credential signingX509Cred) throws SignatureException {
         SimpleXMLObject sxo = (SimpleXMLObject) buildXMLObject(SimpleXMLObject.ELEMENT_NAME);
         sxo.setId("abc123");
         
@@ -350,19 +556,24 @@ public class PKIXSignatureTrustEngineTest extends XMLObjectBaseTestCase {
         idContentRef.getTransforms().add(SignatureConstants.TRANSFORM_C14N_EXCL_OMIT_COMMENTS);
         signature.getContentReferences().add(idContentRef);
         
-        X509KeyInfoGeneratorFactory kiFactory = new X509KeyInfoGeneratorFactory();
-        kiFactory.setEmitEntityCertificate(true);
-        kiFactory.setEmitEntityCertificateChain(true);
-        // This is important - we have multiple certs, and need to disambiguate the entity cert.
-        kiFactory.setEmitX509SubjectName(true);
-        KeyInfo keyInfo = null;
-        try {
-            keyInfo = kiFactory.newInstance().generate(signingX509Cred);
-        } catch (SecurityException e) {
-            fail("Error generating KeyInfo from signing credential: " + e);
-        }
-        
-        signature.setKeyInfo(keyInfo);
+        if (emitKeyInfo) {
+            X509KeyInfoGeneratorFactory kiFactory = new X509KeyInfoGeneratorFactory();
+            if (emitKeyValueOnly) {
+                kiFactory.setEmitPublicKeyValue(true);
+            } else {
+                kiFactory.setEmitEntityCertificate(true);
+                kiFactory.setEmitEntityCertificateChain(true);
+                // This is important - we have multiple certs, and need to disambiguate the entity cert.
+                kiFactory.setEmitX509SubjectName(true);
+            }
+            KeyInfo keyInfo = null;
+            try {
+                keyInfo = kiFactory.newInstance().generate(signingX509Cred);
+            } catch (SecurityException e) {
+                fail("Error generating KeyInfo from signing credential: " + e);
+            }
+            signature.setKeyInfo(keyInfo);
+        }        
         
         sxo.setSignature(signature);
         
@@ -383,6 +594,38 @@ public class PKIXSignatureTrustEngineTest extends XMLObjectBaseTestCase {
         */
         
         return sxo;
+    }
+    
+    private void testRawValidateSuccess(String message) {
+        try {
+            if ( !engine.validate(rawSignature, rawSignedContent, rawAlgorithmURI, criteriaSet, rawCandidateCred) ) {
+                fail("Evaluation of Signature failed, success was expected: " + message);
+            }
+        } catch (SecurityException e) {
+            fail("Evaluation failed due to processing exception: " + e.getMessage());
+        }
+    }
+    
+    private void testRawValidateFailure(String message) {
+        try {
+            if ( engine.validate(rawSignature, rawSignedContent, rawAlgorithmURI, criteriaSet, rawCandidateCred) ) {
+                fail("Evaluation of Signature succeeded, failure was expected: " + message);
+            }
+        } catch (SecurityException e) {
+            fail("Evaluation failed due to processing exception: " + e.getMessage());
+        }
+    }
+    
+    private void testRawValidateProcessingError(String message) {
+        try {
+            if ( engine.validate(rawSignature, rawSignedContent, rawAlgorithmURI, criteriaSet, rawCandidateCred) ) {
+                fail("Evaluation of Signature succeeded, processing failure was expected: " + message);
+            } else {
+                fail("Evaluation of Signature failed, but processing failure was expected: " + message);
+            }
+        } catch (SecurityException e) {
+            // do nothing, failure expected
+        }
     }
 
 }
