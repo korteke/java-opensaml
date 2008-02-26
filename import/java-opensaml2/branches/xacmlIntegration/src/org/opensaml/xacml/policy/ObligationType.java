@@ -45,7 +45,7 @@ public interface ObligationType extends XACMLObject {
     public static final String OBLIGATION_ID_ATTRIB_NAME = "ObligationId";
 
     /** FulfillOn attribute name. */
-    public static final String FULFILL_ON_ATTRIB_NAME = "FulFillOn";
+    public static final String FULFILL_ON_ATTRIB_NAME = "FulfillOn";
 
     /**
      * Gets the attribute assignments for this obligation.
