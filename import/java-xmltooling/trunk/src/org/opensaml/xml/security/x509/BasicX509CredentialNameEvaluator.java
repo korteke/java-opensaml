@@ -261,8 +261,8 @@ public class BasicX509CredentialNameEvaluator implements X509CredentialNameEvalu
                     log.debug("Credential {} passed name check based on subject DN.",
                             X509Util.getIdentifiersToken(credential, x500DNHandler));
                 }                
+                return true;
             }
-            return true;
         }
 
         log.error("Credential failed name check: " 
@@ -280,6 +280,7 @@ public class BasicX509CredentialNameEvaluator implements X509CredentialNameEvalu
      * 
      */
     protected boolean processSubjectDNCommonName(X509Certificate certificate, Set<String> trustedNames) {
+        log.debug("Processing subject DN common name");
         X500Principal subjectPrincipal = certificate.getSubjectX500Principal();
         List<String> commonNames = X509Util.getCommonNames(subjectPrincipal);
         if (commonNames == null || commonNames.isEmpty()) {
@@ -310,25 +311,28 @@ public class BasicX509CredentialNameEvaluator implements X509CredentialNameEvalu
      * @return true if the subject DN matches the set of trusted names, false otherwise
      */
     protected boolean processSubjectDN(X509Certificate certificate, Set<String> trustedNames) {
+        log.debug("Processing subject DN");
         X500Principal subjectPrincipal = certificate.getSubjectX500Principal();
 
         if (log.isDebugEnabled()) {
             log.debug("Extracted X500Principal from certificate: {}", x500DNHandler.getName(subjectPrincipal));
         }        
         for (String trustedName : trustedNames) {
-            X500Principal keyNamePrincipal = null;
+            X500Principal trustedNamePrincipal = null;
             try {
-                keyNamePrincipal = x500DNHandler.parse(trustedName);
-                if (subjectPrincipal.equals(keyNamePrincipal)) {
+                trustedNamePrincipal = x500DNHandler.parse(trustedName);
+                log.debug("Evaluating principal successfully parsed from trusted name: {}", trustedName);
+                if (subjectPrincipal.equals(trustedNamePrincipal)) {
                     if (log.isDebugEnabled()) {
                         log.debug("Matched subject DN to trusted names: {}", x500DNHandler.getName(subjectPrincipal));
-                    }                    
+                    }
                     return true;
                 }
             } catch (IllegalArgumentException e) {
                 // Do nothing, probably wasn't a distinguished name.
                 // TODO maybe try and match only the "suspected" DN values above
                 // - maybe match with regex for '='or something
+                log.debug("Trusted name was not a DN or could not be parsed: {}", trustedName);
                 continue;
             }
         }
@@ -344,6 +348,7 @@ public class BasicX509CredentialNameEvaluator implements X509CredentialNameEvalu
      * @return true if one of the subject alt names matches the set of trusted names, false otherwise
      */
     protected boolean processSubjectAltNames(X509Certificate certificate, Set<String> trustedNames) {
+        log.debug("Processing subject alt names");
         Integer[] nameTypes = new Integer[subjectAltNameTypes.size()];
         subjectAltNameTypes.toArray(nameTypes);
         List altNames = X509Util.getAltNames(certificate, nameTypes);
