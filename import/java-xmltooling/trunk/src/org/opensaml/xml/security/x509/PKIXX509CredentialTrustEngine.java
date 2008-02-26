@@ -38,9 +38,16 @@ public class PKIXX509CredentialTrustEngine implements PKIXTrustEngine<X509Creden
 
     /** The external PKIX trust evaluator used to establish trust. */
     private PKIXTrustEvaluator pkixTrustEvaluator;
+    
+    /** The external credential name evaluator used to establish trusted name compliance. */
+    private X509CredentialNameEvaluator credNameEvaluator;
 
     /**
      * Constructor.
+     * 
+     * <p>The PKIX trust evaluator used defaults to {@link CertPathPKIXTrustEvaluator}.</p>
+     * 
+     * <p>The X.509 credential name evaluator used defaults to {@link BasicX509CredentialNameEvaluator}.</p>
      * 
      * @param resolver credential resolver used to resolve trusted credentials
      */
@@ -50,7 +57,29 @@ public class PKIXX509CredentialTrustEngine implements PKIXTrustEngine<X509Creden
         }
         pkixResolver = resolver;
 
-        pkixTrustEvaluator = new PKIXTrustEvaluator();
+        pkixTrustEvaluator = new CertPathPKIXTrustEvaluator();
+        credNameEvaluator = new BasicX509CredentialNameEvaluator();
+    }
+    
+    /**
+     * Constructor.
+     * 
+     * @param resolver credential resolver used to resolve trusted credentials
+     * @param pkixEvaluator the PKIX trust evaluator to use
+     * @param nameEvaluator the X.509 credential name evaluator to use (may be null)
+     */
+    public PKIXX509CredentialTrustEngine(PKIXValidationInformationResolver resolver, PKIXTrustEvaluator pkixEvaluator,
+            X509CredentialNameEvaluator nameEvaluator) {
+        if (resolver == null) {
+            throw new IllegalArgumentException("PKIX trust information resolver may not be null");
+        }
+        pkixResolver = resolver;
+
+        if (pkixEvaluator == null) {
+            throw new IllegalArgumentException("PKIX trust evaluator may not be null");
+        }
+        pkixTrustEvaluator = pkixEvaluator;
+        credNameEvaluator = nameEvaluator;
     }
 
     /** {@inheritDoc} */
@@ -59,13 +88,28 @@ public class PKIXX509CredentialTrustEngine implements PKIXTrustEngine<X509Creden
     }
 
     /**
-     * Get the PKIXTrustEvaluator instance used to evalute trust. The parameters of this evaluator may be modified to
-     * adjust trust evaluation processing.
+     * Get the PKIXTrustEvaluator instance used to evalute trust.
+     * 
+     * <p>The parameters of this evaluator may be modified to
+     * adjust trust evaluation processing.</p>
      * 
      * @return the PKIX trust evaluator instance that will be used
      */
     public PKIXTrustEvaluator getPKIXTrustEvaluator() {
         return pkixTrustEvaluator;
+    }
+    
+    /**
+     * Get the X509CredentialNameEvaluator instance used to evalute a credential 
+     * against trusted names.
+     * 
+     * <p>The parameters of this evaluator may be modified to
+     * adjust trust evaluation processing.</p>
+     * 
+     * @return the PKIX trust evaluator instance that will be used
+     */
+    public X509CredentialNameEvaluator getX509CredentialNameEvaluator() {
+        return credNameEvaluator;
     }
 
     /** {@inheritDoc} */
@@ -85,12 +129,10 @@ public class PKIXX509CredentialTrustEngine implements PKIXTrustEngine<X509Creden
         }
 
         Set<String> trustedNames = null;
-        if (pkixTrustEvaluator.isNameChecking()) {
-            if (pkixResolver.supportsTrustedNameResolution()) {
-                trustedNames = pkixResolver.resolveTrustedNames(trustBasisCriteria);
-            } else {
-                log.debug("PKIX resolver does not support resolution of trusted names, skipping name checking");
-            }
+        if (pkixResolver.supportsTrustedNameResolution()) {
+            trustedNames = pkixResolver.resolveTrustedNames(trustBasisCriteria);
+        } else {
+            log.debug("PKIX resolver does not support resolution of trusted names, skipping name checking");
         }
 
         return validate(untrustedCredential, trustedNames, pkixResolver.resolve(trustBasisCriteria));
@@ -105,16 +147,22 @@ public class PKIXX509CredentialTrustEngine implements PKIXTrustEngine<X509Creden
      * @param trustedNames the set of trusted names for name checking purposes
      * 
      * @return true if PKIX validation of the untrusted credential is successful, otherwise false
-     * @throws SecurityException
+     * @throws SecurityException thrown if there is an error validating the untrusted credential
+     *          against trusted names or validation information
      */
     protected boolean validate(X509Credential untrustedX509Credential, Set<String> trustedNames,
-            Iterable<PKIXValidationInformation> validationInfoSet) {
-
+            Iterable<PKIXValidationInformation> validationInfoSet) throws SecurityException {
+        
         log.debug("Beginning PKIX validation using trusted validation information");
+
+        if (!checkNames(trustedNames, untrustedX509Credential)) {
+            log.error("Evaluation of credential against trusted names failed. Aborting PKIX validation");
+            return false;
+        }
 
         for (PKIXValidationInformation validationInfo : validationInfoSet) {
             try {
-                if (pkixTrustEvaluator.pkixValidate(validationInfo, trustedNames, untrustedX509Credential)) {
+                if (pkixTrustEvaluator.validate(validationInfo, untrustedX509Credential)) {
                     log.debug("Credential trust established via PKIX validation");
                     return true;
                 }
@@ -125,6 +173,28 @@ public class PKIXX509CredentialTrustEngine implements PKIXTrustEngine<X509Creden
         }
         log.debug("Trust of untrusted credential could not be established via PKIX validation");
         return false;
+    }
+    
+    /**
+     * Evaluate the credential against the set of trusted names.
+     * 
+     * <p>Evaluates to true if no intsance of {@link X509CredentialNameEvaluator} is configured.</p>
+     * 
+     * @param trustedNames set of trusted names
+     * @param untrustedCredential the credential being evaluated
+     * @return true if evaluation is successful, false otherwise
+     * @throws SecurityException thrown if there is an error evaluation the credential
+     */
+    protected boolean checkNames(Set<String> trustedNames, X509Credential untrustedCredential) 
+            throws SecurityException {
+        
+        if (credNameEvaluator == null) {
+            log.debug("No credential name evaluator was available, skipping trusted name evaluation");
+           return true; 
+        } else {
+            return credNameEvaluator.evaluate(untrustedCredential, trustedNames);
+        }
+
     }
 
 }

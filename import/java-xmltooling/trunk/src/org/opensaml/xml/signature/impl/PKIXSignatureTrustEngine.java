@@ -24,11 +24,14 @@ import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.SigningUtil;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
+import org.opensaml.xml.security.x509.BasicX509CredentialNameEvaluator;
 import org.opensaml.xml.security.x509.PKIXTrustEngine;
+import org.opensaml.xml.security.x509.CertPathPKIXTrustEvaluator;
 import org.opensaml.xml.security.x509.PKIXTrustEvaluator;
 import org.opensaml.xml.security.x509.PKIXValidationInformation;
 import org.opensaml.xml.security.x509.PKIXValidationInformationResolver;
 import org.opensaml.xml.security.x509.X509Credential;
+import org.opensaml.xml.security.x509.X509CredentialNameEvaluator;
 import org.opensaml.xml.signature.Signature;
 import org.opensaml.xml.signature.SignatureTrustEngine;
 import org.opensaml.xml.util.Pair;
@@ -59,9 +62,16 @@ public class PKIXSignatureTrustEngine extends
 
     /** The external PKIX trust evaluator used to establish trust. */
     private PKIXTrustEvaluator pkixTrustEvaluator;
+    
+    /** The external credential name evaluator used to establish trusted name compliance. */
+    private X509CredentialNameEvaluator credNameEvaluator;
 
     /**
      * Constructor.
+     * 
+     * <p>The PKIX trust evaluator used defaults to {@link CertPathPKIXTrustEvaluator}.</p>
+     * 
+     * <p>The X.509 credential name evaluator used defaults to {@link BasicX509CredentialNameEvaluator}.</p>
      * 
      * @param resolver credential resolver used to resolve trusted credentials.
      * @param keyInfoResolver KeyInfo credential resolver used to obtain the (advisory) signing credential from a
@@ -76,17 +86,59 @@ public class PKIXSignatureTrustEngine extends
         }
         pkixResolver = resolver;
 
-        pkixTrustEvaluator = new PKIXTrustEvaluator();
+        pkixTrustEvaluator = new CertPathPKIXTrustEvaluator();
+        credNameEvaluator = new BasicX509CredentialNameEvaluator();
     }
 
     /**
-     * Get the PKIXTrustEvaluator instance used to evalute trust. The parameters of this evaluator may be modified to
-     * adjust trust evaluation processing.
+     * Constructor.
+     * 
+     * @param resolver credential resolver used to resolve trusted credentials.
+     * @param keyInfoResolver KeyInfo credential resolver used to obtain the (advisory) signing credential from a
+     *            Signature's KeyInfo element.
+     * * @param pkixEvaluator the PKIX trust evaluator to use
+     * @param nameEvaluator the X.509 credential name evaluator to use (may be null)
+     */
+    public PKIXSignatureTrustEngine(PKIXValidationInformationResolver resolver,
+            KeyInfoCredentialResolver keyInfoResolver, PKIXTrustEvaluator pkixEvaluator, 
+            X509CredentialNameEvaluator nameEvaluator) {
+
+        super(keyInfoResolver);
+        if (resolver == null) {
+            throw new IllegalArgumentException("PKIX trust information resolver may not be null");
+        }
+        pkixResolver = resolver;
+
+        if (pkixEvaluator == null) {
+            throw new IllegalArgumentException("PKIX trust evaluator may not be null");
+        }
+        pkixTrustEvaluator = pkixEvaluator;
+        credNameEvaluator = nameEvaluator;
+    }
+    
+    /**
+     * Get the PKIXTrustEvaluator instance used to evalute trust.
+     * 
+     * <p>The parameters of this evaluator may be modified to
+     * adjust trust evaluation processing.</p>
      * 
      * @return the PKIX trust evaluator instance that will be used
      */
     public PKIXTrustEvaluator getPKIXTrustEvaluator() {
         return pkixTrustEvaluator;
+    }
+    
+    /**
+     * Get the X509CredentialNameEvaluator instance used to evalute a credential 
+     * against trusted names.
+     * 
+     * <p>The parameters of this evaluator may be modified to
+     * adjust trust evaluation processing.</p>
+     * 
+     * @return the PKIX trust evaluator instance that will be used
+     */
+    public X509CredentialNameEvaluator getX509CredentialNameEvaluator() {
+        return credNameEvaluator;
     }
 
     /** {@inheritDoc} */
@@ -153,10 +205,15 @@ public class PKIXSignatureTrustEngine extends
 
         Set<String> trustedNames = validationPair.getFirst();
         Iterable<PKIXValidationInformation> validationInfoSet = validationPair.getSecond();
+        
+        if (!checkNames(trustedNames, untrustedX509Credential)) {
+            log.error("Evaluation of credential against trusted names failed. Aborting PKIX validation");
+            return false;
+        }
 
         for (PKIXValidationInformation validationInfo : validationInfoSet) {
             try {
-                if (pkixTrustEvaluator.pkixValidate(validationInfo, trustedNames, untrustedX509Credential)) {
+                if (pkixTrustEvaluator.validate(validationInfo, untrustedX509Credential)) {
                     log.debug("Signature trust established via PKIX validation of signing credential");
                     return true;
                 }
@@ -183,12 +240,10 @@ public class PKIXSignatureTrustEngine extends
             CriteriaSet trustBasisCriteria) throws SecurityException {
 
         Set<String> trustedNames = null;
-        if (pkixTrustEvaluator.isNameChecking()) {
-            if (pkixResolver.supportsTrustedNameResolution()) {
-                trustedNames = pkixResolver.resolveTrustedNames(trustBasisCriteria);
-            } else {
-                log.debug("PKIX resolver does not support resolution of trusted names, skipping name checking");
-            }
+        if (pkixResolver.supportsTrustedNameResolution()) {
+            trustedNames = pkixResolver.resolveTrustedNames(trustBasisCriteria);
+        } else {
+            log.debug("PKIX resolver does not support resolution of trusted names, skipping name checking");
         }
         Iterable<PKIXValidationInformation> validationInfoSet = pkixResolver.resolve(trustBasisCriteria);
 
@@ -196,6 +251,28 @@ public class PKIXSignatureTrustEngine extends
             new Pair<Set<String>, Iterable<PKIXValidationInformation>>(trustedNames, validationInfoSet);
 
         return validationPair;
+    }
+    
+    /**
+     * Evaluate the credential against the set of trusted names.
+     * 
+     * <p>Evaluates to true if no intsance of {@link X509CredentialNameEvaluator} is configured.</p>
+     * 
+     * @param trustedNames set of trusted names
+     * @param untrustedCredential the credential being evaluated
+     * @return true if evaluation is successful, false otherwise
+     * @throws SecurityException thrown if there is an error evaluation the credential
+     */
+    protected boolean checkNames(Set<String> trustedNames, X509Credential untrustedCredential) 
+            throws SecurityException {
+        
+        if (credNameEvaluator == null) {
+            log.debug("No credential name evaluator was available, skipping trusted name evaluation");
+           return true; 
+        } else {
+            return credNameEvaluator.evaluate(untrustedCredential, trustedNames);
+        }
+
     }
 
 }

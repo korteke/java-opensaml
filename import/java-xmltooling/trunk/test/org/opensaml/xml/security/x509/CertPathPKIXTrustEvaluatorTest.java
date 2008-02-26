@@ -27,9 +27,9 @@ import org.opensaml.xml.XMLObjectBaseTestCase;
 import org.opensaml.xml.security.SecurityException;
 
 /**
- * Tests the X509Util utility methods.
+ * Tests the {@link CertPathPKIXTrustEvaluator} implementation.
  */
-public class PKIXTrustEvaluatorTest extends XMLObjectBaseTestCase {
+public class CertPathPKIXTrustEvaluatorTest extends XMLObjectBaseTestCase {
     
     private static final String DATA_PATH = "/data/org/opensaml/xml/security/x509/";
     
@@ -49,7 +49,7 @@ public class PKIXTrustEvaluatorTest extends XMLObjectBaseTestCase {
     protected void setUp() throws Exception {
         super.setUp();
         
-        pkixEvaluator = new PKIXTrustEvaluator();
+        pkixEvaluator = new CertPathPKIXTrustEvaluator();
         info = null;
         cred = null;
     }
@@ -237,7 +237,7 @@ public class PKIXTrustEvaluatorTest extends XMLObjectBaseTestCase {
     
     private void testValidateSuccess(String message, PKIXValidationInformation info, X509Credential cred) {
         try {
-            if ( !pkixEvaluator.pkixValidate(info, cred) ) {
+            if ( !pkixEvaluator.validate(info, cred) ) {
                 fail("Evaluation of X509Credential failed, success was expected: " + message);
             }
         } catch (SecurityException e) {
@@ -247,7 +247,7 @@ public class PKIXTrustEvaluatorTest extends XMLObjectBaseTestCase {
     
     private void testValidateFailure(String message, PKIXValidationInformation info, X509Credential cred) {
         try {
-            if ( pkixEvaluator.pkixValidate(info, cred) ) {
+            if ( pkixEvaluator.validate(info, cred) ) {
                 fail("Evaluation of X509Credential succeeded, failure was expected: " + message);
             }
         } catch (SecurityException e) {
@@ -257,7 +257,7 @@ public class PKIXTrustEvaluatorTest extends XMLObjectBaseTestCase {
     
     private void testValidateProcessingError(String message, PKIXValidationInformation info, X509Credential cred) {
         try {
-            if ( pkixEvaluator.pkixValidate(info, cred) ) {
+            if ( pkixEvaluator.validate(info, cred) ) {
                 fail("Evaluation of X509Credential succeeded, processing failure was expected: " + message);
             } else {
                 fail("Evaluation of X509Credential failed, but processing failure was expected: " + message);
@@ -331,7 +331,7 @@ public class PKIXTrustEvaluatorTest extends XMLObjectBaseTestCase {
     }
     
     private InputStream getInputStream(String fileName) {
-        return  PKIXTrustEvaluatorTest.class.getResourceAsStream(DATA_PATH + fileName);
+        return  CertPathPKIXTrustEvaluatorTest.class.getResourceAsStream(DATA_PATH + fileName);
     }
 
 }
