@@ -17,12 +17,15 @@
 
 package org.opensaml.xacml.ctx.provider;
 
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import org.opensaml.xacml.ctx.DecisionType.DECISION;
 import org.opensaml.xacml.policy.EffectType;
@@ -31,32 +34,95 @@ import org.opensaml.xacml.policy.ObligationsType;
 
 /** A service for evaluating the obligations within a context. */
 public class ObligationService {
+    
+    /** Read/write lock around the registered obligation handlers. */
+    private ReentrantReadWriteLock rwLock;
 
     /** Registered obligation handlers. */
     private Set<BaseObligationHandler> obligationHandlers;
 
     /** Constructor. */
     public ObligationService() {
+        rwLock = new ReentrantReadWriteLock(true);
         obligationHandlers = new TreeSet<BaseObligationHandler>(new ObligationHandlerComparator());
+    }
+    
+    /**
+     * Gets the registered obligation handlers.
+     * 
+     * @return registered obligation handlers
+     */
+    public Set<BaseObligationHandler> getObligationHandlers(){
+        return Collections.unmodifiableSet(obligationHandlers);
+    }
+    
+    /**
+     * Adds an obligation handler to the list of registered handlers
+     * 
+     * This method waits until a write lock is obtained for the set of registered obligation handlers.
+     * 
+     * @param handler the handler to add to the list of registered handlers.
+     */
+    public void addObligationhandler(BaseObligationHandler handler){
+        if(handler == null){
+            return;
+        }
+        
+        Lock writeLock  = rwLock.writeLock();
+        writeLock.lock();
+        try{
+            obligationHandlers.add(handler);
+        }finally{
+            writeLock.unlock();
+        }
+    }
+    
+    /**
+     * Removes an obligation handler from the list of registered handlers
+     * 
+     * This method waits until a write lock is obtained for the set of registered obligation handlers.
+     * 
+     * @param handler the handler to remove from the list of registered handlers.
+     */
+    public void removeObligationHandler(BaseObligationHandler handler){
+        if(handler == null){
+            return;
+        }
+        
+        Lock writeLock  = rwLock.writeLock();
+        writeLock.lock();
+        try{
+            obligationHandlers.remove(handler);
+        }finally{
+            writeLock.unlock();
+        }
     }
 
     /**
      * Processes the obligations within the effective XACML policy.
+     * 
+     * This method waits until a read lock is obtained for the set of registered obligation handlers.
      * 
      * @param context current processing context
      * 
      * @throws ObligationProcessingException thrown if there is a problem evaluating an obligation
      */
     public void processObligations(ObligationProcessingContext context) throws ObligationProcessingException {
-        Iterator<BaseObligationHandler> handlerItr = obligationHandlers.iterator();
-        Map<String, ObligationType> effectiveObligations = preprocessObligations(context);
-
-        BaseObligationHandler handler;
-        while (handlerItr.hasNext()) {
-            handler = handlerItr.next();
-            if (effectiveObligations.containsKey(handler.getObligationId())) {
-                handler.evaluateObligation(context, effectiveObligations.get(handler.getObligationId()));
+        Lock readLock = rwLock.readLock();
+        readLock.lock();
+            try{
+            Iterator<BaseObligationHandler> handlerItr = obligationHandlers.iterator();
+            Map<String, ObligationType> effectiveObligations = preprocessObligations(context);
+    
+            BaseObligationHandler handler;
+            while (handlerItr.hasNext()) {
+                handler = handlerItr.next();
+                if (effectiveObligations.containsKey(handler.getObligationId())) {
+                    handler.evaluateObligation(context, effectiveObligations.get(handler.getObligationId()));
+                }
             }
+        }finally{
+            readLock.unlock();
         }
     }
 
