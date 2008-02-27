@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.StringTokenizer;
 
@@ -162,6 +163,27 @@ public final class XMLHelper {
 
         return null;
     }
+    
+    /**
+     * Gets the lcoale currently active for the element.  This is done by looking for an xml:lang attribute 
+     * and parsing its content.  If no xml:lang attribute is present the default locale is returned.  This method 
+     * only uses the language primary tag, as defined by RFC3066.
+     * 
+     * @param element element to retrieve local information for
+     * 
+     * @return the active local of the element
+     */
+    public static Locale getLanguage(Element element) {
+        String lang = DatatypeHelper.safeTrimOrNullString(element.getAttributeNS(XMLConstants.XML_NS, "lang"));
+        if(lang != null){
+            if(lang.contains("-")){
+                lang = lang.substring(0, lang.indexOf("-"));
+            }
+            return new Locale(lang.toUpperCase());
+        }else{
+            return Locale.getDefault();
+        }
+    }
 
     /**
      * Constructs an attribute owned by the given document with the given name.
@@ -180,7 +202,7 @@ public final class XMLHelper {
      * Constructs an attribute owned by the given document with the given name.
      * 
      * @param document the owning document
-     * @param namespaceURI the URI fo the namespace the attribute is in
+     * @param namespaceURI the URI for the namespace the attribute is in
      * @param localName the local name
      * @param prefix the prefix of the namespace that attribute is in
      * 
