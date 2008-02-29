@@ -43,7 +43,7 @@ import org.opensaml.xml.security.keyinfo.KeyInfoGenerator;
 import org.opensaml.xml.signature.DigestMethod;
 import org.opensaml.xml.signature.KeyInfo;
 import org.opensaml.xml.signature.SignatureConstants;
-import org.opensaml.xml.signature.impl.KeyInfoBuilder;
+import org.opensaml.xml.signature.XMLSignatureBuilder;
 import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.util.XMLConstants;
 import org.opensaml.xml.util.XMLHelper;
@@ -56,22 +56,30 @@ import org.w3c.dom.Element;
  * Supports encryption of XMLObjects, their content and keys, according to the XML Encryption specification, version
  * 20021210.
  * 
+ * <p>
  * Various overloaded method variants are supplied for encrypting XMLObjects and their contents (with or without
  * encryption of the associated data encryption key), as well as for encrypting keys separately.
+ * </p>
  * 
+ * <p>
  * The parameters for data encryption are specified with an instance of {@link EncryptionParameters}. The parameters
  * for key encryption are specified with one or more instances of {@link KeyEncryptionParameters}.
+ * </p>
  * 
+ * <p>
  * The data encryption credential supplied by {@link EncryptionParameters#getEncryptionCredential()} is mandatory unless
  * key encryption is also being performed and all associated key encryption parameters contain a valid key encryption
  * credential containing a valid key encryption key. In this case the data encryption key will be randomly generated
  * based on the algorithm URI supplied by {@link EncryptionParameters#getAlgorithm()}.
+ * </p>
  * 
+ * <p>
  * If encryption of the data encryption key is being performed using the overloaded methods for elements or content, the
  * resulting EncryptedKey(s) will be placed inline within the KeyInfo of the resulting EncryptedData. If this is not the
  * desired behavior, the XMLObject and the data encryption key should be encrypted separately, and the placement of
  * EncryptedKey(s) handled by the caller. Specialized subclasses of this class maybe also handle key placement in an
  * application-specific manner.
+ * </p>
  * 
  */
 public class Encrypter {
@@ -86,7 +94,7 @@ public class Encrypter {
     private Unmarshaller encryptedKeyUnmarshaller;
 
     /** Builder instance for building KeyInfo objects. */
-    private KeyInfoBuilder keyInfoBuilder;
+    private XMLSignatureBuilder<KeyInfo> keyInfoBuilder;
 
     /** The name of the JCA security provider to use. */
     private String jcaProviderName;
@@ -101,7 +109,7 @@ public class Encrypter {
         encryptedKeyUnmarshaller = unmarshallerFactory.getUnmarshaller(EncryptedKey.DEFAULT_ELEMENT_NAME);
 
         XMLObjectBuilderFactory builderFactory = Configuration.getBuilderFactory();
-        keyInfoBuilder = (KeyInfoBuilder) builderFactory.getBuilder(KeyInfo.DEFAULT_ELEMENT_NAME);
+        keyInfoBuilder = (XMLSignatureBuilder<KeyInfo>) builderFactory.getBuilder(KeyInfo.DEFAULT_ELEMENT_NAME);
 
         jcaProviderName = null;
     }
@@ -141,7 +149,8 @@ public class Encrypter {
      * @return the resulting EncryptedData element
      * @throws EncryptionException exception thrown on encryption errors
      */
-    public EncryptedData encryptElement(XMLObject xmlObject, EncryptionParameters encParams) throws EncryptionException {
+    public EncryptedData encryptElement(XMLObject xmlObject, EncryptionParameters encParams) 
+            throws EncryptionException {
         List<KeyEncryptionParameters> emptyKEKParamsList = new ArrayList<KeyEncryptionParameters>();
         return encryptElement(xmlObject, encParams, emptyKEKParamsList, false);
     }
@@ -277,8 +286,8 @@ public class Encrypter {
 
         if (kekParams.getKeyInfoGenerator() != null) {
             KeyInfoGenerator generator = kekParams.getKeyInfoGenerator();
-            log.debug("Dynamically generating KeyInfo from Credential for EncryptedKey using generator: {}", generator
-                    .getClass().getName());
+            log.debug("Dynamically generating KeyInfo from Credential for EncryptedKey using generator: {}",
+                    generator.getClass().getName());
             try {
                 encryptedKey.setKeyInfo(generator.generate(kekParams.getEncryptionCredential()));
             } catch (SecurityException e) {
@@ -485,8 +494,8 @@ public class Encrypter {
 
         if (encParams.getKeyInfoGenerator() != null) {
             KeyInfoGenerator generator = encParams.getKeyInfoGenerator();
-            log.debug("Dynamically generating KeyInfo from Credential for EncryptedData using generator: {}", generator
-                    .getClass().getName());
+            log.debug("Dynamically generating KeyInfo from Credential for EncryptedData using generator: {}",
+                    generator.getClass().getName());
             try {
                 encryptedData.setKeyInfo(generator.generate(encParams.getEncryptionCredential()));
             } catch (SecurityException e) {
@@ -630,6 +639,8 @@ public class Encrypter {
      */
     protected SecretKey generateEncryptionKey(String encryptionAlgorithmURI) throws EncryptionException {
         try {
+            log.debug("Generating random symmetric data encryption key from algorithm URI: {}", 
+                    encryptionAlgorithmURI);
             return SecurityHelper.generateSymmetricKey(encryptionAlgorithmURI);
         } catch (NoSuchAlgorithmException e) {
             log.error("Could not generate encryption key, algorithm URI was invalid: " + encryptionAlgorithmURI);
