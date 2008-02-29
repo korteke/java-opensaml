@@ -16,55 +16,59 @@
 
 package org.opensaml.xml.util;
 
-import java.lang.ref.WeakReference;
-import java.util.WeakHashMap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * A factory class which returns the singleton instance of an output class based on an input class instance.
- * 
- * The class implements the singleton pattern in that it ensures that exactly one instance
- * of the output class exists for each instance of the input class.  A {@link WeakHashMap}
- * is used as the underlying store to ensure that if the input class instance become otherwise
- * unused, the input class instance key used within the factory will not prevent the input class
- * from being garbage-collected. Value instances of the map are also wrapped in a 
- * {@link WeakReference} to allow for the possibility that the output class may hold a 
- * reference to the input class key, without preventing the described weak reference-based garbage collection.
+ * An abstract Template design pattern implementation of {@link SingletonFactory}.
  *
  * @param <Input> the factory input class type
  * @param <Output> the factory output class type
  */
-public abstract class AbstractSingletonFactory<Input, Output> {
+public abstract class AbstractSingletonFactory<Input, Output> implements SingletonFactory<Input, Output> {
     
-    /** Storage for the factory. */
-    private WeakHashMap<Input, WeakReference<Output>> map = new WeakHashMap<Input, WeakReference<Output>>();
+    /** Class logger. */
+    private final Logger log = LoggerFactory.getLogger(AbstractSingletonFactory.class);
     
-    /**
-     * Constructor.
-     *
-     */
-    public AbstractSingletonFactory() {
-        map = new WeakHashMap<Input, WeakReference<Output>>();
-    }
-    
-    /**
-     * Obtain an instance of the output class based on an input class instance.
-     * 
-     * @param input the input class instance
-     * @return an output class instance
-     */
+    /** {@inheritDoc} */
     public synchronized Output getInstance(Input input) {
-        WeakReference<Output> outputRef = map.get(input);
-        if (outputRef != null) {
-            if (outputRef.get() != null) {
-                return outputRef.get();
-            } else {
-                map.remove(input);
-            }
+        Output output = get(input);
+        if (output != null) {
+            log.trace("Input key mapped to a non-null value, returning output");
+            return output;
+        } else {
+            log.trace("Input key mapped to a null value");
         }
-        Output output = createNewInstance(input);
-        map.put(input, new WeakReference<Output>(output));
+        
+        log.trace("Creating new output instance and inserting to factory map");
+        output = createNewInstance(input);
+        if (output == null) {
+            log.error("New output instance was not created");
+            return null;
+         }
+        
+        put(input, output);
+        
         return output;
     }
+    
+    /**
+     * Get the output instance currently associated with
+     * the input instance.
+     * 
+     * @param input the input instance key
+     * @return the output instance which corresponds to the input instance,
+     *              or null if not present
+     */
+    protected abstract Output get(Input input);
+    
+    /**
+     * Store the input and output instance association.
+     * 
+     * @param input the input instance key
+     * @param output the output instance value
+     */
+    protected abstract void put(Input input, Output output);
 
     /**
      * Create a new instance of the output class based on the input
