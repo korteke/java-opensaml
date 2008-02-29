@@ -19,6 +19,7 @@ package org.opensaml.xml.encryption;
 import java.security.Key;
 import java.security.KeyException;
 import java.security.NoSuchAlgorithmException;
+import java.security.interfaces.DSAPublicKey;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -560,13 +561,18 @@ public class Encrypter {
                 throw new EncryptionException("Key encryption parameters are required");
             }
         }
+        Key key = SecurityHelper.extractEncryptionKey(kekParams.getEncryptionCredential());
+        if (key == null) {
+            log.error("Key encryption credential and contained key are required");
+            throw new EncryptionException("Key encryption credential and contained key are required");
+        }
+        if (key instanceof DSAPublicKey) {
+            log.error("Attempt made to use DSA key for encrypted key transport");
+            throw new EncryptionException("DSA keys may not be used for encrypted key transport");
+        }
         if (DatatypeHelper.isEmpty(kekParams.getAlgorithm())) {
             log.error("Key encryption algorithm URI is required");
             throw new EncryptionException("Key encryption algorithm URI is required");
-        }
-        if (SecurityHelper.extractEncryptionKey(kekParams.getEncryptionCredential()) == null) {
-            log.error("Key encryption credential and contained key are required");
-            throw new EncryptionException("Key encryption credential and contained key are required");
         }
     }
 

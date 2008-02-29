@@ -17,6 +17,7 @@
 package org.opensaml.xml.encryption;
 
 import java.security.Key;
+import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ import java.util.List;
 import org.opensaml.xml.XMLObjectBaseTestCase;
 import org.opensaml.xml.mock.SimpleXMLObject;
 import org.opensaml.xml.parse.XMLParserException;
+import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.SecurityTestHelper;
 import org.opensaml.xml.security.keyinfo.StaticKeyInfoGenerator;
 import org.opensaml.xml.signature.DigestMethod;
@@ -460,6 +462,28 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
         
         assertTrue("EncryptedKey/EncryptionMethod/DigestMethod list was NOT empty",
                 encKey.getEncryptionMethod().getUnknownXMLObjects(DigestMethod.DEFAULT_ELEMENT_NAME).isEmpty());
+    }
+    
+    /**
+     *  Test proper error handling of attempt to encrypt with a DSA key.
+     *  
+     * @throws NoSuchProviderException 
+     * @throws NoSuchAlgorithmException 
+     */
+    public void testEncryptDataBadKEKDSA() throws NoSuchAlgorithmException, NoSuchProviderException {
+        SimpleXMLObject sxo = (SimpleXMLObject) unmarshallElement(targetFile);
+        
+        KeyEncryptionParameters kekParamsDSA = new KeyEncryptionParameters();
+        KeyPair kp = SecurityTestHelper.generateKeyPair("DSA", 1024, null);
+        kekParamsDSA.setEncryptionCredential(SecurityHelper.getSimpleCredential(kp.getPublic(), null));
+        
+        EncryptedData encData = null;
+        try {
+            encData = encrypter.encryptElement(sxo, encParams, kekParamsDSA);
+            fail("Object encryption succeeded, should have failed with DSA key attempt");
+        } catch (EncryptionException e) {
+            // do nothing failure expected
+        }
     }
     
     /**
