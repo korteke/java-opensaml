@@ -485,8 +485,8 @@ public class Decrypter {
      */
     public DocumentFragment decryptDataToDOM(EncryptedData encryptedData) throws DecryptionException {
         if (resolver == null && encKeyResolver == null) {
-            log.error("Decryption can not be attempted, no key resolvers are set");
-            throw new DecryptionException("Unable to decrypt EncryptedData, no key resolvers are set");
+            log.error("Decryption can not be attempted, required resolvers are not available");
+            throw new DecryptionException("Unable to decrypt EncryptedData, required resolvers are not available");
         }
 
         DocumentFragment docFrag = null;
@@ -496,14 +496,15 @@ public class Decrypter {
             if (docFrag != null) {
                 return docFrag;
             } else {
-                log.debug("Failed to decrypt EncryptedData using standard resolver");
+                log.debug("Failed to decrypt EncryptedData using standard KeyInfo resolver");
             }
         }
 
         String algorithm = encryptedData.getEncryptionMethod().getAlgorithm();
         if (DatatypeHelper.isEmpty(algorithm)) {
-            String msg = "EncryptedData's EncryptionMethod Algorithm attribute was empty";
-            log.error(msg + "key decryption could not be attempted");
+            String msg = "EncryptedData's EncryptionMethod Algorithm attribute was empty, "
+                + "key decryption could not be attempted";
+            log.error(msg);
             throw new DecryptionException(msg);
         }
 
@@ -516,9 +517,10 @@ public class Decrypter {
             }
         }
 
-        log.error("Failed to decrypt EncryptedData using either standard credential resolver "
-                + "or encrypted key resolver");
-        throw new DecryptionException("Valid decryption key for EncryptedData could not be resolved");
+        log.error("Failed to decrypt EncryptedData using either EncryptedData KeyInfoCredentialResolver "
+                + "or EncryptedKeyResolver + EncryptedKey KeyInfoCredentialResolver");
+        
+        throw new DecryptionException("Failed to decrypt EncryptedData");
     }
 
     /**
