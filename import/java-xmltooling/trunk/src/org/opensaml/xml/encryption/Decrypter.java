@@ -64,6 +64,37 @@ import org.w3c.dom.NodeList;
  * version 20021210.
  * 
  * <p>
+ * Details on the components specified as constructor options are as follows:
+ * <ol>
+ * 
+ * <li>
+ * <code>newResolver</code>: This {@link KeyInfoCredentialResolver} instance is used to resolve keys (as Credentials)
+ * based on the KeyInfo of EncryptedData elements. While it could in theory be used to handle the complete process of 
+ * resolving the data decryption key, including decrypting any necessary EncryptedKey's, it would typically
+ * be used in cases where encrypted key transport via an EncryptedKey is not being employed. 
+ * This corresponds to scenarios where decryption is instead based on resolving the (presumably shared secret)
+ * symmetric data decryption key directly, based on either context or information present in the 
+ * EncryptedData's KeyInfo. In cases where the data decryption key is to be resolved by decrypting an EncryptedKey,
+ * this resolver would typically not be used and may be <code>null</code>.
+ * </li>
+ * 
+ * <li>
+ * <code>newKEKResolver</code>: This {@link KeyInfoCredentialResolver} instance is used to resolve keys (as Credentials)
+ * used to decrypt EncryptedKey elements, based on the KeyInfo information contained within the EncryptedKey element 
+ * (also known as a Key Encryption Key or KEK). For asymmetric key transport of encrypted keys, this would entail 
+ * resolving the private key which corresponds to the public key which was used to encrypt the EncryptedKey.
+ * </li>
+ * 
+ * <li>
+ * <code>newEncKeyResolver</code>: This {@link EncryptedKeyResolver} instance is responsible for resolving
+ * the EncryptedKey element(s) which hold(s) the encrypted data decryption key which would be used to
+ * decrypt an EncryptedData element. 
+ * </li>
+ * 
+ * </ol>
+ * </p>
+ * 
+ * <p>
  * XML Encryption can encrypt either a single {@link Element} or the contents of an Element. The caller of this class
  * must select the decryption method which is most appropriate for their specific use case.
  * </p>
@@ -111,7 +142,13 @@ import org.w3c.dom.NodeList;
  * XMLObject, it may still necessary for the DOM Elements of the resultant XMLObjects to exist within the tree of Nodes
  * rooted at a DOM Document's document element (e.g. signature verification on the standalone decrypted XMLObject). For
  * these cases these method variants may be used: {@link #decryptDataToList(EncryptedData, boolean)} and
- * {@link #decryptData(EncryptedData, boolean)}. If the boolean parameter <code>rootInNewDocument</code> is true,
+ * {@link #decryptData(EncryptedData, boolean)}.  The <code>rootInNewDocument</code> parameter is explained below.
+ * A default value for this parameter, for the overloaded convenience methods
+ * which do not take this parameter explicitly, may be set via {@link #setRootInNewDocument(boolean)}.
+ * This default value is initialized to <code>false</code>.
+ * </p>
+ * 
+ * <p>If the boolean option <code>rootInNewDocument</code> is true at the time of decryption,
  * then for each top-level child Element of the decrypted DocumentFragment, the following will occur:
  * 
  * <ol>
@@ -157,6 +194,11 @@ public class Decrypter {
 
     /** The name of the JCA security provider to use. */
     private String jcaProviderName;
+    
+    /** Flag to determine whether by default the Element which backs the underlying decrypted SAMLObject will be the 
+     * root of a new DOM document. */
+    private boolean defaultRootInNewDocument;
+    
 
     /**
      * Constructor.
@@ -184,6 +226,28 @@ public class Decrypter {
         parserPool.setBuilderFeatures(features);
 
         unmarshallerFactory = Configuration.getUnmarshallerFactory();
+        
+        defaultRootInNewDocument = false;
+    }
+    
+    /**
+     * Get the flag which indicates whether by default the DOM Element which backs a decrypted SAML object
+     * will be the root of a new DOM document.  Defaults to false.
+     * 
+     * @return the current value of the flag for this decrypter instance
+     */
+    public boolean isRootInNewDocument() {
+        return defaultRootInNewDocument;
+    }
+    
+    /**
+     * Set the flag which indicates whether by default the DOM Element which backs a decrypted SAML object
+     * will be the root of a new DOM document.  Defaults to false.
+     * 
+     * @param flag the current value of the flag for this decrypter instance
+     */
+    public void setRootInNewDocument(boolean flag) {
+       defaultRootInNewDocument = flag; 
     }
 
     /**
@@ -307,9 +371,8 @@ public class Decrypter {
     }
 
     /**
-     * Decrypts the supplied EncryptedData and returns the resulting XMLObject.
-     * 
-     * This will only succeed if the decrypted EncryptedData contains exactly one DOM Node of type Element.
+     * This is a convenience method for calling {@link #decryptData(EncryptedData, boolean)},
+     * with the <code>rootInNewDocument</code> parameter value supplied by {@link #isRootInNewDocument()}.
      * 
      * @param encryptedData encrypted data element containing the data to be decrypted
      * @return the decrypted XMLObject
@@ -317,7 +380,7 @@ public class Decrypter {
      *             contained more than one top-level Element, or some non-Element Node type.
      */
     public XMLObject decryptData(EncryptedData encryptedData) throws DecryptionException {
-        return decryptData(encryptedData, false);
+        return decryptData(encryptedData, isRootInNewDocument());
     }
 
     /**
@@ -344,10 +407,8 @@ public class Decrypter {
     }
 
     /**
-     * Decrypts the supplied EncryptedData and returns the resulting list of XMLObjects.
-     * 
-     * This will succeed only if the decrypted EncryptedData contains at the top-level only DOM Elements (not other
-     * types of DOM Nodes).
+     * This is a convenience method for calling {@link #decryptDataToList(EncryptedData, boolean)},
+     * with the <code>rootInNewDocument</code> parameter value supplied by {@link #isRootInNewDocument()}.
      * 
      * @param encryptedData encrypted data element containing the data to be decrypted
      * @return the list decrypted top-level XMLObjects
@@ -355,7 +416,7 @@ public class Decrypter {
      *             contained DOM nodes other than type of Element
      */
     public List<XMLObject> decryptDataToList(EncryptedData encryptedData) throws DecryptionException {
-        return decryptDataToList(encryptedData, false);
+        return decryptDataToList(encryptedData, isRootInNewDocument());
     }
 
     /**
