@@ -47,6 +47,7 @@ public class SubjectTypeImpl extends AbstractValidatingXMLObject implements Subj
     protected SubjectTypeImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         attributes = new XMLObjectChildrenList<AttributeType>(this);
+        subjectCategory = "urn:oasis:names:tc:xacml:1.0:subject-category:access-subject";
     }
 
     /** {@inheritDoc} */
@@ -55,8 +56,8 @@ public class SubjectTypeImpl extends AbstractValidatingXMLObject implements Subj
     }
 
     /** {@inheritDoc} */
-    public void setSubjectCategory(String subjectCategory) {
-        subjectCategory = prepareForAssignment(this.subjectCategory, subjectCategory);
+    public void setSubjectCategory(String newSubjectCategory) {
+        subjectCategory = prepareForAssignment(this.subjectCategory, newSubjectCategory);
     }
 
     /** {@inheritDoc} */

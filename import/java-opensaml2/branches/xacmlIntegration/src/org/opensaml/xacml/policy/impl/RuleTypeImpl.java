@@ -85,13 +85,13 @@ public class RuleTypeImpl extends AbstractValidatingXMLObject implements RuleTyp
     }
 
     /** {@inheritDoc} */
-    public void setCondition(ConditionType condition) {
-       this.condition = prepareForAssignment(this.condition,condition);
+    public void setCondition(ConditionType newCondition) {
+       this.condition = prepareForAssignment(this.condition,newCondition);
     }
 
     /** {@inheritDoc} */
-    public void setDescription(DescriptionType description) {
-        this.description = prepareForAssignment(this.description,description);
+    public void setDescription(DescriptionType newDescription) {
+        this.description = prepareForAssignment(this.description,newDescription);
     }
 
     /** {@inheritDoc} */
@@ -105,8 +105,8 @@ public class RuleTypeImpl extends AbstractValidatingXMLObject implements RuleTyp
     }
 
     /** {@inheritDoc} */
-    public void setTarget(TargetType target) {
-       this.target = prepareForAssignment(this.target,target);
+    public void setTarget(TargetType newTarget) {
+       this.target = prepareForAssignment(this.target,newTarget);
     }
 
     /** {@inheritDoc} */

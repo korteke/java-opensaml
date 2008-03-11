@@ -110,7 +110,7 @@ public class ObligationService {
     public void processObligations(ObligationProcessingContext context) throws ObligationProcessingException {
         Lock readLock = rwLock.readLock();
         readLock.lock();
-            try{
+        try{
             Iterator<BaseObligationHandler> handlerItr = obligationHandlers.iterator();
             Map<String, ObligationType> effectiveObligations = preprocessObligations(context);
     
@@ -174,6 +174,5 @@ public class ObligationService {
 
             return 1;
         }
-
     }
 }

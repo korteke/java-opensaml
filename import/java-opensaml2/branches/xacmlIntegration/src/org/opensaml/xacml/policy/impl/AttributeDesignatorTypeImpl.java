@@ -92,8 +92,8 @@ public class AttributeDesignatorTypeImpl extends AbstractValidatingXMLObject imp
     }
 
     /** {@inheritDoc} */
-    public void setIssuer(String issuer) {
-        this.issuer = prepareForAssignment(this.issuer,issuer);
+    public void setIssuer(String newIssuer) {
+        this.issuer = prepareForAssignment(this.issuer,newIssuer);
     }
 
     /** {@inheritDoc} */

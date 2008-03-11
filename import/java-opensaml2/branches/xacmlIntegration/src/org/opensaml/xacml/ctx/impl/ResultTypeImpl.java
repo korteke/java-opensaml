@@ -66,8 +66,8 @@ public class ResultTypeImpl extends AbstractValidatingXMLObject implements Resul
     }
 
     /** {@inheritDoc} */
-    public void setObligations(ObligationsType obligations) {
-        this.obligations = prepareForAssignment(this.obligations, obligations);
+    public void setObligations(ObligationsType obligationsIn) {
+        this.obligations = prepareForAssignment(this.obligations, obligationsIn);
     }
 
     /** {@inheritDoc} */
@@ -81,13 +81,13 @@ public class ResultTypeImpl extends AbstractValidatingXMLObject implements Resul
     }
 
     /** {@inheritDoc} */
-    public void setStatus(StatusType status) {
-        this.status = prepareForAssignment(this.status, status);
+    public void setStatus(StatusType statusIn) {
+        this.status = prepareForAssignment(this.status, statusIn);
     }
 
     /** {@inheritDoc} */
-    public void setDecision(DecisionType decision) {
-        this.decision = prepareForAssignment(this.decision, decision);
+    public void setDecision(DecisionType decisionIn) {
+        this.decision = prepareForAssignment(this.decision, decisionIn);
     }
 
     /** {@inheritDoc} */

@@ -62,18 +62,18 @@ public class IdReferenceTypeImpl extends XSStringImpl implements IdReferenceType
     }
 
     /** {@inheritDoc} */
-    public void setEarliestVersion(String version) {
-        this.earliestVersion = prepareForAssignment(this.earliestVersion,version);
+    public void setEarliestVersion(String newEarliestVersion) {
+        this.earliestVersion = prepareForAssignment(this.earliestVersion,newEarliestVersion);
     }
 
     /** {@inheritDoc} */
-    public void setLatestVersion(String version) {
-        this.latestVersion = prepareForAssignment(this.latestVersion,version);
+    public void setLatestVersion(String newLastestVersion) {
+        this.latestVersion = prepareForAssignment(this.latestVersion,newLastestVersion);
     }
 
     /** {@inheritDoc} */
-    public void setVersion(String version) {
-       this.version = prepareForAssignment(this.version,version);
+    public void setVersion(String newVersion) {
+       this.version = prepareForAssignment(this.version,newVersion);
     }
 
 }

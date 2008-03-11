@@ -73,8 +73,8 @@ public class StatusCodeTypeImpl extends AbstractValidatingXMLObject implements S
     }
 
     /** {@inheritDoc} */
-    public void setValue(String value) {
-        this.value = prepareForAssignment(this.value, value);
+    public void setValue(String newValue) {
+        this.value = prepareForAssignment(this.value, newValue);
     }
 
 }

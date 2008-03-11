@@ -99,22 +99,22 @@ public class TargetTypeImpl extends AbstractSAMLObject implements TargetType {
     }
 
     /**{@inheritDoc}*/
-    public void setActions(ActionsType actions) {
-        this.actions = prepareForAssignment(this.actions,actions);
+    public void setActions(ActionsType newActions) {
+        this.actions = prepareForAssignment(this.actions,newActions);
     }
 
     /**{@inheritDoc}*/
-    public void setEnvironments(EnvironmentsType environments) {
-        this.environments = prepareForAssignment(this.environments,environments);
+    public void setEnvironments(EnvironmentsType newEnvironments) {
+        this.environments = prepareForAssignment(this.environments,newEnvironments);
     }
 
     /**{@inheritDoc}*/
-    public void setResources(ResourcesType resources) {
-        this.resources = prepareForAssignment(this.resources,resources);
+    public void setResources(ResourcesType newResources) {
+        this.resources = prepareForAssignment(this.resources,newResources);
     }
 
     /**{@inheritDoc}*/
-    public void setSubjects(SubjectsType subjects) {
-        this.subjects = prepareForAssignment(this.subjects,subjects);
+    public void setSubjects(SubjectsType newSubjects) {
+        this.subjects = prepareForAssignment(this.subjects,newSubjects);
     }
 }

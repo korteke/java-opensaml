@@ -129,13 +129,13 @@ public class PolicyTypeImpl extends AbstractValidatingXMLObject implements Polic
     }
 
     /** {@inheritDoc} */
-    public void setDescription(DescriptionType description) {
-        this.description = prepareForAssignment(this.description, description);
+    public void setDescription(DescriptionType newDescription) {
+        this.description = prepareForAssignment(this.description, newDescription);
     }
 
     /** {@inheritDoc} */
-    public void setObligations(ObligationsType obligations) {
-        this.obligations = prepareForAssignment(this.obligations, obligations);
+    public void setObligations(ObligationsType newObligations) {
+        this.obligations = prepareForAssignment(this.obligations, newObligations);
     }
 
     /** {@inheritDoc} */
@@ -154,13 +154,13 @@ public class PolicyTypeImpl extends AbstractValidatingXMLObject implements Polic
     }
 
     /** {@inheritDoc} */
-    public void setTarget(TargetType target) {
-        this.target = prepareForAssignment(this.target, target);
+    public void setTarget(TargetType newTarget) {
+        this.target = prepareForAssignment(this.target, newTarget);
     }
 
     /** {@inheritDoc} */
-    public void setVersion(String version) {
-        this.version = prepareForAssignment(this.version, version);
+    public void setVersion(String newVersion) {
+        this.version = prepareForAssignment(this.version, newVersion);
     }
 
     /** {@inheritDoc} */

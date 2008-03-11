@@ -71,17 +71,17 @@ public class AttributeTypeImpl extends AbstractValidatingXMLObject implements At
 
     /** {@inheritDoc} */
     public void setAttributeID(String attributeId) {
-        attributeID = prepareForAssignment(this.attributeID, attributeId);
+        this.attributeID = prepareForAssignment(this.attributeID, attributeId);
     }
 
     /** {@inheritDoc} */
     public void setDataType(String datatype) {
-        datatype = prepareForAssignment(this.datatype, datatype);
+        this.datatype = prepareForAssignment(this.datatype, datatype);
     }
 
     /** {@inheritDoc} */
     public void setIssuer(String issuer) {
-        issuer = prepareForAssignment(this.issuer, issuer);
+        this.issuer = prepareForAssignment(this.issuer, issuer);
     }
 
     /** {@inheritDoc} */

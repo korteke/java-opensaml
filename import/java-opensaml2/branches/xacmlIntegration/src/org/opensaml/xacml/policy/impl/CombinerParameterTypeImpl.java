@@ -58,13 +58,13 @@ public class CombinerParameterTypeImpl extends AbstractValidatingXMLObject imple
     }
 
     /** {@inheritDoc} */
-    public void setAttributeValue(AttributeValueType value) {
-        this.value = prepareForAssignment(this.value,value);
+    public void setAttributeValue(AttributeValueType newValue) {
+        this.value = prepareForAssignment(this.value,newValue);
     }
 
     /** {@inheritDoc} */
-    public void setParameterName(String name){
-        this.name = prepareForAssignment(this.name,name);
+    public void setParameterName(String newName){
+        this.name = prepareForAssignment(this.name,newName);
     }
 
     /** {@inheritDoc} */

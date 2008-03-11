@@ -87,8 +87,8 @@ public class StatusTypeImpl extends AbstractValidatingXMLObject implements Statu
     }
 
     /** {@inheritDoc} */
-    public void setStatusMessage(StatusMessageType statusMessage) {
-        this.statusMessage = prepareForAssignment(this.statusMessage, statusMessage);
+    public void setStatusMessage(StatusMessageType newStatusMessage) {
+        this.statusMessage = prepareForAssignment(this.statusMessage, newStatusMessage);
     }
 
     /** {@inheritDoc} */
@@ -97,7 +97,7 @@ public class StatusTypeImpl extends AbstractValidatingXMLObject implements Statu
     }
 
     /** {@inheritDoc} */
-    public void setStatusDetail(StatusDetailType statusDetail) {
-        this.statusDetail = prepareForAssignment(this.statusDetail, statusDetail);
+    public void setStatusDetail(StatusDetailType newStatusDetail) {
+        this.statusDetail = prepareForAssignment(this.statusDetail, newStatusDetail);
     }
 }
