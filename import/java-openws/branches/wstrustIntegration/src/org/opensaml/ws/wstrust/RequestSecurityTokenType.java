@@ -61,6 +61,7 @@ import org.opensaml.xml.signature.SignableXMLObject;
  * <li>{@link Timestamp}
  * <li>{@link TokenType}
  * <li>{@link UseKey}
+ * <li>{@link Signature}
  * <li><code>xs:any</code>
  * </ul>
  * 
