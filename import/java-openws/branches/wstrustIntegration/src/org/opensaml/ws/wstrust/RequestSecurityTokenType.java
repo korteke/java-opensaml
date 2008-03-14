@@ -25,6 +25,7 @@ import org.opensaml.ws.wspolicy.PolicyReference;
 import org.opensaml.ws.wssecurity.Timestamp;
 import org.opensaml.xml.AttributeExtensibleXMLObject;
 import org.opensaml.xml.ElementExtensibleXMLObject;
+import org.opensaml.xml.signature.SignableXMLObject;
 
 /**
  * Abstract interface for the &lt;wst:RequestSecurityToken&gt; (RST) element or
@@ -70,7 +71,7 @@ import org.opensaml.xml.ElementExtensibleXMLObject;
  * @version $Revision$
  */
 public abstract interface RequestSecurityTokenType extends
-        AttributeExtensibleXMLObject, ElementExtensibleXMLObject {
+        AttributeExtensibleXMLObject, ElementExtensibleXMLObject, SignableXMLObject {
 
     /**
      * the &lt;WSTrustMessage/@wst:Context&gt; attribute local name

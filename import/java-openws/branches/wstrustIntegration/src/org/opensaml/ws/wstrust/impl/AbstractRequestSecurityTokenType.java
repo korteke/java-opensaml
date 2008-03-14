@@ -51,9 +51,14 @@ import org.opensaml.ws.wstrust.TokenType;
 import org.opensaml.ws.wstrust.UseKey;
 import org.opensaml.xml.AbstractExtensibleXMLObject;
 import org.opensaml.xml.XMLObject;
+import org.opensaml.xml.signature.Signature;
+import org.opensaml.xml.util.XMLConstants;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 /**
- * AbstractRequestSecurityTokenType is an abstract validating &lt;wst:RequestSecurityToken&gt; or
+ * AbstractRequestSecurityTokenType is an abstract signable, validating &lt;wst:RequestSecurityToken&gt; or
  * &lt;wst:RequestSecurityTokenResponse&gt; element, with a &lt;wst:Context&gt; attribute.
  * 
  * @see RequestSecurityTokenType
@@ -146,6 +151,9 @@ public abstract class AbstractRequestSecurityTokenType extends AbstractExtensibl
 
     /** The &lt;wsu:Timestamp&gt; child element */
     private Timestamp timestamp_ = null;
+
+    /** The &lt;ds:Signature&gt; element */
+    private Signature signature_ = null;
 
     /**
      * Constructor.
@@ -734,7 +742,47 @@ public abstract class AbstractRequestSecurityTokenType extends AbstractExtensibl
         if (!getUnknownXMLObjects().isEmpty()) {
             children.addAll(getUnknownXMLObjects());
         }
+        // add signature
+        if(signature_ != null){
+            children.add(signature_);
+        }
+
         return children;
+    }
+
+    /** {@inheritDoc} */
+    public Signature getSignature() {
+        return signature_;
+    }
+
+    /** {@inheritDoc} */
+    public void setSignature(Signature newSignature) {
+        signature_ = prepareForAssignment(signature_, newSignature);
+    }
+    
+    /** {@inheritDoc} */
+    public boolean isSigned() {
+        Element domElement = getDOM();
+
+        if (domElement == null) {
+            return false;
+        }
+
+        NodeList children = domElement.getChildNodes();
+        Element childElement;
+        for (int i = 0; i < children.getLength(); i++) {
+            if (children.item(i).getNodeType() != Node.ELEMENT_NODE) {
+                continue;
+            }
+
+            childElement = (Element) children.item(i);
+            if (childElement.getNamespaceURI().equals(XMLConstants.XMLSIG_NS)
+                    && childElement.getLocalName().equals(Signature.DEFAULT_ELEMENT_LOCAL_NAME)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /*
