@@ -47,6 +47,7 @@ import org.opensaml.ws.wstrust.UseKey;
 import org.opensaml.xml.AbstractExtensibleXMLObjectUnmarshaller;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
+import org.opensaml.xml.signature.Signature;
 import org.w3c.dom.Attr;
 
 /**
@@ -120,6 +121,7 @@ public abstract class AbstractRequestSecurityTokenTypeUnmarshaller extends
      * <li>{@link Timestamp}
      * <li>{@link TokenType}
      * <li>{@link UseKey}
+     * <li>{@link Signature}
      * </ul>
      * <p>
      * {@inheritDoc}
@@ -231,6 +233,10 @@ public abstract class AbstractRequestSecurityTokenTypeUnmarshaller extends
         else if (childXMLObject instanceof UseKey) {
             UseKey useKey= (UseKey) childXMLObject;
             message.setUseKey(useKey);
+        }
+        else if (childXMLObject instanceof Signature) {
+            Signature signature= (Signature) childXMLObject;
+            message.setSignature(signature);
         }
         else {
             // xs:any elements
