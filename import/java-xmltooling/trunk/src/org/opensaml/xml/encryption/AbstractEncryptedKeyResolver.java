@@ -73,7 +73,6 @@ public abstract class AbstractEncryptedKeyResolver implements EncryptedKeyResolv
         
         if (encryptedData.getKeyInfo() == null 
                 || encryptedData.getKeyInfo().getKeyNames().isEmpty() ) {
-            //TODO maybe should be true in this case as well?
             return false;
         }
         
@@ -99,7 +98,6 @@ public abstract class AbstractEncryptedKeyResolver implements EncryptedKeyResolv
         }
         
         if (DatatypeHelper.isEmpty(encryptedData.getID())) {
-            //TODO maybe should be true in this case as well?
             return false;
         }
         
