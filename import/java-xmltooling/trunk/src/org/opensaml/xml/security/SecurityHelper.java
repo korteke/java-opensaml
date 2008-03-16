@@ -30,6 +30,8 @@ import java.security.interfaces.DSAPrivateKey;
 import java.security.interfaces.RSAPrivateCrtKey;
 import java.security.spec.DSAPublicKeySpec;
 import java.security.spec.RSAPublicKeySpec;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
@@ -49,6 +51,7 @@ import org.opensaml.xml.security.keyinfo.NamedKeyInfoGeneratorManager;
 import org.opensaml.xml.security.x509.BasicX509Credential;
 import org.opensaml.xml.signature.KeyInfo;
 import org.opensaml.xml.signature.Signature;
+import org.opensaml.xml.signature.SignatureConstants;
 import org.opensaml.xml.util.DatatypeHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,6 +63,15 @@ public final class SecurityHelper {
 
     /** Class logger. */
     private static Logger log = LoggerFactory.getLogger(SecurityHelper.class);
+    
+    /** Additional algorithm URI's which imply RSA keys. */
+    private static Set<String> rsaAlgorithmURIs;
+    
+    /** Additional algorithm URI's which imply DSA keys. */
+    private static Set<String> dsaAlgorithmURIs;
+    
+    /** Additional algorithm URI's which imply ECDSA keys. */
+    private static Set<String> ecdsaAlgorithmURIs;
 
     /** Constructor. */
     private SecurityHelper() {
@@ -93,9 +105,30 @@ public final class SecurityHelper {
      * @return the Java key algorithm specifier, or null if the mapping is unavailable or indeterminable from the URI
      */
     public static String getKeyAlgorithmFromURI(String algorithmURI) {
-        // TODO support signature and other algorithm URI's which have implied key algorithms.
-        // The default Apache config file only includes the key algorithm for the block ciphers and key wrap URI's
-        return DatatypeHelper.safeTrimOrNullString(JCEMapper.getJCEKeyAlgorithmFromURI(algorithmURI));
+        // The default Apache config file currently only includes the key algorithm for 
+        // the block ciphers and key wrap URI's.  Note: could use a custom config file which contains others.
+        String apacheValue = DatatypeHelper.safeTrimOrNullString(JCEMapper.getJCEKeyAlgorithmFromURI(algorithmURI));
+        if (apacheValue != null) {
+            return apacheValue;
+        }
+        
+        // HMAC uses any symmetric key, so there is no implied specific key algorithm
+        if (isHMAC(algorithmURI)) {
+            return null;
+        }
+        
+        // As a last ditch fallback, check some known common and supported ones.
+        if (rsaAlgorithmURIs.contains(algorithmURI)) {
+            return "RSA";
+        }
+        if (dsaAlgorithmURIs.contains(algorithmURI)) {
+            return "DSA";
+        }
+        if (ecdsaAlgorithmURIs.contains(algorithmURI)) {
+            return "ECDSA";
+        }
+        
+        return null;
     }
 
     /**
@@ -658,5 +691,22 @@ public final class SecurityHelper {
         if (!Init.isInitialized()) {
             Init.init();
         }
+        
+        // Additonal algorithm URI to JCA key algorithm mappins, beyond what is currently
+        // supplied in the Apache XML Security mapper config.
+        dsaAlgorithmURIs = new HashSet<String>();
+        dsaAlgorithmURIs.add(SignatureConstants.ALGO_ID_SIGNATURE_DSA);
+        
+        ecdsaAlgorithmURIs = new HashSet<String>();
+        ecdsaAlgorithmURIs.add(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA1);
+        
+        rsaAlgorithmURIs = new HashSet<String>();
+        rsaAlgorithmURIs.add(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1);
+        rsaAlgorithmURIs.add(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256);
+        rsaAlgorithmURIs.add(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA384);
+        rsaAlgorithmURIs.add(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA512);
+        rsaAlgorithmURIs.add(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA512);
+        rsaAlgorithmURIs.add(SignatureConstants.ALGO_ID_SIGNATURE_RSA_RIPEMD160);
+        rsaAlgorithmURIs.add(SignatureConstants.ALGO_ID_SIGNATURE_NOT_RECOMMENDED_RSA_MD5);
     }
 }

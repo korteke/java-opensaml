@@ -20,6 +20,9 @@ import java.io.InputStream;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 
+import org.opensaml.xml.encryption.EncryptionConstants;
+import org.opensaml.xml.signature.SignatureConstants;
+
 import junit.framework.TestCase;
 
 /**
@@ -90,6 +93,42 @@ public class SecurityHelperTest extends TestCase {
         pubKey = SecurityHelper.derivePublicKey(privKey);
         assertNotNull(pubKey);
         assertEquals("DSA", pubKey.getAlgorithm());
+    }
+    
+    /** Test mapping algorithm URI's to JCA key algorithm specifiers. */
+    public void testKeyAlgorithmURIMappings() {
+        // Encryption related.
+        assertEquals("RSA", SecurityHelper.getKeyAlgorithmFromURI(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSA15));
+        assertEquals("RSA", SecurityHelper.getKeyAlgorithmFromURI(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP));
+        
+        assertEquals("AES", SecurityHelper.getKeyAlgorithmFromURI(EncryptionConstants.ALGO_ID_KEYWRAP_AES128));
+        assertEquals("AES", SecurityHelper.getKeyAlgorithmFromURI(EncryptionConstants.ALGO_ID_KEYWRAP_AES192));
+        assertEquals("AES", SecurityHelper.getKeyAlgorithmFromURI(EncryptionConstants.ALGO_ID_KEYWRAP_AES256));
+        assertEquals("DESede", SecurityHelper.getKeyAlgorithmFromURI(EncryptionConstants.ALGO_ID_KEYWRAP_TRIPLEDES));
+        
+        assertEquals("AES", SecurityHelper.getKeyAlgorithmFromURI(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128));
+        assertEquals("AES", SecurityHelper.getKeyAlgorithmFromURI(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES192));
+        assertEquals("AES", SecurityHelper.getKeyAlgorithmFromURI(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256));
+        assertEquals("DESede", SecurityHelper.getKeyAlgorithmFromURI(EncryptionConstants.ALGO_ID_BLOCKCIPHER_TRIPLEDES));
+        
+        //Signature related.
+        assertEquals("RSA", SecurityHelper.getKeyAlgorithmFromURI(SignatureConstants.ALGO_ID_SIGNATURE_RSA));
+        assertEquals("RSA", SecurityHelper.getKeyAlgorithmFromURI(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1));
+        assertEquals("RSA", SecurityHelper.getKeyAlgorithmFromURI(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256));
+        assertEquals("RSA", SecurityHelper.getKeyAlgorithmFromURI(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA384));
+        assertEquals("RSA", SecurityHelper.getKeyAlgorithmFromURI(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA512));
+        assertEquals("RSA", SecurityHelper.getKeyAlgorithmFromURI(SignatureConstants.ALGO_ID_SIGNATURE_NOT_RECOMMENDED_RSA_MD5));
+        assertEquals("RSA", SecurityHelper.getKeyAlgorithmFromURI(SignatureConstants.ALGO_ID_SIGNATURE_RSA_RIPEMD160));
+        assertEquals("DSA", SecurityHelper.getKeyAlgorithmFromURI(SignatureConstants.ALGO_ID_SIGNATURE_DSA));
+        assertEquals("ECDSA", SecurityHelper.getKeyAlgorithmFromURI(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA1));
+        
+        // Mac related.  No specific key algorithm is indicated, any symmetric key will do. Should always return null;
+        assertNull(SecurityHelper.getKeyAlgorithmFromURI(SignatureConstants.ALGO_ID_MAC_HMAC_SHA1));
+        assertNull(SecurityHelper.getKeyAlgorithmFromURI(SignatureConstants.ALGO_ID_MAC_HMAC_SHA256));
+        assertNull(SecurityHelper.getKeyAlgorithmFromURI(SignatureConstants.ALGO_ID_MAC_HMAC_SHA384));
+        assertNull(SecurityHelper.getKeyAlgorithmFromURI(SignatureConstants.ALGO_ID_MAC_HMAC_SHA512));
+        assertNull(SecurityHelper.getKeyAlgorithmFromURI(SignatureConstants.ALGO_ID_MAC_HMAC_NOT_RECOMMENDED_MD5));
+        assertNull(SecurityHelper.getKeyAlgorithmFromURI(SignatureConstants.ALGO_ID_MAC_HMAC_RIPEMD160));
     }
 
     /** Generic key testing. */
