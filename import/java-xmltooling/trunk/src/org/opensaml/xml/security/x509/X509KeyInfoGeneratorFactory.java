@@ -39,6 +39,8 @@ import org.opensaml.xml.signature.X509SKI;
 import org.opensaml.xml.signature.impl.KeyInfoBuilder;
 import org.opensaml.xml.signature.impl.X509DataBuilder;
 import org.opensaml.xml.util.DatatypeHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A factory implementation which produces instances of {@link KeyInfoGenerator} capable of 
@@ -341,6 +343,9 @@ public class X509KeyInfoGeneratorFactory extends BasicKeyInfoGeneratorFactory {
      * contained within a {@link X509Credential}.
      */
     public class X509KeyInfoGenerator extends BasicKeyInfoGenerator {
+
+        /** Class logger. */
+        private final Logger log = LoggerFactory.getLogger(X509KeyInfoGenerator.class);
         
         /** The set of options to be used by the generator.*/
         private X509Options options;
@@ -369,7 +374,8 @@ public class X509KeyInfoGeneratorFactory extends BasicKeyInfoGeneratorFactory {
         /** {@inheritDoc} */
         public KeyInfo generate(Credential credential) throws SecurityException {
             if ( ! (credential instanceof X509Credential) ) {
-                //TODO throw error?
+                log.warn("X509KeyInfoGenerator was passed a credential that was not an instance of X509Credential: {}",
+                        credential.getClass().getName());
                 return null;
             }
             X509Credential x509Credential = (X509Credential) credential;
@@ -588,9 +594,10 @@ public class X509KeyInfoGeneratorFactory extends BasicKeyInfoGeneratorFactory {
                     if (altNameValue instanceof String) {
                         KeyInfoHelper.addKeyName(keyInfo, (String) altNameValue);
                     } else if (altNameValue instanceof byte[]){
-                        // TODO what to do with these?
+                        log.warn("Certificate contained an alt name value as a DER-encoded byte[] (not supported)");
                     } else {
-                        // TODO log and/or throw error
+                        log.warn("Certificate contained an alt name value with an unexpected type: {}",
+                                altNameValue.getClass().getName());
                     }
                 }
             }
