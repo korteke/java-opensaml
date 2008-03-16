@@ -59,10 +59,10 @@ public class SignatureValidator implements Validator<Signature> {
             log.debug("Supplied credential contained no key suitable for signature validation");
             throw new ValidationException("No key available to validate signature");
         }
-
-        // TODO - investigate whether need to look at the signature signing algorithm before
-        // blinding trying the key - DSA vs. RSA, public key vs. HMAC. I think using wrong
-        // one might throw exception rather than just causing checkSignatureValue to return false.
+        
+        log.debug("Validating signature with signature algorithm URI: {}", signature.getSignatureAlgorithm());
+        log.debug("Validation credential key algorithm '{}', key instance class '{}'", 
+                validationKey.getAlgorithm(), validationKey.getClass().getName());
 
         try {
             if (xmlSig.checkSignatureValue(validationKey)) {
