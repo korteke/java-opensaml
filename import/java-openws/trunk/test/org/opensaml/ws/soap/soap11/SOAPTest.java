@@ -75,7 +75,11 @@ public class SOAPTest extends BaseTestCase {
         Envelope envelope = (Envelope) unmarshaller.unmarshall(envelopeElem);
         
         // Check to make sure everything unmarshalled okay
-        //TODO test encodingStyle
+        QName encodingStyleName = new QName("http://schemas.xmlsoap.org/soap/envelope/", "encodingStyle");
+        String encodingStyleValue = envelope.getUnknownAttributes().get(encodingStyleName);
+        assertNotNull("Encoding style was null", encodingStyleValue);
+        assertEquals("Encoding style had unexpected value", 
+                "http://schemas.xmlsoap.org/soap/encoding/", encodingStyleValue);
         
         Header header = envelope.getHeader();
         assertNotNull("Header was null", header);
