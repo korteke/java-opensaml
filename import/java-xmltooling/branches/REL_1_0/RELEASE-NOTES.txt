@@ -1,4 +1,4 @@
-XMLTooling-J version 1.0.0
+XMLTooling-J 1.0.0
 ==============================================
 
 XMLTooling-J is a low-level library that may be used to construct libraries 
