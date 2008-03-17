@@ -1,4 +1,4 @@
-OpenWS-J version 1.0 - Release Candidate 3
+OpenWS-J version 1.0 - Trunk
 =============================================
 
 The OpenWS library provides a growing set of tools to work with web services at 
@@ -16,10 +16,10 @@ OpenWS-J is licensed under the Apache License, version 2.
 Feedback
 --------
 Feedback may be provided through the OpenSAML mailing list.
-http://www.opensaml.org/index.html#mailing
+https://spaces.internet2.edu/display/OpenSAML/MailingList
 
 Issues, Suggestions
 --------
 Issues or suggestions for improvement may submitted to the OpenWS - Java
 project at:
-http://bugs.internet2.edu
+http://bugs.internet2.edu/jira
