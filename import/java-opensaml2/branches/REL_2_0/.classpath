@@ -20,12 +20,21 @@
 			<attribute name="javadoc_location" value="http://jargs.sourceforge.net/doc/api/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/java-xmltooling"/>
-	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/java-openws"/>
 	<classpathentry exported="true" kind="lib" path="lib/velocity-1.5.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/commons-lang-2.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/commons-collections-3.1.jar"/>
 	<classpathentry kind="lib" path="build-lib/spring-2.0.7-core.jar"/>
 	<classpathentry kind="lib" path="build-lib/spring-2.0.7-mock.jar"/>
+	<classpathentry kind="lib" path="lib/bcprov-jdk14-138.jar"/>
+	<classpathentry kind="lib" path="lib/commons-codec-1.3.jar"/>
+	<classpathentry kind="lib" path="lib/commons-httpclient-3.1.jar"/>
+	<classpathentry kind="lib" path="lib/jcl104-over-slf4j-1.5.0.jar"/>
+	<classpathentry kind="lib" path="lib/joda-time-1.5.2.jar"/>
+	<classpathentry kind="lib" path="lib/log4j-over-slf4j-1.5.0.jar"/>
+	<classpathentry kind="lib" path="lib/not-yet-commons-ssl-0.3.9.jar"/>
+	<classpathentry kind="lib" path="lib/openws-1.0.0-jdk-1.5.jar"/>
+	<classpathentry kind="lib" path="lib/slf4j-api-1.5.0.jar"/>
+	<classpathentry kind="lib" path="lib/xmlsec-1.4.1.jar"/>
+	<classpathentry kind="lib" path="lib/xmltooling-1.0.0-jdk-1.5.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
