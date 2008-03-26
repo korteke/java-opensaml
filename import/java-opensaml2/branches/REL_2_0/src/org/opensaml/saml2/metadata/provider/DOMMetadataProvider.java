@@ -75,10 +75,10 @@ public class DOMMetadataProvider extends AbstractObservableMetadataProvider impl
     private synchronized void refreshMetadata() throws MetadataProviderException {
         try {
             Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(metadataElement);
-            metadata = unmarshaller.unmarshall(metadataElement);
-            metadata.releaseDOM();
-            metadata.releaseChildrenDOM(true);
-            filterMetadata(metadata);
+            XMLObject metadataTemp = unmarshaller.unmarshall(metadataElement);
+            filterMetadata(metadataTemp);
+            releaseMetadataDOM(metadataTemp);
+            metadata = metadataTemp;
             emitChangeEvent();
         } catch (UnmarshallingException e) {
             String errorMsg = "Unable to unmarshall metadata element";
