@@ -14,7 +14,6 @@ Code standard checking for Internet 2 code
         <property name="tabWidth" value="4"/>
         <module name="JavadocMethod">
             <property name="allowThrowsTagsForSubclasses" value="true"/>
-            <property name="suppressLoadErrors" value="true"/>
         </module>
         <module name="JavadocType"/>
         <module name="JavadocVariable"/>
