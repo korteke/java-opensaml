@@ -1,31 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="src" path="test"/>
-	<classpathentry kind="src" path="resources/classpath"/>
+	<classpathentry kind="src" path="src/main/java"/>
+	<classpathentry kind="src" path="src/test/java"/>
+	<classpathentry excluding="**" kind="src" output="src/main/resources" path="src/main/resources"/>
+	<classpathentry excluding="**" kind="src" output="src/test/resources" path="src/test/resources"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="build-lib/junit-3.8.1.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="http://www.junit.org/junit/javadoc/3.8.1/"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry exported="true" kind="lib" path="lib/xmlsec-1.4.1.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="http://xml.apache.org/security/Java/api/"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="build-lib/xmlunit-1.0.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="http://xmlunit.sourceforge.net/doc/"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry exported="true" kind="lib" path="lib/bcprov-jdk14-138.jar"/>
-	<classpathentry exported="true" kind="lib" path="thirdparty-lib/slf4j/logback-classic-0.9.8.jar"/>
-	<classpathentry exported="true" kind="lib" path="thirdparty-lib/slf4j/logback-core-0.9.8.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/not-yet-commons-ssl-0.3.9.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/joda-time-1.5.2.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jcl104-over-slf4j-1.5.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/log4j-over-slf4j-1.5.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/slf4j-api-1.5.0.jar"/>
-	<classpathentry kind="output" path="bin"/>
+	<classpathentry kind="con" path="org.maven.ide.eclipse.MAVEN2_CLASSPATH_CONTAINER"/>
+	<classpathentry kind="output" path="target/classes"/>
 </classpath>
