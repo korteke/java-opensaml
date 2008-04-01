@@ -3,8 +3,8 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.opensaml</groupId>
     <artifactId>xmltooling</artifactId>
-    <packaging>jar</packaging>
     <version>1.0.0</version>
+    <packaging>jar</packaging>
 
     <name>XMLTooling-J</name>
     <description>
@@ -262,5 +262,28 @@
         <tag>HEAD</tag>
         <url>http://svn.middleware.georgetown.edu/view/?root=java-xmltooling</url>
     </scm>
-
+    
+    <profiles>
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+    
 </project>
