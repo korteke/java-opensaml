@@ -47,6 +47,12 @@
     </build>
 
     <dependencies>
+        <!-- Compile dependencies -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.5.0</version>
+        </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>jcl104-over-slf4j</artifactId>
@@ -57,40 +63,56 @@
             <artifactId>log4j-over-slf4j</artifactId>
             <version>1.5.0</version>
         </dependency>
-
         <dependency>
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
             <version>1.5.2</version>
         </dependency>
         <dependency>
-            <groupId>bouncycastle</groupId>
+            <groupId>org.bouncycastle</groupId>
             <artifactId>bcprov-jdk14</artifactId>
-            <version>136</version><!-- was 138 -->
+            <version>1.38</version>
         </dependency>
         <dependency>
-            <groupId>xml-security</groupId>
-            <artifactId>xmlsec</artifactId>
+            <groupId>org.apache.xml.security</groupId>
+            <artifactId>xml-security</artifactId>
             <version>1.4.1</version>
         </dependency>
         <dependency>
-            <groupId>org.apache.commons</groupId>
+            <groupId>org.apache.commons.ssl</groupId>
             <artifactId>not-yet-commons-ssl</artifactId>
-            <version>0.3.7</version><!-- was 0.3.9 -->
+            <version>0.3.9</version>
         </dependency>
+        
+        <!-- Provided dependencies -->
         <dependency>
-            <groupId>xerces</groupId>
+            <groupId>org.apache.xerces</groupId>
             <artifactId>xercesImpl</artifactId>
-            <version>2.8.1</version><!-- was 2.9.1 -->
+            <version>2.9.1</version>
+            <scope>provided</scope>
+        </dependency>
+        
+        <!-- Runtime dependencies -->
+        <dependency>
+            <groupId>org.apache.xerces</groupId>
+            <artifactId>resolver</artifactId>
+            <version>2.9.1</version>
             <scope>runtime</scope>
         </dependency>
         <dependency>
-            <groupId>xalan</groupId>
-            <artifactId>xalan</artifactId>
-            <version>2.7.0</version><!-- was 2.7.1 -->
+            <groupId>org.apache.xerces</groupId>
+            <artifactId>serializer</artifactId>
+            <version>2.9.1</version>
             <scope>runtime</scope>
         </dependency>
-
+        <dependency>
+            <groupId>org.apache.xalan</groupId>
+            <artifactId>xalan</artifactId>
+            <version>2.7.1</version>
+            <scope>runtime</scope>
+        </dependency>
+        
+        <!-- Test dependencies -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -113,19 +135,10 @@
 
     <repositories>
         <repository>
-            <id>maven.it.su.se</id>
-            <name>Stockholm University</name>
+            <id>shibboleth.internet2.edu</id>
+            <name>Internet2</name>
             <layout>default</layout>
-            <url>http://maven.it.su.se/it.su.se/maven2</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>jboss.org</id>
-            <name>JBoss</name>
-            <layout>default</layout>
-            <url>http://repository.jboss.org/maven2</url>
+            <url>http://shibboleth.internet2.edu/downloads/maven2</url>
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
@@ -181,7 +194,7 @@
             <roles>
                 <role>developer</role>
             </roles>
-            <timezone>-6</timezone>
+            <timezone>-5</timezone>
         </developer>
         <developer>
             <id>ndk</id>
