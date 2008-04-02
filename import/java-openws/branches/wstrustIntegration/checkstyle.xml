@@ -24,9 +24,7 @@ Code standard checking for Internet 2 code
         <module name="ConstantName"/>
         <module name="LocalFinalVariableName"/>
         <module name="LocalVariableName"/>
-        <module name="MemberName">
-            <property name="format" value="^[a-z][a-zA-Z0-9]*_?$"/>
-        </module>
+        <module name="MemberName"/>
         <module name="MethodName"/>
         <module name="PackageName"/>
         <module name="ParameterName"/>
