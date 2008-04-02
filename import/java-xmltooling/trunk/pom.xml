@@ -3,8 +3,9 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.opensaml</groupId>
     <artifactId>xmltooling</artifactId>
-    <version>1.0.0</version>
     <packaging>jar</packaging>
+
+    <version>1.0.0</version>
 
     <name>XMLTooling-J</name>
     <description>
@@ -15,7 +16,6 @@
     <inceptionYear>2006</inceptionYear>
 
     <build>
-        <finalName>xmltooling</finalName>
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -85,14 +85,20 @@
         </dependency>
         
         <!-- Provided dependencies -->
+                
+        <!-- Runtime dependencies -->
+        <dependency>
+            <groupId>org.apache.xerces</groupId>
+            <artifactId>xml-apis</artifactId>
+            <version>2.9.1</version>
+            <scope>runtime</scope>
+        </dependency>
         <dependency>
             <groupId>org.apache.xerces</groupId>
             <artifactId>xercesImpl</artifactId>
             <version>2.9.1</version>
-            <scope>provided</scope>
+            <scope>runtime</scope>
         </dependency>
-        
-        <!-- Runtime dependencies -->
         <dependency>
             <groupId>org.apache.xerces</groupId>
             <artifactId>resolver</artifactId>
@@ -154,7 +160,7 @@
                     <links>
                         <link>http://java.sun.com/j2se/1.5.0/docs/api/</link>
                     </links>
-                    <linksource>true</linksource>
+                    <quiet>true</quiet>
                     <author>false</author>
                     <version>true</version>
                     <doctitle>${project.name} ${project.version} Java API.</doctitle>
