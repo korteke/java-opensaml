@@ -25,7 +25,6 @@ import org.opensaml.xml.io.Unmarshaller;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.parse.XMLParserException;
 import org.opensaml.xml.schema.impl.XSBase64BinaryBuilder;
-import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -58,7 +57,6 @@ public class XSBase64BinaryTest extends XMLObjectBaseTestCase {
         
         Marshaller marshaller = marshallerFactory.getMarshaller(xsb64b);
         Element result = marshaller.marshall(xsb64b);
-        System.out.println(XMLHelper.nodeToString(result));
         
         Document document = parserPool.parse(XSBase64BinaryTest.class.getResourceAsStream(testDocumentLocation));
         assertEquals("Marshalled XSBase64Binary does not match example document", document, xsb64b);

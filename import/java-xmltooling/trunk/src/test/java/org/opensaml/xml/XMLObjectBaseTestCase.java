@@ -16,18 +16,11 @@
 
 package org.opensaml.xml;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 import javax.xml.namespace.QName;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.TransformerFactoryConfigurationError;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 
 import org.custommonkey.xmlunit.XMLTestCase;
 import org.custommonkey.xmlunit.XMLUnit;
@@ -81,6 +74,40 @@ public class XMLObjectBaseTestCase extends XMLTestCase {
     protected void setUp() throws Exception {
         super.setUp();
         XMLUnit.setIgnoreWhitespace(true);
+        
+        try {
+            XMLConfigurator configurator = new XMLConfigurator();
+
+            parserPool = new BasicParserPool();
+            parserPool.setNamespaceAware(true);
+
+            Class clazz = XMLObjectBaseTestCase.class;
+
+            Document generalConfig = parserPool.parse(clazz.getResourceAsStream("/xmltooling-config.xml"));
+            configurator.load(generalConfig);
+
+            Document schemaConfig = parserPool.parse(clazz.getResourceAsStream("/schema-config.xml"));
+            configurator.load(schemaConfig);
+            
+            Document encryptionConfig = parserPool.parse(clazz.getResourceAsStream("/encryption-config.xml"));
+            configurator.load(encryptionConfig);
+
+            Document encryptionValidationConfig = parserPool.parse(clazz.getResourceAsStream("/encryption-validation-config.xml"));
+            configurator.load(encryptionValidationConfig);
+
+            Document signatureConfig = parserPool.parse(clazz.getResourceAsStream("/signature-config.xml"));
+            configurator.load(signatureConfig);
+            
+            Document signatureValidationConfig = parserPool.parse(clazz.getResourceAsStream("/signature-validation-config.xml"));
+            configurator.load(signatureValidationConfig);
+
+            builderFactory = Configuration.getBuilderFactory();
+            marshallerFactory = Configuration.getMarshallerFactory();
+            unmarshallerFactory = Configuration.getUnmarshallerFactory();
+        } catch (Exception e) {
+            System.err.println("Can not initialize XMLObjectBaseTestCase" + e);
+        }
+        
     }
 
     /**
@@ -166,28 +193,9 @@ public class XMLObjectBaseTestCase extends XMLTestCase {
      * 
      */
     public void printXML(Node node, String filename) {
-        Transformer tr = null;
         try {
-            tr = TransformerFactory.newInstance().newTransformer();
-        } catch (TransformerConfigurationException e) {
-            e.printStackTrace();
-        } catch (TransformerFactoryConfigurationError e) {
-            e.printStackTrace();
-        }
-        tr.setOutputProperty(OutputKeys.METHOD,"xml");
-        tr.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
-        tr.setOutputProperty(OutputKeys.INDENT, "yes");
-        tr.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "3");
-
-        try {
-            if (filename == null || filename.equals("")) {
-                tr.transform( new DOMSource(node),new StreamResult(System.out));
-            } else {
-                tr.transform( new DOMSource(node),new StreamResult(new FileOutputStream(filename)));
-            }
-        } catch (TransformerException e) {
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
+            XMLHelper.writeNode(node, new FileWriter(new File(filename)));
+        } catch (IOException e) {
             e.printStackTrace();
         }
         
@@ -206,40 +214,5 @@ public class XMLObjectBaseTestCase extends XMLTestCase {
             e.printStackTrace();
         }
         printXML(elem, filename);
-    }
-    
-    static {
-        try {
-            XMLConfigurator configurator = new XMLConfigurator();;
-
-            parserPool = new BasicParserPool();
-            parserPool.setNamespaceAware(true);
-
-            Class clazz = XMLObjectBaseTestCase.class;
-
-            Document generalConfig = parserPool.parse(clazz.getResourceAsStream("/xmltooling-config.xml"));
-            configurator.load(generalConfig);
-
-            Document schemaConfig = parserPool.parse(clazz.getResourceAsStream("/schema-config.xml"));
-            configurator.load(schemaConfig);
-            
-            Document encryptionConfig = parserPool.parse(clazz.getResourceAsStream("/encryption-config.xml"));
-            configurator.load(encryptionConfig);
-
-            Document encryptionValidationConfig = parserPool.parse(clazz.getResourceAsStream("/encryption-validation-config.xml"));
-            configurator.load(encryptionValidationConfig);
-
-            Document signatureConfig = parserPool.parse(clazz.getResourceAsStream("/signature-config.xml"));
-            configurator.load(signatureConfig);
-            
-            Document signatureValidationConfig = parserPool.parse(clazz.getResourceAsStream("/signature-validation-config.xml"));
-            configurator.load(signatureValidationConfig);
-
-            builderFactory = Configuration.getBuilderFactory();
-            marshallerFactory = Configuration.getMarshallerFactory();
-            unmarshallerFactory = Configuration.getUnmarshallerFactory();
-        } catch (Exception e) {
-            System.err.println("Can not initialize XMLObjectBaseTestCase" + e);
-        }
     }
 }

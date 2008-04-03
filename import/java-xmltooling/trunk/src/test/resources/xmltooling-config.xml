@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <XMLTooling xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
- xsi:schemaLocation="http://www.opensaml.org/xmltooling-config ../../src/schema/xmltooling-config.xsd"
  xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
  xmlns:test="http://www.example.org/testObjects"
  xmlns="http://www.opensaml.org/xmltooling-config">

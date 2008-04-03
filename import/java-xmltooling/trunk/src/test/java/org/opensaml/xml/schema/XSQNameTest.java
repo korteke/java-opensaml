@@ -25,7 +25,6 @@ import org.opensaml.xml.io.Unmarshaller;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.parse.XMLParserException;
 import org.opensaml.xml.schema.impl.XSQNameBuilder;
-import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -58,7 +57,6 @@ public class XSQNameTest extends XMLObjectBaseTestCase {
         
         Marshaller marshaller = marshallerFactory.getMarshaller(xsQName);
         Element result = marshaller.marshall(xsQName);
-        System.out.println(XMLHelper.nodeToString(result));
         
         Document document = parserPool.parse(XSQNameTest.class.getResourceAsStream(testDocumentLocation));
         assertEquals("Marshalled XSQName does not match example document", document, xsQName);
