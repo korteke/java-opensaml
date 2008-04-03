@@ -174,7 +174,6 @@ public class SOAPTest extends BaseTestCase {
         fault.setDetail(detail);
         
         Element marshalledEnvelope = marshallerFactory.getMarshaller(envelope).marshall(envelope);
-        System.out.println(XMLHelper.prettyPrintXML(marshalledEnvelope));
         assertEquals("Marshalled DOM was not the same as control DOM", soapDoc, envelope);
         
     }
