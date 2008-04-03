@@ -43,7 +43,7 @@ import org.w3c.dom.Node;
 /**
  * Base test case class for tests that operate on XMLObjects.
  */
-public class XMLObjectBaseTestCase extends XMLTestCase {
+public abstract class XMLObjectBaseTestCase extends XMLTestCase {
 
     /** Logger */
     private final Logger log = LoggerFactory.getLogger(XMLObjectBaseTestCase.class);
