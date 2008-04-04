@@ -25,11 +25,6 @@ import org.w3c.dom.Attr;
 /** A thread-safe unmarshaller for {@link EndPointReferenc} objects. */
 public class EndPointReferenceUnmarshaller extends AbstractXMLObjectUnmarshaller {
 
-    /** Constructor. */
-    public EndPointReferenceUnmarshaller() {
-        super();
-    }
-
     /** {@inheritDoc} */
     protected void processChildElement(XMLObject parentSAMLObject, XMLObject childSAMLObject) {
         EndPointReference endPointReference = (EndPointReference) parentSAMLObject;

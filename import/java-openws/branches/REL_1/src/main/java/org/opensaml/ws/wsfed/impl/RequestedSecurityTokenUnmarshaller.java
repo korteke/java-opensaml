@@ -24,11 +24,6 @@ import org.w3c.dom.Attr;
 /** A thread-safe unmarshaller for {@link org.opensaml.ws.wsfed.RequestedSecurityToken} objects. */
 public class RequestedSecurityTokenUnmarshaller extends AbstractXMLObjectUnmarshaller {
 
-    /** Constructor. */
-    public RequestedSecurityTokenUnmarshaller() {
-        super();
-    }
-
     /** {@inheritDoc} */
     protected void processChildElement(XMLObject parentSAMLObject, XMLObject childSAMLObject) {
         RequestedSecurityToken requestedSecurityToken = (RequestedSecurityToken) parentSAMLObject;

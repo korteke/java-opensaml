@@ -23,11 +23,6 @@ import org.w3c.dom.Element;
 /** A thread safe marshaller for {@link org.opensaml.ws.wsfed.EndPointReference} objects. */
 public class EndPointReferenceMarshaller extends AbstractXMLObjectMarshaller {
 
-    /** Constructor. */
-    public EndPointReferenceMarshaller() {
-        super();
-    }
-
     /** {@inheritDoc} */
     protected void marshallAttributes(XMLObject fedObject, Element domElement) {
 

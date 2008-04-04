@@ -25,11 +25,6 @@ import org.w3c.dom.Attr;
 /** A thread-safe unmarshaller for {@link AppliesTo} objects. */
 public class AppliesToUnmarshaller extends AbstractXMLObjectUnmarshaller {
 
-    /** Constructor. */
-    public AppliesToUnmarshaller() {
-        super();
-    }
-
     /** {@inheritDoc} */
     protected void processChildElement(XMLObject parentFedObject, XMLObject childFedObject) {
 
@@ -47,6 +42,6 @@ public class AppliesToUnmarshaller extends AbstractXMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
     protected void processElementContent(XMLObject fedObject, String content) {
-        
+
     }
 }

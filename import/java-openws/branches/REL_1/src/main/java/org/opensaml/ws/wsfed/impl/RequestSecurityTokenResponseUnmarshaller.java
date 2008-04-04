@@ -26,11 +26,6 @@ import org.w3c.dom.Attr;
 /** A thread-safe unmarshaller for {@link RequestSecurityTokenResponse} objects. */
 public class RequestSecurityTokenResponseUnmarshaller extends AbstractXMLObjectUnmarshaller {
 
-    /** Constructor. */
-    public RequestSecurityTokenResponseUnmarshaller() {
-        super();
-    }
-
     /** {@inheritDoc} */
     protected void processChildElement(XMLObject parentSAMLObject, XMLObject childSAMLObject) {
         RequestSecurityTokenResponse response = (RequestSecurityTokenResponse) parentSAMLObject;

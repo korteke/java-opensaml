@@ -23,11 +23,6 @@ import org.w3c.dom.Element;
 /** A thread safe marshaller for {@link org.opensaml.ws.wsfed.RequestedSecurityToken} objects. */
 public class RequestedSecurityTokenMarshaller extends AbstractXMLObjectMarshaller {
 
-    /** Constructor. */
-    public RequestedSecurityTokenMarshaller() {
-        super();
-    }
-
     /** {@inheritDoc} */
     protected void marshallAttributes(XMLObject fedObject, Element domElement) {
 

@@ -24,11 +24,6 @@ import org.w3c.dom.Attr;
 /** A thread-safe unmarshaller for {@link Address} objects. */
 public class AddressUnmarshaller extends AbstractXMLObjectUnmarshaller {
 
-    /** Constructor. */
-    public AddressUnmarshaller() {
-        super();
-    }
-
     /** {@inheritDoc} */
     protected void processElementContent(XMLObject fedObject, String elementContent) {
         Address address = (Address) fedObject;

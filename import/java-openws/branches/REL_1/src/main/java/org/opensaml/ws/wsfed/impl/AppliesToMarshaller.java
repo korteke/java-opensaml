@@ -23,11 +23,6 @@ import org.w3c.dom.Element;
 /** A thread safe marshaller for {@link org.opensaml.ws.wsfed.AppliesTo} objects. */
 public class AppliesToMarshaller extends AbstractXMLObjectMarshaller {
 
-    /** Constructor. */
-    public AppliesToMarshaller() {
-        super();
-    }
-
     /** {@inheritDoc} */
     protected void marshallAttributes(XMLObject fedObject, Element domElement) {
 

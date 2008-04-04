@@ -25,11 +25,6 @@ import org.w3c.dom.Element;
 /** A thread-safe marshaller for {@link Address} objects. */
 public class AddressMarshaller extends AbstractXMLObjectMarshaller {
 
-    /** Constructor. */
-    public AddressMarshaller() {
-        super();
-    }
-
     /** {@inheritDoc} */
     protected void marshallAttributes(XMLObject fedObject, Element domElement) {
 
