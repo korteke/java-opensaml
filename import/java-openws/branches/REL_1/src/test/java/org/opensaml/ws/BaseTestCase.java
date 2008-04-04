@@ -66,11 +66,13 @@ public abstract class BaseTestCase extends XMLTestCase {
         Class clazz = BaseTestCase.class;
         try {
 
-            // SOAP 1.1 Configuration
+            // Configuration Files
+            Document wsfedConfig = parserPool.parse(clazz.getResourceAsStream("/wsfed11-protocol-config.xml"));
             Document soap11Config = parserPool.parse(clazz.getResourceAsStream("/soap11-config.xml"));
             Document defaulfConfig = parserPool.parse(clazz.getResourceAsStream("/default-config.xml"));
             
             XMLConfigurator configurator = new XMLConfigurator();
+            configurator.load(wsfedConfig);
             configurator.load(soap11Config);
             configurator.load(defaulfConfig);
 
