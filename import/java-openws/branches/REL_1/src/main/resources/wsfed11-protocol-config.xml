@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<XMLTooling xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.opensaml.org/xmltooling-config ../../src/schema/xmltooling-config.xsd"
+    xmlns:wst="http://schemas.xmlsoap.org/ws/2005/02/trust" 
+    xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
+    xmlns="http://www.opensaml.org/xmltooling-config"
+    xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy"
+    xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing">
+    
+    
+
+    <!-- WSFED 1.X Protocol Object providers -->
+
+    <ObjectProviders>
+
+      <ObjectProvider qualifiedName="wst:RequestedSecurityToken">
+          <BuilderClass className="org.opensaml.ws.core.impl.RequestedSecurityTokenBuilder" />
+          <MarshallingClass className="org.opensaml.ws.core.impl.RequestedSecurityTokenMarshaller" />
+          <UnmarshallingClass className="org.opensaml.ws.core.impl.RequestedSecurityTokenUnmarshaller" />
+      </ObjectProvider>
+      
+      <ObjectProvider qualifiedName="wst:RequestSecurityTokenResponse">
+          <BuilderClass className="org.opensaml.ws.core.impl.ResponseBuilder" />
+          <MarshallingClass className="org.opensaml.ws.core.impl.ResponseMarshaller" />
+          <UnmarshallingClass className="org.opensaml.ws.core.impl.ResponseUnmarshaller" />
+      </ObjectProvider>
+      
+      <ObjectProvider qualifiedName="wsp:AppliesTo">
+          <BuilderClass className="org.opensaml.ws.core.impl.AppliesToBuilder" />
+          <MarshallingClass className="org.opensaml.ws.core.impl.AppliesToMarshaller" />
+          <UnmarshallingClass className="org.opensaml.ws.core.impl.AppliesToUnmarshaller" />
+      </ObjectProvider>
+      
+      <ObjectProvider qualifiedName="wsa:EndPointReference">
+          <BuilderClass className="org.opensaml.ws.core.impl.EndPointReferenceBuilder" />
+          <MarshallingClass className="org.opensaml.ws.core.impl.EndPointReferenceMarshaller" />
+          <UnmarshallingClass className="org.opensaml.ws.core.impl.EndPointReferenceUnmarshaller" />
+      </ObjectProvider>
+      
+     <ObjectProvider qualifiedName="wsa:Address">
+          <BuilderClass className="org.opensaml.ws.core.impl.AddressBuilder" />
+          <MarshallingClass className="org.opensaml.ws.core.impl.AddressMarshaller" />
+          <UnmarshallingClass className="org.opensaml.ws.core.impl.AddressUnmarshaller" />
+      </ObjectProvider>
+
+    </ObjectProviders>
+</XMLTooling>
+
+
+ 
