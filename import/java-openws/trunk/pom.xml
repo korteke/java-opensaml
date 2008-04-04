@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.opensaml</groupId>
     <artifactId>openws</artifactId>
-    <version>1.0.0</version>
+    <version>trunk</version>
     <packaging>jar</packaging>
 
     <name>OpenWS</name>
@@ -30,7 +30,7 @@
         <dependency>
             <groupId>org.opensaml</groupId>
             <artifactId>xmltooling</artifactId>
-            <version>1.0.0</version>
+            <version>trunk</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
