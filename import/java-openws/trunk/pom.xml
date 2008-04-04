@@ -319,12 +319,12 @@
         </profile>
     </profiles>
     
-    
     <!-- Project Metadata -->
     <url>https://opensaml.org/</url>
     
     <inceptionYear>2006</inceptionYear>
-        <licenses>
+    
+    <licenses>
         <license>
             <name>Apache 2</name>
             <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
