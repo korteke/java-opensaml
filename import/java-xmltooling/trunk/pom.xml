@@ -3,9 +3,9 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.opensaml</groupId>
     <artifactId>xmltooling</artifactId>
+    <version>trunk</version>
     <packaging>jar</packaging>
-    <version>1.0.0</version>
-
+ 
     <name>XMLTooling-J</name>
     <description>
         XMLTooling-J is a low-level library that may be used to construct libraries that allow developers to work with
