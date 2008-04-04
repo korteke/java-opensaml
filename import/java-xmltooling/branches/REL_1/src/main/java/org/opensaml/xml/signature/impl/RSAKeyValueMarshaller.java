@@ -16,32 +16,9 @@
 
 package org.opensaml.xml.signature.impl;
 
-import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.signature.RSAKeyValue;
-import org.opensaml.xml.util.XMLConstants;
-
 /**
  * A thread-safe Marshaller for {@link org.opensaml.xml.signature.RSAKeyValue} objects.
  */
 public class RSAKeyValueMarshaller extends AbstractXMLSignatureMarshaller {
-    
-    /**
-     * Constructor
-     *
-     */
-    public RSAKeyValueMarshaller(){
-        super(XMLConstants.XMLSIG_NS, RSAKeyValue.DEFAULT_ELEMENT_LOCAL_NAME);
-    }
-
-    /**
-     * Constructor
-     *
-     * @param targetNamespaceURI
-     * @param targetLocalName
-     * @throws NullPointerException
-     */
-    protected RSAKeyValueMarshaller(String targetNamespaceURI, String targetLocalName){
-        super(targetNamespaceURI, targetLocalName);
-    }
 
 }

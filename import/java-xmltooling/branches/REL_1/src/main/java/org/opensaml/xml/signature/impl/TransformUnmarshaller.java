@@ -19,36 +19,17 @@ package org.opensaml.xml.signature.impl;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.signature.Transform;
-import org.opensaml.xml.util.XMLConstants;
 import org.w3c.dom.Attr;
 
 /**
  * A thread-safe Unmarshaller for {@link org.opensaml.xml.signature.Transform} objects.
  */
 public class TransformUnmarshaller extends AbstractXMLSignatureUnmarshaller {
-    
-    /**
-     * Constructor
-     *
-     */
-    public TransformUnmarshaller(){
-        super(XMLConstants.XMLSIG_NS, Transform.DEFAULT_ELEMENT_LOCAL_NAME);
-    }
-
-    /**
-     * Constructor
-     *
-     * @param targetNamespaceURI
-     * @param targetLocalName
-     */
-    public TransformUnmarshaller(String targetNamespaceURI, String targetLocalName){
-        super(targetNamespaceURI, targetLocalName);
-    }
 
     /** {@inheritDoc} */
     protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
         Transform transform = (Transform) xmlObject;
-        
+
         if (attribute.getLocalName().equals(Transform.ALGORITHM_ATTRIB_NAME)) {
             transform.setAlgorithm(attribute.getValue());
         } else {
@@ -57,9 +38,10 @@ public class TransformUnmarshaller extends AbstractXMLSignatureUnmarshaller {
     }
 
     /** {@inheritDoc} */
-    protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject) throws UnmarshallingException {
+    protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
+            throws UnmarshallingException {
         Transform transform = (Transform) parentXMLObject;
-        
+
         // Has <any> open content model + XPath children
         transform.getAllChildren().add(childXMLObject);
     }

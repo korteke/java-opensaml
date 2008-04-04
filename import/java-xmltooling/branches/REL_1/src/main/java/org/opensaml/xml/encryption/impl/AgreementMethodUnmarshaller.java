@@ -22,28 +22,12 @@ import org.opensaml.xml.encryption.KANonce;
 import org.opensaml.xml.encryption.OriginatorKeyInfo;
 import org.opensaml.xml.encryption.RecipientKeyInfo;
 import org.opensaml.xml.io.UnmarshallingException;
-import org.opensaml.xml.util.XMLConstants;
 import org.w3c.dom.Attr;
 
 /**
  * A thread-safe Unmarshaller for {@link org.opensaml.xml.encryption.AgreementMethod} objects.
  */
 public class AgreementMethodUnmarshaller extends AbstractXMLEncryptionUnmarshaller {
-
-    /** Constructor. */
-    public AgreementMethodUnmarshaller() {
-        super(XMLConstants.XMLENC_NS, AgreementMethod.DEFAULT_ELEMENT_LOCAL_NAME);
-    }
-
-    /**
-     * Constructor.
-     * 
-     * @param targetNamespaceURI namespace URI
-     * @param targetLocalName local name
-     */
-    public AgreementMethodUnmarshaller(String targetNamespaceURI, String targetLocalName) {
-        super(targetNamespaceURI, targetLocalName);
-    }
 
     /** {@inheritDoc} */
     protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {

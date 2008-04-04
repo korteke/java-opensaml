@@ -24,7 +24,6 @@ import org.opensaml.xml.Configuration;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.encryption.EncryptionProperty;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.util.XMLConstants;
 import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
@@ -33,30 +32,11 @@ import org.w3c.dom.Element;
  * A thread-safe Marshaller for {@link org.opensaml.xml.encryption.EncryptionProperty} objects.
  */
 public class EncryptionPropertyMarshaller extends AbstractXMLEncryptionMarshaller {
-    
-    /**
-     * Constructor
-     *
-     */
-    public EncryptionPropertyMarshaller(){
-        super(XMLConstants.XMLENC_NS, EncryptionProperty.DEFAULT_ELEMENT_LOCAL_NAME);
-    }
-
-    /**
-     * Constructor
-     *
-     * @param targetNamespaceURI
-     * @param targetLocalName
-     * @throws NullPointerException
-     */
-    protected EncryptionPropertyMarshaller(String targetNamespaceURI, String targetLocalName){
-        super(targetNamespaceURI, targetLocalName);
-    }
 
     /** {@inheritDoc} */
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         EncryptionProperty ep = (EncryptionProperty) xmlObject;
-        
+
         if (ep.getID() != null) {
             domElement.setAttributeNS(null, EncryptionProperty.ID_ATTRIB_NAME, ep.getID());
             domElement.setIdAttributeNS(null, EncryptionProperty.ID_ATTRIB_NAME, true);
@@ -64,19 +44,16 @@ public class EncryptionPropertyMarshaller extends AbstractXMLEncryptionMarshalle
         if (ep.getTarget() != null) {
             domElement.setAttributeNS(null, EncryptionProperty.TARGET_ATTRIB_NAME, ep.getTarget());
         }
-        
+
         Attr attribute;
-        for(Entry<QName, String> entry: ep.getUnknownAttributes().entrySet()){
+        for (Entry<QName, String> entry : ep.getUnknownAttributes().entrySet()) {
             attribute = XMLHelper.constructAttribute(domElement.getOwnerDocument(), entry.getKey());
             attribute.setValue(entry.getValue());
             domElement.setAttributeNodeNS(attribute);
-            if (Configuration.isIDAttribute(entry.getKey()) 
-                    || ep.getUnknownAttributes().isIDAttribute(entry.getKey())) {
+            if (Configuration.isIDAttribute(entry.getKey()) || ep.getUnknownAttributes().isIDAttribute(entry.getKey())) {
                 attribute.getOwnerElement().setIdAttributeNode(attribute, true);
             }
         }
     }
-    
-    
 
 }

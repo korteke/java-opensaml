@@ -21,27 +21,11 @@ import org.opensaml.xml.encryption.CipherData;
 import org.opensaml.xml.encryption.CipherReference;
 import org.opensaml.xml.encryption.CipherValue;
 import org.opensaml.xml.io.UnmarshallingException;
-import org.opensaml.xml.util.XMLConstants;
 
 /**
  * A thread-safe Unmarshaller for {@link org.opensaml.xml.encryption.CipherData} objects.
  */
 public class CipherDataUnmarshaller extends AbstractXMLEncryptionUnmarshaller {
-
-    /** Constructor. */
-    public CipherDataUnmarshaller(){
-        super(XMLConstants.XMLENC_NS, CipherData.DEFAULT_ELEMENT_LOCAL_NAME);
-    }
-
-    /**
-     * Constructor.
-     * 
-     * @param targetNamespaceURI namespace URI
-     * @param targetLocalName local name
-     */
-    public CipherDataUnmarshaller(String targetNamespaceURI, String targetLocalName){
-        super(targetNamespaceURI, targetLocalName);
-    }
 
     /** {@inheritDoc} */
     protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)

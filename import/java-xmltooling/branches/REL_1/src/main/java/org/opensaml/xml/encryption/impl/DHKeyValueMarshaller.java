@@ -16,27 +16,9 @@
 
 package org.opensaml.xml.encryption.impl;
 
-import org.opensaml.xml.encryption.DHKeyValue;
-import org.opensaml.xml.util.XMLConstants;
-
 /**
  * A thread-safe Marshaller for {@link org.opensaml.xml.encryption.DHKeyValue} objects.
  */
 public class DHKeyValueMarshaller extends AbstractXMLEncryptionMarshaller {
-    
-    /** Constructor. */
-    public DHKeyValueMarshaller(){
-        super(XMLConstants.XMLENC_NS, DHKeyValue.DEFAULT_ELEMENT_LOCAL_NAME);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param targetNamespaceURI namespace URI
-     * @param targetLocalName local name
-     */
-    protected DHKeyValueMarshaller(String targetNamespaceURI, String targetLocalName){
-        super(targetNamespaceURI, targetLocalName);
-    }
 
 }

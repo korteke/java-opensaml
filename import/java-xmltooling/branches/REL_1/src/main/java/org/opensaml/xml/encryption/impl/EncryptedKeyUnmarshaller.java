@@ -21,36 +21,17 @@ import org.opensaml.xml.encryption.CarriedKeyName;
 import org.opensaml.xml.encryption.EncryptedKey;
 import org.opensaml.xml.encryption.ReferenceList;
 import org.opensaml.xml.io.UnmarshallingException;
-import org.opensaml.xml.util.XMLConstants;
 import org.w3c.dom.Attr;
 
 /**
  * A thread-safe Unmarshaller for {@link org.opensaml.xml.encryption.EncryptedKey} objects.
  */
 public class EncryptedKeyUnmarshaller extends EncryptedTypeUnmarshaller {
-    
-    /**
-     * Constructor.
-     *
-     */
-    public EncryptedKeyUnmarshaller(){
-       super(XMLConstants.XMLENC_NS, EncryptedKey.DEFAULT_ELEMENT_LOCAL_NAME);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param targetNamespaceURI
-     * @param targetLocalName
-     */
-    protected EncryptedKeyUnmarshaller(String targetNamespaceURI, String targetLocalName){
-        super(targetNamespaceURI, targetLocalName);
-    }
 
     /** {@inheritDoc} */
     protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
         EncryptedKey ek = (EncryptedKey) xmlObject;
-        
+
         if (attribute.getLocalName().equals(EncryptedKey.RECIPIENT_ATTRIB_NAME)) {
             ek.setRecipient(attribute.getValue());
         } else {
@@ -59,9 +40,10 @@ public class EncryptedKeyUnmarshaller extends EncryptedTypeUnmarshaller {
     }
 
     /** {@inheritDoc} */
-    protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject) throws UnmarshallingException {
+    protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
+            throws UnmarshallingException {
         EncryptedKey ek = (EncryptedKey) parentXMLObject;
-        
+
         if (childXMLObject instanceof ReferenceList) {
             ek.setReferenceList((ReferenceList) childXMLObject);
         } else if (childXMLObject instanceof CarriedKeyName) {

@@ -20,35 +20,17 @@ import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.signature.Transform;
 import org.opensaml.xml.signature.Transforms;
-import org.opensaml.xml.util.XMLConstants;
 
 /**
  * A thread-safe Unmarshaller for {@link org.opensaml.xml.signature.Transforms} objects.
  */
 public class TransformsUnmarshaller extends AbstractXMLSignatureUnmarshaller {
-    
-    /**
-     * Constructor
-     *
-     */
-    public TransformsUnmarshaller(){
-        super(XMLConstants.XMLSIG_NS, Transforms.DEFAULT_ELEMENT_LOCAL_NAME);
-    }
-
-    /**
-     * Constructor
-     *
-     * @param targetNamespaceURI
-     * @param targetLocalName
-     */
-    protected TransformsUnmarshaller(String targetNamespaceURI, String targetLocalName){
-        super(targetNamespaceURI, targetLocalName);
-    }
 
     /** {@inheritDoc} */
-    protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject) throws UnmarshallingException {
+    protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
+            throws UnmarshallingException {
         Transforms transforms = (Transforms) parentXMLObject;
-        
+
         if (childXMLObject instanceof Transform) {
             transforms.getTransforms().add((Transform) childXMLObject);
         } else {

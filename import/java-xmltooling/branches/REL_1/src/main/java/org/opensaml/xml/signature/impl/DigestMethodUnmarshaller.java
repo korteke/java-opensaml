@@ -19,37 +19,17 @@ package org.opensaml.xml.signature.impl;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.signature.DigestMethod;
-import org.opensaml.xml.util.XMLConstants;
 import org.w3c.dom.Attr;
 
 /**
  * A thread-safe Unmarshaller for {@link org.opensaml.xml.signature.DigestMethod} objects.
  */
 public class DigestMethodUnmarshaller extends AbstractXMLSignatureUnmarshaller {
-    
-    /**
-     * Constructor.
-     *
-     */
-    public DigestMethodUnmarshaller(){
-        super(XMLConstants.XMLSIG_NS, DigestMethod.DEFAULT_ELEMENT_LOCAL_NAME);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param targetNamespaceURI
-     * @param targetLocalName
-     * @throws IllegalArgumentException
-     */
-    public DigestMethodUnmarshaller(String targetNamespaceURI, String targetLocalName){
-        super(targetNamespaceURI, targetLocalName);
-    }
 
     /** {@inheritDoc} */
     protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
         DigestMethod dm = (DigestMethod) xmlObject;
-        
+
         if (attribute.getLocalName().equals(DigestMethod.ALGORITHM_ATTRIB_NAME)) {
             dm.setAlgorithm(attribute.getValue());
         } else {

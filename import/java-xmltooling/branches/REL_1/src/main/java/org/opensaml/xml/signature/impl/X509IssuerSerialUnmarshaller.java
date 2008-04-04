@@ -21,35 +21,17 @@ import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.signature.X509IssuerName;
 import org.opensaml.xml.signature.X509IssuerSerial;
 import org.opensaml.xml.signature.X509SerialNumber;
-import org.opensaml.xml.util.XMLConstants;
 
 /**
  * A thread-safe Unmarshaller for {@link org.opensaml.xml.signature.X509IssuerSerial} objects.
  */
 public class X509IssuerSerialUnmarshaller extends AbstractXMLSignatureUnmarshaller {
-    
-    /**
-     * Constructor
-     *
-     */
-    public X509IssuerSerialUnmarshaller(){
-        super(XMLConstants.XMLSIG_NS, X509IssuerSerial.DEFAULT_ELEMENT_LOCAL_NAME);
-    }
-
-    /**
-     * Constructor
-     *
-     * @param targetNamespaceURI
-     * @param targetLocalName
-     */
-    protected X509IssuerSerialUnmarshaller(String targetNamespaceURI, String targetLocalName){
-        super(targetNamespaceURI, targetLocalName);
-    }
 
     /** {@inheritDoc} */
-    protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject) throws UnmarshallingException {
+    protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
+            throws UnmarshallingException {
         X509IssuerSerial keyValue = (X509IssuerSerial) parentXMLObject;
-        
+
         if (childXMLObject instanceof X509IssuerName) {
             keyValue.setX509IssuerName((X509IssuerName) childXMLObject);
         } else if (childXMLObject instanceof X509SerialNumber) {

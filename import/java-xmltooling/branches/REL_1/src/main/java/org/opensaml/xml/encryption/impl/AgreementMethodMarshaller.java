@@ -19,35 +19,17 @@ package org.opensaml.xml.encryption.impl;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.encryption.AgreementMethod;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.util.XMLConstants;
 import org.w3c.dom.Element;
 
 /**
  * A thread-safe Marshaller for {@link org.opensaml.xml.encryption.AgreementMethod} objects.
  */
 public class AgreementMethodMarshaller extends AbstractXMLEncryptionMarshaller {
-    
-    /**
-     * Constructor.
-     */
-    public AgreementMethodMarshaller(){
-        super(XMLConstants.XMLENC_NS, AgreementMethod.DEFAULT_ELEMENT_LOCAL_NAME);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param targetNamespaceURI namespace URI
-     * @param targetLocalName local name
-     */
-    public AgreementMethodMarshaller(String targetNamespaceURI, String targetLocalName){
-        super(targetNamespaceURI, targetLocalName);
-    }
 
     /** {@inheritDoc} */
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         AgreementMethod am = (AgreementMethod) xmlObject;
-        
+
         if (am.getAlgorithm() != null) {
             domElement.setAttributeNS(null, AgreementMethod.ALGORITHM_ATTRIBUTE_NAME, am.getAlgorithm());
         }

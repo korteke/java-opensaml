@@ -26,20 +26,10 @@ import org.w3c.dom.Attr;
  */
 public class ReferenceTypeUnmarshaller extends AbstractXMLEncryptionUnmarshaller {
 
-    /**
-     * Constructor
-     *
-     * @param targetNamespaceURI
-     * @param targetLocalName
-     */
-    protected ReferenceTypeUnmarshaller(String targetNamespaceURI, String targetLocalName){
-        super(targetNamespaceURI, targetLocalName);
-    }
-
     /** {@inheritDoc} */
     protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
         ReferenceType rt = (ReferenceType) xmlObject;
-        
+
         if (attribute.getLocalName().equals(ReferenceType.URI_ATTRIB_NAME)) {
             rt.setURI(attribute.getValue());
         } else {
@@ -48,9 +38,10 @@ public class ReferenceTypeUnmarshaller extends AbstractXMLEncryptionUnmarshaller
     }
 
     /** {@inheritDoc} */
-    protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject) throws UnmarshallingException {
+    protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
+            throws UnmarshallingException {
         ReferenceType rt = (ReferenceType) parentXMLObject;
-        
+
         rt.getUnknownXMLObjects().add(childXMLObject);
     }
 

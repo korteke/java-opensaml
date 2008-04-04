@@ -19,36 +19,17 @@ package org.opensaml.xml.signature.impl;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.signature.RetrievalMethod;
-import org.opensaml.xml.util.XMLConstants;
 import org.w3c.dom.Element;
 
 /**
  * A thread-safe Marshaller for {@link org.opensaml.xml.signature.RetrievalMethod} objects.
  */
 public class RetrievalMethodMarshaller extends AbstractXMLSignatureMarshaller {
-    
-    /**
-     * Constructor
-     *
-     */
-    public RetrievalMethodMarshaller(){
-        super(XMLConstants.XMLSIG_NS, RetrievalMethod.DEFAULT_ELEMENT_LOCAL_NAME);
-    }
-
-    /**
-     * Constructor
-     *
-     * @param targetNamespaceURI
-     * @param targetLocalName
-     */
-    protected RetrievalMethodMarshaller(String targetNamespaceURI, String targetLocalName){
-        super(targetNamespaceURI, targetLocalName);
-    }
 
     /** {@inheritDoc} */
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         RetrievalMethod rm = (RetrievalMethod) xmlObject;
-        
+
         if (rm.getURI() != null) {
             domElement.setAttributeNS(null, RetrievalMethod.URI_ATTRIB_NAME, rm.getURI());
         }

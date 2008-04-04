@@ -21,35 +21,17 @@ import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.signature.Exponent;
 import org.opensaml.xml.signature.Modulus;
 import org.opensaml.xml.signature.RSAKeyValue;
-import org.opensaml.xml.util.XMLConstants;
 
 /**
  * A thread-safe Unmarshaller for {@link org.opensaml.xml.signature.RSAKeyValue} objects.
  */
 public class RSAKeyValueUnmarshaller extends AbstractXMLSignatureUnmarshaller {
-    
-    /**
-     * Constructor
-     *
-     */
-    public RSAKeyValueUnmarshaller(){
-        super(XMLConstants.XMLSIG_NS, RSAKeyValue.DEFAULT_ELEMENT_LOCAL_NAME);
-    }
-
-    /**
-     * Constructor
-     *
-     * @param targetNamespaceURI
-     * @param targetLocalName
-     */
-    protected RSAKeyValueUnmarshaller(String targetNamespaceURI, String targetLocalName){
-        super(targetNamespaceURI, targetLocalName);
-    }
 
     /** {@inheritDoc} */
-    protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject) throws UnmarshallingException {
+    protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
+            throws UnmarshallingException {
         RSAKeyValue keyValue = (RSAKeyValue) parentXMLObject;
-        
+
         if (childXMLObject instanceof Modulus) {
             keyValue.setModulus((Modulus) childXMLObject);
         } else if (childXMLObject instanceof Exponent) {

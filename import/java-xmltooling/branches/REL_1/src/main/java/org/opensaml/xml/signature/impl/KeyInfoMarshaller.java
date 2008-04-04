@@ -16,31 +16,9 @@
 
 package org.opensaml.xml.signature.impl;
 
-import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.signature.KeyInfo;
-import org.opensaml.xml.util.XMLConstants;
-
 /**
- *
+ * A thread-safe Marshaller for {@link org.opensaml.xml.signature.KeyInfo} objects.
  */
 public class KeyInfoMarshaller extends KeyInfoTypeMarshaller {
-    
-    /**
-     * Constructor
-     *
-     */
-    public KeyInfoMarshaller(){
-        super(XMLConstants.XMLSIG_NS, KeyInfo.DEFAULT_ELEMENT_LOCAL_NAME);
-    }
-
-    /**
-     * Constructor
-     *
-     * @param targetNamespaceURI
-     * @param targetLocalName
-     */
-    protected KeyInfoMarshaller(String targetNamespaceURI, String targetLocalName){
-        super(targetNamespaceURI, targetLocalName);
-    }
 
 }

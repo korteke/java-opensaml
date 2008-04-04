@@ -25,27 +25,11 @@ import org.opensaml.xml.encryption.Public;
 import org.opensaml.xml.encryption.Q;
 import org.opensaml.xml.encryption.Seed;
 import org.opensaml.xml.io.UnmarshallingException;
-import org.opensaml.xml.util.XMLConstants;
 
 /**
  * A thread-safe Unmarshaller for {@link org.opensaml.xml.encryption.DHKeyValue} objects.
  */
 public class DHKeyValueUnmarshaller extends AbstractXMLEncryptionUnmarshaller {
-
-    /** Constructor. */
-    public DHKeyValueUnmarshaller() {
-        super(XMLConstants.XMLENC_NS, DHKeyValue.DEFAULT_ELEMENT_LOCAL_NAME);
-    }
-
-    /**
-     * Constructor.
-     * 
-     * @param targetNamespaceURI namespace URI
-     * @param targetLocalName local name
-     */
-    protected DHKeyValueUnmarshaller(String targetNamespaceURI, String targetLocalName) {
-        super(targetNamespaceURI, targetLocalName);
-    }
 
     /** {@inheritDoc} */
     protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)

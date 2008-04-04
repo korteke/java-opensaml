@@ -27,24 +27,6 @@ import org.w3c.dom.Attr;
  */
 public class XSURIUnmarshaller extends AbstractXMLObjectUnmarshaller {
 
-    /** Constructor. */
-    public XSURIUnmarshaller() {
-        super();
-    }
-
-    /**
-     * This constructor supports checking an XMLObject to be marshalled, either element name or schema type, against a
-     * given namespace/local name pair.
-     * 
-     * @param targetNamespaceURI the namespace URI of either the schema type QName or element QName of the elements this
-     *            unmarshaller operates on
-     * @param targetLocalName the local name of either the schema type QName or element QName of the elements this
-     *            unmarshaller operates on
-     */
-    protected XSURIUnmarshaller(String targetNamespaceURI, String targetLocalName) {
-        super(targetNamespaceURI, targetLocalName);
-    }
-
     /** {@inheritDoc} */
     protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
             throws UnmarshallingException {

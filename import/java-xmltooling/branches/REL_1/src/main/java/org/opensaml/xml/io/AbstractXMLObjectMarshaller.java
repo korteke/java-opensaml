@@ -69,6 +69,8 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
      * This constructor supports checking an XMLObject to be marshalled, either element name or schema type, against a
      * given namespace/local name pair.
      * 
+     * @deprecated no replacement
+     * 
      * @param targetNamespaceURI the namespace URI of either the schema type QName or element QName of the elements this
      *            unmarshaller operates on
      * @param targetLocalName the local name of either the schema type QName or element QName of the elements this

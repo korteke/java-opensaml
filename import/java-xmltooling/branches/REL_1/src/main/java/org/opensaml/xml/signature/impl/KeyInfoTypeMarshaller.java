@@ -26,20 +26,10 @@ import org.w3c.dom.Element;
  */
 public class KeyInfoTypeMarshaller extends AbstractXMLSignatureMarshaller {
 
-    /**
-     * Constructor
-     *
-     * @param targetNamespaceURI
-     * @param targetLocalName
-     */
-    protected KeyInfoTypeMarshaller(String targetNamespaceURI, String targetLocalName){
-        super(targetNamespaceURI, targetLocalName);
-    }
-
     /** {@inheritDoc} */
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         KeyInfoType keyInfo = (KeyInfoType) xmlObject;
-        
+
         if (keyInfo.getID() != null) {
             domElement.setAttributeNS(null, KeyInfoType.ID_ATTRIB_NAME, keyInfo.getID());
             domElement.setIdAttributeNS(null, KeyInfoType.ID_ATTRIB_NAME, true);

@@ -20,37 +20,17 @@ import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.encryption.EncryptionProperties;
 import org.opensaml.xml.encryption.EncryptionProperty;
 import org.opensaml.xml.io.UnmarshallingException;
-import org.opensaml.xml.util.XMLConstants;
 import org.w3c.dom.Attr;
 
 /**
  * A thread-safe Unmarshaller for {@link org.opensaml.xml.encryption.EncryptionProperties} objects.
  */
 public class EncryptionPropertiesUnmarshaller extends AbstractXMLEncryptionUnmarshaller {
-    
-    /**
-     * Constructor
-     *
-     */
-    public EncryptionPropertiesUnmarshaller(){
-        super(XMLConstants.XMLENC_NS, EncryptionProperties.DEFAULT_ELEMENT_LOCAL_NAME);
-    }
-
-    /**
-     * Constructor
-     *
-     * @param targetNamespaceURI
-     * @param targetLocalName
-     * @throws IllegalArgumentException
-     */
-    public EncryptionPropertiesUnmarshaller(String targetNamespaceURI, String targetLocalName){
-        super(targetNamespaceURI, targetLocalName);
-    }
 
     /** {@inheritDoc} */
     protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
         EncryptionProperties ep = (EncryptionProperties) xmlObject;
-        
+
         if (attribute.getLocalName().equals(EncryptionProperties.ID_ATTRIB_NAME)) {
             ep.setID(attribute.getValue());
             attribute.getOwnerElement().setIdAttributeNode(attribute, true);
@@ -60,9 +40,10 @@ public class EncryptionPropertiesUnmarshaller extends AbstractXMLEncryptionUnmar
     }
 
     /** {@inheritDoc} */
-    protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject) throws UnmarshallingException {
+    protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
+            throws UnmarshallingException {
         EncryptionProperties ep = (EncryptionProperties) parentXMLObject;
-        
+
         if (childXMLObject instanceof EncryptionProperty) {
             ep.getEncryptionProperties().add((EncryptionProperty) childXMLObject);
         } else {

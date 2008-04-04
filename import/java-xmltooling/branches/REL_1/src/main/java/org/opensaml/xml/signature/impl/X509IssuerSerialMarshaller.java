@@ -16,31 +16,9 @@
 
 package org.opensaml.xml.signature.impl;
 
-import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.signature.X509IssuerSerial;
-import org.opensaml.xml.util.XMLConstants;
-
 /**
  * A thread-safe Marshaller for {@link org.opensaml.xml.signature.X509IssuerSerial} objects.
  */
 public class X509IssuerSerialMarshaller extends AbstractXMLSignatureMarshaller {
-    
-    /**
-     * Constructor
-     *
-     */
-    public X509IssuerSerialMarshaller(){
-        super(XMLConstants.XMLSIG_NS, X509IssuerSerial.DEFAULT_ELEMENT_LOCAL_NAME);
-    }
-
-    /**
-     * Constructor
-     *
-     * @param targetNamespaceURI
-     * @param targetLocalName
-     */
-    protected X509IssuerSerialMarshaller(String targetNamespaceURI, String targetLocalName){
-        super(targetNamespaceURI, targetLocalName);
-    }
 
 }

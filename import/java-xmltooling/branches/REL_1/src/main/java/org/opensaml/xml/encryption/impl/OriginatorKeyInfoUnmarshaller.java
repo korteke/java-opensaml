@@ -16,32 +16,11 @@
 
 package org.opensaml.xml.encryption.impl;
 
-import org.opensaml.xml.encryption.OriginatorKeyInfo;
-import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.signature.impl.KeyInfoTypeUnmarshaller;
-import org.opensaml.xml.util.XMLConstants;
 
 /**
  * A thread-safe Unmarshaller for {@link org.opensaml.xml.encryption.OriginatorKeyInfo} objects.
  */
 public class OriginatorKeyInfoUnmarshaller extends KeyInfoTypeUnmarshaller {
-    
-    /**
-     * Constructor
-     *
-     */
-    public OriginatorKeyInfoUnmarshaller(){
-        super(XMLConstants.XMLENC_NS, OriginatorKeyInfo.DEFAULT_ELEMENT_LOCAL_NAME);
-    }
-
-    /**
-     * Constructor
-     *
-     * @param targetNamespaceURI
-     * @param targetLocalName
-     */
-    protected OriginatorKeyInfoUnmarshaller(String targetNamespaceURI, String targetLocalName){
-        super(targetNamespaceURI, targetLocalName);
-    }
 
 }

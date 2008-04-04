@@ -21,35 +21,17 @@ import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.signature.PGPData;
 import org.opensaml.xml.signature.PGPKeyID;
 import org.opensaml.xml.signature.PGPKeyPacket;
-import org.opensaml.xml.util.XMLConstants;
 
 /**
  * A thread-safe Unmarshaller for {@link org.opensaml.xml.signature.PGPData} objects.
  */
 public class PGPDataUnmarshaller extends AbstractXMLSignatureUnmarshaller {
-    
-    /**
-     * Constructor
-     *
-     */
-    public PGPDataUnmarshaller(){
-        super(XMLConstants.XMLSIG_NS, PGPData.DEFAULT_ELEMENT_LOCAL_NAME);
-    }
-
-    /**
-     * Constructor
-     *
-     * @param targetNamespaceURI
-     * @param targetLocalName
-     */
-    protected PGPDataUnmarshaller(String targetNamespaceURI, String targetLocalName){
-        super(targetNamespaceURI, targetLocalName);
-    }
 
     /** {@inheritDoc} */
-    protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject) throws UnmarshallingException {
+    protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
+            throws UnmarshallingException {
         PGPData pgpData = (PGPData) parentXMLObject;
-        
+
         if (childXMLObject instanceof PGPKeyID) {
             pgpData.setPGPKeyID((PGPKeyID) childXMLObject);
         } else if (childXMLObject instanceof PGPKeyPacket) {

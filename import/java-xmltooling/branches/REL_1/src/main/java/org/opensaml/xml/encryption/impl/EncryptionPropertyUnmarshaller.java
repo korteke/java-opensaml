@@ -21,7 +21,6 @@ import javax.xml.namespace.QName;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.encryption.EncryptionProperty;
 import org.opensaml.xml.io.UnmarshallingException;
-import org.opensaml.xml.util.XMLConstants;
 import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Attr;
 
@@ -29,29 +28,11 @@ import org.w3c.dom.Attr;
  * A thread-safe Unmarshaller for {@link org.opensaml.xml.encryption.EncryptionProperty} objects.
  */
 public class EncryptionPropertyUnmarshaller extends AbstractXMLEncryptionUnmarshaller {
-    
-    /**
-     * Constructor
-     *
-     */
-    public EncryptionPropertyUnmarshaller(){
-        super(XMLConstants.XMLENC_NS, EncryptionProperty.DEFAULT_ELEMENT_LOCAL_NAME);
-    }
-
-    /**
-     * Constructor
-     *
-     * @param targetNamespaceURI
-     * @param targetLocalName
-     */
-    protected EncryptionPropertyUnmarshaller(String targetNamespaceURI, String targetLocalName){
-        super(targetNamespaceURI, targetLocalName);
-    }
 
     /** {@inheritDoc} */
     protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
         EncryptionProperty ep = (EncryptionProperty) xmlObject;
-        
+
         if (attribute.getLocalName().equals(EncryptionProperty.ID_ATTRIB_NAME)) {
             ep.setID(attribute.getValue());
             attribute.getOwnerElement().setIdAttributeNode(attribute, true);
@@ -62,14 +43,15 @@ public class EncryptionPropertyUnmarshaller extends AbstractXMLEncryptionUnmarsh
             if (attribute.isId()) {
                 ep.getUnknownAttributes().registerID(attributeName);
             }
-           ep.getUnknownAttributes().put(attributeName, attribute.getValue()); 
+            ep.getUnknownAttributes().put(attributeName, attribute.getValue());
         }
     }
 
     /** {@inheritDoc} */
-    protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject) throws UnmarshallingException {
+    protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
+            throws UnmarshallingException {
         EncryptionProperty ep = (EncryptionProperty) parentXMLObject;
-        
+
         // <any> content model
         ep.getUnknownXMLObjects().add(childXMLObject);
     }

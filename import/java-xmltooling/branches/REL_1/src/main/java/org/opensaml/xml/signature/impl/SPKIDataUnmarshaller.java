@@ -19,37 +19,19 @@ package org.opensaml.xml.signature.impl;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.signature.SPKIData;
-import org.opensaml.xml.util.XMLConstants;
 
 /**
  * A thread-safe Unmarshaller for {@link org.opensaml.xml.signature.SPKIData} objects.
  */
 public class SPKIDataUnmarshaller extends AbstractXMLSignatureUnmarshaller {
-    
-    /**
-     * Constructor
-     *
-     */
-    public SPKIDataUnmarshaller(){
-        super(XMLConstants.XMLSIG_NS, SPKIData.DEFAULT_ELEMENT_LOCAL_NAME);
-    }
-
-    /**
-     * Constructor
-     *
-     * @param targetNamespaceURI
-     * @param targetLocalName
-     */
-    protected SPKIDataUnmarshaller(String targetNamespaceURI, String targetLocalName){
-        super(targetNamespaceURI, targetLocalName);
-    }
 
     /** {@inheritDoc} */
-    protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject) throws UnmarshallingException {
+    protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
+            throws UnmarshallingException {
         SPKIData spkiData = (SPKIData) parentXMLObject;
-        
+
         // SPKIData contains an unbounded sequence of pairs of a single SPKISexp
-        // and an optional, single wildcard <any> element.  Let the Validator
+        // and an optional, single wildcard <any> element. Let the Validator
         // catch invalid ordering/combinations.
         spkiData.getXMLObjects().add(childXMLObject);
     }

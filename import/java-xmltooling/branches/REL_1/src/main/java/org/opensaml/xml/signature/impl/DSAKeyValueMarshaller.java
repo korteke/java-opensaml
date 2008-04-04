@@ -16,31 +16,9 @@
 
 package org.opensaml.xml.signature.impl;
 
-import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.signature.DSAKeyValue;
-import org.opensaml.xml.util.XMLConstants;
-
 /**
  * A thread-safe Marshaller for {@link org.opensaml.xml.signature.DSAKeyValue} objects.
  */
 public class DSAKeyValueMarshaller extends AbstractXMLSignatureMarshaller {
-    
-    /**
-     * Constructor
-     *
-     */
-    public DSAKeyValueMarshaller(){
-        super(XMLConstants.XMLSIG_NS, DSAKeyValue.DEFAULT_ELEMENT_LOCAL_NAME);
-    }
-
-    /**
-     * Constructor
-     *
-     * @param targetNamespaceURI
-     * @param targetLocalName
-     */
-    protected DSAKeyValueMarshaller(String targetNamespaceURI, String targetLocalName){
-        super(targetNamespaceURI, targetLocalName);
-    }
 
 }

@@ -27,24 +27,6 @@ import org.w3c.dom.Element;
  * Thread-safe marshaller of {@link org.opensaml.xml.schema.XSBase64Binary} objects.
  */
 public class XSBase64BinaryMarshaller extends AbstractXMLObjectMarshaller {
-    
-    /** Constructor. */
-    public XSBase64BinaryMarshaller() {
-        super();
-    }
-
-    /**
-     * This constructor supports checking an XMLObject to be marshalled, either element name or schema type, against a
-     * given namespace/local name pair.
-     * 
-     * @param targetNamespaceURI the namespace URI of either the schema type QName or element QName of the elements this
-     *            marshaller operates on
-     * @param targetLocalName the local name of either the schema type QName or element QName of the elements this
-     *            marshaller operates on
-     */
-    protected XSBase64BinaryMarshaller(String targetNamespaceURI, String targetLocalName) {
-        super(targetNamespaceURI, targetLocalName);
-    }
 
     /** {@inheritDoc} */
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
@@ -54,7 +36,7 @@ public class XSBase64BinaryMarshaller extends AbstractXMLObjectMarshaller {
     /** {@inheritDoc} */
     protected void marshallElementContent(XMLObject xmlObject, Element domElement) throws MarshallingException {
         XSBase64Binary xsBase64Binary = (XSBase64Binary) xmlObject;
-        
+
         XMLHelper.appendTextContent(domElement, xsBase64Binary.getValue());
     }
 }

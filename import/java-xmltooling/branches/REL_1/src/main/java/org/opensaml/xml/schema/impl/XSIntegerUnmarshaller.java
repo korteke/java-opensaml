@@ -26,24 +26,6 @@ import org.w3c.dom.Attr;
  * Thread-safe unmarshaller for {@link org.opensaml.xml.schema.XSInteger} objects.
  */
 public class XSIntegerUnmarshaller extends AbstractXMLObjectUnmarshaller {
-    
-    /** Constructor. */
-    public XSIntegerUnmarshaller() {
-        super();
-    }
-
-    /**
-     * This constructor supports checking an XMLObject to be marshalled, either element name or schema type, against a
-     * given namespace/local name pair.
-     * 
-     * @param targetNamespaceURI the namespace URI of either the schema type QName or element QName of the elements this
-     *            unmarshaller operates on
-     * @param targetLocalName the local name of either the schema type QName or element QName of the elements this
-     *            unmarshaller operates on
-     */
-    protected XSIntegerUnmarshaller(String targetNamespaceURI, String targetLocalName) {
-        super(targetNamespaceURI, targetLocalName);
-    }
 
     /** {@inheritDoc} */
     protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
@@ -53,14 +35,14 @@ public class XSIntegerUnmarshaller extends AbstractXMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
     protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
-        //no attributes
+        // no attributes
     }
 
     /** {@inheritDoc} */
     protected void processElementContent(XMLObject xmlObject, String elementContent) {
         XSInteger xsiInteger = (XSInteger) xmlObject;
-        
-        if(elementContent != null){
+
+        if (elementContent != null) {
             xsiInteger.setValue(Integer.valueOf(elementContent.trim()));
         }
     }

@@ -16,31 +16,9 @@
 
 package org.opensaml.xml.signature.impl;
 
-import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.signature.X509Data;
-import org.opensaml.xml.util.XMLConstants;
-
 /**
  * A thread-safe Marshaller for {@link org.opensaml.xml.signature.X509Data} objects.
  */
 public class X509DataMarshaller extends AbstractXMLSignatureMarshaller {
-    
-    /**
-     * Constructor
-     *
-     */
-    public X509DataMarshaller(){
-        super(XMLConstants.XMLSIG_NS, X509Data.DEFAULT_ELEMENT_LOCAL_NAME);
-    }
-
-    /**
-     * Constructor
-     *
-     * @param targetNamespaceURI
-     * @param targetLocalName
-     */
-    protected X509DataMarshaller(String targetNamespaceURI, String targetLocalName){
-        super(targetNamespaceURI, targetLocalName);
-    }
 
 }

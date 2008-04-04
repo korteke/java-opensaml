@@ -16,31 +16,9 @@
 
 package org.opensaml.xml.encryption.impl;
 
-import org.opensaml.xml.encryption.KeyReference;
-import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.util.XMLConstants;
-
 /**
  * A thread-safe Marshaller for {@link org.opensaml.xml.encryption.KeyReference} objects.
  */
 public class KeyReferenceMarshaller extends ReferenceTypeMarshaller {
-    
-    /**
-     * Constructor
-     *
-     */
-    public KeyReferenceMarshaller(){
-        super(XMLConstants.XMLENC_NS, KeyReference.DEFAULT_ELEMENT_LOCAL_NAME);
-    }
-
-    /**
-     * Constructor
-     *
-     * @param targetNamespaceURI
-     * @param targetLocalName
-     */
-    public KeyReferenceMarshaller(String targetNamespaceURI, String targetLocalName){
-        super(targetNamespaceURI, targetLocalName);
-    }
 
 }

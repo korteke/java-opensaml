@@ -16,27 +16,9 @@
 
 package org.opensaml.xml.encryption.impl;
 
-import org.opensaml.xml.encryption.CipherData;
-import org.opensaml.xml.util.XMLConstants;
-
 /**
  * A thread-safe Marshaller for {@link org.opensaml.xml.encryption.CipherData} objects.
  */
 public class CipherDataMarshaller extends AbstractXMLEncryptionMarshaller {
-
-    /** Constructor. */
-    public CipherDataMarshaller() {
-        super(XMLConstants.XMLENC_NS, CipherData.DEFAULT_ELEMENT_LOCAL_NAME);
-    }
-
-    /**
-     * Constructor.
-     * 
-     * @param targetNamespaceURI namespace URI
-     * @param targetLocalName local name
-     */
-    public CipherDataMarshaller(String targetNamespaceURI, String targetLocalName) {
-        super(targetNamespaceURI, targetLocalName);
-    }
 
 }

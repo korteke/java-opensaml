@@ -32,16 +32,6 @@ public abstract class AbstractXMLSignatureUnmarshaller extends AbstractXMLObject
      * Logger.
      */
     private final Logger log = LoggerFactory.getLogger(AbstractXMLSignatureUnmarshaller.class);
-    
-    /** Constructor. */
-    protected AbstractXMLSignatureUnmarshaller(){
-        super();
-    }
-
-    /** Constructor. */
-    protected AbstractXMLSignatureUnmarshaller(String targetNamespaceURI, String targetLocalName) {
-        super(targetNamespaceURI, targetLocalName);
-    }
 
     /**
      * {@inheritDoc}

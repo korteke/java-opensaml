@@ -30,22 +30,6 @@ import org.w3c.dom.Attr;
  */
 public abstract class EncryptedTypeUnmarshaller extends AbstractXMLEncryptionUnmarshaller {
 
-    /** Constructor. */
-    protected EncryptedTypeUnmarshaller() {
-        super();
-    }
-
-    /**
-     * Constructor.
-     * 
-     * @param targetNamespaceURI
-     * @param targetLocalName
-     * @throws IllegalArgumentException
-     */
-    public EncryptedTypeUnmarshaller(String targetNamespaceURI, String targetLocalName) {
-        super(targetNamespaceURI, targetLocalName);
-    }
-
     /** {@inheritDoc} */
     protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
             throws UnmarshallingException {

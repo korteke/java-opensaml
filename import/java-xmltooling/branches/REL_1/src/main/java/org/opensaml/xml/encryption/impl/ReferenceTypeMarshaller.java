@@ -26,25 +26,14 @@ import org.w3c.dom.Element;
  */
 public class ReferenceTypeMarshaller extends AbstractXMLEncryptionMarshaller {
 
-    /**
-     * Constructor
-     *
-     * @param targetNamespaceURI
-     * @param targetLocalName
-     */
-    protected ReferenceTypeMarshaller(String targetNamespaceURI, String targetLocalName){
-        super(targetNamespaceURI, targetLocalName);
-    }
-
     /** {@inheritDoc} */
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         ReferenceType rt = (ReferenceType) xmlObject;
-        
+
         if (rt.getURI() != null) {
             domElement.setAttributeNS(null, ReferenceType.URI_ATTRIB_NAME, rt.getURI());
         } else {
             super.marshallAttributes(xmlObject, domElement);
         }
     }
-
 }

@@ -19,36 +19,17 @@ package org.opensaml.xml.signature.impl;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.signature.Transform;
-import org.opensaml.xml.util.XMLConstants;
 import org.w3c.dom.Element;
 
 /**
  * A thread-safe Marshaller for {@link org.opensaml.xml.signature.Transform} objects.
  */
 public class TransformMarshaller extends AbstractXMLSignatureMarshaller {
-    
-    /**
-     * Constructor
-     *
-     */
-    public TransformMarshaller(){
-        super(XMLConstants.XMLSIG_NS, Transform.DEFAULT_ELEMENT_LOCAL_NAME);
-    }
-
-    /**
-     * Constructor
-     *
-     * @param targetNamespaceURI
-     * @param targetLocalName
-     */
-    protected TransformMarshaller(String targetNamespaceURI, String targetLocalName){
-        super(targetNamespaceURI, targetLocalName);
-    }
 
     /** {@inheritDoc} */
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         Transform transform = (Transform) xmlObject;
-        
+
         if (transform.getAlgorithm() != null) {
             domElement.setAttributeNS(null, Transform.ALGORITHM_ATTRIB_NAME, transform.getAlgorithm());
         }

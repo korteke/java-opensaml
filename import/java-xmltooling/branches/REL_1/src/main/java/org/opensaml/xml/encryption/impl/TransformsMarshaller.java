@@ -16,31 +16,9 @@
 
 package org.opensaml.xml.encryption.impl;
 
-import org.opensaml.xml.encryption.Transforms;
-import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.util.XMLConstants;
-
 /**
  * A thread-safe Marshaller for {@link org.opensaml.xml.encryption.Transforms} objects.
  */
 public class TransformsMarshaller extends AbstractXMLEncryptionMarshaller {
-    
-    /**
-     * Constructor
-     *
-     */
-    public TransformsMarshaller(){
-        super(XMLConstants.XMLENC_NS, Transforms.DEFAULT_ELEMENT_LOCAL_NAME);
-    }
-
-    /**
-     * Constructor
-     *
-     * @param targetNamespaceURI
-     * @param targetLocalName
-     */
-    protected TransformsMarshaller(String targetNamespaceURI, String targetLocalName){
-        super(targetNamespaceURI, targetLocalName);
-    }
 
 }

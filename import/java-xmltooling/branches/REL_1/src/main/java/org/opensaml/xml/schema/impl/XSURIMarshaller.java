@@ -27,24 +27,6 @@ import org.w3c.dom.Element;
  * A thread-safe marshaller for {@link org.opensaml.xml.schema.XSURI}s.
  */
 public class XSURIMarshaller extends AbstractXMLObjectMarshaller {
-    
-    /** Constructor. */
-    public XSURIMarshaller() {
-        super();
-    }
-
-    /**
-     * This constructor supports checking an XMLObject to be marshalled, either element name or schema type, against a
-     * given namespace/local name pair.
-     * 
-     * @param targetNamespaceURI the namespace URI of either the schema type QName or element QName of the elements this
-     *            marshaller operates on
-     * @param targetLocalName the local name of either the schema type QName or element QName of the elements this
-     *            marshaller operates on
-     */
-    protected XSURIMarshaller(String targetNamespaceURI, String targetLocalName) {
-        super(targetNamespaceURI, targetLocalName);
-    }
 
     /** {@inheritDoc} */
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {

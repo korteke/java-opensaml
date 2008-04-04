@@ -21,36 +21,17 @@ import org.opensaml.xml.encryption.DataReference;
 import org.opensaml.xml.encryption.KeyReference;
 import org.opensaml.xml.encryption.ReferenceList;
 import org.opensaml.xml.io.UnmarshallingException;
-import org.opensaml.xml.util.XMLConstants;
-
 
 /**
  * A thread-safe Unmarshaller for {@link org.opensaml.xml.encryption.ReferenceList} objects.
  */
 public class ReferenceListUnmarshaller extends AbstractXMLEncryptionUnmarshaller {
-    
-    /**
-     * Constructor
-     *
-     */
-    public ReferenceListUnmarshaller(){
-       super(XMLConstants.XMLENC_NS, ReferenceList.DEFAULT_ELEMENT_LOCAL_NAME);
-    }
-
-    /**
-     * Constructor
-     *
-     * @param targetNamespaceURI
-     * @param targetLocalName
-     */
-    public ReferenceListUnmarshaller(String targetNamespaceURI, String targetLocalName){
-        super(targetNamespaceURI, targetLocalName);
-    }
 
     /** {@inheritDoc} */
-    protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject) throws UnmarshallingException {
+    protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
+            throws UnmarshallingException {
         ReferenceList rl = (ReferenceList) parentXMLObject;
-        
+
         if (childXMLObject instanceof DataReference) {
             rl.getReferences().add((DataReference) childXMLObject);
         } else if (childXMLObject instanceof KeyReference) {

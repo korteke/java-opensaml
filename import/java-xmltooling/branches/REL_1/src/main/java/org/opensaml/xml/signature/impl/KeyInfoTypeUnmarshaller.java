@@ -17,7 +17,6 @@
 package org.opensaml.xml.signature.impl;
 
 import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.signature.KeyInfoType;
 import org.w3c.dom.Attr;
@@ -27,20 +26,10 @@ import org.w3c.dom.Attr;
  */
 public class KeyInfoTypeUnmarshaller extends AbstractXMLSignatureUnmarshaller {
 
-    /**
-     * Constructor
-     *
-     * @param targetNamespaceURI
-     * @param targetLocalName
-     */
-    protected KeyInfoTypeUnmarshaller(String targetNamespaceURI, String targetLocalName){
-        super(targetNamespaceURI, targetLocalName);
-    }
-
     /** {@inheritDoc} */
     protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
         KeyInfoType keyInfo = (KeyInfoType) xmlObject;
-        
+
         if (attribute.getLocalName().equals(KeyInfoType.ID_ATTRIB_NAME)) {
             keyInfo.setID(attribute.getValue());
             attribute.getOwnerElement().setIdAttributeNode(attribute, true);
@@ -50,9 +39,10 @@ public class KeyInfoTypeUnmarshaller extends AbstractXMLSignatureUnmarshaller {
     }
 
     /** {@inheritDoc} */
-    protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject) throws UnmarshallingException {
+    protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
+            throws UnmarshallingException {
         KeyInfoType keyInfo = (KeyInfoType) parentXMLObject;
-        
+
         // KeyInfoType contains a range of specific types, but also
         // support <any>, with an unbounded choice over all (no ordering)
         // so no need to distinguish.

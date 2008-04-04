@@ -16,27 +16,9 @@
 
 package org.opensaml.xml.encryption.impl;
 
-import org.opensaml.xml.encryption.EncryptedData;
-import org.opensaml.xml.util.XMLConstants;
-
 /**
  * A thread-safe Unmarshaller for {@link org.opensaml.xml.encryption.EncryptedData} objects.
  */
 public class EncryptedDataUnmarshaller extends EncryptedTypeUnmarshaller {
-    
-    /** Constructor. */
-    public EncryptedDataUnmarshaller(){
-      super(XMLConstants.XMLENC_NS, EncryptedData.DEFAULT_ELEMENT_LOCAL_NAME);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param targetNamespaceURI namespace URI
-     * @param targetLocalName local name
-     */
-    protected EncryptedDataUnmarshaller(String targetNamespaceURI, String targetLocalName){
-        super(targetNamespaceURI, targetLocalName);
-    }
 
 }

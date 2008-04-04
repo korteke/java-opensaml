@@ -19,38 +19,21 @@ package org.opensaml.xml.encryption.impl;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.encryption.EncryptedKey;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.util.XMLConstants;
 import org.w3c.dom.Element;
 
 /**
  * A thread-safe Marshaller for {@link org.opensaml.xml.encryption.EncryptedKey} objects.
  */
 public class EncryptedKeyMarshaller extends EncryptedTypeMarshaller {
-    
-    /** Constructor. */
-    public EncryptedKeyMarshaller(){
-        super(XMLConstants.XMLENC_NS, EncryptedKey.DEFAULT_ELEMENT_LOCAL_NAME);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param targetNamespaceURI namespace URI
-     * @param targetLocalName local name
-     * @throws IllegalArgumentException
-     */
-    protected EncryptedKeyMarshaller(String targetNamespaceURI, String targetLocalName){
-        super(targetNamespaceURI, targetLocalName);
-    }
 
     /** {@inheritDoc} */
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         EncryptedKey ek = (EncryptedKey) xmlObject;
-        
+
         if (ek.getRecipient() != null) {
             domElement.setAttributeNS(null, EncryptedKey.RECIPIENT_ATTRIB_NAME, ek.getRecipient());
         }
-        
+
         super.marshallAttributes(xmlObject, domElement);
     }
 

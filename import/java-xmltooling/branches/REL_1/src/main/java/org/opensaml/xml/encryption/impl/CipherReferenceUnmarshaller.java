@@ -20,28 +20,12 @@ import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.encryption.CipherReference;
 import org.opensaml.xml.encryption.Transforms;
 import org.opensaml.xml.io.UnmarshallingException;
-import org.opensaml.xml.util.XMLConstants;
 import org.w3c.dom.Attr;
 
 /**
  * A thread-safe Unmarshaller for {@link org.opensaml.xml.encryption.CipherReference} objects.
  */
 public class CipherReferenceUnmarshaller extends AbstractXMLEncryptionUnmarshaller {
-
-    /** Constructor. */
-    public CipherReferenceUnmarshaller() {
-        super(XMLConstants.XMLENC_NS, CipherReference.DEFAULT_ELEMENT_LOCAL_NAME);
-    }
-
-    /**
-     * Constructor.
-     * 
-     * @param targetNamespaceURI namespace URI
-     * @param targetLocalName local name
-     */
-    public CipherReferenceUnmarshaller(String targetNamespaceURI, String targetLocalName) {
-        super(targetNamespaceURI, targetLocalName);
-    }
 
     /** {@inheritDoc} */
     protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {

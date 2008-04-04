@@ -19,36 +19,17 @@ package org.opensaml.xml.signature.impl;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.signature.DigestMethod;
-import org.opensaml.xml.util.XMLConstants;
 import org.w3c.dom.Element;
 
 /**
  * A thread-safe Marshaller for {@link org.opensaml.xml.signature.DigestMethod} objects.
  */
 public class DigestMethodMarshaller extends AbstractXMLSignatureMarshaller {
-    
-    /**
-     * Constructor.
-     *
-     */
-    public DigestMethodMarshaller(){
-        super(XMLConstants.XMLSIG_NS, DigestMethod.DEFAULT_ELEMENT_LOCAL_NAME);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param targetNamespaceURI
-     * @param targetLocalName
-     */
-    public DigestMethodMarshaller(String targetNamespaceURI, String targetLocalName){
-        super(targetNamespaceURI, targetLocalName);
-    }
 
     /** {@inheritDoc} */
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         DigestMethod dm = (DigestMethod) xmlObject;
-        
+
         if (dm.getAlgorithm() != null) {
             domElement.setAttributeNS(null, DigestMethod.ALGORITHM_ATTRIB_NAME, dm.getAlgorithm());
         }

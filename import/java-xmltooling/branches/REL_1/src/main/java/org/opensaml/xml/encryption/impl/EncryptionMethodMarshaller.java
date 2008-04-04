@@ -19,36 +19,17 @@ package org.opensaml.xml.encryption.impl;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.encryption.EncryptionMethod;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.util.XMLConstants;
 import org.w3c.dom.Element;
 
 /**
  * A thread-safe Marshaller for {@link org.opensaml.xml.encryption.EncryptionMethod} objects.
  */
 public class EncryptionMethodMarshaller extends AbstractXMLEncryptionMarshaller {
-    
-    /**
-     * Constructor.
-     *
-     */
-    public EncryptionMethodMarshaller(){
-        super(XMLConstants.XMLENC_NS, EncryptionMethod.DEFAULT_ELEMENT_LOCAL_NAME);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param targetNamespaceURI
-     * @param targetLocalName
-     */
-    public EncryptionMethodMarshaller(String targetNamespaceURI, String targetLocalName){
-        super(targetNamespaceURI, targetLocalName);
-    }
 
     /** {@inheritDoc} */
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         EncryptionMethod em = (EncryptionMethod) xmlObject;
-        
+
         if (em.getAlgorithm() != null) {
             domElement.setAttributeNS(null, EncryptionMethod.ALGORITHM_ATTRIB_NAME, em.getAlgorithm());
         }

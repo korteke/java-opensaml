@@ -32,14 +32,6 @@ import org.w3c.dom.Attr;
  */
 public class SimpleXMLObjectUnmarshaller extends AbstractXMLObjectUnmarshaller {
 
-    /**
-     * Constructor.
-     * 
-     */
-    public SimpleXMLObjectUnmarshaller(){
-        super(SimpleXMLObject.NAMESPACE, SimpleXMLObject.LOCAL_NAME);
-    }
-
     /** {@inheritDoc} */
     protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
             throws UnmarshallingException {
@@ -48,18 +40,17 @@ public class SimpleXMLObjectUnmarshaller extends AbstractXMLObjectUnmarshaller {
 
         if (childXMLObject instanceof SimpleXMLObject) {
             simpleXMLObject.getSimpleXMLObjects().add((SimpleXMLObject) childXMLObject);
-        }else if(childXMLObject instanceof EncryptedData){
+        } else if (childXMLObject instanceof EncryptedData) {
             simpleXMLObject.setEncryptedData((EncryptedData) childXMLObject);
-        }else if(childXMLObject instanceof Signature){
+        } else if (childXMLObject instanceof Signature) {
             simpleXMLObject.setSignature((Signature) childXMLObject);
-        }else{
+        } else {
             simpleXMLObject.getUnknownXMLObjects().add(childXMLObject);
         }
     }
 
     /** {@inheritDoc} */
-    protected void processAttribute(XMLObject xmlObject, Attr attribute)
-            throws UnmarshallingException {
+    protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
         SimpleXMLObject simpleXMLObject = (SimpleXMLObject) xmlObject;
 
         if (attribute.getLocalName().equals(SimpleXMLObject.ID_ATTRIB_NAME)) {
@@ -71,7 +62,7 @@ public class SimpleXMLObjectUnmarshaller extends AbstractXMLObjectUnmarshaller {
     /** {@inheritDoc} */
     protected void processElementContent(XMLObject xmlObject, String elementContent) {
         SimpleXMLObject simpleXMLObject = (SimpleXMLObject) xmlObject;
-        
+
         simpleXMLObject.setValue(elementContent);
     }
 }

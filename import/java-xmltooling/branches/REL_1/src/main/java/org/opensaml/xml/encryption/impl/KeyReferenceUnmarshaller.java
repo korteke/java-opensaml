@@ -16,31 +16,9 @@
 
 package org.opensaml.xml.encryption.impl;
 
-import org.opensaml.xml.encryption.KeyReference;
-import org.opensaml.xml.io.UnmarshallingException;
-import org.opensaml.xml.util.XMLConstants;
-
 /**
  * A thread-safe Unmarshaller for {@link org.opensaml.xml.encryption.KeyReference} objects.
  */
 public class KeyReferenceUnmarshaller extends ReferenceTypeUnmarshaller {
-    
-    /**
-     * Constructor
-     *
-     */
-    public KeyReferenceUnmarshaller(){
-        super(XMLConstants.XMLENC_NS, KeyReference.DEFAULT_ELEMENT_LOCAL_NAME);
-    }
-
-    /**
-     * Constructor
-     *
-     * @param targetNamespaceURI
-     * @param targetLocalName
-     */
-    public KeyReferenceUnmarshaller(String targetNamespaceURI, String targetLocalName){
-        super(targetNamespaceURI, targetLocalName);
-    }
 
 }

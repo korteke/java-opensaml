@@ -36,6 +36,8 @@ public class AbstractExtensibleXMLObjectMarshaller extends AbstractElementExtens
     /**
      * Constructor.
      * 
+     * @deprecated no replacement
+     * 
      * @param targetNamespaceURI the namespace URI of either the schema type QName or element QName of the elements this
      *            unmarshaller operates on
      * @param targetLocalName the local name of either the schema type QName or element QName of the elements this

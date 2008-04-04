@@ -22,24 +22,17 @@ import org.opensaml.xml.io.MarshallingException;
 import org.w3c.dom.Element;
 
 /**
- * Marshaller for {@link org.opensaml.xml.mock.SimpleXMLObject}
+ * Marshaller for {@link org.opensaml.xml.mock.SimpleXMLObject} objects.
  */
 public class SimpleXMLObjectMarshaller extends AbstractXMLObjectMarshaller {
 
-    /**
-     * Constructor
-     */
-    public SimpleXMLObjectMarshaller() {
-        super();
-    }
-    
     /** {@inheritDoc} */
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
-        SimpleXMLObject simpleXMLObject = (SimpleXMLObject)xmlObject;
-        
-        if(simpleXMLObject.getId() != null) {
+        SimpleXMLObject simpleXMLObject = (SimpleXMLObject) xmlObject;
+
+        if (simpleXMLObject.getId() != null) {
             domElement.setAttributeNS(null, SimpleXMLObject.ID_ATTRIB_NAME, simpleXMLObject.getId());
-            domElement.setIdAttributeNS(null, SimpleXMLObject.ID_ATTRIB_NAME,true);
+            domElement.setIdAttributeNS(null, SimpleXMLObject.ID_ATTRIB_NAME, true);
         }
 
     }
@@ -47,8 +40,8 @@ public class SimpleXMLObjectMarshaller extends AbstractXMLObjectMarshaller {
     /** {@inheritDoc} */
     protected void marshallElementContent(XMLObject xmlObject, Element domElement) throws MarshallingException {
         SimpleXMLObject simpleXMLObject = (SimpleXMLObject) xmlObject;
-        
-        if(simpleXMLObject.getValue() != null) {
+
+        if (simpleXMLObject.getValue() != null) {
             domElement.setTextContent(simpleXMLObject.getValue());
         }
     }

@@ -21,37 +21,17 @@ import org.opensaml.xml.encryption.EncryptionMethod;
 import org.opensaml.xml.encryption.KeySize;
 import org.opensaml.xml.encryption.OAEPparams;
 import org.opensaml.xml.io.UnmarshallingException;
-import org.opensaml.xml.util.XMLConstants;
 import org.w3c.dom.Attr;
 
 /**
  * A thread-safe Unmarshaller for {@link org.opensaml.xml.encryption.EncryptionMethod} objects.
  */
 public class EncryptionMethodUnmarshaller extends AbstractXMLEncryptionUnmarshaller {
-    
-    /**
-     * Constructor.
-     *
-     */
-    public EncryptionMethodUnmarshaller(){
-        super(XMLConstants.XMLENC_NS, EncryptionMethod.DEFAULT_ELEMENT_LOCAL_NAME);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param targetNamespaceURI
-     * @param targetLocalName
-     * @throws IllegalArgumentException
-     */
-    public EncryptionMethodUnmarshaller(String targetNamespaceURI, String targetLocalName){
-        super(targetNamespaceURI, targetLocalName);
-    }
 
     /** {@inheritDoc} */
     protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
         EncryptionMethod em = (EncryptionMethod) xmlObject;
-        
+
         if (attribute.getLocalName().equals(EncryptionMethod.ALGORITHM_ATTRIB_NAME)) {
             em.setAlgorithm(attribute.getValue());
         } else {
@@ -60,7 +40,8 @@ public class EncryptionMethodUnmarshaller extends AbstractXMLEncryptionUnmarshal
     }
 
     /** {@inheritDoc} */
-    protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject) throws UnmarshallingException {
+    protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
+            throws UnmarshallingException {
         EncryptionMethod em = (EncryptionMethod) parentXMLObject;
         if (childXMLObject instanceof KeySize) {
             em.setKeySize((KeySize) childXMLObject);

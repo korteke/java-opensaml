@@ -16,32 +16,11 @@
 
 package org.opensaml.xml.encryption.impl;
 
-import org.opensaml.xml.encryption.RecipientKeyInfo;
-import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.signature.impl.KeyInfoTypeUnmarshaller;
-import org.opensaml.xml.util.XMLConstants;
 
 /**
  * A thread-safe Unmarshaller for {@link org.opensaml.xml.encryption.RecipientKeyInfo} objects.
  */
 public class RecipientKeyInfoUnmarshaller extends KeyInfoTypeUnmarshaller {
-    
-    /**
-     * Constructor
-     *
-     */
-    public RecipientKeyInfoUnmarshaller(){
-        super(XMLConstants.XMLENC_NS, RecipientKeyInfo.DEFAULT_ELEMENT_LOCAL_NAME);
-    }
-
-    /**
-     * Constructor
-     *
-     * @param targetNamespaceURI
-     * @param targetLocalName
-     */
-    protected RecipientKeyInfoUnmarshaller(String targetNamespaceURI, String targetLocalName){
-        super(targetNamespaceURI, targetLocalName);
-    }
 
 }

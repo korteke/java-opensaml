@@ -19,41 +19,22 @@ package org.opensaml.xml.encryption.impl;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.encryption.EncryptionProperties;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.util.XMLConstants;
 import org.w3c.dom.Element;
 
 /**
  * A thread-safe Marshaller for {@link org.opensaml.xml.encryption.EncryptionProperties} objects.
  */
 public class EncryptionPropertiesMarshaller extends AbstractXMLEncryptionMarshaller {
-    
-    /**
-     * Constructor
-     *
-     */
-    public EncryptionPropertiesMarshaller(){
-        super(XMLConstants.XMLENC_NS, EncryptionProperties.DEFAULT_ELEMENT_LOCAL_NAME);
-    }
-
-    /**
-     * Constructor
-     *
-     * @param targetNamespaceURI
-     * @param targetLocalName
-     */
-    protected EncryptionPropertiesMarshaller(String targetNamespaceURI, String targetLocalName){
-        super(targetNamespaceURI, targetLocalName);
-    }
 
     /** {@inheritDoc} */
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         EncryptionProperties ep = (EncryptionProperties) xmlObject;
-        
+
         if (ep.getID() != null) {
             domElement.setAttributeNS(null, EncryptionProperties.ID_ATTRIB_NAME, ep.getID());
             domElement.setIdAttributeNS(null, EncryptionProperties.ID_ATTRIB_NAME, true);
         }
-        
+
     }
 
 }

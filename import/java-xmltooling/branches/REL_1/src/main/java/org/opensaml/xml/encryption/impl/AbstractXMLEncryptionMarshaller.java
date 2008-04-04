@@ -26,21 +26,6 @@ import org.w3c.dom.Element;
  */
 public abstract class AbstractXMLEncryptionMarshaller extends AbstractXMLObjectMarshaller {
 
-    /** Constructor. */
-    protected AbstractXMLEncryptionMarshaller() {
-        super();
-    }
-
-    /**
-     * Constructor.
-     * 
-     * @param targetNamespaceURI namespace URI
-     * @param targetLocalName local name
-     */
-    protected AbstractXMLEncryptionMarshaller(String targetNamespaceURI, String targetLocalName) {
-        super(targetNamespaceURI, targetLocalName);
-    }
-
     /**
      * No-op method. Extending implementations should override this method if they have attributes to marshall into the
      * Element.

@@ -16,32 +16,11 @@
 
 package org.opensaml.xml.encryption.impl;
 
-import org.opensaml.xml.encryption.OriginatorKeyInfo;
-import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.signature.impl.KeyInfoTypeMarshaller;
-import org.opensaml.xml.util.XMLConstants;
 
 /**
  * A thread-safe Marshaller for {@link org.opensaml.xml.encryption.OriginatorKeyInfo} objects.
  */
 public class OriginatorKeyInfoMarshaller extends KeyInfoTypeMarshaller {
-    
-    /**
-     * Constructor
-     *
-     */
-    public OriginatorKeyInfoMarshaller(){
-        super(XMLConstants.XMLENC_NS, OriginatorKeyInfo.DEFAULT_ELEMENT_LOCAL_NAME);
-    }
-
-    /**
-     * Constructor
-     *
-     * @param targetNamespaceURI
-     * @param targetLocalName
-     */
-    protected OriginatorKeyInfoMarshaller(String targetNamespaceURI, String targetLocalName) {
-        super(targetNamespaceURI, targetLocalName);
-    }
 
 }

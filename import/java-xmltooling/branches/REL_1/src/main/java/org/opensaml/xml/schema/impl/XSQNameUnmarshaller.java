@@ -29,29 +29,11 @@ import org.w3c.dom.Text;
  * A thread-safe unmarshaller for {@link org.opensaml.xml.schema.XSQName}s.
  */
 public class XSQNameUnmarshaller extends AbstractXMLObjectUnmarshaller {
-    
-    /** Constructor. */
-    public XSQNameUnmarshaller() {
-        super();
-    }
-
-    /**
-     * This constructor supports checking an XMLObject to be marshalled, either element name or schema type, against a
-     * given namespace/local name pair.
-     * 
-     * @param targetNamespaceURI the namespace URI of either the schema type QName or element QName of the elements this
-     *            unmarshaller operates on
-     * @param targetLocalName the local name of either the schema type QName or element QName of the elements this
-     *            unmarshaller operates on
-     */
-    protected XSQNameUnmarshaller(String targetNamespaceURI, String targetLocalName) {
-        super(targetNamespaceURI, targetLocalName);
-    }
 
     /** {@inheritDoc} */
     protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
             throws UnmarshallingException {
-        //no child elements
+        // no child elements
     }
 
     /** {@inheritDoc} */
@@ -63,7 +45,7 @@ public class XSQNameUnmarshaller extends AbstractXMLObjectUnmarshaller {
     protected void processElementContent(XMLObject xmlObject, String elementContent) {
         // handled by overriden unmarshallTextContent() directly, because we need access to the owning DOM element
     }
-    
+
     /** {@inheritDoc} */
     protected void unmarshallTextContent(XMLObject xmlObject, Text content) throws UnmarshallingException {
         String textContent = DatatypeHelper.safeTrimOrNullString(content.getWholeText());

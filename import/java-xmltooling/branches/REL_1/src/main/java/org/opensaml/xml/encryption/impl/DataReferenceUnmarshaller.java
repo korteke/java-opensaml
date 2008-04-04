@@ -16,27 +16,9 @@
 
 package org.opensaml.xml.encryption.impl;
 
-import org.opensaml.xml.encryption.DataReference;
-import org.opensaml.xml.util.XMLConstants;
-
 /**
  * A thread-safe Unmarshaller for {@link org.opensaml.xml.encryption.DataReference} objects.
  */
 public class DataReferenceUnmarshaller extends ReferenceTypeUnmarshaller {
-    
-    /** Constructor. */
-    public DataReferenceUnmarshaller(){
-        super(XMLConstants.XMLENC_NS, DataReference.DEFAULT_ELEMENT_LOCAL_NAME);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param targetNamespaceURI namespace URI
-     * @param targetLocalName local name
-     */
-    public DataReferenceUnmarshaller(String targetNamespaceURI, String targetLocalName){
-        super(targetNamespaceURI, targetLocalName);
-    }
 
 }

@@ -26,35 +26,17 @@ import org.opensaml.xml.signature.PgenCounter;
 import org.opensaml.xml.signature.Q;
 import org.opensaml.xml.signature.Seed;
 import org.opensaml.xml.signature.Y;
-import org.opensaml.xml.util.XMLConstants;
 
 /**
  * A thread-safe Unmarshaller for {@link org.opensaml.xml.signature.DSAKeyValue} objects.
  */
 public class DSAKeyValueUnmarshaller extends AbstractXMLSignatureUnmarshaller {
-    
-    /**
-     * Constructor
-     *
-     */
-    public DSAKeyValueUnmarshaller(){
-        super(XMLConstants.XMLSIG_NS, DSAKeyValue.DEFAULT_ELEMENT_LOCAL_NAME);
-    }
-
-    /**
-     * Constructor
-     *
-     * @param targetNamespaceURI
-     * @param targetLocalName
-     */
-    protected DSAKeyValueUnmarshaller(String targetNamespaceURI, String targetLocalName){
-        super(targetNamespaceURI, targetLocalName);
-    }
 
     /** {@inheritDoc} */
-    protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject) throws UnmarshallingException {
+    protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
+            throws UnmarshallingException {
         DSAKeyValue keyValue = (DSAKeyValue) parentXMLObject;
-        
+
         if (childXMLObject instanceof P) {
             keyValue.setP((P) childXMLObject);
         } else if (childXMLObject instanceof Q) {
