@@ -356,10 +356,10 @@
     </mailingLists>
     
     <scm>
-        <connection>scm:svn:https://svn.middleware.georgetown.edu/java-xmltooling/</connection>
-        <developerConnection>scm:svn:https://svn.middleware.georgetown.edu/java-xmltooling/</developerConnection>
+        <connection>scm:svn:https://svn.middleware.georgetown.edu/java-openws/</connection>
+        <developerConnection>scm:svn:https://svn.middleware.georgetown.edu/java-openws/</developerConnection>
         <tag>HEAD</tag>
-        <url>http://svn.middleware.georgetown.edu/view/?root=java-xmltooling</url>
+        <url>http://svn.middleware.georgetown.edu/view/?root=java-openws</url>
     </scm>
 
     <developers>
