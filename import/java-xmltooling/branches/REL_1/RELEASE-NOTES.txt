@@ -1,4 +1,4 @@
-XMLTooling-J Trunk
+XMLTooling-J 1.0.1
 ==============================================
 
 XMLTooling-J is a low-level library that may be used to construct libraries 
