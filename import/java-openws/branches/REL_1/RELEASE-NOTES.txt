@@ -1,4 +1,4 @@
-OpenWS-J Trunk
+OpenWS-J 2.1.0
 =============================================
 
 The OpenWS library provides a growing set of tools to work with web services at 
