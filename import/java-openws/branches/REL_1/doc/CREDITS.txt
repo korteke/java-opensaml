@@ -34,3 +34,5 @@ OpenSAML2 Java Stack Implementation Team
    University of Washington
    
 Additional Contributions by:
+
+    WS-Federation contributions by Naveen Sankar
