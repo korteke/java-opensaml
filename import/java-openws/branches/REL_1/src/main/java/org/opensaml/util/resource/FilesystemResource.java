@@ -1,5 +1,5 @@
 /*
- * Copyright [2006] [University Corporation for Advanced Internet Development, Inc.]
+ * Copyright 2006 University Corporation for Advanced Internet Development, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,23 +27,23 @@ import org.opensaml.xml.util.DatatypeHelper;
 /**
  * A resource representing a file on the local filesystem.
  */
-public class FilesystemResource implements Resource {
-    
+public class FilesystemResource extends AbstractFilteredResource {
+
     /** The file represented by this resource. */
     private File resource;
-    
+
     /**
      * Constructor.
-     *
+     * 
      * @param resourcePath the path to the file for this resource
      * 
      * @throws ResourceException thrown if the resource path is null or empty
      */
-    public FilesystemResource(String resourcePath) throws ResourceException{
-        if(DatatypeHelper.isEmpty(resourcePath)){
+    public FilesystemResource(String resourcePath) throws ResourceException {
+        if (DatatypeHelper.isEmpty(resourcePath)) {
             throw new ResourceException("Resource path may not be null or empty");
         }
-        
+
         resource = new File(resourcePath);
     }
 
@@ -54,19 +54,24 @@ public class FilesystemResource implements Resource {
 
     /** {@inheritDoc} */
     public InputStream getInputStream() throws ResourceException {
-        try{
-            return new FileInputStream(resource);
-        }catch(FileNotFoundException e){
+        try {
+            FileInputStream ins = new FileInputStream(resource);
+            if (getResourceFilter() != null) {
+                return getResourceFilter().applyFilter(ins);
+            } else {
+                return ins;
+            }
+        } catch (FileNotFoundException e) {
             throw new ResourceException("Resource file does not exist: " + resource.getAbsolutePath());
         }
     }
 
     /** {@inheritDoc} */
     public DateTime getLastModifiedTime() throws ResourceException {
-        if(!resource.exists()){
+        if (!resource.exists()) {
             throw new ResourceException("Resource file does not exist: " + resource.getAbsolutePath());
         }
-        
+
         return new DateTime(resource.lastModified());
     }
 
@@ -74,27 +79,27 @@ public class FilesystemResource implements Resource {
     public String getLocation() {
         return resource.getAbsolutePath();
     }
-    
+
     /** {@inheritDoc} */
     public String toString() {
         return getLocation();
     }
-    
+
     /** {@inheritDoc} */
     public int hashCode() {
         return getLocation().hashCode();
     }
-    
+
     /** {@inheritDoc} */
     public boolean equals(Object o) {
-        if(o == this){
+        if (o == this) {
             return true;
         }
-        
-        if(o instanceof FilesystemResource){
-            return getLocation().equals(((ClasspathResource)o).getLocation());
+
+        if (o instanceof FilesystemResource) {
+            return getLocation().equals(((ClasspathResource) o).getLocation());
         }
-        
+
         return false;
     }
 }

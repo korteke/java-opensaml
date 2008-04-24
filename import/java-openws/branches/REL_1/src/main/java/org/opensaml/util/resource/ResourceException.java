@@ -1,5 +1,5 @@
 /*
- * Copyright [2006] [University Corporation for Advanced Internet Development, Inc.]
+ * Copyright 2006 University Corporation for Advanced Internet Development, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ public class ResourceException extends Exception {
     public ResourceException() {
         super();
     }
-    
+
     /**
      * Constructor.
      * 
@@ -39,7 +39,7 @@ public class ResourceException extends Exception {
     public ResourceException(String message) {
         super(message);
     }
-    
+
     /**
      * Constructor.
      * 
@@ -48,7 +48,7 @@ public class ResourceException extends Exception {
     public ResourceException(Exception wrappedException) {
         super(wrappedException);
     }
-    
+
     /**
      * Constructor.
      * 

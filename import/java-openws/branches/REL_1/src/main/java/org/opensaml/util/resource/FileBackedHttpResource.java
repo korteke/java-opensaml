@@ -1,5 +1,5 @@
 /*
- * Copyright [2007] [University Corporation for Advanced Internet Development, Inc.]
+ * Copyright 2007 University Corporation for Advanced Internet Development, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,12 +27,12 @@ import org.joda.time.DateTime;
 import org.opensaml.xml.util.DatatypeHelper;
 
 /**
- * A resource representing a file read from an HTTP(S) location.  Every time the file is successfully read 
- * from the URL location it is written to a backing file.  If the file can not be read from the URL it is 
- * read from this backing file, if available.
+ * A resource representing a file read from an HTTP(S) location. Every time the file is successfully read from the URL
+ * location it is written to a backing file. If the file can not be read from the URL it is read from this backing file,
+ * if available.
  * 
- * Note, large files should not be accessed in this manner as the entire file is read into memory before 
- * being written to disk and then returned.
+ * Note, large files should not be accessed in this manner as the entire file is read into memory before being written
+ * to disk and then returned.
  */
 public class FileBackedHttpResource extends HttpResource {
 
@@ -70,17 +70,24 @@ public class FileBackedHttpResource extends HttpResource {
 
     /** {@inheritDoc} */
     public InputStream getInputStream() throws ResourceException {
+        InputStream ins = null;
         try {
             GetMethod getMethod = super.getResource();
             byte[] response = getMethod.getResponseBody();
             saveToResourceFile(response);
-            return getMethod.getResponseBodyAsStream();
+            ins = getMethod.getResponseBodyAsStream();
         } catch (Exception e) {
             try {
-                return new FileInputStream(resourceFile);
+                ins = new FileInputStream(resourceFile);
             } catch (IOException ioe) {
                 throw new ResourceException("Unable to read resource URL or backing file " + resourceFilePath, ioe);
             }
+        }
+
+        if (getResourceFilter() != null) {
+            return getResourceFilter().applyFilter(ins);
+        } else {
+            return ins;
         }
     }
 

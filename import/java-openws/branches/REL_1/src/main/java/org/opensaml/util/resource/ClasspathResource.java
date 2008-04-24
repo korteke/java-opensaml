@@ -1,5 +1,5 @@
 /*
- * Copyright [2007] [University Corporation for Advanced Internet Development, Inc.]
+ * Copyright 2007 University Corporation for Advanced Internet Development, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ import org.opensaml.xml.util.DatatypeHelper;
  * Because object on the classpath are not meant to change during runtime the last modification is set to the time the
  * {@link ClasspathResource} is created and is never changed.
  */
-public class ClasspathResource implements Resource {
+public class ClasspathResource extends AbstractFilteredResource {
 
     /** Classpath location of resource. */
     private URL resource;
@@ -59,17 +59,22 @@ public class ClasspathResource implements Resource {
 
     /** {@inheritDoc} */
     public boolean exists() throws ResourceException {
-        if(resource != null){
+        if (resource != null) {
             return true;
         }
-        
+
         return false;
     }
 
     /** {@inheritDoc} */
     public InputStream getInputStream() throws ResourceException {
         try {
-            return resource.openStream();
+            InputStream ins = resource.openStream();
+            if (getResourceFilter() != null) {
+                return getResourceFilter().applyFilter(ins);
+            } else {
+                return ins;
+            }
         } catch (IOException e) {
             throw new ResourceException("Unable to open resource: " + resource);
         }
@@ -84,27 +89,27 @@ public class ClasspathResource implements Resource {
     public String getLocation() {
         return resource.toString();
     }
-    
+
     /** {@inheritDoc} */
     public String toString() {
         return getLocation();
     }
-    
+
     /** {@inheritDoc} */
     public int hashCode() {
         return getLocation().hashCode();
     }
-    
+
     /** {@inheritDoc} */
     public boolean equals(Object o) {
-        if(o == this){
+        if (o == this) {
             return true;
         }
-        
-        if(o instanceof ClasspathResource){
-            return getLocation().equals(((ClasspathResource)o).getLocation());
+
+        if (o instanceof ClasspathResource) {
+            return getLocation().equals(((ClasspathResource) o).getLocation());
         }
-        
+
         return false;
     }
 }
