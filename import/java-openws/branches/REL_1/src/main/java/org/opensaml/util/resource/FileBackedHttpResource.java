@@ -59,6 +59,24 @@ public class FileBackedHttpResource extends HttpResource {
         resourceFile = new File(resourceFilePath);
     }
 
+    /**
+     * Constructor.
+     * 
+     * @param resource HTTP(S) URL of the resource
+     * @param backingFile filesystem location to store the resource
+     * @param resourceFilter filter to apply to this resource
+     */
+    public FileBackedHttpResource(String resource, String backingFile, ResourceFilter resourceFilter) {
+        super(resource, resourceFilter);
+
+        resourceFilePath = DatatypeHelper.safeTrimOrNullString(backingFile);
+        if (resourceFilePath == null) {
+            throw new IllegalArgumentException("Backing file path may not be null or empty");
+        }
+
+        resourceFile = new File(resourceFilePath);
+    }
+
     /** {@inheritDoc} */
     public boolean exists() throws ResourceException {
         if (!super.exists()) {

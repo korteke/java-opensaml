@@ -45,6 +45,31 @@ public class ClasspathResource extends AbstractFilteredResource {
      * @throws ResourceException thrown if the resource path is null or empty or if the resource does not exist
      */
     public ClasspathResource(String path) throws ResourceException {
+        super();
+        
+        if (DatatypeHelper.isEmpty(path)) {
+            throw new ResourceException("Resource path may not be null or empty");
+        }
+
+        resource = getClass().getResource(path);
+        if (resource == null) {
+            throw new ResourceException("Classpath resource does not exist: " + path);
+        }
+
+        lastModTime = new DateTime();
+    }
+    
+    /**
+     * Constructor.
+     * 
+     * @param path the path to the file for this resource
+     * @param resourceFilter filter to apply to this resource
+     * 
+     * @throws ResourceException thrown if the resource path is null or empty or if the resource does not exist
+     */
+    public ClasspathResource(String path, ResourceFilter resourceFilter) throws ResourceException {
+        super(resourceFilter);
+        
         if (DatatypeHelper.isEmpty(path)) {
             throw new ResourceException("Resource path may not be null or empty");
         }

@@ -47,6 +47,25 @@ public class HttpResource extends AbstractFilteredResource {
      * @param resource HTTP(S) URL of the resource
      */
     public HttpResource(String resource) {
+        super();
+        
+        resourceUrl = DatatypeHelper.safeTrimOrNullString(resource);
+        if (resourceUrl == null) {
+            throw new IllegalArgumentException("Resource URL may not be null or empty");
+        }
+
+        httpClient = new HttpClient();
+    }
+    
+    /**
+     * Constructor.
+     * 
+     * @param resource HTTP(S) URL of the resource
+     * @param resourceFilter filter to apply to this resource
+     */
+    public HttpResource(String resource, ResourceFilter resourceFilter) {
+        super(resourceFilter);
+        
         resourceUrl = DatatypeHelper.safeTrimOrNullString(resource);
         if (resourceUrl == null) {
             throw new IllegalArgumentException("Resource URL may not be null or empty");

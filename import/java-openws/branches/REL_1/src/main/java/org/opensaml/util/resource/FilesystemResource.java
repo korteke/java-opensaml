@@ -40,6 +40,26 @@ public class FilesystemResource extends AbstractFilteredResource {
      * @throws ResourceException thrown if the resource path is null or empty
      */
     public FilesystemResource(String resourcePath) throws ResourceException {
+        super();
+        
+        if (DatatypeHelper.isEmpty(resourcePath)) {
+            throw new ResourceException("Resource path may not be null or empty");
+        }
+
+        resource = new File(resourcePath);
+    }
+    
+    /**
+     * Constructor.
+     * 
+     * @param resourcePath the path to the file for this resource
+     * @param resourceFilter filter to apply to this resource
+     * 
+     * @throws ResourceException thrown if the resource path is null or empty
+     */
+    public FilesystemResource(String resourcePath, ResourceFilter resourceFilter) throws ResourceException {
+        super(resourceFilter);
+        
         if (DatatypeHelper.isEmpty(resourcePath)) {
             throw new ResourceException("Resource path may not be null or empty");
         }
