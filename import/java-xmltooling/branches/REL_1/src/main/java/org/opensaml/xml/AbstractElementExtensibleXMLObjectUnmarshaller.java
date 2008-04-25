@@ -26,6 +26,11 @@ import org.w3c.dom.Attr;
  * <code>xs:anyAttribute</code> attributes or text content.
  */
 public abstract class AbstractElementExtensibleXMLObjectUnmarshaller extends AbstractXMLObjectUnmarshaller {
+    
+    /** Constructor. */
+    public AbstractElementExtensibleXMLObjectUnmarshaller(){
+        super();
+    }
 
     /**
      * Constructor.

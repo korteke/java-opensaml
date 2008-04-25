@@ -57,10 +57,7 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
     /** Factory for XMLObject Marshallers. */
     private MarshallerFactory marshallerFactory;
 
-    /**
-     * Constructor.
-     * 
-     */
+    /** Constructor. */
     protected AbstractXMLObjectMarshaller() {
         marshallerFactory = Configuration.getMarshallerFactory();
     }

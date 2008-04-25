@@ -1,0 +1,7 @@
+Changes in Release 1.1.0
+==============================================
+[JXT-31] - Add BaseXMLObjectMarshaller and BaseXMLObjectUnmarshaller classes that provide no-op implementations of the 
+           methods on the AbstractXMLObjectMarshaller and AbstractXMLObjectUnmarshaller classes.
+
+Changes in Release 1.0.1
+==============================================
