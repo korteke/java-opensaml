@@ -1,0 +1,7 @@
+Changes in Release 1.2.0
+=============================================
+* [JOWS-8] - Allow a filter to be attached to a Resource
+
+Changes in Release 1.1.0
+=============================================
+* Addition of contributed WS-Federation Code

@@ -36,3 +36,4 @@ OpenSAML2 Java Stack Implementation Team
 Additional Contributions by:
 
     WS-Federation contributions by Naveen Sankar
+    WS-Addressing, WS-Policy, WS-Security, and WS-Trust contributions by Valery Tschopp, of SWITCH and the EGEE Collaboration.

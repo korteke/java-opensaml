@@ -1,5 +1,5 @@
 /*
- * Copyright [2006] [University Corporation for Advanced Internet Development, Inc.]
+ * Copyright 2006 University Corporation for Advanced Internet Development, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,15 +16,18 @@
 
 package org.opensaml.ws.soap.util;
 
-
-/**
- * SOAP Related Constants.
- */
+/** SOAP Related Constants. */
 public class SOAPConstants {
 
-    /** XML core namespace. */
+    /** SOAP 1.1 namespace. */
     public static final String SOAP11_NS = "http://schemas.xmlsoap.org/soap/envelope/";
-    
-    /** XML core prefix for xml attributes. */
+
+    /** SOAP 1.1 prefix. */
     public static final String SOAP11_PREFIX = "soap11";
+
+    /** SOAP 1.2 namespace. */
+    public static final String SOAP12_NS = "http://www.w3.org/2003/05/soap-envelope";
+
+    /** SOAP 1.2 prefix. */
+    public static final String SOAP12_PREFIX = "soap12";
 }
