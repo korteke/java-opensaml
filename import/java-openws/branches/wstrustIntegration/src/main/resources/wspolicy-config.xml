@@ -12,9 +12,9 @@
             <BuilderClass
                 className="org.opensaml.ws.wspolicy.impl.AppliesToBuilder" />
             <MarshallingClass
-                className="org.opensaml.ws.wspolicy.impl.AppliesMarshaller" />
+                className="org.opensaml.ws.wspolicy.impl.AppliesToMarshaller" />
             <UnmarshallingClass
-                className="org.opensaml.ws.wspolicy.impl.AppliesUnmarshaller" />
+                className="org.opensaml.ws.wspolicy.impl.AppliesToUnmarshaller" />
         </ObjectProvider>
 
         <!-- wsp:Policy -->
