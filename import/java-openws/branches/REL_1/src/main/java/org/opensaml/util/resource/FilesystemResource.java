@@ -20,6 +20,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.net.URI;
 
 import org.joda.time.DateTime;
 import org.opensaml.xml.util.DatatypeHelper;
@@ -41,14 +42,33 @@ public class FilesystemResource extends AbstractFilteredResource {
      */
     public FilesystemResource(String resourcePath) throws ResourceException {
         super();
-        
+
         if (DatatypeHelper.isEmpty(resourcePath)) {
             throw new ResourceException("Resource path may not be null or empty");
         }
 
         resource = new File(resourcePath);
     }
-    
+
+    /**
+     * Constructor.
+     * 
+     * @param resourceURI file: URI to the file
+     * 
+     * @throws ResourceException thrown if the resource path is null or empty
+     * 
+     * @since 1.2.0
+     */
+    public FilesystemResource(URI resourceURI) throws ResourceException {
+        super();
+
+        if (resourceURI == null) {
+            throw new ResourceException("Resource URL may not be null");
+        }
+
+        resource = new File(resourceURI);
+    }
+
     /**
      * Constructor.
      * 
@@ -59,12 +79,32 @@ public class FilesystemResource extends AbstractFilteredResource {
      */
     public FilesystemResource(String resourcePath, ResourceFilter resourceFilter) throws ResourceException {
         super(resourceFilter);
-        
+
         if (DatatypeHelper.isEmpty(resourcePath)) {
             throw new ResourceException("Resource path may not be null or empty");
         }
 
         resource = new File(resourcePath);
+    }
+
+    /**
+     * Constructor.
+     * 
+     * @param resourceURI the file: URI to the file for this resource
+     * @param resourceFilter filter to apply to this resource
+     * 
+     * @throws ResourceException thrown if the resource path is null or empty
+     * 
+     * @since 1.2.0
+     */
+    public FilesystemResource(URI resourceURI, ResourceFilter resourceFilter) throws ResourceException {
+        super(resourceFilter);
+
+        if (resourceURI == null) {
+            throw new ResourceException("Resource URI may not be null");
+        }
+
+        resource = new File(resourceURI);
     }
 
     /** {@inheritDoc} */

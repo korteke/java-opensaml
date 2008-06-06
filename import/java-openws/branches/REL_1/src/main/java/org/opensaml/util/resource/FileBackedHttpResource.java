@@ -21,6 +21,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
 
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.joda.time.DateTime;
@@ -36,9 +37,6 @@ import org.opensaml.xml.util.DatatypeHelper;
  */
 public class FileBackedHttpResource extends HttpResource {
 
-    /** Filesystem location to store the resource. */
-    private String resourceFilePath;
-
     /** Backing resource file. */
     private File resourceFile;
 
@@ -51,12 +49,29 @@ public class FileBackedHttpResource extends HttpResource {
     public FileBackedHttpResource(String resource, String backingFile) {
         super(resource);
 
-        resourceFilePath = DatatypeHelper.safeTrimOrNullString(backingFile);
-        if (resourceFilePath == null) {
+        if (DatatypeHelper.isEmpty(backingFile)) {
             throw new IllegalArgumentException("Backing file path may not be null or empty");
         }
 
-        resourceFile = new File(resourceFilePath);
+        resourceFile = new File(backingFile);
+    }
+
+    /**
+     * Constructor.
+     * 
+     * @param resource HTTP(S) URL of the resource
+     * @param backingFile file: URI location to store the resource
+     * 
+     * @since 1.2
+     */
+    public FileBackedHttpResource(String resource, URI backingFile) {
+        super(resource);
+
+        if (backingFile == null) {
+            throw new IllegalArgumentException("Backing file path may not be null or empty");
+        }
+
+        resourceFile = new File(backingFile);
     }
 
     /**
@@ -69,12 +84,30 @@ public class FileBackedHttpResource extends HttpResource {
     public FileBackedHttpResource(String resource, String backingFile, ResourceFilter resourceFilter) {
         super(resource, resourceFilter);
 
-        resourceFilePath = DatatypeHelper.safeTrimOrNullString(backingFile);
-        if (resourceFilePath == null) {
+        if (DatatypeHelper.isEmpty(backingFile)) {
             throw new IllegalArgumentException("Backing file path may not be null or empty");
         }
 
-        resourceFile = new File(resourceFilePath);
+        resourceFile = new File(backingFile);
+    }
+
+    /**
+     * Constructor.
+     * 
+     * @param resource HTTP(S) URL of the resource
+     * @param backingFile filesystem location to store the resource
+     * @param resourceFilter filter to apply to this resource
+     * 
+     * @since 1.2
+     */
+    public FileBackedHttpResource(String resource, URI backingFile, ResourceFilter resourceFilter) {
+        super(resource, resourceFilter);
+
+        if (backingFile == null) {
+            throw new IllegalArgumentException("Backing file path may not be null or empty");
+        }
+
+        resourceFile = new File(backingFile);
     }
 
     /** {@inheritDoc} */
@@ -98,7 +131,8 @@ public class FileBackedHttpResource extends HttpResource {
             try {
                 ins = new FileInputStream(resourceFile);
             } catch (IOException ioe) {
-                throw new ResourceException("Unable to read resource URL or backing file " + resourceFilePath, ioe);
+                throw new ResourceException("Unable to read resource URL or backing file "
+                        + resourceFile.getAbsolutePath(), ioe);
             }
         }
 
@@ -140,7 +174,7 @@ public class FileBackedHttpResource extends HttpResource {
             FileOutputStream out = new FileOutputStream(resourceFile);
             out.write(resource);
         } catch (IOException e) {
-            throw new ResourceException("Unable to write resource to backing file " + resourceFilePath, e);
+            throw new ResourceException("Unable to write resource to backing file " + resourceFile.getAbsolutePath(), e);
         }
     }
 }
