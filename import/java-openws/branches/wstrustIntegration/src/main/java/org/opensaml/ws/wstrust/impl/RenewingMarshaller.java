@@ -39,8 +39,7 @@ public class RenewingMarshaller extends AbstractWSTrustObjectMarshaller {
      * Default constructor.
      */
     public RenewingMarshaller() {
-        super(Renewing.ELEMENT_NAME.getNamespaceURI(),
-              Renewing.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
     /*

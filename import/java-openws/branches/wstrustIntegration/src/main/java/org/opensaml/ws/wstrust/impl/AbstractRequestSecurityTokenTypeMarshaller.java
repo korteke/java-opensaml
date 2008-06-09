@@ -14,8 +14,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.opensaml.ws.wstrust.impl;
 
+package org.opensaml.ws.wstrust.impl;
 
 import org.opensaml.ws.wstrust.RequestSecurityTokenType;
 import org.opensaml.xml.AbstractExtensibleXMLObjectMarshaller;
@@ -27,41 +27,44 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
- * AbstractRequestSecurityTokenTypeMarshaller is an abstract marshaller for
- * element of type {@link RequestSecurityTokenType}.
+ * AbstractRequestSecurityTokenTypeMarshaller is an abstract marshaller for element of type
+ * {@link RequestSecurityTokenType}.
  * 
  * @see RequestSecurityTokenType
  * 
  * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
  * @version $Revision$
  */
-public abstract class AbstractRequestSecurityTokenTypeMarshaller extends
-        AbstractExtensibleXMLObjectMarshaller {
+public abstract class AbstractRequestSecurityTokenTypeMarshaller extends AbstractExtensibleXMLObjectMarshaller {
 
     /**
      * Constructor.
      * <p>
      * {@inheritDoc}
      */
-    public AbstractRequestSecurityTokenTypeMarshaller(
-            String targetNamespaceURI, String targetLocalName) {
-        super(targetNamespaceURI, targetLocalName);
+    public AbstractRequestSecurityTokenTypeMarshaller() {
+        super();
     }
 
     /**
-     * Marshalls the &lt;wst:Context&gt; attribute.
+     * Marshalls the &lt;@wsu:Id&gt; and the &lt;@Context&gt; attributes.
      * <p>
      * {@inheritDoc}
      */
     @Override
-    protected void marshallAttributes(XMLObject xmlObject, Element domElement)
-            throws MarshallingException {
-        RequestSecurityTokenType message= (RequestSecurityTokenType) xmlObject;
-        String context= message.getContext();
+    protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
+        RequestSecurityTokenType message = (RequestSecurityTokenType) xmlObject;
+        String id = message.getId();
+        if (id != null) {
+            Document document = domElement.getOwnerDocument();
+            Attr attribute = XMLHelper.constructAttribute(document, RequestSecurityTokenType.ID_ATTR_NAME);
+            attribute.setValue(id);
+            domElement.setAttributeNodeNS(attribute);
+        }
+        String context = message.getContext();
         if (context != null) {
-            Document document= domElement.getOwnerDocument();
-            Attr attribute= XMLHelper.constructAttribute(document,
-                                                         RequestSecurityTokenType.CONTEXT_ATTR_NAME);
+            Document document = domElement.getOwnerDocument();
+            Attr attribute = XMLHelper.constructAttribute(document, RequestSecurityTokenType.CONTEXT_ATTR_NAME);
             attribute.setValue(context);
             domElement.setAttributeNodeNS(attribute);
         }

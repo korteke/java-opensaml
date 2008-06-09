@@ -39,8 +39,7 @@ public class RequestTypeMarshaller extends AbstractWSTrustObjectMarshaller {
      * 
      */
     public RequestTypeMarshaller() {
-        super(RequestType.ELEMENT_NAME.getNamespaceURI(),
-              RequestType.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
     /*

@@ -37,8 +37,7 @@ public class DelegateToUnmarshaller extends
      * {@inheritDoc}
      */
     public DelegateToUnmarshaller() {
-        super(DelegateTo.ELEMENT_NAME.getNamespaceURI(),
-              DelegateTo.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
 }

@@ -37,12 +37,11 @@ public abstract class AbstractWSTrustObjectUnmarshaller extends AbstractXMLObjec
 
     /**
      * Constructor.
-     * 
-     * @param targetNamespaceURI The namespace of the element
-     * @param targetLocalName The local name of the element
+     * <p>
+     * {@inheritDoc}
      */
-    protected AbstractWSTrustObjectUnmarshaller(String targetNamespaceURI, String targetLocalName) {
-        super(targetNamespaceURI, targetLocalName);
+    protected AbstractWSTrustObjectUnmarshaller() {
+        super();
     }
 
     /*

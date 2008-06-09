@@ -40,12 +40,10 @@ public class UseKeyUnmarshaller extends
      * {@inheritDoc}
      */
     public UseKeyUnmarshaller() {
-        super(UseKey.ELEMENT_NAME.getNamespaceURI(),
-              UseKey.ELEMENT_NAME.getLocalPart());
     }
 
     /**
-     * Unmarshalls the &lt;wst:Sig&gt; attribute.
+     * Unmarshalls the &lt;@Sig&gt; attribute.
      * <p>
      * {@inheritDoc}
      */

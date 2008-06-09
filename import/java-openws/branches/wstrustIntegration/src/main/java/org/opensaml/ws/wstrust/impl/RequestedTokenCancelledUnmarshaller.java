@@ -35,7 +35,6 @@ public class RequestedTokenCancelledUnmarshaller extends
      * {@inheritDoc}
      */
     public RequestedTokenCancelledUnmarshaller() {
-        super(RequestedTokenCancelled.ELEMENT_NAME.getNamespaceURI(),
-              RequestedTokenCancelled.ELEMENT_NAME.getLocalPart());
+        super();
     }
 }

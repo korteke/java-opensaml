@@ -35,7 +35,6 @@ public class AllowPostdatingUnmarshaller extends
      * {@inheritDoc}
      */
     public AllowPostdatingUnmarshaller() {
-        super(AllowPostdating.ELEMENT_NAME.getNamespaceURI(),
-              AllowPostdating.ELEMENT_NAME.getLocalPart());
+        super();
     }
 }

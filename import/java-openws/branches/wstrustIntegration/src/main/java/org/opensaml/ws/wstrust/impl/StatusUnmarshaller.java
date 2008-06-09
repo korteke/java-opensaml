@@ -39,8 +39,7 @@ public class StatusUnmarshaller extends AbstractWSTrustObjectUnmarshaller {
      * {@inheritDoc}
      */
     public StatusUnmarshaller() {
-        super(Status.ELEMENT_NAME.getNamespaceURI(),
-              Status.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
     /**

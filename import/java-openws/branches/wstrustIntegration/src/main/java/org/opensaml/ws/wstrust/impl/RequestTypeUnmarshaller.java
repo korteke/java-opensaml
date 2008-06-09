@@ -37,8 +37,7 @@ public class RequestTypeUnmarshaller extends AbstractWSTrustObjectUnmarshaller {
      * {@inheritDoc}
      */
     public RequestTypeUnmarshaller() {
-        super(RequestType.ELEMENT_NAME.getNamespaceURI(),
-              RequestType.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
     /**

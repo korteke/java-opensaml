@@ -37,8 +37,7 @@ public class ProofEncryptionUnmarshaller extends
      * {@inheritDoc}
      */
     public ProofEncryptionUnmarshaller() {
-        super(ProofEncryption.ELEMENT_NAME.getNamespaceURI(),
-              ProofEncryption.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
 }

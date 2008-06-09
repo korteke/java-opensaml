@@ -43,8 +43,7 @@ public interface UseKey extends ElementExtensibleXMLObject, WSTrustObject {
 
     /** the wst:UseKey/@Sig attribute name */
     public final static QName SIG_ATTR_NAME= new QName(WSTrustConstants.WST_NS,
-                                                       SIG_ATTR_LOCAL_NAME,
-                                                       WSTrustConstants.WST_PREFIX);
+                                                       SIG_ATTR_LOCAL_NAME);
 
     /**
      * Returns the wst:UseKey/@Sig attribute value.

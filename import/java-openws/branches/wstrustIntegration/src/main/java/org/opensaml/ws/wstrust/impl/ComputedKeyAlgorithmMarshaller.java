@@ -40,8 +40,7 @@ public class ComputedKeyAlgorithmMarshaller extends
      * 
      */
     public ComputedKeyAlgorithmMarshaller() {
-        super(ComputedKeyAlgorithm.ELEMENT_NAME.getNamespaceURI(),
-              ComputedKeyAlgorithm.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
     /*

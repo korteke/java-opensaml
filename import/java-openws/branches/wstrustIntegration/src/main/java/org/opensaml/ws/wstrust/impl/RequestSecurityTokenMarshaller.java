@@ -33,8 +33,7 @@ public class RequestSecurityTokenMarshaller extends
      * Default constructor.
      */
     public RequestSecurityTokenMarshaller() {
-        super(RequestSecurityToken.ELEMENT_NAME.getNamespaceURI(),
-              RequestSecurityToken.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
 }

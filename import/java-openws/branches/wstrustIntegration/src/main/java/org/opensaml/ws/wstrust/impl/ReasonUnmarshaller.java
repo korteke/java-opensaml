@@ -37,8 +37,7 @@ public class ReasonUnmarshaller extends AbstractWSTrustObjectUnmarshaller {
      * {@inheritDoc}
      */
     public ReasonUnmarshaller() {
-        super(Reason.ELEMENT_NAME.getNamespaceURI(),
-              Reason.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
     /**

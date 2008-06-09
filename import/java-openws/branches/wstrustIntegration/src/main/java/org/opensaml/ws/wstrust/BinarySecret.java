@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.opensaml.ws.wstrust;
 
 import javax.xml.namespace.QName;
@@ -30,35 +31,29 @@ import org.opensaml.xml.schema.XSBase64Binary;
  * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
  * @version $Revision$
  */
-public interface BinarySecret extends XSBase64Binary,
-        AttributeExtensibleXMLObject, WSTrustObject {
+public interface BinarySecret extends XSBase64Binary, AttributeExtensibleXMLObject, WSTrustObject {
 
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME= "BinarySecret";
+    public static final String ELEMENT_LOCAL_NAME = "BinarySecret";
 
     /** Default element name */
-    public final static QName ELEMENT_NAME= new QName(WSTrustConstants.WST_NS,
-                                                      ELEMENT_LOCAL_NAME,
-                                                      WSTrustConstants.WST_PREFIX);
+    public final static QName ELEMENT_NAME = new QName(WSTrustConstants.WST_NS, ELEMENT_LOCAL_NAME,
+            WSTrustConstants.WST_PREFIX);
 
     /** wst:BinarySecret/@Type attribute local name. */
-    public static final String TYPE_ATTR_LOCAL_NAME= "Type";
+    public static final String TYPE_ATTR_LOCAL_NAME = "Type";
 
     /** wst:BinarySecret/@Type attribute name. */
-    public static final QName TYPE_ATTR_NAME= new QName(WSTrustConstants.WST_NS,
-                                                        TYPE_ATTR_LOCAL_NAME,
-                                                        WSTrustConstants.WST_PREFIX);
+    public static final QName TYPE_ATTR_NAME = new QName(WSTrustConstants.WST_NS, TYPE_ATTR_LOCAL_NAME);
 
     /** Type attribute AsymmetricKey URI */
-    public static final String TYPE_ASYMMETRIC_KEY= WSTrustConstants.WST_NS
-            + "/AsymmetricKey";
+    public static final String TYPE_ASYMMETRIC_KEY = WSTrustConstants.WST_NS + "/AsymmetricKey";
 
     /** Type attribute SymmetricKey URI */
-    public static final String TYPE_SYMMETRIC_KEY= WSTrustConstants.WST_NS
-            + "/SymmetricKey";
+    public static final String TYPE_SYMMETRIC_KEY = WSTrustConstants.WST_NS + "/SymmetricKey";
 
     /** Type attribute Nonce URI */
-    public static final String TYPE_NONCE= WSTrustConstants.WST_NS + "/Nonce";
+    public static final String TYPE_NONCE = WSTrustConstants.WST_NS + "/Nonce";
 
     /**
      * Returns the wst:BinarySecret/@Type attribute value.
@@ -70,8 +65,7 @@ public interface BinarySecret extends XSBase64Binary,
     /**
      * Sets the wst:BinarySecret/@Type attribute value.
      * 
-     * @param type
-     *            the Type attribute value to set.
+     * @param type the Type attribute value to set.
      */
     public void setType(String type);
 

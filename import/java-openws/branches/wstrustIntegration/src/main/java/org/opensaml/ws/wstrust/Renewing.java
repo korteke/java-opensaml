@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.opensaml.ws.wstrust;
 
 import javax.xml.namespace.QName;
@@ -29,28 +30,23 @@ import javax.xml.namespace.QName;
 public interface Renewing extends WSTrustObject {
 
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME= "Renewing";
+    public static final String ELEMENT_LOCAL_NAME = "Renewing";
 
     /** Default element name */
-    public final static QName ELEMENT_NAME= new QName(WSTrustConstants.WST_NS,
-                                                      ELEMENT_LOCAL_NAME,
-                                                      WSTrustConstants.WST_PREFIX);
+    public final static QName ELEMENT_NAME = new QName(WSTrustConstants.WST_NS, ELEMENT_LOCAL_NAME,
+            WSTrustConstants.WST_PREFIX);
 
     /** The wst:Renewing/@Allow attribute local name */
-    public static final String ALLOW_ATTR_LOCAL_NAME= "Allow";
+    public static final String ALLOW_ATTR_LOCAL_NAME = "Allow";
 
     /** The wst:Renewing/@Allow attribute name */
-    public static final QName ALLOW_ATTR_NAME= new QName(WSTrustConstants.WST_NS,
-                                                         ALLOW_ATTR_LOCAL_NAME,
-                                                         WSTrustConstants.WST_PREFIX);
+    public static final QName ALLOW_ATTR_NAME = new QName(WSTrustConstants.WST_NS, ALLOW_ATTR_LOCAL_NAME);
 
     /** The wst:Renewing/@OK attribute local name */
-    public static final String OK_ATTR_LOCAL_NAME= "OK";
+    public static final String OK_ATTR_LOCAL_NAME = "OK";
 
     /** The wst:Renewing/@OK attribute name */
-    public static final QName OK_ATTR_NAME= new QName(WSTrustConstants.WST_NS,
-                                                      OK_ATTR_LOCAL_NAME,
-                                                      WSTrustConstants.WST_PREFIX);
+    public static final QName OK_ATTR_NAME = new QName(WSTrustConstants.WST_NS, OK_ATTR_LOCAL_NAME);
 
     /**
      * Returns the wst:Renewing/@Allow attribute value.
@@ -62,8 +58,7 @@ public interface Renewing extends WSTrustObject {
     /**
      * Sets the wst:Renewing/@Allow attribute value.
      * 
-     * @param allow
-     *            the Allow attribute value.
+     * @param allow the Allow attribute value.
      */
     public void setAllow(Boolean allow);
 
@@ -77,8 +72,7 @@ public interface Renewing extends WSTrustObject {
     /**
      * Sets the wst:Renewing/@OK attribute value.
      * 
-     * @param ok
-     *            the OK attribute value.
+     * @param ok the OK attribute value.
      */
     public void setOK(Boolean ok);
 

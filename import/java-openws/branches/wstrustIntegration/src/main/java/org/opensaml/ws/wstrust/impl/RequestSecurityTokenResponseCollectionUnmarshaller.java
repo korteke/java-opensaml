@@ -44,8 +44,7 @@ public class RequestSecurityTokenResponseCollectionUnmarshaller extends
      * Default constructor.
      */
     public RequestSecurityTokenResponseCollectionUnmarshaller() {
-        super(RequestSecurityTokenResponseCollection.ELEMENT_NAME.getNamespaceURI(),
-              RequestSecurityTokenResponseCollection.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
     /**

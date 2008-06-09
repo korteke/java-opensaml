@@ -37,8 +37,7 @@ public class CancelTargetUnmarshaller extends
      * {@inheritDoc}
      */
     public CancelTargetUnmarshaller() {
-        super(CancelTarget.ELEMENT_NAME.getNamespaceURI(),
-              CancelTarget.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
 }

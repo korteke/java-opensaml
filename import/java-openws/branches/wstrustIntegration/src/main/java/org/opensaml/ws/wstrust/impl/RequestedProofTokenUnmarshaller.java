@@ -40,8 +40,7 @@ public class RequestedProofTokenUnmarshaller extends
      * {@inheritDoc}
      */
     public RequestedProofTokenUnmarshaller() {
-        super(RequestedProofToken.ELEMENT_NAME.getNamespaceURI(),
-              RequestedProofToken.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
     /**

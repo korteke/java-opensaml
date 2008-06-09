@@ -33,8 +33,7 @@ public class RequestedAttachedReferenceMarshaller extends
      * Default constructor.
      */
     public RequestedAttachedReferenceMarshaller() {
-        super(RequestedAttachedReference.ELEMENT_NAME.getNamespaceURI(),
-              RequestedAttachedReference.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
 }

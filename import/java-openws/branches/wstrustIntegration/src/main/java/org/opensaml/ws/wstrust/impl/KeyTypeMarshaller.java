@@ -39,8 +39,7 @@ public class KeyTypeMarshaller extends AbstractWSTrustObjectMarshaller {
      * 
      */
     public KeyTypeMarshaller() {
-        super(KeyType.ELEMENT_NAME.getNamespaceURI(),
-              KeyType.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
     /*

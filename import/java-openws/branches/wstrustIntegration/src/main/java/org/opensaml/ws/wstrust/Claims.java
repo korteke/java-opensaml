@@ -14,10 +14,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.opensaml.ws.wstrust;
 
 import javax.xml.namespace.QName;
-
 
 import org.opensaml.ws.wssecurity.BinarySecurityToken;
 import org.opensaml.ws.wssecurity.UsernameToken;
@@ -34,24 +34,20 @@ import org.opensaml.xml.ElementExtensibleXMLObject;
  * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
  * @version $Revision$
  */
-public interface Claims extends AttributeExtensibleXMLObject,
-        ElementExtensibleXMLObject, WSTrustObject {
+public interface Claims extends AttributeExtensibleXMLObject, ElementExtensibleXMLObject, WSTrustObject {
 
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME= "Claims";
+    public static final String ELEMENT_LOCAL_NAME = "Claims";
 
     /** Default element name */
-    public final static QName ELEMENT_NAME= new QName(WSTrustConstants.WST_NS,
-                                                      ELEMENT_LOCAL_NAME,
-                                                      WSTrustConstants.WST_PREFIX);
+    public final static QName ELEMENT_NAME = new QName(WSTrustConstants.WST_NS, ELEMENT_LOCAL_NAME,
+            WSTrustConstants.WST_PREFIX);
 
     /** The wst:Claims/@Dialect attribute local name */
-    public final static String DIALECT_ATTR_LOCAL_NAME= "Dialect";
+    public final static String DIALECT_ATTR_LOCAL_NAME = "Dialect";
 
     /** The wst:Claims/@Dialect attribute name */
-    public final static QName DIALECT_ATTR_NAME= new QName(WSTrustConstants.WST_NS,
-                                                           DIALECT_ATTR_LOCAL_NAME,
-                                                           WSTrustConstants.WST_PREFIX);
+    public final static QName DIALECT_ATTR_NAME = new QName(WSTrustConstants.WST_NS, DIALECT_ATTR_LOCAL_NAME);
 
     /**
      * Returns the wst:Claims/@Dialect attribute value.
@@ -63,8 +59,7 @@ public interface Claims extends AttributeExtensibleXMLObject,
     /**
      * Sets the wst:Claims/@Dialect attribute value.
      * 
-     * @param dialect
-     *            the Dialect attribute value.
+     * @param dialect the Dialect attribute value.
      */
     public void setDialect(String dialect);
 

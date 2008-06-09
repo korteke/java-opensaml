@@ -32,8 +32,7 @@ public class StatusMarshaller extends AbstractWSTrustObjectMarshaller {
      * Default constructor.
      */
     public StatusMarshaller() {
-        super(Status.ELEMENT_NAME.getNamespaceURI(),
-              Status.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
 }

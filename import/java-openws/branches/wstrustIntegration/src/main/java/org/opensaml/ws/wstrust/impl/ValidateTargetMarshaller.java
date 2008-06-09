@@ -35,8 +35,7 @@ public class ValidateTargetMarshaller extends
      * Default constructor.
      */
     public ValidateTargetMarshaller() {
-        super(ValidateTarget.ELEMENT_NAME.getNamespaceURI(),
-              ValidateTarget.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
 }

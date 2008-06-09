@@ -37,12 +37,11 @@ public abstract class AbstractWSTrustObjectMarshaller extends AbstractXMLObjectM
 
     /**
      * Constructor.
-     * 
-     * @param targetNamespaceURI The namespace of the element
-     * @param targetLocalName The local name of the element
+     * <p>
+     * {@inheritDoc}
      */
-    protected AbstractWSTrustObjectMarshaller(String targetNamespaceURI, String targetLocalName) {
-        super(targetNamespaceURI, targetLocalName);
+    protected AbstractWSTrustObjectMarshaller() {
+        super();
     }
 
     /*

@@ -39,8 +39,7 @@ public class ChallengeMarshaller extends AbstractWSTrustObjectMarshaller {
      * 
      */
     public ChallengeMarshaller() {
-        super(Challenge.ELEMENT_NAME.getNamespaceURI(),
-              Challenge.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
     /*

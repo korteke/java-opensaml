@@ -37,8 +37,7 @@ public class RenewTargetUnmarshaller extends
      * {@inheritDoc}
      */
     public RenewTargetUnmarshaller() {
-        super(RenewTarget.ELEMENT_NAME.getNamespaceURI(),
-              RenewTarget.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
 }

@@ -40,8 +40,7 @@ public class AuthenticatorUnmarshaller extends
      * {@inheritDoc}
      */
     public AuthenticatorUnmarshaller() {
-        super(Authenticator.ELEMENT_NAME.getNamespaceURI(),
-              Authenticator.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
     /**

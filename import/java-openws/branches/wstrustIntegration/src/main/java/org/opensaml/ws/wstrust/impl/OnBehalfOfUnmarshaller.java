@@ -41,8 +41,7 @@ public class OnBehalfOfUnmarshaller extends
      * {@inheritDoc}
      */
     public OnBehalfOfUnmarshaller() {
-        super(OnBehalfOf.ELEMENT_NAME.getNamespaceURI(),
-              OnBehalfOf.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
     /**

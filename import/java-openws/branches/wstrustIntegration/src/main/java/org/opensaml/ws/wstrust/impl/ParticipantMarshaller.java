@@ -16,7 +16,6 @@
  */
 package org.opensaml.ws.wstrust.impl;
 
-import org.opensaml.ws.wstrust.Participant;
 
 /**
  * PrimaryMarshaller
@@ -30,8 +29,7 @@ public class ParticipantMarshaller extends AbstractParticipantTypeMarshaller {
      * Default constructor.
      */
     public ParticipantMarshaller() {
-        super(Participant.ELEMENT_NAME.getNamespaceURI(),
-              Participant.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
 }

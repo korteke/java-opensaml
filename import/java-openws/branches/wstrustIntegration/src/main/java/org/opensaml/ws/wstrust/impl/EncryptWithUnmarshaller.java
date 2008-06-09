@@ -37,8 +37,7 @@ public class EncryptWithUnmarshaller extends AbstractWSTrustObjectUnmarshaller {
      * {@inheritDoc}
      */
     public EncryptWithUnmarshaller() {
-        super(EncryptWith.ELEMENT_NAME.getNamespaceURI(),
-              EncryptWith.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
     /**

@@ -38,8 +38,7 @@ public class KeySizeMarshaller extends AbstractWSTrustObjectMarshaller {
      * Default constructor.
      */
     public KeySizeMarshaller() {
-        super(KeySize.ELEMENT_NAME.getNamespaceURI(),
-              KeySize.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
     /*

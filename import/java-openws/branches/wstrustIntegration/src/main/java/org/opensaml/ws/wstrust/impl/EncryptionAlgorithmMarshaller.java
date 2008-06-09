@@ -40,8 +40,7 @@ public class EncryptionAlgorithmMarshaller extends
      * 
      */
     public EncryptionAlgorithmMarshaller() {
-        super(EncryptionAlgorithm.ELEMENT_NAME.getNamespaceURI(),
-              EncryptionAlgorithm.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
     /*

@@ -38,8 +38,7 @@ public class ComputedKeyAlgorithmUnmarshaller extends
      * {@inheritDoc}
      */
     public ComputedKeyAlgorithmUnmarshaller() {
-        super(ComputedKeyAlgorithm.ELEMENT_NAME.getNamespaceURI(),
-              ComputedKeyAlgorithm.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
     /**

@@ -17,7 +17,6 @@
 package org.opensaml.ws.wstrust.impl;
 
 
-import org.opensaml.ws.wstrust.Participant;
 import org.opensaml.xml.AbstractElementExtensibleXMLObjectUnmarshaller;
 
 /**
@@ -33,7 +32,6 @@ public class ParticipantUnmarshaller extends
      * Default constructor.
      */
     public ParticipantUnmarshaller() {
-        super(Participant.ELEMENT_NAME.getNamespaceURI(),
-              Participant.ELEMENT_NAME.getLocalPart());
+        super();
     }
 }

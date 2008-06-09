@@ -35,8 +35,7 @@ public class DelegateToMarshaller extends
      * Default constructor.
      */
     public DelegateToMarshaller() {
-        super(DelegateTo.ELEMENT_NAME.getNamespaceURI(),
-              DelegateTo.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
 }

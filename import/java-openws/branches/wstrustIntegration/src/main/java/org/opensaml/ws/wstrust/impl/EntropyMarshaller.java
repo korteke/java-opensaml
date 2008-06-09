@@ -34,8 +34,7 @@ public class EntropyMarshaller extends AbstractExtensibleXMLObjectMarshaller {
      * Default constructor.
      */
     public EntropyMarshaller() {
-        super(Entropy.ELEMENT_NAME.getNamespaceURI(),
-              Entropy.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
 }

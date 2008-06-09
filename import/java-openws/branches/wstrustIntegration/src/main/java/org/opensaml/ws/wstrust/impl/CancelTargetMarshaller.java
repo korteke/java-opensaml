@@ -35,8 +35,7 @@ public class CancelTargetMarshaller extends
      * Default constructor.
      */
     public CancelTargetMarshaller() {
-        super(CancelTarget.ELEMENT_NAME.getNamespaceURI(),
-              CancelTarget.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
 }

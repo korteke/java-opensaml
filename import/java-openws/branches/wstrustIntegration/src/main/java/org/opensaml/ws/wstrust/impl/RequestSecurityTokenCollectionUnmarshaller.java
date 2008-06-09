@@ -41,8 +41,7 @@ public class RequestSecurityTokenCollectionUnmarshaller extends
      * {@inheritDoc}
      */
     public RequestSecurityTokenCollectionUnmarshaller() {
-        super(RequestSecurityTokenCollection.ELEMENT_NAME.getNamespaceURI(),
-              RequestSecurityTokenCollection.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
     /**

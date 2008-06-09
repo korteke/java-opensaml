@@ -35,8 +35,7 @@ public class RequestedAttachedReferenceUnmarshaller extends
      * {@inheritDoc}
      */
     public RequestedAttachedReferenceUnmarshaller() {
-        super(RequestedAttachedReference.ELEMENT_NAME.getNamespaceURI(),
-              RequestedAttachedReference.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
 }

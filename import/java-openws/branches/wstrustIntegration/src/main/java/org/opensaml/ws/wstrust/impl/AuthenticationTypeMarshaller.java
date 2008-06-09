@@ -41,8 +41,7 @@ public class AuthenticationTypeMarshaller extends
      * {@inheritDoc}
      */
     public AuthenticationTypeMarshaller() {
-        super(AuthenticationType.ELEMENT_NAME.getNamespaceURI(),
-              AuthenticationType.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
     /*

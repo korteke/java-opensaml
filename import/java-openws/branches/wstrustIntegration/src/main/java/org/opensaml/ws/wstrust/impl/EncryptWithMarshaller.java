@@ -39,8 +39,7 @@ public class EncryptWithMarshaller extends AbstractWSTrustObjectMarshaller {
      * 
      */
     public EncryptWithMarshaller() {
-        super(EncryptWith.ELEMENT_NAME.getNamespaceURI(),
-              EncryptWith.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
     /*

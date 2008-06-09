@@ -35,8 +35,7 @@ public class RequestedProofTokenMarshaller extends
      * Default constructor.
      */
     public RequestedProofTokenMarshaller() {
-        super(RequestedProofToken.ELEMENT_NAME.getNamespaceURI(),
-              RequestedProofToken.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
 }

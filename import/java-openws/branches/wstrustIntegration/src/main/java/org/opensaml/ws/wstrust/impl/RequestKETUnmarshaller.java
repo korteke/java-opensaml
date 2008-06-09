@@ -34,7 +34,6 @@ public class RequestKETUnmarshaller extends AbstractWSTrustObjectUnmarshaller {
      * {@inheritDoc}
      */
     public RequestKETUnmarshaller() {
-        super(RequestKET.ELEMENT_NAME.getNamespaceURI(),
-              RequestKET.ELEMENT_NAME.getLocalPart());
+        super();
     }
 }

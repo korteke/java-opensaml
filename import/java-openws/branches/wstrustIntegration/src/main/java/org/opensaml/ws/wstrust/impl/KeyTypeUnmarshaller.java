@@ -37,8 +37,7 @@ public class KeyTypeUnmarshaller extends AbstractWSTrustObjectUnmarshaller {
      * {@inheritDoc}
      */
     public KeyTypeUnmarshaller() {
-        super(KeyType.ELEMENT_NAME.getNamespaceURI(),
-              KeyType.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
     /**

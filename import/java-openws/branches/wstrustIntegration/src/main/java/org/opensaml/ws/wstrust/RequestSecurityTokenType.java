@@ -22,6 +22,7 @@ import javax.xml.namespace.QName;
 import org.opensaml.ws.wspolicy.AppliesTo;
 import org.opensaml.ws.wspolicy.Policy;
 import org.opensaml.ws.wspolicy.PolicyReference;
+import org.opensaml.ws.wssecurity.AttributedId;
 import org.opensaml.ws.wssecurity.Timestamp;
 import org.opensaml.xml.AttributeExtensibleXMLObject;
 import org.opensaml.xml.ElementExtensibleXMLObject;
@@ -31,7 +32,7 @@ import org.opensaml.xml.signature.SignableXMLObject;
  * Abstract interface for the &lt;wst:RequestSecurityToken&gt; (RST) element or the
  * &lt;wst:RequestSecurityTokenResponse&gt; (RSTR) element.
  * <p>
- * The element have a &lt;wst:Context&gt; attribute.
+ * The element have a &lt;@wsu:Id&gt; and a &lt;@Context&gt; attributes.
  * <p>
  * The element have the following possible child elements:
  * <ul>
@@ -71,29 +72,28 @@ import org.opensaml.xml.signature.SignableXMLObject;
  * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
  * @version $Revision$
  */
-public abstract interface RequestSecurityTokenType extends AttributeExtensibleXMLObject, ElementExtensibleXMLObject,
-        SignableXMLObject {
+public abstract interface RequestSecurityTokenType extends AttributedId, AttributeExtensibleXMLObject,
+        ElementExtensibleXMLObject, SignableXMLObject {
 
     /**
-     * the &lt;WSTrustMessage/@wst:Context&gt; attribute local name
+     * the &lt;@Context&gt; attribute local name
      */
     public final static String CONTEXT_ATTR_LOCAL_NAME = "Context";
 
     /**
-     * the &lt;WSTrustMessage/@wst:Context&gt; attribute name
+     * the &lt;@Context&gt; attribute name
      */
-    public final static QName CONTEXT_ATTR_NAME = new QName(WSTrustConstants.WST_NS, CONTEXT_ATTR_LOCAL_NAME,
-            WSTrustConstants.WST_PREFIX);
+    public final static QName CONTEXT_ATTR_NAME = new QName(WSTrustConstants.WST_NS, CONTEXT_ATTR_LOCAL_NAME);
 
     /**
-     * Returns the &lt;WSTrustMessage/@Context&gt; attribute value
+     * Returns the &lt;@Context&gt; attribute value
      * 
-     * @return The &lt;WSTrustMessage/@Context&gt; attribute value or <code>null</code>.
+     * @return The &lt;@Context&gt; attribute value or <code>null</code>.
      */
     public String getContext();
 
     /**
-     * Sets the &lt;WSTrustMessage/@wst:Context&gt; attribute value
+     * Sets the &lt;@Context&gt; attribute value
      * 
      * @param context The Context attribute value
      */

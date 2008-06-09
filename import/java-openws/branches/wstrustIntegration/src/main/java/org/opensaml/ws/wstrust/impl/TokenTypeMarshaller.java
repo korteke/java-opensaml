@@ -39,8 +39,7 @@ public class TokenTypeMarshaller extends AbstractWSTrustObjectMarshaller {
      * 
      */
     public TokenTypeMarshaller() {
-        super(TokenType.ELEMENT_NAME.getNamespaceURI(),
-              TokenType.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
     /*

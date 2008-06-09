@@ -37,8 +37,7 @@ public class CodeUnmarshaller extends AbstractWSTrustObjectUnmarshaller {
      * {@inheritDoc}
      */
     public CodeUnmarshaller() {
-        super(Code.ELEMENT_NAME.getNamespaceURI(),
-              Code.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
     /**

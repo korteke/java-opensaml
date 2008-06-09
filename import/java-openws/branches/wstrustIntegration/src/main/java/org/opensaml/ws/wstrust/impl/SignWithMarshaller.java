@@ -39,8 +39,7 @@ public class SignWithMarshaller extends AbstractWSTrustObjectMarshaller {
      * 
      */
     public SignWithMarshaller() {
-        super(SignWith.ELEMENT_NAME.getNamespaceURI(),
-              SignWith.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
     /*

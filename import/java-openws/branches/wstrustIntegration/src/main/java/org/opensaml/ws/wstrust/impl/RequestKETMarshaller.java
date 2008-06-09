@@ -33,8 +33,7 @@ public class RequestKETMarshaller extends AbstractWSTrustObjectMarshaller {
      * 
      */
     public RequestKETMarshaller() {
-        super(RequestKET.ELEMENT_NAME.getNamespaceURI(),
-              RequestKET.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
 }

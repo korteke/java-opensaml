@@ -35,8 +35,7 @@ public class KeyExchangeTokenMarshaller extends
      * Default constructor.
      */
     public KeyExchangeTokenMarshaller() {
-        super(KeyExchangeToken.ELEMENT_NAME.getNamespaceURI(),
-              KeyExchangeToken.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
 }

@@ -38,8 +38,7 @@ public class SignatureAlgorithmUnmarshaller extends
      * {@inheritDoc}
      */
     public SignatureAlgorithmUnmarshaller() {
-        super(SignatureAlgorithm.ELEMENT_NAME.getNamespaceURI(),
-              SignatureAlgorithm.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
     /**

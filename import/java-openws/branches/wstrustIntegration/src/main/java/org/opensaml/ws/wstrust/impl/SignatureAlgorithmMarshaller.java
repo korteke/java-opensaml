@@ -40,8 +40,7 @@ public class SignatureAlgorithmMarshaller extends
      * 
      */
     public SignatureAlgorithmMarshaller() {
-        super(SignatureAlgorithm.ELEMENT_NAME.getNamespaceURI(),
-              SignatureAlgorithm.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
     /*

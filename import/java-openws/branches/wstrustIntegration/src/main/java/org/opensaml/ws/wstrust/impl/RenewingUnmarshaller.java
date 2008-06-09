@@ -38,12 +38,11 @@ public class RenewingUnmarshaller extends AbstractWSTrustObjectUnmarshaller {
      * {@inheritDoc}
      */
     public RenewingUnmarshaller() {
-        super(Renewing.ELEMENT_NAME.getNamespaceURI(),
-              Renewing.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
     /**
-     * Unmarshalls the &lt;wst:OK&gt; and the &lt;Allow&gt; attributes.
+     * Unmarshalls the &lt;@OK&gt; and the &lt;@Allow&gt; attributes.
      * <p>
      * {@inheritDoc}
      */

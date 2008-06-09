@@ -47,8 +47,7 @@ public class BinarySecretMarshaller extends AbstractWSTrustObjectMarshaller {
      * 
      */
     public BinarySecretMarshaller() {
-        super(BinarySecret.ELEMENT_NAME.getNamespaceURI(),
-              BinarySecret.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
     /**
@@ -65,7 +64,7 @@ public class BinarySecretMarshaller extends AbstractWSTrustObjectMarshaller {
     }
 
     /**
-     * Marshalls the &lt;wst:Type&gt; and the <code>xs:anyAttribute</code>
+     * Marshalls the &lt;@Type&gt; and the <code>xs:anyAttribute</code>
      * attributes.
      * <p>
      * {@inheritDoc}

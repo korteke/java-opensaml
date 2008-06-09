@@ -30,9 +30,8 @@ public abstract class AbstractRequestedReferenceTypeMarshaller extends
      * <p>
      * {@inheritDoc}
      */
-    public AbstractRequestedReferenceTypeMarshaller(String targetNamespaceURI,
-            String targetLocalName) {
-        super(targetNamespaceURI, targetLocalName);
+    public AbstractRequestedReferenceTypeMarshaller() {
+        super();
     }
 
 }

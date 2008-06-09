@@ -37,8 +37,7 @@ public class KeySizeUnmarshaller extends AbstractWSTrustObjectUnmarshaller {
      * {@inheritDoc}
      */
     public KeySizeUnmarshaller() {
-        super(KeySize.ELEMENT_NAME.getNamespaceURI(),
-              KeySize.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
     /**

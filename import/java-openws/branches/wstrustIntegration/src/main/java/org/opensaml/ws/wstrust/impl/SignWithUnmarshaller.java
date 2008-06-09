@@ -37,8 +37,7 @@ public class SignWithUnmarshaller extends AbstractWSTrustObjectUnmarshaller {
      * {@inheritDoc}
      */
     public SignWithUnmarshaller() {
-        super(SignWith.ELEMENT_NAME.getNamespaceURI(),
-              SignWith.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
     /**

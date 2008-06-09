@@ -34,8 +34,7 @@ public class RequestedUnattachedReferenceMarshaller extends
      * 
      */
     public RequestedUnattachedReferenceMarshaller() {
-        super(RequestedUnattachedReference.ELEMENT_NAME.getNamespaceURI(),
-              RequestedUnattachedReference.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
 }

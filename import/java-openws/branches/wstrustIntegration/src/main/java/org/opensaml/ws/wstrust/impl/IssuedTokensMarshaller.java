@@ -32,8 +32,7 @@ public class IssuedTokensMarshaller extends AbstractWSTrustObjectMarshaller {
      * Default constructor.
      */
     public IssuedTokensMarshaller() {
-        super(IssuedTokens.ELEMENT_NAME.getNamespaceURI(),
-              IssuedTokens.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
 }

@@ -33,8 +33,7 @@ public class SignChallengeResponseMarshaller extends
      * Default constructor.
      */
     public SignChallengeResponseMarshaller() {
-        super(SignChallengeResponse.ELEMENT_NAME.getNamespaceURI(),
-              SignChallengeResponse.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
 }

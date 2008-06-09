@@ -38,8 +38,7 @@ public class KeyWrapAlgorithmUnmarshaller extends
      * {@inheritDoc}
      */
     public KeyWrapAlgorithmUnmarshaller() {
-        super(KeyWrapAlgorithm.ELEMENT_NAME.getNamespaceURI(),
-              KeyWrapAlgorithm.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
     /**

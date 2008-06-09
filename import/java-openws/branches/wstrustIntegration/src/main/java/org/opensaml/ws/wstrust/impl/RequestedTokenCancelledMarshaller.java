@@ -33,8 +33,7 @@ public class RequestedTokenCancelledMarshaller extends
      * Default constructor.
      */
     public RequestedTokenCancelledMarshaller() {
-        super(RequestedTokenCancelled.ELEMENT_NAME.getNamespaceURI(),
-              RequestedTokenCancelled.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
 }

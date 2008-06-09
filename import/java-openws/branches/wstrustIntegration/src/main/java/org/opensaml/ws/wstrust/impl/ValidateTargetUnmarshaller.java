@@ -37,8 +37,7 @@ public class ValidateTargetUnmarshaller extends
      * {@inheritDoc}
      */
     public ValidateTargetUnmarshaller() {
-        super(ValidateTarget.ELEMENT_NAME.getNamespaceURI(),
-              ValidateTarget.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
 }

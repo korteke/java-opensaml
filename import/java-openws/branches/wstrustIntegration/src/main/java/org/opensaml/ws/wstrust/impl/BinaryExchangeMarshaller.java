@@ -48,8 +48,7 @@ public class BinaryExchangeMarshaller extends AbstractWSTrustObjectMarshaller {
      * Default constructor.
      */
     public BinaryExchangeMarshaller() {
-        super(BinaryExchange.ELEMENT_NAME.getNamespaceURI(),
-              BinaryExchange.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
     /**

@@ -37,8 +37,7 @@ public class EncryptionUnmarshaller extends
      * {@inheritDoc}
      */
     public EncryptionUnmarshaller() {
-        super(Encryption.ELEMENT_NAME.getNamespaceURI(),
-              Encryption.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
 }

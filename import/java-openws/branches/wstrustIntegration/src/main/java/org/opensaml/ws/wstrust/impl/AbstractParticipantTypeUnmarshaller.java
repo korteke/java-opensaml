@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.opensaml.ws.wstrust.impl;
 
 import org.opensaml.xml.AbstractElementExtensibleXMLObjectUnmarshaller;
@@ -24,17 +25,15 @@ import org.opensaml.xml.AbstractElementExtensibleXMLObjectUnmarshaller;
  * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
  * @version $Revision$
  */
-public abstract class AbstractParticipantTypeUnmarshaller extends
-        AbstractElementExtensibleXMLObjectUnmarshaller {
+public abstract class AbstractParticipantTypeUnmarshaller extends AbstractElementExtensibleXMLObjectUnmarshaller {
 
     /**
      * Constructor.
      * <p>
      * {@inheritDoc}
      */
-    public AbstractParticipantTypeUnmarshaller(String namespaceURI,
-            String localPart) {
-        super(namespaceURI, localPart);
+    public AbstractParticipantTypeUnmarshaller() {
+        super();
     }
 
 }

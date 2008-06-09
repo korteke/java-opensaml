@@ -39,8 +39,7 @@ public class CodeMarshaller extends AbstractWSTrustObjectMarshaller {
      * 
      */
     public CodeMarshaller() {
-        super(Code.ELEMENT_NAME.getNamespaceURI(),
-              Code.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
     /*

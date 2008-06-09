@@ -35,8 +35,7 @@ public class ProofEncryptionMarshaller extends
      * Default constructor.
      */
     public ProofEncryptionMarshaller() {
-        super(ProofEncryption.ELEMENT_NAME.getNamespaceURI(),
-              ProofEncryption.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
 }

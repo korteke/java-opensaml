@@ -42,9 +42,8 @@ public abstract class AbstractRequestedReferenceTypeUnmarshaller extends
      * <p>
      * {@inheritDoc}
      */
-    public AbstractRequestedReferenceTypeUnmarshaller(
-            String targetNamespaceURI, String targetLocalName) {
-        super(targetNamespaceURI, targetLocalName);
+    public AbstractRequestedReferenceTypeUnmarshaller() {
+        super();
     }
 
     /**

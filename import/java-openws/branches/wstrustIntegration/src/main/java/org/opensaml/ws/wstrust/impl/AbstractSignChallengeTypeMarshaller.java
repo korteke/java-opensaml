@@ -32,9 +32,8 @@ public abstract class AbstractSignChallengeTypeMarshaller extends
      * <p>
      * {@inheritDoc}
      */
-    public AbstractSignChallengeTypeMarshaller(String namespaceURI,
-            String localPart) {
-        super(namespaceURI, localPart);
+    public AbstractSignChallengeTypeMarshaller() {
+        super();
     }
 
 }

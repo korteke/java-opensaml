@@ -34,8 +34,7 @@ public class AuthenticatorMarshaller extends AbstractElementExtensibleXMLObjectM
      * Default constructor.
      */
     public AuthenticatorMarshaller() {
-        super(Authenticator.ELEMENT_NAME.getNamespaceURI(),
-              Authenticator.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
 }

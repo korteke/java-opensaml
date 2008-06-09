@@ -40,8 +40,7 @@ public class ForwardableMarshaller extends AbstractWSTrustObjectMarshaller {
      * 
      */
     public ForwardableMarshaller() {
-        super(Forwardable.ELEMENT_NAME.getNamespaceURI(),
-              Forwardable.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
     /*

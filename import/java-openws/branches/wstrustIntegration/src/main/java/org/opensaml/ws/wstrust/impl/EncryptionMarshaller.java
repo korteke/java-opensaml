@@ -35,8 +35,7 @@ public class EncryptionMarshaller extends
      * Default constructor.
      */
     public EncryptionMarshaller() {
-        super(Encryption.ELEMENT_NAME.getNamespaceURI(),
-              Encryption.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
 }

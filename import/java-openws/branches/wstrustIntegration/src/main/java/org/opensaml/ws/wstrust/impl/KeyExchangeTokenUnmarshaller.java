@@ -37,8 +37,7 @@ public class KeyExchangeTokenUnmarshaller extends
      * {@inheritDoc}
      */
     public KeyExchangeTokenUnmarshaller() {
-        super(KeyExchangeToken.ELEMENT_NAME.getNamespaceURI(),
-              KeyExchangeToken.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
 }

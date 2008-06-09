@@ -42,12 +42,11 @@ public class BinarySecretUnmarshaller extends AbstractWSTrustObjectUnmarshaller 
      * {@inheritDoc}
      */
     public BinarySecretUnmarshaller() {
-        super(BinarySecret.ELEMENT_NAME.getNamespaceURI(),
-              BinarySecret.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
     /**
-     * Unmarshalls the &lt;wst:Type&gt; and the <code>xs:anyAttribute</code>
+     * Unmarshalls the &lt;@Type&gt; and the <code>xs:anyAttribute</code>
      * attributes.
      * <p>
      * {@inheritDoc}

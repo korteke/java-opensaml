@@ -35,8 +35,7 @@ public class SignChallengeUnmarshaller extends
      * {@inheritDoc}
      */
     public SignChallengeUnmarshaller() {
-        super(SignChallenge.ELEMENT_NAME.getNamespaceURI(),
-              SignChallenge.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
 }

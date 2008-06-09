@@ -37,8 +37,7 @@ public class ChallengeUnmarshaller extends AbstractWSTrustObjectUnmarshaller {
      * {@inheritDoc}
      */
     public ChallengeUnmarshaller() {
-        super(Challenge.ELEMENT_NAME.getNamespaceURI(),
-              Challenge.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
     /**

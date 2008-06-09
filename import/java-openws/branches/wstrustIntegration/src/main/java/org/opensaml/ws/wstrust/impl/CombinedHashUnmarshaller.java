@@ -37,8 +37,7 @@ public class CombinedHashUnmarshaller extends AbstractWSTrustObjectUnmarshaller 
      * {@inheritDoc}
      */
     public CombinedHashUnmarshaller() {
-        super(CombinedHash.ELEMENT_NAME.getNamespaceURI(),
-              CombinedHash.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
     /**

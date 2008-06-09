@@ -41,20 +41,7 @@ public class EntropyUnmarshaller extends
      * {@inheritDoc}
      */
     public EntropyUnmarshaller() {
-        this(Entropy.ELEMENT_NAME.getNamespaceURI(),
-             Entropy.ELEMENT_NAME.getLocalPart());
-    }
-
-    /**
-     * Constructor for sub-classes.
-     * 
-     * @param namespaceURI
-     *            the namespace URI.
-     * @param localPart
-     *            the element local name.
-     */
-    protected EntropyUnmarshaller(String namespaceURI, String localPart) {
-        super(namespaceURI, localPart);
+        super();
     }
 
     /**

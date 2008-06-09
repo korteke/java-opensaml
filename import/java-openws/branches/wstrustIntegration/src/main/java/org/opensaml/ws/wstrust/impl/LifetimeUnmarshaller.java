@@ -39,8 +39,7 @@ public class LifetimeUnmarshaller extends AbstractWSTrustObjectUnmarshaller {
      * {@inheritDoc}
      */
     public LifetimeUnmarshaller() {
-        super(Lifetime.ELEMENT_NAME.getNamespaceURI(),
-              Lifetime.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
     /**

@@ -41,12 +41,11 @@ public class UseKeyMarshaller extends
      * Default constructor.
      */
     public UseKeyMarshaller() {
-        super(UseKey.ELEMENT_NAME.getNamespaceURI(),
-              UseKey.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
     /**
-     * Marshalls the &lt;wst:Sig&gt; attribute.
+     * Marshalls the &lt;@Sig&gt; attribute.
      * <p>
      * {@inheritDoc}
      */

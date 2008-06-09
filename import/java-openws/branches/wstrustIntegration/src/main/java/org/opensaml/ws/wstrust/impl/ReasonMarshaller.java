@@ -38,8 +38,7 @@ public class ReasonMarshaller extends AbstractWSTrustObjectMarshaller {
      * Default constructor.
      */
     public ReasonMarshaller() {
-        super(Reason.ELEMENT_NAME.getNamespaceURI(),
-              Reason.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
     /*

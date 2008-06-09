@@ -37,8 +37,7 @@ public class ComputedKeyUnmarshaller extends AbstractWSTrustObjectUnmarshaller {
      * {@inheritDoc}
      */
     public ComputedKeyUnmarshaller() {
-        super(ComputedKey.ELEMENT_NAME.getNamespaceURI(),
-              ComputedKey.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
     /**

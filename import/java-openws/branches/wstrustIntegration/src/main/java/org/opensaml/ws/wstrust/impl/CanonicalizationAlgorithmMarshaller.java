@@ -40,8 +40,7 @@ public class CanonicalizationAlgorithmMarshaller extends
      * 
      */
     public CanonicalizationAlgorithmMarshaller() {
-        super(CanonicalizationAlgorithm.ELEMENT_NAME.getNamespaceURI(),
-              CanonicalizationAlgorithm.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
     /*

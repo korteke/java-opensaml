@@ -39,8 +39,7 @@ public class CombinedHashMarshaller extends AbstractWSTrustObjectMarshaller {
      * 
      */
     public CombinedHashMarshaller() {
-        super(CombinedHash.ELEMENT_NAME.getNamespaceURI(),
-              CombinedHash.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
     /*

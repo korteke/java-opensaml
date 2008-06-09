@@ -38,8 +38,7 @@ public class ForwardableUnmarshaller extends AbstractWSTrustObjectUnmarshaller {
      * {@inheritDoc}
      */
     public ForwardableUnmarshaller() {
-        super(Forwardable.ELEMENT_NAME.getNamespaceURI(),
-              Forwardable.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
     /**

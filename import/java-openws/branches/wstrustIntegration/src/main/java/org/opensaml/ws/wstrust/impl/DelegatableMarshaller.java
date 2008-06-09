@@ -40,8 +40,7 @@ public class DelegatableMarshaller extends AbstractWSTrustObjectMarshaller {
      * 
      */
     public DelegatableMarshaller() {
-        super(Delegatable.ELEMENT_NAME.getNamespaceURI(),
-              Delegatable.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
     /*

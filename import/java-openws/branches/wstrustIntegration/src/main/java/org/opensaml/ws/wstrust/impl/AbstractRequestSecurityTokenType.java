@@ -59,7 +59,7 @@ import org.w3c.dom.NodeList;
 
 /**
  * AbstractRequestSecurityTokenType is an abstract signable, validating &lt;wst:RequestSecurityToken&gt; or
- * &lt;wst:RequestSecurityTokenResponse&gt; element, with a &lt;wst:Context&gt; attribute.
+ * &lt;wst:RequestSecurityTokenResponse&gt; element, with a &lt;@wsu:Id&gt; and a &lt;@Context&gt; attribute.
  * 
  * @see RequestSecurityTokenType
  * @see RequestSecurityToken
@@ -71,7 +71,10 @@ import org.w3c.dom.NodeList;
 public abstract class AbstractRequestSecurityTokenType extends AbstractExtensibleXMLObject implements
         RequestSecurityTokenType {
 
-    /** The &lt;wst:Context&gt; attribute value */
+    /** The &lt;@wsu:Id&gt; attribute value */
+    private String id_ = null;
+
+    /** The &lt;@Context&gt; attribute value */
     private String context_ = null;
 
     /** The &lt;wst:TokenType&gt; child element */
@@ -652,6 +655,16 @@ public abstract class AbstractRequestSecurityTokenType extends AbstractExtensibl
         useKey_ = prepareForAssignment(useKey_, useKey);
     }
 
+    /** {@inheritDoc} */
+    public String getId() {
+        return id_;
+    }
+
+    /** {@inheritDoc} */
+    public void setId(String id) {
+        id_ = prepareForAssignment(id_, id);
+    }
+
     /**
      * Returns an ordered list of the common child elements and the <code>xs:any</code> unknown elements.
      * 
@@ -743,7 +756,7 @@ public abstract class AbstractRequestSecurityTokenType extends AbstractExtensibl
             children.addAll(getUnknownXMLObjects());
         }
         // add signature
-        if(signature_ != null){
+        if (signature_ != null) {
             children.add(signature_);
         }
 
@@ -759,7 +772,7 @@ public abstract class AbstractRequestSecurityTokenType extends AbstractExtensibl
     public void setSignature(Signature newSignature) {
         signature_ = prepareForAssignment(signature_, newSignature);
     }
-    
+
     /** {@inheritDoc} */
     public boolean isSigned() {
         Element domElement = getDOM();

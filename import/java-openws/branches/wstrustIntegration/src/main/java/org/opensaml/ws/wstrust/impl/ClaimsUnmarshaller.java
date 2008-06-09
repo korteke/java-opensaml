@@ -39,8 +39,7 @@ public class ClaimsUnmarshaller extends AbstractExtensibleXMLObjectUnmarshaller 
      * {@inheritDoc}
      */
     public ClaimsUnmarshaller() {
-        super(Claims.ELEMENT_NAME.getNamespaceURI(),
-              Claims.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
     /**

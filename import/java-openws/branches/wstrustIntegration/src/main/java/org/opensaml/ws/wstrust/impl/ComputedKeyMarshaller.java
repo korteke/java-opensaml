@@ -39,8 +39,7 @@ public class ComputedKeyMarshaller extends AbstractWSTrustObjectMarshaller {
      * 
      */
     public ComputedKeyMarshaller() {
-        super(ComputedKey.ELEMENT_NAME.getNamespaceURI(),
-              ComputedKey.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
     /*

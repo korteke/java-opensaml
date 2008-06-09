@@ -37,8 +37,7 @@ public class TokenTypeUnmarshaller extends AbstractWSTrustObjectUnmarshaller {
      * {@inheritDoc}
      */
     public TokenTypeUnmarshaller() {
-        super(TokenType.ELEMENT_NAME.getNamespaceURI(),
-              TokenType.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
     /**

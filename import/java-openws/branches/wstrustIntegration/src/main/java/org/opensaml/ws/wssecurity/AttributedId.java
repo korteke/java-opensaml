@@ -35,16 +35,16 @@ public abstract interface AttributedId {
             WSSecurityConstants.WSU_PREFIX);
 
     /**
-     * Returns the &lt;wsu:Id&gt; attribute value
+     * Returns the &lt;@wsu:Id&gt; attribute value
      * 
-     * @return The &lt;wsu:Id&gt; attribute value or <code>null</code>.
+     * @return The &lt;@wsu:Id&gt; attribute value or <code>null</code>.
      */
     public String getId();
 
     /**
-     * Sets the &lt;wsu:Id&gt; attribute value
+     * Sets the &lt;@wsu:Id&gt; attribute value
      * 
-     * @param id The &lt;wsu:Id&gt; attribute value
+     * @param id The &lt;@wsu:Id&gt; attribute value
      */
     public void setId(String id);
 

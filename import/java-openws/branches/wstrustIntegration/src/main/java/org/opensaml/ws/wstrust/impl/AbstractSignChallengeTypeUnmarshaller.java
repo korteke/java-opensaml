@@ -44,9 +44,8 @@ public abstract class AbstractSignChallengeTypeUnmarshaller extends
      * <p>
      * {@inheritDoc}
      */
-    public AbstractSignChallengeTypeUnmarshaller(String targetNamespaceURI,
-            String targetLocalName) {
-        super(targetNamespaceURI, targetLocalName);
+    public AbstractSignChallengeTypeUnmarshaller() {
+        super();
     }
 
     /**

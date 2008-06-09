@@ -14,10 +14,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.opensaml.ws.wstrust.impl;
 
 import javax.xml.namespace.QName;
-
 
 import org.opensaml.ws.wstrust.BinaryExchange;
 import org.opensaml.xml.XMLObject;
@@ -34,8 +34,7 @@ import org.w3c.dom.Attr;
  * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
  * @version $Revision$
  */
-public class BinaryExchangeUnmarshaller extends
-        AbstractWSTrustObjectUnmarshaller {
+public class BinaryExchangeUnmarshaller extends AbstractWSTrustObjectUnmarshaller {
 
     /**
      * Default constructor.
@@ -43,8 +42,7 @@ public class BinaryExchangeUnmarshaller extends
      * {@inheritDoc}
      */
     public BinaryExchangeUnmarshaller() {
-        super(BinaryExchange.ELEMENT_NAME.getNamespaceURI(),
-              BinaryExchange.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
     /**
@@ -53,43 +51,36 @@ public class BinaryExchangeUnmarshaller extends
      * {@inheritDoc}
      */
     @Override
-    protected void processElementContent(XMLObject xmlObject,
-            String elementContent) {
+    protected void processElementContent(XMLObject xmlObject, String elementContent) {
         if (elementContent != null) {
-            XSBase64Binary base64= (XSBase64Binary) xmlObject;
+            XSBase64Binary base64 = (XSBase64Binary) xmlObject;
             base64.setValue(elementContent);
         }
     }
 
     /**
-     * Unmarshalls the &lt;wst:ValueType&gt;, the &lt;wst:EncodingType&gt; and
-     * the <code>xs:anyAttribute</code> attributes.
+     * Unmarshalls the &lt;@ValueType&gt;, the &lt;@EncodingType&gt; and the <code>xs:anyAttribute</code> attributes.
      * <p>
      * {@inheritDoc}
      */
     @Override
-    protected void processAttribute(XMLObject xmlObject, Attr attribute)
-            throws UnmarshallingException {
-        BinaryExchange binaryExchange= (BinaryExchange) xmlObject;
-        String attrName= attribute.getLocalName();
+    protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
+        BinaryExchange binaryExchange = (BinaryExchange) xmlObject;
+        String attrName = attribute.getLocalName();
         if (BinaryExchange.VALUE_TYPE_ATTR_LOCAL_NAME.equals(attrName)) {
-            String valueType= attribute.getValue();
+            String valueType = attribute.getValue();
             binaryExchange.setValueType(valueType);
-        }
-        else if (BinaryExchange.ENCODING_TYPE_ATTR_LOCAL_NAME.equals(attrName)) {
-            String encodingType= attribute.getValue();
+        } else if (BinaryExchange.ENCODING_TYPE_ATTR_LOCAL_NAME.equals(attrName)) {
+            String encodingType = attribute.getValue();
             binaryExchange.setEncodingType(encodingType);
-        }
-        else {
+        } else {
             // xs:anyAttribute
-            QName attribQName= XMLHelper.constructQName(attribute.getNamespaceURI(),
-                                                        attribute.getLocalName(),
-                                                        attribute.getPrefix());
+            QName attrQName = XMLHelper.constructQName(attribute.getNamespaceURI(), attribute.getLocalName(), attribute
+                    .getPrefix());
             if (attribute.isId()) {
-                binaryExchange.getUnknownAttributes().registerID(attribQName);
+                binaryExchange.getUnknownAttributes().registerID(attrQName);
             }
-            binaryExchange.getUnknownAttributes().put(attribQName,
-                                                      attribute.getValue());
+            binaryExchange.getUnknownAttributes().put(attrQName, attribute.getValue());
         }
     }
 

@@ -34,8 +34,7 @@ public class AllowPostdatingMarshaller extends AbstractWSTrustObjectMarshaller {
      * {@inheritDoc}
      */
     public AllowPostdatingMarshaller() {
-        super(AllowPostdating.ELEMENT_NAME.getNamespaceURI(),
-              AllowPostdating.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
 }

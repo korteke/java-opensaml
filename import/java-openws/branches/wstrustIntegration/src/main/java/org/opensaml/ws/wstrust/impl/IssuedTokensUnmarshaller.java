@@ -40,8 +40,7 @@ public class IssuedTokensUnmarshaller extends AbstractWSTrustObjectUnmarshaller 
      * {@inheritDoc}
      */
     public IssuedTokensUnmarshaller() {
-        super(IssuedTokens.ELEMENT_NAME.getNamespaceURI(),
-              IssuedTokens.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
     /**

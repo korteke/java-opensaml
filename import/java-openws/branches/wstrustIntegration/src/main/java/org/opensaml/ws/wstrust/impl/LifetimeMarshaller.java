@@ -32,8 +32,7 @@ public class LifetimeMarshaller extends AbstractWSTrustObjectMarshaller {
      * Default constructor.
      */
     public LifetimeMarshaller() {
-        super(Lifetime.ELEMENT_NAME.getNamespaceURI(),
-              Lifetime.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
 }

@@ -35,8 +35,7 @@ public class RenewTargetMarshaller extends
      * Default constructor.
      */
     public RenewTargetMarshaller() {
-        super(RenewTarget.ELEMENT_NAME.getNamespaceURI(),
-              RenewTarget.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
 }

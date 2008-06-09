@@ -35,8 +35,7 @@ public class OnBehalfOfMarshaller extends
      * Default constructor.
      */
     public OnBehalfOfMarshaller() {
-        super(OnBehalfOf.ELEMENT_NAME.getNamespaceURI(),
-              OnBehalfOf.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
 }

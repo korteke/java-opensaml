@@ -41,8 +41,7 @@ public class ClaimsMarshaller extends AbstractExtensibleXMLObjectMarshaller {
      * 
      */
     public ClaimsMarshaller() {
-        super(Claims.ELEMENT_NAME.getNamespaceURI(),
-              Claims.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
     /**

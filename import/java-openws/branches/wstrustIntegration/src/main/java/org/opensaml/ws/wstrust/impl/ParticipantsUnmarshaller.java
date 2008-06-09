@@ -37,8 +37,7 @@ public class ParticipantsUnmarshaller extends
      * Default constructor.
      */
     public ParticipantsUnmarshaller() {
-        super(Participants.ELEMENT_NAME.getNamespaceURI(),
-              Participants.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
     /**

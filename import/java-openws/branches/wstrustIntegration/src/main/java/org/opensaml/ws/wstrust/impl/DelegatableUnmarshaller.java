@@ -38,8 +38,7 @@ public class DelegatableUnmarshaller extends AbstractWSTrustObjectUnmarshaller {
      * {@inheritDoc}
      */
     public DelegatableUnmarshaller() {
-        super(Delegatable.ELEMENT_NAME.getNamespaceURI(),
-              Delegatable.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
     /**

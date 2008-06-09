@@ -38,8 +38,7 @@ public class KeyWrapAlgorithmMarshaller extends AbstractWSTrustObjectMarshaller 
      * Default constructor.
      */
     public KeyWrapAlgorithmMarshaller() {
-        super(KeyWrapAlgorithm.ELEMENT_NAME.getNamespaceURI(),
-              KeyWrapAlgorithm.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
     /*
