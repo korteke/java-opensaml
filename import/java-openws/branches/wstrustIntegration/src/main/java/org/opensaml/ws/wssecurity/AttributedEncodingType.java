@@ -14,13 +14,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.opensaml.ws.wssecurity;
 
 import javax.xml.namespace.QName;
 
 /**
- * Interface AttributedEncodingType for element having an
- * &lt;wsse:EncodingType&gt; attribute.
+ * Interface AttributedEncodingType for element having an &lt;@EncodingType&gt; attribute.
  * 
  * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
  * @version $Revision$
@@ -28,18 +28,16 @@ import javax.xml.namespace.QName;
 public abstract interface AttributedEncodingType {
 
     /** the EncodingType attribute local name */
-    public final static String ENCODING_TYPE_ATTR_LOCAL_NAME= "EncodingType";
+    public final static String ENCODING_TYPE_ATTR_LOCAL_NAME = "EncodingType";
 
-    /** the wsse:EncodingType qualified attribute name */
-    public final static QName ENCODING_TYPE_ATTR_NAME= new QName(WSSecurityConstants.WSSE_NS,
-                                                                 ENCODING_TYPE_ATTR_LOCAL_NAME,
-                                                                 WSSecurityConstants.WSSE_PREFIX);
+    /** the EncodingType unqualified attribute name */
+    public final static QName ENCODING_TYPE_ATTR_NAME = new QName(WSSecurityConstants.WSSE_NS,
+            ENCODING_TYPE_ATTR_LOCAL_NAME);
 
     /**
-     * The wsse:EncodingType attribute value <code>#Base64Binary</code>
+     * The EncodingType attribute value <code>#Base64Binary</code>
      */
-    public final static String ENCODINGTYPE_BASE64_BINARY= WSSecurityConstants.WS_SECURITY_NS
-            + "#Base64Binary";
+    public final static String ENCODINGTYPE_BASE64_BINARY = WSSecurityConstants.WS_SECURITY_NS + "#Base64Binary";
 
     /**
      * Returns the EncodingType attribute value.
@@ -51,8 +49,7 @@ public abstract interface AttributedEncodingType {
     /**
      * Sets the EncodingType attribute value.
      * 
-     * @param encodingType
-     *            the EncodingType attribute value.
+     * @param encodingType the EncodingType attribute value.
      */
     public void setEncodingType(String encodingType);
 

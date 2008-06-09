@@ -35,18 +35,6 @@ public class UsernameMarshaller extends AbstractWSSecurityObjectMarshaller {
      * Default constructor.
      */
     public UsernameMarshaller() {
-        super(Username.ELEMENT_NAME.getNamespaceURI(),
-              Username.ELEMENT_NAME.getLocalPart());
-    }
-
-    /**
-     * Constructor.
-     * 
-     * @param targetNamespaceURI
-     * @param targetLocalName
-     */
-    public UsernameMarshaller(String targetNamespaceURI, String targetLocalName) {
-        super(targetNamespaceURI, targetLocalName);
     }
 
     /*

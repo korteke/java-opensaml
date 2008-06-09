@@ -14,8 +14,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.opensaml.ws.wssecurity.impl;
 
+package org.opensaml.ws.wssecurity.impl;
 
 import org.opensaml.ws.wssecurity.Username;
 import org.opensaml.xml.XMLObject;
@@ -32,8 +32,7 @@ public class UsernameUnmarshaller extends AbstractAttributedIdUnmarshaller {
      * Default constructor.
      */
     public UsernameUnmarshaller() {
-        super(Username.ELEMENT_NAME.getNamespaceURI(),
-              Username.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
     /*
@@ -43,10 +42,9 @@ public class UsernameUnmarshaller extends AbstractAttributedIdUnmarshaller {
      *      java.lang.String)
      */
     @Override
-    protected void processElementContent(XMLObject xmlObject,
-            String elementContent) {
+    protected void processElementContent(XMLObject xmlObject, String elementContent) {
         if (elementContent != null) {
-            Username username= (Username) xmlObject;
+            Username username = (Username) xmlObject;
             username.setValue(elementContent.trim());
         }
     }

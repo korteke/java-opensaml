@@ -14,8 +14,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.opensaml.ws.wssecurity.impl;
 
+package org.opensaml.ws.wssecurity.impl;
 
 import org.opensaml.ws.wssecurity.DateTimeType;
 import org.opensaml.xml.XMLObject;
@@ -29,17 +29,15 @@ import org.w3c.dom.Element;
  * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
  * @version $Revision$
  */
-public abstract class AbstractDateTimeTypeMarshaller extends
-        AbstractWSSecurityObjectMarshaller {
+public abstract class AbstractDateTimeTypeMarshaller extends AbstractWSSecurityObjectMarshaller {
 
     /**
      * Constructor.
      * <p>
      * {@inheritDoc}
      */
-    protected AbstractDateTimeTypeMarshaller(String targetNamespaceURI,
-            String targetLocalName) {
-        super(targetNamespaceURI, targetLocalName);
+    protected AbstractDateTimeTypeMarshaller() {
+        super();
     }
 
     /**
@@ -48,10 +46,9 @@ public abstract class AbstractDateTimeTypeMarshaller extends
      * {@inheritDoc}
      */
     @Override
-    protected void marshallElementContent(XMLObject xmlObject,
-            Element domElement) throws MarshallingException {
-        DateTimeType dateTime= (DateTimeType) xmlObject;
-        String formattedDateTime= AbstractDateTimeType.FORMATTER.print(dateTime.getDateTime());
+    protected void marshallElementContent(XMLObject xmlObject, Element domElement) throws MarshallingException {
+        DateTimeType dateTime = (DateTimeType) xmlObject;
+        String formattedDateTime = AbstractDateTimeType.FORMATTER.print(dateTime.getDateTime());
         XMLHelper.appendTextContent(domElement, formattedDateTime);
     }
 

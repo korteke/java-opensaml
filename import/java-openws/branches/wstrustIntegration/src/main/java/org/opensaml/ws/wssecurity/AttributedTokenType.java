@@ -14,13 +14,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.opensaml.ws.wssecurity;
 
 import javax.xml.namespace.QName;
 
 /**
- * Interface AttributedTokenType for element having a &lt;wsse11:TokenType&gt;
- * attribute.
+ * Interface AttributedTokenType for element having a &lt;@wsse11:TokenType&gt; attribute.
  * 
  * @see "WS-Security 2004, Chapter 7.1 SecurityTokenReference Element."
  * 
@@ -29,26 +29,28 @@ import javax.xml.namespace.QName;
  */
 public abstract interface AttributedTokenType {
 
-    /** the <code>wsse11:TokenType</code> attribute local name */
-    public final static String TOKEN_TYPE_ATTR_LOCAL_NAME= "TokenType";
-
-    /** the <code>wsse11:TokenType</code> qualified attribute name */
-    public final static QName TOKEN_TYPE_ATTR_NAME= new QName(WSSecurityConstants.WSSE11_NS,
-                                                              TOKEN_TYPE_ATTR_LOCAL_NAME,
-                                                              WSSecurityConstants.WSSE11_PREFIX);
+    /**
+     * the <code>@wsse11:TokenType</code> attribute local name
+     */
+    public final static String TOKEN_TYPE_ATTR_LOCAL_NAME = "TokenType";
 
     /**
-     * Returns the &lt;wsse11:TokenType&gt; attribute value.
+     * the <code>@wsse11:TokenType</code> qualified attribute name
+     */
+    public final static QName TOKEN_TYPE_ATTR_NAME = new QName(WSSecurityConstants.WSSE11_NS,
+            TOKEN_TYPE_ATTR_LOCAL_NAME, WSSecurityConstants.WSSE11_PREFIX);
+
+    /**
+     * Returns the &lt;@wsse11:TokenType&gt; attribute value.
      * 
-     * @return the &lt;wsse11:TokenType&gt; attribute value or <code>null</code>.
+     * @return the &lt;@wsse11:TokenType&gt; attribute value or <code>null</code>.
      */
     public String getTokenType();
 
     /**
-     * Sets the &lt;wsse11:TokenType&gt; attribute value.
+     * Sets the &lt;@wsse11:TokenType&gt; attribute value.
      * 
-     * @param tokenType
-     *            the &lt;wsse11:TokenType&gt; attribute value to set.
+     * @param tokenType the &lt;@wsse11:TokenType&gt; attribute value to set.
      */
     public void setTokenType(String tokenType);
 

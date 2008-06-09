@@ -17,7 +17,6 @@
 package org.opensaml.ws.wssecurity.impl;
 
 
-import org.opensaml.ws.wssecurity.Iteration;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.schema.XSInteger;
 
@@ -33,8 +32,7 @@ public class IterationUnmarshaller extends AbstractWSSecurityObjectUnmarshaller 
      * Default constructor.
      */
     public IterationUnmarshaller() {
-        super(Iteration.ELEMENT_NAME.getNamespaceURI(),
-              Iteration.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
     /** {@inheritDoc} */

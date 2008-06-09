@@ -14,8 +14,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.opensaml.ws.wssecurity.impl;
 
+package org.opensaml.ws.wssecurity.impl;
 
 import org.opensaml.ws.wssecurity.AttributedId;
 import org.opensaml.ws.wssecurity.Created;
@@ -36,66 +36,55 @@ import org.w3c.dom.Attr;
  * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
  * @version $Revision$
  */
-public class UsernameTokenUnmarshaller extends
-        AbstractExtensibleXMLObjectUnmarshaller {
+public class UsernameTokenUnmarshaller extends AbstractExtensibleXMLObjectUnmarshaller {
 
     /**
      * Default constructor.
      */
     public UsernameTokenUnmarshaller() {
-        super(UsernameToken.ELEMENT_NAME.getNamespaceURI(),
-              UsernameToken.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
     /**
-     * Unmarshalls the &lt;wsse:Username&gt;, the &lt;wsse:Password&gt;, the
-     * &lt;wsu:Created&gt;, the &lt;wsse:Nonce&gt;, the &lt;wsse11:Salt&gt; and
-     * the &lt;wsse11:Iteration&gt; child elements.
+     * Unmarshalls the &lt;wsse:Username&gt;, the &lt;wsse:Password&gt;, the &lt;wsu:Created&gt;, the
+     * &lt;wsse:Nonce&gt;, the &lt;wsse11:Salt&gt; and the &lt;wsse11:Iteration&gt; child elements.
      * <p>
      * {@inheritDoc}
      */
     @Override
-    protected void processChildElement(XMLObject parentXMLObject,
-            XMLObject childXMLObject) throws UnmarshallingException {
-        UsernameToken token= (UsernameToken) parentXMLObject;
+    protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
+            throws UnmarshallingException {
+        UsernameToken token = (UsernameToken) parentXMLObject;
         if (childXMLObject instanceof Username) {
             token.setUsername((Username) childXMLObject);
-        }
-        else if (childXMLObject instanceof Password) {
+        } else if (childXMLObject instanceof Password) {
             token.setPassword((Password) childXMLObject);
-        }
-        else if (childXMLObject instanceof Created) {
+        } else if (childXMLObject instanceof Created) {
             token.setCreated((Created) childXMLObject);
-        }
-        else if (childXMLObject instanceof Nonce) {
+        } else if (childXMLObject instanceof Nonce) {
             token.setNonce((Nonce) childXMLObject);
-        }
-        else if (childXMLObject instanceof Salt) {
+        } else if (childXMLObject instanceof Salt) {
             token.setSalt((Salt) childXMLObject);
-        }
-        else if (childXMLObject instanceof Iteration) {
+        } else if (childXMLObject instanceof Iteration) {
             token.setIteration((Iteration) childXMLObject);
-        }
-        else {
+        } else {
             super.processChildElement(parentXMLObject, childXMLObject);
         }
     }
 
     /**
-     * Unmarshalls the &lt;wsu:Id&gt; attribute.
+     * Unmarshalls the &lt;@wsu:Id&gt; attribute.
      * <p>
      * {@inheritDoc}
      */
     @Override
-    protected void processAttribute(XMLObject xmlObject, Attr attribute)
-            throws UnmarshallingException {
-        String attrName= attribute.getLocalName();
+    protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
+        String attrName = attribute.getLocalName();
         if (AttributedId.ID_ATTR_LOCAL_NAME.equals(attrName)) {
-            AttributedId attributedId= (AttributedId) xmlObject;
-            String attrValue= attribute.getValue();
+            AttributedId attributedId = (AttributedId) xmlObject;
+            String attrValue = attribute.getValue();
             attributedId.setId(attrValue);
-        }
-        else {
+        } else {
             super.processAttribute(xmlObject, attribute);
         }
     }

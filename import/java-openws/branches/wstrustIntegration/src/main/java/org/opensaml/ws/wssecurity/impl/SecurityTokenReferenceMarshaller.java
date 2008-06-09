@@ -43,13 +43,12 @@ public class SecurityTokenReferenceMarshaller extends
      * Default constructor.
      */
     public SecurityTokenReferenceMarshaller() {
-        super(SecurityTokenReference.ELEMENT_NAME.getNamespaceURI(),
-              SecurityTokenReference.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
     /**
-     * Marshalls the &lt;wsu:Id&gt;, the &lt;wsse:Usage&gt; and the
-     * &lt;wsse11:TokenType&gt; attributes.
+     * Marshalls the &lt;@wsu:Id&gt;, the &lt;@Usage&gt; and the
+     * &lt;@wsse11:TokenType&gt; attributes.
      * <p>
      * {@inheritDoc}
      */
@@ -73,7 +72,7 @@ public class SecurityTokenReferenceMarshaller extends
             Attr attribute= XMLHelper.constructAttribute(document,
                                                          AttributedTokenType.TOKEN_TYPE_ATTR_NAME);
             attribute.setValue(tokenType);
-            domElement.setAttributeNode(attribute);
+            domElement.setAttributeNodeNS(attribute);
         }
         SecurityTokenReference securityTokenReference= (SecurityTokenReference) xmlObject;
         List<String> usages= securityTokenReference.getUsages();

@@ -41,8 +41,7 @@ public class SecurityTokenReferenceUnmarshaller extends
      * Default constructor.
      */
     public SecurityTokenReferenceUnmarshaller() {
-        super(SecurityTokenReference.ELEMENT_NAME.getNamespaceURI(),
-              SecurityTokenReference.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
     /*

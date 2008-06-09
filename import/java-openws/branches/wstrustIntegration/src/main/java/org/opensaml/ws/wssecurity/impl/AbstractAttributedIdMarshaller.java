@@ -14,8 +14,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.opensaml.ws.wssecurity.impl;
 
+package org.opensaml.ws.wssecurity.impl;
 
 import org.opensaml.ws.wssecurity.AttributedId;
 import org.opensaml.xml.XMLObject;
@@ -31,17 +31,15 @@ import org.w3c.dom.Element;
  * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
  * @version $Revision$
  */
-public abstract class AbstractAttributedIdMarshaller extends
-        AbstractWSSecurityObjectMarshaller {
+public abstract class AbstractAttributedIdMarshaller extends AbstractWSSecurityObjectMarshaller {
 
     /**
      * Constructor.
      * <p>
      * {@inheritDoc}
      */
-    protected AbstractAttributedIdMarshaller(String targetNamespaceURI,
-            String targetLocalName) {
-        super(targetNamespaceURI, targetLocalName);
+    protected AbstractAttributedIdMarshaller() {
+        super();
     }
 
     /**
@@ -50,14 +48,12 @@ public abstract class AbstractAttributedIdMarshaller extends
      * {@inheritDoc}
      */
     @Override
-    protected void marshallAttributes(XMLObject xmlObject, Element domElement)
-            throws MarshallingException {
-        AttributedId attributedId= (AttributedId) xmlObject;
-        String id= attributedId.getId();
+    protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
+        AttributedId attributedId = (AttributedId) xmlObject;
+        String id = attributedId.getId();
         if (id != null) {
-            Document document= domElement.getOwnerDocument();
-            Attr attribute= XMLHelper.constructAttribute(document,
-                                                         AttributedId.ID_ATTR_NAME);
+            Document document = domElement.getOwnerDocument();
+            Attr attribute = XMLHelper.constructAttribute(document, AttributedId.ID_ATTR_NAME);
             attribute.setValue(id);
             domElement.setAttributeNodeNS(attribute);
             // TODO: check if needed???

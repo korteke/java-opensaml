@@ -34,7 +34,7 @@ public class IssuerMarshaller extends AbstractEndpointReferenceTypeMarshaller {
      * Default constructor.
      */
     public IssuerMarshaller() {
-        super(Issuer.ELEMENT_NAME.getNamespaceURI(), Issuer.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
 }

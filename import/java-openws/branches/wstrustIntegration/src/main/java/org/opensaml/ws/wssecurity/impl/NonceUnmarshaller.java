@@ -34,8 +34,7 @@ public class NonceUnmarshaller extends AbstractWSSecurityObjectUnmarshaller {
      * Default constructor
      */
     public NonceUnmarshaller() {
-        super(Nonce.ELEMENT_NAME.getNamespaceURI(),
-              Nonce.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
     /*

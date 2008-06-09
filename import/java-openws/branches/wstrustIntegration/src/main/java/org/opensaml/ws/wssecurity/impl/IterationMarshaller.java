@@ -17,7 +17,6 @@
 package org.opensaml.ws.wssecurity.impl;
 
 
-import org.opensaml.ws.wssecurity.Iteration;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.schema.XSInteger;
@@ -36,8 +35,7 @@ public class IterationMarshaller extends AbstractWSSecurityObjectMarshaller {
      * Default constructor
      */
     public IterationMarshaller() {
-        super(Iteration.ELEMENT_NAME.getNamespaceURI(),
-              Iteration.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
     /*

@@ -19,7 +19,6 @@ package org.opensaml.ws.wssecurity.impl;
 
 import org.opensaml.ws.wssecurity.AttributedEncodingType;
 import org.opensaml.ws.wssecurity.AttributedValueType;
-import org.opensaml.ws.wssecurity.KeyIdentifier;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.schema.XSBase64Binary;
@@ -37,8 +36,7 @@ public class KeyIdentifierUnmarshaller extends AbstractAttributedIdUnmarshaller 
      * Default constructor.
      */
     public KeyIdentifierUnmarshaller() {
-        super(KeyIdentifier.ELEMENT_NAME.getNamespaceURI(),
-              KeyIdentifier.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
     /*

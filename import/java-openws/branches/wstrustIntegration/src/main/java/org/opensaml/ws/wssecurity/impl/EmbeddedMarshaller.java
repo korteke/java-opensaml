@@ -14,11 +14,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.opensaml.ws.wssecurity.impl;
 
-
 import org.opensaml.ws.wssecurity.AttributedValueType;
-import org.opensaml.ws.wssecurity.Embedded;
 import org.opensaml.xml.AbstractExtensibleXMLObjectMarshaller;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
@@ -39,24 +38,21 @@ public class EmbeddedMarshaller extends AbstractExtensibleXMLObjectMarshaller {
      * Default constructor.
      */
     public EmbeddedMarshaller() {
-        super(Embedded.ELEMENT_NAME.getNamespaceURI(),
-              Embedded.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
     /**
-     * Marshalls the &lt;wsseValueType&gt; attribute.
+     * Marshalls the &lt;@ValueType&gt; attribute.
      * <p>
      * {@inheritDoc}
      */
     @Override
-    protected void marshallAttributes(XMLObject xmlObject, Element domElement)
-            throws MarshallingException {
-        Document document= domElement.getOwnerDocument();
-        AttributedValueType typed= (AttributedValueType) xmlObject;
-        String valueType= typed.getValueType();
+    protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
+        Document document = domElement.getOwnerDocument();
+        AttributedValueType typed = (AttributedValueType) xmlObject;
+        String valueType = typed.getValueType();
         if (valueType != null) {
-            Attr attribute= XMLHelper.constructAttribute(document,
-                                                         AttributedValueType.VALUE_TYPE_ATTR_NAME);
+            Attr attribute = XMLHelper.constructAttribute(document, AttributedValueType.VALUE_TYPE_ATTR_NAME);
             attribute.setValue(valueType);
             domElement.setAttributeNode(attribute);
         }

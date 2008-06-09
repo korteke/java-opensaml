@@ -36,11 +36,11 @@ public class SecurityUnmarshaller extends AbstractExtensibleXMLObjectUnmarshalle
      * Default constructor.
      */
     public SecurityUnmarshaller() {
-        super(Security.ELEMENT_NAME.getNamespaceURI(), Security.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
     /**
-     * Unmarshalls the &lt;S11:mustUnderstand&gt;, the &lt;S12:role&gt; and the &lt;S11:actor&gt; attributes.
+     * Unmarshalls the &lt;@S11:mustUnderstand&gt;, the &lt;@S12:role&gt; and the &lt;@S11:actor&gt; attributes.
      * <p>
      * {@inheritDoc}
      */

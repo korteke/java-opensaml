@@ -14,9 +14,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.opensaml.ws.wssecurity.impl;
 
-import org.opensaml.ws.wssecurity.Created;
 
 /**
  * CreatedUnmarshaller
@@ -30,8 +30,7 @@ public class CreatedUnmarshaller extends AbstractDateTimeTypeUnmarshaller {
      * Constructor
      */
     public CreatedUnmarshaller() {
-        super(Created.ELEMENT_NAME.getNamespaceURI(),
-              Created.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
 }

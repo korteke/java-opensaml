@@ -14,8 +14,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.opensaml.ws.wssecurity.impl;
 
+package org.opensaml.ws.wssecurity.impl;
 
 import org.opensaml.ws.wssecurity.Reference;
 import org.opensaml.xml.XMLObject;
@@ -34,8 +34,7 @@ public class ReferenceUnmarshaller extends AbstractWSSecurityObjectUnmarshaller 
      * Default constructor.
      */
     public ReferenceUnmarshaller() {
-        super(Reference.ELEMENT_NAME.getNamespaceURI(),
-              Reference.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
     /*
@@ -45,20 +44,17 @@ public class ReferenceUnmarshaller extends AbstractWSSecurityObjectUnmarshaller 
      *      org.w3c.dom.Attr)
      */
     @Override
-    protected void processAttribute(XMLObject xmlObject, Attr attribute)
-            throws UnmarshallingException {
-        String attrName= attribute.getLocalName();
+    protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
+        String attrName = attribute.getLocalName();
         if (Reference.URI_ATTR_LOCAL_NAME.equals(attrName)) {
-            Reference reference= (Reference) xmlObject;
-            String uri= attribute.getValue();
+            Reference reference = (Reference) xmlObject;
+            String uri = attribute.getValue();
             reference.setURI(uri);
-        }
-        else if (Reference.VALUE_TYPE_ATTR_LOCAL_NAME.equals(attrName)) {
-            Reference reference= (Reference) xmlObject;
-            String valueType= attribute.getValue();
+        } else if (Reference.VALUE_TYPE_ATTR_LOCAL_NAME.equals(attrName)) {
+            Reference reference = (Reference) xmlObject;
+            String valueType = attribute.getValue();
             reference.setValueType(valueType);
-        }
-        else {
+        } else {
             super.processAttribute(xmlObject, attribute);
         }
     }

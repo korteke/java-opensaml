@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.opensaml.ws.wssecurity;
 
 import java.util.List;
@@ -34,42 +35,33 @@ import org.opensaml.xml.ElementExtensibleXMLObject;
  * @version $Revision$
  * 
  */
-public interface SecurityTokenReference extends AttributedId,
-        AttributedTokenType, AttributeExtensibleXMLObject,
+public interface SecurityTokenReference extends AttributedId, AttributedTokenType, AttributeExtensibleXMLObject,
         ElementExtensibleXMLObject, WSSecurityObject {
 
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME= "SecurityTokenReference";
+    public static final String ELEMENT_LOCAL_NAME = "SecurityTokenReference";
 
     /** Qualified element name */
-    public final static QName ELEMENT_NAME= new QName(WSSecurityConstants.WSSE_NS,
-                                                      ELEMENT_LOCAL_NAME,
-                                                      WSSecurityConstants.WSSE_PREFIX);
+    public final static QName ELEMENT_NAME = new QName(WSSecurityConstants.WSSE_NS, ELEMENT_LOCAL_NAME,
+            WSSecurityConstants.WSSE_PREFIX);
 
-    /** The wsse:SecurityTokenReference/@wsse:Usage attribute local name. */
-    public static final String USAGE_ATTR_LOCAL_NAME= "Usage";
+    /** The wsse:SecurityTokenReference/@Usage attribute local name. */
+    public static final String USAGE_ATTR_LOCAL_NAME = "Usage";
 
-    /** The wsse:SecurityTokenReference/@wsse:Usage qualified attribute name. */
-    public static final QName USAGE_ATTR_NAME= new QName(WSSecurityConstants.WSSE_NS,
-                                                         USAGE_ATTR_LOCAL_NAME,
-                                                         WSSecurityConstants.WSSE_PREFIX);
+    /** The wsse:SecurityTokenReference/@Usage qualified attribute name. */
+    public static final QName USAGE_ATTR_NAME = new QName(WSSecurityConstants.WSSE_NS, USAGE_ATTR_LOCAL_NAME);
 
     /**
-     * Returns the list of &lt;wsse:SecurityTokenReference/@wsse:Usage&gt;
-     * attributes value.
+     * Returns the list of &lt;wsse:SecurityTokenReference/@Usage&gt; attributes value.
      * 
-     * @return the list of &lt;wsse:SecurityTokenReference/@wsse:Usage&gt;
-     *         attributes value.
+     * @return the list of &lt;wsse:SecurityTokenReference/@Usage&gt; attributes value.
      */
     public List<String> getUsages();
 
     /**
-     * Sets the list of &lt;wsse:SecurityTokenReference/@wsse:Usage&gt;
-     * attributes value.
+     * Sets the list of &lt;wsse:SecurityTokenReference/@Usage&gt; attributes value.
      * 
-     * @param usages
-     *            the list of &lt;wsse:SecurityTokenReference/@wsse:Usage&gt;
-     *            attributes value.
+     * @param usages the list of &lt;wsse:SecurityTokenReference/@Usage&gt; attributes value.
      */
     public void setUsages(List<String> usages);
 
@@ -83,8 +75,7 @@ public interface SecurityTokenReference extends AttributedId,
     /**
      * Sets the &lt;wsse:Reference&gt; child element.
      * 
-     * @param reference
-     *            The {@link Reference} object to set.
+     * @param reference The {@link Reference} object to set.
      */
     public void setReference(Reference reference);
 
@@ -98,8 +89,7 @@ public interface SecurityTokenReference extends AttributedId,
     /**
      * Sets the &lt;wsse:KeyIdentifier&gt; child element.
      * 
-     * @param keyIdentifier
-     *            the {@link KeyIdentifier} child element to set.
+     * @param keyIdentifier the {@link KeyIdentifier} child element to set.
      */
     public void setKeyIdentifier(KeyIdentifier keyIdentifier);
 
@@ -113,8 +103,7 @@ public interface SecurityTokenReference extends AttributedId,
     /**
      * Sets the &lt;wsse:Embedded&gt; child element.
      * 
-     * @param embedded
-     *            the {@link Embedded} child element to set
+     * @param embedded the {@link Embedded} child element to set
      */
     public void setEmbedded(Embedded embedded);
 }

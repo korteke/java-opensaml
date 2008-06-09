@@ -16,7 +16,6 @@
  */
 package org.opensaml.ws.wssecurity.impl;
 
-import org.opensaml.ws.wssecurity.Expires;
 
 /**
  * ExpiresMarshaller
@@ -30,8 +29,7 @@ public class ExpiresMarshaller extends AbstractDateTimeTypeMarshaller {
      * Constructor
      */
     public ExpiresMarshaller() {
-        super(Expires.ELEMENT_NAME.getNamespaceURI(),
-              Expires.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
 }

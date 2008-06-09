@@ -14,8 +14,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.opensaml.ws.wssecurity.impl;
 
+package org.opensaml.ws.wssecurity.impl;
 
 import org.opensaml.ws.wssecurity.Password;
 import org.opensaml.xml.XMLObject;
@@ -37,8 +37,7 @@ public class PasswordMarshaller extends AbstractAttributedIdMarshaller {
      * Default constructor.
      */
     public PasswordMarshaller() {
-        super(Password.ELEMENT_NAME.getNamespaceURI(),
-              Password.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
     /*
@@ -48,14 +47,12 @@ public class PasswordMarshaller extends AbstractAttributedIdMarshaller {
      *      org.w3c.dom.Element)
      */
     @Override
-    protected void marshallAttributes(XMLObject xmlObject, Element domElement)
-            throws MarshallingException {
-        Password password= (Password) xmlObject;
-        String type= password.getType();
+    protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
+        Password password = (Password) xmlObject;
+        String type = password.getType();
         if (type != null) {
-            Document document= domElement.getOwnerDocument();
-            Attr attribute= XMLHelper.constructAttribute(document,
-                                                         Password.TYPE_ATTR_NAME);
+            Document document = domElement.getOwnerDocument();
+            Attr attribute = XMLHelper.constructAttribute(document, Password.TYPE_ATTR_NAME);
             attribute.setValue(type);
             domElement.setAttributeNode(attribute);
         }
@@ -69,9 +66,8 @@ public class PasswordMarshaller extends AbstractAttributedIdMarshaller {
      *      org.w3c.dom.Element)
      */
     @Override
-    protected void marshallElementContent(XMLObject xmlObject,
-            Element domElement) throws MarshallingException {
-        Password password= (Password) xmlObject;
+    protected void marshallElementContent(XMLObject xmlObject, Element domElement) throws MarshallingException {
+        Password password = (Password) xmlObject;
         XMLHelper.appendTextContent(domElement, password.getValue());
     }
 

@@ -39,7 +39,7 @@ public class SecurityMarshaller extends AbstractExtensibleXMLObjectMarshaller {
      * Default constructor
      */
     public SecurityMarshaller() {
-        super(Security.ELEMENT_NAME.getNamespaceURI(), Security.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
     /**

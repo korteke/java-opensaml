@@ -37,8 +37,7 @@ public class PasswordUnmarshaller extends AbstractAttributedIdUnmarshaller {
      * Default constructor.
      */
     public PasswordUnmarshaller() {
-        super(Password.ELEMENT_NAME.getNamespaceURI(),
-              Password.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
     /*

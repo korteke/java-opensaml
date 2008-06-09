@@ -14,9 +14,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.opensaml.ws.wssecurity.impl;
 
-import org.opensaml.ws.wssecurity.Expires;
 
 /**
  * ExpiresUnmarshaller
@@ -30,8 +30,7 @@ public class ExpiresUnmarshaller extends AbstractDateTimeTypeUnmarshaller {
      * Constructor
      */
     public ExpiresUnmarshaller() {
-        super(Expires.ELEMENT_NAME.getNamespaceURI(),
-              Expires.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
 }

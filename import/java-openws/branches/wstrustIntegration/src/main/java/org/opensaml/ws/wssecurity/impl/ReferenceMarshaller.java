@@ -14,8 +14,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.opensaml.ws.wssecurity.impl;
 
+package org.opensaml.ws.wssecurity.impl;
 
 import org.opensaml.ws.wssecurity.Reference;
 import org.opensaml.xml.XMLObject;
@@ -37,8 +37,7 @@ public class ReferenceMarshaller extends AbstractWSSecurityObjectMarshaller {
      * Default constructor.
      */
     public ReferenceMarshaller() {
-        super(Reference.ELEMENT_NAME.getNamespaceURI(),
-              Reference.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
     /*
@@ -48,21 +47,18 @@ public class ReferenceMarshaller extends AbstractWSSecurityObjectMarshaller {
      *      org.w3c.dom.Element)
      */
     @Override
-    protected void marshallAttributes(XMLObject xmlObject, Element domElement)
-            throws MarshallingException {
-        Reference reference= (Reference) xmlObject;
-        Document document= domElement.getOwnerDocument();
-        String uri= reference.getURI();
+    protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
+        Reference reference = (Reference) xmlObject;
+        Document document = domElement.getOwnerDocument();
+        String uri = reference.getURI();
         if (uri != null) {
-            Attr attr= XMLHelper.constructAttribute(document,
-                                                    Reference.URI_ATTR_NAME);
+            Attr attr = XMLHelper.constructAttribute(document, Reference.URI_ATTR_NAME);
             attr.setValue(uri);
             domElement.setAttributeNode(attr);
         }
-        String valueType= reference.getValueType();
+        String valueType = reference.getValueType();
         if (valueType != null) {
-            Attr attr= XMLHelper.constructAttribute(document,
-                                                    Reference.VALUE_TYPE_ATTR_NAME);
+            Attr attr = XMLHelper.constructAttribute(document, Reference.VALUE_TYPE_ATTR_NAME);
             attr.setValue(valueType);
             domElement.setAttributeNode(attr);
         }

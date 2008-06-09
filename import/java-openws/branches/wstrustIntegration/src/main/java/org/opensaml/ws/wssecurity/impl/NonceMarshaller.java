@@ -14,8 +14,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.opensaml.ws.wssecurity.impl;
 
+package org.opensaml.ws.wssecurity.impl;
 
 import org.opensaml.ws.wssecurity.AttributedEncodingType;
 import org.opensaml.ws.wssecurity.Nonce;
@@ -38,8 +38,7 @@ public class NonceMarshaller extends AbstractWSSecurityObjectMarshaller {
      * Default constructor.
      */
     public NonceMarshaller() {
-        super(Nonce.ELEMENT_NAME.getNamespaceURI(),
-              Nonce.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
     /*
@@ -49,9 +48,8 @@ public class NonceMarshaller extends AbstractWSSecurityObjectMarshaller {
      *      org.w3c.dom.Element)
      */
     @Override
-    protected void marshallElementContent(XMLObject xmlObject,
-            Element domElement) throws MarshallingException {
-        Nonce nonce= (Nonce) xmlObject;
+    protected void marshallElementContent(XMLObject xmlObject, Element domElement) throws MarshallingException {
+        Nonce nonce = (Nonce) xmlObject;
         XMLHelper.appendTextContent(domElement, nonce.getValue());
     }
 
@@ -62,14 +60,12 @@ public class NonceMarshaller extends AbstractWSSecurityObjectMarshaller {
      *      org.w3c.dom.Element)
      */
     @Override
-    protected void marshallAttributes(XMLObject xmlObject, Element domElement)
-            throws MarshallingException {
-        Nonce nonce= (Nonce) xmlObject;
-        String encodingType= nonce.getEncodingType();
+    protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
+        Nonce nonce = (Nonce) xmlObject;
+        String encodingType = nonce.getEncodingType();
         if (encodingType != null) {
-            Document document= domElement.getOwnerDocument();
-            Attr attribute= XMLHelper.constructAttribute(document,
-                                                         AttributedEncodingType.ENCODING_TYPE_ATTR_NAME);
+            Document document = domElement.getOwnerDocument();
+            Attr attribute = XMLHelper.constructAttribute(document, AttributedEncodingType.ENCODING_TYPE_ATTR_NAME);
             attribute.setValue(encodingType);
             domElement.setAttributeNode(attribute);
         }

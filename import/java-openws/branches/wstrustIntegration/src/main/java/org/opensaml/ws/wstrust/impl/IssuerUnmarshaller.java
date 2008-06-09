@@ -18,7 +18,6 @@
 package org.opensaml.ws.wstrust.impl;
 
 import org.opensaml.ws.wsaddressing.impl.AbstractEndpointReferenceTypeUnmarshaller;
-import org.opensaml.ws.wstrust.Issuer;
 
 /**
  * IssuerUnmarshaller
@@ -32,7 +31,7 @@ public class IssuerUnmarshaller extends AbstractEndpointReferenceTypeUnmarshalle
      * Default constructor.
      */
     public IssuerUnmarshaller() {
-        super(Issuer.ELEMENT_NAME.getNamespaceURI(), Issuer.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
 }

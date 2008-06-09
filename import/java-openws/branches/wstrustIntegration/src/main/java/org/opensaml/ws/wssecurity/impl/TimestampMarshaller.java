@@ -14,11 +14,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.opensaml.ws.wssecurity.impl;
 
-
 import org.opensaml.ws.wssecurity.AttributedId;
-import org.opensaml.ws.wssecurity.Timestamp;
 import org.opensaml.xml.AbstractExtensibleXMLObjectMarshaller;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
@@ -39,24 +38,21 @@ public class TimestampMarshaller extends AbstractExtensibleXMLObjectMarshaller {
      * Default constructor.
      */
     public TimestampMarshaller() {
-        super(Timestamp.ELEMENT_NAME.getNamespaceURI(),
-              Timestamp.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
     /**
-     * Marshalls the &lt;wsu:Id&gt; attribute.
+     * Marshalls the &lt;@wsu:Id&gt; attribute.
      * <p>
      * {@inheritDoc}
      */
     @Override
-    protected void marshallAttributes(XMLObject xmlObject, Element domElement)
-            throws MarshallingException {
-        AttributedId attributedId= (AttributedId) xmlObject;
-        String id= attributedId.getId();
+    protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
+        AttributedId attributedId = (AttributedId) xmlObject;
+        String id = attributedId.getId();
         if (id != null) {
-            Document document= domElement.getOwnerDocument();
-            Attr attribute= XMLHelper.constructAttribute(document,
-                                                         AttributedId.ID_ATTR_NAME);
+            Document document = domElement.getOwnerDocument();
+            Attr attribute = XMLHelper.constructAttribute(document, AttributedId.ID_ATTR_NAME);
             attribute.setValue(id);
             domElement.setAttributeNodeNS(attribute);
             // TODO: check if needed???

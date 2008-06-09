@@ -16,7 +16,6 @@
  */
 package org.opensaml.ws.wssecurity.impl;
 
-import org.opensaml.ws.wssecurity.Created;
 
 /**
  * Marshaller for the &lt;wsu:Created&gt; element.
@@ -30,8 +29,7 @@ public class CreatedMarshaller extends AbstractDateTimeTypeMarshaller {
      * Constructor
      */
     public CreatedMarshaller() {
-        super(Created.ELEMENT_NAME.getNamespaceURI(),
-              Created.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
 }

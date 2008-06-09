@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.opensaml.ws.wssecurity;
 
 import javax.xml.namespace.QName;
@@ -29,33 +30,29 @@ import javax.xml.namespace.QName;
 public interface Reference extends AttributedValueType, WSSecurityObject {
 
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME= "Reference";
+    public static final String ELEMENT_LOCAL_NAME = "Reference";
 
     /** Qualified element name */
-    public final static QName ELEMENT_NAME= new QName(WSSecurityConstants.WSSE_NS,
-                                                      ELEMENT_LOCAL_NAME,
-                                                      WSSecurityConstants.WSSE_PREFIX);
+    public final static QName ELEMENT_NAME = new QName(WSSecurityConstants.WSSE_NS, ELEMENT_LOCAL_NAME,
+            WSSecurityConstants.WSSE_PREFIX);
 
-    /** The wsse:Reference/@wsse:URI attribute local name. */
-    public static final String URI_ATTR_LOCAL_NAME= "URI";
+    /** The wsse:Reference/@URI attribute local name. */
+    public static final String URI_ATTR_LOCAL_NAME = "URI";
 
-    /** The wsse:Reference/@wsse:URI attribute qualified name. */
-    public static final QName URI_ATTR_NAME= new QName(WSSecurityConstants.WSSE_NS,
-                                                       URI_ATTR_LOCAL_NAME,
-                                                       WSSecurityConstants.WSSE_PREFIX);
+    /** The wsse:Reference/@URI attribute unqualified name. */
+    public static final QName URI_ATTR_NAME = new QName(WSSecurityConstants.WSSE_NS, URI_ATTR_LOCAL_NAME);
 
     /**
-     * Returns the wsse:Reference/@wsse:URI attribute value.
+     * Returns the wsse:Reference/@URI attribute value.
      * 
      * @return the URI attribute value.
      */
     public String getURI();
 
     /**
-     * Sets the wsse:Reference/@wsse:URI attribute value.
+     * Sets the wsse:Reference/@URI attribute value.
      * 
-     * @param uri
-     *            the URI to set.
+     * @param uri the URI to set.
      */
     public void setURI(String uri);
 }

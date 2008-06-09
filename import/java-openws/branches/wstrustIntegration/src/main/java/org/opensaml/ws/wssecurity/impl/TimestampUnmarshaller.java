@@ -42,8 +42,7 @@ public class TimestampUnmarshaller extends
      * Default constructor.
      */
     public TimestampUnmarshaller() {
-        super(Timestamp.ELEMENT_NAME.getNamespaceURI(),
-              Timestamp.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
     /**
@@ -71,7 +70,7 @@ public class TimestampUnmarshaller extends
     }
 
     /**
-     * Unmarshalls the &lt;wsu:Id&gt; attribute.
+     * Unmarshalls the &lt;@wsu:Id&gt; attribute.
      * <p>
      * {@inheritDoc}
      */

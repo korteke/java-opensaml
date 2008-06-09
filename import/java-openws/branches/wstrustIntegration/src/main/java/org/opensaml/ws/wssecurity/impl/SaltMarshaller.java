@@ -14,8 +14,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.opensaml.ws.wssecurity.impl;
 
+package org.opensaml.ws.wssecurity.impl;
 
 import org.opensaml.ws.wssecurity.Salt;
 import org.opensaml.xml.XMLObject;
@@ -35,8 +35,7 @@ public class SaltMarshaller extends AbstractWSSecurityObjectMarshaller {
      * Default constructor.
      */
     public SaltMarshaller() {
-        super(Salt.ELEMENT_NAME.getNamespaceURI(),
-              Salt.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
     /*
@@ -46,9 +45,8 @@ public class SaltMarshaller extends AbstractWSSecurityObjectMarshaller {
      *      org.w3c.dom.Element)
      */
     @Override
-    protected void marshallElementContent(XMLObject xmlObject,
-            Element domElement) throws MarshallingException {
-        Salt salt= (Salt) xmlObject;
+    protected void marshallElementContent(XMLObject xmlObject, Element domElement) throws MarshallingException {
+        Salt salt = (Salt) xmlObject;
         XMLHelper.appendTextContent(domElement, salt.getValue());
     }
 

@@ -14,8 +14,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.opensaml.ws.wssecurity.impl;
 
+import javax.xml.namespace.QName;
 
 import org.opensaml.ws.wssecurity.AttributedId;
 import org.opensaml.xml.XMLObject;
@@ -28,34 +30,32 @@ import org.w3c.dom.Attr;
  * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
  * @version $Revision$
  */
-public abstract class AbstractAttributedIdUnmarshaller extends
-        AbstractWSSecurityObjectUnmarshaller {
+public abstract class AbstractAttributedIdUnmarshaller extends AbstractWSSecurityObjectUnmarshaller {
 
     /**
      * Constructor.
      * <p>
      * {@inheritDoc}
      */
-    protected AbstractAttributedIdUnmarshaller(String targetNamespaceURI,
-            String targetLocalName) {
-        super(targetNamespaceURI, targetLocalName);
+    protected AbstractAttributedIdUnmarshaller() {
+        super();
     }
 
     /**
-     * Unmarshalls the &lt;wsu:Id&gt; attribute.
+     * Unmarshalls the &lt;@wsu:Id&gt; attribute.
      * <p>
      * {@inheritDoc}
      */
     @Override
-    protected void processAttribute(XMLObject xmlObject, Attr attribute)
-            throws UnmarshallingException {
-        String attrName= attribute.getLocalName();
-        if (AttributedId.ID_ATTR_LOCAL_NAME.equals(attrName)) {
-            AttributedId attributedId= (AttributedId) xmlObject;
-            String attrValue= attribute.getValue();
+    protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
+        String attrNamespace = attribute.getNamespaceURI();
+        String attrName = attribute.getLocalName();
+        QName attrQName = new QName(attrNamespace, attrName);
+        if (AttributedId.ID_ATTR_NAME.equals(attrQName)) {
+            AttributedId attributedId = (AttributedId) xmlObject;
+            String attrValue = attribute.getValue();
             attributedId.setId(attrValue);
-        }
-        else {
+        } else {
             super.processAttribute(xmlObject, attribute);
         }
     }
