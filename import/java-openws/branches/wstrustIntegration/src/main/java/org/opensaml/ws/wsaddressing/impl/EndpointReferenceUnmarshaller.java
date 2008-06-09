@@ -35,7 +35,7 @@ public class EndpointReferenceUnmarshaller extends AbstractEndpointReferenceType
      * {@inheritDoc}
      */
     public EndpointReferenceUnmarshaller() {
-        super(EndpointReference.ELEMENT_NAME.getNamespaceURI(), EndpointReference.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
 }

@@ -29,13 +29,12 @@ import org.opensaml.xml.AbstractExtensibleXMLObjectMarshaller;
 public abstract class AbstractEndpointReferenceTypeMarshaller extends AbstractExtensibleXMLObjectMarshaller {
 
     /**
-     * Constructor
+     * Constructor.
+     * <p>
      * 
-     * @param targetNamespaceURI
-     * @param targetLocalName
      */
-    public AbstractEndpointReferenceTypeMarshaller(String targetNamespaceURI, String targetLocalName) {
-        super(targetNamespaceURI, targetLocalName);
+    public AbstractEndpointReferenceTypeMarshaller() {
+        super();
     }
 
 }

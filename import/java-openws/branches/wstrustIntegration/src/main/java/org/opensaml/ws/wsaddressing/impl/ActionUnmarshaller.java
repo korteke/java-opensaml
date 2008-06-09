@@ -35,7 +35,7 @@ public class ActionUnmarshaller extends AbstractAttributedURITypeUnmarshaller {
      * {@inheritDoc}
      */
     public ActionUnmarshaller() {
-        super(Action.ELEMENT_NAME.getNamespaceURI(), Action.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
 }

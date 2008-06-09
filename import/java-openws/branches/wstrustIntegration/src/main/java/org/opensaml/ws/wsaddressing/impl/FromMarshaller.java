@@ -31,7 +31,7 @@ public class FromMarshaller extends AbstractEndpointReferenceTypeMarshaller {
      * Default constructor.
      */
     public FromMarshaller() {
-        super(From.ELEMENT_NAME.getNamespaceURI(), From.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
 }

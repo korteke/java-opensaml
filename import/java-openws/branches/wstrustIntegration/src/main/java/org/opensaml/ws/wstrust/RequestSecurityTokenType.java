@@ -14,10 +14,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.opensaml.ws.wstrust;
 
 import javax.xml.namespace.QName;
-
 
 import org.opensaml.ws.wspolicy.AppliesTo;
 import org.opensaml.ws.wspolicy.Policy;
@@ -28,8 +28,8 @@ import org.opensaml.xml.ElementExtensibleXMLObject;
 import org.opensaml.xml.signature.SignableXMLObject;
 
 /**
- * Abstract interface for the &lt;wst:RequestSecurityToken&gt; (RST) element or
- * the &lt;wst:RequestSecurityTokenResponse&gt; (RSTR) element.
+ * Abstract interface for the &lt;wst:RequestSecurityToken&gt; (RST) element or the
+ * &lt;wst:RequestSecurityTokenResponse&gt; (RSTR) element.
  * <p>
  * The element have a &lt;wst:Context&gt; attribute.
  * <p>
@@ -71,34 +71,31 @@ import org.opensaml.xml.signature.SignableXMLObject;
  * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
  * @version $Revision$
  */
-public abstract interface RequestSecurityTokenType extends
-        AttributeExtensibleXMLObject, ElementExtensibleXMLObject, SignableXMLObject {
+public abstract interface RequestSecurityTokenType extends AttributeExtensibleXMLObject, ElementExtensibleXMLObject,
+        SignableXMLObject {
 
     /**
      * the &lt;WSTrustMessage/@wst:Context&gt; attribute local name
      */
-    public final static String CONTEXT_ATTR_LOCAL_NAME= "Context";
+    public final static String CONTEXT_ATTR_LOCAL_NAME = "Context";
 
     /**
      * the &lt;WSTrustMessage/@wst:Context&gt; attribute name
      */
-    public final static QName CONTEXT_ATTR_NAME= new QName(WSTrustConstants.WST_NS,
-                                                           CONTEXT_ATTR_LOCAL_NAME,
-                                                           WSTrustConstants.WST_PREFIX);
+    public final static QName CONTEXT_ATTR_NAME = new QName(WSTrustConstants.WST_NS, CONTEXT_ATTR_LOCAL_NAME,
+            WSTrustConstants.WST_PREFIX);
 
     /**
-     * Returns the &lt;WSTrustMessage/@wst:Context&gt; attribute value
+     * Returns the &lt;WSTrustMessage/@Context&gt; attribute value
      * 
-     * @return The &lt;WSTrustMessage/@wst:Context&gt; attribute value or
-     *         <code>null</code>.
+     * @return The &lt;WSTrustMessage/@Context&gt; attribute value or <code>null</code>.
      */
     public String getContext();
 
     /**
      * Sets the &lt;WSTrustMessage/@wst:Context&gt; attribute value
      * 
-     * @param context
-     *            The Context attribute value
+     * @param context The Context attribute value
      */
     public void setContext(String context);
 
@@ -116,8 +113,7 @@ public abstract interface RequestSecurityTokenType extends
     /**
      * Sets the &lt;wst:RequestType&gt; child element.
      * 
-     * @param requestType
-     *            the {@link RequestType} child element to set.
+     * @param requestType the {@link RequestType} child element to set.
      */
     public void setRequestType(RequestType requestType);
 
@@ -131,8 +127,7 @@ public abstract interface RequestSecurityTokenType extends
     /**
      * Sets the &lt;wst:TokenType&gt; child element.
      * 
-     * @param tokenType
-     *            the {@link TokenType} child element.
+     * @param tokenType the {@link TokenType} child element.
      */
     public void setTokenType(TokenType tokenType);
 
@@ -146,8 +141,7 @@ public abstract interface RequestSecurityTokenType extends
     /**
      * Sets the &lt;wst:Entropy&gt; child element.
      * 
-     * @param entropy
-     *            the {@link Entropy} child element.
+     * @param entropy the {@link Entropy} child element.
      */
     public void setEntropy(Entropy entropy);
 
@@ -161,8 +155,7 @@ public abstract interface RequestSecurityTokenType extends
     /**
      * Sets the &lt;wst:Lifetime&gt; child element
      * 
-     * @param lifetime
-     *            the {@link Lifetime} child element to set
+     * @param lifetime the {@link Lifetime} child element to set
      */
     public void setLifetime(Lifetime lifetime);
 
@@ -176,8 +169,7 @@ public abstract interface RequestSecurityTokenType extends
     /**
      * Sets the &lt;wst:AllowPostdating&gt; child element.
      * 
-     * @param allowPostdating
-     *            the {@link AllowPostdating} child element to set.
+     * @param allowPostdating the {@link AllowPostdating} child element to set.
      */
     public void setAllowPostdating(AllowPostdating allowPostdating);
 
@@ -191,8 +183,7 @@ public abstract interface RequestSecurityTokenType extends
     /**
      * Sets the &lt;wst:Renewing&gt; child element.
      * 
-     * @param renewing
-     *            the {@link Renewing} child element to set.
+     * @param renewing the {@link Renewing} child element to set.
      */
     public void setRenewing(Renewing renewing);
 
@@ -206,8 +197,7 @@ public abstract interface RequestSecurityTokenType extends
     /**
      * Sets the &lt;wst:OnBehalfOf&gt; child element.
      * 
-     * @param onBehalfOf
-     *            the {@link OnBehalfOf} child element to set.
+     * @param onBehalfOf the {@link OnBehalfOf} child element to set.
      */
     public void setOnBehalfOf(OnBehalfOf onBehalfOf);
 
@@ -221,8 +211,7 @@ public abstract interface RequestSecurityTokenType extends
     /**
      * Sets the &lt;wst:Issuer&gt; child element.
      * 
-     * @param issuer
-     *            the {@link Issuer} child element to set.
+     * @param issuer the {@link Issuer} child element to set.
      */
     public void setIssuer(Issuer issuer);
 
@@ -236,8 +225,7 @@ public abstract interface RequestSecurityTokenType extends
     /**
      * Sets the &lt;wst:AuthenticationType&gt; child element.
      * 
-     * @param authenticationType
-     *            the {@link AuthenticationType} child element to set.
+     * @param authenticationType the {@link AuthenticationType} child element to set.
      */
     public void setAuthenticationType(AuthenticationType authenticationType);
 
@@ -251,8 +239,7 @@ public abstract interface RequestSecurityTokenType extends
     /**
      * Sets the &lt;wst:KeyType&gt; child element.
      * 
-     * @param keyType
-     *            the {@link KeyType} child element to set.
+     * @param keyType the {@link KeyType} child element to set.
      */
     public void setKeyType(KeyType keyType);
 
@@ -266,8 +253,7 @@ public abstract interface RequestSecurityTokenType extends
     /**
      * Sets the &lt;wst:KeySize&gt; child element.
      * 
-     * @param keySize
-     *            the {@link KeySize} child element to set.
+     * @param keySize the {@link KeySize} child element to set.
      */
     public void setKeySize(KeySize keySize);
 
@@ -281,8 +267,7 @@ public abstract interface RequestSecurityTokenType extends
     /**
      * Sets the &lt;wst:SignatureAlgorithm&gt; child element.
      * 
-     * @param signatureAlgorithm
-     *            the &lt;wst:SignatureAlgorithm&gt; child element to set.
+     * @param signatureAlgorithm the &lt;wst:SignatureAlgorithm&gt; child element to set.
      */
     public void setSignatureAlgorithm(SignatureAlgorithm signatureAlgorithm);
 
@@ -296,8 +281,7 @@ public abstract interface RequestSecurityTokenType extends
     /**
      * Sets the &lt;wst:Encryption&gt; child element.
      * 
-     * @param encryption
-     *            the {@link Encryption} child element to set.
+     * @param encryption the {@link Encryption} child element to set.
      */
     public void setEncryption(Encryption encryption);
 
@@ -311,8 +295,7 @@ public abstract interface RequestSecurityTokenType extends
     /**
      * Sets the &lt;wst:EncryptionAlgorithm&gt; child element.
      * 
-     * @param encryptionAlgorithm
-     *            the {@link EncryptionAlgorithm} child element to set.
+     * @param encryptionAlgorithm the {@link EncryptionAlgorithm} child element to set.
      */
     public void setEncryptionAlgorithm(EncryptionAlgorithm encryptionAlgorithm);
 
@@ -326,11 +309,9 @@ public abstract interface RequestSecurityTokenType extends
     /**
      * Sets the &lt;wst:CanonicalizationAlgorithm&gt; child element.
      * 
-     * @param canonicalizationAlgorithm
-     *            the {@link CanonicalizationAlgorithm} child element to set.
+     * @param canonicalizationAlgorithm the {@link CanonicalizationAlgorithm} child element to set.
      */
-    public void setCanonicalizationAlgorithm(
-            CanonicalizationAlgorithm canonicalizationAlgorithm);
+    public void setCanonicalizationAlgorithm(CanonicalizationAlgorithm canonicalizationAlgorithm);
 
     /**
      * Returns the &lt;wst:ProofEncryption&gt; child element.
@@ -342,8 +323,7 @@ public abstract interface RequestSecurityTokenType extends
     /**
      * Sets the &lt;wst:ProofEncryption&gt; child element.
      * 
-     * @param proofEncryption
-     *            the {@link ProofEncryption} child element to set.
+     * @param proofEncryption the {@link ProofEncryption} child element to set.
      */
     public void setProofEncryption(ProofEncryption proofEncryption);
 
@@ -357,8 +337,7 @@ public abstract interface RequestSecurityTokenType extends
     /**
      * Sets the &lt;wst:UseKey&gt; child element.
      * 
-     * @param useKey
-     *            the {@link UseKey} child element to set.
+     * @param useKey the {@link UseKey} child element to set.
      */
     public void setUseKey(UseKey useKey);
 
@@ -372,8 +351,7 @@ public abstract interface RequestSecurityTokenType extends
     /**
      * Sets the &lt;wst:SignWith&gt; child element.
      * 
-     * @param signWith
-     *            the {@link SignWith} child element to set.
+     * @param signWith the {@link SignWith} child element to set.
      */
     public void setSignWith(SignWith signWith);
 
@@ -387,8 +365,7 @@ public abstract interface RequestSecurityTokenType extends
     /**
      * Sets the &lt;EncrypWith&gt; child element.
      * 
-     * @param encryptWith
-     *            the {@link EncryptWith} child element to set.
+     * @param encryptWith the {@link EncryptWith} child element to set.
      */
     public void setEncryptWith(EncryptWith encryptWith);
 
@@ -402,8 +379,7 @@ public abstract interface RequestSecurityTokenType extends
     /**
      * Sets the &lt;wst:DelegateTo&gt; child element.
      * 
-     * @param delegateTo
-     *            the {@link DelegateTo} child element to set.
+     * @param delegateTo the {@link DelegateTo} child element to set.
      */
     public void setDelegateTo(DelegateTo delegateTo);
 
@@ -417,8 +393,7 @@ public abstract interface RequestSecurityTokenType extends
     /**
      * Sets the &lt;wst:Forwardable&gt; child element.
      * 
-     * @param forwardable
-     *            the {@link Forwardable} child element to set.
+     * @param forwardable the {@link Forwardable} child element to set.
      */
     public void setForwardable(Forwardable forwardable);
 
@@ -432,8 +407,7 @@ public abstract interface RequestSecurityTokenType extends
     /**
      * Sets the &lt;wst:Delegatable&gt; child element.
      * 
-     * @param delegatable
-     *            the {@link Delegatable} child element ot set.
+     * @param delegatable the {@link Delegatable} child element ot set.
      */
     public void setDelegatable(Delegatable delegatable);
 
@@ -451,8 +425,7 @@ public abstract interface RequestSecurityTokenType extends
     /**
      * Sets the &lt;wsp:AppliesTo&gt; child element.
      * 
-     * @param appliesTo
-     *            the {@link AppliesTo} child element to set.
+     * @param appliesTo the {@link AppliesTo} child element to set.
      */
     public void setAppliesTo(AppliesTo appliesTo);
 
@@ -466,8 +439,7 @@ public abstract interface RequestSecurityTokenType extends
     /**
      * Sets the &lt;wsp:Policy&gt; child element.
      * 
-     * @param policy
-     *            the {@link Policy} child element to set.
+     * @param policy the {@link Policy} child element to set.
      */
     public void setPolicy(Policy policy);
 
@@ -481,8 +453,7 @@ public abstract interface RequestSecurityTokenType extends
     /**
      * Sets the &lt;wsp:PolicyReference&gt; child element.
      * 
-     * @param policyReference
-     *            the {@link PolicyReference} child element or <code>null</code>.
+     * @param policyReference the {@link PolicyReference} child element or <code>null</code>.
      */
     public void setPolicyReference(PolicyReference policyReference);
 
@@ -500,8 +471,7 @@ public abstract interface RequestSecurityTokenType extends
     /**
      * Sets the &lt;wsu:Timestamp&gt; element.
      * 
-     * @param timestamp
-     *            the {@link Timestamp} child element to set
+     * @param timestamp the {@link Timestamp} child element to set
      */
     public void setTimestamp(Timestamp timestamp);
 }

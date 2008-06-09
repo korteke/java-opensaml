@@ -31,7 +31,7 @@ public class FromUnmarshaller extends AbstractEndpointReferenceTypeUnmarshaller 
      * Default constructor.
      */
     public FromUnmarshaller() {
-        super(From.ELEMENT_NAME.getNamespaceURI(), From.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
 }

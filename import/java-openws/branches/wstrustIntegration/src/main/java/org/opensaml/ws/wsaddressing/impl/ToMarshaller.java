@@ -35,6 +35,6 @@ public class ToMarshaller extends AbstractAttributedURITypeMarshaller {
      * {@inheritDoc}
      */
     public ToMarshaller() {
-        super(To.ELEMENT_NAME.getNamespaceURI(), To.ELEMENT_NAME.getLocalPart());
+        super();
     }
 }

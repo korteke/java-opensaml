@@ -14,8 +14,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.opensaml.ws.wspolicy.impl;
 
+package org.opensaml.ws.wspolicy.impl;
 
 import org.opensaml.ws.wspolicy.Policy;
 import org.opensaml.xml.AbstractExtensibleXMLObjectUnmarshaller;
@@ -39,48 +39,25 @@ public class PolicyUnmarshaller extends AbstractExtensibleXMLObjectUnmarshaller 
      * {@inheritDoc}
      */
     public PolicyUnmarshaller() {
-        super(Policy.ELEMENT_NAME.getNamespaceURI(),
-              Policy.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
-    // /**
-    // * Unmarshalls the &lt;wsp: &gt; child element.
-    // * <p>
-    // * {@inheritDoc}
-    // */
-    // @Override
-    // protected void processChildElement(XMLObject parentXMLObject,
-    // XMLObject childXMLObject) throws UnmarshallingException {
-    // Policy container= (Policy) parentXMLObject;
-    // if (childXMLObject instanceof SecurityToken) {
-    // // TODO: implement
-    // // SecurityToken token= (SecurityToken) childXMLObject;
-    // // container.setSecurityToken(token);
-    // }
-    // else {
-    // super.processChildElement(parentXMLObject, childXMLObject);
-    // }
-    // }
-
     /**
-     * Unmarshalls the &lt;wsu:Id&gt; and the &lt;wsp:Name&gt; attributes.
+     * Unmarshalls the <code>wsu:I</code> and the <code>Name</code> attributes.
      * <p>
      * {@inheritDoc}
      */
     @Override
-    protected void processAttribute(XMLObject xmlObject, Attr attribute)
-            throws UnmarshallingException {
-        Policy policy= (Policy) xmlObject;
-        String attrName= attribute.getLocalName();
+    protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
+        Policy policy = (Policy) xmlObject;
+        String attrName = attribute.getLocalName();
         if (Policy.ID_ATTR_LOCAL_NAME.equals(attrName)) {
-            String id= attribute.getValue();
+            String id = attribute.getValue();
             policy.setId(id);
-        }
-        else if (Policy.NAME_ATTR_LOCAL_NAME.equals(attrName)) {
-            String name= attribute.getValue();
+        } else if (Policy.NAME_ATTR_LOCAL_NAME.equals(attrName)) {
+            String name = attribute.getValue();
             policy.setName(name);
-        }
-        else {
+        } else {
             // xs:anyAttribute attributes
             super.processAttribute(xmlObject, attribute);
         }

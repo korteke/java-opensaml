@@ -17,7 +17,6 @@
 package org.opensaml.ws.wsaddressing.impl;
 
 
-import org.opensaml.ws.wsaddressing.ReferenceParameters;
 import org.opensaml.xml.AbstractExtensibleXMLObjectMarshaller;
 
 /**
@@ -35,8 +34,7 @@ public class ReferenceParametersMarshaller extends
      * {@inheritDoc}
      */
     public ReferenceParametersMarshaller() {
-        super(ReferenceParameters.ELEMENT_NAME.getNamespaceURI(),
-              ReferenceParameters.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
 }

@@ -35,7 +35,7 @@ public class EndpointReferenceMarshaller extends AbstractEndpointReferenceTypeMa
      * {@inheritDoc}
      */
     public EndpointReferenceMarshaller() {
-        super(EndpointReference.ELEMENT_NAME.getNamespaceURI(), EndpointReference.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
 }

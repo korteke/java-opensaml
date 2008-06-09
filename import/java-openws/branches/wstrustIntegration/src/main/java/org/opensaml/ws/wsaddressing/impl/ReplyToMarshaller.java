@@ -33,7 +33,7 @@ public class ReplyToMarshaller extends AbstractEndpointReferenceTypeMarshaller {
      * {@inheritDoc}
      */
     public ReplyToMarshaller() {
-        super(ReplyTo.ELEMENT_NAME.getNamespaceURI(), ReplyTo.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
 }

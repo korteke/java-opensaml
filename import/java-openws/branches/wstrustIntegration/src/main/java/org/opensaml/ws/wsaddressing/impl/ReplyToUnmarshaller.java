@@ -33,7 +33,7 @@ public class ReplyToUnmarshaller extends AbstractEndpointReferenceTypeUnmarshall
      * {@inheritDoc}
      */
     public ReplyToUnmarshaller() {
-        super(ReplyTo.ELEMENT_NAME.getNamespaceURI(), ReplyTo.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
 }

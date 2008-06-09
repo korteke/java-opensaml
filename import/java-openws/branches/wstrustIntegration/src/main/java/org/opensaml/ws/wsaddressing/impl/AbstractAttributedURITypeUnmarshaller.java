@@ -39,13 +39,12 @@ import org.w3c.dom.Attr;
 public abstract class AbstractAttributedURITypeUnmarshaller extends AbstractWSAddressingObjectUnmarshaller {
 
     /**
-     * Constructor.
-     * 
-     * @param targetNamespaceURI The element namespace URI
-     * @param targetLocalName The element local name
+     * Default constructor.
+     * <p>
+     * {@inheritDoc}
      */
-    protected AbstractAttributedURITypeUnmarshaller(String targetNamespaceURI, String targetLocalName) {
-        super(targetNamespaceURI, targetLocalName);
+    protected AbstractAttributedURITypeUnmarshaller() {
+        super();
     }
 
     /**

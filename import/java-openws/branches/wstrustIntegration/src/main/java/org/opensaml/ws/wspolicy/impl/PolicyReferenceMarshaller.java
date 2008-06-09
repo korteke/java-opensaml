@@ -14,12 +14,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.opensaml.ws.wspolicy.impl;
 
 import java.util.Map.Entry;
 
 import javax.xml.namespace.QName;
-
 
 import org.opensaml.ws.wspolicy.PolicyReference;
 import org.opensaml.xml.Configuration;
@@ -41,52 +41,37 @@ import org.w3c.dom.Element;
 public class PolicyReferenceMarshaller extends AbstractWSPolicyObjectMarshaller {
 
     /**
-     * Default constructor.
-     * <p>
-     * {@inheritDoc}
-     */
-    public PolicyReferenceMarshaller() {
-        super(PolicyReference.ELEMENT_NAME.getNamespaceURI(),
-              PolicyReference.ELEMENT_NAME.getLocalPart());
-    }
-
-    /**
-     * Marshalls the &lt;wsp:URI&gt;, the &lt;wsp:Digest&gt;, the
-     * &lt;wsp:DigestAlgoritm&gt; and the <code>xs:anyAttribute</code>
-     * attributes.
+     * Marshalls the <code>URI</code>, the <code>Digest</code>, the <code>DigestAlgoritm</code> and the
+     * <code>xs:anyAttribute</code> attributes.
      * <p>
      * {@inheritDoc}
      */
     @Override
-    protected void marshallAttributes(XMLObject xmlObject, Element domElement)
-            throws MarshallingException {
-        Document document= domElement.getOwnerDocument();
-        PolicyReference policyReference= (PolicyReference) xmlObject;
-        String uri= policyReference.getURI();
+    protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
+        Document document = domElement.getOwnerDocument();
+        PolicyReference policyReference = (PolicyReference) xmlObject;
+        String uri = policyReference.getURI();
         if (uri != null) {
-            Attr attribute= XMLHelper.constructAttribute(document,
-                                                         PolicyReference.URI_ATTR_NAME);
+            Attr attribute = XMLHelper.constructAttribute(document, PolicyReference.URI_ATTR_NAME);
             attribute.setValue(uri);
             domElement.setAttributeNodeNS(attribute);
         }
-        String digest= policyReference.getDigest();
+        String digest = policyReference.getDigest();
         if (digest != null) {
-            Attr attribute= XMLHelper.constructAttribute(document,
-                                                         PolicyReference.DIGEST_ATTR_NAME);
+            Attr attribute = XMLHelper.constructAttribute(document, PolicyReference.DIGEST_ATTR_NAME);
             attribute.setValue(digest);
             domElement.setAttributeNodeNS(attribute);
         }
-        String digestAlgoritm= policyReference.getDigestAlgorithm();
+        String digestAlgoritm = policyReference.getDigestAlgorithm();
         if (digestAlgoritm != null) {
-            Attr attribute= XMLHelper.constructAttribute(document,
-                                                         PolicyReference.DIGEST_ALGORITHM_ATTR_NAME);
+            Attr attribute = XMLHelper.constructAttribute(document, PolicyReference.DIGEST_ALGORITHM_ATTR_NAME);
             attribute.setValue(digestAlgoritm);
             domElement.setAttributeNodeNS(attribute);
         }
         // xs:anyAttribute
         Attr attribute;
         for (Entry<QName, String> entry : policyReference.getUnknownAttributes().entrySet()) {
-            attribute= XMLHelper.constructAttribute(document, entry.getKey());
+            attribute = XMLHelper.constructAttribute(document, entry.getKey());
             attribute.setValue(entry.getValue());
             domElement.setAttributeNodeNS(attribute);
             if (Configuration.isIDAttribute(entry.getKey())

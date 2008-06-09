@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.opensaml.ws.wspolicy.impl;
 
 import org.opensaml.xml.XMLObject;
@@ -22,43 +23,29 @@ import org.opensaml.xml.io.MarshallingException;
 import org.w3c.dom.Element;
 
 /**
- * An abstract marshaller implementation for XMLObjects from
- * {@link org.opensaml.ws.wssecurity}.
+ * An abstract marshaller implementation for XMLObjects from {@link org.opensaml.ws.wssecurity}.
  */
-public abstract class AbstractWSPolicyObjectMarshaller extends
-        AbstractXMLObjectMarshaller {
-
-    /**
-     * Constructor.
-     * <p>
-     * {@inheritDoc}
-     */
-    protected AbstractWSPolicyObjectMarshaller(String targetNamespaceURI,
-            String targetLocalName) {
-        super(targetNamespaceURI, targetLocalName);
-    }
+public abstract class AbstractWSPolicyObjectMarshaller extends AbstractXMLObjectMarshaller {
 
     /*
-     * No-op method. Extending implementations should override this method if
-     * they have attributes to marshall into the Element.
+     * No-op method. Extending implementations should override this method if they have attributes to marshall into the
+     * Element.
      * 
      * @see org.opensaml.xml.io.AbstractXMLObjectMarshaller#marshallAttributes(org.opensaml.xml.XMLObject,
      *      org.w3c.dom.Element)
      */
-    protected void marshallAttributes(XMLObject xmlObject, Element domElement)
-            throws MarshallingException {
+    protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
 
     }
 
     /*
-     * No-op method. Extending implementations should override this method if
-     * they have text content to marshall into the Element.
+     * No-op method. Extending implementations should override this method if they have text content to marshall into
+     * the Element.
      * 
      * @see org.opensaml.xml.io.AbstractXMLObjectMarshaller#marshallElementContent(org.opensaml.xml.XMLObject,
      *      org.w3c.dom.Element)
      */
-    protected void marshallElementContent(XMLObject xmlObject,
-            Element domElement) throws MarshallingException {
+    protected void marshallElementContent(XMLObject xmlObject, Element domElement) throws MarshallingException {
 
     }
 }

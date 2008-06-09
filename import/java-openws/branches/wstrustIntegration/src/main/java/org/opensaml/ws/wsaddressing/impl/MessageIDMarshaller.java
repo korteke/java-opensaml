@@ -35,6 +35,6 @@ public class MessageIDMarshaller extends AbstractAttributedURITypeMarshaller {
      * {@inheritDoc}
      */
     public MessageIDMarshaller() {
-        super(MessageID.ELEMENT_NAME.getNamespaceURI(), MessageID.ELEMENT_NAME.getLocalPart());
+        super();
     }
 }

@@ -39,13 +39,12 @@ import org.w3c.dom.Element;
 public abstract class AbstractAttributedURITypeMarshaller extends AbstractWSAddressingObjectMarshaller {
 
     /**
-     * Constructor.
-     * 
-     * @param targetNamespaceURI The element namespace URI
-     * @param targetLocalName The element local name
+     * Default constructor.
+     * <p>
+     * {@inheritDoc}
      */
-    protected AbstractAttributedURITypeMarshaller(String targetNamespaceURI, String targetLocalName) {
-        super(targetNamespaceURI, targetLocalName);
+    protected AbstractAttributedURITypeMarshaller() {
+        super();
     }
 
     /**

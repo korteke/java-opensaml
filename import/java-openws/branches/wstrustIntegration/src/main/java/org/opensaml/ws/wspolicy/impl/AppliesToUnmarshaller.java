@@ -14,8 +14,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.opensaml.ws.wspolicy.impl;
 
+package org.opensaml.ws.wspolicy.impl;
 
 import org.opensaml.ws.wspolicy.AppliesTo;
 import org.opensaml.xml.AbstractExtensibleXMLObjectUnmarshaller;
@@ -28,8 +28,7 @@ import org.opensaml.xml.AbstractExtensibleXMLObjectUnmarshaller;
  * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
  * @version $Revision$
  */
-public class AppliesToUnmarshaller extends
-        AbstractExtensibleXMLObjectUnmarshaller {
+public class AppliesToUnmarshaller extends AbstractExtensibleXMLObjectUnmarshaller {
 
     /**
      * Default constructor.
@@ -37,8 +36,7 @@ public class AppliesToUnmarshaller extends
      * {@inheritDoc}
      */
     public AppliesToUnmarshaller() {
-        super(AppliesTo.ELEMENT_NAME.getNamespaceURI(),
-              AppliesTo.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
 }

@@ -35,7 +35,7 @@ public class AddressUnmarshaller extends AbstractAttributedURITypeUnmarshaller {
      * {@inheritDoc}
      */
     public AddressUnmarshaller() {
-        super(Address.ELEMENT_NAME.getNamespaceURI(), Address.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
 }

@@ -35,7 +35,7 @@ public class MessageIDUnmarshaller extends AbstractAttributedURITypeUnmarshaller
      * {@inheritDoc}
      */
     public MessageIDUnmarshaller() {
-        super(MessageID.ELEMENT_NAME.getNamespaceURI(), MessageID.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
 }

@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.opensaml.ws.wsaddressing.impl;
 
 import org.opensaml.xml.XMLObject;
@@ -24,66 +25,54 @@ import org.slf4j.LoggerFactory;
 import org.w3c.dom.Attr;
 
 /**
- * An abstract unmarshaller implementation for XMLObjects from
- * {@link org.opensaml.ws.wsaddressing}.
+ * An abstract unmarshaller implementation for XMLObjects from {@link org.opensaml.ws.wsaddressing}.
  */
-public abstract class AbstractWSAddressingObjectUnmarshaller extends
-        AbstractXMLObjectUnmarshaller {
+public abstract class AbstractWSAddressingObjectUnmarshaller extends AbstractXMLObjectUnmarshaller {
 
     /**
      * Logger.
      */
-    private final Logger log= LoggerFactory.getLogger(AbstractWSAddressingObjectUnmarshaller.class);
+    private final Logger log = LoggerFactory.getLogger(AbstractWSAddressingObjectUnmarshaller.class);
 
     /**
      * Constructor.
      * 
      * {@inheritDoc}
      */
-    protected AbstractWSAddressingObjectUnmarshaller(String targetNamespaceURI,
-            String targetLocalName) {
-        super(targetNamespaceURI, targetLocalName);
+    protected AbstractWSAddressingObjectUnmarshaller() {
+        super();
     }
 
     /*
-     * No-op method. Extending implementations should override this method if
-     * they have child element to unmarshall.
+     * No-op method. Extending implementations should override this method if they have child element to unmarshall.
      * 
      * @see org.opensaml.xml.io.AbstractXMLObjectUnmarshaller#processChildElement(org.opensaml.xml.XMLObject,
      *      org.opensaml.xml.XMLObject)
      */
-    protected void processChildElement(XMLObject parentXMLObject,
-            XMLObject childXMLObject) throws UnmarshallingException {
-        log.warn("{} ignoring unknown child element {}",
-                 parentXMLObject.getElementQName().getLocalPart(),
-                 childXMLObject.getElementQName().getLocalPart());
+    protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
+            throws UnmarshallingException {
+        log.warn("{} ignoring unknown child element {}", parentXMLObject.getElementQName().getLocalPart(),
+                childXMLObject.getElementQName().getLocalPart());
     }
 
     /*
-     * No-op method. Extending implementations should override this method if
-     * they have attributes to unmarshall.
+     * No-op method. Extending implementations should override this method if they have attributes to unmarshall.
      * 
      * @see org.opensaml.xml.io.AbstractXMLObjectUnmarshaller#processAttribute(org.opensaml.xml.XMLObject,
      *      org.w3c.dom.Attr)
      */
-    protected void processAttribute(XMLObject xmlObject, Attr attribute)
-            throws UnmarshallingException {
-        log.warn("{} ignoring unknown attribute {}",
-                 xmlObject.getElementQName().getLocalPart(),
-                 attribute.getLocalName());
+    protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
+        log.warn("{} ignoring unknown attribute {}", xmlObject.getElementQName().getLocalPart(), attribute
+                .getLocalName());
     }
 
     /*
-     * No-op method. Extending implementations should override this method if
-     * they have element content to unmarshall.
+     * No-op method. Extending implementations should override this method if they have element content to unmarshall.
      * 
      * @see org.opensaml.xml.io.AbstractXMLObjectUnmarshaller#processElementContent(org.opensaml.xml.XMLObject,
      *      java.lang.String)
      */
-    protected void processElementContent(XMLObject xmlObject,
-            String elementContent) {
-        log.warn("{} ignoring unknown element content: {}",
-                 xmlObject.getElementQName().getLocalPart(),
-                 elementContent);
+    protected void processElementContent(XMLObject xmlObject, String elementContent) {
+        log.warn("{} ignoring unknown element content: {}", xmlObject.getElementQName().getLocalPart(), elementContent);
     }
 }

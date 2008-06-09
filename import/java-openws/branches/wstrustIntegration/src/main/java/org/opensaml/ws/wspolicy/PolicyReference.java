@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.opensaml.ws.wspolicy;
 
 import javax.xml.namespace.QName;
@@ -28,88 +29,76 @@ import org.opensaml.xml.AttributeExtensibleXMLObject;
  * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
  * @version $Revision$
  */
-public interface PolicyReference extends AttributeExtensibleXMLObject,
-        WSPolicyObject {
+public interface PolicyReference extends AttributeExtensibleXMLObject, WSPolicyObject {
 
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME= "PolicyReference";
+    public static final String ELEMENT_LOCAL_NAME = "PolicyReference";
 
     /** Default element name */
-    public final static QName ELEMENT_NAME= new QName(WSPolicyConstants.WSP_NS,
-                                                      ELEMENT_LOCAL_NAME,
-                                                      WSPolicyConstants.WSP_PREFIX);
+    public final static QName ELEMENT_NAME = new QName(WSPolicyConstants.WSP_NS, ELEMENT_LOCAL_NAME,
+            WSPolicyConstants.WSP_PREFIX);
 
-    /** The &lt;wsp:URI&gt; attribute local name */
-    public static final String URI_ATTR_LOCAL_NAME= "URI";
+    /** The &lt;wsp:PolicyReference/@URI&gt; attribute local name */
+    public static final String URI_ATTR_LOCAL_NAME = "URI";
 
-    /** The &lt;wsp:URI&gt; attribute name */
-    public static final QName URI_ATTR_NAME= new QName(WSPolicyConstants.WSP_NS,
-                                                       URI_ATTR_LOCAL_NAME,
-                                                       WSPolicyConstants.WSP_PREFIX);
+    /** The &lt;wsp:PolicyReference/@URI&gt; attribute name */
+    public static final QName URI_ATTR_NAME = new QName(WSPolicyConstants.WSP_NS, URI_ATTR_LOCAL_NAME);
 
-    /** The &lt;wsp:Digest&gt; attribute local name */
-    public static final String DIGEST_ATTR_LOCAL_NAME= "Digest";
+    /** The &lt;wsp:PolicyReference/@Digest&gt; attribute local name */
+    public static final String DIGEST_ATTR_LOCAL_NAME = "Digest";
 
-    /** The &lt;wsp:Digest&gt; attribute name */
-    public static final QName DIGEST_ATTR_NAME= new QName(WSPolicyConstants.WSP_NS,
-                                                          DIGEST_ATTR_LOCAL_NAME,
-                                                          WSPolicyConstants.WSP_PREFIX);
+    /** The &lt;wsp:PolicyReference/@Digest&gt; attribute name */
+    public static final QName DIGEST_ATTR_NAME = new QName(WSPolicyConstants.WSP_NS, DIGEST_ATTR_LOCAL_NAME);
 
-    /** The &lt;wsp:Digest&gt; attribute local name */
-    public static final String DIGEST_ALGORITHM_ATTR_LOCAL_NAME= "DigestAlgorithm";
+    /** The &lt;wsp:PolicyReference/@Digest&gt; attribute local name */
+    public static final String DIGEST_ALGORITHM_ATTR_LOCAL_NAME = "DigestAlgorithm";
 
-    /** The &lt;wsp:Digest&gt; attribute name */
-    public static final QName DIGEST_ALGORITHM_ATTR_NAME= new QName(WSPolicyConstants.WSP_NS,
-                                                                    DIGEST_ALGORITHM_ATTR_LOCAL_NAME,
-                                                                    WSPolicyConstants.WSP_PREFIX);
+    /** The &lt;wsp:PolicyReference/@Digest&gt; attribute name */
+    public static final QName DIGEST_ALGORITHM_ATTR_NAME = new QName(WSPolicyConstants.WSP_NS,
+            DIGEST_ALGORITHM_ATTR_LOCAL_NAME);
 
-    /** The default &lt;wsp:DigestAlgorithm&gt; attribute value */
-    public static final String DIGESTALGORITHM_SHA1EXC= WSPolicyConstants.WSP_NS
-            + "/Sha1Exc";
+    /** The default &lt;wsp:PolicyReference/@DigestAlgorithm&gt; attribute value */
+    public static final String DIGESTALGORITHM_SHA1EXC = WSPolicyConstants.WSP_NS + "/Sha1Exc";
 
     /**
-     * Returns the &lt;wsp:URI&gt; attribute value.
+     * Returns the &lt;wsp:PolicyReference/@URI&gt; attribute value.
      * 
-     * @return the &lt;wsp:URI&gt; attribute value.
+     * @return the URI attribute value.
      */
     public String getURI();
 
     /**
-     * Sets the &lt;wsp:URI&gt; attribute value.
+     * Sets the &lt;wsp:PolicyReference/@URI&gt; attribute value.
      * 
-     * @param uri
-     *            the &lt;wsp:URI&gt; attribute value to set.
+     * @param uri the URI attribute value to set.
      */
     public void setURI(String uri);
 
     /**
-     * Returns the &lt;wsp:Digest&gt; attribute URI value.
+     * Returns the &lt;wsp:PolicyReference/@Digest&gt; attribute URI value.
      * 
-     * @return the &lt;wsp:Digest&gt; attribute URI value.
+     * @return the Digest attribute URI value.
      */
     public String getDigest();
 
     /**
-     * Sets the &lt;wsp:Digest&gt; attribute URI value.
+     * Sets the &lt;wsp:PolicyReference/@Digest&gt; attribute URI value.
      * 
-     * @param digest
-     *            the &lt;wsp:Digest&gt; attribute URI value to set.
+     * @param digest the Digest attribute URI value to set.
      */
     public void setDigest(String digest);
 
     /**
-     * Returns the &lt;wsp:DigestAlgoritm&gt; attribute Base64 binary value.
+     * Returns the &lt;wsp:PolicyReference/@DigestAlgoritm&gt; attribute Base64 binary value.
      * 
-     * @return the &lt;wsp:DigestAlgoritm&gt; attribute Base64 binary value.
+     * @return the DigestAlgoritm attribute Base64 binary value.
      */
     public String getDigestAlgorithm();
 
     /**
-     * Sets the &lt;wsp:DigestAlgoritm&gt; attribute Base64 binary value.
+     * Sets the &lt;wsp:PolicyReference/@DigestAlgoritm&gt; attribute Base64 binary value.
      * 
-     * @param digestAlgorithm
-     *            the &lt;wsp:DigestAlgoritm&gt; attribute Base64 binary value
-     *            to set.
+     * @param digestAlgorithm the DigestAlgoritm attribute Base64 binary value to set.
      */
     public void setDigestAlgorithm(String digestAlgorithm);
 

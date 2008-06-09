@@ -14,10 +14,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.opensaml.ws.wsaddressing.impl;
 
-
-import org.opensaml.ws.wsaddressing.Metadata;
 import org.opensaml.xml.AbstractExtensibleXMLObjectUnmarshaller;
 
 /**
@@ -26,15 +25,13 @@ import org.opensaml.xml.AbstractExtensibleXMLObjectUnmarshaller;
  * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
  * @version $Revision$
  */
-public class MetadataUnmarshaller extends
-        AbstractExtensibleXMLObjectUnmarshaller {
+public class MetadataUnmarshaller extends AbstractExtensibleXMLObjectUnmarshaller {
 
     /**
      * Default constructor.
      */
     public MetadataUnmarshaller() {
-        super(Metadata.ELEMENT_NAME.getNamespaceURI(),
-              Metadata.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
 }

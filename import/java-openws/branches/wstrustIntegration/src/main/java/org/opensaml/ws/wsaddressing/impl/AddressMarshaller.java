@@ -34,7 +34,6 @@ public class AddressMarshaller extends AbstractAttributedURITypeMarshaller {
      * {@inheritDoc}
      */
     public AddressMarshaller() {
-        super(Address.ELEMENT_NAME.getNamespaceURI(),
-              Address.ELEMENT_NAME.getLocalPart());
+        super();
     }
 }

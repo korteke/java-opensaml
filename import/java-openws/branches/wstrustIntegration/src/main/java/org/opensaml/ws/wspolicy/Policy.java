@@ -14,10 +14,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.opensaml.ws.wspolicy;
 
 import javax.xml.namespace.QName;
-
 
 import org.opensaml.ws.wssecurity.AttributedId;
 import org.opensaml.xml.AttributeExtensibleXMLObject;
@@ -32,37 +32,32 @@ import org.opensaml.xml.ElementExtensibleXMLObject;
  * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
  * @version $Revision$
  */
-public interface Policy extends AttributeExtensibleXMLObject,
-        ElementExtensibleXMLObject, AttributedId, WSPolicyObject {
+public interface Policy extends AttributeExtensibleXMLObject, ElementExtensibleXMLObject, AttributedId, WSPolicyObject {
 
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME= "Policy";
+    public static final String ELEMENT_LOCAL_NAME = "Policy";
 
     /** Default element name */
-    public final static QName ELEMENT_NAME= new QName(WSPolicyConstants.WSP_NS,
-                                                      ELEMENT_LOCAL_NAME,
-                                                      WSPolicyConstants.WSP_PREFIX);
+    public final static QName ELEMENT_NAME = new QName(WSPolicyConstants.WSP_NS, ELEMENT_LOCAL_NAME,
+            WSPolicyConstants.WSP_PREFIX);
 
-    /** The &lt;wsp:Name&gt; attribute local name */
-    public static final String NAME_ATTR_LOCAL_NAME= "Name";
+    /** The &lt;wsp:Policy/@Name&gt; attribute local name */
+    public static final String NAME_ATTR_LOCAL_NAME = "Name";
 
-    /** The &lt;wsp:Name&gt; attribute name */
-    public static final QName NAME_ATTR_NAME= new QName(WSPolicyConstants.WSP_NS,
-                                                        NAME_ATTR_LOCAL_NAME,
-                                                        WSPolicyConstants.WSP_PREFIX);
+    /** The &lt;wsp:Policy/@Name&gt; attribute name */
+    public static final QName NAME_ATTR_NAME = new QName(WSPolicyConstants.WSP_NS, NAME_ATTR_LOCAL_NAME);
 
     /**
-     * Returns the &lt;wsp:Name&gt; attribute value.
+     * Returns the &lt;wsp:Policy/@Name&gt; attribute value.
      * 
-     * @return the &lt;wsp:Name&gt; attribute value or <code>null</code>.
+     * @return the <code>Name</code> attribute value or <code>null</code>.
      */
     public String getName();
 
     /**
-     * Sets the &lt;wsp:Name&gt; attribute value.
+     * Sets the &lt;wsp:Policy/@Name&gt; attribute value.
      * 
-     * @param name
-     *            the &lt;wsp:Name&gt; attribute value to set.
+     * @param name the <code>Name</code> attribute value to set.
      */
     public void setName(String name);
 

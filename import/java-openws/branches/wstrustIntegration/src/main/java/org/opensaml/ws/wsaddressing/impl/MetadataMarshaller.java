@@ -17,7 +17,6 @@
 package org.opensaml.ws.wsaddressing.impl;
 
 
-import org.opensaml.ws.wsaddressing.Metadata;
 import org.opensaml.xml.AbstractExtensibleXMLObjectMarshaller;
 
 /**
@@ -34,8 +33,7 @@ public class MetadataMarshaller extends AbstractExtensibleXMLObjectMarshaller {
      * {@inheritDoc}
      */
     public MetadataMarshaller() {
-        super(Metadata.ELEMENT_NAME.getNamespaceURI(),
-              Metadata.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
 }

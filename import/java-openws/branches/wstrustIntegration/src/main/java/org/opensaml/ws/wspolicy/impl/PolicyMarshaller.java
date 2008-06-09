@@ -14,8 +14,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.opensaml.ws.wspolicy.impl;
 
+package org.opensaml.ws.wspolicy.impl;
 
 import org.opensaml.ws.wspolicy.Policy;
 import org.opensaml.xml.AbstractExtensibleXMLObjectMarshaller;
@@ -42,32 +42,28 @@ public class PolicyMarshaller extends AbstractExtensibleXMLObjectMarshaller {
      * {@inheritDoc}
      */
     public PolicyMarshaller() {
-        super(Policy.ELEMENT_NAME.getNamespaceURI(),
-              Policy.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
     /**
-     * Marshalls the &lt;wsu:Id&gt; and the &lt;wsp:Name&gt; attributes.
+     * Marshalls the <code>wsu:Id</code> and the <code>Name</code> attributes.
      * <p>
      * {@inheritDoc}
      */
     @Override
-    protected void marshallAttributes(XMLObject xmlObject, Element domElement)
-            throws MarshallingException {
-        Document document= domElement.getOwnerDocument();
-        Policy policy= (Policy) xmlObject;
-        String id= policy.getId();
+    protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
+        Document document = domElement.getOwnerDocument();
+        Policy policy = (Policy) xmlObject;
+        String id = policy.getId();
         if (id != null) {
-            Attr attribute= XMLHelper.constructAttribute(document,
-                                                         Policy.ID_ATTR_NAME);
+            Attr attribute = XMLHelper.constructAttribute(document, Policy.ID_ATTR_NAME);
             attribute.setValue(id);
             domElement.setAttributeNodeNS(attribute);
             domElement.setIdAttributeNode(attribute, true);
         }
-        String name= policy.getName();
+        String name = policy.getName();
         if (name != null) {
-            Attr attribute= XMLHelper.constructAttribute(document,
-                                                         Policy.NAME_ATTR_NAME);
+            Attr attribute = XMLHelper.constructAttribute(document, Policy.NAME_ATTR_NAME);
             attribute.setValue(name);
             domElement.setAttributeNodeNS(attribute);
         }

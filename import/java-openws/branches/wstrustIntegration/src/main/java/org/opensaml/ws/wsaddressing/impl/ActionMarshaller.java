@@ -35,7 +35,7 @@ public class ActionMarshaller extends AbstractAttributedURITypeMarshaller {
      * {@inheritDoc}
      */
     public ActionMarshaller() {
-        super(Action.ELEMENT_NAME.getNamespaceURI(), Action.ELEMENT_NAME.getLocalPart());
+        super();
     }
 
 }

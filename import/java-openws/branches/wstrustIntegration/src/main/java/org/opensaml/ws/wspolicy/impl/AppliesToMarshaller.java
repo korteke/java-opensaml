@@ -14,8 +14,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.opensaml.ws.wspolicy.impl;
 
+package org.opensaml.ws.wspolicy.impl;
 
 import org.opensaml.ws.wspolicy.AppliesTo;
 import org.opensaml.xml.XMLObject;
@@ -33,23 +33,12 @@ import org.w3c.dom.Element;
 public class AppliesToMarshaller extends AbstractWSPolicyObjectMarshaller {
 
     /**
-     * Default constructor.
-     * <p>
-     * {@inheritDoc}
-     */
-    public AppliesToMarshaller() {
-        super(AppliesTo.ELEMENT_NAME.getNamespaceURI(),
-              AppliesTo.ELEMENT_NAME.getLocalPart());
-    }
-
-    /**
      * No text context.
      * <p>
      * {@inheritDoc}
      */
     @Override
-    protected void marshallElementContent(XMLObject xmlObject,
-            Element domElement) throws MarshallingException {
+    protected void marshallElementContent(XMLObject xmlObject, Element domElement) throws MarshallingException {
     }
 
 }

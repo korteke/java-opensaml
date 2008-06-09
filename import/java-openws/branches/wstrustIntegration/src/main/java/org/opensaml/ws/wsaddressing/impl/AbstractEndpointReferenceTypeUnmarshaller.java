@@ -35,12 +35,9 @@ public abstract class AbstractEndpointReferenceTypeUnmarshaller extends Abstract
 
     /**
      * Constructor
-     * 
-     * @param targetNamespaceURI
-     * @param targetLocalName
      */
-    public AbstractEndpointReferenceTypeUnmarshaller(String targetNamespaceURI, String targetLocalName) {
-        super(targetNamespaceURI, targetLocalName);
+    public AbstractEndpointReferenceTypeUnmarshaller() {
+        super();
     }
 
     /**

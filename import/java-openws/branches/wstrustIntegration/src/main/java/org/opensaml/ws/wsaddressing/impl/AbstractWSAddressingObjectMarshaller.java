@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.opensaml.ws.wsaddressing.impl;
 
 import org.opensaml.xml.XMLObject;
@@ -22,44 +23,34 @@ import org.opensaml.xml.io.MarshallingException;
 import org.w3c.dom.Element;
 
 /**
- * An abstract marshaller implementation for XMLObjects from
- * {@link org.opensaml.ws.wsaddressing}.
+ * An abstract marshaller implementation for XMLObjects from {@link org.opensaml.ws.wsaddressing}.
  */
-public abstract class AbstractWSAddressingObjectMarshaller extends
-        AbstractXMLObjectMarshaller {
+public abstract class AbstractWSAddressingObjectMarshaller extends AbstractXMLObjectMarshaller {
 
     /**
      * Constructor.
-     * 
-     * @param targetNamespaceURI
-     *            namespace URI
-     * @param targetLocalName
-     *            local name
      */
-    protected AbstractWSAddressingObjectMarshaller(String targetNamespaceURI,
-            String targetLocalName) {
-        super(targetNamespaceURI, targetLocalName);
+    protected AbstractWSAddressingObjectMarshaller() {
+        super();
     }
 
     /*
-     * No-op method. Extending implementations should override this method if
-     * they have attributes to marshall into the Element.
+     * No-op method. Extending implementations should override this method if they have attributes to marshall into the
+     * Element.
      * 
      * @see org.opensaml.xml.io.AbstractXMLObjectMarshaller#marshallAttributes(org.opensaml.xml.XMLObject,
      *      org.w3c.dom.Element)
      */
-    protected void marshallAttributes(XMLObject xmlObject, Element domElement)
-            throws MarshallingException {
+    protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
     }
 
     /*
-     * No-op method. Extending implementations should override this method if
-     * they have text content to marshall into the Element.
+     * No-op method. Extending implementations should override this method if they have text content to marshall into
+     * the Element.
      * 
      * @see org.opensaml.xml.io.AbstractXMLObjectMarshaller#marshallElementContent(org.opensaml.xml.XMLObject,
      *      org.w3c.dom.Element)
      */
-    protected void marshallElementContent(XMLObject xmlObject,
-            Element domElement) throws MarshallingException {
+    protected void marshallElementContent(XMLObject xmlObject, Element domElement) throws MarshallingException {
     }
 }
