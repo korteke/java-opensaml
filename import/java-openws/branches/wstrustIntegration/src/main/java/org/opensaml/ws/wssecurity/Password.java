@@ -41,7 +41,7 @@ public interface Password extends AttributedId, XSString, WSSecurityObject {
     public final static String TYPE_ATTR_LOCAL_NAME = "Type";
 
     /** The &lt;wsse:Password/@Type&gt; attribute unqualified name */
-    public final static QName TYPE_ATTR_NAME = new QName(WSSecurityConstants.WSSE_NS, TYPE_ATTR_LOCAL_NAME);
+    public final static QName TYPE_ATTR_NAME = new QName(null, TYPE_ATTR_LOCAL_NAME);
 
     /**
      * The &lt;wsse:Password/@Type&gt; attribute URI value <code>#PasswordText</code> (DEFAULT)

@@ -44,7 +44,7 @@ public interface BinarySecret extends XSBase64Binary, AttributeExtensibleXMLObje
     public static final String TYPE_ATTR_LOCAL_NAME = "Type";
 
     /** wst:BinarySecret/@Type attribute name. */
-    public static final QName TYPE_ATTR_NAME = new QName(WSTrustConstants.WST_NS, TYPE_ATTR_LOCAL_NAME);
+    public static final QName TYPE_ATTR_NAME = new QName(null, TYPE_ATTR_LOCAL_NAME);
 
     /** Type attribute AsymmetricKey URI */
     public static final String TYPE_ASYMMETRIC_KEY = WSTrustConstants.WST_NS + "/AsymmetricKey";

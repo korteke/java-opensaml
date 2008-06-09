@@ -42,19 +42,19 @@ public interface PolicyReference extends AttributeExtensibleXMLObject, WSPolicyO
     public static final String URI_ATTR_LOCAL_NAME = "URI";
 
     /** The &lt;wsp:PolicyReference/@URI&gt; attribute name */
-    public static final QName URI_ATTR_NAME = new QName(WSPolicyConstants.WSP_NS, URI_ATTR_LOCAL_NAME);
+    public static final QName URI_ATTR_NAME = new QName(null, URI_ATTR_LOCAL_NAME);
 
     /** The &lt;wsp:PolicyReference/@Digest&gt; attribute local name */
     public static final String DIGEST_ATTR_LOCAL_NAME = "Digest";
 
     /** The &lt;wsp:PolicyReference/@Digest&gt; attribute name */
-    public static final QName DIGEST_ATTR_NAME = new QName(WSPolicyConstants.WSP_NS, DIGEST_ATTR_LOCAL_NAME);
+    public static final QName DIGEST_ATTR_NAME = new QName(null, DIGEST_ATTR_LOCAL_NAME);
 
     /** The &lt;wsp:PolicyReference/@Digest&gt; attribute local name */
     public static final String DIGEST_ALGORITHM_ATTR_LOCAL_NAME = "DigestAlgorithm";
 
     /** The &lt;wsp:PolicyReference/@Digest&gt; attribute name */
-    public static final QName DIGEST_ALGORITHM_ATTR_NAME = new QName(WSPolicyConstants.WSP_NS,
+    public static final QName DIGEST_ALGORITHM_ATTR_NAME = new QName(null,
             DIGEST_ALGORITHM_ATTR_LOCAL_NAME);
 
     /** The default &lt;wsp:PolicyReference/@DigestAlgorithm&gt; attribute value */

@@ -45,7 +45,7 @@ public interface Policy extends AttributeExtensibleXMLObject, ElementExtensibleX
     public static final String NAME_ATTR_LOCAL_NAME = "Name";
 
     /** The &lt;wsp:Policy/@Name&gt; attribute name */
-    public static final QName NAME_ATTR_NAME = new QName(WSPolicyConstants.WSP_NS, NAME_ATTR_LOCAL_NAME);
+    public static final QName NAME_ATTR_NAME = new QName(null, NAME_ATTR_LOCAL_NAME);
 
     /**
      * Returns the &lt;wsp:Policy/@Name&gt; attribute value.

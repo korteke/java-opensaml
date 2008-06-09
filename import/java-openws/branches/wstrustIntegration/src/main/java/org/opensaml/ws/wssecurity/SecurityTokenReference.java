@@ -48,8 +48,8 @@ public interface SecurityTokenReference extends AttributedId, AttributedTokenTyp
     /** The wsse:SecurityTokenReference/@Usage attribute local name. */
     public static final String USAGE_ATTR_LOCAL_NAME = "Usage";
 
-    /** The wsse:SecurityTokenReference/@Usage qualified attribute name. */
-    public static final QName USAGE_ATTR_NAME = new QName(WSSecurityConstants.WSSE_NS, USAGE_ATTR_LOCAL_NAME);
+    /** The wsse:SecurityTokenReference/@Usage unqualified attribute name. */
+    public static final QName USAGE_ATTR_NAME = new QName(null, USAGE_ATTR_LOCAL_NAME);
 
     /**
      * Returns the list of &lt;wsse:SecurityTokenReference/@Usage&gt; attributes value.

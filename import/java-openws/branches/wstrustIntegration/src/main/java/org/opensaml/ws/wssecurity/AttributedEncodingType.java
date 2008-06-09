@@ -31,7 +31,7 @@ public abstract interface AttributedEncodingType {
     public final static String ENCODING_TYPE_ATTR_LOCAL_NAME = "EncodingType";
 
     /** the EncodingType unqualified attribute name */
-    public final static QName ENCODING_TYPE_ATTR_NAME = new QName(WSSecurityConstants.WSSE_NS,
+    public final static QName ENCODING_TYPE_ATTR_NAME = new QName(null,
             ENCODING_TYPE_ATTR_LOCAL_NAME);
 
     /**
