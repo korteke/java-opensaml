@@ -31,7 +31,7 @@ public interface FaultCode extends SOAPObject, XSQName {
     public static final String DEFAULT_ELEMENT_LOCAL_NAME = "faultcode";
 
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(null, DEFAULT_ELEMENT_LOCAL_NAME);
+    public static final QName DEFAULT_ELEMENT_NAME = new QName(DEFAULT_ELEMENT_LOCAL_NAME);
 
     /** FaultCode value <code>VersionMismatch</code> */
     static public QName VERSION_MISMATCH = new QName(SOAPConstants.SOAP11_NS, "VersionMismatch",

@@ -30,5 +30,5 @@ public interface FaultActor extends SOAPObject, XSURI {
     public static final String DEFAULT_ELEMENT_LOCAL_NAME = "faultactor";
 
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(null, DEFAULT_ELEMENT_LOCAL_NAME);
+    public static final QName DEFAULT_ELEMENT_NAME = new QName(DEFAULT_ELEMENT_LOCAL_NAME);
 }
