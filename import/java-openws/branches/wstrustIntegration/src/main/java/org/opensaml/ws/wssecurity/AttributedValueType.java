@@ -31,7 +31,7 @@ public abstract interface AttributedValueType {
     public final static String VALUE_TYPE_ATTR_LOCAL_NAME = "ValueType";
 
     /** the wsse:ValueType unqualified attribute name */
-    public final QName VALUE_TYPE_ATTR_NAME = new QName(null, VALUE_TYPE_ATTR_LOCAL_NAME);
+    public final QName VALUE_TYPE_ATTR_NAME = new QName(VALUE_TYPE_ATTR_LOCAL_NAME);
 
     /**
      * The ValueType attribute UsernameToken URI value <code>#UsernameToken</code>.

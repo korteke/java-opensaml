@@ -40,13 +40,13 @@ public interface Renewing extends WSTrustObject {
     public static final String ALLOW_ATTR_LOCAL_NAME = "Allow";
 
     /** The wst:Renewing/@Allow attribute name */
-    public static final QName ALLOW_ATTR_NAME = new QName(null, ALLOW_ATTR_LOCAL_NAME);
+    public static final QName ALLOW_ATTR_NAME = new QName(ALLOW_ATTR_LOCAL_NAME);
 
     /** The wst:Renewing/@OK attribute local name */
     public static final String OK_ATTR_LOCAL_NAME = "OK";
 
     /** The wst:Renewing/@OK attribute name */
-    public static final QName OK_ATTR_NAME = new QName(null, OK_ATTR_LOCAL_NAME);
+    public static final QName OK_ATTR_NAME = new QName(OK_ATTR_LOCAL_NAME);
 
     /**
      * Returns the wst:Renewing/@Allow attribute value.

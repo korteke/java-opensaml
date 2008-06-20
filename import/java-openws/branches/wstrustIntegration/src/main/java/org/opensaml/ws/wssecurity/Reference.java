@@ -40,7 +40,7 @@ public interface Reference extends AttributedValueType, WSSecurityObject {
     public static final String URI_ATTR_LOCAL_NAME = "URI";
 
     /** The wsse:Reference/@URI attribute unqualified name. */
-    public static final QName URI_ATTR_NAME = new QName(null, URI_ATTR_LOCAL_NAME);
+    public static final QName URI_ATTR_NAME = new QName(URI_ATTR_LOCAL_NAME);
 
     /**
      * Returns the wsse:Reference/@URI attribute value.

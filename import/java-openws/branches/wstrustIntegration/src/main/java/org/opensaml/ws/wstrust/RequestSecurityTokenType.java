@@ -83,7 +83,7 @@ public abstract interface RequestSecurityTokenType extends AttributedId, Attribu
     /**
      * the &lt;@Context&gt; attribute name
      */
-    public final static QName CONTEXT_ATTR_NAME = new QName(null, CONTEXT_ATTR_LOCAL_NAME);
+    public final static QName CONTEXT_ATTR_NAME = new QName(CONTEXT_ATTR_LOCAL_NAME);
 
     /**
      * Returns the &lt;@Context&gt; attribute value

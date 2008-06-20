@@ -49,7 +49,7 @@ public interface SecurityTokenReference extends AttributedId, AttributedTokenTyp
     public static final String USAGE_ATTR_LOCAL_NAME = "Usage";
 
     /** The wsse:SecurityTokenReference/@Usage unqualified attribute name. */
-    public static final QName USAGE_ATTR_NAME = new QName(null, USAGE_ATTR_LOCAL_NAME);
+    public static final QName USAGE_ATTR_NAME = new QName(USAGE_ATTR_LOCAL_NAME);
 
     /**
      * Returns the list of &lt;wsse:SecurityTokenReference/@Usage&gt; attributes value.

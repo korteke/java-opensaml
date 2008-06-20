@@ -47,7 +47,7 @@ public interface Claims extends AttributeExtensibleXMLObject, ElementExtensibleX
     public final static String DIALECT_ATTR_LOCAL_NAME = "Dialect";
 
     /** The wst:Claims/@Dialect attribute name */
-    public final static QName DIALECT_ATTR_NAME = new QName(null, DIALECT_ATTR_LOCAL_NAME);
+    public final static QName DIALECT_ATTR_NAME = new QName(DIALECT_ATTR_LOCAL_NAME);
 
     /**
      * Returns the wst:Claims/@Dialect attribute value.
