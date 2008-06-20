@@ -18,7 +18,6 @@ package org.opensaml.ws.soap.soap11.impl;
 
 import org.opensaml.ws.soap.common.SOAPObjectBuilder;
 import org.opensaml.ws.soap.soap11.Detail;
-import org.opensaml.ws.soap.util.SOAPConstants;
 import org.opensaml.xml.AbstractXMLObjectBuilder;
 
 /**
@@ -32,7 +31,7 @@ public class DetailBuilder extends AbstractXMLObjectBuilder<Detail> implements S
      * @return the build Envelope object
      */
     public Detail buildObject(){
-        return buildObject(SOAPConstants.SOAP11_NS, Detail.DEFAULT_ELEMENT_LOCAL_NAME, SOAPConstants.SOAP11_PREFIX);
+        return buildObject(null, Detail.DEFAULT_ELEMENT_LOCAL_NAME, null);
     }
     
     /** {@inheritDoc} */
