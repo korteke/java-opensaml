@@ -18,7 +18,6 @@ package org.opensaml.ws.soap.soap11.impl;
 
 import org.opensaml.ws.soap.common.SOAPObjectBuilder;
 import org.opensaml.ws.soap.soap11.FaultActor;
-import org.opensaml.ws.soap.util.SOAPConstants;
 import org.opensaml.xml.AbstractXMLObjectBuilder;
 
 /**
@@ -33,6 +32,6 @@ public class FaultActorBuilder extends AbstractXMLObjectBuilder<FaultActor> impl
 
     /** {@inheritDoc} */
     public FaultActor buildObject() {
-        return buildObject(SOAPConstants.SOAP11_NS, FaultActor.DEFAULT_ELEMENT_LOCAL_NAME, SOAPConstants.SOAP11_PREFIX);
+        return buildObject(FaultActor.DEFAULT_ELEMENT_NAME);
     }
 }

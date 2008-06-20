@@ -18,7 +18,6 @@ package org.opensaml.ws.soap.soap11.impl;
 
 import org.opensaml.ws.soap.common.SOAPObjectBuilder;
 import org.opensaml.ws.soap.soap11.FaultString;
-import org.opensaml.ws.soap.util.SOAPConstants;
 import org.opensaml.xml.AbstractXMLObjectBuilder;
 
 /**
@@ -33,7 +32,6 @@ public class FaultStringBuilder extends AbstractXMLObjectBuilder<FaultString> im
 
     /** {@inheritDoc} */
     public FaultString buildObject() {
-        return buildObject(SOAPConstants.SOAP11_NS, FaultString.DEFAULT_ELEMENT_LOCAL_NAME,
-                SOAPConstants.SOAP11_PREFIX);
+        return buildObject(FaultString.DEFAULT_ELEMENT_NAME);
     }
 }

@@ -26,11 +26,25 @@ import org.opensaml.xml.schema.XSQName;
  * SOAP 1.1 faultcode.
  */
 public interface FaultCode extends SOAPObject, XSQName {
-    
+
     /** Element local name. */
     public static final String DEFAULT_ELEMENT_LOCAL_NAME = "faultcode";
-    
+
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = 
-        new QName(SOAPConstants.SOAP11_NS, DEFAULT_ELEMENT_LOCAL_NAME, SOAPConstants.SOAP11_PREFIX);
+    public static final QName DEFAULT_ELEMENT_NAME = new QName(null, DEFAULT_ELEMENT_LOCAL_NAME);
+
+    /** FaultCode value <code>VersionMismatch</code> */
+    static public QName VERSION_MISMATCH = new QName(SOAPConstants.SOAP11_NS, "VersionMismatch",
+            SOAPConstants.SOAP11_PREFIX);
+
+    /** FaultCode value <code>MustUnderstand</code> */
+    static public QName MUST_UNDERSTAND = new QName(SOAPConstants.SOAP11_NS, "MustUnderstand",
+            SOAPConstants.SOAP11_PREFIX);
+
+    /** FaultCode value <code>Server</code> */
+    static public QName SERVER = new QName(SOAPConstants.SOAP11_NS, "Server", SOAPConstants.SOAP11_PREFIX);
+
+    /** FaultCode value <code>Client</code> */
+    static public QName CLIENT = new QName(SOAPConstants.SOAP11_NS, "Client", SOAPConstants.SOAP11_PREFIX);
+
 }

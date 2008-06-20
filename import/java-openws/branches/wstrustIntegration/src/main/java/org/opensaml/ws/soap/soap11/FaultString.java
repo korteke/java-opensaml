@@ -19,7 +19,6 @@ package org.opensaml.ws.soap.soap11;
 import javax.xml.namespace.QName;
 
 import org.opensaml.ws.soap.common.SOAPObject;
-import org.opensaml.ws.soap.util.SOAPConstants;
 import org.opensaml.xml.schema.XSString;
 
 /**
@@ -28,9 +27,8 @@ import org.opensaml.xml.schema.XSString;
 public interface FaultString extends SOAPObject, XSString {
 
     /** Element local name. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "faultString";
-    
+    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "faultstring";
+
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = 
-        new QName(SOAPConstants.SOAP11_NS, DEFAULT_ELEMENT_LOCAL_NAME, SOAPConstants.SOAP11_PREFIX);
+    public static final QName DEFAULT_ELEMENT_NAME = new QName(null, DEFAULT_ELEMENT_LOCAL_NAME);
 }
