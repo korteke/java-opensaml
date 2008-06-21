@@ -32,4 +32,18 @@ public interface FaultCode extends SOAPObject, XSQName {
     
     /** Default element name. */
     public static final QName DEFAULT_ELEMENT_NAME = new QName(DEFAULT_ELEMENT_LOCAL_NAME);
+    
+    /** FaultCode value <code>VersionMismatch</code>. */
+    public static final QName VERSION_MISMATCH = new QName(SOAPConstants.SOAP11_NS, "VersionMismatch",
+            SOAPConstants.SOAP11_PREFIX);
+
+    /** FaultCode value <code>MustUnderstand</code>. */
+    public static final QName MUST_UNDERSTAND = new QName(SOAPConstants.SOAP11_NS, "MustUnderstand",
+            SOAPConstants.SOAP11_PREFIX);
+
+    /** FaultCode value <code>Server</code>. */
+    public static final QName SERVER = new QName(SOAPConstants.SOAP11_NS, "Server", SOAPConstants.SOAP11_PREFIX);
+
+    /** FaultCode value <code>Client</code>. */
+    public static final QName CLIENT = new QName(SOAPConstants.SOAP11_NS, "Client", SOAPConstants.SOAP11_PREFIX);
 }
