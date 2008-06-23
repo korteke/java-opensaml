@@ -27,8 +27,6 @@ import org.opensaml.xml.schema.XSBase64Binary;
  * 
  * @see AttributedValueType for the &lt;wsse:ValueType&gt; attribute values
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public interface BinarySecurityToken extends XSBase64Binary, AttributedEncodingType, AttributedValueType, AttributedId,
         WSSecurityObject {

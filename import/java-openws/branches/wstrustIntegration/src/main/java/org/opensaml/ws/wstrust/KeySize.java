@@ -23,8 +23,6 @@ import org.opensaml.xml.schema.XSInteger;
 /**
  * The &lt;wst:KeySize&gt; element.
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public interface KeySize extends XSInteger, WSTrustObject {
 

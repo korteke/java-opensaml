@@ -27,8 +27,6 @@ import org.opensaml.xml.schema.XSBase64Binary;
  * @see SecurityTokenReference
  * @see "WS-Security, Chapter 7.3 Key Identifiers."
  * 
- * @author Valery Tschopp <tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public interface KeyIdentifier extends XSBase64Binary, AttributedId,
         AttributedEncodingType, AttributedValueType, WSSecurityObject {

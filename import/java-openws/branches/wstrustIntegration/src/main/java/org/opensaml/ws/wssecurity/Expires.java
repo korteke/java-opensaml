@@ -23,8 +23,6 @@ import org.opensaml.xml.schema.XSString;
 /**
  * The &lt;wsu:Expires&gt; element.
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public interface Expires extends XSString, DateTimeType, WSSecurityObject {
 

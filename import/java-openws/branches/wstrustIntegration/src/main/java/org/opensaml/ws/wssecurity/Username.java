@@ -26,8 +26,6 @@ import org.opensaml.xml.schema.XSString;
  * 
  * @see "WS-Security UsernameToken Profile 1.1"
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public interface Username extends XSString, WSSecurityObject {
     /** Element local name. */

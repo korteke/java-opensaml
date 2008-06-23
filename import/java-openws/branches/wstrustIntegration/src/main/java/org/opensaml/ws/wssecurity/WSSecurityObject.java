@@ -21,8 +21,6 @@ import org.opensaml.xml.XMLObject;
 /**
  * WSSecurityObject is the base interface for all the WS-Security elements.
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public interface WSSecurityObject extends XMLObject {
 

@@ -30,8 +30,6 @@ import org.opensaml.xml.AttributeExtensibleXMLObject;
  * @see RequestSecurityTokenResponse
  * @see "WS-Trust 1.3 Specification"
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public interface RequestSecurityTokenResponseCollection extends
         AttributeExtensibleXMLObject, WSTrustObject {

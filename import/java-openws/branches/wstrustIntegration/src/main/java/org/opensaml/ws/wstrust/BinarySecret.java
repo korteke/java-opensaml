@@ -28,8 +28,6 @@ import org.opensaml.xml.schema.XSBase64Binary;
  * @see Entropy
  * @see "WS-Trust 1.3, Chapter 3.3 Binary Secrets."
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public interface BinarySecret extends XSBase64Binary, AttributeExtensibleXMLObject, WSTrustObject {
 

@@ -20,8 +20,6 @@ package org.opensaml.ws.wstrust.impl;
 /**
  * PrimaryMarshaller
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class PrimaryMarshaller extends AbstractParticipantTypeMarshaller {
 

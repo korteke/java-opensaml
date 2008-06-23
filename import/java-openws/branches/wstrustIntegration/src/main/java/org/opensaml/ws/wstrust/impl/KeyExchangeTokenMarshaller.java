@@ -25,8 +25,6 @@ import org.opensaml.xml.AbstractElementExtensibleXMLObjectMarshaller;
  * 
  * @see KeyExchangeToken
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class KeyExchangeTokenMarshaller extends
         AbstractElementExtensibleXMLObjectMarshaller {

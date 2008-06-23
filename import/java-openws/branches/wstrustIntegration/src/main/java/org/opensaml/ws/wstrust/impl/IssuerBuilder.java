@@ -23,8 +23,6 @@ import org.opensaml.ws.wstrust.Issuer;
  * 
  * @see org.opensaml.ws.wstrust.Issuer
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class IssuerBuilder extends AbstractWSTrustObjectBuilder<Issuer> {
 

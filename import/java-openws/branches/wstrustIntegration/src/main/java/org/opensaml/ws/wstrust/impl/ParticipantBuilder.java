@@ -23,8 +23,6 @@ import org.opensaml.ws.wstrust.Participant;
  * 
  * @see Participant
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class ParticipantBuilder extends
         AbstractWSTrustObjectBuilder<Participant> {

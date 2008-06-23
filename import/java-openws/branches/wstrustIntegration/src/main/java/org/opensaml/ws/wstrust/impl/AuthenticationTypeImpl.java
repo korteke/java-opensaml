@@ -23,8 +23,6 @@ import org.opensaml.xml.schema.impl.XSURIImpl;
 /**
  * AddressImpl
  * 
- * @author Valery Tschopp <tschopp@switch.ch>
- * @version $Revision$
  */
 public class AuthenticationTypeImpl extends XSURIImpl implements AuthenticationType {
 

@@ -23,8 +23,6 @@ import org.opensaml.ws.wstrust.CombinedHash;
  * 
  * @see org.opensaml.ws.wstrust.CombinedHash
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class CombinedHashBuilder extends
         AbstractWSTrustObjectBuilder<CombinedHash> {

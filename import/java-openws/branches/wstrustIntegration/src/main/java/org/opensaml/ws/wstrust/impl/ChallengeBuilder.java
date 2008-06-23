@@ -23,8 +23,6 @@ import org.opensaml.ws.wstrust.Challenge;
  * 
  * @see org.opensaml.ws.wstrust.Challenge
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class ChallengeBuilder extends AbstractWSTrustObjectBuilder<Challenge> {
 

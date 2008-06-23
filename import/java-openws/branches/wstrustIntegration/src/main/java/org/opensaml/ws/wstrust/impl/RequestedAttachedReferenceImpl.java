@@ -22,8 +22,6 @@ import org.opensaml.ws.wstrust.RequestedAttachedReference;
 /**
  * RequestedAttachedReferenceImpl
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class RequestedAttachedReferenceImpl extends AbstractRequestedReferenceType implements
         RequestedAttachedReference {

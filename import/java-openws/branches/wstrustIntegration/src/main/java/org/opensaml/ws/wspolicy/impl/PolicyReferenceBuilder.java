@@ -23,8 +23,6 @@ import org.opensaml.ws.wspolicy.PolicyReference;
  * 
  * @see PolicyReference
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class PolicyReferenceBuilder extends
         AbstractWSPolicyObjectBuilder<PolicyReference> {

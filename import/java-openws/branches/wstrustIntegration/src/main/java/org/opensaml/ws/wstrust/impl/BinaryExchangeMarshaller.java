@@ -39,8 +39,6 @@ import org.w3c.dom.Element;
  * 
  * @see BinaryExchange
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class BinaryExchangeMarshaller extends AbstractWSTrustObjectMarshaller {
 

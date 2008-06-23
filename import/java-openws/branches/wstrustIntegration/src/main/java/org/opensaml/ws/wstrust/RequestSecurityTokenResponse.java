@@ -34,8 +34,6 @@ import javax.xml.namespace.QName;
  * @see RequestSecurityTokenType
  * @see "WS-Trust 1.3 Specification"
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public interface RequestSecurityTokenResponse extends RequestSecurityTokenType,
         WSTrustObject {

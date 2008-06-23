@@ -22,8 +22,6 @@ import org.opensaml.ws.wsaddressing.EndpointReference;
 /**
  * Concrete implementation of element {@link EndpointReference}.
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class EndpointReferenceImpl extends AbstractEndpointReferenceType implements EndpointReference {
 

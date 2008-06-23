@@ -56,8 +56,6 @@ import org.w3c.dom.Attr;
  * 
  * @see RequestSecurityTokenType
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public abstract class AbstractRequestSecurityTokenTypeUnmarshaller extends AbstractExtensibleXMLObjectUnmarshaller {
 

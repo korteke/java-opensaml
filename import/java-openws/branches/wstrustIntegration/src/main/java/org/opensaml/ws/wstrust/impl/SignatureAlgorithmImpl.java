@@ -23,8 +23,6 @@ import org.opensaml.xml.schema.impl.XSURIImpl;
 /**
  * SignatureAlgorithmImpl
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class SignatureAlgorithmImpl extends XSURIImpl implements SignatureAlgorithm {
 

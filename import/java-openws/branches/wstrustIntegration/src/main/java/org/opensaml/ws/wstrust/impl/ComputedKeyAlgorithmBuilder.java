@@ -23,8 +23,6 @@ import org.opensaml.ws.wstrust.ComputedKeyAlgorithm;
  * 
  * @see org.opensaml.ws.wstrust.ComputedKeyAlgorithm
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class ComputedKeyAlgorithmBuilder extends
         AbstractWSTrustObjectBuilder<ComputedKeyAlgorithm> {

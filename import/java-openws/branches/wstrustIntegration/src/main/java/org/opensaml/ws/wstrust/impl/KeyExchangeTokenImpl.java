@@ -23,8 +23,6 @@ import org.opensaml.xml.AbstractElementExtensibleXMLObject;
 /**
  * KeyExchangeTokenImpl
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class KeyExchangeTokenImpl extends AbstractElementExtensibleXMLObject implements KeyExchangeToken {
 

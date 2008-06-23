@@ -21,8 +21,6 @@ import org.opensaml.ws.wssecurity.Security;
 /**
  * SecurityBuilder
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class SecurityBuilder extends AbstractWSSecurityObjectBuilder<Security> {
 

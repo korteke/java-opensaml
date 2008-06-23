@@ -21,8 +21,6 @@ import org.opensaml.ws.wsaddressing.MessageID;
 /**
  * MessageIDBuilder
  * 
- * @author Valery Tschopp <tschopp@switch.ch>
- * @version $Revision$
  */
 public class MessageIDBuilder extends AbstractWSAddressingObjectBuilder<MessageID> {
 

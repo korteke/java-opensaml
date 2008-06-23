@@ -28,8 +28,6 @@ import org.opensaml.xml.XMLObject;
 /**
  * AbstractRequestedReferenceType
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 abstract class AbstractRequestedReferenceType extends AbstractWSTrustObject implements RequestedReferenceType {
 

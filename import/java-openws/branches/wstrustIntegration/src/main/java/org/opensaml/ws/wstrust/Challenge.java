@@ -26,8 +26,6 @@ import org.opensaml.xml.schema.XSString;
  * @see SignChallenge
  * @see "WS-Trust 1.3, Chapter 8.2 Signature Challenges."
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public interface Challenge extends XSString, WSTrustObject {
 

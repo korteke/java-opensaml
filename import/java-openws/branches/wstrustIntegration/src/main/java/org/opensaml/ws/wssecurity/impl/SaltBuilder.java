@@ -21,8 +21,6 @@ import org.opensaml.ws.wssecurity.Salt;
 /**
  * SaltBuilder
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class SaltBuilder extends AbstractWSSecurityObjectBuilder<Salt> {
 

@@ -30,8 +30,6 @@ import org.opensaml.xml.encryption.EncryptedKey;
 /**
  * EntropyImpl
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class EntropyImpl extends AbstractExtensibleXMLObject implements Entropy {
 

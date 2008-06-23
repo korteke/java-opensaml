@@ -23,8 +23,6 @@ import org.opensaml.ws.wstrust.TokenType;
  * 
  * @see org.opensaml.ws.wstrust.TokenType
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class TokenTypeBuilder extends AbstractWSTrustObjectBuilder<TokenType> {
 

@@ -23,8 +23,6 @@ import org.opensaml.xml.schema.impl.XSStringImpl;
 /**
  * ReasonImpl
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class ReasonImpl extends XSStringImpl implements Reason {
 

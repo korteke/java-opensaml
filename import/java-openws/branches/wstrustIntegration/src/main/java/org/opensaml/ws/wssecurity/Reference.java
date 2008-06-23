@@ -24,8 +24,6 @@ import javax.xml.namespace.QName;
  * 
  * @see "WS-Security 2004, Chapter 7.2"
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public interface Reference extends AttributedValueType, WSSecurityObject {
 

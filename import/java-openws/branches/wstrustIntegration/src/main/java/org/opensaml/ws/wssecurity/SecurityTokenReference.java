@@ -31,8 +31,6 @@ import org.opensaml.xml.ElementExtensibleXMLObject;
  * 
  * @see "WS-Security 2004, Chapter 7. Token References."
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  * 
  */
 public interface SecurityTokenReference extends AttributedId, AttributedTokenType, AttributeExtensibleXMLObject,

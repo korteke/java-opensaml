@@ -30,8 +30,6 @@ import org.opensaml.xml.XMLObject;
 /**
  * ParticipantsImpl
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class ParticipantsImpl extends AbstractElementExtensibleXMLObject implements Participants {
 

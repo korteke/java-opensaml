@@ -34,8 +34,6 @@ import org.w3c.dom.Attr;
  * 
  * @see RequestSecurityTokenResponseCollection
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class RequestSecurityTokenResponseCollectionUnmarshaller extends
         AbstractWSTrustObjectUnmarshaller {

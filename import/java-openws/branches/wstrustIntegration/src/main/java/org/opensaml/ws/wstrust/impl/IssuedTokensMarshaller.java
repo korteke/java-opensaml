@@ -23,8 +23,6 @@ import org.opensaml.ws.wstrust.IssuedTokens;
  * 
  * @see IssuedTokens
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class IssuedTokensMarshaller extends AbstractWSTrustObjectMarshaller {
 

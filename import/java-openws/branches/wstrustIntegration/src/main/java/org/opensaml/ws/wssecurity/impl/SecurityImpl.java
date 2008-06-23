@@ -24,8 +24,6 @@ import org.opensaml.xml.schema.XSBooleanValue;
 /**
  * SecurityImpl implements the &lt;wsse:Security&gt; header
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class SecurityImpl extends AbstractExtensibleXMLObject implements Security {
 

@@ -22,8 +22,6 @@ import org.opensaml.ws.wsaddressing.Address;
 /**
  * AddressImpl is the concrete implementation of {@link Address}.
  * 
- * @author Valery Tschopp <tschopp@switch.ch>
- * @version $Revision$
  */
 public class AddressImpl extends AbstractAttributedURIType implements Address {
 

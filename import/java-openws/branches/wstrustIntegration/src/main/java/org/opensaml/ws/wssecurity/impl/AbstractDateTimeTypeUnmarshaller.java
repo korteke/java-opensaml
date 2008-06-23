@@ -26,8 +26,6 @@ import org.slf4j.LoggerFactory;
 /**
  * AbstractDateTimeMarshaller
  * 
- * @author Valery Tschopp <tschopp@switch.ch>
- * @version $Revision$
  */
 public abstract class AbstractDateTimeTypeUnmarshaller extends AbstractWSSecurityObjectUnmarshaller {
 

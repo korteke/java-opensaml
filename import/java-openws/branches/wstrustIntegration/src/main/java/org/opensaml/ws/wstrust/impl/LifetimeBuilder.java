@@ -23,8 +23,6 @@ import org.opensaml.ws.wstrust.Lifetime;
  * 
  * @see org.opensaml.ws.wstrust.Lifetime
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class LifetimeBuilder extends AbstractWSTrustObjectBuilder<Lifetime> {
 

@@ -21,8 +21,6 @@ import org.opensaml.ws.wstrust.OnBehalfOf;
 /**
  * Builder for the OnBehalfOf element.
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class OnBehalfOfBuilder extends AbstractWSTrustObjectBuilder<OnBehalfOf> {
 

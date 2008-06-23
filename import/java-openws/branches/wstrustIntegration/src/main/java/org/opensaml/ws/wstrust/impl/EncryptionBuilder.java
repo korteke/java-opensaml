@@ -23,8 +23,6 @@ import org.opensaml.ws.wstrust.Encryption;
  * 
  * @see org.opensaml.ws.wstrust.Encryption
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class EncryptionBuilder extends AbstractWSTrustObjectBuilder<Encryption> {
 

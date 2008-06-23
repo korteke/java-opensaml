@@ -23,8 +23,6 @@ import org.opensaml.ws.wstrust.RequestSecurityTokenCollection;
  * 
  * @see org.opensaml.ws.wstrust.RequestSecurityTokenCollection
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class RequestSecurityTokenCollectionBuilder extends
         AbstractWSTrustObjectBuilder<RequestSecurityTokenCollection> {

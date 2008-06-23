@@ -25,8 +25,6 @@ import org.opensaml.xml.schema.XSURI;
  * 
  * @see "WS-Trust 1.3, Chapter 9.2 Key and Encryption Requirements."
  * 
- * @author Valery Tschopp <tschopp@switch.ch>
- * @version $Revision$
  */
 public interface CanonicalizationAlgorithm extends XSURI, WSTrustObject {
 

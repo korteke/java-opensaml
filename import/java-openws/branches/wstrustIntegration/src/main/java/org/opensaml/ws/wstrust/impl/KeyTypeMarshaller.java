@@ -29,8 +29,6 @@ import org.w3c.dom.Element;
  * 
  * @see KeyType
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class KeyTypeMarshaller extends AbstractWSTrustObjectMarshaller {
 

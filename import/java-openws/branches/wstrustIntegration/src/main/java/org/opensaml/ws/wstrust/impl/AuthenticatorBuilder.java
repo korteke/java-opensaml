@@ -23,8 +23,6 @@ import org.opensaml.ws.wstrust.Authenticator;
  * 
  * @see org.opensaml.ws.wstrust.Authenticator
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class AuthenticatorBuilder extends
         AbstractWSTrustObjectBuilder<Authenticator> {

@@ -23,8 +23,6 @@ import org.opensaml.xml.schema.XSURI;
 /**
  * The &lt;wst:RequestType&gt; element.
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public interface RequestType extends XSURI, WSTrustObject {
 

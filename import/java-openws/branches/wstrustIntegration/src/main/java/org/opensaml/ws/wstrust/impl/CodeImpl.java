@@ -23,8 +23,6 @@ import org.opensaml.xml.schema.impl.XSURIImpl;
 /**
  * CodeImpl
  * 
- * @author Valery Tschopp <tschopp@switch.ch>
- * @version $Revision$
  */
 public class CodeImpl extends XSURIImpl implements Code {
 

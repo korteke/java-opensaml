@@ -23,8 +23,6 @@ import org.opensaml.xml.AbstractExtensibleXMLObject;
 /**
  * EmbeddedImpl is the concrete implementation of {@link Embedded}.
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class EmbeddedImpl extends AbstractExtensibleXMLObject implements Embedded {
 

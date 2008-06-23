@@ -22,8 +22,6 @@ import org.opensaml.ws.wsaddressing.ReplyTo;
 /**
  * Unmarshaller for the {@link ReplyTo} element.
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class ReplyToUnmarshaller extends AbstractEndpointReferenceTypeUnmarshaller {
 

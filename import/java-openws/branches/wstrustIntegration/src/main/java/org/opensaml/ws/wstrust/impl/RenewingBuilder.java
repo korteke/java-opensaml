@@ -23,8 +23,6 @@ import org.opensaml.ws.wstrust.Renewing;
  * 
  * @see org.opensaml.ws.wstrust.Renewing
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class RenewingBuilder extends AbstractWSTrustObjectBuilder<Renewing> {
 

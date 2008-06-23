@@ -21,8 +21,6 @@ import org.opensaml.ws.wssecurity.Expires;
 /**
  * ExpiresBuilder
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class ExpiresBuilder extends AbstractWSSecurityObjectBuilder<Expires> {
 

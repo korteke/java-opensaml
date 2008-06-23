@@ -23,8 +23,6 @@ import org.opensaml.xml.AbstractExtensibleXMLObject;
 /**
  * MetadataImpl
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class MetadataImpl extends AbstractExtensibleXMLObject implements Metadata {
 

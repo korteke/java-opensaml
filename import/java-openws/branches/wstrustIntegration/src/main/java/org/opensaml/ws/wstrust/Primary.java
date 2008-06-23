@@ -24,8 +24,6 @@ import javax.xml.namespace.QName;
  * @see Participants
  * @see "WS-Trust 1.3, Chapter 9.5 Authorized Token Participants."
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public interface Primary extends ParticipantType, WSTrustObject {
 

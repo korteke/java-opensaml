@@ -26,8 +26,6 @@ import org.opensaml.xml.schema.XSString;
  * 
  * @see Challenge
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class ChallengeUnmarshaller extends AbstractWSTrustObjectUnmarshaller {
 

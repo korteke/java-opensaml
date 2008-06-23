@@ -27,8 +27,6 @@ import org.w3c.dom.Attr;
  * 
  * @see Renewing
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class RenewingUnmarshaller extends AbstractWSTrustObjectUnmarshaller {
 

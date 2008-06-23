@@ -21,8 +21,6 @@ import org.opensaml.xml.ElementExtensibleXMLObject;
 /**
  * Interface ParticipantType is a <code>xs:any</code> element.
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public abstract interface ParticipantType extends ElementExtensibleXMLObject {
 

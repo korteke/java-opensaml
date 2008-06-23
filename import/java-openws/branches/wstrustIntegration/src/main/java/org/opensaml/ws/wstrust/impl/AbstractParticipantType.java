@@ -23,8 +23,6 @@ import org.opensaml.xml.AbstractElementExtensibleXMLObject;
 /**
  * AbstractParticipantType
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public abstract class AbstractParticipantType extends AbstractElementExtensibleXMLObject implements ParticipantType {
 

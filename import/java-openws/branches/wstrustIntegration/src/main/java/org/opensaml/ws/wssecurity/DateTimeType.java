@@ -23,8 +23,6 @@ import org.opensaml.xml.schema.XSString;
  * Interface DateTimeType for element of type DateTime or having a
  * <code>DateTime</code> attribute.
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public abstract interface DateTimeType extends XSString {
 

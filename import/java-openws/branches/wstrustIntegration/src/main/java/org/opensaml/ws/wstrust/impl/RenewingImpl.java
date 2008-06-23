@@ -22,8 +22,6 @@ import org.opensaml.ws.wstrust.Renewing;
 /**
  * RenewingImpl
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class RenewingImpl extends AbstractWSTrustObject implements Renewing {
 

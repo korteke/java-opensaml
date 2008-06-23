@@ -37,8 +37,6 @@ import org.w3c.dom.Element;
  * 
  * @see BinarySecret
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class BinarySecretMarshaller extends AbstractWSTrustObjectMarshaller {
 

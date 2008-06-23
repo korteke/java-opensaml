@@ -22,8 +22,6 @@ import org.opensaml.ws.wstrust.RequestedUnattachedReference;
 /**
  * RequestedUnattachedReferenceImpl
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class RequestedUnattachedReferenceImpl extends AbstractRequestedReferenceType implements
         RequestedUnattachedReference {

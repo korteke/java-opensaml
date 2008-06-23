@@ -23,8 +23,6 @@ import org.opensaml.ws.wstrust.SignatureAlgorithm;
  * 
  * @see org.opensaml.ws.wstrust.SignatureAlgorithm
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class SignatureAlgorithmBuilder extends
         AbstractWSTrustObjectBuilder<SignatureAlgorithm> {

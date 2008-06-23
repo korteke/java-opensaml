@@ -34,8 +34,6 @@ import org.opensaml.xml.XMLObject;
  * 
  * @see RequestSecurityTokenResponse
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class RequestSecurityTokenResponseImpl extends AbstractRequestSecurityTokenType implements
         RequestSecurityTokenResponse {

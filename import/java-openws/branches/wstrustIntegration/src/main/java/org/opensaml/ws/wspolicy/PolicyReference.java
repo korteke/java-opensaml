@@ -26,8 +26,6 @@ import org.opensaml.xml.AttributeExtensibleXMLObject;
  * 
  * @see "WS-Policy (http://schemas.xmlsoap.org/ws/2004/09/policy)"
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public interface PolicyReference extends AttributeExtensibleXMLObject, WSPolicyObject {
 

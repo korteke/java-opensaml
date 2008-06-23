@@ -25,8 +25,6 @@ import org.opensaml.xml.AbstractElementExtensibleXMLObjectMarshaller;
  * 
  * @see ValidateTarget
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class ValidateTargetMarshaller extends
         AbstractElementExtensibleXMLObjectMarshaller {

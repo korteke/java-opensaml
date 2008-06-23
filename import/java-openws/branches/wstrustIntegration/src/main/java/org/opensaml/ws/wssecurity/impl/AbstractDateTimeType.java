@@ -25,8 +25,6 @@ import org.opensaml.ws.wssecurity.DateTimeType;
 /**
  * AbstractDateTimeType
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public abstract class AbstractDateTimeType extends AbstractWSSecurityObject implements DateTimeType {
 

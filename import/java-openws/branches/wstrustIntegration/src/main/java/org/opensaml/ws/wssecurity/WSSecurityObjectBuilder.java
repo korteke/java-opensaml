@@ -21,8 +21,6 @@ import org.opensaml.xml.XMLObjectBuilder;
 /**
  * WSSecurityObjectBuilder
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public interface WSSecurityObjectBuilder<WSSecurityObjectType extends WSSecurityObject>
         extends XMLObjectBuilder<WSSecurityObjectType> {

@@ -23,8 +23,6 @@ import org.opensaml.xml.AbstractElementExtensibleXMLObject;
 /**
  * CancelTargetImpl
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class CancelTargetImpl extends AbstractElementExtensibleXMLObject implements CancelTarget {
 

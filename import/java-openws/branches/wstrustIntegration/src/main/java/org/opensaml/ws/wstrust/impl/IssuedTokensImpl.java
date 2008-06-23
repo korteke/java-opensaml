@@ -28,8 +28,6 @@ import org.opensaml.xml.XMLObject;
 /**
  * IssuedTokensImpl
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class IssuedTokensImpl extends AbstractWSTrustObject implements IssuedTokens {
 

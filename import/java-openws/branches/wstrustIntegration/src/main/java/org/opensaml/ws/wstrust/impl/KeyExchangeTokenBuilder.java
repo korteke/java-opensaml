@@ -23,8 +23,6 @@ import org.opensaml.ws.wstrust.KeyExchangeToken;
  * 
  * @see org.opensaml.ws.wstrust.KeyExchangeToken
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class KeyExchangeTokenBuilder extends
         AbstractWSTrustObjectBuilder<KeyExchangeToken> {

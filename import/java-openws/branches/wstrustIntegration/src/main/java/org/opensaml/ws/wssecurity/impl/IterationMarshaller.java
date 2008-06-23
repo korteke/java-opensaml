@@ -26,8 +26,6 @@ import org.w3c.dom.Element;
 /**
  * IterationMarshaller
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class IterationMarshaller extends AbstractWSSecurityObjectMarshaller {
 

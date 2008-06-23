@@ -25,8 +25,6 @@ import org.opensaml.ws.wstrust.Issuer;
  * 
  * @see Issuer
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class IssuerMarshaller extends AbstractEndpointReferenceTypeMarshaller {
 

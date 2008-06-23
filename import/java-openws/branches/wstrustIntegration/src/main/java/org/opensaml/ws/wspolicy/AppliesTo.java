@@ -27,8 +27,6 @@ import org.opensaml.xml.ElementExtensibleXMLObject;
  * 
  * @see "WS-Policy (http://schemas.xmlsoap.org/ws/2004/09/policy)"
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public interface AppliesTo extends AttributeExtensibleXMLObject,
         ElementExtensibleXMLObject, WSPolicyObject {

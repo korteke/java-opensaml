@@ -21,8 +21,6 @@ import org.opensaml.ws.wssecurity.Nonce;
 /**
  * NonceBuilder
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class NonceBuilder extends AbstractWSSecurityObjectBuilder<Nonce> {
 

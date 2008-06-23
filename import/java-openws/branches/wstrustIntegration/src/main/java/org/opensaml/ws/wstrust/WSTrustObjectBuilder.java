@@ -21,8 +21,6 @@ import org.opensaml.xml.XMLObjectBuilder;
 /**
  * WSTrustObjectBuilder
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public interface WSTrustObjectBuilder<WSTrustObjectType extends WSTrustObject>
         extends XMLObjectBuilder<WSTrustObjectType> {

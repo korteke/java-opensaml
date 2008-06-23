@@ -23,8 +23,6 @@ import org.opensaml.xml.schema.impl.XSStringImpl;
 /**
  * PasswordImpl
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class PasswordImpl extends XSStringImpl implements Password {
 

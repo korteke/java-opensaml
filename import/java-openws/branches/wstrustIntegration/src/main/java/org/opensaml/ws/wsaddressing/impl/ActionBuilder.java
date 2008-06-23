@@ -21,8 +21,6 @@ import org.opensaml.ws.wsaddressing.Action;
 /**
  * ActionBuilder
  * 
- * @author Valery Tschopp <tschopp@switch.ch>
- * @version $Revision$
  */
 public class ActionBuilder extends AbstractWSAddressingObjectBuilder<Action> {
 

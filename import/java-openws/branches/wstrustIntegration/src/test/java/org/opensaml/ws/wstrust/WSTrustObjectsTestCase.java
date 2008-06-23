@@ -51,8 +51,6 @@ import org.opensaml.xml.schema.XSBooleanValue;
 /**
  * WSTrustObjectsTestCase is the base test case for the WS-Trust objects.
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class WSTrustObjectsTestCase extends WSBaseTestCase {
 

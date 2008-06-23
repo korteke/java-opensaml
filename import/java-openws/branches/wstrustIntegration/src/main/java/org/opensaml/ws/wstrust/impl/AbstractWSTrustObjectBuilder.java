@@ -24,8 +24,6 @@ import org.opensaml.xml.AbstractXMLObjectBuilder;
 /**
  * AbstractWSTrustObjectBuilder
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public abstract class AbstractWSTrustObjectBuilder<WSTrustObjectType extends WSTrustObject>
         extends AbstractXMLObjectBuilder<WSTrustObjectType> implements

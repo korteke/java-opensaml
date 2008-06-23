@@ -23,8 +23,6 @@ import org.opensaml.xml.AbstractElementExtensibleXMLObject;
 /**
  * ValidateTargetImpl
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class ValidateTargetImpl extends AbstractElementExtensibleXMLObject implements ValidateTarget {
 

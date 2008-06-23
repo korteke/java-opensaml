@@ -22,8 +22,6 @@ import javax.xml.namespace.QName;
 /**
  * Interface AttributedId for element having a &lt;@wsu:Id&gt; attribute.
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public abstract interface AttributedId {
 

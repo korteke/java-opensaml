@@ -29,8 +29,6 @@ import org.opensaml.xml.XMLObject;
 /**
  * StatusImpl
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class StatusImpl extends AbstractWSTrustObject implements Status {
 

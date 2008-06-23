@@ -23,8 +23,6 @@ import org.opensaml.xml.schema.impl.XSURIImpl;
 /**
  * ComputedKeyAlgorithmImpl
  * 
- * @author Valery Tschopp <tschopp@switch.ch>
- * @version $Revision$
  */
 public class ComputedKeyAlgorithmImpl extends XSURIImpl implements ComputedKeyAlgorithm {
 

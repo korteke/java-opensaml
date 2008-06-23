@@ -21,8 +21,6 @@ import org.opensaml.ws.wssecurity.Embedded;
 /**
  * EmbeddedBuilder
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class EmbeddedBuilder extends AbstractWSSecurityObjectBuilder<Embedded> {
 

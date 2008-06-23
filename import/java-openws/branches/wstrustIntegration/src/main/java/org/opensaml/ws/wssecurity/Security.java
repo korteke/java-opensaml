@@ -29,8 +29,6 @@ import org.opensaml.xml.schema.XSBooleanValue;
  * 
  * @see "WS-Security 2004, Chapter 5 Security Header."
  * 
- * @author Valery Tschopp <tschopp@switch.ch>
- * @version $Revision$
  */
 public interface Security extends AttributeExtensibleXMLObject, ElementExtensibleXMLObject, WSSecurityObject {
 

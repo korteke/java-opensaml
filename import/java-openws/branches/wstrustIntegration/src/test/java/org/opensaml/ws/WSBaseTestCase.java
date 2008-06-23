@@ -41,8 +41,6 @@ import org.w3c.dom.Element;
 /**
  * WSBaseTestCase is the base test case for the WS-* packages.
  * 
- * @author Valery Tschopp <tschopp@switch.ch>
- * @version $Revision$
  */
 public abstract class WSBaseTestCase extends XMLTestCase {
 

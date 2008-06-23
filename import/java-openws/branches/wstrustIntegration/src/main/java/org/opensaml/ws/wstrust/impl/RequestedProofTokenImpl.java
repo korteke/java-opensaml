@@ -29,8 +29,6 @@ import org.opensaml.xml.XMLObject;
 /**
  * RequestedProofTokenImpl
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class RequestedProofTokenImpl extends AbstractElementExtensibleXMLObject implements RequestedProofToken {
 

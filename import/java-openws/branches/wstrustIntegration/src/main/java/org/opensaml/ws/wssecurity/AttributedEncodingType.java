@@ -22,8 +22,6 @@ import javax.xml.namespace.QName;
 /**
  * Interface AttributedEncodingType for element having an &lt;@EncodingType&gt; attribute.
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public abstract interface AttributedEncodingType {
 

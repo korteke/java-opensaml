@@ -26,8 +26,6 @@ import org.opensaml.xml.schema.XSBase64Binary;
  * 
  * @see "WS-Security UsernameToken Profile 1.1, 4. Key Derivation."
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public interface Salt extends XSBase64Binary, WSSecurityObject {
     /** Element local name. */

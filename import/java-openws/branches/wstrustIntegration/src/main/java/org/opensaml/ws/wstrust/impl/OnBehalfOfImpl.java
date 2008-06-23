@@ -30,8 +30,6 @@ import org.opensaml.xml.XMLObject;
 /**
  * OnBehalfOfImpl
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class OnBehalfOfImpl extends AbstractElementExtensibleXMLObject implements OnBehalfOf {
 

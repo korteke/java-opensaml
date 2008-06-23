@@ -22,8 +22,6 @@ import org.opensaml.xml.AbstractElementExtensibleXMLObjectUnmarshaller;
 /**
  * AbstractParticipantTypeUnmarshaller
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public abstract class AbstractParticipantTypeUnmarshaller extends AbstractElementExtensibleXMLObjectUnmarshaller {
 

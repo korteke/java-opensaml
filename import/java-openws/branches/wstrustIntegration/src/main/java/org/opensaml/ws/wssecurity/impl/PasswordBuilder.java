@@ -21,8 +21,6 @@ import org.opensaml.ws.wssecurity.Password;
 /**
  * PasswordBuilder
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class PasswordBuilder extends AbstractWSSecurityObjectBuilder<Password> {
 

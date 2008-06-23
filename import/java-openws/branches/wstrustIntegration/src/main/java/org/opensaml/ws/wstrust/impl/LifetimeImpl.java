@@ -29,8 +29,6 @@ import org.opensaml.xml.XMLObject;
 /**
  * LifetimeImpl
  * 
- * @author Valery Tschopp <tschopp@switch.ch>
- * @version $Revision$
  */
 public class LifetimeImpl extends AbstractWSTrustObject implements Lifetime {
 

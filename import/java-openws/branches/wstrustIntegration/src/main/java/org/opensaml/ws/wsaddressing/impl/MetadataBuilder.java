@@ -21,8 +21,6 @@ import org.opensaml.ws.wsaddressing.Metadata;
 /**
  * MetadataBuilder
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class MetadataBuilder extends
         AbstractWSAddressingObjectBuilder<Metadata> {

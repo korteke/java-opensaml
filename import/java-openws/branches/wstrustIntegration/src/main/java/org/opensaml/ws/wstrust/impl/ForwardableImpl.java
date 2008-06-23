@@ -23,8 +23,6 @@ import org.opensaml.xml.schema.XSBooleanValue;
 /**
  * ForwardableImpl
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class ForwardableImpl extends AbstractWSTrustObject implements Forwardable {
 

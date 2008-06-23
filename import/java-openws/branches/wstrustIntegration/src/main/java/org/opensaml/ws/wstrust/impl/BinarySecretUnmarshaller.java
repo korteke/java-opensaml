@@ -31,8 +31,6 @@ import org.w3c.dom.Attr;
  * 
  * @see BinarySecret
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class BinarySecretUnmarshaller extends AbstractWSTrustObjectUnmarshaller {
 

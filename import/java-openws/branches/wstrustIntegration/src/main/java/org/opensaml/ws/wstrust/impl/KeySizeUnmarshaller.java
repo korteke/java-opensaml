@@ -26,8 +26,6 @@ import org.opensaml.xml.schema.XSInteger;
  * 
  * @see KeySize
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class KeySizeUnmarshaller extends AbstractWSTrustObjectUnmarshaller {
 

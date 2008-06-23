@@ -27,8 +27,6 @@ import org.opensaml.xml.ElementExtensibleXMLObject;
  * @see Created
  * @see Expires
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public interface Timestamp extends AttributedId, AttributeExtensibleXMLObject,
         ElementExtensibleXMLObject, WSSecurityObject {

@@ -34,8 +34,6 @@ import org.opensaml.xml.XMLObject;
 /**
  * UsernameTokenImpl
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class UsernameTokenImpl extends AbstractExtensibleXMLObject implements UsernameToken {
 

@@ -21,8 +21,6 @@ import org.opensaml.xml.XMLObjectBuilder;
 /**
  * WSAddressingObjectBuilder
  * 
- * @author Valery Tschopp <tschopp@switch.ch>
- * @version $Revision$
  */
 public interface WSAddressingObjectBuilder<WSAddressingObjectType extends WSAddressingObject>
         extends XMLObjectBuilder<WSAddressingObjectType> {

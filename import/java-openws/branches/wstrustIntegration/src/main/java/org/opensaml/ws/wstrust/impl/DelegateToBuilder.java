@@ -23,8 +23,6 @@ import org.opensaml.ws.wstrust.DelegateTo;
  * 
  * @see org.opensaml.ws.wstrust.DelegateTo
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class DelegateToBuilder extends AbstractWSTrustObjectBuilder<DelegateTo> {
 

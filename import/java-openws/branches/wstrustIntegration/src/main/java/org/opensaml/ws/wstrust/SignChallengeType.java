@@ -26,8 +26,6 @@ import org.opensaml.xml.ElementExtensibleXMLObject;
  * @see SignChallengeResponse
  * @see Challenge
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public abstract interface SignChallengeType extends
         AttributeExtensibleXMLObject, ElementExtensibleXMLObject {

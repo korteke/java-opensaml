@@ -24,8 +24,6 @@ import org.opensaml.ws.wsaddressing.Action;
  * 
  * @see Action
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class ActionMarshaller extends AbstractAttributedURITypeMarshaller {
 

@@ -27,8 +27,6 @@ import org.opensaml.xml.io.UnmarshallingException;
 /**
  * ParticipantsUnmarshaller
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class ParticipantsUnmarshaller extends
         AbstractElementExtensibleXMLObjectUnmarshaller {

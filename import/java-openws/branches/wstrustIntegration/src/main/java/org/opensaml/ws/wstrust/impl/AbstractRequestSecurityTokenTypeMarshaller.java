@@ -32,8 +32,6 @@ import org.w3c.dom.Element;
  * 
  * @see RequestSecurityTokenType
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public abstract class AbstractRequestSecurityTokenTypeMarshaller extends AbstractExtensibleXMLObjectMarshaller {
 

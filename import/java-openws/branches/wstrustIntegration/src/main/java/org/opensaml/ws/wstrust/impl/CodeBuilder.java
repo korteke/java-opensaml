@@ -23,8 +23,6 @@ import org.opensaml.ws.wstrust.Code;
  * 
  * @see org.opensaml.ws.wstrust.Code
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class CodeBuilder extends AbstractWSTrustObjectBuilder<Code> {
 

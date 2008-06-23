@@ -23,8 +23,6 @@ import org.opensaml.xml.AbstractElementExtensibleXMLObject;
 /**
  * UseKeyImpl
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class UseKeyImpl extends AbstractElementExtensibleXMLObject implements UseKey {
 

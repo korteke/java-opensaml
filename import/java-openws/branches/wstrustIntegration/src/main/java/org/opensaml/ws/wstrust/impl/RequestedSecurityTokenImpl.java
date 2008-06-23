@@ -23,8 +23,6 @@ import org.opensaml.xml.AbstractElementExtensibleXMLObject;
 /**
  * RequestedSecurityTokenImpl
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class RequestedSecurityTokenImpl extends AbstractElementExtensibleXMLObject implements RequestedSecurityToken {
 

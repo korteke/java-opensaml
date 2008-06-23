@@ -23,8 +23,6 @@ import org.opensaml.ws.wstrust.SignChallenge;
  * 
  * @see org.opensaml.ws.wstrust.SignChallenge
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class SignChallengeBuilder extends
         AbstractWSTrustObjectBuilder<SignChallenge> {

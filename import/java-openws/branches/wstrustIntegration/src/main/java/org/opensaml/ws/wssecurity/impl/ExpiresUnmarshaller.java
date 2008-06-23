@@ -21,8 +21,6 @@ package org.opensaml.ws.wssecurity.impl;
 /**
  * ExpiresUnmarshaller
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class ExpiresUnmarshaller extends AbstractDateTimeTypeUnmarshaller {
 

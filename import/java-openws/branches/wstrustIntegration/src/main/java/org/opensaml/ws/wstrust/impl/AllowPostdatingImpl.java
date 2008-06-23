@@ -22,8 +22,6 @@ import org.opensaml.ws.wstrust.AllowPostdating;
 /**
  * AllowPostdatingImpl
  * 
- * @author Valery Tschopp <tschopp@switch.ch>
- * @version $Revision$
  */
 public class AllowPostdatingImpl extends AbstractWSTrustObject implements AllowPostdating {
 

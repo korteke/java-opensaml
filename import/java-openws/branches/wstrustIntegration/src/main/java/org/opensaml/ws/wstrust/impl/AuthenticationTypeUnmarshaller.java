@@ -26,8 +26,6 @@ import org.opensaml.xml.schema.XSURI;
  * 
  * @see AuthenticationType
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class AuthenticationTypeUnmarshaller extends
         AbstractWSTrustObjectUnmarshaller {

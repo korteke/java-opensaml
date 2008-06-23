@@ -23,8 +23,6 @@ import org.opensaml.ws.wstrust.BinaryExchange;
  * 
  * @see org.opensaml.ws.wstrust.BinaryExchange
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class BinaryExchangeBuilder extends
         AbstractWSTrustObjectBuilder<BinaryExchange> {

@@ -25,8 +25,6 @@ import org.opensaml.xml.AbstractExtensibleXMLObjectMarshaller;
  * 
  * @see Entropy
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class EntropyMarshaller extends AbstractExtensibleXMLObjectMarshaller {
 

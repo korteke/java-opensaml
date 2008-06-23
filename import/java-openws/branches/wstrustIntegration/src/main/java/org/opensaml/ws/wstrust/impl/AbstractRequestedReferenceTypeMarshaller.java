@@ -19,8 +19,6 @@ package org.opensaml.ws.wstrust.impl;
 /**
  * AbstractRequestedReferenceTypeMarshaller
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public abstract class AbstractRequestedReferenceTypeMarshaller extends
         AbstractRequestSecurityTokenTypeMarshaller {

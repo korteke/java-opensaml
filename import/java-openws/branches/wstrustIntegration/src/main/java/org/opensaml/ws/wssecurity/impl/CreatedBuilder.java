@@ -21,8 +21,6 @@ import org.opensaml.ws.wssecurity.Created;
 /**
  * Builder for the &lt;wsu:Created&gt; element.
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class CreatedBuilder extends AbstractWSSecurityObjectBuilder<Created> {
 

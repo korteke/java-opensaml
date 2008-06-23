@@ -23,8 +23,6 @@ import org.opensaml.ws.wstrust.KeySize;
  * 
  * @see org.opensaml.ws.wstrust.KeySize
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class KeySizeBuilder extends AbstractWSTrustObjectBuilder<KeySize> {
 

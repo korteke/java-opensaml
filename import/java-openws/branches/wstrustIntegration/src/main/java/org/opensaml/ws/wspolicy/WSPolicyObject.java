@@ -21,8 +21,6 @@ import org.opensaml.xml.XMLObject;
 /**
  * WSPolicyObject is the base interface for all WS-Policy element.
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public interface WSPolicyObject extends XMLObject {
 

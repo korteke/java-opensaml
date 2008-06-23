@@ -31,8 +31,6 @@ import org.opensaml.xml.io.UnmarshallingException;
  * @see RequestedAttachedReference
  * @see RequestedUnattachedReference
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public abstract class AbstractRequestedReferenceTypeUnmarshaller extends
         AbstractWSTrustObjectUnmarshaller {

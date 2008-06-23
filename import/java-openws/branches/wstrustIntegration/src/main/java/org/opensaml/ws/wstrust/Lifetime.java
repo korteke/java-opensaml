@@ -27,8 +27,6 @@ import org.opensaml.ws.wssecurity.Expires;
  * @see Created
  * @see Expires
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public interface Lifetime extends WSTrustObject {
 

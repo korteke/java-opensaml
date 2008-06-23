@@ -27,8 +27,6 @@ import javax.xml.namespace.QName;
  * @see RequestSecurityTokenResponse
  * @see "WS-Trust 1.3, Chapter 4.5 Returning Security Tikens in Headers."
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public interface IssuedTokens extends WSTrustObject {
 

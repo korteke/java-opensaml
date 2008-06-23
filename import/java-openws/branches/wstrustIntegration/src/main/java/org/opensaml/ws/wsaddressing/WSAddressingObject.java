@@ -21,8 +21,6 @@ import org.opensaml.xml.XMLObject;
 /**
  * Abstract WS-Addressing object interface
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public abstract interface WSAddressingObject extends XMLObject {
 

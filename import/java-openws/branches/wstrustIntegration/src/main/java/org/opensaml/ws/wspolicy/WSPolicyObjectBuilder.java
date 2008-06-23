@@ -21,8 +21,6 @@ import org.opensaml.xml.XMLObjectBuilder;
 /**
  * WSPolicyObjectBuilder
  * 
- * @author Valery Tschopp <tschopp@switch.ch>
- * @version $Revision$
  */
 public interface WSPolicyObjectBuilder<WSPolicyObjectType extends WSPolicyObject>
         extends XMLObjectBuilder<WSPolicyObjectType> {

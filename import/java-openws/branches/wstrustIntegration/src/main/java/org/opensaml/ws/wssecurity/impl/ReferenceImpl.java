@@ -22,8 +22,6 @@ import org.opensaml.ws.wssecurity.Reference;
 /**
  * ReferenceImpl
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class ReferenceImpl extends AbstractWSSecurityObject implements Reference {
     /** wsse:Reference/@URI attribute */

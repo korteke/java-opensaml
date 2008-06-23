@@ -23,8 +23,6 @@ import javax.xml.namespace.QName;
  * 
  * @see "WS-Addressing 1.0 - Core"
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public interface Action extends AttributedURIType, WSAddressingObject {
 

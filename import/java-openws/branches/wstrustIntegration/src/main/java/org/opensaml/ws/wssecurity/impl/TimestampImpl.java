@@ -30,8 +30,6 @@ import org.opensaml.xml.XMLObject;
 /**
  * Concrete implementation of {@link org.opensaml.ws.wssecurity.Timestamp}
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class TimestampImpl extends AbstractExtensibleXMLObject implements Timestamp {
 

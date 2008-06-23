@@ -31,8 +31,6 @@ import org.opensaml.xml.signature.Signature;
  * 
  * @see RequestSecurityTokenCollection
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class RequestSecurityTokenCollectionImpl extends AbstractWSTrustObject implements RequestSecurityTokenCollection {
 

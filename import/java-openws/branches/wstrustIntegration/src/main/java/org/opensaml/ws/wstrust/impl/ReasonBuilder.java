@@ -23,8 +23,6 @@ import org.opensaml.ws.wstrust.Reason;
  * 
  * @see org.opensaml.ws.wstrust.Reason
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class ReasonBuilder extends AbstractWSTrustObjectBuilder<Reason> {
 

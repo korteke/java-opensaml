@@ -23,8 +23,6 @@ import org.opensaml.ws.wstrust.RequestKET;
  * 
  * @see RequestKET
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class RequestKETUnmarshaller extends AbstractWSTrustObjectUnmarshaller {
 

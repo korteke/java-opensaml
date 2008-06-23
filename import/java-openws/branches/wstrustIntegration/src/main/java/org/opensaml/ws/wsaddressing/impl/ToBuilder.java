@@ -22,8 +22,6 @@ import org.opensaml.ws.wsaddressing.To;
 /**
  * Builder for the {@link To} element.
  * 
- * @author Valery Tschopp <tschopp@switch.ch>
- * @version $Revision$
  */
 public class ToBuilder extends AbstractWSAddressingObjectBuilder<To> {
 

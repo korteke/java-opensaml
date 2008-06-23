@@ -33,8 +33,6 @@ import org.w3c.dom.Element;
 /**
  * Abstract marshaller for the element of type {@link AttributedURIType}.
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public abstract class AbstractAttributedURITypeMarshaller extends AbstractWSAddressingObjectMarshaller {
 

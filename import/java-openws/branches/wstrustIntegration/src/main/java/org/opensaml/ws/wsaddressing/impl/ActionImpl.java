@@ -22,8 +22,6 @@ import org.opensaml.ws.wsaddressing.Action;
 /**
  * ActionImpl is the concrete implementation of {@link Action}.
  * 
- * @author Valery Tschopp <tschopp@switch.ch>
- * @version $Revision$
  */
 public class ActionImpl extends AbstractAttributedURIType implements Action {
 

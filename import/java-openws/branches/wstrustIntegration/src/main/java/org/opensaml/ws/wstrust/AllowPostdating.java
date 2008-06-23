@@ -23,8 +23,6 @@ import javax.xml.namespace.QName;
  * 
  * @see "WS-Trust 1.3, Chapter 5 Renewal Binding."
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public interface AllowPostdating extends WSTrustObject {
 

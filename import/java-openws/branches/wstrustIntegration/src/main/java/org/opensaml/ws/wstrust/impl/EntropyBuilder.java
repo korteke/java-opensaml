@@ -21,8 +21,6 @@ import org.opensaml.ws.wstrust.Entropy;
 /**
  * Builder for the Entropy element.
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class EntropyBuilder extends AbstractWSTrustObjectBuilder<Entropy> {
 

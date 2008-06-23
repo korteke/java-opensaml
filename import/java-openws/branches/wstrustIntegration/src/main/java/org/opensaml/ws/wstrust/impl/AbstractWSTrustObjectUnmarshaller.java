@@ -27,8 +27,6 @@ import org.w3c.dom.Attr;
 /**
  * An abstract unmarshaller implementation for XMLObjects from {@link org.opensaml.ws.wstrust}.
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public abstract class AbstractWSTrustObjectUnmarshaller extends AbstractXMLObjectUnmarshaller {
 

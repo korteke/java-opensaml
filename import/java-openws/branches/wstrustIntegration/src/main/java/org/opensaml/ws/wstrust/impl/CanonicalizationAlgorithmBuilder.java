@@ -23,8 +23,6 @@ import org.opensaml.ws.wstrust.CanonicalizationAlgorithm;
  * 
  * @see org.opensaml.ws.wstrust.CanonicalizationAlgorithm
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class CanonicalizationAlgorithmBuilder extends
         AbstractWSTrustObjectBuilder<CanonicalizationAlgorithm> {

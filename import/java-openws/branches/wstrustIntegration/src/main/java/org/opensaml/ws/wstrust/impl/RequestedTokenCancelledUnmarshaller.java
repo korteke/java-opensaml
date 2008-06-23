@@ -23,8 +23,6 @@ import org.opensaml.ws.wstrust.RequestedTokenCancelled;
  * 
  * @see RequestedTokenCancelled
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class RequestedTokenCancelledUnmarshaller extends
         AbstractWSTrustObjectUnmarshaller {

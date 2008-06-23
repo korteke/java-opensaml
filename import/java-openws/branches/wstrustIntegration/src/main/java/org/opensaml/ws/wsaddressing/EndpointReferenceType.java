@@ -25,8 +25,6 @@ import org.opensaml.xml.ElementExtensibleXMLObject;
  * 
  * @see "WS-Addressing 1.0 - Core"
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public abstract interface EndpointReferenceType extends AttributeExtensibleXMLObject, ElementExtensibleXMLObject {
 

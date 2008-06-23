@@ -33,8 +33,6 @@ import org.opensaml.xml.io.UnmarshallingException;
  * @see SignChallenge
  * @see SignChallengeResponse
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public abstract class AbstractSignChallengeTypeUnmarshaller extends
         AbstractExtensibleXMLObjectUnmarshaller {

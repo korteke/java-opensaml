@@ -23,8 +23,6 @@ import org.opensaml.xml.util.AttributeMap;
 /**
  * BinarySecretImpl
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class BinarySecretImpl extends AbstractWSTrustObject implements BinarySecret {
 

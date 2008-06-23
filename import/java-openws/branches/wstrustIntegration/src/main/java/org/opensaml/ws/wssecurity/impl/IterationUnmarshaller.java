@@ -23,8 +23,6 @@ import org.opensaml.xml.schema.XSInteger;
 /**
  * IterationUnmarshaller
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class IterationUnmarshaller extends AbstractWSSecurityObjectUnmarshaller {
 

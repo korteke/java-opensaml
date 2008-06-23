@@ -25,8 +25,6 @@ import org.opensaml.xml.schema.XSString;
  * 
  * @see Status
  * 
- * @author Valery Tschopp <tschopp@switch.ch>
- * @version $Revision$
  */
 public interface Reason extends XSString, WSTrustObject {
 

@@ -49,8 +49,6 @@ import org.w3c.dom.Element;
  * WSSecurityObjectsTestCase is the base test case for the WS-Security
  * objects.
  * 
- * @author Valery Tschopp <tschopp@switch.ch>
- * @version $Revision$
  */
 public class WSSecurityObjectsTestCase extends WSBaseTestCase {
 

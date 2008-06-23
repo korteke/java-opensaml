@@ -29,8 +29,6 @@ import org.opensaml.xml.XMLObject;
 /**
  * AbstractSignChallengeType
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 abstract class AbstractSignChallengeType extends AbstractExtensibleXMLObject implements SignChallengeType {
 

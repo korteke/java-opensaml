@@ -21,8 +21,6 @@ import org.opensaml.xml.AbstractExtensibleXMLObjectMarshaller;
 /**
  * AbstractSignChallengeTypeMarshaller
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public abstract class AbstractSignChallengeTypeMarshaller extends
         AbstractExtensibleXMLObjectMarshaller {

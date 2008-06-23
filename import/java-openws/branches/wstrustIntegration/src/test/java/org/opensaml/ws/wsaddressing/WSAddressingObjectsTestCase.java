@@ -33,8 +33,6 @@ import org.slf4j.LoggerFactory;
 /**
  * WSAddressingObjectTestCase is the test case for the WS-Addressing objects.
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class WSAddressingObjectsTestCase extends WSBaseTestCase {
 

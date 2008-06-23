@@ -22,8 +22,6 @@ import org.opensaml.ws.wssecurity.AttributedId;
 /**
  * Abstract class for WS-Security object having the &lt;wsu:Id&gt; attribute.
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public abstract class AbstractAttributedId extends AbstractWSSecurityObject implements AttributedId {
 

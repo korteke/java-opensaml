@@ -25,8 +25,6 @@ import org.opensaml.xml.AbstractElementExtensibleXMLObjectUnmarshaller;
  * 
  * @see ProofEncryption
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class ProofEncryptionUnmarshaller extends
         AbstractElementExtensibleXMLObjectUnmarshaller {

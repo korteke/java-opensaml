@@ -23,8 +23,6 @@ import org.opensaml.ws.wstrust.ValidateTarget;
  * 
  * @see org.opensaml.ws.wstrust.ValidateTarget
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class ValidateTargetBuilder extends
         AbstractWSTrustObjectBuilder<ValidateTarget> {

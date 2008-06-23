@@ -28,8 +28,6 @@ import org.opensaml.xml.io.UnmarshallingException;
 /**
  * Abstract unmarshaller for the element of type {@link EndpointReferenceType}.
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public abstract class AbstractEndpointReferenceTypeUnmarshaller extends AbstractExtensibleXMLObjectUnmarshaller {
 

@@ -21,8 +21,6 @@ import org.opensaml.ws.wssecurity.BinarySecurityToken;
 /**
  * Builder for the &lt;BinarySecurityToken&gt; element.
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class BinarySecurityTokenBuilder extends
         AbstractWSSecurityObjectBuilder<BinarySecurityToken> {

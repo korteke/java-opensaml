@@ -23,8 +23,6 @@ import org.opensaml.ws.wstrust.KeyWrapAlgorithm;
  * 
  * @see org.opensaml.ws.wstrust.KeyWrapAlgorithm
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class KeyWrapAlgorithmBuilder extends
         AbstractWSTrustObjectBuilder<KeyWrapAlgorithm> {

@@ -27,8 +27,6 @@ import org.opensaml.xml.schema.XSURI;
  * @see RequestedProofToken
  * @see "WS-Trust 1.3, Chapter 4.4.4 Returning Computed Keys."
  * 
- * @author Valery Tschopp <tschopp@switch.ch>
- * @version $Revision$
  */
 public interface ComputedKey extends XSURI, WSTrustObject {
 

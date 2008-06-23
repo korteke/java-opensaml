@@ -21,8 +21,6 @@ import org.opensaml.ws.wssecurity.Iteration;
 /**
  * IterationBuilder
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class IterationBuilder extends
         AbstractWSSecurityObjectBuilder<Iteration> {

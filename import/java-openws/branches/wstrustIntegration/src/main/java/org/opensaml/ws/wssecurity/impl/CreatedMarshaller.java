@@ -20,8 +20,6 @@ package org.opensaml.ws.wssecurity.impl;
 /**
  * Marshaller for the &lt;wsu:Created&gt; element.
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class CreatedMarshaller extends AbstractDateTimeTypeMarshaller {
 

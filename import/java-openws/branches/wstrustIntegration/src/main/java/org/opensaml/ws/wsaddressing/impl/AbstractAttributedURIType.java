@@ -24,8 +24,6 @@ import org.opensaml.xml.util.AttributeMap;
 /**
  * AbstractAttributedURIType is the abstract implementation of {@link AttributedURIType}.
  * 
- * @author Valery Tschopp <tschopp@switch.ch>
- * @version $Revision$
  */
 public abstract class AbstractAttributedURIType extends XSURIImpl implements AttributedURIType {
 

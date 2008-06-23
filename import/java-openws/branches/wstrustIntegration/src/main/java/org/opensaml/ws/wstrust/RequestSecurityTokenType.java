@@ -69,8 +69,6 @@ import org.opensaml.xml.signature.SignableXMLObject;
  * @see RequestSecurityToken
  * @see RequestSecurityTokenResponse
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public abstract interface RequestSecurityTokenType extends AttributedId, AttributeExtensibleXMLObject,
         ElementExtensibleXMLObject, SignableXMLObject {

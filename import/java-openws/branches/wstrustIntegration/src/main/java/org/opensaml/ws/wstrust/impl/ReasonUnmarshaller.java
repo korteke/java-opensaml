@@ -26,8 +26,6 @@ import org.opensaml.xml.schema.XSString;
  * 
  * @see Reason
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class ReasonUnmarshaller extends AbstractWSTrustObjectUnmarshaller {
 

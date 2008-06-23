@@ -23,8 +23,6 @@ import org.opensaml.ws.wstrust.ProofEncryption;
  * 
  * @see org.opensaml.ws.wstrust.ProofEncryption
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class ProofEncryptionBuilder extends
         AbstractWSTrustObjectBuilder<ProofEncryption> {

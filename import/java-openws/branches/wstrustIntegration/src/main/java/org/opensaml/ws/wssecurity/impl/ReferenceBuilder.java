@@ -21,8 +21,6 @@ import org.opensaml.ws.wssecurity.Reference;
 /**
  * ReferenceBuilder
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class ReferenceBuilder extends
         AbstractWSSecurityObjectBuilder<Reference> {

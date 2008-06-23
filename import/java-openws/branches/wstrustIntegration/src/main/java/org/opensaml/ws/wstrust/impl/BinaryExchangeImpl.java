@@ -23,8 +23,6 @@ import org.opensaml.xml.util.AttributeMap;
 /**
  * BinaryExchangeImpl
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class BinaryExchangeImpl extends AbstractWSTrustObject implements BinaryExchange {
 

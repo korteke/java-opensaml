@@ -23,8 +23,6 @@ import org.opensaml.xml.AbstractExtensibleXMLObjectMarshaller;
 /**
  * Abstract marshaller for the element of type {@link EndpointReferenceType}.
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public abstract class AbstractEndpointReferenceTypeMarshaller extends AbstractExtensibleXMLObjectMarshaller {
 

@@ -22,8 +22,6 @@ import org.opensaml.ws.wssecurity.Expires;
 /**
  * ExpiresImpl
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class ExpiresImpl extends AbstractDateTimeType implements Expires {
 

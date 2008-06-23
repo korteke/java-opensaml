@@ -27,8 +27,6 @@ import org.w3c.dom.Attr;
 /**
  * AbstractAttributedIdUnmarshaller
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public abstract class AbstractAttributedIdUnmarshaller extends AbstractWSSecurityObjectUnmarshaller {
 

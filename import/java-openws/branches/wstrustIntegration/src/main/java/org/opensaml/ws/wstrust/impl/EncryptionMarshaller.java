@@ -25,8 +25,6 @@ import org.opensaml.xml.AbstractElementExtensibleXMLObjectMarshaller;
  * 
  * @see Encryption
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class EncryptionMarshaller extends
         AbstractElementExtensibleXMLObjectMarshaller {

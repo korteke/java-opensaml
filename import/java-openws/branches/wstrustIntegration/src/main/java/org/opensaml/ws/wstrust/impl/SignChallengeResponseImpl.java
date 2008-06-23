@@ -22,8 +22,6 @@ import org.opensaml.ws.wstrust.SignChallengeResponse;
 /**
  * SignChallengeImpl
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class SignChallengeResponseImpl extends AbstractSignChallengeType implements SignChallengeResponse {
 

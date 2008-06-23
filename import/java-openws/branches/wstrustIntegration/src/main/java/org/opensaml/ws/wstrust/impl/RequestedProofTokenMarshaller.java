@@ -25,8 +25,6 @@ import org.opensaml.xml.AbstractElementExtensibleXMLObjectMarshaller;
  * 
  * @see RequestedProofToken
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class RequestedProofTokenMarshaller extends
         AbstractElementExtensibleXMLObjectMarshaller {

@@ -25,8 +25,6 @@ import org.opensaml.xml.AbstractExtensibleXMLObjectUnmarshaller;
  * 
  * @see AppliesTo
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class AppliesToUnmarshaller extends AbstractExtensibleXMLObjectUnmarshaller {
 

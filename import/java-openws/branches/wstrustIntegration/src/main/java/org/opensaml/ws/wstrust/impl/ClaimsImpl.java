@@ -23,8 +23,6 @@ import org.opensaml.xml.AbstractExtensibleXMLObject;
 /**
  * ClaimsImpl
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class ClaimsImpl extends AbstractExtensibleXMLObject implements Claims {
 

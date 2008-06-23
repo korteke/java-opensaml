@@ -22,8 +22,6 @@ import org.opensaml.ws.wssecurity.Created;
 /**
  * CreatedImpl
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class CreatedImpl extends AbstractDateTimeType implements Created {
 

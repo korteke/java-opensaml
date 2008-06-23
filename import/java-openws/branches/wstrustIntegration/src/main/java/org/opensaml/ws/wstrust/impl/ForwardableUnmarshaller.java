@@ -27,8 +27,6 @@ import org.opensaml.xml.schema.XSBooleanValue;
  * 
  * @see Forwardable
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class ForwardableUnmarshaller extends AbstractWSTrustObjectUnmarshaller {
 

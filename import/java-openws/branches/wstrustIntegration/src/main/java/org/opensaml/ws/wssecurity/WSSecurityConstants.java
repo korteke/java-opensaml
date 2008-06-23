@@ -21,8 +21,6 @@ package org.opensaml.ws.wssecurity;
  * 
  * @see "WS-Security 2004 Specification"
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class WSSecurityConstants {
 

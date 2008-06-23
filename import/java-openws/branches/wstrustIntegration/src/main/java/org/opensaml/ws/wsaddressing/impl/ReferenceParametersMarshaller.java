@@ -22,8 +22,6 @@ import org.opensaml.xml.AbstractExtensibleXMLObjectMarshaller;
 /**
  * ReferenceParametersMarshaller
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class ReferenceParametersMarshaller extends
         AbstractExtensibleXMLObjectMarshaller {

@@ -22,8 +22,6 @@ import org.opensaml.ws.wstrust.Primary;
 /**
  * PrimaryImpl
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class PrimaryImpl extends AbstractParticipantType implements Primary {
 

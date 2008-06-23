@@ -26,8 +26,6 @@ import org.opensaml.xml.schema.XSInteger;
  * 
  * @see "WS-Security UsernameToken Profile 1.1, 4. Key Derivation."
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public interface Iteration extends XSInteger, WSSecurityObject {
     /** Element local name. */

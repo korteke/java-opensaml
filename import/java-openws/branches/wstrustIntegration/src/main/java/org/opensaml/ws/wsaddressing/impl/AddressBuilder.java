@@ -21,8 +21,6 @@ import org.opensaml.ws.wsaddressing.Address;
 /**
  * AddressBuilder
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class AddressBuilder extends AbstractWSAddressingObjectBuilder<Address> {
 

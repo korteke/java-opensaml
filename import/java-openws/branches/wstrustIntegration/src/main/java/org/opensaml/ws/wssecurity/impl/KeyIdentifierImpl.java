@@ -27,8 +27,6 @@ import org.opensaml.xml.XMLObject;
 /**
  * KeyIdentifierImpl
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class KeyIdentifierImpl extends AbstractWSSecurityObject implements KeyIdentifier {
 

@@ -21,8 +21,6 @@ package org.opensaml.ws.wstrust;
  * 
  * @see "WS-Trust 1.3 Specification"
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class WSTrustConstants {
 

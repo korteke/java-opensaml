@@ -23,8 +23,6 @@ import org.opensaml.xml.schema.impl.XSBase64BinaryImpl;
 /**
  * NonceImpl
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class NonceImpl extends XSBase64BinaryImpl implements Nonce {
 

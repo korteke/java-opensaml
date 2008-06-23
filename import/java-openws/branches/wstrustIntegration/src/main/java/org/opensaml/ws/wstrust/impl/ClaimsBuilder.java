@@ -23,8 +23,6 @@ import org.opensaml.ws.wstrust.Claims;
  * 
  * @see org.opensaml.ws.wstrust.Claims
  * 
- * @author Valery Tschopp &lt;tschopp@switch.ch&gt;
- * @version $Revision$
  */
 public class ClaimsBuilder extends AbstractWSTrustObjectBuilder<Claims> {
 
