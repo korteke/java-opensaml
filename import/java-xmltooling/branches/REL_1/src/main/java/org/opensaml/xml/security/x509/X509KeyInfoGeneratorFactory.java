@@ -613,7 +613,7 @@ public class X509KeyInfoGeneratorFactory extends BasicKeyInfoGeneratorFactory {
         protected void processEntityCertificateChain(KeyInfo keyInfo, X509Data x509Data, X509Credential credential) 
                 throws SecurityException {
             
-            if (options.emitEntityCertificateChain) {
+            if (options.emitEntityCertificateChain && credential.getEntityCertificateChain() != null) {
                 for (java.security.cert.X509Certificate javaCert : credential.getEntityCertificateChain()) {
                     try {
                         X509Certificate xmlCert = KeyInfoHelper.buildX509Certificate(javaCert);
@@ -636,7 +636,7 @@ public class X509KeyInfoGeneratorFactory extends BasicKeyInfoGeneratorFactory {
         protected void processCRLs(KeyInfo keyInfo, X509Data x509Data, X509Credential credential) 
                 throws SecurityException {
             
-            if (options.emitCRLs) {
+            if (options.emitCRLs && credential.getCRLs() != null) {
                 for (java.security.cert.X509CRL javaCRL : credential.getCRLs()) {
                     try {
                         X509CRL xmlCRL = KeyInfoHelper.buildX509CRL(javaCRL);
