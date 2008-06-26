@@ -1,5 +1,5 @@
 /*
- * Copyright [2005] [University Corporation for Advanced Internet Development, Inc.]
+ * Copyright 2005 University Corporation for Advanced Internet Development, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,15 +17,15 @@
 package org.opensaml.xml.util;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 
-/**
- * Helper class for working with various datatypes.
- */
+/** Helper class for working with various datatypes. */
 public final class DatatypeHelper {
 
     /** Constructor. */
@@ -101,7 +101,7 @@ public final class DatatypeHelper {
 
         return null;
     }
-    
+
     /**
      * Converts an integer into an unsigned 4-byte array.
      * 
@@ -109,14 +109,46 @@ public final class DatatypeHelper {
      * 
      * @return 4-byte array representing integer
      */
-    public static byte[] intToByteArray(int integer){
+    public static byte[] intToByteArray(int integer) {
         byte[] intBytes = new byte[4];
-        intBytes[0]=(byte)((integer & 0xff000000)>>>24);
-        intBytes[1]=(byte)((integer & 0x00ff0000)>>>16);
-        intBytes[2]=(byte)((integer & 0x0000ff00)>>>8);
-        intBytes[3]=(byte)((integer & 0x000000ff));
+        intBytes[0] = (byte) ((integer & 0xff000000) >>> 24);
+        intBytes[1] = (byte) ((integer & 0x00ff0000) >>> 16);
+        intBytes[2] = (byte) ((integer & 0x0000ff00) >>> 8);
+        intBytes[3] = (byte) ((integer & 0x000000ff));
 
         return intBytes;
+    }
+
+    /**
+     * Reads the contents of a file in to a byte array.
+     * 
+     * @param file file to read
+     * @return the byte contents of the file
+     * 
+     * @throws IOException throw if there is a problem reading the file in to the byte array
+     */
+    public static byte[] fileToByteArray(File file) throws IOException {
+        long numOfBytes = file.length();
+
+        if (numOfBytes > Integer.MAX_VALUE) {
+            throw new IOException("File is to large to be read in to a byte array");
+        }
+
+        byte[] bytes = new byte[(int) numOfBytes];
+        FileInputStream ins = new FileInputStream(file);
+        int offset = 0;
+        int numRead = 0;
+        do{
+            numRead = ins.read(bytes, offset, bytes.length - offset);
+            offset += numRead;
+        }while(offset < bytes.length && numRead >= 0);
+
+        if (offset < bytes.length) {
+            throw new IOException("Could not completely read file " + file.getName());
+        }
+
+        ins.close();
+        return bytes;
     }
 
     /**
