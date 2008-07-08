@@ -36,6 +36,15 @@ public class MapBasedStorageService<KeyType, ValueType> implements StorageServic
     public MapBasedStorageService() {
         store = new Hashtable<String, Map<KeyType, ValueType>>();
     }
+    
+    /**
+     * Constructor.
+     *
+     * @param serviceStore the map to use as storage
+     */
+    protected MapBasedStorageService(Map<String, Map<KeyType, ValueType>> serviceStore){
+        store = serviceStore;
+    }
 
     /** {@inheritDoc} */
     public Iterator<String> getPartitions() {

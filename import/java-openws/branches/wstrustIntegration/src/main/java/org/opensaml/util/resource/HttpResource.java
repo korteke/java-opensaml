@@ -1,5 +1,5 @@
 /*
- * Copyright [2007] [University Corporation for Advanced Internet Development, Inc.]
+ * Copyright 2007 University Corporation for Advanced Internet Development, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,9 +31,9 @@ import org.joda.time.DateTime;
 import org.opensaml.xml.util.DatatypeHelper;
 
 /**
- * A resource representing a file retrieved from a URL using Apache Commons' HTTPClient.
+ * A resource representing a file retrieved from a URL using Apache Commons HTTPClient.
  */
-public class HttpResource implements Resource {
+public class HttpResource extends AbstractFilteredResource {
 
     /** HTTP URL of the resource. */
     private String resourceUrl;
@@ -47,6 +47,25 @@ public class HttpResource implements Resource {
      * @param resource HTTP(S) URL of the resource
      */
     public HttpResource(String resource) {
+        super();
+        
+        resourceUrl = DatatypeHelper.safeTrimOrNullString(resource);
+        if (resourceUrl == null) {
+            throw new IllegalArgumentException("Resource URL may not be null or empty");
+        }
+
+        httpClient = new HttpClient();
+    }
+    
+    /**
+     * Constructor.
+     * 
+     * @param resource HTTP(S) URL of the resource
+     * @param resourceFilter filter to apply to this resource
+     */
+    public HttpResource(String resource, ResourceFilter resourceFilter) {
+        super(resourceFilter);
+        
         resourceUrl = DatatypeHelper.safeTrimOrNullString(resource);
         if (resourceUrl == null) {
             throw new IllegalArgumentException("Resource URL may not be null or empty");
@@ -74,9 +93,14 @@ public class HttpResource implements Resource {
     /** {@inheritDoc} */
     public InputStream getInputStream() throws ResourceException {
         GetMethod getMethod = getResource();
-        try{
-            return getMethod.getResponseBodyAsStream();
-        }catch(IOException e){
+        try {
+            InputStream ins = getMethod.getResponseBodyAsStream();
+            if (getResourceFilter() != null) {
+                return getResourceFilter().applyFilter(ins);
+            } else {
+                return ins;
+            }
+        } catch (IOException e) {
             throw new ResourceException("Unable to read response", e);
         }
     }
@@ -125,17 +149,17 @@ public class HttpResource implements Resource {
 
     /** {@inheritDoc} */
     public boolean equals(Object o) {
-        if(o == this){
+        if (o == this) {
             return true;
         }
-        
+
         if (o instanceof HttpResource) {
             return getLocation().equals(((ClasspathResource) o).getLocation());
         }
 
         return false;
     }
-    
+
     /**
      * Gets remote resource.
      * 
@@ -143,7 +167,7 @@ public class HttpResource implements Resource {
      * 
      * @throws ResourceException thrown if the resource could not be fetched
      */
-    protected GetMethod getResource() throws ResourceException{
+    protected GetMethod getResource() throws ResourceException {
         GetMethod getMethod = new GetMethod(resourceUrl);
 
         try {

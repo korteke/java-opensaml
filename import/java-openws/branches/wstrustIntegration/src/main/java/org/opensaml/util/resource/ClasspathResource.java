@@ -1,5 +1,5 @@
 /*
- * Copyright [2007] [University Corporation for Advanced Internet Development, Inc.]
+ * Copyright 2007 University Corporation for Advanced Internet Development, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ import org.opensaml.xml.util.DatatypeHelper;
  * Because object on the classpath are not meant to change during runtime the last modification is set to the time the
  * {@link ClasspathResource} is created and is never changed.
  */
-public class ClasspathResource implements Resource {
+public class ClasspathResource extends AbstractFilteredResource {
 
     /** Classpath location of resource. */
     private URL resource;
@@ -45,6 +45,31 @@ public class ClasspathResource implements Resource {
      * @throws ResourceException thrown if the resource path is null or empty or if the resource does not exist
      */
     public ClasspathResource(String path) throws ResourceException {
+        super();
+        
+        if (DatatypeHelper.isEmpty(path)) {
+            throw new ResourceException("Resource path may not be null or empty");
+        }
+
+        resource = getClass().getResource(path);
+        if (resource == null) {
+            throw new ResourceException("Classpath resource does not exist: " + path);
+        }
+
+        lastModTime = new DateTime();
+    }
+    
+    /**
+     * Constructor.
+     * 
+     * @param path the path to the file for this resource
+     * @param resourceFilter filter to apply to this resource
+     * 
+     * @throws ResourceException thrown if the resource path is null or empty or if the resource does not exist
+     */
+    public ClasspathResource(String path, ResourceFilter resourceFilter) throws ResourceException {
+        super(resourceFilter);
+        
         if (DatatypeHelper.isEmpty(path)) {
             throw new ResourceException("Resource path may not be null or empty");
         }
@@ -59,17 +84,22 @@ public class ClasspathResource implements Resource {
 
     /** {@inheritDoc} */
     public boolean exists() throws ResourceException {
-        if(resource != null){
+        if (resource != null) {
             return true;
         }
-        
+
         return false;
     }
 
     /** {@inheritDoc} */
     public InputStream getInputStream() throws ResourceException {
         try {
-            return resource.openStream();
+            InputStream ins = resource.openStream();
+            if (getResourceFilter() != null) {
+                return getResourceFilter().applyFilter(ins);
+            } else {
+                return ins;
+            }
         } catch (IOException e) {
             throw new ResourceException("Unable to open resource: " + resource);
         }
@@ -84,27 +114,27 @@ public class ClasspathResource implements Resource {
     public String getLocation() {
         return resource.toString();
     }
-    
+
     /** {@inheritDoc} */
     public String toString() {
         return getLocation();
     }
-    
+
     /** {@inheritDoc} */
     public int hashCode() {
         return getLocation().hashCode();
     }
-    
+
     /** {@inheritDoc} */
     public boolean equals(Object o) {
-        if(o == this){
+        if (o == this) {
             return true;
         }
-        
-        if(o instanceof ClasspathResource){
-            return getLocation().equals(((ClasspathResource)o).getLocation());
+
+        if (o instanceof ClasspathResource) {
+            return getLocation().equals(((ClasspathResource) o).getLocation());
         }
-        
+
         return false;
     }
 }
