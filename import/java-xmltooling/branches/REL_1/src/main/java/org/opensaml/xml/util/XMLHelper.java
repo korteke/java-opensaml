@@ -806,7 +806,7 @@ public final class XMLHelper {
             serializer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "3");
 
             StringWriter output = new StringWriter();
-            serializer.transform(new DOMSource(node.getOwnerDocument()), new StreamResult(output));
+            serializer.transform(new DOMSource(node), new StreamResult(output));
             return output.toString();
         } catch (TransformerException e) {
             // this is fatal, just dump the stack and throw a runtime exception
