@@ -38,6 +38,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.opensaml.xml.XMLObject;
+import org.opensaml.xml.XMLRuntimeException;
 import org.opensaml.xml.parse.XMLParserException;
 import org.w3c.dom.Attr;
 import org.w3c.dom.DOMImplementation;
@@ -476,7 +477,10 @@ public final class XMLHelper {
      */
     public static void adoptElement(Element adoptee, Document adopter) {
         if (!(adoptee.getOwnerDocument().equals(adopter))) {
-            adopter.adoptNode(adoptee);
+            if (adopter.adoptNode(adoptee) == null) {
+                // This can happen if the adopter and adoptee were produced by different DOM implementations
+                throw new XMLRuntimeException("DOM Element node adoption failed");
+            }
         }
     }
 
