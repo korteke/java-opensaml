@@ -2,6 +2,5 @@ Changes in Release 1.1.0
 ==============================================
 [JXT-31] - Add BaseXMLObjectMarshaller and BaseXMLObjectUnmarshaller classes that provide no-op implementations of the 
            methods on the AbstractXMLObjectMarshaller and AbstractXMLObjectUnmarshaller classes.
-
-Changes in Release 1.0.1
-==============================================
+[JXT-32] - XMLHelper adoptElement should check success of node adoption
+[JXT-34] - Upgrade to Apache XML Security lib 1.4.2

@@ -59,9 +59,9 @@
             <version>1.38</version>
         </dependency>
         <dependency>
-            <groupId>org.apache.xml.security</groupId>
-            <artifactId>xml-security</artifactId>
-            <version>1.4.1</version>
+            <groupId>org.apache.santuario</groupId>
+            <artifactId>xmlsec</artifactId>
+            <version>1.4.2</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons.ssl</groupId>
