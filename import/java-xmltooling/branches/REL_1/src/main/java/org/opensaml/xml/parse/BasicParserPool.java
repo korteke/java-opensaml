@@ -26,8 +26,6 @@ import java.util.EmptyStackException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -79,9 +77,6 @@ public class BasicParserPool implements ParserPool {
     /** Cache of document builders. */
     private Stack<SoftReference<DocumentBuilder>> builderPool;
 
-    /** Lock used when we're performing operations that remove items from the pool. */
-    private Lock builderPoolLock;
-
     /** Max number of builders allowed in the pool. Default value: 5 */
     private int maxPoolSize;
 
@@ -126,7 +121,6 @@ public class BasicParserPool implements ParserPool {
         Configuration.validateNonSunJAXP();
         maxPoolSize = 5;
         builderPool = new Stack<SoftReference<DocumentBuilder>>();
-        builderPoolLock = new ReentrantLock(true);
         builderAttributes = new HashMap<String, Object>();
         coalescing = true;
         expandEntityReferences = true;
@@ -182,16 +176,18 @@ public class BasicParserPool implements ParserPool {
         }
 
         DocumentBuilderProxy proxiedBuilder = (DocumentBuilderProxy) builder;
-        if (proxiedBuilder.getOwningPool() != this && proxiedBuilder.getPoolVersion() != poolVersion) {
+        if (proxiedBuilder.getOwningPool() != this || proxiedBuilder.getPoolVersion() != poolVersion) {
             return;
         }
 
         DocumentBuilder unwrappedBuilder = proxiedBuilder.getProxiedBuilder();
         unwrappedBuilder.reset();
         SoftReference<DocumentBuilder> builderReference = new SoftReference<DocumentBuilder>(unwrappedBuilder);
-
-        if (builderPool.size() < maxPoolSize) {
-            builderPool.push(builderReference);
+        
+        synchronized (this) {
+            if (builderPool.size() < maxPoolSize) {
+                builderPool.push(builderReference);
+            }
         }
     }
 
@@ -499,12 +495,11 @@ public class BasicParserPool implements ParserPool {
             newFactory.setValidating(dtdValidating);
             newFactory.setXIncludeAware(xincludeAware);
 
-            synchronized (this) {
-                poolVersion++;
-                dirtyBuilderConfiguration = false;
-                builderFactory = newFactory;
-                builderPool.clear();
-            }
+            poolVersion++;
+            dirtyBuilderConfiguration = false;
+            builderFactory = newFactory;
+            builderPool.clear();
+            
         } catch (ParserConfigurationException e) {
             throw new XMLParserException("Unable to configure builder factory", e);
         }
