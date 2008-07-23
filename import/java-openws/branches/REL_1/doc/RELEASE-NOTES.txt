@@ -1,7 +1,8 @@
 Changes in Release 1.2.0
 =============================================
 * [JOWS-8] - Allow a filter to be attached to a Resource
-* Add new constructor to filesystem-related resource provider that can take file: URIs
+* [JOWS-9] - SOAP Fault elements faultcode, faultstring, faultactor and detail shouldn't be prefixed
+* [JOWS-10] - Add constructor to filesystem-related resource providers that take a URL to the file.
 
 Changes in Release 1.1.0
 =============================================
