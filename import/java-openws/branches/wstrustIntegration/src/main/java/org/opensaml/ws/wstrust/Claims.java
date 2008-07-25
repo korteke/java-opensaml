@@ -47,6 +47,21 @@ public interface Claims extends AttributeExtensibleXMLObject, ElementExtensibleX
     /** The wst:Claims/@Dialect attribute name */
     public final static QName DIALECT_ATTR_NAME = new QName(DIALECT_ATTR_LOCAL_NAME);
 
+    /** The wst:Claims/@Dialect value for username token */
+    public final static String DIALECT_USERNAME_TOKEN = TokenType.USERNAME_TOKEN;
+
+    /** The wst:Claims/@Dialect value for SAML 1.1 token */
+    public final static String DIALECT_SAML11_TOKEN = TokenType.SAML11_TOKEN;
+
+    /** The wst:Claims/@Dialect value for X509 token */
+    public final static String DIALECT_X509_TOKEN = TokenType.X509_TOKEN;
+
+    /** The wst:Claims/@Dialect value for SAML 2.0 token */
+    public final static String DIALECT_SAML2_TOKEN = TokenType.SAML2_TOKEN;
+
+    /** The wst:Claims/@Dialect value for Kerberos token */
+    public final static String DIALECT_KERBEROS_TOKEN = TokenType.KERBEROS_TOKEN;
+
     /**
      * Returns the wst:Claims/@Dialect attribute value.
      * 
