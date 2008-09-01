@@ -21,10 +21,16 @@ import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * A simple task that periodically sweeps over a {@link StorageService} and removes expired entries.
  */
 public class ExpiringObjectStorageServiceSweeper extends TimerTask {
+    
+    /** Class logger. */
+    private final Logger log = LoggerFactory.getLogger(ExpiringObjectStorageServiceSweeper.class);
 
     /** Storage service whose entries will be periodically checked. */
     private StorageService store;
@@ -41,7 +47,7 @@ public class ExpiringObjectStorageServiceSweeper extends TimerTask {
      */
     public ExpiringObjectStorageServiceSweeper(Timer taskTimer, long sweepInterval, StorageService sweptStore) {
         store = sweptStore;
-        taskTimer.schedule(this, sweepInterval);
+        taskTimer.schedule(this, sweepInterval, sweepInterval);
     }
 
     /**
@@ -58,11 +64,12 @@ public class ExpiringObjectStorageServiceSweeper extends TimerTask {
         if (sweptParitions != null || sweptParitions.isEmpty()) {
             partitions = sweptParitions;
         }
-        taskTimer.schedule(this, sweepInterval);
+        taskTimer.schedule(this, sweepInterval, sweepInterval);
     }
 
     /** {@inheritDoc} */
     public void run() {
+        log.trace("Sweeping storage service");
         Iterator<String> sweepPartitions;
         if (partitions != null) {
             sweepPartitions = partitions.iterator();
