@@ -16,7 +16,6 @@
 
 package org.opensaml.util.storage;
 
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -37,13 +36,13 @@ public class MapBasedStorageService<KeyType, ValueType> implements StorageServic
     public MapBasedStorageService() {
         store = new ConcurrentHashMap<String, Map<KeyType, ValueType>>();
     }
-    
+
     /**
      * Constructor.
-     *
+     * 
      * @param serviceStore the map to use as storage
      */
-    protected MapBasedStorageService(Map<String, Map<KeyType, ValueType>> serviceStore){
+    protected MapBasedStorageService(Map<String, Map<KeyType, ValueType>> serviceStore) {
         store = serviceStore;
     }
 
@@ -105,7 +104,7 @@ public class MapBasedStorageService<KeyType, ValueType> implements StorageServic
         synchronized (store) {
             partitionMap = store.get(partition);
             if (partitionMap == null) {
-                partitionMap = new Hashtable<KeyType, ValueType>();
+                partitionMap = new ConcurrentHashMap<KeyType, ValueType>();
             }
             store.put(partition, partitionMap);
         }
