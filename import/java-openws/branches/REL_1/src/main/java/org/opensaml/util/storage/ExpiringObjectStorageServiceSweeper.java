@@ -48,6 +48,7 @@ public class ExpiringObjectStorageServiceSweeper extends TimerTask {
     public ExpiringObjectStorageServiceSweeper(Timer taskTimer, long sweepInterval, StorageService sweptStore) {
         store = sweptStore;
         taskTimer.schedule(this, sweepInterval, sweepInterval);
+        partitions = null;
     }
 
     /**
@@ -56,22 +57,23 @@ public class ExpiringObjectStorageServiceSweeper extends TimerTask {
      * @param taskTimer timer that will sweep the given storage service
      * @param sweepInterval interval, in milliseconds, that the storage service will be swept
      * @param sweptStore storage service that will be swept
-     * @param sweptParitions the partitions to sweep, if null or empty all partitions are swept
+     * @param sweptPartitions the partitions to sweep, if null or empty all partitions are swept
      */
     public ExpiringObjectStorageServiceSweeper(Timer taskTimer, long sweepInterval, StorageService sweptStore,
-            Set<String> sweptParitions) {
+            Set<String> sweptPartitions) {
         store = sweptStore;
-        if (sweptParitions != null || sweptParitions.isEmpty()) {
-            partitions = sweptParitions;
+        if (sweptPartitions != null || sweptPartitions.isEmpty()) {
+            partitions = sweptPartitions;
+        }else{
+            partitions = null;
         }
         taskTimer.schedule(this, sweepInterval, sweepInterval);
     }
 
     /** {@inheritDoc} */
     public void run() {
-        log.trace("Sweeping storage service");
         Iterator<String> sweepPartitions;
-        if (partitions != null) {
+        if (partitions != null && !partitions.isEmpty()) {
             sweepPartitions = partitions.iterator();
         } else {
             sweepPartitions = store.getPartitions();
@@ -83,6 +85,7 @@ public class ExpiringObjectStorageServiceSweeper extends TimerTask {
         Object partitionValue;
         while (sweepPartitions.hasNext()) {
             currentParition = sweepPartitions.next();
+            log.trace("Sweeping storage service partition {}", currentParition);
             partitionKeys = store.getKeys(currentParition);
             if (partitionKeys == null) {
                 continue;
@@ -93,6 +96,7 @@ public class ExpiringObjectStorageServiceSweeper extends TimerTask {
                 partitionValue = store.get(currentParition, partitionKey);
                 if (partitionValue instanceof ExpiringObject) {
                     if (((ExpiringObject) partitionValue).isExpired()) {
+                        log.trace("Removing expired object from storage service partition {}", currentParition);
                         partitionKeys.remove();
                     }
                 }
