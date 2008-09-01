@@ -3,6 +3,7 @@ Changes in Release 1.2.0
 * [JOWS-8] - Allow a filter to be attached to a Resource
 * [JOWS-9] - SOAP Fault elements faultcode, faultstring, faultactor and detail shouldn't be prefixed
 * [JOWS-10] - Add constructor to filesystem-related resource providers that take a URL to the file.
+* [JOWS-11] -  ExpiringObjectStorageServiceSweeper does not continuously executes
 
 Changes in Release 1.1.0
 =============================================
