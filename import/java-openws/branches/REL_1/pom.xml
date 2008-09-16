@@ -171,6 +171,44 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <index>true</index>
+                        <manifestEntries>
+                            <Main-Class>org.opensaml.ws.Version</Main-Class>
+                        </manifestEntries>
+                        <manifestSections>
+                            <manifestSection>
+                                <name>org/opensaml/ws/</name>
+                                <manifestEntries>
+                                    <Implementation-Title>${pom.artifactId}</Implementation-Title>
+                                    <Implementation-Version>${pom.version}</Implementation-Version>
+                                    <Implementation-Vendor>www.opensaml.org</Implementation-Vendor>
+                                </manifestEntries>
+                            </manifestSection>
+                            <manifestSection>
+                                <name>org/opensaml/ws/soap/soap11/</name>
+                                <manifestEntries>
+                                    <Specification-Title>Simple Object Access Protocol (SOAP) 1.1</Specification-Title>
+                                    <Specification-Version>20000508</Specification-Version>
+                                    <Specification-Vendor>World Wide Web Consortium (W3C)</Specification-Vendor>
+                                </manifestEntries>
+                            </manifestSection>
+                            <manifestSection>
+                                <name>org/opensaml/ws/wsfed/</name>
+                                <manifestEntries>
+                                    <Specification-Title>WS-Federation</Specification-Title>
+                                    <Specification-Version>1.1</Specification-Version>
+                                    <Specification-Vendor>xmlsoap.org</Specification-Vendor>
+                                </manifestEntries>
+                            </manifestSection>
+                        </manifestSections>
+                    </archive>
+                </configuration>                
+            </plugin>
         </plugins>
     </build>
 
