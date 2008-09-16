@@ -154,6 +154,44 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <index>true</index>
+                        <manifestEntries>
+                            <Main-Class>org.opensaml.xml.Version</Main-Class>
+                        </manifestEntries>
+       					<manifestSections>
+                            <manifestSection>
+                                <name>org/opensaml/xml/</name>
+                                <manifestEntries>
+                                    <Implementation-Title>${pom.artifactId}</Implementation-Title>
+                                    <Implementation-Version>${pom.version}</Implementation-Version>
+                                    <Implementation-Vendor>www.opensaml.org</Implementation-Vendor>
+                                </manifestEntries>
+                            </manifestSection>
+                            <manifestSection>
+                                <name>org/opensaml/xml/signature/</name>
+                                <manifestEntries>
+                                    <Specification-Title>XML Signature Syntax and Processing</Specification-Title>
+                                    <Specification-Version>20020212</Specification-Version>
+                                    <Specification-Vendor>World Wide Web Consortium (W3C)</Specification-Vendor>
+                                </manifestEntries>
+                            </manifestSection>
+                            <manifestSection>
+                                <name>org/opensaml/xml/encryption/</name>
+                                <manifestEntries>
+                                    <Specification-Title>XML Encryption Syntax and Processing</Specification-Title>
+                                    <Specification-Version>20021210</Specification-Version>
+                                    <Specification-Vendor>World Wide Web Consortium (W3C)</Specification-Vendor>
+                                </manifestEntries>
+                            </manifestSection>
+                        </manifestSections>
+                    </archive>
+                </configuration>				
+            </plugin>
         </plugins>
     </build>
 
