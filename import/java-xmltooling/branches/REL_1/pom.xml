@@ -55,8 +55,8 @@
         </dependency>
         <dependency>
             <groupId>org.bouncycastle</groupId>
-            <artifactId>bcprov-jdk14</artifactId>
-            <version>1.38</version>
+            <artifactId>bcprov-ext-jdk15</artifactId>
+            <version>1.40</version>
         </dependency>
         <dependency>
             <groupId>org.apache.santuario</groupId>

@@ -5,6 +5,7 @@ Changes in Release 1.1.0
 [JXT-32] - XMLHelper adoptElement should check success of node adoption
 [JXT-34] - Upgrade to Apache XML Security lib 1.4.2
 [JXT-35] - Upgrade to SLF4J 1.5.2
+[JXT-36] - Upgrade to Bouncy Castle 1.40
 [JXT-37] - NPE is thrown if X509KeyInfoGeneratorFactory is set to emit certs or CRLs but none are present in the generator
 [JXT-38] - XMLHelper.prettyPrintXML write the entire document not just the node passed in as an argument
 [JXT-39] - Add version information in library JAR manifest and provide command line tool to view it
