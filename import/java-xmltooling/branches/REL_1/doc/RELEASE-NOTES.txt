@@ -1,5 +1,6 @@
 Changes in Release 1.1.0
 ==============================================
+[JXT-7]  - Support extraction of certificate URI subject alt names which have non-URL values
 [JXT-31] - Add BaseXMLObjectMarshaller and BaseXMLObjectUnmarshaller classes that provide no-op implementations of the 
            methods on the AbstractXMLObjectMarshaller and AbstractXMLObjectUnmarshaller classes.
 [JXT-32] - XMLHelper adoptElement should check success of node adoption
