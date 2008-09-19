@@ -47,6 +47,8 @@ import org.opensaml.xml.util.DatatypeHelper;
  */
 public class X509KeyInfoGeneratorTest extends XMLObjectBaseTestCase {
     
+    private static String subjectAltNameExtensionOID = "2.5.29.17";
+    
     private BasicX509Credential credential;
     
     private X509KeyInfoGeneratorFactory factory;
@@ -446,8 +448,10 @@ public class X509KeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         assertNull("Generated KeyInfo was not null", keyInfo);
         
         // Just a sanity check
-        assertNotNull("Credential entity cert's Java native getSubjectAltenativeNames() was null", 
-                credential.getEntityCertificate().getSubjectAlternativeNames());
+        byte[] extensionValue = credential.getEntityCertificate().getExtensionValue(subjectAltNameExtensionOID);
+        assertNotNull("Entity cert's Java native getExtensionValue() was null", 
+                extensionValue);
+        assertTrue("Entity cert's extension value was empty", extensionValue.length > 0);
         
         factory.getSubjectAltNames().add(altName1Type);
         

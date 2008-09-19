@@ -279,8 +279,6 @@ public class X509UtilTest extends XMLObjectBaseTestCase {
         assertNotNull("Entity cert's Java native getExtensionValue() was null", 
                 extensionValue);
         assertTrue("Entity cert's extension value was empty", extensionValue.length > 0);
-        assertNotNull("Entity cert's Java native getSubjectAltenativeNames() was null", 
-                cert.getSubjectAlternativeNames());
         
         Set<Integer> nameTypes = new HashSet<Integer>();
         nameTypes.add(altNameTypeDNS);
@@ -296,8 +294,6 @@ public class X509UtilTest extends XMLObjectBaseTestCase {
      * @throws SecurityException
      * @throws CertificateParsingException 
      */
-    /*  TODO Sun's cert impl doesn't like URN-valued alt names
-     *       Maybe look at rewriting to use Bouncy castle.
     public void testGetSubjectAltNames1NameURN() throws SecurityException, CertificateParsingException {
         X509Certificate cert = entityCert1AltNameURN;
         // Sanity checks
@@ -305,8 +301,6 @@ public class X509UtilTest extends XMLObjectBaseTestCase {
         assertNotNull("Entity cert's Java native getExtensionValue() was null", 
                 extensionValue);
         assertTrue("Entity cert's extension value was empty", extensionValue.length > 0);
-        assertNotNull("Entity cert's Java native getSubjectAltenativeNames() was null", 
-                cert.getSubjectAlternativeNames());
         
         Set<Integer> nameTypes = new HashSet<Integer>();
         nameTypes.add(altNameTypeURI);
@@ -316,7 +310,6 @@ public class X509UtilTest extends XMLObjectBaseTestCase {
         
         assertTrue("Failed to find expected KeyName value", altNames.contains(altNameURN));
     }
-    */
     
     /**
      * Test 1 alt name: URI (URL).
@@ -330,8 +323,6 @@ public class X509UtilTest extends XMLObjectBaseTestCase {
         assertNotNull("Entity cert's Java native getExtensionValue() was null", 
                 extensionValue);
         assertTrue("Entity cert's extension value was empty", extensionValue.length > 0);
-        assertNotNull("Entity cert's Java native getSubjectAltenativeNames() was null", 
-                cert.getSubjectAlternativeNames());
         
         Set<Integer> nameTypes = new HashSet<Integer>();
         nameTypes.add(altNameTypeURI);
@@ -354,8 +345,6 @@ public class X509UtilTest extends XMLObjectBaseTestCase {
         assertNotNull("Entity cert's Java native getExtensionValue() was null", 
                 extensionValue);
         assertTrue("Entity cert's extension value was empty", extensionValue.length > 0);
-        assertNotNull("Entity cert's Java native getSubjectAltenativeNames() was null", 
-                cert.getSubjectAlternativeNames());
         
         Set<Integer> nameTypes = new HashSet<Integer>();
         nameTypes.add(altNameTypeIP);
@@ -378,8 +367,6 @@ public class X509UtilTest extends XMLObjectBaseTestCase {
         assertNotNull("Entity cert's Java native getExtensionValue() was null", 
                 extensionValue);
         assertTrue("Entity cert's extension value was empty", extensionValue.length > 0);
-        assertNotNull("Entity cert's Java native getSubjectAltenativeNames() was null", 
-                cert.getSubjectAlternativeNames());
         
         Set<Integer> nameTypes = new HashSet<Integer>();
         nameTypes.add(altNameTypeDNS);
@@ -399,8 +386,6 @@ public class X509UtilTest extends XMLObjectBaseTestCase {
      * @throws SecurityException
      * @throws CertificateParsingException 
      */
-    /*  TODO Sun's cert impl doesn't like URN-valued alt names
-     *       Maybe look at rewriting to use Bouncy castle.
     public void testGetSubjectAltNames3NamesDNS_URN_IP() throws SecurityException, CertificateParsingException {
         X509Certificate cert = entityCert3AltNamesDNS_URN_IP;
         // Sanity checks
@@ -408,8 +393,6 @@ public class X509UtilTest extends XMLObjectBaseTestCase {
         assertNotNull("Entity cert's Java native getExtensionValue() was null", 
                 extensionValue);
         assertTrue("Entity cert's extension value was empty", extensionValue.length > 0);
-        assertNotNull("Entity cert's Java native getSubjectAltenativeNames() was null", 
-                cert.getSubjectAlternativeNames());
         
         Set<Integer> nameTypes = new HashSet<Integer>();
         nameTypes.add(altNameTypeDNS);
@@ -423,7 +406,6 @@ public class X509UtilTest extends XMLObjectBaseTestCase {
         assertTrue("Failed to find expected KeyName value", altNames.contains(altNameURN));
         assertTrue("Failed to find expected KeyName value", altNames.contains(altNameIP));
     }
-    */
     
     /** Test decoding a PEM encoded cert. */
     public void testDecodeCertPEM() throws Exception{

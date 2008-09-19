@@ -26,7 +26,6 @@ import java.security.cert.CertificateParsingException;
 import java.security.cert.X509CRL;
 import java.security.cert.X509Certificate;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -42,7 +41,9 @@ import org.bouncycastle.asn1.DERString;
 import org.bouncycastle.asn1.x509.SubjectKeyIdentifier;
 import org.bouncycastle.asn1.x509.X509Extensions;
 import org.bouncycastle.x509.extension.SubjectKeyIdentifierStructure;
+import org.bouncycastle.x509.extension.X509ExtensionUtil;
 import org.opensaml.xml.util.DatatypeHelper;
+import org.opensaml.xml.util.IPAddressHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -168,29 +169,31 @@ public class X509Util {
         }
 
         List<Object> names = new LinkedList<Object>();
+        Collection<List<?>> altNames = null;
         try {
-            Collection<List<?>> altNames = certificate.getSubjectAlternativeNames();
-            if (altNames != null) {
-                // 0th position represents the alt name type
-                // 1st position contains the alt name data
-                List altName;
-                for (Iterator<List<?>> nameIterator = altNames.iterator(); nameIterator.hasNext();) {
-                    altName = nameIterator.next();
-                    for (int i = 0; i < nameTypes.length; i++) {
-                        if (altName.get(0).equals(nameTypes[i])) {
-                            names.add(altName.get(1));
-                            break;
-                        }
+            altNames = X509ExtensionUtil.getSubjectAlternativeNames(certificate);
+        } catch (CertificateParsingException e) {
+            log.error("Encountered an problem trying to extract Subject Alternate "
+                    + "Name from supplied certificate: " + e);
+            return names;
+        }
+        
+        if (altNames != null) {
+            // 0th position represents the alt name type
+            // 1st position contains the alt name data
+            for (List altName : altNames) {
+                for (Integer nameType : nameTypes) {
+                    if (altName.get(0).equals(nameType)) {
+                        names.add( convertAltNameType(nameType, altName.get(1)) );
+                        break;
                     }
                 }
             }
-        } catch (CertificateParsingException e1) {
-            log.error("Encountered an problem trying to extract Subject Alternate "
-                    + "Name from supplied certificate: " + e1);
         }
 
         return names;
     }
+    
 
     /**
      * Gets the common name components of the issuer and all the subject alt names of a given type.
@@ -312,4 +315,42 @@ public class X509Util {
         builder.append(']');
         return builder.toString();
     }
+
+    /**
+     * Convert types returned by Bouncy Castle X509ExtensionUtil.getSubjectAlternativeNames(X509Certificate)
+     * to be consistent with what is documented for: 
+     * java.security.cert.X509Certificate#getSubjectAlternativeNames.
+     * 
+     * @param nameType the alt name type 
+     * @param nameValue the alt name value
+     * @return converted representation of name value, based on type
+     */
+    private static Object convertAltNameType(Integer nameType, Object nameValue) {
+        if (DIRECTORY_ALT_NAME.equals(nameType) ||
+            DNS_ALT_NAME.equals(nameType) ||
+            RFC822_ALT_NAME.equals(nameType) ||
+            URI_ALT_NAME.equals(nameType) ||
+            REGISTERED_ID_ALT_NAME.equals(nameType) ) {
+            
+            // these are just strings in the appropriate format already, return as-is
+            return nameValue;
+        } 
+        
+        if (IP_ADDRESS_ALT_NAME.equals(nameType)) {
+            // this is a byte[], IP addr in network byte order
+            return IPAddressHelper.addressToString((byte[]) nameValue);
+        } 
+        
+        if (EDI_PARTY_ALT_NAME.equals(nameType) ||
+            X400ADDRESS_ALT_NAME.equals(nameType) ||
+            OTHER_ALT_NAME.equals(nameType)) {
+            
+            // these have no defined representation, just return a DER-encoded byte[]
+            return ((DERObject)nameValue).getDEREncoded();
+        } 
+        
+        log.warn("Encountered unknown alt name type '{}', adding as-is", nameType);
+        return nameValue;
+    }
+
 }
