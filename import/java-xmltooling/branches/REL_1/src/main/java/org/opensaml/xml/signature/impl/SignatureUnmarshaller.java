@@ -81,7 +81,8 @@ public class SignatureUnmarshaller implements Unmarshaller {
             signature.setDOM(signatureElement);
             return signature;
         } catch (XMLSecurityException e) {
-            throw new UnmarshallingException("Unable to unmarshall XMLSecSignatureImpl", e);
+            log.error("Error constructing Apache XMLSignature instance from Signature element: {}", e.getMessage());
+            throw new UnmarshallingException("Unable to unmarshall Signature with Apache XMLSignature", e);
         }
     }
 
