@@ -115,6 +115,25 @@ public class CertPathPKIXTrustEvaluatorTest extends XMLObjectBaseTestCase {
         testValidateFailure("Specified certificate was revoked, V1 CRL was processed", info, cred);
     }
     
+    public void testRevokedV1CRLinCred() {
+        cred = getCredential("foo-1A1-revoked.crt");
+        info = getPKIXInfoSet(
+                getCertificates("root1-ca.crt", "inter1A-ca.crt", "inter1A1-ca.crt"),
+                EMPTY_CRLS,
+                MAX_DEPTH );
+        
+        testValidateSuccess("Sanity check that revoked cert is otherwise good, sans CRLs", info, cred);
+        
+        cred = getCredential("foo-1A1-revoked.crt");
+        ((BasicX509Credential)cred).setCRLs(getCRLS("inter1A1-v1.crl"));
+        info = getPKIXInfoSet(
+                getCertificates("root1-ca.crt", "inter1A-ca.crt", "inter1A1-ca.crt"),
+                EMPTY_CRLS,
+                MAX_DEPTH );
+        
+        testValidateFailure("Specified certificate was revoked, V1 CRL from credential was processed", info, cred);
+    }
+    
     public void testRevokedV2() {
         cred = getCredential("foo-1A1-revoked.crt");
         info = getPKIXInfoSet(
@@ -131,6 +150,25 @@ public class CertPathPKIXTrustEvaluatorTest extends XMLObjectBaseTestCase {
                 MAX_DEPTH );
         
         testValidateFailure("Specified certificate was revoked, V2 CRL was processed", info, cred);
+    }
+    
+    public void testRevokedV2CRLinCred() {
+        cred = getCredential("foo-1A1-revoked.crt");
+        info = getPKIXInfoSet(
+                getCertificates("root1-ca.crt", "inter1A-ca.crt", "inter1A1-ca.crt"),
+                EMPTY_CRLS,
+                MAX_DEPTH );
+        
+        testValidateSuccess("Sanity check that revoked cert is otherwise good, sans CRLs", info, cred);
+        
+        cred = getCredential("foo-1A1-revoked.crt");
+        ((BasicX509Credential)cred).setCRLs(getCRLS("inter1A1-v2.crl"));
+        info = getPKIXInfoSet(
+                getCertificates("root1-ca.crt", "inter1A-ca.crt", "inter1A1-ca.crt"),
+                EMPTY_CRLS,
+                MAX_DEPTH );
+        
+        testValidateFailure("Specified certificate was revoked, V2 CRL from credential was processed", info, cred);
     }
     
     public void testEmptyCRL() {

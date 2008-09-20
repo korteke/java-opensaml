@@ -267,7 +267,30 @@ public class CertPathPKIXTrustEvaluator implements PKIXTrustEvaluator {
         }
         
         Date now = new Date();
-        for (X509CRL crl : validationInfo.getCRLs()) {
+        
+        if (validationInfo.getCRLs() != null) {
+            log.trace("Processing CRL's from PKIX info set");
+            addCRLsToStoreMaterial(storeMaterial, validationInfo.getCRLs(), now);
+        }        
+        
+        if (untrustedCredential.getCRLs() != null) {
+            log.trace("Processing CRL's from untrusted credential");
+            addCRLsToStoreMaterial(storeMaterial, untrustedCredential.getCRLs(), now);
+        }        
+        
+        return CertStore.getInstance("Collection", new CollectionCertStoreParameters(storeMaterial));
+    }
+    
+    /**
+     * Add CRL's from the specified collection to the list of certs and CRL's being collected
+     * for the CertStore.
+     * 
+     * @param storeMaterial list of certs and CRL's to be updated.
+     * @param crls collection of CRL's to be processed
+     * @param now current date/time
+     */
+    protected void addCRLsToStoreMaterial(List<Object> storeMaterial, Collection<X509CRL> crls, Date now) {
+        for (X509CRL crl : crls) {
             if (crl.getRevokedCertificates() != null && !crl.getRevokedCertificates().isEmpty()) {
                 storeMaterial.add(crl);
                 if (log.isTraceEnabled()) {
@@ -285,8 +308,6 @@ public class CertPathPKIXTrustEvaluator implements PKIXTrustEvaluator {
                 }
             }
         }
-
-        return CertStore.getInstance("Collection", new CollectionCertStoreParameters(storeMaterial));
     }
 
     /**

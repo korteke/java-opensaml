@@ -10,3 +10,4 @@ Changes in Release 1.1.0
 [JXT-37] - NPE is thrown if X509KeyInfoGeneratorFactory is set to emit certs or CRLs but none are present in the generator
 [JXT-38] - XMLHelper.prettyPrintXML write the entire document not just the node passed in as an argument
 [JXT-39] - Add version information in library JAR manifest and provide command line tool to view it
+[JXT-41] - CRL in Signature of Metadata is not processed when using PKIX path validation
