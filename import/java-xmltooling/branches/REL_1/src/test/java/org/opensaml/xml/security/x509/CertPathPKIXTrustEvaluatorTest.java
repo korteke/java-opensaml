@@ -174,11 +174,26 @@ public class CertPathPKIXTrustEvaluatorTest extends XMLObjectBaseTestCase {
     public void testEmptyCRL() {
         cred = getCredential("foo-1A1-good.crt");
         info = getPKIXInfoSet(
-                getCertificates("root1-ca.crt", "inter1A-ca.crt", "inter1A1-ca.crt"),
+                getCertificates("inter1A1-ca.crt"),
                 getCRLS("inter1A1-v1-empty.crl"),
                 MAX_DEPTH );
         
+        // Only supply 1 CRL, make the issuing intermediate CA the trust anchor, rest of chain irrelevant, 
+        // so doesn't matter that CRL's are missing
         testValidateSuccess("Certificate was valid, empty V1 CRL was processed", info, cred);
+    }
+    
+    public void testIncompleteCRLsForChain() {
+        cred = getCredential("foo-1A1-good.crt", "inter1A1-ca.crt", "inter1A-ca.crt");
+        ((BasicX509Credential)cred).setCRLs(getCRLS("inter1A1-v2.crl"));
+        info = getPKIXInfoSet(
+                getCertificates("root1-ca.crt"),
+                EMPTY_CRLS,
+                MAX_DEPTH );
+        
+        // The only valid chain will be the full chain to the root.  Missing CRL's for the inter1A-ca and root1-ca will
+        // cause validation to fail.
+        testValidateFailure("Certificate was valid (non-revoked), V2 CRL for intermediate CA was processed, missing complete CRL info for chain", info, cred);
     }
     
     public void testExpiredCRL() {
