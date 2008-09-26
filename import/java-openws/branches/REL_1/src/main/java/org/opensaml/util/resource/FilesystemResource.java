@@ -157,7 +157,7 @@ public class FilesystemResource extends AbstractFilteredResource {
         }
 
         if (o instanceof FilesystemResource) {
-            return getLocation().equals(((ClasspathResource) o).getLocation());
+            return getLocation().equals(((FilesystemResource) o).getLocation());
         }
 
         return false;

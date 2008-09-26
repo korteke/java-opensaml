@@ -154,7 +154,7 @@ public class HttpResource extends AbstractFilteredResource {
         }
 
         if (o instanceof HttpResource) {
-            return getLocation().equals(((ClasspathResource) o).getLocation());
+            return getLocation().equals(((HttpResource) o).getLocation());
         }
 
         return false;
