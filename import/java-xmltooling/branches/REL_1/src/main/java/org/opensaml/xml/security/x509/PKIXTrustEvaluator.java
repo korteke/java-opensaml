@@ -35,6 +35,13 @@ public interface PKIXTrustEvaluator {
     public boolean validate(PKIXValidationInformation validationInfo, X509Credential untrustedCredential)
             throws SecurityException;
     
+    /**
+     * Get the {@link PKIXValidationOptions} instance that is in use.
+     * 
+     * @return the PKIXValidationOptions instance
+     */
+    public PKIXValidationOptions getPKIXValidationOptions();
+    
 }
 
 

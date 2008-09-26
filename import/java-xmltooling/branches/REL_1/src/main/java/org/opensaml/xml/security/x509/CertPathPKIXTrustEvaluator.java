@@ -45,19 +45,38 @@ import org.slf4j.LoggerFactory;
  * An implementation of {@link PKIXTrustEvaluator} that is based on the Java CertPath API.
  */
 public class CertPathPKIXTrustEvaluator implements PKIXTrustEvaluator {
-    
-    /** Default verify depth. */
-    public static final Integer DEFAULT_VERIFY_DEPTH = 1;
 
     /** Class logger. */
     private final Logger log = LoggerFactory.getLogger(CertPathPKIXTrustEvaluator.class);
     
     /** Responsible for parsing and serializing X.500 names to/from {@link X500Principal} instances. */
     private X500DNHandler x500DNHandler;
+    
+    /** Options influencing processing behavior. */
+    private PKIXValidationOptions options;
 
     /** Constructor. */
     public CertPathPKIXTrustEvaluator() {
+        options = new PKIXValidationOptions();
         x500DNHandler = new InternalX500DNHandler();
+    }
+    
+    /**
+     * Constructor.
+     * 
+     * @param newOptions PKIX validation options
+     */
+    public CertPathPKIXTrustEvaluator(PKIXValidationOptions newOptions) {
+        if (newOptions == null) {
+            throw new IllegalArgumentException("PKIXValidationOptions may not be null");
+        }
+        options = newOptions;
+        x500DNHandler = new InternalX500DNHandler();
+    }
+    
+    /** {@inheritDoc} */
+    public PKIXValidationOptions getPKIXValidationOptions() {
+        return options;
     }
 
     /**
@@ -154,12 +173,25 @@ public class CertPathPKIXTrustEvaluator implements PKIXTrustEvaluator {
         CertStore certStore = buildCertStore(validationInfo, untrustedCredential);
         params.addCertStore(certStore);
 
-        if (storeContainsCRLs(certStore)) {
-            log.trace("At least one CRL was present in cert store, enabling revocation checking");
-            params.setRevocationEnabled(true);
+        boolean isForceRevocationEnabled = false;
+        boolean forcedRevocation = false;
+        if (options instanceof CertPathPKIXValidationOptions) {
+           CertPathPKIXValidationOptions certpathOptions = (CertPathPKIXValidationOptions) options;
+           isForceRevocationEnabled = certpathOptions.isForceRevocationEnabled();
+           forcedRevocation = certpathOptions.isRevocationEnabled();
+        }
+        
+        if (isForceRevocationEnabled) {
+            log.trace("PKIXBuilderParameters#setRevocationEnabled is being forced to: {}", forcedRevocation);
+            params.setRevocationEnabled(forcedRevocation);
         } else {
-            log.trace("No CRLs present in cert store, disabling revocation checking");
-            params.setRevocationEnabled(false);
+            if (storeContainsCRLs(certStore)) {
+                log.trace("At least one CRL was present in cert store, enabling revocation checking");
+                params.setRevocationEnabled(true);
+            } else {
+                log.trace("No CRLs present in cert store, disabling revocation checking");
+                params.setRevocationEnabled(false);
+            }
         }
 
         return params;
@@ -196,7 +228,7 @@ public class CertPathPKIXTrustEvaluator implements PKIXTrustEvaluator {
     protected Integer getEffectiveVerificationDepth(PKIXValidationInformation validationInfo) {
         Integer effectiveVerifyDepth = validationInfo.getVerificationDepth();
         if (effectiveVerifyDepth == null) {
-            effectiveVerifyDepth = DEFAULT_VERIFY_DEPTH;
+            effectiveVerifyDepth = options.getDefaultVerificationDepth();
         }
         return effectiveVerifyDepth;
     }
@@ -268,12 +300,13 @@ public class CertPathPKIXTrustEvaluator implements PKIXTrustEvaluator {
         
         Date now = new Date();
         
-        if (validationInfo.getCRLs() != null) {
+        if (validationInfo.getCRLs() != null && !validationInfo.getCRLs().isEmpty()) {
             log.trace("Processing CRL's from PKIX info set");
             addCRLsToStoreMaterial(storeMaterial, validationInfo.getCRLs(), now);
         }        
         
-        if (untrustedCredential.getCRLs() != null) {
+        if (untrustedCredential.getCRLs() != null && !untrustedCredential.getCRLs().isEmpty() 
+                && options.isProcessCredentialCRLs()) {
             log.trace("Processing CRL's from untrusted credential");
             addCRLsToStoreMaterial(storeMaterial, untrustedCredential.getCRLs(), now);
         }        
@@ -291,15 +324,28 @@ public class CertPathPKIXTrustEvaluator implements PKIXTrustEvaluator {
      */
     protected void addCRLsToStoreMaterial(List<Object> storeMaterial, Collection<X509CRL> crls, Date now) {
         for (X509CRL crl : crls) {
-            if (crl.getRevokedCertificates() != null && !crl.getRevokedCertificates().isEmpty()) {
-                storeMaterial.add(crl);
-                if (log.isTraceEnabled()) {
-                    log.trace("Added X509CRL to cert store from issuer {} dated {}",
-                            x500DNHandler.getName(crl.getIssuerX500Principal()), crl.getThisUpdate());
-                }
-                if (crl.getNextUpdate().before(now)) {
-                    log.warn("Using X509CRL from issuer {} with a nextUpdate in the past: {}",
-                            x500DNHandler.getName(crl.getIssuerX500Principal()), crl.getNextUpdate());
+            boolean isEmpty = crl.getRevokedCertificates() == null || crl.getRevokedCertificates().isEmpty();
+            boolean isExpired = crl.getNextUpdate().before(now);
+            if (!isEmpty || options.isProcessEmptyCRLs()) {
+                if (!isExpired || options.isProcessExpiredCRLs()) {
+                    storeMaterial.add(crl);
+                    if (log.isTraceEnabled()) {
+                        log.trace("Added X509CRL to cert store from issuer {} dated {}",
+                                x500DNHandler.getName(crl.getIssuerX500Principal()), crl.getThisUpdate());
+                        if (isEmpty) {
+                            log.trace("X509CRL added to cert store from issuer {} dated {} was empty",
+                                    x500DNHandler.getName(crl.getIssuerX500Principal()), crl.getThisUpdate());
+                        }
+                    }
+                    if (isExpired) {
+                        log.warn("Using X509CRL from issuer {} with a nextUpdate in the past: {}",
+                                x500DNHandler.getName(crl.getIssuerX500Principal()), crl.getNextUpdate());
+                    }
+                } else {
+                    if (log.isTraceEnabled()) {
+                        log.trace("Expired X509CRL not added to cert store, from issuer {} nextUpdate {}",
+                                x500DNHandler.getName(crl.getIssuerX500Principal()), crl.getNextUpdate());
+                    }
                 }
             } else {
                 if (log.isTraceEnabled()) {
