@@ -40,6 +40,8 @@ public class CertPathPKIXValidationOptions extends PKIXValidationOptions {
      * value supplied by {@link #isRevocationEnabled()}. If false, the revocation behavior
      * of the underlying provider will be determined by the PKIXTrustEvaluator implementation.
      * 
+     * <p>Default is: <b>false</b></p>
+     * 
      * @return Returns the forceRevocationEnabled.
      */
     public boolean isForceRevocationEnabled() {
@@ -50,6 +52,8 @@ public class CertPathPKIXValidationOptions extends PKIXValidationOptions {
      * If true, the revocation behavior of the underlying CertPath provider will be forced to the
      * value supplied by {@link #isRevocationEnabled()}. If false, the revocation behavior
      * of the underlying provider will be determined by the PKIXTrustEvaluator implementation.
+     * 
+     * <p>Default is: <b>false</b></p>
      * 
      * @param forceRevocationEnabled The forceRevocationEnabled to set.
      */
@@ -62,6 +66,8 @@ public class CertPathPKIXValidationOptions extends PKIXValidationOptions {
      * will be forced to this value. If the former is false, the revocation behavior
      * of the underlying provider will be determined by the PKIXTrustEvaluator implementation.
      * 
+     * <p>Default is: <b>true</b></p>
+     * 
      * @return Returns the revocationEnabled.
      */
     public boolean isRevocationEnabled() {
@@ -72,6 +78,8 @@ public class CertPathPKIXValidationOptions extends PKIXValidationOptions {
      * If {@link #isForceRevocationEnabled()} is true, the revocation behavior of the underlying CertPath Provider
      * will be forced to this value. If the former is false, the revocation behavior
      * of the underlying provider will be determined by the PKIXTrustEvaluator implementation.
+     * 
+     * <p>Default is: <b>true</b></p>
      * 
      * @param revocationEnabled The revocationEnabled to set.
      */

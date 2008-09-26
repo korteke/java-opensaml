@@ -35,7 +35,7 @@ public class PKIXValidationOptions {
 
     /** Constructor. */
     public PKIXValidationOptions() {
-        processEmptyCRLs = false;
+        processEmptyCRLs = true;
         processExpiredCRLs = true;
         processCredentialCRLs = true;
         
@@ -44,6 +44,8 @@ public class PKIXValidationOptions {
 
     /**
      * Whether empty CRL's should be processed.
+     * 
+     * <p>Default is: <b>true</b></p>
      * 
      * @return Returns the processEmptyCRLs.
      */
@@ -54,6 +56,8 @@ public class PKIXValidationOptions {
     /**
      * Whether empty CRL's should be processed.
      * 
+     * <p>Default is: <b>true</b></p>
+     * 
      * @param processEmptyCRLs The processEmptyCRLs to set.
      */
     public void setProcessEmptyCRLs(boolean processEmptyCRLs) {
@@ -62,6 +66,8 @@ public class PKIXValidationOptions {
 
     /**
      * Whether expired CRL's should be processed.
+     * 
+     * <p>Default is: <b>true</b></p>
      * 
      * @return Returns the processExpiredCRLs.
      */
@@ -72,6 +78,8 @@ public class PKIXValidationOptions {
     /**
      * Whether expired CRL's should be processed.
      * 
+     * <p>Default is: <b>true</b></p>
+     * 
      * @param processExpiredCRLs The processExpiredCRLs to set.
      */
     public void setProcessExpiredCRLs(boolean processExpiredCRLs) {
@@ -81,6 +89,8 @@ public class PKIXValidationOptions {
     /**
      * Whether CRL's supplied within the untrusted {@link X509Credential} being evaluated should be processed.
      * 
+     * <p>Default is: <b>true</b></p>
+     * 
      * @return Returns the processCredentialCRLs.
      */
     public boolean isProcessCredentialCRLs() {
@@ -89,6 +99,8 @@ public class PKIXValidationOptions {
 
     /**
      * Whether CRL's supplied within the untrusted {@link X509Credential} being evaluated should be processed.
+     * 
+     * <p>Default is: <b>true</b></p>
      * 
      * @param processCredentialCRLs The processCredentialCRLs to set.
      */
@@ -100,6 +112,8 @@ public class PKIXValidationOptions {
      * The default PKIX maximum path verification depth, if not supplied in the 
      * {@link PKIXValidationInformation} being evaluated.
      * 
+     * <p>Default is: <b>1</b></p>
+     * 
      * @return Returns the defaultVerificationDepth.
      */
     public Integer getDefaultVerificationDepth() {
@@ -109,6 +123,8 @@ public class PKIXValidationOptions {
     /**
      * The default PKIX maximum path verification depth, if not supplied in the 
      * {@link PKIXValidationInformation} being evaluated.
+     * 
+     * <p>Default is: <b>1</b></p>
      * 
      * @param defaultVerificationDepth The defaultVerificationDepth to set.
      */
