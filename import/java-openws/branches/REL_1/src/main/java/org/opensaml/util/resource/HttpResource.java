@@ -116,12 +116,9 @@ public class HttpResource extends AbstractFilteredResource {
                         + ", received HTTP status code " + headMethod.getStatusCode());
             }
             Header lastModifiedHeader = headMethod.getResponseHeader("Last-Modified");
-            if (lastModifiedHeader != null) {
-                HeaderElement[] elements = lastModifiedHeader.getElements();
-                if (elements.length > 0) {
-                    long lastModifiedTime = DateUtil.parseDate(elements[0].getValue()).getTime();
-                    return new DateTime(lastModifiedTime);
-                }
+            if (lastModifiedHeader != null  && ! DatatypeHelper.isEmpty(lastModifiedHeader.getValue())) {
+                long lastModifiedTime = DateUtil.parseDate(lastModifiedHeader.getValue()).getTime();
+                return new DateTime(lastModifiedTime);
             }
 
             return new DateTime();

@@ -5,6 +5,7 @@ Changes in Release 1.2.0
 [JOWS-10] - Add constructor to filesystem-related resource providers that take a URL to the file.
 [JOWS-11] - ExpiringObjectStorageServiceSweeper does not continuously executes
 [JOWS-12] - Add version information in library JAR manifest and provide command line tool to view it
+[JOWS-13] - HttpResource is incorrectly handling HTTP Last-Modified header in getLastModifiedTime()
 
 
 Changes in Release 1.1.0
