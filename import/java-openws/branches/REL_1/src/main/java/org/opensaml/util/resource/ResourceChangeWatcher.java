@@ -65,7 +65,7 @@ public class ResourceChangeWatcher extends TimerTask {
      * 
      * @param resource the resource to be watched
      * 
-     * @throws ResourceException thrown if resource existance or last modification time can not be determined
+     * @throws ResourceException thrown if resource existence or last modification time can not be determined
      */
     public ResourceChangeWatcher(Resource resource) throws ResourceException {
         this(resource, DEFAULT_POLL_FREQUENCY, DEFAULT_MAX_RETRY_ATTEMPTS);
@@ -77,7 +77,7 @@ public class ResourceChangeWatcher extends TimerTask {
      * @param resource the resource to be watched
      * @param pollingFrequency the frequency, in milliseconds, to poll the resource for changes
      * 
-     * @throws ResourceException thrown if resource existance or last modification time can not be determined
+     * @throws ResourceException thrown if resource existence or last modification time can not be determined
      */
     public ResourceChangeWatcher(Resource resource, long pollingFrequency) throws ResourceException {
         this(resource, pollingFrequency, DEFAULT_MAX_RETRY_ATTEMPTS);
@@ -90,7 +90,7 @@ public class ResourceChangeWatcher extends TimerTask {
      * @param pollingFrequency the frequency, in milliseconds, to poll the resource for changes
      * @param retryAttempts maximum number of poll attempts before the resource is considered inaccessible
      * 
-     * @throws ResourceException thrown if resource existance or last modification time can not be determined
+     * @throws ResourceException thrown if resource existence or last modification time can not be determined
      */
     public ResourceChangeWatcher(Resource resource, long pollingFrequency, int retryAttempts) throws ResourceException {
         if (resource == null) {
@@ -123,7 +123,7 @@ public class ResourceChangeWatcher extends TimerTask {
     }
 
     /**
-     * Gets the frequency, in milliseonds, the watched resource should be polled.
+     * Gets the frequency, in milliseconds, the watched resource should be polled.
      * 
      * @return frequency the watched resource should be polled
      */
