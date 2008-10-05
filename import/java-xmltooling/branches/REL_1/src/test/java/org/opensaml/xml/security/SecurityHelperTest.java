@@ -17,6 +17,9 @@
 package org.opensaml.xml.security;
 
 import java.io.InputStream;
+import java.security.KeyPair;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 
@@ -129,6 +132,53 @@ public class SecurityHelperTest extends TestCase {
         assertNull(SecurityHelper.getKeyAlgorithmFromURI(SignatureConstants.ALGO_ID_MAC_HMAC_SHA512));
         assertNull(SecurityHelper.getKeyAlgorithmFromURI(SignatureConstants.ALGO_ID_MAC_HMAC_NOT_RECOMMENDED_MD5));
         assertNull(SecurityHelper.getKeyAlgorithmFromURI(SignatureConstants.ALGO_ID_MAC_HMAC_RIPEMD160));
+    }
+    
+    /** Test the evaluation that 2 keys are members of the same key pair. 
+     * 
+     * @throws NoSuchProviderException 
+     * @throws NoSuchAlgorithmException 
+     * @throws SecurityException */
+    public void testKeyPairMatching() throws NoSuchAlgorithmException, NoSuchProviderException, SecurityException {
+        org.opensaml.xml.Configuration.setGlobalSecurityConfiguration(
+                DefaultSecurityConfigurationBootstrap.buildDefaultConfig());
+        KeyPair kp1rsa = SecurityTestHelper.generateKeyPair("RSA", 1024, null);
+        KeyPair kp2rsa = SecurityTestHelper.generateKeyPair("RSA", 1024, null);
+        KeyPair kp1dsa = SecurityTestHelper.generateKeyPair("DSA", 1024, null);
+        KeyPair kp2dsa = SecurityTestHelper.generateKeyPair("DSA", 1024, null);
+        
+        assertTrue(SecurityHelper.matchKeyPair(kp1rsa.getPublic(), kp1rsa.getPrivate()));
+        assertTrue(SecurityHelper.matchKeyPair(kp2rsa.getPublic(), kp2rsa.getPrivate()));
+        assertFalse(SecurityHelper.matchKeyPair(kp1rsa.getPublic(), kp2rsa.getPrivate()));
+        assertFalse(SecurityHelper.matchKeyPair(kp2rsa.getPublic(), kp1rsa.getPrivate()));
+        
+        assertTrue(SecurityHelper.matchKeyPair(kp1dsa.getPublic(), kp1dsa.getPrivate()));
+        assertTrue(SecurityHelper.matchKeyPair(kp2dsa.getPublic(), kp2dsa.getPrivate()));
+        assertFalse(SecurityHelper.matchKeyPair(kp1dsa.getPublic(), kp2dsa.getPrivate()));
+        assertFalse(SecurityHelper.matchKeyPair(kp2dsa.getPublic(), kp1dsa.getPrivate()));
+        
+        try {
+            // key algorithm type mismatch, should be an error
+            assertFalse(SecurityHelper.matchKeyPair(kp1rsa.getPublic(), kp2dsa.getPrivate()));
+            fail("Key algorithm mismatch should have caused evaluation failure");
+        } catch (SecurityException e) {
+           // expected 
+        }
+        
+        try {
+            // null key, should be an error
+            assertFalse(SecurityHelper.matchKeyPair(kp1rsa.getPublic(), null));
+            fail("Null key should have caused failure");
+        } catch (SecurityException e) {
+           // expected 
+        }
+        try {
+            // null key, should be an error
+            assertFalse(SecurityHelper.matchKeyPair(null, kp1rsa.getPrivate()));
+            fail("Key algorithm mismatch should have caused evaluation failure");
+        } catch (SecurityException e) {
+            // expected
+        }
     }
 
     /** Generic key testing. */

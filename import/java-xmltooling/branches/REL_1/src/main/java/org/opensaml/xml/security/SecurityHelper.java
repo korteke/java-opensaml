@@ -403,6 +403,50 @@ public final class SecurityHelper {
             throw new KeyException("Unable to decode private key", e);
         }
     }
+    
+    /**
+     * Compare the supplied public and private keys, and determine if they correspond to the same
+     * key pair.
+     * 
+     * @param pubKey the public key
+     * @param privKey the private key
+     * @return true if the public and private are from the same key pair, false if not
+     * @throws SecurityException if the keys can not be evaluated, or if the key algorithm is unsupported
+     *                           or unknown
+     */
+    public static boolean matchKeyPair(PublicKey pubKey, PrivateKey privKey) throws SecurityException {
+        //This approach attempts to match the keys by signing and then validating some known data. 
+        
+        if (pubKey == null || privKey == null) {
+            throw new SecurityException("Either public or private key was null");
+        }
+        
+        // Need to dynamically determine the JCA signature algorithm ID to use from the key algorithm.
+        // Don't currently have a direct mapping, so have to map to XML Signature algorithm URI first,
+        // then map that to JCA algorithm ID.
+        SecurityConfiguration secConfig = Configuration.getGlobalSecurityConfiguration();
+        if (secConfig == null) {
+            throw new SecurityException("Global security configuration was null, could not resolve signing algorithm");
+        }
+        String algoURI =  secConfig.getSignatureAlgorithmURI(privKey.getAlgorithm());
+        if (algoURI == null) {
+           throw new SecurityException("Can't determine algorithm URI from key algorithm: " + privKey.getAlgorithm());
+        }
+        String jcaAlgoID = getAlgorithmIDFromURI(algoURI);
+        if (jcaAlgoID == null) {
+           throw new SecurityException("Can't determine JCA algorithm ID from algorithm URI: " + algoURI);
+        }
+        
+        if (log.isDebugEnabled()) {
+            log.debug("Attempting to match key pair containing key algorithms public '{}' private '{}', " 
+                    + "using JCA signature algorithm '{}'",
+                    new Object[] {pubKey.getAlgorithm(), privKey.getAlgorithm(), jcaAlgoID});
+        }
+            
+        byte[] data = "This is the data to sign".getBytes();
+        byte[] signature = SigningUtil.sign(privKey, jcaAlgoID, data);
+        return SigningUtil.verify(pubKey, jcaAlgoID, signature, data);
+    }
 
     /**
      * Prepare a {@link Signature} with necessary additional information prior to signing.
