@@ -1,6 +1,6 @@
-Changes in Release 1.1.2
+Changes in Release 1.1.1
 ==============================================
-Updated logging libraries
+Updated logging libraries in order to grab some bug fixes
 
 
 Changes in Release 1.1.0
