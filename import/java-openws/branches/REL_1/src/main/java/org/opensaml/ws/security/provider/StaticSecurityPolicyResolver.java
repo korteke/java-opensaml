@@ -34,10 +34,25 @@ public class StaticSecurityPolicyResolver implements SecurityPolicyResolver {
     /**
      * Constructor.
      * 
+     * @param policy the static policy returned by this resolver
+     */
+    public StaticSecurityPolicyResolver(SecurityPolicy policy) {
+        securityPolicies = new ArrayList<SecurityPolicy>();
+        if(policy != null){
+            securityPolicies.add(policy);
+        }
+    }
+    
+    /**
+     * Constructor.
+     * 
      * @param policies the static list of policies returned by this resolver
      */
     public StaticSecurityPolicyResolver(List<SecurityPolicy> policies) {
-        securityPolicies = new ArrayList<SecurityPolicy>(policies);
+        securityPolicies = new ArrayList<SecurityPolicy>();
+        if(policies != null){
+            securityPolicies.addAll(policies);
+        }
     }
 
     /** {@inheritDoc} */
