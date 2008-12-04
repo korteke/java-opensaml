@@ -18,9 +18,11 @@ package org.opensaml.xml.security.x509;
 
 import java.io.InputStream;
 import java.math.BigInteger;
+import java.security.PrivateKey;
 import java.security.cert.CertificateParsingException;
 import java.security.cert.X509CRL;
 import java.security.cert.X509Certificate;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -29,7 +31,9 @@ import java.util.Set;
 import javax.security.auth.x500.X500Principal;
 
 import org.opensaml.xml.XMLObjectBaseTestCase;
+import org.opensaml.xml.security.DefaultSecurityConfigurationBootstrap;
 import org.opensaml.xml.security.SecurityException;
+import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.SecurityTestHelper;
 import org.opensaml.xml.util.Base64;
 
@@ -37,6 +41,41 @@ import org.opensaml.xml.util.Base64;
  * Tests the X509Util utility methods.
  */
 public class X509UtilTest extends XMLObjectBaseTestCase {
+    
+    private PrivateKey entityPrivateKey;
+    private String entityPrivKeyBase64 =
+        "MIICXQIBAAKBgQCewxYtt+tEFlhy7+5V3kdCGDATiiXP/A0r2Q+amujuDz0aauvf" +
+        "j8fcEsIm1JJf7KDeIeYncybi71Fd/2iPFVUKJIUuXmPxfwXnn7eqzspQRNnS1zf+" +
+        "y8oe4V7Y6/DBD0vt+tMCjMCiaAfsyQshaje78hZbh0m3fWrdJMClpcTXAQIDAQAB" +
+        "AoGAENG8JMXKT+FKJ4sRpdkxlWf4l+lXziv2vUF2rLtil+3XXFgdewbBdqgqF3EH" +
+        "vM/VzxKqTl2drgcKiLnJOvdYldq721OglkBfCEwI1yKjf/xWo/B2IuHsbkKrodBW" +
+        "LpzWhoYb8WLSePFPaYvIyRUxAiDSTUcySn1piHKh2L6dFj0CQQDTC5/3GZaFL1lK" +
+        "Tp2/WOzp1a+W5pinNVYugQz6ZUWurIdkePiJswCeERa7IHnAfa8iHYWZhn2Y9jub" +
+        "l1W+aLgXAkEAwJRu+JFpW4AtiwRGRHpTLMGJh40eUI668RwXiBePLUFdWJMPsuZC" +
+        "//fWRLIZQ/Ukv5XLcFdQeAPh8crVQGlApwJAXSy2tRtg7vAWlc3bq00RW7Nx0EeC" +
+        "gd/0apejKTFo8FNPezZFVFXpIeAdjwQpfKiAl6k9AKj17oBXlLvdqTEGhQJBALgs" +
+        "PIST7EKJrwSILftHUUw4OyLbnuZD2hzEVOzeOxt4q6EN47Gf7OuHRe+ks+z+AQsI" +
+        "YuspVdexPuBSrudOwXkCQQDEdI7texImU7o6tXAt9mmVyVik9ibRaTnpbJJh+ox+" +
+        "EwYAMfQ7HqW8el3XH+q5tNNDNuR+voIuWJPRD30nOgb5";
+    
+    private X509Certificate entityCert;
+    private String entityCertBase64 = 
+        "MIICvzCCAiigAwIBAgIJALQ1JXkgPO25MA0GCSqGSIb3DQEBBQUAMEoxCzAJBgNV" +
+        "BAYTAkNIMQ8wDQYDVQQIEwZadXJpY2gxFDASBgNVBAoTC2V4YW1wbGUub3JnMRQw" +
+        "EgYDVQQDEwtleGFtcGxlLm9yZzAeFw0wODEyMDQwNzUzNDBaFw0wOTEyMDQwNzUz" +
+        "NDBaMEoxCzAJBgNVBAYTAkNIMQ8wDQYDVQQIEwZadXJpY2gxFDASBgNVBAoTC2V4" +
+        "YW1wbGUub3JnMRQwEgYDVQQDEwtleGFtcGxlLm9yZzCBnzANBgkqhkiG9w0BAQEF" +
+        "AAOBjQAwgYkCgYEAnsMWLbfrRBZYcu/uVd5HQhgwE4olz/wNK9kPmpro7g89Gmrr" +
+        "34/H3BLCJtSSX+yg3iHmJ3Mm4u9RXf9ojxVVCiSFLl5j8X8F55+3qs7KUETZ0tc3" +
+        "/svKHuFe2OvwwQ9L7frTAozAomgH7MkLIWo3u/IWW4dJt31q3STApaXE1wECAwEA" +
+        "AaOBrDCBqTAdBgNVHQ4EFgQU0lf1wYwRJhvGZYL2WpMOykDNdeUwegYDVR0jBHMw" +
+        "cYAU0lf1wYwRJhvGZYL2WpMOykDNdeWhTqRMMEoxCzAJBgNVBAYTAkNIMQ8wDQYD" +
+        "VQQIEwZadXJpY2gxFDASBgNVBAoTC2V4YW1wbGUub3JnMRQwEgYDVQQDEwtleGFt" +
+        "cGxlLm9yZ4IJALQ1JXkgPO25MAwGA1UdEwQFMAMBAf8wDQYJKoZIhvcNAQEFBQAD" +
+        "gYEAlhsuXNm5WMq7mILnbS+Xr+oi/LVezr4Yju+Qdh9AhYwbDaXnsZITHiAmfYhO" +
+        "5nTjstWMAHc6JZs7h8wDvqY92RvLY+Vx78MoJXIwqqLFH4oHm2UKpvsNivrNfD/q" +
+        "WPiKEYrXVVkDXUVA2yKupX1VtCru8kaJ42kAlCN9Bg4wezU=";
+    
     
     private X509Certificate entityCert3AltNamesDNS_URL_IP;
     private String entityCert3AltNamesDNS_URL_IPBase64 = 
@@ -241,6 +280,9 @@ public class X509UtilTest extends XMLObjectBaseTestCase {
     protected void setUp() throws Exception {
         super.setUp();
         
+        entityPrivateKey = SecurityTestHelper.buildJavaRSAPrivateKey(entityPrivKeyBase64);
+        entityCert =SecurityTestHelper.buildJavaX509Cert(entityCertBase64);        
+        
         entityCert3AltNamesDNS_URL_IP = SecurityTestHelper.buildJavaX509Cert(entityCert3AltNamesDNS_URL_IPBase64);
         entityCert3AltNamesDNS_URN_IP = SecurityTestHelper.buildJavaX509Cert(entityCert3AltNamesDNS_URN_IPBase64);
         entityCert1AltNameDNS = SecurityTestHelper.buildJavaX509Cert(entityCert1AltNameDNSBase64);
@@ -265,6 +307,23 @@ public class X509UtilTest extends XMLObjectBaseTestCase {
         altNameTypeIP = X509Util.IP_ADDRESS_ALT_NAME;
         altNameTypeURI = X509Util.URI_ALT_NAME;
         altNameTypeDNS = X509Util.DNS_ALT_NAME;
+    }
+    
+    /**
+     * Tests that the entity cert is correctly identified in the collection.
+     * 
+     * @throws Exception
+     */
+    public void testDetermineEntityCertificate() throws Exception{
+        org.opensaml.xml.Configuration.setGlobalSecurityConfiguration(
+                DefaultSecurityConfigurationBootstrap.buildDefaultConfig());
+        
+        ArrayList<X509Certificate> certs = new ArrayList<X509Certificate>();
+        certs.add(entityCert3AltNamesDNS_URL_IP);
+        certs.add(entityCert1AltNameDNS);
+        certs.add(entityCert);
+        
+        assertTrue(X509Util.determineEntityCertificate(certs, entityPrivateKey).equals(entityCert));
     }
     
     /**

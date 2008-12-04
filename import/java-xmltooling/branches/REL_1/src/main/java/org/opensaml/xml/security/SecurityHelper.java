@@ -16,6 +16,8 @@
 
 package org.opensaml.xml.security;
 
+import java.io.File;
+import java.io.IOException;
 import java.math.BigInteger;
 import java.security.GeneralSecurityException;
 import java.security.Key;
@@ -40,7 +42,6 @@ import org.apache.commons.ssl.PKCS8Key;
 import org.apache.xml.security.Init;
 import org.apache.xml.security.algorithms.JCEMapper;
 import org.opensaml.xml.Configuration;
-import org.opensaml.xml.encryption.Encrypter;
 import org.opensaml.xml.encryption.EncryptionParameters;
 import org.opensaml.xml.encryption.KeyEncryptionParameters;
 import org.opensaml.xml.security.credential.BasicCredential;
@@ -63,13 +64,13 @@ public final class SecurityHelper {
 
     /** Class logger. */
     private static Logger log = LoggerFactory.getLogger(SecurityHelper.class);
-    
+
     /** Additional algorithm URI's which imply RSA keys. */
     private static Set<String> rsaAlgorithmURIs;
-    
+
     /** Additional algorithm URI's which imply DSA keys. */
     private static Set<String> dsaAlgorithmURIs;
-    
+
     /** Additional algorithm URI's which imply ECDSA keys. */
     private static Set<String> ecdsaAlgorithmURIs;
 
@@ -105,18 +106,18 @@ public final class SecurityHelper {
      * @return the Java key algorithm specifier, or null if the mapping is unavailable or indeterminable from the URI
      */
     public static String getKeyAlgorithmFromURI(String algorithmURI) {
-        // The default Apache config file currently only includes the key algorithm for 
-        // the block ciphers and key wrap URI's.  Note: could use a custom config file which contains others.
+        // The default Apache config file currently only includes the key algorithm for
+        // the block ciphers and key wrap URI's. Note: could use a custom config file which contains others.
         String apacheValue = DatatypeHelper.safeTrimOrNullString(JCEMapper.getJCEKeyAlgorithmFromURI(algorithmURI));
         if (apacheValue != null) {
             return apacheValue;
         }
-        
+
         // HMAC uses any symmetric key, so there is no implied specific key algorithm
         if (isHMAC(algorithmURI)) {
             return null;
         }
-        
+
         // As a last ditch fallback, check some known common and supported ones.
         if (rsaAlgorithmURIs.contains(algorithmURI)) {
             return "RSA";
@@ -127,7 +128,7 @@ public final class SecurityHelper {
         if (ecdsaAlgorithmURIs.contains(algorithmURI)) {
             return "ECDSA";
         }
-        
+
         return null;
     }
 
@@ -395,6 +396,32 @@ public final class SecurityHelper {
      * 
      * @throws KeyException thrown if the key can not be decoded
      */
+    public static PrivateKey decodePrivateKey(File key, char[] password) throws KeyException {
+        if (!key.exists()) {
+            throw new KeyException("Key file " + key.getAbsolutePath() + " does not exist");
+        }
+
+        if (!key.canRead()) {
+            throw new KeyException("Key file " + key.getAbsolutePath() + " is not readable");
+        }
+
+        try {
+            return decodePrivateKey(DatatypeHelper.fileToByteArray(key), password);
+        } catch (IOException e) {
+            throw new KeyException("Error reading Key file " + key.getAbsolutePath(), e);
+        }
+    }
+
+    /**
+     * Decodes RSA/DSA private keys in DER, PEM, or PKCS#8 (encrypted or unencrypted) formats.
+     * 
+     * @param key encoded key
+     * @param password decryption password or null if the key is not encrypted
+     * 
+     * @return deocded private key
+     * 
+     * @throws KeyException thrown if the key can not be decoded
+     */
     public static PrivateKey decodePrivateKey(byte[] key, char[] password) throws KeyException {
         try {
             PKCS8Key deocodedKey = new PKCS8Key(key, password);
@@ -403,24 +430,22 @@ public final class SecurityHelper {
             throw new KeyException("Unable to decode private key", e);
         }
     }
-    
+
     /**
-     * Compare the supplied public and private keys, and determine if they correspond to the same
-     * key pair.
+     * Compare the supplied public and private keys, and determine if they correspond to the same key pair.
      * 
      * @param pubKey the public key
      * @param privKey the private key
      * @return true if the public and private are from the same key pair, false if not
-     * @throws SecurityException if the keys can not be evaluated, or if the key algorithm is unsupported
-     *                           or unknown
+     * @throws SecurityException if the keys can not be evaluated, or if the key algorithm is unsupported or unknown
      */
     public static boolean matchKeyPair(PublicKey pubKey, PrivateKey privKey) throws SecurityException {
-        //This approach attempts to match the keys by signing and then validating some known data. 
-        
+        // This approach attempts to match the keys by signing and then validating some known data.
+
         if (pubKey == null || privKey == null) {
             throw new SecurityException("Either public or private key was null");
         }
-        
+
         // Need to dynamically determine the JCA signature algorithm ID to use from the key algorithm.
         // Don't currently have a direct mapping, so have to map to XML Signature algorithm URI first,
         // then map that to JCA algorithm ID.
@@ -428,21 +453,21 @@ public final class SecurityHelper {
         if (secConfig == null) {
             throw new SecurityException("Global security configuration was null, could not resolve signing algorithm");
         }
-        String algoURI =  secConfig.getSignatureAlgorithmURI(privKey.getAlgorithm());
+        String algoURI = secConfig.getSignatureAlgorithmURI(privKey.getAlgorithm());
         if (algoURI == null) {
-           throw new SecurityException("Can't determine algorithm URI from key algorithm: " + privKey.getAlgorithm());
+            throw new SecurityException("Can't determine algorithm URI from key algorithm: " + privKey.getAlgorithm());
         }
         String jcaAlgoID = getAlgorithmIDFromURI(algoURI);
         if (jcaAlgoID == null) {
-           throw new SecurityException("Can't determine JCA algorithm ID from algorithm URI: " + algoURI);
+            throw new SecurityException("Can't determine JCA algorithm ID from algorithm URI: " + algoURI);
         }
-        
+
         if (log.isDebugEnabled()) {
-            log.debug("Attempting to match key pair containing key algorithms public '{}' private '{}', " 
-                    + "using JCA signature algorithm '{}'",
-                    new Object[] {pubKey.getAlgorithm(), privKey.getAlgorithm(), jcaAlgoID});
+            log.debug("Attempting to match key pair containing key algorithms public '{}' private '{}', "
+                    + "using JCA signature algorithm '{}'", new Object[] { pubKey.getAlgorithm(),
+                    privKey.getAlgorithm(), jcaAlgoID });
         }
-            
+
         byte[] data = "This is the data to sign".getBytes();
         byte[] signature = SigningUtil.sign(privKey, jcaAlgoID, data);
         return SigningUtil.verify(pubKey, jcaAlgoID, signature, data);
@@ -466,8 +491,10 @@ public final class SecurityHelper {
      * </ul>
      * </p>
      * 
-     * <p>Existing (non-null) values of these parameters on the specified signature
-     * will <strong>NOT</strong> be overwritten, however.</p>
+     * <p>
+     * Existing (non-null) values of these parameters on the specified signature will <strong>NOT</strong> be
+     * overwritten, however.
+     * </p>
      * 
      * <p>
      * All values are determined by the specified {@link SecurityConfiguration}. If a security configuration is not
@@ -507,19 +534,19 @@ public final class SecurityHelper {
         if (signAlgo == null) {
             signAlgo = secConfig.getSignatureAlgorithmURI(signingCredential);
             signature.setSignatureAlgorithm(signAlgo);
-        }        
-        
+        }
+
         // If we're doing HMAC, set the output length
         if (SecurityHelper.isHMAC(signAlgo)) {
             if (signature.getHMACOutputLength() == null) {
                 signature.setHMACOutputLength(secConfig.getSignatureHMACOutputLength());
-            }            
+            }
         }
-        
+
         if (signature.getCanonicalizationAlgorithm() == null) {
             signature.setCanonicalizationAlgorithm(secConfig.getSignatureCanonicalizationAlgorithm());
-        }        
-        
+        }
+
         if (signature.getKeyInfo() == null) {
             KeyInfoGenerator kiGenerator = getKeyInfoGenerator(signingCredential, secConfig, keyInfoGenName);
             if (kiGenerator != null) {
@@ -535,11 +562,12 @@ public final class SecurityHelper {
                         signingCredential.getCredentialType().getName());
                 log.info("No KeyInfo will be generated for Signature");
             }
-        }        
+        }
     }
 
     /**
-     * Build an instance of {@link EncryptionParameters} suitable for passing to an {@link Encrypter}.
+     * Build an instance of {@link EncryptionParameters} suitable for passing to an
+     * {@link org.opensaml.xml.encryption.Encrypter}.
      * 
      * <p>
      * The following parameter values will be added:
@@ -606,7 +634,8 @@ public final class SecurityHelper {
     }
 
     /**
-     * Build an instance of {@link KeyEncryptionParameters} suitable for passing to an {@link Encrypter}.
+     * Build an instance of {@link KeyEncryptionParameters} suitable for passing to an
+     * {@link org.opensaml.xml.encryption.Encrypter}.
      * 
      * <p>
      * The following parameter values will be added:
@@ -735,15 +764,15 @@ public final class SecurityHelper {
         if (!Init.isInitialized()) {
             Init.init();
         }
-        
+
         // Additonal algorithm URI to JCA key algorithm mappins, beyond what is currently
         // supplied in the Apache XML Security mapper config.
         dsaAlgorithmURIs = new HashSet<String>();
         dsaAlgorithmURIs.add(SignatureConstants.ALGO_ID_SIGNATURE_DSA);
-        
+
         ecdsaAlgorithmURIs = new HashSet<String>();
         ecdsaAlgorithmURIs.add(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA1);
-        
+
         rsaAlgorithmURIs = new HashSet<String>();
         rsaAlgorithmURIs.add(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1);
         rsaAlgorithmURIs.add(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256);

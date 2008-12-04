@@ -17,8 +17,10 @@
 package org.opensaml.xml.security.x509;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.security.PrivateKey;
 import java.security.cert.CRLException;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
@@ -42,6 +44,8 @@ import org.bouncycastle.asn1.x509.SubjectKeyIdentifier;
 import org.bouncycastle.asn1.x509.X509Extensions;
 import org.bouncycastle.x509.extension.SubjectKeyIdentifierStructure;
 import org.bouncycastle.x509.extension.X509ExtensionUtil;
+import org.opensaml.xml.security.SecurityException;
+import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.util.IPAddressHelper;
 import org.slf4j.Logger;
@@ -93,6 +97,34 @@ public class X509Util {
     /** Constructed. */
     protected X509Util() {
 
+    }
+    
+    /**
+     * Determines the certificate, from the collection, associated with the private key.
+     * 
+     * @param certs certificates to check
+     * @param privateKey entity's private key
+     * 
+     * @return the certificate associated with entity's private key or null if not certificate in the collection is
+     *         associated with the given private key
+     * 
+     * @throws SecurityException thrown if the public or private keys checked are of an unsupported type
+     * 
+     * @since 1.2
+     */
+    public static X509Certificate determineEntityCertificate(Collection<X509Certificate> certs, PrivateKey privateKey)
+            throws SecurityException {
+        if (certs == null || privateKey == null) {
+            return null;
+        }
+
+        for (X509Certificate certificate : certs) {
+            if (SecurityHelper.matchKeyPair(certificate.getPublicKey(), privateKey)) {
+                return certificate;
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -177,14 +209,14 @@ public class X509Util {
                     + "Name from supplied certificate: " + e);
             return names;
         }
-        
+
         if (altNames != null) {
             // 0th position represents the alt name type
             // 1st position contains the alt name data
             for (List altName : altNames) {
                 for (Integer nameType : nameTypes) {
                     if (altName.get(0).equals(nameType)) {
-                        names.add( convertAltNameType(nameType, altName.get(1)) );
+                        names.add(convertAltNameType(nameType, altName.get(1)));
                         break;
                     }
                 }
@@ -193,7 +225,6 @@ public class X509Util {
 
         return names;
     }
-    
 
     /**
      * Gets the common name components of the issuer and all the subject alt names of a given type.
@@ -243,6 +274,33 @@ public class X509Util {
             return null;
         }
     }
+    
+    /**
+     * Decodes X.509 certificates in DER or PEM format.
+     * 
+     * @param certs encoded certs
+     * 
+     * @return decoded certs
+     * 
+     * @throws CertificateException thrown if the certificates can not be decoded
+     * 
+     * @since 1.2
+     */
+    public static Collection<X509Certificate> decodeCertificate(File certs) throws CertificateException{
+        if(!certs.exists()){
+            throw new CertificateException("Certificate file " + certs.getAbsolutePath() + " does not exist");
+        }
+        
+        if(!certs.canRead()){
+            throw new CertificateException("Certificate file " + certs.getAbsolutePath() + " is not readable");
+        }
+        
+        try{
+            return decodeCertificate(DatatypeHelper.fileToByteArray(certs));
+        }catch(IOException e){
+            throw new CertificateException("Error reading certificate file " + certs.getAbsolutePath(), e);
+        }
+    }
 
     /**
      * Decodes X.509 certificates in DER or PEM format.
@@ -260,6 +318,34 @@ public class X509Util {
             return tm.getCertificates();
         } catch (Exception e) {
             throw new CertificateException("Unable to decode X.509 certificates", e);
+        }
+    }
+    
+    /**
+     * Decodes CRLS in DER or PKCS#7 format. If in PKCS#7 format only the CRLs are decode, the rest of the content is
+     * ignored.
+     * 
+     * @param crls encoded CRLs
+     * 
+     * @return decoded CRLs
+     * 
+     * @throws CRLException thrown if the CRLs can not be decoded
+     * 
+     * @since 1.2
+     */
+    public static Collection<X509CRL> decodeCRLs(File crls) throws CRLException{
+        if(!crls.exists()){
+            throw new CRLException("CRL file " + crls.getAbsolutePath() + " does not exist");
+        }
+        
+        if(!crls.canRead()){
+            throw new CRLException("CRL file " + crls.getAbsolutePath() + " is not readable");
+        }
+        
+        try{
+            return decodeCRLs(DatatypeHelper.fileToByteArray(crls));
+        }catch(IOException e){
+            throw new CRLException("Error reading CRL file " + crls.getAbsolutePath(), e);
         }
     }
 
@@ -286,14 +372,18 @@ public class X509Util {
     /**
      * Gets a formatted string representing identifier information from the supplied credential.
      * 
-     * <p>This could for example be used in logging messages.</p>
+     * <p>
+     * This could for example be used in logging messages.
+     * </p>
      * 
-     * <p>Often it will be the case that a given credential that is being evaluated will NOT have a value for the
-     * entity ID property. So extract the certificate subject DN, and if present, the credential's entity ID.</p>
+     * <p>
+     * Often it will be the case that a given credential that is being evaluated will NOT have a value for the entity ID
+     * property. So extract the certificate subject DN, and if present, the credential's entity ID.
+     * </p>
      * 
      * @param credential the credential for which to produce a token.
-     * @param handler the X.500 DN handler to use.  If null, a new instance of 
-     *          {@link InternalX500DNHandler} will be used.
+     * @param handler the X.500 DN handler to use. If null, a new instance of {@link InternalX500DNHandler} will be
+     *            used.
      * 
      * @return a formatted string containing identifier information present in the credential
      */
@@ -317,40 +407,34 @@ public class X509Util {
     }
 
     /**
-     * Convert types returned by Bouncy Castle X509ExtensionUtil.getSubjectAlternativeNames(X509Certificate)
-     * to be consistent with what is documented for: 
-     * java.security.cert.X509Certificate#getSubjectAlternativeNames.
+     * Convert types returned by Bouncy Castle X509ExtensionUtil.getSubjectAlternativeNames(X509Certificate) to be
+     * consistent with what is documented for: java.security.cert.X509Certificate#getSubjectAlternativeNames.
      * 
-     * @param nameType the alt name type 
+     * @param nameType the alt name type
      * @param nameValue the alt name value
      * @return converted representation of name value, based on type
      */
     private static Object convertAltNameType(Integer nameType, Object nameValue) {
-        if (DIRECTORY_ALT_NAME.equals(nameType) ||
-            DNS_ALT_NAME.equals(nameType) ||
-            RFC822_ALT_NAME.equals(nameType) ||
-            URI_ALT_NAME.equals(nameType) ||
-            REGISTERED_ID_ALT_NAME.equals(nameType) ) {
-            
+        if (DIRECTORY_ALT_NAME.equals(nameType) || DNS_ALT_NAME.equals(nameType) || RFC822_ALT_NAME.equals(nameType)
+                || URI_ALT_NAME.equals(nameType) || REGISTERED_ID_ALT_NAME.equals(nameType)) {
+
             // these are just strings in the appropriate format already, return as-is
             return nameValue;
-        } 
-        
+        }
+
         if (IP_ADDRESS_ALT_NAME.equals(nameType)) {
             // this is a byte[], IP addr in network byte order
             return IPAddressHelper.addressToString((byte[]) nameValue);
-        } 
-        
-        if (EDI_PARTY_ALT_NAME.equals(nameType) ||
-            X400ADDRESS_ALT_NAME.equals(nameType) ||
-            OTHER_ALT_NAME.equals(nameType)) {
-            
+        }
+
+        if (EDI_PARTY_ALT_NAME.equals(nameType) || X400ADDRESS_ALT_NAME.equals(nameType)
+                || OTHER_ALT_NAME.equals(nameType)) {
+
             // these have no defined representation, just return a DER-encoded byte[]
-            return ((DERObject)nameValue).getDEREncoded();
-        } 
-        
+            return ((DERObject) nameValue).getDEREncoded();
+        }
+
         log.warn("Encountered unknown alt name type '{}', adding as-is", nameType);
         return nameValue;
     }
-
 }
