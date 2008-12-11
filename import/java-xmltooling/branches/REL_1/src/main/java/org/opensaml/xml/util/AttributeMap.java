@@ -20,10 +20,10 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArraySet;
 
 import javax.xml.namespace.QName;
+
+import net.jcip.annotations.NotThreadSafe;
 
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.XMLObject;
@@ -34,6 +34,7 @@ import org.opensaml.xml.XMLObject;
  * 
  * <strong>Note:</strong> 
  */
+@NotThreadSafe
 public class AttributeMap implements Map<QName, String> {
 
     /** XMLObject owning the attributes. */
@@ -59,8 +60,8 @@ public class AttributeMap implements Map<QName, String> {
         }
 
         attributeOwner = newOwner;
-        attributes = new ConcurrentHashMap<QName, String>();
-        idAttribNames = new CopyOnWriteArraySet<QName>();
+        attributes = new LazyMap<QName, String>();
+        idAttribNames = new LazySet<QName>();
     }
 
     /** {@inheritDoc} */

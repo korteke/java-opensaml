@@ -19,13 +19,15 @@ package org.opensaml.xml.util;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
+
+import net.jcip.annotations.NotThreadSafe;
 
 import org.opensaml.xml.XMLObject;
 
 /**
  * Class which provides storage for the ID-to-XMLObject index mapping on an owning {@link org.opensaml.xml.XMLObject}.
  */
+@NotThreadSafe
 public class IDIndex {
     
     /** The XMLObject which owns this ID index. */
@@ -48,7 +50,7 @@ public class IDIndex {
         }
         
         owner = newOwner;
-        idMappings = new ConcurrentHashMap<String, XMLObject>();
+        idMappings = new LazyMap<String, XMLObject>();
     }
     
 

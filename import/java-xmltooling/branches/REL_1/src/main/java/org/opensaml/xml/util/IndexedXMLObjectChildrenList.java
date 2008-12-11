@@ -17,13 +17,13 @@
 package org.opensaml.xml.util;
 
 import java.util.AbstractList;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import javax.xml.namespace.QName;
+
+import net.jcip.annotations.NotThreadSafe;
 
 import org.opensaml.xml.XMLObject;
 
@@ -32,10 +32,11 @@ import org.opensaml.xml.XMLObject;
  * 
  * @param <ElementType> the type of element added to the list
  */
+@NotThreadSafe
 public class IndexedXMLObjectChildrenList<ElementType extends XMLObject> extends XMLObjectChildrenList<ElementType> {
 
     /** Index of objects by type and name. */
-    private Map<QName, ArrayList<ElementType>> objectIndex;
+    private Map<QName, List<ElementType>> objectIndex;
 
     /**
      * Constructor.
@@ -44,7 +45,7 @@ public class IndexedXMLObjectChildrenList<ElementType extends XMLObject> extends
      */
     public IndexedXMLObjectChildrenList(XMLObject parent) {
         super(parent);
-        objectIndex = new ConcurrentHashMap<QName, ArrayList<ElementType>>();
+        objectIndex = new LazyMap<QName, List<ElementType>>();
     }
 
     /**
@@ -55,7 +56,7 @@ public class IndexedXMLObjectChildrenList<ElementType extends XMLObject> extends
      */
     public IndexedXMLObjectChildrenList(XMLObject parent, Collection<ElementType> col) {
         super(parent);
-        objectIndex = new ConcurrentHashMap<QName, ArrayList<ElementType>>();
+        objectIndex = new LazyMap<QName, List<ElementType>>();
         addAll(col);
     }
 
@@ -150,7 +151,7 @@ public class IndexedXMLObjectChildrenList<ElementType extends XMLObject> extends
      */
     public List<? extends ElementType> subList(QName index) {
         if (!objectIndex.containsKey(index)) {
-            objectIndex.put(index, new ArrayList<ElementType>());
+            objectIndex.put(index, new LazyList<ElementType>());
         }
 
         return new ListView<ElementType>(this, index);
@@ -181,9 +182,9 @@ public class IndexedXMLObjectChildrenList<ElementType extends XMLObject> extends
      * @param element the element to be indexed
      */
     protected void indexElement(QName index, ElementType element) {
-        ArrayList<ElementType> objects = objectIndex.get(index);
+        List<ElementType> objects = objectIndex.get(index);
         if (objects == null) {
-            objects = new ArrayList<ElementType>();
+            objects = new LazyList<ElementType>();
             objectIndex.put(index, objects);
         }
 
@@ -215,7 +216,7 @@ public class IndexedXMLObjectChildrenList<ElementType extends XMLObject> extends
      * @param element the element to be removed from that index
      */
     protected void removeElementFromIndex(QName index, ElementType element) {
-        ArrayList<ElementType> objects = objectIndex.get(index);
+        List<ElementType> objects = objectIndex.get(index);
         if (objects != null) {
             objects.remove(element);
         }

@@ -18,7 +18,6 @@ package org.opensaml.xml.util;
 
 import java.util.AbstractList;
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.List;
 
 import org.opensaml.xml.XMLObject;
@@ -51,7 +50,7 @@ public class XMLObjectChildrenList<ElementType extends XMLObject> extends Abstra
         }
 
         parent = newParent;
-        elements = new LinkedList<ElementType>();
+        elements = new LazyList<ElementType>();
     }
 
     /**
@@ -71,7 +70,7 @@ public class XMLObjectChildrenList<ElementType extends XMLObject> extends Abstra
         }
 
         parent = newParent;
-        elements = new LinkedList<ElementType>();
+        elements = new LazyList<ElementType>();
 
         addAll(newElements);
     }

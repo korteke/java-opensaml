@@ -21,6 +21,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.opensaml.xml.signature.AbstractSignableXMLObject;
+import org.opensaml.xml.util.LazyList;
 import org.opensaml.xml.validation.ValidatingXMLObject;
 import org.opensaml.xml.validation.ValidationException;
 import org.opensaml.xml.validation.Validator;
@@ -49,7 +50,7 @@ public abstract class AbstractValidatingSignableXMLObject extends AbstractSignab
      */
     protected AbstractValidatingSignableXMLObject(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        validators = new LinkedList<Validator>();
+        validators = new LazyList<Validator>();
     }
 
     /** {@inheritDoc} */

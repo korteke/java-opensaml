@@ -22,6 +22,7 @@ import java.util.List;
 
 import org.opensaml.xml.AbstractXMLObject;
 import org.opensaml.xml.XMLObject;
+import org.opensaml.xml.util.LazyList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,7 +47,7 @@ public abstract class AbstractValidatingXMLObject extends AbstractXMLObject impl
      */
     protected AbstractValidatingXMLObject(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        validators = new LinkedList<Validator>();
+        validators = new LazyList<Validator>();
     }
 
     /** {@inheritDoc} */

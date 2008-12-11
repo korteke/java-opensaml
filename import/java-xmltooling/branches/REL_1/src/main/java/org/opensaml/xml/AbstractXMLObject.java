@@ -25,6 +25,7 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.util.IDIndex;
+import org.opensaml.xml.util.LazySet;
 import org.opensaml.xml.util.XMLHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -74,7 +75,7 @@ public abstract class AbstractXMLObject implements XMLObject {
      */
     protected AbstractXMLObject(String namespaceURI, String elementLocalName, String namespacePrefix) {
         idIndex = new IDIndex(this);
-        namespaces = new HashSet<Namespace>();
+        namespaces = new LazySet<Namespace>();
         elementQname = XMLHelper.constructQName(namespaceURI, elementLocalName, namespacePrefix);
         addNamespace(new Namespace(namespaceURI, namespacePrefix));
         setElementNamespacePrefix(namespacePrefix);
