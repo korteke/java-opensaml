@@ -90,7 +90,7 @@ public class KeyInfoTypeSchemaValidator implements Validator<KeyInfoType> {
     }
     
     static {
-        VALID_DS_CHILD_NAMES = new HashSet<QName>();
+        VALID_DS_CHILD_NAMES = new HashSet<QName>(10);
         VALID_DS_CHILD_NAMES.add(KeyName.DEFAULT_ELEMENT_NAME);
         VALID_DS_CHILD_NAMES.add(KeyValue.DEFAULT_ELEMENT_NAME);
         VALID_DS_CHILD_NAMES.add(RetrievalMethod.DEFAULT_ELEMENT_NAME);

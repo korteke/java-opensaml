@@ -56,12 +56,19 @@ public class LazyList<ElementType> implements List<ElementType>, Serializable {
 
     /** {@inheritDoc} */
     public boolean addAll(Collection<? extends ElementType> collection) {
+        if(collection == null || collection.isEmpty()){
+            return false;
+        }
         delegate = buildList();
         return delegate.addAll(collection);
     }
 
     /** {@inheritDoc} */
     public boolean addAll(int index, Collection<? extends ElementType> collection) {
+        if(collection == null || collection.isEmpty()){
+            return false;
+        }
+        
         delegate = buildList();
         return delegate.addAll(index, collection);
     }
@@ -77,8 +84,8 @@ public class LazyList<ElementType> implements List<ElementType>, Serializable {
     }
 
     /** {@inheritDoc} */
-    public boolean containsAll(Collection<?> collections) {
-        return delegate.containsAll(collections);
+    public boolean containsAll(Collection<?> collection) {
+        return delegate.containsAll(collection);
     }
 
     /** {@inheritDoc} */
@@ -130,6 +137,10 @@ public class LazyList<ElementType> implements List<ElementType>, Serializable {
 
     /** {@inheritDoc} */
     public boolean removeAll(Collection<?> collection) {
+        if(collection == null || collection.isEmpty()){
+            return false;
+        }
+        
         delegate = buildList();
         return delegate.removeAll(collection);
     }

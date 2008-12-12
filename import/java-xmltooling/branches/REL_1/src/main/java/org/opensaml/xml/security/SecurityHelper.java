@@ -54,6 +54,7 @@ import org.opensaml.xml.signature.KeyInfo;
 import org.opensaml.xml.signature.Signature;
 import org.opensaml.xml.signature.SignatureConstants;
 import org.opensaml.xml.util.DatatypeHelper;
+import org.opensaml.xml.util.LazySet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -767,13 +768,13 @@ public final class SecurityHelper {
 
         // Additonal algorithm URI to JCA key algorithm mappins, beyond what is currently
         // supplied in the Apache XML Security mapper config.
-        dsaAlgorithmURIs = new HashSet<String>();
+        dsaAlgorithmURIs = new LazySet<String>();
         dsaAlgorithmURIs.add(SignatureConstants.ALGO_ID_SIGNATURE_DSA);
 
-        ecdsaAlgorithmURIs = new HashSet<String>();
+        ecdsaAlgorithmURIs = new LazySet<String>();
         ecdsaAlgorithmURIs.add(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA1);
 
-        rsaAlgorithmURIs = new HashSet<String>();
+        rsaAlgorithmURIs = new HashSet<String>(10);
         rsaAlgorithmURIs.add(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1);
         rsaAlgorithmURIs.add(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256);
         rsaAlgorithmURIs.add(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA384);

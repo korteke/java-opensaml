@@ -133,7 +133,7 @@ public abstract class AbstractCriteriaFilteringCredentialResolver extends Abstra
      *                           from the EvaluableCredentialCriteriaRegistry
      */
     private Set<EvaluableCriteria<Credential>> getEvaluableCriteria(CriteriaSet criteriaSet) throws SecurityException {
-        Set<EvaluableCriteria<Credential>> evaluable = new HashSet<EvaluableCriteria<Credential>>();
+        Set<EvaluableCriteria<Credential>> evaluable = new HashSet<EvaluableCriteria<Credential>>(criteriaSet.size());
         for (Criteria criteria : criteriaSet) {
             if (criteria instanceof EvaluableCredentialCriteria) {
                 evaluable.add((EvaluableCredentialCriteria) criteria);

@@ -18,11 +18,11 @@ package org.opensaml.xml.security.credential;
 
 import java.security.PrivateKey;
 import java.security.PublicKey;
-import java.util.HashSet;
 
 import javax.crypto.SecretKey;
 
 import org.opensaml.xml.util.DatatypeHelper;
+import org.opensaml.xml.util.LazySet;
 
 /**
  * A basic implementation of {@link Credential}.
@@ -32,7 +32,7 @@ public class BasicCredential extends AbstractCredential {
     /** Constructor. */
     public BasicCredential() {
         super();
-        keyNames = new HashSet<String>();
+        keyNames = new LazySet<String>();
         usageType = UsageType.UNSPECIFIED;
     }
     

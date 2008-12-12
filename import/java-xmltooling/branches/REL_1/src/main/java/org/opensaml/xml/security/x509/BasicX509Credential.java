@@ -83,7 +83,7 @@ public class BasicX509Credential extends BasicCredential implements X509Credenti
     /** {@inheritDoc} */
     public Collection<X509Certificate> getEntityCertificateChain() {
         if (entityCertChain == null && entityCert != null) {
-            HashSet<X509Certificate> constructedChain = new HashSet<X509Certificate>();
+            HashSet<X509Certificate> constructedChain = new HashSet<X509Certificate>(5);
             constructedChain.add(entityCert);
             return constructedChain;
         }

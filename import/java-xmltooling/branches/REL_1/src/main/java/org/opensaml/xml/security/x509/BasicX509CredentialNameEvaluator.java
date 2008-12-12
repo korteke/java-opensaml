@@ -80,7 +80,7 @@ public class BasicX509CredentialNameEvaluator implements X509CredentialNameEvalu
     public BasicX509CredentialNameEvaluator() {
 
         x500DNHandler = new InternalX500DNHandler();
-        subjectAltNameTypes = new HashSet<Integer>();
+        subjectAltNameTypes = new HashSet<Integer>(5);
 
         // Add some defaults
         setCheckSubjectAltNames(true);

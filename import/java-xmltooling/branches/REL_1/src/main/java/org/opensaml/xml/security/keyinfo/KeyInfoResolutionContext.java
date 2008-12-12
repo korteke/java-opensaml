@@ -26,6 +26,7 @@ import java.util.Set;
 
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.signature.KeyInfo;
+import org.opensaml.xml.util.LazySet;
 
 
 /**
@@ -71,7 +72,7 @@ public class KeyInfoResolutionContext {
     public KeyInfoResolutionContext(Collection<Credential> credentials) {
         resolvedCredentials = Collections.unmodifiableCollection(credentials);
         properties = new HashMap<String, Object>();
-        keyNames = new HashSet<String>();
+        keyNames = new LazySet<String>();
     }
     
     /**

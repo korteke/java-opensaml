@@ -90,7 +90,7 @@ public class PGPDataSchemaValidator implements Validator<PGPData> {
     }
     
     static {
-        VALID_DS_CHILD_NAMES = new HashSet<QName>();
+        VALID_DS_CHILD_NAMES = new HashSet<QName>(5);
         VALID_DS_CHILD_NAMES.add(PGPKeyID.DEFAULT_ELEMENT_NAME);
         VALID_DS_CHILD_NAMES.add(PGPKeyPacket.DEFAULT_ELEMENT_NAME);
     }

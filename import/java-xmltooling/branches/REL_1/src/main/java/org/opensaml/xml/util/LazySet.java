@@ -52,6 +52,10 @@ public class LazySet<ElementType> implements Set<ElementType>, Serializable {
 
     /** {@inheritDoc} */
     public boolean addAll(Collection<? extends ElementType> collection) {
+        if(collection == null || collection.isEmpty()){
+            return false;
+        }
+        
         delegate = createImplementation();
         return delegate.addAll(collection);
     }
@@ -89,6 +93,10 @@ public class LazySet<ElementType> implements Set<ElementType>, Serializable {
 
     /** {@inheritDoc} */
     public boolean removeAll(Collection<?> collection) {
+        if(collection == null || collection.isEmpty()){
+            return false;
+        }
+        
         delegate = createImplementation();
         return delegate.removeAll(collection);
     }

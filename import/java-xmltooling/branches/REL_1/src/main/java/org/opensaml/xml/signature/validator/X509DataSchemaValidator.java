@@ -88,7 +88,7 @@ public class X509DataSchemaValidator implements Validator<X509Data> {
     }
     
     static {
-        VALID_DS_CHILD_NAMES = new HashSet<QName>();
+        VALID_DS_CHILD_NAMES = new HashSet<QName>(10);
         VALID_DS_CHILD_NAMES.add(X509IssuerSerial.DEFAULT_ELEMENT_NAME);
         VALID_DS_CHILD_NAMES.add(X509SKI.DEFAULT_ELEMENT_NAME);
         VALID_DS_CHILD_NAMES.add(X509SubjectName.DEFAULT_ELEMENT_NAME);

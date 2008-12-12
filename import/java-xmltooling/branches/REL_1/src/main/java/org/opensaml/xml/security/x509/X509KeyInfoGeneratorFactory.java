@@ -39,6 +39,7 @@ import org.opensaml.xml.signature.X509SKI;
 import org.opensaml.xml.signature.impl.KeyInfoBuilder;
 import org.opensaml.xml.signature.impl.X509DataBuilder;
 import org.opensaml.xml.util.DatatypeHelper;
+import org.opensaml.xml.util.LazySet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -697,7 +698,7 @@ public class X509KeyInfoGeneratorFactory extends BasicKeyInfoGeneratorFactory {
        
        /** Constructor. */
        protected X509Options() {
-           subjectAltNames = new HashSet<Integer>();
+           subjectAltNames = new LazySet<Integer>();
            x500DNHandler = new InternalX500DNHandler();
            x500SubjectDNFormat = X500DNHandler.FORMAT_RFC2253;
            x500IssuerDNFormat = X500DNHandler.FORMAT_RFC2253;
@@ -707,7 +708,7 @@ public class X509KeyInfoGeneratorFactory extends BasicKeyInfoGeneratorFactory {
        protected X509Options clone() {
            X509Options clonedOptions = (X509Options) super.clone();
            
-           clonedOptions.subjectAltNames = new HashSet<Integer>();
+           clonedOptions.subjectAltNames = new LazySet<Integer>();
            clonedOptions.subjectAltNames.addAll(this.subjectAltNames);
            
            clonedOptions.x500DNHandler = this.x500DNHandler.clone();

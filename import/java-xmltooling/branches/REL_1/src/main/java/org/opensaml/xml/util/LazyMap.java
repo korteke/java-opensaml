@@ -87,9 +87,13 @@ public class LazyMap<KeyType, ValueType> implements Map<KeyType, ValueType>, Ser
     }
 
     /** {@inheritDoc} */
-    public void putAll(Map<? extends KeyType, ? extends ValueType> t) {
+    public void putAll(Map<? extends KeyType, ? extends ValueType> map) {
+        if(map == null || map.isEmpty()){
+            return;
+        }
+        
         delegate = buildMap();
-        delegate.putAll(t);
+        delegate.putAll(map);
     }
 
     /** {@inheritDoc} */
