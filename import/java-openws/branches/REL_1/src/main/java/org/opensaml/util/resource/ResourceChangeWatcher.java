@@ -117,7 +117,7 @@ public class ResourceChangeWatcher extends TimerTask {
             resourceExist = false;
         }
 
-        resourceListeners = new ArrayList<ResourceChangeListener>();
+        resourceListeners = new ArrayList<ResourceChangeListener>(5);
         log.debug("Watching resource: " + watchedResource.getLocation()
                 + ", polling frequency: {}ms, max retry attempts: {}", pollFrequency, maxRetryAttempts);
     }

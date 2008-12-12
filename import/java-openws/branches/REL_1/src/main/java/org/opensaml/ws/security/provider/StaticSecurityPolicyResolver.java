@@ -16,7 +16,6 @@
 
 package org.opensaml.ws.security.provider;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -24,12 +23,13 @@ import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.security.SecurityPolicy;
 import org.opensaml.ws.security.SecurityPolicyResolver;
 import org.opensaml.xml.security.SecurityException;
+import org.opensaml.xml.util.LazyList;
 
 /** A simple security policy resolver implementation that returns a static list of policies. */
 public class StaticSecurityPolicyResolver implements SecurityPolicyResolver {
 
     /** Registered security policies. */
-    private ArrayList<SecurityPolicy> securityPolicies;
+    private List<SecurityPolicy> securityPolicies;
 
     /**
      * Constructor.
@@ -37,7 +37,7 @@ public class StaticSecurityPolicyResolver implements SecurityPolicyResolver {
      * @param policy the static policy returned by this resolver
      */
     public StaticSecurityPolicyResolver(SecurityPolicy policy) {
-        securityPolicies = new ArrayList<SecurityPolicy>();
+        securityPolicies = new LazyList<SecurityPolicy>();
         if(policy != null){
             securityPolicies.add(policy);
         }
@@ -49,7 +49,7 @@ public class StaticSecurityPolicyResolver implements SecurityPolicyResolver {
      * @param policies the static list of policies returned by this resolver
      */
     public StaticSecurityPolicyResolver(List<SecurityPolicy> policies) {
-        securityPolicies = new ArrayList<SecurityPolicy>();
+        securityPolicies = new LazyList<SecurityPolicy>();
         if(policies != null){
             securityPolicies.addAll(policies);
         }
