@@ -33,6 +33,7 @@ import org.opensaml.xml.security.keyinfo.KeyInfoProvider;
 import org.opensaml.xml.security.keyinfo.KeyInfoResolutionContext;
 import org.opensaml.xml.signature.DSAKeyValue;
 import org.opensaml.xml.signature.KeyValue;
+import org.opensaml.xml.util.LazySet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -88,7 +89,9 @@ public class DSAKeyValueProvider extends AbstractKeyInfoProvider {
         }
         
         log.debug("Credential successfully extracted from DSAKeyValue");
-        return singletonSet(cred);
+        LazySet<Credential> credentialSet = new LazySet<Credential>();
+        credentialSet.add(cred);
+        return credentialSet;
     }
     
     /**

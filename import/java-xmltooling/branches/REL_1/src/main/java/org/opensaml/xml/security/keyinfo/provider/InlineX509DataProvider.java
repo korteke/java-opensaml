@@ -49,6 +49,7 @@ import org.opensaml.xml.signature.X509SKI;
 import org.opensaml.xml.signature.X509SubjectName;
 import org.opensaml.xml.util.Base64;
 import org.opensaml.xml.util.DatatypeHelper;
+import org.opensaml.xml.util.LazySet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -151,7 +152,9 @@ public class InlineX509DataProvider extends AbstractKeyInfoProvider {
             cred.getCredentalContextSet().add(credContext);
         }
         
-        return singletonSet(cred);
+        LazySet<Credential> credentialSet = new LazySet<Credential>();
+        credentialSet.add(cred);
+        return credentialSet;
     }
 
     /**

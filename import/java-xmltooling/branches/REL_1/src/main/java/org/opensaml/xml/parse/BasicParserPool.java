@@ -23,7 +23,6 @@ import java.io.Reader;
 import java.lang.ref.SoftReference;
 import java.util.Collections;
 import java.util.EmptyStackException;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
 
@@ -33,6 +32,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.validation.Schema;
 
 import org.opensaml.xml.Configuration;
+import org.opensaml.xml.util.LazyMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.DOMImplementation;
@@ -121,10 +121,10 @@ public class BasicParserPool implements ParserPool {
         Configuration.validateNonSunJAXP();
         maxPoolSize = 5;
         builderPool = new Stack<SoftReference<DocumentBuilder>>();
-        builderAttributes = new HashMap<String, Object>();
+        builderAttributes = new LazyMap<String, Object>();
         coalescing = true;
         expandEntityReferences = true;
-        builderFeatures = new HashMap<String, Boolean>();
+        builderFeatures = new LazyMap<String, Boolean>();
         ignoreComments = true;
         ignoreElementContentWhitespace = true;
         namespaceAware = true;
@@ -183,7 +183,7 @@ public class BasicParserPool implements ParserPool {
         DocumentBuilder unwrappedBuilder = proxiedBuilder.getProxiedBuilder();
         unwrappedBuilder.reset();
         SoftReference<DocumentBuilder> builderReference = new SoftReference<DocumentBuilder>(unwrappedBuilder);
-        
+
         synchronized (this) {
             if (builderPool.size() < maxPoolSize) {
                 builderPool.push(builderReference);
@@ -499,7 +499,7 @@ public class BasicParserPool implements ParserPool {
             dirtyBuilderConfiguration = false;
             builderFactory = newFactory;
             builderPool.clear();
-            
+
         } catch (ParserConfigurationException e) {
             throw new XMLParserException("Unable to configure builder factory", e);
         }

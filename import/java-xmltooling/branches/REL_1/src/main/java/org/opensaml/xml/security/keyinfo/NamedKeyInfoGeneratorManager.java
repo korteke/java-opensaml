@@ -17,11 +17,11 @@
 package org.opensaml.xml.security.keyinfo;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
 import org.opensaml.xml.security.credential.Credential;
+import org.opensaml.xml.util.LazyMap;
 
 /**
  * A manager for named sets of {@link KeyInfoGeneratorFactory} instances. Each name key serves as an index to an
@@ -41,7 +41,7 @@ public class NamedKeyInfoGeneratorManager {
     
     /** Constructor. */
     public NamedKeyInfoGeneratorManager() {
-        managers = new HashMap<String, KeyInfoGeneratorManager>();
+        managers = new LazyMap<String, KeyInfoGeneratorManager>();
         defaultManager = new KeyInfoGeneratorManager();
         useDefaultManager = true;
     }
