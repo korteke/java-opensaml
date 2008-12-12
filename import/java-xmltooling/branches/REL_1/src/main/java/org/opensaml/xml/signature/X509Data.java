@@ -1,5 +1,5 @@
 /*
- * Copyright [2006] [University Corporation for Advanced Internet Development, Inc.]
+ * Copyright 2006 University Corporation for Advanced Internet Development, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,73 +24,71 @@ import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.util.XMLConstants;
 import org.opensaml.xml.validation.ValidatingXMLObject;
 
-/**
- * XMLObject representing XML Digital Signature, version 20020212, X509Data element.
- */
+/** XMLObject representing XML Digital Signature, version 20020212, X509Data element. */
 public interface X509Data extends ValidatingXMLObject {
-    
-    /** Element local name */
-    public final static String DEFAULT_ELEMENT_LOCAL_NAME = "X509Data";
-    
-    /** Default element name */
-    public final static QName DEFAULT_ELEMENT_NAME = new QName(XMLConstants.XMLSIG_NS, DEFAULT_ELEMENT_LOCAL_NAME, XMLConstants.XMLSIG_PREFIX);
-    
-    /** Local name of the XSI type */
-    public final static String TYPE_LOCAL_NAME = "X509DataType"; 
-        
-    /** QName of the XSI type */
-    public final static QName TYPE_NAME = new QName(XMLConstants.XMLSIG_NS, TYPE_LOCAL_NAME, XMLConstants.XMLSIG_PREFIX);
-    
+
+    /** Element local name. */
+    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "X509Data";
+
+    /** Default element name. */
+    public static final QName DEFAULT_ELEMENT_NAME = new QName(XMLConstants.XMLSIG_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+            XMLConstants.XMLSIG_PREFIX);
+
+    /** Local name of the XSI type. */
+    public static final String TYPE_LOCAL_NAME = "X509DataType";
+
+    /** QName of the XSI type. */
+    public static final QName TYPE_NAME = new QName(XMLConstants.XMLSIG_NS, TYPE_LOCAL_NAME, XMLConstants.XMLSIG_PREFIX);
+
     /**
-     * Get the list of all XMLObject children
+     * Get the list of all XMLObject children.
      * 
      * @return the list of XMLObject children
      */
     public List<XMLObject> getXMLObjects();
-    
+
     /**
-     * Get the list of XMLObject children whose type or element
-     * QName matches the specified QName
+     * Get the list of XMLObject children whose type or element QName matches the specified QName.
      * 
      * @param typeOrName the QName of the desired elements
      * 
      * @return the matching list of XMLObject children
      */
     public List<XMLObject> getXMLObjects(QName typeOrName);
-    
+
     /**
-     * Get the list of X509IssuerSerial child elements
+     * Get the list of X509IssuerSerial child elements.
      * 
      * @return the list of X509IssuerSerial child elements
-     */ 
+     */
     public List<X509IssuerSerial> getX509IssuerSerials();
-    
+
     /**
-     * Get the list of X509SKI child elements
+     * Get the list of X509SKI child elements.
      * 
      * @return the list of X509SKI child elements
-     */ 
+     */
     public List<X509SKI> getX509SKIs();
-    
+
     /**
-     * Get the list of X509SubjectName child elements
+     * Get the list of X509SubjectName child elements.
      * 
      * @return the list of X509SubjectName child elements
-     */ 
+     */
     public List<X509SubjectName> getX509SubjectNames();
-    
+
     /**
-     * Get the list of X509Certificate child elements
+     * Get the list of X509Certificate child elements.
      * 
      * @return the list of X509Certificate child elements
-     */ 
+     */
     public List<X509Certificate> getX509Certificates();
-    
+
     /**
-     * Get the list of X509CRL child elements
+     * Get the list of X509CRL child elements.
      * 
      * @return the list of X509CRL child elements
-     */ 
+     */
     public List<X509CRL> getX509CRLs();
 
 }
