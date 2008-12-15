@@ -54,6 +54,9 @@ public class XMLConfigurator {
 
     /** Class logger. */
     private final Logger log = LoggerFactory.getLogger(XMLConfigurator.class);
+    
+    /** Whether the XML configuration elements that configured object providers should be retained. */
+    private boolean retainXMLConfiguration;
 
     /** Pool of parsers used to read and validate configurations. */
     private BasicParserPool parserPool;
@@ -67,6 +70,20 @@ public class XMLConfigurator {
      * @throws ConfigurationException thrown if the validation schema for configuration files can not be created
      */
     public XMLConfigurator() throws ConfigurationException {
+        this(false);
+    }
+    
+    /**
+     * Constructor.
+     * 
+     * @param retainXML whether to retain the XML configuration elements within the {@link Configuration}.
+     * 
+     * @throws ConfigurationException thrown if the validation schema for configuration files can not be created
+     * 
+     * @deprecated this method will be removed once {@link Configuration} no longer has the option to store the XML configuration fragements
+     */
+    public XMLConfigurator(boolean retainXML) throws ConfigurationException {
+        retainXMLConfiguration = retainXML;
         parserPool = new BasicParserPool();
         SchemaFactory factory = SchemaFactory.newInstance(javax.xml.XMLConstants.W3C_XML_SCHEMA_NS_URI);
         Source schemaSource = new StreamSource(XMLConfigurator.class
@@ -83,7 +100,7 @@ public class XMLConfigurator {
     }
 
     /**
-     * Loads the configurtion file(s) from the given file. If the file is a directory each file within the directory is
+     * Loads the configuration file(s) from the given file. If the file is a directory each file within the directory is
      * loaded.
      * 
      * @param configurationFile the configuration file(s) to be loaded
@@ -225,8 +242,12 @@ public class XMLConfigurator {
                         "UnmarshallingClass").item(0);
                 unmarshaller = (Unmarshaller) createClassInstance(configuration);
 
+                if(retainXMLConfiguration){
                 Configuration.registerObjectProvider(objectProviderName, builder, marshaller, unmarshaller,
                         objectProvider);
+                }else{
+                    Configuration.registerObjectProvider(objectProviderName, builder, marshaller, unmarshaller);
+                }
 
                 log.debug("{} intialized and configuration cached", objectProviderName);
             } catch (ConfigurationException e) {
@@ -276,7 +297,11 @@ public class XMLConfigurator {
             }
 
             log.debug("ValidtorSuite {} has been initialized", validatorSuiteId);
-            Configuration.registerValidatorSuite(validatorSuiteId, validatorSuite, validatorSuiteElement);
+            if(retainXMLConfiguration){
+                Configuration.registerValidatorSuite(validatorSuiteId, validatorSuite, validatorSuiteElement);
+            }else{
+                Configuration.registerValidatorSuite(validatorSuiteId, validatorSuite);
+            }
         }
     }
 

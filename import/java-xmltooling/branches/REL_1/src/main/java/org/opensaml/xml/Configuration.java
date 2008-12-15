@@ -1,5 +1,5 @@
 /*
- * Copyright [2006] [University Corporation for Advanced Internet Development, Inc.]
+ * Copyright 2006 University Corporation for Advanced Internet Development, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,9 +38,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
 
-/**
- * Class for loading library configuration files and retrieving the configured components.
- */
+/** Class for loading library configuration files and retrieving the configured components. */
 public class Configuration {
 
     /** Class logger. */
@@ -51,10 +49,10 @@ public class Configuration {
             XMLConstants.XMLTOOLING_DEFAULT_OBJECT_PROVIDER);
 
     /** Object provider configuration elements indexed by QName. */
-    private static Map<QName, Element> configuredObjectProviders = new ConcurrentHashMap<QName, Element>();
+    private static Map<QName, Element> configuredObjectProviders = new ConcurrentHashMap<QName, Element>(0);
 
     /** Validator suite configuration elements indexed by suite IDs. */
-    private static Map<String, Element> validatorSuiteConfigurations = new ConcurrentHashMap<String, Element>();
+    private static Map<String, Element> validatorSuiteConfigurations = new ConcurrentHashMap<String, Element>(0);
 
     /** Configured XMLObject builder factory. */
     private static XMLObjectBuilderFactory builderFactory = new XMLObjectBuilderFactory();
@@ -66,7 +64,7 @@ public class Configuration {
     private static UnmarshallerFactory unmarshallerFactory = new UnmarshallerFactory();
 
     /** Configured ValidatorSuites. */
-    private static Map<String, ValidatorSuite> validatorSuites = new ConcurrentHashMap<String, ValidatorSuite>();
+    private static Map<String, ValidatorSuite> validatorSuites = new ConcurrentHashMap<String, ValidatorSuite>(5);
 
     /** Configured set of attribute QNames which have been globally registered as having an ID type. */
     private static Set<QName> idAttributeNames = new CopyOnWriteArraySet<QName>();
@@ -97,14 +95,10 @@ public class Configuration {
      * @param builder the builder for that given provider
      * @param marshaller the marshaller for the provider
      * @param unmarshaller the unmarshaller for the provider
-     * @param configuration optional XML configuration snippet
      */
     public static void registerObjectProvider(QName providerName, XMLObjectBuilder builder, Marshaller marshaller,
-            Unmarshaller unmarshaller, Element configuration) {
+            Unmarshaller unmarshaller) {
         log.debug("Registering new builder, marshaller, and unmarshaller for {}", providerName);
-        if(configuration != null){
-            configuredObjectProviders.put(providerName, configuration);
-        }
         builderFactory.registerBuilder(providerName, builder);
         marshallerFactory.registerMarshaller(providerName, marshaller);
         unmarshallerFactory.registerUnmarshaller(providerName, unmarshaller);
@@ -121,19 +115,6 @@ public class Configuration {
         builderFactory.deregisterBuilder(key);
         marshallerFactory.deregisterMarshaller(key);
         unmarshallerFactory.deregisterUnmarshaller(key);
-    }
-
-    /**
-     * Gets a clone of the configuration element for a qualified element. Note that this configuration reflects the
-     * state of things as they were when the configuration was loaded, applications may have programmatically removed
-     * builder, marshallers, and unmarshallers during runtime.
-     * 
-     * @param qualifedName the namespace qualifed element name of the schema type of the object provider
-     * 
-     * @return the object provider configuration element or null if no object provider is configured with that name
-     */
-    public static Element getObjectProviderConfiguration(QName qualifedName) {
-        return (Element) configuredObjectProviders.get(qualifedName).cloneNode(true);
     }
 
     /**
@@ -171,8 +152,7 @@ public class Configuration {
      * @param suite the configured suite
      * @param configuration optional XML configuration information
      */
-    public static void registerValidatorSuite(String suiteId, ValidatorSuite suite, Element configuration) {
-        validatorSuiteConfigurations.put(suiteId, configuration);
+    public static void registerValidatorSuite(String suiteId, ValidatorSuite suite) {
         validatorSuites.put(suiteId, suite);
     }
 
@@ -184,19 +164,6 @@ public class Configuration {
     public static void deregisterValidatorSuite(String suiteId) {
         validatorSuiteConfigurations.remove(suiteId);
         validatorSuites.remove(suiteId);
-    }
-
-    /**
-     * Gets a clone of the ValidatorSuite configuration element for the ID. Note that this configuration reflects the
-     * state of things as they were when the configuration was loaded, applications may have programmatically removed
-     * altered the suite during runtime.
-     * 
-     * @param suiteId the ID of the ValidatorSuite whose configuration is to be retrieved
-     * 
-     * @return the validator suite configuration element or null if no suite is configured with that ID
-     */
-    public static Element getValidatorSuiteConfiguration(String suiteId) {
-        return (Element) validatorSuiteConfigurations.get(suiteId).cloneNode(true);
     }
 
     /**
@@ -314,6 +281,75 @@ public class Configuration {
         // Could do more tests here as needed.
 
         return ret;
+    }
+
+    /**
+     * Adds an object provider to this configuration.
+     * 
+     * @param providerName the name of the object provider, corresponding to the element name or type name that the
+     *            builder, marshaller, and unmarshaller operate on
+     * @param builder the builder for that given provider
+     * @param marshaller the marshaller for the provider
+     * @param unmarshaller the unmarshaller for the provider
+     * @param configuration optional XML configuration snippet
+     * 
+     * @deprecated this method is deprecated with no replacement
+     */
+    public static void registerObjectProvider(QName providerName, XMLObjectBuilder builder, Marshaller marshaller,
+            Unmarshaller unmarshaller, Element configuration) {
+        log.debug("Registering new builder, marshaller, and unmarshaller for {}", providerName);
+        if (configuration != null) {
+            configuredObjectProviders.put(providerName, configuration);
+        }
+        builderFactory.registerBuilder(providerName, builder);
+        marshallerFactory.registerMarshaller(providerName, marshaller);
+        unmarshallerFactory.registerUnmarshaller(providerName, unmarshaller);
+    }
+
+    /**
+     * Gets a clone of the configuration element for a qualified element. Note that this configuration reflects the
+     * state of things as they were when the configuration was loaded, applications may have programmatically removed
+     * builder, marshallers, and unmarshallers during runtime.
+     * 
+     * @param qualifedName the namespace qualifed element name of the schema type of the object provider
+     * 
+     * @return the object provider configuration element or null if no object provider is configured with that name
+     * 
+     * @deprecated this method is deprecated with no replacement
+     */
+    public static Element getObjectProviderConfiguration(QName qualifedName) {
+        return (Element) configuredObjectProviders.get(qualifedName).cloneNode(true);
+    }
+
+    /**
+     * Registers a configured validator suite.
+     * 
+     * @param suiteId the ID of the suite
+     * @param suite the configured suite
+     * @param configuration optional XML configuration information
+     * 
+     * @deprecated this method is deprecated with no replacement
+     */
+    public static void registerValidatorSuite(String suiteId, ValidatorSuite suite, Element configuration) {
+        if (configuration != null) {
+            validatorSuiteConfigurations.put(suiteId, configuration);
+        }
+        validatorSuites.put(suiteId, suite);
+    }
+
+    /**
+     * Gets a clone of the ValidatorSuite configuration element for the ID. Note that this configuration reflects the
+     * state of things as they were when the configuration was loaded, applications may have programmatically removed
+     * altered the suite during runtime.
+     * 
+     * @param suiteId the ID of the ValidatorSuite whose configuration is to be retrieved
+     * 
+     * @return the validator suite configuration element or null if no suite is configured with that ID
+     * 
+     * @deprecated this method is deprecated with no replacement
+     */
+    public static Element getValidatorSuiteConfiguration(String suiteId) {
+        return (Element) validatorSuiteConfigurations.get(suiteId).cloneNode(true);
     }
 
     static {
