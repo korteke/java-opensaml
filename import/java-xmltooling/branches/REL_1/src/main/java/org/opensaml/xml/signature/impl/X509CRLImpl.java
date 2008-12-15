@@ -1,5 +1,5 @@
 /*
- * Copyright [2006] [University Corporation for Advanced Internet Development, Inc.]
+ * Copyright 2006 University Corporation for Advanced Internet Development, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,23 +16,61 @@
 
 package org.opensaml.xml.signature.impl;
 
-import org.opensaml.xml.schema.impl.XSBase64BinaryImpl;
-import org.opensaml.xml.signature.X509CRL;
+import java.util.Collections;
+import java.util.List;
 
-/**
- * Concrete implementation of {@link org.opensaml.xml.signature.X509CRL}
- */
-public class X509CRLImpl extends XSBase64BinaryImpl implements X509CRL {
+import org.opensaml.xml.XMLObject;
+import org.opensaml.xml.signature.X509CRL;
+import org.opensaml.xml.util.DatatypeHelper;
+import org.opensaml.xml.util.IndexingObjectStore;
+import org.opensaml.xml.validation.AbstractValidatingXMLObject;
+
+/** Concrete implementation of {@link X509CRL}. */
+public class X509CRLImpl extends AbstractValidatingXMLObject implements X509CRL {
+
+    /** Class-level index of Base64 encoded CRL values. */
+    private static final IndexingObjectStore<String> B64_CRL_STORE = new IndexingObjectStore<String>();
+
+    /** Index to a stored Base64 encoded CRL. */
+    private String b64CRLIndex;
 
     /**
-     * Constructor
-     *
-     * @param namespaceURI
-     * @param elementLocalName
-     * @param namespacePrefix
+     * Constructor.
+     * 
+     * @param namespaceURI the namespace the element is in
+     * @param elementLocalName the local name of the XML element this Object represents
+     * @param namespacePrefix the prefix for the given namespace
      */
     protected X509CRLImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
+    /** {@inheritDoc} */
+    public String getValue() {
+        return B64_CRL_STORE.get(b64CRLIndex);
+    }
+
+    /** {@inheritDoc} */
+    public void setValue(String newValue) {
+        // Dump our cached DOM if the new value really is new
+        String currentCert = B64_CRL_STORE.get(b64CRLIndex);
+        String b64Cert = prepareForAssignment(currentCert, newValue);
+
+        // This is a new value, remove the old one, add the new one
+        if (!DatatypeHelper.safeEquals(currentCert, b64Cert)) {
+            B64_CRL_STORE.remove(b64CRLIndex);
+            b64CRLIndex = B64_CRL_STORE.put(b64Cert);
+        }
+    }
+
+    /** {@inheritDoc} */
+    public List<XMLObject> getOrderedChildren() {
+        return Collections.EMPTY_LIST;
+    }
+
+    /** {@inheritDoc} */
+    protected void finalize() throws Throwable {
+        super.finalize();
+        B64_CRL_STORE.remove(b64CRLIndex);
+    }
 }

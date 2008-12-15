@@ -1,5 +1,5 @@
 /*
- * Copyright [2006] [University Corporation for Advanced Internet Development, Inc.]
+ * Copyright 2006 University Corporation for Advanced Internet Development, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,20 +32,18 @@ import org.opensaml.xml.signature.X509SubjectName;
 import org.opensaml.xml.util.IndexedXMLObjectChildrenList;
 import org.opensaml.xml.validation.AbstractValidatingXMLObject;
 
-/**
- * Concrete implementation of {@link org.opensaml.xml.signature.X509Data}
- */
+/** Concrete implementation of {@link X509Data}. */
 public class X509DataImpl extends AbstractValidatingXMLObject implements X509Data {
-    
-    /** The list of XMLObject child elements */
+
+    /** The list of XMLObject child elements. */
     private final IndexedXMLObjectChildrenList indexedChildren;
 
     /**
-     * Constructor
-     *
-     * @param namespaceURI
-     * @param elementLocalName
-     * @param namespacePrefix
+     * Constructor.
+     * 
+     * @param namespaceURI the namespace the element is in
+     * @param elementLocalName the local name of the XML element this Object represents
+     * @param namespacePrefix the prefix for the given namespace
      */
     protected X509DataImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
@@ -90,13 +88,13 @@ public class X509DataImpl extends AbstractValidatingXMLObject implements X509Dat
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
         ArrayList<XMLObject> children = new ArrayList<XMLObject>();
-        
+
         children.addAll((List<XMLObject>) indexedChildren);
-        
+
         if (children.size() == 0) {
             return null;
         }
-        
+
         return Collections.unmodifiableList(children);
     }
 
