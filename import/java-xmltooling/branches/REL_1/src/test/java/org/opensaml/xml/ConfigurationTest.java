@@ -119,14 +119,14 @@ public class ConfigurationTest extends TestCase {
 
         ValidatorSuite suite1 = Configuration.getValidatorSuite(suite1Id);
         assertNotNull("ValidatorSuite TestSuite1 was not configured", suite1);
-        assertNotNull("ValidatorSuite TestSuite1 configuration Element was not available", Configuration
+        assertNull("ValidatorSuite TestSuite1 configuration Element was not available", Configuration
                 .getValidatorSuiteConfiguration(suite1Id));
         List<Validator> suite1Validators = suite1.getValidators(simpleXMLObjectQName);
         assertEquals("Suite1 did not have expected number of validators", 2, suite1Validators.size());
 
         ValidatorSuite suite2 = Configuration.getValidatorSuite(suite2Id);
         assertNotNull("ValidatorSuite TestSuite2 was not configured", suite2);
-        assertNotNull("ValidatorSuite TestSuite2 configuration Element was not available", Configuration
+        assertNull("ValidatorSuite TestSuite2 configuration Element was not available", Configuration
                 .getValidatorSuiteConfiguration(suite2Id));
         List<Validator> suite2Validators = suite2.getValidators(simpleXMLObjectQName);
         assertEquals("Suite2 did not have expected number of validators", 1, suite2Validators.size());

@@ -116,9 +116,9 @@ public class NamedKeyInfoGeneratorManagerTest extends XMLObjectBaseTestCase {
     
     /** Test that obtaining a manager by name works. */
     public void testGetManagerByName() {
-        Collection<String> names = manager.getManagerNames();
         manager.registerFactory(nameFoo, basicFactoryFoo);
         manager.registerFactory(nameBar, basicFactoryBar);
+        Collection<String> names = manager.getManagerNames();
         assertEquals("Unexpected # of manager names", 2, names.size());
         
         assertNotNull("Failed to find manager by name", manager.getManager(nameFoo));
@@ -131,10 +131,10 @@ public class NamedKeyInfoGeneratorManagerTest extends XMLObjectBaseTestCase {
     
     /** Remove a manager by name. */
     public void testRemoveManagerByName() {
-        Collection<String> names = manager.getManagerNames();
         manager.registerFactory(nameFoo, basicFactoryFoo);
         manager.registerFactory(nameFoo, x509FactoryFoo);
         manager.registerFactory(nameBar, basicFactoryBar);
+        Collection<String> names = manager.getManagerNames();
         assertEquals("Unexpected # of manager names", 2, names.size());
         
         assertNotNull("Failed to find manager by name", manager.getManager(nameFoo));

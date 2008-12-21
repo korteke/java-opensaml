@@ -50,7 +50,7 @@ public class StaticPKIXValidationInformationResolver implements PKIXValidationIn
             pkixInfo = Collections.EMPTY_LIST;
         }
 
-        if (trustedNames != null) {
+        if (names != null) {
             trustedNames = new HashSet<String>(names);
         } else {
             trustedNames = Collections.EMPTY_SET;
