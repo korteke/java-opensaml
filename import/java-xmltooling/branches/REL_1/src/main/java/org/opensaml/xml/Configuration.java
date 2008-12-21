@@ -318,7 +318,11 @@ public class Configuration {
      * @deprecated this method is deprecated with no replacement
      */
     public static Element getObjectProviderConfiguration(QName qualifedName) {
-        return (Element) configuredObjectProviders.get(qualifedName).cloneNode(true);
+        Element configElement = configuredObjectProviders.get(qualifedName);
+        if (configElement != null) {
+            return (Element) configElement.cloneNode(true);
+        }
+        return null;
     }
 
     /**
@@ -349,7 +353,12 @@ public class Configuration {
      * @deprecated this method is deprecated with no replacement
      */
     public static Element getValidatorSuiteConfiguration(String suiteId) {
-        return (Element) validatorSuiteConfigurations.get(suiteId).cloneNode(true);
+        Element configElement = validatorSuiteConfigurations.get(suiteId);
+        if (configElement != null) {
+            return (Element) configElement.cloneNode(true);
+        }
+
+        return null;
     }
 
     static {
