@@ -19,7 +19,6 @@ package org.opensaml.ws.soap.soap11;
 import javax.xml.namespace.QName;
 
 import org.opensaml.ws.soap.common.SOAPObject;
-import org.opensaml.ws.soap.util.SOAPConstants;
 import org.opensaml.xml.schema.XSURI;
 
 /**
