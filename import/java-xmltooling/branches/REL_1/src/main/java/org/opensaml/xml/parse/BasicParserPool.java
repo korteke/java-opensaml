@@ -144,12 +144,16 @@ public class BasicParserPool implements ParserPool {
     /** {@inheritDoc} */
     public DocumentBuilder getBuilder() throws XMLParserException {
         DocumentBuilder builder = null;
+        long version = 0;
 
         try {
             if (dirtyBuilderConfiguration) {
                 initializePool();
             }
-            builder = builderPool.pop().get();
+            synchronized(this) {
+                builder = builderPool.pop().get();
+                version = getPoolVersion();
+            }
         } catch (EmptyStackException e) {
             // we don't take care of this here because we do the same thing whether
             // we get this exception or if the builder is null because its was
@@ -158,12 +162,15 @@ public class BasicParserPool implements ParserPool {
 
         if (builder == null) {
             if (builderPool.size() < maxPoolSize || createBuildersAtPoolLimit) {
-                builder = createBuilder();
+                synchronized(this) {
+                    builder = createBuilder();
+                    version = getPoolVersion();
+                }
             }
         }
 
         if (builder != null) {
-            return new DocumentBuilderProxy(builder, this);
+            return new DocumentBuilderProxy(builder, this, version);
         }
 
         return null;
@@ -176,12 +183,16 @@ public class BasicParserPool implements ParserPool {
         }
 
         DocumentBuilderProxy proxiedBuilder = (DocumentBuilderProxy) builder;
-        if (proxiedBuilder.getOwningPool() != this || proxiedBuilder.getPoolVersion() != poolVersion) {
+        if (proxiedBuilder.getOwningPool() != this) {
             return;
         }
         
         synchronized (this) {
             if (proxiedBuilder.isReturned()) {
+                return;
+            }
+            
+            if (proxiedBuilder.getPoolVersion() != poolVersion) {
                 return;
             }
             
@@ -567,9 +578,10 @@ public class BasicParserPool implements ParserPool {
          * 
          * @param target document builder to proxy
          * @param owner the owning pool
+         * @param version the owning pool's version
          */
-        public DocumentBuilderProxy(DocumentBuilder target, BasicParserPool owner) {
-            owningPoolVersion = owner.getPoolVersion();
+        public DocumentBuilderProxy(DocumentBuilder target, BasicParserPool owner, long version) {
+            owningPoolVersion = version;
             owningPool = owner;
             builder = target;
             returned = false;
