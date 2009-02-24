@@ -179,13 +179,18 @@ public class BasicParserPool implements ParserPool {
         if (proxiedBuilder.getOwningPool() != this || proxiedBuilder.getPoolVersion() != poolVersion) {
             return;
         }
-
-        DocumentBuilder unwrappedBuilder = proxiedBuilder.getProxiedBuilder();
-        unwrappedBuilder.reset();
-        SoftReference<DocumentBuilder> builderReference = new SoftReference<DocumentBuilder>(unwrappedBuilder);
-
+        
         synchronized (this) {
+            if (proxiedBuilder.isReturned()) {
+                return;
+            }
+            
+            DocumentBuilder unwrappedBuilder = proxiedBuilder.getProxiedBuilder();
+            unwrappedBuilder.reset();
+            SoftReference<DocumentBuilder> builderReference = new SoftReference<DocumentBuilder>(unwrappedBuilder);
+
             if (builderPool.size() < maxPoolSize) {
+                proxiedBuilder.setReturned(true);
                 builderPool.push(builderReference);
             }
         }
@@ -461,6 +466,15 @@ public class BasicParserPool implements ParserPool {
     protected long getPoolVersion() {
         return poolVersion;
     }
+    
+    /**
+     * Gets the size of the current pool storage.
+     * 
+     * @return current pool storage size
+     */
+    protected int getPoolSize() {
+        return builderPool.size();
+    }
 
     /**
      * Initializes the pool with a new set of configuration options.
@@ -544,6 +558,9 @@ public class BasicParserPool implements ParserPool {
 
         /** Version of the pool when this proxy was created. */
         private long owningPoolVersion;
+        
+        /** Track accounting state of whether this builder has been returned to the owning pool. */
+        private boolean returned;
 
         /**
          * Constructor.
@@ -555,60 +572,72 @@ public class BasicParserPool implements ParserPool {
             owningPoolVersion = owner.getPoolVersion();
             owningPool = owner;
             builder = target;
+            returned = false;
         }
 
         /** {@inheritDoc} */
         public DOMImplementation getDOMImplementation() {
+            checkValidState();
             return builder.getDOMImplementation();
         }
 
         /** {@inheritDoc} */
         public Schema getSchema() {
+            checkValidState();
             return builder.getSchema();
         }
 
         /** {@inheritDoc} */
         public boolean isNamespaceAware() {
+            checkValidState();
             return builder.isNamespaceAware();
         }
 
         /** {@inheritDoc} */
         public boolean isValidating() {
+            checkValidState();
             return builder.isValidating();
         }
 
         /** {@inheritDoc} */
         public boolean isXIncludeAware() {
+            checkValidState();
             return builder.isXIncludeAware();
         }
 
         /** {@inheritDoc} */
         public Document newDocument() {
+            checkValidState();
             return builder.newDocument();
         }
 
         /** {@inheritDoc} */
         public Document parse(File f) throws SAXException, IOException {
+            checkValidState();
             return builder.parse(f);
         }
 
         /** {@inheritDoc} */
         public Document parse(InputSource is) throws SAXException, IOException {
+            checkValidState();
             return builder.parse(is);
         }
 
         /** {@inheritDoc} */
         public Document parse(InputStream is) throws SAXException, IOException {
+            checkValidState();
             return builder.parse(is);
         }
 
         /** {@inheritDoc} */
         public Document parse(InputStream is, String systemId) throws SAXException, IOException {
+            checkValidState();
             return builder.parse(is, systemId);
         }
 
         /** {@inheritDoc} */
         public Document parse(String uri) throws SAXException, IOException {
+            checkValidState();
             return builder.parse(uri);
         }
 
@@ -619,11 +648,13 @@ public class BasicParserPool implements ParserPool {
 
         /** {@inheritDoc} */
         public void setEntityResolver(EntityResolver er) {
+            checkValidState();
             return;
         }
 
         /** {@inheritDoc} */
         public void setErrorHandler(ErrorHandler eh) {
+            checkValidState();
             return;
         }
 
@@ -652,6 +683,37 @@ public class BasicParserPool implements ParserPool {
          */
         protected DocumentBuilder getProxiedBuilder() {
             return builder;
+        }
+        
+        /**
+         * Check accounting state as to whether this parser has been returned to the
+         * owning pool.
+         * 
+         * @return true if parser has been returned to the owning pool, otherwise false
+         */
+        protected boolean isReturned() {
+            return returned;
+        }
+        
+        /**
+         * Set accounting state as to whether this parser has been returned to the
+         * owning pool.
+         * 
+         * @param isReturned set true to indicate that parser has been returned to the owning pool
+         */
+        protected void setReturned(boolean isReturned) {
+           this.returned = isReturned; 
+        }
+        
+        /**
+         * Check whether the parser is in a valid and usable state, and if not, throw a runtime exception.
+         * 
+         * @throws IllegalStateException thrown if the parser is in a state such that it can not be used
+         */
+        protected void checkValidState() throws IllegalStateException {
+            if (isReturned()) {
+                throw new IllegalStateException("DocumentBuilderProxy has already been returned to its owning pool");
+            }
         }
 
         /** {@inheritDoc} */
