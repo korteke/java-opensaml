@@ -295,7 +295,7 @@ public class BasicParserPool implements ParserPool {
      * 
      * @param newAttributes builder attributes used when creating builders
      */
-    public void setBuilderAttributes(Map<String, Object> newAttributes) {
+    public synchronized void setBuilderAttributes(Map<String, Object> newAttributes) {
         builderAttributes = newAttributes;
         dirtyBuilderConfiguration = true;
     }
@@ -314,7 +314,7 @@ public class BasicParserPool implements ParserPool {
      * 
      * @param isCoalescing whether the builders are coalescing
      */
-    public void setCoalescing(boolean isCoalescing) {
+    public synchronized void setCoalescing(boolean isCoalescing) {
         coalescing = isCoalescing;
         dirtyBuilderConfiguration = true;
     }
@@ -333,7 +333,7 @@ public class BasicParserPool implements ParserPool {
      * 
      * @param expand whether builders expand entity references
      */
-    public void setExpandEntityReferences(boolean expand) {
+    public synchronized void setExpandEntityReferences(boolean expand) {
         expandEntityReferences = expand;
         dirtyBuilderConfiguration = true;
     }
@@ -352,7 +352,7 @@ public class BasicParserPool implements ParserPool {
      * 
      * @param newFeatures the builders' features
      */
-    public void setBuilderFeatures(Map<String, Boolean> newFeatures) {
+    public synchronized void setBuilderFeatures(Map<String, Boolean> newFeatures) {
         builderFeatures = newFeatures;
         dirtyBuilderConfiguration = true;
     }
@@ -371,7 +371,7 @@ public class BasicParserPool implements ParserPool {
      * 
      * @param ignore The ignoreComments to set.
      */
-    public void setIgnoreComments(boolean ignore) {
+    public synchronized void setIgnoreComments(boolean ignore) {
         ignoreComments = ignore;
         dirtyBuilderConfiguration = true;
     }
@@ -390,7 +390,7 @@ public class BasicParserPool implements ParserPool {
      * 
      * @param ignore whether the builders ignore element content whitespace
      */
-    public void setIgnoreElementContentWhitespace(boolean ignore) {
+    public synchronized void setIgnoreElementContentWhitespace(boolean ignore) {
         ignoreElementContentWhitespace = ignore;
         dirtyBuilderConfiguration = true;
     }
@@ -409,7 +409,7 @@ public class BasicParserPool implements ParserPool {
      * 
      * @param isNamespaceAware whether the builders are namespace aware
      */
-    public void setNamespaceAware(boolean isNamespaceAware) {
+    public synchronized void setNamespaceAware(boolean isNamespaceAware) {
         namespaceAware = isNamespaceAware;
         dirtyBuilderConfiguration = true;
     }
@@ -420,7 +420,7 @@ public class BasicParserPool implements ParserPool {
     }
 
     /** {@inheritDoc} */
-    public void setSchema(Schema newSchema) {
+    public synchronized void setSchema(Schema newSchema) {
         schema = newSchema;
         if (schema != null) {
             setNamespaceAware(true);
@@ -445,7 +445,7 @@ public class BasicParserPool implements ParserPool {
      * 
      * @param isValidating whether the builders are validating
      */
-    public void setDTDValidating(boolean isValidating) {
+    public synchronized void setDTDValidating(boolean isValidating) {
         dtdValidating = isValidating;
         dirtyBuilderConfiguration = true;
     }
@@ -464,7 +464,7 @@ public class BasicParserPool implements ParserPool {
      * 
      * @param isXIncludeAware whether the builders are XInclude aware
      */
-    public void setXincludeAware(boolean isXIncludeAware) {
+    public synchronized void setXincludeAware(boolean isXIncludeAware) {
         xincludeAware = isXIncludeAware;
         dirtyBuilderConfiguration = true;
     }
