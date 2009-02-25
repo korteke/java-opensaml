@@ -45,17 +45,17 @@ import org.xml.sax.SAXException;
 /**
  * A pool of JAXP 1.3 {@link DocumentBuilder}s.
  * 
- * Builder retrieved from this pool should be returned to the pool with the method
+ * <p>This is a pool implementation of the caching factory variety, and as such imposes no upper bound 
+ * on the number of DocumentBuilders allowed to be concurrently checked out and in use. It does however
+ * impose a limit on the size of the internal cache of idle builder instances via the value configured 
+ * via {@link #setMaxPoolSize(int)}.</p>
+ * 
+ * <p>Builders retrieved from this pool may (but are not required to) be returned to the pool with the method
  * {@link #returnBuilder(DocumentBuilder)}. Builders checked out prior to a change in the pool's properties will not be
- * effected by the change and will be appropriately dealt with when they are returned.
+ * effected by the change and will be appropriately dealt with when they are returned.</p>
  * 
- * If a the pool reaches its max size and another request for a builder is made behavior is dependent upon
- * {@link #getCreateBuildersAtPoolLimit()}. If this returns the true then a new builder will be created and returned
- * but will be discarded when it is returned. If it returns false a builder will not be created and null will be
- * returned.
- * 
- * References to builders are kept by way of {@link SoftReference} so that the garbage collector may reap the builders
- * if the system is running out of memory.
+ * <p>References to builders are kept by way of {@link SoftReference} so that the garbage collector 
+ * may reap the builders if the system is running out of memory.</p>
  */
 public class BasicParserPool implements ParserPool {
 
@@ -64,9 +64,6 @@ public class BasicParserPool implements ParserPool {
 
     /** Current version of the pool. */
     private long poolVersion;
-
-    /** Create a new builder when the pool size is reached. Default value: true */
-    private boolean createBuildersAtPoolLimit;
 
     /** Whether a change has been made to the builder configuration but has not yet been applied. */
     private boolean dirtyBuilderConfiguration;
@@ -161,11 +158,9 @@ public class BasicParserPool implements ParserPool {
         }
 
         if (builder == null) {
-            if (builderPool.size() < maxPoolSize || createBuildersAtPoolLimit) {
-                synchronized(this) {
-                    builder = createBuilder();
-                    version = getPoolVersion();
-                }
+            synchronized(this) {
+                builder = createBuilder();
+                version = getPoolVersion();
             }
         }
 
@@ -266,19 +261,27 @@ public class BasicParserPool implements ParserPool {
     /**
      * Gets whether new builders will be created when the max pool size is reached.
      * 
+     * <p><b>Note this method is deprecated and will be removed in the next release. It
+     * is also currently functionally non-operational.</b></p>
+     * 
      * @return whether new builders will be created when the max pool size is reached
+     * @deprecated
      */
     public boolean getCreateBuildersAtPoolLimit() {
-        return createBuildersAtPoolLimit;
+        return true;
     }
 
     /**
      * Sets whether new builders will be created when the max pool size is reached.
      * 
+     * <p><b>Note this method is deprecated and will be removed in the next release. It
+     * is also currently functionally non-operational.</b></p>
+     * 
      * @param createBuilders whether new builders will be created when the max pool size is reached
+     * @deprecated
      */
     public void setCreateBuildersAtPoolLimit(boolean createBuilders) {
-        createBuildersAtPoolLimit = createBuilders;
+        // do nothing
     }
 
     /**
