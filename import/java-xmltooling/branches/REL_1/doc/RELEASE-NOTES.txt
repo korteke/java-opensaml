@@ -1,5 +1,9 @@
 Changes in Release 1.2
 ==============================================
+[JXT-50] - Update libs for 1.2.1 release
+
+Changes in Release 1.2
+==============================================
 [JXT-43] - Add some additional security related helper methods
 [JXT-44] - Optimize use of Collections 
 
