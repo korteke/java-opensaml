@@ -143,24 +143,19 @@ public class BasicParserPool implements ParserPool {
         DocumentBuilder builder = null;
         long version = 0;
 
-        try {
-            if (dirtyBuilderConfiguration) {
-                initializePool();
-            }
-            synchronized(this) {
-                builder = builderPool.pop().get();
-                version = getPoolVersion();
-            }
-        } catch (EmptyStackException e) {
-            // we don't take care of this here because we do the same thing whether
-            // we get this exception or if the builder is null because its was
-            // garbage collected is the same (we're using soft references, remember?)
+        if (dirtyBuilderConfiguration) {
+            initializePool();
         }
-
-        if (builder == null) {
-            synchronized(this) {
+        
+        synchronized(this) {
+            version = getPoolVersion();
+            if (!builderPool.isEmpty()) {
+                builder = builderPool.pop().get();
+            }
+            // Will be null if either the stack was empty, or the SoftReference
+            // has been garbage-collected
+            if (builder == null) {
                 builder = createBuilder();
-                version = getPoolVersion();
             }
         }
 
