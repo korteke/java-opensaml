@@ -22,7 +22,6 @@ import java.io.InputStream;
 import java.io.Reader;
 import java.lang.ref.SoftReference;
 import java.util.Collections;
-import java.util.EmptyStackException;
 import java.util.Map;
 import java.util.Stack;
 
