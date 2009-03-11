@@ -44,10 +44,9 @@ import org.xml.sax.SAXException;
 /**
  * A pool of JAXP 1.3 {@link DocumentBuilder}s.
  * 
- * <p>This implementation of {@link ParserPool} allows its properties to be modified over 
- * time and versions the builders it manages appropriately.  There are certain performance penalties
- * for doing this.  For a more performant  implementation that does not support versioning or property
- * modification over time, see {@link StaticBasicParserPool}.</p>
+ * <p>This implementation of {@link ParserPool} does not allow its properties to be modified once
+ * it has been initialized.  For an implementation that does support versioned properties over
+ * time, see {@link BasicParserPool}.</p>
  * 
  * <p>This is a pool implementation of the caching factory variety, and as such imposes no upper bound 
  * on the number of DocumentBuilders allowed to be concurrently checked out and in use. It does however
@@ -55,22 +54,18 @@ import org.xml.sax.SAXException;
  * via {@link #setMaxPoolSize(int)}.</p>
  * 
  * <p>Builders retrieved from this pool may (but are not required to) be returned to the pool with the method
- * {@link #returnBuilder(DocumentBuilder)}. Builders checked out prior to a change in the pool's properties will not be
- * effected by the change and will be appropriately dealt with when they are returned.</p>
+ * {@link #returnBuilder(DocumentBuilder)}.</p>
  * 
  * <p>References to builders are kept by way of {@link SoftReference} so that the garbage collector 
  * may reap the builders if the system is running out of memory.</p>
  */
-public class BasicParserPool implements ParserPool {
+public class StaticBasicParserPool implements ParserPool {
 
     /** Class logger. */
-    private final Logger log = LoggerFactory.getLogger(BasicParserPool.class);
-
-    /** Current version of the pool. */
-    private long poolVersion;
-
-    /** Whether a change has been made to the builder configuration but has not yet been applied. */
-    private boolean dirtyBuilderConfiguration;
+    private final Logger log = LoggerFactory.getLogger(StaticBasicParserPool.class);
+    
+    /** Flag to track whether pool is in the initialized state. */
+    private boolean initialized;
 
     /** Factory used to create new builders. */
     private DocumentBuilderFactory builderFactory;
@@ -118,8 +113,9 @@ public class BasicParserPool implements ParserPool {
     private ErrorHandler errorHandler;
 
     /** Constructor. */
-    public BasicParserPool() {
+    public StaticBasicParserPool() {
         Configuration.validateNonSunJAXP();
+        initialized = false;
         maxPoolSize = 5;
         builderPool = new Stack<SoftReference<DocumentBuilder>>();
         builderAttributes = new LazyMap<String, Object>();
@@ -134,37 +130,54 @@ public class BasicParserPool implements ParserPool {
         xincludeAware = false;
         errorHandler = new LoggingErrorHandler(log);
 
-        try {
-            dirtyBuilderConfiguration = true;
-            initializePool();
-        } catch (XMLParserException e) {
-            // default settings, no parsing exception
+    }
+    
+    /** 
+     * Initialize the pool. 
+     * 
+     * @throws XMLParserException thrown if pool can not be initialized,
+     *        or if it is already initialized
+     * 
+     **/
+    public synchronized void initialize() throws XMLParserException {
+        if (initialized) {
+            throw new XMLParserException("Parser pool was already initialized");
         }
+        initializeFactory();
+        initialized = true;
+    }
+    
+    /**
+     * Return initialized state. 
+     * 
+     * @return true if pool is initialized, false otherwise
+     */
+    public synchronized boolean isInitialized() {
+        return initialized;
     }
 
     /** {@inheritDoc} */
     public DocumentBuilder getBuilder() throws XMLParserException {
         DocumentBuilder builder = null;
-        long version = 0;
-
-        if (dirtyBuilderConfiguration) {
-            initializePool();
+        
+        if (!initialized) {
+            throw new XMLParserException("Parser pool has not been initialized");
         }
         
-        synchronized(this) {
-            version = getPoolVersion();
+        synchronized(builderPool) {
             if (!builderPool.isEmpty()) {
                 builder = builderPool.pop().get();
             }
-            // Will be null if either the stack was empty, or the SoftReference
-            // has been garbage-collected
-            if (builder == null) {
-                builder = createBuilder();
-            }
+        }
+        
+        // Will be null if either the stack was empty, or the SoftReference
+        // has been garbage-collected
+        if (builder == null) {
+            builder = createBuilder();
         }
 
         if (builder != null) {
-            return new DocumentBuilderProxy(builder, this, version);
+            return new DocumentBuilderProxy(builder, this);
         }
 
         return null;
@@ -175,27 +188,30 @@ public class BasicParserPool implements ParserPool {
         if (!(builder instanceof DocumentBuilderProxy)) {
             return;
         }
-
+        
         DocumentBuilderProxy proxiedBuilder = (DocumentBuilderProxy) builder;
         if (proxiedBuilder.getOwningPool() != this) {
             return;
         }
         
-        synchronized (this) {
+        synchronized (proxiedBuilder) {
             if (proxiedBuilder.isReturned()) {
                 return;
             }
-            
-            if (proxiedBuilder.getPoolVersion() != poolVersion) {
-                return;
-            }
-            
-            DocumentBuilder unwrappedBuilder = proxiedBuilder.getProxiedBuilder();
-            unwrappedBuilder.reset();
-            SoftReference<DocumentBuilder> builderReference = new SoftReference<DocumentBuilder>(unwrappedBuilder);
-
+            // Not strictly true in that it may not actually be pushed back
+            // into the cache, depending on builderPool.size() below.  But 
+            // that's ok.  returnBuilder() shouldn't normally be called twice
+            // on the same builder instance anyway, and it also doesn't matter
+            // whether a builder is ever logically returned to the pool.
+            proxiedBuilder.setReturned(true);
+        }
+        
+        DocumentBuilder unwrappedBuilder = proxiedBuilder.getProxiedBuilder();
+        unwrappedBuilder.reset();
+        SoftReference<DocumentBuilder> builderReference = new SoftReference<DocumentBuilder>(unwrappedBuilder);
+        
+        synchronized(builderPool) {
             if (builderPool.size() < maxPoolSize) {
-                proxiedBuilder.setReturned(true);
                 builderPool.push(builderReference);
             }
         }
@@ -254,33 +270,8 @@ public class BasicParserPool implements ParserPool {
      * @param newSize max number of builders the pool will hold
      */
     public void setMaxPoolSize(int newSize) {
+        checkValidModifyState();
         maxPoolSize = newSize;
-    }
-
-    /**
-     * Gets whether new builders will be created when the max pool size is reached.
-     * 
-     * <p><b>Note this method is deprecated and will be removed in the next release. It
-     * is also currently functionally non-operational.</b></p>
-     * 
-     * @return whether new builders will be created when the max pool size is reached
-     * @deprecated
-     */
-    public boolean getCreateBuildersAtPoolLimit() {
-        return true;
-    }
-
-    /**
-     * Sets whether new builders will be created when the max pool size is reached.
-     * 
-     * <p><b>Note this method is deprecated and will be removed in the next release. It
-     * is also currently functionally non-operational.</b></p>
-     * 
-     * @param createBuilders whether new builders will be created when the max pool size is reached
-     * @deprecated
-     */
-    public void setCreateBuildersAtPoolLimit(boolean createBuilders) {
-        // do nothing
     }
 
     /**
@@ -297,9 +288,9 @@ public class BasicParserPool implements ParserPool {
      * 
      * @param newAttributes builder attributes used when creating builders
      */
-    public synchronized void setBuilderAttributes(Map<String, Object> newAttributes) {
+    public void setBuilderAttributes(Map<String, Object> newAttributes) {
+        checkValidModifyState();
         builderAttributes = newAttributes;
-        dirtyBuilderConfiguration = true;
     }
 
     /**
@@ -316,9 +307,9 @@ public class BasicParserPool implements ParserPool {
      * 
      * @param isCoalescing whether the builders are coalescing
      */
-    public synchronized void setCoalescing(boolean isCoalescing) {
+    public void setCoalescing(boolean isCoalescing) {
+        checkValidModifyState();
         coalescing = isCoalescing;
-        dirtyBuilderConfiguration = true;
     }
 
     /**
@@ -335,9 +326,9 @@ public class BasicParserPool implements ParserPool {
      * 
      * @param expand whether builders expand entity references
      */
-    public synchronized void setExpandEntityReferences(boolean expand) {
+    public void setExpandEntityReferences(boolean expand) {
+        checkValidModifyState();
         expandEntityReferences = expand;
-        dirtyBuilderConfiguration = true;
     }
 
     /**
@@ -354,9 +345,9 @@ public class BasicParserPool implements ParserPool {
      * 
      * @param newFeatures the builders' features
      */
-    public synchronized void setBuilderFeatures(Map<String, Boolean> newFeatures) {
+    public void setBuilderFeatures(Map<String, Boolean> newFeatures) {
+        checkValidModifyState();
         builderFeatures = newFeatures;
-        dirtyBuilderConfiguration = true;
     }
 
     /**
@@ -373,9 +364,9 @@ public class BasicParserPool implements ParserPool {
      * 
      * @param ignore The ignoreComments to set.
      */
-    public synchronized void setIgnoreComments(boolean ignore) {
+    public void setIgnoreComments(boolean ignore) {
+        checkValidModifyState();
         ignoreComments = ignore;
-        dirtyBuilderConfiguration = true;
     }
 
     /**
@@ -392,9 +383,9 @@ public class BasicParserPool implements ParserPool {
      * 
      * @param ignore whether the builders ignore element content whitespace
      */
-    public synchronized void setIgnoreElementContentWhitespace(boolean ignore) {
+    public void setIgnoreElementContentWhitespace(boolean ignore) {
+        checkValidModifyState();
         ignoreElementContentWhitespace = ignore;
-        dirtyBuilderConfiguration = true;
     }
 
     /**
@@ -411,9 +402,9 @@ public class BasicParserPool implements ParserPool {
      * 
      * @param isNamespaceAware whether the builders are namespace aware
      */
-    public synchronized void setNamespaceAware(boolean isNamespaceAware) {
+    public void setNamespaceAware(boolean isNamespaceAware) {
+        checkValidModifyState();
         namespaceAware = isNamespaceAware;
-        dirtyBuilderConfiguration = true;
     }
 
     /** {@inheritDoc} */
@@ -423,14 +414,15 @@ public class BasicParserPool implements ParserPool {
 
     /** {@inheritDoc} */
     public synchronized void setSchema(Schema newSchema) {
+        // Note this method is synchronized because it is more than just an atomic assignment.
+        // Don't want inconsistent data in the factory via initializeFactory(), also synchronized.
+        checkValidModifyState();
         schema = newSchema;
         if (schema != null) {
             setNamespaceAware(true);
             builderAttributes.remove("http://java.sun.com/xml/jaxp/properties/schemaSource");
             builderAttributes.remove("http://java.sun.com/xml/jaxp/properties/schemaLanguage");
         }
-
-        dirtyBuilderConfiguration = true;
     }
 
     /**
@@ -447,9 +439,9 @@ public class BasicParserPool implements ParserPool {
      * 
      * @param isValidating whether the builders are validating
      */
-    public synchronized void setDTDValidating(boolean isValidating) {
+    public void setDTDValidating(boolean isValidating) {
+        checkValidModifyState();
         dtdValidating = isValidating;
-        dirtyBuilderConfiguration = true;
     }
 
     /**
@@ -466,20 +458,11 @@ public class BasicParserPool implements ParserPool {
      * 
      * @param isXIncludeAware whether the builders are XInclude aware
      */
-    public synchronized void setXincludeAware(boolean isXIncludeAware) {
+    public void setXincludeAware(boolean isXIncludeAware) {
+        checkValidModifyState();
         xincludeAware = isXIncludeAware;
-        dirtyBuilderConfiguration = true;
     }
 
-    /**
-     * Gets the current pool version.
-     * 
-     * @return current pool version
-     */
-    protected long getPoolVersion() {
-        return poolVersion;
-    }
-    
     /**
      * Gets the size of the current pool storage.
      * 
@@ -488,18 +471,22 @@ public class BasicParserPool implements ParserPool {
     protected int getPoolSize() {
         return builderPool.size();
     }
+    
+    /**
+     * Check that pool is in a valid state to be modified.
+     */
+    protected void checkValidModifyState() {
+        if (initialized) {
+            throw new IllegalStateException("Pool is already initialized, property changes not allowed");
+        }
+    }
 
     /**
      * Initializes the pool with a new set of configuration options.
      * 
      * @throws XMLParserException thrown if there is a problem initialzing the pool
      */
-    protected synchronized void initializePool() throws XMLParserException {
-        if (!dirtyBuilderConfiguration) {
-            // in case the pool was initialized by some other thread
-            return;
-        }
-
+    protected synchronized void initializeFactory() throws XMLParserException {
         try {
             DocumentBuilderFactory newFactory = DocumentBuilderFactory.newInstance();
 
@@ -522,10 +509,7 @@ public class BasicParserPool implements ParserPool {
             newFactory.setValidating(dtdValidating);
             newFactory.setXIncludeAware(xincludeAware);
 
-            poolVersion++;
-            dirtyBuilderConfiguration = false;
             builderFactory = newFactory;
-            builderPool.clear();
 
         } catch (ParserConfigurationException e) {
             throw new XMLParserException("Unable to configure builder factory", e);
@@ -569,9 +553,6 @@ public class BasicParserPool implements ParserPool {
         /** Pool that owns this parser. */
         private ParserPool owningPool;
 
-        /** Version of the pool when this proxy was created. */
-        private long owningPoolVersion;
-        
         /** Track accounting state of whether this builder has been returned to the owning pool. */
         private boolean returned;
 
@@ -580,10 +561,8 @@ public class BasicParserPool implements ParserPool {
          * 
          * @param target document builder to proxy
          * @param owner the owning pool
-         * @param version the owning pool's version
          */
-        public DocumentBuilderProxy(DocumentBuilder target, BasicParserPool owner, long version) {
-            owningPoolVersion = version;
+        public DocumentBuilderProxy(DocumentBuilder target, StaticBasicParserPool owner) {
             owningPool = owner;
             builder = target;
             returned = false;
@@ -680,16 +659,7 @@ public class BasicParserPool implements ParserPool {
         protected ParserPool getOwningPool() {
             return owningPool;
         }
-
-        /**
-         * Gets the version of the pool that owns this parser at the time of the proxy's creation.
-         * 
-         * @return version of the pool that owns this parser at the time of the proxy's creation
-         */
-        protected long getPoolVersion() {
-            return owningPoolVersion;
-        }
-
+        
         /**
          * Gets the proxied document builder.
          * 

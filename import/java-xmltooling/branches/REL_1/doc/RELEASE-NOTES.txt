@@ -5,6 +5,7 @@ Changes in Release 1.2.1
 [JXT-49] - Remove some inconsistent (and non-functional) logic in BasicParserPool
 [JXT-50] - Update libs for 1.2.1 release
 [JXT-51] - In BasicParserPool, avoid throwing an EmptyStackException on empty cache case
+[JXT-52] - New ParserPool implementation that eliminates most locking by forgoing support for versioning and property mods over time
 
 Changes in Release 1.2
 ==============================================
