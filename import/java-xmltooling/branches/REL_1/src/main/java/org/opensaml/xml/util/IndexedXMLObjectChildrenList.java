@@ -228,8 +228,10 @@ public class IndexedXMLObjectChildrenList<ElementType extends XMLObject> extends
 }
 
 /**
- * A special list that works as a view of an IndexedXMLObjectChildrenList showing only the sublist associated with a
- * given index. Operations performed on this sublist are reflected in the backing list.
+ * A special, unmodifiable, list that works as a view of an IndexedXMLObjectChildrenList showing only the sublist
+ * associated with a given index. Operations performed on this sublist are reflected in the backing list.
+ * 
+ * Note, this list does not reflect changes made to the backing list after the view has been created.
  * 
  * @param <ElementType> the XMLObject type that this list operates on
  */
@@ -279,44 +281,45 @@ class ListView<ElementType extends XMLObject> extends AbstractList<ElementType> 
 
     /** {@inheritDoc} */
     public ElementType set(int newIndex, ElementType element) {
-
-        if (newIndex < 0 && newIndex > indexList.size()) {
-            throw new IndexOutOfBoundsException();
-        }
-
-        ElementType replacedElement;
-        int elementIndex;
-
-        replacedElement = indexList.get(newIndex);
-        elementIndex = backingList.indexOf(replacedElement);
-        backingList.set(elementIndex, element);
-
-        return replacedElement;
+        throw new UnsupportedOperationException();
     }
 
     /** {@inheritDoc} */
     public void add(int newIndex, ElementType element) {
-        indexCheck(element);
-        backingList.add(element);
+        throw new UnsupportedOperationException();
     }
 
     /** {@inheritDoc} */
     public ElementType remove(int newIndex) {
-        return backingList.remove(newIndex);
+        throw new UnsupportedOperationException();
     }
 
-    /**
-     * Checks to make sure the given element schema type or name matches the index given at construction time.
-     * 
-     * @param element the element to check
-     * 
-     * @throws IllegalArgumentException thrown if the element schema type or name does not match the index
-     */
-    protected void indexCheck(ElementType element) throws IllegalArgumentException {
-        if (index.equals(element.getSchemaType()) || index.equals(element.getElementQName())) {
-            return;
-        } else {
-            throw new IllegalArgumentException("Element " + element.getElementQName() + " is not of type " + index);
-        }
+    /** {@inheritDoc} */
+    public boolean addAll(Collection<? extends ElementType> c) {
+        throw new UnsupportedOperationException();
+    }
+
+    /** {@inheritDoc} */
+    public boolean remove(Object o) {
+        throw new UnsupportedOperationException();
+    }
+
+    /** {@inheritDoc} */
+    public boolean removeAll(Collection<?> c) {
+        throw new UnsupportedOperationException();
+    }
+
+    /** {@inheritDoc} */
+    public boolean retainAll(Collection<?> c) {
+        throw new UnsupportedOperationException();
+    }
+
+    public boolean add(ElementType o) {
+        throw new UnsupportedOperationException();
+    };
+
+    /** {@inheritDoc} */
+    public boolean addAll(int index, Collection<? extends ElementType> c) {
+        throw new UnsupportedOperationException();
     }
 }

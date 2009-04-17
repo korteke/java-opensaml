@@ -17,7 +17,6 @@
 package org.opensaml.xml.util;
 
 import java.util.Arrays;
-import java.util.HashSet;
 
 import junit.framework.TestCase;
 

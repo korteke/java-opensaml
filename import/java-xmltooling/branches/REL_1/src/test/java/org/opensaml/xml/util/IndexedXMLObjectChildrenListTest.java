@@ -16,6 +16,7 @@
 
 package org.opensaml.xml.util;
 
+import java.util.Iterator;
 import java.util.List;
 
 import javax.xml.namespace.QName;
@@ -34,12 +35,13 @@ import junit.framework.TestCase;
  * 
  */
 public class IndexedXMLObjectChildrenListTest extends TestCase {
-    
+
     private QName type1 = new QName("example.org/ns/type1", "Type1");
+
     private QName type2 = new QName("example.org/ns/type2", "Type2");
+
     private SimpleXMLObjectBuilder sxoBuilder = new SimpleXMLObjectBuilder();
-    
-    
+
     /**
      * Test the add method to make sure it creates the index correctly.
      */
@@ -102,55 +104,80 @@ public class IndexedXMLObjectChildrenListTest extends TestCase {
                 child1.getElementQName()).size());
         assertNull("List gotten by type QName index should have been null", indexedList.get(child1.getSchemaType()));
     }
-    
+
     /**
      * Tests the sublist functionality.
      */
     public void testSublist() {
         SimpleXMLObject parentObject = sxoBuilder.buildObject();
-        IndexedXMLObjectChildrenList<XMLObject> indexedList = new IndexedXMLObjectChildrenList<XMLObject>(
-                parentObject);
-        
+        IndexedXMLObjectChildrenList<XMLObject> indexedList = new IndexedXMLObjectChildrenList<XMLObject>(parentObject);
+
         SimpleXMLObject child1 = sxoBuilder.buildObject(SimpleXMLObject.ELEMENT_NAME, type1);
         indexedList.add(child1);
 
         SimpleXMLObject child2 = sxoBuilder.buildObject(SimpleXMLObject.ELEMENT_NAME, type2);
         indexedList.add(child2);
-        
+
         SimpleXMLObject child3 = sxoBuilder.buildObject();
         indexedList.add(child3);
-        
+
         SimpleXMLObject child4 = sxoBuilder.buildObject(SimpleXMLObject.ELEMENT_NAME, type2);
         indexedList.add(child4);
-        
+
         SimpleXMLObject child5 = sxoBuilder.buildObject(SimpleXMLObject.ELEMENT_NAME, type1);
         indexedList.add(child5);
-        
+
         SimpleXMLObject child6 = sxoBuilder.buildObject(SimpleXMLObject.ELEMENT_NAME, type1);
         indexedList.add(child6);
-        
-        List<SimpleXMLObject> elementNameSublist = (List<SimpleXMLObject>) indexedList.subList(child1.getElementQName());
+
+        List<SimpleXMLObject> elementNameSublist = (List<SimpleXMLObject>) indexedList
+                .subList(child1.getElementQName());
         List<SimpleXMLObject> type1SchemaSublist = (List<SimpleXMLObject>) indexedList.subList(type1);
         List<SimpleXMLObject> type2SchemaSublist = (List<SimpleXMLObject>) indexedList.subList(type2);
-        
-        assertEquals("Element name index sublist did not have expected number of elements", 6, elementNameSublist.size());
-        assertEquals("Schema Type1 index sublist did not have expected number of elements", 3, type1SchemaSublist.size());
-        assertEquals("Schema Type2 index sublist did not have expected number of elements", 2, type2SchemaSublist.size());
-        
+
+        assertEquals("Element name index sublist did not have expected number of elements", 6, elementNameSublist
+                .size());
+        assertEquals("Schema Type1 index sublist did not have expected number of elements", 3, type1SchemaSublist
+                .size());
+        assertEquals("Schema Type2 index sublist did not have expected number of elements", 2, type2SchemaSublist
+                .size());
+
         SimpleXMLObject child7 = sxoBuilder.buildObject(SimpleXMLObject.ELEMENT_NAME, type1);
-        type1SchemaSublist.add(child7);
+        try {
+            type1SchemaSublist.add(child7);
+            fail("Unsupported add operation did not throw proper exception");
+        } catch (UnsupportedOperationException e) {
+
+        }
         
-        assertEquals("Child added to sublist did not have parent properly set", parentObject, child7.getParent());
-        assertEquals("Element name index sublist did not have expected number of elements", 7, elementNameSublist.size());
-        assertEquals("Schema Type1 index sublist did not have expected number of elements", 4, type1SchemaSublist.size());
-        assertEquals("Schema Type2 index sublist did not have expected number of elements", 2, type2SchemaSublist.size());
+        try {
+            type1SchemaSublist.set(0, child7);
+            fail("Unsupported set operation did not throw proper exception");
+        } catch (UnsupportedOperationException e) {
+
+        }
         
-        SimpleXMLObject child8 = sxoBuilder.buildObject(SimpleXMLObject.ELEMENT_NAME, type2);
-        SimpleXMLObject replacedObject = type2SchemaSublist.set(0, child8);
+        try {
+            type1SchemaSublist.remove(0);
+            fail("Unsupported remove operation did not throw proper exception");
+        } catch (UnsupportedOperationException e) {
+
+        }
         
-        assertEquals("Element name index sublist did not have expected number of elements", 7, elementNameSublist.size());
-        assertEquals("Schema Type1 index sublist did not have expected number of elements", 4, type1SchemaSublist.size());
-        assertEquals("Schema Type2 index sublist did not have expected number of elements", 2, type2SchemaSublist.size());
-        assertEquals("Replaced object was not expected object", child2, replacedObject);
+        try {
+            type1SchemaSublist.remove(child7);
+            fail("Unsupported remove operation did not throw proper exception");
+        } catch (UnsupportedOperationException e) {
+
+        }
+        
+        try {
+            Iterator<SimpleXMLObject> listItr = type1SchemaSublist.iterator();
+            listItr.next();
+            listItr.remove();
+            fail("Unsupported remove operation did not throw proper exception");
+        } catch (UnsupportedOperationException e) {
+
+        }
     }
 }
