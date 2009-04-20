@@ -228,8 +228,9 @@ public class IndexedXMLObjectChildrenList<ElementType extends XMLObject> extends
 }
 
 /**
- * A special, unmodifiable, list that works as a view of an IndexedXMLObjectChildrenList showing only the sublist
- * associated with a given index. Operations performed on this sublist are reflected in the backing list.
+ * A special list that works as a view of an IndexedXMLObjectChildrenList showing only the sublist associated with a
+ * given index. Operations performed on this sublist are reflected in the backing list. Index-based operations are not
+ * supported.
  * 
  * Note, this list does not reflect changes made to the backing list after the view has been created.
  * 
@@ -280,6 +281,35 @@ class ListView<ElementType extends XMLObject> extends AbstractList<ElementType> 
     }
 
     /** {@inheritDoc} */
+    public boolean addAll(Collection<? extends ElementType> c) {
+        return backingList.addAll(c);
+    }
+
+    /** {@inheritDoc} */
+    public boolean remove(Object o) {
+        return backingList.remove(o);
+    }
+
+    /** {@inheritDoc} */
+    public boolean removeAll(Collection<?> c) {
+        return backingList.removeAll(c);
+    }
+
+    /** {@inheritDoc} */
+    public boolean retainAll(Collection<?> c) {
+        return backingList.retainAll(c);
+    }
+
+    public boolean add(ElementType o) {
+        return backingList.add(o);
+    }
+
+    /** {@inheritDoc} */
+    public boolean addAll(int index, Collection<? extends ElementType> c) {
+        throw new UnsupportedOperationException();
+    }
+
+    /** {@inheritDoc} */
     public ElementType set(int newIndex, ElementType element) {
         throw new UnsupportedOperationException();
     }
@@ -291,35 +321,6 @@ class ListView<ElementType extends XMLObject> extends AbstractList<ElementType> 
 
     /** {@inheritDoc} */
     public ElementType remove(int newIndex) {
-        throw new UnsupportedOperationException();
-    }
-
-    /** {@inheritDoc} */
-    public boolean addAll(Collection<? extends ElementType> c) {
-        throw new UnsupportedOperationException();
-    }
-
-    /** {@inheritDoc} */
-    public boolean remove(Object o) {
-        throw new UnsupportedOperationException();
-    }
-
-    /** {@inheritDoc} */
-    public boolean removeAll(Collection<?> c) {
-        throw new UnsupportedOperationException();
-    }
-
-    /** {@inheritDoc} */
-    public boolean retainAll(Collection<?> c) {
-        throw new UnsupportedOperationException();
-    }
-
-    public boolean add(ElementType o) {
-        throw new UnsupportedOperationException();
-    };
-
-    /** {@inheritDoc} */
-    public boolean addAll(int index, Collection<? extends ElementType> c) {
         throw new UnsupportedOperationException();
     }
 }
