@@ -60,6 +60,18 @@ public class IndexedXMLObjectChildrenList<ElementType extends XMLObject> extends
         addAll(col);
     }
 
+    /**
+     * Inserts the specified element at the specified position in this list. Shifts the element currently at that
+     * position (if any) and any subsequent elements to the right (adds one to their indices).
+     * 
+     * @param index index of element to add
+     * @param element element to be stored at the specified position
+     */
+    public void add(int index, ElementType element) {
+        super.add(index, element);
+        indexElement(element);
+    }
+
     /** {@inheritDoc} */
     public void clear() {
         super.clear();
@@ -75,86 +87,6 @@ public class IndexedXMLObjectChildrenList<ElementType extends XMLObject> extends
      */
     public List<ElementType> get(QName typeOrName) {
         return objectIndex.get(typeOrName);
-    }
-
-    /**
-     * Replaces the element at the specified position in this list with the specified element.
-     * 
-     * @param index index of element to replace
-     * @param element element to be stored at the specified position
-     * 
-     * @return the element previously at the specified position
-     */
-    public ElementType set(int index, ElementType element) {
-        ElementType returnValue = super.set(index, element);
-
-        removeElementFromIndex(returnValue);
-
-        indexElement(element);
-        return returnValue;
-    }
-
-    /**
-     * Inserts the specified element at the specified position in this list. Shifts the element currently at that
-     * position (if any) and any subsequent elements to the right (adds one to their indices).
-     * 
-     * @param index index of element to add
-     * @param element element to be stored at the specified position
-     */
-    public void add(int index, ElementType element) {
-        super.add(index, element);
-        indexElement(element);
-    }
-
-    /**
-     * Removes the element at the specified position in this list. Shifts any subsequent elements to the left (subtracts
-     * one from their indices). Returns the element that was removed from the list
-     * 
-     * @param index the index of the element to remove
-     * 
-     * @return the element removed from the list
-     */
-    public ElementType remove(int index) {
-        ElementType returnValue = super.remove(index);
-
-        removeElementFromIndex(returnValue);
-
-        return returnValue;
-    }
-
-    /**
-     * Removes a given element from the list and index.
-     * 
-     * @param element the element to be removed
-     * 
-     * @return true if the element was in the list and removed, false if not
-     */
-    public boolean remove(ElementType element) {
-        boolean elementRemoved = false;
-
-        elementRemoved = super.remove(element);
-        if (elementRemoved) {
-            removeElementFromIndex(element);
-        }
-
-        return elementRemoved;
-    }
-
-    /**
-     * Returns a view of the list that only contains elements stored under the given index. The returned list is backed
-     * by this list so and supports all optional operations, so changes made to the returned list are reflected in this
-     * list.
-     * 
-     * @param index index of the elements returned in the list view
-     * 
-     * @return a view of this list that contains only the elements stored under the given index
-     */
-    public List<? extends ElementType> subList(QName index) {
-        if (!objectIndex.containsKey(index)) {
-            objectIndex.put(index, new LazyList<ElementType>());
-        }
-
-        return new ListView<ElementType>(this, index);
     }
 
     /**
@@ -192,6 +124,40 @@ public class IndexedXMLObjectChildrenList<ElementType extends XMLObject> extends
     }
 
     /**
+     * Removes a given element from the list and index.
+     * 
+     * @param element the element to be removed
+     * 
+     * @return true if the element was in the list and removed, false if not
+     */
+    public boolean remove(ElementType element) {
+        boolean elementRemoved = false;
+
+        elementRemoved = super.remove(element);
+        if (elementRemoved) {
+            removeElementFromIndex(element);
+        }
+
+        return elementRemoved;
+    }
+
+    /**
+     * Removes the element at the specified position in this list. Shifts any subsequent elements to the left (subtracts
+     * one from their indices). Returns the element that was removed from the list
+     * 
+     * @param index the index of the element to remove
+     * 
+     * @return the element removed from the list
+     */
+    public ElementType remove(int index) {
+        ElementType returnValue = super.remove(index);
+
+        removeElementFromIndex(returnValue);
+
+        return returnValue;
+    }
+
+    /**
      * Removes the given element from the schema type and element qname index.
      * 
      * @param element the element to remove from the index
@@ -225,14 +191,46 @@ public class IndexedXMLObjectChildrenList<ElementType extends XMLObject> extends
             objectIndex.remove(index);
         }
     }
+
+    /**
+     * Replaces the element at the specified position in this list with the specified element.
+     * 
+     * @param index index of element to replace
+     * @param element element to be stored at the specified position
+     * 
+     * @return the element previously at the specified position
+     */
+    public ElementType set(int index, ElementType element) {
+        ElementType returnValue = super.set(index, element);
+
+        removeElementFromIndex(returnValue);
+
+        indexElement(element);
+        return returnValue;
+    }
+
+    /**
+     * Returns a view of the list that only contains elements stored under the given index. The returned list is backed
+     * by this list so and supports all optional operations, so changes made to the returned list are reflected in this
+     * list.
+     * 
+     * @param index index of the elements returned in the list view
+     * 
+     * @return a view of this list that contains only the elements stored under the given index
+     */
+    public List<? extends ElementType> subList(QName index) {
+        if (!objectIndex.containsKey(index)) {
+            objectIndex.put(index, new LazyList<ElementType>());
+        }
+
+        return new ListView<ElementType>(this, index);
+    }
 }
 
 /**
  * A special list that works as a view of an IndexedXMLObjectChildrenList showing only the sublist associated with a
- * given index. Operations performed on this sublist are reflected in the backing list. Index-based operations are not
- * supported.
- * 
- * Note, this list does not reflect changes made to the backing list after the view has been created.
+ * given index. Operations performed on this sublist are reflected in the backing list. Index-based mutation operations
+ * are not supported.
  * 
  * @param <ElementType> the XMLObject type that this list operates on
  */
@@ -259,59 +257,10 @@ class ListView<ElementType extends XMLObject> extends AbstractList<ElementType> 
         indexList = backingList.get(index);
     }
 
-    /**
-     * Checks to see if the given element is contained in this list.
-     * 
-     * @param element the element to check for
-     * 
-     * @return true if the element is in this list, false if not
-     */
-    public boolean contains(ElementType element) {
-        return indexList.contains(element);
-    }
-
-    /** {@inheritDoc} */
-    public ElementType get(int newIndex) {
-        return indexList.get(newIndex);
-    }
-
-    /** {@inheritDoc} */
-    public int size() {
-        return indexList.size();
-    }
-
-    /** {@inheritDoc} */
-    public boolean addAll(Collection<? extends ElementType> c) {
-        return backingList.addAll(c);
-    }
-
-    /** {@inheritDoc} */
-    public boolean remove(Object o) {
-        return backingList.remove(o);
-    }
-
-    /** {@inheritDoc} */
-    public boolean removeAll(Collection<?> c) {
-        return backingList.removeAll(c);
-    }
-
-    /** {@inheritDoc} */
-    public boolean retainAll(Collection<?> c) {
-        return backingList.retainAll(c);
-    }
-
     public boolean add(ElementType o) {
-        return backingList.add(o);
-    }
-
-    /** {@inheritDoc} */
-    public boolean addAll(int index, Collection<? extends ElementType> c) {
-        throw new UnsupportedOperationException();
-    }
-
-    /** {@inheritDoc} */
-    public ElementType set(int newIndex, ElementType element) {
-        throw new UnsupportedOperationException();
+        boolean result = backingList.add(o);
+        indexList = backingList.get(index);
+        return result;
     }
 
     /** {@inheritDoc} */
@@ -320,7 +269,101 @@ class ListView<ElementType extends XMLObject> extends AbstractList<ElementType> 
     }
 
     /** {@inheritDoc} */
+    public boolean addAll(Collection<? extends ElementType> c) {
+        boolean result = backingList.addAll(c);
+        indexList = backingList.get(index);
+        return result;
+    }
+
+    /** {@inheritDoc} */
+    public boolean addAll(int index, Collection<? extends ElementType> c) {
+        throw new UnsupportedOperationException();
+    }
+
+    /** {@inheritDoc} */
+    public void clear() {
+        backingList.clear();
+        indexList = backingList.get(index);
+    }
+
+    /**
+     * Checks to see if the given element is contained in this list.
+     * 
+     * @param element the element to check for
+     * 
+     * @return true if the element is in this list, false if not
+     */
+    public boolean contains(Object element) {
+        return indexList.contains(element);
+    }
+
+    /** {@inheritDoc} */
+    public boolean containsAll(Collection<?> c) {
+        return indexList.containsAll(c);
+    }
+
+    /** {@inheritDoc} */
+    public ElementType get(int newIndex) {
+        return indexList.get(newIndex);
+    }
+
+    /** {@inheritDoc} */
+    public int indexOf(Object o) {
+        return backingList.indexOf(o);
+    }
+
+    /** {@inheritDoc} */
+    public boolean isEmpty() {
+        return indexList.isEmpty();
+    }
+
+    /** {@inheritDoc} */
+    public int lastIndexOf(Object o) {
+        return backingList.lastIndexOf(o);
+    }
+
+    /** {@inheritDoc} */
     public ElementType remove(int newIndex) {
         throw new UnsupportedOperationException();
+    }
+
+    /** {@inheritDoc} */
+    public boolean remove(Object o) {
+        boolean result = backingList.remove(o);
+        indexList = backingList.get(index);
+        return result;
+    }
+
+    /** {@inheritDoc} */
+    public boolean removeAll(Collection<?> c) {
+        boolean result = backingList.removeAll(c);
+        indexList = backingList.get(index);
+        return result;
+    }
+
+    /** {@inheritDoc} */
+    public boolean retainAll(Collection<?> c) {
+        boolean result = backingList.retainAll(c);
+        indexList = backingList.get(index);
+        return result;
+    }
+
+    /** {@inheritDoc} */
+    public ElementType set(int newIndex, ElementType element) {
+        throw new UnsupportedOperationException();
+    }
+
+    /** {@inheritDoc} */
+    public int size() {
+        return indexList.size();
+    }
+
+    /** {@inheritDoc} */
+    public Object[] toArray() {
+        return indexList.toArray();
+    }
+
+    public <T extends Object> T[] toArray(T[] a) {
+        return indexList.toArray(a);
     }
 }

@@ -16,17 +16,15 @@
 
 package org.opensaml.xml.util;
 
-import java.util.Iterator;
 import java.util.List;
 
 import javax.xml.namespace.QName;
 
+import junit.framework.TestCase;
+
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.mock.SimpleXMLObject;
 import org.opensaml.xml.mock.SimpleXMLObjectBuilder;
-import org.opensaml.xml.util.IndexedXMLObjectChildrenList;
-
-import junit.framework.TestCase;
 
 /**
  * Test case for {@link org.opensaml.xml.util.IndexedXMLObjectChildrenList}. Note that this test only tests those
@@ -143,38 +141,23 @@ public class IndexedXMLObjectChildrenListTest extends TestCase {
                 .size());
 
         SimpleXMLObject child7 = sxoBuilder.buildObject(SimpleXMLObject.ELEMENT_NAME, type1);
-        try {
-            type1SchemaSublist.add(child7);
-            fail("Unsupported add operation did not throw proper exception");
-        } catch (UnsupportedOperationException e) {
+        type1SchemaSublist.add(child7);
+        assertTrue(type1SchemaSublist.contains(child7));
+        assertTrue(indexedList.contains(child7));
 
-        }
-        
+        type1SchemaSublist.remove(child7);
+        assertFalse(type1SchemaSublist.contains(child7));
+        assertFalse(indexedList.contains(child7));
+
         try {
             type1SchemaSublist.set(0, child7);
             fail("Unsupported set operation did not throw proper exception");
         } catch (UnsupportedOperationException e) {
 
         }
-        
+
         try {
             type1SchemaSublist.remove(0);
-            fail("Unsupported remove operation did not throw proper exception");
-        } catch (UnsupportedOperationException e) {
-
-        }
-        
-        try {
-            type1SchemaSublist.remove(child7);
-            fail("Unsupported remove operation did not throw proper exception");
-        } catch (UnsupportedOperationException e) {
-
-        }
-        
-        try {
-            Iterator<SimpleXMLObject> listItr = type1SchemaSublist.iterator();
-            listItr.next();
-            listItr.remove();
             fail("Unsupported remove operation did not throw proper exception");
         } catch (UnsupportedOperationException e) {
 
