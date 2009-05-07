@@ -83,7 +83,7 @@ public class SecurityTokenReferenceMarshaller extends
                                                          SecurityTokenReference.USAGE_ATTR_NAME);
             String usagesList= sb.toString().trim();
             attribute.setValue(usagesList);
-            domElement.setAttributeNode(attribute);
+            domElement.setAttributeNodeNS(attribute);
         }
         super.marshallAttributes(xmlObject, domElement);
     }

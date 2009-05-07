@@ -52,13 +52,13 @@ public class ReferenceMarshaller extends AbstractWSSecurityObjectMarshaller {
         if (uri != null) {
             Attr attr = XMLHelper.constructAttribute(document, Reference.URI_ATTR_NAME);
             attr.setValue(uri);
-            domElement.setAttributeNode(attr);
+            domElement.setAttributeNodeNS(attr);
         }
         String valueType = reference.getValueType();
         if (valueType != null) {
             Attr attr = XMLHelper.constructAttribute(document, Reference.VALUE_TYPE_ATTR_NAME);
             attr.setValue(valueType);
-            domElement.setAttributeNode(attr);
+            domElement.setAttributeNodeNS(attr);
         }
 
         super.marshallAttributes(xmlObject, domElement);

@@ -56,7 +56,7 @@ public class KeyIdentifierMarshaller extends AbstractAttributedIdMarshaller {
             Attr attribute= XMLHelper.constructAttribute(document,
                                                          AttributedValueType.VALUE_TYPE_ATTR_NAME);
             attribute.setValue(valueType);
-            domElement.setAttributeNode(attribute);
+            domElement.setAttributeNodeNS(attribute);
         }
         AttributedEncodingType encodingTyped= (AttributedEncodingType) xmlObject;
         String encodingType= encodingTyped.getEncodingType();
@@ -64,7 +64,7 @@ public class KeyIdentifierMarshaller extends AbstractAttributedIdMarshaller {
             Attr attribute= XMLHelper.constructAttribute(document,
                                                          AttributedEncodingType.ENCODING_TYPE_ATTR_NAME);
             attribute.setValue(encodingType);
-            domElement.setAttributeNode(attribute);
+            domElement.setAttributeNodeNS(attribute);
         }
         super.marshallAttributes(xmlObject, domElement);
     }

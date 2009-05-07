@@ -65,7 +65,7 @@ public class NonceMarshaller extends AbstractWSSecurityObjectMarshaller {
             Document document = domElement.getOwnerDocument();
             Attr attribute = XMLHelper.constructAttribute(document, AttributedEncodingType.ENCODING_TYPE_ATTR_NAME);
             attribute.setValue(encodingType);
-            domElement.setAttributeNode(attribute);
+            domElement.setAttributeNodeNS(attribute);
         }
     }
 

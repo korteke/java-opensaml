@@ -52,7 +52,7 @@ public class PasswordMarshaller extends AbstractAttributedIdMarshaller {
             Document document = domElement.getOwnerDocument();
             Attr attribute = XMLHelper.constructAttribute(document, Password.TYPE_ATTR_NAME);
             attribute.setValue(type);
-            domElement.setAttributeNode(attribute);
+            domElement.setAttributeNodeNS(attribute);
         }
         super.marshallAttributes(xmlObject, domElement);
     }

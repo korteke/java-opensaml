@@ -52,7 +52,7 @@ public class EmbeddedMarshaller extends AbstractExtensibleXMLObjectMarshaller {
         if (valueType != null) {
             Attr attribute = XMLHelper.constructAttribute(document, AttributedValueType.VALUE_TYPE_ATTR_NAME);
             attribute.setValue(valueType);
-            domElement.setAttributeNode(attribute);
+            domElement.setAttributeNodeNS(attribute);
         }
         super.marshallAttributes(xmlObject, domElement);
     }
