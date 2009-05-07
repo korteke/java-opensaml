@@ -225,7 +225,7 @@ public final class XMLHelper {
         }
 
         if (DatatypeHelper.isEmpty(namespaceURI)) {
-            return document.createAttribute(qualifiedName);
+            return document.createAttributeNS(null, qualifiedName);
         } else {
             return document.createAttributeNS(namespaceURI, qualifiedName);
         }

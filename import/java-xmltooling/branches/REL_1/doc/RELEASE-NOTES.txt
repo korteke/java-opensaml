@@ -7,6 +7,7 @@ Changes in Release 1.2.1
 [JXT-51] - In BasicParserPool, avoid throwing an EmptyStackException on empty cache case
 [JXT-52] - New ParserPool implementation that eliminates most locking by forgoing support for versioning and property mods over time
 [JXT-54] - Method add(index, element) for a subList (e.g. of a choicegroup) only append element.
+[JXT-56] - XMLHelper erroneously creating DOM Attribute with Document createAttribute rather than createAttributeNS
 
 Changes in Release 1.2
 ==============================================
