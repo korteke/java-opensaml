@@ -26,7 +26,7 @@ import javax.security.auth.x500.X500Principal;
 
 import junit.framework.TestCase;
 
-import org.opensaml.xml.security.SecurityTestHelper;
+import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.credential.BasicCredential;
 import org.opensaml.xml.security.x509.BasicX509Credential;
 
@@ -74,7 +74,7 @@ public class EvaluableX509CertSelectorCredentialCriteriaTest extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
         
-        entityCert = SecurityTestHelper.buildJavaX509Cert(entityCertBase64);
+        entityCert = SecurityHelper.buildJavaX509Cert(entityCertBase64);
         pubKey = entityCert.getPublicKey();
         subjectName = new X500Principal("cn=foobar.example.org, O=Internet2");
         
@@ -102,7 +102,7 @@ public class EvaluableX509CertSelectorCredentialCriteriaTest extends TestCase {
     }
 
     public void testNotSatisfy() throws NoSuchAlgorithmException, NoSuchProviderException {
-        certSelector.setSubjectPublicKey( SecurityTestHelper.generateKeyPair("RSA", 1024, null).getPublic() );
+        certSelector.setSubjectPublicKey( SecurityHelper.generateKeyPair("RSA", 1024, null).getPublic() );
         assertFalse("Credential should NOT have matched the evaluable criteria", evalCrit.evaluate(credential));
     }
     

@@ -32,7 +32,7 @@ import javax.security.auth.x500.X500Principal;
 
 import org.opensaml.xml.XMLObjectBaseTestCase;
 import org.opensaml.xml.security.SecurityException;
-import org.opensaml.xml.security.SecurityTestHelper;
+import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.keyinfo.KeyInfoGenerator;
 import org.opensaml.xml.security.keyinfo.KeyInfoHelper;
 import org.opensaml.xml.signature.KeyInfo;
@@ -141,10 +141,10 @@ public class X509KeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         factory = new X509KeyInfoGeneratorFactory();
         generator = null;
         
-        entityCert = SecurityTestHelper.buildJavaX509Cert(entityCertBase64);
+        entityCert = SecurityHelper.buildJavaX509Cert(entityCertBase64);
         pubKey = entityCert.getPublicKey();
-        caCert = SecurityTestHelper.buildJavaX509Cert(caCertBase64);
-        caCRL = SecurityTestHelper.buildJavaX509CRL(caCRLBase64);
+        caCert = SecurityHelper.buildJavaX509Cert(caCertBase64);
+        caCRL = SecurityHelper.buildJavaX509CRL(caCRLBase64);
         
         subjectCN = "foobar.example.org";
         subjectName = new X500Principal("cn=foobar.example.org, O=Internet2");

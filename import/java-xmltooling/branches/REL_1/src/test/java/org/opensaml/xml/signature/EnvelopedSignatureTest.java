@@ -32,7 +32,6 @@ import org.opensaml.xml.mock.SimpleXMLObjectBuilder;
 import org.opensaml.xml.parse.BasicParserPool;
 import org.opensaml.xml.parse.XMLParserException;
 import org.opensaml.xml.security.SecurityHelper;
-import org.opensaml.xml.security.SecurityTestHelper;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.keyinfo.KeyInfoHelper;
 import org.opensaml.xml.signature.impl.SignatureBuilder;
@@ -70,10 +69,10 @@ public class EnvelopedSignatureTest extends XMLObjectBaseTestCase {
     protected void setUp() throws Exception {
         super.setUp();
         
-        KeyPair keyPair = SecurityTestHelper.generateKeyPair("RSA", 1024, null);
+        KeyPair keyPair = SecurityHelper.generateKeyPair("RSA", 1024, null);
         goodCredential = SecurityHelper.getSimpleCredential(keyPair.getPublic(), keyPair.getPrivate());
 
-        keyPair = SecurityTestHelper.generateKeyPair("RSA", 1024, null);
+        keyPair = SecurityHelper.generateKeyPair("RSA", 1024, null);
         badCredential = SecurityHelper.getSimpleCredential(keyPair.getPublic(), null);
 
         sxoBuilder = new SimpleXMLObjectBuilder();

@@ -24,7 +24,7 @@ import org.opensaml.xml.XMLObjectBaseTestCase;
 import org.opensaml.xml.encryption.EncryptedData;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.security.SecurityException;
-import org.opensaml.xml.security.SecurityTestHelper;
+import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.signature.KeyInfo;
 import org.opensaml.xml.signature.KeyName;
 import org.w3c.dom.Element;
@@ -67,7 +67,7 @@ public class StaticKeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         keyname2.setValue(expectedKeyName2);
         origKeyInfo.getKeyNames().add(keyname2);
         
-        expectedKeyValue = SecurityTestHelper.generateKeyPair(expectedKeyAlgorithm, 1024, null).getPublic();
+        expectedKeyValue = SecurityHelper.generateKeyPair(expectedKeyAlgorithm, 1024, null).getPublic();
         KeyInfoHelper.addPublicKey(origKeyInfo, expectedKeyValue);
         
         generator = new StaticKeyInfoGenerator(origKeyInfo);

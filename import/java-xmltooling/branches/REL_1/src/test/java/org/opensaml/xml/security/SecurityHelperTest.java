@@ -142,10 +142,10 @@ public class SecurityHelperTest extends TestCase {
     public void testKeyPairMatching() throws NoSuchAlgorithmException, NoSuchProviderException, SecurityException {
         org.opensaml.xml.Configuration.setGlobalSecurityConfiguration(
                 DefaultSecurityConfigurationBootstrap.buildDefaultConfig());
-        KeyPair kp1rsa = SecurityTestHelper.generateKeyPair("RSA", 1024, null);
-        KeyPair kp2rsa = SecurityTestHelper.generateKeyPair("RSA", 1024, null);
-        KeyPair kp1dsa = SecurityTestHelper.generateKeyPair("DSA", 1024, null);
-        KeyPair kp2dsa = SecurityTestHelper.generateKeyPair("DSA", 1024, null);
+        KeyPair kp1rsa = SecurityHelper.generateKeyPair("RSA", 1024, null);
+        KeyPair kp2rsa = SecurityHelper.generateKeyPair("RSA", 1024, null);
+        KeyPair kp1dsa = SecurityHelper.generateKeyPair("DSA", 1024, null);
+        KeyPair kp2dsa = SecurityHelper.generateKeyPair("DSA", 1024, null);
         
         assertTrue(SecurityHelper.matchKeyPair(kp1rsa.getPublic(), kp1rsa.getPrivate()));
         assertTrue(SecurityHelper.matchKeyPair(kp2rsa.getPublic(), kp2rsa.getPrivate()));

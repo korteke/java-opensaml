@@ -19,7 +19,7 @@ package org.opensaml.xml.security.credential.criteria;
 import junit.framework.TestCase;
 
 import org.opensaml.xml.security.SecurityException;
-import org.opensaml.xml.security.SecurityTestHelper;
+import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.credential.BasicCredential;
 import org.opensaml.xml.security.criteria.KeyLengthCriteria;
 
@@ -43,7 +43,7 @@ public class EvaluableKeyLengthCredentialCriteriaTest extends TestCase {
         super.setUp();
         
         credential = new BasicCredential();
-        credential.setSecretKey(SecurityTestHelper.generateKey(keyAlgo, keyLength, null));
+        credential.setSecretKey(SecurityHelper.generateKey(keyAlgo, keyLength, null));
         
         criteria = new KeyLengthCriteria(keyLength);
     }

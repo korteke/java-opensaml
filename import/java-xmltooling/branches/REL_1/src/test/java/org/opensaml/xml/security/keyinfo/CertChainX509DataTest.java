@@ -27,7 +27,7 @@ import javax.security.auth.x500.X500Principal;
 import org.opensaml.xml.XMLObjectBaseTestCase;
 import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
-import org.opensaml.xml.security.SecurityTestHelper;
+import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.keyinfo.provider.RSAKeyValueProvider;
 import org.opensaml.xml.security.keyinfo.provider.InlineX509DataProvider;
@@ -118,9 +118,9 @@ public class CertChainX509DataTest extends XMLObjectBaseTestCase {
         providers.add(new RSAKeyValueProvider());
         resolver = new BasicProviderKeyInfoCredentialResolver(providers);
         
-        pubKey = SecurityTestHelper.buildJavaRSAPublicKey(rsaBase64);
-        entityCert = SecurityTestHelper.buildJavaX509Cert(entityCertBase64);
-        caCert = SecurityTestHelper.buildJavaX509Cert(caCertBase64);
+        pubKey = SecurityHelper.buildJavaRSAPublicKey(rsaBase64);
+        entityCert = SecurityHelper.buildJavaX509Cert(entityCertBase64);
+        caCert = SecurityHelper.buildJavaX509Cert(caCertBase64);
         
         subjectName = new X500Principal("cn=foobar.example.org, O=Internet2");
         issuerName = new X500Principal("cn=ca.example.org, O=Internet2");

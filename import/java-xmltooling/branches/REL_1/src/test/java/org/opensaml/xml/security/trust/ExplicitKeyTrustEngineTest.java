@@ -26,7 +26,6 @@ import junit.framework.TestCase;
 import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.SecurityHelper;
-import org.opensaml.xml.security.SecurityTestHelper;
 import org.opensaml.xml.security.credential.BasicCredential;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.credential.CredentialResolver;
@@ -125,10 +124,10 @@ public class ExplicitKeyTrustEngineTest extends TestCase {
 
     /** {@inheritDoc} */
     protected void setUp() throws Exception {
-        entityPubKey = SecurityTestHelper.buildJavaRSAPublicKey(rsaBase64);
-        entityCert = SecurityTestHelper.buildJavaX509Cert(entityCertBase64);
-        otherCert1 = SecurityTestHelper.buildJavaX509Cert(otherCert1Base64);
-        otherCert2 = SecurityTestHelper.buildJavaX509Cert(otherCert2Base64);
+        entityPubKey = SecurityHelper.buildJavaRSAPublicKey(rsaBase64);
+        entityCert = SecurityHelper.buildJavaX509Cert(entityCertBase64);
+        otherCert1 = SecurityHelper.buildJavaX509Cert(otherCert1Base64);
+        otherCert2 = SecurityHelper.buildJavaX509Cert(otherCert2Base64);
         
         entityRSACred = SecurityHelper.getSimpleCredential(entityPubKey, null);
         entityRSACred.setEntityId("entity-RSA");

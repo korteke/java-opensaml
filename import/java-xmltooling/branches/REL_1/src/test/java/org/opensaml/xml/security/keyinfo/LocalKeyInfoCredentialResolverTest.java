@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import org.opensaml.xml.XMLObjectBaseTestCase;
 import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
-import org.opensaml.xml.security.SecurityTestHelper;
+import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.credential.BasicCredential;
 import org.opensaml.xml.security.credential.CollectionCredentialResolver;
 import org.opensaml.xml.security.credential.Credential;
@@ -49,7 +49,7 @@ public class LocalKeyInfoCredentialResolverTest extends XMLObjectBaseTestCase {
         super.setUp();
         
         keyName = "MyKey";
-        keyPair = SecurityTestHelper.generateKeyPair("RSA", 1024, null);
+        keyPair = SecurityHelper.generateKeyPair("RSA", 1024, null);
         
         localCred = new BasicCredential();
         localCred.setPublicKey(keyPair.getPublic());
@@ -88,7 +88,7 @@ public class LocalKeyInfoCredentialResolverTest extends XMLObjectBaseTestCase {
         NoSuchAlgorithmException, NoSuchProviderException {
         
         KeyInfoHelper.addPublicKey(keyInfo, 
-                SecurityTestHelper.generateKeyPair("RSA", 1024, null).getPublic());
+                SecurityHelper.generateKeyPair("RSA", 1024, null).getPublic());
         
         CriteriaSet criteriaSet = new CriteriaSet( new KeyInfoCriteria(keyInfo) );
         Credential resolvedCred = keyInfoResolver.resolveSingle(criteriaSet);

@@ -24,7 +24,7 @@ import java.util.List;
 import org.opensaml.xml.XMLObjectBaseTestCase;
 import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
-import org.opensaml.xml.security.SecurityTestHelper;
+import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.credential.BasicCredential;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.keyinfo.provider.RSAKeyValueProvider;
@@ -59,7 +59,7 @@ public class RSAKeyValueTest extends XMLObjectBaseTestCase {
         providers.add(new RSAKeyValueProvider());
         resolver = new BasicProviderKeyInfoCredentialResolver(providers);
         keyInfoFile = "/data/org/opensaml/xml/security/keyinfo/RSAKeyValue.xml";
-        pubKey = SecurityTestHelper.buildJavaRSAPublicKey(rsaBase64);
+        pubKey = SecurityHelper.buildJavaRSAPublicKey(rsaBase64);
     }
     
     /**

@@ -16,20 +16,14 @@
 
 package org.opensaml.xml.security.credential.criteria;
 
-import java.math.BigInteger;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
 import java.security.cert.X509Certificate;
-
-import javax.security.auth.x500.X500Principal;
 
 import junit.framework.TestCase;
 
 import org.opensaml.xml.security.SecurityException;
-import org.opensaml.xml.security.SecurityTestHelper;
+import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.credential.BasicCredential;
 import org.opensaml.xml.security.x509.BasicX509Credential;
-import org.opensaml.xml.security.x509.X509IssuerSerialCriteria;
 import org.opensaml.xml.security.x509.X509SubjectKeyIdentifierCriteria;
 import org.opensaml.xml.util.Base64;
 
@@ -92,8 +86,8 @@ public class EvaluableX509SubjectKeyIdentifierCredentialCriteriaTest extends Tes
     protected void setUp() throws Exception {
         super.setUp();
         
-        entityCert = SecurityTestHelper.buildJavaX509Cert(entityCertBase64);
-        entityCertNoSKI = SecurityTestHelper.buildJavaX509Cert(entityCertNoSKIBase64);
+        entityCert = SecurityHelper.buildJavaX509Cert(entityCertBase64);
+        entityCertNoSKI = SecurityHelper.buildJavaX509Cert(entityCertNoSKIBase64);
         subjectKeyIdentifier = Base64.decode(entityCertSKIBase64);
         
         credential = new BasicX509Credential();

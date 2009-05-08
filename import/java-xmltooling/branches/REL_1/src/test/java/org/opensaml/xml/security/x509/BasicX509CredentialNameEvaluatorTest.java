@@ -23,7 +23,6 @@ import java.util.Set;
 import org.opensaml.xml.XMLObjectBaseTestCase;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.SecurityHelper;
-import org.opensaml.xml.security.SecurityTestHelper;
 
 /**
  * Tests the {@link CertPathPKIXTrustEvaluator} implementation.
@@ -68,7 +67,7 @@ public class BasicX509CredentialNameEvaluatorTest extends XMLObjectBaseTestCase 
     protected void setUp() throws Exception {
         super.setUp();
         
-        entityCert3AltNamesDNS_URL_IP = SecurityTestHelper.buildJavaX509Cert(entityCert3AltNamesDNS_URL_IPBase64);
+        entityCert3AltNamesDNS_URL_IP = SecurityHelper.buildJavaX509Cert(entityCert3AltNamesDNS_URL_IPBase64);
         cred = SecurityHelper.getSimpleCredential(entityCert3AltNamesDNS_URL_IP, null);
         
         subjectCN = "foobar.example.org";

@@ -22,7 +22,7 @@ import java.util.List;
 
 import org.opensaml.xml.XMLObjectBaseTestCase;
 import org.opensaml.xml.security.SecurityException;
-import org.opensaml.xml.security.SecurityTestHelper;
+import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.keyinfo.KeyInfoGenerator;
 import org.opensaml.xml.security.keyinfo.KeyInfoHelper;
 import org.opensaml.xml.signature.KeyInfo;
@@ -58,7 +58,7 @@ public class BasicKeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         factory = new BasicKeyInfoGeneratorFactory();
         generator = null;
         
-        pubKey = SecurityTestHelper.buildJavaRSAPublicKey(rsaBase64);
+        pubKey = SecurityHelper.buildJavaRSAPublicKey(rsaBase64);
         
         credential = new BasicCredential();
         credential.setEntityId(entityID);

@@ -31,8 +31,7 @@ import java.util.List;
 import javax.security.auth.x500.X500Principal;
 
 import org.opensaml.xml.XMLObjectBaseTestCase;
-import org.opensaml.xml.security.SecurityTestHelper;
-import org.opensaml.xml.security.keyinfo.KeyInfoHelper;
+import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.signature.DSAKeyValue;
 import org.opensaml.xml.signature.Exponent;
 import org.opensaml.xml.signature.G;
@@ -230,12 +229,12 @@ public class KeyInfoHelperTest extends XMLObjectBaseTestCase {
         numExpectedCerts = 2;
         numExpectedCRLs = 1;
         
-        javaCert1 = SecurityTestHelper.buildJavaX509Cert(cert1);
-        javaCert2 = SecurityTestHelper.buildJavaX509Cert(cert2);
-        javaCRL1 = SecurityTestHelper.buildJavaX509CRL(crl1);
+        javaCert1 = SecurityHelper.buildJavaX509Cert(cert1);
+        javaCert2 = SecurityHelper.buildJavaX509Cert(cert2);
+        javaCRL1 = SecurityHelper.buildJavaX509CRL(crl1);
         
-        javaDSAPubKey1 = SecurityTestHelper.buildJavaDSAPublicKey(dsaPubKey1);
-        javaRSAPubKey1 = SecurityTestHelper.buildJavaRSAPublicKey(rsaPubKey1);
+        javaDSAPubKey1 = SecurityHelper.buildJavaDSAPublicKey(dsaPubKey1);
+        javaRSAPubKey1 = SecurityHelper.buildJavaRSAPublicKey(rsaPubKey1);
         
         xmlRSAKeyValue1 = (RSAKeyValue) buildXMLObject(RSAKeyValue.DEFAULT_ELEMENT_NAME);
         Modulus modulus = (Modulus) buildXMLObject(Modulus.DEFAULT_ELEMENT_NAME);
@@ -281,7 +280,7 @@ public class KeyInfoHelperTest extends XMLObjectBaseTestCase {
         assertEquals("Cert1 SubjectDN", cert1SubjectDN,
                 javaCert.getSubjectX500Principal().getName(X500Principal.RFC2253));
         assertEquals("Java cert was not the expected value", 
-                SecurityTestHelper.buildJavaX509Cert(xmlCert1.getValue()), javaCert);
+                SecurityHelper.buildJavaX509Cert(xmlCert1.getValue()), javaCert);
         
         List<java.security.cert.X509Certificate> javaCertList = null;
         
@@ -321,7 +320,7 @@ public class KeyInfoHelperTest extends XMLObjectBaseTestCase {
         assertNotNull("CRL was null, failed to convert from XML to Java representation", javaCRL);
         assertEquals("CRL IssuerDN", crl1IssuerDN, javaCRL.getIssuerX500Principal().getName(X500Principal.RFC2253));
         assertEquals("Java CRL was not the expected value", 
-                SecurityTestHelper.buildJavaX509CRL(xmlCRL1.getValue()), javaCRL);
+                SecurityHelper.buildJavaX509CRL(xmlCRL1.getValue()), javaCRL);
         
         
         List<java.security.cert.X509CRL> javaCRLList = null;
@@ -357,7 +356,7 @@ public class KeyInfoHelperTest extends XMLObjectBaseTestCase {
         }
         
         assertEquals("Java X509Certificate encoding to XMLObject failed",
-                javaCert1, SecurityTestHelper.buildJavaX509Cert(xmlCert.getValue()));
+                javaCert1, SecurityHelper.buildJavaX509Cert(xmlCert.getValue()));
     }
     
     /** Test converting java.security.cert.X509CRL to XML X509CRL. 
@@ -372,7 +371,7 @@ public class KeyInfoHelperTest extends XMLObjectBaseTestCase {
         }
         
         assertEquals("Java X509CRL encoding to XMLObject failed", javaCRL1, 
-                SecurityTestHelper.buildJavaX509CRL(xmlCRL.getValue()));
+                SecurityHelper.buildJavaX509CRL(xmlCRL.getValue()));
     }
     
     /** Test conversion of DSA public keys from XML to Java security native type. */
@@ -599,7 +598,7 @@ public class KeyInfoHelperTest extends XMLObjectBaseTestCase {
         assertTrue("Incorrect SKI value", Arrays.equals(skiValue, xmlValue) );
         
         //Test that a cert with no SKI produces null
-        java.security.cert.X509Certificate noExtCert = SecurityTestHelper.buildJavaX509Cert(certNoExtensions);
+        java.security.cert.X509Certificate noExtCert = SecurityHelper.buildJavaX509Cert(certNoExtensions);
         assertNotNull(noExtCert);
         X509SKI noExtXMLSKI = KeyInfoHelper.buildX509SKI(noExtCert);
         assertNull("Building X509SKI from cert without SKI should have generated null", noExtXMLSKI);

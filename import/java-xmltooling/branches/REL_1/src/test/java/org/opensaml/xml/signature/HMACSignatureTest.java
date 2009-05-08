@@ -34,7 +34,6 @@ import org.opensaml.xml.mock.SimpleXMLObjectBuilder;
 import org.opensaml.xml.parse.BasicParserPool;
 import org.opensaml.xml.parse.XMLParserException;
 import org.opensaml.xml.security.SecurityHelper;
-import org.opensaml.xml.security.SecurityTestHelper;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.keyinfo.KeyInfoHelper;
 import org.opensaml.xml.signature.impl.KeyInfoBuilder;
@@ -88,10 +87,10 @@ public class HMACSignatureTest extends XMLObjectBaseTestCase {
         hmacOutputLength = new Integer(64);
         expectedKeyName = "KeyFoo123";
         
-        SecretKey key = SecurityTestHelper.generateKey("AES", 128, null);
+        SecretKey key = SecurityHelper.generateKey("AES", 128, null);
         goodCredential = SecurityHelper.getSimpleCredential(key);
         
-        key = SecurityTestHelper.generateKey("AES", 128, null);
+        key = SecurityHelper.generateKey("AES", 128, null);
         badCredential = SecurityHelper.getSimpleCredential(key);
 
         sxoBuilder = new SimpleXMLObjectBuilder();

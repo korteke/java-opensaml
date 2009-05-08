@@ -32,7 +32,6 @@ import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.mock.SimpleXMLObject;
 import org.opensaml.xml.parse.XMLParserException;
 import org.opensaml.xml.security.SecurityHelper;
-import org.opensaml.xml.security.SecurityTestHelper;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xml.security.keyinfo.StaticKeyInfoCredentialResolver;
@@ -72,11 +71,11 @@ public class DecryptionSignedContentTest extends XMLObjectBaseTestCase {
     protected void setUp() throws Exception {
         super.setUp();
 
-        KeyPair keyPair = SecurityTestHelper.generateKeyPair("RSA", 1024, null);
+        KeyPair keyPair = SecurityHelper.generateKeyPair("RSA", 1024, null);
         signingCredential = SecurityHelper.getSimpleCredential(keyPair.getPublic(), keyPair.getPrivate());
 
         String encURI = EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128;
-        Credential encCred = SecurityTestHelper.generateKeyAndCredential(encURI);
+        Credential encCred = SecurityHelper.generateKeyAndCredential(encURI);
         encParams = new EncryptionParameters();
         encParams.setAlgorithm(encURI);
         encParams.setEncryptionCredential(encCred);

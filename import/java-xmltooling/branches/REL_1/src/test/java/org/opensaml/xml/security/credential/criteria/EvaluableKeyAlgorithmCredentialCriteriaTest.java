@@ -19,7 +19,7 @@ package org.opensaml.xml.security.credential.criteria;
 import junit.framework.TestCase;
 
 import org.opensaml.xml.security.SecurityException;
-import org.opensaml.xml.security.SecurityTestHelper;
+import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.credential.BasicCredential;
 import org.opensaml.xml.security.criteria.KeyAlgorithmCriteria;
 
@@ -41,7 +41,7 @@ public class EvaluableKeyAlgorithmCredentialCriteriaTest extends TestCase {
         super.setUp();
         
         credential = new BasicCredential();
-        credential.setPublicKey(SecurityTestHelper.generateKeyPair(keyAlgo, 1024, null).getPublic());
+        credential.setPublicKey(SecurityHelper.generateKeyPair(keyAlgo, 1024, null).getPublic());
         
         criteria = new KeyAlgorithmCriteria(keyAlgo);
     }

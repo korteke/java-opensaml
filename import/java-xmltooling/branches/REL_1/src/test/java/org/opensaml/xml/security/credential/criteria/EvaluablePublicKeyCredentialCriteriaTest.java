@@ -23,7 +23,7 @@ import java.security.PublicKey;
 import junit.framework.TestCase;
 
 import org.opensaml.xml.security.SecurityException;
-import org.opensaml.xml.security.SecurityTestHelper;
+import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.credential.BasicCredential;
 import org.opensaml.xml.security.criteria.PublicKeyCriteria;
 
@@ -46,7 +46,7 @@ public class EvaluablePublicKeyCredentialCriteriaTest extends TestCase {
         super.setUp();
         
         credential = new BasicCredential();
-        pubKey = SecurityTestHelper.generateKeyPair(keyAlgo, 1024, null).getPublic();
+        pubKey = SecurityHelper.generateKeyPair(keyAlgo, 1024, null).getPublic();
         credential.setPublicKey(pubKey);
         
         criteria = new PublicKeyCriteria(pubKey);
@@ -58,7 +58,7 @@ public class EvaluablePublicKeyCredentialCriteriaTest extends TestCase {
     }
 
     public void testNotSatisfyDifferentKey() throws NoSuchAlgorithmException, NoSuchProviderException {
-        criteria.setPublicKey(SecurityTestHelper.generateKeyPair(keyAlgo, 1024, null).getPublic());
+        criteria.setPublicKey(SecurityHelper.generateKeyPair(keyAlgo, 1024, null).getPublic());
         EvaluablePublicKeyCredentialCriteria evalCrit = new EvaluablePublicKeyCredentialCriteria(criteria);
         assertFalse("Credential should NOT have matched the evaluable criteria", evalCrit.evaluate(credential));
     }

@@ -66,9 +66,9 @@ public class SigningUtilTest extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
         
-        secretKeyAES128 = SecurityTestHelper.generateKey("AES", 128, null);
+        secretKeyAES128 = SecurityHelper.generateKey("AES", 128, null);
         credAES = SecurityHelper.getSimpleCredential(secretKeyAES128);
-        keyPairRSA = SecurityTestHelper.generateKeyPair("RSA", 1024, null);
+        keyPairRSA = SecurityHelper.generateKeyPair("RSA", 1024, null);
         credRSA = SecurityHelper.getSimpleCredential(keyPairRSA.getPublic(), keyPairRSA.getPrivate());
         
         controlSignatureRSA = getControlSignature(data.getBytes(), keyPairRSA.getPrivate(), rsaJCAAlgorithm);
@@ -96,7 +96,7 @@ public class SigningUtilTest extends TestCase {
         assertTrue("Signature failed to verify, should have succeeded",
                 SigningUtil.verifyWithURI(credRSA, rsaAlgorithmURI, controlSignatureRSA, data.getBytes()));
         
-        KeyPair badKP = SecurityTestHelper.generateKeyPair("RSA", 1024, null);
+        KeyPair badKP = SecurityHelper.generateKeyPair("RSA", 1024, null);
         Credential badCred = SecurityHelper.getSimpleCredential(badKP.getPublic(), badKP.getPrivate());
         
         assertFalse("Signature verified successfully, should have failed due to wrong verification key",
@@ -112,7 +112,7 @@ public class SigningUtilTest extends TestCase {
         assertTrue("Signature failed to verify, should have succeeded",
                 SigningUtil.verifyWithURI(credAES, hmacAlgorithmURI, controlSignatureHMAC, data.getBytes()));
         
-        SecretKey badKey = SecurityTestHelper.generateKey("AES", 128, null);
+        SecretKey badKey = SecurityHelper.generateKey("AES", 128, null);
         Credential badCred = SecurityHelper.getSimpleCredential(badKey);
         
         assertFalse("Signature verified successfully, should have failed due to wrong verification key",

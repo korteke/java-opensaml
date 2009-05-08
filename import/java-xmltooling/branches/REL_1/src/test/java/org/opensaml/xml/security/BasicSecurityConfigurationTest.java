@@ -41,9 +41,9 @@ public class BasicSecurityConfigurationTest extends TestCase {
             Init.init();
         }
         
-        KeyPair kp = SecurityTestHelper.generateKeyPair("RSA", 1024, null);
+        KeyPair kp = SecurityHelper.generateKeyPair("RSA", 1024, null);
         rsaCred = SecurityHelper.getSimpleCredential(kp.getPublic(), kp.getPrivate());
-        aes128Cred = SecurityTestHelper.generateKeyAndCredential(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128);
+        aes128Cred = SecurityHelper.generateKeyAndCredential(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128);
         
         config = new BasicSecurityConfiguration();
     }

@@ -25,9 +25,8 @@ import java.util.List;
 import org.opensaml.xml.XMLObjectBaseTestCase;
 import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
-import org.opensaml.xml.security.SecurityTestHelper;
+import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.credential.Credential;
-import org.opensaml.xml.security.keyinfo.provider.DSAKeyValueProvider;
 import org.opensaml.xml.security.keyinfo.provider.InlineX509DataProvider;
 import org.opensaml.xml.security.x509.X509Credential;
 import org.opensaml.xml.signature.KeyInfo;
@@ -82,8 +81,8 @@ public class SingleCertX509DataTest extends XMLObjectBaseTestCase {
         providers.add(new InlineX509DataProvider());
         resolver = new BasicProviderKeyInfoCredentialResolver(providers);
         
-        pubKey = SecurityTestHelper.buildJavaRSAPublicKey(rsaBase64);
-        entityCert = SecurityTestHelper.buildJavaX509Cert(entityCertBase64);
+        pubKey = SecurityHelper.buildJavaRSAPublicKey(rsaBase64);
+        entityCert = SecurityHelper.buildJavaX509Cert(entityCertBase64);
     }
     
     /**

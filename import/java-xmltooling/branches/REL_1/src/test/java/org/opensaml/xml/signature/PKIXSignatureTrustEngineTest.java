@@ -34,7 +34,6 @@ import org.opensaml.xml.mock.SimpleXMLObject;
 import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.SecurityHelper;
-import org.opensaml.xml.security.SecurityTestHelper;
 import org.opensaml.xml.security.SigningUtil;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.criteria.EntityIDCriteria;
@@ -46,7 +45,6 @@ import org.opensaml.xml.security.x509.X509Credential;
 import org.opensaml.xml.security.x509.X509KeyInfoGeneratorFactory;
 import org.opensaml.xml.security.x509.X509Util;
 import org.opensaml.xml.signature.impl.PKIXSignatureTrustEngine;
-import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
 
@@ -472,7 +470,7 @@ public class PKIXSignatureTrustEngineTest extends XMLObjectBaseTestCase {
         
         StaticPKIXValidationInformationResolver resolver = new StaticPKIXValidationInformationResolver(infoList, names);
         
-        return new PKIXSignatureTrustEngine(resolver, SecurityTestHelper.buildBasicInlineKeyInfoResolver());
+        return new PKIXSignatureTrustEngine(resolver, SecurityHelper.buildBasicInlineKeyInfoResolver());
     }
     
     private PKIXValidationInformation getPKIXInfoSet(Collection<X509Certificate> certs,

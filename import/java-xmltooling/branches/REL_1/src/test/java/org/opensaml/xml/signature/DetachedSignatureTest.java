@@ -18,7 +18,6 @@ package org.opensaml.xml.signature;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.GeneralSecurityException;
 import java.security.KeyPair;
@@ -36,7 +35,6 @@ import org.opensaml.xml.parse.XMLParserException;
 import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.SecurityHelper;
-import org.opensaml.xml.security.SecurityTestHelper;
 import org.opensaml.xml.security.credential.BasicCredential;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
@@ -75,10 +73,10 @@ public class DetachedSignatureTest extends XMLObjectBaseTestCase {
     protected void setUp() throws Exception {
         super.setUp();
 
-        KeyPair keyPair = SecurityTestHelper.generateKeyPair("RSA", 1024, null);
+        KeyPair keyPair = SecurityHelper.generateKeyPair("RSA", 1024, null);
         goodCredential = SecurityHelper.getSimpleCredential(keyPair.getPublic(), keyPair.getPrivate());
 
-        keyPair = SecurityTestHelper.generateKeyPair("RSA", 1024, null);
+        keyPair = SecurityHelper.generateKeyPair("RSA", 1024, null);
         badCredential = SecurityHelper.getSimpleCredential(keyPair.getPublic(), null);
 
         sxoBuilder = new SimpleXMLObjectBuilder();
@@ -177,7 +175,7 @@ public class DetachedSignatureTest extends XMLObjectBaseTestCase {
         Unmarshaller unmarshaller = Configuration.getUnmarshallerFactory().getUnmarshaller(signatureElement);
         Signature signature = (Signature) unmarshaller.unmarshall(signatureElement);
 
-        KeyInfoCredentialResolver resolver = SecurityTestHelper.buildBasicInlineKeyInfoResolver();
+        KeyInfoCredentialResolver resolver = SecurityHelper.buildBasicInlineKeyInfoResolver();
 
         KeyInfoCriteria criteria = new KeyInfoCriteria(signature.getKeyInfo());
         CriteriaSet criteriaSet = new CriteriaSet(criteria);

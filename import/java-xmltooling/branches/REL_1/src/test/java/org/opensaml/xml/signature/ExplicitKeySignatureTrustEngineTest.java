@@ -27,7 +27,7 @@ import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.mock.SimpleXMLObject;
 import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
-import org.opensaml.xml.security.SecurityTestHelper;
+import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.SigningUtil;
 import org.opensaml.xml.security.credential.CollectionCredentialResolver;
 import org.opensaml.xml.security.credential.Credential;
@@ -143,15 +143,15 @@ public class ExplicitKeySignatureTrustEngineTest extends XMLObjectBaseTestCase {
         super.setUp();
         
         signingEntityID = "signing-entity-ID";
-        signingCert = SecurityTestHelper.buildJavaX509Cert(signingCertBase64);
-        signingPrivateKey = SecurityTestHelper.buildJavaRSAPrivateKey(signingPrivateKeyBase64);
+        signingCert = SecurityHelper.buildJavaX509Cert(signingCertBase64);
+        signingPrivateKey = SecurityHelper.buildJavaRSAPrivateKey(signingPrivateKeyBase64);
         
         signingX509Cred = new BasicX509Credential();
         signingX509Cred.setEntityCertificate(signingCert);
         signingX509Cred.setPrivateKey(signingPrivateKey);
         signingX509Cred.setEntityId(signingEntityID);
         
-        otherCert1 = SecurityTestHelper.buildJavaX509Cert(otherCert1Base64);
+        otherCert1 = SecurityHelper.buildJavaX509Cert(otherCert1Base64);
         
         BasicX509Credential otherCred1 = new BasicX509Credential();
         otherCred1.setEntityCertificate(otherCert1);
@@ -164,7 +164,7 @@ public class ExplicitKeySignatureTrustEngineTest extends XMLObjectBaseTestCase {
         
         //KeyInfoCredentialResolver kiResolver = new StaticKeyInfoCredentialResolver(new ArrayList<Credential>());
         //Testing with inline cert
-        KeyInfoCredentialResolver kiResolver = SecurityTestHelper.buildBasicInlineKeyInfoResolver();
+        KeyInfoCredentialResolver kiResolver = SecurityHelper.buildBasicInlineKeyInfoResolver();
         engine = new ExplicitKeySignatureTrustEngine(credResolver, kiResolver);
         
         criteriaSet = new CriteriaSet();

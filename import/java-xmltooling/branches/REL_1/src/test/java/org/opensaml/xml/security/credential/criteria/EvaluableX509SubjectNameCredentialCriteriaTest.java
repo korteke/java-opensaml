@@ -23,7 +23,7 @@ import javax.security.auth.x500.X500Principal;
 import junit.framework.TestCase;
 
 import org.opensaml.xml.security.SecurityException;
-import org.opensaml.xml.security.SecurityTestHelper;
+import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.credential.BasicCredential;
 import org.opensaml.xml.security.x509.BasicX509Credential;
 import org.opensaml.xml.security.x509.X509SubjectNameCriteria;
@@ -70,7 +70,7 @@ public class EvaluableX509SubjectNameCredentialCriteriaTest extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
         
-        entityCert = SecurityTestHelper.buildJavaX509Cert(entityCertBase64);
+        entityCert = SecurityHelper.buildJavaX509Cert(entityCertBase64);
         subjectName = new X500Principal("cn=foobar.example.org, O=Internet2");
         
         credential = new BasicX509Credential();
