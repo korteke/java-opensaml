@@ -18,6 +18,7 @@ package org.opensaml.xml.signature;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.GeneralSecurityException;
 import java.security.KeyPair;
@@ -166,8 +167,8 @@ public class DetachedSignatureTest extends XMLObjectBaseTestCase {
      * @throws GeneralSecurityException
      * @throws SecurityException
      */
-    public void testUnmarshallExternalSignatureAndVerification() throws IOException, XMLParserException,
-            UnmarshallingException, ValidationException, GeneralSecurityException, SecurityException {
+    public void testUnmarshallExternalSignatureAndVerification() throws IOException, MalformedURLException,
+            XMLParserException, UnmarshallingException, ValidationException, GeneralSecurityException, SecurityException {
         String signatureLocation = "http://www.w3.org/TR/xmldsig-core/signature-example-rsa.xml";
         InputStream ins = new URL(signatureLocation).openStream();
         Element signatureElement = parserPool.parse(ins).getDocumentElement();
