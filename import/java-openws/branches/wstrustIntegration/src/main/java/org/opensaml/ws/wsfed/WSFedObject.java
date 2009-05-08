@@ -1,5 +1,5 @@
 /*
- * Copyright [2007] [University Corporation for Advanced Internet Development, Inc.]
+ * Copyright 2008 University Corporation for Advanced Internet Development, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,20 +14,11 @@
  * limitations under the License.
  */
 
-package org.opensaml.ws.soap.client;
+package org.opensaml.ws.wsfed;
 
+import org.opensaml.xml.XMLObject;
 
-/**
- * A factory for {@link ClientTransport} instances.
- * 
- * @param <TransportType> the type of transport created by this factory
- */
-public interface ClientTransportFactory<TransportType extends ClientTransport> {
+/** Marker interface for WS-Federation {@link XMLObject}s. */
+public interface WSFedObject extends XMLObject {
 
-    /**
-     * Creates a new transport instance.
-     * 
-     * @return the newly created transport
-     */
-    public TransportType createTransport();
 }

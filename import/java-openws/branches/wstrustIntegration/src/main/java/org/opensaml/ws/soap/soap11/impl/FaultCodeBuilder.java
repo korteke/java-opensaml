@@ -32,6 +32,6 @@ public class FaultCodeBuilder extends AbstractXMLObjectBuilder<FaultCode> implem
 
     /** {@inheritDoc} */
     public FaultCode buildObject() {
-        return buildObject(FaultCode.DEFAULT_ELEMENT_NAME);
+        return buildObject(null, FaultCode.DEFAULT_ELEMENT_LOCAL_NAME, null);
     }
 }

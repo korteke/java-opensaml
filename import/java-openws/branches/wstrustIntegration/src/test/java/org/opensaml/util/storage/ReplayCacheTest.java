@@ -18,7 +18,6 @@ package org.opensaml.util.storage;
 
 import junit.framework.TestCase;
 
-import org.opensaml.util.storage.ReplayCache.ReplayCacheEntry;
 
 /**
  * Testing SAML message replay security policy rule.

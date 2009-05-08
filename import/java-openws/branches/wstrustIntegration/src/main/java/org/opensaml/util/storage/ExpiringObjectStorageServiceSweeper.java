@@ -21,10 +21,16 @@ import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * A simple task that periodically sweeps over a {@link StorageService} and removes expired entries.
  */
 public class ExpiringObjectStorageServiceSweeper extends TimerTask {
+    
+    /** Class logger. */
+    private final Logger log = LoggerFactory.getLogger(ExpiringObjectStorageServiceSweeper.class);
 
     /** Storage service whose entries will be periodically checked. */
     private StorageService store;
@@ -41,7 +47,8 @@ public class ExpiringObjectStorageServiceSweeper extends TimerTask {
      */
     public ExpiringObjectStorageServiceSweeper(Timer taskTimer, long sweepInterval, StorageService sweptStore) {
         store = sweptStore;
-        taskTimer.schedule(this, sweepInterval);
+        taskTimer.schedule(this, sweepInterval, sweepInterval);
+        partitions = null;
     }
 
     /**
@@ -50,21 +57,23 @@ public class ExpiringObjectStorageServiceSweeper extends TimerTask {
      * @param taskTimer timer that will sweep the given storage service
      * @param sweepInterval interval, in milliseconds, that the storage service will be swept
      * @param sweptStore storage service that will be swept
-     * @param sweptParitions the partitions to sweep, if null or empty all partitions are swept
+     * @param sweptPartitions the partitions to sweep, if null or empty all partitions are swept
      */
     public ExpiringObjectStorageServiceSweeper(Timer taskTimer, long sweepInterval, StorageService sweptStore,
-            Set<String> sweptParitions) {
+            Set<String> sweptPartitions) {
         store = sweptStore;
-        if (sweptParitions != null || sweptParitions.isEmpty()) {
-            partitions = sweptParitions;
+        if (sweptPartitions != null || sweptPartitions.isEmpty()) {
+            partitions = sweptPartitions;
+        }else{
+            partitions = null;
         }
-        taskTimer.schedule(this, sweepInterval);
+        taskTimer.schedule(this, sweepInterval, sweepInterval);
     }
 
     /** {@inheritDoc} */
     public void run() {
         Iterator<String> sweepPartitions;
-        if (partitions != null) {
+        if (partitions != null && !partitions.isEmpty()) {
             sweepPartitions = partitions.iterator();
         } else {
             sweepPartitions = store.getPartitions();
@@ -76,6 +85,7 @@ public class ExpiringObjectStorageServiceSweeper extends TimerTask {
         Object partitionValue;
         while (sweepPartitions.hasNext()) {
             currentParition = sweepPartitions.next();
+            log.trace("Sweeping storage service partition {}", currentParition);
             partitionKeys = store.getKeys(currentParition);
             if (partitionKeys == null) {
                 continue;
@@ -86,6 +96,7 @@ public class ExpiringObjectStorageServiceSweeper extends TimerTask {
                 partitionValue = store.get(currentParition, partitionKey);
                 if (partitionValue instanceof ExpiringObject) {
                     if (((ExpiringObject) partitionValue).isExpired()) {
+                        log.trace("Removing expired object from storage service partition {}", currentParition);
                         partitionKeys.remove();
                     }
                 }

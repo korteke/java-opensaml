@@ -17,9 +17,7 @@
 
 package org.opensaml.ws.soap.util;
 
-/**
- * SOAP Related Constants.
- */
+/** SOAP Related Constants. */
 public class SOAPConstants {
 
     /** SOAP 1.1 namespace. */
@@ -31,7 +29,6 @@ public class SOAPConstants {
     /** SOAP 1.2 namespace. */
     public static final String SOAP12_NS = "http://www.w3.org/2003/05/soap-envelope";
 
-    /** SOAP 1.2 prefix */
+    /** SOAP 1.2 prefix. */
     public static final String SOAP12_PREFIX = "soap12";
-
 }

@@ -16,7 +16,7 @@
 
 package org.opensaml.ws.security.provider;
 
-import org.opensaml.ws.security.BaseSecurityPolicyRuleTest;
+import org.opensaml.ws.security.BaseSecurityPolicyRuleTestCase;
 import org.opensaml.ws.transport.InTransport;
 import org.opensaml.ws.transport.http.HTTPInTransport;
 import org.opensaml.ws.transport.http.HttpServletRequestAdapter;
@@ -25,7 +25,7 @@ import org.springframework.mock.web.MockHttpServletRequest;
 /**
  * Test the HTTP security policy rule.
  */
-public class HTTPRuleTest extends BaseSecurityPolicyRuleTest {
+public class HTTPRuleTest extends BaseSecurityPolicyRuleTestCase {
     
     private MockHttpServletRequest httpRequest;
     

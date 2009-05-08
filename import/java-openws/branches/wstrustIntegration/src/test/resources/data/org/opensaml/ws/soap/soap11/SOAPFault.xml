@@ -3,6 +3,7 @@
         <soap11:Fault>
             <faultcode>soap11:Server</faultcode>
             <faultstring>Server Error</faultstring>
+            <faultactor>http://ws.example.org/someActor</faultactor>
             <detail>
                 <e:myfaultdetails xmlns:e="Some-URI">
                     <message>My application didn't work</message>

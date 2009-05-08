@@ -32,6 +32,6 @@ public class FaultActorBuilder extends AbstractXMLObjectBuilder<FaultActor> impl
 
     /** {@inheritDoc} */
     public FaultActor buildObject() {
-        return buildObject(FaultActor.DEFAULT_ELEMENT_NAME);
+        return buildObject(null, FaultActor.DEFAULT_ELEMENT_LOCAL_NAME, null);
     }
 }

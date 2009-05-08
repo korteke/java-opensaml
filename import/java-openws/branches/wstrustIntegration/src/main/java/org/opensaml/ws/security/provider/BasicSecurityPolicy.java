@@ -36,7 +36,7 @@ public class BasicSecurityPolicy implements SecurityPolicy {
     
     /** Constructor. */
     public BasicSecurityPolicy(){
-        rules = new ArrayList<SecurityPolicyRule>();
+        rules = new ArrayList<SecurityPolicyRule>(5);
     }
     
     /** {@inheritDoc} */

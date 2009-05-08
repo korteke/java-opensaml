@@ -17,6 +17,7 @@ OpenSAML2 Java Stack Implementation Team
    SWITCH
      
    Brent Putman
+   Georgetown University
    
    Rod Widdowson
    University of Edinburgh
@@ -33,3 +34,6 @@ OpenSAML2 Java Stack Implementation Team
    University of Washington
    
 Additional Contributions by:
+
+    WS-Federation contributions by Naveen Sankar
+    WS-Addressing, WS-Policy, WS-Security, and WS-Trust contributions by Valery Tschopp, of SWITCH and the EGEE Collaboration.

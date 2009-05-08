@@ -31,7 +31,7 @@ public class DetailBuilder extends AbstractXMLObjectBuilder<Detail> implements S
      * @return the build Envelope object
      */
     public Detail buildObject(){
-        return buildObject(Detail.DEFAULT_ELEMENT_NAME);
+        return buildObject(null, Detail.DEFAULT_ELEMENT_LOCAL_NAME, null);
     }
     
     /** {@inheritDoc} */

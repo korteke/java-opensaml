@@ -1,5 +1,5 @@
 /*
- * Copyright [2007] [University Corporation for Advanced Internet Development, Inc.]
+ * Copyright 2007 University Corporation for Advanced Internet Development, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,6 @@
 
 package org.opensaml.util.storage;
 
-import java.io.Serializable;
 import java.util.concurrent.locks.ReentrantLock;
 
 import org.joda.time.DateTime;
@@ -130,40 +129,6 @@ public class ReplayCache {
      */
     protected void addMessageID(String messageId, DateTime expiration) {
         log.debug("Writing message ID {} to replay cache with expiration time {}", messageId, expiration.toString());
-        storage.put(partition, messageId, new ReplayCacheEntry(expiration));
-    }
-
-    /** Replay cache storage service entry. */
-    public class ReplayCacheEntry implements ExpiringObject, Serializable {
-
-        /** Serial version UID. */
-        private static final long serialVersionUID = 2398693920546938083L;
-
-        /** Time when this entry expires. */
-        private DateTime expirationTime;
-
-        /**
-         * Constructor.
-         * 
-         * @param expiration time when this entry expires
-         */
-        public ReplayCacheEntry(DateTime expiration) {
-            expirationTime = expiration;
-        }
-
-        /** {@inheritDoc} */
-        public DateTime getExpirationTime() {
-            return expirationTime;
-        }
-
-        /** {@inheritDoc} */
-        public boolean isExpired() {
-            return expirationTime.isBeforeNow();
-        }
-
-        /** {@inheritDoc} */
-        public void onExpire() {
-
-        }
+        storage.put(partition, messageId, new ReplayCacheEntry(messageId, expiration));
     }
 }

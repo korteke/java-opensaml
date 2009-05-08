@@ -30,6 +30,9 @@ import org.w3c.dom.Element;
  * Base class for message decoders.
  */
 public abstract class BaseMessageEncoder implements MessageEncoder {
+    
+    /** Used to log protocol messages. */
+    private Logger protocolMessageLog = LoggerFactory.getLogger("PROTOCOL_MESSAGE");
 
     /** Class logger. */
     private final Logger log = LoggerFactory.getLogger(BaseMessageEncoder.class);
@@ -47,6 +50,9 @@ public abstract class BaseMessageEncoder implements MessageEncoder {
         doEncode(messageContext);
 
         log.debug("Successfully encoded message.");
+        if(protocolMessageLog.isDebugEnabled() && messageContext.getOutboundMessage() != null){
+            protocolMessageLog.debug("\n" + XMLHelper.prettyPrintXML(messageContext.getOutboundMessage().getDOM()));
+        }
     }
 
     /**

@@ -16,13 +16,12 @@
 
 package org.opensaml.util;
 
-import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.opensaml.ws.transport.http.HTTPTransportUtils;
 import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.util.Pair;
 
@@ -82,8 +81,8 @@ public class URLBuilder {
             if (!DatatypeHelper.isEmpty(userInfo)) {
                 if (userInfo.contains(":")) {
                     String[] userInfoComps = userInfo.split(":");
-                    setUsername(URLDecoder.decode(userInfoComps[0], "UTF-8"));
-                    setPassword(URLDecoder.decode(userInfoComps[1], "UTF-8"));
+                    setUsername(HTTPTransportUtils.urlDecode(userInfoComps[0]));
+                    setPassword(HTTPTransportUtils.urlDecode(userInfoComps[1]));
                 } else {
                     setUsername(userInfo);
                 }
@@ -104,19 +103,19 @@ public class URLBuilder {
                 for (int i = 0; i < queryComps.length; i++) {
                     queryComp = queryComps[i];
                     if (!queryComp.contains("=")) {
-                        paramName = URLDecoder.decode(queryComp, "UTF-8");
+                        paramName = HTTPTransportUtils.urlDecode(queryComp);
                         queryParams.add(new Pair<String, String>(paramName, null));
                     } else {
                         paramComps = queryComp.split("=");
-                        paramName = URLDecoder.decode(paramComps[0], "UTF-8");
-                        paramValue = URLDecoder.decode(paramComps[1], "UTF-8");
+                        paramName = HTTPTransportUtils.urlDecode(paramComps[0]);
+                        paramValue = HTTPTransportUtils.urlDecode(paramComps[1]);
                         queryParams.add(new Pair<String, String>(paramName, paramValue));
                     }
                 }
             }
 
             setFragment(url.getRef());
-        } catch (Exception e) {
+        } catch (MalformedURLException e) {
             throw new IllegalArgumentException("Given URL is not well formed", e);
         }
     }
@@ -297,7 +296,7 @@ public class URLBuilder {
         }
 
         String queryString = buildQueryString();
-        if(!DatatypeHelper.isEmpty(queryString)){
+        if (!DatatypeHelper.isEmpty(queryString)) {
             builder.append("?");
             builder.append(queryString);
         }
@@ -309,43 +308,38 @@ public class URLBuilder {
 
         return builder.toString();
     }
-    
+
     /**
      * Builds the query string for the URL.
      * 
      * @return query string for the URL or null if there are now query parameters
      */
-    public String buildQueryString(){
+    public String buildQueryString() {
         StringBuilder builder = new StringBuilder();
-        try {
-            if (queryParams.size() > 0) {
-                String name;
-                String value;
+        if (queryParams.size() > 0) {
+            String name;
+            String value;
 
-                Pair<String, String> param;
-                for (int i = 0; i < queryParams.size(); i++) {
-                    param = queryParams.get(i);
-                    name = DatatypeHelper.safeTrimOrNullString(param.getFirst());
+            Pair<String, String> param;
+            for (int i = 0; i < queryParams.size(); i++) {
+                param = queryParams.get(i);
+                name = DatatypeHelper.safeTrimOrNullString(param.getFirst());
 
-                    if (name != null) {
-                        builder.append(URLEncoder.encode(name, "UTF-8"));
-                        value = DatatypeHelper.safeTrimOrNullString(param.getSecond());
-                        if (value != null) {
-                            builder.append("=");
-                            builder.append(URLEncoder.encode(value, "UTF-8"));
-                        }
-                        if (i < queryParams.size() - 1) {
-                            builder.append("&");
-                        }
+                if (name != null) {
+                    builder.append(HTTPTransportUtils.urlEncode(name));
+                    value = DatatypeHelper.safeTrimOrNullString(param.getSecond());
+                    if (value != null) {
+                        builder.append("=");
+                        builder.append(HTTPTransportUtils.urlEncode(value));
+                    }
+                    if (i < queryParams.size() - 1) {
+                        builder.append("&");
                     }
                 }
-                
-                return builder.toString();
             }
-        } catch (UnsupportedEncodingException e) {
-            // UTF-8 encoding is required to be supported by all JVMs
+            return builder.toString();
         }
-        
+
         return null;
     }
 }

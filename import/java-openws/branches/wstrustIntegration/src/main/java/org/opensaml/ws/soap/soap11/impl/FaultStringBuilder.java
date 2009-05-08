@@ -32,6 +32,6 @@ public class FaultStringBuilder extends AbstractXMLObjectBuilder<FaultString> im
 
     /** {@inheritDoc} */
     public FaultString buildObject() {
-        return buildObject(FaultString.DEFAULT_ELEMENT_NAME);
+        return buildObject(null, FaultString.DEFAULT_ELEMENT_LOCAL_NAME, null);
     }
 }

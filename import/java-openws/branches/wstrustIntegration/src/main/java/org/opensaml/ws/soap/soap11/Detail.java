@@ -30,14 +30,14 @@ public interface Detail extends SOAPObject, ElementExtensibleXMLObject, Attribut
 
     /** Element local name. */
     public static final String DEFAULT_ELEMENT_LOCAL_NAME = "detail";
-
+    
     /** Default element name. */
     public static final QName DEFAULT_ELEMENT_NAME = new QName(DEFAULT_ELEMENT_LOCAL_NAME);
-
+    
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "detail";
-
+    public static final String TYPE_LOCAL_NAME = "detail"; 
+        
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = new QName(SOAPConstants.SOAP11_NS, TYPE_LOCAL_NAME,
-            SOAPConstants.SOAP11_PREFIX);
+    public static final QName TYPE_NAME = 
+        new QName(SOAPConstants.SOAP11_NS, TYPE_LOCAL_NAME, SOAPConstants.SOAP11_PREFIX);
 }

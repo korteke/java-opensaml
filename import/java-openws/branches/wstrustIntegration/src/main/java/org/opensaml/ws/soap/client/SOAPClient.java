@@ -1,5 +1,5 @@
 /*
- * Copyright [2007] [University Corporation for Advanced Internet Development, Inc.]
+ * Copyright 2008 University Corporation for Advanced Internet Development, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,70 +16,33 @@
 
 package org.opensaml.ws.soap.client;
 
-import java.net.URI;
-import java.util.HashMap;
-import java.util.Map;
+import org.opensaml.ws.soap.common.SOAPException;
+import org.opensaml.xml.security.SecurityException;
 
-import org.opensaml.ws.message.MessageContext;
-import org.opensaml.ws.message.decoder.MessageDecodingException;
-import org.opensaml.ws.security.SecurityPolicyException;
-import org.opensaml.ws.soap.soap11.Envelope;
-import org.opensaml.ws.transport.Transport;
-import org.opensaml.ws.transport.TransportException;
+import net.jcip.annotations.ThreadSafe;
 
 /**
- * A client for sending and receiving SOAP messages.
+ * An interface for a very basic SOAP client.
  * 
- * When a client sends a message it will create a {@link Transport} instance, based on the endpoint's scheme, marshall
- * and bind the message to the transport, receive, decode, and umarshall the response, evaluate the message security
- * policy, and finally return the response. After this process is complete the response message and transport will be
- * added to the message context.
+ * Implementations of this interface do NOT attempt to do intelligent things like figure out when and how to attach
+ * WS-Security headers. It is strictly meant to open sockets, shuttle messages over it, and return a response.
  */
-public class SOAPClient {
-
-    /** Registered transport factories. */
-    private HashMap<String, ClientTransportFactory> transportFactories;
+@ThreadSafe
+public interface SOAPClient {
 
     /**
-     * Constructor.
-     */
-    public SOAPClient() {
-    }
-
-    /**
-     * Gets the transports registered with this client.
+     * Sends a message and waits for a response.
      * 
-     * @return mutable list of transports registered with this client
-     */
-    public Map<String, ClientTransportFactory> getRegisteredTransports() {
-        return transportFactories;
-    }
-
-    /**
-     * Sends a SOAP message to the given endpoint.
+     * @param endpoint the endpoint to which to send the message
+     * @param messageContext the message context containing the outbound SOAP message
      * 
-     * @param endpointURI endpoint to send the SOAP message to
-     * @param messageContext context of the message to send
-     * 
-     * @throws TransportException thrown if there is a problem creating or using the {@link Transport}
-     * @throws MessageDecodingException thrown if there is a problem decoding the response
-     * @throws SecurityPolicyException thrown if there is a problem evaluating the decoder's security policy
+     * @throws SOAPClientException thrown if there is a problem sending the message or receiving the response or if the
+     *             response is a SOAP fault
+     * @throws SecurityException thrown if the response does not meet any security policy associated with the message
+     *             context
      */
-    public void send(URI endpointURI, MessageContext messageContext) throws TransportException,
-            MessageDecodingException, SecurityPolicyException {
-        
-        if(!(messageContext.getOutboundMessage() instanceof Envelope)){
-            throw new TransportException("Outbound message must be a SOAP Envelope");
-        }
-        
-        String transportScheme = endpointURI.getScheme();
-        ClientTransportFactory transFactory = transportFactories.get(transportScheme);
+    public void send(String endpoint, SOAPMessageContext messageContext) throws SOAPException, SecurityException;
 
-        if (transFactory == null) {
-            throw new TransportException("No transport registered for URI scheme: " + transportScheme);
-        }
-
-        ClientTransport transport = transFactory.createTransport();
-        transport.send(endpointURI, messageContext);
-    }
+    /** Marker interface for binding/transport request parameters. */
+    public interface SOAPRequestParameters {};
 }

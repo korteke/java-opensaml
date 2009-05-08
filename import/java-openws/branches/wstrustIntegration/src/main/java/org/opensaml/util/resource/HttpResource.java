@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import org.apache.commons.httpclient.Header;
-import org.apache.commons.httpclient.HeaderElement;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.methods.GetMethod;
@@ -116,12 +115,9 @@ public class HttpResource extends AbstractFilteredResource {
                         + ", received HTTP status code " + headMethod.getStatusCode());
             }
             Header lastModifiedHeader = headMethod.getResponseHeader("Last-Modified");
-            if (lastModifiedHeader != null) {
-                HeaderElement[] elements = lastModifiedHeader.getElements();
-                if (elements.length > 0) {
-                    long lastModifiedTime = DateUtil.parseDate(elements[0].getValue()).getTime();
-                    return new DateTime(lastModifiedTime);
-                }
+            if (lastModifiedHeader != null  && ! DatatypeHelper.isEmpty(lastModifiedHeader.getValue())) {
+                long lastModifiedTime = DateUtil.parseDate(lastModifiedHeader.getValue()).getTime();
+                return new DateTime(lastModifiedTime);
             }
 
             return new DateTime();
@@ -154,7 +150,7 @@ public class HttpResource extends AbstractFilteredResource {
         }
 
         if (o instanceof HttpResource) {
-            return getLocation().equals(((ClasspathResource) o).getLocation());
+            return getLocation().equals(((HttpResource) o).getLocation());
         }
 
         return false;

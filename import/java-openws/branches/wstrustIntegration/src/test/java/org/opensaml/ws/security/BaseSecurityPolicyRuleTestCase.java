@@ -25,7 +25,7 @@ import org.opensaml.xml.XMLObject;
 /**
  * Base class for security policy rule tests.
  */
-public abstract class BaseSecurityPolicyRuleTest extends BaseTestCase {
+public abstract class BaseSecurityPolicyRuleTestCase extends BaseTestCase {
     
     /** The security policy rule to evaluate. */
     protected SecurityPolicyRule rule;

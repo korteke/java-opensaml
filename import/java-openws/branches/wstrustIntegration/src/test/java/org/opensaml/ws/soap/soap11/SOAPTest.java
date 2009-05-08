@@ -19,10 +19,17 @@ package org.opensaml.ws.soap.soap11;
 import javax.xml.namespace.QName;
 
 import org.opensaml.ws.BaseTestCase;
+import org.opensaml.ws.soap.soap11.impl.DetailBuilder;
+import org.opensaml.ws.soap.soap11.impl.FaultActorBuilder;
+import org.opensaml.ws.soap.soap11.impl.FaultCodeBuilder;
+import org.opensaml.ws.soap.soap11.impl.FaultStringBuilder;
 import org.opensaml.ws.soap.util.SOAPConstants;
+import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.io.Unmarshaller;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.parse.XMLParserException;
+import org.opensaml.xml.util.DatatypeHelper;
+import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -37,9 +44,14 @@ public class SOAPTest extends BaseTestCase {
     /** Path, on classpath, to SOAP fault test document. */
     private String soapFault;
     
+    /** Path, on classpath, to SOAP fault test document. */
+    private String soapFaultMarshall;
+    
     private QName expectedFaultCode;
     
     private String expectedFaultString;
+    
+    private String expectedFaultActor;
 
     /** {@inheritDoc} */
     protected void setUp() throws Exception {
@@ -47,9 +59,11 @@ public class SOAPTest extends BaseTestCase {
         
         soapMessage = "/data/org/opensaml/ws/soap/soap11/SOAP.xml";
         soapFault = "/data/org/opensaml/ws/soap/soap11/SOAPFault.xml";
+        soapFaultMarshall = "/data/org/opensaml/ws/soap/soap11/SOAPFaultMarshall.xml";
         
         expectedFaultCode = new QName(SOAPConstants.SOAP11_NS, "Server", SOAPConstants.SOAP11_PREFIX);
         expectedFaultString = "Server Error";
+        expectedFaultActor = "http://ws.example.org/someActor";
     }
     
     /**
@@ -66,7 +80,11 @@ public class SOAPTest extends BaseTestCase {
         Envelope envelope = (Envelope) unmarshaller.unmarshall(envelopeElem);
         
         // Check to make sure everything unmarshalled okay
-        //TODO test encodingStyle
+        QName encodingStyleName = new QName("http://schemas.xmlsoap.org/soap/envelope/", "encodingStyle");
+        String encodingStyleValue = envelope.getUnknownAttributes().get(encodingStyleName);
+        assertNotNull("Encoding style was null", encodingStyleValue);
+        assertEquals("Encoding style had unexpected value", 
+                "http://schemas.xmlsoap.org/soap/encoding/", encodingStyleValue);
         
         Header header = envelope.getHeader();
         assertNotNull("Header was null", header);
@@ -106,15 +124,16 @@ public class SOAPTest extends BaseTestCase {
         assertNotNull("Fault was null", fault);
         
         FaultActor actor = fault.getActor();
-        assertNull("Actor was not null", actor);
+        assertNotNull("FaultActor was null", actor);
+        assertEquals("FaultActor had unexpected value", expectedFaultActor, actor.getValue());
         
         FaultCode code = fault.getCode();
         assertNotNull("FaultCode was null", code);
-        assertEquals("FaultCode had unexpected value", code.getValue(), expectedFaultCode);
+        assertEquals("FaultCode had unexpected value", expectedFaultCode, code.getValue());
         
         FaultString message = fault.getMessage();
         assertNotNull("FaultString was null", message);
-        assertEquals("FaultString had unexpected value", message.getValue(), expectedFaultString);
+        assertEquals("FaultString had unexpected value", expectedFaultString, message.getValue());
         
         Detail detail = fault.getDetail();
         assertNotNull("Detail was null", detail);
@@ -124,5 +143,69 @@ public class SOAPTest extends BaseTestCase {
         envelope.releaseDOM();
         envelope.releaseChildrenDOM(true);
         assertEquals("Marshalled DOM was not the same as control DOM", soapFaultDoc, envelope);
+    }
+    
+    /**
+     * Test constructing and marshalling a SOAP fault message.
+     * 
+     * @throws MarshallingException  if the DOM can not b marshalled
+     * @throws XMLParserException 
+     */
+    public void testSOAPFaultConstructAndMarshall() throws MarshallingException, XMLParserException {
+        Document soapDoc = parserPool.parse(SOAPTest.class.getResourceAsStream(soapFaultMarshall));
+        Element envelopeElem = soapDoc.getDocumentElement();
+        
+        Envelope envelope = (Envelope) buildXMLObject(Envelope.DEFAULT_ELEMENT_NAME);
+        
+        Body body = (Body) buildXMLObject(Body.DEFAULT_ELEMENT_NAME);
+        envelope.setBody(body);
+        
+        Fault fault = (Fault) buildXMLObject(Fault.DEFAULT_ELEMENT_NAME);
+        body.getUnknownXMLObjects().add(fault);
+        
+        FaultCode faultCode = (FaultCode) buildXMLObject(FaultCode.DEFAULT_ELEMENT_NAME);
+        faultCode.setValue(expectedFaultCode);
+        fault.setCode(faultCode);
+        
+        FaultString faultString = (FaultString) buildXMLObject(FaultString.DEFAULT_ELEMENT_NAME);
+        faultString.setValue(expectedFaultString);
+        fault.setMessage(faultString);
+        
+        FaultActor faultActor = (FaultActor) buildXMLObject(FaultActor.DEFAULT_ELEMENT_NAME);
+        faultActor.setValue(expectedFaultActor);
+        fault.setActor(faultActor);
+        
+        Detail detail = (Detail) buildXMLObject(Detail.DEFAULT_ELEMENT_NAME);
+        fault.setDetail(detail);
+        
+        Element marshalledEnvelope = marshallerFactory.getMarshaller(envelope).marshall(envelope);
+        assertEquals("Marshalled DOM was not the same as control DOM", soapDoc, envelope);
+        
+    }
+    
+    /**
+     *  Test that the no-arg SOAP fault-related builders are operating correcting, i.e. not namespace-qualified.
+     */
+    public void testSOAPFaultBuilders() {
+        
+       DetailBuilder detailBuilder = (DetailBuilder) builderFactory.getBuilder(Detail.DEFAULT_ELEMENT_NAME); 
+       Detail detail = detailBuilder.buildObject();
+       assertTrue("Namespace URI was not empty", DatatypeHelper.isEmpty(detail.getElementQName().getNamespaceURI()));
+       assertTrue("Namespace prefix was not empty", DatatypeHelper.isEmpty(detail.getElementQName().getPrefix()));
+        
+       FaultActorBuilder faultActorBuilder = (FaultActorBuilder) builderFactory.getBuilder(FaultActor.DEFAULT_ELEMENT_NAME); 
+       FaultActor faultActor = faultActorBuilder.buildObject();
+       assertTrue("Namespace URI was not empty", DatatypeHelper.isEmpty(faultActor.getElementQName().getNamespaceURI()));
+       assertTrue("Namespace prefix was not empty", DatatypeHelper.isEmpty(faultActor.getElementQName().getPrefix()));
+       
+       FaultCodeBuilder faultCodeBuilder = (FaultCodeBuilder) builderFactory.getBuilder(FaultCode.DEFAULT_ELEMENT_NAME); 
+       FaultCode faultCode = faultCodeBuilder.buildObject();
+       assertTrue("Namespace URI was not empty", DatatypeHelper.isEmpty(faultCode.getElementQName().getNamespaceURI()));
+       assertTrue("Namespace prefix was not empty", DatatypeHelper.isEmpty(faultCode.getElementQName().getPrefix()));
+       
+       FaultStringBuilder faultStringBuilder = (FaultStringBuilder) builderFactory.getBuilder(FaultString.DEFAULT_ELEMENT_NAME); 
+       FaultString faultString = faultStringBuilder.buildObject();
+       assertTrue("Namespace URI was not empty", DatatypeHelper.isEmpty(faultString.getElementQName().getNamespaceURI()));
+       assertTrue("Namespace prefix was not empty", DatatypeHelper.isEmpty(faultString.getElementQName().getPrefix()));
     }
 }

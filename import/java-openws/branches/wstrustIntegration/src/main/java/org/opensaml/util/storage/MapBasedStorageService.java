@@ -1,5 +1,5 @@
 /*
- * Copyright [2007] [University Corporation for Advanced Internet Development, Inc.]
+ * Copyright 2007 University Corporation for Advanced Internet Development, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,10 +16,10 @@
 
 package org.opensaml.util.storage;
 
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * A simple {@link Map} based {@link StorageService} implementation.
@@ -34,15 +34,15 @@ public class MapBasedStorageService<KeyType, ValueType> implements StorageServic
 
     /** Constructor. */
     public MapBasedStorageService() {
-        store = new Hashtable<String, Map<KeyType, ValueType>>();
+        store = new ConcurrentHashMap<String, Map<KeyType, ValueType>>();
     }
-    
+
     /**
      * Constructor.
-     *
+     * 
      * @param serviceStore the map to use as storage
      */
-    protected MapBasedStorageService(Map<String, Map<KeyType, ValueType>> serviceStore){
+    protected MapBasedStorageService(Map<String, Map<KeyType, ValueType>> serviceStore) {
         store = serviceStore;
     }
 
@@ -104,7 +104,7 @@ public class MapBasedStorageService<KeyType, ValueType> implements StorageServic
         synchronized (store) {
             partitionMap = store.get(partition);
             if (partitionMap == null) {
-                partitionMap = new Hashtable<KeyType, ValueType>();
+                partitionMap = new ConcurrentHashMap<KeyType, ValueType>();
             }
             store.put(partition, partitionMap);
         }

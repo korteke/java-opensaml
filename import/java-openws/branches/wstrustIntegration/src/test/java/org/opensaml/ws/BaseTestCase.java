@@ -59,6 +59,29 @@ public abstract class BaseTestCase extends XMLTestCase {
     protected void setUp() throws Exception {
         super.setUp();
         XMLUnit.setIgnoreWhitespace(true);
+        
+        parserPool = new BasicParserPool();
+        parserPool.setNamespaceAware(true);
+
+        Class clazz = BaseTestCase.class;
+        try {
+
+            // Configuration Files
+            Document wsfedConfig = parserPool.parse(clazz.getResourceAsStream("/wsfed11-protocol-config.xml"));
+            Document soap11Config = parserPool.parse(clazz.getResourceAsStream("/soap11-config.xml"));
+            Document defaulfConfig = parserPool.parse(clazz.getResourceAsStream("/default-config.xml"));
+            
+            XMLConfigurator configurator = new XMLConfigurator();
+            configurator.load(wsfedConfig);
+            configurator.load(soap11Config);
+            configurator.load(defaulfConfig);
+
+            builderFactory = Configuration.getBuilderFactory();
+            marshallerFactory = Configuration.getMarshallerFactory();
+            unmarshallerFactory = Configuration.getUnmarshallerFactory();
+        } catch (Exception e) {
+            System.err.println("Can not initialize test suite, " + e.getMessage());
+        }
     }
 
     /**
@@ -111,31 +134,5 @@ public abstract class BaseTestCase extends XMLTestCase {
             fail("Unable to retrieve builder for object QName " + objectQName);
         }
         return builder.buildObject(objectQName.getNamespaceURI(), objectQName.getLocalPart(), objectQName.getPrefix());
-    }
-
-    /*
-     * Initialize the library
-     */
-    static {
-        parserPool = new BasicParserPool();
-        parserPool.setNamespaceAware(true);
-
-        Class clazz = BaseTestCase.class;
-        try {
-
-            // SOAP 1.1 Configuration
-            Document soap11Config = parserPool.parse(clazz.getResourceAsStream("/soap11-config.xml"));
-            Document defaulfConfig = parserPool.parse(clazz.getResourceAsStream("/default-config.xml"));
-            
-            XMLConfigurator configurator = new XMLConfigurator();
-            configurator.load(soap11Config);
-            configurator.load(defaulfConfig);
-
-            builderFactory = Configuration.getBuilderFactory();
-            marshallerFactory = Configuration.getMarshallerFactory();
-            unmarshallerFactory = Configuration.getUnmarshallerFactory();
-        } catch (Exception e) {
-            System.err.println("Can not initialize test suite, " + e.getMessage());
-        }
     }
 }

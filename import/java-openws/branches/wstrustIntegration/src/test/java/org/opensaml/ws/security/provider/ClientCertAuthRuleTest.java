@@ -22,7 +22,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.opensaml.ws.security.BaseSecurityPolicyRuleTest;
+import org.opensaml.ws.security.BaseSecurityPolicyRuleTestCase;
 import org.opensaml.ws.security.ServletRequestX509CredentialAdapter;
 import org.opensaml.ws.transport.InTransport;
 import org.opensaml.ws.transport.http.HTTPInTransport;
@@ -40,7 +40,7 @@ import org.springframework.mock.web.MockHttpServletRequest;
 /**
  * Test client certificate authentication security policy rule.
  */
-public class ClientCertAuthRuleTest extends BaseSecurityPolicyRuleTest {
+public class ClientCertAuthRuleTest extends BaseSecurityPolicyRuleTestCase {
     
     private String entitySubjectDN;
     private String entityCN;
