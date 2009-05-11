@@ -296,6 +296,28 @@ public final class XMLHelper {
 
         return values;
     }
+    
+    /**
+     * Gets the set of values of a List of strings as a space delimited XML list-type.
+     * 
+     * @param values list of strings
+     * 
+     * @return space delimited string of values
+     */
+    public static String listToStringValue(List<String> values) {
+        if (!values.isEmpty()) {
+            StringBuffer sb= new StringBuffer();
+            for (String value : values) {
+                value = DatatypeHelper.safeTrimOrNullString(value);
+                if (value != null) {
+                    sb.append(" ").append(value);
+                }
+            }
+            return sb.toString().trim();
+        } else {
+            return null;
+        }
+    }
 
     /**
      * Constructs a QName from an element's adjacent Text child nodes.
