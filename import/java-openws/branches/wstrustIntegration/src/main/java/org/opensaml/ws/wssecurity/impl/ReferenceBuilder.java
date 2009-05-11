@@ -19,31 +19,18 @@ package org.opensaml.ws.wssecurity.impl;
 import org.opensaml.ws.wssecurity.Reference;
 
 /**
- * ReferenceBuilder
+ * ReferenceBuilder.
  * 
  */
-public class ReferenceBuilder extends
-        AbstractWSSecurityObjectBuilder<Reference> {
+public class ReferenceBuilder extends AbstractWSSecurityObjectBuilder<Reference> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wssecurity.impl.AbstractWSSecurityObjectBuilder#buildObject()
-     */
-    @Override
+    /** {@inheritDoc} */
     public Reference buildObject() {
         return buildObject(Reference.ELEMENT_NAME);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AbstractXMLObjectBuilder#buildObject(java.lang.String,
-     *      java.lang.String, java.lang.String)
-     */
-    @Override
-    public Reference buildObject(String namespaceURI, String localName,
-            String namespacePrefix) {
+    /** {@inheritDoc} */
+    public Reference buildObject(String namespaceURI, String localName, String namespacePrefix) {
         return new ReferenceImpl(namespaceURI, localName, namespacePrefix);
     }
 

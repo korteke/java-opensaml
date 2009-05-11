@@ -17,43 +17,35 @@
 
 package org.opensaml.ws.wssecurity.impl;
 
+import javax.xml.namespace.QName;
+
 import org.opensaml.ws.wssecurity.Reference;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
+import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Attr;
 
 /**
- * ReferenceUnmarshaller
+ * ReferenceUnmarshaller.
  * 
  */
 public class ReferenceUnmarshaller extends AbstractWSSecurityObjectUnmarshaller {
 
-    /**
-     * Default constructor.
-     */
-    public ReferenceUnmarshaller() {
-        super();
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wssecurity.impl.AbstractWSSecurityObjectUnmarshaller#processAttribute(org.opensaml.xml.XMLObject,
-     *      org.w3c.dom.Attr)
-     */
-    @Override
+    /** {@inheritDoc} */
     protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
+        Reference reference = (Reference) xmlObject;
         String attrName = attribute.getLocalName();
-        if (Reference.URI_ATTR_LOCAL_NAME.equals(attrName)) {
-            Reference reference = (Reference) xmlObject;
-            String uri = attribute.getValue();
-            reference.setURI(uri);
-        } else if (Reference.VALUE_TYPE_ATTR_LOCAL_NAME.equals(attrName)) {
-            Reference reference = (Reference) xmlObject;
-            String valueType = attribute.getValue();
-            reference.setValueType(valueType);
+        if (Reference.URI_ATTRIB_NAME.equals(attrName)) {
+            reference.setURI(attribute.getValue());
+        } else if (Reference.VALUE_TYPE_ATTRIB_NAME.equals(attrName)) {
+            reference.setValueType(attribute.getValue());
         } else {
-            super.processAttribute(xmlObject, attribute);
+            QName attribQName = 
+                XMLHelper.constructQName(attribute.getNamespaceURI(), attribute.getLocalName(), attribute.getPrefix());
+            if (attribute.isId()) {
+                reference.getUnknownAttributes().registerID(attribQName);
+            }
+            reference.getUnknownAttributes().put(attribQName, attribute.getValue());
         }
     }
 

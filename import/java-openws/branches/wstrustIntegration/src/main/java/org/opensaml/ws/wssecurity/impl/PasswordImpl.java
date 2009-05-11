@@ -18,19 +18,14 @@
 package org.opensaml.ws.wssecurity.impl;
 
 import org.opensaml.ws.wssecurity.Password;
-import org.opensaml.xml.schema.impl.XSStringImpl;
 
 /**
- * PasswordImpl
- * 
+ * PasswordImpl.
  */
-public class PasswordImpl extends XSStringImpl implements Password {
+public class PasswordImpl extends AttributedStringImpl implements Password {
 
-    /** wsu:Password/@wsu:Id attribute */
-    private String id_ = null;
-
-    /** wsse:Password/@Type attribute */
-    private String type_;
+    /** wsse:Password/@Type attribute. */
+    private String type;
 
     /**
      * Constructor. Default Type attribute: <code>Password.TYPE_PASSWORD_TEXT</code>
@@ -42,44 +37,17 @@ public class PasswordImpl extends XSStringImpl implements Password {
     public PasswordImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         // set default type
-        type_ = Password.TYPE_PASSWORD_TEXT;
+        type = Password.TYPE_PASSWORD_TEXT;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.glite.xml.security.Password#getType()
-     */
+    /** {@inheritDoc} */
     public String getType() {
-        return type_;
+        return type;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.glite.xml.security.Password#setType(java.lang.String)
-     */
-    public void setType(String type) {
-        type_ = prepareForAssignment(type_, type);
-
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.schema.AttributedId#getID()
-     */
-    public String getId() {
-        return id_;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.schema.AttributedId#setID(java.lang.String)
-     */
-    public void setId(String id) {
-        id_ = prepareForAssignment(id_, id);
+    /** {@inheritDoc} */
+    public void setType(String newType) {
+        type = prepareForAssignment(type, newType);
     }
 
 }

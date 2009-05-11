@@ -19,31 +19,17 @@ package org.opensaml.ws.wssecurity.impl;
 import org.opensaml.ws.wssecurity.KeyIdentifier;
 
 /**
- * KeyIdentifierBuilder
- * 
+ * KeyIdentifierBuilder.
  */
-public class KeyIdentifierBuilder extends
-        AbstractWSSecurityObjectBuilder<KeyIdentifier> {
+public class KeyIdentifierBuilder extends AbstractWSSecurityObjectBuilder<KeyIdentifier> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wssecurity.impl.AbstractWSSecurityObjectBuilder#buildObject()
-     */
-    @Override
+    /** {@inheritDoc} */
     public KeyIdentifier buildObject() {
         return buildObject(KeyIdentifier.ELEMENT_NAME);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AbstractXMLObjectBuilder#buildObject(java.lang.String,
-     *      java.lang.String, java.lang.String)
-     */
-    @Override
-    public KeyIdentifier buildObject(String namespaceURI, String localName,
-            String namespacePrefix) {
+    /** {@inheritDoc} */
+    public KeyIdentifier buildObject(String namespaceURI, String localName, String namespacePrefix) {
         return new KeyIdentifierImpl(namespaceURI, localName, namespacePrefix);
     }
 

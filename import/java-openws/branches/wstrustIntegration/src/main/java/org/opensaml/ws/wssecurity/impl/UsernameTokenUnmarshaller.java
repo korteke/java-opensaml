@@ -17,7 +17,8 @@
 
 package org.opensaml.ws.wssecurity.impl;
 
-import org.opensaml.ws.wssecurity.AttributedId;
+import javax.xml.namespace.QName;
+
 import org.opensaml.ws.wssecurity.Created;
 import org.opensaml.ws.wssecurity.Iteration;
 import org.opensaml.ws.wssecurity.Nonce;
@@ -25,31 +26,17 @@ import org.opensaml.ws.wssecurity.Password;
 import org.opensaml.ws.wssecurity.Salt;
 import org.opensaml.ws.wssecurity.Username;
 import org.opensaml.ws.wssecurity.UsernameToken;
-import org.opensaml.xml.AbstractExtensibleXMLObjectUnmarshaller;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
+import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Attr;
 
 /**
- * UsernameUnmarshaller
- * 
+ * UsernameUnmarshaller.
  */
-public class UsernameTokenUnmarshaller extends AbstractExtensibleXMLObjectUnmarshaller {
+public class UsernameTokenUnmarshaller extends AbstractWSSecurityObjectUnmarshaller {
 
-    /**
-     * Default constructor.
-     */
-    public UsernameTokenUnmarshaller() {
-        super();
-    }
-
-    /**
-     * Unmarshalls the &lt;wsse:Username&gt;, the &lt;wsse:Password&gt;, the &lt;wsu:Created&gt;, the
-     * &lt;wsse:Nonce&gt;, the &lt;wsse11:Salt&gt; and the &lt;wsse11:Iteration&gt; child elements.
-     * <p>
-     * {@inheritDoc}
-     */
-    @Override
+    /** {@inheritDoc} */
     protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
             throws UnmarshallingException {
         UsernameToken token = (UsernameToken) parentXMLObject;
@@ -66,24 +53,25 @@ public class UsernameTokenUnmarshaller extends AbstractExtensibleXMLObjectUnmars
         } else if (childXMLObject instanceof Iteration) {
             token.setIteration((Iteration) childXMLObject);
         } else {
-            super.processChildElement(parentXMLObject, childXMLObject);
+            token.getUnknownXMLObjects().add(childXMLObject);
         }
     }
 
-    /**
-     * Unmarshalls the &lt;@wsu:Id&gt; attribute.
-     * <p>
-     * {@inheritDoc}
-     */
-    @Override
+    /** {@inheritDoc} */
     protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
-        String attrName = attribute.getLocalName();
-        if (AttributedId.ID_ATTR_LOCAL_NAME.equals(attrName)) {
-            AttributedId attributedId = (AttributedId) xmlObject;
-            String attrValue = attribute.getValue();
-            attributedId.setId(attrValue);
+        UsernameToken token = (UsernameToken) xmlObject;
+        
+        //TODO - fix this - should be based on QName, not local name
+        if (attribute.getLocalName().equals(UsernameToken.ID_ATTR_LOCAL_NAME)) {
+            token.setId(attribute.getValue());
+            attribute.getOwnerElement().setIdAttributeNode(attribute, true);
         } else {
-            super.processAttribute(xmlObject, attribute);
+            QName attribQName = 
+                XMLHelper.constructQName(attribute.getNamespaceURI(), attribute.getLocalName(), attribute.getPrefix());
+            if (attribute.isId()) {
+                token.getUnknownAttributes().registerID(attribQName);
+            }
+            token.getUnknownAttributes().put(attribQName, attribute.getValue());
         }
     }
 

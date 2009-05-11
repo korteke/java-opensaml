@@ -19,30 +19,17 @@ package org.opensaml.ws.wssecurity.impl;
 import org.opensaml.ws.wssecurity.Username;
 
 /**
- * UsernameBuilder
- * 
+ * UsernameBuilder.
  */
 public class UsernameBuilder extends AbstractWSSecurityObjectBuilder<Username> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wssecurity.impl.AbstractWSSecurityObjectBuilder#buildObject()
-     */
-    @Override
+    /** {@inheritDoc} */
     public Username buildObject() {
         return buildObject(Username.ELEMENT_NAME);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AbstractXMLObjectBuilder#buildObject(java.lang.String,
-     *      java.lang.String, java.lang.String)
-     */
-    @Override
-    public Username buildObject(String namespaceURI, String localName,
-            String namespacePrefix) {
+    /** {@inheritDoc} */
+    public Username buildObject(String namespaceURI, String localName, String namespacePrefix) {
         return new UsernameImpl(namespaceURI, localName, namespacePrefix);
     }
 

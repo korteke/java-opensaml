@@ -17,51 +17,49 @@
 
 package org.opensaml.ws.wssecurity.impl;
 
+import java.util.Map.Entry;
+
+import javax.xml.namespace.QName;
+
 import org.opensaml.ws.wssecurity.Reference;
+import org.opensaml.xml.Configuration;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
+import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
- * ReferenceMarshaller
+ * ReferenceMarshaller.
  * 
  */
 public class ReferenceMarshaller extends AbstractWSSecurityObjectMarshaller {
 
-    /**
-     * Default constructor.
-     */
-    public ReferenceMarshaller() {
-        super();
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wssecurity.impl.AbstractWSSecurityObjectMarshaller#marshallAttributes(org.opensaml.xml.XMLObject,
-     *      org.w3c.dom.Element)
-     */
-    @Override
+    /** {@inheritDoc} */
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         Reference reference = (Reference) xmlObject;
+        
+        if (!DatatypeHelper.isEmpty(reference.getURI())) {
+            domElement.setAttributeNS(null, Reference.URI_ATTRIB_NAME, reference.getURI());
+        }
+        
+        if (!DatatypeHelper.isEmpty(reference.getValueType())) {
+            domElement.setAttributeNS(null, Reference.VALUE_TYPE_ATTRIB_NAME, reference.getValueType());
+        }
+        
+        Attr attribute;
         Document document = domElement.getOwnerDocument();
-        String uri = reference.getURI();
-        if (uri != null) {
-            Attr attr = XMLHelper.constructAttribute(document, Reference.URI_ATTR_NAME);
-            attr.setValue(uri);
-            domElement.setAttributeNodeNS(attr);
+        for (Entry<QName, String> entry : reference.getUnknownAttributes().entrySet()) {
+            attribute = XMLHelper.constructAttribute(document, entry.getKey());
+            attribute.setValue(entry.getValue());
+            domElement.setAttributeNodeNS(attribute);
+            if (Configuration.isIDAttribute(entry.getKey())
+                    || reference.getUnknownAttributes().isIDAttribute(entry.getKey())) {
+                attribute.getOwnerElement().setIdAttributeNode(attribute, true);
+            }
         }
-        String valueType = reference.getValueType();
-        if (valueType != null) {
-            Attr attr = XMLHelper.constructAttribute(document, Reference.VALUE_TYPE_ATTR_NAME);
-            attr.setValue(valueType);
-            domElement.setAttributeNodeNS(attr);
-        }
-
-        super.marshallAttributes(xmlObject, domElement);
     }
 
 }

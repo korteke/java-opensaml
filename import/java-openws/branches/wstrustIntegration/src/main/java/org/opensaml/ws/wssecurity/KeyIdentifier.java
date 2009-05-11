@@ -18,25 +18,44 @@ package org.opensaml.ws.wssecurity;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.xml.schema.XSBase64Binary;
-
 /**
- * The &lt;wsse:KeyIdentifier&gt; child element of a
- * &lt;wsse:SecurityTokenReference&gt; element.
+ * The &lt;wsse:KeyIdentifier&gt; element.
  * 
  * @see SecurityTokenReference
  * @see "WS-Security, Chapter 7.3 Key Identifiers."
  * 
  */
-public interface KeyIdentifier extends XSBase64Binary, AttributedId,
-        AttributedEncodingType, AttributedValueType, WSSecurityObject {
+public interface KeyIdentifier extends EncodedString {
 
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME= "KeyIdentifier";
+    public static final String ELEMENT_LOCAL_NAME = "KeyIdentifier";
 
-    /** Qualified element name */
-    public final static QName ELEMENT_NAME= new QName(WSSecurityConstants.WSSE_NS,
-                                                      ELEMENT_LOCAL_NAME,
-                                                      WSSecurityConstants.WSSE_PREFIX);
+    /** Qualified element name. */
+    public static final QName ELEMENT_NAME =
+        new QName(WSSecurityConstants.WSSE_NS, ELEMENT_LOCAL_NAME, WSSecurityConstants.WSSE_PREFIX);
+    
+    /** Local name of the XSI type. */
+    public static final String TYPE_LOCAL_NAME = "KeyIdentifierType"; 
+        
+    /** QName of the XSI type. */
+    public static final QName TYPE_NAME = 
+        new QName(WSSecurityConstants.WSSE_NS, TYPE_LOCAL_NAME, WSSecurityConstants.WSSE_PREFIX);
+    
+    /** The ValueType attribute name. */
+    public static final String VALUE_TYPE_ATTRIB_NAME = "ValueType";
+    
+    /**
+     * Returns the ValueType attribute URI value.
+     * 
+     * @return the ValueType attribute value or <code>null</code>.
+     */
+    public String getValueType();
+
+    /**
+     * Sets the ValueType attribute URI value.
+     * 
+     * @param newValueType the ValueType attribute value.
+     */
+    public void setValueType(String newValueType);
 
 }

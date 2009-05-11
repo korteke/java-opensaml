@@ -16,36 +16,9 @@
  */
 package org.opensaml.ws.wssecurity.impl;
 
-
-import org.opensaml.ws.wssecurity.Username;
-import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.util.XMLHelper;
-import org.w3c.dom.Element;
-
 /**
- * UsernameMarshaller
- * 
+ * UsernameMarshaller.
  */
-public class UsernameMarshaller extends AbstractWSSecurityObjectMarshaller {
-
-    /**
-     * Default constructor.
-     */
-    public UsernameMarshaller() {
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.io.AbstractXMLObjectMarshaller#marshallElementContent(org.opensaml.xml.XMLObject,
-     *      org.w3c.dom.Element)
-     */
-    @Override
-    protected void marshallElementContent(XMLObject xmlObject,
-            Element domElement) throws MarshallingException {
-        Username username= (Username) xmlObject;
-        XMLHelper.appendTextContent(domElement, username.getValue());
-    }
+public class UsernameMarshaller extends AttributedStringMarshaller {
 
 }

@@ -17,69 +17,25 @@
 package org.opensaml.ws.wssecurity.impl;
 
 
-import org.opensaml.ws.wssecurity.AttributedEncodingType;
-import org.opensaml.ws.wssecurity.AttributedValueType;
+import org.opensaml.ws.wssecurity.KeyIdentifier;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.schema.XSBase64Binary;
-import org.opensaml.xml.util.XMLHelper;
-import org.w3c.dom.Attr;
-import org.w3c.dom.Document;
+import org.opensaml.xml.util.DatatypeHelper;
 import org.w3c.dom.Element;
 
 /**
- * KeyIdentifierMarshaller
+ * KeyIdentifierMarshaller.
  * 
  */
-public class KeyIdentifierMarshaller extends AbstractAttributedIdMarshaller {
+public class KeyIdentifierMarshaller extends EncodedStringMarshaller {
 
-    /**
-     * Default constructor.
-     */
-    public KeyIdentifierMarshaller() {
-        super();
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wssecurity.impl.AbstractIdMarshaller#marshallAttributes(org.opensaml.xml.XMLObject,
-     *      org.w3c.dom.Element)
-     */
-    @Override
-    protected void marshallAttributes(XMLObject xmlObject, Element domElement)
-            throws MarshallingException {
-        Document document= domElement.getOwnerDocument();
-        AttributedValueType typed= (AttributedValueType) xmlObject;
-        String valueType= typed.getValueType();
-        if (valueType != null) {
-            Attr attribute= XMLHelper.constructAttribute(document,
-                                                         AttributedValueType.VALUE_TYPE_ATTR_NAME);
-            attribute.setValue(valueType);
-            domElement.setAttributeNodeNS(attribute);
-        }
-        AttributedEncodingType encodingTyped= (AttributedEncodingType) xmlObject;
-        String encodingType= encodingTyped.getEncodingType();
-        if (encodingType != null) {
-            Attr attribute= XMLHelper.constructAttribute(document,
-                                                         AttributedEncodingType.ENCODING_TYPE_ATTR_NAME);
-            attribute.setValue(encodingType);
-            domElement.setAttributeNodeNS(attribute);
+    /** {@inheritDoc} */
+    protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
+        KeyIdentifier keyIdentifier = (KeyIdentifier) xmlObject;
+        if (!DatatypeHelper.isEmpty(keyIdentifier.getValueType())) {
+            domElement.setAttributeNS(null, KeyIdentifier.ENCODING_TYPE_ATTRIB_NAME, keyIdentifier.getValueType());
         }
         super.marshallAttributes(xmlObject, domElement);
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wssecurity.impl.AbstractWSSecurityObjectMarshaller#marshallElementContent(org.opensaml.xml.XMLObject,
-     *      org.w3c.dom.Element)
-     */
-    @Override
-    protected void marshallElementContent(XMLObject xmlObject,
-            Element domElement) throws MarshallingException {
-        XSBase64Binary base64binary= (XSBase64Binary) xmlObject;
-        XMLHelper.appendTextContent(domElement, base64binary.getValue());
     }
 
 }

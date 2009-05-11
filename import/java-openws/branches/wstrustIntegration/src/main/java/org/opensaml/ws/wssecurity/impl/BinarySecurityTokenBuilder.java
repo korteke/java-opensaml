@@ -20,33 +20,17 @@ import org.opensaml.ws.wssecurity.BinarySecurityToken;
 
 /**
  * Builder for the &lt;BinarySecurityToken&gt; element.
- * 
  */
-public class BinarySecurityTokenBuilder extends
-        AbstractWSSecurityObjectBuilder<BinarySecurityToken> {
+public class BinarySecurityTokenBuilder extends AbstractWSSecurityObjectBuilder<BinarySecurityToken> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wssecurity.impl.AbstractWSSecurityObjectBuilder#buildObject()
-     */
-    @Override
+    /** {@inheritDoc} */
     public BinarySecurityToken buildObject() {
         return buildObject(BinarySecurityToken.ELEMENT_NAME);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AbstractXMLObjectBuilder#buildObject(java.lang.String,
-     *      java.lang.String, java.lang.String)
-     */
-    @Override
-    public BinarySecurityToken buildObject(String namespaceURI,
-            String localName, String namespacePrefix) {
-        return new BinarySecurityTokenImpl(namespaceURI,
-                                           localName,
-                                           namespacePrefix);
+    /** {@inheritDoc} */
+    public BinarySecurityToken buildObject(String namespaceURI, String localName, String namespacePrefix) {
+        return new BinarySecurityTokenImpl(namespaceURI, localName, namespacePrefix);
     }
 
 }

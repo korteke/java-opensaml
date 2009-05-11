@@ -17,40 +17,41 @@
 
 package org.opensaml.ws.wssecurity.impl;
 
-import org.opensaml.ws.wssecurity.AttributedValueType;
-import org.opensaml.xml.AbstractExtensibleXMLObjectUnmarshaller;
+import javax.xml.namespace.QName;
+
+import org.opensaml.ws.wssecurity.Embedded;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
+import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Attr;
 
 /**
- * EmbeddedUnmarshaller
+ * EmbeddedUnmarshaller.
  * 
  */
-public class EmbeddedUnmarshaller extends AbstractExtensibleXMLObjectUnmarshaller {
+public class EmbeddedUnmarshaller extends AbstractWSSecurityObjectUnmarshaller {
 
-    /**
-     * Default constructor.
-     */
-    public EmbeddedUnmarshaller() {
-        super();
+    /** {@inheritDoc} */
+    protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
+        Embedded embedded = (Embedded) xmlObject;
+        String attrName = attribute.getLocalName();
+        if (Embedded.VALUE_TYPE_ATTRIB_NAME.equals(attrName)) {
+            embedded.setValueType(attribute.getValue());
+        } else {
+            QName attribQName = 
+                XMLHelper.constructQName(attribute.getNamespaceURI(), attribute.getLocalName(), attribute.getPrefix());
+            if (attribute.isId()) {
+                embedded.getUnknownAttributes().registerID(attribQName);
+            }
+            embedded.getUnknownAttributes().put(attribQName, attribute.getValue());
+        }
     }
 
-    /**
-     * Unmarshalls the &lt;@ValueType&gt; attribute.
-     * <p>
-     * {@inheritDoc}
-     */
-    @Override
-    protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
-        String attrName = attribute.getLocalName();
-        if (AttributedValueType.VALUE_TYPE_ATTR_LOCAL_NAME.equals(attrName)) {
-            AttributedValueType valueType = (AttributedValueType) xmlObject;
-            String attrValue = attribute.getValue();
-            valueType.setValueType(attrValue);
-        } else {
-            super.processAttribute(xmlObject, attribute);
-        }
+    /** {@inheritDoc} */
+    protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
+            throws UnmarshallingException {
+        Embedded embedded = (Embedded) parentXMLObject;
+        embedded.getUnknownXMLObjects().add(childXMLObject);
     }
 
 }

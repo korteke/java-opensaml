@@ -17,45 +17,48 @@
 
 package org.opensaml.ws.wssecurity.impl;
 
-import org.opensaml.ws.wssecurity.AttributedId;
-import org.opensaml.xml.AbstractExtensibleXMLObjectMarshaller;
+import java.util.Map.Entry;
+
+import javax.xml.namespace.QName;
+
+import org.opensaml.ws.wssecurity.UsernameToken;
+import org.opensaml.xml.Configuration;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
+import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
- * UsernameTokenMarshaller
- * 
+ * UsernameTokenMarshaller.
  */
-public class UsernameTokenMarshaller extends AbstractExtensibleXMLObjectMarshaller {
+public class UsernameTokenMarshaller extends AbstractWSSecurityObjectMarshaller {
 
-    /**
-     * Default constructor.
-     */
-    public UsernameTokenMarshaller() {
-        super();
-    }
-
-    /**
-     * Marshalls the &lt;@wsu:Id&gt; attribute.
-     * <p>
-     * {@inheritDoc}
-     */
-    @Override
+    /** {@inheritDoc} */
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
-        AttributedId attributedId = (AttributedId) xmlObject;
-        String id = attributedId.getId();
-        if (id != null) {
-            Document document = domElement.getOwnerDocument();
-            Attr attribute = XMLHelper.constructAttribute(document, AttributedId.ID_ATTR_NAME);
-            attribute.setValue(id);
+        UsernameToken usernameToken = (UsernameToken) xmlObject;
+        Attr attribute;
+        Document document = domElement.getOwnerDocument();
+        
+        for (Entry<QName, String> entry : usernameToken.getUnknownAttributes().entrySet()) {
+            attribute = XMLHelper.constructAttribute(document, entry.getKey());
+            attribute.setValue(entry.getValue());
             domElement.setAttributeNodeNS(attribute);
-            // TODO: check if needed???
-            // domElement.setIdAttributeNode(attribute,true);
+            if (Configuration.isIDAttribute(entry.getKey())
+                    || usernameToken.getUnknownAttributes().isIDAttribute(entry.getKey())) {
+                attribute.getOwnerElement().setIdAttributeNode(attribute, true);
+            }
         }
+        
+        if (!DatatypeHelper.isEmpty(usernameToken.getId())) {
+            attribute = XMLHelper.constructAttribute(document, UsernameToken.ID_ATTR_NAME);
+            attribute.setValue(usernameToken.getId());
+            domElement.setAttributeNodeNS(attribute);
+            attribute.getOwnerElement().setIdAttributeNode(attribute, true);
+        }
+        
         super.marshallAttributes(xmlObject, domElement);
     }
 

@@ -25,15 +25,37 @@ import org.opensaml.xml.ElementExtensibleXMLObject;
  * the &lt;wsse:Embedded&gt; element.
  * 
  */
-public interface Embedded extends AttributedValueType,
-        AttributeExtensibleXMLObject, ElementExtensibleXMLObject,
-        WSSecurityObject {
+public interface Embedded extends AttributeExtensibleXMLObject, ElementExtensibleXMLObject, WSSecurityObject {
+    
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME= "Embedded";
+    public static final String ELEMENT_LOCAL_NAME = "Embedded";
 
-    /** Qualified element name */
-    public final static QName ELEMENT_NAME= new QName(WSSecurityConstants.WSSE_NS,
-                                                      ELEMENT_LOCAL_NAME,
-                                                      WSSecurityConstants.WSSE_PREFIX);
+    /** Qualified element name. */
+    public static final QName ELEMENT_NAME =
+        new QName(WSSecurityConstants.WSSE_NS, ELEMENT_LOCAL_NAME, WSSecurityConstants.WSSE_PREFIX);
+    
+    /** Local name of the XSI type. */
+    public static final String TYPE_LOCAL_NAME = "EmbeddedType"; 
+        
+    /** QName of the XSI type. */
+    public static final QName TYPE_NAME = 
+        new QName(WSSecurityConstants.WSSE_NS, TYPE_LOCAL_NAME, WSSecurityConstants.WSSE_PREFIX);
 
+    /** The wsse:Embedded/@ValueType attribute local name. */
+    public static final String VALUE_TYPE_ATTRIB_NAME= "ValueType";
+
+    /**
+     * Returns the ValueType attribute URI value.
+     * 
+     * @return the ValueType attribute value or <code>null</code>.
+     */
+    public String getValueType();
+
+    /**
+     * Sets the ValueType attribute URI value.
+     * 
+     * @param newValueType the ValueType attribute value.
+     */
+    public void setValueType(String newValueType);
+    
 }

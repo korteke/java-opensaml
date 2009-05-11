@@ -22,7 +22,7 @@ import javax.xml.namespace.QName;
 import org.opensaml.ws.wspolicy.AppliesTo;
 import org.opensaml.ws.wspolicy.Policy;
 import org.opensaml.ws.wspolicy.PolicyReference;
-import org.opensaml.ws.wssecurity.AttributedId;
+import org.opensaml.ws.wssecurity.IdBearing;
 import org.opensaml.ws.wssecurity.Timestamp;
 import org.opensaml.xml.AttributeExtensibleXMLObject;
 import org.opensaml.xml.ElementExtensibleXMLObject;
@@ -70,7 +70,7 @@ import org.opensaml.xml.signature.SignableXMLObject;
  * @see RequestSecurityTokenResponse
  * 
  */
-public abstract interface RequestSecurityTokenType extends AttributedId, AttributeExtensibleXMLObject,
+public abstract interface RequestSecurityTokenType extends IdBearing, AttributeExtensibleXMLObject,
         ElementExtensibleXMLObject, SignableXMLObject {
 
     /**

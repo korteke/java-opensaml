@@ -18,17 +18,22 @@
 package org.opensaml.ws.wssecurity.impl;
 
 import org.opensaml.ws.wssecurity.Reference;
+import org.opensaml.xml.util.AttributeMap;
 
 /**
- * ReferenceImpl
+ * ReferenceImpl.
  * 
  */
 public class ReferenceImpl extends AbstractWSSecurityObject implements Reference {
-    /** wsse:Reference/@URI attribute */
-    private String uri_ = null;
+    
+    /** wsse:Reference/@URI attribute. */
+    private String uri;
 
-    /** wsse:Reference/@ValueType attribute */
-    private String valueType_ = null;
+    /** wsse:Reference/@ValueType attribute. */
+    private String valueType;
+    
+    /** Wildcard attributes. */
+    private AttributeMap unknownAttributes;
 
     /**
      * Constructor.
@@ -39,42 +44,32 @@ public class ReferenceImpl extends AbstractWSSecurityObject implements Reference
      */
     public ReferenceImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
+        unknownAttributes = new AttributeMap(this);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wssecurity.Reference#getURI()
-     */
+    /** {@inheritDoc} */
     public String getURI() {
-        return uri_;
+        return uri;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wssecurity.Reference#setURI(java.lang.String)
-     */
-    public void setURI(String uri) {
-        uri_ = prepareForAssignment(uri_, uri);
+    /** {@inheritDoc} */
+    public void setURI(String newURI) {
+        uri = prepareForAssignment(uri, newURI);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.schema.AttributedValueType#getValueType()
-     */
+    /** {@inheritDoc} */
     public String getValueType() {
-        return valueType_;
+        return valueType;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.schema.AttributedValueType#setValueType(java.lang.String)
-     */
-    public void setValueType(String valueType) {
-        valueType_ = prepareForAssignment(valueType_, valueType);
+    /** {@inheritDoc} */
+    public void setValueType(String newValueType) {
+        valueType = prepareForAssignment(valueType, newValueType);
+    }
+
+    /** {@inheritDoc} */
+    public AttributeMap getUnknownAttributes() {
+        return unknownAttributes;
     }
 
 }

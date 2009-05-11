@@ -169,10 +169,9 @@ public class WSSecurityObjectsTestCase extends WSBaseTestCase {
         BinarySecurityToken token= buildXMLObject(BinarySecurityToken.ELEMENT_NAME);
         token.setId("BinarySecurityToken-" + System.currentTimeMillis());
         token.setValue("Base64Encoded_X509_CERTIFICATE...");
-        token.setValueType(BinarySecurityToken.VALUETYPE_X509_V3);
+        token.setValueType("http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-x509-token-profile-1.0#X509v3");
         // check default encoding type
-        assertEquals(BinarySecurityToken.ENCODINGTYPE_BASE64_BINARY,
-                     token.getEncodingType());
+        assertEquals(BinarySecurityToken.ENCODING_TYPE_BASE64_BINARY, token.getEncodingType());
 
         marshallAndUnmarshall(token);
 
@@ -181,7 +180,7 @@ public class WSSecurityObjectsTestCase extends WSBaseTestCase {
     public void testReference() throws Exception {
         Reference reference= buildXMLObject(Reference.ELEMENT_NAME);
 
-        reference.setValueType(Reference.VALUETYPE_USERNAME_TOKEN);
+        reference.setValueType("http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#UsernameToken");
         reference.setURI("#UsernameToken-0000001");
 
         marshallAndUnmarshall(reference);
@@ -193,9 +192,8 @@ public class WSSecurityObjectsTestCase extends WSBaseTestCase {
         UsernameToken usernameToken= createUsernameToken("EmbeddedUT",
                                                          "EmbeddedUT");
 
-        embedded.setValueType(Embedded.VALUETYPE_USERNAME_TOKEN);
+        embedded.setValueType("http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#UsernameToken");
         embedded.getUnknownXMLObjects().add(usernameToken);
-        // embedded.setSecurityToken(usernameToken);
 
         marshallAndUnmarshall(embedded);
 

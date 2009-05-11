@@ -20,53 +20,21 @@ package org.opensaml.ws.wssecurity.impl;
 import org.opensaml.ws.wssecurity.Password;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.util.XMLHelper;
-import org.w3c.dom.Attr;
-import org.w3c.dom.Document;
+import org.opensaml.xml.util.DatatypeHelper;
 import org.w3c.dom.Element;
 
 /**
- * PasswordMarshaller
- * 
+ * PasswordMarshaller.
  */
-public class PasswordMarshaller extends AbstractAttributedIdMarshaller {
+public class PasswordMarshaller extends AttributedStringMarshaller {
 
-    /**
-     * Default constructor.
-     */
-    public PasswordMarshaller() {
-        super();
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wssecurity.impl.AbstractWSSecurityObjectMarshaller#marshallAttributes(org.opensaml.xml.XMLObject,
-     *      org.w3c.dom.Element)
-     */
-    @Override
+    /** {@inheritDoc} */
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         Password password = (Password) xmlObject;
-        String type = password.getType();
-        if (type != null) {
-            Document document = domElement.getOwnerDocument();
-            Attr attribute = XMLHelper.constructAttribute(document, Password.TYPE_ATTR_NAME);
-            attribute.setValue(type);
-            domElement.setAttributeNodeNS(attribute);
+        if (!DatatypeHelper.isEmpty(password.getType())) {
+            domElement.setAttributeNS(null, Password.TYPE_ATTRIB_NAME, password.getType());
         }
         super.marshallAttributes(xmlObject, domElement);
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.io.AbstractXMLObjectMarshaller#marshallElementContent(org.opensaml.xml.XMLObject,
-     *      org.w3c.dom.Element)
-     */
-    @Override
-    protected void marshallElementContent(XMLObject xmlObject, Element domElement) throws MarshallingException {
-        Password password = (Password) xmlObject;
-        XMLHelper.appendTextContent(domElement, password.getValue());
     }
 
 }

@@ -19,8 +19,9 @@ package org.opensaml.ws.wssecurity;
 import org.opensaml.xml.XMLObjectBuilder;
 
 /**
- * WSSecurityObjectBuilder
+ * WSSecurityObjectBuilder.
  * 
+ * @param <WSSecurityObjectType> the type of WS-Security object
  */
 public interface WSSecurityObjectBuilder<WSSecurityObjectType extends WSSecurityObject>
         extends XMLObjectBuilder<WSSecurityObjectType> {

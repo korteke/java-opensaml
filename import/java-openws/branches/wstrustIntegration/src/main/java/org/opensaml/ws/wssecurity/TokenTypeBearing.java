@@ -20,35 +20,35 @@ package org.opensaml.ws.wssecurity;
 import javax.xml.namespace.QName;
 
 /**
- * Interface AttributedTokenType for element having a &lt;@wsse11:TokenType&gt; attribute.
+ * Interface for element having a <code>@wsse11:TokenType</code>; attribute.
  * 
  * @see "WS-Security 2004, Chapter 7.1 SecurityTokenReference Element."
  * 
  */
-public abstract interface AttributedTokenType {
+public abstract interface TokenTypeBearing {
 
     /**
-     * the <code>@wsse11:TokenType</code> attribute local name
+     * The <code>@wsse11:TokenType</code> attribute local name.
      */
-    public final static String TOKEN_TYPE_ATTR_LOCAL_NAME = "TokenType";
+    public static final String TOKEN_TYPE_ATTR_LOCAL_NAME = "TokenType";
 
     /**
-     * the <code>@wsse11:TokenType</code> qualified attribute name
+     * The <code>@wsse11:TokenType</code> qualified attribute name.
      */
-    public final static QName TOKEN_TYPE_ATTR_NAME = new QName(WSSecurityConstants.WSSE11_NS,
-            TOKEN_TYPE_ATTR_LOCAL_NAME, WSSecurityConstants.WSSE11_PREFIX);
+    public static final QName TOKEN_TYPE_ATTR_NAME =
+        new QName(WSSecurityConstants.WSSE11_NS, TOKEN_TYPE_ATTR_LOCAL_NAME, WSSecurityConstants.WSSE11_PREFIX);
 
     /**
-     * Returns the &lt;@wsse11:TokenType&gt; attribute value.
+     * Returns the <code>@wsse11:TokenType</code> attribute value.
      * 
-     * @return the &lt;@wsse11:TokenType&gt; attribute value or <code>null</code>.
+     * @return the <code>@wsse11:TokenType</code> attribute value or <code>null</code>.
      */
     public String getTokenType();
 
     /**
-     * Sets the &lt;@wsse11:TokenType&gt; attribute value.
+     * Sets the <code>@wsse11:TokenType</code> attribute value.
      * 
-     * @param tokenType the &lt;@wsse11:TokenType&gt; attribute value to set.
+     * @param tokenType the <code>@wsse11:TokenType</code> attribute value to set.
      */
     public void setTokenType(String tokenType);
 

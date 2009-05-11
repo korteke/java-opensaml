@@ -19,34 +19,19 @@ package org.opensaml.ws.wssecurity.impl;
 import org.opensaml.ws.wssecurity.SecurityTokenReference;
 
 /**
- * SecurityTokenReferenceBuilder
+ * SecurityTokenReferenceBuilder.
  * 
  */
-public class SecurityTokenReferenceBuilder extends
-        AbstractWSSecurityObjectBuilder<SecurityTokenReference> {
+public class SecurityTokenReferenceBuilder extends AbstractWSSecurityObjectBuilder<SecurityTokenReference> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wssecurity.impl.AbstractWSSecurityObjectBuilder#buildObject()
-     */
-    @Override
+    /** {@inheritDoc} */
     public SecurityTokenReference buildObject() {
         return buildObject(SecurityTokenReference.ELEMENT_NAME);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AbstractXMLObjectBuilder#buildObject(java.lang.String,
-     *      java.lang.String, java.lang.String)
-     */
-    @Override
-    public SecurityTokenReference buildObject(String namespaceURI,
-            String localName, String namespacePrefix) {
-        return new SecurityTokenReferenceImpl(namespaceURI,
-                                              localName,
-                                              namespacePrefix);
+    /** {@inheritDoc} */
+    public SecurityTokenReference buildObject(String namespaceURI, String localName, String namespacePrefix) {
+        return new SecurityTokenReferenceImpl(namespaceURI, localName, namespacePrefix);
     }
 
 }

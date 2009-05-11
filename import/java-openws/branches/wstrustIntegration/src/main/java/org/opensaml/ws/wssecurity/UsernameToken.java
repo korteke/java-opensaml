@@ -27,16 +27,22 @@ import org.opensaml.xml.ElementExtensibleXMLObject;
  * @see "WS-Security UsernameToken Profile 1.1"
  * 
  */
-public interface UsernameToken extends AttributedId,
-        AttributeExtensibleXMLObject, ElementExtensibleXMLObject,
-        WSSecurityObject {
+public interface UsernameToken extends IdBearing, AttributeExtensibleXMLObject, 
+        ElementExtensibleXMLObject, WSSecurityObject {
+    
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME= "UsernameToken";
+    public static final String ELEMENT_LOCAL_NAME = "UsernameToken";
 
-    /** Qualified element name */
-    public final static QName ELEMENT_NAME= new QName(WSSecurityConstants.WSSE_NS,
-                                                      ELEMENT_LOCAL_NAME,
-                                                      WSSecurityConstants.WSSE_PREFIX);
+    /** Qualified element name. */
+    public static final QName ELEMENT_NAME =
+        new QName(WSSecurityConstants.WSSE_NS, ELEMENT_LOCAL_NAME, WSSecurityConstants.WSSE_PREFIX);
+    
+    /** Local name of the XSI type. */
+    public static final String TYPE_LOCAL_NAME = "UsernameTokenType"; 
+        
+    /** QName of the XSI type. */
+    public static final QName TYPE_NAME = 
+        new QName(WSSecurityConstants.WSSE_NS, TYPE_LOCAL_NAME, WSSecurityConstants.WSSE_PREFIX);
 
     /**
      * Returns the &lt;wsse:Username&gt; child element.

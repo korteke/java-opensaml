@@ -19,47 +19,42 @@ package org.opensaml.ws.wssecurity;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.xml.schema.XSString;
-
 /**
- * The &lt;wsse:Password&gt; element within a &lt;wsse:UsernameToken&gt; element.
+ * The <code>Password</code> element.
  * 
  * @see "WS-Security UsernameToken Profile 1.1"
  * 
  */
-public interface Password extends AttributedId, XSString, WSSecurityObject {
+public interface Password extends AttributedString {
     /** Element local name. */
     public static final String ELEMENT_LOCAL_NAME = "Password";
 
-    /** Qualified element name */
-    public final static QName ELEMENT_NAME = new QName(WSSecurityConstants.WSSE_NS, ELEMENT_LOCAL_NAME,
-            WSSecurityConstants.WSSE_PREFIX);
+    /** Qualified element name. */
+    public static final QName ELEMENT_NAME = 
+        new QName(WSSecurityConstants.WSSE_NS, ELEMENT_LOCAL_NAME, WSSecurityConstants.WSSE_PREFIX);
 
-    /** The <code>Type</code> attribute local name */
-    public final static String TYPE_ATTR_LOCAL_NAME = "Type";
-
-    /** The &lt;wsse:Password/@Type&gt; attribute unqualified name */
-    public final static QName TYPE_ATTR_NAME = new QName(TYPE_ATTR_LOCAL_NAME);
-
+    /** The <code>Type</code> attribute local name. */
+    public static final String TYPE_ATTRIB_NAME = "Type";
+    
     /**
-     * The &lt;wsse:Password/@Type&gt; attribute URI value <code>#PasswordText</code> (DEFAULT)
+     * The <code>wsse:Password/@Type</code> attribute URI value <code>#PasswordText</code> (DEFAULT).
      */
-    public final static String TYPE_PASSWORD_TEXT = WSSecurityConstants.WSSE_NS + "#PasswordText";
+    public static final String TYPE_PASSWORD_TEXT = WSSecurityConstants.WSSE_NS + "#PasswordText";
 
     /**
-     * The &lt;wsse:Password/@Type&gt; attribute URI value <code>#PasswordDigest</code>
+     * The <code>wsse:Password/@Type</code> attribute URI value <code>#PasswordDigest</code>.
      */
-    public final static String TYPE_PASSWORD_DIGEST = WSSecurityConstants.WSSE_NS + "#PasswordDigest";
+    public static final String TYPE_PASSWORD_DIGEST = WSSecurityConstants.WSSE_NS + "#PasswordDigest";
 
     /**
-     * Returns the &lt;wsse:Password/@Type&gt; attribute URI value.
+     * Returns the <code>wsse:Password/@Type</code> attribute URI value.
      * 
      * @return the <code>Type</code> attribute URI value.
      */
     public String getType();
 
     /**
-     * Sets the &lt;wsse:Password/@Type&gt; attribute URI value.
+     * Sets the <code>wsse:Password/@Type</code> attribute URI value.
      * 
      * @param type the <code>Type</code> attribute URI value to set.
      */

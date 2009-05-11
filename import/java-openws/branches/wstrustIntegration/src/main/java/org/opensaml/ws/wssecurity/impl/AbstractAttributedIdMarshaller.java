@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wssecurity.impl;
 
-import org.opensaml.ws.wssecurity.AttributedId;
+import org.opensaml.ws.wssecurity.IdBearing;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.util.XMLHelper;
@@ -47,11 +47,11 @@ public abstract class AbstractAttributedIdMarshaller extends AbstractWSSecurityO
      */
     @Override
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
-        AttributedId attributedId = (AttributedId) xmlObject;
+        IdBearing attributedId = (IdBearing) xmlObject;
         String id = attributedId.getId();
         if (id != null) {
             Document document = domElement.getOwnerDocument();
-            Attr attribute = XMLHelper.constructAttribute(document, AttributedId.ID_ATTR_NAME);
+            Attr attribute = XMLHelper.constructAttribute(document, IdBearing.ID_ATTR_NAME);
             attribute.setValue(id);
             domElement.setAttributeNodeNS(attribute);
             // TODO: check if needed???

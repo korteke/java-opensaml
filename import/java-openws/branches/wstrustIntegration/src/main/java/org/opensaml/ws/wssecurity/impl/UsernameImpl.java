@@ -18,13 +18,11 @@
 package org.opensaml.ws.wssecurity.impl;
 
 import org.opensaml.ws.wssecurity.Username;
-import org.opensaml.xml.schema.impl.XSStringImpl;
 
 /**
- * UsernameImpl
- * 
+ * Implementation of {@link Username}.
  */
-public class UsernameImpl extends XSStringImpl implements Username {
+public class UsernameImpl extends AttributedStringImpl implements Username {
 
     /**
      * Constructor.

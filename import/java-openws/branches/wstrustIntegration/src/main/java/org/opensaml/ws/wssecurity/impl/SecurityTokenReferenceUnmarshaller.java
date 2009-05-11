@@ -16,10 +16,6 @@
  */
 package org.opensaml.ws.wssecurity.impl;
 
-import java.util.Arrays;
-
-
-import org.opensaml.ws.wssecurity.AttributedId;
 import org.opensaml.ws.wssecurity.Embedded;
 import org.opensaml.ws.wssecurity.KeyIdentifier;
 import org.opensaml.ws.wssecurity.Reference;
@@ -29,74 +25,28 @@ import org.opensaml.xml.io.UnmarshallingException;
 import org.w3c.dom.Attr;
 
 /**
- * SecurityTokenReferenceUnmarshaller
- * 
+ * SecurityTokenReferenceUnmarshaller.
  */
-public class SecurityTokenReferenceUnmarshaller extends
-        AbstractAttributedIdUnmarshaller {
+public class SecurityTokenReferenceUnmarshaller extends AbstractWSSecurityObjectUnmarshaller {
 
-    /**
-     * Default constructor.
-     */
-    public SecurityTokenReferenceUnmarshaller() {
-        super();
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wssecurity.impl.AbstractWSSecurityObjectUnmarshaller#processChildElement(org.opensaml.xml.XMLObject,
-     *      org.opensaml.xml.XMLObject)
-     */
-    @Override
-    protected void processChildElement(XMLObject parentXMLObject,
-            XMLObject childXMLObject) throws UnmarshallingException {
-        SecurityTokenReference securityTokenReference= (SecurityTokenReference) parentXMLObject;
+    /** {@inheritDoc} */
+    protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject) throws UnmarshallingException {
+        SecurityTokenReference str = (SecurityTokenReference) parentXMLObject;
         if (childXMLObject instanceof Reference) {
-            securityTokenReference.setReference((Reference) childXMLObject);
-        }
-        else if (childXMLObject instanceof KeyIdentifier) {
-            securityTokenReference.setKeyIdentifier((KeyIdentifier) childXMLObject);
-        }
-        else if (childXMLObject instanceof Embedded) {
-            securityTokenReference.setEmbedded((Embedded) childXMLObject);
-        }
-        else {
-            // unmarshalls xs:any element
-            super.processChildElement(parentXMLObject, childXMLObject);
+            str.setReference((Reference) childXMLObject);
+        } else if (childXMLObject instanceof KeyIdentifier) {
+            str.setKeyIdentifier((KeyIdentifier) childXMLObject);
+        } else if (childXMLObject instanceof Embedded) {
+            str.setEmbedded((Embedded) childXMLObject);
+        } else {
+            str.getUnknownXMLObjects().add(childXMLObject);
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wssecurity.impl.AbstractIdUnmarshaller#processAttribute(org.opensaml.xml.XMLObject,
-     *      org.w3c.dom.Attr)
-     */
-    @Override
-    protected void processAttribute(XMLObject xmlObject, Attr attribute)
-            throws UnmarshallingException {
-        String attrName= attribute.getLocalName();
-        if (AttributedId.ID_ATTR_LOCAL_NAME.equals(attrName)) {
-            AttributedId id= (AttributedId) xmlObject;
-            String attrValue= attribute.getValue();
-            id.setId(attrValue);
-        }
-        else if (SecurityTokenReference.TOKEN_TYPE_ATTR_NAME.equals(attrName)) {
-            SecurityTokenReference securityTokenReference= (SecurityTokenReference) xmlObject;
-            String attrValue= attribute.getValue();
-            securityTokenReference.setTokenType(attrValue);
-        }
-        else if (SecurityTokenReference.USAGE_ATTR_NAME.equals(attrName)) {
-            SecurityTokenReference securityTokenReference= (SecurityTokenReference) xmlObject;
-            String attrValue= attribute.getValue();
-            String usages[]= attrValue.split(" ");
-            securityTokenReference.setUsages(Arrays.asList(usages));
-        }
-        else {
-            // unmarshall xs:anyAttribute
-            super.processAttribute(xmlObject, attribute);
-        }
+    /** {@inheritDoc} */
+    protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
+        SecurityTokenReference str = (SecurityTokenReference) xmlObject;
+        //TODO
     }
 
 }

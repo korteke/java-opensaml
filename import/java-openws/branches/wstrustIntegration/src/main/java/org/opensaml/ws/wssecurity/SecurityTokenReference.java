@@ -17,8 +17,6 @@
 
 package org.opensaml.ws.wssecurity;
 
-import java.util.List;
-
 import javax.xml.namespace.QName;
 
 import org.opensaml.xml.AttributeExtensibleXMLObject;
@@ -33,35 +31,22 @@ import org.opensaml.xml.ElementExtensibleXMLObject;
  * 
  * 
  */
-public interface SecurityTokenReference extends AttributedId, AttributedTokenType, AttributeExtensibleXMLObject,
+public interface SecurityTokenReference extends IdBearing, UsageBearing, TokenTypeBearing, AttributeExtensibleXMLObject,
         ElementExtensibleXMLObject, WSSecurityObject {
 
     /** Element local name. */
     public static final String ELEMENT_LOCAL_NAME = "SecurityTokenReference";
 
-    /** Qualified element name */
-    public final static QName ELEMENT_NAME = new QName(WSSecurityConstants.WSSE_NS, ELEMENT_LOCAL_NAME,
-            WSSecurityConstants.WSSE_PREFIX);
-
-    /** The wsse:SecurityTokenReference/@Usage attribute local name. */
-    public static final String USAGE_ATTR_LOCAL_NAME = "Usage";
-
-    /** The wsse:SecurityTokenReference/@Usage unqualified attribute name. */
-    public static final QName USAGE_ATTR_NAME = new QName(USAGE_ATTR_LOCAL_NAME);
-
-    /**
-     * Returns the list of &lt;wsse:SecurityTokenReference/@Usage&gt; attributes value.
-     * 
-     * @return the list of &lt;wsse:SecurityTokenReference/@Usage&gt; attributes value.
-     */
-    public List<String> getUsages();
-
-    /**
-     * Sets the list of &lt;wsse:SecurityTokenReference/@Usage&gt; attributes value.
-     * 
-     * @param usages the list of &lt;wsse:SecurityTokenReference/@Usage&gt; attributes value.
-     */
-    public void setUsages(List<String> usages);
+    /** Qualified element name. */
+    public final static QName ELEMENT_NAME =
+        new QName(WSSecurityConstants.WSSE_NS, ELEMENT_LOCAL_NAME, WSSecurityConstants.WSSE_PREFIX);
+    
+    /** Local name of the XSI type. */
+    public static final String TYPE_LOCAL_NAME = "SecurityTokenReferenceType"; 
+        
+    /** QName of the XSI type. */
+    public static final QName TYPE_NAME = 
+        new QName(WSSecurityConstants.WSSE_NS, TYPE_LOCAL_NAME, WSSecurityConstants.WSSE_PREFIX);
 
     /**
      * Returns the &lt;wsse:Reference&gt; child element.

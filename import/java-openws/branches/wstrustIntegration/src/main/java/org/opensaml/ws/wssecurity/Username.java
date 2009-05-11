@@ -18,8 +18,6 @@ package org.opensaml.ws.wssecurity;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.xml.schema.XSString;
-
 /**
  * The &lt;wsse:Username&gt; element within the &lt;wsse:UsernameToken&gt;
  * element.
@@ -27,13 +25,13 @@ import org.opensaml.xml.schema.XSString;
  * @see "WS-Security UsernameToken Profile 1.1"
  * 
  */
-public interface Username extends XSString, WSSecurityObject {
+public interface Username extends AttributedString {
+    
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME= "Username";
+    public static final String ELEMENT_LOCAL_NAME = "Username";
 
-    /** Qualified element name */
-    public final static QName ELEMENT_NAME= new QName(WSSecurityConstants.WSSE_NS,
-                                                      ELEMENT_LOCAL_NAME,
-                                                      WSSecurityConstants.WSSE_PREFIX);
+    /** Qualified element name. */
+    public static final QName ELEMENT_NAME =
+        new QName(WSSecurityConstants.WSSE_NS, ELEMENT_LOCAL_NAME, WSSecurityConstants.WSSE_PREFIX);
 
 }

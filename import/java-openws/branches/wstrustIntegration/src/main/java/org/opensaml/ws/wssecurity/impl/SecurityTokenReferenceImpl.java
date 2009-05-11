@@ -21,36 +21,45 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.xml.namespace.QName;
+
 import org.opensaml.ws.wssecurity.Embedded;
 import org.opensaml.ws.wssecurity.KeyIdentifier;
 import org.opensaml.ws.wssecurity.Reference;
 import org.opensaml.ws.wssecurity.SecurityTokenReference;
-import org.opensaml.xml.AbstractExtensibleXMLObject;
 import org.opensaml.xml.XMLObject;
+import org.opensaml.xml.util.AttributeMap;
+import org.opensaml.xml.util.IndexedXMLObjectChildrenList;
 
 /**
- * SecurityTokenReferenceImpl
+ * SecurityTokenReferenceImpl.
  * 
  */
-public class SecurityTokenReferenceImpl extends AbstractExtensibleXMLObject implements SecurityTokenReference {
+public class SecurityTokenReferenceImpl extends AbstractWSSecurityObject implements SecurityTokenReference {
 
-    /** The &lt;wsu:Id&gt; attribute value */
-    private String id_ = null;
+    /** The &lt;wsu:Id&gt; attribute value. */
+    private String id;
 
-    /** List of &lt;wsse:Usage&gt; attribute values */
-    private List<String> usages_ = null;
+    /** List of &lt;wsse:Usage&gt; attribute values. */
+    private List<String> usages;
 
-    /** The &lt;wsse11:TokenType&gt; attribute value */
-    private String tokenType_ = null;
+    /** The &lt;wsse11:TokenType&gt; attribute value. */
+    private String tokenType;
 
-    /** The &lt;wsse:Embedded&gt; child element */
-    private Embedded embedded_ = null;
+    /** The &lt;wsse:Embedded&gt; child element. */
+    private Embedded embedded_;
 
-    /** The &lt;wsse:KeyIdentifier&gt; child element */
-    private KeyIdentifier keyIdentifier_ = null;
+    /** The &lt;wsse:KeyIdentifier&gt; child element. */
+    private KeyIdentifier keyIdentifier_;
 
-    /** the &lt;wsse:Reference&gt; child element */
-    private Reference reference_ = null;
+    /** the &lt;wsse:Reference&gt; child element. */
+    private Reference reference_;
+    
+    /** Wildcard attributes. */
+    private AttributeMap unknownAttributes;
+    
+    /** Wildcard child elements. */
+    private IndexedXMLObjectChildrenList<XMLObject> unknownChildren;
 
     /**
      * Constructor.
@@ -61,106 +70,96 @@ public class SecurityTokenReferenceImpl extends AbstractExtensibleXMLObject impl
      */
     public SecurityTokenReferenceImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        usages_ = new ArrayList<String>();
+        usages = new ArrayList<String>();
+        unknownAttributes = new AttributeMap(this);
+        unknownChildren = new IndexedXMLObjectChildrenList<XMLObject>(this);
     }
+    
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wssecurity.SecurityTokenReference#getEmbedded()
-     */
-    public Embedded getEmbedded() {
-        return embedded_;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wssecurity.SecurityTokenReference#getKeyIdentifier()
-     */
-    public KeyIdentifier getKeyIdentifier() {
-        return keyIdentifier_;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wssecurity.SecurityTokenReference#getReference()
-     */
-    public Reference getReference() {
-        return reference_;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wssecurity.SecurityTokenReference#getUsages()
-     */
+    /** {@inheritDoc} */
     public List<String> getUsages() {
-        return usages_;
+        return usages;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wssecurity.SecurityTokenReference#setEmbedded(org.opensaml.ws.wssecurity.Embedded)
-     */
-    public void setEmbedded(Embedded embedded) {
-        embedded_ = prepareForAssignment(embedded_, embedded);
+    /** {@inheritDoc} */
+    public void setUsages(List<String> newUsages) {
+        usages = prepareForAssignment(usages, newUsages);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wssecurity.SecurityTokenReference#setKeyIdentifier(org.opensaml.ws.wssecurity.KeyIdentifier)
-     */
-    public void setKeyIdentifier(KeyIdentifier keyIdentifier) {
-        keyIdentifier_ = prepareForAssignment(keyIdentifier_, keyIdentifier);
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wssecurity.SecurityTokenReference#setReference(org.opensaml.ws.wssecurity.Reference)
-     */
-    public void setReference(Reference reference) {
-        reference_ = prepareForAssignment(reference_, reference);
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wssecurity.SecurityTokenReference#setUsages(java.util.List)
-     */
-    public void setUsages(List<String> usages) {
-        usages_ = prepareForAssignment(usages_, usages);
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wssecurity.AttributedTokenType#getTokenType()
-     */
+    /** {@inheritDoc} */
     public String getTokenType() {
-        return tokenType_;
+        return tokenType;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wssecurity.AttributedTokenType#setTokenType(java.lang.String)
-     */
-    public void setTokenType(String tokenType) {
-        tokenType_ = prepareForAssignment(tokenType_, tokenType);
+    /** {@inheritDoc} */
+    public void setTokenType(String newTokenType) {
+        tokenType = prepareForAssignment(tokenType, newTokenType);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.XMLObject#getOrderedChildren()
-     */
+    /** {@inheritDoc} */
+    public String getId() {
+        return id;
+    }
+
+    /** {@inheritDoc} */
+    public void setId(String newId) {
+        id = prepareForAssignment(id, newId);
+    }
+    
+
+    /** {@inheritDoc} */
+    public Embedded getEmbedded() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+    
+    /** {@inheritDoc} */
+    public void setEmbedded(Embedded embedded) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    /** {@inheritDoc} */
+    public KeyIdentifier getKeyIdentifier() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+    
+    /** {@inheritDoc} */
+    public void setKeyIdentifier(KeyIdentifier keyIdentifier) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    /** {@inheritDoc} */
+    public Reference getReference() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /** {@inheritDoc} */
+    public void setReference(Reference reference) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    /** {@inheritDoc} */
+    public AttributeMap getUnknownAttributes() {
+        return unknownAttributes;
+    }
+
+    /** {@inheritDoc} */
+    public List<XMLObject> getUnknownXMLObjects() {
+        return unknownChildren;
+    }
+
+    /** {@inheritDoc} */
+    public List<XMLObject> getUnknownXMLObjects(QName typeOrName) {
+        return unknownChildren.get(typeOrName);
+    }
+    
+    /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        // TODO check order and eventually add ds:KeyInfo support !!!!
         List<XMLObject> children = new ArrayList<XMLObject>();
         if (reference_ != null) {
             children.add(reference_);
@@ -177,22 +176,6 @@ public class SecurityTokenReferenceImpl extends AbstractExtensibleXMLObject impl
         return Collections.unmodifiableList(children);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wssecurity.AttributedId#getId()
-     */
-    public String getId() {
-        return id_;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wssecurity.AttributedId#setId(java.lang.String)
-     */
-    public void setId(String id) {
-        id_ = prepareForAssignment(id_, id);
-    }
+ 
 
 }

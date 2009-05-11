@@ -17,64 +17,24 @@
 
 package org.opensaml.ws.wssecurity.impl;
 
-import org.opensaml.ws.wssecurity.AttributedEncodingType;
-import org.opensaml.ws.wssecurity.AttributedValueType;
+import org.opensaml.ws.wssecurity.BinarySecurityToken;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.schema.XSBase64Binary;
-import org.opensaml.xml.util.XMLHelper;
-import org.w3c.dom.Attr;
-import org.w3c.dom.Document;
+import org.opensaml.xml.util.DatatypeHelper;
 import org.w3c.dom.Element;
 
 /**
- * BinarySecurityTokenMarshaller
- * 
+ * BinarySecurityTokenMarshaller.
  */
-public class BinarySecurityTokenMarshaller extends AbstractAttributedIdMarshaller {
+public class BinarySecurityTokenMarshaller extends EncodedStringMarshaller {
 
-    /**
-     * Default constructor.
-     */
-    public BinarySecurityTokenMarshaller() {
-        super();
-    }
-
-    /**
-     * Marshalls the &lt;@ValueType&gt; and the &lt;@EncodingType&gt; attributes.
-     * <p>
-     * {@inheritDoc}
-     */
-    @Override
+    /** {@inheritDoc} */
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
-        Document document = domElement.getOwnerDocument();
-        AttributedValueType typed = (AttributedValueType) xmlObject;
-        String valueType = typed.getValueType();
-        if (valueType != null) {
-            Attr attribute = XMLHelper.constructAttribute(document, AttributedValueType.VALUE_TYPE_ATTR_NAME);
-            attribute.setValue(valueType);
-            domElement.setAttributeNodeNS(attribute);
+        BinarySecurityToken token = (BinarySecurityToken) xmlObject;
+        if (!DatatypeHelper.isEmpty(token.getValueType())) {
+            domElement.setAttributeNS(null, BinarySecurityToken.ENCODING_TYPE_ATTRIB_NAME, token.getValueType());
         }
-        AttributedEncodingType encodingTyped = (AttributedEncodingType) xmlObject;
-        String encodingType = encodingTyped.getEncodingType();
-        if (encodingType != null) {
-            Attr attribute = XMLHelper.constructAttribute(document, AttributedEncodingType.ENCODING_TYPE_ATTR_NAME);
-            attribute.setValue(encodingType);
-            domElement.setAttributeNodeNS(attribute);
-        }
-        // marshalls the wsu:Id
         super.marshallAttributes(xmlObject, domElement);
-    }
-
-    /**
-     * Marshalls the Base64 binary content.
-     * <p>
-     * {@inheritDoc}
-     */
-    @Override
-    protected void marshallElementContent(XMLObject xmlObject, Element domElement) throws MarshallingException {
-        XSBase64Binary base64binary = (XSBase64Binary) xmlObject;
-        XMLHelper.appendTextContent(domElement, base64binary.getValue());
     }
 
 }

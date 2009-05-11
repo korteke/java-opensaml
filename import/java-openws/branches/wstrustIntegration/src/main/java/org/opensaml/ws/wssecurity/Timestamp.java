@@ -28,7 +28,7 @@ import org.opensaml.xml.ElementExtensibleXMLObject;
  * @see Expires
  * 
  */
-public interface Timestamp extends AttributedId, AttributeExtensibleXMLObject,
+public interface Timestamp extends IdBearing, AttributeExtensibleXMLObject,
         ElementExtensibleXMLObject, WSSecurityObject {
 
     /** Element local name. */

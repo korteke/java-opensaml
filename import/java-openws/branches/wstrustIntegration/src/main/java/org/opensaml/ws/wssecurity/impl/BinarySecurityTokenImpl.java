@@ -20,19 +20,12 @@ package org.opensaml.ws.wssecurity.impl;
 import org.opensaml.ws.wssecurity.BinarySecurityToken;
 
 /**
- * BinarySecurityTokenImpl
- * 
+ * BinarySecurityTokenImpl.
  */
-public class BinarySecurityTokenImpl extends AbstractAttributedId implements BinarySecurityToken {
+public class BinarySecurityTokenImpl extends EncodedStringImpl implements BinarySecurityToken {
 
-    /** wsse:BinarySecurityToken Base64 content */
-    private String value_ = null;
-
-    /** wsse:BinarySecurityToken/@ValueType attribute */
-    private String valueType_ = null;
-
-    /** wsse:BinarySecurityToken/@EncodingType attribute */
-    private String encodingType_ = null;
+    /** wsse:BinarySecurityToken/@ValueType attribute. */
+    private String valueType;
 
     /**
      * Constructor. Default EncodingType is <code>BinarySecurityToken.ENCODINGTYPE_BASE64_BINARY</code>
@@ -44,61 +37,17 @@ public class BinarySecurityTokenImpl extends AbstractAttributedId implements Bin
     public BinarySecurityTokenImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         // default encoding type
-        encodingType_ = BinarySecurityToken.ENCODINGTYPE_BASE64_BINARY;
+        setEncodingType(BinarySecurityToken.ENCODING_TYPE_BASE64_BINARY);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.schema.XSBase64Binary#getValue()
-     */
-    public String getValue() {
-        return value_;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.schema.XSBase64Binary#setValue(java.lang.String)
-     */
-    public void setValue(String newValue) {
-        value_ = prepareForAssignment(value_, newValue);
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wssecurity.AttributedEncodingType#getEncodingType()
-     */
-    public String getEncodingType() {
-        return encodingType_;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wssecurity.AttributedEncodingType#setEncodingType(java.lang.String)
-     */
-    public void setEncodingType(String encodingType) {
-        encodingType_ = prepareForAssignment(encodingType_, encodingType);
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wssecurity.AttributedValueType#getValueType()
-     */
+    /** {@inheritDoc} */
     public String getValueType() {
-        return valueType_;
+        return valueType;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wssecurity.AttributedValueType#setValueType(java.lang.String)
-     */
-    public void setValueType(String valueType) {
-        valueType_ = prepareForAssignment(valueType_, valueType);
+    /** {@inheritDoc} */
+    public void setValueType(String newValueType) {
+        valueType = prepareForAssignment(valueType, newValueType);
     }
 
 }

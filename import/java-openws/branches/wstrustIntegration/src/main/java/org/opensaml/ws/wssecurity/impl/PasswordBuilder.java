@@ -19,30 +19,18 @@ package org.opensaml.ws.wssecurity.impl;
 import org.opensaml.ws.wssecurity.Password;
 
 /**
- * PasswordBuilder
+ * PasswordBuilder.
  * 
  */
 public class PasswordBuilder extends AbstractWSSecurityObjectBuilder<Password> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wssecurity.impl.AbstractWSSecurityObjectBuilder#buildObject()
-     */
-    @Override
+    /** {@inheritDoc} */
     public Password buildObject() {
         return buildObject(Password.ELEMENT_NAME);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AbstractXMLObjectBuilder#buildObject(java.lang.String,
-     *      java.lang.String, java.lang.String)
-     */
-    @Override
-    public Password buildObject(String namespaceURI, String localName,
-            String namespacePrefix) {
+    /** {@inheritDoc} */
+    public Password buildObject(String namespaceURI, String localName, String namespacePrefix) {
         return new PasswordImpl(namespaceURI, localName, namespacePrefix);
     }
 

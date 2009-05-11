@@ -23,53 +23,19 @@ import org.opensaml.xml.io.UnmarshallingException;
 import org.w3c.dom.Attr;
 
 /**
- * PasswordMarshaller
+ * PasswordUnmarshaller.
  * 
  */
-public class PasswordUnmarshaller extends AbstractAttributedIdUnmarshaller {
+public class PasswordUnmarshaller extends AttributedStringUnmarshaller {
 
-    // private final Logger log=
-    // LoggerFactory.getLogger(PasswordUnmarshaller.class);
-
-    /**
-     * Default constructor.
-     */
-    public PasswordUnmarshaller() {
-        super();
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wssecurity.impl.AbstractWSSecurityObjectUnmarshaller#processAttribute(org.opensaml.xml.XMLObject,
-     *      org.w3c.dom.Attr)
-     */
-    @Override
-    protected void processAttribute(XMLObject xmlObject, Attr attribute)
-            throws UnmarshallingException {
-        String attrName= attribute.getLocalName();
-        if (Password.TYPE_ATTR_LOCAL_NAME.equals(attrName)) {
-            Password password= (Password) xmlObject;
+    /** {@inheritDoc} */
+    protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
+        Password password= (Password) xmlObject;
+        if (Password.TYPE_ATTRIB_NAME.equals(attribute.getLocalName())) {
             password.setType(attribute.getValue());
-        }
-        else {
+        } else {
             super.processAttribute(xmlObject, attribute);
         }
     }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wssecurity.impl.AbstractWSSecurityObjectUnmarshaller#processElementContent(org.opensaml.xml.XMLObject,
-     *      java.lang.String)
-     */
-    @Override
-    protected void processElementContent(XMLObject xmlObject,
-            String elementContent) {
-        if (elementContent != null) {
-            Password password= (Password) xmlObject;
-            password.setValue(elementContent);
-        }
-    }
-
+    
 }

@@ -17,65 +17,23 @@
 package org.opensaml.ws.wssecurity.impl;
 
 
-import org.opensaml.ws.wssecurity.AttributedEncodingType;
-import org.opensaml.ws.wssecurity.AttributedValueType;
+import org.opensaml.ws.wssecurity.KeyIdentifier;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
-import org.opensaml.xml.schema.XSBase64Binary;
 import org.w3c.dom.Attr;
 
 /**
- * KeyIdentifierUnmarshaller
- * 
+ * KeyIdentifierUnmarshaller.
  */
-public class KeyIdentifierUnmarshaller extends AbstractAttributedIdUnmarshaller {
+public class KeyIdentifierUnmarshaller extends EncodedStringUnmarshaller {
 
-    /**
-     * Default constructor.
-     */
-    public KeyIdentifierUnmarshaller() {
-        super();
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wssecurity.impl.AbstractIdUnmarshaller#processAttribute(org.opensaml.xml.XMLObject,
-     *      org.w3c.dom.Attr)
-     */
-    @Override
-    protected void processAttribute(XMLObject xmlObject, Attr attribute)
-            throws UnmarshallingException {
-        String attrName= attribute.getLocalName();
-        if (AttributedEncodingType.ENCODING_TYPE_ATTR_LOCAL_NAME.equals(attrName)) {
-            AttributedEncodingType encodingType= (AttributedEncodingType) xmlObject;
-            String attrValue= attribute.getValue();
-            encodingType.setEncodingType(attrValue);
-        }
-        else if (AttributedValueType.VALUE_TYPE_ATTR_LOCAL_NAME.equals(attrName)) {
-            AttributedValueType valueType= (AttributedValueType) xmlObject;
-            String attrValue= attribute.getValue();
-            valueType.setValueType(attrValue);
-        }
-        else {
-            // marshall wsu:Id attribute
+    /** {@inheritDoc} */
+    protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
+        KeyIdentifier keyIdentifier = (KeyIdentifier) xmlObject;
+        if (KeyIdentifier.VALUE_TYPE_ATTRIB_NAME.equals(attribute.getLocalName())) {
+            keyIdentifier.setValueType(attribute.getValue());
+        } else {
             super.processAttribute(xmlObject, attribute);
         }
     }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wssecurity.impl.AbstractWSSecurityObjectUnmarshaller#processElementContent(org.opensaml.xml.XMLObject,
-     *      java.lang.String)
-     */
-    @Override
-    protected void processElementContent(XMLObject xmlObject,
-            String elementContent) {
-        if (elementContent != null) {
-            XSBase64Binary base64Binary= (XSBase64Binary) xmlObject;
-            base64Binary.setValue(elementContent.trim());
-        }
-    }
-
 }

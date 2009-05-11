@@ -19,31 +19,18 @@ package org.opensaml.ws.wssecurity.impl;
 import org.opensaml.ws.wssecurity.UsernameToken;
 
 /**
- * UsernameTokenBuilder
- * 
+ * UsernameTokenBuilder.
  */
 public class UsernameTokenBuilder extends
         AbstractWSSecurityObjectBuilder<UsernameToken> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wssecurity.impl.AbstractWSSecurityObjectBuilder#buildObject()
-     */
-    @Override
+    /** {@inheritDoc} */
     public UsernameToken buildObject() {
         return buildObject(UsernameToken.ELEMENT_NAME);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AbstractXMLObjectBuilder#buildObject(java.lang.String,
-     *      java.lang.String, java.lang.String)
-     */
-    @Override
-    public UsernameToken buildObject(String namespaceURI, String localName,
-            String namespacePrefix) {
+    /** {@inheritDoc} */
+    public UsernameToken buildObject(String namespaceURI, String localName, String namespacePrefix) {
         return new UsernameTokenImpl(namespaceURI, localName, namespacePrefix);
     }
 

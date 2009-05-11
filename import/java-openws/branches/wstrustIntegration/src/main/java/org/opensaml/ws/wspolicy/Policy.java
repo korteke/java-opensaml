@@ -19,7 +19,7 @@ package org.opensaml.ws.wspolicy;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.ws.wssecurity.AttributedId;
+import org.opensaml.ws.wssecurity.IdBearing;
 import org.opensaml.xml.AttributeExtensibleXMLObject;
 import org.opensaml.xml.ElementExtensibleXMLObject;
 
@@ -30,7 +30,7 @@ import org.opensaml.xml.ElementExtensibleXMLObject;
  * 
  * 
  */
-public interface Policy extends AttributeExtensibleXMLObject, ElementExtensibleXMLObject, AttributedId, WSPolicyObject {
+public interface Policy extends AttributeExtensibleXMLObject, ElementExtensibleXMLObject, IdBearing, WSPolicyObject {
 
     /** Element local name. */
     public static final String ELEMENT_LOCAL_NAME = "Policy";

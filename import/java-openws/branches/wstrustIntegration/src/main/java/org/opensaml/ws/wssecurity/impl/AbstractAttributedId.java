@@ -17,13 +17,13 @@
 
 package org.opensaml.ws.wssecurity.impl;
 
-import org.opensaml.ws.wssecurity.AttributedId;
+import org.opensaml.ws.wssecurity.IdBearing;
 
 /**
  * Abstract class for WS-Security object having the &lt;wsu:Id&gt; attribute.
  * 
  */
-public abstract class AbstractAttributedId extends AbstractWSSecurityObject implements AttributedId {
+public abstract class AbstractAttributedId extends AbstractWSSecurityObject implements IdBearing {
 
     /** the &lt;wsu:Id&gt; attribute */
     private String id_ = null;

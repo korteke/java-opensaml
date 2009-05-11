@@ -18,8 +18,11 @@
 package org.opensaml.ws.wssecurity.impl;
 
 import java.util.ArrayList;
+
 import java.util.Collections;
 import java.util.List;
+
+import javax.xml.namespace.QName;
 
 import org.opensaml.ws.wssecurity.Created;
 import org.opensaml.ws.wssecurity.Iteration;
@@ -28,35 +31,41 @@ import org.opensaml.ws.wssecurity.Password;
 import org.opensaml.ws.wssecurity.Salt;
 import org.opensaml.ws.wssecurity.Username;
 import org.opensaml.ws.wssecurity.UsernameToken;
-import org.opensaml.xml.AbstractExtensibleXMLObject;
 import org.opensaml.xml.XMLObject;
+import org.opensaml.xml.util.AttributeMap;
+import org.opensaml.xml.util.IndexedXMLObjectChildrenList;
 
 /**
- * UsernameTokenImpl
- * 
+ * Implementation of {@link UsernameToken}.
  */
-public class UsernameTokenImpl extends AbstractExtensibleXMLObject implements UsernameToken {
+public class UsernameTokenImpl extends AbstractWSSecurityObject implements UsernameToken {
 
-    /** The &lt;wsu:Id&gt; attribute value */
-    private String id_ = null;
+    /** The &lt;wsu:Id&gt; attribute value. */
+    private String id;
 
-    /** The &lt;wsu:Created&gt; child element */
-    private Created created_ = null;
+    /** The &lt;wsu:Created&gt; child element. */
+    private Created created;
 
-    /** The &lt;wsse:Nonce&gt; child element */
-    private Nonce nonce_ = null;
+    /** The &lt;wsse:Nonce&gt; child element. */
+    private Nonce nonce;
 
-    /** The &lt;wsse:Password&gt; child element */
-    private Password password_ = null;
+    /** The &lt;wsse:Password&gt; child element. */
+    private Password password;
 
-    /** The &lt;wsse:Username&gt; child element */
-    private Username username_ = null;
+    /** The &lt;wsse:Username&gt; child element. */
+    private Username username;
 
-    /** The &lt;wsse11:Salt&gt; child element */
-    private Salt salt_ = null;
+    /** The &lt;wsse11:Salt&gt; child element. */
+    private Salt salt;
 
-    /** The &lt;wsse11:Iteration&gt; child element */
-    private Iteration iteration_ = null;
+    /** The &lt;wsse11:Iteration&gt; child element. */
+    private Iteration iteration;
+    
+    /** Wildcard attributes. */
+    private AttributeMap unknownAttributes;
+    
+    /** Wildcard child elements. */
+    private IndexedXMLObjectChildrenList<XMLObject> unknownChildren;
 
     /**
      * Constructor.
@@ -67,165 +76,122 @@ public class UsernameTokenImpl extends AbstractExtensibleXMLObject implements Us
      */
     public UsernameTokenImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
+        unknownAttributes = new AttributeMap(this);
+        unknownChildren = new IndexedXMLObjectChildrenList<XMLObject>(this);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.glite.xml.security.UsernameToken#getCreated()
-     */
+    /** {@inheritDoc} */
     public Created getCreated() {
-        return created_;
+        return created;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.glite.xml.security.UsernameToken#getNonce()
-     */
+    /** {@inheritDoc} */
     public Nonce getNonce() {
-        return nonce_;
+        return nonce;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.glite.xml.security.UsernameToken#getPassword()
-     */
+    /** {@inheritDoc} */
     public Password getPassword() {
-        return password_;
+        return password;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.glite.xml.security.UsernameToken#getUsername()
-     */
+    /** {@inheritDoc} */
     public Username getUsername() {
-        return username_;
+        return username;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.glite.xml.security.UsernameToken#setCreated(org.glite.xml.security.Created)
-     */
-    public void setCreated(Created created) {
-        created_ = prepareForAssignment(created_, created);
+    /** {@inheritDoc} */
+    public void setCreated(Created newCreated) {
+        created = prepareForAssignment(created, newCreated);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.glite.xml.security.UsernameToken#setNonce(org.glite.xml.security.Nonce)
-     */
-    public void setNonce(Nonce nonce) {
-        nonce_ = prepareForAssignment(nonce_, nonce);
+    /** {@inheritDoc} */
+    public void setNonce(Nonce newNonce) {
+        nonce = prepareForAssignment(nonce, newNonce);
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.glite.xml.security.UsernameToken#setPassword(org.glite.xml.security.Password)
-     */
-    public void setPassword(Password password) {
-        password_ = prepareForAssignment(password_, password);
+    /** {@inheritDoc} */
+    public void setPassword(Password newPassword) {
+        password = prepareForAssignment(password, newPassword);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.glite.xml.security.UsernameToken#setUsername(org.glite.xml.security.Username)
-     */
-    public void setUsername(Username username) {
-        username_ = prepareForAssignment(username_, username);
+    /** {@inheritDoc} */
+    public void setUsername(Username newUsername) {
+        username = prepareForAssignment(username, newUsername);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.XMLObject#getOrderedChildren()
-     */
+    /** {@inheritDoc} */
+    public Iteration getIteration() {
+        return iteration;
+    }
+
+    /** {@inheritDoc} */
+    public Salt getSalt() {
+        return salt;
+    }
+
+    /** {@inheritDoc} */
+    public void setIteration(Iteration newIteration) {
+        iteration = prepareForAssignment(iteration, newIteration);
+    }
+
+    /** {@inheritDoc} */
+    public void setSalt(Salt newSalt) {
+        salt = prepareForAssignment(salt, newSalt);
+    }
+
+    /** {@inheritDoc} */
+    public String getId() {
+        return id;
+    }
+
+    /** {@inheritDoc} */
+    public void setId(String newId) {
+        id = prepareForAssignment(id, newId);
+    }
+    
+    /** {@inheritDoc} */
+    public AttributeMap getUnknownAttributes() {
+        return unknownAttributes;
+    }
+
+    /** {@inheritDoc} */
+    public List<XMLObject> getUnknownXMLObjects() {
+        return unknownChildren;
+    }
+
+    /** {@inheritDoc} */
+    public List<XMLObject> getUnknownXMLObjects(QName typeOrName) {
+        return unknownChildren.get(typeOrName);
+    }
+    
+    /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
         ArrayList<XMLObject> children = new ArrayList<XMLObject>();
-        if (username_ != null) {
-            children.add(username_);
+        if (username != null) {
+            children.add(username);
         }
-        if (password_ != null) {
-            children.add(password_);
+        if (password != null) {
+            children.add(password);
         }
-        if (nonce_ != null) {
-            children.add(nonce_);
+        if (nonce != null) {
+            children.add(nonce);
         }
-        if (salt_ != null) {
-            children.add(salt_);
+        if (salt != null) {
+            children.add(salt);
         }
-        if (iteration_ != null) {
-            children.add(iteration_);
+        if (iteration != null) {
+            children.add(iteration);
         }
-        if (created_ != null) {
-            children.add(created_);
+        if (created != null) {
+            children.add(created);
         }
-        // xs:any element
+        
         if (!getUnknownXMLObjects().isEmpty()) {
             children.addAll(getUnknownXMLObjects());
         }
         return Collections.unmodifiableList(children);
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wssecurity.UsernameToken#getIteration()
-     */
-    public Iteration getIteration() {
-        return iteration_;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wssecurity.UsernameToken#getSalt()
-     */
-    public Salt getSalt() {
-        return salt_;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wssecurity.UsernameToken#setIteration(org.opensaml.ws.wssecurity.Iteration)
-     */
-    public void setIteration(Iteration iteration) {
-        iteration_ = prepareForAssignment(iteration_, iteration);
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wssecurity.UsernameToken#setSalt(org.opensaml.ws.wssecurity.Salt)
-     */
-    public void setSalt(Salt salt) {
-        salt_ = prepareForAssignment(salt_, salt);
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wssecurity.AttributedId#getId()
-     */
-    public String getId() {
-        return id_;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wssecurity.AttributedId#setId(java.lang.String)
-     */
-    public void setId(String id) {
-        id_ = prepareForAssignment(id_, id);
     }
 
 }

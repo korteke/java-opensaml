@@ -19,30 +19,18 @@ package org.opensaml.ws.wssecurity.impl;
 import org.opensaml.ws.wssecurity.Embedded;
 
 /**
- * EmbeddedBuilder
+ * EmbeddedBuilder.
  * 
  */
 public class EmbeddedBuilder extends AbstractWSSecurityObjectBuilder<Embedded> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wssecurity.impl.AbstractWSSecurityObjectBuilder#buildObject()
-     */
-    @Override
+    /** {@inheritDoc} */
     public Embedded buildObject() {
         return buildObject(Embedded.ELEMENT_NAME);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AbstractXMLObjectBuilder#buildObject(java.lang.String,
-     *      java.lang.String, java.lang.String)
-     */
-    @Override
-    public Embedded buildObject(String namespaceURI, String localName,
-            String namespacePrefix) {
+    /** {@inheritDoc} */
+    public Embedded buildObject(String namespaceURI, String localName, String namespacePrefix) {
         return new EmbeddedImpl(namespaceURI, localName, namespacePrefix);
     }
 

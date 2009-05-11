@@ -19,7 +19,7 @@ package org.opensaml.ws.wssecurity.impl;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.ws.wssecurity.AttributedId;
+import org.opensaml.ws.wssecurity.IdBearing;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.w3c.dom.Attr;
@@ -49,8 +49,8 @@ public abstract class AbstractAttributedIdUnmarshaller extends AbstractWSSecurit
         String attrNamespace = attribute.getNamespaceURI();
         String attrName = attribute.getLocalName();
         QName attrQName = new QName(attrNamespace, attrName);
-        if (AttributedId.ID_ATTR_NAME.equals(attrQName)) {
-            AttributedId attributedId = (AttributedId) xmlObject;
+        if (IdBearing.ID_ATTR_NAME.equals(attrQName)) {
+            IdBearing attributedId = (IdBearing) xmlObject;
             String attrValue = attribute.getValue();
             attributedId.setId(attrValue);
         } else {

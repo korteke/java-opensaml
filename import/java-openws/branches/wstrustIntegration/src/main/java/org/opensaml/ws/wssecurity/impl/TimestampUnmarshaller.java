@@ -17,7 +17,7 @@
 package org.opensaml.ws.wssecurity.impl;
 
 
-import org.opensaml.ws.wssecurity.AttributedId;
+import org.opensaml.ws.wssecurity.IdBearing;
 import org.opensaml.ws.wssecurity.Created;
 import org.opensaml.ws.wssecurity.Expires;
 import org.opensaml.ws.wssecurity.Timestamp;
@@ -77,8 +77,8 @@ public class TimestampUnmarshaller extends
             throws UnmarshallingException {
         // log.debug("attribute {}", attribute.getLocalName());
         String attrName= attribute.getLocalName();
-        if (AttributedId.ID_ATTR_LOCAL_NAME.equals(attrName)) {
-            AttributedId attributedId= (AttributedId) xmlObject;
+        if (IdBearing.ID_ATTR_LOCAL_NAME.equals(attrName)) {
+            IdBearing attributedId= (IdBearing) xmlObject;
             String id= attribute.getValue();
             attributedId.setId(id);
         }

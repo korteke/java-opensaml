@@ -19,26 +19,35 @@ package org.opensaml.ws.wssecurity;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.xml.AttributeExtensibleXMLObject;
+
 /**
  * The &lt;wsse:Reference&gt; empty element.
  * 
  * @see "WS-Security 2004, Chapter 7.2"
  * 
  */
-public interface Reference extends AttributedValueType, WSSecurityObject {
+public interface Reference extends AttributeExtensibleXMLObject, WSSecurityObject {
 
     /** Element local name. */
     public static final String ELEMENT_LOCAL_NAME = "Reference";
 
-    /** Qualified element name */
-    public final static QName ELEMENT_NAME = new QName(WSSecurityConstants.WSSE_NS, ELEMENT_LOCAL_NAME,
-            WSSecurityConstants.WSSE_PREFIX);
+    /** Qualified element name. */
+    public static final QName ELEMENT_NAME =
+        new QName(WSSecurityConstants.WSSE_NS, ELEMENT_LOCAL_NAME, WSSecurityConstants.WSSE_PREFIX);
+    
+    /** Local name of the XSI type. */
+    public static final String TYPE_LOCAL_NAME = "ReferenceType"; 
+        
+    /** QName of the XSI type. */
+    public static final QName TYPE_NAME = 
+        new QName(WSSecurityConstants.WSSE_NS, TYPE_LOCAL_NAME, WSSecurityConstants.WSSE_PREFIX);
 
     /** The wsse:Reference/@URI attribute local name. */
-    public static final String URI_ATTR_LOCAL_NAME = "URI";
-
-    /** The wsse:Reference/@URI attribute unqualified name. */
-    public static final QName URI_ATTR_NAME = new QName(URI_ATTR_LOCAL_NAME);
+    public static final String URI_ATTRIB_NAME= "URI";
+    
+    /** The wsse:Reference/@ValueType attribute local name. */
+    public static final String VALUE_TYPE_ATTRIB_NAME= "ValueType";
 
     /**
      * Returns the wsse:Reference/@URI attribute value.
@@ -50,7 +59,22 @@ public interface Reference extends AttributedValueType, WSSecurityObject {
     /**
      * Sets the wsse:Reference/@URI attribute value.
      * 
-     * @param uri the URI to set.
+     * @param newURI the URI to set.
      */
-    public void setURI(String uri);
+    public void setURI(String newURI);
+    
+    /**
+     * Returns the ValueType attribute URI value.
+     * 
+     * @return the ValueType attribute value or <code>null</code>.
+     */
+    public String getValueType();
+
+    /**
+     * Sets the ValueType attribute URI value.
+     * 
+     * @param newValueType the ValueType attribute value.
+     */
+    public void setValueType(String newValueType);
+    
 }

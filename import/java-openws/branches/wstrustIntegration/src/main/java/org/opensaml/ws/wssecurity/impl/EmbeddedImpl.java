@@ -17,17 +17,31 @@
 
 package org.opensaml.ws.wssecurity.impl;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import javax.xml.namespace.QName;
+
 import org.opensaml.ws.wssecurity.Embedded;
-import org.opensaml.xml.AbstractExtensibleXMLObject;
+import org.opensaml.xml.XMLObject;
+import org.opensaml.xml.util.AttributeMap;
+import org.opensaml.xml.util.IndexedXMLObjectChildrenList;
 
 /**
  * EmbeddedImpl is the concrete implementation of {@link Embedded}.
  * 
  */
-public class EmbeddedImpl extends AbstractExtensibleXMLObject implements Embedded {
+public class EmbeddedImpl extends AbstractWSSecurityObject implements Embedded {
 
-    /** wsse:Embedded/@wsse:ValueType attribute */
-    private String valueType_ = null;
+    /** wsse:Embedded/@wsse:ValueType attribute. */
+    private String valueType;
+    
+    /** Wildcard attributes. */
+    private AttributeMap unknownAttributes;
+    
+    /** Wildcard child elements. */
+    private IndexedXMLObjectChildrenList<XMLObject> unknownChildren;
 
     /**
      * Constructor.
@@ -38,24 +52,43 @@ public class EmbeddedImpl extends AbstractExtensibleXMLObject implements Embedde
      */
     protected EmbeddedImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
+        unknownAttributes = new AttributeMap(this);
+        unknownChildren = new IndexedXMLObjectChildrenList<XMLObject>(this);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wssecurity.AttributedValueType#getValueType()
-     */
+    /** {@inheritDoc} */
     public String getValueType() {
-        return valueType_;
+        return valueType;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wssecurity.AttributedValueType#setValueType(java.lang.String)
-     */
-    public void setValueType(String valueType) {
-        valueType_ = prepareForAssignment(valueType_, valueType);
+    /** {@inheritDoc} */
+    public void setValueType(String newValueType) {
+        valueType = prepareForAssignment(valueType, newValueType);
+    }
+
+    /** {@inheritDoc} */
+    public AttributeMap getUnknownAttributes() {
+        return unknownAttributes;
+    }
+
+    /** {@inheritDoc} */
+    public List<XMLObject> getUnknownXMLObjects() {
+        return unknownChildren;
+    }
+
+    /** {@inheritDoc} */
+    public List<XMLObject> getUnknownXMLObjects(QName typeOrName) {
+        return unknownChildren.get(typeOrName);
+    }
+
+    /** {@inheritDoc} */
+    public List<XMLObject> getOrderedChildren() {
+        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        
+        if (!getUnknownXMLObjects().isEmpty()) {
+            children.addAll(getUnknownXMLObjects());
+        }
+        return Collections.unmodifiableList(children);
     }
 
 }

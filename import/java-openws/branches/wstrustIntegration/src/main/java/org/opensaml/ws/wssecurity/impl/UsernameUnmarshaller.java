@@ -17,34 +17,9 @@
 
 package org.opensaml.ws.wssecurity.impl;
 
-import org.opensaml.ws.wssecurity.Username;
-import org.opensaml.xml.XMLObject;
-
 /**
- * UsernameUnmarshaller
- * 
+ * UsernameUnmarshaller.
  */
-public class UsernameUnmarshaller extends AbstractAttributedIdUnmarshaller {
-
-    /**
-     * Default constructor.
-     */
-    public UsernameUnmarshaller() {
-        super();
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wssecurity.impl.AbstractWSSecurityObjectUnmarshaller#processElementContent(org.opensaml.xml.XMLObject,
-     *      java.lang.String)
-     */
-    @Override
-    protected void processElementContent(XMLObject xmlObject, String elementContent) {
-        if (elementContent != null) {
-            Username username = (Username) xmlObject;
-            username.setValue(elementContent.trim());
-        }
-    }
+public class UsernameUnmarshaller extends AttributedStringUnmarshaller {
 
 }

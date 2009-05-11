@@ -20,29 +20,29 @@ package org.opensaml.ws.wssecurity;
 import javax.xml.namespace.QName;
 
 /**
- * Interface AttributedId for element having a &lt;@wsu:Id&gt; attribute.
+ * Interface for element having a <code>@wsu:Id</code> attribute.
  * 
  */
-public abstract interface AttributedId {
+public abstract interface IdBearing {
 
-    /** the <code>Id</code> attribute local name */
-    public final static String ID_ATTR_LOCAL_NAME = "Id";
+    /** the <code>Id</code> attribute local name. */
+    public static final String ID_ATTR_LOCAL_NAME = "Id";
 
-    /** the <code>wsu:Id</code> qualified attribute name */
-    public final static QName ID_ATTR_NAME = new QName(WSSecurityConstants.WSU_NS, ID_ATTR_LOCAL_NAME,
-            WSSecurityConstants.WSU_PREFIX);
+    /** the <code>wsu:Id</code> qualified attribute name. */
+    public static final QName ID_ATTR_NAME =
+        new QName(WSSecurityConstants.WSU_NS, ID_ATTR_LOCAL_NAME, WSSecurityConstants.WSU_PREFIX);
 
     /**
-     * Returns the &lt;@wsu:Id&gt; attribute value
+     * Returns the <code>@wsu:Id</code> attribute value.
      * 
-     * @return The &lt;@wsu:Id&gt; attribute value or <code>null</code>.
+     * @return The <code>@wsu:Id</code> attribute value or <code>null</code>.
      */
     public String getId();
 
     /**
-     * Sets the &lt;@wsu:Id&gt; attribute value
+     * Sets the <code>@wsu:Id</code> attribute value.
      * 
-     * @param id The &lt;@wsu:Id&gt; attribute value
+     * @param id The <code>@wsu:Id</code> attribute value
      */
     public void setId(String id);
 

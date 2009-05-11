@@ -16,76 +16,19 @@
  */
 package org.opensaml.ws.wssecurity.impl;
 
-import java.util.List;
-
-
-import org.opensaml.ws.wssecurity.AttributedId;
-import org.opensaml.ws.wssecurity.AttributedTokenType;
-import org.opensaml.ws.wssecurity.SecurityTokenReference;
-import org.opensaml.xml.AbstractExtensibleXMLObjectMarshaller;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.util.XMLHelper;
-import org.w3c.dom.Attr;
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
- * SecurityTokenReferenceMarshaller
+ * SecurityTokenReferenceMarshaller.
  * 
  */
-public class SecurityTokenReferenceMarshaller extends
-        AbstractExtensibleXMLObjectMarshaller {
+public class SecurityTokenReferenceMarshaller extends AbstractWSSecurityObjectMarshaller {
 
-    /**
-     * Default constructor.
-     */
-    public SecurityTokenReferenceMarshaller() {
-        super();
-    }
-
-    /**
-     * Marshalls the &lt;@wsu:Id&gt;, the &lt;@Usage&gt; and the
-     * &lt;@wsse11:TokenType&gt; attributes.
-     * <p>
-     * {@inheritDoc}
-     */
-    @Override
-    protected void marshallAttributes(XMLObject xmlObject, Element domElement)
-            throws MarshallingException {
-        Document document= domElement.getOwnerDocument();
-        AttributedId attributedId= (AttributedId) xmlObject;
-        String id= attributedId.getId();
-        if (id != null) {
-            Attr attribute= XMLHelper.constructAttribute(document,
-                                                         AttributedId.ID_ATTR_NAME);
-            attribute.setValue(id);
-            domElement.setAttributeNodeNS(attribute);
-            // TODO: check if needed???
-            // domElement.setIdAttributeNode(attribute,true);
-        }
-        AttributedTokenType tokenTyped= (AttributedTokenType) xmlObject;
-        String tokenType= tokenTyped.getTokenType();
-        if (tokenType != null) {
-            Attr attribute= XMLHelper.constructAttribute(document,
-                                                         AttributedTokenType.TOKEN_TYPE_ATTR_NAME);
-            attribute.setValue(tokenType);
-            domElement.setAttributeNodeNS(attribute);
-        }
-        SecurityTokenReference securityTokenReference= (SecurityTokenReference) xmlObject;
-        List<String> usages= securityTokenReference.getUsages();
-        if (!usages.isEmpty()) {
-            StringBuffer sb= new StringBuffer();
-            for (String usage : usages) {
-                sb.append(" ").append(usage);
-            }
-            Attr attribute= XMLHelper.constructAttribute(document,
-                                                         SecurityTokenReference.USAGE_ATTR_NAME);
-            String usagesList= sb.toString().trim();
-            attribute.setValue(usagesList);
-            domElement.setAttributeNodeNS(attribute);
-        }
-        super.marshallAttributes(xmlObject, domElement);
+    /** {@inheritDoc} */
+    protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
+        //TODO
     }
 
 }

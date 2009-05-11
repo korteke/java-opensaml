@@ -17,58 +17,23 @@
 
 package org.opensaml.ws.wssecurity.impl;
 
-import org.opensaml.ws.wssecurity.AttributedEncodingType;
-import org.opensaml.ws.wssecurity.AttributedValueType;
+import org.opensaml.ws.wssecurity.BinarySecurityToken;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
-import org.opensaml.xml.schema.XSBase64Binary;
 import org.w3c.dom.Attr;
 
 /**
- * BinarySecurityTokenUnmarshaller
- * 
+ * BinarySecurityTokenUnmarshaller.
  */
-public class BinarySecurityTokenUnmarshaller extends AbstractAttributedIdUnmarshaller {
+public class BinarySecurityTokenUnmarshaller extends EncodedStringUnmarshaller {
 
-    /**
-     * Default constructor.
-     */
-    public BinarySecurityTokenUnmarshaller() {
-        super();
-    }
-
-    /**
-     * Unmarshalls the &lt;@ValueType&gt; and the &lt;@EncodingType&gt; attributes.
-     * <p>
-     * {@inheritDoc}
-     */
-    @Override
+    /** {@inheritDoc} */
     protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
-        String attrName = attribute.getLocalName();
-        if (AttributedEncodingType.ENCODING_TYPE_ATTR_LOCAL_NAME.equals(attrName)) {
-            AttributedEncodingType encodingType = (AttributedEncodingType) xmlObject;
-            String attrValue = attribute.getValue();
-            encodingType.setEncodingType(attrValue);
-        } else if (AttributedValueType.VALUE_TYPE_ATTR_LOCAL_NAME.equals(attrName)) {
-            AttributedValueType valueType = (AttributedValueType) xmlObject;
-            String attrValue = attribute.getValue();
-            valueType.setValueType(attrValue);
+        BinarySecurityToken token = (BinarySecurityToken) xmlObject;
+        if (BinarySecurityToken.VALUE_TYPE_ATTRIB_NAME.equals(attribute.getLocalName())) {
+            token.setValueType(attribute.getValue());
         } else {
-            // unmarshall wsu:Id attribute
             super.processAttribute(xmlObject, attribute);
-        }
-    }
-
-    /**
-     * Unmarshalls the Base64 binary content.
-     * <p>
-     * {@inheritDoc}
-     */
-    @Override
-    protected void processElementContent(XMLObject xmlObject, String elementContent) {
-        if (elementContent != null) {
-            XSBase64Binary base64Binary = (XSBase64Binary) xmlObject;
-            base64Binary.setValue(elementContent.trim());
         }
     }
 
