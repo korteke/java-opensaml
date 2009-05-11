@@ -322,6 +322,27 @@ public final class XMLHelper {
     }
     
     /**
+     * Marshall an attribute name and value to a DOM Element. This is particularly useful
+     * for attributes whose names appear in namespace-qualified form.
+     * 
+     * @param attributeName the attribute name in QName form
+     * @param attributeValue the attribute value
+     * @param domElement the target element to which to marshall
+     * @param isIDAttribute flag indicating whether the attribute being marshalled
+     *          should be handled as an ID-typed attribute
+     */
+    public static void marshallAttribute(QName attributeName, String attributeValue, Element domElement,
+            boolean isIDAttribute) {
+        Document document = domElement.getOwnerDocument();
+        Attr attribute = XMLHelper.constructAttribute(document, attributeName);
+        attribute.setValue(attributeValue);
+        domElement.setAttributeNodeNS(attribute);
+        if (isIDAttribute) {
+            domElement.setIdAttributeNode(attribute, true);
+        }
+    }
+    
+    /**
      * Marshall the attributes represented by the indicated AttributeMap into the indicated DOM Element.
      * 
      * @param attributeMap the AttributeMap
