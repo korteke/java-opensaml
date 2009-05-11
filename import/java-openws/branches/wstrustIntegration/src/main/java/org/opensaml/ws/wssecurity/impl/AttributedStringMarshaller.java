@@ -16,18 +16,11 @@
 
 package org.opensaml.ws.wssecurity.impl;
 
-import java.util.Map.Entry;
-
-import javax.xml.namespace.QName;
-
 import org.opensaml.ws.wssecurity.AttributedString;
-import org.opensaml.xml.Configuration;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.util.XMLHelper;
-import org.w3c.dom.Attr;
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
@@ -38,25 +31,12 @@ public class AttributedStringMarshaller extends AbstractWSSecurityObjectMarshall
     /** {@inheritDoc} */
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         AttributedString attributedString = (AttributedString) xmlObject;
-        Attr attribute;
-        Document document = domElement.getOwnerDocument();
-        
-        for (Entry<QName, String> entry : attributedString.getUnknownAttributes().entrySet()) {
-            attribute = XMLHelper.constructAttribute(document, entry.getKey());
-            attribute.setValue(entry.getValue());
-            domElement.setAttributeNodeNS(attribute);
-            if (Configuration.isIDAttribute(entry.getKey())
-                    || attributedString.getUnknownAttributes().isIDAttribute(entry.getKey())) {
-                attribute.getOwnerElement().setIdAttributeNode(attribute, true);
-            }
-        }
         
         if (!DatatypeHelper.isEmpty(attributedString.getId())) {
-            attribute = XMLHelper.constructAttribute(document, AttributedString.ID_ATTR_NAME);
-            attribute.setValue(attributedString.getId());
-            domElement.setAttributeNodeNS(attribute);
-            attribute.getOwnerElement().setIdAttributeNode(attribute, true);
+            XMLHelper.marshallAttribute(AttributedString.ID_ATTR_NAME, attributedString.getId(), domElement, true);
         }
+        
+        XMLHelper.marshallAttributeMap(attributedString.getUnknownAttributes(), domElement);
         
     }
 

@@ -33,17 +33,13 @@ public class AttributedStringUnmarshaller extends AbstractWSSecurityObjectUnmars
     protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
         AttributedString attributedString = (AttributedString) xmlObject;
         
-        //TODO - fix this - should be based on QName, not local name
-        if (attribute.getLocalName().equals(AttributedString.ID_ATTR_LOCAL_NAME)) {
+        QName attribQName = 
+            XMLHelper.constructQName(attribute.getNamespaceURI(), attribute.getLocalName(), attribute.getPrefix());
+        if (AttributedString.ID_ATTR_NAME.equals(attribQName)) {
             attributedString.setId(attribute.getValue());
             attribute.getOwnerElement().setIdAttributeNode(attribute, true);
         } else {
-            QName attribQName = 
-                XMLHelper.constructQName(attribute.getNamespaceURI(), attribute.getLocalName(), attribute.getPrefix());
-            if (attribute.isId()) {
-                attributedString.getUnknownAttributes().registerID(attribQName);
-            }
-            attributedString.getUnknownAttributes().put(attribQName, attribute.getValue());
+            XMLHelper.unmarshallToAttributeMap(attributedString.getUnknownAttributes(), attribute);
         }
     }
 

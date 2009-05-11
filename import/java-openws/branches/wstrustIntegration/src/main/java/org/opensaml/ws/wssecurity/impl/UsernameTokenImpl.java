@@ -148,7 +148,9 @@ public class UsernameTokenImpl extends AbstractWSSecurityObject implements Usern
 
     /** {@inheritDoc} */
     public void setId(String newId) {
+        String oldId = id;
         id = prepareForAssignment(id, newId);
+        registerOwnID(oldId, id);
     }
     
     /** {@inheritDoc} */

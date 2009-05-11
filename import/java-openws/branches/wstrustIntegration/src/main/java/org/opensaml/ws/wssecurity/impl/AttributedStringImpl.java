@@ -62,7 +62,9 @@ public class AttributedStringImpl extends AbstractWSSecurityObject implements At
 
     /** {@inheritDoc} */
     public void setId(String newId) {
+        String oldId = id;
         id = prepareForAssignment(id, newId);
+        registerOwnID(oldId, id);
     }
 
     /** {@inheritDoc} */

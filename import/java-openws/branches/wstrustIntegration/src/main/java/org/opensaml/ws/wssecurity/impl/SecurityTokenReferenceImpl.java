@@ -103,7 +103,9 @@ public class SecurityTokenReferenceImpl extends AbstractWSSecurityObject impleme
 
     /** {@inheritDoc} */
     public void setId(String newId) {
+        String oldId = id;
         id = prepareForAssignment(id, newId);
+        registerOwnID(oldId, id);
     }
     
 

@@ -17,8 +17,6 @@
 
 package org.opensaml.ws.wssecurity.impl;
 
-import javax.xml.namespace.QName;
-
 import org.opensaml.ws.wssecurity.Embedded;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
@@ -38,12 +36,7 @@ public class EmbeddedUnmarshaller extends AbstractWSSecurityObjectUnmarshaller {
         if (Embedded.VALUE_TYPE_ATTRIB_NAME.equals(attrName)) {
             embedded.setValueType(attribute.getValue());
         } else {
-            QName attribQName = 
-                XMLHelper.constructQName(attribute.getNamespaceURI(), attribute.getLocalName(), attribute.getPrefix());
-            if (attribute.isId()) {
-                embedded.getUnknownAttributes().registerID(attribQName);
-            }
-            embedded.getUnknownAttributes().put(attribQName, attribute.getValue());
+            XMLHelper.unmarshallToAttributeMap(embedded.getUnknownAttributes(), attribute);
         }
     }
 

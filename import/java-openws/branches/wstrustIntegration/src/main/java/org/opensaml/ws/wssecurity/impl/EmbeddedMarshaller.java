@@ -17,18 +17,11 @@
 
 package org.opensaml.ws.wssecurity.impl;
 
-import java.util.Map.Entry;
-
-import javax.xml.namespace.QName;
-
 import org.opensaml.ws.wssecurity.Embedded;
-import org.opensaml.xml.Configuration;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.util.XMLHelper;
-import org.w3c.dom.Attr;
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
@@ -44,17 +37,8 @@ public class EmbeddedMarshaller extends AbstractWSSecurityObjectMarshaller {
             domElement.setAttributeNS(null, Embedded.VALUE_TYPE_ATTRIB_NAME, embedded.getValueType());
         }
         
-        Attr attribute;
-        Document document = domElement.getOwnerDocument();
-        for (Entry<QName, String> entry : embedded.getUnknownAttributes().entrySet()) {
-            attribute = XMLHelper.constructAttribute(document, entry.getKey());
-            attribute.setValue(entry.getValue());
-            domElement.setAttributeNodeNS(attribute);
-            if (Configuration.isIDAttribute(entry.getKey())
-                    || embedded.getUnknownAttributes().isIDAttribute(entry.getKey())) {
-                attribute.getOwnerElement().setIdAttributeNode(attribute, true);
-            }
-        }
+        XMLHelper.marshallAttributeMap(embedded.getUnknownAttributes(), domElement);
+        
     }
 
 }

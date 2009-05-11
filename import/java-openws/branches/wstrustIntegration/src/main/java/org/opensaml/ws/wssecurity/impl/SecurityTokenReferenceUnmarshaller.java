@@ -16,12 +16,15 @@
  */
 package org.opensaml.ws.wssecurity.impl;
 
+import javax.xml.namespace.QName;
+
 import org.opensaml.ws.wssecurity.Embedded;
 import org.opensaml.ws.wssecurity.KeyIdentifier;
 import org.opensaml.ws.wssecurity.Reference;
 import org.opensaml.ws.wssecurity.SecurityTokenReference;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
+import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Attr;
 
 /**
@@ -30,7 +33,8 @@ import org.w3c.dom.Attr;
 public class SecurityTokenReferenceUnmarshaller extends AbstractWSSecurityObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject) throws UnmarshallingException {
+    protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
+            throws UnmarshallingException {
         SecurityTokenReference str = (SecurityTokenReference) parentXMLObject;
         if (childXMLObject instanceof Reference) {
             str.setReference((Reference) childXMLObject);
@@ -46,7 +50,17 @@ public class SecurityTokenReferenceUnmarshaller extends AbstractWSSecurityObject
     /** {@inheritDoc} */
     protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
         SecurityTokenReference str = (SecurityTokenReference) xmlObject;
-        //TODO
+        
+        QName attribQName = 
+            XMLHelper.constructQName(attribute.getNamespaceURI(), attribute.getLocalName(), attribute.getPrefix());
+        if (SecurityTokenReference.ID_ATTR_NAME.equals(attribQName)) {
+            str.setId(attribute.getValue());
+            attribute.getOwnerElement().setIdAttributeNode(attribute, true);
+        } else if (SecurityTokenReference.USAGE_ATTR_NAME.equals(attribQName)) {
+            str.setUsages(XMLHelper.getAttributeValueAsList(attribute));
+        } else {
+            XMLHelper.unmarshallToAttributeMap(str.getUnknownAttributes(), attribute);
+        }
     }
 
 }

@@ -17,8 +17,6 @@
 
 package org.opensaml.ws.wssecurity.impl;
 
-import javax.xml.namespace.QName;
-
 import org.opensaml.ws.wssecurity.Reference;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
@@ -40,12 +38,7 @@ public class ReferenceUnmarshaller extends AbstractWSSecurityObjectUnmarshaller 
         } else if (Reference.VALUE_TYPE_ATTRIB_NAME.equals(attrName)) {
             reference.setValueType(attribute.getValue());
         } else {
-            QName attribQName = 
-                XMLHelper.constructQName(attribute.getNamespaceURI(), attribute.getLocalName(), attribute.getPrefix());
-            if (attribute.isId()) {
-                reference.getUnknownAttributes().registerID(attribQName);
-            }
-            reference.getUnknownAttributes().put(attribQName, attribute.getValue());
+            XMLHelper.unmarshallToAttributeMap(reference.getUnknownAttributes(), attribute);
         }
     }
 

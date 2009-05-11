@@ -61,17 +61,13 @@ public class UsernameTokenUnmarshaller extends AbstractWSSecurityObjectUnmarshal
     protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
         UsernameToken token = (UsernameToken) xmlObject;
         
-        //TODO - fix this - should be based on QName, not local name
-        if (attribute.getLocalName().equals(UsernameToken.ID_ATTR_LOCAL_NAME)) {
+        QName attribQName = 
+            XMLHelper.constructQName(attribute.getNamespaceURI(), attribute.getLocalName(), attribute.getPrefix());
+        if (UsernameToken.ID_ATTR_NAME.equals(attribQName)) {
             token.setId(attribute.getValue());
             attribute.getOwnerElement().setIdAttributeNode(attribute, true);
         } else {
-            QName attribQName = 
-                XMLHelper.constructQName(attribute.getNamespaceURI(), attribute.getLocalName(), attribute.getPrefix());
-            if (attribute.isId()) {
-                token.getUnknownAttributes().registerID(attribQName);
-            }
-            token.getUnknownAttributes().put(attribQName, attribute.getValue());
+            XMLHelper.unmarshallToAttributeMap(token.getUnknownAttributes(), attribute);
         }
     }
 
