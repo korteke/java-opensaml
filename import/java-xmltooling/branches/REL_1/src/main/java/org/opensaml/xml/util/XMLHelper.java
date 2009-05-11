@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.StringTokenizer;
+import java.util.Map.Entry;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
@@ -37,6 +38,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.opensaml.xml.Configuration;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.XMLRuntimeException;
 import org.opensaml.xml.parse.XMLParserException;
@@ -316,6 +318,40 @@ public final class XMLHelper {
             return sb.toString().trim();
         } else {
             return null;
+        }
+    }
+    
+    /**
+     * Marshall the attributes represented by the indicated AttributeMap into the indicated DOM Element.
+     * 
+     * @param attributeMap the AttributeMap
+     * @param domElement the target Element
+     */
+    public static void marshallAttributeMap(AttributeMap attributeMap, Element domElement) {
+        Document document = domElement.getOwnerDocument();
+        Attr attribute = null;
+        for (Entry<QName, String> entry : attributeMap.entrySet()) {
+            attribute = XMLHelper.constructAttribute(document, entry.getKey());
+            attribute.setValue(entry.getValue());
+            domElement.setAttributeNodeNS(attribute);
+            if (Configuration.isIDAttribute(entry.getKey()) || attributeMap.isIDAttribute(entry.getKey())) {
+                domElement.setIdAttributeNode(attribute, true);
+            }
+        }
+    }
+    
+    /**
+     * Unmarshall a DOM Attr to an AttributeMap.
+     * 
+     * @param attributeMap the target AttributeMap
+     * @param attribute the target DOM Attr
+     */
+    public static void unmarshallToAttributeMap(AttributeMap attributeMap, Attr attribute) {
+        QName attribQName = 
+            XMLHelper.constructQName(attribute.getNamespaceURI(), attribute.getLocalName(), attribute.getPrefix());
+        attributeMap.put(attribQName, attribute.getValue());
+        if (attribute.isId() || Configuration.isIDAttribute(attribQName)) {
+            attributeMap.registerID(attribQName);
         }
     }
 
@@ -1046,4 +1082,5 @@ public final class XMLHelper {
         Duration xmlDuration = getDataTypeFactory().newDuration(duration);
         return xmlDuration.toString();
     }
+
 }
