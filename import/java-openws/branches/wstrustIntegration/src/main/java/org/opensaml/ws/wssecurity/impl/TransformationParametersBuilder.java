@@ -14,26 +14,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.opensaml.ws.wssecurity.impl;
 
-import org.opensaml.ws.wssecurity.Created;
+import org.opensaml.ws.wssecurity.TransformationParameters;
 
 /**
- * CreatedImpl.
- * 
+ * TransformationParametersBuilder.
  */
-public class CreatedImpl extends AttributedDataTimeImpl implements Created {
+public class TransformationParametersBuilder extends AbstractWSSecurityObjectBuilder<TransformationParameters> {
 
-    /**
-     * Constructor.
-     * 
-     * @param namespaceURI namespace of the element
-     * @param elementLocalName name of the element
-     * @param namespacePrefix namespace prefix of the element
-     */
-    public CreatedImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
-        super(namespaceURI, elementLocalName, namespacePrefix);
+    /** {@inheritDoc} */
+    public TransformationParameters buildObject() {
+        return buildObject(TransformationParameters.ELEMENT_NAME);
+    }
+
+    /** {@inheritDoc} */
+    public TransformationParameters buildObject(String namespaceURI, String localName, String namespacePrefix) {
+        return new TransformationParametersImpl(namespaceURI, localName, namespacePrefix);
     }
 
 }

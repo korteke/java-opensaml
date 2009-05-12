@@ -18,22 +18,19 @@ package org.opensaml.ws.wssecurity;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.xml.schema.XSBase64Binary;
-
 /**
  * The &lt;wsse:Nonce&gt; element within a &lt;wsse:UsernameToken&gt; element.
  * 
  * @see "WS-Security UsernameToken Profile 1.1, 4. Key Derivation."
  * 
  */
-public interface Nonce extends XSBase64Binary, AttributedEncodingType,
-        WSSecurityObject {
+public interface Nonce extends EncodedString {
+    
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME= "Nonce";
+    public static final String ELEMENT_LOCAL_NAME = "Nonce";
 
-    /** Qualified element name */
-    public final static QName ELEMENT_NAME= new QName(WSSecurityConstants.WSSE_NS,
-                                                      ELEMENT_LOCAL_NAME,
-                                                      WSSecurityConstants.WSSE_PREFIX);
+    /** Qualified element name. */
+    public static final QName ELEMENT_NAME =
+        new QName(WSSecurityConstants.WSSE_NS, ELEMENT_LOCAL_NAME, WSSecurityConstants.WSSE_PREFIX);
 
 }

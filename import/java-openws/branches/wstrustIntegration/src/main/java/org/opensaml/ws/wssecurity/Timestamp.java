@@ -32,12 +32,11 @@ public interface Timestamp extends IdBearing, AttributeExtensibleXMLObject,
         ElementExtensibleXMLObject, WSSecurityObject {
 
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME= "Timestamp";
+    public static final String ELEMENT_LOCAL_NAME = "Timestamp";
 
-    /** Qualified element name */
-    public final static QName ELEMENT_NAME= new QName(WSSecurityConstants.WSU_NS,
-                                                      ELEMENT_LOCAL_NAME,
-                                                      WSSecurityConstants.WSU_PREFIX);
+    /** Qualified element name. */
+    public static final QName ELEMENT_NAME =
+        new QName(WSSecurityConstants.WSU_NS, ELEMENT_LOCAL_NAME, WSSecurityConstants.WSU_PREFIX);
 
     /**
      * Returns the &lt;wsu:Created&lt; child element.

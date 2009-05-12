@@ -14,23 +14,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.opensaml.ws.wssecurity;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.xml.schema.XSString;
+import org.opensaml.xml.AttributeExtensibleXMLObject;
+import org.opensaml.xml.ElementExtensibleXMLObject;
 
 /**
- * The &lt;wsu:Created&gt; element.
+ * The &lt;wsse:TransformationParameters&gt; element.
  * 
  */
-public interface Created extends AttributedDateTime {
+public interface TransformationParameters extends AttributeExtensibleXMLObject, ElementExtensibleXMLObject, WSSecurityObject {
 
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME = "Created";
+    public static final String ELEMENT_LOCAL_NAME = "TransformationParameters";
 
     /** Qualified element name. */
     public static final QName ELEMENT_NAME =
-        new QName(WSSecurityConstants.WSU_NS, ELEMENT_LOCAL_NAME, WSSecurityConstants.WSU_PREFIX);
+        new QName(WSSecurityConstants.WSSE_NS, ELEMENT_LOCAL_NAME, WSSecurityConstants.WSSE_PREFIX);
+    
+    /** Local name of the XSI type. */
+    public static final String TYPE_LOCAL_NAME = "TransformationParametersType"; 
+        
+    /** QName of the XSI type. */
+    public static final QName TYPE_NAME = 
+        new QName(WSSecurityConstants.WSSE_NS, TYPE_LOCAL_NAME, WSSecurityConstants.WSSE_PREFIX);
 
 }

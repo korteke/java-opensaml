@@ -21,26 +21,35 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.xml.namespace.QName;
+
 import org.opensaml.ws.wssecurity.Created;
 import org.opensaml.ws.wssecurity.Expires;
 import org.opensaml.ws.wssecurity.Timestamp;
-import org.opensaml.xml.AbstractExtensibleXMLObject;
 import org.opensaml.xml.XMLObject;
+import org.opensaml.xml.util.AttributeMap;
+import org.opensaml.xml.util.IndexedXMLObjectChildrenList;
 
 /**
- * Concrete implementation of {@link org.opensaml.ws.wssecurity.Timestamp}
+ * Concrete implementation of {@link org.opensaml.ws.wssecurity.Timestamp}.
  * 
  */
-public class TimestampImpl extends AbstractExtensibleXMLObject implements Timestamp {
+public class TimestampImpl extends AbstractWSSecurityObject implements Timestamp {
 
-    /** wsu:Timestamp/@wsu:Id attribute */
-    private String id_ = null;
+    /** wsu:Timestamp/@wsu:Id attribute. */
+    private String id;
 
-    /** wsu:Timestamp/wsu:Created element */
-    private Created created_ = null;
+    /** wsu:Timestamp/wsu:Created element. */
+    private Created created;
 
-    /** wsu:Timestamp/wsu:Expires element */
-    private Expires expires_ = null;
+    /** wsu:Timestamp/wsu:Expires element. */
+    private Expires expires;
+    
+    /** Wildcard attributes. */
+    private AttributeMap unknownAttributes;
+    
+    /** Wildcard child elements. */
+    private IndexedXMLObjectChildrenList<XMLObject> unknownChildren;
 
     /**
      * Constructor.
@@ -51,81 +60,71 @@ public class TimestampImpl extends AbstractExtensibleXMLObject implements Timest
      */
     public TimestampImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
+        unknownAttributes = new AttributeMap(this);
+        unknownChildren = new IndexedXMLObjectChildrenList<XMLObject>(this);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wssecurity.Timestamp#getCreated()
-     */
+    /** {@inheritDoc} */
     public Created getCreated() {
-        return created_;
+        return created;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wssecurity.Timestamp#getExpires()
-     */
+    /** {@inheritDoc} */
     public Expires getExpires() {
-        return expires_;
+        return expires;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wssecurity.Timestamp#setCreated(org.opensaml.ws.wssecurity.Created)
-     */
-    public void setCreated(Created created) {
-        created_ = prepareForAssignment(created_, created);
+    /** {@inheritDoc} */
+    public void setCreated(Created newCreated) {
+        created = prepareForAssignment(created, newCreated);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wssecurity.Timestamp#setExpires(org.opensaml.ws.wssecurity.Expires)
-     */
-    public void setExpires(Expires expires) {
-        expires_ = prepareForAssignment(expires_, expires);
+    /** {@inheritDoc} */
+    public void setExpires(Expires newExpires) {
+        expires = prepareForAssignment(expires, newExpires);
+    }
+ 
+    /** {@inheritDoc} */
+    public String getId() {
+        return id;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wssecurity.impl.AbstractWSSecurityObject#getOrderedChildren()
-     */
-    @Override
+    /** {@inheritDoc} */
+    public void setId(String newId) {
+        String oldId = id;
+        id = prepareForAssignment(id, newId);
+        registerOwnID(oldId, id);
+    }
+
+    /** {@inheritDoc} */
+    public AttributeMap getUnknownAttributes() {
+        return unknownAttributes;
+    }
+
+    /** {@inheritDoc} */
+    public List<XMLObject> getUnknownXMLObjects() {
+        return unknownChildren;
+    }
+
+    /** {@inheritDoc} */
+    public List<XMLObject> getUnknownXMLObjects(QName typeOrName) {
+        return (List<XMLObject>) unknownChildren.subList(typeOrName);
+    }
+    
+    /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
         ArrayList<XMLObject> children = new ArrayList<XMLObject>();
-        if (created_ != null) {
-            children.add(created_);
+        if (created != null) {
+            children.add(created);
         }
-        if (expires_ != null) {
-            children.add(expires_);
+        if (expires != null) {
+            children.add(expires);
         }
         if (!getUnknownXMLObjects().isEmpty()) {
             children.addAll(getUnknownXMLObjects());
         }
 
         return Collections.unmodifiableList(children);
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.schema.AttributedId#getID()
-     */
-    public String getId() {
-        return id_;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.schema.AttributedId#setID(java.lang.String)
-     */
-    public void setId(String id) {
-        id_ = prepareForAssignment(id_, id);
     }
 
 }

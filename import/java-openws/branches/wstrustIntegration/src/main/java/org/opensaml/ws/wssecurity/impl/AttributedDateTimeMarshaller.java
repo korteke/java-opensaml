@@ -17,22 +17,35 @@
 
 package org.opensaml.ws.wssecurity.impl;
 
-import org.opensaml.ws.wssecurity.Security;
+import org.opensaml.ws.wssecurity.AttributedDateTime;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
+import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Element;
 
 /**
- * SecurityMarshaller.
+ * AttributedDateTimeMarshaller.
  * 
  */
-public class SecurityMarshaller extends AbstractWSSecurityObjectMarshaller {
+public class AttributedDateTimeMarshaller extends AbstractWSSecurityObjectMarshaller {
 
     /** {@inheritDoc} */
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
-        Security security = (Security) xmlObject;
-        XMLHelper.marshallAttributeMap(security.getUnknownAttributes(), domElement);
+        AttributedDateTime dateTime = (AttributedDateTime) xmlObject;
+        
+        if (!DatatypeHelper.isEmpty(dateTime.getId())) {
+            XMLHelper.marshallAttribute(AttributedDateTime.ID_ATTR_NAME, dateTime.getId(), domElement, true);
+        }
+        
+        XMLHelper.marshallAttributeMap(dateTime.getUnknownAttributes(), domElement);
+        
     }
 
+    /** {@inheritDoc} */
+    protected void marshallElementContent(XMLObject xmlObject, Element domElement) throws MarshallingException {
+        AttributedDateTime dateTime = (AttributedDateTime) xmlObject;
+        XMLHelper.appendTextContent(domElement, dateTime.getValue());
+    }
+    
 }

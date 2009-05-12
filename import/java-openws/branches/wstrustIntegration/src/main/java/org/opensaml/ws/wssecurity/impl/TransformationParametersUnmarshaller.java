@@ -17,22 +17,29 @@
 
 package org.opensaml.ws.wssecurity.impl;
 
-import org.opensaml.ws.wssecurity.Security;
+import org.opensaml.ws.wssecurity.TransformationParameters;
 import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.io.MarshallingException;
+import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.util.XMLHelper;
-import org.w3c.dom.Element;
+import org.w3c.dom.Attr;
 
 /**
- * SecurityMarshaller.
+ * TransformationParametersUnmarshaller.
  * 
  */
-public class SecurityMarshaller extends AbstractWSSecurityObjectMarshaller {
+public class TransformationParametersUnmarshaller extends AbstractWSSecurityObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
-        Security security = (Security) xmlObject;
-        XMLHelper.marshallAttributeMap(security.getUnknownAttributes(), domElement);
+    protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
+        TransformationParameters tp = (TransformationParameters) xmlObject;
+        XMLHelper.unmarshallToAttributeMap(tp.getUnknownAttributes(), attribute);
+    }
+
+    /** {@inheritDoc} */
+    protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
+            throws UnmarshallingException {
+        TransformationParameters tp = (TransformationParameters) parentXMLObject;
+        tp.getUnknownXMLObjects().add(childXMLObject);
     }
 
 }

@@ -19,31 +19,18 @@ package org.opensaml.ws.wssecurity.impl;
 import org.opensaml.ws.wssecurity.Timestamp;
 
 /**
- * TimestampBuilder
+ * TimestampBuilder.
  * 
  */
-public class TimestampBuilder extends
-        AbstractWSSecurityObjectBuilder<Timestamp> {
+public class TimestampBuilder extends AbstractWSSecurityObjectBuilder<Timestamp> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wssecurity.impl.AbstractWSSecurityObjectBuilder#buildObject()
-     */
-    @Override
+    /** {@inheritDoc} */
     public Timestamp buildObject() {
         return buildObject(Timestamp.ELEMENT_NAME);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AbstractXMLObjectBuilder#buildObject(java.lang.String,
-     *      java.lang.String, java.lang.String)
-     */
-    @Override
-    public Timestamp buildObject(String namespaceURI, String localName,
-            String namespacePrefix) {
+    /** {@inheritDoc} */
+    public Timestamp buildObject(String namespaceURI, String localName, String namespacePrefix) {
         return new TimestampImpl(namespaceURI, localName, namespacePrefix);
     }
 

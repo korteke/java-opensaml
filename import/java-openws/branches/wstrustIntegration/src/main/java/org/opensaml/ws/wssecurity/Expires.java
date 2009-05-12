@@ -18,20 +18,17 @@ package org.opensaml.ws.wssecurity;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.xml.schema.XSString;
-
 /**
  * The &lt;wsu:Expires&gt; element.
  * 
  */
-public interface Expires extends XSString, DateTimeType, WSSecurityObject {
+public interface Expires extends AttributedDateTime {
 
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME= "Expires";
+    public static final String ELEMENT_LOCAL_NAME = "Expires";
 
-    /** Qualified element name */
-    public final static QName ELEMENT_NAME= new QName(WSSecurityConstants.WSU_NS,
-                                                      ELEMENT_LOCAL_NAME,
-                                                      WSSecurityConstants.WSU_PREFIX);
+    /** Qualified element name. */
+    public static final QName ELEMENT_NAME =
+        new QName(WSSecurityConstants.WSU_NS, ELEMENT_LOCAL_NAME, WSSecurityConstants.WSU_PREFIX);
 
 }

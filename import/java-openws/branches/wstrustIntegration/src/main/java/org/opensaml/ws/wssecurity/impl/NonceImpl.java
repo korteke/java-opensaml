@@ -18,16 +18,12 @@
 package org.opensaml.ws.wssecurity.impl;
 
 import org.opensaml.ws.wssecurity.Nonce;
-import org.opensaml.xml.schema.impl.XSBase64BinaryImpl;
 
 /**
- * NonceImpl
+ * NonceImpl.
  * 
  */
-public class NonceImpl extends XSBase64BinaryImpl implements Nonce {
-
-    /** wsse:Nonce/@EncodingType attribute */
-    private String encodingType_ = null;
+public class NonceImpl extends EncodedStringImpl implements Nonce {
 
     /**
      * Constructor.
@@ -38,25 +34,6 @@ public class NonceImpl extends XSBase64BinaryImpl implements Nonce {
      */
     public NonceImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        // TODO default encoding type ???
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wssecurity.AttributedEncodingType#getEncodingType()
-     */
-    public String getEncodingType() {
-        return encodingType_;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wssecurity.AttributedEncodingType#setEncodingType(java.lang.String)
-     */
-    public void setEncodingType(String encodingType) {
-        encodingType_ = prepareForAssignment(encodingType_, encodingType);
     }
 
 }

@@ -19,30 +19,18 @@ package org.opensaml.ws.wssecurity.impl;
 import org.opensaml.ws.wssecurity.Nonce;
 
 /**
- * NonceBuilder
+ * NonceBuilder.
  * 
  */
 public class NonceBuilder extends AbstractWSSecurityObjectBuilder<Nonce> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wssecurity.impl.AbstractWSSecurityObjectBuilder#buildObject()
-     */
-    @Override
+    /** {@inheritDoc} */
     public Nonce buildObject() {
         return buildObject(Nonce.ELEMENT_NAME);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AbstractXMLObjectBuilder#buildObject(java.lang.String,
-     *      java.lang.String, java.lang.String)
-     */
-    @Override
-    public Nonce buildObject(String namespaceURI, String localName,
-            String namespacePrefix) {
+    /** {@inheritDoc} */
+    public Nonce buildObject(String namespaceURI, String localName, String namespacePrefix) {
         return new NonceImpl(namespaceURI, localName, namespacePrefix);
     }
 

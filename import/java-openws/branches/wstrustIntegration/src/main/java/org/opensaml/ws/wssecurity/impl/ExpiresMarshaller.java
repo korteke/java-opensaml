@@ -18,16 +18,9 @@ package org.opensaml.ws.wssecurity.impl;
 
 
 /**
- * ExpiresMarshaller
+ * ExpiresMarshaller.
  * 
  */
-public class ExpiresMarshaller extends AbstractDateTimeTypeMarshaller {
-
-    /**
-     * Constructor
-     */
-    public ExpiresMarshaller() {
-        super();
-    }
+public class ExpiresMarshaller extends AttributedDateTimeMarshaller {
 
 }

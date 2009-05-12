@@ -18,47 +18,28 @@
 package org.opensaml.ws.wssecurity.impl;
 
 import org.opensaml.ws.wssecurity.Security;
-import org.opensaml.xml.AbstractExtensibleXMLObjectUnmarshaller;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
-import org.opensaml.xml.schema.XSBooleanValue;
+import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Attr;
 
 /**
- * SecurityUnmarshaller
+ * SecurityUnmarshaller.
  * 
  */
-public class SecurityUnmarshaller extends AbstractExtensibleXMLObjectUnmarshaller {
+public class SecurityUnmarshaller extends AbstractWSSecurityObjectUnmarshaller {
 
-    /**
-     * Default constructor.
-     */
-    public SecurityUnmarshaller() {
-        super();
-    }
-
-    /**
-     * Unmarshalls the &lt;@S11:mustUnderstand&gt;, the &lt;@S12:role&gt; and the &lt;@S11:actor&gt; attributes.
-     * <p>
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
         Security security = (Security) xmlObject;
-        String attrName = attribute.getLocalName();
-        if (Security.MUST_UNDERSTAND_ATTR_LOCAL_NAME.equals(attrName)) {
-            String value = attribute.getValue();
-            // SOAP 1.1 or SOAP 1.2 ???
-            XSBooleanValue mustUnderstand = XSBooleanValue.valueOf(value);
-            security.setMustUnderstand(mustUnderstand);
-        } else if (Security.ACTOR_ATTR_LOCAL_NAME.equals(attrName)) {
-            String actor = attribute.getValue();
-            security.setActor(actor);
-        } else if (Security.ROLE_ATTR_LOCAL_NAME.equals(attrName)) {
-            String role = attribute.getValue();
-            security.setRole(role);
-        } else {
-            super.processAttribute(xmlObject, attribute);
-        }
+        XMLHelper.unmarshallToAttributeMap(security.getUnknownAttributes(), attribute);
+    }
+
+    /** {@inheritDoc} */
+    protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
+            throws UnmarshallingException {
+        Security security = (Security) parentXMLObject;
+        security.getUnknownXMLObjects().add(childXMLObject);
     }
 
 }

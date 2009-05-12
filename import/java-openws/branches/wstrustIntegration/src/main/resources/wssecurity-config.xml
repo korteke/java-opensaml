@@ -138,7 +138,17 @@
             <UnmarshallingClass
                 className="org.opensaml.ws.wssecurity.impl.TimestampUnmarshaller" />
         </ObjectProvider>
-
+        
+        <!-- wsse:TransformationParameters -->
+        <ObjectProvider qualifiedName="wsse:TransformationParameters">
+            <BuilderClass
+                className="org.opensaml.ws.wssecurity.impl.TransformationParametersBuilder" />
+            <MarshallingClass
+                className="org.opensaml.ws.wssecurity.impl.TransformationParametersMarshaller" />
+            <UnmarshallingClass
+                className="org.opensaml.ws.wssecurity.impl.TransformationParametersUnmarshaller" />
+        </ObjectProvider>
+        
         <!-- wsse:Username -->
         <ObjectProvider qualifiedName="wsse:Username">
             <BuilderClass

@@ -25,7 +25,7 @@ import org.joda.time.format.DateTimeFormatter;
 import org.opensaml.ws.WSBaseTestCase;
 import org.opensaml.ws.wssecurity.BinarySecurityToken;
 import org.opensaml.ws.wssecurity.Created;
-import org.opensaml.ws.wssecurity.DateTimeType;
+import org.opensaml.ws.wssecurity.AttributedDateTime;
 import org.opensaml.ws.wssecurity.Embedded;
 import org.opensaml.ws.wssecurity.Expires;
 import org.opensaml.ws.wssecurity.Iteration;
@@ -126,7 +126,7 @@ public class WSSecurityObjectsTestCase extends WSBaseTestCase {
 
         UsernameToken usernameToken= createUsernameToken("test", "test");
         usernameToken.setId(refId);
-        DateTimeFormatter formatter= DateTimeFormat.forPattern(DateTimeType.DEFAULT_DATETIME_FORMAT);
+        DateTimeFormatter formatter= DateTimeFormat.forPattern(AttributedDateTime.DEFAULT_DATETIME_FORMAT);
         DateTime refDateTime= formatter.parseDateTime(refDateTimeStr);
         usernameToken.getCreated().setDateTime(refDateTime);
 

@@ -17,37 +17,22 @@
 
 package org.opensaml.ws.wssecurity.impl;
 
-import org.opensaml.ws.wssecurity.DateTimeType;
+import org.opensaml.ws.wssecurity.TransformationParameters;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Element;
 
 /**
- * AbstractDateTimeMarshaller
+ * TransformationParametersMarshaller.
  * 
  */
-public abstract class AbstractDateTimeTypeMarshaller extends AbstractWSSecurityObjectMarshaller {
+public class TransformationParametersMarshaller extends AbstractWSSecurityObjectMarshaller {
 
-    /**
-     * Constructor.
-     * <p>
-     * {@inheritDoc}
-     */
-    protected AbstractDateTimeTypeMarshaller() {
-        super();
-    }
-
-    /**
-     * Marshalls the date time element content.
-     * <p>
-     * {@inheritDoc}
-     */
-    @Override
-    protected void marshallElementContent(XMLObject xmlObject, Element domElement) throws MarshallingException {
-        DateTimeType dateTime = (DateTimeType) xmlObject;
-        String formattedDateTime = AbstractDateTimeType.FORMATTER.print(dateTime.getDateTime());
-        XMLHelper.appendTextContent(domElement, formattedDateTime);
+    /** {@inheritDoc} */
+    protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
+        TransformationParameters tp = (TransformationParameters) xmlObject;
+        XMLHelper.marshallAttributeMap(tp.getUnknownAttributes(), domElement);
     }
 
 }

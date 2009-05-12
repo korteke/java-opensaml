@@ -47,13 +47,13 @@ public class SecurityTokenReferenceImpl extends AbstractWSSecurityObject impleme
     private String tokenType;
 
     /** The &lt;wsse:Embedded&gt; child element. */
-    private Embedded embedded_;
+    private Embedded embedded;
 
     /** The &lt;wsse:KeyIdentifier&gt; child element. */
-    private KeyIdentifier keyIdentifier_;
+    private KeyIdentifier keyIdentifier;
 
     /** the &lt;wsse:Reference&gt; child element. */
-    private Reference reference_;
+    private Reference reference;
     
     /** Wildcard attributes. */
     private AttributeMap unknownAttributes;
@@ -111,38 +111,32 @@ public class SecurityTokenReferenceImpl extends AbstractWSSecurityObject impleme
 
     /** {@inheritDoc} */
     public Embedded getEmbedded() {
-        // TODO Auto-generated method stub
-        return null;
+        return embedded;
     }
     
     /** {@inheritDoc} */
-    public void setEmbedded(Embedded embedded) {
-        // TODO Auto-generated method stub
-        
+    public void setEmbedded(Embedded newEmbedded) {
+        embedded = prepareForAssignment(embedded, newEmbedded);
     }
 
     /** {@inheritDoc} */
     public KeyIdentifier getKeyIdentifier() {
-        // TODO Auto-generated method stub
-        return null;
+        return keyIdentifier;
     }
     
     /** {@inheritDoc} */
-    public void setKeyIdentifier(KeyIdentifier keyIdentifier) {
-        // TODO Auto-generated method stub
-        
+    public void setKeyIdentifier(KeyIdentifier newKeyIdentifier) {
+        keyIdentifier = prepareForAssignment(keyIdentifier, newKeyIdentifier);
     }
 
     /** {@inheritDoc} */
     public Reference getReference() {
-        // TODO Auto-generated method stub
-        return null;
+        return reference;
     }
 
     /** {@inheritDoc} */
-    public void setReference(Reference reference) {
-        // TODO Auto-generated method stub
-        
+    public void setReference(Reference newReference) {
+        reference = prepareForAssignment(reference, newReference);
     }
 
     /** {@inheritDoc} */
@@ -157,27 +151,25 @@ public class SecurityTokenReferenceImpl extends AbstractWSSecurityObject impleme
 
     /** {@inheritDoc} */
     public List<XMLObject> getUnknownXMLObjects(QName typeOrName) {
-        return unknownChildren.get(typeOrName);
+        return (List<XMLObject>) unknownChildren.subList(typeOrName);
     }
     
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
         List<XMLObject> children = new ArrayList<XMLObject>();
-        if (reference_ != null) {
-            children.add(reference_);
+        if (reference != null) {
+            children.add(reference);
         }
-        if (keyIdentifier_ != null) {
-            children.add(keyIdentifier_);
+        if (keyIdentifier != null) {
+            children.add(keyIdentifier);
         }
-        if (embedded_ != null) {
-            children.add(embedded_);
+        if (embedded != null) {
+            children.add(embedded);
         }
         if (!getUnknownXMLObjects().isEmpty()) {
             children.addAll(getUnknownXMLObjects());
         }
         return Collections.unmodifiableList(children);
     }
-
- 
 
 }

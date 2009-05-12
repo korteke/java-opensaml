@@ -16,6 +16,8 @@
  */
 package org.opensaml.ws.wssecurity;
 
+import javax.xml.namespace.QName;
+
 /**
  * Constants for the WS-Security 2004.
  * 
@@ -23,6 +25,8 @@ package org.opensaml.ws.wssecurity;
  * 
  */
 public final class WSSecurityConstants {
+    
+    // Namespaces and prefixes.
 
     /** WS-Security SOAP Message Security 1.0 namespace. */
     public static final String WS_SECURITY_NS =
@@ -72,7 +76,40 @@ public final class WSSecurityConstants {
     /** WS-Security Kerberos Token Profile 1.1 namespace. */
     public static final String WSSE_KERBEROS_TOKEN_PROFILE_NS =
         "http://docs.oasis-open.org/wss/oasis-wss-kerberos-token-profile-1.1";
-
+    
+    // SOAP fault codes.
+    
+    /** WS-Security SOAP fault code: SOAP"wsse:UnsupportedSecurityToken". */
+    public static final QName SOAP_FAULT_UNSUPPORTED_SECURITY_TOKEN =
+        new QName(WSSE_NS, "UnsupportedSecurityToken", WSSE_PREFIX);
+    
+    /** WS-Security SOAP fault code: "wsse:UnsupportedAlgorithm". */
+    public static final QName SOAP_FAULT_UNSUPPORTED_ALGORITHM =
+        new QName(WSSE_NS, "UnsupportedAlgorithm", WSSE_PREFIX);
+    
+    /** WS-Security SOAP fault code: "wsse:InvalidSecurity". */
+    public static final QName SOAP_FAULT_INVALID_SECURITY =
+        new QName(WSSE_NS, "InvalidSecurity", WSSE_PREFIX);
+    
+    /** WS-Security SOAP fault code: "wsse:InvalidSecurityToken". */
+    public static final QName SOAP_FAULT_INVALID_SECURITY_TOKEN =
+        new QName(WSSE_NS, "InvalidSecurityToken", WSSE_PREFIX);
+    
+    /** WS-Security SOAP fault code: "wsse:FailedAuthentication". */
+    public static final QName SOAP_FAULT_FAILED_AUTHENTICATION =
+        new QName(WSSE_NS, "FailedAuthentication", WSSE_PREFIX);
+    
+    /** WS-Security SOAP fault code: "wsse:FailedCheck". */
+    public static final QName SOAP_FAULT_FAILED_CHECK =
+        new QName(WSSE_NS, "FailedCheck", WSSE_PREFIX);
+    
+    /** WS-Security SOAP fault code: "wsse:SecurityTokenUnavailable". */
+    public static final QName SOAP_FAULT_SECURITY_TOKEN_UNAVAILABLE =
+        new QName(WSSE_NS, "SecurityTokenUnavailable", WSSE_PREFIX);
+    
+    /** WS-Security SOAP fault code: "wsu:MessageExpired". */
+    public static final QName SOAP_FAULT_MESSAGE_EXPIRED =
+        new QName(WSU_NS, "MessageExpired", WSU_PREFIX);
     
     /**
      * Prevents instantiation.

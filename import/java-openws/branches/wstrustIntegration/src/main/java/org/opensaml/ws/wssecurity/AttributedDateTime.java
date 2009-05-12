@@ -16,17 +16,26 @@
  */
 package org.opensaml.ws.wssecurity;
 
+import javax.xml.namespace.QName;
+
 import org.joda.time.DateTime;
+import org.opensaml.xml.AttributeExtensibleXMLObject;
 import org.opensaml.xml.schema.XSString;
 
 /**
- * Interface DateTimeType for element of type DateTime or having a
- * <code>DateTime</code> attribute.
+ * Interface for elements of complex type AttributedDateTime.
  * 
  */
-public abstract interface DateTimeType extends XSString {
+public interface AttributedDateTime extends XSString, IdBearing, AttributeExtensibleXMLObject, WSSecurityObject  {
 
-    /** Default DateTime format */
+    /** Local name of the XSI type. */
+    public static final String TYPE_LOCAL_NAME = "AttributedDateTime"; 
+        
+    /** QName of the XSI type. */
+    public static final QName TYPE_NAME = 
+        new QName(WSSecurityConstants.WSU_NS, TYPE_LOCAL_NAME, WSSecurityConstants.WSU_PREFIX);
+    
+    /** Default DateTime format. */
     public static final String DEFAULT_DATETIME_FORMAT= "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
 
     /**

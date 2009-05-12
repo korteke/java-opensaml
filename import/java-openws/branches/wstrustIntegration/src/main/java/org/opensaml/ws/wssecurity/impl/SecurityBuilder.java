@@ -19,30 +19,18 @@ package org.opensaml.ws.wssecurity.impl;
 import org.opensaml.ws.wssecurity.Security;
 
 /**
- * SecurityBuilder
+ * SecurityBuilder.
  * 
  */
 public class SecurityBuilder extends AbstractWSSecurityObjectBuilder<Security> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wssecurity.impl.AbstractWSSecurityObjectBuilder#buildObject()
-     */
-    @Override
+    /** {@inheritDoc} */
     public Security buildObject() {
         return buildObject(Security.ELEMENT_NAME);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AbstractXMLObjectBuilder#buildObject(java.lang.String,
-     *      java.lang.String, java.lang.String)
-     */
-    @Override
-    public Security buildObject(String namespaceURI, String localName,
-            String namespacePrefix) {
+    /** {@inheritDoc} */
+    public Security buildObject(String namespaceURI, String localName, String namespacePrefix) {
         return new SecurityImpl(namespaceURI, localName, namespacePrefix);
     }
 

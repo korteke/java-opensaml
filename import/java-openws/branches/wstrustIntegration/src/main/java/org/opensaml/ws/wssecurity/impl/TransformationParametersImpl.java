@@ -23,16 +23,16 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.ws.wssecurity.Security;
+import org.opensaml.ws.wssecurity.TransformationParameters;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.util.AttributeMap;
 import org.opensaml.xml.util.IndexedXMLObjectChildrenList;
 
 /**
- * SecurityImpl implements the &lt;wsse:Security&gt; header.
+ * TransformationParametersImpl implements the &lt;wsse:TransformationParameters&gt; element.
  * 
  */
-public class SecurityImpl extends AbstractWSSecurityObject implements Security {
+public class TransformationParametersImpl extends AbstractWSSecurityObject implements TransformationParameters {
     
     /** Wildcard attributes. */
     private AttributeMap unknownAttributes;
@@ -47,7 +47,7 @@ public class SecurityImpl extends AbstractWSSecurityObject implements Security {
      * @param elementLocalName name of the element
      * @param namespacePrefix namespace prefix of the element
      */
-    public SecurityImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
+    public TransformationParametersImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         unknownAttributes = new AttributeMap(this);
         unknownChildren = new IndexedXMLObjectChildrenList<XMLObject>(this);

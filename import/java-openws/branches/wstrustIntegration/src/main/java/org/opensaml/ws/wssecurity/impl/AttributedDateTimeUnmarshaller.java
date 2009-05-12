@@ -14,52 +14,43 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.opensaml.ws.wssecurity.impl;
 
+package org.opensaml.ws.wssecurity.impl;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.ws.wssecurity.Created;
-import org.opensaml.ws.wssecurity.Expires;
-import org.opensaml.ws.wssecurity.Timestamp;
+import org.opensaml.ws.wssecurity.AttributedDateTime;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
+import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Attr;
 
 /**
- * TimestampUnmarshaller.
+ * AttributedDateTimeUnmarshaller.
  * 
  */
-public class TimestampUnmarshaller extends AbstractWSSecurityObjectUnmarshaller {
-
-    /** {@inheritDoc} */
-    protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
-            throws UnmarshallingException {
-        Timestamp timestamp = (Timestamp) parentXMLObject;
-        
-        if (childXMLObject instanceof Created) {
-            timestamp.setCreated((Created) childXMLObject);
-        } else if (childXMLObject instanceof Expires) {
-            timestamp.setExpires((Expires) childXMLObject);
-        } else {
-            timestamp.getUnknownXMLObjects().add(childXMLObject);
-        }
-    }
-
+public class AttributedDateTimeUnmarshaller extends AbstractWSSecurityObjectUnmarshaller {
+    
     /** {@inheritDoc} */
     protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
-        Timestamp timestamp = (Timestamp) xmlObject;
+        AttributedDateTime dateTime = (AttributedDateTime) xmlObject;
         
         QName attrName =
             XMLHelper.constructQName(attribute.getNamespaceURI(), attribute.getLocalName(), attribute.getPrefix());
-        if (Timestamp.ID_ATTR_NAME.equals(attrName)) {
-            timestamp.setId(attribute.getValue());
+        if (AttributedDateTime.ID_ATTR_NAME.equals(attrName)) {
+            dateTime.setId(attribute.getValue());
             attribute.getOwnerElement().setIdAttributeNode(attribute, true);
         } else {
-            XMLHelper.unmarshallToAttributeMap(timestamp.getUnknownAttributes(), attribute);
+            XMLHelper.unmarshallToAttributeMap(dateTime.getUnknownAttributes(), attribute);
         }
-        
     }
 
+    /** {@inheritDoc} */
+    protected void processElementContent(XMLObject xmlObject, String elementContent) {
+        AttributedDateTime dateTime = (AttributedDateTime) xmlObject;
+        if (!DatatypeHelper.isEmpty(elementContent)) {
+            dateTime.setValue(elementContent);
+        }
+    }
 }

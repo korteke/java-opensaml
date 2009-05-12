@@ -21,13 +21,6 @@ package org.opensaml.ws.wssecurity.impl;
  * Marshaller for the &lt;wsu:Created&gt; element.
  * 
  */
-public class CreatedMarshaller extends AbstractDateTimeTypeMarshaller {
-
-    /**
-     * Constructor
-     */
-    public CreatedMarshaller() {
-        super();
-    }
+public class CreatedMarshaller extends AttributedDateTimeMarshaller {
 
 }

@@ -19,16 +19,9 @@ package org.opensaml.ws.wssecurity.impl;
 
 
 /**
- * ExpiresUnmarshaller
+ * ExpiresUnmarshaller.
  * 
  */
-public class ExpiresUnmarshaller extends AbstractDateTimeTypeUnmarshaller {
-
-    /**
-     * Constructor
-     */
-    public ExpiresUnmarshaller() {
-        super();
-    }
+public class ExpiresUnmarshaller extends AttributedDateTimeUnmarshaller {
 
 }

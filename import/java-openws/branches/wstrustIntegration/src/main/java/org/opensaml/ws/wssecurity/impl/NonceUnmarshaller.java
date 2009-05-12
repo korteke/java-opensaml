@@ -17,56 +17,11 @@
 package org.opensaml.ws.wssecurity.impl;
 
 
-import org.opensaml.ws.wssecurity.Nonce;
-import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.io.UnmarshallingException;
-import org.w3c.dom.Attr;
-
 /**
- * NonceUnmarshaller
+ * NonceUnmarshaller.
  * 
  */
-public class NonceUnmarshaller extends AbstractWSSecurityObjectUnmarshaller {
+public class NonceUnmarshaller extends EncodedStringUnmarshaller {
 
-    /**
-     * Default constructor
-     */
-    public NonceUnmarshaller() {
-        super();
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wssecurity.impl.AbstractWSSecurityObjectUnmarshaller#processAttribute(org.opensaml.xml.XMLObject,
-     *      org.w3c.dom.Attr)
-     */
-    @Override
-    protected void processAttribute(XMLObject xmlObject, Attr attribute)
-            throws UnmarshallingException {
-        String attrName= attribute.getLocalName();
-        if (Nonce.ENCODING_TYPE_ATTR_LOCAL_NAME.equals(attrName)) {
-            Nonce nonce= (Nonce) xmlObject;
-            nonce.setEncodingType(attribute.getValue());
-        }
-        else {
-            super.processAttribute(xmlObject, attribute);
-        }
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wssecurity.impl.AbstractWSSecurityObjectUnmarshaller#processElementContent(org.opensaml.xml.XMLObject,
-     *      java.lang.String)
-     */
-    @Override
-    protected void processElementContent(XMLObject xmlObject,
-            String elementContent) {
-        if (elementContent != null) {
-            Nonce nonce= (Nonce) xmlObject;
-            nonce.setValue(elementContent.trim());
-        }
-    }
 
 }

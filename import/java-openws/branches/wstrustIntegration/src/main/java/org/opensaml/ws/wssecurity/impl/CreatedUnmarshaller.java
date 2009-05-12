@@ -19,16 +19,9 @@ package org.opensaml.ws.wssecurity.impl;
 
 
 /**
- * CreatedUnmarshaller
+ * CreatedUnmarshaller.
  * 
  */
-public class CreatedUnmarshaller extends AbstractDateTimeTypeUnmarshaller {
-
-    /**
-     * Constructor
-     */
-    public CreatedUnmarshaller() {
-        super();
-    }
+public class CreatedUnmarshaller extends AttributedDateTimeUnmarshaller {
 
 }

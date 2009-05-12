@@ -20,10 +20,10 @@ package org.opensaml.ws.wssecurity.impl;
 import org.opensaml.ws.wssecurity.Expires;
 
 /**
- * ExpiresImpl
+ * ExpiresImpl.
  * 
  */
-public class ExpiresImpl extends AbstractDateTimeType implements Expires {
+public class ExpiresImpl extends AttributedDataTimeImpl implements Expires {
 
     /**
      * Constructor.
