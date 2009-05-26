@@ -9,6 +9,7 @@ Changes in Release 1.2.1
 [JXT-54] - Method add(index, element) for a subList (e.g. of a choicegroup) only append element.
 [JXT-56] - XMLHelper erroneously creating DOM Attribute with Document createAttribute rather than createAttributeNS
 [JXT-57] - Deprecate SecurityHelperTest class in favor of moving methods over to main SecurityHelper class
+[JXT-59] - Add additional helper methods to XMLHelper to assist with more complex attribute marshalling and unmarshalling cases
 
 Changes in Release 1.2
 ==============================================
