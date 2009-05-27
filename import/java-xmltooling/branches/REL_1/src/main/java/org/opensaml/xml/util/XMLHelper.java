@@ -286,39 +286,7 @@ public final class XMLHelper {
      * @return list of values, never null
      */
     public static List<String> getAttributeValueAsList(Attr attribute) {
-        ArrayList<String> values = new ArrayList<String>();
-        if (attribute == null) {
-            return values;
-        }
-
-        StringTokenizer valueTokens = new StringTokenizer(DatatypeHelper.safeTrimOrNullString(attribute.getValue()));
-        while (valueTokens.hasMoreTokens()) {
-            values.add(valueTokens.nextToken());
-        }
-
-        return values;
-    }
-    
-    /**
-     * Gets the set of values of a List of strings as a space delimited XML list-type.
-     * 
-     * @param values list of strings
-     * 
-     * @return space delimited string of values
-     */
-    public static String listToStringValue(List<String> values) {
-        if (!values.isEmpty()) {
-            StringBuffer sb= new StringBuffer();
-            for (String value : values) {
-                value = DatatypeHelper.safeTrimOrNullString(value);
-                if (value != null) {
-                    sb.append(" ").append(value);
-                }
-            }
-            return sb.toString().trim();
-        } else {
-            return null;
-        }
+        return DatatypeHelper.stringToList(attribute.getValue(), " ");
     }
     
     /**
@@ -340,6 +308,20 @@ public final class XMLHelper {
         if (isIDAttribute) {
             domElement.setIdAttributeNode(attribute, true);
         }
+    }
+    
+    /**
+     * Marshall an attribute name and value to a DOM Element. This is particularly useful
+     * for attributes whose names appear in namespace-qualified form.
+     * 
+     * @param attributeName the attribute name in QName form
+     * @param attributeValues the attribute values
+     * @param domElement the target element to which to marshall
+     * @param isIDAttribute flag indicating whether the attribute being marshalled
+     *          should be handled as an ID-typed attribute
+     */
+    public static void marshallAttribute(QName attributeName, List<String> attributeValue, Element domElement, boolean isIDAttribute){
+        marshallAttribute(attributeName, DatatypeHelper.listToStringValue(attributeValue, " "), domElement, isIDAttribute);
     }
     
     /**
@@ -419,18 +401,7 @@ public final class XMLHelper {
      * @return list of values, never null
      */
     public static List<String> getElementContentAsList(Element element) {
-        ArrayList<String> values = new ArrayList<String>();
-        if (element == null) {
-            return values;
-        }
-
-        String elementContent = DatatypeHelper.safeTrimOrNullString(element.getTextContent());
-        StringTokenizer valueTokens = new StringTokenizer(elementContent);
-        while (valueTokens.hasMoreTokens()) {
-            values.add(valueTokens.nextToken());
-        }
-
-        return values;
+        return DatatypeHelper.stringToList(element.getTextContent(), " ");
     }
 
     /**

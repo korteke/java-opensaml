@@ -24,6 +24,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.StringTokenizer;
 
 /** Helper class for working with various datatypes. */
 public final class DatatypeHelper {
@@ -138,10 +142,10 @@ public final class DatatypeHelper {
         FileInputStream ins = new FileInputStream(file);
         int offset = 0;
         int numRead = 0;
-        do{
+        do {
             numRead = ins.read(bytes, offset, bytes.length - offset);
             offset += numRead;
-        }while(offset < bytes.length && numRead >= 0);
+        } while (offset < bytes.length && numRead >= 0);
 
         if (offset < bytes.length) {
             throw new IOException("Could not completely read file " + file.getName());
@@ -179,5 +183,56 @@ public final class DatatypeHelper {
         reader.close();
 
         return stringBuffer.toString();
+    }
+
+    /**
+     * Converts a delimited String in to a list.
+     * 
+     * @param string the string to be split in to a list
+     * @param delimiter the delimiter between values
+     * 
+     * @return the list of values or an empty list if the given string is null or empty
+     */
+    public static List<String> stringToList(String string, String delimiter) {
+        if (delimiter == null) {
+            throw new IllegalArgumentException("String delimiter may not be null");
+        }
+
+        ArrayList<String> values = new ArrayList<String>();
+
+        String trimmedString = safeTrimOrNullString(string);
+        if (trimmedString != null) {
+            StringTokenizer tokens = new StringTokenizer(trimmedString, delimiter);
+            while (tokens.hasMoreTokens()) {
+                values.add(tokens.nextToken());
+            }
+        }
+
+        return values;
+    }
+
+    /**
+     * Gets the set of values of a List of strings as a space delimited XML list-type.
+     * 
+     * @param values list of strings
+     * @param delimiter the delimiter used between values
+     * 
+     * @return delimited string of values
+     */
+    public static String listToStringValue(List<String> values, String delimiter) {
+        if (delimiter == null) {
+            throw new IllegalArgumentException("String delimiter may not be null");
+        }
+        
+        StringBuilder stringValue = new StringBuilder();
+        Iterator<String> valueItr = values.iterator();
+        while(valueItr.hasNext()){
+            stringValue.append(valueItr.next());
+            if(valueItr.hasNext()){
+                stringValue.append(delimiter);
+            }
+        }
+        
+        return stringValue.toString();
     }
 }
