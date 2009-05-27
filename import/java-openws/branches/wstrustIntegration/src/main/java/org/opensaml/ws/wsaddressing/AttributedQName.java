@@ -14,28 +14,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.opensaml.ws.wsaddressing;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.xml.AttributeExtensibleXMLObject;
+import org.opensaml.xml.schema.XSQName;
+
 /**
- * The &lt;wsa:Address&gt; element.
+ * Interface for type &lt;wsa:AttributedQName&gt;.
  * 
- * @see "WS-Addressing 1.0 - Core"
+ * @see "WS-Addressing 1.0 - SOAP Binding"
  * 
  */
-public interface Address extends AttributedURI {
+public interface AttributedQName extends XSQName, AttributeExtensibleXMLObject, WSAddressingObject {
+    
+    /** Local name of the XSI type. */
+    public static final String TYPE_LOCAL_NAME = "AttributedQNameType"; 
+        
+    /** QName of the XSI type. */
+    public static final QName TYPE_NAME = 
+        new QName(WSAddressingConstants.WSA_NS, TYPE_LOCAL_NAME, WSAddressingConstants.WSA_PREFIX);
 
-    /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME = "Address";
-
-    /** Default element name. */
-    public static final QName ELEMENT_NAME =
-        new QName(WSAddressingConstants.WSA_NS, ELEMENT_LOCAL_NAME, WSAddressingConstants.WSA_PREFIX);
-
-    /** Anonymous address URI. */
-    public static final String ANONYMOUS = WSAddressingConstants.WSA_NS + "/anonymous";
-
-    /** None address URI. */
-    public static final String NONE = WSAddressingConstants.WSA_NS + "/none";
 }

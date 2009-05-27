@@ -25,12 +25,12 @@ import javax.xml.namespace.QName;
  * @see "WS-Addressing 1.0 - Core"
  * 
  */
-public interface From extends EndpointReferenceType, WSAddressingObject {
+public interface From extends EndpointReferenceType {
 
     /** Element local name. */
     public static final String ELEMENT_LOCAL_NAME = "From";
 
-    /** Default element name */
-    public final static QName ELEMENT_NAME = new QName(WSAddressingConstants.WSA_NS, ELEMENT_LOCAL_NAME,
-            WSAddressingConstants.WSA_PREFIX);
+    /** Default element name. */
+    public static final QName ELEMENT_NAME =
+        new QName(WSAddressingConstants.WSA_NS, ELEMENT_LOCAL_NAME, WSAddressingConstants.WSA_PREFIX);
 }

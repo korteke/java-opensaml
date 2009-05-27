@@ -19,14 +19,16 @@ package org.opensaml.ws.wsaddressing;
 import org.opensaml.xml.XMLObjectBuilder;
 
 /**
- * WSAddressingObjectBuilder
+ * WSAddressingObjectBuilder.
+ * 
+ * @param <WSAddressingObjectType> the type of object being built 
  * 
  */
 public interface WSAddressingObjectBuilder<WSAddressingObjectType extends WSAddressingObject>
         extends XMLObjectBuilder<WSAddressingObjectType> {
 
     /**
-     * Builds a WS-Addressing object
+     * Builds a WS-Addressing object.
      * 
      * @return the built object
      */

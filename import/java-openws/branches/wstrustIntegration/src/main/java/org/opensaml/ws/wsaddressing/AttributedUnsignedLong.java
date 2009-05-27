@@ -14,34 +14,40 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.opensaml.ws.wsaddressing;
 
 import javax.xml.namespace.QName;
 
 import org.opensaml.xml.AttributeExtensibleXMLObject;
-import org.opensaml.xml.ElementExtensibleXMLObject;
 
 /**
- * The optional &lt;wsa:Metadata&gt; element.
+ * Interface for type &lt;wsa:AttributedUnsignedLongType&gt;.
  * 
- * @see "WS-Addressing 1.0 - Core"
+ * @see "WS-Addressing 1.0 - SOAP Binding"
  * 
  */
-public interface Metadata extends AttributeExtensibleXMLObject, ElementExtensibleXMLObject, WSAddressingObject {
-    
-    /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME = "Metadata";
-
-    /** Default element name. */
-    public static final QName ELEMENT_NAME =
-        new QName(WSAddressingConstants.WSA_NS, ELEMENT_LOCAL_NAME, WSAddressingConstants.WSA_PREFIX);
+public interface AttributedUnsignedLong extends AttributeExtensibleXMLObject, WSAddressingObject {
     
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "MetadataType"; 
+    public static final String TYPE_LOCAL_NAME = "AttributedUnsignedLongType"; 
         
     /** QName of the XSI type. */
     public static final QName TYPE_NAME = 
         new QName(WSAddressingConstants.WSA_NS, TYPE_LOCAL_NAME, WSAddressingConstants.WSA_PREFIX);
+    
+    /**
+     * Gets the element's value.
+     * 
+     * @return the element's value
+     */
+    public Long getValue();
 
+    /**
+     * Sets the element's value.
+     * 
+     * @param newValue the new element value
+     */
+    public void setValue(Long newValue);
 
 }

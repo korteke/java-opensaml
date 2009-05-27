@@ -24,14 +24,13 @@ import javax.xml.namespace.QName;
  * @see "WS-Addressing 1.0 - Core"
  * 
  */
-public interface Action extends AttributedURIType, WSAddressingObject {
+public interface Action extends AttributedURI {
 
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME= "Action";
+    public static final String ELEMENT_LOCAL_NAME = "Action";
 
-    /** Default element name */
-    public final static QName ELEMENT_NAME= new QName(WSAddressingConstants.WSA_NS,
-                                                      ELEMENT_LOCAL_NAME,
-                                                      WSAddressingConstants.WSA_PREFIX);
+    /** Default element name. */
+    public static final QName ELEMENT_NAME =
+        new QName(WSAddressingConstants.WSA_NS, ELEMENT_LOCAL_NAME, WSAddressingConstants.WSA_PREFIX);
 
 }

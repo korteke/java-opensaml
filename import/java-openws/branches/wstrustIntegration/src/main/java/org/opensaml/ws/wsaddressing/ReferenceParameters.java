@@ -27,14 +27,20 @@ import org.opensaml.xml.ElementExtensibleXMLObject;
  * @see "WS-Addressing 1.0 - Core"
  * 
  */
-public interface ReferenceParameters extends AttributeExtensibleXMLObject,
-        ElementExtensibleXMLObject, WSAddressingObject {
+public interface ReferenceParameters extends AttributeExtensibleXMLObject, ElementExtensibleXMLObject, WSAddressingObject {
+    
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME= "ReferenceParameters";
+    public static final String ELEMENT_LOCAL_NAME = "ReferenceParameters";
 
-    /** Default element name */
-    public final static QName ELEMENT_NAME= new QName(WSAddressingConstants.WSA_NS,
-                                                      ELEMENT_LOCAL_NAME,
-                                                      WSAddressingConstants.WSA_PREFIX);
+    /** Default element name. */
+    public static final QName ELEMENT_NAME =
+        new QName(WSAddressingConstants.WSA_NS, ELEMENT_LOCAL_NAME, WSAddressingConstants.WSA_PREFIX);
+    
+    /** Local name of the XSI type. */
+    public static final String TYPE_LOCAL_NAME = "ReferenceParametersType"; 
+        
+    /** QName of the XSI type. */
+    public static final QName TYPE_NAME = 
+        new QName(WSAddressingConstants.WSA_NS, TYPE_LOCAL_NAME, WSAddressingConstants.WSA_PREFIX);
 
 }

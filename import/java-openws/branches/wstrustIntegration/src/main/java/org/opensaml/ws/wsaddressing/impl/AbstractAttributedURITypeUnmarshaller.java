@@ -20,7 +20,7 @@ package org.opensaml.ws.wsaddressing.impl;
 import javax.xml.namespace.QName;
 
 import org.opensaml.ws.wsaddressing.Address;
-import org.opensaml.ws.wsaddressing.AttributedURIType;
+import org.opensaml.ws.wsaddressing.AttributedURI;
 import org.opensaml.xml.AttributeExtensibleXMLObject;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
@@ -29,7 +29,7 @@ import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Attr;
 
 /**
- * Abstract unmarshaller for the element of type {@link AttributedURIType}.
+ * Abstract unmarshaller for the element of type {@link AttributedURI}.
  * 
  * @see Address
  * 

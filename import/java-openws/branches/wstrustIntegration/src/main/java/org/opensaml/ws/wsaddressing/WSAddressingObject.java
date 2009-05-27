@@ -19,9 +19,9 @@ package org.opensaml.ws.wsaddressing;
 import org.opensaml.xml.XMLObject;
 
 /**
- * Abstract WS-Addressing object interface
+ * Abstract WS-Addressing object interface.
  * 
  */
-public abstract interface WSAddressingObject extends XMLObject {
+public interface WSAddressingObject extends XMLObject {
 
 }

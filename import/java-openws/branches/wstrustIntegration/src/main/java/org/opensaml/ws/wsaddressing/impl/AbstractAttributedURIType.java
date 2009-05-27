@@ -17,15 +17,15 @@
 
 package org.opensaml.ws.wsaddressing.impl;
 
-import org.opensaml.ws.wsaddressing.AttributedURIType;
+import org.opensaml.ws.wsaddressing.AttributedURI;
 import org.opensaml.xml.schema.impl.XSURIImpl;
 import org.opensaml.xml.util.AttributeMap;
 
 /**
- * AbstractAttributedURIType is the abstract implementation of {@link AttributedURIType}.
+ * AbstractAttributedURIType is the abstract implementation of {@link AttributedURI}.
  * 
  */
-public abstract class AbstractAttributedURIType extends XSURIImpl implements AttributedURIType {
+public abstract class AbstractAttributedURIType extends XSURIImpl implements AttributedURI {
 
     /** xs:anyAttribute for this element. */
     private AttributeMap anyAttributes_;

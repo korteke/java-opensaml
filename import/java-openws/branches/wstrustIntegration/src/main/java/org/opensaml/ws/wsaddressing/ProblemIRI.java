@@ -17,15 +17,21 @@
 
 package org.opensaml.ws.wsaddressing;
 
-import org.opensaml.xml.AttributeExtensibleXMLObject;
-import org.opensaml.xml.schema.XSURI;
+import javax.xml.namespace.QName;
 
 /**
- * Abstract interface for element of type &lt;wsa:AttributedURIType&gt;.
+ * The &lt;wsa:ProblemIRI&gt; element.
  * 
- * @see "WS-Addressing 1.0 - Core"
+ * @see "WS-Addressing 1.0 - SOAP Binding"
  * 
  */
-public abstract interface AttributedURIType extends XSURI, AttributeExtensibleXMLObject {
+public interface ProblemIRI extends AttributedURI {
+
+    /** Element local name. */
+    public static final String ELEMENT_LOCAL_NAME = "ProblemIRI";
+
+    /** Default element name. */
+    public static final QName ELEMENT_NAME =
+        new QName(WSAddressingConstants.WSA_NS, ELEMENT_LOCAL_NAME, WSAddressingConstants.WSA_PREFIX);
 
 }

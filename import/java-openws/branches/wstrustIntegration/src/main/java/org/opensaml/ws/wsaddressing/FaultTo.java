@@ -14,28 +14,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.opensaml.ws.wsaddressing;
 
 import javax.xml.namespace.QName;
 
 /**
- * The &lt;wsa:Address&gt; element.
+ * The &lt;wsa:FaultTo&gt; element.
  * 
  * @see "WS-Addressing 1.0 - Core"
  * 
  */
-public interface Address extends AttributedURI {
+public interface FaultTo extends EndpointReferenceType {
 
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME = "Address";
+    public static final String ELEMENT_LOCAL_NAME = "FaultTo";
 
     /** Default element name. */
     public static final QName ELEMENT_NAME =
         new QName(WSAddressingConstants.WSA_NS, ELEMENT_LOCAL_NAME, WSAddressingConstants.WSA_PREFIX);
-
-    /** Anonymous address URI. */
-    public static final String ANONYMOUS = WSAddressingConstants.WSA_NS + "/anonymous";
-
-    /** None address URI. */
-    public static final String NONE = WSAddressingConstants.WSA_NS + "/none";
 }

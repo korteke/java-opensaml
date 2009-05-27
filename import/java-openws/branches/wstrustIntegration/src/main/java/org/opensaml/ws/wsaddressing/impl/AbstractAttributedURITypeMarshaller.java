@@ -21,7 +21,7 @@ import java.util.Map.Entry;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.ws.wsaddressing.AttributedURIType;
+import org.opensaml.ws.wsaddressing.AttributedURI;
 import org.opensaml.xml.AttributeExtensibleXMLObject;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
@@ -31,7 +31,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
- * Abstract marshaller for the element of type {@link AttributedURIType}.
+ * Abstract marshaller for the element of type {@link AttributedURI}.
  * 
  */
 public abstract class AbstractAttributedURITypeMarshaller extends AbstractWSAddressingObjectMarshaller {
@@ -52,7 +52,7 @@ public abstract class AbstractAttributedURITypeMarshaller extends AbstractWSAddr
      */
     @Override
     protected void marshallElementContent(XMLObject xmlObject, Element domElement) throws MarshallingException {
-        AttributedURIType intf = (AttributedURIType) xmlObject;
+        AttributedURI intf = (AttributedURI) xmlObject;
         XMLHelper.appendTextContent(domElement, intf.getValue());
     }
 

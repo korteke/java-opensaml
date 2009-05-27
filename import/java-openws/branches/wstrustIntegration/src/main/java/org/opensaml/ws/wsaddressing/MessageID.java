@@ -25,13 +25,13 @@ import javax.xml.namespace.QName;
  * @see "WS-Addressing 1.0 - Core"
  * 
  */
-public interface MessageID extends AttributedURIType, WSAddressingObject {
+public interface MessageID extends AttributedURI {
 
     /** Element local name. */
     public static final String ELEMENT_LOCAL_NAME = "MessageID";
 
-    /** Default element name */
-    public final static QName ELEMENT_NAME = new QName(WSAddressingConstants.WSA_NS, ELEMENT_LOCAL_NAME,
-            WSAddressingConstants.WSA_PREFIX);
+    /** Default element name. */
+    public static final QName ELEMENT_NAME =
+        new QName(WSAddressingConstants.WSA_NS, ELEMENT_LOCAL_NAME, WSAddressingConstants.WSA_PREFIX);
 
 }

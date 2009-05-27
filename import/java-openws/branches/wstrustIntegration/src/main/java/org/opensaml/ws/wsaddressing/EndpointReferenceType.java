@@ -17,16 +17,25 @@
 
 package org.opensaml.ws.wsaddressing;
 
+import javax.xml.namespace.QName;
+
 import org.opensaml.xml.AttributeExtensibleXMLObject;
 import org.opensaml.xml.ElementExtensibleXMLObject;
 
 /**
- * Abstract interface for element of type {@link EndpointReferenceType}.
+ * Interface for element of type {@link EndpointReferenceType}.
  * 
  * @see "WS-Addressing 1.0 - Core"
  * 
  */
-public abstract interface EndpointReferenceType extends AttributeExtensibleXMLObject, ElementExtensibleXMLObject {
+public interface EndpointReferenceType extends AttributeExtensibleXMLObject, ElementExtensibleXMLObject, WSAddressingObject {
+    
+    /** Local name of the XSI type. */
+    public static final String TYPE_LOCAL_NAME = "EndpointReferenceType"; 
+        
+    /** QName of the XSI type. */
+    public static final QName TYPE_NAME = 
+        new QName(WSAddressingConstants.WSA_NS, TYPE_LOCAL_NAME, WSAddressingConstants.WSA_PREFIX);
 
     /**
      * Returns the &lt;wsa:Address&gt; child element.
