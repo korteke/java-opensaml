@@ -58,6 +58,10 @@ import org.w3c.dom.ls.LSSerializer;
  * A helper class for working with W3C DOM objects.
  */
 public final class XMLHelper {
+   
+    /** A string which contains the valid delimiters for the XML Schema 'list' type. These
+     * are: space, newline, carriage return, and tab. */
+    public static final String LIST_DELIMITERS = " \n\r\t";
 
     /** JAXP DatatypeFactory. */
     private static DatatypeFactory dataTypeFactory;
@@ -286,7 +290,7 @@ public final class XMLHelper {
      * @return list of values, never null
      */
     public static List<String> getAttributeValueAsList(Attr attribute) {
-        return DatatypeHelper.stringToList(attribute.getValue(), " ");
+        return DatatypeHelper.stringToList(attribute.getValue(), LIST_DELIMITERS);
     }
     
     /**
@@ -320,8 +324,10 @@ public final class XMLHelper {
      * @param isIDAttribute flag indicating whether the attribute being marshalled
      *          should be handled as an ID-typed attribute
      */
-    public static void marshallAttribute(QName attributeName, List<String> attributeValue, Element domElement, boolean isIDAttribute){
-        marshallAttribute(attributeName, DatatypeHelper.listToStringValue(attributeValue, " "), domElement, isIDAttribute);
+    public static void marshallAttribute(QName attributeName, List<String> attributeValues, Element domElement,
+            boolean isIDAttribute){
+        marshallAttribute(attributeName, DatatypeHelper.listToStringValue(attributeValues, " "),
+                domElement, isIDAttribute);
     }
     
     /**
@@ -401,7 +407,7 @@ public final class XMLHelper {
      * @return list of values, never null
      */
     public static List<String> getElementContentAsList(Element element) {
-        return DatatypeHelper.stringToList(element.getTextContent(), " ");
+        return DatatypeHelper.stringToList(element.getTextContent(), LIST_DELIMITERS);
     }
 
     /**

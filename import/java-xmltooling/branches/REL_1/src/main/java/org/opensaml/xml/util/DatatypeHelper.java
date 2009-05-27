@@ -186,10 +186,12 @@ public final class DatatypeHelper {
     }
 
     /**
-     * Converts a delimited String in to a list.
+     * Converts a delimited string into a list.
      * 
-     * @param string the string to be split in to a list
-     * @param delimiter the delimiter between values
+     * @param string the string to be split into a list
+     * @param delimiter the delimiter between values. This string may contain
+     *                  multiple delimiter characters, as allowed by
+     *                  {@link StringTokenizer}
      * 
      * @return the list of values or an empty list if the given string is null or empty
      */
@@ -212,7 +214,8 @@ public final class DatatypeHelper {
     }
 
     /**
-     * Gets the set of values of a List of strings as a space delimited XML list-type.
+     * Converts a List of strings into a single string, with values separated by a
+     * specified delimiter.
      * 
      * @param values list of strings
      * @param delimiter the delimiter used between values
