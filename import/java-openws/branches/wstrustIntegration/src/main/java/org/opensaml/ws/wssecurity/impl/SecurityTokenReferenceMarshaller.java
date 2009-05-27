@@ -41,8 +41,7 @@ public class SecurityTokenReferenceMarshaller extends AbstractWSSecurityObjectMa
         
         List<String> usages = str.getUsages();
         if (usages != null && ! usages.isEmpty()) {
-            XMLHelper.marshallAttribute(SecurityTokenReference.USAGE_ATTR_NAME, XMLHelper.listToStringValue(usages),
-                    domElement, false);
+            XMLHelper.marshallAttribute(SecurityTokenReference.USAGE_ATTR_NAME, usages, domElement, false);
         }
         
         XMLHelper.marshallAttributeMap(str.getUnknownAttributes(), domElement);
