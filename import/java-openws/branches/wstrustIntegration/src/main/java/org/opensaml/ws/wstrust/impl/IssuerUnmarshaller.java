@@ -17,13 +17,13 @@
 
 package org.opensaml.ws.wstrust.impl;
 
-import org.opensaml.ws.wsaddressing.impl.AbstractEndpointReferenceTypeUnmarshaller;
+import org.opensaml.ws.wsaddressing.impl.EndpointReferenceTypeUnmarshaller;
 
 /**
  * IssuerUnmarshaller
  * 
  */
-public class IssuerUnmarshaller extends AbstractEndpointReferenceTypeUnmarshaller {
+public class IssuerUnmarshaller extends EndpointReferenceTypeUnmarshaller {
 
     /**
      * Default constructor.

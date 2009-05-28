@@ -17,14 +17,14 @@
 
 package org.opensaml.ws.wstrust.impl;
 
-import org.opensaml.ws.wsaddressing.impl.AbstractEndpointReferenceType;
+import org.opensaml.ws.wsaddressing.impl.EndpointReferenceTypeImpl;
 import org.opensaml.ws.wstrust.Issuer;
 
 /**
  * IssuerImpl
  * 
  */
-public class IssuerImpl extends AbstractEndpointReferenceType implements Issuer {
+public class IssuerImpl extends EndpointReferenceTypeImpl implements Issuer {
 
     /**
      * Constructor.

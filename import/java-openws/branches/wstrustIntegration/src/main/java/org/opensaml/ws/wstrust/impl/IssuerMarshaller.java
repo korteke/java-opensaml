@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wstrust.impl;
 
-import org.opensaml.ws.wsaddressing.impl.AbstractEndpointReferenceTypeMarshaller;
+import org.opensaml.ws.wsaddressing.impl.EndpointReferenceTypeMarshaller;
 import org.opensaml.ws.wstrust.Issuer;
 
 /**
@@ -26,7 +26,7 @@ import org.opensaml.ws.wstrust.Issuer;
  * @see Issuer
  * 
  */
-public class IssuerMarshaller extends AbstractEndpointReferenceTypeMarshaller {
+public class IssuerMarshaller extends EndpointReferenceTypeMarshaller {
 
     /**
      * Default constructor.
