@@ -19,8 +19,6 @@ package org.opensaml.ws.wstrust;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.ws.wssecurity.AttributedValueType;
-import org.opensaml.ws.wssecurity.WSSecurityConstants;
 import org.opensaml.xml.schema.XSURI;
 
 /**
@@ -35,20 +33,5 @@ public interface TokenType extends XSURI, WSTrustObject {
     /** Default element name */
     public final static QName ELEMENT_NAME = new QName(WSTrustConstants.WST_NS, ELEMENT_LOCAL_NAME,
             WSTrustConstants.WST_PREFIX);
-
-    /** Username Token identifier URI */
-    public static final String USERNAME_TOKEN = AttributedValueType.VALUETYPE_USERNAME_TOKEN;
-
-    /** X509v3 Token identifier URI */
-    public static final String X509_TOKEN = AttributedValueType.VALUETYPE_X509_V3;
-
-    /** SAML 1.1 Token identifier URI */
-    public static final String SAML11_TOKEN = WSSecurityConstants.WSSE11_SAML_TOKEN_PROFILE_NS + "#SAMLV1.1";
-
-    /** SAML 2.0 Token identifier URI */
-    public static final String SAML2_TOKEN = WSSecurityConstants.WSSE11_SAML_TOKEN_PROFILE_NS + "#SAMLV2.0";
-
-    /** Kerberos v.5 AP-REQ Token identifier URI */
-    public static final String KERBEROS_TOKEN = AttributedValueType.VALUETYPE_KERBEROS_AP_REQ;
 
 }

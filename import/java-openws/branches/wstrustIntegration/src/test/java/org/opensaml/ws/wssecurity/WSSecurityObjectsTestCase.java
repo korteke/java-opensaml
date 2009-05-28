@@ -128,10 +128,11 @@ public class WSSecurityObjectsTestCase extends WSBaseTestCase {
         usernameToken.setId(refId);
         DateTimeFormatter formatter= DateTimeFormat.forPattern(AttributedDateTime.DEFAULT_DATETIME_FORMAT);
         DateTime refDateTime= formatter.parseDateTime(refDateTimeStr);
-        usernameToken.getCreated().setDateTime(refDateTime);
+        Created usernameCreated = (Created) usernameToken.getUnknownXMLObjects(Created.ELEMENT_NAME).get(0);
+        usernameCreated.setDateTime(refDateTime);
 
         // check default password type
-        Password password= usernameToken.getPassword();
+        Password password= (Password) usernameToken.getUnknownXMLObjects(Password.ELEMENT_NAME).get(0);
         assertNotNull(password);
         assertEquals(Password.TYPE_PASSWORD_TEXT, password.getType());
 
@@ -159,8 +160,12 @@ public class WSSecurityObjectsTestCase extends WSBaseTestCase {
         // unmarshall directly from file
         UsernameToken ut= unmarshallXML("/data/org/opensaml/ws/wssecurity/UsernameToken.xml");
         assertEquals("test", ut.getUsername().getValue());
-        assertEquals("test", ut.getPassword().getValue());
-        DateTime created= ut.getCreated().getDateTime();
+        Password utPassword = (Password) ut.getUnknownXMLObjects(Password.ELEMENT_NAME).get(0);
+        assertNotNull(utPassword);
+        assertEquals("test", utPassword.getValue());
+        Created utCreated = (Created) ut.getUnknownXMLObjects(Created.ELEMENT_NAME).get(0);
+        assertNotNull(utCreated);
+        DateTime created= utCreated.getDateTime();
         System.out.println(created);
 
     }
@@ -213,8 +218,8 @@ public class WSSecurityObjectsTestCase extends WSBaseTestCase {
         String id= "UsernameToken-" + System.currentTimeMillis();
         usernameToken.setId(id);
         usernameToken.setUsername(username);
-        usernameToken.setPassword(password);
-        usernameToken.setCreated(created);
+        usernameToken.getUnknownXMLObjects().add(password);
+        usernameToken.getUnknownXMLObjects().add(created);
 
         return usernameToken;
 

@@ -43,23 +43,8 @@ public class UsernameTokenImpl extends AbstractWSSecurityObject implements Usern
     /** The &lt;wsu:Id&gt; attribute value. */
     private String id;
 
-    /** The &lt;wsu:Created&gt; child element. */
-    private Created created;
-
-    /** The &lt;wsse:Nonce&gt; child element. */
-    private Nonce nonce;
-
-    /** The &lt;wsse:Password&gt; child element. */
-    private Password password;
-
     /** The &lt;wsse:Username&gt; child element. */
     private Username username;
-
-    /** The &lt;wsse11:Salt&gt; child element. */
-    private Salt salt;
-
-    /** The &lt;wsse11:Iteration&gt; child element. */
-    private Iteration iteration;
     
     /** Wildcard attributes. */
     private AttributeMap unknownAttributes;
@@ -79,66 +64,15 @@ public class UsernameTokenImpl extends AbstractWSSecurityObject implements Usern
         unknownAttributes = new AttributeMap(this);
         unknownChildren = new IndexedXMLObjectChildrenList<XMLObject>(this);
     }
-
-    /** {@inheritDoc} */
-    public Created getCreated() {
-        return created;
-    }
-
-    /** {@inheritDoc} */
-    public Nonce getNonce() {
-        return nonce;
-    }
-
-    /** {@inheritDoc} */
-    public Password getPassword() {
-        return password;
-    }
-
+ 
     /** {@inheritDoc} */
     public Username getUsername() {
         return username;
     }
 
     /** {@inheritDoc} */
-    public void setCreated(Created newCreated) {
-        created = prepareForAssignment(created, newCreated);
-    }
-
-    /** {@inheritDoc} */
-    public void setNonce(Nonce newNonce) {
-        nonce = prepareForAssignment(nonce, newNonce);
-
-    }
-
-    /** {@inheritDoc} */
-    public void setPassword(Password newPassword) {
-        password = prepareForAssignment(password, newPassword);
-    }
-
-    /** {@inheritDoc} */
     public void setUsername(Username newUsername) {
         username = prepareForAssignment(username, newUsername);
-    }
-
-    /** {@inheritDoc} */
-    public Iteration getIteration() {
-        return iteration;
-    }
-
-    /** {@inheritDoc} */
-    public Salt getSalt() {
-        return salt;
-    }
-
-    /** {@inheritDoc} */
-    public void setIteration(Iteration newIteration) {
-        iteration = prepareForAssignment(iteration, newIteration);
-    }
-
-    /** {@inheritDoc} */
-    public void setSalt(Salt newSalt) {
-        salt = prepareForAssignment(salt, newSalt);
     }
 
     /** {@inheritDoc} */
@@ -173,21 +107,6 @@ public class UsernameTokenImpl extends AbstractWSSecurityObject implements Usern
         ArrayList<XMLObject> children = new ArrayList<XMLObject>();
         if (username != null) {
             children.add(username);
-        }
-        if (password != null) {
-            children.add(password);
-        }
-        if (nonce != null) {
-            children.add(nonce);
-        }
-        if (salt != null) {
-            children.add(salt);
-        }
-        if (iteration != null) {
-            children.add(iteration);
-        }
-        if (created != null) {
-            children.add(created);
         }
         
         if (!getUnknownXMLObjects().isEmpty()) {

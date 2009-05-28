@@ -23,9 +23,6 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.ws.wssecurity.Embedded;
-import org.opensaml.ws.wssecurity.KeyIdentifier;
-import org.opensaml.ws.wssecurity.Reference;
 import org.opensaml.ws.wssecurity.SecurityTokenReference;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.util.AttributeMap;
@@ -42,18 +39,6 @@ public class SecurityTokenReferenceImpl extends AbstractWSSecurityObject impleme
 
     /** List of &lt;wsse:Usage&gt; attribute values. */
     private List<String> usages;
-
-    /** The &lt;wsse11:TokenType&gt; attribute value. */
-    private String tokenType;
-
-    /** The &lt;wsse:Embedded&gt; child element. */
-    private Embedded embedded;
-
-    /** The &lt;wsse:KeyIdentifier&gt; child element. */
-    private KeyIdentifier keyIdentifier;
-
-    /** the &lt;wsse:Reference&gt; child element. */
-    private Reference reference;
     
     /** Wildcard attributes. */
     private AttributeMap unknownAttributes;
@@ -87,16 +72,6 @@ public class SecurityTokenReferenceImpl extends AbstractWSSecurityObject impleme
     }
 
     /** {@inheritDoc} */
-    public String getTokenType() {
-        return tokenType;
-    }
-
-    /** {@inheritDoc} */
-    public void setTokenType(String newTokenType) {
-        tokenType = prepareForAssignment(tokenType, newTokenType);
-    }
-
-    /** {@inheritDoc} */
     public String getId() {
         return id;
     }
@@ -107,37 +82,7 @@ public class SecurityTokenReferenceImpl extends AbstractWSSecurityObject impleme
         id = prepareForAssignment(id, newId);
         registerOwnID(oldId, id);
     }
-    
 
-    /** {@inheritDoc} */
-    public Embedded getEmbedded() {
-        return embedded;
-    }
-    
-    /** {@inheritDoc} */
-    public void setEmbedded(Embedded newEmbedded) {
-        embedded = prepareForAssignment(embedded, newEmbedded);
-    }
-
-    /** {@inheritDoc} */
-    public KeyIdentifier getKeyIdentifier() {
-        return keyIdentifier;
-    }
-    
-    /** {@inheritDoc} */
-    public void setKeyIdentifier(KeyIdentifier newKeyIdentifier) {
-        keyIdentifier = prepareForAssignment(keyIdentifier, newKeyIdentifier);
-    }
-
-    /** {@inheritDoc} */
-    public Reference getReference() {
-        return reference;
-    }
-
-    /** {@inheritDoc} */
-    public void setReference(Reference newReference) {
-        reference = prepareForAssignment(reference, newReference);
-    }
 
     /** {@inheritDoc} */
     public AttributeMap getUnknownAttributes() {
@@ -157,15 +102,7 @@ public class SecurityTokenReferenceImpl extends AbstractWSSecurityObject impleme
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
         List<XMLObject> children = new ArrayList<XMLObject>();
-        if (reference != null) {
-            children.add(reference);
-        }
-        if (keyIdentifier != null) {
-            children.add(keyIdentifier);
-        }
-        if (embedded != null) {
-            children.add(embedded);
-        }
+
         if (!getUnknownXMLObjects().isEmpty()) {
             children.addAll(getUnknownXMLObjects());
         }

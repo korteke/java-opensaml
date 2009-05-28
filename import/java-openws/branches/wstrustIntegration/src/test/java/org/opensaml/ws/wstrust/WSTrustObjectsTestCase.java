@@ -90,7 +90,7 @@ public class WSTrustObjectsTestCase extends WSBaseTestCase {
 
     public void testBinaryExchange() throws Exception {
         BinaryExchange binaryExchange= buildXMLObject(BinaryExchange.ELEMENT_NAME);
-        binaryExchange.setValueType(BinaryExchange.VALUETYPE_X509_V3);
+        binaryExchange.setValueType("http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-x509-token-profile-1.0#X509v3");
         binaryExchange.setValue("BASE64BINARY_X509_DATA...");
         marshallAndUnmarshall(binaryExchange);
     }
@@ -125,6 +125,7 @@ public class WSTrustObjectsTestCase extends WSBaseTestCase {
 
     public void testClaims() throws Exception {
         Claims claims= buildXMLObject(Claims.ELEMENT_NAME);
+        // TODO - this is a semantically incorrect usage of the Claims element. Fix with a more realistic example.
         claims.getUnknownXMLObjects().add(createUsernameToken("testuser",
                                                               "testpassword"));
         marshallAndUnmarshall(claims);
@@ -181,8 +182,9 @@ public class WSTrustObjectsTestCase extends WSBaseTestCase {
         requestType.setValue(RequestType.ISSUE);
         rst.setRequestType(requestType);
         TokenType tokenType= buildXMLObject(TokenType.ELEMENT_NAME);
-        tokenType.setValue(TokenType.SAML2_TOKEN);
+        tokenType.setValue("http://docs.oasis-open.org/wss/oasis-wss-saml-token-profile-1.1#SAMLV2.0");
         rst.setTokenType(tokenType);
+        // TODO - this is a semantically incorrect usage of the Claims element. Fix with a more realistic example.
         Claims claims= buildXMLObject(Claims.ELEMENT_NAME);
         claims.getUnknownXMLObjects().add(createUsernameToken("myuser",
                                                               "mypassword"));
@@ -240,8 +242,8 @@ public class WSTrustObjectsTestCase extends WSBaseTestCase {
         String id= "UsernameToken-" + System.currentTimeMillis();
         usernameToken.setId(id);
         usernameToken.setUsername(username);
-        usernameToken.setPassword(password);
-        usernameToken.setCreated(created);
+        usernameToken.getUnknownXMLObjects().add(password);
+        usernameToken.getUnknownXMLObjects().add(created);
 
         return usernameToken;
 

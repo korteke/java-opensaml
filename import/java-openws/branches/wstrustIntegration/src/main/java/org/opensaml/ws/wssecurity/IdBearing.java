@@ -23,7 +23,7 @@ import javax.xml.namespace.QName;
  * Interface for element having a <code>@wsu:Id</code> attribute.
  * 
  */
-public abstract interface IdBearing {
+public interface IdBearing {
 
     /** the <code>Id</code> attribute local name. */
     public static final String ID_ATTR_LOCAL_NAME = "Id";

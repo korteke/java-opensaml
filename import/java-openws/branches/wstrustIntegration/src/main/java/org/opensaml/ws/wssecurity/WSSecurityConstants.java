@@ -111,6 +111,56 @@ public final class WSSecurityConstants {
     public static final QName SOAP_FAULT_MESSAGE_EXPIRED =
         new QName(WSU_NS, "MessageExpired", WSU_PREFIX);
     
+    // Other constants
+    
+    /** WS-Security - Username Token Profile - UsernameToken. */
+    public static final String USERNAME_TOKEN =
+        WSSE_USERNAME_TOKEN_PROFILE_NS + "#UsernameToken";
+
+    /** WS-Security - X.509 Token Profile - X509V3. */
+    public static final String X509_V3 =
+        WSSE_X509_TOKEN_PROFILE_NS + "#X509v3";
+
+    /** WS-Security - X.509 Token Profile - X509V1. */
+    public static final String X509_V1 =
+        WSSE_X509_TOKEN_PROFILE_NS + "#X509v1";
+
+    /** WS-Security - X.509 Token Profile - X509PKIPathv1. */
+    public static final String X509_PKI_PATH_V1 =
+        WSSE_X509_TOKEN_PROFILE_NS + "#X509PKIPathv1";
+
+    /** WS-Security - X.509 Token Profile - PKCS7. */
+    public static final String X509_PKCS7 =
+        WSSE_X509_TOKEN_PROFILE_NS + "#PKCS7";
+    
+    /** WS-Security - X.509 Token Profile - X509SubjectKeyIdentifier. */
+    public static final String X509_SUBJECT_KEY_IDENTIFIER =
+        WSSE_X509_TOKEN_PROFILE_NS + "#X509SubjectKeyIdentifier";
+
+    /** WS-Security - Kerberos Token Profile - Kerberosv5_AP_REQ. */
+    public static final String KERBEROS_AP_REQ =
+        WSSE_KERBEROS_TOKEN_PROFILE_NS + "#Kerberosv5_AP_REQ";
+
+    /** WS-Security - Kerberos Token Profile - GSS_Kerberosv5_AP_REQ. */
+    public static final String GSS_KERBEROS_AP_REQ =
+        WSSE_KERBEROS_TOKEN_PROFILE_NS + "#GSS_Kerberosv5_AP_REQ";
+
+    /** WS-Security - Kerberos Token Profile - Kerberosv5_AP_REQ1510. */
+    public static final String KERBEROS_AP_REQ_1510 =
+        WSSE_KERBEROS_TOKEN_PROFILE_NS + "#Kerberosv5_AP_REQ1510";
+
+    /** WS-Security - Kerberos Token Profile - GSS_Kerberosv5_AP_REQ1510. */
+    public static final String GSS_KERBEROS_AP_REQ_1510 =
+        WSSE_KERBEROS_TOKEN_PROFILE_NS + "#GSS_Kerberosv5_AP_REQ1510";
+
+    /** WS-Security - KeyIdentifier - ThumbPrintSHA1.*/
+    public static final String THUMB_PRINT_SHA1 =
+        WS_SECURITY_NS + "#ThumbPrintSHA1";
+
+    /** WS-Security - KeyIdentifier - EncryptedKeySHA1.*/
+    public static final String ENCRYPTED_KEY_SHA1 =
+        WS_SECURITY_NS + "#EncryptedKeySHA1";
+    
     /**
      * Prevents instantiation.
      */

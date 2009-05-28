@@ -17,37 +17,25 @@
 package org.opensaml.ws.wssecurity.impl;
 
 
+import org.opensaml.ws.wssecurity.Iteration;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.schema.XSInteger;
 import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Element;
 
 /**
- * IterationMarshaller
+ * IterationMarshaller.
  * 
  */
 public class IterationMarshaller extends AbstractWSSecurityObjectMarshaller {
 
-    /**
-     * Default constructor
-     */
-    public IterationMarshaller() {
-        super();
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.io.AbstractXMLObjectMarshaller#marshallElementContent(org.opensaml.xml.XMLObject,
-     *      org.w3c.dom.Element)
-     */
-    @Override
-    protected void marshallElementContent(XMLObject xmlObject,
-            Element domElement) throws MarshallingException {
-        XSInteger iteration= (XSInteger) xmlObject;
-        Integer value= iteration.getValue();
-        XMLHelper.appendTextContent(domElement, value.toString());
+    /** {@inheritDoc} */
+    protected void marshallElementContent(XMLObject xmlObject, Element domElement) throws MarshallingException {
+        Iteration iteration = (Iteration) xmlObject;
+        
+        if (iteration.getValue() != null) {
+            XMLHelper.appendTextContent(domElement, iteration.getValue().toString());
+        }
     }
 
 }

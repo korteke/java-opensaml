@@ -17,28 +17,19 @@
 
 package org.opensaml.ws.wssecurity.impl;
 
+import org.opensaml.ws.wssecurity.Salt;
 import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.schema.XSBase64Binary;
 
 /**
- * IterationUnmarshaller
+ * SaltUnmarshaller.
  * 
  */
 public class SaltUnmarshaller extends AbstractWSSecurityObjectUnmarshaller {
 
-    /**
-     * Default constructor.
-     */
-    public SaltUnmarshaller() {
-        super();
-    }
-
     /** {@inheritDoc} */
     protected void processElementContent(XMLObject xmlObject, String elementContent) {
-        if (elementContent != null) {
-            XSBase64Binary base64Binary = (XSBase64Binary) xmlObject;
-            base64Binary.setValue(elementContent.trim());
-        }
+        Salt salt = (Salt) xmlObject;
+        salt.setValue(elementContent);
     }
 
 }

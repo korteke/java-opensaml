@@ -21,7 +21,7 @@ import org.opensaml.ws.wssecurity.Salt;
 import org.opensaml.xml.schema.impl.XSBase64BinaryImpl;
 
 /**
- * SaltImpl
+ * SaltImpl.
  * 
  */
 public class SaltImpl extends XSBase64BinaryImpl implements Salt {

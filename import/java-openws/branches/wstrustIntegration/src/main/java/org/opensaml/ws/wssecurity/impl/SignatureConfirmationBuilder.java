@@ -14,27 +14,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.opensaml.ws.wssecurity.impl;
 
-import org.opensaml.ws.wssecurity.Iteration;
-import org.opensaml.xml.schema.impl.XSIntegerImpl;
+import org.opensaml.ws.wssecurity.SignatureConfirmation;
 
 /**
- * IterationImpl.
+ * SignatureConfirmationBuilder.
  * 
  */
-public class IterationImpl extends XSIntegerImpl implements Iteration {
+public class SignatureConfirmationBuilder extends AbstractWSSecurityObjectBuilder<SignatureConfirmation> {
 
-    /**
-     * Constructor.
-     * 
-     * @param namespaceURI namespace of the element
-     * @param elementLocalName name of the element
-     * @param namespacePrefix namespace prefix of the element
-     */
-    public IterationImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
-        super(namespaceURI, elementLocalName, namespacePrefix);
+    /** {@inheritDoc} */
+    public SignatureConfirmation buildObject() {
+        return buildObject(SignatureConfirmation.ELEMENT_NAME);
+    }
+
+    /** {@inheritDoc} */
+    public SignatureConfirmation buildObject(String namespaceURI, String localName, String namespacePrefix) {
+        return new SignatureConfirmationImpl(namespaceURI, localName, namespacePrefix);
     }
 
 }

@@ -24,21 +24,19 @@ import org.opensaml.xml.ElementExtensibleXMLObject;
 
 /**
  * The &lt;wsse:SecurityTokenReference&gt; element.
- * <p>
- * TODO: add Ch. 7.5 ds:KeyInfo and Ch. 7.6 ds:KeyName support
  * 
  * @see "WS-Security 2004, Chapter 7. Token References."
  * 
  * 
  */
-public interface SecurityTokenReference extends IdBearing, UsageBearing, TokenTypeBearing, AttributeExtensibleXMLObject,
+public interface SecurityTokenReference extends IdBearing, UsageBearing, AttributeExtensibleXMLObject,
         ElementExtensibleXMLObject, WSSecurityObject {
 
     /** Element local name. */
     public static final String ELEMENT_LOCAL_NAME = "SecurityTokenReference";
 
     /** Qualified element name. */
-    public final static QName ELEMENT_NAME =
+    public static final QName ELEMENT_NAME =
         new QName(WSSecurityConstants.WSSE_NS, ELEMENT_LOCAL_NAME, WSSecurityConstants.WSSE_PREFIX);
     
     /** Local name of the XSI type. */
@@ -48,45 +46,4 @@ public interface SecurityTokenReference extends IdBearing, UsageBearing, TokenTy
     public static final QName TYPE_NAME = 
         new QName(WSSecurityConstants.WSSE_NS, TYPE_LOCAL_NAME, WSSecurityConstants.WSSE_PREFIX);
 
-    /**
-     * Returns the &lt;wsse:Reference&gt; child element.
-     * 
-     * @return the {@link Reference} child element or <code>null</code>.
-     */
-    public Reference getReference();
-
-    /**
-     * Sets the &lt;wsse:Reference&gt; child element.
-     * 
-     * @param reference The {@link Reference} object to set.
-     */
-    public void setReference(Reference reference);
-
-    /**
-     * Returns the &lt;wsse:KeyIdentifier&gt; child element.
-     * 
-     * @return the {@link KeyIdentifier} child element or <code>null</code>.
-     */
-    public KeyIdentifier getKeyIdentifier();
-
-    /**
-     * Sets the &lt;wsse:KeyIdentifier&gt; child element.
-     * 
-     * @param keyIdentifier the {@link KeyIdentifier} child element to set.
-     */
-    public void setKeyIdentifier(KeyIdentifier keyIdentifier);
-
-    /**
-     * Returns the &lt;wsse:Embedded&gt; child element.
-     * 
-     * @return the {@link Embedded} child element or <code>null</code>
-     */
-    public Embedded getEmbedded();
-
-    /**
-     * Sets the &lt;wsse:Embedded&gt; child element.
-     * 
-     * @param embedded the {@link Embedded} child element to set
-     */
-    public void setEmbedded(Embedded embedded);
 }

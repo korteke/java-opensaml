@@ -16,22 +16,12 @@
  */
 package org.opensaml.ws.wstrust.impl;
 
-import java.util.Map.Entry;
-
-import javax.xml.namespace.QName;
-
-
-import org.opensaml.ws.wssecurity.AttributedEncodingType;
-import org.opensaml.ws.wssecurity.AttributedValueType;
 import org.opensaml.ws.wstrust.BinaryExchange;
-import org.opensaml.xml.AttributeExtensibleXMLObject;
-import org.opensaml.xml.Configuration;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.schema.XSBase64Binary;
+import org.opensaml.xml.schema.impl.XSStringMarshaller;
+import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.util.XMLHelper;
-import org.w3c.dom.Attr;
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
@@ -40,67 +30,22 @@ import org.w3c.dom.Element;
  * @see BinaryExchange
  * 
  */
-public class BinaryExchangeMarshaller extends AbstractWSTrustObjectMarshaller {
+public class BinaryExchangeMarshaller extends XSStringMarshaller {
 
-    /**
-     * Default constructor.
-     */
-    public BinaryExchangeMarshaller() {
-        super();
-    }
-
-    /**
-     * Marshalls the Base64 binary content.
-     * <p>
-     * {@inheritDoc}
-     */
-    @Override
-    protected void marshallElementContent(XMLObject xmlObject,
-            Element domElement) throws MarshallingException {
-        XSBase64Binary base64binary= (XSBase64Binary) xmlObject;
-        String value= base64binary.getValue();
-        XMLHelper.appendTextContent(domElement, value);
-    }
-
-    /**
-     * Marshalls the &lt;wst:ValueType&gt;, the &lt;wst:EncodingType&gt; and the
-     * <code>xs:anyAttribute</code> attributes.
-     * <p>
-     * {@inheritDoc}
-     */
-    @Override
-    protected void marshallAttributes(XMLObject xmlObject, Element domElement)
-            throws MarshallingException {
-        Document document= domElement.getOwnerDocument();
-        AttributedValueType typed= (AttributedValueType) xmlObject;
-        String valueType= typed.getValueType();
+    /** {@inheritDoc} */
+    protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
+        BinaryExchange binaryExchange = (BinaryExchange) xmlObject;
+        
+        String valueType = DatatypeHelper.safeTrimOrNullString(binaryExchange.getValueType());
         if (valueType != null) {
-            Attr attribute= XMLHelper.constructAttribute(document,
-                                                         AttributedValueType.VALUE_TYPE_ATTR_NAME);
-            attribute.setValue(valueType);
-            domElement.setAttributeNodeNS(attribute);
+            domElement.setAttributeNS(null, BinaryExchange.VALUE_TYPE_ATTRIB_NAME, valueType);
         }
-        AttributedEncodingType encodingTyped= (AttributedEncodingType) xmlObject;
-        String encodingType= encodingTyped.getEncodingType();
+        String encodingType = DatatypeHelper.safeTrimOrNullString(binaryExchange.getEncodingType());
         if (encodingType != null) {
-            Attr attribute= XMLHelper.constructAttribute(document,
-                                                         AttributedEncodingType.ENCODING_TYPE_ATTR_NAME);
-            attribute.setValue(encodingType);
-            domElement.setAttributeNodeNS(attribute);
+            domElement.setAttributeNS(null, BinaryExchange.ENCODING_TYPE_ATTRIB_NAME, encodingType);
         }
-        // xs:anyAttribute
-        AttributeExtensibleXMLObject anyAttribute= (AttributeExtensibleXMLObject) xmlObject;
-        Attr attribute;
-        for (Entry<QName, String> entry : anyAttribute.getUnknownAttributes().entrySet()) {
-            attribute= XMLHelper.constructAttribute(document, entry.getKey());
-            attribute.setValue(entry.getValue());
-            domElement.setAttributeNodeNS(attribute);
-            if (Configuration.isIDAttribute(entry.getKey())
-                    || anyAttribute.getUnknownAttributes().isIDAttribute(entry.getKey())) {
-                attribute.getOwnerElement().setIdAttributeNode(attribute, true);
-            }
-        }
-        super.marshallAttributes(xmlObject, domElement);
+        
+        XMLHelper.marshallAttributeMap(binaryExchange.getUnknownAttributes(), domElement);
     }
 
 }

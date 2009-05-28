@@ -19,11 +19,6 @@ package org.opensaml.ws.wssecurity.impl;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.ws.wssecurity.Created;
-import org.opensaml.ws.wssecurity.Iteration;
-import org.opensaml.ws.wssecurity.Nonce;
-import org.opensaml.ws.wssecurity.Password;
-import org.opensaml.ws.wssecurity.Salt;
 import org.opensaml.ws.wssecurity.Username;
 import org.opensaml.ws.wssecurity.UsernameToken;
 import org.opensaml.xml.XMLObject;
@@ -42,16 +37,6 @@ public class UsernameTokenUnmarshaller extends AbstractWSSecurityObjectUnmarshal
         UsernameToken token = (UsernameToken) parentXMLObject;
         if (childXMLObject instanceof Username) {
             token.setUsername((Username) childXMLObject);
-        } else if (childXMLObject instanceof Password) {
-            token.setPassword((Password) childXMLObject);
-        } else if (childXMLObject instanceof Created) {
-            token.setCreated((Created) childXMLObject);
-        } else if (childXMLObject instanceof Nonce) {
-            token.setNonce((Nonce) childXMLObject);
-        } else if (childXMLObject instanceof Salt) {
-            token.setSalt((Salt) childXMLObject);
-        } else if (childXMLObject instanceof Iteration) {
-            token.setIteration((Iteration) childXMLObject);
         } else {
             token.getUnknownXMLObjects().add(childXMLObject);
         }

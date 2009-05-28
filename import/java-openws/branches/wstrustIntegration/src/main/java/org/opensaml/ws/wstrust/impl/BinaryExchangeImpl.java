@@ -18,25 +18,23 @@
 package org.opensaml.ws.wstrust.impl;
 
 import org.opensaml.ws.wstrust.BinaryExchange;
+import org.opensaml.xml.schema.impl.XSStringImpl;
 import org.opensaml.xml.util.AttributeMap;
 
 /**
- * BinaryExchangeImpl
+ * BinaryExchangeImpl.
  * 
  */
-public class BinaryExchangeImpl extends AbstractWSTrustObject implements BinaryExchange {
+public class BinaryExchangeImpl extends XSStringImpl implements BinaryExchange {
 
-    /** The wst:BinaryExchange Base64 encoded binary content */
-    String base64Binary_ = null;
+    /** The wst:BinaryExchange/@ValueType attribute value. */
+    private String valueType;
 
-    /** The wst:BinaryExchange/@ValueType attribute value */
-    String valueType_ = null;
-
-    /** The wst:BinaryExchange/@EncodingType attribute value */
-    String encodingType_ = null;
+    /** The wst:BinaryExchange/@EncodingType attribute value. */
+    private String encodingType;
 
     /** xs:anyAttribute for this element. */
-    private AttributeMap anyAttributes_;
+    private AttributeMap unknownAttributes;
 
     /**
      * Constructor.
@@ -47,70 +45,32 @@ public class BinaryExchangeImpl extends AbstractWSTrustObject implements BinaryE
      */
     public BinaryExchangeImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        anyAttributes_ = new AttributeMap(this);
+        unknownAttributes = new AttributeMap(this);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.schema.XSBase64Binary#getValue()
-     */
-    public String getValue() {
-        return base64Binary_;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.schema.XSBase64Binary#setValue(java.lang.String)
-     */
-    public void setValue(String newValue) {
-        base64Binary_ = prepareForAssignment(base64Binary_, newValue);
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wssecurity.AttributedEncodingType#getEncodingType()
-     */
+    /** {@inheritDoc} */
     public String getEncodingType() {
-        return encodingType_;
+        return encodingType;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wssecurity.AttributedEncodingType#setEncodingType(java.lang.String)
-     */
-    public void setEncodingType(String encodingType) {
-        encodingType_ = prepareForAssignment(encodingType_, encodingType);
+    /** {@inheritDoc} */
+    public void setEncodingType(String newEncodingType) {
+        encodingType = prepareForAssignment(encodingType, newEncodingType);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wssecurity.AttributedValueType#getValueType()
-     */
+    /** {@inheritDoc} */
     public String getValueType() {
-        return valueType_;
+        return valueType;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wssecurity.AttributedValueType#setValueType(java.lang.String)
-     */
-    public void setValueType(String valueType) {
-        valueType_ = prepareForAssignment(valueType_, valueType);
+    /** {@inheritDoc} */
+    public void setValueType(String newValueType) {
+        valueType = prepareForAssignment(valueType, newValueType);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AttributeExtensibleXMLObject#getUnknownAttributes()
-     */
+    /** {@inheritDoc} */
     public AttributeMap getUnknownAttributes() {
-        return anyAttributes_;
+        return unknownAttributes;
     }
 
 }

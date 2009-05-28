@@ -19,31 +19,18 @@ package org.opensaml.ws.wssecurity.impl;
 import org.opensaml.ws.wssecurity.Iteration;
 
 /**
- * IterationBuilder
+ * IterationBuilder.
  * 
  */
-public class IterationBuilder extends
-        AbstractWSSecurityObjectBuilder<Iteration> {
+public class IterationBuilder extends AbstractWSSecurityObjectBuilder<Iteration> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wssecurity.impl.AbstractWSSecurityObjectBuilder#buildObject()
-     */
-    @Override
+    /** {@inheritDoc} */
     public Iteration buildObject() {
         return buildObject(Iteration.ELEMENT_NAME);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AbstractXMLObjectBuilder#buildObject(java.lang.String,
-     *      java.lang.String, java.lang.String)
-     */
-    @Override
-    public Iteration buildObject(String namespaceURI, String localName,
-            String namespacePrefix) {
+    /** {@inheritDoc} */
+    public Iteration buildObject(String namespaceURI, String localName, String namespacePrefix) {
         return new IterationImpl(namespaceURI, localName, namespacePrefix);
     }
 

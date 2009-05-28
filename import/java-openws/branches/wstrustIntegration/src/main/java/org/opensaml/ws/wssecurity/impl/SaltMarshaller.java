@@ -24,25 +24,12 @@ import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Element;
 
 /**
- * SaltMarshaller
+ * SaltMarshaller.
  * 
  */
 public class SaltMarshaller extends AbstractWSSecurityObjectMarshaller {
 
-    /**
-     * Default constructor.
-     */
-    public SaltMarshaller() {
-        super();
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.io.AbstractXMLObjectMarshaller#marshallElementContent(org.opensaml.xml.XMLObject,
-     *      org.w3c.dom.Element)
-     */
-    @Override
+    /** {@inheritDoc} */
     protected void marshallElementContent(XMLObject xmlObject, Element domElement) throws MarshallingException {
         Salt salt = (Salt) xmlObject;
         XMLHelper.appendTextContent(domElement, salt.getValue());

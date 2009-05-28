@@ -25,7 +25,7 @@ import javax.xml.namespace.QName;
  * @see "WS-Security 2004, Chapter 7.1 SecurityTokenReference Element."
  * 
  */
-public abstract interface TokenTypeBearing {
+public interface TokenTypeBearing {
 
     /**
      * The <code>@wsse11:TokenType</code> attribute local name.

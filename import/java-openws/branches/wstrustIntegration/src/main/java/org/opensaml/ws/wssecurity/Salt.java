@@ -28,12 +28,12 @@ import org.opensaml.xml.schema.XSBase64Binary;
  * 
  */
 public interface Salt extends XSBase64Binary, WSSecurityObject {
+    
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME= "Salt";
+    public static final String ELEMENT_LOCAL_NAME = "Salt";
 
-    /** Qualified element name */
-    public final static QName ELEMENT_NAME= new QName(WSSecurityConstants.WSSE11_NS,
-                                                      ELEMENT_LOCAL_NAME,
-                                                      WSSecurityConstants.WSSE11_PREFIX);
+    /** Qualified element name. */
+    public static final QName ELEMENT_NAME =
+        new QName(WSSecurityConstants.WSSE11_NS, ELEMENT_LOCAL_NAME, WSSecurityConstants.WSSE11_PREFIX);
 
 }

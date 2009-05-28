@@ -19,30 +19,17 @@ package org.opensaml.ws.wssecurity.impl;
 import org.opensaml.ws.wssecurity.Salt;
 
 /**
- * SaltBuilder
- * 
+ * SaltBuilder.
  */
 public class SaltBuilder extends AbstractWSSecurityObjectBuilder<Salt> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wssecurity.impl.AbstractWSSecurityObjectBuilder#buildObject()
-     */
-    @Override
+    /** {@inheritDoc} */
     public Salt buildObject() {
         return buildObject(Salt.ELEMENT_NAME);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AbstractXMLObjectBuilder#buildObject(java.lang.String,
-     *      java.lang.String, java.lang.String)
-     */
-    @Override
-    public Salt buildObject(String namespaceURI, String localName,
-            String namespacePrefix) {
+    /** {@inheritDoc} */
+    public Salt buildObject(String namespaceURI, String localName, String namespacePrefix) {
         return new SaltImpl(namespaceURI, localName, namespacePrefix);
     }
 

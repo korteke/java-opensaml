@@ -18,9 +18,6 @@ package org.opensaml.ws.wssecurity.impl;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.ws.wssecurity.Embedded;
-import org.opensaml.ws.wssecurity.KeyIdentifier;
-import org.opensaml.ws.wssecurity.Reference;
 import org.opensaml.ws.wssecurity.SecurityTokenReference;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
@@ -36,15 +33,8 @@ public class SecurityTokenReferenceUnmarshaller extends AbstractWSSecurityObject
     protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
             throws UnmarshallingException {
         SecurityTokenReference str = (SecurityTokenReference) parentXMLObject;
-        if (childXMLObject instanceof Reference) {
-            str.setReference((Reference) childXMLObject);
-        } else if (childXMLObject instanceof KeyIdentifier) {
-            str.setKeyIdentifier((KeyIdentifier) childXMLObject);
-        } else if (childXMLObject instanceof Embedded) {
-            str.setEmbedded((Embedded) childXMLObject);
-        } else {
-            str.getUnknownXMLObjects().add(childXMLObject);
-        }
+
+        str.getUnknownXMLObjects().add(childXMLObject);
     }
 
     /** {@inheritDoc} */
