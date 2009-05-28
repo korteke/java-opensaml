@@ -17,19 +17,29 @@
 
 package org.opensaml.ws.wsaddressing.impl;
 
-import org.opensaml.xml.AbstractExtensibleXMLObjectUnmarshaller;
+import org.opensaml.ws.wsaddressing.Metadata;
+import org.opensaml.xml.XMLObject;
+import org.opensaml.xml.io.UnmarshallingException;
+import org.opensaml.xml.util.XMLHelper;
+import org.w3c.dom.Attr;
 
 /**
- * MetadataUnmarshaller
+ * MetadataUnmarshaller.
  * 
  */
-public class MetadataUnmarshaller extends AbstractExtensibleXMLObjectUnmarshaller {
+public class MetadataUnmarshaller extends AbstractWSAddressingObjectUnmarshaller {
 
-    /**
-     * Default constructor.
-     */
-    public MetadataUnmarshaller() {
-        super();
+    /** {@inheritDoc} */
+    protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
+        Metadata metadata = (Metadata) xmlObject;
+        XMLHelper.unmarshallToAttributeMap(metadata.getUnknownAttributes(), attribute);
+    }
+
+    /** {@inheritDoc} */
+    protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
+            throws UnmarshallingException {
+        Metadata metadata = (Metadata) parentXMLObject;
+        metadata.getUnknownXMLObjects().add(metadata);
     }
 
 }

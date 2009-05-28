@@ -34,44 +34,25 @@ public abstract class AbstractWSAddressingObjectUnmarshaller extends AbstractXML
      */
     private final Logger log = LoggerFactory.getLogger(AbstractWSAddressingObjectUnmarshaller.class);
 
-    /**
-     * Constructor.
-     * 
-     * {@inheritDoc}
-     */
+    /** Constructor. */
     protected AbstractWSAddressingObjectUnmarshaller() {
         super();
     }
 
-    /*
-     * No-op method. Extending implementations should override this method if they have child element to unmarshall.
-     * 
-     * @see org.opensaml.xml.io.AbstractXMLObjectUnmarshaller#processChildElement(org.opensaml.xml.XMLObject,
-     *      org.opensaml.xml.XMLObject)
-     */
+    /** {@inheritDoc} */
     protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
             throws UnmarshallingException {
         log.warn("{} ignoring unknown child element {}", parentXMLObject.getElementQName().getLocalPart(),
                 childXMLObject.getElementQName().getLocalPart());
     }
 
-    /*
-     * No-op method. Extending implementations should override this method if they have attributes to unmarshall.
-     * 
-     * @see org.opensaml.xml.io.AbstractXMLObjectUnmarshaller#processAttribute(org.opensaml.xml.XMLObject,
-     *      org.w3c.dom.Attr)
-     */
+    /** {@inheritDoc} */
     protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
         log.warn("{} ignoring unknown attribute {}", xmlObject.getElementQName().getLocalPart(), attribute
                 .getLocalName());
     }
 
-    /*
-     * No-op method. Extending implementations should override this method if they have element content to unmarshall.
-     * 
-     * @see org.opensaml.xml.io.AbstractXMLObjectUnmarshaller#processElementContent(org.opensaml.xml.XMLObject,
-     *      java.lang.String)
-     */
+    /** {@inheritDoc} */
     protected void processElementContent(XMLObject xmlObject, String elementContent) {
         log.warn("{} ignoring unknown element content: {}", xmlObject.getElementQName().getLocalPart(), elementContent);
     }

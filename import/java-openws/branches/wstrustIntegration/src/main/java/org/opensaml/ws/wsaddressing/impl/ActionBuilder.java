@@ -19,28 +19,18 @@ package org.opensaml.ws.wsaddressing.impl;
 import org.opensaml.ws.wsaddressing.Action;
 
 /**
- * ActionBuilder
+ * ActionBuilder.
  * 
  */
 public class ActionBuilder extends AbstractWSAddressingObjectBuilder<Action> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wsaddressing.impl.AbstractWSAddressObjectBuilder#buildObject()
-     */
+    /** {@inheritDoc} */
     public Action buildObject() {
         return buildObject(Action.ELEMENT_NAME);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AbstractXMLObjectBuilder#buildObject(java.lang.String,
-     *      java.lang.String, java.lang.String)
-     */
-    public Action buildObject(String namespaceURI, String localName,
-            String namespacePrefix) {
+    /** {@inheritDoc} */
+    public Action buildObject(String namespaceURI, String localName, String namespacePrefix) {
         return new ActionImpl(namespaceURI, localName, namespacePrefix);
     }
 

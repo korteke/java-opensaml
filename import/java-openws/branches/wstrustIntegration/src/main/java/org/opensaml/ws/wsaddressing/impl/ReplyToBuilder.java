@@ -25,20 +25,12 @@ import org.opensaml.ws.wsaddressing.ReplyTo;
  */
 public class ReplyToBuilder extends AbstractWSAddressingObjectBuilder<ReplyTo> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wsaddressing.impl.AbstractWSAddressObjectBuilder#buildObject()
-     */
+    /** {@inheritDoc} */
     public ReplyTo buildObject() {
         return buildObject(ReplyTo.ELEMENT_NAME);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AbstractXMLObjectBuilder#buildObject(java.lang.String, java.lang.String, java.lang.String)
-     */
+    /** {@inheritDoc} */
     public ReplyTo buildObject(String namespaceURI, String localName, String namespacePrefix) {
         return new ReplyToImpl(namespaceURI, localName, namespacePrefix);
     }

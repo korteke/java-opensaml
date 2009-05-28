@@ -25,15 +25,6 @@ import org.opensaml.ws.wsaddressing.To;
  * @see To
  * 
  */
-public class ToUnmarshaller extends AbstractAttributedURITypeUnmarshaller {
-
-    /**
-     * Default constructor.
-     * <p>
-     * {@inheritDoc}
-     */
-    public ToUnmarshaller() {
-        super();
-    }
+public class ToUnmarshaller extends AttributedURIUnmarshaller {
 
 }

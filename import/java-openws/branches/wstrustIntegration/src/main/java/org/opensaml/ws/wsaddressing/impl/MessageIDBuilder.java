@@ -19,28 +19,18 @@ package org.opensaml.ws.wsaddressing.impl;
 import org.opensaml.ws.wsaddressing.MessageID;
 
 /**
- * MessageIDBuilder
+ * MessageIDBuilder.
  * 
  */
 public class MessageIDBuilder extends AbstractWSAddressingObjectBuilder<MessageID> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wsaddressing.impl.AbstractWSAddressObjectBuilder#buildObject()
-     */
+    /** {@inheritDoc} */
     public MessageID buildObject() {
         return buildObject(MessageID.ELEMENT_NAME);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AbstractXMLObjectBuilder#buildObject(java.lang.String,
-     *      java.lang.String, java.lang.String)
-     */
-    public MessageID buildObject(String namespaceURI, String localName,
-            String namespacePrefix) {
+    /** {@inheritDoc} */
+    public MessageID buildObject(String namespaceURI, String localName, String namespacePrefix) {
         return new MessageIDImpl(namespaceURI, localName, namespacePrefix);
     }
 

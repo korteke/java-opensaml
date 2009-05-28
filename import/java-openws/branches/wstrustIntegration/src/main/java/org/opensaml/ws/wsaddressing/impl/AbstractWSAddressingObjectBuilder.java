@@ -22,17 +22,14 @@ import org.opensaml.ws.wsaddressing.WSAddressingObjectBuilder;
 import org.opensaml.xml.AbstractXMLObjectBuilder;
 
 /**
- * AbstractWSAddressObjectBuilder
- * 
+ * AbstractWSAddressObjectBuilder.
+ *
+ * @param <WSAddressingObjectType> the type of WS-Addressing object to be built
  */
 public abstract class AbstractWSAddressingObjectBuilder<WSAddressingObjectType extends WSAddressingObject>
         extends AbstractXMLObjectBuilder<WSAddressingObjectType> implements
         WSAddressingObjectBuilder<WSAddressingObjectType> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wsaddressing.WSAddressingObjectBuilder#buildObject()
-     */
+    /** {@inheritDoc} */
     public abstract WSAddressingObjectType buildObject();
 }

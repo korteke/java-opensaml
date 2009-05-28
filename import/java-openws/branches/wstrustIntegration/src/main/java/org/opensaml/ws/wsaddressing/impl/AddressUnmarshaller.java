@@ -25,15 +25,6 @@ import org.opensaml.ws.wsaddressing.Address;
  * @see Address
  * 
  */
-public class AddressUnmarshaller extends AbstractAttributedURITypeUnmarshaller {
-
-    /**
-     * Default constructor.
-     * <p>
-     * {@inheritDoc}
-     */
-    public AddressUnmarshaller() {
-        super();
-    }
+public class AddressUnmarshaller extends AttributedURIUnmarshaller {
 
 }

@@ -25,20 +25,12 @@ import org.opensaml.ws.wsaddressing.From;
  */
 public class FromBuilder extends AbstractWSAddressingObjectBuilder<From> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wsaddressing.impl.AbstractWSAddressObjectBuilder#buildObject()
-     */
+    /** {@inheritDoc} */
     public From buildObject() {
         return buildObject(From.ELEMENT_NAME);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AbstractXMLObjectBuilder#buildObject(java.lang.String, java.lang.String, java.lang.String)
-     */
+    /** {@inheritDoc} */
     public From buildObject(String namespaceURI, String localName, String namespacePrefix) {
         return new FromImpl(namespaceURI, localName, namespacePrefix);
     }

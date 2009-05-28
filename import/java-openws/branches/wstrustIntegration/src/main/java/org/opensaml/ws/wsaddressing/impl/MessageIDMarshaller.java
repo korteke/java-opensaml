@@ -25,14 +25,6 @@ import org.opensaml.ws.wsaddressing.MessageID;
  * @see MessageID
  * 
  */
-public class MessageIDMarshaller extends AbstractAttributedURITypeMarshaller {
+public class MessageIDMarshaller extends AttributedURIMarshaller {
 
-    /**
-     * Default constructor.
-     * <p>
-     * {@inheritDoc}
-     */
-    public MessageIDMarshaller() {
-        super();
-    }
 }

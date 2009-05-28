@@ -17,22 +17,22 @@
 package org.opensaml.ws.wsaddressing.impl;
 
 
-import org.opensaml.xml.AbstractExtensibleXMLObjectMarshaller;
+import org.opensaml.ws.wsaddressing.ReferenceParameters;
+import org.opensaml.xml.XMLObject;
+import org.opensaml.xml.io.MarshallingException;
+import org.opensaml.xml.util.XMLHelper;
+import org.w3c.dom.Element;
 
 /**
- * ReferenceParametersMarshaller
+ * ReferenceParametersMarshaller.
  * 
  */
-public class ReferenceParametersMarshaller extends
-        AbstractExtensibleXMLObjectMarshaller {
+public class ReferenceParametersMarshaller extends AbstractWSAddressingObjectMarshaller {
 
-    /**
-     * Default constructor.
-     * <p>
-     * {@inheritDoc}
-     */
-    public ReferenceParametersMarshaller() {
-        super();
+    /** {@inheritDoc} */
+    protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
+        ReferenceParameters rp = (ReferenceParameters) xmlObject;
+        XMLHelper.marshallAttributeMap(rp.getUnknownAttributes(), domElement);
     }
 
 }

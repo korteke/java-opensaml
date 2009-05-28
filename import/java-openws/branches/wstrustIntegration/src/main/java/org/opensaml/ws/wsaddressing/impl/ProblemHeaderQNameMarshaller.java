@@ -17,22 +17,14 @@
 
 package org.opensaml.ws.wsaddressing.impl;
 
-import org.opensaml.ws.wsaddressing.EndpointReferenceType;
-import org.opensaml.xml.AbstractExtensibleXMLObjectMarshaller;
+import org.opensaml.ws.wsaddressing.ProblemHeaderQName;
 
 /**
- * Abstract marshaller for the element of type {@link EndpointReferenceType}.
+ * Marshaller for the &lt;wsa:ProblemHeaderQName&gt; element.
+ * 
+ * @see ProblemHeaderQName
  * 
  */
-public abstract class AbstractEndpointReferenceTypeMarshaller extends AbstractExtensibleXMLObjectMarshaller {
-
-    /**
-     * Constructor.
-     * <p>
-     * 
-     */
-    public AbstractEndpointReferenceTypeMarshaller() {
-        super();
-    }
+public class ProblemHeaderQNameMarshaller extends AttributedQNameMarshaller {
 
 }

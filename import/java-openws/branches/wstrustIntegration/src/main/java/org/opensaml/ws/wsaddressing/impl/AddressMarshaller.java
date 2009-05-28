@@ -24,14 +24,6 @@ import org.opensaml.ws.wsaddressing.Address;
  * @see Address
  * 
  */
-public class AddressMarshaller extends AbstractAttributedURITypeMarshaller {
+public class AddressMarshaller extends AttributedURIMarshaller {
 
-    /**
-     * Default constructor.
-     * <p>
-     * {@inheritDoc}
-     */
-    public AddressMarshaller() {
-        super();
-    }
 }

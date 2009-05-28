@@ -25,15 +25,6 @@ import org.opensaml.ws.wsaddressing.MessageID;
  * @see MessageID
  * 
  */
-public class MessageIDUnmarshaller extends AbstractAttributedURITypeUnmarshaller {
-
-    /**
-     * Default constructor.
-     * <p>
-     * {@inheritDoc}
-     */
-    public MessageIDUnmarshaller() {
-        super();
-    }
+public class MessageIDUnmarshaller extends AttributedURIUnmarshaller {
 
 }

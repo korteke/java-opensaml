@@ -17,61 +17,30 @@
 
 package org.opensaml.ws.wsaddressing.impl;
 
-import javax.xml.namespace.QName;
-
-import org.opensaml.ws.wsaddressing.Address;
 import org.opensaml.ws.wsaddressing.AttributedURI;
-import org.opensaml.xml.AttributeExtensibleXMLObject;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
-import org.opensaml.xml.schema.XSURI;
 import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Attr;
 
 /**
  * Abstract unmarshaller for the element of type {@link AttributedURI}.
  * 
- * @see Address
- * 
  */
-public abstract class AbstractAttributedURITypeUnmarshaller extends AbstractWSAddressingObjectUnmarshaller {
+public class AttributedURIUnmarshaller extends AbstractWSAddressingObjectUnmarshaller {
 
-    /**
-     * Default constructor.
-     * <p>
-     * {@inheritDoc}
-     */
-    protected AbstractAttributedURITypeUnmarshaller() {
-        super();
-    }
-
-    /**
-     * Unmarshalls the element of type &lt;wsa:AttributedURIType&gt; URI content.
-     * <p>
-     * {@inheritDoc}
-     */
-    @Override
+    /** {@inheritDoc} */
     protected void processElementContent(XMLObject xmlObject, String elementContent) {
         if (elementContent != null) {
-            XSURI xsUri = (XSURI) xmlObject;
-            xsUri.setValue(elementContent);
+            AttributedURI attributedURI = (AttributedURI) xmlObject;
+            attributedURI.setValue(elementContent);
         }
     }
 
-    /**
-     * Unmarshalls the <code>xs:anyAttribute</code> attributes.
-     * <p>
-     * {@inheritDoc}
-     */
-    @Override
+    /** {@inheritDoc} */
     protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
-        AttributeExtensibleXMLObject anyAttribute = (AttributeExtensibleXMLObject) xmlObject;
-        QName attrQName = XMLHelper.constructQName(attribute.getNamespaceURI(), attribute.getLocalName(), attribute
-                .getPrefix());
-        if (attribute.isId()) {
-            anyAttribute.getUnknownAttributes().registerID(attrQName);
-        }
-        anyAttribute.getUnknownAttributes().put(attrQName, attribute.getValue());
+        AttributedURI attributedURI = (AttributedURI) xmlObject;
+        XMLHelper.unmarshallToAttributeMap(attributedURI.getUnknownAttributes(), attribute);
     }
 
 }

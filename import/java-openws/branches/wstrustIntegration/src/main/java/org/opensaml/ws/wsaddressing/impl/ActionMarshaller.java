@@ -25,15 +25,6 @@ import org.opensaml.ws.wsaddressing.Action;
  * @see Action
  * 
  */
-public class ActionMarshaller extends AbstractAttributedURITypeMarshaller {
-
-    /**
-     * Default constructor.
-     * <p>
-     * {@inheritDoc}
-     */
-    public ActionMarshaller() {
-        super();
-    }
+public class ActionMarshaller extends AttributedURIMarshaller {
 
 }

@@ -24,7 +24,7 @@ import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.validation.AbstractValidatingXMLObject;
 
 /**
- * AbstractWSAddressingObject
+ * AbstractWSAddressingObject.
  * 
  */
 public abstract class AbstractWSAddressingObject extends AbstractValidatingXMLObject implements WSAddressingObject {
@@ -40,11 +40,7 @@ public abstract class AbstractWSAddressingObject extends AbstractValidatingXMLOb
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
-    /*
-     * No-op. No children by default.
-     * 
-     * @see org.opensaml.xml.XMLObject#getOrderedChildren()
-     */
+    /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
         return null;
     }

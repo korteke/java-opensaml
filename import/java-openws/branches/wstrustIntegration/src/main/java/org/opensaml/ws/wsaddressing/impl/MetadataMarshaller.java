@@ -17,21 +17,22 @@
 package org.opensaml.ws.wsaddressing.impl;
 
 
-import org.opensaml.xml.AbstractExtensibleXMLObjectMarshaller;
+import org.opensaml.ws.wsaddressing.Metadata;
+import org.opensaml.xml.XMLObject;
+import org.opensaml.xml.io.MarshallingException;
+import org.opensaml.xml.util.XMLHelper;
+import org.w3c.dom.Element;
 
 /**
- * MetadataMarshaller
+ * MetadataMarshaller.
  * 
  */
-public class MetadataMarshaller extends AbstractExtensibleXMLObjectMarshaller {
+public class MetadataMarshaller extends AbstractWSAddressingObjectMarshaller {
 
-    /**
-     * Default constructor.
-     * <p>
-     * {@inheritDoc}
-     */
-    public MetadataMarshaller() {
-        super();
+    /** {@inheritDoc} */
+    protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
+        Metadata metadata = (Metadata) xmlObject;
+        XMLHelper.marshallAttributeMap(metadata.getUnknownAttributes(), domElement);
     }
 
 }

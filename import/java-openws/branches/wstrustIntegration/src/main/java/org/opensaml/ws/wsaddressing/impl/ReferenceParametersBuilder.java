@@ -19,32 +19,19 @@ package org.opensaml.ws.wsaddressing.impl;
 import org.opensaml.ws.wsaddressing.ReferenceParameters;
 
 /**
- * ReferenceParametersBuilder
+ * ReferenceParametersBuilder.
  * 
  */
-public class ReferenceParametersBuilder extends
-        AbstractWSAddressingObjectBuilder<ReferenceParameters> {
+public class ReferenceParametersBuilder extends AbstractWSAddressingObjectBuilder<ReferenceParameters> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wsaddressing.impl.AbstractWSAddressObjectBuilder#buildObject()
-     */
+    /** {@inheritDoc} */
     public ReferenceParameters buildObject() {
         return buildObject(ReferenceParameters.ELEMENT_NAME);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AbstractXMLObjectBuilder#buildObject(java.lang.String,
-     *      java.lang.String, java.lang.String)
-     */
-    public ReferenceParameters buildObject(String namespaceURI,
-            String localName, String namespacePrefix) {
-        return new ReferenceParametersImpl(namespaceURI,
-                                           localName,
-                                           namespacePrefix);
+    /** {@inheritDoc} */
+    public ReferenceParameters buildObject(String namespaceURI, String localName, String namespacePrefix) {
+        return new ReferenceParametersImpl(namespaceURI, localName, namespacePrefix);
     }
 
 }

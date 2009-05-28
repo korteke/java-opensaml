@@ -25,15 +25,6 @@ import org.opensaml.ws.wsaddressing.EndpointReference;
  * @see EndpointReference
  * 
  */
-public class EndpointReferenceMarshaller extends AbstractEndpointReferenceTypeMarshaller {
-
-    /**
-     * Default constructor.
-     * <p>
-     * {@inheritDoc}
-     */
-    public EndpointReferenceMarshaller() {
-        super();
-    }
+public class EndpointReferenceMarshaller extends EndpointReferenceTypeMarshaller {
 
 }

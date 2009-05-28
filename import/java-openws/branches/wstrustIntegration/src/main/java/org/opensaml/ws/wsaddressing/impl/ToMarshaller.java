@@ -25,14 +25,6 @@ import org.opensaml.ws.wsaddressing.To;
  * @see To
  * 
  */
-public class ToMarshaller extends AbstractAttributedURITypeMarshaller {
+public class ToMarshaller extends AttributedURIMarshaller {
 
-    /**
-     * Default constructor.
-     * <p>
-     * {@inheritDoc}
-     */
-    public ToMarshaller() {
-        super();
-    }
 }

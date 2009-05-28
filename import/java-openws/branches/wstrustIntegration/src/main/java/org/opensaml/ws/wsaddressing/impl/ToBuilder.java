@@ -25,20 +25,12 @@ import org.opensaml.ws.wsaddressing.To;
  */
 public class ToBuilder extends AbstractWSAddressingObjectBuilder<To> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wsaddressing.impl.AbstractWSAddressObjectBuilder#buildObject()
-     */
+    /** {@inheritDoc} */
     public To buildObject() {
         return buildObject(To.ELEMENT_NAME);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AbstractXMLObjectBuilder#buildObject(java.lang.String, java.lang.String, java.lang.String)
-     */
+    /** {@inheritDoc} */
     public To buildObject(String namespaceURI, String localName, String namespacePrefix) {
         return new ToImpl(namespaceURI, localName, namespacePrefix);
     }

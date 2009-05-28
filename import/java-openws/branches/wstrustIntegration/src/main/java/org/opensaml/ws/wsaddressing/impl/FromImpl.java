@@ -20,10 +20,10 @@ package org.opensaml.ws.wsaddressing.impl;
 import org.opensaml.ws.wsaddressing.From;
 
 /**
- * Concrete implementation of element {@link From}
+ * Concrete implementation of element {@link From}.
  * 
  */
-public class FromImpl extends AbstractEndpointReferenceType implements From {
+public class FromImpl extends EndpointReferenceTypeImpl implements From {
 
     /**
      * Constructor.

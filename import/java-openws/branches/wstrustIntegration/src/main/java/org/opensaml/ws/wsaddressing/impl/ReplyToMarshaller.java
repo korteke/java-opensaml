@@ -23,15 +23,6 @@ import org.opensaml.ws.wsaddressing.ReplyTo;
  * Marshaller for the {@link ReplyTo} element.
  * 
  */
-public class ReplyToMarshaller extends AbstractEndpointReferenceTypeMarshaller {
-
-    /**
-     * Default constructor.
-     * <p>
-     * {@inheritDoc}
-     */
-    public ReplyToMarshaller() {
-        super();
-    }
+public class ReplyToMarshaller extends EndpointReferenceTypeMarshaller {
 
 }

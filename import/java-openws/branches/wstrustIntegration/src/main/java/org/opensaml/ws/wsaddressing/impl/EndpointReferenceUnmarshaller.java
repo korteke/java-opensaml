@@ -25,15 +25,6 @@ import org.opensaml.ws.wsaddressing.EndpointReference;
  * @see EndpointReference
  * 
  */
-public class EndpointReferenceUnmarshaller extends AbstractEndpointReferenceTypeUnmarshaller {
-
-    /**
-     * Default constructor.
-     * <p>
-     * {@inheritDoc}
-     */
-    public EndpointReferenceUnmarshaller() {
-        super();
-    }
+public class EndpointReferenceUnmarshaller extends EndpointReferenceTypeUnmarshaller {
 
 }

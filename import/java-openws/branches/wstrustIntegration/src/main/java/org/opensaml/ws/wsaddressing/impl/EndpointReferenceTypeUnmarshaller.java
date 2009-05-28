@@ -21,45 +21,36 @@ import org.opensaml.ws.wsaddressing.Address;
 import org.opensaml.ws.wsaddressing.EndpointReferenceType;
 import org.opensaml.ws.wsaddressing.Metadata;
 import org.opensaml.ws.wsaddressing.ReferenceParameters;
-import org.opensaml.xml.AbstractExtensibleXMLObjectUnmarshaller;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
+import org.opensaml.xml.util.XMLHelper;
+import org.w3c.dom.Attr;
 
 /**
  * Abstract unmarshaller for the element of type {@link EndpointReferenceType}.
  * 
  */
-public abstract class AbstractEndpointReferenceTypeUnmarshaller extends AbstractExtensibleXMLObjectUnmarshaller {
+public class EndpointReferenceTypeUnmarshaller extends AbstractWSAddressingObjectUnmarshaller {
 
-    /**
-     * Constructor
-     */
-    public AbstractEndpointReferenceTypeUnmarshaller() {
-        super();
-    }
-
-    /**
-     * Unmarshalls the &lt;wsa:Address&gt;, the &lt;wsa:Metadata&gt; and the &lt;wsa:ReferenceParameters&gt; child
-     * elements.
-     * <p>
-     * {@inheritDoc}
-     */
-    @Override
+    /** {@inheritDoc} */
     protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
-            throws UnmarshallingException {
+        throws UnmarshallingException {
         EndpointReferenceType epr = (EndpointReferenceType) parentXMLObject;
         if (childXMLObject instanceof Address) {
-            Address address = (Address) childXMLObject;
-            epr.setAddress(address);
+            epr.setAddress((Address) childXMLObject);
         } else if (childXMLObject instanceof Metadata) {
-            Metadata metadata = (Metadata) childXMLObject;
-            epr.setMetadata(metadata);
+            epr.setMetadata((Metadata) childXMLObject);
         } else if (childXMLObject instanceof ReferenceParameters) {
-            ReferenceParameters ref = (ReferenceParameters) childXMLObject;
-            epr.setReferenceParameters(ref);
+            epr.setReferenceParameters((ReferenceParameters) childXMLObject);
         } else {
-            super.processChildElement(parentXMLObject, childXMLObject);
+            epr.getUnknownXMLObjects().add(childXMLObject);
         }
+    }
+
+    /** {@inheritDoc} */
+    protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
+        EndpointReferenceType epr = (EndpointReferenceType) xmlObject;
+        XMLHelper.unmarshallToAttributeMap(epr.getUnknownAttributes(), attribute);
     }
 
 }

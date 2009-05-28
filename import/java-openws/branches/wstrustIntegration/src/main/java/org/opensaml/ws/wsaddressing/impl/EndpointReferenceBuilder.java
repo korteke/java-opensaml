@@ -19,32 +19,19 @@ package org.opensaml.ws.wsaddressing.impl;
 import org.opensaml.ws.wsaddressing.EndpointReference;
 
 /**
- * EndpointReferenceBuilder
+ * EndpointReferenceBuilder.
  * 
  */
-public class EndpointReferenceBuilder extends
-        AbstractWSAddressingObjectBuilder<EndpointReference> {
+public class EndpointReferenceBuilder extends AbstractWSAddressingObjectBuilder<EndpointReference> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wsaddressing.impl.AbstractWSAddressObjectBuilder#buildObject()
-     */
+    /** {@inheritDoc} */
     public EndpointReference buildObject() {
         return buildObject(EndpointReference.ELEMENT_NAME);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AbstractXMLObjectBuilder#buildObject(java.lang.String,
-     *      java.lang.String, java.lang.String)
-     */
-    public EndpointReference buildObject(String namespaceURI, String localName,
-            String namespacePrefix) {
-        return new EndpointReferenceImpl(namespaceURI,
-                                         localName,
-                                         namespacePrefix);
+    /** {@inheritDoc} */
+    public EndpointReference buildObject(String namespaceURI, String localName, String namespacePrefix) {
+        return new EndpointReferenceImpl(namespaceURI, localName, namespacePrefix);
     }
 
 }

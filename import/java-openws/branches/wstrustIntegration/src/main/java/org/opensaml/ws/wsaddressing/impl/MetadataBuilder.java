@@ -19,29 +19,18 @@ package org.opensaml.ws.wsaddressing.impl;
 import org.opensaml.ws.wsaddressing.Metadata;
 
 /**
- * MetadataBuilder
+ * MetadataBuilder.
  * 
  */
-public class MetadataBuilder extends
-        AbstractWSAddressingObjectBuilder<Metadata> {
+public class MetadataBuilder extends AbstractWSAddressingObjectBuilder<Metadata> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wsaddressing.impl.AbstractWSAddressObjectBuilder#buildObject()
-     */
+    /** {@inheritDoc} */
     public Metadata buildObject() {
         return buildObject(Metadata.ELEMENT_NAME);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AbstractXMLObjectBuilder#buildObject(java.lang.String,
-     *      java.lang.String, java.lang.String)
-     */
-    public Metadata buildObject(String namespaceURI, String localName,
-            String namespacePrefix) {
+    /** {@inheritDoc} */
+    public Metadata buildObject(String namespaceURI, String localName, String namespacePrefix) {
         return new MetadataImpl(namespaceURI, localName, namespacePrefix);
     }
 

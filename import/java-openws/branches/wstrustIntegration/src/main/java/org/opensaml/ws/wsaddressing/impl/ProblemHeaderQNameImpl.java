@@ -6,7 +6,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,18 +17,12 @@
 
 package org.opensaml.ws.wsaddressing.impl;
 
-import org.opensaml.ws.wsaddressing.AttributedURI;
-import org.opensaml.xml.schema.impl.XSURIImpl;
-import org.opensaml.xml.util.AttributeMap;
+import org.opensaml.ws.wsaddressing.ProblemHeaderQName;
 
 /**
- * AbstractAttributedURIType is the abstract implementation of {@link AttributedURI}.
- * 
+ * Concrete implementation for the {@link ProblemHeaderQName} element.
  */
-public abstract class AbstractAttributedURIType extends XSURIImpl implements AttributedURI {
-
-    /** xs:anyAttribute for this element. */
-    private AttributeMap anyAttributes_;
+public class ProblemHeaderQNameImpl extends AttributedQNameImpl implements ProblemHeaderQName {
 
     /**
      * Constructor.
@@ -37,19 +31,8 @@ public abstract class AbstractAttributedURIType extends XSURIImpl implements Att
      * @param elementLocalName The local name of the element
      * @param namespacePrefix The namespace prefix of the element
      */
-    public AbstractAttributedURIType(String namespaceURI, String elementLocalName, String namespacePrefix) {
+    public ProblemHeaderQNameImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        anyAttributes_ = new AttributeMap(this);
-
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AttributeExtensibleXMLObject#getUnknownAttributes()
-     */
-    public AttributeMap getUnknownAttributes() {
-        return anyAttributes_;
     }
 
 }

@@ -34,23 +34,11 @@ public abstract class AbstractWSAddressingObjectMarshaller extends AbstractXMLOb
         super();
     }
 
-    /*
-     * No-op method. Extending implementations should override this method if they have attributes to marshall into the
-     * Element.
-     * 
-     * @see org.opensaml.xml.io.AbstractXMLObjectMarshaller#marshallAttributes(org.opensaml.xml.XMLObject,
-     *      org.w3c.dom.Element)
-     */
+    /** {@inheritDoc} */
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
     }
 
-    /*
-     * No-op method. Extending implementations should override this method if they have text content to marshall into
-     * the Element.
-     * 
-     * @see org.opensaml.xml.io.AbstractXMLObjectMarshaller#marshallElementContent(org.opensaml.xml.XMLObject,
-     *      org.w3c.dom.Element)
-     */
+    /** {@inheritDoc} */
     protected void marshallElementContent(XMLObject xmlObject, Element domElement) throws MarshallingException {
     }
 }

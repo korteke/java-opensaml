@@ -23,13 +23,6 @@ import org.opensaml.ws.wsaddressing.From;
  * Marshaller for the {@link From} element.
  * 
  */
-public class FromMarshaller extends AbstractEndpointReferenceTypeMarshaller {
-
-    /**
-     * Default constructor.
-     */
-    public FromMarshaller() {
-        super();
-    }
+public class FromMarshaller extends EndpointReferenceTypeMarshaller {
 
 }

@@ -22,7 +22,7 @@ import org.opensaml.ws.wsaddressing.MessageID;
 /**
  * Concrete implementation for the {@link MessageID} element.
  */
-public class MessageIDImpl extends AbstractAttributedURIType implements MessageID {
+public class MessageIDImpl extends AttributedURIImpl implements MessageID {
 
     /**
      * Constructor.

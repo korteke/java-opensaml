@@ -23,15 +23,6 @@ import org.opensaml.ws.wsaddressing.ReplyTo;
  * Unmarshaller for the {@link ReplyTo} element.
  * 
  */
-public class ReplyToUnmarshaller extends AbstractEndpointReferenceTypeUnmarshaller {
-
-    /**
-     * Default constructor.
-     * <p>
-     * {@inheritDoc}
-     */
-    public ReplyToUnmarshaller() {
-        super();
-    }
+public class ReplyToUnmarshaller extends EndpointReferenceTypeUnmarshaller {
 
 }

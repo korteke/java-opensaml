@@ -23,7 +23,7 @@ import org.opensaml.ws.wsaddressing.Address;
  * AddressImpl is the concrete implementation of {@link Address}.
  * 
  */
-public class AddressImpl extends AbstractAttributedURIType implements Address {
+public class AddressImpl extends AttributedURIImpl implements Address {
 
     /**
      * Constructor.

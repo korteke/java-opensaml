@@ -21,7 +21,7 @@ import org.opensaml.ws.wsaddressing.To;
 /**
  * Concrete implementation for the {@link To} element.
  */
-public class ToImpl extends AbstractAttributedURIType implements To {
+public class ToImpl extends AttributedURIImpl implements To {
 
     /**
      * Constructor.

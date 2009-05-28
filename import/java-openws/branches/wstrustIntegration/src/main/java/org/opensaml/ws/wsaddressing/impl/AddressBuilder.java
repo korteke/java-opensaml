@@ -19,28 +19,18 @@ package org.opensaml.ws.wsaddressing.impl;
 import org.opensaml.ws.wsaddressing.Address;
 
 /**
- * AddressBuilder
+ * AddressBuilder.
  * 
  */
 public class AddressBuilder extends AbstractWSAddressingObjectBuilder<Address> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wsaddressing.impl.AbstractWSAddressObjectBuilder#buildObject()
-     */
+    /** {@inheritDoc} */
     public Address buildObject() {
         return buildObject(Address.ELEMENT_NAME);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AbstractXMLObjectBuilder#buildObject(java.lang.String,
-     *      java.lang.String, java.lang.String)
-     */
-    public Address buildObject(String namespaceURI, String localName,
-            String namespacePrefix) {
+    /** {@inheritDoc} */
+    public Address buildObject(String namespaceURI, String localName, String namespacePrefix) {
         return new AddressImpl(namespaceURI, localName, namespacePrefix);
     }
 

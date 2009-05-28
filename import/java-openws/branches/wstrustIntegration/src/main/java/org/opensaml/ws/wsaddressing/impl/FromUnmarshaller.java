@@ -23,13 +23,6 @@ import org.opensaml.ws.wsaddressing.From;
  * Unmarshaller for the {@link From} element.
  * 
  */
-public class FromUnmarshaller extends AbstractEndpointReferenceTypeUnmarshaller {
-
-    /**
-     * Default constructor.
-     */
-    public FromUnmarshaller() {
-        super();
-    }
+public class FromUnmarshaller extends EndpointReferenceTypeUnmarshaller {
 
 }

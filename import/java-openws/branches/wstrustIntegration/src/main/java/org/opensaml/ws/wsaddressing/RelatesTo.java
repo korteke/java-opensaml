@@ -47,6 +47,9 @@ public interface RelatesTo extends XSURI, AttributeExtensibleXMLObject, WSAddres
     /** The RelationshipType attribute name. */
     public static final String RELATIONSHIP_TYPE_ATTRIB_NAME = "RelationshipType";
     
+    /** RelationshipType attribute - Reply URI. */
+    public static final String RELATIONSHIP_TYPE_REPLY = WSAddressingConstants.WSA_NS + "/reply";
+    
     /**
      * Returns the RelationshipType attribute URI value.
      * 

@@ -23,7 +23,7 @@ import org.opensaml.ws.wsaddressing.ReplyTo;
  * Concrete implementation of element {@link ReplyTo}.
  * 
  */
-public class ReplyToImpl extends AbstractEndpointReferenceType implements ReplyTo {
+public class ReplyToImpl extends EndpointReferenceTypeImpl implements ReplyTo {
 
     /**
      * Constructor.
