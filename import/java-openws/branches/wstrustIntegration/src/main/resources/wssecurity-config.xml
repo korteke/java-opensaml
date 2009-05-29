@@ -180,5 +180,9 @@
         </ObjectProvider>
 
     </ObjectProviders>
+    
+    <IDAttributes>
+        <IDAttribute>wsu:Id</IDAttribute>
+    </IDAttributes>
 
 </XMLTooling>
