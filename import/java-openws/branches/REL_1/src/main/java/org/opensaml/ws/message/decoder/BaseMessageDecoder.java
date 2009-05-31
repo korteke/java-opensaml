@@ -71,8 +71,34 @@ public abstract class BaseMessageDecoder implements MessageDecoder {
     public void decode(MessageContext messageContext) throws MessageDecodingException, SecurityException {
         log.debug("Beginning to decode message from inbound transport of type: {}", messageContext
                 .getInboundMessageTransport().getClass().getName());
+        
         doDecode(messageContext);
+        
+        logDecodedMessage(messageContext);
 
+        processSecurityPolicy(messageContext);
+
+        log.debug("Successfully decoded message.");
+    }
+
+    /**
+     * Log the decoded message to the protocol message logger.
+     * 
+     * @param messageContext the message context to process
+     */
+    protected void logDecodedMessage(MessageContext messageContext) {
+        if(protocolMessageLog.isDebugEnabled() && messageContext.getInboundMessage() != null){
+            protocolMessageLog.debug("\n" + XMLHelper.prettyPrintXML(messageContext.getInboundMessage().getDOM()));
+        }
+    }
+
+    /**
+     * Process any {@link SecurityPolicy}s which can be resolved for the message context.
+     * 
+     * @param messageContext the message context to process
+     * @throws SecurityException thrown if the decoded message does not meet the required security constraints
+     */
+    protected void processSecurityPolicy(MessageContext messageContext) throws SecurityException {
         SecurityPolicyResolver policyResolver = messageContext.getSecurityPolicyResolver();
         if (policyResolver != null) {
             Iterable<SecurityPolicy> securityPolicies = policyResolver.resolve(messageContext);
@@ -89,11 +115,6 @@ public abstract class BaseMessageDecoder implements MessageDecoder {
             }
         } else {
             log.debug("No security policy resolver attached to this message context, no security policy evaluation attempted");
-        }
-
-        log.debug("Successfully decoded message.");
-        if(protocolMessageLog.isDebugEnabled() && messageContext.getInboundMessage() != null){
-            protocolMessageLog.debug("\n" + XMLHelper.prettyPrintXML(messageContext.getInboundMessage().getDOM()));
         }
     }
 
