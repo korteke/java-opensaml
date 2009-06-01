@@ -49,7 +49,17 @@ public abstract class BaseMessageEncoder implements MessageEncoder {
 
         doEncode(messageContext);
 
+        logEncodedMessage(messageContext);
+        
         log.debug("Successfully encoded message.");
+    }
+
+    /**
+     * Log the encoded message to the protocol message logger.
+     * 
+     * @param messageContext the message context to process
+     */
+    protected void logEncodedMessage(MessageContext messageContext) {
         if(protocolMessageLog.isDebugEnabled() && messageContext.getOutboundMessage() != null){
             protocolMessageLog.debug("\n" + XMLHelper.prettyPrintXML(messageContext.getOutboundMessage().getDOM()));
         }
