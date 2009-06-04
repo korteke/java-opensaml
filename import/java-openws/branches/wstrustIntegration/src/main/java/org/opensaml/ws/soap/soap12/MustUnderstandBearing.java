@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.ws.soap.soap11;
+package org.opensaml.ws.soap.soap12;
 
 import javax.xml.namespace.QName;
 
@@ -22,43 +22,43 @@ import org.opensaml.ws.soap.util.SOAPConstants;
 import org.opensaml.xml.schema.XSBooleanValue;
 
 /**
- * Interface for element having a <code>@soap11:mustUnderstand</code> attribute.
+ * Interface for element having a <code>@soap12:mustUnderstand</code> attribute.
  */
 public interface MustUnderstandBearing {
     
-    /** The soap11:@mustUnderstand attribute local name. */
-    public static final String SOAP11_MUST_UNDERSTAND_ATTR_LOCAL_NAME = "mustUnderstand";
+    /** The soap12:@mustUnderstand attribute local name. */
+    public static final String SOAP12_MUST_UNDERSTAND_ATTR_LOCAL_NAME = "mustUnderstand";
 
-    /** The soap11:@mustUnderstand qualified attribute name. */
-    public static final QName SOAP11_MUST_UNDERSTAND_ATTR_NAME =
-        new QName(SOAPConstants.SOAP11_NS, SOAP11_MUST_UNDERSTAND_ATTR_LOCAL_NAME, SOAPConstants.SOAP11_PREFIX);
+    /** The soap12:@mustUnderstand qualified attribute name. */
+    public static final QName SOAP12_MUST_UNDERSTAND_ATTR_NAME =
+        new QName(SOAPConstants.SOAP12_NS, SOAP12_MUST_UNDERSTAND_ATTR_LOCAL_NAME, SOAPConstants.SOAP12_PREFIX);
     
     /**
      * Get the attribute value.
      * 
      * @return return the attribute vlue
      */
-    public Boolean isSOAP11MustUnderstand();
+    public Boolean isSOAP12MustUnderstand();
     
     /**
      * Get the attribute value.
      * 
      * @return return the attribute vlue
      */
-    public XSBooleanValue isSOAP11MustUnderstandXSBoolean();
+    public XSBooleanValue isSOAP12MustUnderstandXSBoolean();
     
     /**
      * Set the attribute value.
      * 
      * @param newMustUnderstand the new attribute value
      */
-    public void setSOAP11MustUnderstand(Boolean newMustUnderstand);
+    public void setSOAP12MustUnderstand(Boolean newMustUnderstand);
     
     /**
      * Set the attribute value.
      * 
      * @param newMustUnderstand the new attribute value
      */
-    public void setSOAP11MustUnderstand(XSBooleanValue newMustUnderstand);
+    public void setSOAP12MustUnderstand(XSBooleanValue newMustUnderstand);
 
 }

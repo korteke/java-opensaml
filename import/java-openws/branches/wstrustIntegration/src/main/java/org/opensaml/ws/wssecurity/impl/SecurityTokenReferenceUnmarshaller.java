@@ -43,11 +43,11 @@ public class SecurityTokenReferenceUnmarshaller extends AbstractWSSecurityObject
         
         QName attribQName = 
             XMLHelper.constructQName(attribute.getNamespaceURI(), attribute.getLocalName(), attribute.getPrefix());
-        if (SecurityTokenReference.ID_ATTR_NAME.equals(attribQName)) {
-            str.setId(attribute.getValue());
+        if (SecurityTokenReference.WSU_ID_ATTR_NAME.equals(attribQName)) {
+            str.setWSUId(attribute.getValue());
             attribute.getOwnerElement().setIdAttributeNode(attribute, true);
-        } else if (SecurityTokenReference.USAGE_ATTR_NAME.equals(attribQName)) {
-            str.setUsages(XMLHelper.getAttributeValueAsList(attribute));
+        } else if (SecurityTokenReference.WSSE_USAGE_ATTR_NAME.equals(attribQName)) {
+            str.setWSSEUsages(XMLHelper.getAttributeValueAsList(attribute));
         } else {
             XMLHelper.unmarshallToAttributeMap(str.getUnknownAttributes(), attribute);
         }

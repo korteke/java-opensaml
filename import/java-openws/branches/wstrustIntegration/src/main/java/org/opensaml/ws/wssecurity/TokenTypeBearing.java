@@ -30,26 +30,26 @@ public interface TokenTypeBearing {
     /**
      * The <code>@wsse11:TokenType</code> attribute local name.
      */
-    public static final String TOKEN_TYPE_ATTR_LOCAL_NAME = "TokenType";
+    public static final String WSSE11_TOKEN_TYPE_ATTR_LOCAL_NAME = "TokenType";
 
     /**
      * The <code>@wsse11:TokenType</code> qualified attribute name.
      */
-    public static final QName TOKEN_TYPE_ATTR_NAME =
-        new QName(WSSecurityConstants.WSSE11_NS, TOKEN_TYPE_ATTR_LOCAL_NAME, WSSecurityConstants.WSSE11_PREFIX);
+    public static final QName WSSE11_TOKEN_TYPE_ATTR_NAME =
+        new QName(WSSecurityConstants.WSSE11_NS, WSSE11_TOKEN_TYPE_ATTR_LOCAL_NAME, WSSecurityConstants.WSSE11_PREFIX);
 
     /**
      * Returns the <code>@wsse11:TokenType</code> attribute value.
      * 
      * @return the <code>@wsse11:TokenType</code> attribute value or <code>null</code>.
      */
-    public String getTokenType();
+    public String getWSSE11TokenType();
 
     /**
      * Sets the <code>@wsse11:TokenType</code> attribute value.
      * 
      * @param tokenType the <code>@wsse11:TokenType</code> attribute value to set.
      */
-    public void setTokenType(String tokenType);
+    public void setWSSE11TokenType(String tokenType);
 
 }

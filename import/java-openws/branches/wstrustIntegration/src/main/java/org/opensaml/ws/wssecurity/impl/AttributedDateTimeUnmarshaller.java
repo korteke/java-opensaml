@@ -38,8 +38,8 @@ public class AttributedDateTimeUnmarshaller extends AbstractWSSecurityObjectUnma
         
         QName attrName =
             XMLHelper.constructQName(attribute.getNamespaceURI(), attribute.getLocalName(), attribute.getPrefix());
-        if (AttributedDateTime.ID_ATTR_NAME.equals(attrName)) {
-            dateTime.setId(attribute.getValue());
+        if (AttributedDateTime.WSU_ID_ATTR_NAME.equals(attrName)) {
+            dateTime.setWSUId(attribute.getValue());
             attribute.getOwnerElement().setIdAttributeNode(attribute, true);
         } else {
             XMLHelper.unmarshallToAttributeMap(dateTime.getUnknownAttributes(), attribute);

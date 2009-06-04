@@ -240,7 +240,7 @@ public class WSTrustObjectsTestCase extends WSBaseTestCase {
         Created created= buildXMLObject(Created.ELEMENT_NAME);
         created.setDateTime(new DateTime());
         String id= "UsernameToken-" + System.currentTimeMillis();
-        usernameToken.setId(id);
+        usernameToken.setWSUId(id);
         usernameToken.setUsername(username);
         usernameToken.getUnknownXMLObjects().add(password);
         usernameToken.getUnknownXMLObjects().add(created);

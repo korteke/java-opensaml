@@ -18,7 +18,15 @@ package org.opensaml.ws.soap.util;
 
 import java.util.List;
 
+import org.opensaml.ws.soap.soap11.ActorBearing;
+import org.opensaml.ws.soap.soap11.EncodingStyleBearing;
+import org.opensaml.ws.soap.soap11.MustUnderstandBearing;
 import org.opensaml.xml.AttributeExtensibleXMLObject;
+import org.opensaml.xml.XMLObject;
+import org.opensaml.xml.schema.XSBooleanValue;
+import org.opensaml.xml.util.AttributeMap;
+import org.opensaml.xml.util.DatatypeHelper;
+import org.opensaml.xml.util.LazyList;
 
 /**
  * Helper methods for working with SOAP.
@@ -26,7 +34,7 @@ import org.opensaml.xml.AttributeExtensibleXMLObject;
 public class SOAPHelper {
 
     /**
-     * Privatae constructor.
+     * Private constructor.
      */
     private SOAPHelper() {
     }
@@ -37,8 +45,16 @@ public class SOAPHelper {
      * @param soapObject the SOAP object to add the attribute to
      * @param mustUnderstand whether mustUnderstand is true or false
      */
-    public static void addMustUnderstandAttribute(AttributeExtensibleXMLObject soapObject, boolean mustUnderstand) {
-
+    public static void addMustUnderstandAttribute(XMLObject soapObject, boolean mustUnderstand) {
+        if (soapObject instanceof MustUnderstandBearing) {
+            ((MustUnderstandBearing)soapObject).setSOAP11MustUnderstand(new XSBooleanValue(mustUnderstand, true));
+        } else if (soapObject instanceof AttributeExtensibleXMLObject) {
+            ((AttributeExtensibleXMLObject)soapObject).getUnknownAttributes()
+                .put(MustUnderstandBearing.SOAP11_MUST_UNDERSTAND_ATTR_NAME, 
+                        new XSBooleanValue(mustUnderstand, true).toString());
+        } else {
+            throw new IllegalArgumentException("Specified object was neither MustUnderBearing nor AttributeExtensible");
+        }
     }
 
     /**
@@ -47,8 +63,15 @@ public class SOAPHelper {
      * @param soapObject the SOAP object to add the attribute to
      * @param actorURI the URI of the actor
      */
-    public static void addActorAttribute(AttributeExtensibleXMLObject soapObject, String actorURI) {
-
+    public static void addActorAttribute(XMLObject soapObject, String actorURI) {
+        if (soapObject instanceof ActorBearing) {
+            ((ActorBearing)soapObject).setSOAP11Actor(actorURI);
+        } else if (soapObject instanceof AttributeExtensibleXMLObject) {
+            ((AttributeExtensibleXMLObject)soapObject).getUnknownAttributes()
+                .put(ActorBearing.SOAP11_ACTOR_ATTR_NAME, actorURI);
+        } else {
+            throw new IllegalArgumentException("Specified object was neither ActorBearing nor AttributeExtensible");
+        }
     }
 
     /**
@@ -58,8 +81,27 @@ public class SOAPHelper {
      * @param soapObject the SOAP object to add the attribute to
      * @param encodingStyle the encoding style to add
      */
-    public static void addEncodingStyle(AttributeExtensibleXMLObject soapObject, String encodingStyle) {
-
+    public static void addEncodingStyle(XMLObject soapObject, String encodingStyle) {
+        if (soapObject instanceof EncodingStyleBearing) {
+            EncodingStyleBearing esb = (EncodingStyleBearing) soapObject;
+            List<String> list = esb.getSOAP11EncodingStyles();
+            if (list == null) {
+                list = new LazyList<String>();
+                esb.setSOAP11EncodingStyles(list);
+            }
+            list.add(encodingStyle);
+        } else if (soapObject instanceof AttributeExtensibleXMLObject) {
+            AttributeMap am =  ((AttributeExtensibleXMLObject)soapObject).getUnknownAttributes();
+            String list = am.get(EncodingStyleBearing.SOAP11_ENCODING_STYLE_ATTR_NAME);
+            if (list == null) {
+                list = encodingStyle;
+            } else {
+                list = list + " " + encodingStyle;
+            }
+            am.put(EncodingStyleBearing.SOAP11_ENCODING_STYLE_ATTR_NAME, list);
+        } else {
+            throw new IllegalArgumentException("Specified object was neither EncodingStyleBearing nor AttributeExtensible");
+        }
     }
 
     /**
@@ -68,7 +110,15 @@ public class SOAPHelper {
      * @param soapObject the SOAP object to add the attribute to
      * @param encodingStyles the list of encoding styles to add
      */
-    public static void addEncodingStyles(AttributeExtensibleXMLObject soapObject, List<String> encodingStyles) {
-
+    public static void addEncodingStyles(XMLObject soapObject, List<String> encodingStyles) {
+        if (soapObject instanceof EncodingStyleBearing) {
+            ((EncodingStyleBearing)soapObject).setSOAP11EncodingStyles(encodingStyles);
+        } else if (soapObject instanceof AttributeExtensibleXMLObject) {
+            ((AttributeExtensibleXMLObject)soapObject).getUnknownAttributes()
+                .put(EncodingStyleBearing.SOAP11_ENCODING_STYLE_ATTR_NAME, 
+                        DatatypeHelper.listToStringValue(encodingStyles, " "));
+        } else {
+            throw new IllegalArgumentException("Specified object was neither EncodingStyleBearing nor AttributeExtensible");
+        }
     }
 }

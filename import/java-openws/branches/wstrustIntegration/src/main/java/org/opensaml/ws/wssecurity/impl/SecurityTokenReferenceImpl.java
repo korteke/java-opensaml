@@ -62,22 +62,22 @@ public class SecurityTokenReferenceImpl extends AbstractWSSecurityObject impleme
     
 
     /** {@inheritDoc} */
-    public List<String> getUsages() {
+    public List<String> getWSSEUsages() {
         return usages;
     }
 
     /** {@inheritDoc} */
-    public void setUsages(List<String> newUsages) {
+    public void setWSSEUsages(List<String> newUsages) {
         usages = prepareForAssignment(usages, newUsages);
     }
 
     /** {@inheritDoc} */
-    public String getId() {
+    public String getWSUId() {
         return id;
     }
 
     /** {@inheritDoc} */
-    public void setId(String newId) {
+    public void setWSUId(String newId) {
         String oldId = id;
         id = prepareForAssignment(id, newId);
         registerOwnID(oldId, id);

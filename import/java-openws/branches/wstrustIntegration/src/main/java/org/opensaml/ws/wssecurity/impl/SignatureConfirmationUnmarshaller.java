@@ -35,8 +35,8 @@ public class SignatureConfirmationUnmarshaller extends AbstractWSSecurityObjectU
         
         QName attrName =
             XMLHelper.constructQName(attribute.getNamespaceURI(), attribute.getLocalName(), attribute.getPrefix());
-        if (SignatureConfirmation.ID_ATTR_NAME.equals(attrName)) {
-            sc.setId(attribute.getValue());
+        if (SignatureConfirmation.WSU_ID_ATTR_NAME.equals(attrName)) {
+            sc.setWSUId(attribute.getValue());
             attribute.getOwnerElement().setIdAttributeNode(attribute, true);
         } else if (SignatureConfirmation.VALUE_ATTRIB_NAME.equals(attribute.getLocalName())) {
             sc.setValue(attribute.getValue());

@@ -52,9 +52,9 @@ public class PolicyMarshaller extends AbstractExtensibleXMLObjectMarshaller {
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         Document document = domElement.getOwnerDocument();
         Policy policy = (Policy) xmlObject;
-        String id = policy.getId();
+        String id = policy.getWSUId();
         if (id != null) {
-            Attr attribute = XMLHelper.constructAttribute(document, Policy.ID_ATTR_NAME);
+            Attr attribute = XMLHelper.constructAttribute(document, Policy.WSU_ID_ATTR_NAME);
             attribute.setValue(id);
             domElement.setAttributeNodeNS(attribute);
             domElement.setIdAttributeNode(attribute, true);

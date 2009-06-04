@@ -654,12 +654,12 @@ public abstract class AbstractRequestSecurityTokenType extends AbstractExtensibl
     }
 
     /** {@inheritDoc} */
-    public String getId() {
+    public String getWSUId() {
         return id_;
     }
 
     /** {@inheritDoc} */
-    public void setId(String id) {
+    public void setWSUId(String id) {
         id_ = prepareForAssignment(id_, id);
     }
 

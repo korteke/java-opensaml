@@ -35,8 +35,8 @@ public class AttributedStringUnmarshaller extends AbstractWSSecurityObjectUnmars
         
         QName attribQName = 
             XMLHelper.constructQName(attribute.getNamespaceURI(), attribute.getLocalName(), attribute.getPrefix());
-        if (AttributedString.ID_ATTR_NAME.equals(attribQName)) {
-            attributedString.setId(attribute.getValue());
+        if (AttributedString.WSU_ID_ATTR_NAME.equals(attribQName)) {
+            attributedString.setWSUId(attribute.getValue());
             attribute.getOwnerElement().setIdAttributeNode(attribute, true);
         } else {
             XMLHelper.unmarshallToAttributeMap(attributedString.getUnknownAttributes(), attribute);

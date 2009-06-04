@@ -48,7 +48,7 @@ public class PolicyImpl extends AbstractExtensibleXMLObject implements Policy {
      * 
      * @see org.opensaml.ws.wssecurity.AttributedId#getId()
      */
-    public String getId() {
+    public String getWSUId() {
         return id_;
     }
 
@@ -57,7 +57,7 @@ public class PolicyImpl extends AbstractExtensibleXMLObject implements Policy {
      * 
      * @see org.opensaml.ws.wssecurity.AttributedId#setId(java.lang.String)
      */
-    public void setId(String id) {
+    public void setWSUId(String id) {
         id_ = prepareForAssignment(id_, id);
     }
 

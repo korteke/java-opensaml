@@ -32,8 +32,8 @@ public class AttributedStringMarshaller extends AbstractWSSecurityObjectMarshall
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         AttributedString attributedString = (AttributedString) xmlObject;
         
-        if (!DatatypeHelper.isEmpty(attributedString.getId())) {
-            XMLHelper.marshallAttribute(AttributedString.ID_ATTR_NAME, attributedString.getId(), domElement, true);
+        if (!DatatypeHelper.isEmpty(attributedString.getWSUId())) {
+            XMLHelper.marshallAttribute(AttributedString.WSU_ID_ATTR_NAME, attributedString.getWSUId(), domElement, true);
         }
         
         XMLHelper.marshallAttributeMap(attributedString.getUnknownAttributes(), domElement);

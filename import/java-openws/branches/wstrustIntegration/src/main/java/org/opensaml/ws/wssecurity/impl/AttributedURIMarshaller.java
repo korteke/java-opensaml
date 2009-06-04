@@ -32,8 +32,8 @@ public class AttributedURIMarshaller extends AbstractWSSecurityObjectMarshaller 
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         AttributedURI attributedURI = (AttributedURI) xmlObject;
         
-        if (!DatatypeHelper.isEmpty(attributedURI.getId())) {
-            XMLHelper.marshallAttribute(AttributedURI.ID_ATTR_NAME, attributedURI.getId(), domElement, true);
+        if (!DatatypeHelper.isEmpty(attributedURI.getWSUId())) {
+            XMLHelper.marshallAttribute(AttributedURI.WSU_ID_ATTR_NAME, attributedURI.getWSUId(), domElement, true);
         }
         
         XMLHelper.marshallAttributeMap(attributedURI.getUnknownAttributes(), domElement);

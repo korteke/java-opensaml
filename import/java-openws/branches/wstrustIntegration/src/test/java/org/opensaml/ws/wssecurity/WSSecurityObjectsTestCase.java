@@ -38,7 +38,9 @@ import org.opensaml.ws.wssecurity.Username;
 import org.opensaml.ws.wssecurity.UsernameToken;
 import org.opensaml.xml.XMLConfigurator;
 import org.opensaml.xml.XMLObject;
+import org.opensaml.xml.encryption.EncryptedData;
 import org.opensaml.xml.io.Marshaller;
+import org.opensaml.xml.schema.XSBooleanValue;
 import org.opensaml.xml.util.XMLHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -82,7 +84,7 @@ public class WSSecurityObjectsTestCase extends WSBaseTestCase {
         expires.setDateTime(now.plusMinutes(10));
         timestamp.setExpires(expires);
 
-        timestamp.setId("Timestamp-" + System.currentTimeMillis());
+        timestamp.setWSUId("Timestamp-" + System.currentTimeMillis());
 
         marshallAndUnmarshall(timestamp);
     }
@@ -119,13 +121,24 @@ public class WSSecurityObjectsTestCase extends WSBaseTestCase {
         assertEquals(Password.TYPE_PASSWORD_TEXT, password.getType());
         marshallAndUnmarshall(password);
     }
+    
+    public void testEncryptedHeader() throws Exception {
+        EncryptedHeader eh = buildXMLObject(EncryptedHeader.ELEMENT_NAME);
+        eh.setWSUId("abc123");
+        eh.setSOAP11MustUnderstand(true);
+        eh.setSOAP11Actor("urn:test:soap11actor");
+        eh.setSOAP12MustUnderstand(true);
+        eh.setSOAP12Role("urn:test:soap12role");
+        eh.setSOAP12Relay(true);
+        marshallAndUnmarshall(eh);
+    }
 
     public void testUsernameToken() throws Exception {
         String refId= "UsernameToken-007";
         String refDateTimeStr= "2007-12-19T09:53:08.335Z";
 
         UsernameToken usernameToken= createUsernameToken("test", "test");
-        usernameToken.setId(refId);
+        usernameToken.setWSUId(refId);
         DateTimeFormatter formatter= DateTimeFormat.forPattern(AttributedDateTime.DEFAULT_DATETIME_FORMAT);
         DateTime refDateTime= formatter.parseDateTime(refDateTimeStr);
         Created usernameCreated = (Created) usernameToken.getUnknownXMLObjects(Created.ELEMENT_NAME).get(0);
@@ -172,7 +185,7 @@ public class WSSecurityObjectsTestCase extends WSBaseTestCase {
 
     public void testBinarySecurityToken() throws Exception {
         BinarySecurityToken token= buildXMLObject(BinarySecurityToken.ELEMENT_NAME);
-        token.setId("BinarySecurityToken-" + System.currentTimeMillis());
+        token.setWSUId("BinarySecurityToken-" + System.currentTimeMillis());
         token.setValue("Base64Encoded_X509_CERTIFICATE...");
         token.setValueType("http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-x509-token-profile-1.0#X509v3");
         // check default encoding type
@@ -216,7 +229,7 @@ public class WSSecurityObjectsTestCase extends WSBaseTestCase {
         created.setDateTime(now);
 
         String id= "UsernameToken-" + System.currentTimeMillis();
-        usernameToken.setId(id);
+        usernameToken.setWSUId(id);
         usernameToken.setUsername(username);
         usernameToken.getUnknownXMLObjects().add(password);
         usernameToken.getUnknownXMLObjects().add(created);

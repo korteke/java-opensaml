@@ -28,11 +28,11 @@ import org.opensaml.xml.schema.XSBooleanValue;
 public interface IsReferenceParameterBearing {
 
     /** the <code>IsReferenceParameter</code> attribute local name. */
-    public static final String IS_REFERENCE_PARAMETER_ATTR_LOCAL_NAME = "IsReferenceParameter";
+    public static final String WSA_IS_REFERENCE_PARAMETER_ATTR_LOCAL_NAME = "IsReferenceParameter";
 
     /** the <code>wsa:IsReferenceParameter</code> qualified attribute name. */
-    public static final QName IS_REFERENCE_PARAMETER_ATTR_NAME =
-        new QName(WSAddressingConstants.WSA_NS, IS_REFERENCE_PARAMETER_ATTR_LOCAL_NAME,
+    public static final QName WSA_IS_REFERENCE_PARAMETER_ATTR_NAME =
+        new QName(WSAddressingConstants.WSA_NS, WSA_IS_REFERENCE_PARAMETER_ATTR_LOCAL_NAME,
                 WSAddressingConstants.WSA_PREFIX);
 
     /**
@@ -40,27 +40,27 @@ public interface IsReferenceParameterBearing {
      * 
      * @return The <code>@wsa:IsReferenceParameter</code> attribute value or <code>null</code>.
      */
-    public Boolean isIsReferenceParameter();
+    public Boolean isWSAIsReferenceParameter();
 
     /**
      * Returns the <code>@wsa:IsReferenceParameter</code> attribute value.
      * 
      * @return The <code>@wsa:IsReferenceParameter</code> attribute value or <code>null</code>.
      */
-    public XSBooleanValue isIsReferenceParameterXSBoolean();
+    public XSBooleanValue isWSAIsReferenceParameterXSBoolean();
 
     /**
      * Sets the <code>@wsa:IsReferenceParameter</code> attribute value.
      * 
      * @param newIsReferenceParameter The <code>@wsa:IsReferenceParameter</code> attribute value
      */
-    public void setIsReferenceParameter(Boolean newIsReferenceParameter);
+    public void setWSAIsReferenceParameter(Boolean newIsReferenceParameter);
     
     /**
      * Sets the <code>@wsa:IsReferenceParameter</code> attribute value.
      * 
      * @param newIsReferenceParameter The <code>@wsa:IsReferenceParameter</code> attribute value
      */
-    public void setIsReferenceParameter(XSBooleanValue newIsReferenceParameter);
+    public void setWSAIsReferenceParameter(XSBooleanValue newIsReferenceParameter);
 
 }

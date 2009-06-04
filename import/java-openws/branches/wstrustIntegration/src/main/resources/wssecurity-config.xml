@@ -39,6 +39,16 @@
                 className="org.opensaml.ws.wssecurity.impl.EmbeddedUnmarshaller" />
         </ObjectProvider>
 
+        <!-- wsse11:EncryptedHeader -->
+        <ObjectProvider qualifiedName="wsse11:EncryptedHeader">
+            <BuilderClass
+                className="org.opensaml.ws.wssecurity.impl.EncryptedHeaderBuilder" />
+            <MarshallingClass
+                className="org.opensaml.ws.wssecurity.impl.EncryptedHeaderMarshaller" />
+            <UnmarshallingClass
+                className="org.opensaml.ws.wssecurity.impl.EncryptedHeaderUnmarshaller" />
+        </ObjectProvider>
+        
         <!-- wsu:Expires -->
         <ObjectProvider qualifiedName="wsu:Expires">
             <BuilderClass

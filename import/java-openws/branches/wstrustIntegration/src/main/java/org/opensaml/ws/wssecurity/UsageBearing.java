@@ -26,24 +26,24 @@ import javax.xml.namespace.QName;
 public interface UsageBearing {
     
     /** The wsse:@Usage attribute local name. */
-    public static final String USAGE_ATTR_LOCAL_NAME = "Usage";
+    public static final String WSSE_USAGE_ATTR_LOCAL_NAME = "Usage";
 
     /** The wsse:@Usage qualified attribute name. */
-    public static final QName USAGE_ATTR_NAME =
-        new QName(WSSecurityConstants.WSSE_NS, USAGE_ATTR_LOCAL_NAME, WSSecurityConstants.WSSE_PREFIX);
+    public static final QName WSSE_USAGE_ATTR_NAME =
+        new QName(WSSecurityConstants.WSSE_NS, WSSE_USAGE_ATTR_LOCAL_NAME, WSSecurityConstants.WSSE_PREFIX);
 
     /**
      * Returns the list of <code>wsse:@Usage</code> attributes value.
      * 
      * @return the list of attribute values
      */
-    public List<String> getUsages();
+    public List<String> getWSSEUsages();
 
     /**
      * Sets the list of <code>wsse:@Usage</code> attributes value.
      * 
      * @param usages the list of attribute values
      */
-    public void setUsages(List<String> usages);
+    public void setWSSEUsages(List<String> usages);
     
 }

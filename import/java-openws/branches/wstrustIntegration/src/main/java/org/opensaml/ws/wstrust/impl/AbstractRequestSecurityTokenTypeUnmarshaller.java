@@ -80,10 +80,10 @@ public abstract class AbstractRequestSecurityTokenTypeUnmarshaller extends Abstr
             RequestSecurityTokenType rst = (RequestSecurityTokenType) xmlObject;
             String context = attribute.getValue();
             rst.setContext(context);
-        } else if (RequestSecurityTokenType.ID_ATTR_LOCAL_NAME.equals(attrName)) {
+        } else if (RequestSecurityTokenType.WSU_ID_ATTR_LOCAL_NAME.equals(attrName)) {
             RequestSecurityTokenType rst = (RequestSecurityTokenType) xmlObject;
             String id = attribute.getValue();
-            rst.setId(id);
+            rst.setWSUId(id);
         } else {
             // xs:anyAttribute
             super.processAttribute(xmlObject, attribute);

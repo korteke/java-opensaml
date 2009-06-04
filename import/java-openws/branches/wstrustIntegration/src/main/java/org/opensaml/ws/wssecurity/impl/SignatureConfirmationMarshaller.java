@@ -32,8 +32,8 @@ public class SignatureConfirmationMarshaller extends AbstractWSSecurityObjectMar
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         SignatureConfirmation sc = (SignatureConfirmation) xmlObject;
         
-        if (!DatatypeHelper.isEmpty(sc.getId())) {
-            XMLHelper.marshallAttribute(SignatureConfirmation.ID_ATTR_NAME, sc.getId(), domElement, true);
+        if (!DatatypeHelper.isEmpty(sc.getWSUId())) {
+            XMLHelper.marshallAttribute(SignatureConfirmation.WSU_ID_ATTR_NAME, sc.getWSUId(), domElement, true);
         }
         if (!DatatypeHelper.isEmpty(sc.getValue())) {
             domElement.setAttributeNS(null, SignatureConfirmation.VALUE_ATTRIB_NAME, sc.getValue());

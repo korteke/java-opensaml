@@ -48,8 +48,8 @@ public class UsernameTokenUnmarshaller extends AbstractWSSecurityObjectUnmarshal
         
         QName attribQName = 
             XMLHelper.constructQName(attribute.getNamespaceURI(), attribute.getLocalName(), attribute.getPrefix());
-        if (UsernameToken.ID_ATTR_NAME.equals(attribQName)) {
-            token.setId(attribute.getValue());
+        if (UsernameToken.WSU_ID_ATTR_NAME.equals(attribQName)) {
+            token.setWSUId(attribute.getValue());
             attribute.getOwnerElement().setIdAttributeNode(attribute, true);
         } else {
             XMLHelper.unmarshallToAttributeMap(token.getUnknownAttributes(), attribute);

@@ -81,12 +81,12 @@ public class AttributedDataTimeImpl extends AbstractWSSecurityObject implements 
     }
 
     /** {@inheritDoc} */
-    public String getId() {
+    public String getWSUId() {
         return id;
     }
 
     /** {@inheritDoc} */
-    public void setId(String newId) {
+    public void setWSUId(String newId) {
         String oldID = id;
         id = prepareForAssignment(id, newId);
         registerOwnID(oldID, id);

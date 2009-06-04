@@ -34,8 +34,8 @@ public class AttributedDateTimeMarshaller extends AbstractWSSecurityObjectMarsha
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         AttributedDateTime dateTime = (AttributedDateTime) xmlObject;
         
-        if (!DatatypeHelper.isEmpty(dateTime.getId())) {
-            XMLHelper.marshallAttribute(AttributedDateTime.ID_ATTR_NAME, dateTime.getId(), domElement, true);
+        if (!DatatypeHelper.isEmpty(dateTime.getWSUId())) {
+            XMLHelper.marshallAttribute(AttributedDateTime.WSU_ID_ATTR_NAME, dateTime.getWSUId(), domElement, true);
         }
         
         XMLHelper.marshallAttributeMap(dateTime.getUnknownAttributes(), domElement);

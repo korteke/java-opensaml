@@ -49,9 +49,9 @@ public class PolicyUnmarshaller extends AbstractExtensibleXMLObjectUnmarshaller 
     protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
         Policy policy = (Policy) xmlObject;
         String attrName = attribute.getLocalName();
-        if (Policy.ID_ATTR_LOCAL_NAME.equals(attrName)) {
+        if (Policy.WSU_ID_ATTR_LOCAL_NAME.equals(attrName)) {
             String id = attribute.getValue();
-            policy.setId(id);
+            policy.setWSUId(id);
         } else if (Policy.NAME_ATTR_LOCAL_NAME.equals(attrName)) {
             String name = attribute.getValue();
             policy.setName(name);

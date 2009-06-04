@@ -14,36 +14,36 @@
  * limitations under the License.
  */
 
-package org.opensaml.ws.soap.soap11;
+package org.opensaml.ws.soap.soap12;
 
 import javax.xml.namespace.QName;
 
 import org.opensaml.ws.soap.util.SOAPConstants;
 
 /**
- * Interface for element having a <code>@soap11:actor</code> attribute.
+ * Interface for element having a <code>@soap12:role</code> attribute.
  */
-public interface ActorBearing {
+public interface RoleBearing {
     
-    /** The soap11:@actor attribute local name. */
-    public static final String SOAP11_ACTOR_ATTR_LOCAL_NAME = "actor";
+    /** The soap12:@role attribute local name. */
+    public static final String SOAP12_ROLE_ATTR_LOCAL_NAME = "role";
 
-    /** The soap11:@actor qualified attribute name. */
-    public static final QName SOAP11_ACTOR_ATTR_NAME =
-        new QName(SOAPConstants.SOAP11_NS, SOAP11_ACTOR_ATTR_LOCAL_NAME, SOAPConstants.SOAP11_PREFIX);
+    /** The soap12:@role qualified attribute name. */
+    public static final QName SOAP12_ROLE_ATTR_NAME =
+        new QName(SOAPConstants.SOAP12_NS, SOAP12_ROLE_ATTR_LOCAL_NAME, SOAPConstants.SOAP12_PREFIX);
     
     /**
      * Get the attribute value.
      * 
      * @return return the attribute vlue
      */
-    public String getSOAP11Actor();
+    public String getSOAP12Role();
     
     /**
      * Set the attribute value.
      * 
-     * @param newActor the new attribute value
+     * @param newRole the new attribute value
      */
-    public void setSOAP11Actor(String newActor);
+    public void setSOAP12Role(String newRole);
 
 }

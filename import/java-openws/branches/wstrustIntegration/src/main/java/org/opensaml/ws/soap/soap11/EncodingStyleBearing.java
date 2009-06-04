@@ -28,24 +28,24 @@ import org.opensaml.ws.soap.util.SOAPConstants;
 public interface EncodingStyleBearing {
     
     /** The soap11:@encodingStyle attribute local name. */
-    public static final String ENCODING_STYLE_ATTR_LOCAL_NAME = "encodingStyle";
+    public static final String SOAP11_ENCODING_STYLE_ATTR_LOCAL_NAME = "encodingStyle";
 
     /** The soap11:@encodingStyle qualified attribute name. */
-    public static final QName ENCODING_STYLE_ATTR_NAME =
-        new QName(SOAPConstants.SOAP11_NS, ENCODING_STYLE_ATTR_LOCAL_NAME, SOAPConstants.SOAP11_PREFIX);
+    public static final QName SOAP11_ENCODING_STYLE_ATTR_NAME =
+        new QName(SOAPConstants.SOAP11_NS, SOAP11_ENCODING_STYLE_ATTR_LOCAL_NAME, SOAPConstants.SOAP11_PREFIX);
     
     /**
      * Get the attribute value.
      * 
      * @return return the list of attribute values
      */
-    public List<String> getEncodingStyles();
+    public List<String> getSOAP11EncodingStyles();
     
     /**
      * Set the attribute value.
      * 
-     * @param newEncodingStyles set the new list of attribute values
+     * @param newEncodingStyles the new list of attribute values
      */
-    public void setEncodingStyles(List<String> newEncodingStyles);
+    public void setSOAP11EncodingStyles(List<String> newEncodingStyles);
 
 }

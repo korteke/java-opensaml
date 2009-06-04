@@ -53,8 +53,8 @@ public class TimestampUnmarshaller extends AbstractWSSecurityObjectUnmarshaller 
         
         QName attrName =
             XMLHelper.constructQName(attribute.getNamespaceURI(), attribute.getLocalName(), attribute.getPrefix());
-        if (Timestamp.ID_ATTR_NAME.equals(attrName)) {
-            timestamp.setId(attribute.getValue());
+        if (Timestamp.WSU_ID_ATTR_NAME.equals(attrName)) {
+            timestamp.setWSUId(attribute.getValue());
             attribute.getOwnerElement().setIdAttributeNode(attribute, true);
         } else {
             XMLHelper.unmarshallToAttributeMap(timestamp.getUnknownAttributes(), attribute);

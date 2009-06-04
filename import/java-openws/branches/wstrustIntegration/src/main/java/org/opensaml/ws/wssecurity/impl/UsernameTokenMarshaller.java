@@ -33,8 +33,8 @@ public class UsernameTokenMarshaller extends AbstractWSSecurityObjectMarshaller 
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         UsernameToken usernameToken = (UsernameToken) xmlObject;
         
-        if (!DatatypeHelper.isEmpty(usernameToken.getId())) {
-            XMLHelper.marshallAttribute(UsernameToken.ID_ATTR_NAME, usernameToken.getId(), domElement, true);
+        if (!DatatypeHelper.isEmpty(usernameToken.getWSUId())) {
+            XMLHelper.marshallAttribute(UsernameToken.WSU_ID_ATTR_NAME, usernameToken.getWSUId(), domElement, true);
         }
         
         XMLHelper.marshallAttributeMap(usernameToken.getUnknownAttributes(), domElement);

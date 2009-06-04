@@ -52,10 +52,10 @@ public abstract class AbstractRequestSecurityTokenTypeMarshaller extends Abstrac
     @Override
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         RequestSecurityTokenType message = (RequestSecurityTokenType) xmlObject;
-        String id = message.getId();
+        String id = message.getWSUId();
         if (id != null) {
             Document document = domElement.getOwnerDocument();
-            Attr attribute = XMLHelper.constructAttribute(document, RequestSecurityTokenType.ID_ATTR_NAME);
+            Attr attribute = XMLHelper.constructAttribute(document, RequestSecurityTokenType.WSU_ID_ATTR_NAME);
             attribute.setValue(id);
             domElement.setAttributeNodeNS(attribute);
         }

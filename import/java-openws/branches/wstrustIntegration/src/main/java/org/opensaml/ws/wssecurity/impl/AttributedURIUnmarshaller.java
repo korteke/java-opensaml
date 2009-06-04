@@ -35,8 +35,8 @@ public class AttributedURIUnmarshaller extends AbstractWSSecurityObjectUnmarshal
         
         QName attribQName = 
             XMLHelper.constructQName(attribute.getNamespaceURI(), attribute.getLocalName(), attribute.getPrefix());
-        if (AttributedURI.ID_ATTR_NAME.equals(attribQName)) {
-            attributedURI.setId(attribute.getValue());
+        if (AttributedURI.WSU_ID_ATTR_NAME.equals(attribQName)) {
+            attributedURI.setWSUId(attribute.getValue());
             attribute.getOwnerElement().setIdAttributeNode(attribute, true);
         } else {
             XMLHelper.unmarshallToAttributeMap(attributedURI.getUnknownAttributes(), attribute);
