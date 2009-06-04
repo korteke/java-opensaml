@@ -16,6 +16,7 @@
 
 package org.opensaml.ws.message;
 
+import org.opensaml.ws.message.handler.HandlerChainResolver;
 import org.opensaml.ws.security.SecurityPolicyResolver;
 import org.opensaml.ws.transport.InTransport;
 import org.opensaml.ws.transport.OutTransport;
@@ -149,4 +150,46 @@ public interface MessageContext {
      * @param resolver resolver used to determine active SecurityPolicy
      */
     public void setSecurityPolicyResolver(SecurityPolicyResolver resolver);
+    
+    /**
+     * Get the pre-SecurityPolicy inbound handler chain resolver.
+     * 
+     * @return the pre-security inbound handler chain resolver.
+     */
+    public HandlerChainResolver getPreSecurityInboundHandlerChainResolver();
+    
+    /**
+     * Set the pre-SecurityPolicy inbound handler chain resolver.
+     * 
+     * @param newHandlerChainResolver the new pre-SecurityPolicy inbound handler chain.
+     */
+    public void setPreSecurityInboundHandlerChainResolver(HandlerChainResolver newHandlerChainResolver);
+    
+    /**
+     * Get the post-SecurityPolicy inbound handler chain resolver.
+     * 
+     * @return the pre-SecurityPolicy inbound handler chain resolver.
+     */
+    public HandlerChainResolver getPostSecurityInboundHandlerChainResolver();
+    
+    /**
+     * Set the post-SecurityPolicy inbound handler chain resolver.
+     * 
+     * @param newHandlerChainResolver the new post-SecurityPolicy inbound handler chain resolver.
+     */
+    public void setPostSecurityInboundHandlerChainResolver(HandlerChainResolver newHandlerChainResolver);
+    
+    /**
+     * Get the outbound handler chain resolver.
+     * 
+     * @return the outbound handler chain resolver.
+     */
+    public HandlerChainResolver getOutboundHandlerChainResolver();
+    
+    /**
+     * Set the outbound handler chain resolver.
+     * 
+     * @param newHandlerChainResolver the new outbound handler chain resolver.
+     */
+    public void setOutboundHandlerChainResolver(HandlerChainResolver newHandlerChainResolver);
 }
