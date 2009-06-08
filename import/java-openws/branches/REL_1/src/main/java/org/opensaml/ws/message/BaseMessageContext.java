@@ -16,6 +16,7 @@
 
 package org.opensaml.ws.message;
 
+import org.opensaml.ws.message.handler.HandlerChainResolver;
 import org.opensaml.ws.security.SecurityPolicyResolver;
 import org.opensaml.ws.transport.InTransport;
 import org.opensaml.ws.transport.OutTransport;
@@ -50,6 +51,15 @@ public class BaseMessageContext implements MessageContext {
     
     /** Resolver used to determine active security policy. */
     private SecurityPolicyResolver securityPolicyResolver;
+    
+    /** Pre-SecurityPolicy inbound handler chain. */
+    private HandlerChainResolver preSecurityInboundHandlerChainResolver;
+    
+    /** Post-SecurityPolicy inbound handler chain. */
+    private HandlerChainResolver postSecurityInboundHandlerChainResolver;
+    
+    /** Inbound handler chain. */
+    private HandlerChainResolver outboundHandlerChainResolver;
     
     /** {@inheritDoc} */
     public String getCommunicationProfileId() {
@@ -134,5 +144,35 @@ public class BaseMessageContext implements MessageContext {
     /** {@inheritDoc} */
     public boolean isIssuerAuthenticated() {
             return getInboundMessageTransport().isAuthenticated();
+    }
+
+    /** {@inheritDoc} */
+    public HandlerChainResolver getPreSecurityInboundHandlerChainResolver() {
+        return preSecurityInboundHandlerChainResolver;
+    }
+    
+    /** {@inheritDoc} */
+    public HandlerChainResolver getPostSecurityInboundHandlerChainResolver() {
+        return postSecurityInboundHandlerChainResolver;
+    }
+
+    /** {@inheritDoc} */
+    public HandlerChainResolver getOutboundHandlerChainResolver() {
+        return outboundHandlerChainResolver;
+    }
+
+    /** {@inheritDoc} */
+    public void setPreSecurityInboundHandlerChainResolver(HandlerChainResolver newHandlerChainResolver) {
+        preSecurityInboundHandlerChainResolver = newHandlerChainResolver;
+    }
+    
+    /** {@inheritDoc} */
+    public void setPostSecurityInboundHandlerChainResolver(HandlerChainResolver newHandlerChainResolver) {
+        postSecurityInboundHandlerChainResolver = newHandlerChainResolver;
+    }
+
+    /** {@inheritDoc} */
+    public void setOutboundHandlerChainResolver(HandlerChainResolver newHandlerChainResolver) {
+        outboundHandlerChainResolver = newHandlerChainResolver;
     }
 }
