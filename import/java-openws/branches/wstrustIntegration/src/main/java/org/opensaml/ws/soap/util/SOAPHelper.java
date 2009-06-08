@@ -105,7 +105,7 @@ public final class SOAPHelper {
     }
     
     /**
-     * Adds an "actor" attribute to the given SOAP object.
+     * Adds a <code>soap11:actor</code> attribute to the given SOAP object.
      * 
      * @param soapObject the SOAP object to add the attribute to
      * @param actorURI the URI of the actor
