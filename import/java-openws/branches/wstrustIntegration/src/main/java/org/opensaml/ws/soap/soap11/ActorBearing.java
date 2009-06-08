@@ -32,6 +32,9 @@ public interface ActorBearing {
     public static final QName SOAP11_ACTOR_ATTR_NAME =
         new QName(SOAPConstants.SOAP11_NS, SOAP11_ACTOR_ATTR_LOCAL_NAME, SOAPConstants.SOAP11_PREFIX);
     
+    /** The specification-defined value 'http://schemas.xmlsoap.org/soap/actor/next'. */
+    public static final String SOAP11_ACTOR_NEXT = "http://schemas.xmlsoap.org/soap/actor/next";
+    
     /**
      * Get the attribute value.
      * 

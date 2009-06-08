@@ -80,7 +80,7 @@ public abstract class BaseHandlerChainAwareMessageEncoder extends BaseMessageEnc
             try {
                 for (HandlerChain outboundHandlerChain : outboundHandlerChainResolver.resolve(messageContext)) {
                     if (outboundHandlerChain != null) {
-                        outboundHandlerChain.invoke(messageContext);
+                        invokeHandlerChain(outboundHandlerChain, messageContext);
                     }
                 }
             } catch (HandlerException e) {
@@ -90,6 +90,19 @@ public abstract class BaseHandlerChainAwareMessageEncoder extends BaseMessageEnc
         }
     }
     
-
+    /**
+     * Invoke a handler chain on the specified message context.
+     * 
+     * @param handlerChain the handle chain to invoke
+     * @param messageContext the message context to process
+     * 
+     * @throws HandlerException if handler chain encountered a problem handling the message context
+     */
+    protected void invokeHandlerChain(HandlerChain handlerChain, MessageContext messageContext)
+            throws HandlerException {
+        if (handlerChain != null && messageContext != null) {
+            handlerChain.invoke(messageContext);
+        }
+    }
 
 }

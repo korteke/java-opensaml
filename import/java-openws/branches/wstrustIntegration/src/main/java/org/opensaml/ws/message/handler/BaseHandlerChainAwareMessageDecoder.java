@@ -83,7 +83,7 @@ public abstract class BaseHandlerChainAwareMessageDecoder extends BaseMessageDec
             try {
                 for (HandlerChain inboundHandlerChain : inboundHandlerChainResolver.resolve(messageContext)) {
                     if (inboundHandlerChain != null) {
-                        inboundHandlerChain.invoke(messageContext);
+                        invokeHandlerChain(inboundHandlerChain, messageContext);
                     }
                 }
             } catch (HandlerException e) {
@@ -107,13 +107,28 @@ public abstract class BaseHandlerChainAwareMessageDecoder extends BaseMessageDec
             try {
                 for (HandlerChain inboundHandlerChain : inboundHandlerChainResolver.resolve(messageContext)) {
                     if (inboundHandlerChain != null) {
-                        inboundHandlerChain.invoke(messageContext);
+                        invokeHandlerChain(inboundHandlerChain, messageContext);
                     }
                 }
             } catch (HandlerException e) {
                 log.error("Encountered post-SecurityPolicy HandlerException when decoding message: {}", e.getMessage());
                 throw new MessageDecodingException("Handler exception while decoding message", e);
             }
+        }
+    }
+    
+    /**
+     * Invoke a handler chain on the specified message context.
+     * 
+     * @param handlerChain the handle chain to invoke
+     * @param messageContext the message context to process
+     * 
+     * @throws HandlerException if handler chain encountered a problem handling the message context
+     */
+    protected void invokeHandlerChain(HandlerChain handlerChain, MessageContext messageContext)
+            throws HandlerException {
+        if (handlerChain != null && messageContext != null) {
+            handlerChain.invoke(messageContext);
         }
     }
 
