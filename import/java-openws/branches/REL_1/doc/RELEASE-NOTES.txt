@@ -3,6 +3,11 @@ Changes in Release 1.3.0
 [JOWS-6] - Implement SOAP client
 [JOWS-16] -  Update libs for 1.3.0 release
 
+* New object provider support for WS-Security specification
+* New object provider support for WS-Addressing specification
+* Introduces a new message context Handler and HandlerChain framework
+* New support for basic SOAP 1.1 messaging via encoders and decoders
+
 Changes in Release 1.2.2
 ==============================================
 * Minor memory usage enhancements
