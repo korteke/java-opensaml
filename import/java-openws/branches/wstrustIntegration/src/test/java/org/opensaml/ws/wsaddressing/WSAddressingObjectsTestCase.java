@@ -19,13 +19,7 @@ package org.opensaml.ws.wsaddressing;
 import java.io.InputStream;
 
 import org.opensaml.ws.WSBaseTestCase;
-import org.opensaml.ws.wsaddressing.Action;
-import org.opensaml.ws.wsaddressing.Address;
-import org.opensaml.ws.wsaddressing.EndpointReference;
-import org.opensaml.ws.wsaddressing.Metadata;
-import org.opensaml.ws.wsaddressing.ReferenceParameters;
 import org.opensaml.ws.wssecurity.WSSecurityObjectsTestCase;
-import org.opensaml.ws.wstrust.WSTrustConstants;
 import org.opensaml.xml.XMLConfigurator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,7 +47,7 @@ public class WSAddressingObjectsTestCase extends WSBaseTestCase {
 
     public void testAction() throws Exception {
         Action action= buildXMLObject(Action.ELEMENT_NAME);
-        action.setValue(WSTrustConstants.WSA_ACTION_RST_ISSUE);
+        action.setValue("urn:test:foo:bar");
         marshallAndUnmarshall(action);
     }
 
