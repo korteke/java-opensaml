@@ -207,7 +207,7 @@ public class HttpSOAPClient implements SOAPClient {
             if (faults.size() < 1) {
                 throw new SOAPClientException("HTTP status code was 500 but SOAP response did not contain a Fault");
             }
-            Fault fault = (Fault) faults.get(1);
+            Fault fault = (Fault) faults.get(0);
 
             log.debug("SOAP fault code {} with message {}", fault.getCode(), fault.getMessage());
             SOAPFaultException faultException = new SOAPFaultException("SOAP Fault: " + fault.getCode());
