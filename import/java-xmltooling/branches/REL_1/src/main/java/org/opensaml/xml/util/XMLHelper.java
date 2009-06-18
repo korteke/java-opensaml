@@ -19,6 +19,7 @@ package org.opensaml.xml.util;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
@@ -290,6 +291,9 @@ public final class XMLHelper {
      * @return list of values, never null
      */
     public static List<String> getAttributeValueAsList(Attr attribute) {
+        if (attribute == null) {
+            return Collections.emptyList();
+        }
         return DatatypeHelper.stringToList(attribute.getValue(), LIST_DELIMITERS);
     }
     
@@ -407,6 +411,9 @@ public final class XMLHelper {
      * @return list of values, never null
      */
     public static List<String> getElementContentAsList(Element element) {
+        if (element == null) {
+            return Collections.emptyList();
+        }
         return DatatypeHelper.stringToList(element.getTextContent(), LIST_DELIMITERS);
     }
 
