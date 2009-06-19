@@ -209,8 +209,9 @@ public class HttpSOAPClient implements SOAPClient {
             }
             Fault fault = (Fault) faults.get(0);
 
-            log.debug("SOAP fault code {} with message {}", fault.getCode(), fault.getMessage());
-            SOAPFaultException faultException = new SOAPFaultException("SOAP Fault: " + fault.getCode());
+            log.debug("SOAP fault code {} with message {}", fault.getCode().getValue(), fault.getMessage().getValue());
+            SOAPFaultException faultException = new SOAPFaultException("SOAP Fault: " + fault.getCode().getValue()
+                    + " Fault Message: " + fault.getMessage().getValue());
             faultException.setFault(fault);
             throw faultException;
         } catch (IOException e) {
