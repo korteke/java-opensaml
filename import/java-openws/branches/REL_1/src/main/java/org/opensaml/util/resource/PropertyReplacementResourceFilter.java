@@ -16,16 +16,16 @@
 
 package org.opensaml.util.resource;
 
-import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.Reader;
 import java.util.Iterator;
 import java.util.Properties;
+
+import org.opensaml.xml.util.DatatypeHelper;
 
 /**
  * A resource filter that buffers a resource into a string and replaces instance of macros with properties read from a
@@ -54,6 +54,7 @@ public class PropertyReplacementResourceFilter implements ResourceFilter {
     }
 
     /** {@inheritDoc} */
+    @SuppressWarnings("unchecked")
     public InputStream applyFilter(InputStream resource) throws ResourceException {
         Properties props = new Properties();
         try {
@@ -63,17 +64,7 @@ public class PropertyReplacementResourceFilter implements ResourceFilter {
         }
 
         try {
-            StringBuilder resourceBuffer = new StringBuilder();
-            Reader resourceReader = new BufferedReader(new InputStreamReader(resource));
-
-            char[] resourceCharacters = new char[2048];
-            while (resourceReader.read(resourceCharacters) > -1) {
-                resourceBuffer.append(resourceCharacters);
-                resourceCharacters = new char[2048];
-            }
-            resource.close();
-
-            String resourceString = resourceBuffer.toString();
+            String resourceString = DatatypeHelper.inputstreamToString(resource, null);
             
             Iterator<String> keyItr = (Iterator<String>) props.propertyNames();
             String key;

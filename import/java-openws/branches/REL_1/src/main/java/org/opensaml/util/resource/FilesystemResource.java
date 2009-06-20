@@ -116,11 +116,7 @@ public class FilesystemResource extends AbstractFilteredResource {
     public InputStream getInputStream() throws ResourceException {
         try {
             FileInputStream ins = new FileInputStream(resource);
-            if (getResourceFilter() != null) {
-                return getResourceFilter().applyFilter(ins);
-            } else {
-                return ins;
-            }
+            return applyFilter(ins);
         } catch (FileNotFoundException e) {
             throw new ResourceException("Resource file does not exist: " + resource.getAbsolutePath());
         }

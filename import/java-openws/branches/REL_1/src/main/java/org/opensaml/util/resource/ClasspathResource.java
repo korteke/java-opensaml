@@ -95,11 +95,7 @@ public class ClasspathResource extends AbstractFilteredResource {
     public InputStream getInputStream() throws ResourceException {
         try {
             InputStream ins = resource.openStream();
-            if (getResourceFilter() != null) {
-                return getResourceFilter().applyFilter(ins);
-            } else {
-                return ins;
-            }
+            return applyFilter(ins);
         } catch (IOException e) {
             throw new ResourceException("Unable to open resource: " + resource);
         }

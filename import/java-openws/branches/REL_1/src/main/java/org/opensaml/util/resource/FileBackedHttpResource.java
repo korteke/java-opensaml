@@ -136,11 +136,7 @@ public class FileBackedHttpResource extends HttpResource {
             }
         }
 
-        if (getResourceFilter() != null) {
-            return getResourceFilter().applyFilter(ins);
-        } else {
-            return ins;
-        }
+        return applyFilter(ins);
     }
 
     /** {@inheritDoc} */

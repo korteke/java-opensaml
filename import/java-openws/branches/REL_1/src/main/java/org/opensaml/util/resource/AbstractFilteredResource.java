@@ -16,15 +16,17 @@
 
 package org.opensaml.util.resource;
 
+import java.io.InputStream;
+
 /** A {@link Resource} whose contents may be run through a filter as it is being read. */
 public abstract class AbstractFilteredResource implements Resource {
 
     /** Associated resource filter. */
     private ResourceFilter resourceFilter;
-    
+
     /** Constructor. */
-    protected AbstractFilteredResource(){
-        
+    protected AbstractFilteredResource() {
+
     }
 
     /**
@@ -43,5 +45,23 @@ public abstract class AbstractFilteredResource implements Resource {
      */
     public ResourceFilter getResourceFilter() {
         return resourceFilter;
+    }
+
+    /**
+     * Applies the filter to the given stream resulting in the returned stream. If no filter is set than the given
+     * stream is the returned stream.
+     * 
+     * @param stream the stream to filter
+     * 
+     * @return the filtered stream
+     * 
+     * @throws ResourceException thrown if the filter can not be applied to the stream
+     */
+    protected InputStream applyFilter(InputStream stream) throws ResourceException {
+        if (getResourceFilter() != null) {
+            return getResourceFilter().applyFilter(stream);
+        } else {
+            return stream;
+        }
     }
 }

@@ -93,12 +93,7 @@ public class HttpResource extends AbstractFilteredResource {
     public InputStream getInputStream() throws ResourceException {
         GetMethod getMethod = getResource();
         try {
-            InputStream ins = getMethod.getResponseBodyAsStream();
-            if (getResourceFilter() != null) {
-                return getResourceFilter().applyFilter(ins);
-            } else {
-                return ins;
-            }
+            return applyFilter(getMethod.getResponseBodyAsStream());
         } catch (IOException e) {
             throw new ResourceException("Unable to read response", e);
         }
