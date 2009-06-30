@@ -52,10 +52,6 @@ public class LazySet<ElementType> implements Set<ElementType>, Serializable {
 
     /** {@inheritDoc} */
     public boolean addAll(Collection<? extends ElementType> collection) {
-        if(collection == null || collection.isEmpty()){
-            return false;
-        }
-        
         delegate = createImplementation();
         return delegate.addAll(collection);
     }
@@ -93,10 +89,6 @@ public class LazySet<ElementType> implements Set<ElementType>, Serializable {
 
     /** {@inheritDoc} */
     public boolean removeAll(Collection<?> collection) {
-        if(collection == null || collection.isEmpty()){
-            return false;
-        }
-        
         delegate = createImplementation();
         return delegate.removeAll(collection);
     }
@@ -133,5 +125,28 @@ public class LazySet<ElementType> implements Set<ElementType>, Serializable {
         }
 
         return new HashSet<ElementType>(delegate);
+    }
+
+    /** {@inheritDoc} */
+    public String toString() {
+        return delegate.toString();
+    }
+
+    /** {@inheritDoc} */
+    public int hashCode() {
+        return delegate.hashCode();
+    }
+
+    /** {@inheritDoc} */
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj == null || this.getClass() != obj.getClass()) {
+            return false;
+        }
+
+        return delegate.equals(((LazySet<?>) obj).delegate);
     }
 }

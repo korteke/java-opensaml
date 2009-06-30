@@ -24,16 +24,19 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
+import net.jcip.annotations.NotThreadSafe;
+
 /**
  * A list that is lazy initialized. This list takes very little memory when storing zero or one item.
  * 
  * @param <ElementType> type of elements within the list
  */
+@NotThreadSafe
 public class LazyList<ElementType> implements List<ElementType>, Serializable {
 
     /** Serial version UID. */
     private static final long serialVersionUID = -7741904523916701817L;
-    
+
     /** Delegate list. */
     private List<ElementType> delegate = Collections.emptyList();
 
@@ -56,19 +59,12 @@ public class LazyList<ElementType> implements List<ElementType>, Serializable {
 
     /** {@inheritDoc} */
     public boolean addAll(Collection<? extends ElementType> collection) {
-        if(collection == null || collection.isEmpty()){
-            return false;
-        }
         delegate = buildList();
         return delegate.addAll(collection);
     }
 
     /** {@inheritDoc} */
     public boolean addAll(int index, Collection<? extends ElementType> collection) {
-        if(collection == null || collection.isEmpty()){
-            return false;
-        }
-        
         delegate = buildList();
         return delegate.addAll(index, collection);
     }
@@ -84,8 +80,8 @@ public class LazyList<ElementType> implements List<ElementType>, Serializable {
     }
 
     /** {@inheritDoc} */
-    public boolean containsAll(Collection<?> collection) {
-        return delegate.containsAll(collection);
+    public boolean containsAll(Collection<?> collections) {
+        return delegate.containsAll(collections);
     }
 
     /** {@inheritDoc} */
@@ -137,10 +133,6 @@ public class LazyList<ElementType> implements List<ElementType>, Serializable {
 
     /** {@inheritDoc} */
     public boolean removeAll(Collection<?> collection) {
-        if(collection == null || collection.isEmpty()){
-            return false;
-        }
-        
         delegate = buildList();
         return delegate.removeAll(collection);
     }
@@ -188,5 +180,28 @@ public class LazyList<ElementType> implements List<ElementType>, Serializable {
         }
 
         return new ArrayList<ElementType>(delegate);
+    }
+
+    /** {@inheritDoc} */
+    public String toString() {
+        return delegate.toString();
+    }
+
+    /** {@inheritDoc} */
+    public int hashCode() {
+        return delegate.hashCode();
+    }
+
+    /** {@inheritDoc} */
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj == null || this.getClass() != obj.getClass()) {
+            return false;
+        }
+
+        return delegate.equals(((LazyList<?>) obj).delegate);
     }
 }
