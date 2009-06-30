@@ -18,17 +18,11 @@
 package org.opensaml.ws.wssecurity.impl;
 
 import java.util.ArrayList;
-
 import java.util.Collections;
 import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.ws.wssecurity.Created;
-import org.opensaml.ws.wssecurity.Iteration;
-import org.opensaml.ws.wssecurity.Nonce;
-import org.opensaml.ws.wssecurity.Password;
-import org.opensaml.ws.wssecurity.Salt;
 import org.opensaml.ws.wssecurity.Username;
 import org.opensaml.ws.wssecurity.UsernameToken;
 import org.opensaml.xml.XMLObject;
