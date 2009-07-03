@@ -39,6 +39,8 @@ public abstract class AbstractFilteredResource implements Resource {
      * Constructor.
      * 
      * @param filter the filter used on the resource
+     * 
+     * @deprecated use {@link #setResourceFilter(ResourceFilter)} instead
      */
     protected AbstractFilteredResource(ResourceFilter filter) {
         resourceFilter = filter;
@@ -51,6 +53,15 @@ public abstract class AbstractFilteredResource implements Resource {
      */
     public ResourceFilter getResourceFilter() {
         return resourceFilter;
+    }
+    
+    /**
+     * Sets the resource filter associated with this resource.
+     * 
+     * @param filter filter associated with this resource
+     */
+    public void setResourceFilter(ResourceFilter filter){
+        resourceFilter = filter;
     }
 
     /**

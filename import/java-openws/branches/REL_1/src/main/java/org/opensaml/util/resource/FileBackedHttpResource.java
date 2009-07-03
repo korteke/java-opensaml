@@ -80,6 +80,8 @@ public class FileBackedHttpResource extends HttpResource {
      * @param resource HTTP(S) URL of the resource
      * @param backingFile filesystem location to store the resource
      * @param resourceFilter filter to apply to this resource
+     * 
+     * @deprecated use {@link #setResourceFilter(ResourceFilter)} instead
      */
     public FileBackedHttpResource(String resource, String backingFile, ResourceFilter resourceFilter) {
         super(resource, resourceFilter);
@@ -99,6 +101,7 @@ public class FileBackedHttpResource extends HttpResource {
      * @param resourceFilter filter to apply to this resource
      * 
      * @since 1.2
+     * @deprecated use {@link #setResourceFilter(ResourceFilter)} instead
      */
     public FileBackedHttpResource(String resource, URI backingFile, ResourceFilter resourceFilter) {
         super(resource, resourceFilter);

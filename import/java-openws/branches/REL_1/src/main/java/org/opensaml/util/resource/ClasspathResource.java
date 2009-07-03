@@ -66,6 +66,8 @@ public class ClasspathResource extends AbstractFilteredResource {
      * @param resourceFilter filter to apply to this resource
      * 
      * @throws ResourceException thrown if the resource path is null or empty or if the resource does not exist
+     * 
+     * @deprecated use {@link #setResourceFilter(ResourceFilter)} instead
      */
     public ClasspathResource(String path, ResourceFilter resourceFilter) throws ResourceException {
         super(resourceFilter);

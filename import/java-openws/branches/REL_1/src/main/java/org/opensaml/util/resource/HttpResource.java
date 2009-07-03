@@ -61,6 +61,8 @@ public class HttpResource extends AbstractFilteredResource {
      * 
      * @param resource HTTP(S) URL of the resource
      * @param resourceFilter filter to apply to this resource
+     * 
+     * @deprecated use {@link #setResourceFilter(ResourceFilter)} instead
      */
     public HttpResource(String resource, ResourceFilter resourceFilter) {
         super(resourceFilter);
