@@ -171,13 +171,13 @@ public final class DatatypeHelper {
             charsetDecoder = Charset.defaultCharset().newDecoder();
         }
 
-        StringBuffer stringBuffer = new StringBuffer(2048);
         BufferedReader reader = new BufferedReader(new InputStreamReader(input, charsetDecoder));
 
-        char[] chars = new char[1024];
-        while (reader.read(chars) > -1) {
-            stringBuffer.append(String.valueOf(chars));
-            chars = new char[1024];
+        StringBuilder stringBuffer = new StringBuilder();
+        String line = reader.readLine();
+        while(line != null){
+            stringBuffer.append(line).append("\n");
+            line = reader.readLine();
         }
 
         reader.close();
