@@ -18,8 +18,14 @@ package org.opensaml.util.resource;
 
 import java.io.InputStream;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /** A {@link Resource} whose contents may be run through a filter as it is being read. */
 public abstract class AbstractFilteredResource implements Resource {
+    
+    /** Class logger. */
+    private final Logger log = LoggerFactory.getLogger(AbstractFilteredResource.class);
 
     /** Associated resource filter. */
     private ResourceFilter resourceFilter;
@@ -58,7 +64,9 @@ public abstract class AbstractFilteredResource implements Resource {
      * @throws ResourceException thrown if the filter can not be applied to the stream
      */
     protected InputStream applyFilter(InputStream stream) throws ResourceException {
-        if (getResourceFilter() != null) {
+        ResourceFilter filter = getResourceFilter();
+        if (filter != null) {
+            log.debug("Apply filter '{}' to resource '{}'", filter.getClass(), this.getLocation());
             return getResourceFilter().applyFilter(stream);
         } else {
             return stream;

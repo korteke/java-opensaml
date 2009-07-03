@@ -65,7 +65,7 @@ public class PropertyReplacementResourceFilter implements ResourceFilter {
 
         try {
             String resourceString = DatatypeHelper.inputstreamToString(resource, null);
-            
+
             Iterator<String> keyItr = (Iterator<String>) props.propertyNames();
             String key;
             while (keyItr.hasNext()) {
@@ -73,6 +73,7 @@ public class PropertyReplacementResourceFilter implements ResourceFilter {
                 resourceString = resourceString.replace("${" + key + "}", props.getProperty(key));
             }
 
+            resourceString.trim();
             return new ByteArrayInputStream(resourceString.getBytes());
         } catch (IOException e) {
             throw new ResourceException("Unable to read contents of resource", e);
