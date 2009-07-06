@@ -243,11 +243,11 @@ public final class SOAPHelper {
     public static void addSOAP12MustUnderstandAttribute(XMLObject soapObject, boolean mustUnderstand) {
         if (soapObject instanceof org.opensaml.ws.soap.soap12.MustUnderstandBearing) {
             ((org.opensaml.ws.soap.soap12.MustUnderstandBearing) soapObject)
-                    .setSOAP12MustUnderstand(new XSBooleanValue(mustUnderstand, true));
+                    .setSOAP12MustUnderstand(new XSBooleanValue(mustUnderstand, false));
         } else if (soapObject instanceof AttributeExtensibleXMLObject) {
             ((AttributeExtensibleXMLObject) soapObject).getUnknownAttributes().put(
                     org.opensaml.ws.soap.soap12.MustUnderstandBearing.SOAP12_MUST_UNDERSTAND_ATTR_NAME,
-                    new XSBooleanValue(mustUnderstand, true).toString());
+                    new XSBooleanValue(mustUnderstand, false).toString());
         } else {
             throw new IllegalArgumentException("Specified object was neither MustUnderstandBearing nor AttributeExtensible");
         }
@@ -272,7 +272,7 @@ public final class SOAPHelper {
             String value = DatatypeHelper.safeTrimOrNullString(((AttributeExtensibleXMLObject) soapObject)
                     .getUnknownAttributes().get(
                             org.opensaml.ws.soap.soap12.MustUnderstandBearing.SOAP12_MUST_UNDERSTAND_ATTR_NAME));
-            return DatatypeHelper.safeEquals("1", value);
+            return DatatypeHelper.safeEquals("1", value) || DatatypeHelper.safeEquals("true", value);
         }
         return false;
     }
@@ -285,11 +285,11 @@ public final class SOAPHelper {
      */
     public static void addSOAP12RelayAttribute(XMLObject soapObject, boolean relay) {
         if (soapObject instanceof org.opensaml.ws.soap.soap12.RelayBearing) {
-            ((org.opensaml.ws.soap.soap12.RelayBearing) soapObject).setSOAP12Relay(new XSBooleanValue(relay, true));
+            ((org.opensaml.ws.soap.soap12.RelayBearing) soapObject).setSOAP12Relay(new XSBooleanValue(relay, false));
         } else if (soapObject instanceof AttributeExtensibleXMLObject) {
             ((AttributeExtensibleXMLObject) soapObject).getUnknownAttributes().put(
                     org.opensaml.ws.soap.soap12.RelayBearing.SOAP12_RELAY_ATTR_NAME,
-                    new XSBooleanValue(relay, true).toString());
+                    new XSBooleanValue(relay, false).toString());
         } else {
             throw new IllegalArgumentException("Specified object was neither RelyBearing nor AttributeExtensible");
         }
@@ -312,7 +312,7 @@ public final class SOAPHelper {
         if (soapObject instanceof AttributeExtensibleXMLObject) {
             String value = DatatypeHelper.safeTrimOrNullString(((AttributeExtensibleXMLObject) soapObject)
                     .getUnknownAttributes().get(org.opensaml.ws.soap.soap12.RelayBearing.SOAP12_RELAY_ATTR_LOCAL_NAME));
-            return DatatypeHelper.safeEquals("1", value);
+            return DatatypeHelper.safeEquals("1", value) || DatatypeHelper.safeEquals("true", value);
         }
         return false;
     }

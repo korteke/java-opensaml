@@ -69,7 +69,7 @@ public final class WSAddressingHelper {
         if (soapObject instanceof AttributeExtensibleXMLObject) {
             String valueStr = DatatypeHelper.safeTrimOrNullString(((AttributeExtensibleXMLObject)soapObject)
                     .getUnknownAttributes().get(IsReferenceParameterBearing.WSA_IS_REFERENCE_PARAMETER_ATTR_NAME)); 
-            return valueStr.equals("1") || valueStr.equals("true");
+            return DatatypeHelper.safeEquals("1", valueStr) || DatatypeHelper.safeEquals("true", valueStr);
         }
         return false;
     }
