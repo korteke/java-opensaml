@@ -18,7 +18,6 @@ package org.opensaml.xml.security.credential.criteria;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
-import java.security.PublicKey;
 import java.security.cert.X509CertSelector;
 import java.security.cert.X509Certificate;
 
@@ -38,7 +37,6 @@ public class EvaluableX509CertSelectorCredentialCriteriaTest extends TestCase {
     private BasicX509Credential credential;
     private X509CertSelector certSelector;
     private X500Principal subjectName;
-    private PublicKey pubKey;
     private EvaluableX509CertSelectorCredentialCriteria evalCrit;
     
     private X509Certificate entityCert;
@@ -75,7 +73,7 @@ public class EvaluableX509CertSelectorCredentialCriteriaTest extends TestCase {
         super.setUp();
         
         entityCert = SecurityHelper.buildJavaX509Cert(entityCertBase64);
-        pubKey = entityCert.getPublicKey();
+        entityCert.getPublicKey();
         subjectName = new X500Principal("cn=foobar.example.org, O=Internet2");
         
         credential = new BasicX509Credential();

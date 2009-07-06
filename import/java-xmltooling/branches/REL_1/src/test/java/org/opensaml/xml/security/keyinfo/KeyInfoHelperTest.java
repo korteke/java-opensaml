@@ -58,8 +58,6 @@ import org.opensaml.xml.util.DatatypeHelper;
  */
 public class KeyInfoHelperTest extends XMLObjectBaseTestCase {
     
-    /** No-extensions test cert subject name. */
-    private final String certNoExtensionSubjectDN = "CN=noextensions.example.org";
     /** Cert which contains no X.509 v3 extensions. */
     private final String certNoExtensions =
         "MIIBwjCCASugAwIBAgIJAMrW6QSeKNBJMA0GCSqGSIb3DQEBBAUAMCMxITAfBgNV" +
@@ -187,7 +185,6 @@ public class KeyInfoHelperTest extends XMLObjectBaseTestCase {
     private int numExpectedCRLs;
     
     private java.security.cert.X509Certificate javaCert1;
-    private java.security.cert.X509Certificate javaCert2;
     private java.security.cert.X509CRL javaCRL1;
     private RSAPublicKey javaRSAPubKey1;
     private DSAPublicKey javaDSAPubKey1;
@@ -230,7 +227,7 @@ public class KeyInfoHelperTest extends XMLObjectBaseTestCase {
         numExpectedCRLs = 1;
         
         javaCert1 = SecurityHelper.buildJavaX509Cert(cert1);
-        javaCert2 = SecurityHelper.buildJavaX509Cert(cert2);
+        SecurityHelper.buildJavaX509Cert(cert2);
         javaCRL1 = SecurityHelper.buildJavaX509CRL(crl1);
         
         javaDSAPubKey1 = SecurityHelper.buildJavaDSAPublicKey(dsaPubKey1);

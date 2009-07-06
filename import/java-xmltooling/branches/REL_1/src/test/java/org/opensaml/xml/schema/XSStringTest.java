@@ -26,7 +26,6 @@ import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.parse.XMLParserException;
 import org.opensaml.xml.schema.impl.XSStringBuilder;
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 /**
  * Unit test for {@link XSString}
@@ -56,7 +55,7 @@ public class XSStringTest extends XMLObjectBaseTestCase {
         xsString.setValue(expectedValue);
         
         Marshaller marshaller = marshallerFactory.getMarshaller(xsString);
-        Element result = marshaller.marshall(xsString);
+        marshaller.marshall(xsString);
         
         Document document = parserPool.parse(XSStringTest.class.getResourceAsStream(testDocumentLocation));
         assertEquals("Marshalled XSString does not match example document", document, xsString);

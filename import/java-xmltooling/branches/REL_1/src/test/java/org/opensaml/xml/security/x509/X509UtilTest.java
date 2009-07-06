@@ -218,7 +218,6 @@ public class X509UtilTest extends XMLObjectBaseTestCase {
 
     private String entityCertSKIBase64 = "OBGBOSNoqgroOhl9RniD0sMlRa4=";
 
-    private X509Certificate caCert;
     private String caCertBase64 = 
         "MIIDXTCCAkWgAwIBAgIBATANBgkqhkiG9w0BAQUFADAtMRIwEAYDVQQKEwlJbnRl" +
         "cm5ldDIxFzAVBgNVBAMTDmNhLmV4YW1wbGUub3JnMB4XDTA3MDQwOTA1NDcxMloX" +
@@ -240,16 +239,9 @@ public class X509UtilTest extends XMLObjectBaseTestCase {
         "yCL/KhjlrDkjJ3hIxBF5mP/Y27cFpRnC2gECkieURvh52OyuqkzpbOrTN5rD9fNi" +
         "nA==";
     
-    private String subjectCN;
-    private X500Principal subjectName;
-    private X500Principal issuerName;
-    private BigInteger serialNumber3AltNamesDNS_URL_IP;
-    private byte[] subjectKeyIdentifier;
-    
     private String altNameDNS, altNameURN, altNameURL, altNameIP;
     private Integer altNameTypeDNS, altNameTypeURI, altNameTypeIP;
     
-    private X509CRL caCRL;
     private String caCRLBase64 =
         "MIIBmjCBgwIBATANBgkqhkiG9w0BAQUFADAtMRIwEAYDVQQKEwlJbnRlcm5ldDIx" +
         "FzAVBgNVBAMTDmNhLmV4YW1wbGUub3JnFw0wNzA1MjEwNTAwMzNaFw0wNzA2MjAw" +
@@ -289,14 +281,13 @@ public class X509UtilTest extends XMLObjectBaseTestCase {
         entityCert1AltNameURL = SecurityHelper.buildJavaX509Cert(entityCert1AltNameURLBase64);
         entityCert1AltNameIP = SecurityHelper.buildJavaX509Cert(entityCert1AltNameIPBase64);
         
-        caCert = SecurityHelper.buildJavaX509Cert(caCertBase64);
-        caCRL = SecurityHelper.buildJavaX509CRL(caCRLBase64);
+        SecurityHelper.buildJavaX509Cert(caCertBase64);
+        SecurityHelper.buildJavaX509CRL(caCRLBase64);
         
-        subjectCN = "foobar.example.org";
-        subjectName = new X500Principal("cn=foobar.example.org, O=Internet2");
-        issuerName = new X500Principal("cn=ca.example.org, O=Internet2");
-        serialNumber3AltNamesDNS_URL_IP = new BigInteger("49");
-        subjectKeyIdentifier = Base64.decode(entityCertSKIBase64);
+        new X500Principal("cn=foobar.example.org, O=Internet2");
+        new X500Principal("cn=ca.example.org, O=Internet2");
+        new BigInteger("49");
+        Base64.decode(entityCertSKIBase64);
         
         altNameDNS = "asimov.example.org";
         altNameURN = "urn:foo:example.org:idp";

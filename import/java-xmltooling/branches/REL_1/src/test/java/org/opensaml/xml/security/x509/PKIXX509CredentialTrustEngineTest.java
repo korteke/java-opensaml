@@ -178,18 +178,6 @@ public class PKIXX509CredentialTrustEngineTest extends XMLObjectBaseTestCase {
         }
     }
     
-    private void testValidateProcessingError(String message) {
-        try {
-            if ( engine.validate(cred, criteriaSet) ) {
-                fail("Evaluation of X509Credential succeeded, processing failure was expected: " + message);
-            } else {
-                fail("Evaluation of X509Credential failed, but processing failure was expected: " + message);
-            }
-        } catch (SecurityException e) {
-            // do nothing, failure expected
-        }
-    }
-    
     private BasicX509Credential getCredential(String entityCertFileName, String ... chainMembers) {
         BasicX509Credential cred = new BasicX509Credential();
         

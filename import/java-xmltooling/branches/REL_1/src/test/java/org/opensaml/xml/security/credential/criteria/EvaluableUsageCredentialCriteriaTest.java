@@ -21,7 +21,6 @@ import junit.framework.TestCase;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.credential.BasicCredential;
 import org.opensaml.xml.security.credential.UsageType;
-import org.opensaml.xml.security.criteria.EntityIDCriteria;
 import org.opensaml.xml.security.criteria.UsageCriteria;
 
 /**

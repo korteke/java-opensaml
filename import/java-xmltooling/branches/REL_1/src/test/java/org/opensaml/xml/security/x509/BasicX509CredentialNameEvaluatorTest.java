@@ -61,7 +61,7 @@ public class BasicX509CredentialNameEvaluatorTest extends XMLObjectBaseTestCase 
     
     private String subjectCN;
     private String subjectDN;
-    private String altNameDNS, altNameURN, altNameURL, altNameIP;
+    private String altNameDNS, altNameURL;
     
     /** {@inheritDoc} */
     protected void setUp() throws Exception {
@@ -74,10 +74,7 @@ public class BasicX509CredentialNameEvaluatorTest extends XMLObjectBaseTestCase 
         subjectDN = "cn=foobar.example.org, O=Internet2"; 
         
         altNameDNS = "asimov.example.org";
-        altNameURN = "urn:foo:example.org:idp";
         altNameURL = "http://heinlein.example.org";
-        altNameIP = "10.1.2.3";
-        
         names = new HashSet<String>();
         
         // Reset evaluator checks to a known starting state, in case defaults change in future.
@@ -265,18 +262,6 @@ public class BasicX509CredentialNameEvaluatorTest extends XMLObjectBaseTestCase 
             }
         } catch (SecurityException e) {
             fail("Evaluation failed due to processing exception: " + e.getMessage());
-        }
-    }
-    
-    private void testEvaluateProcessingError(String message, Set<String> trustedNames, X509Credential untrustedCred) {
-        try {
-            if ( evaluator.evaluate(untrustedCred, trustedNames) ) {
-                fail("Evaluation of X509Credential succeeded, processing failure was expected: " + message);
-            } else {
-                fail("Evaluation of X509Credential failed, but processing failure was expected: " + message);
-            }
-        } catch (SecurityException e) {
-            // do nothing, failure expected
         }
     }
 }

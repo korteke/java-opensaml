@@ -18,7 +18,6 @@ package org.opensaml.xml.security.x509;
 
 import java.security.cert.CRLException;
 import java.security.cert.CertificateEncodingException;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 

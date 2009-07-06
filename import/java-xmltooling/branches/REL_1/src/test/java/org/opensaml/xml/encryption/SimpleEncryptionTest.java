@@ -383,11 +383,9 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
         
         kekParamsList.clear();
         
-        EncryptedData encData = null;
-        
         // try with no KEK
         try {
-            encData = encrypter.encryptElement(sxo, encParams);
+            encrypter.encryptElement(sxo, encParams);
             fail("Object encryption should have failed: no KEK supplied with auto key generation for data encryption");
         } catch (EncryptionException e) {
             // do nothing, should fail
@@ -395,7 +393,7 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
         
         // try with empty KEK list
         try {
-            encData = encrypter.encryptElement(sxo, encParams, kekParamsList);
+            encrypter.encryptElement(sxo, encParams, kekParamsList);
             fail("Object encryption should have failed: no KEK supplied with auto key generation for data encryption");
         } catch (EncryptionException e) {
             // do nothing, should fail
@@ -476,9 +474,8 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
         KeyPair kp = SecurityHelper.generateKeyPair("DSA", 1024, null);
         kekParamsDSA.setEncryptionCredential(SecurityHelper.getSimpleCredential(kp.getPublic(), null));
         
-        EncryptedData encData = null;
         try {
-            encData = encrypter.encryptElement(sxo, encParams, kekParamsDSA);
+            encrypter.encryptElement(sxo, encParams, kekParamsDSA);
             fail("Object encryption succeeded, should have failed with DSA key attempt");
         } catch (EncryptionException e) {
             // do nothing failure expected

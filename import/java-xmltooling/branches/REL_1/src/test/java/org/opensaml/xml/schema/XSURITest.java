@@ -26,7 +26,6 @@ import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.parse.XMLParserException;
 import org.opensaml.xml.schema.impl.XSURIBuilder;
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 /**
  * Unit test for {@link XSURi}
@@ -56,7 +55,7 @@ public class XSURITest extends XMLObjectBaseTestCase {
         xsURI.setValue(expectedValue);
         
         Marshaller marshaller = marshallerFactory.getMarshaller(xsURI);
-        Element result = marshaller.marshall(xsURI);
+        marshaller.marshall(xsURI);
         
         Document document = parserPool.parse(XSURITest.class.getResourceAsStream(testDocumentLocation));
         assertEquals("Marshalled XSURI does not match example document", document, xsURI);

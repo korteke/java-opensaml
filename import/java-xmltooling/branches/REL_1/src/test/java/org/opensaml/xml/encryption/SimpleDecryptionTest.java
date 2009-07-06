@@ -166,9 +166,8 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
     public void testErrorNoResolvers() {
         Decrypter decrypter = new Decrypter(null, null, null);
         
-        XMLObject decryptedXMLObject = null;
         try {
-            decryptedXMLObject = decrypter.decryptData(encryptedData);
+            decrypter.decryptData(encryptedData);
             fail("Decryption should have failed, no resolvers configured");
         } catch (DecryptionException e) {
             // do nothing, should fail
@@ -190,9 +189,8 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
         
         Decrypter decrypter = new Decrypter(badEncResolver, null, null);
         
-        XMLObject decryptedXMLObject = null;
         try {
-            decryptedXMLObject = decrypter.decryptData(encryptedData);
+            decrypter.decryptData(encryptedData);
             fail("Decryption should have failed, invalid data decryption key");
         } catch (DecryptionException e) {
             // do nothing, should fail
@@ -215,9 +213,8 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
         
         Decrypter decrypter = new Decrypter(null, badKEKResolver, null);
         
-        Key decryptedKey = null;
         try {
-            decryptedKey = decrypter.decryptKey(encryptedKey, encURI);
+            decrypter.decryptKey(encryptedKey, encURI);
             fail("Decryption should have failed, invalid key decryption key");
         } catch (DecryptionException e) {
             // do nothing, should fail
@@ -231,9 +228,8 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
     public void testEncryptedContent() {
         Decrypter decrypter = new Decrypter(keyResolver, null, null);
         
-        XMLObject decryptedXMLObject = null;
         try {
-            decryptedXMLObject = decrypter.decryptData(encryptedContent);
+            decrypter.decryptData(encryptedContent);
             fail("This should have failed, decryption of element content not yet supported");
         } catch (DecryptionException e) {
             //fail("Error on decryption of EncryptedData to element content: " + e);

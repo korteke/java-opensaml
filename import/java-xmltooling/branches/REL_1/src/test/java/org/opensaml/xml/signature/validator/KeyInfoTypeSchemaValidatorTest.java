@@ -21,7 +21,6 @@ import org.opensaml.xml.mock.SimpleXMLObject;
 import org.opensaml.xml.mock.SimpleXMLObjectBuilder;
 import org.opensaml.xml.signature.KeyInfo;
 import org.opensaml.xml.signature.KeyName;
-import org.opensaml.xml.signature.Transforms;
 import org.opensaml.xml.util.XMLConstants;
 
 /**

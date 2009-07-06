@@ -25,7 +25,6 @@ import javax.xml.namespace.QName;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.util.AttributeMap;
 import org.opensaml.xml.util.IndexedXMLObjectChildrenList;
-import org.opensaml.xml.util.XMLObjectChildrenList;
 import org.opensaml.xml.validation.AbstractValidatingXMLObject;
 
 /**

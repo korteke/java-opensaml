@@ -102,13 +102,6 @@ public class CertChainX509DataTest extends XMLObjectBaseTestCase {
         "yCL/KhjlrDkjJ3hIxBF5mP/Y27cFpRnC2gECkieURvh52OyuqkzpbOrTN5rD9fNi" +
         "nA==";
     
-    private X500Principal subjectName;
-    private X500Principal issuerName;
-    private int serialNumber;
-    private byte[] subjectKeyIdentifier;
-
-
-
     /** {@inheritDoc} */
     protected void setUp() throws Exception {
         super.setUp();
@@ -122,10 +115,9 @@ public class CertChainX509DataTest extends XMLObjectBaseTestCase {
         entityCert = SecurityHelper.buildJavaX509Cert(entityCertBase64);
         caCert = SecurityHelper.buildJavaX509Cert(caCertBase64);
         
-        subjectName = new X500Principal("cn=foobar.example.org, O=Internet2");
-        issuerName = new X500Principal("cn=ca.example.org, O=Internet2");
-        serialNumber = 42;
-        subjectKeyIdentifier = Base64.decode(entityCertSKIBase64);
+        new X500Principal("cn=foobar.example.org, O=Internet2");
+        new X500Principal("cn=ca.example.org, O=Internet2");
+        Base64.decode(entityCertSKIBase64);
     }
     
     /**

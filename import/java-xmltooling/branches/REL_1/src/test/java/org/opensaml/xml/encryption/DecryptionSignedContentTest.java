@@ -42,8 +42,6 @@ import org.opensaml.xml.signature.SignatureException;
 import org.opensaml.xml.signature.SignatureValidator;
 import org.opensaml.xml.signature.Signer;
 import org.opensaml.xml.validation.ValidationException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -51,9 +49,6 @@ import org.w3c.dom.Element;
  * Test decryption of signed content.
  */
 public class DecryptionSignedContentTest extends XMLObjectBaseTestCase {
-
-    /** Class logger. */
-    private final Logger log = LoggerFactory.getLogger(DecryptionSignedContentTest.class);
 
     /** Credential used to sign and verify. */
     private Credential signingCredential;

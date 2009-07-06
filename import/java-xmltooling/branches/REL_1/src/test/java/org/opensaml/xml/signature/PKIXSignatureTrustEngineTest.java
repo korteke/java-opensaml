@@ -388,18 +388,6 @@ public class PKIXSignatureTrustEngineTest extends XMLObjectBaseTestCase {
         }
     }
     
-    private void testValidateProcessingError(String message) {
-        try {
-            if ( engine.validate(signature, criteriaSet) ) {
-                fail("Evaluation of Signature succeeded, processing failure was expected: " + message);
-            } else {
-                fail("Evaluation of Signature failed, but processing failure was expected: " + message);
-            }
-        } catch (SecurityException e) {
-            // do nothing, failure expected
-        }
-    }
-    
     private Signature getSignature(String entityCertFileName, String entityKeyFileName, String ... chainMembers) {
         X509Credential cred = getCredential(entityCertFileName, entityKeyFileName, chainMembers);
         
@@ -611,18 +599,6 @@ public class PKIXSignatureTrustEngineTest extends XMLObjectBaseTestCase {
             }
         } catch (SecurityException e) {
             fail("Evaluation failed due to processing exception: " + e.getMessage());
-        }
-    }
-    
-    private void testRawValidateProcessingError(String message) {
-        try {
-            if ( engine.validate(rawSignature, rawSignedContent, rawAlgorithmURI, criteriaSet, rawCandidateCred) ) {
-                fail("Evaluation of Signature succeeded, processing failure was expected: " + message);
-            } else {
-                fail("Evaluation of Signature failed, but processing failure was expected: " + message);
-            }
-        } catch (SecurityException e) {
-            // do nothing, failure expected
         }
     }
 

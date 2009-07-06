@@ -27,7 +27,6 @@ import org.opensaml.xml.signature.PGPData;
 import org.opensaml.xml.signature.PGPKeyID;
 import org.opensaml.xml.signature.PGPKeyPacket;
 import org.opensaml.xml.util.IndexedXMLObjectChildrenList;
-import org.opensaml.xml.util.XMLObjectChildrenList;
 import org.opensaml.xml.validation.AbstractValidatingXMLObject;
 
 /**

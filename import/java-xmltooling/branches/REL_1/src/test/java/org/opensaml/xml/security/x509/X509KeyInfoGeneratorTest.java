@@ -117,7 +117,6 @@ public class X509KeyInfoGeneratorTest extends XMLObjectBaseTestCase {
     private BigInteger serialNumber;
     private byte[] subjectKeyIdentifier;
     
-    private X509Certificate altNameCert;
     private String altName1, altName2, altName3;
     private Integer altName1Type, altName2Type, altName3Type;
     

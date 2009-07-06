@@ -53,8 +53,6 @@ import java.util.Set;
 
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
-import javax.crypto.interfaces.DHPublicKey;
-
 import org.apache.commons.ssl.PKCS8Key;
 import org.apache.xml.security.Init;
 import org.apache.xml.security.algorithms.JCEMapper;

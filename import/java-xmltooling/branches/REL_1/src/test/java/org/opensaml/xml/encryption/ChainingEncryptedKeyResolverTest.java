@@ -63,9 +63,8 @@ public class ChainingEncryptedKeyResolverTest extends XMLObjectBaseTestCase {
         //Make the resolver chain empty before resolving
         resolver.getResolverChain().clear();
         
-        List<EncryptedKey> resolved = null;
         try {
-            resolved = generateList(encData, resolver);
+            generateList(encData, resolver);
             fail("Resolver called with empty chain, should have thrown IllegalStateException");
         } catch (IllegalStateException e) {
             // do nothing, error expected

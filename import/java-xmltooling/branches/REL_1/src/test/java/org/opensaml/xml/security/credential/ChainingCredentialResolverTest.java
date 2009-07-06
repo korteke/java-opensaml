@@ -152,9 +152,8 @@ public class ChainingCredentialResolverTest extends TestCase {
      * @throws SecurityException
      */
     public void testEmptyResolverChain() throws SecurityException {
-        Iterable<Credential> credentials = null;
         try {
-            credentials = chainingResolver.resolve(criteriaSet);
+            chainingResolver.resolve(criteriaSet);
             fail("Should have thrown an illegal state exception due to no chain members");
         } catch (IllegalStateException e) {
             // do nothing, expected to fail
@@ -170,7 +169,7 @@ public class ChainingCredentialResolverTest extends TestCase {
         
         Iterator<Credential> iter = chainingResolver.resolve(criteriaSet).iterator();
         assertTrue("Iterator was empty", iter.hasNext());
-        Credential cred = iter.next();
+        iter.next();
         try {
             iter.remove();
             fail("Remove from iterator is unsupported, should have thrown exception");
@@ -189,17 +188,16 @@ public class ChainingCredentialResolverTest extends TestCase {
         chainingResolver.getResolverChain().add(staticResolver3);
         
         Iterator<Credential> iter = chainingResolver.resolve(criteriaSet).iterator();
-        Credential cred = null;
         assertTrue("Should have next member", iter.hasNext());
-        cred = iter.next();
+        iter.next();
         assertTrue("Should have next member", iter.hasNext());
-        cred = iter.next();
+        iter.next();
         assertTrue("Should have next member", iter.hasNext());
-        cred = iter.next();
+        iter.next();
         
         assertFalse("Should NOT have next member", iter.hasNext());
         try {
-            cred = iter.next();
+            iter.next();
             fail("Should have thrown exception due to next() call with no more members");
         } catch (NoSuchElementException e) {
             // do nothing, expected to fail

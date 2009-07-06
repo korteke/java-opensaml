@@ -26,7 +26,6 @@ import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.parse.XMLParserException;
 import org.opensaml.xml.schema.impl.XSIntegerBuilder;
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 /**
  * Unit test for {@link XSInteger}
@@ -56,7 +55,7 @@ public class XSIntegerTest extends XMLObjectBaseTestCase {
         xsInteger.setValue(expectedValue);
         
         Marshaller marshaller = marshallerFactory.getMarshaller(xsInteger);
-        Element result = marshaller.marshall(xsInteger);
+        marshaller.marshall(xsInteger);
         
         Document document = parserPool.parse(XSIntegerTest.class.getResourceAsStream(testDocumentLocation));
         assertEquals("Marshalled XSInteger does not match example document", document, xsInteger);
