@@ -18,10 +18,14 @@ package org.opensaml.ws.soap.util;
 
 import java.util.List;
 
+import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.soap.soap11.ActorBearing;
 import org.opensaml.ws.soap.soap11.EncodingStyleBearing;
+import org.opensaml.ws.soap.soap11.Envelope;
+import org.opensaml.ws.soap.soap11.Header;
 import org.opensaml.ws.soap.soap11.MustUnderstandBearing;
 import org.opensaml.xml.AttributeExtensibleXMLObject;
+import org.opensaml.xml.Configuration;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.schema.XSBooleanValue;
 import org.opensaml.xml.util.AttributeMap;
@@ -404,5 +408,44 @@ public final class SOAPHelper {
      */
     public static void addMustUnderstandAttribute(XMLObject soapObject, boolean mustUnderstand) {
         addSOAP11MustUnderstandAttribute(soapObject, mustUnderstand);
+    }
+    
+    /**
+     * Add a header block to the SOAP envelope contained within the specified message context's
+     * {@link MessageContext#getOutboundMessage()}.
+     * 
+     * @param messageContext the message context being processed
+     * @param headerBlock the header block to add
+     */
+    public static void addHeaderBlock(MessageContext messageContext, XMLObject headerBlock) {
+        XMLObject outboundEnvelope = messageContext.getOutboundMessage();
+        if (outboundEnvelope == null) {
+            throw new IllegalArgumentException("Message context does not contain a SOAP envelope");
+        }
+        
+        // SOAP 1.1 Envelope
+        if (outboundEnvelope instanceof Envelope) {
+            addSOAP11HeaderBlock((Envelope) outboundEnvelope, headerBlock);
+        }
+        
+        //TODO SOAP 1.2 support when object providers are implemented
+        
+    }
+
+    /**
+     * Add a header to the SOAP 1.1 Envelope.
+     * 
+     * @param envelope the SOAP 1.1 envelope to process
+     * @param headerBlock the header to add
+     */
+    public static void addSOAP11HeaderBlock(Envelope envelope, XMLObject headerBlock) {
+        Header envelopeHeader = envelope.getHeader();
+        if (envelopeHeader == null) {
+            envelopeHeader = (Header) Configuration.getBuilderFactory().getBuilder(Header.DEFAULT_ELEMENT_NAME)
+                .buildObject(Header.DEFAULT_ELEMENT_NAME);
+            envelope.setHeader(envelopeHeader);
+        }
+        
+        envelopeHeader.getUnknownXMLObjects().add(headerBlock);
     }
 }
