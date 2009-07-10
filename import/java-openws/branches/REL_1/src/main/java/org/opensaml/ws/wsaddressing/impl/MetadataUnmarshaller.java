@@ -39,7 +39,7 @@ public class MetadataUnmarshaller extends AbstractWSAddressingObjectUnmarshaller
     protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
             throws UnmarshallingException {
         Metadata metadata = (Metadata) parentXMLObject;
-        metadata.getUnknownXMLObjects().add(metadata);
+        metadata.getUnknownXMLObjects().add(childXMLObject);
     }
 
 }
