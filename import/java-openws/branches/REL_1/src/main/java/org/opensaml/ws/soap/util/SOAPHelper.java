@@ -16,7 +16,12 @@
 
 package org.opensaml.ws.soap.util;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
+
+import javax.xml.namespace.QName;
 
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.soap.soap11.ActorBearing;
@@ -447,5 +452,57 @@ public final class SOAPHelper {
         }
         
         envelopeHeader.getUnknownXMLObjects().add(headerBlock);
+    }
+
+    /**
+     * Get a header block from the SOAP envelope contained within the specified message context's
+     * {@link MessageContext#getInboundMessage()}.
+     * 
+     * @param msgContext the message context being processed
+     * @param headerName the name of the header block to return 
+     * @param targetNodes the specific SOAP nodes to which the header is targeted.  Null or empty set means
+     *              the final destination
+     * @return the list of matching header blocks
+     */
+    public static List<XMLObject> getHeaderBlock(MessageContext msgContext, QName headerName, Set<String> targetNodes) {
+        XMLObject inboundEnvelope = msgContext.getInboundMessage();
+        if (inboundEnvelope == null) {
+            throw new IllegalArgumentException("Message context does not contain a SOAP envelope");
+        }
+        
+        // SOAP 1.1 Envelope
+        if (inboundEnvelope instanceof Envelope) {
+            return getSOAP11HeaderBlock((Envelope) inboundEnvelope, headerName, targetNodes);
+        }
+        
+        //TODO SOAP 1.2 support when object providers are implemented
+        return Collections.emptyList();
+    }
+
+    /**
+     * Get a header block from the SOAP 1.1 envelope.
+     * 
+     * @param envelope the SOAP 1.1 envelope to process 
+     * @param headerName the name of the header block to return 
+     * @param targetNodes the specific SOAP nodes to which the header is targeted.  Null or empty set means
+     *              the final destination
+     * @return the list of matching header blocks
+     */
+    public static List<XMLObject> getSOAP11HeaderBlock(Envelope envelope, QName headerName, Set<String> targetNodes) {
+        Header envelopeHeader = envelope.getHeader();
+        if (envelopeHeader == null) {
+            return Collections.emptyList();
+        }
+        ArrayList<XMLObject> headers = new ArrayList<XMLObject>();
+        for (XMLObject header : envelopeHeader.getUnknownXMLObjects(headerName)) {
+            String headerActor = getSOAP11ActorAttribute(header);
+            if (headerActor == null && (targetNodes == null || targetNodes.isEmpty())) {
+                headers.add(header);
+            } else if (targetNodes != null && targetNodes.contains(headerActor)) {
+                headers.add(header);
+            }
+        }
+        
+        return headers;
     }
 }
