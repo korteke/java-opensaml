@@ -464,15 +464,40 @@ public final class SOAPHelper {
      *              the final destination
      * @return the list of matching header blocks
      */
-    public static List<XMLObject> getHeaderBlock(MessageContext msgContext, QName headerName, Set<String> targetNodes) {
+    public static List<XMLObject> getInboundHeaderBlock(MessageContext msgContext, QName headerName, Set<String> targetNodes) {
         XMLObject inboundEnvelope = msgContext.getInboundMessage();
         if (inboundEnvelope == null) {
-            throw new IllegalArgumentException("Message context does not contain a SOAP envelope");
+            throw new IllegalArgumentException("Message context does not contain an inbound SOAP envelope");
         }
         
         // SOAP 1.1 Envelope
         if (inboundEnvelope instanceof Envelope) {
             return getSOAP11HeaderBlock((Envelope) inboundEnvelope, headerName, targetNodes);
+        }
+        
+        //TODO SOAP 1.2 support when object providers are implemented
+        return Collections.emptyList();
+    }
+
+    /**
+     * Get a header block from the SOAP envelope contained within the specified message context's
+     * {@link MessageContext#getOutboundMessage()}.
+     * 
+     * @param msgContext the message context being processed
+     * @param headerName the name of the header block to return 
+     * @param targetNodes the specific SOAP nodes to which the header is targeted.  Null or empty set means
+     *              the final destination
+     * @return the list of matching header blocks
+     */
+    public static List<XMLObject> getOutboundHeaderBlock(MessageContext msgContext, QName headerName, Set<String> targetNodes) {
+        XMLObject outboundEnvelope = msgContext.getOutboundMessage();
+        if (outboundEnvelope == null) {
+            throw new IllegalArgumentException("Message context does not contain an outbound SOAP envelope");
+        }
+        
+        // SOAP 1.1 Envelope
+        if (outboundEnvelope instanceof Envelope) {
+            return getSOAP11HeaderBlock((Envelope) outboundEnvelope, headerName, targetNodes);
         }
         
         //TODO SOAP 1.2 support when object providers are implemented
