@@ -530,4 +530,24 @@ public final class SOAPHelper {
         
         return headers;
     }
+
+    /**
+     * Determine whether the inbound message represented by the message context 
+     * contains a SOAP Envelope.
+     * 
+     * @param messageContext the current message context
+     * @return true if the inbound message contains a SOAP Envelope, false otherwise
+     */
+    public static boolean isInboundSOAPMessage(MessageContext messageContext) {
+        XMLObject inboundMessage = messageContext.getInboundMessage();
+        if (inboundMessage == null) {
+            return false;
+        }
+        // SOAP 1.1 Envelope
+        if (inboundMessage instanceof Envelope) {
+            return true;
+        }
+        //TODO SOAP 1.2 support when object providers are implemented
+        return false;
+    }
 }
