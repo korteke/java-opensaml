@@ -19,19 +19,27 @@ package org.opensaml.ws.soap.util;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.Map.Entry;
 
 import javax.xml.namespace.QName;
 
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.soap.soap11.ActorBearing;
+import org.opensaml.ws.soap.soap11.Detail;
 import org.opensaml.ws.soap.soap11.EncodingStyleBearing;
 import org.opensaml.ws.soap.soap11.Envelope;
+import org.opensaml.ws.soap.soap11.Fault;
+import org.opensaml.ws.soap.soap11.FaultActor;
+import org.opensaml.ws.soap.soap11.FaultCode;
+import org.opensaml.ws.soap.soap11.FaultString;
 import org.opensaml.ws.soap.soap11.Header;
 import org.opensaml.ws.soap.soap11.MustUnderstandBearing;
 import org.opensaml.xml.AttributeExtensibleXMLObject;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.XMLObject;
+import org.opensaml.xml.XMLObjectBuilderFactory;
 import org.opensaml.xml.schema.XSBooleanValue;
 import org.opensaml.xml.util.AttributeMap;
 import org.opensaml.xml.util.DatatypeHelper;
@@ -460,11 +468,13 @@ public final class SOAPHelper {
      * 
      * @param msgContext the message context being processed
      * @param headerName the name of the header block to return 
-     * @param targetNodes the specific SOAP nodes to which the header is targeted.  Null or empty set means
-     *              the final destination
+     * @param targetNodes the explicitly specified SOAP node actors (1.1) or roles (1.2) for which the header is desired
+     * @param isFinalDestination true specifies that headers targeted for message final destination should be returned,
+     *          false means they should not be returned
      * @return the list of matching header blocks
      */
-    public static List<XMLObject> getInboundHeaderBlock(MessageContext msgContext, QName headerName, Set<String> targetNodes) {
+    public static List<XMLObject> getInboundHeaderBlock(MessageContext msgContext, QName headerName,
+            Set<String> targetNodes, boolean isFinalDestination) {
         XMLObject inboundEnvelope = msgContext.getInboundMessage();
         if (inboundEnvelope == null) {
             throw new IllegalArgumentException("Message context does not contain an inbound SOAP envelope");
@@ -472,7 +482,7 @@ public final class SOAPHelper {
         
         // SOAP 1.1 Envelope
         if (inboundEnvelope instanceof Envelope) {
-            return getSOAP11HeaderBlock((Envelope) inboundEnvelope, headerName, targetNodes);
+            return getSOAP11HeaderBlock((Envelope) inboundEnvelope, headerName, targetNodes, isFinalDestination);
         }
         
         //TODO SOAP 1.2 support when object providers are implemented
@@ -485,11 +495,13 @@ public final class SOAPHelper {
      * 
      * @param msgContext the message context being processed
      * @param headerName the name of the header block to return 
-     * @param targetNodes the specific SOAP nodes to which the header is targeted.  Null or empty set means
-     *              the final destination
+     * @param targetNodes the explicitly specified SOAP node actors (1.1) or roles (1.2) for which the header is desired
+     * @param isFinalDestination true specifies that headers targeted for message final destination should be returned,
+     *          false specifies they should not be returned
      * @return the list of matching header blocks
      */
-    public static List<XMLObject> getOutboundHeaderBlock(MessageContext msgContext, QName headerName, Set<String> targetNodes) {
+    public static List<XMLObject> getOutboundHeaderBlock(MessageContext msgContext, QName headerName,
+            Set<String> targetNodes, boolean isFinalDestination) {
         XMLObject outboundEnvelope = msgContext.getOutboundMessage();
         if (outboundEnvelope == null) {
             throw new IllegalArgumentException("Message context does not contain an outbound SOAP envelope");
@@ -497,7 +509,7 @@ public final class SOAPHelper {
         
         // SOAP 1.1 Envelope
         if (outboundEnvelope instanceof Envelope) {
-            return getSOAP11HeaderBlock((Envelope) outboundEnvelope, headerName, targetNodes);
+            return getSOAP11HeaderBlock((Envelope) outboundEnvelope, headerName, targetNodes, isFinalDestination);
         }
         
         //TODO SOAP 1.2 support when object providers are implemented
@@ -509,26 +521,50 @@ public final class SOAPHelper {
      * 
      * @param envelope the SOAP 1.1 envelope to process 
      * @param headerName the name of the header block to return 
-     * @param targetNodes the specific SOAP nodes to which the header is targeted.  Null or empty set means
-     *              the final destination
+     * @param targetNodes the explicitly specified SOAP node actors for which the header is desired
+     * @param isFinalDestination true specifies that headers targeted for message final destination should be returned,
+     *          false specifies they should not be returned
      * @return the list of matching header blocks
      */
-    public static List<XMLObject> getSOAP11HeaderBlock(Envelope envelope, QName headerName, Set<String> targetNodes) {
+    public static List<XMLObject> getSOAP11HeaderBlock(Envelope envelope, QName headerName, Set<String> targetNodes,
+            boolean isFinalDestination) {
         Header envelopeHeader = envelope.getHeader();
         if (envelopeHeader == null) {
             return Collections.emptyList();
         }
         ArrayList<XMLObject> headers = new ArrayList<XMLObject>();
         for (XMLObject header : envelopeHeader.getUnknownXMLObjects(headerName)) {
-            String headerActor = getSOAP11ActorAttribute(header);
-            if (headerActor == null && (targetNodes == null || targetNodes.isEmpty())) {
-                headers.add(header);
-            } else if (targetNodes != null && targetNodes.contains(headerActor)) {
+            if (isSOAP11HeaderTargetedToNode(header, targetNodes, isFinalDestination)) {
                 headers.add(header);
             }
         }
         
         return headers;
+    }
+    
+    /**
+     * Evaluate whether the specified header block is targeted to a SOAP 1.1 node given the specified 
+     * parameters.
+     * 
+     * @param header the header to evaluate
+     * @param nodeActors the explicitly specified node actors for which the header is desired
+     * @param isFinalDestination true specifies that headers targeted for message final destination should be returned,
+     *          false specifies they should not be returned
+     * @return the list of matching header blocks
+     */
+    public static boolean isSOAP11HeaderTargetedToNode(XMLObject header, Set<String> nodeActors,
+            boolean isFinalDestination) {
+        String headerActor = getSOAP11ActorAttribute(header);
+        if (headerActor == null) {
+            if (isFinalDestination) {
+                return true;
+            }
+        } else if (ActorBearing.SOAP11_ACTOR_NEXT.equals(headerActor)) {
+            return true;
+        } else if (nodeActors != null && nodeActors.contains(headerActor)) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -549,5 +585,75 @@ public final class SOAPHelper {
         }
         //TODO SOAP 1.2 support when object providers are implemented
         return false;
+    }
+    
+    /**
+     * Build a SOAP 1.1. Fault element.
+     * 
+     * @param faultCode the 'faultcode' QName (required)
+     * @param faultString the 'faultstring' value (required)
+     * @param faultActor the 'faultactor' value (may be null)
+     * @param detailChildren the 'detail' child elements
+     * @param detailAttributes the 'detail' element attributes
+     * @return the new Fault element object
+     */
+    public static Fault buildSOAP11Fault(QName faultCode, String faultString, String faultActor,
+            List<XMLObject> detailChildren, Map<QName, String> detailAttributes) {
+        if (faultCode == null) {
+            throw new IllegalArgumentException("Argument for 'faultcode' may not be null");
+        }
+        if (faultString == null) {
+            throw new IllegalArgumentException("Argument for 'faultstring' may not be null");
+        }
+        
+        XMLObjectBuilderFactory builderFactory = Configuration.getBuilderFactory(); 
+        
+        Fault faultObj =  (Fault) builderFactory.getBuilder(Fault.DEFAULT_ELEMENT_NAME)
+            .buildObject(Fault.DEFAULT_ELEMENT_NAME);
+        FaultCode faultCodeObj =  (FaultCode) builderFactory.getBuilder(FaultCode.DEFAULT_ELEMENT_NAME)
+            .buildObject(FaultCode.DEFAULT_ELEMENT_NAME);
+        FaultString faultStringObj =  (FaultString) builderFactory.getBuilder(FaultString.DEFAULT_ELEMENT_NAME)
+            .buildObject(FaultString.DEFAULT_ELEMENT_NAME);
+        
+        faultCodeObj.setValue(faultCode);
+        faultObj.setCode(faultCodeObj);
+        
+        faultStringObj.setValue(faultString);
+        faultObj.setMessage(faultStringObj);
+        
+        if (faultActor != null) {
+            FaultActor faultActorObj =  (FaultActor) builderFactory.getBuilder(FaultActor.DEFAULT_ELEMENT_NAME)
+                .buildObject(FaultActor.DEFAULT_ELEMENT_NAME);
+            faultActorObj.setValue(faultActor);
+            faultObj.setActor(faultActorObj);
+        }
+            
+        Detail detailObj = null;
+        if (detailChildren != null && !detailChildren.isEmpty()) {
+            detailObj = (Detail) builderFactory.getBuilder(Detail.DEFAULT_ELEMENT_NAME)
+                .buildObject(Detail.DEFAULT_ELEMENT_NAME);
+            for (XMLObject xo : detailChildren) {
+                if (xo != null) {
+                    detailObj.getUnknownXMLObjects().add(xo);
+                }
+            }
+        }
+        if (detailAttributes != null && !detailAttributes.isEmpty()) {
+            if (detailObj == null) {
+                detailObj = (Detail) builderFactory.getBuilder(Detail.DEFAULT_ELEMENT_NAME)
+                    .buildObject(Detail.DEFAULT_ELEMENT_NAME);
+            }
+            for (Entry<QName,String> entry : detailAttributes.entrySet()) {
+                if (entry.getKey() != null && entry.getValue() != null) {
+                    detailObj.getUnknownAttributes().put(entry.getKey(), entry.getValue());
+                }
+            }
+        }
+        if (detailObj != null && 
+                (!detailObj.getUnknownXMLObjects().isEmpty() || !detailObj.getUnknownAttributes().isEmpty())) {
+            faultObj.setDetail(detailObj);
+        }
+        
+        return faultObj;
     }
 }
