@@ -40,22 +40,22 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>1.5.6</version>
+            <version>1.5.8</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>jcl-over-slf4j</artifactId>
-            <version>1.5.6</version>
+            <version>1.5.8</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>log4j-over-slf4j</artifactId>
-            <version>1.5.6</version>
+            <version>1.5.8</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>jul-to-slf4j</artifactId>
-            <version>1.5.6</version>
+            <version>1.5.8</version>
         </dependency>
         <dependency>
             <groupId>joda-time</groupId>
@@ -64,13 +64,13 @@
         </dependency>
         <dependency>
             <groupId>org.bouncycastle</groupId>
-            <artifactId>bcprov-ext-jdk15</artifactId>
-            <version>1.40</version>
+            <artifactId>bcprov-jdk15</artifactId>
+            <version>1.43</version>
         </dependency>
         <dependency>
             <groupId>org.apache.santuario</groupId>
             <artifactId>xmlsec</artifactId>
-            <version>1.4.2</version>
+            <version>1.4.3</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons.ssl</groupId>

@@ -84,7 +84,7 @@ public class HMACSignatureTest extends XMLObjectBaseTestCase {
     protected void setUp() throws Exception {
         super.setUp();
         
-        hmacOutputLength = new Integer(64);
+        hmacOutputLength = new Integer(160);
         expectedKeyName = "KeyFoo123";
         
         SecretKey key = SecurityHelper.generateKey("AES", 128, null);
