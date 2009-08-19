@@ -12,6 +12,7 @@ Changes in Release 1.2.1
 [JXT-57] - Deprecate SecurityHelperTest class in favor of moving methods over to main SecurityHelper class
 [JXT-59] - Add additional helper methods to XMLHelper to assist with more complex attribute marshalling and unmarshalling cases
 [JXT-61] - Provide support for cloning an XMLObject via a helper utility method
+[JXT-62] - Default namespace defining attribute names converted to "xmlns:xmlns" during unmarshalling
 
 Changes in Release 1.2
 ==============================================

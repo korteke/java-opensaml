@@ -76,15 +76,34 @@ public abstract class AbstractXMLObject implements XMLObject {
         idIndex = new IDIndex(this);
         namespaces = new LazySet<Namespace>();
         elementQname = XMLHelper.constructQName(namespaceURI, elementLocalName, namespacePrefix);
-        addNamespace(new Namespace(namespaceURI, namespacePrefix));
-        setElementNamespacePrefix(namespacePrefix);
+        if(namespaceURI != null){
+            addNamespace(new Namespace(namespaceURI, namespacePrefix));
+            setElementNamespacePrefix(namespacePrefix);
+        }
     }
     
     /** {@inheritDoc} */
-    public void addNamespace(Namespace namespace) {
-        if (namespace != null) {
-            namespaces.add(namespace);
+    public void addNamespace(Namespace newNamespace) {
+        if(newNamespace == null){
+            return;
         }
+        
+        if(namespaces.size() == 0){
+            namespaces.add(newNamespace);
+            return;
+        }
+        
+        for(Namespace namespace : namespaces){
+            if(DatatypeHelper.safeEquals(namespace.getNamespaceURI(), newNamespace.getNamespaceURI()) &&
+                    DatatypeHelper.safeEquals(namespace.getNamespacePrefix(), newNamespace.getNamespacePrefix())){
+                if(newNamespace.alwaysDeclare()){
+                    namespace.setAlwaysDeclare(true);
+                    return;
+                }
+            }
+        }
+        
+        namespaces.add(newNamespace);
     }
 
     /** {@inheritDoc} */

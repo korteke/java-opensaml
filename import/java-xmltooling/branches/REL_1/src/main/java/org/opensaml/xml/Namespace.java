@@ -1,5 +1,5 @@
 /*
- * Copyright [2005] [University Corporation for Advanced Internet Development, Inc.]
+ * Copyright 2005 University Corporation for Advanced Internet Development, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,9 +19,7 @@ package org.opensaml.xml;
 import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.util.XMLConstants;
 
-/**
- * Data structure for representing XML namespace attributes.
- */
+/** Data structure for representing XML namespace attributes. */
 public class Namespace {
 
     /** URI of the namespace. */
@@ -56,7 +54,7 @@ public class Namespace {
     /**
      * Gets the prefix of the namespace.
      * 
-     * @return the prefix of the namespace
+     * @return the prefix of the namespace, may be null if this is a default namespace
      */
     public String getNamespacePrefix() {
         return namespacePrefix;
@@ -157,9 +155,7 @@ public class Namespace {
         return false;
     }
 
-    /**
-     * Constructs an XML namespace declaration string representing this namespace.
-     */
+    /** Constructs an XML namespace declaration string representing this namespace. */
     protected void constructStringRepresentation() {
         StringBuffer stringRep = new StringBuffer();
 

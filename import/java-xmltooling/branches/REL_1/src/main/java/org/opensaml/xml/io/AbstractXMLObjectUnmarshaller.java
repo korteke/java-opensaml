@@ -246,7 +246,12 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
     protected void unmarshallNamespaceAttribute(XMLObject xmlObject, Attr attribute) {
         log.trace("{} is a namespace declaration, adding it to the list of namespaces on the XMLObject", XMLHelper
                 .getNodeQName(attribute));
-        Namespace namespace = new Namespace(attribute.getValue(), attribute.getLocalName());
+        Namespace namespace;
+        if(DatatypeHelper.safeEquals(attribute.getLocalName(), XMLConstants.XMLNS_PREFIX)){
+            namespace = new Namespace(attribute.getValue(), null);
+        }else{
+            namespace = new Namespace(attribute.getValue(), attribute.getLocalName());
+        }
         namespace.setAlwaysDeclare(true);
         xmlObject.addNamespace(namespace);
     }

@@ -59,9 +59,11 @@ import org.w3c.dom.ls.LSSerializer;
  * A helper class for working with W3C DOM objects.
  */
 public final class XMLHelper {
-   
-    /** A string which contains the valid delimiters for the XML Schema 'list' type. These
-     * are: space, newline, carriage return, and tab. */
+
+    /**
+     * A string which contains the valid delimiters for the XML Schema 'list' type. These are: space, newline, carriage
+     * return, and tab.
+     */
     public static final String LIST_DELIMITERS = " \n\r\t";
 
     /** JAXP DatatypeFactory. */
@@ -171,11 +173,11 @@ public final class XMLHelper {
 
         return null;
     }
-    
+
     /**
-     * Gets the lcoale currently active for the element.  This is done by looking for an xml:lang attribute 
-     * and parsing its content.  If no xml:lang attribute is present the default locale is returned.  This method 
-     * only uses the language primary tag, as defined by RFC3066.
+     * Gets the lcoale currently active for the element. This is done by looking for an xml:lang attribute and parsing
+     * its content. If no xml:lang attribute is present the default locale is returned. This method only uses the
+     * language primary tag, as defined by RFC3066.
      * 
      * @param element element to retrieve local information for
      * 
@@ -183,12 +185,12 @@ public final class XMLHelper {
      */
     public static Locale getLanguage(Element element) {
         String lang = DatatypeHelper.safeTrimOrNullString(element.getAttributeNS(XMLConstants.XML_NS, "lang"));
-        if(lang != null){
-            if(lang.contains("-")){
+        if (lang != null) {
+            if (lang.contains("-")) {
                 lang = lang.substring(0, lang.indexOf("-"));
             }
             return new Locale(lang.toUpperCase());
-        }else{
+        } else {
             return Locale.getDefault();
         }
     }
@@ -269,10 +271,10 @@ public final class XMLHelper {
      * @return boolean value of the attribute or null
      */
     public static Boolean getAttributeValueAsBoolean(Attr attribute) {
-        if(attribute == null){
+        if (attribute == null) {
             return null;
         }
-        
+
         String valueStr = attribute.getValue();
         if (valueStr.equals("0") || valueStr.equals("false")) {
             return Boolean.FALSE;
@@ -296,16 +298,16 @@ public final class XMLHelper {
         }
         return DatatypeHelper.stringToList(attribute.getValue(), LIST_DELIMITERS);
     }
-    
+
     /**
-     * Marshall an attribute name and value to a DOM Element. This is particularly useful
-     * for attributes whose names appear in namespace-qualified form.
+     * Marshall an attribute name and value to a DOM Element. This is particularly useful for attributes whose names
+     * appear in namespace-qualified form.
      * 
      * @param attributeName the attribute name in QName form
      * @param attributeValue the attribute value
      * @param domElement the target element to which to marshall
-     * @param isIDAttribute flag indicating whether the attribute being marshalled
-     *          should be handled as an ID-typed attribute
+     * @param isIDAttribute flag indicating whether the attribute being marshalled should be handled as an ID-typed
+     *            attribute
      */
     public static void marshallAttribute(QName attributeName, String attributeValue, Element domElement,
             boolean isIDAttribute) {
@@ -317,23 +319,23 @@ public final class XMLHelper {
             domElement.setIdAttributeNode(attribute, true);
         }
     }
-    
+
     /**
-     * Marshall an attribute name and value to a DOM Element. This is particularly useful
-     * for attributes whose names appear in namespace-qualified form.
+     * Marshall an attribute name and value to a DOM Element. This is particularly useful for attributes whose names
+     * appear in namespace-qualified form.
      * 
      * @param attributeName the attribute name in QName form
      * @param attributeValues the attribute values
      * @param domElement the target element to which to marshall
-     * @param isIDAttribute flag indicating whether the attribute being marshalled
-     *          should be handled as an ID-typed attribute
+     * @param isIDAttribute flag indicating whether the attribute being marshalled should be handled as an ID-typed
+     *            attribute
      */
     public static void marshallAttribute(QName attributeName, List<String> attributeValues, Element domElement,
-            boolean isIDAttribute){
-        marshallAttribute(attributeName, DatatypeHelper.listToStringValue(attributeValues, " "),
-                domElement, isIDAttribute);
+            boolean isIDAttribute) {
+        marshallAttribute(attributeName, DatatypeHelper.listToStringValue(attributeValues, " "), domElement,
+                isIDAttribute);
     }
-    
+
     /**
      * Marshall the attributes represented by the indicated AttributeMap into the indicated DOM Element.
      * 
@@ -352,7 +354,7 @@ public final class XMLHelper {
             }
         }
     }
-    
+
     /**
      * Unmarshall a DOM Attr to an AttributeMap.
      * 
@@ -360,8 +362,8 @@ public final class XMLHelper {
      * @param attribute the target DOM Attr
      */
     public static void unmarshallToAttributeMap(AttributeMap attributeMap, Attr attribute) {
-        QName attribQName = 
-            XMLHelper.constructQName(attribute.getNamespaceURI(), attribute.getLocalName(), attribute.getPrefix());
+        QName attribQName = XMLHelper.constructQName(attribute.getNamespaceURI(), attribute.getLocalName(), attribute
+                .getPrefix());
         attributeMap.put(attribQName, attribute.getValue());
         if (attribute.isId() || Configuration.isIDAttribute(attribQName)) {
             attributeMap.registerID(attribQName);
@@ -447,7 +449,7 @@ public final class XMLHelper {
     public static QName constructQName(String qname, XMLObject owningObject) {
         return constructQName(qname, owningObject.getDOM());
     }
-    
+
     /**
      * Constructs a QName from a string (attribute element content) value.
      * 
@@ -572,7 +574,7 @@ public final class XMLHelper {
     public static void appendNamespaceDeclaration(Element domElement, String namespaceURI, String prefix) {
         String nsURI = DatatypeHelper.safeTrimOrNullString(namespaceURI);
         String nsPrefix = DatatypeHelper.safeTrimOrNullString(prefix);
-        
+
         // This results in xmlns="" being emitted, which seems wrong.
         if (nsURI == null && nsPrefix == null) {
             return;
@@ -619,17 +621,13 @@ public final class XMLHelper {
      * doesn't have an namespace delcaration attribute.
      * 
      * @param startingElement the starting element
-     * @param stopingElement the ancestor of the starting element that serves as the upper-bound for the search
+     * @param stopingElement the ancestor of the starting element that serves as the upper-bound, inclusive, for the search
      * @param prefix the prefix to look up
      * 
      * @return the namespace URI for the given prefer or null
      */
     public static String lookupNamespaceURI(Element startingElement, Element stopingElement, String prefix) {
         String namespaceURI;
-
-        if (startingElement == stopingElement) {
-            return null;
-        }
 
         // This code is a modified version of the lookup code within Xerces
         if (startingElement.hasAttributes()) {
@@ -654,10 +652,11 @@ public final class XMLHelper {
             }
         }
 
-        Element ancestor = getElementAncestor(startingElement);
-
-        if (ancestor != null) {
-            return lookupNamespaceURI(ancestor, stopingElement, prefix);
+        if(startingElement != stopingElement){
+            Element ancestor = getElementAncestor(startingElement);
+            if (ancestor != null) {
+                return lookupNamespaceURI(ancestor, stopingElement, prefix);
+            }
         }
 
         return null;
@@ -687,17 +686,13 @@ public final class XMLHelper {
      * doesn't have an namespace delcaration attribute.
      * 
      * @param startingElement the starting element
-     * @param stopingElement the ancestor of the starting element that serves as the upper-bound for the search
+     * @param stopingElement the ancestor of the starting element that serves as the upper-bound, inclusive, for the search
      * @param namespaceURI the uri to look up
      * 
      * @return the prefix for the given namespace URI
      */
     public static String lookupPrefix(Element startingElement, Element stopingElement, String namespaceURI) {
         String namespace;
-
-        if (startingElement == stopingElement) {
-            return null;
-        }
 
         // This code is a modified version of the lookup code within Xerces
         if (startingElement.hasAttributes()) {
@@ -724,11 +719,14 @@ public final class XMLHelper {
                 }
             }
         }
-        Element ancestor = getElementAncestor(startingElement);
-
-        if (ancestor != null) {
-            return lookupPrefix(ancestor, stopingElement, namespaceURI);
+        
+        if(startingElement != stopingElement){
+            Element ancestor = getElementAncestor(startingElement);
+            if (ancestor != null) {
+                return lookupPrefix(ancestor, stopingElement, namespaceURI);
+            }
         }
+        
         return null;
     }
 
@@ -944,24 +942,39 @@ public final class XMLHelper {
      */
     private static void rootNamespaces(Element domElement, Element upperNamespaceSearchBound) throws XMLParserException {
         String namespaceURI = null;
-        String namespacePrefix = null;
+        String namespacePrefix = domElement.getPrefix();
 
-        // Make sure this element's namespace is rooted or has been rooted in an ancestor
-        namespacePrefix = domElement.getPrefix();
-        if (DatatypeHelper.isEmpty(namespacePrefix)) {
-            namespaceURI = lookupNamespaceURI(upperNamespaceSearchBound, "");
+        // Check if the namespace for this element is already declared on this element
+        boolean nsDeclaredOnElement = false;
+        if (namespacePrefix == null) {
+            nsDeclaredOnElement = domElement.hasAttributeNS(null, XMLConstants.XMLNS_PREFIX);
         } else {
-            namespaceURI = lookupNamespaceURI(domElement, upperNamespaceSearchBound, namespacePrefix);
+            nsDeclaredOnElement = domElement.hasAttributeNS(XMLConstants.XMLNS_NS, namespacePrefix);
         }
 
-        if (namespaceURI == null) {
-            namespaceURI = lookupNamespaceURI(upperNamespaceSearchBound, null, namespacePrefix);
-            if (namespaceURI == null) {
-                throw new XMLParserException("Unable to resolve namespace prefix " + namespacePrefix
-                        + " found on element " + getNodeQName(domElement));
-            }
+        if (!nsDeclaredOnElement) {
+            // Namspace for element was not declared on the element itself, see if the namespace is declared on
+            // an ancestral element within the subtree where namespaces much be rooted
+            namespaceURI = lookupNamespaceURI(domElement, upperNamespaceSearchBound, namespacePrefix);
 
-            appendNamespaceDeclaration(domElement, namespaceURI, namespacePrefix);
+            if (namespaceURI == null) {
+                // Namespace for the element is not declared on any ancestral nodes within the subtree where namespaces
+                // must be rooted. Resolve the namespace from ancestors outside that subtree.
+                namespaceURI = lookupNamespaceURI(upperNamespaceSearchBound, null, namespacePrefix);
+                if (namespaceURI != null) {
+                    // Namespace resolved outside the subtree where namespaces must be declared so declare the namespace
+                    // on this element (within the subtree).
+                    appendNamespaceDeclaration(domElement, namespaceURI, namespacePrefix);
+                } else {
+                    // Namespace couldn't be resolved from any ancestor. If the namespace prefix is null then the
+                    // element is simply in the undeclared default document namespace, which is fine. If it isn't null 
+                    // then a namespace prefix, that hasn't properly been declared, is being used.
+                    if (namespacePrefix != null) {
+                        throw new XMLParserException("Unable to resolve namespace prefix " + namespacePrefix
+                                + " found on element " + getNodeQName(domElement));
+                    }
+                }
+            }
         }
 
         // Make sure all the attribute URIs are rooted here or have been rooted in an ancestor
