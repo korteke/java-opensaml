@@ -2,6 +2,7 @@ Changes in Release 1.2.1
 ==============================================
 [JXT-30] - Fix some minor race conditions in BasicParserPool
 [JXT-46] - Thrown under moderate load: org.xml.sax.SAXException: FWK005 parse may not be called while parsing.
+[JXT-48] - 
 [JXT-49] - Remove some inconsistent (and non-functional) logic in BasicParserPool
 [JXT-50] - Update libs for 1.2.1 release
 [JXT-51] - In BasicParserPool, avoid throwing an EmptyStackException on empty cache case
