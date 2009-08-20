@@ -24,6 +24,7 @@ import org.opensaml.xml.security.CriteriaSet;
 
 
 /**
+ * <strong>NOTE:</strong> this class is not yet implemented
  * A {@link CredentialResolver} that pulls credential information from the file system.
  * 
  * This credential resolver attempts to retrieve credential information from the file system. Specifically it will
@@ -48,12 +49,10 @@ public class FilesystemCredentialResolver extends AbstractCriteriaFilteringCrede
      */
     public FilesystemCredentialResolver(String credentialDirectory, Map<String, String> passwords) {
         super();
-        // TODO
     }
 
     /** {@inheritDoc} */
     protected Iterable<Credential> resolveFromSource(CriteriaSet criteriaSet) {
-        // TODO Auto-generated method stub
-        return null;
+        throw new UnsupportedOperationException("Functionality not yet implemented");
     }
 }

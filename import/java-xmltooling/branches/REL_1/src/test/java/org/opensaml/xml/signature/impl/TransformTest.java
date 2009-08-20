@@ -88,10 +88,7 @@ public class TransformTest extends XMLObjectProviderBaseTestCase {
         transform.getAllChildren().add( buildXMLObject(SimpleXMLObject.ELEMENT_NAME));
         transform.getAllChildren().add( buildXMLObject(XPath.DEFAULT_ELEMENT_NAME));
         transform.getAllChildren().add( buildXMLObject(SimpleXMLObject.ELEMENT_NAME));
-        
-        // TODO investigate - XMLUnit does not fail the test if the 
-        // above children are added in a different order than the control 
-        // XML file.  XMLTooling *does* marshall them in the correct order.
+
         assertEquals(expectedChildElementsDOM, transform);
     }
 
