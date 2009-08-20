@@ -67,7 +67,8 @@ public class SOAP11Decoder extends BaseHandlerChainAwareMessageDecoder {
     public void decode(MessageContext messageContext) throws MessageDecodingException, SecurityException {
             super.decode(messageContext);
         
-            checkUnderstoodSOAPHeaders(messageContext);
+            // TODO enable once header checking support is completed
+            // checkUnderstoodSOAPHeaders(messageContext);
     }
     
     /**
