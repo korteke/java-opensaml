@@ -1,0 +1,59 @@
+Changes in Release 2.3.0
+=============================================
+[JOST-28] - BaseSAML1MessageDecoder and subclasses mistakenly take an ArtifactMap as a constructor arg
+[JOST-69] - BasicSAMLArtifactMap dereferences a pointer that might be null
+[JOST-76] - Relax requirement that HTTP requests be GETs when using Redirect and Artifact Binding
+[JOST-77] - Metadata refresh causes ConcurrentModificationException and idp failure
+[JOST-78] - Update libs for 2.2.4 release
+[JOST-79] - StatusDetail builder is missing from saml2-protocol-config.properties file
+[JOST-83] - Add object provider support for Condition for Delegation Restriction extension schema
+[JOST-85] - metadata missing entityId causes NullPointerException
+[JOST-86] - In absense of matching endpoint, IDP choose the first ACS in metadata.
+[JOST-87] - In org.opensaml.saml2.binding.encoding.BaseSAML2MessageEncoder OutboundMessage should be compared against StatusResponseType instead of Response
+[JOST-89] - Create XMLObject object provider for IdP Discovery Protocol endpoint
+* Add object provider support for SAML 2 ECP schema
+
+Changes in Release 2.2.3
+=============================================
+[JOST-70] - ActionType typo in xacml20-context-config.xml
+[JOST-71] - Wrong localname in StatusMessageTypeImplBuilder 
+[JOST-72] - XACMLAuthzDecisionQuery : returncontext attribute not handled properly by marshaller
+* Add various XACML constants
+* Major memory usage improvements
+* Pick up latest version of libs
+
+
+Changes in Release 2.2.2
+=============================================
+[JOST-66] Cleanup ArtifactMap related classes
+[JOST-67] SAML 1 and 2 POST encoders rely on system encoding when providing the bytes for Base64 encoding
+* Update logging libraries to grab some bug fixes
+
+Changes in Release 2.2.1
+=============================================
+[JOST-64] - Multiple calls to ChainingMetadataProvider#getMetadata result in "EntitiesDescriptor is already the child of another XMLObject" exception
+
+Changes in Release 2.2.0
+=============================================
+[JOST-32] - MetadataSignatureFilter should verify signatures on RoleDescriptor and AffiliationDescriptor elements
+[JOST-35] - some XACML elements not correctly marshalled
+[JOST-37] - inline policies in XACML policy sets cannot be unmarshalled
+[JOST-38] - Marshalling problem for AttributeAssignmentType
+[JOST-39] - ReferencedPolicies not used correctly
+[JOST-40] - Misspelled method name in ReferencedPoliciesType
+[JOST-42] - Missing function for PolicySetType choice group
+[JOST-43] - Method setExpression() of class ExpressionType doesn't work
+[JOST-44] - Method getAttributeValues() of AttributeType should return List<AttributeValueType>
+[JOST-45] - Missing StatusMessage and Description XACML object implementations
+[JOST-46] - Method getPolicies of PolicySetType returns null
+[JOST-48] - Add feature to require validUntil expiration on metadata
+[JOST-49] - cacheDuration and validUntil values in metadata are ignored
+[JOST-50] - Security policy rule which evaluates and enforces SAML 2 metadata SPSSODescriptor/@AuthnRequestsSigned
+[JOST-51] - Issue with multiple obligation handlers
+[JOST-53] - boolean values can not be nulled. Setters should take Boolean objects as in the SAML classes
+[JOST-54] - New addObligationhandlers method in ObligationService
+[JOST-62] - Add version information in library JAR manifest and provide command line tool to view it
+
+Changes in Release 2.1.0
+=============================================
+* Addition of contributed XACML code
