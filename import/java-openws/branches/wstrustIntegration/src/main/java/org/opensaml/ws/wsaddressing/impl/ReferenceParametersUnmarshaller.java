@@ -24,7 +24,7 @@ import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Attr;
 
 /**
- * MetadataUnmarshaller.
+ * ReferenceParametersUnmarshaller.
  * 
  */
 public class ReferenceParametersUnmarshaller extends AbstractWSAddressingObjectUnmarshaller {
@@ -39,7 +39,7 @@ public class ReferenceParametersUnmarshaller extends AbstractWSAddressingObjectU
     protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
             throws UnmarshallingException {
         ReferenceParameters rp = (ReferenceParameters) parentXMLObject;
-        rp.getUnknownXMLObjects().add(rp);
+        rp.getUnknownXMLObjects().add(childXMLObject);
     }
 
 }

@@ -16,13 +16,12 @@
 
 package org.opensaml.util.resource;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
 
 import junit.framework.TestCase;
+
+import org.opensaml.xml.util.DatatypeHelper;
 
 /** Unit test for {@link PropertyReplacementResourceFilter}. */
 public class PropertyReplacementResourceFilterTest extends TestCase {
@@ -42,19 +41,10 @@ public class PropertyReplacementResourceFilterTest extends TestCase {
         File propsFile = new File(PropertyReplacementResourceFilterTest.class.getResource(propsFilePath).toURI());
         PropertyReplacementResourceFilter filter = new PropertyReplacementResourceFilter(propsFile);
 
-        InputStream result = filter.applyFilter(PropertyReplacementResourceFilterTest.class
+        InputStream resultIns = filter.applyFilter(PropertyReplacementResourceFilterTest.class
                 .getResourceAsStream(testFilePath));
+        String result = DatatypeHelper.inputstreamToString(resultIns, null);
 
-        StringBuilder resourceBuffer = new StringBuilder();
-        Reader resourceReader = new BufferedReader(new InputStreamReader(result));
-
-        char[] resourceCharacters = new char[2048];
-        while (resourceReader.read(resourceCharacters) > -1) {
-            resourceBuffer.append(resourceCharacters);
-            resourceCharacters = new char[2048];
-        }
-        result.close();
-
-        assertEquals("value1\nvalue2\nvalue1\n${key3}", resourceBuffer.toString().trim());
+        assertEquals("value1\nvalue2\nvalue1\n${key3}", result.trim());
     }
 }

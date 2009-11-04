@@ -1,5 +1,5 @@
 /*
- * Copyright [2006] [University Corporation for Advanced Internet Development, Inc.]
+ * Copyright 2009 University Corporation for Advanced Internet Development, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -69,7 +69,7 @@ public final class WSAddressingHelper {
         if (soapObject instanceof AttributeExtensibleXMLObject) {
             String valueStr = DatatypeHelper.safeTrimOrNullString(((AttributeExtensibleXMLObject)soapObject)
                     .getUnknownAttributes().get(IsReferenceParameterBearing.WSA_IS_REFERENCE_PARAMETER_ATTR_NAME)); 
-            return valueStr.equals("1") || valueStr.equals("true");
+            return DatatypeHelper.safeEquals("1", valueStr) || DatatypeHelper.safeEquals("true", valueStr);
         }
         return false;
     }

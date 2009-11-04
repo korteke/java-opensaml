@@ -16,21 +16,31 @@
 
 package org.opensaml.util.resource;
 
+import java.io.InputStream;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /** A {@link Resource} whose contents may be run through a filter as it is being read. */
 public abstract class AbstractFilteredResource implements Resource {
+    
+    /** Class logger. */
+    private final Logger log = LoggerFactory.getLogger(AbstractFilteredResource.class);
 
     /** Associated resource filter. */
     private ResourceFilter resourceFilter;
-    
+
     /** Constructor. */
-    protected AbstractFilteredResource(){
-        
+    protected AbstractFilteredResource() {
+
     }
 
     /**
      * Constructor.
      * 
      * @param filter the filter used on the resource
+     * 
+     * @deprecated use {@link #setResourceFilter(ResourceFilter)} instead
      */
     protected AbstractFilteredResource(ResourceFilter filter) {
         resourceFilter = filter;
@@ -43,5 +53,34 @@ public abstract class AbstractFilteredResource implements Resource {
      */
     public ResourceFilter getResourceFilter() {
         return resourceFilter;
+    }
+    
+    /**
+     * Sets the resource filter associated with this resource.
+     * 
+     * @param filter filter associated with this resource
+     */
+    public void setResourceFilter(ResourceFilter filter){
+        resourceFilter = filter;
+    }
+
+    /**
+     * Applies the filter to the given stream resulting in the returned stream. If no filter is set than the given
+     * stream is the returned stream.
+     * 
+     * @param stream the stream to filter
+     * 
+     * @return the filtered stream
+     * 
+     * @throws ResourceException thrown if the filter can not be applied to the stream
+     */
+    protected InputStream applyFilter(InputStream stream) throws ResourceException {
+        ResourceFilter filter = getResourceFilter();
+        if (filter != null) {
+            log.debug("Apply filter '{}' to resource '{}'", filter.getClass(), this.getLocation());
+            return getResourceFilter().applyFilter(stream);
+        } else {
+            return stream;
+        }
     }
 }

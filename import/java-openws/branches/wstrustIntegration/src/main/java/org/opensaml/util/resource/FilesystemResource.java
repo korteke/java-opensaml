@@ -76,6 +76,8 @@ public class FilesystemResource extends AbstractFilteredResource {
      * @param resourceFilter filter to apply to this resource
      * 
      * @throws ResourceException thrown if the resource path is null or empty
+     * 
+     * @deprecated use {@link #setResourceFilter(ResourceFilter)} instead
      */
     public FilesystemResource(String resourcePath, ResourceFilter resourceFilter) throws ResourceException {
         super(resourceFilter);
@@ -96,6 +98,7 @@ public class FilesystemResource extends AbstractFilteredResource {
      * @throws ResourceException thrown if the resource path is null or empty
      * 
      * @since 1.2.0
+     * @deprecated use {@link #setResourceFilter(ResourceFilter)} instead
      */
     public FilesystemResource(URI resourceURI, ResourceFilter resourceFilter) throws ResourceException {
         super(resourceFilter);
@@ -116,11 +119,7 @@ public class FilesystemResource extends AbstractFilteredResource {
     public InputStream getInputStream() throws ResourceException {
         try {
             FileInputStream ins = new FileInputStream(resource);
-            if (getResourceFilter() != null) {
-                return getResourceFilter().applyFilter(ins);
-            } else {
-                return ins;
-            }
+            return applyFilter(ins);
         } catch (FileNotFoundException e) {
             throw new ResourceException("Resource file does not exist: " + resource.getAbsolutePath());
         }

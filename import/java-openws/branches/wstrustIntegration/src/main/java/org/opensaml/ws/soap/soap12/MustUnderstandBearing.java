@@ -36,14 +36,14 @@ public interface MustUnderstandBearing {
     /**
      * Get the attribute value.
      * 
-     * @return return the attribute vlue
+     * @return return the attribute value
      */
     public Boolean isSOAP12MustUnderstand();
     
     /**
      * Get the attribute value.
      * 
-     * @return return the attribute vlue
+     * @return return the attribute value
      */
     public XSBooleanValue isSOAP12MustUnderstandXSBoolean();
     

@@ -18,8 +18,6 @@ package org.opensaml.ws.wssecurity;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.xml.schema.XSString;
-
 /**
  * The &lt;wsu:Created&gt; element.
  * 
