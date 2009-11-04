@@ -16,6 +16,7 @@
 
 package org.opensaml.xml.util;
 
+import java.io.OutputStream;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
@@ -54,6 +55,7 @@ import org.w3c.dom.Text;
 import org.w3c.dom.ls.DOMImplementationLS;
 import org.w3c.dom.ls.LSOutput;
 import org.w3c.dom.ls.LSSerializer;
+import org.w3c.dom.ls.LSSerializerFilter;
 
 /**
  * A helper class for working with W3C DOM objects.
@@ -882,16 +884,28 @@ public final class XMLHelper {
     }
 
     /**
-     * Writes a Node out to a Writer using the DOM, level 3, Load/Save serializer. The writen content is encoded using
+     * Writes a Node out to a Writer using the DOM, level 3, Load/Save serializer. The written content is encoded using
      * the encoding specified in the writer configuration.
      * 
      * @param node the node to write out
      * @param output the writer to write the XML to
+     * 
+     * @deprecated use {@link #writeNode(Node, OutputStream)}
      */
     public static void writeNode(Node node, Writer output) {
         DOMImplementation domImpl = node.getOwnerDocument().getImplementation();
         DOMImplementationLS domImplLS = (DOMImplementationLS) domImpl.getFeature("LS", "3.0");
         LSSerializer serializer = domImplLS.createLSSerializer();
+        serializer.setFilter(new LSSerializerFilter() {
+            
+            public short acceptNode(Node arg0) {
+                return FILTER_ACCEPT;
+            }
+            
+            public int getWhatToShow() {
+                return SHOW_ALL;
+            }
+        });
 
         LSOutput serializerOut = domImplLS.createLSOutput();
         serializerOut.setCharacterStream(output);
@@ -899,6 +913,34 @@ public final class XMLHelper {
         serializer.write(node, serializerOut);
     }
 
+    /**
+     * Writes a Node out to a Writer using the DOM, level 3, Load/Save serializer. The written content is encoded using
+     * the encoding specified in the writer configuration.
+     * 
+     * @param node the node to write out
+     * @param output the output stream to write the XML to
+     */
+    public static void writeNode(Node node, OutputStream output) {
+        DOMImplementation domImpl = node.getOwnerDocument().getImplementation();
+        DOMImplementationLS domImplLS = (DOMImplementationLS) domImpl.getFeature("LS", "3.0");
+        LSSerializer serializer = domImplLS.createLSSerializer();
+        serializer.setFilter(new LSSerializerFilter() {
+            
+            public short acceptNode(Node arg0) {
+                return FILTER_ACCEPT;
+            }
+            
+            public int getWhatToShow() {
+                return SHOW_ALL;
+            }
+        });
+
+        LSOutput serializerOut = domImplLS.createLSOutput();
+        serializerOut.setByteStream(output);
+
+        serializer.write(node, serializerOut);
+    }
+    
     /**
      * Converts a QName into a string that can be used for attribute values or element content.
      * 
