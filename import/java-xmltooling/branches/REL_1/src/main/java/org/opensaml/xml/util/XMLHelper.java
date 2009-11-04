@@ -889,8 +889,6 @@ public final class XMLHelper {
      * 
      * @param node the node to write out
      * @param output the writer to write the XML to
-     * 
-     * @deprecated use {@link #writeNode(Node, OutputStream)}
      */
     public static void writeNode(Node node, Writer output) {
         DOMImplementation domImpl = node.getOwnerDocument().getImplementation();
