@@ -18,128 +18,48 @@ package org.opensaml.ws.wstrust;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.xml.AttributeExtensibleXMLObject;
+import org.opensaml.xml.ElementExtensibleXMLObject;
+
 /**
- * The &lt;wst:RequestSecurityTokenResponse&gt; element (RSTR).
- * <p>
- * The element have the following additional possible child elements:
- * <ul>
- * <li>{@link Authenticator}
- * <li>{@link RequestedAttachedReference}
- * <li>{@link RequestedUnattachedReference}
- * <li>{@link RequestedProofToken}
- * <li>{@link RequestedSecurityToken}
- * <li>{@link Status}
- * </ul>
+ * The wst:RequestSecurityTokenResponse element.
  * 
- * @see RequestSecurityTokenType
  * @see "WS-Trust 1.3 Specification"
  * 
  */
-public interface RequestSecurityTokenResponse extends RequestSecurityTokenType,
-        WSTrustObject {
+public interface RequestSecurityTokenResponse extends ElementExtensibleXMLObject, AttributeExtensibleXMLObject, WSTrustObject {
 
     /** Element local name. */
     public static final String ELEMENT_LOCAL_NAME= "RequestSecurityTokenResponse";
 
     /** Default element name */
-    public final static QName ELEMENT_NAME= new QName(WSTrustConstants.WST_NS,
-                                                      ELEMENT_LOCAL_NAME,
-                                                      WSTrustConstants.WST_PREFIX);
+    public final static QName ELEMENT_NAME =
+        new QName(WSTrustConstants.WST_NS, ELEMENT_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
+    
+    /** Local name of the XSI type. */
+    public static final String TYPE_LOCAL_NAME = "RequestSecurityTokenResponseType"; 
+        
+    /** QName of the XSI type. */
+    public static final QName TYPE_NAME = 
+        new QName(WSTrustConstants.WST_NS, TYPE_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
+    
+    /**
+     * The Context attribute name.
+     */
+    public final static String CONTEXT_ATTRIB_NAME = "Context";
+    
+    /**
+     * Returns the Context attribute value
+     * 
+     * @return The Context attribute value or <code>null</code>.
+     */
+    public String getContext();
 
     /**
-     * Returns the &lt;wst:RequestedSecurityToken&gt; child element.
+     * Sets the Context attribute value
      * 
-     * @return the {@link RequestedSecurityToken} element or <code>null</code>.
+     * @param context The Context attribute value
      */
-    public RequestedSecurityToken getRequestedSecurityToken();
-
-    /**
-     * Sets the &lt;wst:RequestedSecurityToken&gt; child element.
-     * 
-     * @param requestedSecurityToken
-     *            the {@link RequestSecurityToken} to set.
-     */
-    public void setRequestedSecurityToken(
-            RequestedSecurityToken requestedSecurityToken);
-
-    /**
-     * Returns the &lt;wst:RequestedAttachedReference&gt; child element.
-     * 
-     * @return the {@link RequestedAttachedReference} child element or
-     *         <code>null</code>.
-     */
-    public RequestedAttachedReference getRequestedAttachedReference();
-
-    /**
-     * Sets the &lt;wst:RequestedAttachedReference&gt; child element.
-     * 
-     * @param requestedAttachedReference
-     *            the {@link RequestedAttachedReference} child element.
-     */
-    public void setRequestedAttachedReference(
-            RequestedAttachedReference requestedAttachedReference);
-
-    /**
-     * Returns the &lt;wst:RequestedUnattachedReference&gt; child element.
-     * 
-     * @return the {@link RequestedUnattachedReference} child element or
-     *         <code>null</code>
-     */
-    public RequestedUnattachedReference getRequestedUnattachedReference();
-
-    /**
-     * Sets the &lt;wst:RequestedUnattachedReference&gt; child element.
-     * 
-     * @param requestedUnattachedReference
-     *            the {@link RequestedUnattachedReference} child element.
-     */
-    public void setRequestedUnattachedReference(
-            RequestedUnattachedReference requestedUnattachedReference);
-
-    /**
-     * Returns the &lt;wst:RequestedProofToken&gt; child element.
-     * 
-     * @return the {@link RequestedProofToken} child element or
-     *         <code>null</code>.
-     */
-    public RequestedProofToken getRequestedProofToken();
-
-    /**
-     * Sets the &lt;wst:RequestedProofToken&gt; child element.
-     * 
-     * @param requestedProofToken
-     *            the {@link RequestedProofToken} child element.
-     */
-    public void setRequestedProofToken(RequestedProofToken requestedProofToken);
-
-    /**
-     * Returns the &lt;wst:Status&gt; child element.
-     * 
-     * @return the {@link Status} child element or <code>null</code>.
-     */
-    public Status getStatus();
-
-    /**
-     * Sets the &lt;wst:Status&gt; child element.
-     * 
-     * @param status
-     *            the {@link Status} child element.
-     */
-    public void setStatus(Status status);
-
-    /**
-     * Returns the &lt;wst:Authenticator&gt; child element.
-     * 
-     * @return {@link Authenticator} child element or <code>null</code>.
-     */
-    public Authenticator getAuthenticator();
-
-    /**
-     * Sets &lt;wst:Authenticator&gt; child element.
-     * 
-     * @param authenticator
-     *            the {@link Authenticator} child element to set.
-     */
-    public void setAuthenticator(Authenticator authenticator);
+    public void setContext(String context);
 
 }

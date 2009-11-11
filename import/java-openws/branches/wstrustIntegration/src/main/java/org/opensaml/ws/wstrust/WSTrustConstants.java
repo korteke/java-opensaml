@@ -30,9 +30,6 @@ public class WSTrustConstants {
     /** WS-Trust version */
     public final static String WST_VERSION= "1.3";
 
-    /** WS-Trust Profile 1.3 identifier */
-    public final static String WST_PROFILE_ID= "urn:mace:switch.ch:doc:wst:profile:200711";
-
     /** WS-Trust QName prefix */
     public final static String WST_PREFIX= "wst";
 
@@ -41,12 +38,14 @@ public class WSTrustConstants {
 
     /** Request type suffixes */
     protected final static String REQUESTTYPE_ISSUE= "/Issue";
+    
+    protected final static String REQUESTTYPE_RENEW= "/Renew";
 
     protected final static String REQUESTTYPE_CANCEL= "/Cancel";
+    
+    protected final static String REQUESTTYPE_STSCANCEL= "/STSCancel";
 
     protected final static String REQUESTTYPE_VALIDATE= "/Validate";
-
-    protected final static String REQUESTTYPE_RENEW= "/Renew";
 
     //
     // WS-Addressing
@@ -57,6 +56,9 @@ public class WSTrustConstants {
 
     public final static String WSA_ACTION_RST_CANCEL= WST_NS + "/RST"
             + REQUESTTYPE_CANCEL;
+
+    public final static String WSA_ACTION_RST_STSCANCEL= WST_NS + "/RST"
+            + REQUESTTYPE_STSCANCEL;
 
     public final static String WSA_ACTION_RST_VALIDATE= WST_NS + "/RST"
             + REQUESTTYPE_VALIDATE;

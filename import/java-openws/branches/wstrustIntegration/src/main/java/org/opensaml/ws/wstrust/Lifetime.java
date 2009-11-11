@@ -22,49 +22,50 @@ import org.opensaml.ws.wssecurity.Created;
 import org.opensaml.ws.wssecurity.Expires;
 
 /**
- * The &lt;wst:Lifetime&gt; element.
- * 
- * @see Created
- * @see Expires
+ * The wst:Lifetime element.
  * 
  */
 public interface Lifetime extends WSTrustObject {
 
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME= "Lifetime";
+    public static final String ELEMENT_LOCAL_NAME = "Lifetime";
 
     /** Default element name */
-    public final static QName ELEMENT_NAME= new QName(WSTrustConstants.WST_NS,
-                                                      ELEMENT_LOCAL_NAME,
-                                                      WSTrustConstants.WST_PREFIX);
+    public final static QName ELEMENT_NAME =
+        new QName(WSTrustConstants.WST_NS, ELEMENT_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
+    
+    /** Local name of the XSI type. */
+    public static final String TYPE_LOCAL_NAME = "LifetimeType"; 
+        
+    /** QName of the XSI type. */
+    public static final QName TYPE_NAME = 
+        new QName(WSTrustConstants.WST_NS, TYPE_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
 
     /**
-     * Returns the &lt;wsu:Created&gt; child element.
+     * Returns the wsu:Created child element.
      * 
      * @return the {@link Created} child element or <code>null</code>.
      */
     public Created getCreated();
 
     /**
-     * Sets the &lt;wsu:Created&gt; child element.
+     * Sets the wsu:Created child element.
      * 
-     * @param created
-     *            the {@link Created} child element to set.
+     * @param created the {@link Created} child element to set.
      */
     public void setCreated(Created created);
 
     /**
-     * Returns the &lt;wsu:Expires&gt; child element.
+     * Returns the wsu:Expires child element.
      * 
      * @return the {@link Expires} child element or <code>null</code>.
      */
     public Expires getExpires();
 
     /**
-     * Sets the &lt;wsu:Expires&gt; child element.
+     * Sets the wsu:Expires child element.
      * 
-     * @param expires
-     *            the {@link Expires} child element.
+     * @param expires the {@link Expires} child element.
      */
     public void setExpires(Expires expires);
 

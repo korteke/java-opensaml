@@ -22,7 +22,7 @@ import javax.xml.namespace.QName;
 import org.opensaml.xml.schema.XSURI;
 
 /**
- * The &lt;wst:TokenType&gt; element.
+ * The wst:TokenType element.
  * 
  */
 public interface TokenType extends XSURI, WSTrustObject {
@@ -31,7 +31,7 @@ public interface TokenType extends XSURI, WSTrustObject {
     public static final String ELEMENT_LOCAL_NAME = "TokenType";
 
     /** Default element name */
-    public final static QName ELEMENT_NAME = new QName(WSTrustConstants.WST_NS, ELEMENT_LOCAL_NAME,
-            WSTrustConstants.WST_PREFIX);
+    public final static QName ELEMENT_NAME =
+        new QName(WSTrustConstants.WST_NS, ELEMENT_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
 
 }

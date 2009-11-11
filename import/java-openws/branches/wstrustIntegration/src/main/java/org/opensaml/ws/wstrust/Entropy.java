@@ -20,56 +20,30 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.xml.AttributeExtensibleXMLObject;
 import org.opensaml.xml.ElementExtensibleXMLObject;
-import org.opensaml.xml.encryption.EncryptedKey;
 
 /**
- * The &lt;wst:Entropy&gt; element contains either a &lt;xenc:EncryptedKey&gt;
- * or a &lt;wst:BinarySecret&gt; element. Or other element as
- * <code>xs:any</code>.
+ * The wst:Entropy element.
  * 
- * @see BinarySecret
- * @see EncryptedKey
  * @see "WS-Trust 1.3, Chapter 4.1 Requesting a Security Token."
  * 
  */
-public interface Entropy extends AttributeExtensibleXMLObject,
-        ElementExtensibleXMLObject, WSTrustObject {
+public interface Entropy extends AttributeExtensibleXMLObject, ElementExtensibleXMLObject, WSTrustObject {
 
     /** Element local name. */
     public static final String ELEMENT_LOCAL_NAME= "Entropy";
 
     /** Default element name */
-    public final static QName ELEMENT_NAME= new QName(WSTrustConstants.WST_NS,
-                                                      ELEMENT_LOCAL_NAME,
-                                                      WSTrustConstants.WST_PREFIX);
+    public final static QName ELEMENT_NAME=
+        new QName(WSTrustConstants.WST_NS, ELEMENT_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
+    
+    /** Local name of the XSI type. */
+    public static final String TYPE_LOCAL_NAME = "EntropyType"; 
+    
+    /** QName of the XSI type. */
+    public static final QName TYPE_NAME = 
+        new QName(WSTrustConstants.WST_NS, TYPE_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
 
-    /**
-     * Returns the &lt;wst:BinarySecret&gt; child element.
-     * 
-     * @return the {@link BinarySecret} child element or <code>null</code>.
-     */
-    public BinarySecret getBinarySecret();
-
-    /**
-     * Sets the &lt;wst:BinarySecret&gt; child element.
-     * 
-     * @param binarySecret
-     *            the {@link BinarySecret} child element to set.
-     */
-    public void setBinarySecret(BinarySecret binarySecret);
-
-    /**
-     * Returns the &lt;xenc:EncryptedKey&gt; child element.
-     * 
-     * @return the {@link EncryptedKey} child element or <code>null</code>.
-     */
-    public EncryptedKey getEncryptedKey();
-
-    /**
-     * Sets the &lt;xenc:EncryptedKey&gt; child element.
-     * 
-     * @param encryptedKey
-     *            the {@link EncryptedKey} child element to set.
-     */
-    public void setEncryptedKey(EncryptedKey encryptedKey);
+    /** The wst:Claims/@Dialect attribute local name */
+    public final static String DIALECT_ATTRIB_NAME = "EntropyType";
+    
 }

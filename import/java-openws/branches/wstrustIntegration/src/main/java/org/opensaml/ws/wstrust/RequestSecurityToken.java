@@ -18,42 +18,48 @@ package org.opensaml.ws.wstrust;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.xml.AttributeExtensibleXMLObject;
+import org.opensaml.xml.ElementExtensibleXMLObject;
+
 /**
- * The &lt;wst:RequestSecurityToken&gt; element (RST).
- * <p>
- * The element have the following additional possible child elements:
- * <ul>
- * <li>{@link Claims}
- * </ul>
+ * The wst:RequestSecurityToken element. 
  * 
- * @see RequestSecurityTokenType
  * @see "WS-Trust 1.3 Specification"
  * 
  */
-public interface RequestSecurityToken extends RequestSecurityTokenType,
-        WSTrustObject {
+public interface RequestSecurityToken extends ElementExtensibleXMLObject, AttributeExtensibleXMLObject, WSTrustObject {
 
     /** Element local name. */
     public static final String ELEMENT_LOCAL_NAME= "RequestSecurityToken";
 
     /** Default element name */
-    public final static QName ELEMENT_NAME= new QName(WSTrustConstants.WST_NS,
-                                                      ELEMENT_LOCAL_NAME,
-                                                      WSTrustConstants.WST_PREFIX);
+    public final static QName ELEMENT_NAME =
+        new QName(WSTrustConstants.WST_NS, ELEMENT_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
+    
+    /** Local name of the XSI type. */
+    public static final String TYPE_LOCAL_NAME = "RequestSecurityTokenType"; 
+        
+    /** QName of the XSI type. */
+    public static final QName TYPE_NAME = 
+        new QName(WSTrustConstants.WST_NS, TYPE_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
+    
+    /**
+     * The Context attribute name.
+     */
+    public final static String CONTEXT_ATTRIB_NAME = "Context";
+    
+    /**
+     * Returns the Context attribute value
+     * 
+     * @return The Context attribute value or <code>null</code>.
+     */
+    public String getContext();
 
     /**
-     * Returns the &lt;wst:Claims&gt; child element.
+     * Sets the Context attribute value
      * 
-     * @return the {@link Claims} child element.
+     * @param context The Context attribute value
      */
-    public Claims getClaims();
-
-    /**
-     * Sets the &lt;wst:Claims&gt; child element.
-     * 
-     * @param claims
-     *            the {@link Claims} child element to set.
-     */
-    public void setClaims(Claims claims);
+    public void setContext(String context);
 
 }

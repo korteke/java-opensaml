@@ -21,33 +21,38 @@ import javax.xml.namespace.QName;
 import org.opensaml.xml.schema.XSURI;
 
 /**
- * The &lt;wst:RequestType&gt; element.
+ * The wst:RequestType element.
  * 
  */
 public interface RequestType extends XSURI, WSTrustObject {
 
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME= "RequestType";
+    public static final String ELEMENT_LOCAL_NAME = "RequestType";
 
     /** Default element name */
-    public final static QName ELEMENT_NAME= new QName(WSTrustConstants.WST_NS,
-                                                      ELEMENT_LOCAL_NAME,
-                                                      WSTrustConstants.WST_PREFIX);
+    public final static QName ELEMENT_NAME =
+        new QName(WSTrustConstants.WST_NS, ELEMENT_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
+    
+    /** Local name of the XSI type. */
+    public static final String TYPE_LOCAL_NAME = "RequestTypeOpenEnum"; 
+        
+    /** QName of the XSI type. */
+    public static final QName TYPE_NAME = 
+        new QName(WSTrustConstants.WST_NS, TYPE_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
 
     /** RequestType Issue URI */
-    public static final String ISSUE= WSTrustConstants.WST_NS
-            + WSTrustConstants.REQUESTTYPE_ISSUE;
+    public static final String ISSUE = WSTrustConstants.WST_NS + WSTrustConstants.REQUESTTYPE_ISSUE;
 
     /** RequestType Renew URI */
-    public static final String RENEW= WSTrustConstants.WST_NS
-            + WSTrustConstants.REQUESTTYPE_RENEW;
+    public static final String RENEW = WSTrustConstants.WST_NS + WSTrustConstants.REQUESTTYPE_RENEW;
 
     /** RequestType Cancel URI */
-    public static final String CANCEL= WSTrustConstants.WST_NS
-            + WSTrustConstants.REQUESTTYPE_CANCEL;
+    public static final String CANCEL = WSTrustConstants.WST_NS + WSTrustConstants.REQUESTTYPE_CANCEL;
+
+    /** RequestType STSCancel URI */
+    public static final String STSCANCEL = WSTrustConstants.WST_NS + WSTrustConstants.REQUESTTYPE_STSCANCEL;
 
     /** RequestType Validate URI */
-    public static final String VALIDATE= WSTrustConstants.WST_NS
-            + WSTrustConstants.REQUESTTYPE_VALIDATE;
+    public static final String VALIDATE = WSTrustConstants.WST_NS + WSTrustConstants.REQUESTTYPE_VALIDATE;
 
 }

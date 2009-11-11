@@ -19,16 +19,12 @@ package org.opensaml.ws.wstrust;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.ws.wssecurity.BinarySecurityToken;
-import org.opensaml.ws.wssecurity.UsernameToken;
 import org.opensaml.xml.AttributeExtensibleXMLObject;
 import org.opensaml.xml.ElementExtensibleXMLObject;
 
 /**
- * The &lt;wst:Claims&gt; element containing a list of security tokens (<code>xs:any</code>).
+ * The wst:Claims element.
  * 
- * @see UsernameToken
- * @see BinarySecurityToken
  * @see "WS-Trust 1.3, Chapter 4.1 Requesting a Security Token."
  * 
  */
@@ -38,14 +34,18 @@ public interface Claims extends AttributeExtensibleXMLObject, ElementExtensibleX
     public static final String ELEMENT_LOCAL_NAME = "Claims";
 
     /** Default element name */
-    public final static QName ELEMENT_NAME = new QName(WSTrustConstants.WST_NS, ELEMENT_LOCAL_NAME,
-            WSTrustConstants.WST_PREFIX);
+    public final static QName ELEMENT_NAME =
+        new QName(WSTrustConstants.WST_NS, ELEMENT_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
+    
+    /** Local name of the XSI type. */
+    public static final String TYPE_LOCAL_NAME = "ClaimsType"; 
+        
+    /** QName of the XSI type. */
+    public static final QName TYPE_NAME = 
+        new QName(WSTrustConstants.WST_NS, TYPE_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
 
     /** The wst:Claims/@Dialect attribute local name */
-    public final static String DIALECT_ATTR_LOCAL_NAME = "Dialect";
-
-    /** The wst:Claims/@Dialect attribute name */
-    public final static QName DIALECT_ATTR_NAME = new QName(DIALECT_ATTR_LOCAL_NAME);
+    public final static String DIALECT_ATTRIB_NAME = "Dialect";
     
     /**
      * Returns the wst:Claims/@Dialect attribute value.

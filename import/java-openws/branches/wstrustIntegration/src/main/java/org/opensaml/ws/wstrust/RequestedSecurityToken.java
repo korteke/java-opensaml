@@ -21,19 +21,25 @@ import javax.xml.namespace.QName;
 import org.opensaml.xml.ElementExtensibleXMLObject;
 
 /**
- * The &lt;wst:RequestedSecurityToken&gt; element containing a security token (<code>xs:any</code>).
+ * The wst:RequestedSecurityToken element containing a security token.
  * 
  * @see "WS-Trust 1.3, Chapter 4.4 Returning a Security Token."
  * 
  */
-public interface RequestedSecurityToken extends ElementExtensibleXMLObject,
-        WSTrustObject {
+public interface RequestedSecurityToken extends ElementExtensibleXMLObject, WSTrustObject {
 
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME= "RequestedSecurityToken";
+    public static final String ELEMENT_LOCAL_NAME = "RequestedSecurityToken";
 
     /** Default element name */
-    public final static QName ELEMENT_NAME= new QName(WSTrustConstants.WST_NS,
-                                                      ELEMENT_LOCAL_NAME,
-                                                      WSTrustConstants.WST_PREFIX);
+    public final static QName ELEMENT_NAME =
+        new QName(WSTrustConstants.WST_NS, ELEMENT_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
+    
+    /** Local name of the XSI type. */
+    public static final String TYPE_LOCAL_NAME = "RequestedSecurityTokenType"; 
+        
+    /** QName of the XSI type. */
+    public static final QName TYPE_NAME = 
+        new QName(WSTrustConstants.WST_NS, TYPE_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
+    
 }
