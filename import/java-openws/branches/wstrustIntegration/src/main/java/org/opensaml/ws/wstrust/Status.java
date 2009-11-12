@@ -19,51 +19,45 @@ package org.opensaml.ws.wstrust;
 import javax.xml.namespace.QName;
 
 /**
- * The &lt;wst:Status&gt; element containing a &lt;wst:Code&gt; and a
- * &lt;Reason&gt; elements.
+ * The wst:Status element.
  * 
- * @see Code
- * @see Reason
  * @see "WS-Trust 1.3, Chapter 7 Validation Binding."
  * 
  */
 public interface Status extends WSTrustObject {
 
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME= "Status";
+    public static final String ELEMENT_LOCAL_NAME = "Status";
 
-    /** Default element name */
-    public final static QName ELEMENT_NAME= new QName(WSTrustConstants.WST_NS,
-                                                      ELEMENT_LOCAL_NAME,
-                                                      WSTrustConstants.WST_PREFIX);
+    /** Default element name. */
+    public static final QName ELEMENT_NAME =
+        new QName(WSTrustConstants.WST_NS, ELEMENT_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
 
     /**
-     * Returns the &lt;wst:Code&gt; child element.
+     * Returns the wst:Code child element.
      * 
      * @return the {@link Code} child element or <code>null</code>
      */
     public Code getCode();
 
     /**
-     * Sets the &lt;wst:Code&gt; child element.
+     * Sets the wst:Code child element.
      * 
-     * @param code
-     *            the {@link Code} child element to set.
+     * @param code the {@link Code} child element to set.
      */
     public void setCode(Code code);
 
     /**
-     * Returns the {@link Reason} child element.
+     * Returns the wst:Reason child element.
      * 
      * @return the {@link Reason} child element or <code>null</code>.
      */
     public Reason getReason();
 
     /**
-     * Sets the {@link Reason} child element.
+     * Sets the wst:Reason child element.
      * 
-     * @param reason
-     *            the {@link Reason} child element to set.
+     * @param reason the {@link Reason} child element to set.
      */
     public void setReason(Reason reason);
 

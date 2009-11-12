@@ -18,30 +18,46 @@ package org.opensaml.ws.wstrust;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.xml.ElementExtensibleXMLObject;
+import org.opensaml.xml.XMLObject;
 
 /**
- * The &lt;wst:UseKey&gt; element contains a security token (<code>xs:any</code>).
+ * The wst:UseKey element.
  * 
  * @see "WS-Trust 1.3, Chapter 9.2 Key and Encryption Requirements."
  * 
  */
-public interface UseKey extends ElementExtensibleXMLObject, WSTrustObject {
+public interface UseKey extends WSTrustObject {
 
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME= "UseKey";
+    public static final String ELEMENT_LOCAL_NAME = "UseKey";
 
-    /** Default element name */
-    public final static QName ELEMENT_NAME= new QName(WSTrustConstants.WST_NS,
-                                                      ELEMENT_LOCAL_NAME,
-                                                      WSTrustConstants.WST_PREFIX);
+    /** Default element name. */
+    public static final QName ELEMENT_NAME =
+        new QName(WSTrustConstants.WST_NS, ELEMENT_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
+    
+    /** Local name of the XSI type. */
+    public static final String TYPE_LOCAL_NAME = "UseKeyType"; 
+        
+    /** QName of the XSI type. */
+    public static final QName TYPE_NAME = 
+        new QName(WSTrustConstants.WST_NS, TYPE_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
 
-    /** the wst:UseKey/@Sig attribute local name */
-    public final static String SIG_ATTR_LOCAL_NAME= "Sig";
-
-    /** the wst:UseKey/@Sig attribute name */
-    public final static QName SIG_ATTR_NAME= new QName(null,
-                                                       SIG_ATTR_LOCAL_NAME);
+    /** The wst:UseKey/@Sig attribute local name. */
+    public static final String SIG_ATTRIB_NAME = "Sig";
+    
+    /**
+     * Get the unknown child element.
+     * 
+     * @return the child element
+     */
+    public XMLObject getUnknownXMLObject();
+    
+    /**
+     * Set the unknown child element.
+     * 
+     * @param unknownObject the new child element
+     */
+    public void setUnknownXMLObject(XMLObject unknownObject);
 
     /**
      * Returns the wst:UseKey/@Sig attribute value.
@@ -53,8 +69,7 @@ public interface UseKey extends ElementExtensibleXMLObject, WSTrustObject {
     /**
      * Sets the wst:UseKey/@Sig attribute value.
      * 
-     * @param sig
-     *            the Sig attribute value to set.
+     * @param sig the Sig attribute value to set.
      */
     public void setSig(String sig);
 

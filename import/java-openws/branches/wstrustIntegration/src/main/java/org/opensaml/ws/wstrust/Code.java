@@ -21,7 +21,7 @@ import javax.xml.namespace.QName;
 import org.opensaml.xml.schema.XSURI;
 
 /**
- * The &lt;wst:Code&gt; element within a &lt;wst:Status&gt; element.
+ * The wst:Code element within a wst:Status element.
  * 
  * @see Status
  * @see "WS-Trust 1.3, Chapter 7 Validation Binding."
@@ -30,18 +30,23 @@ import org.opensaml.xml.schema.XSURI;
 public interface Code extends XSURI, WSTrustObject {
 
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME= "Code";
+    public static final String ELEMENT_LOCAL_NAME = "Code";
 
-    /** Default element name */
-    public final static QName ELEMENT_NAME= new QName(WSTrustConstants.WST_NS,
-                                                      ELEMENT_LOCAL_NAME,
-                                                      WSTrustConstants.WST_PREFIX);
+    /** Default element name. */
+    public static final QName ELEMENT_NAME =
+        new QName(WSTrustConstants.WST_NS, ELEMENT_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
+    
+    /** Local name of the XSI type. */
+    public static final String TYPE_LOCAL_NAME = "StatusCodeOpenEnum"; 
+        
+    /** QName of the XSI type. */
+    public static final QName TYPE_NAME = 
+        new QName(WSTrustConstants.WST_NS, TYPE_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
 
-    /** StatusCode valid URI value */
+    /** Status/Code 'valid' URI value . */
     public static final String VALID= WSTrustConstants.WST_NS + "/status/valid";
 
-    /** StatusCode invalid URI value */
-    public static final String INVALID= WSTrustConstants.WST_NS
-            + "/status/invalid";
+    /** Status/Code 'invalid' URI value. */
+    public static final String INVALID= WSTrustConstants.WST_NS + "/status/invalid";
 
 }

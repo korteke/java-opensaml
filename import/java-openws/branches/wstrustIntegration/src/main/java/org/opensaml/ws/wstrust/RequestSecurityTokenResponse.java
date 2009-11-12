@@ -27,13 +27,14 @@ import org.opensaml.xml.ElementExtensibleXMLObject;
  * @see "WS-Trust 1.3 Specification"
  * 
  */
-public interface RequestSecurityTokenResponse extends ElementExtensibleXMLObject, AttributeExtensibleXMLObject, WSTrustObject {
+public interface RequestSecurityTokenResponse extends ElementExtensibleXMLObject, AttributeExtensibleXMLObject, 
+        WSTrustObject {
 
     /** Element local name. */
     public static final String ELEMENT_LOCAL_NAME= "RequestSecurityTokenResponse";
 
-    /** Default element name */
-    public final static QName ELEMENT_NAME =
+    /** Default element name. */
+    public static final QName ELEMENT_NAME =
         new QName(WSTrustConstants.WST_NS, ELEMENT_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
     
     /** Local name of the XSI type. */
@@ -46,17 +47,17 @@ public interface RequestSecurityTokenResponse extends ElementExtensibleXMLObject
     /**
      * The Context attribute name.
      */
-    public final static String CONTEXT_ATTRIB_NAME = "Context";
+    public static final String CONTEXT_ATTRIB_NAME = "Context";
     
     /**
-     * Returns the Context attribute value
+     * Returns the Context attribute value.
      * 
      * @return The Context attribute value or <code>null</code>.
      */
     public String getContext();
 
     /**
-     * Sets the Context attribute value
+     * Sets the Context attribute value.
      * 
      * @param context The Context attribute value
      */

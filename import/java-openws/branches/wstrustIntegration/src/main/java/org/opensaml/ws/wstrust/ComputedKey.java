@@ -21,26 +21,30 @@ import javax.xml.namespace.QName;
 import org.opensaml.xml.schema.XSURI;
 
 /**
- * The &lt;wst:ComputedKey&gt; element within a &lt;wst:RequestedProofToken&gt;
- * element.
+ * The wst:ComputedKey element.
  * 
- * @see RequestedProofToken
  * @see "WS-Trust 1.3, Chapter 4.4.4 Returning Computed Keys."
  * 
  */
 public interface ComputedKey extends XSURI, WSTrustObject {
 
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME= "ComputedKey";
+    public static final String ELEMENT_LOCAL_NAME = "ComputedKey";
 
-    /** Default element name */
-    public final static QName ELEMENT_NAME= new QName(WSTrustConstants.WST_NS,
-                                                      ELEMENT_LOCAL_NAME,
-                                                      WSTrustConstants.WST_PREFIX);
+    /** Default element name. */
+    public static final QName ELEMENT_NAME =
+        new QName(WSTrustConstants.WST_NS, ELEMENT_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
+    
+    /** Local name of the XSI type. */
+    public static final String TYPE_LOCAL_NAME = "ComputedKeyOpenEnum"; 
+        
+    /** QName of the XSI type. */
+    public static final QName TYPE_NAME = 
+        new QName(WSTrustConstants.WST_NS, TYPE_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
 
-    /** The ComputedKey PSHA1 URI */
+    /** The ComputedKey PSHA1 URI. */
     public static final String PSHA1= WSTrustConstants.WST_NS + "/CK/PSHA1";
 
-    /** The ComputedKey HASH URI */
+    /** The ComputedKey HASH URI. */
     public static final String HASH= WSTrustConstants.WST_NS + "/CK/HASH";
 }

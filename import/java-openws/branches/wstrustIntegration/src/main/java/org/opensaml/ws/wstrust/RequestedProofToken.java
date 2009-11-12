@@ -21,37 +21,25 @@ import javax.xml.namespace.QName;
 import org.opensaml.xml.ElementExtensibleXMLObject;
 
 /**
- * The &lt;wst:RequestedProofToken&gt; element contains proof-of-possession
- * token (<code>xs:any</code>) or a &lt;wst:ComputedKey&gt; element.
+ * The wst:RequestedProofToken element.
  * 
- * @see ComputedKey
- * 
- * @see "WS-Trust 1.3, Chapters 4.4.3 Keys and Entropy, and next..."
+ * @see "WS-Trust 1.3, Chapters 4.4.3 Keys and Entropy"
  * 
  */
-public interface RequestedProofToken extends ElementExtensibleXMLObject,
-        WSTrustObject {
+public interface RequestedProofToken extends ElementExtensibleXMLObject, WSTrustObject {
 
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME= "RequestedProofToken";
+    public static final String ELEMENT_LOCAL_NAME = "RequestedProofToken";
 
-    /** Default element name */
-    public final static QName ELEMENT_NAME= new QName(WSTrustConstants.WST_NS,
-                                                      ELEMENT_LOCAL_NAME,
-                                                      WSTrustConstants.WST_PREFIX);
+    /** Default element name. */
+    public static final QName ELEMENT_NAME =
+        new QName(WSTrustConstants.WST_NS, ELEMENT_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
+    
+    /** Local name of the XSI type. */
+    public static final String TYPE_LOCAL_NAME = "RequestedProofTokenType"; 
+        
+    /** QName of the XSI type. */
+    public static final QName TYPE_NAME = 
+        new QName(WSTrustConstants.WST_NS, TYPE_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
 
-    /**
-     * Returns the &lt;wst:ComputedKey&gt; child element.
-     * 
-     * @return the {@link ComputedKey} child element or <code>null</code>.
-     */
-    public ComputedKey getComputedKey();
-
-    /**
-     * Sets the &lt;wst:ComputedKey&gt; child element.
-     * 
-     * @param computedKey
-     *            the {@link ComputedKey} child element to set.
-     */
-    public void setComputedKey(ComputedKey computedKey);
 }

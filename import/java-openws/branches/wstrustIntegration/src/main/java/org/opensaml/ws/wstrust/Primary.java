@@ -19,20 +19,18 @@ package org.opensaml.ws.wstrust;
 import javax.xml.namespace.QName;
 
 /**
- * The &lt;wst:Primary&gt; element.
+ * The wst:Primary element.
  * 
- * @see Participants
  * @see "WS-Trust 1.3, Chapter 9.5 Authorized Token Participants."
  * 
  */
-public interface Primary extends ParticipantType, WSTrustObject {
+public interface Primary extends ParticipantType {
 
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME= "Primary";
+    public static final String ELEMENT_LOCAL_NAME = "Primary";
 
-    /** Default element name */
-    public final static QName ELEMENT_NAME= new QName(WSTrustConstants.WST_NS,
-                                                      ELEMENT_LOCAL_NAME,
-                                                      WSTrustConstants.WST_PREFIX);
+    /** Default element name. */
+    public static final QName ELEMENT_NAME =
+        new QName(WSTrustConstants.WST_NS, ELEMENT_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
 
 }

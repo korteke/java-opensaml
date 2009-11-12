@@ -21,20 +21,18 @@ import javax.xml.namespace.QName;
 import org.opensaml.xml.schema.XSString;
 
 /**
- * The &lt;wst:Challenge&gt; element within a &lt;wst:SignChallenge&gt; element.
+ * The wst:Challenge element.
  * 
- * @see SignChallenge
  * @see "WS-Trust 1.3, Chapter 8.2 Signature Challenges."
  * 
  */
 public interface Challenge extends XSString, WSTrustObject {
 
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME= "Challenge";
+    public static final String ELEMENT_LOCAL_NAME = "Challenge";
 
-    /** Default element name */
-    public final static QName ELEMENT_NAME= new QName(WSTrustConstants.WST_NS,
-                                                      ELEMENT_LOCAL_NAME,
-                                                      WSTrustConstants.WST_PREFIX);
+    /** Default element name. */
+    public static final QName ELEMENT_NAME =
+        new QName(WSTrustConstants.WST_NS, ELEMENT_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
 
 }

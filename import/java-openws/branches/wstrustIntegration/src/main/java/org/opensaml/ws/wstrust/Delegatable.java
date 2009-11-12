@@ -21,7 +21,7 @@ import javax.xml.namespace.QName;
 import org.opensaml.xml.schema.XSBoolean;
 
 /**
- * The &lt;wst:Delegatable&gt; element
+ * The wst:Delegatable element.
  * 
  * @see "WS-Trust 1.3, Chapter 9.3 Delegation and Forwarding Requirements."
  * 
@@ -29,11 +29,10 @@ import org.opensaml.xml.schema.XSBoolean;
 public interface Delegatable extends XSBoolean, WSTrustObject {
 
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME= "Delegatable";
+    public static final String ELEMENT_LOCAL_NAME = "Delegatable";
 
-    /** Default element name */
-    public final static QName ELEMENT_NAME= new QName(WSTrustConstants.WST_NS,
-                                                      ELEMENT_LOCAL_NAME,
-                                                      WSTrustConstants.WST_PREFIX);
+    /** Default element name. */
+    public static final QName ELEMENT_NAME =
+        new QName(WSTrustConstants.WST_NS, ELEMENT_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
 
 }

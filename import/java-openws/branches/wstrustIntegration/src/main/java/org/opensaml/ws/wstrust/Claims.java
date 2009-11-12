@@ -33,8 +33,8 @@ public interface Claims extends AttributeExtensibleXMLObject, ElementExtensibleX
     /** Element local name. */
     public static final String ELEMENT_LOCAL_NAME = "Claims";
 
-    /** Default element name */
-    public final static QName ELEMENT_NAME =
+    /** Default element name. */
+    public static final QName ELEMENT_NAME =
         new QName(WSTrustConstants.WST_NS, ELEMENT_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
     
     /** Local name of the XSI type. */
@@ -44,8 +44,8 @@ public interface Claims extends AttributeExtensibleXMLObject, ElementExtensibleX
     public static final QName TYPE_NAME = 
         new QName(WSTrustConstants.WST_NS, TYPE_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
 
-    /** The wst:Claims/@Dialect attribute local name */
-    public final static String DIALECT_ATTRIB_NAME = "Dialect";
+    /** The wst:Claims/@Dialect attribute local name. */
+    public static final String DIALECT_ATTRIB_NAME = "Dialect";
     
     /**
      * Returns the wst:Claims/@Dialect attribute value.

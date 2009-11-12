@@ -21,7 +21,7 @@ import javax.xml.namespace.QName;
 import org.opensaml.xml.schema.XSURI;
 
 /**
- * The &lt;wst:AuthenticationType&gt; element.
+ * The wst:AuthenticationType element.
  * 
  * @see "WS-Trust 1.3, Chapter 9.2 Key and Encryption Requirements."
  * 
@@ -29,11 +29,10 @@ import org.opensaml.xml.schema.XSURI;
 public interface AuthenticationType extends XSURI, WSTrustObject {
 
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME= "AuthenticationType";
+    public static final String ELEMENT_LOCAL_NAME = "AuthenticationType";
 
-    /** Default element name */
-    public final static QName ELEMENT_NAME= new QName(WSTrustConstants.WST_NS,
-                                                      ELEMENT_LOCAL_NAME,
-                                                      WSTrustConstants.WST_PREFIX);
+    /** Default element name. */
+    public static final QName ELEMENT_NAME =
+        new QName(WSTrustConstants.WST_NS, ELEMENT_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
 
 }

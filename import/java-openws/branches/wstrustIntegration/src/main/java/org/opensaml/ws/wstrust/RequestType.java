@@ -29,8 +29,8 @@ public interface RequestType extends XSURI, WSTrustObject {
     /** Element local name. */
     public static final String ELEMENT_LOCAL_NAME = "RequestType";
 
-    /** Default element name */
-    public final static QName ELEMENT_NAME =
+    /** Default element name. */
+    public static final QName ELEMENT_NAME =
         new QName(WSTrustConstants.WST_NS, ELEMENT_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
     
     /** Local name of the XSI type. */
@@ -40,19 +40,19 @@ public interface RequestType extends XSURI, WSTrustObject {
     public static final QName TYPE_NAME = 
         new QName(WSTrustConstants.WST_NS, TYPE_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
 
-    /** RequestType Issue URI */
-    public static final String ISSUE = WSTrustConstants.WST_NS + WSTrustConstants.REQUESTTYPE_ISSUE;
+    /** RequestType Issue URI. */
+    public static final String ISSUE = WSTrustConstants.WST_NS + "/Issue";
 
-    /** RequestType Renew URI */
-    public static final String RENEW = WSTrustConstants.WST_NS + WSTrustConstants.REQUESTTYPE_RENEW;
+    /** RequestType Renew URI. */
+    public static final String RENEW = WSTrustConstants.WST_NS + "/Renew";
 
-    /** RequestType Cancel URI */
-    public static final String CANCEL = WSTrustConstants.WST_NS + WSTrustConstants.REQUESTTYPE_CANCEL;
+    /** RequestType Cancel URI. */
+    public static final String CANCEL = WSTrustConstants.WST_NS + "/Cancel";
 
-    /** RequestType STSCancel URI */
-    public static final String STSCANCEL = WSTrustConstants.WST_NS + WSTrustConstants.REQUESTTYPE_STSCANCEL;
+    /** RequestType STSCancel URI. */
+    public static final String STSCANCEL = WSTrustConstants.WST_NS + "/STSCancel";
 
-    /** RequestType Validate URI */
-    public static final String VALIDATE = WSTrustConstants.WST_NS + WSTrustConstants.REQUESTTYPE_VALIDATE;
+    /** RequestType Validate URI. */
+    public static final String VALIDATE = WSTrustConstants.WST_NS + "/Validate";
 
 }

@@ -16,19 +16,27 @@
  */
 package org.opensaml.ws.wstrust;
 
+import javax.xml.namespace.QName;
+
 import org.opensaml.ws.wssecurity.SecurityTokenReference;
 
 /**
- * Abstract interface RequestedReferenceType for element containing a
- * &lt;wsse:SecurityTokenReference&gt; element.
+ * Abstract interface for RequestedReferenceType complex type.
  * 
  * @see RequestedAttachedReference
  * @see RequestedUnattachedReference
- * 
  */
-public abstract interface RequestedReferenceType {
+public abstract interface RequestedReferenceType extends WSTrustObject {
+    
+    /** Local name of the XSI type. */
+    public static final String TYPE_LOCAL_NAME = "RequestedReferenceType"; 
+        
+    /** QName of the XSI type. */
+    public static final QName TYPE_NAME = 
+        new QName(WSTrustConstants.WST_NS, TYPE_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
+    
     /**
-     * Returns the &lt;wsse:SecurityTokenReference&gt; child element.
+     * Returns the wsse:SecurityTokenReference child element.
      * 
      * @return the {@link SecurityTokenReference} child element or
      *         <code>null</code>.
@@ -36,12 +44,11 @@ public abstract interface RequestedReferenceType {
     public SecurityTokenReference getSecurityTokenReference();
 
     /**
-     * Sets the &lt;wsse:SecurityTokenReference&gt; child element.
+     * Sets the wsse:SecurityTokenReference child element.
      * 
      * @param securityTokenReference
      *            The {@link SecurityTokenReference} child element to be set.
      */
-    public void setSecurityTokenReference(
-            SecurityTokenReference securityTokenReference);
+    public void setSecurityTokenReference(SecurityTokenReference securityTokenReference);
 
 }

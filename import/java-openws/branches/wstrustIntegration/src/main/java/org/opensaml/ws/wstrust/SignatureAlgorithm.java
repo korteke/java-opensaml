@@ -19,10 +19,9 @@ package org.opensaml.ws.wstrust;
 import javax.xml.namespace.QName;
 
 import org.opensaml.xml.schema.XSURI;
-import org.opensaml.xml.signature.SignatureConstants;
 
 /**
- * The &lt;wst:SignatureAlgorithm&gt; element
+ * The wst:SignatureAlgorithm element.
  * 
  * @see "WS-Trust 1.3, Chapter 9.2 Key and Encryption Requirements."
  * 
@@ -30,16 +29,10 @@ import org.opensaml.xml.signature.SignatureConstants;
 public interface SignatureAlgorithm extends XSURI, WSTrustObject {
 
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME= "SignatureAlgorithm";
+    public static final String ELEMENT_LOCAL_NAME = "SignatureAlgorithm";
 
-    /** Default element name */
-    public final static QName ELEMENT_NAME= new QName(WSTrustConstants.WST_NS,
-                                                      ELEMENT_LOCAL_NAME,
-                                                      WSTrustConstants.WST_PREFIX);
-
-    /** RSAwithSHA1 Signature algorithm URI */
-    public static final String RSA_SHA1= SignatureConstants.ALGO_ID_SIGNATURE_RSA;
-
-    /** DSAwithSHA1 Signature algorithm URI */
-    public static final String DSA_SHA1= SignatureConstants.ALGO_ID_SIGNATURE_DSA;
+    /** Default element name. */
+    public static final QName ELEMENT_NAME =
+        new QName(WSTrustConstants.WST_NS, ELEMENT_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
+    
 }

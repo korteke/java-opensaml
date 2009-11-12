@@ -21,35 +21,38 @@ import javax.xml.namespace.QName;
 import org.opensaml.xml.ElementExtensibleXMLObject;
 
 /**
- * The &lt;wst:Authenticator&gt; element.
+ * The wst:Authenticator element.
  * 
- * @see CombinedHash
  * @see "WS-Trust 1.3, Chapter 8.9 Authenticating Exchanges."
  * 
  */
-public interface Authenticator extends ElementExtensibleXMLObject,
-        WSTrustObject {
+public interface Authenticator extends ElementExtensibleXMLObject, WSTrustObject {
 
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME= "Authenticator";
+    public static final String ELEMENT_LOCAL_NAME = "Authenticator";
 
-    /** Default element name */
-    public final static QName ELEMENT_NAME= new QName(WSTrustConstants.WST_NS,
-                                                      ELEMENT_LOCAL_NAME,
-                                                      WSTrustConstants.WST_PREFIX);
+    /** Default element name. */
+    public static final QName ELEMENT_NAME =
+        new QName(WSTrustConstants.WST_NS, ELEMENT_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
+    
+    /** Local name of the XSI type. */
+    public static final String TYPE_LOCAL_NAME = "AuthenticatorType"; 
+        
+    /** QName of the XSI type. */
+    public static final QName TYPE_NAME = 
+        new QName(WSTrustConstants.WST_NS, TYPE_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
 
     /**
-     * Returns the &lt;wst:CombinedHash&gt; element.
+     * Returns the wst:CombinedHash child element.
      * 
      * @return the {@link CombinedHash} element.
      */
     public CombinedHash getCombinedHash();
 
     /**
-     * Sets the &lt;wst:CombinedHash&gt; element.
+     * Sets the wst:CombinedHash child element.
      * 
-     * @param combinedHash
-     *            the {@link CombinedHash} to set.
+     * @param combinedHash the {@link CombinedHash} to set.
      */
     public void setCombinedHash(CombinedHash combinedHash);
 

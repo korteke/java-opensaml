@@ -18,26 +18,42 @@ package org.opensaml.ws.wstrust;
 
 import javax.xml.namespace.QName;
 
-
-import org.opensaml.ws.wssecurity.BinarySecurityToken;
-import org.opensaml.ws.wssecurity.UsernameToken;
-import org.opensaml.xml.ElementExtensibleXMLObject;
+import org.opensaml.xml.XMLObject;
 
 /**
- * the &lt;wst:CancelTarget&gt; element containing a security token (<code>xs:any</code>).
+ * The wst:CancelTarget element.
  * 
- * @see BinarySecurityToken
- * @see UsernameToken
  * @see "WS-Trust 1.3, Chapter 6 Cancel Binding."
  * 
  */
-public interface CancelTarget extends ElementExtensibleXMLObject, WSTrustObject {
+public interface CancelTarget extends WSTrustObject {
 
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME= "CancelTarget";
+    public static final String ELEMENT_LOCAL_NAME = "CancelTarget";
 
-    /** Default element name */
-    public final static QName ELEMENT_NAME= new QName(WSTrustConstants.WST_NS,
-                                                      ELEMENT_LOCAL_NAME,
-                                                      WSTrustConstants.WST_PREFIX);
+    /** Default element name. */
+    public static final QName ELEMENT_NAME =
+        new QName(WSTrustConstants.WST_NS, ELEMENT_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
+    
+    /** Local name of the XSI type. */
+    public static final String TYPE_LOCAL_NAME = "CancelTargetType"; 
+        
+    /** QName of the XSI type. */
+    public static final QName TYPE_NAME = 
+        new QName(WSTrustConstants.WST_NS, TYPE_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
+    
+    /**
+     * Get the unknown child element.
+     * 
+     * @return the child element
+     */
+    public XMLObject getUnknownXMLObject();
+    
+    /**
+     * Set the unknown child element.
+     * 
+     * @param unknownObject the new child element
+     */
+    public void setUnknownXMLObject(XMLObject unknownObject);
+    
 }

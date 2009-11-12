@@ -21,23 +21,20 @@ import javax.xml.namespace.QName;
 import org.opensaml.xml.schema.XSBase64Binary;
 
 /**
- * The &lt;wst:CombinedHash&gt; element within a &lt;wst:Authenticator&gt;
- * element.
+ * The wst:CombinedHash element.
  * 
- * @see Authenticator
  * @see "WS-Trust 1.3, Chapter 8.9 Authenticating Exchanges."
  * 
  */
 public interface CombinedHash extends XSBase64Binary, WSTrustObject {
 
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME= "CombinedHash";
+    public static final String ELEMENT_LOCAL_NAME = "CombinedHash";
 
-    /** Default element name */
-    public final static QName ELEMENT_NAME= new QName(WSTrustConstants.WST_NS,
-                                                      ELEMENT_LOCAL_NAME,
-                                                      WSTrustConstants.WST_PREFIX);
+    /** Default element name. */
+    public static final QName ELEMENT_NAME =
+        new QName(WSTrustConstants.WST_NS, ELEMENT_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
 
-    /** The string for the digest */
-    public final static String AUTH_HASH= "AUTH-HASH";
+    /** The fixed string "AUTH-HASH" used in computing the value of the combined hash. */
+    public static final String AUTH_HASH = "AUTH-HASH";
 }

@@ -16,80 +16,128 @@
  */
 package org.opensaml.ws.wstrust;
 
+import javax.xml.namespace.QName;
+
 /**
  * The WS-Trust 1.3 constants.
  * 
  * @see "WS-Trust 1.3 Specification"
  * 
  */
-public class WSTrustConstants {
+public final class WSTrustConstants {
 
     //
     // WS-Trust
     //
-    /** WS-Trust version */
-    public final static String WST_VERSION= "1.3";
-
-    /** WS-Trust QName prefix */
-    public final static String WST_PREFIX= "wst";
-
-    /** WS-Trust 1.3 namespace */
-    public final static String WST_NS= "http://docs.oasis-open.org/ws-sx/ws-trust/200512";
-
-    /** Request type suffixes */
-    protected final static String REQUESTTYPE_ISSUE= "/Issue";
     
-    protected final static String REQUESTTYPE_RENEW= "/Renew";
+    /** WS-Trust version. */
+    public static final String WST_VERSION= "1.3";
 
-    protected final static String REQUESTTYPE_CANCEL= "/Cancel";
-    
-    protected final static String REQUESTTYPE_STSCANCEL= "/STSCancel";
+    /** WS-Trust namespace prefix. */
+    public static final String WST_PREFIX= "wst";
 
-    protected final static String REQUESTTYPE_VALIDATE= "/Validate";
+    /** WS-Trust 1.3 namespace. */
+    public static final String WST_NS= "http://docs.oasis-open.org/ws-sx/ws-trust/200512";
 
     //
     // WS-Addressing
     //
-    /** WS-Addressing RequestSecurityToken (RST) action URIs */
-    public final static String WSA_ACTION_RST_ISSUE= WST_NS + "/RST"
-            + REQUESTTYPE_ISSUE;
+    
+    //* WS-Addressing RequestSecurityToken (RST) action URIs.
+    
+    /** WS-Addressing RequestSecurityToken (RST) action URI 'Issue'. */
+    public static final String WSA_ACTION_RST_ISSUE= WST_NS + "/RST" + "/Issue";
 
-    public final static String WSA_ACTION_RST_CANCEL= WST_NS + "/RST"
-            + REQUESTTYPE_CANCEL;
+    /** WS-Addressing RequestSecurityToken (RST) action URI 'Cancel'. */
+    public static final String WSA_ACTION_RST_CANCEL= WST_NS + "/RST" + "/Cancel";
 
-    public final static String WSA_ACTION_RST_STSCANCEL= WST_NS + "/RST"
-            + REQUESTTYPE_STSCANCEL;
+    /** WS-Addressing RequestSecurityToken (RST) action URI 'STSCancel'. */
+    public static final String WSA_ACTION_RST_STSCANCEL= WST_NS + "/RST" + "/STSCancel";
 
-    public final static String WSA_ACTION_RST_VALIDATE= WST_NS + "/RST"
-            + REQUESTTYPE_VALIDATE;
+    /** WS-Addressing RequestSecurityToken (RST) action URI 'Validate'. */
+    public static final String WSA_ACTION_RST_VALIDATE= WST_NS + "/RST" + "/Validate";
 
-    public final static String WSA_ACTION_RST_RENEW= WST_NS + "/RST"
-            + REQUESTTYPE_RENEW;
+    /** WS-Addressing RequestSecurityToken (RST) action URI 'Renew'. */
+    public static final String WSA_ACTION_RST_RENEW= WST_NS + "/RST" + "/Renew";
+    
 
-    /** WS-Addressing RequestSecurityTokenResponse (RSTR) action URIs */
-    public final static String WSA_ACTION_RSTR_ISSUE= WST_NS + "/RSTR"
-            + REQUESTTYPE_ISSUE;
+    // WS-Addressing RequestSecurityTokenResponse (RSTR) action URIs.
+    
+    /** WS-Addressing RequestSecurityTokenResponse (RSTR) action URI 'Issue'. */
+    public static final String WSA_ACTION_RSTR_ISSUE= WST_NS + "/RSTR" + "/Issue";
 
-    public final static String WSA_ACTION_RSTR_CANCEL= WST_NS + "/RSTR"
-            + REQUESTTYPE_CANCEL;
+    /** WS-Addressing RequestSecurityTokenResponse (RSTR) action URI 'Cancel'. */
+    public static final String WSA_ACTION_RSTR_CANCEL= WST_NS + "/RSTR" + "/Cancel";
+    
+    /** WS-Addressing RequestSecurityTokenResponse (RSTR) action URI 'CancelFinal'. */
+    public static final String WSA_ACTION_RSTR_CANCEL_FINAL= WST_NS + "/RSTR" + "/CancelFinal";
 
-    public final static String WSA_ACTION_RSTR_VALIDATE= WST_NS + "/RSTR"
-            + REQUESTTYPE_VALIDATE;
+    /** WS-Addressing RequestSecurityTokenResponse (RSTR) action URI 'Validate'. */
+    public static final String WSA_ACTION_RSTR_VALIDATE= WST_NS + "/RSTR" + "/Validate";
 
-    public final static String WSA_ACTION_RSTR_RENEW= WST_NS + "/RSTR"
-            + REQUESTTYPE_RENEW;
+    /** WS-Addressing RequestSecurityTokenResponse (RSTR) action URI 'ValidateFinal'. */
+    public static final String WSA_ACTION_RSTR_VALIDATE_FINAL= WST_NS + "/RSTR" + "/ValidateFinal";
 
-    /** WS-Addressing RequestSecurityTokenResponse (RSTRC) final action URIs */
-    public final static String WSA_ACTION_RSTRC_ISSUE= WST_NS + "/RSTRC"
-            + REQUESTTYPE_ISSUE;
+    /** WS-Addressing RequestSecurityTokenResponse (RSTR) action URI 'Renew'. */
+    public static final String WSA_ACTION_RSTR_RENEW= WST_NS + "/RSTR" + "/Renew";
+    
+    /** WS-Addressing RequestSecurityTokenResponse (RSTR) action URI 'RenewFinal'. */
+    public static final String WSA_ACTION_RSTR_RENEW_FINAL= WST_NS + "/RSTR" + "/RenewFinal";
+    
 
-    public final static String WSA_ACTION_RSTRC_CANCEL= WST_NS + "/RSTRC"
-            + REQUESTTYPE_CANCEL;
-
-    public final static String WSA_ACTION_RSTRC_VALIDATE= WST_NS + "/RSTRC"
-            + REQUESTTYPE_VALIDATE;
-
-    public final static String WSA_ACTION_RSTRC_RENEW= WST_NS + "/RSTRC"
-            + REQUESTTYPE_RENEW;
+    // WS-Addressing RequestSecurityTokenResponseCollection (RSTRC) action URIs.
+    
+    /** WS-Addressing RequestSecurityTokenResponseCollection (RSTRC) action URI 'Issue'. */
+    public static final String WSA_ACTION_RSTRC_ISSUE_FINAL= WST_NS + "/RSTRC" + "/IssueFinal";
+    
+    
+    // SOAP fault codes.
+    
+    /** WS-Trust SOAP fault code: "wst:InvalidRequest". */
+    public static final QName SOAP_FAULT_INVALID_REQUEST =
+        new QName(WST_NS, "InvalidRequest", WST_PREFIX);
+    
+    /** WS-Trust SOAP fault code: "wst:FailedAuthentication". */
+    public static final QName SOAP_FAULT_FAILED_AUTHENTICATION = 
+        new QName(WST_NS, "FailedAuthentication", WST_PREFIX);
+    
+    /** WS-Trust SOAP fault code: "wst:RequestFailed". */
+    public static final QName SOAP_FAULT_REQUEST_FAILED = 
+        new QName(WST_NS, "RequestFailed", WST_PREFIX);
+    
+    /** WS-Trust SOAP fault code: "wst:InvalidSecurityToken". */
+    public static final QName SOAP_FAULT_INVALID_SECURITY_TOKEN = 
+        new QName(WST_NS, "InvalidSecurityToken", WST_PREFIX);
+    
+    /** WS-Trust SOAP fault code: "wst:AuthenticationBadElements". */
+    public static final QName SOAP_FAULT_AUTHENTICATION_BAD_ELEMENTS =
+        new QName(WST_NS, "AuthenticationBadElements", WST_PREFIX);
+    
+    /** WS-Trust SOAP fault code: "wst:BadRequest". */
+    public static final QName SOAP_FAULT_BAD_REQUEST =
+        new QName(WST_NS, "BadRequest", WST_PREFIX);
+    
+    /** WS-Trust SOAP fault code: "wst:ExpiredData". */
+    public static final QName SOAP_FAULT_EXPIRED_DATA = 
+        new QName(WST_NS, "ExpiredData", WST_PREFIX);
+    
+    /** WS-Trust SOAP fault code: "wst:InvalidTimeRange". */
+    public static final QName SOAP_FAULT_INVALID_TIME_RANGE =
+        new QName(WST_NS, "InvalidTimeRange", WST_PREFIX);
+    
+    /** WS-Trust SOAP fault code: "wst:InvalidScope". */
+    public static final QName SOAP_FAULT_INVALID_SCOPE =
+        new QName(WST_NS, "InvalidScope", WST_PREFIX);
+    
+    /** WS-Trust SOAP fault code: "wst:RenewNeeded". */
+    public static final QName SOAP_FAULT_RENEW_NEEDED =
+        new QName(WST_NS, "RenewNeeded", WST_PREFIX);
+    
+    /** WS-Trust SOAP fault code: "wst:UnableToRenew". */
+    public static final QName SOAP_FAULT_UNABLE_TO_RENEW =
+        new QName(WST_NS, "UnableToRenew", WST_PREFIX);
+    
+    /** Constructor. Private to prevent instantiation. */
+    private WSTrustConstants() { }
 
 }

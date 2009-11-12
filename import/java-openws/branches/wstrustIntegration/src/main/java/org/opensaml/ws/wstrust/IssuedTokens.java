@@ -16,43 +16,21 @@
  */
 package org.opensaml.ws.wstrust;
 
-import java.util.List;
-
 import javax.xml.namespace.QName;
 
 /**
- * The &lt;wst:IssuedTokens&gt; element used to return security tokens in the
- * SOAP header. Contains a list of &lt;wst:RequestSecurityTokenResponse&gt;s.
+ * The wst:IssuedTokens element.
  * 
- * @see RequestSecurityTokenResponse
- * @see "WS-Trust 1.3, Chapter 4.5 Returning Security Tikens in Headers."
+ * @see "WS-Trust 1.3, Chapter 4.5 Returning Security Tokens in Headers."
  * 
  */
-public interface IssuedTokens extends WSTrustObject {
+public interface IssuedTokens extends RequestSecurityTokenResponseCollection {
 
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME= "IssuedTokens";
+    public static final String ELEMENT_LOCAL_NAME = "IssuedTokens";
 
-    /** Default element name */
-    public final static QName ELEMENT_NAME= new QName(WSTrustConstants.WST_NS,
-                                                      ELEMENT_LOCAL_NAME,
-                                                      WSTrustConstants.WST_PREFIX);
-
-    /**
-     * Returns the list of &lt;wst:RequestSecurityTokenResponse&gt; child
-     * elements.
-     * 
-     * @return the list of {@link RequestSecurityTokenResponse} child elements.
-     */
-    public List<RequestSecurityTokenResponse> getRequestSecurityTokenResponses();
-
-    /**
-     * Sets the list of &lt;wst:RequestSecurityTokenResponse&gt; child elements.
-     * 
-     * @param requestSecurityTokenResponses
-     *            the list of {@link RequestSecurityTokenResponse} child
-     *            elements.
-     */
-    public void setRequestSecurityTokenResponses(
-            List<RequestSecurityTokenResponse> requestSecurityTokenResponses);
+    /** Default element name. */
+    public static final QName ELEMENT_NAME =
+        new QName(WSTrustConstants.WST_NS, ELEMENT_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
+    
 }

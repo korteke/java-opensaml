@@ -18,22 +18,42 @@ package org.opensaml.ws.wstrust;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.xml.ElementExtensibleXMLObject;
+import org.opensaml.xml.XMLObject;
 
 /**
- * The &lt;wst:DelegateTo&gt; element containing a security token (<code>xs:any</code>).
+ * The wst:DelegateTo element.
  * 
  * @see "WS-Trust 1.3, Chapter 9.3 Delegation and Forwarding Requirements."
  * 
  */
-public interface DelegateTo extends ElementExtensibleXMLObject, WSTrustObject {
+public interface DelegateTo extends WSTrustObject {
 
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME= "DelegateTo";
+    public static final String ELEMENT_LOCAL_NAME = "DelegateTo";
 
-    /** Default element name */
-    public final static QName ELEMENT_NAME= new QName(WSTrustConstants.WST_NS,
-                                                      ELEMENT_LOCAL_NAME,
-                                                      WSTrustConstants.WST_PREFIX);
+    /** Default element name. */
+    public static final QName ELEMENT_NAME =
+        new QName(WSTrustConstants.WST_NS, ELEMENT_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
+    
+    /** Local name of the XSI type. */
+    public static final String TYPE_LOCAL_NAME = "DelegateToType"; 
+        
+    /** QName of the XSI type. */
+    public static final QName TYPE_NAME = 
+        new QName(WSTrustConstants.WST_NS, TYPE_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
+    
+    /**
+     * Get the unknown child element.
+     * 
+     * @return the child element
+     */
+    public XMLObject getUnknownXMLObject();
+    
+    /**
+     * Set the unknown child element.
+     * 
+     * @param unknownObject the new child element
+     */
+    public void setUnknownXMLObject(XMLObject unknownObject);
 
 }

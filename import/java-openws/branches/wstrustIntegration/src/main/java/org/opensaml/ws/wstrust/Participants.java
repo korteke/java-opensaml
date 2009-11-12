@@ -16,56 +16,53 @@
  */
 package org.opensaml.ws.wstrust;
 
+import java.util.List;
+
 import javax.xml.namespace.QName;
 
 import org.opensaml.xml.ElementExtensibleXMLObject;
 
 /**
- * The &lt;wst:Participants&gt; element containing a &lt;wst:Primary&gt; and a
- * &lt;Participant&gt; child elements.
+ * The wst:Participants element.
  * 
- * @see Primary
- * @see Participant
  * @see "WS-Trust 1.3, Chapter 9.5 Authorized Token Participants."
  * 
  */
 public interface Participants extends ElementExtensibleXMLObject, WSTrustObject {
 
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME= "Participants";
+    public static final String ELEMENT_LOCAL_NAME = "Participants";
 
-    /** Default element name */
-    public final static QName ELEMENT_NAME= new QName(WSTrustConstants.WST_NS,
-                                                      ELEMENT_LOCAL_NAME,
-                                                      WSTrustConstants.WST_PREFIX);
+    /** Default element name. */
+    public static final QName ELEMENT_NAME =
+        new QName(WSTrustConstants.WST_NS, ELEMENT_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
+    
+    /** Local name of the XSI type. */
+    public static final String TYPE_LOCAL_NAME = "ParticipantsType"; 
+        
+    /** QName of the XSI type. */
+    public static final QName TYPE_NAME = 
+        new QName(WSTrustConstants.WST_NS, TYPE_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
 
     /**
-     * Returns the &lt;wst:Primary&gt; child element.
+     * Returns the wst:Primary child element.
      * 
      * @return the {@link Primary} child element or <code>null</code>.
      */
     public Primary getPrimary();
 
     /**
-     * Sets the &lt;wst:Primary&gt; child element.
+     * Sets the wst:Primary child element.
      * 
-     * @param primary
-     *            the {@link Primary} child element to set.
+     * @param primary the {@link Primary} child element to set.
      */
     public void setPrimary(Primary primary);
 
     /**
-     * Returns the &lt;wst:Participant&gt; child element.
+     * Returns the list of wst:Participant child elements .
      * 
-     * @return the {@link Participant} child element or <code>null</code>.
+     * @return the list of {@link Participant} child elements
      */
-    public Participant getParticipant();
+    public List<Participant> getParticipants();
 
-    /**
-     * Sets the &lt;wst:Participant&gt; child element.
-     * 
-     * @param participant
-     *            the {@link Participant} child element to set.
-     */
-    public void setParticipant(Participant participant);
 }

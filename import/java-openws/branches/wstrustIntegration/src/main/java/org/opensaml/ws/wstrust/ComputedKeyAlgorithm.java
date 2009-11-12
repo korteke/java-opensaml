@@ -21,7 +21,7 @@ import javax.xml.namespace.QName;
 import org.opensaml.xml.schema.XSURI;
 
 /**
- * The &lt;wst:ComputedKeyAlgorithm&gt; element.
+ * The wst:ComputedKeyAlgorithm element.
  * 
  * @see "WS-Trust 1.3, Chapter 9.2 Key and Encryption Requirements."
  * 
@@ -29,11 +29,10 @@ import org.opensaml.xml.schema.XSURI;
 public interface ComputedKeyAlgorithm extends XSURI, WSTrustObject {
 
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME= "ComputedKeyAlgorithm";
+    public static final String ELEMENT_LOCAL_NAME = "ComputedKeyAlgorithm";
 
-    /** Default element name */
-    public final static QName ELEMENT_NAME= new QName(WSTrustConstants.WST_NS,
-                                                      ELEMENT_LOCAL_NAME,
-                                                      WSTrustConstants.WST_PREFIX);
+    /** Default element name. */
+    public static final QName ELEMENT_NAME =
+        new QName(WSTrustConstants.WST_NS, ELEMENT_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
 
 }

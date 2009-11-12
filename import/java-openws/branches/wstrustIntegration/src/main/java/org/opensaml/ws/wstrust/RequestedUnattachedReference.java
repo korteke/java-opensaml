@@ -19,20 +19,18 @@ package org.opensaml.ws.wstrust;
 import javax.xml.namespace.QName;
 
 /**
- * The &lt;wst:RequestedUnattachedReference&gt; element.
+ * The wst:RequestedUnattachedReference element.
  * 
  * @see "WS-Trust 1.3, Chapter 4.4.2 Requested References."
  * 
  */
-public interface RequestedUnattachedReference extends RequestedReferenceType,
-        WSTrustObject {
+public interface RequestedUnattachedReference extends RequestedReferenceType {
 
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME= "RequestedUnattachedReference";
+    public static final String ELEMENT_LOCAL_NAME = "RequestedUnattachedReference";
 
     /** Default element name */
-    public final static QName ELEMENT_NAME= new QName(WSTrustConstants.WST_NS,
-                                                      ELEMENT_LOCAL_NAME,
-                                                      WSTrustConstants.WST_PREFIX);
+    public final static QName ELEMENT_NAME =
+        new QName(WSTrustConstants.WST_NS, ELEMENT_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
 
 }

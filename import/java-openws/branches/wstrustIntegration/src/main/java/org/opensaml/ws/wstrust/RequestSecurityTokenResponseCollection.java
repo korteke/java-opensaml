@@ -23,40 +23,32 @@ import javax.xml.namespace.QName;
 import org.opensaml.xml.AttributeExtensibleXMLObject;
 
 /**
- * The &lt;wst:RequestSecurityTokenResponseCollection&gt; element (RSTRC)
- * <b>must</b> be used to return a response to a security token request (RST or
- * RSTC) on the final response.
+ * The wst:RequestSecurityTokenResponseCollection element.
  * 
- * @see RequestSecurityTokenResponse
  * @see "WS-Trust 1.3 Specification"
  * 
  */
-public interface RequestSecurityTokenResponseCollection extends
-        AttributeExtensibleXMLObject, WSTrustObject {
+public interface RequestSecurityTokenResponseCollection extends AttributeExtensibleXMLObject, WSTrustObject {
 
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME= "RequestSecurityTokenResponseCollection";
+    public static final String ELEMENT_LOCAL_NAME = "RequestSecurityTokenResponseCollection";
 
-    /** Default element name */
-    public final static QName ELEMENT_NAME= new QName(WSTrustConstants.WST_NS,
-                                                      ELEMENT_LOCAL_NAME,
-                                                      WSTrustConstants.WST_PREFIX);
+    /** Default element name. */
+    public static final QName ELEMENT_NAME =
+        new QName(WSTrustConstants.WST_NS, ELEMENT_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
+    
+    /** Local name of the XSI type. */
+    public static final String TYPE_LOCAL_NAME = "RequestSecurityTokenResponseCollectionType"; 
+        
+    /** QName of the XSI type. */
+    public static final QName TYPE_NAME = 
+        new QName(WSTrustConstants.WST_NS, TYPE_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
 
     /**
-     * Returns the list of &lt;wst:RequestSecurityTokenResponse&gt; child
-     * elements.
+     * Returns the list of wst:RequestSecurityTokenResponse child elements.
      * 
      * @return The list of {@link RequestSecurityTokenResponse}s.
      */
     public List<RequestSecurityTokenResponse> getRequestSecurityTokenResponses();
-
-    /**
-     * Sets he list of &lt;wst:RequestSecurityTokenResponse&gt; child elements.
-     * 
-     * @param requestSecurityTokenResponses
-     *            the list of {@link RequestSecurityTokenResponse}s.
-     */
-    public void setRequestSecurityTokenResponses(
-            List<RequestSecurityTokenResponse> requestSecurityTokenResponses);
 
 }

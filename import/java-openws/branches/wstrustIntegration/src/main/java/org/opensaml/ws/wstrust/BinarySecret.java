@@ -34,8 +34,8 @@ public interface BinarySecret extends XSBase64Binary, AttributeExtensibleXMLObje
     /** Element local name. */
     public static final String ELEMENT_LOCAL_NAME = "BinarySecret";
 
-    /** Default element name */
-    public final static QName ELEMENT_NAME =
+    /** Default element name. */
+    public static final QName ELEMENT_NAME =
         new QName(WSTrustConstants.WST_NS, ELEMENT_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
     
     /** Local name of the XSI type. */
@@ -48,13 +48,13 @@ public interface BinarySecret extends XSBase64Binary, AttributeExtensibleXMLObje
     /** wst:BinarySecret/@Type attribute local name. */
     public static final String TYPE_ATTRIB_NAME = "Type";
 
-    /** Type attribute AsymmetricKey URI */
+    /** Type attribute AsymmetricKey URI. */
     public static final String TYPE_ASYMMETRIC_KEY = WSTrustConstants.WST_NS + "/AsymmetricKey";
 
-    /** Type attribute SymmetricKey URI */
+    /** Type attribute SymmetricKey URI. */
     public static final String TYPE_SYMMETRIC_KEY = WSTrustConstants.WST_NS + "/SymmetricKey";
 
-    /** Type attribute Nonce URI */
+    /** Type attribute Nonce URI. */
     public static final String TYPE_NONCE = WSTrustConstants.WST_NS + "/Nonce";
 
     /**

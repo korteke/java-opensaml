@@ -18,59 +18,42 @@ package org.opensaml.ws.wstrust;
 
 import javax.xml.namespace.QName;
 
-
-import org.opensaml.ws.wsaddressing.EndpointReference;
-import org.opensaml.ws.wssecurity.SecurityTokenReference;
-import org.opensaml.xml.ElementExtensibleXMLObject;
+import org.opensaml.xml.XMLObject;
 
 /**
- * The &lt;wst:OnBehalfOf&gt; element, containing a security token (<code>xs:any</code>),
- * a &lt;wsse:SecurityTokenReference&gt; or a &lt;wsa:EndpointReference&gt;.
- * 
- * @see SecurityTokenReference
- * @see EndpointReference
+ * The wst:OnBehalfOf element.
  * 
  * @see "WS-Trust 1.3, Chapter 9.1 On-Behalf-Of Parameters."
  * 
  */
-public interface OnBehalfOf extends ElementExtensibleXMLObject, WSTrustObject {
+public interface OnBehalfOf extends WSTrustObject {
 
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME= "OnBehalfOf";
+    public static final String ELEMENT_LOCAL_NAME = "OnBehalfOf";
 
-    /** Default element name */
-    public final static QName ELEMENT_NAME= new QName(WSTrustConstants.WST_NS,
-                                                      ELEMENT_LOCAL_NAME,
-                                                      WSTrustConstants.WST_PREFIX);
-
+    /** Default element name. */
+    public static final QName ELEMENT_NAME =
+        new QName(WSTrustConstants.WST_NS, ELEMENT_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
+    
+    /** Local name of the XSI type. */
+    public static final String TYPE_LOCAL_NAME = "OnBehalfOfType"; 
+        
+    /** QName of the XSI type. */
+    public static final QName TYPE_NAME = 
+        new QName(WSTrustConstants.WST_NS, TYPE_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
+    
     /**
-     * Returns the &lt;wsse:SecurityTokenReference&gt; child element, if any.
+     * Get the unknown child element.
      * 
-     * @return the {@link SecurityTokenReference} or <code>null</code>.
+     * @return the child element
      */
-    public SecurityTokenReference getSecurityTokenReference();
-
+    public XMLObject getUnknownXMLObject();
+    
     /**
-     * Sets the &lt;wsse:SecurityTokenReference&gt; child element.
+     * Set the unknown child element.
      * 
-     * @param securityTokenReference
-     *            the {@link SecurityTokenReference} child element to set.
+     * @param unknownObject the new child element
      */
-    public void setSecurityTokenReference(
-            SecurityTokenReference securityTokenReference);
-
-    /**
-     * Returns the &lt;wsa:EndpointReference&gt; child element, if any.
-     * 
-     * @return the {@link EndpointReference} or <code>null</code>.
-     */
-    public EndpointReference getEndpointReference();
-
-    /**
-     * Sets the &lt;wsa:EndpointReference&gt; child element.
-     * 
-     * @param endpointReference
-     *            The {@link EndpointReference} child element to set.
-     */
-    public void setEndpointReference(EndpointReference endpointReference);
+    public void setUnknownXMLObject(XMLObject unknownObject);
+    
 }

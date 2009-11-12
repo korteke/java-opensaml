@@ -19,20 +19,18 @@ package org.opensaml.ws.wstrust;
 import javax.xml.namespace.QName;
 
 /**
- * The &lt;wst:RequestedAttachedReference&gt; element.
+ * The wst:RequestedAttachedReference element.
  * 
  * @see "WS-Trust 1.3, Chapter 4.4.2 Requested References."
  * 
  */
-public interface RequestedAttachedReference extends RequestedReferenceType,
-        WSTrustObject {
+public interface RequestedAttachedReference extends RequestedReferenceType {
 
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME= "RequestedAttachedReference";
+    public static final String ELEMENT_LOCAL_NAME = "RequestedAttachedReference";
 
-    /** Default element name */
-    public final static QName ELEMENT_NAME= new QName(WSTrustConstants.WST_NS,
-                                                      ELEMENT_LOCAL_NAME,
-                                                      WSTrustConstants.WST_PREFIX);
-
+    /** Default element name. */
+    public static final QName ELEMENT_NAME =
+        new QName(WSTrustConstants.WST_NS, ELEMENT_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
+    
 }

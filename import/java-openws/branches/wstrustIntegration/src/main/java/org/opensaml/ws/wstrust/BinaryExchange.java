@@ -22,7 +22,7 @@ import org.opensaml.xml.AttributeExtensibleXMLObject;
 import org.opensaml.xml.schema.XSString;
 
 /**
- * The &lt;wst:BinaryExchange&gt; element.
+ * The wst:BinaryExchange element.
  * 
  * @see "WS-Trust 1.3, Chapter 8.3 Binary Exchanges and Negotiations."
  * 

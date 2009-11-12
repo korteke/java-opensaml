@@ -19,7 +19,7 @@ package org.opensaml.ws.wstrust;
 import javax.xml.namespace.QName;
 
 /**
- * The &lt;wst:RequestedTokenCancelled&gt; empty element.
+ * The wst:RequestedTokenCancelled element.
  * 
  * @see "WS-Trust 1.3, Chapter 6 Cancel Binding."
  * 
@@ -27,10 +27,17 @@ import javax.xml.namespace.QName;
 public interface RequestedTokenCancelled extends WSTrustObject {
 
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME= "RequestedTokenCancelled";
+    public static final String ELEMENT_LOCAL_NAME = "RequestedTokenCancelled";
 
-    /** Default element name */
-    public final static QName ELEMENT_NAME= new QName(WSTrustConstants.WST_NS,
-                                                      ELEMENT_LOCAL_NAME,
-                                                      WSTrustConstants.WST_PREFIX);
+    /** Default element name. */
+    public static final QName ELEMENT_NAME =
+        new QName(WSTrustConstants.WST_NS, ELEMENT_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
+    
+    /** Local name of the XSI type. */
+    public static final String TYPE_LOCAL_NAME = "RequestedTokenCancelledType"; 
+        
+    /** QName of the XSI type. */
+    public static final QName TYPE_NAME = 
+        new QName(WSTrustConstants.WST_NS, TYPE_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
+    
 }

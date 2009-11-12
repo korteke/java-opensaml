@@ -21,17 +21,16 @@ import javax.xml.namespace.QName;
 import org.opensaml.xml.schema.XSInteger;
 
 /**
- * The &lt;wst:KeySize&gt; element.
+ * The wst:KeySize element.
  * 
  */
 public interface KeySize extends XSInteger, WSTrustObject {
 
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME= "KeySize";
+    public static final String ELEMENT_LOCAL_NAME = "KeySize";
 
-    /** Default element name */
-    public final static QName ELEMENT_NAME= new QName(WSTrustConstants.WST_NS,
-                                                      ELEMENT_LOCAL_NAME,
-                                                      WSTrustConstants.WST_PREFIX);
+    /** Default element name. */
+    public static final QName ELEMENT_NAME =
+        new QName(WSTrustConstants.WST_NS, ELEMENT_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
 
 }

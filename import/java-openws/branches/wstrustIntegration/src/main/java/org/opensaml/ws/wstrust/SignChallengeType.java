@@ -16,32 +16,36 @@
  */
 package org.opensaml.ws.wstrust;
 
+import javax.xml.namespace.QName;
+
 import org.opensaml.xml.AttributeExtensibleXMLObject;
 import org.opensaml.xml.ElementExtensibleXMLObject;
 
 /**
- * Abstract SignChallengeType contains a &lt;wst:Challenge&gt; element.
- * 
- * @see SignChallenge
- * @see SignChallengeResponse
- * @see Challenge
+ * Abstract SignChallengeType complext type. 
  * 
  */
-public abstract interface SignChallengeType extends
-        AttributeExtensibleXMLObject, ElementExtensibleXMLObject {
+public abstract interface SignChallengeType extends AttributeExtensibleXMLObject, ElementExtensibleXMLObject, 
+        WSTrustObject {
+    
+    /** Local name of the XSI type. */
+    public static final String TYPE_LOCAL_NAME = "SignChallengeType"; 
+        
+    /** QName of the XSI type. */
+    public static final QName TYPE_NAME = 
+        new QName(WSTrustConstants.WST_NS, TYPE_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
 
     /**
-     * Returns the &lt;wst:Challenge&gt; child element.
+     * Returns the wst:Challenge child element.
      * 
      * @return the {@link Challenge} child element or <code>null</code>.
      */
     public Challenge getChallenge();
 
     /**
-     * Sets the &lt;wst:Challenge&gt; child element.
+     * Sets the wst:Challenge child element.
      * 
-     * @param challenge
-     *            the {@link Challenge} child element to set.
+     * @param challenge the {@link Challenge} child element to set.
      */
     public void setChallenge(Challenge challenge);
 

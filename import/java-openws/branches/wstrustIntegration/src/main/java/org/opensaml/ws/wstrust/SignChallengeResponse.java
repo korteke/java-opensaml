@@ -19,19 +19,18 @@ package org.opensaml.ws.wstrust;
 import javax.xml.namespace.QName;
 
 /**
- * The &lt;wst:SignChallengeResponse&gt; element.
+ * The wst:SignChallengeResponse element.
  * 
  * @see "WS-Trust 1.3, Chapter 8.2 Signature Challenges."
  * 
  */
-public interface SignChallengeResponse extends SignChallengeType, WSTrustObject {
+public interface SignChallengeResponse extends SignChallengeType {
 
     /** Element local name. */
     public static final String ELEMENT_LOCAL_NAME= "SignChallengeResponse";
 
-    /** Default element name */
-    public final static QName ELEMENT_NAME= new QName(WSTrustConstants.WST_NS,
-                                                      ELEMENT_LOCAL_NAME,
-                                                      WSTrustConstants.WST_PREFIX);
+    /** Default element name. */
+    public static final QName ELEMENT_NAME =
+        new QName(WSTrustConstants.WST_NS, ELEMENT_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
 
 }

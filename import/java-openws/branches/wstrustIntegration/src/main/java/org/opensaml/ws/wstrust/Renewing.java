@@ -19,8 +19,10 @@ package org.opensaml.ws.wstrust;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.xml.schema.XSBoolean;
+
 /**
- * The &lt;wst:Renewing&gt; empty element.
+ * The wst:Renewing element.
  * 
  * @see "WS-Trust 1.3, Chapter 5 Renewal Binding."
  * 
@@ -30,28 +32,36 @@ public interface Renewing extends WSTrustObject {
     /** Element local name. */
     public static final String ELEMENT_LOCAL_NAME = "Renewing";
 
-    /** Default element name */
-    public final static QName ELEMENT_NAME = new QName(WSTrustConstants.WST_NS, ELEMENT_LOCAL_NAME,
-            WSTrustConstants.WST_PREFIX);
+    /** Default element name. */
+    public static final QName ELEMENT_NAME =
+        new QName(WSTrustConstants.WST_NS, ELEMENT_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
+    
+    /** Local name of the XSI type. */
+    public static final String TYPE_LOCAL_NAME = "RenewingType"; 
+        
+    /** QName of the XSI type. */
+    public static final QName TYPE_NAME = 
+        new QName(WSTrustConstants.WST_NS, TYPE_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
 
-    /** The wst:Renewing/@Allow attribute local name */
-    public static final String ALLOW_ATTR_LOCAL_NAME = "Allow";
+    /** The wst:Renewing/@Allow attribute local name. */
+    public static final String ALLOW_ATTRIB_NAME = "Allow";
 
-    /** The wst:Renewing/@Allow attribute name */
-    public static final QName ALLOW_ATTR_NAME = new QName(ALLOW_ATTR_LOCAL_NAME);
-
-    /** The wst:Renewing/@OK attribute local name */
-    public static final String OK_ATTR_LOCAL_NAME = "OK";
-
-    /** The wst:Renewing/@OK attribute name */
-    public static final QName OK_ATTR_NAME = new QName(OK_ATTR_LOCAL_NAME);
+    /** The wst:Renewing/@OK attribute local name. */
+    public static final String OK_ATTRIB_NAME = "OK";
 
     /**
      * Returns the wst:Renewing/@Allow attribute value.
      * 
-     * @return the Allow attribute value or <code>null</code>.
+     * @return the Allow attribute value
      */
-    public Boolean getAllow();
+    public Boolean isAllow();
+    
+    /**
+     * Returns the wst:Renewing/@Allow attribute value.
+     * 
+     * @return the Allow attribute value
+     */
+    public XSBoolean isAllowXSBoolean();
 
     /**
      * Sets the wst:Renewing/@Allow attribute value.
@@ -61,11 +71,25 @@ public interface Renewing extends WSTrustObject {
     public void setAllow(Boolean allow);
 
     /**
+     * Sets the wst:Renewing/@Allow attribute value.
+     * 
+     * @param allow the Allow attribute value.
+     */
+    public void setAllow(XSBoolean allow);
+
+    /**
      * Returns the wst:Renewing/@OK attribute value.
      * 
-     * @return the OK attribute value or <code>null</code>
+     * @return the OK attribute value
      */
-    public Boolean getOK();
+    public Boolean isOK();
+    
+    /**
+     * Returns the wst:Renewing/@OK attribute value.
+     * 
+     * @return the OK attribute value
+     */
+    public XSBoolean isOKXSBoolean();
 
     /**
      * Sets the wst:Renewing/@OK attribute value.
@@ -73,5 +97,12 @@ public interface Renewing extends WSTrustObject {
      * @param ok the OK attribute value.
      */
     public void setOK(Boolean ok);
-
+    
+    /**
+     * Sets the wst:Renewing/@OK attribute value.
+     * 
+     * @param ok the OK attribute value.
+     */
+    public void setOK(XSBoolean ok);
+    
 }

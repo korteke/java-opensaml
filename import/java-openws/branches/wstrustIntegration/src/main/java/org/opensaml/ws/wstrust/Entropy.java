@@ -32,8 +32,8 @@ public interface Entropy extends AttributeExtensibleXMLObject, ElementExtensible
     /** Element local name. */
     public static final String ELEMENT_LOCAL_NAME= "Entropy";
 
-    /** Default element name */
-    public final static QName ELEMENT_NAME=
+    /** Default element name. */
+    public static final QName ELEMENT_NAME=
         new QName(WSTrustConstants.WST_NS, ELEMENT_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
     
     /** Local name of the XSI type. */
@@ -43,7 +43,7 @@ public interface Entropy extends AttributeExtensibleXMLObject, ElementExtensible
     public static final QName TYPE_NAME = 
         new QName(WSTrustConstants.WST_NS, TYPE_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
 
-    /** The wst:Claims/@Dialect attribute local name */
-    public final static String DIALECT_ATTRIB_NAME = "EntropyType";
+    /** The wst:Claims/@Dialect attribute local name. */
+    public static final String DIALECT_ATTRIB_NAME = "EntropyType";
     
 }

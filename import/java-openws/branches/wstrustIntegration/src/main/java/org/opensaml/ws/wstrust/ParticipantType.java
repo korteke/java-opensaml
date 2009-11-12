@@ -16,12 +16,35 @@
  */
 package org.opensaml.ws.wstrust;
 
-import org.opensaml.xml.ElementExtensibleXMLObject;
+import javax.xml.namespace.QName;
+
+import org.opensaml.xml.XMLObject;
 
 /**
- * Interface ParticipantType is a <code>xs:any</code> element.
+ * Abstract interface ParticipantType complex type.
  * 
  */
-public abstract interface ParticipantType extends ElementExtensibleXMLObject {
+public abstract interface ParticipantType extends WSTrustObject {
+    
+    /** Local name of the XSI type. */
+    public static final String TYPE_LOCAL_NAME = "ParticipantType"; 
+        
+    /** QName of the XSI type. */
+    public static final QName TYPE_NAME = 
+        new QName(WSTrustConstants.WST_NS, TYPE_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
+    
+    /**
+     * Get the unknown child element.
+     * 
+     * @return the child element
+     */
+    public XMLObject getUnknownXMLObject();
+    
+    /**
+     * Set the unknown child element.
+     * 
+     * @param unknownObject the new child element
+     */
+    public void setUnknownXMLObject(XMLObject unknownObject);
 
 }

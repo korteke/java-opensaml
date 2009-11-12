@@ -19,8 +19,7 @@ package org.opensaml.ws.wstrust;
 import org.opensaml.xml.XMLObjectBuilder;
 
 /**
- * WSTrustObjectBuilder
- * 
+ * WSTrustObjectBuilder.
  */
 public interface WSTrustObjectBuilder<WSTrustObjectType extends WSTrustObject>
         extends XMLObjectBuilder<WSTrustObjectType> {
