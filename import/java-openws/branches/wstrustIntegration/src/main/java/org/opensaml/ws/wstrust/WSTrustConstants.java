@@ -60,6 +60,9 @@ public final class WSTrustConstants {
     /** WS-Addressing RequestSecurityToken (RST) action URI 'Renew'. */
     public static final String WSA_ACTION_RST_RENEW= WST_NS + "/RST" + "/Renew";
     
+    /** WS-Addressing RequestSecurityToken (RST) action URI 'KET'. */
+    public static final String WSA_ACTION_RST_KET= WST_NS + "/RST" + "/KET";
+    
 
     // WS-Addressing RequestSecurityTokenResponse (RSTR) action URIs.
     
@@ -83,6 +86,12 @@ public final class WSTrustConstants {
     
     /** WS-Addressing RequestSecurityTokenResponse (RSTR) action URI 'RenewFinal'. */
     public static final String WSA_ACTION_RSTR_RENEW_FINAL= WST_NS + "/RSTR" + "/RenewFinal";
+    
+    /** WS-Addressing RequestSecurityTokenResponse (RSTR) action URI 'KET'. */
+    public static final String WSA_ACTION_RSTR_KET= WST_NS + "/RSTR" + "/KET";
+    
+    /** WS-Addressing RequestSecurityTokenResponse (RSTR) action URI 'KETFinal'. */
+    public static final String WSA_ACTION_RSTR_KET_FINAL= WST_NS + "/RSTR" + "/KETFinal";
     
 
     // WS-Addressing RequestSecurityTokenResponseCollection (RSTRC) action URIs.

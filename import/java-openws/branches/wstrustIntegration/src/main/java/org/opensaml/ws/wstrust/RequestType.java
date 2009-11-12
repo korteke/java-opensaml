@@ -40,6 +40,8 @@ public interface RequestType extends XSURI, WSTrustObject {
     public static final QName TYPE_NAME = 
         new QName(WSTrustConstants.WST_NS, TYPE_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
 
+    // Single action request types
+    
     /** RequestType Issue URI. */
     public static final String ISSUE = WSTrustConstants.WST_NS + "/Issue";
 
@@ -54,5 +56,22 @@ public interface RequestType extends XSURI, WSTrustObject {
 
     /** RequestType Validate URI. */
     public static final String VALIDATE = WSTrustConstants.WST_NS + "/Validate";
+    
+    /** RequestType Key Exchange Token (KET) URI. */
+    public static final String KET = WSTrustConstants.WST_NS + "/KET";
+    
+    // Batch action request types
+    
+    /** RequestType BatchIssue URI. */
+    public static final String BATCH_ISSUE = WSTrustConstants.WST_NS + "/BatchIssue";
+
+    /** RequestType BatchRenew URI. */
+    public static final String BATCH_RENEW = WSTrustConstants.WST_NS + "/BatchRenew";
+
+    /** RequestType BatchCancel URI. */
+    public static final String BATCH_CANCEL = WSTrustConstants.WST_NS + "/BatchCancel";
+
+    /** RequestType BatchValidate URI. */
+    public static final String BATCH_VALIDATE = WSTrustConstants.WST_NS + "/BatchValidate";
 
 }

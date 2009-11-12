@@ -33,5 +33,8 @@ public interface TokenType extends XSURI, WSTrustObject {
     /** Default element name. */
     public static final QName ELEMENT_NAME =
         new QName(WSTrustConstants.WST_NS, ELEMENT_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
+    
+    /** TokenType Status URI. */
+    public static final String STATUS = WSTrustConstants.WST_NS + "/RSTR/Status";
 
 }
