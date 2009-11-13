@@ -17,39 +17,12 @@
 package org.opensaml.ws.wstrust.impl;
 
 
-import org.opensaml.ws.wstrust.ComputedKey;
-import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.schema.XSURI;
+import org.opensaml.xml.schema.impl.XSURIUnmarshaller;
 
 /**
- * Unmarshaller for the &lt;wst:ComputedKey&gt; element.
- * 
- * @see ComputedKey
+ * Unmarshaller for the wst:ComputedKey element.
  * 
  */
-public class ComputedKeyUnmarshaller extends AbstractWSTrustObjectUnmarshaller {
-
-    /**
-     * Default constructor.
-     * <p>
-     * {@inheritDoc}
-     */
-    public ComputedKeyUnmarshaller() {
-        super();
-    }
-
-    /**
-     * Unmarshalls the &lt;wst:ComputedKey&gt; element content.
-     * <p>
-     * {@inheritDoc}
-     */
-    @Override
-    protected void processElementContent(XMLObject xmlObject,
-            String elementContent) {
-        if (elementContent != null) {
-            XSURI xsUri= (XSURI) xmlObject;
-            xsUri.setValue(elementContent);
-        }
-    }
+public class ComputedKeyUnmarshaller extends XSURIUnmarshaller {
 
 }

@@ -18,24 +18,20 @@ package org.opensaml.ws.wstrust.impl;
 
 
 import org.opensaml.ws.wstrust.ValidateTarget;
-import org.opensaml.xml.AbstractElementExtensibleXMLObjectUnmarshaller;
+import org.opensaml.xml.XMLObject;
+import org.opensaml.xml.io.UnmarshallingException;
 
 /**
- * Unmarshaller for the &lt;wst:ValidateTarget&gt; element.
- * 
- * @see ValidateTarget
+ * Unmarshaller for the wst:ValidateTarget element.
  * 
  */
-public class ValidateTargetUnmarshaller extends
-        AbstractElementExtensibleXMLObjectUnmarshaller {
+public class ValidateTargetUnmarshaller extends AbstractWSTrustObjectUnmarshaller {
 
-    /**
-     * Default constructor.
-     * <p>
-     * {@inheritDoc}
-     */
-    public ValidateTargetUnmarshaller() {
-        super();
+    /** {@inheritDoc} */
+    protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
+            throws UnmarshallingException {
+        ValidateTarget vt = (ValidateTarget) parentXMLObject;
+        vt.setUnknownXMLObject(childXMLObject);
     }
 
 }

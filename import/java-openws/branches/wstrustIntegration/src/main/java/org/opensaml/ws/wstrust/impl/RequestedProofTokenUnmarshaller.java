@@ -17,47 +17,21 @@
 package org.opensaml.ws.wstrust.impl;
 
 
-import org.opensaml.ws.wstrust.ComputedKey;
 import org.opensaml.ws.wstrust.RequestedProofToken;
-import org.opensaml.xml.AbstractElementExtensibleXMLObjectUnmarshaller;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
 
 /**
- * Unmarshaller for the &lt;wst:RequestedProofToken&gt; element.
- * 
- * @see RequestedProofToken
+ * Unmarshaller for the wst:RequestedProofToken element.
  * 
  */
-public class RequestedProofTokenUnmarshaller extends
-        AbstractElementExtensibleXMLObjectUnmarshaller {
+public class RequestedProofTokenUnmarshaller extends AbstractWSTrustObjectUnmarshaller {
 
-    /**
-     * Default constructor.
-     * <p>
-     * {@inheritDoc}
-     */
-    public RequestedProofTokenUnmarshaller() {
-        super();
-    }
-
-    /**
-     * Unmarshalls the &lt;wst:ComputedKey&gt; child element.
-     * <p>
-     * {@inheritDoc}
-     */
-    @Override
-    protected void processChildElement(XMLObject parentXMLObject,
-            XMLObject childXMLObject) throws UnmarshallingException {
-        if (childXMLObject instanceof ComputedKey) {
-            RequestedProofToken container= (RequestedProofToken) parentXMLObject;
-            ComputedKey computedKey= (ComputedKey) childXMLObject;
-            container.setComputedKey(computedKey);
-        }
-        else {
-            // unmarshall xs:any element
-            super.processChildElement(parentXMLObject, childXMLObject);
-        }
+    /** {@inheritDoc} */
+    protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
+            throws UnmarshallingException {
+        RequestedProofToken rpt = (RequestedProofToken) parentXMLObject;
+        rpt.setUnknownXMLObject(childXMLObject);
     }
 
 }

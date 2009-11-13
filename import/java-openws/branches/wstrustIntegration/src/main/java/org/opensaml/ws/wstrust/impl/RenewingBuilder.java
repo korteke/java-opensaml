@@ -21,32 +21,16 @@ import org.opensaml.ws.wstrust.Renewing;
 /**
  * Builder for the Renewing element.
  * 
- * @see org.opensaml.ws.wstrust.Renewing
- * 
  */
 public class RenewingBuilder extends AbstractWSTrustObjectBuilder<Renewing> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.impl.AbstractWSTrustObjectBuilder#buildObject()
-     * @see org.opensaml.ws.wstrust.Renewing
-     */
-    @Override
+    /** {@inheritDoc} */
     public Renewing buildObject() {
         return buildObject(Renewing.ELEMENT_NAME);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AbstractXMLObjectBuilder#buildObject(java.lang.String,
-     *      java.lang.String, java.lang.String)
-     * @see org.opensaml.ws.wstrust.Renewing
-     */
-    @Override
-    public Renewing buildObject(String namespaceURI, String localName,
-            String namespacePrefix) {
+    /** {@inheritDoc} */
+    public Renewing buildObject(String namespaceURI, String localName, String namespacePrefix) {
         return new RenewingImpl(namespaceURI, localName, namespacePrefix);
     }
 

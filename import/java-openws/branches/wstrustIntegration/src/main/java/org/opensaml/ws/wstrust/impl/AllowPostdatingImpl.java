@@ -17,10 +17,13 @@
 
 package org.opensaml.ws.wstrust.impl;
 
+import java.util.List;
+
 import org.opensaml.ws.wstrust.AllowPostdating;
+import org.opensaml.xml.XMLObject;
 
 /**
- * AllowPostdatingImpl
+ * AllowPostdatingImpl.
  * 
  */
 public class AllowPostdatingImpl extends AbstractWSTrustObject implements AllowPostdating {
@@ -34,6 +37,11 @@ public class AllowPostdatingImpl extends AbstractWSTrustObject implements AllowP
      */
     public AllowPostdatingImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
+    }
+
+    /** {@inheritDoc} */
+    public List<XMLObject> getOrderedChildren() {
+        return null;
     }
 
 }

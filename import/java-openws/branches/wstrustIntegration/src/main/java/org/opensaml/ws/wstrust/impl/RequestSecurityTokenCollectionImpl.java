@@ -24,18 +24,16 @@ import java.util.List;
 import org.opensaml.ws.wstrust.RequestSecurityToken;
 import org.opensaml.ws.wstrust.RequestSecurityTokenCollection;
 import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.signature.Signature;
 
 /**
- * RequestSecurityTokenCollectionImpl
- * 
- * @see RequestSecurityTokenCollection
+ * RequestSecurityTokenCollectionImpl.
  * 
  */
-public class RequestSecurityTokenCollectionImpl extends AbstractWSTrustObject implements RequestSecurityTokenCollection {
+public class RequestSecurityTokenCollectionImpl extends AbstractWSTrustObject 
+        implements RequestSecurityTokenCollection {
 
-    /** The list of &lt;wst:RequestSecurityToken&gt; child elements */
-    private List<RequestSecurityToken> requestSecurityTokens_ = null;
+    /** The list of wst:RequestSecurityToken child elements. */
+    private List<RequestSecurityToken> requestSecurityTokens;
 
     /**
      * Constructor.
@@ -46,41 +44,19 @@ public class RequestSecurityTokenCollectionImpl extends AbstractWSTrustObject im
      */
     public RequestSecurityTokenCollectionImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        requestSecurityTokens_ = new ArrayList<RequestSecurityToken>();
+        requestSecurityTokens = new ArrayList<RequestSecurityToken>();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.RequestSecurityTokenCollection#getRequestSecurityTokens()
-     */
+    /** {@inheritDoc} */
     public List<RequestSecurityToken> getRequestSecurityTokens() {
-        return requestSecurityTokens_;
+        return requestSecurityTokens;
     }
 
-    /**
-     * Returns the list of {@link RequestSecurityToken} child elements and the {@link Signature} child element.
-     * 
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
         List<XMLObject> children = new ArrayList<XMLObject>();
-        for (XMLObject rst : requestSecurityTokens_) {
-            children.add(rst);
-        }
-        // if (getSignature() != null) {
-        // children.add(getSignature());
-        // }
+        children.addAll(requestSecurityTokens);
         return Collections.unmodifiableList(children);
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.RequestSecurityTokenCollection#setRequestSecurityTokens(java.util.List)
-     */
-    public void setRequestSecurityTokens(List<RequestSecurityToken> requestSecurityTokens) {
-        requestSecurityTokens_ = prepareForAssignment(requestSecurityTokens_, requestSecurityTokens);
     }
 
 }

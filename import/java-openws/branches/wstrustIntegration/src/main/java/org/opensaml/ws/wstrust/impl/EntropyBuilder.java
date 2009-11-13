@@ -24,24 +24,13 @@ import org.opensaml.ws.wstrust.Entropy;
  */
 public class EntropyBuilder extends AbstractWSTrustObjectBuilder<Entropy> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.impl.AbstractWSTrustObjectBuilder#buildObject()
-     */
-    @Override
+    /** {@inheritDoc} */
     public Entropy buildObject() {
         return buildObject(Entropy.ELEMENT_NAME);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AbstractXMLObjectBuilder#buildObject(java.lang.String,
-     *      java.lang.String, java.lang.String)
-     */
-    public Entropy buildObject(String namespaceURI, String localName,
-            String namespacePrefix) {
+    /** {@inheritDoc} */
+    public Entropy buildObject(String namespaceURI, String localName, String namespacePrefix) {
         return new EntropyImpl(namespaceURI, localName, namespacePrefix);
     }
 

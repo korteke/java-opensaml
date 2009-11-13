@@ -21,33 +21,16 @@ import org.opensaml.ws.wstrust.ComputedKey;
 /**
  * Builder for the ComputedKey element.
  * 
- * @see org.opensaml.ws.wstrust.ComputedKey
- * 
  */
-public class ComputedKeyBuilder extends
-        AbstractWSTrustObjectBuilder<ComputedKey> {
+public class ComputedKeyBuilder extends AbstractWSTrustObjectBuilder<ComputedKey> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.impl.AbstractWSTrustObjectBuilder#buildObject()
-     * @see org.opensaml.ws.wstrust.ComputedKey
-     */
-    @Override
+    /** {@inheritDoc} */
     public ComputedKey buildObject() {
         return buildObject(ComputedKey.ELEMENT_NAME);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AbstractXMLObjectBuilder#buildObject(java.lang.String,
-     *      java.lang.String, java.lang.String)
-     * @see org.opensaml.ws.wstrust.ComputedKey
-     */
-    @Override
-    public ComputedKey buildObject(String namespaceURI, String localName,
-            String namespacePrefix) {
+    /** {@inheritDoc} */
+    public ComputedKey buildObject(String namespaceURI, String localName, String namespacePrefix) {
         return new ComputedKeyImpl(namespaceURI, localName, namespacePrefix);
     }
 

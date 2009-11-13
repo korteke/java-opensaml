@@ -27,16 +27,16 @@ import org.opensaml.ws.wstrust.Lifetime;
 import org.opensaml.xml.XMLObject;
 
 /**
- * LifetimeImpl
+ * LifetimeImpl.
  * 
  */
 public class LifetimeImpl extends AbstractWSTrustObject implements Lifetime {
 
-    /** The wsu:Created child element */
-    private Created created_ = null;
+    /** The wsu:Created child element. */
+    private Created created;
 
-    /** The wsu:Expires child element */
-    private Expires expires_ = null;
+    /** The wsu:Expires child element. */
+    private Expires expires;
 
     /**
      * Constructor.
@@ -49,54 +49,34 @@ public class LifetimeImpl extends AbstractWSTrustObject implements Lifetime {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.glite.xml.trust.Lifetime#getCreated()
-     */
+    /** {@inheritDoc} */
     public Created getCreated() {
-        return created_;
+        return created;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.glite.xml.trust.Lifetime#getExpires()
-     */
+    /** {@inheritDoc} */
     public Expires getExpires() {
-        return expires_;
+        return expires;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.glite.xml.trust.Lifetime#setCreated(org.glite.xml.security.Created)
-     */
-    public void setCreated(Created created) {
-        created_ = prepareForAssignment(created_, created);
+    /** {@inheritDoc} */
+    public void setCreated(Created newCreated) {
+        created = prepareForAssignment(created, newCreated);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.glite.xml.trust.Lifetime#setExpires(org.glite.xml.security.Expires)
-     */
-    public void setExpires(Expires expires) {
-        expires_ = prepareForAssignment(expires_, expires);
+    /** {@inheritDoc} */
+    public void setExpires(Expires newExpires) {
+        expires = prepareForAssignment(expires, newExpires);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.glite.xml.trust.impl.AbstractWSTrustObject#getOrderedChildren()
-     */
+    /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
         ArrayList<XMLObject> children = new ArrayList<XMLObject>();
-        if (created_ != null) {
-            children.add(created_);
+        if (created != null) {
+            children.add(created);
         }
-        if (expires_ != null) {
-            children.add(expires_);
+        if (expires != null) {
+            children.add(expires);
         }
         return Collections.unmodifiableList(children);
     }

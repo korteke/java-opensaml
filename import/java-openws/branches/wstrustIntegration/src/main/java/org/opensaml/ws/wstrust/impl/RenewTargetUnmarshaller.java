@@ -16,26 +16,23 @@
  */
 package org.opensaml.ws.wstrust.impl;
 
-
 import org.opensaml.ws.wstrust.RenewTarget;
-import org.opensaml.xml.AbstractElementExtensibleXMLObjectUnmarshaller;
+import org.opensaml.xml.XMLObject;
+import org.opensaml.xml.io.UnmarshallingException;
+
+
 
 /**
  * Unmarshaller for the &lt;wst:RenewTarget&gt; element.
  * 
- * @see RenewTarget
- * 
  */
-public class RenewTargetUnmarshaller extends
-        AbstractElementExtensibleXMLObjectUnmarshaller {
+public class RenewTargetUnmarshaller extends AbstractWSTrustObjectUnmarshaller {
 
-    /**
-     * Default constructor.
-     * <p>
-     * {@inheritDoc}
-     */
-    public RenewTargetUnmarshaller() {
-        super();
+    /** {@inheritDoc} */
+    protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
+            throws UnmarshallingException {
+        RenewTarget rt = (RenewTarget) parentXMLObject;
+        rt.setUnknownXMLObject(childXMLObject);
     }
 
 }

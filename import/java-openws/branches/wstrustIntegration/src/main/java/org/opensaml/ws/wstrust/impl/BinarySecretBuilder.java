@@ -21,33 +21,16 @@ import org.opensaml.ws.wstrust.BinarySecret;
 /**
  * Builder for the BinarySecret element.
  * 
- * @see org.opensaml.ws.wstrust.BinarySecret
- * 
  */
-public class BinarySecretBuilder extends
-        AbstractWSTrustObjectBuilder<BinarySecret> {
+public class BinarySecretBuilder extends AbstractWSTrustObjectBuilder<BinarySecret> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.impl.AbstractWSTrustObjectBuilder#buildObject()
-     * @see org.opensaml.ws.wstrust.BinarySecret
-     */
-    @Override
+    /** {@inheritDoc} */
     public BinarySecret buildObject() {
         return buildObject(BinarySecret.ELEMENT_NAME);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AbstractXMLObjectBuilder#buildObject(java.lang.String,
-     *      java.lang.String, java.lang.String)
-     * @see org.opensaml.ws.wstrust.BinarySecret
-     */
-    @Override
-    public BinarySecret buildObject(String namespaceURI, String localName,
-            String namespacePrefix) {
+    /** {@inheritDoc} */
+    public BinarySecret buildObject(String namespaceURI, String localName, String namespacePrefix) {
         return new BinarySecretImpl(namespaceURI, localName, namespacePrefix);
     }
 

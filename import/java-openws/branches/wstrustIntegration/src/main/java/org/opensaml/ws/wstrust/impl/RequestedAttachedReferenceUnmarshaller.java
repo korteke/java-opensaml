@@ -16,24 +16,11 @@
  */
 package org.opensaml.ws.wstrust.impl;
 
-import org.opensaml.ws.wstrust.RequestedAttachedReference;
 
 /**
- * Unmarshaller for the &lt;wst:RequestedAttachedReference&gt; element.
- * 
- * @see RequestedAttachedReference
+ * Unmarshaller for the wst:RequestedAttachedReference element.
  * 
  */
-public class RequestedAttachedReferenceUnmarshaller extends
-        AbstractRequestedReferenceTypeUnmarshaller {
-
-    /**
-     * Default constructor.
-     * <p>
-     * {@inheritDoc}
-     */
-    public RequestedAttachedReferenceUnmarshaller() {
-        super();
-    }
+public class RequestedAttachedReferenceUnmarshaller extends RequestedReferenceTypeUnmarshaller {
 
 }

@@ -21,32 +21,16 @@ import org.opensaml.ws.wstrust.Claims;
 /**
  * Builder for the Claims element.
  * 
- * @see org.opensaml.ws.wstrust.Claims
- * 
  */
 public class ClaimsBuilder extends AbstractWSTrustObjectBuilder<Claims> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.impl.AbstractWSTrustObjectBuilder#buildObject()
-     * @see org.opensaml.ws.wstrust.Claims
-     */
-    @Override
+    /** {@inheritDoc} */
     public Claims buildObject() {
         return buildObject(Claims.ELEMENT_NAME);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AbstractXMLObjectBuilder#buildObject(java.lang.String,
-     *      java.lang.String, java.lang.String)
-     * @see org.opensaml.ws.wstrust.Claims
-     */
-    @Override
-    public Claims buildObject(String namespaceURI, String localName,
-            String namespacePrefix) {
+    /** {@inheritDoc} */
+    public Claims buildObject(String namespaceURI, String localName, String namespacePrefix) {
         return new ClaimsImpl(namespaceURI, localName, namespacePrefix);
     }
 

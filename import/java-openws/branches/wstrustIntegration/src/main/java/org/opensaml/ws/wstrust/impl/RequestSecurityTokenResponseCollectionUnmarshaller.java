@@ -16,72 +16,35 @@
  */
 package org.opensaml.ws.wstrust.impl;
 
-import java.util.List;
-
-import javax.xml.namespace.QName;
-
-
 import org.opensaml.ws.wstrust.RequestSecurityTokenResponse;
 import org.opensaml.ws.wstrust.RequestSecurityTokenResponseCollection;
-import org.opensaml.xml.AttributeExtensibleXMLObject;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Attr;
 
+
 /**
- * RequestSecurityTokenResponseCollectionUnmarshaller
- * 
- * @see RequestSecurityTokenResponseCollection
+ * RequestSecurityTokenResponseCollectionUnmarshaller.
  * 
  */
-public class RequestSecurityTokenResponseCollectionUnmarshaller extends
-        AbstractWSTrustObjectUnmarshaller {
+public class RequestSecurityTokenResponseCollectionUnmarshaller extends AbstractWSTrustObjectUnmarshaller {
 
-    /**
-     * Default constructor.
-     */
-    public RequestSecurityTokenResponseCollectionUnmarshaller() {
-        super();
+    /** {@inheritDoc} */
+    protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
+        RequestSecurityTokenResponseCollection rstrc = (RequestSecurityTokenResponseCollection) xmlObject;
+        XMLHelper.unmarshallToAttributeMap(rstrc.getUnknownAttributes(), attribute);
     }
 
-    /**
-     * Unmarshalls the {@link RequestSecurityTokenResponse} child elements and
-     * add them to the RSTR list.
-     * <p>
-     * {@inheritDoc}
-     */
-    @Override
-    protected void processChildElement(XMLObject parentXMLObject,
-            XMLObject childXMLObject) throws UnmarshallingException {
+    /** {@inheritDoc} */
+    protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
+            throws UnmarshallingException {
+        RequestSecurityTokenResponseCollection rstrc = (RequestSecurityTokenResponseCollection) parentXMLObject;
         if (childXMLObject instanceof RequestSecurityTokenResponse) {
-            RequestSecurityTokenResponseCollection rstrc= (RequestSecurityTokenResponseCollection) parentXMLObject;
-            List<RequestSecurityTokenResponse> rstrs= rstrc.getRequestSecurityTokenResponses();
-            RequestSecurityTokenResponse rstr= (RequestSecurityTokenResponse) childXMLObject;
-            rstrs.add(rstr);
-        }
-        else {
+            rstrc.getRequestSecurityTokenResponses().add((RequestSecurityTokenResponse) childXMLObject);
+        } else {
             super.processChildElement(parentXMLObject, childXMLObject);
         }
-    }
-
-    /**
-     * Unmarshalls the <code>xs:anyAttribute</code> attributes.
-     * <p>
-     * {@inheritDoc}
-     */
-    @Override
-    protected void processAttribute(XMLObject xmlObject, Attr attribute)
-            throws UnmarshallingException {
-        AttributeExtensibleXMLObject anyAttribute= (AttributeExtensibleXMLObject) xmlObject;
-        QName attribQName= XMLHelper.constructQName(attribute.getNamespaceURI(),
-                                                    attribute.getLocalName(),
-                                                    attribute.getPrefix());
-        if (attribute.isId()) {
-            anyAttribute.getUnknownAttributes().registerID(attribQName);
-        }
-        anyAttribute.getUnknownAttributes().put(attribQName,
-                                                attribute.getValue());
     }
 
 }

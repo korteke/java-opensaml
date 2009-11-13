@@ -22,18 +22,16 @@ import org.opensaml.ws.wstrust.WSTrustObjectBuilder;
 import org.opensaml.xml.AbstractXMLObjectBuilder;
 
 /**
- * AbstractWSTrustObjectBuilder
+ * AbstractWSTrustObjectBuilder.
+ * 
+ * @param <WSTrustObjectType> the type of WSTrustObject being built
  * 
  */
-public abstract class AbstractWSTrustObjectBuilder<WSTrustObjectType extends WSTrustObject>
-        extends AbstractXMLObjectBuilder<WSTrustObjectType> implements
-        WSTrustObjectBuilder<WSTrustObjectType> {
+public abstract class AbstractWSTrustObjectBuilder<WSTrustObjectType extends WSTrustObject> 
+        extends AbstractXMLObjectBuilder<WSTrustObjectType> 
+        implements WSTrustObjectBuilder<WSTrustObjectType> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.WSTrustObjectBuilder#buildObject()
-     */
+    /** {@inheritDoc} */
     public abstract WSTrustObjectType buildObject();
 
 }

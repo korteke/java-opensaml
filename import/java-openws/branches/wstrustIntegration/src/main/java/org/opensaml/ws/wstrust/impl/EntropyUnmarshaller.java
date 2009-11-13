@@ -16,54 +16,31 @@
  */
 package org.opensaml.ws.wstrust.impl;
 
-
-import org.opensaml.ws.wstrust.BinarySecret;
-import org.opensaml.ws.wstrust.Entropy;
-import org.opensaml.xml.AbstractExtensibleXMLObjectUnmarshaller;
+import org.opensaml.ws.wstrust.Claims;
 import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.encryption.EncryptedKey;
 import org.opensaml.xml.io.UnmarshallingException;
+import org.opensaml.xml.util.XMLHelper;
+import org.w3c.dom.Attr;
+
+
 
 /**
- * Unmarshaller for the &lt;wst:Entropy&gt; element.
- * 
- * @see Entropy
+ * Unmarshaller for the wst:Entropy element.
  * 
  */
-public class EntropyUnmarshaller extends
-        AbstractExtensibleXMLObjectUnmarshaller {
+public class EntropyUnmarshaller extends AbstractWSTrustObjectUnmarshaller {
 
-    /**
-     * Default constructor.
-     * <p>
-     * {@inheritDoc}
-     */
-    public EntropyUnmarshaller() {
-        super();
+    /** {@inheritDoc} */
+    protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
+        Claims claims = (Claims) xmlObject;
+        XMLHelper.unmarshallToAttributeMap(claims.getUnknownAttributes(), attribute);
     }
 
-    /**
-     * Unmarshalls the &lt;wst:BinarySecret&gt; or the &lt;xenc:EncryptedKey&gt;
-     * child elements.
-     * <p>
-     * {@inheritDoc}
-     */
-    @Override
-    protected void processChildElement(XMLObject parentXMLObject,
-            XMLObject childXMLObject) throws UnmarshallingException {
-        Entropy container= (Entropy) parentXMLObject;
-        if (childXMLObject instanceof BinarySecret) {
-            BinarySecret binarySecret= (BinarySecret) childXMLObject;
-            container.setBinarySecret(binarySecret);
-        }
-        else if (childXMLObject instanceof EncryptedKey) {
-            EncryptedKey encryptedKey= (EncryptedKey) childXMLObject;
-            container.setEncryptedKey(encryptedKey);
-        }
-        else {
-            // xs:any element
-            super.processChildElement(parentXMLObject, childXMLObject);
-        }
+    /** {@inheritDoc} */
+    protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
+            throws UnmarshallingException {
+        Claims claims = (Claims) parentXMLObject;
+        claims.getUnknownXMLObjects().add(childXMLObject);
     }
-
+    
 }

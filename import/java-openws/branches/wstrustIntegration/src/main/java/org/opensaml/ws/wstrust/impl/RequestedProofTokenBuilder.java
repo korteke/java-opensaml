@@ -21,36 +21,17 @@ import org.opensaml.ws.wstrust.RequestedProofToken;
 /**
  * Builder for the RequestedProofToken element.
  * 
- * @see org.opensaml.ws.wstrust.RequestedProofToken
- * 
  */
-public class RequestedProofTokenBuilder extends
-        AbstractWSTrustObjectBuilder<RequestedProofToken> {
+public class RequestedProofTokenBuilder extends AbstractWSTrustObjectBuilder<RequestedProofToken> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.impl.AbstractWSTrustObjectBuilder#buildObject()
-     * @see org.opensaml.ws.wstrust.RequestedProofToken
-     */
-    @Override
+    /** {@inheritDoc} */
     public RequestedProofToken buildObject() {
         return buildObject(RequestedProofToken.ELEMENT_NAME);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AbstractXMLObjectBuilder#buildObject(java.lang.String,
-     *      java.lang.String, java.lang.String)
-     * @see org.opensaml.ws.wstrust.RequestedProofToken
-     */
-    @Override
-    public RequestedProofToken buildObject(String namespaceURI,
-            String localName, String namespacePrefix) {
-        return new RequestedProofTokenImpl(namespaceURI,
-                                           localName,
-                                           namespacePrefix);
+    /** {@inheritDoc} */
+    public RequestedProofToken buildObject(String namespaceURI, String localName, String namespacePrefix) {
+        return new RequestedProofTokenImpl(namespaceURI, localName, namespacePrefix);
     }
 
 }

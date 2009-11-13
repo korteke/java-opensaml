@@ -16,48 +16,11 @@
  */
 package org.opensaml.ws.wstrust.impl;
 
-import java.util.List;
-
-
-import org.opensaml.ws.wstrust.IssuedTokens;
-import org.opensaml.ws.wstrust.RequestSecurityTokenResponse;
-import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.io.UnmarshallingException;
 
 /**
- * Unmarshaller for the &lt;wst:IssuedTokens&gt; element.
- * 
- * @see IssuedTokens
+ * Unmarshaller for the wst:IssuedTokens element.
  * 
  */
-public class IssuedTokensUnmarshaller extends AbstractWSTrustObjectUnmarshaller {
+public class IssuedTokensUnmarshaller extends RequestSecurityTokenResponseCollectionUnmarshaller {
 
-    /**
-     * Default constructor.
-     * <p>
-     * {@inheritDoc}
-     */
-    public IssuedTokensUnmarshaller() {
-        super();
-    }
-
-    /**
-     * Unmarshalls the list of &lt;wst:RequestSecurityTokenResponse&gt; child
-     * elements.
-     * <p>
-     * {@inheritDoc}
-     */
-    @Override
-    protected void processChildElement(XMLObject parentXMLObject,
-            XMLObject childXMLObject) throws UnmarshallingException {
-        if (childXMLObject instanceof RequestSecurityTokenResponse) {
-            IssuedTokens issuedTokens= (IssuedTokens) parentXMLObject;
-            List<RequestSecurityTokenResponse> rstrs= issuedTokens.getRequestSecurityTokenResponses();
-            RequestSecurityTokenResponse rstr= (RequestSecurityTokenResponse) childXMLObject;
-            rstrs.add(rstr);
-        }
-        else {
-            super.processChildElement(parentXMLObject, childXMLObject);
-        }
-    }
 }

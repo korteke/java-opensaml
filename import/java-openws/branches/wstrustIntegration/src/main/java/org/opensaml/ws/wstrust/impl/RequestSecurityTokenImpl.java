@@ -17,21 +17,31 @@
 
 package org.opensaml.ws.wstrust.impl;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.opensaml.ws.wstrust.Claims;
+import javax.xml.namespace.QName;
+
 import org.opensaml.ws.wstrust.RequestSecurityToken;
 import org.opensaml.xml.XMLObject;
+import org.opensaml.xml.util.AttributeMap;
+import org.opensaml.xml.util.IndexedXMLObjectChildrenList;
 
 /**
- * RequestSecurityTokenImpl
+ * RequestSecurityTokenImpl.
  * 
  */
-public class RequestSecurityTokenImpl extends AbstractRequestSecurityTokenType implements RequestSecurityToken {
-
-    /** The &lt;wst:Claims&gt; child element */
-    private Claims claims_ = null;
+public class RequestSecurityTokenImpl extends AbstractWSTrustObject implements RequestSecurityToken {
+    
+    /** Context attribute value. */
+    private String context;
+    
+    /** Wildcard child elements. */
+    private IndexedXMLObjectChildrenList<XMLObject> unknownChildren;
+    
+    /** Wildcard attributes. */
+    private AttributeMap unknownAttributes;
 
     /**
      * Constructor.
@@ -42,37 +52,39 @@ public class RequestSecurityTokenImpl extends AbstractRequestSecurityTokenType i
      */
     public RequestSecurityTokenImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
+        unknownChildren = new IndexedXMLObjectChildrenList<XMLObject>(this);
+        unknownAttributes = new AttributeMap(this);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.RequestSecurityToken#getClaims()
-     */
-    public Claims getClaims() {
-        return claims_;
+    /** {@inheritDoc} */
+    public String getContext() {
+        return context;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.RequestSecurityToken#setClaims(org.opensaml.ws.wstrust.Claims)
-     */
-    public void setClaims(Claims claims) {
-        claims_ = prepareForAssignment(claims_, claims);
+    /** {@inheritDoc} */
+    public void setContext(String newContext) {
+        context = prepareForAssignment(context, newContext);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.XMLObject#getOrderedChildren()
-     */
+    /** {@inheritDoc} */
+    public List<XMLObject> getUnknownXMLObjects() {
+        return unknownChildren;
+    }
+
+    /** {@inheritDoc} */
+    public List<XMLObject> getUnknownXMLObjects(QName typeOrName) {
+        return unknownChildren.get(typeOrName);
+    }
+
+    /** {@inheritDoc} */
+    public AttributeMap getUnknownAttributes() {
+        return unknownAttributes;
+    }
+
+    /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        List<XMLObject> children = getCommonChildren();
-        // TODO add all possible children, in which order ???
-        if (claims_ != null) {
-            children.add(claims_);
-        }
+        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        children.addAll(unknownChildren);
         return Collections.unmodifiableList(children);
     }
 

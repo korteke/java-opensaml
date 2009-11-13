@@ -18,15 +18,15 @@ package org.opensaml.ws.wstrust;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.xml.ElementExtensibleXMLObject;
+import org.opensaml.xml.XMLObject;
 
 /**
- * The wst:RequestedSecurityToken element containing a security token.
+ * The wst:RequestedSecurityToken element.
  * 
  * @see "WS-Trust 1.3, Chapter 4.4 Returning a Security Token."
  * 
  */
-public interface RequestedSecurityToken extends ElementExtensibleXMLObject, WSTrustObject {
+public interface RequestedSecurityToken extends WSTrustObject {
 
     /** Element local name. */
     public static final String ELEMENT_LOCAL_NAME = "RequestedSecurityToken";
@@ -41,5 +41,19 @@ public interface RequestedSecurityToken extends ElementExtensibleXMLObject, WSTr
     /** QName of the XSI type. */
     public static final QName TYPE_NAME = 
         new QName(WSTrustConstants.WST_NS, TYPE_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
+    
+    /**
+     * Get the unknown child element.
+     * 
+     * @return the child element
+     */
+    public XMLObject getUnknownXMLObject();
+    
+    /**
+     * Set the unknown child element.
+     * 
+     * @param unknownObject the new child element
+     */
+    public void setUnknownXMLObject(XMLObject unknownObject);
     
 }

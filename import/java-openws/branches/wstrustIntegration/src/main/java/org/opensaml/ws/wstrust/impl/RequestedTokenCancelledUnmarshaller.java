@@ -16,23 +16,11 @@
  */
 package org.opensaml.ws.wstrust.impl;
 
-import org.opensaml.ws.wstrust.RequestedTokenCancelled;
 
 /**
- * Unmarshaller for the empty &lt;wst:RequestedTokenCancelled&gt; element.
- * 
- * @see RequestedTokenCancelled
+ * Unmarshaller for the empty wst:RequestedTokenCancelled element.
  * 
  */
-public class RequestedTokenCancelledUnmarshaller extends
-        AbstractWSTrustObjectUnmarshaller {
+public class RequestedTokenCancelledUnmarshaller extends AbstractWSTrustObjectUnmarshaller {
 
-    /**
-     * Default constructor.
-     * <p>
-     * {@inheritDoc}
-     */
-    public RequestedTokenCancelledUnmarshaller() {
-        super();
-    }
 }

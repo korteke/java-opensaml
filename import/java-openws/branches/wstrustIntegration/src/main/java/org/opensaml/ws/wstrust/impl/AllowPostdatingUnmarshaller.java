@@ -16,23 +16,11 @@
  */
 package org.opensaml.ws.wstrust.impl;
 
-import org.opensaml.ws.wstrust.AllowPostdating;
 
 /**
- * Unmarshaller for the empty &lt;wst:AllowPostdating&gt; element.
- * 
- * @see AllowPostdating
+ * Unmarshaller for the wst:AllowPostdating element.
  * 
  */
-public class AllowPostdatingUnmarshaller extends
-        AbstractWSTrustObjectUnmarshaller {
+public class AllowPostdatingUnmarshaller extends AbstractWSTrustObjectUnmarshaller {
 
-    /**
-     * Default constructor.
-     * <p>
-     * {@inheritDoc}
-     */
-    public AllowPostdatingUnmarshaller() {
-        super();
-    }
 }

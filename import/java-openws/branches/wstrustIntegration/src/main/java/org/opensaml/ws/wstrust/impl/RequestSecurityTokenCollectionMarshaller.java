@@ -16,22 +16,10 @@
  */
 package org.opensaml.ws.wstrust.impl;
 
-import org.opensaml.ws.wstrust.RequestSecurityTokenCollection;
-
 /**
  * Marshaller for the RequestSecurityTokenCollection element.
  * 
- * @see RequestSecurityTokenCollection
- * 
  */
-public class RequestSecurityTokenCollectionMarshaller extends
-        AbstractWSTrustObjectMarshaller {
-
-    /**
-     * Default constructor.
-     */
-    public RequestSecurityTokenCollectionMarshaller() {
-        super();
-    }
+public class RequestSecurityTokenCollectionMarshaller extends AbstractWSTrustObjectMarshaller {
 
 }

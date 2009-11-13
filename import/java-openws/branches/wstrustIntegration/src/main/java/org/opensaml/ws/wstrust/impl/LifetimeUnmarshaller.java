@@ -16,49 +16,28 @@
  */
 package org.opensaml.ws.wstrust.impl;
 
-
 import org.opensaml.ws.wssecurity.Created;
 import org.opensaml.ws.wssecurity.Expires;
 import org.opensaml.ws.wstrust.Lifetime;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
 
+
 /**
- * Unmarshaller for the &lt;wst:Lifetime&gt; element.
- * 
- * @see Lifetime
+ * Unmarshaller for the wst:Lifetime element.
  * 
  */
 public class LifetimeUnmarshaller extends AbstractWSTrustObjectUnmarshaller {
 
-    /**
-     * Default constructor.
-     * <p>
-     * {@inheritDoc}
-     */
-    public LifetimeUnmarshaller() {
-        super();
-    }
-
-    /**
-     * Unmarshalls the &lt;wsu:Created&gt; and the &lt;wsu:Expires&gt; child
-     * elements.
-     * <p>
-     * {@inheritDoc}
-     */
-    @Override
-    protected void processChildElement(XMLObject parentXMLObject,
-            XMLObject childXMLObject) throws UnmarshallingException {
-        Lifetime container= (Lifetime) parentXMLObject;
+    /** {@inheritDoc} */
+    protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
+            throws UnmarshallingException {
+        Lifetime lifetime = (Lifetime) parentXMLObject;
         if (childXMLObject instanceof Created) {
-            Created created= (Created) childXMLObject;
-            container.setCreated(created);
-        }
-        else if (childXMLObject instanceof Expires) {
-            Expires expires= (Expires) childXMLObject;
-            container.setExpires(expires);
-        }
-        else {
+            lifetime.setCreated((Created) childXMLObject);
+        } else if (childXMLObject instanceof Expires) {
+            lifetime.setExpires((Expires) childXMLObject);
+        } else {
             super.processChildElement(parentXMLObject, childXMLObject);
         }
     }

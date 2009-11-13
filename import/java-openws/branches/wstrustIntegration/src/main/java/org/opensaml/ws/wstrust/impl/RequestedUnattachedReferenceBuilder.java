@@ -21,36 +21,17 @@ import org.opensaml.ws.wstrust.RequestedUnattachedReference;
 /**
  * Builder for the RequestedUnattachedReference element.
  * 
- * @see org.opensaml.ws.wstrust.RequestedUnattachedReference
- * 
  */
-public class RequestedUnattachedReferenceBuilder extends
-        AbstractWSTrustObjectBuilder<RequestedUnattachedReference> {
+public class RequestedUnattachedReferenceBuilder extends AbstractWSTrustObjectBuilder<RequestedUnattachedReference> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.impl.AbstractWSTrustObjectBuilder#buildObject()
-     * @see org.opensaml.ws.wstrust.RequestedUnattachedReference
-     */
-    @Override
+    /** {@inheritDoc} */
     public RequestedUnattachedReference buildObject() {
         return buildObject(RequestedUnattachedReference.ELEMENT_NAME);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AbstractXMLObjectBuilder#buildObject(java.lang.String,
-     *      java.lang.String, java.lang.String)
-     * @see org.opensaml.ws.wstrust.RequestedUnattachedReference
-     */
-    @Override
-    public RequestedUnattachedReference buildObject(String namespaceURI,
-            String localName, String namespacePrefix) {
-        return new RequestedUnattachedReferenceImpl(namespaceURI,
-                                                    localName,
-                                                    namespacePrefix);
+    /** {@inheritDoc} */
+    public RequestedUnattachedReference buildObject(String namespaceURI, String localName, String namespacePrefix) {
+        return new RequestedUnattachedReferenceImpl(namespaceURI, localName, namespacePrefix);
     }
 
 }

@@ -16,48 +16,35 @@
  */
 package org.opensaml.ws.wstrust.impl;
 
-
 import org.opensaml.ws.wstrust.Claims;
-import org.opensaml.xml.AbstractExtensibleXMLObjectUnmarshaller;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
+import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Attr;
 
+
+
 /**
- * Unmarshaller for the &lt;wst:Claims&gt; element.
- * 
- * @see Claims
+ * Unmarshaller for the wst:Claims element.
  * 
  */
-public class ClaimsUnmarshaller extends AbstractExtensibleXMLObjectUnmarshaller {
+public class ClaimsUnmarshaller extends AbstractWSTrustObjectUnmarshaller {
 
-    /**
-     * Default constructor.
-     * <p>
-     * {@inheritDoc}
-     */
-    public ClaimsUnmarshaller() {
-        super();
+    /** {@inheritDoc} */
+    protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
+        Claims claims = (Claims) xmlObject;
+        if (Claims.DIALECT_ATTRIB_NAME.equals(attribute.getLocalName())) {
+            claims.setDialect(attribute.getValue());
+        } else {
+            XMLHelper.unmarshallToAttributeMap(claims.getUnknownAttributes(), attribute);
+        }
     }
 
-    /**
-     * Unmarshalls the &lt;wst:Dialect&gt; attribute.
-     * <p>
-     * {@inheritDoc}
-     */
-    @Override
-    protected void processAttribute(XMLObject xmlObject, Attr attribute)
+    /** {@inheritDoc} */
+    protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
             throws UnmarshallingException {
-        String attrName= attribute.getLocalName();
-        if (Claims.DIALECT_ATTR_LOCAL_NAME.equals(attrName)) {
-            Claims claims= (Claims) xmlObject;
-            String dialect= attribute.getValue();
-            claims.setDialect(dialect);
-        }
-        else {
-            // unmarshalls xs:anyAttribute
-            super.processAttribute(xmlObject, attribute);
-        }
+        Claims claims = (Claims) parentXMLObject;
+        claims.getUnknownXMLObjects().add(childXMLObject);
     }
 
 }

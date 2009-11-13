@@ -20,10 +20,10 @@ package org.opensaml.ws.wstrust.impl;
 import org.opensaml.ws.wstrust.RequestedUnattachedReference;
 
 /**
- * RequestedUnattachedReferenceImpl
+ * RequestedUnattachedReferenceImpl.
  * 
  */
-public class RequestedUnattachedReferenceImpl extends AbstractRequestedReferenceType implements
+public class RequestedUnattachedReferenceImpl extends RequestedReferenceTypeImpl implements
         RequestedUnattachedReference {
 
     /**

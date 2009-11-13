@@ -17,10 +17,13 @@
 
 package org.opensaml.ws.wstrust.impl;
 
+import java.util.List;
+
 import org.opensaml.ws.wstrust.RequestedTokenCancelled;
+import org.opensaml.xml.XMLObject;
 
 /**
- * RequestedTokenCancelledImpl
+ * RequestedTokenCancelledImpl.
  * 
  */
 public class RequestedTokenCancelledImpl extends AbstractWSTrustObject implements RequestedTokenCancelled {
@@ -34,6 +37,11 @@ public class RequestedTokenCancelledImpl extends AbstractWSTrustObject implement
      */
     public RequestedTokenCancelledImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
+    }
+
+    /** {@inheritDoc} */
+    public List<XMLObject> getOrderedChildren() {
+        return null;
     }
 
 }

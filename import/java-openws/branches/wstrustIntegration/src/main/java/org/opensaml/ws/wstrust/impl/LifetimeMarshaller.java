@@ -16,21 +16,11 @@
  */
 package org.opensaml.ws.wstrust.impl;
 
-import org.opensaml.ws.wstrust.Lifetime;
 
 /**
  * Marshaller for the Lifetime element.
  * 
- * @see Lifetime
- * 
  */
 public class LifetimeMarshaller extends AbstractWSTrustObjectMarshaller {
-
-    /**
-     * Default constructor.
-     */
-    public LifetimeMarshaller() {
-        super();
-    }
 
 }

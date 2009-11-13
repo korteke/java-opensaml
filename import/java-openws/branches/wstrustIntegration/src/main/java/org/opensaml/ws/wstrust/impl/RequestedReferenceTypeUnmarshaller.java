@@ -16,48 +16,26 @@
  */
 package org.opensaml.ws.wstrust.impl;
 
-
 import org.opensaml.ws.wssecurity.SecurityTokenReference;
-import org.opensaml.ws.wstrust.RequestedAttachedReference;
 import org.opensaml.ws.wstrust.RequestedReferenceType;
-import org.opensaml.ws.wstrust.RequestedUnattachedReference;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
 
+
+
 /**
- * Abstract unmarshaller for the element of type RequestedReferenceType.
- * 
- * @see RequestedReferenceType
- * @see RequestedAttachedReference
- * @see RequestedUnattachedReference
+ * Unmarshaller for the element of type RequestedReferenceType.
  * 
  */
-public abstract class AbstractRequestedReferenceTypeUnmarshaller extends
-        AbstractWSTrustObjectUnmarshaller {
+public class RequestedReferenceTypeUnmarshaller extends AbstractWSTrustObjectUnmarshaller {
 
-    /**
-     * Constructor.
-     * <p>
-     * {@inheritDoc}
-     */
-    public AbstractRequestedReferenceTypeUnmarshaller() {
-        super();
-    }
-
-    /**
-     * Unmarshalls the &lt;wst:SecurityTokenReference&gt; child element.
-     * <p>
-     * {@inheritDoc}
-     */
-    @Override
-    protected void processChildElement(XMLObject parentXMLObject,
-            XMLObject childXMLObject) throws UnmarshallingException {
-        RequestedReferenceType container= (RequestedReferenceType) parentXMLObject;
+    /** {@inheritDoc} */
+    protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
+            throws UnmarshallingException {
+        RequestedReferenceType rrt = (RequestedReferenceType) parentXMLObject;
         if (childXMLObject instanceof SecurityTokenReference) {
-            SecurityTokenReference ref= (SecurityTokenReference) childXMLObject;
-            container.setSecurityTokenReference(ref);
-        }
-        else {
+            rrt.setSecurityTokenReference((SecurityTokenReference) childXMLObject);
+        } else {
             super.processChildElement(parentXMLObject, childXMLObject);
         }
     }

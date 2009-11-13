@@ -21,7 +21,7 @@ import org.opensaml.ws.wstrust.TokenType;
 import org.opensaml.xml.schema.impl.XSURIImpl;
 
 /**
- * TokenTypeImpl
+ * TokenTypeImpl.
  * 
  */
 public class TokenTypeImpl extends XSURIImpl implements TokenType {

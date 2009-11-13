@@ -17,43 +17,33 @@
 package org.opensaml.ws.wstrust.impl;
 
 
-import org.opensaml.ws.wstrust.Claims;
 import org.opensaml.ws.wstrust.RequestSecurityToken;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
+import org.opensaml.xml.util.XMLHelper;
+import org.w3c.dom.Attr;
 
 /**
- * RequestSecurityTokenUnmarshaller
- * 
- * @see RequestSecurityToken
+ * RequestSecurityTokenUnmarshaller.
  * 
  */
-public class RequestSecurityTokenUnmarshaller extends
-        AbstractRequestSecurityTokenTypeUnmarshaller {
+public class RequestSecurityTokenUnmarshaller extends AbstractWSTrustObjectUnmarshaller {
 
-    /**
-     * Default constructor.
-     */
-    public RequestSecurityTokenUnmarshaller() {
-        super();
-    }
-
-    /**
-     * Unmarshalls the additional {@link Claims} child element.
-     * <p>
-     * {@inheritDoc}
-     */
-    @Override
-    protected void processChildElement(XMLObject parentXMLObject,
-            XMLObject childXMLObject) throws UnmarshallingException {
-        if (childXMLObject instanceof Claims) {
-            Claims claims= (Claims) childXMLObject;
-            RequestSecurityToken rst= (RequestSecurityToken) parentXMLObject;
-            rst.setClaims(claims);
-        }
-        else {
-            // common elements
-            super.processChildElement(parentXMLObject, childXMLObject);
+    /** {@inheritDoc} */
+    protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
+        RequestSecurityToken rst = (RequestSecurityToken) xmlObject;
+        if (RequestSecurityToken.CONTEXT_ATTRIB_NAME.equals(attribute.getLocalName())) {
+            rst.setContext(attribute.getValue());
+        } else {
+            XMLHelper.unmarshallToAttributeMap(rst.getUnknownAttributes(), attribute);
         }
     }
+
+    /** {@inheritDoc} */
+    protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
+            throws UnmarshallingException {
+        RequestSecurityToken rst = (RequestSecurityToken) parentXMLObject;
+        rst.getUnknownXMLObjects().add(childXMLObject);
+    }
+
 }

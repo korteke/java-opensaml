@@ -21,7 +21,7 @@ import org.opensaml.ws.wstrust.Reason;
 import org.opensaml.xml.schema.impl.XSStringImpl;
 
 /**
- * ReasonImpl
+ * ReasonImpl.
  * 
  */
 public class ReasonImpl extends XSStringImpl implements Reason {

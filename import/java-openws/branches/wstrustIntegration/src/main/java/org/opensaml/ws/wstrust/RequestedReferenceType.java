@@ -21,12 +21,10 @@ import javax.xml.namespace.QName;
 import org.opensaml.ws.wssecurity.SecurityTokenReference;
 
 /**
- * Abstract interface for RequestedReferenceType complex type.
+ * Interface for RequestedReferenceType complex type.
  * 
- * @see RequestedAttachedReference
- * @see RequestedUnattachedReference
  */
-public abstract interface RequestedReferenceType extends WSTrustObject {
+public interface RequestedReferenceType extends WSTrustObject {
     
     /** Local name of the XSI type. */
     public static final String TYPE_LOCAL_NAME = "RequestedReferenceType"; 

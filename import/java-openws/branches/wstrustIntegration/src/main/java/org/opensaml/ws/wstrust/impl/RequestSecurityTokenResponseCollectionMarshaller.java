@@ -16,58 +16,22 @@
  */
 package org.opensaml.ws.wstrust.impl;
 
-import java.util.Map.Entry;
-
-import javax.xml.namespace.QName;
-
-
 import org.opensaml.ws.wstrust.RequestSecurityTokenResponseCollection;
-import org.opensaml.xml.AttributeExtensibleXMLObject;
-import org.opensaml.xml.Configuration;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.util.XMLHelper;
-import org.w3c.dom.Attr;
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
  * Marshaller for the RequestSecurityTokenResponseCollection element.
  * 
- * @see RequestSecurityTokenResponseCollection
- * 
  */
-public class RequestSecurityTokenResponseCollectionMarshaller extends
-        AbstractWSTrustObjectMarshaller {
+public class RequestSecurityTokenResponseCollectionMarshaller extends AbstractWSTrustObjectMarshaller {
 
-    /**
-     * Default constructor.
-     */
-    public RequestSecurityTokenResponseCollectionMarshaller() {
-        super();
-    }
-
-    /**
-     * Marshalls the <code>any:Attribute</code> attributes.
-     * <p>
-     * {@inheritDoc}
-     */
-    @Override
-    protected void marshallAttributes(XMLObject xmlObject, Element domElement)
-            throws MarshallingException {
-        AttributeExtensibleXMLObject anyAttribute= (AttributeExtensibleXMLObject) xmlObject;
-        Document document= domElement.getOwnerDocument();
-        Attr attribute;
-        for (Entry<QName, String> entry : anyAttribute.getUnknownAttributes().entrySet()) {
-            attribute= XMLHelper.constructAttribute(document, entry.getKey());
-            attribute.setValue(entry.getValue());
-            domElement.setAttributeNodeNS(attribute);
-            if (Configuration.isIDAttribute(entry.getKey())
-                    || anyAttribute.getUnknownAttributes().isIDAttribute(entry.getKey())) {
-                attribute.getOwnerElement().setIdAttributeNode(attribute, true);
-            }
-        }
-        super.marshallAttributes(xmlObject, domElement);
+    /** {@inheritDoc} */
+    protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
+        RequestSecurityTokenResponseCollection rstrc = (RequestSecurityTokenResponseCollection) xmlObject;
+        XMLHelper.marshallAttributeMap(rstrc.getUnknownAttributes(), domElement);
     }
 
 }

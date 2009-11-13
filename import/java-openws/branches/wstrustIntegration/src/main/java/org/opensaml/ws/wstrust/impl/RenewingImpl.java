@@ -17,19 +17,23 @@
 
 package org.opensaml.ws.wstrust.impl;
 
+import java.util.List;
+
 import org.opensaml.ws.wstrust.Renewing;
+import org.opensaml.xml.XMLObject;
+import org.opensaml.xml.schema.XSBooleanValue;
 
 /**
- * RenewingImpl
+ * RenewingImpl.
  * 
  */
 public class RenewingImpl extends AbstractWSTrustObject implements Renewing {
-
-    /** Allow attribute value */
-    private Boolean allow_ = null;
-
-    /** OK attribute value */
-    private Boolean ok_ = null;
+    
+    /** The Allow attribute value. */
+    private XSBooleanValue allow;
+    
+    /** The OK attribute value. */
+    private XSBooleanValue ok;
 
     /**
      * Constructor.
@@ -42,40 +46,67 @@ public class RenewingImpl extends AbstractWSTrustObject implements Renewing {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.Renewing#getAllow()
-     */
-    public Boolean getAllow() {
-        return allow_;
+    /** {@inheritDoc} */
+    public Boolean isAllow() {
+        if (allow != null) {
+            return allow.getValue();
+        }
+
+        // Note: Default is true here, rather than the more common default of false.
+        return Boolean.TRUE;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.Renewing#getOK()
-     */
-    public Boolean getOK() {
-        return ok_;
+    /** {@inheritDoc} */
+    public XSBooleanValue isAllowXSBoolean() {
+        return allow;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.Renewing#setAllow(Boolean)
-     */
-    public void setAllow(Boolean allow) {
-        allow_ = prepareForAssignment(allow_, allow);
+    /** {@inheritDoc} */
+    public void setAllow(Boolean newAllow) {
+        if (newAllow != null) {
+            allow = prepareForAssignment(allow, new XSBooleanValue(newAllow, false));
+        } else {
+            allow = prepareForAssignment(allow, null);
+        }        
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.Renewing#setOK(Boolean)
-     */
-    public void setOK(Boolean ok) {
-        ok_ = prepareForAssignment(ok_, ok);
+    /** {@inheritDoc} */
+    public void setAllow(XSBooleanValue newAllow) {
+        allow = prepareForAssignment(allow, newAllow);
+    }
+
+    /** {@inheritDoc} */
+    public Boolean isOK() {
+        if (ok != null) {
+            return ok.getValue();
+        }
+
+        // Default is false.
+        return Boolean.FALSE;
+    }
+
+    /** {@inheritDoc} */
+    public XSBooleanValue isOKXSBoolean() {
+        return ok;
+    }
+
+    /** {@inheritDoc} */
+    public void setOK(Boolean newOK) {
+        if (newOK != null) {
+            ok = prepareForAssignment(ok, new XSBooleanValue(newOK, false));
+        } else {
+            ok = prepareForAssignment(ok, null);
+        }        
+    }
+
+    /** {@inheritDoc} */
+    public void setOK(XSBooleanValue newOK) {
+        ok = prepareForAssignment(ok, newOK);
+    }
+
+    /** {@inheritDoc} */
+    public List<XMLObject> getOrderedChildren() {
+        return null;
     }
 
 }

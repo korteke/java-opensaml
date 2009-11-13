@@ -17,23 +17,11 @@
 package org.opensaml.ws.wstrust.impl;
 
 
-import org.opensaml.ws.wstrust.RequestedProofToken;
-import org.opensaml.xml.AbstractElementExtensibleXMLObjectMarshaller;
 
 /**
  * Marshaller for the RequestedProofToken element.
  * 
- * @see RequestedProofToken
- * 
  */
-public class RequestedProofTokenMarshaller extends
-        AbstractElementExtensibleXMLObjectMarshaller {
-
-    /**
-     * Default constructor.
-     */
-    public RequestedProofTokenMarshaller() {
-        super();
-    }
+public class RequestedProofTokenMarshaller extends AbstractWSTrustObjectMarshaller {
 
 }

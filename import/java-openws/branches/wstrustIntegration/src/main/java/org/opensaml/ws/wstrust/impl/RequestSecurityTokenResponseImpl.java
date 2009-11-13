@@ -17,44 +17,31 @@
 
 package org.opensaml.ws.wstrust.impl;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.opensaml.ws.wstrust.Authenticator;
+import javax.xml.namespace.QName;
+
 import org.opensaml.ws.wstrust.RequestSecurityTokenResponse;
-import org.opensaml.ws.wstrust.RequestedAttachedReference;
-import org.opensaml.ws.wstrust.RequestedProofToken;
-import org.opensaml.ws.wstrust.RequestedSecurityToken;
-import org.opensaml.ws.wstrust.RequestedUnattachedReference;
-import org.opensaml.ws.wstrust.Status;
 import org.opensaml.xml.XMLObject;
+import org.opensaml.xml.util.AttributeMap;
+import org.opensaml.xml.util.IndexedXMLObjectChildrenList;
 
 /**
- * RequestSecurityTokenResponseImpl
- * 
- * @see RequestSecurityTokenResponse
+ * RequestSecurityTokenResponseImpl.
  * 
  */
-public class RequestSecurityTokenResponseImpl extends AbstractRequestSecurityTokenType implements
-        RequestSecurityTokenResponse {
+public class RequestSecurityTokenResponseImpl extends AbstractWSTrustObject implements RequestSecurityTokenResponse {
 
-    /** the &lt;wst:Authenticator&gt; child element */
-    private Authenticator authenticator_ = null;
-
-    /** the &lt;wst:RequestedAttachedReference&gt; child element */
-    private RequestedAttachedReference requestedAttachedReference_ = null;
-
-    /** the &lt;wst:RequestedProofToken&gt; child element */
-    private RequestedProofToken requestedProofToken_ = null;
-
-    /** the &lt;wst:RequestedSecurityToken&gt; child element */
-    private RequestedSecurityToken requestedSecurityToken_ = null;
-
-    /** the &lt;wst:RequestedUnattachedReference&gt; child element */
-    private RequestedUnattachedReference requestedUnattachedReference_ = null;
-
-    /** the &lt;wst:Status&gt; child element */
-    private Status status_ = null;
+    /** Context attribute value. */
+    private String context;
+    
+    /** Wildcard child elements. */
+    private IndexedXMLObjectChildrenList<XMLObject> unknownChildren;
+    
+    /** Wildcard attributes. */
+    private AttributeMap unknownAttributes;
 
     /**
      * Constructor.
@@ -65,141 +52,40 @@ public class RequestSecurityTokenResponseImpl extends AbstractRequestSecurityTok
      */
     public RequestSecurityTokenResponseImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
+        unknownChildren = new IndexedXMLObjectChildrenList<XMLObject>(this);
+        unknownAttributes = new AttributeMap(this);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.RequestSecurityTokenResponse#getAuthenticator()
-     */
-    public Authenticator getAuthenticator() {
-        return authenticator_;
+    /** {@inheritDoc} */
+    public String getContext() {
+        return context;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.RequestSecurityTokenResponse#getRequestedAttachedReference()
-     */
-    public RequestedAttachedReference getRequestedAttachedReference() {
-        return requestedAttachedReference_;
+    /** {@inheritDoc} */
+    public void setContext(String newContext) {
+        context = prepareForAssignment(context, newContext);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.RequestSecurityTokenResponse#getRequestedProofToken()
-     */
-    public RequestedProofToken getRequestedProofToken() {
-        return requestedProofToken_;
+    /** {@inheritDoc} */
+    public List<XMLObject> getUnknownXMLObjects() {
+        return unknownChildren;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.RequestSecurityTokenResponse#getRequestedSecurityToken()
-     */
-    public RequestedSecurityToken getRequestedSecurityToken() {
-        return requestedSecurityToken_;
+    /** {@inheritDoc} */
+    public List<XMLObject> getUnknownXMLObjects(QName typeOrName) {
+        return unknownChildren.get(typeOrName);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.RequestSecurityTokenResponse#getRequestedUnattachedReference()
-     */
-    public RequestedUnattachedReference getRequestedUnattachedReference() {
-        return requestedUnattachedReference_;
+    /** {@inheritDoc} */
+    public AttributeMap getUnknownAttributes() {
+        return unknownAttributes;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.RequestSecurityTokenResponse#getStatus()
-     */
-    public Status getStatus() {
-        return status_;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.RequestSecurityTokenResponse#setAuthenticator(org.opensaml.ws.wstrust.Authenticator)
-     */
-    public void setAuthenticator(Authenticator authenticator) {
-        authenticator_ = prepareForAssignment(authenticator_, authenticator);
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.RequestSecurityTokenResponse#setRequestedAttachedReference(org.opensaml.ws.wstrust.RequestedAttachedReference)
-     */
-    public void setRequestedAttachedReference(RequestedAttachedReference requestedAttachedReference) {
-        requestedAttachedReference_ = prepareForAssignment(requestedAttachedReference_, requestedAttachedReference);
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.RequestSecurityTokenResponse#setRequestedProofToken(org.opensaml.ws.wstrust.RequestedProofToken)
-     */
-    public void setRequestedProofToken(RequestedProofToken requestedProofToken) {
-        requestedProofToken_ = prepareForAssignment(requestedProofToken_, requestedProofToken);
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.RequestSecurityTokenResponse#setRequestedSecurityToken(org.opensaml.ws.wstrust.RequestedSecurityToken)
-     */
-    public void setRequestedSecurityToken(RequestedSecurityToken requestedSecurityToken) {
-        requestedSecurityToken_ = prepareForAssignment(requestedSecurityToken_, requestedSecurityToken);
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.RequestSecurityTokenResponse#setRequestedUnattachedReference(org.opensaml.ws.wstrust.RequestedUnattachedReference)
-     */
-    public void setRequestedUnattachedReference(RequestedUnattachedReference requestedUnattachedReference) {
-        requestedUnattachedReference_ = prepareForAssignment(requestedUnattachedReference_,
-                requestedUnattachedReference);
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.RequestSecurityTokenResponse#setStatus(org.opensaml.ws.wstrust.Status)
-     */
-    public void setStatus(Status status) {
-        status_ = prepareForAssignment(status_, status);
-
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.XMLObject#getOrderedChildren()
-     */
+    /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        List<XMLObject> children = getCommonChildren();
-        if (authenticator_ != null) {
-            children.add(authenticator_);
-        }
-        if (requestedAttachedReference_ != null) {
-            children.add(requestedAttachedReference_);
-        }
-        if (requestedProofToken_ != null) {
-            children.add(requestedProofToken_);
-        }
-        if (requestedSecurityToken_ != null) {
-            children.add(requestedSecurityToken_);
-        }
-        if (requestedUnattachedReference_ != null) {
-            children.add(requestedUnattachedReference_);
-        }
+        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        children.addAll(unknownChildren);
         return Collections.unmodifiableList(children);
     }
-
+    
 }

@@ -30,37 +30,21 @@ import org.w3c.dom.Element;
  */
 public abstract class AbstractWSTrustObjectMarshaller extends AbstractXMLObjectMarshaller {
 
-    /** Logger */
+    /** Logger. */
     private final Logger log = LoggerFactory.getLogger(AbstractWSTrustObjectMarshaller.class);
 
-    /**
-     * Constructor.
-     * <p>
-     * {@inheritDoc}
-     */
+    /** Constructor. */
     protected AbstractWSTrustObjectMarshaller() {
         super();
     }
 
-    /*
-     * No-op method. Extending implementations should override this method if they have attributes to marshall into the
-     * Element.
-     * 
-     * @see org.opensaml.xml.io.AbstractXMLObjectMarshaller#marshallAttributes(org.opensaml.xml.XMLObject,
-     *      org.w3c.dom.Element)
-     */
+    /** {@inheritDoc} */
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         log.debug("{} has no more attribute to marshall.", xmlObject.getElementQName().getLocalPart());
 
     }
 
-    /*
-     * No-op method. Extending implementations should override this method if they have text content to marshall into
-     * the Element.
-     * 
-     * @see org.opensaml.xml.io.AbstractXMLObjectMarshaller#marshallElementContent(org.opensaml.xml.XMLObject,
-     *      org.w3c.dom.Element)
-     */
+    /** {@inheritDoc} */
     protected void marshallElementContent(XMLObject xmlObject, Element domElement) throws MarshallingException {
         log.debug("{} has no content to marshall.", xmlObject.getElementQName().getLocalPart());
     }

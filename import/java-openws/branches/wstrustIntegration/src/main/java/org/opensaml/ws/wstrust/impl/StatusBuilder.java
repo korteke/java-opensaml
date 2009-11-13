@@ -21,32 +21,16 @@ import org.opensaml.ws.wstrust.Status;
 /**
  * Builder for the Status element.
  * 
- * @see org.opensaml.ws.wstrust.Status
- * 
  */
 public class StatusBuilder extends AbstractWSTrustObjectBuilder<Status> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.impl.AbstractWSTrustObjectBuilder#buildObject()
-     * @see org.opensaml.ws.wstrust.Status
-     */
-    @Override
+    /** {@inheritDoc} */
     public Status buildObject() {
         return buildObject(Status.ELEMENT_NAME);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AbstractXMLObjectBuilder#buildObject(java.lang.String,
-     *      java.lang.String, java.lang.String)
-     * @see org.opensaml.ws.wstrust.Status
-     */
-    @Override
-    public Status buildObject(String namespaceURI, String localName,
-            String namespacePrefix) {
+    /** {@inheritDoc} */
+    public Status buildObject(String namespaceURI, String localName, String namespacePrefix) {
         return new StatusImpl(namespaceURI, localName, namespacePrefix);
     }
 

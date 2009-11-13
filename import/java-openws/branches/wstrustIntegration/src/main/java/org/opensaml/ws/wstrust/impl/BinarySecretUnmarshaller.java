@@ -16,72 +16,26 @@
  */
 package org.opensaml.ws.wstrust.impl;
 
-import javax.xml.namespace.QName;
-
-
 import org.opensaml.ws.wstrust.BinarySecret;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
-import org.opensaml.xml.schema.XSBase64Binary;
+import org.opensaml.xml.schema.impl.XSBase64BinaryUnmarshaller;
 import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Attr;
 
 /**
  * Unmarshaller for the &lt;wst:BinarySecret&gt; element.
  * 
- * @see BinarySecret
- * 
  */
-public class BinarySecretUnmarshaller extends AbstractWSTrustObjectUnmarshaller {
+public class BinarySecretUnmarshaller extends XSBase64BinaryUnmarshaller {
 
-    /**
-     * Default constructor.
-     * <p>
-     * {@inheritDoc}
-     */
-    public BinarySecretUnmarshaller() {
-        super();
-    }
-
-    /**
-     * Unmarshalls the &lt;@Type&gt; and the <code>xs:anyAttribute</code>
-     * attributes.
-     * <p>
-     * {@inheritDoc}
-     */
-    @Override
-    protected void processAttribute(XMLObject xmlObject, Attr attribute)
-            throws UnmarshallingException {
-        String attrName= attribute.getLocalName();
-        BinarySecret binarySecret= (BinarySecret) xmlObject;
-        if (BinarySecret.TYPE_ATTR_LOCAL_NAME.equals(attrName)) {
-            String type= attribute.getValue();
-            binarySecret.setType(type);
-        }
-        else {
-            // xs:anyAttribute
-            QName attribQName= XMLHelper.constructQName(attribute.getNamespaceURI(),
-                                                        attribute.getLocalName(),
-                                                        attribute.getPrefix());
-            if (attribute.isId()) {
-                binarySecret.getUnknownAttributes().registerID(attribQName);
-            }
-            binarySecret.getUnknownAttributes().put(attribQName,
-                                                    attribute.getValue());
-        }
-    }
-
-    /**
-     * Unmarshalls the &lt;wst:BinarySecret&gt; element base64 binary content.
-     * <p>
-     * {@inheritDoc}
-     */
-    @Override
-    protected void processElementContent(XMLObject xmlObject,
-            String elementContent) {
-        if (elementContent != null) {
-            XSBase64Binary base64= (XSBase64Binary) xmlObject;
-            base64.setValue(elementContent);
+    /** {@inheritDoc} */
+    protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
+        BinarySecret bs = (BinarySecret) xmlObject;
+        if (BinarySecret.TYPE_ATTRIB_NAME.equals(attribute.getLocalName())) {
+            bs.setType(attribute.getValue());
+        } else {
+            XMLHelper.unmarshallToAttributeMap(bs.getUnknownAttributes(), attribute);
         }
     }
 

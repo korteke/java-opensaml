@@ -20,10 +20,10 @@ package org.opensaml.ws.wstrust.impl;
 import org.opensaml.ws.wstrust.RequestedAttachedReference;
 
 /**
- * RequestedAttachedReferenceImpl
+ * RequestedAttachedReferenceImpl.
  * 
  */
-public class RequestedAttachedReferenceImpl extends AbstractRequestedReferenceType implements
+public class RequestedAttachedReferenceImpl extends RequestedReferenceTypeImpl implements
         RequestedAttachedReference {
 
     /**

@@ -16,49 +16,28 @@
  */
 package org.opensaml.ws.wstrust.impl;
 
-import java.util.List;
-
-
 import org.opensaml.ws.wstrust.RequestSecurityToken;
 import org.opensaml.ws.wstrust.RequestSecurityTokenCollection;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
 
+
 /**
- * RequestSecurityTokenCollectionUnmarshaller
- * 
- * @see RequestSecurityTokenCollection
+ * RequestSecurityTokenCollectionUnmarshaller.
  * 
  */
-public class RequestSecurityTokenCollectionUnmarshaller extends
-        AbstractWSTrustObjectUnmarshaller {
+public class RequestSecurityTokenCollectionUnmarshaller extends AbstractWSTrustObjectUnmarshaller {
 
-    /**
-     * Default constructor.
-     * <p>
-     * {@inheritDoc}
-     */
-    public RequestSecurityTokenCollectionUnmarshaller() {
-        super();
-    }
-
-    /**
-     * Unmarshalls the {@link RequestSecurityToken} child elements and add them
-     * to the RST list.
-     * <p>
-     * {@inheritDoc}
-     */
-    @Override
-    protected void processChildElement(XMLObject parentXMLObject,
-            XMLObject childXMLObject) throws UnmarshallingException {
+    /** {@inheritDoc} */
+    protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
+            throws UnmarshallingException {
+        RequestSecurityTokenCollection rstc = (RequestSecurityTokenCollection) parentXMLObject;
         if (childXMLObject instanceof RequestSecurityToken) {
-            RequestSecurityTokenCollection rstc= (RequestSecurityTokenCollection) parentXMLObject;
-            List<RequestSecurityToken> rsts= rstc.getRequestSecurityTokens();
-            RequestSecurityToken rst= (RequestSecurityToken) childXMLObject;
-            rsts.add(rst);
-        }
-        else {
+            rstc.getRequestSecurityTokens().add((RequestSecurityToken) childXMLObject);
+        } else {
             super.processChildElement(parentXMLObject, childXMLObject);
         }
     }
+    
+
 }

@@ -18,48 +18,25 @@ package org.opensaml.ws.wstrust.impl;
 
 
 import org.opensaml.ws.wstrust.Claims;
-import org.opensaml.xml.AbstractExtensibleXMLObjectMarshaller;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.util.XMLHelper;
-import org.w3c.dom.Attr;
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
  * Marshaller for the Claims element.
  * 
- * @see Claims
- * 
  */
-public class ClaimsMarshaller extends AbstractExtensibleXMLObjectMarshaller {
+public class ClaimsMarshaller extends AbstractWSTrustObjectMarshaller {
 
-    /**
-     * Default constructor.
-     * 
-     */
-    public ClaimsMarshaller() {
-        super();
-    }
-
-    /**
-     * Marshalls the &lt;wst:Dialect&gt; attribute.
-     * <p>
-     * {@inheritDoc}
-     */
-    @Override
-    protected void marshallAttributes(XMLObject xmlObject, Element domElement)
-            throws MarshallingException {
-        Claims claims= (Claims) xmlObject;
-        String dialect= claims.getDialect();
-        if (dialect != null) {
-            Document document= domElement.getOwnerDocument();
-            Attr attribute= XMLHelper.constructAttribute(document,
-                                                         Claims.DIALECT_ATTR_NAME);
-            attribute.setValue(dialect);
-            domElement.setAttributeNodeNS(attribute);
+    /** {@inheritDoc} */
+    protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
+        Claims claims = (Claims) xmlObject;
+        if (claims.getDialect() != null) {
+            domElement.setAttributeNS(null, Claims.DIALECT_ATTRIB_NAME, claims.getDialect());
         }
-        super.marshallAttributes(xmlObject, domElement);
+        
+        XMLHelper.marshallAttributeMap(claims.getUnknownAttributes(), domElement);
     }
 
 }

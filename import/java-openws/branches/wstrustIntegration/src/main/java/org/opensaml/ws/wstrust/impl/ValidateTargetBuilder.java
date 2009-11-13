@@ -21,33 +21,16 @@ import org.opensaml.ws.wstrust.ValidateTarget;
 /**
  * Builder for the ValidateTarget element.
  * 
- * @see org.opensaml.ws.wstrust.ValidateTarget
- * 
  */
-public class ValidateTargetBuilder extends
-        AbstractWSTrustObjectBuilder<ValidateTarget> {
+public class ValidateTargetBuilder extends AbstractWSTrustObjectBuilder<ValidateTarget> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.impl.AbstractWSTrustObjectBuilder#buildObject()
-     * @see org.opensaml.ws.wstrust.ValidateTarget
-     */
-    @Override
+    /** {@inheritDoc} */
     public ValidateTarget buildObject() {
         return buildObject(ValidateTarget.ELEMENT_NAME);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AbstractXMLObjectBuilder#buildObject(java.lang.String,
-     *      java.lang.String, java.lang.String)
-     * @see org.opensaml.ws.wstrust.ValidateTarget
-     */
-    @Override
-    public ValidateTarget buildObject(String namespaceURI, String localName,
-            String namespacePrefix) {
+    /** {@inheritDoc} */
+    public ValidateTarget buildObject(String namespaceURI, String localName, String namespacePrefix) {
         return new ValidateTargetImpl(namespaceURI, localName, namespacePrefix);
     }
 

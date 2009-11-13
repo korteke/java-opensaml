@@ -26,10 +26,13 @@ import org.opensaml.ws.wstrust.RequestedReferenceType;
 import org.opensaml.xml.XMLObject;
 
 /**
- * AbstractRequestedReferenceType
+ * RequestedReferenceTypeImpl.
  * 
  */
-abstract class AbstractRequestedReferenceType extends AbstractWSTrustObject implements RequestedReferenceType {
+public class RequestedReferenceTypeImpl extends AbstractWSTrustObject implements RequestedReferenceType {
+    
+    /** SecurityTokenReference child element. */
+    private SecurityTokenReference securityTokenReference;
 
     /**
      * Constructor.
@@ -38,41 +41,25 @@ abstract class AbstractRequestedReferenceType extends AbstractWSTrustObject impl
      * @param elementLocalName name of the element
      * @param namespacePrefix namespace prefix of the element
      */
-    public AbstractRequestedReferenceType(String namespaceURI, String elementLocalName, String namespacePrefix) {
+    public RequestedReferenceTypeImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
-    /** SecurityTokenReference child element */
-    protected SecurityTokenReference securityTokenReference_ = null;
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.RequestedReferenceType#getSecurityTokenReference()
-     */
+    /** {@inheritDoc} */
     public SecurityTokenReference getSecurityTokenReference() {
-        return securityTokenReference_;
+        return securityTokenReference;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.RequestedReferenceType#setSecurityTokenReference(org.opensaml.ws.wssecurity.SecurityTokenReference)
-     */
-    public void setSecurityTokenReference(SecurityTokenReference securityTokenReference) {
-        securityTokenReference_ = prepareForAssignment(securityTokenReference_, securityTokenReference);
+    /** {@inheritDoc} */
+    public void setSecurityTokenReference(SecurityTokenReference newSecurityTokenReference) {
+        securityTokenReference = prepareForAssignment(securityTokenReference, newSecurityTokenReference);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.impl.AbstractWSTrustObject#getOrderedChildren()
-     */
-    @Override
+    /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
         List<XMLObject> children = new ArrayList<XMLObject>();
-        if (securityTokenReference_ != null) {
-            children.add(securityTokenReference_);
+        if (securityTokenReference != null) {
+            children.add(securityTokenReference);
         }
         return Collections.unmodifiableList(children);
     }

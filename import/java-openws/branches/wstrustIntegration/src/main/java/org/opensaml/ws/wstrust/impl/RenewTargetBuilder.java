@@ -21,33 +21,14 @@ import org.opensaml.ws.wstrust.RenewTarget;
 /**
  * Builder for the RenewTarget element.
  * 
- * @see org.opensaml.ws.wstrust.RenewTarget
- * 
  */
-public class RenewTargetBuilder extends
-        AbstractWSTrustObjectBuilder<RenewTarget> {
+public class RenewTargetBuilder extends AbstractWSTrustObjectBuilder<RenewTarget> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.impl.AbstractWSTrustObjectBuilder#buildObject()
-     * @see org.opensaml.ws.wstrust.RenewTarget
-     */
-    @Override
     public RenewTarget buildObject() {
         return buildObject(RenewTarget.ELEMENT_NAME);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AbstractXMLObjectBuilder#buildObject(java.lang.String,
-     *      java.lang.String, java.lang.String)
-     * @see org.opensaml.ws.wstrust.RenewTarget
-     */
-    @Override
-    public RenewTarget buildObject(String namespaceURI, String localName,
-            String namespacePrefix) {
+    public RenewTarget buildObject(String namespaceURI, String localName, String namespacePrefix) {
         return new RenewTargetImpl(namespaceURI, localName, namespacePrefix);
     }
 

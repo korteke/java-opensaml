@@ -16,21 +16,11 @@
  */
 package org.opensaml.ws.wstrust.impl;
 
-import org.opensaml.ws.wstrust.IssuedTokens;
 
 /**
  * Marshaller for the IssuedTokens element.
  * 
- * @see IssuedTokens
- * 
  */
-public class IssuedTokensMarshaller extends AbstractWSTrustObjectMarshaller {
-
-    /**
-     * Default constructor.
-     */
-    public IssuedTokensMarshaller() {
-        super();
-    }
+public class IssuedTokensMarshaller extends RequestSecurityTokenResponseCollectionMarshaller {
 
 }

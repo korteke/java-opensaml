@@ -17,19 +17,10 @@
 package org.opensaml.ws.wstrust.impl;
 
 /**
- * AbstractRequestedReferenceTypeMarshaller
+ * RequestedReferenceTypeMarshaller.
  * 
  */
-public abstract class AbstractRequestedReferenceTypeMarshaller extends
-        AbstractRequestSecurityTokenTypeMarshaller {
+public class RequestedReferenceTypeMarshaller extends AbstractWSTrustObjectMarshaller {
 
-    /**
-     * Constructor.
-     * <p>
-     * {@inheritDoc}
-     */
-    public AbstractRequestedReferenceTypeMarshaller() {
-        super();
-    }
 
 }

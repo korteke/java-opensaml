@@ -17,39 +17,13 @@
 package org.opensaml.ws.wstrust.impl;
 
 
-import org.opensaml.ws.wstrust.Reason;
-import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.schema.XSString;
+import org.opensaml.xml.schema.impl.XSStringUnmarshaller;
 
 /**
- * Unmarshaller for the &lt;wst:Reason&gt; element.
- * 
- * @see Reason
+ * Unmarshaller for the wst:Reason element.
  * 
  */
-public class ReasonUnmarshaller extends AbstractWSTrustObjectUnmarshaller {
+public class ReasonUnmarshaller extends XSStringUnmarshaller {
 
-    /**
-     * Default constructor.
-     * <p>
-     * {@inheritDoc}
-     */
-    public ReasonUnmarshaller() {
-        super();
-    }
-
-    /**
-     * Unmarshalls the &lt;wst:Reason&gt; element content.
-     * <p>
-     * {@inheritDoc}
-     */
-    @Override
-    protected void processElementContent(XMLObject xmlObject,
-            String elementContent) {
-        if (elementContent != null) {
-            XSString xsString= (XSString) xmlObject;
-            xsString.setValue(elementContent);
-        }
-    }
 
 }

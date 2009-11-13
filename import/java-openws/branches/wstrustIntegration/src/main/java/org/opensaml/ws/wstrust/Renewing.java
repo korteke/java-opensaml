@@ -19,7 +19,7 @@ package org.opensaml.ws.wstrust;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.xml.schema.XSBoolean;
+import org.opensaml.xml.schema.XSBooleanValue;
 
 /**
  * The wst:Renewing element.
@@ -61,7 +61,7 @@ public interface Renewing extends WSTrustObject {
      * 
      * @return the Allow attribute value
      */
-    public XSBoolean isAllowXSBoolean();
+    public XSBooleanValue isAllowXSBoolean();
 
     /**
      * Sets the wst:Renewing/@Allow attribute value.
@@ -75,7 +75,7 @@ public interface Renewing extends WSTrustObject {
      * 
      * @param allow the Allow attribute value.
      */
-    public void setAllow(XSBoolean allow);
+    public void setAllow(XSBooleanValue allow);
 
     /**
      * Returns the wst:Renewing/@OK attribute value.
@@ -89,7 +89,7 @@ public interface Renewing extends WSTrustObject {
      * 
      * @return the OK attribute value
      */
-    public XSBoolean isOKXSBoolean();
+    public XSBooleanValue isOKXSBoolean();
 
     /**
      * Sets the wst:Renewing/@OK attribute value.
@@ -103,6 +103,6 @@ public interface Renewing extends WSTrustObject {
      * 
      * @param ok the OK attribute value.
      */
-    public void setOK(XSBoolean ok);
+    public void setOK(XSBooleanValue ok);
     
 }

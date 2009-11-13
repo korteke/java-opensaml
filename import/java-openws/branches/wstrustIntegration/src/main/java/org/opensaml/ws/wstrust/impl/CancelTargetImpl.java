@@ -17,14 +17,21 @@
 
 package org.opensaml.ws.wstrust.impl;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import org.opensaml.ws.wstrust.CancelTarget;
-import org.opensaml.xml.AbstractElementExtensibleXMLObject;
+import org.opensaml.xml.XMLObject;
 
 /**
- * CancelTargetImpl
+ * CancelTargetImpl.
  * 
  */
-public class CancelTargetImpl extends AbstractElementExtensibleXMLObject implements CancelTarget {
+public class CancelTargetImpl extends AbstractWSTrustObject implements CancelTarget {
+    
+    /** Wildcard child element. */
+    private XMLObject unknownChild;
 
     /**
      * Constructor.
@@ -35,6 +42,25 @@ public class CancelTargetImpl extends AbstractElementExtensibleXMLObject impleme
      */
     public CancelTargetImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
+    }
+
+    /** {@inheritDoc} */
+    public XMLObject getUnknownXMLObject() {
+        return unknownChild;
+    }
+
+    /** {@inheritDoc} */
+    public void setUnknownXMLObject(XMLObject unknownObject) {
+        prepareForAssignment(unknownChild, unknownObject);
+    }
+
+    /** {@inheritDoc} */
+    public List<XMLObject> getOrderedChildren() {
+        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        if (unknownChild != null) {
+            children.add(unknownChild);
+        }
+        return Collections.unmodifiableList(children);
     }
 
 }

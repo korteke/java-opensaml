@@ -17,15 +17,11 @@
 
 package org.opensaml.ws.wstrust.impl;
 
-import java.util.List;
-
 import org.opensaml.ws.wstrust.WSTrustObject;
-import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.validation.AbstractValidatingXMLObject;
 
 /**
- * AbstractWSTrustObject
- * 
+ * AbstractWSTrustObject.
  */
 public abstract class AbstractWSTrustObject extends AbstractValidatingXMLObject implements WSTrustObject {
 
@@ -38,16 +34,6 @@ public abstract class AbstractWSTrustObject extends AbstractValidatingXMLObject 
      */
     public AbstractWSTrustObject(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-    }
-
-    /*
-     * No-op. No child element by default.
-     * 
-     * @see org.opensaml.xml.XMLObject#getOrderedChildren()
-     */
-    public List<XMLObject> getOrderedChildren() {
-        // default no children
-        return null;
     }
 
 }

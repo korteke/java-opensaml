@@ -21,31 +21,15 @@ import org.opensaml.ws.wstrust.AllowPostdating;
 /**
  * Builder for the AllowPostdating element.
  * 
- * @see org.opensaml.ws.wstrust.AllowPostdating
- * 
  */
-public class AllowPostdatingBuilder extends
-        AbstractWSTrustObjectBuilder<AllowPostdating> {
+public class AllowPostdatingBuilder extends AbstractWSTrustObjectBuilder<AllowPostdating> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.impl.AbstractWSTrustObjectBuilder#buildObject()
-     * @see org.opensaml.ws.wstrust.AllowPostdating
-     */
-    @Override
+    /** {@inheritDoc} */
     public AllowPostdating buildObject() {
         return buildObject(AllowPostdating.ELEMENT_NAME);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AbstractXMLObjectBuilder#buildObject(java.lang.String,
-     *      java.lang.String, java.lang.String)
-     * @see org.opensaml.ws.wstrust.AllowPostdating
-     */
-    @Override
+    /** {@inheritDoc} */
     public AllowPostdating buildObject(String namespaceURI, String localName,
             String namespacePrefix) {
         return new AllowPostdatingImpl(namespaceURI, localName, namespacePrefix);

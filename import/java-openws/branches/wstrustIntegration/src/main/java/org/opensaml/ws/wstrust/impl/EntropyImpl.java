@@ -21,23 +21,24 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.opensaml.ws.wstrust.BinarySecret;
+import javax.xml.namespace.QName;
+
 import org.opensaml.ws.wstrust.Entropy;
-import org.opensaml.xml.AbstractExtensibleXMLObject;
 import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.encryption.EncryptedKey;
+import org.opensaml.xml.util.AttributeMap;
+import org.opensaml.xml.util.IndexedXMLObjectChildrenList;
 
 /**
- * EntropyImpl
+ * EntropyImpl.
  * 
  */
-public class EntropyImpl extends AbstractExtensibleXMLObject implements Entropy {
-
-    /** the &lt;wst:BinarySecret&gt; child element */
-    private BinarySecret binarySecret_ = null;
-
-    /** the &lt;xenc:EncryptedKey&gt; child element */
-    private EncryptedKey encryptedKey_ = null;
+public class EntropyImpl extends AbstractWSTrustObject implements Entropy {
+    
+    /** Wildcard child elements. */
+    private IndexedXMLObjectChildrenList<XMLObject> unknownChildren;
+    
+    /** Wildcard attributes. */
+    private AttributeMap unknownAttributes;
 
     /**
      * Constructor.
@@ -48,72 +49,30 @@ public class EntropyImpl extends AbstractExtensibleXMLObject implements Entropy 
      */
     public EntropyImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
+        unknownChildren = new IndexedXMLObjectChildrenList<XMLObject>(this);
+        unknownAttributes = new AttributeMap(this);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.Entropy#getBinarySecret()
-     */
-    public BinarySecret getBinarySecret() {
-        return binarySecret_;
+    /** {@inheritDoc} */
+    public AttributeMap getUnknownAttributes() {
+        return unknownAttributes;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.Entropy#getEncryptedKey()
-     */
-    public EncryptedKey getEncryptedKey() {
-        return encryptedKey_;
+    /** {@inheritDoc} */
+    public List<XMLObject> getUnknownXMLObjects() {
+        return unknownChildren;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.Entropy#setBinarySecret(org.opensaml.ws.wstrust.BinarySecret)
-     */
-    public void setBinarySecret(BinarySecret binarySecret) {
-        binarySecret_ = prepareForAssignment(binarySecret_, binarySecret);
+    /** {@inheritDoc} */
+    public List<XMLObject> getUnknownXMLObjects(QName typeOrName) {
+        return unknownChildren.get(typeOrName);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.Entropy#setEncryptedKey(org.opensaml.xml.encryption.EncryptedKey)
-     */
-    public void setEncryptedKey(EncryptedKey encryptedKey) {
-        encryptedKey_ = prepareForAssignment(encryptedKey_, encryptedKey);
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.impl.AbstractWSTrustObject#getOrderedChildren()
-     */
-    @Override
+    /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        List<XMLObject> children = getChildren();
-        // xs:any elements
-        if (!getUnknownXMLObjects().isEmpty()) {
-            children.addAll(getUnknownXMLObjects());
-        }
+        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        children.addAll(unknownChildren);
         return Collections.unmodifiableList(children);
     }
 
-    /**
-     * Returns a modifiable list of children elements.
-     * 
-     * @return list of children elements.
-     */
-    protected List<XMLObject> getChildren() {
-        List<XMLObject> children = new ArrayList<XMLObject>();
-        if (encryptedKey_ != null) {
-            children.add(encryptedKey_);
-        }
-        if (binarySecret_ != null) {
-            children.add(binarySecret_);
-        }
-        return children;
-    }
 }

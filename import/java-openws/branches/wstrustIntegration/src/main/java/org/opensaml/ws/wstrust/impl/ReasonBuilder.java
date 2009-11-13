@@ -21,32 +21,16 @@ import org.opensaml.ws.wstrust.Reason;
 /**
  * Builder for the Reason element.
  * 
- * @see org.opensaml.ws.wstrust.Reason
- * 
  */
 public class ReasonBuilder extends AbstractWSTrustObjectBuilder<Reason> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.impl.AbstractWSTrustObjectBuilder#buildObject()
-     * @see org.opensaml.ws.wstrust.Reason
-     */
-    @Override
+    /** {@inheritDoc} */
     public Reason buildObject() {
         return buildObject(Reason.ELEMENT_NAME);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AbstractXMLObjectBuilder#buildObject(java.lang.String,
-     *      java.lang.String, java.lang.String)
-     * @see org.opensaml.ws.wstrust.Reason
-     */
-    @Override
-    public Reason buildObject(String namespaceURI, String localName,
-            String namespacePrefix) {
+    /** {@inheritDoc} */
+    public Reason buildObject(String namespaceURI, String localName, String namespacePrefix) {
         return new ReasonImpl(namespaceURI, localName, namespacePrefix);
     }
 

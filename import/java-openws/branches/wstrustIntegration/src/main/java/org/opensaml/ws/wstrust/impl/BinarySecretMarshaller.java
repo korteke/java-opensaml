@@ -16,20 +16,11 @@
  */
 package org.opensaml.ws.wstrust.impl;
 
-import java.util.Map.Entry;
-
-import javax.xml.namespace.QName;
-
-
 import org.opensaml.ws.wstrust.BinarySecret;
-import org.opensaml.xml.AttributeExtensibleXMLObject;
-import org.opensaml.xml.Configuration;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.schema.XSBase64Binary;
+import org.opensaml.xml.schema.impl.XSBase64BinaryMarshaller;
 import org.opensaml.xml.util.XMLHelper;
-import org.w3c.dom.Attr;
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
@@ -38,60 +29,16 @@ import org.w3c.dom.Element;
  * @see BinarySecret
  * 
  */
-public class BinarySecretMarshaller extends AbstractWSTrustObjectMarshaller {
+public class BinarySecretMarshaller extends XSBase64BinaryMarshaller {
 
-    /**
-     * Default constructor.
-     * 
-     */
-    public BinarySecretMarshaller() {
-        super();
-    }
-
-    /**
-     * Marshalls the Base64 binary content.
-     * <p>
-     * {@inheritDoc}
-     */
-    @Override
-    protected void marshallElementContent(XMLObject xmlObject,
-            Element domElement) throws MarshallingException {
-        XSBase64Binary base64binary= (XSBase64Binary) xmlObject;
-        String value= base64binary.getValue();
-        XMLHelper.appendTextContent(domElement, value);
-    }
-
-    /**
-     * Marshalls the &lt;@Type&gt; and the <code>xs:anyAttribute</code>
-     * attributes.
-     * <p>
-     * {@inheritDoc}
-     */
-    @Override
-    protected void marshallAttributes(XMLObject xmlObject, Element domElement)
-            throws MarshallingException {
-        Document document= domElement.getOwnerDocument();
-        BinarySecret binarySecret= (BinarySecret) xmlObject;
-        String type= binarySecret.getType();
-        if (type != null) {
-            Attr attribute= XMLHelper.constructAttribute(document,
-                                                         BinarySecret.TYPE_ATTR_NAME);
-            attribute.setValue(type);
-            domElement.setAttributeNodeNS(attribute);
+    /** {@inheritDoc} */
+    protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
+        BinarySecret bs = (BinarySecret) xmlObject;
+        if (bs.getType() != null) {
+            domElement.setAttributeNS(null, BinarySecret.TYPE_ATTRIB_NAME, bs.getType());
         }
-        // xs:anyAttribute
-        AttributeExtensibleXMLObject anyAttribute= (AttributeExtensibleXMLObject) xmlObject;
-        Attr attribute;
-        for (Entry<QName, String> entry : anyAttribute.getUnknownAttributes().entrySet()) {
-            attribute= XMLHelper.constructAttribute(document, entry.getKey());
-            attribute.setValue(entry.getValue());
-            domElement.setAttributeNodeNS(attribute);
-            if (Configuration.isIDAttribute(entry.getKey())
-                    || anyAttribute.getUnknownAttributes().isIDAttribute(entry.getKey())) {
-                attribute.getOwnerElement().setIdAttributeNode(attribute, true);
-            }
-        }
-        super.marshallAttributes(xmlObject, domElement);
+        
+        XMLHelper.marshallAttributeMap(bs.getUnknownAttributes(), domElement);
     }
 
 }

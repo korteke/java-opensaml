@@ -21,7 +21,7 @@ import org.opensaml.ws.wstrust.RequestType;
 import org.opensaml.xml.schema.impl.XSURIImpl;
 
 /**
- * RequestTypeImpl
+ * RequestTypeImpl.
  * 
  */
 public class RequestTypeImpl extends XSURIImpl implements RequestType {

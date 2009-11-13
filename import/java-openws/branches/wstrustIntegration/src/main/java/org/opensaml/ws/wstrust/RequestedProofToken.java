@@ -18,7 +18,7 @@ package org.opensaml.ws.wstrust;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.xml.ElementExtensibleXMLObject;
+import org.opensaml.xml.XMLObject;
 
 /**
  * The wst:RequestedProofToken element.
@@ -26,7 +26,7 @@ import org.opensaml.xml.ElementExtensibleXMLObject;
  * @see "WS-Trust 1.3, Chapters 4.4.3 Keys and Entropy"
  * 
  */
-public interface RequestedProofToken extends ElementExtensibleXMLObject, WSTrustObject {
+public interface RequestedProofToken extends WSTrustObject {
 
     /** Element local name. */
     public static final String ELEMENT_LOCAL_NAME = "RequestedProofToken";
@@ -41,5 +41,19 @@ public interface RequestedProofToken extends ElementExtensibleXMLObject, WSTrust
     /** QName of the XSI type. */
     public static final QName TYPE_NAME = 
         new QName(WSTrustConstants.WST_NS, TYPE_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
+    
+    /**
+     * Get the unknown child element.
+     * 
+     * @return the child element
+     */
+    public XMLObject getUnknownXMLObject();
+    
+    /**
+     * Set the unknown child element.
+     * 
+     * @param unknownObject the new child element
+     */
+    public void setUnknownXMLObject(XMLObject unknownObject);
 
 }

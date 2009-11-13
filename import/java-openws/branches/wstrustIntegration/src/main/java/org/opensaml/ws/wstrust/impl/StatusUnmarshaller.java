@@ -24,38 +24,21 @@ import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
 
 /**
- * Unmarshaller for the &lt;wst:Status&gt; element.
- * 
- * @see Status
+ * Unmarshaller for the wst:Status element.
  * 
  */
 public class StatusUnmarshaller extends AbstractWSTrustObjectUnmarshaller {
 
-    /**
-     * Default constructor.
-     * <p>
-     * {@inheritDoc}
-     */
-    public StatusUnmarshaller() {
-        super();
-    }
-
-    /**
-     * Unmarshalls the &lt;wst:Code&gt; and &lt;wst:Reason&gt; child elements.
-     * <p>
-     * {@inheritDoc}
-     */
-    @Override
-    protected void processChildElement(XMLObject parentXMLObject,
-            XMLObject childXMLObject) throws UnmarshallingException {
-        Status container= (Status) parentXMLObject;
+    /** {@inheritDoc} */
+    protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject) 
+            throws UnmarshallingException {
+        Status status= (Status) parentXMLObject;
+        
         if (childXMLObject instanceof Code) {
-            container.setCode((Code) childXMLObject);
-        }
-        else if (childXMLObject instanceof Reason) {
-            container.setReason((Reason) childXMLObject);
-        }
-        else {
+            status.setCode((Code) childXMLObject);
+        } else if (childXMLObject instanceof Reason) {
+            status.setReason((Reason) childXMLObject);
+        } else {
             super.processChildElement(parentXMLObject, childXMLObject);
         }
     }

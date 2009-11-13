@@ -17,23 +17,11 @@
 package org.opensaml.ws.wstrust.impl;
 
 
-import org.opensaml.ws.wstrust.CancelTarget;
-import org.opensaml.xml.AbstractElementExtensibleXMLObjectMarshaller;
 
 /**
  * Marshaller for the CancelTarget element.
  * 
- * @see CancelTarget
- * 
  */
-public class CancelTargetMarshaller extends
-        AbstractElementExtensibleXMLObjectMarshaller {
-
-    /**
-     * Default constructor.
-     */
-    public CancelTargetMarshaller() {
-        super();
-    }
+public class CancelTargetMarshaller extends AbstractWSTrustObjectMarshaller {
 
 }

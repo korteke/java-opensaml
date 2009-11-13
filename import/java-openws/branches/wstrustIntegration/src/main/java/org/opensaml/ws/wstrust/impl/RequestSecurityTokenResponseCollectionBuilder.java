@@ -21,36 +21,19 @@ import org.opensaml.ws.wstrust.RequestSecurityTokenResponseCollection;
 /**
  * Builder for the RequestSecurityTokenResponseCollection element.
  * 
- * @see org.opensaml.ws.wstrust.RequestSecurityTokenResponseCollection
- * 
  */
 public class RequestSecurityTokenResponseCollectionBuilder extends
         AbstractWSTrustObjectBuilder<RequestSecurityTokenResponseCollection> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.impl.AbstractWSTrustObjectBuilder#buildObject()
-     * @see org.opensaml.ws.wstrust.RequestSecurityTokenResponseCollection
-     */
-    @Override
+    /** {@inheritDoc} */
     public RequestSecurityTokenResponseCollection buildObject() {
         return buildObject(RequestSecurityTokenResponseCollection.ELEMENT_NAME);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AbstractXMLObjectBuilder#buildObject(java.lang.String,
-     *      java.lang.String, java.lang.String)
-     * @see org.opensaml.ws.wstrust.RequestSecurityTokenResponseCollection
-     */
-    @Override
-    public RequestSecurityTokenResponseCollection buildObject(
-            String namespaceURI, String localName, String namespacePrefix) {
-        return new RequestSecurityTokenResponseCollectionImpl(namespaceURI,
-                                                              localName,
-                                                              namespacePrefix);
+    /** {@inheritDoc} */
+    public RequestSecurityTokenResponseCollection buildObject( String namespaceURI, String localName, 
+            String namespacePrefix) {
+        return new RequestSecurityTokenResponseCollectionImpl(namespaceURI, localName, namespacePrefix);
     }
 
 }

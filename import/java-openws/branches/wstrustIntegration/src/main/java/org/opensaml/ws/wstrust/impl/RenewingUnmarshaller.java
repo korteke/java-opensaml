@@ -20,48 +20,24 @@ package org.opensaml.ws.wstrust.impl;
 import org.opensaml.ws.wstrust.Renewing;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
+import org.opensaml.xml.schema.XSBooleanValue;
 import org.w3c.dom.Attr;
 
 /**
- * Unmarshaller for the empty &lt;wst:Renewing&gt; element.
- * 
- * @see Renewing
+ * Unmarshaller for the empty wst:Renewing element.
  * 
  */
 public class RenewingUnmarshaller extends AbstractWSTrustObjectUnmarshaller {
 
-    /**
-     * Default constructor.
-     * <p>
-     * {@inheritDoc}
-     */
-    public RenewingUnmarshaller() {
-        super();
-    }
-
-    /**
-     * Unmarshalls the &lt;@OK&gt; and the &lt;@Allow&gt; attributes.
-     * <p>
-     * {@inheritDoc}
-     */
-    @Override
-    protected void processAttribute(XMLObject xmlObject, Attr attribute)
-            throws UnmarshallingException {
-        Renewing renewing= (Renewing) xmlObject;
-        String attrName= attribute.getLocalName();
-        if (Renewing.OK_ATTR_LOCAL_NAME.equals(attrName)) {
-            String value= attribute.getValue();
-            Boolean ok= Boolean.parseBoolean(value);
-            // TODO: check if need to set false?
-            renewing.setOK(ok);
-        }
-        else if (Renewing.ALLOW_ATTR_LOCAL_NAME.equals(attrName)) {
-            String value= attribute.getValue();
-            Boolean allow= Boolean.parseBoolean(value);
-            // TODO: check if need to set false?
-            renewing.setOK(allow);
-        }
-        else {
+    /** {@inheritDoc} */
+    protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
+        Renewing renewing = (Renewing) xmlObject;
+        
+        if (attribute.getLocalName().equals(Renewing.ALLOW_ATTRIB_NAME)) {
+            renewing.setAllow(XSBooleanValue.valueOf(attribute.getValue()));
+        } else if (attribute.getLocalName().equals(Renewing.OK_ATTRIB_NAME)) {
+            renewing.setOK(XSBooleanValue.valueOf(attribute.getValue()));
+        } else {
             super.processAttribute(xmlObject, attribute);
         }
     }

@@ -16,22 +16,11 @@
  */
 package org.opensaml.ws.wstrust.impl;
 
-import org.opensaml.ws.wstrust.RequestedAttachedReference;
 
 /**
  * Marshaller for the RequestedAttachedReference element.
  * 
- * @see RequestedAttachedReference
- * 
  */
-public class RequestedAttachedReferenceMarshaller extends
-        AbstractRequestedReferenceTypeMarshaller {
-
-    /**
-     * Default constructor.
-     */
-    public RequestedAttachedReferenceMarshaller() {
-        super();
-    }
+public class RequestedAttachedReferenceMarshaller extends RequestedReferenceTypeMarshaller {
 
 }

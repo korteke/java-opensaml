@@ -21,32 +21,16 @@ import org.opensaml.ws.wstrust.Lifetime;
 /**
  * Builder for the Lifetime element.
  * 
- * @see org.opensaml.ws.wstrust.Lifetime
- * 
  */
 public class LifetimeBuilder extends AbstractWSTrustObjectBuilder<Lifetime> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.impl.AbstractWSTrustObjectBuilder#buildObject()
-     * @see org.opensaml.ws.wstrust.Lifetime
-     */
-    @Override
+    /** {@inheritDoc} */
     public Lifetime buildObject() {
         return buildObject(Lifetime.ELEMENT_NAME);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AbstractXMLObjectBuilder#buildObject(java.lang.String,
-     *      java.lang.String, java.lang.String)
-     * @see org.opensaml.ws.wstrust.Lifetime
-     */
-    @Override
-    public Lifetime buildObject(String namespaceURI, String localName,
-            String namespacePrefix) {
+    /** {@inheritDoc} */
+    public Lifetime buildObject(String namespaceURI, String localName, String namespacePrefix) {
         return new LifetimeImpl(namespaceURI, localName, namespacePrefix);
     }
 

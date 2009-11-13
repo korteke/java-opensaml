@@ -27,19 +27,17 @@ import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.util.AttributeMap;
 
 /**
- * RequestSecurityTokenResponseCollectionImpl
- * 
- * @see RequestSecurityTokenResponseCollection
+ * RequestSecurityTokenResponseCollectionImpl.
  * 
  */
 public class RequestSecurityTokenResponseCollectionImpl extends AbstractWSTrustObject implements
         RequestSecurityTokenResponseCollection {
 
-    /** xs:anyAttribute for this element. */
-    private AttributeMap anyAttributes_;
+    /** Wildcard attributes. */
+    private AttributeMap unknownAttributes;
 
-    /** The list of &lt;wst:RequestSecurityTokenResponse&gt; child elements */
-    private List<RequestSecurityTokenResponse> requestSecurityTokenResponses_ = null;
+    /** The list of wst:RequestSecurityTokenResponse child elements. */
+    private List<RequestSecurityTokenResponse> requestSecurityTokenResponses;
 
     /**
      * Constructor.
@@ -52,49 +50,25 @@ public class RequestSecurityTokenResponseCollectionImpl extends AbstractWSTrustO
     public RequestSecurityTokenResponseCollectionImpl(String namespaceURI, String elementLocalName,
             String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        anyAttributes_ = new AttributeMap(this);
-        requestSecurityTokenResponses_ = new ArrayList<RequestSecurityTokenResponse>();
+        unknownAttributes = new AttributeMap(this);
+        requestSecurityTokenResponses = new ArrayList<RequestSecurityTokenResponse>();
+    }
+    
+    /** {@inheritDoc} */
+    public AttributeMap getUnknownAttributes() {
+        return unknownAttributes;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.RequestSecurityTokenResponseCollection#getRequestSecurityTokenResponses()
-     */
+    /** {@inheritDoc} */
     public List<RequestSecurityTokenResponse> getRequestSecurityTokenResponses() {
-        return requestSecurityTokenResponses_;
+        return requestSecurityTokenResponses;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.RequestSecurityTokenResponseCollection#setRequestSecurityTokenResponses(java.util.List)
-     */
-    public void setRequestSecurityTokenResponses(List<RequestSecurityTokenResponse> requestSecurityTokenResponses) {
-        requestSecurityTokenResponses_ = prepareForAssignment(requestSecurityTokenResponses_,
-                requestSecurityTokenResponses);
-    }
-
-    /**
-     * Returns the list of {@link RequestSecurityTokenResponse} child elements.
-     * <p>
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
         List<XMLObject> children = new ArrayList<XMLObject>();
-        for (XMLObject rstr : requestSecurityTokenResponses_) {
-            children.add(rstr);
-        }
+        children.addAll(requestSecurityTokenResponses);
         return Collections.unmodifiableList(children);
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AttributeExtensibleXMLObject#getUnknownAttributes()
-     */
-    public AttributeMap getUnknownAttributes() {
-        return anyAttributes_;
     }
 
 }

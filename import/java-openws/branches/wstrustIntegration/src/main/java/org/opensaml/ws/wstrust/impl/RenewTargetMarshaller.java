@@ -17,23 +17,11 @@
 package org.opensaml.ws.wstrust.impl;
 
 
-import org.opensaml.ws.wstrust.RenewTarget;
-import org.opensaml.xml.AbstractElementExtensibleXMLObjectMarshaller;
 
 /**
  * Marshaller for the RenewTarget element.
  * 
- * @see RenewTarget
- * 
  */
-public class RenewTargetMarshaller extends
-        AbstractElementExtensibleXMLObjectMarshaller {
-
-    /**
-     * Default constructor.
-     */
-    public RenewTargetMarshaller() {
-        super();
-    }
+public class RenewTargetMarshaller extends AbstractWSTrustObjectMarshaller {
 
 }

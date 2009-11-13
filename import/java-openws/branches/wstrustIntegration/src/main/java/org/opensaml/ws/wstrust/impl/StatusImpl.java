@@ -27,16 +27,16 @@ import org.opensaml.ws.wstrust.Status;
 import org.opensaml.xml.XMLObject;
 
 /**
- * StatusImpl
+ * StatusImpl.
  * 
  */
 public class StatusImpl extends AbstractWSTrustObject implements Status {
 
-    /** The {@link Code} child element */
-    private Code code_ = null;
+    /** The Code child element. */
+    private Code code;
 
-    /** The {@link Reason} child element */
-    private Reason reason_ = null;
+    /** The Reason child element. */
+    private Reason reason;
 
     /**
      * Constructor.
@@ -49,54 +49,34 @@ public class StatusImpl extends AbstractWSTrustObject implements Status {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.glite.xml.trust.Status#getCode()
-     */
+    /** {@inheritDoc} */
     public Code getCode() {
-        return code_;
+        return code;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.glite.xml.trust.Status#getReason()
-     */
+    /** {@inheritDoc} */
     public Reason getReason() {
-        return reason_;
+        return reason;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.glite.xml.trust.Status#setCode(org.glite.xml.trust.Code)
-     */
-    public void setCode(Code code) {
-        code_ = prepareForAssignment(code_, code);
+    /** {@inheritDoc} */
+    public void setCode(Code newCode) {
+        code = prepareForAssignment(code, newCode);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.glite.xml.trust.Status#setReason(org.glite.xml.trust.Reason)
-     */
-    public void setReason(Reason reason) {
-        reason_ = prepareForAssignment(reason_, reason);
+    /** {@inheritDoc} */
+    public void setReason(Reason newReason) {
+        reason = prepareForAssignment(reason, newReason);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.XMLObject#getOrderedChildren()
-     */
+    /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
         ArrayList<XMLObject> children = new ArrayList<XMLObject>();
-        if (code_ != null) {
-            children.add(code_);
+        if (code != null) {
+            children.add(code);
         }
-        if (reason_ != null) {
-            children.add(reason_);
+        if (reason != null) {
+            children.add(reason);
         }
         return Collections.unmodifiableList(children);
     }

@@ -16,23 +16,11 @@
  */
 package org.opensaml.ws.wstrust.impl;
 
-import org.opensaml.ws.wstrust.AllowPostdating;
 
 /**
  * Marshaller for the AllowPostdating element.
  * 
- * @see AllowPostdating
- * 
  */
 public class AllowPostdatingMarshaller extends AbstractWSTrustObjectMarshaller {
-
-    /**
-     * Constructor.
-     * <p>
-     * {@inheritDoc}
-     */
-    public AllowPostdatingMarshaller() {
-        super();
-    }
 
 }

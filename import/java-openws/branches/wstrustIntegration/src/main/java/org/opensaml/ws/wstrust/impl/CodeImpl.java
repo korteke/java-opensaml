@@ -21,7 +21,7 @@ import org.opensaml.ws.wstrust.Code;
 import org.opensaml.xml.schema.impl.XSURIImpl;
 
 /**
- * CodeImpl
+ * CodeImpl.
  * 
  */
 public class CodeImpl extends XSURIImpl implements Code {

@@ -17,23 +17,24 @@
 
 package org.opensaml.ws.wstrust.impl;
 
+import java.util.List;
+
 import org.opensaml.ws.wstrust.BinarySecret;
+import org.opensaml.xml.XMLObject;
+import org.opensaml.xml.schema.impl.XSBase64BinaryImpl;
 import org.opensaml.xml.util.AttributeMap;
 
 /**
- * BinarySecretImpl
+ * BinarySecretImpl.
  * 
  */
-public class BinarySecretImpl extends AbstractWSTrustObject implements BinarySecret {
+public class BinarySecretImpl extends XSBase64BinaryImpl implements BinarySecret {
 
-    /** The &lt;wst:Type&gt; attribute value */
-    private String type_ = null;
+    /** The Type attribute value. */
+    private String type;
 
-    /** xs:anyAttribute for this element. */
-    private AttributeMap anyAttributes_;
-
-    /** The base64 content */
-    private String value_ = null;
+    /** Wildcard attributes. */
+    private AttributeMap unknownChildren;
 
     /**
      * Constructor.
@@ -44,52 +45,27 @@ public class BinarySecretImpl extends AbstractWSTrustObject implements BinarySec
      */
     public BinarySecretImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        anyAttributes_ = new AttributeMap(this);
+        unknownChildren = new AttributeMap(this);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.BinarySecret#getType()
-     */
+    /** {@inheritDoc} */
     public String getType() {
-        return type_;
+        return type;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.BinarySecret#setType(java.lang.String)
-     */
-    public void setType(String type) {
-        type_ = prepareForAssignment(type_, type);
+    /** {@inheritDoc} */
+    public void setType(String newType) {
+        type = prepareForAssignment(type, newType);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.schema.XSBase64Binary#getValue()
-     */
-    public String getValue() {
-        return value_;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.schema.XSBase64Binary#setValue(java.lang.String)
-     */
-    public void setValue(String value) {
-        value_ = prepareForAssignment(value_, value);
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AttributeExtensibleXMLObject#getUnknownAttributes()
-     */
+    /** {@inheritDoc} */
     public AttributeMap getUnknownAttributes() {
-        return anyAttributes_;
+        return unknownChildren;
     }
 
+    /** {@inheritDoc} */
+    public List<XMLObject> getOrderedChildren() {
+        return null;
+    }
+    
 }

@@ -21,33 +21,16 @@ import org.opensaml.ws.wstrust.CancelTarget;
 /**
  * Builder for the CancelTarget element.
  * 
- * @see org.opensaml.ws.wstrust.CancelTarget
- * 
  */
-public class CancelTargetBuilder extends
-        AbstractWSTrustObjectBuilder<CancelTarget> {
+public class CancelTargetBuilder extends AbstractWSTrustObjectBuilder<CancelTarget> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.impl.AbstractWSTrustObjectBuilder#buildObject()
-     * @see org.opensaml.ws.wstrust.CancelTarget
-     */
-    @Override
+    /** {@inheritDoc} */
     public CancelTarget buildObject() {
         return buildObject(CancelTarget.ELEMENT_NAME);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AbstractXMLObjectBuilder#buildObject(java.lang.String,
-     *      java.lang.String, java.lang.String)
-     * @see org.opensaml.ws.wstrust.CancelTarget
-     */
-    @Override
-    public CancelTarget buildObject(String namespaceURI, String localName,
-            String namespacePrefix) {
+    /** {@inheritDoc} */
+    public CancelTarget buildObject(String namespaceURI, String localName, String namespacePrefix) {
         return new CancelTargetImpl(namespaceURI, localName, namespacePrefix);
     }
 

@@ -24,30 +24,15 @@ import org.opensaml.ws.wstrust.RequestType;
  * @see org.opensaml.ws.wstrust.RequestType
  * 
  */
-public class RequestTypeBuilder extends
-        AbstractWSTrustObjectBuilder<RequestType> {
+public class RequestTypeBuilder extends AbstractWSTrustObjectBuilder<RequestType> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.impl.AbstractWSTrustObjectBuilder#buildObject()
-     * @see org.opensaml.ws.wstrust.RequestType
-     */
-    @Override
+    /** {@inheritDoc} */
     public RequestType buildObject() {
         return buildObject(RequestType.ELEMENT_NAME);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AbstractXMLObjectBuilder#buildObject(java.lang.String,
-     *      java.lang.String, java.lang.String)
-     * @see org.opensaml.ws.wstrust.RequestType
-     */
-    @Override
-    public RequestType buildObject(String namespaceURI, String localName,
-            String namespacePrefix) {
+    /** {@inheritDoc} */
+    public RequestType buildObject(String namespaceURI, String localName, String namespacePrefix) {
         return new RequestTypeImpl(namespaceURI, localName, namespacePrefix);
     }
 

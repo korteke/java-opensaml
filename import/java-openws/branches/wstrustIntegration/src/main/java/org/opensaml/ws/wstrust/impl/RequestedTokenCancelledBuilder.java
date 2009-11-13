@@ -21,36 +21,17 @@ import org.opensaml.ws.wstrust.RequestedTokenCancelled;
 /**
  * Builder for the RequestedTokenCancelled element.
  * 
- * @see org.opensaml.ws.wstrust.RequestedTokenCancelled
- * 
  */
-public class RequestedTokenCancelledBuilder extends
-        AbstractWSTrustObjectBuilder<RequestedTokenCancelled> {
+public class RequestedTokenCancelledBuilder extends AbstractWSTrustObjectBuilder<RequestedTokenCancelled> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.impl.AbstractWSTrustObjectBuilder#buildObject()
-     * @see org.opensaml.ws.wstrust.RequestedTokenCancelled
-     */
-    @Override
+    /** {@inheritDoc} */
     public RequestedTokenCancelled buildObject() {
         return buildObject(RequestedTokenCancelled.ELEMENT_NAME);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AbstractXMLObjectBuilder#buildObject(java.lang.String,
-     *      java.lang.String, java.lang.String)
-     * @see org.opensaml.ws.wstrust.RequestedTokenCancelled
-     */
-    @Override
-    public RequestedTokenCancelled buildObject(String namespaceURI,
-            String localName, String namespacePrefix) {
-        return new RequestedTokenCancelledImpl(namespaceURI,
-                                               localName,
-                                               namespacePrefix);
+    /** {@inheritDoc} */
+    public RequestedTokenCancelled buildObject(String namespaceURI, String localName, String namespacePrefix) {
+        return new RequestedTokenCancelledImpl(namespaceURI, localName, namespacePrefix);
     }
 
 }

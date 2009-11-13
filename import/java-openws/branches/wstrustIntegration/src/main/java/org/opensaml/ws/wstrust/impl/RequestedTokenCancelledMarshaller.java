@@ -16,22 +16,11 @@
  */
 package org.opensaml.ws.wstrust.impl;
 
-import org.opensaml.ws.wstrust.RequestedTokenCancelled;
 
 /**
  * Marshaller for the RequestedTokenCancelled element.
  * 
- * @see RequestedTokenCancelled
- * 
  */
-public class RequestedTokenCancelledMarshaller extends
-        AbstractWSTrustObjectMarshaller {
-
-    /**
-     * Default constructor.
-     */
-    public RequestedTokenCancelledMarshaller() {
-        super();
-    }
+public class RequestedTokenCancelledMarshaller extends AbstractWSTrustObjectMarshaller {
 
 }

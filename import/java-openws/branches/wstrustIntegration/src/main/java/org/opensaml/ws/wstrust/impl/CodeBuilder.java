@@ -21,32 +21,16 @@ import org.opensaml.ws.wstrust.Code;
 /**
  * Builder for the Code element.
  * 
- * @see org.opensaml.ws.wstrust.Code
- * 
  */
 public class CodeBuilder extends AbstractWSTrustObjectBuilder<Code> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.impl.AbstractWSTrustObjectBuilder#buildObject()
-     * @see org.opensaml.ws.wstrust.Code
-     */
-    @Override
+    /** {@inheritDoc} */
     public Code buildObject() {
         return buildObject(Code.ELEMENT_NAME);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AbstractXMLObjectBuilder#buildObject(java.lang.String,
-     *      java.lang.String, java.lang.String)
-     * @see org.opensaml.ws.wstrust.Code
-     */
-    @Override
-    public Code buildObject(String namespaceURI, String localName,
-            String namespacePrefix) {
+    /** {@inheritDoc} */
+    public Code buildObject(String namespaceURI, String localName, String namespacePrefix) {
         return new CodeImpl(namespaceURI, localName, namespacePrefix);
     }
 

@@ -17,23 +17,11 @@
 package org.opensaml.ws.wstrust.impl;
 
 
-import org.opensaml.ws.wstrust.ValidateTarget;
-import org.opensaml.xml.AbstractElementExtensibleXMLObjectMarshaller;
 
 /**
  * Marshaller for the ValidateTarget element.
  * 
- * @see ValidateTarget
- * 
  */
-public class ValidateTargetMarshaller extends
-        AbstractElementExtensibleXMLObjectMarshaller {
-
-    /**
-     * Default constructor.
-     */
-    public ValidateTargetMarshaller() {
-        super();
-    }
+public class ValidateTargetMarshaller extends AbstractWSTrustObjectMarshaller {
 
 }

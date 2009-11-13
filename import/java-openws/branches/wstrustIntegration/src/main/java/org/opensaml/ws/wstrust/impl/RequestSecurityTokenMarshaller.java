@@ -17,21 +17,25 @@
 package org.opensaml.ws.wstrust.impl;
 
 import org.opensaml.ws.wstrust.RequestSecurityToken;
+import org.opensaml.xml.XMLObject;
+import org.opensaml.xml.io.MarshallingException;
+import org.opensaml.xml.util.XMLHelper;
+import org.w3c.dom.Element;
 
 /**
  * Marshaller for the RequestSecurityToken element.
  * 
- * @see RequestSecurityToken
- * 
  */
-public class RequestSecurityTokenMarshaller extends
-        AbstractRequestSecurityTokenTypeMarshaller {
+public class RequestSecurityTokenMarshaller extends AbstractWSTrustObjectMarshaller {
 
-    /**
-     * Default constructor.
-     */
-    public RequestSecurityTokenMarshaller() {
-        super();
+    /** {@inheritDoc} */
+    protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
+        RequestSecurityToken rst = (RequestSecurityToken) xmlObject;
+        if (rst.getContext() != null) {
+            domElement.setAttributeNS(null, RequestSecurityToken.CONTEXT_ATTRIB_NAME, rst.getContext());
+        }
+        
+        XMLHelper.marshallAttributeMap(rst.getUnknownAttributes(), domElement);
     }
 
 }

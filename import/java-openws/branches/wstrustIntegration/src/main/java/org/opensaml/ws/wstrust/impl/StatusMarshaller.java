@@ -16,21 +16,11 @@
  */
 package org.opensaml.ws.wstrust.impl;
 
-import org.opensaml.ws.wstrust.Status;
 
 /**
  * Marshaller for the Status element.
  * 
- * @see Status
- * 
  */
 public class StatusMarshaller extends AbstractWSTrustObjectMarshaller {
-
-    /**
-     * Default constructor.
-     */
-    public StatusMarshaller() {
-        super();
-    }
 
 }

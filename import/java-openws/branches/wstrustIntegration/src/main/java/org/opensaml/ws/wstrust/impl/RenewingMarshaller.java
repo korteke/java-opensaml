@@ -20,52 +20,25 @@ package org.opensaml.ws.wstrust.impl;
 import org.opensaml.ws.wstrust.Renewing;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.util.XMLHelper;
-import org.w3c.dom.Attr;
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
  * Marshaller for the Renewing element.
  * 
- * @see Renewing
- * 
  */
 public class RenewingMarshaller extends AbstractWSTrustObjectMarshaller {
 
-    /**
-     * Default constructor.
-     */
-    public RenewingMarshaller() {
-        super();
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.impl.AbstractWSTrustObjectMarshaller#marshallAttributes(org.opensaml.xml.XMLObject,
-     *      org.w3c.dom.Element)
-     */
-    @Override
-    protected void marshallAttributes(XMLObject xmlObject, Element domElement)
-            throws MarshallingException {
-        Document document= domElement.getOwnerDocument();
-        Renewing renewing= (Renewing) xmlObject;
-        Boolean ok= renewing.getOK();
-        if (ok != null) {
-            Attr attribute= XMLHelper.constructAttribute(document,
-                                                         Renewing.OK_ATTR_NAME);
-            attribute.setValue(ok.toString());
-            domElement.setAttributeNodeNS(attribute);
+    /** {@inheritDoc} */
+    protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
+        Renewing renewing = (Renewing) xmlObject;
+        
+        if (renewing.isAllowXSBoolean() != null) {
+            domElement.setAttributeNS(null, Renewing.ALLOW_ATTRIB_NAME, renewing.isAllowXSBoolean().toString());
         }
-        Boolean allow= renewing.getAllow();
-        if (allow != null) {
-            Attr attribute= XMLHelper.constructAttribute(document,
-                                                         Renewing.ALLOW_ATTR_NAME);
-            attribute.setValue(allow.toString());
-            domElement.setAttributeNodeNS(attribute);
+        
+        if (renewing.isOKXSBoolean() != null) {
+            domElement.setAttributeNS(null, Renewing.OK_ATTRIB_NAME, renewing.isOKXSBoolean().toString());
         }
-        super.marshallAttributes(xmlObject, domElement);
     }
-
+    
 }

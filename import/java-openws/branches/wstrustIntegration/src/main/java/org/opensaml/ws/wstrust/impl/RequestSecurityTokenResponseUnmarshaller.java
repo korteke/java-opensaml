@@ -16,78 +16,35 @@
  */
 package org.opensaml.ws.wstrust.impl;
 
-
-import org.opensaml.ws.wstrust.Authenticator;
 import org.opensaml.ws.wstrust.RequestSecurityTokenResponse;
-import org.opensaml.ws.wstrust.RequestedAttachedReference;
-import org.opensaml.ws.wstrust.RequestedProofToken;
-import org.opensaml.ws.wstrust.RequestedSecurityToken;
-import org.opensaml.ws.wstrust.RequestedUnattachedReference;
-import org.opensaml.ws.wstrust.Status;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
+import org.opensaml.xml.util.XMLHelper;
+import org.w3c.dom.Attr;
+
+
 
 /**
- * RequestSecurityTokenResponseUnmarshaller
- * 
- * @see RequestSecurityTokenResponse
+ * RequestSecurityTokenResponseUnmarshaller.
  * 
  */
-public class RequestSecurityTokenResponseUnmarshaller extends
-        AbstractRequestSecurityTokenTypeUnmarshaller {
-
-    /**
-     * Default constructor.
-     */
-    public RequestSecurityTokenResponseUnmarshaller() {
-        super();
+public class RequestSecurityTokenResponseUnmarshaller extends AbstractWSTrustObjectUnmarshaller {
+    
+    /** {@inheritDoc} */
+    protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
+        RequestSecurityTokenResponse rstr = (RequestSecurityTokenResponse) xmlObject;
+        if (RequestSecurityTokenResponse.CONTEXT_ATTRIB_NAME.equals(attribute.getLocalName())) {
+            rstr.setContext(attribute.getValue());
+        } else {
+            XMLHelper.unmarshallToAttributeMap(rstr.getUnknownAttributes(), attribute);
+        }
     }
 
-    /**
-     * Unmarshalls the following additional elements:
-     * <ul>
-     * <li>{@link Authenticator}
-     * <li>{@link RequestedAttachedReference}
-     * <li>{@link RequestedUnattachedReference}
-     * <li>{@link RequestedProofToken}
-     * <li>{@link RequestedSecurityToken}
-     * <li>{@link Status}
-     * </ul>
-     * <p>
-     * {@inheritDoc}
-     */
-    @Override
-    protected void processChildElement(XMLObject parentXMLObject,
-            XMLObject childXMLObject) throws UnmarshallingException {
-        RequestSecurityTokenResponse rstr= (RequestSecurityTokenResponse) parentXMLObject;
-        if (childXMLObject instanceof Authenticator) {
-            Authenticator authenticator= (Authenticator) childXMLObject;
-            rstr.setAuthenticator(authenticator);
-        }
-        else if (childXMLObject instanceof RequestedAttachedReference) {
-            RequestedAttachedReference requestedAttachedReference= (RequestedAttachedReference) childXMLObject;
-            rstr.setRequestedAttachedReference(requestedAttachedReference);
-        }
-        else if (childXMLObject instanceof RequestedUnattachedReference) {
-            RequestedUnattachedReference requestedUnattachedReference= (RequestedUnattachedReference) childXMLObject;
-            rstr.setRequestedUnattachedReference(requestedUnattachedReference);
-        }
-        else if (childXMLObject instanceof RequestedProofToken) {
-            RequestedProofToken requestedProofToken= (RequestedProofToken) childXMLObject;
-            rstr.setRequestedProofToken(requestedProofToken);
-        }
-        else if (childXMLObject instanceof RequestedSecurityToken) {
-            RequestedSecurityToken requestedSecurityToken= (RequestedSecurityToken) childXMLObject;
-            rstr.setRequestedSecurityToken(requestedSecurityToken);
-        }
-        else if (childXMLObject instanceof Status) {
-            Status status= (Status) childXMLObject;
-            rstr.setStatus(status);
-        }
-        else {
-            // common elements
-            super.processChildElement(parentXMLObject, childXMLObject);
-        }
+    /** {@inheritDoc} */
+    protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
+            throws UnmarshallingException {
+        RequestSecurityTokenResponse rstr = (RequestSecurityTokenResponse) parentXMLObject;
+        rstr.getUnknownXMLObjects().add(childXMLObject);
     }
 
 }

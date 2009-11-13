@@ -16,23 +16,23 @@
  */
 package org.opensaml.ws.wstrust.impl;
 
-
 import org.opensaml.ws.wstrust.Entropy;
-import org.opensaml.xml.AbstractExtensibleXMLObjectMarshaller;
+import org.opensaml.xml.XMLObject;
+import org.opensaml.xml.io.MarshallingException;
+import org.opensaml.xml.util.XMLHelper;
+import org.w3c.dom.Element;
+
 
 /**
  * Marshaller for the Entropy element.
  * 
- * @see Entropy
- * 
  */
-public class EntropyMarshaller extends AbstractExtensibleXMLObjectMarshaller {
+public class EntropyMarshaller extends AbstractWSTrustObjectMarshaller {
 
-    /**
-     * Default constructor.
-     */
-    public EntropyMarshaller() {
-        super();
+    /** {@inheritDoc} */
+    protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
+        Entropy entropy = (Entropy) xmlObject;
+        XMLHelper.marshallAttributeMap(entropy.getUnknownAttributes(), domElement);
     }
 
 }

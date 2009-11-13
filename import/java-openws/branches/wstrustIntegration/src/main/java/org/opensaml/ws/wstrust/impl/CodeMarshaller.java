@@ -17,41 +17,12 @@
 package org.opensaml.ws.wstrust.impl;
 
 
-import org.opensaml.ws.wstrust.Code;
-import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.schema.XSURI;
-import org.opensaml.xml.util.XMLHelper;
-import org.w3c.dom.Element;
+import org.opensaml.xml.schema.impl.XSURIMarshaller;
 
 /**
  * Marshaller for the Code element.
  * 
- * @see Code
- * 
  */
-public class CodeMarshaller extends AbstractWSTrustObjectMarshaller {
-
-    /**
-     * Default constructor.
-     * 
-     */
-    public CodeMarshaller() {
-        super();
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.impl.AbstractWSTrustObjectMarshaller#marshallElementContent(org.opensaml.xml.XMLObject,
-     *      org.w3c.dom.Element)
-     */
-    @Override
-    protected void marshallElementContent(XMLObject xmlObject,
-            Element domElement) throws MarshallingException {
-        XSURI xsUri= (XSURI) xmlObject;
-        String uri= xsUri.getValue();
-        XMLHelper.appendTextContent(domElement, uri);
-    }
+public class CodeMarshaller extends XSURIMarshaller {
 
 }

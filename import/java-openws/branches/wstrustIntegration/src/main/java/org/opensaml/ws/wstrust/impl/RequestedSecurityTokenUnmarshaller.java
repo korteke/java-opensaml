@@ -18,24 +18,20 @@ package org.opensaml.ws.wstrust.impl;
 
 
 import org.opensaml.ws.wstrust.RequestedSecurityToken;
-import org.opensaml.xml.AbstractElementExtensibleXMLObjectUnmarshaller;
+import org.opensaml.xml.XMLObject;
+import org.opensaml.xml.io.UnmarshallingException;
 
 /**
  * Unmarshaller for the &lt;wst:RequestedSecurityToken&gt; element.
  * 
- * @see RequestedSecurityToken
- * 
  */
-public class RequestedSecurityTokenUnmarshaller extends
-        AbstractElementExtensibleXMLObjectUnmarshaller {
+public class RequestedSecurityTokenUnmarshaller extends AbstractWSTrustObjectUnmarshaller {
 
-    /**
-     * Default constructor.
-     * <p>
-     * {@inheritDoc}
-     */
-    public RequestedSecurityTokenUnmarshaller() {
-        super();
+    /** {@inheritDoc} */
+    protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
+            throws UnmarshallingException {
+        RequestedSecurityToken reqToken = (RequestedSecurityToken) parentXMLObject;
+        reqToken.setUnknownXMLObject(childXMLObject);
     }
 
 }

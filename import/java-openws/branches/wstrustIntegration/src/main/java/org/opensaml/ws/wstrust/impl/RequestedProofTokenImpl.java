@@ -21,19 +21,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.opensaml.ws.wstrust.ComputedKey;
 import org.opensaml.ws.wstrust.RequestedProofToken;
-import org.opensaml.xml.AbstractElementExtensibleXMLObject;
 import org.opensaml.xml.XMLObject;
 
 /**
- * RequestedProofTokenImpl
+ * RequestedProofTokenImpl.
  * 
  */
-public class RequestedProofTokenImpl extends AbstractElementExtensibleXMLObject implements RequestedProofToken {
-
-    /** {@link ComputedKey} child element */
-    private ComputedKey computedKey_ = null;
+public class RequestedProofTokenImpl extends AbstractWSTrustObject implements RequestedProofToken {
+    
+    /** Unknown child element. */
+    private XMLObject unknownChild;
 
     /**
      * Constructor.
@@ -46,38 +44,21 @@ public class RequestedProofTokenImpl extends AbstractElementExtensibleXMLObject 
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.RequestedProofToken#getComputedKey()
-     */
-    public ComputedKey getComputedKey() {
-        return computedKey_;
+    /** {@inheritDoc} */
+    public XMLObject getUnknownXMLObject() {
+        return unknownChild;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.RequestedProofToken#setComputedKey(org.opensaml.ws.wstrust.ComputedKey)
-     */
-    public void setComputedKey(ComputedKey computedKey) {
-        computedKey_ = prepareForAssignment(computedKey_, computedKey);
+    /** {@inheritDoc} */
+    public void setUnknownXMLObject(XMLObject unknownObject) {
+        unknownChild = prepareForAssignment(unknownChild, unknownObject);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.impl.EntropyImpl#getOrderedChildren()
-     */
-    @Override
+    /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        List<XMLObject> children = new ArrayList<XMLObject>();
-        if (computedKey_ != null) {
-            children.add(computedKey_);
-        }
-        // xs:any elements
-        if (!getUnknownXMLObjects().isEmpty()) {
-            children.addAll(getUnknownXMLObjects());
+        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        if (unknownChild != null) {
+            children.add(unknownChild);
         }
         return Collections.unmodifiableList(children);
     }

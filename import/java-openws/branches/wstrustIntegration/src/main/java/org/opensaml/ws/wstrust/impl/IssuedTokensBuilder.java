@@ -21,33 +21,16 @@ import org.opensaml.ws.wstrust.IssuedTokens;
 /**
  * Builder for the IssuedTokens element.
  * 
- * @see org.opensaml.ws.wstrust.IssuedTokens
- * 
  */
-public class IssuedTokensBuilder extends
-        AbstractWSTrustObjectBuilder<IssuedTokens> {
+public class IssuedTokensBuilder extends AbstractWSTrustObjectBuilder<IssuedTokens> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.impl.AbstractWSTrustObjectBuilder#buildObject()
-     * @see org.opensaml.ws.wstrust.IssuedTokens
-     */
-    @Override
+    /** {@inheritDoc} */
     public IssuedTokens buildObject() {
         return buildObject(IssuedTokens.ELEMENT_NAME);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AbstractXMLObjectBuilder#buildObject(java.lang.String,
-     *      java.lang.String, java.lang.String)
-     * @see org.opensaml.ws.wstrust.IssuedTokens
-     */
-    @Override
-    public IssuedTokens buildObject(String namespaceURI, String localName,
-            String namespacePrefix) {
+    /** {@inheritDoc} */
+    public IssuedTokens buildObject(String namespaceURI, String localName, String namespacePrefix) {
         return new IssuedTokensImpl(namespaceURI, localName, namespacePrefix);
     }
 

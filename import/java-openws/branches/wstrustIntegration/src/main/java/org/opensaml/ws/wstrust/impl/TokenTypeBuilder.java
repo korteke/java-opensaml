@@ -26,27 +26,13 @@ import org.opensaml.ws.wstrust.TokenType;
  */
 public class TokenTypeBuilder extends AbstractWSTrustObjectBuilder<TokenType> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.impl.AbstractWSTrustObjectBuilder#buildObject()
-     * @see org.opensaml.ws.wstrust.TokenType
-     */
-    @Override
+    /** {@inheritDoc} */
     public TokenType buildObject() {
         return buildObject(TokenType.ELEMENT_NAME);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AbstractXMLObjectBuilder#buildObject(java.lang.String,
-     *      java.lang.String, java.lang.String)
-     * @see org.opensaml.ws.wstrust.TokenType
-     */
-    @Override
-    public TokenType buildObject(String namespaceURI, String localName,
-            String namespacePrefix) {
+    /** {@inheritDoc} */
+    public TokenType buildObject(String namespaceURI, String localName, String namespacePrefix) {
         return new TokenTypeImpl(namespaceURI, localName, namespacePrefix);
     }
 
