@@ -21,7 +21,7 @@ import org.opensaml.ws.wstrust.KeyType;
 import org.opensaml.xml.schema.impl.XSURIImpl;
 
 /**
- * KeyTypeImpl
+ * KeyTypeImpl.
  * 
  */
 public class KeyTypeImpl extends XSURIImpl implements KeyType {

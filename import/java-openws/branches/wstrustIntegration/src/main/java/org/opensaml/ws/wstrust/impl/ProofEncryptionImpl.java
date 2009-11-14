@@ -17,14 +17,21 @@
 
 package org.opensaml.ws.wstrust.impl;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import org.opensaml.ws.wstrust.ProofEncryption;
-import org.opensaml.xml.AbstractElementExtensibleXMLObject;
+import org.opensaml.xml.XMLObject;
 
 /**
- * ProofEncryptionImpl
+ * ProofEncryptionImpl.
  * 
  */
-public class ProofEncryptionImpl extends AbstractElementExtensibleXMLObject implements ProofEncryption {
+public class ProofEncryptionImpl extends AbstractWSTrustObject implements ProofEncryption {
+    
+    /** Wildcard child element. */
+    private XMLObject unknownChild;
 
     /**
      * Constructor.
@@ -35,6 +42,25 @@ public class ProofEncryptionImpl extends AbstractElementExtensibleXMLObject impl
      */
     public ProofEncryptionImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
+    }
+
+    /** {@inheritDoc} */
+    public XMLObject getUnknownXMLObject() {
+        return unknownChild;
+    }
+
+    /** {@inheritDoc} */
+    public void setUnknownXMLObject(XMLObject unknownObject) {
+        unknownChild = prepareForAssignment(unknownChild, unknownObject);
+    }
+
+    /** {@inheritDoc} */
+    public List<XMLObject> getOrderedChildren() {
+        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        if (unknownChild != null) {
+            children.add(unknownChild);
+        }
+        return Collections.unmodifiableList(children);
     }
 
 }

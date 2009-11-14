@@ -17,39 +17,12 @@
 package org.opensaml.ws.wstrust.impl;
 
 
-import org.opensaml.ws.wstrust.KeySize;
-import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.schema.XSInteger;
-import org.opensaml.xml.util.XMLHelper;
-import org.w3c.dom.Element;
+import org.opensaml.xml.schema.impl.XSIntegerMarshaller;
 
 /**
  * Marshaller for the KeySize element.
  * 
- * @see KeySize
- * 
  */
-public class KeySizeMarshaller extends AbstractWSTrustObjectMarshaller {
+public class KeySizeMarshaller extends XSIntegerMarshaller {
 
-    /**
-     * Default constructor.
-     */
-    public KeySizeMarshaller() {
-        super();
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.io.AbstractXMLObjectMarshaller#marshallElementContent(org.opensaml.xml.XMLObject,
-     *      org.w3c.dom.Element)
-     */
-    @Override
-    protected void marshallElementContent(XMLObject xmlObject,
-            Element domElement) throws MarshallingException {
-        XSInteger keySize= (XSInteger) xmlObject;
-        Integer value= keySize.getValue();
-        XMLHelper.appendTextContent(domElement, value.toString());
-    }
 }

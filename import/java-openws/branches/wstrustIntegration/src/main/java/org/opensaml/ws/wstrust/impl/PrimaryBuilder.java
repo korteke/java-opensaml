@@ -21,30 +21,16 @@ import org.opensaml.ws.wstrust.Primary;
 /**
  * Builder for the Primary element.
  * 
- * @see Primary
- * 
  */
 public class PrimaryBuilder extends AbstractWSTrustObjectBuilder<Primary> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.impl.AbstractWSTrustObjectBuilder#buildObject()
-     */
-    @Override
+    /** {@inheritDoc} */
     public Primary buildObject() {
         return buildObject(Primary.ELEMENT_NAME);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AbstractXMLObjectBuilder#buildObject(java.lang.String,
-     *      java.lang.String, java.lang.String)
-     */
-    @Override
-    public Primary buildObject(String namespaceURI, String localName,
-            String namespacePrefix) {
+    /** {@inheritDoc} */
+    public Primary buildObject(String namespaceURI, String localName, String namespacePrefix) {
         return new PrimaryImpl(namespaceURI, localName, namespacePrefix);
     }
 

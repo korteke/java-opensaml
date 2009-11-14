@@ -21,7 +21,7 @@ import org.opensaml.ws.wstrust.KeyWrapAlgorithm;
 import org.opensaml.xml.schema.impl.XSStringImpl;
 
 /**
- * KeyWrapAlgorithmImpl
+ * KeyWrapAlgorithmImpl.
  * 
  */
 public class KeyWrapAlgorithmImpl extends XSStringImpl implements KeyWrapAlgorithm {

@@ -16,22 +16,11 @@
  */
 package org.opensaml.ws.wstrust.impl;
 
-import org.opensaml.ws.wstrust.RequestKET;
 
 /**
  * Marshaller for the RequestKET element.
  * 
- * @see RequestKET
- * 
  */
 public class RequestKETMarshaller extends AbstractWSTrustObjectMarshaller {
-
-    /**
-     * Default constructor.
-     * 
-     */
-    public RequestKETMarshaller() {
-        super();
-    }
 
 }

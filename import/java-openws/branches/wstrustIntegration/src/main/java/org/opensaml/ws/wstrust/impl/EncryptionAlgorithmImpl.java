@@ -21,7 +21,7 @@ import org.opensaml.ws.wstrust.EncryptionAlgorithm;
 import org.opensaml.xml.schema.impl.XSURIImpl;
 
 /**
- * EncryptionAlgorithmImpl
+ * EncryptionAlgorithmImpl.
  * 
  */
 public class EncryptionAlgorithmImpl extends XSURIImpl implements EncryptionAlgorithm {

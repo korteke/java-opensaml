@@ -21,7 +21,7 @@ import org.opensaml.ws.wstrust.SignWith;
 import org.opensaml.xml.schema.impl.XSURIImpl;
 
 /**
- * SignWithImpl
+ * SignWithImpl.
  * 
  */
 public class SignWithImpl extends XSURIImpl implements SignWith {

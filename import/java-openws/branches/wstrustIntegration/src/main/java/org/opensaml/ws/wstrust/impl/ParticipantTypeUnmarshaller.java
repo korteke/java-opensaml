@@ -14,24 +14,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.opensaml.ws.wstrust.impl;
 
-import org.opensaml.xml.AbstractExtensibleXMLObjectMarshaller;
+import org.opensaml.ws.wstrust.ParticipantType;
+import org.opensaml.xml.XMLObject;
+import org.opensaml.xml.io.UnmarshallingException;
 
 /**
- * AbstractSignChallengeTypeMarshaller
+ * ParticipantTypeUnmarshaller.
  * 
  */
-public abstract class AbstractSignChallengeTypeMarshaller extends
-        AbstractExtensibleXMLObjectMarshaller {
+public class ParticipantTypeUnmarshaller extends AbstractWSTrustObjectUnmarshaller {
 
-    /**
-     * Constructor.
-     * <p>
-     * {@inheritDoc}
-     */
-    public AbstractSignChallengeTypeMarshaller() {
-        super();
+    /** {@inheritDoc} */
+    protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
+            throws UnmarshallingException {
+        ParticipantType pt = (ParticipantType) parentXMLObject;
+        pt.setUnknownXMLObject(childXMLObject);
     }
 
 }

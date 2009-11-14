@@ -20,10 +20,10 @@ package org.opensaml.ws.wstrust.impl;
 import org.opensaml.ws.wstrust.Primary;
 
 /**
- * PrimaryImpl
+ * PrimaryImpl.
  * 
  */
-public class PrimaryImpl extends AbstractParticipantType implements Primary {
+public class PrimaryImpl extends ParticipantTypeImpl implements Primary {
 
     /**
      * Constructor.

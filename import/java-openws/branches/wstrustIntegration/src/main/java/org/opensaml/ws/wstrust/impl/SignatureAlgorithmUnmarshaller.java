@@ -17,40 +17,12 @@
 package org.opensaml.ws.wstrust.impl;
 
 
-import org.opensaml.ws.wstrust.SignatureAlgorithm;
-import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.schema.XSURI;
+import org.opensaml.xml.schema.impl.XSURIUnmarshaller;
 
 /**
- * Unmarshaller for the &lt;wst:SignatureAlgorithm&gt; element.
- * 
- * @see SignatureAlgorithm
+ * Unmarshaller for the wst:SignatureAlgorithm element.
  * 
  */
-public class SignatureAlgorithmUnmarshaller extends
-        AbstractWSTrustObjectUnmarshaller {
-
-    /**
-     * Default constructor.
-     * <p>
-     * {@inheritDoc}
-     */
-    public SignatureAlgorithmUnmarshaller() {
-        super();
-    }
-
-    /**
-     * Unmarshalls the &lt;wst:SignatureAlgorithm&gt; element content.
-     * <p>
-     * {@inheritDoc}
-     */
-    @Override
-    protected void processElementContent(XMLObject xmlObject,
-            String elementContent) {
-        if (elementContent != null) {
-            XSURI xsUri= (XSURI) xmlObject;
-            xsUri.setValue(elementContent);
-        }
-    }
+public class SignatureAlgorithmUnmarshaller extends XSURIUnmarshaller {
 
 }

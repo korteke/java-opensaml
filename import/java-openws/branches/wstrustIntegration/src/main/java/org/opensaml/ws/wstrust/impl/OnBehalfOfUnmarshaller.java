@@ -17,53 +17,21 @@
 package org.opensaml.ws.wstrust.impl;
 
 
-import org.opensaml.ws.wsaddressing.EndpointReference;
-import org.opensaml.ws.wssecurity.SecurityTokenReference;
 import org.opensaml.ws.wstrust.OnBehalfOf;
-import org.opensaml.xml.AbstractElementExtensibleXMLObjectUnmarshaller;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
 
 /**
- * Unmarshaller for the &lt;wst:OnBehalfOf&gt; element.
- * 
- * @see OnBehalfOf
+ * Unmarshaller for the wst:OnBehalfOf element.
  * 
  */
-public class OnBehalfOfUnmarshaller extends
-        AbstractElementExtensibleXMLObjectUnmarshaller {
+public class OnBehalfOfUnmarshaller extends AbstractWSTrustObjectUnmarshaller {
 
-    /**
-     * Default constructor.
-     * <p>
-     * {@inheritDoc}
-     */
-    public OnBehalfOfUnmarshaller() {
-        super();
-    }
-
-    /**
-     * Try to unmarshall the &lt;wsa:EndpointReference&gt; or the
-     * &lt;SecurityTokenReference&gt; child elements, if any.
-     * <p>
-     * {@inheritDoc}
-     */
-    @Override
-    protected void processChildElement(XMLObject parentXMLObject,
-            XMLObject childXMLObject) throws UnmarshallingException {
-        OnBehalfOf container= (OnBehalfOf) parentXMLObject;
-        if (childXMLObject instanceof EndpointReference) {
-            EndpointReference endpointReference= (EndpointReference) childXMLObject;
-            container.setEndpointReference(endpointReference);
-        }
-        else if (childXMLObject instanceof SecurityTokenReference) {
-            SecurityTokenReference securityTokenReference= (SecurityTokenReference) childXMLObject;
-            container.setSecurityTokenReference(securityTokenReference);
-        }
-        else {
-            // other security token in xs:any
-            super.processChildElement(parentXMLObject, childXMLObject);
-        }
+    /** {@inheritDoc} */
+    protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject) 
+            throws UnmarshallingException {
+        OnBehalfOf obo = (OnBehalfOf) parentXMLObject;
+        obo.setUnknownXMLObject(childXMLObject);
     }
 
 }

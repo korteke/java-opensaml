@@ -21,32 +21,16 @@ import org.opensaml.ws.wstrust.DelegateTo;
 /**
  * Builder for the DelegateTo element.
  * 
- * @see org.opensaml.ws.wstrust.DelegateTo
- * 
  */
 public class DelegateToBuilder extends AbstractWSTrustObjectBuilder<DelegateTo> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.impl.AbstractWSTrustObjectBuilder#buildObject()
-     * @see org.opensaml.ws.wstrust.DelegateTo
-     */
-    @Override
+    /** {@inheritDoc} */
     public DelegateTo buildObject() {
         return buildObject(DelegateTo.ELEMENT_NAME);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AbstractXMLObjectBuilder#buildObject(java.lang.String,
-     *      java.lang.String, java.lang.String)
-     * @see org.opensaml.ws.wstrust.DelegateTo
-     */
-    @Override
-    public DelegateTo buildObject(String namespaceURI, String localName,
-            String namespacePrefix) {
+    /** {@inheritDoc} */
+    public DelegateTo buildObject(String namespaceURI, String localName, String namespacePrefix) {
         return new DelegateToImpl(namespaceURI, localName, namespacePrefix);
     }
 

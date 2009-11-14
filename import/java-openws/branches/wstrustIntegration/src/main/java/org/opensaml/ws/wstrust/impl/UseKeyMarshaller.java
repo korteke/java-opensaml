@@ -18,46 +18,21 @@ package org.opensaml.ws.wstrust.impl;
 
 
 import org.opensaml.ws.wstrust.UseKey;
-import org.opensaml.xml.AbstractElementExtensibleXMLObjectMarshaller;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.util.XMLHelper;
-import org.w3c.dom.Attr;
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
  * Marshaller for the UseKey element.
  * 
- * @see UseKey
- * 
  */
-public class UseKeyMarshaller extends
-        AbstractElementExtensibleXMLObjectMarshaller {
+public class UseKeyMarshaller extends AbstractWSTrustObjectMarshaller {
 
-    /**
-     * Default constructor.
-     */
-    public UseKeyMarshaller() {
-        super();
-    }
-
-    /**
-     * Marshalls the &lt;@Sig&gt; attribute.
-     * <p>
-     * {@inheritDoc}
-     */
-    @Override
-    protected void marshallAttributes(XMLObject xmlObject, Element domElement)
-            throws MarshallingException {
-        UseKey useKey= (UseKey) xmlObject;
-        String sig= useKey.getSig();
-        if (sig != null) {
-            Document document= domElement.getOwnerDocument();
-            Attr attribute= XMLHelper.constructAttribute(document,
-                                                         UseKey.SIG_ATTR_NAME);
-            attribute.setValue(sig);
-            domElement.setAttributeNodeNS(attribute);
+    /** {@inheritDoc} */
+    protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
+        UseKey useKey = (UseKey) xmlObject;
+        if (useKey.getSig() != null) {
+            domElement.setAttributeNS(null, UseKey.SIG_ATTRIB_NAME, useKey.getSig());
         }
         super.marshallAttributes(xmlObject, domElement);
     }

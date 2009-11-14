@@ -17,23 +17,11 @@
 package org.opensaml.ws.wstrust.impl;
 
 
-import org.opensaml.ws.wstrust.Encryption;
-import org.opensaml.xml.AbstractElementExtensibleXMLObjectMarshaller;
 
 /**
  * Marshaller for the Encryption element.
  * 
- * @see Encryption
- * 
  */
-public class EncryptionMarshaller extends
-        AbstractElementExtensibleXMLObjectMarshaller {
-
-    /**
-     * Default constructor.
-     */
-    public EncryptionMarshaller() {
-        super();
-    }
+public class EncryptionMarshaller extends AbstractWSTrustObjectMarshaller {
 
 }

@@ -19,38 +19,20 @@ package org.opensaml.ws.wstrust.impl;
 
 import org.opensaml.ws.wstrust.Delegatable;
 import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.schema.XSBoolean;
 import org.opensaml.xml.schema.XSBooleanValue;
 
 /**
- * Unmarshaller for the &lt;wst:Delegatable&gt; element.
- * 
- * @see Delegatable
+ * Unmarshaller for the wst:Delegatable element.
  * 
  */
 public class DelegatableUnmarshaller extends AbstractWSTrustObjectUnmarshaller {
 
-    /**
-     * Default constructor.
-     * <p>
-     * {@inheritDoc}
-     */
-    public DelegatableUnmarshaller() {
-        super();
-    }
-
-    /**
-     * Unmarshalls the &lt;wst:Delegatable&gt; element boolean content.
-     * <p>
-     * {@inheritDoc}
-     */
-    @Override
-    protected void processElementContent(XMLObject xmlObject,
-            String elementContent) {
+    /** {@inheritDoc} */
+    protected void processElementContent(XMLObject xmlObject, String elementContent) {
         if (elementContent != null) {
-            XSBoolean xsBoolean= (XSBoolean) xmlObject;
-            XSBooleanValue value= XSBooleanValue.valueOf(elementContent);
-            xsBoolean.setValue(value);
+            Delegatable delegatable = (Delegatable) xmlObject;
+            XSBooleanValue value = XSBooleanValue.valueOf(elementContent);
+            delegatable.setValue(value);
         }
     }
 

@@ -20,7 +20,6 @@ package org.opensaml.ws.wstrust.impl;
 import org.opensaml.ws.wstrust.Forwardable;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.schema.XSBoolean;
 import org.opensaml.xml.schema.XSBooleanValue;
 import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Element;
@@ -28,30 +27,13 @@ import org.w3c.dom.Element;
 /**
  * Marshaller for the Forwardable element.
  * 
- * @see Forwardable
- * 
  */
 public class ForwardableMarshaller extends AbstractWSTrustObjectMarshaller {
 
-    /**
-     * Default constructor.
-     * 
-     */
-    public ForwardableMarshaller() {
-        super();
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.impl.AbstractWSTrustObjectMarshaller#marshallElementContent(org.opensaml.xml.XMLObject,
-     *      org.w3c.dom.Element)
-     */
-    @Override
-    protected void marshallElementContent(XMLObject xmlObject,
-            Element domElement) throws MarshallingException {
-        XSBoolean xsBoolean= (XSBoolean) xmlObject;
-        XSBooleanValue value= xsBoolean.getValue();
+    /** {@inheritDoc} */
+    protected void marshallElementContent(XMLObject xmlObject, Element domElement) throws MarshallingException {
+        Forwardable forwardable = (Forwardable) xmlObject;
+        XSBooleanValue value= forwardable.getValue();
         XMLHelper.appendTextContent(domElement, value.toString());
     }
 }

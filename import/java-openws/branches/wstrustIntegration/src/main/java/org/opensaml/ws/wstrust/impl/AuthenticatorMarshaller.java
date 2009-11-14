@@ -17,22 +17,11 @@
 package org.opensaml.ws.wstrust.impl;
 
 
-import org.opensaml.ws.wstrust.Authenticator;
-import org.opensaml.xml.AbstractElementExtensibleXMLObjectMarshaller;
 
 /**
  * Marshaller for the Authenticator element.
  * 
- * @see Authenticator
- * 
  */
-public class AuthenticatorMarshaller extends AbstractElementExtensibleXMLObjectMarshaller {
-
-    /**
-     * Default constructor.
-     */
-    public AuthenticatorMarshaller() {
-        super();
-    }
+public class AuthenticatorMarshaller extends AbstractWSTrustObjectMarshaller {
 
 }

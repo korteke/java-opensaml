@@ -21,36 +21,16 @@ import org.opensaml.ws.wstrust.SignChallengeResponse;
 /**
  * Builder for the SignChallengeResponse element.
  * 
- * @see org.opensaml.ws.wstrust.SignChallengeResponse
- * 
  */
-public class SignChallengeResponseBuilder extends
-        AbstractWSTrustObjectBuilder<SignChallengeResponse> {
+public class SignChallengeResponseBuilder extends AbstractWSTrustObjectBuilder<SignChallengeResponse> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.impl.AbstractWSTrustObjectBuilder#buildObject()
-     * @see org.opensaml.ws.wstrust.SignChallengeResponse
-     */
-    @Override
+    /** {@inheritDoc} */
     public SignChallengeResponse buildObject() {
         return buildObject(SignChallengeResponse.ELEMENT_NAME);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AbstractXMLObjectBuilder#buildObject(java.lang.String,
-     *      java.lang.String, java.lang.String)
-     * @see org.opensaml.ws.wstrust.SignChallengeResponse
-     */
-    @Override
-    public SignChallengeResponse buildObject(String namespaceURI,
-            String localName, String namespacePrefix) {
-        return new SignChallengeResponseImpl(namespaceURI,
-                                             localName,
-                                             namespacePrefix);
-    }
+    /** {@inheritDoc} */
+    public SignChallengeResponse buildObject(String namespaceURI, String localName, String namespacePrefix) {
+        return new SignChallengeResponseImpl(namespaceURI, localName, namespacePrefix); }
 
 }

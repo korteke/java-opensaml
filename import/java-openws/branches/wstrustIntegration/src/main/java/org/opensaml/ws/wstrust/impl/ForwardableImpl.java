@@ -17,18 +17,24 @@
 
 package org.opensaml.ws.wstrust.impl;
 
+import java.util.List;
+
 import org.opensaml.ws.wstrust.Forwardable;
+import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.schema.XSBooleanValue;
 
 /**
- * ForwardableImpl
+ * ForwardableImpl.
  * 
  */
 public class ForwardableImpl extends AbstractWSTrustObject implements Forwardable {
 
-    /** The wst:Forwardable content. */
-    private XSBooleanValue forwardable_ = null;
+    /** Default value. */
+    private static final Boolean DEFAULT_VALUE = Boolean.TRUE;
 
+    /** The wst:Forwardable content. */
+    private XSBooleanValue value;
+    
     /**
      * Constructor. Default value is <code>TRUE</code>.
      * 
@@ -38,25 +44,26 @@ public class ForwardableImpl extends AbstractWSTrustObject implements Forwardabl
      */
     public ForwardableImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        forwardable_ = new XSBooleanValue(true, false);
+        value = new XSBooleanValue(DEFAULT_VALUE, false);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.glite.xml.schema.XSBoolean#getValue()
-     */
+    /** {@inheritDoc} */
     public XSBooleanValue getValue() {
-        return forwardable_;
+        return value;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.glite.xml.schema.XSBoolean#setValue(org.opensaml.xml.schema.XSBooleanValue)
-     */
-    public void setValue(XSBooleanValue value) {
-        forwardable_ = prepareForAssignment(forwardable_, value);
+    /** {@inheritDoc} */
+    public void setValue(XSBooleanValue newValue) {
+        if (newValue != null) {
+            value = prepareForAssignment(value, newValue);
+        } else {
+            value = prepareForAssignment(value, new XSBooleanValue(DEFAULT_VALUE, false));
+        }
+    }
+
+    /** {@inheritDoc} */
+    public List<XMLObject> getOrderedChildren() {
+        return null;
     }
 
 }

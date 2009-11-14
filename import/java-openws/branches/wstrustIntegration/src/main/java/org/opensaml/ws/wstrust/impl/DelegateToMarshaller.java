@@ -17,23 +17,11 @@
 package org.opensaml.ws.wstrust.impl;
 
 
-import org.opensaml.ws.wstrust.DelegateTo;
-import org.opensaml.xml.AbstractElementExtensibleXMLObjectMarshaller;
 
 /**
  * Marshaller for the DelegateTo element.
  * 
- * @see DelegateTo
- * 
  */
-public class DelegateToMarshaller extends
-        AbstractElementExtensibleXMLObjectMarshaller {
-
-    /**
-     * Default constructor.
-     */
-    public DelegateToMarshaller() {
-        super();
-    }
+public class DelegateToMarshaller extends AbstractWSTrustObjectMarshaller {
 
 }

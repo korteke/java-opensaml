@@ -18,16 +18,9 @@ package org.opensaml.ws.wstrust.impl;
 
 
 /**
- * PrimaryMarshaller
+ * PrimaryMarshaller.
  * 
  */
-public class PrimaryMarshaller extends AbstractParticipantTypeMarshaller {
-
-    /**
-     * Default constructor.
-     */
-    public PrimaryMarshaller() {
-        super();
-    }
+public class PrimaryMarshaller extends ParticipantTypeMarshaller {
 
 }

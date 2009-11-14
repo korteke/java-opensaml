@@ -17,21 +17,36 @@
 package org.opensaml.ws.wstrust.impl;
 
 
-import org.opensaml.ws.wstrust.ProofEncryption;
+import org.opensaml.ws.wstrust.Challenge;
+import org.opensaml.ws.wstrust.SignChallengeType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
+import org.opensaml.xml.util.XMLHelper;
+import org.w3c.dom.Attr;
 
 /**
- * Unmarshaller for the wst:ProofEncryption element.
+ * Unmarshaller for the SignChallengeType element.
+ * 
  * 
  */
-public class ProofEncryptionUnmarshaller extends AbstractWSTrustObjectUnmarshaller {
+public class SignChallengeTypeUnmarshaller extends AbstractWSTrustObjectUnmarshaller {
+
+    /** {@inheritDoc} */
+    protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
+        SignChallengeType signChallengeType= (SignChallengeType) xmlObject;
+        XMLHelper.unmarshallToAttributeMap(signChallengeType.getUnknownAttributes(), attribute);
+    }
 
     /** {@inheritDoc} */
     protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
             throws UnmarshallingException {
-        ProofEncryption pe = (ProofEncryption) parentXMLObject;
-        pe.setUnknownXMLObject(childXMLObject);
+        SignChallengeType signChallengeType= (SignChallengeType) parentXMLObject;
+        
+        if (childXMLObject instanceof Challenge) {
+            signChallengeType.setChallenge((Challenge) childXMLObject);
+        }  else {
+            signChallengeType.getUnknownXMLObjects().add(childXMLObject);
+        }
     }
 
 }

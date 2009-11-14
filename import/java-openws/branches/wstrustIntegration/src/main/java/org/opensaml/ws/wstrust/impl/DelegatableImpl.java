@@ -17,17 +17,23 @@
 
 package org.opensaml.ws.wstrust.impl;
 
+import java.util.List;
+
 import org.opensaml.ws.wstrust.Delegatable;
+import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.schema.XSBooleanValue;
 
 /**
- * DelegatableImpl
+ * DelegatableImpl.
  * 
  */
 public class DelegatableImpl extends AbstractWSTrustObject implements Delegatable {
 
-    /** The wst:Delegatable content. */
-    private XSBooleanValue delegatable_ = null;
+    /** Default value. */
+    private static final Boolean DEFAULT_VALUE = Boolean.FALSE;
+
+    /** The wst:Forwardable content. */
+    private XSBooleanValue value;
 
     /**
      * Constructor. Default value is <code>FALSE</code>.
@@ -38,25 +44,25 @@ public class DelegatableImpl extends AbstractWSTrustObject implements Delegatabl
      */
     public DelegatableImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        delegatable_ = new XSBooleanValue(false, false);
+        value = new XSBooleanValue(DEFAULT_VALUE, false);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.glite.xml.schema.XSBoolean#getValue()
-     */
+    /** {@inheritDoc} */
     public XSBooleanValue getValue() {
-        return delegatable_;
+        return value;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.glite.xml.schema.XSBoolean#setValue(org.opensaml.xml.schema.XSBooleanValue)
-     */
-    public void setValue(XSBooleanValue value) {
-        delegatable_ = prepareForAssignment(delegatable_, value);
+    /** {@inheritDoc} */
+    public void setValue(XSBooleanValue newValue) {
+        if (newValue != null) {
+            value = prepareForAssignment(value, newValue);
+        } else {
+            value = prepareForAssignment(value, new XSBooleanValue(DEFAULT_VALUE, false));
+        }
     }
 
+    /** {@inheritDoc} */
+    public List<XMLObject> getOrderedChildren() {
+        return null;
+    }
 }

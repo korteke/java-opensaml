@@ -17,17 +17,24 @@
 
 package org.opensaml.ws.wstrust.impl;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import org.opensaml.ws.wstrust.UseKey;
-import org.opensaml.xml.AbstractElementExtensibleXMLObject;
+import org.opensaml.xml.XMLObject;
 
 /**
- * UseKeyImpl
+ * UseKeyImpl.
  * 
  */
-public class UseKeyImpl extends AbstractElementExtensibleXMLObject implements UseKey {
+public class UseKeyImpl extends AbstractWSTrustObject implements UseKey {
+    
+    /** Wildcard child element. */
+    private XMLObject unknownChild;
 
-    /** wst:UseKey/@Sig attribute value */
-    private String sig_ = null;
+    /** wst:UseKey/@Sig attribute value. */
+    private String sig;
 
     /**
      * Constructor.
@@ -40,22 +47,33 @@ public class UseKeyImpl extends AbstractElementExtensibleXMLObject implements Us
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.UseKey#getSig()
-     */
+    /** {@inheritDoc} */
     public String getSig() {
-        return sig_;
+        return sig;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.UseKey#setSig(java.lang.String)
-     */
-    public void setSig(String sig) {
-        sig_ = prepareForAssignment(sig_, sig);
+    /** {@inheritDoc} */
+    public void setSig(String newSig) {
+        sig = prepareForAssignment(sig, newSig);
+    }
+    
+    /** {@inheritDoc} */
+    public XMLObject getUnknownXMLObject() {
+        return unknownChild;
+    }
+
+    /** {@inheritDoc} */
+    public void setUnknownXMLObject(XMLObject unknownObject) {
+        unknownChild = prepareForAssignment(unknownChild, unknownObject);
+    }
+
+    /** {@inheritDoc} */
+    public List<XMLObject> getOrderedChildren() {
+        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        if (unknownChild != null) {
+            children.add(unknownChild);
+        }
+        return Collections.unmodifiableList(children);
     }
 
 }

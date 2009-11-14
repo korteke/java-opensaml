@@ -22,11 +22,10 @@ import org.opensaml.xml.AttributeExtensibleXMLObject;
 import org.opensaml.xml.ElementExtensibleXMLObject;
 
 /**
- * Abstract SignChallengeType complext type. 
+ * SignChallengeType complex type. 
  * 
  */
-public abstract interface SignChallengeType extends AttributeExtensibleXMLObject, ElementExtensibleXMLObject, 
-        WSTrustObject {
+public interface SignChallengeType extends AttributeExtensibleXMLObject, ElementExtensibleXMLObject, WSTrustObject {
     
     /** Local name of the XSI type. */
     public static final String TYPE_LOCAL_NAME = "SignChallengeType"; 

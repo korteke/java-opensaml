@@ -17,14 +17,23 @@
 
 package org.opensaml.ws.wstrust.impl;
 
+import java.util.Collections;
+import java.util.List;
+
+import javax.xml.namespace.QName;
+
 import org.opensaml.ws.wstrust.KeyExchangeToken;
-import org.opensaml.xml.AbstractElementExtensibleXMLObject;
+import org.opensaml.xml.XMLObject;
+import org.opensaml.xml.util.IndexedXMLObjectChildrenList;
 
 /**
- * KeyExchangeTokenImpl
+ * KeyExchangeTokenImpl.
  * 
  */
-public class KeyExchangeTokenImpl extends AbstractElementExtensibleXMLObject implements KeyExchangeToken {
+public class KeyExchangeTokenImpl extends AbstractWSTrustObject implements KeyExchangeToken {
+    
+    /** Wildcard child elements. */
+    private IndexedXMLObjectChildrenList<XMLObject> unknownChildren;
 
     /**
      * Constructor.
@@ -35,6 +44,22 @@ public class KeyExchangeTokenImpl extends AbstractElementExtensibleXMLObject imp
      */
     public KeyExchangeTokenImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
+        unknownChildren = new IndexedXMLObjectChildrenList<XMLObject>(this);
+    }
+
+    /** {@inheritDoc} */
+    public List<XMLObject> getUnknownXMLObjects() {
+        return unknownChildren;
+    }
+
+    /** {@inheritDoc} */
+    public List<XMLObject> getUnknownXMLObjects(QName typeOrName) {
+        return unknownChildren.get(typeOrName);
+    }
+
+    /** {@inheritDoc} */
+    public List<XMLObject> getOrderedChildren() {
+        return Collections.unmodifiableList(unknownChildren);
     }
 
 }

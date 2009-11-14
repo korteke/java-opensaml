@@ -21,33 +21,16 @@ import org.opensaml.ws.wstrust.BinaryExchange;
 /**
  * Builder for the BinaryExchange element.
  * 
- * @see org.opensaml.ws.wstrust.BinaryExchange
- * 
  */
-public class BinaryExchangeBuilder extends
-        AbstractWSTrustObjectBuilder<BinaryExchange> {
+public class BinaryExchangeBuilder extends AbstractWSTrustObjectBuilder<BinaryExchange> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.impl.AbstractWSTrustObjectBuilder#buildObject()
-     * @see org.opensaml.ws.wstrust.BinaryExchange
-     */
-    @Override
+    /** {@inheritDoc} */
     public BinaryExchange buildObject() {
         return buildObject(BinaryExchange.ELEMENT_NAME);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AbstractXMLObjectBuilder#buildObject(java.lang.String,
-     *      java.lang.String, java.lang.String)
-     * @see org.opensaml.ws.wstrust.BinaryExchange
-     */
-    @Override
-    public BinaryExchange buildObject(String namespaceURI, String localName,
-            String namespacePrefix) {
+    /** {@inheritDoc} */
+    public BinaryExchange buildObject(String namespaceURI, String localName, String namespacePrefix) {
         return new BinaryExchangeImpl(namespaceURI, localName, namespacePrefix);
     }
 

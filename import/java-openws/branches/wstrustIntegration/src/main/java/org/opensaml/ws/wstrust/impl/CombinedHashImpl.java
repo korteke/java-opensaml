@@ -21,7 +21,7 @@ import org.opensaml.ws.wstrust.CombinedHash;
 import org.opensaml.xml.schema.impl.XSBase64BinaryImpl;
 
 /**
- * CombinedHashImpl
+ * CombinedHashImpl.
  * 
  */
 public class CombinedHashImpl extends XSBase64BinaryImpl implements CombinedHash {

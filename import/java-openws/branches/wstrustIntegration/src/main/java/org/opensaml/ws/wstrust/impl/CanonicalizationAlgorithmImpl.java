@@ -21,7 +21,7 @@ import org.opensaml.ws.wstrust.CanonicalizationAlgorithm;
 import org.opensaml.xml.schema.impl.XSURIImpl;
 
 /**
- * CanonicalizationAlgorithmImpl
+ * CanonicalizationAlgorithmImpl.
  * 
  */
 public class CanonicalizationAlgorithmImpl extends XSURIImpl implements CanonicalizationAlgorithm {

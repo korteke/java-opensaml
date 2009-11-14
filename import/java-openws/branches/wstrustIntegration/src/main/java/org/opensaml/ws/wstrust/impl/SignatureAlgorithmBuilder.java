@@ -21,36 +21,17 @@ import org.opensaml.ws.wstrust.SignatureAlgorithm;
 /**
  * Builder for the SignatureAlgorithm element.
  * 
- * @see org.opensaml.ws.wstrust.SignatureAlgorithm
- * 
  */
-public class SignatureAlgorithmBuilder extends
-        AbstractWSTrustObjectBuilder<SignatureAlgorithm> {
+public class SignatureAlgorithmBuilder extends AbstractWSTrustObjectBuilder<SignatureAlgorithm> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.impl.AbstractWSTrustObjectBuilder#buildObject()
-     * @see org.opensaml.ws.wstrust.SignatureAlgorithm
-     */
-    @Override
+    /** {@inheritDoc} */
     public SignatureAlgorithm buildObject() {
         return buildObject(SignatureAlgorithm.ELEMENT_NAME);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AbstractXMLObjectBuilder#buildObject(java.lang.String,
-     *      java.lang.String, java.lang.String)
-     * @see org.opensaml.ws.wstrust.SignatureAlgorithm
-     */
-    @Override
-    public SignatureAlgorithm buildObject(String namespaceURI,
-            String localName, String namespacePrefix) {
-        return new SignatureAlgorithmImpl(namespaceURI,
-                                          localName,
-                                          namespacePrefix);
+    /** {@inheritDoc} */
+    public SignatureAlgorithm buildObject(String namespaceURI, String localName, String namespacePrefix) {
+        return new SignatureAlgorithmImpl(namespaceURI, localName, namespacePrefix);
     }
 
 }

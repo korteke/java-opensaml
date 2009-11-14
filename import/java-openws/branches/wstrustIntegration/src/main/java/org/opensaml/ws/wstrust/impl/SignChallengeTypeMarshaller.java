@@ -14,24 +14,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.opensaml.ws.wstrust.impl;
 
-import org.opensaml.xml.AbstractElementExtensibleXMLObjectUnmarshaller;
+import org.opensaml.ws.wstrust.SignChallengeType;
+import org.opensaml.xml.XMLObject;
+import org.opensaml.xml.io.MarshallingException;
+import org.opensaml.xml.util.XMLHelper;
+import org.w3c.dom.Element;
+
 
 /**
- * AbstractParticipantTypeUnmarshaller
+ * SignChallengeTypeMarshaller.
  * 
  */
-public abstract class AbstractParticipantTypeUnmarshaller extends AbstractElementExtensibleXMLObjectUnmarshaller {
+public class SignChallengeTypeMarshaller extends AbstractWSTrustObjectMarshaller {
 
-    /**
-     * Constructor.
-     * <p>
-     * {@inheritDoc}
-     */
-    public AbstractParticipantTypeUnmarshaller() {
-        super();
+    /** {@inheritDoc} */
+    protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
+        SignChallengeType signChallengeType = (SignChallengeType) xmlObject;
+        XMLHelper.marshallAttributeMap(signChallengeType.getUnknownAttributes(), domElement);
     }
 
 }

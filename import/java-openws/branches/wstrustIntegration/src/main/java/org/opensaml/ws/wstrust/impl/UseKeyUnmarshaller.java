@@ -18,44 +18,31 @@ package org.opensaml.ws.wstrust.impl;
 
 
 import org.opensaml.ws.wstrust.UseKey;
-import org.opensaml.xml.AbstractElementExtensibleXMLObjectUnmarshaller;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.w3c.dom.Attr;
 
 /**
- * Unmarshaller for the &lt;wst:UseKey&gt; element.
- * 
- * @see UseKey
+ * Unmarshaller for the wst:UseKey element.
  * 
  */
-public class UseKeyUnmarshaller extends
-        AbstractElementExtensibleXMLObjectUnmarshaller {
+public class UseKeyUnmarshaller extends AbstractWSTrustObjectUnmarshaller {
 
-    /**
-     * Default constructor.
-     * <p>
-     * {@inheritDoc}
-     */
-    public UseKeyUnmarshaller() {
-    }
-
-    /**
-     * Unmarshalls the &lt;@Sig&gt; attribute.
-     * <p>
-     * {@inheritDoc}
-     */
-    @Override
-    protected void processAttribute(XMLObject xmlObject, Attr attribute)
-            throws UnmarshallingException {
-        String attrName= attribute.getLocalName();
-        if (UseKey.SIG_ATTR_LOCAL_NAME.equals(attrName)) {
-            UseKey useKey= (UseKey) xmlObject;
-            String sig= attribute.getValue();
-            useKey.setSig(sig);
-        }
-        else {
+    /** {@inheritDoc} */
+    protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
+        UseKey uk = (UseKey) xmlObject;
+        
+        if (UseKey.SIG_ATTRIB_NAME.equals(attribute.getLocalName())) {
+            uk.setSig(attribute.getValue());
+        } else {
             super.processAttribute(xmlObject, attribute);
         }
+    }
+
+    /** {@inheritDoc} */
+    protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
+            throws UnmarshallingException {
+        UseKey uk = (UseKey) parentXMLObject;
+        uk.setUnknownXMLObject(childXMLObject);
     }
 }

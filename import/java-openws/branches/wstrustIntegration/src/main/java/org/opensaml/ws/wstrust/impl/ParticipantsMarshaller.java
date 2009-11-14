@@ -17,19 +17,11 @@
 package org.opensaml.ws.wstrust.impl;
 
 
-import org.opensaml.xml.AbstractElementExtensibleXMLObjectMarshaller;
 
 /**
- * ParticipantsMarshaller
+ * ParticipantsMarshaller.
  * 
  */
-public class ParticipantsMarshaller extends
-        AbstractElementExtensibleXMLObjectMarshaller {
+public class ParticipantsMarshaller extends AbstractWSTrustObjectMarshaller {
 
-    /**
-     * Default constructor.
-     */
-    public ParticipantsMarshaller() {
-        super();
-    }
 }

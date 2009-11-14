@@ -21,36 +21,17 @@ import org.opensaml.ws.wstrust.KeyExchangeToken;
 /**
  * Builder for the KeyExchangeToken element.
  * 
- * @see org.opensaml.ws.wstrust.KeyExchangeToken
- * 
  */
-public class KeyExchangeTokenBuilder extends
-        AbstractWSTrustObjectBuilder<KeyExchangeToken> {
+public class KeyExchangeTokenBuilder extends AbstractWSTrustObjectBuilder<KeyExchangeToken> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.impl.AbstractWSTrustObjectBuilder#buildObject()
-     * @see org.opensaml.ws.wstrust.KeyExchangeToken
-     */
-    @Override
+    /** {@inheritDoc} */
     public KeyExchangeToken buildObject() {
         return buildObject(KeyExchangeToken.ELEMENT_NAME);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AbstractXMLObjectBuilder#buildObject(java.lang.String,
-     *      java.lang.String, java.lang.String)
-     * @see org.opensaml.ws.wstrust.KeyExchangeToken
-     */
-    @Override
-    public KeyExchangeToken buildObject(String namespaceURI, String localName,
-            String namespacePrefix) {
-        return new KeyExchangeTokenImpl(namespaceURI,
-                                        localName,
-                                        namespacePrefix);
+    /** {@inheritDoc} */
+    public KeyExchangeToken buildObject(String namespaceURI, String localName, String namespacePrefix) {
+        return new KeyExchangeTokenImpl(namespaceURI, localName, namespacePrefix);
     }
 
 }

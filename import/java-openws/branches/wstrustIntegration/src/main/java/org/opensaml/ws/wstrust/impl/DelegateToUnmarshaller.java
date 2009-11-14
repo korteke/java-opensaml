@@ -18,24 +18,20 @@ package org.opensaml.ws.wstrust.impl;
 
 
 import org.opensaml.ws.wstrust.DelegateTo;
-import org.opensaml.xml.AbstractElementExtensibleXMLObjectUnmarshaller;
+import org.opensaml.xml.XMLObject;
+import org.opensaml.xml.io.UnmarshallingException;
 
 /**
  * Unmarshaller for the &lt;wst:DelegateTo&gt; element.
  * 
- * @see DelegateTo
- * 
  */
-public class DelegateToUnmarshaller extends
-        AbstractElementExtensibleXMLObjectUnmarshaller {
+public class DelegateToUnmarshaller extends AbstractWSTrustObjectUnmarshaller {
 
-    /**
-     * Default constructor.
-     * <p>
-     * {@inheritDoc}
-     */
-    public DelegateToUnmarshaller() {
-        super();
+    /** {@inheritDoc} */
+    protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
+            throws UnmarshallingException {
+        DelegateTo delegateTo = (DelegateTo) parentXMLObject;
+        delegateTo.setUnknownXMLObject(childXMLObject);
     }
 
 }

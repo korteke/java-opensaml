@@ -16,22 +16,11 @@
  */
 package org.opensaml.ws.wstrust.impl;
 
-import org.opensaml.ws.wstrust.RequestKET;
 
 /**
- * Unmarshaller for the empty &lt;wst:RequestKET&gt; element.
- * 
- * @see RequestKET
+ * Unmarshaller for the wst:RequestKET element.
  * 
  */
 public class RequestKETUnmarshaller extends AbstractWSTrustObjectUnmarshaller {
-
-    /**
-     * Default constructor.
-     * <p>
-     * {@inheritDoc}
-     */
-    public RequestKETUnmarshaller() {
-        super();
-    }
+    
 }

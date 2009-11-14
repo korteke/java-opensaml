@@ -21,19 +21,28 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.xml.namespace.QName;
+
 import org.opensaml.ws.wstrust.Challenge;
 import org.opensaml.ws.wstrust.SignChallengeType;
-import org.opensaml.xml.AbstractExtensibleXMLObject;
 import org.opensaml.xml.XMLObject;
+import org.opensaml.xml.util.AttributeMap;
+import org.opensaml.xml.util.IndexedXMLObjectChildrenList;
 
 /**
- * AbstractSignChallengeType
+ * SignChallengeTypeImpl.
  * 
  */
-abstract class AbstractSignChallengeType extends AbstractExtensibleXMLObject implements SignChallengeType {
+public class SignChallengeTypeImpl extends AbstractWSTrustObject implements SignChallengeType {
+    
+    /** Wilcard child elements. */
+    private IndexedXMLObjectChildrenList<XMLObject> unknownChildren;
+    
+    /** Wildcard attributes. */
+    private AttributeMap unknownAttributes;
 
-    /** {@link Challenge} child element */
-    protected Challenge challenge_ = null;
+    /** {@link Challenge} child element. */
+    private Challenge challenge;
 
     /**
      * Constructor.
@@ -42,43 +51,45 @@ abstract class AbstractSignChallengeType extends AbstractExtensibleXMLObject imp
      * @param elementLocalName name of the element
      * @param namespacePrefix namespace prefix of the element
      */
-    public AbstractSignChallengeType(String namespaceURI, String elementLocalName, String namespacePrefix) {
+    public SignChallengeTypeImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
+        unknownChildren = new IndexedXMLObjectChildrenList<XMLObject>(this);
+        unknownAttributes = new AttributeMap(this);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.SignChallengeType#getChallenge()
-     */
+    /** {@inheritDoc} */
     public Challenge getChallenge() {
-        return challenge_;
+        return challenge;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.SignChallengeType#setChallenge(org.opensaml.ws.wstrust.Challenge)
-     */
-    public void setChallenge(Challenge challenge) {
-        challenge_ = prepareForAssignment(challenge_, challenge);
+    /** {@inheritDoc} */
+    public void setChallenge(Challenge newChallenge) {
+        challenge = prepareForAssignment(challenge, newChallenge);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.impl.AbstractWSTrustObject#getOrderedChildren()
-     */
-    @Override
+    /** {@inheritDoc} */
+    public AttributeMap getUnknownAttributes() {
+        return unknownAttributes;
+    }
+
+    /** {@inheritDoc} */
+    public List<XMLObject> getUnknownXMLObjects() {
+        return unknownChildren;
+    }
+
+    /** {@inheritDoc} */
+    public List<XMLObject> getUnknownXMLObjects(QName typeOrName) {
+        return unknownChildren.get(typeOrName);
+    }
+    
+    /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
         List<XMLObject> children = new ArrayList<XMLObject>();
-        if (challenge_ != null) {
-            children.add(challenge_);
+        if (challenge != null) {
+            children.add(challenge);
         }
-        // xs:any
-        if (!getUnknownXMLObjects().isEmpty()) {
-            children.addAll(getUnknownXMLObjects());
-        }
+        children.addAll(unknownChildren);
         return Collections.unmodifiableList(children);
     }
+
 }

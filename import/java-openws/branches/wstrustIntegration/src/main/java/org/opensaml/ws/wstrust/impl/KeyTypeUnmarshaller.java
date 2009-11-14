@@ -17,39 +17,12 @@
 package org.opensaml.ws.wstrust.impl;
 
 
-import org.opensaml.ws.wstrust.KeyType;
-import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.schema.XSURI;
+import org.opensaml.xml.schema.impl.XSURIUnmarshaller;
 
 /**
- * Unmarshaller for the &lt;wst:KeyType&gt; element.
- * 
- * @see KeyType
+ * Unmarshaller for the wst:KeyType element.
  * 
  */
-public class KeyTypeUnmarshaller extends AbstractWSTrustObjectUnmarshaller {
-
-    /**
-     * Default constructor.
-     * <p>
-     * {@inheritDoc}
-     */
-    public KeyTypeUnmarshaller() {
-        super();
-    }
-
-    /**
-     * Unmarshalls the &lt;wst:KeyType&gt; element content.
-     * <p>
-     * {@inheritDoc}
-     */
-    @Override
-    protected void processElementContent(XMLObject xmlObject,
-            String elementContent) {
-        if (elementContent != null) {
-            XSURI xsUri= (XSURI) xmlObject;
-            xsUri.setValue(elementContent);
-        }
-    }
+public class KeyTypeUnmarshaller extends XSURIUnmarshaller {
 
 }

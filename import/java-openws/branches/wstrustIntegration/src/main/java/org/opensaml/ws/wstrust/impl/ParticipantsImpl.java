@@ -21,23 +21,28 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.xml.namespace.QName;
+
 import org.opensaml.ws.wstrust.Participant;
 import org.opensaml.ws.wstrust.Participants;
 import org.opensaml.ws.wstrust.Primary;
-import org.opensaml.xml.AbstractElementExtensibleXMLObject;
 import org.opensaml.xml.XMLObject;
+import org.opensaml.xml.util.IndexedXMLObjectChildrenList;
 
 /**
- * ParticipantsImpl
+ * ParticipantsImpl.
  * 
  */
-public class ParticipantsImpl extends AbstractElementExtensibleXMLObject implements Participants {
+public class ParticipantsImpl extends AbstractWSTrustObject implements Participants {
 
-    /** The {@link Primary} child element */
-    private Primary primary_ = null;
+    /** The {@link Primary} child element. */
+    private Primary primary;
 
-    /** The {@link Participant} child element */
-    private Participant participant_ = null;
+    /** The list of {@link Participant} child elements. */
+    private List<Participant> participants;
+    
+    /** Wildcard child elements. */
+    private IndexedXMLObjectChildrenList<XMLObject> unknownChildren;
 
     /**
      * Constructor.
@@ -48,62 +53,46 @@ public class ParticipantsImpl extends AbstractElementExtensibleXMLObject impleme
      */
     public ParticipantsImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
+        participants = new ArrayList<Participant>();
+        unknownChildren = new IndexedXMLObjectChildrenList<XMLObject>(this);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.Participants#getParticipant()
-     */
-    public Participant getParticipant() {
-        return participant_;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.Participants#getPrimary()
-     */
+    /** {@inheritDoc} */
     public Primary getPrimary() {
-        return primary_;
+        return primary;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.Participants#setParticipant(org.opensaml.ws.wstrust.Participant)
-     */
-    public void setParticipant(Participant participant) {
-        participant_ = prepareForAssignment(participant_, participant);
+    /** {@inheritDoc} */
+    public void setPrimary(Primary newPrimary) {
+        primary = prepareForAssignment(primary, newPrimary);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.Participants#setPrimary(org.opensaml.ws.wstrust.Primary)
-     */
-    public void setPrimary(Primary primary) {
-        primary_ = prepareForAssignment(primary_, primary);
+    /** {@inheritDoc} */
+    public List<Participant> getParticipants() {
+        return participants;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.impl.AbstractElementExtensible#getOrderedChildren()
-     */
-    @Override
+    /** {@inheritDoc} */
+    public List<XMLObject> getUnknownXMLObjects() {
+        return unknownChildren;
+    }
+
+    /** {@inheritDoc} */
+    public List<XMLObject> getUnknownXMLObjects(QName typeOrName) {
+        return unknownChildren.get(typeOrName);
+    }
+
+    /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
         List<XMLObject> children = new ArrayList<XMLObject>();
-        if (primary_ != null) {
-            children.add(primary_);
+        if (primary != null) {
+            children.add(primary);
         }
-        if (participant_ != null) {
-            children.add(participant_);
-        }
-        // xs:any element
-        if (!getUnknownXMLObjects().isEmpty()) {
-            children.addAll(getUnknownXMLObjects());
-        }
+        
+        children.addAll(participants);
+        
+        children.addAll(unknownChildren);
+        
         return Collections.unmodifiableList(children);
     }
 

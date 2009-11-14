@@ -21,32 +21,16 @@ import org.opensaml.ws.wstrust.KeyType;
 /**
  * Builder for the KeyType element.
  * 
- * @see org.opensaml.ws.wstrust.KeyType
- * 
  */
 public class KeyTypeBuilder extends AbstractWSTrustObjectBuilder<KeyType> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.impl.AbstractWSTrustObjectBuilder#buildObject()
-     * @see org.opensaml.ws.wstrust.KeyType
-     */
-    @Override
+    /** {@inheritDoc} */
     public KeyType buildObject() {
         return buildObject(KeyType.ELEMENT_NAME);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AbstractXMLObjectBuilder#buildObject(java.lang.String,
-     *      java.lang.String, java.lang.String)
-     * @see org.opensaml.ws.wstrust.KeyType
-     */
-    @Override
-    public KeyType buildObject(String namespaceURI, String localName,
-            String namespacePrefix) {
+    /** {@inheritDoc} */
+    public KeyType buildObject(String namespaceURI, String localName, String namespacePrefix) {
         return new KeyTypeImpl(namespaceURI, localName, namespacePrefix);
     }
 

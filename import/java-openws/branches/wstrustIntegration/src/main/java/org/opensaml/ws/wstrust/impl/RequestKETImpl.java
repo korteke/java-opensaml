@@ -17,10 +17,13 @@
 
 package org.opensaml.ws.wstrust.impl;
 
+import java.util.List;
+
 import org.opensaml.ws.wstrust.RequestKET;
+import org.opensaml.xml.XMLObject;
 
 /**
- * RequestKETImpl
+ * RequestKETImpl.
  * 
  */
 public class RequestKETImpl extends AbstractWSTrustObject implements RequestKET {
@@ -34,6 +37,11 @@ public class RequestKETImpl extends AbstractWSTrustObject implements RequestKET 
      */
     public RequestKETImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
+    }
+
+    /** {@inheritDoc} */
+    public List<XMLObject> getOrderedChildren() {
+        return null;
     }
 
 }

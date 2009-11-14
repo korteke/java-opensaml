@@ -21,33 +21,16 @@ import org.opensaml.ws.wstrust.Forwardable;
 /**
  * Builder for the Forwardable element.
  * 
- * @see org.opensaml.ws.wstrust.Forwardable
- * 
  */
-public class ForwardableBuilder extends
-        AbstractWSTrustObjectBuilder<Forwardable> {
+public class ForwardableBuilder extends AbstractWSTrustObjectBuilder<Forwardable> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.impl.AbstractWSTrustObjectBuilder#buildObject()
-     * @see org.opensaml.ws.wstrust.Forwardable
-     */
-    @Override
+    /** {@inheritDoc} */
     public Forwardable buildObject() {
         return buildObject(Forwardable.ELEMENT_NAME);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AbstractXMLObjectBuilder#buildObject(java.lang.String,
-     *      java.lang.String, java.lang.String)
-     * @see org.opensaml.ws.wstrust.Forwardable
-     */
-    @Override
-    public Forwardable buildObject(String namespaceURI, String localName,
-            String namespacePrefix) {
+    /** {@inheritDoc} */
+    public Forwardable buildObject(String namespaceURI, String localName, String namespacePrefix) {
         return new ForwardableImpl(namespaceURI, localName, namespacePrefix);
     }
 

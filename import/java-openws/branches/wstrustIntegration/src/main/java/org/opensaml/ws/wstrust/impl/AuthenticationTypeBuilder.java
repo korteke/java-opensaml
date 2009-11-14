@@ -21,36 +21,17 @@ import org.opensaml.ws.wstrust.AuthenticationType;
 /**
  * Builder for the AuthenticationType element.
  * 
- * @see org.opensaml.ws.wstrust.AuthenticationType
- * 
  */
-public class AuthenticationTypeBuilder extends
-        AbstractWSTrustObjectBuilder<AuthenticationType> {
+public class AuthenticationTypeBuilder extends AbstractWSTrustObjectBuilder<AuthenticationType> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.impl.AbstractWSTrustObjectBuilder#buildObject()
-     * @see org.opensaml.ws.wstrust.AuthenticationType
-     */
-    @Override
+    /** {@inheritDoc} */
     public AuthenticationType buildObject() {
         return buildObject(AuthenticationType.ELEMENT_NAME);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AbstractXMLObjectBuilder#buildObject(java.lang.String,
-     *      java.lang.String, java.lang.String)
-     * @see org.opensaml.ws.wstrust.AuthenticationType
-     */
-    @Override
-    public AuthenticationType buildObject(String namespaceURI,
-            String localName, String namespacePrefix) {
-        return new AuthenticationTypeImpl(namespaceURI,
-                                          localName,
-                                          namespacePrefix);
+    /** {@inheritDoc} */
+    public AuthenticationType buildObject(String namespaceURI, String localName, String namespacePrefix) {
+        return new AuthenticationTypeImpl(namespaceURI, localName, namespacePrefix);
     }
 
 }

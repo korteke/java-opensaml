@@ -17,40 +17,12 @@
 package org.opensaml.ws.wstrust.impl;
 
 
-import org.opensaml.ws.wstrust.EncryptionAlgorithm;
-import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.schema.XSURI;
+import org.opensaml.xml.schema.impl.XSURIUnmarshaller;
 
 /**
- * Unmarshaller for the &lt;wst:EncryptionAlgorithm&gt; element.
- * 
- * @see EncryptionAlgorithm
+ * Unmarshaller for the wst:EncryptionAlgorithm element.
  * 
  */
-public class EncryptionAlgorithmUnmarshaller extends
-        AbstractWSTrustObjectUnmarshaller {
-
-    /**
-     * Default constructor.
-     * <p>
-     * {@inheritDoc}
-     */
-    public EncryptionAlgorithmUnmarshaller() {
-        super();
-    }
-
-    /**
-     * Unmarshalls the &lt;wst:EncryptionAlgorithm&gt; element content.
-     * <p>
-     * {@inheritDoc}
-     */
-    @Override
-    protected void processElementContent(XMLObject xmlObject,
-            String elementContent) {
-        if (elementContent != null) {
-            XSURI xsUri= (XSURI) xmlObject;
-            xsUri.setValue(elementContent);
-        }
-    }
+public class EncryptionAlgorithmUnmarshaller extends XSURIUnmarshaller {
 
 }

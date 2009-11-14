@@ -21,33 +21,15 @@ import org.opensaml.ws.wstrust.CombinedHash;
 /**
  * Builder for the CombinedHash element.
  * 
- * @see org.opensaml.ws.wstrust.CombinedHash
- * 
  */
-public class CombinedHashBuilder extends
-        AbstractWSTrustObjectBuilder<CombinedHash> {
+public class CombinedHashBuilder extends AbstractWSTrustObjectBuilder<CombinedHash> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.impl.AbstractWSTrustObjectBuilder#buildObject()
-     * @see org.opensaml.ws.wstrust.CombinedHash
-     */
-    @Override
     public CombinedHash buildObject() {
         return buildObject(CombinedHash.ELEMENT_NAME);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AbstractXMLObjectBuilder#buildObject(java.lang.String,
-     *      java.lang.String, java.lang.String)
-     * @see org.opensaml.ws.wstrust.CombinedHash
-     */
-    @Override
-    public CombinedHash buildObject(String namespaceURI, String localName,
-            String namespacePrefix) {
+    /** {@inheritDoc} */
+    public CombinedHash buildObject(String namespaceURI, String localName, String namespacePrefix) {
         return new CombinedHashImpl(namespaceURI, localName, namespacePrefix);
     }
 

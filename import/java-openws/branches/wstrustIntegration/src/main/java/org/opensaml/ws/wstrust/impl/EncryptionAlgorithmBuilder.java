@@ -21,36 +21,17 @@ import org.opensaml.ws.wstrust.EncryptionAlgorithm;
 /**
  * Builder for the EncryptionAlgorithm element.
  * 
- * @see org.opensaml.ws.wstrust.EncryptionAlgorithm
- * 
  */
-public class EncryptionAlgorithmBuilder extends
-        AbstractWSTrustObjectBuilder<EncryptionAlgorithm> {
+public class EncryptionAlgorithmBuilder extends AbstractWSTrustObjectBuilder<EncryptionAlgorithm> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.impl.AbstractWSTrustObjectBuilder#buildObject()
-     * @see org.opensaml.ws.wstrust.EncryptionAlgorithm
-     */
-    @Override
+    /** {@inheritDoc} */
     public EncryptionAlgorithm buildObject() {
         return buildObject(EncryptionAlgorithm.ELEMENT_NAME);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AbstractXMLObjectBuilder#buildObject(java.lang.String,
-     *      java.lang.String, java.lang.String)
-     * @see org.opensaml.ws.wstrust.EncryptionAlgorithm
-     */
-    @Override
-    public EncryptionAlgorithm buildObject(String namespaceURI,
-            String localName, String namespacePrefix) {
-        return new EncryptionAlgorithmImpl(namespaceURI,
-                                           localName,
-                                           namespacePrefix);
+    /** {@inheritDoc} */
+    public EncryptionAlgorithm buildObject(String namespaceURI, String localName, String namespacePrefix) {
+        return new EncryptionAlgorithmImpl(namespaceURI, localName, namespacePrefix);
     }
 
 }

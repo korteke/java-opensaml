@@ -21,33 +21,16 @@ import org.opensaml.ws.wstrust.Delegatable;
 /**
  * Builder for the Delegatable element.
  * 
- * @see org.opensaml.ws.wstrust.Delegatable
- * 
  */
-public class DelegatableBuilder extends
-        AbstractWSTrustObjectBuilder<Delegatable> {
+public class DelegatableBuilder extends AbstractWSTrustObjectBuilder<Delegatable> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.impl.AbstractWSTrustObjectBuilder#buildObject()
-     * @see org.opensaml.ws.wstrust.Delegatable
-     */
-    @Override
+    /** {@inheritDoc} */
     public Delegatable buildObject() {
         return buildObject(Delegatable.ELEMENT_NAME);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AbstractXMLObjectBuilder#buildObject(java.lang.String,
-     *      java.lang.String, java.lang.String)
-     * @see org.opensaml.ws.wstrust.Delegatable
-     */
-    @Override
-    public Delegatable buildObject(String namespaceURI, String localName,
-            String namespacePrefix) {
+    /** {@inheritDoc} */
+    public Delegatable buildObject(String namespaceURI, String localName, String namespacePrefix) {
         return new DelegatableImpl(namespaceURI, localName, namespacePrefix);
     }
 

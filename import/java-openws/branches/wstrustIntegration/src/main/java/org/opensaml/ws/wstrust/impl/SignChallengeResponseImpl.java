@@ -20,10 +20,10 @@ package org.opensaml.ws.wstrust.impl;
 import org.opensaml.ws.wstrust.SignChallengeResponse;
 
 /**
- * SignChallengeImpl
+ * SignChallengeImpl.
  * 
  */
-public class SignChallengeResponseImpl extends AbstractSignChallengeType implements SignChallengeResponse {
+public class SignChallengeResponseImpl extends SignChallengeTypeImpl implements SignChallengeResponse {
 
     /**
      * Constructor.

@@ -21,32 +21,16 @@ import org.opensaml.ws.wstrust.Challenge;
 /**
  * Builder for the Challenge element.
  * 
- * @see org.opensaml.ws.wstrust.Challenge
- * 
  */
 public class ChallengeBuilder extends AbstractWSTrustObjectBuilder<Challenge> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.impl.AbstractWSTrustObjectBuilder#buildObject()
-     * @see org.opensaml.ws.wstrust.Challenge
-     */
-    @Override
+    /** {@inheritDoc} */
     public Challenge buildObject() {
         return buildObject(Challenge.ELEMENT_NAME);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AbstractXMLObjectBuilder#buildObject(java.lang.String,
-     *      java.lang.String, java.lang.String)
-     * @see org.opensaml.ws.wstrust.Challenge
-     */
-    @Override
-    public Challenge buildObject(String namespaceURI, String localName,
-            String namespacePrefix) {
+    /** {@inheritDoc} */
+    public Challenge buildObject(String namespaceURI, String localName, String namespacePrefix) {
         return new ChallengeImpl(namespaceURI, localName, namespacePrefix);
     }
 

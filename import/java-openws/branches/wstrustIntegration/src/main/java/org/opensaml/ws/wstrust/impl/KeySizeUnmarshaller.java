@@ -17,45 +17,12 @@
 package org.opensaml.ws.wstrust.impl;
 
 
-import org.opensaml.ws.wstrust.KeySize;
-import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.schema.XSInteger;
+import org.opensaml.xml.schema.impl.XSIntegerUnmarshaller;
 
 /**
- * Unmarshaller for the &lt;wst:KeySize&gt; element.
- * 
- * @see KeySize
+ * Unmarshaller for the wst:KeySize element.
  * 
  */
-public class KeySizeUnmarshaller extends AbstractWSTrustObjectUnmarshaller {
-
-    /**
-     * Default constructor.
-     * <p>
-     * {@inheritDoc}
-     */
-    public KeySizeUnmarshaller() {
-        super();
-    }
-
-    /**
-     * Unmarshalls the &lt;wst:KeySize&gt; element content.
-     * <p>
-     * {@inheritDoc}
-     */
-    @Override
-    protected void processElementContent(XMLObject xmlObject,
-            String elementContent) {
-        if (elementContent != null) {
-            XSInteger xsInteger= (XSInteger) xmlObject;
-            try {
-                Integer value= Integer.parseInt(elementContent);
-                xsInteger.setValue(value);
-            } catch (NumberFormatException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-    }
+public class KeySizeUnmarshaller extends XSIntegerUnmarshaller {
 
 }

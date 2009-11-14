@@ -21,32 +21,16 @@ import org.opensaml.ws.wstrust.SignWith;
 /**
  * Builder for the SignWith element.
  * 
- * @see org.opensaml.ws.wstrust.SignWith
- * 
  */
 public class SignWithBuilder extends AbstractWSTrustObjectBuilder<SignWith> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.impl.AbstractWSTrustObjectBuilder#buildObject()
-     * @see org.opensaml.ws.wstrust.SignWith
-     */
-    @Override
+    /** {@inheritDoc} */
     public SignWith buildObject() {
         return buildObject(SignWith.ELEMENT_NAME);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AbstractXMLObjectBuilder#buildObject(java.lang.String,
-     *      java.lang.String, java.lang.String)
-     * @see org.opensaml.ws.wstrust.SignWith
-     */
-    @Override
-    public SignWith buildObject(String namespaceURI, String localName,
-            String namespacePrefix) {
+    /** {@inheritDoc} */
+    public SignWith buildObject(String namespaceURI, String localName, String namespacePrefix) {
         return new SignWithImpl(namespaceURI, localName, namespacePrefix);
     }
 

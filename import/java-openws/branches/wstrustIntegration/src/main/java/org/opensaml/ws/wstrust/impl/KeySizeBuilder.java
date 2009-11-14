@@ -21,32 +21,16 @@ import org.opensaml.ws.wstrust.KeySize;
 /**
  * Builder for the KeySize element.
  * 
- * @see org.opensaml.ws.wstrust.KeySize
- * 
  */
 public class KeySizeBuilder extends AbstractWSTrustObjectBuilder<KeySize> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.impl.AbstractWSTrustObjectBuilder#buildObject()
-     * @see org.opensaml.ws.wstrust.KeySize
-     */
-    @Override
+    /** {@inheritDoc} */
     public KeySize buildObject() {
         return buildObject(KeySize.ELEMENT_NAME);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AbstractXMLObjectBuilder#buildObject(java.lang.String,
-     *      java.lang.String, java.lang.String)
-     * @see org.opensaml.ws.wstrust.KeySize
-     */
-    @Override
-    public KeySize buildObject(String namespaceURI, String localName,
-            String namespacePrefix) {
+    /** {@inheritDoc} */
+    public KeySize buildObject(String namespaceURI, String localName, String namespacePrefix) {
         return new KeySizeImpl(namespaceURI, localName, namespacePrefix);
     }
 

@@ -21,10 +21,10 @@ import javax.xml.namespace.QName;
 import org.opensaml.xml.XMLObject;
 
 /**
- * Abstract interface ParticipantType complex type.
+ * Interface ParticipantType complex type.
  * 
  */
-public abstract interface ParticipantType extends WSTrustObject {
+public interface ParticipantType extends WSTrustObject {
     
     /** Local name of the XSI type. */
     public static final String TYPE_LOCAL_NAME = "ParticipantType"; 

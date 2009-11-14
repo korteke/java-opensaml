@@ -17,23 +17,11 @@
 package org.opensaml.ws.wstrust.impl;
 
 
-import org.opensaml.ws.wstrust.OnBehalfOf;
-import org.opensaml.xml.AbstractElementExtensibleXMLObjectMarshaller;
 
 /**
  * Marshaller for the OnBehalfOf element.
  * 
- * @see OnBehalfOf
- * 
  */
-public class OnBehalfOfMarshaller extends
-        AbstractElementExtensibleXMLObjectMarshaller {
-
-    /**
-     * Default constructor.
-     */
-    public OnBehalfOfMarshaller() {
-        super();
-    }
+public class OnBehalfOfMarshaller extends AbstractWSTrustObjectMarshaller {
 
 }

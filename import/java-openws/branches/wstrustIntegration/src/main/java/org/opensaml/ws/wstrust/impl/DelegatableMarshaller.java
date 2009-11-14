@@ -20,7 +20,6 @@ package org.opensaml.ws.wstrust.impl;
 import org.opensaml.ws.wstrust.Delegatable;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.schema.XSBoolean;
 import org.opensaml.xml.schema.XSBooleanValue;
 import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Element;
@@ -28,30 +27,13 @@ import org.w3c.dom.Element;
 /**
  * Marshaller for the Delegatable element.
  * 
- * @see Delegatable
- * 
  */
 public class DelegatableMarshaller extends AbstractWSTrustObjectMarshaller {
 
-    /**
-     * Default constructor.
-     * 
-     */
-    public DelegatableMarshaller() {
-        super();
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.impl.AbstractWSTrustObjectMarshaller#marshallElementContent(org.opensaml.xml.XMLObject,
-     *      org.w3c.dom.Element)
-     */
-    @Override
-    protected void marshallElementContent(XMLObject xmlObject,
-            Element domElement) throws MarshallingException {
-        XSBoolean xsBoolean= (XSBoolean) xmlObject;
-        XSBooleanValue value= xsBoolean.getValue();
+    /** {@inheritDoc} */
+    protected void marshallElementContent(XMLObject xmlObject, Element domElement) throws MarshallingException {
+        Delegatable delegatable = (Delegatable) xmlObject;
+        XSBooleanValue value= delegatable.getValue();
         XMLHelper.appendTextContent(domElement, value.toString());
     }
 

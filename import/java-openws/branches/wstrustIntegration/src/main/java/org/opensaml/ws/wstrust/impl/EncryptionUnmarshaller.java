@@ -16,26 +16,23 @@
  */
 package org.opensaml.ws.wstrust.impl;
 
-
 import org.opensaml.ws.wstrust.Encryption;
-import org.opensaml.xml.AbstractElementExtensibleXMLObjectUnmarshaller;
+import org.opensaml.xml.XMLObject;
+import org.opensaml.xml.io.UnmarshallingException;
+
+
 
 /**
- * Unmarshaller for the &lt;wst:Encryption&gt; element.
- * 
- * @see Encryption
+ * Unmarshaller for the wst:Encryption element.
  * 
  */
-public class EncryptionUnmarshaller extends
-        AbstractElementExtensibleXMLObjectUnmarshaller {
+public class EncryptionUnmarshaller extends AbstractWSTrustObjectUnmarshaller {
 
-    /**
-     * Default constructor.
-     * <p>
-     * {@inheritDoc}
-     */
-    public EncryptionUnmarshaller() {
-        super();
+    /** {@inheritDoc} */
+    protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
+            throws UnmarshallingException {
+        Encryption enc = (Encryption) parentXMLObject;
+        enc.setUnknownXMLObject(childXMLObject);
     }
 
 }

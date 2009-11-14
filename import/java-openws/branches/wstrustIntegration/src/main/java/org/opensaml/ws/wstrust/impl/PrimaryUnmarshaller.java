@@ -17,19 +17,11 @@
 package org.opensaml.ws.wstrust.impl;
 
 
-import org.opensaml.xml.AbstractElementExtensibleXMLObjectUnmarshaller;
 
 /**
- * PrimaryUnmarshaller
+ * PrimaryUnmarshaller.
  * 
  */
-public class PrimaryUnmarshaller extends
-        AbstractElementExtensibleXMLObjectUnmarshaller {
+public class PrimaryUnmarshaller extends ParticipantTypeUnmarshaller {
 
-    /**
-     * Default constructor.
-     */
-    public PrimaryUnmarshaller() {
-        super();
-    }
 }

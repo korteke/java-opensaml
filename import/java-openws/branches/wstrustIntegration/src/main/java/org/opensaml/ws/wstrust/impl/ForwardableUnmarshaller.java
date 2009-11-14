@@ -19,38 +19,20 @@ package org.opensaml.ws.wstrust.impl;
 
 import org.opensaml.ws.wstrust.Forwardable;
 import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.schema.XSBoolean;
 import org.opensaml.xml.schema.XSBooleanValue;
 
 /**
- * Unmarshaller for the &lt;wst:Forwardable&gt; element.
- * 
- * @see Forwardable
+ * Unmarshaller for the wst:Forwardable element.
  * 
  */
 public class ForwardableUnmarshaller extends AbstractWSTrustObjectUnmarshaller {
 
-    /**
-     * Default constructor.
-     * <p>
-     * {@inheritDoc}
-     */
-    public ForwardableUnmarshaller() {
-        super();
-    }
-
-    /**
-     * Unmarshalls the &lt;wst:Forwardable&gt; element boolean content.
-     * <p>
-     * {@inheritDoc}
-     */
-    @Override
-    protected void processElementContent(XMLObject xmlObject,
-            String elementContent) {
+    /** {@inheritDoc} */
+    protected void processElementContent(XMLObject xmlObject, String elementContent) {
         if (elementContent != null) {
-            XSBoolean xsBoolean= (XSBoolean) xmlObject;
-            XSBooleanValue value= XSBooleanValue.valueOf(elementContent);
-            xsBoolean.setValue(value);
+            Forwardable forwardable = (Forwardable) xmlObject;
+            XSBooleanValue value = XSBooleanValue.valueOf(elementContent);
+            forwardable.setValue(value);
         }
     }
 

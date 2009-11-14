@@ -17,40 +17,12 @@
 package org.opensaml.ws.wstrust.impl;
 
 
-import org.opensaml.ws.wstrust.KeyWrapAlgorithm;
-import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.schema.XSURI;
+import org.opensaml.xml.schema.impl.XSURIUnmarshaller;
 
 /**
- * Unmarshaller for the &lt;wst:KeyWrapAlgorithm&gt; element.
- * 
- * @see KeyWrapAlgorithm
+ * Unmarshaller for the wst:KeyWrapAlgorithm element.
  * 
  */
-public class KeyWrapAlgorithmUnmarshaller extends
-        AbstractWSTrustObjectUnmarshaller {
-
-    /**
-     * Default constructor.
-     * <p>
-     * {@inheritDoc}
-     */
-    public KeyWrapAlgorithmUnmarshaller() {
-        super();
-    }
-
-    /**
-     * Unmarshalls the &lt;wst:KeyWrapAlgorithm&gt; element URI content.
-     * <p>
-     * {@inheritDoc}
-     */
-    @Override
-    protected void processElementContent(XMLObject xmlObject,
-            String elementContent) {
-        if (elementContent != null) {
-            XSURI xsUri= (XSURI) xmlObject;
-            xsUri.setValue(elementContent);
-        }
-    }
+public class KeyWrapAlgorithmUnmarshaller extends XSURIUnmarshaller {
 
 }

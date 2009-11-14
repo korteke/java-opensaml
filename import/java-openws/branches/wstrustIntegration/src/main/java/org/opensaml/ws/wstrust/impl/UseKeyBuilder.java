@@ -21,32 +21,16 @@ import org.opensaml.ws.wstrust.UseKey;
 /**
  * Builder for the UseKey element.
  * 
- * @see org.opensaml.ws.wstrust.UseKey
- * 
  */
 public class UseKeyBuilder extends AbstractWSTrustObjectBuilder<UseKey> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.impl.AbstractWSTrustObjectBuilder#buildObject()
-     * @see org.opensaml.ws.wstrust.UseKey
-     */
-    @Override
+    /** {@inheritDoc} */
     public UseKey buildObject() {
         return buildObject(UseKey.ELEMENT_NAME);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AbstractXMLObjectBuilder#buildObject(java.lang.String,
-     *      java.lang.String, java.lang.String)
-     * @see org.opensaml.ws.wstrust.UseKey
-     */
-    @Override
-    public UseKey buildObject(String namespaceURI, String localName,
-            String namespacePrefix) {
+    /** {@inheritDoc} */
+    public UseKey buildObject(String namespaceURI, String localName, String namespacePrefix) {
         return new UseKeyImpl(namespaceURI, localName, namespacePrefix);
     }
 

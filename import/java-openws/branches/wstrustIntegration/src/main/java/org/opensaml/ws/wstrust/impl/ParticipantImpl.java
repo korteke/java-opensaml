@@ -20,10 +20,10 @@ package org.opensaml.ws.wstrust.impl;
 import org.opensaml.ws.wstrust.Participant;
 
 /**
- * ParticipantImpl
+ * ParticipantImpl.
  * 
  */
-public class ParticipantImpl extends AbstractParticipantType implements Participant {
+public class ParticipantImpl extends ParticipantTypeImpl implements Participant {
 
     /**
      * Constructor.

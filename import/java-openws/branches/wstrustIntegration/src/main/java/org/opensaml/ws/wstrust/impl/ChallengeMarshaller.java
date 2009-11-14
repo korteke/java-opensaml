@@ -17,41 +17,12 @@
 package org.opensaml.ws.wstrust.impl;
 
 
-import org.opensaml.ws.wstrust.Challenge;
-import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.schema.XSString;
-import org.opensaml.xml.util.XMLHelper;
-import org.w3c.dom.Element;
+import org.opensaml.xml.schema.impl.XSStringMarshaller;
 
 /**
  * Marshaller for the Challenge element.
  * 
- * @see Challenge
- * 
  */
-public class ChallengeMarshaller extends AbstractWSTrustObjectMarshaller {
-
-    /**
-     * Default constructor.
-     * 
-     */
-    public ChallengeMarshaller() {
-        super();
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.impl.AbstractWSTrustObjectMarshaller#marshallElementContent(org.opensaml.xml.XMLObject,
-     *      org.w3c.dom.Element)
-     */
-    @Override
-    protected void marshallElementContent(XMLObject xmlObject,
-            Element domElement) throws MarshallingException {
-        XSString xsString= (XSString) xmlObject;
-        String value= xsString.getValue();
-        XMLHelper.appendTextContent(domElement, value);
-    }
+public class ChallengeMarshaller extends XSStringMarshaller {
 
 }

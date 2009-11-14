@@ -21,7 +21,7 @@ import org.opensaml.ws.wstrust.ComputedKeyAlgorithm;
 import org.opensaml.xml.schema.impl.XSURIImpl;
 
 /**
- * ComputedKeyAlgorithmImpl
+ * ComputedKeyAlgorithmImpl.
  * 
  */
 public class ComputedKeyAlgorithmImpl extends XSURIImpl implements ComputedKeyAlgorithm {

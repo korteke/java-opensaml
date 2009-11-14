@@ -17,14 +17,21 @@
 
 package org.opensaml.ws.wstrust.impl;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import org.opensaml.ws.wstrust.ParticipantType;
-import org.opensaml.xml.AbstractElementExtensibleXMLObject;
+import org.opensaml.xml.XMLObject;
 
 /**
- * AbstractParticipantType
+ * ParticipantTypeImpl.
  * 
  */
-public abstract class AbstractParticipantType extends AbstractElementExtensibleXMLObject implements ParticipantType {
+public class ParticipantTypeImpl extends AbstractWSTrustObject implements ParticipantType {
+    
+    /** Unknown child elements. */
+    private XMLObject unknownChild;
 
     /**
      * Constructor.
@@ -33,8 +40,27 @@ public abstract class AbstractParticipantType extends AbstractElementExtensibleX
      * @param elementLocalName name of the element
      * @param namespacePrefix namespace prefix of the element
      */
-    public AbstractParticipantType(String namespaceURI, String elementLocalName, String namespacePrefix) {
+    public ParticipantTypeImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
+    }
+
+    /** {@inheritDoc} */
+    public XMLObject getUnknownXMLObject() {
+        return unknownChild;
+    }
+
+    /** {@inheritDoc} */
+    public void setUnknownXMLObject(XMLObject unknownObject) {
+        unknownChild = prepareForAssignment(unknownChild, unknownObject);
+    }
+
+    /** {@inheritDoc} */
+    public List<XMLObject> getOrderedChildren() {
+        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        if (unknownChild != null) {
+            children.add(unknownChild);
+        }
+        return Collections.unmodifiableList(children);
     }
 
 }

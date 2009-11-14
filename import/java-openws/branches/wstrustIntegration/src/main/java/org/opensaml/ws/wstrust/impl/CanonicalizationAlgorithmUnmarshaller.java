@@ -17,40 +17,12 @@
 package org.opensaml.ws.wstrust.impl;
 
 
-import org.opensaml.ws.wstrust.CanonicalizationAlgorithm;
-import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.schema.XSURI;
+import org.opensaml.xml.schema.impl.XSURIUnmarshaller;
 
 /**
- * Unmarshaller for the &lt;wst:CanonicalizationAlgorithm&gt; element.
- * 
- * @see CanonicalizationAlgorithm
+ * Unmarshaller for the wst:CanonicalizationAlgorithm element.
  * 
  */
-public class CanonicalizationAlgorithmUnmarshaller extends
-        AbstractWSTrustObjectUnmarshaller {
-
-    /**
-     * Default constructor.
-     * <p>
-     * {@inheritDoc}
-     */
-    public CanonicalizationAlgorithmUnmarshaller() {
-        super();
-    }
-
-    /**
-     * Unmarshalls the &lt;wst:CanonicalizationAlgorithm&gt; element content.
-     * <p>
-     * {@inheritDoc}
-     */
-    @Override
-    protected void processElementContent(XMLObject xmlObject,
-            String elementContent) {
-        if (elementContent != null) {
-            XSURI xsUri= (XSURI) xmlObject;
-            xsUri.setValue(elementContent);
-        }
-    }
+public class CanonicalizationAlgorithmUnmarshaller extends XSURIUnmarshaller {
 
 }

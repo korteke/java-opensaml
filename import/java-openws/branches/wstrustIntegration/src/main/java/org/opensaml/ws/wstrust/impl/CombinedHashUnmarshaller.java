@@ -17,39 +17,12 @@
 package org.opensaml.ws.wstrust.impl;
 
 
-import org.opensaml.ws.wstrust.CombinedHash;
-import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.schema.XSBase64Binary;
+import org.opensaml.xml.schema.impl.XSBase64BinaryUnmarshaller;
 
 /**
- * Unmarshaller for the &lt;wst:CombinedHash&gt; element.
- * 
- * @see CombinedHash
+ * Unmarshaller for the wst:CombinedHash element.
  * 
  */
-public class CombinedHashUnmarshaller extends AbstractWSTrustObjectUnmarshaller {
-
-    /**
-     * Default constructor.
-     * <p>
-     * {@inheritDoc}
-     */
-    public CombinedHashUnmarshaller() {
-        super();
-    }
-
-    /**
-     * Unmarshalls the &lt;wst:CombinedHash&gt; element base64 binary content.
-     * <p>
-     * {@inheritDoc}
-     */
-    @Override
-    protected void processElementContent(XMLObject xmlObject,
-            String elementContent) {
-        if (elementContent != null) {
-            XSBase64Binary base64= (XSBase64Binary) xmlObject;
-            base64.setValue(elementContent);
-        }
-    }
+public class CombinedHashUnmarshaller extends XSBase64BinaryUnmarshaller {
 
 }

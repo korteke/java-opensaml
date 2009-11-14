@@ -21,32 +21,16 @@ import org.opensaml.ws.wstrust.RequestKET;
 /**
  * Builder for the RequestKET element.
  * 
- * @see org.opensaml.ws.wstrust.RequestKET
- * 
  */
 public class RequestKETBuilder extends AbstractWSTrustObjectBuilder<RequestKET> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.impl.AbstractWSTrustObjectBuilder#buildObject()
-     * @see org.opensaml.ws.wstrust.RequestKET
-     */
-    @Override
+    /** {@inheritDoc} */
     public RequestKET buildObject() {
         return buildObject(RequestKET.ELEMENT_NAME);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AbstractXMLObjectBuilder#buildObject(java.lang.String,
-     *      java.lang.String, java.lang.String)
-     * @see org.opensaml.ws.wstrust.RequestKET
-     */
-    @Override
-    public RequestKET buildObject(String namespaceURI, String localName,
-            String namespacePrefix) {
+    /** {@inheritDoc} */
+    public RequestKET buildObject(String namespaceURI, String localName, String namespacePrefix) {
         return new RequestKETImpl(namespaceURI, localName, namespacePrefix);
     }
 

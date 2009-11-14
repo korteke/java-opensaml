@@ -21,36 +21,17 @@ import org.opensaml.ws.wstrust.ComputedKeyAlgorithm;
 /**
  * Builder for the ComputedKeyAlgorithm element.
  * 
- * @see org.opensaml.ws.wstrust.ComputedKeyAlgorithm
- * 
  */
-public class ComputedKeyAlgorithmBuilder extends
-        AbstractWSTrustObjectBuilder<ComputedKeyAlgorithm> {
+public class ComputedKeyAlgorithmBuilder extends AbstractWSTrustObjectBuilder<ComputedKeyAlgorithm> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.impl.AbstractWSTrustObjectBuilder#buildObject()
-     * @see org.opensaml.ws.wstrust.ComputedKeyAlgorithm
-     */
-    @Override
+    /** {@inheritDoc} */
     public ComputedKeyAlgorithm buildObject() {
         return buildObject(ComputedKeyAlgorithm.ELEMENT_NAME);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AbstractXMLObjectBuilder#buildObject(java.lang.String,
-     *      java.lang.String, java.lang.String)
-     * @see org.opensaml.ws.wstrust.ComputedKeyAlgorithm
-     */
-    @Override
-    public ComputedKeyAlgorithm buildObject(String namespaceURI,
-            String localName, String namespacePrefix) {
-        return new ComputedKeyAlgorithmImpl(namespaceURI,
-                                            localName,
-                                            namespacePrefix);
+    /** {@inheritDoc} */
+    public ComputedKeyAlgorithm buildObject(String namespaceURI, String localName, String namespacePrefix) {
+        return new ComputedKeyAlgorithmImpl(namespaceURI, localName, namespacePrefix);
     }
 
 }

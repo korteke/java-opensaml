@@ -21,36 +21,17 @@ import org.opensaml.ws.wstrust.KeyWrapAlgorithm;
 /**
  * Builder for the KeyWrapAlgorithm element.
  * 
- * @see org.opensaml.ws.wstrust.KeyWrapAlgorithm
- * 
  */
-public class KeyWrapAlgorithmBuilder extends
-        AbstractWSTrustObjectBuilder<KeyWrapAlgorithm> {
+public class KeyWrapAlgorithmBuilder extends AbstractWSTrustObjectBuilder<KeyWrapAlgorithm> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.impl.AbstractWSTrustObjectBuilder#buildObject()
-     * @see org.opensaml.ws.wstrust.KeyWrapAlgorithm
-     */
-    @Override
+    /** {@inheritDoc} */
     public KeyWrapAlgorithm buildObject() {
         return buildObject(KeyWrapAlgorithm.ELEMENT_NAME);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AbstractXMLObjectBuilder#buildObject(java.lang.String,
-     *      java.lang.String, java.lang.String)
-     * @see org.opensaml.ws.wstrust.KeyWrapAlgorithm
-     */
-    @Override
-    public KeyWrapAlgorithm buildObject(String namespaceURI, String localName,
-            String namespacePrefix) {
-        return new KeyWrapAlgorithmImpl(namespaceURI,
-                                        localName,
-                                        namespacePrefix);
+    /** {@inheritDoc} */
+    public KeyWrapAlgorithm buildObject(String namespaceURI, String localName, String namespacePrefix) {
+        return new KeyWrapAlgorithmImpl(namespaceURI, localName, namespacePrefix);
     }
 
 }

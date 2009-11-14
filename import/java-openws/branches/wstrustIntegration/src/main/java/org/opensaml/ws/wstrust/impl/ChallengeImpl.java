@@ -21,7 +21,7 @@ import org.opensaml.ws.wstrust.Challenge;
 import org.opensaml.xml.schema.impl.XSStringImpl;
 
 /**
- * ChallengeImpl
+ * ChallengeImpl.
  * 
  */
 public class ChallengeImpl extends XSStringImpl implements Challenge {

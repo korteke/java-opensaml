@@ -17,23 +17,11 @@
 package org.opensaml.ws.wstrust.impl;
 
 
-import org.opensaml.ws.wstrust.KeyExchangeToken;
-import org.opensaml.xml.AbstractElementExtensibleXMLObjectMarshaller;
 
 /**
  * Marshaller for the KeyExchangeToken element.
  * 
- * @see KeyExchangeToken
- * 
  */
-public class KeyExchangeTokenMarshaller extends
-        AbstractElementExtensibleXMLObjectMarshaller {
-
-    /**
-     * Default constructor.
-     */
-    public KeyExchangeTokenMarshaller() {
-        super();
-    }
+public class KeyExchangeTokenMarshaller extends AbstractWSTrustObjectMarshaller {
 
 }

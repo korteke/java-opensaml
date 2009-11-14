@@ -21,33 +21,16 @@ import org.opensaml.ws.wstrust.EncryptWith;
 /**
  * Builder for the EncryptWith element.
  * 
- * @see org.opensaml.ws.wstrust.EncryptWith
- * 
  */
-public class EncryptWithBuilder extends
-        AbstractWSTrustObjectBuilder<EncryptWith> {
+public class EncryptWithBuilder extends AbstractWSTrustObjectBuilder<EncryptWith> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.impl.AbstractWSTrustObjectBuilder#buildObject()
-     * @see org.opensaml.ws.wstrust.EncryptWith
-     */
-    @Override
+    /** {@inheritDoc} */
     public EncryptWith buildObject() {
         return buildObject(EncryptWith.ELEMENT_NAME);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AbstractXMLObjectBuilder#buildObject(java.lang.String,
-     *      java.lang.String, java.lang.String)
-     * @see org.opensaml.ws.wstrust.EncryptWith
-     */
-    @Override
-    public EncryptWith buildObject(String namespaceURI, String localName,
-            String namespacePrefix) {
+    /** {@inheritDoc} */
+    public EncryptWith buildObject(String namespaceURI, String localName, String namespacePrefix) {
         return new EncryptWithImpl(namespaceURI, localName, namespacePrefix);
     }
 

@@ -21,7 +21,7 @@ import org.opensaml.ws.wstrust.EncryptWith;
 import org.opensaml.xml.schema.impl.XSURIImpl;
 
 /**
- * EncryptWithImpl
+ * EncryptWithImpl.
  * 
  */
 public class EncryptWithImpl extends XSURIImpl implements EncryptWith {

@@ -21,31 +21,16 @@ import org.opensaml.ws.wstrust.Participant;
 /**
  * Builder for the Participant element.
  * 
- * @see Participant
- * 
  */
-public class ParticipantBuilder extends
-        AbstractWSTrustObjectBuilder<Participant> {
+public class ParticipantBuilder extends AbstractWSTrustObjectBuilder<Participant> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.impl.AbstractWSTrustObjectBuilder#buildObject()
-     */
-    @Override
+    /** {@inheritDoc} */
     public Participant buildObject() {
         return buildObject(Participant.ELEMENT_NAME);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AbstractXMLObjectBuilder#buildObject(java.lang.String,
-     *      java.lang.String, java.lang.String)
-     */
-    @Override
-    public Participant buildObject(String namespaceURI, String localName,
-            String namespacePrefix) {
+    /** {@inheritDoc} */
+    public Participant buildObject(String namespaceURI, String localName, String namespacePrefix) {
         return new ParticipantImpl(namespaceURI, localName, namespacePrefix);
     }
 

@@ -21,7 +21,7 @@ import org.opensaml.ws.wstrust.SignatureAlgorithm;
 import org.opensaml.xml.schema.impl.XSURIImpl;
 
 /**
- * SignatureAlgorithmImpl
+ * SignatureAlgorithmImpl.
  * 
  */
 public class SignatureAlgorithmImpl extends XSURIImpl implements SignatureAlgorithm {

@@ -16,22 +16,11 @@
  */
 package org.opensaml.ws.wstrust.impl;
 
-import org.opensaml.ws.wstrust.SignChallengeResponse;
 
 /**
  * Marshaller for the SignChallengeResponse element.
  * 
- * @see SignChallengeResponse
- * 
  */
-public class SignChallengeResponseMarshaller extends
-        AbstractSignChallengeTypeMarshaller {
-
-    /**
-     * Default constructor.
-     */
-    public SignChallengeResponseMarshaller() {
-        super();
-    }
+public class SignChallengeResponseMarshaller extends SignChallengeTypeMarshaller {
 
 }

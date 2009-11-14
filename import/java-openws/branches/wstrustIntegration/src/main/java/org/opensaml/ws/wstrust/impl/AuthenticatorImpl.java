@@ -21,20 +21,25 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.xml.namespace.QName;
+
 import org.opensaml.ws.wstrust.Authenticator;
 import org.opensaml.ws.wstrust.CombinedHash;
-import org.opensaml.xml.AbstractElementExtensibleXMLObject;
 import org.opensaml.xml.XMLObject;
+import org.opensaml.xml.util.IndexedXMLObjectChildrenList;
 
 /**
- * AuthenticatorImpl
+ * AuthenticatorImpl.
  * 
  */
-public class AuthenticatorImpl extends AbstractElementExtensibleXMLObject implements Authenticator {
+public class AuthenticatorImpl extends AbstractWSTrustObject implements Authenticator {
+    
+    /** the wst:Authenticator/wst:CombinedHash child element. */
+    private CombinedHash combinedHash;
 
-    /** the wst:Authenticator/wst:CombinedHash child element */
-    private CombinedHash combinedHash_ = null;
-
+    /** Wildcard child elements. */
+    private IndexedXMLObjectChildrenList<XMLObject> unknownChildren;
+    
     /**
      * Constructor.
      * 
@@ -44,40 +49,36 @@ public class AuthenticatorImpl extends AbstractElementExtensibleXMLObject implem
      */
     public AuthenticatorImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
+        unknownChildren = new IndexedXMLObjectChildrenList<XMLObject>(this);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.Authenticator#getCombinedHash()
-     */
+    /** {@inheritDoc} */
     public CombinedHash getCombinedHash() {
-        return combinedHash_;
+        return combinedHash;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.Authenticator#setCombinedHash(org.opensaml.ws.wstrust.CombinedHash)
-     */
-    public void setCombinedHash(CombinedHash combinedHash) {
-        combinedHash_ = prepareForAssignment(combinedHash_, combinedHash);
+    /** {@inheritDoc} */
+    public void setCombinedHash(CombinedHash newCombinedHash) {
+        combinedHash = prepareForAssignment(combinedHash, newCombinedHash);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.glite.xml.AbstractElementExtensibleXMLObject#getOrderedChildren()
-     */
+    /** {@inheritDoc} */
+    public List<XMLObject> getUnknownXMLObjects() {
+        return unknownChildren;
+    }
+
+    /** {@inheritDoc} */
+    public List<XMLObject> getUnknownXMLObjects(QName typeOrName) {
+        return unknownChildren.get(typeOrName);
+    }
+
+    /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
         ArrayList<XMLObject> children = new ArrayList<XMLObject>();
-        if (combinedHash_ != null) {
-            children.add(combinedHash_);
+        if (combinedHash != null) {
+            children.add(combinedHash);
         }
-        // xs:any element
-        if (!getUnknownXMLObjects().isEmpty()) {
-            children.addAll(getUnknownXMLObjects());
-        }
+        children.addAll(unknownChildren);
         return Collections.unmodifiableList(children);
     }
 

@@ -21,7 +21,7 @@ import org.opensaml.ws.wstrust.AuthenticationType;
 import org.opensaml.xml.schema.impl.XSURIImpl;
 
 /**
- * AddressImpl
+ * AddressImpl.
  * 
  */
 public class AuthenticationTypeImpl extends XSURIImpl implements AuthenticationType {

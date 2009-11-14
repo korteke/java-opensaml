@@ -20,16 +20,9 @@ package org.opensaml.ws.wstrust.impl;
 import org.opensaml.ws.wsaddressing.impl.EndpointReferenceTypeUnmarshaller;
 
 /**
- * IssuerUnmarshaller
+ * IssuerUnmarshaller.
  * 
  */
 public class IssuerUnmarshaller extends EndpointReferenceTypeUnmarshaller {
-
-    /**
-     * Default constructor.
-     */
-    public IssuerUnmarshaller() {
-        super();
-    }
 
 }

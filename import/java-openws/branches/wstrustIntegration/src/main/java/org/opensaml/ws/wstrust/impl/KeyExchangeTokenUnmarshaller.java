@@ -18,24 +18,20 @@ package org.opensaml.ws.wstrust.impl;
 
 
 import org.opensaml.ws.wstrust.KeyExchangeToken;
-import org.opensaml.xml.AbstractElementExtensibleXMLObjectUnmarshaller;
+import org.opensaml.xml.XMLObject;
+import org.opensaml.xml.io.UnmarshallingException;
 
 /**
- * Unmarshaller for the &lt;wst:KeyExchangeToken&gt; element.
- * 
- * @see KeyExchangeToken
+ * Unmarshaller for the wst:KeyExchangeToken element.
  * 
  */
-public class KeyExchangeTokenUnmarshaller extends
-        AbstractElementExtensibleXMLObjectUnmarshaller {
+public class KeyExchangeTokenUnmarshaller extends AbstractWSTrustObjectUnmarshaller {
 
-    /**
-     * Default constructor.
-     * <p>
-     * {@inheritDoc}
-     */
-    public KeyExchangeTokenUnmarshaller() {
-        super();
+    /** {@inheritDoc} */
+    protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
+            throws UnmarshallingException {
+        KeyExchangeToken ket = (KeyExchangeToken) parentXMLObject;
+        ket.getUnknownXMLObjects().add(childXMLObject);
     }
 
 }

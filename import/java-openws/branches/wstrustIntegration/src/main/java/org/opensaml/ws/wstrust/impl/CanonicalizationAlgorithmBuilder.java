@@ -21,36 +21,17 @@ import org.opensaml.ws.wstrust.CanonicalizationAlgorithm;
 /**
  * Builder for the CanonicalizationAlgorithm element.
  * 
- * @see org.opensaml.ws.wstrust.CanonicalizationAlgorithm
- * 
  */
-public class CanonicalizationAlgorithmBuilder extends
-        AbstractWSTrustObjectBuilder<CanonicalizationAlgorithm> {
+public class CanonicalizationAlgorithmBuilder extends AbstractWSTrustObjectBuilder<CanonicalizationAlgorithm> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.impl.AbstractWSTrustObjectBuilder#buildObject()
-     * @see org.opensaml.ws.wstrust.CanonicalizationAlgorithm
-     */
-    @Override
+    /** {@inheritDoc} */
     public CanonicalizationAlgorithm buildObject() {
         return buildObject(CanonicalizationAlgorithm.ELEMENT_NAME);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AbstractXMLObjectBuilder#buildObject(java.lang.String,
-     *      java.lang.String, java.lang.String)
-     * @see org.opensaml.ws.wstrust.CanonicalizationAlgorithm
-     */
-    @Override
-    public CanonicalizationAlgorithm buildObject(String namespaceURI,
-            String localName, String namespacePrefix) {
-        return new CanonicalizationAlgorithmImpl(namespaceURI,
-                                                 localName,
-                                                 namespacePrefix);
+    /** {@inheritDoc} */
+    public CanonicalizationAlgorithm buildObject(String namespaceURI, String localName, String namespacePrefix) {
+        return new CanonicalizationAlgorithmImpl(namespaceURI, localName, namespacePrefix);
     }
 
 }

@@ -16,24 +16,11 @@
  */
 package org.opensaml.ws.wstrust.impl;
 
-import org.opensaml.ws.wstrust.SignChallenge;
 
 /**
- * Unmarshaller for the &lt;wst:SignChallenge&gt; element.
- * 
- * @see SignChallenge
+ * Unmarshaller for the wst:SignChallenge element.
  * 
  */
-public class SignChallengeUnmarshaller extends
-        AbstractSignChallengeTypeUnmarshaller {
-
-    /**
-     * Default constructor.
-     * <p>
-     * {@inheritDoc}
-     */
-    public SignChallengeUnmarshaller() {
-        super();
-    }
+public class SignChallengeUnmarshaller extends SignChallengeTypeUnmarshaller {
 
 }

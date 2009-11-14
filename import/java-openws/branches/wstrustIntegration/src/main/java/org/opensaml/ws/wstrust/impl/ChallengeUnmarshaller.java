@@ -17,39 +17,12 @@
 package org.opensaml.ws.wstrust.impl;
 
 
-import org.opensaml.ws.wstrust.Challenge;
-import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.schema.XSString;
+import org.opensaml.xml.schema.impl.XSStringUnmarshaller;
 
 /**
- * Unmarshaller for the &lt;wst:Challenge&gt; element.
- * 
- * @see Challenge
+ * Unmarshaller for the wst:Challenge element.
  * 
  */
-public class ChallengeUnmarshaller extends AbstractWSTrustObjectUnmarshaller {
-
-    /**
-     * Default constructor.
-     * <p>
-     * {@inheritDoc}
-     */
-    public ChallengeUnmarshaller() {
-        super();
-    }
-
-    /**
-     * Unmarshalls the &lt;wst:Challenge&gt; element content.
-     * <p>
-     * {@inheritDoc}
-     */
-    @Override
-    protected void processElementContent(XMLObject xmlObject,
-            String elementContent) {
-        if (elementContent != null) {
-            XSString xsString= (XSString) xmlObject;
-            xsString.setValue(elementContent);
-        }
-    }
+public class ChallengeUnmarshaller extends XSStringUnmarshaller {
 
 }

@@ -24,27 +24,13 @@ import org.opensaml.ws.wstrust.OnBehalfOf;
  */
 public class OnBehalfOfBuilder extends AbstractWSTrustObjectBuilder<OnBehalfOf> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.impl.AbstractWSTrustObjectBuilder#buildObject()
-     * @see org.opensaml.ws.wstrust.OnBehalfOf
-     */
-    @Override
+    /** {@inheritDoc} */
     public OnBehalfOf buildObject() {
         return buildObject(OnBehalfOf.ELEMENT_NAME);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AbstractXMLObjectBuilder#buildObject(java.lang.String,
-     *      java.lang.String, java.lang.String)
-     * @see org.opensaml.ws.wstrust.OnBehalfOf
-     */
-    @Override
-    public OnBehalfOf buildObject(String namespaceURI, String localName,
-            String namespacePrefix) {
+    /** {@inheritDoc} */
+    public OnBehalfOf buildObject(String namespaceURI, String localName, String namespacePrefix) {
         return new OnBehalfOfImpl(namespaceURI, localName, namespacePrefix);
     }
 

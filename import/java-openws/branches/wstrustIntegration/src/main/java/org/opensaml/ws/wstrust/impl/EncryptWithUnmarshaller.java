@@ -17,39 +17,12 @@
 package org.opensaml.ws.wstrust.impl;
 
 
-import org.opensaml.ws.wstrust.EncryptWith;
-import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.schema.XSURI;
+import org.opensaml.xml.schema.impl.XSURIUnmarshaller;
 
 /**
- * Unmarshaller for the &lt;wst:EncryptWith&gt; element.
- * 
- * @see EncryptWith
+ * Unmarshaller for the wst:EncryptWith element.
  * 
  */
-public class EncryptWithUnmarshaller extends AbstractWSTrustObjectUnmarshaller {
-
-    /**
-     * Default constructor.
-     * <p>
-     * {@inheritDoc}
-     */
-    public EncryptWithUnmarshaller() {
-        super();
-    }
-
-    /**
-     * Unmarshalls the &lt;wst:EncryptWith&gt; element content.
-     * <p>
-     * {@inheritDoc}
-     */
-    @Override
-    protected void processElementContent(XMLObject xmlObject,
-            String elementContent) {
-        if (elementContent != null) {
-            XSURI xsUri= (XSURI) xmlObject;
-            xsUri.setValue(elementContent);
-        }
-    }
+public class EncryptWithUnmarshaller extends XSURIUnmarshaller {
 
 }

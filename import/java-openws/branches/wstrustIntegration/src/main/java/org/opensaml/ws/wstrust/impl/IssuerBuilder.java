@@ -21,32 +21,16 @@ import org.opensaml.ws.wstrust.Issuer;
 /**
  * Builder for the Issuer element.
  * 
- * @see org.opensaml.ws.wstrust.Issuer
- * 
  */
 public class IssuerBuilder extends AbstractWSTrustObjectBuilder<Issuer> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.impl.AbstractWSTrustObjectBuilder#buildObject()
-     * @see org.opensaml.ws.wstrust.Issuer
-     */
-    @Override
+    /** {@inheritDoc} */
     public Issuer buildObject() {
         return buildObject(Issuer.ELEMENT_NAME);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AbstractXMLObjectBuilder#buildObject(java.lang.String,
-     *      java.lang.String, java.lang.String)
-     * @see org.opensaml.ws.wstrust.Issuer
-     */
-    @Override
-    public Issuer buildObject(String namespaceURI, String localName,
-            String namespacePrefix) {
+    /** {@inheritDoc} */
+    public Issuer buildObject(String namespaceURI, String localName, String namespacePrefix) {
         return new IssuerImpl(namespaceURI, localName, namespacePrefix);
     }
 

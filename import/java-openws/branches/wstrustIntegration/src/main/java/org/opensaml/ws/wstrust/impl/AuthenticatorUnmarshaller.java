@@ -19,44 +19,24 @@ package org.opensaml.ws.wstrust.impl;
 
 import org.opensaml.ws.wstrust.Authenticator;
 import org.opensaml.ws.wstrust.CombinedHash;
-import org.opensaml.xml.AbstractElementExtensibleXMLObjectUnmarshaller;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
 
 /**
- * Unmarshaller for the &lt;wst:Authenticator&gt; element.
- * 
- * @see Authenticator
+ * Unmarshaller for the wst:Authenticator element.
  * 
  */
-public class AuthenticatorUnmarshaller extends
-        AbstractElementExtensibleXMLObjectUnmarshaller {
+public class AuthenticatorUnmarshaller extends AbstractWSTrustObjectUnmarshaller {
 
-    /**
-     * Default constructor.
-     * <p>
-     * {@inheritDoc}
-     */
-    public AuthenticatorUnmarshaller() {
-        super();
-    }
-
-    /**
-     * Unmarshalls the &lt;wst:CombinedHash&gt; child element.
-     * <p>
-     * {@inheritDoc}
-     */
-    @Override
-    protected void processChildElement(XMLObject parentXMLObject,
-            XMLObject childXMLObject) throws UnmarshallingException {
-        Authenticator container= (Authenticator) parentXMLObject;
+    /** {@inheritDoc} */
+    protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject) 
+            throws UnmarshallingException {
+        Authenticator authenticator = (Authenticator) parentXMLObject;
+        
         if (childXMLObject instanceof CombinedHash) {
-            CombinedHash combinedHash= (CombinedHash) childXMLObject;
-            container.setCombinedHash(combinedHash);
-        }
-        else {
-            // xs:any element
-            super.processChildElement(parentXMLObject, childXMLObject);
+            authenticator.setCombinedHash((CombinedHash) childXMLObject);
+        } else {
+            authenticator.getUnknownXMLObjects().add(childXMLObject);
         }
     }
 

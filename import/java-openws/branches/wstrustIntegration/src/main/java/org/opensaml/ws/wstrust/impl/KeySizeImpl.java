@@ -21,7 +21,7 @@ import org.opensaml.ws.wstrust.KeySize;
 import org.opensaml.xml.schema.impl.XSIntegerImpl;
 
 /**
- * KeySizeImpl
+ * KeySizeImpl.
  * 
  */
 public class KeySizeImpl extends XSIntegerImpl implements KeySize {

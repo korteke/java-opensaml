@@ -21,7 +21,7 @@ import org.opensaml.ws.wsaddressing.impl.EndpointReferenceTypeImpl;
 import org.opensaml.ws.wstrust.Issuer;
 
 /**
- * IssuerImpl
+ * IssuerImpl.
  * 
  */
 public class IssuerImpl extends EndpointReferenceTypeImpl implements Issuer {

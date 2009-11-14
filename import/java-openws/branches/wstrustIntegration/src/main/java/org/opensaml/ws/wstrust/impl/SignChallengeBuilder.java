@@ -21,33 +21,16 @@ import org.opensaml.ws.wstrust.SignChallenge;
 /**
  * Builder for the SignChallenge element.
  * 
- * @see org.opensaml.ws.wstrust.SignChallenge
- * 
  */
-public class SignChallengeBuilder extends
-        AbstractWSTrustObjectBuilder<SignChallenge> {
+public class SignChallengeBuilder extends AbstractWSTrustObjectBuilder<SignChallenge> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.impl.AbstractWSTrustObjectBuilder#buildObject()
-     * @see org.opensaml.ws.wstrust.SignChallenge
-     */
-    @Override
+    /** {@inheritDoc} */
     public SignChallenge buildObject() {
         return buildObject(SignChallenge.ELEMENT_NAME);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AbstractXMLObjectBuilder#buildObject(java.lang.String,
-     *      java.lang.String, java.lang.String)
-     * @see org.opensaml.ws.wstrust.SignChallenge
-     */
-    @Override
-    public SignChallenge buildObject(String namespaceURI, String localName,
-            String namespacePrefix) {
+    /** {@inheritDoc} */
+    public SignChallenge buildObject(String namespaceURI, String localName, String namespacePrefix) {
         return new SignChallengeImpl(namespaceURI, localName, namespacePrefix);
     }
 

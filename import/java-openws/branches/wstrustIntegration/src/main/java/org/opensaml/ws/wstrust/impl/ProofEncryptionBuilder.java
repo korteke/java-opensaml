@@ -21,33 +21,16 @@ import org.opensaml.ws.wstrust.ProofEncryption;
 /**
  * Builder for the ProofEncryption element.
  * 
- * @see org.opensaml.ws.wstrust.ProofEncryption
- * 
  */
-public class ProofEncryptionBuilder extends
-        AbstractWSTrustObjectBuilder<ProofEncryption> {
+public class ProofEncryptionBuilder extends AbstractWSTrustObjectBuilder<ProofEncryption> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.impl.AbstractWSTrustObjectBuilder#buildObject()
-     * @see org.opensaml.ws.wstrust.ProofEncryption
-     */
-    @Override
+    /** {@inheritDoc} */
     public ProofEncryption buildObject() {
         return buildObject(ProofEncryption.ELEMENT_NAME);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AbstractXMLObjectBuilder#buildObject(java.lang.String,
-     *      java.lang.String, java.lang.String)
-     * @see org.opensaml.ws.wstrust.ProofEncryption
-     */
-    @Override
-    public ProofEncryption buildObject(String namespaceURI, String localName,
-            String namespacePrefix) {
+    /** {@inheritDoc} */
+    public ProofEncryption buildObject(String namespaceURI, String localName, String namespacePrefix) {
         return new ProofEncryptionImpl(namespaceURI, localName, namespacePrefix);
     }
 

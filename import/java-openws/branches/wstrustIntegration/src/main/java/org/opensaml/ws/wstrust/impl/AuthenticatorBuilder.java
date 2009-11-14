@@ -21,33 +21,16 @@ import org.opensaml.ws.wstrust.Authenticator;
 /**
  * Builder for the Authenticator element.
  * 
- * @see org.opensaml.ws.wstrust.Authenticator
- * 
  */
-public class AuthenticatorBuilder extends
-        AbstractWSTrustObjectBuilder<Authenticator> {
+public class AuthenticatorBuilder extends AbstractWSTrustObjectBuilder<Authenticator> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.impl.AbstractWSTrustObjectBuilder#buildObject()
-     * @see org.opensaml.ws.wstrust.Authenticator
-     */
-    @Override
+    /** {@inheritDoc} */
     public Authenticator buildObject() {
         return buildObject(Authenticator.ELEMENT_NAME);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AbstractXMLObjectBuilder#buildObject(java.lang.String,
-     *      java.lang.String, java.lang.String)
-     * @see org.opensaml.ws.wstrust.Authenticator
-     */
-    @Override
-    public Authenticator buildObject(String namespaceURI, String localName,
-            String namespacePrefix) {
+    /** {@inheritDoc} */
+    public Authenticator buildObject(String namespaceURI, String localName, String namespacePrefix) {
         return new AuthenticatorImpl(namespaceURI, localName, namespacePrefix);
     }
 

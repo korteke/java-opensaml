@@ -20,45 +20,26 @@ package org.opensaml.ws.wstrust.impl;
 import org.opensaml.ws.wstrust.Participant;
 import org.opensaml.ws.wstrust.Participants;
 import org.opensaml.ws.wstrust.Primary;
-import org.opensaml.xml.AbstractElementExtensibleXMLObjectUnmarshaller;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
 
 /**
- * ParticipantsUnmarshaller
+ * ParticipantsUnmarshaller.
  * 
  */
-public class ParticipantsUnmarshaller extends
-        AbstractElementExtensibleXMLObjectUnmarshaller {
+public class ParticipantsUnmarshaller extends AbstractWSTrustObjectUnmarshaller {
 
-    /**
-     * Default constructor.
-     */
-    public ParticipantsUnmarshaller() {
-        super();
-    }
-
-    /**
-     * Unmarshalls the &lt;wst:Primary&gt; and the &lt;wst:Participant&gt; child
-     * elements.
-     * <p>
-     * {@inheritDoc}
-     */
-    @Override
-    protected void processChildElement(XMLObject parentXMLObject,
-            XMLObject childXMLObject) throws UnmarshallingException {
-        Participants participants= (Participants) parentXMLObject;
+    /** {@inheritDoc} */
+    protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject) 
+            throws UnmarshallingException {
+        Participants participants = (Participants) parentXMLObject;
+        
         if (childXMLObject instanceof Primary) {
-            Primary primary= (Primary) childXMLObject;
-            participants.setPrimary(primary);
-        }
-        else if (childXMLObject instanceof Participant) {
-            Participant participant= (Participant) childXMLObject;
-            participants.setParticipant(participant);
-        }
-        else {
-            // xs:any element
-            super.processChildElement(parentXMLObject, childXMLObject);
+            participants.setPrimary((Primary) childXMLObject);
+        } else if (childXMLObject instanceof Participant) {
+            participants.getParticipants().add((Participant) childXMLObject);
+        } else {
+            participants.getUnknownXMLObjects().add(childXMLObject);
         }
     }
 
