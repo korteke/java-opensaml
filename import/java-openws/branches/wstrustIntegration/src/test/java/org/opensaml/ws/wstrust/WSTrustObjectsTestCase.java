@@ -17,7 +17,8 @@
 package org.opensaml.ws.wstrust;
 
 import java.io.InputStream;
-import java.util.List;
+
+import javax.xml.namespace.QName;
 
 import org.joda.time.DateTime;
 import org.opensaml.ws.WSBaseTestCase;
@@ -26,40 +27,26 @@ import org.opensaml.ws.wssecurity.Password;
 import org.opensaml.ws.wssecurity.Timestamp;
 import org.opensaml.ws.wssecurity.Username;
 import org.opensaml.ws.wssecurity.UsernameToken;
-import org.opensaml.ws.wstrust.AllowPostdating;
-import org.opensaml.ws.wstrust.AuthenticationType;
-import org.opensaml.ws.wstrust.Authenticator;
-import org.opensaml.ws.wstrust.BinaryExchange;
-import org.opensaml.ws.wstrust.BinarySecret;
-import org.opensaml.ws.wstrust.CancelTarget;
-import org.opensaml.ws.wstrust.CanonicalizationAlgorithm;
-import org.opensaml.ws.wstrust.Challenge;
-import org.opensaml.ws.wstrust.Claims;
-import org.opensaml.ws.wstrust.Code;
-import org.opensaml.ws.wstrust.CombinedHash;
-import org.opensaml.ws.wstrust.ComputedKey;
-import org.opensaml.ws.wstrust.ComputedKeyAlgorithm;
-import org.opensaml.ws.wstrust.Delegatable;
-import org.opensaml.ws.wstrust.DelegateTo;
-import org.opensaml.ws.wstrust.RequestSecurityToken;
-import org.opensaml.ws.wstrust.RequestType;
-import org.opensaml.ws.wstrust.TokenType;
+import org.opensaml.xml.Configuration;
 import org.opensaml.xml.XMLConfigurator;
-import org.opensaml.xml.XMLObject;
+import org.opensaml.xml.schema.XSAny;
 import org.opensaml.xml.schema.XSBooleanValue;
+import org.opensaml.xml.schema.impl.XSAnyBuilder;
+import org.opensaml.xml.schema.impl.XSAnyMarshaller;
+import org.opensaml.xml.schema.impl.XSAnyUnmarshaller;
 
 /**
  * WSTrustObjectsTestCase is the base test case for the WS-Trust objects.
  * 
  */
 public class WSTrustObjectsTestCase extends WSBaseTestCase {
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.WSBaseTestCase#configureWS()
+    
+    /**
+     * QName for test Claims element.
      */
-    @Override
+    private static final QName TEST_CLAIMS_QNAME = new QName("urn:test:claims:ns", "TestClaim", "tc");
+
+    /** {@inheritDoc} */
     protected void configureWS() throws Exception {
         // load ws-trust config
         InputStream is= getClass().getResourceAsStream("/wstrust-config.xml");
@@ -68,6 +55,10 @@ public class WSTrustObjectsTestCase extends WSBaseTestCase {
         // load ws-security config
         is= getClass().getResourceAsStream("/wssecurity-config.xml");
         configurator.load(is);
+        
+        // register provider for TestClaims supporting config
+        Configuration.registerObjectProvider(TEST_CLAIMS_QNAME,  
+                new XSAnyBuilder(), new XSAnyMarshaller(), new XSAnyUnmarshaller());
     }
 
     public void testAllowPostdating() throws Exception {
@@ -104,10 +95,9 @@ public class WSTrustObjectsTestCase extends WSBaseTestCase {
 
     public void testCancelTarget() throws Exception {
         CancelTarget cancelTarget= buildXMLObject(CancelTarget.ELEMENT_NAME);
-        List<XMLObject> any= cancelTarget.getUnknownXMLObjects();
         UsernameToken usernameToken= createUsernameToken("testuser",
                                                          "testpassword");
-        any.add(usernameToken);
+        cancelTarget.setUnknownXMLObject(usernameToken);
         marshallAndUnmarshall(cancelTarget);
     }
 
@@ -124,10 +114,7 @@ public class WSTrustObjectsTestCase extends WSBaseTestCase {
     }
 
     public void testClaims() throws Exception {
-        Claims claims= buildXMLObject(Claims.ELEMENT_NAME);
-        // TODO - this is a semantically incorrect usage of the Claims element. Fix with a more realistic example.
-        claims.getUnknownXMLObjects().add(createUsernameToken("testuser",
-                                                              "testpassword"));
+        Claims claims= createClaims();
         marshallAndUnmarshall(claims);
     }
 
@@ -169,8 +156,7 @@ public class WSTrustObjectsTestCase extends WSBaseTestCase {
 
     public void testDelegateTo() throws Exception {
         DelegateTo delegateTo= buildXMLObject(DelegateTo.ELEMENT_NAME);
-        delegateTo.getUnknownXMLObjects().add(createUsernameToken("delegateUser",
-                                                                  "delegatePassord"));
+        delegateTo.setUnknownXMLObject(createUsernameToken("delegateUser", "delegatePassord"));
         marshallAndUnmarshall(delegateTo);
     }
 
@@ -180,22 +166,33 @@ public class WSTrustObjectsTestCase extends WSBaseTestCase {
         rst.setContext(context);
         RequestType requestType= buildXMLObject(RequestType.ELEMENT_NAME);
         requestType.setValue(RequestType.ISSUE);
-        rst.setRequestType(requestType);
+        rst.getUnknownXMLObjects().add(requestType);
         TokenType tokenType= buildXMLObject(TokenType.ELEMENT_NAME);
         tokenType.setValue("http://docs.oasis-open.org/wss/oasis-wss-saml-token-profile-1.1#SAMLV2.0");
-        rst.setTokenType(tokenType);
-        // TODO - this is a semantically incorrect usage of the Claims element. Fix with a more realistic example.
-        Claims claims= buildXMLObject(Claims.ELEMENT_NAME);
-        claims.getUnknownXMLObjects().add(createUsernameToken("myuser",
-                                                              "mypassword"));
-        rst.setClaims(claims);
+        rst.getUnknownXMLObjects().add(tokenType);
+        
+        Claims claims= createClaims();
+        rst.getUnknownXMLObjects().add(claims);
+        
         Timestamp timestamp= createTimestamp();
-        rst.setTimestamp(timestamp);
+        rst.getUnknownXMLObjects().add(timestamp);
         marshallAndUnmarshall(rst);
 
         rst= unmarshallXML("/data/org/opensaml/ws/wstrust/RequestSecurityToken.xml");
         rst.releaseDOM();
         marshallAndUnmarshall(rst);
+    }
+
+    protected Claims createClaims() throws Exception {
+        Claims claims= buildXMLObject(Claims.ELEMENT_NAME);
+        claims.setDialect("urn:test:claims:some-test-dialect");
+        
+        XSAny claimData  = (XSAny) getBuilder(TEST_CLAIMS_QNAME).buildObject(TEST_CLAIMS_QNAME);
+        claimData.setTextContent("urn:test:claims:attribute-bundle-Foo");
+        
+        claims.getUnknownXMLObjects().add(claimData);
+        
+        return claims;
     }
 
     protected Timestamp createTimestamp() throws Exception {
@@ -206,12 +203,6 @@ public class WSTrustObjectsTestCase extends WSBaseTestCase {
         return timestamp;
     }
 
-    /**
-     * 
-     * @param value
-     * @return
-     * @throws Exception
-     */
     protected CombinedHash createCombinedHash(String value) throws Exception {
         CombinedHash combinedHash= buildXMLObject(CombinedHash.ELEMENT_NAME);
         if (value == null) {
@@ -223,13 +214,6 @@ public class WSTrustObjectsTestCase extends WSBaseTestCase {
         return combinedHash;
     }
 
-    /**
-     * 
-     * @param user
-     * @param pass
-     * @return
-     * @throws Exception
-     */
     protected UsernameToken createUsernameToken(String user, String pass)
             throws Exception {
         UsernameToken usernameToken= buildXMLObject(UsernameToken.ELEMENT_NAME);
