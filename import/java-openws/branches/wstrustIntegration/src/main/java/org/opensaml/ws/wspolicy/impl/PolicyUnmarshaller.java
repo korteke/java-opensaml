@@ -17,48 +17,39 @@
 
 package org.opensaml.ws.wspolicy.impl;
 
+import javax.xml.namespace.QName;
+
 import org.opensaml.ws.wspolicy.Policy;
-import org.opensaml.xml.AbstractExtensibleXMLObjectUnmarshaller;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
+import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Attr;
 
+
+
 /**
- * Unmarshaller for the &lt;wsp:Policy&gt; element.
- * 
- * @see Policy
+ * Unmarshaller for the wsp:Policy element.
  * 
  */
-public class PolicyUnmarshaller extends AbstractExtensibleXMLObjectUnmarshaller {
+public class PolicyUnmarshaller extends OperatorContentTypeUnmarshaller {
 
-    /**
-     * Default constructor.
-     * <p>
-     * {@inheritDoc}
-     */
-    public PolicyUnmarshaller() {
-        super();
-    }
-
-    /**
-     * Unmarshalls the <code>wsu:I</code> and the <code>Name</code> attributes.
-     * <p>
-     * {@inheritDoc}
-     */
-    @Override
+    /** {@inheritDoc} */
     protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
         Policy policy = (Policy) xmlObject;
-        String attrName = attribute.getLocalName();
-        if (Policy.WSU_ID_ATTR_LOCAL_NAME.equals(attrName)) {
-            String id = attribute.getValue();
-            policy.setWSUId(id);
-        } else if (Policy.NAME_ATTR_LOCAL_NAME.equals(attrName)) {
-            String name = attribute.getValue();
-            policy.setName(name);
+        
+        QName nameQName = new QName(Policy.NAME_ATTRIB_NAME);
+        
+        QName attribQName = 
+            XMLHelper.constructQName(attribute.getNamespaceURI(), attribute.getLocalName(), attribute.getPrefix());
+        
+        if (nameQName.equals(attribQName)) {
+            policy.setName(attribute.getValue());
+        } else if (Policy.WSU_ID_ATTR_NAME.equals(attribQName)) {
+            policy.setWSUId(attribute.getValue());
+            attribute.getOwnerElement().setIdAttributeNode(attribute, true);
         } else {
-            // xs:anyAttribute attributes
-            super.processAttribute(xmlObject, attribute);
+            XMLHelper.unmarshallToAttributeMap(policy.getUnknownAttributes(), attribute);
         }
     }
-
+    
 }

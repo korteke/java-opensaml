@@ -14,14 +14,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.opensaml.ws.wspolicy;
+package org.opensaml.ws.wspolicy.impl;
 
-import org.opensaml.xml.XMLObject;
+import org.opensaml.ws.wspolicy.ExactlyOne;
 
 /**
- * WSPolicyObject is the base interface for all WS-Policy elements.
+ * Builder for the ExactlyOne element.
  * 
  */
-public interface WSPolicyObject extends XMLObject {
+public class ExactlyOneBuilder extends AbstractWSPolicyObjectBuilder<ExactlyOne> {
+
+    /** {@inheritDoc} */
+    public ExactlyOne buildObject() {
+        return buildObject(ExactlyOne.ELEMENT_NAME);
+    }
+
+    /** {@inheritDoc} */
+    public ExactlyOne buildObject(String namespaceURI, String localName, String namespacePrefix) {
+        return new ExactlyOneImpl(namespaceURI, localName, namespacePrefix);
+    }
 
 }

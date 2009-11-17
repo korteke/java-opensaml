@@ -22,21 +22,18 @@ import org.opensaml.xml.AttributeExtensibleXMLObject;
 import org.opensaml.xml.ElementExtensibleXMLObject;
 
 /**
- * The &lt;wsp:AppliesTo&gt; element contains generally a
- * &lt;wsa:EndpointReference&gt; or <code>xs:any</code> elements.
+ * The wsp:AppliesTo element.
  * 
  * @see "WS-Policy (http://schemas.xmlsoap.org/ws/2004/09/policy)"
  * 
  */
-public interface AppliesTo extends AttributeExtensibleXMLObject,
-        ElementExtensibleXMLObject, WSPolicyObject {
+public interface AppliesTo extends AttributeExtensibleXMLObject, ElementExtensibleXMLObject, WSPolicyObject {
 
     /** Element local name. */
     public static final String ELEMENT_LOCAL_NAME= "AppliesTo";
 
-    /** Default element name */
-    public final static QName ELEMENT_NAME= new QName(WSPolicyConstants.WSP_NS,
-                                                      ELEMENT_LOCAL_NAME,
-                                                      WSPolicyConstants.WSP_PREFIX);
+    /** Default element name. */
+    public static final QName ELEMENT_NAME =
+        new QName(WSPolicyConstants.WSP_NS, ELEMENT_LOCAL_NAME, WSPolicyConstants.WSP_PREFIX);
 
 }

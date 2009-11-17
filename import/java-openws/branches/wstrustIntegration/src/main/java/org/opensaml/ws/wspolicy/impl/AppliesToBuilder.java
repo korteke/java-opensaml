@@ -21,30 +21,16 @@ import org.opensaml.ws.wspolicy.AppliesTo;
 /**
  * Builder for the AppliesTo element.
  * 
- * @see AppliesTo
- * 
  */
 public class AppliesToBuilder extends AbstractWSPolicyObjectBuilder<AppliesTo> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wspolicy.impl.AbstactWSPolicyObjectBuilder#buildObject()
-     */
-    @Override
+    /** {@inheritDoc} */
     public AppliesTo buildObject() {
         return buildObject(AppliesTo.ELEMENT_NAME);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AbstractXMLObjectBuilder#buildObject(java.lang.String,
-     *      java.lang.String, java.lang.String)
-     */
-    @Override
-    public AppliesTo buildObject(String namespaceURI, String localName,
-            String namespacePrefix) {
+    /** {@inheritDoc} */
+    public AppliesTo buildObject(String namespaceURI, String localName, String namespacePrefix) {
         return new AppliesToImpl(namespaceURI, localName, namespacePrefix);
     }
 

@@ -19,14 +19,15 @@ package org.opensaml.ws.wspolicy;
 import org.opensaml.xml.XMLObjectBuilder;
 
 /**
- * WSPolicyObjectBuilder
+ * WSPolicyObjectBuilder.
  * 
+ * @param <WSPolicyObjectType> the type of WS-Policy object being built
  */
 public interface WSPolicyObjectBuilder<WSPolicyObjectType extends WSPolicyObject>
         extends XMLObjectBuilder<WSPolicyObjectType> {
 
     /**
-     * Builds a WS-Policy object
+     * Builds a WS-Policy object.
      * 
      * @return the built object
      */

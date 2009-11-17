@@ -26,50 +26,30 @@ import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Attr;
 
 /**
- * Unmarshaller for the &lt;wsp:PolicyReference&gt; element.
- * 
- * @see PolicyReference
+ * Unmarshaller for the wsp:PolicyReference element.
  * 
  */
 public class PolicyReferenceUnmarshaller extends AbstractWSPolicyObjectUnmarshaller {
 
-    /**
-     * Default constructor.
-     * <p>
-     * {@inheritDoc}
-     */
-    public PolicyReferenceUnmarshaller() {
-        super();
-    }
-
-    /**
-     * Unmarshalls the <code>URI</code>, the <code>Digest</code>, the <code>DigestAlgoritm</code> and the
-     * <code>xs:anyAttribute</code> attributes.
-     * <p>
-     * {@inheritDoc}
-     */
-    @Override
+    /** {@inheritDoc} */
     protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
-        PolicyReference policyReference = (PolicyReference) xmlObject;
-        String attrName = attribute.getLocalName();
-        if (PolicyReference.URI_ATTR_LOCAL_NAME.equals(attrName)) {
-            String value = attribute.getValue();
-            policyReference.setURI(value);
-        } else if (PolicyReference.DIGEST_ATTR_LOCAL_NAME.equals(attrName)) {
-            String value = attribute.getValue();
-            policyReference.setDigest(value);
-        } else if (PolicyReference.DIGEST_ALGORITHM_ATTR_LOCAL_NAME.equals(attrName)) {
-            String value = attribute.getValue();
-            policyReference.setDigestAlgorithm(value);
-        }
-        // xs:anyAttribute
-        else {
-            QName attribQName = XMLHelper.constructQName(attribute.getNamespaceURI(), attribute.getLocalName(),
-                    attribute.getPrefix());
-            if (attribute.isId()) {
-                policyReference.getUnknownAttributes().registerID(attribQName);
-            }
-            policyReference.getUnknownAttributes().put(attribQName, attribute.getValue());
+        PolicyReference pr = (PolicyReference) xmlObject;
+
+        QName uriName = new QName(PolicyReference.URI_ATTRIB_NAME);
+        QName digestName = new QName(PolicyReference.DIGEST_ATTRIB_NAME);
+        QName digestAlgorithmName = new QName(PolicyReference.DIGEST_ALGORITHM_ATTRIB_NAME);
+
+        QName attribQName = 
+            XMLHelper.constructQName(attribute.getNamespaceURI(), attribute.getLocalName(), attribute .getPrefix());
+
+        if (uriName.equals(attribQName)) {
+            pr.setURI(attribute.getValue());
+        } else if (digestName.equals(attribQName)) {
+            pr.setDigest(attribute.getValue());
+        } else if (digestAlgorithmName.equals(attribQName)) {
+            pr.setDigestAlgorithm(attribute.getValue());
+        } else {
+            XMLHelper.unmarshallToAttributeMap(pr.getUnknownAttributes(), attribute);
         }
     }
 

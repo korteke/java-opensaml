@@ -22,16 +22,13 @@ import org.opensaml.ws.wspolicy.WSPolicyObjectBuilder;
 import org.opensaml.xml.AbstractXMLObjectBuilder;
 
 /**
- * AbstactWSPolicyObjectBuilder
- * 
+ * AbstactWSPolicyObjectBuilder.
+ *
+ * @param <T> the type of object being built
  */
 public abstract class AbstractWSPolicyObjectBuilder<T extends WSPolicyObject>
         extends AbstractXMLObjectBuilder<T> implements WSPolicyObjectBuilder<T> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wspolicy.WSPolicyObjectBuilder#buildObject()
-     */
+    /** {@inheritDoc} */
     public abstract T buildObject();
 }

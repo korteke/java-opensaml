@@ -1,12 +1,11 @@
 /*
- * Copyright 2008 Members of the EGEE Collaboration.
- * Copyright 2008 University Corporation for Advanced Internet Development, Inc.
+ * Copyright 2009 University Corporation for Advanced Internet Development, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,23 +16,21 @@
 
 package org.opensaml.ws.wspolicy.impl;
 
+import org.opensaml.ws.wspolicy.PolicyAttachment;
 import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.io.AbstractXMLObjectMarshaller;
 import org.opensaml.xml.io.MarshallingException;
+import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Element;
 
 /**
- * An abstract marshaller implementation for XMLObjects from {@link org.opensaml.ws.wssecurity}.
+ * Marshaller for PolicyAttachment.
  */
-public abstract class AbstractWSPolicyObjectMarshaller extends AbstractXMLObjectMarshaller {
+public class PolicyAttachmentMarshaller extends AbstractWSPolicyObjectMarshaller {
 
     /** {@inheritDoc} */
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
-
+        PolicyAttachment pa = (PolicyAttachment) xmlObject;
+        XMLHelper.marshallAttributeMap(pa.getUnknownAttributes(), domElement);
     }
 
-    /** {@inheritDoc} */
-    protected void marshallElementContent(XMLObject xmlObject, Element domElement) throws MarshallingException {
-
-    }
 }

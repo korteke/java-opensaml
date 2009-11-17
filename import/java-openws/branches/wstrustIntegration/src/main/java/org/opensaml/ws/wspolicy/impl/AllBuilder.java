@@ -14,14 +14,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.opensaml.ws.wspolicy;
+package org.opensaml.ws.wspolicy.impl;
 
-import org.opensaml.xml.XMLObject;
+import org.opensaml.ws.wspolicy.All;
 
 /**
- * WSPolicyObject is the base interface for all WS-Policy elements.
+ * Builder for the All element.
  * 
  */
-public interface WSPolicyObject extends XMLObject {
+public class AllBuilder extends AbstractWSPolicyObjectBuilder<All> {
+
+    /** {@inheritDoc} */
+    public All buildObject() {
+        return buildObject(All.ELEMENT_NAME);
+    }
+
+    /** {@inheritDoc} */
+    public All buildObject(String namespaceURI, String localName, String namespacePrefix) {
+        return new AllImpl(namespaceURI, localName, namespacePrefix);
+    }
 
 }

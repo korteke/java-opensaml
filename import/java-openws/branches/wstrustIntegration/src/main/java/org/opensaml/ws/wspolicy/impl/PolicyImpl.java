@@ -18,19 +18,22 @@
 package org.opensaml.ws.wspolicy.impl;
 
 import org.opensaml.ws.wspolicy.Policy;
-import org.opensaml.xml.AbstractExtensibleXMLObject;
+import org.opensaml.xml.util.AttributeMap;
 
 /**
- * PolicyImpl
+ * PolicyImpl.
  * 
  */
-public class PolicyImpl extends AbstractExtensibleXMLObject implements Policy {
+public class PolicyImpl extends OperatorContentTypeImpl implements Policy {
 
-    /** the wsu:Id attribute value */
-    private String id_ = null;
+    /** The wsu:Id attribute value. */
+    private String id;
 
-    /** the wsp:Name attribute value */
-    private String name_ = null;
+    /** The Name attribute value. */
+    private String name;
+    
+    /** Wildcard attributes. */
+    private AttributeMap unknownAttributes;
 
     /**
      * Constructor.
@@ -41,42 +44,33 @@ public class PolicyImpl extends AbstractExtensibleXMLObject implements Policy {
      */
     protected PolicyImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
+        unknownAttributes = new AttributeMap(this);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wssecurity.AttributedId#getId()
-     */
-    public String getWSUId() {
-        return id_;
-    }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wssecurity.AttributedId#setId(java.lang.String)
-     */
-    public void setWSUId(String id) {
-        id_ = prepareForAssignment(id_, id);
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wspolicy.Policy#getName()
-     */
+    /** {@inheritDoc} */
     public String getName() {
-        return name_;
+        return name;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wspolicy.Policy#setName(java.lang.String)
-     */
-    public void setName(String name) {
-        name_ = prepareForAssignment(name_, name);
+    /** {@inheritDoc} */
+    public void setName(String newName) {
+        name = prepareForAssignment(name, newName);
+    }
+
+    /** {@inheritDoc} */
+    public String getWSUId() {
+        return id;
+    }
+
+    /** {@inheritDoc} */
+    public void setWSUId(String newId) {
+        id = prepareForAssignment(id, newId);
+    }
+    
+    /** {@inheritDoc} */
+    public AttributeMap getUnknownAttributes() {
+        return unknownAttributes;
     }
 
 }

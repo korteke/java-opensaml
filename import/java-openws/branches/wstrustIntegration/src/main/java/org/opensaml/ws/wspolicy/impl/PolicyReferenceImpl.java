@@ -17,26 +17,29 @@
 
 package org.opensaml.ws.wspolicy.impl;
 
+import java.util.List;
+
 import org.opensaml.ws.wspolicy.PolicyReference;
+import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.util.AttributeMap;
 
 /**
- * PolicyReferenceImpl
+ * PolicyReferenceImpl.
  * 
  */
 public class PolicyReferenceImpl extends AbstractWSPolicyObject implements PolicyReference {
 
-    /** URI attribute value */
-    private String uri_ = null;
+    /** URI attribute value. */
+    private String uri;
 
-    /** Digest attribute value */
-    private String digest_ = null;
+    /** Digest attribute value. */
+    private String digest;
 
-    /** DigestAlgorithm attribute value */
-    private String digestAlgorithm_ = null;
+    /** DigestAlgorithm attribute value. */
+    private String digestAlgorithm;
 
-    /** xs:anyAttribute attributes */
-    private AttributeMap anyAttributes_;
+    /** xs:anyAttribute attributes. */
+    private AttributeMap unknownAttributes;
 
     /**
      * Constructor.
@@ -47,70 +50,47 @@ public class PolicyReferenceImpl extends AbstractWSPolicyObject implements Polic
      */
     public PolicyReferenceImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        anyAttributes_ = new AttributeMap(this);
+        unknownAttributes = new AttributeMap(this);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wspolicy.PolicyReference#getDigest()
-     */
+    /** {@inheritDoc} */
     public String getDigest() {
-        return digest_;
+        return digest;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wspolicy.PolicyReference#getDigestAlgorithm()
-     */
+    /** {@inheritDoc} */
     public String getDigestAlgorithm() {
-        return digestAlgorithm_;
+        return digestAlgorithm;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wspolicy.PolicyReference#getURI()
-     */
+    /** {@inheritDoc} */
     public String getURI() {
-        return uri_;
+        return uri;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wspolicy.PolicyReference#setDigest(java.lang.String)
-     */
-    public void setDigest(String digest) {
-        digest_ = prepareForAssignment(digest_, digest);
+    /** {@inheritDoc} */
+    public void setDigest(String newDigest) {
+        digest = prepareForAssignment(digest, newDigest);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wspolicy.PolicyReference#setDigestAlgorithm(java.lang.String)
-     */
-    public void setDigestAlgorithm(String digestAlgorithm) {
-        digestAlgorithm_ = prepareForAssignment(digestAlgorithm_, digestAlgorithm);
+    /** {@inheritDoc} */
+    public void setDigestAlgorithm(String newDigestAlgorithm) {
+        digestAlgorithm = prepareForAssignment(digestAlgorithm, newDigestAlgorithm);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wspolicy.PolicyReference#setURI(java.lang.String)
-     */
-    public void setURI(String uri) {
-        uri_ = prepareForAssignment(uri_, uri);
+    /** {@inheritDoc} */
+    public void setURI(String newURI) {
+        uri = prepareForAssignment(uri, newURI);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AttributeExtensibleXMLObject#getUnknownAttributes()
-     */
+    /** {@inheritDoc} */
     public AttributeMap getUnknownAttributes() {
-        return anyAttributes_;
+        return unknownAttributes;
+    }
+
+    /** {@inheritDoc} */
+    public List<XMLObject> getOrderedChildren() {
+        return null;
     }
 
 }

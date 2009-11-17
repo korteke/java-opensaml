@@ -17,14 +17,11 @@
 
 package org.opensaml.ws.wspolicy.impl;
 
-import java.util.List;
-
 import org.opensaml.ws.wspolicy.WSPolicyObject;
-import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.validation.AbstractValidatingXMLObject;
 
 /**
- * AbstractWSSecurityObject
+ * AbstractWSSecurityObject.
  * 
  */
 public abstract class AbstractWSPolicyObject extends AbstractValidatingXMLObject implements WSPolicyObject {
@@ -38,16 +35,6 @@ public abstract class AbstractWSPolicyObject extends AbstractValidatingXMLObject
      */
     public AbstractWSPolicyObject(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-    }
-
-    /*
-     * No-op method. No child by default.
-     * 
-     * @see org.opensaml.xml.XMLObject#getOrderedChildren()
-     */
-    public List<XMLObject> getOrderedChildren() {
-        // no children
-        return null;
     }
 
 }

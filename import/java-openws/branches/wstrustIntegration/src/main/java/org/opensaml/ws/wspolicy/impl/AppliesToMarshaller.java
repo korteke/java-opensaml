@@ -20,23 +20,20 @@ package org.opensaml.ws.wspolicy.impl;
 import org.opensaml.ws.wspolicy.AppliesTo;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
+import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Element;
 
+
 /**
- * Marshaller for the &lt;wsp:AppliesTo&gt; element.
- * 
- * @see AppliesTo
+ * Marshaller for the wsp:AppliesTo element.
  * 
  */
 public class AppliesToMarshaller extends AbstractWSPolicyObjectMarshaller {
-
-    /**
-     * No text context.
-     * <p>
-     * {@inheritDoc}
-     */
-    @Override
-    protected void marshallElementContent(XMLObject xmlObject, Element domElement) throws MarshallingException {
+    
+    /** {@inheritDoc} */
+    protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
+        AppliesTo at = (AppliesTo) xmlObject;
+        XMLHelper.marshallAttributeMap(at.getUnknownAttributes(), domElement);
     }
 
 }

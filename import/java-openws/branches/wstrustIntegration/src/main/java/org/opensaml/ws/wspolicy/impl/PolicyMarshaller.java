@@ -18,55 +18,32 @@
 package org.opensaml.ws.wspolicy.impl;
 
 import org.opensaml.ws.wspolicy.Policy;
-import org.opensaml.xml.AbstractExtensibleXMLObjectMarshaller;
+import org.opensaml.ws.wssecurity.IdBearing;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.util.XMLHelper;
-import org.w3c.dom.Attr;
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+
 /**
- * Marshaller for the &lt;wsp:Policy&gt; element.
- * 
- * @see Policy
+ * Marshaller for the wsp:Policy element.
  * 
  */
-public class PolicyMarshaller extends AbstractExtensibleXMLObjectMarshaller {
+public class PolicyMarshaller extends OperatorContentTypeMarshaller {
 
-    /**
-     * Default constructor.
-     * <p>
-     * {@inheritDoc}
-     */
-    public PolicyMarshaller() {
-        super();
-    }
-
-    /**
-     * Marshalls the <code>wsu:Id</code> and the <code>Name</code> attributes.
-     * <p>
-     * {@inheritDoc}
-     */
-    @Override
+    /** {@inheritDoc} */
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
-        Document document = domElement.getOwnerDocument();
         Policy policy = (Policy) xmlObject;
-        String id = policy.getWSUId();
-        if (id != null) {
-            Attr attribute = XMLHelper.constructAttribute(document, Policy.WSU_ID_ATTR_NAME);
-            attribute.setValue(id);
-            domElement.setAttributeNodeNS(attribute);
-            domElement.setIdAttributeNode(attribute, true);
+        
+        if (policy.getName() != null) {
+            domElement.setAttributeNS(null, Policy.NAME_ATTRIB_NAME, policy.getName());
         }
-        String name = policy.getName();
-        if (name != null) {
-            Attr attribute = XMLHelper.constructAttribute(document, Policy.NAME_ATTR_NAME);
-            attribute.setValue(name);
-            domElement.setAttributeNodeNS(attribute);
+        
+        if (policy.getWSUId() != null) {
+            XMLHelper.marshallAttribute(IdBearing.WSU_ID_ATTR_NAME, policy.getWSUId(), domElement, true);
         }
-        // xs:anyAttribute
-        super.marshallAttributes(xmlObject, domElement);
+        
+        XMLHelper.marshallAttributeMap(policy.getUnknownAttributes(), domElement);
     }
 
 }

@@ -21,39 +21,34 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.ws.wssecurity.IdBearing;
 import org.opensaml.xml.AttributeExtensibleXMLObject;
-import org.opensaml.xml.ElementExtensibleXMLObject;
 
 /**
- * The &lt;wsp:Policy&gt; element.
+ * The wsp:Policy element.
  * 
  * @see "WS-Policy (http://schemas.xmlsoap.org/ws/2004/09/policy)"
  * 
- * 
  */
-public interface Policy extends AttributeExtensibleXMLObject, ElementExtensibleXMLObject, IdBearing, WSPolicyObject {
+public interface Policy extends OperatorContentType, AttributeExtensibleXMLObject, IdBearing {
 
     /** Element local name. */
     public static final String ELEMENT_LOCAL_NAME = "Policy";
 
-    /** Default element name */
-    public final static QName ELEMENT_NAME = new QName(WSPolicyConstants.WSP_NS, ELEMENT_LOCAL_NAME,
-            WSPolicyConstants.WSP_PREFIX);
+    /** Default element name. */
+    public static final QName ELEMENT_NAME =
+        new QName(WSPolicyConstants.WSP_NS, ELEMENT_LOCAL_NAME, WSPolicyConstants.WSP_PREFIX);
 
-    /** The &lt;wsp:Policy/@Name&gt; attribute local name */
-    public static final String NAME_ATTR_LOCAL_NAME = "Name";
-
-    /** The &lt;wsp:Policy/@Name&gt; attribute name */
-    public static final QName NAME_ATTR_NAME = new QName(NAME_ATTR_LOCAL_NAME);
+    /** The wsp:Policy/@Name attribute local name. */
+    public static final String NAME_ATTRIB_NAME = "Name";
 
     /**
-     * Returns the &lt;wsp:Policy/@Name&gt; attribute value.
+     * Returns the wsp:Policy/@Name attribute value.
      * 
      * @return the <code>Name</code> attribute value or <code>null</code>.
      */
     public String getName();
 
     /**
-     * Sets the &lt;wsp:Policy/@Name&gt; attribute value.
+     * Sets the wsp:Policy/@Name attribute value.
      * 
      * @param name the <code>Name</code> attribute value to set.
      */

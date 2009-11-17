@@ -1,12 +1,11 @@
 /*
- * Copyright 2008 Members of the EGEE Collaboration.
- * Copyright 2008 University Corporation for Advanced Internet Development, Inc.
+ * Copyright 2009 University Corporation for Advanced Internet Development, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -24,15 +23,23 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.opensaml.ws.wspolicy.AppliesTo;
+import org.opensaml.ws.wspolicy.Policy;
+import org.opensaml.ws.wspolicy.PolicyAttachment;
+import org.opensaml.ws.wspolicy.PolicyReference;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.util.AttributeMap;
 import org.opensaml.xml.util.IndexedXMLObjectChildrenList;
 
 /**
- * AppliesToImpl.
- * 
+ * PolicyAttachmentImpl.
  */
-public class AppliesToImpl extends AbstractWSPolicyObject implements AppliesTo {
+public class PolicyAttachmentImpl extends AbstractWSPolicyObject implements PolicyAttachment {
+    
+    /** AppliesTo Child element. */
+    private AppliesTo appliesTo;
+    
+    /** Policy and PolicyReference children. */
+    private IndexedXMLObjectChildrenList<XMLObject> policiesAndReferences;
     
     /** Wildcard child elements. */
     private IndexedXMLObjectChildrenList<XMLObject> unknownChildren;
@@ -47,10 +54,31 @@ public class AppliesToImpl extends AbstractWSPolicyObject implements AppliesTo {
      * @param elementLocalName The local name of the element
      * @param namespacePrefix The namespace prefix of the element
      */
-    protected AppliesToImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
+    public PolicyAttachmentImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
+        policiesAndReferences = new IndexedXMLObjectChildrenList<XMLObject>(this);
         unknownChildren = new IndexedXMLObjectChildrenList<XMLObject>(this);
         unknownAttributes = new AttributeMap(this);
+    }
+
+    /** {@inheritDoc} */
+    public AppliesTo getAppliesTo() {
+        return appliesTo;
+    }
+
+    /** {@inheritDoc} */
+    public void setAppliesTo(AppliesTo newAppliesTo) {
+        appliesTo = prepareForAssignment(appliesTo, newAppliesTo);
+    }
+
+    /** {@inheritDoc} */
+    public List<Policy> getPolicies() {
+        return (List<Policy>) policiesAndReferences.subList(Policy.ELEMENT_NAME);
+    }
+
+    /** {@inheritDoc} */
+    public List<PolicyReference> getPolicyReferences() {
+        return (List<PolicyReference>) policiesAndReferences.subList(PolicyReference.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
@@ -71,8 +99,12 @@ public class AppliesToImpl extends AbstractWSPolicyObject implements AppliesTo {
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
         ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        if (appliesTo != null) {
+            children.add(appliesTo);
+        }
+        children.addAll(policiesAndReferences);
         children.addAll(unknownChildren);
         return Collections.unmodifiableList(children);
     }
-    
+
 }

@@ -21,32 +21,16 @@ import org.opensaml.ws.wspolicy.Policy;
 /**
  * Builder for the Policy element.
  * 
- * @see Policy
- * 
  */
 public class PolicyBuilder extends AbstractWSPolicyObjectBuilder<Policy> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.wstrust.impl.AbstractWSTrustObjectBuilder#buildObject()
-     * @see Policy
-     */
-    @Override
+    /** {@inheritDoc} */
     public Policy buildObject() {
         return buildObject(Policy.ELEMENT_NAME);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AbstractXMLObjectBuilder#buildObject(java.lang.String,
-     *      java.lang.String, java.lang.String)
-     * @see Policy
-     */
-    @Override
-    public Policy buildObject(String namespaceURI, String localName,
-            String namespacePrefix) {
+    /** {@inheritDoc} */
+    public Policy buildObject(String namespaceURI, String localName, String namespacePrefix) {
         return new PolicyImpl(namespaceURI, localName, namespacePrefix);
     }
 

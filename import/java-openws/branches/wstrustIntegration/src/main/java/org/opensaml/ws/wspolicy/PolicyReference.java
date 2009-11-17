@@ -22,7 +22,7 @@ import javax.xml.namespace.QName;
 import org.opensaml.xml.AttributeExtensibleXMLObject;
 
 /**
- * The &lt;wsp:PolicyReference&gt; element.
+ * The wsp:PolicyReference element.
  * 
  * @see "WS-Policy (http://schemas.xmlsoap.org/ws/2004/09/policy)"
  * 
@@ -32,68 +32,59 @@ public interface PolicyReference extends AttributeExtensibleXMLObject, WSPolicyO
     /** Element local name. */
     public static final String ELEMENT_LOCAL_NAME = "PolicyReference";
 
-    /** Default element name */
-    public final static QName ELEMENT_NAME = new QName(WSPolicyConstants.WSP_NS, ELEMENT_LOCAL_NAME,
-            WSPolicyConstants.WSP_PREFIX);
+    /** Default element name. */
+    public static final QName ELEMENT_NAME =
+        new QName(WSPolicyConstants.WSP_NS, ELEMENT_LOCAL_NAME, WSPolicyConstants.WSP_PREFIX);
 
-    /** The &lt;wsp:PolicyReference/@URI&gt; attribute local name */
-    public static final String URI_ATTR_LOCAL_NAME = "URI";
+    /** The wsp:PolicyReference/@URI attribute local name. */
+    public static final String URI_ATTRIB_NAME = "URI";
 
-    /** The &lt;wsp:PolicyReference/@URI&gt; attribute name */
-    public static final QName URI_ATTR_NAME = new QName(URI_ATTR_LOCAL_NAME);
+    /** The wsp:PolicyReference/@Digest attribute local name. */
+    public static final String DIGEST_ATTRIB_NAME = "Digest";
 
-    /** The &lt;wsp:PolicyReference/@Digest&gt; attribute local name */
-    public static final String DIGEST_ATTR_LOCAL_NAME = "Digest";
+    /** The wsp:PolicyReference/@Digest attribute local name. */
+    public static final String DIGEST_ALGORITHM_ATTRIB_NAME = "DigestAlgorithm";
 
-    /** The &lt;wsp:PolicyReference/@Digest&gt; attribute name */
-    public static final QName DIGEST_ATTR_NAME = new QName(DIGEST_ATTR_LOCAL_NAME);
-
-    /** The &lt;wsp:PolicyReference/@Digest&gt; attribute local name */
-    public static final String DIGEST_ALGORITHM_ATTR_LOCAL_NAME = "DigestAlgorithm";
-
-    /** The &lt;wsp:PolicyReference/@Digest&gt; attribute name */
-    public static final QName DIGEST_ALGORITHM_ATTR_NAME = new QName(DIGEST_ALGORITHM_ATTR_LOCAL_NAME);
-
-    /** The default &lt;wsp:PolicyReference/@DigestAlgorithm&gt; attribute value */
-    public static final String DIGESTALGORITHM_SHA1EXC = WSPolicyConstants.WSP_NS + "/Sha1Exc";
+    /** The default wsp:PolicyReference/@DigestAlgorithm attribute value. */
+    public static final String DIGEST_ALGORITHM_SHA1EXC = WSPolicyConstants.WSP_NS + "/Sha1Exc";
 
     /**
-     * Returns the &lt;wsp:PolicyReference/@URI&gt; attribute value.
+     * Returns the wsp:PolicyReference/@URI attribute value.
      * 
      * @return the URI attribute value.
      */
     public String getURI();
 
     /**
-     * Sets the &lt;wsp:PolicyReference/@URI&gt; attribute value.
+     * Sets the wsp:PolicyReference/@URI attribute value.
      * 
      * @param uri the URI attribute value to set.
      */
     public void setURI(String uri);
 
     /**
-     * Returns the &lt;wsp:PolicyReference/@Digest&gt; attribute URI value.
+     * Returns the wsp:PolicyReference/@Digest attribute URI value.
      * 
      * @return the Digest attribute URI value.
      */
     public String getDigest();
 
     /**
-     * Sets the &lt;wsp:PolicyReference/@Digest&gt; attribute URI value.
+     * Sets the wsp:PolicyReference/@Digest attribute URI value.
      * 
      * @param digest the Digest attribute URI value to set.
      */
     public void setDigest(String digest);
 
     /**
-     * Returns the &lt;wsp:PolicyReference/@DigestAlgoritm&gt; attribute Base64 binary value.
+     * Returns the wsp:PolicyReference/@DigestAlgoritm attribute Base64 binary value.
      * 
      * @return the DigestAlgoritm attribute Base64 binary value.
      */
     public String getDigestAlgorithm();
 
     /**
-     * Sets the &lt;wsp:PolicyReference/@DigestAlgoritm&gt; attribute Base64 binary value.
+     * Sets the wsp:PolicyReference/@DigestAlgoritm attribute Base64 binary value.
      * 
      * @param digestAlgorithm the DigestAlgoritm attribute Base64 binary value to set.
      */

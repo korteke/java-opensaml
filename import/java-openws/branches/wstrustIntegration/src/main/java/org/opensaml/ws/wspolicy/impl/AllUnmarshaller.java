@@ -14,14 +14,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.opensaml.ws.wspolicy;
 
-import org.opensaml.xml.XMLObject;
+package org.opensaml.ws.wspolicy.impl;
+
 
 /**
- * WSPolicyObject is the base interface for all WS-Policy elements.
+ * Unmarshaller for the wsp:All element.
  * 
  */
-public interface WSPolicyObject extends XMLObject {
+public class AllUnmarshaller extends OperatorContentTypeUnmarshaller {
 
 }
