@@ -69,7 +69,7 @@ public class AuthenticatorImpl extends AbstractWSTrustObject implements Authenti
 
     /** {@inheritDoc} */
     public List<XMLObject> getUnknownXMLObjects(QName typeOrName) {
-        return unknownChildren.get(typeOrName);
+        return (List<XMLObject>) unknownChildren.subList(typeOrName);
     }
 
     /** {@inheritDoc} */

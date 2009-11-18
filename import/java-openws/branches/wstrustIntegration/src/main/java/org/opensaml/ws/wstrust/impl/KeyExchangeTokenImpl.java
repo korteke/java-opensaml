@@ -54,7 +54,7 @@ public class KeyExchangeTokenImpl extends AbstractWSTrustObject implements KeyEx
 
     /** {@inheritDoc} */
     public List<XMLObject> getUnknownXMLObjects(QName typeOrName) {
-        return unknownChildren.get(typeOrName);
+        return (List<XMLObject>) unknownChildren.subList(typeOrName);
     }
 
     /** {@inheritDoc} */

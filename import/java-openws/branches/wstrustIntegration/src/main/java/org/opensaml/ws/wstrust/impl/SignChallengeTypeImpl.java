@@ -79,7 +79,7 @@ public class SignChallengeTypeImpl extends AbstractWSTrustObject implements Sign
 
     /** {@inheritDoc} */
     public List<XMLObject> getUnknownXMLObjects(QName typeOrName) {
-        return unknownChildren.get(typeOrName);
+        return (List<XMLObject>) unknownChildren.subList(typeOrName);
     }
     
     /** {@inheritDoc} */

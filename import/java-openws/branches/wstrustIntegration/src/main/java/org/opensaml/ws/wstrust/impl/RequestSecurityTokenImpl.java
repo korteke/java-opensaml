@@ -73,7 +73,7 @@ public class RequestSecurityTokenImpl extends AbstractWSTrustObject implements R
 
     /** {@inheritDoc} */
     public List<XMLObject> getUnknownXMLObjects(QName typeOrName) {
-        return unknownChildren.get(typeOrName);
+        return (List<XMLObject>) unknownChildren.subList(typeOrName);
     }
 
     /** {@inheritDoc} */

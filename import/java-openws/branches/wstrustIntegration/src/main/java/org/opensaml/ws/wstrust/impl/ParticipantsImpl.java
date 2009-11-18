@@ -79,7 +79,7 @@ public class ParticipantsImpl extends AbstractWSTrustObject implements Participa
 
     /** {@inheritDoc} */
     public List<XMLObject> getUnknownXMLObjects(QName typeOrName) {
-        return unknownChildren.get(typeOrName);
+        return (List<XMLObject>) unknownChildren.subList(typeOrName);
     }
 
     /** {@inheritDoc} */
