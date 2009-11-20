@@ -23,7 +23,7 @@ import javax.xml.namespace.QName;
  * 
  * @see "WS-Policy (http://schemas.xmlsoap.org/ws/2004/09/policy)"
  */
-public interface ExactlyOne extends WSPolicyObject {
+public interface ExactlyOne extends OperatorContentType {
     
     /** Element local name. */
     public static final String ELEMENT_LOCAL_NAME = "ExactlyOne";

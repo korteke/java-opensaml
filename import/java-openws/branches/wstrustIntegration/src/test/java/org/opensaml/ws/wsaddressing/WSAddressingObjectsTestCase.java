@@ -19,7 +19,6 @@ package org.opensaml.ws.wsaddressing;
 import java.io.InputStream;
 
 import org.opensaml.ws.WSBaseTestCase;
-import org.opensaml.ws.wssecurity.WSSecurityObjectsTestCase;
 import org.opensaml.xml.XMLConfigurator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +29,7 @@ import org.slf4j.LoggerFactory;
  */
 public class WSAddressingObjectsTestCase extends WSBaseTestCase {
 
-    public Logger log= LoggerFactory.getLogger(WSSecurityObjectsTestCase.class);
+    public Logger log= LoggerFactory.getLogger(WSAddressingObjectsTestCase.class);
 
     /*
      * (non-Javadoc)
@@ -39,7 +38,7 @@ public class WSAddressingObjectsTestCase extends WSBaseTestCase {
      */
     @Override
     protected void configureWS() throws Exception {
-        // load ws-security config
+        // load ws-policy config
         InputStream is= getClass().getResourceAsStream("/wsaddressing-config.xml");
         XMLConfigurator configurator= new XMLConfigurator();
         configurator.load(is);
