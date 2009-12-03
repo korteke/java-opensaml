@@ -31,12 +31,7 @@ public class WSAddressingObjectsTestCase extends WSBaseTestCase {
 
     public Logger log= LoggerFactory.getLogger(WSAddressingObjectsTestCase.class);
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.WSBaseTestCase#configureWS()
-     */
-    @Override
+    /** {@inheritDoc} */
     protected void configureWS() throws Exception {
         // load ws-policy config
         InputStream is= getClass().getResourceAsStream("/wsaddressing-config.xml");
@@ -67,11 +62,17 @@ public class WSAddressingObjectsTestCase extends WSBaseTestCase {
         epr.setReferenceParameters(referenceParameters);
         marshallAndUnmarshall(epr);
     }
+    
+    public void testFaultTo() {
+        //TODO
+    }
 
-    public void testReferenceParameters() throws Exception {
-        ReferenceParameters referenceParameters= buildXMLObject(ReferenceParameters.ELEMENT_NAME);
-        // TODO: add some child elements
-        marshallAndUnmarshall(referenceParameters);
+    public void testFrom() {
+        //TODO
+    }
+
+    public void testMessageID() {
+        //TODO
     }
 
     public void testMetadata() throws Exception {
@@ -79,6 +80,44 @@ public class WSAddressingObjectsTestCase extends WSBaseTestCase {
         // TODO: add some child elements
 
         marshallAndUnmarshall(metadata);
+    }
+    
+    public void testProblemAction() {
+        //TODO
+    }
+
+    public void testProblemHeaderQName() {
+        //TODO
+    }
+
+    public void testProblemIRI() {
+        //TODO
+    }
+    
+    public void testReferenceParameters() throws Exception {
+        ReferenceParameters referenceParameters= buildXMLObject(ReferenceParameters.ELEMENT_NAME);
+        // TODO: add some child elements
+        marshallAndUnmarshall(referenceParameters);
+    }
+
+    public void testRelatesTo() {
+        //TODO
+    }
+
+    public void testReplyTo() {
+        //TODO
+    }
+
+    public void testRetryAfter() {
+        //TODO
+    }
+
+    public void testSoapAction() {
+        //TODO
+    }
+
+    public void testTo() {
+        //TODO
     }
 
 }

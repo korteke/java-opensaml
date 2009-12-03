@@ -23,24 +23,9 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.opensaml.ws.WSBaseTestCase;
-import org.opensaml.ws.wssecurity.BinarySecurityToken;
-import org.opensaml.ws.wssecurity.Created;
-import org.opensaml.ws.wssecurity.AttributedDateTime;
-import org.opensaml.ws.wssecurity.Embedded;
-import org.opensaml.ws.wssecurity.Expires;
-import org.opensaml.ws.wssecurity.Iteration;
-import org.opensaml.ws.wssecurity.Nonce;
-import org.opensaml.ws.wssecurity.Password;
-import org.opensaml.ws.wssecurity.Reference;
-import org.opensaml.ws.wssecurity.Salt;
-import org.opensaml.ws.wssecurity.Timestamp;
-import org.opensaml.ws.wssecurity.Username;
-import org.opensaml.ws.wssecurity.UsernameToken;
 import org.opensaml.xml.XMLConfigurator;
 import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.encryption.EncryptedData;
 import org.opensaml.xml.io.Marshaller;
-import org.opensaml.xml.schema.XSBooleanValue;
 import org.opensaml.xml.util.XMLHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -73,6 +58,102 @@ public class WSSecurityObjectsTestCase extends WSBaseTestCase {
         // TODO implementation
     }
 
+    public void testBinarySecurityToken() throws Exception {
+        BinarySecurityToken token= buildXMLObject(BinarySecurityToken.ELEMENT_NAME);
+        token.setWSUId("BinarySecurityToken-" + System.currentTimeMillis());
+        token.setValue("Base64Encoded_X509_CERTIFICATE...");
+        token.setValueType("http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-x509-token-profile-1.0#X509v3");
+        // check default encoding type
+        assertEquals(BinarySecurityToken.ENCODING_TYPE_BASE64_BINARY, token.getEncodingType());
+    
+        marshallAndUnmarshall(token);
+    
+    }
+    
+    public void testCreated() throws Exception {
+        //TODO
+    }
+
+    public void testEmbedded() throws Exception {
+        Embedded embedded= buildXMLObject(Embedded.ELEMENT_NAME);
+    
+        UsernameToken usernameToken= createUsernameToken("EmbeddedUT",
+                                                         "EmbeddedUT");
+    
+        embedded.setValueType("http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#UsernameToken");
+        embedded.getUnknownXMLObjects().add(usernameToken);
+    
+        marshallAndUnmarshall(embedded);
+    
+    }
+
+    public void testEncryptedHeader() throws Exception {
+        EncryptedHeader eh = buildXMLObject(EncryptedHeader.ELEMENT_NAME);
+        eh.setWSUId("abc123");
+        eh.setSOAP11MustUnderstand(true);
+        eh.setSOAP11Actor("urn:test:soap11actor");
+        eh.setSOAP12MustUnderstand(true);
+        eh.setSOAP12Role("urn:test:soap12role");
+        eh.setSOAP12Relay(true);
+        marshallAndUnmarshall(eh);
+    }
+
+    public void testExpires() throws Exception {
+        //TODO
+    }
+
+    public void testIteration() throws Exception {
+        Iteration iteration= buildXMLObject(Iteration.ELEMENT_NAME);
+        iteration.setValue(new Integer(1000));
+        marshallAndUnmarshall(iteration);
+    }
+    
+    public void testKeyIdentifier() throws Exception {
+        //TODO
+    }
+
+    public void testNonce() throws Exception {
+        Nonce nonce= buildXMLObject(Nonce.ELEMENT_NAME);
+        nonce.setValue("Base64EncodedValue...");
+        marshallAndUnmarshall(nonce);
+    }
+
+    public void testPassword() throws Exception {
+    
+        Password password= buildXMLObject(Password.ELEMENT_NAME);
+        password.setValue("test");
+        // check default
+        assertEquals(Password.TYPE_PASSWORD_TEXT, password.getType());
+        marshallAndUnmarshall(password);
+    }
+
+    public void testReference() throws Exception {
+        Reference reference= buildXMLObject(Reference.ELEMENT_NAME);
+    
+        reference.setValueType("http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#UsernameToken");
+        reference.setURI("#UsernameToken-0000001");
+    
+        marshallAndUnmarshall(reference);
+    }
+
+    public void testSalt() throws Exception {
+        Salt salt= buildXMLObject(Salt.ELEMENT_NAME);
+        salt.setValue("Base64Encoded_Salt_VALUE...");
+        marshallAndUnmarshall(salt);
+    }
+
+    public void testSecurity() throws Exception {
+        //TODO
+    }
+    
+    public void testSecurityTokenReference() throws Exception {
+        //TODO
+    }
+    
+    public void testSignatureConfirmation() throws Exception {
+        //TODO
+    }
+
     public void testTimestamp() throws Exception {
         Timestamp timestamp= buildXMLObject(Timestamp.ELEMENT_NAME);
         Created created= buildXMLObject(Created.ELEMENT_NAME);
@@ -88,49 +169,15 @@ public class WSSecurityObjectsTestCase extends WSBaseTestCase {
 
         marshallAndUnmarshall(timestamp);
     }
+    
+    public void testTransformationParameters() throws Exception {
+        //TODO
+    }
 
     public void testUsername() throws Exception {
         Username username= buildXMLObject(Username.ELEMENT_NAME);
         username.setValue("test");
         marshallAndUnmarshall(username);
-    }
-
-    public void testNonce() throws Exception {
-        Nonce nonce= buildXMLObject(Nonce.ELEMENT_NAME);
-        nonce.setValue("Base64EncodedValue...");
-        marshallAndUnmarshall(nonce);
-    }
-
-    public void testSalt() throws Exception {
-        Salt salt= buildXMLObject(Salt.ELEMENT_NAME);
-        salt.setValue("Base64Encoded_Salt_VALUE...");
-        marshallAndUnmarshall(salt);
-    }
-
-    public void testIteration() throws Exception {
-        Iteration iteration= buildXMLObject(Iteration.ELEMENT_NAME);
-        iteration.setValue(new Integer(1000));
-        marshallAndUnmarshall(iteration);
-    }
-
-    public void testPassword() throws Exception {
-
-        Password password= buildXMLObject(Password.ELEMENT_NAME);
-        password.setValue("test");
-        // check default
-        assertEquals(Password.TYPE_PASSWORD_TEXT, password.getType());
-        marshallAndUnmarshall(password);
-    }
-    
-    public void testEncryptedHeader() throws Exception {
-        EncryptedHeader eh = buildXMLObject(EncryptedHeader.ELEMENT_NAME);
-        eh.setWSUId("abc123");
-        eh.setSOAP11MustUnderstand(true);
-        eh.setSOAP11Actor("urn:test:soap11actor");
-        eh.setSOAP12MustUnderstand(true);
-        eh.setSOAP12Role("urn:test:soap12role");
-        eh.setSOAP12Relay(true);
-        marshallAndUnmarshall(eh);
     }
 
     public void testUsernameToken() throws Exception {
@@ -180,40 +227,6 @@ public class WSSecurityObjectsTestCase extends WSBaseTestCase {
         assertNotNull(utCreated);
         DateTime created= utCreated.getDateTime();
         System.out.println(created);
-
-    }
-
-    public void testBinarySecurityToken() throws Exception {
-        BinarySecurityToken token= buildXMLObject(BinarySecurityToken.ELEMENT_NAME);
-        token.setWSUId("BinarySecurityToken-" + System.currentTimeMillis());
-        token.setValue("Base64Encoded_X509_CERTIFICATE...");
-        token.setValueType("http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-x509-token-profile-1.0#X509v3");
-        // check default encoding type
-        assertEquals(BinarySecurityToken.ENCODING_TYPE_BASE64_BINARY, token.getEncodingType());
-
-        marshallAndUnmarshall(token);
-
-    }
-
-    public void testReference() throws Exception {
-        Reference reference= buildXMLObject(Reference.ELEMENT_NAME);
-
-        reference.setValueType("http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#UsernameToken");
-        reference.setURI("#UsernameToken-0000001");
-
-        marshallAndUnmarshall(reference);
-    }
-
-    public void testEmbedded() throws Exception {
-        Embedded embedded= buildXMLObject(Embedded.ELEMENT_NAME);
-
-        UsernameToken usernameToken= createUsernameToken("EmbeddedUT",
-                                                         "EmbeddedUT");
-
-        embedded.setValueType("http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#UsernameToken");
-        embedded.getUnknownXMLObjects().add(usernameToken);
-
-        marshallAndUnmarshall(embedded);
 
     }
 

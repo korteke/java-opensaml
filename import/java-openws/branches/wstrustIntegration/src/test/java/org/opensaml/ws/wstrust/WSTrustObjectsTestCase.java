@@ -159,7 +159,107 @@ public class WSTrustObjectsTestCase extends WSBaseTestCase {
         delegateTo.setUnknownXMLObject(createUsernameToken("delegateUser", "delegatePassord"));
         marshallAndUnmarshall(delegateTo);
     }
+    
+    public void testEncryption() throws Exception {
+        //TODO
+    }
 
+    public void testEncryptionAlgorithm() throws Exception {
+        //TODO
+    }
+
+    public void testEncryptWith() throws Exception {
+        //TODO
+    }
+
+    public void testEntropy() throws Exception {
+        //TODO
+    }
+
+    public void testForwardable() throws Exception {
+        //TODO
+    }
+
+    public void testIssuedTokens() throws Exception {
+        //TODO
+    }
+
+    public void testIssuer() throws Exception {
+        //TODO
+    }
+
+    public void testKeyExchangeToken() throws Exception {
+        //TODO
+    }
+
+    public void testKeySize() throws Exception {
+        //TODO
+    }
+    
+    public void testKeyType() throws Exception {
+        //TODO
+    }
+
+    public void testKeyWrapAlgorithm() throws Exception {
+        //TODO
+    }
+    
+    public void testLifetime() throws Exception {
+        //TODO
+    }
+
+    public void testOnBehalfOf() throws Exception {
+        //TODO
+    }
+
+    public void testParticipant() throws Exception {
+        //TODO
+    }
+
+    public void testPrimary() throws Exception {
+        //TODO
+    }
+
+    public void testProofEncryption() throws Exception {
+        //TODO
+    }
+
+    public void testReason() throws Exception {
+        //TODO
+    }
+
+    public void testRenewing() throws Exception {
+        //TODO
+    }
+
+    public void testRenewTarget() throws Exception {
+        //TODO
+    }
+
+    public void testRequestedAttachedReference() throws Exception {
+        //TODO
+    }
+
+    public void testRequestedProofToken() throws Exception {
+        //TODO
+    }
+
+    public void testRequestedSecurityToken() throws Exception {
+        //TODO
+    }
+
+    public void testRequestedTokenCancelled() throws Exception {
+        //TODO
+    }
+
+    public void testRequestedUnattachedReference() throws Exception {
+        //TODO
+    }
+
+    public void testKET() throws Exception {
+        //TODO
+    }
+    
     public void testRequestSecurityToken() throws Exception {
         RequestSecurityToken rst= buildXMLObject(RequestSecurityToken.ELEMENT_NAME);
         String context= "Context-" + System.currentTimeMillis();
@@ -183,6 +283,59 @@ public class WSTrustObjectsTestCase extends WSBaseTestCase {
         marshallAndUnmarshall(rst);
     }
 
+    public void testRequestSecurityTokenCollection() throws Exception {
+        //TODO
+    }
+
+    public void testRequestSecurityTokenResponse() throws Exception {
+        //TODO
+    }
+
+    public void testRequestSecurityTokenResponseCollection() throws Exception {
+        //TODO
+    }
+
+    public void testRequestType() throws Exception {
+        //TODO
+    }
+
+    public void testSignatureAlgorithm() throws Exception {
+        //TODO
+    }
+
+    public void testSignChallenge() throws Exception {
+        //TODO
+    }
+
+    public void testSignChallengeResponse() throws Exception {
+        //TODO
+    }
+
+    public void testSignWith() throws Exception {
+        //TODO
+    }
+
+    public void testStatus() throws Exception {
+        //TODO
+    }
+
+    public void testTokenType() throws Exception {
+        //TODO
+    }
+
+    public void testUseKey() throws Exception {
+        //TODO
+    }
+
+    public void testValidateTarget() throws Exception {
+        //TODO
+    }
+
+    
+    /*--------------------------*/
+    /* Utility methods          */
+    /*--------------------------*/
+    
     protected Claims createClaims() throws Exception {
         Claims claims= buildXMLObject(Claims.ELEMENT_NAME);
         claims.setDialect("urn:test:claims:some-test-dialect");
