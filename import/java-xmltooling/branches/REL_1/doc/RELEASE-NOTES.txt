@@ -1,3 +1,10 @@
+Changes in Release 1.2.2
+==============================================
+[JXT-63] - Update 3rd party libraries for release 1.2.2
+* Add XML serialization method that works solely on strings
+* Add helper class for building XML schemas
+* Clean up project POM file
+
 Changes in Release 1.2.1
 ==============================================
 [JXT-30] - Fix some minor race conditions in BasicParserPool

@@ -919,7 +919,13 @@ public final class XMLHelper {
      * @param output the output stream to write the XML to
      */
     public static void writeNode(Node node, OutputStream output) {
-        DOMImplementation domImpl = node.getOwnerDocument().getImplementation();
+        DOMImplementation domImpl;
+        if(node instanceof Document){
+            domImpl = ((Document)node).getImplementation();
+        }else{
+            domImpl = node.getOwnerDocument().getImplementation();
+        }
+        
         DOMImplementationLS domImplLS = (DOMImplementationLS) domImpl.getFeature("LS", "3.0");
         LSSerializer serializer = domImplLS.createLSSerializer();
         serializer.setFilter(new LSSerializerFilter() {
