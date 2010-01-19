@@ -25,17 +25,19 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.xml.AttributeExtensibleXMLObject;
 import org.opensaml.xml.ElementExtensibleXMLObject;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.encryption.EncryptedData;
 import org.opensaml.xml.signature.AbstractSignableXMLObject;
+import org.opensaml.xml.util.AttributeMap;
 import org.opensaml.xml.util.IndexedXMLObjectChildrenList;
 import org.opensaml.xml.util.XMLObjectChildrenList;
 
 /**
  * Simple XMLObject that can be used for testing
  */
-public class SimpleXMLObject extends AbstractSignableXMLObject implements ElementExtensibleXMLObject {
+public class SimpleXMLObject extends AbstractSignableXMLObject implements ElementExtensibleXMLObject, AttributeExtensibleXMLObject {
     
     /** Default namespace */
     public final static String NAMESPACE = "http://www.example.org/testObjects";
@@ -70,6 +72,9 @@ public class SimpleXMLObject extends AbstractSignableXMLObject implements Elemen
     /** EncryptedData child */
     private EncryptedData encryptedData;
     
+    /** anyAttribute wildcard attributes. */
+    private AttributeMap unknownAttributes;
+    
     /**
      * Constructor
      */
@@ -78,6 +83,7 @@ public class SimpleXMLObject extends AbstractSignableXMLObject implements Elemen
         
         simpleXMLObjects = new XMLObjectChildrenList<SimpleXMLObject>(this);
         unknownXMLObjects = new IndexedXMLObjectChildrenList<XMLObject>(this);
+        unknownAttributes = new AttributeMap(this);
     }
     
     /**
@@ -166,5 +172,10 @@ public class SimpleXMLObject extends AbstractSignableXMLObject implements Elemen
         children.add(getSignature());
         
         return Collections.unmodifiableList(children);
+    }
+
+    /** {@inheritDoc} */
+    public AttributeMap getUnknownAttributes() {
+        return unknownAttributes;
     }
 }

@@ -25,6 +25,7 @@ import org.opensaml.xml.encryption.EncryptedData;
 import org.opensaml.xml.io.AbstractXMLObjectUnmarshaller;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.signature.Signature;
+import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Attr;
 
 /**
@@ -56,6 +57,8 @@ public class SimpleXMLObjectUnmarshaller extends AbstractXMLObjectUnmarshaller {
         if (attribute.getLocalName().equals(SimpleXMLObject.ID_ATTRIB_NAME)) {
             simpleXMLObject.setId(attribute.getValue());
             attribute.getOwnerElement().setIdAttributeNode(attribute, true);
+        } else {
+            XMLHelper.unmarshallToAttributeMap(simpleXMLObject.getUnknownAttributes(), attribute);
         }
     }
 
