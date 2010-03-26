@@ -156,7 +156,9 @@ public abstract class WSBaseTestCase extends XMLTestCase {
         Marshaller marshaller= getMarshaller(name);
         Unmarshaller unmarshaller= getUnmarshaller(name);
 
-        // object.releaseDOM();
+        // Go ahead and release the cached DOM, just for good measure
+        object.releaseDOM();
+        object.releaseChildrenDOM(true);
         Element element= marshaller.marshall(object);
         assertNotNull(element);
 
@@ -165,12 +167,21 @@ public abstract class WSBaseTestCase extends XMLTestCase {
         T object2= (T) unmarshaller.unmarshall(element);
         assertNotNull(object2);
 
-        // object2.releaseDOM();
+        // Have to release the DOM before re-marshalling, otherwise the already cached
+        // Element just gets adopted into a new Document, and the test below
+        // is comparing the same Element/Document and is therefore always true
+        // and therefore an invalid test.
+        object2.releaseDOM();
+        object2.releaseChildrenDOM(true);
         Element element2= marshaller.marshall(object2);
         assertNotNull(element2);
 
         System.out.println(XMLHelper.nodeToString(element2));
 
+        // These need to be false, otherwise the test below is invalid
+        //System.out.println("Element equals: " + element.isSameNode(element2)); 
+        //System.out.println("Document equals: " + element.getOwnerDocument().isSameNode(element2.getOwnerDocument())); 
+        
         // compare XML content
         assertXMLEqual(element.getOwnerDocument(), element2.getOwnerDocument());
 

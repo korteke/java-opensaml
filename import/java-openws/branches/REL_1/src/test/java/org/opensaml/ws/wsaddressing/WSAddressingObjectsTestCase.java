@@ -19,7 +19,6 @@ package org.opensaml.ws.wsaddressing;
 import java.io.InputStream;
 
 import org.opensaml.ws.WSBaseTestCase;
-import org.opensaml.ws.wssecurity.WSSecurityObjectsTestCase;
 import org.opensaml.xml.XMLConfigurator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,16 +29,11 @@ import org.slf4j.LoggerFactory;
  */
 public class WSAddressingObjectsTestCase extends WSBaseTestCase {
 
-    public Logger log= LoggerFactory.getLogger(WSSecurityObjectsTestCase.class);
+    public Logger log= LoggerFactory.getLogger(WSAddressingObjectsTestCase.class);
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.ws.WSBaseTestCase#configureWS()
-     */
-    @Override
+    /** {@inheritDoc} */
     protected void configureWS() throws Exception {
-        // load ws-security config
+        // load ws-policy config
         InputStream is= getClass().getResourceAsStream("/wsaddressing-config.xml");
         XMLConfigurator configurator= new XMLConfigurator();
         configurator.load(is);
@@ -68,11 +62,17 @@ public class WSAddressingObjectsTestCase extends WSBaseTestCase {
         epr.setReferenceParameters(referenceParameters);
         marshallAndUnmarshall(epr);
     }
+    
+    public void testFaultTo() {
+        //TODO
+    }
 
-    public void testReferenceParameters() throws Exception {
-        ReferenceParameters referenceParameters= buildXMLObject(ReferenceParameters.ELEMENT_NAME);
-        // TODO: add some child elements
-        marshallAndUnmarshall(referenceParameters);
+    public void testFrom() {
+        //TODO
+    }
+
+    public void testMessageID() {
+        //TODO
     }
 
     public void testMetadata() throws Exception {
@@ -80,6 +80,44 @@ public class WSAddressingObjectsTestCase extends WSBaseTestCase {
         // TODO: add some child elements
 
         marshallAndUnmarshall(metadata);
+    }
+    
+    public void testProblemAction() {
+        //TODO
+    }
+
+    public void testProblemHeaderQName() {
+        //TODO
+    }
+
+    public void testProblemIRI() {
+        //TODO
+    }
+    
+    public void testReferenceParameters() throws Exception {
+        ReferenceParameters referenceParameters= buildXMLObject(ReferenceParameters.ELEMENT_NAME);
+        // TODO: add some child elements
+        marshallAndUnmarshall(referenceParameters);
+    }
+
+    public void testRelatesTo() {
+        //TODO
+    }
+
+    public void testReplyTo() {
+        //TODO
+    }
+
+    public void testRetryAfter() {
+        //TODO
+    }
+
+    public void testSoapAction() {
+        //TODO
+    }
+
+    public void testTo() {
+        //TODO
     }
 
 }
