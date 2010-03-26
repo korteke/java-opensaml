@@ -62,6 +62,10 @@ public class PropertyReplacementResourceFilter implements ResourceFilter {
         } catch (IOException e) {
             throw new ResourceException("Unable to read property file", e);
         }
+        
+        if(props.isEmpty()){
+            return resource;
+        }
 
         try {
             String resourceString = DatatypeHelper.inputstreamToString(resource, null);

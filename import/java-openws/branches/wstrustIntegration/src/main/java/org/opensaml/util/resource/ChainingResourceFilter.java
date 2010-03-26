@@ -19,9 +19,15 @@ package org.opensaml.util.resource;
 import java.io.InputStream;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /** Resource filter that executes a list of resource filters in order. */
 public class ChainingResourceFilter implements ResourceFilter {
 
+    /** Class logger. */
+    private Logger log = LoggerFactory.getLogger(ChainingResourceFilter.class);
+    
     /** Registered resource filters. */
     private List<ResourceFilter> resourceFilters;
 
@@ -37,10 +43,12 @@ public class ChainingResourceFilter implements ResourceFilter {
     /** {@inheritDoc} */
     public InputStream applyFilter(InputStream resource) throws ResourceException {
         if (resourceFilters == null || resourceFilters.isEmpty()) {
+            log.debug("No resource filters configured, nothing to do");
             return resource;
         }
 
         for (ResourceFilter filter : resourceFilters) {
+            log.debug("Applying filter '{}'", filter.getClass().getName());
             resource = filter.applyFilter(resource);
         }
 
