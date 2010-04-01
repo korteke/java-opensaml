@@ -53,6 +53,7 @@ public class AttributedDataTimeImpl extends AbstractWSSecurityObject implements 
      */
     public AttributedDataTimeImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
+        //TODO might need to modify this default formatter.  See XSDateTime also.
         formatter = DateTimeFormat.forPattern(AttributedDateTime.DEFAULT_DATETIME_FORMAT);
         unknownAttributes = new AttributeMap(this);
     }
@@ -95,6 +96,19 @@ public class AttributedDataTimeImpl extends AbstractWSSecurityObject implements 
     /** {@inheritDoc} */
     public AttributeMap getUnknownAttributes() {
         return unknownAttributes;
+    }
+    
+    /** {@inheritDoc} */
+    public DateTimeFormatter getDateTimeFormatter() {
+        return formatter;
+    }
+
+    /** {@inheritDoc} */
+    public void setDateTimeFormatter(DateTimeFormatter newFormatter) {
+        if (newFormatter == null) {
+            throw new IllegalArgumentException("The specified DateTimeFormatter may not be null");
+        }
+        formatter = newFormatter;
     }
 
 }

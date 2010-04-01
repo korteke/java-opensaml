@@ -19,6 +19,7 @@ package org.opensaml.ws.wssecurity;
 import javax.xml.namespace.QName;
 
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormatter;
 import org.opensaml.xml.AttributeExtensibleXMLObject;
 import org.opensaml.xml.schema.XSString;
 
@@ -52,4 +53,20 @@ public interface AttributedDateTime extends XSString, IdBearing, AttributeExtens
      *            the {@link DateTime} object to set.
      */
     public void setDateTime(DateTime dateTime);
+    
+    /**
+     * Get the {@link DateTimeFormatter} to be used when parsing and stringifying
+     * the {@link DateTime} value.
+     * 
+     * @return the currently configured formatter
+     */
+    public DateTimeFormatter getDateTimeFormatter();
+    
+    /**
+     * Set the {@link DateTimeFormatter} to be used when parsing and stringifying
+     * the {@link DateTime} value.
+     * 
+     * @param newFormatter the new formatter
+     */
+    public void setDateTimeFormatter(DateTimeFormatter newFormatter);
 }
