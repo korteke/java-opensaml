@@ -19,6 +19,13 @@
             <UnmarshallingClass className="org.opensaml.xml.schema.impl.XSStringUnmarshaller" />
         </ObjectProvider>
         
+        <!-- XML Schema dateTime -->
+        <ObjectProvider qualifiedName="xs:dateTime">
+            <BuilderClass className="org.opensaml.xml.schema.impl.XSDateTimeBuilder" />
+            <MarshallingClass className="org.opensaml.xml.schema.impl.XSDateTimeMarshaller" />
+            <UnmarshallingClass className="org.opensaml.xml.schema.impl.XSDateTimeUnmarshaller" />
+        </ObjectProvider>
+        
         <!-- XML Schema QName -->
         <ObjectProvider qualifiedName="xs:QName">
             <BuilderClass className="org.opensaml.xml.schema.impl.XSQNameBuilder" />
