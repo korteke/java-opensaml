@@ -49,16 +49,24 @@ public interface XSDateTime extends ValidatingXMLObject {
     public void setValue(DateTime newValue);
     
     /**
-     * Get the {@link DateTimeFormatter} to be used when parsing and stringifying
+     * Get the {@link DateTimeFormatter} to be used when stringifying
      * the {@link DateTime} value.
+     * 
+     * <p>Defaults to the formatter constructed by calling: 
+     * <code>org.joda.time.format.ISODateTimeFormat.dateTime().withChronology(org.joda.time.chrono.ISOChronology.getInstanceUTC()</code>
+     * </p>
      * 
      * @return the currently configured formatter
      */
     public DateTimeFormatter getDateTimeFormatter();
     
     /**
-     * Set the {@link DateTimeFormatter} to be used when parsing and stringifying
+     * Set the {@link DateTimeFormatter} to be used when stringifying
      * the {@link DateTime} value.
+     * 
+     * <p>Defaults to the formatter constructed by calling: 
+     * <code>org.joda.time.format.ISODateTimeFormat.dateTime().withChronology(org.joda.time.chrono.ISOChronology.getInstanceUTC()</code>
+     * </p>
      * 
      * @param newFormatter the new formatter
      */

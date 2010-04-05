@@ -20,7 +20,9 @@ import java.util.Collections;
 import java.util.List;
 
 import org.joda.time.DateTime;
+import org.joda.time.chrono.ISOChronology;
 import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.format.ISODateTimeFormat;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.schema.XSDateTime;
 import org.opensaml.xml.validation.AbstractValidatingXMLObject;
@@ -46,8 +48,7 @@ public class XSDateTimeImpl extends AbstractValidatingXMLObject implements XSDat
      */
     protected XSDateTimeImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        //TODO what default and from where?  Perhaps pull from Configuration singleton
-        formatter = null;
+        formatter = ISODateTimeFormat.dateTime().withChronology(ISOChronology.getInstanceUTC());
     }
     
     /** {@inheritDoc} */

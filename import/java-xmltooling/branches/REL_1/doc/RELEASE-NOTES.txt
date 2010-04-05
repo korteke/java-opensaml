@@ -1,3 +1,7 @@
+Changes in Release 1.3.0
+==============================================
+[JXT-29]: Support for dateTime schema type
+
 Changes in Release 1.2.2
 ==============================================
 [JXT-63] - Update 3rd party libraries for release 1.2.2
