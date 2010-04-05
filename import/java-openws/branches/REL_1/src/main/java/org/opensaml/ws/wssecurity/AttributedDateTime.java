@@ -36,7 +36,12 @@ public interface AttributedDateTime extends XSString, IdBearing, AttributeExtens
     public static final QName TYPE_NAME = 
         new QName(WSSecurityConstants.WSU_NS, TYPE_LOCAL_NAME, WSSecurityConstants.WSU_PREFIX);
     
-    /** Default DateTime format. */
+    /** Default DateTime format. 
+     * 
+     * @deprecated replaced by use of a {@link DateTimeFormatter} 
+     *              configured via {@link #setDateTimeFormatter(DateTimeFormatter)}.
+     * 
+     * */
     public static final String DEFAULT_DATETIME_FORMAT= "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
 
     /**
@@ -55,16 +60,24 @@ public interface AttributedDateTime extends XSString, IdBearing, AttributeExtens
     public void setDateTime(DateTime dateTime);
     
     /**
-     * Get the {@link DateTimeFormatter} to be used when parsing and stringifying
+     * Get the {@link DateTimeFormatter} to be used when stringifying
      * the {@link DateTime} value.
+     * 
+     * <p>Defaults to the formatter constructed by calling: 
+     * <code>org.joda.time.format.ISODateTimeFormat.dateTime().withChronology(org.joda.time.chrono.ISOChronology.getInstanceUTC()</code>
+     * </p>
      * 
      * @return the currently configured formatter
      */
     public DateTimeFormatter getDateTimeFormatter();
     
     /**
-     * Set the {@link DateTimeFormatter} to be used when parsing and stringifying
+     * Set the {@link DateTimeFormatter} to be used when stringifying
      * the {@link DateTime} value.
+     * 
+     * <p>Defaults to the formatter constructed by calling: 
+     * <code>org.joda.time.format.ISODateTimeFormat.dateTime().withChronology(org.joda.time.chrono.ISOChronology.getInstanceUTC()</code>
+     * </p>
      * 
      * @param newFormatter the new formatter
      */

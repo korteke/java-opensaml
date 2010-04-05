@@ -1,5 +1,6 @@
 Changes in Release 1.4.0
 ==============================================
+[JOWS-15] - AbstractDateTimeType does not handle all datetime formats
 * New object provider support for WS-Trust 1.3 specification
 * New object provider support for WS-Policy specification
 

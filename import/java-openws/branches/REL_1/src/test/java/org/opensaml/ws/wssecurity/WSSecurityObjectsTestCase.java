@@ -20,13 +20,10 @@ import java.io.InputStream;
 import java.util.List;
 
 import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.opensaml.ws.WSBaseTestCase;
 import org.opensaml.xml.XMLConfigurator;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.Marshaller;
-import org.opensaml.xml.util.XMLHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -186,8 +183,7 @@ public class WSSecurityObjectsTestCase extends WSBaseTestCase {
 
         UsernameToken usernameToken= createUsernameToken("test", "test");
         usernameToken.setWSUId(refId);
-        DateTimeFormatter formatter= DateTimeFormat.forPattern(AttributedDateTime.DEFAULT_DATETIME_FORMAT);
-        DateTime refDateTime= formatter.parseDateTime(refDateTimeStr);
+        DateTime refDateTime= new DateTime(refDateTimeStr);
         Created usernameCreated = (Created) usernameToken.getUnknownXMLObjects(Created.ELEMENT_NAME).get(0);
         usernameCreated.setDateTime(refDateTime);
 
@@ -207,8 +203,7 @@ public class WSSecurityObjectsTestCase extends WSBaseTestCase {
         // Document refDocument= refUsernameToken.getDOM().getOwnerDocument();
         // refUsernameToken.releaseDOM();
         Document refDocument= parseXMLDocument("/data/org/opensaml/ws/wssecurity/UsernameToken.xml");
-        System.out.println("XXX: "
-                + XMLHelper.nodeToString(refDocument.getDocumentElement()));
+        //System.out.println("XXX: " + XMLHelper.nodeToString(refDocument.getDocumentElement()));
 
         Marshaller marshaller= getMarshaller(usernameToken);
         Element element= marshaller.marshall(usernameToken);

@@ -18,8 +18,9 @@
 package org.opensaml.ws.wssecurity.impl;
 
 import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
+import org.joda.time.chrono.ISOChronology;
 import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.format.ISODateTimeFormat;
 import org.opensaml.ws.wssecurity.AttributedDateTime;
 import org.opensaml.xml.util.AttributeMap;
 
@@ -53,8 +54,7 @@ public class AttributedDataTimeImpl extends AbstractWSSecurityObject implements 
      */
     public AttributedDataTimeImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        //TODO might need to modify this default formatter.  See XSDateTime also.
-        formatter = DateTimeFormat.forPattern(AttributedDateTime.DEFAULT_DATETIME_FORMAT);
+        formatter = ISODateTimeFormat.dateTime().withChronology(ISOChronology.getInstanceUTC());
         unknownAttributes = new AttributeMap(this);
     }
 
@@ -77,8 +77,8 @@ public class AttributedDataTimeImpl extends AbstractWSSecurityObject implements 
 
     /** {@inheritDoc} */
     public void setValue(String newValue) {
+        dateTimeValue = new DateTime(newValue);
         stringValue = prepareForAssignment(stringValue, newValue);
-        dateTimeValue = formatter.parseDateTime(stringValue);
     }
 
     /** {@inheritDoc} */
