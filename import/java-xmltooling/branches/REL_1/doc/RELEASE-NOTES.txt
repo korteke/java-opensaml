@@ -1,6 +1,7 @@
 Changes in Release 1.3.0
 ==============================================
-[JXT-29]: Support for dateTime schema type
+[JXT-29] - Support for dateTime schema type
+[JXT-60] - Add interfaces and helpers for the global attributes from the 'xml' namespace
 
 Changes in Release 1.2.2
 ==============================================
