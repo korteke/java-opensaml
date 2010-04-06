@@ -77,7 +77,7 @@ public class AttributedDataTimeImpl extends AbstractWSSecurityObject implements 
 
     /** {@inheritDoc} */
     public void setValue(String newValue) {
-        dateTimeValue = new DateTime(newValue);
+        dateTimeValue = new DateTime(newValue).withChronology(ISOChronology.getInstanceUTC());
         stringValue = prepareForAssignment(stringValue, newValue);
     }
 
