@@ -109,6 +109,8 @@ public class AttributedDataTimeImpl extends AbstractWSSecurityObject implements 
             throw new IllegalArgumentException("The specified DateTimeFormatter may not be null");
         }
         formatter = newFormatter;
+        // Explicitly cause the cached string representation to be reformatted when the formatter is changed
+        setDateTime(getDateTime());
     }
 
 }
