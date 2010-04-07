@@ -31,6 +31,7 @@ import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallerFactory;
 import org.opensaml.xml.io.Unmarshaller;
 import org.opensaml.xml.io.UnmarshallerFactory;
+import org.opensaml.xml.parse.ParserPool;
 import org.opensaml.xml.security.SecurityConfiguration;
 import org.opensaml.xml.util.XMLConstants;
 import org.opensaml.xml.validation.ValidatorSuite;
@@ -72,11 +73,32 @@ public class Configuration {
     /** Configured global security configuration information. */
     private static SecurityConfiguration globalSecurityConfig;
 
+    /** Configured parser pool. */
+    private static ParserPool parserPool;
+
     /** Constructor. */
     protected Configuration() {
 
     }
+    
+    /**
+     * Get the currently configured ParserPool instance.
+     * 
+     * @return the currently ParserPool
+     */
+    public static ParserPool getParserPool() {
+        return parserPool;
+    }
 
+    /**
+     * Set the currently configured ParserPool instance.
+     * 
+     * @param newParserPool the new ParserPool instance to configure
+     */
+    public static void setParserPool(ParserPool newParserPool) {
+        parserPool = newParserPool;
+    }
+    
     /**
      * Gets the QName for the object provider that will be used for XMLObjects that do not have a registered object
      * provider.

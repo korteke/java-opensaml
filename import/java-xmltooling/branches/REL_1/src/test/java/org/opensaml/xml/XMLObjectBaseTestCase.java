@@ -80,6 +80,8 @@ public abstract class XMLObjectBaseTestCase extends XMLTestCase {
 
             parserPool = new BasicParserPool();
             parserPool.setNamespaceAware(true);
+            
+            Configuration.setParserPool(parserPool);
 
             Class clazz = XMLObjectBaseTestCase.class;
 

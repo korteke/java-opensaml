@@ -62,5 +62,45 @@ public class XMLObjectHelperTest extends XMLObjectBaseTestCase {
         assertEquals("Text content of child was not the expected value", "FooBarBaz", clonedChildObj.getValue());
     }
     
+    /** Tests cloning an XMLObject. */
+    public void testXMLObjectCloneWithRootInNewDocument() {
+        SimpleXMLObjectBuilder sxoBuilder = (SimpleXMLObjectBuilder) Configuration.getBuilderFactory()
+            .getBuilder(SimpleXMLObject.ELEMENT_NAME);
+        
+        SimpleXMLObject origChildObj = sxoBuilder.buildObject();
+        origChildObj.setValue("FooBarBaz");
+        
+        SimpleXMLObject origParentObj = sxoBuilder.buildObject();
+        origParentObj.getSimpleXMLObjects().add(origChildObj);
+        
+        SimpleXMLObject clonedParentObj = null;
+        try {
+            clonedParentObj = XMLObjectHelper.cloneXMLObject(origParentObj, true);
+        } catch (MarshallingException e) {
+            fail("Object cloning failed on marshalling: " + e.getMessage());
+        } catch (UnmarshallingException e) {
+            fail("Object cloning failed on unmarshalling: " + e.getMessage());
+        }
+        
+        assertFalse("Parent XMLObjects were the same reference", origParentObj == clonedParentObj);
+        assertFalse("Parent DOM node was not cloned properly",
+                origParentObj.getDOM().isSameNode(clonedParentObj.getDOM()));
+        
+        assertFalse("Cloned parent had no children", clonedParentObj.getSimpleXMLObjects().isEmpty());
+        SimpleXMLObject clonedChildObj = (SimpleXMLObject) clonedParentObj.getSimpleXMLObjects().get(0);
+        
+        assertFalse("Child XMLObjects were the same reference", origChildObj == clonedChildObj);
+        assertFalse("Child DOM node was not cloned properly",
+                origChildObj.getDOM().isSameNode(clonedChildObj.getDOM()));
+        
+        assertEquals("Text content of child was not the expected value", "FooBarBaz", clonedChildObj.getValue());
+        
+        // Test rootInNewDocument requirements
+        assertFalse("Cloned objects DOM's were owned by the same Document", 
+                origParentObj.getDOM().getOwnerDocument().isSameNode(clonedParentObj.getDOM().getOwnerDocument()));
+        assertTrue("Cloned object was not the new Document root", 
+                clonedParentObj.getDOM().getOwnerDocument().getDocumentElement().isSameNode(clonedParentObj.getDOM()));
+    }
+    
 
 }
