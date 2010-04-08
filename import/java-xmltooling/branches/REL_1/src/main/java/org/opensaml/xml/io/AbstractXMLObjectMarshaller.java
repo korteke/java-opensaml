@@ -376,6 +376,12 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
             domElement.setAttributeNS(XMLConstants.XSI_NS, XMLConstants.XSI_PREFIX + ":noNamespaceSchemaLocation",
                     xmlObject.getNoNamespaceSchemaLocation());
         }
+        
+        if (xmlObject.isNilXSBoolean() != null && xmlObject.isNil()) {
+            log.trace("Setting xsi:nil for XMLObject {} to true", xmlObject.getElementQName());
+            domElement.setAttributeNS(XMLConstants.XSI_NS, XMLConstants.XSI_PREFIX + ":nil",
+                    xmlObject.isNilXSBoolean().toString());
+        }
 
         QName type = xmlObject.getSchemaType();
         if (type == null) {

@@ -1,5 +1,6 @@
 Changes in Release 1.3.0
 ==============================================
+[JXT-28] - Implement better support for xsi:nil
 [JXT-29] - Support for dateTime schema type
 [JXT-60] - Add interfaces and helpers for the global attributes from the 'xml' namespace
 

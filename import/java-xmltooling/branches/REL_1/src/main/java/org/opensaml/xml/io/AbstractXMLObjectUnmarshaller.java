@@ -23,6 +23,7 @@ import org.opensaml.xml.Namespace;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.XMLObjectBuilder;
 import org.opensaml.xml.XMLObjectBuilderFactory;
+import org.opensaml.xml.schema.XSBooleanValue;
 import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.util.XMLConstants;
 import org.opensaml.xml.util.XMLHelper;
@@ -274,6 +275,10 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
             log.trace("Saw XMLObject {} with an xsi:noNamespaceSchemaLocation of: {}", xmlObject.getElementQName(), 
                     attribute.getValue());
             xmlObject.setNoNamespaceSchemaLocation(attribute.getValue());
+        } else if (XMLConstants.XSI_NIL_ATTRIB_NAME.equals(attribName)) {
+            log.trace("Saw XMLObject {} with an xsi:nil of: {}", xmlObject.getElementQName(), 
+                    attribute.getValue());
+            xmlObject.setNil(XSBooleanValue.valueOf(attribute.getValue()));
         }
     }
 

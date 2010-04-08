@@ -21,6 +21,7 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.xml.schema.XSBooleanValue;
 import org.opensaml.xml.util.IDIndex;
 import org.w3c.dom.Element;
 
@@ -195,5 +196,94 @@ public interface XMLObject {
      * @param location value of the XML Schema schemaLocation attribute for this object
      */
     public void setSchemaLocation(String location);
+    
+    /**
+     * Gets whether the object declares that its element content
+     * is null, which corresponds to an <code>xsi:nil</code>
+     * attribute of <code>true</code>.
+     * 
+     * <p>
+     * Note that it is up to the developer to ensure that the 
+     * value of this attribute is consistent with the actual
+     * element content on the object instance.
+     * </p>
+     * 
+     * <p>
+     * Per the XML Schema specification, a value of true disallows 
+     * element content, but not element attributes.
+     * </p>
+     * 
+     * @see http://www.w3.org/TR/xmlschema-0/#Nils
+     * 
+     * @return whether the object's content model is null
+     */
+    public Boolean isNil();
+
+    /**
+     * 
+     * Gets whether the object declares that its element content
+     * is null, which corresponds to an <code>xsi:nil</code>
+     * attribute of <code>true</code>.
+     * 
+     * <p>
+     * Note that it is up to the developer to ensure that the 
+     * value of this attribute is consistent with the actual
+     * element content on the object instance.
+     * </p>
+     * 
+     * <p>
+     * Per the XML Schema specification, a value of true disallows 
+     * element content, but not element attributes.
+     * </p>
+     * 
+     * @see http://www.w3.org/TR/xmlschema-0/#Nils
+     * 
+     * @return whether the object's content model is null
+     */
+    public XSBooleanValue isNilXSBoolean();
+
+    /**
+     * Sets whether the object declares that its element content
+     * is null, which corresponds to an <code>xsi:nil</code>
+     * attribute of <code>true</code>.
+     * 
+     * <p>
+     * Note that it is up to the developer to ensure that the 
+     * value of this attribute is consistent with the actual
+     * element content on the object instance.
+     * </p>
+     * 
+     * <p>
+     * Per the XML Schema specification, a value of true disallows 
+     * element content, but not element attributes.
+     * </p>
+     * 
+     * @see http://www.w3.org/TR/xmlschema-0/#Nils
+     * 
+     * @param newNil whether the object's content model is expressed as null
+     */
+    public void setNil(Boolean newNil);
+
+    /**
+     * Sets whether the object declares that its element content
+     * is null, which corresponds to an <code>xsi:nil</code>
+     * attribute of <code>true</code>.
+     * 
+     * <p>
+     * Note that it is up to the developer to ensure that the 
+     * value of this attribute is consistent with the actual
+     * element content on the object instance.
+     * </p>
+     * 
+     * <p>
+     * Per the XML Schema specification, a value of true disallows 
+     * element content, but not element attributes.
+     * </p>
+     * 
+     * @see http://www.w3.org/TR/xmlschema-0/#Nils 
+     * 
+     * @param newNil whether the object's content model is expressed as null
+     */
+    public void setNil(XSBooleanValue newNil);
 
 }

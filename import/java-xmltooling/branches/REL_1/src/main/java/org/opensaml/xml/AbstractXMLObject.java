@@ -22,6 +22,7 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.xml.schema.XSBooleanValue;
 import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.util.IDIndex;
 import org.opensaml.xml.util.LazySet;
@@ -58,6 +59,9 @@ public abstract class AbstractXMLObject implements XMLObject {
 
     /** DOM Element representation of this object. */
     private Element dom;
+    
+    /** The value of the <code>xsi:nil</code> attribute. */
+    private  XSBooleanValue nil;
 
     /**
      * Mapping of ID attributes to XMLObjects in the subtree rooted at this object. This allows constant-time
@@ -454,6 +458,34 @@ public abstract class AbstractXMLObject implements XMLObject {
             typeQname = type;
             addNamespace(new Namespace(type.getNamespaceURI(), type.getPrefix()));
         }
+    }
+    
+    /** {@inheritDoc} */
+    public Boolean isNil() {
+        if (nil != null) {
+            return nil.getValue();
+        }
+
+        return Boolean.FALSE;
+    }
+
+    /** {@inheritDoc} */
+    public XSBooleanValue isNilXSBoolean() {
+        return nil;
+    }
+
+    /** {@inheritDoc} */
+    public void setNil(Boolean newNil) {
+        if (newNil != null) {
+            nil = prepareForAssignment(nil, new XSBooleanValue(newNil, false));
+        } else {
+            nil = prepareForAssignment(nil, null);
+        }
+    }
+
+    /** {@inheritDoc} */
+    public void setNil(XSBooleanValue newNil) {
+        nil = prepareForAssignment(nil, newNil);
     }
 
 }
