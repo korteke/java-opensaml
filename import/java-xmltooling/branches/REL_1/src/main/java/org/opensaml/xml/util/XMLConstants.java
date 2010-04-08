@@ -16,6 +16,8 @@
 
 package org.opensaml.xml.util;
 
+import javax.xml.namespace.QName;
+
 /**
  * XML related constants.
  */
@@ -74,5 +76,21 @@ public class XMLConstants {
 
     /** XML Encryption QName prefix. */
     public static final String XMLENC_PREFIX = "xenc";
+    
+    /** XML Schema instance <code>xsi:type</code> attribute QName. */
+    public static final QName XSI_TYPE_ATTRIB_NAME = 
+        new QName(XSI_NS, "type", XSI_PREFIX);
+
+    /** XML Schema instance <code>xsi:type</code> attribute QName. */
+    public static final QName XSI_SCHEMA_LOCATION_ATTRIB_NAME = 
+        new QName(XSI_NS, "schemaLocation", XSI_PREFIX);
+
+    /** XML Schema instance <code>xsi:type</code> attribute QName. */
+    public static final QName XSI_NO_NAMESPACE_SCHEMA_LOCATION_ATTRIB_NAME = 
+        new QName(XSI_NS, "noNamespaceSchemaLocation", XSI_PREFIX);
+    
+    /** XML Schema instance <code>xsi:type</code> attribute QName. */
+    public static final QName XSI_NIL_ATTRIB_NAME = 
+        new QName(XSI_NS, "nil", XSI_PREFIX);
 
 }

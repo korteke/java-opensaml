@@ -263,11 +263,16 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
      * @param attribute the namespace decleration attribute
      */
     protected void unmarshallSchemaInstanceAttributes(XMLObject xmlObject, Attr attribute) {
-        if (DatatypeHelper.safeEquals(attribute.getLocalName(), "type")) {
-            // ignore, this is handled by the builder
-        } else if (DatatypeHelper.safeEquals(attribute.getLocalName(), "schemaLocation")) {
+        QName attribName = XMLHelper.getNodeQName(attribute);
+        if (XMLConstants.XSI_TYPE_ATTRIB_NAME.equals(attribName)) {
+            log.trace("Saw XMLObject {} with an xsi:type of: {}", xmlObject.getElementQName(), attribute.getValue());
+        } else if (XMLConstants.XSI_SCHEMA_LOCATION_ATTRIB_NAME.equals(attribName)) {
+            log.trace("Saw XMLObject {} with an xsi:schemaLocation of: {}", xmlObject.getElementQName(), 
+                    attribute.getValue());
             xmlObject.setSchemaLocation(attribute.getValue());
-        } else if (DatatypeHelper.safeEquals(attribute.getLocalName(), "noNamespaceSchemaLocation")) {
+        } else if (XMLConstants.XSI_NO_NAMESPACE_SCHEMA_LOCATION_ATTRIB_NAME.equals(attribName)) {
+            log.trace("Saw XMLObject {} with an xsi:noNamespaceSchemaLocation of: {}", xmlObject.getElementQName(), 
+                    attribute.getValue());
             xmlObject.setNoNamespaceSchemaLocation(attribute.getValue());
         }
     }
