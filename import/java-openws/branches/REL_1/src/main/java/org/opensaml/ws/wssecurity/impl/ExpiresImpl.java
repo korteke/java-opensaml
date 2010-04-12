@@ -23,7 +23,7 @@ import org.opensaml.ws.wssecurity.Expires;
  * ExpiresImpl.
  * 
  */
-public class ExpiresImpl extends AttributedDataTimeImpl implements Expires {
+public class ExpiresImpl extends AttributedDateTimeImpl implements Expires {
 
     /**
      * Constructor.

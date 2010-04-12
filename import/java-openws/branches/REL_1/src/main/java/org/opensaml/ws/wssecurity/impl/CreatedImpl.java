@@ -23,7 +23,7 @@ import org.opensaml.ws.wssecurity.Created;
  * CreatedImpl.
  * 
  */
-public class CreatedImpl extends AttributedDataTimeImpl implements Created {
+public class CreatedImpl extends AttributedDateTimeImpl implements Created {
 
     /**
      * Constructor.

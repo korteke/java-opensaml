@@ -17,33 +17,16 @@
 
 package org.opensaml.ws.wssecurity.impl;
 
-import org.joda.time.DateTime;
-import org.joda.time.chrono.ISOChronology;
-import org.joda.time.format.DateTimeFormatter;
-import org.joda.time.format.ISODateTimeFormat;
 import org.opensaml.ws.wssecurity.AttributedDateTime;
-import org.opensaml.xml.util.AttributeMap;
+
 
 /**
- * AbstractDateTimeType.
+ * Implementation of {@link AttributedDateTime}.
+ * 
+ * @deprecated replacement {@link AttributedDateTimeImpl}.
  * 
  */
-public class AttributedDataTimeImpl extends AbstractWSSecurityObject implements AttributedDateTime {
-
-    /** DateTime formatter. */
-    private DateTimeFormatter formatter;
-
-    /** DateTime object. */
-    private DateTime dateTimeValue;
-
-    /** String dateTime representation. */
-    private String stringValue;
-    
-    /** wsu:id attribute value. */
-    private String id;
-    
-    /** Wildcard attributes. */
-    private AttributeMap unknownAttributes;
+public class AttributedDataTimeImpl extends AttributedDateTimeImpl {
 
     /**
      * Constructor.
@@ -54,63 +37,6 @@ public class AttributedDataTimeImpl extends AbstractWSSecurityObject implements 
      */
     public AttributedDataTimeImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        formatter = ISODateTimeFormat.dateTime().withChronology(ISOChronology.getInstanceUTC());
-        unknownAttributes = new AttributeMap(this);
-    }
-
-    /** {@inheritDoc} */
-    public DateTime getDateTime() {
-        return dateTimeValue;
-    }
-
-    /** {@inheritDoc} */
-    public void setDateTime(DateTime newDateTime) {
-        dateTimeValue = newDateTime;
-        String formattedDateTime = formatter.print(dateTimeValue);
-        stringValue = prepareForAssignment(stringValue, formattedDateTime);
-    }
-
-    /** {@inheritDoc} */
-    public String getValue() {
-        return stringValue;
-    }
-
-    /** {@inheritDoc} */
-    public void setValue(String newValue) {
-        dateTimeValue = new DateTime(newValue).withChronology(ISOChronology.getInstanceUTC());
-        stringValue = prepareForAssignment(stringValue, newValue);
-    }
-
-    /** {@inheritDoc} */
-    public String getWSUId() {
-        return id;
-    }
-
-    /** {@inheritDoc} */
-    public void setWSUId(String newId) {
-        String oldID = id;
-        id = prepareForAssignment(id, newId);
-        registerOwnID(oldID, id);
-    }
-
-    /** {@inheritDoc} */
-    public AttributeMap getUnknownAttributes() {
-        return unknownAttributes;
-    }
-    
-    /** {@inheritDoc} */
-    public DateTimeFormatter getDateTimeFormatter() {
-        return formatter;
-    }
-
-    /** {@inheritDoc} */
-    public void setDateTimeFormatter(DateTimeFormatter newFormatter) {
-        if (newFormatter == null) {
-            throw new IllegalArgumentException("The specified DateTimeFormatter may not be null");
-        }
-        formatter = newFormatter;
-        // Explicitly cause the cached string representation to be reformatted when the formatter is changed
-        setDateTime(getDateTime());
     }
 
 }
