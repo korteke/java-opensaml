@@ -623,7 +623,8 @@ public final class XMLHelper {
      * doesn't have an namespace delcaration attribute.
      * 
      * @param startingElement the starting element
-     * @param stopingElement the ancestor of the starting element that serves as the upper-bound, inclusive, for the search
+     * @param stopingElement the ancestor of the starting element that serves as the upper-bound, inclusive, for the
+     *            search
      * @param prefix the prefix to look up
      * 
      * @return the namespace URI for the given prefer or null
@@ -654,7 +655,7 @@ public final class XMLHelper {
             }
         }
 
-        if(startingElement != stopingElement){
+        if (startingElement != stopingElement) {
             Element ancestor = getElementAncestor(startingElement);
             if (ancestor != null) {
                 return lookupNamespaceURI(ancestor, stopingElement, prefix);
@@ -688,7 +689,8 @@ public final class XMLHelper {
      * doesn't have an namespace delcaration attribute.
      * 
      * @param startingElement the starting element
-     * @param stopingElement the ancestor of the starting element that serves as the upper-bound, inclusive, for the search
+     * @param stopingElement the ancestor of the starting element that serves as the upper-bound, inclusive, for the
+     *            search
      * @param namespaceURI the uri to look up
      * 
      * @return the prefix for the given namespace URI
@@ -721,14 +723,14 @@ public final class XMLHelper {
                 }
             }
         }
-        
-        if(startingElement != stopingElement){
+
+        if (startingElement != stopingElement) {
             Element ancestor = getElementAncestor(startingElement);
             if (ancestor != null) {
                 return lookupPrefix(ancestor, stopingElement, namespaceURI);
             }
         }
-        
+
         return null;
     }
 
@@ -753,7 +755,8 @@ public final class XMLHelper {
             childNode = childNodes.item(i);
             if (childNode.getNodeType() == Node.ELEMENT_NODE) {
                 e = (Element) childNode;
-                if (e.getNamespaceURI().equals(namespaceURI) && e.getLocalName().equals(localName)) {
+                if (DatatypeHelper.safeEquals(e.getNamespaceURI(), namespaceURI)
+                        && DatatypeHelper.safeEquals(e.getLocalName(), localName)) {
                     children.add(e);
                 }
             }
@@ -782,7 +785,7 @@ public final class XMLHelper {
             childNode = childNodes.item(i);
             if (childNode.getNodeType() == Node.ELEMENT_NODE) {
                 e = (Element) childNode;
-                if (e.getLocalName().equals(localName)) {
+                if (DatatypeHelper.safeEquals(e.getLocalName(), localName)) {
                     children.add(e);
                 }
             }
@@ -895,11 +898,11 @@ public final class XMLHelper {
         DOMImplementationLS domImplLS = (DOMImplementationLS) domImpl.getFeature("LS", "3.0");
         LSSerializer serializer = domImplLS.createLSSerializer();
         serializer.setFilter(new LSSerializerFilter() {
-            
+
             public short acceptNode(Node arg0) {
                 return FILTER_ACCEPT;
             }
-            
+
             public int getWhatToShow() {
                 return SHOW_ALL;
             }
@@ -920,20 +923,20 @@ public final class XMLHelper {
      */
     public static void writeNode(Node node, OutputStream output) {
         DOMImplementation domImpl;
-        if(node instanceof Document){
-            domImpl = ((Document)node).getImplementation();
-        }else{
+        if (node instanceof Document) {
+            domImpl = ((Document) node).getImplementation();
+        } else {
             domImpl = node.getOwnerDocument().getImplementation();
         }
-        
+
         DOMImplementationLS domImplLS = (DOMImplementationLS) domImpl.getFeature("LS", "3.0");
         LSSerializer serializer = domImplLS.createLSSerializer();
         serializer.setFilter(new LSSerializerFilter() {
-            
+
             public short acceptNode(Node arg0) {
                 return FILTER_ACCEPT;
             }
-            
+
             public int getWhatToShow() {
                 return SHOW_ALL;
             }
@@ -944,7 +947,7 @@ public final class XMLHelper {
 
         serializer.write(node, serializerOut);
     }
-    
+
     /**
      * Converts a QName into a string that can be used for attribute values or element content.
      * 
@@ -1013,7 +1016,7 @@ public final class XMLHelper {
                     appendNamespaceDeclaration(domElement, namespaceURI, namespacePrefix);
                 } else {
                     // Namespace couldn't be resolved from any ancestor. If the namespace prefix is null then the
-                    // element is simply in the undeclared default document namespace, which is fine. If it isn't null 
+                    // element is simply in the undeclared default document namespace, which is fine. If it isn't null
                     // then a namespace prefix, that hasn't properly been declared, is being used.
                     if (namespacePrefix != null) {
                         throw new XMLParserException("Unable to resolve namespace prefix " + namespacePrefix
