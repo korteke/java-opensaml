@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <name>OpenSAML</name>
+    <groupId>org.opensaml</groupId>
+    <artifactId>parent</artifactId>
+    <version>3.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>util</module>
+    </modules>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <logback.groupId>ch.qos.logback</logback.groupId>
+        <logback.version>0.9.18</logback.version>
+        <xerces.groupId>org.apache.xerces</xerces.groupId>
+        <xerces.version>2.9.1</xerces.version>
+    </properties>
+
+    <repositories>
+        <repository>
+            <id>shibboleth.internet2.edu</id>
+            <name>Internet2</name>
+            <url>http://shibboleth.internet2.edu/downloads/maven2</url>
+        </repository>
+    </repositories>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- Compile Dependencies -->
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>1.5.11</version>
+            </dependency>
+
+            <!-- Provided Dependencies -->
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>servlet-api</artifactId>
+                <version>2.4</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>net.jcip</groupId>
+                <artifactId>jcip-annotations</artifactId>
+                <version>1.0</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <!-- Runtime Dependencies -->
+            <dependency>
+                <groupId>${xerces.groupId}</groupId>
+                <artifactId>xml-apis</artifactId>
+                <version>${xerces.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+            <dependency>
+                <groupId>${xerces.groupId}</groupId>
+                <artifactId>xercesImpl</artifactId>
+                <version>${xerces.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+            <dependency>
+                <groupId>${xerces.groupId}</groupId>
+                <artifactId>resolver</artifactId>
+                <version>${xerces.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+            <dependency>
+                <groupId>${xerces.groupId}</groupId>
+                <artifactId>serializer</artifactId>
+                <version>${xerces.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.xalan</groupId>
+                <artifactId>xalan</artifactId>
+                <version>2.7.1</version>
+                <scope>runtime</scope>
+            </dependency>
+
+            <!--  Test Dependencies -->
+            <dependency>
+                <groupId>org.testng</groupId>
+                <artifactId>testng</artifactId>
+                <version>5.9</version>
+                <classifier>jdk15</classifier>
+                <scope>test</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <distributionManagement>
+        <repository>
+            <id>release-repo</id>
+            <url>${dist.release.url}</url>
+        </repository>
+    </distributionManagement>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <configuration>
+                        <source>1.5</source>
+                        <target>1.5</target>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <configuration>
+                        <argLine>-Xmx256m</argLine>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
+    <!-- Project Metadata -->
+    <url>http://opensaml.org</url>
+
+    <inceptionYear>2006</inceptionYear>
+
+    <licenses>
+        <license>
+            <name>Apache 2</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <organization>
+        <name>Internet2</name>
+        <url>http://www.internet2.edu/</url>
+    </organization>
+
+    <issueManagement>
+        <system>JIRA</system>
+        <url>http://bugs.internet2.edu/</url>
+    </issueManagement>
+
+    <mailingLists>
+        <mailingList>
+            <name>OpenSAML Users</name>
+            <subscribe>https://spaces.internet2.edu/display/OpenSAML/MailingList</subscribe>
+            <unsubscribe>https://spaces.internet2.edu/display/OpenSAML/MailingList</unsubscribe>
+            <post>mace-opensaml-users@internet2.edu</post>
+            <archive>http://groups.google.com/group/opensaml-users</archive>
+        </mailingList>
+    </mailingLists>
+
+    <scm>
+        <connection>scm:svn:https://svn.middleware.georgetown.edu/java-opensaml2/</connection>
+        <developerConnection>scm:svn:https://svn.middleware.georgetown.edu/java-opensaml2/</developerConnection>
+        <tag>HEAD</tag>
+        <url>http://svn.middleware.georgetown.edu/view/java-opensaml</url>
+    </scm>
+
+    <developers>
+        <developer>
+            <id>lajoie</id>
+            <name>Chad La Joie</name>
+            <organization>Itumi</organization>
+            <organizationUrl>http://itumi.biz/</organizationUrl>
+            <roles>
+                <role>developer</role>
+                <role>documentation</role>
+            </roles>
+            <timezone>-5</timezone>
+        </developer>
+        <developer>
+            <id>putmanb</id>
+            <name>Brent Putman</name>
+            <organization>Georgetown University</organization>
+            <organizationUrl>http://www.georgetown.edu/</organizationUrl>
+            <roles>
+                <role>developer</role>
+            </roles>
+            <timezone>-5</timezone>
+        </developer>
+    </developers>
+
+</project>
