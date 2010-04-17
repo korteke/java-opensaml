@@ -16,6 +16,9 @@
 
 package org.opensaml.util.xml;
 
+import org.opensaml.util.Assert;
+import org.opensaml.util.Objects;
+import org.opensaml.util.Strings;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -25,6 +28,41 @@ public final class Namespaces {
 
     /** Constructor. */
     private Namespaces() {
+    }
+
+    /**
+     * Adds a namespace declaration (xmlns:) attribute to the given element.
+     * 
+     * @param element the element to add the attribute to
+     * @param namespaceURI the URI of the namespace
+     * @param prefix the prefix for the namespace
+     */
+    public static void appendNamespaceDeclaration(Element element, String namespaceURI, String prefix) {
+        Assert.isNotNull(element, "Element may not be null");
+
+        String nsURI = Strings.trimOrNull(namespaceURI);
+        String nsPrefix = Strings.trimOrNull(prefix);
+
+        // This results in xmlns="" being emitted, which seems wrong.
+        if (nsURI == null && nsPrefix == null) {
+            return;
+        }
+
+        String attributeName;
+        if (nsPrefix == null) {
+            attributeName = XmlConstants.XMLNS_PREFIX;
+        } else {
+            attributeName = XmlConstants.XMLNS_PREFIX + ":" + nsPrefix;
+        }
+
+        String attributeValue;
+        if (nsURI == null) {
+            attributeValue = "";
+        } else {
+            attributeValue = nsURI;
+        }
+
+        element.setAttributeNS(XmlConstants.XMLNS_NS, attributeName, attributeValue);
     }
 
     /**
@@ -42,7 +80,7 @@ public final class Namespaces {
      * @return the namespace URI for the given prefer or null
      */
     public static String lookupNamespaceURI(Element startingElement, Element stopingElement, String prefix) {
-        String namespaceURI;
+        Assert.isNotNull(startingElement, "Starting element may not be null");
 
         // This code is a modified version of the lookup code within Xerces
         if (startingElement.hasAttributes()) {
@@ -50,16 +88,14 @@ public final class Namespaces {
             int length = map.getLength();
             for (int i = 0; i < length; i++) {
                 Node attr = map.item(i);
-                String attrPrefix = attr.getPrefix();
                 String value = attr.getNodeValue();
-                namespaceURI = attr.getNamespaceURI();
-                if (namespaceURI != null && namespaceURI.equals(XmlConstants.XMLNS_NS)) {
+                if (Objects.equals(attr.getNamespaceURI(), XmlConstants.XMLNS_NS)) {
                     // at this point we are dealing with DOM Level 2 nodes only
-                    if (prefix == null && attr.getNodeName().equals(XmlConstants.XMLNS_PREFIX)) {
+                    if (Objects.equals(prefix, XmlConstants.XMLNS_PREFIX)) {
                         // default namespace
                         return value;
-                    } else if (attrPrefix != null && attrPrefix.equals(XmlConstants.XMLNS_PREFIX)
-                            && attr.getLocalName().equals(prefix)) {
+                    } else if (Objects.equals(attr.getPrefix(), XmlConstants.XMLNS_PREFIX)
+                            && Objects.equals(attr, prefix)) {
                         // non default namespace
                         return value;
                     }
@@ -108,7 +144,7 @@ public final class Namespaces {
      * @return the prefix for the given namespace URI
      */
     public static String lookupPrefix(Element startingElement, Element stopingElement, String namespaceURI) {
-        String namespace;
+        Assert.isNotNull(startingElement, "Starting element may not be null");
 
         // This code is a modified version of the lookup code within Xerces
         if (startingElement.hasAttributes()) {
@@ -116,18 +152,15 @@ public final class Namespaces {
             int length = map.getLength();
             for (int i = 0; i < length; i++) {
                 Node attr = map.item(i);
-                String attrPrefix = attr.getPrefix();
-                String value = attr.getNodeValue();
-                namespace = attr.getNamespaceURI();
-                if (namespace != null && namespace.equals(XmlConstants.XMLNS_NS)) {
+                if (Objects.equals(attr.getNamespaceURI(), XmlConstants.XMLNS_NS)) {
                     // DOM Level 2 nodes
-                    if (attr.getNodeName().equals(XmlConstants.XMLNS_PREFIX)
-                            || (attrPrefix != null && attrPrefix.equals(XmlConstants.XMLNS_PREFIX))
-                            && value.equals(namespaceURI)) {
+                    if (Objects.equals(attr.getNodeName(), XmlConstants.XMLNS_PREFIX)
+                            || (Objects.equals(attr.getPrefix(), XmlConstants.XMLNS_PREFIX))
+                            && Objects.equals(attr.getNodeValue(), namespaceURI)) {
 
                         String localname = attr.getLocalName();
                         String foundNamespace = startingElement.lookupNamespaceURI(localname);
-                        if (foundNamespace != null && foundNamespace.equals(namespaceURI)) {
+                        if (Objects.equals(foundNamespace, namespaceURI)) {
                             return localname;
                         }
                     }

@@ -32,6 +32,10 @@ public final class Closeables {
      * @param closebale the stream to be closed
      */
     public static void closeQuiety(Closeable closebale) {
+        if(closebale == null){
+            return;
+        }
+        
         try {
             closebale.close();
         } catch (IOException e) {

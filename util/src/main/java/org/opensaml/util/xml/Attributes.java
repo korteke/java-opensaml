@@ -22,6 +22,7 @@ import java.util.Locale;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.util.Assert;
 import org.opensaml.util.Strings;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
@@ -42,6 +43,9 @@ public final class Attributes {
      * @param base the base value
      */
     public static void addXMLBase(Element element, String base) {
+        Assert.isNotNull(element, "Element may not be null");
+        Assert.isNotNull(base, "base attribute value may not be null");
+
         Attr attr = constructAttribute(element.getOwnerDocument(), XmlConstants.XML_BASE_ATTRIB_NAME);
         attr.setValue(base);
         element.setAttributeNodeNS(attr);
@@ -54,6 +58,9 @@ public final class Attributes {
      * @param id the Id value
      */
     public static void addXMLId(Element element, String id) {
+        Assert.isNotNull(element, "Element may not be null");
+        Assert.isNotNull(id, "id attribute value may not be null");
+
         Attr attr = constructAttribute(element.getOwnerDocument(), XmlConstants.XML_ID_ATTRIB_NAME);
         attr.setValue(id);
         element.setAttributeNodeNS(attr);
@@ -66,6 +73,9 @@ public final class Attributes {
      * @param lang the lang value
      */
     public static void addXMLLang(Element element, String lang) {
+        Assert.isNotNull(element, "Element may not be null");
+        Assert.isNotNull(lang, "lang attribute value may not be null");
+
         Attr attr = constructAttribute(element.getOwnerDocument(), XmlConstants.XML_LANG_ATTRIB_NAME);
         attr.setValue(lang);
         element.setAttributeNodeNS(attr);
@@ -78,42 +88,64 @@ public final class Attributes {
      * @param space the space value
      */
     public static void addXMLSpace(Element element, XmlSpace space) {
+        Assert.isNotNull(element, "Element may not be null");
+        Assert.isNotNull(space, "space attribute value may not be null");
+
         Attr attr = constructAttribute(element.getOwnerDocument(), XmlConstants.XML_SPACE_ATTRIB_NAME);
         attr.setValue(space.toString());
         element.setAttributeNodeNS(attr);
     }
+    
+    /**
+     * Adds an non-id attribute name and value to a DOM Element. This is particularly useful for attributes whose names
+     * appear in namespace-qualified form.
+     * 
+     * @param attributeName the attribute name in QName form
+     * @param attributeValue the attribute values
+     * @param element the target element to which to marshall
+     */
+    public static void appendAttribute(Element element, QName attributeName, String attributeValue){
+        appendAttribute(element, attributeName, attributeValue, false);
+    }
 
     /**
-     * Adds a namespace declaration (xmlns:) attribute to the given element.
+     * Adds an attribute name and value to a DOM Element. This is particularly useful for attributes whose names
+     * appear in namespace-qualified form.
      * 
-     * @param domElement the element to add the attribute to
-     * @param namespaceURI the URI of the namespace
-     * @param prefix the prefix for the namespace
+     * @param attributeName the attribute name in QName form
+     * @param attributeValues the attribute values
+     * @param element the target element to which to marshall
+     * @param isIDAttribute flag indicating whether the attribute being marshalled should be handled as an ID-typed
+     *            attribute
      */
-    public static void appendNamespaceDeclaration(Element domElement, String namespaceURI, String prefix) {
-        String nsURI = Strings.trimOrNull(namespaceURI);
-        String nsPrefix = Strings.trimOrNull(prefix);
+    public static void appendAttribute(Element element, QName attributeName, List<String> attributeValues,
+            boolean isIDAttribute) {
+        appendAttribute(element, attributeName, Strings.listToStringValue(attributeValues, " "), isIDAttribute);
+    }
 
-        // This results in xmlns="" being emitted, which seems wrong.
-        if (nsURI == null && nsPrefix == null) {
-            return;
+    /**
+     * Adds an attribute name and value to a DOM Element. This is particularly useful for attributes whose names
+     * appear in namespace-qualified form.
+     * 
+     * @param attributeName the attribute name in QName form
+     * @param attributeValue the attribute value
+     * @param element the target element to which to marshall
+     * @param isIDAttribute flag indicating whether the attribute being marshalled should be handled as an ID-typed
+     *            attribute
+     */
+    public static void appendAttribute(Element element, QName attributeName, String attributeValue,
+            boolean isIDAttribute) {
+        Assert.isNotNull(element, "Element may not be null");
+        Assert.isNotNull(attributeName, "Attribute name may not be null");
+        Assert.isNotNull(attributeValue, "Attribute value may not be null");
+
+        Document document = element.getOwnerDocument();
+        Attr attribute = constructAttribute(document, attributeName);
+        attribute.setValue(attributeValue);
+        element.setAttributeNodeNS(attribute);
+        if (isIDAttribute) {
+            element.setIdAttributeNode(attribute, true);
         }
-
-        String attributeName;
-        if (nsPrefix == null) {
-            attributeName = XmlConstants.XMLNS_PREFIX;
-        } else {
-            attributeName = XmlConstants.XMLNS_PREFIX + ":" + nsPrefix;
-        }
-
-        String attributeValue;
-        if (nsURI == null) {
-            attributeValue = "";
-        } else {
-            attributeValue = nsURI;
-        }
-
-        domElement.setAttributeNS(XmlConstants.XMLNS_NS, attributeName, attributeValue);
     }
 
     /**
@@ -140,11 +172,10 @@ public final class Attributes {
      * @return the constructed attribute
      */
     public static Attr constructAttribute(Document document, String namespaceURI, String localName, String prefix) {
-        String trimmedLocalName = Strings.trimOrNull(localName);
+        Assert.isNotNull(document, "Document may not null");
 
-        if (trimmedLocalName == null) {
-            throw new IllegalArgumentException("Local name may not be null or empty");
-        }
+        String trimmedLocalName = Strings.trimOrNull(localName);
+        Assert.isNull(trimmedLocalName, "Attribute local name may not be null or empty");
 
         String qualifiedName;
         String trimmedPrefix = Strings.trimOrNull(prefix);
@@ -183,6 +214,10 @@ public final class Attributes {
      * @return the value of the attribute or null if the element does not have such an attribute
      */
     public static String getAttributeValue(Element element, String namespace, String attributeLocalName) {
+        if (element == null) {
+            return null;
+        }
+
         Attr attr = element.getAttributeNodeNS(namespace, attributeLocalName);
 
         if (attr == null) {
@@ -254,16 +289,16 @@ public final class Attributes {
     /**
      * Gets the ID attribute of a DOM element.
      * 
-     * @param domElement the DOM element
+     * @param element the DOM element
      * 
      * @return the ID attribute or null if there isn't one
      */
-    public static Attr getIdAttribute(Element domElement) {
-        if (!domElement.hasAttributes()) {
+    public static Attr getIdAttribute(Element element) {
+        if (element == null || !element.hasAttributes()) {
             return null;
         }
 
-        NamedNodeMap attributes = domElement.getAttributes();
+        NamedNodeMap attributes = element.getAttributes();
         Attr attribute;
         for (int i = 0; i < attributes.getLength(); i++) {
             attribute = (Attr) attributes.item(i);
@@ -273,6 +308,22 @@ public final class Attributes {
         }
 
         return null;
+    }
+
+    /**
+     * Checks if the given attribute has an attribute with the given name.
+     * 
+     * @param element element to check
+     * @param name name of the attribute
+     * 
+     * @return true if the element has an attribute with the given name, false otherwise
+     */
+    public static boolean hasAttribute(Element element, QName name) {
+        if (element == name || name == null) {
+            return false;
+        }
+
+        return element.hasAttributeNS(name.getNamespaceURI(), name.getLocalPart());
     }
 
     /**
@@ -318,6 +369,10 @@ public final class Attributes {
      * @return the active local of the element
      */
     public static Locale getXMLLangAsLocale(Element element) {
+        if (element == null) {
+            return null;
+        }
+
         String lang = getXMLLang(element);
         if (lang != null) {
             if (lang.contains("-")) {
@@ -338,41 +393,5 @@ public final class Attributes {
      */
     public static XmlSpace getXMLSpace(Element element) {
         return XmlSpace.valueOf(getAttributeValue(element, XmlConstants.XML_SPACE_ATTRIB_NAME));
-    }
-
-    /**
-     * Marshall an attribute name and value to a DOM Element. This is particularly useful for attributes whose names
-     * appear in namespace-qualified form.
-     * 
-     * @param attributeName the attribute name in QName form
-     * @param attributeValues the attribute values
-     * @param domElement the target element to which to marshall
-     * @param isIDAttribute flag indicating whether the attribute being marshalled should be handled as an ID-typed
-     *            attribute
-     */
-    public static void marshallAttribute(QName attributeName, List<String> attributeValues, Element domElement,
-            boolean isIDAttribute) {
-        marshallAttribute(attributeName, Strings.listToStringValue(attributeValues, " "), domElement, isIDAttribute);
-    }
-
-    /**
-     * Marshall an attribute name and value to a DOM Element. This is particularly useful for attributes whose names
-     * appear in namespace-qualified form.
-     * 
-     * @param attributeName the attribute name in QName form
-     * @param attributeValue the attribute value
-     * @param domElement the target element to which to marshall
-     * @param isIDAttribute flag indicating whether the attribute being marshalled should be handled as an ID-typed
-     *            attribute
-     */
-    public static void marshallAttribute(QName attributeName, String attributeValue, Element domElement,
-            boolean isIDAttribute) {
-        Document document = domElement.getOwnerDocument();
-        Attr attribute = constructAttribute(document, attributeName);
-        attribute.setValue(attributeValue);
-        domElement.setAttributeNodeNS(attribute);
-        if (isIDAttribute) {
-            domElement.setIdAttributeNode(attribute, true);
-        }
     }
 }
