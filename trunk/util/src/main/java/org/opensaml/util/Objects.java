@@ -30,14 +30,14 @@ public final class Objects {
      * 
      * @return the hash code for the object of 0 if the given object is null
      */
-    public static int hashCode(Object o){
-        if(o == null){
+    public static int hashCode(Object o) {
+        if (o == null) {
             return 0;
         }
-        
+
         return o.hashCode();
     }
-    
+
     /**
      * Performs a safe (null-aware) {@link Object#equals(Object)} check.
      * 
@@ -52,5 +52,27 @@ public final class Objects {
         }
 
         return o1.equals(o2);
+    }
+
+    /**
+     * Null-safe check to determine if the given object is equal to any of a list of objects.
+     * 
+     * @param o1 object to check if it's equal to any object in a list
+     * @param objects list of objects
+     * 
+     * @return true of the given object is equal to any object in the given list
+     */
+    public static boolean equalsAny(Object o1, Object... objects) {
+        if (o1 == null || objects == null) {
+            return o1 == objects;
+        }
+
+        for (Object object : objects) {
+            if (equals(o1, object)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

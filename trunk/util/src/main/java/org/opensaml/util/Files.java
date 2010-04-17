@@ -37,6 +37,10 @@ public final class Files {
      * @throws IOException throw if there is a problem reading the file in to the byte array
      */
     public static byte[] fileToByteArray(File file) throws IOException {
+        Assert.isNotNull(file, "File may not be null");
+        Assert.isTrue(file.exists(), "File does not exist");
+        Assert.isTrue(file.canRead(), "File is not readable");
+
         long numOfBytes = file.length();
 
         if (numOfBytes > Integer.MAX_VALUE) {
@@ -56,7 +60,8 @@ public final class Files {
             throw new IOException("Could not completely read file " + file.getName());
         }
 
-        ins.close();
+        Closeables.closeQuiety(ins);
+
         return bytes;
     }
 }

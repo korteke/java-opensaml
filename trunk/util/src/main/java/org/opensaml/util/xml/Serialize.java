@@ -28,6 +28,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.opensaml.util.Assert;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -52,6 +53,8 @@ public final class Serialize {
      * @return the string representation of the node
      */
     public static String nodeToString(Node node) {
+        Assert.isNotNull(node, "Node may not be null");
+
         ByteArrayOutputStream baout = new ByteArrayOutputStream();
         writeNode(node, baout);
         try {
@@ -70,6 +73,8 @@ public final class Serialize {
      * @return pretty-printed xml
      */
     public static String prettyPrintXML(Node node) {
+        Assert.isNotNull(node, "Node may not be null");
+
         TransformerFactory tfactory = TransformerFactory.newInstance();
         Transformer serializer;
         try {
@@ -95,6 +100,9 @@ public final class Serialize {
      * @param output the output stream to write the XML to
      */
     public static void writeNode(Node node, OutputStream output) {
+        Assert.isNotNull(node, "Node may not be null");
+        Assert.isNotNull(output, "Outputstream may not be null");
+
         DOMImplementation domImpl;
         if (node instanceof Document) {
             domImpl = ((Document) node).getImplementation();

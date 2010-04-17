@@ -32,7 +32,7 @@ public final class Types {
 
     /** JAXP DatatypeFactory. */
     private static DatatypeFactory dataTypeFactory;
-    
+
     /** Constructor. */
     private Types() {
     }

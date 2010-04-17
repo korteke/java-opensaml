@@ -20,14 +20,14 @@ import java.util.StringTokenizer;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.util.Objects;
+import org.opensaml.util.Assert;
 import org.opensaml.util.Strings;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 /** Set of helper methods for working with DOM QNames. */
 public final class QNames {
-    
+
     /** Constructor. */
     private QNames() {
     }
@@ -40,7 +40,10 @@ public final class QNames {
      * 
      * @return the QName respresented by the string
      */
-    public static QName constructQName(String qname, Element owningElement) {
+    public static QName constructQName(Element owningElement, String qname) {
+        Assert.isNotNull(owningElement, "Owning element may not be null");
+        Assert.isNotNull(qname, "Name may not be null");
+
         String nsURI;
         String nsPrefix;
         String name;
@@ -68,6 +71,7 @@ public final class QNames {
      * @return the QName
      */
     public static QName constructQName(String namespaceURI, String localName, String prefix) {
+        Assert.isNotNull(localName, "Local name may not be null");
         if (Strings.isNullOrEmpty(prefix)) {
             return new QName(namespaceURI, localName);
         } else if (Strings.isNullOrEmpty(namespaceURI)) {
@@ -93,19 +97,6 @@ public final class QNames {
     }
 
     /**
-     * Shortcut for checking a DOM element node's namespace and local name.
-     * 
-     * @param e An element to compare against
-     * @param ns An XML namespace to compare
-     * @param localName A local name to compare
-     * @return true iff the element's local name and namespace match the parameters
-     */
-    public static boolean isElementNamed(Element e, String ns, String localName) {
-        return e != null && Objects.equals(ns, e.getNamespaceURI())
-                && Objects.equals(localName, e.getLocalName());
-    }
-
-    /**
      * Converts a QName into a string that can be used for attribute values or element content.
      * 
      * @param qname the QName to convert to a string
@@ -113,6 +104,8 @@ public final class QNames {
      * @return the string value of the QName
      */
     public static String qnameToContentString(QName qname) {
+        Assert.isNotNull(qname, "QName may not be null");
+
         StringBuffer buf = new StringBuffer();
 
         if (qname.getPrefix() != null) {

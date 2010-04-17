@@ -24,6 +24,7 @@ import java.util.Map;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.util.Assert;
 import org.opensaml.util.Objects;
 import org.opensaml.util.Strings;
 import org.w3c.dom.Document;
@@ -34,7 +35,7 @@ import org.w3c.dom.Text;
 
 /** Set of helper methods for working with DOM Elements. */
 public final class Elements {
-
+    
     /** Constructor. */
     private Elements() {
     }
@@ -45,8 +46,11 @@ public final class Elements {
      * @param adoptee the element to be adopted
      * @param adopter the document into which the element is adopted
      */
-    public static void adoptElement(Element adoptee, Document adopter) {
-        if (!(adoptee.getOwnerDocument().equals(adopter))) {
+    public static void adoptElement(Document adopter, Element adoptee) {
+        Assert.isNotNull(adoptee, "Adoptee Element may not be null");
+        Assert.isNotNull(adopter, "Adopter Element may not be null");
+
+        if (!(adoptee.getOwnerDocument().isSameNode(adopter))) {
             if (adopter.adoptNode(adoptee) == null) {
                 // This can happen if the adopter and adoptee were produced by different DOM implementations
                 throw new RuntimeException("DOM Element node adoption failed. This is most likely caused by the "
@@ -62,25 +66,31 @@ public final class Elements {
      * @param childElement the child Element
      */
     public static void appendChildElement(Element parentElement, Element childElement) {
+        if (childElement == null) {
+            return;
+        }
+
+        Assert.isNotNull(parentElement, "Parent Element may not be null");
         Document parentDocument = parentElement.getOwnerDocument();
-        adoptElement(childElement, parentDocument);
+        adoptElement(parentDocument, childElement);
 
         parentElement.appendChild(childElement);
     }
-    
+
     /**
      * Creates a text node with the given content and appends it as child to the given element.
      * 
-     * @param domElement the element to recieve the text node
+     * @param element the element to recieve the text node
      * @param textContent the content for the text node
      */
-    public static void appendTextContent(Element domElement, String textContent) {
+    public static void appendTextContent(Element element, String textContent) {
         if (textContent == null) {
             return;
         }
-        Document parentDocument = domElement.getOwnerDocument();
+        Assert.isNotNull(element, "Element may not be null");
+        Document parentDocument = element.getOwnerDocument();
         Text textNode = parentDocument.createTextNode(textContent);
-        domElement.appendChild(textNode);
+        element.appendChild(textNode);
     }
 
     /**
@@ -107,11 +117,10 @@ public final class Elements {
      * @return the element
      */
     public static Element constructElement(Document document, String namespaceURI, String localName, String prefix) {
-        String trimmedLocalName = Strings.trimOrNull(localName);
+        Assert.isNotNull(document, "Document may not be null");
 
-        if (trimmedLocalName == null) {
-            throw new IllegalArgumentException("Local name may not be null or empty");
-        }
+        String trimmedLocalName = Strings.trimOrNull(localName);
+        Assert.isNotNull(trimmedLocalName, "Element local name may not be null or empty");
 
         String qualifiedName;
         String trimmedPrefix = Strings.trimOrNull(prefix);
@@ -129,33 +138,25 @@ public final class Elements {
     }
 
     /**
-     * Gets the child elements of the given element in a single iteration.
+     * Gets the child elements of the given element.
      * 
      * @param root element to get the child elements of
      * 
-     * @return child elements indexed by namespace qualifed tag name, never null
+     * @return list of child elements
      */
-    public static Map<QName, List<Element>> getChildElements(Element root) {
-        Map<QName, List<Element>> children = new HashMap<QName, List<Element>>();
-        NodeList childNodes = root.getChildNodes();
+    public static List<Element> getChildElements(Element root) {
+        ArrayList<Element> children = new ArrayList<Element>();
+        if (root == null) {
+            return null;
+        }
 
+        NodeList childNodes = root.getChildNodes();
         int numOfNodes = childNodes.getLength();
         Node childNode;
-        Element e;
-        QName qname;
-        List<Element> elements;
         for (int i = 0; i < numOfNodes; i++) {
             childNode = childNodes.item(i);
             if (childNode.getNodeType() == Node.ELEMENT_NODE) {
-                e = (Element) childNode;
-                qname = QNames.getNodeQName(e);
-                elements = children.get(qname);
-                if (elements == null) {
-                    elements = new ArrayList<Element>();
-                    children.put(qname, elements);
-                }
-
-                elements.add(e);
+                children.add((Element) childNode);
             }
         }
 
@@ -173,8 +174,11 @@ public final class Elements {
      */
     public static List<Element> getChildElementsByTagName(Element root, String localName) {
         ArrayList<Element> children = new ArrayList<Element>();
-        NodeList childNodes = root.getChildNodes();
+        if (root == null) {
+            return null;
+        }
 
+        NodeList childNodes = root.getChildNodes();
         int numOfNodes = childNodes.getLength();
         Node childNode;
         Element e;
@@ -203,8 +207,11 @@ public final class Elements {
      */
     public static List<Element> getChildElementsByTagNameNS(Element root, String namespaceURI, String localName) {
         ArrayList<Element> children = new ArrayList<Element>();
-        NodeList childNodes = root.getChildNodes();
+        if (root == null) {
+            return null;
+        }
 
+        NodeList childNodes = root.getChildNodes();
         int numOfNodes = childNodes.getLength();
         Node childNode;
         Element e;
@@ -212,8 +219,7 @@ public final class Elements {
             childNode = childNodes.item(i);
             if (childNode.getNodeType() == Node.ELEMENT_NODE) {
                 e = (Element) childNode;
-                if (Objects.equals(e.getNamespaceURI(), namespaceURI)
-                        && Objects.equals(e.getLocalName(), localName)) {
+                if (Objects.equals(e.getNamespaceURI(), namespaceURI) && Objects.equals(e.getLocalName(), localName)) {
                     children.add(e);
                 }
             }
@@ -230,6 +236,10 @@ public final class Elements {
      * @return the ancestral element node of the current node, or null
      */
     public static Element getElementAncestor(Node currentNode) {
+        if (currentNode == null) {
+            return null;
+        }
+
         Node parent = currentNode.getParentNode();
         if (parent != null) {
             short type = parent.getNodeType();
@@ -297,6 +307,10 @@ public final class Elements {
      * @return The first child Element of n, or null if none
      */
     public static Element getFirstChildElement(Node n) {
+        if (n == null) {
+            return null;
+        }
+
         Node child = n.getFirstChild();
         while (child != null && child.getNodeType() != Node.ELEMENT_NODE) {
             child = child.getNextSibling();
@@ -310,12 +324,54 @@ public final class Elements {
     }
 
     /**
+     * Gets the child elements of the given element in a single iteration.
+     * 
+     * @param root element to get the child elements of
+     * 
+     * @return child elements indexed by namespace qualifed tag name, never null
+     */
+    public static Map<QName, List<Element>> getIndexedChildElements(Element root) {
+        Map<QName, List<Element>> children = new HashMap<QName, List<Element>>();
+        if (root == null) {
+            return children;
+        }
+
+        NodeList childNodes = root.getChildNodes();
+
+        int numOfNodes = childNodes.getLength();
+        Node childNode;
+        Element e;
+        QName qname;
+        List<Element> elements;
+        for (int i = 0; i < numOfNodes; i++) {
+            childNode = childNodes.item(i);
+            if (childNode.getNodeType() == Node.ELEMENT_NODE) {
+                e = (Element) childNode;
+                qname = QNames.getNodeQName(e);
+                elements = children.get(qname);
+                if (elements == null) {
+                    elements = new ArrayList<Element>();
+                    children.put(qname, elements);
+                }
+
+                elements.add(e);
+            }
+        }
+
+        return children;
+    }
+
+    /**
      * Gets the next sibling Element of the node, skipping any Text nodes such as whitespace.
      * 
      * @param n The sibling to start with
      * @return The next sibling Element of n, or null if none
      */
     public static Element getNextSiblingElement(Node n) {
+        if (n == null) {
+            return null;
+        }
+
         Node sib = n.getNextSibling();
         while (sib != null && sib.getNodeType() != Node.ELEMENT_NODE) {
             sib = sib.getNextSibling();
@@ -328,4 +384,46 @@ public final class Elements {
         }
     }
 
+    /**
+     * Check if the given Element has the given name.
+     * 
+     * @param e element to check
+     * @param name name to check for
+     * 
+     * @return true if the element has the given name, false otherwise
+     */
+    public static boolean isElementNamed(Element e, QName name) {
+        return isElementNamed(e, name.getNamespaceURI(), name.getLocalPart());
+    }
+
+    /**
+     * Shortcut for checking a DOM element node's namespace and local name.
+     * 
+     * @param e An element to compare against
+     * @param ns An XML namespace to compare
+     * @param localName A local name to compare
+     * @return true iff the element's local name and namespace match the parameters
+     */
+    public static boolean isElementNamed(Element e, String ns, String localName) {
+        return e != null && Objects.equals(ns, e.getNamespaceURI()) && Objects.equals(localName, e.getLocalName());
+    }
+
+    /**
+     * Sets a given Element as the root element of a given document. If the given element is not owned by the given
+     * document than it is adopted first.
+     * 
+     * @param document document whose root element will be set
+     * @param element element that will be the new root element
+     */
+    public static void setDocumentElement(Document document, Element element) {
+        Assert.isNotNull(document, "Document may not be null");
+        Assert.isNotNull(element, "Element may not be null");
+
+        adoptElement(document, element);
+
+        Element rootElement = document.getDocumentElement();
+        if (!rootElement.isSameNode(element)) {
+            document.replaceChild(element, rootElement);
+        }
+    }
 }
