@@ -135,7 +135,7 @@ public final class Strings {
      */
     public static String trimOrNull(String s) {
         String temp = trim(s);
-        if (temp.length() == 0) {
+        if (temp == null || temp.length() == 0) {
             return null;
         }
 
