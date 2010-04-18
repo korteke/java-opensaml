@@ -144,7 +144,7 @@ public final class Elements {
      * 
      * @return list of child elements
      */
-    public static List<Element> getChildElements(Element root) {
+    public static List<Element> getChildElements(Node root) {
         ArrayList<Element> children = new ArrayList<Element>();
         if (root == null) {
             return null;
@@ -172,7 +172,7 @@ public final class Elements {
      * 
      * @return list of child elements, never null
      */
-    public static List<Element> getChildElementsByTagName(Element root, String localName) {
+    public static List<Element> getChildElementsByTagName(Node root, String localName) {
         ArrayList<Element> children = new ArrayList<Element>();
         if (root == null) {
             return null;
@@ -205,7 +205,7 @@ public final class Elements {
      * 
      * @return list of child elements, never null
      */
-    public static List<Element> getChildElementsByTagNameNS(Element root, String namespaceURI, String localName) {
+    public static List<Element> getChildElementsByTagNameNS(Node root, String namespaceURI, String localName) {
         ArrayList<Element> children = new ArrayList<Element>();
         if (root == null) {
             return null;
