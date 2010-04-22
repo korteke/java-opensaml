@@ -12,6 +12,7 @@
 
     <modules>
         <module>util</module>
+        <module>messaging-api</module>
     </modules>
 
     <properties>

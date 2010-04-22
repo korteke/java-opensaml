@@ -12,7 +12,7 @@
     </parent>
 
     <name>OpenSAML :: Messaging</name>
-    <artifactId>messaging</artifactId>
+    <artifactId>opensaml-messaging-api</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>

@@ -12,7 +12,7 @@
     </parent>
 
     <name>OpenSAML :: XML Utilities</name>
-    <artifactId>util</artifactId>
+    <artifactId>opensaml-util</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
