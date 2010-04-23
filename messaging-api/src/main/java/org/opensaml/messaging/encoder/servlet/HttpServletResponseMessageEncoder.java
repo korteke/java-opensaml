@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.opensaml.messaging.binding.servlet;
+package org.opensaml.messaging.encoder.servlet;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.opensaml.messaging.binding.MessageEncoder;
+import org.opensaml.messaging.encoder.MessageEncoder;
 
 /**
  * A specialization of {@link MessageEncoder} that operates on a sink message data type of {@link HttpServletResponse}.

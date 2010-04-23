@@ -13,33 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.opensaml.messaging.binding.servlet.impl;
+package org.opensaml.messaging.encoder.servlet.impl;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-import org.opensaml.messaging.binding.impl.BaseMessageDecoder;
-import org.opensaml.messaging.binding.servlet.HttpServletRequestMessageDecoder;
-
+import org.opensaml.messaging.encoder.impl.BaseMessageEncoder;
+import org.opensaml.messaging.encoder.servlet.HttpServletResponseMessageEncoder;
 
 /**
- * Abstract implementation of {@link HttpServletRequestMessageDecoder}.
+ * Abstract implementation of {@link HttpServletResponseMessageDecoder}.
  * 
  * @param <MessageType> the message type of the message context on which to operate
  */
-public abstract class AbstractHttpServletRequestMessageDecoder<MessageType> extends BaseMessageDecoder<MessageType> 
-        implements HttpServletRequestMessageDecoder<MessageType> {
+public abstract class AbstractHttpServletResponseMessageEncoder<MessageType> extends BaseMessageEncoder<MessageType> 
+        implements HttpServletResponseMessageEncoder<MessageType> {
     
-    /** The HTTP servlet request. */
-    private HttpServletRequest request;
+    /** The HTTP servlet response. */
+    private HttpServletResponse response;
     
     /** {@inheritDoc} */
-    public HttpServletRequest getHttpServletRequest() {
-        return request;
+    public HttpServletResponse getHttpServletResponse() {
+        return response;
     }
     
     /** {@inheritDoc} */
-    public void setHttpServletRequest(HttpServletRequest servletRequest) {
-        request = servletRequest;
+    public void setHttpServletResponse(HttpServletResponse servletResponse) {
+        response = servletResponse;
     }
     
 }

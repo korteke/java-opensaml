@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.opensaml.messaging.binding.impl;
+package org.opensaml.messaging.encoder.impl;
 
-import org.opensaml.messaging.binding.MessageEncoder;
 import org.opensaml.messaging.context.MessageContext;
+import org.opensaml.messaging.encoder.MessageEncoder;
 
 /**
  * Base message encoder.

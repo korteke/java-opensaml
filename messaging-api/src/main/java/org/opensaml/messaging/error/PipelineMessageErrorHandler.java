@@ -15,7 +15,7 @@
  */
 package org.opensaml.messaging.error;
 
-import org.opensaml.messaging.binding.MessageEncoder;
+import org.opensaml.messaging.encoder.MessageEncoder;
 import org.opensaml.messaging.handler.MessageHandlerChain;
 
 

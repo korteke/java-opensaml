@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.opensaml.messaging.binding;
+package org.opensaml.messaging.encoder;
 
 import org.opensaml.messaging.MessageException;
 
