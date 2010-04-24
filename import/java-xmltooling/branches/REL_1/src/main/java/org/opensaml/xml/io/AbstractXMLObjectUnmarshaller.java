@@ -227,6 +227,9 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
             String attributeNSPrefix;
             if (attributeNSURI != null) {
                 attributeNSPrefix = attribute.lookupPrefix(attributeNSURI);
+                if (attributeNSPrefix == null && XMLConstants.XML_NS.equals(attributeNSURI)) {
+                    attributeNSPrefix = XMLConstants.XML_PREFIX;
+                }
                 Namespace attributeNS = new Namespace(attributeNSURI, attributeNSPrefix);
                 attributeNS.setAlwaysDeclare(false);
                 xmlObject.addNamespace(attributeNS);

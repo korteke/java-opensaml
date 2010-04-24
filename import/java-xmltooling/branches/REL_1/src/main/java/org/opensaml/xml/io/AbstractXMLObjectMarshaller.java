@@ -332,7 +332,8 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
 
         for (Namespace namespace : namespaces) {
             if (!namespace.alwaysDeclare()) {
-                if(DatatypeHelper.safeEquals(namespace.getNamespacePrefix(), XMLConstants.XML_PREFIX)){
+                if(DatatypeHelper.safeEquals(namespace.getNamespacePrefix(), XMLConstants.XML_PREFIX)
+                        || DatatypeHelper.safeEquals(namespace.getNamespaceURI(), XMLConstants.XML_NS)) {
                     //the "xml" namespace never needs to be declared
                     continue;
                 }
