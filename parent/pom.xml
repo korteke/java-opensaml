@@ -11,8 +11,8 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>../util</module>
-        <module>../messaging-api</module>
+        <module>../opensaml-util</module>
+        <module>../opensaml-messaging-api</module>
     </modules>
 
     <properties>
