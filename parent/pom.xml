@@ -17,8 +17,6 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <logback.groupId>ch.qos.logback</logback.groupId>
-        <logback.version>0.9.18</logback.version>
         <xerces.groupId>org.apache.xerces</xerces.groupId>
         <xerces.version>2.9.1</xerces.version>
     </properties>
