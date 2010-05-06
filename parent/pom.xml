@@ -31,13 +31,51 @@
         </repository>
     </repositories>
 
+    <!--
+        Dependencies which are required by every single project module should go here and will be inherited by all
+        modules.
+    -->
+    <dependencies>
+        <!-- Compile Dependencies -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.5.11</version>
+        </dependency>
+
+        <!-- Provided Dependencies -->
+        <dependency>
+            <groupId>net.jcip</groupId>
+            <artifactId>jcip-annotations</artifactId>
+            <version>1.0</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Runtime Dependencies -->
+
+        <!--  Test Dependencies -->
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>5.9</version>
+            <classifier>jdk15</classifier>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
+    <!--
+        Dependencies which are not required by every project module but for which every module should use the same
+        version of the dependency should go here. That is to say, placing a dependency here allows one to "peg" the
+        version of the artifact used by all project modules.
+    -->
     <dependencyManagement>
         <dependencies>
             <!-- Compile Dependencies -->
             <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-api</artifactId>
-                <version>1.5.11</version>
+                <groupId>joda-time</groupId>
+                <artifactId>joda-time</artifactId>
+                <version>1.6</version>
             </dependency>
 
             <!-- Provided Dependencies -->
@@ -45,12 +83,6 @@
                 <groupId>javax.servlet</groupId>
                 <artifactId>servlet-api</artifactId>
                 <version>2.4</version>
-                <scope>provided</scope>
-            </dependency>
-            <dependency>
-                <groupId>net.jcip</groupId>
-                <artifactId>jcip-annotations</artifactId>
-                <version>1.0</version>
                 <scope>provided</scope>
             </dependency>
 
@@ -87,13 +119,7 @@
             </dependency>
 
             <!--  Test Dependencies -->
-            <dependency>
-                <groupId>org.testng</groupId>
-                <artifactId>testng</artifactId>
-                <version>5.9</version>
-                <classifier>jdk15</classifier>
-                <scope>test</scope>
-            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
