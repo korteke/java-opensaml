@@ -16,7 +16,6 @@
     <packaging>jar</packaging>
 
     <dependencies>
-
         <!-- Compile Dependencies -->
 
         <!-- Provided Dependencies -->
@@ -26,18 +25,6 @@
         <!-- Test Dependencies -->
 
         <!-- Managed Dependencies -->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>net.jcip</groupId>
-            <artifactId>jcip-annotations</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.testng</groupId>
-            <artifactId>testng</artifactId>
-            <classifier>jdk15</classifier>
-        </dependency>
+
     </dependencies>
 </project>
