@@ -1,0 +1,60 @@
+This document provides the steps necessary for a developer to add a new project
+module.
+
+The following steps should be performed from the command line, outside Eclipse.
+All instances of "MODULE_NAME" should be replaced with whatever you call your
+module.
+
+1. Create a directory called opensaml-MODULE_NAME as a child of the java-opensaml
+   project
+
+2. With in the module directory create the directories:
+   - src/main/java
+   - src/main/resources
+   - src/test/java
+   - src/test/resources
+
+3. Copy the java-opensaml/opensaml-part/module-settings/pom-template.xml in to 
+   your module directory and edit the following lines:
+   - line 14, replace "DESCRIPTIVE NAME" with a decently descriptive name
+   - line 15, replace "MODULE_NAME"
+
+4. Add (svn add java-opensaml/opensaml-MODULE_NAME) your module to SVN.
+   
+5. From the java-opensaml directory, run the following SVN command:
+   svn propset svn:externals -F opensaml-parent/module-settings/externals.svn opensaml-MODULE_NAME
+   
+6. Commit (svn commit opensaml-MODULE_NAME -m "LOG MESSAGE") your module to SVN
+
+7. Perform an svn update to pull in the externalized files (set up via step 5)
+
+Now, from Eclipse
+
+1. Within the package explore, right-click and select "Import"
+
+2. Select "Maven 2 Project" as the project type
+
+3. For the project location select your module via Browse
+
+4. Import the module
+
+At this point you should be good to go.
+
+Some notes:
+* The .checkstyle file or .settings directory are maintained centrally for all
+modules.  So don't commit changes to them unless you really mean to change the
+setting for all modules.
+
+* The opensaml-parent/pom.xml declares both inherited and managed dependencies.
+Inherited dependencies are inherited by, available to, all project modules. You
+don't have to do anything in your pom to get them. Managed dependencies are 
+managed (version, scope, exclusions, etc.) by the parent pom but are not 
+automatically available to your project.  To use them your must declare a 
+dependency with the a groupId, artifactId, and optionally a qualifier.  You do
+not declare the version, scope, or exclusions (thats the managed part).
+
+* If you have a dependency that is used by another module, define it as a 
+managed dependency in the parent pom and change the other module's pom to use 
+the dependency as a managed dependency.  In general, you should not declare 
+additional inherited dependencies unless you're certain that every single 
+project module will need it.
