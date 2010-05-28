@@ -26,7 +26,10 @@ import javax.xml.namespace.QName;
 import net.jcip.annotations.NotThreadSafe;
 
 import org.opensaml.xml.Configuration;
+import org.opensaml.xml.NamespaceManager;
 import org.opensaml.xml.XMLObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A map of attribute names and attribute values that invalidates the DOM of the attribute owning XMLObject when the
@@ -36,6 +39,9 @@ import org.opensaml.xml.XMLObject;
  */
 @NotThreadSafe
 public class AttributeMap implements Map<QName, String> {
+    
+    /** Logger. */
+    private final Logger log = LoggerFactory.getLogger(AttributeMap.class);
 
     /** XMLObject owning the attributes. */
     private XMLObject attributeOwner;
@@ -46,6 +52,14 @@ public class AttributeMap implements Map<QName, String> {
     /** Set of attribute QNames which have been locally registered as having an ID type within this 
      * AttributeMap instance. */
     private Set<QName> idAttribNames;
+    
+    /** Set of attribute QNames which have been locally registered as having an QName value type within this 
+     * AttributeMap instance. */
+    private Set<QName> qnameAttribNames;
+    
+    /** Flag indicating whether an attempt should be made to infer QName values, 
+     * if attribute is not registered as a QName type. */
+    private boolean inferQNameValues;
 
     /**
      * Constructor.
@@ -62,6 +76,7 @@ public class AttributeMap implements Map<QName, String> {
         attributeOwner = newOwner;
         attributes = new LazyMap<QName, String>();
         idAttribNames = new LazySet<QName>();
+        qnameAttribNames = new LazySet<QName>();
     }
 
     /** {@inheritDoc} */
@@ -74,6 +89,15 @@ public class AttributeMap implements Map<QName, String> {
                 attributeOwner.getIDIndex().deregisterIDMapping(oldValue);
                 attributeOwner.getIDIndex().registerIDMapping(value, attributeOwner);
             }
+            if (!DatatypeHelper.isEmpty(attributeName.getNamespaceURI())) {
+                if (value == null) {
+                    attributeOwner.getNamespaceManager().deregisterAttributeName(attributeName);
+                } else {
+                    attributeOwner.getNamespaceManager().registerAttributeName(attributeName);
+                }
+            }
+            checkAndDeregisterQNameValue(attributeName, oldValue);
+            checkAndRegisterQNameValue(attributeName, value);
         }
         
         return oldValue;
@@ -129,6 +153,8 @@ public class AttributeMap implements Map<QName, String> {
             if (isIDAttribute(attributeName) || Configuration.isIDAttribute(attributeName)) {
                 attributeOwner.getIDIndex().deregisterIDMapping(removedValue);
             }
+            attributeOwner.getNamespaceManager().deregisterAttributeName(attributeName);
+            checkAndDeregisterQNameValue(attributeName, removedValue);
         }
 
         return removedValue;
@@ -207,10 +233,208 @@ public class AttributeMap implements Map<QName, String> {
     }
     
     /**
+     * Register an attribute as having a type of QName.
+     * 
+     * @param attributeName the name of the QName-valued attribute to be registered
+     */
+    public void registerQNameAttribute(QName attributeName) {
+        qnameAttribNames.add(attributeName);
+    }
+    
+    /**
+     * Deregister an attribute as having a type of QName.
+     * 
+     * @param attributeName the name of the QName-valued attribute to be registered
+     */
+    public void deregisterQNameAttribute(QName attributeName) {
+        qnameAttribNames.remove(attributeName);
+    }
+    
+    /**
+     * Check whether a given attribute is known to have a QName type.
+     * 
+     * @param attributeName the QName of the attribute to be checked for QName type.
+     * @return true if attribute is registered as having an QName type.
+     */
+    public boolean isQNameAttribute(QName attributeName) {
+        return qnameAttribNames.contains(attributeName);
+    }
+    
+    /**
+     * Get the flag indicating whether an attempt should be made to infer QName values, 
+     * if attribute is not registered via a configuration as a QName type. Default is false.
+     * 
+     * @return true if QName types should be inferred, false if not
+     * 
+     */
+    public boolean isInferQNameValues() {
+        return inferQNameValues;
+    }
+    
+    /**
+     * Set the flag indicating whether an attempt should be made to infer QName values, 
+     * if attribute is not registered via a configuration as a QName type. Default is false.
+     * 
+     * @param flag true if QName types should be inferred, false if not
+     * 
+     */
+    public void setInferQNameValues(boolean flag) {
+        inferQNameValues = flag;
+    }
+    
+    /**
      * Releases the DOM caching associated XMLObject and its ancestors.
      */
     private void releaseDOM() {
         attributeOwner.releaseDOM();
         attributeOwner.releaseParentDOM(true);
     }
+    
+    /**
+     * Check whether the attribute value is a QName type, and if it is,
+     * register it with the owner's namespace manger.
+     * 
+     * @param attributeName the attribute name
+     * @param attributeValue the attribute value
+     */
+    private void checkAndRegisterQNameValue(QName attributeName, String attributeValue) {
+        if (attributeValue == null) {
+            return;
+        }
+        
+        QName qnameValue = checkQName(attributeName, attributeValue);
+        if (qnameValue != null) {
+            String attributeID = NamespaceManager.generateAttributeID(attributeName);
+            log.trace("QName attribute value detected, registering QName '{}' under attibute ID '{}'",
+                    qnameValue, attributeID);
+            attributeOwner.getNamespaceManager().registerAttributeValue(attributeID, qnameValue);
+        } else {
+            log.trace("Attribute '{}' with value '{}' was not evaluated to be QName type", 
+                    attributeName, attributeValue);
+        }
+        
+    }
+    
+    /**
+     * Check whether the attribute value is a QName type, and if it is,
+     * deregister it with the owner's namespace manger.
+     * 
+     * @param attributeName the attribute name
+     * @param attributeValue the attribute value
+     */
+    private void checkAndDeregisterQNameValue(QName attributeName, String attributeValue) {
+        if (attributeValue == null) {
+            return;
+        }
+        
+        QName qnameValue = checkQName(attributeName, attributeValue);
+        if (qnameValue != null) {
+            String attributeID = NamespaceManager.generateAttributeID(attributeName);
+            log.trace("QName attribute value detected, registering QName '{}' under attibute ID '{}'",
+                    qnameValue, attributeID);
+            attributeOwner.getNamespaceManager().deregisterAttributeValue(attributeID);
+        } else {
+            log.trace("Attribute '{}' with value '{}' was not evaluated to be QName type", 
+                    attributeName, attributeValue);
+        }
+        
+    }
+    
+    /**
+     * Check where the attribute value is a QName type, and if so, return the QName.
+     * 
+     * @param attributeName the attribute name
+     * @param attributeValue the attribute value
+     * @return the QName if the attribute value is a QName type, otherwise null
+     */
+    private QName checkQName(QName attributeName, String attributeValue) {
+        log.trace("Checking whether attribute '{}' with value {} is a QName type", attributeName, attributeValue);
+        
+        if (attributeValue == null) {
+            log.trace("Attribute value was null, returning null");
+            return null;
+        }
+        
+        if (isQNameAttribute(attributeName)) {
+            log.trace("Configuration indicates attribute with name '{}' is a QName type, resolving value QName", 
+                    attributeName);
+            // Do support the default namespace in this scenario, since we know it should be a QName
+            QName valueName = resolveQName(attributeValue, true);
+            if (valueName != null) {
+                log.trace("Successfully resolved attribute value to QName: {}", valueName);
+            } else {
+                log.trace("Could not resolve attribute value to QName, returning null");
+            }
+            return valueName;
+        } else if (isInferQNameValues()) {
+            log.trace("Attempting to infer whether attribute value is a QName");
+            // Do not support the default namespace in this scenario, since we're trying to infer.
+            // Better to fail to resolve than to infer a bogus QName value.
+            QName valueName = resolveQName(attributeValue, false);
+            if (valueName != null) {
+                log.trace("Resolved attribute as a QName: '{}'", valueName);
+            } else {
+                log.trace("Attribute value was not resolveable to a QName, returning null");
+            }
+            return valueName;
+        } else {
+            log.trace("Attribute was not registered in configuration as a QName type and QName inference is disabled");
+            return null;
+        }
+
+    }
+    
+    /**
+     * Attempt to resolve the specified attribute value into a QName.
+     * 
+     * @param attributeValue the value to evaluate
+     * @param isDefaultNSOK flag indicating whether resolution should be attempted if the prefix is null, 
+     *           that is, the value is considered to be be potentially in the default XML namespace
+     * 
+     * @return the QName, or null if unable to resolve into a QName
+     */
+    private QName resolveQName(String attributeValue, boolean isDefaultNSOK) {
+        if (attributeValue == null) {
+            return null;
+        }
+        log.trace("Attemtping to resolve QName from attribute value '{}'", attributeValue);
+        
+        // Attempt to resolve value as a QName by splitting on colon and then attempting to resolve
+        // this candidate prefix into a namespace URI. 
+        String candidatePrefix = null;
+        String localPart = null;
+        int ci = attributeValue.indexOf(':');
+        if (ci > -1) {
+            candidatePrefix = attributeValue.substring(0, ci);
+            log.trace("Evaluating candiate namespace prefix '{}'", candidatePrefix);
+            localPart = attributeValue.substring(ci+1);
+        } else {
+            // No prefix - possibly evaluate as if in the default namespace
+            if (isDefaultNSOK) {
+                candidatePrefix = null;
+                log.trace("Value did not contain a colon, evaluating as default namespace");
+                localPart = attributeValue;
+            } else {
+                log.trace("Value did not contain a colon, default namespace is disallowed, returning null");
+                return null;
+            }
+        }
+        
+        log.trace("Evaluated QName local part as '{}'", localPart);
+        
+        String nsURI = XMLObjectHelper.lookupNamespaceURI(attributeOwner, candidatePrefix);
+        log.trace("Resolved namespace URI '{}'", nsURI);
+        if (nsURI != null) {
+            QName name = XMLHelper.constructQName(nsURI, localPart, candidatePrefix);
+            log.trace("Resolved QName '{}'", name);
+            return name;
+        } else {
+            log.trace("Namespace URI for candidate prefix '{}' could not be resolved", candidatePrefix);
+        }
+        
+        log.trace("Value was either not a QName, or namespace URI could not be resolved");
+        
+        return null;
+    }
+
 }

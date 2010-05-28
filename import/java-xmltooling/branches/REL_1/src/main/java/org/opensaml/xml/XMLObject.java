@@ -34,6 +34,8 @@ public interface XMLObject {
     /**
      * Adds a namespace to the ones already scoped to this element.
      * 
+     * @deprecated use appropriate methods on the XMLObject's {@link NamespaceManager}.
+     * 
      * @param namespace the namespace to add
      */
     public void addNamespace(Namespace namespace);
@@ -68,6 +70,13 @@ public interface XMLObject {
      * @return the IDIndex owned by this XMLObject
      */
     public IDIndex getIDIndex();
+    
+    /**
+     * Gets the {@link NamespaceManager} instance for this object.
+     * 
+     * @return the namespace manager for this object
+     */
+    public NamespaceManager getNamespaceManager();
 
     /**
      * Gets the namespaces that are scoped to this element.
@@ -146,6 +155,8 @@ public interface XMLObject {
 
     /**
      * Removes a namespace from this element.
+     * 
+     * @deprecated use appropriate methods on the XMLObject's {@link NamespaceManager}.
      * 
      * @param namespace the namespace to remove
      */

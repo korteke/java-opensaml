@@ -22,6 +22,7 @@ import java.io.Reader;
 import java.io.Writer;
 
 import org.opensaml.xml.Configuration;
+import org.opensaml.xml.Namespace;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.XMLRuntimeException;
 import org.opensaml.xml.io.Marshaller;
@@ -255,6 +256,51 @@ public final class XMLObjectHelper {
         Element element = marshall(xmlObject);
         XMLHelper.writeNode(element, writer);
     }
-
+    
+    /**
+     * Get the namespace URI bound to the specified prefix within the scope of the specified
+     * XMLObject.
+     *
+     * @param xmlObject the XMLObject from which to search
+     * @param prefix the prefix to search
+     * @return the namespace URI bound to the prefix, or none if not found
+     */
+    public static String lookupNamespaceURI(XMLObject xmlObject, String prefix) {
+        XMLObject current = xmlObject;
+        
+        while (current != null) {
+            for (Namespace ns : current.getNamespaces()) {
+                if (DatatypeHelper.safeEquals(ns.getNamespacePrefix(), prefix)) {
+                    return ns.getNamespaceURI();
+                }
+            }
+            current = current.getParent();
+        }
+        
+        return null;
+    }
+    
+    /**
+     * Get the prefix bound to the specified namespace URI within the scope of the specified
+     * XMLObject.
+     *
+     * @param xmlObject the XMLObject from which to search
+     * @param namespaceURI the namespace URI to search
+     * @return the prefix bound to the namespace URI, or none if not found
+     */
+    public static String lookupNamespacePrefix(XMLObject xmlObject, String namespaceURI) {
+        XMLObject current = xmlObject;
+        
+        while (current != null) {
+            for (Namespace ns : current.getNamespaces()) {
+                if (DatatypeHelper.safeEquals(ns.getNamespaceURI(), namespaceURI)) {
+                    return ns.getNamespacePrefix();
+                }
+            }
+            current = current.getParent();
+        }
+        
+        return null;
+    }
     
 }

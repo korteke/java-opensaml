@@ -62,6 +62,9 @@ public abstract class AbstractXMLObject implements XMLObject {
     
     /** The value of the <code>xsi:nil</code> attribute. */
     private  XSBooleanValue nil;
+    
+    /** The namespace manager for this XML object. */
+    private NamespaceManager nsManager;
 
     /**
      * Mapping of ID attributes to XMLObjects in the subtree rooted at this object. This allows constant-time
@@ -84,30 +87,12 @@ public abstract class AbstractXMLObject implements XMLObject {
             addNamespace(new Namespace(namespaceURI, namespacePrefix));
             setElementNamespacePrefix(namespacePrefix);
         }
+        nsManager = new NamespaceManager(this);
     }
     
     /** {@inheritDoc} */
     public void addNamespace(Namespace newNamespace) {
-        if(newNamespace == null){
-            return;
-        }
-        
-        if(namespaces.size() == 0){
-            namespaces.add(newNamespace);
-            return;
-        }
-        
-        for(Namespace namespace : namespaces){
-            if(DatatypeHelper.safeEquals(namespace.getNamespaceURI(), newNamespace.getNamespaceURI()) &&
-                    DatatypeHelper.safeEquals(namespace.getNamespacePrefix(), newNamespace.getNamespacePrefix())){
-                if(newNamespace.alwaysDeclare()){
-                    namespace.setAlwaysDeclare(true);
-                    return;
-                }
-            }
-        }
-        
-        namespaces.add(newNamespace);
+        getNamespaceManager().registerNamespace(newNamespace);
     }
 
     /** {@inheritDoc} */
@@ -129,6 +114,11 @@ public abstract class AbstractXMLObject implements XMLObject {
     /** {@inheritDoc} */
     public IDIndex getIDIndex() {
         return idIndex;
+    }
+    
+    /** {@inheritDoc} */
+    public NamespaceManager getNamespaceManager() {
+        return nsManager;
     }
 
     /** {@inheritDoc} */
@@ -180,6 +170,9 @@ public abstract class AbstractXMLObject implements XMLObject {
      * @param newValue - the new value
      * 
      * @return the value that should be assigned
+     * 
+     * @deprecated replacement {@link #prepareAttributeValueForAssignment(String, QName, QName)} 
+     *                or {@link #prepareElementContentForAssignment(QName, QName)} as appropriate
      */
     protected QName prepareForAssignment(QName oldValue, QName newValue) {
         if (oldValue == null) {
@@ -197,6 +190,77 @@ public abstract class AbstractXMLObject implements XMLObject {
             if (newValue != null) {
                 Namespace newNamespace = new Namespace(newValue.getNamespaceURI(), newValue.getPrefix());
                 addNamespace(newNamespace);
+            }
+            releaseThisandParentDOM();
+        }
+
+        return newValue;
+    }
+    
+    /**
+     * A helper function for derived classes. This checks for semantic equality between two QNames if it they are
+     * different invalidates the DOM. It returns the normalized value so subclasses just have to go. this.foo =
+     * prepareElementContentForAssignment(this.foo, foo);
+     * 
+     * @param oldValue - the current value
+     * @param newValue - the new value
+     * 
+     * @return the value that should be assigned
+     */
+    protected QName prepareElementContentForAssignment(QName oldValue, QName newValue) {
+        if (oldValue == null) {
+            if (newValue != null) {
+                getNamespaceManager().registerContentValue(newValue);
+                releaseThisandParentDOM();
+                return newValue;
+            } else {
+                return null;
+            }
+        }
+        
+        // Old value was not null, so go ahead and deregister it
+        getNamespaceManager().deregisterContentValue();
+
+        if (!oldValue.equals(newValue)) {
+            if (newValue != null) {
+                getNamespaceManager().registerContentValue(newValue);
+            }
+            releaseThisandParentDOM();
+        }
+
+        return newValue;
+    }
+    
+    
+    /**
+     * A helper function for derived classes. This checks for semantic equality between two QNames if it they are
+     * different invalidates the DOM. It returns the normalized value so subclasses just have to go. this.foo =
+     * prepareAttributeValueForAssignment(this.foo, foo);
+     * 
+     * @param attributeID - unique identifier of the attribute in the content model within this XMLObject, used to 
+     *        identify the attribute within the XMLObject's NamespaceManager
+     * @param oldValue - the current value
+     * @param newValue - the new value
+     * 
+     * @return the value that should be assigned
+     */
+    protected QName prepareAttributeValueForAssignment(String attributeID, QName oldValue, QName newValue) {
+        if (oldValue == null) {
+            if (newValue != null) {
+                getNamespaceManager().registerAttributeValue(attributeID, newValue);
+                releaseThisandParentDOM();
+                return newValue;
+            } else {
+                return null;
+            }
+        }
+        
+        // Old value was not null, so go ahead and deregister it
+        getNamespaceManager().deregisterAttributeValue(attributeID);
+
+        if (!oldValue.equals(newValue)) {
+            if (newValue != null) {
+                getNamespaceManager().registerAttributeValue(attributeID, newValue);
             }
             releaseThisandParentDOM();
         }
@@ -383,7 +447,7 @@ public abstract class AbstractXMLObject implements XMLObject {
 
     /** {@inheritDoc} */
     public void removeNamespace(Namespace namespace) {
-        namespaces.remove(namespace);
+        getNamespaceManager().deregisterNamespace(namespace);
     }
 
     /** {@inheritDoc} */
