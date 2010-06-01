@@ -54,9 +54,6 @@ public abstract class AbstractXMLObject implements XMLObject {
     /** The schema type of this element with namespace and prefix information. */
     private QName typeQname;
 
-    /** Namespaces declared on this element. */
-    private Set<Namespace> namespaces;
-
     /** DOM Element representation of this object. */
     private Element dom;
     
@@ -80,14 +77,12 @@ public abstract class AbstractXMLObject implements XMLObject {
      * @param namespacePrefix the prefix for the given namespace
      */
     protected AbstractXMLObject(String namespaceURI, String elementLocalName, String namespacePrefix) {
+        nsManager = new NamespaceManager(this);
         idIndex = new IDIndex(this);
-        namespaces = new LazySet<Namespace>();
         elementQname = XMLHelper.constructQName(namespaceURI, elementLocalName, namespacePrefix);
         if(namespaceURI != null){
-            addNamespace(new Namespace(namespaceURI, namespacePrefix));
             setElementNamespacePrefix(namespacePrefix);
         }
-        nsManager = new NamespaceManager(this);
     }
     
     /** {@inheritDoc} */
@@ -123,7 +118,7 @@ public abstract class AbstractXMLObject implements XMLObject {
 
     /** {@inheritDoc} */
     public Set<Namespace> getNamespaces() {
-        return Collections.unmodifiableSet(namespaces);
+        return Collections.unmodifiableSet(getNamespaceManager().getNamespaces());
     }
 
     /** {@inheritDoc} */
@@ -480,6 +475,7 @@ public abstract class AbstractXMLObject implements XMLObject {
         } else {
             elementQname = new QName(elementQname.getNamespaceURI(), elementQname.getLocalPart(), prefix);
         }
+        getNamespaceManager().registerElementName(elementQname);
     }
 
     /**
@@ -490,7 +486,7 @@ public abstract class AbstractXMLObject implements XMLObject {
     protected void setElementQName(QName elementQName) {
         this.elementQname = XMLHelper.constructQName(elementQName.getNamespaceURI(), elementQName.getLocalPart(),
                 elementQName.getPrefix());
-        addNamespace(new Namespace(elementQName.getNamespaceURI(), elementQName.getLocalPart()));
+        getNamespaceManager().registerElementName(elementQName);
     }
 
     /** {@inheritDoc} */
@@ -516,12 +512,8 @@ public abstract class AbstractXMLObject implements XMLObject {
      * @param type the schema type
      */
     protected void setSchemaType(QName type) {
-        if (type == null) {
-            typeQname = null;
-        } else {
-            typeQname = type;
-            addNamespace(new Namespace(type.getNamespaceURI(), type.getPrefix()));
-        }
+        typeQname = type;
+        getNamespaceManager().registerElementType(typeQname);
     }
     
     /** {@inheritDoc} */

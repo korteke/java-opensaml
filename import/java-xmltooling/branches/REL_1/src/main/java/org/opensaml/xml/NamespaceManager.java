@@ -44,10 +44,10 @@ public class NamespaceManager {
     private XMLObject owner;
     
     /** XMLObject name namespace. */
-    private Namespace objectName;
+    private Namespace elementName;
     
     /** XMLObject type namespace. */
-    private Namespace objectType;
+    private Namespace elementType;
     
     /** Explicitly declared namespaces. */
     private Set<Namespace> decls;
@@ -76,12 +76,6 @@ public class NamespaceManager {
         usage = new LazySet<Namespace>();
         attrNames = new LazySet<Namespace>();
         attrValues = new LazyMap<String, Namespace>();
-        
-        registerObjectName(owner.getElementQName());
-        
-        if (owner.getSchemaType() != null) {
-            registerObjectType(owner.getSchemaType());
-        }
     }
     
     /**
@@ -112,8 +106,8 @@ public class NamespaceManager {
      */
     public Set<Namespace> getNamespaces() {
         Set<Namespace> namespaces = mergeNamespaceCollections(decls, usage, attrNames, attrValues.values());
-        addNamespace(namespaces, objectName);
-        addNamespace(namespaces, objectType);
+        addNamespace(namespaces, getElementNameNamespace());
+        addNamespace(namespaces, getElementTypeNamespace());
         addNamespace(namespaces, contentValue);
         return namespaces;
     }
@@ -261,8 +255,8 @@ public class NamespaceManager {
      * 
      * @param name the element name to register
      */
-    private void registerObjectName(QName name) {
-        objectName = buildNamespace(name);
+    public void registerElementName(QName name) {
+        elementName = buildNamespace(name);
     }
 
     /**
@@ -270,8 +264,39 @@ public class NamespaceManager {
      * 
      * @param type the element type to register
      */
-    private void registerObjectType(QName type) {
-        objectType = buildNamespace(type);
+    public void registerElementType(QName type) {
+        if (type != null) {
+            elementType = buildNamespace(type);
+        } else {
+            elementType = null;
+        }
+    }
+    
+    /**
+     * Return a Namespace instance representing the namespace of the element name.
+     * 
+     * @return the element name's namespace
+     */
+    private Namespace getElementNameNamespace() {
+        if (elementName == null) {
+            elementName = buildNamespace(owner.getElementQName());
+        }
+        return elementName;
+    }
+
+    /**
+     * Return a Namespace instance representing the namespace of the element type, if known.
+     * 
+     * @return the element type's namespace
+     */
+    private Namespace getElementTypeNamespace() {
+        if (elementType == null) {
+            QName type = owner.getSchemaType();
+            if (type != null) {
+                elementType = buildNamespace(type);
+            }
+        }
+        return elementType;
     }
     
     /**
@@ -375,14 +400,14 @@ public class NamespaceManager {
         LazySet<String> prefixes = new LazySet<String>();
 
         // Add prefix from element name.
-        String elementNamePrefix = DatatypeHelper.safeTrimOrNullString(objectName.getNamespacePrefix());
+        String elementNamePrefix = DatatypeHelper.safeTrimOrNullString(getElementNameNamespace().getNamespacePrefix());
         if (elementNamePrefix == null) {
             elementNamePrefix = DEFAULT_NS_TOKEN;
         }
         prefixes.add(elementNamePrefix);
 
         // Add xsi attribute prefix, if element carries an xsi:type.
-        if (objectType != null) {
+        if (getElementTypeNamespace() != null) {
             prefixes.add(XMLConstants.XSI_PREFIX);
         }
         
@@ -402,8 +427,9 @@ public class NamespaceManager {
         LazySet<String> prefixes = new LazySet<String>();
 
         // Add xsi:type value's prefix, if element carries an xsi:type
-        if (objectType != null) {
-            String schemaTypePrefix = DatatypeHelper.safeTrimOrNullString(objectType.getNamespacePrefix());
+        if (getElementTypeNamespace() != null) {
+            String schemaTypePrefix = DatatypeHelper.safeTrimOrNullString(
+                    getElementTypeNamespace().getNamespacePrefix());
             if (schemaTypePrefix == null) {
                 schemaTypePrefix = DEFAULT_NS_TOKEN;
             }
