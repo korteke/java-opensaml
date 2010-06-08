@@ -78,6 +78,7 @@ public class LazySet<ElementType> implements Set<ElementType>, Serializable {
 
     /** {@inheritDoc} */
     public Iterator<ElementType> iterator() {
+        delegate = createImplementation();
         return delegate.iterator();
     }
 
