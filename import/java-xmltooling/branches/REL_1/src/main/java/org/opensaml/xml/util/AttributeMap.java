@@ -102,10 +102,47 @@ public class AttributeMap implements Map<QName, String> {
         
         return oldValue;
     }
+    
+    /**
+     * Set an attribute value as a QName.  This method takes care of properly registering and 
+     * deregistering the namespace information associated with the new QName being added, and
+     * with the old QName being possibly removed.
+     * 
+     * @param attributeName the attribute name
+     * @param value the QName attribute value
+     * @return the old attribute value, possibly null
+     */
+    public QName put(QName attributeName, QName value) {
+        String oldValueString = get(attributeName);
+        
+        QName oldValue = null;
+        if (!DatatypeHelper.isEmpty(oldValueString)) {
+            oldValue = resolveQName(oldValueString, true);
+        }
+        
+        if (!DatatypeHelper.safeEquals(oldValue, value)) {
+            releaseDOM();
+            if (value != null) {
+                // new value is not null, old value was either null or non-equal
+                String newStringValue = constructAttributeValue(value);
+                attributes.put(attributeName, newStringValue);
+                registerQNameValue(attributeName, value);
+                attributeOwner.getNamespaceManager().registerAttributeName(attributeName);
+            } else {
+                // new value is null, old value was not null
+                deregisterQNameValue(attributeName);
+                attributeOwner.getNamespaceManager().deregisterAttributeName(attributeName);
+            }
+        }
+        
+        return oldValue;
+    }
 
     /** {@inheritDoc} */
     public void clear() {
-        for (QName attributeName : attributes.keySet()) {
+        LazySet<QName> keys = new LazySet<QName>();
+        keys.addAll(attributes.keySet());
+        for (QName attributeName : keys) {
             remove(attributeName);
         }
     }
@@ -304,15 +341,31 @@ public class AttributeMap implements Map<QName, String> {
         
         QName qnameValue = checkQName(attributeName, attributeValue);
         if (qnameValue != null) {
-            String attributeID = NamespaceManager.generateAttributeID(attributeName);
-            log.trace("QName attribute value detected, registering QName '{}' under attibute ID '{}'",
-                    qnameValue, attributeID);
-            attributeOwner.getNamespaceManager().registerAttributeValue(attributeID, qnameValue);
+            log.trace("Attribute '{}' with value '{}' was evaluated to be QName type", 
+                    attributeName, attributeValue);
+            registerQNameValue(attributeName, qnameValue);
         } else {
             log.trace("Attribute '{}' with value '{}' was not evaluated to be QName type", 
                     attributeName, attributeValue);
         }
         
+    }
+    
+    /**
+     * Register a QName attribute value with the owner's namespace manger.
+     * 
+     * @param attributeName the attribute name
+     * @param attributeValue the attribute value
+     */
+    private void registerQNameValue(QName attributeName, QName attributeValue) {
+        if (attributeValue == null) {
+            return;
+        }
+        
+        String attributeID = NamespaceManager.generateAttributeID(attributeName);
+        log.trace("Registering QName attribute value '{}' under attibute ID '{}'",
+                attributeValue, attributeID);
+        attributeOwner.getNamespaceManager().registerAttributeValue(attributeID, attributeValue);
     }
     
     /**
@@ -329,15 +382,24 @@ public class AttributeMap implements Map<QName, String> {
         
         QName qnameValue = checkQName(attributeName, attributeValue);
         if (qnameValue != null) {
-            String attributeID = NamespaceManager.generateAttributeID(attributeName);
-            log.trace("QName attribute value detected, registering QName '{}' under attibute ID '{}'",
-                    qnameValue, attributeID);
-            attributeOwner.getNamespaceManager().deregisterAttributeValue(attributeID);
+            log.trace("Attribute '{}' with value '{}' was evaluated to be QName type", 
+                    attributeName, attributeValue);
+            deregisterQNameValue(attributeName);
         } else {
             log.trace("Attribute '{}' with value '{}' was not evaluated to be QName type", 
                     attributeName, attributeValue);
         }
-        
+    }
+    
+    /**
+     * Deregister a QName attribute value with the owner's namespace manger.
+     * 
+     * @param attributeName the attribute name whose QName attribute value should be deregistered
+     */
+    private void deregisterQNameValue(QName attributeName) {
+        String attributeID = NamespaceManager.generateAttributeID(attributeName);
+        log.trace("Deregistering QName attribute with attibute ID '{}'", attributeID);
+        attributeOwner.getNamespaceManager().deregisterAttributeValue(attributeID);
     }
     
     /**
@@ -435,6 +497,29 @@ public class AttributeMap implements Map<QName, String> {
         log.trace("Value was either not a QName, or namespace URI could not be resolved");
         
         return null;
+    }
+    
+    /**
+     * Construct the string representation of a QName attribute value.
+     * 
+     * @param attributeValue the QName to process
+     * @return the attribute value string representation of the QName
+     */
+    private String constructAttributeValue(QName attributeValue) {
+        String trimmedLocalName = DatatypeHelper.safeTrimOrNullString(attributeValue.getLocalPart());
+
+        if (trimmedLocalName == null) {
+            throw new IllegalArgumentException("Local name may not be null or empty");
+        }
+
+        String qualifiedName;
+        String trimmedPrefix = DatatypeHelper.safeTrimOrNullString(attributeValue.getPrefix());
+        if (trimmedPrefix != null) {
+            qualifiedName = trimmedPrefix + ":" + DatatypeHelper.safeTrimOrNullString(trimmedLocalName);
+        } else {
+            qualifiedName = DatatypeHelper.safeTrimOrNullString(trimmedLocalName);
+        }
+        return qualifiedName;
     }
 
 }

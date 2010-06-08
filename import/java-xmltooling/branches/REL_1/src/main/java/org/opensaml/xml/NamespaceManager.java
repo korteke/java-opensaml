@@ -17,6 +17,8 @@
 package org.opensaml.xml;
 
 import java.util.Collection;
+
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -118,7 +120,7 @@ public class NamespaceManager {
      * 
      * <p>
      * Other methods which indicate specific usage should be preferred over this one.  This
-     * method exists primarily for backward-compatibilty support for {@link XMLObject#addNamespace(Namespace)}.
+     * method exists primarily for backward-compatibility support for {@link XMLObject#addNamespace(Namespace)}.
      * </p>
      * 
      * @param namespace namespace to register
@@ -132,7 +134,7 @@ public class NamespaceManager {
      * 
      * <p>
      * Other methods which indicate specific usage should be preferred over this one.  This
-     * method exists primarily for backward-compatibilty support for {@link XMLObject#removeNamespace(Namespace)}.
+     * method exists primarily for backward-compatibility support for {@link XMLObject#removeNamespace(Namespace)}.
      * </p>
      * 
      * @param namespace namespace to deregister
@@ -166,7 +168,9 @@ public class NamespaceManager {
      * @param attributeName the attribute name to register
      */
     public void registerAttributeName(QName attributeName) {
-        addNamespace(attrNames, buildNamespace(attributeName));
+        if (checkQName(attributeName)) {
+            addNamespace(attrNames, buildNamespace(attributeName));
+        }
     }
     
     /**
@@ -175,7 +179,9 @@ public class NamespaceManager {
      * @param attributeName the attribute name to deregister
      */
     public void deregisterAttributeName(QName attributeName) {
-        removeNamespace(attrNames, buildNamespace(attributeName));
+        if (checkQName(attributeName)) {
+            removeNamespace(attrNames, buildNamespace(attributeName));
+        }
     }
     
     /**
@@ -185,7 +191,9 @@ public class NamespaceManager {
      * @param attributeValue the QName value to register
      */
     public void registerAttributeValue(String attributeID, QName attributeValue) {
-        attrValues.put(attributeID, buildNamespace(attributeValue));
+        if (checkQName(attributeValue)) {
+            attrValues.put(attributeID, buildNamespace(attributeValue));
+        }
     }
     
     /**
@@ -203,7 +211,9 @@ public class NamespaceManager {
      * @param content the QName value to register
      */
     public void registerContentValue(QName content) {
-        contentValue = buildNamespace(content);
+        if (checkQName(content)) {
+            contentValue = buildNamespace(content);
+        }
     }
     
     /**
@@ -256,7 +266,9 @@ public class NamespaceManager {
      * @param name the element name to register
      */
     public void registerElementName(QName name) {
-        elementName = buildNamespace(name);
+        if (checkQName(name)) {
+            elementName = buildNamespace(name);
+        }
     }
 
     /**
@@ -266,7 +278,9 @@ public class NamespaceManager {
      */
     public void registerElementType(QName type) {
         if (type != null) {
-            elementType = buildNamespace(type);
+            if (checkQName(type)) {
+                elementType = buildNamespace(type);
+            }
         } else {
             elementType = null;
         }
@@ -278,7 +292,7 @@ public class NamespaceManager {
      * @return the element name's namespace
      */
     private Namespace getElementNameNamespace() {
-        if (elementName == null) {
+        if (elementName == null && checkQName(owner.getElementQName())) {
             elementName = buildNamespace(owner.getElementQName());
         }
         return elementName;
@@ -292,7 +306,7 @@ public class NamespaceManager {
     private Namespace getElementTypeNamespace() {
         if (elementType == null) {
             QName type = owner.getSchemaType();
-            if (type != null) {
+            if (type != null && checkQName(type)) {
                 elementType = buildNamespace(type);
             }
         }
@@ -340,6 +354,9 @@ public class NamespaceManager {
                     namespaces.remove(namespace);
                     namespaces.add(newNamespace);
                     return;
+                } else {
+                    // URI and prefix match, alwaysDeclare does also, so just leave the original
+                    return;
                 }
             }
         }
@@ -360,10 +377,12 @@ public class NamespaceManager {
             return;
         }
         
-        for (Namespace namespace : namespaces) {
+        Iterator<Namespace> iter = namespaces.iterator();
+        while (iter.hasNext()) {
+            Namespace namespace = iter.next();
             if (DatatypeHelper.safeEquals(namespace.getNamespaceURI(), oldNamespace.getNamespaceURI()) &&
                     DatatypeHelper.safeEquals(namespace.getNamespacePrefix(), oldNamespace.getNamespacePrefix())) {
-                namespaces.remove(namespace);
+                iter.remove();
             }
         }
         
@@ -400,11 +419,14 @@ public class NamespaceManager {
         LazySet<String> prefixes = new LazySet<String>();
 
         // Add prefix from element name.
-        String elementNamePrefix = DatatypeHelper.safeTrimOrNullString(getElementNameNamespace().getNamespacePrefix());
-        if (elementNamePrefix == null) {
-            elementNamePrefix = DEFAULT_NS_TOKEN;
+        if (getElementNameNamespace() != null) {
+            String elementNamePrefix = DatatypeHelper.safeTrimOrNullString(
+                    getElementNameNamespace().getNamespacePrefix());
+            if (elementNamePrefix == null) {
+                elementNamePrefix = DEFAULT_NS_TOKEN;
+            }
+            prefixes.add(elementNamePrefix);
         }
-        prefixes.add(elementNamePrefix);
 
         // Add xsi attribute prefix, if element carries an xsi:type.
         if (getElementTypeNamespace() != null) {
@@ -438,11 +460,13 @@ public class NamespaceManager {
         
         // Add prefixes from attribute and content values
         addPrefixes(prefixes, attrValues.values());
-        String contentValuePrefix = DatatypeHelper.safeTrimOrNullString(contentValue.getNamespacePrefix());
-        if (contentValuePrefix == null) {
-            contentValuePrefix = DEFAULT_NS_TOKEN;
+        if (contentValue != null) {
+            String contentValuePrefix = DatatypeHelper.safeTrimOrNullString(contentValue.getNamespacePrefix());
+            if (contentValuePrefix == null) {
+                contentValuePrefix = DEFAULT_NS_TOKEN;
+            }
+            prefixes.add(contentValuePrefix);
         }
-        prefixes.add(contentValuePrefix);
 
         return prefixes;
     }
@@ -462,6 +486,17 @@ public class NamespaceManager {
             }
             prefixes.add(prefix);
         }
+    }
+    
+    /**
+     * Check whether the supplied QName contains non-empty namespace info and should
+     * be managed by the namespace manager.
+     * 
+     * @param name the QName to check
+     * @return true if the QName contains non-empty namespace info and should be managed, false otherwise
+     */
+    private boolean checkQName(QName name) {
+        return !DatatypeHelper.isEmpty(name.getNamespaceURI());
     }
     
 }
