@@ -22,7 +22,6 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.xml.Namespace;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.schema.XSQName;
 import org.opensaml.xml.validation.AbstractValidatingXMLObject;
@@ -53,8 +52,7 @@ public class XSQNameImpl extends AbstractValidatingXMLObject implements XSQName 
 
     /** {@inheritDoc} */
     public void setValue(QName newValue) {
-        value = prepareForAssignment(value, newValue);
-        addNamespace(new Namespace(value.getNamespaceURI(), value.getPrefix()));
+        value = prepareElementContentForAssignment(value, newValue);
     }
 
     /** {@inheritDoc} */
