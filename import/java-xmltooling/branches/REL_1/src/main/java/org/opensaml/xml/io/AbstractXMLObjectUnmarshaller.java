@@ -213,7 +213,8 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
      * @throws UnmarshallingException thrown if there is a problem unmarshalling an attribute
      */
     protected void unmarshallAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
-        log.trace("Pre-processing attribute {}", XMLHelper.getNodeQName(attribute));
+        QName attribName = XMLHelper.getNodeQName(attribute);
+        log.trace("Pre-processing attribute {}", attribName);
         String attributeNamespace = DatatypeHelper.safeTrimOrNullString(attribute.getNamespaceURI());
         
         if (DatatypeHelper.safeEquals(attributeNamespace, XMLConstants.XMLNS_NS)) {
@@ -230,9 +231,7 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
                 if (attributeNSPrefix == null && XMLConstants.XML_NS.equals(attributeNSURI)) {
                     attributeNSPrefix = XMLConstants.XML_PREFIX;
                 }
-                Namespace attributeNS = new Namespace(attributeNSURI, attributeNSPrefix);
-                attributeNS.setAlwaysDeclare(false);
-                xmlObject.addNamespace(attributeNS);
+                xmlObject.getNamespaceManager().registerAttributeName(attribName);
             }
 
             checkIDAttribute(attribute);
@@ -257,7 +256,7 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
             namespace = new Namespace(attribute.getValue(), attribute.getLocalName());
         }
         namespace.setAlwaysDeclare(true);
-        xmlObject.addNamespace(namespace);
+        xmlObject.getNamespaceManager().registerNamespaceDeclaration(namespace);
     }
 
     /**

@@ -41,6 +41,9 @@ public class NamespaceManagerTest extends XMLObjectBaseTestCase {
     private static String ns3uri = "urn:test:ns3uri";
     private static String ns3Prefix = "testNS3";
     
+    private static String ns4uri = "urn:test:ns4uri";
+    private static String ns4Prefix = "testNS4";
+    
     private static QName elementName = new QName(ns1uri, "TestElementName", ns1Prefix);
     private static QName typeName = new QName(ns2uri, "TestTypeName", ns2Prefix);
     
@@ -172,8 +175,79 @@ public class NamespaceManagerTest extends XMLObjectBaseTestCase {
         assertNull(findNamespace(nsManager, ns2));
     }
     
+    public void testNonVisibleNamespacePrefixes() {
+        QName name1 = new QName(ns1uri, "Test1", ns1Prefix);
+        QName name2 = new QName(ns2uri, "Test2", ns2Prefix);
+        QName name3 = new QName(ns3uri, "Test3", ns3Prefix);
+        QName name4 = new QName(ns4uri, "Test4", ns4Prefix);
+        Namespace ns = new Namespace(ns3uri, ns3Prefix);
+        
+        checkPrefixes(nsManager);
+        
+        nsManager.registerAttributeName(name1);
+        checkPrefixes(nsManager);
+        nsManager.deregisterAttributeName(name1);
+        
+        nsManager.registerAttributeValue("foo", name1);
+        checkPrefixes(nsManager);
+        nsManager.deregisterAttributeValue("foo");
+        
+        nsManager.registerAttributeName(name2);
+        checkPrefixes(nsManager);
+        nsManager.deregisterAttributeName(name2);
+        
+        nsManager.registerAttributeValue("foo", name2);
+        checkPrefixes(nsManager, ns2Prefix);
+        
+        nsManager.registerContentValue(name3);
+        checkPrefixes(nsManager, ns2Prefix, ns3Prefix);
+        nsManager.deregisterAttributeValue("foo");
+        nsManager.deregisterContentValue();
+        
+        checkPrefixes(nsManager);
+        
+        nsManager.registerNamespaceDeclaration(ns);
+        checkPrefixes(nsManager);
+        nsManager.deregisterNamespaceDeclaration(ns);
+        
+        nsManager.registerNamespace(ns);
+        checkPrefixes(nsManager);
+        nsManager.deregisterNamespace(ns);
+        
+        checkPrefixes(nsManager);
+        
+        XSAny typedXSAny = xsAnyBuilder.buildObject(elementName, typeName);
+        checkPrefixes(typedXSAny.getNamespaceManager(), ns2Prefix);
+        
+        typedXSAny.getUnknownAttributes().put(name4, name3);
+        checkPrefixes(typedXSAny.getNamespaceManager(), ns2Prefix, ns3Prefix);
+        
+        typedXSAny.getUnknownAttributes().put(name2, name3);
+        checkPrefixes(typedXSAny.getNamespaceManager(), ns3Prefix);
+        
+        typedXSAny.getUnknownAttributes().remove(name2);
+        checkPrefixes(typedXSAny.getNamespaceManager(), ns2Prefix, ns3Prefix);
+        
+        // Check that children are working vis-a-vis parent object
+        xsAny.getUnknownXMLObjects().add(typedXSAny);
+        checkPrefixes(nsManager, ns2Prefix, ns3Prefix);
+        
+        xsAny.getUnknownAttributes().put(name2, "foo");
+        checkPrefixes(nsManager, ns3Prefix);
+    }
+    
     
     /**********************/
+    
+    private void checkPrefixes(NamespaceManager manager, String ... controlPrefixes) {
+        Set<String> nonVisiblePrefixes = manager.getNonVisibleNamespacePrefixes();
+        
+        assertEquals("Wrong number of not visible prefixes", controlPrefixes.length, nonVisiblePrefixes.size());
+        
+        for (String prefix : controlPrefixes) {
+            assertTrue("Expected prefix not seen: " + prefix, nonVisiblePrefixes.contains(prefix));
+        }
+    }
     
     /**
      * Check the namespaces produced by the object against the supplied list of QNames.

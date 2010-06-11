@@ -413,7 +413,6 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
         domElement.setAttributeNS(XMLConstants.XSI_NS, XMLConstants.XSI_PREFIX + ":type", attributeValue);
 
         log.trace("Adding XSI namespace to list of namespaces used by XMLObject {}", xmlObject.getElementQName());
-        xmlObject.addNamespace(new Namespace(XMLConstants.XSI_NS, XMLConstants.XSI_PREFIX));
     }
 
     /**

@@ -4,6 +4,8 @@ Changes in Release 1.3.0
 [JXT-29] - Support for dateTime schema type
 [JXT-60] - Add interfaces and helpers for the global attributes from the 'xml' namespace
 
+Introduction of NamespaceManager, which handles management of namespace info that is in scope on an XMLObject.
+
 Changes in Release 1.2.2
 ==============================================
 [JXT-63] - Update 3rd party libraries for release 1.2.2
