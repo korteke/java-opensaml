@@ -23,6 +23,7 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.ws.wssecurity.IdBearing;
 import org.opensaml.ws.wssecurity.Username;
 import org.opensaml.ws.wssecurity.UsernameToken;
 import org.opensaml.xml.XMLObject;
@@ -79,6 +80,7 @@ public class UsernameTokenImpl extends AbstractWSSecurityObject implements Usern
         String oldId = id;
         id = prepareForAssignment(id, newId);
         registerOwnID(oldId, id);
+        manageQualifiedAttributeNamespace(IdBearing.WSU_ID_ATTR_NAME, id != null);
     }
     
     /** {@inheritDoc} */

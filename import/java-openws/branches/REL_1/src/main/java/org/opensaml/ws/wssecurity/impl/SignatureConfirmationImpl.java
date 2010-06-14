@@ -16,6 +16,7 @@
 
 package org.opensaml.ws.wssecurity.impl;
 
+import org.opensaml.ws.wssecurity.IdBearing;
 import org.opensaml.ws.wssecurity.SignatureConfirmation;
 
 /**
@@ -60,6 +61,7 @@ public class SignatureConfirmationImpl extends AbstractWSSecurityObject implemen
         String oldId = id;
         id = prepareForAssignment(id, newId);
         registerOwnID(oldId, id);
+        manageQualifiedAttributeNamespace(IdBearing.WSU_ID_ATTR_NAME, id != null);
     }
 
 }

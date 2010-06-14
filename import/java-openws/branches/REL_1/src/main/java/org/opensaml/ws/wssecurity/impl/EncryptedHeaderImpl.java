@@ -19,7 +19,12 @@ package org.opensaml.ws.wssecurity.impl;
 import java.util.Collections;
 import java.util.List;
 
+import org.opensaml.ws.soap.soap11.ActorBearing;
+import org.opensaml.ws.soap.soap11.MustUnderstandBearing;
+import org.opensaml.ws.soap.soap12.RelayBearing;
+import org.opensaml.ws.soap.soap12.RoleBearing;
 import org.opensaml.ws.wssecurity.EncryptedHeader;
+import org.opensaml.ws.wssecurity.IdBearing;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.encryption.EncryptedData;
 import org.opensaml.xml.schema.XSBooleanValue;
@@ -82,6 +87,7 @@ public class EncryptedHeaderImpl extends AbstractWSSecurityObject implements Enc
         String oldId = wsuId;
         wsuId = prepareForAssignment(wsuId, newId);
         registerOwnID(oldId, wsuId);
+        manageQualifiedAttributeNamespace(IdBearing.WSU_ID_ATTR_NAME, wsuId != null);
     }
 
     /** {@inheritDoc} */
@@ -105,11 +111,15 @@ public class EncryptedHeaderImpl extends AbstractWSSecurityObject implements Enc
         } else {
             soap11MustUnderstand = prepareForAssignment(soap11MustUnderstand, null);
         }
+        manageQualifiedAttributeNamespace(MustUnderstandBearing.SOAP11_MUST_UNDERSTAND_ATTR_NAME, 
+                soap11MustUnderstand != null);
     }
 
     /** {@inheritDoc} */
     public void setSOAP11MustUnderstand(XSBooleanValue newMustUnderstand) {
             soap11MustUnderstand = prepareForAssignment(soap11MustUnderstand, newMustUnderstand);
+            manageQualifiedAttributeNamespace(MustUnderstandBearing.SOAP11_MUST_UNDERSTAND_ATTR_NAME, 
+                    soap11MustUnderstand != null);
     }
 
     /** {@inheritDoc} */
@@ -120,6 +130,7 @@ public class EncryptedHeaderImpl extends AbstractWSSecurityObject implements Enc
     /** {@inheritDoc} */
     public void setSOAP11Actor(String newActor) {
         soap11Actor = prepareForAssignment(soap11Actor, newActor);
+        manageQualifiedAttributeNamespace(ActorBearing.SOAP11_ACTOR_ATTR_NAME, soap11Actor != null);
     }
     
     /** {@inheritDoc} */
@@ -143,11 +154,15 @@ public class EncryptedHeaderImpl extends AbstractWSSecurityObject implements Enc
         } else {
             soap12MustUnderstand = prepareForAssignment(soap12MustUnderstand, null);
         }
+        manageQualifiedAttributeNamespace(org.opensaml.ws.soap.soap12.MustUnderstandBearing.SOAP12_MUST_UNDERSTAND_ATTR_NAME, 
+                soap12MustUnderstand != null);
     }
 
     /** {@inheritDoc} */
     public void setSOAP12MustUnderstand(XSBooleanValue newMustUnderstand) {
             soap12MustUnderstand = prepareForAssignment(soap12MustUnderstand, newMustUnderstand);
+            manageQualifiedAttributeNamespace(org.opensaml.ws.soap.soap12.MustUnderstandBearing.SOAP12_MUST_UNDERSTAND_ATTR_NAME, 
+                    soap12MustUnderstand != null);
     }
 
     /** {@inheritDoc} */
@@ -158,6 +173,7 @@ public class EncryptedHeaderImpl extends AbstractWSSecurityObject implements Enc
     /** {@inheritDoc} */
     public void setSOAP12Role(String newRole) {
         soap12Role = prepareForAssignment(soap12Role, newRole);
+        manageQualifiedAttributeNamespace(RoleBearing.SOAP12_ROLE_ATTR_NAME, soap12Role != null);
     }
 
     /** {@inheritDoc} */
@@ -181,11 +197,13 @@ public class EncryptedHeaderImpl extends AbstractWSSecurityObject implements Enc
         } else {
             soap12Relay = prepareForAssignment(soap12Relay, null);
         }
+        manageQualifiedAttributeNamespace(RelayBearing.SOAP12_RELAY_ATTR_NAME, soap12Relay != null);
     }
 
     /** {@inheritDoc} */
     public void setSOAP12Relay(XSBooleanValue newRelay) {
             soap12Relay = prepareForAssignment(soap12Relay, newRelay);
+            manageQualifiedAttributeNamespace(RelayBearing.SOAP12_RELAY_ATTR_NAME, soap12Relay != null);
     }
 
     /** {@inheritDoc} */

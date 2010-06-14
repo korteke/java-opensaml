@@ -25,6 +25,7 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.ws.wssecurity.Created;
 import org.opensaml.ws.wssecurity.Expires;
+import org.opensaml.ws.wssecurity.IdBearing;
 import org.opensaml.ws.wssecurity.Timestamp;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.util.AttributeMap;
@@ -94,6 +95,7 @@ public class TimestampImpl extends AbstractWSSecurityObject implements Timestamp
         String oldId = id;
         id = prepareForAssignment(id, newId);
         registerOwnID(oldId, id);
+        manageQualifiedAttributeNamespace(IdBearing.WSU_ID_ATTR_NAME, id != null);
     }
 
     /** {@inheritDoc} */

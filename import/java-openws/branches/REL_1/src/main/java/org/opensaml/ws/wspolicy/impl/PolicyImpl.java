@@ -18,6 +18,7 @@
 package org.opensaml.ws.wspolicy.impl;
 
 import org.opensaml.ws.wspolicy.Policy;
+import org.opensaml.ws.wssecurity.IdBearing;
 import org.opensaml.xml.util.AttributeMap;
 
 /**
@@ -65,7 +66,10 @@ public class PolicyImpl extends OperatorContentTypeImpl implements Policy {
 
     /** {@inheritDoc} */
     public void setWSUId(String newId) {
+        String oldId = id;
         id = prepareForAssignment(id, newId);
+        registerOwnID(oldId, id);
+        manageQualifiedAttributeNamespace(IdBearing.WSU_ID_ATTR_NAME, id != null);
     }
     
     /** {@inheritDoc} */

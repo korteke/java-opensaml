@@ -23,7 +23,9 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.ws.wssecurity.IdBearing;
 import org.opensaml.ws.wssecurity.SecurityTokenReference;
+import org.opensaml.ws.wssecurity.UsageBearing;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.util.AttributeMap;
 import org.opensaml.xml.util.IndexedXMLObjectChildrenList;
@@ -69,6 +71,7 @@ public class SecurityTokenReferenceImpl extends AbstractWSSecurityObject impleme
     /** {@inheritDoc} */
     public void setWSSEUsages(List<String> newUsages) {
         usages = prepareForAssignment(usages, newUsages);
+        manageQualifiedAttributeNamespace(UsageBearing.WSSE_USAGE_ATTR_NAME, !usages.isEmpty());
     }
 
     /** {@inheritDoc} */
@@ -81,6 +84,7 @@ public class SecurityTokenReferenceImpl extends AbstractWSSecurityObject impleme
         String oldId = id;
         id = prepareForAssignment(id, newId);
         registerOwnID(oldId, id);
+        manageQualifiedAttributeNamespace(IdBearing.WSU_ID_ATTR_NAME, id != null);
     }
 
 

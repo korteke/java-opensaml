@@ -22,6 +22,7 @@ import org.joda.time.chrono.ISOChronology;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 import org.opensaml.ws.wssecurity.AttributedDateTime;
+import org.opensaml.ws.wssecurity.IdBearing;
 import org.opensaml.xml.util.AttributeMap;
 
 /**
@@ -91,6 +92,7 @@ public class AttributedDateTimeImpl extends AbstractWSSecurityObject implements 
         String oldID = id;
         id = prepareForAssignment(id, newId);
         registerOwnID(oldID, id);
+        manageQualifiedAttributeNamespace(IdBearing.WSU_ID_ATTR_NAME, id != null);
     }
 
     /** {@inheritDoc} */
