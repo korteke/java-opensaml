@@ -25,7 +25,6 @@ import javax.xml.namespace.QName;
 import org.opensaml.xml.schema.XSBooleanValue;
 import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.util.IDIndex;
-import org.opensaml.xml.util.LazySet;
 import org.opensaml.xml.util.XMLHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -154,6 +153,21 @@ public abstract class AbstractXMLObject implements XMLObject {
     /** {@inheritDoc} */
     public boolean hasParent() {
         return getParent() != null;
+    }
+    
+    /**
+     * A helper function for derived classes.  This method should be called when the value of a
+     * namespace-qualified attribute changes.
+     * 
+     * @param attributeName the attribute name
+     * @param hasValue true to indicate that the attribute has a value, false to indicate it has no value
+     */
+    protected void manageQualifiedAttributeNamespace(QName attributeName, boolean hasValue) {
+        if (hasValue) {
+            getNamespaceManager().registerAttributeName(attributeName);
+        } else {
+            getNamespaceManager().deregisterAttributeName(attributeName);
+        }
     }
 
     /**
