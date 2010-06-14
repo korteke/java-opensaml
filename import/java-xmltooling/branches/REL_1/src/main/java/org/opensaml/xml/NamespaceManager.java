@@ -257,6 +257,9 @@ public class NamespaceManager {
 
         // Now subtract this object's visible prefixes.
         nonVisibleCandidates.removeAll(getVisibleNamespacePrefixes());
+        
+        // As a special case, never return the 'xml' prefix.
+        nonVisibleCandidates.remove(XMLConstants.XML_PREFIX);
 
         // What remains is this effective set of non-visible prefixes 
         // for the subtree rooted at this node.
