@@ -19,6 +19,7 @@ package org.opensaml.xml;
 import java.util.Collection;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -239,11 +240,14 @@ public class NamespaceManager {
         LazySet<String> nonVisibleCandidates = new LazySet<String>();
 
         // Collect each child's non-visible prefixes.
-        for(XMLObject child : getOwner().getOrderedChildren()) {
-            if (child != null) {
-                Set<String> childPrefixes = child.getNamespaceManager().getNonVisibleNamespacePrefixes();
-                if (childPrefixes != null && ! childPrefixes.isEmpty()) {
-                    nonVisibleCandidates.addAll(childPrefixes);
+        List<XMLObject> children = getOwner().getOrderedChildren();
+        if (children != null) {
+            for(XMLObject child : getOwner().getOrderedChildren()) {
+                if (child != null) {
+                    Set<String> childPrefixes = child.getNamespaceManager().getNonVisibleNamespacePrefixes();
+                    if (childPrefixes != null && ! childPrefixes.isEmpty()) {
+                        nonVisibleCandidates.addAll(childPrefixes);
+                    }
                 }
             }
         }
