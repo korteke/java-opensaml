@@ -25,6 +25,7 @@ import javax.xml.namespace.QName;
 import org.opensaml.xml.schema.XSBooleanValue;
 import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.util.IDIndex;
+import org.opensaml.xml.util.XMLConstants;
 import org.opensaml.xml.util.XMLHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -500,12 +501,13 @@ public abstract class AbstractXMLObject implements XMLObject {
     protected void setElementQName(QName elementQName) {
         this.elementQname = XMLHelper.constructQName(elementQName.getNamespaceURI(), elementQName.getLocalPart(),
                 elementQName.getPrefix());
-        getNamespaceManager().registerElementName(elementQName);
+        getNamespaceManager().registerElementName(this.elementQname);
     }
 
     /** {@inheritDoc} */
     public void setNoNamespaceSchemaLocation(String location) {
         noNamespaceSchemaLocation = DatatypeHelper.safeTrimOrNullString(location);
+        manageQualifiedAttributeNamespace(XMLConstants.XSI_NO_NAMESPACE_SCHEMA_LOCATION_ATTRIB_NAME, schemaLocation != null);
     }
 
     /** {@inheritDoc} */
@@ -516,18 +518,20 @@ public abstract class AbstractXMLObject implements XMLObject {
     /** {@inheritDoc} */
     public void setSchemaLocation(String location) {
         schemaLocation = DatatypeHelper.safeTrimOrNullString(location);
+        manageQualifiedAttributeNamespace(XMLConstants.XSI_SCHEMA_LOCATION_ATTRIB_NAME, schemaLocation != null);
     }
 
     /**
-     * Sets a given QName as the schema type for the Element represented by this XMLObject. This will add the namespace
-     * to the list of namespaces scoped for this XMLObject. It will not remove any namespaces, for example, if there is
-     * already a schema type set and null is passed in.
+     * Sets a given QName as the schema type for the Element represented by this XMLObject. This will register the namespace
+     * for the type as well as for the xsi:type qualified attribute name with the namespace manager for this XMLObject.
+     * If null is passed, the type name and xsi:type name will be deregistered.
      * 
      * @param type the schema type
      */
     protected void setSchemaType(QName type) {
         typeQname = type;
         getNamespaceManager().registerElementType(typeQname);
+        manageQualifiedAttributeNamespace(XMLConstants.XSI_TYPE_ATTRIB_NAME, typeQname != null);
     }
     
     /** {@inheritDoc} */
@@ -551,11 +555,13 @@ public abstract class AbstractXMLObject implements XMLObject {
         } else {
             nil = prepareForAssignment(nil, null);
         }
+        manageQualifiedAttributeNamespace(XMLConstants.XSI_NIL_ATTRIB_NAME, nil != null);
     }
 
     /** {@inheritDoc} */
     public void setNil(XSBooleanValue newNil) {
         nil = prepareForAssignment(nil, newNil);
+        manageQualifiedAttributeNamespace(XMLConstants.XSI_NIL_ATTRIB_NAME, nil != null);
     }
 
 }
