@@ -268,6 +268,43 @@ public class NamespaceManager {
     }
     
     /**
+     * Get the set of all namespaces which are in scope within the subtree rooted
+     * at the owning XMLObject.
+     * 
+     * <p>
+     * The Namespace instances themselves will be copied before being returned, so
+     * modifications to them do not affect the actual Namespace instances in the
+     * underlying tree. The original alwaysDeclare property is not preserved.
+     * </p>
+     * 
+     * @return set of all namespaces in scope for the owning object
+     */
+    public Set<Namespace> getAllNamespacesInSubtreeScope() {
+        LazySet<Namespace> namespaces = new LazySet<Namespace>();
+
+        // Collect namespaces for the subtree rooted at each child
+        List<XMLObject> children = getOwner().getOrderedChildren();
+        if (children != null) {
+            for(XMLObject child : getOwner().getOrderedChildren()) {
+                if (child != null) {
+                    Set<Namespace> childNamespaces = child.getNamespaceManager().getAllNamespacesInSubtreeScope();
+                    if (childNamespaces != null && ! childNamespaces.isEmpty()) {
+                        namespaces.addAll(childNamespaces);
+                    }
+                }
+            }
+        }
+
+        // Collect this node's namespaces.  Copy before adding to the set. Do not preserve alwaysDeclare.
+        for (Namespace myNS : getNamespaces()) {
+            namespaces.add(new Namespace(myNS.getNamespaceURI(), myNS.getNamespacePrefix()));
+        }
+
+        return namespaces;
+
+    }
+    
+    /**
      * Register the owning XMLObject's element name.
      * 
      * @param name the element name to register
