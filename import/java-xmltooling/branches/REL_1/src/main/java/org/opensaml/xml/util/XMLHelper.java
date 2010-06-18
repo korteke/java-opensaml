@@ -62,6 +62,9 @@ public final class XMLHelper {
      * return, and tab.
      */
     public static final String LIST_DELIMITERS = " \n\r\t";
+    
+    /** DOM configuration parameters used by LSSerializer in pretty print format output. */
+    private static Map<String, Object> prettyPrintParams;
 
     /** JAXP DatatypeFactory. */
     private static DatatypeFactory dataTypeFactory;
@@ -864,12 +867,21 @@ public final class XMLHelper {
      */
     public static String prettyPrintXML(Node node) {
         StringWriter writer = new StringWriter();
-        
-        HashMap<String, Object> serializerParams = new HashMap<String, Object>();
-        serializerParams.put("format-pretty-print", Boolean.TRUE); 
-        
-        writeNode(node, writer, serializerParams);
+        writeNode(node, writer,  getPrettyPrintParams());
         return writer.toString();
+    }
+    
+    /**
+     * Create the parameters set used in pretty print formatting of an LSSerializer.
+     * 
+     * @return the params map
+     */
+    private static Map<String, Object> getPrettyPrintParams() {
+        if (prettyPrintParams == null) {
+            prettyPrintParams = new LazyMap<String, Object>();
+            prettyPrintParams.put("format-pretty-print", Boolean.TRUE);
+        }
+        return prettyPrintParams;
     }
 
     /**
