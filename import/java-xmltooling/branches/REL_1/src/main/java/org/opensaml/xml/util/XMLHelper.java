@@ -45,6 +45,7 @@ import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.XMLRuntimeException;
 import org.opensaml.xml.parse.XMLParserException;
 import org.w3c.dom.Attr;
+import org.w3c.dom.DOMConfiguration;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -868,22 +869,13 @@ public final class XMLHelper {
      * @return pretty-printed xml
      */
     public static String prettyPrintXML(Node node) {
-        TransformerFactory tfactory = TransformerFactory.newInstance();
-        Transformer serializer;
-        try {
-            serializer = tfactory.newTransformer();
-            serializer.setOutputProperty(OutputKeys.INDENT, "yes");
-            serializer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "3");
-
-            StringWriter output = new StringWriter();
-            serializer.transform(new DOMSource(node), new StreamResult(output));
-            return output.toString();
-        } catch (TransformerException e) {
-            // this is fatal, just dump the stack and throw a runtime exception
-            e.printStackTrace();
-
-            throw new RuntimeException(e);
-        }
+        StringWriter writer = new StringWriter();
+        
+        HashMap<String, Object> serializerParams = new HashMap<String, Object>();
+        serializerParams.put("format-pretty-print", Boolean.TRUE); 
+        
+        writeNode(node, writer, serializerParams);
+        return writer.toString();
     }
 
     /**
@@ -894,9 +886,80 @@ public final class XMLHelper {
      * @param output the writer to write the XML to
      */
     public static void writeNode(Node node, Writer output) {
-        DOMImplementation domImpl = node.getOwnerDocument().getImplementation();
-        DOMImplementationLS domImplLS = (DOMImplementationLS) domImpl.getFeature("LS", "3.0");
+        writeNode(node, output, null);
+    }
+    
+    /**
+     * Writes a Node out to a Writer using the DOM, level 3, Load/Save serializer. The written content is encoded using
+     * the encoding specified in the writer configuration.
+     * 
+     * @param node the node to write out
+     * @param output the writer to write the XML to
+     * @param serializerParams parameters to pass to the {@link DOMConfiguration} of the serializer
+     *         instance, obtained via {@link LSSerializer#getDomConfig()}. May be null.
+     */
+    public static void writeNode(Node node, Writer output, Map<String, Object> serializerParams) {
+        DOMImplementationLS domImplLS = getLSDOMImpl(node);
+        
+        LSSerializer serializer = getLSSerializer(domImplLS, serializerParams);
+
+        LSOutput serializerOut = domImplLS.createLSOutput();
+        serializerOut.setCharacterStream(output);
+
+        serializer.write(node, serializerOut);
+    }
+    
+    /**
+     * Writes a Node out to an OutputStream using the DOM, level 3, Load/Save serializer. The written content
+     * is encoded using the encoding specified in the output stream configuration.
+     * 
+     * @param node the node to write out
+     * @param output the output stream to write the XML to
+     */
+    public static void writeNode(Node node, OutputStream output) {
+        writeNode(node, output, null);
+    }
+
+
+    /**
+     * Writes a Node out to an OutputStream using the DOM, level 3, Load/Save serializer. The written content 
+     * is encoded using the encoding specified in the output stream configuration.
+     * 
+     * @param node the node to write out
+     * @param output the output stream to write the XML to
+     * @param serializerParams parameters to pass to the {@link DOMConfiguration} of the serializer
+     *         instance, obtained via {@link LSSerializer#getDomConfig()}. May be null.
+     */
+    public static void writeNode(Node node, OutputStream output, Map<String, Object> serializerParams) {
+        DOMImplementationLS domImplLS = getLSDOMImpl(node);
+        
+        LSSerializer serializer = getLSSerializer(domImplLS, serializerParams);
+
+        LSOutput serializerOut = domImplLS.createLSOutput();
+        serializerOut.setByteStream(output);
+
+        serializer.write(node, serializerOut);
+    }
+    
+    /**
+     * Obtain a the DOM, level 3, Load/Save serializer {@link LSSerializer} instance from the
+     * given {@link DOMImplementationLS} instance.
+     * 
+     * <p>
+     * The serializer instance will be configured with the parameters passed as the <code>serializerParams</code>
+     * argument. It will also be configured with an {@link LSSerializerFilter} that shows all nodes to the filter, 
+     * and accepts all nodes shown.
+     * </p>
+     * 
+     * @param domImplLS the DOM Level 3 Load/Save implementation to use
+     * @param serializerParams parameters to pass to the {@link DOMConfiguration} of the serializer
+     *         instance, obtained via {@link LSSerializer#getDomConfig()}. May be null.
+     *         
+     * @return a new LSSerializer instance
+     */
+    public static LSSerializer getLSSerializer(DOMImplementationLS domImplLS, Map<String, Object> serializerParams) {
         LSSerializer serializer = domImplLS.createLSSerializer();
+        
         serializer.setFilter(new LSSerializerFilter() {
 
             public short acceptNode(Node arg0) {
@@ -907,21 +970,25 @@ public final class XMLHelper {
                 return SHOW_ALL;
             }
         });
-
-        LSOutput serializerOut = domImplLS.createLSOutput();
-        serializerOut.setCharacterStream(output);
-
-        serializer.write(node, serializerOut);
+        
+        
+        if (serializerParams != null) {
+            DOMConfiguration serializerDOMConfig = serializer.getDomConfig();
+            for (String key : serializerParams.keySet()) {
+                serializerDOMConfig.setParameter(key, serializerParams.get(key));
+            }
+        }
+        
+        return serializer;
     }
-
+    
     /**
-     * Writes a Node out to a Writer using the DOM, level 3, Load/Save serializer. The written content is encoded using
-     * the encoding specified in the writer configuration.
+     * Get the DOM Level 3 Load/Save {@link DOMImplementationLS} for the given node.
      * 
-     * @param node the node to write out
-     * @param output the output stream to write the XML to
+     * @param node the node to evaluate
+     * @return the DOMImplementationLS for the given node
      */
-    public static void writeNode(Node node, OutputStream output) {
+    public static DOMImplementationLS getLSDOMImpl(Node node) {
         DOMImplementation domImpl;
         if (node instanceof Document) {
             domImpl = ((Document) node).getImplementation();
@@ -930,22 +997,7 @@ public final class XMLHelper {
         }
 
         DOMImplementationLS domImplLS = (DOMImplementationLS) domImpl.getFeature("LS", "3.0");
-        LSSerializer serializer = domImplLS.createLSSerializer();
-        serializer.setFilter(new LSSerializerFilter() {
-
-            public short acceptNode(Node arg0) {
-                return FILTER_ACCEPT;
-            }
-
-            public int getWhatToShow() {
-                return SHOW_ALL;
-            }
-        });
-
-        LSOutput serializerOut = domImplLS.createLSOutput();
-        serializerOut.setByteStream(output);
-
-        serializer.write(node, serializerOut);
+        return domImplLS;
     }
 
     /**
