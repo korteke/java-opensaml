@@ -23,6 +23,7 @@ import javax.xml.namespace.QName;
 import org.opensaml.xml.schema.XSAny;
 import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.util.LazySet;
+import org.opensaml.xml.util.XMLConstants;
 
 /**
  * Test the NamespaceManger used by XMLObjects.
@@ -47,6 +48,8 @@ public class NamespaceManagerTest extends XMLObjectBaseTestCase {
     private static QName elementName = new QName(ns1uri, "TestElementName", ns1Prefix);
     private static QName typeName = new QName(ns2uri, "TestTypeName", ns2Prefix);
     
+    private static QName xsiTypeName = new QName(XMLConstants.XSI_NS, "type", XMLConstants.XSI_PREFIX);
+    
     private XMLObjectBuilder<XSAny> xsAnyBuilder;
     
     public NamespaceManagerTest() {
@@ -67,7 +70,7 @@ public class NamespaceManagerTest extends XMLObjectBaseTestCase {
     
     public void testObjectType() {
         xsAny = xsAnyBuilder.buildObject(elementName, typeName);
-        checkNamespaces(xsAny, 2, elementName, typeName);
+        checkNamespaces(xsAny, 3, elementName, typeName, xsiTypeName);
     }
     
     public void testQNameElementContent() {
