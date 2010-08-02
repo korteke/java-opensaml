@@ -158,7 +158,7 @@ public class PKIXSignatureTrustEngine extends
             return true;
         }
 
-        log.error("PKIX validation of signature failed, unable to resolve valid and trusted signing key");
+        log.debug("PKIX validation of signature failed, unable to resolve valid and trusted signing key");
         return false;
     }
 
@@ -187,10 +187,10 @@ public class PKIXSignatureTrustEngine extends
                 log.debug("Failed to establish trust of supplied candidate credential");
             }
         } else {
-            log.error("Cryptographic verification of raw signature failed with candidate credential");
+            log.debug("Cryptographic verification of raw signature failed with candidate credential");
         }
 
-        log.error("PKIX validation of raw signature failed, "
+        log.debug("PKIX validation of raw signature failed, "
                 + "unable to establish trust of supplied verification credential");
         return false;
     }
@@ -200,7 +200,7 @@ public class PKIXSignatureTrustEngine extends
             Pair<Set<String>, Iterable<PKIXValidationInformation>> validationPair) throws SecurityException {
 
         if (!(untrustedCredential instanceof X509Credential)) {
-            log.info("Can not evaluate trust of non-X509Credential");
+            log.debug("Can not evaluate trust of non-X509Credential");
             return false;
         }
         X509Credential untrustedX509Credential = (X509Credential) untrustedCredential;
@@ -209,7 +209,7 @@ public class PKIXSignatureTrustEngine extends
         Iterable<PKIXValidationInformation> validationInfoSet = validationPair.getSecond();
         
         if (!checkNames(trustedNames, untrustedX509Credential)) {
-            log.error("Evaluation of credential against trusted names failed. Aborting PKIX validation");
+            log.debug("Evaluation of credential against trusted names failed. Aborting PKIX validation");
             return false;
         }
 
@@ -221,7 +221,7 @@ public class PKIXSignatureTrustEngine extends
                 }
             } catch (SecurityException e) {
                 // log the operational error, but allow other validation info sets to be tried
-                log.error("Error performing PKIX validation on untrusted credential", e);
+                log.debug("Error performing PKIX validation on untrusted credential", e);
             }
         }
 

@@ -111,7 +111,7 @@ public class ExplicitKeySignatureTrustEngine extends BaseSignatureTrustEngine<It
                 return true;
             }
         }
-        log.error("Failed to verify signature using either KeyInfo-derived or directly trusted credentials");
+        log.debug("Failed to verify signature using either KeyInfo-derived or directly trusted credentials");
         return false;
     }
 
@@ -158,7 +158,7 @@ public class ExplicitKeySignatureTrustEngine extends BaseSignatureTrustEngine<It
                 return true;
             }
         }
-        log.error("Failed to verify signature using either supplied candidate credential"
+        log.debug("Failed to verify signature using either supplied candidate credential"
                 + " or directly trusted credentials");
         return false;
     }

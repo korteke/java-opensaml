@@ -156,7 +156,7 @@ public class PKIXX509CredentialTrustEngine implements PKIXTrustEngine<X509Creden
         log.debug("Beginning PKIX validation using trusted validation information");
 
         if (!checkNames(trustedNames, untrustedX509Credential)) {
-            log.error("Evaluation of credential against trusted names failed. Aborting PKIX validation");
+            log.debug("Evaluation of credential against trusted names failed. Aborting PKIX validation");
             return false;
         }
 
@@ -168,7 +168,7 @@ public class PKIXX509CredentialTrustEngine implements PKIXTrustEngine<X509Creden
                 }
             } catch (SecurityException e) {
                 // log the operational error, but allow other validation info sets to be tried
-                log.error("Error performing PKIX validation on untrusted credential", e);
+                log.debug("Error performing PKIX validation on untrusted credential", e);
             }
         }
         log.debug("Trust of untrusted credential could not be established via PKIX validation");

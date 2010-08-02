@@ -108,7 +108,7 @@ public abstract class BaseSignatureTrustEngine<TrustBasisType> implements Signat
                 }
             }
         } else {
-            log.info("Signature contained no KeyInfo element, could not resolve verification credentials");
+            log.debug("Signature contained no KeyInfo element, could not resolve verification credentials");
         }
 
         log.debug("Failed to verify signature and/or establish trust using any KeyInfo-derived credentials");
