@@ -500,35 +500,64 @@ public class BasicParserPool implements ParserPool {
             return;
         }
 
-        try {
-            DocumentBuilderFactory newFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilderFactory newFactory = DocumentBuilderFactory.newInstance();
+        setAttributes(newFactory, builderAttributes);
+        setFeatures(newFactory, builderFeatures);
+        newFactory.setCoalescing(coalescing);
+        newFactory.setExpandEntityReferences(expandEntityReferences);
+        newFactory.setIgnoringComments(ignoreComments);
+        newFactory.setIgnoringElementContentWhitespace(ignoreElementContentWhitespace);
+        newFactory.setNamespaceAware(namespaceAware);
+        newFactory.setSchema(schema);
+        newFactory.setValidating(dtdValidating);
+        newFactory.setXIncludeAware(xincludeAware);
 
-            for (Map.Entry<String, Object> attribute : builderAttributes.entrySet()) {
-                newFactory.setAttribute(attribute.getKey(), attribute.getValue());
+        poolVersion++;
+        dirtyBuilderConfiguration = false;
+        builderFactory = newFactory;
+        builderPool.clear();
+    }
+    
+    
+    /**
+     * Sets document builder attributes. If an attribute is not supported it is ignored.
+     * 
+     * @param factory document builder factory upon which the attribute will be set
+     * @param attributes the set of attributes to be set
+     */
+    protected void setAttributes(DocumentBuilderFactory factory, Map<String, Object> attributes) {
+        if (attributes == null || attributes.isEmpty()) {
+            return;
+        }
+
+        for (Map.Entry<String, Object> attribute : attributes.entrySet()) {
+            try {
+                log.debug("Setting DocumentBuilderFactory attribute '{}'", attribute.getKey());
+                factory.setAttribute(attribute.getKey(), attribute.getValue());
+            } catch (IllegalArgumentException e) {
+                log.warn("DocumentBuilderFactory attribute '{}' is not supported", attribute.getKey());
             }
+        }
+    }
 
-            for (Map.Entry<String, Boolean> feature : builderFeatures.entrySet()) {
-                if (feature.getKey() != null) {
-                    newFactory.setFeature(feature.getKey(), feature.getValue().booleanValue());
-                }
+    /**
+     * Sets document builder features. If an features is not supported it is ignored.
+     * 
+     * @param factory document builder factory upon which the attribute will be set
+     * @param features the set of features to be set
+     */
+    protected void setFeatures(DocumentBuilderFactory factory, Map<String, Boolean> features) {
+        if (features == null || features.isEmpty()) {
+            return;
+        }
+
+        for (Map.Entry<String, Boolean> feature : features.entrySet()) {
+            try {
+                log.debug("Setting DocumentBuilderFactory attribute '{}'", feature.getKey());
+                factory.setFeature(feature.getKey(), feature.getValue());
+            } catch (ParserConfigurationException e) {
+                log.warn("DocumentBuilderFactory feature '{}' is not supported", feature.getKey());
             }
-
-            newFactory.setCoalescing(coalescing);
-            newFactory.setExpandEntityReferences(expandEntityReferences);
-            newFactory.setIgnoringComments(ignoreComments);
-            newFactory.setIgnoringElementContentWhitespace(ignoreElementContentWhitespace);
-            newFactory.setNamespaceAware(namespaceAware);
-            newFactory.setSchema(schema);
-            newFactory.setValidating(dtdValidating);
-            newFactory.setXIncludeAware(xincludeAware);
-
-            poolVersion++;
-            dirtyBuilderConfiguration = false;
-            builderFactory = newFactory;
-            builderPool.clear();
-
-        } catch (ParserConfigurationException e) {
-            throw new XMLParserException("Unable to configure builder factory", e);
         }
     }
 
