@@ -15,7 +15,10 @@
  */
 package org.opensaml.messaging.context.impl;
 
+import java.util.UUID;
+
 import org.joda.time.DateTime;
+import org.joda.time.chrono.ISOChronology;
 import org.opensaml.messaging.context.InOutOperationContext;
 import org.opensaml.messaging.context.MessageContext;
 
@@ -42,6 +45,12 @@ public class BasicInOutOperationContext<InboundMessageType, OutboundMessageType>
     /** The context creation timestamp. */
     private  DateTime creationTime;
     
+    /** Constructor.  Sets ID to a generated UUID and creation time to now. */
+    protected BasicInOutOperationContext(){
+        id = UUID.randomUUID().toString();
+        creationTime = new DateTime(ISOChronology.getInstanceUTC());
+    }
+    
     /**
      * Constructor.
      *
@@ -50,10 +59,12 @@ public class BasicInOutOperationContext<InboundMessageType, OutboundMessageType>
      */
     public BasicInOutOperationContext(MessageContext<InboundMessageType> inbound, 
             MessageContext<OutboundMessageType> outbound) {
+        this();
+        
+        //TODO should check for null?
         inboundContext = inbound; 
         outboundContext = outbound; 
-        creationTime = new DateTime();
-        // TODO id = generate random id ? or allow explicit set ?
+
     }
     
     /** {@inheritDoc} */
