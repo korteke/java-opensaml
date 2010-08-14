@@ -192,10 +192,9 @@ public final class Assert {
      * @param message message used in the {@link IllegalArgumentException}
      */
     public static void isNotEmpty(Collection<?> collection, String message) {
-        if (!collection.isEmpty()) {
-            return;
+        if(collection == null || collection.isEmpty()){
+            throw new IllegalArgumentException(message);            
         }
-        throw new IllegalArgumentException(message);
     }
 
     /**
