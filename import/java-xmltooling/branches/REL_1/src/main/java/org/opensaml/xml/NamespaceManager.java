@@ -43,6 +43,14 @@ public class NamespaceManager {
     /** The token used to represent the default namespace in {@link #getNonVisibleNamespacePrefixes()}. */
     public static final String DEFAULT_NS_TOKEN = "#default";
     
+    /** The 'xml' namespace. */
+    private static final Namespace XML_NAMESPACE = 
+        new Namespace(XMLConstants.XML_NS, XMLConstants.XML_PREFIX);
+    
+    /** The 'xsi' namespace. */
+    private static final Namespace XSI_NAMESPACE = 
+        new Namespace(XMLConstants.XSI_NS, XMLConstants.XSI_PREFIX);
+    
     /** The owning XMLObject. */
     private XMLObject owner;
     
@@ -237,31 +245,54 @@ public class NamespaceManager {
      * @return the set of non-visibly used namespace prefixes
      */
     public Set<String> getNonVisibleNamespacePrefixes() {
-        LazySet<String> nonVisibleCandidates = new LazySet<String>();
+        LazySet<String> prefixes = new LazySet<String>();
+        addPrefixes(prefixes, getNonVisibleNamespaces());
+        return prefixes;
+    }
+    
+    /**
+     * Obtain the set of namespaces used in a non-visible manner on owning XMLObject
+     * and its children.
+     * 
+     * <p>
+     * The primary use case for this information is to support the inclusive prefixes
+     * information that may optionally be supplied as a part of XML exclusive canonicalization.
+     * </p>
+     * 
+     * <p>
+     * The Namespace instances themselves will be copied before being returned, so
+     * modifications to them do not affect the actual Namespace instances in the
+     * underlying tree. The original <code>alwaysDeclare</code> property is not preserved.
+     * </p>
+     * 
+     * @return the set of non-visibly used namespaces 
+     */
+    public Set<Namespace> getNonVisibleNamespaces() {
+        LazySet<Namespace> nonVisibleCandidates = new LazySet<Namespace>();
 
-        // Collect each child's non-visible prefixes.
+        // Collect each child's non-visible namespaces
         List<XMLObject> children = getOwner().getOrderedChildren();
         if (children != null) {
             for(XMLObject child : getOwner().getOrderedChildren()) {
                 if (child != null) {
-                    Set<String> childPrefixes = child.getNamespaceManager().getNonVisibleNamespacePrefixes();
-                    if (childPrefixes != null && ! childPrefixes.isEmpty()) {
-                        nonVisibleCandidates.addAll(childPrefixes);
+                    Set<Namespace> childNonVisibleNamespaces = child.getNamespaceManager().getNonVisibleNamespaces();
+                    if (childNonVisibleNamespaces != null && ! childNonVisibleNamespaces.isEmpty()) {
+                        nonVisibleCandidates.addAll(childNonVisibleNamespaces);
                     }
                 }
             }
         }
 
-        // Collect this node's non-visible candidate prefixes.
-        nonVisibleCandidates.addAll(getNonVisibleNamespacePrefixCandidates());
+        // Collect this node's non-visible candidate namespaces
+        nonVisibleCandidates.addAll(getNonVisibleNamespaceCandidates());
 
-        // Now subtract this object's visible prefixes.
-        nonVisibleCandidates.removeAll(getVisibleNamespacePrefixes());
+        // Now subtract this object's visible namespaces
+        nonVisibleCandidates.removeAll(getVisibleNamespaces());
         
         // As a special case, never return the 'xml' prefix.
-        nonVisibleCandidates.remove(XMLConstants.XML_PREFIX);
+        nonVisibleCandidates.remove(XML_NAMESPACE);
 
-        // What remains is this effective set of non-visible prefixes 
+        // What remains is the effective set of non-visible namespaces
         // for the subtree rooted at this node.
         return nonVisibleCandidates;
 
@@ -274,7 +305,7 @@ public class NamespaceManager {
      * <p>
      * The Namespace instances themselves will be copied before being returned, so
      * modifications to them do not affect the actual Namespace instances in the
-     * underlying tree. The original alwaysDeclare property is not preserved.
+     * underlying tree. The original <code>alwaysDeclare</code> property is not preserved.
      * </p>
      * 
      * @return set of all namespaces in scope for the owning object
@@ -297,11 +328,10 @@ public class NamespaceManager {
 
         // Collect this node's namespaces.  Copy before adding to the set. Do not preserve alwaysDeclare.
         for (Namespace myNS : getNamespaces()) {
-            namespaces.add(new Namespace(myNS.getNamespaceURI(), myNS.getNamespacePrefix()));
+            namespaces.add(copyNamespace(myNS));
         }
 
         return namespaces;
-
     }
     
     /**
@@ -454,65 +484,83 @@ public class NamespaceManager {
     }
     
     /**
-     * Get the set of namespace prefixes which are currently visibly used on the owning XMLObject (only the owner,
+     * Get the set of namespaces which are currently visibly-used on the owning XMLObject (only the owner,
      * not its children).
      * 
-     * @return the set of visibly used namespace prefixes
+     * <p>
+     * Namespaces returned in the set are copied from the ones held in the manager.  The
+     * <code>alwaysDeclare</code> property is not preserved.
+     * </p>
+     * 
+     * @return the set of visibly-used namespaces
      */
-    private Set<String> getVisibleNamespacePrefixes() {
-        LazySet<String> prefixes = new LazySet<String>();
+    private Set<Namespace> getVisibleNamespaces() {
+        LazySet<Namespace> namespaces = new LazySet<Namespace>();
 
-        // Add prefix from element name.
+        // Add namespace from element name.
         if (getElementNameNamespace() != null) {
-            String elementNamePrefix = DatatypeHelper.safeTrimOrNullString(
-                    getElementNameNamespace().getNamespacePrefix());
-            if (elementNamePrefix == null) {
-                elementNamePrefix = DEFAULT_NS_TOKEN;
-            }
-            prefixes.add(elementNamePrefix);
+            namespaces.add(copyNamespace(getElementNameNamespace()));
         }
 
         // Add xsi attribute prefix, if element carries an xsi:type.
         if (getElementTypeNamespace() != null) {
-            prefixes.add(XMLConstants.XSI_PREFIX);
+            namespaces.add(copyNamespace(XSI_NAMESPACE));
         }
         
-        // Add prefixes from attribute names
-        addPrefixes(prefixes, attrNames);
+        // Add namespaces from attribute names
+        for (Namespace attribName : attrNames) {
+            if (attribName != null) {
+                namespaces.add(copyNamespace(attribName));
+            }
+        }
 
-        return prefixes;
+        return namespaces;
     }
 
     /**
-     * Get the set of non-visibly used namespace prefixes used on the owning XMLObject (only the owner,
+     * Get the set of non-visibly used namespaces used on the owning XMLObject (only the owner,
      * not the owner's children).
      * 
-     * @return the set of non-visilby used namespace prefixes
+     * <p>
+     * Namespaces returned in the set are copied from the ones held in the manager.  The
+     * <code>alwaysDeclare</code> property is not preserved.
+     * </p>
+     * 
+     * @return the set of non-visibly-used namespaces
      */
-    private Set<String> getNonVisibleNamespacePrefixCandidates() {
-        LazySet<String> prefixes = new LazySet<String>();
+    private Set<Namespace> getNonVisibleNamespaceCandidates() {
+        LazySet<Namespace> namespaces = new LazySet<Namespace>();
 
         // Add xsi:type value's prefix, if element carries an xsi:type
         if (getElementTypeNamespace() != null) {
-            String schemaTypePrefix = DatatypeHelper.safeTrimOrNullString(
-                    getElementTypeNamespace().getNamespacePrefix());
-            if (schemaTypePrefix == null) {
-                schemaTypePrefix = DEFAULT_NS_TOKEN;
-            }
-            prefixes.add(schemaTypePrefix);
+            namespaces.add(copyNamespace(getElementTypeNamespace()));
         }
         
         // Add prefixes from attribute and content values
-        addPrefixes(prefixes, attrValues.values());
-        if (contentValue != null) {
-            String contentValuePrefix = DatatypeHelper.safeTrimOrNullString(contentValue.getNamespacePrefix());
-            if (contentValuePrefix == null) {
-                contentValuePrefix = DEFAULT_NS_TOKEN;
+        for (Namespace attribValue : attrValues.values()) {
+            if (attribValue != null) {
+                namespaces.add(copyNamespace(attribValue));
             }
-            prefixes.add(contentValuePrefix);
+        }
+        if (contentValue != null) {
+            namespaces.add(copyNamespace(contentValue));
         }
 
-        return prefixes;
+        return namespaces;
+    }
+    
+    /**
+     * Get a copy of a Namespace.  The <code>alwaysDeclare</code> property is not preserved.
+     * 
+     * @param orig the namespace instance to copy
+     * @return a copy of the specified namespace
+     */
+    private Namespace copyNamespace(Namespace orig) {
+        if (orig == null) {
+            return null;
+        } else {
+            return new Namespace(orig.getNamespaceURI(), orig.getNamespacePrefix());
+        }
     }
     
     /**
