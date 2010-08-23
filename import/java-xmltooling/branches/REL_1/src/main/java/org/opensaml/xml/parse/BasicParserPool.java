@@ -119,7 +119,6 @@ public class BasicParserPool implements ParserPool {
 
     /** Constructor. */
     public BasicParserPool() {
-        Configuration.validateNonSunJAXP();
         maxPoolSize = 5;
         builderPool = new Stack<SoftReference<DocumentBuilder>>();
         builderAttributes = new LazyMap<String, Object>();

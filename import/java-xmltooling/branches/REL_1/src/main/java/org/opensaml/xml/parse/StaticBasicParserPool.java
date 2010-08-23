@@ -114,7 +114,6 @@ public class StaticBasicParserPool implements ParserPool {
 
     /** Constructor. */
     public StaticBasicParserPool() {
-        Configuration.validateNonSunJAXP();
         initialized = false;
         maxPoolSize = 5;
         builderPool = new Stack<SoftReference<DocumentBuilder>>();

@@ -384,8 +384,6 @@ public class Configuration {
     }
 
     static {
-        validateNonSunJAXP();
-
         validateJCEProviders();
 
         // Default to registering the xml:id attribute as an ID type for all configurations

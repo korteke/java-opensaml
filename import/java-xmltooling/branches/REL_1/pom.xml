@@ -13,6 +13,14 @@
         XML in a Java beans manner.
     </description>
     
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <slf4j.groupId>org.slf4j</slf4j.groupId>
+        <slf4j.version>1.6.1</slf4j.version>
+        <xerces.groupId>org.apache.xerces</xerces.groupId>
+        <xerces.version>2.10.0</xerces.version>
+    </properties>
+    
     <repositories>
         <repository>
             <id>shibboleth-release</id>
@@ -35,24 +43,24 @@
     <dependencies>
         <!-- Compile dependencies -->
         <dependency>
-            <groupId>org.slf4j</groupId>
+            <groupId>${slf4j.groupId}</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>1.5.10</version>
+            <version>${slf4j.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.slf4j</groupId>
+            <groupId>${slf4j.groupId}</groupId>
             <artifactId>jcl-over-slf4j</artifactId>
-            <version>1.5.10</version>
+            <version>${slf4j.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.slf4j</groupId>
+            <groupId>${slf4j.groupId}</groupId>
             <artifactId>log4j-over-slf4j</artifactId>
-            <version>1.5.10</version>
+            <version>${slf4j.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.slf4j</groupId>
+            <groupId>${slf4j.groupId}</groupId>
             <artifactId>jul-to-slf4j</artifactId>
-            <version>1.5.10</version>
+            <version>${slf4j.version}</version>
         </dependency>
         <dependency>
             <groupId>joda-time</groupId>
@@ -90,27 +98,27 @@
                 
         <!-- Runtime dependencies -->
         <dependency>
-            <groupId>org.apache.xerces</groupId>
+            <groupId>${xerces.groupId}</groupId>
             <artifactId>xml-apis</artifactId>
-            <version>2.9.1</version>
+            <version>${xerces.version}</version>
             <scope>runtime</scope>
         </dependency>
         <dependency>
-            <groupId>org.apache.xerces</groupId>
+            <groupId>${xerces.groupId}</groupId>
             <artifactId>xercesImpl</artifactId>
-            <version>2.9.1</version>
+            <version>${xerces.version}</version>
             <scope>runtime</scope>
         </dependency>
         <dependency>
-            <groupId>org.apache.xerces</groupId>
+            <groupId>${xerces.groupId}</groupId>
             <artifactId>resolver</artifactId>
-            <version>2.9.1</version>
+            <version>${xerces.version}</version>
             <scope>runtime</scope>
         </dependency>
         <dependency>
-            <groupId>org.apache.xerces</groupId>
+            <groupId>${xerces.groupId}</groupId>
             <artifactId>serializer</artifactId>
-            <version>2.9.1</version>
+            <version>${xerces.version}</version>
             <scope>runtime</scope>
         </dependency>
         <dependency>
@@ -136,7 +144,7 @@
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <version>0.9.18</version>
+            <version>0.9.24</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

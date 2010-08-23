@@ -5,8 +5,9 @@ Changes in Release 1.3.0
 [JXT-60] - Add interfaces and helpers for the global attributes from the 'xml' namespace
 [JXT-65] - XMLHelper prettyPrintXML should use the same serialization logic as writeNode
 [JXT-67] - Can we turn down the ExplicitKeySignatureTrustEngine ERROR to WARN
-
-Introduction of NamespaceManager, which handles management of namespace info that is in scope on an XMLObject.
+[JXT-68] - Update 3rd Party Libs for 1.3 release
+[JXT-69] - Remove check that prevents xmltooling from starting when Sun 1.5 and below JAXP impl is used
+         - Introduction of NamespaceManager, which handles management of namespace info that is in scope on an XMLObject.
 
 Changes in Release 1.2.2
 ==============================================
