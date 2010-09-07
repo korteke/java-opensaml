@@ -11,13 +11,18 @@
         <relativePath>../opensaml-parent</relativePath>
     </parent>
 
-    <name>OpenSAML :: XML Utilities</name>
+    <name>OpenSAML :: Utilities</name>
     <artifactId>opensaml-util</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
         <!-- Compile Dependencies -->
-
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.1-alpha2</version>
+        </dependency>
+        
         <!-- Provided Dependencies -->
 
         <!-- Runtime Dependencies -->
