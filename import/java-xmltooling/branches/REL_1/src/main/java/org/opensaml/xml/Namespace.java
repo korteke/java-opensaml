@@ -94,6 +94,8 @@ public class Namespace {
      * ancestral element.
      * 
      * @return true if this namespace should always be declared, false if not
+     * 
+     * @deprecated use appropriate methods on the XMLObject's {@link NamespaceManager}.
      */
     public boolean alwaysDeclare() {
         return alwaysDeclare;
@@ -104,6 +106,8 @@ public class Namespace {
      * ancestral element.
      * 
      * @param shouldAlwaysDeclare true if this namespace should always be declared, false if not
+     * 
+     * @deprecated use appropriate methods on the XMLObject's {@link NamespaceManager}.
      */
     public void setAlwaysDeclare(boolean shouldAlwaysDeclare) {
         alwaysDeclare = shouldAlwaysDeclare;
