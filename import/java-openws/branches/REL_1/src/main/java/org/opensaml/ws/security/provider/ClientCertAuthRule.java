@@ -16,14 +16,13 @@
 
 package org.opensaml.ws.security.provider;
 
+import java.security.cert.CertificateEncodingException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.security.SecurityPolicyException;
-import org.opensaml.ws.transport.InTransport;
-import org.opensaml.ws.transport.Transport;
 import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.credential.UsageType;
@@ -36,44 +35,44 @@ import org.opensaml.xml.util.DatatypeHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.sun.org.apache.xml.internal.security.utils.Base64;
+
 /**
  * Policy rule that checks if the client cert used to authenticate the request is valid and trusted.
  * 
  * <p>
  * This rule is only evaluated if the message context contains a peer {@link X509Credential} as returned from the
- * inbound message context's inbound message transport {@link Transport#getPeerCredential()}.
+ * inbound message context's inbound message transport {@link org.opensaml.ws.transport.Transport#getPeerCredential()}.
  * </p>
  * 
  * <p>
  * The entity ID used to perform trust evaluation of the X509 credential is first retrieved via
- * {@link #getCertificatePresenterEntityID(MessageContext)}. If this value is non-null, trust evaluation 
- * proceeds on that basis.  If trust evaluation using this entity ID is successful, the message context's inbound
- * transport authentication state will be set to <code>true</code> and processing is terminated. If unsuccessful, a
+ * {@link #getCertificatePresenterEntityID(MessageContext)}. If this value is non-null, trust evaluation proceeds on
+ * that basis. If trust evaluation using this entity ID is successful, the message context's inbound transport
+ * authentication state will be set to <code>true</code> and processing is terminated. If unsuccessful, a
  * {@link SecurityPolicyException} is thrown.
  * </p>
  * 
  * <p>
- * If a non-null value was available from {@link #getCertificatePresenterEntityID(MessageContext)},
- * then rule evaluation will be attempted as described in
- * {@link #evaluateCertificateNameDerivedPresenters(X509Credential, MessageContext)}, based on the currently configured
- * certificate name evaluation options. If this method returns a non-null certificate presenter entity ID,
- * it will be set on the message context by calling
- * {@link #setAuthenticatedCertificatePresenterEntityID(MessageContext, String)}
- * The message context's inbound transport authentication state will be set to <code>true</code> via
- * {@link InTransport#setAuthenticated(boolean)}.
- * Rule processing is then terminated. If the method returns null, the client certificate presenter entity ID
- * and inbound transport authentication state will remain unmodified and rule processing continues.
+ * If a non-null value was available from {@link #getCertificatePresenterEntityID(MessageContext)}, then rule evaluation
+ * will be attempted as described in {@link #evaluateCertificateNameDerivedPresenters(X509Credential, MessageContext)},
+ * based on the currently configured certificate name evaluation options. If this method returns a non-null certificate
+ * presenter entity ID, it will be set on the message context by calling
+ * {@link #setAuthenticatedCertificatePresenterEntityID(MessageContext, String)} The message context's inbound transport
+ * authentication state will be set to <code>true</code> via
+ * {@link org.opensaml.ws.transport.InTransport#setAuthenticated(boolean)}. Rule processing is then terminated. If the
+ * method returns null, the client certificate presenter entity ID and inbound transport authentication state will
+ * remain unmodified and rule processing continues.
  * </p>
  * 
  * <p>
  * Finally rule evaluation will proceed as described in
- * {@link #evaluateDerivedPresenters(X509Credential, MessageContext)}.
- * This is primarily an extension point by which subclasses may implement specific custom logic. If this method returns
- * a non-null client certificate presenter entity ID, it will be set via 
- * {@link #setAuthenticatedCertificatePresenterEntityID(MessageContext, String)}, the message
- * context's inbound transport authentication state will be set to <code>true</code> and rule processing is
- * terminated. If the method returns null, the client certificate presenter entity ID and transport authentication
- * state will remain unmodified.
+ * {@link #evaluateDerivedPresenters(X509Credential, MessageContext)}. This is primarily an extension point by which
+ * subclasses may implement specific custom logic. If this method returns a non-null client certificate presenter entity
+ * ID, it will be set via {@link #setAuthenticatedCertificatePresenterEntityID(MessageContext, String)}, the message
+ * context's inbound transport authentication state will be set to <code>true</code> and rule processing is terminated.
+ * If the method returns null, the client certificate presenter entity ID and transport authentication state will remain
+ * unmodified.
  * </p>
  */
 public class ClientCertAuthRule extends BaseTrustEngineRule<X509Credential> {
@@ -113,7 +112,14 @@ public class ClientCertAuthRule extends BaseTrustEngineRule<X509Credential> {
         }
 
         X509Credential requestCredential = (X509Credential) peerCredential;
-
+        if (log.isDebugEnabled()) {
+            try {
+                log.debug("Attempting to authenticate inbound connection that presented the certificate:\n{}",
+                        Base64.encode(requestCredential.getEntityCertificate().getEncoded()));
+            } catch (CertificateEncodingException e) {
+                // do nothing
+            }
+        }
         doEvaluate(requestCredential, messageContext);
     }
 
@@ -132,8 +138,8 @@ public class ClientCertAuthRule extends BaseTrustEngineRule<X509Credential> {
      * @param requestCredential the X509Credential derived from the request
      * @param messageContext the message context being evaluated
      * @throws SecurityPolicyException thrown if a certificate presenter entity ID available from the message context
-     *              and the client certificate token can not be establishd as trusted on that basis,
-     *              or if there is error during evaluation processing
+     *             and the client certificate token can not be establishd as trusted on that basis, or if there is error
+     *             during evaluation processing
      */
     protected void doEvaluate(X509Credential requestCredential, MessageContext messageContext)
             throws SecurityPolicyException {
@@ -176,12 +182,11 @@ public class ClientCertAuthRule extends BaseTrustEngineRule<X509Credential> {
     }
 
     /**
-     * Get the entity ID of the presenter of the client TLS certificate, as will be used
-     * for trust evaluation purposes.
+     * Get the entity ID of the presenter of the client TLS certificate, as will be used for trust evaluation purposes.
      * 
-     * <p>The default behavior is to return the value of
-     * {@link MessageContext#getInboundMessageIssuer()}.  Subclasses may override to implement
-     * different logic.
+     * <p>
+     * The default behavior is to return the value of {@link MessageContext#getInboundMessageIssuer()}. Subclasses may
+     * override to implement different logic.
      * </p>
      * 
      * @param messageContext the current message context
@@ -190,22 +195,19 @@ public class ClientCertAuthRule extends BaseTrustEngineRule<X509Credential> {
     protected String getCertificatePresenterEntityID(MessageContext messageContext) {
         return messageContext.getInboundMessageIssuer();
     }
-    
+
     /**
-     * Store the sucessfully authenticated derived entity ID of the certificate presenter
-     * in the message context.
+     * Store the sucessfully authenticated derived entity ID of the certificate presenter in the message context.
      * 
-     * <p>The default behavior is to set the value by calling
-     * {@link MessageContext#setInboundMessageIssuer(String)}. Subclasses may override to implement
-     * different logic.
+     * <p>
+     * The default behavior is to set the value by calling {@link MessageContext#setInboundMessageIssuer(String)}.
+     * Subclasses may override to implement different logic.
      * </p>
      * 
      * @param messageContext the current message context
-     * @param entityID the successfully authenticated derived entity ID of the client TLS
-     *              certificate presenter
+     * @param entityID the successfully authenticated derived entity ID of the client TLS certificate presenter
      */
-    protected void setAuthenticatedCertificatePresenterEntityID(MessageContext messageContext,
-            String entityID) {
+    protected void setAuthenticatedCertificatePresenterEntityID(MessageContext messageContext, String entityID) {
         messageContext.setInboundMessageIssuer(entityID);
     }
 
@@ -244,8 +246,8 @@ public class ClientCertAuthRule extends BaseTrustEngineRule<X509Credential> {
      */
     protected String evaluateDerivedIssuers(X509Credential requestCredential, MessageContext messageContext)
             throws SecurityPolicyException {
-                return evaluateDerivedPresenters(requestCredential, messageContext);
-            }
+        return evaluateDerivedPresenters(requestCredential, messageContext);
+    }
 
     /**
      * Evaluate any candidate presenter entity ID's which may be derived from the credential or other message context
@@ -276,8 +278,8 @@ public class ClientCertAuthRule extends BaseTrustEngineRule<X509Credential> {
      * according to the options supplied via {@link CertificateNameOptions}.
      * 
      * <p>
-     * Configured certificate name types are derived as candidate presenter entity ID's and processed
-     * in the following order:
+     * Configured certificate name types are derived as candidate presenter entity ID's and processed in the following
+     * order:
      * <ol>
      * <li>The certificate subject DN string as serialized by the X500DNHandler obtained via
      * {@link CertificateNameOptions#getX500DNHandler()} and using the output format indicated by
@@ -301,16 +303,16 @@ public class ClientCertAuthRule extends BaseTrustEngineRule<X509Credential> {
      */
     protected String evaluateCertificateNameDerivedIssuers(X509Credential requestCredential,
             MessageContext messageContext) throws SecurityPolicyException {
-                return evaluateCertificateNameDerivedPresenters(requestCredential, messageContext);
-            }
+        return evaluateCertificateNameDerivedPresenters(requestCredential, messageContext);
+    }
 
     /**
      * Evaluate candidate presenter entity ID's which may be derived from the request credential's entity certificate
      * according to the options supplied via {@link CertificateNameOptions}.
      * 
      * <p>
-     * Configured certificate name types are derived as candidate presenter entity ID's and processed
-     * in the following order:
+     * Configured certificate name types are derived as candidate presenter entity ID's and processed in the following
+     * order:
      * <ol>
      * <li>The certificate subject DN string as serialized by the X500DNHandler obtained via
      * {@link CertificateNameOptions#getX500DNHandler()} and using the output format indicated by
@@ -378,8 +380,7 @@ public class ClientCertAuthRule extends BaseTrustEngineRule<X509Credential> {
         String candidatePresenter = getCommonName(certificate);
         if (candidatePresenter != null) {
             if (evaluate(requestCredential, candidatePresenter, messageContext)) {
-                log.info("Authentication succeeded for presenter entity ID derived from CN {}",
-                        candidatePresenter);
+                log.info("Authentication succeeded for presenter entity ID derived from CN {}", candidatePresenter);
                 return candidatePresenter;
             }
         }
@@ -411,8 +412,8 @@ public class ClientCertAuthRule extends BaseTrustEngineRule<X509Credential> {
     }
 
     /**
-     * Evaluate the presenter entity ID as derived from the cert subject alternative names specified by
-     * types enumerated in {@link CertificateNameOptions#getSubjectAltNames()}.
+     * Evaluate the presenter entity ID as derived from the cert subject alternative names specified by types enumerated
+     * in {@link CertificateNameOptions#getSubjectAltNames()}.
      * 
      * @param requestCredential the X509Credential derived from the request
      * @param messageContext the message context being evaluated

@@ -2,6 +2,7 @@ Changes in Release 1.4.0
 ==============================================
 [JOWS-15] - AbstractDateTimeType does not handle all datetime formats
 [JOWS-20] - Update 3rd party libs for 1.4.0 release
+[JOWS-21] - Can we get the Relying Party's certificate data in the log
           - New object provider support for WS-Trust 1.3 specification
           - New object provider support for WS-Policy specification
 
