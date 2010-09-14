@@ -31,11 +31,10 @@ import org.opensaml.xml.security.criteria.UsageCriteria;
 import org.opensaml.xml.security.trust.TrustEngine;
 import org.opensaml.xml.security.x509.X509Credential;
 import org.opensaml.xml.security.x509.X509Util;
+import org.opensaml.xml.util.Base64;
 import org.opensaml.xml.util.DatatypeHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.sun.org.apache.xml.internal.security.utils.Base64;
 
 /**
  * Policy rule that checks if the client cert used to authenticate the request is valid and trusted.
@@ -114,8 +113,8 @@ public class ClientCertAuthRule extends BaseTrustEngineRule<X509Credential> {
         X509Credential requestCredential = (X509Credential) peerCredential;
         if (log.isDebugEnabled()) {
             try {
-                log.debug("Attempting to authenticate inbound connection that presented the certificate:\n{}",
-                        Base64.encode(requestCredential.getEntityCertificate().getEncoded()));
+                log.debug("Attempting to authenticate inbound connection that presented the certificate:");
+                log.debug(Base64.encodeBytes(requestCredential.getEntityCertificate().getEncoded()));
             } catch (CertificateEncodingException e) {
                 // do nothing
             }
