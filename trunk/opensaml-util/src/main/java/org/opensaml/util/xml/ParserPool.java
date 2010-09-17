@@ -34,7 +34,7 @@ public interface ParserPool {
      * 
      * @return a builder from the pool
      * 
-     * @throws XMLParserException thrown if the document builder factory is misconfigured
+     * @throws XmlParserException thrown if the document builder factory is misconfigured
      */
     public DocumentBuilder getBuilder() throws XMLParserException;
 
@@ -50,7 +50,7 @@ public interface ParserPool {
      * 
      * @return created document
      * 
-     * @throws XMLParserException thrown if there is a problem retrieving a builder
+     * @throws XmlParserException thrown if there is a problem retrieving a builder
      */
     public Document newDocument() throws XMLParserException;
 
@@ -61,10 +61,10 @@ public interface ParserPool {
      * 
      * @return parsed document
      * 
-     * @throws XMLParserException thrown if there is a problem retrieving a builder, the input stream can not be read,
+     * @throws XmlParserException thrown if there is a problem retrieving a builder, the input stream can not be read,
      *             or the XML was invalid
      */
-    public Document parse(InputStream input) throws XMLParserException;
+    public Document parse(final InputStream input) throws XMLParserException;
 
     /**
      * Convenience method for parsing an XML file using a pooled builder.
@@ -73,10 +73,10 @@ public interface ParserPool {
      * 
      * @return parsed document
      * 
-     * @throws XMLParserException thrown if there is a problem retrieving a builder, the input stream can not be read,
+     * @throws XmlParserException thrown if there is a problem retrieving a builder, the input stream can not be read,
      *             or the XML was invalid
      */
-    public Document parse(Reader input) throws XMLParserException;
+    public Document parse(final Reader input) throws XMLParserException;
 
     /**
      * Gets the schema builders use to validate.
@@ -90,6 +90,6 @@ public interface ParserPool {
      * 
      * @param newSchema the schema builders use to validate
      */
-    public void setSchema(Schema newSchema);
+    public void setSchema(final Schema newSchema);
 
 }

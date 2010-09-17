@@ -39,7 +39,7 @@ public class FilesystemResource implements Resource {
      * 
      * @param resourcePath file read by this resource, never null or empty
      */
-    public FilesystemResource(String resourcePath) {
+    public FilesystemResource(final String resourcePath) {
         this(resourcePath, Charset.defaultCharset());
     }
 
@@ -49,8 +49,8 @@ public class FilesystemResource implements Resource {
      * @param resourcePath file read by this resource, never null or empty
      * @param charset character set of the file, never null
      */
-    public FilesystemResource(String resourcePath, Charset charset) {
-        String trimmedPath = StringSupport.trimOrNull(resourcePath);
+    public FilesystemResource(final String resourcePath, final Charset charset) {
+        final String trimmedPath = StringSupport.trimOrNull(resourcePath);
         Assert.isNotNull(trimmedPath, "Resource file path may not be null or empty");
         resourceFile = new File(trimmedPath);
 

@@ -34,10 +34,10 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 
 /** Set of helper methods for working with DOM Elements. */
-public final class Elements {
-    
+public final class ElementSupport {
+
     /** Constructor. */
-    private Elements() {
+    private ElementSupport() {
     }
 
     /**
@@ -46,7 +46,7 @@ public final class Elements {
      * @param adoptee the element to be adopted
      * @param adopter the document into which the element is adopted
      */
-    public static void adoptElement(Document adopter, Element adoptee) {
+    public static void adoptElement(final Document adopter, final Element adoptee) {
         Assert.isNotNull(adoptee, "Adoptee Element may not be null");
         Assert.isNotNull(adopter, "Adopter Element may not be null");
 
@@ -65,13 +65,13 @@ public final class Elements {
      * @param parentElement the parent Element
      * @param childElement the child Element
      */
-    public static void appendChildElement(Element parentElement, Element childElement) {
+    public static void appendChildElement(final Element parentElement, final Element childElement) {
         if (childElement == null) {
             return;
         }
 
         Assert.isNotNull(parentElement, "Parent Element may not be null");
-        Document parentDocument = parentElement.getOwnerDocument();
+        final Document parentDocument = parentElement.getOwnerDocument();
         adoptElement(parentDocument, childElement);
 
         parentElement.appendChild(childElement);
@@ -83,13 +83,12 @@ public final class Elements {
      * @param element the element to recieve the text node
      * @param textContent the content for the text node
      */
-    public static void appendTextContent(Element element, String textContent) {
+    public static void appendTextContent(final Element element, final String textContent) {
         if (textContent == null) {
             return;
         }
         Assert.isNotNull(element, "Element may not be null");
-        Document parentDocument = element.getOwnerDocument();
-        Text textNode = parentDocument.createTextNode(textContent);
+        final Text textNode = element.getOwnerDocument().createTextNode(textContent);
         element.appendChild(textNode);
     }
 
@@ -101,7 +100,7 @@ public final class Elements {
      * 
      * @return the element
      */
-    public static Element constructElement(Document document, QName elementName) {
+    public static Element constructElement(final Document document, final QName elementName) {
         return constructElement(document, elementName.getNamespaceURI(), elementName.getLocalPart(), elementName
                 .getPrefix());
     }
@@ -116,14 +115,15 @@ public final class Elements {
      * 
      * @return the element
      */
-    public static Element constructElement(Document document, String namespaceURI, String localName, String prefix) {
+    public static Element constructElement(final Document document, final String namespaceURI, final String localName,
+            final String prefix) {
         Assert.isNotNull(document, "Document may not be null");
 
-        String trimmedLocalName = StringSupport.trimOrNull(localName);
+        final String trimmedLocalName = StringSupport.trimOrNull(localName);
         Assert.isNotNull(trimmedLocalName, "Element local name may not be null or empty");
 
         String qualifiedName;
-        String trimmedPrefix = StringSupport.trimOrNull(prefix);
+        final String trimmedPrefix = StringSupport.trimOrNull(prefix);
         if (trimmedPrefix != null) {
             qualifiedName = trimmedPrefix + ":" + StringSupport.trimOrNull(trimmedLocalName);
         } else {
@@ -144,14 +144,14 @@ public final class Elements {
      * 
      * @return list of child elements
      */
-    public static List<Element> getChildElements(Node root) {
-        ArrayList<Element> children = new ArrayList<Element>();
+    public static List<Element> getChildElements(final Node root) {
+        final ArrayList<Element> children = new ArrayList<Element>();
         if (root == null) {
             return null;
         }
 
-        NodeList childNodes = root.getChildNodes();
-        int numOfNodes = childNodes.getLength();
+        final NodeList childNodes = root.getChildNodes();
+        final int numOfNodes = childNodes.getLength();
         Node childNode;
         for (int i = 0; i < numOfNodes; i++) {
             childNode = childNodes.item(i);
@@ -172,14 +172,14 @@ public final class Elements {
      * 
      * @return list of child elements, never null
      */
-    public static List<Element> getChildElementsByTagName(Node root, String localName) {
-        ArrayList<Element> children = new ArrayList<Element>();
+    public static List<Element> getChildElementsByTagName(final Node root, final String localName) {
+        final ArrayList<Element> children = new ArrayList<Element>();
         if (root == null) {
             return null;
         }
 
-        NodeList childNodes = root.getChildNodes();
-        int numOfNodes = childNodes.getLength();
+        final NodeList childNodes = root.getChildNodes();
+        final int numOfNodes = childNodes.getLength();
         Node childNode;
         Element e;
         for (int i = 0; i < numOfNodes; i++) {
@@ -205,21 +205,23 @@ public final class Elements {
      * 
      * @return list of child elements, never null
      */
-    public static List<Element> getChildElementsByTagNameNS(Node root, String namespaceURI, String localName) {
-        ArrayList<Element> children = new ArrayList<Element>();
+    public static List<Element> getChildElementsByTagNameNS(final Node root, final String namespaceURI,
+            final String localName) {
+        final ArrayList<Element> children = new ArrayList<Element>();
         if (root == null) {
             return null;
         }
 
-        NodeList childNodes = root.getChildNodes();
-        int numOfNodes = childNodes.getLength();
+        final NodeList childNodes = root.getChildNodes();
+        final int numOfNodes = childNodes.getLength();
         Node childNode;
         Element e;
         for (int i = 0; i < numOfNodes; i++) {
             childNode = childNodes.item(i);
             if (childNode.getNodeType() == Node.ELEMENT_NODE) {
                 e = (Element) childNode;
-                if (ObjectSupport.equals(e.getNamespaceURI(), namespaceURI) && ObjectSupport.equals(e.getLocalName(), localName)) {
+                if (ObjectSupport.equals(e.getNamespaceURI(), namespaceURI)
+                        && ObjectSupport.equals(e.getLocalName(), localName)) {
                     children.add(e);
                 }
             }
@@ -235,12 +237,12 @@ public final class Elements {
      * 
      * @return the ancestral element node of the current node, or null
      */
-    public static Element getElementAncestor(Node currentNode) {
+    public static Element getElementAncestor(final Node currentNode) {
         if (currentNode == null) {
             return null;
         }
 
-        Node parent = currentNode.getParentNode();
+        final Node parent = currentNode.getParentNode();
         if (parent != null) {
             short type = parent.getNodeType();
             if (type == Node.ELEMENT_NODE) {
@@ -258,7 +260,7 @@ public final class Elements {
      * 
      * @return list of values, never null
      */
-    public static List<String> getElementContentAsList(Element element) {
+    public static List<String> getElementContentAsList(final Element element) {
         if (element == null) {
             return Collections.emptyList();
         }
@@ -272,15 +274,16 @@ public final class Elements {
      * 
      * @return a QName from an element's value, or null if the given element is empty
      */
-    public static QName getElementContentAsQName(Element element) {
+    public static QName getElementContentAsQName(final Element element) {
         if (element == null) {
             return null;
         }
 
+        final NodeList nodeList = element.getChildNodes();
         String elementContent = null;
-        NodeList nodeList = element.getChildNodes();
+        Node node;
         for (int i = 0; i < nodeList.getLength(); i++) {
-            Node node = nodeList.item(i);
+            node = nodeList.item(i);
             if (node.getNodeType() == Node.TEXT_NODE) {
                 elementContent = StringSupport.trimOrNull(((Text) node).getWholeText());
                 break;
@@ -291,11 +294,11 @@ public final class Elements {
             return null;
         }
 
-        String[] valueComponents = elementContent.split(":");
+        final String[] valueComponents = elementContent.split(":");
         if (valueComponents.length == 1) {
-            return QNames.constructQName(element.lookupNamespaceURI(null), valueComponents[0], null);
+            return QNameSupport.constructQName(element.lookupNamespaceURI(null), valueComponents[0], null);
         } else {
-            return QNames.constructQName(element.lookupNamespaceURI(valueComponents[0]), valueComponents[1],
+            return QNameSupport.constructQName(element.lookupNamespaceURI(valueComponents[0]), valueComponents[1],
                     valueComponents[0]);
         }
     }
@@ -306,7 +309,7 @@ public final class Elements {
      * @param n The parent in which to search for children
      * @return The first child Element of n, or null if none
      */
-    public static Element getFirstChildElement(Node n) {
+    public static Element getFirstChildElement(final Node n) {
         if (n == null) {
             return null;
         }
@@ -330,15 +333,15 @@ public final class Elements {
      * 
      * @return child elements indexed by namespace qualifed tag name, never null
      */
-    public static Map<QName, List<Element>> getIndexedChildElements(Element root) {
-        Map<QName, List<Element>> children = new HashMap<QName, List<Element>>();
+    public static Map<QName, List<Element>> getIndexedChildElements(final Element root) {
+        final Map<QName, List<Element>> children = new HashMap<QName, List<Element>>();
         if (root == null) {
             return children;
         }
 
-        NodeList childNodes = root.getChildNodes();
+        final NodeList childNodes = root.getChildNodes();
+        final int numOfNodes = childNodes.getLength();
 
-        int numOfNodes = childNodes.getLength();
         Node childNode;
         Element e;
         QName qname;
@@ -347,7 +350,7 @@ public final class Elements {
             childNode = childNodes.item(i);
             if (childNode.getNodeType() == Node.ELEMENT_NODE) {
                 e = (Element) childNode;
-                qname = QNames.getNodeQName(e);
+                qname = QNameSupport.getNodeQName(e);
                 elements = children.get(qname);
                 if (elements == null) {
                     elements = new ArrayList<Element>();
@@ -367,7 +370,7 @@ public final class Elements {
      * @param n The sibling to start with
      * @return The next sibling Element of n, or null if none
      */
-    public static Element getNextSiblingElement(Node n) {
+    public static Element getNextSiblingElement(final Node n) {
         if (n == null) {
             return null;
         }
@@ -392,7 +395,7 @@ public final class Elements {
      * 
      * @return true if the element has the given name, false otherwise
      */
-    public static boolean isElementNamed(Element e, QName name) {
+    public static boolean isElementNamed(final Element e, final QName name) {
         return isElementNamed(e, name.getNamespaceURI(), name.getLocalPart());
     }
 
@@ -404,8 +407,9 @@ public final class Elements {
      * @param localName A local name to compare
      * @return true iff the element's local name and namespace match the parameters
      */
-    public static boolean isElementNamed(Element e, String ns, String localName) {
-        return e != null && ObjectSupport.equals(ns, e.getNamespaceURI()) && ObjectSupport.equals(localName, e.getLocalName());
+    public static boolean isElementNamed(final Element e, final String ns, final String localName) {
+        return e != null && ObjectSupport.equals(ns, e.getNamespaceURI())
+                && ObjectSupport.equals(localName, e.getLocalName());
     }
 
     /**
@@ -415,13 +419,13 @@ public final class Elements {
      * @param document document whose root element will be set
      * @param element element that will be the new root element
      */
-    public static void setDocumentElement(Document document, Element element) {
+    public static void setDocumentElement(final Document document, final Element element) {
         Assert.isNotNull(document, "Document may not be null");
         Assert.isNotNull(element, "Element may not be null");
 
         adoptElement(document, element);
 
-        Element rootElement = document.getDocumentElement();
+        final Element rootElement = document.getDocumentElement();
         if (!rootElement.isSameNode(element)) {
             document.replaceChild(element, rootElement);
         }

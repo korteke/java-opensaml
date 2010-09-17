@@ -140,7 +140,7 @@ public class HttpClientBuilder {
      * 
      * @param address local IP address used when making requests
      */
-    public void setSocketLocalAddress(InetAddress address) {
+    public void setSocketLocalAddress(final InetAddress address) {
         socketLocalAddress = address;
     }
 
@@ -151,7 +151,7 @@ public class HttpClientBuilder {
      * 
      * @throws UnknownHostException thrown if the given IP or hostname can not be resolved
      */
-    public void setSocketLocalAddress(String ipOrHost) throws UnknownHostException {
+    public void setSocketLocalAddress(final String ipOrHost) throws UnknownHostException {
         Assert.isNotNull(ipOrHost, "IP or hostname may not be null");
         socketLocalAddress = InetAddress.getByName(ipOrHost);
     }
@@ -172,7 +172,7 @@ public class HttpClientBuilder {
      * 
      * @param timeout maximum period inactivity between two consecutive data packets in milliseconds
      */
-    public void setSocketTimeout(int timeout) {
+    public void setSocketTimeout(final int timeout) {
         this.socketTimeout = timeout;
     }
 
@@ -190,7 +190,7 @@ public class HttpClientBuilder {
      * 
      * @param size size of the socket buffer, in bytes, used for request/response buffering; must be greater than 0
      */
-    public void setSocketBufferSize(int size) {
+    public void setSocketBufferSize(final int size) {
         Assert.isGreaterThan(0, size, "Socket buffer size must be greater than 0");
         socketBufferSize = size;
     }
@@ -211,7 +211,7 @@ public class HttpClientBuilder {
      * 
      * @param timeout maximum length of time in milliseconds to wait for the connection to be established
      */
-    public void setConnectionTimeout(int timeout) {
+    public void setConnectionTimeout(final int timeout) {
         connectionTimeout = timeout;
     }
 
@@ -229,7 +229,7 @@ public class HttpClientBuilder {
      * 
      * @param disregard whether the responder's SSL certificate should be ignored
      */
-    public void setConnectionDisregardSslCertificate(boolean disregard) {
+    public void setConnectionDisregardSslCertificate(final boolean disregard) {
         connectionDisregardSslCertificate = disregard;
     }
 
@@ -247,7 +247,7 @@ public class HttpClientBuilder {
      * 
      * @param pooling whether connections with the same route should be pooled and reused
      */
-    public void setConnectionPooling(boolean pooling) {
+    public void setConnectionPooling(final boolean pooling) {
         connectionPooling = pooling;
     }
 
@@ -268,7 +268,7 @@ public class HttpClientBuilder {
      * 
      * @param check whether reused connections are checked if they are closed before being used by the client
      */
-    public void setConnectionStalecheck(boolean check) {
+    public void setConnectionStalecheck(final boolean check) {
         connectionStalecheck = check;
     }
 
@@ -287,7 +287,7 @@ public class HttpClientBuilder {
      * @param max maximum number of connections that may be open at any given time when pooling is used; must be greater
      *            than zero
      */
-    public void setConnectionsMaxTotal(int max) {
+    public void setConnectionsMaxTotal(final int max) {
         Assert.isGreaterThan(0, max, "Max total connections must be greater than 0");
         connectionsMaxTotal = max;
     }
@@ -306,7 +306,7 @@ public class HttpClientBuilder {
      * 
      * @param max maximum number of connection per route; must be greater than zero
      */
-    public void setConnectionsMaxPerRoute(int max) {
+    public void setConnectionsMaxPerRoute(final int max) {
         Assert.isGreaterThan(0, max, "Max connections per route must be greater than zero");
         connectionsMaxPerRoute = max;
     }
@@ -325,7 +325,7 @@ public class HttpClientBuilder {
      * 
      * @param host hostname of the default proxy used when making connection
      */
-    public void setConnectionProxyHost(String host) {
+    public void setConnectionProxyHost(final String host) {
         connectionProxyHost = StringSupport.trimOrNull(host);
     }
 
@@ -343,7 +343,7 @@ public class HttpClientBuilder {
      * 
      * @param port port of the default proxy used when making connection; must be greater than 0 and less than 65536
      */
-    public void setConnectionProxyPort(int port) {
+    public void setConnectionProxyPort(final int port) {
         Assert.numberInRangeExclusive(0, 65536, port, "Proxy port must be between 0 and 65536, exclusive");
         connectionProxyPort = port;
     }
@@ -362,7 +362,7 @@ public class HttpClientBuilder {
      * 
      * @param usename username to use when authenticating to the proxy; may be null
      */
-    public void setConnectionProxyUsername(String usename) {
+    public void setConnectionProxyUsername(final String usename) {
         connectionProxyUsername = usename;
     }
 
@@ -380,7 +380,7 @@ public class HttpClientBuilder {
      * 
      * @param password password used when authenticating to the proxy; may be null
      */
-    public void setConnectionProxyPassword(String password) {
+    public void setConnectionProxyPassword(final String password) {
         connectionProxyPassword = password;
     }
 
@@ -398,7 +398,7 @@ public class HttpClientBuilder {
      * 
      * @param followRedirects true if redirects are followed, false otherwise
      */
-    public void setHttpFollowRedirects(boolean followRedirects) {
+    public void setHttpFollowRedirects(final boolean followRedirects) {
         httpFollowRedirects = followRedirects;
     }
 
@@ -416,7 +416,7 @@ public class HttpClientBuilder {
      * 
      * @param charSet character set used with the HTTP entity (body)
      */
-    public void setHttpContentCharSet(String charSet) {
+    public void setHttpContentCharSet(final String charSet) {
         httpContentCharSet = charSet;
     }
 
@@ -426,11 +426,11 @@ public class HttpClientBuilder {
      * @return the constructed client
      */
     public HttpClient buildClient() {
-        DefaultHttpClient client = new DefaultHttpClient(buildConnectionManager());
+        final DefaultHttpClient client = new DefaultHttpClient(buildConnectionManager());
         client.addRequestInterceptor(new RequestAcceptEncoding());
         client.addResponseInterceptor(new ResponseContentEncoding());
 
-        HttpParams httpParams = client.getParams();
+        final HttpParams httpParams = client.getParams();
 
         if (socketLocalAddress != null) {
             httpParams.setParameter(AllClientPNames.LOCAL_ADDRESS, socketLocalAddress);
@@ -449,11 +449,11 @@ public class HttpClientBuilder {
         httpParams.setBooleanParameter(AllClientPNames.STALE_CONNECTION_CHECK, connectionStalecheck);
 
         if (connectionProxyHost != null) {
-            HttpHost proxyHost = new HttpHost(connectionProxyHost, connectionProxyPort);
+            final HttpHost proxyHost = new HttpHost(connectionProxyHost, connectionProxyPort);
             httpParams.setParameter(AllClientPNames.DEFAULT_PROXY, proxyHost);
 
             if (connectionProxyUsername != null && connectionProxyPassword != null) {
-                CredentialsProvider credProvider = client.getCredentialsProvider();
+                final CredentialsProvider credProvider = client.getCredentialsProvider();
                 credProvider.setCredentials(new AuthScope(connectionProxyHost, connectionProxyPort),
                         new UsernamePasswordCredentials(connectionProxyUsername, connectionProxyPassword));
             }
@@ -475,12 +475,12 @@ public class HttpClientBuilder {
      * @return the connection manager used by the HTTP client
      */
     private ClientConnectionManager buildConnectionManager() {
-        SchemeRegistry registry = buildSchemeRegistry();
+        final SchemeRegistry registry = buildSchemeRegistry();
 
         if (!connectionPooling) {
             return new SingleClientConnManager(registry);
         } else {
-            ThreadSafeClientConnManager manager = new ThreadSafeClientConnManager(registry);
+            final ThreadSafeClientConnManager manager = new ThreadSafeClientConnManager(registry);
             manager.setDefaultMaxPerRoute(connectionsMaxPerRoute);
             manager.setMaxTotalConnections(connectionsMaxTotal);
             return manager;
@@ -495,11 +495,11 @@ public class HttpClientBuilder {
      * @return the default scheme registry.
      */
     private SchemeRegistry buildSchemeRegistry() {
-        SchemeRegistry registry = new SchemeRegistry();
+        final SchemeRegistry registry = new SchemeRegistry();
 
         registry.register(new Scheme("http", 80, PlainSocketFactory.getSocketFactory()));
 
-        SSLSocketFactory sslSF = null;
+        final SSLSocketFactory sslSF;
         if (!connectionDisregardSslCertificate) {
             sslSF = SSLSocketFactory.getSocketFactory();
         } else {
@@ -523,9 +523,9 @@ public class HttpClientBuilder {
                 sslcontext.init(null, new TrustManager[] { noTrustManager }, null);
                 sslSF = new SSLSocketFactory(sslcontext);
             } catch (NoSuchAlgorithmException e) {
-                // nothing to do, TLS is required to be supported by the JVM
+                throw new RuntimeException("TLS SSLContext type is required to be supported by the JVM but is not", e);
             } catch (KeyManagementException e) {
-                // nothing to do, our "trust everything" trust manager has no keys to manage
+                throw new RuntimeException("Some how the trust everything trust manager didn't trust everything", e);
             }
         }
         registry.register(new Scheme("https", 443, sslSF));

@@ -36,7 +36,7 @@ public class Pair<T1, T2> {
      * @param newFirst first object in the pair
      * @param newSecond second object in the pair
      */
-    public Pair(T1 newFirst, T2 newSecond) {
+    public Pair(final T1 newFirst, final T2 newSecond) {
         first = newFirst;
         second = newSecond;
     }
@@ -55,7 +55,7 @@ public class Pair<T1, T2> {
      * 
      * @param newFirst first object in the pair
      */
-    public void setFirst(T1 newFirst) {
+    public void setFirst(final T1 newFirst) {
         first = newFirst;
     }
 
@@ -73,7 +73,7 @@ public class Pair<T1, T2> {
      * 
      * @param newSecond second object in the pair
      */
-    public void setSecond(T2 newSecond) {
+    public void setSecond(final T2 newSecond) {
         second = newSecond;
     }
 
@@ -85,7 +85,7 @@ public class Pair<T1, T2> {
         }
         
         if (o instanceof Pair) {
-            Pair<T1, T2> otherPair = (Pair<T1, T2>) o;
+            final Pair<T1, T2> otherPair = (Pair<T1, T2>) o;
             return ObjectSupport.equals(getFirst(), otherPair.getFirst())
                     && ObjectSupport.equals(getSecond(), otherPair.getSecond());
         }

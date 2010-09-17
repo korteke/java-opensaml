@@ -1,5 +1,5 @@
 /*
- * Copyright [2007] [University Corporation for Advanced Internet Development, Inc.]
+ * Copyright 2010 University Corporation for Advanced Internet Development, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ import org.xml.sax.SAXParseException;
 /**
  * A SAX error handler that logs errors a {@link Logger} before rethrowing them.
  */
-public class LoggingErrorHandler implements ErrorHandler {
+public final class LoggingErrorHandler implements ErrorHandler {
 
     /** Error logger. */
     private Logger log;
@@ -34,24 +34,24 @@ public class LoggingErrorHandler implements ErrorHandler {
      * 
      * @param logger logger errors will be written to
      */
-    public LoggingErrorHandler(Logger logger) {
+    public LoggingErrorHandler(final Logger logger) {
         log = logger;
     }
 
     /** {@inheritDoc} */
-    public void error(SAXParseException exception) throws SAXException {
+    public void error(final SAXParseException exception) throws SAXException {
         log.error("XML Parsing Error:", exception);
         throw exception;
     }
 
     /** {@inheritDoc} */
-    public void fatalError(SAXParseException exception) throws SAXException {
+    public void fatalError(final SAXParseException exception) throws SAXException {
         log.error("XML Parsing Error", exception);
         throw exception;
     }
 
     /** {@inheritDoc} */
-    public void warning(SAXParseException exception) throws SAXException {
+    public void warning(final SAXParseException exception) throws SAXException {
         log.warn("XML Parsing Error", exception);
         throw exception;
     }

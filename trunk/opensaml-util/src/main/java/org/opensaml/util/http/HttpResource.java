@@ -37,6 +37,7 @@ import org.apache.http.impl.cookie.DateParseException;
 import org.apache.http.impl.cookie.DateUtils;
 import org.apache.http.util.EntityUtils;
 import org.opensaml.util.Assert;
+import org.opensaml.util.CloseableSupport;
 import org.opensaml.util.ObjectSupport;
 import org.opensaml.util.StringSupport;
 import org.opensaml.util.resource.CachingResource;
@@ -110,8 +111,8 @@ public class HttpResource implements CachingResource, FilebackedRemoteResource {
     /** {@inheritDoc} */
     public long getLastModifiedTime() throws ResourceException {
         try {
-            Date lastModDate = DateUtils.parseDate(cachedResourceLastModified);
-            GregorianCalendar cal = new GregorianCalendar();
+            final Date lastModDate = DateUtils.parseDate(cachedResourceLastModified);
+            final GregorianCalendar cal = new GregorianCalendar();
             cal.setTime(lastModDate);
             return cal.getTimeInMillis();
         } catch (DateParseException e) {
@@ -125,11 +126,11 @@ public class HttpResource implements CachingResource, FilebackedRemoteResource {
         HttpHead headRequest = new HttpHead(resourceUrl);
 
         try {
-            HttpResponse headResponse = httpClient.execute(headRequest);
-            int statusCode = headResponse.getStatusLine().getStatusCode();
+            final HttpResponse headResponse = httpClient.execute(headRequest);
+            final int statusCode = headResponse.getStatusLine().getStatusCode();
 
-            String etag = getETag(headResponse);
-            String lastModified = getLastModified(headResponse);
+            final String etag = getETag(headResponse);
+            final String lastModified = getLastModified(headResponse);
             if ((etag != null && !ObjectSupport.equals(etag, cachedResourceETag))
                     || (lastModified != null && !ObjectSupport.equals(lastModified, cachedResourceLastModified))) {
                 expireCache();
@@ -147,12 +148,12 @@ public class HttpResource implements CachingResource, FilebackedRemoteResource {
 
     /** {@inheritDoc} */
     public InputStream getInputStream() throws ResourceException {
-        HttpGet getRequest = buildGetRequest();
+        final HttpGet getRequest = buildGetRequest();
 
         try {
             log.debug("Attempting to fetch data from '{}'", resourceUrl);
-            HttpResponse response = httpClient.execute(getRequest);
-            int httpStatus = response.getStatusLine().getStatusCode();
+            final HttpResponse response = httpClient.execute(getRequest);
+            final int httpStatus = response.getStatusLine().getStatusCode();
 
             switch (httpStatus) {
                 case HttpStatus.SC_OK:
@@ -162,9 +163,10 @@ public class HttpResource implements CachingResource, FilebackedRemoteResource {
                     log.debug("Metadata unchanged since last request");
                     return null;
                 default:
-                    log.debug(
-                            "Non-ok status code, {}, returned when fetching metadata from '{}', using cached data if available",
-                            httpStatus, resourceUrl);
+                    log
+                            .debug(
+                                    "Non-ok status code, {}, returned when fetching metadata from '{}', using cached data if available",
+                                    httpStatus, resourceUrl);
                     return getInputStreamFromBackupFile();
             }
         } catch (IOException e) {
@@ -212,7 +214,7 @@ public class HttpResource implements CachingResource, FilebackedRemoteResource {
             return null;
         }
 
-        Header httpHeader = response.getFirstHeader(HttpHeader.ETAG);
+        final Header httpHeader = response.getFirstHeader(HttpHeader.ETAG);
         if (httpHeader != null) {
             return httpHeader.getValue();
         }
@@ -232,7 +234,7 @@ public class HttpResource implements CachingResource, FilebackedRemoteResource {
             return null;
         }
 
-        Header httpHeader = response.getFirstHeader(HttpHeader.LAST_MODIFIED);
+        final Header httpHeader = response.getFirstHeader(HttpHeader.LAST_MODIFIED);
         if (httpHeader != null) {
             return httpHeader.getValue();
         }
@@ -248,7 +250,7 @@ public class HttpResource implements CachingResource, FilebackedRemoteResource {
      * @return the constructed GET method
      */
     private HttpGet buildGetRequest() {
-        HttpGet getMethod = new HttpGet(resourceUrl);
+        final HttpGet getMethod = new HttpGet(resourceUrl);
 
         if (cachedResourceETag != null) {
             getMethod.setHeader(HttpHeader.IF_NONE_MATCH, cachedResourceETag);
@@ -273,7 +275,7 @@ public class HttpResource implements CachingResource, FilebackedRemoteResource {
      */
     private InputStream getInputStreamFromResponse(final HttpResponse response) throws ResourceException {
         try {
-            byte[] responseEntity = EntityUtils.toByteArray(response.getEntity());
+            final byte[] responseEntity = EntityUtils.toByteArray(response.getEntity());
 
             saveToBackupFile(responseEntity);
 
@@ -283,9 +285,10 @@ public class HttpResource implements CachingResource, FilebackedRemoteResource {
 
             return new ByteArrayInputStream(responseEntity);
         } catch (Exception e) {
-            log.debug(
-                    "Error retrieving metadata from '{}' and saving backup copy to '{}'.  Reading data from cached copy if available",
-                    resourceUrl, getBackupFilePath());
+            log
+                    .debug(
+                            "Error retrieving metadata from '{}' and saving backup copy to '{}'.  Reading data from cached copy if available",
+                            resourceUrl, getBackupFilePath());
             return getInputStreamFromBackupFile();
         }
     }
@@ -300,10 +303,11 @@ public class HttpResource implements CachingResource, FilebackedRemoteResource {
      *             permission to the backup file)
      */
     private void saveToBackupFile(final byte[] data) throws IOException {
-        File tmpFile = File.createTempFile(Integer.toString(resourceUrl.hashCode()), null);
-        FileOutputStream out = new FileOutputStream(tmpFile);
+        final File tmpFile = File.createTempFile(Integer.toString(resourceUrl.hashCode()), null);
+        final FileOutputStream out = new FileOutputStream(tmpFile);
         out.write(data);
         out.flush();
+        CloseableSupport.closeQuietly(out);
         backupFile.delete();
         tmpFile.renameTo(backupFile);
     }

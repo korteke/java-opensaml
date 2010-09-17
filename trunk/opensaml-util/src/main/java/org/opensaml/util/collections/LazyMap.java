@@ -46,12 +46,12 @@ public class LazyMap<KeyType, ValueType> implements Map<KeyType, ValueType>, Ser
     }
 
     /** {@inheritDoc} */
-    public boolean containsKey(Object key) {
+    public boolean containsKey(final Object key) {
         return delegate.containsKey(key);
     }
 
     /** {@inheritDoc} */
-    public boolean containsValue(Object value) {
+    public boolean containsValue(final Object value) {
         return delegate.containsValue(value);
     }
 
@@ -61,7 +61,7 @@ public class LazyMap<KeyType, ValueType> implements Map<KeyType, ValueType>, Ser
     }
 
     /** {@inheritDoc} */
-    public ValueType get(Object key) {
+    public ValueType get(final Object key) {
         return delegate.get(key);
     }
 
@@ -76,7 +76,7 @@ public class LazyMap<KeyType, ValueType> implements Map<KeyType, ValueType>, Ser
     }
 
     /** {@inheritDoc} */
-    public ValueType put(KeyType key, ValueType value) {
+    public ValueType put(final KeyType key, final ValueType value) {
         if (delegate.isEmpty()) {
             delegate = Collections.singletonMap(key, value);
             return null;
@@ -87,13 +87,13 @@ public class LazyMap<KeyType, ValueType> implements Map<KeyType, ValueType>, Ser
     }
 
     /** {@inheritDoc} */
-    public void putAll(Map<? extends KeyType, ? extends ValueType> t) {
+    public void putAll(final Map<? extends KeyType, ? extends ValueType> t) {
         delegate = buildMap();
         delegate.putAll(t);
     }
 
     /** {@inheritDoc} */
-    public ValueType remove(Object key) {
+    public ValueType remove(final Object key) {
         delegate = buildMap();
         return delegate.remove(key);
     }
@@ -114,7 +114,7 @@ public class LazyMap<KeyType, ValueType> implements Map<KeyType, ValueType>, Ser
      * @return the delegate map
      */
     protected Map<KeyType, ValueType> buildMap() {
-        if (delegate instanceof HashMap) {
+        if (delegate instanceof HashMap<?, ?>) {
             return delegate;
         }
 
@@ -132,7 +132,7 @@ public class LazyMap<KeyType, ValueType> implements Map<KeyType, ValueType>, Ser
     }
 
     /** {@inheritDoc} */
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj) {
             return true;
         }

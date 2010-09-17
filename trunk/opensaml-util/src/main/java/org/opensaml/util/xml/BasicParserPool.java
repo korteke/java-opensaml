@@ -178,12 +178,12 @@ public class BasicParserPool implements ParserPool {
     }
 
     /** {@inheritDoc} */
-    public void returnBuilder(DocumentBuilder builder) {
+    public void returnBuilder(final DocumentBuilder builder) {
         if (!(builder instanceof DocumentBuilderProxy)) {
             return;
         }
 
-        DocumentBuilderProxy proxiedBuilder = (DocumentBuilderProxy) builder;
+        final DocumentBuilderProxy proxiedBuilder = (DocumentBuilderProxy) builder;
         if (proxiedBuilder.getOwningPool() != this) {
             return;
         }
@@ -200,9 +200,9 @@ public class BasicParserPool implements ParserPool {
             proxiedBuilder.setReturned(true);
         }
 
-        DocumentBuilder unwrappedBuilder = proxiedBuilder.getProxiedBuilder();
+        final DocumentBuilder unwrappedBuilder = proxiedBuilder.getProxiedBuilder();
         unwrappedBuilder.reset();
-        SoftReference<DocumentBuilder> builderReference = new SoftReference<DocumentBuilder>(unwrappedBuilder);
+        final SoftReference<DocumentBuilder> builderReference = new SoftReference<DocumentBuilder>(unwrappedBuilder);
 
         synchronized (builderPool) {
             if (builderPool.size() < maxPoolSize) {
@@ -220,10 +220,10 @@ public class BasicParserPool implements ParserPool {
     }
 
     /** {@inheritDoc} */
-    public Document parse(InputStream input) throws XMLParserException {
-        DocumentBuilder builder = getBuilder();
+    public Document parse(final InputStream input) throws XMLParserException {
+        final DocumentBuilder builder = getBuilder();
         try {
-            Document document = builder.parse(input);
+            final Document document = builder.parse(input);
             return document;
         } catch (SAXException e) {
             throw new XMLParserException("Invalid XML", e);
@@ -235,10 +235,10 @@ public class BasicParserPool implements ParserPool {
     }
 
     /** {@inheritDoc} */
-    public Document parse(Reader input) throws XMLParserException {
-        DocumentBuilder builder = getBuilder();
+    public Document parse(final Reader input) throws XMLParserException {
+        final DocumentBuilder builder = getBuilder();
         try {
-            Document document = builder.parse(new InputSource(input));
+            final Document document = builder.parse(new InputSource(input));
             return document;
         } catch (SAXException e) {
             throw new XMLParserException("Invalid XML", e);
@@ -263,7 +263,7 @@ public class BasicParserPool implements ParserPool {
      * 
      * @param newSize max number of builders the pool will hold
      */
-    public void setMaxPoolSize(int newSize) {
+    public void setMaxPoolSize(final int newSize) {
         checkValidModifyState();
         maxPoolSize = newSize;
     }
@@ -282,7 +282,7 @@ public class BasicParserPool implements ParserPool {
      * 
      * @param newAttributes builder attributes used when creating builders
      */
-    public void setBuilderAttributes(Map<String, Object> newAttributes) {
+    public void setBuilderAttributes(final Map<String, Object> newAttributes) {
         checkValidModifyState();
         builderAttributes = newAttributes;
     }
@@ -301,7 +301,7 @@ public class BasicParserPool implements ParserPool {
      * 
      * @param isCoalescing whether the builders are coalescing
      */
-    public void setCoalescing(boolean isCoalescing) {
+    public void setCoalescing(final boolean isCoalescing) {
         checkValidModifyState();
         coalescing = isCoalescing;
     }
@@ -320,7 +320,7 @@ public class BasicParserPool implements ParserPool {
      * 
      * @param expand whether builders expand entity references
      */
-    public void setExpandEntityReferences(boolean expand) {
+    public void setExpandEntityReferences(final boolean expand) {
         checkValidModifyState();
         expandEntityReferences = expand;
     }
@@ -339,7 +339,7 @@ public class BasicParserPool implements ParserPool {
      * 
      * @param newFeatures the builders' features
      */
-    public void setBuilderFeatures(Map<String, Boolean> newFeatures) {
+    public void setBuilderFeatures(final Map<String, Boolean> newFeatures) {
         checkValidModifyState();
         builderFeatures = newFeatures;
     }
@@ -358,7 +358,7 @@ public class BasicParserPool implements ParserPool {
      * 
      * @param ignore The ignoreComments to set.
      */
-    public void setIgnoreComments(boolean ignore) {
+    public void setIgnoreComments(final boolean ignore) {
         checkValidModifyState();
         ignoreComments = ignore;
     }
@@ -377,7 +377,7 @@ public class BasicParserPool implements ParserPool {
      * 
      * @param ignore whether the builders ignore element content whitespace
      */
-    public void setIgnoreElementContentWhitespace(boolean ignore) {
+    public void setIgnoreElementContentWhitespace(final boolean ignore) {
         checkValidModifyState();
         ignoreElementContentWhitespace = ignore;
     }
@@ -396,7 +396,7 @@ public class BasicParserPool implements ParserPool {
      * 
      * @param isNamespaceAware whether the builders are namespace aware
      */
-    public void setNamespaceAware(boolean isNamespaceAware) {
+    public void setNamespaceAware(final boolean isNamespaceAware) {
         checkValidModifyState();
         namespaceAware = isNamespaceAware;
     }
@@ -407,7 +407,7 @@ public class BasicParserPool implements ParserPool {
     }
 
     /** {@inheritDoc} */
-    public synchronized void setSchema(Schema newSchema) {
+    public synchronized void setSchema(final Schema newSchema) {
         // Note this method is synchronized because it is more than just an atomic assignment.
         // Don't want inconsistent data in the factory via initializeFactory(), also synchronized.
         checkValidModifyState();
@@ -433,7 +433,7 @@ public class BasicParserPool implements ParserPool {
      * 
      * @param isValidating whether the builders are validating
      */
-    public void setDTDValidating(boolean isValidating) {
+    public void setDTDValidating(final boolean isValidating) {
         checkValidModifyState();
         dtdValidating = isValidating;
     }
@@ -452,7 +452,7 @@ public class BasicParserPool implements ParserPool {
      * 
      * @param isXIncludeAware whether the builders are XInclude aware
      */
-    public void setXincludeAware(boolean isXIncludeAware) {
+    public void setXincludeAware(final boolean isXIncludeAware) {
         checkValidModifyState();
         xincludeAware = isXIncludeAware;
     }
@@ -482,7 +482,7 @@ public class BasicParserPool implements ParserPool {
      */
     protected synchronized void initializeFactory() throws XMLParserException {
         try {
-            DocumentBuilderFactory newFactory = DocumentBuilderFactory.newInstance();
+            final DocumentBuilderFactory newFactory = DocumentBuilderFactory.newInstance();
 
             for (Map.Entry<String, Object> attribute : builderAttributes.entrySet()) {
                 newFactory.setAttribute(attribute.getKey(), attribute.getValue());
@@ -519,7 +519,7 @@ public class BasicParserPool implements ParserPool {
      */
     protected DocumentBuilder createBuilder() throws XMLParserException {
         try {
-            DocumentBuilder builder = builderFactory.newDocumentBuilder();
+            final DocumentBuilder builder = builderFactory.newDocumentBuilder();
 
             if (entityResolver != null) {
                 builder.setEntityResolver(entityResolver);
@@ -542,10 +542,10 @@ public class BasicParserPool implements ParserPool {
     protected class DocumentBuilderProxy extends DocumentBuilder {
 
         /** Builder being proxied. */
-        private DocumentBuilder builder;
+        private final DocumentBuilder builder;
 
         /** Pool that owns this parser. */
-        private ParserPool owningPool;
+        private final ParserPool owningPool;
 
         /** Track accounting state of whether this builder has been returned to the owning pool. */
         private boolean returned;
@@ -556,7 +556,7 @@ public class BasicParserPool implements ParserPool {
          * @param target document builder to proxy
          * @param owner the owning pool
          */
-        public DocumentBuilderProxy(DocumentBuilder target, BasicParserPool owner) {
+        public DocumentBuilderProxy(final DocumentBuilder target, final BasicParserPool owner) {
             owningPool = owner;
             builder = target;
             returned = false;
@@ -599,31 +599,31 @@ public class BasicParserPool implements ParserPool {
         }
 
         /** {@inheritDoc} */
-        public Document parse(File f) throws SAXException, IOException {
+        public Document parse(final File f) throws SAXException, IOException {
             checkValidState();
             return builder.parse(f);
         }
 
         /** {@inheritDoc} */
-        public Document parse(InputSource is) throws SAXException, IOException {
+        public Document parse(final InputSource is) throws SAXException, IOException {
             checkValidState();
             return builder.parse(is);
         }
 
         /** {@inheritDoc} */
-        public Document parse(InputStream is) throws SAXException, IOException {
+        public Document parse(final InputStream is) throws SAXException, IOException {
             checkValidState();
             return builder.parse(is);
         }
 
         /** {@inheritDoc} */
-        public Document parse(InputStream is, String systemId) throws SAXException, IOException {
+        public Document parse(final InputStream is, final String systemId) throws SAXException, IOException {
             checkValidState();
             return builder.parse(is, systemId);
         }
 
         /** {@inheritDoc} */
-        public Document parse(String uri) throws SAXException, IOException {
+        public Document parse(final String uri) throws SAXException, IOException {
             checkValidState();
             return builder.parse(uri);
         }
@@ -634,13 +634,13 @@ public class BasicParserPool implements ParserPool {
         }
 
         /** {@inheritDoc} */
-        public void setEntityResolver(EntityResolver er) {
+        public void setEntityResolver(final EntityResolver er) {
             checkValidState();
             return;
         }
 
         /** {@inheritDoc} */
-        public void setErrorHandler(ErrorHandler eh) {
+        public void setErrorHandler(final ErrorHandler eh) {
             checkValidState();
             return;
         }
@@ -677,7 +677,7 @@ public class BasicParserPool implements ParserPool {
          * 
          * @param isReturned set true to indicate that parser has been returned to the owning pool
          */
-        protected void setReturned(boolean isReturned) {
+        protected void setReturned(final boolean isReturned) {
             this.returned = isReturned;
         }
 

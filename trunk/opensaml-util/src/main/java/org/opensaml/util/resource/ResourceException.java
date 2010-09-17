@@ -13,13 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.opensaml.util.resource;
 
 /** Indicates a problem accessing a resource. */
 public class ResourceException extends Exception {
 
     /** Serial version UID. */
-    private static final long serialVersionUID = -3347987371630094896L;
+    private static final long serialVersionUID = 1206797817537436338L;
 
     /**
      * Constructor.
@@ -33,7 +34,7 @@ public class ResourceException extends Exception {
      * 
      * @param message exception message
      */
-    public ResourceException(String message) {
+    public ResourceException(final String message) {
         super(message);
     }
 
@@ -42,7 +43,7 @@ public class ResourceException extends Exception {
      * 
      * @param wrappedException exception to be wrapped by this one
      */
-    public ResourceException(Exception wrappedException) {
+    public ResourceException(final Exception wrappedException) {
         super(wrappedException);
     }
 
@@ -52,7 +53,7 @@ public class ResourceException extends Exception {
      * @param message exception message
      * @param wrappedException exception to be wrapped by this one
      */
-    public ResourceException(String message, Exception wrappedException) {
+    public ResourceException(final String message, final Exception wrappedException) {
         super(message, wrappedException);
     }
 
