@@ -43,7 +43,7 @@ public enum XmlSpace {
      * @param value the value to parse
      * @return the corresponding XMLSpaceEnum
      */
-    public static XmlSpace parseValue(String value) {
+    public static XmlSpace parseValue(final String value) {
         return XmlSpace.valueOf(value.toUpperCase());
     }
 }

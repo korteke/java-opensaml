@@ -26,10 +26,10 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 /** Set of helper methods for working with DOM QNames. */
-public final class QNames {
+public final class QNameSupport {
 
     /** Constructor. */
-    private QNames() {
+    private QNameSupport() {
     }
 
     /**
@@ -40,16 +40,14 @@ public final class QNames {
      * 
      * @return the QName respresented by the string
      */
-    public static QName constructQName(Element owningElement, String qname) {
+    public static QName constructQName(final Element owningElement, final String qname) {
         Assert.isNotNull(owningElement, "Owning element may not be null");
         Assert.isNotNull(qname, "Name may not be null");
 
-        String nsURI;
         String nsPrefix;
         String name;
-
         if (qname.indexOf(":") > -1) {
-            StringTokenizer qnameTokens = new StringTokenizer(qname, ":");
+            final StringTokenizer qnameTokens = new StringTokenizer(qname, ":");
             nsPrefix = qnameTokens.nextToken();
             name = qnameTokens.nextToken();
         } else {
@@ -57,7 +55,7 @@ public final class QNames {
             name = qname;
         }
 
-        nsURI = Namespaces.lookupNamespaceURI(owningElement, nsPrefix);
+        final String nsURI = NamespaceSupport.lookupNamespaceURI(owningElement, nsPrefix);
         return constructQName(nsURI, name, nsPrefix);
     }
 
@@ -70,7 +68,7 @@ public final class QNames {
      * 
      * @return the QName
      */
-    public static QName constructQName(String namespaceURI, String localName, String prefix) {
+    public static QName constructQName(final String namespaceURI, final String localName, final String prefix) {
         Assert.isNotNull(localName, "Local name may not be null");
         if (StringSupport.isNullOrEmpty(prefix)) {
             return new QName(namespaceURI, localName);
@@ -88,7 +86,7 @@ public final class QNames {
      * 
      * @return the QName for the element or null if the element was null
      */
-    public static QName getNodeQName(Node domNode) {
+    public static QName getNodeQName(final Node domNode) {
         if (domNode != null) {
             return constructQName(domNode.getNamespaceURI(), domNode.getLocalName(), domNode.getPrefix());
         }
@@ -103,17 +101,16 @@ public final class QNames {
      * 
      * @return the string value of the QName
      */
-    public static String qnameToContentString(QName qname) {
+    public static String qnameToContentString(final QName qname) {
         Assert.isNotNull(qname, "QName may not be null");
 
-        StringBuffer buf = new StringBuffer();
-
+        final StringBuffer buf = new StringBuffer();
         if (qname.getPrefix() != null) {
             buf.append(qname.getPrefix());
             buf.append(":");
         }
         buf.append(qname.getLocalPart());
+
         return buf.toString();
     }
-
 }

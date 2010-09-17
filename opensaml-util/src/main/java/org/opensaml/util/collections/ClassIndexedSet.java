@@ -31,10 +31,10 @@ import java.util.Set;
 public class ClassIndexedSet<T> extends AbstractSet<T> implements Set<T> {
 
     /** Storage for set members. */
-    private HashSet<T> set;
+    private final HashSet<T> set;
 
     /** Storage for index of class -> member. */
-    private HashMap<Class<? extends T>, T> index;
+    private final HashMap<Class<? extends T>, T> index;
 
     /**
      * Constructor.
@@ -46,7 +46,7 @@ public class ClassIndexedSet<T> extends AbstractSet<T> implements Set<T> {
     }
 
     /** {@inheritDoc} */
-    public boolean add(T o) {
+    public boolean add(final T o) {
         return add(o, false);
     }
 
@@ -58,13 +58,14 @@ public class ClassIndexedSet<T> extends AbstractSet<T> implements Set<T> {
      * 
      * @return true if object was added
      */
-    public boolean add(T o, boolean replace) {
+    public boolean add(final T o, final boolean replace) {
         if (o == null) {
             throw new NullPointerException("Null elements are not allowed");
         }
+
         boolean replacing = false;
-        Class<? extends T> indexClass = getIndexClass(o);
-        T existing = get(indexClass);
+        final Class<? extends T> indexClass = getIndexClass(o);
+        final T existing = get(indexClass);
         if (existing != null) {
             replacing = true;
             if (replace) {
@@ -87,7 +88,7 @@ public class ClassIndexedSet<T> extends AbstractSet<T> implements Set<T> {
 
     /** {@inheritDoc} */
     @SuppressWarnings("unchecked")
-    public boolean remove(Object o) {
+    public boolean remove(final Object o) {
         if (set.contains(o)) {
             removeFromIndex((T) o);
             set.remove(o);
@@ -112,7 +113,7 @@ public class ClassIndexedSet<T> extends AbstractSet<T> implements Set<T> {
      * @param clazz the class to check
      * @return true if set contains an instance of the specified class, false otherwise
      */
-    public boolean contains(Class<? extends T> clazz) {
+    public boolean contains(final Class<? extends T> clazz) {
         return get(clazz) != null;
     }
 
@@ -125,7 +126,7 @@ public class ClassIndexedSet<T> extends AbstractSet<T> implements Set<T> {
      * 
      */
     @SuppressWarnings("unchecked")
-    public <X extends T> X get(Class<X> clazz) {
+    public <X extends T> X get(final Class<X> clazz) {
         return (X) index.get(clazz);
     }
 
@@ -137,7 +138,7 @@ public class ClassIndexedSet<T> extends AbstractSet<T> implements Set<T> {
      * @return the class index value associated with the object instance
      */
     @SuppressWarnings("unchecked")
-    protected Class<? extends T> getIndexClass(Object o) {
+    protected Class<? extends T> getIndexClass(final Object o) {
         return (Class<? extends T>) o.getClass();
     }
 
@@ -146,7 +147,7 @@ public class ClassIndexedSet<T> extends AbstractSet<T> implements Set<T> {
      * 
      * @param o the object to remove
      */
-    private void removeFromIndex(T o) {
+    private void removeFromIndex(final T o) {
         index.remove(getIndexClass(o));
     }
 
@@ -157,10 +158,10 @@ public class ClassIndexedSet<T> extends AbstractSet<T> implements Set<T> {
     protected class ClassIndexedSetIterator implements Iterator<T> {
 
         /** The set instance over which this instance is an iterator. */
-        private ClassIndexedSet<T> set;
+        private final ClassIndexedSet<T> set;
 
         /** The iterator for the owner's underlying storage. */
-        private Iterator<T> iterator;
+        private final Iterator<T> iterator;
 
         /** Flag which tracks whether next() has been called at least once. */
         private boolean nextCalled;
@@ -179,7 +180,7 @@ public class ClassIndexedSet<T> extends AbstractSet<T> implements Set<T> {
          * @param parentSet the {@link ClassIndexedSet} over which this instance is an iterator
          * @param parentIterator the iterator for the parent's underlying storage
          */
-        protected ClassIndexedSetIterator(ClassIndexedSet<T> parentSet, Iterator<T> parentIterator) {
+        protected ClassIndexedSetIterator(final ClassIndexedSet<T> parentSet, final Iterator<T> parentIterator) {
             set = parentSet;
             iterator = parentIterator;
             current = null;

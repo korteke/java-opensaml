@@ -31,7 +31,7 @@ public final class CloseableSupport {
      * 
      * @param closebale the stream to be closed
      */
-    public static void closeQuiety(Closeable closebale) {
+    public static void closeQuietly(final Closeable closebale) {
         if(closebale == null){
             return;
         }

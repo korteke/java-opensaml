@@ -36,19 +36,19 @@ public final class FileSupport {
      * 
      * @throws IOException throw if there is a problem reading the file in to the byte array
      */
-    public static byte[] fileToByteArray(File file) throws IOException {
+    public static byte[] fileToByteArray(final File file) throws IOException {
         Assert.isNotNull(file, "File may not be null");
         Assert.isTrue(file.exists(), "File does not exist");
         Assert.isTrue(file.canRead(), "File is not readable");
 
-        long numOfBytes = file.length();
+        final long numOfBytes = file.length();
 
         if (numOfBytes > Integer.MAX_VALUE) {
             throw new IOException("File is to large to be read in to a byte array");
         }
 
-        byte[] bytes = new byte[(int) numOfBytes];
-        FileInputStream ins = new FileInputStream(file);
+        final byte[] bytes = new byte[(int) numOfBytes];
+        final FileInputStream ins = new FileInputStream(file);
         int offset = 0;
         int numRead = 0;
         do {
@@ -60,7 +60,7 @@ public final class FileSupport {
             throw new IOException("Could not completely read file " + file.getName());
         }
 
-        CloseableSupport.closeQuiety(ins);
+        CloseableSupport.closeQuietly(ins);
 
         return bytes;
     }

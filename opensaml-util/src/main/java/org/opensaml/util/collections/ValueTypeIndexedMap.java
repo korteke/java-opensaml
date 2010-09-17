@@ -1,5 +1,5 @@
 /*
- * Copyright [2007] [University Corporation for Advanced Internet Development, Inc.]
+ * Copyright 2010 University Corporation for Advanced Internet Development, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,7 +33,7 @@ public class ValueTypeIndexedMap<KeyType, ValueType> implements Map<KeyType, Val
 
     /** Class to represent null values. */
     private static class NullValue {}
-    
+
     /** Storage for index of class -> members. */
     private Map<Class<?>, Map<KeyType, ValueType>> index;
 
@@ -41,32 +41,32 @@ public class ValueTypeIndexedMap<KeyType, ValueType> implements Map<KeyType, Val
     private Map<KeyType, ValueType> map;
 
     /** Set of valid types for this map. */
-    private Set<Class> types;
+    private Set<Class<?>> types;
 
     /** Constructor. */
     public ValueTypeIndexedMap() {
-        this(new HashSet<Class>());
+        this(new HashSet<Class<?>>());
     }
 
     /**
      * Constructor.
-     *
+     * 
      * @param newMap existing map to build from.
      * @param newTypes collection of value types to index
      */
-    public ValueTypeIndexedMap(Map<KeyType, ValueType> newMap, Collection<Class> newTypes) {
+    public ValueTypeIndexedMap(final Map<KeyType, ValueType> newMap, final Collection<Class<?>> newTypes) {
         map = newMap;
-        types = new HashSet<Class>(newTypes);
+        types = new HashSet<Class<?>>(newTypes);
         index = new HashMap<Class<?>, Map<KeyType, ValueType>>();
         rebuildIndex();
     }
-    
+
     /**
      * Constructor.
-     *
+     * 
      * @param newTypes collection of value types to index
      */
-    public ValueTypeIndexedMap(Collection<Class> newTypes) {
+    public ValueTypeIndexedMap(final Collection<Class<?>> newTypes) {
         this(new HashMap<KeyType, ValueType>(), newTypes);
     }
 
@@ -77,12 +77,12 @@ public class ValueTypeIndexedMap<KeyType, ValueType> implements Map<KeyType, Val
     }
 
     /** {@inheritDoc} */
-    public boolean containsKey(Object key) {
+    public boolean containsKey(final Object key) {
         return map.containsKey(key);
     }
 
     /** {@inheritDoc} */
-    public boolean containsValue(Object value) {
+    public boolean containsValue(final Object value) {
         return map.containsValue(value);
     }
 
@@ -92,7 +92,7 @@ public class ValueTypeIndexedMap<KeyType, ValueType> implements Map<KeyType, Val
     }
 
     /** {@inheritDoc} */
-    public ValueType get(Object key) {
+    public ValueType get(final Object key) {
         return map.get(key);
     }
 
@@ -101,7 +101,7 @@ public class ValueTypeIndexedMap<KeyType, ValueType> implements Map<KeyType, Val
      * 
      * @return which value types are indexed
      */
-    public Set<Class> getTypes() {
+    public Set<Class<?>> getTypes() {
         return types;
     }
 
@@ -122,16 +122,22 @@ public class ValueTypeIndexedMap<KeyType, ValueType> implements Map<KeyType, Val
      * @param object object to check
      * @return true if the object is of the specified type
      */
-    private Boolean matchType(Class<?> type, Object object) {
+    private Boolean matchType(final Class<?> type, final Object object) {
         return type.isInstance(object) || (type == NullValue.class && object == null);
     }
 
     /** {@inheritDoc} */
-    public ValueType put(KeyType key, ValueType value) {
-        ValueType oldValue = map.put(key, value);
+    public ValueType put(final KeyType key, final ValueType value) {
+        final ValueType oldValue = map.put(key, value);
 
-        for (Class<?> type : index.keySet()) {
-            if (type == null) { type = NullValue.class; }
+        for (Class<?> clazz : index.keySet()) {
+            final Class<?> type;
+            if (clazz == null) {
+                type = NullValue.class;
+            } else {
+                type = clazz;
+            }
+
             if (matchType(type, value)) {
                 index.get(type).put(key, value);
             } else if (matchType(type, oldValue)) {
@@ -143,13 +149,13 @@ public class ValueTypeIndexedMap<KeyType, ValueType> implements Map<KeyType, Val
     }
 
     /** {@inheritDoc} */
-    public void putAll(Map<? extends KeyType, ? extends ValueType> t) {
+    public void putAll(final Map<? extends KeyType, ? extends ValueType> t) {
         // this is probably not the most efficient way to do this
         for (KeyType key : t.keySet()) {
             put(key, t.get(key));
         }
     }
-    
+
     /**
      * Rebuild internal index.
      */
@@ -157,8 +163,14 @@ public class ValueTypeIndexedMap<KeyType, ValueType> implements Map<KeyType, Val
         index.clear();
         ValueType value;
 
-        for (Class<?> type : types) {
-            if (type == null) { type = NullValue.class; }
+        for (Class<?> clazz : types) {
+            final Class<?> type;
+            if (clazz == null) {
+                type = NullValue.class;
+            } else {
+                type = clazz;
+            }
+
             index.put(type, new HashMap<KeyType, ValueType>());
             for (KeyType key : map.keySet()) {
                 value = map.get(key);
@@ -168,10 +180,10 @@ public class ValueTypeIndexedMap<KeyType, ValueType> implements Map<KeyType, Val
             }
         }
     }
-    
+
     /** {@inheritDoc} */
-    public ValueType remove(Object key) {
-        ValueType value = map.remove(key);
+    public ValueType remove(final Object key) {
+        final ValueType value = map.remove(key);
 
         for (Class<?> type : index.keySet()) {
             if (type.isInstance(value)) {
@@ -181,14 +193,14 @@ public class ValueTypeIndexedMap<KeyType, ValueType> implements Map<KeyType, Val
 
         return value;
     }
-    
+
     /**
      * Set which value types are indexed.
      * 
      * @param newTypes which value types are indexed
      */
-    public void setTypes(Collection<Class> newTypes) {
-        this.types = new HashSet<Class>(newTypes);
+    public void setTypes(final Collection<Class<?>> newTypes) {
+        types = new HashSet<Class<?>>(newTypes);
     }
 
     /** {@inheritDoc} */
@@ -205,9 +217,11 @@ public class ValueTypeIndexedMap<KeyType, ValueType> implements Map<KeyType, Val
      *         this map.
      */
     @SuppressWarnings("unchecked")
-    public <SubType extends ValueType> Map<KeyType, SubType> subMap(Class<SubType> type) {
+    public <SubType extends ValueType> Map<KeyType, SubType> subMap(final Class<SubType> type) {
         Class<?> key = type;
-        if (key == null) { key = NullValue.class; }
+        if (key == null) {
+            key = NullValue.class;
+        }
         if (index.containsKey(key)) {
             return Collections.unmodifiableMap((Map<KeyType, SubType>) index.get(key));
         } else {
@@ -219,11 +233,9 @@ public class ValueTypeIndexedMap<KeyType, ValueType> implements Map<KeyType, Val
     public String toString() {
         return map.toString();
     }
-    
+
     /** {@inheritDoc} */
     public Collection<ValueType> values() {
         return map.values();
     }
-
-
 }

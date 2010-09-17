@@ -31,7 +31,7 @@ public final class Assert {
      * 
      * @param collection collection check
      */
-    public static void isEmpty(Collection<?> collection) {
+    public static void isEmpty(final Collection<?> collection) {
         isEmpty(collection, null);
     }
 
@@ -42,7 +42,7 @@ public final class Assert {
      * @param collection collection check
      * @param message message used in the {@link IllegalArgumentException}
      */
-    public static void isEmpty(Collection<?> collection, String message) {
+    public static void isEmpty(final Collection<?> collection, final String message) {
         if (collection.isEmpty()) {
             return;
         }
@@ -54,7 +54,7 @@ public final class Assert {
      * 
      * @param b boolean to check
      */
-    public static void isFalse(boolean b) {
+    public static void isFalse(final boolean b) {
         isFalse(b, null);
     }
 
@@ -64,7 +64,7 @@ public final class Assert {
      * @param b boolean to check
      * @param message message used in {@link IllegalArgumentException}
      */
-    public static void isFalse(boolean b, String message) {
+    public static void isFalse(final boolean b, final String message) {
         if (b) {
             throw new IllegalArgumentException(message);
         }
@@ -77,7 +77,7 @@ public final class Assert {
      * @param threshold the threshold
      * @param number the number to be checked
      */
-    public static void isGreaterThan(long threshold, long number) {
+    public static void isGreaterThan(final long threshold, final long number) {
         isGreaterThan(threshold, number, null);
     }
 
@@ -89,7 +89,7 @@ public final class Assert {
      * @param number the number to be checked
      * @param message message used in the {@link IllegalArgumentException}
      */
-    public static void isGreaterThan(long threshold, long number, String message) {
+    public static void isGreaterThan(final long threshold, final long number, final String message) {
         if (number > threshold) {
             return;
         }
@@ -103,7 +103,7 @@ public final class Assert {
      * @param threshold the threshold
      * @param number the number to be checked
      */
-    public static void isGreaterThanOrEqual(long threshold, long number) {
+    public static void isGreaterThanOrEqual(final long threshold, final long number) {
         isGreaterThanOrEqual(threshold, number, null);
     }
 
@@ -115,7 +115,7 @@ public final class Assert {
      * @param number the number to be checked
      * @param message message used in the {@link IllegalArgumentException}
      */
-    public static void isGreaterThanOrEqual(long threshold, long number, String message) {
+    public static void isGreaterThanOrEqual(final long threshold, final long number, final String message) {
         if (number >= threshold) {
             return;
         }
@@ -129,7 +129,7 @@ public final class Assert {
      * @param threshold the threshold
      * @param number the number to be checked
      */
-    public static void isLessThan(long threshold, long number) {
+    public static void isLessThan(final long threshold, final long number) {
         isLessThan(threshold, number, null);
     }
 
@@ -141,7 +141,7 @@ public final class Assert {
      * @param number the number to be checked
      * @param message message used in the {@link IllegalArgumentException}
      */
-    public static void isLessThan(long threshold, long number, String message) {
+    public static void isLessThan(final long threshold, final long number, final String message) {
         if (number < threshold) {
             return;
         }
@@ -155,7 +155,7 @@ public final class Assert {
      * @param threshold the threshold
      * @param number the number to be checked
      */
-    public static void isLessThanOrEqual(long threshold, long number) {
+    public static void isLessThanOrEqual(final long threshold, final long number) {
         isLessThanOrEqual(threshold, number, null);
     }
 
@@ -167,7 +167,7 @@ public final class Assert {
      * @param number the number to be checked
      * @param message message used in the {@link IllegalArgumentException}
      */
-    public static void isLessThanOrEqual(long threshold, long number, String message) {
+    public static void isLessThanOrEqual(final long threshold, final long number, final String message) {
         if (number <= threshold) {
             return;
         }
@@ -180,7 +180,7 @@ public final class Assert {
      * 
      * @param collection collection check
      */
-    public static void isNotEmpty(Collection<?> collection) {
+    public static void isNotEmpty(final Collection<?> collection) {
         isNotEmpty(collection, null);
     }
 
@@ -191,9 +191,9 @@ public final class Assert {
      * @param collection collection check
      * @param message message used in the {@link IllegalArgumentException}
      */
-    public static void isNotEmpty(Collection<?> collection, String message) {
-        if(collection == null || collection.isEmpty()){
-            throw new IllegalArgumentException(message);            
+    public static void isNotEmpty(final Collection<?> collection, final String message) {
+        if (collection == null || collection.isEmpty()) {
+            throw new IllegalArgumentException(message);
         }
     }
 
@@ -202,7 +202,7 @@ public final class Assert {
      * 
      * @param obj object to check
      */
-    public static void isNotNull(Object obj) {
+    public static void isNotNull(final Object obj) {
         isNotNull(obj, null);
     }
 
@@ -212,7 +212,7 @@ public final class Assert {
      * @param obj object to check
      * @param message message used in {@link IllegalArgumentException}
      */
-    public static void isNotNull(Object obj, String message) {
+    public static void isNotNull(final Object obj, final String message) {
         if (obj != null) {
             return;
         }
@@ -224,7 +224,7 @@ public final class Assert {
      * 
      * @param obj object to check
      */
-    public static void isNull(Object obj) {
+    public static void isNull(final Object obj) {
         isNull(obj, null);
     }
 
@@ -234,7 +234,7 @@ public final class Assert {
      * @param obj object to check
      * @param message message used in {@link IllegalArgumentException}
      */
-    public static void isNull(Object obj, String message) {
+    public static void isNull(final Object obj, final String message) {
         if (obj == null) {
             return;
         }
@@ -246,7 +246,7 @@ public final class Assert {
      * 
      * @param b boolean to check
      */
-    public static void isTrue(boolean b) {
+    public static void isTrue(final boolean b) {
         isTrue(b, null);
     }
 
@@ -256,7 +256,7 @@ public final class Assert {
      * @param b boolean to check
      * @param message message used in {@link IllegalArgumentException}
      */
-    public static void isTrue(boolean b, String message) {
+    public static void isTrue(final boolean b, final String message) {
         if (!b) {
             throw new IllegalArgumentException(message);
         }
@@ -270,7 +270,7 @@ public final class Assert {
      * @param upperThreshold upper bound of the range
      * @param number number to check
      */
-    public static void numberInRangeExclusive(long lowerTheshold, long upperThreshold, long number) {
+    public static void numberInRangeExclusive(final long lowerTheshold, final long upperThreshold, final long number) {
         numberInRangeExclusive(lowerTheshold, upperThreshold, number, null);
     }
 
@@ -283,7 +283,8 @@ public final class Assert {
      * @param number number to check
      * @param message message used in the {@link IllegalArgumentException}
      */
-    public static void numberInRangeExclusive(long lowerTheshold, long upperThreshold, long number, String message) {
+    public static void numberInRangeExclusive(final long lowerTheshold, final long upperThreshold, final long number,
+            final String message) {
         if (number > lowerTheshold && number < upperThreshold) {
             return;
         }
@@ -298,7 +299,7 @@ public final class Assert {
      * @param upperThreshold upper bound of the range
      * @param number number to check
      */
-    public static void numberInRangeInclusive(long lowerTheshold, long upperThreshold, long number) {
+    public static void numberInRangeInclusive(final long lowerTheshold, final long upperThreshold, final long number) {
         numberInRangeInclusive(lowerTheshold, upperThreshold, number, null);
     }
 
@@ -311,7 +312,8 @@ public final class Assert {
      * @param number number to check
      * @param message message used in the {@link IllegalArgumentException}
      */
-    public static void numberInRangeInclusive(long lowerTheshold, long upperThreshold, long number, String message) {
+    public static void numberInRangeInclusive(final long lowerTheshold, final long upperThreshold, final long number,
+            final String message) {
         if (number >= lowerTheshold && number <= upperThreshold) {
             return;
         }

@@ -30,7 +30,7 @@ public final class ObjectSupport {
      * 
      * @return the hash code for the object of 0 if the given object is null
      */
-    public static int hashCode(Object o) {
+    public static int hashCode(final Object o) {
         if (o == null) {
             return 0;
         }
@@ -46,7 +46,7 @@ public final class ObjectSupport {
      * 
      * @return true of the objects are equal or both null, false otherwise
      */
-    public static boolean equals(Object o1, Object o2) {
+    public static boolean equals(final Object o1, final Object o2) {
         if (o1 == null || o2 == null) {
             return o1 == o2;
         }
@@ -62,7 +62,7 @@ public final class ObjectSupport {
      * 
      * @return true of the given object is equal to any object in the given list
      */
-    public static boolean equalsAny(Object o1, Object... objects) {
+    public static boolean equalsAny(final Object o1, final Object... objects) {
         if (o1 == null || objects == null) {
             return o1 == objects;
         }

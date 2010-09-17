@@ -19,7 +19,10 @@ package org.opensaml.util.http;
 /**
  * Constants enumerating the HTTP headers. All headers defined in RFC1945 (HTTP/1.0), RFC2616 (HTTP/1.1), and RFC2518
  * (WebDAV) are listed.
+ * 
+ * @deprecated this class will be removed as soon as it appears in the HttpClient library
  */
+//TODO remove this when it appears in HttpClient library
 public interface HttpHeader {
 
     /** RFC 2616 (HTTP/1.1) Section 14.1 */

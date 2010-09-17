@@ -41,7 +41,7 @@ public class LazyList<ElementType> implements List<ElementType>, Serializable {
     private List<ElementType> delegate = Collections.emptyList();
 
     /** {@inheritDoc} */
-    public boolean add(ElementType item) {
+    public boolean add(final ElementType item) {
         if (delegate.isEmpty()) {
             delegate = Collections.singletonList(item);
             return true;
@@ -52,19 +52,19 @@ public class LazyList<ElementType> implements List<ElementType>, Serializable {
     }
 
     /** {@inheritDoc} */
-    public void add(int index, ElementType element) {
+    public void add(final int index, final ElementType element) {
         delegate = buildList();
         delegate.add(index, element);
     }
 
     /** {@inheritDoc} */
-    public boolean addAll(Collection<? extends ElementType> collection) {
+    public boolean addAll(final Collection<? extends ElementType> collection) {
         delegate = buildList();
         return delegate.addAll(collection);
     }
 
     /** {@inheritDoc} */
-    public boolean addAll(int index, Collection<? extends ElementType> collection) {
+    public boolean addAll(final int index, final Collection<? extends ElementType> collection) {
         delegate = buildList();
         return delegate.addAll(index, collection);
     }
@@ -75,22 +75,22 @@ public class LazyList<ElementType> implements List<ElementType>, Serializable {
     }
 
     /** {@inheritDoc} */
-    public boolean contains(Object element) {
+    public boolean contains(final Object element) {
         return delegate.contains(element);
     }
 
     /** {@inheritDoc} */
-    public boolean containsAll(Collection<?> collections) {
+    public boolean containsAll(final Collection<?> collections) {
         return delegate.containsAll(collections);
     }
 
     /** {@inheritDoc} */
-    public ElementType get(int index) {
+    public ElementType get(final int index) {
         return delegate.get(index);
     }
 
     /** {@inheritDoc} */
-    public int indexOf(Object element) {
+    public int indexOf(final Object element) {
         return delegate.indexOf(element);
     }
 
@@ -105,7 +105,7 @@ public class LazyList<ElementType> implements List<ElementType>, Serializable {
     }
 
     /** {@inheritDoc} */
-    public int lastIndexOf(Object element) {
+    public int lastIndexOf(final Object element) {
         return delegate.lastIndexOf(element);
     }
 
@@ -115,36 +115,36 @@ public class LazyList<ElementType> implements List<ElementType>, Serializable {
     }
 
     /** {@inheritDoc} */
-    public ListIterator<ElementType> listIterator(int index) {
+    public ListIterator<ElementType> listIterator(final int index) {
         return delegate.listIterator(index);
     }
 
     /** {@inheritDoc} */
-    public boolean remove(Object element) {
+    public boolean remove(final Object element) {
         delegate = buildList();
         return delegate.remove(element);
     }
 
     /** {@inheritDoc} */
-    public ElementType remove(int index) {
+    public ElementType remove(final int index) {
         delegate = buildList();
         return delegate.remove(index);
     }
 
     /** {@inheritDoc} */
-    public boolean removeAll(Collection<?> collection) {
+    public boolean removeAll(final Collection<?> collection) {
         delegate = buildList();
         return delegate.removeAll(collection);
     }
 
     /** {@inheritDoc} */
-    public boolean retainAll(Collection<?> collection) {
+    public boolean retainAll(final Collection<?> collection) {
         delegate = buildList();
         return delegate.retainAll(collection);
     }
 
     /** {@inheritDoc} */
-    public ElementType set(int index, ElementType element) {
+    public ElementType set(final int index, final ElementType element) {
         delegate = buildList();
         return delegate.set(index, element);
     }
@@ -155,7 +155,7 @@ public class LazyList<ElementType> implements List<ElementType>, Serializable {
     }
 
     /** {@inheritDoc} */
-    public List<ElementType> subList(int fromIndex, int toIndex) {
+    public List<ElementType> subList(final int fromIndex, final int toIndex) {
         return delegate.subList(fromIndex, toIndex);
     }
 
@@ -175,7 +175,7 @@ public class LazyList<ElementType> implements List<ElementType>, Serializable {
      * @return delegate for this list
      */
     protected List<ElementType> buildList() {
-        if (delegate instanceof ArrayList) {
+        if (delegate instanceof ArrayList<?>) {
             return delegate;
         }
 
@@ -193,7 +193,7 @@ public class LazyList<ElementType> implements List<ElementType>, Serializable {
     }
 
     /** {@inheritDoc} */
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj) {
             return true;
         }

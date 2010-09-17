@@ -23,7 +23,7 @@ import java.util.StringTokenizer;
 
 /** String utility methods. */
 public final class StringSupport {
-    
+
     /** Constructor. */
     private StringSupport() {
     }
@@ -35,7 +35,7 @@ public final class StringSupport {
      * 
      * @return true if the given string is null or empty, false if not
      */
-    public static boolean isNullOrEmpty(String s) {
+    public static boolean isNullOrEmpty(final String s) {
         String temp = trimOrNull(s);
         if (temp == null) {
             return true;
@@ -52,13 +52,13 @@ public final class StringSupport {
      * 
      * @return delimited string of values
      */
-    public static String listToStringValue(List<String> values, String delimiter) {
+    public static String listToStringValue(final List<String> values, final String delimiter) {
         if (delimiter == null) {
             throw new IllegalArgumentException("String delimiter may not be null");
         }
 
-        StringBuilder stringValue = new StringBuilder();
-        Iterator<String> valueItr = values.iterator();
+        final StringBuilder stringValue = new StringBuilder();
+        final Iterator<String> valueItr = values.iterator();
         while (valueItr.hasNext()) {
             stringValue.append(valueItr.next());
             if (valueItr.hasNext()) {
@@ -76,7 +76,7 @@ public final class StringSupport {
      * 
      * @return an empty string if the given string is null or the given string if it is not
      */
-    public static String nullToEmpty(String s) {
+    public static String nullToEmpty(final String s) {
         if (s == null) {
             return "";
         }
@@ -93,16 +93,16 @@ public final class StringSupport {
      * 
      * @return the list of values or an empty list if the given string is null or empty
      */
-    public static List<String> stringToList(String string, String delimiter) {
+    public static List<String> stringToList(final String string, final String delimiter) {
         if (delimiter == null) {
             throw new IllegalArgumentException("String delimiter may not be null");
         }
 
-        ArrayList<String> values = new ArrayList<String>();
+        final ArrayList<String> values = new ArrayList<String>();
 
-        String trimmedString = trimOrNull(string);
+        final String trimmedString = trimOrNull(string);
         if (trimmedString != null) {
-            StringTokenizer tokens = new StringTokenizer(trimmedString, delimiter);
+            final StringTokenizer tokens = new StringTokenizer(trimmedString, delimiter);
             while (tokens.hasMoreTokens()) {
                 values.add(tokens.nextToken());
             }
@@ -118,7 +118,7 @@ public final class StringSupport {
      * 
      * @return the trimmed string or null if the given string was null
      */
-    public static String trim(String s) {
+    public static String trim(final String s) {
         if (s == null) {
             return null;
         }
@@ -133,8 +133,8 @@ public final class StringSupport {
      * 
      * @return the trimmed string or null if the given string was null or the trimmed string was empty
      */
-    public static String trimOrNull(String s) {
-        String temp = trim(s);
+    public static String trimOrNull(final String s) {
+        final String temp = trim(s);
         if (temp == null || temp.length() == 0) {
             return null;
         }

@@ -30,10 +30,10 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 
 /** Set of helper methods for working with DOM Attributes. */
-public final class Attributes {
+public final class AttributeSupport {
 
     /** Constructor. */
-    private Attributes() {
+    private AttributeSupport() {
     }
 
     /**
@@ -42,11 +42,11 @@ public final class Attributes {
      * @param element the element to which to add the attribute
      * @param base the base value
      */
-    public static void addXMLBase(Element element, String base) {
+    public static void addXMLBase(final Element element, final String base) {
         Assert.isNotNull(element, "Element may not be null");
         Assert.isNotNull(base, "base attribute value may not be null");
 
-        Attr attr = constructAttribute(element.getOwnerDocument(), XmlConstants.XML_BASE_ATTRIB_NAME);
+        final Attr attr = constructAttribute(element.getOwnerDocument(), XmlConstants.XML_BASE_ATTRIB_NAME);
         attr.setValue(base);
         element.setAttributeNodeNS(attr);
     }
@@ -57,11 +57,11 @@ public final class Attributes {
      * @param element the element to which to add the attribute
      * @param id the Id value
      */
-    public static void addXMLId(Element element, String id) {
+    public static void addXMLId(final Element element, final String id) {
         Assert.isNotNull(element, "Element may not be null");
         Assert.isNotNull(id, "id attribute value may not be null");
 
-        Attr attr = constructAttribute(element.getOwnerDocument(), XmlConstants.XML_ID_ATTRIB_NAME);
+        final Attr attr = constructAttribute(element.getOwnerDocument(), XmlConstants.XML_ID_ATTRIB_NAME);
         attr.setValue(id);
         element.setAttributeNodeNS(attr);
     }
@@ -72,11 +72,11 @@ public final class Attributes {
      * @param element the element to which to add the attribute
      * @param lang the lang value
      */
-    public static void addXMLLang(Element element, String lang) {
+    public static void addXMLLang(final Element element, final String lang) {
         Assert.isNotNull(element, "Element may not be null");
         Assert.isNotNull(lang, "lang attribute value may not be null");
 
-        Attr attr = constructAttribute(element.getOwnerDocument(), XmlConstants.XML_LANG_ATTRIB_NAME);
+        final Attr attr = constructAttribute(element.getOwnerDocument(), XmlConstants.XML_LANG_ATTRIB_NAME);
         attr.setValue(lang);
         element.setAttributeNodeNS(attr);
     }
@@ -87,15 +87,15 @@ public final class Attributes {
      * @param element the element to which to add the attribute
      * @param space the space value
      */
-    public static void addXMLSpace(Element element, XmlSpace space) {
+    public static void addXMLSpace(final Element element, final XmlSpace space) {
         Assert.isNotNull(element, "Element may not be null");
         Assert.isNotNull(space, "space attribute value may not be null");
 
-        Attr attr = constructAttribute(element.getOwnerDocument(), XmlConstants.XML_SPACE_ATTRIB_NAME);
+        final Attr attr = constructAttribute(element.getOwnerDocument(), XmlConstants.XML_SPACE_ATTRIB_NAME);
         attr.setValue(space.toString());
         element.setAttributeNodeNS(attr);
     }
-    
+
     /**
      * Adds an non-id attribute name and value to a DOM Element. This is particularly useful for attributes whose names
      * appear in namespace-qualified form.
@@ -104,13 +104,13 @@ public final class Attributes {
      * @param attributeValue the attribute values
      * @param element the target element to which to marshall
      */
-    public static void appendAttribute(Element element, QName attributeName, String attributeValue){
+    public static void appendAttribute(final Element element, final QName attributeName, final String attributeValue) {
         appendAttribute(element, attributeName, attributeValue, false);
     }
 
     /**
-     * Adds an attribute name and value to a DOM Element. This is particularly useful for attributes whose names
-     * appear in namespace-qualified form.
+     * Adds an attribute name and value to a DOM Element. This is particularly useful for attributes whose names appear
+     * in namespace-qualified form.
      * 
      * @param attributeName the attribute name in QName form
      * @param attributeValues the attribute values
@@ -118,14 +118,14 @@ public final class Attributes {
      * @param isIDAttribute flag indicating whether the attribute being marshalled should be handled as an ID-typed
      *            attribute
      */
-    public static void appendAttribute(Element element, QName attributeName, List<String> attributeValues,
-            boolean isIDAttribute) {
+    public static void appendAttribute(final Element element, final QName attributeName,
+            final List<String> attributeValues, final boolean isIDAttribute) {
         appendAttribute(element, attributeName, StringSupport.listToStringValue(attributeValues, " "), isIDAttribute);
     }
 
     /**
-     * Adds an attribute name and value to a DOM Element. This is particularly useful for attributes whose names
-     * appear in namespace-qualified form.
+     * Adds an attribute name and value to a DOM Element. This is particularly useful for attributes whose names appear
+     * in namespace-qualified form.
      * 
      * @param attributeName the attribute name in QName form
      * @param attributeValue the attribute value
@@ -133,14 +133,14 @@ public final class Attributes {
      * @param isIDAttribute flag indicating whether the attribute being marshalled should be handled as an ID-typed
      *            attribute
      */
-    public static void appendAttribute(Element element, QName attributeName, String attributeValue,
-            boolean isIDAttribute) {
+    public static void appendAttribute(final Element element, final QName attributeName, final String attributeValue,
+            final boolean isIDAttribute) {
         Assert.isNotNull(element, "Element may not be null");
         Assert.isNotNull(attributeName, "Attribute name may not be null");
         Assert.isNotNull(attributeValue, "Attribute value may not be null");
 
-        Document document = element.getOwnerDocument();
-        Attr attribute = constructAttribute(document, attributeName);
+        final Document document = element.getOwnerDocument();
+        final Attr attribute = constructAttribute(document, attributeName);
         attribute.setValue(attributeValue);
         element.setAttributeNodeNS(attribute);
         if (isIDAttribute) {
@@ -156,7 +156,7 @@ public final class Attributes {
      * 
      * @return the constructed attribute
      */
-    public static Attr constructAttribute(Document owningDocument, QName attributeName) {
+    public static Attr constructAttribute(final Document owningDocument, final QName attributeName) {
         return constructAttribute(owningDocument, attributeName.getNamespaceURI(), attributeName.getLocalPart(),
                 attributeName.getPrefix());
     }
@@ -171,14 +171,15 @@ public final class Attributes {
      * 
      * @return the constructed attribute
      */
-    public static Attr constructAttribute(Document document, String namespaceURI, String localName, String prefix) {
+    public static Attr constructAttribute(final Document document, final String namespaceURI, final String localName,
+            final String prefix) {
         Assert.isNotNull(document, "Document may not null");
 
-        String trimmedLocalName = StringSupport.trimOrNull(localName);
+        final String trimmedLocalName = StringSupport.trimOrNull(localName);
         Assert.isNull(trimmedLocalName, "Attribute local name may not be null or empty");
 
         String qualifiedName;
-        String trimmedPrefix = StringSupport.trimOrNull(prefix);
+        final String trimmedPrefix = StringSupport.trimOrNull(prefix);
         if (trimmedPrefix != null) {
             qualifiedName = trimmedPrefix + ":" + StringSupport.trimOrNull(trimmedLocalName);
         } else {
@@ -200,7 +201,7 @@ public final class Attributes {
      * 
      * @return the value of the attribute or null if the element does not have such an attribute
      */
-    public static String getAttributeValue(Element element, QName attributeName) {
+    public static String getAttributeValue(final Element element, final QName attributeName) {
         return getAttributeValue(element, attributeName.getNamespaceURI(), attributeName.getLocalPart());
     }
 
@@ -213,13 +214,13 @@ public final class Attributes {
      * 
      * @return the value of the attribute or null if the element does not have such an attribute
      */
-    public static String getAttributeValue(Element element, String namespace, String attributeLocalName) {
+    public static String getAttributeValue(final Element element, final String namespace,
+            final String attributeLocalName) {
         if (element == null) {
             return null;
         }
 
-        Attr attr = element.getAttributeNodeNS(namespace, attributeLocalName);
-
+        final Attr attr = element.getAttributeNodeNS(namespace, attributeLocalName);
         if (attr == null) {
             return null;
         }
@@ -235,12 +236,12 @@ public final class Attributes {
      * 
      * @return boolean value of the attribute or null
      */
-    public static Boolean getAttributeValueAsBoolean(Attr attribute) {
+    public static Boolean getAttributeValueAsBoolean(final Attr attribute) {
         if (attribute == null) {
             return null;
         }
 
-        String valueStr = attribute.getValue();
+        final String valueStr = attribute.getValue();
         if ("0".equals(valueStr) || "false".equals(valueStr)) {
             return Boolean.FALSE;
         } else if ("1".equals(valueStr) || "true".equals(valueStr)) {
@@ -257,7 +258,7 @@ public final class Attributes {
      * 
      * @return list of values, never null
      */
-    public static List<String> getAttributeValueAsList(Attr attribute) {
+    public static List<String> getAttributeValueAsList(final Attr attribute) {
         if (attribute == null) {
             return Collections.emptyList();
         }
@@ -271,17 +272,17 @@ public final class Attributes {
      * 
      * @return a QName from an attributes value, or null if the given attribute is null
      */
-    public static QName getAttributeValueAsQName(Attr attribute) {
+    public static QName getAttributeValueAsQName(final Attr attribute) {
         if (attribute == null || StringSupport.isNullOrEmpty(attribute.getValue())) {
             return null;
         }
 
-        String attributeValue = attribute.getTextContent();
-        String[] valueComponents = attributeValue.split(":");
+        final String attributeValue = attribute.getTextContent();
+        final String[] valueComponents = attributeValue.split(":");
         if (valueComponents.length == 1) {
-            return QNames.constructQName(attribute.lookupNamespaceURI(null), valueComponents[0], null);
+            return QNameSupport.constructQName(attribute.lookupNamespaceURI(null), valueComponents[0], null);
         } else {
-            return QNames.constructQName(attribute.lookupNamespaceURI(valueComponents[0]), valueComponents[1],
+            return QNameSupport.constructQName(attribute.lookupNamespaceURI(valueComponents[0]), valueComponents[1],
                     valueComponents[0]);
         }
     }
@@ -293,12 +294,12 @@ public final class Attributes {
      * 
      * @return the ID attribute or null if there isn't one
      */
-    public static Attr getIdAttribute(Element element) {
+    public static Attr getIdAttribute(final Element element) {
         if (element == null || !element.hasAttributes()) {
             return null;
         }
 
-        NamedNodeMap attributes = element.getAttributes();
+        final NamedNodeMap attributes = element.getAttributes();
         Attr attribute;
         for (int i = 0; i < attributes.getLength(); i++) {
             attribute = (Attr) attributes.item(i);
@@ -318,7 +319,7 @@ public final class Attributes {
      * 
      * @return true if the element has an attribute with the given name, false otherwise
      */
-    public static boolean hasAttribute(Element element, QName name) {
+    public static boolean hasAttribute(final Element element, final QName name) {
         if (element == name || name == null) {
             return false;
         }
@@ -333,7 +334,7 @@ public final class Attributes {
      * 
      * @return the value of the xml:base attribute, or null if not present
      */
-    public static String getXMLBase(Element element) {
+    public static String getXMLBase(final Element element) {
         return getAttributeValue(element, XmlConstants.XML_BASE_ATTRIB_NAME);
     }
 
@@ -344,7 +345,7 @@ public final class Attributes {
      * 
      * @return the value of the xml:id attribute, or null if not present
      */
-    public static String getXMLId(Element element) {
+    public static String getXMLId(final Element element) {
         return getAttributeValue(element, XmlConstants.XML_ID_ATTRIB_NAME);
     }
 
@@ -355,7 +356,7 @@ public final class Attributes {
      * 
      * @return the value of the xml:lang attribute, or null if not present
      */
-    public static String getXMLLang(Element element) {
+    public static String getXMLLang(final Element element) {
         return getAttributeValue(element, XmlConstants.XML_LANG_ATTRIB_NAME);
     }
 
@@ -368,7 +369,7 @@ public final class Attributes {
      * 
      * @return the active local of the element
      */
-    public static Locale getXMLLangAsLocale(Element element) {
+    public static Locale getXMLLangAsLocale(final Element element) {
         if (element == null) {
             return null;
         }
@@ -391,7 +392,7 @@ public final class Attributes {
      * 
      * @return the value of the xml:space attribute, or null if not present
      */
-    public static XmlSpace getXMLSpace(Element element) {
+    public static XmlSpace getXMLSpace(final Element element) {
         return XmlSpace.valueOf(getAttributeValue(element, XmlConstants.XML_SPACE_ATTRIB_NAME));
     }
 }

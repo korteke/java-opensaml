@@ -28,13 +28,13 @@ import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
 
 /** Set of helper methods for working with DOM data types. */
-public final class Types {
+public final class DomTypeSupport {
 
     /** JAXP DatatypeFactory. */
     private static DatatypeFactory dataTypeFactory;
 
     /** Constructor. */
-    private Types() {
+    private DomTypeSupport() {
     }
 
     /**
@@ -44,8 +44,8 @@ public final class Types {
      * 
      * @return duration in milliseconds
      */
-    public static long durationToLong(String duration) {
-        Duration xmlDuration = getDataTypeFactory().newDuration(duration);
+    public static long durationToLong(final String duration) {
+        final Duration xmlDuration = getDataTypeFactory().newDuration(duration);
         return xmlDuration.getTimeInMillis(new GregorianCalendar());
     }
 
@@ -73,11 +73,11 @@ public final class Types {
      * 
      * @return the type or null
      */
-    public static QName getXSIType(Element e) {
+    public static QName getXSIType(final Element e) {
         if (hasXSIType(e)) {
-            Attr attribute = e.getAttributeNodeNS(XmlConstants.XSI_NS, "type");
-            String attributeValue = attribute.getTextContent().trim();
-            StringTokenizer tokenizer = new StringTokenizer(attributeValue, ":");
+            final Attr attribute = e.getAttributeNodeNS(XmlConstants.XSI_NS, "type");
+            final String attributeValue = attribute.getTextContent().trim();
+            final StringTokenizer tokenizer = new StringTokenizer(attributeValue, ":");
             String prefix = null;
             String localPart;
             if (tokenizer.countTokens() > 1) {
@@ -87,7 +87,7 @@ public final class Types {
                 localPart = tokenizer.nextToken();
             }
 
-            return QNames.constructQName(e.lookupNamespaceURI(prefix), localPart, prefix);
+            return QNameSupport.constructQName(e.lookupNamespaceURI(prefix), localPart, prefix);
         }
 
         return null;
@@ -100,7 +100,7 @@ public final class Types {
      * 
      * @return true if there is a type, false if not
      */
-    public static boolean hasXSIType(Element e) {
+    public static boolean hasXSIType(final Element e) {
         if (e != null) {
             if (e.getAttributeNodeNS(XmlConstants.XSI_NS, "type") != null) {
                 return true;
@@ -117,7 +117,7 @@ public final class Types {
      * 
      * @return the lexical representation
      */
-    public static String longToDuration(long duration) {
+    public static String longToDuration(final long duration) {
         Duration xmlDuration = getDataTypeFactory().newDuration(duration);
         return xmlDuration.toString();
     }

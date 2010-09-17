@@ -38,10 +38,10 @@ import org.w3c.dom.ls.LSSerializer;
 import org.w3c.dom.ls.LSSerializerFilter;
 
 /** Set of helper functions for serializing/writing DOM nodes. */
-public final class Serialize {
+public final class SerializeSupport {
 
     /** Constructor. */
-    private Serialize() {
+    private SerializeSupport() {
 
     }
 
@@ -52,10 +52,10 @@ public final class Serialize {
      * 
      * @return the string representation of the node
      */
-    public static String nodeToString(Node node) {
+    public static String nodeToString(final Node node) {
         Assert.isNotNull(node, "Node may not be null");
 
-        ByteArrayOutputStream baout = new ByteArrayOutputStream();
+        final ByteArrayOutputStream baout = new ByteArrayOutputStream();
         writeNode(node, baout);
         try {
             return new String(baout.toByteArray(), "UTF-8");
@@ -72,17 +72,16 @@ public final class Serialize {
      * 
      * @return pretty-printed xml
      */
-    public static String prettyPrintXML(Node node) {
+    public static String prettyPrintXML(final Node node) {
         Assert.isNotNull(node, "Node may not be null");
 
-        TransformerFactory tfactory = TransformerFactory.newInstance();
-        Transformer serializer;
+        final TransformerFactory tfactory = TransformerFactory.newInstance();
         try {
-            serializer = tfactory.newTransformer();
+            final Transformer serializer = tfactory.newTransformer();
             serializer.setOutputProperty(OutputKeys.INDENT, "yes");
             serializer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "3");
 
-            StringWriter output = new StringWriter();
+            final StringWriter output = new StringWriter();
             serializer.transform(new DOMSource(node), new StreamResult(output));
             return output.toString();
         } catch (TransformerException e) {
@@ -99,19 +98,19 @@ public final class Serialize {
      * @param node the node to write out
      * @param output the output stream to write the XML to
      */
-    public static void writeNode(Node node, OutputStream output) {
+    public static void writeNode(final Node node, final OutputStream output) {
         Assert.isNotNull(node, "Node may not be null");
         Assert.isNotNull(output, "Outputstream may not be null");
 
-        DOMImplementation domImpl;
+        final DOMImplementation domImpl;
         if (node instanceof Document) {
             domImpl = ((Document) node).getImplementation();
         } else {
             domImpl = node.getOwnerDocument().getImplementation();
         }
 
-        DOMImplementationLS domImplLS = (DOMImplementationLS) domImpl.getFeature("LS", "3.0");
-        LSSerializer serializer = domImplLS.createLSSerializer();
+        final DOMImplementationLS domImplLS = (DOMImplementationLS) domImpl.getFeature("LS", "3.0");
+        final LSSerializer serializer = domImplLS.createLSSerializer();
         serializer.setFilter(new LSSerializerFilter() {
 
             public short acceptNode(Node arg0) {
@@ -123,7 +122,7 @@ public final class Serialize {
             }
         });
 
-        LSOutput serializerOut = domImplLS.createLSOutput();
+        final LSOutput serializerOut = domImplLS.createLSOutput();
         serializerOut.setByteStream(output);
 
         serializer.write(node, serializerOut);

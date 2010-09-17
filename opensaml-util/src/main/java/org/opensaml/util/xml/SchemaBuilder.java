@@ -84,7 +84,8 @@ public final class SchemaBuilder {
      * 
      * @throws SAXException thrown if there is a problem converting the schema sources in to a schema
      */
-    public static Schema buildSchema(SchemaLanguage lang, String... schemaFilesOrDirectories) throws SAXException {
+    public static Schema buildSchema(final SchemaLanguage lang, final String... schemaFilesOrDirectories)
+            throws SAXException {
         if (schemaFilesOrDirectories == null || schemaFilesOrDirectories.length == 0) {
             return null;
         }
@@ -102,19 +103,20 @@ public final class SchemaBuilder {
      * 
      * @throws SAXException thrown if there is a problem converting the schema sources in to a schema
      */
-    public static Schema buildSchema(SchemaLanguage lang, File... schemaFilesOrDirectories) throws SAXException {
+    public static Schema buildSchema(final SchemaLanguage lang, final File... schemaFilesOrDirectories)
+            throws SAXException {
         if (schemaFilesOrDirectories == null || schemaFilesOrDirectories.length == 0) {
             return null;
         }
 
-        ArrayList<File> schemaFiles = new ArrayList<File>();
+        final ArrayList<File> schemaFiles = new ArrayList<File>();
         getSchemaFiles(lang, schemaFiles, schemaFilesOrDirectories);
 
         if (schemaFiles.isEmpty()) {
             return null;
         }
 
-        ArrayList<Source> schemaSources = new ArrayList<Source>();
+        final ArrayList<Source> schemaSources = new ArrayList<Source>();
         for (File schemaFile : schemaFiles) {
             schemaSources.add(new StreamSource(schemaFile));
         }
@@ -131,12 +133,12 @@ public final class SchemaBuilder {
      * 
      * @throws SAXException thrown if there is a problem converting the schema sources in to a schema
      */
-    public static Schema buildSchema(SchemaLanguage lang, Resource... schemaSources) throws SAXException {
+    public static Schema buildSchema(final SchemaLanguage lang, final Resource... schemaSources) throws SAXException {
         if (schemaSources == null || schemaSources.length == 0) {
             return null;
         }
 
-        ArrayList<Source> sourceStreams = new ArrayList<Source>();
+        final ArrayList<Source> sourceStreams = new ArrayList<Source>();
         for (Resource schemaSource : schemaSources) {
             try {
                 sourceStreams.add(new StreamSource(schemaSource.getInputStream()));
@@ -157,12 +159,12 @@ public final class SchemaBuilder {
      * 
      * @throws SAXException thrown if there is a problem converting the schema sources in to a schema
      */
-    public static Schema buildSchema(SchemaLanguage lang, InputStream... schemaSources) throws SAXException {
+    public static Schema buildSchema(final SchemaLanguage lang, final InputStream... schemaSources) throws SAXException {
         if (schemaSources == null || schemaSources.length == 0) {
             return null;
         }
 
-        ArrayList<StreamSource> sources = new ArrayList<StreamSource>();
+        final ArrayList<StreamSource> sources = new ArrayList<StreamSource>();
         for (InputStream schemaSource : schemaSources) {
             if (schemaSource == null) {
                 continue;
@@ -184,8 +186,8 @@ public final class SchemaBuilder {
      * @param schemaFilesOrDirectories files and directories which may contain schema files
      * @param accumulatedSchemaFiles list that accumulates the schema files
      */
-    protected static void getSchemaFiles(SchemaLanguage lang, List<File> accumulatedSchemaFiles,
-            File... schemaFilesOrDirectories) {
+    protected static void getSchemaFiles(final SchemaLanguage lang, final List<File> accumulatedSchemaFiles,
+            final File... schemaFilesOrDirectories) {
 
         if (lang == null) {
             throw new IllegalArgumentException("Schema language may not be null");
@@ -225,7 +227,7 @@ public final class SchemaBuilder {
      * 
      * @throws SAXException thrown if there is a problem converting the schema sources in to a schema
      */
-    protected static Schema buildSchema(SchemaLanguage lang, Source... schemaSources) throws SAXException {
+    protected static Schema buildSchema(final SchemaLanguage lang, final Source... schemaSources) throws SAXException {
         if (lang == null) {
             throw new IllegalArgumentException("Schema language may not be null");
         }
@@ -234,8 +236,7 @@ public final class SchemaBuilder {
             throw new IllegalArgumentException("Schema sources may not be null");
         }
 
-        SchemaFactory schemaFactory;
-
+        final SchemaFactory schemaFactory;
         if (lang == SchemaLanguage.XML) {
             schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
         } else {

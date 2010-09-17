@@ -39,7 +39,7 @@ public class ClasspathResource implements Resource {
      * 
      * @param resourcePath classpath path to the resource
      */
-    public ClasspathResource(String resourcePath) {
+    public ClasspathResource(final String resourcePath) {
         this(resourcePath, ClasspathResource.class.getClassLoader(), Charset.defaultCharset());
     }
 
@@ -49,7 +49,7 @@ public class ClasspathResource implements Resource {
      * @param resourcePath classpath path to the resource
      * @param charset character set used by the resource
      */
-    public ClasspathResource(String resourcePath, Charset charset) {
+    public ClasspathResource(final String resourcePath, final Charset charset) {
         this(resourcePath, ClasspathResource.class.getClassLoader(), charset);
     }
 
@@ -59,7 +59,7 @@ public class ClasspathResource implements Resource {
      * @param resourcePath classpath path to the resource
      * @param classLoader class loader used to locate the resource
      */
-    public ClasspathResource(String resourcePath, ClassLoader classLoader) {
+    public ClasspathResource(final String resourcePath, final ClassLoader classLoader) {
         this(resourcePath, Charset.defaultCharset());
     }
 
@@ -70,8 +70,8 @@ public class ClasspathResource implements Resource {
      * @param classLoader class loader used to locate the resource
      * @param charset character set used by the resource
      */
-    public ClasspathResource(String resourcePath, ClassLoader classLoader, Charset charset) {
-        String trimmedPath = StringSupport.trimOrNull(resourcePath);
+    public ClasspathResource(final String resourcePath, final ClassLoader classLoader, final Charset charset) {
+        final String trimmedPath = StringSupport.trimOrNull(resourcePath);
         Assert.isNotNull(trimmedPath, "Resource path may not be null or empty");
 
         Assert.isNotNull(classLoader, "Resource class loader may not be null");
