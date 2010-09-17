@@ -23,7 +23,7 @@ import java.io.InputStream;
 import java.nio.charset.Charset;
 
 import org.opensaml.util.Assert;
-import org.opensaml.util.Strings;
+import org.opensaml.util.StringSupport;
 
 /** An {@link Resource} that reads data from a fileystem file. */
 public class FilesystemResource implements Resource {
@@ -50,7 +50,7 @@ public class FilesystemResource implements Resource {
      * @param charset character set of the file, never null
      */
     public FilesystemResource(String resourcePath, Charset charset) {
-        String trimmedPath = Strings.trimOrNull(resourcePath);
+        String trimmedPath = StringSupport.trimOrNull(resourcePath);
         Assert.isNotNull(trimmedPath, "Resource file path may not be null or empty");
         resourceFile = new File(trimmedPath);
 

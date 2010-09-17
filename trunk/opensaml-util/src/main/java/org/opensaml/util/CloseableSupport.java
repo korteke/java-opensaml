@@ -20,10 +20,10 @@ import java.io.Closeable;
 import java.io.IOException;
 
 /** Utility for closing {@link Closeable}s. */
-public final class Closeables {
+public final class CloseableSupport {
 
     /** Constructor. */
-    private Closeables() {
+    private CloseableSupport() {
     }
 
     /**

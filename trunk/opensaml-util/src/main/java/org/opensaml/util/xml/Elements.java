@@ -25,8 +25,8 @@ import java.util.Map;
 import javax.xml.namespace.QName;
 
 import org.opensaml.util.Assert;
-import org.opensaml.util.Objects;
-import org.opensaml.util.Strings;
+import org.opensaml.util.ObjectSupport;
+import org.opensaml.util.StringSupport;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -119,18 +119,18 @@ public final class Elements {
     public static Element constructElement(Document document, String namespaceURI, String localName, String prefix) {
         Assert.isNotNull(document, "Document may not be null");
 
-        String trimmedLocalName = Strings.trimOrNull(localName);
+        String trimmedLocalName = StringSupport.trimOrNull(localName);
         Assert.isNotNull(trimmedLocalName, "Element local name may not be null or empty");
 
         String qualifiedName;
-        String trimmedPrefix = Strings.trimOrNull(prefix);
+        String trimmedPrefix = StringSupport.trimOrNull(prefix);
         if (trimmedPrefix != null) {
-            qualifiedName = trimmedPrefix + ":" + Strings.trimOrNull(trimmedLocalName);
+            qualifiedName = trimmedPrefix + ":" + StringSupport.trimOrNull(trimmedLocalName);
         } else {
-            qualifiedName = Strings.trimOrNull(trimmedLocalName);
+            qualifiedName = StringSupport.trimOrNull(trimmedLocalName);
         }
 
-        if (!Strings.isNullOrEmpty(namespaceURI)) {
+        if (!StringSupport.isNullOrEmpty(namespaceURI)) {
             return document.createElementNS(namespaceURI, qualifiedName);
         } else {
             return document.createElementNS(null, qualifiedName);
@@ -186,7 +186,7 @@ public final class Elements {
             childNode = childNodes.item(i);
             if (childNode.getNodeType() == Node.ELEMENT_NODE) {
                 e = (Element) childNode;
-                if (Objects.equals(e.getLocalName(), localName)) {
+                if (ObjectSupport.equals(e.getLocalName(), localName)) {
                     children.add(e);
                 }
             }
@@ -219,7 +219,7 @@ public final class Elements {
             childNode = childNodes.item(i);
             if (childNode.getNodeType() == Node.ELEMENT_NODE) {
                 e = (Element) childNode;
-                if (Objects.equals(e.getNamespaceURI(), namespaceURI) && Objects.equals(e.getLocalName(), localName)) {
+                if (ObjectSupport.equals(e.getNamespaceURI(), namespaceURI) && ObjectSupport.equals(e.getLocalName(), localName)) {
                     children.add(e);
                 }
             }
@@ -262,7 +262,7 @@ public final class Elements {
         if (element == null) {
             return Collections.emptyList();
         }
-        return Strings.stringToList(element.getTextContent(), XmlConstants.LIST_DELIMITERS);
+        return StringSupport.stringToList(element.getTextContent(), XmlConstants.LIST_DELIMITERS);
     }
 
     /**
@@ -282,7 +282,7 @@ public final class Elements {
         for (int i = 0; i < nodeList.getLength(); i++) {
             Node node = nodeList.item(i);
             if (node.getNodeType() == Node.TEXT_NODE) {
-                elementContent = Strings.trimOrNull(((Text) node).getWholeText());
+                elementContent = StringSupport.trimOrNull(((Text) node).getWholeText());
                 break;
             }
         }
@@ -405,7 +405,7 @@ public final class Elements {
      * @return true iff the element's local name and namespace match the parameters
      */
     public static boolean isElementNamed(Element e, String ns, String localName) {
-        return e != null && Objects.equals(ns, e.getNamespaceURI()) && Objects.equals(localName, e.getLocalName());
+        return e != null && ObjectSupport.equals(ns, e.getNamespaceURI()) && ObjectSupport.equals(localName, e.getLocalName());
     }
 
     /**

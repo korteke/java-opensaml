@@ -86,8 +86,8 @@ public class Pair<T1, T2> {
         
         if (o instanceof Pair) {
             Pair<T1, T2> otherPair = (Pair<T1, T2>) o;
-            return Objects.equals(getFirst(), otherPair.getFirst())
-                    && Objects.equals(getSecond(), otherPair.getSecond());
+            return ObjectSupport.equals(getFirst(), otherPair.getFirst())
+                    && ObjectSupport.equals(getSecond(), otherPair.getSecond());
         }
 
         return false;

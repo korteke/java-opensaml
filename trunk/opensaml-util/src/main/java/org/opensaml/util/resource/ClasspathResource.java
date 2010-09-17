@@ -22,7 +22,7 @@ import java.net.URL;
 import java.nio.charset.Charset;
 
 import org.opensaml.util.Assert;
-import org.opensaml.util.Strings;
+import org.opensaml.util.StringSupport;
 
 /** A resource which reads data from the classpath. */
 public class ClasspathResource implements Resource {
@@ -71,7 +71,7 @@ public class ClasspathResource implements Resource {
      * @param charset character set used by the resource
      */
     public ClasspathResource(String resourcePath, ClassLoader classLoader, Charset charset) {
-        String trimmedPath = Strings.trimOrNull(resourcePath);
+        String trimmedPath = StringSupport.trimOrNull(resourcePath);
         Assert.isNotNull(trimmedPath, "Resource path may not be null or empty");
 
         Assert.isNotNull(classLoader, "Resource class loader may not be null");

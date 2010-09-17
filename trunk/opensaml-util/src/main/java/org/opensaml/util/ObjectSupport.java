@@ -17,10 +17,10 @@
 package org.opensaml.util;
 
 /** Helper methods for working with Objects. */
-public final class Objects {
+public final class ObjectSupport {
 
     /** Constructor. */
-    private Objects() {
+    private ObjectSupport() {
     }
 
     /**

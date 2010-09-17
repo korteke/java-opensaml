@@ -21,7 +21,7 @@ import java.util.StringTokenizer;
 import javax.xml.namespace.QName;
 
 import org.opensaml.util.Assert;
-import org.opensaml.util.Strings;
+import org.opensaml.util.StringSupport;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
@@ -72,9 +72,9 @@ public final class QNames {
      */
     public static QName constructQName(String namespaceURI, String localName, String prefix) {
         Assert.isNotNull(localName, "Local name may not be null");
-        if (Strings.isNullOrEmpty(prefix)) {
+        if (StringSupport.isNullOrEmpty(prefix)) {
             return new QName(namespaceURI, localName);
-        } else if (Strings.isNullOrEmpty(namespaceURI)) {
+        } else if (StringSupport.isNullOrEmpty(namespaceURI)) {
             return new QName(localName);
         }
 

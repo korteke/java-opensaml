@@ -45,7 +45,7 @@ import org.apache.http.impl.conn.SingleClientConnManager;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 import org.apache.http.params.HttpParams;
 import org.opensaml.util.Assert;
-import org.opensaml.util.Strings;
+import org.opensaml.util.StringSupport;
 
 /** Builder used to construct {@link HttpClient} objects configured with particular settings. */
 public class HttpClientBuilder {
@@ -326,7 +326,7 @@ public class HttpClientBuilder {
      * @param host hostname of the default proxy used when making connection
      */
     public void setConnectionProxyHost(String host) {
-        connectionProxyHost = Strings.trimOrNull(host);
+        connectionProxyHost = StringSupport.trimOrNull(host);
     }
 
     /**

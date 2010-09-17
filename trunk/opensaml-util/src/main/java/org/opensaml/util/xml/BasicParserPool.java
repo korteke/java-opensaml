@@ -55,10 +55,10 @@ import org.xml.sax.SAXException;
  * 
  * This implementation of {@link ParserPool} does not allow its properties to be modified once it has been initialized.
  */
-public class StaticBasicParserPool implements ParserPool {
+public class BasicParserPool implements ParserPool {
 
     /** Class logger. */
-    private final Logger log = LoggerFactory.getLogger(StaticBasicParserPool.class);
+    private final Logger log = LoggerFactory.getLogger(BasicParserPool.class);
 
     /** Flag to track whether pool is in the initialized state. */
     private boolean initialized;
@@ -109,7 +109,7 @@ public class StaticBasicParserPool implements ParserPool {
     private ErrorHandler errorHandler;
 
     /** Constructor. */
-    public StaticBasicParserPool() {
+    public BasicParserPool() {
         initialized = false;
         maxPoolSize = 5;
         builderPool = new Stack<SoftReference<DocumentBuilder>>();
@@ -556,7 +556,7 @@ public class StaticBasicParserPool implements ParserPool {
          * @param target document builder to proxy
          * @param owner the owning pool
          */
-        public DocumentBuilderProxy(DocumentBuilder target, StaticBasicParserPool owner) {
+        public DocumentBuilderProxy(DocumentBuilder target, BasicParserPool owner) {
             owningPool = owner;
             builder = target;
             returned = false;
