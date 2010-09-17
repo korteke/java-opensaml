@@ -34,7 +34,7 @@ public interface ParserPool {
      * 
      * @return a builder from the pool
      * 
-     * @throws XmlParserException thrown if the document builder factory is misconfigured
+     * @throws XMLParserException thrown if the document builder factory is misconfigured
      */
     public DocumentBuilder getBuilder() throws XMLParserException;
 
@@ -50,7 +50,7 @@ public interface ParserPool {
      * 
      * @return created document
      * 
-     * @throws XmlParserException thrown if there is a problem retrieving a builder
+     * @throws XMLParserException thrown if there is a problem retrieving a builder
      */
     public Document newDocument() throws XMLParserException;
 
@@ -61,7 +61,7 @@ public interface ParserPool {
      * 
      * @return parsed document
      * 
-     * @throws XmlParserException thrown if there is a problem retrieving a builder, the input stream can not be read,
+     * @throws XMLParserException thrown if there is a problem retrieving a builder, the input stream can not be read,
      *             or the XML was invalid
      */
     public Document parse(final InputStream input) throws XMLParserException;
@@ -73,7 +73,7 @@ public interface ParserPool {
      * 
      * @return parsed document
      * 
-     * @throws XmlParserException thrown if there is a problem retrieving a builder, the input stream can not be read,
+     * @throws XMLParserException thrown if there is a problem retrieving a builder, the input stream can not be read,
      *             or the XML was invalid
      */
     public Document parse(final Reader input) throws XMLParserException;
