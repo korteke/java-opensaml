@@ -37,8 +37,8 @@ import org.apache.http.impl.cookie.DateParseException;
 import org.apache.http.impl.cookie.DateUtils;
 import org.apache.http.util.EntityUtils;
 import org.opensaml.util.Assert;
-import org.opensaml.util.Objects;
-import org.opensaml.util.Strings;
+import org.opensaml.util.ObjectSupport;
+import org.opensaml.util.StringSupport;
 import org.opensaml.util.resource.CachingResource;
 import org.opensaml.util.resource.FilebackedRemoteResource;
 import org.opensaml.util.resource.ResourceException;
@@ -86,7 +86,7 @@ public class HttpResource implements CachingResource, FilebackedRemoteResource {
      * @param backup file to which remote resource data is written as a backup/cache
      */
     public HttpResource(final String url, final HttpClient client, final String backup) {
-        resourceUrl = Strings.trimOrNull(url);
+        resourceUrl = StringSupport.trimOrNull(url);
         Assert.isNotNull(resourceUrl, "Resource URL may not be null or empty");
 
         Assert.isNotNull(client, "HTTP client may not be null");
@@ -130,8 +130,8 @@ public class HttpResource implements CachingResource, FilebackedRemoteResource {
 
             String etag = getETag(headResponse);
             String lastModified = getLastModified(headResponse);
-            if ((etag != null && !Objects.equals(etag, cachedResourceETag))
-                    || (lastModified != null && !Objects.equals(lastModified, cachedResourceLastModified))) {
+            if ((etag != null && !ObjectSupport.equals(etag, cachedResourceETag))
+                    || (lastModified != null && !ObjectSupport.equals(lastModified, cachedResourceLastModified))) {
                 expireCache();
             }
 

@@ -17,8 +17,8 @@
 package org.opensaml.util.xml;
 
 import org.opensaml.util.Assert;
-import org.opensaml.util.Objects;
-import org.opensaml.util.Strings;
+import org.opensaml.util.ObjectSupport;
+import org.opensaml.util.StringSupport;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -40,8 +40,8 @@ public final class Namespaces {
     public static void appendNamespaceDeclaration(Element element, String namespaceURI, String prefix) {
         Assert.isNotNull(element, "Element may not be null");
 
-        String nsURI = Strings.trimOrNull(namespaceURI);
-        String nsPrefix = Strings.trimOrNull(prefix);
+        String nsURI = StringSupport.trimOrNull(namespaceURI);
+        String nsPrefix = StringSupport.trimOrNull(prefix);
 
         // This results in xmlns="" being emitted, which seems wrong.
         if (nsURI == null && nsPrefix == null) {
@@ -89,13 +89,13 @@ public final class Namespaces {
             for (int i = 0; i < length; i++) {
                 Node attr = map.item(i);
                 String value = attr.getNodeValue();
-                if (Objects.equals(attr.getNamespaceURI(), XmlConstants.XMLNS_NS)) {
+                if (ObjectSupport.equals(attr.getNamespaceURI(), XmlConstants.XMLNS_NS)) {
                     // at this point we are dealing with DOM Level 2 nodes only
-                    if (Objects.equals(prefix, XmlConstants.XMLNS_PREFIX)) {
+                    if (ObjectSupport.equals(prefix, XmlConstants.XMLNS_PREFIX)) {
                         // default namespace
                         return value;
-                    } else if (Objects.equals(attr.getPrefix(), XmlConstants.XMLNS_PREFIX)
-                            && Objects.equals(attr, prefix)) {
+                    } else if (ObjectSupport.equals(attr.getPrefix(), XmlConstants.XMLNS_PREFIX)
+                            && ObjectSupport.equals(attr, prefix)) {
                         // non default namespace
                         return value;
                     }
@@ -152,15 +152,15 @@ public final class Namespaces {
             int length = map.getLength();
             for (int i = 0; i < length; i++) {
                 Node attr = map.item(i);
-                if (Objects.equals(attr.getNamespaceURI(), XmlConstants.XMLNS_NS)) {
+                if (ObjectSupport.equals(attr.getNamespaceURI(), XmlConstants.XMLNS_NS)) {
                     // DOM Level 2 nodes
-                    if (Objects.equals(attr.getNodeName(), XmlConstants.XMLNS_PREFIX)
-                            || (Objects.equals(attr.getPrefix(), XmlConstants.XMLNS_PREFIX))
-                            && Objects.equals(attr.getNodeValue(), namespaceURI)) {
+                    if (ObjectSupport.equals(attr.getNodeName(), XmlConstants.XMLNS_PREFIX)
+                            || (ObjectSupport.equals(attr.getPrefix(), XmlConstants.XMLNS_PREFIX))
+                            && ObjectSupport.equals(attr.getNodeValue(), namespaceURI)) {
 
                         String localname = attr.getLocalName();
                         String foundNamespace = startingElement.lookupNamespaceURI(localname);
-                        if (Objects.equals(foundNamespace, namespaceURI)) {
+                        if (ObjectSupport.equals(foundNamespace, namespaceURI)) {
                             return localname;
                         }
                     }

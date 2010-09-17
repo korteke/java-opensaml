@@ -23,7 +23,7 @@ import java.util.Locale;
 import javax.xml.namespace.QName;
 
 import org.opensaml.util.Assert;
-import org.opensaml.util.Strings;
+import org.opensaml.util.StringSupport;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -120,7 +120,7 @@ public final class Attributes {
      */
     public static void appendAttribute(Element element, QName attributeName, List<String> attributeValues,
             boolean isIDAttribute) {
-        appendAttribute(element, attributeName, Strings.listToStringValue(attributeValues, " "), isIDAttribute);
+        appendAttribute(element, attributeName, StringSupport.listToStringValue(attributeValues, " "), isIDAttribute);
     }
 
     /**
@@ -174,18 +174,18 @@ public final class Attributes {
     public static Attr constructAttribute(Document document, String namespaceURI, String localName, String prefix) {
         Assert.isNotNull(document, "Document may not null");
 
-        String trimmedLocalName = Strings.trimOrNull(localName);
+        String trimmedLocalName = StringSupport.trimOrNull(localName);
         Assert.isNull(trimmedLocalName, "Attribute local name may not be null or empty");
 
         String qualifiedName;
-        String trimmedPrefix = Strings.trimOrNull(prefix);
+        String trimmedPrefix = StringSupport.trimOrNull(prefix);
         if (trimmedPrefix != null) {
-            qualifiedName = trimmedPrefix + ":" + Strings.trimOrNull(trimmedLocalName);
+            qualifiedName = trimmedPrefix + ":" + StringSupport.trimOrNull(trimmedLocalName);
         } else {
-            qualifiedName = Strings.trimOrNull(trimmedLocalName);
+            qualifiedName = StringSupport.trimOrNull(trimmedLocalName);
         }
 
-        if (Strings.isNullOrEmpty(namespaceURI)) {
+        if (StringSupport.isNullOrEmpty(namespaceURI)) {
             return document.createAttributeNS(null, qualifiedName);
         } else {
             return document.createAttributeNS(namespaceURI, qualifiedName);
@@ -261,7 +261,7 @@ public final class Attributes {
         if (attribute == null) {
             return Collections.emptyList();
         }
-        return Strings.stringToList(attribute.getValue(), XmlConstants.LIST_DELIMITERS);
+        return StringSupport.stringToList(attribute.getValue(), XmlConstants.LIST_DELIMITERS);
     }
 
     /**
@@ -272,7 +272,7 @@ public final class Attributes {
      * @return a QName from an attributes value, or null if the given attribute is null
      */
     public static QName getAttributeValueAsQName(Attr attribute) {
-        if (attribute == null || Strings.isNullOrEmpty(attribute.getValue())) {
+        if (attribute == null || StringSupport.isNullOrEmpty(attribute.getValue())) {
             return null;
         }
 

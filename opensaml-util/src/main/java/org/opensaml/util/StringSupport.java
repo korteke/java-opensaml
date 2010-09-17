@@ -22,10 +22,10 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 /** String utility methods. */
-public final class Strings {
+public final class StringSupport {
     
     /** Constructor. */
-    private Strings() {
+    private StringSupport() {
     }
 
     /**

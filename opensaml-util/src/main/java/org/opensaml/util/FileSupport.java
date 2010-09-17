@@ -21,10 +21,10 @@ import java.io.FileInputStream;
 import java.io.IOException;
 
 /** File helper functions. */
-public final class Files {
+public final class FileSupport {
 
     /** Constructor. */
-    private Files() {
+    private FileSupport() {
 
     }
 
@@ -60,7 +60,7 @@ public final class Files {
             throw new IOException("Could not completely read file " + file.getName());
         }
 
-        Closeables.closeQuiety(ins);
+        CloseableSupport.closeQuiety(ins);
 
         return bytes;
     }
