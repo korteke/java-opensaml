@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsse:UsernameToken 
+    xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd"
+    xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"
+    wsu:Id="UsernameToken-007">
+    <wsse:Username>
+        test
+    </wsse:Username>
+    <wsse:Password
+        Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd#PasswordText">
+        test
+    </wsse:Password>
+    <wsu:Created>
+        2007-12-19T09:53:08.335Z
+    </wsu:Created>
+</wsse:UsernameToken>
