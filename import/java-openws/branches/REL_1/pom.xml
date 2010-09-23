@@ -295,15 +295,6 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-checkstyle-plugin</artifactId>
-                <configuration>
-                    <configLocation>checkstyle.xml</configLocation>
-                    <outputDirectory>${project.reporting.outputDirectory}/style</outputDirectory>
-                    <enableRSS>false</enableRSS>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-report-plugin</artifactId>
                 <configuration>
                     <outputDirectory>${project.reporting.outputDirectory}/unitTest</outputDirectory>
@@ -343,19 +334,6 @@
                                 <phase>package</phase>
                                 <goals>
                                     <goal>jxr</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-checkstyle-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>release-checkstyle</id>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>checkstyle</goal>
                                 </goals>
                             </execution>
                         </executions>
@@ -404,7 +382,7 @@
     </profiles>
     
     <!-- Project Metadata -->
-    <url>https://opensaml.org/</url>
+    <url>http://opensaml.org/</url>
     
     <inceptionYear>2006</inceptionYear>
     
