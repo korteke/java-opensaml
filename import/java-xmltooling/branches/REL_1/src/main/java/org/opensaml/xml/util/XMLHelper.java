@@ -575,11 +575,6 @@ public final class XMLHelper {
         String nsURI = DatatypeHelper.safeTrimOrNullString(namespaceURI);
         String nsPrefix = DatatypeHelper.safeTrimOrNullString(prefix);
 
-        // This results in xmlns="" being emitted, which seems wrong.
-        if (nsURI == null && nsPrefix == null) {
-            return;
-        }
-
         String attributeName;
         if (nsPrefix == null) {
             attributeName = XMLConstants.XMLNS_PREFIX;
