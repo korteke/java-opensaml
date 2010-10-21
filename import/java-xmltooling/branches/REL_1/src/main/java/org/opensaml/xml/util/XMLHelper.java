@@ -1016,8 +1016,9 @@ public final class XMLHelper {
     public static String qnameToContentString(QName qname) {
         StringBuffer buf = new StringBuffer();
 
-        if (qname.getPrefix() != null) {
-            buf.append(qname.getPrefix());
+        String prefix = DatatypeHelper.safeTrimOrNullString(qname.getPrefix());
+        if (prefix != null) {
+            buf.append(prefix);
             buf.append(":");
         }
         buf.append(qname.getLocalPart());
