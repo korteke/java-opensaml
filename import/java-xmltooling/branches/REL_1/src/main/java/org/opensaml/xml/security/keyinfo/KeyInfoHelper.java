@@ -72,9 +72,6 @@ import org.slf4j.LoggerFactory;
  */
 public class KeyInfoHelper {
 
-    /** Class logger. */
-    private static Logger log = LoggerFactory.getLogger(KeyInfoHelper.class);
-    
     /** Factory for {@link java.security.cert.X509Certificate} and
      * {@link java.security.cert.X509CRL} creation. */
     private static CertificateFactory x509CertFactory;
@@ -670,6 +667,7 @@ public class KeyInfoHelper {
      *             contain valid information
      */
     protected static PublicKey buildKey(KeySpec keySpec, String keyAlgorithm) throws KeyException {
+        Logger log = getLogger();
         try {
             KeyFactory keyFactory = KeyFactory.getInstance(keyAlgorithm);
             return keyFactory.generatePublic(keySpec);
@@ -696,5 +694,14 @@ public class KeyInfoHelper {
         }
 
         return x509CertFactory;
+    }
+    
+    /**
+     * Get an SLF4J Logger.
+     * 
+     * @return a Logger instance
+     */
+    private static Logger getLogger() {
+        return LoggerFactory.getLogger(KeyInfoHelper.class);
     }
 }

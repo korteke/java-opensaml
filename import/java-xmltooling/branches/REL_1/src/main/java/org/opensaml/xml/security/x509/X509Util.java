@@ -44,6 +44,7 @@ import org.bouncycastle.asn1.x509.SubjectKeyIdentifier;
 import org.bouncycastle.asn1.x509.X509Extensions;
 import org.bouncycastle.x509.extension.SubjectKeyIdentifierStructure;
 import org.bouncycastle.x509.extension.X509ExtensionUtil;
+import org.opensaml.xml.schema.SchemaBuilder;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.util.DatatypeHelper;
@@ -91,9 +92,6 @@ public class X509Util {
     /** RFC 2459 Registered ID Subject Alt Name type. */
     public static final Integer REGISTERED_ID_ALT_NAME = new Integer(8);
 
-    /** Class logger. */
-    private static Logger log = LoggerFactory.getLogger(X509Util.class);
-
     /** Constructed. */
     protected X509Util() {
 
@@ -136,6 +134,7 @@ public class X509Util {
      * @return the common names that appear in the DN in the order they appear or null if the given DN is null
      */
     public static List<String> getCommonNames(X500Principal dn) {
+        Logger log = getLogger();
         if (dn == null) {
             return null;
         }
@@ -196,6 +195,7 @@ public class X509Util {
      * @return the alt names, of the given type, within the cert
      */
     public static List getAltNames(X509Certificate certificate, Integer[] nameTypes) {
+        Logger log = getLogger();
         if (certificate == null) {
             return null;
         }
@@ -255,6 +255,7 @@ public class X509Util {
      * @throws IOException
      */
     public static byte[] getSubjectKeyIdentifier(X509Certificate certificate) {
+        Logger log = getLogger();
         byte[] derValue = certificate.getExtensionValue(X509Extensions.SubjectKeyIdentifier.getId());
         if (derValue == null || derValue.length == 0) {
             return null;
@@ -415,6 +416,7 @@ public class X509Util {
      * @return converted representation of name value, based on type
      */
     private static Object convertAltNameType(Integer nameType, Object nameValue) {
+        Logger log = getLogger();
         if (DIRECTORY_ALT_NAME.equals(nameType) || DNS_ALT_NAME.equals(nameType) || RFC822_ALT_NAME.equals(nameType)
                 || URI_ALT_NAME.equals(nameType) || REGISTERED_ID_ALT_NAME.equals(nameType)) {
 
@@ -436,5 +438,14 @@ public class X509Util {
 
         log.warn("Encountered unknown alt name type '{}', adding as-is", nameType);
         return nameValue;
+    }
+    
+    /**
+     * Get an SLF4J Logger.
+     * 
+     * @return a Logger instance
+     */
+    private static Logger getLogger() {
+        return LoggerFactory.getLogger(X509Util.class);
     }
 }

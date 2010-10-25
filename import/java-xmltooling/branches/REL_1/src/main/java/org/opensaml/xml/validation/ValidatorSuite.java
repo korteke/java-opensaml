@@ -39,7 +39,7 @@ import org.slf4j.LoggerFactory;
 public class ValidatorSuite {
 
     /** Class logger. */
-    private static Logger log = LoggerFactory.getLogger(ValidatorSuite.class);
+    private final Logger log = LoggerFactory.getLogger(ValidatorSuite.class);
 
     /** Unique ID for this suite. */
     private String id;

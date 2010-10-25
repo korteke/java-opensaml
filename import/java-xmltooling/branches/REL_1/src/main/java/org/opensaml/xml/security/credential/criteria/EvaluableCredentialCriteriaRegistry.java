@@ -46,9 +46,6 @@ public final class EvaluableCredentialCriteriaRegistry {
      */
     public static final String DEFAULT_MAPPINGS_FILE = "/credential-criteria-registry.properties";
 
-    /** Logger. */
-    private static Logger log = LoggerFactory.getLogger(EvaluableCredentialCriteriaRegistry.class);
-
     /** Storage for the registry mappings. */
     private static Map<Class<? extends Criteria>, Class<? extends EvaluableCredentialCriteria>> registry;
 
@@ -69,6 +66,7 @@ public final class EvaluableCredentialCriteriaRegistry {
      *             EvaluableCredentialCriteria based on class information stored in the registry
      */
     public static EvaluableCredentialCriteria getEvaluator(Criteria criteria) throws SecurityException {
+        Logger log = getLogger();
         Class<? extends EvaluableCredentialCriteria> clazz = lookup(criteria.getClass());
 
         if (clazz != null) {
@@ -127,6 +125,7 @@ public final class EvaluableCredentialCriteriaRegistry {
      */
     public static synchronized void register(Class<? extends Criteria> criteriaClass,
             Class<? extends EvaluableCredentialCriteria> evaluableClass) {
+        Logger log = getLogger();
 
         log.debug("Registering class {} as evaluator for class {}", evaluableClass.getName(), criteriaClass.getName());
 
@@ -140,6 +139,7 @@ public final class EvaluableCredentialCriteriaRegistry {
      * @param criteriaClass class subtype of {@link Criteria}
      */
     public static synchronized void deregister(Class<? extends Criteria> criteriaClass) {
+        Logger log = getLogger();
 
         log.debug("Deregistering evaluator for class {}", criteriaClass.getName());
         registry.remove(criteriaClass);
@@ -149,6 +149,7 @@ public final class EvaluableCredentialCriteriaRegistry {
      * Clear all mappings from the registry.
      */
     public static synchronized void clearRegistry() {
+        Logger log = getLogger();
         log.debug("Clearing evaluable criteria registry");
 
         registry.clear();
@@ -182,6 +183,7 @@ public final class EvaluableCredentialCriteriaRegistry {
      * Load the default set of criteria-evaluator mappings from the default mappings properties file.
      */
     public static synchronized void loadDefaultMappings() {
+        Logger log = getLogger();
         log.debug("Loading default evaluable credential criteria mappings");
         InputStream inStream = EvaluableCredentialCriteriaRegistry.class.getResourceAsStream(DEFAULT_MAPPINGS_FILE);
         if (inStream == null) {
@@ -208,6 +210,7 @@ public final class EvaluableCredentialCriteriaRegistry {
      */
     @SuppressWarnings("unchecked")
     public static synchronized void loadMappings(Properties mappings) {
+        Logger log = getLogger();
         for (Object key : mappings.keySet()) {
             if (!(key instanceof String)) {
                 log.error(String.format("Properties key was not an instance of String, was '%s', skipping...", key
@@ -240,6 +243,15 @@ public final class EvaluableCredentialCriteriaRegistry {
             register(criteriaClass, evaluableClass);
         }
 
+    }
+    
+    /**
+     * Get an SLF4J Logger.
+     * 
+     * @return a Logger instance
+     */
+    private static Logger getLogger() {
+        return LoggerFactory.getLogger(EvaluableCredentialCriteriaRegistry.class);
     }
 
     static {

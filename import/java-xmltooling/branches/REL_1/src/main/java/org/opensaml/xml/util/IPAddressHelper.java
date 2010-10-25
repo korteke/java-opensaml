@@ -25,9 +25,6 @@ import org.slf4j.LoggerFactory;
 /** Helper class for working with IP address data. */
 public final class IPAddressHelper {
     
-    /** Class logger. */
-    private static Logger log = LoggerFactory.getLogger(IPAddressHelper.class);
-
     /** Constructor. */
     private IPAddressHelper() {
 
@@ -42,6 +39,7 @@ public final class IPAddressHelper {
      * @return IP address as a string, or null if can not be processed
      */
     public static String addressToString(byte[] address) {
+        Logger log = getLogger();
         if (isIPv4(address)) {
             return ipv4ToString(address);
         } else if (isIPv6(address)) {
@@ -61,6 +59,7 @@ public final class IPAddressHelper {
      * @return IP address as a string, or null if can not be processed
      */
     private static String ipv4ToString(byte[] address) {
+        Logger log = getLogger();
         // This code was modeled after similar code in Sun's sun.security.x509.IPAddressName,
         // used by sun.security.x509.X509CertImpl.
         StringBuilder builder = new StringBuilder();
@@ -100,6 +99,7 @@ public final class IPAddressHelper {
      * @return IP address as a string, or null if can not be processed
      */
     private static String ipv6ToString(byte[] address) {
+        Logger log = getLogger();
         // This code was modeled after similar code in Sun's sun.security.x509.IPAddressName,
         // used by sun.security.x509.X509CertImpl.
         StringBuilder builder = new StringBuilder();
@@ -170,6 +170,15 @@ public final class IPAddressHelper {
      */
     public static boolean hasMask(byte[] address) {
         return address.length == 8 || address.length == 32;
+    }
+    
+    /**
+     * Get an SLF4J Logger.
+     * 
+     * @return a Logger instance
+     */
+    private static Logger getLogger() {
+        return LoggerFactory.getLogger(IPAddressHelper.class);
     }
 
 }

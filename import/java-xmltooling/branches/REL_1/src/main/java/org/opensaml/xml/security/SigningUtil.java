@@ -35,9 +35,6 @@ import org.slf4j.LoggerFactory;
  */
 public final class SigningUtil {
 
-    /** Class logger. */
-    private static Logger log = LoggerFactory.getLogger(SigningUtil.class);
-
     /** Constructor. */
     private SigningUtil() {
     }
@@ -82,6 +79,7 @@ public final class SigningUtil {
      */
     public static byte[] sign(Credential signingCredential, String jcaAlgorithmID, boolean isMAC, byte[] input)
             throws SecurityException {
+        Logger log = getLogger();
 
         Key signingKey = SecurityHelper.extractSigningKey(signingCredential);
         if (signingKey == null) {
@@ -112,6 +110,7 @@ public final class SigningUtil {
      * @throws SecurityException thrown if the signature computation results in an error
      */
     public static byte[] sign(PrivateKey signingKey, String jcaAlgorithmID, byte[] input) throws SecurityException {
+        Logger log = getLogger();
         log.debug("Computing signature over input using private key of type {} and JCA algorithm ID {}", signingKey
                 .getAlgorithm(), jcaAlgorithmID);
 
@@ -141,6 +140,7 @@ public final class SigningUtil {
      * @throws SecurityException thrown if the MAC computation results in an error
      */
     public static byte[] signMAC(Key signingKey, String jcaAlgorithmID, byte[] input) throws SecurityException {
+        Logger log = getLogger();
         log.debug("Computing MAC over input using key of type {} and JCA algorithm ID {}", signingKey.getAlgorithm(),
                 jcaAlgorithmID);
 
@@ -201,6 +201,7 @@ public final class SigningUtil {
      */
     public static boolean verify(Credential verificationCredential, String jcaAlgorithmID, boolean isMAC,
             byte[] signature, byte[] input) throws SecurityException {
+        Logger log = getLogger();
 
         Key verificationKey = SecurityHelper.extractVerificationKey(verificationCredential);
         if (verificationKey == null) {
@@ -234,6 +235,7 @@ public final class SigningUtil {
      */
     public static boolean verify(PublicKey verificationKey, String jcaAlgorithmID, byte[] signature, byte[] input)
             throws SecurityException {
+        Logger log = getLogger();
 
         log.debug("Verifying signature over input using public key of type {} and JCA algorithm ID {}", verificationKey
                 .getAlgorithm(), jcaAlgorithmID);
@@ -266,6 +268,7 @@ public final class SigningUtil {
      */
     public static boolean verifyMAC(Key verificationKey, String jcaAlgorithmID, byte[] signature, byte[] input)
             throws SecurityException {
+        Logger log = getLogger();
 
         log.debug("Verifying MAC over input using key of type {} and JCA algorithm ID {}", verificationKey
                 .getAlgorithm(), jcaAlgorithmID);
@@ -275,5 +278,14 @@ public final class SigningUtil {
 
         byte[] computed = signMAC(verificationKey, jcaAlgorithmID, input);
         return Arrays.equals(computed, signature);
+    }
+    
+    /**
+     * Get an SLF4J Logger.
+     * 
+     * @return a Logger instance
+     */
+    private static Logger getLogger() {
+        return LoggerFactory.getLogger(SigningUtil.class);
     }
 }

@@ -53,6 +53,7 @@ import java.util.Set;
 
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
+
 import org.apache.commons.ssl.PKCS8Key;
 import org.apache.xml.security.Init;
 import org.apache.xml.security.algorithms.JCEMapper;
@@ -84,9 +85,6 @@ import org.slf4j.LoggerFactory;
  * Helper methods for security-related requirements.
  */
 public final class SecurityHelper {
-
-    /** Class logger. */
-    private static Logger log = LoggerFactory.getLogger(SecurityHelper.class);
 
     /** Additional algorithm URI's which imply RSA keys. */
     private static Set<String> rsaAlgorithmURIs;
@@ -163,6 +161,7 @@ public final class SecurityHelper {
      *         indeterminable from the URI
      */
     public static Integer getKeyLengthFromURI(String algorithmURI) {
+        Logger log = getLogger();
         String algoClass = DatatypeHelper.safeTrimOrNullString(JCEMapper.getAlgorithmClassFromURI(algorithmURI));
 
         if (ApacheXMLSecurityConstants.ALGO_CLASS_BLOCK_ENCRYPTION.equals(algoClass)
@@ -189,6 +188,7 @@ public final class SecurityHelper {
      * @throws KeyException thrown if the length of the key to generate could not be determined
      */
     public static SecretKey generateSymmetricKey(String algoURI) throws NoSuchAlgorithmException, KeyException {
+        Logger log = getLogger();
         String jceAlgorithmName = getKeyAlgorithmFromURI(algoURI);
         if (DatatypeHelper.isEmpty(jceAlgorithmName)) {
             log.error("Mapping from algorithm URI '" + algoURI
@@ -280,6 +280,7 @@ public final class SecurityHelper {
      * @return length of the key in bits, or null if the length can not be determined
      */
     public static Integer getKeyLength(Key key) {
+        Logger log = getLogger();
         // TODO investigate techniques (and use cases) to determine length in other cases,
         // e.g. RSA and DSA keys, and non-RAW format symmetric keys
         if (key instanceof SecretKey && "RAW".equals(key.getFormat())) {
@@ -732,6 +733,7 @@ public final class SecurityHelper {
      * @throws SecurityException if the keys can not be evaluated, or if the key algorithm is unsupported or unknown
      */
     public static boolean matchKeyPair(PublicKey pubKey, PrivateKey privKey) throws SecurityException {
+        Logger log = getLogger();
         // This approach attempts to match the keys by signing and then validating some known data.
 
         if (pubKey == null || privKey == null) {
@@ -813,6 +815,7 @@ public final class SecurityHelper {
      */
     public static void prepareSignatureParams(Signature signature, Credential signingCredential,
             SecurityConfiguration config, String keyInfoGenName) throws SecurityException {
+        Logger log = getLogger();
 
         SecurityConfiguration secConfig;
         if (config != null) {
@@ -896,6 +899,7 @@ public final class SecurityHelper {
      */
     public static EncryptionParameters buildDataEncryptionParams(Credential encryptionCredential,
             SecurityConfiguration config, String keyInfoGenName) {
+        Logger log = getLogger();
 
         SecurityConfiguration secConfig;
         if (config != null) {
@@ -971,6 +975,7 @@ public final class SecurityHelper {
     public static KeyEncryptionParameters buildKeyEncryptionParams(Credential encryptionCredential,
             String wrappedKeyAlgorithm, SecurityConfiguration config, String keyInfoGenName, String recipient)
             throws SecurityException {
+        Logger log = getLogger();
 
         SecurityConfiguration secConfig;
         if (config != null) {
@@ -1048,6 +1053,15 @@ public final class SecurityHelper {
             }
         }
         return null;
+    }
+    
+    /**
+     * Get an SLF4J Logger.
+     * 
+     * @return a Logger instance
+     */
+    private static Logger getLogger() {
+        return LoggerFactory.getLogger(SecurityHelper.class);
     }
 
     static {

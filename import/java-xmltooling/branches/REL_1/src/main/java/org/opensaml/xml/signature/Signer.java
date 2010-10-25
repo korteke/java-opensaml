@@ -39,9 +39,6 @@ import org.slf4j.LoggerFactory;
  */
 public class Signer {
 
-    /** Class logger. */
-    private static Logger log = LoggerFactory.getLogger(Signer.class);
-
     /** Constructor. */
     protected Signer() {
 
@@ -66,6 +63,7 @@ public class Signer {
      * @throws SignatureException thrown if there is an error computing the signature
      */
     public static void signObject(Signature signature) throws SignatureException {
+        Logger log = getLogger();
         try {
             XMLSignature xmlSignature = ((SignatureImpl) signature).getXMLSignature();
 
@@ -81,11 +79,21 @@ public class Signer {
             throw new SignatureException("Signature computation error", e);
         }
     }
+    
+    /**
+     * Get an SLF4J Logger.
+     * 
+     * @return a Logger instance
+     */
+    private static Logger getLogger() {
+        return LoggerFactory.getLogger(Signer.class);
+    }
 
     /*
      * Initialize the Apache XML security library if it hasn't been already
      */
     static {
+        Logger log = getLogger();
         if (!Init.isInitialized()) {
             log.debug("Initializing XML security library");
             Init.init();

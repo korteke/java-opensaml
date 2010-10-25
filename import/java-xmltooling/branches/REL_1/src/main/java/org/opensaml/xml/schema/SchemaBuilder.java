@@ -33,7 +33,7 @@ import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
 /** A helper class for building {@link Schema} from a set of input. */
-public class SchemaBuilder {
+public final class SchemaBuilder {
 
     /** Language of the schema files. */
     public static enum SchemaLanguage {
@@ -65,9 +65,9 @@ public class SchemaBuilder {
             return schemaFileExtension;
         }
     };
-
-    /** Class logger. */
-    private static final Logger LOG = LoggerFactory.getLogger(SchemaBuilder.class);
+    
+    /** Constructor. */
+    private SchemaBuilder() {}
 
     /**
      * Builds a schema from the given schema source.
@@ -209,6 +209,7 @@ public class SchemaBuilder {
      */
     protected static void getSchemaFiles(SchemaLanguage lang, File[] schemaFilesOrDirectories,
             List<File> accumulatedSchemaFiles) {
+        Logger log = getLogger();
         
         if(lang == null){
             throw new IllegalArgumentException("Schema language may not be null");
@@ -224,11 +225,11 @@ public class SchemaBuilder {
             }
 
             if (!handle.canRead()) {
-                LOG.debug("Ignoring '{}', no read permission", handle.getAbsolutePath());
+                log.debug("Ignoring '{}', no read permission", handle.getAbsolutePath());
             }
 
             if (handle.isFile() && handle.getName().endsWith(lang.getSchemaFileExtension())) {
-                LOG.debug("Added schema source '{}'", handle.getAbsolutePath());
+                log.debug("Added schema source '{}'", handle.getAbsolutePath());
                 accumulatedSchemaFiles.add(handle);
             }
 
@@ -267,5 +268,14 @@ public class SchemaBuilder {
 
         schemaFactory.setErrorHandler(new LoggingErrorHandler(LoggerFactory.getLogger(SchemaBuilder.class)));
         return schemaFactory.newSchema(schemaSources);
+    }
+    
+    /**
+     * Get an SLF4J Logger.
+     * 
+     * @return a Logger instance
+     */
+    private static Logger getLogger() {
+        return LoggerFactory.getLogger(SchemaBuilder.class);
     }
 }

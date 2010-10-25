@@ -42,9 +42,6 @@ import org.w3c.dom.Element;
 /** Class for loading library configuration files and retrieving the configured components. */
 public class Configuration {
 
-    /** Class logger. */
-    private static Logger log = LoggerFactory.getLogger(Configuration.class);
-
     /** Default object provider. */
     private static QName defaultProvider = new QName(XMLConstants.XMLTOOLING_CONFIG_NS,
             XMLConstants.XMLTOOLING_DEFAULT_OBJECT_PROVIDER);
@@ -120,6 +117,7 @@ public class Configuration {
      */
     public static void registerObjectProvider(QName providerName, XMLObjectBuilder builder, Marshaller marshaller,
             Unmarshaller unmarshaller) {
+        Logger log = getLogger();
         log.debug("Registering new builder, marshaller, and unmarshaller for {}", providerName);
         builderFactory.registerBuilder(providerName, builder);
         marshallerFactory.registerMarshaller(providerName, marshaller);
@@ -132,6 +130,7 @@ public class Configuration {
      * @param key the key of the builder, marshaller, and unmarshaller to be removed
      */
     public static void deregisterObjectProvider(QName key) {
+        Logger log = getLogger();
         log.debug("Unregistering builder, marshaller, and unmarshaller for {}", key);
         configuredObjectProviders.remove(key);
         builderFactory.deregisterBuilder(key);
@@ -253,6 +252,7 @@ public class Configuration {
      * Validates that the system is not using the horribly buggy Sun JAXP implementation.
      */
     public static void validateNonSunJAXP() {
+        Logger log = getLogger();
         String builderFactoryClass = DocumentBuilderFactory.newInstance().getClass().getName();
         log.debug("VM using JAXP parser {}", builderFactoryClass);
 
@@ -278,6 +278,7 @@ public class Configuration {
      * @return false if one or more capablities are not present, otherwise true
      */
     public static boolean validateJCEProviders() {
+        Logger log = getLogger();
         boolean ret = true;
 
         // XML Encryption spec requires AES support (128 and 256).
@@ -319,6 +320,7 @@ public class Configuration {
      */
     public static void registerObjectProvider(QName providerName, XMLObjectBuilder builder, Marshaller marshaller,
             Unmarshaller unmarshaller, Element configuration) {
+        Logger log = getLogger();
         log.debug("Registering new builder, marshaller, and unmarshaller for {}", providerName);
         if (configuration != null) {
             configuredObjectProviders.put(providerName, configuration);
@@ -381,6 +383,15 @@ public class Configuration {
         }
 
         return null;
+    }
+    
+    /**
+     * Get an SLF4J Logger.
+     * 
+     * @return a Logger instance
+     */
+    private static Logger getLogger() {
+        return LoggerFactory.getLogger(Configuration.class);
     }
 
     static {
