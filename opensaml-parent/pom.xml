@@ -18,7 +18,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <xerces.groupId>org.apache.xerces</xerces.groupId>
-        <xerces.version>2.9.1</xerces.version>
+        <xerces.version>2.10.0</xerces.version>
     </properties>
 
     <repositories>
@@ -184,8 +184,8 @@
     </mailingLists>
 
     <scm>
-        <connection>scm:svn:https://svn.middleware.georgetown.edu/java-opensaml2/</connection>
-        <developerConnection>scm:svn:https://svn.middleware.georgetown.edu/java-opensaml2/</developerConnection>
+        <connection>scm:svn:https://svn.middleware.georgetown.edu/java-opensaml/</connection>
+        <developerConnection>scm:svn:https://svn.middleware.georgetown.edu/java-opensaml/</developerConnection>
         <tag>HEAD</tag>
         <url>http://svn.middleware.georgetown.edu/view/java-opensaml</url>
     </scm>
