@@ -28,6 +28,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 import org.apache.http.Header;
+import org.apache.http.HttpHeaders;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
@@ -214,7 +215,7 @@ public class HttpResource implements CachingResource, FilebackedRemoteResource {
             return null;
         }
 
-        final Header httpHeader = response.getFirstHeader(HttpHeader.ETAG);
+        final Header httpHeader = response.getFirstHeader(HttpHeaders.ETAG);
         if (httpHeader != null) {
             return httpHeader.getValue();
         }
@@ -234,7 +235,7 @@ public class HttpResource implements CachingResource, FilebackedRemoteResource {
             return null;
         }
 
-        final Header httpHeader = response.getFirstHeader(HttpHeader.LAST_MODIFIED);
+        final Header httpHeader = response.getFirstHeader(HttpHeaders.LAST_MODIFIED);
         if (httpHeader != null) {
             return httpHeader.getValue();
         }
@@ -253,11 +254,11 @@ public class HttpResource implements CachingResource, FilebackedRemoteResource {
         final HttpGet getMethod = new HttpGet(resourceUrl);
 
         if (cachedResourceETag != null) {
-            getMethod.setHeader(HttpHeader.IF_NONE_MATCH, cachedResourceETag);
+            getMethod.setHeader(HttpHeaders.IF_NONE_MATCH, cachedResourceETag);
         }
 
         if (cachedResourceLastModified != null) {
-            getMethod.setHeader(HttpHeader.IF_MODIFIED_SINCE, cachedResourceLastModified);
+            getMethod.setHeader(HttpHeaders.IF_MODIFIED_SINCE, cachedResourceLastModified);
         }
 
         return getMethod;

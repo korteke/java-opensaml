@@ -482,7 +482,7 @@ public class HttpClientBuilder {
         } else {
             final ThreadSafeClientConnManager manager = new ThreadSafeClientConnManager(registry);
             manager.setDefaultMaxPerRoute(connectionsMaxPerRoute);
-            manager.setMaxTotalConnections(connectionsMaxTotal);
+            manager.setMaxTotal(connectionsMaxTotal);
             return manager;
         }
     }
