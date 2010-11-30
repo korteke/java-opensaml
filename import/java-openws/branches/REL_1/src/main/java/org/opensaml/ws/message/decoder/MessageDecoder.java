@@ -20,7 +20,7 @@ import org.opensaml.ws.message.MessageContext;
 import org.opensaml.xml.security.SecurityException;
 
 /**
- * Decodes a message, from an inbound transport, in a binding specific mannger. As the decode proceeds information is
+ * Decodes a message, from an inbound transport, in a binding specific manner. As the decode proceeds information is
  * stored in the {@link MessageContext}. The decoding process deserializes the message from the inbound transport into
  * its DOM representation, unmarshall the DOM into the appropriate XMLObject, and then evaluates the security policy
  * against the inbound transport and decoded message.
