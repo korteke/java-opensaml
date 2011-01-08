@@ -1,6 +1,7 @@
 Changes in Release 1.4.1
 ==============================================
 [JOWS-23] - Update libs for 1.4.1
+[JOWS-24] - StorageServiceSweeper can throw exception, causing the entire TaskTimer to die
 
 Changes in Release 1.4.0
 ==============================================

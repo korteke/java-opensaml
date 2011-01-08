@@ -1,5 +1,5 @@
 /*
- * Copyright [2007] [University Corporation for Advanced Internet Development, Inc.]
+ * Copyright 2007 University Corporation for Advanced Internet Development, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,9 +28,12 @@ import org.slf4j.LoggerFactory;
  * A simple task that periodically sweeps over a {@link StorageService} and removes expired entries.
  */
 public class ExpiringObjectStorageServiceSweeper extends TimerTask {
-    
+
     /** Class logger. */
     private final Logger log = LoggerFactory.getLogger(ExpiringObjectStorageServiceSweeper.class);
+
+    /** Interval between sweeps. */
+    private long sweepInterval;
 
     /** Storage service whose entries will be periodically checked. */
     private StorageService store;
@@ -42,12 +45,13 @@ public class ExpiringObjectStorageServiceSweeper extends TimerTask {
      * Constructor. Registers this task with the given timer.
      * 
      * @param taskTimer timer that will sweep the given storage service
-     * @param sweepInterval interval, in milliseconds, that the storage service will be swept
+     * @param interval interval, in milliseconds, that the storage service will be swept
      * @param sweptStore storage service that will be swept
      */
-    public ExpiringObjectStorageServiceSweeper(Timer taskTimer, long sweepInterval, StorageService sweptStore) {
+    public ExpiringObjectStorageServiceSweeper(Timer taskTimer, long interval, StorageService sweptStore) {
         store = sweptStore;
-        taskTimer.schedule(this, sweepInterval, sweepInterval);
+        sweepInterval = interval;
+        taskTimer.schedule(this, interval, interval);
         partitions = null;
     }
 
@@ -55,52 +59,57 @@ public class ExpiringObjectStorageServiceSweeper extends TimerTask {
      * Constructor. Registers this task with the given timer.
      * 
      * @param taskTimer timer that will sweep the given storage service
-     * @param sweepInterval interval, in milliseconds, that the storage service will be swept
+     * @param interval interval, in milliseconds, that the storage service will be swept
      * @param sweptStore storage service that will be swept
      * @param sweptPartitions the partitions to sweep, if null or empty all partitions are swept
      */
-    public ExpiringObjectStorageServiceSweeper(Timer taskTimer, long sweepInterval, StorageService sweptStore,
+    public ExpiringObjectStorageServiceSweeper(Timer taskTimer, long interval, StorageService sweptStore,
             Set<String> sweptPartitions) {
         store = sweptStore;
         if (sweptPartitions != null || sweptPartitions.isEmpty()) {
             partitions = sweptPartitions;
-        }else{
+        } else {
             partitions = null;
         }
-        taskTimer.schedule(this, sweepInterval, sweepInterval);
+        sweepInterval = interval;
+        taskTimer.schedule(this, interval, interval);
     }
 
     /** {@inheritDoc} */
     public void run() {
-        Iterator<String> sweepPartitions;
-        if (partitions != null && !partitions.isEmpty()) {
-            sweepPartitions = partitions.iterator();
-        } else {
-            sweepPartitions = store.getPartitions();
-        }
-
-        String currentParition;
-        Iterator<?> partitionKeys;
-        Object partitionKey;
-        Object partitionValue;
-        while (sweepPartitions.hasNext()) {
-            currentParition = sweepPartitions.next();
-            log.trace("Sweeping storage service partition {}", currentParition);
-            partitionKeys = store.getKeys(currentParition);
-            if (partitionKeys == null) {
-                continue;
+        try {
+            Iterator<String> sweepPartitions;
+            if (partitions != null && !partitions.isEmpty()) {
+                sweepPartitions = partitions.iterator();
+            } else {
+                sweepPartitions = store.getPartitions();
             }
 
-            while (partitionKeys.hasNext()) {
-                partitionKey = partitionKeys.next();
-                partitionValue = store.get(currentParition, partitionKey);
-                if (partitionValue instanceof ExpiringObject) {
-                    if (((ExpiringObject) partitionValue).isExpired()) {
-                        log.trace("Removing expired object from storage service partition {}", currentParition);
-                        partitionKeys.remove();
+            String currentParition;
+            Iterator<?> partitionKeys;
+            Object partitionKey;
+            Object partitionValue;
+            while (sweepPartitions.hasNext()) {
+                currentParition = sweepPartitions.next();
+                log.trace("Sweeping storage service partition {}", currentParition);
+                partitionKeys = store.getKeys(currentParition);
+                if (partitionKeys == null) {
+                    continue;
+                }
+
+                while (partitionKeys.hasNext()) {
+                    partitionKey = partitionKeys.next();
+                    partitionValue = store.get(currentParition, partitionKey);
+                    if (partitionValue instanceof ExpiringObject) {
+                        if (((ExpiringObject) partitionValue).isExpired()) {
+                            log.trace("Removing expired object from storage service partition {}", currentParition);
+                            partitionKeys.remove();
+                        }
                     }
                 }
             }
+        } catch (Throwable t) {
+            log.error("Caught unexpected error, sweeper will execute again in " + sweepInterval + "ms", t);
         }
     }
 }
