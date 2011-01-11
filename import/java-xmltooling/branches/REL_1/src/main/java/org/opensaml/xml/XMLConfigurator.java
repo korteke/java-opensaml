@@ -177,27 +177,27 @@ public class XMLConfigurator {
         NodeList objectProviders = configurationRoot.getElementsByTagNameNS(XMLConstants.XMLTOOLING_CONFIG_NS,
                 "ObjectProviders");
         if (objectProviders.getLength() > 0) {
-            log.info("Preparing to load ObjectProviders");
+            log.debug("Preparing to load ObjectProviders");
             initializeObjectProviders((Element) objectProviders.item(0));
-            log.info("ObjectProviders load complete");
+            log.debug("ObjectProviders load complete");
         }
 
         // Initialize validator suites
         NodeList validatorSuitesNodes = configurationRoot.getElementsByTagNameNS(XMLConstants.XMLTOOLING_CONFIG_NS,
                 "ValidatorSuites");
         if (validatorSuitesNodes.getLength() > 0) {
-            log.info("Preparing to load ValidatorSuites");
+            log.debug("Preparing to load ValidatorSuites");
             initializeValidatorSuites((Element) validatorSuitesNodes.item(0));
-            log.info("ValidatorSuites load complete");
+            log.debug("ValidatorSuites load complete");
         }
 
         // Initialize ID attributes
         NodeList idAttributesNodes = configurationRoot.getElementsByTagNameNS(XMLConstants.XMLTOOLING_CONFIG_NS,
                 "IDAttributes");
         if (idAttributesNodes.getLength() > 0) {
-            log.info("Preparing to load IDAttributes");
+            log.debug("Preparing to load IDAttributes");
             initializeIDAttributes((Element) idAttributesNodes.item(0));
-            log.info("IDAttributes load complete");
+            log.debug("IDAttributes load complete");
         }
     }
 
@@ -323,7 +323,7 @@ public class XMLConfigurator {
             idAttributeElement = (Element) idAttributeList.item(i);
             attributeQName = XMLHelper.getElementContentAsQName(idAttributeElement);
             if (attributeQName == null) {
-                log.info("IDAttribute element was empty, no registration performed");
+                log.debug("IDAttribute element was empty, no registration performed");
             } else {
                 Configuration.registerIDAttribute(attributeQName);
                 log.debug("IDAttribute {} has been registered", attributeQName);
