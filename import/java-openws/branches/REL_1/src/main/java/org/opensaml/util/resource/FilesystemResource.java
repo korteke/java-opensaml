@@ -23,6 +23,7 @@ import java.io.InputStream;
 import java.net.URI;
 
 import org.joda.time.DateTime;
+import org.joda.time.chrono.ISOChronology;
 import org.opensaml.xml.util.DatatypeHelper;
 
 /**
@@ -131,7 +132,7 @@ public class FilesystemResource extends AbstractFilteredResource {
             throw new ResourceException("Resource file does not exist: " + resource.getAbsolutePath());
         }
 
-        return new DateTime(resource.lastModified());
+        return new DateTime(resource.lastModified(), ISOChronology.getInstanceUTC());
     }
 
     /** {@inheritDoc} */

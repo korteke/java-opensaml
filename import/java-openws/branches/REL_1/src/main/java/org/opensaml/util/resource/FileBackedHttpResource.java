@@ -25,6 +25,7 @@ import java.net.URI;
 
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.joda.time.DateTime;
+import org.joda.time.chrono.ISOChronology;
 import org.opensaml.xml.util.DatatypeHelper;
 
 /**
@@ -152,7 +153,7 @@ public class FileBackedHttpResource extends HttpResource {
                 throw new ResourceException("URL resource is not reachable and backing file is not readable");
             }
 
-            return new DateTime(lastModifiedTime);
+            return new DateTime(lastModifiedTime, ISOChronology.getInstanceUTC());
         }
     }
 

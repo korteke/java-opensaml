@@ -27,6 +27,7 @@ import org.apache.commons.httpclient.methods.HeadMethod;
 import org.apache.commons.httpclient.util.DateParseException;
 import org.apache.commons.httpclient.util.DateUtil;
 import org.joda.time.DateTime;
+import org.joda.time.chrono.ISOChronology;
 import org.opensaml.xml.util.DatatypeHelper;
 
 /**
@@ -114,7 +115,7 @@ public class HttpResource extends AbstractFilteredResource {
             Header lastModifiedHeader = headMethod.getResponseHeader("Last-Modified");
             if (lastModifiedHeader != null  && ! DatatypeHelper.isEmpty(lastModifiedHeader.getValue())) {
                 long lastModifiedTime = DateUtil.parseDate(lastModifiedHeader.getValue()).getTime();
-                return new DateTime(lastModifiedTime);
+                return new DateTime(lastModifiedTime, ISOChronology.getInstanceUTC());
             }
 
             return new DateTime();
