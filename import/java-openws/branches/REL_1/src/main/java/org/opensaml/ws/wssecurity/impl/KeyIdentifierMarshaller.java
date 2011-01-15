@@ -33,7 +33,7 @@ public class KeyIdentifierMarshaller extends EncodedStringMarshaller {
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         KeyIdentifier keyIdentifier = (KeyIdentifier) xmlObject;
         if (!DatatypeHelper.isEmpty(keyIdentifier.getValueType())) {
-            domElement.setAttributeNS(null, KeyIdentifier.ENCODING_TYPE_ATTRIB_NAME, keyIdentifier.getValueType());
+            domElement.setAttributeNS(null, KeyIdentifier.VALUE_TYPE_ATTRIB_NAME, keyIdentifier.getValueType());
         }
         super.marshallAttributes(xmlObject, domElement);
     }
