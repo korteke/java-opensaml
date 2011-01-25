@@ -1,0 +1,7 @@
+Imported repositories and versions:
+
+** 2011-01-25 **
+
+java-xmltooling r705
+java-openws     r392
+java-opensaml2  r1501
