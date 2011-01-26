@@ -11,6 +11,12 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>../opensaml-xml-api</module>
+        <module>../opensaml-xml-impl</module>
+        <module>../opensaml-security-api</module>
+        <module>../opensaml-security-impl</module>
+        <module>../opensaml-xmlsec-api</module>
+        <module>../opensaml-xmlsec-impl</module>
         <module>../opensaml-util</module>
         <module>../opensaml-messaging-api</module>
     </modules>
