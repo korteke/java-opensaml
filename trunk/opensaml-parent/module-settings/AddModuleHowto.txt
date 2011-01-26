@@ -5,6 +5,14 @@ The following steps should be performed from the command line, outside Eclipse.
 All instances of "MODULE_NAME" should be replaced with whatever you call your
 module.
 
+The MODULE_NAME should end in either -api or -impl.  -api modules contain the 
+interfaces and classes that form the public API for plugins.  If you put classes
+in there you are committing to API compatibility throughout the lifetime of the 3.x
+code.  -impl modules contain internal implementations of stuff found in the -api
+modules.  Code within -impl modules can be torn up and changed at any point without
+having to worry about breaking compatibility.  So, to put it another away, don't 
+put stuff in -api unless you're really sure it needs to be there.
+
 1. Create a directory called opensaml-MODULE_NAME as a child of the java-opensaml
    project
 
@@ -24,9 +32,14 @@ module.
 5. From the java-opensaml directory, run the following SVN command:
    svn propset svn:externals -F opensaml-parent/module-settings/externals.svn opensaml-MODULE_NAME
    
-6. Commit (svn commit opensaml-MODULE_NAME -m "LOG MESSAGE") your module to SVN
+6. From the java-opensaml directory, run the following SVN command:
+   svn propset svn:ignore -F opensaml-parent/module-settings/ignore.svn opensaml-MODULE_NAME
+   
+7. Commit (svn commit opensaml-MODULE_NAME -m "LOG MESSAGE") your module to SVN
 
-7. Perform an svn update to pull in the externalized files (set up via step 5)
+8. Perform an svn update to pull in the externalized files (set up via step 5)
+
+9. Add module to the idp-parent/pom.xml and commit change to this POM.
 
 Now, from Eclipse
 
