@@ -22,16 +22,16 @@ put stuff in -api unless you're really sure it needs to be there.
    - src/test/java
    - src/test/resources
 
-3. Copy the java-opensaml/opensaml-part/module-settings/pom-template.xml in to 
+3. Copy the java-opensaml/opensaml-parent/module-settings/pom-template.xml in to 
    your module directory and edit the following lines:
    - line 14, replace "DESCRIPTIVE NAME" with a decently descriptive name
    - line 15, replace "MODULE_NAME"
 
-4. Copy the java-opensaml/opensaml-part/module-settings/eclipse/.project-template in to 
+4. Copy the java-opensaml/opensaml-parent/module-settings/eclipse/.project-template in to 
    your module directory and edit the following lines:
    - line 3, replace "MODULE_NAME"
 
-5. Copy the java-opensaml/opensaml-part/module-settings/eclipse/.classpath-template in to 
+5. Copy the java-opensaml/opensaml-parent/module-settings/eclipse/.classpath-template in to 
    your module directory.
 
 6. Add (svn add java-opensaml/opensaml-MODULE_NAME) your module to SVN.
