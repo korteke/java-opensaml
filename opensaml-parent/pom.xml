@@ -21,6 +21,8 @@
         <module>../opensaml-messaging-api</module>
         <module>../opensaml-saml-api</module>
         <module>../opensaml-saml-impl</module>
+        <module>../opensaml-xacml-api</module>
+        <module>../opensaml-xacml-impl</module>
     </modules>
 
     <properties>
