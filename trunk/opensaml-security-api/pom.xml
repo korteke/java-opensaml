@@ -6,7 +6,7 @@
 
     <parent>
         <groupId>org.opensaml</groupId>
-        <artifactId>parent</artifactId>
+        <artifactId>opensaml-parent</artifactId>
         <version>3.0.0-SNAPSHOT</version>
         <relativePath>../opensaml-parent</relativePath>
     </parent>
