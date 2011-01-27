@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wst:RequestSecurityToken
+xmlns:wst="http://docs.oasis-open.org/ws-sx/ws-trust/200512" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" 
+ wst:Context="Context-1202218308889">
+	<wst:TokenType>
+		http://docs.oasis-open.org/wss/oasis-wss-saml-token-profile-1.1#SAMLV2.0
+	</wst:TokenType>
+	<wst:RequestType>
+		http://docs.oasis-open.org/ws-sx/ws-trust/200512/Issue
+	</wst:RequestType>
+	<wsu:Timestamp>
+		<wsu:Created>
+			2008-02-05T14:31:48.890Z
+		</wsu:Created>
+	</wsu:Timestamp>
+	<wst:Claims Dialect="urn:test:claims:some-test-dialect">
+		<tc:TestClaim xmlns:tc="urn:test:claims:ns">urn:test:claims:attribute-bundle-Foo</tc:TestClaim>
+	</wst:Claims>
+</wst:RequestSecurityToken>
