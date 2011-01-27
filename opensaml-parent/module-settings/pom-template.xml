@@ -11,7 +11,7 @@
         <relativePath>../opensaml-parent</relativePath>
     </parent>
 
-    <name>OpenSAML :: DESCRIPTIVE NAME</name>
+    <name>OpenSAML :: DESCRIPTIVE_NAME</name>
     <artifactId>opensaml-MODULE_NAME</artifactId>
     <packaging>jar</packaging>
 
