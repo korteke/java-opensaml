@@ -19,6 +19,8 @@
         <module>../opensaml-xmlsec-impl</module>
         <module>../opensaml-util</module>
         <module>../opensaml-messaging-api</module>
+        <module>../opensaml-saml-api</module>
+        <module>../opensaml-saml-impl</module>
     </modules>
 
     <properties>
