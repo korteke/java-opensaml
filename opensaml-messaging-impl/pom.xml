@@ -11,18 +11,12 @@
         <relativePath>../opensaml-parent</relativePath>
     </parent>
 
-    <name>OpenSAML :: Messaging API's</name>
-    <artifactId>opensaml-messaging-api</artifactId>
+    <name>OpenSAML :: Messaging Implementations</name>
+    <artifactId>opensaml-messaging-impl</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
-
         <!-- Compile Dependencies -->
-        <dependency>
-            <groupId>org.opensaml</groupId>
-            <artifactId>opensaml-util</artifactId>
-            <version>${project.version}</version>
-        </dependency>
 
         <!-- Provided Dependencies -->
 
@@ -31,14 +25,6 @@
         <!-- Test Dependencies -->
 
         <!-- Managed Dependencies -->
-        <dependency>
-            <groupId>joda-time</groupId>
-            <artifactId>joda-time</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
-        </dependency>
 
     </dependencies>
 </project>
