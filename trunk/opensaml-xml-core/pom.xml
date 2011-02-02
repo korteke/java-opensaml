@@ -11,8 +11,8 @@
         <relativePath>../opensaml-parent</relativePath>
     </parent>
 
-    <name>OpenSAML :: XMLTooling Implementation</name>
-    <artifactId>opensaml-xml-impl</artifactId>
+    <name>OpenSAML :: Core</name>
+    <artifactId>opensaml-core</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
