@@ -21,14 +21,11 @@ import java.util.Map;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.xml.encryption.EncryptedData;
-import org.opensaml.xml.encryption.EncryptedKey;
 import org.opensaml.xml.io.Unmarshaller;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.mock.SimpleXMLObject;
 import org.opensaml.xml.parse.XMLParserException;
 import org.opensaml.xml.schema.XSAny;
-import org.opensaml.xml.signature.KeyInfo;
 import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Document;
 
@@ -57,77 +54,6 @@ public class IDAttributeTest extends XMLObjectBaseTestCase {
         sxObject.setId(null);
         assertNull("Lookup of removed ID (formerly extant) didn't return null", sxObject.resolveID("IDLevel1"));
         assertNull("Lookup of removed ID (formerly extant) didn't return null", sxObject.resolveIDFromRoot("IDLevel1"));
-    }
-    
-    /**
-     * Test of ID attributes on complex nested unmarshalled elements 
-     * where children are singletons.
-     */
-    public void testComplexUnmarshall() {
-        SimpleXMLObject sxObject = 
-            (SimpleXMLObject) unmarshallElement("/data/org/opensaml/xml/IDAttributeWithChildren.xml");
-        
-        assertNull("Lookup of non-existent ID didn't return null", sxObject.resolveID("NonExistent"));
-        
-        assertEquals("ID lookup failed", sxObject, 
-                sxObject.resolveID("SimpleElementID"));
-        assertEquals("ID lookup failed", sxObject.getEncryptedData(), 
-                sxObject.resolveID("EncryptedDataID"));
-        assertEquals("ID lookup failed", sxObject.getEncryptedData().getKeyInfo(), 
-                sxObject.resolveID("KeyInfoID"));
-        assertEquals("ID lookup failed", sxObject.getEncryptedData().getKeyInfo().getEncryptedKeys().get(0), 
-                sxObject.resolveID("EncryptedKeyID"));
-        
-        EncryptedData encData = sxObject.getEncryptedData();
-        EncryptedKey encKey = sxObject.getEncryptedData().getKeyInfo().getEncryptedKeys().get(0);
-        
-        // testing resolveIDFromRoot
-        assertNull("Lookup of ID not in this object's subtree didn't return null", encKey.resolveID("EncryptedDataID"));
-        assertEquals("ID lookup failed", encData, encKey.resolveIDFromRoot("EncryptedDataID"));
-    }
-    
-    /**
-     *  Test propagation of various changes to ID attribute lookup
-     *  where children are singletons.
-     */
-    public void testChangePropagation() {
-        SimpleXMLObject sxObject =  
-            (SimpleXMLObject) unmarshallElement("/data/org/opensaml/xml/IDAttributeWithChildren.xml");
-        
-        EncryptedData encData = sxObject.getEncryptedData();
-        KeyInfo keyInfo = sxObject.getEncryptedData().getKeyInfo();
-        EncryptedKey encKey = sxObject.getEncryptedData().getKeyInfo().getEncryptedKeys().get(0);
-        
-        encKey.setID("Foo");
-        assertNull("Lookup of non-existent ID didn't return null", sxObject.resolveID("EncryptedKeyID"));
-        assertEquals("ID lookup failed", encKey, sxObject.resolveID("Foo"));
-        encKey.setID("EncryptedKeyID");
-        assertEquals("ID lookup failed", encKey, sxObject.resolveID("EncryptedKeyID"));
-        
-        encKey.setID(null);
-        assertNull("Lookup of non-existent ID didn't return null", sxObject.resolveID("EncryptedKeyID"));
-        encKey.setID("EncryptedKeyID");
-        assertEquals("ID lookup failed", encKey, sxObject.resolveID("EncryptedKeyID"));
-        
-        encData.setKeyInfo(null);
-        assertEquals("ID lookup failed", sxObject, sxObject.resolveID("SimpleElementID"));
-        assertEquals("ID lookup failed", encData, sxObject.resolveID("EncryptedDataID"));
-        assertNull("Lookup of non-existent ID didn't return null", sxObject.resolveID("KeyInfoID"));
-        assertNull("Lookup of non-existent ID didn't return null", sxObject.resolveID("EncryptedKeyID"));
-        
-        encData.setKeyInfo(keyInfo);
-        assertEquals("ID lookup failed", sxObject, sxObject.resolveID("SimpleElementID"));
-        assertEquals("ID lookup failed", encData, sxObject.resolveID("EncryptedDataID"));
-        assertEquals("ID lookup failed", keyInfo, sxObject.resolveID("KeyInfoID"));
-        assertEquals("ID lookup failed", encKey, sxObject.resolveID("EncryptedKeyID"));
-        
-        KeyInfo newKeyInfo = (KeyInfo) buildXMLObject(KeyInfo.DEFAULT_ELEMENT_NAME);
-        newKeyInfo.setID("NewKeyInfoID");
-        sxObject.getEncryptedData().setKeyInfo(newKeyInfo);
-        assertEquals("ID lookup failed", sxObject, sxObject.resolveID("SimpleElementID"));
-        assertEquals("ID lookup failed", encData, sxObject.resolveID("EncryptedDataID"));
-        assertEquals("ID lookup failed", newKeyInfo, sxObject.resolveID("NewKeyInfoID"));
-        assertNull("Lookup of non-existent ID didn't return null", sxObject.resolveID("EncryptedKeyID"));
     }
     
     /**

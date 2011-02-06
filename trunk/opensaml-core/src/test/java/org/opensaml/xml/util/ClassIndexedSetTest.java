@@ -22,35 +22,29 @@ import java.util.NoSuchElementException;
 
 import junit.framework.TestCase;
 
-import org.opensaml.xml.security.Criteria;
-import org.opensaml.xml.security.criteria.EntityIDCriteria;
-import org.opensaml.xml.security.criteria.KeyAlgorithmCriteria;
-import org.opensaml.xml.security.criteria.KeyLengthCriteria;
-import org.opensaml.xml.security.keyinfo.KeyInfoCriteria;
-
 /**
- * Tests the ClassIndexedSet, using Criteria as the underlying type.
+ * Tests the ClassIndexedSet, using local Member interface as the underlying type.
  */
 public class ClassIndexedSetTest extends TestCase {
     
-    /** Criteria set to use as target for tests. */
-    private ClassIndexedSet<Criteria> criteriaSet;
+    /** Set to use as target for tests. */
+    private ClassIndexedSet<Member> memberSet;
 
     /** {@inheritDoc} */
     protected void setUp() throws Exception {
         super.setUp();
-        criteriaSet = new ClassIndexedSet<Criteria>();
+        memberSet = new ClassIndexedSet<Member>();
     }
     
     /**
      *  Test failure of adding a duplicate instance.
      */
     public void testDupInstance() {
-        EntityIDCriteria  entityCriteria = new EntityIDCriteria("owner");
-        criteriaSet.add(entityCriteria);
+        A  memberA = new A("owner");
+        memberSet.add(memberA);
         
         try {
-            criteriaSet.add(entityCriteria);
+            memberSet.add(memberA);
             fail("Set already contained the specified instance");
         } catch (IllegalArgumentException e) {
             // it should fail
@@ -58,17 +52,17 @@ public class ClassIndexedSetTest extends TestCase {
     }
     
     /**
-     *  Test failure of adding a duplicate criteria type.
+     *  Test failure of adding a duplicate member type.
      */
     public void testDupType() {
-        EntityIDCriteria  entityCriteria1 = 
-            new EntityIDCriteria("owner");
-        EntityIDCriteria  entityCriteria2 = 
-            new EntityIDCriteria("owner#2");
-        criteriaSet.add(entityCriteria1);
+        A  memberA1 = 
+            new A("owner");
+        A  memberA2 = 
+            new A("owner#2");
+        memberSet.add(memberA1);
         
         try {
-            criteriaSet.add(entityCriteria2);
+            memberSet.add(memberA2);
             fail("Set already contained an instance of the specified class");
         } catch (IllegalArgumentException e) {
             // it should fail
@@ -76,99 +70,99 @@ public class ClassIndexedSetTest extends TestCase {
     }
     
     /**
-     *  Test success of adding a duplicate criteria type with replacement.
+     *  Test success of adding a duplicate member type with replacement.
      */
     public void testDupTypeWithReplacement() {
-        EntityIDCriteria  entityCriteria1 = 
-            new EntityIDCriteria("owner");
-        EntityIDCriteria  entityCriteria2 = 
-            new EntityIDCriteria("owner#2");
-        criteriaSet.add(entityCriteria1);
+        A  memberA1 = 
+            new A("owner");
+        A  memberA2 = 
+            new A("owner#2");
+        memberSet.add(memberA1);
         
         try {
-            criteriaSet.add(entityCriteria2, true);
+            memberSet.add(memberA2, true);
         } catch (IllegalArgumentException e) {
-            fail("Set should have replaced existing criteria type");
+            fail("Set should have replaced existing member type");
         }
         
-        assertFalse("Did not find the expected criteria instance",
-                entityCriteria1 == criteriaSet.get(EntityIDCriteria.class) );
-        assertTrue("Did not find the expected criteria instance",
-                entityCriteria2 == criteriaSet.get(EntityIDCriteria.class) );
+        assertFalse("Did not find the expected member instance",
+                memberA1 == memberSet.get(A.class) );
+        assertTrue("Did not find the expected member instance",
+                memberA2 == memberSet.get(A.class) );
         
     }
     
     /**
-     *  Test getting criteria instance from set by type.
+     *  Test getting member instance from set by type.
      */
     public void testGetType() {
-        EntityIDCriteria  entityCriteria = new EntityIDCriteria("owner");
-        criteriaSet.add(entityCriteria);
-        KeyAlgorithmCriteria  keyCriteria = new KeyAlgorithmCriteria("algorithm");
-        criteriaSet.add(keyCriteria);
+        A  memberA = new A("owner");
+        memberSet.add(memberA);
+        B  memberB = new B("algorithm");
+        memberSet.add(memberB);
         
-        assertTrue("Did not find the expected criteria instance",
-                entityCriteria == criteriaSet.get(EntityIDCriteria.class) );
-        assertTrue("Did not find the expected criteria instance",
-                keyCriteria == criteriaSet.get(KeyAlgorithmCriteria.class) );
-        assertTrue("Did not find the expected (null) criteria instance",
-                null == criteriaSet.get(KeyInfoCriteria.class) );
+        assertTrue("Did not find the expected member instance",
+                memberA == memberSet.get(A.class) );
+        assertTrue("Did not find the expected member instance",
+                memberB == memberSet.get(B.class) );
+        assertTrue("Did not find the expected (null) member instance",
+                null == memberSet.get(C.class) );
     }
     
-    /** Tests removing criteria from set by instance. */
+    /** Tests removing member from set by instance. */
     public void testRemove() {
-        EntityIDCriteria  entityCriteria = new EntityIDCriteria("owner");
-        criteriaSet.add(entityCriteria);
-        KeyAlgorithmCriteria  keyCriteria = new KeyAlgorithmCriteria("algorithm");
-        criteriaSet.add(keyCriteria);
+        A  memberA = new A("owner");
+        memberSet.add(memberA);
+        B  memberB = new B("algorithm");
+        memberSet.add(memberB);
         
-        assertEquals("Set had unexpected size", 2, criteriaSet.size());
+        assertEquals("Set had unexpected size", 2, memberSet.size());
         
-        criteriaSet.remove(keyCriteria);
-        assertEquals("Set had unexpected size", 1, criteriaSet.size());
-        assertNull("Set returned removed value", criteriaSet.get(KeyAlgorithmCriteria.class));
+        memberSet.remove(memberB);
+        assertEquals("Set had unexpected size", 1, memberSet.size());
+        assertNull("Set returned removed value", memberSet.get(B.class));
         
-        criteriaSet.remove(entityCriteria);
-        assertEquals("Set had unexpected size", 0, criteriaSet.size());
-        assertNull("Set returned removed value", criteriaSet.get(EntityIDCriteria.class));
+        memberSet.remove(memberA);
+        assertEquals("Set had unexpected size", 0, memberSet.size());
+        assertNull("Set returned removed value", memberSet.get(A.class));
     }
     
     /** Tests clearing the set. */
     public void testClear() {
-        EntityIDCriteria  entityCriteria = new EntityIDCriteria("owner");
-        criteriaSet.add(entityCriteria);
-        KeyAlgorithmCriteria  keyCriteria = new KeyAlgorithmCriteria("algorithm");
-        criteriaSet.add(keyCriteria);
+        A  memberA = new A("owner");
+        memberSet.add(memberA);
+        B  memberB = new B("algorithm");
+        memberSet.add(memberB);
         
-        assertEquals("Set had unexpected size", 2, criteriaSet.size());
+        assertEquals("Set had unexpected size", 2, memberSet.size());
         
-        criteriaSet.clear();
-        assertEquals("Set had unexpected size", 0, criteriaSet.size());
+        memberSet.clear();
+        assertEquals("Set had unexpected size", 0, memberSet.size());
         
-        assertNull("Set returned removed value", criteriaSet.get(KeyAlgorithmCriteria.class));
-        assertNull("Set returned removed value", criteriaSet.get(EntityIDCriteria.class));
+        assertNull("Set returned removed value", memberSet.get(B.class));
+        assertNull("Set returned removed value", memberSet.get(A.class));
     }
     
     /** Tests proper iterator iterating behavior. */
     public void testIterator() {
-        EntityIDCriteria  entityCriteria = new EntityIDCriteria("owner");
-        criteriaSet.add(entityCriteria);
-        KeyAlgorithmCriteria  keyCriteria = new KeyAlgorithmCriteria("algorithm");
-        criteriaSet.add(keyCriteria);
-        KeyInfoCriteria keyInfoCriteria = new KeyInfoCriteria(null);
-        criteriaSet.add(keyInfoCriteria);
+        A  memberA = new A("owner");
+        memberSet.add(memberA);
+        B  memberB = new B("algorithm");
+        memberSet.add(memberB);
+        C memberC = new C(null);
+        memberSet.add(memberC);
         
-        assertEquals("Set had unexpected size", 3, criteriaSet.size());
+        assertEquals("Set had unexpected size", 3, memberSet.size());
         
         int count = 0;
-        HashSet<Criteria> unique = new HashSet<Criteria>();
-        for ( Criteria criteria : criteriaSet) {
+        HashSet<Member> unique = new HashSet<Member>();
+        for ( Member member : memberSet) {
             count++;
-            assertTrue("Duplicate was returned by iterator", unique.add(criteria));
+            assertTrue("Duplicate was returned by iterator", unique.add(member));
         }
         assertEquals("Set iteration had unexpected count", 3, count);
         
-        Iterator<Criteria> iterator = criteriaSet.iterator();
+        Iterator<Member> iterator = memberSet.iterator();
         assertTrue("Iterator should have more elements", iterator.hasNext());
         iterator.next();
         assertTrue("Iterator should have more elements", iterator.hasNext());
@@ -187,58 +181,58 @@ public class ClassIndexedSetTest extends TestCase {
     
     /** Tests proper iterator remove() behavior. */
     public void testIteratorRemove() {
-        criteriaSet = new ClassIndexedSet<Criteria>();
-        EntityIDCriteria  entityCriteria = new EntityIDCriteria("owner");
-        criteriaSet.add(entityCriteria);
-        KeyAlgorithmCriteria  algorithmCriteria = new KeyAlgorithmCriteria("algorithm");
-        criteriaSet.add(algorithmCriteria);
-        KeyInfoCriteria keyInfoCriteria = new KeyInfoCriteria(null);
-        criteriaSet.add(keyInfoCriteria);
-        KeyLengthCriteria lengthCriteria = new KeyLengthCriteria(128);
-        criteriaSet.add(lengthCriteria);
+        memberSet = new ClassIndexedSet<Member>();
+        A  memberA = new A("owner");
+        memberSet.add(memberA);
+        B  memberB = new B("algorithm");
+        memberSet.add(memberB);
+        C memberC = new C(null);
+        memberSet.add(memberC);
+        D memberD = new D("128");
+        memberSet.add(memberD);
         
-        assertEquals("Set had unexpected size", 4, criteriaSet.size());
+        assertEquals("Set had unexpected size", 4, memberSet.size());
         
-        Iterator<Criteria> iterator = criteriaSet.iterator();
-        Criteria criteria = null;
+        Iterator<Member> iterator = memberSet.iterator();
+        Member member = null;
         while ( iterator.hasNext() ) {
-            criteria = iterator.next();
-            if (criteria instanceof KeyAlgorithmCriteria) {
+            member = iterator.next();
+            if (member instanceof B) {
                 iterator.remove();
             }
         }
-        assertEquals("Set iteration had unexpected size", 3, criteriaSet.size());
+        assertEquals("Set iteration had unexpected size", 3, memberSet.size());
         
-        assertTrue("Set did not contain expected instance", criteriaSet.contains(entityCriteria));
-        assertTrue("Set did not contain expected instance", criteriaSet.contains(keyInfoCriteria));
-        assertTrue("Set did not contain expected instance", criteriaSet.contains(lengthCriteria));
-        assertFalse("Set contained unexpected instance", criteriaSet.contains(algorithmCriteria));
+        assertTrue("Set did not contain expected instance", memberSet.contains(memberA));
+        assertTrue("Set did not contain expected instance", memberSet.contains(memberC));
+        assertTrue("Set did not contain expected instance", memberSet.contains(memberD));
+        assertFalse("Set contained unexpected instance", memberSet.contains(memberB));
         
         assertTrue("Set did not contain expected class type", 
-                criteriaSet.contains(EntityIDCriteria.class));
+                memberSet.contains(A.class));
         assertTrue("Set did not contain expected class type", 
-                criteriaSet.contains(KeyInfoCriteria.class));
+                memberSet.contains(C.class));
         assertTrue("Set did not contain expected class type", 
-                criteriaSet.contains(KeyLengthCriteria.class));
+                memberSet.contains(D.class));
         assertFalse("Set contained unexpected class type", 
-                criteriaSet.contains(KeyAlgorithmCriteria.class));
+                memberSet.contains(B.class));
     }
         
     /** Tests proper iterator remove() behavior when called illegally. */
     public void testIteratorRemoveIllegal() {
-        criteriaSet = new ClassIndexedSet<Criteria>();
-        EntityIDCriteria  entityCriteria = new EntityIDCriteria("owner");
-        criteriaSet.add(entityCriteria);
-        KeyAlgorithmCriteria  keyCriteria = new KeyAlgorithmCriteria("algorithm");
-        criteriaSet.add(keyCriteria);
-        KeyInfoCriteria keyInfoCriteria = new KeyInfoCriteria(null);
-        criteriaSet.add(keyInfoCriteria);
-        KeyLengthCriteria lengthCriteria = new KeyLengthCriteria(128);
-        criteriaSet.add(lengthCriteria);
+        memberSet = new ClassIndexedSet<Member>();
+        A  memberA = new A("owner");
+        memberSet.add(memberA);
+        B  memberB = new B("algorithm");
+        memberSet.add(memberB);
+        C memberC = new C(null);
+        memberSet.add(memberC);
+        D memberD = new D("128");
+        memberSet.add(memberD);
         
-        assertEquals("Set had unexpected size", 4, criteriaSet.size());
+        assertEquals("Set had unexpected size", 4, memberSet.size());
         
-        Iterator<Criteria> iterator = criteriaSet.iterator();
+        Iterator<Member> iterator = memberSet.iterator();
         try {
             iterator.remove();
             fail("Should have seen a iterator exception, remove() called before first next()");
@@ -246,7 +240,7 @@ public class ClassIndexedSetTest extends TestCase {
             // do nothing, should fail
         }
         
-        iterator = criteriaSet.iterator();
+        iterator = memberSet.iterator();
         iterator.next();
         iterator.remove();
         try {
@@ -255,6 +249,77 @@ public class ClassIndexedSetTest extends TestCase {
         } catch (IllegalStateException e) {
             // do nothing, should fail
         }
+    }
+    
+    
+    /* Classes used for testing. */
+    
+    private interface Member {
+       public String getData(); 
+    }
+    
+    private abstract class AbstractMember implements Member {
+        private String data;
+        
+        public AbstractMember(String newData) {
+            data = newData;
+        }
+        
+        public String getData() {
+            return data;
+        }
+    }
+    
+    private class A extends AbstractMember {
+
+        /**
+         * Constructor.
+         *
+         * @param newData
+         */
+        public A(String newData) {
+            super(newData);
+        }
+        
+    }
+    
+    private class B extends AbstractMember {
+
+        /**
+         * Constructor.
+         *
+         * @param newData
+         */
+        public B(String newData) {
+            super(newData);
+        }
+        
+    }
+    
+    private class C extends AbstractMember {
+
+        /**
+         * Constructor.
+         *
+         * @param newData
+         */
+        public C(String newData) {
+            super(newData);
+        }
+        
+    }
+    
+    private class D extends AbstractMember {
+
+        /**
+         * Constructor.
+         *
+         * @param newData
+         */
+        public D(String newData) {
+            super(newData);
+        }
+        
     }
 
 }

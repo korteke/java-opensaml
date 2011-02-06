@@ -32,7 +32,6 @@ import org.opensaml.xml.io.MarshallerFactory;
 import org.opensaml.xml.io.Unmarshaller;
 import org.opensaml.xml.io.UnmarshallerFactory;
 import org.opensaml.xml.parse.ParserPool;
-import org.opensaml.xml.security.SecurityConfiguration;
 import org.opensaml.xml.util.XMLConstants;
 import org.opensaml.xml.validation.ValidatorSuite;
 import org.slf4j.Logger;
@@ -67,8 +66,9 @@ public class Configuration {
     /** Configured set of attribute QNames which have been globally registered as having an ID type. */
     private static Set<QName> idAttributeNames = new CopyOnWriteArraySet<QName>();
 
+    /** TODO resolve with extensible configuration or similar **/
     /** Configured global security configuration information. */
-    private static SecurityConfiguration globalSecurityConfig;
+    //private static SecurityConfiguration globalSecurityConfig;
 
     /** Configured parser pool. */
     private static ParserPool parserPool;
@@ -235,18 +235,22 @@ public class Configuration {
      * 
      * @return the global security configuration instance
      */
+    /* TODO resolve with extensible configuration
     public static SecurityConfiguration getGlobalSecurityConfiguration() {
         return globalSecurityConfig;
     }
+    */
 
     /**
      * Set the global security configuration.
      * 
      * @param config the new global security configuration instance
      */
+    /* TODO resolve with extensible configuration
     public static void setGlobalSecurityConfiguration(SecurityConfiguration config) {
         globalSecurityConfig = config;
     }
+    */
 
     /**
      * Validates that the system is not using the horribly buggy Sun JAXP implementation.
