@@ -29,8 +29,11 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <slf4j.groupId>org.slf4j</slf4j.groupId>
+        <slf4j.version>1.6.1</slf4j.version>
         <xerces.groupId>org.apache.xerces</xerces.groupId>
         <xerces.version>2.10.0</xerces.version>
+        <xmlunit.version>1.0</xmlunit.version>
     </properties>
 
     <repositories>
@@ -48,9 +51,9 @@
     <dependencies>
         <!-- Compile Dependencies -->
         <dependency>
-            <groupId>org.slf4j</groupId>
+            <groupId>${slf4j.groupId}</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>1.6.1</version>
+            <version>${slf4j.version}</version>
         </dependency>
 
         <!-- Provided Dependencies -->
@@ -69,6 +72,13 @@
             <artifactId>testng</artifactId>
             <version>5.9</version>
             <classifier>jdk15</classifier>
+            <scope>test</scope>
+        </dependency>
+        <!--  TODO this is just temporary -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>3.8.1</version>
             <scope>test</scope>
         </dependency>
 
@@ -129,6 +139,12 @@
             </dependency>
 
             <!--  Test Dependencies -->
+            <dependency>
+                <groupId>xmlunit</groupId>
+                <artifactId>xmlunit</artifactId>
+                <version>${xmlunit.version}</version>
+                <scope>test</scope>
+            </dependency>
 
         </dependencies>
     </dependencyManagement>
