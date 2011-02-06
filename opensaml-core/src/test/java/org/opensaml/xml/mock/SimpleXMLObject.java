@@ -25,11 +25,10 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.xml.AbstractXMLObject;
 import org.opensaml.xml.AttributeExtensibleXMLObject;
 import org.opensaml.xml.ElementExtensibleXMLObject;
 import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.encryption.EncryptedData;
-import org.opensaml.xml.signature.AbstractSignableXMLObject;
 import org.opensaml.xml.util.AttributeMap;
 import org.opensaml.xml.util.IndexedXMLObjectChildrenList;
 import org.opensaml.xml.util.XMLObjectChildrenList;
@@ -37,7 +36,7 @@ import org.opensaml.xml.util.XMLObjectChildrenList;
 /**
  * Simple XMLObject that can be used for testing
  */
-public class SimpleXMLObject extends AbstractSignableXMLObject implements ElementExtensibleXMLObject, AttributeExtensibleXMLObject {
+public class SimpleXMLObject extends AbstractXMLObject  implements ElementExtensibleXMLObject, AttributeExtensibleXMLObject {
     
     /** Default namespace */
     public final static String NAMESPACE = "http://www.example.org/testObjects";
@@ -50,9 +49,6 @@ public class SimpleXMLObject extends AbstractSignableXMLObject implements Elemen
     
     /** Default element name */
     public final static QName ELEMENT_NAME = new QName(NAMESPACE, LOCAL_NAME, NAMESPACE_PREFIX);
-    
-    /** Local name of encrypted element */
-    public final static String ENCRYPTED_NAME = "Encrypted" + LOCAL_NAME;
     
     /** Name attribute name */
     public final static String ID_ATTRIB_NAME = "Id";
@@ -68,9 +64,6 @@ public class SimpleXMLObject extends AbstractSignableXMLObject implements Elemen
     
     /** Other children */
     private IndexedXMLObjectChildrenList<XMLObject> unknownXMLObjects;
-    
-    /** EncryptedData child */
-    private EncryptedData encryptedData;
     
     /** anyAttribute wildcard attributes. */
     private AttributeMap unknownAttributes;
@@ -124,24 +117,6 @@ public class SimpleXMLObject extends AbstractSignableXMLObject implements Elemen
     }
     
     /**
-     * Get the EncryptedData child element.
-     * 
-     * @return the EncryptedData child element
-     */
-    public EncryptedData getEncryptedData() {
-       return this.encryptedData;
-    }
-    
-    /**
-     * Set the EncryptedData child element.
-     * 
-     * @param newEncryptedData the new EncryptedData child element
-     */
-    public void setEncryptedData(EncryptedData newEncryptedData) {
-        this.encryptedData = prepareForAssignment(this.encryptedData, newEncryptedData);
-    }
-    
-    /**
      * Gets the list of child SimpleXMLObjects.
      * 
      * @return the list of child SimpleXMLObjects
@@ -165,11 +140,7 @@ public class SimpleXMLObject extends AbstractSignableXMLObject implements Elemen
         List<XMLObject> children = new LinkedList<XMLObject>();
         
         children.addAll(simpleXMLObjects);
-        if (encryptedData != null) {
-            children.add(encryptedData);
-        }
         children.addAll(unknownXMLObjects);
-        children.add(getSignature());
         
         return Collections.unmodifiableList(children);
     }
