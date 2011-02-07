@@ -16,7 +16,7 @@
 
 package org.opensaml.xml.security.credential;
 
-import org.opensaml.xml.util.ClassIndexedSet;
+import org.opensaml.util.collections.ClassIndexedSet;
 
 
 /**
