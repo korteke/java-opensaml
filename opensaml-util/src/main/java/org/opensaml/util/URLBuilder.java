@@ -17,13 +17,12 @@
 package org.opensaml.util;
 
 import java.net.MalformedURLException;
+
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.opensaml.ws.transport.http.HTTPTransportUtils;
-import org.opensaml.xml.util.DatatypeHelper;
-import org.opensaml.xml.util.Pair;
+import org.opensaml.util.http.HttpSupport;
 
 /**
  * Utility class for building URLs. May also be used to parse a URL into its invidual components. All components will be
@@ -78,11 +77,11 @@ public class URLBuilder {
             setScheme(url.getProtocol());
 
             String userInfo = url.getUserInfo();
-            if (!DatatypeHelper.isEmpty(userInfo)) {
+            if (!StringSupport.isNullOrEmpty(userInfo)) {
                 if (userInfo.contains(":")) {
                     String[] userInfoComps = userInfo.split(":");
-                    setUsername(HTTPTransportUtils.urlDecode(userInfoComps[0]));
-                    setPassword(HTTPTransportUtils.urlDecode(userInfoComps[1]));
+                    setUsername(HttpSupport.urlDecode(userInfoComps[0]));
+                    setPassword(HttpSupport.urlDecode(userInfoComps[1]));
                 } else {
                     setUsername(userInfo);
                 }
@@ -94,7 +93,7 @@ public class URLBuilder {
 
             queryParams = new ArrayList<Pair<String, String>>();
             String queryString = url.getQuery();
-            if (!DatatypeHelper.isEmpty(queryString)) {
+            if (!StringSupport.isNullOrEmpty(queryString)) {
                 String[] queryComps = queryString.split("&");
                 String queryComp;
                 String[] paramComps;
@@ -103,12 +102,12 @@ public class URLBuilder {
                 for (int i = 0; i < queryComps.length; i++) {
                     queryComp = queryComps[i];
                     if (!queryComp.contains("=")) {
-                        paramName = HTTPTransportUtils.urlDecode(queryComp);
+                        paramName = HttpSupport.urlDecode(queryComp);
                         queryParams.add(new Pair<String, String>(paramName, null));
                     } else {
                         paramComps = queryComp.split("=");
-                        paramName = HTTPTransportUtils.urlDecode(paramComps[0]);
-                        paramValue = HTTPTransportUtils.urlDecode(paramComps[1]);
+                        paramName = HttpSupport.urlDecode(paramComps[0]);
+                        paramValue = HttpSupport.urlDecode(paramComps[1]);
                         queryParams.add(new Pair<String, String>(paramName, paramValue));
                     }
                 }
@@ -135,7 +134,7 @@ public class URLBuilder {
      * @param newFragment URL fragment in its decoded form
      */
     public void setFragment(String newFragment) {
-        fragement = DatatypeHelper.safeTrimOrNullString(newFragment);
+        fragement = StringSupport.trimOrNull(newFragment);
     }
 
     /**
@@ -153,7 +152,7 @@ public class URLBuilder {
      * @param newHost host component of the URL
      */
     public void setHost(String newHost) {
-        host = DatatypeHelper.safeTrimOrNullString(newHost);
+        host = StringSupport.trimOrNull(newHost);
     }
 
     /**
@@ -171,7 +170,7 @@ public class URLBuilder {
      * @param newPassword user's password in the URL
      */
     public void setPassword(String newPassword) {
-        password = DatatypeHelper.safeTrimOrNullString(newPassword);
+        password = StringSupport.trimOrNull(newPassword);
     }
 
     /**
@@ -189,7 +188,7 @@ public class URLBuilder {
      * @param newPath path component of the URL
      */
     public void setPath(String newPath) {
-        path = DatatypeHelper.safeTrimOrNullString(newPath);
+        path = StringSupport.trimOrNull(newPath);
     }
 
     /**
@@ -234,7 +233,7 @@ public class URLBuilder {
      * @param newScheme URL scheme (http, https, etc)
      */
     public void setScheme(String newScheme) {
-        scheme = DatatypeHelper.safeTrimOrNullString(newScheme);
+        scheme = StringSupport.trimOrNull(newScheme);
     }
 
     /**
@@ -252,7 +251,7 @@ public class URLBuilder {
      * @param newUsername user name component of the URL
      */
     public void setUsername(String newUsername) {
-        username = DatatypeHelper.safeTrimOrNullString(newUsername);
+        username = StringSupport.trimOrNull(newUsername);
     }
 
     /**
@@ -265,14 +264,14 @@ public class URLBuilder {
     public String buildURL() {
         StringBuilder builder = new StringBuilder();
 
-        if (!DatatypeHelper.isEmpty(scheme)) {
+        if (!StringSupport.isNullOrEmpty(scheme)) {
             builder.append(scheme);
             builder.append("://");
         }
 
-        if (!DatatypeHelper.isEmpty(username)) {
+        if (!StringSupport.isNullOrEmpty(username)) {
             builder.append(username);
-            if (!DatatypeHelper.isEmpty(password)) {
+            if (!StringSupport.isNullOrEmpty(password)) {
                 builder.append(":");
                 builder.append(password);
             }
@@ -280,7 +279,7 @@ public class URLBuilder {
             builder.append("@");
         }
 
-        if (!DatatypeHelper.isEmpty(host)) {
+        if (!StringSupport.isNullOrEmpty(host)) {
             builder.append(host);
             if (port > 0) {
                 builder.append(":");
@@ -288,7 +287,7 @@ public class URLBuilder {
             }
         }
 
-        if (!DatatypeHelper.isEmpty(path)) {
+        if (!StringSupport.isNullOrEmpty(path)) {
             if (!path.startsWith("/")) {
                 builder.append("/");
             }
@@ -296,12 +295,12 @@ public class URLBuilder {
         }
 
         String queryString = buildQueryString();
-        if (!DatatypeHelper.isEmpty(queryString)) {
+        if (!StringSupport.isNullOrEmpty(queryString)) {
             builder.append("?");
             builder.append(queryString);
         }
 
-        if (!DatatypeHelper.isEmpty(fragement)) {
+        if (!StringSupport.isNullOrEmpty(fragement)) {
             builder.append("#");
             builder.append(fragement);
         }
@@ -323,14 +322,14 @@ public class URLBuilder {
             Pair<String, String> param;
             for (int i = 0; i < queryParams.size(); i++) {
                 param = queryParams.get(i);
-                name = DatatypeHelper.safeTrimOrNullString(param.getFirst());
+                name = StringSupport.trimOrNull(param.getFirst());
 
                 if (name != null) {
-                    builder.append(HTTPTransportUtils.urlEncode(name));
-                    value = DatatypeHelper.safeTrimOrNullString(param.getSecond());
+                    builder.append(HttpSupport.urlEncode(name));
+                    value = StringSupport.trimOrNull(param.getSecond());
                     if (value != null) {
                         builder.append("=");
-                        builder.append(HTTPTransportUtils.urlEncode(value));
+                        builder.append(HttpSupport.urlEncode(value));
                     }
                     if (i < queryParams.size() - 1) {
                         builder.append("&");
