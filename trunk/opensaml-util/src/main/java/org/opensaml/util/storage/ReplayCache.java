@@ -19,7 +19,7 @@ package org.opensaml.util.storage;
 import java.util.concurrent.locks.ReentrantLock;
 
 import org.joda.time.DateTime;
-import org.opensaml.xml.util.DatatypeHelper;
+import org.opensaml.util.StringSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -70,8 +70,8 @@ public class ReplayCache {
     public ReplayCache(StorageService<String, ReplayCacheEntry> storageService, String storageParition, long duration) {
         storage = storageService;
         entryDuration = duration;
-        if (!DatatypeHelper.isEmpty(storageParition)) {
-            partition = DatatypeHelper.safeTrim(storageParition);
+        if (!StringSupport.isNullOrEmpty(storageParition)) {
+            partition = StringSupport.trim(storageParition);
         } else {
             partition = "replay";
         }
