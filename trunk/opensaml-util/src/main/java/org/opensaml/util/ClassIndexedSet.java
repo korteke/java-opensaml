@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.xml.util;
+package org.opensaml.util;
 
 import java.util.AbstractSet;
 import java.util.HashMap;
