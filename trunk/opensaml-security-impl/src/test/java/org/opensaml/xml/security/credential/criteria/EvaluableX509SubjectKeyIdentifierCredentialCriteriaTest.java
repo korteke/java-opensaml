@@ -25,7 +25,7 @@ import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.credential.BasicCredential;
 import org.opensaml.xml.security.x509.BasicX509Credential;
 import org.opensaml.xml.security.x509.X509SubjectKeyIdentifierCriteria;
-import org.opensaml.xml.util.Base64;
+import org.opensaml.util.Base64;
 
 /**
  *
