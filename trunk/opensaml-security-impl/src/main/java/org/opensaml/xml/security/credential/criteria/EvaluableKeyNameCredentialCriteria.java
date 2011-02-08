@@ -16,9 +16,9 @@
 
 package org.opensaml.xml.security.credential.criteria;
 
+import org.opensaml.util.StringSupport;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.criteria.KeyNameCriteria;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,7 +51,7 @@ public class EvaluableKeyNameCredentialCriteria implements EvaluableCredentialCr
      * @param newKeyName the criteria value which is the basis for evaluation
      */
     public EvaluableKeyNameCredentialCriteria(String newKeyName) {
-        if (DatatypeHelper.isEmpty(newKeyName)) {
+        if (StringSupport.isNullOrEmpty(newKeyName)) {
             throw new IllegalArgumentException("Key name may not be null");
         }
         keyName = newKeyName;

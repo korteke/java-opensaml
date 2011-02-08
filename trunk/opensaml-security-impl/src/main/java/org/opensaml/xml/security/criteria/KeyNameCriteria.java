@@ -16,8 +16,8 @@
 
 package org.opensaml.xml.security.criteria;
 
+import org.opensaml.util.StringSupport;
 import org.opensaml.xml.security.Criteria;
-import org.opensaml.xml.util.DatatypeHelper;
 
 /**
  * An implementation of {@link Criteria} which specifies key name criteria.
@@ -51,10 +51,10 @@ public final class KeyNameCriteria implements Criteria {
      * @param name The keyName to set.
      */
     public void setKeyName(String name) {
-        if (DatatypeHelper.isEmpty(name)) {
+        if (StringSupport.isNullOrEmpty(name)) {
             throw new IllegalArgumentException("Key name criteria value must be supplied");
         }
-        keyName = DatatypeHelper.safeTrimOrNullString(name);
+        keyName = StringSupport.trimOrNull(name);
     }
 
 }

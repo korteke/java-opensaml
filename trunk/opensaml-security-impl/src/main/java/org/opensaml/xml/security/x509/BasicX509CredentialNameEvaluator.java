@@ -23,8 +23,8 @@ import java.util.Set;
 
 import javax.security.auth.x500.X500Principal;
 
+import org.opensaml.util.StringSupport;
 import org.opensaml.xml.security.SecurityException;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -295,7 +295,7 @@ public class BasicX509CredentialNameEvaluator implements X509CredentialNameEvalu
         String commonName = commonNames.get(0);
         log.debug("Extracted common name from certificate: {}", commonName);
 
-        if (DatatypeHelper.isEmpty(commonName)) {
+        if (StringSupport.isNullOrEmpty(commonName)) {
             return false;
         }
         if (trustedNames.contains(commonName)) {

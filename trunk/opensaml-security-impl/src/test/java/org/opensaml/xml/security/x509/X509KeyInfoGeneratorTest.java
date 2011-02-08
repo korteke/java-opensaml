@@ -40,7 +40,6 @@ import org.opensaml.xml.signature.X509Data;
 import org.opensaml.xml.signature.X509IssuerSerial;
 import org.opensaml.xml.signature.X509SKI;
 import org.opensaml.xml.util.Base64;
-import org.opensaml.xml.util.DatatypeHelper;
 
 /**
  * Tests the factory and impl for X509KeyInfoGenerator.
@@ -345,7 +344,7 @@ public class X509KeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         assertEquals("Unexpected number of X509Data elements", 1, keyInfo.getX509Datas().size());
         X509Data x509Data = keyInfo.getX509Datas().get(0);
         assertEquals("Unexpected number of X509SubjectName elements", 1, x509Data.getX509SubjectNames().size());
-        String name = DatatypeHelper.safeTrimOrNullString(x509Data.getX509SubjectNames().get(0).getValue());
+        String name = StringSupport.trimOrNull(x509Data.getX509SubjectNames().get(0).getValue());
         assertEquals("Unexpected X509SubjectName value found", subjectName, new X500Principal(name));
     }
     
@@ -368,7 +367,7 @@ public class X509KeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         X509IssuerSerial issuerSerial = x509Data.getX509IssuerSerials().get(0);
         assertNotNull("X509IssuerName not present", issuerSerial.getX509IssuerName());
         assertNotNull("X509SerialNumber not present", issuerSerial.getX509SerialNumber());
-        String name = DatatypeHelper.safeTrimOrNullString(issuerSerial.getX509IssuerName().getValue());
+        String name = StringSupport.trimOrNull(issuerSerial.getX509IssuerName().getValue());
         assertEquals("Unexpected X509IssuerName value found", issuerName, new X500Principal(name));
         BigInteger number = issuerSerial.getX509SerialNumber().getValue();
         assertEquals("Unexpected serial number value found", serialNumber, number);
@@ -391,7 +390,7 @@ public class X509KeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         X509Data x509Data = keyInfo.getX509Datas().get(0);
         assertEquals("Unexpected number of X509SKI elements", 1, x509Data.getX509SKIs().size());
         X509SKI ski = x509Data.getX509SKIs().get(0);
-        byte[] skiValue = Base64.decode(DatatypeHelper.safeTrimOrNullString(ski.getValue()));
+        byte[] skiValue = Base64.decode(StringSupport.trimOrNull(ski.getValue()));
         assertTrue("Unexpected SKI value found", Arrays.equals(subjectKeyIdentifier, skiValue));
     }
     
@@ -410,7 +409,7 @@ public class X509KeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         
         assertEquals("Unexpected number of KeyName elements", 1, keyInfo.getKeyNames().size());
         List<String> keyNames = KeyInfoHelper.getKeyNames(keyInfo);
-        String name = DatatypeHelper.safeTrimOrNullString(keyNames.get(0));
+        String name = StringSupport.trimOrNull(keyNames.get(0));
         assertEquals("Unexpected subject DN key name value found", subjectName, new X500Principal(name));
     }
     

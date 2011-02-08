@@ -16,9 +16,9 @@
 
 package org.opensaml.xml.security.credential.criteria;
 
+import org.opensaml.util.StringSupport;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.criteria.EntityIDCriteria;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,7 +51,7 @@ public class EvaluableEntityIDCredentialCriteria implements EvaluableCredentialC
      * @param newEntityID the criteria value which is the basis for evaluation
      */
     public EvaluableEntityIDCredentialCriteria(String newEntityID) {
-        if (DatatypeHelper.isEmpty(newEntityID)) {
+        if (StringSupport.isNullOrEmpty(newEntityID)) {
             throw new IllegalArgumentException("Entity ID may not be null");
         }
         entityID = newEntityID;
@@ -63,7 +63,7 @@ public class EvaluableEntityIDCredentialCriteria implements EvaluableCredentialC
             log.error("Credential target was null");
             return null;
         }
-        if (DatatypeHelper.isEmpty(target.getEntityId())) {
+        if (StringSupport.isNullOrEmpty(target.getEntityId())) {
             log.info("Could not evaluate criteria, credential contained no entity ID");
             return null;
         }

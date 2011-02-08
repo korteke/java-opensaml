@@ -57,6 +57,7 @@ import javax.crypto.SecretKey;
 import org.apache.commons.ssl.PKCS8Key;
 import org.apache.xml.security.Init;
 import org.apache.xml.security.algorithms.JCEMapper;
+import org.opensaml.util.StringSupport;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.encryption.EncryptionParameters;
 import org.opensaml.xml.encryption.KeyEncryptionParameters;
@@ -76,7 +77,6 @@ import org.opensaml.xml.signature.KeyInfo;
 import org.opensaml.xml.signature.Signature;
 import org.opensaml.xml.signature.SignatureConstants;
 import org.opensaml.xml.util.Base64;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.util.LazySet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -106,7 +106,7 @@ public final class SecurityHelper {
      * @return the Java algorithm identifier, or null if the mapping is unavailable or indeterminable from the URI
      */
     public static String getAlgorithmIDFromURI(String algorithmURI) {
-        return DatatypeHelper.safeTrimOrNullString(JCEMapper.translateURItoJCEID(algorithmURI));
+        return StringSupport.trimOrNull(JCEMapper.translateURItoJCEID(algorithmURI));
     }
 
     /**
@@ -116,7 +116,7 @@ public final class SecurityHelper {
      * @return true if URI indicates HMAC, false otherwise
      */
     public static boolean isHMAC(String signatureAlgorithm) {
-        String algoClass = DatatypeHelper.safeTrimOrNullString(JCEMapper.getAlgorithmClassFromURI(signatureAlgorithm));
+        String algoClass = StringSupport.trimOrNull(JCEMapper.getAlgorithmClassFromURI(signatureAlgorithm));
         return ApacheXMLSecurityConstants.ALGO_CLASS_MAC.equals(algoClass);
     }
 
@@ -129,7 +129,7 @@ public final class SecurityHelper {
     public static String getKeyAlgorithmFromURI(String algorithmURI) {
         // The default Apache config file currently only includes the key algorithm for
         // the block ciphers and key wrap URI's. Note: could use a custom config file which contains others.
-        String apacheValue = DatatypeHelper.safeTrimOrNullString(JCEMapper.getJCEKeyAlgorithmFromURI(algorithmURI));
+        String apacheValue = StringSupport.trimOrNull(JCEMapper.getJCEKeyAlgorithmFromURI(algorithmURI));
         if (apacheValue != null) {
             return apacheValue;
         }
@@ -162,7 +162,7 @@ public final class SecurityHelper {
      */
     public static Integer getKeyLengthFromURI(String algorithmURI) {
         Logger log = getLogger();
-        String algoClass = DatatypeHelper.safeTrimOrNullString(JCEMapper.getAlgorithmClassFromURI(algorithmURI));
+        String algoClass = StringSupport.trimOrNull(JCEMapper.getAlgorithmClassFromURI(algorithmURI));
 
         if (ApacheXMLSecurityConstants.ALGO_CLASS_BLOCK_ENCRYPTION.equals(algoClass)
                 || ApacheXMLSecurityConstants.ALGO_CLASS_SYMMETRIC_KEY_WRAP.equals(algoClass)) {
@@ -190,7 +190,7 @@ public final class SecurityHelper {
     public static SecretKey generateSymmetricKey(String algoURI) throws NoSuchAlgorithmException, KeyException {
         Logger log = getLogger();
         String jceAlgorithmName = getKeyAlgorithmFromURI(algoURI);
-        if (DatatypeHelper.isEmpty(jceAlgorithmName)) {
+        if (StringSupport.isNullOrEmpty(jceAlgorithmName)) {
             log.error("Mapping from algorithm URI '" + algoURI
                     + "' to key algorithm not available, key generation failed");
             throw new NoSuchAlgorithmException("Algorithm URI'" + algoURI + "' is invalid for key generation");
@@ -1043,7 +1043,7 @@ public final class SecurityHelper {
         NamedKeyInfoGeneratorManager kiMgr = secConfig.getKeyInfoGeneratorManager();
         if (kiMgr != null) {
             KeyInfoGeneratorFactory kiFactory = null;
-            if (DatatypeHelper.isEmpty(keyInfoGenName)) {
+            if (StringSupport.isNullOrEmpty(keyInfoGenName)) {
                 kiFactory = kiMgr.getDefaultManager().getFactory(credential);
             } else {
                 kiFactory = kiMgr.getFactory(keyInfoGenName, credential);

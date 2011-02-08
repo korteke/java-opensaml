@@ -16,8 +16,8 @@
 
 package org.opensaml.xml.security.criteria;
 
+import org.opensaml.util.StringSupport;
 import org.opensaml.xml.security.Criteria;
-import org.opensaml.xml.util.DatatypeHelper;
 
 /**
  * An implementation of {@link Criteria} which specifies criteria pertaining 
@@ -57,7 +57,7 @@ public final class PeerEntityIDCriteria implements Criteria {
      * @param peer The peerID to set.
      */
     public void setPeerID(String peer) {
-        String trimmed = DatatypeHelper.safeTrimOrNullString(peer);
+        String trimmed = StringSupport.trimOrNull(peer);
         if (trimmed == null) {
             throw new IllegalArgumentException("Peer entity ID criteria must be supplied");
         }

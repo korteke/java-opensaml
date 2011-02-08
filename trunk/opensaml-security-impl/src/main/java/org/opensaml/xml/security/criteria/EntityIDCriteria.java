@@ -16,8 +16,8 @@
 
 package org.opensaml.xml.security.criteria;
 
+import org.opensaml.util.StringSupport;
 import org.opensaml.xml.security.Criteria;
-import org.opensaml.xml.util.DatatypeHelper;
 
 /**
  * An implementation of {@link Criteria} which specifies criteria identifying a
@@ -60,7 +60,7 @@ public final class EntityIDCriteria implements Criteria {
      * @param entity The entityID to set.
      */
     public void setEntityID(String entity) {
-        String trimmed = DatatypeHelper.safeTrimOrNullString(entity);
+        String trimmed = StringSupport.trimOrNull(entity);
         if (trimmed == null) {
             throw new IllegalArgumentException("Entity ID criteria must be supplied");
         }

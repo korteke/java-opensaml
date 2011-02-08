@@ -18,9 +18,9 @@ package org.opensaml.xml.security.credential.criteria;
 
 import java.security.Key;
 
+import org.opensaml.util.StringSupport;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.criteria.KeyAlgorithmCriteria;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,7 +53,7 @@ public class EvaluableKeyAlgorithmCredentialCriteria implements EvaluableCredent
      * @param newKeyAlgorithm the criteria value which is the basis for evaluation
      */
     public EvaluableKeyAlgorithmCredentialCriteria(String newKeyAlgorithm) {
-        if (DatatypeHelper.isEmpty(newKeyAlgorithm)) {
+        if (StringSupport.isNullOrEmpty(newKeyAlgorithm)) {
             throw new IllegalArgumentException("Key algorithm may not be null");
         }
         keyAlgorithm = newKeyAlgorithm;
@@ -70,7 +70,7 @@ public class EvaluableKeyAlgorithmCredentialCriteria implements EvaluableCredent
             log.info("Could not evaluate criteria, credential contained no key");
             return null;
         }
-        String algorithm = DatatypeHelper.safeTrimOrNullString(key.getAlgorithm());
+        String algorithm = StringSupport.trimOrNull(key.getAlgorithm());
         if (algorithm == null) {
             log.info("Could not evaluate criteria, key does not specify an algorithm via getAlgorithm()");
             return null;
