@@ -21,7 +21,6 @@ import java.security.PublicKey;
 
 import javax.crypto.SecretKey;
 
-import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.util.LazySet;
 
 /**
@@ -47,7 +46,7 @@ public class BasicCredential extends AbstractCredential {
      * @param id ID of the entity this credential is for
      */
     public void setEntityId(String id) {
-        entityID = DatatypeHelper.safeTrimOrNullString(id);
+        entityID = StringSupport.trimOrNull(id);
     }
 
     /**

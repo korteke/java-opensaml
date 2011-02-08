@@ -37,7 +37,6 @@ import org.opensaml.xml.signature.X509Data;
 import org.opensaml.xml.signature.X509SKI;
 import org.opensaml.xml.signature.impl.KeyInfoBuilder;
 import org.opensaml.xml.signature.impl.X509DataBuilder;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.util.LazySet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -469,7 +468,7 @@ public class X509KeyInfoGeneratorFactory extends BasicKeyInfoGeneratorFactory {
         protected void processCertX509SubjectName(X509Data x509Data, java.security.cert.X509Certificate cert) {
             if (options.emitX509SubjectName) {
                 String subjectNameValue = getSubjectName(cert);
-                if (! DatatypeHelper.isEmpty(subjectNameValue)) {
+                if (! StringSupport.isNullOrEmpty(subjectNameValue)) {
                     x509Data.getX509SubjectNames().add( KeyInfoHelper.buildX509SubjectName(subjectNameValue));
                 }
             }
@@ -485,7 +484,7 @@ public class X509KeyInfoGeneratorFactory extends BasicKeyInfoGeneratorFactory {
         protected void processCertX509IssuerSerial(X509Data x509Data, java.security.cert.X509Certificate cert) {
             if (options.emitX509IssuerSerial) {
                 String issuerNameValue = getIssuerName(cert);
-                if (! DatatypeHelper.isEmpty(issuerNameValue)) {
+                if (! StringSupport.isNullOrEmpty(issuerNameValue)) {
                     x509Data.getX509IssuerSerials().add( 
                             KeyInfoHelper.buildX509IssuerSerial(issuerNameValue, cert.getSerialNumber()) );
                 }
@@ -519,7 +518,7 @@ public class X509KeyInfoGeneratorFactory extends BasicKeyInfoGeneratorFactory {
             if (cert == null) {
                 return null;
             }
-            if (! DatatypeHelper.isEmpty(options.x500SubjectDNFormat)) {
+            if (! StringSupport.isNullOrEmpty(options.x500SubjectDNFormat)) {
                 return options.x500DNHandler.getName(cert.getSubjectX500Principal(), options.x500SubjectDNFormat);
             } else {
                 return options.x500DNHandler.getName(cert.getSubjectX500Principal());
@@ -537,7 +536,7 @@ public class X509KeyInfoGeneratorFactory extends BasicKeyInfoGeneratorFactory {
             if (cert == null) {
                 return null;
             }
-            if (! DatatypeHelper.isEmpty(options.x500IssuerDNFormat)) {
+            if (! StringSupport.isNullOrEmpty(options.x500IssuerDNFormat)) {
                 return options.x500DNHandler.getName(cert.getIssuerX500Principal(), options.x500IssuerDNFormat);
             } else {
                 return options.x500DNHandler.getName(cert.getIssuerX500Principal());
@@ -554,7 +553,7 @@ public class X509KeyInfoGeneratorFactory extends BasicKeyInfoGeneratorFactory {
         protected void processSubjectDNKeyName(KeyInfo keyInfo, java.security.cert.X509Certificate cert) {
             if (options.emitSubjectDNAsKeyName) {
                 String subjectNameValue = getSubjectName(cert);
-                if (! DatatypeHelper.isEmpty(subjectNameValue)) {
+                if (! StringSupport.isNullOrEmpty(subjectNameValue)) {
                    KeyInfoHelper.addKeyName(keyInfo, subjectNameValue); 
                 }
             }
@@ -570,7 +569,7 @@ public class X509KeyInfoGeneratorFactory extends BasicKeyInfoGeneratorFactory {
         protected void processSubjectCNKeyName(KeyInfo keyInfo, java.security.cert.X509Certificate cert) {
             if (options.emitSubjectCNAsKeyName) {
                 for (String name : X509Util.getCommonNames(cert.getSubjectX500Principal())) {
-                    if (! DatatypeHelper.isEmpty(name)) {
+                    if (! StringSupport.isNullOrEmpty(name)) {
                         KeyInfoHelper.addKeyName(keyInfo, name);
                     }
                 }

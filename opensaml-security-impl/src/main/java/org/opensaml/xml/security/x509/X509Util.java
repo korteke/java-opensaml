@@ -44,10 +44,11 @@ import org.bouncycastle.asn1.x509.SubjectKeyIdentifier;
 import org.bouncycastle.asn1.x509.X509Extensions;
 import org.bouncycastle.x509.extension.SubjectKeyIdentifierStructure;
 import org.bouncycastle.x509.extension.X509ExtensionUtil;
+import org.opensaml.util.FileSupport;
+import org.opensaml.util.StringSupport;
 import org.opensaml.xml.schema.SchemaBuilder;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.SecurityHelper;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.util.IPAddressHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -297,7 +298,7 @@ public class X509Util {
         }
         
         try{
-            return decodeCertificate(DatatypeHelper.fileToByteArray(certs));
+            return decodeCertificate(FileSupport.fileToByteArray(certs));
         }catch(IOException e){
             throw new CertificateException("Error reading certificate file " + certs.getAbsolutePath(), e);
         }
@@ -344,7 +345,7 @@ public class X509Util {
         }
         
         try{
-            return decodeCRLs(DatatypeHelper.fileToByteArray(crls));
+            return decodeCRLs(FileSupport.fileToByteArray(crls));
         }catch(IOException e){
             throw new CRLException("Error reading CRL file " + crls.getAbsolutePath(), e);
         }
@@ -399,8 +400,8 @@ public class X509Util {
         StringBuilder builder = new StringBuilder();
         builder.append('[');
         builder.append(String.format("subjectName='%s'", x500DNHandler.getName(x500Principal)));
-        if (!DatatypeHelper.isEmpty(credential.getEntityId())) {
-            builder.append(String.format(" |credential entityID='%s'", DatatypeHelper.safeTrimOrNullString(credential
+        if (!StringSupport.isNullOrEmpty(credential.getEntityId())) {
+            builder.append(String.format(" |credential entityID='%s'", StringSupport.trimOrNull(credential
                     .getEntityId())));
         }
         builder.append(']');

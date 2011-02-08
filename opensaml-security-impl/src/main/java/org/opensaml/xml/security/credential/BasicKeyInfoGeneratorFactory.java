@@ -18,6 +18,7 @@ package org.opensaml.xml.security.credential;
 
 import java.util.List;
 
+import org.opensaml.util.StringSupport;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.security.SecurityException;
@@ -26,7 +27,6 @@ import org.opensaml.xml.security.keyinfo.KeyInfoGeneratorFactory;
 import org.opensaml.xml.security.keyinfo.KeyInfoHelper;
 import org.opensaml.xml.signature.KeyInfo;
 import org.opensaml.xml.signature.impl.KeyInfoBuilder;
-import org.opensaml.xml.util.DatatypeHelper;
 
 
 /**
@@ -190,7 +190,7 @@ public class BasicKeyInfoGeneratorFactory implements KeyInfoGeneratorFactory {
         protected void processKeyNames(KeyInfo keyInfo, Credential credential) {
             if (options.emitKeyNames) {
                 for (String keyNameValue : credential.getKeyNames()) {
-                    if ( ! DatatypeHelper.isEmpty(keyNameValue)) {
+                    if ( ! StringSupport.isNullOrEmpty(keyNameValue)) {
                         KeyInfoHelper.addKeyName(keyInfo, keyNameValue);
                     }
                 }
@@ -205,7 +205,7 @@ public class BasicKeyInfoGeneratorFactory implements KeyInfoGeneratorFactory {
         protected void processEntityID(KeyInfo keyInfo, Credential credential) {
             if (options.emitEntityIDAsKeyName) {
                 String keyNameValue = credential.getEntityId();
-                if ( ! DatatypeHelper.isEmpty(keyNameValue)) {
+                if ( ! StringSupport.isNullOrEmpty(keyNameValue)) {
                     KeyInfoHelper.addKeyName(keyInfo, keyNameValue);
                 }
             }

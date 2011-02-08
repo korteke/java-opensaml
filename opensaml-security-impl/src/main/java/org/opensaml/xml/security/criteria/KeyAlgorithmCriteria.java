@@ -16,8 +16,8 @@
 
 package org.opensaml.xml.security.criteria;
 
+import org.opensaml.util.StringSupport;
 import org.opensaml.xml.security.Criteria;
-import org.opensaml.xml.util.DatatypeHelper;
 
 /**
  * An implementation of {@link Criteria} which specifies key algorithm criteria.
@@ -51,10 +51,10 @@ public final class KeyAlgorithmCriteria implements Criteria {
      * @param algorithm The keyAlgorithm to set.
      */
     public void setKeyAlgorithm(String algorithm) {
-        if (DatatypeHelper.isEmpty(algorithm)) {
+        if (StringSupport.isNullOrEmpty(algorithm)) {
             throw new IllegalArgumentException("Key algorithm criteria value must be supplied");
         }
-        keyAlgorithm = DatatypeHelper.safeTrimOrNullString(algorithm);
+        keyAlgorithm = StringSupport.trimOrNull(algorithm);
     }
 
 }
