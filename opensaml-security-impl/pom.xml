@@ -22,6 +22,10 @@
             <artifactId>opensaml-security-api</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.commons.ssl</groupId>
+            <artifactId>not-yet-commons-ssl</artifactId>
+        </dependency>
 
         <!-- Provided Dependencies -->
 
