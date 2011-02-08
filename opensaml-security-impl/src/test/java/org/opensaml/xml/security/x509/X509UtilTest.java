@@ -31,7 +31,6 @@ import java.util.Set;
 import javax.security.auth.x500.X500Principal;
 
 import org.opensaml.xml.XMLObjectBaseTestCase;
-import org.opensaml.xml.security.DefaultSecurityConfigurationBootstrap;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.util.Base64;
@@ -305,8 +304,9 @@ public class X509UtilTest extends XMLObjectBaseTestCase {
      * @throws Exception
      */
     public void testDetermineEntityCertificate() throws Exception{
-        org.opensaml.xml.Configuration.setGlobalSecurityConfiguration(
-                DefaultSecurityConfigurationBootstrap.buildDefaultConfig());
+        //TODO comment out probably causes failure until X509Util matchKey method is refactored.
+        //org.opensaml.xml.Configuration.setGlobalSecurityConfiguration(
+        //       DefaultSecurityConfigurationBootstrap.buildDefaultConfig());
         
         ArrayList<X509Certificate> certs = new ArrayList<X509Certificate>();
         certs.add(entityCert3AltNamesDNS_URL_IP);
