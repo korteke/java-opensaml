@@ -31,7 +31,6 @@ import javax.crypto.SecretKey;
 import junit.framework.TestCase;
 
 import org.opensaml.xml.security.credential.Credential;
-import org.opensaml.xml.signature.SignatureConstants;
 
 /**
  * Test the SigningUtil operations for generating and verifying simple, raw signatures and MAC's.
@@ -55,10 +54,10 @@ public class SigningUtilTest extends TestCase {
     public SigningUtilTest() throws NoSuchAlgorithmException, NoSuchProviderException {
         data = "Hello, here is some secret data that is to be signed";
         
-        rsaAlgorithmURI = SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1;
+        rsaAlgorithmURI = "http://www.w3.org/2000/09/xmldsig#";
         rsaJCAAlgorithm = "SHA1withRSA";
         
-        hmacAlgorithmURI = SignatureConstants.ALGO_ID_MAC_HMAC_SHA1;
+        hmacAlgorithmURI = "http://www.w3.org/2000/09/xmldsig#hmac-sha1";
         hmacJCAAlgorithm = "HmacSHA1";
     }
     
