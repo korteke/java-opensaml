@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.xml.util;
+package org.opensaml.util;
 
 /**
  * Encodes and decodes to and from Base64 notation.
