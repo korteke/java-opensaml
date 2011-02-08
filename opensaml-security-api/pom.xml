@@ -22,6 +22,11 @@
             <artifactId>opensaml-util</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>opensaml-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         
 
         <!-- Provided Dependencies -->
