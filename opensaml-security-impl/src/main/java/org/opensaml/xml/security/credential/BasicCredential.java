@@ -21,7 +21,8 @@ import java.security.PublicKey;
 
 import javax.crypto.SecretKey;
 
-import org.opensaml.xml.util.LazySet;
+import org.opensaml.util.StringSupport;
+import org.opensaml.util.collections.LazySet;
 
 /**
  * A basic implementation of {@link Credential}.

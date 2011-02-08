@@ -23,6 +23,7 @@ import java.util.Set;
 
 import javax.security.auth.x500.X500Principal;
 
+import org.opensaml.util.StringSupport;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.security.SecurityException;
@@ -37,7 +38,7 @@ import org.opensaml.xml.signature.X509Data;
 import org.opensaml.xml.signature.X509SKI;
 import org.opensaml.xml.signature.impl.KeyInfoBuilder;
 import org.opensaml.xml.signature.impl.X509DataBuilder;
-import org.opensaml.xml.util.LazySet;
+import org.opensaml.util.collections.LazySet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

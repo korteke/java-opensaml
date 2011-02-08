@@ -39,7 +39,8 @@ import org.opensaml.xml.signature.KeyInfo;
 import org.opensaml.xml.signature.X509Data;
 import org.opensaml.xml.signature.X509IssuerSerial;
 import org.opensaml.xml.signature.X509SKI;
-import org.opensaml.xml.util.Base64;
+import org.opensaml.util.Base64;
+import org.opensaml.util.StringSupport;
 
 /**
  * Tests the factory and impl for X509KeyInfoGenerator.

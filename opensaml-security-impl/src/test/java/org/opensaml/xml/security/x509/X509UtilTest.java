@@ -34,7 +34,7 @@ import org.opensaml.xml.XMLObjectBaseTestCase;
 import org.opensaml.xml.security.DefaultSecurityConfigurationBootstrap;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.SecurityHelper;
-import org.opensaml.xml.util.Base64;
+import org.opensaml.util.Base64;
 
 /**
  * Tests the X509Util utility methods.

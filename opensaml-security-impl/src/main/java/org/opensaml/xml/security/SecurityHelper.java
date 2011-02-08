@@ -57,6 +57,7 @@ import javax.crypto.SecretKey;
 import org.apache.commons.ssl.PKCS8Key;
 import org.apache.xml.security.Init;
 import org.apache.xml.security.algorithms.JCEMapper;
+import org.opensaml.util.FileSupport;
 import org.opensaml.util.StringSupport;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.encryption.EncryptionParameters;
@@ -76,8 +77,8 @@ import org.opensaml.xml.security.x509.BasicX509Credential;
 import org.opensaml.xml.signature.KeyInfo;
 import org.opensaml.xml.signature.Signature;
 import org.opensaml.xml.signature.SignatureConstants;
-import org.opensaml.xml.util.Base64;
-import org.opensaml.xml.util.LazySet;
+import org.opensaml.util.Base64;
+import org.opensaml.util.collections.LazySet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -445,7 +446,7 @@ public final class SecurityHelper {
         }
 
         try {
-            return decodePrivateKey(DatatypeHelper.fileToByteArray(key), password);
+            return decodePrivateKey(FileSupport.fileToByteArray(key), password);
         } catch (IOException e) {
             throw new KeyException("Error reading Key file " + key.getAbsolutePath(), e);
         }
