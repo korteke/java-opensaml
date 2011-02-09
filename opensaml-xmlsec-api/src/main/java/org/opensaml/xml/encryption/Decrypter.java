@@ -41,6 +41,7 @@ import org.opensaml.xml.security.Criteria;
 import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.SecurityHelper;
+import org.opensaml.xml.security.XMLSecurityHelper;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.credential.UsageType;
 import org.opensaml.xml.security.criteria.KeyAlgorithmCriteria;
@@ -889,7 +890,7 @@ public class Decrypter {
             return null;
         }
 
-        String jcaKeyAlgorithm = SecurityHelper.getKeyAlgorithmFromURI(encAlgorithmURI);
+        String jcaKeyAlgorithm = XMLSecurityHelper.getKeyAlgorithmFromURI(encAlgorithmURI);
         if (!DatatypeHelper.isEmpty(jcaKeyAlgorithm)) {
             return new KeyAlgorithmCriteria(jcaKeyAlgorithm);
         }
@@ -908,7 +909,7 @@ public class Decrypter {
             return null;
         }
 
-        Integer keyLength = SecurityHelper.getKeyLengthFromURI(encAlgorithmURI);
+        Integer keyLength = XMLSecurityHelper.getKeyLengthFromURI(encAlgorithmURI);
         if (keyLength != null) {
             return new KeyLengthCriteria(keyLength);
         }
