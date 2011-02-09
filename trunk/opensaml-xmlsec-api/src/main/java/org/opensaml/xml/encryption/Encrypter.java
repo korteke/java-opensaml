@@ -39,6 +39,7 @@ import org.opensaml.xml.io.UnmarshallerFactory;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.SecurityHelper;
+import org.opensaml.xml.security.XMLSecurityHelper;
 import org.opensaml.xml.security.keyinfo.KeyInfoGenerator;
 import org.opensaml.xml.signature.DigestMethod;
 import org.opensaml.xml.signature.KeyInfo;
@@ -641,7 +642,7 @@ public class Encrypter {
         try {
             log.debug("Generating random symmetric data encryption key from algorithm URI: {}", 
                     encryptionAlgorithmURI);
-            return SecurityHelper.generateSymmetricKey(encryptionAlgorithmURI);
+            return XMLSecurityHelper.generateSymmetricKey(encryptionAlgorithmURI);
         } catch (NoSuchAlgorithmException e) {
             log.error("Could not generate encryption key, algorithm URI was invalid: " + encryptionAlgorithmURI);
             throw new EncryptionException("Could not generate encryption key, algorithm URI was invalid: "

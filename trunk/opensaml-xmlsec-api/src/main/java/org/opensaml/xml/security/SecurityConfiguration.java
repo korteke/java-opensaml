@@ -20,6 +20,7 @@ import java.security.interfaces.DSAParams;
 
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
+import org.opensaml.xml.security.keyinfo.NamedKeyInfoGeneratorManager;
 
 /**
  * Interface for classes which store security-related configuration information, especially
