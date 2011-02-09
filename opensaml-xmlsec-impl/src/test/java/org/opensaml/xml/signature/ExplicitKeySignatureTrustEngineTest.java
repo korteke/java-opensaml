@@ -24,11 +24,14 @@ import java.util.List;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.XMLObjectBaseTestCase;
 import org.opensaml.xml.io.MarshallingException;
+import org.opensaml.xml.mock.SignableSimpleXMLObject;
 import org.opensaml.xml.mock.SimpleXMLObject;
 import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.SigningUtil;
+import org.opensaml.xml.security.XMLSecurityHelper;
+import org.opensaml.xml.security.XMLSigningUtil;
 import org.opensaml.xml.security.credential.CollectionCredentialResolver;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.criteria.EntityIDCriteria;
@@ -164,7 +167,7 @@ public class ExplicitKeySignatureTrustEngineTest extends XMLObjectBaseTestCase {
         
         //KeyInfoCredentialResolver kiResolver = new StaticKeyInfoCredentialResolver(new ArrayList<Credential>());
         //Testing with inline cert
-        KeyInfoCredentialResolver kiResolver = SecurityHelper.buildBasicInlineKeyInfoResolver();
+        KeyInfoCredentialResolver kiResolver = XMLSecurityHelper.buildBasicInlineKeyInfoResolver();
         engine = new ExplicitKeySignatureTrustEngine(credResolver, kiResolver);
         
         criteriaSet = new CriteriaSet();
@@ -172,7 +175,7 @@ public class ExplicitKeySignatureTrustEngineTest extends XMLObjectBaseTestCase {
         
         rawData = "Hello, here is some secret data that is to be signed";
         rawAlgorithmURI = SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1;
-        rawControlSignature = SigningUtil.signWithURI(signingX509Cred, rawAlgorithmURI, rawData.getBytes());
+        rawControlSignature = XMLSigningUtil.signWithURI(signingX509Cred, rawAlgorithmURI, rawData.getBytes());
     }
     
     /**
@@ -268,7 +271,7 @@ public class ExplicitKeySignatureTrustEngineTest extends XMLObjectBaseTestCase {
      */
     protected SignableXMLObject getValidSignedObject() {
         //return buildSignedObject();
-        return (SimpleXMLObject) unmarshallElement("/data/org/opensaml/xml/signature/Signed-SimpleObject.xml");
+        return (SignableSimpleXMLObject) unmarshallElement("/data/org/opensaml/xml/signature/Signed-SimpleObject.xml");
     }
 
     /**
@@ -279,7 +282,7 @@ public class ExplicitKeySignatureTrustEngineTest extends XMLObjectBaseTestCase {
      */
     protected SignableXMLObject getInvalidSignedObject() {
         //return buildSignedObject();
-        return (SimpleXMLObject) unmarshallElement("/data/org/opensaml/xml/signature/Signed-SimpleObject-InvalidSignature.xml");
+        return (SignableSimpleXMLObject) unmarshallElement("/data/org/opensaml/xml/signature/Signed-SimpleObject-InvalidSignature.xml");
     }
     
     /**
@@ -289,10 +292,10 @@ public class ExplicitKeySignatureTrustEngineTest extends XMLObjectBaseTestCase {
      * @throws SignatureException 
      */
     protected SignableXMLObject buildSignedObject() throws SignatureException {
-        SimpleXMLObject sxo = (SimpleXMLObject) buildXMLObject(SimpleXMLObject.ELEMENT_NAME);
+        SignableSimpleXMLObject sxo = (SignableSimpleXMLObject) buildXMLObject(SignableSimpleXMLObject.ELEMENT_NAME);
         sxo.setId("abc123");
         
-        SimpleXMLObject child = (SimpleXMLObject) buildXMLObject(SimpleXMLObject.ELEMENT_NAME);
+        SignableSimpleXMLObject child = (SignableSimpleXMLObject) buildXMLObject(SignableSimpleXMLObject.ELEMENT_NAME);
         child.setValue("SomeSimpleValueAsTextContent");
         sxo.getSimpleXMLObjects().add(child);
         

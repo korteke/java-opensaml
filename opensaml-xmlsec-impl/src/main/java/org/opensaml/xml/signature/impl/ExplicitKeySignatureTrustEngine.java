@@ -20,6 +20,8 @@ import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.SigningUtil;
+import org.opensaml.xml.security.XMLSecurityHelper;
+import org.opensaml.xml.security.XMLSigningUtil;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.credential.CredentialResolver;
 import org.opensaml.xml.security.credential.UsageType;
@@ -89,7 +91,7 @@ public class ExplicitKeySignatureTrustEngine extends BaseSignatureTrustEngine<It
         if (!criteriaSet.contains(UsageCriteria.class)) {
             criteriaSet.add(new UsageCriteria(UsageType.SIGNING));
         }
-        String jcaAlgorithm = SecurityHelper.getKeyAlgorithmFromURI(signature.getSignatureAlgorithm());
+        String jcaAlgorithm = XMLSecurityHelper.getKeyAlgorithmFromURI(signature.getSignatureAlgorithm());
         if (!DatatypeHelper.isEmpty(jcaAlgorithm)) {
             criteriaSet.add(new KeyAlgorithmCriteria(jcaAlgorithm), true);
         }
@@ -126,7 +128,7 @@ public class ExplicitKeySignatureTrustEngine extends BaseSignatureTrustEngine<It
         if (!criteriaSet.contains(UsageCriteria.class)) {
             criteriaSet.add(new UsageCriteria(UsageType.SIGNING));
         }
-        String jcaAlgorithm = SecurityHelper.getKeyAlgorithmFromURI(algorithmURI);
+        String jcaAlgorithm = XMLSecurityHelper.getKeyAlgorithmFromURI(algorithmURI);
         if (!DatatypeHelper.isEmpty(jcaAlgorithm)) {
             criteriaSet.add(new KeyAlgorithmCriteria(jcaAlgorithm), true);
         }
@@ -135,7 +137,7 @@ public class ExplicitKeySignatureTrustEngine extends BaseSignatureTrustEngine<It
 
         // First try the optional supplied candidate credential
         if (candidateCredential != null) {
-            if (SigningUtil.verifyWithURI(candidateCredential, algorithmURI, signature, content)) {
+            if (XMLSigningUtil.verifyWithURI(candidateCredential, algorithmURI, signature, content)) {
                 log.debug("Successfully verified signature using supplied candidate credential");
                 log.debug("Attempting to establish trust of supplied candidate credential");
                 if (evaluateTrust(candidateCredential, trustedCredentials)) {
@@ -153,7 +155,7 @@ public class ExplicitKeySignatureTrustEngine extends BaseSignatureTrustEngine<It
         log.debug("Attempting to verify signature using trusted credentials");
 
         for (Credential trustedCredential : trustedCredentials) {
-            if (SigningUtil.verifyWithURI(trustedCredential, algorithmURI, signature, content)) {
+            if (XMLSigningUtil.verifyWithURI(trustedCredential, algorithmURI, signature, content)) {
                 log.debug("Successfully verified signature using resolved trusted credential");
                 return true;
             }

@@ -65,7 +65,7 @@ public class SignableSimpleXMLObject extends AbstractSignableXMLObject implement
     private String value;
     
     /** Child SimpleXMLObjects */
-    private XMLObjectChildrenList<SimpleXMLObject> simpleXMLObjects;
+    private XMLObjectChildrenList<SignableSimpleXMLObject> simpleXMLObjects;
     
     /** Other children */
     private IndexedXMLObjectChildrenList<XMLObject> unknownXMLObjects;
@@ -82,7 +82,7 @@ public class SignableSimpleXMLObject extends AbstractSignableXMLObject implement
     public SignableSimpleXMLObject(String namspaceURI, String localName, String namespacePrefix) {
         super(namspaceURI, localName, namespacePrefix);
         
-        simpleXMLObjects = new XMLObjectChildrenList<SimpleXMLObject>(this);
+        simpleXMLObjects = new XMLObjectChildrenList<SignableSimpleXMLObject>(this);
         unknownXMLObjects = new IndexedXMLObjectChildrenList<XMLObject>(this);
         unknownAttributes = new AttributeMap(this);
     }
@@ -147,7 +147,7 @@ public class SignableSimpleXMLObject extends AbstractSignableXMLObject implement
      * 
      * @return the list of child SimpleXMLObjects
      */
-    public List<SimpleXMLObject> getSimpleXMLObjects(){
+    public List<SignableSimpleXMLObject> getSimpleXMLObjects(){
         return simpleXMLObjects;
     }
     

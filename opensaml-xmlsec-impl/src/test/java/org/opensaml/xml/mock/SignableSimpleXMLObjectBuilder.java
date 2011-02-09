@@ -25,14 +25,14 @@ import org.opensaml.xml.AbstractXMLObjectBuilder;
 /**
  * Builder of {@link org.opensaml.xml.mock.SimpleXMLObject}s.
  */
-public class SignableSimpleXMLObjectBuilder extends AbstractXMLObjectBuilder<SimpleXMLObject> {
+public class SignableSimpleXMLObjectBuilder extends AbstractXMLObjectBuilder<SignableSimpleXMLObject> {
     
-    public SimpleXMLObject buildObject(){
-        return buildObject(SimpleXMLObject.NAMESPACE, SimpleXMLObject.LOCAL_NAME, SimpleXMLObject.NAMESPACE_PREFIX);
+    public SignableSimpleXMLObject buildObject(){
+        return buildObject(SignableSimpleXMLObject.NAMESPACE, SimpleXMLObject.LOCAL_NAME, SimpleXMLObject.NAMESPACE_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public SimpleXMLObject buildObject(String namespaceURI, String localName, String namespacePrefix) {
-        return new SimpleXMLObject(namespaceURI, localName, namespacePrefix);
+    public SignableSimpleXMLObject buildObject(String namespaceURI, String localName, String namespacePrefix) {
+        return new SignableSimpleXMLObject(namespaceURI, localName, namespacePrefix);
     }
 }

@@ -37,10 +37,10 @@ public class SignableSimpleXMLObjectUnmarshaller extends AbstractXMLObjectUnmars
     protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
             throws UnmarshallingException {
 
-        SimpleXMLObject simpleXMLObject = (SimpleXMLObject) parentXMLObject;
+        SignableSimpleXMLObject simpleXMLObject = (SignableSimpleXMLObject) parentXMLObject;
 
-        if (childXMLObject instanceof SimpleXMLObject) {
-            simpleXMLObject.getSimpleXMLObjects().add((SimpleXMLObject) childXMLObject);
+        if (childXMLObject instanceof SignableSimpleXMLObject) {
+            simpleXMLObject.getSimpleXMLObjects().add((SignableSimpleXMLObject) childXMLObject);
         } else if (childXMLObject instanceof EncryptedData) {
             simpleXMLObject.setEncryptedData((EncryptedData) childXMLObject);
         } else if (childXMLObject instanceof Signature) {

@@ -19,6 +19,7 @@ package org.opensaml.xml.security;
 import java.security.interfaces.DSAParams;
 
 import org.opensaml.xml.security.credential.Credential;
+import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
 
 /**
  * Interface for classes which store security-related configuration information, especially
@@ -136,8 +137,7 @@ public interface SecurityConfiguration {
      * 
      * @return the KeyInfoGenerator manager, or null if none is configured
      */
-    //TODO  need to move or fix
-    //public NamedKeyInfoGeneratorManager getKeyInfoGeneratorManager();
+    public NamedKeyInfoGeneratorManager getKeyInfoGeneratorManager();
     
     /**
      * Get the KeyInfoCredentialResolver associated with the named configuration.
@@ -145,15 +145,13 @@ public interface SecurityConfiguration {
      * @param name the name of the resolver configuration to return
      * @return a KeyInfoCredentialResolver instance
      */
-    //TODO  need to move or fix
-    //public KeyInfoCredentialResolver getKeyInfoCredentialResolver(String name);
+    public KeyInfoCredentialResolver getKeyInfoCredentialResolver(String name);
     
     /**
      * Get the default KeyInfoCredentialResolver configuration.
      * 
      * @return the default KeyInfoCredentialResolver
      */
-    //TODO  need to move or fix
-    //public KeyInfoCredentialResolver getDefaultKeyInfoCredentialResolver();
+    public KeyInfoCredentialResolver getDefaultKeyInfoCredentialResolver();
     
 }

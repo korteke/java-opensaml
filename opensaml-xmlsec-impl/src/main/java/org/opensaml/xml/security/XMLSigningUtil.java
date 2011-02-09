@@ -16,16 +16,6 @@
 
 package org.opensaml.xml.security;
 
-import java.security.GeneralSecurityException;
-import java.security.Key;
-import java.security.PrivateKey;
-import java.security.PublicKey;
-import java.security.Signature;
-import java.util.Arrays;
-
-import javax.crypto.Mac;
-
-import org.bouncycastle.util.encoders.Hex;
 import org.opensaml.xml.security.credential.Credential;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,14 +44,14 @@ public final class XMLSigningUtil {
     public static byte[] signWithURI(Credential signingCredential, String algorithmURI, byte[] input)
             throws SecurityException {
 
-        String jcaAlgorithmID = SecurityHelper.getAlgorithmIDFromURI(algorithmURI);
+        String jcaAlgorithmID = XMLSecurityHelper.getAlgorithmIDFromURI(algorithmURI);
         if (jcaAlgorithmID == null) {
             throw new SecurityException("Could not derive JCA algorithm identifier from algorithm URI");
         }
 
-        boolean isHMAC = SecurityHelper.isHMAC(algorithmURI);
+        boolean isHMAC = XMLSecurityHelper.isHMAC(algorithmURI);
 
-        return sign(signingCredential, jcaAlgorithmID, isHMAC, input);
+        return SigningUtil.sign(signingCredential, jcaAlgorithmID, isHMAC, input);
     }
     
     /**
@@ -81,14 +71,14 @@ public final class XMLSigningUtil {
     public static boolean verifyWithURI(Credential verificationCredential, String algorithmURI, byte[] signature,
             byte[] input) throws SecurityException {
 
-        String jcaAlgorithmID = SecurityHelper.getAlgorithmIDFromURI(algorithmURI);
+        String jcaAlgorithmID = XMLSecurityHelper.getAlgorithmIDFromURI(algorithmURI);
         if (jcaAlgorithmID == null) {
             throw new SecurityException("Could not derive JCA algorithm identifier from algorithm URI");
         }
 
-        boolean isHMAC = SecurityHelper.isHMAC(algorithmURI);
+        boolean isHMAC = XMLSecurityHelper.isHMAC(algorithmURI);
 
-        return verify(verificationCredential, jcaAlgorithmID, isHMAC, signature, input);
+        return SigningUtil.verify(verificationCredential, jcaAlgorithmID, isHMAC, signature, input);
     }
 
     

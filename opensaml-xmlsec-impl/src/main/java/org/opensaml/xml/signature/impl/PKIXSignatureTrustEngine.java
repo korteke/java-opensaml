@@ -22,6 +22,7 @@ import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.SigningUtil;
+import org.opensaml.xml.security.XMLSigningUtil;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xml.security.x509.BasicX509CredentialNameEvaluator;
@@ -177,7 +178,7 @@ public class PKIXSignatureTrustEngine extends
         Pair<Set<String>, Iterable<PKIXValidationInformation>> validationPair = 
             resolveValidationInfo(trustBasisCriteria);
 
-        if (SigningUtil.verifyWithURI(candidateCredential, algorithmURI, signature, content)) {
+        if (XMLSigningUtil.verifyWithURI(candidateCredential, algorithmURI, signature, content)) {
             log.debug("Successfully verified raw signature using supplied candidate credential");
             log.debug("Attempting to establish trust of supplied candidate credential");
             if (evaluateTrust(candidateCredential, validationPair)) {

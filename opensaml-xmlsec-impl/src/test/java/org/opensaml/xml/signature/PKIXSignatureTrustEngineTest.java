@@ -30,11 +30,14 @@ import org.opensaml.xml.Configuration;
 import org.opensaml.xml.XMLObjectBaseTestCase;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.io.UnmarshallingException;
+import org.opensaml.xml.mock.SignableSimpleXMLObject;
 import org.opensaml.xml.mock.SimpleXMLObject;
 import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.SigningUtil;
+import org.opensaml.xml.security.XMLSecurityHelper;
+import org.opensaml.xml.security.XMLSigningUtil;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.criteria.EntityIDCriteria;
 import org.opensaml.xml.security.x509.BasicPKIXValidationInformation;
@@ -230,7 +233,7 @@ public class PKIXSignatureTrustEngineTest extends XMLObjectBaseTestCase {
     
     public void testRawGoodPathInAnchors() throws SecurityException {
         rawCandidateCred = getCredential("foo-1A1-good.crt", "foo-1A1-good.key");
-        rawSignature = SigningUtil.signWithURI(rawCandidateCred, rawAlgorithmURI, rawSignedContent);
+        rawSignature = XMLSigningUtil.signWithURI(rawCandidateCred, rawAlgorithmURI, rawSignedContent);
         engine = getEngine(
                 getCertificates("root1-ca.crt", "inter1A-ca.crt", "inter1A1-ca.crt"),
                 EMPTY_CRLS,
@@ -242,7 +245,7 @@ public class PKIXSignatureTrustEngineTest extends XMLObjectBaseTestCase {
     
     public void testRawGoodPathInCred() throws SecurityException {
         rawCandidateCred = getCredential("foo-1A1-good.crt", "foo-1A1-good.key", "inter1A-ca.crt", "inter1A1-ca.crt");
-        rawSignature = SigningUtil.signWithURI(rawCandidateCred, rawAlgorithmURI, rawSignedContent);
+        rawSignature = XMLSigningUtil.signWithURI(rawCandidateCred, rawAlgorithmURI, rawSignedContent);
         engine = getEngine(
                 getCertificates("root1-ca.crt"),
                 EMPTY_CRLS,
@@ -254,7 +257,7 @@ public class PKIXSignatureTrustEngineTest extends XMLObjectBaseTestCase {
     
     public void testRawGoodPathNoTrustedNames() throws SecurityException {
         rawCandidateCred = getCredential("foo-1A1-good.crt", "foo-1A1-good.key", "inter1A-ca.crt", "inter1A1-ca.crt");
-        rawSignature = SigningUtil.signWithURI(rawCandidateCred, rawAlgorithmURI, rawSignedContent);
+        rawSignature = XMLSigningUtil.signWithURI(rawCandidateCred, rawAlgorithmURI, rawSignedContent);
         engine = getEngine(
                 getCertificates("root1-ca.crt"),
                 EMPTY_CRLS,
@@ -266,7 +269,7 @@ public class PKIXSignatureTrustEngineTest extends XMLObjectBaseTestCase {
     
     public void testRawGoodPathBadTrustedName() throws SecurityException {
         rawCandidateCred = getCredential("foo-1A1-good.crt", "foo-1A1-good.key", "inter1A-ca.crt", "inter1A1-ca.crt");
-        rawSignature = SigningUtil.signWithURI(rawCandidateCred, rawAlgorithmURI, rawSignedContent);
+        rawSignature = XMLSigningUtil.signWithURI(rawCandidateCred, rawAlgorithmURI, rawSignedContent);
         engine = getEngine(
                 getCertificates("root1-ca.crt"),
                 EMPTY_CRLS,
@@ -278,7 +281,7 @@ public class PKIXSignatureTrustEngineTest extends XMLObjectBaseTestCase {
     
     public void testRawCertRevoked() throws SecurityException {
         rawCandidateCred = getCredential("foo-1A1-revoked.crt", "foo-1A1-good.key", "inter1A-ca.crt", "inter1A1-ca.crt");
-        rawSignature = SigningUtil.signWithURI(rawCandidateCred, rawAlgorithmURI, rawSignedContent);
+        rawSignature = XMLSigningUtil.signWithURI(rawCandidateCred, rawAlgorithmURI, rawSignedContent);
         engine = getEngine(
                 getCertificates("root1-ca.crt"),
                 getCRLS("inter1A1-v1.crl"),
@@ -290,7 +293,7 @@ public class PKIXSignatureTrustEngineTest extends XMLObjectBaseTestCase {
     
     public void testRawCertExpired() throws SecurityException {
         rawCandidateCred = getCredential("foo-1A1-expired.crt", "foo-1A1-good.key", "inter1A-ca.crt", "inter1A1-ca.crt");
-        rawSignature = SigningUtil.signWithURI(rawCandidateCred, rawAlgorithmURI, rawSignedContent);
+        rawSignature = XMLSigningUtil.signWithURI(rawCandidateCred, rawAlgorithmURI, rawSignedContent);
         engine = getEngine(
                 getCertificates("root1-ca.crt"),
                 EMPTY_CRLS,
@@ -302,7 +305,7 @@ public class PKIXSignatureTrustEngineTest extends XMLObjectBaseTestCase {
     
     public void testRawCertMissingAnchor() throws SecurityException {
         rawCandidateCred = getCredential("foo-1A1-good.crt", "foo-1A1-good.key", "inter1A-ca.crt", "inter1A1-ca.crt");
-        rawSignature = SigningUtil.signWithURI(rawCandidateCred, rawAlgorithmURI, rawSignedContent);
+        rawSignature = XMLSigningUtil.signWithURI(rawCandidateCred, rawAlgorithmURI, rawSignedContent);
         engine = getEngine(
                 getCertificates("root2-ca.crt", "inter2A-ca.crt", "inter2B-ca.crt"),
                 EMPTY_CRLS,
@@ -314,7 +317,7 @@ public class PKIXSignatureTrustEngineTest extends XMLObjectBaseTestCase {
     
     public void testRawCertNoAnchors() throws SecurityException {
         rawCandidateCred = getCredential("foo-1A1-good.crt", "foo-1A1-good.key", "inter1A-ca.crt", "inter1A1-ca.crt");
-        rawSignature = SigningUtil.signWithURI(rawCandidateCred, rawAlgorithmURI, rawSignedContent);
+        rawSignature = XMLSigningUtil.signWithURI(rawCandidateCred, rawAlgorithmURI, rawSignedContent);
         engine = getEngine(
                 EMPTY_ANCHORS,
                 EMPTY_CRLS,
@@ -326,7 +329,7 @@ public class PKIXSignatureTrustEngineTest extends XMLObjectBaseTestCase {
     
     public void testRawTamperedData() throws SecurityException {
         rawCandidateCred = getCredential("foo-1A1-good.crt", "foo-1A1-good.key");
-        rawSignature = SigningUtil.signWithURI(rawCandidateCred, rawAlgorithmURI, rawSignedContent);
+        rawSignature = XMLSigningUtil.signWithURI(rawCandidateCred, rawAlgorithmURI, rawSignedContent);
         rawSignedContent = (rawData + "HAHA All your base are belong to us").getBytes();
         engine = getEngine(
                 getCertificates("root1-ca.crt", "inter1A-ca.crt", "inter1A1-ca.crt"),
@@ -339,7 +342,7 @@ public class PKIXSignatureTrustEngineTest extends XMLObjectBaseTestCase {
     
     public void testRawNoCandidateCred() throws SecurityException {
         rawCandidateCred = getCredential("foo-1A1-good.crt", "foo-1A1-good.key");
-        rawSignature = SigningUtil.signWithURI(rawCandidateCred, rawAlgorithmURI, rawSignedContent);
+        rawSignature = XMLSigningUtil.signWithURI(rawCandidateCred, rawAlgorithmURI, rawSignedContent);
         rawCandidateCred = null;
         engine = getEngine(
                 getCertificates("root1-ca.crt", "inter1A-ca.crt", "inter1A1-ca.crt"),
@@ -352,7 +355,7 @@ public class PKIXSignatureTrustEngineTest extends XMLObjectBaseTestCase {
     
     public void testRawWrongCredType() throws SecurityException {
         rawCandidateCred = getCredential("foo-1A1-good.crt", "foo-1A1-good.key");
-        rawSignature = SigningUtil.signWithURI(rawCandidateCred, rawAlgorithmURI, rawSignedContent);
+        rawSignature = XMLSigningUtil.signWithURI(rawCandidateCred, rawAlgorithmURI, rawSignedContent);
         rawCandidateCred = SecurityHelper.getSimpleCredential(rawCandidateCred.getPublicKey(), null);
         engine = getEngine(
                 getCertificates("root1-ca.crt", "inter1A-ca.crt", "inter1A1-ca.crt"),
@@ -458,7 +461,7 @@ public class PKIXSignatureTrustEngineTest extends XMLObjectBaseTestCase {
         
         StaticPKIXValidationInformationResolver resolver = new StaticPKIXValidationInformationResolver(infoList, names);
         
-        return new PKIXSignatureTrustEngine(resolver, SecurityHelper.buildBasicInlineKeyInfoResolver());
+        return new PKIXSignatureTrustEngine(resolver, XMLSecurityHelper.buildBasicInlineKeyInfoResolver());
     }
     
     private PKIXValidationInformation getPKIXInfoSet(Collection<X509Certificate> certs,
@@ -524,10 +527,10 @@ public class PKIXSignatureTrustEngineTest extends XMLObjectBaseTestCase {
     }
     
     private SignableXMLObject buildSignedObject(X509Credential signingX509Cred) throws SignatureException {
-        SimpleXMLObject sxo = (SimpleXMLObject) buildXMLObject(SimpleXMLObject.ELEMENT_NAME);
+        SignableSimpleXMLObject sxo = (SignableSimpleXMLObject) buildXMLObject(SignableSimpleXMLObject.ELEMENT_NAME);
         sxo.setId("abc123");
         
-        SimpleXMLObject child = (SimpleXMLObject) buildXMLObject(SimpleXMLObject.ELEMENT_NAME);
+        SignableSimpleXMLObject child = (SignableSimpleXMLObject) buildXMLObject(SignableSimpleXMLObject.ELEMENT_NAME);
         child.setValue("SomeSimpleValueAsTextContent");
         sxo.getSimpleXMLObjects().add(child);
         
