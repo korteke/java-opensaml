@@ -46,18 +46,14 @@ public class SigningUtilTest extends TestCase {
     private byte[] controlSignatureRSA;
     private byte[] controlSignatureHMAC;
     
-    private String rsaAlgorithmURI;
     private String rsaJCAAlgorithm;
-    private String hmacAlgorithmURI;
     private String hmacJCAAlgorithm;
     
     public SigningUtilTest() throws NoSuchAlgorithmException, NoSuchProviderException {
         data = "Hello, here is some secret data that is to be signed";
         
-        rsaAlgorithmURI = "http://www.w3.org/2000/09/xmldsig#";
         rsaJCAAlgorithm = "SHA1withRSA";
         
-        hmacAlgorithmURI = "http://www.w3.org/2000/09/xmldsig#hmac-sha1";
         hmacJCAAlgorithm = "HmacSHA1";
     }
     
@@ -80,47 +76,47 @@ public class SigningUtilTest extends TestCase {
     }
 
     public void testSigningWithPrivateKey() throws SecurityException {
-        byte[] signature = SigningUtil.signWithURI(credRSA, rsaAlgorithmURI, data.getBytes());
+        byte[] signature = SigningUtil.sign(credRSA, "RSA", false, data.getBytes());
         assertNotNull(signature);
         assertTrue("Signature was not the expected value", Arrays.equals(controlSignatureRSA, signature));
     }
     
     public void testSigningWithHMAC() throws SecurityException {
-        byte[] signature = SigningUtil.signWithURI(credAES, hmacAlgorithmURI, data.getBytes());
+        byte[] signature = SigningUtil.sign(credAES, "AES", true, data.getBytes());
         assertNotNull(signature);
         assertTrue("Signature was not the expected value", Arrays.equals(controlSignatureHMAC, signature));
     }
     
     public void testVerificationWithPublicKey() throws SecurityException, NoSuchAlgorithmException, NoSuchProviderException {
         assertTrue("Signature failed to verify, should have succeeded",
-                SigningUtil.verifyWithURI(credRSA, rsaAlgorithmURI, controlSignatureRSA, data.getBytes()));
+                SigningUtil.verify(credRSA, "RSA", false, controlSignatureRSA, data.getBytes()));
         
         KeyPair badKP = SecurityHelper.generateKeyPair("RSA", 1024, null);
         Credential badCred = SecurityHelper.getSimpleCredential(badKP.getPublic(), badKP.getPrivate());
         
         assertFalse("Signature verified successfully, should have failed due to wrong verification key",
-                SigningUtil.verifyWithURI(badCred, rsaAlgorithmURI, controlSignatureRSA, data.getBytes()));
+                SigningUtil.verify(badCred, "RSA", false, controlSignatureRSA, data.getBytes()));
         
         String tamperedData = data + "HAHA All your base are belong to us";
         
         assertFalse("Signature verified successfully, should have failed due to tampered data",
-                SigningUtil.verifyWithURI(credRSA, rsaAlgorithmURI, controlSignatureRSA, tamperedData.getBytes()));
+                SigningUtil.verify(credRSA, "RSA", false, controlSignatureRSA, tamperedData.getBytes()));
     }
 
     public void testVerificationWithHMAC() throws SecurityException, NoSuchAlgorithmException, NoSuchProviderException {
         assertTrue("Signature failed to verify, should have succeeded",
-                SigningUtil.verifyWithURI(credAES, hmacAlgorithmURI, controlSignatureHMAC, data.getBytes()));
+                SigningUtil.verify(credAES, "AES", true, controlSignatureHMAC, data.getBytes()));
         
         SecretKey badKey = SecurityHelper.generateKey("AES", 128, null);
         Credential badCred = SecurityHelper.getSimpleCredential(badKey);
         
         assertFalse("Signature verified successfully, should have failed due to wrong verification key",
-                SigningUtil.verifyWithURI(badCred, hmacAlgorithmURI, controlSignatureHMAC, data.getBytes()));
+                SigningUtil.verify(badCred, "AES", true, controlSignatureHMAC, data.getBytes()));
         
         String tamperedData = data + "HAHA All your base are belong to us";
         
         assertFalse("Signature verified successfully, should have failed due to tampered data",
-                SigningUtil.verifyWithURI(credAES, hmacAlgorithmURI, controlSignatureHMAC, tamperedData.getBytes()));
+                SigningUtil.verify(credAES, "AES", true, controlSignatureHMAC, tamperedData.getBytes()));
         
     }
     

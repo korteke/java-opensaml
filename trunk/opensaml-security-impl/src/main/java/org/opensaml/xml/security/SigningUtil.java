@@ -39,30 +39,6 @@ public final class SigningUtil {
     private SigningUtil() {
     }
 
-    /**
-     * Compute the signature or MAC value over the supplied input.
-     * 
-     * It is up to the caller to ensure that the specified algorithm URI is consistent with the type of signing key
-     * supplied in the signing credential.
-     * 
-     * @param signingCredential the credential containing the signing key
-     * @param algorithmURI the algorithm URI to use
-     * @param input the input over which to compute the signature
-     * @return the computed signature or MAC value
-     * @throws SecurityException throw if the computation process results in an error
-     */
-    public static byte[] signWithURI(Credential signingCredential, String algorithmURI, byte[] input)
-            throws SecurityException {
-
-        String jcaAlgorithmID = SecurityHelper.getAlgorithmIDFromURI(algorithmURI);
-        if (jcaAlgorithmID == null) {
-            throw new SecurityException("Could not derive JCA algorithm identifier from algorithm URI");
-        }
-
-        boolean isHMAC = SecurityHelper.isHMAC(algorithmURI);
-
-        return sign(signingCredential, jcaAlgorithmID, isHMAC, input);
-    }
 
     /**
      * Compute the signature or MAC value over the supplied input.
@@ -155,33 +131,6 @@ public final class SigningUtil {
             log.error("Error during MAC generation", e);
             throw new SecurityException("Error during MAC generation", e);
         }
-    }
-
-    /**
-     * Verify the signature value computed over the supplied input against the supplied signature value.
-     * 
-     * It is up to the caller to ensure that the specified algorithm URI are consistent with the type of verification
-     * credential supplied.
-     * 
-     * @param verificationCredential the credential containing the verification key
-     * @param algorithmURI the algorithm URI to use
-     * @param signature the computed signature value received from the signer
-     * @param input the input over which the signature is computed and verified
-     * @return true if the signature value computed over the input using the supplied key and algorithm ID is identical
-     *         to the supplied signature value
-     * @throws SecurityException thrown if the signature computation or verification process results in an error
-     */
-    public static boolean verifyWithURI(Credential verificationCredential, String algorithmURI, byte[] signature,
-            byte[] input) throws SecurityException {
-
-        String jcaAlgorithmID = SecurityHelper.getAlgorithmIDFromURI(algorithmURI);
-        if (jcaAlgorithmID == null) {
-            throw new SecurityException("Could not derive JCA algorithm identifier from algorithm URI");
-        }
-
-        boolean isHMAC = SecurityHelper.isHMAC(algorithmURI);
-
-        return verify(verificationCredential, jcaAlgorithmID, isHMAC, signature, input);
     }
 
     /**
