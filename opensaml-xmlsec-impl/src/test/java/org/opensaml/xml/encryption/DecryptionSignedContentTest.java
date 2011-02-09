@@ -29,9 +29,11 @@ import org.opensaml.xml.XMLObjectBaseTestCase;
 import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.io.UnmarshallingException;
+import org.opensaml.xml.mock.SignableSimpleXMLObject;
 import org.opensaml.xml.mock.SimpleXMLObject;
 import org.opensaml.xml.parse.XMLParserException;
 import org.opensaml.xml.security.SecurityHelper;
+import org.opensaml.xml.security.XMLSecurityHelper;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xml.security.keyinfo.StaticKeyInfoCredentialResolver;
@@ -70,7 +72,7 @@ public class DecryptionSignedContentTest extends XMLObjectBaseTestCase {
         signingCredential = SecurityHelper.getSimpleCredential(keyPair.getPublic(), keyPair.getPrivate());
 
         String encURI = EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128;
-        Credential encCred = SecurityHelper.generateKeyAndCredential(encURI);
+        Credential encCred = XMLSecurityHelper.generateKeyAndCredential(encURI);
         encParams = new EncryptionParameters();
         encParams.setAlgorithm(encURI);
         encParams.setEncryptionCredential(encCred);
@@ -117,7 +119,7 @@ public class DecryptionSignedContentTest extends XMLObjectBaseTestCase {
         Decrypter decrypter = new Decrypter(encKeyResolver, null, null);
         XMLObject decryptedXMLObject = decrypter.decryptData(encryptedData2, true);
         assertTrue(decryptedXMLObject instanceof SimpleXMLObject);
-        SimpleXMLObject decryptedSXO = (SimpleXMLObject) decryptedXMLObject;
+        SignableSimpleXMLObject decryptedSXO = (SignableSimpleXMLObject) decryptedXMLObject;
 
         Signature decryptedSignature = decryptedSXO.getSignature();
 
@@ -141,7 +143,7 @@ public class DecryptionSignedContentTest extends XMLObjectBaseTestCase {
 
         XMLObject xmlObject = unmarshallerFactory.getUnmarshaller(signedElement).unmarshall(signedElement);
         assertTrue(xmlObject instanceof SimpleXMLObject);
-        SimpleXMLObject sxo = (SimpleXMLObject) xmlObject;
+        SignableSimpleXMLObject sxo = (SignableSimpleXMLObject) xmlObject;
 
         SignatureValidator sigValidator = new SignatureValidator(signingCredential);
         try {
@@ -159,7 +161,7 @@ public class DecryptionSignedContentTest extends XMLObjectBaseTestCase {
      * @throws SignatureException 
      */
     private Element getSignedElement() throws MarshallingException, SignatureException {
-        SimpleXMLObject sxo = (SimpleXMLObject) buildXMLObject(SimpleXMLObject.ELEMENT_NAME);
+        SignableSimpleXMLObject sxo = (SignableSimpleXMLObject) buildXMLObject(SignableSimpleXMLObject.ELEMENT_NAME);
         sxo.setId(idValue);
 
         Signature sig = (Signature) buildXMLObject(Signature.DEFAULT_ELEMENT_NAME);

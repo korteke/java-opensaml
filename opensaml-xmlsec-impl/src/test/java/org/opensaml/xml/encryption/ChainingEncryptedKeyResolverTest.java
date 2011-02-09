@@ -21,7 +21,7 @@ import java.util.List;
 
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.XMLObjectBaseTestCase;
-import org.opensaml.xml.mock.SimpleXMLObject;
+import org.opensaml.xml.mock.SignableSimpleXMLObject;
 
 /**
  * Test the encrypted key resolver which dereferences RetrievalMethods.
@@ -44,7 +44,7 @@ public class ChainingEncryptedKeyResolverTest extends XMLObjectBaseTestCase {
     /** Test error case of empty resolver chain. */
     public void testEmptyChain() {
         String filename =  "/data/org/opensaml/xml/encryption/ChainingEncryptedKeyResolverSingleInline.xml";
-        SimpleXMLObject sxo =  (SimpleXMLObject) unmarshallElement(filename);
+        SignableSimpleXMLObject sxo =  (SignableSimpleXMLObject) unmarshallElement(filename);
         assertNotNull(sxo);
         assertNotNull(sxo.getSimpleXMLObjects().get(0));
         assertNotNull(sxo.getSimpleXMLObjects().get(0).getEncryptedData());
@@ -74,7 +74,7 @@ public class ChainingEncryptedKeyResolverTest extends XMLObjectBaseTestCase {
     /** One recipient specified to resolver, EncryptedKey in instance inline. */
     public void testSingleEKInline() {
         String filename =  "/data/org/opensaml/xml/encryption/ChainingEncryptedKeyResolverSingleInline.xml";
-        SimpleXMLObject sxo =  (SimpleXMLObject) unmarshallElement(filename);
+        SignableSimpleXMLObject sxo =  (SignableSimpleXMLObject) unmarshallElement(filename);
         assertNotNull(sxo);
         assertNotNull(sxo.getSimpleXMLObjects().get(0));
         assertNotNull(sxo.getSimpleXMLObjects().get(0).getEncryptedData());
@@ -99,7 +99,7 @@ public class ChainingEncryptedKeyResolverTest extends XMLObjectBaseTestCase {
     /** One recipient specified to resolver, EncryptedKey in instance via RetrievalMethod . */
     public void testSingleEKRetrievalMethod() {
         String filename =  "/data/org/opensaml/xml/encryption/ChainingEncryptedKeyResolverSingleRetrievalMethod.xml";
-        SimpleXMLObject sxo =  (SimpleXMLObject) unmarshallElement(filename);
+        SignableSimpleXMLObject sxo =  (SignableSimpleXMLObject) unmarshallElement(filename);
         assertNotNull(sxo);
         assertNotNull(sxo.getSimpleXMLObjects().get(0));
         assertNotNull(sxo.getSimpleXMLObjects().get(0).getEncryptedData());
@@ -124,7 +124,7 @@ public class ChainingEncryptedKeyResolverTest extends XMLObjectBaseTestCase {
     /** One recipient specified to resolver, EncryptedKeys in instance inline and via RetrievalMethod . */
     public void testMultiEKWithOneRecipient() {
         String filename =  "/data/org/opensaml/xml/encryption/ChainingEncryptedKeyResolverMultiple.xml";
-        SimpleXMLObject sxo =  (SimpleXMLObject) unmarshallElement(filename);
+        SignableSimpleXMLObject sxo =  (SignableSimpleXMLObject) unmarshallElement(filename);
         assertNotNull(sxo);
         assertNotNull(sxo.getSimpleXMLObjects().get(0));
         assertNotNull(sxo.getSimpleXMLObjects().get(0).getEncryptedData());
@@ -150,7 +150,7 @@ public class ChainingEncryptedKeyResolverTest extends XMLObjectBaseTestCase {
     /** Two recipients specified to resolver, EncryptedKeys in instance inline and via RetrievalMethod . */
     public void testMultiEKWithTwoRecipients() {
         String filename =  "/data/org/opensaml/xml/encryption/ChainingEncryptedKeyResolverMultiple.xml";
-        SimpleXMLObject sxo =  (SimpleXMLObject) unmarshallElement(filename);
+        SignableSimpleXMLObject sxo =  (SignableSimpleXMLObject) unmarshallElement(filename);
         assertNotNull(sxo);
         assertNotNull(sxo.getSimpleXMLObjects().get(0));
         assertNotNull(sxo.getSimpleXMLObjects().get(0).getEncryptedData());
@@ -177,12 +177,12 @@ public class ChainingEncryptedKeyResolverTest extends XMLObjectBaseTestCase {
     }
     
     /**
-     * Extract all the EncryptedKey's from the SimpleXMLObject.
+     * Extract all the EncryptedKey's from the SignableSimpleXMLObject.
      * 
      * @param sxo the mock object to process
      * @return a list of EncryptedKey elements
      */
-    private List<EncryptedKey> getEncryptedKeys(SimpleXMLObject sxo) {
+    private List<EncryptedKey> getEncryptedKeys(SignableSimpleXMLObject sxo) {
         List<EncryptedKey> allKeys = new ArrayList<EncryptedKey>();
         allKeys.addAll(sxo.getSimpleXMLObjects().get(0).getEncryptedData().getKeyInfo().getEncryptedKeys());
         for (XMLObject xmlObject : sxo.getUnknownXMLObjects()) {
