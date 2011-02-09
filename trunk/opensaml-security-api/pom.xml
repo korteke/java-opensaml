@@ -27,6 +27,18 @@
             <artifactId>opensaml-core</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <!--  TODO ideally we don't want xmlsec-api dependent on Apache xmlsec, xmlsec-impl.  -->
+        <dependency>
+            <groupId>org.apache.santuario</groupId>
+            <artifactId>xmlsec</artifactId>
+            <version>1.4.4</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
         
 
         <!-- Provided Dependencies -->
