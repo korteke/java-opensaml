@@ -27,6 +27,7 @@ import org.opensaml.xml.XMLObjectBaseTestCase;
 import org.opensaml.xml.mock.SimpleXMLObject;
 import org.opensaml.xml.parse.XMLParserException;
 import org.opensaml.xml.security.SecurityHelper;
+import org.opensaml.xml.security.XMLSecurityHelper;
 import org.opensaml.xml.security.keyinfo.StaticKeyInfoGenerator;
 import org.opensaml.xml.signature.DigestMethod;
 import org.opensaml.xml.signature.KeyInfo;
@@ -91,18 +92,18 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
         
         encParams = new EncryptionParameters();
         encParams.setAlgorithm(algoURI);
-        encParams.setEncryptionCredential(SecurityHelper.generateKeyAndCredential(algoURI));
+        encParams.setEncryptionCredential(XMLSecurityHelper.generateKeyAndCredential(algoURI));
         
         kekParamsList = new ArrayList<KeyEncryptionParameters>();
         
         kekParamsAES = new KeyEncryptionParameters();
         kekParamsAES.setAlgorithm(kekURIAES);
-        kekParamsAES.setEncryptionCredential(SecurityHelper.generateKeyAndCredential(kekURIAES));
+        kekParamsAES.setEncryptionCredential(XMLSecurityHelper.generateKeyAndCredential(kekURIAES));
         kekParamsAES.setRecipient(expectedRecipientAES);
         
         kekParamsRSA = new KeyEncryptionParameters();
         kekParamsRSA.setAlgorithm(kekURIRSA);
-        kekParamsRSA.setEncryptionCredential(SecurityHelper.generateKeyPairAndCredential(kekURIRSA, 1024, false));
+        kekParamsRSA.setEncryptionCredential(XMLSecurityHelper.generateKeyPairAndCredential(kekURIRSA, 1024, false));
         kekParamsRSA.setRecipient(expectedRecipientRSA);
         
         keyInfo = (KeyInfo) buildXMLObject(KeyInfo.DEFAULT_ELEMENT_NAME);
@@ -291,7 +292,7 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
     public void testEncryptKeySingleKEK() throws NoSuchAlgorithmException, NoSuchProviderException, 
             XMLParserException {
         
-        Key targetKey = SecurityHelper.generateKeyFromURI(algoURI);
+        Key targetKey = XMLSecurityHelper.generateKeyFromURI(algoURI);
         
         kekParamsRSA.setKeyInfoGenerator(new StaticKeyInfoGenerator(kekKeyInfoRSA));
         
@@ -316,7 +317,7 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
     public void testEncryptKeyMultipleKEK() throws NoSuchAlgorithmException, NoSuchProviderException, 
             XMLParserException {
         
-        Key targetKey = SecurityHelper.generateKeyFromURI(algoURI);
+        Key targetKey = XMLSecurityHelper.generateKeyFromURI(algoURI);
         
         kekParamsAES.setKeyInfoGenerator(new StaticKeyInfoGenerator(kekKeyInfoAES));
         kekParamsRSA.setKeyInfoGenerator(new StaticKeyInfoGenerator(kekKeyInfoRSA));
@@ -412,7 +413,7 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
     public void testEncryptKeyDigestMethodsRSAOAEP() throws NoSuchAlgorithmException, NoSuchProviderException, 
             XMLParserException {
         
-        Key targetKey = SecurityHelper.generateKeyFromURI(algoURI);
+        Key targetKey = XMLSecurityHelper.generateKeyFromURI(algoURI);
         
         kekParamsRSA.setAlgorithm(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP);
         
@@ -445,7 +446,7 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
     public void testEncryptKeyDigestMethodsRSAv15() throws NoSuchAlgorithmException, NoSuchProviderException, 
             XMLParserException {
         
-        Key targetKey = SecurityHelper.generateKeyFromURI(algoURI);
+        Key targetKey = XMLSecurityHelper.generateKeyFromURI(algoURI);
         
         kekParamsRSA.setAlgorithm(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSA15);
         

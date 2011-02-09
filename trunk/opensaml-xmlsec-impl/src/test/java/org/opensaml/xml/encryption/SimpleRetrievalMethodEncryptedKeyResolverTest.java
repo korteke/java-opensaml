@@ -21,7 +21,7 @@ import java.util.List;
 
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.XMLObjectBaseTestCase;
-import org.opensaml.xml.mock.SimpleXMLObject;
+import org.opensaml.xml.mock.SignableSimpleXMLObject;
 
 /**
  * Test the encrypted key resolver which dereferences RetrievalMethods.
@@ -42,7 +42,7 @@ public class SimpleRetrievalMethodEncryptedKeyResolverTest extends XMLObjectBase
     /** No recipients specified to resolver, one EncryptedKey in instance. */
     public void testSingleEKNoRecipient() {
         String filename =  "/data/org/opensaml/xml/encryption/SimpleRetrievalMethodEncryptedKeyResolverSingle.xml";
-        SimpleXMLObject sxo =  (SimpleXMLObject) unmarshallElement(filename);
+        SignableSimpleXMLObject sxo =  (SignableSimpleXMLObject) unmarshallElement(filename);
         assertNotNull(sxo);
         assertNotNull(sxo.getSimpleXMLObjects().get(0));
         assertNotNull(sxo.getSimpleXMLObjects().get(0).getEncryptedData());
@@ -66,7 +66,7 @@ public class SimpleRetrievalMethodEncryptedKeyResolverTest extends XMLObjectBase
     /** One recipients specified to resolver, one EncryptedKey in instance. */
     public void testSingleEKWithRecipient() {
         String filename =  "/data/org/opensaml/xml/encryption/SimpleRetrievalMethodEncryptedKeyResolverSingle.xml";
-        SimpleXMLObject sxo =  (SimpleXMLObject) unmarshallElement(filename);
+        SignableSimpleXMLObject sxo =  (SignableSimpleXMLObject) unmarshallElement(filename);
         assertNotNull(sxo);
         assertNotNull(sxo.getSimpleXMLObjects().get(0));
         assertNotNull(sxo.getSimpleXMLObjects().get(0).getEncryptedData());
@@ -91,7 +91,7 @@ public class SimpleRetrievalMethodEncryptedKeyResolverTest extends XMLObjectBase
     public void testSingleEKWithTransform() {
         String filename =  
             "/data/org/opensaml/xml/encryption/SimpleRetrievalMethodEncryptedKeyResolverSingleWithTransforms.xml";
-        SimpleXMLObject sxo =  (SimpleXMLObject) unmarshallElement(filename);
+        SignableSimpleXMLObject sxo =  (SignableSimpleXMLObject) unmarshallElement(filename);
         assertNotNull(sxo);
         assertNotNull(sxo.getSimpleXMLObjects().get(0));
         assertNotNull(sxo.getSimpleXMLObjects().get(0).getEncryptedData());
@@ -114,7 +114,7 @@ public class SimpleRetrievalMethodEncryptedKeyResolverTest extends XMLObjectBase
      * two RetrievalMethod references. */
     public void testMultiEKWithOneRecipient() {
         String filename =  "/data/org/opensaml/xml/encryption/SimpleRetrievalMethodEncryptedKeyResolverMultiple.xml";
-        SimpleXMLObject sxo =  (SimpleXMLObject) unmarshallElement(filename);
+        SignableSimpleXMLObject sxo =  (SignableSimpleXMLObject) unmarshallElement(filename);
         assertNotNull(sxo);
         assertNotNull(sxo.getSimpleXMLObjects().get(0));
         assertNotNull(sxo.getSimpleXMLObjects().get(0).getEncryptedData());
@@ -139,7 +139,7 @@ public class SimpleRetrievalMethodEncryptedKeyResolverTest extends XMLObjectBase
      * two RetrievalMethod references. */
     public void testMultiEKWithTwoRecipients() {
         String filename =  "/data/org/opensaml/xml/encryption/SimpleRetrievalMethodEncryptedKeyResolverMultiple.xml";
-        SimpleXMLObject sxo =  (SimpleXMLObject) unmarshallElement(filename);
+        SignableSimpleXMLObject sxo =  (SignableSimpleXMLObject) unmarshallElement(filename);
         assertNotNull(sxo);
         assertNotNull(sxo.getSimpleXMLObjects().get(0));
         assertNotNull(sxo.getSimpleXMLObjects().get(0).getEncryptedData());
@@ -168,7 +168,7 @@ public class SimpleRetrievalMethodEncryptedKeyResolverTest extends XMLObjectBase
      * @param sxo the mock object to process
      * @return a list of EncryptedKey elements
      */
-    private List<EncryptedKey> getEncryptedKeys(SimpleXMLObject sxo) {
+    private List<EncryptedKey> getEncryptedKeys(SignableSimpleXMLObject sxo) {
         List<EncryptedKey> allKeys = new ArrayList<EncryptedKey>();
         for (XMLObject xmlObject : sxo.getUnknownXMLObjects()) {
            if (xmlObject instanceof EncryptedKey)  {

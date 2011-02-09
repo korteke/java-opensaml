@@ -27,6 +27,7 @@ import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.XMLObjectBaseTestCase;
 import org.opensaml.xml.mock.SimpleXMLObject;
 import org.opensaml.xml.security.SecurityHelper;
+import org.opensaml.xml.security.XMLSecurityHelper;
 import org.opensaml.xml.security.credential.BasicCredential;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
@@ -73,7 +74,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
     protected void setUp() throws Exception {
         super.setUp();
         
-        Credential encCred = SecurityHelper.generateKeyAndCredential(encURI);
+        Credential encCred = XMLSecurityHelper.generateKeyAndCredential(encURI);
         encKey = encCred.getSecretKey();
         keyResolver = new StaticKeyInfoCredentialResolver(encCred);
         encParams = new EncryptionParameters();
@@ -81,7 +82,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
         encParams.setEncryptionCredential(encCred);
         
         
-        Credential kekCred = SecurityHelper.generateKeyPairAndCredential(kekURI, 1024, true);
+        Credential kekCred = XMLSecurityHelper.generateKeyPairAndCredential(kekURI, 1024, true);
         kekResolver = new StaticKeyInfoCredentialResolver(kekCred);
         kekParams = new KeyEncryptionParameters();
         kekParams.setAlgorithm(kekURI);
@@ -182,7 +183,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
      * @throws NoSuchAlgorithmException 
      */
     public void testErrorInvalidDataDecryptionKey() throws NoSuchAlgorithmException, NoSuchProviderException {
-        Key badKey = SecurityHelper.generateKeyFromURI(encURI);
+        Key badKey = XMLSecurityHelper.generateKeyFromURI(encURI);
         BasicCredential encCred = new BasicCredential();
         encCred.setSecretKey((SecretKey) badKey);
         KeyInfoCredentialResolver badEncResolver = new StaticKeyInfoCredentialResolver(encCred);
@@ -205,7 +206,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
      * @throws NoSuchAlgorithmException 
      */
     public void testErrorInvalidKeyDecryptionKey() throws NoSuchAlgorithmException, NoSuchProviderException {
-        KeyPair badKeyPair = SecurityHelper.generateKeyPairFromURI(kekURI, 1024);
+        KeyPair badKeyPair = XMLSecurityHelper.generateKeyPairFromURI(kekURI, 1024);
         BasicCredential kekCred = new BasicCredential();
         kekCred.setPublicKey(badKeyPair.getPublic());
         kekCred.setPrivateKey(badKeyPair.getPrivate());
