@@ -50,6 +50,11 @@
         <!-- Runtime Dependencies -->
 
         <!-- Test Dependencies -->
+        <dependency>
+            <groupId>xmlunit</groupId>
+            <artifactId>xmlunit</artifactId>
+            <scope>test</scope>
+        </dependency>
 
         <!-- Managed Dependencies -->
 
