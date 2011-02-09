@@ -29,6 +29,8 @@ import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.io.Unmarshaller;
 import org.opensaml.xml.io.UnmarshallingException;
+import org.opensaml.xml.mock.SignableSimpleXMLObject;
+import org.opensaml.xml.mock.SignableSimpleXMLObjectBuilder;
 import org.opensaml.xml.mock.SimpleXMLObject;
 import org.opensaml.xml.mock.SimpleXMLObjectBuilder;
 import org.opensaml.xml.parse.BasicParserPool;
@@ -63,7 +65,7 @@ public class HMACSignatureTest extends XMLObjectBaseTestCase {
     private Credential badCredential;
 
     /** Builder of mock XML objects. */
-    private SimpleXMLObjectBuilder sxoBuilder;
+    private SignableSimpleXMLObjectBuilder sxoBuilder;
 
     /** Builder of Signature XML objects. */
     private SignatureBuilder sigBuilder;
@@ -93,7 +95,7 @@ public class HMACSignatureTest extends XMLObjectBaseTestCase {
         key = SecurityHelper.generateKey("AES", 128, null);
         badCredential = SecurityHelper.getSimpleCredential(key);
 
-        sxoBuilder = new SimpleXMLObjectBuilder();
+        sxoBuilder = new SignableSimpleXMLObjectBuilder();
         sigBuilder = new SignatureBuilder();
         keyInfoBuilder = new KeyInfoBuilder();
 
@@ -109,7 +111,7 @@ public class HMACSignatureTest extends XMLObjectBaseTestCase {
      * @throws SignatureException 
      */
     public void testSigningAndVerificationNoOutputLength() throws MarshallingException, ValidationException, SignatureException {
-        SimpleXMLObject sxo = getXMLObjectWithSignature(false);
+        SignableSimpleXMLObject sxo = getXMLObjectWithSignature(false);
         Signature signature = sxo.getSignature();
 
         Marshaller marshaller = Configuration.getMarshallerFactory().getMarshaller(sxo);
@@ -141,7 +143,7 @@ public class HMACSignatureTest extends XMLObjectBaseTestCase {
      * @throws SignatureException 
      */
     public void testSigningAndVerificationWithOutputLength() throws MarshallingException, ValidationException, SignatureException {
-        SimpleXMLObject sxo = getXMLObjectWithSignature(true);
+        SignableSimpleXMLObject sxo = getXMLObjectWithSignature(true);
         Signature signature = sxo.getSignature();
 
         Marshaller marshaller = Configuration.getMarshallerFactory().getMarshaller(sxo);
@@ -178,7 +180,7 @@ public class HMACSignatureTest extends XMLObjectBaseTestCase {
         Element rootElement = envelopedSignatureDoc.getDocumentElement();
 
         Unmarshaller unmarshaller = Configuration.getUnmarshallerFactory().getUnmarshaller(rootElement);
-        SimpleXMLObject sxo = (SimpleXMLObject) unmarshaller.unmarshall(rootElement);
+        SignableSimpleXMLObject sxo = (SignableSimpleXMLObject) unmarshaller.unmarshall(rootElement);
 
         assertEquals("Id attribute was not expected value", "FOO", sxo.getId());
 
@@ -209,7 +211,7 @@ public class HMACSignatureTest extends XMLObjectBaseTestCase {
         Element rootElement = envelopedSignatureDoc.getDocumentElement();
 
         Unmarshaller unmarshaller = Configuration.getUnmarshallerFactory().getUnmarshaller(rootElement);
-        SimpleXMLObject sxo = (SimpleXMLObject) unmarshaller.unmarshall(rootElement);
+        SignableSimpleXMLObject sxo = (SignableSimpleXMLObject) unmarshaller.unmarshall(rootElement);
 
         assertEquals("Id attribute was not expected value", "FOO", sxo.getId());
 
@@ -234,7 +236,7 @@ public class HMACSignatureTest extends XMLObjectBaseTestCase {
      * @throws MarshallingException thrown in signed object can't be marshalled
      */
     public void testMarshallNoOutputLength() throws MarshallingException {
-        SimpleXMLObject sxo = getXMLObjectWithSignature(false);
+        SignableSimpleXMLObject sxo = getXMLObjectWithSignature(false);
         Signature signature = sxo.getSignature();
 
         Marshaller marshaller = Configuration.getMarshallerFactory().getMarshaller(sxo);
@@ -257,7 +259,7 @@ public class HMACSignatureTest extends XMLObjectBaseTestCase {
      * @throws MarshallingException thrown in signed object can't be marshalled
      */
     public void testMarshallWithOutputLength() throws MarshallingException {
-        SimpleXMLObject sxo = getXMLObjectWithSignature(true);
+        SignableSimpleXMLObject sxo = getXMLObjectWithSignature(true);
         Signature signature = sxo.getSignature();
 
         Marshaller marshaller = Configuration.getMarshallerFactory().getMarshaller(sxo);
@@ -285,8 +287,8 @@ public class HMACSignatureTest extends XMLObjectBaseTestCase {
      * 
      * @return a XMLObject that has a Signature child element
      */
-    private SimpleXMLObject getXMLObjectWithSignature(boolean useHMACOutputLength) {
-        SimpleXMLObject sxo = sxoBuilder.buildObject();
+    private SignableSimpleXMLObject getXMLObjectWithSignature(boolean useHMACOutputLength) {
+        SignableSimpleXMLObject sxo = sxoBuilder.buildObject();
         sxo.setId("FOO");
 
         Signature sig = sigBuilder.buildObject();

@@ -218,7 +218,7 @@ public final class XMLSecurityHelper {
             throws NoSuchAlgorithmException, NoSuchProviderException {
         String jceAlgorithmName = JCEMapper.getJCEKeyAlgorithmFromURI(algoURI);
         int keyLength = JCEMapper.getKeyLengthFromURI(algoURI);
-        return generateKey(jceAlgorithmName, keyLength, null);
+        return SecurityHelper.generateKey(jceAlgorithmName, keyLength, null);
     }
     
     /**
@@ -233,7 +233,7 @@ public final class XMLSecurityHelper {
     public static KeyPair generateKeyPairFromURI(String algoURI, int keyLength) 
             throws NoSuchAlgorithmException, NoSuchProviderException {
         String jceAlgorithmName = JCEMapper.getJCEKeyAlgorithmFromURI(algoURI);
-        return generateKeyPair(jceAlgorithmName, keyLength, null);
+        return SecurityHelper.generateKeyPair(jceAlgorithmName, keyLength, null);
     }
     
     /**
@@ -285,6 +285,16 @@ public final class XMLSecurityHelper {
         providers.add( new DSAKeyValueProvider() );
         providers.add( new InlineX509DataProvider() );
         return new BasicProviderKeyInfoCredentialResolver(providers);
+    }
+    
+    /**
+     * Get the global XML security configuration instance.
+     * 
+     * @return the global XML security configuration
+     */
+    public static SecurityConfiguration getGlobalXMLSecurityConfiguration() {
+        //TODO need to figure out how this is going to work
+        return null;
     }
     
     /**
@@ -341,7 +351,7 @@ public final class XMLSecurityHelper {
         if (config != null) {
             secConfig = config;
         } else {
-            secConfig = Configuration.getGlobalSecurityConfiguration();
+            secConfig = getGlobalXMLSecurityConfiguration();
         }
 
         // The algorithm URI is derived from the credential
@@ -352,7 +362,7 @@ public final class XMLSecurityHelper {
         }
 
         // If we're doing HMAC, set the output length
-        if (SecurityHelper.isHMAC(signAlgo)) {
+        if (XMLSecurityHelper.isHMAC(signAlgo)) {
             if (signature.getHMACOutputLength() == null) {
                 signature.setHMACOutputLength(secConfig.getSignatureHMACOutputLength());
             }
@@ -425,7 +435,7 @@ public final class XMLSecurityHelper {
         if (config != null) {
             secConfig = config;
         } else {
-            secConfig = Configuration.getGlobalSecurityConfiguration();
+            secConfig = getGlobalXMLSecurityConfiguration();
         }
 
         EncryptionParameters encParams = new EncryptionParameters();
@@ -501,7 +511,7 @@ public final class XMLSecurityHelper {
         if (config != null) {
             secConfig = config;
         } else {
-            secConfig = Configuration.getGlobalSecurityConfiguration();
+            secConfig = getGlobalXMLSecurityConfiguration();
         }
 
         KeyEncryptionParameters kekParams = new KeyEncryptionParameters();
@@ -557,7 +567,7 @@ public final class XMLSecurityHelper {
         if (config != null) {
             secConfig = config;
         } else {
-            secConfig = Configuration.getGlobalSecurityConfiguration();
+            secConfig = getGlobalXMLSecurityConfiguration();
         }
 
         NamedKeyInfoGeneratorManager kiMgr = secConfig.getKeyInfoGeneratorManager();

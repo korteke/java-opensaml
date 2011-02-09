@@ -29,6 +29,8 @@ import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.io.Unmarshaller;
 import org.opensaml.xml.io.UnmarshallingException;
+import org.opensaml.xml.mock.SignableSimpleXMLObject;
+import org.opensaml.xml.mock.SignableSimpleXMLObjectBuilder;
 import org.opensaml.xml.mock.SimpleXMLObject;
 import org.opensaml.xml.mock.SimpleXMLObjectBuilder;
 import org.opensaml.xml.parse.BasicParserPool;
@@ -36,6 +38,7 @@ import org.opensaml.xml.parse.XMLParserException;
 import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.SecurityHelper;
+import org.opensaml.xml.security.XMLSecurityHelper;
 import org.opensaml.xml.security.credential.BasicCredential;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
@@ -59,7 +62,7 @@ public class DetachedSignatureTest extends XMLObjectBaseTestCase {
     private BasicCredential badCredential;
 
     /** Builder of mock XML objects. */
-    private SimpleXMLObjectBuilder sxoBuilder;
+    private SignableSimpleXMLObjectBuilder sxoBuilder;
 
     /** Builder of Signature XML objects. */
     private SignatureBuilder sigBuilder;
@@ -80,7 +83,7 @@ public class DetachedSignatureTest extends XMLObjectBaseTestCase {
         keyPair = SecurityHelper.generateKeyPair("RSA", 1024, null);
         badCredential = SecurityHelper.getSimpleCredential(keyPair.getPublic(), null);
 
-        sxoBuilder = new SimpleXMLObjectBuilder();
+        sxoBuilder = new SignableSimpleXMLObjectBuilder();
         sigBuilder = new SignatureBuilder();
 
         parserPool = new BasicParserPool();
@@ -97,7 +100,7 @@ public class DetachedSignatureTest extends XMLObjectBaseTestCase {
      */
     public void testInternalSignatureAndVerification() throws MarshallingException, UnmarshallingException,
             ValidationException, SignatureException {
-        SimpleXMLObject sxo = getXMLObjectWithSignature();
+        SignableSimpleXMLObject sxo = getXMLObjectWithSignature();
         Signature signature = sxo.getSignature();
 
         Marshaller marshaller = Configuration.getMarshallerFactory().getMarshaller(sxo);
@@ -109,7 +112,7 @@ public class DetachedSignatureTest extends XMLObjectBaseTestCase {
         }
 
         Unmarshaller unmarshaller = Configuration.getUnmarshallerFactory().getUnmarshaller(signedElement);
-        sxo = (SimpleXMLObject) unmarshaller.unmarshall(signedElement);
+        sxo = (SignableSimpleXMLObject) unmarshaller.unmarshall(signedElement);
         signature = (Signature) sxo.getOrderedChildren().get(1);
 
         SignatureValidator sigValidator = new SignatureValidator(goodCredential);
@@ -176,7 +179,7 @@ public class DetachedSignatureTest extends XMLObjectBaseTestCase {
         Unmarshaller unmarshaller = Configuration.getUnmarshallerFactory().getUnmarshaller(signatureElement);
         Signature signature = (Signature) unmarshaller.unmarshall(signatureElement);
 
-        KeyInfoCredentialResolver resolver = SecurityHelper.buildBasicInlineKeyInfoResolver();
+        KeyInfoCredentialResolver resolver = XMLSecurityHelper.buildBasicInlineKeyInfoResolver();
 
         KeyInfoCriteria criteria = new KeyInfoCriteria(signature.getKeyInfo());
         CriteriaSet criteriaSet = new CriteriaSet(criteria);
@@ -191,10 +194,10 @@ public class DetachedSignatureTest extends XMLObjectBaseTestCase {
      * 
      * @return the XMLObject
      */
-    private SimpleXMLObject getXMLObjectWithSignature() {
-        SimpleXMLObject rootSXO = sxoBuilder.buildObject();
+    private SignableSimpleXMLObject getXMLObjectWithSignature() {
+        SignableSimpleXMLObject rootSXO = sxoBuilder.buildObject();
 
-        SimpleXMLObject childSXO = sxoBuilder.buildObject();
+        SignableSimpleXMLObject childSXO = sxoBuilder.buildObject();
         childSXO.setId("FOO");
         rootSXO.getSimpleXMLObjects().add(childSXO);
 

@@ -27,6 +27,7 @@ import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.security.SecurityHelper;
+import org.opensaml.xml.security.XMLSecurityHelper;
 import org.opensaml.xml.signature.ContentReference;
 import org.opensaml.xml.signature.KeyInfo;
 import org.opensaml.xml.signature.Signature;
@@ -101,7 +102,7 @@ public class SignatureMarshaller implements Marshaller {
         try {
             log.debug("Creating XMLSignature object");
             XMLSignature dsig = null;
-            if (signature.getHMACOutputLength() != null && SecurityHelper.isHMAC(signature.getSignatureAlgorithm())) {
+            if (signature.getHMACOutputLength() != null && XMLSecurityHelper.isHMAC(signature.getSignatureAlgorithm())) {
                 dsig = new XMLSignature(document, "", signature.getSignatureAlgorithm(), signature
                         .getHMACOutputLength(), signature.getCanonicalizationAlgorithm());
             } else {

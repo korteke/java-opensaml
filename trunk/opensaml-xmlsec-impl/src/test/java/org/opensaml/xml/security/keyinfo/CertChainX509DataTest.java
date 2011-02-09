@@ -33,7 +33,7 @@ import org.opensaml.xml.security.keyinfo.provider.RSAKeyValueProvider;
 import org.opensaml.xml.security.keyinfo.provider.InlineX509DataProvider;
 import org.opensaml.xml.security.x509.X509Credential;
 import org.opensaml.xml.signature.KeyInfo;
-import org.opensaml.xml.util.Base64;
+import org.opensaml.util.Base64;
 
 
 /**
