@@ -102,9 +102,6 @@ public class SecurityHelperTest extends TestCase {
      * @throws NoSuchAlgorithmException 
      * @throws SecurityException */
     public void testKeyPairMatching() throws NoSuchAlgorithmException, NoSuchProviderException, SecurityException {
-        //TODO this will fail, need to refactor helper method to remove use of algorithm URI's
-        //org.opensaml.xml.Configuration.setGlobalSecurityConfiguration(
-        //       DefaultSecurityConfigurationBootstrap.buildDefaultConfig());
         KeyPair kp1rsa = SecurityHelper.generateKeyPair("RSA", 1024, null);
         KeyPair kp2rsa = SecurityHelper.generateKeyPair("RSA", 1024, null);
         KeyPair kp1dsa = SecurityHelper.generateKeyPair("DSA", 1024, null);

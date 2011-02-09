@@ -17,6 +17,7 @@
 package org.opensaml.xml.security;
 
 import java.io.ByteArrayInputStream;
+
 import java.io.File;
 import java.io.IOException;
 import java.math.BigInteger;
@@ -46,6 +47,7 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 import java.security.spec.RSAPublicKeySpec;
 import java.security.spec.X509EncodedKeySpec;
+import java.util.Map;
 
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
@@ -53,6 +55,7 @@ import javax.crypto.SecretKey;
 import org.apache.commons.ssl.PKCS8Key;
 import org.opensaml.util.Base64;
 import org.opensaml.util.FileSupport;
+import org.opensaml.util.collections.LazyMap;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.security.credential.BasicCredential;
 import org.opensaml.xml.security.credential.Credential;
@@ -64,6 +67,9 @@ import org.slf4j.LoggerFactory;
  * Helper methods for security-related requirements.
  */
 public final class SecurityHelper {
+    
+    /** Maps key algorithms to the signing algorithm used in the key matching function. */
+    private static Map<String, String> keyMatchAlgorithms;
 
     /** Constructor. */
     private SecurityHelper() {
@@ -510,9 +516,6 @@ public final class SecurityHelper {
         return keyGenerator.generateKeyPair();
     }
 
-    
-    //TODO need to refactor this so doesn't have dependency on XML Security related things.
-    
     /**
      * Compare the supplied public and private keys, and determine if they correspond to the same key pair.
      * 
@@ -529,20 +532,10 @@ public final class SecurityHelper {
             throw new SecurityException("Either public or private key was null");
         }
 
-        // Need to dynamically determine the JCA signature algorithm ID to use from the key algorithm.
-        // Don't currently have a direct mapping, so have to map to XML Signature algorithm URI first,
-        // then map that to JCA algorithm ID.
-        SecurityConfiguration secConfig = Configuration.getGlobalSecurityConfiguration();
-        if (secConfig == null) {
-            throw new SecurityException("Global security configuration was null, could not resolve signing algorithm");
-        }
-        String algoURI = secConfig.getSignatureAlgorithmURI(privKey.getAlgorithm());
-        if (algoURI == null) {
-            throw new SecurityException("Can't determine algorithm URI from key algorithm: " + privKey.getAlgorithm());
-        }
-        String jcaAlgoID = getAlgorithmIDFromURI(algoURI);
+        String jcaAlgoID = keyMatchAlgorithms.get(privKey.getAlgorithm());
         if (jcaAlgoID == null) {
-            throw new SecurityException("Can't determine JCA algorithm ID from algorithm URI: " + algoURI);
+            throw new SecurityException("Can't determine JCA algorithm ID for key matching from key algorithm: " 
+                    + privKey.getAlgorithm());
         }
 
         if (log.isDebugEnabled()) {
@@ -564,6 +557,13 @@ public final class SecurityHelper {
      */
     private static Logger getLogger() {
         return LoggerFactory.getLogger(SecurityHelper.class);
+    }
+    
+    static {
+        keyMatchAlgorithms = new LazyMap<String, String>();
+        keyMatchAlgorithms.put("RSA", "SHA1withRSA");
+        keyMatchAlgorithms.put("DSA", "SHA1withDSA");
+        keyMatchAlgorithms.put("ECDSA", "SHA1withECDSA");
     }
 
 }
