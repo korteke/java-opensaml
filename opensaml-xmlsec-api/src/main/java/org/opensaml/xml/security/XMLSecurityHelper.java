@@ -64,15 +64,10 @@ import org.opensaml.xml.encryption.EncryptionParameters;
 import org.opensaml.xml.encryption.KeyEncryptionParameters;
 import org.opensaml.xml.security.credential.BasicCredential;
 import org.opensaml.xml.security.credential.Credential;
-import org.opensaml.xml.security.keyinfo.BasicProviderKeyInfoCredentialResolver;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xml.security.keyinfo.KeyInfoGenerator;
 import org.opensaml.xml.security.keyinfo.KeyInfoGeneratorFactory;
-import org.opensaml.xml.security.keyinfo.KeyInfoProvider;
 import org.opensaml.xml.security.keyinfo.NamedKeyInfoGeneratorManager;
-import org.opensaml.xml.security.keyinfo.provider.DSAKeyValueProvider;
-import org.opensaml.xml.security.keyinfo.provider.InlineX509DataProvider;
-import org.opensaml.xml.security.keyinfo.provider.RSAKeyValueProvider;
 import org.opensaml.xml.security.x509.BasicX509Credential;
 import org.opensaml.xml.signature.KeyInfo;
 import org.opensaml.xml.signature.Signature;
@@ -279,6 +274,7 @@ public final class XMLSecurityHelper {
      * 
      * @return a new KeyInfoCredentialResolver instance
      */
+    /* TODO figure out something here.
     public static KeyInfoCredentialResolver buildBasicInlineKeyInfoResolver() {
         List<KeyInfoProvider> providers = new ArrayList<KeyInfoProvider>();
         providers.add( new RSAKeyValueProvider() );
@@ -286,6 +282,7 @@ public final class XMLSecurityHelper {
         providers.add( new InlineX509DataProvider() );
         return new BasicProviderKeyInfoCredentialResolver(providers);
     }
+    */
     
     /**
      * Get the global XML security configuration instance.
