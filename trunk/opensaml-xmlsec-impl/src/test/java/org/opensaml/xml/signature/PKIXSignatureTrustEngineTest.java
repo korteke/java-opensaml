@@ -37,6 +37,7 @@ import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.SigningUtil;
 import org.opensaml.xml.security.XMLSecurityHelper;
+import org.opensaml.xml.security.XMLSecurityTestingHelper;
 import org.opensaml.xml.security.XMLSigningUtil;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.criteria.EntityIDCriteria;
@@ -461,7 +462,7 @@ public class PKIXSignatureTrustEngineTest extends XMLObjectBaseTestCase {
         
         StaticPKIXValidationInformationResolver resolver = new StaticPKIXValidationInformationResolver(infoList, names);
         
-        return new PKIXSignatureTrustEngine(resolver, XMLSecurityHelper.buildBasicInlineKeyInfoResolver());
+        return new PKIXSignatureTrustEngine(resolver, XMLSecurityTestingHelper.buildBasicInlineKeyInfoResolver());
     }
     
     private PKIXValidationInformation getPKIXInfoSet(Collection<X509Certificate> certs,

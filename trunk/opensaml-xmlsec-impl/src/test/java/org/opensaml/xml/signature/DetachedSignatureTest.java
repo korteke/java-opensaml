@@ -31,14 +31,12 @@ import org.opensaml.xml.io.Unmarshaller;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.mock.SignableSimpleXMLObject;
 import org.opensaml.xml.mock.SignableSimpleXMLObjectBuilder;
-import org.opensaml.xml.mock.SimpleXMLObject;
-import org.opensaml.xml.mock.SimpleXMLObjectBuilder;
 import org.opensaml.xml.parse.BasicParserPool;
 import org.opensaml.xml.parse.XMLParserException;
 import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.SecurityHelper;
-import org.opensaml.xml.security.XMLSecurityHelper;
+import org.opensaml.xml.security.XMLSecurityTestingHelper;
 import org.opensaml.xml.security.credential.BasicCredential;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
@@ -179,7 +177,7 @@ public class DetachedSignatureTest extends XMLObjectBaseTestCase {
         Unmarshaller unmarshaller = Configuration.getUnmarshallerFactory().getUnmarshaller(signatureElement);
         Signature signature = (Signature) unmarshaller.unmarshall(signatureElement);
 
-        KeyInfoCredentialResolver resolver = XMLSecurityHelper.buildBasicInlineKeyInfoResolver();
+        KeyInfoCredentialResolver resolver = XMLSecurityTestingHelper.buildBasicInlineKeyInfoResolver();
 
         KeyInfoCriteria criteria = new KeyInfoCriteria(signature.getKeyInfo());
         CriteriaSet criteriaSet = new CriteriaSet(criteria);
