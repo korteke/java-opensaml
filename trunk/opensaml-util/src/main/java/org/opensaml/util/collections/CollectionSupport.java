@@ -27,6 +27,40 @@ public final class CollectionSupport {
     }
 
     /**
+     * Adds the given element to the given collection if, and only if, it is not null.
+     * 
+     * @param <T> type of the collection elements
+     * @param collection collection to which the element is added
+     * @param element element to be added to the collection, may be null
+     * 
+     * @return true if this operation resulted in a change to the collection, false otherwise
+     */
+    public static <T> boolean addNonNull(final Collection<T> collection, final T element) {
+        if (element == null) {
+            return false;
+        }
+
+        return collection.add(element);
+    }
+
+    /**
+     * Removes the given element from the given collection if, and only if, it is not null.
+     * 
+     * @param <T> type of the collection elements
+     * @param collection collection to which the element is added
+     * @param element element to be added to the collection, may be null
+     * 
+     * @return true if this operation resulted in a change to the collection, false otherwise
+     */
+    public static <T> boolean removeNonNull(final Collection<T> collection, final T element) {
+        if (element == null) {
+            return false;
+        }
+
+        return collection.remove(element);
+    }
+
+    /**
      * Copies all the non-null elements from the source collection to the target collection in iteration order. If
      * either the source or target collection is <code>null</code> this method simply returns.
      * 
