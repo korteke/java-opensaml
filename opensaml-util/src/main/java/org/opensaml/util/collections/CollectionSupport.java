@@ -19,6 +19,8 @@ package org.opensaml.util.collections;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.opensaml.util.Assert;
+
 /** Set of helper methods for working with collections. */
 public final class CollectionSupport {
 
@@ -35,7 +37,7 @@ public final class CollectionSupport {
      * 
      * @return true if this operation resulted in a change to the collection, false otherwise
      */
-    public static <T> boolean addNonNull(final Collection<T> collection, final T element) {
+    public static <T> boolean nonNullAdd(final Collection<T> collection, final T element) {
         if (element == null) {
             return false;
         }
@@ -46,18 +48,39 @@ public final class CollectionSupport {
     /**
      * Removes the given element from the given collection if, and only if, it is not null.
      * 
-     * @param <T> type of the collection elements
      * @param collection collection to which the element is added
      * @param element element to be added to the collection, may be null
      * 
      * @return true if this operation resulted in a change to the collection, false otherwise
      */
-    public static <T> boolean removeNonNull(final Collection<T> collection, final T element) {
+    public static boolean nonNullRemove(final Collection<?> collection, final Object element) {
         if (element == null) {
             return false;
         }
 
         return collection.remove(element);
+    }
+
+    /**
+     * Clears the target collection and then adds all non-null elements from the source collection to the target
+     * collection.
+     * 
+     * @param <T> type of elements in the collections
+     * @param source source collection, may be null, empty, or contain null elements
+     * @param target target collection, may not be null
+     */
+    public static <T> void nonNullReplace(final Collection<T> source, final Collection<T> target) {
+        Assert.isNotNull(target, "Target collection may not be null");
+
+        target.clear();
+
+        if (source == null || source.isEmpty()) {
+            return;
+        }
+
+        for (T element : source) {
+            nonNullAdd(target, element);
+        }
     }
 
     /**
