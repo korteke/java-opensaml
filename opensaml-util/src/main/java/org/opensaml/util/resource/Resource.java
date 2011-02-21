@@ -13,29 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.opensaml.util.resource;
 
 import java.io.InputStream;
-import java.nio.charset.Charset;
 
 /** An interface representing an data resource. */
 public interface Resource {
 
     /**
-     * Gets resource location information.  Examples might be filesystem path, URL, etc.
+     * Gets resource location information. Examples might be filesystem path, URL, etc.
      * 
      * @return resource location information
      */
     public String getLocation();
-    
-    /**
-     * Gets the character encoding scheme used by the resource.  This is only used if the represented resource 
-     * is textual.
-     * 
-     * @return character encoding scheme used by the resource
-     */
-    public Charset getCharacterSet();
-    
+
     /**
      * Checks whether the resource exists.
      * 
@@ -44,7 +36,7 @@ public interface Resource {
      * @throws ResourceException thrown if there is a problem determining if the resource exists
      */
     public boolean exists() throws ResourceException;
-    
+
     /**
      * Gets the input stream to the resource's data.
      * 
@@ -53,7 +45,7 @@ public interface Resource {
      * @throws ResourceException thrown if an input stream can not be created for the resource
      */
     public InputStream getInputStream() throws ResourceException;
-    
+
     /**
      * Gets the time, in milliseconds since the epoch, when the resource was last modified.
      * 

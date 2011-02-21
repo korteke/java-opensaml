@@ -164,9 +164,7 @@ public class HttpResource implements CachingResource, FilebackedRemoteResource {
                     log.debug("Metadata unchanged since last request");
                     return null;
                 default:
-                    log
-                            .debug(
-                                    "Non-ok status code, {}, returned when fetching metadata from '{}', using cached data if available",
+                    log.debug("Non-ok status code, {}, returned when fetching metadata from '{}', using cached data if available",
                                     httpStatus, resourceUrl);
                     return getInputStreamFromBackupFile();
             }
@@ -201,6 +199,20 @@ public class HttpResource implements CachingResource, FilebackedRemoteResource {
     /** {@inheritDoc} */
     public String getBackupFilePath() {
         return backupFile.getAbsolutePath();
+    }
+    
+
+    /** {@inheritDoc} */
+    public InputStream getInputStreamFromBackupFile() throws ResourceException {
+        if(backupFile == null || !backupFile.exists()){
+            return null;
+        }
+        
+        try {
+            return new FileInputStream(backupFile);
+        } catch (FileNotFoundException e) {
+            throw new ResourceException("Unable to read backup file " + getBackupFilePath(), e);
+        }
     }
 
     /**
@@ -286,9 +298,7 @@ public class HttpResource implements CachingResource, FilebackedRemoteResource {
 
             return new ByteArrayInputStream(responseEntity);
         } catch (Exception e) {
-            log
-                    .debug(
-                            "Error retrieving metadata from '{}' and saving backup copy to '{}'.  Reading data from cached copy if available",
+            log.debug("Error retrieving metadata from '{}' and saving backup copy to '{}'.  Reading data from cached copy if available",
                             resourceUrl, getBackupFilePath());
             return getInputStreamFromBackupFile();
         }
@@ -311,21 +321,5 @@ public class HttpResource implements CachingResource, FilebackedRemoteResource {
         CloseableSupport.closeQuietly(out);
         backupFile.delete();
         tmpFile.renameTo(backupFile);
-    }
-
-    /**
-     * Retrieves the resource data from the backup file.
-     * 
-     * @return the resource data
-     * 
-     * @throws ResourceException thrown if there is a problem reading the backup file (e.g. the file does not exist or
-     *             is not readable)
-     */
-    private InputStream getInputStreamFromBackupFile() throws ResourceException {
-        try {
-            return new FileInputStream(backupFile);
-        } catch (FileNotFoundException e) {
-            throw new ResourceException("Unable to read backup file " + getBackupFilePath(), e);
-        }
     }
 }

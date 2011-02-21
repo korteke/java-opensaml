@@ -20,9 +20,10 @@ package org.opensaml.util.resource;
  * A {@link Resource} which may cache the fetched data. This is useful when fetching data from a remote source that may
  * not change as often as the data is read.
  * 
- * When using a caching resource the {@link #getInputStream()} will return null if the resource has not changed since
- * the last request. If you need to re-read the resource use {@link #expireCache()} prior to calling
- * {@link #getInputStream()}.
+ * When using a caching resource the {@link #getInputStream()} method will return null if the resource has not changed
+ * since the last request. If you need to re-read the resource use {@link #expireCache()} prior to calling
+ * {@link #getInputStream()}. Note, this does <strong>not</strong> mean that I/O operations will not occur if the
+ * resource is cached. Such operations may still be necessary to determine if the cached copy is fresh.
  */
 public interface CachingResource extends Resource {
 
