@@ -16,6 +16,8 @@
 
 package org.opensaml.util.resource;
 
+import java.io.InputStream;
+
 /**
  * A resource that fetches data from a remote source but keeps a backup copy on the filesystem in case the remote file
  * can not be reached.
@@ -46,4 +48,14 @@ public interface FilebackedRemoteResource extends Resource {
      * @return creation time of the backup file or 0 if the file does not yet exist
      */
     public long getBackupFileCerationInstant();
+
+    /**
+     * Gets an InputStream of the backup file, if it exists. Implementations of this method must not perform any caching
+     * but instead returns a new inputstream, on every call, if the backup file exits.
+     * 
+     * @return the InputStream for the the backup file if it exists, otherwise null
+     * 
+     * @throws ResourceException thrown if there is a problem reading the backup file
+     */
+    public InputStream getInputStreamFromBackupFile() throws ResourceException;
 }

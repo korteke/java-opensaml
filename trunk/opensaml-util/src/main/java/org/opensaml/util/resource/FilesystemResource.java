@@ -20,7 +20,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.nio.charset.Charset;
 
 import org.opensaml.util.Assert;
 import org.opensaml.util.StringSupport;
@@ -31,41 +30,20 @@ public class FilesystemResource implements Resource {
     /** Filesytem file read by this resource. */
     private final File resourceFile;
 
-    /** Character set used by the file. */
-    private final Charset resourceCharset;
-
     /**
      * Constructor. The file character set is set to the system default character set.
      * 
      * @param resourcePath file read by this resource, never null or empty
      */
     public FilesystemResource(final String resourcePath) {
-        this(resourcePath, Charset.defaultCharset());
-    }
-
-    /**
-     * Constructor.
-     * 
-     * @param resourcePath file read by this resource, never null or empty
-     * @param charset character set of the file, never null
-     */
-    public FilesystemResource(final String resourcePath, final Charset charset) {
         final String trimmedPath = StringSupport.trimOrNull(resourcePath);
         Assert.isNotNull(trimmedPath, "Resource file path may not be null or empty");
         resourceFile = new File(trimmedPath);
-
-        Assert.isNotNull(charset, "File character set may not be null");
-        resourceCharset = charset;
     }
 
     /** {@inheritDoc} */
     public boolean exists() throws ResourceException {
         return resourceFile.exists();
-    }
-
-    /** {@inheritDoc} */
-    public Charset getCharacterSet() {
-        return resourceCharset;
     }
 
     /** {@inheritDoc} */

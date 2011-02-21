@@ -19,7 +19,6 @@ package org.opensaml.util.resource;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.nio.charset.Charset;
 
 import org.opensaml.util.Assert;
 import org.opensaml.util.StringSupport;
@@ -30,9 +29,6 @@ public class ClasspathResource implements Resource {
     /** URL to the classpath resoruce. */
     private final URL classpathResource;
 
-    /** Character set used by the resource. */
-    private final Charset resourceCharset;
-
     /**
      * Constructor. ClassLoader used to locate the resource is the loader used to load this class. Default system
      * character set is used as the resource character set.
@@ -40,37 +36,16 @@ public class ClasspathResource implements Resource {
      * @param resourcePath classpath path to the resource
      */
     public ClasspathResource(final String resourcePath) {
-        this(resourcePath, ClasspathResource.class.getClassLoader(), Charset.defaultCharset());
+        this(resourcePath, ClasspathResource.class.getClassLoader());
     }
 
     /**
      * Constructor.
-     * 
-     * @param resourcePath classpath path to the resource
-     * @param charset character set used by the resource
-     */
-    public ClasspathResource(final String resourcePath, final Charset charset) {
-        this(resourcePath, ClasspathResource.class.getClassLoader(), charset);
-    }
-
-    /**
-     * Constructor. Default system character set is used as the resource character set.
      * 
      * @param resourcePath classpath path to the resource
      * @param classLoader class loader used to locate the resource
      */
     public ClasspathResource(final String resourcePath, final ClassLoader classLoader) {
-        this(resourcePath, Charset.defaultCharset());
-    }
-
-    /**
-     * Constructor.
-     * 
-     * @param resourcePath classpath path to the resource
-     * @param classLoader class loader used to locate the resource
-     * @param charset character set used by the resource
-     */
-    public ClasspathResource(final String resourcePath, final ClassLoader classLoader, final Charset charset) {
         final String trimmedPath = StringSupport.trimOrNull(resourcePath);
         Assert.isNotNull(trimmedPath, "Resource path may not be null or empty");
 
@@ -78,19 +53,11 @@ public class ClasspathResource implements Resource {
 
         classpathResource = classLoader.getResource(trimmedPath);
         Assert.isNotNull(classpathResource, "Resource " + resourcePath + " does not exist on the classpath");
-
-        Assert.isNotNull(charset, "Resource character set may not be null");
-        resourceCharset = charset;
     }
 
     /** {@inheritDoc} */
     public boolean exists() throws ResourceException {
         return true;
-    }
-
-    /** {@inheritDoc} */
-    public Charset getCharacterSet() {
-        return resourceCharset;
     }
 
     /** {@inheritDoc} */
