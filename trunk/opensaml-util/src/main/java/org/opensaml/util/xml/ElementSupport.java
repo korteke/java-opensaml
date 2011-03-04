@@ -101,8 +101,8 @@ public final class ElementSupport {
      * @return the element
      */
     public static Element constructElement(final Document document, final QName elementName) {
-        return constructElement(document, elementName.getNamespaceURI(), elementName.getLocalPart(), elementName
-                .getPrefix());
+        return constructElement(document, elementName.getNamespaceURI(), elementName.getLocalPart(),
+                elementName.getPrefix());
     }
 
     /**
@@ -161,6 +161,19 @@ public final class ElementSupport {
         }
 
         return children;
+    }
+
+    /**
+     * Gets the child nodes with the given local tag name. If you need to retrieve multiple, named, children consider
+     * using {@link #getChildElements(Element)}.
+     * 
+     * @param root element to retrieve the children from
+     * @param name name of the child elements to be retrieved
+     * 
+     * @return list of child elements, never null
+     */
+    public static List<Element> getChildElements(final Node root, final QName name) {
+        return getChildElementsByTagNameNS(root, name.getNamespaceURI(), name.getLocalPart());
     }
 
     /**
