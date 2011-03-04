@@ -16,14 +16,21 @@
 
 package org.opensaml.util.xml;
 
-import java.util.GregorianCalendar;
 import java.util.StringTokenizer;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.Duration;
 import javax.xml.namespace.QName;
 
+import org.joda.time.Period;
+import org.joda.time.convert.ConverterManager;
+import org.joda.time.convert.DurationConverter;
+import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.format.ISODateTimeFormat;
+import org.joda.time.format.ISOPeriodFormat;
+import org.joda.time.format.PeriodFormatter;
+import org.opensaml.util.Assert;
+import org.opensaml.util.StringSupport;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
 
@@ -33,8 +40,31 @@ public final class DomTypeSupport {
     /** JAXP DatatypeFactory. */
     private static DatatypeFactory dataTypeFactory;
 
+    /** The converter used to read/write ISO8601 date/times. */
+    private static DateTimeFormatter dateTimeConverter;
+
+    /** The converter used to read in ISO8601 durations. */
+    private static DurationConverter durationReader;
+
+    /** The converter used to write out IS08601 durations. */
+    private static PeriodFormatter durationWritter;
+
     /** Constructor. */
     private DomTypeSupport() {
+    }
+
+    /**
+     * Converts a lexical dateTime, as defined by XML Schema 1.0, into milliseconds since the epoch.
+     * 
+     * @param dateTime lexical date/time, may not be null
+     * 
+     * @return the date/time expressed as milliseconds since the epoch
+     */
+    public static long dateTimeToLong(final String dateTime) {
+        String trimmedString = StringSupport.trimOrNull(dateTime);
+        Assert.isNotNull(trimmedString, "Lexical dateTime may not be null or empty");
+
+        return dateTimeConverter.parseMillis(trimmedString);
     }
 
     /**
@@ -45,8 +75,7 @@ public final class DomTypeSupport {
      * @return duration in milliseconds
      */
     public static long durationToLong(final String duration) {
-        final Duration xmlDuration = getDataTypeFactory().newDuration(duration);
-        return xmlDuration.getTimeInMillis(new GregorianCalendar());
+        return durationReader.getDurationMillis(duration);
     }
 
     /**
@@ -55,14 +84,6 @@ public final class DomTypeSupport {
      * @return the factory or null if the factory could not be created
      */
     public static DatatypeFactory getDataTypeFactory() {
-        if (dataTypeFactory == null) {
-            try {
-                dataTypeFactory = DatatypeFactory.newInstance();
-            } catch (DatatypeConfigurationException e) {
-                // do nothing
-            }
-        }
-
         return dataTypeFactory;
     }
 
@@ -111,6 +132,18 @@ public final class DomTypeSupport {
     }
 
     /**
+     * Converts a numerical date/time, given in milliseconds since the epoch, to a lexical dateTime defined by XML
+     * Schema 1.0.
+     * 
+     * @param dateTime the date time to be converted
+     * 
+     * @return the lexical representation of the date/time
+     */
+    public static String longToDateTime(final long dateTime) {
+        return dateTimeConverter.print(dateTime);
+    }
+
+    /**
      * Converts a duration in milliseconds to a lexical duration, as defined by XML Schema 1.0.
      * 
      * @param duration the duration
@@ -118,7 +151,20 @@ public final class DomTypeSupport {
      * @return the lexical representation
      */
     public static String longToDuration(final long duration) {
-        Duration xmlDuration = getDataTypeFactory().newDuration(duration);
-        return xmlDuration.toString();
+        return durationWritter.print(new Period(duration));
+    }
+
+    static {
+        dateTimeConverter = ISODateTimeFormat.basicDateTimeNoMillis();
+
+        // passing in an empty string here just allows us to get the duration converter for strings
+        durationReader = ConverterManager.getInstance().getDurationConverter("");
+        durationWritter = ISOPeriodFormat.standard();
+
+        try {
+            dataTypeFactory = DatatypeFactory.newInstance();
+        } catch (DatatypeConfigurationException e) {
+            throw new RuntimeException("JVM is required to support XML DatatypeFactory but it does not", e);
+        }
     }
 }

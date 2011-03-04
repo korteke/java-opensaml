@@ -97,18 +97,6 @@ public final class AttributeSupport {
     }
 
     /**
-     * Adds an non-id attribute name and value to a DOM Element. This is particularly useful for attributes whose names
-     * appear in namespace-qualified form.
-     * 
-     * @param attributeName the attribute name in QName form
-     * @param attributeValue the attribute values
-     * @param element the target element to which to marshall
-     */
-    public static void appendAttribute(final Element element, final QName attributeName, final String attributeValue) {
-        appendAttribute(element, attributeName, attributeValue, false);
-    }
-
-    /**
      * Adds an attribute name and value to a DOM Element. This is particularly useful for attributes whose names appear
      * in namespace-qualified form.
      * 
@@ -121,6 +109,18 @@ public final class AttributeSupport {
     public static void appendAttribute(final Element element, final QName attributeName,
             final List<String> attributeValues, final boolean isIDAttribute) {
         appendAttribute(element, attributeName, StringSupport.listToStringValue(attributeValues, " "), isIDAttribute);
+    }
+
+    /**
+     * Adds an non-id attribute name and value to a DOM Element. This is particularly useful for attributes whose names
+     * appear in namespace-qualified form.
+     * 
+     * @param attributeName the attribute name in QName form
+     * @param attributeValue the attribute values
+     * @param element the target element to which to marshall
+     */
+    public static void appendAttribute(final Element element, final QName attributeName, final String attributeValue) {
+        appendAttribute(element, attributeName, attributeValue, false);
     }
 
     /**
@@ -146,6 +146,29 @@ public final class AttributeSupport {
         if (isIDAttribute) {
             element.setIdAttributeNode(attribute, true);
         }
+    }
+
+    /**
+     * Adds an attribute to the given element. The value of the attribute is the instant now + the given duration
+     * expressed in XML dateTime format.
+     * 
+     * @param element element to which the attribute will be added, not null
+     * @param attributeName name of the attribute, not null
+     * @param duration duration, in milliseconds, must be greater than 0
+     */
+    public static void appendDateTimeAttribute(final Element element, QName attributeName, long duration) {
+        appendAttribute(element, attributeName, DomTypeSupport.longToDateTime(duration));
+    }
+
+    /**
+     * Adds an attribute to given element. The value of the attribute is the given duration in XML duration format.
+     * 
+     * @param element element to which the attribute will be added, not null
+     * @param attributeName name of the attribute, not null
+     * @param duration duration, in milliseconds, must be greater than 0
+     */
+    public static void appendDurationAttribute(final Element element, QName attributeName, long duration) {
+        appendAttribute(element, attributeName, DomTypeSupport.longToDuration(duration));
     }
 
     /**
@@ -191,6 +214,23 @@ public final class AttributeSupport {
         } else {
             return document.createAttributeNS(namespaceURI, qualifiedName);
         }
+    }
+
+    /**
+     * Gets the attribute with the given name.
+     * 
+     * @param element element that may contain the attribute, may be null
+     * @param attributeName name of the attribute, may be null
+     * 
+     * @return the attribute or null if the given element or attribute was null or the given attribute did not contain
+     *         an attribute with the given name
+     */
+    public static Attr getAttribute(Element element, QName attributeName) {
+        if (element == null || attributeName == null) {
+            return null;
+        }
+
+        return element.getAttributeNodeNS(attributeName.getNamespaceURI(), attributeName.getLocalPart());
     }
 
     /**
@@ -288,6 +328,36 @@ public final class AttributeSupport {
     }
 
     /**
+     * Gets the value of a dateTime-type attribute in milliseconds since the epoch.
+     * 
+     * @param attribute attribute from which to extract the value, may be null
+     * 
+     * @return date/time in millisecond since the epoch, or null if the attribute was null
+     */
+    public static Long getDateTimeAttributeAsLong(final Attr attribute) {
+        if (attribute == null) {
+            return null;
+        }
+
+        return DomTypeSupport.dateTimeToLong(attribute.getValue());
+    }
+
+    /**
+     * Gets the value of a duration-type attribute in milliseconds.
+     * 
+     * @param attribute attribute from which to extract the value, may be null
+     * 
+     * @return duration, in millisecond, or null if the attribute was null
+     */
+    public static Long getDurationAttributeValueAsLong(final Attr attribute) {
+        if (attribute == null) {
+            return null;
+        }
+
+        return DomTypeSupport.durationToLong(attribute.getValue());
+    }
+
+    /**
      * Gets the ID attribute of a DOM element.
      * 
      * @param element the DOM element
@@ -309,22 +379,6 @@ public final class AttributeSupport {
         }
 
         return null;
-    }
-
-    /**
-     * Checks if the given attribute has an attribute with the given name.
-     * 
-     * @param element element to check
-     * @param name name of the attribute
-     * 
-     * @return true if the element has an attribute with the given name, false otherwise
-     */
-    public static boolean hasAttribute(final Element element, final QName name) {
-        if (element == name || name == null) {
-            return false;
-        }
-
-        return element.hasAttributeNS(name.getNamespaceURI(), name.getLocalPart());
     }
 
     /**
@@ -394,5 +448,21 @@ public final class AttributeSupport {
      */
     public static XmlSpace getXMLSpace(final Element element) {
         return XmlSpace.valueOf(getAttributeValue(element, XmlConstants.XML_SPACE_ATTRIB_NAME));
+    }
+
+    /**
+     * Checks if the given attribute has an attribute with the given name.
+     * 
+     * @param element element to check
+     * @param name name of the attribute
+     * 
+     * @return true if the element has an attribute with the given name, false otherwise
+     */
+    public static boolean hasAttribute(final Element element, final QName name) {
+        if (element == name || name == null) {
+            return false;
+        }
+
+        return element.hasAttributeNS(name.getNamespaceURI(), name.getLocalPart());
     }
 }
