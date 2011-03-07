@@ -439,8 +439,15 @@ public final class ElementSupport {
         adoptElement(document, element);
 
         final Element rootElement = document.getDocumentElement();
-        if (!rootElement.isSameNode(element)) {
-            document.replaceChild(element, rootElement);
+        if (rootElement == null) {
+            document.adoptNode(rootElement);
+            return;
         }
+
+        if (rootElement.isSameNode(element)) {
+            return;
+        }
+
+        document.replaceChild(element, rootElement);
     }
 }
