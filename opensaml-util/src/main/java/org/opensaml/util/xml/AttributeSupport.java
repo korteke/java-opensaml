@@ -199,7 +199,7 @@ public final class AttributeSupport {
         Assert.isNotNull(document, "Document may not null");
 
         final String trimmedLocalName = StringSupport.trimOrNull(localName);
-        Assert.isNull(trimmedLocalName, "Attribute local name may not be null or empty");
+        Assert.isNotNull(trimmedLocalName, "Attribute local name may not be null or empty");
 
         String qualifiedName;
         final String trimmedPrefix = StringSupport.trimOrNull(prefix);

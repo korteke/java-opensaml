@@ -16,19 +16,15 @@
 
 package org.opensaml.util.xml;
 
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.StringTokenizer;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.namespace.QName;
 
-import org.joda.time.Period;
-import org.joda.time.convert.ConverterManager;
-import org.joda.time.convert.DurationConverter;
-import org.joda.time.format.DateTimeFormatter;
-import org.joda.time.format.ISODateTimeFormat;
-import org.joda.time.format.ISOPeriodFormat;
-import org.joda.time.format.PeriodFormatter;
 import org.opensaml.util.Assert;
 import org.opensaml.util.StringSupport;
 import org.w3c.dom.Attr;
@@ -39,15 +35,6 @@ public final class DomTypeSupport {
 
     /** JAXP DatatypeFactory. */
     private static DatatypeFactory dataTypeFactory;
-
-    /** The converter used to read/write ISO8601 date/times. */
-    private static DateTimeFormatter dateTimeConverter;
-
-    /** The converter used to read in ISO8601 durations. */
-    private static DurationConverter durationReader;
-
-    /** The converter used to write out IS08601 durations. */
-    private static PeriodFormatter durationWritter;
 
     /** Constructor. */
     private DomTypeSupport() {
@@ -64,7 +51,8 @@ public final class DomTypeSupport {
         String trimmedString = StringSupport.trimOrNull(dateTime);
         Assert.isNotNull(trimmedString, "Lexical dateTime may not be null or empty");
 
-        return dateTimeConverter.parseMillis(trimmedString);
+        XMLGregorianCalendar calendar = dataTypeFactory.newXMLGregorianCalendar(dateTime);
+        return calendar.toGregorianCalendar().getTimeInMillis();
     }
 
     /**
@@ -75,7 +63,7 @@ public final class DomTypeSupport {
      * @return duration in milliseconds
      */
     public static long durationToLong(final String duration) {
-        return durationReader.getDurationMillis(duration);
+        return dataTypeFactory.newDuration(duration).getTimeInMillis(new Date(0));
     }
 
     /**
@@ -140,7 +128,10 @@ public final class DomTypeSupport {
      * @return the lexical representation of the date/time
      */
     public static String longToDateTime(final long dateTime) {
-        return dateTimeConverter.print(dateTime);
+        GregorianCalendar calendar = new GregorianCalendar();
+        calendar.setTimeInMillis(dateTime);
+
+        return dataTypeFactory.newXMLGregorianCalendar(calendar).normalize().toXMLFormat();
     }
 
     /**
@@ -151,16 +142,10 @@ public final class DomTypeSupport {
      * @return the lexical representation
      */
     public static String longToDuration(final long duration) {
-        return durationWritter.print(new Period(duration));
+        return dataTypeFactory.newDuration(duration).toString();
     }
 
     static {
-        dateTimeConverter = ISODateTimeFormat.basicDateTimeNoMillis();
-
-        // passing in an empty string here just allows us to get the duration converter for strings
-        durationReader = ConverterManager.getInstance().getDurationConverter("");
-        durationWritter = ISOPeriodFormat.standard();
-
         try {
             dataTypeFactory = DatatypeFactory.newInstance();
         } catch (DatatypeConfigurationException e) {
