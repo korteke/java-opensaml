@@ -72,7 +72,9 @@ public final class ElementSupport {
 
         Assert.isNotNull(parentElement, "Parent Element may not be null");
         final Document parentDocument = parentElement.getOwnerDocument();
-        adoptElement(parentDocument, childElement);
+        if(!parentDocument.equals(childElement.getOwnerDocument())){
+            adoptElement(parentDocument, childElement);
+        }
 
         parentElement.appendChild(childElement);
     }
