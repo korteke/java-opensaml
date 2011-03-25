@@ -19,6 +19,7 @@ package org.opensaml.util.xml;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.StringTokenizer;
+import java.util.TimeZone;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
@@ -129,6 +130,7 @@ public final class DomTypeSupport {
      */
     public static String longToDateTime(final long dateTime) {
         GregorianCalendar calendar = new GregorianCalendar();
+        calendar.setTimeZone(TimeZone.getTimeZone("UTC"));
         calendar.setTimeInMillis(dateTime);
 
         return dataTypeFactory.newXMLGregorianCalendar(calendar).normalize().toXMLFormat();
