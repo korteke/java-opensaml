@@ -230,6 +230,9 @@ public final class AttributeSupport {
             return null;
         }
 
+        if (StringSupport.isNullOrEmpty(attributeName.getNamespaceURI())) {
+            return element.getAttributeNodeNS(null, attributeName.getLocalPart());
+        }
         return element.getAttributeNodeNS(attributeName.getNamespaceURI(), attributeName.getLocalPart());
     }
 
@@ -242,6 +245,9 @@ public final class AttributeSupport {
      * @return the value of the attribute or null if the element does not have such an attribute
      */
     public static String getAttributeValue(final Element element, final QName attributeName) {
+        if (StringSupport.isNullOrEmpty(attributeName.getNamespaceURI())) {
+            return getAttributeValue(element, null, attributeName.getLocalPart());
+        }
         return getAttributeValue(element, attributeName.getNamespaceURI(), attributeName.getLocalPart());
     }
 
@@ -463,6 +469,33 @@ public final class AttributeSupport {
             return false;
         }
 
+        if (StringSupport.isNullOrEmpty(name.getNamespaceURI())) {
+            return element.hasAttributeNS(null, name.getLocalPart());
+        }
+
         return element.hasAttributeNS(name.getNamespaceURI(), name.getLocalPart());
+    }
+
+    /**
+     * Removes an attribute from an element.
+     * 
+     * @param element element from which the attribute should be removed
+     * @param attributeName name of the attribute to be removed
+     * 
+     * @return true if the element contained the attribute and it was removed, false if the element did not contain such
+     *         an attribute
+     */
+    public static boolean removeAttribute(final Element element, final QName attributeName) {
+        if (hasAttribute(element, attributeName)) {
+            if (StringSupport.isNullOrEmpty(attributeName.getNamespaceURI())) {
+                element.removeAttributeNS(null, attributeName.getLocalPart());
+            } else {
+                element.removeAttributeNS(attributeName.getNamespaceURI(), attributeName.getLocalPart());
+            }
+
+            return true;
+        }
+
+        return false;
     }
 }
