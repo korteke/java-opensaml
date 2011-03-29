@@ -159,6 +159,12 @@
                 <scope>runtime</scope>
             </dependency>
             <dependency>
+                <groupId>${xerces.groupId}</groupId>
+                <artifactId>serializer</artifactId>
+                <version>${xerces.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+            <dependency>
                 <groupId>${xmlresolver.groupId}</groupId>
                 <artifactId>xml-resolver</artifactId>
                 <version>${xmlresolver.version}</version>
