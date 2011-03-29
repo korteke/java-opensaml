@@ -296,6 +296,15 @@
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <links>
+                        <link>http://download.oracle.com/javaee/5/api/</link>
+                        <link>http://joda-time.sourceforge.net/api-release/</link>
+                        <link>http://hc.apache.org/httpcomponents-client-ga/httpclient/apidocs/</link>
+                        <link>http://vt-middleware.googlecode.com/svn/vt-crypt/javadoc/vt-crypt-2.1.3/</link>
+                        <link>http://www.slf4j.org/apidocs</link>
+                    </links>
+                </configuration>
             </plugin>
         </plugins>
     </build>
