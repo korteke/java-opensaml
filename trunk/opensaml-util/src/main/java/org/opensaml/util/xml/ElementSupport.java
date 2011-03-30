@@ -167,7 +167,7 @@ public final class ElementSupport {
 
     /**
      * Gets the child nodes with the given local tag name. If you need to retrieve multiple, named, children consider
-     * using {@link #getChildElements(Element)}.
+     * using {@link #getChildElements(Node)}.
      * 
      * @param root element to retrieve the children from
      * @param name name of the child elements to be retrieved
@@ -180,7 +180,7 @@ public final class ElementSupport {
 
     /**
      * Gets the child nodes with the given local tag name. If you need to retrieve multiple, named, children consider
-     * using {@link #getChildElements(Element)}.
+     * using {@link #getChildElements(Node)}.
      * 
      * @param root element to retrieve the children from
      * @param localName local, tag, name of the child element
@@ -212,7 +212,7 @@ public final class ElementSupport {
 
     /**
      * Gets the child nodes with the given namespace qualified tag name. If you need to retrieve multiple, named,
-     * children consider using {@link #getChildElements(Element)}.
+     * children consider using {@link #getChildElements(Node)}.
      * 
      * @param root element to retrieve the children from
      * @param namespaceURI namespace URI of the child element
