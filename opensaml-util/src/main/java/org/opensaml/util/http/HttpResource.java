@@ -105,11 +105,6 @@ public class HttpResource implements CachingResource, FilebackedRemoteResource {
     }
 
     /** {@inheritDoc} */
-    public Charset getCharacterSet() {
-        return resourceCharset;
-    }
-
-    /** {@inheritDoc} */
     public long getLastModifiedTime() throws ResourceException {
         try {
             final Date lastModDate = DateUtils.parseDate(cachedResourceLastModified);
