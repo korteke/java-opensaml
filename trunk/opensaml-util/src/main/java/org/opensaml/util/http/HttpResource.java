@@ -23,7 +23,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
@@ -64,9 +63,6 @@ public class HttpResource implements CachingResource, FilebackedRemoteResource {
 
     /** URL of remote resource. */
     private final String resourceUrl;
-
-    /** Character set of remote resource. */
-    private Charset resourceCharset;
 
     /** Backup and local cache of metadata. */
     private File backupFile;
@@ -289,7 +285,6 @@ public class HttpResource implements CachingResource, FilebackedRemoteResource {
 
             cachedResourceETag = getETag(response);
             cachedResourceLastModified = getLastModified(response);
-            resourceCharset = Charset.forName(EntityUtils.getContentCharSet(response.getEntity()));
 
             return new ByteArrayInputStream(responseEntity);
         } catch (Exception e) {
