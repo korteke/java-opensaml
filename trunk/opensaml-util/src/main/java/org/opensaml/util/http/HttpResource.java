@@ -26,6 +26,8 @@ import java.io.InputStream;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import net.jcip.annotations.NotThreadSafe;
+
 import org.apache.http.Header;
 import org.apache.http.HttpHeaders;
 import org.apache.http.HttpResponse;
@@ -33,6 +35,7 @@ import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpHead;
+import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.cookie.DateParseException;
 import org.apache.http.impl.cookie.DateUtils;
 import org.apache.http.util.EntityUtils;
@@ -53,6 +56,7 @@ import org.slf4j.LoggerFactory;
  * down).
  */
 // TODO authentication
+@NotThreadSafe
 public class HttpResource implements CachingResource, FilebackedRemoteResource {
 
     /** Class logger. */
@@ -91,6 +95,13 @@ public class HttpResource implements CachingResource, FilebackedRemoteResource {
         httpClient = client;
 
         backupFile = new File(backup);
+        if (!backupFileExists()) {
+            try {
+                backupFile.createNewFile();
+            } catch (IOException e) {
+                throw new IllegalArgumentException("Unable to create backup file", e);
+            }
+        }
         Assert.isTrue(backupFile.canRead(), "Backup file is not readable");
         Assert.isTrue(backupFile.canWrite(), "Backup file is not writable");
     }
@@ -115,26 +126,37 @@ public class HttpResource implements CachingResource, FilebackedRemoteResource {
 
     /** {@inheritDoc} */
     public boolean exists() throws ResourceException {
-        HttpHead headRequest = new HttpHead(resourceUrl);
+        HttpUriRequest httpRequest = new HttpHead(resourceUrl);
 
         try {
-            final HttpResponse headResponse = httpClient.execute(headRequest);
-            final int statusCode = headResponse.getStatusLine().getStatusCode();
+            HttpResponse httpResponse = httpClient.execute(httpRequest);
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            httpRequest.abort();
+            
+            if (statusCode == HttpStatus.SC_METHOD_NOT_ALLOWED) {
+                log.debug(resourceUrl + " does not support HEAD requests, falling back to GET request");
+                httpRequest = buildGetRequest();
+                httpResponse = httpClient.execute(httpRequest);
+                statusCode = httpResponse.getStatusLine().getStatusCode();
+                httpRequest.abort();
+            }
 
-            final String etag = getETag(headResponse);
-            final String lastModified = getLastModified(headResponse);
+            if (statusCode != HttpStatus.SC_OK) {
+                return false;
+            }
+
+            final String etag = getETag(httpResponse);
+            final String lastModified = getLastModified(httpResponse);
             if ((etag != null && !ObjectSupport.equals(etag, cachedResourceETag))
                     || (lastModified != null && !ObjectSupport.equals(lastModified, cachedResourceLastModified))) {
                 expireCache();
             }
 
-            if (statusCode == HttpStatus.SC_OK) {
-                return true;
-            }
-
-            return false;
+            return true;
         } catch (IOException e) {
             throw new ResourceException("Error contacting resource " + resourceUrl, e);
+        }finally{
+            httpRequest.abort();
         }
     }
 
@@ -155,12 +177,15 @@ public class HttpResource implements CachingResource, FilebackedRemoteResource {
                     log.debug("Metadata unchanged since last request");
                     return null;
                 default:
-                    log.debug("Non-ok status code, {}, returned when fetching metadata from '{}', using cached data if available",
-                                    httpStatus, resourceUrl);
+                    log.debug(
+                            "Non-ok status code, {}, returned when fetching metadata from '{}', using cached data if available",
+                            httpStatus, resourceUrl);
                     return getInputStreamFromBackupFile();
             }
         } catch (IOException e) {
             throw new ResourceException("Error retrieving metadata from " + resourceUrl, e);
+        }finally{
+            getRequest.abort();
         }
     }
 
@@ -191,14 +216,14 @@ public class HttpResource implements CachingResource, FilebackedRemoteResource {
     public String getBackupFilePath() {
         return backupFile.getAbsolutePath();
     }
-    
 
     /** {@inheritDoc} */
     public InputStream getInputStreamFromBackupFile() throws ResourceException {
-        if(backupFile == null || !backupFile.exists()){
+        log.debug("Reading HTTP resource from backup file {}", backupFile.getAbsolutePath());
+        if (!backupFile.exists()) {
             return null;
         }
-        
+
         try {
             return new FileInputStream(backupFile);
         } catch (FileNotFoundException e) {
@@ -255,7 +280,7 @@ public class HttpResource implements CachingResource, FilebackedRemoteResource {
      */
     private HttpGet buildGetRequest() {
         final HttpGet getMethod = new HttpGet(resourceUrl);
-
+        
         if (cachedResourceETag != null) {
             getMethod.setHeader(HttpHeaders.IF_NONE_MATCH, cachedResourceETag);
         }
@@ -280,16 +305,20 @@ public class HttpResource implements CachingResource, FilebackedRemoteResource {
     private InputStream getInputStreamFromResponse(final HttpResponse response) throws ResourceException {
         try {
             final byte[] responseEntity = EntityUtils.toByteArray(response.getEntity());
+            log.debug("Recived response entity of {} bytes", responseEntity.length);
 
             saveToBackupFile(responseEntity);
 
             cachedResourceETag = getETag(response);
             cachedResourceLastModified = getLastModified(response);
+            log.debug("HTTP response included an ETag of {} and a Last-Modified of {}", cachedResourceETag,
+                    cachedResourceLastModified);
 
             return new ByteArrayInputStream(responseEntity);
         } catch (Exception e) {
-            log.debug("Error retrieving metadata from '{}' and saving backup copy to '{}'.  Reading data from cached copy if available",
-                            resourceUrl, getBackupFilePath());
+            log.debug(
+                    "Error retrieving metadata from '{}' and saving backup copy to '{}'.  Reading data from cached copy if available",
+                    resourceUrl, getBackupFilePath());
             return getInputStreamFromBackupFile();
         }
     }
@@ -304,6 +333,8 @@ public class HttpResource implements CachingResource, FilebackedRemoteResource {
      *             permission to the backup file)
      */
     private void saveToBackupFile(final byte[] data) throws IOException {
+        log.debug("Saving backup of response to {}", backupFile.getAbsolutePath());
+
         final File tmpFile = File.createTempFile(Integer.toString(resourceUrl.hashCode()), null);
         final FileOutputStream out = new FileOutputStream(tmpFile);
         out.write(data);
@@ -311,5 +342,7 @@ public class HttpResource implements CachingResource, FilebackedRemoteResource {
         CloseableSupport.closeQuietly(out);
         backupFile.delete();
         tmpFile.renameTo(backupFile);
+
+        log.debug("Wrote {} bytes to backup file {}", backupFile.length(), backupFile.getAbsolutePath());
     }
 }
