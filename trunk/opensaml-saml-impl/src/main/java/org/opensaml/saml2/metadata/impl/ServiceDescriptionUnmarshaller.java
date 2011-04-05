@@ -20,50 +20,10 @@
 
 package org.opensaml.saml2.metadata.impl;
 
-import javax.xml.namespace.QName;
-
-import org.opensaml.common.impl.AbstractSAMLObjectUnmarshaller;
-import org.opensaml.saml2.metadata.LocalizedString;
-import org.opensaml.saml2.metadata.ServiceDescription;
-import org.opensaml.xml.LangBearing;
-import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.io.UnmarshallingException;
-import org.opensaml.xml.util.XMLHelper;
-import org.w3c.dom.Attr;
 
 /**
  * A thread-safe Unmarshaller for {@link org.opensaml.saml2.metadata.ServiceDescription} objects.
  */
-public class ServiceDescriptionUnmarshaller extends AbstractSAMLObjectUnmarshaller {
+public class ServiceDescriptionUnmarshaller extends LocalizedNameUnmarshaller {
 
-    /**
-     * {@inheritDoc}
-     */
-    protected void processAttribute(XMLObject samlObject, Attr attribute) throws UnmarshallingException {
-        QName attribName = XMLHelper.getNodeQName(attribute);
-        if (LangBearing.XML_LANG_ATTR_NAME.equals(attribName)) {
-            ServiceDescription description = (ServiceDescription) samlObject;
-
-            LocalizedString descStr = description.getDescription();
-            if (descStr == null) {
-                descStr = new LocalizedString();
-            }
-
-            descStr.setLanguage(attribute.getValue());
-            description.setDescription(descStr);
-        }
-    }
-
-    /** {@inheritDoc} */
-    protected void processElementContent(XMLObject samlObject, String elementContent) {
-        ServiceDescription description = (ServiceDescription) samlObject;
-
-        LocalizedString descStr = description.getDescription();
-        if (descStr == null) {
-            descStr = new LocalizedString();
-        }
-
-        descStr.setLocalizedString(elementContent);
-        description.setDescription(descStr);
-    }
 }

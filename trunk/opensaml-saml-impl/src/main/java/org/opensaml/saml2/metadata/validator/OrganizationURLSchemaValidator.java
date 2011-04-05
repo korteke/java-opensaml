@@ -46,7 +46,10 @@ public class OrganizationURLSchemaValidator implements Validator<OrganizationURL
      * @throws ValidationException
      */
     protected void validateName(OrganizationURL organizationURL) throws ValidationException {
-        if (organizationURL.getURL() == null) {
+        if (organizationURL.getXMLLang() == null) {
+            throw new ValidationException("xml:lang required");   
+        }
+        if (organizationURL.getValue() == null) {
             throw new ValidationException("URL required");
         }
     }

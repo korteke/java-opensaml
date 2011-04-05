@@ -196,7 +196,7 @@ public class AttributeConsumingServiceSelectorTest extends BaseTestCase {
      * @return the first name of the service
      */
     private String getName(AttributeConsumingService acs) {
-        return acs.getNames().get(0).getName().getLocalString();
+        return acs.getNames().get(0).getValue();
     }
 
 }

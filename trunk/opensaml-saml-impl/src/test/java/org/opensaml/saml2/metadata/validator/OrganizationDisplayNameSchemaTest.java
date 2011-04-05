@@ -20,7 +20,6 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.common.BaseSAMLObjectValidatorTestCase;
 import org.opensaml.common.xml.SAMLConstants;
-import org.opensaml.saml2.metadata.LocalizedString;
 import org.opensaml.saml2.metadata.OrganizationDisplayName;
 import org.opensaml.xml.validation.ValidationException;
 
@@ -39,7 +38,8 @@ public class OrganizationDisplayNameSchemaTest extends BaseSAMLObjectValidatorTe
     protected void populateRequiredData() {
         super.populateRequiredData();
         OrganizationDisplayName organizationDisplayName = (OrganizationDisplayName) target;
-        organizationDisplayName.setName(new LocalizedString("name", "Languauge"));
+        organizationDisplayName.setValue("name");
+        organizationDisplayName.setXMLLang("Languauge");
     }
 
     /**
@@ -50,7 +50,10 @@ public class OrganizationDisplayNameSchemaTest extends BaseSAMLObjectValidatorTe
     public void testNameFailure() throws ValidationException {
         OrganizationDisplayName organizationDisplayName = (OrganizationDisplayName) target;
 
-        organizationDisplayName.setName(null);
+        organizationDisplayName.setValue(null);
         assertValidationFail("Name was null, should raise a Validation Exception.");
+        organizationDisplayName = (OrganizationDisplayName) target;
+        organizationDisplayName.setXMLLang(null);
+        assertValidationFail("XML:lang was null, should raise a Validation Exception.");
     }
 }

@@ -20,50 +20,11 @@
 
 package org.opensaml.saml2.metadata.impl;
 
-import javax.xml.namespace.QName;
-
-import org.opensaml.common.impl.AbstractSAMLObjectUnmarshaller;
-import org.opensaml.saml2.metadata.LocalizedString;
-import org.opensaml.saml2.metadata.OrganizationDisplayName;
-import org.opensaml.xml.LangBearing;
-import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.io.UnmarshallingException;
-import org.opensaml.xml.util.XMLHelper;
-import org.w3c.dom.Attr;
 
 /**
  * A thread-safe unmarshaller for {@link org.opensaml.saml2.metadata.OrganizationDisplayName} objects.
  */
-public class OrganizationDisplayNameUnmarshaller extends AbstractSAMLObjectUnmarshaller {
+public class OrganizationDisplayNameUnmarshaller extends LocalizedNameUnmarshaller {
 
-    /**
-     * {@inheritDoc}
-     */
-    protected void processAttribute(XMLObject samlObject, Attr attribute) throws UnmarshallingException {
-        QName attribName = XMLHelper.getNodeQName(attribute);
-        if (LangBearing.XML_LANG_ATTR_NAME.equals(attribName)) {
-            OrganizationDisplayName name = (OrganizationDisplayName) samlObject;
 
-            LocalizedString nameStr = name.getName();
-            if (nameStr == null) {
-                nameStr = new LocalizedString();
-            }
-
-            nameStr.setLanguage(attribute.getValue());
-            name.setName(nameStr);
-        }
-    }
-
-    /** {@inheritDoc} */
-    protected void processElementContent(XMLObject samlObject, String elementContent) {
-        OrganizationDisplayName name = (OrganizationDisplayName) samlObject;
-
-        LocalizedString nameStr = name.getName();
-        if (nameStr == null) {
-            nameStr = new LocalizedString();
-        }
-
-        nameStr.setLocalizedString(elementContent);
-        name.setName(nameStr);
-    }
 }

@@ -20,7 +20,6 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.common.BaseSAMLObjectValidatorTestCase;
 import org.opensaml.common.xml.SAMLConstants;
-import org.opensaml.saml2.metadata.LocalizedString;
 import org.opensaml.saml2.metadata.OrganizationURL;
 import org.opensaml.xml.validation.ValidationException;
 
@@ -39,7 +38,8 @@ public class OrganizationURLSchemaTest extends BaseSAMLObjectValidatorTestCase {
     protected void populateRequiredData() {
         super.populateRequiredData();
         OrganizationURL organizationURL = (OrganizationURL) target;
-        organizationURL.setURL(new LocalizedString("url", "language"));
+        organizationURL.setValue("url");
+        organizationURL.setXMLLang("languauge");
     }
 
     /**
@@ -50,7 +50,11 @@ public class OrganizationURLSchemaTest extends BaseSAMLObjectValidatorTestCase {
     public void testNameFailure() throws ValidationException {
         OrganizationURL organizationURL = (OrganizationURL) target;
 
-        organizationURL.setURL(null);
+        organizationURL.setValue(null);
         assertValidationFail("URL was null, should raise a Validation Exception.");
+        organizationURL = (OrganizationURL) target;
+        organizationURL.setXMLLang(null);
+        assertValidationFail("XML:lang was null, should raise a Validation Exception.");
+
     }
 }

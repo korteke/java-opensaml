@@ -23,7 +23,6 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
 import org.opensaml.common.xml.SAMLConstants;
-import org.opensaml.saml2.metadata.LocalizedString;
 import org.opensaml.saml2.metadata.ServiceDescription;
 
 /**
@@ -33,8 +32,11 @@ import org.opensaml.saml2.metadata.ServiceDescription;
 public class ServiceDescriptionTest extends BaseSAMLObjectProviderTestCase {
     
     /** Expected description */
-    protected LocalizedString expectedDescription;
-    
+    /** Expected URL. */
+    private String expectLocalizedDescription = "This is a description";
+    private String expectLang = "Language" ;
+
+   
     /**
      * Constructor
      */
@@ -43,17 +45,11 @@ public class ServiceDescriptionTest extends BaseSAMLObjectProviderTestCase {
     }
     
     /** {@inheritDoc} */
-    protected void setUp() throws Exception {
-        super.setUp();
-        
-        expectedDescription = new LocalizedString("This is a description", "Language");
-    }
-
-    /** {@inheritDoc} */
     public void testSingleElementUnmarshall() {
         ServiceDescription description = (ServiceDescription) unmarshallElement(singleElementFile);
         
-        assertEquals("Description was not expected value", expectedDescription, description.getDescription());
+        assertEquals("Description was not expected value", expectLocalizedDescription, description.getValue());
+        assertEquals("xml:lamg was not expected value", expectLang, description.getXMLLang());
     }
 
     /** {@inheritDoc} */
@@ -61,7 +57,8 @@ public class ServiceDescriptionTest extends BaseSAMLObjectProviderTestCase {
         QName qname = new QName(SAMLConstants.SAML20MD_NS, ServiceDescription.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
         ServiceDescription description = (ServiceDescription) buildXMLObject(qname);
         
-        description.setDescription(expectedDescription);
+        description.setValue(expectLocalizedDescription);
+        description.setXMLLang(expectLang);
 
         assertEquals(expectedDOM, description);
     }
