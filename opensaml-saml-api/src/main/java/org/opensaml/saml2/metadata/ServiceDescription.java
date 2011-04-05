@@ -24,34 +24,21 @@ import org.opensaml.common.xml.SAMLConstants;
 /**
  * SAML 2.0 Metadata ServiceDescription
  */
-public interface ServiceDescription extends SAMLObject {
+public interface ServiceDescription extends LocalizedName {
 
-    /** Element local name */
-    public final static String DEFAULT_ELEMENT_LOCAL_NAME = "ServiceDescription";
+    /** Element local name. */
+    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "ServiceDescription";
     
-    /** Default element name */
-    public final static QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
+    /** Default element name. */
+    public static final QName DEFAULT_ELEMENT_NAME = 
+        new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
     
-    /** Local name of the XSI type */
-    public final static String TYPE_LOCAL_NAME = "localizedNameType"; 
+    /** Local name of the XSI type. */
+    public static final String TYPE_LOCAL_NAME = "localizedNameType"; 
         
-    /** QName of the XSI type */
-    public final static QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
+    /** QName of the XSI type. */
+    public static final QName TYPE_NAME = 
+        new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
     
-    /** Language attribute name */
-    public final static String LANG_ATTRIB_NAME = "lang";
-    
-    /**
-     * Gets the description of the service.
-     * 
-     * @return the description of the service
-     */
-    public LocalizedString getDescription();
-    
-    /**
-     * Sets the description of the service.
-     * 
-     * @param newDescription the description of the service
-     */
-    public void setDescription(LocalizedString newDescription);
+
 }

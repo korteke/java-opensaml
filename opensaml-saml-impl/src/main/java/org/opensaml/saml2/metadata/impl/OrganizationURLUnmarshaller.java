@@ -20,50 +20,10 @@
 
 package org.opensaml.saml2.metadata.impl;
 
-import javax.xml.namespace.QName;
-
-import org.opensaml.common.impl.AbstractSAMLObjectUnmarshaller;
-import org.opensaml.saml2.metadata.LocalizedString;
-import org.opensaml.saml2.metadata.OrganizationURL;
-import org.opensaml.xml.LangBearing;
-import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.io.UnmarshallingException;
-import org.opensaml.xml.util.XMLHelper;
-import org.w3c.dom.Attr;
 
 /**
  * A thread-safe Unmarshaller for {@link org.opensaml.saml2.metadata.OrganizationURL} objects.
  */
-public class OrganizationURLUnmarshaller extends AbstractSAMLObjectUnmarshaller {
+public class OrganizationURLUnmarshaller extends LocalizedNameUnmarshaller {
 
-    /**
-     * {@inheritDoc}
-     */
-    protected void processAttribute(XMLObject samlObject, Attr attribute) throws UnmarshallingException {
-        QName attribName = XMLHelper.getNodeQName(attribute);
-        if (LangBearing.XML_LANG_ATTR_NAME.equals(attribName)) {
-            OrganizationURL url = (OrganizationURL) samlObject;
-
-            LocalizedString urlStr = url.getURL();
-            if (urlStr == null) {
-                urlStr = new LocalizedString();
-            }
-
-            urlStr.setLanguage(attribute.getValue());
-            url.setURL(urlStr);
-        }
-    }
-
-    /** {@inheritDoc} */
-    protected void processElementContent(XMLObject samlObject, String elementContent) {
-        OrganizationURL url = (OrganizationURL) samlObject;
-
-        LocalizedString urlStr = url.getURL();
-        if (urlStr == null) {
-            urlStr = new LocalizedString();
-        }
-
-        urlStr.setLocalizedString(elementContent);
-        url.setURL(urlStr);
-    }
 }

@@ -23,7 +23,6 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
 import org.opensaml.common.xml.SAMLConstants;
-import org.opensaml.saml2.metadata.LocalizedString;
 import org.opensaml.saml2.metadata.OrganizationURL;
 
 /**
@@ -32,8 +31,9 @@ import org.opensaml.saml2.metadata.OrganizationURL;
  */
 public class OrganizationURLTest extends BaseSAMLObjectProviderTestCase {
     
-    /** Expected URL */
-    protected LocalizedString expectURL;
+    /** Expected URL. */
+    private String expectValue = "http://example.org";
+    private String expectLang = "Language" ;
     
     /**
      * Constructor
@@ -43,17 +43,13 @@ public class OrganizationURLTest extends BaseSAMLObjectProviderTestCase {
     }
     
     /** {@inheritDoc} */
-    protected void setUp() throws Exception {
-        super.setUp();
-        
-        expectURL = new LocalizedString("http://example.org", "Language");
-    }
 
     /** {@inheritDoc} */
     public void testSingleElementUnmarshall() {
         OrganizationURL url = (OrganizationURL) unmarshallElement(singleElementFile);
         
-        assertEquals("URL was not expected value", expectURL, url.getURL());
+        assertEquals("URL was not expected value", expectValue, url.getValue());
+        assertEquals("langg was not expected value", expectLang, url.getXMLLang());
     }
 
     /** {@inheritDoc} */
@@ -61,7 +57,8 @@ public class OrganizationURLTest extends BaseSAMLObjectProviderTestCase {
         QName qname = new QName(SAMLConstants.SAML20MD_NS, OrganizationURL.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
         OrganizationURL url = (OrganizationURL) buildXMLObject(qname);
         
-        url.setURL(expectURL);
+        url.setValue(expectValue);
+        url.setXMLLang(expectLang);
 
         assertEquals(expectedDOM, url);
     }

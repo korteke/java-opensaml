@@ -23,7 +23,6 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
 import org.opensaml.common.xml.SAMLConstants;
-import org.opensaml.saml2.metadata.LocalizedString;
 import org.opensaml.saml2.metadata.ServiceName;
 
 /**
@@ -32,9 +31,10 @@ import org.opensaml.saml2.metadata.ServiceName;
  */
 public class ServiceNameTest extends BaseSAMLObjectProviderTestCase {
     
-    /** Expected description */
-    protected LocalizedString expectedName;
-    
+    /** Expected description. */
+    private String expectValue ="Name";
+    private String expectLang = "Language" ;
+
     /**
      * Constructor
      */
@@ -42,18 +42,14 @@ public class ServiceNameTest extends BaseSAMLObjectProviderTestCase {
         singleElementFile = "/data/org/opensaml/saml2/metadata/impl/ServiceName.xml";
     }
     
-    /** {@inheritDoc} */
-    protected void setUp() throws Exception {
-        super.setUp();
-        
-        expectedName = new LocalizedString("Name", "Language");
-    }
+
 
     /** {@inheritDoc} */
     public void testSingleElementUnmarshall() {
         ServiceName name = (ServiceName) unmarshallElement(singleElementFile);
         
-        assertEquals("Name was not expected value", expectedName, name.getName());
+        assertEquals("xml:lamg was not expected value", expectLang, name.getXMLLang());
+        assertEquals("Name was not expected value", expectValue, name.getValue());
     }
 
     /** {@inheritDoc} */
@@ -61,7 +57,8 @@ public class ServiceNameTest extends BaseSAMLObjectProviderTestCase {
         QName qname = new QName(SAMLConstants.SAML20MD_NS, ServiceName.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
         ServiceName name = (ServiceName) buildXMLObject(qname);
         
-        name.setName(expectedName);
+        name.setValue(expectValue);
+        name.setXMLLang(expectLang);
 
         assertEquals(expectedDOM, name);
     }

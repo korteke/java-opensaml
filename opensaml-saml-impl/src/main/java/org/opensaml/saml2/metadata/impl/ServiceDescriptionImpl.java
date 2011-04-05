@@ -20,51 +20,21 @@
 
 package org.opensaml.saml2.metadata.impl;
 
-import java.util.List;
-
-import org.opensaml.common.impl.AbstractSAMLObject;
-import org.opensaml.saml2.metadata.LocalizedString;
 import org.opensaml.saml2.metadata.ServiceDescription;
-import org.opensaml.xml.LangBearing;
-import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.util.DatatypeHelper;
 
 /**
  * Concrete implementation of {@link org.opensaml.saml2.metadata.ServiceDescription}.
  */
-public class ServiceDescriptionImpl extends AbstractSAMLObject implements ServiceDescription {
-
-    /** Service description */
-    private LocalizedString description;
+public class ServiceDescriptionImpl extends LocalizeNameImpl implements ServiceDescription {
 
     /**
-     * Constructor
+     * Constructor.
      * 
-     * @param namespaceURI
-     * @param elementLocalName
-     * @param namespacePrefix
+     * @param namespaceURI URI
+     * @param elementLocalName Name
+     * @param namespacePrefix prefix
      */
     protected ServiceDescriptionImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-    }
-
-    /** {@inheritDoc} */
-    public LocalizedString getDescription() {
-        return description;
-    }
-
-    /** {@inheritDoc} */
-    public void setDescription(LocalizedString newDescription) {
-        description = prepareForAssignment(description, newDescription);
-        boolean hasXMLLang = false;
-        if (description != null && !DatatypeHelper.isEmpty(description.getLanguage())) {
-            hasXMLLang = true;
-        }
-        manageQualifiedAttributeNamespace(LangBearing.XML_LANG_ATTR_NAME, hasXMLLang);
-    }
-
-    /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        return null;
     }
 }

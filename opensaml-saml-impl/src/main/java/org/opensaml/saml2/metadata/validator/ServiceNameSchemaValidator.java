@@ -29,7 +29,7 @@ import org.opensaml.xml.validation.Validator;
  */
 public class ServiceNameSchemaValidator implements Validator<ServiceName> {
 
-    /** Constructor */
+    /** Constructor. */
     public ServiceNameSchemaValidator() {
 
     }
@@ -46,7 +46,10 @@ public class ServiceNameSchemaValidator implements Validator<ServiceName> {
      * @throws ValidationException
      */
     protected void validateName(ServiceName serviceName) throws ValidationException {
-        if (serviceName.getName() == null) {
+        if (serviceName.getXMLLang() == null) {
+            throw new ValidationException("xml:lang required");   
+        }
+        if (serviceName.getValue() == null) {
             throw new ValidationException("Name required");
         }
     }

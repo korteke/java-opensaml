@@ -20,40 +20,10 @@
 
 package org.opensaml.saml2.metadata.impl;
 
-import org.opensaml.common.impl.AbstractSAMLObjectMarshaller;
-import org.opensaml.common.xml.SAMLConstants;
-import org.opensaml.saml2.metadata.ServiceDescription;
-import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.util.XMLHelper;
-import org.w3c.dom.Attr;
-import org.w3c.dom.Element;
 
 /**
  * A thread safe Marshaller for {@link org.opensaml.saml2.metadata.ServiceDescription} objects.
  */
-public class ServiceDescriptionMarshaller extends AbstractSAMLObjectMarshaller {
+public class ServiceDescriptionMarshaller extends LocalizedNameMarshaller {
 
-    /**
-     * {@inheritDoc}
-     */
-    protected void marshallAttributes(XMLObject samlObject, Element domElement) throws MarshallingException {
-        ServiceDescription description = (ServiceDescription) samlObject;
-
-        if (description.getDescription() != null) {
-            Attr attribute = XMLHelper.constructAttribute(domElement.getOwnerDocument(), SAMLConstants.XML_NS,
-                    ServiceDescription.LANG_ATTRIB_NAME, SAMLConstants.XML_PREFIX);
-            attribute.setValue(description.getDescription().getLanguage());
-            domElement.setAttributeNodeNS(attribute);
-        }
-    }
-
-    /** {@inheritDoc} */
-    protected void marshallElementContent(XMLObject samlObject, Element domElement) throws MarshallingException {
-        ServiceDescription description = (ServiceDescription) samlObject;
-
-        if (description.getDescription() != null) {
-            XMLHelper.appendTextContent(domElement, description.getDescription().getLocalString());
-        }
-    }
 }

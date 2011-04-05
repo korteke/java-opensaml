@@ -20,7 +20,6 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.common.BaseSAMLObjectValidatorTestCase;
 import org.opensaml.common.xml.SAMLConstants;
-import org.opensaml.saml2.metadata.LocalizedString;
 import org.opensaml.saml2.metadata.ServiceDescription;
 import org.opensaml.xml.validation.ValidationException;
 
@@ -39,7 +38,8 @@ public class ServiceDescriptionSchemaTest extends BaseSAMLObjectValidatorTestCas
     protected void populateRequiredData() {
         super.populateRequiredData();
         ServiceDescription serviceDescription = (ServiceDescription) target;
-        serviceDescription.setDescription(new LocalizedString("description","language"));
+        serviceDescription.setValue("description");
+        serviceDescription.setXMLLang("language");
     }
 
     /**
@@ -50,7 +50,11 @@ public class ServiceDescriptionSchemaTest extends BaseSAMLObjectValidatorTestCas
     public void testDescriptionFailure() throws ValidationException {
         ServiceDescription serviceDescription = (ServiceDescription) target;
 
-        serviceDescription.setDescription(null);
+        serviceDescription.setValue(null);
         assertValidationFail("Description was null, should raise a Validation Exception.");
+        serviceDescription = (ServiceDescription) target;
+        serviceDescription.setXMLLang(null);
+        assertValidationFail("XML:lang was null, should raise a Validation Exception.");
+
     }
 }

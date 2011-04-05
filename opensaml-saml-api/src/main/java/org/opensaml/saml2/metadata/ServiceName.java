@@ -22,36 +22,23 @@ import org.opensaml.common.SAMLObject;
 import org.opensaml.common.xml.SAMLConstants;
 
 /**
- * SAML 2.0 Metadata ServiceName
+ * SAML 2.0 Metadata ServiceName.
  */
-public interface ServiceName extends SAMLObject {
+public interface ServiceName extends LocalizedName {
 
-    /** Element local name */
-    public final static String DEFAULT_ELEMENT_LOCAL_NAME = "ServiceName";
+    /** Element local name. */
+    static final public String DEFAULT_ELEMENT_LOCAL_NAME = "ServiceName";
     
-    /** Default element name */
-    public final static QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
+    /** Default element name. */
+    public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
     
-    /** Local name of the XSI type */
-    public final static String TYPE_LOCAL_NAME = "localizedNameType"; 
+    /** Local name of the XSI type. */
+    public static final String TYPE_LOCAL_NAME = "localizedNameType"; 
         
-    /** QName of the XSI type */
-    public final static QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
+    /** QName of the XSI type. */
+    public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
     
-    /** Language attribute name */
-    public final static String LANG_ATTRIB_NAME = "lang";
+    /** Language attribute name. */
+    public static final String LANG_ATTRIB_NAME = "lang";
     
-    /**
-     * Gets the name of the service.
-     * 
-     * @return the name of the service
-     */
-    public LocalizedString getName();
-    
-    /**
-     * Sets the service name.
-     * 
-     * @param newName service name
-     */
-    public void setName(LocalizedString newName);
 }

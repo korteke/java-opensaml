@@ -46,7 +46,10 @@ public class ServiceDescriptionSchemaValidator implements Validator<ServiceDescr
      * @throws ValidationException
      */
     protected void validateDescription(ServiceDescription serviceDescription) throws ValidationException {
-        if (serviceDescription.getDescription() == null) {
+        if (serviceDescription.getXMLLang() == null) {
+            throw new ValidationException("xml:lang required");   
+        }
+        if (serviceDescription.getValue() == null) {
             throw new ValidationException("Description required");
         }
     }

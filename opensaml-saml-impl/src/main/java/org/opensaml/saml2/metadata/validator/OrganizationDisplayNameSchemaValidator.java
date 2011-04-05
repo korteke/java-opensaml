@@ -46,7 +46,10 @@ public class OrganizationDisplayNameSchemaValidator implements Validator<Organiz
      * @throws ValidationException
      */
     protected void validateName(OrganizationDisplayName organizationDisplayName) throws ValidationException {
-        if (organizationDisplayName.getName() == null) {
+        if (organizationDisplayName.getXMLLang() == null) {
+            throw new ValidationException("xml:lang required");   
+        }
+        if (organizationDisplayName.getValue() == null) {
             throw new ValidationException("Name required");
         }
     }
