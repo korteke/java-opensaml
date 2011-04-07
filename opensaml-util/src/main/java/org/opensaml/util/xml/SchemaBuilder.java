@@ -141,7 +141,7 @@ public final class SchemaBuilder {
         final ArrayList<Source> sourceStreams = new ArrayList<Source>();
         for (Resource schemaSource : schemaSources) {
             try {
-                sourceStreams.add(new StreamSource(schemaSource.getInputStream()));
+                sourceStreams.add(new StreamSource(schemaSource.getInputStream(), schemaSource.getLocation()));
             } catch (ResourceException e) {
                 throw new SAXException("Unable to read schema resource " + schemaSource.getLocation(), e);
             }
