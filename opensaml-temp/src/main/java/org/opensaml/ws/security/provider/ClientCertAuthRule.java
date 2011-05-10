@@ -31,7 +31,7 @@ import org.opensaml.xml.security.criteria.UsageCriteria;
 import org.opensaml.xml.security.trust.TrustEngine;
 import org.opensaml.xml.security.x509.X509Credential;
 import org.opensaml.xml.security.x509.X509Util;
-import org.opensaml.xml.util.Base64;
+import org.opensaml.util.Base64;
 import org.opensaml.xml.util.DatatypeHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
