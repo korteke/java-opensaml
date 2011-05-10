@@ -92,9 +92,12 @@ public class SAMLObjectContentReference implements ContentReference {
         transforms = new LazyList<String>();
         
         // Set defaults
+        //TODO resolve with new configuration scheme
+        /*
         if (Configuration.getGlobalSecurityConfiguration() != null ) {
             digestAlgorithm = Configuration.getGlobalSecurityConfiguration().getSignatureReferenceDigestMethod();
         }
+        */
         if (digestAlgorithm == null) {
             digestAlgorithm = SignatureConstants.ALGO_ID_DIGEST_SHA1;
         }

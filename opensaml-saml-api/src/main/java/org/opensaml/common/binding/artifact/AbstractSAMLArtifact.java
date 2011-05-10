@@ -19,7 +19,7 @@ package org.opensaml.common.binding.artifact;
 import java.util.Arrays;
 
 import org.bouncycastle.util.encoders.Hex;
-import org.opensaml.xml.util.Base64;
+import org.opensaml.util.Base64;
 
 /**
  * Base class for SAML artifacts.
