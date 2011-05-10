@@ -34,6 +34,7 @@ import org.opensaml.xml.encryption.EncryptionException;
 import org.opensaml.xml.encryption.EncryptionParameters;
 import org.opensaml.xml.encryption.KeyEncryptionParameters;
 import org.opensaml.xml.security.SecurityHelper;
+import org.opensaml.xml.security.XMLSecurityHelper;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.keyinfo.StaticKeyInfoGenerator;
 import org.opensaml.xml.signature.KeyInfo;
@@ -77,9 +78,9 @@ public class ComplexEncryptionTest extends BaseTestCase {
     protected void setUp() throws Exception {
         super.setUp();
         
-        Credential encCred = SecurityHelper.generateKeyAndCredential(algoURI);
-        Credential kekCredAES = SecurityHelper.generateKeyAndCredential(kekURIAES);
-        Credential kekCredRSA = SecurityHelper.generateKeyPairAndCredential(kekURIRSA, 2048, false);
+        Credential encCred = XMLSecurityHelper.generateKeyAndCredential(algoURI);
+        Credential kekCredAES = XMLSecurityHelper.generateKeyAndCredential(kekURIAES);
+        Credential kekCredRSA = XMLSecurityHelper.generateKeyPairAndCredential(kekURIRSA, 2048, false);
         
         encParams = new EncryptionParameters();
         encParams.setAlgorithm(algoURI);

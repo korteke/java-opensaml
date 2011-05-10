@@ -35,6 +35,7 @@ import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.SecurityHelper;
+import org.opensaml.xml.security.XMLSecurityHelper;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.signature.Signature;
 import org.opensaml.xml.signature.SignatureException;
@@ -144,7 +145,7 @@ public abstract class BaseSAML1MessageEncoder extends BaseMessageEncoder impleme
             try {
                 // TODO pull SecurityConfiguration from SAMLMessageContext? needs to be added
                 // TODO pull binding-specific keyInfoGenName from encoder setting, etc?
-                SecurityHelper.prepareSignatureParams(signature, signingCredential, null, null);
+                XMLSecurityHelper.prepareSignatureParams(signature, signingCredential, null, null);
             } catch (SecurityException e) {
                 throw new MessageEncodingException("Error preparing signature for signing", e);
             }

@@ -33,6 +33,7 @@ import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.SecurityHelper;
+import org.opensaml.xml.security.XMLSecurityHelper;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.signature.Signature;
 import org.opensaml.xml.signature.Signer;
@@ -191,7 +192,7 @@ public class HTTPSOAP11DecoderTest extends BaseTestCase {
         Credential signingCred = SecurityHelper.getSimpleCredential(kp.getPublic(), kp.getPrivate());
         signature.setSigningCredential(signingCred);
         samlRequest.setSignature(signature);
-        SecurityHelper.prepareSignatureParams(signature, signingCred, null, null);
+        XMLSecurityHelper.prepareSignatureParams(signature, signingCred, null, null);
         marshallerFactory.getMarshaller(soapEnvelope).marshall(soapEnvelope);
         Signer.signObject(signature);
         
