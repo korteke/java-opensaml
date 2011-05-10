@@ -20,10 +20,10 @@
         <module>../opensaml-messaging-api</module>
         <module>../opensaml-messaging-impl</module>
         <module>../opensaml-temp</module>
-        <!-- 
         <module>../opensaml-soap-api</module>
         <module>../opensaml-soap-impl</module>
         <module>../opensaml-saml-api</module>
+        <!-- 
         <module>../opensaml-saml-impl</module> 
         <module>../opensaml-xacml-api</module> 
         <module>../opensaml-xacml-impl</module> 
