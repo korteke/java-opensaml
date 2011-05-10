@@ -34,6 +34,7 @@ import org.opensaml.xml.encryption.EncryptionException;
 import org.opensaml.xml.encryption.EncryptionParameters;
 import org.opensaml.xml.encryption.KeyEncryptionParameters;
 import org.opensaml.xml.security.SecurityHelper;
+import org.opensaml.xml.security.XMLSecurityHelper;
 import org.opensaml.xml.security.keyinfo.StaticKeyInfoGenerator;
 import org.opensaml.xml.signature.KeyInfo;
 import org.opensaml.xml.signature.KeyName;
@@ -74,11 +75,11 @@ public class SimpleEncryptionTest extends BaseTestCase {
         
         encParams = new EncryptionParameters();
         encParams.setAlgorithm(algoURI);
-        encParams.setEncryptionCredential(SecurityHelper.generateKeyAndCredential(algoURI));
+        encParams.setEncryptionCredential(XMLSecurityHelper.generateKeyAndCredential(algoURI));
         
         kekParamsRSA = new KeyEncryptionParameters();
         kekParamsRSA.setAlgorithm(kekURIRSA);
-        kekParamsRSA.setEncryptionCredential(SecurityHelper.generateKeyPairAndCredential(kekURIRSA, 1024, false));
+        kekParamsRSA.setEncryptionCredential(XMLSecurityHelper.generateKeyPairAndCredential(kekURIRSA, 1024, false));
         
         kekParamsList = new ArrayList<KeyEncryptionParameters>();
         

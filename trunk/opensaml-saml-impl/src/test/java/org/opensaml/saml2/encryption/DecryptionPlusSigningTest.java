@@ -37,6 +37,7 @@ import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.parse.XMLParserException;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.SecurityHelper;
+import org.opensaml.xml.security.XMLSecurityHelper;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xml.security.keyinfo.StaticKeyInfoCredentialResolver;
@@ -130,7 +131,7 @@ public class DecryptionPlusSigningTest extends BaseTestCase {
         Signature responseSignature = (Signature) buildXMLObject(Signature.DEFAULT_ELEMENT_NAME);
         responseSignature.setSigningCredential(signingCred);
         response.setSignature(responseSignature);
-        SecurityHelper.prepareSignatureParams(responseSignature, signingCred, null, null);
+        XMLSecurityHelper.prepareSignatureParams(responseSignature, signingCred, null, null);
         
         marshallerFactory.getMarshaller(response).marshall(response);
         

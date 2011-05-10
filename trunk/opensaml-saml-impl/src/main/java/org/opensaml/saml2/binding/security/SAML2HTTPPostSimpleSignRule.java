@@ -38,7 +38,7 @@ import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xml.security.keyinfo.KeyInfoCriteria;
 import org.opensaml.xml.signature.KeyInfo;
 import org.opensaml.xml.signature.SignatureTrustEngine;
-import org.opensaml.xml.util.Base64;
+import org.opensaml.util.Base64;
 import org.opensaml.xml.util.DatatypeHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

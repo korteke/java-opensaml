@@ -34,7 +34,7 @@ import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.message.encoder.MessageEncodingException;
 import org.opensaml.ws.transport.http.HTTPOutTransport;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.util.Pair;
+import org.opensaml.util.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
