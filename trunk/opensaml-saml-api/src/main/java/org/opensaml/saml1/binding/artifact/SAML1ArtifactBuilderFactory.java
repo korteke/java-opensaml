@@ -19,7 +19,7 @@ package org.opensaml.saml1.binding.artifact;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.opensaml.xml.util.Base64;
+import org.opensaml.util.Base64;
 
 /**
  * Factory used to construct SAML 1 artifact builders.

@@ -18,8 +18,8 @@ package org.opensaml.saml2.binding.artifact;
 
 import java.util.Map;
 
-import org.opensaml.xml.util.Base64;
-import org.opensaml.xml.util.LazyMap;
+import org.opensaml.util.Base64;
+import org.opensaml.util.collections.LazyMap;
 
 /**
  * Factory used to construct SAML 2 artifact builders.

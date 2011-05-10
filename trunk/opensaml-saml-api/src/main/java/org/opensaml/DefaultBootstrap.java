@@ -126,7 +126,8 @@ public class DefaultBootstrap {
      * Initializes the default global security configuration.
      */
     protected static void initializeGlobalSecurityConfiguration() {
-        Configuration.setGlobalSecurityConfiguration(DefaultSecurityConfigurationBootstrap.buildDefaultConfig());
+        // TODO resolve with new configuration scheme
+        //Configuration.setGlobalSecurityConfiguration(DefaultSecurityConfigurationBootstrap.buildDefaultConfig());
     }
 
     /**
