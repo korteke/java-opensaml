@@ -37,6 +37,7 @@ import org.opensaml.saml2.metadata.provider.MetadataProviderException;
 import org.opensaml.saml2.metadata.provider.ObservableMetadataProvider;
 import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
+import org.opensaml.xml.security.XMLSecurityHelper;
 import org.opensaml.xml.security.credential.AbstractCriteriaFilteringCredentialResolver;
 import org.opensaml.xml.security.credential.BasicCredential;
 import org.opensaml.xml.security.credential.Credential;
@@ -97,7 +98,7 @@ public class MetadataCredentialResolver extends AbstractCriteriaFilteringCredent
 
         cache = new HashMap<MetadataCacheKey, SoftReference<Collection<Credential>>>();
 
-        keyInfoCredentialResolver = Configuration.getGlobalSecurityConfiguration()
+        keyInfoCredentialResolver = XMLSecurityHelper.getGlobalXMLSecurityConfiguration()
                 .getDefaultKeyInfoCredentialResolver();
         
         rwlock = new ReentrantReadWriteLock();

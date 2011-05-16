@@ -38,6 +38,7 @@ import org.opensaml.xml.encryption.EncryptionException;
 import org.opensaml.xml.encryption.EncryptionParameters;
 import org.opensaml.xml.parse.XMLParserException;
 import org.opensaml.xml.security.SecurityHelper;
+import org.opensaml.xml.security.XMLSecurityHelper;
 import org.opensaml.xml.security.credential.BasicCredential;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
@@ -71,7 +72,7 @@ public class SimpleDecryptionTest extends BaseTestCase {
     protected void setUp() throws Exception {
         super.setUp();
         
-        Credential encCred = SecurityHelper.generateKeyAndCredential(encURI);
+        Credential encCred = XMLSecurityHelper.generateKeyAndCredential(encURI);
         encCred.getSecretKey();
         keyResolver = new StaticKeyInfoCredentialResolver(encCred);
         encParams = new EncryptionParameters();
@@ -233,7 +234,7 @@ public class SimpleDecryptionTest extends BaseTestCase {
      */
     public void testErrorInvalidDataDecryptionKey() 
             throws XMLParserException, EncryptionException, NoSuchAlgorithmException, NoSuchProviderException {
-        Key badKey = SecurityHelper.generateKeyFromURI(encURI);
+        Key badKey = XMLSecurityHelper.generateKeyFromURI(encURI);
         BasicCredential encCred = new BasicCredential();
         encCred.setSecretKey((SecretKey) badKey);
         KeyInfoCredentialResolver badEncResolver = new StaticKeyInfoCredentialResolver(encCred);

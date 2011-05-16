@@ -79,7 +79,7 @@ public class DecryptionPlusSigningTest extends BaseTestCase {
     protected void setUp() throws Exception {
         super.setUp();
         
-        Credential encCred = SecurityHelper.generateKeyAndCredential(encURI);
+        Credential encCred = XMLSecurityHelper.generateKeyAndCredential(encURI);
         encCred.getSecretKey();
         keyResolver = new StaticKeyInfoCredentialResolver(encCred);
         encParams = new EncryptionParameters();

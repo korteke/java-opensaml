@@ -20,6 +20,7 @@ import java.security.KeyPair;
 
 import org.joda.time.DateTime;
 import org.opensaml.common.BaseTestCase;
+import org.opensaml.common.SAMLTestHelper;
 import org.opensaml.common.SAMLVersion;
 import org.opensaml.common.impl.SecureRandomIdentifierGenerator;
 import org.opensaml.saml2.core.impl.AssertionBuilder;
@@ -132,7 +133,7 @@ public class SignedAssertionTest extends BaseTestCase {
             (Assertion) unmarshallerFactory.getUnmarshaller(assertion.getDOM()).unmarshall(assertion.getDOM());
         
         StaticCredentialResolver credResolver = new StaticCredentialResolver(goodCredential);
-        KeyInfoCredentialResolver kiResolver = SecurityHelper.buildBasicInlineKeyInfoResolver();
+        KeyInfoCredentialResolver kiResolver = SAMLTestHelper.buildBasicInlineKeyInfoResolver();
         ExplicitKeySignatureTrustEngine trustEngine = new ExplicitKeySignatureTrustEngine(credResolver, kiResolver);
         
         CriteriaSet criteriaSet = new CriteriaSet( new EntityIDCriteria("urn:example.org:issuer") );

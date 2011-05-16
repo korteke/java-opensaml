@@ -55,17 +55,20 @@ public class RoundTripTest extends BaseTestCase {
 
         OrganizationNameBuilder orgNameBuilder = (OrganizationNameBuilder) Configuration.getBuilderFactory().getBuilder(OrganizationName.DEFAULT_ELEMENT_NAME);     
         OrganizationName newOrgName = orgNameBuilder.buildObject();
-        newOrgName.setName(new LocalizedString("OrgFullName", "en"));
+        newOrgName.setValue("OrgFullName");
+        newOrgName.setXMLLang("en");
         organization.getOrganizationNames().add(newOrgName);
 
         OrganizationDisplayNameBuilder orgDisplayNameBuilder = (OrganizationDisplayNameBuilder) Configuration.getBuilderFactory().getBuilder(OrganizationDisplayName.DEFAULT_ELEMENT_NAME); 
         OrganizationDisplayName newOrgDisplayName = orgDisplayNameBuilder.buildObject();
-        newOrgDisplayName.setName(new LocalizedString("OrgDisplayName", "en"));
+        newOrgDisplayName.setValue("OrgDisplayName");
+        newOrgDisplayName.setXMLLang("en");
         organization.getDisplayNames().add(newOrgDisplayName);
 
         OrganizationURLBuilder orgURLBuilder = (OrganizationURLBuilder) Configuration.getBuilderFactory().getBuilder(OrganizationURL.DEFAULT_ELEMENT_NAME);     
         OrganizationURL newOrgURL = orgURLBuilder.buildObject();    
-        newOrgURL.setURL(new LocalizedString("http://org.url.edu", "en"));
+        newOrgURL.setValue("http://org.url.edu");
+        newOrgURL.setXMLLang("en");
         organization.getURLs().add(newOrgURL);
         
         MarshallerFactory marshallerFactory = Configuration.getMarshallerFactory();

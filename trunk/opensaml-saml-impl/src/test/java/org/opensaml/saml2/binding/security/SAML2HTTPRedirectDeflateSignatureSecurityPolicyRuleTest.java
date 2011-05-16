@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.opensaml.common.SAMLObjectBuilder;
+import org.opensaml.common.SAMLTestHelper;
 import org.opensaml.common.binding.BasicSAMLMessageContext;
 import org.opensaml.common.binding.SAMLMessageContext;
 import org.opensaml.common.binding.security.BaseSAMLSecurityPolicyRuleTestCase;
@@ -177,7 +178,7 @@ public class SAML2HTTPRedirectDeflateSignatureSecurityPolicyRuleTest
         
         credResolver = new CollectionCredentialResolver(trustedCredentials);
         
-        KeyInfoCredentialResolver kiResolver = SecurityHelper.buildBasicInlineKeyInfoResolver();
+        KeyInfoCredentialResolver kiResolver = SAMLTestHelper.buildBasicInlineKeyInfoResolver();
         SignatureTrustEngine engine = new ExplicitKeySignatureTrustEngine(credResolver, kiResolver);
         
         rule = new SAML2HTTPRedirectDeflateSignatureRule(engine);

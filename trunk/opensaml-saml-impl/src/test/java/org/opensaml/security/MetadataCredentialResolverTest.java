@@ -25,6 +25,7 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.Configuration;
 import org.opensaml.common.BaseTestCase;
+import org.opensaml.common.SAMLTestHelper;
 import org.opensaml.saml2.metadata.EntitiesDescriptor;
 import org.opensaml.saml2.metadata.EntityDescriptor;
 import org.opensaml.saml2.metadata.IDPSSODescriptor;
@@ -35,6 +36,7 @@ import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.SecurityConfiguration;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.SecurityHelper;
+import org.opensaml.xml.security.XMLSecurityHelper;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.credential.UsageType;
 import org.opensaml.xml.security.criteria.EntityIDCriteria;
@@ -160,10 +162,11 @@ public class MetadataCredentialResolverTest extends BaseTestCase {
         mdProvider.initialize();
         
         //For testing, use default KeyInfo resolver from global security config, per metadata resolver constructor
-        origGlobalSecurityConfig = Configuration.getGlobalSecurityConfiguration();
+        origGlobalSecurityConfig = XMLSecurityHelper.getGlobalXMLSecurityConfiguration();
         BasicSecurityConfiguration newSecConfig = new BasicSecurityConfiguration();
-        newSecConfig.setDefaultKeyInfoCredentialResolver( SecurityHelper.buildBasicInlineKeyInfoResolver() );
-        Configuration.setGlobalSecurityConfiguration(newSecConfig);
+        newSecConfig.setDefaultKeyInfoCredentialResolver( SAMLTestHelper.buildBasicInlineKeyInfoResolver() );
+        //TODO fix when new config stuff is in place
+        //Configuration.setGlobalSecurityConfiguration(newSecConfig);
         
         mdResolver = new MetadataCredentialResolver(mdProvider);
         
@@ -179,7 +182,8 @@ public class MetadataCredentialResolverTest extends BaseTestCase {
     /** {@inheritDoc} */
     protected void tearDown() throws Exception {
         super.tearDown();
-        Configuration.setGlobalSecurityConfiguration(origGlobalSecurityConfig);
+        //TODO fix when new config stuff is in place
+        //Configuration.setGlobalSecurityConfiguration(origGlobalSecurityConfig);
     }
 
     /**
