@@ -26,6 +26,7 @@ import java.util.List;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.runtime.RuntimeConstants;
 import org.opensaml.common.SAMLObjectBuilder;
+import org.opensaml.common.SAMLTestHelper;
 import org.opensaml.common.binding.BasicSAMLMessageContext;
 import org.opensaml.common.binding.SAMLMessageContext;
 import org.opensaml.common.binding.security.BaseSAMLSecurityPolicyRuleTestCase;
@@ -193,7 +194,7 @@ public class SAML2HTTPPostSimpleSignSecurityPolicyRuleTest
         
         credResolver = new CollectionCredentialResolver(trustedCredentials);
         
-        KeyInfoCredentialResolver kiResolver = SecurityHelper.buildBasicInlineKeyInfoResolver();
+        KeyInfoCredentialResolver kiResolver = SAMLTestHelper.buildBasicInlineKeyInfoResolver();
         SignatureTrustEngine engine = new ExplicitKeySignatureTrustEngine(credResolver, kiResolver);
         
         rule = new SAML2HTTPPostSimpleSignRule(engine, parser, kiResolver);

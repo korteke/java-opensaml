@@ -269,22 +269,6 @@ public final class XMLSecurityHelper {
     }
     
     /**
-     * Get a basic KeyInfo credential resolver which can process standard inline
-     * data - RSAKeyValue, DSAKeyValue, X509Data.
-     * 
-     * @return a new KeyInfoCredentialResolver instance
-     */
-    /* TODO figure out something here.
-    public static KeyInfoCredentialResolver buildBasicInlineKeyInfoResolver() {
-        List<KeyInfoProvider> providers = new ArrayList<KeyInfoProvider>();
-        providers.add( new RSAKeyValueProvider() );
-        providers.add( new DSAKeyValueProvider() );
-        providers.add( new InlineX509DataProvider() );
-        return new BasicProviderKeyInfoCredentialResolver(providers);
-    }
-    */
-    
-    /**
      * Get the global XML security configuration instance.
      * 
      * @return the global XML security configuration

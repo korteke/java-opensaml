@@ -31,6 +31,8 @@ import org.opensaml.xml.security.SecurityConfiguration;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.SigningUtil;
+import org.opensaml.xml.security.XMLSecurityHelper;
+import org.opensaml.xml.security.XMLSigningUtil;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.keyinfo.KeyInfoGenerator;
 import org.opensaml.xml.signature.KeyInfo;
@@ -118,7 +120,7 @@ public class HTTPPostSimpleSignEncoder extends HTTPPostEncoder {
         String formControlData = buildFormDataToSign(velocityContext, sigAlgURI);
         velocityContext.put("Signature", generateSignature(signingCredential, sigAlgURI, formControlData));
 
-        KeyInfoGenerator kiGenerator = SecurityHelper.getKeyInfoGenerator(signingCredential, null, null);
+        KeyInfoGenerator kiGenerator = XMLSecurityHelper.getKeyInfoGenerator(signingCredential, null, null);
         if (kiGenerator != null) {
             String kiBase64 = buildKeyInfo(signingCredential, kiGenerator);
             if (!DatatypeHelper.isEmpty(kiBase64)) {
@@ -224,7 +226,7 @@ public class HTTPPostSimpleSignEncoder extends HTTPPostEncoder {
         if (config != null) {
             secConfig = config;
         } else {
-            secConfig = Configuration.getGlobalSecurityConfiguration();
+            secConfig = XMLSecurityHelper.getGlobalXMLSecurityConfiguration();
         }
 
         String signAlgo = secConfig.getSignatureAlgorithmURI(credential);
@@ -256,7 +258,7 @@ public class HTTPPostSimpleSignEncoder extends HTTPPostEncoder {
 
         String b64Signature = null;
         try {
-            byte[] rawSignature = SigningUtil.signWithURI(signingCredential, algorithmURI, formData.getBytes("UTF-8"));
+            byte[] rawSignature = XMLSigningUtil.signWithURI(signingCredential, algorithmURI, formData.getBytes("UTF-8"));
             b64Signature = Base64.encodeBytes(rawSignature, Base64.DONT_BREAK_LINES);
             log.debug("Generated digital signature value (base64-encoded) {}", b64Signature);
         } catch (SecurityException e) {

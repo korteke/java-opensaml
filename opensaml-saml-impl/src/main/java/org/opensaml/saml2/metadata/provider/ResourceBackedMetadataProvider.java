@@ -117,7 +117,7 @@ public class ResourceBackedMetadataProvider extends AbstractReloadingMetadataPro
     /** {@inheritDoc} */
     protected byte[] fetchMetadata() throws MetadataProviderException {
         try {
-            DateTime metadataUpdateTime = metadataResource.getLastModifiedTime();
+            DateTime metadataUpdateTime = new DateTime(metadataResource.getLastModifiedTime());
             log.debug("resource {} was last modified {}", metadataResource.getLocation(), metadataUpdateTime);
             if (getLastRefresh() == null || metadataUpdateTime.isAfter(getLastRefresh())) {
                 return inputstreamToByteArray(metadataResource.getInputStream());

@@ -26,6 +26,7 @@ import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.parse.XMLParserException;
 import org.opensaml.xml.security.SecurityHelper;
+import org.opensaml.xml.security.XMLSecurityHelper;
 import org.opensaml.xml.security.credential.StaticCredentialResolver;
 import org.opensaml.xml.security.x509.X509Credential;
 import org.opensaml.xml.signature.SignatureTrustEngine;
@@ -88,7 +89,7 @@ public class SignatureValidationFilterTest extends BaseTestCase {
         X509Credential switchCred = SecurityHelper.getSimpleCredential(switchCert, null);
         StaticCredentialResolver switchCredResolver = new StaticCredentialResolver(switchCred);
         switchSigTrustEngine = new ExplicitKeySignatureTrustEngine(switchCredResolver, 
-                Configuration.getGlobalSecurityConfiguration().getDefaultKeyInfoCredentialResolver());
+                XMLSecurityHelper.getGlobalXMLSecurityConfiguration().getDefaultKeyInfoCredentialResolver());
     }
 
     public void testValidSWITCHStandalone() throws UnmarshallingException {
@@ -121,7 +122,7 @@ public class SignatureValidationFilterTest extends BaseTestCase {
         X509Credential cred = SecurityHelper.getSimpleCredential(cert, null);
         StaticCredentialResolver credResolver = new StaticCredentialResolver(cred);
         SignatureTrustEngine trustEngine = new ExplicitKeySignatureTrustEngine(credResolver, 
-                Configuration.getGlobalSecurityConfiguration().getDefaultKeyInfoCredentialResolver());
+                XMLSecurityHelper.getGlobalXMLSecurityConfiguration().getDefaultKeyInfoCredentialResolver());
         
         Document mdDoc = parser.parse(SignatureValidationFilterTest.class.getResourceAsStream(openIDFileValid));
         XMLObject xmlObject = 
@@ -144,7 +145,7 @@ public class SignatureValidationFilterTest extends BaseTestCase {
         X509Credential cred = SecurityHelper.getSimpleCredential(cert, null);
         StaticCredentialResolver credResolver = new StaticCredentialResolver(cred);
         SignatureTrustEngine trustEngine = new ExplicitKeySignatureTrustEngine(credResolver, 
-                Configuration.getGlobalSecurityConfiguration().getDefaultKeyInfoCredentialResolver());
+                XMLSecurityHelper.getGlobalXMLSecurityConfiguration().getDefaultKeyInfoCredentialResolver());
         
         Document mdDoc = parser.parse(SignatureValidationFilterTest.class.getResourceAsStream(openIDFileInvalid));
         XMLObject xmlObject = 
@@ -168,7 +169,7 @@ public class SignatureValidationFilterTest extends BaseTestCase {
         X509Credential cred = SecurityHelper.getSimpleCredential(cert, null);
         StaticCredentialResolver credResolver = new StaticCredentialResolver(cred);
         SignatureTrustEngine trustEngine = new ExplicitKeySignatureTrustEngine(credResolver, 
-                Configuration.getGlobalSecurityConfiguration().getDefaultKeyInfoCredentialResolver());
+                XMLSecurityHelper.getGlobalXMLSecurityConfiguration().getDefaultKeyInfoCredentialResolver());
         
         Document mdDoc = parser.parse(SignatureValidationFilterTest.class.getResourceAsStream(openIDFileValid));
         
@@ -194,7 +195,7 @@ public class SignatureValidationFilterTest extends BaseTestCase {
         X509Credential cred = SecurityHelper.getSimpleCredential(cert, null);
         StaticCredentialResolver credResolver = new StaticCredentialResolver(cred);
         SignatureTrustEngine trustEngine = new ExplicitKeySignatureTrustEngine(credResolver, 
-                Configuration.getGlobalSecurityConfiguration().getDefaultKeyInfoCredentialResolver());
+                XMLSecurityHelper.getGlobalXMLSecurityConfiguration().getDefaultKeyInfoCredentialResolver());
         
         Document mdDoc = parser.parse(SignatureValidationFilterTest.class.getResourceAsStream(openIDFileInvalid));
         
