@@ -15,18 +15,37 @@
  */
 package org.opensaml.core.config;
 
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.Properties;
 import java.util.ServiceLoader;
 
+import org.opensaml.core.config.provider.MapBasedConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * A service which provides for the registration, retrieval and deregistration of objects
  * related to library module configuration. 
+ * 
+ * <p>
+ * The service uses an internally-managed instance of {@link Configuration} to handle
+ * the registration, retrieval and deregistration of the configuration objects under its
+ * management.
+ * </p>
+ * 
+ * <p>
+ * The service first attempts to use the Java Services API to resolve the instance 
+ * of Configuration to use. If multiple implementations of Configuration are registered
+ * via the Services API mechanism, the first one returned by the {@link ServiceLoader} iterator
+ * is used.  If no Configuration implementation is declared or resolvable using 
+ * the Services API, then it uses the default implementation {@link MapBasedConfiguration}.
+ * </p>
+ * 
+ * <p>
+ * The Configuration instance to use may also be set externally via {@link #setConfiguration(Configuration)}.
+ * This may be useful where an application-specific means such as Spring is used to configure the environment.
+ * This overrides the resolution process described above.
+ * </p>
  */
 public class ConfigurationService {
     
@@ -40,9 +59,8 @@ public class ConfigurationService {
     private static ServiceLoader<ConfigurationPropertiesSource> configPropertiesLoader = 
         ServiceLoader.load(ConfigurationPropertiesSource.class) ;
     
-    /** Storage for registered configuration objects. */
-    //TODO this is perhaps temporary pending a possible reimplementation using JNDI 
-    private static Map<String, Map<String, Object>> storage = new HashMap<String, Map<String, Object>>();
+    /** The configuration instance to use. */
+    private static Configuration configuration;
     
     /** Constructor. */
     protected ConfigurationService() { }
@@ -58,7 +76,7 @@ public class ConfigurationService {
      */
     public static <T extends Object> T get(Class<T> configClass) {
         String partitionName = getPartitionName();
-        return get(configClass, partitionName);
+        return getConfiguration().get(configClass, partitionName);
     }
     
     /**
@@ -68,11 +86,11 @@ public class ConfigurationService {
      * @param <I> the configuration object instance type being registered, which must be an instance of <T>
      * 
      * @param configClass the type of configuration being registered
-     * @param configuration the configuration object instance being registered
+     * @param configInstance the configuration object instance being registered
      */
-    public static <T extends Object, I extends T> void register(Class<T> configClass, I configuration) {
+    public static <T extends Object, I extends T> void register(Class<T> configClass, I configInstance) {
         String partitionName = getPartitionName();
-        register(configClass, configuration, partitionName);
+        getConfiguration().register(configClass, configInstance, partitionName);
     }
 
     /**
@@ -86,7 +104,7 @@ public class ConfigurationService {
      */
     public static <T extends Object> T deregister(Class<T> configClass) {
         String partitionName = getPartitionName();
-        return deregister(configClass, partitionName);
+        return getConfiguration().deregister(configClass, partitionName);
     }
     
     /**
@@ -125,6 +143,22 @@ public class ConfigurationService {
     }
     
     /**
+     * Set the {@link Configuration} instance to use.
+     * 
+     * <p>
+     * The configuration instance to use is normally resolved via the Java Services API,
+     * or is defaulted.  However, this method is provided to allow the configuration
+     * instance to be supplied externally, perhaps using an application-specific
+     * means such as Spring dependency injection.
+     * </p>
+     * 
+     * @param newConfiguration the Configuration instance to use
+     */
+    public static void setConfiguration(Configuration newConfiguration) {
+        configuration = newConfiguration;
+    }
+    
+    /**
      * Return the partition name which will be used for storage of configuration objects.
      * 
      * <p>
@@ -146,73 +180,32 @@ public class ConfigurationService {
         log.debug("Resolved effective configuration partition name '{}'", partitionName);
         return partitionName;
     }
-    
+
     /**
-     * Obtain the registered configuration instance. 
+     * Get the {@link Configuration} instance to use.
      * 
-     * @param <T> the type of configuration being retrieved, typically an interface
+     * <p>
+     * The implementation to return is first resolved using the Java Services API.
+     * If this produces no implementation, then an instance of the default implementation
+     * of {@link MapBasedConfiguration} is used.
+     * </p>
      * 
-     * @param configClass the configuration class identifier, typically an interface
-     * @param partitionName the partition name to use
-     * 
-     * @return the instance of the registered configuration interface, or null
+     * @return the Configuration implementation instance 
      */
-    @SuppressWarnings("unchecked")
-    private static <T extends Object> T get(Class<T> configClass, String partitionName) {
-        Map<String, Object> partition = getPartition(partitionName);
-        return (T) partition.get(configClass.getName());
-    }
-    
-    /**
-     * Register a configuration instance.
-     * 
-     * @param <T> the type of configuration being registered, typically an interface
-     * @param <I> the configuration implementation being registered, which will be an instance of <T>
-     * 
-     * @param configClass the type of configuration class being registered, typically an interface
-     * @param configuration the configuration implementation instance being registered
-     * @param partitionName the partition name to use
-     */
-    private static <T extends Object, I extends T> void register(Class<T> configClass, I configuration,
-            String partitionName) {
-        Map<String, Object> partition = getPartition(partitionName);
-        partition.put(configClass.getName(), configuration);
-    }
-    
-    /**
-     * Deregister a configuration instance.
-     * 
-     * @param <T> the type of configuration being deregistered, typically an interface
-     * 
-     * @param configClass the type of configuration class being deregistered , typically an interface
-     * @param partitionName the partition name to use
-     * 
-     * @return the configuration implementation instance which was deregistered, or null
-     */
-    private static <T extends Object> T deregister(Class<T> configClass, String partitionName) {
-        Map<String, Object> partition = getPartition(partitionName);
-        synchronized (partition) {
-            @SuppressWarnings("unchecked")
-            T old = (T) partition.get(configClass.getName());
-            partition.remove(configClass.getName());
-            return old;
+    protected static Configuration getConfiguration() {
+        if (configuration == null) {
+            synchronized (ConfigurationService.class) {
+                ServiceLoader<Configuration> loader = ServiceLoader.load(Configuration.class);
+                Iterator<Configuration> iter = loader.iterator();
+                if (iter.hasNext()) {
+                    configuration = iter.next();
+                } else {
+                    // Default impl
+                    configuration = new MapBasedConfiguration();
+                }
+            }
         }
-    }
-    
-    /**
-     * Get the Map instance which corresponds to the specified partition name.
-     * 
-     * @param partitionName the partition name to use
-     * 
-     * @return the Map corresponding to the partition name.  A new empty Map will be created if necessary
-     */
-    private static synchronized Map<String, Object> getPartition(String partitionName) {
-        Map<String, Object> partition = storage.get(partitionName);
-        if (partition == null) {
-            partition = new HashMap<String, Object>();
-            storage.put(partitionName, partition);
-        }
-        return partition;
+        return configuration;
     }
     
     /**
@@ -223,5 +216,5 @@ public class ConfigurationService {
     private static Logger getLogger() {
         return LoggerFactory.getLogger(ConfigurationService.class);
     }
-
+    
 }
