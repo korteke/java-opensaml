@@ -18,7 +18,11 @@ package org.opensaml.util;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 /** File helper functions. */
 public final class FileSupport {
@@ -64,4 +68,29 @@ public final class FileSupport {
 
         return bytes;
     }
+    
+    /**
+     * Copy a source file to a target file.  If the target file exists, it will be first deleted.
+     * 
+     * @param source the source File
+     * @param target the target File
+     * @throws IOException 
+     */
+    public static void copyFile(final File source, final File target) throws IOException {
+        if (target.exists()) {
+            target.delete();
+        }
+        
+        InputStream in = new FileInputStream(source);
+        OutputStream out = new FileOutputStream(target);
+        
+        byte[] buf = new byte[1024];
+        int len;
+        while ((len = in.read(buf)) > 0){
+            out.write(buf, 0, len);
+        }
+        in.close();
+        out.close();
+    }
+    
 }
