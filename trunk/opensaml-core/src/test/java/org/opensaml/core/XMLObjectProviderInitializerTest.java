@@ -29,7 +29,7 @@ import org.opensaml.xml.schema.XSString;
 /**
  * Test XMLObject provider initializer for module "core".
  */
-public class XMLProviderInitializerTest extends TestCase {
+public class XMLObjectProviderInitializerTest extends TestCase {
     
     /** {@inheritDoc} */
     protected void setUp() throws Exception {
@@ -56,7 +56,7 @@ public class XMLProviderInitializerTest extends TestCase {
         XMLObjectProviderRegistry registry = ConfigurationService.get(XMLObjectProviderRegistry.class);
         assertNull("Registry was non-null", registry);
         
-        XMLProviderInitializer initializer = new XMLProviderInitializer();
+        XMLObjectProviderInitializer initializer = new XMLObjectProviderInitializer();
         initializer.init();
         
         registry = ConfigurationService.get(XMLObjectProviderRegistry.class);
