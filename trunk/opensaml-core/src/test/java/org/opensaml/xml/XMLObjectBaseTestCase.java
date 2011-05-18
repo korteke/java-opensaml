@@ -24,6 +24,8 @@ import javax.xml.namespace.QName;
 
 import org.custommonkey.xmlunit.XMLTestCase;
 import org.custommonkey.xmlunit.XMLUnit;
+import org.opensaml.core.config.ConfigurationService;
+import org.opensaml.core.config.InitializationService;
 import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallerFactory;
 import org.opensaml.xml.io.MarshallingException;
@@ -32,6 +34,7 @@ import org.opensaml.xml.io.UnmarshallerFactory;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.mock.SimpleXMLObject;
 import org.opensaml.xml.parse.BasicParserPool;
+import org.opensaml.xml.parse.ParserPool;
 import org.opensaml.xml.parse.XMLParserException;
 import org.opensaml.xml.util.XMLHelper;
 import org.slf4j.Logger;
@@ -49,7 +52,7 @@ public abstract class XMLObjectBaseTestCase extends XMLTestCase {
     private final Logger log = LoggerFactory.getLogger(XMLObjectBaseTestCase.class);
 
     /** Parser pool */
-    protected static BasicParserPool parserPool;
+    protected static ParserPool parserPool;
 
     /** XMLObject builder factory */
     protected static XMLObjectBuilderFactory builderFactory;
@@ -75,39 +78,17 @@ public abstract class XMLObjectBaseTestCase extends XMLTestCase {
         super.setUp();
         XMLUnit.setIgnoreWhitespace(true);
         
+        InitializationService.initialize();
+        
         try {
-            XMLConfigurator configurator = new XMLConfigurator();
-
-            parserPool = new BasicParserPool();
-            parserPool.setNamespaceAware(true);
-            
-            Configuration.setParserPool(parserPool);
-
-            Class clazz = XMLObjectBaseTestCase.class;
-
-            Document generalConfig = parserPool.parse(clazz.getResourceAsStream("/xmltooling-config.xml"));
-            configurator.load(generalConfig);
-
-            Document schemaConfig = parserPool.parse(clazz.getResourceAsStream("/schema-config.xml"));
-            configurator.load(schemaConfig);
-            
-            Document encryptionConfig = parserPool.parse(clazz.getResourceAsStream("/encryption-config.xml"));
-            configurator.load(encryptionConfig);
-
-            Document encryptionValidationConfig = parserPool.parse(clazz.getResourceAsStream("/encryption-validation-config.xml"));
-            configurator.load(encryptionValidationConfig);
-
-            Document signatureConfig = parserPool.parse(clazz.getResourceAsStream("/signature-config.xml"));
-            configurator.load(signatureConfig);
-            
-            Document signatureValidationConfig = parserPool.parse(clazz.getResourceAsStream("/signature-validation-config.xml"));
-            configurator.load(signatureValidationConfig);
-
-            builderFactory = Configuration.getBuilderFactory();
-            marshallerFactory = Configuration.getMarshallerFactory();
-            unmarshallerFactory = Configuration.getUnmarshallerFactory();
+            XMLObjectProviderRegistry registry = ConfigurationService.get(XMLObjectProviderRegistry.class);
+            parserPool = registry.getParserPool();
+            builderFactory = registry.getBuilderFactory();
+            marshallerFactory = registry.getMarshallerFactory();
+            unmarshallerFactory = registry.getUnmarshallerFactory();
         } catch (Exception e) {
-            System.err.println("Can not initialize XMLObjectBaseTestCase" + e);
+            log.error("Can not initialize XMLObjectBaseTestCase", e);
+            throw e;
         }
         
     }
