@@ -20,7 +20,7 @@ import org.opensaml.xml.AbstractXMLObjectProviderInitializer;
 /**
  * XMLObject provider initializer for module "core".
  */
-public class XMLProviderInitializer extends AbstractXMLObjectProviderInitializer {
+public class XMLObjectProviderInitializer extends AbstractXMLObjectProviderInitializer {
     
     /** Config resources. */
     private static String[] configs = {
