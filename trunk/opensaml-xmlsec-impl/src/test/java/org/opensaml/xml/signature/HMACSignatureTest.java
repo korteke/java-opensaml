@@ -98,9 +98,6 @@ public class HMACSignatureTest extends XMLObjectBaseTestCase {
         sxoBuilder = new SignableSimpleXMLObjectBuilder();
         sigBuilder = new SignatureBuilder();
         keyInfoBuilder = new KeyInfoBuilder();
-
-        parserPool = new BasicParserPool();
-        parserPool.setNamespaceAware(true);
     }
 
     /**

@@ -21,16 +21,21 @@ import javax.xml.namespace.QName;
 import org.custommonkey.xmlunit.XMLTestCase;
 import org.custommonkey.xmlunit.XMLUnit;
 import org.opensaml.Configuration;
+import org.opensaml.core.config.ConfigurationService;
+import org.opensaml.core.config.InitializationException;
+import org.opensaml.core.config.InitializationService;
 import org.opensaml.xml.ConfigurationException;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.XMLObjectBuilder;
 import org.opensaml.xml.XMLObjectBuilderFactory;
+import org.opensaml.xml.XMLObjectProviderRegistry;
 import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallerFactory;
 import org.opensaml.xml.io.Unmarshaller;
 import org.opensaml.xml.io.UnmarshallerFactory;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.parse.BasicParserPool;
+import org.opensaml.xml.parse.ParserPool;
 import org.opensaml.xml.parse.XMLParserException;
 import org.opensaml.xml.util.XMLHelper;
 import org.slf4j.Logger;
@@ -44,7 +49,7 @@ import org.w3c.dom.Element;
 public abstract class BaseTestCase extends XMLTestCase {
     
     /** Parser manager used to parse XML. */
-    protected static BasicParserPool parser;
+    protected static ParserPool parser;
     
     /** XMLObject builder factory. */
     protected static XMLObjectBuilderFactory builderFactory;
@@ -58,15 +63,10 @@ public abstract class BaseTestCase extends XMLTestCase {
     /** Class logger. */
     private static Logger log = LoggerFactory.getLogger(BaseTestCase.class);
     
-    /** Constructor. */
-    public BaseTestCase(){
+    /** Constructor. 
+     * @throws InitializationException */
+    public BaseTestCase() {
         super();
-        
-        parser = new BasicParserPool();
-        parser.setNamespaceAware(true);
-        builderFactory = Configuration.getBuilderFactory();
-        marshallerFactory = Configuration.getMarshallerFactory();
-        unmarshallerFactory = Configuration.getUnmarshallerFactory();
     }
 
     /** {@inheritDoc} */
@@ -74,11 +74,14 @@ public abstract class BaseTestCase extends XMLTestCase {
         super.setUp();
         XMLUnit.setIgnoreWhitespace(true);
         
-        try{
-            TestBootstrap.bootstrap();
-        }catch(ConfigurationException e){
-            fail(e.getMessage());
-        }
+        InitializationService.initialize();
+        
+        XMLObjectProviderRegistry registry = ConfigurationService.get(XMLObjectProviderRegistry.class);
+        
+        parser = registry.getParserPool();
+        builderFactory = registry.getBuilderFactory();
+        marshallerFactory = registry.getMarshallerFactory();
+        unmarshallerFactory = registry.getUnmarshallerFactory();
     }
 
     /** {@inheritDoc} */
