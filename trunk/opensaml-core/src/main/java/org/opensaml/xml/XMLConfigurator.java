@@ -30,6 +30,7 @@ import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
+import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.Unmarshaller;
 import org.opensaml.xml.parse.BasicParserPool;
@@ -63,6 +64,9 @@ public class XMLConfigurator {
 
     /** Schema used to validate configruation files. */
     private Schema configurationSchema;
+    
+    /** The provider registry instance to use. */
+    private XMLObjectProviderRegistry registry;
 
     /**
      * Constructor.
@@ -96,6 +100,15 @@ public class XMLConfigurator {
             parserPool.setSchema(configurationSchema);
         } catch (SAXException e) {
             throw new ConfigurationException("Unable to read XMLTooling configuration schema", e);
+        }
+        
+        synchronized(XMLObjectProviderRegistry.class) {
+            registry = ConfigurationService.get(XMLObjectProviderRegistry.class);
+            if (registry == null) {
+                log.debug("XMLObjectProviderRegistry did not exist in ConfigurationService, will be created");
+                registry = new XMLObjectProviderRegistry();
+                ConfigurationService.register(XMLObjectProviderRegistry.class, registry);
+            }
         }
     }
 
@@ -243,17 +256,17 @@ public class XMLConfigurator {
                 unmarshaller = (Unmarshaller) createClassInstance(configuration);
 
                 if(retainXMLConfiguration){
-                Configuration.registerObjectProvider(objectProviderName, builder, marshaller, unmarshaller,
-                        objectProvider);
+                    // TODO think we should probably remove this now
+                    //getRegistry().registerObjectProvider(objectProviderName, builder, marshaller, unmarshaller, objectProvider);
                 }else{
-                    Configuration.registerObjectProvider(objectProviderName, builder, marshaller, unmarshaller);
+                    getRegistry().registerObjectProvider(objectProviderName, builder, marshaller, unmarshaller);
                 }
 
                 log.debug("{} intialized and configuration cached", objectProviderName);
             } catch (ConfigurationException e) {
                 log.error("Error initializing object provier " + objectProvider, e);
                 // clean up any parts of the object provider that might have been registered before the failure
-                Configuration.deregisterObjectProvider(objectProviderName);
+                getRegistry().deregisterObjectProvider(objectProviderName);
                 throw e;
             }
         }
@@ -298,9 +311,10 @@ public class XMLConfigurator {
 
             log.debug("ValidtorSuite {} has been initialized", validatorSuiteId);
             if(retainXMLConfiguration){
-                Configuration.registerValidatorSuite(validatorSuiteId, validatorSuite, validatorSuiteElement);
+                // TODO think we should probably remove this now
+                //getRegistry().registerValidatorSuite(validatorSuiteId, validatorSuite, validatorSuiteElement);
             }else{
-                Configuration.registerValidatorSuite(validatorSuiteId, validatorSuite);
+                getRegistry().registerValidatorSuite(validatorSuiteId, validatorSuite);
             }
         }
     }
@@ -325,7 +339,7 @@ public class XMLConfigurator {
             if (attributeQName == null) {
                 log.debug("IDAttribute element was empty, no registration performed");
             } else {
-                Configuration.registerIDAttribute(attributeQName);
+                getRegistry().registerIDAttribute(attributeQName);
                 log.debug("IDAttribute {} has been registered", attributeQName);
             }
         }
@@ -350,7 +364,9 @@ public class XMLConfigurator {
 
         try {
             log.trace("Creating instance of {}", className);
-            ClassLoader classLoader = this.getClass().getClassLoader();
+            //TODO switch to thread context class loader, this seems more correct. Need to test and verify.
+            //ClassLoader classLoader = this.getClass().getClassLoader();
+            ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
             Class clazz = classLoader.loadClass(className);
             Constructor constructor = clazz.getConstructor();
             return constructor.newInstance();
@@ -381,5 +397,14 @@ public class XMLConfigurator {
             log.error(errorMsg, e);
             throw new ConfigurationException(errorMsg, e);
         }
+    }
+    
+    /**
+     * Get the XMLObject provider registry instance to use.
+     * 
+     * @return the registry instance
+     */
+    protected XMLObjectProviderRegistry getRegistry() {
+        return registry;
     }
 }

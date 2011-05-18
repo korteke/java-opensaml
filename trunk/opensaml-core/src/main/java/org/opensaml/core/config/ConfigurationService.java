@@ -128,9 +128,11 @@ public class ConfigurationService {
     public static Properties getConfigurationProperties() {
         //TODO make these immutable?
         Logger log = getLogger();
+        log.debug("Resolving configuration propreties source");
         Iterator<ConfigurationPropertiesSource> iter = configPropertiesLoader.iterator();
         while (iter.hasNext()) {
             ConfigurationPropertiesSource source = iter.next();
+            log.debug("Evaluating configuration properties implementation: {}", source.getClass().getName());
             Properties props = source.getProperties();
             if (props != null) {
                 log.debug("Resolved non-null configuration properties using implementation: {}", 

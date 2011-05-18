@@ -13,29 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.opensaml.core.config.provider;
+package org.opensaml.core.config;
 
 import java.util.Properties;
 
+import org.opensaml.core.config.provider.ThreadLocalConfigurationPropertiesHolder;
+import org.opensaml.xml.XMLObjectProviderRegistry;
+
 import junit.framework.TestCase;
 
-import org.opensaml.core.config.ConfigurationPropertiesSource;
-
 /**
- * Test {@link ThreadLocalConfigurationPropertiesSource}.
+ * A class which provides basic testing for the InitializationService.
  */
-public class ThreadLocalConfigurationPropertiesSourceTest extends TestCase {
-    
-    /** The source test to test. */
-    private ConfigurationPropertiesSource source;
+public class InitializationServiceTest extends TestCase {
     
     /** {@inheritDoc} */
     protected void setUp() throws Exception {
         super.setUp();
         Properties props = new Properties();
         
-        props.setProperty("opensaml.config.partitionName", "myapp-threadlocal");
-        props.setProperty("opensaml.initializer.foo.flag", "false");
+        props.setProperty(ConfigurationService.PROPERTY_PARTITION_NAME, this.getClass().getName());
         
         ThreadLocalConfigurationPropertiesHolder.setProperties(props);
     }
@@ -45,17 +42,15 @@ public class ThreadLocalConfigurationPropertiesSourceTest extends TestCase {
         super.tearDown();
         ThreadLocalConfigurationPropertiesHolder.clear();
     }
-    
-    /**
-     *  Test basic retrieval of properties from properties source.
-     */
-    public void testSource() {
-        source = new ThreadLocalConfigurationPropertiesSource();
-        Properties props = source.getProperties();
-        assertNotNull("Properties was null", props);
+
+    public void testProviderInit() throws InitializationException {
+        XMLObjectProviderRegistry registry = ConfigurationService.get(XMLObjectProviderRegistry.class);
+        assertNull("Registry was non-null", registry);        
         
-        assertEquals("Incorrect property value", "myapp-threadlocal", props.getProperty("opensaml.config.partitionName"));
-        assertEquals("Incorrect property value", "false", props.getProperty("opensaml.initializer.foo.flag"));
+        InitializationService.initialize();
+        
+        registry = ConfigurationService.get(XMLObjectProviderRegistry.class);
+        assertNotNull("Registry was null", registry);        
     }
 
 }
