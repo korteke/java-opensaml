@@ -79,9 +79,6 @@ public class EnvelopedSignatureTest extends XMLObjectBaseTestCase {
 
         sxoBuilder = new SignableSimpleXMLObjectBuilder();
         sigBuilder = new SignatureBuilder();
-
-        parserPool = new BasicParserPool();
-        parserPool.setNamespaceAware(true);
     }
 
     /**
