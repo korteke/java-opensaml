@@ -31,6 +31,8 @@
     </modules>
 
     <properties>
+        <logback.groupId>ch.qos.logback</logback.groupId>
+        <logback.version>0.9.24</logback.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <slf4j.groupId>org.slf4j</slf4j.groupId>
         <slf4j.version>1.6.1</slf4j.version>
@@ -91,6 +93,12 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>3.8.1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>${logback.groupId}</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback.version}</version>
             <scope>test</scope>
         </dependency>
 
@@ -177,7 +185,6 @@
             </dependency>
 
             <!-- Test Dependencies -->
-            <!-- TODO remove with JUnit -->
             <dependency>
                 <groupId>xmlunit</groupId>
                 <artifactId>xmlunit</artifactId>
