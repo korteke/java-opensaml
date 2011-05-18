@@ -16,54 +16,30 @@
 
 package org.opensaml.core;
 
-import java.util.Properties;
+import javax.xml.namespace.QName;
 
-import junit.framework.TestCase;
-
+import org.opensaml.core.config.XMLObjectProviderInitializerBaseTestCase;
 import org.opensaml.core.config.ConfigurationService;
-import org.opensaml.core.config.InitializationException;
-import org.opensaml.core.config.provider.ThreadLocalConfigurationPropertiesHolder;
+import org.opensaml.core.config.Initializer;
 import org.opensaml.xml.XMLObjectProviderRegistry;
 import org.opensaml.xml.schema.XSString;
 
 /**
  * Test XMLObject provider initializer for module "core".
  */
-public class XMLObjectProviderInitializerTest extends TestCase {
-    
+public class XMLObjectProviderInitializerTest extends XMLObjectProviderInitializerBaseTestCase {
+
     /** {@inheritDoc} */
-    protected void setUp() throws Exception {
-        super.setUp();
-        Properties props = new Properties();
-        
-        props.setProperty(ConfigurationService.PROPERTY_PARTITION_NAME, this.getClass().getName());
-        
-        ThreadLocalConfigurationPropertiesHolder.setProperties(props);
+    protected Initializer getTestedInitializer() {
+        return new XMLObjectProviderInitializer();
     }
 
     /** {@inheritDoc} */
-    protected void tearDown() throws Exception {
-        super.tearDown();
-        ThreadLocalConfigurationPropertiesHolder.clear();
-    }
-    
-    /**
-     * Test basic provider registration.
-     * 
-     * @throws InitializationException if there is an error during provider init
-     */
-    public void testProviderInit() throws InitializationException {
-        XMLObjectProviderRegistry registry = ConfigurationService.get(XMLObjectProviderRegistry.class);
-        assertNull("Registry was non-null", registry);
-        
-        XMLObjectProviderInitializer initializer = new XMLObjectProviderInitializer();
-        initializer.init();
-        
-        registry = ConfigurationService.get(XMLObjectProviderRegistry.class);
-        assertNotNull("Registry was null", registry);
-        assertNotNull("Builder was null", registry.getBuilderFactory().getBuilder(XSString.TYPE_NAME));
-        assertNotNull("Unmarshaller was null", registry.getUnmarshallerFactory().getUnmarshaller(XSString.TYPE_NAME));
-        assertNotNull("Marshaller was null", registry.getMarshallerFactory().getMarshaller(XSString.TYPE_NAME));
+    protected QName[] getTestedProviders() {
+        return new QName[] { 
+                ConfigurationService.get(XMLObjectProviderRegistry.class).getDefaultProviderQName(), 
+                XSString.TYPE_NAME, 
+        };
     }
 
 }
