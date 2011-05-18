@@ -26,6 +26,7 @@ import javax.xml.namespace.QName;
 import org.opensaml.Configuration;
 import org.opensaml.common.BaseTestCase;
 import org.opensaml.common.SAMLTestHelper;
+import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.saml2.metadata.EntitiesDescriptor;
 import org.opensaml.saml2.metadata.EntityDescriptor;
 import org.opensaml.saml2.metadata.IDPSSODescriptor;
@@ -165,8 +166,7 @@ public class MetadataCredentialResolverTest extends BaseTestCase {
         origGlobalSecurityConfig = XMLSecurityHelper.getGlobalXMLSecurityConfiguration();
         BasicSecurityConfiguration newSecConfig = new BasicSecurityConfiguration();
         newSecConfig.setDefaultKeyInfoCredentialResolver( SAMLTestHelper.buildBasicInlineKeyInfoResolver() );
-        //TODO fix when new config stuff is in place
-        //Configuration.setGlobalSecurityConfiguration(newSecConfig);
+        ConfigurationService.register(SecurityConfiguration.class, newSecConfig);
         
         mdResolver = new MetadataCredentialResolver(mdProvider);
         
@@ -182,8 +182,7 @@ public class MetadataCredentialResolverTest extends BaseTestCase {
     /** {@inheritDoc} */
     protected void tearDown() throws Exception {
         super.tearDown();
-        //TODO fix when new config stuff is in place
-        //Configuration.setGlobalSecurityConfiguration(origGlobalSecurityConfig);
+        ConfigurationService.register(SecurityConfiguration.class, origGlobalSecurityConfig);
     }
 
     /**

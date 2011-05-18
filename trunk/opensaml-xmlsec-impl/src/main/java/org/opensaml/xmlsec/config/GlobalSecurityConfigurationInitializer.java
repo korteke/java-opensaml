@@ -13,38 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.opensaml.core;
-
-import javax.xml.namespace.QName;
+package org.opensaml.xmlsec.config;
 
 import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.core.config.InitializationException;
-import org.opensaml.xml.AbstractXMLObjectProviderInitializer;
-import org.opensaml.xml.XMLObjectProviderRegistry;
+import org.opensaml.core.config.Initializer;
+import org.opensaml.xml.security.BasicSecurityConfiguration;
+import org.opensaml.xml.security.DefaultSecurityConfigurationBootstrap;
+import org.opensaml.xml.security.SecurityConfiguration;
 
 /**
- * XMLObject provider initializer for module "core".
+ * An initializer which initializes the global security configuration.
  */
-public class XMLObjectProviderInitializer extends AbstractXMLObjectProviderInitializer {
-    
-    /** Config resources. */
-    private static String[] configs = {
-        "/default-config.xml",
-        "/schema-config.xml",
-        };
-
-    /** {@inheritDoc} */
-    protected String[] getConfigResources() {
-        return configs;
-    }
+public class GlobalSecurityConfigurationInitializer implements Initializer {
 
     /** {@inheritDoc} */
     public void init() throws InitializationException {
-        super.init();
-        
-        XMLObjectProviderRegistry registry = ConfigurationService.get(XMLObjectProviderRegistry.class);
-        
-        registry.registerIDAttribute(new QName(javax.xml.XMLConstants.XML_NS_URI, "id"));
+        BasicSecurityConfiguration secConfig = DefaultSecurityConfigurationBootstrap.buildDefaultConfig();
+        ConfigurationService.register(SecurityConfiguration.class, secConfig);
     }
 
 }

@@ -32,7 +32,8 @@ public class TestBootstrap extends DefaultBootstrap {
     public static synchronized void bootstrap() throws ConfigurationException {
         DefaultBootstrap.bootstrap();
         
-        initializeXMLTooling(testConfigs);
+        //TODO
+        //initializeXMLTooling(testConfigs);
         
     }
 

@@ -57,6 +57,7 @@ import javax.crypto.SecretKey;
 import org.apache.commons.ssl.PKCS8Key;
 import org.apache.xml.security.Init;
 import org.apache.xml.security.algorithms.JCEMapper;
+import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.util.FileSupport;
 import org.opensaml.util.StringSupport;
 import org.opensaml.xml.Configuration;
@@ -274,8 +275,7 @@ public final class XMLSecurityHelper {
      * @return the global XML security configuration
      */
     public static SecurityConfiguration getGlobalXMLSecurityConfiguration() {
-        //TODO need to figure out how this is going to work
-        return null;
+        return ConfigurationService.get(SecurityConfiguration.class);
     }
     
     /**

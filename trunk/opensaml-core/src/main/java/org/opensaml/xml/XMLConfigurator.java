@@ -102,7 +102,7 @@ public class XMLConfigurator {
             throw new ConfigurationException("Unable to read XMLTooling configuration schema", e);
         }
         
-        synchronized(XMLObjectProviderRegistry.class) {
+        synchronized(ConfigurationService.class) {
             registry = ConfigurationService.get(XMLObjectProviderRegistry.class);
             if (registry == null) {
                 log.debug("XMLObjectProviderRegistry did not exist in ConfigurationService, will be created");
