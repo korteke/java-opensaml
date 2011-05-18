@@ -26,6 +26,7 @@ import org.apache.xml.security.transforms.TransformationException;
 import org.apache.xml.security.transforms.Transforms;
 import org.apache.xml.security.transforms.params.InclusiveNamespaces;
 import org.opensaml.common.SignableSAMLObject;
+import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.Namespace;
 import org.opensaml.xml.NamespaceManager;
@@ -92,12 +93,10 @@ public class SAMLObjectContentReference implements ContentReference {
         transforms = new LazyList<String>();
         
         // Set defaults
-        //TODO resolve with new configuration scheme
-        /*
-        if (Configuration.getGlobalSecurityConfiguration() != null ) {
-            digestAlgorithm = Configuration.getGlobalSecurityConfiguration().getSignatureReferenceDigestMethod();
+        SecurityConfiguration globalSecConfig = ConfigurationService.get(SecurityConfiguration.class);
+        if (globalSecConfig != null ) {
+            digestAlgorithm = globalSecConfig.getSignatureReferenceDigestMethod();
         }
-        */
         if (digestAlgorithm == null) {
             digestAlgorithm = SignatureConstants.ALGO_ID_DIGEST_SHA1;
         }
