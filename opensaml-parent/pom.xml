@@ -88,7 +88,7 @@
             <classifier>jdk15</classifier>
             <scope>test</scope>
         </dependency>
-        <!-- TODO this is just temporary -->
+        <!-- TODO JUnit is just temporary until TestNG conversion -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -99,6 +99,24 @@
             <groupId>${logback.groupId}</groupId>
             <artifactId>logback-classic</artifactId>
             <version>${logback.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>${slf4j.groupId}</groupId>
+            <artifactId>jcl-over-slf4j</artifactId>
+            <version>${slf4j.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>${slf4j.groupId}</groupId>
+            <artifactId>log4j-over-slf4j</artifactId>
+            <version>${slf4j.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>${slf4j.groupId}</groupId>
+            <artifactId>jul-to-slf4j</artifactId>
+            <version>${slf4j.version}</version>
             <scope>test</scope>
         </dependency>
 
