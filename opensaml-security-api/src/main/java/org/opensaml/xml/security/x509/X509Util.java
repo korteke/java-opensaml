@@ -41,12 +41,10 @@ import org.bouncycastle.asn1.DERSequence;
 import org.bouncycastle.asn1.DERSet;
 import org.bouncycastle.asn1.DERString;
 import org.bouncycastle.asn1.x509.SubjectKeyIdentifier;
-import org.bouncycastle.asn1.x509.X509Extensions;
 import org.bouncycastle.x509.extension.SubjectKeyIdentifierStructure;
 import org.bouncycastle.x509.extension.X509ExtensionUtil;
 import org.opensaml.util.FileSupport;
 import org.opensaml.util.StringSupport;
-import org.opensaml.xml.schema.SchemaBuilder;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.util.IPAddressHelper;
@@ -65,6 +63,9 @@ public class X509Util {
 
     /** Common Name (CN) OID. */
     public static final String CN_OID = "2.5.4.3";
+    
+    /** Subject Key Identifier (SKI) OID. */
+    public static final String SKI_OID = "2.5.29.14";
 
     /** RFC 2459 Other Subject Alt Name type. */
     public static final Integer OTHER_ALT_NAME = new Integer(0);
@@ -257,7 +258,7 @@ public class X509Util {
      */
     public static byte[] getSubjectKeyIdentifier(X509Certificate certificate) {
         Logger log = getLogger();
-        byte[] derValue = certificate.getExtensionValue(X509Extensions.SubjectKeyIdentifier.getId());
+        byte[] derValue = certificate.getExtensionValue(SKI_OID);
         if (derValue == null || derValue.length == 0) {
             return null;
         }
