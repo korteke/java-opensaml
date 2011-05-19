@@ -52,7 +52,7 @@ public class SignableSimpleXMLObjectUnmarshaller extends AbstractXMLObjectUnmars
 
     /** {@inheritDoc} */
     protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
-        SimpleXMLObject simpleXMLObject = (SimpleXMLObject) xmlObject;
+        SignableSimpleXMLObject simpleXMLObject = (SignableSimpleXMLObject) xmlObject;
 
         if (attribute.getLocalName().equals(SimpleXMLObject.ID_ATTRIB_NAME)) {
             simpleXMLObject.setId(attribute.getValue());
@@ -64,7 +64,7 @@ public class SignableSimpleXMLObjectUnmarshaller extends AbstractXMLObjectUnmars
 
     /** {@inheritDoc} */
     protected void processElementContent(XMLObject xmlObject, String elementContent) {
-        SimpleXMLObject simpleXMLObject = (SimpleXMLObject) xmlObject;
+        SignableSimpleXMLObject simpleXMLObject = (SignableSimpleXMLObject) xmlObject;
 
         simpleXMLObject.setValue(elementContent);
     }

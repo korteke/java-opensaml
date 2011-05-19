@@ -47,7 +47,7 @@ public class SignableSimpleXMLObject extends AbstractSignableXMLObject implement
     public final static String NAMESPACE_PREFIX = "test";
     
     /** Element local name */
-    public final static String LOCAL_NAME = "SimpleElement";
+    public final static String LOCAL_NAME = "SignableSimpleElement";
     
     /** Default element name */
     public final static QName ELEMENT_NAME = new QName(NAMESPACE, LOCAL_NAME, NAMESPACE_PREFIX);

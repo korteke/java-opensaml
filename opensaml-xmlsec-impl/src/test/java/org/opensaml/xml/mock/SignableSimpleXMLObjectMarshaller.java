@@ -29,11 +29,11 @@ public class SignableSimpleXMLObjectMarshaller extends AbstractXMLObjectMarshall
 
     /** {@inheritDoc} */
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
-        SimpleXMLObject simpleXMLObject = (SimpleXMLObject) xmlObject;
+        SignableSimpleXMLObject simpleXMLObject = (SignableSimpleXMLObject) xmlObject;
 
         if (simpleXMLObject.getId() != null) {
-            domElement.setAttributeNS(null, SimpleXMLObject.ID_ATTRIB_NAME, simpleXMLObject.getId());
-            domElement.setIdAttributeNS(null, SimpleXMLObject.ID_ATTRIB_NAME, true);
+            domElement.setAttributeNS(null, SignableSimpleXMLObject.ID_ATTRIB_NAME, simpleXMLObject.getId());
+            domElement.setIdAttributeNS(null, SignableSimpleXMLObject.ID_ATTRIB_NAME, true);
         }
         
         XMLHelper.marshallAttributeMap(simpleXMLObject.getUnknownAttributes(), domElement);
@@ -42,7 +42,7 @@ public class SignableSimpleXMLObjectMarshaller extends AbstractXMLObjectMarshall
 
     /** {@inheritDoc} */
     protected void marshallElementContent(XMLObject xmlObject, Element domElement) throws MarshallingException {
-        SimpleXMLObject simpleXMLObject = (SimpleXMLObject) xmlObject;
+        SignableSimpleXMLObject simpleXMLObject = (SignableSimpleXMLObject) xmlObject;
 
         if (simpleXMLObject.getValue() != null) {
             domElement.setTextContent(simpleXMLObject.getValue());

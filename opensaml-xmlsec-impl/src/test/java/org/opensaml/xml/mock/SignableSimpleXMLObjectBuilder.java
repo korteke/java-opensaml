@@ -28,7 +28,7 @@ import org.opensaml.xml.AbstractXMLObjectBuilder;
 public class SignableSimpleXMLObjectBuilder extends AbstractXMLObjectBuilder<SignableSimpleXMLObject> {
     
     public SignableSimpleXMLObject buildObject(){
-        return buildObject(SignableSimpleXMLObject.NAMESPACE, SimpleXMLObject.LOCAL_NAME, SimpleXMLObject.NAMESPACE_PREFIX);
+        return buildObject(SignableSimpleXMLObject.NAMESPACE, SignableSimpleXMLObject.LOCAL_NAME, SignableSimpleXMLObject.NAMESPACE_PREFIX);
     }
 
     /** {@inheritDoc} */
