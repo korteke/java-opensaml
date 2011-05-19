@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.opensaml.xml.XMLObjectBaseTestCase;
-import org.opensaml.xml.mock.SimpleXMLObject;
+import org.opensaml.xml.mock.SignableSimpleXMLObject;
 import org.opensaml.xml.parse.XMLParserException;
 import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.XMLSecurityHelper;
@@ -127,7 +127,7 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
      *  set key name in passed KeyInfo object.
      */
     public void testEncryptDataWithKeyNameNoKEK() {
-        SimpleXMLObject sxo = (SimpleXMLObject) unmarshallElement(targetFile);
+        SignableSimpleXMLObject sxo = (SignableSimpleXMLObject) unmarshallElement(targetFile);
         
         encParams.setKeyInfoGenerator(new StaticKeyInfoGenerator(keyInfo));
         
@@ -151,7 +151,7 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
      *  Test data basic encryption with symmetric key, one KEK.
      */
     public void testEncryptDataSingleKEK() {
-        SimpleXMLObject sxo = (SimpleXMLObject) unmarshallElement(targetFile);
+        SignableSimpleXMLObject sxo = (SignableSimpleXMLObject) unmarshallElement(targetFile);
         
         kekParamsRSA.setKeyInfoGenerator(new StaticKeyInfoGenerator(kekKeyInfoRSA));
         
@@ -176,7 +176,7 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
      *  Test basic data encryption with symmetric key, one KEK.
      */
     public void testEncryptDataMultipleKEK() {
-        SimpleXMLObject sxo = (SimpleXMLObject) unmarshallElement(targetFile);
+        SignableSimpleXMLObject sxo = (SignableSimpleXMLObject) unmarshallElement(targetFile);
         
         kekParamsRSA.setKeyInfoGenerator(new StaticKeyInfoGenerator(kekKeyInfoRSA));
         kekParamsAES.setKeyInfoGenerator(new StaticKeyInfoGenerator(kekKeyInfoAES));
@@ -207,7 +207,7 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
      *  set key name in passed KeyInfo object.
      */
     public void testEncryptContentWithKeyNameNoKEK() {
-        SimpleXMLObject sxo = (SimpleXMLObject) unmarshallElement(targetFile);
+        SignableSimpleXMLObject sxo = (SignableSimpleXMLObject) unmarshallElement(targetFile);
         
         encParams.setKeyInfoGenerator(new StaticKeyInfoGenerator(keyInfo));
         
@@ -231,7 +231,7 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
      *  Test basic content encryption with symmetric key, one KEK.
      */
     public void testEncryptContentSingleKEK() {
-        SimpleXMLObject sxo = (SimpleXMLObject) unmarshallElement(targetFile);
+        SignableSimpleXMLObject sxo = (SignableSimpleXMLObject) unmarshallElement(targetFile);
         
         kekParamsRSA.setKeyInfoGenerator(new StaticKeyInfoGenerator(kekKeyInfoRSA));
         
@@ -256,7 +256,7 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
      *  Test basic encryption with symmetric key, one KEK.
      */
     public void testEncryptContentMultipleKEK() {
-        SimpleXMLObject sxo = (SimpleXMLObject) unmarshallElement(targetFile);
+        SignableSimpleXMLObject sxo = (SignableSimpleXMLObject) unmarshallElement(targetFile);
         
         kekParamsAES.setKeyInfoGenerator(new StaticKeyInfoGenerator(kekKeyInfoAES));
         kekParamsRSA.setKeyInfoGenerator(new StaticKeyInfoGenerator(kekKeyInfoRSA));
@@ -346,7 +346,7 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
      * @throws NoSuchAlgorithmException 
      */
     public void testAutoKeyGen() {
-        SimpleXMLObject sxo = (SimpleXMLObject) unmarshallElement(targetFile);
+        SignableSimpleXMLObject sxo = (SignableSimpleXMLObject) unmarshallElement(targetFile);
         
         encParams.setEncryptionCredential(null);
         
@@ -378,7 +378,7 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
      * @throws NoSuchAlgorithmException 
      */
     public void testAutoKeyGenNoKEK() {
-        SimpleXMLObject sxo = (SimpleXMLObject) unmarshallElement(targetFile);
+        SignableSimpleXMLObject sxo = (SignableSimpleXMLObject) unmarshallElement(targetFile);
         
         encParams.setEncryptionCredential(null);
         
@@ -469,7 +469,7 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
      * @throws NoSuchAlgorithmException 
      */
     public void testEncryptDataBadKEKDSA() throws NoSuchAlgorithmException, NoSuchProviderException {
-        SimpleXMLObject sxo = (SimpleXMLObject) unmarshallElement(targetFile);
+        SignableSimpleXMLObject sxo = (SignableSimpleXMLObject) unmarshallElement(targetFile);
         
         KeyEncryptionParameters kekParamsDSA = new KeyEncryptionParameters();
         KeyPair kp = SecurityHelper.generateKeyPair("DSA", 1024, null);
