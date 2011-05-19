@@ -25,7 +25,7 @@ import org.opensaml.xml.validation.Validator;
 /**
  * A very simple validator that ensures an XMLObject is of type {@link org.opensaml.xml.mock.SimpleXMLObject}.
  */
-public class SignableSimpleXMLObjectValidator implements Validator<SimpleXMLObject> {
+public abstract class SignableSimpleXMLObjectValidator implements Validator<SignableSimpleXMLObject> {
     
     /**
      * Constructor
@@ -35,11 +35,11 @@ public class SignableSimpleXMLObjectValidator implements Validator<SimpleXMLObje
     }
 
     /** {@inheritDoc} */
-    public void validate(SimpleXMLObject xmlObject) throws ValidationException {
-        if(xmlObject instanceof SimpleXMLObject){
+    public void validate(SignableSimpleXMLObject xmlObject) throws ValidationException {
+        if(xmlObject instanceof SignableSimpleXMLObject){
             return;
         }else{
-            throw new ValidationException("XMLObject not an instance of SimpleXMLObject as it should be");
+            throw new ValidationException("XMLObject not an instance of SignableSimpleXMLObject as it should be");
         }
     }
 }
