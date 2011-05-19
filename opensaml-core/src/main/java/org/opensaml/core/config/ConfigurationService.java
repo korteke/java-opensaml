@@ -128,19 +128,19 @@ public class ConfigurationService {
     public static Properties getConfigurationProperties() {
         //TODO make these immutable?
         Logger log = getLogger();
-        log.debug("Resolving configuration propreties source");
+        log.trace("Resolving configuration propreties source");
         Iterator<ConfigurationPropertiesSource> iter = configPropertiesLoader.iterator();
         while (iter.hasNext()) {
             ConfigurationPropertiesSource source = iter.next();
-            log.debug("Evaluating configuration properties implementation: {}", source.getClass().getName());
+            log.trace("Evaluating configuration properties implementation: {}", source.getClass().getName());
             Properties props = source.getProperties();
             if (props != null) {
-                log.debug("Resolved non-null configuration properties using implementation: {}", 
+                log.trace("Resolved non-null configuration properties using implementation: {}", 
                         source.getClass().getName());
                 return props;
             }
         }
-        log.debug("Unable to resolve non-null configuration properties from any ConfigurationPropertiesSource");
+        log.trace("Unable to resolve non-null configuration properties from any ConfigurationPropertiesSource");
         return null;
     }
     
@@ -179,7 +179,7 @@ public class ConfigurationService {
         } else {
             partitionName = DEFAULT_PARTITION_NAME;
         }
-        log.debug("Resolved effective configuration partition name '{}'", partitionName);
+        log.trace("Resolved effective configuration partition name '{}'", partitionName);
         return partitionName;
     }
 
