@@ -30,7 +30,6 @@ import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.mock.SignableSimpleXMLObject;
-import org.opensaml.xml.mock.SimpleXMLObject;
 import org.opensaml.xml.parse.XMLParserException;
 import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.XMLSecurityHelper;
@@ -94,8 +93,8 @@ public class DecryptionSignedContentTest extends XMLObjectBaseTestCase {
 
         // Unmarshall to XMLObject
         XMLObject signedXMLObject = unmarshallerFactory.getUnmarshaller(signedElement).unmarshall(signedElement);
-        assertTrue(signedXMLObject instanceof SimpleXMLObject);
-        SimpleXMLObject sxo = (SimpleXMLObject) signedXMLObject;
+        assertTrue(signedXMLObject instanceof SignableSimpleXMLObject);
+        SignableSimpleXMLObject sxo = (SignableSimpleXMLObject) signedXMLObject;
 
         // Encrypt object
         Encrypter encrypter = new Encrypter();
@@ -118,7 +117,7 @@ public class DecryptionSignedContentTest extends XMLObjectBaseTestCase {
         // the root of a new Document.
         Decrypter decrypter = new Decrypter(encKeyResolver, null, null);
         XMLObject decryptedXMLObject = decrypter.decryptData(encryptedData2, true);
-        assertTrue(decryptedXMLObject instanceof SimpleXMLObject);
+        assertTrue(decryptedXMLObject instanceof SignableSimpleXMLObject);
         SignableSimpleXMLObject decryptedSXO = (SignableSimpleXMLObject) decryptedXMLObject;
 
         Signature decryptedSignature = decryptedSXO.getSignature();
@@ -142,7 +141,7 @@ public class DecryptionSignedContentTest extends XMLObjectBaseTestCase {
         Element signedElement = getSignedElement();
 
         XMLObject xmlObject = unmarshallerFactory.getUnmarshaller(signedElement).unmarshall(signedElement);
-        assertTrue(xmlObject instanceof SimpleXMLObject);
+        assertTrue(xmlObject instanceof SignableSimpleXMLObject);
         SignableSimpleXMLObject sxo = (SignableSimpleXMLObject) xmlObject;
 
         SignatureValidator sigValidator = new SignatureValidator(signingCredential);

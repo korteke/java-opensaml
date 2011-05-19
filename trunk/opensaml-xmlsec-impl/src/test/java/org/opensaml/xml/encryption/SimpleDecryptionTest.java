@@ -25,7 +25,7 @@ import javax.crypto.SecretKey;
 
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.XMLObjectBaseTestCase;
-import org.opensaml.xml.mock.SimpleXMLObject;
+import org.opensaml.xml.mock.SignableSimpleXMLObject;
 import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.XMLSecurityHelper;
 import org.opensaml.xml.security.credential.BasicCredential;
@@ -55,7 +55,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
     
     private String targetFile;
     private Document targetDOM;
-    private SimpleXMLObject targetObject;
+    private SignableSimpleXMLObject targetObject;
 
     /**
      * Constructor.
@@ -93,7 +93,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
         
         
         targetDOM = parserPool.parse(SimpleDecryptionTest.class.getResourceAsStream(targetFile));
-        targetObject = (SimpleXMLObject) unmarshallElement(targetFile);
+        targetObject = (SignableSimpleXMLObject) unmarshallElement(targetFile);
         try {
             encryptedData = encrypter.encryptElement(targetObject, encParams);
             encryptedContent = encrypter.encryptElementContent(targetObject, encParams);
