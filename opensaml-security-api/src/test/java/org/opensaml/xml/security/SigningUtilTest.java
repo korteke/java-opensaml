@@ -76,47 +76,47 @@ public class SigningUtilTest extends TestCase {
     }
 
     public void testSigningWithPrivateKey() throws SecurityException {
-        byte[] signature = SigningUtil.sign(credRSA, "RSA", false, data.getBytes());
+        byte[] signature = SigningUtil.sign(credRSA, rsaJCAAlgorithm, false, data.getBytes());
         assertNotNull(signature);
         assertTrue("Signature was not the expected value", Arrays.equals(controlSignatureRSA, signature));
     }
     
     public void testSigningWithHMAC() throws SecurityException {
-        byte[] signature = SigningUtil.sign(credAES, "AES", true, data.getBytes());
+        byte[] signature = SigningUtil.sign(credAES, hmacJCAAlgorithm, true, data.getBytes());
         assertNotNull(signature);
         assertTrue("Signature was not the expected value", Arrays.equals(controlSignatureHMAC, signature));
     }
     
     public void testVerificationWithPublicKey() throws SecurityException, NoSuchAlgorithmException, NoSuchProviderException {
         assertTrue("Signature failed to verify, should have succeeded",
-                SigningUtil.verify(credRSA, "RSA", false, controlSignatureRSA, data.getBytes()));
+                SigningUtil.verify(credRSA, rsaJCAAlgorithm, false, controlSignatureRSA, data.getBytes()));
         
         KeyPair badKP = SecurityHelper.generateKeyPair("RSA", 1024, null);
         Credential badCred = SecurityHelper.getSimpleCredential(badKP.getPublic(), badKP.getPrivate());
         
         assertFalse("Signature verified successfully, should have failed due to wrong verification key",
-                SigningUtil.verify(badCred, "RSA", false, controlSignatureRSA, data.getBytes()));
+                SigningUtil.verify(badCred, rsaJCAAlgorithm, false, controlSignatureRSA, data.getBytes()));
         
         String tamperedData = data + "HAHA All your base are belong to us";
         
         assertFalse("Signature verified successfully, should have failed due to tampered data",
-                SigningUtil.verify(credRSA, "RSA", false, controlSignatureRSA, tamperedData.getBytes()));
+                SigningUtil.verify(credRSA, rsaJCAAlgorithm, false, controlSignatureRSA, tamperedData.getBytes()));
     }
 
     public void testVerificationWithHMAC() throws SecurityException, NoSuchAlgorithmException, NoSuchProviderException {
         assertTrue("Signature failed to verify, should have succeeded",
-                SigningUtil.verify(credAES, "AES", true, controlSignatureHMAC, data.getBytes()));
+                SigningUtil.verify(credAES, hmacJCAAlgorithm, true, controlSignatureHMAC, data.getBytes()));
         
         SecretKey badKey = SecurityHelper.generateKey("AES", 128, null);
         Credential badCred = SecurityHelper.getSimpleCredential(badKey);
         
         assertFalse("Signature verified successfully, should have failed due to wrong verification key",
-                SigningUtil.verify(badCred, "AES", true, controlSignatureHMAC, data.getBytes()));
+                SigningUtil.verify(badCred, hmacJCAAlgorithm, true, controlSignatureHMAC, data.getBytes()));
         
         String tamperedData = data + "HAHA All your base are belong to us";
         
         assertFalse("Signature verified successfully, should have failed due to tampered data",
-                SigningUtil.verify(credAES, "AES", true, controlSignatureHMAC, tamperedData.getBytes()));
+                SigningUtil.verify(credAES, hmacJCAAlgorithm, true, controlSignatureHMAC, tamperedData.getBytes()));
         
     }
     
