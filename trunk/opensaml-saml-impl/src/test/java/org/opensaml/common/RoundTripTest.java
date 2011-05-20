@@ -48,8 +48,10 @@ public class RoundTripTest extends BaseTestCase {
     /** Organization Unmarshaller */
     private Unmarshaller orgUnmarshaller;
     
-    /** {@inheritDoc} */
-    protected void setUp(){
+    /** {@inheritDoc} 
+     * @throws Exception */
+    protected void setUp() throws Exception {
+        super.setUp();
         OrganizationBuilder orgBuilder = (OrganizationBuilder) Configuration.getBuilderFactory().getBuilder(Organization.TYPE_NAME);
         organization = orgBuilder.buildObject();            
 

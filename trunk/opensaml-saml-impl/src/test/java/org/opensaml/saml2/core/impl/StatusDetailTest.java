@@ -55,11 +55,9 @@ public class StatusDetailTest extends BaseSAMLObjectProviderTestCase {
         StatusDetail statusDetail = (StatusDetail) buildXMLObject(qname);
         QName childQname = new QName("http://www.example.org/testObjects", "SimpleElement", "test");
         
-        XSAnyBuilder xsAnyBuilder = new XSAnyBuilder();
-        
-        statusDetail.getUnknownXMLObjects().add(xsAnyBuilder.buildObject(childQname));
-        statusDetail.getUnknownXMLObjects().add(xsAnyBuilder.buildObject(childQname));
-        statusDetail.getUnknownXMLObjects().add(xsAnyBuilder.buildObject(childQname));
+        statusDetail.getUnknownXMLObjects().add(buildXMLObject(childQname));
+        statusDetail.getUnknownXMLObjects().add(buildXMLObject(childQname));
+        statusDetail.getUnknownXMLObjects().add(buildXMLObject(childQname));
         
         assertEquals(expectedChildElementsDOM, statusDetail);
     }
