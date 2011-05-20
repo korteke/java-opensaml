@@ -168,23 +168,24 @@ public class DetachedSignatureTest extends XMLObjectBaseTestCase {
      * @throws GeneralSecurityException
      * @throws SecurityException
      */
-    public void testUnmarshallExternalSignatureAndVerification() throws IOException, MalformedURLException,
-            XMLParserException, UnmarshallingException, ValidationException, GeneralSecurityException, SecurityException {
-        String signatureLocation = "http://www.w3.org/TR/xmldsig-core/signature-example-rsa.xml";
-        InputStream ins = new URL(signatureLocation).openStream();
-        Element signatureElement = parserPool.parse(ins).getDocumentElement();
-
-        Unmarshaller unmarshaller = Configuration.getUnmarshallerFactory().getUnmarshaller(signatureElement);
-        Signature signature = (Signature) unmarshaller.unmarshall(signatureElement);
-
-        KeyInfoCredentialResolver resolver = XMLSecurityTestingHelper.buildBasicInlineKeyInfoResolver();
-
-        KeyInfoCriteria criteria = new KeyInfoCriteria(signature.getKeyInfo());
-        CriteriaSet criteriaSet = new CriteriaSet(criteria);
-        Credential credential = resolver.resolveSingle(criteriaSet);
-        SignatureValidator sigValidator = new SignatureValidator(credential);
-        sigValidator.validate(signature);
-    }
+// TODO this test now fails because the detached signature document is a signature over a document that has now changed
+//    public void testUnmarshallExternalSignatureAndVerification() throws IOException, MalformedURLException,
+//            XMLParserException, UnmarshallingException, ValidationException, GeneralSecurityException, SecurityException {
+//        String signatureLocation = "http://www.w3.org/TR/xmldsig-core/signature-example-rsa.xml";
+//        InputStream ins = new URL(signatureLocation).openStream();
+//        Element signatureElement = parserPool.parse(ins).getDocumentElement();
+//
+//        Unmarshaller unmarshaller = Configuration.getUnmarshallerFactory().getUnmarshaller(signatureElement);
+//        Signature signature = (Signature) unmarshaller.unmarshall(signatureElement);
+//
+//        KeyInfoCredentialResolver resolver = XMLSecurityTestingHelper.buildBasicInlineKeyInfoResolver();
+//
+//        KeyInfoCriteria criteria = new KeyInfoCriteria(signature.getKeyInfo());
+//        CriteriaSet criteriaSet = new CriteriaSet(criteria);
+//        Credential credential = resolver.resolveSingle(criteriaSet);
+//        SignatureValidator sigValidator = new SignatureValidator(credential);
+//        sigValidator.validate(signature);
+//    }
 
     /**
      * Creates a XMLObject that has another XMLObject and a Signature as children. The Signature is is a detached

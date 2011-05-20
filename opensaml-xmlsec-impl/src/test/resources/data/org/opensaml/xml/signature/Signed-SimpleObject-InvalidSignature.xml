@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<test:SimpleElement Id="abc123" xmlns:test="http://www.example.org/testObjects"><test:SimpleElement>SomeSimpleValueAsTextContent-MODIFIED-INVALID-SIGNATURE</test:SimpleElement><ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+<test:SignableSimpleElement Id="abc123" xmlns:test="http://www.example.org/testObjects"><test:SignableSimpleElement>SomeSimpleValueAsTextContent-MODIFIED-INVALID-SIGNATURE</test:SignableSimpleElement><ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
 <ds:SignedInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
 <ds:CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" xmlns:ds="http://www.w3.org/2000/09/xmldsig#"/>
 <ds:SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" xmlns:ds="http://www.w3.org/2000/09/xmldsig#"/>
@@ -36,4 +36,4 @@ JyTF56GVxHh/82hiRFbyPu+2eSl7UcJfH4ZNbAfHL1vDKTRJ9zoD8WRzpOCUtT0IPIA/Ex+8lFzZ
 mujO10j3TMpp8Ii6+auYwi/Tosrfw1YCxF+GI5KO49CfDRr6yxUbMhbTN+ssK4UzFf36UbkeJ3Ef
 DwB0WU70jnlkyO8f97X6mLd5QvRcwlkDMftP4+MB+inTlxDZ/w8NLXQoDW6p/8r91bupXe0xwuyE
 vow2xjxlzVcux2BZsUZYjBa07ZmNNBtF7WaQqH7l2OBCAdnBhvme5i/e0LK3Ivys+hcVyvCXs5Xt
-FTFWDAVYvzQ6</ds:X509Certificate></ds:X509Data></ds:KeyInfo></ds:Signature></test:SimpleElement>
+FTFWDAVYvzQ6</ds:X509Certificate></ds:X509Data></ds:KeyInfo></ds:Signature></test:SignableSimpleElement>
