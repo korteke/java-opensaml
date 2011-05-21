@@ -16,7 +16,7 @@
 
 package org.opensaml.samlext.saml2mdui.impl;
 
-import org.opensaml.saml2.metadata.impl.LocalizedNameImpl;
+import org.opensaml.saml2.metadata.impl.LocalizedURIImpl;
 import org.opensaml.samlext.saml2mdui.InformationURL;
 
 /**
@@ -24,7 +24,7 @@ import org.opensaml.samlext.saml2mdui.InformationURL;
  * @author Rod Widdowson
  */
 
-public class InformationURLImpl extends LocalizedNameImpl implements InformationURL {
+public class InformationURLImpl extends LocalizedURIImpl implements InformationURL {
 
     /**
      * Constructor.

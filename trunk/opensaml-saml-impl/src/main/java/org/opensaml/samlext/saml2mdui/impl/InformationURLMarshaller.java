@@ -16,11 +16,11 @@
 
 package org.opensaml.samlext.saml2mdui.impl;
 
-import org.opensaml.saml2.metadata.impl.LocalizedNameMarshaller;
+import org.opensaml.saml2.metadata.impl.LocalizedURIMarshaller;
 
 
 /**
  * A thread safe Marshaller for {@link org.opensaml.samlext.saml2mdui.InformationURL} objects.
  */
-public class InformationURLMarshaller extends LocalizedNameMarshaller {
+public class InformationURLMarshaller extends LocalizedURIMarshaller {
 }

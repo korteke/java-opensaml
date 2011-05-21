@@ -16,7 +16,7 @@
 
 package org.opensaml.samlext.saml2mdui.impl;
 
-import org.opensaml.saml2.metadata.impl.LocalizedNameImpl;
+import org.opensaml.saml2.metadata.impl.LocalizedURIImpl;
 import org.opensaml.samlext.saml2mdui.PrivacyStatementURL;
 
 
@@ -25,7 +25,7 @@ import org.opensaml.samlext.saml2mdui.PrivacyStatementURL;
  * @author Rod Widdowson
  */
 
-public class PrivacyStatementURLImpl extends LocalizedNameImpl implements PrivacyStatementURL {
+public class PrivacyStatementURLImpl extends LocalizedURIImpl implements PrivacyStatementURL {
 
     /**
      * Constructor.
