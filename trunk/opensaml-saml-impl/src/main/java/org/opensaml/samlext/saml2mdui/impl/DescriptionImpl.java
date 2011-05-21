@@ -16,13 +16,13 @@
 
 package org.opensaml.samlext.saml2mdui.impl;
 
-import org.opensaml.saml2.metadata.impl.LocalizeNameImpl;
+import org.opensaml.saml2.metadata.impl.LocalizedNameImpl;
 import org.opensaml.samlext.saml2mdui.Description;
 
 /**
  * Concrete implementation of {@link org.opensaml.samlext.saml2mdui.Description}.
  */
-public class DescriptionImpl extends LocalizeNameImpl implements Description {
+public class DescriptionImpl extends LocalizedNameImpl implements Description {
 
     /**
      * Constructor.
