@@ -17,52 +17,52 @@
 /**
  * 
  */
-package org.opensaml.samlext.mdui;
+package org.opensaml.samlext.saml2mdui;
 
 import javax.xml.namespace.QName;
 
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
-import org.opensaml.samlext.saml2mdui.Description;
+import org.opensaml.samlext.saml2mdui.InformationURL;
 import org.opensaml.samlext.saml2mdui.UIInfo;
 
 /**
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml2.metadata.OrganizationName}.
  */
-public class DescriptionTest extends BaseSAMLObjectProviderTestCase {
+public class InformationURLTest extends BaseSAMLObjectProviderTestCase {
     
     /** Expected name. */
-    protected String expectValue = "Textual Desriptice prose";
+    protected String expectValue = "http://example.org/Info/URL";
     /** Expected language. */
-    protected String expectLang =  "lang";
+    protected String expectLang = "infoUrlLang";
     
     /**
      * Constructor.
      */
-    public DescriptionTest() {
-        singleElementFile = "/data/org/opensaml/samlext/saml2mdui/Description.xml";
+    public InformationURLTest() {
+        singleElementFile = "/data/org/opensaml/samlext/saml2mdui/InformationURL.xml";
     }
     
-
     /** {@inheritDoc} */
     public void testSingleElementUnmarshall() {
-        Description name = (Description) unmarshallElement(singleElementFile);
-        
-        assertEquals("Name was not expected value", expectValue, name.getValue());
-        assertEquals("xml:lang was not expected value", expectLang, name.getXMLLang());
+        InformationURL url = (InformationURL) unmarshallElement(singleElementFile);
+
+        assertEquals("URI was not expected value", expectValue, url.getValue());
+        assertEquals("xml:lang was not expected value", expectLang, url.getXMLLang());
+
     }
 
     /** {@inheritDoc} */
     public void testSingleElementMarshall() {
         QName qname = new QName(UIInfo.MDUI_NS, 
-                                Description.DEFAULT_ELEMENT_LOCAL_NAME, 
+                                InformationURL.DEFAULT_ELEMENT_LOCAL_NAME, 
                                 UIInfo.MDUI_PREFIX);
         
-        Description name = (Description) buildXMLObject(qname);
+        InformationURL url = (InformationURL) buildXMLObject(qname);
         
-        name.setValue(expectValue);
-        name.setXMLLang(expectLang);
+        url.setValue(expectValue);
+        url.setXMLLang(expectLang);
 
-        assertEquals(expectedDOM, name);
+        assertEquals(expectedDOM, url);
     }
 }

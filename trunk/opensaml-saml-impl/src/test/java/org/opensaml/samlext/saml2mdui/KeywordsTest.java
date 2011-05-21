@@ -17,7 +17,7 @@
 /**
  * 
  */
-package org.opensaml.samlext.mdui;
+package org.opensaml.samlext.saml2mdui;
 
 import java.util.ArrayList;
 import java.util.List;
