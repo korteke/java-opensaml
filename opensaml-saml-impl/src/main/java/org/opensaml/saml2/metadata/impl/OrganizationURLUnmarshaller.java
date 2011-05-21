@@ -24,6 +24,6 @@ package org.opensaml.saml2.metadata.impl;
 /**
  * A thread-safe Unmarshaller for {@link org.opensaml.saml2.metadata.OrganizationURL} objects.
  */
-public class OrganizationURLUnmarshaller extends LocalizedNameUnmarshaller {
+public class OrganizationURLUnmarshaller extends LocalizedURIUnmarshaller {
 
 }

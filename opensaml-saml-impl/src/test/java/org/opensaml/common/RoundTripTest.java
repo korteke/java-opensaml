@@ -17,7 +17,6 @@
 package org.opensaml.common;
 
 import org.opensaml.Configuration;
-import org.opensaml.saml2.metadata.LocalizedString;
 import org.opensaml.saml2.metadata.Organization;
 import org.opensaml.saml2.metadata.OrganizationDisplayName;
 import org.opensaml.saml2.metadata.OrganizationName;

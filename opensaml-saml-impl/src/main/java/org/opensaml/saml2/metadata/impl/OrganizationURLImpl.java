@@ -25,7 +25,7 @@ import org.opensaml.saml2.metadata.OrganizationURL;
 /**
  * Concrete implementation of {@link org.opensaml.saml2.metadata.OrganizationURL}.
  */
-public class OrganizationURLImpl extends LocalizedNameImpl implements OrganizationURL {
+public class OrganizationURLImpl extends LocalizedURIImpl implements OrganizationURL {
 
     /**
      * Constructor.

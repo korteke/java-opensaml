@@ -16,11 +16,11 @@
 
 package org.opensaml.samlext.saml2mdui.impl;
 
-import org.opensaml.saml2.metadata.impl.LocalizedNameUnmarshaller;
+import org.opensaml.saml2.metadata.impl.LocalizedURIUnmarshaller;
 
 
 /**
  * A thread-safe unmarshaller for {@link org.opensaml.samlext.saml2mdui.PrivacyStatementURL} objects.
  */
-public class PrivacyStatementURLUnmarshaller extends LocalizedNameUnmarshaller {
+public class PrivacyStatementURLUnmarshaller extends LocalizedURIUnmarshaller {
 }
