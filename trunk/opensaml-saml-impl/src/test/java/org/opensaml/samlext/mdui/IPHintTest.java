@@ -38,7 +38,7 @@ public class IPHintTest extends BaseSAMLObjectProviderTestCase {
      * Constructor.
      */
     public IPHintTest() {
-        singleElementFile = "/data/org/opensaml/samlext/mdui/IPHint.xml";
+        singleElementFile = "/data/org/opensaml/samlext/saml2mdui/IPHint.xml";
     }
     
     /** {@inheritDoc} */
