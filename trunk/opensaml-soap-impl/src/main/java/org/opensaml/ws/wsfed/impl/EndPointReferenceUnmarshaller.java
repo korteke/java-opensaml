@@ -22,7 +22,7 @@ import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.AbstractXMLObjectUnmarshaller;
 import org.w3c.dom.Attr;
 
-/** A thread-safe unmarshaller for {@link EndPointReferenc} objects. */
+/** A thread-safe unmarshaller for {@link EndPointReference} objects. */
 public class EndPointReferenceUnmarshaller extends AbstractXMLObjectUnmarshaller {
 
     /** {@inheritDoc} */

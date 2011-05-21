@@ -23,7 +23,6 @@ import org.apache.velocity.app.VelocityEngine;
 import org.opensaml.common.binding.SAMLMessageContext;
 import org.opensaml.common.xml.SAMLConstants;
 import org.opensaml.ws.message.encoder.MessageEncodingException;
-import org.opensaml.ws.transport.http.HTTPTransportUtils;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallingException;
@@ -117,7 +116,7 @@ public class HTTPPostSimpleSignEncoder extends HTTPPostEncoder {
         String sigAlgURI = getSignatureAlgorithmURI(signingCredential, null);
         velocityContext.put("SigAlg", sigAlgURI);
 
-        String formControlData = buildFormDataToSign(velocityContext, sigAlgURI);
+        String formControlData = buildFormDataToSign(velocityContext, messageContext, sigAlgURI);
         velocityContext.put("Signature", generateSignature(signingCredential, sigAlgURI, formControlData));
 
         KeyInfoGenerator kiGenerator = XMLSecurityHelper.getKeyInfoGenerator(signingCredential, null, null);
@@ -168,11 +167,12 @@ public class HTTPPostSimpleSignEncoder extends HTTPPostEncoder {
      * 
      * @param velocityContext the Velocity context which is already populated with the values for SAML message and relay
      *            state
+     * @param messageContext  the SAML message context being processed
      * @param sigAlgURI the signature algorithm URI
      * 
      * @return the form control data string for signature computation
      */
-    protected String buildFormDataToSign(VelocityContext velocityContext, String sigAlgURI) {
+    protected String buildFormDataToSign(VelocityContext velocityContext, SAMLMessageContext messageContext, String sigAlgURI) {
         StringBuilder builder = new StringBuilder();
 
         boolean isRequest = false;
@@ -200,8 +200,8 @@ public class HTTPPostSimpleSignEncoder extends HTTPPostEncoder {
             builder.append("SAMLResponse=" + msg);
         }
 
-        if (velocityContext.get("RelayState") != null) {
-            builder.append("&RelayState=" + HTTPTransportUtils.urlDecode((String) velocityContext.get("RelayState")));
+        if (messageContext.getRelayState() != null) {
+            builder.append("&RelayState=" + messageContext.getRelayState());
         }
 
         builder.append("&SigAlg=" + sigAlgURI);

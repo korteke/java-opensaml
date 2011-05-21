@@ -35,7 +35,7 @@ import net.jcip.annotations.ThreadSafe;
 import org.apache.commons.httpclient.params.HttpConnectionParams;
 import org.apache.commons.httpclient.protocol.SecureProtocolSocketFactory;
 
-/** An SSL/TLS socket factory that uses {@link KeyStoreFactory}s to get its key and trust material. */
+/** An SSL/TLS socket factory that uses KeyStoreFactory's to get its key and trust material. */
 @ThreadSafe
 public class TLSProtocolSocketFactory implements SecureProtocolSocketFactory {
 

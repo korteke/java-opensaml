@@ -17,6 +17,7 @@
 package org.opensaml.ws.message.encoder;
 
 import org.opensaml.ws.message.MessageContext;
+import org.opensaml.ws.message.decoder.MessageDecodingException;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.Marshaller;
@@ -61,6 +62,14 @@ public abstract class BaseMessageEncoder implements MessageEncoder {
      */
     protected void logEncodedMessage(MessageContext messageContext) {
         if(protocolMessageLog.isDebugEnabled() && messageContext.getOutboundMessage() != null){
+            if (messageContext.getOutboundMessage().getDOM() == null) {
+                try {
+                    marshallMessage(messageContext.getOutboundMessage());
+                } catch (MessageEncodingException e) {
+                    log.error("Unable to marshall message for logging purposes: " + e.getMessage());
+                    return;
+                }
+            }
             protocolMessageLog.debug("\n" + XMLHelper.prettyPrintXML(messageContext.getOutboundMessage().getDOM()));
         }
     }
@@ -90,6 +99,9 @@ public abstract class BaseMessageEncoder implements MessageEncoder {
             Marshaller marshaller = Configuration.getMarshallerFactory().getMarshaller(message);
             if (marshaller == null) {
                 log.error("Unable to marshall message, no marshaller registered for message object: "
+                        + message.getElementQName());
+                throw new MessageEncodingException(
+                        "Unable to marshall message, no marshaller registered for message object: "
                         + message.getElementQName());
             }
             Element messageElem = marshaller.marshall(message);

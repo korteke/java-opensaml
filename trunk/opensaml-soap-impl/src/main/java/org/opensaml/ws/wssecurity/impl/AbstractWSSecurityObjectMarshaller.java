@@ -30,7 +30,6 @@ public abstract class AbstractWSSecurityObjectMarshaller extends AbstractXMLObje
     /**
      * Constructor.
      * <p>
-     * {@inheritDoc}
      */
     protected AbstractWSSecurityObjectMarshaller() {
         super();

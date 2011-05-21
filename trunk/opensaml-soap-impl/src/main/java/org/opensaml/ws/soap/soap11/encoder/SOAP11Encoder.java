@@ -71,7 +71,9 @@ public class SOAP11Encoder extends BaseHandlerChainAwareMessageEncoder {
     
     /** {@inheritDoc} */
     protected void prepareMessageContext(MessageContext messageContext) throws MessageEncodingException {
-        messageContext.setOutboundMessage(buildSOAPEnvelope(messageContext));
+        if (messageContext.getOutboundMessage() == null) {
+            messageContext.setOutboundMessage(buildSOAPEnvelope(messageContext));
+        }
     }
     
     /** {@inheritDoc} */
