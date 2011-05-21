@@ -26,7 +26,7 @@ import org.opensaml.xml.util.DatatypeHelper;
 /**
  * Concrete implementation of {@link org.opensaml.saml2.metadata.LocalizedName}.
  */
-public class LocalizeNameImpl extends XSStringImpl implements LocalizedName {
+public class LocalizedNameImpl extends XSStringImpl implements LocalizedName {
 
     /** Language. */
     private String language;
@@ -38,7 +38,7 @@ public class LocalizeNameImpl extends XSStringImpl implements LocalizedName {
      * @param elementLocalName the elementLocalName
      * @param namespacePrefix the namespacePrefix
      */
-    protected LocalizeNameImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
+    protected LocalizedNameImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 

@@ -25,7 +25,7 @@ import org.opensaml.saml2.metadata.OrganizationName;
 /**
  * Concrete implementation of {@link org.opensaml.saml2.metadata.OrganizationName}
  */
-public class OrganizationNameImpl extends LocalizeNameImpl implements OrganizationName {
+public class OrganizationNameImpl extends LocalizedNameImpl implements OrganizationName {
 
     /**
      * Constructor.

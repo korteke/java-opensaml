@@ -25,7 +25,7 @@ import org.opensaml.saml2.metadata.ServiceDescription;
 /**
  * Concrete implementation of {@link org.opensaml.saml2.metadata.ServiceDescription}.
  */
-public class ServiceDescriptionImpl extends LocalizeNameImpl implements ServiceDescription {
+public class ServiceDescriptionImpl extends LocalizedNameImpl implements ServiceDescription {
 
     /**
      * Constructor.
