@@ -1,0 +1,343 @@
+------------------------------------------------------------------------
+r1502 | cantor | 2011-02-02 21:29:16 -0500 (Wed, 02 Feb 2011) | 1 line
+Changed paths:
+   M /branches/REL_2/src/main/java/org/opensaml/saml2/core/AuthnContext.java
+
+Spelling in comment.
+------------------------------------------------------------------------
+r1503 | rdw | 2011-02-21 13:01:39 -0500 (Mon, 21 Feb 2011) | 5 lines
+Changed paths:
+   M /branches/REL_2/src/main/java/org/opensaml/DefaultBootstrap.java
+   A /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdui
+   A /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdui/Description.java
+   A /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdui/DiscoHints.java
+   A /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdui/DisplayName.java
+   A /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdui/DomainHint.java
+   A /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdui/GeolocationHint.java
+   A /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdui/IPHint.java
+   A /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdui/InformationURL.java
+   A /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdui/Keywords.java
+   A /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdui/LocalizedName.java
+   A /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdui/LocalizedURI.java
+   A /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdui/Logo.java
+   A /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdui/PrivacyStatementURL.java
+   A /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdui/UIInfo.java
+   A /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdui/impl
+   A /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdui/impl/DescriptionBuilder.java
+   A /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdui/impl/DescriptionImpl.java
+   A /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdui/impl/DescriptionMarshaller.java
+   A /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdui/impl/DescriptionUnmarshaller.java
+   A /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdui/impl/DiscoHintsBuilder.java
+   A /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdui/impl/DiscoHintsImpl.java
+   A /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdui/impl/DiscoHintsMarshaller.java
+   A /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdui/impl/DiscoHintsUnmarshaller.java
+   A /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdui/impl/DisplayNameBuilder.java
+   A /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdui/impl/DisplayNameImpl.java
+   A /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdui/impl/DisplayNameMarshaller.java
+   A /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdui/impl/DisplayNameUnmarshaller.java
+   A /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdui/impl/DomainHintBuilder.java
+   A /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdui/impl/DomainHintImpl.java
+   A /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdui/impl/DomainHintMarshaller.java
+   A /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdui/impl/DomainHintUnmarshaller.java
+   A /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdui/impl/GeolocationHintBuilder.java
+   A /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdui/impl/GeolocationHintImpl.java
+   A /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdui/impl/GeolocationHintMarshaller.java
+   A /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdui/impl/GeolocationHintUnmarshaller.java
+   A /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdui/impl/IPHintBuilder.java
+   A /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdui/impl/IPHintImpl.java
+   A /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdui/impl/IPHintMarshaller.java
+   A /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdui/impl/IPHintUnmarshaller.java
+   A /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdui/impl/InformationURLBuilder.java
+   A /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdui/impl/InformationURLImpl.java
+   A /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdui/impl/InformationURLMarshaller.java
+   A /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdui/impl/InformationURLUnmarshaller.java
+   A /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdui/impl/KeywordsBuilder.java
+   A /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdui/impl/KeywordsImpl.java
+   A /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdui/impl/KeywordsMarshaller.java
+   A /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdui/impl/KeywordsUnmarshaller.java
+   A /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdui/impl/LocalizedNameImpl.java
+   A /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdui/impl/LocalizedNameMarshaller.java
+   A /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdui/impl/LocalizedNameUnmarshaller.java
+   A /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdui/impl/LocalizedURIImpl.java
+   A /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdui/impl/LocalizedURIMarshaller.java
+   A /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdui/impl/LocalizedURIUnmarshaller.java
+   A /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdui/impl/LogoBuilder.java
+   A /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdui/impl/LogoImpl.java
+   A /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdui/impl/LogoMarshaller.java
+   A /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdui/impl/LogoUnmarshaller.java
+   A /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdui/impl/PrivacyStatementURLBuilder.java
+   A /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdui/impl/PrivacyStatementURLImpl.java
+   A /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdui/impl/PrivacyStatementURLMarshaller.java
+   A /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdui/impl/PrivacyStatementURLUnmarshaller.java
+   A /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdui/impl/UIInfoBuilder.java
+   A /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdui/impl/UIInfoImpl.java
+   A /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdui/impl/UIInfoMarshaller.java
+   A /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdui/impl/UIInfoUnmarshaller.java
+   A /branches/REL_2/src/main/resources/saml2-metadata-ui-config.xml
+   A /branches/REL_2/src/main/resources/schema/sstc-saml-metadata-ui-v1.0.xsd
+   A /branches/REL_2/src/test/java/org/opensaml/samlext/mdui
+   A /branches/REL_2/src/test/java/org/opensaml/samlext/mdui/DescriptionTest.java
+   A /branches/REL_2/src/test/java/org/opensaml/samlext/mdui/DiscoHintsTest.java
+   A /branches/REL_2/src/test/java/org/opensaml/samlext/mdui/DisplayNameTest.java
+   A /branches/REL_2/src/test/java/org/opensaml/samlext/mdui/DomainHintTest.java
+   A /branches/REL_2/src/test/java/org/opensaml/samlext/mdui/IPHintTest.java
+   A /branches/REL_2/src/test/java/org/opensaml/samlext/mdui/InformationURLTest.java
+   A /branches/REL_2/src/test/java/org/opensaml/samlext/mdui/KeywordsTest.java
+   A /branches/REL_2/src/test/java/org/opensaml/samlext/mdui/LogoTest.java
+   A /branches/REL_2/src/test/java/org/opensaml/samlext/mdui/PrivacyStatementURLTest.java
+   A /branches/REL_2/src/test/java/org/opensaml/samlext/mdui/UIInfoTest.java
+   A /branches/REL_2/src/test/resources/data/org/opensaml/samlext/mdui
+   A /branches/REL_2/src/test/resources/data/org/opensaml/samlext/mdui/Description.xml
+   A /branches/REL_2/src/test/resources/data/org/opensaml/samlext/mdui/DiscoHints.xml
+   A /branches/REL_2/src/test/resources/data/org/opensaml/samlext/mdui/DiscoHintsChildElements.xml
+   A /branches/REL_2/src/test/resources/data/org/opensaml/samlext/mdui/DisplayName.xml
+   A /branches/REL_2/src/test/resources/data/org/opensaml/samlext/mdui/DomainHint.xml
+   A /branches/REL_2/src/test/resources/data/org/opensaml/samlext/mdui/GeolocationHint.xml
+   A /branches/REL_2/src/test/resources/data/org/opensaml/samlext/mdui/IPHint.xml
+   A /branches/REL_2/src/test/resources/data/org/opensaml/samlext/mdui/InformationURL.xml
+   A /branches/REL_2/src/test/resources/data/org/opensaml/samlext/mdui/Keywords.xml
+   A /branches/REL_2/src/test/resources/data/org/opensaml/samlext/mdui/Logo.xml
+   A /branches/REL_2/src/test/resources/data/org/opensaml/samlext/mdui/LogoWithLang.xml
+   A /branches/REL_2/src/test/resources/data/org/opensaml/samlext/mdui/PrivacyStatementURL.xml
+   A /branches/REL_2/src/test/resources/data/org/opensaml/samlext/mdui/UIInfo.xml
+   A /branches/REL_2/src/test/resources/data/org/opensaml/samlext/mdui/UIInfoChildElements.xml
+
+https://bugs.internet2.edu/jira/browse/JOST-147 - Add support for MDUI extensions into OpenSAML2
+
+This modifies the POM to 2.5.0
+
+Adds code and unit tests for elements in the urn:oasis:names:tc:SAML:metadata:ui namespace"
+------------------------------------------------------------------------
+r1504 | rdw | 2011-02-21 13:06:55 -0500 (Mon, 21 Feb 2011) | 1 line
+Changed paths:
+   M /branches/REL_2/doc/RELEASE-NOTES.txt
+
+[Jost-147] Release notes
+------------------------------------------------------------------------
+r1505 | rdw | 2011-02-21 13:15:26 -0500 (Mon, 21 Feb 2011) | 1 line
+Changed paths:
+   M /branches/REL_2/src/test/java/org/opensaml/samlext/mdui/DiscoHintsTest.java
+
+Missed merge found during re-checkout smoke test.
+------------------------------------------------------------------------
+r1506 | rdw | 2011-03-02 04:31:28 -0500 (Wed, 02 Mar 2011) | 1 line
+Changed paths:
+   M /branches/REL_2/pom.xml
+
+JOST-147 Rev version in pom to 2.5
+------------------------------------------------------------------------
+r1507 | cantor | 2011-03-09 14:31:36 -0500 (Wed, 09 Mar 2011) | 1 line
+Changed paths:
+   M /branches/REL_2/src/main/java/org/opensaml/saml2/metadata/provider/AbstractMetadataProvider.java
+
+Fix spurious "no longer valid" log messages when metadata lookup fails.
+------------------------------------------------------------------------
+r1508 | cantor | 2011-03-11 14:40:17 -0500 (Fri, 11 Mar 2011) | 1 line
+Changed paths:
+   M /branches/REL_2/src/main/java/org/opensaml/saml2/metadata/provider/AbstractMetadataProvider.java
+
+Fix some debug logging parameters.
+------------------------------------------------------------------------
+r1509 | lajoie | 2011-03-14 07:36:25 -0400 (Mon, 14 Mar 2011) | 2 lines
+Changed paths:
+   M /branches/REL_2/doc/RELEASE-NOTES.txt
+   M /branches/REL_2/src/main/java/org/opensaml/Version.java
+
+Add some helper methods to Version class (all projects) - JOST-135
+
+------------------------------------------------------------------------
+r1510 | lajoie | 2011-03-14 07:37:57 -0400 (Mon, 14 Mar 2011) | 2 lines
+Changed paths:
+   M /branches/REL_2/src/main/java/org/opensaml/xacml/policy/AttributeDesignatorType.java
+   M /branches/REL_2/src/main/java/org/opensaml/xacml/policy/impl/SubjectTypeImplBuilder.java
+
+Fix typo in EnvironmentAttributeDesignator element local name - JOST-145
+Fix typo in SubjectTypleImpleBuilder - JOST-149
+------------------------------------------------------------------------
+r1511 | lajoie | 2011-03-21 08:42:33 -0400 (Mon, 21 Mar 2011) | 1 line
+Changed paths:
+   M /branches/REL_2/doc/RELEASE-NOTES.txt
+   M /branches/REL_2/src/main/java/org/opensaml/saml2/metadata/provider/AbstractMetadataProvider.java
+   M /branches/REL_2/src/main/java/org/opensaml/saml2/metadata/provider/AbstractObservableMetadataProvider.java
+   M /branches/REL_2/src/main/java/org/opensaml/saml2/metadata/provider/ChainingMetadataProvider.java
+   M /branches/REL_2/src/main/java/org/opensaml/saml2/metadata/provider/EntityRoleFilter.java
+   M /branches/REL_2/src/main/java/org/opensaml/saml2/metadata/provider/MetadataFilterChain.java
+
+Correct some potential concurrency issues with metadata providers and filters
+------------------------------------------------------------------------
+r1512 | lajoie | 2011-03-21 09:17:55 -0400 (Mon, 21 Mar 2011) | 1 line
+Changed paths:
+   M /branches/REL_2/doc/RELEASE-NOTES.txt
+
+Add in issue number
+------------------------------------------------------------------------
+r1513 | lajoie | 2011-03-24 07:47:32 -0400 (Thu, 24 Mar 2011) | 4 lines
+Changed paths:
+   M /branches/REL_2/doc/RELEASE-NOTES.txt
+   M /branches/REL_2/pom.xml
+   M /branches/REL_2/src/main/assembly/bin.xml
+   M /branches/REL_2/src/main/assembly/src.xml
+   M /branches/REL_2/src/main/java/org/opensaml/saml2/metadata/provider/ChainingMetadataProvider.java
+   M /branches/REL_2/src/main/java/org/opensaml/samlext/idpdisco/DiscoveryResponseMarshaller.java
+   M /branches/REL_2/src/main/java/org/opensaml/samlext/idpdisco/DiscoveryResponseUnmarshaller.java
+   M /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdui/impl/DiscoHintsImpl.java
+   M /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdui/impl/DiscoHintsUnmarshaller.java
+   M /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdui/impl/GeolocationHintBuilder.java
+   M /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdui/impl/LocalizedURIUnmarshaller.java
+   M /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdui/impl/LogoUnmarshaller.java
+   M /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdui/impl/UIInfoUnmarshaller.java
+   M /branches/REL_2/src/main/java/org/opensaml/xacml/policy/impl/ActionTypeMarshaller.java
+
+Update POM to:
+  - include plugin version numbers for maven 3
+  - fetch xalan and xml-resolver from maven central
+Fix up minor javadoc typos
+------------------------------------------------------------------------
+r1514 | lajoie | 2011-03-24 08:01:57 -0400 (Thu, 24 Mar 2011) | 1 line
+Changed paths:
+   M /branches/REL_2/doc/RELEASE-NOTES.txt
+   M /branches/REL_2/pom.xml
+
+Attache source jars to generated artifacts to help with IDEs that can use them - JOST-119
+------------------------------------------------------------------------
+r1515 | cantor | 2011-04-05 22:10:48 -0400 (Tue, 05 Apr 2011) | 1 line
+Changed paths:
+   M /branches/REL_2/src/main/java/org/opensaml/saml2/binding/decoding/HTTPSOAP11Decoder.java
+
+Fix log message.
+------------------------------------------------------------------------
+r1516 | cantor | 2011-04-05 22:12:02 -0400 (Tue, 05 Apr 2011) | 1 line
+Changed paths:
+   A /branches/REL_2/src/main/java/org/opensaml/saml2/binding/decoding/HandlerChainAwareHTTPSOAP11Decoder.java
+   A /branches/REL_2/src/main/java/org/opensaml/saml2/binding/encoding/HandlerChainAwareHTTPSOAP11Encoder.java
+
+SAML SOAP binding classes with handler chain support.
+------------------------------------------------------------------------
+r1517 | lajoie | 2011-04-07 19:55:48 -0400 (Thu, 07 Apr 2011) | 1 line
+Changed paths:
+   M /branches/REL_2/doc/RELEASE-NOTES.txt
+   M /branches/REL_2/pom.xml
+
+Update POM for Shib.net Repo and attach generate Javadocs - JOST-158
+------------------------------------------------------------------------
+r1518 | lajoie | 2011-04-11 16:49:14 -0400 (Mon, 11 Apr 2011) | 1 line
+Changed paths:
+   M /branches/REL_2/doc/README.txt
+   M /branches/REL_2/doc/RELEASE-NOTES.txt
+   M /branches/REL_2/pom.xml
+   M /branches/REL_2/src/main/java/org/opensaml/common/impl/package.html
+   M /branches/REL_2/src/main/java/org/opensaml/common/package.html
+   M /branches/REL_2/src/main/java/org/opensaml/common/xml/package.html
+   M /branches/REL_2/src/main/java/org/opensaml/saml1/binding/package.html
+   M /branches/REL_2/src/main/java/org/opensaml/saml1/core/impl/package.html
+   M /branches/REL_2/src/main/java/org/opensaml/saml1/core/package.html
+   M /branches/REL_2/src/main/java/org/opensaml/saml1/core/validator/package.html
+   M /branches/REL_2/src/main/java/org/opensaml/saml2/binding/package.html
+   M /branches/REL_2/src/main/java/org/opensaml/saml2/common/impl/package.html
+   M /branches/REL_2/src/main/java/org/opensaml/saml2/common/package.html
+   M /branches/REL_2/src/main/java/org/opensaml/saml2/core/impl/package.html
+   M /branches/REL_2/src/main/java/org/opensaml/saml2/core/package.html
+   M /branches/REL_2/src/main/java/org/opensaml/saml2/core/validator/package.html
+   M /branches/REL_2/src/main/java/org/opensaml/saml2/metadata/impl/package.html
+   M /branches/REL_2/src/main/java/org/opensaml/saml2/metadata/package.html
+   M /branches/REL_2/src/main/java/org/opensaml/saml2/metadata/provider/package.html
+   M /branches/REL_2/src/main/java/org/opensaml/saml2/metadata/validator/package.html
+   M /branches/REL_2/src/main/java/org/opensaml/samlext/saml1md/impl/package.html
+   M /branches/REL_2/src/main/java/org/opensaml/samlext/saml1md/package.html
+   M /branches/REL_2/src/main/java/org/opensaml/samlext/saml2delrestrict/impl/package.html
+   M /branches/REL_2/src/main/java/org/opensaml/samlext/saml2delrestrict/package.html
+   M /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdquery/impl/package.html
+   M /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdquery/package.html
+   M /branches/REL_2/src/main/java/org/opensaml/samlext/samlpthrpty/impl/package.html
+   M /branches/REL_2/src/main/java/org/opensaml/samlext/samlpthrpty/package.html
+   M /branches/REL_2/src/main/java/org/opensaml/security/package.html
+
+references to spaces.internet.edu may need changed to wiki.shibboleth.net - JOST-157
+------------------------------------------------------------------------
+r1519 | lajoie | 2011-04-11 16:56:52 -0400 (Mon, 11 Apr 2011) | 2 lines
+Changed paths:
+   M /branches/REL_2/doc/RELEASE-NOTES.txt
+   M /branches/REL_2/src/test/java/org/opensaml/saml2/metadata/provider/FilesystemMetadataProviderTest.java
+   M /branches/REL_2/src/test/java/org/opensaml/security/MetadataCredentialResolverCachingTest.java
+   M /branches/REL_2/src/test/resources/logback-test.xml
+
+Remove unit tests checks that depended on the old in-process update mechanisms of the metadata provider - JOST 154, 155, 156
+update logback config to work with latest version
+------------------------------------------------------------------------
+r1520 | lajoie | 2011-04-11 16:58:55 -0400 (Mon, 11 Apr 2011) | 1 line
+Changed paths:
+   M /branches/REL_2/src/test/resources/logback-test.xml
+
+update logback config to work with latest version
+------------------------------------------------------------------------
+r1521 | putmanb | 2011-04-11 17:16:31 -0400 (Mon, 11 Apr 2011) | 1 line
+Changed paths:
+   M /branches/REL_2/pom.xml
+   M /branches/REL_2/src/main/java/org/opensaml/DefaultBootstrap.java
+   A /branches/REL_2/src/main/java/org/opensaml/ESAPISecurityConfig.java
+   A /branches/REL_2/src/test/java/org/opensaml/ESAPITest.java
+
+Add OWASP ESAPI library support, in support of JOST-150.
+------------------------------------------------------------------------
+r1522 | putmanb | 2011-04-11 19:15:36 -0400 (Mon, 11 Apr 2011) | 2 lines
+Changed paths:
+   M /branches/REL_2/doc/RELEASE-NOTES.txt
+   M /branches/REL_2/src/main/java/org/opensaml/saml1/binding/encoding/HTTPPostEncoder.java
+   M /branches/REL_2/src/main/java/org/opensaml/saml2/binding/encoding/HTTPArtifactEncoder.java
+   M /branches/REL_2/src/main/java/org/opensaml/saml2/binding/encoding/HTTPPostEncoder.java
+   M /branches/REL_2/src/main/java/org/opensaml/saml2/binding/encoding/HTTPPostSimpleSignEncoder.java
+
+JOST-150: Template input needs to be HTML encoded.
+Use ESAPI Encoder to encode TARGET/RelayState parameters used in form-based bindings.
+------------------------------------------------------------------------
+r1523 | putmanb | 2011-04-12 15:27:18 -0400 (Tue, 12 Apr 2011) | 1 line
+Changed paths:
+   M /branches/REL_2/src/main/java/org/opensaml/saml1/binding/encoding/HTTPPostEncoder.java
+   M /branches/REL_2/src/main/java/org/opensaml/saml2/binding/encoding/HTTPArtifactEncoder.java
+   M /branches/REL_2/src/main/java/org/opensaml/saml2/binding/encoding/HTTPPostEncoder.java
+   M /branches/REL_2/src/main/java/org/opensaml/saml2/binding/encoding/HTTPPostSimpleSignEncoder.java
+
+More JOST-150: HTML escape the form 'action' parameter
+------------------------------------------------------------------------
+r1524 | lajoie | 2011-05-10 15:34:00 -0400 (Tue, 10 May 2011) | 1 line
+Changed paths:
+   M /branches/REL_2/src/main/java/org/opensaml/DefaultBootstrap.java
+   M /branches/REL_2/src/main/java/org/opensaml/common/xml/SAMLConstants.java
+   A /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdattr
+   A /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdattr/EntityAttributes.java
+   A /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdattr/impl
+   A /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdattr/impl/EntityAttributesBuilder.java
+   A /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdattr/impl/EntityAttributesImpl.java
+   A /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdattr/impl/EntityAttributesMarshaller.java
+   A /branches/REL_2/src/main/java/org/opensaml/samlext/saml2mdattr/impl/EntityAttributesUnmarshaller.java
+   A /branches/REL_2/src/main/resources/saml2-metadata-attr-config.xml
+   A /branches/REL_2/src/main/resources/schema/sstc-metadata-attr.xsd
+   A /branches/REL_2/src/test/java/org/opensaml/samlext/saml2mdattr
+   A /branches/REL_2/src/test/java/org/opensaml/samlext/saml2mdattr/EntityAttributesTest.java
+   A /branches/REL_2/src/test/resources/data/org/opensaml/samlext/saml2mdattr
+   A /branches/REL_2/src/test/resources/data/org/opensaml/samlext/saml2mdattr/EntityAttributes.xml
+   A /branches/REL_2/src/test/resources/data/org/opensaml/samlext/saml2mdattr/EntityAttributesChildElements.xml
+
+Add support for EntityAttributes metadata extension
+------------------------------------------------------------------------
+r1525 | lajoie | 2011-05-10 15:42:37 -0400 (Tue, 10 May 2011) | 1 line
+Changed paths:
+   M /branches/REL_2/doc/RELEASE-NOTES.txt
+
+Update release notes to reflect previous commit
+------------------------------------------------------------------------
+r1526 | putmanb | 2011-05-13 15:22:09 -0400 (Fri, 13 May 2011) | 1 line
+Changed paths:
+   M /branches/REL_2/src/test/java/org/opensaml/saml1/binding/encoding/HTTPPostEncoderTest.java
+   M /branches/REL_2/src/test/java/org/opensaml/saml2/binding/encoding/HTTPPostEncoderTest.java
+   M /branches/REL_2/src/test/java/org/opensaml/saml2/binding/encoding/HTTPPostSimpleSignEncoderTest.java
+
+Fix encoder unit tests which had previously broken when we started HTML encoding the form action with ESAPI.
+------------------------------------------------------------------------
+r1527 | putmanb | 2011-05-13 15:22:41 -0400 (Fri, 13 May 2011) | 1 line
+Changed paths:
+   M /branches/REL_2/pom.xml
+   M /branches/REL_2/src/main/java/org/opensaml/ESAPISecurityConfig.java
+
+Update OWASP ESAPI library to version 2.0GA.
+------------------------------------------------------------------------

@@ -1,0 +1,92 @@
+------------------------------------------------------------------------
+r706 | lajoie | 2011-03-14 07:36:23 -0400 (Mon, 14 Mar 2011) | 2 lines
+Changed paths:
+   M /branches/REL_1/src/main/java/org/opensaml/xml/Version.java
+
+Add some helper methods to Version class (all projects) - JOST-135
+
+------------------------------------------------------------------------
+r707 | lajoie | 2011-03-20 17:52:41 -0400 (Sun, 20 Mar 2011) | 1 line
+Changed paths:
+   M /branches/REL_1/src/test/java/org/opensaml/xml/signature/DetachedSignatureTest.java
+
+comment out unit test for unmarshalling and validating detached signature to external files because the external file has changed and so the test now fails - JXT-73
+------------------------------------------------------------------------
+r708 | lajoie | 2011-03-24 07:01:40 -0400 (Thu, 24 Mar 2011) | 4 lines
+Changed paths:
+   M /branches/REL_1/doc/RELEASE-NOTES.txt
+   M /branches/REL_1/pom.xml
+   M /branches/REL_1/src/main/java/org/opensaml/xml/Configuration.java
+   M /branches/REL_1/src/main/java/org/opensaml/xml/XMLObject.java
+
+Update POM to:
+  - include plugin version numbers for maven 3
+  - fetch not-yet-commons-ssl from maven central
+Fix up minor javadoc typos
+------------------------------------------------------------------------
+r709 | lajoie | 2011-03-24 07:06:16 -0400 (Thu, 24 Mar 2011) | 1 line
+Changed paths:
+   M /branches/REL_1/pom.xml
+   M /branches/REL_1/src/main/assembly/bin.xml
+   M /branches/REL_1/src/main/assembly/src.xml
+
+Also load Xalan from maven central
+------------------------------------------------------------------------
+r710 | lajoie | 2011-03-24 07:16:27 -0400 (Thu, 24 Mar 2011) | 1 line
+Changed paths:
+   M /branches/REL_1/pom.xml
+
+load xml-resolver from maven central
+------------------------------------------------------------------------
+r711 | lajoie | 2011-03-24 07:31:59 -0400 (Thu, 24 Mar 2011) | 1 line
+Changed paths:
+   M /branches/REL_1/src/main/assembly/bin.xml
+   M /branches/REL_1/src/main/assembly/src.xml
+
+exclude from lib directory the xml-apis brought in by xalan dependency
+------------------------------------------------------------------------
+r712 | lajoie | 2011-03-24 08:01:54 -0400 (Thu, 24 Mar 2011) | 1 line
+Changed paths:
+   M /branches/REL_1/pom.xml
+
+Attache source jars to generated artifacts to help with IDEs that can use them - JOST-119
+------------------------------------------------------------------------
+r713 | lajoie | 2011-04-07 19:48:43 -0400 (Thu, 07 Apr 2011) | 1 line
+Changed paths:
+   M /branches/REL_1/doc/RELEASE-NOTES.txt
+   M /branches/REL_1/pom.xml
+
+Update POM for Shib.net Repo and attach generated Javadocs - JXT-77
+------------------------------------------------------------------------
+r714 | lajoie | 2011-04-11 16:49:04 -0400 (Mon, 11 Apr 2011) | 1 line
+Changed paths:
+   M /branches/REL_1/pom.xml
+
+references to spaces.internet.edu may need changed to wiki.shibboleth.net - JOST-157
+------------------------------------------------------------------------
+r715 | lajoie | 2011-04-11 16:58:51 -0400 (Mon, 11 Apr 2011) | 1 line
+Changed paths:
+   M /branches/REL_1/src/test/resources/logback-test.xml
+
+update logback config to work with latest version
+------------------------------------------------------------------------
+r716 | putmanb | 2011-04-14 16:17:54 -0400 (Thu, 14 Apr 2011) | 1 line
+Changed paths:
+   M /branches/REL_1/src/main/java/org/opensaml/xml/security/x509/CertPathPKIXTrustEvaluator.java
+
+Add missing setter for PKIXValidationOptions on CertPath PKIX trust evaluator.
+------------------------------------------------------------------------
+r717 | cantor | 2011-05-04 11:21:02 -0400 (Wed, 04 May 2011) | 1 line
+Changed paths:
+   M /branches/REL_1/doc/README
+
+SIDP-486: login.jsp page contains old wiki link
+------------------------------------------------------------------------
+r718 | lajoie | 2011-05-15 15:30:09 -0400 (Sun, 15 May 2011) | 2 lines
+Changed paths:
+   M /branches/REL_1/doc/RELEASE-NOTES.txt
+   M /branches/REL_1/pom.xml
+
+Update release notes
+bump version number for release
+------------------------------------------------------------------------

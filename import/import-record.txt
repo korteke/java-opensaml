@@ -5,3 +5,16 @@ Imported repositories and versions:
 java-xmltooling r705
 java-openws     r392
 java-opensaml2  r1501
+
+** 2011-05-20
+
+Merged changes:
+
+java-xmltooling r705  - r719
+java-openws     r392  - r402
+java-opensaml2  r1501 - r1528
+
+Except for 
+ - SAML 2 metadata UI packages, which will be reconciled separately.
+ - Project artifact changes (e.g. POM's, /doc) which will be reconciled separately
+

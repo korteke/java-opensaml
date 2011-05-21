@@ -1,0 +1,703 @@
+Index: doc/RELEASE-NOTES.txt
+===================================================================
+--- doc/RELEASE-NOTES.txt	(revision 705)
++++ doc/RELEASE-NOTES.txt	(revision 719)
+@@ -1,3 +1,12 @@
++Changes in Release 1.3.2
++==============================================
++[JXT-73] - DetachedSignatureTest failure
++[JXT-74] - Some pom changes for XMLTooling
++[JXT-77] - Update POM for Shib.net Repo and attach generated Javadocs
++[JOST-119] - change pom to create attached -sources jar
++[JOST-136] - Update Version class with getVersion() and getName() static methods
++[JOST-157] - references to spaces.internet.edu may need changed to wiki.shibboleth.net
++
+ Changes in Release 1.3.1
+ ==============================================
+ [JXT-71] - Static helper classes should not use static Loggers
+Index: doc/README
+===================================================================
+--- doc/README	(revision 705)
++++ doc/README	(revision 719)
+@@ -16,7 +16,7 @@
+ Feedback
+ --------
+ Feedback may be provided through the OpenSAML mailing list.
+-https://spaces.internet2.edu/display/OpenSAML/MailingList
++https://wiki.shibboleth.net/confluence/display/OpenSAML/MailingList
+ 
+ Issues, Suggestions
+ --------
+Index: src/test/java/org/opensaml/xml/signature/DetachedSignatureTest.java
+===================================================================
+--- src/test/java/org/opensaml/xml/signature/DetachedSignatureTest.java	(revision 705)
++++ src/test/java/org/opensaml/xml/signature/DetachedSignatureTest.java	(revision 719)
+@@ -167,24 +167,25 @@
+      * @throws GeneralSecurityException
+      * @throws SecurityException
+      */
+-    public void testUnmarshallExternalSignatureAndVerification() throws IOException, MalformedURLException,
+-            XMLParserException, UnmarshallingException, ValidationException, GeneralSecurityException, SecurityException {
+-        String signatureLocation = "http://www.w3.org/TR/xmldsig-core/signature-example-rsa.xml";
+-        InputStream ins = new URL(signatureLocation).openStream();
+-        Element signatureElement = parserPool.parse(ins).getDocumentElement();
++// TODO this test now fails because the detached signature document is a signature over a document that has now changed 
++//    public void testUnmarshallExternalSignatureAndVerification() throws IOException, MalformedURLException,
++//            XMLParserException, UnmarshallingException, ValidationException, GeneralSecurityException, SecurityException {
++//        String signatureLocation = "http://www.w3.org/TR/xmldsig-core/signature-example-rsa.xml";
++//        InputStream ins = new URL(signatureLocation).openStream();
++//        Element signatureElement = parserPool.parse(ins).getDocumentElement();
++//
++//        Unmarshaller unmarshaller = Configuration.getUnmarshallerFactory().getUnmarshaller(signatureElement);
++//        Signature signature = (Signature) unmarshaller.unmarshall(signatureElement);
++//
++//        KeyInfoCredentialResolver resolver = SecurityHelper.buildBasicInlineKeyInfoResolver();
++//
++//        KeyInfoCriteria criteria = new KeyInfoCriteria(signature.getKeyInfo());
++//        CriteriaSet criteriaSet = new CriteriaSet(criteria);
++//        Credential credential = resolver.resolveSingle(criteriaSet);
++//        SignatureValidator sigValidator = new SignatureValidator(credential);
++//        sigValidator.validate(signature);
++//    }
+ 
+-        Unmarshaller unmarshaller = Configuration.getUnmarshallerFactory().getUnmarshaller(signatureElement);
+-        Signature signature = (Signature) unmarshaller.unmarshall(signatureElement);
+-
+-        KeyInfoCredentialResolver resolver = SecurityHelper.buildBasicInlineKeyInfoResolver();
+-
+-        KeyInfoCriteria criteria = new KeyInfoCriteria(signature.getKeyInfo());
+-        CriteriaSet criteriaSet = new CriteriaSet(criteria);
+-        Credential credential = resolver.resolveSingle(criteriaSet);
+-        SignatureValidator sigValidator = new SignatureValidator(credential);
+-        sigValidator.validate(signature);
+-    }
+-
+     /**
+      * Creates a XMLObject that has another XMLObject and a Signature as children. The Signature is is a detached
+      * signature of its sibling.
+Index: src/test/resources/logback-test.xml
+===================================================================
+--- src/test/resources/logback-test.xml	(revision 705)
++++ src/test/resources/logback-test.xml	(revision 719)
+@@ -1,17 +1,21 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ 
+-<!-- Basic configuration used until the IdP can load the real configuration -->
+ <configuration>
+ 
+-  <appender name="STDOUT"
+-    class="ch.qos.logback.core.ConsoleAppender">
+-    <layout class="ch.qos.logback.classic.PatternLayout">
+-      <Pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</Pattern>
+-    </layout>
+-  </appender>
+-
+-  <root>
+-    <level value="warn" />
+-    <appender-ref ref="STDOUT" />
+-  </root>
++    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
++        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
++            <pattern>%-5level %logger{0} - %msg%n</pattern>
++            <charset>UTF-8</charset>
++        </encoder>
++    </appender>
++    
++    <logger name="org.opensaml">
++        <level value="WARN" />
++    </logger>
++    
++    <root>
++        <appender-ref ref="STDOUT" />
++        <level value="WARN" />
++    </root>
++    
+ </configuration>
+\ No newline at end of file
+Index: src/main/assembly/src.xml
+===================================================================
+--- src/main/assembly/src.xml	(revision 705)
++++ src/main/assembly/src.xml	(revision 719)
+@@ -10,9 +10,11 @@
+         <dependencySet>
+             <outputDirectory>/lib</outputDirectory>
+             <excludes>
++                <exclude>org.opensaml:xmltooling:*</exclude>
+                 <exclude>org.apache.xerces:*</exclude>
+-                <exclude>org.apache.xalan:*</exclude>
+-                <exclude>org.opensaml:xmltooling:*</exclude>
++                <exclude>xalan:*</exclude>
++                <exclude>xml-resolver:*</exclude>
++                <exclude>xml-apis:</exclude>
+             </excludes>
+             <includes>
+                 <include>*:jar:*</include>
+@@ -22,7 +24,8 @@
+             <outputDirectory>/endorsed</outputDirectory>
+             <includes>
+                 <include>org.apache.xerces:*</include>
+-                <include>org.apache.xalan:*</include>
++                <include>xalan:*</include>
++                <include>xml-resolver:*</include>
+             </includes>
+         </dependencySet>
+     </dependencySets>
+Index: src/main/assembly/bin.xml
+===================================================================
+--- src/main/assembly/bin.xml	(revision 705)
++++ src/main/assembly/bin.xml	(revision 719)
+@@ -10,9 +10,11 @@
+         <dependencySet>
+             <outputDirectory>/lib</outputDirectory>
+             <excludes>
++                <exclude>org.opensaml:xmltooling:*</exclude>
+                 <exclude>org.apache.xerces:*</exclude>
+-                <exclude>org.apache.xalan:*</exclude>
+-                <exclude>org.opensaml:xmltooling:*</exclude>
++                <exclude>xalan:*</exclude>
++                <exclude>xml-resolver:*</exclude>
++                <exclude>xml-apis:</exclude>
+             </excludes>
+             <includes>
+                 <include>*:jar:*</include>
+@@ -22,7 +24,8 @@
+             <outputDirectory>/endorsed</outputDirectory>
+             <includes>
+                 <include>org.apache.xerces:*</include>
+-                <include>org.apache.xalan:*</include>
++                <include>xalan:*</include>
++                <include>xml-resolver:*</include>
+             </includes>
+         </dependencySet>
+     </dependencySets>
+Index: src/main/java/org/opensaml/xml/Configuration.java
+===================================================================
+--- src/main/java/org/opensaml/xml/Configuration.java	(revision 705)
++++ src/main/java/org/opensaml/xml/Configuration.java	(revision 719)
+@@ -171,7 +171,6 @@
+      * 
+      * @param suiteId the ID of the suite
+      * @param suite the configured suite
+-     * @param configuration optional XML configuration information
+      */
+     public static void registerValidatorSuite(String suiteId, ValidatorSuite suite) {
+         validatorSuites.put(suiteId, suite);
+Index: src/main/java/org/opensaml/xml/Version.java
+===================================================================
+--- src/main/java/org/opensaml/xml/Version.java	(revision 705)
++++ src/main/java/org/opensaml/xml/Version.java	(revision 719)
+@@ -17,8 +17,27 @@
+ package org.opensaml.xml;
+ 
+ /** Class for printing the version of this library. */
+-public class Version {
++public final class Version {
+ 
++    /** Name of the library. */
++    private static final String NAME;
++
++    /** Library version. */
++    private static final String VERSION;
++
++    /** Library major version number. */
++    private static final int MAJOR_VERSION;
++
++    /** Library minor version number. */
++    private static final int MINOR_VERSION;
++
++    /** Library micro version number. */
++    private static final int MICRO_VERSION;
++
++    /** Constructor. */
++    private Version() {
++    }
++
+     /**
+      * Main entry point to program.
+      * 
+@@ -26,6 +45,61 @@
+      */
+     public static void main(String[] args) {
+         Package pkg = Version.class.getPackage();
+-        System.out.println(pkg.getImplementationTitle() + " version " + pkg.getImplementationVersion());
++        System.out.println(NAME + " version " + VERSION);
+     }
++
++    /**
++     * Gets the name of the library.
++     * 
++     * @return name of the library
++     */
++    public static String getName() {
++        return NAME;
++    }
++
++    /**
++     * Gets the version of the library.
++     * 
++     * @return version of the library
++     */
++    public static String getVersion() {
++        return VERSION;
++    }
++
++    /**
++     * Gets the major version number of the library.
++     * 
++     * @return major version number of the library
++     */
++    public static int getMajorVersion() {
++        return MAJOR_VERSION;
++    }
++
++    /**
++     * Gets the minor version number of the library.
++     * 
++     * @return minor version number of the library
++     */
++    public static int getMinorVersion() {
++        return MINOR_VERSION;
++    }
++
++    /**
++     * Gets the micro version number of the library.
++     * 
++     * @return micro version number of the library
++     */
++    public static int getMicroVersion() {
++        return MICRO_VERSION;
++    }
++
++    static {
++        Package pkg = Version.class.getPackage();
++        NAME = pkg.getImplementationTitle().intern();
++        VERSION = pkg.getImplementationVersion().intern();
++        String[] versionParts = VERSION.split(".");
++        MAJOR_VERSION = Integer.parseInt(versionParts[0]);
++        MINOR_VERSION = Integer.parseInt(versionParts[1]);
++        MICRO_VERSION = Integer.parseInt(versionParts[2]);
++    }
+ }
+\ No newline at end of file
+Index: src/main/java/org/opensaml/xml/XMLObject.java
+===================================================================
+--- src/main/java/org/opensaml/xml/XMLObject.java	(revision 705)
++++ src/main/java/org/opensaml/xml/XMLObject.java	(revision 719)
+@@ -224,7 +224,7 @@
+      * element content, but not element attributes.
+      * </p>
+      * 
+-     * @see http://www.w3.org/TR/xmlschema-0/#Nils
++     * @see <a href="http://www.w3.org/TR/xmlschema-0/#Nils"/>
+      * 
+      * @return whether the object's content model is null
+      */
+@@ -247,7 +247,7 @@
+      * element content, but not element attributes.
+      * </p>
+      * 
+-     * @see http://www.w3.org/TR/xmlschema-0/#Nils
++     * @see <a href="http://www.w3.org/TR/xmlschema-0/#Nils/>
+      * 
+      * @return whether the object's content model is null
+      */
+@@ -269,7 +269,7 @@
+      * element content, but not element attributes.
+      * </p>
+      * 
+-     * @see http://www.w3.org/TR/xmlschema-0/#Nils
++     * @see <a href="http://www.w3.org/TR/xmlschema-0/#Nils/>
+      * 
+      * @param newNil whether the object's content model is expressed as null
+      */
+@@ -291,7 +291,7 @@
+      * element content, but not element attributes.
+      * </p>
+      * 
+-     * @see http://www.w3.org/TR/xmlschema-0/#Nils 
++     * @see <a href="http://www.w3.org/TR/xmlschema-0/#Nils/>
+      * 
+      * @param newNil whether the object's content model is expressed as null
+      */
+Index: src/main/java/org/opensaml/xml/security/x509/CertPathPKIXTrustEvaluator.java
+===================================================================
+--- src/main/java/org/opensaml/xml/security/x509/CertPathPKIXTrustEvaluator.java	(revision 705)
++++ src/main/java/org/opensaml/xml/security/x509/CertPathPKIXTrustEvaluator.java	(revision 719)
+@@ -80,6 +80,18 @@
+     }
+ 
+     /**
++     * Set the desired PKIX validation options set.
++     * 
++     * @param newOptions the new set of options
++     */
++    public void setPKIXValidationOptions(PKIXValidationOptions newOptions) {
++        if (newOptions == null) {
++            throw new IllegalArgumentException("PKIXValidationOptions may not be null");
++        }
++        options = newOptions;
++    }
++
++    /**
+      * Get the handler which process X.500 distinguished names.
+      * 
+      * Defaults to {@link InternalX500DNHandler}.
+Index: pom.xml
+===================================================================
+--- pom.xml	(revision 705)
++++ pom.xml	(revision 719)
+@@ -4,7 +4,7 @@
+     <modelVersion>4.0.0</modelVersion>
+     <groupId>org.opensaml</groupId>
+     <artifactId>xmltooling</artifactId>
+-    <version>1.3.1</version>
++    <version>1.3.2</version>
+     <packaging>jar</packaging>
+ 
+     <name>XMLTooling-J</name>
+@@ -12,7 +12,7 @@
+         XMLTooling-J is a low-level library that may be used to construct libraries that allow developers to work with
+         XML in a Java beans manner.
+     </description>
+-    
++
+     <properties>
+         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+         <slf4j.groupId>org.slf4j</slf4j.groupId>
+@@ -20,25 +20,23 @@
+         <xerces.groupId>org.apache.xerces</xerces.groupId>
+         <xerces.version>2.10.0</xerces.version>
+     </properties>
+-    
++
+     <repositories>
+         <repository>
+-            <id>shibboleth-release</id>
+-            <name>Internet2 Releases</name>
+-            <layout>default</layout>
+-            <url>http://shibboleth.internet2.edu/downloads/maven2</url>
++            <id>shib-release</id>
++            <url>https://shibboleth.net/nexus/content/groups/public</url>
+             <snapshots>
+                 <enabled>false</enabled>
+             </snapshots>
+         </repository>
+-    </repositories>
+-    
+-    <distributionManagement>
+         <repository>
+-            <id>release-repo</id>
+-            <url>${dist.release.url}</url>
++            <id>shib-snapshot</id>
++            <url>https://shibboleth.net/nexus/content/repositories/snapshots</url>
++            <releases>
++                <enabled>false</enabled>
++            </releases>
+         </repository>
+-    </distributionManagement>
++    </repositories>
+ 
+     <dependencies>
+         <!-- Compile dependencies -->
+@@ -84,18 +82,28 @@
+             </exclusions>
+         </dependency>
+         <dependency>
+-            <groupId>org.apache.commons.ssl</groupId>
++            <groupId>ca.juliusdavies</groupId>
+             <artifactId>not-yet-commons-ssl</artifactId>
+             <version>0.3.9</version>
++            <exclusions>
++                <exclusion>
++                    <groupId>log4j</groupId>
++                    <artifactId>log4j</artifactId>
++                </exclusion>
++                <exclusion>
++                    <groupId>commons-logging</groupId>
++                    <artifactId>commons-logging</artifactId>
++                </exclusion>
++            </exclusions>
+         </dependency>
+         <dependency>
+             <groupId>net.jcip</groupId>
+             <artifactId>jcip-annotations</artifactId>
+             <version>1.0</version>
+         </dependency>
+-        
++
+         <!-- Provided dependencies -->
+-                
++
+         <!-- Runtime dependencies -->
+         <dependency>
+             <groupId>${xerces.groupId}</groupId>
+@@ -110,24 +118,18 @@
+             <scope>runtime</scope>
+         </dependency>
+         <dependency>
+-            <groupId>${xerces.groupId}</groupId>
+-            <artifactId>resolver</artifactId>
+-            <version>${xerces.version}</version>
++            <groupId>xml-resolver</groupId>
++            <artifactId>xml-resolver</artifactId>
++            <version>1.2</version>
+             <scope>runtime</scope>
+         </dependency>
+         <dependency>
+-            <groupId>${xerces.groupId}</groupId>
+-            <artifactId>serializer</artifactId>
+-            <version>${xerces.version}</version>
+-            <scope>runtime</scope>
+-        </dependency>
+-        <dependency>
+-            <groupId>org.apache.xalan</groupId>
++            <groupId>xalan</groupId>
+             <artifactId>xalan</artifactId>
+             <version>2.7.1</version>
+             <scope>runtime</scope>
+         </dependency>
+-        
++
+         <!-- Test dependencies -->
+         <dependency>
+             <groupId>junit</groupId>
+@@ -148,19 +150,24 @@
+             <scope>test</scope>
+         </dependency>
+     </dependencies>
+-    
++
++    <distributionManagement>
++        <repository>
++            <id>release</id>
++            <url>https://shibboleth.net/nexus/content/repositories/releases</url>
++        </repository>
++        <snapshotRepository>
++            <id>snapshot</id>
++            <url>https://shibboleth.net/nexus/content/repositories/snapshots</url>
++        </snapshotRepository>
++    </distributionManagement>
++
+     <build>
+         <plugins>
+             <plugin>
+                 <groupId>org.apache.maven.plugins</groupId>
+-                <artifactId>maven-resources-plugin</artifactId>
+-                <configuration>
+-                    <encoding>UTF-8</encoding>
+-                </configuration>
+-            </plugin>
+-            <plugin>
+-                <groupId>org.apache.maven.plugins</groupId>
+                 <artifactId>maven-compiler-plugin</artifactId>
++                <version>2.3.2</version>
+                 <configuration>
+                     <source>1.5</source>
+                     <target>1.5</target>
+@@ -170,6 +177,7 @@
+             <plugin>
+                 <groupId>org.apache.maven.plugins</groupId>
+                 <artifactId>maven-assembly-plugin</artifactId>
++                <version>2.2.1</version>
+                 <configuration>
+                     <descriptors>
+                         <descriptor>src/main/assembly/bin.xml</descriptor>
+@@ -190,25 +198,27 @@
+             <plugin>
+                 <groupId>org.apache.maven.plugins</groupId>
+                 <artifactId>maven-surefire-plugin</artifactId>
++                <version>2.8</version>
+                 <configuration>
+-                  <argLine>-Xmx256m</argLine>
++                    <argLine>-Xmx256m</argLine>
+                 </configuration>
+             </plugin>
+             <plugin>
+                 <groupId>org.apache.maven.plugins</groupId>
+                 <artifactId>maven-jar-plugin</artifactId>
++                <version>2.3.1</version>
+                 <configuration>
+                     <archive>
+                         <index>true</index>
+                         <manifestEntries>
+                             <Main-Class>org.opensaml.xml.Version</Main-Class>
+                         </manifestEntries>
+-       					<manifestSections>
++                        <manifestSections>
+                             <manifestSection>
+                                 <name>org/opensaml/xml/</name>
+                                 <manifestEntries>
+-                                    <Implementation-Title>${pom.artifactId}</Implementation-Title>
+-                                    <Implementation-Version>${pom.version}</Implementation-Version>
++                                    <Implementation-Title>${project.artifactId}</Implementation-Title>
++                                    <Implementation-Version>${project.version}</Implementation-Version>
+                                     <Implementation-Vendor>www.opensaml.org</Implementation-Vendor>
+                                 </manifestEntries>
+                             </manifestSection>
+@@ -230,8 +240,36 @@
+                             </manifestSection>
+                         </manifestSections>
+                     </archive>
+-                </configuration>				
++                </configuration>
+             </plugin>
++            <plugin>
++                <artifactId>maven-source-plugin</artifactId>
++                <version>2.1.2</version>
++                <executions>
++                    <execution>
++                        <id>attach-sources</id>
++                        <goals>
++                            <goal>jar</goal>
++                        </goals>
++                    </execution>
++                </executions>
++            </plugin>
++            <plugin>
++                <groupId>org.apache.maven.plugins</groupId>
++                <artifactId>maven-javadoc-plugin</artifactId>
++                <version>2.7</version>
++                <executions>
++                    <execution>
++                        <id>attach-javadocs</id>
++                        <goals>
++                            <goal>jar</goal>
++                        </goals>
++                    </execution>
++                </executions>
++                <configuration>
++                    <quiet>true</quiet>
++                </configuration>
++            </plugin>
+         </plugins>
+     </build>
+ 
+@@ -240,6 +278,7 @@
+             <plugin>
+                 <groupId>org.apache.maven.plugins</groupId>
+                 <artifactId>maven-javadoc-plugin</artifactId>
++                <version>2.7</version>
+                 <configuration>
+                     <links>
+                         <link>http://java.sun.com/j2se/1.5.0/docs/api/</link>
+@@ -255,16 +294,18 @@
+             <plugin>
+                 <groupId>org.apache.maven.plugins</groupId>
+                 <artifactId>maven-jxr-plugin</artifactId>
++                <version>2.2</version>
+                 <configuration>
+                     <outputDirectory>${project.reporting.outputDirectory}/xref</outputDirectory>
+                     <doctitle>${project.name} ${project.version} Code Cross-Reference</doctitle>
+                     <windowtitle>${project.name} ${project.version} Java API.</windowtitle>
+-                    <javadocDir>${project.reporting.outputDirectory}/apidocs</javadocDir>                    
++                    <javadocDir>${project.reporting.outputDirectory}/apidocs</javadocDir>
+                 </configuration>
+             </plugin>
+             <plugin>
+                 <groupId>org.apache.maven.plugins</groupId>
+                 <artifactId>maven-surefire-report-plugin</artifactId>
++                <version>2.8</version>
+                 <configuration>
+                     <outputDirectory>${project.reporting.outputDirectory}/unitTest</outputDirectory>
+                     <xrefLocation>${project.reporting.outputDirectory}/xref</xrefLocation>
+@@ -272,7 +313,7 @@
+             </plugin>
+         </plugins>
+     </reporting>
+-    
++
+     <profiles>
+         <profile>
+             <id>release</id>
+@@ -345,16 +386,16 @@
+                             </execution>
+                         </executions>
+                     </plugin>
+-                </plugins>    
+-            </build>            
++                </plugins>
++            </build>
+         </profile>
+     </profiles>
+-    
++
+     <!-- Project Metadata -->
+     <url>http://opensaml.org/</url>
+-    
++
+     <inceptionYear>2006</inceptionYear>
+-    
++
+     <licenses>
+         <license>
+             <name>Apache 2</name>
+@@ -362,37 +403,34 @@
+             <distribution>repo</distribution>
+         </license>
+     </licenses>
+-    
++
+     <organization>
+         <name>Internet2</name>
+         <url>http://www.internet2.edu/</url>
+     </organization>
+-    
++
+     <issueManagement>
+         <system>JIRA</system>
+         <url>http://bugs.internet2.edu/</url>
+     </issueManagement>
+-    
++
+     <mailingLists>
+         <mailingList>
+             <name>OpenSAML Users</name>
+-            <subscribe>https://spaces.internet2.edu/display/OpenSAML/MailingList</subscribe>
+-            <unsubscribe>https://spaces.internet2.edu/display/OpenSAML/MailingList</unsubscribe>
++            <subscribe>https://wiki.shibboleth.net/confluence/display/OpenSAML/MailingList</subscribe>
++            <unsubscribe>https://wiki.shibboleth.net/confluence/display/OpenSAML/MailingList</unsubscribe>
+             <post>mace-opensaml-users@internet2.edu</post>
+-            <archive>https://mail.internet2.edu/wws/arc/mace-opensaml-users</archive>
+-            <otherArchives>
+-                <otherArchive>http://groups.google.com/group/opensaml-users</otherArchive>
+-            </otherArchives>
++            <archive>http://groups.google.com/group/opensaml-users</archive>
+         </mailingList>
+     </mailingLists>
+-    
++
+     <scm>
+         <connection>scm:svn:https://svn.middleware.georgetown.edu/java-xmltooling/</connection>
+         <developerConnection>scm:svn:https://svn.middleware.georgetown.edu/java-xmltooling/</developerConnection>
+         <tag>HEAD</tag>
+         <url>http://svn.middleware.georgetown.edu/view/?root=java-xmltooling</url>
+     </scm>
+-    
++
+     <developers>
+         <developer>
+             <id>cantor</id>
+@@ -417,13 +455,13 @@
+         <developer>
+             <id>lajoie</id>
+             <name>Chad La Joie</name>
+-            <organization>SWITCH</organization>
+-            <organizationUrl>http://www.switch.ch/</organizationUrl>
++            <organization>Itumi, LLC</organization>
++            <organizationUrl>http://itumi.biz</organizationUrl>
+             <roles>
+                 <role>developer</role>
+                 <role>documentation</role>
+             </roles>
+-            <timezone>+1</timezone>
++            <timezone>-5</timezone>
+         </developer>
+         <developer>
+             <id>putmanb</id>
+@@ -446,5 +484,5 @@
+             <timezone>0</timezone>
+         </developer>
+     </developers>
+-    
++
+ </project>

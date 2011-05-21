@@ -1,0 +1,79 @@
+------------------------------------------------------------------------
+r392 | lajoie | 2011-01-15 10:38:27 -0500 (Sat, 15 Jan 2011) | 1 line
+Changed paths:
+   M /branches/REL_1/doc/RELEASE-NOTES.txt
+   M /branches/REL_1/src/main/java/org/opensaml/ws/wssecurity/impl/KeyIdentifierMarshaller.java
+
+correct attribute name in key identifier unmarshaller - JOWS-26
+------------------------------------------------------------------------
+r393 | cantor | 2011-02-17 16:46:21 -0500 (Thu, 17 Feb 2011) | 1 line
+Changed paths:
+   M /branches/REL_1/doc/RELEASE-NOTES.txt
+   M /branches/REL_1/pom.xml
+   M /branches/REL_1/src/main/java/org/opensaml/ws/message/decoder/BaseMessageDecoder.java
+   M /branches/REL_1/src/main/java/org/opensaml/ws/message/encoder/BaseMessageEncoder.java
+
+JOWS-27: Fix NPE in message logging and enhance sanity checks.
+------------------------------------------------------------------------
+r394 | lajoie | 2011-03-14 07:36:21 -0400 (Mon, 14 Mar 2011) | 2 lines
+Changed paths:
+   M /branches/REL_1/src/main/java/org/opensaml/ws/Version.java
+
+Add some helper methods to Version class (all projects) - JOST-135
+
+------------------------------------------------------------------------
+r395 | lajoie | 2011-03-24 07:34:06 -0400 (Thu, 24 Mar 2011) | 4 lines
+Changed paths:
+   M /branches/REL_1/doc/RELEASE-NOTES.txt
+   M /branches/REL_1/pom.xml
+   M /branches/REL_1/src/main/assembly/bin.xml
+   M /branches/REL_1/src/main/assembly/src.xml
+   M /branches/REL_1/src/main/java/org/opensaml/ws/soap/client/http/TLSProtocolSocketFactory.java
+   M /branches/REL_1/src/main/java/org/opensaml/ws/wsfed/impl/EndPointReferenceUnmarshaller.java
+   M /branches/REL_1/src/main/java/org/opensaml/ws/wssecurity/impl/AbstractWSSecurityObjectMarshaller.java
+   M /branches/REL_1/src/main/java/org/opensaml/ws/wssecurity/impl/AbstractWSSecurityObjectUnmarshaller.java
+
+Update POM to:
+  - include plugin version numbers for maven 3
+  - fetch xalan and xml-resolver from maven central
+Fix up minor javadoc typos
+------------------------------------------------------------------------
+r396 | lajoie | 2011-03-24 08:01:51 -0400 (Thu, 24 Mar 2011) | 1 line
+Changed paths:
+   M /branches/REL_1/pom.xml
+
+Attache source jars to generated artifacts to help with IDEs that can use them - JOST-119
+------------------------------------------------------------------------
+r397 | lajoie | 2011-04-07 19:51:54 -0400 (Thu, 07 Apr 2011) | 1 line
+Changed paths:
+   M /branches/REL_1/doc/RELEASE-NOTES.txt
+   M /branches/REL_1/pom.xml
+
+Update POM for Shib.net Repo and attach generated Javadocs - JOWS-30
+------------------------------------------------------------------------
+r398 | lajoie | 2011-04-11 16:49:01 -0400 (Mon, 11 Apr 2011) | 1 line
+Changed paths:
+   M /branches/REL_1/doc/README.txt
+   M /branches/REL_1/pom.xml
+
+references to spaces.internet.edu may need changed to wiki.shibboleth.net - JOST-157
+------------------------------------------------------------------------
+r399 | lajoie | 2011-04-11 16:58:48 -0400 (Mon, 11 Apr 2011) | 1 line
+Changed paths:
+   M /branches/REL_1/src/test/resources/logback-test.xml
+
+update logback config to work with latest version
+------------------------------------------------------------------------
+r400 | putmanb | 2011-04-14 20:28:16 -0400 (Thu, 14 Apr 2011) | 1 line
+Changed paths:
+   M /branches/REL_1/doc/RELEASE-NOTES.txt
+   M /branches/REL_1/src/main/java/org/opensaml/ws/soap/soap11/encoder/SOAP11Encoder.java
+
+JOWS-28: SOAP11Encoder doesn't encode original SOAP message
+------------------------------------------------------------------------
+r401 | lajoie | 2011-05-15 15:31:13 -0400 (Sun, 15 May 2011) | 1 line
+Changed paths:
+   M /branches/REL_1/pom.xml
+
+update xmltooling version
+------------------------------------------------------------------------

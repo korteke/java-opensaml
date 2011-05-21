@@ -1,0 +1,30 @@
+Path: REL_1
+URL: https://svn.shibboleth.net/java-xmltooling/branches/REL_1
+Repository Root: https://svn.shibboleth.net/java-xmltooling
+Repository UUID: 9fbd0cf9-a10c-0410-82c1-be8c084f3200
+Revision: 719
+Node Kind: directory
+Last Changed Author: lajoie
+Last Changed Rev: 718
+Last Changed Date: 2011-05-15 15:30:09 -0400 (Sun, 15 May 2011)
+
+Path: REL_1
+URL: https://svn.shibboleth.net/java-openws/branches/REL_1
+Repository Root: https://svn.shibboleth.net/java-openws
+Repository UUID: 68e08561-3e15-0410-b96d-d18bf8373583
+Revision: 402
+Node Kind: directory
+Last Changed Author: lajoie
+Last Changed Rev: 401
+Last Changed Date: 2011-05-15 15:31:13 -0400 (Sun, 15 May 2011)
+
+Path: REL_2
+URL: https://svn.shibboleth.net/java-opensaml2/branches/REL_2
+Repository Root: https://svn.shibboleth.net/java-opensaml2
+Repository UUID: 59e08313-8a06-0410-87f4-cf042bce0a15
+Revision: 1528
+Node Kind: directory
+Last Changed Author: putmanb
+Last Changed Rev: 1527
+Last Changed Date: 2011-05-13 15:22:41 -0400 (Fri, 13 May 2011)
+
