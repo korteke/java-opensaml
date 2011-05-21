@@ -29,7 +29,9 @@ import org.opensaml.saml2.metadata.EntityDescriptor;
 import org.opensaml.samlext.idpdisco.DiscoveryResponse;
 import org.opensaml.samlext.saml1md.SourceID;
 import org.opensaml.samlext.saml2delrestrict.Delegate;
+import org.opensaml.samlext.saml2mdattr.EntityAttributes;
 import org.opensaml.samlext.saml2mdquery.AttributeQueryDescriptorType;
+import org.opensaml.samlext.saml2mdui.UIInfo;
 import org.opensaml.samlext.samlpthrpty.RespondTo;
 import org.opensaml.xml.encryption.EncryptedData;
 import org.opensaml.xml.signature.Signature;
@@ -53,11 +55,14 @@ public class XMLObjectProviderInitializerTest extends XMLObjectProviderInitializ
                 AuthnStatement.DEFAULT_ELEMENT_NAME,
                 Delegate.DEFAULT_ELEMENT_NAME,
                 RelayState.DEFAULT_ELEMENT_NAME,
+                EntityAttributes.DEFAULT_ELEMENT_NAME,
                 EntityDescriptor.DEFAULT_ELEMENT_NAME,
                 DiscoveryResponse.DEFAULT_ELEMENT_NAME,
                 AttributeQueryDescriptorType.TYPE_NAME,
+                UIInfo.DEFAULT_ELEMENT_NAME,
                 AuthnRequest.DEFAULT_ELEMENT_NAME,
                 RespondTo.DEFAULT_ELEMENT_NAME,
+                
         };
     }
     

@@ -80,6 +80,18 @@ public class CertPathPKIXTrustEvaluator implements PKIXTrustEvaluator {
     }
 
     /**
+     * Set the desired PKIX validation options set.
+     * 
+     * @param newOptions the new set of options
+     */
+    public void setPKIXValidationOptions(PKIXValidationOptions newOptions) {
+        if (newOptions == null) {
+            throw new IllegalArgumentException("PKIXValidationOptions may not be null");
+        }
+        options = newOptions;
+    }
+
+    /**
      * Get the handler which process X.500 distinguished names.
      * 
      * Defaults to {@link InternalX500DNHandler}.

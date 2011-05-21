@@ -20,9 +20,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.xml.namespace.QName;
 
@@ -56,7 +57,7 @@ public abstract class AbstractMetadataProvider extends BaseMetadataProvider {
     private boolean failFastInitialization;
 
     /** Cache of entity IDs to their descriptors. */
-    private HashMap<String, EntityDescriptor> indexedDescriptors;
+    private Map<String, EntityDescriptor> indexedDescriptors;
 
     /** Pool of parsers used to process XML. */
     private ParserPool parser;
@@ -64,7 +65,7 @@ public abstract class AbstractMetadataProvider extends BaseMetadataProvider {
     /** Constructor. */
     public AbstractMetadataProvider() {
         super();
-        indexedDescriptors = new HashMap<String, EntityDescriptor>();
+        indexedDescriptors = new ConcurrentHashMap<String, EntityDescriptor>();
         failFastInitialization = true;
         initialized = false;
     }
@@ -113,9 +114,8 @@ public abstract class AbstractMetadataProvider extends BaseMetadataProvider {
         EntitiesDescriptor descriptor = doGetEntitiesDescriptor(name);
         if (descriptor == null) {
             log.debug("Metadata document does not contain an EntitiesDescriptor with the name {}", name);
-        }
-
-        if (!isValid(descriptor)) {
+            return null;
+        } else if (!isValid(descriptor)) {
             log.debug("Metadata document contained an EntitiesDescriptor with the name {}, but it was no longer valid",
                     name);
             return null;
@@ -164,9 +164,8 @@ public abstract class AbstractMetadataProvider extends BaseMetadataProvider {
         EntityDescriptor descriptor = doGetEntityDescriptor(entityID);
         if (descriptor == null) {
             log.debug("Metadata document does not contain an EntityDescriptor with the ID {}", entityID);
-        }
-
-        if (!isValid(descriptor)) {
+            return null;
+        } else if (!isValid(descriptor)) {
             log.debug("Metadata document contained an EntityDescriptor with the ID {}, but it was no longer valid",
                     entityID);
             return null;
@@ -214,21 +213,21 @@ public abstract class AbstractMetadataProvider extends BaseMetadataProvider {
 
         List<RoleDescriptor> roleDescriptors = doGetRole(entityID, roleName);
         if (roleDescriptors == null || roleDescriptors.isEmpty()) {
-            log.debug("Entity descriptor {} did not contain any {} roles", entityID, roleDescriptors);
+            log.debug("Entity descriptor {} did not contain any {} roles", entityID, roleName);
             return null;
         }
 
         Iterator<RoleDescriptor> roleDescItr = roleDescriptors.iterator();
         while (roleDescItr.hasNext()) {
             if (!isValid(roleDescItr.next())) {
-                log.debug("Metadata document contained a role of type {} for entity {}, but it was invalid", entityID,
-                        roleName);
+                log.debug("Metadata document contained a role of type {} for entity {}, but it was invalid", roleName,
+                        entityID);
                 roleDescItr.remove();
             }
         }
 
         if (roleDescriptors.isEmpty()) {
-            log.debug("Entity descriptor {} did not contain any valid {} roles", entityID, roleDescriptors);
+            log.debug("Entity descriptor {} did not contain any valid {} roles", entityID, roleName);
         }
         return roleDescriptors;
     }

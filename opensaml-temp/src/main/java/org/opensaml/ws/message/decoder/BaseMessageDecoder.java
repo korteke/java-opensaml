@@ -19,10 +19,13 @@ package org.opensaml.ws.message.decoder;
 import java.io.InputStream;
 
 import org.opensaml.ws.message.MessageContext;
+import org.opensaml.ws.message.encoder.MessageEncodingException;
 import org.opensaml.ws.security.SecurityPolicy;
 import org.opensaml.ws.security.SecurityPolicyResolver;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.XMLObject;
+import org.opensaml.xml.io.Marshaller;
+import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.io.Unmarshaller;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.parse.BasicParserPool;
@@ -88,6 +91,24 @@ public abstract class BaseMessageDecoder implements MessageDecoder {
      */
     protected void logDecodedMessage(MessageContext messageContext) {
         if(protocolMessageLog.isDebugEnabled() && messageContext.getInboundMessage() != null){
+            if (messageContext.getInboundMessage().getDOM() == null) {
+                XMLObject message = messageContext.getInboundMessage();
+                Marshaller marshaller = Configuration.getMarshallerFactory().getMarshaller(message);
+                if (marshaller != null) {
+                    try {
+                        marshaller.marshall(message);
+                    } catch (MarshallingException e) {
+                        log.error("Unable to marshall message for logging purposes: " + e.getMessage());
+                    }
+                }
+                else {
+                    log.error("Unable to marshall message for logging purposes, no marshaller registered for message object: "
+                            + message.getElementQName());
+                }
+                if (message.getDOM() == null) {
+                    return;
+                }
+            }
             protocolMessageLog.debug("\n" + XMLHelper.prettyPrintXML(messageContext.getInboundMessage().getDOM()));
         }
     }
