@@ -17,51 +17,53 @@
 /**
  * 
  */
-package org.opensaml.samlext.mdui;
+package org.opensaml.samlext.saml2mdui;
 
 import javax.xml.namespace.QName;
 
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
-import org.opensaml.samlext.saml2mdui.DisplayName;
+import org.opensaml.samlext.saml2mdui.IPHint;
 import org.opensaml.samlext.saml2mdui.UIInfo;
 
 /**
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml2.metadata.OrganizationName}.
  */
-public class DisplayNameTest extends BaseSAMLObjectProviderTestCase {
+public class IPHintTest extends BaseSAMLObjectProviderTestCase {
     
     /** Expected name. */
-    protected String expectValue="Prifysgol Caerdydd";
-    /** Expected language. */
-    protected String expectLang = "cy";
+    private String expectedHint;
     
     /**
      * Constructor.
      */
-    public DisplayNameTest() {
-        singleElementFile = "/data/org/opensaml/samlext/saml2mdui/DisplayName.xml";
+    public IPHintTest() {
+        singleElementFile = "/data/org/opensaml/samlext/saml2mdui/IPHint.xml";
     }
     
     /** {@inheritDoc} */
+    protected void setUp() throws Exception {
+        super.setUp();
+        expectedHint = "10.0.0.0/23";
+    }
+
+    /** {@inheritDoc} */
     public void testSingleElementUnmarshall() {
-        DisplayName name = (DisplayName) unmarshallElement(singleElementFile);
+        IPHint hint = (IPHint) unmarshallElement(singleElementFile);
         
-        assertEquals("Name was not expected value", expectValue, name.getValue());
-        assertEquals("xml:lang was not expected value", expectLang, name.getXMLLang());
+        assertEquals("Name was not expected value", expectedHint, hint.getHint());
     }
 
     /** {@inheritDoc} */
     public void testSingleElementMarshall() {
         QName qname = new QName(UIInfo.MDUI_NS, 
-                                DisplayName.DEFAULT_ELEMENT_LOCAL_NAME, 
+                                IPHint.DEFAULT_ELEMENT_LOCAL_NAME, 
                                 UIInfo.MDUI_PREFIX);
         
-        DisplayName name = (DisplayName) buildXMLObject(qname);
+        IPHint hint = (IPHint) buildXMLObject(qname);
         
-        name.setValue(expectValue);
-        name.setXMLLang(expectLang);
+        hint.setHint(expectedHint);
 
-        assertEquals(expectedDOM, name);
+        assertEquals(expectedDOM, hint);
     }
 }

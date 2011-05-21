@@ -17,53 +17,52 @@
 /**
  * 
  */
-package org.opensaml.samlext.mdui;
+package org.opensaml.samlext.saml2mdui;
 
 import javax.xml.namespace.QName;
 
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
-import org.opensaml.samlext.saml2mdui.DomainHint;
+import org.opensaml.samlext.saml2mdui.PrivacyStatementURL;
 import org.opensaml.samlext.saml2mdui.UIInfo;
 
 /**
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml2.metadata.OrganizationName}.
  */
-public class DomainHintTest extends BaseSAMLObjectProviderTestCase {
+public class PrivacyStatementURLTest extends BaseSAMLObjectProviderTestCase {
     
     /** Expected name. */
-    private String expectedHint;
+    protected String expectValue="https://example.org/Privacy";
+    /** Expected language. */
+    protected String expectLang="PrivacyLang";
     
     /**
      * Constructor.
      */
-    public DomainHintTest() {
-        singleElementFile = "/data/org/opensaml/samlext/saml2mdui/DomainHint.xml";
+    public PrivacyStatementURLTest() {
+        singleElementFile = "/data/org/opensaml/samlext/saml2mdui/PrivacyStatementURL.xml";
     }
     
-    /** {@inheritDoc} */
-    protected void setUp() throws Exception {
-        super.setUp();
-        expectedHint = ".ed.ac.uk";
-    }
 
     /** {@inheritDoc} */
     public void testSingleElementUnmarshall() {
-        DomainHint hint = (DomainHint) unmarshallElement(singleElementFile);
+        PrivacyStatementURL url = (PrivacyStatementURL) unmarshallElement(singleElementFile);
         
-        assertEquals("Name was not expected value", expectedHint, hint.getHint());
+        assertEquals("URI was not expected value", expectValue, url.getValue());
+        assertEquals("xml:lang was not expected value", expectLang, url.getXMLLang());
     }
 
     /** {@inheritDoc} */
     public void testSingleElementMarshall() {
         QName qname = new QName(UIInfo.MDUI_NS, 
-                                DomainHint.DEFAULT_ELEMENT_LOCAL_NAME, 
+                                PrivacyStatementURL.DEFAULT_ELEMENT_LOCAL_NAME, 
                                 UIInfo.MDUI_PREFIX);
         
-        DomainHint hint = (DomainHint) buildXMLObject(qname);
+        PrivacyStatementURL url = (PrivacyStatementURL) buildXMLObject(qname);
         
-        hint.setHint(expectedHint);
+        url.setValue(expectValue);
+        url.setXMLLang(expectLang);
 
-        assertEquals(expectedDOM, hint);
+        assertEquals(expectedDOM, url);
     }
 }

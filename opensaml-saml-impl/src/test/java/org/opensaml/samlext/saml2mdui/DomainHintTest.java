@@ -17,19 +17,19 @@
 /**
  * 
  */
-package org.opensaml.samlext.mdui;
+package org.opensaml.samlext.saml2mdui;
 
 import javax.xml.namespace.QName;
 
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
-import org.opensaml.samlext.saml2mdui.IPHint;
+import org.opensaml.samlext.saml2mdui.DomainHint;
 import org.opensaml.samlext.saml2mdui.UIInfo;
 
 /**
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml2.metadata.OrganizationName}.
  */
-public class IPHintTest extends BaseSAMLObjectProviderTestCase {
+public class DomainHintTest extends BaseSAMLObjectProviderTestCase {
     
     /** Expected name. */
     private String expectedHint;
@@ -37,19 +37,19 @@ public class IPHintTest extends BaseSAMLObjectProviderTestCase {
     /**
      * Constructor.
      */
-    public IPHintTest() {
-        singleElementFile = "/data/org/opensaml/samlext/saml2mdui/IPHint.xml";
+    public DomainHintTest() {
+        singleElementFile = "/data/org/opensaml/samlext/saml2mdui/DomainHint.xml";
     }
     
     /** {@inheritDoc} */
     protected void setUp() throws Exception {
         super.setUp();
-        expectedHint = "10.0.0.0/23";
+        expectedHint = ".ed.ac.uk";
     }
 
     /** {@inheritDoc} */
     public void testSingleElementUnmarshall() {
-        IPHint hint = (IPHint) unmarshallElement(singleElementFile);
+        DomainHint hint = (DomainHint) unmarshallElement(singleElementFile);
         
         assertEquals("Name was not expected value", expectedHint, hint.getHint());
     }
@@ -57,10 +57,10 @@ public class IPHintTest extends BaseSAMLObjectProviderTestCase {
     /** {@inheritDoc} */
     public void testSingleElementMarshall() {
         QName qname = new QName(UIInfo.MDUI_NS, 
-                                IPHint.DEFAULT_ELEMENT_LOCAL_NAME, 
+                                DomainHint.DEFAULT_ELEMENT_LOCAL_NAME, 
                                 UIInfo.MDUI_PREFIX);
         
-        IPHint hint = (IPHint) buildXMLObject(qname);
+        DomainHint hint = (DomainHint) buildXMLObject(qname);
         
         hint.setHint(expectedHint);
 
