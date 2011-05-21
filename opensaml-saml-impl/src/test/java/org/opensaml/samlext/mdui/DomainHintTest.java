@@ -38,7 +38,7 @@ public class DomainHintTest extends BaseSAMLObjectProviderTestCase {
      * Constructor.
      */
     public DomainHintTest() {
-        singleElementFile = "/data/org/opensaml/samlext/mdui/DomainHint.xml";
+        singleElementFile = "/data/org/opensaml/samlext/saml2mdui/DomainHint.xml";
     }
     
     /** {@inheritDoc} */

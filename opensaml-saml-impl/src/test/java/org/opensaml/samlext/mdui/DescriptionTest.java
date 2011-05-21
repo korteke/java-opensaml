@@ -40,7 +40,7 @@ public class DescriptionTest extends BaseSAMLObjectProviderTestCase {
      * Constructor.
      */
     public DescriptionTest() {
-        singleElementFile = "/data/org/opensaml/samlext/mdui/Description.xml";
+        singleElementFile = "/data/org/opensaml/samlext/saml2mdui/Description.xml";
     }
     
 

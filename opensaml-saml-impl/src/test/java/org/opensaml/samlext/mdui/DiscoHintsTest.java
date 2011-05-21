@@ -47,8 +47,8 @@ public class DiscoHintsTest extends BaseSAMLObjectProviderTestCase {
      * Constructor.
      */
     public DiscoHintsTest() {
-        singleElementFile = "/data/org/opensaml/samlext/mdui/DiscoHints.xml";
-        childElementsFile = "/data/org/opensaml/samlext/mdui/DiscoHintsChildElements.xml";
+        singleElementFile = "/data/org/opensaml/samlext/saml2mdui/DiscoHints.xml";
+        childElementsFile = "/data/org/opensaml/samlext/saml2mdui/DiscoHintsChildElements.xml";
     }
     
     /** {@inheritDoc} */
