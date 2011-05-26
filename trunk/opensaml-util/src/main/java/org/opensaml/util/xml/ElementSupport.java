@@ -438,18 +438,18 @@ public final class ElementSupport {
         Assert.isNotNull(document, "Document may not be null");
         Assert.isNotNull(element, "Element may not be null");
 
-        adoptElement(document, element);
-
         final Element rootElement = document.getDocumentElement();
-        if (rootElement == null) {
-            document.adoptNode(rootElement);
+        if(rootElement == null){
+            adoptElement(document, element);
+            document.appendChild(element);
             return;
         }
-
-        if (rootElement.isSameNode(element)) {
+        
+        if(rootElement.isSameNode(element)){
             return;
         }
-
+        
+        adoptElement(document, element);
         document.replaceChild(element, rootElement);
     }
 }
