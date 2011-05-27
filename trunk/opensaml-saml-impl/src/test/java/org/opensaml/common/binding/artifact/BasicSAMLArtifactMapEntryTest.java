@@ -23,6 +23,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import org.custommonkey.xmlunit.Diff;
+import org.custommonkey.xmlunit.XMLAssert;
 import org.joda.time.DateTime;
 import org.opensaml.common.BaseTestCase;
 import org.opensaml.common.SAMLObject;
@@ -75,7 +77,7 @@ public class BasicSAMLArtifactMapEntryTest extends BaseTestCase {
         // Test SAMLObject reconstitution
         // It will be unmarshalled and so should already have a DOM
         Document newDocument = newEntry.getSamlMessage().getDOM().getOwnerDocument();
-        assertXMLEqual(origDocument, newDocument);
+        XMLAssert.assertXMLIdentical(new Diff(origDocument, newDocument), true);
 
     }
     

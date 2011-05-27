@@ -18,6 +18,8 @@ package org.opensaml.ws;
 
 import javax.xml.namespace.QName;
 
+import org.custommonkey.xmlunit.Diff;
+import org.custommonkey.xmlunit.XMLAssert;
 import org.custommonkey.xmlunit.XMLTestCase;
 import org.custommonkey.xmlunit.XMLUnit;
 import org.opensaml.xml.Configuration;
@@ -115,7 +117,7 @@ public abstract class BaseTestCase extends XMLTestCase {
             if (log.isDebugEnabled()) {
                 log.debug("Marshalled DOM was " + XMLHelper.nodeToString(generatedDOM));
             }
-            assertXMLEqual(failMessage, expectedDOM, generatedDOM.getOwnerDocument());
+            XMLAssert.assertXMLIdentical(failMessage, new Diff(expectedDOM, generatedDOM.getOwnerDocument()), true);
         } catch (Exception e) {
             fail("Marshalling failed with the following error: " + e);
         }

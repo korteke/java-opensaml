@@ -22,6 +22,8 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
+import org.custommonkey.xmlunit.Diff;
+import org.custommonkey.xmlunit.XMLAssert;
 import org.custommonkey.xmlunit.XMLTestCase;
 import org.custommonkey.xmlunit.XMLUnit;
 import org.opensaml.xml.Configuration;
@@ -183,7 +185,7 @@ public abstract class WSBaseTestCase extends XMLTestCase {
         //System.out.println("Document equals: " + element.getOwnerDocument().isSameNode(element2.getOwnerDocument())); 
         
         // compare XML content
-        assertXMLEqual(element.getOwnerDocument(), element2.getOwnerDocument());
+        XMLAssert.assertXMLIdentical(new Diff(element.getOwnerDocument(), element2.getOwnerDocument()), true);
 
         return object2;
 

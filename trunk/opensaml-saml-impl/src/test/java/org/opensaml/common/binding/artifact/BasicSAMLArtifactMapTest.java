@@ -16,6 +16,8 @@
 
 package org.opensaml.common.binding.artifact;
 
+import org.custommonkey.xmlunit.Diff;
+import org.custommonkey.xmlunit.XMLAssert;
 import org.opensaml.common.BaseTestCase;
 import org.opensaml.common.SAMLObject;
 import org.opensaml.common.binding.artifact.SAMLArtifactMap.SAMLArtifactMapEntry;
@@ -74,7 +76,7 @@ public class BasicSAMLArtifactMapTest extends BaseTestCase {
         SAMLObject retrievedObject = entry.getSamlMessage();
         Document newDocument = 
             marshallerFactory.getMarshaller(retrievedObject).marshall(retrievedObject).getOwnerDocument();
-        assertXMLEqual(origDocument, newDocument);
+        XMLAssert.assertXMLIdentical(new Diff(origDocument, newDocument), true);
     }
     
     public void testRemove() throws MarshallingException {

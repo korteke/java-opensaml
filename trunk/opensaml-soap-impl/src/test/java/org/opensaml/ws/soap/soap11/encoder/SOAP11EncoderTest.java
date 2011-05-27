@@ -21,6 +21,8 @@ import java.io.ByteArrayOutputStream;
 
 import javax.xml.namespace.QName;
 
+import org.custommonkey.xmlunit.Diff;
+import org.custommonkey.xmlunit.XMLAssert;
 import org.opensaml.ws.BaseTestCase;
 import org.opensaml.ws.message.BaseMessageContext;
 import org.opensaml.ws.message.MessageContext;
@@ -90,7 +92,7 @@ public class SOAP11EncoderTest extends BaseTestCase {
         Envelope encodedEnv = (Envelope) getEncodedMessage(messageContext);
         assertNotNull(encodedEnv.getDOM());
         
-        assertXMLEqual(controlEnv.getDOM().getOwnerDocument(), encodedEnv.getDOM().getOwnerDocument());
+        XMLAssert.assertXMLIdentical(new Diff(controlEnv.getDOM().getOwnerDocument(), encodedEnv.getDOM().getOwnerDocument()), true);
     }
     
     /**
@@ -120,7 +122,7 @@ public class SOAP11EncoderTest extends BaseTestCase {
         Envelope encodedEnv = (Envelope) getEncodedMessage(messageContext);
         assertNotNull(encodedEnv.getDOM());
         
-        assertXMLEqual(controlEnv.getDOM().getOwnerDocument(), encodedEnv.getDOM().getOwnerDocument());
+        XMLAssert.assertXMLIdentical(new Diff(controlEnv.getDOM().getOwnerDocument(), encodedEnv.getDOM().getOwnerDocument()), true);
     }
     
     
