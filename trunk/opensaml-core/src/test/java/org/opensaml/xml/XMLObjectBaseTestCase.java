@@ -22,9 +22,10 @@ import java.io.IOException;
 
 import javax.xml.namespace.QName;
 
+import junit.framework.TestCase;
+
 import org.custommonkey.xmlunit.Diff;
 import org.custommonkey.xmlunit.XMLAssert;
-import org.custommonkey.xmlunit.XMLTestCase;
 import org.custommonkey.xmlunit.XMLUnit;
 import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.core.config.InitializationService;
@@ -35,7 +36,6 @@ import org.opensaml.xml.io.Unmarshaller;
 import org.opensaml.xml.io.UnmarshallerFactory;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.mock.SimpleXMLObject;
-import org.opensaml.xml.parse.BasicParserPool;
 import org.opensaml.xml.parse.ParserPool;
 import org.opensaml.xml.parse.XMLParserException;
 import org.opensaml.xml.util.XMLHelper;
@@ -48,7 +48,7 @@ import org.w3c.dom.Node;
 /**
  * Base test case class for tests that operate on XMLObjects.
  */
-public abstract class XMLObjectBaseTestCase extends XMLTestCase {
+public abstract class XMLObjectBaseTestCase extends TestCase {
 
     /** Logger */
     private final Logger log = LoggerFactory.getLogger(XMLObjectBaseTestCase.class);
