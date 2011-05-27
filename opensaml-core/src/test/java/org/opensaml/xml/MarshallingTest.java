@@ -18,6 +18,8 @@ package org.opensaml.xml;
 
 import javax.xml.namespace.QName;
 
+import org.custommonkey.xmlunit.Diff;
+import org.custommonkey.xmlunit.XMLAssert;
 import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.mock.SimpleXMLObject;
@@ -144,7 +146,7 @@ public class MarshallingTest extends XMLObjectBaseTestCase {
         // Marshall statement (with cached DOM) into SOAP Body element child
         Document expectedDocument = parserPool.parse(MarshallingTest.class.getResourceAsStream(expectedDocumentLocation));
         Element statementElem = marshaller.marshall(statement, soapBody);
-        assertXMLEqual(expectedDocument, statementElem.getOwnerDocument());
+        XMLAssert.assertXMLIdentical(new Diff(expectedDocument, statementElem.getOwnerDocument()), true);
         assertNull("Parent of XML fragment DOM was not invalidated during marshalling", response.getDOM());
         assertNotNull("XML fragment DOM was invalidated during marshalling", statement.getDOM());
     }

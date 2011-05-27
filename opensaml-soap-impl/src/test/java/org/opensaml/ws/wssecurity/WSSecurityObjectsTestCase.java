@@ -19,6 +19,8 @@ package org.opensaml.ws.wssecurity;
 import java.io.InputStream;
 import java.util.List;
 
+import org.custommonkey.xmlunit.Diff;
+import org.custommonkey.xmlunit.XMLAssert;
 import org.joda.time.DateTime;
 import org.opensaml.ws.WSBaseTestCase;
 import org.opensaml.xml.XMLConfigurator;
@@ -210,7 +212,7 @@ public class WSSecurityObjectsTestCase extends WSBaseTestCase {
         Document document= element.getOwnerDocument();
 
         // compare with XMLUnit
-        assertXMLEqual(refDocument, document);
+        XMLAssert.assertXMLIdentical(new Diff(refDocument, document), true);
 
         // unmarshall directly from file
         UsernameToken ut= unmarshallXML("/data/org/opensaml/ws/wssecurity/UsernameToken.xml");

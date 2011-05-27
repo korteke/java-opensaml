@@ -16,6 +16,8 @@
 
 package org.opensaml.common;
 
+import org.custommonkey.xmlunit.Diff;
+import org.custommonkey.xmlunit.XMLAssert;
 import org.opensaml.Configuration;
 import org.opensaml.saml2.metadata.Organization;
 import org.opensaml.saml2.metadata.OrganizationDisplayName;
@@ -97,7 +99,7 @@ public class RoundTripTest extends BaseTestCase {
         org2.releaseDOM();
         org2.releaseChildrenDOM(true);
         Element orgElement2 = orgMarshaller.marshall(org2);
-        assertXMLEqual(orgElement1.getOwnerDocument(), orgElement2.getOwnerDocument());
+        XMLAssert.assertXMLIdentical(new Diff(orgElement1.getOwnerDocument(), orgElement2.getOwnerDocument()), true);
         
         // Unmarshall again
         Organization org3 = (Organization) orgUnmarshaller.unmarshall(orgElement2);
@@ -106,6 +108,6 @@ public class RoundTripTest extends BaseTestCase {
         org3.releaseDOM();
         org3.releaseChildrenDOM(true);
         Element orgElement3 = orgMarshaller.marshall(org3);
-        assertXMLEqual(orgElement1.getOwnerDocument(), orgElement3.getOwnerDocument());
+        XMLAssert.assertXMLIdentical(new Diff(orgElement1.getOwnerDocument(), orgElement3.getOwnerDocument()), true);
     }
 }
