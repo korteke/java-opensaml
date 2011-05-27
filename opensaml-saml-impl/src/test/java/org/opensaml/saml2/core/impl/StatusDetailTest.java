@@ -43,16 +43,14 @@ public class StatusDetailTest extends BaseSAMLObjectProviderTestCase {
     
     /** {@inheritDoc} */
     public void testSingleElementMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20P_NS, StatusDetail.DEFAULT_ELEMENT_LOCAL_NAME);
-        StatusDetail statusDetail = (StatusDetail) buildXMLObject(qname);
+        StatusDetail statusDetail = (StatusDetail) buildXMLObject(StatusDetail.DEFAULT_ELEMENT_NAME);
         
         assertEquals(expectedDOM, statusDetail);
     }
 
     /** {@inheritDoc} */
     public void testChildElementsMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20P_NS, StatusDetail.DEFAULT_ELEMENT_LOCAL_NAME);
-        StatusDetail statusDetail = (StatusDetail) buildXMLObject(qname);
+        StatusDetail statusDetail = (StatusDetail) buildXMLObject(StatusDetail.DEFAULT_ELEMENT_NAME);
         QName childQname = new QName("http://www.example.org/testObjects", "SimpleElement", "test");
         
         statusDetail.getUnknownXMLObjects().add(buildXMLObject(childQname));

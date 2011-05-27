@@ -71,8 +71,7 @@ public class NameIDMappingServiceTest extends BaseSAMLObjectProviderTestCase {
 
     /** {@inheritDoc} */
     public void testSingleElementMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20MD_NS, NameIDMappingService.DEFAULT_ELEMENT_LOCAL_NAME);
-        NameIDMappingService service = (NameIDMappingService) buildXMLObject(qname);
+        NameIDMappingService service = (NameIDMappingService) buildXMLObject(NameIDMappingService.DEFAULT_ELEMENT_NAME);
         
         service.setBinding(expectedBinding);
         service.setLocation(expectedLocation);
@@ -82,8 +81,7 @@ public class NameIDMappingServiceTest extends BaseSAMLObjectProviderTestCase {
 
     /** {@inheritDoc} */
     public void testSingleElementOptionalAttributesMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20MD_NS, NameIDMappingService.DEFAULT_ELEMENT_LOCAL_NAME);
-        NameIDMappingService service = (NameIDMappingService) buildXMLObject(qname);
+        NameIDMappingService service = (NameIDMappingService) buildXMLObject(NameIDMappingService.DEFAULT_ELEMENT_NAME);
         
         service.setBinding(expectedBinding);
         service.setLocation(expectedLocation);

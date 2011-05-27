@@ -66,8 +66,7 @@ public class OrganizationTest extends BaseSAMLObjectProviderTestCase {
 
     /** {@inheritDoc} */
     public void testSingleElementMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20MD_NS, Organization.DEFAULT_ELEMENT_LOCAL_NAME);
-        Organization org = (Organization) buildXMLObject(qname);
+        Organization org = (Organization) buildXMLObject(Organization.DEFAULT_ELEMENT_NAME);
 
         assertEquals(expectedDOM, org);
     }
@@ -76,27 +75,21 @@ public class OrganizationTest extends BaseSAMLObjectProviderTestCase {
      * 
      */
     public void testChildElementsMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20MD_NS, Organization.DEFAULT_ELEMENT_LOCAL_NAME);
-        Organization org = (Organization) buildXMLObject(qname);
+        Organization org = (Organization) buildXMLObject(Organization.DEFAULT_ELEMENT_NAME);
 
         QName extensionsQName = new QName(SAMLConstants.SAML20MD_NS, Extensions.LOCAL_NAME,
                 SAMLConstants.SAML20MD_PREFIX);
         org.setExtensions((Extensions) buildXMLObject(extensionsQName));
 
-        QName nameQName = new QName(SAMLConstants.SAML20MD_NS, OrganizationName.DEFAULT_ELEMENT_LOCAL_NAME,
-                SAMLConstants.SAML20MD_PREFIX);
         for (int i = 0; i < 3; i++) {
-            org.getOrganizationNames().add((OrganizationName) buildXMLObject(nameQName));
+            org.getOrganizationNames().add((OrganizationName) buildXMLObject(OrganizationName.DEFAULT_ELEMENT_NAME));
         }
 
-        QName displayNameQName = new QName(SAMLConstants.SAML20MD_NS, OrganizationDisplayName.DEFAULT_ELEMENT_LOCAL_NAME,
-                SAMLConstants.SAML20MD_PREFIX);
         for (int i = 0; i < 2; i++) {
-            org.getDisplayNames().add((OrganizationDisplayName) buildXMLObject(displayNameQName));
+            org.getDisplayNames().add((OrganizationDisplayName) buildXMLObject(OrganizationDisplayName.DEFAULT_ELEMENT_NAME));
         }
 
-        QName urlQName = new QName(SAMLConstants.SAML20MD_NS, OrganizationURL.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
-        org.getURLs().add((OrganizationURL) buildXMLObject(urlQName));
+        org.getURLs().add((OrganizationURL) buildXMLObject(OrganizationURL.DEFAULT_ELEMENT_NAME));
         
         assertEquals(expectedChildElementsDOM, org);
     }

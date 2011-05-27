@@ -1,4 +1,4 @@
-<samlp:AuthenticationQuery
-xmlns:samlp="urn:oasis:names:tc:SAML:1.0:protocol" 
-xmlns:saml="urn:oasis:names:tc:SAML:1.0:assertion" 
-><saml:Subject /></samlp:AuthenticationQuery>
+<saml1p:AuthenticationQuery
+xmlns:saml1p="urn:oasis:names:tc:SAML:1.0:protocol" 
+xmlns:saml1="urn:oasis:names:tc:SAML:1.0:assertion" 
+><saml1:Subject /></saml1p:AuthenticationQuery>

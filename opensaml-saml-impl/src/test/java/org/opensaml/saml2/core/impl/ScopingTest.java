@@ -58,8 +58,7 @@ public class ScopingTest extends BaseSAMLObjectProviderTestCase {
 
     /** {@inheritDoc} */
     public void testSingleElementMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20P_NS, Scoping.DEFAULT_ELEMENT_LOCAL_NAME);
-        Scoping scoping = (Scoping) buildXMLObject(qname);
+        Scoping scoping = (Scoping) buildXMLObject(Scoping.DEFAULT_ELEMENT_NAME);
         
         assertEquals(expectedDOM, scoping);
 
@@ -67,8 +66,7 @@ public class ScopingTest extends BaseSAMLObjectProviderTestCase {
 
     /** {@inheritDoc} */
     public void testSingleElementOptionalAttributesMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20P_NS, Scoping.DEFAULT_ELEMENT_LOCAL_NAME);
-        Scoping scoping = (Scoping) buildXMLObject(qname);
+        Scoping scoping = (Scoping) buildXMLObject(Scoping.DEFAULT_ELEMENT_NAME);
         
         scoping.setProxyCount(new Integer(expectedProxyCount));
         
@@ -77,8 +75,7 @@ public class ScopingTest extends BaseSAMLObjectProviderTestCase {
 
     /** {@inheritDoc} */
     public void testChildElementsMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20P_NS, Scoping.DEFAULT_ELEMENT_LOCAL_NAME);
-        Scoping scoping = (Scoping) buildXMLObject(qname);
+        Scoping scoping = (Scoping) buildXMLObject(Scoping.DEFAULT_ELEMENT_NAME);
         
         QName idpListQName = new QName(SAMLConstants.SAML20P_NS, IDPList.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
         scoping.setIDPList((IDPList) buildXMLObject(idpListQName));

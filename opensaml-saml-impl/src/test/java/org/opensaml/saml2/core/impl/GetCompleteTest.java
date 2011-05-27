@@ -59,8 +59,7 @@ public class GetCompleteTest extends BaseSAMLObjectProviderTestCase {
 
     /** {@inheritDoc} */
     public void testSingleElementMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20P_NS, GetComplete.DEFAULT_ELEMENT_LOCAL_NAME);
-        GetComplete gc = (GetComplete) buildXMLObject(qname);
+        GetComplete gc = (GetComplete) buildXMLObject(GetComplete.DEFAULT_ELEMENT_NAME);
 
         gc.setGetComplete(expectedGetComplete);
         

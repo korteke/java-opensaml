@@ -71,8 +71,7 @@ public class SingleLogoutServiceTest extends BaseSAMLObjectProviderTestCase {
 
     /** {@inheritDoc} */
     public void testSingleElementMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20MD_NS, SingleLogoutService.DEFAULT_ELEMENT_LOCAL_NAME);
-        SingleLogoutService service = (SingleLogoutService) buildXMLObject(qname);
+        SingleLogoutService service = (SingleLogoutService) buildXMLObject(SingleLogoutService.DEFAULT_ELEMENT_NAME);
         
         service.setBinding(expectedBinding);
         service.setLocation(expectedLocation);
@@ -82,8 +81,7 @@ public class SingleLogoutServiceTest extends BaseSAMLObjectProviderTestCase {
 
     /** {@inheritDoc} */
     public void testSingleElementOptionalAttributesMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20MD_NS, SingleLogoutService.DEFAULT_ELEMENT_LOCAL_NAME);
-        SingleLogoutService service = (SingleLogoutService) buildXMLObject(qname);
+        SingleLogoutService service = (SingleLogoutService) buildXMLObject(SingleLogoutService.DEFAULT_ELEMENT_NAME);
         
         service.setBinding(expectedBinding);
         service.setLocation(expectedLocation);

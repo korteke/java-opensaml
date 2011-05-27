@@ -19,10 +19,7 @@
  */
 package org.opensaml.saml2.core.impl;
 
-import javax.xml.namespace.QName;
-
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
-import org.opensaml.common.xml.SAMLConstants;
 import org.opensaml.saml2.core.RequesterID;
 
 /**
@@ -58,8 +55,7 @@ public class RequesterIDTest extends BaseSAMLObjectProviderTestCase {
 
     /** {@inheritDoc} */
     public void testSingleElementMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20P_NS, RequesterID.DEFAULT_ELEMENT_LOCAL_NAME);
-        RequesterID reqID = (RequesterID) buildXMLObject(qname);
+        RequesterID reqID = (RequesterID) buildXMLObject(RequesterID.DEFAULT_ELEMENT_NAME);
 
         reqID.setRequesterID(expectedRequesterID);
         
