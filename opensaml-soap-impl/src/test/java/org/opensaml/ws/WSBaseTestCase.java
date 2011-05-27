@@ -22,9 +22,10 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
+import junit.framework.TestCase;
+
 import org.custommonkey.xmlunit.Diff;
 import org.custommonkey.xmlunit.XMLAssert;
-import org.custommonkey.xmlunit.XMLTestCase;
 import org.custommonkey.xmlunit.XMLUnit;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.XMLObject;
@@ -44,7 +45,7 @@ import org.w3c.dom.Element;
  * WSBaseTestCase is the base test case for the WS-* packages.
  * 
  */
-public abstract class WSBaseTestCase extends XMLTestCase {
+public abstract class WSBaseTestCase extends TestCase {
 
     Logger log= LoggerFactory.getLogger(WSBaseTestCase.class);
 

@@ -18,9 +18,11 @@ package org.opensaml.ws;
 
 import javax.xml.namespace.QName;
 
+
+import junit.framework.TestCase;
+
 import org.custommonkey.xmlunit.Diff;
 import org.custommonkey.xmlunit.XMLAssert;
-import org.custommonkey.xmlunit.XMLTestCase;
 import org.custommonkey.xmlunit.XMLUnit;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.XMLConfigurator;
@@ -40,7 +42,7 @@ import org.w3c.dom.Element;
 /**
  * Base test case for SOAP XMLObject unit tests.
  */
-public abstract class BaseTestCase extends XMLTestCase {
+public abstract class BaseTestCase extends TestCase {
 
     /** Logger. */
     private final Logger log = LoggerFactory.getLogger(BaseTestCase.class);

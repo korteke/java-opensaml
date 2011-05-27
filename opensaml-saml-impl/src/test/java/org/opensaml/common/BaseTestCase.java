@@ -18,9 +18,11 @@ package org.opensaml.common;
 
 import javax.xml.namespace.QName;
 
+
+import junit.framework.TestCase;
+
 import org.custommonkey.xmlunit.Diff;
 import org.custommonkey.xmlunit.XMLAssert;
-import org.custommonkey.xmlunit.XMLTestCase;
 import org.custommonkey.xmlunit.XMLUnit;
 import org.opensaml.Configuration;
 import org.opensaml.core.config.ConfigurationService;
@@ -48,7 +50,7 @@ import org.w3c.dom.Element;
 /**
  * Intermediate class that serves to initialize the configuration environment for other base test classes.
  */
-public abstract class BaseTestCase extends XMLTestCase {
+public abstract class BaseTestCase extends TestCase {
     
     /** Parser manager used to parse XML. */
     protected static ParserPool parser;
