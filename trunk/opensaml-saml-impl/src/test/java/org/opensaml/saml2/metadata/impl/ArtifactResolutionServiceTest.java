@@ -79,8 +79,7 @@ public class ArtifactResolutionServiceTest extends BaseSAMLObjectProviderTestCas
 
     /** {@inheritDoc} */
     public void testSingleElementMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20MD_NS, ArtifactResolutionService.DEFAULT_ELEMENT_LOCAL_NAME);
-        ArtifactResolutionService service = (ArtifactResolutionService) buildXMLObject(qname);
+        ArtifactResolutionService service = (ArtifactResolutionService) buildXMLObject(ArtifactResolutionService.DEFAULT_ELEMENT_NAME);
         
         service.setBinding(expectedBinding);
         service.setLocation(expectedLocation);
@@ -91,8 +90,7 @@ public class ArtifactResolutionServiceTest extends BaseSAMLObjectProviderTestCas
 
     /** {@inheritDoc} */
     public void testSingleElementOptionalAttributesMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20MD_NS, ArtifactResolutionService.DEFAULT_ELEMENT_LOCAL_NAME);
-        ArtifactResolutionService service = (ArtifactResolutionService) buildXMLObject(qname);
+        ArtifactResolutionService service = (ArtifactResolutionService) buildXMLObject(ArtifactResolutionService.DEFAULT_ELEMENT_NAME);
         
         service.setBinding(expectedBinding);
         service.setLocation(expectedLocation);

@@ -71,8 +71,7 @@ public class SingleSignOnServiceTest extends BaseSAMLObjectProviderTestCase {
 
     /** {@inheritDoc} */
     public void testSingleElementMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20MD_NS,  SingleSignOnService.DEFAULT_ELEMENT_LOCAL_NAME);
-        SingleSignOnService service = ( SingleSignOnService) buildXMLObject(qname);
+        SingleSignOnService service = ( SingleSignOnService) buildXMLObject(SingleSignOnService.DEFAULT_ELEMENT_NAME);
         
         service.setBinding(expectedBinding);
         service.setLocation(expectedLocation);
@@ -82,8 +81,7 @@ public class SingleSignOnServiceTest extends BaseSAMLObjectProviderTestCase {
 
     /** {@inheritDoc} */
     public void testSingleElementOptionalAttributesMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20MD_NS,  SingleSignOnService.DEFAULT_ELEMENT_LOCAL_NAME);
-        SingleSignOnService service = ( SingleSignOnService) buildXMLObject(qname);
+        SingleSignOnService service = ( SingleSignOnService) buildXMLObject(SingleSignOnService.DEFAULT_ELEMENT_NAME);
         
         service.setBinding(expectedBinding);
         service.setLocation(expectedLocation);

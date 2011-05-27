@@ -87,8 +87,7 @@ public class AttributeConsumingServiceTest extends BaseSAMLObjectProviderTestCas
 
     /** {@inheritDoc} */
     public void testSingleElementMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20MD_NS, AttributeConsumingService.DEFAULT_ELEMENT_LOCAL_NAME);
-        AttributeConsumingService service = (AttributeConsumingService) buildXMLObject(qname);
+        AttributeConsumingService service = (AttributeConsumingService) buildXMLObject(AttributeConsumingService.DEFAULT_ELEMENT_NAME);
         
         service.setIndex(expectedIndex);
 
@@ -97,8 +96,7 @@ public class AttributeConsumingServiceTest extends BaseSAMLObjectProviderTestCas
 
     /** {@inheritDoc} */
     public void testSingleElementOptionalAttributesMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20MD_NS, AttributeConsumingService.DEFAULT_ELEMENT_LOCAL_NAME);
-        AttributeConsumingService service = (AttributeConsumingService) buildXMLObject(qname);
+        AttributeConsumingService service = (AttributeConsumingService) buildXMLObject(AttributeConsumingService.DEFAULT_ELEMENT_NAME);
         
         service.setIndex(expectedIndex);
         service.setIsDefault(expectedIsDefault);
@@ -109,19 +107,16 @@ public class AttributeConsumingServiceTest extends BaseSAMLObjectProviderTestCas
 
     public void testChildElementsMarshall()
     {
-        QName qname = new QName(SAMLConstants.SAML20MD_NS, AttributeConsumingService.DEFAULT_ELEMENT_LOCAL_NAME);
-        AttributeConsumingService service = (AttributeConsumingService) buildXMLObject(qname);
+        AttributeConsumingService service = (AttributeConsumingService) buildXMLObject(AttributeConsumingService.DEFAULT_ELEMENT_NAME);
         
         service.setIndex(expectedIndex);
         
-        QName serviceNameQName = new QName(SAMLConstants.SAML20MD_NS, ServiceName.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
         for (int i = 0; i < expectedServiceNameCount; i++) {
-            service.getNames().add((ServiceName) buildXMLObject(serviceNameQName));
+            service.getNames().add((ServiceName) buildXMLObject(ServiceName.DEFAULT_ELEMENT_NAME));
         }
 
-        QName serviceDescQName = new QName(SAMLConstants.SAML20MD_NS, ServiceDescription.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
         for (int i = 0; i < expectedServiceDecsriptionCount; i++) {
-            service.getDescriptions().add((ServiceDescription) buildXMLObject(serviceDescQName));
+            service.getDescriptions().add((ServiceDescription) buildXMLObject(ServiceDescription.DEFAULT_ELEMENT_NAME));
         }
 
         service.getRequestAttributes().add((RequestedAttribute) buildXMLObject(RequestedAttribute.DEFAULT_ELEMENT_NAME));

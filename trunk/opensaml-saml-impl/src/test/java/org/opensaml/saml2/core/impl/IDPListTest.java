@@ -53,8 +53,7 @@ public class IDPListTest extends BaseSAMLObjectProviderTestCase {
 
     /** {@inheritDoc} */
     public void testSingleElementMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20P_NS, IDPList.DEFAULT_ELEMENT_LOCAL_NAME);
-        IDPList list = (IDPList) buildXMLObject(qname);
+        IDPList list = (IDPList) buildXMLObject(IDPList.DEFAULT_ELEMENT_NAME);
 
         assertEquals(expectedDOM, list);
     }
@@ -62,8 +61,7 @@ public class IDPListTest extends BaseSAMLObjectProviderTestCase {
 
     /** {@inheritDoc} */
     public void testChildElementsMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20P_NS, IDPList.DEFAULT_ELEMENT_LOCAL_NAME);
-        IDPList list = (IDPList) buildXMLObject(qname);
+        IDPList list = (IDPList) buildXMLObject(IDPList.DEFAULT_ELEMENT_NAME);
         
         QName idpEntryQName = new QName(SAMLConstants.SAML20P_NS, IDPEntry.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
         for (int i=0; i<expectedNumIDPEntryChildren; i++){

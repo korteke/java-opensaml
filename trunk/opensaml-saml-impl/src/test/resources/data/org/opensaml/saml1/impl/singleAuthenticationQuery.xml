@@ -1,1 +1,1 @@
-<samlp:AuthenticationQuery xmlns:samlp="urn:oasis:names:tc:SAML:1.0:protocol" />
+<saml1p:AuthenticationQuery xmlns:saml1p="urn:oasis:names:tc:SAML:1.0:protocol" />

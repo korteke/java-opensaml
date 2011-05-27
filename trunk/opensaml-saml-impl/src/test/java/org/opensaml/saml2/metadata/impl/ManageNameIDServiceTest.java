@@ -71,8 +71,7 @@ public class ManageNameIDServiceTest extends BaseSAMLObjectProviderTestCase {
 
     /** {@inheritDoc} */
     public void testSingleElementMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20MD_NS, ManageNameIDService.DEFAULT_ELEMENT_LOCAL_NAME);
-        ManageNameIDService service = (ManageNameIDService) buildXMLObject(qname);
+        ManageNameIDService service = (ManageNameIDService) buildXMLObject(ManageNameIDService.DEFAULT_ELEMENT_NAME);
         
         service.setBinding(expectedBinding);
         service.setLocation(expectedLocation);
@@ -82,8 +81,7 @@ public class ManageNameIDServiceTest extends BaseSAMLObjectProviderTestCase {
 
     /** {@inheritDoc} */
     public void testSingleElementOptionalAttributesMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20MD_NS, ManageNameIDService.DEFAULT_ELEMENT_LOCAL_NAME);
-        ManageNameIDService service = (ManageNameIDService) buildXMLObject(qname);
+        ManageNameIDService service = (ManageNameIDService) buildXMLObject(ManageNameIDService.DEFAULT_ELEMENT_NAME);
         
         service.setBinding(expectedBinding);
         service.setLocation(expectedLocation);

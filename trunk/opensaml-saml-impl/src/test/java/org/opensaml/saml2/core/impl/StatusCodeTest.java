@@ -52,8 +52,7 @@ public class StatusCodeTest extends BaseSAMLObjectProviderTestCase {
     
     /** {@inheritDoc} */
     public void testSingleElementMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20P_NS, StatusCode.DEFAULT_ELEMENT_LOCAL_NAME);
-        StatusCode statusCode = (StatusCode) buildXMLObject(qname);
+        StatusCode statusCode = (StatusCode) buildXMLObject(StatusCode.DEFAULT_ELEMENT_NAME);
         
         statusCode.setValue(expectedValue);
         
@@ -63,8 +62,7 @@ public class StatusCodeTest extends BaseSAMLObjectProviderTestCase {
 
     /** {@inheritDoc} */
     public void testChildElementsMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20P_NS, StatusCode.DEFAULT_ELEMENT_LOCAL_NAME);
-        StatusCode statusCode = (StatusCode) buildXMLObject(qname);
+        StatusCode statusCode = (StatusCode) buildXMLObject(StatusCode.DEFAULT_ELEMENT_NAME);
         
         QName statusCodeQName = new QName(SAMLConstants.SAML20P_NS, StatusCode.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
         statusCode.setStatusCode((StatusCode) buildXMLObject(statusCodeQName));

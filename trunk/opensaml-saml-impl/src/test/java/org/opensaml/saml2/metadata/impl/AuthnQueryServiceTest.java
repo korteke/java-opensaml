@@ -23,6 +23,7 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
 import org.opensaml.common.xml.SAMLConstants;
+import org.opensaml.saml2.core.AuthnQuery;
 import org.opensaml.saml2.metadata.AuthnQueryService;
 
 /**
@@ -71,8 +72,7 @@ public class AuthnQueryServiceTest extends BaseSAMLObjectProviderTestCase {
 
     /** {@inheritDoc} */
     public void testSingleElementMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20MD_NS, AuthnQueryService.DEFAULT_ELEMENT_LOCAL_NAME);
-        AuthnQueryService service = (AuthnQueryService) buildXMLObject(qname);
+        AuthnQueryService service = (AuthnQueryService) buildXMLObject(AuthnQueryService.DEFAULT_ELEMENT_NAME);
         
         service.setBinding(expectedBinding);
         service.setLocation(expectedLocation);
@@ -82,8 +82,7 @@ public class AuthnQueryServiceTest extends BaseSAMLObjectProviderTestCase {
 
     /** {@inheritDoc} */
     public void testSingleElementOptionalAttributesMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20MD_NS, AuthnQueryService.DEFAULT_ELEMENT_LOCAL_NAME);
-        AuthnQueryService service = (AuthnQueryService) buildXMLObject(qname);
+        AuthnQueryService service = (AuthnQueryService) buildXMLObject(AuthnQueryService.DEFAULT_ELEMENT_NAME);
         
         service.setBinding(expectedBinding);
         service.setLocation(expectedLocation);

@@ -47,8 +47,7 @@ public class TerminateTest extends BaseSAMLObjectProviderTestCase {
 
     /** {@inheritDoc} */
     public void testSingleElementMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20P_NS, Terminate.DEFAULT_ELEMENT_LOCAL_NAME);
-        Terminate term = (Terminate) buildXMLObject(qname);
+        Terminate term = (Terminate) buildXMLObject(Terminate.DEFAULT_ELEMENT_NAME);
         
         assertEquals(expectedDOM, term);
     }

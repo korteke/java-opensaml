@@ -1,6 +1,4 @@
-<samlp:Request xmlns:samlp="urn:oasis:names:tc:SAML:1.0:protocol"
-MajorVersion="1"
-MinorVersion="1"
-><samlp:AssertionArtifact
-/><samlp:AssertionArtifact
-/></samlp:Request>
+<saml1p:Request xmlns:saml1p="urn:oasis:names:tc:SAML:1.0:protocol" MajorVersion="1" MinorVersion="1">
+    <saml1p:AssertionArtifact />
+    <saml1p:AssertionArtifact />
+</saml1p:Request>

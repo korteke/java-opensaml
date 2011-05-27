@@ -57,8 +57,7 @@ public class TelephoneNumberTest extends BaseSAMLObjectProviderTestCase {
 
     /** {@inheritDoc} */
     public void testSingleElementMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20MD_NS, TelephoneNumber.DEFAULT_ELEMENT_LOCAL_NAME);
-        TelephoneNumber number = (TelephoneNumber) buildXMLObject(qname);
+        TelephoneNumber number = (TelephoneNumber) buildXMLObject(TelephoneNumber.DEFAULT_ELEMENT_NAME);
         
         number.setNumber(expectedNumber);
 

@@ -49,8 +49,7 @@ public class StatusMessageTest extends BaseSAMLObjectProviderTestCase {
 
     /** {@inheritDoc} */
     public void testSingleElementMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20P_NS, StatusMessage.DEFAULT_ELEMENT_LOCAL_NAME);
-        StatusMessage message = (StatusMessage) buildXMLObject(qname);
+        StatusMessage message = (StatusMessage) buildXMLObject(StatusMessage.DEFAULT_ELEMENT_NAME);
         
         message.setMessage(expectedMessage);
         

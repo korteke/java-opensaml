@@ -64,8 +64,7 @@ public class IDPEntryTest extends BaseSAMLObjectProviderTestCase {
 
     /** {@inheritDoc} */
     public void testSingleElementMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20P_NS, IDPEntry.DEFAULT_ELEMENT_LOCAL_NAME);
-        IDPEntry entry = (IDPEntry) buildXMLObject(qname);
+        IDPEntry entry = (IDPEntry) buildXMLObject(IDPEntry.DEFAULT_ELEMENT_NAME);
         
         entry.setProviderID(expectedProviderID);
 
@@ -76,8 +75,7 @@ public class IDPEntryTest extends BaseSAMLObjectProviderTestCase {
     
     /** {@inheritDoc} */
     public void testSingleElementOptionalAttributesMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20P_NS, IDPEntry.DEFAULT_ELEMENT_LOCAL_NAME);
-        IDPEntry entry = (IDPEntry) buildXMLObject(qname);
+        IDPEntry entry = (IDPEntry) buildXMLObject(IDPEntry.DEFAULT_ELEMENT_NAME);
         
         entry.setProviderID(expectedProviderID);
         entry.setName(expectedName);

@@ -80,8 +80,7 @@ public class ContactPersonTest extends BaseSAMLObjectProviderTestCase {
 
     /** {@inheritDoc} */
     public void testSingleElementMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20MD_NS, ContactPerson.DEFAULT_ELEMENT_LOCAL_NAME);
-        ContactPerson person = (ContactPerson) buildXMLObject(qname);
+        ContactPerson person = (ContactPerson) buildXMLObject(ContactPerson.DEFAULT_ELEMENT_NAME);
         
         person.setType(expectedPersonType);
 
@@ -91,8 +90,7 @@ public class ContactPersonTest extends BaseSAMLObjectProviderTestCase {
     /** {@inheritDoc} */
     public void testChildElementsMarshall()
     {
-        QName qname = new QName(SAMLConstants.SAML20MD_NS, ContactPerson.DEFAULT_ELEMENT_LOCAL_NAME);
-        ContactPerson person = (ContactPerson) buildXMLObject(qname);
+        ContactPerson person = (ContactPerson) buildXMLObject(ContactPerson.DEFAULT_ELEMENT_NAME);
         
         person.setType(expectedPersonType);
 

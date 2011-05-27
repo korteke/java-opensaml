@@ -71,8 +71,7 @@ public class AssertionIDRequestServiceTest extends BaseSAMLObjectProviderTestCas
 
     /** {@inheritDoc} */
     public void testSingleElementMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20MD_NS, AssertionIDRequestService.DEFAULT_ELEMENT_LOCAL_NAME);
-        AssertionIDRequestService service = (AssertionIDRequestService) buildXMLObject(qname);
+        AssertionIDRequestService service = (AssertionIDRequestService) buildXMLObject(AssertionIDRequestService.DEFAULT_ELEMENT_NAME);
         
         service.setBinding(expectedBinding);
         service.setLocation(expectedLocation);
@@ -82,8 +81,7 @@ public class AssertionIDRequestServiceTest extends BaseSAMLObjectProviderTestCas
 
     /** {@inheritDoc} */
     public void testSingleElementOptionalAttributesMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20MD_NS, AssertionIDRequestService.DEFAULT_ELEMENT_LOCAL_NAME);
-        AssertionIDRequestService service = (AssertionIDRequestService) buildXMLObject(qname);
+        AssertionIDRequestService service = (AssertionIDRequestService) buildXMLObject(AssertionIDRequestService.DEFAULT_ELEMENT_NAME);
         
         service.setBinding(expectedBinding);
         service.setLocation(expectedLocation);

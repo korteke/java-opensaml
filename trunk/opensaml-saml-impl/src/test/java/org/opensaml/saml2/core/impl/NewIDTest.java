@@ -57,8 +57,7 @@ public class NewIDTest extends BaseSAMLObjectProviderTestCase {
 
     /** {@inheritDoc} */
     public void testSingleElementMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20P_NS, NewID.DEFAULT_ELEMENT_LOCAL_NAME);
-        NewID newID = (NewID) buildXMLObject(qname);
+        NewID newID = (NewID) buildXMLObject(NewID.DEFAULT_ELEMENT_NAME);
         
         newID.setNewID(expectedNewID);
         

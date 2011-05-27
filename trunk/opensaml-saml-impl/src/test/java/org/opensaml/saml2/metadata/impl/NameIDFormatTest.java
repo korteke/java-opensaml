@@ -57,8 +57,7 @@ public class NameIDFormatTest extends BaseSAMLObjectProviderTestCase {
 
     /** {@inheritDoc} */
     public void testSingleElementMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20MD_NS, NameIDFormat.DEFAULT_ELEMENT_LOCAL_NAME);
-        NameIDFormat format = (NameIDFormat) buildXMLObject(qname);
+        NameIDFormat format = (NameIDFormat) buildXMLObject(NameIDFormat.DEFAULT_ELEMENT_NAME);
         
         format.setFormat(expectFormat);
 

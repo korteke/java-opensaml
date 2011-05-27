@@ -57,8 +57,7 @@ public class GivenNameTest extends BaseSAMLObjectProviderTestCase {
 
     /** {@inheritDoc} */
     public void testSingleElementMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20MD_NS, GivenName.DEFAULT_ELEMENT_LOCAL_NAME);
-        GivenName name = (GivenName) buildXMLObject(qname);
+        GivenName name = (GivenName) buildXMLObject(GivenName.DEFAULT_ELEMENT_NAME);
         
         name.setName(expectName);
 
