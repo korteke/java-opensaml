@@ -19,7 +19,10 @@ package org.opensaml.samlext.saml2mdui.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.namespace.QName;
+
 import org.opensaml.common.impl.AbstractSAMLObject;
+import org.opensaml.saml2.core.AuthnStatement;
 import org.opensaml.samlext.saml2mdui.Description;
 import org.opensaml.samlext.saml2mdui.DisplayName;
 import org.opensaml.samlext.saml2mdui.InformationURL;
@@ -28,7 +31,7 @@ import org.opensaml.samlext.saml2mdui.Logo;
 import org.opensaml.samlext.saml2mdui.PrivacyStatementURL;
 import org.opensaml.samlext.saml2mdui.UIInfo;
 import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.util.XMLObjectChildrenList;
+import org.opensaml.xml.util.IndexedXMLObjectChildrenList;
 
 /**
  * Concrete implementation of {@link org.opensaml.samlext.saml2mdui.UIInfo}.
@@ -36,24 +39,9 @@ import org.opensaml.xml.util.XMLObjectChildrenList;
  */
 public class UIInfoImpl extends AbstractSAMLObject implements UIInfo {
     
-    /** localized descriptions. */
-    private final XMLObjectChildrenList<Description> descriptions;
+    /** Children of the UIInfo. */
+    private final IndexedXMLObjectChildrenList<XMLObject> uiInfoChildren;
     
-    /** localized displayNames. */
-    private final XMLObjectChildrenList<DisplayName> displayNames;
-        
-    /** localized displayNames. */
-    private final XMLObjectChildrenList<Keywords> keywords;
-        
-    /** (posibly) localized Logos. */
-    private final XMLObjectChildrenList<Logo> logos;
- 
-    /** localized Informational URLs. */
-    private final XMLObjectChildrenList<InformationURL> urls;
- 
-    /** localized PrivacyStatementURLs. */
-    private final XMLObjectChildrenList<PrivacyStatementURL> privacyStatementURLs;
- 
     /**
      * Constructor.
      * @param namespaceURI namespaceURI
@@ -63,55 +51,54 @@ public class UIInfoImpl extends AbstractSAMLObject implements UIInfo {
     protected UIInfoImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         
-        descriptions = new XMLObjectChildrenList<Description>(this);
-        displayNames = new XMLObjectChildrenList<DisplayName>(this);
-        logos = new XMLObjectChildrenList<Logo>(this);
-        urls = new XMLObjectChildrenList<InformationURL>(this);
-        keywords = new XMLObjectChildrenList<Keywords>(this);
-        privacyStatementURLs = new XMLObjectChildrenList<PrivacyStatementURL>(this);
+        uiInfoChildren = new IndexedXMLObjectChildrenList<XMLObject>(this);
     }
-
     
     /** {@inheritDoc} */
+    public List<XMLObject> getXMLObjects() {
+        return uiInfoChildren;
+    }
+
+    /** {@inheritDoc} */
+    public List<XMLObject> getXMLObjects(QName typeOrName) {
+        return (List<XMLObject>) uiInfoChildren.subList(typeOrName);
+    }
+
+    /** {@inheritDoc} */
     public List<Description> getDescriptions() {
-        return descriptions;
+        return (List<Description>) uiInfoChildren.subList(Description.DEFAULT_ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
     public List<DisplayName> getDisplayNames() {
-        return displayNames;
+        return (List<DisplayName>) uiInfoChildren.subList(DisplayName.DEFAULT_ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
     public List<Keywords> getKeywords() {
-        return keywords;
+        return (List<Keywords>) uiInfoChildren.subList(Keywords.DEFAULT_ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
     public List<InformationURL> getInformationURLs() {
-        return urls;
+        return (List<InformationURL>) uiInfoChildren.subList(InformationURL.DEFAULT_ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
     public List<Logo> getLogos() {
-        return logos;
+        return (List<Logo>) uiInfoChildren.subList(Logo.DEFAULT_ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
     public List<PrivacyStatementURL> getPrivacyStatementURLs() {
-        return privacyStatementURLs;
+        return (List<PrivacyStatementURL>) uiInfoChildren.subList(PrivacyStatementURL.DEFAULT_ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
         ArrayList<XMLObject> children = new ArrayList<XMLObject>();
         
-        children.addAll(displayNames);
-        children.addAll(descriptions);
-        children.addAll(keywords);
-        children.addAll(urls);
-        children.addAll(logos);
-        children.addAll(privacyStatementURLs);
+        children.addAll(uiInfoChildren);
         return children;
     }
 

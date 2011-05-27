@@ -87,31 +87,19 @@ public class DiscoHintsTest extends BaseSAMLObjectProviderTestCase {
 
     /** {@inheritDoc} */
     public void testChildElementsMarshall(){
-        QName qname = new QName(UIInfo.MDUI_NS, 
-                DiscoHints.DEFAULT_ELEMENT_LOCAL_NAME, 
-                UIInfo.MDUI_PREFIX);
-        DiscoHints hints = (DiscoHints) buildXMLObject(qname);
+        DiscoHints hints = (DiscoHints) buildXMLObject(DiscoHints.DEFAULT_ELEMENT_NAME);
         
-        QName iPHintQname = new QName(UIInfo.MDUI_NS, 
-                                      IPHint.DEFAULT_ELEMENT_LOCAL_NAME, 
-                                      UIInfo.MDUI_PREFIX);
-        for (int i = 0; i < expectedIPHintCount; i++) {
-            hints.getIPHints().add((IPHint) buildXMLObject(iPHintQname));
-        }
+        hints.getDomainHints().add((DomainHint) buildXMLObject(DomainHint.DEFAULT_ELEMENT_NAME));
+        
+        hints.getIPHints().add((IPHint) buildXMLObject(IPHint.DEFAULT_ELEMENT_NAME));
 
-        QName domainHintQname = new QName(UIInfo.MDUI_NS, 
-                                           DomainHint.DEFAULT_ELEMENT_LOCAL_NAME, 
-                                           UIInfo.MDUI_PREFIX);
-        for (int i = 0; i < expectedDomainHintsCount; i++) {
-            hints.getDomainHints().add((DomainHint) buildXMLObject(domainHintQname));
-        }
+        hints.getGeolocationHints().add((GeolocationHint) buildXMLObject(GeolocationHint.DEFAULT_ELEMENT_NAME));
+        
+        hints.getDomainHints().add((DomainHint) buildXMLObject(DomainHint.DEFAULT_ELEMENT_NAME));
 
-        QName geolocationHintQname = new QName(UIInfo.MDUI_NS, 
-                                    GeolocationHint.DEFAULT_ELEMENT_LOCAL_NAME, 
-                                    UIInfo.MDUI_PREFIX);
-        for (int i = 0; i < expectedGeolocationHintsCount; i++) {
-            hints.getGeolocationHints().add((GeolocationHint) buildXMLObject(geolocationHintQname));
-        }
+        hints.getIPHints().add((IPHint) buildXMLObject(IPHint.DEFAULT_ELEMENT_NAME));
+        
+        hints.getDomainHints().add((DomainHint) buildXMLObject(DomainHint.DEFAULT_ELEMENT_NAME));
 
         assertEquals(expectedChildElementsDOM, hints);   
     }

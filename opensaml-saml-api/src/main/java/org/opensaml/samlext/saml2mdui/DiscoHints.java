@@ -21,6 +21,7 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.opensaml.common.SAMLObject;
+import org.opensaml.xml.XMLObject;
 
 /**
  * See IdP Discovery and Login UI Metadata Extension Profile.
@@ -64,5 +65,21 @@ public interface DiscoHints extends SAMLObject {
      * @return hints
      */
     public List <GeolocationHint> getGeolocationHints();
+    
+    /**
+     * Get the list of all children of this element.
+     * 
+     * @return the list of all XMLObject children
+     */
+    public List <XMLObject> getXMLObjects(); 
+    
+    /**
+     * Get the list of all children of this element which have the specified name or type.
+     * 
+     * @param typeOrName the element name or type of the desired list of elements
+     * 
+     * @return the list of all XMLObject children
+     */
+    public List <XMLObject> getXMLObjects(QName typeOrName); 
     
 }

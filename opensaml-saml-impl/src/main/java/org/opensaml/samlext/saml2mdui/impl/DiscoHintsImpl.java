@@ -19,25 +19,21 @@ package org.opensaml.samlext.saml2mdui.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.namespace.QName;
+
 import org.opensaml.common.impl.AbstractSAMLObject;
 import org.opensaml.samlext.saml2mdui.DiscoHints;
 import org.opensaml.samlext.saml2mdui.DomainHint;
 import org.opensaml.samlext.saml2mdui.GeolocationHint;
 import org.opensaml.samlext.saml2mdui.IPHint;
 import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.util.XMLObjectChildrenList;
+import org.opensaml.xml.util.IndexedXMLObjectChildrenList;
 
 /** Concrete implementation of {@link org.opensaml.samlext.saml2mdui.DiscoHints}. */
 public class DiscoHintsImpl extends AbstractSAMLObject implements DiscoHints {
-
-    /** DNS Domain hints. */
-    private final XMLObjectChildrenList<DomainHint> domainHints;
-
-    /** IP Address hints. */
-    private final XMLObjectChildrenList<IPHint> iPHints;
-
-    /** GeoLocation hints. */
-    private final XMLObjectChildrenList<GeolocationHint> geoHints;
+    
+    /** Children of the UIInfo. */
+    private final IndexedXMLObjectChildrenList<XMLObject> discoHintsChildren;
 
     /**
      * Constructor.
@@ -48,33 +44,39 @@ public class DiscoHintsImpl extends AbstractSAMLObject implements DiscoHints {
      */
     protected DiscoHintsImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        domainHints = new XMLObjectChildrenList<DomainHint>(this);
-        iPHints = new XMLObjectChildrenList<IPHint>(this);
-        geoHints = new XMLObjectChildrenList<GeolocationHint>(this);
+        discoHintsChildren = new IndexedXMLObjectChildrenList<XMLObject>(this);
+    }
+
+    /** {@inheritDoc} */
+    public List<XMLObject> getXMLObjects() {
+        return discoHintsChildren;
+    }
+
+    /** {@inheritDoc} */
+    public List<XMLObject> getXMLObjects(QName typeOrName) {
+        return (List<XMLObject>) discoHintsChildren.subList(typeOrName);
     }
 
     /** {@inheritDoc} */
     public List<DomainHint> getDomainHints() {
-        return domainHints;
+        return (List<DomainHint>) discoHintsChildren.subList(DomainHint.DEFAULT_ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
     public List<GeolocationHint> getGeolocationHints() {
-        return geoHints;
+        return (List<GeolocationHint>) discoHintsChildren.subList(GeolocationHint.DEFAULT_ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
     public List<IPHint> getIPHints() {
-        return iPHints;
+        return (List<IPHint>) discoHintsChildren.subList(IPHint.DEFAULT_ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
         ArrayList<XMLObject> children = new ArrayList<XMLObject>();
 
-        children.addAll(domainHints);
-        children.addAll(iPHints);
-        children.addAll(geoHints);
+        children.addAll(discoHintsChildren);
         return children;
     }
 }
