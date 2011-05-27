@@ -46,7 +46,7 @@ public class UIInfoTest extends BaseSAMLObjectProviderTestCase {
     private final int expectedKeywordsCount = 2;
     
     /** Expected count of &lt;Logo&gt;. */
-    private final int expectedLogosCount = 0;
+    private final int expectedLogosCount = 1;
     
     /** Expected count of &lt;InformationURL&gt;. */
     private final int expectedInformationURLsCount = 1;
@@ -102,52 +102,25 @@ public class UIInfoTest extends BaseSAMLObjectProviderTestCase {
 
     /** {@inheritDoc} */
     public void testChildElementsMarshall(){
-        QName qname = new QName(UIInfo.MDUI_NS, 
-                UIInfo.DEFAULT_ELEMENT_LOCAL_NAME, 
-                UIInfo.MDUI_PREFIX);
-        UIInfo uiinfo = (UIInfo) buildXMLObject(qname);
+        UIInfo uiinfo = (UIInfo) buildXMLObject(UIInfo.DEFAULT_ELEMENT_NAME);
         
-        QName displayNameQname = new QName(UIInfo.MDUI_NS, 
-                                      DisplayName.DEFAULT_ELEMENT_LOCAL_NAME, 
-                                      UIInfo.MDUI_PREFIX);
-        for (int i = 0; i < expectedDisplayNamesCount; i++) {
-            uiinfo.getDisplayNames().add((DisplayName) buildXMLObject(displayNameQname));
-        }
+        uiinfo.getDisplayNames().add((DisplayName) buildXMLObject(DisplayName.DEFAULT_ELEMENT_NAME));
 
-        QName descriptionQname = new QName(UIInfo.MDUI_NS, 
-                Description.DEFAULT_ELEMENT_LOCAL_NAME, 
-                UIInfo.MDUI_PREFIX);
-        for (int i = 0; i < expectedDescriptionsCount; i++) {
-            uiinfo.getDescriptions().add((Description) buildXMLObject(descriptionQname));
-        }
+        uiinfo.getDescriptions().add((Description) buildXMLObject(Description.DEFAULT_ELEMENT_NAME));
 
-        QName logoQname = new QName(UIInfo.MDUI_NS, 
-                Logo.DEFAULT_ELEMENT_LOCAL_NAME, 
-                UIInfo.MDUI_PREFIX);
-        for (int i = 0; i < expectedLogosCount; i++) {
-            uiinfo.getLogos().add((Logo) buildXMLObject(logoQname));
-        }
+        uiinfo.getKeywords().add((Keywords) buildXMLObject(Keywords.DEFAULT_ELEMENT_NAME));
+        
+        uiinfo.getKeywords().add((Keywords) buildXMLObject(Keywords.DEFAULT_ELEMENT_NAME));
+        
+        uiinfo.getInformationURLs().add((InformationURL) buildXMLObject(InformationURL.DEFAULT_ELEMENT_NAME));
+        
+        uiinfo.getDisplayNames().add((DisplayName) buildXMLObject(DisplayName.DEFAULT_ELEMENT_NAME));
+        
+        uiinfo.getLogos().add((Logo) buildXMLObject(Logo.DEFAULT_ELEMENT_NAME));
 
-        QName keywordsQname = new QName(UIInfo.MDUI_NS, 
-                Keywords.DEFAULT_ELEMENT_LOCAL_NAME, 
-                UIInfo.MDUI_PREFIX);
-        for (int i = 0; i < expectedKeywordsCount; i++) {
-            uiinfo.getKeywords().add((Keywords) buildXMLObject(keywordsQname));
-        }
-
-        QName informationURLQname = new QName(UIInfo.MDUI_NS, 
-                InformationURL.DEFAULT_ELEMENT_LOCAL_NAME, 
-                UIInfo.MDUI_PREFIX);
-        for (int i = 0; i < expectedInformationURLsCount; i++) {
-            uiinfo.getInformationURLs().add((InformationURL) buildXMLObject(informationURLQname));
-        }
-
-        QName privacyStatementURLQname = new QName(UIInfo.MDUI_NS, 
-                PrivacyStatementURL.DEFAULT_ELEMENT_LOCAL_NAME, 
-                UIInfo.MDUI_PREFIX);
-        for (int i = 0; i < expectedPrivacyStatementURLsCount; i++) {
-            uiinfo.getPrivacyStatementURLs().add((PrivacyStatementURL) buildXMLObject(privacyStatementURLQname));
-        }
+        uiinfo.getPrivacyStatementURLs().add((PrivacyStatementURL) buildXMLObject(PrivacyStatementURL.DEFAULT_ELEMENT_NAME));
+        
+        uiinfo.getDisplayNames().add((DisplayName) buildXMLObject(DisplayName.DEFAULT_ELEMENT_NAME));
 
         assertEquals(expectedChildElementsDOM, uiinfo);   
     }
