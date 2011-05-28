@@ -27,6 +27,7 @@ import org.opensaml.samlext.saml2mdui.DomainHint;
 import org.opensaml.samlext.saml2mdui.GeolocationHint;
 import org.opensaml.samlext.saml2mdui.IPHint;
 import org.opensaml.samlext.saml2mdui.UIInfo;
+import org.opensaml.xml.mock.SimpleXMLObject;
 
 /**
  * Test case for creating, marshalling, and unmarshalling
@@ -42,6 +43,9 @@ public class DiscoHintsTest extends BaseSAMLObjectProviderTestCase {
     
     /** Expected count of &lt;GeolocationHint/&gt;. */
     private final int expectedGeolocationHintsCount = 1;
+    
+    /** Expected count of &lt;test:SimpleElementgt;. */
+    private final int expectedSimpleElementCount =1;
     
     /**
      * Constructor.
@@ -83,6 +87,7 @@ public class DiscoHintsTest extends BaseSAMLObjectProviderTestCase {
         assertEquals("<IPHint> count", expectedIPHintCount, hints.getIPHints().size());
         assertEquals("<DomainHint> count", expectedDomainHintsCount, hints.getDomainHints().size());
         assertEquals("<GeolocationHint> count", expectedGeolocationHintsCount, hints.getGeolocationHints().size());
+        assertEquals("<test:SimpleElement> count", expectedSimpleElementCount, hints.getXMLObjects(SimpleXMLObject.ELEMENT_NAME).size());
     }
 
     /** {@inheritDoc} */
@@ -94,6 +99,8 @@ public class DiscoHintsTest extends BaseSAMLObjectProviderTestCase {
         hints.getIPHints().add((IPHint) buildXMLObject(IPHint.DEFAULT_ELEMENT_NAME));
 
         hints.getGeolocationHints().add((GeolocationHint) buildXMLObject(GeolocationHint.DEFAULT_ELEMENT_NAME));
+        
+        hints.getXMLObjects().add((SimpleXMLObject) buildXMLObject(SimpleXMLObject.ELEMENT_NAME));
         
         hints.getDomainHints().add((DomainHint) buildXMLObject(DomainHint.DEFAULT_ELEMENT_NAME));
 

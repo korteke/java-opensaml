@@ -17,12 +17,6 @@
 package org.opensaml.samlext.saml2mdui.impl;
 
 import org.opensaml.common.impl.AbstractSAMLObjectUnmarshaller;
-import org.opensaml.samlext.saml2mdui.Description;
-import org.opensaml.samlext.saml2mdui.DisplayName;
-import org.opensaml.samlext.saml2mdui.InformationURL;
-import org.opensaml.samlext.saml2mdui.Keywords;
-import org.opensaml.samlext.saml2mdui.Logo;
-import org.opensaml.samlext.saml2mdui.PrivacyStatementURL;
 import org.opensaml.samlext.saml2mdui.UIInfo;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
@@ -36,21 +30,6 @@ public class UIInfoUnmarshaller extends AbstractSAMLObjectUnmarshaller {
     protected void processChildElement(XMLObject parentSAMLObject, XMLObject childSAMLObject)
             throws UnmarshallingException {
         UIInfo info = (UIInfo) parentSAMLObject;
-
-        if (childSAMLObject instanceof Description) {
-            info.getDescriptions().add((Description) childSAMLObject);
-        } else if (childSAMLObject instanceof DisplayName) {
-            info.getDisplayNames().add((DisplayName) childSAMLObject);
-        } else if (childSAMLObject instanceof Keywords) {
-            info.getKeywords().add((Keywords) childSAMLObject);
-        } else if (childSAMLObject instanceof InformationURL) {
-            info.getInformationURLs().add((InformationURL) childSAMLObject);
-        } else if (childSAMLObject instanceof Logo) {
-            info.getLogos().add((Logo) childSAMLObject);
-        } else if (childSAMLObject instanceof PrivacyStatementURL) {
-            info.getPrivacyStatementURLs().add((PrivacyStatementURL) childSAMLObject);
-        } else {
-            super.processChildElement(parentSAMLObject, childSAMLObject);
-        }
+        info.getXMLObjects().add(childSAMLObject);
     }
 }

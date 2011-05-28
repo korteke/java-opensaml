@@ -29,6 +29,7 @@ import org.opensaml.samlext.saml2mdui.Keywords;
 import org.opensaml.samlext.saml2mdui.Logo;
 import org.opensaml.samlext.saml2mdui.PrivacyStatementURL;
 import org.opensaml.samlext.saml2mdui.UIInfo;
+import org.opensaml.xml.mock.SimpleXMLObject;
 
 /**
  * Test case for creating, marshalling, and unmarshalling
@@ -53,6 +54,9 @@ public class UIInfoTest extends BaseSAMLObjectProviderTestCase {
     
     /** Expected count of &lt;PrivacyStatementURL&gt;. */
     private final int expectedPrivacyStatementURLsCount =1;
+    
+    /** Expected count of &lt;test:SimpleElementgt;. */
+    private final int expectedSimpleElementCount =1;
     
     /**
      * Constructor.
@@ -97,6 +101,8 @@ public class UIInfoTest extends BaseSAMLObjectProviderTestCase {
         assertEquals("<InformationURLs> count", expectedInformationURLsCount, uiinfo.getInformationURLs().size());
         assertEquals("<PrivacyStatementURLs> count", expectedPrivacyStatementURLsCount, 
                                                      uiinfo.getPrivacyStatementURLs().size());
+        assertEquals("<test:SimpleElement> count", expectedSimpleElementCount, uiinfo.getXMLObjects(SimpleXMLObject.ELEMENT_NAME).size());
+        
        
     }
 
@@ -119,6 +125,8 @@ public class UIInfoTest extends BaseSAMLObjectProviderTestCase {
         uiinfo.getLogos().add((Logo) buildXMLObject(Logo.DEFAULT_ELEMENT_NAME));
 
         uiinfo.getPrivacyStatementURLs().add((PrivacyStatementURL) buildXMLObject(PrivacyStatementURL.DEFAULT_ELEMENT_NAME));
+        
+        uiinfo.getXMLObjects().add((SimpleXMLObject) buildXMLObject(SimpleXMLObject.ELEMENT_NAME));
         
         uiinfo.getDisplayNames().add((DisplayName) buildXMLObject(DisplayName.DEFAULT_ELEMENT_NAME));
 
