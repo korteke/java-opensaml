@@ -18,9 +18,6 @@ package org.opensaml.samlext.saml2mdui.impl;
 
 import org.opensaml.common.impl.AbstractSAMLObjectUnmarshaller;
 import org.opensaml.samlext.saml2mdui.DiscoHints;
-import org.opensaml.samlext.saml2mdui.DomainHint;
-import org.opensaml.samlext.saml2mdui.GeolocationHint;
-import org.opensaml.samlext.saml2mdui.IPHint;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
 
@@ -33,16 +30,7 @@ public class DiscoHintsUnmarshaller extends AbstractSAMLObjectUnmarshaller {
     protected void processChildElement(XMLObject parentSAMLObject, XMLObject childSAMLObject)
             throws UnmarshallingException {
         DiscoHints info = (DiscoHints) parentSAMLObject;
-
-        if (childSAMLObject instanceof IPHint) {
-            info.getIPHints().add((IPHint) childSAMLObject);
-        } else if (childSAMLObject instanceof DomainHint) {
-            info.getDomainHints().add((DomainHint) childSAMLObject);
-        } else if (childSAMLObject instanceof GeolocationHint) {
-            info.getGeolocationHints().add((GeolocationHint) childSAMLObject);
-        } else {
-            super.processChildElement(parentSAMLObject, childSAMLObject);
-        }
+        info.getXMLObjects().add(childSAMLObject);
     }
 
 }
