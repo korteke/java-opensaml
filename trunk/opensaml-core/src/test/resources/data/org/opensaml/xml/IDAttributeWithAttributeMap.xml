@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <products>
-    <product id="1144"
-        xmlns="http://example.com/product-info"
-        xmlns:html="http://www.w3.org/1999/xhtml"
-        >
+    <product xmlns="http://example.com/product-info" xmlns:html="http://www.w3.org/1999/xhtml" id="1144">
         <name xml:lang="en">Python Perfect IDE</name>
         <description>
             Uses mind-reading technology to anticipate and accommodate
@@ -12,12 +9,9 @@
             the year 3000.  Works well with <code>1166</code>.
         </description>
     </product>
-    <p:product id="1166" xmlns:p="http://example.com/product-info">
+    <p:product xmlns:p="http://example.com/product-info" id="1166">
         <p:name>XSLT Perfect IDE</p:name>
-        <p:description
-            xmlns:html="http://www.w3.org/1999/xhtml"
-            xmlns:xl="http://www.w3.org/1999/xlink"
-            >
+        <p:description xmlns:html="http://www.w3.org/1999/xhtml" xmlns:xl="http://www.w3.org/1999/xlink">
             <p:code>red</p:code>
             <html:code>blue</html:code>
             <html:div>

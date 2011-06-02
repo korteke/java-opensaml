@@ -1,5 +1,2 @@
-<saml:AttributeValue 
-    xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"
-    xmlns:xs="http://www.w3.org/2001/XMLSchema"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:type="xs:anyURI">urn:test:foo:bar:baz</saml:AttributeValue>
+<?xml version="1.0" encoding="UTF-8"?>
+<saml:AttributeValue xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="xs:anyURI">urn:test:foo:bar:baz</saml:AttributeValue>

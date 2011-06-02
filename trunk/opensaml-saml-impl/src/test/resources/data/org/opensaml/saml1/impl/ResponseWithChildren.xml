@@ -1,7 +1,2 @@
-<saml1p:Response xmlns:saml1p="urn:oasis:names:tc:SAML:1.0:protocol" xmlns:saml1="urn:oasis:names:tc:SAML:1.0:assertion"
-MajorVersion="1"
-MinorVersion="1"
-><saml1p:Status/><saml1:Assertion
-MajorVersion="1"
-MinorVersion="1"
-/></saml1p:Response>
+<?xml version="1.0" encoding="UTF-8"?>
+<saml1p:Response xmlns:saml1p="urn:oasis:names:tc:SAML:1.0:protocol" xmlns:saml1="urn:oasis:names:tc:SAML:1.0:assertion" MajorVersion="1" MinorVersion="1"><saml1p:Status/><saml1:Assertion MajorVersion="1" MinorVersion="1"/></saml1p:Response>
