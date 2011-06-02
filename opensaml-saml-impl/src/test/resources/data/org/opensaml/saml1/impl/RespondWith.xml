@@ -1,1 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <saml1p:RespondWith xmlns:saml1p="urn:oasis:names:tc:SAML:1.0:protocol" xmlns:saml1="urn:oasis:names:tc:SAML:1.0:assertion">saml1:AttributeStatement</saml1p:RespondWith>

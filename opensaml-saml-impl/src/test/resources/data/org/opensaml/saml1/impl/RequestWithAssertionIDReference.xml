@@ -1,5 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <saml1p:Request xmlns:saml1p="urn:oasis:names:tc:SAML:1.0:protocol" xmlns:saml1="urn:oasis:names:tc:SAML:1.0:assertion" MajorVersion="1" MinorVersion="1">
-    <saml1:AssertionIDReference />
-    <saml1:AssertionIDReference />
-    <saml1:AssertionIDReference />
+    <saml1:AssertionIDReference/>
+    <saml1:AssertionIDReference/>
+    <saml1:AssertionIDReference/>
 </saml1p:Request>

@@ -1,9 +1,2 @@
-<saml1p:AuthorizationDecisionQuery
-xmlns:saml1p="urn:oasis:names:tc:SAML:1.0:protocol" 
-xmlns:saml1="urn:oasis:names:tc:SAML:1.0:assertion" 
-><saml1:Subject 
-/><saml1:Action
-/><saml1:Action
-/><saml1:Action
-/><saml1:Evidence
-/></saml1p:AuthorizationDecisionQuery>
+<?xml version="1.0" encoding="UTF-8"?>
+<saml1p:AuthorizationDecisionQuery xmlns:saml1p="urn:oasis:names:tc:SAML:1.0:protocol" xmlns:saml1="urn:oasis:names:tc:SAML:1.0:assertion"><saml1:Subject/><saml1:Action/><saml1:Action/><saml1:Action/><saml1:Evidence/></saml1p:AuthorizationDecisionQuery>

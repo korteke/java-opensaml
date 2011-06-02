@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mdui:DiscoHints xmlns:mdui="urn:oasis:names:tc:SAML:metadata:ui">
-    <mdui:DomainHint />
-    <mdui:IPHint />
-    <mdui:GeolocationHint />
-    <test:SimpleElement xmlns:test="http://www.example.org/testObjects" />
-    <mdui:DomainHint />
-    <mdui:IPHint />
-    <mdui:DomainHint />
+    <mdui:DomainHint/>
+    <mdui:IPHint/>
+    <mdui:GeolocationHint/>
+    <test:SimpleElement xmlns:test="http://www.example.org/testObjects"/>
+    <mdui:DomainHint/>
+    <mdui:IPHint/>
+    <mdui:DomainHint/>
 </mdui:DiscoHints>

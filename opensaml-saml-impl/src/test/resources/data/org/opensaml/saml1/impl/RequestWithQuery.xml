@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <saml1p:Request xmlns:saml1p="urn:oasis:names:tc:SAML:1.0:protocol" MajorVersion="1" MinorVersion="1">
-    <saml1p:AttributeQuery />
+    <saml1p:AttributeQuery/>
 </saml1p:Request>
