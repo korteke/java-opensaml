@@ -16,6 +16,11 @@
 
     <dependencies>
         <!-- Compile Dependencies -->
+        <dependency>
+            <groupId>org.opensaml</groupId>
+            <artifactId>opensaml-messaging-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
         <!-- Provided Dependencies -->
 
