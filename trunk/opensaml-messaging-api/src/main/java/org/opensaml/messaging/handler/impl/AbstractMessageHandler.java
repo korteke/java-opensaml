@@ -15,31 +15,33 @@
  * limitations under the License.
  */
 
-package org.opensaml.messaging.context.impl;
+package org.opensaml.messaging.handler.impl;
 
-import org.opensaml.messaging.context.Subcontext;
-import org.opensaml.messaging.context.SubcontextContainer;
+import org.opensaml.messaging.handler.MessageHandler;
+
 
 /**
- * Base abstract implementation of {@link Subcontext}.
+ * A base abstract implementation of {@link MessageHandler}.
+ * 
+ * @param <MessageType> the type of message being handled
  */
-public abstract class BaseSubcontext implements Subcontext {
-    
-    /** The owning container. */
-    private SubcontextContainer owner;
+public abstract class AbstractMessageHandler<MessageType> implements MessageHandler<MessageType> {
+
+    /** The handler unique identifier. */
+    private String id;
+
+    /** {@inheritDoc} */
+    public String getId() {
+        return id;
+    }
     
     /**
-     * Constructor.
-     *
-     * @param container the owning subcontext container.
+     * Set the handler's unique identifier.
+     * 
+     * @param newId the handler's new unique identifier
      */
-    public BaseSubcontext(SubcontextContainer container) {
-        owner = container;
+    public void setId(String newId) {
+        id = newId;
     }
-    
-    /** {@inheritDoc} */
-    public SubcontextContainer getOwner() {
-        return owner;
-    }
-    
+
 }

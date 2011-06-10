@@ -19,7 +19,7 @@ package org.opensaml.messaging.decoder.servlet.impl;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.opensaml.messaging.decoder.impl.BaseMessageDecoder;
+import org.opensaml.messaging.decoder.impl.AbstractMessageDecoder;
 import org.opensaml.messaging.decoder.servlet.HttpServletRequestMessageDecoder;
 
 
@@ -28,7 +28,7 @@ import org.opensaml.messaging.decoder.servlet.HttpServletRequestMessageDecoder;
  * 
  * @param <MessageType> the message type of the message context on which to operate
  */
-public abstract class AbstractHttpServletRequestMessageDecoder<MessageType> extends BaseMessageDecoder<MessageType> 
+public abstract class AbstractHttpServletRequestMessageDecoder<MessageType> extends AbstractMessageDecoder<MessageType> 
         implements HttpServletRequestMessageDecoder<MessageType> {
     
     /** The HTTP servlet request. */

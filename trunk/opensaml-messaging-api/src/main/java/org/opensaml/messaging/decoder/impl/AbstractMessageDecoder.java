@@ -15,24 +15,24 @@
  * limitations under the License.
  */
 
-package org.opensaml.messaging.encoder.impl;
+package org.opensaml.messaging.decoder.impl;
 
 import org.opensaml.messaging.context.MessageContext;
-import org.opensaml.messaging.encoder.MessageEncoder;
+import org.opensaml.messaging.decoder.MessageDecoder;
 
 /**
- * Base message encoder.
+ * Abstract message decoder.
  *
  * @param <MessageType> the message type of the message context on which to operate
  */
-public abstract class BaseMessageEncoder<MessageType> implements MessageEncoder<MessageType> {
+public abstract class AbstractMessageDecoder<MessageType> implements MessageDecoder<MessageType> {
     
-    /** The message context. */
+    /** Message context. */
     private MessageContext<MessageType> messageContext;
     
     /** {@inheritDoc} */
-    public void setMessageContext(MessageContext<MessageType> context) {
-        messageContext = context;
+    public MessageContext<MessageType> getMessageContext() {
+        return messageContext;
     }
     
     /** {@inheritDoc} */
@@ -46,12 +46,12 @@ public abstract class BaseMessageEncoder<MessageType> implements MessageEncoder<
     }
     
     /**
-     * Get the message context.
+     * Set the message context.
      * 
-     * @return the message context.
+     * @param context the message context
      */
-    protected MessageContext<MessageType> getMessageContext() {
-        return messageContext;
+    protected void setMessageContext(MessageContext<MessageType> context) {
+       messageContext = context;
     }
     
 }
