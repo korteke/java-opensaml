@@ -15,32 +15,42 @@
  * limitations under the License.
  */
 
-package org.opensaml.messaging.encoder.servlet.impl;
+package org.opensaml.messaging.encoder;
 
-import javax.servlet.http.HttpServletResponse;
-
-import org.opensaml.messaging.encoder.impl.AbstractMessageEncoder;
-import org.opensaml.messaging.encoder.servlet.HttpServletResponseMessageEncoder;
+import org.opensaml.messaging.context.MessageContext;
 
 /**
- * Abstract implementation of {@link HttpServletResponseMessageDecoder}.
- * 
+ * Abstract message encoder.
+ *
  * @param <MessageType> the message type of the message context on which to operate
  */
-public abstract class AbstractHttpServletResponseMessageEncoder<MessageType> extends AbstractMessageEncoder<MessageType> 
-        implements HttpServletResponseMessageEncoder<MessageType> {
+public abstract class AbstractMessageEncoder<MessageType> implements MessageEncoder<MessageType> {
     
-    /** The HTTP servlet response. */
-    private HttpServletResponse response;
+    /** The message context. */
+    private MessageContext<MessageType> messageContext;
     
     /** {@inheritDoc} */
-    public HttpServletResponse getHttpServletResponse() {
-        return response;
+    public void setMessageContext(MessageContext<MessageType> context) {
+        messageContext = context;
     }
     
     /** {@inheritDoc} */
-    public void setHttpServletResponse(HttpServletResponse servletResponse) {
-        response = servletResponse;
+    public void initialize() {
+        //Default implementation is a no-op
+    }
+    
+    /** {@inheritDoc} */
+    public void destroy() {
+        //Default implementation is a no-op
+    }
+    
+    /**
+     * Get the message context.
+     * 
+     * @return the message context.
+     */
+    protected MessageContext<MessageType> getMessageContext() {
+        return messageContext;
     }
     
 }

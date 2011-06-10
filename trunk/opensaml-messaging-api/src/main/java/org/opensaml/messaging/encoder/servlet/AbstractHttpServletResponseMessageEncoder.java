@@ -15,43 +15,31 @@
  * limitations under the License.
  */
 
-package org.opensaml.messaging.decoder.impl;
+package org.opensaml.messaging.encoder.servlet;
 
-import org.opensaml.messaging.context.MessageContext;
-import org.opensaml.messaging.decoder.MessageDecoder;
+import javax.servlet.http.HttpServletResponse;
+
+import org.opensaml.messaging.encoder.AbstractMessageEncoder;
 
 /**
- * Abstract message decoder.
- *
+ * Abstract implementation of {@link HttpServletResponseMessageDecoder}.
+ * 
  * @param <MessageType> the message type of the message context on which to operate
  */
-public abstract class AbstractMessageDecoder<MessageType> implements MessageDecoder<MessageType> {
+public abstract class AbstractHttpServletResponseMessageEncoder<MessageType> extends AbstractMessageEncoder<MessageType> 
+        implements HttpServletResponseMessageEncoder<MessageType> {
     
-    /** Message context. */
-    private MessageContext<MessageType> messageContext;
+    /** The HTTP servlet response. */
+    private HttpServletResponse response;
     
     /** {@inheritDoc} */
-    public MessageContext<MessageType> getMessageContext() {
-        return messageContext;
+    public HttpServletResponse getHttpServletResponse() {
+        return response;
     }
     
     /** {@inheritDoc} */
-    public void initialize() {
-        //Default implementation is a no-op
-    }
-    
-    /** {@inheritDoc} */
-    public void destroy() {
-        //Default implementation is a no-op
-    }
-    
-    /**
-     * Set the message context.
-     * 
-     * @param context the message context
-     */
-    protected void setMessageContext(MessageContext<MessageType> context) {
-       messageContext = context;
+    public void setHttpServletResponse(HttpServletResponse servletResponse) {
+        response = servletResponse;
     }
     
 }

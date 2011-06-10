@@ -15,31 +15,32 @@
  * limitations under the License.
  */
 
-package org.opensaml.messaging.context.impl;
+package org.opensaml.messaging.decoder.servlet;
 
-import org.opensaml.messaging.context.Subcontext;
-import org.opensaml.messaging.context.SubcontextContainer;
+import javax.servlet.http.HttpServletRequest;
+
+import org.opensaml.messaging.decoder.AbstractMessageDecoder;
+
 
 /**
- * Abstract implementation of {@link Subcontext}.
+ * Abstract implementation of {@link HttpServletRequestMessageDecoder}.
+ * 
+ * @param <MessageType> the message type of the message context on which to operate
  */
-public abstract class AbstractSubcontext implements Subcontext {
+public abstract class AbstractHttpServletRequestMessageDecoder<MessageType> extends AbstractMessageDecoder<MessageType> 
+        implements HttpServletRequestMessageDecoder<MessageType> {
     
-    /** The owning container. */
-    private SubcontextContainer owner;
+    /** The HTTP servlet request. */
+    private HttpServletRequest request;
     
-    /**
-     * Constructor.
-     *
-     * @param container the owning subcontext container.
-     */
-    public AbstractSubcontext(SubcontextContainer container) {
-        owner = container;
+    /** {@inheritDoc} */
+    public HttpServletRequest getHttpServletRequest() {
+        return request;
     }
     
     /** {@inheritDoc} */
-    public SubcontextContainer getOwner() {
-        return owner;
+    public void setHttpServletRequest(HttpServletRequest servletRequest) {
+        request = servletRequest;
     }
     
 }

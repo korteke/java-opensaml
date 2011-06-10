@@ -15,15 +15,13 @@
  * limitations under the License.
  */
 
-package org.opensaml.messaging.context.impl;
+package org.opensaml.messaging.context;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
 
 import org.opensaml.messaging.MessageRuntimeException;
-import org.opensaml.messaging.context.Subcontext;
-import org.opensaml.messaging.context.SubcontextContainer;
 import org.opensaml.util.collections.ClassIndexedSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

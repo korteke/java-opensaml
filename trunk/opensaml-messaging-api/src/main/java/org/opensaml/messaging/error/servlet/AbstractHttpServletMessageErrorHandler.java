@@ -15,12 +15,11 @@
  * limitations under the License.
  */
 
-package org.opensaml.messaging.error.servlet.impl;
+package org.opensaml.messaging.error.servlet;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.opensaml.messaging.error.servlet.HttpServletMessageErrorHandler;
 
 /**
  * Abstract implementation of {@link HttpServletMessageErrorHandler}.
