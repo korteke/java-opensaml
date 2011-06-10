@@ -19,7 +19,7 @@ package org.opensaml.messaging.encoder.servlet.impl;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.opensaml.messaging.encoder.impl.BaseMessageEncoder;
+import org.opensaml.messaging.encoder.impl.AbstractMessageEncoder;
 import org.opensaml.messaging.encoder.servlet.HttpServletResponseMessageEncoder;
 
 /**
@@ -27,7 +27,7 @@ import org.opensaml.messaging.encoder.servlet.HttpServletResponseMessageEncoder;
  * 
  * @param <MessageType> the message type of the message context on which to operate
  */
-public abstract class AbstractHttpServletResponseMessageEncoder<MessageType> extends BaseMessageEncoder<MessageType> 
+public abstract class AbstractHttpServletResponseMessageEncoder<MessageType> extends AbstractMessageEncoder<MessageType> 
         implements HttpServletResponseMessageEncoder<MessageType> {
     
     /** The HTTP servlet response. */

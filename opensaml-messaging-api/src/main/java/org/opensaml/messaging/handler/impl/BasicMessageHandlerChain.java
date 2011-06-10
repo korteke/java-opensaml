@@ -30,7 +30,8 @@ import org.opensaml.messaging.handler.MessageHandlerException;
  * 
  * @param <MessageType> the type of message being handled
  */
-public class BasicMessageHandlerChain<MessageType> extends BaseMessageHandler<MessageType> {
+public class BasicMessageHandlerChain<MessageType> extends AbstractMessageHandler<MessageType> 
+    implements MessageHandlerChain<MessageType> {
 
     /** The list of members of the handler chain. */
     private List<MessageHandler<MessageType>> members;
