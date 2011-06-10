@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.opensaml.messaging.context.MessageContext;
+import org.opensaml.messaging.handler.AbstractMessageHandler;
 import org.opensaml.messaging.handler.MessageHandler;
 import org.opensaml.messaging.handler.MessageHandlerChain;
 import org.opensaml.messaging.handler.MessageHandlerException;

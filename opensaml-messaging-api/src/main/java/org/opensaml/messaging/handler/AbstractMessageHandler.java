@@ -15,9 +15,8 @@
  * limitations under the License.
  */
 
-package org.opensaml.messaging.handler.impl;
+package org.opensaml.messaging.handler;
 
-import org.opensaml.messaging.handler.MessageHandler;
 
 
 /**

@@ -15,33 +15,42 @@
  * limitations under the License.
  */
 
-package org.opensaml.messaging.decoder.servlet.impl;
+package org.opensaml.messaging.decoder;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.opensaml.messaging.decoder.impl.AbstractMessageDecoder;
-import org.opensaml.messaging.decoder.servlet.HttpServletRequestMessageDecoder;
-
+import org.opensaml.messaging.context.MessageContext;
 
 /**
- * Abstract implementation of {@link HttpServletRequestMessageDecoder}.
- * 
+ * Abstract message decoder.
+ *
  * @param <MessageType> the message type of the message context on which to operate
  */
-public abstract class AbstractHttpServletRequestMessageDecoder<MessageType> extends AbstractMessageDecoder<MessageType> 
-        implements HttpServletRequestMessageDecoder<MessageType> {
+public abstract class AbstractMessageDecoder<MessageType> implements MessageDecoder<MessageType> {
     
-    /** The HTTP servlet request. */
-    private HttpServletRequest request;
+    /** Message context. */
+    private MessageContext<MessageType> messageContext;
     
     /** {@inheritDoc} */
-    public HttpServletRequest getHttpServletRequest() {
-        return request;
+    public MessageContext<MessageType> getMessageContext() {
+        return messageContext;
     }
     
     /** {@inheritDoc} */
-    public void setHttpServletRequest(HttpServletRequest servletRequest) {
-        request = servletRequest;
+    public void initialize() {
+        //Default implementation is a no-op
+    }
+    
+    /** {@inheritDoc} */
+    public void destroy() {
+        //Default implementation is a no-op
+    }
+    
+    /**
+     * Set the message context.
+     * 
+     * @param context the message context
+     */
+    protected void setMessageContext(MessageContext<MessageType> context) {
+       messageContext = context;
     }
     
 }
