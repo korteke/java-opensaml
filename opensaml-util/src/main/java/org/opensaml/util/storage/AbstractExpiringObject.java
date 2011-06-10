@@ -25,6 +25,9 @@ import org.joda.time.chrono.ISOChronology;
 /** Base implementation for {@link ExpiringObject}. */
 public abstract class AbstractExpiringObject implements ExpiringObject, Serializable {
 
+    /** Serial version UID. */
+    private static final long serialVersionUID = -5862358212935797056L;
+    
     /** Moment of expiration in UTC. */
     private long expiration;
 
