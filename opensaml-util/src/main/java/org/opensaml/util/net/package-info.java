@@ -17,4 +17,4 @@
 
 /** Classes for working with HTTP URLs and the protocol. */
 
-package org.opensaml.util.http;
+package org.opensaml.util.net;

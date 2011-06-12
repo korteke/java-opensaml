@@ -30,12 +30,12 @@ import org.opensaml.saml1.binding.artifact.SAML1ArtifactType0001;
 import org.opensaml.saml1.core.Assertion;
 import org.opensaml.saml1.core.NameIdentifier;
 import org.opensaml.saml1.core.Response;
-import org.opensaml.util.URLBuilder;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.message.encoder.MessageEncodingException;
 import org.opensaml.ws.transport.http.HTTPOutTransport;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.util.Pair;
+import org.opensaml.util.net.HttpUrl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -95,7 +95,7 @@ public class HTTPArtifactEncoder extends BaseSAML1MessageEncoder {
         SAMLMessageContext<SAMLObject, Response, NameIdentifier> artifactContext = (SAMLMessageContext) messageContext;
         HTTPOutTransport outTransport = (HTTPOutTransport) artifactContext.getOutboundMessageTransport();
 
-        URLBuilder urlBuilder = getEndpointURL(artifactContext);
+        HttpUrl urlBuilder = getEndpointURL(artifactContext);
 
         List<Pair<String, String>> params = urlBuilder.getQueryParams();
 
@@ -130,10 +130,10 @@ public class HTTPArtifactEncoder extends BaseSAML1MessageEncoder {
             params.add(new Pair<String, String>("SAMLart", artifactString));
         }
 
-        String redirectUrl = urlBuilder.buildURL();
+        String redirectUrl = urlBuilder.toString();
 
         log.debug("Sending redirect to URL {} to relying party {}", redirectUrl, artifactContext
                 .getInboundMessageIssuer());
-        outTransport.sendRedirect(urlBuilder.buildURL());
+        outTransport.sendRedirect(urlBuilder.toString());
     }
 }

@@ -39,14 +39,10 @@ public abstract class BaseSAMLMessageDecoder extends BaseMessageDecoder implemen
     
     /** Class logger. */
     private final Logger log = LoggerFactory.getLogger(BaseSAMLMessageDecoder.class);
-    
-    /** The URIComparator implementation to use. */
-    private URIComparator uriComparator;
 
     /** Constructor. */
     public BaseSAMLMessageDecoder() {
         super();
-        setURIComparator(new BasicURLComparator());
     }
 
     /**
@@ -56,28 +52,6 @@ public abstract class BaseSAMLMessageDecoder extends BaseMessageDecoder implemen
      */
     public BaseSAMLMessageDecoder(ParserPool pool) {
         super(pool);
-        setURIComparator(new BasicURLComparator());
-    }
-
-    /**
-     * Set the {@link URIComparator} to use in {@link #compareEndpointURIs(String, String)}.
-     * 
-     * @param comparator The uriComparator to set.
-     */
-    public void setURIComparator(URIComparator comparator) {
-        if (comparator == null) {
-            throw new IllegalArgumentException("URI comparator may not be null");
-        }
-        uriComparator = comparator;
-    }
-
-    /**
-     * Get the {@link URIComparator} to use in {@link #compareEndpointURIs(String, String)}.
-     * 
-     * @return Returns the uriComparator.
-     */
-    public URIComparator getURIComparator() {
-        return uriComparator;
     }
 
     /**
@@ -167,10 +141,11 @@ public abstract class BaseSAMLMessageDecoder extends BaseMessageDecoder implemen
      * @return true if the endpoints are equivalent, false otherwise
      * @throws MessageDecodingException thrown if the endpoints specified are not equivalent
      */
+    // TODO move this check outside the decoder
     protected boolean compareEndpointURIs(String messageDestination, String receiverEndpoint) 
             throws MessageDecodingException {
-        
-        return getURIComparator().compare(messageDestination, receiverEndpoint);
+        return false;
+        //return getURIComparator().compare(messageDestination, receiverEndpoint);
     }
     
     /**
@@ -185,39 +160,40 @@ public abstract class BaseSAMLMessageDecoder extends BaseMessageDecoder implemen
      *                                  the message Destination or receiver
      *                                  endpoint information
      */
+    // TODO move this check outside the decoder
     protected void checkEndpointURI(SAMLMessageContext messageContext) 
             throws SecurityException, MessageDecodingException {
         
-        log.debug("Checking SAML message intended destination endpoint against receiver endpoint");
-        
-        String messageDestination = 
-            DatatypeHelper.safeTrimOrNullString(getIntendedDestinationEndpointURI(messageContext));
-        
-        boolean bindingRequires = isIntendedDestinationEndpointURIRequired(messageContext);
-        
-        if (messageDestination == null) {
-            if (bindingRequires) {
-                log.error("SAML message intended destination endpoint URI required by binding was empty");
-                throw new SecurityException("SAML message intended destination (required by binding) was not present");
-            } else {
-                log.debug("SAML message intended destination endpoint in message was empty, not required by binding, skipping");
-                return;
-            }
-        }
-        
-        String receiverEndpoint = DatatypeHelper.safeTrimOrNullString(getActualReceiverEndpointURI(messageContext));
-        
-        log.debug("Intended message destination endpoint: {}", messageDestination);
-        log.debug("Actual message receiver endpoint: {}", receiverEndpoint);
-        
-        boolean matched = compareEndpointURIs(messageDestination, receiverEndpoint);
-        if (!matched) {
-            log.error("SAML message intended destination endpoint '{}' did not match the recipient endpoint '{}'",
-                    messageDestination, receiverEndpoint);
-            throw new SecurityException("SAML message intended destination endpoint did not match recipient endpoint");
-        } else {
-            log.debug("SAML message intended destination endpoint matched recipient endpoint");
-        }
+//        log.debug("Checking SAML message intended destination endpoint against receiver endpoint");
+//        
+//        String messageDestination = 
+//            DatatypeHelper.safeTrimOrNullString(getIntendedDestinationEndpointURI(messageContext));
+//        
+//        boolean bindingRequires = isIntendedDestinationEndpointURIRequired(messageContext);
+//        
+//        if (messageDestination == null) {
+//            if (bindingRequires) {
+//                log.error("SAML message intended destination endpoint URI required by binding was empty");
+//                throw new SecurityException("SAML message intended destination (required by binding) was not present");
+//            } else {
+//                log.debug("SAML message intended destination endpoint in message was empty, not required by binding, skipping");
+//                return;
+//            }
+//        }
+//        
+//        String receiverEndpoint = DatatypeHelper.safeTrimOrNullString(getActualReceiverEndpointURI(messageContext));
+//        
+//        log.debug("Intended message destination endpoint: {}", messageDestination);
+//        log.debug("Actual message receiver endpoint: {}", receiverEndpoint);
+//        
+//        boolean matched = compareEndpointURIs(messageDestination, receiverEndpoint);
+//        if (!matched) {
+//            log.error("SAML message intended destination endpoint '{}' did not match the recipient endpoint '{}'",
+//                    messageDestination, receiverEndpoint);
+//            throw new SecurityException("SAML message intended destination endpoint did not match recipient endpoint");
+//        } else {
+//            log.debug("SAML message intended destination endpoint matched recipient endpoint");
+//        }
     }
 
 }

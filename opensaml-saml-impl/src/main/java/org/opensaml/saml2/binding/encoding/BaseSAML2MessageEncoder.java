@@ -28,7 +28,7 @@ import org.opensaml.common.binding.SAMLMessageContext;
 import org.opensaml.common.binding.encoding.SAMLMessageEncoder;
 import org.opensaml.saml2.core.StatusResponseType;
 import org.opensaml.saml2.metadata.Endpoint;
-import org.opensaml.util.URLBuilder;
+import org.opensaml.util.net.HttpUrl;
 import org.opensaml.ws.message.encoder.BaseMessageEncoder;
 import org.opensaml.ws.message.encoder.MessageEncodingException;
 import org.opensaml.xml.XMLObjectBuilder;
@@ -99,21 +99,21 @@ public abstract class BaseSAML2MessageEncoder extends BaseMessageEncoder impleme
      * 
      * @throws MessageEncodingException throw if no relying party endpoint is available
      */
-    protected URLBuilder getEndpointURL(SAMLMessageContext messageContext) throws MessageEncodingException {
+    protected HttpUrl getEndpointURL(SAMLMessageContext messageContext) throws MessageEncodingException {
         Endpoint endpoint = messageContext.getPeerEntityEndpoint();
         if (endpoint == null) {
             throw new MessageEncodingException("Endpoint for relying party was null.");
         }
         
-        URLBuilder urlBuilder;
+        HttpUrl urlBuilder;
         if (messageContext.getOutboundMessage() instanceof StatusResponseType
                 && !DatatypeHelper.isEmpty(endpoint.getResponseLocation())) {
-            urlBuilder = new URLBuilder(endpoint.getResponseLocation());
+            urlBuilder = new HttpUrl(endpoint.getResponseLocation());
         } else {
             if (DatatypeHelper.isEmpty(endpoint.getLocation())) {
                 throw new MessageEncodingException("Relying party endpoint location was null or empty.");
             }
-            urlBuilder = new URLBuilder(endpoint.getLocation());
+            urlBuilder = new HttpUrl(endpoint.getLocation());
         }
         
         if(!getAllowedURLSchemes().contains(urlBuilder.getScheme())){
