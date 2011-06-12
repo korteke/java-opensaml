@@ -30,13 +30,13 @@ import org.opensaml.common.xml.SAMLConstants;
 import org.opensaml.saml2.binding.artifact.AbstractSAML2Artifact;
 import org.opensaml.saml2.binding.artifact.SAML2ArtifactBuilder;
 import org.opensaml.saml2.binding.artifact.SAML2ArtifactType0004;
-import org.opensaml.util.URLBuilder;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.message.encoder.MessageEncodingException;
 import org.opensaml.ws.transport.http.HTTPOutTransport;
 import org.opensaml.ws.transport.http.HTTPTransportUtils;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.util.Pair;
+import org.opensaml.util.net.HttpUrl;
 import org.owasp.esapi.ESAPI;
 import org.owasp.esapi.Encoder;
 import org.slf4j.Logger;
@@ -188,7 +188,7 @@ public class HTTPArtifactEncoder extends BaseSAML2MessageEncoder {
             throws MessageEncodingException {
         log.debug("Performing HTTP GET SAML 2 artifact encoding");
 
-        URLBuilder urlBuilder = getEndpointURL(artifactContext);
+        HttpUrl urlBuilder = getEndpointURL(artifactContext);
 
         List<Pair<String, String>> params = urlBuilder.getQueryParams();
 
@@ -203,7 +203,7 @@ public class HTTPArtifactEncoder extends BaseSAML2MessageEncoder {
             params.add(new Pair<String, String>("RelayState", artifactContext.getRelayState()));
         }
 
-        outTransport.sendRedirect(urlBuilder.buildURL());
+        outTransport.sendRedirect(urlBuilder.toString());
     }
 
     /**

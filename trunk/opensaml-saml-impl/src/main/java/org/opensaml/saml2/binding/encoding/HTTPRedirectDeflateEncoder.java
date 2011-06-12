@@ -30,7 +30,6 @@ import org.opensaml.common.binding.SAMLMessageContext;
 import org.opensaml.common.xml.SAMLConstants;
 import org.opensaml.saml2.core.RequestAbstractType;
 import org.opensaml.saml2.core.StatusResponseType;
-import org.opensaml.util.URLBuilder;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.message.encoder.MessageEncodingException;
 import org.opensaml.ws.transport.http.HTTPOutTransport;
@@ -45,6 +44,7 @@ import org.opensaml.xml.security.XMLSigningUtil;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.util.Base64;
 import org.opensaml.util.Pair;
+import org.opensaml.util.net.HttpUrl;
 import org.opensaml.xml.util.XMLHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -95,7 +95,7 @@ public class HTTPRedirectDeflateEncoder extends BaseSAML2MessageEncoder {
 
         SAMLMessageContext samlMsgCtx = (SAMLMessageContext) messageContext;
 
-        String endpointURL = getEndpointURL(samlMsgCtx).buildURL();
+        String endpointURL = getEndpointURL(samlMsgCtx).toString();
 
         setResponseDestination(samlMsgCtx.getOutboundSAMLMessage(), endpointURL);
 
@@ -165,7 +165,7 @@ public class HTTPRedirectDeflateEncoder extends BaseSAML2MessageEncoder {
     protected String buildRedirectURL(SAMLMessageContext messagesContext, String endpointURL, String message)
             throws MessageEncodingException {
         log.debug("Building URL to redirect client to");
-        URLBuilder urlBuilder = new URLBuilder(endpointURL);
+        HttpUrl urlBuilder = new HttpUrl(endpointURL);
 
         List<Pair<String, String>> queryParams = urlBuilder.getQueryParams();
         queryParams.clear();
@@ -196,7 +196,7 @@ public class HTTPRedirectDeflateEncoder extends BaseSAML2MessageEncoder {
                     sigMaterial)));
         }
 
-        return urlBuilder.buildURL();
+        return urlBuilder.toString();
     }
 
     /**

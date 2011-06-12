@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.util.http;
+package org.opensaml.util.net;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
