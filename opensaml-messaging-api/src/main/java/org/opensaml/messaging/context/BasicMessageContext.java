@@ -1,8 +1,8 @@
 /*
- * Licensed to the University Corporation for Advanced Internet Development, 
- * Inc. (UCAID) under one or more contributor license agreements.  See the 
- * NOTICE file distributed with this work for additional information regarding
- * copyright ownership. The UCAID licenses this file to You under the Apache 
+ * Licensed to the University Corporation for Advanced Internet Development, Inc.
+ * under one or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information regarding
+ * copyright ownership. The ASF licenses this file to You under the Apache 
  * License, Version 2.0 (the "License"); you may not use this file except in 
  * compliance with the License.  You may obtain a copy of the License at
  *
@@ -15,54 +15,66 @@
  * limitations under the License.
  */
 
-package org.opensaml.messaging.context.impl;
+package org.opensaml.messaging.context;
+
+import java.util.UUID;
 
 import org.joda.time.DateTime;
-import org.opensaml.messaging.context.AbstractSubcontextContainer;
-import org.opensaml.messaging.context.MessageContext;
-
+import org.opensaml.util.Assert;
+import org.opensaml.util.StringSupport;
 
 /**
  * A basic implementation of of {@link MessageContext}.
  * 
  * @param <MessageType> the type of message represented by the message context
  */
-public class BasicMessageContext<MessageType> extends AbstractSubcontextContainer 
-        implements MessageContext<MessageType> {
-    
+public class BasicMessageContext<MessageType> extends AbstractSubcontextContainer implements
+        MessageContext<MessageType> {
+
     /** The message represented. */
     private MessageType msg;
-    
+
     /** The context unique identifier. */
     private String id;
-    
+
     /** The context creation timestamp. */
-    private  DateTime creationTime;
-    
-    /** Constructor. */
+    private DateTime creationTime;
+
+    /** Constructor. Generates a random context ID. */
     public BasicMessageContext() {
-        creationTime = new DateTime();
-        // TODO id = generate random id ? or allow explicit set ?
+        this(UUID.randomUUID().toString());
     }
-    
+
+    /**
+     * Constructor.
+     * 
+     * @param contextId ID for this context, not null nor empty
+     */
+    public BasicMessageContext(String contextId) {
+        creationTime = new DateTime();
+
+        id = StringSupport.trimOrNull(contextId);
+        Assert.isNotNull(id, "Context ID can not be null or empty");
+    }
+
     /** {@inheritDoc} */
     public MessageType getMessage() {
         return msg;
     }
-    
+
     /** {@inheritDoc} */
     public void setMessage(MessageType message) {
         msg = message;
     }
-    
+
     /** {@inheritDoc} */
     public String getId() {
         return id;
     }
-    
+
     /** {@inheritDoc} */
     public DateTime getCreationTime() {
         return creationTime;
     }
-    
+
 }
