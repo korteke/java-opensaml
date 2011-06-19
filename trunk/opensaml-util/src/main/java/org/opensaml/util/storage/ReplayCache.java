@@ -17,16 +17,15 @@
 
 package org.opensaml.util.storage;
 
+import java.util.Map;
 import java.util.concurrent.locks.ReentrantLock;
 
 import org.joda.time.DateTime;
-import org.opensaml.util.StringSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Class that uses an underlying {@link StorageService} to track information associated with messages in order to detect
- * message replays.
+ * Tracks information associated with messages in order to detect message replays.
  * 
  * This class is thread-safe and uses a basic reentrant lock to avoid corruption of the underlying store, as well as to
  * prevent race conditions with respect to replay checking.
@@ -37,10 +36,7 @@ public class ReplayCache {
     private final Logger log = LoggerFactory.getLogger(ReplayCache.class);
 
     /** Backing storage for the replay cache. */
-    private StorageService<String, ReplayCacheEntry> storage;
-
-    /** Storage service partition used by this cache. default: replay */
-    private String partition;
+    private Map<String, ReplayCacheEntry> storage;
 
     /** Time, in milliseconds, that message state is valid. */
     private long entryDuration;
@@ -51,31 +47,12 @@ public class ReplayCache {
     /**
      * Constructor.
      * 
-     * @param storageService the StorageService which serves as the backing store for the cache
+     * @param cacheStorage the backing data store for this service
      * @param duration default length of time that message state is valid
      */
-    public ReplayCache(StorageService<String, ReplayCacheEntry> storageService, long duration) {
-        storage = storageService;
+    public ReplayCache(Map<String, ReplayCacheEntry> cacheStorage, long duration) {
+        storage = cacheStorage;
         entryDuration = duration;
-        partition = "replay";
-        cacheLock = new ReentrantLock(true);
-    }
-
-    /**
-     * Constructor.
-     * 
-     * @param storageService the StorageService which serves as the backing store for the cache
-     * @param storageParition name of storage service partition to use
-     * @param duration default length of time that message state is valid
-     */
-    public ReplayCache(StorageService<String, ReplayCacheEntry> storageService, String storageParition, long duration) {
-        storage = storageService;
-        entryDuration = duration;
-        if (!StringSupport.isNullOrEmpty(storageParition)) {
-            partition = StringSupport.trim(storageParition);
-        } else {
-            partition = "replay";
-        }
         cacheLock = new ReentrantLock(true);
     }
 
@@ -97,7 +74,7 @@ public class ReplayCache {
             boolean replayed = true;
             String entryHash = issuerId + messageId;
 
-            ReplayCacheEntry cacheEntry = storage.get(partition, entryHash);
+            ReplayCacheEntry cacheEntry = storage.get(entryHash);
 
             if (cacheEntry == null || cacheEntry.isExpired()) {
                 if (log.isDebugEnabled()) {
@@ -106,7 +83,7 @@ public class ReplayCache {
                     } else if (cacheEntry.isExpired()) {
                         log.debug("Message ID {} expired in replay cache at {}", messageId, cacheEntry
                                 .getExpirationTime().toString());
-                        storage.remove(partition, entryHash);
+                        storage.remove(entryHash);
                     }
                 }
                 replayed = false;
@@ -123,13 +100,13 @@ public class ReplayCache {
     }
 
     /**
-     * Accquires a write lock and adds the message state to the underlying storage service.
+     * Acquires a write lock and adds the message state to the underlying storage service.
      * 
      * @param messageId unique ID of the message
      * @param expiration time the message state expires
      */
     protected void addMessageID(String messageId, DateTime expiration) {
         log.debug("Writing message ID {} to replay cache with expiration time {}", messageId, expiration.toString());
-        storage.put(partition, messageId, new ReplayCacheEntry(messageId, expiration));
+        storage.put(messageId, new ReplayCacheEntry(messageId, expiration));
     }
 }

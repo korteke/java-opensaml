@@ -17,6 +17,8 @@
 
 package org.opensaml.util.storage;
 
+import java.util.HashMap;
+
 import junit.framework.TestCase;
 
 
@@ -27,7 +29,7 @@ public class ReplayCacheTest extends TestCase {
 
     private String messageID;
 
-    private MapBasedStorageService<String, ReplayCacheEntry> storageEngine;
+    private HashMap<String, ReplayCacheEntry> storageEngine;
 
     /** {@inheritDoc} */
     protected void setUp() throws Exception {
@@ -35,7 +37,7 @@ public class ReplayCacheTest extends TestCase {
 
         messageID = "abc123";
 
-        storageEngine = new MapBasedStorageService<String, ReplayCacheEntry>();
+        storageEngine = new HashMap<String, ReplayCacheEntry>();
     }
 
     /**
