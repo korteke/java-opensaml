@@ -17,10 +17,11 @@
 
 package org.opensaml.common.binding.security;
 
+import java.util.HashMap;
+
 import org.opensaml.saml2.core.AttributeQuery;
 import org.opensaml.saml2.core.NameID;
 import org.opensaml.saml2.core.Response;
-import org.opensaml.util.storage.MapBasedStorageService;
 import org.opensaml.util.storage.ReplayCache;
 import org.opensaml.util.storage.ReplayCacheEntry;
 
@@ -31,7 +32,7 @@ public class MessageReplayRuleTest extends BaseSAMLSecurityPolicyRuleTestCase<At
 
     private String messageID;
 
-    private MapBasedStorageService<String, ReplayCacheEntry> storageEngine;
+    private HashMap<String, ReplayCacheEntry> storageEngine;
 
     private ReplayCache replayCache;
 
@@ -44,7 +45,7 @@ public class MessageReplayRuleTest extends BaseSAMLSecurityPolicyRuleTestCase<At
         messageContext.setInboundMessageIssuer("issuer");
         messageContext.setInboundSAMLMessageId(messageID);
 
-        storageEngine = new MapBasedStorageService<String, ReplayCacheEntry>();
+        storageEngine = new HashMap<String, ReplayCacheEntry>();
         replayCache = new ReplayCache(storageEngine, 60 * 10 * 1000);
         rule = new MessageReplayRule(replayCache);
     }
