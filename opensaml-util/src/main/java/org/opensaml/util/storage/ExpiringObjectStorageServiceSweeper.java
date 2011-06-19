@@ -18,7 +18,7 @@
 package org.opensaml.util.storage;
 
 import java.util.Iterator;
-import java.util.Set;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -26,7 +26,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * A simple task that periodically sweeps over a {@link StorageService} and removes expired entries.
+ * A simple task that periodically sweeps over a Map and removes expired entries.
  */
 public class ExpiringObjectStorageServiceSweeper extends TimerTask {
 
@@ -37,10 +37,7 @@ public class ExpiringObjectStorageServiceSweeper extends TimerTask {
     private long sweepInterval;
 
     /** Storage service whose entries will be periodically checked. */
-    private StorageService store;
-
-    /** Storage partitions to sweep. */
-    private Set<String> partitions;
+    private Map store;
 
     /**
      * Constructor. Registers this task with the given timer.
@@ -49,29 +46,8 @@ public class ExpiringObjectStorageServiceSweeper extends TimerTask {
      * @param interval interval, in milliseconds, that the storage service will be swept
      * @param sweptStore storage service that will be swept
      */
-    public ExpiringObjectStorageServiceSweeper(Timer taskTimer, long interval, StorageService sweptStore) {
+    public ExpiringObjectStorageServiceSweeper(Timer taskTimer, long interval, Map sweptStore) {
         store = sweptStore;
-        sweepInterval = interval;
-        taskTimer.schedule(this, interval, interval);
-        partitions = null;
-    }
-
-    /**
-     * Constructor. Registers this task with the given timer.
-     * 
-     * @param taskTimer timer that will sweep the given storage service
-     * @param interval interval, in milliseconds, that the storage service will be swept
-     * @param sweptStore storage service that will be swept
-     * @param sweptPartitions the partitions to sweep, if null or empty all partitions are swept
-     */
-    public ExpiringObjectStorageServiceSweeper(Timer taskTimer, long interval, StorageService sweptStore,
-            Set<String> sweptPartitions) {
-        store = sweptStore;
-        if (sweptPartitions != null || sweptPartitions.isEmpty()) {
-            partitions = sweptPartitions;
-        } else {
-            partitions = null;
-        }
         sweepInterval = interval;
         taskTimer.schedule(this, interval, interval);
     }
@@ -79,33 +55,17 @@ public class ExpiringObjectStorageServiceSweeper extends TimerTask {
     /** {@inheritDoc} */
     public void run() {
         try {
-            Iterator<String> sweepPartitions;
-            if (partitions != null && !partitions.isEmpty()) {
-                sweepPartitions = partitions.iterator();
-            } else {
-                sweepPartitions = store.getPartitions();
-            }
+            Iterator<Object> keyItr = store.keySet().iterator();
+            Object key;
+            Object value;
 
-            String currentParition;
-            Iterator<?> partitionKeys;
-            Object partitionKey;
-            Object partitionValue;
-            while (sweepPartitions.hasNext()) {
-                currentParition = sweepPartitions.next();
-                log.trace("Sweeping storage service partition {}", currentParition);
-                partitionKeys = store.getKeys(currentParition);
-                if (partitionKeys == null) {
-                    continue;
-                }
-
-                while (partitionKeys.hasNext()) {
-                    partitionKey = partitionKeys.next();
-                    partitionValue = store.get(currentParition, partitionKey);
-                    if (partitionValue instanceof ExpiringObject) {
-                        if (((ExpiringObject) partitionValue).isExpired()) {
-                            log.trace("Removing expired object from storage service partition {}", currentParition);
-                            partitionKeys.remove();
-                        }
+            while (keyItr.hasNext()) {
+                key = keyItr.next();
+                value = store.get(key);
+                if (value instanceof ExpiringObject) {
+                    if (((ExpiringObject) value).isExpired()) {
+                        log.trace("Removing expired object");
+                        keyItr.remove();
                     }
                 }
             }
