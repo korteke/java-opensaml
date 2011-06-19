@@ -17,27 +17,26 @@
 
 package org.opensaml.messaging.context;
 
-
-/**
- * Abstract implementation of {@link Subcontext}.
- */
+/** Abstract implementation of {@link Subcontext}. */
 public abstract class AbstractSubcontext implements Subcontext {
-    
+
     /** The owning container. */
     private SubcontextContainer owner;
-    
+
     /**
-     * Constructor.
-     *
+     * Constructor. Adds this subcontext to the given container.
+     * 
      * @param container the owning subcontext container.
      */
     public AbstractSubcontext(SubcontextContainer container) {
         owner = container;
+        if (container != null) {
+            container.addSubcontext(this);
+        }
     }
-    
+
     /** {@inheritDoc} */
     public SubcontextContainer getOwner() {
         return owner;
     }
-    
 }

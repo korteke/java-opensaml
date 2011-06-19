@@ -15,20 +15,16 @@
  * limitations under the License.
  */
 
-package org.opensaml.messaging.context.impl;
+package org.opensaml.messaging.context;
 
 import java.util.UUID;
 
 import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
-import org.opensaml.messaging.context.AbstractSubcontextContainer;
-import org.opensaml.messaging.context.InOutOperationContext;
-import org.opensaml.messaging.context.MessageContext;
 
 
 /**
- *
- * Basic implemenation of {@link InOutOperationContext}.
+ * Basic implementation of {@link InOutOperationContext}.
  * 
  * @param <InboundMessageType> the inbound message type
  * @param <OutboundMessageType> the outbound message type
