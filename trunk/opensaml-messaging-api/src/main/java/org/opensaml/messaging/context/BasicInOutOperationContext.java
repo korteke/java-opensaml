@@ -22,58 +22,74 @@ import java.util.UUID;
 import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
 
-
 /**
  * Basic implementation of {@link InOutOperationContext}.
  * 
  * @param <InboundMessageType> the inbound message type
  * @param <OutboundMessageType> the outbound message type
  */
-public class BasicInOutOperationContext<InboundMessageType, OutboundMessageType> extends AbstractSubcontextContainer 
+public class BasicInOutOperationContext<InboundMessageType, OutboundMessageType> extends AbstractSubcontextContainer
         implements InOutOperationContext<InboundMessageType, OutboundMessageType> {
-    
+
     /** The inbound message context. */
     private MessageContext<InboundMessageType> inboundContext;
-    
+
     /** The outbound message context. */
     private MessageContext<OutboundMessageType> outboundContext;
-    
+
     /** The context unique identifier. */
     private String id;
-    
+
     /** The context creation timestamp. */
-    private  DateTime creationTime;
-    
-    /** Constructor.  Sets ID to a generated UUID and creation time to now. */
-    protected BasicInOutOperationContext(){
+    private DateTime creationTime;
+
+    /** Constructor. Sets ID to a generated UUID and creation time to now. */
+    protected BasicInOutOperationContext() {
         id = UUID.randomUUID().toString();
         creationTime = new DateTime(ISOChronology.getInstanceUTC());
     }
-    
+
     /**
      * Constructor.
-     *
+     * 
      * @param inbound the inbound message context
      * @param outbound the outbound message context
      */
-    public BasicInOutOperationContext(MessageContext<InboundMessageType> inbound, 
+    public BasicInOutOperationContext(MessageContext<InboundMessageType> inbound,
             MessageContext<OutboundMessageType> outbound) {
         this();
-        
-        //TODO should check for null?
-        inboundContext = inbound; 
-        outboundContext = outbound; 
+
+        inboundContext = inbound;
+        outboundContext = outbound;
 
     }
-    
+
     /** {@inheritDoc} */
     public MessageContext<InboundMessageType> getInboundMessageContext() {
         return inboundContext;
     }
-    
+
+    /**
+     * Sets the inbound message context.
+     * 
+     * @param context inbound message context, may be null
+     */
+    public void setInboundMessageContext(MessageContext<InboundMessageType> context) {
+        inboundContext = context;
+    }
+
     /** {@inheritDoc} */
     public MessageContext<OutboundMessageType> getOutboundMessageContext() {
         return outboundContext;
+    }
+
+    /**
+     * Sets the outbound message context.
+     * 
+     * @param context outbound message context, may be null
+     */
+    public void setOutboundMessageContext(MessageContext<OutboundMessageType> context) {
+        outboundContext = context;
     }
 
     /** {@inheritDoc} */
@@ -85,5 +101,5 @@ public class BasicInOutOperationContext<InboundMessageType, OutboundMessageType>
     public String getId() {
         return id;
     }
-    
+
 }
