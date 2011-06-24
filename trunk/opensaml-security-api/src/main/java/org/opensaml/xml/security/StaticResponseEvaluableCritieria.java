@@ -17,12 +17,26 @@
 
 package org.opensaml.xml.security;
 
+import net.jcip.annotations.ThreadSafe;
+
 /**
  * An {@link EvaluableCriteria} implementation that always returns the same response.
  * 
  * @param <T> the type of object which may be evaluated
  */
+@ThreadSafe
 public class StaticResponseEvaluableCritieria<T> implements EvaluableCriteria<T> {
+
+    /** {@link EvaluableCriteria} that always returns {@link Boolean#TRUE}. */
+    public static final StaticResponseEvaluableCritieria TRUE_RESPONSE = new StaticResponseEvaluableCritieria(
+            Boolean.TRUE);
+
+    /** {@link EvaluableCriteria} that always returns {@link Boolean#FALSE}. */
+    public static final StaticResponseEvaluableCritieria FALSE_RESPONSE = new StaticResponseEvaluableCritieria(
+            Boolean.FALSE);
+
+    /** {@link EvaluableCriteria} that always returns null. */
+    public static final StaticResponseEvaluableCritieria NULL_RESPONSE = new StaticResponseEvaluableCritieria(null);
 
     /** Response returned for all requests. */
     private final Boolean response;
@@ -32,7 +46,7 @@ public class StaticResponseEvaluableCritieria<T> implements EvaluableCriteria<T>
      * 
      * @param criteriaResponse response from this criteria
      */
-    public StaticResponseEvaluableCritieria(Boolean criteriaResponse) {
+    protected StaticResponseEvaluableCritieria(final Boolean criteriaResponse) {
         response = criteriaResponse;
     }
 
