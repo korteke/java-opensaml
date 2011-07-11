@@ -20,6 +20,8 @@ package org.opensaml.saml2.binding.encoding;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.zip.Deflater;
 import java.util.zip.DeflaterOutputStream;
@@ -30,21 +32,19 @@ import org.opensaml.common.binding.SAMLMessageContext;
 import org.opensaml.common.xml.SAMLConstants;
 import org.opensaml.saml2.core.RequestAbstractType;
 import org.opensaml.saml2.core.StatusResponseType;
+import org.opensaml.util.Base64;
+import org.opensaml.util.Pair;
+import org.opensaml.util.net.UriSupport;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.message.encoder.MessageEncodingException;
 import org.opensaml.ws.transport.http.HTTPOutTransport;
 import org.opensaml.ws.transport.http.HTTPTransportUtils;
-import org.opensaml.xml.Configuration;
 import org.opensaml.xml.security.SecurityConfiguration;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.SecurityHelper;
-import org.opensaml.xml.security.SigningUtil;
 import org.opensaml.xml.security.XMLSecurityHelper;
 import org.opensaml.xml.security.XMLSigningUtil;
 import org.opensaml.xml.security.credential.Credential;
-import org.opensaml.util.Base64;
-import org.opensaml.util.Pair;
-import org.opensaml.util.net.HttpUrl;
 import org.opensaml.xml.util.XMLHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,7 +68,7 @@ public class HTTPRedirectDeflateEncoder extends BaseSAML2MessageEncoder {
     public String getBindingURI() {
         return SAMLConstants.SAML2_REDIRECT_BINDING_URI;
     }
-    
+
     /** {@inheritDoc} */
     public boolean providesMessageConfidentiality(MessageContext messageContext) throws MessageEncodingException {
         return false;
@@ -155,19 +155,25 @@ public class HTTPRedirectDeflateEncoder extends BaseSAML2MessageEncoder {
      * Builds the URL to redirect the client to.
      * 
      * @param messagesContext current message context
-     * @param endpointURL endpoint URL to send encoded message to
+     * @param endpoint endpoint URL to send encoded message to
      * @param message Deflated and Base64 encoded message
      * 
      * @return URL to redirect client to
      * 
      * @throws MessageEncodingException thrown if the SAML message is neither a RequestAbstractType or Response
      */
-    protected String buildRedirectURL(SAMLMessageContext messagesContext, String endpointURL, String message)
+    protected String buildRedirectURL(SAMLMessageContext messagesContext, String endpoint, String message)
             throws MessageEncodingException {
         log.debug("Building URL to redirect client to");
-        HttpUrl urlBuilder = new HttpUrl(endpointURL);
 
-        List<Pair<String, String>> queryParams = urlBuilder.getQueryParams();
+        URI endpointUrl;
+        try {
+            endpointUrl = new URI(endpoint);
+        } catch (URISyntaxException e) {
+            throw new MessageEncodingException("Endpoint URL " + endpoint + " is not a valid URL", e);
+        }
+
+        List<Pair<String, String>> queryParams = UriSupport.parseQueryString(endpointUrl.getQuery());
         queryParams.clear();
 
         if (messagesContext.getOutboundSAMLMessage() instanceof RequestAbstractType) {
@@ -190,13 +196,14 @@ public class HTTPRedirectDeflateEncoder extends BaseSAML2MessageEncoder {
             String sigAlgURI = getSignatureAlgorithmURI(signingCredential, null);
             Pair<String, String> sigAlg = new Pair<String, String>("SigAlg", sigAlgURI);
             queryParams.add(sigAlg);
-            String sigMaterial = urlBuilder.buildQueryString();
+            String sigMaterial = UriSupport.buildQuery(queryParams);
 
             queryParams.add(new Pair<String, String>("Signature", generateSignature(signingCredential, sigAlgURI,
                     sigMaterial)));
+            endpointUrl = UriSupport.setQuery(endpointUrl, queryParams);
         }
 
-        return urlBuilder.toString();
+        return endpointUrl.toASCIIString();
     }
 
     /**
@@ -247,8 +254,8 @@ public class HTTPRedirectDeflateEncoder extends BaseSAML2MessageEncoder {
 
         String b64Signature = null;
         try {
-            byte[] rawSignature = XMLSigningUtil.signWithURI(signingCredential, algorithmURI, queryString
-                    .getBytes("UTF-8"));
+            byte[] rawSignature =
+                    XMLSigningUtil.signWithURI(signingCredential, algorithmURI, queryString.getBytes("UTF-8"));
             b64Signature = Base64.encodeBytes(rawSignature, Base64.DONT_BREAK_LINES);
             log.debug("Generated digital signature value (base64-encoded) {}", b64Signature);
         } catch (SecurityException e) {

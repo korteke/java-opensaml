@@ -17,6 +17,8 @@
 
 package org.opensaml.saml2.binding.encoding;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -26,16 +28,15 @@ import org.opensaml.common.SAMLObject;
 import org.opensaml.common.SignableSAMLObject;
 import org.opensaml.common.binding.SAMLMessageContext;
 import org.opensaml.common.binding.encoding.SAMLMessageEncoder;
+import org.opensaml.saml2.core.Response;
 import org.opensaml.saml2.core.StatusResponseType;
 import org.opensaml.saml2.metadata.Endpoint;
-import org.opensaml.util.net.HttpUrl;
 import org.opensaml.ws.message.encoder.BaseMessageEncoder;
 import org.opensaml.ws.message.encoder.MessageEncodingException;
 import org.opensaml.xml.XMLObjectBuilder;
 import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.security.SecurityException;
-import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.XMLSecurityHelper;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.signature.Signature;
@@ -44,6 +45,10 @@ import org.opensaml.xml.signature.Signer;
 import org.opensaml.xml.util.DatatypeHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+//TODO pull allowed URL scheme check out in to a separate class
+//TODO pull out the getEndpointURL method to support class and share it with BaseSAML1MessageEncoder
+//TODO not sure if message signing should be in here either, it's not really part of the encoding process
 
 /**
  * Base class for SAML 2 message encoders.
@@ -99,27 +104,38 @@ public abstract class BaseSAML2MessageEncoder extends BaseMessageEncoder impleme
      * 
      * @throws MessageEncodingException throw if no relying party endpoint is available
      */
-    protected HttpUrl getEndpointURL(SAMLMessageContext messageContext) throws MessageEncodingException {
+    protected URI getEndpointURL(SAMLMessageContext messageContext) throws MessageEncodingException {
         Endpoint endpoint = messageContext.getPeerEntityEndpoint();
         if (endpoint == null) {
             throw new MessageEncodingException("Endpoint for relying party was null.");
         }
-        
-        HttpUrl urlBuilder;
-        if (messageContext.getOutboundMessage() instanceof StatusResponseType
+
+        URI endpointUrl;
+        if (messageContext.getOutboundMessage() instanceof Response
                 && !DatatypeHelper.isEmpty(endpoint.getResponseLocation())) {
-            urlBuilder = new HttpUrl(endpoint.getResponseLocation());
+            try {
+                endpointUrl = new URI(endpoint.getResponseLocation());
+            } catch (URISyntaxException e) {
+                throw new MessageEncodingException("The endpoint response location " + endpoint.getResponseLocation()
+                        + " is not a valid URL", e);
+            }
         } else {
             if (DatatypeHelper.isEmpty(endpoint.getLocation())) {
                 throw new MessageEncodingException("Relying party endpoint location was null or empty.");
             }
-            urlBuilder = new HttpUrl(endpoint.getLocation());
+            try {
+                endpointUrl = new URI(endpoint.getLocation());
+            } catch (URISyntaxException e) {
+                throw new MessageEncodingException("The endpoint location " + endpoint.getLocation()
+                        + " is not a valid URL", e);
+            }
         }
-        
-        if(!getAllowedURLSchemes().contains(urlBuilder.getScheme())){
-           throw new MessageEncodingException("Relying party endpoint used the untrusted URL scheme " + urlBuilder.getScheme()); 
+
+        if (!getAllowedURLSchemes().contains(endpointUrl.getScheme())) {
+            throw new MessageEncodingException("Relying party endpoint used the untrusted URL scheme "
+                    + endpointUrl.getScheme());
         }
-        return urlBuilder;
+        return endpointUrl;
     }
 
     /**

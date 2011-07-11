@@ -18,6 +18,7 @@
 package org.opensaml.saml2.binding.encoding;
 
 import java.io.OutputStreamWriter;
+import java.net.URI;
 import java.util.List;
 
 import org.apache.velocity.VelocityContext;
@@ -30,13 +31,12 @@ import org.opensaml.common.xml.SAMLConstants;
 import org.opensaml.saml2.binding.artifact.AbstractSAML2Artifact;
 import org.opensaml.saml2.binding.artifact.SAML2ArtifactBuilder;
 import org.opensaml.saml2.binding.artifact.SAML2ArtifactType0004;
+import org.opensaml.util.Pair;
+import org.opensaml.util.net.UriSupport;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.message.encoder.MessageEncodingException;
 import org.opensaml.ws.transport.http.HTTPOutTransport;
-import org.opensaml.ws.transport.http.HTTPTransportUtils;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.util.Pair;
-import org.opensaml.util.net.HttpUrl;
 import org.owasp.esapi.ESAPI;
 import org.owasp.esapi.Encoder;
 import org.slf4j.Logger;
@@ -162,7 +162,8 @@ public class HTTPArtifactEncoder extends BaseSAML2MessageEncoder {
 
         if (checkRelayState(artifactContext.getRelayState())) {
             String encodedRelayState = esapiEncoder.encodeForHTMLAttribute(artifactContext.getRelayState());
-            log.debug("Setting RelayState parameter to: '{}', encoded as '{}'", artifactContext.getRelayState(), encodedRelayState);
+            log.debug("Setting RelayState parameter to: '{}', encoded as '{}'", artifactContext.getRelayState(),
+                    encodedRelayState);
             context.put("RelayState", encodedRelayState);
         }
 
@@ -188,12 +189,12 @@ public class HTTPArtifactEncoder extends BaseSAML2MessageEncoder {
             throws MessageEncodingException {
         log.debug("Performing HTTP GET SAML 2 artifact encoding");
 
-        HttpUrl urlBuilder = getEndpointURL(artifactContext);
+        URI endpointUri = getEndpointURL(artifactContext);
 
-        List<Pair<String, String>> params = urlBuilder.getQueryParams();
+        List<Pair<String, String>> params = UriSupport.parseQueryString(endpointUri.getQuery());
 
         AbstractSAMLArtifact artifact = buildArtifact(artifactContext);
-        if(artifact == null){
+        if (artifact == null) {
             log.error("Unable to build artifact for message to relying party");
             throw new MessageEncodingException("Unable to builder artifact for message to relying party");
         }
@@ -203,7 +204,7 @@ public class HTTPArtifactEncoder extends BaseSAML2MessageEncoder {
             params.add(new Pair<String, String>("RelayState", artifactContext.getRelayState()));
         }
 
-        outTransport.sendRedirect(urlBuilder.toString());
+        outTransport.sendRedirect(endpointUri.toASCIIString());
     }
 
     /**
@@ -219,22 +220,23 @@ public class HTTPArtifactEncoder extends BaseSAML2MessageEncoder {
 
         SAML2ArtifactBuilder artifactBuilder;
         if (artifactContext.getOutboundMessageArtifactType() != null) {
-            artifactBuilder = Configuration.getSAML2ArtifactBuilderFactory().getArtifactBuilder(
-                    artifactContext.getOutboundMessageArtifactType());
+            artifactBuilder =
+                    Configuration.getSAML2ArtifactBuilderFactory().getArtifactBuilder(
+                            artifactContext.getOutboundMessageArtifactType());
         } else {
             artifactBuilder = Configuration.getSAML2ArtifactBuilderFactory().getArtifactBuilder(defaultArtifactType);
             artifactContext.setOutboundMessageArtifactType(defaultArtifactType);
         }
 
         AbstractSAML2Artifact artifact = artifactBuilder.buildArtifact(artifactContext);
-        if(artifact == null){
+        if (artifact == null) {
             log.error("Unable to build artifact for message to relying party");
             throw new MessageEncodingException("Unable to builder artifact for message to relying party");
         }
         String encodedArtifact = artifact.base64Encode();
         try {
-            artifactMap.put(encodedArtifact, artifactContext.getInboundMessageIssuer(), artifactContext
-                    .getOutboundMessageIssuer(), artifactContext.getOutboundSAMLMessage());
+            artifactMap.put(encodedArtifact, artifactContext.getInboundMessageIssuer(),
+                    artifactContext.getOutboundMessageIssuer(), artifactContext.getOutboundSAMLMessage());
         } catch (MarshallingException e) {
             log.error("Unable to marshall assertion to be represented as an artifact", e);
             throw new MessageEncodingException("Unable to marshall assertion to be represented as an artifact", e);

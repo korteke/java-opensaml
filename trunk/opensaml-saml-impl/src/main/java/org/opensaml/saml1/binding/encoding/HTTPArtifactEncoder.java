@@ -17,6 +17,7 @@
 
 package org.opensaml.saml1.binding.encoding;
 
+import java.net.URI;
 import java.util.List;
 
 import org.opensaml.Configuration;
@@ -30,12 +31,12 @@ import org.opensaml.saml1.binding.artifact.SAML1ArtifactType0001;
 import org.opensaml.saml1.core.Assertion;
 import org.opensaml.saml1.core.NameIdentifier;
 import org.opensaml.saml1.core.Response;
+import org.opensaml.util.Pair;
+import org.opensaml.util.net.UriSupport;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.message.encoder.MessageEncodingException;
 import org.opensaml.ws.transport.http.HTTPOutTransport;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.util.Pair;
-import org.opensaml.util.net.HttpUrl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -95,9 +96,9 @@ public class HTTPArtifactEncoder extends BaseSAML1MessageEncoder {
         SAMLMessageContext<SAMLObject, Response, NameIdentifier> artifactContext = (SAMLMessageContext) messageContext;
         HTTPOutTransport outTransport = (HTTPOutTransport) artifactContext.getOutboundMessageTransport();
 
-        HttpUrl urlBuilder = getEndpointURL(artifactContext);
+        URI endpointUrl = getEndpointURL(artifactContext);
 
-        List<Pair<String, String>> params = urlBuilder.getQueryParams();
+        List<Pair<String, String>> params = UriSupport.parseQueryString(endpointUrl.getQuery());
 
         params.add(new Pair<String, String>("TARGET", artifactContext.getRelayState()));
 
@@ -130,10 +131,11 @@ public class HTTPArtifactEncoder extends BaseSAML1MessageEncoder {
             params.add(new Pair<String, String>("SAMLart", artifactString));
         }
 
-        String redirectUrl = urlBuilder.toString();
+        endpointUrl = UriSupport.setQuery(endpointUrl, params);
 
-        log.debug("Sending redirect to URL {} to relying party {}", redirectUrl, artifactContext
+        String encodedEndpoint = endpointUrl.toASCIIString();
+        log.debug("Sending redirect to URL {} to relying party {}", encodedEndpoint, artifactContext
                 .getInboundMessageIssuer());
-        outTransport.sendRedirect(urlBuilder.toString());
+        outTransport.sendRedirect(encodedEndpoint);
     }
 }

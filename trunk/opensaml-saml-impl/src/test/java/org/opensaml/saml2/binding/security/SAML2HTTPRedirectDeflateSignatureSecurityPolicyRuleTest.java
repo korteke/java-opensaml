@@ -17,6 +17,7 @@
 
 package org.opensaml.saml2.binding.security;
 
+import java.net.URI;
 import java.security.KeyException;
 import java.security.PrivateKey;
 import java.security.cert.CertificateException;
@@ -49,7 +50,7 @@ import org.opensaml.xml.security.x509.BasicX509Credential;
 import org.opensaml.xml.signature.SignatureTrustEngine;
 import org.opensaml.xml.signature.impl.ExplicitKeySignatureTrustEngine;
 import org.opensaml.util.Pair;
-import org.opensaml.util.net.HttpUrl;
+import org.opensaml.util.net.UriSupport;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 
@@ -278,9 +279,10 @@ public class SAML2HTTPRedirectDeflateSignatureSecurityPolicyRuleTest
         
         // The Spring mock object doesn't convert between the query params and the getParameter apparently,
         // so have to set them both ways.
-        HttpUrl urlBuilder = new HttpUrl(response.getRedirectedUrl());
-        request.setQueryString(urlBuilder.buildQueryString());
-        for (Pair<String, String> param : urlBuilder.getQueryParams()) {
+        URI redirectedUrl = URI.create(response.getRedirectedUrl());
+        List<Pair<String, String>> queryParams = UriSupport.parseQueryString(redirectedUrl.getQuery());
+        request.setQueryString(UriSupport.buildQuery(queryParams));
+        for (Pair<String, String> param : queryParams) {
             request.setParameter(param.getFirst(), param.getSecond());
         }
         

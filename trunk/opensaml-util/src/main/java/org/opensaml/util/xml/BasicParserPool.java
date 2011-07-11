@@ -679,7 +679,7 @@ public class BasicParserPool implements ParserPool {
          * @param isReturned set true to indicate that parser has been returned to the owning pool
          */
         protected void setReturned(final boolean isReturned) {
-            this.returned = isReturned;
+            returned = isReturned;
         }
 
         /**
