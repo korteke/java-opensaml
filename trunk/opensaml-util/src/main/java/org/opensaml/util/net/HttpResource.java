@@ -20,12 +20,14 @@ package org.opensaml.util.net;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Properties;
 
 import net.jcip.annotations.NotThreadSafe;
 
@@ -42,7 +44,7 @@ import org.apache.http.impl.cookie.DateUtils;
 import org.apache.http.util.EntityUtils;
 import org.opensaml.util.Assert;
 import org.opensaml.util.CloseableSupport;
-import org.opensaml.util.ObjectSupport;
+import org.opensaml.util.Pair;
 import org.opensaml.util.StringSupport;
 import org.opensaml.util.resource.CachingResource;
 import org.opensaml.util.resource.FilebackedRemoteResource;
@@ -60,6 +62,12 @@ import org.slf4j.LoggerFactory;
 @NotThreadSafe
 public class HttpResource implements CachingResource, FilebackedRemoteResource {
 
+    /** Property name under which the ETag data is stored. */
+    public static final String ETAG_PROP = "etag";
+
+    /** Property name under which the Last-Modified data is stored. */
+    public static final String LAST_MODIFIED_PROP = "modified";
+
     /** Class logger. */
     private final Logger log = LoggerFactory.getLogger(HttpResource.class);
 
@@ -70,7 +78,16 @@ public class HttpResource implements CachingResource, FilebackedRemoteResource {
     private final String resourceUrl;
 
     /** Backup and local cache of metadata. */
-    private File backupFile;
+    private final File backupFile;
+
+    /** File used to store ETag and Last-Modified properties associated with backup file. */
+    private final File propFile;
+
+    /**
+     * Whether the data (ETag and/or Last-Modified) information will be saved in addition to the backup file and then
+     * used to bootstrap this resource next time.
+     */
+    private final boolean savingConditionalGetData;
 
     /** Instant, in milliseconds since the epoch, when the backup file was created. */
     private long backupFileCreationInstant;
@@ -87,24 +104,24 @@ public class HttpResource implements CachingResource, FilebackedRemoteResource {
      * @param url URL of the remote resource data
      * @param client client used to fetch the remote resource data
      * @param backup file to which remote resource data is written as a backup/cache
+     * @param saveConditionalGetData whether to save conditional GET data in addition to backup data
      */
-    public HttpResource(final String url, final HttpClient client, final String backup) {
+    public HttpResource(final String url, final HttpClient client, final String backup, boolean saveConditionalGetData) {
         resourceUrl = StringSupport.trimOrNull(url);
         Assert.isNotNull(resourceUrl, "Resource URL may not be null or empty");
 
         Assert.isNotNull(client, "HTTP client may not be null");
         httpClient = client;
 
-        backupFile = new File(backup);
-        if (!backupFileExists()) {
-            try {
-                backupFile.createNewFile();
-            } catch (IOException e) {
-                throw new IllegalArgumentException("Unable to create backup file", e);
-            }
+        final String trimmedBackup = StringSupport.trimOrNull(backup);
+        Assert.isNotNull(trimmedBackup, "Backup file path can not be null");
+        backupFile = new File(trimmedBackup);
+        propFile = new File(backupFile.getAbsolutePath() + ".props");
+
+        savingConditionalGetData = saveConditionalGetData;
+        if (saveConditionalGetData) {
+            readInSavedConditionalGetData();
         }
-        Assert.isTrue(backupFile.canRead(), "Backup file is not readable");
-        Assert.isTrue(backupFile.canWrite(), "Backup file is not writable");
     }
 
     /** {@inheritDoc} */
@@ -112,8 +129,22 @@ public class HttpResource implements CachingResource, FilebackedRemoteResource {
         return resourceUrl;
     }
 
+    /**
+     * Gets whether the data (ETag and/or Last-Modified) information will be saved in addition to the backup file and
+     * then used to bootstrap this resource next time.
+     * 
+     * @return whether conditional GET data is saved along with backup data file
+     */
+    public boolean isSavingConditionalGetData() {
+        return savingConditionalGetData;
+    }
+
     /** {@inheritDoc} */
     public long getLastModifiedTime() throws ResourceException {
+        if (cachedResourceLastModified == null) {
+            return -1;
+        }
+
         try {
             final Date lastModDate = DateUtils.parseDate(cachedResourceLastModified);
             final GregorianCalendar cal = new GregorianCalendar();
@@ -133,7 +164,7 @@ public class HttpResource implements CachingResource, FilebackedRemoteResource {
             HttpResponse httpResponse = httpClient.execute(httpRequest);
             int statusCode = httpResponse.getStatusLine().getStatusCode();
             httpRequest.abort();
-            
+
             if (statusCode == HttpStatus.SC_METHOD_NOT_ALLOWED) {
                 log.debug(resourceUrl + " does not support HEAD requests, falling back to GET request");
                 httpRequest = buildGetRequest();
@@ -142,32 +173,25 @@ public class HttpResource implements CachingResource, FilebackedRemoteResource {
                 httpRequest.abort();
             }
 
-            if (statusCode != HttpStatus.SC_OK) {
-                return false;
+            if (statusCode == HttpStatus.SC_OK || statusCode == HttpStatus.SC_NOT_MODIFIED) {
+                return true;
             }
 
-            final String etag = getETag(httpResponse);
-            final String lastModified = getLastModified(httpResponse);
-            if ((etag != null && !ObjectSupport.equals(etag, cachedResourceETag))
-                    || (lastModified != null && !ObjectSupport.equals(lastModified, cachedResourceLastModified))) {
-                expireCache();
-            }
-
-            return true;
+            return false;
         } catch (IOException e) {
             throw new ResourceException("Error contacting resource " + resourceUrl, e);
-        }finally{
+        } finally {
             httpRequest.abort();
         }
     }
 
     /** {@inheritDoc} */
     public InputStream getInputStream() throws ResourceException {
-        final HttpGet getRequest = buildGetRequest();
+        final HttpGet httpRequest = buildGetRequest();
 
         try {
             log.debug("Attempting to fetch data from '{}'", resourceUrl);
-            final HttpResponse response = httpClient.execute(getRequest);
+            final HttpResponse response = httpClient.execute(httpRequest);
             final int httpStatus = response.getStatusLine().getStatusCode();
 
             switch (httpStatus) {
@@ -179,14 +203,19 @@ public class HttpResource implements CachingResource, FilebackedRemoteResource {
                     return null;
                 default:
                     log.debug(
-                            "Non-ok status code, {}, returned when fetching metadata from '{}', using cached data if available",
+                            "Unacceptable status code, {}, returned when fetching metadata from '{}', using cached data if available",
                             httpStatus, resourceUrl);
-                    return getInputStreamFromBackupFile();
+                    InputStream ins = getInputStreamFromBackupFile();
+                    if (ins == null) {
+                        throw new ResourceException("Unable to read resource from " + resourceUrl + " or backup file "
+                                + backupFile.getAbsolutePath());
+                    }
+                    return ins;
             }
         } catch (IOException e) {
             throw new ResourceException("Error retrieving metadata from " + resourceUrl, e);
-        }finally{
-            getRequest.abort();
+        } finally {
+            httpRequest.abort();
         }
     }
 
@@ -199,8 +228,15 @@ public class HttpResource implements CachingResource, FilebackedRemoteResource {
     public void expireCache() {
         cachedResourceETag = null;
         cachedResourceLastModified = null;
-        backupFile.delete();
-        backupFileCreationInstant = 0;
+
+        if (backupFile.exists()) {
+            backupFile.delete();
+            backupFileCreationInstant = 0;
+        }
+
+        if (propFile.exists()) {
+            propFile.delete();
+        }
     }
 
     /** {@inheritDoc} */
@@ -209,7 +245,7 @@ public class HttpResource implements CachingResource, FilebackedRemoteResource {
     }
 
     /** {@inheritDoc} */
-    public long getBackupFileCerationInstant() {
+    public long getBackupFileCreationInstant() {
         return backupFileCreationInstant;
     }
 
@@ -221,13 +257,15 @@ public class HttpResource implements CachingResource, FilebackedRemoteResource {
     /** {@inheritDoc} */
     public InputStream getInputStreamFromBackupFile() throws ResourceException {
         log.debug("Reading HTTP resource from backup file {}", backupFile.getAbsolutePath());
+        
         if (!backupFile.exists()) {
+            log.debug("Backup file {} does not exist, unable to read data from it", backupFile.getAbsolutePath());
             return null;
         }
 
         try {
             return new FileInputStream(backupFile);
-        } catch (FileNotFoundException e) {
+        } catch (IOException e) {
             throw new ResourceException("Unable to read backup file " + getBackupFilePath(), e);
         }
     }
@@ -272,6 +310,22 @@ public class HttpResource implements CachingResource, FilebackedRemoteResource {
         return null;
     }
 
+    /** Reads in any previously saved conditional GET data. */
+    private void readInSavedConditionalGetData() {
+        if (!propFile.exists()) {
+            return;
+        }
+
+        Properties props = new Properties();
+        try {
+            props.load(new FileReader(propFile));
+            cachedResourceETag = StringSupport.trimOrNull(props.getProperty(ETAG_PROP));
+            cachedResourceLastModified = StringSupport.trimOrNull(props.getProperty(LAST_MODIFIED_PROP));
+        } catch (IOException e) {
+            log.debug("Unable to read in property file {}", propFile.getAbsolutePath());
+        }
+    }
+
     /**
      * Builds the HTTP GET method used to fetch the metadata. The returned method advertises support for GZIP and
      * deflate compression, enables conditional GETs if the cached metadata came with either an ETag or Last-Modified
@@ -281,7 +335,7 @@ public class HttpResource implements CachingResource, FilebackedRemoteResource {
      */
     private HttpGet buildGetRequest() {
         final HttpGet getMethod = new HttpGet(resourceUrl);
-        
+
         if (cachedResourceETag != null) {
             getMethod.setHeader(HttpHeaders.IF_NONE_MATCH, cachedResourceETag);
         }
@@ -308,12 +362,12 @@ public class HttpResource implements CachingResource, FilebackedRemoteResource {
             final byte[] responseEntity = EntityUtils.toByteArray(response.getEntity());
             log.debug("Recived response entity of {} bytes", responseEntity.length);
 
-            saveToBackupFile(responseEntity);
-
             cachedResourceETag = getETag(response);
             cachedResourceLastModified = getLastModified(response);
             log.debug("HTTP response included an ETag of {} and a Last-Modified of {}", cachedResourceETag,
                     cachedResourceLastModified);
+
+            saveToBackupFile(responseEntity, cachedResourceETag, cachedResourceLastModified);
 
             return new ByteArrayInputStream(responseEntity);
         } catch (Exception e) {
@@ -325,25 +379,84 @@ public class HttpResource implements CachingResource, FilebackedRemoteResource {
     }
 
     /**
-     * Saves the resource data to the backup file. When this method is invoked a temp file is created, the data written
-     * to it, and then the existing backup file is deleted and the temp file renamed to the backup file.
+     * Saves the resource data to the backup file and optionally, based on {@link #savingConditionalGetData}, the
+     * associated ETag and/or Last-Modified.
      * 
-     * @param data resource data to be written to the backup file
+     * When this method is invoked a temp file is created, the data written to it, and then the existing backup file is
+     * deleted and the temp file renamed to the backup file.
+     * 
+     * @param data resource data to be written to the backup file, never null
+     * @param etag ETag data associated with the current data, may be null
+     * @param lastModified Last-Modified data associated with the current data, may be null
      * 
      * @throws IOException thrown if there is a problem writing the backup file (e.g. if the process does not have write
      *             permission to the backup file)
      */
-    private void saveToBackupFile(final byte[] data) throws IOException {
+    private void saveToBackupFile(final byte[] data, String etag, String lastModified) throws IOException {
         log.debug("Saving backup of response to {}", backupFile.getAbsolutePath());
 
-        final File tmpFile = File.createTempFile(Integer.toString(resourceUrl.hashCode()), null);
-        final FileOutputStream out = new FileOutputStream(tmpFile);
+        final Pair<File, File> tmpFiles = saveToTempFiles(data, etag, lastModified);
+        final File tmpDataFile = tmpFiles.getFirst();
+        final File tmpPropFile = tmpFiles.getSecond();
+
+        if (backupFile.exists()) {
+            backupFile.delete();
+        }
+        if (!tmpDataFile.renameTo(backupFile)) {
+            log.debug("Unable to copy temporary data file to {}", backupFile.getAbsolutePath());
+            return;
+        }
+        backupFileCreationInstant = backupFile.lastModified();
+
+        if (propFile.exists()) {
+            propFile.delete();
+        }
+        if (tmpPropFile != null) {
+            if (!tmpPropFile.renameTo(propFile)) {
+                log.debug("Unable to copy temporary property file to {}.props", backupFile.getAbsolutePath());
+            }
+        }
+
+        log.debug("Wrote {} bytes to backup file {}", backupFile.length(), backupFile.getAbsolutePath());
+    }
+
+    /**
+     * Writes the data to temporary files.
+     * 
+     * @param data data to be saved
+     * @param etag ETag data associated with the current data, may be null
+     * @param lastModified Last-Modified data associated with the current data, may be null
+     * 
+     * @return the temp files; the first file is the data file and the second file is the property file and may be null
+     *         if no data was written
+     * 
+     * @throws IOException thrown if there is a problem writing the temporary data to disk
+     */
+    private Pair<File, File> saveToTempFiles(final byte[] data, String etag, String lastModified) throws IOException {
+        final String tmpFileName = Integer.toString(resourceUrl.hashCode());
+
+        final File tmpPropFile;
+        if (savingConditionalGetData && (etag != null || lastModified != null)) {
+            tmpPropFile = File.createTempFile(tmpFileName, "props");
+            Properties props = new Properties();
+            if (etag != null) {
+                props.put("etag", etag);
+            }
+            if (lastModified != null) {
+                props.put("modified", lastModified);
+            }
+
+            props.store(new FileWriter(tmpPropFile), "Properties for URL " + resourceUrl);
+        } else {
+            tmpPropFile = null;
+        }
+
+        final File tmpDataFile = File.createTempFile(Integer.toString(resourceUrl.hashCode()), null);
+        final FileOutputStream out = new FileOutputStream(tmpDataFile);
         out.write(data);
         out.flush();
         CloseableSupport.closeQuietly(out);
-        backupFile.delete();
-        tmpFile.renameTo(backupFile);
 
-        log.debug("Wrote {} bytes to backup file {}", backupFile.length(), backupFile.getAbsolutePath());
+        return new Pair<File, File>(tmpDataFile, tmpPropFile);
     }
 }
