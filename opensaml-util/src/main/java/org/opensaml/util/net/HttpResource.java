@@ -403,6 +403,10 @@ public class HttpResource implements CachingResource, FilebackedRemoteResource {
             backupFile.delete();
         }
         if (!tmpDataFile.renameTo(backupFile)) {
+            tmpDataFile.delete();
+            if(tmpPropFile.exists()){
+                tmpPropFile.delete();
+            }
             log.debug("Unable to copy temporary data file to {}", backupFile.getAbsolutePath());
             return;
         }
@@ -413,6 +417,7 @@ public class HttpResource implements CachingResource, FilebackedRemoteResource {
         }
         if (tmpPropFile != null) {
             if (!tmpPropFile.renameTo(propFile)) {
+                tmpPropFile.delete();
                 log.debug("Unable to copy temporary property file to {}.props", backupFile.getAbsolutePath());
             }
         }
