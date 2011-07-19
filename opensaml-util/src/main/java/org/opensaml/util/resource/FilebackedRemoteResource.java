@@ -48,7 +48,7 @@ public interface FilebackedRemoteResource extends Resource {
      * 
      * @return creation time of the backup file or 0 if the file does not yet exist
      */
-    public long getBackupFileCerationInstant();
+    public long getBackupFileCreationInstant();
 
     /**
      * Gets an InputStream of the backup file, if it exists. Implementations of this method must not perform any caching

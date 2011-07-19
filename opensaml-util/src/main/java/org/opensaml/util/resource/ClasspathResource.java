@@ -27,7 +27,7 @@ import org.opensaml.util.StringSupport;
 /** A resource which reads data from the classpath. */
 public class ClasspathResource implements Resource {
 
-    /** URL to the classpath resoruce. */
+    /** URL to the classpath resource. */
     private final URL classpathResource;
 
     /**
