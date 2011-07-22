@@ -30,8 +30,9 @@ import java.util.Set;
 import org.apache.xml.security.Init;
 import org.apache.xml.security.encryption.XMLCipher;
 import org.apache.xml.security.encryption.XMLEncryptionException;
-import org.opensaml.util.criteria.Criterion;
 import org.opensaml.util.criteria.CriteriaSet;
+import org.opensaml.util.criteria.Criterion;
+import org.opensaml.util.resolver.ResolverException;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.Marshaller;
@@ -40,7 +41,6 @@ import org.opensaml.xml.io.UnmarshallerFactory;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.parse.BasicParserPool;
 import org.opensaml.xml.parse.XMLParserException;
-import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.XMLSecurityHelper;
 import org.opensaml.xml.security.credential.Credential;
@@ -617,7 +617,7 @@ public class Decrypter {
                     continue;
                 }
             }
-        } catch (SecurityException e) {
+        } catch (ResolverException e) {
             log.error("Error resolving credentials from EncryptedKey KeyInfo", e);
         }
 
@@ -741,7 +741,7 @@ public class Decrypter {
                         continue;
                     }
                 }
-            } catch (SecurityException e) {
+            } catch (ResolverException e) {
                 log.error("Error resolving credentials from EncryptedData KeyInfo", e);
             }
         }

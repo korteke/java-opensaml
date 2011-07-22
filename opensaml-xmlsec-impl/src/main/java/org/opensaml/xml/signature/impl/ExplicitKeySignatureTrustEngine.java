@@ -18,9 +18,8 @@
 package org.opensaml.xml.signature.impl;
 
 import org.opensaml.util.criteria.CriteriaSet;
+import org.opensaml.util.resolver.ResolverException;
 import org.opensaml.xml.security.SecurityException;
-import org.opensaml.xml.security.SecurityHelper;
-import org.opensaml.xml.security.SigningUtil;
 import org.opensaml.xml.security.XMLSecurityHelper;
 import org.opensaml.xml.security.XMLSigningUtil;
 import org.opensaml.xml.security.credential.Credential;
@@ -97,7 +96,12 @@ public class ExplicitKeySignatureTrustEngine extends BaseSignatureTrustEngine<It
             criteriaSet.add(new KeyAlgorithmCriterion(jcaAlgorithm), true);
         }
 
-        Iterable<Credential> trustedCredentials = getCredentialResolver().resolve(criteriaSet);
+        Iterable<Credential> trustedCredentials;
+        try {
+            trustedCredentials = getCredentialResolver().resolve(criteriaSet);
+        } catch (ResolverException e) {
+            throw new SecurityException("Error resolving trusted credentials", e);
+        }
 
         if (validate(signature, trustedCredentials)) {
             return true;
@@ -134,7 +138,12 @@ public class ExplicitKeySignatureTrustEngine extends BaseSignatureTrustEngine<It
             criteriaSet.add(new KeyAlgorithmCriterion(jcaAlgorithm), true);
         }
 
-        Iterable<Credential> trustedCredentials = getCredentialResolver().resolve(criteriaSet);
+        Iterable<Credential> trustedCredentials;
+        try {
+            trustedCredentials = getCredentialResolver().resolve(criteriaSet);
+        } catch (ResolverException e) {
+            throw new SecurityException("Error resolving trusted credentials", e);
+        }
 
         // First try the optional supplied candidate credential
         if (candidateCredential != null) {

@@ -30,6 +30,7 @@ import org.opensaml.saml2.metadata.SPSSODescriptor;
 import org.opensaml.saml2.metadata.provider.FilesystemMetadataProvider;
 import org.opensaml.saml2.metadata.provider.MetadataProviderException;
 import org.opensaml.util.criteria.CriteriaSet;
+import org.opensaml.util.resolver.ResolverException;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.credential.UsageType;
@@ -108,9 +109,10 @@ public class MetadataCredentialResolverCachingTest extends BaseTestCase {
      * @throws MetadataProviderException
      * @throws SecurityException
      * @throws InterruptedException
+     * @throws ResolverException 
      */
     public void testSigning_UnspecToEncryption() 
-            throws IOException, MetadataProviderException, SecurityException, InterruptedException {
+            throws IOException, MetadataProviderException, SecurityException, InterruptedException, ResolverException {
         
         copyFile(mdFileUnspec, mdFile);
         assertTrue(mdFile.exists());
@@ -151,9 +153,10 @@ public class MetadataCredentialResolverCachingTest extends BaseTestCase {
      * @throws MetadataProviderException
      * @throws SecurityException
      * @throws InterruptedException
+     * @throws ResolverException 
      */
     public void testSigning_EncryptionToUnspec() 
-            throws IOException, MetadataProviderException, SecurityException, InterruptedException {
+            throws IOException, MetadataProviderException, SecurityException, InterruptedException, ResolverException {
         
         copyFile(mdFileEncryption, mdFile);
         assertTrue(mdFile.exists());

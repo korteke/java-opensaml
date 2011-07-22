@@ -20,6 +20,7 @@ package org.opensaml.xml.security.x509;
 import java.util.Set;
 
 import org.opensaml.util.criteria.CriteriaSet;
+import org.opensaml.util.resolver.ResolverException;
 import org.opensaml.xml.security.SecurityException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -131,12 +132,23 @@ public class PKIXX509CredentialTrustEngine implements PKIXTrustEngine<X509Creden
 
         Set<String> trustedNames = null;
         if (pkixResolver.supportsTrustedNameResolution()) {
-            trustedNames = pkixResolver.resolveTrustedNames(trustBasisCriteria);
+            try {
+                trustedNames = pkixResolver.resolveTrustedNames(trustBasisCriteria);
+            } catch (UnsupportedOperationException e) {
+                throw new SecurityException("Error resolving trusted names", e);
+            } catch (ResolverException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         } else {
             log.debug("PKIX resolver does not support resolution of trusted names, skipping name checking");
         }
 
-        return validate(untrustedCredential, trustedNames, pkixResolver.resolve(trustBasisCriteria));
+        try {
+            return validate(untrustedCredential, trustedNames, pkixResolver.resolve(trustBasisCriteria));
+        } catch (ResolverException e) {
+            throw new SecurityException("Error resolving trusted credentials", e);
+        }
     }
 
     /**

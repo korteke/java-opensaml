@@ -25,7 +25,7 @@ import java.util.NoSuchElementException;
 import junit.framework.TestCase;
 
 import org.opensaml.util.criteria.CriteriaSet;
-import org.opensaml.xml.security.SecurityException;
+import org.opensaml.util.resolver.ResolverException;
 
 /**
  * Testing the chaining credential resolver.
@@ -79,9 +79,9 @@ public class ChainingCredentialResolverTest extends TestCase {
     
     /**
      * Test a single chain member, which returns no credentials.
-     * @throws SecurityException
+     * @throws ResolverException 
      */
-    public void testOneEmptyMember() throws SecurityException {
+    public void testOneEmptyMember() throws ResolverException {
         chainingResolver.getResolverChain().add(staticResolverEmpty);
         
         List<Credential> resolved = getResolved(chainingResolver.resolve(criteriaSet));
@@ -90,9 +90,9 @@ public class ChainingCredentialResolverTest extends TestCase {
     
     /**
      * Test multiple chain members, all of which return no credentials.
-     * @throws SecurityException
+     * @throws ResolverException 
      */
-    public void testMultipleEmptyMember() throws SecurityException {
+    public void testMultipleEmptyMember() throws ResolverException {
         chainingResolver.getResolverChain().add(staticResolverEmpty);
         chainingResolver.getResolverChain().add(staticResolverEmpty);
         chainingResolver.getResolverChain().add(staticResolverEmpty);
@@ -103,9 +103,9 @@ public class ChainingCredentialResolverTest extends TestCase {
     
     /**
      * Test one chain member, returning credentials.
-     * @throws SecurityException
+     * @throws ResolverException 
      */
-    public void testOneMember() throws SecurityException {
+    public void testOneMember() throws ResolverException {
         chainingResolver.getResolverChain().add(staticResolver12);
         
         List<Credential> resolved = getResolved(chainingResolver.resolve(criteriaSet));
@@ -114,9 +114,9 @@ public class ChainingCredentialResolverTest extends TestCase {
     
     /**
      * Test multiple chain members, returning credentials.
-     * @throws SecurityException
+     * @throws ResolverException 
      */
-    public void testMultipleMembers() throws SecurityException {
+    public void testMultipleMembers() throws ResolverException {
         chainingResolver.getResolverChain().add(staticResolver12);
         chainingResolver.getResolverChain().add(staticResolver3);
         chainingResolver.getResolverChain().add(staticResolverEmpty);
@@ -129,9 +129,9 @@ public class ChainingCredentialResolverTest extends TestCase {
     /**
      * Test that order of returned credentials is the expected ordering,
      * based on the ordering in the resolver chain.
-     * @throws SecurityException
+     * @throws ResolverException 
      */
-    public void testOrderingMultipleMembers() throws SecurityException {
+    public void testOrderingMultipleMembers() throws ResolverException {
         chainingResolver.getResolverChain().add(staticResolverEmpty);
         chainingResolver.getResolverChain().add(staticResolver45);
         chainingResolver.getResolverChain().add(staticResolverEmpty);
@@ -150,9 +150,9 @@ public class ChainingCredentialResolverTest extends TestCase {
     
     /**
      * Test empty resolver chain, i.e. no underlying resolver members.
-     * @throws SecurityException
+     * @throws ResolverException 
      */
-    public void testEmptyResolverChain() throws SecurityException {
+    public void testEmptyResolverChain() throws ResolverException {
         try {
             chainingResolver.resolve(criteriaSet);
             fail("Should have thrown an illegal state exception due to no chain members");
@@ -163,9 +163,9 @@ public class ChainingCredentialResolverTest extends TestCase {
     
     /**
      * Test exception on attempt to call remove() on iterator.
-     * @throws SecurityException
+     * @throws ResolverException 
      */
-    public void testRemove() throws SecurityException {
+    public void testRemove() throws ResolverException {
         chainingResolver.getResolverChain().add(staticResolver12);
         
         Iterator<Credential> iter = chainingResolver.resolve(criteriaSet).iterator();
@@ -182,9 +182,9 @@ public class ChainingCredentialResolverTest extends TestCase {
     
     /**
      * Test exception on attempt to call next() on iterator when no more members.
-     * @throws SecurityException
+     * @throws ResolverException 
      */
-    public void testNoMoreMembers() throws SecurityException {
+    public void testNoMoreMembers() throws ResolverException {
         chainingResolver.getResolverChain().add(staticResolver12);
         chainingResolver.getResolverChain().add(staticResolver3);
         

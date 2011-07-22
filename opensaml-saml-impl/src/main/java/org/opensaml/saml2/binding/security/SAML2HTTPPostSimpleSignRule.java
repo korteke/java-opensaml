@@ -40,6 +40,7 @@ import org.opensaml.xml.signature.KeyInfo;
 import org.opensaml.xml.signature.SignatureTrustEngine;
 import org.opensaml.util.Base64;
 import org.opensaml.util.criteria.CriteriaSet;
+import org.opensaml.util.resolver.ResolverException;
 import org.opensaml.xml.util.DatatypeHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -161,7 +162,7 @@ public class SAML2HTTPPostSimpleSignRule extends BaseSAMLSimpleSignatureSecurity
             for (Credential cred : keyInfoResolver.resolve(criteriaSet)) {
                 credentials.add(cred);
             }
-        } catch (SecurityException e) {
+        } catch (ResolverException e) {
             log.warn("Error resolving credentials from KeyInfo", e);
             throw new SecurityPolicyException("Error resolving credentials from KeyInfo", e);
         }
