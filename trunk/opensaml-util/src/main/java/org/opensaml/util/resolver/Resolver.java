@@ -15,7 +15,9 @@
  * limitations under the License.
  */
 
-package org.opensaml.xml.security;
+package org.opensaml.util.resolver;
+
+import org.opensaml.xml.security.SecurityException;
 
 
 /**

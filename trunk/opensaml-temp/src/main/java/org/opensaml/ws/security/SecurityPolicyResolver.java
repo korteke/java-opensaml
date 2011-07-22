@@ -17,8 +17,8 @@
 
 package org.opensaml.ws.security;
 
+import org.opensaml.util.resolver.Resolver;
 import org.opensaml.ws.message.MessageContext;
-import org.opensaml.xml.security.Resolver;
 
 /**
  * A resolver which uses different criteria to resolve and return instances of {@link SecurityPolicy}.
