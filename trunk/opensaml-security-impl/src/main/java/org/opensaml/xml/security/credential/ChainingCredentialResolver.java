@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.opensaml.util.criteria.CriteriaSet;
-import org.opensaml.xml.security.SecurityException;
+import org.opensaml.util.resolver.ResolverException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -57,7 +57,7 @@ public class ChainingCredentialResolver extends AbstractCredentialResolver {
     }
 
     /** {@inheritDoc} */
-    public Iterable<Credential> resolve(CriteriaSet criteriaSet) throws SecurityException {
+    public Iterable<Credential> resolve(CriteriaSet criteriaSet) throws ResolverException {
         if (resolvers.isEmpty()) {
             log.warn("Chaining credential resolver resolution was attempted with an empty resolver chain");
             throw new IllegalStateException("The resolver chain is empty");
@@ -178,7 +178,7 @@ public class ChainingCredentialResolver extends AbstractCredentialResolver {
                     log.debug("Getting credential iterator from next resolver in chain: {}", currentResolver.getClass().toString());
                 try {
                     return currentResolver.resolve(critSet).iterator();
-                } catch (SecurityException e) {
+                } catch (ResolverException e) {
                     log.error(String.format("Error resolving credentials from chaining resolver member '%s'",
                             currentResolver.getClass().getName()), e);
                     if (resolverIterator.hasNext()) {

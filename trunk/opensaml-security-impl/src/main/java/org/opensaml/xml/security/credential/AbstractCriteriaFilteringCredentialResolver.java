@@ -25,6 +25,7 @@ import org.opensaml.util.criteria.CriteriaFilteringIterable;
 import org.opensaml.util.criteria.CriteriaFilteringIterator;
 import org.opensaml.util.criteria.CriteriaSet;
 import org.opensaml.util.criteria.EvaluableCriterion;
+import org.opensaml.util.resolver.ResolverException;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.credential.criteria.EvaluableCredentialCriterion;
 import org.opensaml.xml.security.credential.criteria.EvaluableCredentialCriteriaRegistry;
@@ -53,7 +54,7 @@ public abstract class AbstractCriteriaFilteringCredentialResolver extends Abstra
     }
 
     /** {@inheritDoc} */
-    public Iterable<Credential> resolve(CriteriaSet criteriaSet) throws SecurityException {
+    public Iterable<Credential> resolve(CriteriaSet criteriaSet) throws ResolverException {
         Iterable<Credential> storeCandidates = resolveFromSource(criteriaSet);
         Set<EvaluableCriterion<Credential>> evaluableCriteria = getEvaluableCriteria(criteriaSet);
         if (evaluableCriteria.isEmpty()) {
@@ -120,27 +121,31 @@ public abstract class AbstractCriteriaFilteringCredentialResolver extends Abstra
      * 
      * @param criteriaSet the set of criteria used to resolve credentials from the credential source
      * @return an Iterable for the resolved set of credentials
-     * @throws SecurityException thrown if there is an error resolving credentials from the credential source
+     * @throws ResolverException thrown if there is an error resolving credentials from the credential source
      */
     protected abstract Iterable<Credential> resolveFromSource(CriteriaSet criteriaSet)
-        throws SecurityException;
+        throws ResolverException;
 
     /**
      * Extract the evaluable credential criteria from the criteria set.
      * 
      * @param criteriaSet the set of credential criteria to process.
      * @return a set of evaluable Credential criteria
-     * @throws SecurityException thrown if there is an error obtaining an instance of EvaluableCredentialCriterion
+     * @throws ResolverException thrown if there is an error obtaining an instance of EvaluableCredentialCriterion
      *                           from the EvaluableCredentialCriteriaRegistry
      */
-    private Set<EvaluableCriterion<Credential>> getEvaluableCriteria(CriteriaSet criteriaSet) throws SecurityException {
+    private Set<EvaluableCriterion<Credential>> getEvaluableCriteria(CriteriaSet criteriaSet) throws ResolverException {
         Set<EvaluableCriterion<Credential>> evaluable = new HashSet<EvaluableCriterion<Credential>>(criteriaSet.size());
         for (Criterion criteria : criteriaSet) {
             if (criteria instanceof EvaluableCredentialCriterion) {
                 evaluable.add((EvaluableCredentialCriterion) criteria);
             } else {
-                EvaluableCredentialCriterion evaluableCriteria = 
-                    EvaluableCredentialCriteriaRegistry.getEvaluator(criteria);
+                EvaluableCredentialCriterion evaluableCriteria;
+                try {
+                    evaluableCriteria = EvaluableCredentialCriteriaRegistry.getEvaluator(criteria);
+                } catch (SecurityException e) {
+                    throw new ResolverException("Exception obtaining EvaluableCredentialCriterion", e);
+                }
                 if (evaluableCriteria != null) {
                     evaluable.add(evaluableCriteria);
                 }

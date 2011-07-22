@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.opensaml.util.criteria.CriteriaSet;
-import org.opensaml.xml.security.SecurityException;
+import org.opensaml.util.resolver.ResolverException;
 
 /**
  * Simple implementation of {@link CredentialResolver} which just stores and returns a static set of credentials.
@@ -58,7 +58,7 @@ public class StaticCredentialResolver extends AbstractCredentialResolver {
     }
 
     /** {@inheritDoc} */
-    public Iterable<Credential> resolve(CriteriaSet criteria) throws SecurityException {
+    public Iterable<Credential> resolve(CriteriaSet criteria) throws ResolverException {
         return creds;
     }
 

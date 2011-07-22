@@ -22,6 +22,7 @@ import java.util.Set;
 import org.opensaml.util.criteria.Criterion;
 import org.opensaml.util.criteria.CriteriaSet;
 import org.opensaml.util.resolver.Resolver;
+import org.opensaml.util.resolver.ResolverException;
 import org.opensaml.xml.security.SecurityException;
 
 /**
@@ -41,11 +42,11 @@ public interface PKIXValidationInformationResolver extends Resolver<PKIXValidati
      * 
      * @param criteriaSet set of criteria used to determine or resolve the trusted names
      * @return the set of certificate names trusted for an entity
-     * @throws SecurityException thrown if there is an error resolving the trusted names
+     * @throws ResolverException thrown if there is an error resolving the trusted names
      * @throws UnsupportedOperationException thrown if this optional method is not supported by the implementation
      */
     public Set<String> resolveTrustedNames(CriteriaSet criteriaSet)
-        throws SecurityException, UnsupportedOperationException;
+        throws ResolverException, UnsupportedOperationException;
     
     /**
      * Check whether resolution of trusted names is supported.

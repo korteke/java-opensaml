@@ -23,8 +23,8 @@ import java.util.Collection;
 import java.util.List;
 
 import org.opensaml.util.criteria.CriteriaSet;
+import org.opensaml.util.resolver.ResolverException;
 import org.opensaml.xml.encryption.Decrypter;
-import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.credential.CredentialResolver;
 import org.opensaml.xml.security.criteria.KeyNameCriterion;
@@ -100,7 +100,7 @@ public class LocalKeyInfoCredentialResolver extends BasicProviderKeyInfoCredenti
 
     /** {@inheritDoc} */
     protected void postProcess(KeyInfoResolutionContext kiContext, CriteriaSet criteriaSet,
-            List<Credential> credentials) throws SecurityException {
+            List<Credential> credentials) throws ResolverException {
         
         ArrayList<Credential> localCreds = new ArrayList<Credential>();
         
@@ -138,10 +138,10 @@ public class LocalKeyInfoCredentialResolver extends BasicProviderKeyInfoCredenti
      * 
      * @param keyName the key name criteria
      * @return collection of local credentials identified by the specified key name
-     * @throws SecurityException  thrown if there is a problem resolving credentials from the 
+     * @throws ResolverException  thrown if there is a problem resolving credentials from the 
      *          local credential resolver
      */
-    protected Collection<? extends Credential> resolveByKeyName(String keyName) throws SecurityException {
+    protected Collection<? extends Credential> resolveByKeyName(String keyName) throws ResolverException {
         ArrayList<Credential> localCreds = new ArrayList<Credential>();
         
         CriteriaSet criteriaSet = new CriteriaSet( new KeyNameCriterion(keyName) );
@@ -160,10 +160,10 @@ public class LocalKeyInfoCredentialResolver extends BasicProviderKeyInfoCredenti
      * @param publicKey the public key criteria
      * @return collection of local credentials which contain the private key
      *          corresponding to the specified public key
-     * @throws SecurityException  thrown if there is a problem resolving credentials from the 
+     * @throws ResolverException  thrown if there is a problem resolving credentials from the 
      *          local credential resolver
      */
-    protected Collection<? extends Credential> resolveByPublicKey(PublicKey publicKey) throws SecurityException {
+    protected Collection<? extends Credential> resolveByPublicKey(PublicKey publicKey) throws ResolverException {
         ArrayList<Credential> localCreds = new ArrayList<Credential>();
         
         CriteriaSet criteriaSet = new CriteriaSet( new PublicKeyCriterion(publicKey) );

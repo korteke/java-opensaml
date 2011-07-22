@@ -18,6 +18,7 @@
 package org.opensaml.xml.signature.impl;
 
 import org.opensaml.util.criteria.CriteriaSet;
+import org.opensaml.util.resolver.ResolverException;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
@@ -96,17 +97,21 @@ public abstract class BaseSignatureTrustEngine<TrustBasisType> implements Signat
             KeyInfoCriterion keyInfoCriteria = new KeyInfoCriterion(signature.getKeyInfo());
             CriteriaSet keyInfoCriteriaSet = new CriteriaSet(keyInfoCriteria);
 
-            for (Credential kiCred : getKeyInfoResolver().resolve(keyInfoCriteriaSet)) {
-                if (verifySignature(signature, kiCred)) {
-                    log.debug("Successfully verified signature using KeyInfo-derived credential");
-                    log.debug("Attempting to establish trust of KeyInfo-derived credential");
-                    if (evaluateTrust(kiCred, trustBasis)) {
-                        log.debug("Successfully established trust of KeyInfo-derived credential");
-                        return true;
-                    } else {
-                        log.debug("Failed to establish trust of KeyInfo-derived credential");
+            try {
+                for (Credential kiCred : getKeyInfoResolver().resolve(keyInfoCriteriaSet)) {
+                    if (verifySignature(signature, kiCred)) {
+                        log.debug("Successfully verified signature using KeyInfo-derived credential");
+                        log.debug("Attempting to establish trust of KeyInfo-derived credential");
+                        if (evaluateTrust(kiCred, trustBasis)) {
+                            log.debug("Successfully established trust of KeyInfo-derived credential");
+                            return true;
+                        } else {
+                            log.debug("Failed to establish trust of KeyInfo-derived credential");
+                        }
                     }
                 }
+            } catch (ResolverException e) {
+                throw new SecurityException("Error resolving KeyInfo from KeyInfoResolver", e);
             }
         } else {
             log.debug("Signature contained no KeyInfo element, could not resolve verification credentials");
