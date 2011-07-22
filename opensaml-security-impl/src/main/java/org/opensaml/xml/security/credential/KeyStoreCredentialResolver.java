@@ -19,9 +19,9 @@ package org.opensaml.xml.security.credential;
 
 import java.security.GeneralSecurityException;
 import java.security.KeyStore;
+import java.security.KeyStore.SecretKeyEntry;
 import java.security.KeyStoreException;
 import java.security.UnrecoverableEntryException;
-import java.security.KeyStore.SecretKeyEntry;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,6 +29,7 @@ import java.util.Collections;
 import java.util.Map;
 
 import org.opensaml.util.criteria.CriteriaSet;
+import org.opensaml.util.resolver.ResolverException;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.criteria.EntityIDCriterion;
 import org.opensaml.xml.security.criteria.UsageCriterion;
@@ -104,7 +105,7 @@ public class KeyStoreCredentialResolver extends AbstractCriteriaFilteringCredent
     }
 
     /** {@inheritDoc} */
-    protected Iterable<Credential> resolveFromSource(CriteriaSet criteriaSet) throws SecurityException {
+    protected Iterable<Credential> resolveFromSource(CriteriaSet criteriaSet) throws ResolverException {
 
         checkCriteriaRequirements(criteriaSet);
 
@@ -133,10 +134,10 @@ public class KeyStoreCredentialResolver extends AbstractCriteriaFilteringCredent
         } catch (UnrecoverableEntryException e) {
             log.error("Unable to retrieve keystore entry for entityID (keystore alias): " + entityID);
             log.error("Check for invalid keystore entityID/alias entry password");
-            throw new SecurityException("Could not retrieve entry from keystore", e);
+            throw new ResolverException("Could not retrieve entry from keystore", e);
         } catch (GeneralSecurityException e) {
             log.error("Unable to retrieve keystore entry for entityID (keystore alias): " + entityID, e);
-            throw new SecurityException("Could not retrieve entry from keystore", e);
+            throw new ResolverException("Could not retrieve entry from keystore", e);
         }
 
         if (keyStoreEntry == null) {
@@ -182,10 +183,10 @@ public class KeyStoreCredentialResolver extends AbstractCriteriaFilteringCredent
      * @param entityID the entityID to include in the credential
      * @param usage the usage type to include in the credential
      * @return the new credential instance, appropriate to the type of key store entry being processed
-     * @throws SecurityException throw if there is a problem building a credential from the key store entry
+     * @throws ResolverException throw if there is a problem building a credential from the key store entry
      */
     protected Credential buildCredential(KeyStore.Entry keyStoreEntry, String entityID, UsageType usage)
-            throws SecurityException {
+            throws ResolverException {
 
         log.debug("Building credential from keystore entry for entityID {}, usage type {}", entityID, usage);
 
@@ -198,7 +199,7 @@ public class KeyStoreCredentialResolver extends AbstractCriteriaFilteringCredent
         } else if (keyStoreEntry instanceof KeyStore.SecretKeyEntry) {
             credential = processSecretKeyEntry((KeyStore.SecretKeyEntry) keyStoreEntry, entityID, keystoreUsage);
         } else {
-            throw new SecurityException("KeyStore entry was of an unsupported type: "
+            throw new ResolverException("KeyStore entry was of an unsupported type: "
                     + keyStoreEntry.getClass().getName());
         }
         return credential;

@@ -19,6 +19,7 @@ package org.opensaml.ws.message.decoder;
 
 import java.io.InputStream;
 
+import org.opensaml.util.resolver.ResolverException;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.message.encoder.MessageEncodingException;
 import org.opensaml.ws.security.SecurityPolicy;
@@ -123,7 +124,12 @@ public abstract class BaseMessageDecoder implements MessageDecoder {
     protected void processSecurityPolicy(MessageContext messageContext) throws SecurityException {
         SecurityPolicyResolver policyResolver = messageContext.getSecurityPolicyResolver();
         if (policyResolver != null) {
-            Iterable<SecurityPolicy> securityPolicies = policyResolver.resolve(messageContext);
+            Iterable<SecurityPolicy> securityPolicies;
+            try {
+                securityPolicies = policyResolver.resolve(messageContext);
+            } catch (ResolverException e) {
+                throw new SecurityException("Error resolving SecurityPolicies", e);
+            }
             if (securityPolicies != null) {
                 for (SecurityPolicy policy : securityPolicies) {
                     if (policy != null) {

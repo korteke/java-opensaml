@@ -37,6 +37,7 @@ import org.opensaml.saml2.metadata.provider.MetadataProvider;
 import org.opensaml.saml2.metadata.provider.MetadataProviderException;
 import org.opensaml.saml2.metadata.provider.ObservableMetadataProvider;
 import org.opensaml.util.criteria.CriteriaSet;
+import org.opensaml.util.resolver.ResolverException;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.XMLSecurityHelper;
 import org.opensaml.xml.security.credential.AbstractCriteriaFilteringCredentialResolver;
@@ -139,7 +140,7 @@ public class MetadataCredentialResolver extends AbstractCriteriaFilteringCredent
     }
 
     /** {@inheritDoc} */
-    protected Iterable<Credential> resolveFromSource(CriteriaSet criteriaSet) throws SecurityException {
+    protected Iterable<Credential> resolveFromSource(CriteriaSet criteriaSet) throws ResolverException {
 
         checkCriteriaRequirements(criteriaSet);
 
@@ -235,11 +236,11 @@ public class MetadataCredentialResolver extends AbstractCriteriaFilteringCredent
      * 
      * @return the resolved credentials or null
      * 
-     * @throws SecurityException thrown if the key, certificate, or CRL information is represented in an unsupported
+     * @throws ResolverException thrown if the key, certificate, or CRL information is represented in an unsupported
      *             format
      */
     protected Collection<Credential> retrieveFromMetadata(String entityID, QName role, String protocol, UsageType usage)
-            throws SecurityException {
+            throws ResolverException {
 
         log.debug("Attempting to retrieve credentials from metadata for entity: {}", entityID);
         Collection<Credential> credentials = new HashSet<Credential>(3);
@@ -307,10 +308,10 @@ public class MetadataCredentialResolver extends AbstractCriteriaFilteringCredent
      * @param role role in which the entity is operating
      * @param protocol protocol over which the entity is operating (may be null)
      * @return a list of role descriptors matching the given parameters, or null
-     * @throws SecurityException thrown if there is an error retrieving role descriptors from the metadata provider
+     * @throws ResolverException thrown if there is an error retrieving role descriptors from the metadata provider
      */
     protected List<RoleDescriptor> getRoleDescriptors(String entityID, QName role, String protocol)
-            throws SecurityException {
+            throws ResolverException {
         try {
             if (log.isDebugEnabled()) {
                 log.debug("Retrieving metadata for entity '{}' in role '{}' for protocol '{}'", 
@@ -330,7 +331,7 @@ public class MetadataCredentialResolver extends AbstractCriteriaFilteringCredent
             }
         } catch (MetadataProviderException e) {
             log.error("Unable to read metadata from provider", e);
-            throw new SecurityException("Unable to read metadata provider", e);
+            throw new ResolverException("Unable to read metadata provider", e);
         }
     }
 

@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.opensaml.util.criteria.CriteriaSet;
-import org.opensaml.xml.security.SecurityException;
+import org.opensaml.util.resolver.ResolverException;
 
 /**
  * An implementation of {@link PKIXValidationInformationResolver} which always returns a static, fixed set of
@@ -59,7 +59,7 @@ public class StaticPKIXValidationInformationResolver implements PKIXValidationIn
     }
 
     /** {@inheritDoc} */
-    public Set<String> resolveTrustedNames(CriteriaSet criteriaSet) throws SecurityException,
+    public Set<String> resolveTrustedNames(CriteriaSet criteriaSet) throws ResolverException,
             UnsupportedOperationException {
 
         return trustedNames;
@@ -71,12 +71,12 @@ public class StaticPKIXValidationInformationResolver implements PKIXValidationIn
     }
 
     /** {@inheritDoc} */
-    public Iterable<PKIXValidationInformation> resolve(CriteriaSet criteria) throws SecurityException {
+    public Iterable<PKIXValidationInformation> resolve(CriteriaSet criteria) throws ResolverException {
         return pkixInfo;
     }
 
     /** {@inheritDoc} */
-    public PKIXValidationInformation resolveSingle(CriteriaSet criteria) throws SecurityException {
+    public PKIXValidationInformation resolveSingle(CriteriaSet criteria) throws ResolverException {
         if (!pkixInfo.isEmpty()) {
             return pkixInfo.get(0);
         }

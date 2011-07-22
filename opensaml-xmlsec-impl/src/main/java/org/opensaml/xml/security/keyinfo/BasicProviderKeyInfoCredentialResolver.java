@@ -30,8 +30,8 @@ import java.util.Set;
 import javax.crypto.SecretKey;
 
 import org.opensaml.util.criteria.CriteriaSet;
+import org.opensaml.util.resolver.ResolverException;
 import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.credential.AbstractCriteriaFilteringCredentialResolver;
 import org.opensaml.xml.security.credential.BasicCredential;
@@ -128,11 +128,11 @@ public class BasicProviderKeyInfoCredentialResolver extends AbstractCriteriaFilt
     }
 
     /** {@inheritDoc} */
-    protected Iterable<Credential> resolveFromSource(CriteriaSet criteriaSet) throws SecurityException {
+    protected Iterable<Credential> resolveFromSource(CriteriaSet criteriaSet) throws ResolverException {
         KeyInfoCriterion kiCriteria = criteriaSet.get(KeyInfoCriterion.class);
         if (kiCriteria == null) {
             log.error("No KeyInfo criteria supplied, resolver could not process");
-            throw new SecurityException("Credential criteria set did not contain an instance of"
+            throw new ResolverException("Credential criteria set did not contain an instance of"
                     + "KeyInfoCredentialCriteria");
         }
         KeyInfo keyInfo = kiCriteria.getKeyInfo();
@@ -170,10 +170,10 @@ public class BasicProviderKeyInfoCredentialResolver extends AbstractCriteriaFilt
      * @param kiContext KeyInfo resolution context
      * @param criteriaSet the credential criteria used to resolve credentials
      * @param credentials the list which will store the resolved credentials
-     * @throws SecurityException thrown if there is an error during processing
+     * @throws ResolverException thrown if there is an error during processing
      */
     private void processKeyInfo(KeyInfo keyInfo, KeyInfoResolutionContext kiContext, CriteriaSet criteriaSet,
-            List<Credential> credentials) throws SecurityException {
+            List<Credential> credentials) throws ResolverException {
 
         // Initialize the resolution context that will be used by the provider plugins.
         // This processes the KeyName and the KeyValue children, if either are present.
@@ -208,10 +208,10 @@ public class BasicProviderKeyInfoCredentialResolver extends AbstractCriteriaFilt
      * @param kiContext KeyInfo resolution context
      * @param criteriaSet the credential criteria used to resolve credentials
      * @param credentials the list which will store the resolved credentials
-     * @throws SecurityException thrown if there is an error during processing
+     * @throws ResolverException thrown if there is an error during processing
      */
     protected void postProcess(KeyInfoResolutionContext kiContext, CriteriaSet criteriaSet, List<Credential> credentials)
-            throws SecurityException {
+            throws ResolverException {
 
     }
 
@@ -223,10 +223,10 @@ public class BasicProviderKeyInfoCredentialResolver extends AbstractCriteriaFilt
      * @param criteriaSet the credential criteria used to resolve credentials
      * @param credentials the list which will store the resolved credentials
      * 
-     * @throws SecurityException thrown if there is an error during processing
+     * @throws ResolverException thrown if there is an error during processing
      */
     protected void postProcessEmptyCredentials(KeyInfoResolutionContext kiContext, CriteriaSet criteriaSet,
-            List<Credential> credentials) throws SecurityException {
+            List<Credential> credentials) throws ResolverException {
 
     }
 
@@ -240,10 +240,10 @@ public class BasicProviderKeyInfoCredentialResolver extends AbstractCriteriaFilt
      * @param kiContext KeyInfo resolution context
      * @param criteriaSet the credential criteria used to resolve credentials
      * @param credentials the list which will store the resolved credentials
-     * @throws SecurityException thrown if there is a provider error processing the KeyInfo children
+     * @throws ResolverException thrown if there is a provider error processing the KeyInfo children
      */
     protected void processKeyInfoChildren(KeyInfoResolutionContext kiContext, CriteriaSet criteriaSet,
-            List<Credential> credentials) throws SecurityException {
+            List<Credential> credentials) throws ResolverException {
 
         for (XMLObject keyInfoChild : kiContext.getKeyInfo().getXMLObjects()) {
 
@@ -281,10 +281,10 @@ public class BasicProviderKeyInfoCredentialResolver extends AbstractCriteriaFilt
      * @param criteriaSet the credential criteria used to resolve credentials
      * @param keyInfoChild the KeyInfo to evaluate
      * @return the collection of resolved credentials, or null
-     * @throws SecurityException thrown if there is a provider error processing the KeyInfo child
+     * @throws ResolverException thrown if there is a provider error processing the KeyInfo child
      */
     protected Collection<Credential> processKeyInfoChild(KeyInfoResolutionContext kiContext, CriteriaSet criteriaSet,
-            XMLObject keyInfoChild) throws SecurityException {
+            XMLObject keyInfoChild) throws ResolverException {
 
         for (KeyInfoProvider provider : getProviders()) {
 
@@ -317,10 +317,10 @@ public class BasicProviderKeyInfoCredentialResolver extends AbstractCriteriaFilt
      * @param kiContext KeyInfo resolution context
      * @param keyInfo the KeyInfo to evaluate
      * @param criteriaSet the credential criteria used to resolve credentials
-     * @throws SecurityException thrown if there is an error processing the KeyValue children
+     * @throws ResolverException thrown if there is an error processing the KeyValue children
      */
     protected void initResolutionContext(KeyInfoResolutionContext kiContext, KeyInfo keyInfo, CriteriaSet criteriaSet)
-            throws SecurityException {
+            throws ResolverException {
 
         kiContext.setKeyInfo(keyInfo);
 
@@ -349,10 +349,10 @@ public class BasicProviderKeyInfoCredentialResolver extends AbstractCriteriaFilt
      * @param kiContext KeyInfo resolution context
      * @param criteriaSet the credential criteria used to resolve credentials
      * @param keyValues the KeyValue children to evaluate
-     * @throws SecurityException thrown if there is an error resolving the key from the KeyValue
+     * @throws ResolverException thrown if there is an error resolving the key from the KeyValue
      */
     protected void resolveKeyValue(KeyInfoResolutionContext kiContext, CriteriaSet criteriaSet, List<KeyValue> keyValues)
-            throws SecurityException {
+            throws ResolverException {
 
         for (KeyValue keyValue : keyValues) {
             Collection<Credential> creds = processKeyInfoChild(kiContext, criteriaSet, keyValue);
@@ -375,9 +375,9 @@ public class BasicProviderKeyInfoCredentialResolver extends AbstractCriteriaFilt
      * @param key the key to include in the credential
      * @param keyNames the key names to include in the credential
      * @return a basic credential with the specified key and key names
-     * @throws SecurityException if there is an error building the credential
+     * @throws ResolverException if there is an error building the credential
      */
-    protected Credential buildBasicCredential(Key key, Set<String> keyNames) throws SecurityException {
+    protected Credential buildBasicCredential(Key key, Set<String> keyNames) throws ResolverException {
         if (key == null) {
             log.debug("Key supplied was null, could not build credential");
             return null;

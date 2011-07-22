@@ -20,10 +20,10 @@ package org.opensaml.ws.security.provider;
 import java.util.Collections;
 import java.util.List;
 
+import org.opensaml.util.resolver.ResolverException;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.security.SecurityPolicy;
 import org.opensaml.ws.security.SecurityPolicyResolver;
-import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.util.LazyList;
 
 /** A simple security policy resolver implementation that returns a static list of policies. */
@@ -57,7 +57,7 @@ public class StaticSecurityPolicyResolver implements SecurityPolicyResolver {
     }
 
     /** {@inheritDoc} */
-    public Iterable<SecurityPolicy> resolve(MessageContext criteria) throws SecurityException {
+    public Iterable<SecurityPolicy> resolve(MessageContext criteria) throws ResolverException {
         return Collections.unmodifiableList(securityPolicies);
     }
 
@@ -66,7 +66,7 @@ public class StaticSecurityPolicyResolver implements SecurityPolicyResolver {
      * 
      * If more than one policy is registered with this resolver this method returns the first policy in the list.
      */
-    public SecurityPolicy resolveSingle(MessageContext criteria) throws SecurityException {
+    public SecurityPolicy resolveSingle(MessageContext criteria) throws ResolverException {
         if (!securityPolicies.isEmpty()) {
             return securityPolicies.get(0);
         } else {

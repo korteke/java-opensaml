@@ -21,9 +21,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.opensaml.util.criteria.CriteriaSet;
-import org.opensaml.xml.security.SecurityException;
-import org.opensaml.xml.security.credential.criteria.EvaluableCredentialCriterion;
+import org.opensaml.util.resolver.ResolverException;
 import org.opensaml.xml.security.credential.criteria.EvaluableCredentialCriteriaRegistry;
+import org.opensaml.xml.security.credential.criteria.EvaluableCredentialCriterion;
 
 /**
  * An implementation of {@link CredentialResolver} which uses a {@link Collection} as the
@@ -71,7 +71,7 @@ public class CollectionCredentialResolver extends AbstractCriteriaFilteringCrede
     }
 
     /** {@inheritDoc} */
-    protected Iterable<Credential> resolveFromSource(CriteriaSet criteriaSet) throws SecurityException {
+    protected Iterable<Credential> resolveFromSource(CriteriaSet criteriaSet) throws ResolverException {
         return collection;
     }
 
