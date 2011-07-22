@@ -17,45 +17,48 @@
 
 package org.opensaml.xml.security.criteria;
 
-import org.opensaml.util.StringSupport;
-import org.opensaml.xml.security.Criteria;
+import org.opensaml.util.criteria.Criterion;
+import org.opensaml.xml.security.credential.UsageType;
+
 
 /**
- * An implementation of {@link Criteria} which specifies key algorithm criteria.
+ * An implementation of {@link Criterion} which specifies criteria pertaining 
+ * usage of the resolved credential. 
  */
-public final class KeyAlgorithmCriteria implements Criteria {
-    
-    /** Key algorithm type of resolved credentials. */
-    private String keyAlgorithm;
+public final class UsageCriterion implements Criterion {
+   
+    /** Key usage type of resolved credentials. */
+    private UsageType credUsage;
     
     /**
-     * Constructor.
+    * Constructor.
      *
-     * @param algorithm key algorithm
+     * @param usage the usage for which a credential is intended
      */
-    public KeyAlgorithmCriteria(String algorithm) {
-        setKeyAlgorithm(algorithm);
-    }
- 
-    /**
-     * Get the key algorithm criteria.
-     * 
-     * @return returns the keyAlgorithm.
-     */
-    public String getKeyAlgorithm() {
-        return keyAlgorithm;
+    public UsageCriterion(UsageType usage) {
+        setUsage(usage);
     }
 
     /**
-     * Set the key algorithm criteria.
+     * Get the key usage criteria.
      * 
-     * @param algorithm The keyAlgorithm to set.
+     * @return Returns the usage.
      */
-    public void setKeyAlgorithm(String algorithm) {
-        if (StringSupport.isNullOrEmpty(algorithm)) {
-            throw new IllegalArgumentException("Key algorithm criteria value must be supplied");
+    public UsageType getUsage() {
+        return credUsage;
+    }
+
+    /**
+     * Set the key usage criteria.
+     * 
+     * @param usage The usage to set.
+     */
+    public void setUsage(UsageType usage) {
+        if (usage != null) {
+            credUsage = usage;
+        } else {
+            credUsage = UsageType.UNSPECIFIED;
         }
-        keyAlgorithm = StringSupport.trimOrNull(algorithm);
     }
 
 }

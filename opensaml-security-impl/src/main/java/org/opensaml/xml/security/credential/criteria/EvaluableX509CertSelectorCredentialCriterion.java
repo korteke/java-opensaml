@@ -17,50 +17,37 @@
 
 package org.opensaml.xml.security.credential.criteria;
 
+import java.security.cert.X509CertSelector;
 import java.security.cert.X509Certificate;
-
-import javax.security.auth.x500.X500Principal;
 
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.x509.X509Credential;
-import org.opensaml.xml.security.x509.X509SubjectNameCriteria;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Instance of evaluable credential criteria for evaluating whether a credential's certificate contains a particular
- * subject name.
+ * Instance of evaluable credential criteria for evaluating whether a credential's certificate meets the criteria
+ * specified by an instance of {@link X509CertSelector}.
+ * 
  */
-public class EvaluableX509SubjectNameCredentialCriteria implements EvaluableCredentialCriteria {
+public class EvaluableX509CertSelectorCredentialCriterion implements EvaluableCredentialCriterion {
 
     /** Logger. */
-    private final Logger log = LoggerFactory.getLogger(EvaluableX509SubjectNameCredentialCriteria.class);
+    private final Logger log = LoggerFactory.getLogger(EvaluableX509CertSelectorCredentialCriterion.class);
 
     /** Base criteria. */
-    private X500Principal subjectName;
+    private X509CertSelector certSelector;
 
     /**
      * Constructor.
      * 
-     * @param criteria the criteria which is the basis for evaluation
+     * @param newSelector the new X509 cert selector
      */
-    public EvaluableX509SubjectNameCredentialCriteria(X509SubjectNameCriteria criteria) {
-        if (criteria == null) {
-            throw new NullPointerException("Criteria instance may not be null");
+    public EvaluableX509CertSelectorCredentialCriterion(X509CertSelector newSelector) {
+        if (newSelector == null) {
+            throw new IllegalArgumentException("X509 cert selector may not be null");
         }
-        subjectName = criteria.getSubjectName();
-    }
-
-    /**
-     * Constructor.
-     * 
-     * @param newSubjectName the subject name criteria value which is the basis for evaluation
-     */
-    public EvaluableX509SubjectNameCredentialCriteria(X500Principal newSubjectName) {
-        if (newSubjectName == null) {
-            throw new IllegalArgumentException("Subject name may not be null");
-        }
-        subjectName = newSubjectName;
+        certSelector = newSelector;
     }
 
     /** {@inheritDoc} */
@@ -70,18 +57,18 @@ public class EvaluableX509SubjectNameCredentialCriteria implements EvaluableCred
             return null;
         }
         if (!(target instanceof X509Credential)) {
-            log.info("Credential is not an X509Credential, does not satisfy subject name criteria");
+            log.info("Credential is not an X509Credential, can not evaluate X509CertSelector criteria");
             return Boolean.FALSE;
         }
         X509Credential x509Cred = (X509Credential) target;
 
         X509Certificate entityCert = x509Cred.getEntityCertificate();
         if (entityCert == null) {
-            log.info("X509Credential did not contain an entity certificate, does not satisfy criteria");
+            log.info("X509Credential did not contain an entity certificate, can not evaluate X509CertSelector criteria");
             return Boolean.FALSE;
         }
 
-        Boolean result = entityCert.getSubjectX500Principal().equals(subjectName);
+        Boolean result = certSelector.match(entityCert);
         return result;
     }
 

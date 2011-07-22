@@ -30,8 +30,8 @@ import java.util.List;
 import javax.security.auth.x500.X500Principal;
 
 import org.opensaml.util.Base64;
+import org.opensaml.util.criteria.CriteriaSet;
 import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.credential.CredentialContext;

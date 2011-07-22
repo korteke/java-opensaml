@@ -26,7 +26,7 @@ import junit.framework.TestCase;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.credential.BasicCredential;
-import org.opensaml.xml.security.criteria.PublicKeyCriteria;
+import org.opensaml.xml.security.criteria.PublicKeyCriterion;
 
 /**
  *
@@ -36,7 +36,7 @@ public class EvaluablePublicKeyCredentialCriteriaTest extends TestCase {
     private BasicCredential credential;
     private String keyAlgo;
     PublicKey pubKey;
-    private PublicKeyCriteria criteria;
+    private PublicKeyCriterion criteria;
     
     public EvaluablePublicKeyCredentialCriteriaTest() {
         keyAlgo = "RSA";
@@ -50,34 +50,34 @@ public class EvaluablePublicKeyCredentialCriteriaTest extends TestCase {
         pubKey = SecurityHelper.generateKeyPair(keyAlgo, 1024, null).getPublic();
         credential.setPublicKey(pubKey);
         
-        criteria = new PublicKeyCriteria(pubKey);
+        criteria = new PublicKeyCriterion(pubKey);
     }
     
     public void testSatifsy() {
-        EvaluablePublicKeyCredentialCriteria evalCrit = new EvaluablePublicKeyCredentialCriteria(criteria);
+        EvaluablePublicKeyCredentialCriterion evalCrit = new EvaluablePublicKeyCredentialCriterion(criteria);
         assertTrue("Credential should have matched the evaluable criteria", evalCrit.evaluate(credential));
     }
 
     public void testNotSatisfyDifferentKey() throws NoSuchAlgorithmException, NoSuchProviderException {
         criteria.setPublicKey(SecurityHelper.generateKeyPair(keyAlgo, 1024, null).getPublic());
-        EvaluablePublicKeyCredentialCriteria evalCrit = new EvaluablePublicKeyCredentialCriteria(criteria);
+        EvaluablePublicKeyCredentialCriterion evalCrit = new EvaluablePublicKeyCredentialCriterion(criteria);
         assertFalse("Credential should NOT have matched the evaluable criteria", evalCrit.evaluate(credential));
     }
     
     public void testNotSatisfyNoPublicKey() {
         credential.setPublicKey(null);
-        EvaluablePublicKeyCredentialCriteria evalCrit = new EvaluablePublicKeyCredentialCriteria(criteria);
+        EvaluablePublicKeyCredentialCriterion evalCrit = new EvaluablePublicKeyCredentialCriterion(criteria);
         assertFalse("Credential should NOT have matched the evaluable criteria", evalCrit.evaluate(credential));
     }
     
     public void testCanNotEvaluate() {
         //Only unevaluable case is null credential
-        EvaluablePublicKeyCredentialCriteria evalCrit = new EvaluablePublicKeyCredentialCriteria(criteria);
+        EvaluablePublicKeyCredentialCriterion evalCrit = new EvaluablePublicKeyCredentialCriterion(criteria);
         assertNull("Credential should have been unevaluable against the criteria", evalCrit.evaluate(null));
     }
     
     public void testRegistry() throws SecurityException {
-        EvaluableCredentialCriteria evalCrit = EvaluableCredentialCriteriaRegistry.getEvaluator(criteria);
+        EvaluableCredentialCriterion evalCrit = EvaluableCredentialCriteriaRegistry.getEvaluator(criteria);
         assertNotNull("Evaluable criteria was unavailable from the registry", evalCrit);
         assertTrue("Credential should have matched the evaluable criteria", evalCrit.evaluate(credential));
     }

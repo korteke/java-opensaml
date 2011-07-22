@@ -29,12 +29,12 @@ import org.opensaml.common.BaseTestCase;
 import org.opensaml.saml2.metadata.SPSSODescriptor;
 import org.opensaml.saml2.metadata.provider.FilesystemMetadataProvider;
 import org.opensaml.saml2.metadata.provider.MetadataProviderException;
-import org.opensaml.xml.security.CriteriaSet;
+import org.opensaml.util.criteria.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.credential.UsageType;
-import org.opensaml.xml.security.criteria.EntityIDCriteria;
-import org.opensaml.xml.security.criteria.UsageCriteria;
+import org.opensaml.xml.security.criteria.EntityIDCriterion;
+import org.opensaml.xml.security.criteria.UsageCriterion;
 
 /**
  * Testing various cases of caching by the metadata credential resolver.
@@ -50,9 +50,9 @@ public class MetadataCredentialResolverCachingTest extends BaseTestCase {
     
     private MetadataCredentialResolver mdResolver;
     
-    private EntityIDCriteria entityCriteria;
+    private EntityIDCriterion entityCriteria;
     
-    private MetadataCriteria mdCriteria;
+    private MetadataCriterion mdCriteria;
     
     private CriteriaSet criteriaSet;
     
@@ -71,8 +71,8 @@ public class MetadataCredentialResolverCachingTest extends BaseTestCase {
     protected void setUp() throws Exception {
         super.setUp();
         
-        entityCriteria = new EntityIDCriteria(spEntityID);
-        mdCriteria = new MetadataCriteria(spRole, protocolFoo);
+        entityCriteria = new EntityIDCriterion(spEntityID);
+        mdCriteria = new MetadataCriterion(spRole, protocolFoo);
         
         criteriaSet = new CriteriaSet();
         criteriaSet.add(entityCriteria);
@@ -122,7 +122,7 @@ public class MetadataCredentialResolverCachingTest extends BaseTestCase {
         fsProvider.initialize();
         
         mdResolver = new MetadataCredentialResolver(fsProvider);
-        criteriaSet.add( new UsageCriteria(UsageType.SIGNING) );
+        criteriaSet.add( new UsageCriterion(UsageType.SIGNING) );
         
         Credential cred = null;
         
@@ -165,7 +165,7 @@ public class MetadataCredentialResolverCachingTest extends BaseTestCase {
         fsProvider.initialize();
         
         mdResolver = new MetadataCredentialResolver(fsProvider);
-        criteriaSet.add( new UsageCriteria(UsageType.SIGNING) );
+        criteriaSet.add( new UsageCriterion(UsageType.SIGNING) );
         
         Credential cred = null;
         

@@ -19,14 +19,14 @@ package org.opensaml.security;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.xml.security.Criteria;
+import org.opensaml.util.criteria.Criterion;
 import org.opensaml.xml.util.DatatypeHelper;
 
 /**
- * An implementation of {@link Criteria} which specifies criteria pertaining 
+ * An implementation of {@link Criterion} which specifies criteria pertaining 
  * to SAML 2 metadata.
  */
-public final class MetadataCriteria implements Criteria {
+public final class MetadataCriterion implements Criterion {
     
     /** Metadata role indicated by the criteria. */
     private QName entityRole;
@@ -40,7 +40,7 @@ public final class MetadataCriteria implements Criteria {
      * @param role the entity role
      * @param protocol the entity protocol
      */
-    public MetadataCriteria(QName role, String protocol) {
+    public MetadataCriterion(QName role, String protocol) {
        setRole(role);
        setProtocol(protocol);
     }

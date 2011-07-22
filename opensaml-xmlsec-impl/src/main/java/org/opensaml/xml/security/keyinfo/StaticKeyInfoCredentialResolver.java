@@ -26,7 +26,7 @@ import org.opensaml.xml.security.credential.StaticCredentialResolver;
  * Simple implementation of {@link KeyInfoCredentialResolver} which just stores and returns a static set of credentials.
  * 
  * <p>
- * Note: no filtering or other evaluation of the credentials is performed.  Any Criteria
+ * Note: no filtering or other evaluation of the credentials is performed.  Any Criterion
  * specified are ignored.  For a similar Collection-based KeyInfoCredentialResolver implementation which does support 
  * evaluation and filtering based on supplied evaluable criteria, see {@link CollectionKeyInfoCredentialResolver}.
  * </p>

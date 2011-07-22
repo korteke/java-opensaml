@@ -24,6 +24,7 @@ import java.net.URL;
 import java.security.GeneralSecurityException;
 import java.security.KeyPair;
 
+import org.opensaml.util.criteria.CriteriaSet;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.XMLObjectBaseTestCase;
 import org.opensaml.xml.io.Marshaller;
@@ -34,14 +35,13 @@ import org.opensaml.xml.mock.SignableSimpleXMLObject;
 import org.opensaml.xml.mock.SignableSimpleXMLObjectBuilder;
 import org.opensaml.xml.parse.BasicParserPool;
 import org.opensaml.xml.parse.XMLParserException;
-import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.XMLSecurityTestingHelper;
 import org.opensaml.xml.security.credential.BasicCredential;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
-import org.opensaml.xml.security.keyinfo.KeyInfoCriteria;
+import org.opensaml.xml.security.keyinfo.KeyInfoCriterion;
 import org.opensaml.xml.signature.impl.SignatureBuilder;
 import org.opensaml.xml.util.XMLHelper;
 import org.opensaml.xml.validation.ValidationException;
@@ -181,7 +181,7 @@ public class DetachedSignatureTest extends XMLObjectBaseTestCase {
 //
 //        KeyInfoCredentialResolver resolver = XMLSecurityTestingHelper.buildBasicInlineKeyInfoResolver();
 //
-//        KeyInfoCriteria criteria = new KeyInfoCriteria(signature.getKeyInfo());
+//        KeyInfoCriterion criteria = new KeyInfoCriterion(signature.getKeyInfo());
 //        CriteriaSet criteriaSet = new CriteriaSet(criteria);
 //        Credential credential = resolver.resolveSingle(criteriaSet);
 //        SignatureValidator sigValidator = new SignatureValidator(credential);

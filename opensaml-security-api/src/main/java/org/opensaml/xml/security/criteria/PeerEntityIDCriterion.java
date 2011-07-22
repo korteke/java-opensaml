@@ -18,18 +18,18 @@
 package org.opensaml.xml.security.criteria;
 
 import org.opensaml.util.StringSupport;
-import org.opensaml.xml.security.Criteria;
+import org.opensaml.util.criteria.Criterion;
 
 /**
- * An implementation of {@link Criteria} which specifies criteria pertaining 
+ * An implementation of {@link Criterion} which specifies criteria pertaining 
  * to peer entity IDs.  This is typically used only in conjunction with a
- * {@link EntityIDCriteria}, where the peer is interpreted to be relative
+ * {@link EntityIDCriterion}, where the peer is interpreted to be relative
  * to that primary entity ID. In this sense it serves to scope the primary entity ID.
  * 
  * Note that the peer entity ID may be either local or remote,
  * depending on whether the associated primary entity ID is remote or local.
  */
-public final class PeerEntityIDCriteria implements Criteria {
+public final class PeerEntityIDCriterion implements Criterion {
     
     /** Peer entity ID criteria. */
     private String peerID;
@@ -39,7 +39,7 @@ public final class PeerEntityIDCriteria implements Criteria {
      *
      * @param peer the entity ID which is the peer relative to a primary entity ID
      */
-    public PeerEntityIDCriteria(String peer) {
+    public PeerEntityIDCriterion(String peer) {
         setPeerID(peer);
     }
 

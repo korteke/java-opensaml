@@ -17,7 +17,7 @@
 
 package org.opensaml.xml.signature.impl;
 
-import org.opensaml.xml.security.CriteriaSet;
+import org.opensaml.util.criteria.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.SigningUtil;
@@ -26,8 +26,8 @@ import org.opensaml.xml.security.XMLSigningUtil;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.credential.CredentialResolver;
 import org.opensaml.xml.security.credential.UsageType;
-import org.opensaml.xml.security.criteria.KeyAlgorithmCriteria;
-import org.opensaml.xml.security.criteria.UsageCriteria;
+import org.opensaml.xml.security.criteria.KeyAlgorithmCriterion;
+import org.opensaml.xml.security.criteria.UsageCriterion;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xml.security.trust.ExplicitKeyTrustEvaluator;
 import org.opensaml.xml.security.trust.TrustedCredentialTrustEngine;
@@ -89,12 +89,12 @@ public class ExplicitKeySignatureTrustEngine extends BaseSignatureTrustEngine<It
 
         CriteriaSet criteriaSet = new CriteriaSet();
         criteriaSet.addAll(trustBasisCriteria);
-        if (!criteriaSet.contains(UsageCriteria.class)) {
-            criteriaSet.add(new UsageCriteria(UsageType.SIGNING));
+        if (!criteriaSet.contains(UsageCriterion.class)) {
+            criteriaSet.add(new UsageCriterion(UsageType.SIGNING));
         }
         String jcaAlgorithm = XMLSecurityHelper.getKeyAlgorithmFromURI(signature.getSignatureAlgorithm());
         if (!DatatypeHelper.isEmpty(jcaAlgorithm)) {
-            criteriaSet.add(new KeyAlgorithmCriteria(jcaAlgorithm), true);
+            criteriaSet.add(new KeyAlgorithmCriterion(jcaAlgorithm), true);
         }
 
         Iterable<Credential> trustedCredentials = getCredentialResolver().resolve(criteriaSet);
@@ -126,12 +126,12 @@ public class ExplicitKeySignatureTrustEngine extends BaseSignatureTrustEngine<It
 
         CriteriaSet criteriaSet = new CriteriaSet();
         criteriaSet.addAll(trustBasisCriteria);
-        if (!criteriaSet.contains(UsageCriteria.class)) {
-            criteriaSet.add(new UsageCriteria(UsageType.SIGNING));
+        if (!criteriaSet.contains(UsageCriterion.class)) {
+            criteriaSet.add(new UsageCriterion(UsageType.SIGNING));
         }
         String jcaAlgorithm = XMLSecurityHelper.getKeyAlgorithmFromURI(algorithmURI);
         if (!DatatypeHelper.isEmpty(jcaAlgorithm)) {
-            criteriaSet.add(new KeyAlgorithmCriteria(jcaAlgorithm), true);
+            criteriaSet.add(new KeyAlgorithmCriterion(jcaAlgorithm), true);
         }
 
         Iterable<Credential> trustedCredentials = getCredentialResolver().resolve(criteriaSet);

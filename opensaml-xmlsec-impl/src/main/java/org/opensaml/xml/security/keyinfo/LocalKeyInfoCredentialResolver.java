@@ -22,13 +22,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.opensaml.util.criteria.CriteriaSet;
 import org.opensaml.xml.encryption.Decrypter;
-import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.credential.CredentialResolver;
-import org.opensaml.xml.security.criteria.KeyNameCriteria;
-import org.opensaml.xml.security.criteria.PublicKeyCriteria;
+import org.opensaml.xml.security.criteria.KeyNameCriterion;
+import org.opensaml.xml.security.criteria.PublicKeyCriterion;
 import org.opensaml.xml.signature.KeyInfo;
 
 /**
@@ -144,7 +144,7 @@ public class LocalKeyInfoCredentialResolver extends BasicProviderKeyInfoCredenti
     protected Collection<? extends Credential> resolveByKeyName(String keyName) throws SecurityException {
         ArrayList<Credential> localCreds = new ArrayList<Credential>();
         
-        CriteriaSet criteriaSet = new CriteriaSet( new KeyNameCriteria(keyName) );
+        CriteriaSet criteriaSet = new CriteriaSet( new KeyNameCriterion(keyName) );
         for (Credential cred : getLocalCredentialResolver().resolve(criteriaSet)) {
             if (isLocalCredential(cred)) {
                 localCreds.add(cred);
@@ -166,7 +166,7 @@ public class LocalKeyInfoCredentialResolver extends BasicProviderKeyInfoCredenti
     protected Collection<? extends Credential> resolveByPublicKey(PublicKey publicKey) throws SecurityException {
         ArrayList<Credential> localCreds = new ArrayList<Credential>();
         
-        CriteriaSet criteriaSet = new CriteriaSet( new PublicKeyCriteria(publicKey) );
+        CriteriaSet criteriaSet = new CriteriaSet( new PublicKeyCriterion(publicKey) );
         for (Credential cred : getLocalCredentialResolver().resolve(criteriaSet)) {
             if (isLocalCredential(cred)) {
                 localCreds.add(cred);

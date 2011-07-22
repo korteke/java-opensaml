@@ -38,7 +38,7 @@ public class EvaluableX509CertSelectorCredentialCriteriaTest extends TestCase {
     private BasicX509Credential credential;
     private X509CertSelector certSelector;
     private X500Principal subjectName;
-    private EvaluableX509CertSelectorCredentialCriteria evalCrit;
+    private EvaluableX509CertSelectorCredentialCriterion evalCrit;
     
     private X509Certificate entityCert;
     private String entityCertBase64 = 
@@ -82,7 +82,7 @@ public class EvaluableX509CertSelectorCredentialCriteriaTest extends TestCase {
         
         certSelector = new X509CertSelector();
         
-        evalCrit = new EvaluableX509CertSelectorCredentialCriteria(certSelector);
+        evalCrit = new EvaluableX509CertSelectorCredentialCriterion(certSelector);
     }
     
     public void testSatifsyByCert() {

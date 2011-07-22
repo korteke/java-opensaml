@@ -24,14 +24,14 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
-import org.opensaml.xml.security.CriteriaSet;
+import org.opensaml.util.criteria.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.credential.BasicCredential;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.credential.CredentialResolver;
 import org.opensaml.xml.security.credential.StaticCredentialResolver;
-import org.opensaml.xml.security.criteria.EntityIDCriteria;
+import org.opensaml.xml.security.criteria.EntityIDCriterion;
 import org.opensaml.xml.security.x509.BasicX509Credential;
 
 /**
@@ -151,7 +151,7 @@ public class ExplicitX509CertificateTrustEngineTest extends TestCase {
         
         // not used, but have to pass in a non-null, non-empty criteria set
         criteriaSet = new CriteriaSet();
-        criteriaSet.add( new EntityIDCriteria("dummyEntityID") );
+        criteriaSet.add( new EntityIDCriterion("dummyEntityID") );
     }
 
     public void testCertTrusted() throws SecurityException {

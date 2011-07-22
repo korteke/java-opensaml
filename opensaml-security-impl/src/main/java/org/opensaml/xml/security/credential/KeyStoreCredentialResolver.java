@@ -28,10 +28,10 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
 
-import org.opensaml.xml.security.CriteriaSet;
+import org.opensaml.util.criteria.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
-import org.opensaml.xml.security.criteria.EntityIDCriteria;
-import org.opensaml.xml.security.criteria.UsageCriteria;
+import org.opensaml.xml.security.criteria.EntityIDCriterion;
+import org.opensaml.xml.security.criteria.UsageCriterion;
 import org.opensaml.xml.security.x509.BasicX509Credential;
 import org.opensaml.xml.security.x509.X509Credential;
 import org.slf4j.Logger;
@@ -108,8 +108,8 @@ public class KeyStoreCredentialResolver extends AbstractCriteriaFilteringCredent
 
         checkCriteriaRequirements(criteriaSet);
 
-        String entityID = criteriaSet.get(EntityIDCriteria.class).getEntityID();
-        UsageCriteria usageCriteria = criteriaSet.get(UsageCriteria.class);
+        String entityID = criteriaSet.get(EntityIDCriterion.class).getEntityID();
+        UsageCriterion usageCriteria = criteriaSet.get(UsageCriterion.class);
         UsageType usage;
         if (usageCriteria != null) {
             usage = usageCriteria.getUsage();
@@ -154,10 +154,10 @@ public class KeyStoreCredentialResolver extends AbstractCriteriaFilteringCredent
      * @param criteriaSet the credential criteria set to evaluate
      */
     protected void checkCriteriaRequirements(CriteriaSet criteriaSet) {
-        EntityIDCriteria entityCriteria = criteriaSet.get(EntityIDCriteria.class);
+        EntityIDCriterion entityCriteria = criteriaSet.get(EntityIDCriterion.class);
         if (entityCriteria == null) {
-            log.error("EntityIDCriteria was not specified in the criteria set, resolution can not be attempted");
-            throw new IllegalArgumentException("No EntityIDCriteria was available in criteria set");
+            log.error("EntityIDCriterion was not specified in the criteria set, resolution can not be attempted");
+            throw new IllegalArgumentException("No EntityIDCriterion was available in criteria set");
         }
     }
 

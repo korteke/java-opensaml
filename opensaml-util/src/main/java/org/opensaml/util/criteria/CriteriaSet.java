@@ -20,10 +20,10 @@ package org.opensaml.util.criteria;
 import org.opensaml.util.collections.ClassIndexedSet;
 
 /**
- * This class holds instances of {@link Criteria} which are used 
+ * This class holds instances of {@link Criterion} which are used 
  * in resolution or evaluation operations.
  */
-public class CriteriaSet extends ClassIndexedSet<Criteria> {
+public class CriteriaSet extends ClassIndexedSet<Criterion> {
     
     /**
      * Constructor.
@@ -38,7 +38,7 @@ public class CriteriaSet extends ClassIndexedSet<Criteria> {
      *
      * @param criteria a single criteria 
      */
-    public CriteriaSet(Criteria criteria) {
+    public CriteriaSet(Criterion criteria) {
         super();
         add(criteria);
     }

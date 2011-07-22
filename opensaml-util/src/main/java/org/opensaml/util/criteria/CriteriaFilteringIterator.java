@@ -23,9 +23,9 @@ import java.util.Set;
 
 /**
  * <p>This implementation of {@link Iterator} wraps another Iterator of a particular type, containing candidates
- * which are to be evaluated against a given set of {@link EvaluableCriteria}.  When the iterator is traversed,
+ * which are to be evaluated against a given set of {@link EvaluableCriterion}.  When the iterator is traversed,
  * criteria evaluation is performed on each candidate element of the underlying wrapped iterator
- * via {@link EvaluableCriteria#evaluate(Object)}. Only those elements which satisfy the criteria indicated by 
+ * via {@link EvaluableCriterion#evaluate(Object)}. Only those elements which satisfy the criteria indicated by 
  * the criteria set are returned by the Iterator, as follows.</p>
  * 
  * <p>If the parameter <code>meetAllCriteria</code> is <code>true</code>, then all criteria in the criteria
@@ -35,7 +35,7 @@ import java.util.Set;
  * <code>OR</code>.</p>
  * 
  * <p>If the parameter <code>unevaluableSatisfies</code> is <code>true</code>, then if a criteria's evaluation
- * of the candidate via {@link EvaluableCriteria#evaluate(Object)} indicates that it is unable to evaluate
+ * of the candidate via {@link EvaluableCriterion#evaluate(Object)} indicates that it is unable to evaluate
  * the candidate, the criteria will be considered satisfied as far as the determination of whether to return
  * the candidate. If <code>false</code>, then the criteria will be considered unsatisfied for purposes 
  * of this determination.</p>
@@ -50,7 +50,7 @@ public class CriteriaFilteringIterator<T> implements Iterator<T> {
     private Iterator<? extends T> candidateIter;
     
     /** The set of criteria against which to evaluate the candidates. */
-    private Set<EvaluableCriteria<T>> criteriaSet;
+    private Set<EvaluableCriterion<T>> criteriaSet;
     
     /** Flag indicating whether the candidate must satisfy all the criteria in the set, or just one. */
     private boolean meetAll;
@@ -72,7 +72,7 @@ public class CriteriaFilteringIterator<T> implements Iterator<T> {
      *          of determinig whether to return the element
      */
     public CriteriaFilteringIterator(Iterator<? extends T> candidatesIterator,
-            Set<EvaluableCriteria<T>> criteria, boolean meetAllCriteria, boolean unevaluableSatisfies) {
+            Set<EvaluableCriterion<T>> criteria, boolean meetAllCriteria, boolean unevaluableSatisfies) {
         
         candidateIter = candidatesIterator;
         criteriaSet = criteria;
@@ -144,7 +144,7 @@ public class CriteriaFilteringIterator<T> implements Iterator<T> {
             return true;
         }
         
-        for (EvaluableCriteria<T> criteria : criteriaSet) {
+        for (EvaluableCriterion<T> criteria : criteriaSet) {
             Boolean result = criteria.evaluate(candidate);
             if (result == Boolean.FALSE) {
                 if (meetAll) {

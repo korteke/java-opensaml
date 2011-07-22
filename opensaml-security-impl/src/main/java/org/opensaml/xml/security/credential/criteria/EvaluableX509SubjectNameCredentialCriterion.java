@@ -17,57 +17,50 @@
 
 package org.opensaml.xml.security.credential.criteria;
 
-import java.math.BigInteger;
 import java.security.cert.X509Certificate;
 
 import javax.security.auth.x500.X500Principal;
 
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.x509.X509Credential;
-import org.opensaml.xml.security.x509.X509IssuerSerialCriteria;
+import org.opensaml.xml.security.x509.X509SubjectNameCriterion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * Instance of evaluable credential criteria for evaluating whether a credential's certificate contains a particular
- * issuer name and serial number.
+ * subject name.
  */
-public class EvaluableX509IssuerSerialCredentialCriteria implements EvaluableCredentialCriteria {
+public class EvaluableX509SubjectNameCredentialCriterion implements EvaluableCredentialCriterion {
 
     /** Logger. */
-    private final Logger log = LoggerFactory.getLogger(EvaluableX509IssuerSerialCredentialCriteria.class);
+    private final Logger log = LoggerFactory.getLogger(EvaluableX509SubjectNameCredentialCriterion.class);
 
     /** Base criteria. */
-    private X500Principal issuer;
-
-    /** Base criteria. */
-    private BigInteger serialNumber;
+    private X500Principal subjectName;
 
     /**
      * Constructor.
      * 
      * @param criteria the criteria which is the basis for evaluation
      */
-    public EvaluableX509IssuerSerialCredentialCriteria(X509IssuerSerialCriteria criteria) {
+    public EvaluableX509SubjectNameCredentialCriterion(X509SubjectNameCriterion criteria) {
         if (criteria == null) {
-            throw new NullPointerException("Criteria instance may not be null");
+            throw new NullPointerException("Criterion instance may not be null");
         }
-        issuer = criteria.getIssuerName();
-        serialNumber = criteria.getSerialNumber();
+        subjectName = criteria.getSubjectName();
     }
 
     /**
      * Constructor.
      * 
-     * @param newIssuer the issuer name criteria value which is the basis for evaluation
-     * @param newSerialNumber the serial number criteria value which is the basis for evaluation
+     * @param newSubjectName the subject name criteria value which is the basis for evaluation
      */
-    public EvaluableX509IssuerSerialCredentialCriteria(X500Principal newIssuer, BigInteger newSerialNumber) {
-        if (newIssuer == null || newSerialNumber == null) {
-            throw new IllegalArgumentException("Issuer and serial number may not be null");
+    public EvaluableX509SubjectNameCredentialCriterion(X500Principal newSubjectName) {
+        if (newSubjectName == null) {
+            throw new IllegalArgumentException("Subject name may not be null");
         }
-        issuer = newIssuer;
-        serialNumber = newSerialNumber;
+        subjectName = newSubjectName;
     }
 
     /** {@inheritDoc} */
@@ -77,7 +70,7 @@ public class EvaluableX509IssuerSerialCredentialCriteria implements EvaluableCre
             return null;
         }
         if (!(target instanceof X509Credential)) {
-            log.info("Credential is not an X509Credential, does not satisfy issuer name and serial number criteria");
+            log.info("Credential is not an X509Credential, does not satisfy subject name criteria");
             return Boolean.FALSE;
         }
         X509Credential x509Cred = (X509Credential) target;
@@ -88,10 +81,7 @@ public class EvaluableX509IssuerSerialCredentialCriteria implements EvaluableCre
             return Boolean.FALSE;
         }
 
-        if (!entityCert.getIssuerX500Principal().equals(issuer)) {
-            return false;
-        }
-        Boolean result = entityCert.getSerialNumber().equals(serialNumber);
+        Boolean result = entityCert.getSubjectX500Principal().equals(subjectName);
         return result;
     }
 

@@ -21,17 +21,17 @@ import java.security.Key;
 
 import org.opensaml.util.StringSupport;
 import org.opensaml.xml.security.credential.Credential;
-import org.opensaml.xml.security.criteria.KeyAlgorithmCriteria;
+import org.opensaml.xml.security.criteria.KeyAlgorithmCriterion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * Instance of evaluable credential criteria for evaluating the credential key algorithm.
  */
-public class EvaluableKeyAlgorithmCredentialCriteria implements EvaluableCredentialCriteria {
+public class EvaluableKeyAlgorithmCredentialCriterion implements EvaluableCredentialCriterion {
 
     /** Logger. */
-    private final Logger log = LoggerFactory.getLogger(EvaluableKeyAlgorithmCredentialCriteria.class);
+    private final Logger log = LoggerFactory.getLogger(EvaluableKeyAlgorithmCredentialCriterion.class);
 
     /** Base criteria. */
     private String keyAlgorithm;
@@ -41,9 +41,9 @@ public class EvaluableKeyAlgorithmCredentialCriteria implements EvaluableCredent
      * 
      * @param criteria the criteria which is the basis for evaluation
      */
-    public EvaluableKeyAlgorithmCredentialCriteria(KeyAlgorithmCriteria criteria) {
+    public EvaluableKeyAlgorithmCredentialCriterion(KeyAlgorithmCriterion criteria) {
         if (criteria == null) {
-            throw new NullPointerException("Criteria instance may not be null");
+            throw new NullPointerException("Criterion instance may not be null");
         }
         keyAlgorithm = criteria.getKeyAlgorithm();
     }
@@ -53,7 +53,7 @@ public class EvaluableKeyAlgorithmCredentialCriteria implements EvaluableCredent
      * 
      * @param newKeyAlgorithm the criteria value which is the basis for evaluation
      */
-    public EvaluableKeyAlgorithmCredentialCriteria(String newKeyAlgorithm) {
+    public EvaluableKeyAlgorithmCredentialCriterion(String newKeyAlgorithm) {
         if (StringSupport.isNullOrEmpty(newKeyAlgorithm)) {
             throw new IllegalArgumentException("Key algorithm may not be null");
         }

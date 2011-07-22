@@ -15,46 +15,49 @@
  * limitations under the License.
  */
 
-package org.opensaml.xml.security.criteria;
+package org.opensaml.xml.security.x509;
 
-import org.opensaml.xml.security.Criteria;
+import javax.security.auth.x500.X500Principal;
+
+import org.opensaml.util.criteria.Criterion;
 
 /**
- * An implementation of {@link Criteria} which specifies key length criteria.
+ * An implementation of {@link Criterion} which specifies criteria based on
+ * X.509 certificate subject name.
  */
-public final class KeyLengthCriteria implements Criteria {
+public final class X509SubjectNameCriterion implements Criterion {
     
-    /** Key length of resolved credentials. */
-    private Integer keyLength;
+    /** X.509 certificate subject name. */
+    private X500Principal subjectName;
     
     /**
      * Constructor.
      *
-     * @param length key length 
+     * @param subject certificate subject name
      */
-    public KeyLengthCriteria(Integer length) {
-        setKeyLength(length);
+    public X509SubjectNameCriterion(X500Principal subject) {
+        setSubjectName(subject);
     }
 
     /**
-     * Get the key length.
+     * Get the subject name.
      * 
-     * @return Returns the keyLength.
+     * @return Returns the subject name
      */
-    public Integer getKeyLength() {
-        return keyLength;
+    public X500Principal getSubjectName() {
+        return subjectName;
     }
 
     /**
-     * Set the key length.
+     * Set the serial number.
      * 
-     * @param length The keyLength to set.
+     * @param subject The subject name
      */
-    public void setKeyLength(Integer length) {
-        if (length == null) {
-            throw new IllegalArgumentException("Key length criteria value must be supplied");
+    public void setSubjectName(X500Principal subject) {
+        if (subject == null) {
+            throw new IllegalArgumentException("Subject principal criteria value must be supplied");
         }
-        keyLength = length;
+        this.subjectName = subject;
     }
 
 }

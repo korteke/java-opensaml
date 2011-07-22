@@ -20,18 +20,18 @@ package org.opensaml.xml.security.credential;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.opensaml.xml.security.Criteria;
-import org.opensaml.xml.security.CriteriaFilteringIterable;
-import org.opensaml.xml.security.CriteriaFilteringIterator;
-import org.opensaml.xml.security.CriteriaSet;
-import org.opensaml.xml.security.EvaluableCriteria;
+import org.opensaml.util.criteria.Criterion;
+import org.opensaml.util.criteria.CriteriaFilteringIterable;
+import org.opensaml.util.criteria.CriteriaFilteringIterator;
+import org.opensaml.util.criteria.CriteriaSet;
+import org.opensaml.util.criteria.EvaluableCriterion;
 import org.opensaml.xml.security.SecurityException;
-import org.opensaml.xml.security.credential.criteria.EvaluableCredentialCriteria;
+import org.opensaml.xml.security.credential.criteria.EvaluableCredentialCriterion;
 import org.opensaml.xml.security.credential.criteria.EvaluableCredentialCriteriaRegistry;
 
 /**
  * An abstract implementation of {@link CredentialResolver} which filters the returned Credentials
- * based on the instances of {@link EvaluableCredentialCriteria} which are present in the set of
+ * based on the instances of {@link EvaluableCredentialCriterion} which are present in the set of
  * criteria, or which are obtained via lookup in the {@link EvaluableCredentialCriteriaRegistry}.
  */
 public abstract class AbstractCriteriaFilteringCredentialResolver extends AbstractCredentialResolver {
@@ -55,7 +55,7 @@ public abstract class AbstractCriteriaFilteringCredentialResolver extends Abstra
     /** {@inheritDoc} */
     public Iterable<Credential> resolve(CriteriaSet criteriaSet) throws SecurityException {
         Iterable<Credential> storeCandidates = resolveFromSource(criteriaSet);
-        Set<EvaluableCriteria<Credential>> evaluableCriteria = getEvaluableCriteria(criteriaSet);
+        Set<EvaluableCriterion<Credential>> evaluableCriteria = getEvaluableCriteria(criteriaSet);
         if (evaluableCriteria.isEmpty()) {
             return storeCandidates;
         } else {
@@ -65,7 +65,7 @@ public abstract class AbstractCriteriaFilteringCredentialResolver extends Abstra
     }
     
     /**
-     * Get whether all {@link EvaluableCredentialCriteria} must be met to return
+     * Get whether all {@link EvaluableCredentialCriterion} must be met to return
      * a credential, or only one or more evaluable criteria.
      * 
      * See also {@link CriteriaFilteringIterator}.
@@ -77,7 +77,7 @@ public abstract class AbstractCriteriaFilteringCredentialResolver extends Abstra
     }
 
     /**
-     * Set whether all {@link EvaluableCredentialCriteria} must be met to return
+     * Set whether all {@link EvaluableCredentialCriterion} must be met to return
      * a credential, or only one or more evaluable criteria.
      * 
      * See also {@link CriteriaFilteringIterator}.
@@ -90,7 +90,7 @@ public abstract class AbstractCriteriaFilteringCredentialResolver extends Abstra
 
     /**
      * Get the flag which determines the processing behavior when 
-     * an {@link EvaluableCredentialCriteria} is unable to evaluate
+     * an {@link EvaluableCredentialCriterion} is unable to evaluate
      * a Credential.
      * 
      * See also {@link CriteriaFilteringIterator}.
@@ -103,7 +103,7 @@ public abstract class AbstractCriteriaFilteringCredentialResolver extends Abstra
 
     /**
      * Set the flag which determines the processing behavior when 
-     * an {@link EvaluableCredentialCriteria} is unable to evaluate
+     * an {@link EvaluableCredentialCriterion} is unable to evaluate
      * a Credential.
      * 
      * See also {@link CriteriaFilteringIterator}.
@@ -130,16 +130,16 @@ public abstract class AbstractCriteriaFilteringCredentialResolver extends Abstra
      * 
      * @param criteriaSet the set of credential criteria to process.
      * @return a set of evaluable Credential criteria
-     * @throws SecurityException thrown if there is an error obtaining an instance of EvaluableCredentialCriteria
+     * @throws SecurityException thrown if there is an error obtaining an instance of EvaluableCredentialCriterion
      *                           from the EvaluableCredentialCriteriaRegistry
      */
-    private Set<EvaluableCriteria<Credential>> getEvaluableCriteria(CriteriaSet criteriaSet) throws SecurityException {
-        Set<EvaluableCriteria<Credential>> evaluable = new HashSet<EvaluableCriteria<Credential>>(criteriaSet.size());
-        for (Criteria criteria : criteriaSet) {
-            if (criteria instanceof EvaluableCredentialCriteria) {
-                evaluable.add((EvaluableCredentialCriteria) criteria);
+    private Set<EvaluableCriterion<Credential>> getEvaluableCriteria(CriteriaSet criteriaSet) throws SecurityException {
+        Set<EvaluableCriterion<Credential>> evaluable = new HashSet<EvaluableCriterion<Credential>>(criteriaSet.size());
+        for (Criterion criteria : criteriaSet) {
+            if (criteria instanceof EvaluableCredentialCriterion) {
+                evaluable.add((EvaluableCredentialCriterion) criteria);
             } else {
-                EvaluableCredentialCriteria evaluableCriteria = 
+                EvaluableCredentialCriterion evaluableCriteria = 
                     EvaluableCredentialCriteriaRegistry.getEvaluator(criteria);
                 if (evaluableCriteria != null) {
                     evaluable.add(evaluableCriteria);

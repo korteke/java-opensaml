@@ -18,8 +18,25 @@
 package org.opensaml.util.criteria;
 
 /**
- * A generic marker interface for representing criteria used in resolution or evaluation operations.
+ * Interface for criteria which are capable of evaluating a target of a particular type.
+ * 
+ * @param <T> the type of object which may be evaluated
  */
-public interface Criteria {
+public interface EvaluableCriterion<T> extends Criterion {
+    
+    /**
+     * Evaluate the target.
+     * 
+     * The result of evaluation is one of the following values:
+     * <ul>
+     *   <li><code>Boolean.TRUE</code> if the target satisfies the criteria</li>
+     *   <li><code>Boolean.FALSE</code> if the target does not satisfy criteria</li>
+     *   <li><code>null</code> if the target can not be evaluated against the criteria</li>
+     * </ul>
+     * 
+     * @param target the object to be evaluated
+     * @return the result of evaluation
+     */
+    public Boolean evaluate(T target);
 
 }

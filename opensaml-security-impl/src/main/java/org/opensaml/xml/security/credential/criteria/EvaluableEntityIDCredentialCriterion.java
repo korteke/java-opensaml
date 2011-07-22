@@ -19,17 +19,17 @@ package org.opensaml.xml.security.credential.criteria;
 
 import org.opensaml.util.StringSupport;
 import org.opensaml.xml.security.credential.Credential;
-import org.opensaml.xml.security.criteria.EntityIDCriteria;
+import org.opensaml.xml.security.criteria.EntityIDCriterion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * Instance of evaluable credential criteria for evaluating a credential's entity ID.
  */
-public class EvaluableEntityIDCredentialCriteria implements EvaluableCredentialCriteria {
+public class EvaluableEntityIDCredentialCriterion implements EvaluableCredentialCriterion {
 
     /** Logger. */
-    private final Logger log = LoggerFactory.getLogger(EvaluableEntityIDCredentialCriteria.class);
+    private final Logger log = LoggerFactory.getLogger(EvaluableEntityIDCredentialCriterion.class);
 
     /** Base criteria. */
     private String entityID;
@@ -39,9 +39,9 @@ public class EvaluableEntityIDCredentialCriteria implements EvaluableCredentialC
      * 
      * @param criteria the criteria which is the basis for evaluation
      */
-    public EvaluableEntityIDCredentialCriteria(EntityIDCriteria criteria) {
+    public EvaluableEntityIDCredentialCriterion(EntityIDCriterion criteria) {
         if (criteria == null) {
-            throw new NullPointerException("Criteria instance may not be null");
+            throw new NullPointerException("Criterion instance may not be null");
         }
         entityID = criteria.getEntityID();
     }
@@ -51,7 +51,7 @@ public class EvaluableEntityIDCredentialCriteria implements EvaluableCredentialC
      * 
      * @param newEntityID the criteria value which is the basis for evaluation
      */
-    public EvaluableEntityIDCredentialCriteria(String newEntityID) {
+    public EvaluableEntityIDCredentialCriterion(String newEntityID) {
         if (StringSupport.isNullOrEmpty(newEntityID)) {
             throw new IllegalArgumentException("Entity ID may not be null");
         }

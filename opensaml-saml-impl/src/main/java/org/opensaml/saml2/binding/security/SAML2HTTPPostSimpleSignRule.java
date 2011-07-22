@@ -32,14 +32,14 @@ import org.opensaml.xml.io.Unmarshaller;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.parse.ParserPool;
 import org.opensaml.xml.parse.XMLParserException;
-import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
-import org.opensaml.xml.security.keyinfo.KeyInfoCriteria;
+import org.opensaml.xml.security.keyinfo.KeyInfoCriterion;
 import org.opensaml.xml.signature.KeyInfo;
 import org.opensaml.xml.signature.SignatureTrustEngine;
 import org.opensaml.util.Base64;
+import org.opensaml.util.criteria.CriteriaSet;
 import org.opensaml.xml.util.DatatypeHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -156,7 +156,7 @@ public class SAML2HTTPPostSimpleSignRule extends BaseSAMLSimpleSignatureSecurity
         }
 
         List<Credential> credentials = new ArrayList<Credential>();
-        CriteriaSet criteriaSet = new CriteriaSet(new KeyInfoCriteria(keyInfo));
+        CriteriaSet criteriaSet = new CriteriaSet(new KeyInfoCriterion(keyInfo));
         try {
             for (Credential cred : keyInfoResolver.resolve(criteriaSet)) {
                 credentials.add(cred);

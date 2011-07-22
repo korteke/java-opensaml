@@ -18,10 +18,10 @@
 package org.opensaml.xml.security.criteria;
 
 import org.opensaml.util.StringSupport;
-import org.opensaml.xml.security.Criteria;
+import org.opensaml.util.criteria.Criterion;
 
 /**
- * An implementation of {@link Criteria} which specifies criteria identifying a
+ * An implementation of {@link Criterion} which specifies criteria identifying a
  * particular entity.
  * 
  * Note that when used as a credential criteria for a credential resolver, the entity ID is the entity which owns 
@@ -30,9 +30,9 @@ import org.opensaml.xml.security.Criteria;
  * would be a remote peer; in resolution of decryption credentials, the owner entity ID would be
  * a local entity ID.
  * 
- * See also {@link PeerEntityIDCriteria}.
+ * See also {@link PeerEntityIDCriterion}.
  */
-public final class EntityIDCriteria implements Criteria {
+public final class EntityIDCriterion implements Criterion {
     
     /** Entity ID criteria. */
     private String entityID;
@@ -42,7 +42,7 @@ public final class EntityIDCriteria implements Criteria {
      *
      * @param entity the entity ID represented by the criteria
      */
-    public EntityIDCriteria(String entity) {
+    public EntityIDCriterion(String entity) {
         setEntityID(entity);
     }
 

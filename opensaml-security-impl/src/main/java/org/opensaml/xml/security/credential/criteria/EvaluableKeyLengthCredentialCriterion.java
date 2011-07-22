@@ -21,17 +21,17 @@ import java.security.Key;
 
 import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.credential.Credential;
-import org.opensaml.xml.security.criteria.KeyLengthCriteria;
+import org.opensaml.xml.security.criteria.KeyLengthCriterion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * Instance of evaluable credential criteria for evaluating the credential key length.
  */
-public class EvaluableKeyLengthCredentialCriteria implements EvaluableCredentialCriteria {
+public class EvaluableKeyLengthCredentialCriterion implements EvaluableCredentialCriterion {
 
     /** Logger. */
-    private final Logger log = LoggerFactory.getLogger(EvaluableKeyLengthCredentialCriteria.class);
+    private final Logger log = LoggerFactory.getLogger(EvaluableKeyLengthCredentialCriterion.class);
 
     /** Base criteria. */
     private Integer keyLength;
@@ -41,9 +41,9 @@ public class EvaluableKeyLengthCredentialCriteria implements EvaluableCredential
      * 
      * @param criteria the criteria which is the basis for evaluation
      */
-    public EvaluableKeyLengthCredentialCriteria(KeyLengthCriteria criteria) {
+    public EvaluableKeyLengthCredentialCriterion(KeyLengthCriterion criteria) {
         if (criteria == null) {
-            throw new NullPointerException("Criteria instance may not be null");
+            throw new NullPointerException("Criterion instance may not be null");
         }
         keyLength = criteria.getKeyLength();
     }
@@ -53,7 +53,7 @@ public class EvaluableKeyLengthCredentialCriteria implements EvaluableCredential
      * 
      * @param newKeyLength the criteria value which is the basis for evaluation
      */
-    public EvaluableKeyLengthCredentialCriteria(Integer newKeyLength) {
+    public EvaluableKeyLengthCredentialCriterion(Integer newKeyLength) {
         if (newKeyLength == null) {
             throw new IllegalArgumentException("Key length may not be null");
         }
