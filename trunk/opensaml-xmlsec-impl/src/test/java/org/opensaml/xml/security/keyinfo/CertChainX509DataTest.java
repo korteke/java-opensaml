@@ -35,6 +35,7 @@ import org.opensaml.xml.security.x509.X509Credential;
 import org.opensaml.xml.signature.KeyInfo;
 import org.opensaml.util.Base64;
 import org.opensaml.util.criteria.CriteriaSet;
+import org.opensaml.util.resolver.ResolverException;
 
 
 /**
@@ -125,8 +126,9 @@ public class CertChainX509DataTest extends XMLObjectBaseTestCase {
      * Test resolution with multiple certs, end-entity cert identified by KeyValue.
      * 
      * @throws SecurityException on error resolving credentials
+     * @throws ResolverException  on error resolving credentials
      */
-    public void testResolutionWithKeyValue() throws SecurityException {
+    public void testResolutionWithKeyValue() throws SecurityException, ResolverException {
         KeyInfo keyInfo = 
             (KeyInfo) unmarshallElement("/data/org/opensaml/xml/security/keyinfo/X509CertificatesWithKeyValue.xml");
         CriteriaSet criteriaSet = new CriteriaSet( new KeyInfoCriterion(keyInfo) );
@@ -160,8 +162,9 @@ public class CertChainX509DataTest extends XMLObjectBaseTestCase {
      * Test resolution with multiple certs, end-entity cert identified by X509SubjectName.
      * 
      * @throws SecurityException on error resolving credentials
+     * @throws ResolverException on error resolving credentials
      */
-    public void testResolutionWithSubjectName() throws SecurityException {
+    public void testResolutionWithSubjectName() throws SecurityException, ResolverException {
         KeyInfo keyInfo = 
             (KeyInfo) unmarshallElement("/data/org/opensaml/xml/security/keyinfo/X509CertificatesWithSubjectName.xml");
         CriteriaSet criteriaSet = new CriteriaSet( new KeyInfoCriterion(keyInfo) );
@@ -195,8 +198,9 @@ public class CertChainX509DataTest extends XMLObjectBaseTestCase {
      * Test resolution with multiple certs, end-entity cert identified by X509IssuerSerial.
      * 
      * @throws SecurityException on error resolving credentials
+     * @throws ResolverException on error resolving credentials
      */
-    public void testResolutionWithIssuerSerial() throws SecurityException {
+    public void testResolutionWithIssuerSerial() throws SecurityException, ResolverException {
         KeyInfo keyInfo = 
             (KeyInfo) unmarshallElement("/data/org/opensaml/xml/security/keyinfo/X509CertificatesWithIssuerSerial.xml");
         CriteriaSet criteriaSet = new CriteriaSet( new KeyInfoCriterion(keyInfo) );
@@ -230,8 +234,9 @@ public class CertChainX509DataTest extends XMLObjectBaseTestCase {
      * Test resolution with multiple certs, end-entity cert identified by X509SubjectName.
      * 
      * @throws SecurityException on error resolving credentials
+     * @throws ResolverException on error resolving credentials
      */
-    public void testResolutionWithSubjectKeyIdentifier() throws SecurityException {
+    public void testResolutionWithSubjectKeyIdentifier() throws SecurityException, ResolverException {
         KeyInfo keyInfo = 
             (KeyInfo) unmarshallElement("/data/org/opensaml/xml/security/keyinfo/X509CertificatesWithSKI.xml");
         CriteriaSet criteriaSet = new CriteriaSet( new KeyInfoCriterion(keyInfo) );

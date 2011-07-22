@@ -31,6 +31,7 @@ import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.methods.ByteArrayRequestEntity;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.RequestEntity;
+import org.opensaml.util.resolver.ResolverException;
 import org.opensaml.ws.security.SecurityPolicy;
 import org.opensaml.ws.security.SecurityPolicyResolver;
 import org.opensaml.ws.soap.client.SOAPClient;
@@ -265,7 +266,7 @@ public class HttpSOAPClient implements SOAPClient {
             if (policy == null) {
                 return;
             }
-        } catch (SecurityException e) {
+        } catch (ResolverException e) {
             throw new SOAPClientException("Unable to resolve security policy for inbound SOAP response", e);
         }
 

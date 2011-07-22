@@ -23,8 +23,8 @@ import java.security.NoSuchProviderException;
 import java.util.ArrayList;
 
 import org.opensaml.util.criteria.CriteriaSet;
+import org.opensaml.util.resolver.ResolverException;
 import org.opensaml.xml.XMLObjectBaseTestCase;
-import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.credential.BasicCredential;
 import org.opensaml.xml.security.credential.CollectionCredentialResolver;
@@ -67,7 +67,7 @@ public class LocalKeyInfoCredentialResolverTest extends XMLObjectBaseTestCase {
         keyInfo = (KeyInfo) buildXMLObject(KeyInfo.DEFAULT_ELEMENT_NAME);
     }
     
-    public void testKeyInfoWithKeyName() throws SecurityException {
+    public void testKeyInfoWithKeyName() throws ResolverException {
         KeyInfoHelper.addKeyName(keyInfo, keyName);
         
         CriteriaSet criteriaSet = new CriteriaSet( new KeyInfoCriterion(keyInfo) );
@@ -76,7 +76,7 @@ public class LocalKeyInfoCredentialResolverTest extends XMLObjectBaseTestCase {
         assertEquals("Unexpected local credential resolved", localCred, resolvedCred);
     }
 
-    public void testKeyInfoWithKnownPublicKey() throws SecurityException {
+    public void testKeyInfoWithKnownPublicKey() throws ResolverException {
         KeyInfoHelper.addPublicKey(keyInfo, keyPair.getPublic());
         
         CriteriaSet criteriaSet = new CriteriaSet( new KeyInfoCriterion(keyInfo) );
@@ -85,8 +85,8 @@ public class LocalKeyInfoCredentialResolverTest extends XMLObjectBaseTestCase {
         assertEquals("Unexpected local credential resolved", localCred, resolvedCred);
     }
     
-    public void testKeyInfoWithUnknownPublicKey() throws SecurityException, IllegalArgumentException,
-        NoSuchAlgorithmException, NoSuchProviderException {
+    public void testKeyInfoWithUnknownPublicKey() throws IllegalArgumentException,
+        NoSuchAlgorithmException, NoSuchProviderException, ResolverException {
         
         KeyInfoHelper.addPublicKey(keyInfo, 
                 SecurityHelper.generateKeyPair("RSA", 1024, null).getPublic());

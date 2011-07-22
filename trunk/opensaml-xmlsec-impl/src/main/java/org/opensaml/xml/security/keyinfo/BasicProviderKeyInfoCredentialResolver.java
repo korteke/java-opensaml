@@ -32,6 +32,7 @@ import javax.crypto.SecretKey;
 import org.opensaml.util.criteria.CriteriaSet;
 import org.opensaml.util.resolver.ResolverException;
 import org.opensaml.xml.XMLObject;
+import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.credential.AbstractCriteriaFilteringCredentialResolver;
 import org.opensaml.xml.security.credential.BasicCredential;
@@ -296,7 +297,12 @@ public class BasicProviderKeyInfoCredentialResolver extends AbstractCriteriaFilt
 
             log.debug("Processing KeyInfo child {} with provider {}", keyInfoChild.getElementQName(), provider
                     .getClass().getName());
-            Collection<Credential> creds = provider.process(this, keyInfoChild, criteriaSet, kiContext);
+            Collection<Credential> creds;
+            try {
+                creds = provider.process(this, keyInfoChild, criteriaSet, kiContext);
+            } catch (SecurityException e) {
+                throw new ResolverException("Error processing KeyInfo child element", e);
+            }
 
             if (creds != null && !creds.isEmpty()) {
                 log.debug("Credentials successfully extracted from child {} by provider {}", keyInfoChild

@@ -24,6 +24,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.opensaml.util.criteria.CriteriaSet;
+import org.opensaml.util.resolver.ResolverException;
 import org.opensaml.xml.XMLObjectBaseTestCase;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.SecurityHelper;
@@ -89,9 +90,9 @@ public class SingleCertX509DataTest extends XMLObjectBaseTestCase {
     /**
      * Test basic credential resolution.
      * 
-     * @throws SecurityException on error resolving credentials
+     * @throws ResolverException on error resolving credentials
      */
-    public void testCredResolution() throws SecurityException {
+    public void testCredResolution() throws ResolverException {
         KeyInfo keyInfo = 
             (KeyInfo) unmarshallElement("/data/org/opensaml/xml/security/keyinfo/SingleX509Certificate.xml");
         CriteriaSet criteriaSet = new CriteriaSet( new KeyInfoCriterion(keyInfo) );

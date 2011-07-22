@@ -20,6 +20,7 @@ package org.opensaml.xml.signature.impl;
 import java.util.Set;
 
 import org.opensaml.util.criteria.CriteriaSet;
+import org.opensaml.util.resolver.ResolverException;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.SigningUtil;
@@ -245,11 +246,22 @@ public class PKIXSignatureTrustEngine extends
 
         Set<String> trustedNames = null;
         if (pkixResolver.supportsTrustedNameResolution()) {
-            trustedNames = pkixResolver.resolveTrustedNames(trustBasisCriteria);
+            try {
+                trustedNames = pkixResolver.resolveTrustedNames(trustBasisCriteria);
+            } catch (UnsupportedOperationException e) {
+                throw new SecurityException("Error resolving trusted names", e);
+            } catch (ResolverException e) {
+                throw new SecurityException("Error resolving trusted names", e);
+            }
         } else {
             log.debug("PKIX resolver does not support resolution of trusted names, skipping name checking");
         }
-        Iterable<PKIXValidationInformation> validationInfoSet = pkixResolver.resolve(trustBasisCriteria);
+        Iterable<PKIXValidationInformation> validationInfoSet;
+        try {
+            validationInfoSet = pkixResolver.resolve(trustBasisCriteria);
+        } catch (ResolverException e) {
+            throw new SecurityException("Error resolving trusted PKIX validation information", e);
+        }
 
         Pair<Set<String>, Iterable<PKIXValidationInformation>> validationPair = 
             new Pair<Set<String>, Iterable<PKIXValidationInformation>>(trustedNames, validationInfoSet);

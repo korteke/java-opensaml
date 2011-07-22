@@ -18,6 +18,7 @@
 package org.opensaml.xml.security.trust;
 
 import org.opensaml.util.criteria.CriteriaSet;
+import org.opensaml.util.resolver.ResolverException;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.credential.CredentialResolver;
@@ -67,7 +68,12 @@ public class ExplicitKeyTrustEngine implements TrustedCredentialTrustEngine<Cred
         checkParams(untrustedCredential, trustBasisCriteria);
 
         log.debug("Attempting to validate untrusted credential");
-        Iterable<Credential> trustedCredentials = getCredentialResolver().resolve(trustBasisCriteria);
+        Iterable<Credential> trustedCredentials;
+        try {
+            trustedCredentials = getCredentialResolver().resolve(trustBasisCriteria);
+        } catch (ResolverException e) {
+            throw new SecurityException("Error resolving trusted credentials", e);
+        }
 
         return trustEvaluator.validate(untrustedCredential, trustedCredentials);
     }
