@@ -22,19 +22,19 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.opensaml.common.binding.SAMLMessageContext;
-import org.opensaml.security.MetadataCriteria;
+import org.opensaml.security.MetadataCriterion;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.security.SecurityPolicyException;
 import org.opensaml.ws.security.SecurityPolicyRule;
 import org.opensaml.ws.transport.http.HttpServletRequestAdapter;
-import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.credential.UsageType;
-import org.opensaml.xml.security.criteria.EntityIDCriteria;
-import org.opensaml.xml.security.criteria.UsageCriteria;
+import org.opensaml.xml.security.criteria.EntityIDCriterion;
+import org.opensaml.xml.security.criteria.UsageCriterion;
 import org.opensaml.xml.signature.SignatureTrustEngine;
 import org.opensaml.util.Base64;
+import org.opensaml.util.criteria.CriteriaSet;
 import org.opensaml.xml.util.DatatypeHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -294,14 +294,14 @@ public abstract class BaseSAMLSimpleSignatureSecurityPolicyRule implements Secur
 
         CriteriaSet criteriaSet = new CriteriaSet();
         if (!DatatypeHelper.isEmpty(entityID)) {
-            criteriaSet.add(new EntityIDCriteria(entityID));
+            criteriaSet.add(new EntityIDCriterion(entityID));
         }
 
-        MetadataCriteria mdCriteria = new MetadataCriteria(samlContext.getPeerEntityRole(), samlContext
+        MetadataCriterion mdCriteria = new MetadataCriterion(samlContext.getPeerEntityRole(), samlContext
                 .getInboundSAMLProtocol());
         criteriaSet.add(mdCriteria);
 
-        criteriaSet.add(new UsageCriteria(UsageType.SIGNING));
+        criteriaSet.add(new UsageCriterion(UsageType.SIGNING));
 
         return criteriaSet;
     }

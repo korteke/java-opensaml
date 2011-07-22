@@ -26,10 +26,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.opensaml.util.criteria.CriteriaSet;
 import org.opensaml.xml.XMLObjectBaseTestCase;
-import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
-import org.opensaml.xml.security.criteria.EntityIDCriteria;
+import org.opensaml.xml.security.criteria.EntityIDCriterion;
 
 /**
  * Tests the {@link PKIXX509CredentialTrustEngine} implementation.
@@ -58,7 +58,7 @@ public class PKIXX509CredentialTrustEngineTest extends XMLObjectBaseTestCase {
         
         subjectCN = "foo.example.org";
         
-        criteriaSet = new CriteriaSet( new EntityIDCriteria("dummy-entity-id") );
+        criteriaSet = new CriteriaSet( new EntityIDCriterion("dummy-entity-id") );
     }
     
     public void testGoodPathInAnchors() {

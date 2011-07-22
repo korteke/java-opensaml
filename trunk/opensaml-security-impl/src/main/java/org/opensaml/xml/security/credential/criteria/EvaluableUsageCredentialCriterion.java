@@ -19,17 +19,17 @@ package org.opensaml.xml.security.credential.criteria;
 
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.credential.UsageType;
-import org.opensaml.xml.security.criteria.UsageCriteria;
+import org.opensaml.xml.security.criteria.UsageCriterion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * Instance of evaluable credential criteria for evaluating whether a credential contains a particular usage specifier.
  */
-public class EvaluableUsageCredentialCriteria implements EvaluableCredentialCriteria {
+public class EvaluableUsageCredentialCriterion implements EvaluableCredentialCriterion {
 
     /** Logger. */
-    private final Logger log = LoggerFactory.getLogger(EvaluableUsageCredentialCriteria.class);
+    private final Logger log = LoggerFactory.getLogger(EvaluableUsageCredentialCriterion.class);
 
     /** Base criteria. */
     private UsageType usage;
@@ -39,9 +39,9 @@ public class EvaluableUsageCredentialCriteria implements EvaluableCredentialCrit
      * 
      * @param criteria the criteria which is the basis for evaluation
      */
-    public EvaluableUsageCredentialCriteria(UsageCriteria criteria) {
+    public EvaluableUsageCredentialCriterion(UsageCriterion criteria) {
         if (criteria == null) {
-            throw new NullPointerException("Criteria instance may not be null");
+            throw new NullPointerException("Criterion instance may not be null");
         }
         usage = criteria.getUsage();
     }
@@ -51,7 +51,7 @@ public class EvaluableUsageCredentialCriteria implements EvaluableCredentialCrit
      * 
      * @param newUsage the criteria value which is the basis for evaluation
      */
-    public EvaluableUsageCredentialCriteria(UsageType newUsage) {
+    public EvaluableUsageCredentialCriterion(UsageType newUsage) {
         if (newUsage == null) {
             throw new IllegalArgumentException("Usage may not be null");
         }

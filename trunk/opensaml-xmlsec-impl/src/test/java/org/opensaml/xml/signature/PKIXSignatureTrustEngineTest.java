@@ -27,13 +27,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.opensaml.util.criteria.CriteriaSet;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.XMLObjectBaseTestCase;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.mock.SignableSimpleXMLObject;
 import org.opensaml.xml.mock.SimpleXMLObject;
-import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.SigningUtil;
@@ -41,7 +41,7 @@ import org.opensaml.xml.security.XMLSecurityHelper;
 import org.opensaml.xml.security.XMLSecurityTestingHelper;
 import org.opensaml.xml.security.XMLSigningUtil;
 import org.opensaml.xml.security.credential.Credential;
-import org.opensaml.xml.security.criteria.EntityIDCriteria;
+import org.opensaml.xml.security.criteria.EntityIDCriterion;
 import org.opensaml.xml.security.x509.BasicPKIXValidationInformation;
 import org.opensaml.xml.security.x509.BasicX509Credential;
 import org.opensaml.xml.security.x509.PKIXValidationInformation;
@@ -90,7 +90,7 @@ public class PKIXSignatureTrustEngineTest extends XMLObjectBaseTestCase {
         
         subjectCN = "foo.example.org";
         
-        criteriaSet = new CriteriaSet( new EntityIDCriteria("dummy-entity-id") );
+        criteriaSet = new CriteriaSet( new EntityIDCriterion("dummy-entity-id") );
         
         // Used to test the tampered data case
         tamperDocumentPostSigning = false;

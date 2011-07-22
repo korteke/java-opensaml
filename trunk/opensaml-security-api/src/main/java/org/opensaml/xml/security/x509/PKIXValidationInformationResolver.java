@@ -19,13 +19,13 @@ package org.opensaml.xml.security.x509;
 
 import java.util.Set;
 
-import org.opensaml.xml.security.Criteria;
-import org.opensaml.xml.security.CriteriaSet;
+import org.opensaml.util.criteria.Criterion;
+import org.opensaml.util.criteria.CriteriaSet;
 import org.opensaml.xml.security.Resolver;
 import org.opensaml.xml.security.SecurityException;
 
 /**
- * A resolver which uses {@link Criteria} to resolve {@link PKIXValidationInformation}, which will typically be used
+ * A resolver which uses {@link Criterion} to resolve {@link PKIXValidationInformation}, which will typically be used
  * PKIX-based trust engines.
  * 
  * Implementations may also optionally implement {@link #resolveTrustedNames(CriteriaSet)}, which will 

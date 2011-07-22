@@ -21,6 +21,9 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.opensaml.util.criteria.CriteriaFilteringIterable;
+import org.opensaml.util.criteria.EvaluableCriterion;
+
 import junit.framework.TestCase;
 
 /**
@@ -30,7 +33,7 @@ public class CriteriaFilteringIterableTest extends TestCase {
     
     private Collection<Thing> things;
     
-    private Set<EvaluableCriteria<Thing>> criteriaSet;
+    private Set<EvaluableCriterion<Thing>> criteriaSet;
     
     private Thing foofoo, foobar, foobaz, foonull;
     
@@ -52,7 +55,7 @@ public class CriteriaFilteringIterableTest extends TestCase {
         things.add(foobaz);
         things.add(foonull);
         
-        criteriaSet = new HashSet<EvaluableCriteria<Thing>>();
+        criteriaSet = new HashSet<EvaluableCriterion<Thing>>();
     }
     
     /**
@@ -78,60 +81,60 @@ public class CriteriaFilteringIterableTest extends TestCase {
         
         // Present value 1
         criteriaSet.clear();
-        criteriaSet.add( new ThingCriteria1(FOO) );
+        criteriaSet.add( new ThingCriterion1(FOO) );
         matches = getMatches( new CriteriaFilteringIterable<Thing>(things, criteriaSet, true, true) );
         checkMatches(matches, 4, foofoo, foobar, foobaz, foonull);
         
         // Not present value1
         criteriaSet.clear();
-        criteriaSet.add( new ThingCriteria1(BAR) );
+        criteriaSet.add( new ThingCriterion1(BAR) );
         matches = getMatches( new CriteriaFilteringIterable<Thing>(things, criteriaSet, true, true) );
         checkMatches(matches, 0);
         
         // Present value 2
         criteriaSet.clear();
-        criteriaSet.add( new ThingCriteria2(BAZ) );
+        criteriaSet.add( new ThingCriterion2(BAZ) );
         matches = getMatches( new CriteriaFilteringIterable<Thing>(things, criteriaSet, true, true) );
         checkMatches(matches, 2, foobaz, foonull);
         
         // Not present value2
         criteriaSet.clear();
-        criteriaSet.add( new ThingCriteria2(OTHER) );
+        criteriaSet.add( new ThingCriterion2(OTHER) );
         matches = getMatches( new CriteriaFilteringIterable<Thing>(things, criteriaSet, true, true) );
         checkMatches(matches, 1, foonull);
         
         // Present value1, present value2
         criteriaSet.clear();
-        criteriaSet.add( new ThingCriteria1(FOO) );
-        criteriaSet.add( new ThingCriteria2(BAR) );
+        criteriaSet.add( new ThingCriterion1(FOO) );
+        criteriaSet.add( new ThingCriterion2(BAR) );
         matches = getMatches( new CriteriaFilteringIterable<Thing>(things, criteriaSet, true, true) );
         checkMatches(matches, 2, foobar, foonull);
         
         // Not present value1, not present value2
         criteriaSet.clear();
-        criteriaSet.add( new ThingCriteria1(OTHER) );
-        criteriaSet.add( new ThingCriteria2(OTHER) );
+        criteriaSet.add( new ThingCriterion1(OTHER) );
+        criteriaSet.add( new ThingCriterion2(OTHER) );
         matches = getMatches( new CriteriaFilteringIterable<Thing>(things, criteriaSet, true, true) );
         checkMatches(matches, 0);
         
         // Present value1, not present value2
         criteriaSet.clear();
-        criteriaSet.add( new ThingCriteria1(FOO) );
-        criteriaSet.add( new ThingCriteria2(OTHER) );
+        criteriaSet.add( new ThingCriterion1(FOO) );
+        criteriaSet.add( new ThingCriterion2(OTHER) );
         matches = getMatches( new CriteriaFilteringIterable<Thing>(things, criteriaSet, true, true) );
         checkMatches(matches, 1, foonull);
         
         // Not present value1, present value2
         criteriaSet.clear();
-        criteriaSet.add( new ThingCriteria1(OTHER) );
-        criteriaSet.add( new ThingCriteria2(BAR) );
+        criteriaSet.add( new ThingCriterion1(OTHER) );
+        criteriaSet.add( new ThingCriterion2(BAR) );
         matches = getMatches( new CriteriaFilteringIterable<Thing>(things, criteriaSet, true, true) );
         checkMatches(matches, 0);
         
         // Contradictory value2
         criteriaSet.clear();
-        criteriaSet.add( new ThingCriteria2(OTHER) );
-        criteriaSet.add( new ThingCriteria2(FOO) );
+        criteriaSet.add( new ThingCriterion2(OTHER) );
+        criteriaSet.add( new ThingCriterion2(FOO) );
         matches = getMatches( new CriteriaFilteringIterable<Thing>(things, criteriaSet, true, true) );
         checkMatches(matches, 1, foonull);
     }
@@ -144,60 +147,60 @@ public class CriteriaFilteringIterableTest extends TestCase {
         
         // Present value 1
         criteriaSet.clear();
-        criteriaSet.add( new ThingCriteria1(FOO) );
+        criteriaSet.add( new ThingCriterion1(FOO) );
         matches = getMatches( new CriteriaFilteringIterable<Thing>(things, criteriaSet, true, false) );
         checkMatches(matches, 4, foofoo, foobar, foobaz, foonull);
         
         // Not present value1
         criteriaSet.clear();
-        criteriaSet.add( new ThingCriteria1(BAR) );
+        criteriaSet.add( new ThingCriterion1(BAR) );
         matches = getMatches( new CriteriaFilteringIterable<Thing>(things, criteriaSet, true, false) );
         checkMatches(matches, 0);
         
         // Present value 2
         criteriaSet.clear();
-        criteriaSet.add( new ThingCriteria2(BAZ) );
+        criteriaSet.add( new ThingCriterion2(BAZ) );
         matches = getMatches( new CriteriaFilteringIterable<Thing>(things, criteriaSet, true, false) );
         checkMatches(matches, 1, foobaz);
         
         // Not present value2
         criteriaSet.clear();
-        criteriaSet.add( new ThingCriteria2(OTHER) );
+        criteriaSet.add( new ThingCriterion2(OTHER) );
         matches = getMatches( new CriteriaFilteringIterable<Thing>(things, criteriaSet, true, false) );
         checkMatches(matches, 0);
         
         // Present value1, present value2
         criteriaSet.clear();
-        criteriaSet.add( new ThingCriteria1(FOO) );
-        criteriaSet.add( new ThingCriteria2(BAR) );
+        criteriaSet.add( new ThingCriterion1(FOO) );
+        criteriaSet.add( new ThingCriterion2(BAR) );
         matches = getMatches( new CriteriaFilteringIterable<Thing>(things, criteriaSet, true, false) );
         checkMatches(matches, 1, foobar);
         
         // Not present value1, not present value2
         criteriaSet.clear();
-        criteriaSet.add( new ThingCriteria1(OTHER) );
-        criteriaSet.add( new ThingCriteria2(OTHER) );
+        criteriaSet.add( new ThingCriterion1(OTHER) );
+        criteriaSet.add( new ThingCriterion2(OTHER) );
         matches = getMatches( new CriteriaFilteringIterable<Thing>(things, criteriaSet, true, false) );
         checkMatches(matches, 0);
         
         // Present value1, not present value2
         criteriaSet.clear();
-        criteriaSet.add( new ThingCriteria1(FOO) );
-        criteriaSet.add( new ThingCriteria2(OTHER) );
+        criteriaSet.add( new ThingCriterion1(FOO) );
+        criteriaSet.add( new ThingCriterion2(OTHER) );
         matches = getMatches( new CriteriaFilteringIterable<Thing>(things, criteriaSet, true, false) );
         checkMatches(matches, 0);
         
         // Not present value1, present value2
         criteriaSet.clear();
-        criteriaSet.add( new ThingCriteria1(OTHER) );
-        criteriaSet.add( new ThingCriteria2(BAR) );
+        criteriaSet.add( new ThingCriterion1(OTHER) );
+        criteriaSet.add( new ThingCriterion2(BAR) );
         matches = getMatches( new CriteriaFilteringIterable<Thing>(things, criteriaSet, true, false) );
         checkMatches(matches, 0);
         
         // Contradictory value2
         criteriaSet.clear();
-        criteriaSet.add( new ThingCriteria2(OTHER) );
-        criteriaSet.add( new ThingCriteria2(FOO) );
+        criteriaSet.add( new ThingCriterion2(OTHER) );
+        criteriaSet.add( new ThingCriterion2(FOO) );
         matches = getMatches( new CriteriaFilteringIterable<Thing>(things, criteriaSet, true, false) );
         checkMatches(matches, 0);
     }
@@ -211,60 +214,60 @@ public class CriteriaFilteringIterableTest extends TestCase {
         
         // Present value 1
         criteriaSet.clear();
-        criteriaSet.add( new ThingCriteria1(FOO) );
+        criteriaSet.add( new ThingCriterion1(FOO) );
         matches = getMatches( new CriteriaFilteringIterable<Thing>(things, criteriaSet, false, true) );
         checkMatches(matches, 4, foofoo, foobar, foobaz, foonull);
         
         // Not present value1
         criteriaSet.clear();
-        criteriaSet.add( new ThingCriteria1(BAR) );
+        criteriaSet.add( new ThingCriterion1(BAR) );
         matches = getMatches( new CriteriaFilteringIterable<Thing>(things, criteriaSet, false, true) );
         checkMatches(matches, 0);
         
         // Present value 2
         criteriaSet.clear();
-        criteriaSet.add( new ThingCriteria2(BAZ) );
+        criteriaSet.add( new ThingCriterion2(BAZ) );
         matches = getMatches( new CriteriaFilteringIterable<Thing>(things, criteriaSet, false, true) );
         checkMatches(matches, 2, foobaz, foonull);
         
         // Not present value2
         criteriaSet.clear();
-        criteriaSet.add( new ThingCriteria2(OTHER) );
+        criteriaSet.add( new ThingCriterion2(OTHER) );
         matches = getMatches( new CriteriaFilteringIterable<Thing>(things, criteriaSet, false, true) );
         checkMatches(matches, 1, foonull);
         
         // Present value1, present value2
         criteriaSet.clear();
-        criteriaSet.add( new ThingCriteria1(FOO) );
-        criteriaSet.add( new ThingCriteria2(BAR) );
+        criteriaSet.add( new ThingCriterion1(FOO) );
+        criteriaSet.add( new ThingCriterion2(BAR) );
         matches = getMatches( new CriteriaFilteringIterable<Thing>(things, criteriaSet, false, true) );
         checkMatches(matches, 4, foofoo, foobar, foobaz, foonull);
         
         // Not present value1, not present value2
         criteriaSet.clear();
-        criteriaSet.add( new ThingCriteria1(OTHER) );
-        criteriaSet.add( new ThingCriteria2(OTHER) );
+        criteriaSet.add( new ThingCriterion1(OTHER) );
+        criteriaSet.add( new ThingCriterion2(OTHER) );
         matches = getMatches( new CriteriaFilteringIterable<Thing>(things, criteriaSet, false, true) );
         checkMatches(matches, 1, foonull);
         
         // Present value1, not present value2
         criteriaSet.clear();
-        criteriaSet.add( new ThingCriteria1(FOO) );
-        criteriaSet.add( new ThingCriteria2(OTHER) );
+        criteriaSet.add( new ThingCriterion1(FOO) );
+        criteriaSet.add( new ThingCriterion2(OTHER) );
         matches = getMatches( new CriteriaFilteringIterable<Thing>(things, criteriaSet, false, true) );
         checkMatches(matches, 4, foofoo, foobar, foobaz, foonull);
         
         // Not present value1, present value2
         criteriaSet.clear();
-        criteriaSet.add( new ThingCriteria1(OTHER) );
-        criteriaSet.add( new ThingCriteria2(BAR) );
+        criteriaSet.add( new ThingCriterion1(OTHER) );
+        criteriaSet.add( new ThingCriterion2(BAR) );
         matches = getMatches( new CriteriaFilteringIterable<Thing>(things, criteriaSet, false, true) );
         checkMatches(matches, 2, foobar, foonull);
         
         // Contradictory value2
         criteriaSet.clear();
-        criteriaSet.add( new ThingCriteria2(OTHER) );
-        criteriaSet.add( new ThingCriteria2(FOO) );
+        criteriaSet.add( new ThingCriterion2(OTHER) );
+        criteriaSet.add( new ThingCriterion2(FOO) );
         matches = getMatches( new CriteriaFilteringIterable<Thing>(things, criteriaSet, false, true) );
         checkMatches(matches, 2, foofoo, foonull);
     }
@@ -277,60 +280,60 @@ public class CriteriaFilteringIterableTest extends TestCase {
         
         // Present value 1
         criteriaSet.clear();
-        criteriaSet.add( new ThingCriteria1(FOO) );
+        criteriaSet.add( new ThingCriterion1(FOO) );
         matches = getMatches( new CriteriaFilteringIterable<Thing>(things, criteriaSet, false, false) );
         checkMatches(matches, 4, foofoo, foobar, foobaz, foonull);
         
         // Not present value1
         criteriaSet.clear();
-        criteriaSet.add( new ThingCriteria1(BAR) );
+        criteriaSet.add( new ThingCriterion1(BAR) );
         matches = getMatches( new CriteriaFilteringIterable<Thing>(things, criteriaSet, false, false) );
         checkMatches(matches, 0);
         
         // Present value 2
         criteriaSet.clear();
-        criteriaSet.add( new ThingCriteria2(BAZ) );
+        criteriaSet.add( new ThingCriterion2(BAZ) );
         matches = getMatches( new CriteriaFilteringIterable<Thing>(things, criteriaSet, false, false) );
         checkMatches(matches, 1, foobaz);
         
         // Not present value2
         criteriaSet.clear();
-        criteriaSet.add( new ThingCriteria2(OTHER) );
+        criteriaSet.add( new ThingCriterion2(OTHER) );
         matches = getMatches( new CriteriaFilteringIterable<Thing>(things, criteriaSet, false, false) );
         checkMatches(matches, 0);
         
         // Present value1, present value2
         criteriaSet.clear();
-        criteriaSet.add( new ThingCriteria1(FOO) );
-        criteriaSet.add( new ThingCriteria2(BAR) );
+        criteriaSet.add( new ThingCriterion1(FOO) );
+        criteriaSet.add( new ThingCriterion2(BAR) );
         matches = getMatches( new CriteriaFilteringIterable<Thing>(things, criteriaSet, false, false) );
         checkMatches(matches, 4, foofoo, foobar, foobaz, foonull);
         
         // Not present value1, not present value2
         criteriaSet.clear();
-        criteriaSet.add( new ThingCriteria1(OTHER) );
-        criteriaSet.add( new ThingCriteria2(OTHER) );
+        criteriaSet.add( new ThingCriterion1(OTHER) );
+        criteriaSet.add( new ThingCriterion2(OTHER) );
         matches = getMatches( new CriteriaFilteringIterable<Thing>(things, criteriaSet, false, false) );
         checkMatches(matches, 0);
         
         // Present value1, not present value2
         criteriaSet.clear();
-        criteriaSet.add( new ThingCriteria1(FOO) );
-        criteriaSet.add( new ThingCriteria2(OTHER) );
+        criteriaSet.add( new ThingCriterion1(FOO) );
+        criteriaSet.add( new ThingCriterion2(OTHER) );
         matches = getMatches( new CriteriaFilteringIterable<Thing>(things, criteriaSet, false, false) );
         checkMatches(matches, 4, foofoo, foobar, foobaz, foonull);
         
         // Not present value1, present value2
         criteriaSet.clear();
-        criteriaSet.add( new ThingCriteria1(OTHER) );
-        criteriaSet.add( new ThingCriteria2(BAR) );
+        criteriaSet.add( new ThingCriterion1(OTHER) );
+        criteriaSet.add( new ThingCriterion2(BAR) );
         matches = getMatches( new CriteriaFilteringIterable<Thing>(things, criteriaSet, false, false) );
         checkMatches(matches, 1, foobar);
         
         // Contradictory value2
         criteriaSet.clear();
-        criteriaSet.add( new ThingCriteria2(OTHER) );
-        criteriaSet.add( new ThingCriteria2(FOO) );
+        criteriaSet.add( new ThingCriterion2(OTHER) );
+        criteriaSet.add( new ThingCriterion2(FOO) );
         matches = getMatches( new CriteriaFilteringIterable<Thing>(things, criteriaSet, false, false) );
         checkMatches(matches, 1, foofoo);
     }
@@ -390,11 +393,11 @@ public class CriteriaFilteringIterableTest extends TestCase {
     }
     
     /** Mock criteria for testing. */
-    private class ThingCriteria1 implements EvaluableCriteria<Thing> {
+    private class ThingCriterion1 implements EvaluableCriterion<Thing> {
         
         private String value;
         
-        public ThingCriteria1(String value) {
+        public ThingCriterion1(String value) {
             this.value = value;
         }
         
@@ -409,11 +412,11 @@ public class CriteriaFilteringIterableTest extends TestCase {
     }
 
     /** Mock criteria for testing. */
-    private class ThingCriteria2 implements EvaluableCriteria<Thing> {
+    private class ThingCriterion2 implements EvaluableCriterion<Thing> {
         
         private String value;
         
-        public ThingCriteria2(String value) {
+        public ThingCriterion2(String value) {
             this.value = value;
         }
         

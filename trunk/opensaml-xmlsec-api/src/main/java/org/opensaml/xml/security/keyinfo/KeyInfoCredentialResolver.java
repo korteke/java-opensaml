@@ -24,7 +24,7 @@ import org.opensaml.xml.signature.KeyInfo;
  * Specialized {@link CredentialResolver} marker interface for resolvers which resolve
  * credentials based on a {@link KeyInfo} element.
  * 
- * Implementations will typically require an instance of {@link KeyInfoCriteria} within the
+ * Implementations will typically require an instance of {@link KeyInfoCriterion} within the
  * criteria set which is supplied as input to the resolve methods.
  */
 public interface KeyInfoCredentialResolver extends CredentialResolver {

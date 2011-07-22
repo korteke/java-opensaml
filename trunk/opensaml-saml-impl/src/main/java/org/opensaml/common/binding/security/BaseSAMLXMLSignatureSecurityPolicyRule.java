@@ -18,14 +18,14 @@
 package org.opensaml.common.binding.security;
 
 import org.opensaml.common.binding.SAMLMessageContext;
-import org.opensaml.security.MetadataCriteria;
+import org.opensaml.security.MetadataCriterion;
+import org.opensaml.util.criteria.CriteriaSet;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.security.SecurityPolicyException;
 import org.opensaml.ws.security.provider.BaseTrustEngineRule;
-import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.credential.UsageType;
-import org.opensaml.xml.security.criteria.EntityIDCriteria;
-import org.opensaml.xml.security.criteria.UsageCriteria;
+import org.opensaml.xml.security.criteria.EntityIDCriterion;
+import org.opensaml.xml.security.criteria.UsageCriterion;
 import org.opensaml.xml.security.trust.TrustEngine;
 import org.opensaml.xml.signature.Signature;
 import org.opensaml.xml.util.DatatypeHelper;
@@ -61,14 +61,14 @@ public abstract class BaseSAMLXMLSignatureSecurityPolicyRule extends BaseTrustEn
         
         CriteriaSet criteriaSet = new CriteriaSet();
         if (! DatatypeHelper.isEmpty(entityID)) {
-            criteriaSet.add(new EntityIDCriteria(entityID) );
+            criteriaSet.add(new EntityIDCriterion(entityID) );
         }
         
-        MetadataCriteria mdCriteria = 
-            new MetadataCriteria(samlContext.getPeerEntityRole(), samlContext.getInboundSAMLProtocol());
+        MetadataCriterion mdCriteria = 
+            new MetadataCriterion(samlContext.getPeerEntityRole(), samlContext.getInboundSAMLProtocol());
         criteriaSet.add(mdCriteria);
         
-        criteriaSet.add( new UsageCriteria(UsageType.SIGNING) );
+        criteriaSet.add( new UsageCriterion(UsageType.SIGNING) );
         
         return criteriaSet;
     }

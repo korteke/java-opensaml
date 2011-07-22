@@ -18,12 +18,12 @@
 package org.opensaml.common.binding.security;
 
 import org.opensaml.common.binding.SAMLMessageContext;
-import org.opensaml.security.MetadataCriteria;
+import org.opensaml.security.MetadataCriterion;
+import org.opensaml.util.criteria.CriteriaSet;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.security.SecurityPolicyException;
 import org.opensaml.ws.security.provider.CertificateNameOptions;
 import org.opensaml.ws.security.provider.ClientCertAuthRule;
-import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.trust.TrustEngine;
 import org.opensaml.xml.security.x509.X509Credential;
 import org.slf4j.Logger;
@@ -60,8 +60,8 @@ public class SAMLMDClientCertAuthRule extends ClientCertAuthRule {
         SAMLMessageContext samlContext = (SAMLMessageContext) messageContext;
 
         CriteriaSet criteriaSet = super.buildCriteriaSet(entityID, messageContext);
-        MetadataCriteria mdCriteria = 
-            new MetadataCriteria(samlContext.getPeerEntityRole(), samlContext.getInboundSAMLProtocol());
+        MetadataCriterion mdCriteria = 
+            new MetadataCriterion(samlContext.getPeerEntityRole(), samlContext.getInboundSAMLProtocol());
         criteriaSet.add(mdCriteria);
 
         return criteriaSet;

@@ -27,15 +27,15 @@ import org.opensaml.common.impl.SecureRandomIdentifierGenerator;
 import org.opensaml.saml2.core.impl.AssertionBuilder;
 import org.opensaml.saml2.core.impl.AuthnStatementBuilder;
 import org.opensaml.saml2.core.impl.IssuerBuilder;
+import org.opensaml.util.criteria.CriteriaSet;
 import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.io.UnmarshallingException;
-import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.credential.BasicCredential;
 import org.opensaml.xml.security.credential.StaticCredentialResolver;
-import org.opensaml.xml.security.criteria.EntityIDCriteria;
+import org.opensaml.xml.security.criteria.EntityIDCriterion;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xml.signature.Signature;
 import org.opensaml.xml.signature.SignatureConstants;
@@ -137,7 +137,7 @@ public class SignedAssertionTest extends BaseTestCase {
         KeyInfoCredentialResolver kiResolver = SAMLTestHelper.buildBasicInlineKeyInfoResolver();
         ExplicitKeySignatureTrustEngine trustEngine = new ExplicitKeySignatureTrustEngine(credResolver, kiResolver);
         
-        CriteriaSet criteriaSet = new CriteriaSet( new EntityIDCriteria("urn:example.org:issuer") );
+        CriteriaSet criteriaSet = new CriteriaSet( new EntityIDCriterion("urn:example.org:issuer") );
         assertTrue("Assertion signature was not valid",
                 trustEngine.validate(signedAssertion.getSignature(), criteriaSet));
     }

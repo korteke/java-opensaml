@@ -17,47 +17,48 @@
 
 package org.opensaml.xml.security.x509;
 
-import javax.security.auth.x500.X500Principal;
-
-import org.opensaml.xml.security.Criteria;
+import org.opensaml.util.criteria.Criterion;
 
 /**
- * An implementation of {@link Criteria} which specifies criteria based on
- * X.509 certificate subject name.
+ * An implementation of {@link Criterion} which specifies criteria based on
+ * X.509 certificate subject key identifier.
  */
-public final class X509SubjectNameCriteria implements Criteria {
+public final class X509SubjectKeyIdentifierCriterion implements Criterion {
     
-    /** X.509 certificate subject name. */
-    private X500Principal subjectName;
+    /** X.509 certificate subject key identifier. */
+    private byte[] subjectKeyIdentifier;
     
     /**
      * Constructor.
      *
-     * @param subject certificate subject name
+     * @param ski certificate subject key identifier
      */
-    public X509SubjectNameCriteria(X500Principal subject) {
-        setSubjectName(subject);
+    public X509SubjectKeyIdentifierCriterion(byte[] ski) {
+        setSubjectKeyIdentifier(ski);
+    }
+    
+    /**
+     * Get the subject key identifier.
+     * 
+     * @return Returns the subject key identifier
+     */
+    public byte[] getSubjectKeyIdentifier() {
+        return subjectKeyIdentifier;
     }
 
     /**
-     * Get the subject name.
+     * Set the subject key identifier.
      * 
-     * @return Returns the subject name
+     * @param ski The subject key identifier to set.
      */
-    public X500Principal getSubjectName() {
-        return subjectName;
-    }
-
-    /**
-     * Set the serial number.
-     * 
-     * @param subject The subject name
-     */
-    public void setSubjectName(X500Principal subject) {
-        if (subject == null) {
-            throw new IllegalArgumentException("Subject principal criteria value must be supplied");
+    public void setSubjectKeyIdentifier(byte[] ski) {
+        if (ski == null || ski.length == 0) {
+            throw new IllegalArgumentException("Subject key identifier criteria value must be non-null and non-empty");
         }
-        this.subjectName = subject;
+        subjectKeyIdentifier = ski;
     }
+    
+    
+    
 
 }

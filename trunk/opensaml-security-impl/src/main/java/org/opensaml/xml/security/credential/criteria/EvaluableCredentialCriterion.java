@@ -17,12 +17,12 @@
 
 package org.opensaml.xml.security.credential.criteria;
 
-import org.opensaml.xml.security.EvaluableCriteria;
+import org.opensaml.util.criteria.EvaluableCriterion;
 import org.opensaml.xml.security.credential.Credential;
 
 /**
  * Marker interface for evaluable credential resolver criteria.
  */
-public interface EvaluableCredentialCriteria extends EvaluableCriteria<Credential> {
+public interface EvaluableCredentialCriterion extends EvaluableCriterion<Credential> {
 
 }

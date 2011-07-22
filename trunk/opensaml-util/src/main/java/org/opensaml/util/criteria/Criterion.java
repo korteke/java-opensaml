@@ -15,11 +15,11 @@
  * limitations under the License.
  */
 
-package org.opensaml.xml.security;
+package org.opensaml.util.criteria;
 
 /**
  * A generic marker interface for representing criteria used in resolution or evaluation operations.
  */
-public interface Criteria {
+public interface Criterion {
 
 }

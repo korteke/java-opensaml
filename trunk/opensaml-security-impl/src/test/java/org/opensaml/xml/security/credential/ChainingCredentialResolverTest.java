@@ -24,7 +24,7 @@ import java.util.NoSuchElementException;
 
 import junit.framework.TestCase;
 
-import org.opensaml.xml.security.CriteriaSet;
+import org.opensaml.util.criteria.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
 
 /**

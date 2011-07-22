@@ -17,46 +17,44 @@
 
 package org.opensaml.xml.security.criteria;
 
-import java.security.PublicKey;
-
-import org.opensaml.xml.security.Criteria;
+import org.opensaml.util.criteria.Criterion;
 
 /**
- * An implementation of {@link Criteria} which specifies public key criteria.
+ * An implementation of {@link Criterion} which specifies key length criteria.
  */
-public final class PublicKeyCriteria implements Criteria {
-
-    /** Specifier of public key associated with resolved credentials. */
-    private PublicKey publicKey;
+public final class KeyLengthCriterion implements Criterion {
+    
+    /** Key length of resolved credentials. */
+    private Integer keyLength;
     
     /**
      * Constructor.
      *
-     * @param pubKey public key
+     * @param length key length 
      */
-    public PublicKeyCriteria(PublicKey pubKey) {
-        setPublicKey(pubKey);
-    }
-    
-    /**
-     * Get the public key criteria.
-     * 
-     * @return Returns the publicKey.
-     */
-    public PublicKey getPublicKey() {
-        return publicKey;
+    public KeyLengthCriterion(Integer length) {
+        setKeyLength(length);
     }
 
     /**
-     * Set the public key criteria. 
+     * Get the key length.
      * 
-     * @param key The publicKey to set.
+     * @return Returns the keyLength.
      */
-    public void setPublicKey(PublicKey key) {
-        if (key == null) {
-            throw new IllegalArgumentException("Public key criteria value must be supplied");
+    public Integer getKeyLength() {
+        return keyLength;
+    }
+
+    /**
+     * Set the key length.
+     * 
+     * @param length The keyLength to set.
+     */
+    public void setKeyLength(Integer length) {
+        if (length == null) {
+            throw new IllegalArgumentException("Key length criteria value must be supplied");
         }
-        publicKey = key;
+        keyLength = length;
     }
 
 }

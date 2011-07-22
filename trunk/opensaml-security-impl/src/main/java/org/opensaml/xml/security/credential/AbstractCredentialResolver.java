@@ -17,7 +17,7 @@
 
 package org.opensaml.xml.security.credential;
 
-import org.opensaml.xml.security.CriteriaSet;
+import org.opensaml.util.criteria.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
 
 /**

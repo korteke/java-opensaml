@@ -17,45 +17,47 @@
 
 package org.opensaml.xml.security.credential.criteria;
 
-import org.opensaml.util.StringSupport;
+import java.security.PublicKey;
+
 import org.opensaml.xml.security.credential.Credential;
-import org.opensaml.xml.security.criteria.KeyNameCriteria;
+import org.opensaml.xml.security.criteria.PublicKeyCriterion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Instance of evaluable credential criteria for evaluating credential key names.
+ * Instance of evaluable credential criteria for evaluating whether a credential contains a particular
+ * public key.
  */
-public class EvaluableKeyNameCredentialCriteria implements EvaluableCredentialCriteria {
+public class EvaluablePublicKeyCredentialCriterion implements EvaluableCredentialCriterion {
     
     /** Logger. */
-    private final Logger log = LoggerFactory.getLogger(EvaluableKeyNameCredentialCriteria.class);
+    private final Logger log = LoggerFactory.getLogger(EvaluablePublicKeyCredentialCriterion.class);
     
     /** Base criteria. */
-    private String keyName;
+    private PublicKey publicKey;
     
     /**
      * Constructor.
      *
      * @param criteria the criteria which is the basis for evaluation
      */
-    public EvaluableKeyNameCredentialCriteria(KeyNameCriteria criteria) {
+    public EvaluablePublicKeyCredentialCriterion(PublicKeyCriterion criteria) {
         if (criteria == null) {
-            throw new NullPointerException("Criteria instance may not be null");
+            throw new NullPointerException("Criterion instance may not be null");
         }
-        keyName = criteria.getKeyName();
+        publicKey = criteria.getPublicKey();
     }
     
     /**
      * Constructor.
      *
-     * @param newKeyName the criteria value which is the basis for evaluation
+     * @param newPublicKey the criteria value which is the basis for evaluation
      */
-    public EvaluableKeyNameCredentialCriteria(String newKeyName) {
-        if (StringSupport.isNullOrEmpty(newKeyName)) {
-            throw new IllegalArgumentException("Key name may not be null");
+    public EvaluablePublicKeyCredentialCriterion(PublicKey newPublicKey) {
+        if (newPublicKey == null) {
+            throw new IllegalArgumentException("Public key may not be null");
         }
-        keyName = newKeyName;
+        publicKey = newPublicKey;
     }
 
     /** {@inheritDoc} */
@@ -64,11 +66,13 @@ public class EvaluableKeyNameCredentialCriteria implements EvaluableCredentialCr
             log.error("Credential target was null");
             return null;
         }
-        if (target.getKeyNames().isEmpty()) {
-            log.info("Could not evaluate criteria, credential contained no key names");
-            return null;
+        PublicKey key = target.getPublicKey();
+        if (key == null) {
+            log.info("Credential contained no public key, does not satisfy public key criteria");
+            return Boolean.FALSE;
         }
-        Boolean result = target.getKeyNames().contains(keyName);
+        
+        Boolean result = publicKey.equals(key);
         return result;
     }
 

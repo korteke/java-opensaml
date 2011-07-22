@@ -21,13 +21,13 @@ import java.math.BigInteger;
 
 import javax.security.auth.x500.X500Principal;
 
-import org.opensaml.xml.security.Criteria;
+import org.opensaml.util.criteria.Criterion;
 
 /**
- * An implementation of {@link Criteria} which specifies criteria based on
+ * An implementation of {@link Criterion} which specifies criteria based on
  * X.509 certificate issuer name and serial number.
  */
-public final class X509IssuerSerialCriteria implements Criteria {
+public final class X509IssuerSerialCriterion implements Criterion {
     
     /** X.509 certificate issuer name. */
     private X500Principal issuerName;
@@ -41,7 +41,7 @@ public final class X509IssuerSerialCriteria implements Criteria {
      * @param issuer certificate issuer name
      * @param serial certificate serial number
      */
-    public X509IssuerSerialCriteria(X500Principal issuer, BigInteger serial) {
+    public X509IssuerSerialCriterion(X500Principal issuer, BigInteger serial) {
         setIssuerName(issuer);
         setSerialNumber(serial);
     }

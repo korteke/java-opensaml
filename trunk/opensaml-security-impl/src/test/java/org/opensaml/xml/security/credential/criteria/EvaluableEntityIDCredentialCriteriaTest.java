@@ -21,7 +21,7 @@ import junit.framework.TestCase;
 
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.credential.BasicCredential;
-import org.opensaml.xml.security.criteria.EntityIDCriteria;
+import org.opensaml.xml.security.criteria.EntityIDCriterion;
 
 /**
  *
@@ -30,7 +30,7 @@ public class EvaluableEntityIDCredentialCriteriaTest extends TestCase {
     
     private BasicCredential credential;
     private String entityID;
-    private EntityIDCriteria criteria;
+    private EntityIDCriterion criteria;
     
     public EvaluableEntityIDCredentialCriteriaTest() {
         entityID = "someEntityID";
@@ -43,28 +43,28 @@ public class EvaluableEntityIDCredentialCriteriaTest extends TestCase {
         credential = new BasicCredential();
         credential.setEntityId(entityID);
         
-        criteria = new EntityIDCriteria(entityID);
+        criteria = new EntityIDCriterion(entityID);
     }
     
     public void testSatifsy() {
-        EvaluableEntityIDCredentialCriteria evalCrit = new EvaluableEntityIDCredentialCriteria(criteria);
+        EvaluableEntityIDCredentialCriterion evalCrit = new EvaluableEntityIDCredentialCriterion(criteria);
         assertTrue("Credential should have matched the evaluable criteria", evalCrit.evaluate(credential));
     }
 
     public void testNotSatisfy() {
         criteria.setEntityID("OTHER");
-        EvaluableEntityIDCredentialCriteria evalCrit = new EvaluableEntityIDCredentialCriteria(criteria);
+        EvaluableEntityIDCredentialCriterion evalCrit = new EvaluableEntityIDCredentialCriterion(criteria);
         assertFalse("Credential should NOT have matched the evaluable criteria", evalCrit.evaluate(credential));
     }
     
     public void testCanNotEvaluate() {
         credential.setEntityId(null);
-        EvaluableEntityIDCredentialCriteria evalCrit = new EvaluableEntityIDCredentialCriteria(criteria);
+        EvaluableEntityIDCredentialCriterion evalCrit = new EvaluableEntityIDCredentialCriterion(criteria);
         assertNull("Credential should have been unevaluable against the criteria", evalCrit.evaluate(credential));
     }
     
     public void testRegistry() throws SecurityException {
-        EvaluableCredentialCriteria evalCrit = EvaluableCredentialCriteriaRegistry.getEvaluator(criteria);
+        EvaluableCredentialCriterion evalCrit = EvaluableCredentialCriteriaRegistry.getEvaluator(criteria);
         assertNotNull("Evaluable criteria was unavailable from the registry", evalCrit);
         assertTrue("Credential should have matched the evaluable criteria", evalCrit.evaluate(credential));
     }

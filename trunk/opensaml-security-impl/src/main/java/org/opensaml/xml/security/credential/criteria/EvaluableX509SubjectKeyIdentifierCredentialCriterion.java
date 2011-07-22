@@ -22,7 +22,7 @@ import java.util.Arrays;
 
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.x509.X509Credential;
-import org.opensaml.xml.security.x509.X509SubjectKeyIdentifierCriteria;
+import org.opensaml.xml.security.x509.X509SubjectKeyIdentifierCriterion;
 import org.opensaml.xml.security.x509.X509Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,10 +31,10 @@ import org.slf4j.LoggerFactory;
  * Instance of evaluable credential criteria for evaluating whether a credential's certificate contains a particular
  * subject key identifier.
  */
-public class EvaluableX509SubjectKeyIdentifierCredentialCriteria implements EvaluableCredentialCriteria {
+public class EvaluableX509SubjectKeyIdentifierCredentialCriterion implements EvaluableCredentialCriterion {
     
     /** Logger. */
-    private final Logger log = LoggerFactory.getLogger(EvaluableX509SubjectKeyIdentifierCredentialCriteria.class);
+    private final Logger log = LoggerFactory.getLogger(EvaluableX509SubjectKeyIdentifierCredentialCriterion.class);
     
     /** Base criteria. */
     private byte[] ski;
@@ -44,9 +44,9 @@ public class EvaluableX509SubjectKeyIdentifierCredentialCriteria implements Eval
      *
      * @param criteria the criteria which is the basis for evaluation
      */
-    public EvaluableX509SubjectKeyIdentifierCredentialCriteria(X509SubjectKeyIdentifierCriteria criteria) {
+    public EvaluableX509SubjectKeyIdentifierCredentialCriterion(X509SubjectKeyIdentifierCriterion criteria) {
         if (criteria == null) {
-            throw new NullPointerException("Criteria instance may not be null");
+            throw new NullPointerException("Criterion instance may not be null");
         }
         ski = criteria.getSubjectKeyIdentifier();
     }
@@ -56,7 +56,7 @@ public class EvaluableX509SubjectKeyIdentifierCredentialCriteria implements Eval
      *
      * @param newSKI the criteria value which is the basis for evaluation
      */
-    public EvaluableX509SubjectKeyIdentifierCredentialCriteria(byte[] newSKI) {
+    public EvaluableX509SubjectKeyIdentifierCredentialCriterion(byte[] newSKI) {
         if (newSKI == null || newSKI.length == 0) {
             throw new IllegalArgumentException("Subject key identifier may not be null or empty");
         }

@@ -25,18 +25,18 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
+import org.opensaml.util.criteria.Criterion;
 import org.opensaml.xml.Configuration;
-import org.opensaml.xml.security.Criteria;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.credential.Credential;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * A registry which manages mappings from types of {@link Criteria} to the class type which can evaluate that criteria's
- * data against a {@link Credential} target. That latter class will be a subtype of {@link EvaluableCredentialCriteria}.
- * Each EvaluableCredentialCriteria implementation that is registered <strong>MUST</strong> implement a single-arg
- * constructor which takes an instance of the Criteria to be evaluated. The evaluable instance is instantiated
+ * A registry which manages mappings from types of {@link Criterion} to the class type which can evaluate that criteria's
+ * data against a {@link Credential} target. That latter class will be a subtype of {@link EvaluableCredentialCriterion}.
+ * Each EvaluableCredentialCriterion implementation that is registered <strong>MUST</strong> implement a single-arg
+ * constructor which takes an instance of the Criterion to be evaluated. The evaluable instance is instantiated
  * reflectively based on this requirement.
  */
 public final class EvaluableCredentialCriteriaRegistry {
@@ -48,7 +48,7 @@ public final class EvaluableCredentialCriteriaRegistry {
     public static final String DEFAULT_MAPPINGS_FILE = "/credential-criteria-registry.properties";
 
     /** Storage for the registry mappings. */
-    private static Map<Class<? extends Criteria>, Class<? extends EvaluableCredentialCriteria>> registry;
+    private static Map<Class<? extends Criterion>, Class<? extends EvaluableCredentialCriterion>> registry;
 
     /** Flag to track whether registry is initialized. */
     private static boolean initialized;
@@ -58,17 +58,17 @@ public final class EvaluableCredentialCriteriaRegistry {
     }
 
     /**
-     * Get an instance of EvaluableCredentialCriteria which can evaluate the supplied criteria's requirements against a
+     * Get an instance of EvaluableCredentialCriterion which can evaluate the supplied criteria's requirements against a
      * Credential target.
      * 
      * @param criteria the criteria to be evaluated against a credential
-     * @return an instance of of EvaluableCredentialCriteria representing the specified criteria's requirements
+     * @return an instance of of EvaluableCredentialCriterion representing the specified criteria's requirements
      * @throws SecurityException thrown if there is an error reflectively instantiating a new instance of
-     *             EvaluableCredentialCriteria based on class information stored in the registry
+     *             EvaluableCredentialCriterion based on class information stored in the registry
      */
-    public static EvaluableCredentialCriteria getEvaluator(Criteria criteria) throws SecurityException {
+    public static EvaluableCredentialCriterion getEvaluator(Criterion criteria) throws SecurityException {
         Logger log = getLogger();
-        Class<? extends EvaluableCredentialCriteria> clazz = lookup(criteria.getClass());
+        Class<? extends EvaluableCredentialCriterion> clazz = lookup(criteria.getClass());
 
         if (clazz != null) {
             log.debug("Registry located evaluable criteria class {} for criteria class {}", clazz.getName(), criteria
@@ -76,29 +76,29 @@ public final class EvaluableCredentialCriteriaRegistry {
 
             try {
 
-                Constructor<? extends EvaluableCredentialCriteria> constructor = clazz
+                Constructor<? extends EvaluableCredentialCriterion> constructor = clazz
                         .getConstructor(new Class[] { criteria.getClass() });
 
                 return constructor.newInstance(new Object[] { criteria });
 
             } catch (java.lang.SecurityException e) {
-                log.error("Error instantiating new EvaluableCredentialCriteria instance", e);
-                throw new SecurityException("Could not create new EvaluableCredentialCriteria", e);
+                log.error("Error instantiating new EvaluableCredentialCriterion instance", e);
+                throw new SecurityException("Could not create new EvaluableCredentialCriterion", e);
             } catch (NoSuchMethodException e) {
-                log.error("Error instantiating new EvaluableCredentialCriteria instance", e);
-                throw new SecurityException("Could not create new EvaluableCredentialCriteria", e);
+                log.error("Error instantiating new EvaluableCredentialCriterion instance", e);
+                throw new SecurityException("Could not create new EvaluableCredentialCriterion", e);
             } catch (IllegalArgumentException e) {
-                log.error("Error instantiating new EvaluableCredentialCriteria instance", e);
-                throw new SecurityException("Could not create new EvaluableCredentialCriteria", e);
+                log.error("Error instantiating new EvaluableCredentialCriterion instance", e);
+                throw new SecurityException("Could not create new EvaluableCredentialCriterion", e);
             } catch (InstantiationException e) {
-                log.error("Error instantiating new EvaluableCredentialCriteria instance", e);
-                throw new SecurityException("Could not create new EvaluableCredentialCriteria", e);
+                log.error("Error instantiating new EvaluableCredentialCriterion instance", e);
+                throw new SecurityException("Could not create new EvaluableCredentialCriterion", e);
             } catch (IllegalAccessException e) {
-                log.error("Error instantiating new EvaluableCredentialCriteria instance", e);
-                throw new SecurityException("Could not create new EvaluableCredentialCriteria", e);
+                log.error("Error instantiating new EvaluableCredentialCriterion instance", e);
+                throw new SecurityException("Could not create new EvaluableCredentialCriterion", e);
             } catch (InvocationTargetException e) {
-                log.error("Error instantiating new EvaluableCredentialCriteria instance", e);
-                throw new SecurityException("Could not create new EvaluableCredentialCriteria", e);
+                log.error("Error instantiating new EvaluableCredentialCriterion instance", e);
+                throw new SecurityException("Could not create new EvaluableCredentialCriterion", e);
             }
 
         } else {
@@ -109,23 +109,23 @@ public final class EvaluableCredentialCriteriaRegistry {
     }
 
     /**
-     * Lookup the class subtype of EvaluableCredentialCriteria which is registered for the specified Criteria class.
+     * Lookup the class subtype of EvaluableCredentialCriterion which is registered for the specified Criterion class.
      * 
-     * @param clazz the Criteria class subtype to lookup
-     * @return the registered EvaluableCredentialCriteria class subtype
+     * @param clazz the Criterion class subtype to lookup
+     * @return the registered EvaluableCredentialCriterion class subtype
      */
-    public static synchronized Class<? extends EvaluableCredentialCriteria> lookup(Class<? extends Criteria> clazz) {
+    public static synchronized Class<? extends EvaluableCredentialCriterion> lookup(Class<? extends Criterion> clazz) {
         return registry.get(clazz);
     }
 
     /**
      * Register a credential evaluator class for a criteria class.
      * 
-     * @param criteriaClass class subtype of {@link Criteria}
-     * @param evaluableClass class subtype of {@link EvaluableCredentialCriteria}
+     * @param criteriaClass class subtype of {@link Criterion}
+     * @param evaluableClass class subtype of {@link EvaluableCredentialCriterion}
      */
-    public static synchronized void register(Class<? extends Criteria> criteriaClass,
-            Class<? extends EvaluableCredentialCriteria> evaluableClass) {
+    public static synchronized void register(Class<? extends Criterion> criteriaClass,
+            Class<? extends EvaluableCredentialCriterion> evaluableClass) {
         Logger log = getLogger();
 
         log.debug("Registering class {} as evaluator for class {}", evaluableClass.getName(), criteriaClass.getName());
@@ -137,9 +137,9 @@ public final class EvaluableCredentialCriteriaRegistry {
     /**
      * Deregister a criteria-evaluator mapping.
      * 
-     * @param criteriaClass class subtype of {@link Criteria}
+     * @param criteriaClass class subtype of {@link Criterion}
      */
-    public static synchronized void deregister(Class<? extends Criteria> criteriaClass) {
+    public static synchronized void deregister(Class<? extends Criterion> criteriaClass) {
         Logger log = getLogger();
 
         log.debug("Deregistering evaluator for class {}", criteriaClass.getName());
@@ -173,7 +173,7 @@ public final class EvaluableCredentialCriteriaRegistry {
             return;
         }
 
-        registry = new HashMap<Class<? extends Criteria>, Class<? extends EvaluableCredentialCriteria>>();
+        registry = new HashMap<Class<? extends Criterion>, Class<? extends EvaluableCredentialCriterion>>();
 
         loadDefaultMappings();
 

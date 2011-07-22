@@ -22,8 +22,8 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.util.ArrayList;
 
+import org.opensaml.util.criteria.CriteriaSet;
 import org.opensaml.xml.XMLObjectBaseTestCase;
-import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.credential.BasicCredential;
@@ -70,7 +70,7 @@ public class LocalKeyInfoCredentialResolverTest extends XMLObjectBaseTestCase {
     public void testKeyInfoWithKeyName() throws SecurityException {
         KeyInfoHelper.addKeyName(keyInfo, keyName);
         
-        CriteriaSet criteriaSet = new CriteriaSet( new KeyInfoCriteria(keyInfo) );
+        CriteriaSet criteriaSet = new CriteriaSet( new KeyInfoCriterion(keyInfo) );
         Credential resolvedCred = keyInfoResolver.resolveSingle(criteriaSet);
         
         assertEquals("Unexpected local credential resolved", localCred, resolvedCred);
@@ -79,7 +79,7 @@ public class LocalKeyInfoCredentialResolverTest extends XMLObjectBaseTestCase {
     public void testKeyInfoWithKnownPublicKey() throws SecurityException {
         KeyInfoHelper.addPublicKey(keyInfo, keyPair.getPublic());
         
-        CriteriaSet criteriaSet = new CriteriaSet( new KeyInfoCriteria(keyInfo) );
+        CriteriaSet criteriaSet = new CriteriaSet( new KeyInfoCriterion(keyInfo) );
         Credential resolvedCred = keyInfoResolver.resolveSingle(criteriaSet);
         
         assertEquals("Unexpected local credential resolved", localCred, resolvedCred);
@@ -91,7 +91,7 @@ public class LocalKeyInfoCredentialResolverTest extends XMLObjectBaseTestCase {
         KeyInfoHelper.addPublicKey(keyInfo, 
                 SecurityHelper.generateKeyPair("RSA", 1024, null).getPublic());
         
-        CriteriaSet criteriaSet = new CriteriaSet( new KeyInfoCriteria(keyInfo) );
+        CriteriaSet criteriaSet = new CriteriaSet( new KeyInfoCriterion(keyInfo) );
         Credential resolvedCred = keyInfoResolver.resolveSingle(criteriaSet);
         
         assertNull("Expected no credential to be resolved", resolvedCred);

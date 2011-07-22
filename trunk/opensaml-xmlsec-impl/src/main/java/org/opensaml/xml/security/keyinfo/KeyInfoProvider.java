@@ -19,8 +19,8 @@ package org.opensaml.xml.security.keyinfo;
 
 import java.util.Collection;
 
+import org.opensaml.util.criteria.CriteriaSet;
 import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.signature.KeyInfo;

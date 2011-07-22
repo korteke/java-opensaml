@@ -18,12 +18,12 @@
 package org.opensaml.xml.security.criteria;
 
 import org.opensaml.util.StringSupport;
-import org.opensaml.xml.security.Criteria;
+import org.opensaml.util.criteria.Criterion;
 
 /**
- * An implementation of {@link Criteria} which specifies key name criteria.
+ * An implementation of {@link Criterion} which specifies key name criteria.
  */
-public final class KeyNameCriteria implements Criteria {
+public final class KeyNameCriterion implements Criterion {
 
     /** Key name of resolved credentials.  */
     private String keyName;
@@ -33,7 +33,7 @@ public final class KeyNameCriteria implements Criteria {
      *
      * @param name key name
      */
-    public KeyNameCriteria(String name) {
+    public KeyNameCriterion(String name) {
         setKeyName(name);
     }
 

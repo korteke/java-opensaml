@@ -25,7 +25,7 @@ import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.credential.BasicCredential;
 import org.opensaml.xml.security.x509.BasicX509Credential;
-import org.opensaml.xml.security.x509.X509SubjectKeyIdentifierCriteria;
+import org.opensaml.xml.security.x509.X509SubjectKeyIdentifierCriterion;
 import org.opensaml.util.Base64;
 
 /**
@@ -37,7 +37,7 @@ public class EvaluableX509SubjectKeyIdentifierCredentialCriteriaTest extends Tes
     private String entityCertSKIBase64 = "OBGBOSNoqgroOhl9RniD0sMlRa4=";
     private byte[] subjectKeyIdentifier;
     
-    private X509SubjectKeyIdentifierCriteria criteria;
+    private X509SubjectKeyIdentifierCriterion criteria;
     
     
     private X509Certificate entityCert;
@@ -94,40 +94,40 @@ public class EvaluableX509SubjectKeyIdentifierCredentialCriteriaTest extends Tes
         credential = new BasicX509Credential();
         credential.setEntityCertificate(entityCert);
         
-        criteria = new X509SubjectKeyIdentifierCriteria(subjectKeyIdentifier);
+        criteria = new X509SubjectKeyIdentifierCriterion(subjectKeyIdentifier);
     }
     
     public void testSatifsy() {
-        EvaluableX509SubjectKeyIdentifierCredentialCriteria evalCrit = new EvaluableX509SubjectKeyIdentifierCredentialCriteria(criteria);
+        EvaluableX509SubjectKeyIdentifierCredentialCriterion evalCrit = new EvaluableX509SubjectKeyIdentifierCredentialCriterion(criteria);
         assertTrue("Credential should have matched the evaluable criteria", evalCrit.evaluate(credential));
     }
 
     public void testNotSatisfy() {
         criteria.setSubjectKeyIdentifier("abcdef123456".getBytes());
-        EvaluableX509SubjectKeyIdentifierCredentialCriteria evalCrit = new EvaluableX509SubjectKeyIdentifierCredentialCriteria(criteria);
+        EvaluableX509SubjectKeyIdentifierCredentialCriterion evalCrit = new EvaluableX509SubjectKeyIdentifierCredentialCriterion(criteria);
         assertFalse("Credential should NOT have matched the evaluable criteria", evalCrit.evaluate(credential));
     }
     
     public void testNotSatisfyWrongCredType() {
         BasicCredential basicCred = new BasicCredential();
-        EvaluableX509SubjectKeyIdentifierCredentialCriteria evalCrit = new EvaluableX509SubjectKeyIdentifierCredentialCriteria(criteria);
+        EvaluableX509SubjectKeyIdentifierCredentialCriterion evalCrit = new EvaluableX509SubjectKeyIdentifierCredentialCriterion(criteria);
         assertFalse("Credential should NOT have matched the evaluable criteria", evalCrit.evaluate(basicCred));
     }
     
     public void testNotSatisfyNoCert() {
         credential.setEntityCertificate(null);
-        EvaluableX509SubjectKeyIdentifierCredentialCriteria evalCrit = new EvaluableX509SubjectKeyIdentifierCredentialCriteria(criteria);
+        EvaluableX509SubjectKeyIdentifierCredentialCriterion evalCrit = new EvaluableX509SubjectKeyIdentifierCredentialCriterion(criteria);
         assertFalse("Credential should NOT have matched the evaluable criteria", evalCrit.evaluate(credential));
     }
     
     public void testCanNotEvaluate() {
         credential.setEntityCertificate(entityCertNoSKI);
-        EvaluableX509SubjectKeyIdentifierCredentialCriteria evalCrit = new EvaluableX509SubjectKeyIdentifierCredentialCriteria(criteria);
+        EvaluableX509SubjectKeyIdentifierCredentialCriterion evalCrit = new EvaluableX509SubjectKeyIdentifierCredentialCriterion(criteria);
         assertNull("Credential should have been unevaluable against the criteria", evalCrit.evaluate(credential));
     }
     
     public void testRegistry() throws SecurityException {
-        EvaluableCredentialCriteria evalCrit = EvaluableCredentialCriteriaRegistry.getEvaluator(criteria);
+        EvaluableCredentialCriterion evalCrit = EvaluableCredentialCriteriaRegistry.getEvaluator(criteria);
         assertNotNull("Evaluable criteria was unavailable from the registry", evalCrit);
         assertTrue("Credential should have matched the evaluable criteria", evalCrit.evaluate(credential));
     }

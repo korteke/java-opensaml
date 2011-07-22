@@ -23,8 +23,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.opensaml.util.criteria.CriteriaSet;
 import org.opensaml.xml.XMLObjectBaseTestCase;
-import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.credential.Credential;
@@ -94,7 +94,7 @@ public class SingleCertX509DataTest extends XMLObjectBaseTestCase {
     public void testCredResolution() throws SecurityException {
         KeyInfo keyInfo = 
             (KeyInfo) unmarshallElement("/data/org/opensaml/xml/security/keyinfo/SingleX509Certificate.xml");
-        CriteriaSet criteriaSet = new CriteriaSet( new KeyInfoCriteria(keyInfo) );
+        CriteriaSet criteriaSet = new CriteriaSet( new KeyInfoCriterion(keyInfo) );
         Iterator<Credential> iter = resolver.resolve(criteriaSet).iterator();
         
         assertTrue("No credentials were found", iter.hasNext());

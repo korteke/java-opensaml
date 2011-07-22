@@ -20,7 +20,7 @@ package org.opensaml.xml.signature.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.opensaml.xml.security.CriteriaSet;
+import org.opensaml.util.criteria.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;

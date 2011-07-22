@@ -19,7 +19,7 @@ package org.opensaml.xml.security.x509;
 
 import java.util.Set;
 
-import org.opensaml.xml.security.CriteriaSet;
+import org.opensaml.util.criteria.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

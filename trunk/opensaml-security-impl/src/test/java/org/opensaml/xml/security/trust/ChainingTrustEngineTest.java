@@ -19,9 +19,9 @@ package org.opensaml.xml.security.trust;
 
 import junit.framework.TestCase;
 
-import org.opensaml.xml.security.CriteriaSet;
+import org.opensaml.util.criteria.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
-import org.opensaml.xml.security.criteria.EntityIDCriteria;
+import org.opensaml.xml.security.criteria.EntityIDCriterion;
 
 /**
  * Test the chaining trust engine.
@@ -42,7 +42,7 @@ public class ChainingTrustEngineTest extends TestCase {
         engine = new ChainingTrustEngine<FooToken>();
         
         criteriaSet = new CriteriaSet();
-        criteriaSet.add( new EntityIDCriteria("dummyEntityID") );
+        criteriaSet.add( new EntityIDCriterion("dummyEntityID") );
     }
     
     public void testFirstTrusted() throws SecurityException {

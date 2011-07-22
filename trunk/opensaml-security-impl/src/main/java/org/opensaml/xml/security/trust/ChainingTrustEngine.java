@@ -20,7 +20,7 @@ package org.opensaml.xml.security.trust;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.opensaml.xml.security.CriteriaSet;
+import org.opensaml.util.criteria.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

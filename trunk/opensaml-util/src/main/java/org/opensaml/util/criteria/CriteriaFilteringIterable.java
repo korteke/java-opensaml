@@ -34,7 +34,7 @@ public class CriteriaFilteringIterable<T> implements Iterable<T> {
     private Iterable<? extends T> candidates;
     
     /** The set of criteria against which to evaluate the candidates. */
-    private Set<EvaluableCriteria<T>> criteriaSet;
+    private Set<EvaluableCriterion<T>> criteriaSet;
     
     /** Flag indicating whether the candidate must satisfy all the criteria in the set, or just one. */
     private boolean meetAll;
@@ -52,7 +52,7 @@ public class CriteriaFilteringIterable<T> implements Iterable<T> {
      *          is treated as the candidate having satisfied or not satisfied the criteria, for purposes
      *          of determinig whether to return the element
      */
-    public CriteriaFilteringIterable(Iterable<? extends T> candidatesIterable, Set<EvaluableCriteria<T>> criteria, 
+    public CriteriaFilteringIterable(Iterable<? extends T> candidatesIterable, Set<EvaluableCriterion<T>> criteria, 
             boolean meetAllCriteria, boolean unevaluableSatisfies) {
         
         candidates = candidatesIterable;

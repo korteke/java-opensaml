@@ -17,10 +17,10 @@
 
 package org.opensaml.ws.security.provider;
 
+import org.opensaml.util.criteria.CriteriaSet;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.security.SecurityPolicyException;
 import org.opensaml.ws.security.SecurityPolicyRule;
-import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.trust.TrustEngine;
 import org.slf4j.Logger;

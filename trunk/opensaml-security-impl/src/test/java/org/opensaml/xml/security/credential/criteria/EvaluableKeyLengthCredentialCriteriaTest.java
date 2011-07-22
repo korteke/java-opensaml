@@ -22,7 +22,7 @@ import junit.framework.TestCase;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.credential.BasicCredential;
-import org.opensaml.xml.security.criteria.KeyLengthCriteria;
+import org.opensaml.xml.security.criteria.KeyLengthCriterion;
 
 /**
  *
@@ -32,7 +32,7 @@ public class EvaluableKeyLengthCredentialCriteriaTest extends TestCase {
     private BasicCredential credential;
     private String keyAlgo;
     private Integer keyLength;
-    private KeyLengthCriteria criteria;
+    private KeyLengthCriterion criteria;
     
     public EvaluableKeyLengthCredentialCriteriaTest() {
         keyAlgo = "AES";
@@ -46,28 +46,28 @@ public class EvaluableKeyLengthCredentialCriteriaTest extends TestCase {
         credential = new BasicCredential();
         credential.setSecretKey(SecurityHelper.generateKey(keyAlgo, keyLength, null));
         
-        criteria = new KeyLengthCriteria(keyLength);
+        criteria = new KeyLengthCriterion(keyLength);
     }
     
     public void testSatifsy() {
-        EvaluableKeyLengthCredentialCriteria evalCrit = new EvaluableKeyLengthCredentialCriteria(criteria);
+        EvaluableKeyLengthCredentialCriterion evalCrit = new EvaluableKeyLengthCredentialCriterion(criteria);
         assertTrue("Credential should have matched the evaluable criteria", evalCrit.evaluate(credential));
     }
 
     public void testNotSatisfy() {
         criteria.setKeyLength(keyLength * 2);
-        EvaluableKeyLengthCredentialCriteria evalCrit = new EvaluableKeyLengthCredentialCriteria(criteria);
+        EvaluableKeyLengthCredentialCriterion evalCrit = new EvaluableKeyLengthCredentialCriterion(criteria);
         assertFalse("Credential should NOT have matched the evaluable criteria", evalCrit.evaluate(credential));
     }
     
     public void testCanNotEvaluate() {
         credential.setSecretKey(null);
-        EvaluableKeyLengthCredentialCriteria evalCrit = new EvaluableKeyLengthCredentialCriteria(criteria);
+        EvaluableKeyLengthCredentialCriterion evalCrit = new EvaluableKeyLengthCredentialCriterion(criteria);
         assertNull("Credential should have been unevaluable against the criteria", evalCrit.evaluate(credential));
     }
     
     public void testRegistry() throws SecurityException {
-        EvaluableCredentialCriteria evalCrit = EvaluableCredentialCriteriaRegistry.getEvaluator(criteria);
+        EvaluableCredentialCriterion evalCrit = EvaluableCredentialCriteriaRegistry.getEvaluator(criteria);
         assertNotNull("Evaluable criteria was unavailable from the registry", evalCrit);
         assertTrue("Credential should have matched the evaluable criteria", evalCrit.evaluate(credential));
     }

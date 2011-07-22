@@ -29,8 +29,8 @@ import java.util.Set;
 
 import javax.crypto.SecretKey;
 
+import org.opensaml.util.criteria.CriteriaSet;
 import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.credential.AbstractCriteriaFilteringCredentialResolver;
@@ -53,7 +53,7 @@ import org.slf4j.LoggerFactory;
  * </p>
  * 
  * <p>
- * This resolver requires a {@link KeyInfoCriteria} to be supplied as the resolution criteria. It is permissible,
+ * This resolver requires a {@link KeyInfoCriterion} to be supplied as the resolution criteria. It is permissible,
  * however, for the criteria's KeyInfo data object to be null. This allows for more convenient processing logic, for
  * example, in cases when a parent element allows an optional KeyInfo and when in fact a given instance does not contain
  * one. Specialized subclasses of this resolver may still attempt to return credentials in an implementation or
@@ -129,7 +129,7 @@ public class BasicProviderKeyInfoCredentialResolver extends AbstractCriteriaFilt
 
     /** {@inheritDoc} */
     protected Iterable<Credential> resolveFromSource(CriteriaSet criteriaSet) throws SecurityException {
-        KeyInfoCriteria kiCriteria = criteriaSet.get(KeyInfoCriteria.class);
+        KeyInfoCriterion kiCriteria = criteriaSet.get(KeyInfoCriterion.class);
         if (kiCriteria == null) {
             log.error("No KeyInfo criteria supplied, resolver could not process");
             throw new SecurityException("Credential criteria set did not contain an instance of"

@@ -17,48 +17,45 @@
 
 package org.opensaml.xml.security.criteria;
 
-import org.opensaml.xml.security.Criteria;
-import org.opensaml.xml.security.credential.UsageType;
-
+import org.opensaml.util.StringSupport;
+import org.opensaml.util.criteria.Criterion;
 
 /**
- * An implementation of {@link Criteria} which specifies criteria pertaining 
- * usage of the resolved credential. 
+ * An implementation of {@link Criterion} which specifies key algorithm criteria.
  */
-public final class UsageCriteria implements Criteria {
-   
-    /** Key usage type of resolved credentials. */
-    private UsageType credUsage;
+public final class KeyAlgorithmCriterion implements Criterion {
+    
+    /** Key algorithm type of resolved credentials. */
+    private String keyAlgorithm;
     
     /**
-    * Constructor.
+     * Constructor.
      *
-     * @param usage the usage for which a credential is intended
+     * @param algorithm key algorithm
      */
-    public UsageCriteria(UsageType usage) {
-        setUsage(usage);
+    public KeyAlgorithmCriterion(String algorithm) {
+        setKeyAlgorithm(algorithm);
+    }
+ 
+    /**
+     * Get the key algorithm criteria.
+     * 
+     * @return returns the keyAlgorithm.
+     */
+    public String getKeyAlgorithm() {
+        return keyAlgorithm;
     }
 
     /**
-     * Get the key usage criteria.
+     * Set the key algorithm criteria.
      * 
-     * @return Returns the usage.
+     * @param algorithm The keyAlgorithm to set.
      */
-    public UsageType getUsage() {
-        return credUsage;
-    }
-
-    /**
-     * Set the key usage criteria.
-     * 
-     * @param usage The usage to set.
-     */
-    public void setUsage(UsageType usage) {
-        if (usage != null) {
-            credUsage = usage;
-        } else {
-            credUsage = UsageType.UNSPECIFIED;
+    public void setKeyAlgorithm(String algorithm) {
+        if (StringSupport.isNullOrEmpty(algorithm)) {
+            throw new IllegalArgumentException("Key algorithm criteria value must be supplied");
         }
+        keyAlgorithm = StringSupport.trimOrNull(algorithm);
     }
 
 }

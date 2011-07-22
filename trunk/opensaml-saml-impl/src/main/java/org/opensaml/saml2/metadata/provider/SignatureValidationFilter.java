@@ -24,11 +24,11 @@ import org.opensaml.saml2.metadata.EntitiesDescriptor;
 import org.opensaml.saml2.metadata.EntityDescriptor;
 import org.opensaml.saml2.metadata.RoleDescriptor;
 import org.opensaml.security.SAMLSignatureProfileValidator;
+import org.opensaml.util.criteria.CriteriaSet;
 import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.credential.UsageType;
-import org.opensaml.xml.security.criteria.UsageCriteria;
+import org.opensaml.xml.security.criteria.UsageCriterion;
 import org.opensaml.xml.signature.SignableXMLObject;
 import org.opensaml.xml.signature.Signature;
 import org.opensaml.xml.signature.SignatureTrustEngine;
@@ -364,8 +364,8 @@ public class SignatureValidationFilter implements MetadataFilter {
             newCriteriaSet.addAll( getDefaultCriteria() );
         }
         
-        if (!newCriteriaSet.contains(UsageCriteria.class)) {
-            newCriteriaSet.add( new UsageCriteria(UsageType.SIGNING) );
+        if (!newCriteriaSet.contains(UsageCriterion.class)) {
+            newCriteriaSet.add( new UsageCriterion(UsageType.SIGNING) );
         }
         
         // TODO how to handle adding dynamic entity ID and/or other criteria for trust engine consumption?

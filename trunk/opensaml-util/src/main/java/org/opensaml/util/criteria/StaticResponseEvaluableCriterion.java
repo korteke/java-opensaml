@@ -20,23 +20,23 @@ package org.opensaml.util.criteria;
 import net.jcip.annotations.ThreadSafe;
 
 /**
- * An {@link EvaluableCriteria} implementation that always returns the same response.
+ * An {@link EvaluableCriterion} implementation that always returns the same response.
  * 
  * @param <T> the type of object which may be evaluated
  */
 @ThreadSafe
-public class StaticResponseEvaluableCritieria<T> implements EvaluableCriteria<T> {
+public class StaticResponseEvaluableCriterion<T> implements EvaluableCriterion<T> {
 
-    /** {@link EvaluableCriteria} that always returns {@link Boolean#TRUE}. */
-    public static final StaticResponseEvaluableCritieria TRUE_RESPONSE = new StaticResponseEvaluableCritieria(
+    /** {@link EvaluableCriterion} that always returns {@link Boolean#TRUE}. */
+    public static final StaticResponseEvaluableCriterion TRUE_RESPONSE = new StaticResponseEvaluableCriterion(
             Boolean.TRUE);
 
-    /** {@link EvaluableCriteria} that always returns {@link Boolean#FALSE}. */
-    public static final StaticResponseEvaluableCritieria FALSE_RESPONSE = new StaticResponseEvaluableCritieria(
+    /** {@link EvaluableCriterion} that always returns {@link Boolean#FALSE}. */
+    public static final StaticResponseEvaluableCriterion FALSE_RESPONSE = new StaticResponseEvaluableCriterion(
             Boolean.FALSE);
 
-    /** {@link EvaluableCriteria} that always returns null. */
-    public static final StaticResponseEvaluableCritieria NULL_RESPONSE = new StaticResponseEvaluableCritieria(null);
+    /** {@link EvaluableCriterion} that always returns null. */
+    public static final StaticResponseEvaluableCriterion NULL_RESPONSE = new StaticResponseEvaluableCriterion(null);
 
     /** Response returned for all requests. */
     private final Boolean response;
@@ -46,7 +46,7 @@ public class StaticResponseEvaluableCritieria<T> implements EvaluableCriteria<T>
      * 
      * @param criteriaResponse response from this criteria
      */
-    protected StaticResponseEvaluableCritieria(final Boolean criteriaResponse) {
+    protected StaticResponseEvaluableCriterion(final Boolean criteriaResponse) {
         response = criteriaResponse;
     }
 

@@ -20,9 +20,9 @@ package org.opensaml.xml.security.credential;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.opensaml.xml.security.CriteriaSet;
+import org.opensaml.util.criteria.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
-import org.opensaml.xml.security.credential.criteria.EvaluableCredentialCriteria;
+import org.opensaml.xml.security.credential.criteria.EvaluableCredentialCriterion;
 import org.opensaml.xml.security.credential.criteria.EvaluableCredentialCriteriaRegistry;
 
 /**
@@ -31,7 +31,7 @@ import org.opensaml.xml.security.credential.criteria.EvaluableCredentialCriteria
  * 
  * <p>
  * The credentials returned are filtered based on any
- * {@link EvaluableCredentialCriteria} which may have been present in the specified criteria set, or
+ * {@link EvaluableCredentialCriterion} which may have been present in the specified criteria set, or
  * which are resolved by lookup in the {@link EvaluableCredentialCriteriaRegistry}.
  * </p>
  */

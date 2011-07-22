@@ -15,32 +15,48 @@
  * limitations under the License.
  */
 
-package org.opensaml.xml.security;
+package org.opensaml.xml.security.criteria;
 
-import org.opensaml.util.collections.ClassIndexedSet;
+import java.security.PublicKey;
+
+import org.opensaml.util.criteria.Criterion;
 
 /**
- * This class holds instances of {@link Criteria} which are used 
- * in resolution or evaluation operations.
+ * An implementation of {@link Criterion} which specifies public key criteria.
  */
-public class CriteriaSet extends ClassIndexedSet<Criteria> {
+public final class PublicKeyCriterion implements Criterion {
+
+    /** Specifier of public key associated with resolved credentials. */
+    private PublicKey publicKey;
     
     /**
      * Constructor.
      *
+     * @param pubKey public key
      */
-    public CriteriaSet() {
-        super();
+    public PublicKeyCriterion(PublicKey pubKey) {
+        setPublicKey(pubKey);
     }
     
     /**
-     * A convenience constructor for constructing and adding a single criteria.
-     *
-     * @param criteria a single criteria 
+     * Get the public key criteria.
+     * 
+     * @return Returns the publicKey.
      */
-    public CriteriaSet(Criteria criteria) {
-        super();
-        add(criteria);
+    public PublicKey getPublicKey() {
+        return publicKey;
+    }
+
+    /**
+     * Set the public key criteria. 
+     * 
+     * @param key The publicKey to set.
+     */
+    public void setPublicKey(PublicKey key) {
+        if (key == null) {
+            throw new IllegalArgumentException("Public key criteria value must be supplied");
+        }
+        publicKey = key;
     }
 
 }

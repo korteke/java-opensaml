@@ -19,7 +19,7 @@ package org.opensaml.xml.security.credential;
 
 import java.util.Map;
 
-import org.opensaml.xml.security.CriteriaSet;
+import org.opensaml.util.criteria.CriteriaSet;
 
 //TODO amend docs (and impl) for symmetric key storage and retrieval
 
