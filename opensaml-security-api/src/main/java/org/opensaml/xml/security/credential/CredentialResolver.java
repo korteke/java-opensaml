@@ -20,7 +20,7 @@ package org.opensaml.xml.security.credential;
 
 import org.opensaml.util.criteria.Criterion;
 import org.opensaml.util.criteria.CriteriaSet;
-import org.opensaml.xml.security.Resolver;
+import org.opensaml.util.resolver.Resolver;
 
 /**
  * A resolver which uses {@link Criterion} to resolve and return instances of {@link Credential}.

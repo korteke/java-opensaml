@@ -21,7 +21,7 @@ import java.util.Set;
 
 import org.opensaml.util.criteria.Criterion;
 import org.opensaml.util.criteria.CriteriaSet;
-import org.opensaml.xml.security.Resolver;
+import org.opensaml.util.resolver.Resolver;
 import org.opensaml.xml.security.SecurityException;
 
 /**
