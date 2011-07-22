@@ -17,8 +17,6 @@
 
 package org.opensaml.util.resolver;
 
-import org.opensaml.xml.security.SecurityException;
-
 
 /**
  * Generic interface for resolvers which process specified criteria and produce some implementation-specific
@@ -36,9 +34,9 @@ public interface Resolver<ProductType, CriteriaType> {
      * 
      * @param criteria the criteria to evaluate or process
      * @return instances which satisfy the criteria
-     * @throws SecurityException thrown if there is an error processing the specified criteria
+     * @throws ResolverException thrown if there is an error processing the specified criteria
      */
-    Iterable<ProductType> resolve(CriteriaType criteria) throws SecurityException;
+    Iterable<ProductType> resolve(CriteriaType criteria) throws ResolverException;
     
     /**
      * Process the specified criteria and return a single instance of the product type
@@ -49,7 +47,7 @@ public interface Resolver<ProductType, CriteriaType> {
      * 
      * @param criteria the criteria to evaluate or process
      * @return instances which satisfy the criteria
-     * @throws SecurityException thrown if there is an error processing the specified criteria
+     * @throws ResolverException thrown if there is an error processing the specified criteria
      */
-    ProductType resolveSingle(CriteriaType criteria) throws SecurityException;
+    ProductType resolveSingle(CriteriaType criteria) throws ResolverException;
 }
