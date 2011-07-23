@@ -38,7 +38,7 @@ public interface EvaluableCriterion<T> extends Criterion {
      * 
      * @return the result of evaluation
      * 
-     * @throws thrown if there is some problem evaluating the criterion
+     * @throws EvaluationException thrown if there is some problem evaluating the criterion
      */
     public Boolean evaluate(T target) throws EvaluationException;
 
