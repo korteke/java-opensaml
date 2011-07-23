@@ -126,7 +126,7 @@ public class EvaluableX509SubjectKeyIdentifierCredentialCriteriaTest extends Tes
         assertNull("Credential should have been unevaluable against the criteria", evalCrit.evaluate(credential));
     }
     
-    public void testRegistry() throws SecurityException {
+    public void testRegistry() throws Exception {
         EvaluableCredentialCriterion evalCrit = EvaluableCredentialCriteriaRegistry.getEvaluator(criteria);
         assertNotNull("Evaluable criteria was unavailable from the registry", evalCrit);
         assertTrue("Credential should have matched the evaluable criteria", evalCrit.evaluate(credential));

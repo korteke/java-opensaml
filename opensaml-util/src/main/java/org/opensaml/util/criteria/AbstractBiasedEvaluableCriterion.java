@@ -27,10 +27,16 @@ package org.opensaml.util.criteria;
  */
 public abstract class AbstractBiasedEvaluableCriterion<T> implements EvaluableCriterion<T> {
 
-    /** Whether {@link EvaluationException} should be propagated up or swallowed and the bias returned. */
-    private boolean propagatingEvaluationException;
+    /**
+     * Whether {@link EvaluationException} should be propagated up or swallowed and the bias returned. Default value:
+     * true
+     */
+    private boolean propagatingEvaluationException = true;
 
-    /** The bias used in place of a {@link EvaluationException} if the exception is not propagated. */
+    /** 
+     * The bias used in place of a {@link EvaluationException} if the exception is not propagated. Default value: 
+     * null 
+     */
     private Boolean bias;
 
     /**
