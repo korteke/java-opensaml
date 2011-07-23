@@ -23,20 +23,23 @@ package org.opensaml.util.criteria;
  * @param <T> the type of object which may be evaluated
  */
 public interface EvaluableCriterion<T> extends Criterion {
-    
+
     /**
      * Evaluate the target.
      * 
      * The result of evaluation is one of the following values:
      * <ul>
-     *   <li><code>Boolean.TRUE</code> if the target satisfies the criteria</li>
-     *   <li><code>Boolean.FALSE</code> if the target does not satisfy criteria</li>
-     *   <li><code>null</code> if the target can not be evaluated against the criteria</li>
+     * <li><code>Boolean.TRUE</code> if the target satisfies the criteria</li>
+     * <li><code>Boolean.FALSE</code> if the target does not satisfy criteria</li>
+     * <li><code>null</code> if the target can not be evaluated against the criteria</li>
      * </ul>
      * 
      * @param target the object to be evaluated
+     * 
      * @return the result of evaluation
+     * 
+     * @throws thrown if there is some problem evaluating the criterion
      */
-    public Boolean evaluate(T target);
+    public Boolean evaluate(T target) throws EvaluationException;
 
 }

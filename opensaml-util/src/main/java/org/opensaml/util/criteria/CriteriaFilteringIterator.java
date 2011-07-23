@@ -145,7 +145,12 @@ public class CriteriaFilteringIterator<T> implements Iterator<T> {
         }
         
         for (EvaluableCriterion<T> criteria : criteriaSet) {
-            Boolean result = criteria.evaluate(candidate);
+            Boolean result;
+            try{
+                result = criteria.evaluate(candidate);
+            }catch(EvaluationException e){
+                result = null;
+            }
             if (result == Boolean.FALSE) {
                 if (meetAll) {
                     return false;
