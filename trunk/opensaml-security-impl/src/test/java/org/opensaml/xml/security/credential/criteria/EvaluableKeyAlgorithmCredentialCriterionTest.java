@@ -27,13 +27,13 @@ import org.opensaml.xml.security.criteria.KeyAlgorithmCriterion;
 /**
  *
  */
-public class EvaluableKeyAlgorithmCredentialCriteriaTest extends TestCase {
+public class EvaluableKeyAlgorithmCredentialCriterionTest extends TestCase {
     
     private BasicCredential credential;
     private String keyAlgo;
     private KeyAlgorithmCriterion criteria;
     
-    public EvaluableKeyAlgorithmCredentialCriteriaTest() {
+    public EvaluableKeyAlgorithmCredentialCriterionTest() {
         keyAlgo = "RSA";
     }
 

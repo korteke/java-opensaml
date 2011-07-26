@@ -17,6 +17,7 @@
 
 package org.opensaml.xml.security.credential.criteria;
 
+import java.math.BigInteger;
 import java.security.cert.X509Certificate;
 
 import javax.security.auth.x500.X500Principal;
@@ -27,16 +28,17 @@ import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.credential.BasicCredential;
 import org.opensaml.xml.security.x509.BasicX509Credential;
-import org.opensaml.xml.security.x509.X509SubjectNameCriterion;
+import org.opensaml.xml.security.x509.X509IssuerSerialCriterion;
 
 /**
  *
  */
-public class EvaluableX509SubjectNameCredentialCriteriaTest extends TestCase {
+public class EvaluableX509IssuerSerialCredentialCriterionTest extends TestCase {
     
     private BasicX509Credential credential;
-    private X500Principal subjectName;
-    private X509SubjectNameCriterion criteria;
+    private BigInteger serialNumber;
+    private X500Principal issuerName;
+    private X509IssuerSerialCriterion criteria;
     
     private X509Certificate entityCert;
     private String entityCertBase64 = 
@@ -63,7 +65,7 @@ public class EvaluableX509SubjectNameCredentialCriteriaTest extends TestCase {
         "+hcVyvCXs5XtFTFWDAVYvzQ6";
     
     
-    public EvaluableX509SubjectNameCredentialCriteriaTest() {
+    public EvaluableX509IssuerSerialCredentialCriterionTest() {
         
     }
 
@@ -72,34 +74,35 @@ public class EvaluableX509SubjectNameCredentialCriteriaTest extends TestCase {
         super.setUp();
         
         entityCert = SecurityHelper.buildJavaX509Cert(entityCertBase64);
-        subjectName = new X500Principal("cn=foobar.example.org, O=Internet2");
+        issuerName = new X500Principal("cn=ca.example.org, O=Internet2");
+        serialNumber = new BigInteger("49");
         
         credential = new BasicX509Credential();
         credential.setEntityCertificate(entityCert);
         
-        criteria = new X509SubjectNameCriterion(subjectName);
+        criteria = new X509IssuerSerialCriterion(issuerName, serialNumber);
     }
     
     public void testSatifsy() {
-        EvaluableX509SubjectNameCredentialCriterion evalCrit = new EvaluableX509SubjectNameCredentialCriterion(criteria);
+        EvaluableX509IssuerSerialCredentialCriterion evalCrit = new EvaluableX509IssuerSerialCredentialCriterion(criteria);
         assertTrue("Credential should have matched the evaluable criteria", evalCrit.evaluate(credential));
     }
 
     public void testNotSatisfy() {
-        criteria.setSubjectName( new X500Principal("cn=SomeOtherName, o=SomeOtherOrg"));
-        EvaluableX509SubjectNameCredentialCriterion evalCrit = new EvaluableX509SubjectNameCredentialCriterion(criteria);
+        criteria.setSerialNumber(new BigInteger("100"));
+        EvaluableX509IssuerSerialCredentialCriterion evalCrit = new EvaluableX509IssuerSerialCredentialCriterion(criteria);
         assertFalse("Credential should NOT have matched the evaluable criteria", evalCrit.evaluate(credential));
     }
     
     public void testNotSatisfyWrongCredType() {
         BasicCredential basicCred = new BasicCredential();
-        EvaluableX509SubjectNameCredentialCriterion evalCrit = new EvaluableX509SubjectNameCredentialCriterion(criteria);
+        EvaluableX509IssuerSerialCredentialCriterion evalCrit = new EvaluableX509IssuerSerialCredentialCriterion(criteria);
         assertFalse("Credential should NOT have matched the evaluable criteria", evalCrit.evaluate(basicCred));
     }
     
     public void testNotSatisfyNoCert() {
         credential.setEntityCertificate(null);
-        EvaluableX509SubjectNameCredentialCriterion evalCrit = new EvaluableX509SubjectNameCredentialCriterion(criteria);
+        EvaluableX509IssuerSerialCredentialCriterion evalCrit = new EvaluableX509IssuerSerialCredentialCriterion(criteria);
         assertFalse("Credential should NOT have matched the evaluable criteria", evalCrit.evaluate(credential));
     }
     
