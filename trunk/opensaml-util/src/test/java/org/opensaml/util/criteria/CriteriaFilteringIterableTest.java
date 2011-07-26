@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.xml.security;
+package org.opensaml.util.criteria;
 
 import java.util.Collection;
 import java.util.HashSet;
