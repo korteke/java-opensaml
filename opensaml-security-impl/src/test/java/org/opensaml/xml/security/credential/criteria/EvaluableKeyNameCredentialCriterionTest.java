@@ -21,19 +21,19 @@ import junit.framework.TestCase;
 
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.credential.BasicCredential;
-import org.opensaml.xml.security.criteria.EntityIDCriterion;
+import org.opensaml.xml.security.criteria.KeyNameCriterion;
 
 /**
  *
  */
-public class EvaluableEntityIDCredentialCriteriaTest extends TestCase {
+public class EvaluableKeyNameCredentialCriterionTest extends TestCase {
     
     private BasicCredential credential;
-    private String entityID;
-    private EntityIDCriterion criteria;
+    private String keyName;
+    private KeyNameCriterion criteria;
     
-    public EvaluableEntityIDCredentialCriteriaTest() {
-        entityID = "someEntityID";
+    public EvaluableKeyNameCredentialCriterionTest() {
+        keyName = "someKeyName";
     }
 
     /** {@inheritDoc} */
@@ -41,25 +41,27 @@ public class EvaluableEntityIDCredentialCriteriaTest extends TestCase {
         super.setUp();
         
         credential = new BasicCredential();
-        credential.setEntityId(entityID);
+        credential.getKeyNames().add(keyName);
+        credential.getKeyNames().add("foo");
+        credential.getKeyNames().add("bar");
         
-        criteria = new EntityIDCriterion(entityID);
+        criteria = new KeyNameCriterion(keyName);
     }
     
     public void testSatifsy() {
-        EvaluableEntityIDCredentialCriterion evalCrit = new EvaluableEntityIDCredentialCriterion(criteria);
+        EvaluableKeyNameCredentialCriterion evalCrit = new EvaluableKeyNameCredentialCriterion(criteria);
         assertTrue("Credential should have matched the evaluable criteria", evalCrit.evaluate(credential));
     }
 
     public void testNotSatisfy() {
-        criteria.setEntityID("OTHER");
-        EvaluableEntityIDCredentialCriterion evalCrit = new EvaluableEntityIDCredentialCriterion(criteria);
+        criteria.setKeyName(keyName + "OTHER");
+        EvaluableKeyNameCredentialCriterion evalCrit = new EvaluableKeyNameCredentialCriterion(criteria);
         assertFalse("Credential should NOT have matched the evaluable criteria", evalCrit.evaluate(credential));
     }
     
     public void testCanNotEvaluate() {
-        credential.setEntityId(null);
-        EvaluableEntityIDCredentialCriterion evalCrit = new EvaluableEntityIDCredentialCriterion(criteria);
+        credential.getKeyNames().clear();
+        EvaluableKeyNameCredentialCriterion evalCrit = new EvaluableKeyNameCredentialCriterion(criteria);
         assertNull("Credential should have been unevaluable against the criteria", evalCrit.evaluate(credential));
     }
     

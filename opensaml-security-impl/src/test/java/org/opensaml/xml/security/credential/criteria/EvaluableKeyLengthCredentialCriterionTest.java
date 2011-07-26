@@ -27,14 +27,14 @@ import org.opensaml.xml.security.criteria.KeyLengthCriterion;
 /**
  *
  */
-public class EvaluableKeyLengthCredentialCriteriaTest extends TestCase {
+public class EvaluableKeyLengthCredentialCriterionTest extends TestCase {
     
     private BasicCredential credential;
     private String keyAlgo;
     private Integer keyLength;
     private KeyLengthCriterion criteria;
     
-    public EvaluableKeyLengthCredentialCriteriaTest() {
+    public EvaluableKeyLengthCredentialCriterionTest() {
         keyAlgo = "AES";
         keyLength = 128;
     }

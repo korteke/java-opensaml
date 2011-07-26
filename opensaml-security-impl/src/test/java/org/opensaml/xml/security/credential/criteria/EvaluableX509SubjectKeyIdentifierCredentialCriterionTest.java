@@ -31,7 +31,7 @@ import org.opensaml.util.Base64;
 /**
  *
  */
-public class EvaluableX509SubjectKeyIdentifierCredentialCriteriaTest extends TestCase {
+public class EvaluableX509SubjectKeyIdentifierCredentialCriterionTest extends TestCase {
     
     private BasicX509Credential credential;
     private String entityCertSKIBase64 = "OBGBOSNoqgroOhl9RniD0sMlRa4=";
@@ -79,7 +79,7 @@ public class EvaluableX509SubjectKeyIdentifierCredentialCriteriaTest extends Tes
 
     
     
-    public EvaluableX509SubjectKeyIdentifierCredentialCriteriaTest() {
+    public EvaluableX509SubjectKeyIdentifierCredentialCriterionTest() {
         
     }
 

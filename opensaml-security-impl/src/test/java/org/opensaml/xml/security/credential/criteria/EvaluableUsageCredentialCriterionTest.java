@@ -17,29 +17,24 @@
 
 package org.opensaml.xml.security.credential.criteria;
 
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
-import java.security.PublicKey;
-
 import junit.framework.TestCase;
 
 import org.opensaml.xml.security.SecurityException;
-import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.credential.BasicCredential;
-import org.opensaml.xml.security.criteria.PublicKeyCriterion;
+import org.opensaml.xml.security.credential.UsageType;
+import org.opensaml.xml.security.criteria.UsageCriterion;
 
 /**
  *
  */
-public class EvaluablePublicKeyCredentialCriteriaTest extends TestCase {
+public class EvaluableUsageCredentialCriterionTest extends TestCase {
     
     private BasicCredential credential;
-    private String keyAlgo;
-    PublicKey pubKey;
-    private PublicKeyCriterion criteria;
+    private UsageType usage;
+    private UsageCriterion criteria;
     
-    public EvaluablePublicKeyCredentialCriteriaTest() {
-        keyAlgo = "RSA";
+    public EvaluableUsageCredentialCriterionTest() {
+        usage = UsageType.SIGNING;
     }
 
     /** {@inheritDoc} */
@@ -47,34 +42,41 @@ public class EvaluablePublicKeyCredentialCriteriaTest extends TestCase {
         super.setUp();
         
         credential = new BasicCredential();
-        pubKey = SecurityHelper.generateKeyPair(keyAlgo, 1024, null).getPublic();
-        credential.setPublicKey(pubKey);
+        credential.setUsageType(usage);
         
-        criteria = new PublicKeyCriterion(pubKey);
+        criteria = new UsageCriterion(usage);
     }
     
-    public void testSatifsy() {
-        EvaluablePublicKeyCredentialCriterion evalCrit = new EvaluablePublicKeyCredentialCriterion(criteria);
+    public void testSatifsyExactMatch() {
+        EvaluableUsageCredentialCriterion evalCrit = new EvaluableUsageCredentialCriterion(criteria);
+        assertTrue("Credential should have matched the evaluable criteria", evalCrit.evaluate(credential));
+    }
+    
+    public void testSatisfyWithUnspecifiedCriteria() {
+        criteria.setUsage(UsageType.UNSPECIFIED);
+        EvaluableUsageCredentialCriterion evalCrit = new EvaluableUsageCredentialCriterion(criteria);
+        assertTrue("Credential should have matched the evaluable criteria", evalCrit.evaluate(credential));
+    }
+    
+    public void testSatisfyWithUnspecifiedCredential() {
+        credential.setUsageType(UsageType.UNSPECIFIED);
+        EvaluableUsageCredentialCriterion evalCrit = new EvaluableUsageCredentialCriterion(criteria);
         assertTrue("Credential should have matched the evaluable criteria", evalCrit.evaluate(credential));
     }
 
-    public void testNotSatisfyDifferentKey() throws NoSuchAlgorithmException, NoSuchProviderException {
-        criteria.setPublicKey(SecurityHelper.generateKeyPair(keyAlgo, 1024, null).getPublic());
-        EvaluablePublicKeyCredentialCriterion evalCrit = new EvaluablePublicKeyCredentialCriterion(criteria);
+    public void testNotSatisfy() {
+        criteria.setUsage(UsageType.ENCRYPTION);
+        EvaluableUsageCredentialCriterion evalCrit = new EvaluableUsageCredentialCriterion(criteria);
         assertFalse("Credential should NOT have matched the evaluable criteria", evalCrit.evaluate(credential));
     }
     
-    public void testNotSatisfyNoPublicKey() {
-        credential.setPublicKey(null);
-        EvaluablePublicKeyCredentialCriterion evalCrit = new EvaluablePublicKeyCredentialCriterion(criteria);
-        assertFalse("Credential should NOT have matched the evaluable criteria", evalCrit.evaluate(credential));
-    }
-    
+    /* With BasicCredential, can't set UsageType to null, so can't really test.
     public void testCanNotEvaluate() {
-        //Only unevaluable case is null credential
-        EvaluablePublicKeyCredentialCriterion evalCrit = new EvaluablePublicKeyCredentialCriterion(criteria);
-        assertNull("Credential should have been unevaluable against the criteria", evalCrit.evaluate(null));
+        credential.setUsageType(null);
+        EvaluableUsageCredentialCriterion evalCrit = new EvaluableUsageCredentialCriterion(criteria);
+        assertNull("Credential should have been unevaluable against the criteria", evalCrit.evaluate(credential));
     }
+    */
     
     public void testRegistry() throws Exception {
         EvaluableCredentialCriterion evalCrit = EvaluableCredentialCriteriaRegistry.getEvaluator(criteria);
