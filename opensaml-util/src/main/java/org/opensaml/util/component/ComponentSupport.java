@@ -30,7 +30,7 @@ public final class ComponentSupport {
      * 
      * @param obj object to destroy, may be null
      */
-    public static void destory(Object obj) {
+    public static void destroy(Object obj) {
         if (obj == null) {
             return;
         }
