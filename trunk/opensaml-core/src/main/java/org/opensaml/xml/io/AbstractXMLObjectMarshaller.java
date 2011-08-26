@@ -419,22 +419,30 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
      * marshaller for child elements. The XMLObject passed to this method is guaranteed to be of the target name
      * specified during this unmarshaller's construction.
      * 
+     * This default implementation of this method is a no-op
+     * 
      * @param xmlObject the XMLObject to marshall
      * @param domElement the W3C DOM element
      * 
      * @throws MarshallingException thrown if there is a problem marshalling the element
      */
-    protected abstract void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException;
+    protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException{
+        
+    }
 
     /**
      * Marshalls data from the XMLObject into content of the DOM Element.
+     * 
+     * The default implementation of this method is a no-op.
      * 
      * @param xmlObject the XMLObject
      * @param domElement the DOM element recieving the content
      * 
      * @throws MarshallingException thrown if the textual content can not be added to the DOM element
      */
-    protected abstract void marshallElementContent(XMLObject xmlObject, Element domElement) throws MarshallingException;
+    protected void marshallElementContent(XMLObject xmlObject, Element domElement) throws MarshallingException{
+        
+    }
 
     /**
      * Prepares the given DOM caching XMLObject for adoption into another document. If the XMLObject has a parent then
