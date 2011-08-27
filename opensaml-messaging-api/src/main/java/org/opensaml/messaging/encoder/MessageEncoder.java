@@ -18,9 +18,13 @@
 package org.opensaml.messaging.encoder;
 
 import org.opensaml.messaging.context.MessageContext;
+import org.opensaml.util.component.DestructableComponent;
+import org.opensaml.util.component.InitializableComponent;
 
 /**
- * Interface for component that encodes message data from a {@link MessageContext} to a sink.
+ * Interface for component that encodes message data from a {@link MessageContext} to a sink. Before the encoder can be
+ * used the {@link #initialize()} method must be called. After the encoder has been used the {@link #destroy()} should
+ * be invoked in order to clean up any resources.
  * 
  * <p>
  * The sink data or structure on which the encoder operates is supplied in an implementation-specific manner.
@@ -28,58 +32,43 @@ import org.opensaml.messaging.context.MessageContext;
  * 
  * @param <MessageType> the message type of the message context on which to operate
  */
-public interface MessageEncoder<MessageType> {
-    
+public interface MessageEncoder<MessageType> extends InitializableComponent, DestructableComponent {
+
     /**
-     * Initialize the encoder.  Must be called prior to calling <code>encode</code>.
-     */
-    public void initialize();
-    
-    /**
-     * Destroy the encoder.  Must be called after calling <code>encode</code>.
-     */
-    public void destroy();
-    
-    /**
-     * This method should prepare the message context by creating and populating
-     * any binding-specific data structures required in the MessageContext,
-     * prior to actually encoding.
-     *
+     * This method should prepare the message context by creating and populating any binding-specific data structures
+     * required in the MessageContext, prior to actually encoding.
+     * 
      * <p>
-     * This method should be called after the MessageContext has been set,
-     * and before any binding-specific Handler or HandlerChains are invoked.
+     * This method should be called after the MessageContext has been set, and before any binding-specific Handler or
+     * HandlerChains are invoked.
      * </p>
      * 
      * <p>
-     * Example:  For a SOAP encoder, this method would create and store the basic SOAP Envelope
-     * structure in the message context, so that Handlers that are invoked have a place to
-     * which to add headers.
+     * Example: For a SOAP encoder, this method would create and store the basic SOAP Envelope structure in the message
+     * context, so that Handlers that are invoked have a place to which to add headers.
      * </p>
      * 
      * <p>
-     * This method may be a no-op if not required by the binding, or if the message type of
-     * the context implies that the binding-specific structures have already been created elsewhere
-     * (e.g. message-oriented code where the calling code already knows its SOAP,
-     * and is operating on the raw SOAP envelope anyway).
+     * This method may be a no-op if not required by the binding, or if the message type of the context implies that the
+     * binding-specific structures have already been created elsewhere (e.g. message-oriented code where the calling
+     * code already knows its SOAP, and is operating on the raw SOAP envelope anyway).
      * </p>
-     *
+     * 
      * @throws MessageEncodingException if there is a problem preparing the message context for encoding
      */
     public void prepareContext() throws MessageEncodingException;
-    
+
     /**
-     * Encode the {@link MessageContext} supplied via {@link #setMessageContext(MessageContext)} to the 
-     * sink.
+     * Encode the {@link MessageContext} supplied via {@link #setMessageContext(MessageContext)} to the sink.
      * 
      * @throws MessageEncodingException if there is a problem encoding the message context
      */
     public void encode() throws MessageEncodingException;
-    
+
     /**
      * Set the {@link MessageContext} which is to be encoded.
      * 
      * @param messageContext the message context
      */
     public void setMessageContext(MessageContext<MessageType> messageContext);
-    
 }

@@ -18,25 +18,18 @@
 package org.opensaml.messaging.context;
 
 import org.joda.time.DateTime;
+import org.opensaml.util.component.IdentifiedComponent;
 
-/** Interface for a component which represents the context used to store state used for purposes 
- * related to messaging. */
-public interface Context {
-    
-    // TODO serializable here or in sub-interfaces
-    
-    /**
-     * Get the context's unique identifier.
-     * 
-     * @return the context identifier
-     */
-    public String getId();
-    
+/**
+ * Interface for a component which represents the context used to store state used for purposes related to messaging.
+ */
+public interface Context extends IdentifiedComponent {
+
     /**
      * Get the timestamp of the creation of the context.
      * 
      * @return the creation timestamp
      */
     public DateTime getCreationTime();
-    
+
 }

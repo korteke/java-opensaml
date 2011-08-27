@@ -18,39 +18,36 @@
 package org.opensaml.messaging.decoder;
 
 import org.opensaml.messaging.context.MessageContext;
+import org.opensaml.util.component.AbstractInitializableComponent;
+import org.opensaml.util.component.UnmodifiableComponent;
 
 /**
  * Abstract message decoder.
- *
+ * 
  * @param <MessageType> the message type of the message context on which to operate
  */
-public abstract class AbstractMessageDecoder<MessageType> implements MessageDecoder<MessageType> {
-    
+public abstract class AbstractMessageDecoder<MessageType> extends AbstractInitializableComponent implements
+        MessageDecoder<MessageType>, UnmodifiableComponent {
+
     /** Message context. */
     private MessageContext<MessageType> messageContext;
-    
+
     /** {@inheritDoc} */
     public MessageContext<MessageType> getMessageContext() {
         return messageContext;
     }
-    
-    /** {@inheritDoc} */
-    public void initialize() {
-        //Default implementation is a no-op
-    }
-    
+
     /** {@inheritDoc} */
     public void destroy() {
-        //Default implementation is a no-op
+        // Default implementation is a no-op
     }
-    
+
     /**
      * Set the message context.
      * 
      * @param context the message context
      */
     protected void setMessageContext(MessageContext<MessageType> context) {
-       messageContext = context;
+        messageContext = context;
     }
-    
 }

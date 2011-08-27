@@ -20,26 +20,39 @@ package org.opensaml.messaging.encoder.servlet;
 import javax.servlet.http.HttpServletResponse;
 
 import org.opensaml.messaging.encoder.AbstractMessageEncoder;
+import org.opensaml.util.component.ComponentInitializationException;
+import org.opensaml.util.component.UnmodifiableComponentException;
 
 /**
  * Abstract implementation of {@link HttpServletResponseMessageDecoder}.
  * 
  * @param <MessageType> the message type of the message context on which to operate
  */
-public abstract class AbstractHttpServletResponseMessageEncoder<MessageType> extends AbstractMessageEncoder<MessageType> 
-        implements HttpServletResponseMessageEncoder<MessageType> {
-    
+public abstract class AbstractHttpServletResponseMessageEncoder<MessageType> extends
+        AbstractMessageEncoder<MessageType> implements HttpServletResponseMessageEncoder<MessageType> {
+
     /** The HTTP servlet response. */
     private HttpServletResponse response;
-    
+
     /** {@inheritDoc} */
     public HttpServletResponse getHttpServletResponse() {
         return response;
     }
-    
+
     /** {@inheritDoc} */
-    public void setHttpServletResponse(HttpServletResponse servletResponse) {
+    public synchronized void setHttpServletResponse(HttpServletResponse servletResponse) {
+        if (isInitialized()) {
+            throw new UnmodifiableComponentException("Servlet response can not be changed once decoder is initialized");
+        }
         response = servletResponse;
     }
-    
+
+    /** {@inheritDoc} */
+    protected void doInitialize() throws ComponentInitializationException {
+        super.doInitialize();
+
+        if (response == null) {
+            throw new ComponentInitializationException("HTTP servlet response can not be null");
+        }
+    }
 }

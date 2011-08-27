@@ -18,32 +18,31 @@
 package org.opensaml.messaging.encoder;
 
 import org.opensaml.messaging.context.MessageContext;
+import org.opensaml.util.component.AbstractInitializableComponent;
+import org.opensaml.util.component.ComponentInitializationException;
+import org.opensaml.util.component.UnmodifiableComponent;
 
 /**
  * Abstract message encoder.
- *
+ * 
  * @param <MessageType> the message type of the message context on which to operate
  */
-public abstract class AbstractMessageEncoder<MessageType> implements MessageEncoder<MessageType> {
-    
+public abstract class AbstractMessageEncoder<MessageType> extends AbstractInitializableComponent implements
+        MessageEncoder<MessageType>, UnmodifiableComponent {
+
     /** The message context. */
     private MessageContext<MessageType> messageContext;
-    
+
     /** {@inheritDoc} */
     public void setMessageContext(MessageContext<MessageType> context) {
         messageContext = context;
     }
-    
-    /** {@inheritDoc} */
-    public void initialize() {
-        //Default implementation is a no-op
-    }
-    
+
     /** {@inheritDoc} */
     public void destroy() {
-        //Default implementation is a no-op
+        // Default implementation is a no-op
     }
-    
+
     /**
      * Get the message context.
      * 
@@ -52,5 +51,13 @@ public abstract class AbstractMessageEncoder<MessageType> implements MessageEnco
     protected MessageContext<MessageType> getMessageContext() {
         return messageContext;
     }
-    
+
+    /** {@inheritDoc} */
+    protected void doInitialize() throws ComponentInitializationException {
+        super.doInitialize();
+
+        if (messageContext == null) {
+            throw new ComponentInitializationException("Message context can not be null");
+        }
+    }
 }
