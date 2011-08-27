@@ -17,31 +17,25 @@
 
 package org.opensaml.util.component;
 
-import org.opensaml.util.StringSupport;
+/** Base class for things that implement {@link InitializableComponent}. */
+public abstract class AbstractInitializableComponent implements InitializableComponent {
 
-/**
- * Simple implementation of {@link InitializableComponent} and {@link IdentifiedComponent}.
- * 
- * Note, this class synchronizes the {@link #setId(String)} method and, if the component is already initialized this
- * method is treated as no-op.
- */
-public abstract class AbstractIdentifiedInitializableComponent extends AbstractInitializableComponent implements
-        IdentifiedComponent {
-
-    /** The unique identifier for this component. */
-    private String id;
+    /** Whether this component has been initialized. */
+    private boolean isInitialized;
 
     /** {@inheritDoc} */
-    public String getId() {
-        return id;
+    public boolean isInitialized() {
+        return isInitialized;
     }
 
     /** {@inheritDoc} */
-    protected synchronized void setId(String componentId) {
+    public final synchronized void initialize() throws ComponentInitializationException {
         if (isInitialized()) {
             return;
         }
-        id = StringSupport.trimOrNull(componentId);
+        
+        doInitialize();
+        isInitialized = true;
     }
 
     /**
@@ -53,8 +47,6 @@ public abstract class AbstractIdentifiedInitializableComponent extends AbstractI
      * @throws ComponentInitializationException thrown if there is a problem initializing the component
      */
     protected void doInitialize() throws ComponentInitializationException {
-        if (getId() == null) {
-            throw new ComponentInitializationException("Component identifier can not be null");
-        }
+
     }
 }

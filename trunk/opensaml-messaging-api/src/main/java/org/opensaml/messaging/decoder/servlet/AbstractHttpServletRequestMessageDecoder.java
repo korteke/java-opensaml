@@ -20,27 +20,39 @@ package org.opensaml.messaging.decoder.servlet;
 import javax.servlet.http.HttpServletRequest;
 
 import org.opensaml.messaging.decoder.AbstractMessageDecoder;
-
+import org.opensaml.util.component.ComponentInitializationException;
+import org.opensaml.util.component.UnmodifiableComponentException;
 
 /**
  * Abstract implementation of {@link HttpServletRequestMessageDecoder}.
  * 
  * @param <MessageType> the message type of the message context on which to operate
  */
-public abstract class AbstractHttpServletRequestMessageDecoder<MessageType> extends AbstractMessageDecoder<MessageType> 
+public abstract class AbstractHttpServletRequestMessageDecoder<MessageType> extends AbstractMessageDecoder<MessageType>
         implements HttpServletRequestMessageDecoder<MessageType> {
-    
+
     /** The HTTP servlet request. */
     private HttpServletRequest request;
-    
+
     /** {@inheritDoc} */
     public HttpServletRequest getHttpServletRequest() {
         return request;
     }
-    
+
     /** {@inheritDoc} */
-    public void setHttpServletRequest(HttpServletRequest servletRequest) {
+    public synchronized void setHttpServletRequest(HttpServletRequest servletRequest) {
+        if (isInitialized()) {
+            throw new UnmodifiableComponentException("Servlet request can not be changed once decoder is initialized");
+        }
         request = servletRequest;
     }
-    
+
+    /** {@inheritDoc} */
+    protected void doInitialize() throws ComponentInitializationException {
+        super.doInitialize();
+
+        if (request == null) {
+            throw new ComponentInitializationException("HTTP Servlet request can not be null");
+        }
+    }
 }

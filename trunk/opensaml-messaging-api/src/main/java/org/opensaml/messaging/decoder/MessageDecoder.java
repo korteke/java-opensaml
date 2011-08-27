@@ -18,10 +18,13 @@
 package org.opensaml.messaging.decoder;
 
 import org.opensaml.messaging.context.MessageContext;
-
+import org.opensaml.util.component.DestructableComponent;
+import org.opensaml.util.component.InitializableComponent;
 
 /**
- * Interface for component that decodes message data from a source into a {@link MessageContext}.
+ * Interface for component that decodes message data from a source into a {@link MessageContext}. Before the decoder can
+ * be used the {@link #initialize()} method must be called. After the decoder has been used the {@link #destroy()}
+ * should be invoked in order to clean up any resources.
  * 
  * <p>
  * The data on which the decoder operates is supplied in an implementation-specific manner.
@@ -29,30 +32,19 @@ import org.opensaml.messaging.context.MessageContext;
  * 
  * @param <MessageType> the message type of the message context on which to operate
  */
-public interface MessageDecoder<MessageType> {
-    
-    /**
-     * Initialize the decoder.  Must be called prior to calling <code>decode</code>.
-     */
-    public void initialize();
-    
-    /**
-     * Destroy the decoder.  Must be called after calling <code>decode</code>.
-     */
-    public void destroy();
-    
+public interface MessageDecoder<MessageType> extends InitializableComponent, DestructableComponent {
+
     /**
      * Decode message data from the source and store it so that it may be retrieved via {@link #getMessageContext()}.
      * 
      * @throws MessageDecodingException if there is a problem decoding the message context
      */
     public void decode() throws MessageDecodingException;
-    
+
     /**
      * Get the decoded message context.
      * 
      * @return the decoded message context
      */
     public MessageContext<MessageType> getMessageContext();
-    
 }
