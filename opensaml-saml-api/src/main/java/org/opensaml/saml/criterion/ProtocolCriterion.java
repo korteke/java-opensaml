@@ -45,4 +45,35 @@ public final class ProtocolCriterion implements Criterion {
     public String getProtocol() {
         return protocol;
     }
+
+    /** {@inheritDoc} */
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("ProtocolCriterion [protocol=");
+        builder.append(protocol);
+        builder.append("]");
+        return builder.toString();
+    }
+
+    /** {@inheritDoc} */
+    public int hashCode() {
+        return protocol.hashCode();
+    }
+
+    /** {@inheritDoc} */
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj == null) {
+            return false;
+        }
+
+        if (obj instanceof ProtocolCriterion) {
+            return protocol.equals(((ProtocolCriterion) obj).protocol);
+        }
+
+        return false;
+    }
 }

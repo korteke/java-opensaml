@@ -45,4 +45,35 @@ public final class EntityIdCriterion implements Criterion {
     public String getEntityId() {
         return id;
     }
+
+    /** {@inheritDoc} */
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("EntityIdCriterion [id=");
+        builder.append(id);
+        builder.append("]");
+        return builder.toString();
+    }
+
+    /** {@inheritDoc} */
+    public int hashCode() {
+        return id.hashCode();
+    }
+
+    /** {@inheritDoc} */
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj == null) {
+            return false;
+        }
+
+        if (obj instanceof EntityIdCriterion) {
+            return id.equals(((EntityIdCriterion) obj).id);
+        }
+
+        return false;
+    }
 }

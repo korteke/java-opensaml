@@ -45,4 +45,35 @@ public final class BindingResponseLocation implements Criterion {
     public String getLocation() {
         return location;
     }
+    
+    /** {@inheritDoc} */
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("BindingResponseLocation [location=");
+        builder.append(location);
+        builder.append("]");
+        return builder.toString();
+    }
+
+    /** {@inheritDoc} */
+    public int hashCode() {
+        return location.hashCode();
+    }
+
+    /** {@inheritDoc} */
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj == null) {
+            return false;
+        }
+
+        if (obj instanceof BindingResponseLocation) {
+            return location.equals(((BindingResponseLocation) obj).location);
+        }
+
+        return false;
+    }
 }
