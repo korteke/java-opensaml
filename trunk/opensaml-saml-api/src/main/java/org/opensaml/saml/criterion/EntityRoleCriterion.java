@@ -46,4 +46,35 @@ public final class EntityRoleCriterion implements Criterion {
     public QName getRole() {
         return role;
     }
+    
+    /** {@inheritDoc} */
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("EntityRoleCriterion [role=");
+        builder.append(role);
+        builder.append("]");
+        return builder.toString();
+    }
+
+    /** {@inheritDoc} */
+    public int hashCode() {
+        return role.hashCode();
+    }
+
+    /** {@inheritDoc} */
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj == null) {
+            return false;
+        }
+
+        if (obj instanceof EntityRoleCriterion) {
+            return role.equals(((EntityRoleCriterion) obj).role);
+        }
+
+        return false;
+    }
 }
