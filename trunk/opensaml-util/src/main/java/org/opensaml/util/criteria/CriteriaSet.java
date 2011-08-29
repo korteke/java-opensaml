@@ -19,28 +19,31 @@ package org.opensaml.util.criteria;
 
 import org.opensaml.util.collections.ClassIndexedSet;
 
-/**
- * This class holds instances of {@link Criterion} which are used 
- * in resolution or evaluation operations.
- */
+/** This class holds instances of {@link Criterion} which are used in resolution or evaluation operations. */
 public class CriteriaSet extends ClassIndexedSet<Criterion> {
-    
-    /**
-     * Constructor.
-     *
-     */
+
+    /** Constructor. */
     public CriteriaSet() {
         super();
     }
-    
-    /**
-     * A convenience constructor for constructing and adding a single criteria.
-     *
-     * @param criteria a single criteria 
-     */
-    public CriteriaSet(Criterion criteria) {
-        super();
-        add(criteria);
-    }
 
+    /**
+     * A convenience constructor for constructing and adding criteria.
+     * 
+     * @param criteria criteria to add, may be null or contain null values
+     */
+    public CriteriaSet(Criterion... criteria) {
+        super();
+
+        if (criteria == null || criteria.length == 0) {
+            return;
+        }
+
+        for (Criterion criterion : criteria) {
+            if (criterion == null) {
+                continue;
+            }
+            add(criterion);
+        }
+    }
 }
