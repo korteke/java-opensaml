@@ -20,13 +20,13 @@ package org.opensaml.util.component;
 import org.opensaml.util.StringSupport;
 
 /**
- * Simple implementation of {@link InitializableComponent} and {@link IdentifiedComponent}.
+ * Simple implementation of {@link InitializableComponent} and {@link IdentifiableComponent}.
  * 
  * Note, this class synchronizes the {@link #setId(String)} method and, if the component is already initialized this
  * method is treated as no-op.
  */
-public abstract class AbstractIdentifiedInitializableComponent extends AbstractInitializableComponent implements
-        IdentifiedComponent {
+public abstract class AbstractIdentifiableInitializableComponent extends AbstractInitializableComponent implements
+        IdentifiableComponent {
 
     /** The unique identifier for this component. */
     private String id;

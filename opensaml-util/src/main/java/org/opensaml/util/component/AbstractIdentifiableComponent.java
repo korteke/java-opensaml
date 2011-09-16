@@ -21,12 +21,12 @@ import org.opensaml.util.Assert;
 import org.opensaml.util.StringSupport;
 
 /**
- * Simple implementation of {@link IdentifiedComponent}.
+ * Simple implementation of {@link IdentifiableComponent}.
  * 
  * Note, while this implementation's {@link #setId(String)} is protected it can always be hoisted to a public method if
  * that is desired.
  */
-public abstract class AbstractIdentifiedComponent implements IdentifiedComponent {
+public abstract class AbstractIdentifiableComponent implements IdentifiableComponent {
 
     /** The unique identifier for this component. */
     private String id;
