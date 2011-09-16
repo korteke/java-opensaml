@@ -36,8 +36,12 @@ public class SecureRandomIdentifierGenerator implements IdentifierGenerator {
      * 
      * @throws NoSuchAlgorithmException thrown if the SHA1PRNG algorithm is not supported by the JVM
      */
-    public SecureRandomIdentifierGenerator() throws NoSuchAlgorithmException {
-        random = SecureRandom.getInstance("SHA1PRNG");
+    public SecureRandomIdentifierGenerator() {
+        try {
+            random = SecureRandom.getInstance("SHA1PRNG");
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException("SHA1PRNG is required to be supported by the JVM but is not", e);
+        }
     }
 
     /**
