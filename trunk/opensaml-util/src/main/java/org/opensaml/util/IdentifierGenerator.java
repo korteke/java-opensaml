@@ -15,37 +15,26 @@
  * limitations under the License.
  */
 
-package org.opensaml.common.impl;
-
-import java.util.Random;
-
-import org.bouncycastle.util.encoders.Hex;
-import org.opensaml.common.IdentifierGenerator;
+package org.opensaml.util;
 
 /**
- * Generates identifiers using random data obtained from a {@link java.util.Random} instance.
+ * Interface for identifier generators.  This identifier can be used for things like
+ * digital signature identifiers, opaque principal identifiers, etc. 
  */
-public class RandomIdentifierGenerator implements IdentifierGenerator {
-
-    /** Random number generator. */
-    private static Random random;
+public interface IdentifierGenerator {
 
     /**
-     * Constructor.
+     * Generates a 16 byte identifier.
+     * 
+     * @return an hex encoded identifier
      */
-    public RandomIdentifierGenerator() {
-        random = new Random();
-    }
-
-    /** {@inheritDoc} */
-    public String generateIdentifier() {
-        return generateIdentifier(16);
-    }
-
-    /** {@inheritDoc} */
-    public String generateIdentifier(int size) {
-        byte[] buf = new byte[size];
-        random.nextBytes(buf);
-        return "_".concat(new String(Hex.encode(buf)));
-    }
+    public String generateIdentifier();
+    
+    /** Generates a random identifier.
+     * 
+     * @param size number of bytes in the identifier
+     * 
+     * @return the hex encoded identifier
+     */
+    public String generateIdentifier(int size);
 }

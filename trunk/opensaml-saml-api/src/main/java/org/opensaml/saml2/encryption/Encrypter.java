@@ -25,8 +25,6 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.opensaml.Configuration;
-import org.opensaml.common.IdentifierGenerator;
-import org.opensaml.common.impl.SecureRandomIdentifierGenerator;
 import org.opensaml.saml2.core.Assertion;
 import org.opensaml.saml2.core.Attribute;
 import org.opensaml.saml2.core.BaseID;
@@ -37,6 +35,8 @@ import org.opensaml.saml2.core.EncryptedID;
 import org.opensaml.saml2.core.NameID;
 import org.opensaml.saml2.core.NewEncryptedID;
 import org.opensaml.saml2.core.NewID;
+import org.opensaml.util.IdentifierGenerator;
+import org.opensaml.util.SecureRandomIdentifierGenerator;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.XMLObjectBuilderFactory;
 import org.opensaml.xml.encryption.CarriedKeyName;
