@@ -15,44 +15,25 @@
  * limitations under the License.
  */
 
-package org.opensaml.common.impl;
+package org.opensaml.util;
 
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
+import java.util.Random;
 
 import org.bouncycastle.util.encoders.Hex;
-import org.opensaml.common.IdentifierGenerator;
 
 /**
- * Generates identifiers using random data obtained from a {@link java.security.SecureRandom} instance.
+ * Generates identifiers using random data obtained from a {@link java.util.Random} instance.
  */
-public class SecureRandomIdentifierGenerator implements IdentifierGenerator {
+public class RandomIdentifierGenerator implements IdentifierGenerator {
 
     /** Random number generator. */
-    private static SecureRandom random;
+    private static Random random;
 
     /**
      * Constructor.
-     * 
-     * @throws NoSuchAlgorithmException thrown if the SHA1PRNG algorithm is not supported by the JVM
      */
-    public SecureRandomIdentifierGenerator() {
-        try {
-            random = SecureRandom.getInstance("SHA1PRNG");
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException("SHA1PRNG is required to be supported by the JVM but is not", e);
-        }
-    }
-
-    /**
-     * Constructor.
-     * 
-     * @param algorithm the random number generation algorithm to use
-     * 
-     * @throws NoSuchAlgorithmException thrown if the algorithm is not supported by the JVM
-     */
-    public SecureRandomIdentifierGenerator(String algorithm) throws NoSuchAlgorithmException {
-        random = SecureRandom.getInstance(algorithm);
+    public RandomIdentifierGenerator() {
+        random = new Random();
     }
 
     /** {@inheritDoc} */
