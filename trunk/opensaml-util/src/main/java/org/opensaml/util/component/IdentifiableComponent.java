@@ -17,8 +17,10 @@
 
 package org.opensaml.util.component;
 
+//TODO this should IdentifableComponent to be in harmony with others
+
 /** A {@link Component} which can be assigned a unique identifier. */
-public interface IdentifiedComponent extends Component {
+public interface IdentifiableComponent extends Component {
 
     /**
      * Gets the ID of this component.

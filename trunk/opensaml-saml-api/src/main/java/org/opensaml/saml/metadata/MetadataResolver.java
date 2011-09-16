@@ -18,7 +18,7 @@
 package org.opensaml.saml.metadata;
 
 import org.opensaml.saml2.metadata.EntityDescriptor;
-import org.opensaml.util.component.IdentifiedComponent;
+import org.opensaml.util.component.IdentifiableComponent;
 import org.opensaml.util.component.ValidatableComponent;
 import org.opensaml.util.criteria.CriteriaSet;
 import org.opensaml.util.resolver.Resolver;
@@ -44,7 +44,7 @@ import org.opensaml.util.resolver.Resolver;
  * <li>{@link org.opensaml.saml.criterion.BindingCriterion}</li>
  * </ul>
  */
-public interface MetadataResolver extends Resolver<EntityDescriptor, CriteriaSet>, IdentifiedComponent,
+public interface MetadataResolver extends Resolver<EntityDescriptor, CriteriaSet>, IdentifiableComponent,
         ValidatableComponent {
 
 }

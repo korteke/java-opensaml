@@ -18,12 +18,12 @@
 package org.opensaml.messaging.context;
 
 import org.joda.time.DateTime;
-import org.opensaml.util.component.IdentifiedComponent;
+import org.opensaml.util.component.IdentifiableComponent;
 
 /**
  * Interface for a component which represents the context used to store state used for purposes related to messaging.
  */
-public interface Context extends IdentifiedComponent {
+public interface Context extends IdentifiableComponent {
 
     /**
      * Get the timestamp of the creation of the context.
