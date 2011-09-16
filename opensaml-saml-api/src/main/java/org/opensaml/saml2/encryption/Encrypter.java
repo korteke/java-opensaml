@@ -211,11 +211,7 @@ public class Encrypter extends org.opensaml.xml.encryption.Encrypter {
         carriedKeyNameBuilder = 
             (XMLEncryptionBuilder<CarriedKeyName>) builderFactory.getBuilder(CarriedKeyName.DEFAULT_ELEMENT_NAME);
         
-        try{
-            idGenerator = new SecureRandomIdentifierGenerator();
-        }catch(NoSuchAlgorithmException e){
-            log.error("JVM does not support SHA1PRNG random number generation algorithm.");
-        }
+        idGenerator = new SecureRandomIdentifierGenerator();
         
         keyPlacement = KeyPlacement.PEER;
     }
