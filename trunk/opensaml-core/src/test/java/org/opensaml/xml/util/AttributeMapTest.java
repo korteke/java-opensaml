@@ -21,6 +21,7 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.util.collections.LazySet;
 import org.opensaml.xml.AttributeExtensibleXMLObject;
 import org.opensaml.xml.Namespace;
 import org.opensaml.xml.XMLObject;

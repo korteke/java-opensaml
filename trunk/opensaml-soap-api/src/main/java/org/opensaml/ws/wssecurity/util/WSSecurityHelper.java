@@ -19,6 +19,7 @@ package org.opensaml.ws.wssecurity.util;
 
 import java.util.List;
 
+import org.opensaml.util.collections.LazyList;
 import org.opensaml.ws.wssecurity.IdBearing;
 import org.opensaml.ws.wssecurity.TokenTypeBearing;
 import org.opensaml.ws.wssecurity.UsageBearing;
@@ -26,7 +27,6 @@ import org.opensaml.xml.AttributeExtensibleXMLObject;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.util.AttributeMap;
 import org.opensaml.xml.util.DatatypeHelper;
-import org.opensaml.xml.util.LazyList;
 import org.opensaml.xml.util.XMLHelper;
 
 /**

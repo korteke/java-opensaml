@@ -17,10 +17,10 @@
 
 package org.opensaml.ws.soap.client;
 
+import net.jcip.annotations.ThreadSafe;
+
 import org.opensaml.ws.soap.common.SOAPException;
 import org.opensaml.xml.security.SecurityException;
-
-import net.jcip.annotations.ThreadSafe;
 
 /**
  * An interface for a very basic SOAP client.

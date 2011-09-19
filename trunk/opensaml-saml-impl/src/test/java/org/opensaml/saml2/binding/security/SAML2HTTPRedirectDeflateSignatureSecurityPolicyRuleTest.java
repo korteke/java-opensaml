@@ -37,6 +37,8 @@ import org.opensaml.saml2.core.Response;
 import org.opensaml.saml2.metadata.AssertionConsumerService;
 import org.opensaml.saml2.metadata.Endpoint;
 import org.opensaml.saml2.metadata.SPSSODescriptor;
+import org.opensaml.util.Pair;
+import org.opensaml.util.net.UriSupport;
 import org.opensaml.ws.message.encoder.MessageEncodingException;
 import org.opensaml.ws.transport.InTransport;
 import org.opensaml.ws.transport.http.HTTPInTransport;
@@ -49,8 +51,6 @@ import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xml.security.x509.BasicX509Credential;
 import org.opensaml.xml.signature.SignatureTrustEngine;
 import org.opensaml.xml.signature.impl.ExplicitKeySignatureTrustEngine;
-import org.opensaml.util.Pair;
-import org.opensaml.util.net.UriSupport;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 

@@ -26,6 +26,8 @@ import javax.xml.namespace.QName;
 
 import net.jcip.annotations.NotThreadSafe;
 
+import org.opensaml.util.collections.LazyMap;
+import org.opensaml.util.collections.LazySet;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.NamespaceManager;
 import org.opensaml.xml.XMLObject;

@@ -18,7 +18,6 @@
 package org.opensaml.xacml.impl;
 
 import org.opensaml.xml.XMLObject;
-
 import org.opensaml.xml.io.AbstractXMLObjectUnmarshaller;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.w3c.dom.Attr;

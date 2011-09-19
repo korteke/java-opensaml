@@ -19,8 +19,8 @@ package org.opensaml.xmlsec.config;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.core.config.XMLObjectProviderInitializerBaseTestCase;
 import org.opensaml.core.config.Initializer;
+import org.opensaml.core.config.XMLObjectProviderInitializerBaseTestCase;
 import org.opensaml.xml.encryption.EncryptedData;
 import org.opensaml.xml.signature.Signature;
 

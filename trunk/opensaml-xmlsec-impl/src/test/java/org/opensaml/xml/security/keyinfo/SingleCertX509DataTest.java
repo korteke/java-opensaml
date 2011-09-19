@@ -26,7 +26,6 @@ import java.util.List;
 import org.opensaml.util.criteria.CriteriaSet;
 import org.opensaml.util.resolver.ResolverException;
 import org.opensaml.xml.XMLObjectBaseTestCase;
-import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.keyinfo.provider.InlineX509DataProvider;

@@ -20,7 +20,6 @@ package org.opensaml.saml2.metadata.provider;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
-import org.opensaml.Configuration;
 import org.opensaml.common.BaseTestCase;
 import org.opensaml.saml2.metadata.EntityDescriptor;
 import org.opensaml.xml.XMLObject;

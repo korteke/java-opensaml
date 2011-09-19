@@ -23,10 +23,10 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
+import org.opensaml.util.collections.LazyMap;
+import org.opensaml.util.collections.LazySet;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.signature.KeyInfo;
-import org.opensaml.xml.util.LazyMap;
-import org.opensaml.xml.util.LazySet;
 
 
 /**

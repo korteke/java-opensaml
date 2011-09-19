@@ -20,8 +20,8 @@ package org.opensaml.xml;
 import java.util.Collections;
 import java.util.List;
 
+import org.opensaml.util.collections.LazyList;
 import org.opensaml.xml.signature.AbstractSignableXMLObject;
-import org.opensaml.xml.util.LazyList;
 import org.opensaml.xml.validation.ValidatingXMLObject;
 import org.opensaml.xml.validation.ValidationException;
 import org.opensaml.xml.validation.Validator;

@@ -34,7 +34,6 @@ import org.opensaml.xml.encryption.EncryptionConstants;
 import org.opensaml.xml.encryption.EncryptionException;
 import org.opensaml.xml.encryption.EncryptionParameters;
 import org.opensaml.xml.encryption.KeyEncryptionParameters;
-import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.XMLSecurityHelper;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.keyinfo.StaticKeyInfoGenerator;

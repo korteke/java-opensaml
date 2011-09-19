@@ -26,8 +26,8 @@ import java.util.List;
 
 import org.opensaml.saml2.core.Attribute;
 import org.opensaml.saml2.core.AttributeQuery;
+import org.opensaml.util.Pair;
 import org.opensaml.xml.util.DatatypeHelper;
-import org.opensaml.xml.util.Pair;
 import org.opensaml.xml.validation.ValidationException;
 
 /**

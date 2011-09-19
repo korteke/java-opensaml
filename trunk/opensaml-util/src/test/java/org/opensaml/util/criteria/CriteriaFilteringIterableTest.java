@@ -21,9 +21,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.opensaml.util.criteria.CriteriaFilteringIterable;
-import org.opensaml.util.criteria.EvaluableCriterion;
-
 import junit.framework.TestCase;
 
 /**

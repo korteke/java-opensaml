@@ -23,9 +23,7 @@ package org.opensaml.saml2.core.impl;
 import javax.xml.namespace.QName;
 
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
-import org.opensaml.common.xml.SAMLConstants;
 import org.opensaml.saml2.core.StatusDetail;
-import org.opensaml.xml.schema.impl.XSAnyBuilder;
 
 /**
  * Test case for creating, marshalling, and unmarshalling

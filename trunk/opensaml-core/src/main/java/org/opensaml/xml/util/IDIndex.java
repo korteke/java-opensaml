@@ -23,6 +23,7 @@ import java.util.Set;
 
 import net.jcip.annotations.NotThreadSafe;
 
+import org.opensaml.util.collections.LazyMap;
 import org.opensaml.xml.XMLObject;
 
 /**

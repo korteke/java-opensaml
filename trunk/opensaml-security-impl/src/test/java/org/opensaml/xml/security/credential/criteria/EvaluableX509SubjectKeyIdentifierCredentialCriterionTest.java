@@ -21,12 +21,11 @@ import java.security.cert.X509Certificate;
 
 import junit.framework.TestCase;
 
-import org.opensaml.xml.security.SecurityException;
+import org.opensaml.util.Base64;
 import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.credential.BasicCredential;
 import org.opensaml.xml.security.x509.BasicX509Credential;
 import org.opensaml.xml.security.x509.X509SubjectKeyIdentifierCriterion;
-import org.opensaml.util.Base64;
 
 /**
  *

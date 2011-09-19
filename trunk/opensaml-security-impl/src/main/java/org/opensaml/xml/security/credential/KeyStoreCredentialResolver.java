@@ -30,7 +30,6 @@ import java.util.Map;
 
 import org.opensaml.util.criteria.CriteriaSet;
 import org.opensaml.util.resolver.ResolverException;
-import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.criteria.EntityIDCriterion;
 import org.opensaml.xml.security.criteria.UsageCriterion;
 import org.opensaml.xml.security.x509.BasicX509Credential;

@@ -18,8 +18,8 @@
 package org.opensaml.xml.security.credential;
 
 
-import org.opensaml.util.criteria.Criterion;
 import org.opensaml.util.criteria.CriteriaSet;
+import org.opensaml.util.criteria.Criterion;
 import org.opensaml.util.resolver.Resolver;
 
 /**

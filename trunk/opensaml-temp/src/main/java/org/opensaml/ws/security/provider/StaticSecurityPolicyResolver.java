@@ -20,11 +20,11 @@ package org.opensaml.ws.security.provider;
 import java.util.Collections;
 import java.util.List;
 
+import org.opensaml.util.collections.LazyList;
 import org.opensaml.util.resolver.ResolverException;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.security.SecurityPolicy;
 import org.opensaml.ws.security.SecurityPolicyResolver;
-import org.opensaml.xml.util.LazyList;
 
 /** A simple security policy resolver implementation that returns a static list of policies. */
 public class StaticSecurityPolicyResolver implements SecurityPolicyResolver {

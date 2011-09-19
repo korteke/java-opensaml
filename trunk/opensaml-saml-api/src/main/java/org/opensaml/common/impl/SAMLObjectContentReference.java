@@ -28,16 +28,14 @@ import org.apache.xml.security.transforms.Transforms;
 import org.apache.xml.security.transforms.params.InclusiveNamespaces;
 import org.opensaml.common.SignableSAMLObject;
 import org.opensaml.core.config.ConfigurationService;
-import org.opensaml.xml.Configuration;
-import org.opensaml.xml.Namespace;
+import org.opensaml.util.collections.LazyList;
+import org.opensaml.util.collections.LazySet;
 import org.opensaml.xml.NamespaceManager;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.security.SecurityConfiguration;
 import org.opensaml.xml.signature.ContentReference;
 import org.opensaml.xml.signature.SignatureConstants;
 import org.opensaml.xml.util.DatatypeHelper;
-import org.opensaml.xml.util.LazyList;
-import org.opensaml.xml.util.LazySet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

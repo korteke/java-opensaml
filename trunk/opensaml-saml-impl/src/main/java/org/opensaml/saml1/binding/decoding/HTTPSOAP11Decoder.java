@@ -25,6 +25,7 @@ import org.opensaml.common.SAMLObject;
 import org.opensaml.common.binding.SAMLMessageContext;
 import org.opensaml.common.binding.artifact.SAMLArtifactMap;
 import org.opensaml.common.xml.SAMLConstants;
+import org.opensaml.util.collections.LazyList;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.message.decoder.MessageDecodingException;
 import org.opensaml.ws.soap.soap11.Envelope;
@@ -34,7 +35,6 @@ import org.opensaml.xml.AttributeExtensibleXMLObject;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.parse.ParserPool;
 import org.opensaml.xml.util.DatatypeHelper;
-import org.opensaml.xml.util.LazyList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

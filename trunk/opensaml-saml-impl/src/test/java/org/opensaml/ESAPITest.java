@@ -17,11 +17,11 @@
 
 package org.opensaml;
 
+import junit.framework.TestCase;
+
 import org.owasp.esapi.ESAPI;
 import org.owasp.esapi.Encoder;
 import org.owasp.esapi.SecurityConfiguration;
-
-import junit.framework.TestCase;
 
 /**
  * Test that OWASPI ESAPI is initialized properly by the default bootstrap process.

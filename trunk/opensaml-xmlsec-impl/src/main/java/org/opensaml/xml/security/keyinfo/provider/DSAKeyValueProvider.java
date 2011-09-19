@@ -21,6 +21,7 @@ import java.security.KeyException;
 import java.security.PublicKey;
 import java.util.Collection;
 
+import org.opensaml.util.collections.LazySet;
 import org.opensaml.util.criteria.CriteriaSet;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.security.SecurityException;
@@ -34,7 +35,6 @@ import org.opensaml.xml.security.keyinfo.KeyInfoProvider;
 import org.opensaml.xml.security.keyinfo.KeyInfoResolutionContext;
 import org.opensaml.xml.signature.DSAKeyValue;
 import org.opensaml.xml.signature.KeyValue;
-import org.opensaml.xml.util.LazySet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

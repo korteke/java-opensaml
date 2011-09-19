@@ -20,15 +20,15 @@ package org.opensaml.xml.security.credential;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.opensaml.util.criteria.Criterion;
 import org.opensaml.util.criteria.CriteriaFilteringIterable;
 import org.opensaml.util.criteria.CriteriaFilteringIterator;
 import org.opensaml.util.criteria.CriteriaSet;
+import org.opensaml.util.criteria.Criterion;
 import org.opensaml.util.criteria.EvaluableCriterion;
 import org.opensaml.util.resolver.ResolverException;
 import org.opensaml.xml.security.SecurityException;
-import org.opensaml.xml.security.credential.criteria.EvaluableCredentialCriterion;
 import org.opensaml.xml.security.credential.criteria.EvaluableCredentialCriteriaRegistry;
+import org.opensaml.xml.security.credential.criteria.EvaluableCredentialCriterion;
 
 /**
  * An abstract implementation of {@link CredentialResolver} which filters the returned Credentials

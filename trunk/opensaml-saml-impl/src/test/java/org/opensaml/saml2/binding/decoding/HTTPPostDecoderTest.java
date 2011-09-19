@@ -28,6 +28,7 @@ import org.opensaml.common.binding.decoding.SAMLMessageDecoder;
 import org.opensaml.saml2.core.AuthnRequest;
 import org.opensaml.saml2.core.RequestAbstractType;
 import org.opensaml.saml2.core.Response;
+import org.opensaml.util.Base64;
 import org.opensaml.ws.message.decoder.MessageDecodingException;
 import org.opensaml.ws.transport.http.HttpServletRequestAdapter;
 import org.opensaml.xml.security.SecurityException;
@@ -36,7 +37,6 @@ import org.opensaml.xml.security.XMLSecurityHelper;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.signature.Signature;
 import org.opensaml.xml.signature.Signer;
-import org.opensaml.util.Base64;
 import org.opensaml.xml.util.XMLHelper;
 import org.springframework.mock.web.MockHttpServletRequest;
 

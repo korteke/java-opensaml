@@ -18,8 +18,8 @@
 package org.opensaml.xml.signature.impl;
 
 import org.opensaml.xml.AbstractXMLObjectBuilder;
-import org.opensaml.xml.signature.Y;
 import org.opensaml.xml.signature.XMLSignatureBuilder;
+import org.opensaml.xml.signature.Y;
 import org.opensaml.xml.util.XMLConstants;
 
 /**

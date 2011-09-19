@@ -23,6 +23,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import org.opensaml.util.Assert;
+
 /**
  * Set implementation which provides indexed access to set members via their class, and which allows only one instance
  * of a given class to be present in the set. Null members are not allowed.
@@ -60,9 +62,7 @@ public class ClassIndexedSet<T> extends AbstractSet<T> implements Set<T> {
      * @return true if object was added
      */
     public boolean add(final T o, final boolean replace) {
-        if (o == null) {
-            throw new NullPointerException("Null elements are not allowed");
-        }
+        Assert.isNotNull(o, "Null elements are not allowed");
 
         boolean replacing = false;
         final Class<? extends T> indexClass = getIndexClass(o);

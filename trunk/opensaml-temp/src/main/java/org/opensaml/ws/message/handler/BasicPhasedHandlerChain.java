@@ -22,8 +22,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import org.opensaml.xml.util.LazyList;
-import org.opensaml.xml.util.LazyMap;
+import org.opensaml.util.collections.LazyList;
+import org.opensaml.util.collections.LazyMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

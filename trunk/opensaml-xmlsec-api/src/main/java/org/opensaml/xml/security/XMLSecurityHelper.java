@@ -17,65 +17,32 @@
 
 package org.opensaml.xml.security;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.math.BigInteger;
-import java.security.GeneralSecurityException;
-import java.security.Key;
 import java.security.KeyException;
-import java.security.KeyFactory;
 import java.security.KeyPair;
-import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
-import java.security.PrivateKey;
-import java.security.PublicKey;
-import java.security.cert.CRLException;
-import java.security.cert.CertificateException;
-import java.security.cert.CertificateFactory;
-import java.security.cert.X509Certificate;
-import java.security.interfaces.DSAParams;
-import java.security.interfaces.DSAPrivateKey;
-import java.security.interfaces.DSAPublicKey;
-import java.security.interfaces.ECPublicKey;
-import java.security.interfaces.RSAPrivateCrtKey;
-import java.security.interfaces.RSAPrivateKey;
-import java.security.interfaces.RSAPublicKey;
-import java.security.spec.DSAPublicKeySpec;
-import java.security.spec.InvalidKeySpecException;
-import java.security.spec.KeySpec;
-import java.security.spec.RSAPublicKeySpec;
-import java.security.spec.X509EncodedKeySpec;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 
-import org.apache.commons.ssl.PKCS8Key;
 import org.apache.xml.security.Init;
 import org.apache.xml.security.algorithms.JCEMapper;
 import org.opensaml.core.config.ConfigurationService;
-import org.opensaml.util.FileSupport;
 import org.opensaml.util.StringSupport;
+import org.opensaml.util.collections.LazySet;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.encryption.EncryptionParameters;
 import org.opensaml.xml.encryption.KeyEncryptionParameters;
 import org.opensaml.xml.security.credential.BasicCredential;
 import org.opensaml.xml.security.credential.Credential;
-import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xml.security.keyinfo.KeyInfoGenerator;
 import org.opensaml.xml.security.keyinfo.KeyInfoGeneratorFactory;
 import org.opensaml.xml.security.keyinfo.NamedKeyInfoGeneratorManager;
-import org.opensaml.xml.security.x509.BasicX509Credential;
 import org.opensaml.xml.signature.KeyInfo;
 import org.opensaml.xml.signature.Signature;
 import org.opensaml.xml.signature.SignatureConstants;
-import org.opensaml.util.Base64;
-import org.opensaml.util.collections.LazySet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

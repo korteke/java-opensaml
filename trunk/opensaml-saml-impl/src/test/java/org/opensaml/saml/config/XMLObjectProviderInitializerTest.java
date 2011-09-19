@@ -19,8 +19,8 @@ package org.opensaml.saml.config;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.core.config.XMLObjectProviderInitializerBaseTestCase;
 import org.opensaml.core.config.Initializer;
+import org.opensaml.core.config.XMLObjectProviderInitializerBaseTestCase;
 import org.opensaml.saml1.core.AuthenticationStatement;
 import org.opensaml.saml1.core.RespondWith;
 import org.opensaml.saml2.core.AuthnRequest;
@@ -34,8 +34,6 @@ import org.opensaml.samlext.saml2mdattr.EntityAttributes;
 import org.opensaml.samlext.saml2mdquery.AttributeQueryDescriptorType;
 import org.opensaml.samlext.saml2mdui.UIInfo;
 import org.opensaml.samlext.samlpthrpty.RespondTo;
-import org.opensaml.xml.encryption.EncryptedData;
-import org.opensaml.xml.signature.Signature;
 
 /**
  * Test XMLObject provider initializer for module "saml-impl".

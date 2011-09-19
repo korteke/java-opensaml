@@ -19,8 +19,8 @@ package org.opensaml.xacml.ctx.provider;
 
 import org.opensaml.common.BaseTestCase;
 import org.opensaml.xacml.ctx.DecisionType;
-import org.opensaml.xacml.ctx.ResultType;
 import org.opensaml.xacml.ctx.DecisionType.DECISION;
+import org.opensaml.xacml.ctx.ResultType;
 import org.opensaml.xacml.policy.EffectType;
 import org.opensaml.xacml.policy.ObligationType;
 import org.opensaml.xacml.policy.ObligationsType;

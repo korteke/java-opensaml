@@ -23,8 +23,6 @@ package org.opensaml.samlext.saml2mdui;
 import javax.xml.namespace.QName;
 
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
-import org.opensaml.samlext.saml2mdui.InformationURL;
-import org.opensaml.samlext.saml2mdui.UIInfo;
 
 /**
  * Test case for creating, marshalling, and unmarshalling

@@ -21,7 +21,6 @@ import java.io.InputStream;
 
 import org.opensaml.util.resolver.ResolverException;
 import org.opensaml.ws.message.MessageContext;
-import org.opensaml.ws.message.encoder.MessageEncodingException;
 import org.opensaml.ws.security.SecurityPolicy;
 import org.opensaml.ws.security.SecurityPolicyResolver;
 import org.opensaml.xml.Configuration;

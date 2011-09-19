@@ -27,7 +27,6 @@ import org.opensaml.xml.Configuration;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.XMLSecurityHelper;
 import org.opensaml.xml.signature.ContentReference;
 import org.opensaml.xml.signature.KeyInfo;

@@ -20,12 +20,10 @@ package org.opensaml.core.config.provider;
 import java.io.File;
 import java.util.Properties;
 
-import org.opensaml.core.config.ConfigurationPropertiesSource;
-import org.opensaml.core.config.provider.AbstractFilesystemConfigurationPropertiesSource;
-import org.opensaml.core.config.provider.ClasspathConfigurationPropertiesSource;
-import org.opensaml.util.FileSupport;
-
 import junit.framework.TestCase;
+
+import org.opensaml.core.config.ConfigurationPropertiesSource;
+import org.opensaml.util.FileSupport;
 
 /**
  * Test {@link AbstractFilesystemConfigurationPropertiesSource}.

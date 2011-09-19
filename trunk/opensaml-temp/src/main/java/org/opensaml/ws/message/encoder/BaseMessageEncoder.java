@@ -18,7 +18,6 @@
 package org.opensaml.ws.message.encoder;
 
 import org.opensaml.ws.message.MessageContext;
-import org.opensaml.ws.message.decoder.MessageDecodingException;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.Marshaller;

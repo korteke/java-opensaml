@@ -31,10 +31,10 @@ import java.util.Set;
 
 import javax.security.auth.x500.X500Principal;
 
+import org.opensaml.util.Base64;
 import org.opensaml.xml.XMLObjectBaseTestCase;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.SecurityHelper;
-import org.opensaml.util.Base64;
 
 /**
  * Tests the X509Util utility methods.

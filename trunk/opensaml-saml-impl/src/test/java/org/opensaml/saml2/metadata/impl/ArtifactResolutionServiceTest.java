@@ -20,10 +20,7 @@
  */
 package org.opensaml.saml2.metadata.impl;
 
-import javax.xml.namespace.QName;
-
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
-import org.opensaml.common.xml.SAMLConstants;
 import org.opensaml.saml2.metadata.ArtifactResolutionService;
 import org.opensaml.xml.schema.XSBooleanValue;
 
