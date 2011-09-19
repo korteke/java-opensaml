@@ -19,11 +19,11 @@ package org.opensaml.xacml.policy.impl;
 
 import java.util.List;
 
+import org.opensaml.util.collections.LazyList;
 import org.opensaml.xacml.impl.AbstractXACMLObject;
 import org.opensaml.xacml.policy.AttributeDesignatorType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.schema.XSBooleanValue;
-import org.opensaml.xml.util.LazyList;
 
 /**
  * Implementation of {@link AttributeDesignatorType}.

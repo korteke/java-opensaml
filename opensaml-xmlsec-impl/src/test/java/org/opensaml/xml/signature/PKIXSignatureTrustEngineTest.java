@@ -36,8 +36,6 @@ import org.opensaml.xml.mock.SignableSimpleXMLObject;
 import org.opensaml.xml.mock.SimpleXMLObject;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.SecurityHelper;
-import org.opensaml.xml.security.SigningUtil;
-import org.opensaml.xml.security.XMLSecurityHelper;
 import org.opensaml.xml.security.XMLSecurityTestingHelper;
 import org.opensaml.xml.security.XMLSigningUtil;
 import org.opensaml.xml.security.credential.Credential;

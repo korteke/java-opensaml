@@ -23,6 +23,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.opensaml.common.binding.SAMLMessageContext;
 import org.opensaml.security.MetadataCriterion;
+import org.opensaml.util.Base64;
+import org.opensaml.util.criteria.CriteriaSet;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.security.SecurityPolicyException;
 import org.opensaml.ws.security.SecurityPolicyRule;
@@ -33,8 +35,6 @@ import org.opensaml.xml.security.credential.UsageType;
 import org.opensaml.xml.security.criteria.EntityIDCriterion;
 import org.opensaml.xml.security.criteria.UsageCriterion;
 import org.opensaml.xml.signature.SignatureTrustEngine;
-import org.opensaml.util.Base64;
-import org.opensaml.util.criteria.CriteriaSet;
 import org.opensaml.xml.util.DatatypeHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

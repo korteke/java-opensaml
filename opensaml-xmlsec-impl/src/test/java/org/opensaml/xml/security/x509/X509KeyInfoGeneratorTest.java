@@ -31,6 +31,8 @@ import java.util.List;
 
 import javax.security.auth.x500.X500Principal;
 
+import org.opensaml.util.Base64;
+import org.opensaml.util.StringSupport;
 import org.opensaml.xml.XMLObjectBaseTestCase;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.SecurityHelper;
@@ -40,8 +42,6 @@ import org.opensaml.xml.signature.KeyInfo;
 import org.opensaml.xml.signature.X509Data;
 import org.opensaml.xml.signature.X509IssuerSerial;
 import org.opensaml.xml.signature.X509SKI;
-import org.opensaml.util.Base64;
-import org.opensaml.util.StringSupport;
 
 /**
  * Tests the factory and impl for X509KeyInfoGenerator.

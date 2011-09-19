@@ -29,10 +29,10 @@ import org.opensaml.saml2.metadata.ContactPerson;
 import org.opensaml.saml2.metadata.KeyDescriptor;
 import org.opensaml.saml2.metadata.Organization;
 import org.opensaml.saml2.metadata.RoleDescriptor;
+import org.opensaml.util.collections.LazyList;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.util.AttributeMap;
 import org.opensaml.xml.util.DatatypeHelper;
-import org.opensaml.xml.util.LazyList;
 import org.opensaml.xml.util.XMLObjectChildrenList;
 
 /** Concrete implementation of {@link org.opensaml.saml2.metadata.RoleDescriptor}. */

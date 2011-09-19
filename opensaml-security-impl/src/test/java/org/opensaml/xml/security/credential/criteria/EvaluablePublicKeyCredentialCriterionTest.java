@@ -23,7 +23,6 @@ import java.security.PublicKey;
 
 import junit.framework.TestCase;
 
-import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.credential.BasicCredential;
 import org.opensaml.xml.security.criteria.PublicKeyCriterion;

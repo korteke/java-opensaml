@@ -30,7 +30,6 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.Configuration;
 import org.opensaml.saml2.metadata.KeyDescriptor;
 import org.opensaml.saml2.metadata.RoleDescriptor;
 import org.opensaml.saml2.metadata.provider.MetadataProvider;
@@ -38,7 +37,6 @@ import org.opensaml.saml2.metadata.provider.MetadataProviderException;
 import org.opensaml.saml2.metadata.provider.ObservableMetadataProvider;
 import org.opensaml.util.criteria.CriteriaSet;
 import org.opensaml.util.resolver.ResolverException;
-import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.XMLSecurityHelper;
 import org.opensaml.xml.security.credential.AbstractCriteriaFilteringCredentialResolver;
 import org.opensaml.xml.security.credential.BasicCredential;

@@ -21,9 +21,9 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.util.collections.LazySet;
 import org.opensaml.xml.schema.XSAny;
 import org.opensaml.xml.util.DatatypeHelper;
-import org.opensaml.xml.util.LazySet;
 import org.opensaml.xml.util.XMLConstants;
 
 /**

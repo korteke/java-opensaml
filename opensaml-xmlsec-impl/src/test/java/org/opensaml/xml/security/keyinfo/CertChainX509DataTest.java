@@ -25,17 +25,17 @@ import java.util.List;
 
 import javax.security.auth.x500.X500Principal;
 
+import org.opensaml.util.Base64;
+import org.opensaml.util.criteria.CriteriaSet;
+import org.opensaml.util.resolver.ResolverException;
 import org.opensaml.xml.XMLObjectBaseTestCase;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.credential.Credential;
-import org.opensaml.xml.security.keyinfo.provider.RSAKeyValueProvider;
 import org.opensaml.xml.security.keyinfo.provider.InlineX509DataProvider;
+import org.opensaml.xml.security.keyinfo.provider.RSAKeyValueProvider;
 import org.opensaml.xml.security.x509.X509Credential;
 import org.opensaml.xml.signature.KeyInfo;
-import org.opensaml.util.Base64;
-import org.opensaml.util.criteria.CriteriaSet;
-import org.opensaml.util.resolver.ResolverException;
 
 
 /**

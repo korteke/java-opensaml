@@ -18,7 +18,6 @@
 package org.opensaml.xml.security;
 
 import java.io.ByteArrayInputStream;
-
 import java.io.File;
 import java.io.IOException;
 import java.math.BigInteger;
@@ -57,7 +56,6 @@ import org.apache.commons.ssl.PKCS8Key;
 import org.opensaml.util.Base64;
 import org.opensaml.util.FileSupport;
 import org.opensaml.util.collections.LazyMap;
-import org.opensaml.xml.Configuration;
 import org.opensaml.xml.security.credential.BasicCredential;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.x509.BasicX509Credential;

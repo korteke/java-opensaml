@@ -21,11 +21,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.util.collections.LazyList;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.soap.soap11.ActorBearing;
 import org.opensaml.ws.soap.soap11.Detail;
@@ -44,7 +45,6 @@ import org.opensaml.xml.XMLObjectBuilderFactory;
 import org.opensaml.xml.schema.XSBooleanValue;
 import org.opensaml.xml.util.AttributeMap;
 import org.opensaml.xml.util.DatatypeHelper;
-import org.opensaml.xml.util.LazyList;
 import org.opensaml.xml.util.XMLHelper;
 
 /**

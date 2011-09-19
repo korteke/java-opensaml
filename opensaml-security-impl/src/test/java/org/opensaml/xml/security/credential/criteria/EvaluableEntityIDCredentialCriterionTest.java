@@ -19,7 +19,6 @@ package org.opensaml.xml.security.credential.criteria;
 
 import junit.framework.TestCase;
 
-import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.credential.BasicCredential;
 import org.opensaml.xml.security.criteria.EntityIDCriterion;
 

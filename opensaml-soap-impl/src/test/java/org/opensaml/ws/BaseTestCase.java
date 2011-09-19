@@ -19,7 +19,6 @@ package org.opensaml.ws;
 
 import javax.xml.namespace.QName;
 
-
 import junit.framework.TestCase;
 
 import org.custommonkey.xmlunit.Diff;

@@ -19,10 +19,10 @@ package org.opensaml.core.config;
 
 import java.util.Properties;
 
+import junit.framework.TestCase;
+
 import org.opensaml.core.config.provider.ThreadLocalConfigurationPropertiesHolder;
 import org.opensaml.xml.XMLObjectProviderRegistry;
-
-import junit.framework.TestCase;
 
 /**
  * A class which provides basic testing for the InitializationService.

@@ -30,6 +30,7 @@ import java.util.List;
 import javax.security.auth.x500.X500Principal;
 
 import org.opensaml.util.Base64;
+import org.opensaml.util.collections.LazySet;
 import org.opensaml.util.criteria.CriteriaSet;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.security.SecurityException;
@@ -50,7 +51,6 @@ import org.opensaml.xml.signature.X509IssuerSerial;
 import org.opensaml.xml.signature.X509SKI;
 import org.opensaml.xml.signature.X509SubjectName;
 import org.opensaml.xml.util.DatatypeHelper;
-import org.opensaml.xml.util.LazySet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

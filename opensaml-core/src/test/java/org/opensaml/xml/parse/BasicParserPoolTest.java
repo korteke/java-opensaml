@@ -25,11 +25,11 @@ import java.util.ArrayList;
 
 import javax.xml.parsers.DocumentBuilder;
 
+import junit.framework.TestCase;
+
 import org.opensaml.xml.parse.BasicParserPool.DocumentBuilderProxy;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-
-import junit.framework.TestCase;
 
 /**
  * Test the basic parser pool implementation.

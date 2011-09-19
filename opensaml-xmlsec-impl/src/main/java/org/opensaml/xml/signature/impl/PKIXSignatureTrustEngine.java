@@ -19,17 +19,17 @@ package org.opensaml.xml.signature.impl;
 
 import java.util.Set;
 
+import org.opensaml.util.Pair;
 import org.opensaml.util.criteria.CriteriaSet;
 import org.opensaml.util.resolver.ResolverException;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.SecurityHelper;
-import org.opensaml.xml.security.SigningUtil;
 import org.opensaml.xml.security.XMLSigningUtil;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xml.security.x509.BasicX509CredentialNameEvaluator;
-import org.opensaml.xml.security.x509.PKIXTrustEngine;
 import org.opensaml.xml.security.x509.CertPathPKIXTrustEvaluator;
+import org.opensaml.xml.security.x509.PKIXTrustEngine;
 import org.opensaml.xml.security.x509.PKIXTrustEvaluator;
 import org.opensaml.xml.security.x509.PKIXValidationInformation;
 import org.opensaml.xml.security.x509.PKIXValidationInformationResolver;
@@ -37,7 +37,6 @@ import org.opensaml.xml.security.x509.X509Credential;
 import org.opensaml.xml.security.x509.X509CredentialNameEvaluator;
 import org.opensaml.xml.signature.Signature;
 import org.opensaml.xml.signature.SignatureTrustEngine;
-import org.opensaml.xml.util.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

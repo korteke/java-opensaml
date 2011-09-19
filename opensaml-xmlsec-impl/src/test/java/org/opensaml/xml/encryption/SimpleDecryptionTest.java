@@ -27,7 +27,6 @@ import javax.crypto.SecretKey;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.XMLObjectBaseTestCase;
 import org.opensaml.xml.mock.SignableSimpleXMLObject;
-import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.XMLSecurityHelper;
 import org.opensaml.xml.security.credential.BasicCredential;
 import org.opensaml.xml.security.credential.Credential;

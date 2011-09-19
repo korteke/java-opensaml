@@ -19,7 +19,6 @@ package org.opensaml.saml2.metadata;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.common.SAMLObject;
 import org.opensaml.common.xml.SAMLConstants;
 
 /**

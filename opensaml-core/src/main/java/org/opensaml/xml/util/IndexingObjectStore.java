@@ -24,6 +24,8 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import net.jcip.annotations.ThreadSafe;
 
+import org.opensaml.util.collections.LazyMap;
+
 /**
  * This class is used to store instances of objects that may be created independently but are, in face, the same object.
  * For example, {@link org.opensaml.xml.signature.KeyInfo}s contain keys, certs, and CRLs. Multiple unique instances of

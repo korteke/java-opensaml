@@ -19,11 +19,10 @@ package org.opensaml.xml.security.x509;
 
 import java.util.Set;
 
-import org.opensaml.util.criteria.Criterion;
 import org.opensaml.util.criteria.CriteriaSet;
+import org.opensaml.util.criteria.Criterion;
 import org.opensaml.util.resolver.Resolver;
 import org.opensaml.util.resolver.ResolverException;
-import org.opensaml.xml.security.SecurityException;
 
 /**
  * A resolver which uses {@link Criterion} to resolve {@link PKIXValidationInformation}, which will typically be used

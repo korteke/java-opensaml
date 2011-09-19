@@ -19,9 +19,9 @@ package org.opensaml.xacml.policy.impl;
 
 import java.util.List;
 
+import org.opensaml.util.collections.LazyList;
 import org.opensaml.xacml.policy.SubjectAttributeDesignatorType;
 import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.util.LazyList;
 
 /**
  * Implementation of {@link SubjectAttributeDesignatorType}.

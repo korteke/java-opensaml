@@ -18,7 +18,6 @@
 package org.opensaml.saml2.encryption;
 
 import java.security.Key;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 

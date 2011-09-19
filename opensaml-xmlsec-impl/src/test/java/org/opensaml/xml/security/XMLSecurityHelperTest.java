@@ -18,16 +18,12 @@
 package org.opensaml.xml.security;
 
 import java.io.InputStream;
-import java.security.KeyPair;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
-import java.security.PublicKey;
+
+import junit.framework.TestCase;
 
 import org.opensaml.xml.encryption.EncryptionConstants;
 import org.opensaml.xml.signature.SignatureConstants;
-
-import junit.framework.TestCase;
 
 /**
  * Unit test for {@link SecurityHelper}.

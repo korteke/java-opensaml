@@ -31,8 +31,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.validation.Schema;
 
-import org.opensaml.xml.Configuration;
-import org.opensaml.xml.util.LazyMap;
+import org.opensaml.util.collections.LazyMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.DOMImplementation;

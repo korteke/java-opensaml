@@ -18,7 +18,6 @@
 package org.opensaml.xml;
 
 import java.util.Collection;
-
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -26,9 +25,9 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.util.collections.LazyMap;
+import org.opensaml.util.collections.LazySet;
 import org.opensaml.xml.util.DatatypeHelper;
-import org.opensaml.xml.util.LazyMap;
-import org.opensaml.xml.util.LazySet;
 import org.opensaml.xml.util.XMLConstants;
 
 /**

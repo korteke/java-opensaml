@@ -27,8 +27,8 @@ import org.opensaml.xml.security.keyinfo.KeyInfoGeneratorManager;
 import org.opensaml.xml.security.keyinfo.KeyInfoProvider;
 import org.opensaml.xml.security.keyinfo.NamedKeyInfoGeneratorManager;
 import org.opensaml.xml.security.keyinfo.provider.DSAKeyValueProvider;
-import org.opensaml.xml.security.keyinfo.provider.RSAKeyValueProvider;
 import org.opensaml.xml.security.keyinfo.provider.InlineX509DataProvider;
+import org.opensaml.xml.security.keyinfo.provider.RSAKeyValueProvider;
 import org.opensaml.xml.security.x509.X509KeyInfoGeneratorFactory;
 import org.opensaml.xml.signature.SignatureConstants;
 

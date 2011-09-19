@@ -20,8 +20,8 @@ package org.opensaml.ws.message.handler;
 import java.util.Collections;
 import java.util.List;
 
+import org.opensaml.util.collections.LazyList;
 import org.opensaml.ws.message.MessageContext;
-import org.opensaml.xml.util.LazyList;
 
 /** A simple handler chain resolver implementation that returns a static list of handler chains. */
 public class StaticHandlerChainResolver implements HandlerChainResolver {

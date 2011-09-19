@@ -21,10 +21,10 @@ import java.util.Map.Entry;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.xml.Configuration;
 import org.opensaml.xacml.impl.AbstractXACMLObjectMarshaller;
 import org.opensaml.xacml.policy.AttributeAssignmentType;
 import org.opensaml.xacml.policy.AttributeValueType;
+import org.opensaml.xml.Configuration;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.util.DatatypeHelper;

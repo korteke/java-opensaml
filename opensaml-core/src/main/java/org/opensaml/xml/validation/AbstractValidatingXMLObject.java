@@ -20,9 +20,9 @@ package org.opensaml.xml.validation;
 import java.util.Collections;
 import java.util.List;
 
+import org.opensaml.util.collections.LazyList;
 import org.opensaml.xml.AbstractXMLObject;
 import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.util.LazyList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

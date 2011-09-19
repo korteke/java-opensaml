@@ -19,9 +19,9 @@ package org.opensaml.core.config;
 
 import java.util.Properties;
 
-import org.opensaml.core.config.provider.ThreadLocalConfigurationPropertiesHolder;
-
 import junit.framework.TestCase;
+
+import org.opensaml.core.config.provider.ThreadLocalConfigurationPropertiesHolder;
 
 /**
  * An abstract base class for initializer tests which ensures are using a unique configuration

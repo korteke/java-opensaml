@@ -21,9 +21,9 @@ import java.util.Map.Entry;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.xml.Configuration;
 import org.opensaml.xacml.ctx.ResourceContentType;
 import org.opensaml.xacml.impl.AbstractXACMLObjectMarshaller;
+import org.opensaml.xml.Configuration;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.util.XMLHelper;

@@ -24,7 +24,6 @@ import javax.security.auth.x500.X500Principal;
 
 import junit.framework.TestCase;
 
-import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.credential.BasicCredential;
 import org.opensaml.xml.security.x509.BasicX509Credential;

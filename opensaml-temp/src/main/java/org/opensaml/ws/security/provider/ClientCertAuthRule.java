@@ -22,6 +22,8 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.opensaml.util.Base64;
+import org.opensaml.util.criteria.CriteriaSet;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.security.SecurityPolicyException;
 import org.opensaml.xml.security.credential.Credential;
@@ -31,8 +33,6 @@ import org.opensaml.xml.security.criteria.UsageCriterion;
 import org.opensaml.xml.security.trust.TrustEngine;
 import org.opensaml.xml.security.x509.X509Credential;
 import org.opensaml.xml.security.x509.X509Util;
-import org.opensaml.util.Base64;
-import org.opensaml.util.criteria.CriteriaSet;
 import org.opensaml.xml.util.DatatypeHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
