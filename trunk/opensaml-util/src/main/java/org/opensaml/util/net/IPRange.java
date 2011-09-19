@@ -85,19 +85,21 @@ public class IPRange {
     /**
      * Validate an IPv6 address for use as the base of a CIDR block.
      * 
+     * Just check that any non-empty components are valid hexadecimal integers
+     * in the right range; leave most of the hard work to the {@link InetAddress} parser. 
+     * 
      * Throws IllegalArgumentException if validation fails.
      * 
      * @param address the address to validate
      */
     private static void validateV6Address(final String address) {
         String[] components = address.split(":");
-        if (components.length != 8) {
-            throw new IllegalArgumentException("IPv6 address should have eight components");
-        }
         for (String component : components) {
-            int value = Integer.parseInt(component, 16);
-            if (value < 0 || (value > 0xFFFF)) {
-                throw new IllegalArgumentException("IPv6 component range error: " + component);
+            if (component.length() != 0) {
+                int value = Integer.parseInt(component, 16);
+                if (value < 0 || (value > 0xFFFF)) {
+                    throw new IllegalArgumentException("IPv6 component range error: " + component);
+                }
             }
         }
     }
