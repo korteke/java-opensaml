@@ -63,6 +63,62 @@ public class IPRange {
     }
 
     /**
+     * Validate an IPv4 address for use as the base of a CIDR block.
+     * 
+     * Throws IllegalArgumentException if validation fails.
+     * 
+     * @param address the address to validate
+     */
+    private static void validateV4Address(final String address) {
+        String[] components = address.split("\\.");
+        if (components.length != 4) {
+            throw new IllegalArgumentException("IPv4 address should have four components");
+        }
+        for (String component : components) {
+            int value = Integer.parseInt(component, 10);
+            if (value < 0 || (value > 255)) {
+                throw new IllegalArgumentException("IPv4 component range error: " + component);
+            }
+        }
+    }
+    
+    /**
+     * Validate an IPv6 address for use as the base of a CIDR block.
+     * 
+     * Throws IllegalArgumentException if validation fails.
+     * 
+     * @param address the address to validate
+     */
+    private static void validateV6Address(final String address) {
+        String[] components = address.split(":");
+        if (components.length != 8) {
+            throw new IllegalArgumentException("IPv6 address should have eight components");
+        }
+        for (String component : components) {
+            int value = Integer.parseInt(component, 16);
+            if (value < 0 || (value > 0xFFFF)) {
+                throw new IllegalArgumentException("IPv6 component range error: " + component);
+            }
+        }
+    }
+    
+    /**
+     * Validate an IP address for use as the base of a CIDR block.
+     * 
+     * Throws IllegalArgumentException if validation fails.
+     * 
+     * @param address the address to validate
+     */
+    private static void validateIPAddress(final String address) {
+        // any colons mean a V6 address, otherwise V4
+        if (address.indexOf(':') >= 0) {
+            validateV6Address(address);
+        } else {
+            validateV4Address(address);
+        }
+    }
+    
+    /**
      * Parses a CIDR block definition in to an IP range.
      * 
      * @param cidrBlock the CIDR block definition
@@ -77,6 +133,7 @@ public class IPRange {
 
         String[] blockParts = block.split("/");
         try {
+            validateIPAddress(blockParts[0]);
             InetAddress networkAddress = InetAddress.getByName(blockParts[0]);
             int maskSize = Integer.parseInt(blockParts[1]);
             return new IPRange(networkAddress, maskSize);
