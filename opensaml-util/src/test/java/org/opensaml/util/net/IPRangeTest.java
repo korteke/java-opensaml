@@ -26,6 +26,9 @@ public class IPRangeTest {
     public void validV6Addresses() {
         IPRange.parseCIDRBlock("0:0:0:0:0:0:0:0/128");
         IPRange.parseCIDRBlock("1234:5678:90ab:cdef:FfFf:AaAa:BBBB:CCCC/128");
+        IPRange.parseCIDRBlock("1234:5678::BBBB:CCCC/128");
+        IPRange.parseCIDRBlock("2001:630:200::/48");
+        IPRange.parseCIDRBlock("::0BAD:7/128");
     }
     
     @Test
@@ -45,6 +48,7 @@ public class IPRangeTest {
     public void invalidV6Addresses() {
         testInvalid("0:0/128");
         testInvalid("1:2:3:4:5:6:7/128");
+        testInvalid("::0BAD::7/128");
     }
 
 }
