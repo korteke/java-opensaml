@@ -124,6 +124,17 @@ public class HttpResource implements CachingResource, FilebackedRemoteResource {
         }
     }
 
+    /**
+     * Constructor.  Initializes {@link #saveConditionalGetData} to true.
+     * 
+     * @param url URL of the remote resource data
+     * @param client client used to fetch the remote resource data
+     * @param backup file to which remote resource data is written as a backup/cache
+     */
+    public HttpResource(final String url, final HttpClient client, final String backup) {
+        this(url, client, backup, true);
+    }
+    
     /** {@inheritDoc} */
     public String getLocation() {
         return resourceUrl;
