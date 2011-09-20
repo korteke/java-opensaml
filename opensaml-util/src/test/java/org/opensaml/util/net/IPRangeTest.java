@@ -20,11 +20,13 @@ public class IPRangeTest {
     public void validV4Addresses() {
         IPRange.parseCIDRBlock("1.2.3.4/32");
         IPRange.parseCIDRBlock("0.0.0.0/8");
+        IPRange.parseCIDRBlock("0.0.0.0/0");
     }
     
     @Test
     public void validV6Addresses() {
         IPRange.parseCIDRBlock("0:0:0:0:0:0:0:0/128");
+        IPRange.parseCIDRBlock("0:0:0:0:0:0:0:0/0");
         IPRange.parseCIDRBlock("1234:5678:90ab:cdef:FfFf:AaAa:BBBB:CCCC/128");
         IPRange.parseCIDRBlock("1234:5678::BBBB:CCCC/128");
         IPRange.parseCIDRBlock("2001:630:200::/48");
@@ -42,6 +44,9 @@ public class IPRangeTest {
         testInvalid("1/32");
         testInvalid("1.2/32");
         testInvalid("1.2.3/32");
+        testInvalid("1.2.3.4/33");
+        testInvalid("1.2.3.4/-3");
+        testInvalid("1.2.3.4/wrong");
     }
     
     @Test
@@ -49,6 +54,9 @@ public class IPRangeTest {
         testInvalid("0:0/128");
         testInvalid("1:2:3:4:5:6:7/128");
         testInvalid("::0BAD::7/128");
+        testInvalid("1:2:3:4:5:6:7:8/-5");
+        testInvalid("1:2:3:4:5:6:7:8/129");
+        testInvalid("1:2:3:4:5:6:7:8/wrong");
     }
 
 }
