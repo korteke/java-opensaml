@@ -56,6 +56,10 @@ public class IPRange {
         if (addressLength != 32 && addressLength != 128) {
             throw new IllegalArgumentException("Network address was neither an IPv4 or IPv6 address");
         }
+        
+        if (maskSize < 0 || maskSize > addressLength) {
+            throw new IllegalArgumentException("prefix length must be in range 0 to " + addressLength);
+        }
 
         network = toBitSet(networkAddress);
         mask = new BitSet(addressLength);
