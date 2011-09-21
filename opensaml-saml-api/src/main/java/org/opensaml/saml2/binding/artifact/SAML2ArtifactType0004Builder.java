@@ -29,7 +29,6 @@ import org.opensaml.saml2.core.NameID;
 import org.opensaml.saml2.metadata.ArtifactResolutionService;
 import org.opensaml.saml2.metadata.Endpoint;
 import org.opensaml.saml2.metadata.IndexedEndpoint;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,7 +53,7 @@ public class SAML2ArtifactType0004Builder implements SAML2ArtifactBuilder<SAML2A
                 return null;
             }
 
-            byte[] endpointIndex = DatatypeHelper.intToByteArray(acsEndpoint.getIndex());
+            byte[] endpointIndex = intToByteArray(acsEndpoint.getIndex());
             byte[] trimmedIndex = new byte[2];
             trimmedIndex[0] = endpointIndex[2];
             trimmedIndex[1] = endpointIndex[3];
@@ -98,5 +97,22 @@ public class SAML2ArtifactType0004Builder implements SAML2ArtifactBuilder<SAML2A
         }
 
         return acsEndpoint;
+    }
+    
+    /**
+     * Converts an integer into an unsigned 4-byte array.
+     * 
+     * @param integer integer to convert
+     * 
+     * @return 4-byte array representing integer
+     */
+    private byte[] intToByteArray(int integer) {
+        byte[] intBytes = new byte[4];
+        intBytes[0] = (byte) ((integer & 0xff000000) >>> 24);
+        intBytes[1] = (byte) ((integer & 0x00ff0000) >>> 16);
+        intBytes[2] = (byte) ((integer & 0x0000ff00) >>> 8);
+        intBytes[3] = (byte) ((integer & 0x000000ff));
+
+        return intBytes;
     }
 }

@@ -23,8 +23,8 @@ import java.io.IOException;
 import java.util.Timer;
 
 import org.apache.commons.httpclient.HttpClient;
+import org.opensaml.util.FileSupport;
 import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -123,7 +123,7 @@ public class FileBackedHTTPMetadataProvider extends HTTPMetadataProvider {
         } catch (MetadataProviderException e) {
             if (metadataBackupFile.exists()) {
                 try {
-                    return DatatypeHelper.fileToByteArray(metadataBackupFile);
+                    return FileSupport.fileToByteArray(metadataBackupFile);
                 } catch (IOException ioe) {
                     String errMsg = "Unable to retrieve metadata from backup file "
                             + metadataBackupFile.getAbsolutePath();

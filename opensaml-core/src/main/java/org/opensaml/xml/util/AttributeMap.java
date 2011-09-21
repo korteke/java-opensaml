@@ -26,6 +26,7 @@ import javax.xml.namespace.QName;
 
 import net.jcip.annotations.NotThreadSafe;
 
+import org.opensaml.util.ObjectSupport;
 import org.opensaml.util.StringSupport;
 import org.opensaml.util.collections.LazyMap;
 import org.opensaml.util.collections.LazySet;
@@ -124,7 +125,7 @@ public class AttributeMap implements Map<QName, String> {
             oldValue = resolveQName(oldValueString, true);
         }
         
-        if (!DatatypeHelper.safeEquals(oldValue, value)) {
+        if (!ObjectSupport.equals(oldValue, value)) {
             releaseDOM();
             if (value != null) {
                 // new value is not null, old value was either null or non-equal

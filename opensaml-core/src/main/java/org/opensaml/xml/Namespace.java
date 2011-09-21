@@ -17,6 +17,7 @@
 
 package org.opensaml.xml;
 
+import org.opensaml.util.ObjectSupport;
 import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.util.XMLConstants;
 
@@ -150,8 +151,8 @@ public class Namespace {
         
         if (obj instanceof Namespace) {
             Namespace otherNamespace = (Namespace) obj;
-            if (DatatypeHelper.safeEquals(otherNamespace.getNamespaceURI(), getNamespaceURI())){
-                if (DatatypeHelper.safeEquals(otherNamespace.getNamespacePrefix(), getNamespacePrefix())){
+            if (ObjectSupport.equals(otherNamespace.getNamespaceURI(), getNamespaceURI())){
+                if (ObjectSupport.equals(otherNamespace.getNamespacePrefix(), getNamespacePrefix())){
                     return otherNamespace.alwaysDeclare() == alwaysDeclare();
                 }
             }

@@ -19,6 +19,7 @@ package org.opensaml.xml.io;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.util.ObjectSupport;
 import org.opensaml.util.xml.QNameSupport;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.Namespace;
@@ -219,9 +220,9 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
         log.trace("Pre-processing attribute {}", attribName);
         String attributeNamespace = DatatypeHelper.safeTrimOrNullString(attribute.getNamespaceURI());
 
-        if (DatatypeHelper.safeEquals(attributeNamespace, XMLConstants.XMLNS_NS)) {
+        if (ObjectSupport.equals(attributeNamespace, XMLConstants.XMLNS_NS)) {
             unmarshallNamespaceAttribute(xmlObject, attribute);
-        } else if (DatatypeHelper.safeEquals(attributeNamespace, XMLConstants.XSI_NS)) {
+        } else if (ObjectSupport.equals(attributeNamespace, XMLConstants.XSI_NS)) {
             unmarshallSchemaInstanceAttributes(xmlObject, attribute);
         } else {
             log.trace("Attribute {} is neither a schema type nor namespace, calling processAttribute()",
@@ -252,7 +253,7 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
         log.trace("{} is a namespace declaration, adding it to the list of namespaces on the XMLObject",
                 XMLHelper.getNodeQName(attribute));
         Namespace namespace;
-        if (DatatypeHelper.safeEquals(attribute.getLocalName(), XMLConstants.XMLNS_PREFIX)) {
+        if (ObjectSupport.equals(attribute.getLocalName(), XMLConstants.XMLNS_PREFIX)) {
             namespace = new Namespace(attribute.getValue(), null);
         } else {
             namespace = new Namespace(attribute.getValue(), attribute.getLocalName());

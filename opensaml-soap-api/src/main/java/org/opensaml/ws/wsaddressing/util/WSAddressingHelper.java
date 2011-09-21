@@ -17,6 +17,7 @@
 
 package org.opensaml.ws.wsaddressing.util;
 
+import org.opensaml.util.ObjectSupport;
 import org.opensaml.ws.wsaddressing.IsReferenceParameterBearing;
 import org.opensaml.xml.AttributeExtensibleXMLObject;
 import org.opensaml.xml.XMLObject;
@@ -70,7 +71,7 @@ public final class WSAddressingHelper {
         if (soapObject instanceof AttributeExtensibleXMLObject) {
             String valueStr = DatatypeHelper.safeTrimOrNullString(((AttributeExtensibleXMLObject)soapObject)
                     .getUnknownAttributes().get(IsReferenceParameterBearing.WSA_IS_REFERENCE_PARAMETER_ATTR_NAME)); 
-            return DatatypeHelper.safeEquals("1", valueStr) || DatatypeHelper.safeEquals("true", valueStr);
+            return ObjectSupport.equals("1", valueStr) || ObjectSupport.equals("true", valueStr);
         }
         return false;
     }

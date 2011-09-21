@@ -24,6 +24,7 @@ import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.opensaml.util.ObjectSupport;
 import org.opensaml.util.StringSupport;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.Namespace;
@@ -334,8 +335,8 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
 
         for (Namespace namespace : namespaces) {
             if (!namespace.alwaysDeclare()) {
-                if(DatatypeHelper.safeEquals(namespace.getNamespacePrefix(), XMLConstants.XML_PREFIX)
-                        || DatatypeHelper.safeEquals(namespace.getNamespaceURI(), XMLConstants.XML_NS)) {
+                if(ObjectSupport.equals(namespace.getNamespacePrefix(), XMLConstants.XML_PREFIX)
+                        || ObjectSupport.equals(namespace.getNamespaceURI(), XMLConstants.XML_NS)) {
                     //the "xml" namespace never needs to be declared
                     continue;
                 }
