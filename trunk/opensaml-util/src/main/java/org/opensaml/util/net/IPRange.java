@@ -38,32 +38,36 @@ public class IPRange {
     /**
      * Constructor.
      * 
-     * @param networkAddress the network address for the range
+     * @param address address to base the range on; may be the network address or the
+     *                address of a host within the network
      * @param maskSize the number of bits in the netmask
      */
-    public IPRange(InetAddress networkAddress, int maskSize) {
-        this(networkAddress.getAddress(), maskSize);
+    public IPRange(InetAddress address, int maskSize) {
+        this(address.getAddress(), maskSize);
     }
 
     /**
      * Constructor.
      * 
-     * @param networkAddress the network address for the range
+     * @param address address to base the range on; may be the network address or the
+     *                address of a host within the network
      * @param maskSize the number of bits in the netmask
      */
-    public IPRange(byte[] networkAddress, int maskSize) {
-        addressLength = networkAddress.length * 8;
+    public IPRange(byte[] address, int maskSize) {
+        addressLength = address.length * 8;
         if (addressLength != 32 && addressLength != 128) {
-            throw new IllegalArgumentException("Network address was neither an IPv4 or IPv6 address");
+            throw new IllegalArgumentException("address was neither an IPv4 or IPv6 address");
         }
         
         if (maskSize < 0 || maskSize > addressLength) {
             throw new IllegalArgumentException("prefix length must be in range 0 to " + addressLength);
         }
 
-        network = toBitSet(networkAddress);
         mask = new BitSet(addressLength);
         mask.set(addressLength - maskSize, addressLength, true);
+
+        network = toBitSet(address);
+        network.and(mask);
     }
 
     /**
@@ -140,9 +144,9 @@ public class IPRange {
         String[] blockParts = block.split("/");
         try {
             validateIPAddress(blockParts[0]);
-            InetAddress networkAddress = InetAddress.getByName(blockParts[0]);
+            InetAddress address = InetAddress.getByName(blockParts[0]);
             int maskSize = Integer.parseInt(blockParts[1]);
-            return new IPRange(networkAddress, maskSize);
+            return new IPRange(address, maskSize);
         } catch (UnknownHostException e) {
             throw new IllegalArgumentException("Invalid IP address");
         } catch (NumberFormatException e) {
