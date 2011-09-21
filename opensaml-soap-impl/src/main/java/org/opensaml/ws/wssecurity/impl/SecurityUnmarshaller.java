@@ -20,7 +20,7 @@ package org.opensaml.ws.wssecurity.impl;
 import org.opensaml.ws.wssecurity.Security;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
-import org.opensaml.xml.util.XMLHelper;
+import org.opensaml.xml.util.XMLObjectHelper;
 import org.w3c.dom.Attr;
 
 /**
@@ -32,7 +32,7 @@ public class SecurityUnmarshaller extends AbstractWSSecurityObjectUnmarshaller {
     /** {@inheritDoc} */
     protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
         Security security = (Security) xmlObject;
-        XMLHelper.unmarshallToAttributeMap(security.getUnknownAttributes(), attribute);
+        XMLObjectHelper.unmarshallToAttributeMap(security.getUnknownAttributes(), attribute);
     }
 
     /** {@inheritDoc} */

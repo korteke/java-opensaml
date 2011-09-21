@@ -24,7 +24,7 @@ package org.opensaml.xml.mock;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.AbstractXMLObjectUnmarshaller;
 import org.opensaml.xml.io.UnmarshallingException;
-import org.opensaml.xml.util.XMLHelper;
+import org.opensaml.xml.util.XMLObjectHelper;
 import org.w3c.dom.Attr;
 
 /**
@@ -53,7 +53,7 @@ public class SimpleXMLObjectUnmarshaller extends AbstractXMLObjectUnmarshaller {
             simpleXMLObject.setId(attribute.getValue());
             attribute.getOwnerElement().setIdAttributeNode(attribute, true);
         } else {
-            XMLHelper.unmarshallToAttributeMap(simpleXMLObject.getUnknownAttributes(), attribute);
+            XMLObjectHelper.unmarshallToAttributeMap(simpleXMLObject.getUnknownAttributes(), attribute);
         }
     }
 

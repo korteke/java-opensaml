@@ -20,7 +20,7 @@ package org.opensaml.ws.wstrust.impl;
 import org.opensaml.ws.wstrust.RequestSecurityToken;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.util.XMLHelper;
+import org.opensaml.xml.util.XMLObjectHelper;
 import org.w3c.dom.Element;
 
 /**
@@ -36,7 +36,7 @@ public class RequestSecurityTokenMarshaller extends AbstractWSTrustObjectMarshal
             domElement.setAttributeNS(null, RequestSecurityToken.CONTEXT_ATTRIB_NAME, rst.getContext());
         }
         
-        XMLHelper.marshallAttributeMap(rst.getUnknownAttributes(), domElement);
+        XMLObjectHelper.marshallAttributeMap(rst.getUnknownAttributes(), domElement);
     }
 
 }

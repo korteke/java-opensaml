@@ -20,7 +20,7 @@ package org.opensaml.ws.wstrust.impl;
 import org.opensaml.ws.wstrust.RequestSecurityTokenResponseCollection;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.util.XMLHelper;
+import org.opensaml.xml.util.XMLObjectHelper;
 import org.w3c.dom.Element;
 
 /**
@@ -32,7 +32,7 @@ public class RequestSecurityTokenResponseCollectionMarshaller extends AbstractWS
     /** {@inheritDoc} */
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         RequestSecurityTokenResponseCollection rstrc = (RequestSecurityTokenResponseCollection) xmlObject;
-        XMLHelper.marshallAttributeMap(rstrc.getUnknownAttributes(), domElement);
+        XMLObjectHelper.marshallAttributeMap(rstrc.getUnknownAttributes(), domElement);
     }
 
 }

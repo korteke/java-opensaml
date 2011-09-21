@@ -21,7 +21,7 @@ import org.opensaml.ws.wstrust.BinarySecret;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.schema.impl.XSBase64BinaryMarshaller;
-import org.opensaml.xml.util.XMLHelper;
+import org.opensaml.xml.util.XMLObjectHelper;
 import org.w3c.dom.Element;
 
 /**
@@ -39,7 +39,7 @@ public class BinarySecretMarshaller extends XSBase64BinaryMarshaller {
             domElement.setAttributeNS(null, BinarySecret.TYPE_ATTRIB_NAME, bs.getType());
         }
         
-        XMLHelper.marshallAttributeMap(bs.getUnknownAttributes(), domElement);
+        XMLObjectHelper.marshallAttributeMap(bs.getUnknownAttributes(), domElement);
     }
 
 }

@@ -20,7 +20,7 @@ package org.opensaml.ws.wsaddressing.impl;
 import org.opensaml.ws.wsaddressing.Metadata;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
-import org.opensaml.xml.util.XMLHelper;
+import org.opensaml.xml.util.XMLObjectHelper;
 import org.w3c.dom.Attr;
 
 /**
@@ -32,7 +32,7 @@ public class MetadataUnmarshaller extends AbstractWSAddressingObjectUnmarshaller
     /** {@inheritDoc} */
     protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
         Metadata metadata = (Metadata) xmlObject;
-        XMLHelper.unmarshallToAttributeMap(metadata.getUnknownAttributes(), attribute);
+        XMLObjectHelper.unmarshallToAttributeMap(metadata.getUnknownAttributes(), attribute);
     }
 
     /** {@inheritDoc} */

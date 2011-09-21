@@ -23,7 +23,7 @@ import org.opensaml.ws.wspolicy.PolicyAttachment;
 import org.opensaml.ws.wspolicy.PolicyReference;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
-import org.opensaml.xml.util.XMLHelper;
+import org.opensaml.xml.util.XMLObjectHelper;
 import org.w3c.dom.Attr;
 
 /**
@@ -34,7 +34,7 @@ public class PolicyAttachmentUnmarshaller extends AbstractWSPolicyObjectUnmarsha
     /** {@inheritDoc} */
     protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
         PolicyAttachment pa = (PolicyAttachment) xmlObject;
-        XMLHelper.unmarshallToAttributeMap(pa.getUnknownAttributes(), attribute);
+        XMLObjectHelper.unmarshallToAttributeMap(pa.getUnknownAttributes(), attribute);
     }
 
     /** {@inheritDoc} */

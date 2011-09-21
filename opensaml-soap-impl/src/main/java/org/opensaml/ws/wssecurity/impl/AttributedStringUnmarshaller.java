@@ -23,7 +23,7 @@ import org.opensaml.util.xml.QNameSupport;
 import org.opensaml.ws.wssecurity.AttributedString;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
-import org.opensaml.xml.util.XMLHelper;
+import org.opensaml.xml.util.XMLObjectHelper;
 import org.w3c.dom.Attr;
 
 /**
@@ -41,7 +41,7 @@ public class AttributedStringUnmarshaller extends AbstractWSSecurityObjectUnmars
             attributedString.setWSUId(attribute.getValue());
             attribute.getOwnerElement().setIdAttributeNode(attribute, true);
         } else {
-            XMLHelper.unmarshallToAttributeMap(attributedString.getUnknownAttributes(), attribute);
+            XMLObjectHelper.unmarshallToAttributeMap(attributedString.getUnknownAttributes(), attribute);
         }
     }
 

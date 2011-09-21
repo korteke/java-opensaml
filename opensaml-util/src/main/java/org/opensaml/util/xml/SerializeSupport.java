@@ -21,6 +21,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
+import java.util.Map;
 
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
@@ -30,6 +31,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.opensaml.util.Assert;
+import org.w3c.dom.DOMConfiguration;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -127,5 +129,64 @@ public final class SerializeSupport {
         serializerOut.setByteStream(output);
 
         serializer.write(node, serializerOut);
+    }
+
+    /**
+     * Obtain a the DOM, level 3, Load/Save serializer {@link LSSerializer} instance from the given
+     * {@link DOMImplementationLS} instance.
+     * 
+     * <p>
+     * The serializer instance will be configured with the parameters passed as the <code>serializerParams</code>
+     * argument. It will also be configured with an {@link LSSerializerFilter} that shows all nodes to the filter, and
+     * accepts all nodes shown.
+     * </p>
+     * 
+     * @param domImplLS the DOM Level 3 Load/Save implementation to use
+     * @param serializerParams parameters to pass to the {@link DOMConfiguration} of the serializer instance, obtained
+     *            via {@link LSSerializer#getDomConfig()}. May be null.
+     * 
+     * @return a new LSSerializer instance
+     */
+    public static LSSerializer getLsSerializer(final DOMImplementationLS domImplLS,
+            final Map<String, Object> serializerParams) {
+        final LSSerializer serializer = domImplLS.createLSSerializer();
+
+        serializer.setFilter(new LSSerializerFilter() {
+
+            public short acceptNode(Node arg0) {
+                return FILTER_ACCEPT;
+            }
+
+            public int getWhatToShow() {
+                return SHOW_ALL;
+            }
+        });
+
+        if (serializerParams != null) {
+            final DOMConfiguration serializerDOMConfig = serializer.getDomConfig();
+            for (String key : serializerParams.keySet()) {
+                serializerDOMConfig.setParameter(key, serializerParams.get(key));
+            }
+        }
+
+        return serializer;
+    }
+
+    /**
+     * Gets the DOM, level 3, Load/Store implementation associated with the given node.
+     * 
+     * @param node the node, never null
+     * 
+     * @return the Load/Store implementation, never null
+     */
+    public static DOMImplementationLS getDomLsImplementation(final Node node) {
+        final DOMImplementation domImpl;
+        if (node instanceof Document) {
+            domImpl = ((Document) node).getImplementation();
+        } else {
+            domImpl = node.getOwnerDocument().getImplementation();
+        }
+
+        return (DOMImplementationLS) domImpl.getFeature("LS", "3.0");
     }
 }

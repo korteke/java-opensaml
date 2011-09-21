@@ -22,7 +22,7 @@ import org.opensaml.util.StringSupport;
 import org.opensaml.ws.wssecurity.Reference;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.util.XMLHelper;
+import org.opensaml.xml.util.XMLObjectHelper;
 import org.w3c.dom.Element;
 
 /**
@@ -43,7 +43,7 @@ public class ReferenceMarshaller extends AbstractWSSecurityObjectMarshaller {
             domElement.setAttributeNS(null, Reference.VALUE_TYPE_ATTRIB_NAME, reference.getValueType());
         }
         
-        XMLHelper.marshallAttributeMap(reference.getUnknownAttributes(), domElement);
+        XMLObjectHelper.marshallAttributeMap(reference.getUnknownAttributes(), domElement);
         
     }
 

@@ -20,7 +20,7 @@ package org.opensaml.ws.wsaddressing.impl;
 import org.opensaml.ws.wsaddressing.AttributedUnsignedLong;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
-import org.opensaml.xml.util.XMLHelper;
+import org.opensaml.xml.util.XMLObjectHelper;
 import org.w3c.dom.Attr;
 
 /**
@@ -31,7 +31,7 @@ public class AttributedUnsignedLongUnmarshaller extends AbstractWSAddressingObje
     /** {@inheritDoc} */
     protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
         AttributedUnsignedLong aul = (AttributedUnsignedLong) xmlObject;
-        XMLHelper.unmarshallToAttributeMap(aul.getUnknownAttributes(), attribute);
+        XMLObjectHelper.unmarshallToAttributeMap(aul.getUnknownAttributes(), attribute);
     }
 
     /** {@inheritDoc} */

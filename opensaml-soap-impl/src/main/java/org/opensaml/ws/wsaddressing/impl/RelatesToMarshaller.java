@@ -22,7 +22,7 @@ import org.opensaml.ws.wsaddressing.RelatesTo;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.schema.impl.XSURIMarshaller;
-import org.opensaml.xml.util.XMLHelper;
+import org.opensaml.xml.util.XMLObjectHelper;
 import org.w3c.dom.Element;
 
 /**
@@ -39,7 +39,7 @@ public class RelatesToMarshaller extends XSURIMarshaller {
             domElement.setAttributeNS(null, RelatesTo.RELATIONSHIP_TYPE_ATTRIB_NAME, relationshipType);
         }
         
-        XMLHelper.marshallAttributeMap(relatesTo.getUnknownAttributes(), domElement);
+        XMLObjectHelper.marshallAttributeMap(relatesTo.getUnknownAttributes(), domElement);
     }
 
 }

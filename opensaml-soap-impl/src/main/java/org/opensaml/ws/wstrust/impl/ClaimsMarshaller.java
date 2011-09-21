@@ -21,7 +21,7 @@ package org.opensaml.ws.wstrust.impl;
 import org.opensaml.ws.wstrust.Claims;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.util.XMLHelper;
+import org.opensaml.xml.util.XMLObjectHelper;
 import org.w3c.dom.Element;
 
 /**
@@ -37,7 +37,7 @@ public class ClaimsMarshaller extends AbstractWSTrustObjectMarshaller {
             domElement.setAttributeNS(null, Claims.DIALECT_ATTRIB_NAME, claims.getDialect());
         }
         
-        XMLHelper.marshallAttributeMap(claims.getUnknownAttributes(), domElement);
+        XMLObjectHelper.marshallAttributeMap(claims.getUnknownAttributes(), domElement);
     }
 
 }

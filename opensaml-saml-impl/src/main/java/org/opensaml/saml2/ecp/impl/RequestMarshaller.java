@@ -21,7 +21,7 @@ import org.opensaml.common.impl.AbstractSAMLObjectMarshaller;
 import org.opensaml.saml2.ecp.Request;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.util.XMLHelper;
+import org.opensaml.xml.util.XMLObjectHelper;
 import org.w3c.dom.Element;
 
 /**
@@ -41,11 +41,11 @@ public class RequestMarshaller extends AbstractSAMLObjectMarshaller {
                     request.isPassiveXSBoolean().toString());
         }
         if (request.isSOAP11MustUnderstandXSBoolean() != null) {
-            XMLHelper.marshallAttribute(Request.SOAP11_MUST_UNDERSTAND_ATTR_NAME, 
+            XMLObjectHelper.marshallAttribute(Request.SOAP11_MUST_UNDERSTAND_ATTR_NAME, 
                     request.isSOAP11MustUnderstandXSBoolean().toString(), domElement, false);
         }
         if (request.getSOAP11Actor() != null) {
-            XMLHelper.marshallAttribute(Request.SOAP11_ACTOR_ATTR_NAME, 
+            XMLObjectHelper.marshallAttribute(Request.SOAP11_ACTOR_ATTR_NAME, 
                     request.getSOAP11Actor(), domElement, false);
         }
         

@@ -29,6 +29,7 @@ import org.opensaml.saml2.core.Assertion;
 import org.opensaml.saml2.core.EncryptedAssertion;
 import org.opensaml.saml2.core.Issuer;
 import org.opensaml.saml2.core.Response;
+import org.opensaml.util.xml.SerializeSupport;
 import org.opensaml.xml.encryption.DecryptionException;
 import org.opensaml.xml.encryption.EncryptionConstants;
 import org.opensaml.xml.encryption.EncryptionException;
@@ -46,7 +47,6 @@ import org.opensaml.xml.signature.Signature;
 import org.opensaml.xml.signature.SignatureException;
 import org.opensaml.xml.signature.SignatureValidator;
 import org.opensaml.xml.signature.Signer;
-import org.opensaml.xml.util.XMLHelper;
 import org.opensaml.xml.validation.ValidationException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -141,7 +141,7 @@ public class DecryptionPlusSigningTest extends BaseTestCase {
         // Marshall Response and re-parse, for good measure
         Element marshalledResponse = marshallerFactory.getMarshaller(response).marshall(response);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLHelper.writeNode(marshalledResponse, baos);
+        SerializeSupport.writeNode(marshalledResponse, baos);
         
         //System.out.println(XMLHelper.prettyPrintXML(marshalledResponse));
         

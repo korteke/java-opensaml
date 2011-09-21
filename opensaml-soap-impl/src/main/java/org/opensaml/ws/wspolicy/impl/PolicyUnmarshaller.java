@@ -23,7 +23,7 @@ import org.opensaml.util.xml.QNameSupport;
 import org.opensaml.ws.wspolicy.Policy;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
-import org.opensaml.xml.util.XMLHelper;
+import org.opensaml.xml.util.XMLObjectHelper;
 import org.w3c.dom.Attr;
 
 
@@ -49,7 +49,7 @@ public class PolicyUnmarshaller extends OperatorContentTypeUnmarshaller {
             policy.setWSUId(attribute.getValue());
             attribute.getOwnerElement().setIdAttributeNode(attribute, true);
         } else {
-            XMLHelper.unmarshallToAttributeMap(policy.getUnknownAttributes(), attribute);
+            XMLObjectHelper.unmarshallToAttributeMap(policy.getUnknownAttributes(), attribute);
         }
     }
     

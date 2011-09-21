@@ -20,7 +20,7 @@ package org.opensaml.ws.wstrust.impl;
 import org.opensaml.ws.wstrust.Entropy;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.util.XMLHelper;
+import org.opensaml.xml.util.XMLObjectHelper;
 import org.w3c.dom.Element;
 
 
@@ -33,7 +33,7 @@ public class EntropyMarshaller extends AbstractWSTrustObjectMarshaller {
     /** {@inheritDoc} */
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         Entropy entropy = (Entropy) xmlObject;
-        XMLHelper.marshallAttributeMap(entropy.getUnknownAttributes(), domElement);
+        XMLObjectHelper.marshallAttributeMap(entropy.getUnknownAttributes(), domElement);
     }
 
 }

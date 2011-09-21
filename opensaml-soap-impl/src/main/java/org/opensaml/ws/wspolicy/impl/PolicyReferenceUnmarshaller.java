@@ -23,7 +23,7 @@ import org.opensaml.util.xml.QNameSupport;
 import org.opensaml.ws.wspolicy.PolicyReference;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
-import org.opensaml.xml.util.XMLHelper;
+import org.opensaml.xml.util.XMLObjectHelper;
 import org.w3c.dom.Attr;
 
 /**
@@ -50,7 +50,7 @@ public class PolicyReferenceUnmarshaller extends AbstractWSPolicyObjectUnmarshal
         } else if (digestAlgorithmName.equals(attribQName)) {
             pr.setDigestAlgorithm(attribute.getValue());
         } else {
-            XMLHelper.unmarshallToAttributeMap(pr.getUnknownAttributes(), attribute);
+            XMLObjectHelper.unmarshallToAttributeMap(pr.getUnknownAttributes(), attribute);
         }
     }
 

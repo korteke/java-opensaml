@@ -19,11 +19,12 @@ package org.opensaml.ws.wssecurity.impl;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.util.xml.AttributeSupport;
 import org.opensaml.util.xml.QNameSupport;
 import org.opensaml.ws.wssecurity.SecurityTokenReference;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
-import org.opensaml.xml.util.XMLHelper;
+import org.opensaml.xml.util.XMLObjectHelper;
 import org.w3c.dom.Attr;
 
 /**
@@ -49,9 +50,9 @@ public class SecurityTokenReferenceUnmarshaller extends AbstractWSSecurityObject
             str.setWSUId(attribute.getValue());
             attribute.getOwnerElement().setIdAttributeNode(attribute, true);
         } else if (SecurityTokenReference.WSSE_USAGE_ATTR_NAME.equals(attribQName)) {
-            str.setWSSEUsages(XMLHelper.getAttributeValueAsList(attribute));
+            str.setWSSEUsages(AttributeSupport.getAttributeValueAsList(attribute));
         } else {
-            XMLHelper.unmarshallToAttributeMap(str.getUnknownAttributes(), attribute);
+            XMLObjectHelper.unmarshallToAttributeMap(str.getUnknownAttributes(), attribute);
         }
     }
 

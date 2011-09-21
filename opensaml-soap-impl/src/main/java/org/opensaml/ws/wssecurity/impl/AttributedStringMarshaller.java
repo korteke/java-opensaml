@@ -22,7 +22,7 @@ import org.opensaml.util.xml.ElementSupport;
 import org.opensaml.ws.wssecurity.AttributedString;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.util.XMLHelper;
+import org.opensaml.xml.util.XMLObjectHelper;
 import org.w3c.dom.Element;
 
 /**
@@ -35,10 +35,10 @@ public class AttributedStringMarshaller extends AbstractWSSecurityObjectMarshall
         AttributedString attributedString = (AttributedString) xmlObject;
         
         if (!StringSupport.isNullOrEmpty(attributedString.getWSUId())) {
-            XMLHelper.marshallAttribute(AttributedString.WSU_ID_ATTR_NAME, attributedString.getWSUId(), domElement, true);
+            XMLObjectHelper.marshallAttribute(AttributedString.WSU_ID_ATTR_NAME, attributedString.getWSUId(), domElement, true);
         }
         
-        XMLHelper.marshallAttributeMap(attributedString.getUnknownAttributes(), domElement);
+        XMLObjectHelper.marshallAttributeMap(attributedString.getUnknownAttributes(), domElement);
         
     }
 

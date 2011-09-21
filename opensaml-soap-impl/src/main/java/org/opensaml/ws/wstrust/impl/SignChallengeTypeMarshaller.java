@@ -20,7 +20,7 @@ package org.opensaml.ws.wstrust.impl;
 import org.opensaml.ws.wstrust.SignChallengeType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.util.XMLHelper;
+import org.opensaml.xml.util.XMLObjectHelper;
 import org.w3c.dom.Element;
 
 
@@ -33,7 +33,7 @@ public class SignChallengeTypeMarshaller extends AbstractWSTrustObjectMarshaller
     /** {@inheritDoc} */
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         SignChallengeType signChallengeType = (SignChallengeType) xmlObject;
-        XMLHelper.marshallAttributeMap(signChallengeType.getUnknownAttributes(), domElement);
+        XMLObjectHelper.marshallAttributeMap(signChallengeType.getUnknownAttributes(), domElement);
     }
 
 }
