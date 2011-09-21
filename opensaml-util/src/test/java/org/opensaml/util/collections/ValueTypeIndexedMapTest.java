@@ -15,21 +15,24 @@
  * limitations under the License.
  */
 
-package org.opensaml.xml.util;
+package org.opensaml.util.collections;
 
 import java.util.Arrays;
 
-import junit.framework.TestCase;
+import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 /**
  * Tests the ValueTypeIndexedMap.
  */
-public class ValueTypeIndexedMapTest extends TestCase {
+public class ValueTypeIndexedMapTest {
 
     /** Instance used for testing. */
     private ValueTypeIndexedMap<String, Object> map;
 
     /** {@inheritDoc} */
+    @BeforeMethod
     public void setUp() {
         map = new ValueTypeIndexedMap<String, Object>();
         map.setTypes(Arrays.asList(new Class[] {Integer.class, String.class}));
@@ -39,70 +42,73 @@ public class ValueTypeIndexedMapTest extends TestCase {
     /**
      * Test basic functionality.
      */
+    @Test
     public void testBasic() {
         map.put("i1", Integer.parseInt("4"));
         map.put("s1", "first string");
         map.put("s2", "second string");
 
-        assertEquals(3, map.size());
-        assertEquals(1, map.subMap(Integer.class).size());
-        assertEquals(2, map.subMap(String.class).size());
-                
+        Assert.assertEquals(map.size(), 3);
+        Assert.assertEquals(map.subMap(Integer.class).size(), 1);
+        Assert.assertEquals(map.subMap(String.class).size(), 2);
+
         map.remove("s1");
-        assertEquals(2, map.size());
-        assertEquals(1, map.subMap(Integer.class).size());
-        assertEquals(1, map.subMap(String.class).size());
+        Assert.assertEquals(map.size(), 2);
+        Assert.assertEquals(map.subMap(Integer.class).size(), 1);
+        Assert.assertEquals(map.subMap(String.class).size(), 1);
     }
 
     /**
      * Test null key support.
      */
+    @Test
     public void testNullKeys() {
         map.put("i1", Integer.parseInt("2"));
         map.put(null, Integer.parseInt("3"));
         map.put("s1", "first string");
-        
-        assertEquals(3, map.size());
-        assertEquals(2, map.subMap(Integer.class).size());
-        assertEquals(1, map.subMap(String.class).size());
-                
+
+        Assert.assertEquals(map.size(), 3);
+        Assert.assertEquals(map.subMap(Integer.class).size(), 2);
+        Assert.assertEquals(map.subMap(String.class).size(), 1);
+
         map.put(null, "new string");
-        assertEquals(3, map.size());
-        assertEquals(1, map.subMap(Integer.class).size());
-        assertEquals(2, map.subMap(String.class).size());
-        
-        assertTrue(map.containsKey(null));
+        Assert.assertEquals(map.size(), 3);
+        Assert.assertEquals(map.subMap(Integer.class).size(), 1);
+        Assert.assertEquals(map.subMap(String.class).size(), 2);
+
+        Assert.assertTrue(map.containsKey(null));
         map.remove(null);
-        assertFalse(map.containsKey(null));
+        Assert.assertFalse(map.containsKey(null));
     }
 
     /**
      * Test null value support.
      */
+    @Test
     public void testNullValues() {
         map.getTypes().add(null);
         map.rebuildIndex();
-        
+
         map.put("i1", Integer.parseInt("3"));
         map.put("n1", null);
         map.put("s1", "first string");
 
-        assertEquals(3, map.size());
-        assertEquals(1, map.subMap(Integer.class).size());
-        assertEquals(1, map.subMap(String.class).size());
-        assertEquals(1, map.subMap(null).size());
+        Assert.assertEquals(map.size(), 3);
+        Assert.assertEquals(map.subMap(Integer.class).size(), 1);
+        Assert.assertEquals(map.subMap(String.class).size(), 1);
+        Assert.assertEquals(map.subMap(null).size(), 1);
 
         map.put("i1", "new string");
-        assertEquals(3, map.size());
-        assertEquals(0, map.subMap(Integer.class).size());
-        assertEquals(2, map.subMap(String.class).size());
-        assertEquals(1, map.subMap(null).size());
+        Assert.assertEquals(map.size(), 3);
+        Assert.assertEquals(map.subMap(Integer.class).size(), 0);
+        Assert.assertEquals(map.subMap(String.class).size(), 2);
+        Assert.assertEquals(map.subMap(null).size(), 1);
 
         map.put("i1", null);
-        assertEquals(3, map.size());
-        assertEquals(0, map.subMap(Integer.class).size());
-        assertEquals(1, map.subMap(String.class).size());
-        assertEquals(2, map.subMap(null).size());
+        Assert.assertEquals(map.size(), 3);
+        Assert.assertEquals(map.subMap(Integer.class).size(), 0);
+        Assert.assertEquals(map.subMap(String.class).size(), 1);
+        Assert.assertEquals(map.subMap(null).size(), 2);
     }
 
 }
