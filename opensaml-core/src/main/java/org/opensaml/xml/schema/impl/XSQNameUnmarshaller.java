@@ -18,12 +18,12 @@
 package org.opensaml.xml.schema.impl;
 
 import org.opensaml.util.StringSupport;
+import org.opensaml.util.xml.ElementSupport;
 import org.opensaml.util.xml.QNameSupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.AbstractXMLObjectUnmarshaller;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.schema.XSQName;
-import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Text;
 
@@ -53,7 +53,7 @@ public class XSQNameUnmarshaller extends AbstractXMLObjectUnmarshaller {
         String textContent = StringSupport.trimOrNull(content.getWholeText());
         if (textContent != null) {
             XSQName qname = (XSQName) xmlObject;
-            qname.setValue(QNameSupport.constructQName(XMLHelper.getElementAncestor(content), textContent));
+            qname.setValue(QNameSupport.constructQName(ElementSupport.getElementAncestor(content), textContent));
         }
     }
 }

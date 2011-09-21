@@ -32,9 +32,9 @@ import org.opensaml.saml2.metadata.EmailAddress;
 import org.opensaml.saml2.metadata.GivenName;
 import org.opensaml.saml2.metadata.SurName;
 import org.opensaml.saml2.metadata.TelephoneNumber;
+import org.opensaml.util.xml.QNameSupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
-import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Attr;
 
 /**
@@ -83,7 +83,7 @@ public class ContactPersonUnmarshaller extends AbstractSAMLObjectUnmarshaller {
                 super.processAttribute(samlObject, attribute);
             }
         } else {
-            QName attribQName = XMLHelper.getNodeQName(attribute);
+            QName attribQName = QNameSupport.getNodeQName(attribute);
             if (attribute.isId()) {
                 person.getUnknownAttributes().registerID(attribQName);
             }

@@ -23,7 +23,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.xml.util.XMLHelper;
+import org.opensaml.util.xml.DomTypeSupport;
+import org.opensaml.util.xml.QNameSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
@@ -71,10 +72,10 @@ public class XMLObjectBuilderFactory {
     public XMLObjectBuilder getBuilder(Element domElement) {
         XMLObjectBuilder builder;
 
-        builder = getBuilder(XMLHelper.getXSIType(domElement));
+        builder = getBuilder(DomTypeSupport.getXSIType(domElement));
 
         if (builder == null) {
-            builder = getBuilder(XMLHelper.getNodeQName(domElement));
+            builder = getBuilder(QNameSupport.getNodeQName(domElement));
         }
 
         return builder;

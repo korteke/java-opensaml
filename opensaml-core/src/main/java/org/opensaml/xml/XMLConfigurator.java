@@ -33,6 +33,7 @@ import javax.xml.validation.SchemaFactory;
 
 import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.util.StringSupport;
+import org.opensaml.util.xml.ElementSupport;
 import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.Unmarshaller;
 import org.opensaml.xml.parse.BasicParserPool;
@@ -336,7 +337,7 @@ public class XMLConfigurator {
 
         for (int i = 0; i < idAttributeList.getLength(); i++) {
             idAttributeElement = (Element) idAttributeList.item(i);
-            attributeQName = XMLHelper.getElementContentAsQName(idAttributeElement);
+            attributeQName = ElementSupport.getElementContentAsQName(idAttributeElement);
             if (attributeQName == null) {
                 log.debug("IDAttribute element was empty, no registration performed");
             } else {

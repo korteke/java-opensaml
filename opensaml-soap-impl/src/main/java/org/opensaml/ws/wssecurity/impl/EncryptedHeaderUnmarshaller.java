@@ -19,12 +19,12 @@ package org.opensaml.ws.wssecurity.impl;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.util.xml.QNameSupport;
 import org.opensaml.ws.wssecurity.EncryptedHeader;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.encryption.EncryptedData;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.schema.XSBooleanValue;
-import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Attr;
 
 /**
@@ -35,7 +35,7 @@ public class EncryptedHeaderUnmarshaller extends AbstractWSSecurityObjectUnmarsh
     /** {@inheritDoc} */
     protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
         EncryptedHeader eh = (EncryptedHeader) xmlObject;
-        QName attrName = XMLHelper.getNodeQName(attribute);
+        QName attrName = QNameSupport.getNodeQName(attribute);
         if (EncryptedHeader.WSU_ID_ATTR_NAME.equals(attrName)) {
             eh.setWSUId(attribute.getValue());
             attribute.getOwnerElement().setIdAttributeNode(attribute, true);

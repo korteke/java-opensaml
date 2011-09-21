@@ -34,11 +34,11 @@ import org.opensaml.saml2.metadata.EntityDescriptor;
 import org.opensaml.saml2.metadata.RoleDescriptor;
 import org.opensaml.util.ObjectSupport;
 import org.opensaml.util.StringSupport;
+import org.opensaml.util.xml.QNameSupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.Unmarshaller;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.parse.ParserPool;
-import org.opensaml.xml.util.XMLHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -452,7 +452,7 @@ public abstract class AbstractMetadataProvider extends BaseMetadataProvider {
             log.trace("Unmarshalling and caching metdata DOM");
             Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(mdDocument.getDocumentElement());
             if (unmarshaller == null) {
-                String msg ="No unmarshaller registered for document element " + XMLHelper
+                String msg ="No unmarshaller registered for document element " + QNameSupport
                         .getNodeQName(mdDocument.getDocumentElement());
                 log.error(msg);
                 throw new UnmarshallingException(msg);

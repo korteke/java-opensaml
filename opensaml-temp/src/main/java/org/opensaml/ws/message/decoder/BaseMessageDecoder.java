@@ -20,6 +20,7 @@ package org.opensaml.ws.message.decoder;
 import java.io.InputStream;
 
 import org.opensaml.util.resolver.ResolverException;
+import org.opensaml.util.xml.QNameSupport;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.security.SecurityPolicy;
 import org.opensaml.ws.security.SecurityPolicyResolver;
@@ -199,10 +200,10 @@ public abstract class BaseMessageDecoder implements MessageDecoder {
             Unmarshaller unmarshaller = Configuration.getUnmarshallerFactory().getUnmarshaller(messageElem);
             if (unmarshaller == null) {
                 log.error("Unable to unmarshall message, no unmarshaller registered for message element "
-                        + XMLHelper.getNodeQName(messageElem));
+                        + QNameSupport.getNodeQName(messageElem));
                 throw new MessageDecodingException(
                         "Unable to unmarshall message, no unmarshaller registered for message element "
-                                + XMLHelper.getNodeQName(messageElem));
+                                + QNameSupport.getNodeQName(messageElem));
             }
 
             XMLObject message = unmarshaller.unmarshall(messageElem);

@@ -33,10 +33,10 @@ import org.opensaml.saml2.metadata.Organization;
 import org.opensaml.saml2.metadata.RoleDescriptor;
 import org.opensaml.util.StringSupport;
 import org.opensaml.util.xml.DomTypeSupport;
+import org.opensaml.util.xml.QNameSupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.signature.Signature;
-import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Attr;
 
 /**
@@ -84,7 +84,7 @@ public abstract class RoleDescriptorUnmarshaller extends AbstractSAMLObjectUnmar
         } else if (attribute.getLocalName().equals(RoleDescriptor.ERROR_URL_ATTRIB_NAME)) {
             roleDescriptor.setErrorURL(attribute.getValue());
         } else {
-            QName attribQName = XMLHelper.getNodeQName(attribute);
+            QName attribQName = QNameSupport.getNodeQName(attribute);
             if (attribute.isId()) {
                 roleDescriptor.getUnknownAttributes().registerID(attribQName);
             }
