@@ -27,7 +27,7 @@ import java.util.List;
 import org.opensaml.saml2.core.Attribute;
 import org.opensaml.saml2.core.AttributeQuery;
 import org.opensaml.util.Pair;
-import org.opensaml.xml.util.DatatypeHelper;
+import org.opensaml.util.StringSupport;
 import org.opensaml.xml.validation.ValidationException;
 
 /**
@@ -65,7 +65,7 @@ public class AttributeQuerySchemaValidator extends SubjectQuerySchemaValidator<A
         for (Attribute attribute : attributes) {
             attributeName = attribute.getName();
             attributeNameFormat = attribute.getNameFormat();
-            if (DatatypeHelper.isEmpty(attributeNameFormat)) {
+            if (StringSupport.isNullOrEmpty(attributeNameFormat)) {
                 // SAML 2 core, sec. 2.7.3.1, if no format is specified,
                 // unspecified is in effect. This avoids bug in processing null value.
                 attributeNameFormat = Attribute.UNSPECIFIED;

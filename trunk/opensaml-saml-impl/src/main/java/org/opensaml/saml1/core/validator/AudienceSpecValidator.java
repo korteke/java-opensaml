@@ -22,7 +22,7 @@
 package org.opensaml.saml1.core.validator;
 
 import org.opensaml.saml1.core.Audience;
-import org.opensaml.xml.util.DatatypeHelper;
+import org.opensaml.util.StringSupport;
 import org.opensaml.xml.validation.ValidationException;
 import org.opensaml.xml.validation.Validator;
 
@@ -37,7 +37,7 @@ public class AudienceSpecValidator implements Validator<Audience> {
     }
     
     protected void validateURIPresent(Audience audience) throws ValidationException {
-        if (DatatypeHelper.isEmpty(audience.getUri())) {
+        if (StringSupport.isNullOrEmpty(audience.getUri())) {
             throw new ValidationException("AudienceURI Required");
         }
     }

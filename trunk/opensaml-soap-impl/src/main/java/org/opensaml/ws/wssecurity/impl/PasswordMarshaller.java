@@ -17,10 +17,10 @@
 
 package org.opensaml.ws.wssecurity.impl;
 
+import org.opensaml.util.StringSupport;
 import org.opensaml.ws.wssecurity.Password;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.w3c.dom.Element;
 
 /**
@@ -31,7 +31,7 @@ public class PasswordMarshaller extends AttributedStringMarshaller {
     /** {@inheritDoc} */
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         Password password = (Password) xmlObject;
-        if (!DatatypeHelper.isEmpty(password.getType())) {
+        if (!StringSupport.isNullOrEmpty(password.getType())) {
             domElement.setAttributeNS(null, Password.TYPE_ATTRIB_NAME, password.getType());
         }
         super.marshallAttributes(xmlObject, domElement);

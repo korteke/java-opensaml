@@ -24,11 +24,11 @@ import org.opensaml.common.SAMLObject;
 import org.opensaml.common.binding.SAMLMessageContext;
 import org.opensaml.common.xml.SAMLConstants;
 import org.opensaml.util.Base64;
+import org.opensaml.util.StringSupport;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.message.decoder.MessageDecodingException;
 import org.opensaml.ws.transport.http.HTTPInTransport;
 import org.opensaml.xml.parse.ParserPool;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -108,11 +108,11 @@ public class HTTPPostDecoder extends BaseSAML2MessageDecoder {
     protected InputStream getBase64DecodedMessage(HTTPInTransport transport) throws MessageDecodingException {
         log.debug("Getting Base64 encoded message from request");
         String encodedMessage = transport.getParameterValue("SAMLRequest");
-        if (DatatypeHelper.isEmpty(encodedMessage)) {
+        if (StringSupport.isNullOrEmpty(encodedMessage)) {
             encodedMessage = transport.getParameterValue("SAMLResponse");
         }
 
-        if (DatatypeHelper.isEmpty(encodedMessage)) {
+        if (StringSupport.isNullOrEmpty(encodedMessage)) {
             log.error("Request did not contain either a SAMLRequest or "
                     + "SAMLResponse paramter.  Invalid request for SAML 2 HTTP POST binding.");
             throw new MessageDecodingException("No SAML message present in request");

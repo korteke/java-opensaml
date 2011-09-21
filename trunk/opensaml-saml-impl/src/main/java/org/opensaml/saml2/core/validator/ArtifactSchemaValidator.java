@@ -22,7 +22,7 @@ package org.opensaml.saml2.core.validator;
 
 
 import org.opensaml.saml2.core.Artifact;
-import org.opensaml.xml.util.DatatypeHelper;
+import org.opensaml.util.StringSupport;
 import org.opensaml.xml.validation.ValidationException;
 import org.opensaml.xml.validation.Validator;
 
@@ -49,7 +49,7 @@ public class ArtifactSchemaValidator implements Validator<Artifact> {
      * @throws ValidationException if invalid
      */
     protected void validateArtifact(Artifact artifact) throws ValidationException {
-        if (DatatypeHelper.isEmpty(artifact.getArtifact())) {
+        if (StringSupport.isNullOrEmpty(artifact.getArtifact())) {
             throw new ValidationException("Artifact must contain a value");
         }
     }

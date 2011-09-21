@@ -19,9 +19,9 @@ package org.opensaml.samlext.saml2mdquery.impl;
 
 import org.opensaml.common.impl.AbstractSAMLObjectMarshaller;
 import org.opensaml.samlext.saml2mdquery.ActionNamespace;
+import org.opensaml.util.StringSupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Element;
 
@@ -34,7 +34,7 @@ public class ActionNamespaceMarshaller extends AbstractSAMLObjectMarshaller {
     protected void marshallElementContent(XMLObject xmlObject, Element domElement) throws MarshallingException {
         ActionNamespace actionNamespace = (ActionNamespace) xmlObject;
 
-        if (!DatatypeHelper.isEmpty(actionNamespace.getValue())) {
+        if (!StringSupport.isNullOrEmpty(actionNamespace.getValue())) {
             XMLHelper.appendTextContent(domElement, actionNamespace.getValue());
         }
     }

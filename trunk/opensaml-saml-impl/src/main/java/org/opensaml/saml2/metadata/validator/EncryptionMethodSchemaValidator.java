@@ -22,7 +22,7 @@
 package org.opensaml.saml2.metadata.validator;
 
 import org.opensaml.saml2.metadata.EncryptionMethod;
-import org.opensaml.xml.util.DatatypeHelper;
+import org.opensaml.util.StringSupport;
 import org.opensaml.xml.validation.ValidationException;
 import org.opensaml.xml.validation.Validator;
 
@@ -48,7 +48,7 @@ public class EncryptionMethodSchemaValidator implements Validator<EncryptionMeth
      * @throws ValidationException thrown if Algorithm attribute is missing or empty
      */
     protected void validateAlgorithm(EncryptionMethod encMethod) throws ValidationException {
-        if (DatatypeHelper.isEmpty(encMethod.getAlgorithm())) {
+        if (StringSupport.isNullOrEmpty(encMethod.getAlgorithm())) {
             throw new ValidationException("Algorithm URI attribute is required");
         }
     }

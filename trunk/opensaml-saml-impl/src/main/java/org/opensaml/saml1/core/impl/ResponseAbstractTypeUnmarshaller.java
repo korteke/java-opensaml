@@ -26,10 +26,10 @@ import org.joda.time.chrono.ISOChronology;
 import org.opensaml.common.SAMLVersion;
 import org.opensaml.common.impl.AbstractSAMLObjectUnmarshaller;
 import org.opensaml.saml1.core.ResponseAbstractType;
+import org.opensaml.util.StringSupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.signature.Signature;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Attr;
@@ -48,7 +48,7 @@ public abstract class ResponseAbstractTypeUnmarshaller extends AbstractSAMLObjec
     public XMLObject unmarshall(Element domElement) throws UnmarshallingException {
         // After regular unmarshalling, check the minor version and set ID-ness if not SAML 1.0
         ResponseAbstractType response = (ResponseAbstractType) super.unmarshall(domElement);
-        if (response.getMinorVersion() != 0 && !DatatypeHelper.isEmpty(response.getID())) {
+        if (response.getMinorVersion() != 0 && !StringSupport.isNullOrEmpty(response.getID())) {
             domElement.setIdAttributeNS(null, ResponseAbstractType.ID_ATTRIB_NAME, true);
         }
         return response;
@@ -75,7 +75,7 @@ public abstract class ResponseAbstractTypeUnmarshaller extends AbstractSAMLObjec
         } else if (attribute.getLocalName().equals(ResponseAbstractType.INRESPONSETO_ATTRIB_NAME)) {
             response.setInResponseTo(attribute.getValue());
         } else if (attribute.getLocalName().equals(ResponseAbstractType.ISSUEINSTANT_ATTRIB_NAME)
-                && !DatatypeHelper.isEmpty(attribute.getValue())) {
+                && !StringSupport.isNullOrEmpty(attribute.getValue())) {
             response.setIssueInstant(new DateTime(attribute.getValue(), ISOChronology.getInstanceUTC()));
         } else if (attribute.getLocalName().equals(ResponseAbstractType.MINORVERSION_ATTRIB_NAME)) {
             int minor;

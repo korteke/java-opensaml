@@ -32,6 +32,7 @@ import org.opensaml.saml2.common.SAML2Helper;
 import org.opensaml.saml2.metadata.EntitiesDescriptor;
 import org.opensaml.saml2.metadata.EntityDescriptor;
 import org.opensaml.saml2.metadata.RoleDescriptor;
+import org.opensaml.util.StringSupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.Unmarshaller;
 import org.opensaml.xml.io.UnmarshallingException;
@@ -107,7 +108,7 @@ public abstract class AbstractMetadataProvider extends BaseMetadataProvider {
             throw new MetadataProviderException("Metadata provider has not been initialized");
         }
 
-        if (DatatypeHelper.isEmpty(name)) {
+        if (StringSupport.isNullOrEmpty(name)) {
             log.debug("EntitiesDescriptor name was null or empty, skipping search for it");
             return null;
         }
@@ -157,7 +158,7 @@ public abstract class AbstractMetadataProvider extends BaseMetadataProvider {
             throw new MetadataProviderException("Metadata provider has not been initialized");
         }
 
-        if (DatatypeHelper.isEmpty(entityID)) {
+        if (StringSupport.isNullOrEmpty(entityID)) {
             log.debug("EntityDescriptor entityID was null or empty, skipping search for it");
             return null;
         }
@@ -202,7 +203,7 @@ public abstract class AbstractMetadataProvider extends BaseMetadataProvider {
             throw new MetadataProviderException("Metadata provider has not been initialized");
         }
 
-        if (DatatypeHelper.isEmpty(entityID)) {
+        if (StringSupport.isNullOrEmpty(entityID)) {
             log.debug("EntityDescriptor entityID was null or empty, skipping search for roles");
             return null;
         }
@@ -266,7 +267,7 @@ public abstract class AbstractMetadataProvider extends BaseMetadataProvider {
             throw new MetadataProviderException("Metadata provider has not been initialized");
         }
 
-        if (DatatypeHelper.isEmpty(entityID)) {
+        if (StringSupport.isNullOrEmpty(entityID)) {
             log.debug("EntityDescriptor entityID was null or empty, skipping search for role");
             return null;
         }
@@ -276,7 +277,7 @@ public abstract class AbstractMetadataProvider extends BaseMetadataProvider {
             return null;
         }
 
-        if (DatatypeHelper.isEmpty(supportedProtocol)) {
+        if (StringSupport.isNullOrEmpty(supportedProtocol)) {
             log.debug("Supported protocol was null, skipping search for role.");
             return null;
         }

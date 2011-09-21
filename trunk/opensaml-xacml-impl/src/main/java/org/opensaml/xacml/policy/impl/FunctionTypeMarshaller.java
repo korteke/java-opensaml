@@ -17,11 +17,11 @@
 
 package org.opensaml.xacml.policy.impl;
 
+import org.opensaml.util.StringSupport;
 import org.opensaml.xacml.impl.AbstractXACMLObjectMarshaller;
 import org.opensaml.xacml.policy.FunctionType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.w3c.dom.Element;
 
 /**
@@ -37,7 +37,7 @@ public class FunctionTypeMarshaller extends AbstractXACMLObjectMarshaller {
     /** {@inheritDoc} */
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         FunctionType functionType = (FunctionType) xmlObject;
-        if(!DatatypeHelper.isEmpty(functionType.getFunctionId())){
+        if(!StringSupport.isNullOrEmpty(functionType.getFunctionId())){
             domElement.setAttribute(FunctionType.FUNCTION_ID_ATTRIB_NAME,functionType.getFunctionId());
         }
     }

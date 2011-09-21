@@ -31,10 +31,10 @@ import org.opensaml.saml2.metadata.ContactPerson;
 import org.opensaml.saml2.metadata.EntityDescriptor;
 import org.opensaml.saml2.metadata.Organization;
 import org.opensaml.saml2.metadata.RoleDescriptor;
+import org.opensaml.util.StringSupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.signature.Signature;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Attr;
 
@@ -77,7 +77,7 @@ public class EntityDescriptorUnmarshaller extends AbstractSAMLObjectUnmarshaller
             entityDescriptor.setID(attribute.getValue());
             attribute.getOwnerElement().setIdAttributeNode(attribute, true);
         } else if (attribute.getLocalName().equals(TimeBoundSAMLObject.VALID_UNTIL_ATTRIB_NAME)
-                && !DatatypeHelper.isEmpty(attribute.getValue())) {
+                && !StringSupport.isNullOrEmpty(attribute.getValue())) {
             entityDescriptor.setValidUntil(new DateTime(attribute.getValue(), ISOChronology.getInstanceUTC()));
         } else if (attribute.getLocalName().equals(CacheableSAMLObject.CACHE_DURATION_ATTRIB_NAME)) {
             entityDescriptor.setCacheDuration(XMLHelper.durationToLong(attribute.getValue()));

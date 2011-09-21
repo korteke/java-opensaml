@@ -17,8 +17,8 @@
 
 package org.opensaml.xml.signature.validator;
 
+import org.opensaml.util.StringSupport;
 import org.opensaml.xml.signature.Signature;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.validation.ValidationException;
 import org.opensaml.xml.validation.Validator;
 
@@ -40,7 +40,7 @@ public class SignatureSchemaValidator implements Validator<Signature> {
      * @throws ValidationException thrown if object is invalid
      */
     protected void validateCanonicalizationMethod(Signature xmlObject) throws ValidationException {
-        if (DatatypeHelper.isEmpty(xmlObject.getCanonicalizationAlgorithm())) {
+        if (StringSupport.isNullOrEmpty(xmlObject.getCanonicalizationAlgorithm())) {
             throw new ValidationException("The CanonicalizationMethod value was empty");
         }
     }
@@ -52,7 +52,7 @@ public class SignatureSchemaValidator implements Validator<Signature> {
      * @throws ValidationException thrown if object is invalid
      */
     protected void validateSignatureMethod(Signature xmlObject) throws ValidationException {
-        if (DatatypeHelper.isEmpty(xmlObject.getSignatureAlgorithm())) {
+        if (StringSupport.isNullOrEmpty(xmlObject.getSignatureAlgorithm())) {
             throw new ValidationException("The SignatureMethod value was empty");
         }
     }

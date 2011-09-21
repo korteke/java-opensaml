@@ -17,10 +17,10 @@
 
 package org.opensaml.xacml.policy.impl;
 
+import org.opensaml.util.StringSupport;
 import org.opensaml.xacml.policy.AttributeAssignmentType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.w3c.dom.Element;
 
 /** Marshaller for {@link AttributeAssignmentType}. */
@@ -35,11 +35,11 @@ public class AttributeAssignmentTypeMarshaller extends AttributeValueTypeMarshal
     protected void marshallAttributes(XMLObject samlElement, Element domElement) throws MarshallingException {
         AttributeAssignmentType attributeAssignment = (AttributeAssignmentType) samlElement;
 
-        if (!DatatypeHelper.isEmpty(attributeAssignment.getAttributeId())) {
+        if (!StringSupport.isNullOrEmpty(attributeAssignment.getAttributeId())) {
             domElement.setAttributeNS(null, AttributeAssignmentType.ATTR_ID_ATTRIB_NAME, attributeAssignment
                     .getAttributeId());
         }
-        if(!DatatypeHelper.isEmpty(attributeAssignment.getDataType())){
+        if(!StringSupport.isNullOrEmpty(attributeAssignment.getDataType())){
         	super.marshallAttributes(samlElement, domElement);
         }
         

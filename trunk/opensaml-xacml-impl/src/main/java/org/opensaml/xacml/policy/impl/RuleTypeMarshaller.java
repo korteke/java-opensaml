@@ -17,12 +17,12 @@
 
 package org.opensaml.xacml.policy.impl;
 
+import org.opensaml.util.StringSupport;
 import org.opensaml.xacml.impl.AbstractXACMLObjectMarshaller;
 import org.opensaml.xacml.policy.EffectType;
 import org.opensaml.xacml.policy.RuleType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.w3c.dom.Element;
 
 /**
@@ -40,11 +40,11 @@ public class RuleTypeMarshaller extends AbstractXACMLObjectMarshaller {
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         RuleType ruleType = (RuleType) xmlObject;
 
-        if (!DatatypeHelper.isEmpty(ruleType.getRuleId())) {
+        if (!StringSupport.isNullOrEmpty(ruleType.getRuleId())) {
             domElement.setAttribute(RuleType.RULE_ID_ATTRIB_NAME, ruleType.getRuleId());
         }
         
-        if(!DatatypeHelper.isEmpty(ruleType.getEffect().toString())){
+        if(!StringSupport.isNullOrEmpty(ruleType.getEffect().toString())){
             if(ruleType.getEffect().equals(EffectType.Deny)){
                 domElement.setAttribute(RuleType.EFFECT_ATTRIB_NAME,EffectType.Deny.toString());
             }else{

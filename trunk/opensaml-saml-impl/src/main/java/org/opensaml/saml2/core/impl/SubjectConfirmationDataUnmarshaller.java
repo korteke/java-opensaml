@@ -27,9 +27,9 @@ import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
 import org.opensaml.common.impl.AbstractSAMLObjectUnmarshaller;
 import org.opensaml.saml2.core.SubjectConfirmationData;
+import org.opensaml.util.StringSupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Attr;
 
@@ -53,10 +53,10 @@ public class SubjectConfirmationDataUnmarshaller extends AbstractSAMLObjectUnmar
         SubjectConfirmationData subjectCD = (SubjectConfirmationData) samlObject;
 
         if (attribute.getLocalName().equals(SubjectConfirmationData.NOT_BEFORE_ATTRIB_NAME)
-                && !DatatypeHelper.isEmpty(attribute.getValue())) {
+                && !StringSupport.isNullOrEmpty(attribute.getValue())) {
             subjectCD.setNotBefore(new DateTime(attribute.getValue(), ISOChronology.getInstanceUTC()));
         } else if (attribute.getLocalName().equals(SubjectConfirmationData.NOT_ON_OR_AFTER_ATTRIB_NAME)
-                && !DatatypeHelper.isEmpty(attribute.getValue())) {
+                && !StringSupport.isNullOrEmpty(attribute.getValue())) {
             subjectCD.setNotOnOrAfter(new DateTime(attribute.getValue(), ISOChronology.getInstanceUTC()));
         } else if (attribute.getLocalName().equals(SubjectConfirmationData.RECIPIENT_ATTRIB_NAME)) {
             subjectCD.setRecipient(attribute.getValue());

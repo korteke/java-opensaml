@@ -24,6 +24,7 @@ import org.apache.velocity.app.VelocityEngine;
 import org.opensaml.common.binding.SAMLMessageContext;
 import org.opensaml.common.xml.SAMLConstants;
 import org.opensaml.util.Base64;
+import org.opensaml.util.StringSupport;
 import org.opensaml.ws.message.encoder.MessageEncodingException;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.io.Marshaller;
@@ -36,7 +37,6 @@ import org.opensaml.xml.security.XMLSigningUtil;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.keyinfo.KeyInfoGenerator;
 import org.opensaml.xml.signature.KeyInfo;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.util.XMLHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -122,7 +122,7 @@ public class HTTPPostSimpleSignEncoder extends HTTPPostEncoder {
         KeyInfoGenerator kiGenerator = XMLSecurityHelper.getKeyInfoGenerator(signingCredential, null, null);
         if (kiGenerator != null) {
             String kiBase64 = buildKeyInfo(signingCredential, kiGenerator);
-            if (!DatatypeHelper.isEmpty(kiBase64)) {
+            if (!StringSupport.isNullOrEmpty(kiBase64)) {
                 velocityContext.put("KeyInfo", kiBase64);
             }
         }

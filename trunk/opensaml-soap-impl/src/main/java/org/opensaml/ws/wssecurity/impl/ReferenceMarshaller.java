@@ -18,10 +18,10 @@
 package org.opensaml.ws.wssecurity.impl;
 
 
+import org.opensaml.util.StringSupport;
 import org.opensaml.ws.wssecurity.Reference;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Element;
 
@@ -35,11 +35,11 @@ public class ReferenceMarshaller extends AbstractWSSecurityObjectMarshaller {
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         Reference reference = (Reference) xmlObject;
         
-        if (!DatatypeHelper.isEmpty(reference.getURI())) {
+        if (!StringSupport.isNullOrEmpty(reference.getURI())) {
             domElement.setAttributeNS(null, Reference.URI_ATTRIB_NAME, reference.getURI());
         }
         
-        if (!DatatypeHelper.isEmpty(reference.getValueType())) {
+        if (!StringSupport.isNullOrEmpty(reference.getValueType())) {
             domElement.setAttributeNS(null, Reference.VALUE_TYPE_ATTRIB_NAME, reference.getValueType());
         }
         

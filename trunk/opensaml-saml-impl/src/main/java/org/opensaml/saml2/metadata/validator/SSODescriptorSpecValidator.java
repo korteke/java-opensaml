@@ -22,7 +22,7 @@
 package org.opensaml.saml2.metadata.validator;
 
 import org.opensaml.saml2.metadata.SSODescriptor;
-import org.opensaml.xml.util.DatatypeHelper;
+import org.opensaml.util.StringSupport;
 import org.opensaml.xml.validation.ValidationException;
 
 /**
@@ -51,7 +51,7 @@ public class SSODescriptorSpecValidator<SSODescriptorType extends SSODescriptor>
         if (ssoDescriptor.getArtifactResolutionServices() != null
                 && ssoDescriptor.getArtifactResolutionServices().size() > 0) {
             for (int i = 0; i < ssoDescriptor.getArtifactResolutionServices().size(); i++) {
-                if (!DatatypeHelper.isEmpty(ssoDescriptor.getArtifactResolutionServices().get(i).getResponseLocation())) {
+                if (!StringSupport.isNullOrEmpty(ssoDescriptor.getArtifactResolutionServices().get(i).getResponseLocation())) {
                     throw new ValidationException("ResponseLocation of all ArtificatResolutionServices must be null");
                 }
             }

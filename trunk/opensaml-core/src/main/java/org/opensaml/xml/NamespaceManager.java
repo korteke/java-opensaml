@@ -25,6 +25,7 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.util.StringSupport;
 import org.opensaml.util.collections.LazyMap;
 import org.opensaml.util.collections.LazySet;
 import org.opensaml.xml.util.DatatypeHelper;
@@ -588,7 +589,7 @@ public class NamespaceManager {
      * @return true if the QName contains non-empty namespace info and should be managed, false otherwise
      */
     private boolean checkQName(QName name) {
-        return !DatatypeHelper.isEmpty(name.getNamespaceURI());
+        return !StringSupport.isNullOrEmpty(name.getNamespaceURI());
     }
     
 }

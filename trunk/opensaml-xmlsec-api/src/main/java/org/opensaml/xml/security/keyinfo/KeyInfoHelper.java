@@ -41,6 +41,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.opensaml.util.Base64;
+import org.opensaml.util.StringSupport;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.XMLObjectBuilderFactory;
 import org.opensaml.xml.security.x509.X509Util;
@@ -61,7 +62,6 @@ import org.opensaml.xml.signature.X509SKI;
 import org.opensaml.xml.signature.X509SerialNumber;
 import org.opensaml.xml.signature.X509SubjectName;
 import org.opensaml.xml.signature.Y;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -607,9 +607,9 @@ public class KeyInfoHelper {
      * @return true if all parameters are present and non-empty, false otherwise
      */
     public static boolean hasCompleteDSAParams(DSAKeyValue keyDescriptor) {
-        if (       keyDescriptor.getG() == null || DatatypeHelper.isEmpty(keyDescriptor.getG().getValue())
-                || keyDescriptor.getP() == null || DatatypeHelper.isEmpty(keyDescriptor.getP().getValue())
-                || keyDescriptor.getQ() == null || DatatypeHelper.isEmpty(keyDescriptor.getQ().getValue())
+        if (       keyDescriptor.getG() == null || StringSupport.isNullOrEmpty(keyDescriptor.getG().getValue())
+                || keyDescriptor.getP() == null || StringSupport.isNullOrEmpty(keyDescriptor.getP().getValue())
+                || keyDescriptor.getQ() == null || StringSupport.isNullOrEmpty(keyDescriptor.getQ().getValue())
         ) {
             return false;
         }

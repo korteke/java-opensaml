@@ -20,10 +20,10 @@ package org.opensaml.saml2.metadata.impl;
 import java.util.List;
 
 import org.opensaml.saml2.metadata.LocalizedName;
+import org.opensaml.util.StringSupport;
 import org.opensaml.xml.LangBearing;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.schema.impl.XSStringImpl;
-import org.opensaml.xml.util.DatatypeHelper;
 
 /**
  * Concrete implementation of {@link org.opensaml.saml2.metadata.LocalizedName}.
@@ -51,7 +51,7 @@ public class LocalizedURIImpl extends XSStringImpl implements LocalizedName {
 
     /** {@inheritDoc} */
     public void setXMLLang(String newLang) {
-        boolean hasValue = newLang != null && !DatatypeHelper.isEmpty(newLang);
+        boolean hasValue = newLang != null && !StringSupport.isNullOrEmpty(newLang);
         language = prepareForAssignment(language, newLang);
         manageQualifiedAttributeNamespace(LangBearing.XML_LANG_ATTR_NAME, hasValue);
     }

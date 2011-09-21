@@ -22,7 +22,7 @@
 package org.opensaml.saml2.metadata.validator;
 
 import org.opensaml.saml2.metadata.AffiliateMember;
-import org.opensaml.xml.util.DatatypeHelper;
+import org.opensaml.util.StringSupport;
 import org.opensaml.xml.validation.ValidationException;
 import org.opensaml.xml.validation.Validator;
 
@@ -48,7 +48,7 @@ public class AffiliateMemberSchemaValidator implements Validator<AffiliateMember
      * @throws ValidationException
      */
     protected void validateID(AffiliateMember affiliateMember) throws ValidationException {
-        if (DatatypeHelper.isEmpty(affiliateMember.getID())) {
+        if (StringSupport.isNullOrEmpty(affiliateMember.getID())) {
             throw new ValidationException("ID required");
         } else if (affiliateMember.getID().length() > 1024) {
             throw new ValidationException("Max ID length is 1024");

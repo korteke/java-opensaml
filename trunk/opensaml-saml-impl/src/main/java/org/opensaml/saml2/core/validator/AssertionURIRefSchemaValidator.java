@@ -22,7 +22,7 @@
 package org.opensaml.saml2.core.validator;
 
 import org.opensaml.saml2.core.AssertionURIRef;
-import org.opensaml.xml.util.DatatypeHelper;
+import org.opensaml.util.StringSupport;
 import org.opensaml.xml.validation.ValidationException;
 import org.opensaml.xml.validation.Validator;
 
@@ -48,7 +48,7 @@ public class AssertionURIRefSchemaValidator implements Validator<AssertionURIRef
      * @throws ValidationException
      */
     protected void validateURIRef(AssertionURIRef assertionURIRef) throws ValidationException {
-        if (DatatypeHelper.isEmpty(assertionURIRef.getAssertionURI())) {
+        if (StringSupport.isNullOrEmpty(assertionURIRef.getAssertionURI())) {
             throw new ValidationException("AssertionURI required");
         }
     }

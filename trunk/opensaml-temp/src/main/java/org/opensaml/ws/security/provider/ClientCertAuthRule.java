@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.opensaml.util.Base64;
+import org.opensaml.util.StringSupport;
 import org.opensaml.util.criteria.CriteriaSet;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.security.SecurityPolicyException;
@@ -33,7 +34,6 @@ import org.opensaml.xml.security.criteria.UsageCriterion;
 import org.opensaml.xml.security.trust.TrustEngine;
 import org.opensaml.xml.security.x509.X509Credential;
 import org.opensaml.xml.security.x509.X509Util;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -216,7 +216,7 @@ public class ClientCertAuthRule extends BaseTrustEngineRule<X509Credential> {
             throws SecurityPolicyException {
 
         CriteriaSet criteriaSet = new CriteriaSet();
-        if (!DatatypeHelper.isEmpty(entityID)) {
+        if (!StringSupport.isNullOrEmpty(entityID)) {
             criteriaSet.add(new EntityIDCriterion(entityID));
         }
 
@@ -466,7 +466,7 @@ public class ClientCertAuthRule extends BaseTrustEngineRule<X509Credential> {
             return null;
         }
         String name = null;
-        if (!DatatypeHelper.isEmpty(certNameOptions.getX500SubjectDNFormat())) {
+        if (!StringSupport.isNullOrEmpty(certNameOptions.getX500SubjectDNFormat())) {
             name = certNameOptions.getX500DNHandler().getName(cert.getSubjectX500Principal(),
                     certNameOptions.getX500SubjectDNFormat());
         } else {

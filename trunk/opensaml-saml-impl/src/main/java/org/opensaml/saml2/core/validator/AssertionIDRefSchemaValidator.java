@@ -22,7 +22,7 @@
 package org.opensaml.saml2.core.validator;
 
 import org.opensaml.saml2.core.AssertionIDRef;
-import org.opensaml.xml.util.DatatypeHelper;
+import org.opensaml.util.StringSupport;
 import org.opensaml.xml.validation.ValidationException;
 import org.opensaml.xml.validation.Validator;
 
@@ -48,7 +48,7 @@ public class AssertionIDRefSchemaValidator implements Validator<AssertionIDRef> 
      * @throws ValidationException
      */
     protected void validateIDRef(AssertionIDRef assertionIDRef) throws ValidationException {
-        if (DatatypeHelper.isEmpty(assertionIDRef.getAssertionID())) {
+        if (StringSupport.isNullOrEmpty(assertionIDRef.getAssertionID())) {
             throw new ValidationException("IDRef is required");
         }
     }

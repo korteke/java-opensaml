@@ -20,6 +20,7 @@ package org.opensaml.saml2.binding.decoding;
 
 import org.opensaml.common.binding.SAMLMessageContext;
 import org.opensaml.common.xml.SAMLConstants;
+import org.opensaml.util.StringSupport;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.message.decoder.MessageDecodingException;
 import org.opensaml.ws.transport.http.HTTPInTransport;
@@ -81,7 +82,7 @@ public class HTTPArtifactDecoder extends BaseSAML2MessageDecoder {
         SAMLMessageContext samlMsgCtx = (SAMLMessageContext) messageContext;
 
         HTTPInTransport inTransport = (HTTPInTransport) samlMsgCtx.getInboundMessageTransport();
-        String relayState = DatatypeHelper.safeTrim(inTransport.getParameterValue("RelayState"));
+        String relayState = StringSupport.trim(inTransport.getParameterValue("RelayState"));
         samlMsgCtx.setRelayState(relayState);
         
         processArtifact(samlMsgCtx);

@@ -17,11 +17,11 @@
 
 package org.opensaml.xacml.policy.impl;
 
+import org.opensaml.util.StringSupport;
 import org.opensaml.xacml.policy.IdReferenceType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.schema.impl.XSStringMarshaller;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.w3c.dom.Element;
 
 /**
@@ -38,13 +38,13 @@ public class IdReferenceTypeMarshaller extends XSStringMarshaller {
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         IdReferenceType idReferenceType = (IdReferenceType)xmlObject;
         
-        if(!DatatypeHelper.isEmpty(idReferenceType.getEarliestVersion())){
+        if(!StringSupport.isNullOrEmpty(idReferenceType.getEarliestVersion())){
             domElement.setAttribute(IdReferenceType.EARLIEST_VERSION_ATTRIB_NAME,
                     idReferenceType.getEarliestVersion());
-        }else if(!DatatypeHelper.isEmpty(idReferenceType.getLatestVersion())){
+        }else if(!StringSupport.isNullOrEmpty(idReferenceType.getLatestVersion())){
             domElement.setAttribute(IdReferenceType.LATEST_VERSION_ATTRIB_NAME,
                     idReferenceType.getLatestVersion());
-        }else if(!DatatypeHelper.isEmpty(idReferenceType.getVersion())){
+        }else if(!StringSupport.isNullOrEmpty(idReferenceType.getVersion())){
             domElement.setAttribute(IdReferenceType.VERSION_ATTRIB_NAME,
                     idReferenceType.getVersion());
         }

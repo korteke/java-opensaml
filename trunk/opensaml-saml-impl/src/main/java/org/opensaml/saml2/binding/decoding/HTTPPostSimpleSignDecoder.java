@@ -19,9 +19,9 @@ package org.opensaml.saml2.binding.decoding;
 
 import org.opensaml.common.binding.SAMLMessageContext;
 import org.opensaml.common.xml.SAMLConstants;
+import org.opensaml.util.StringSupport;
 import org.opensaml.ws.transport.http.HTTPInTransport;
 import org.opensaml.xml.parse.ParserPool;
-import org.opensaml.xml.util.DatatypeHelper;
 
 /** Message decoder implementing the SAML 2.0 HTTP POST-SimpleSign binding. */
 public class HTTPPostSimpleSignDecoder extends HTTPPostDecoder {
@@ -52,7 +52,7 @@ public class HTTPPostSimpleSignDecoder extends HTTPPostDecoder {
     protected boolean isMessageSigned(SAMLMessageContext messageContext) {
         HTTPInTransport inTransport = (HTTPInTransport) messageContext.getInboundMessageTransport();
         String sigParam = inTransport.getParameterValue("Signature");
-        return (!DatatypeHelper.isEmpty(sigParam)) || super.isMessageSigned(messageContext);
+        return (!StringSupport.isNullOrEmpty(sigParam)) || super.isMessageSigned(messageContext);
     }
     
 }

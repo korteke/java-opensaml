@@ -30,6 +30,7 @@ import java.util.Set;
 import org.apache.xml.security.Init;
 import org.apache.xml.security.encryption.XMLCipher;
 import org.apache.xml.security.encryption.XMLEncryptionException;
+import org.opensaml.util.StringSupport;
 import org.opensaml.util.criteria.CriteriaSet;
 import org.opensaml.util.criteria.Criterion;
 import org.opensaml.util.resolver.ResolverException;
@@ -503,7 +504,7 @@ public class Decrypter {
         }
 
         String algorithm = encryptedData.getEncryptionMethod().getAlgorithm();
-        if (DatatypeHelper.isEmpty(algorithm)) {
+        if (StringSupport.isNullOrEmpty(algorithm)) {
             String msg = "EncryptedData's EncryptionMethod Algorithm attribute was empty, "
                 + "key decryption could not be attempted";
             log.error(msg);
@@ -601,7 +602,7 @@ public class Decrypter {
             throw new DecryptionException("No KEK KeyInfo resolver is available for EncryptedKey decryption");
         }
 
-        if (DatatypeHelper.isEmpty(algorithm)) {
+        if (StringSupport.isNullOrEmpty(algorithm)) {
             log.error("Algorithm of encrypted key not supplied, key decryption cannot proceed.");
             throw new DecryptionException("Algorithm of encrypted key not supplied, key decryption cannot proceed.");
         }
@@ -640,7 +641,7 @@ public class Decrypter {
             log.error("Data encryption key was null");
             throw new IllegalArgumentException("Data encryption key may not be null");
         }
-        if (DatatypeHelper.isEmpty(algorithm)) {
+        if (StringSupport.isNullOrEmpty(algorithm)) {
             log.error("Algorithm of encrypted key not supplied, key decryption cannot proceed.");
             throw new DecryptionException("Algorithm of encrypted key not supplied, key decryption cannot proceed.");
         }
@@ -887,12 +888,12 @@ public class Decrypter {
      * @return a new key algorithm credential criteria instance, or null if criteria could not be determined
      */
     private KeyAlgorithmCriterion buildKeyAlgorithmCriteria(String encAlgorithmURI) {
-        if (DatatypeHelper.isEmpty(encAlgorithmURI)) {
+        if (StringSupport.isNullOrEmpty(encAlgorithmURI)) {
             return null;
         }
 
         String jcaKeyAlgorithm = XMLSecurityHelper.getKeyAlgorithmFromURI(encAlgorithmURI);
-        if (!DatatypeHelper.isEmpty(jcaKeyAlgorithm)) {
+        if (!StringSupport.isNullOrEmpty(jcaKeyAlgorithm)) {
             return new KeyAlgorithmCriterion(jcaKeyAlgorithm);
         }
 
@@ -906,7 +907,7 @@ public class Decrypter {
      * @return a new key length credential criteria instance, or null if the value could not be determined
      */
     private KeyLengthCriterion buildKeyLengthCriteria(String encAlgorithmURI) {
-        if (!DatatypeHelper.isEmpty(encAlgorithmURI)) {
+        if (!StringSupport.isNullOrEmpty(encAlgorithmURI)) {
             return null;
         }
 

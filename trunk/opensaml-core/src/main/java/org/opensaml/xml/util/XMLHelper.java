@@ -35,6 +35,7 @@ import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.Duration;
 import javax.xml.namespace.QName;
 
+import org.opensaml.util.StringSupport;
 import org.opensaml.util.collections.LazyMap;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.XMLObject;
@@ -235,7 +236,7 @@ public final class XMLHelper {
             qualifiedName = DatatypeHelper.safeTrimOrNullString(trimmedLocalName);
         }
 
-        if (DatatypeHelper.isEmpty(namespaceURI)) {
+        if (StringSupport.isNullOrEmpty(namespaceURI)) {
             return document.createAttributeNS(null, qualifiedName);
         } else {
             return document.createAttributeNS(namespaceURI, qualifiedName);
@@ -250,7 +251,7 @@ public final class XMLHelper {
      * @return a QName from an attributes value, or null if the given attribute is null
      */
     public static QName getAttributeValueAsQName(Attr attribute) {
-        if (attribute == null || DatatypeHelper.isEmpty(attribute.getValue())) {
+        if (attribute == null || StringSupport.isNullOrEmpty(attribute.getValue())) {
             return null;
         }
 
@@ -431,9 +432,9 @@ public final class XMLHelper {
      * @return the QName
      */
     public static QName constructQName(String namespaceURI, String localName, String prefix) {
-        if (DatatypeHelper.isEmpty(prefix)) {
+        if (StringSupport.isNullOrEmpty(prefix)) {
             return new QName(namespaceURI, localName);
-        } else if (DatatypeHelper.isEmpty(namespaceURI)) {
+        } else if (StringSupport.isNullOrEmpty(namespaceURI)) {
             return new QName(localName);
         }
 
@@ -516,7 +517,7 @@ public final class XMLHelper {
             qualifiedName = DatatypeHelper.safeTrimOrNullString(trimmedLocalName);
         }
 
-        if (!DatatypeHelper.isEmpty(namespaceURI)) {
+        if (!StringSupport.isNullOrEmpty(namespaceURI)) {
             return document.createElementNS(namespaceURI, qualifiedName);
         } else {
             return document.createElementNS(null, qualifiedName);
@@ -1096,7 +1097,7 @@ public final class XMLHelper {
             }
 
             namespacePrefix = attributeNode.getPrefix();
-            if (!DatatypeHelper.isEmpty(namespacePrefix)) {
+            if (!StringSupport.isNullOrEmpty(namespacePrefix)) {
                 // If it's the "xmlns" prefix then it is the namespace declaration,
                 // don't try to look it up and redeclare it
                 if (namespacePrefix.equals(XMLConstants.XMLNS_PREFIX)

@@ -21,7 +21,7 @@
 package org.opensaml.saml2.core.validator;
 
 import org.opensaml.saml2.core.IDPEntry;
-import org.opensaml.xml.util.DatatypeHelper;
+import org.opensaml.util.StringSupport;
 import org.opensaml.xml.validation.ValidationException;
 import org.opensaml.xml.validation.Validator;
 
@@ -50,7 +50,7 @@ public class IDPEntrySchemaValidator implements Validator<IDPEntry> {
      * @throws ValidationException 
      */
     protected void validateProviderID(IDPEntry entry) throws ValidationException {
-        if (DatatypeHelper.isEmpty(entry.getProviderID())) {
+        if (StringSupport.isNullOrEmpty(entry.getProviderID())) {
             throw new ValidationException("ProviderID attribute is required");
         }
     }

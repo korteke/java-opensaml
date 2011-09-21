@@ -23,7 +23,7 @@ package org.opensaml.saml2.core.validator;
 
 import org.opensaml.common.SAMLVersion;
 import org.opensaml.saml2.core.RequestAbstractType;
-import org.opensaml.xml.util.DatatypeHelper;
+import org.opensaml.util.StringSupport;
 import org.opensaml.xml.validation.ValidationException;
 import org.opensaml.xml.validation.Validator;
 
@@ -56,7 +56,7 @@ public abstract class RequestAbstractTypeSchemaValidator<RequestType extends Req
      * @throws ValidationException if invalid
      */
     protected void validateID(RequestAbstractType request) throws ValidationException {
-        if (DatatypeHelper.isEmpty(request.getID())) {
+        if (StringSupport.isNullOrEmpty(request.getID())) {
             throw new ValidationException("ID attribute must not be empty");
         }
     }

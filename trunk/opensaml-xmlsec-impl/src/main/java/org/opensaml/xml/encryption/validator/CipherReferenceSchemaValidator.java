@@ -17,8 +17,8 @@
 
 package org.opensaml.xml.encryption.validator;
 
+import org.opensaml.util.StringSupport;
 import org.opensaml.xml.encryption.CipherReference;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.validation.ValidationException;
 import org.opensaml.xml.validation.Validator;
 
@@ -39,7 +39,7 @@ public class CipherReferenceSchemaValidator implements Validator<CipherReference
      * @throws ValidationException  thrown if the object is invalid
      */
     protected void validateURI(CipherReference xmlObject) throws ValidationException {
-        if (DatatypeHelper.isEmpty(xmlObject.getURI())) {
+        if (StringSupport.isNullOrEmpty(xmlObject.getURI())) {
             throw new ValidationException("CipherReference URI was empty");
         }
     }

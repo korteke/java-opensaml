@@ -25,11 +25,11 @@ import org.opensaml.saml2.core.AuthnRequest;
 import org.opensaml.saml2.metadata.SPSSODescriptor;
 import org.opensaml.saml2.metadata.provider.MetadataProvider;
 import org.opensaml.saml2.metadata.provider.MetadataProviderException;
+import org.opensaml.util.StringSupport;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.security.SecurityPolicyException;
 import org.opensaml.ws.security.SecurityPolicyRule;
 import org.opensaml.ws.transport.http.HTTPInTransport;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -57,7 +57,7 @@ public class SAML2AuthnRequestsSignedRule implements SecurityPolicyRule {
         }
         
         String messageIssuer = samlMsgCtx.getInboundMessageIssuer();
-        if (DatatypeHelper.isEmpty(messageIssuer)) {
+        if (StringSupport.isNullOrEmpty(messageIssuer)) {
             log.warn("Inbound message issuer was empty, unable to evaluate rule");
             return;
         }
@@ -117,7 +117,7 @@ public class SAML2AuthnRequestsSignedRule implements SecurityPolicyRule {
         // This handles HTTP-Redirect and HTTP-POST-SimpleSign bindings.
         HTTPInTransport inTransport = (HTTPInTransport) messageContext.getInboundMessageTransport();
         String sigParam = inTransport.getParameterValue("Signature");
-        return !DatatypeHelper.isEmpty(sigParam);
+        return !StringSupport.isNullOrEmpty(sigParam);
     }
 
 }

@@ -24,6 +24,7 @@ import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.opensaml.util.StringSupport;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.Namespace;
 import org.opensaml.xml.XMLObject;
@@ -365,14 +366,14 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
     protected void marshallSchemaInstanceAttributes(XMLObject xmlObject, Element domElement)
             throws MarshallingException {
 
-        if (!DatatypeHelper.isEmpty(xmlObject.getSchemaLocation())) {
+        if (!StringSupport.isNullOrEmpty(xmlObject.getSchemaLocation())) {
             log.trace("Setting xsi:schemaLocation for XMLObject {} to {}", xmlObject.getElementQName(), xmlObject
                     .getSchemaLocation());
             domElement.setAttributeNS(XMLConstants.XSI_NS, XMLConstants.XSI_PREFIX + ":schemaLocation", xmlObject
                     .getSchemaLocation());
         }
 
-        if (!DatatypeHelper.isEmpty(xmlObject.getNoNamespaceSchemaLocation())) {
+        if (!StringSupport.isNullOrEmpty(xmlObject.getNoNamespaceSchemaLocation())) {
             log.trace("Setting xsi:noNamespaceSchemaLocation for XMLObject {} to {}", xmlObject.getElementQName(),
                     xmlObject.getNoNamespaceSchemaLocation());
             domElement.setAttributeNS(XMLConstants.XSI_NS, XMLConstants.XSI_PREFIX + ":noNamespaceSchemaLocation",

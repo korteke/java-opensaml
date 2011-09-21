@@ -22,7 +22,7 @@
 package org.opensaml.saml2.core.validator;
 
 import org.opensaml.saml2.core.Issuer;
-import org.opensaml.xml.util.DatatypeHelper;
+import org.opensaml.util.StringSupport;
 import org.opensaml.xml.validation.ValidationException;
 import org.opensaml.xml.validation.Validator;
 
@@ -48,7 +48,7 @@ public class IssuerSchemaValidator implements Validator<Issuer> {
      * @throws ValidationException
      */
     protected void validateName(Issuer issuer) throws ValidationException {
-        if (DatatypeHelper.isEmpty(issuer.getValue())) {
+        if (StringSupport.isNullOrEmpty(issuer.getValue())) {
             throw new ValidationException("Issuer name required");
         }
     }
