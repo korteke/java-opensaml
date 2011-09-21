@@ -20,9 +20,9 @@ package org.opensaml.samlext.saml2mdquery.impl;
 import org.opensaml.common.impl.AbstractSAMLObjectMarshaller;
 import org.opensaml.samlext.saml2mdquery.ActionNamespace;
 import org.opensaml.util.StringSupport;
+import org.opensaml.util.xml.ElementSupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Element;
 
 /**
@@ -35,7 +35,7 @@ public class ActionNamespaceMarshaller extends AbstractSAMLObjectMarshaller {
         ActionNamespace actionNamespace = (ActionNamespace) xmlObject;
 
         if (!StringSupport.isNullOrEmpty(actionNamespace.getValue())) {
-            XMLHelper.appendTextContent(domElement, actionNamespace.getValue());
+            ElementSupport.appendTextContent(domElement, actionNamespace.getValue());
         }
     }
 }

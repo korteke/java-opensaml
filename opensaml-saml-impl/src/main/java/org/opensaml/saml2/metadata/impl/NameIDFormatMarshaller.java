@@ -23,9 +23,9 @@ package org.opensaml.saml2.metadata.impl;
 
 import org.opensaml.common.impl.AbstractSAMLObjectMarshaller;
 import org.opensaml.saml2.metadata.NameIDFormat;
+import org.opensaml.util.xml.ElementSupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Element;
 
 /**
@@ -38,7 +38,7 @@ public class NameIDFormatMarshaller extends AbstractSAMLObjectMarshaller {
         NameIDFormat format = (NameIDFormat) samlObject;
 
         if (format.getFormat() != null) {
-            XMLHelper.appendTextContent(domElement, format.getFormat());
+            ElementSupport.appendTextContent(domElement, format.getFormat());
         }
     }
 }

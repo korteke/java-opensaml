@@ -21,6 +21,7 @@ import java.util.Map.Entry;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.util.xml.ElementSupport;
 import org.opensaml.xacml.ctx.ResourceContentType;
 import org.opensaml.xacml.impl.AbstractXACMLObjectMarshaller;
 import org.opensaml.xml.Configuration;
@@ -71,7 +72,7 @@ public class ResourceContentTypeMarshaller extends AbstractXACMLObjectMarshaller
         ResourceContentType resourceContent = (ResourceContentType) xmlObject;
         
         if(resourceContent.getValue() != null){
-            XMLHelper.appendTextContent(domElement, resourceContent.getValue());
+            ElementSupport.appendTextContent(domElement, resourceContent.getValue());
         }
     }
 }

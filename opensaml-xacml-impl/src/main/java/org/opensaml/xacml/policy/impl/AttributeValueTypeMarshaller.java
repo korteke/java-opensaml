@@ -22,6 +22,7 @@ import java.util.Map.Entry;
 import javax.xml.namespace.QName;
 
 import org.opensaml.util.StringSupport;
+import org.opensaml.util.xml.ElementSupport;
 import org.opensaml.xacml.impl.AbstractXACMLObjectMarshaller;
 import org.opensaml.xacml.policy.AttributeAssignmentType;
 import org.opensaml.xacml.policy.AttributeValueType;
@@ -65,7 +66,7 @@ public class AttributeValueTypeMarshaller extends AbstractXACMLObjectMarshaller 
         AttributeValueType attributeValue = (AttributeValueType) xmlObject;
 
         if (attributeValue.getValue() != null) {
-            XMLHelper.appendTextContent(domElement, attributeValue.getValue());
+            ElementSupport.appendTextContent(domElement, attributeValue.getValue());
         }
     }
 }

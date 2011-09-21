@@ -18,6 +18,7 @@
 package org.opensaml.ws.wsaddressing.impl;
 
 
+import org.opensaml.util.xml.ElementSupport;
 import org.opensaml.ws.wsaddressing.AttributedURI;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
@@ -33,7 +34,7 @@ public class AttributedURIMarshaller extends AbstractWSAddressingObjectMarshalle
     /** {@inheritDoc} */
     protected void marshallElementContent(XMLObject xmlObject, Element domElement) throws MarshallingException {
         AttributedURI attributedURI = (AttributedURI) xmlObject;
-        XMLHelper.appendTextContent(domElement, attributedURI.getValue());
+        ElementSupport.appendTextContent(domElement, attributedURI.getValue());
     }
 
     /** {@inheritDoc} */

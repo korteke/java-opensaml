@@ -17,11 +17,11 @@
 
 package org.opensaml.xml.schema.impl;
 
+import org.opensaml.util.xml.ElementSupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.BaseXMLObjectMarshaller;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.schema.XSDateTime;
-import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Element;
 
 /**
@@ -36,7 +36,7 @@ public class XSDateTimeMarshaller extends BaseXMLObjectMarshaller {
     protected void marshallElementContent(XMLObject xmlObject, Element domElement) throws MarshallingException {
         XSDateTime xsDateTime = (XSDateTime) xmlObject;
         
-        XMLHelper.appendTextContent(domElement, xsDateTime.getDateTimeFormatter().print(xsDateTime.getValue()));
+        ElementSupport.appendTextContent(domElement, xsDateTime.getDateTimeFormatter().print(xsDateTime.getValue()));
     }
 
 }

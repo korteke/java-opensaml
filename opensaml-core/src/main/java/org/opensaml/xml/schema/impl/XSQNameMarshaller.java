@@ -17,6 +17,7 @@
 
 package org.opensaml.xml.schema.impl;
 
+import org.opensaml.util.xml.ElementSupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.AbstractXMLObjectMarshaller;
 import org.opensaml.xml.io.MarshallingException;
@@ -37,6 +38,6 @@ public class XSQNameMarshaller extends AbstractXMLObjectMarshaller {
     /** {@inheritDoc} */
     protected void marshallElementContent(XMLObject xmlObject, Element domElement) throws MarshallingException {
         XSQName qname = (XSQName) xmlObject;
-        XMLHelper.appendTextContent(domElement, XMLHelper.qnameToContentString(qname.getValue()));
+        ElementSupport.appendTextContent(domElement, XMLHelper.qnameToContentString(qname.getValue()));
     }
 }

@@ -17,11 +17,11 @@
 
 package org.opensaml.xml.signature.impl;
 
+import org.opensaml.util.xml.ElementSupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.AbstractXMLObjectMarshaller;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.signature.X509SerialNumber;
-import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Element;
 
 /**
@@ -39,7 +39,7 @@ public class X509SerialNumberMarshaller extends AbstractXMLObjectMarshaller {
         X509SerialNumber x509SerialNumber = (X509SerialNumber) xmlObject;
         
         if (x509SerialNumber.getValue() != null) {
-            XMLHelper.appendTextContent(domElement, x509SerialNumber.getValue().toString());
+            ElementSupport.appendTextContent(domElement, x509SerialNumber.getValue().toString());
         }
     }
 }

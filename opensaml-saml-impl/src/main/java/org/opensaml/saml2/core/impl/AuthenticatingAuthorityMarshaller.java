@@ -23,9 +23,9 @@ package org.opensaml.saml2.core.impl;
 
 import org.opensaml.common.impl.AbstractSAMLObjectMarshaller;
 import org.opensaml.saml2.core.AuthenticatingAuthority;
+import org.opensaml.util.xml.ElementSupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Element;
 
 /**
@@ -36,6 +36,6 @@ public class AuthenticatingAuthorityMarshaller extends AbstractSAMLObjectMarshal
     /** {@inheritDoc} */
     protected void marshallElementContent(XMLObject samlObject, Element domElement) throws MarshallingException {
         AuthenticatingAuthority authenticatingAuthority = (AuthenticatingAuthority) samlObject;
-        XMLHelper.appendTextContent(domElement, authenticatingAuthority.getURI());
+        ElementSupport.appendTextContent(domElement, authenticatingAuthority.getURI());
     }
 }

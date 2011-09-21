@@ -27,6 +27,7 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.common.impl.AbstractSAMLObjectMarshaller;
 import org.opensaml.saml2.core.AuthnContextDecl;
+import org.opensaml.util.xml.ElementSupport;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
@@ -60,7 +61,7 @@ public class AuthnContextDeclMarshaller extends AbstractSAMLObjectMarshaller {
         AuthnContextDecl authnCtxDecl = (AuthnContextDecl) xmlObject;
 
         if (authnCtxDecl.getTextContent() != null) {
-            XMLHelper.appendTextContent(domElement, authnCtxDecl.getTextContent());
+            ElementSupport.appendTextContent(domElement, authnCtxDecl.getTextContent());
         }
     }
 }

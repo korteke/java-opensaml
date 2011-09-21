@@ -26,6 +26,8 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.opensaml.util.ObjectSupport;
 import org.opensaml.util.StringSupport;
+import org.opensaml.util.xml.ElementSupport;
+import org.opensaml.util.xml.NamespaceSupport;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.Namespace;
 import org.opensaml.xml.XMLObject;
@@ -111,7 +113,7 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
 
             if (domElement.getOwnerDocument() != document) {
                 log.trace("Adopting DOM of XMLObject into given Document");
-                XMLHelper.adoptElement(domElement, document);
+                ElementSupport.adoptElement(document, domElement);
             }
 
             log.trace("Setting DOM of XMLObject as document element of given Document");
@@ -160,7 +162,7 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
 
             log.trace("Appending DOM of XMLObject {} as child of parent element {}", xmlObject.getElementQName(),
                     XMLHelper.getNodeQName(parentElement));
-            XMLHelper.appendChildElement(parentElement, domElement);
+            ElementSupport.appendChildElement(parentElement, domElement);
 
             return domElement;
         }
@@ -173,7 +175,7 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
         log.trace("Appending newly created element to given parent element");
         // we need to do this before the rest of the marshalling so that signing and other ID dependent operations have
         // a path to the document root
-        XMLHelper.appendChildElement(parentElement, domElement);
+        ElementSupport.appendChildElement(parentElement, domElement);
         domElement = marshallInto(xmlObject, domElement);
 
         log.trace("Setting created element to DOM cache for XMLObject {}", xmlObject.getElementQName());
@@ -351,7 +353,7 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
             String nsURI = StringSupport.trimOrNull(namespace.getNamespaceURI());
             String nsPrefix = StringSupport.trimOrNull(namespace.getNamespacePrefix());
 
-            XMLHelper.appendNamespaceDeclaration(domElement, nsURI, nsPrefix);
+            NamespaceSupport.appendNamespaceDeclaration(domElement, nsURI, nsPrefix);
         }
     }
 

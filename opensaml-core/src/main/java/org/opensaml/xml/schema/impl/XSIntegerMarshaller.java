@@ -17,11 +17,11 @@
 
 package org.opensaml.xml.schema.impl;
 
+import org.opensaml.util.xml.ElementSupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.AbstractXMLObjectMarshaller;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.schema.XSInteger;
-import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Element;
 
 /**
@@ -39,7 +39,7 @@ public class XSIntegerMarshaller extends AbstractXMLObjectMarshaller {
         XSInteger xsiInteger = (XSInteger) xmlObject;
 
         if (xsiInteger.getValue() != null) {
-            XMLHelper.appendTextContent(domElement, xsiInteger.getValue().toString());
+            ElementSupport.appendTextContent(domElement, xsiInteger.getValue().toString());
         }
     }
 }

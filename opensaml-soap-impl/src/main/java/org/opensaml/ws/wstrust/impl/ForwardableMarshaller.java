@@ -18,11 +18,11 @@
 package org.opensaml.ws.wstrust.impl;
 
 
+import org.opensaml.util.xml.ElementSupport;
 import org.opensaml.ws.wstrust.Forwardable;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.schema.XSBooleanValue;
-import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Element;
 
 /**
@@ -35,6 +35,6 @@ public class ForwardableMarshaller extends AbstractWSTrustObjectMarshaller {
     protected void marshallElementContent(XMLObject xmlObject, Element domElement) throws MarshallingException {
         Forwardable forwardable = (Forwardable) xmlObject;
         XSBooleanValue value= forwardable.getValue();
-        XMLHelper.appendTextContent(domElement, value.toString());
+        ElementSupport.appendTextContent(domElement, value.toString());
     }
 }

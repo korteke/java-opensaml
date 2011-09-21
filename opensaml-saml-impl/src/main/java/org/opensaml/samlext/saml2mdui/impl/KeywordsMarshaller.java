@@ -20,6 +20,7 @@ package org.opensaml.samlext.saml2mdui.impl;
 import org.opensaml.common.impl.AbstractSAMLObjectMarshaller;
 import org.opensaml.common.xml.SAMLConstants;
 import org.opensaml.samlext.saml2mdui.Keywords;
+import org.opensaml.util.xml.ElementSupport;
 import org.opensaml.xml.LangBearing;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
@@ -56,7 +57,7 @@ public class KeywordsMarshaller extends AbstractSAMLObjectMarshaller {
                 sb.append(s);
                 sb.append(' ');
             }
-            XMLHelper.appendTextContent(domElement, sb.toString());
+            ElementSupport.appendTextContent(domElement, sb.toString());
         }
     }
 }

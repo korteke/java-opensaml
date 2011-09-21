@@ -19,9 +19,9 @@ package org.opensaml.saml1.core.impl;
 
 import org.opensaml.common.impl.AbstractSAMLObjectMarshaller;
 import org.opensaml.saml1.core.NameIdentifier;
+import org.opensaml.util.xml.ElementSupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Element;
 
 /**
@@ -48,7 +48,7 @@ public class NameIdentifierMarshaller extends AbstractSAMLObjectMarshaller {
         NameIdentifier nameIdentifier = (NameIdentifier) samlObject;
 
         if (nameIdentifier.getNameIdentifier() != null) {
-            XMLHelper.appendTextContent(domElement, nameIdentifier.getNameIdentifier());
+            ElementSupport.appendTextContent(domElement, nameIdentifier.getNameIdentifier());
         }
     }
 }

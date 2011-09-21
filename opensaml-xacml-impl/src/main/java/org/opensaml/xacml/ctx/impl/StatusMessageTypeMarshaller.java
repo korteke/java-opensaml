@@ -17,11 +17,11 @@
 
 package org.opensaml.xacml.ctx.impl;
 
+import org.opensaml.util.xml.ElementSupport;
 import org.opensaml.xacml.ctx.StatusMessageType;
 import org.opensaml.xacml.impl.AbstractXACMLObjectMarshaller;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Element;
 
 /**
@@ -34,7 +34,7 @@ public class StatusMessageTypeMarshaller extends AbstractXACMLObjectMarshaller {
         StatusMessageType message = (StatusMessageType)xmlObject;
 
         if(message.getValue() != null){
-            XMLHelper.appendTextContent(domElement, message.getValue());
+            ElementSupport.appendTextContent(domElement, message.getValue());
         }        
     }
 
