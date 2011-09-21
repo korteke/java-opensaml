@@ -32,12 +32,12 @@ import org.opensaml.saml2.core.AuthnRequest;
 import org.opensaml.saml2.core.RequestAbstractType;
 import org.opensaml.saml2.core.Response;
 import org.opensaml.util.Base64;
+import org.opensaml.util.xml.SerializeSupport;
 import org.opensaml.ws.message.decoder.MessageDecodingException;
 import org.opensaml.ws.message.encoder.MessageEncodingException;
 import org.opensaml.ws.transport.http.HttpServletRequestAdapter;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.security.SecurityException;
-import org.opensaml.xml.util.XMLHelper;
 import org.springframework.mock.web.MockHttpServletRequest;
 
 /**
@@ -238,7 +238,7 @@ public class HTTPRedirectDeflateDecoderTest extends BaseTestCase {
     protected String encodeMessage(SAMLObject message) throws MessageEncodingException, MarshallingException {
         try {
             marshallerFactory.getMarshaller(message).marshall(message);
-            String messageStr = XMLHelper.nodeToString(message.getDOM());
+            String messageStr = SerializeSupport.nodeToString(message.getDOM());
 
             ByteArrayOutputStream bytesOut = new ByteArrayOutputStream();
             Deflater deflater = new Deflater(Deflater.DEFLATED, true);

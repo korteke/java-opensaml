@@ -21,9 +21,9 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.common.impl.AbstractSAMLObjectMarshaller;
 import org.opensaml.saml1.core.StatusCode;
+import org.opensaml.util.xml.QNameSupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Element;
 
 /**
@@ -37,7 +37,7 @@ public class StatusCodeMarshaller extends AbstractSAMLObjectMarshaller {
 
         QName statusValue = statusCode.getValue();
         if (statusValue != null) {
-            domElement.setAttributeNS(null, StatusCode.VALUE_ATTRIB_NAME, XMLHelper.qnameToContentString(statusValue));
+            domElement.setAttributeNS(null, StatusCode.VALUE_ATTRIB_NAME, QNameSupport.qnameToContentString(statusValue));
         }
     }
 }

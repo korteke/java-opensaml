@@ -29,11 +29,11 @@ import org.opensaml.common.binding.SAMLMessageContext;
 import org.opensaml.common.xml.SAMLConstants;
 import org.opensaml.saml1.core.ResponseAbstractType;
 import org.opensaml.util.Base64;
+import org.opensaml.util.xml.SerializeSupport;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.message.encoder.MessageEncodingException;
 import org.opensaml.ws.transport.http.HTTPOutTransport;
 import org.opensaml.ws.transport.http.HTTPTransportUtils;
-import org.opensaml.xml.util.XMLHelper;
 import org.owasp.esapi.ESAPI;
 import org.owasp.esapi.Encoder;
 import org.slf4j.Logger;
@@ -132,7 +132,7 @@ public class HTTPPostEncoder extends BaseSAML1MessageEncoder {
             context.put("action", encodedEndpointURL);
 
             log.debug("Marshalling and Base64 encoding SAML message");
-            String messageXML = XMLHelper.nodeToString(marshallMessage(messageContext.getOutboundSAMLMessage()));
+            String messageXML = SerializeSupport.nodeToString(marshallMessage(messageContext.getOutboundSAMLMessage()));
             String encodedMessage = Base64.encodeBytes(messageXML.getBytes("UTF-8"), Base64.DONT_BREAK_LINES);
             context.put("SAMLResponse", encodedMessage);
 

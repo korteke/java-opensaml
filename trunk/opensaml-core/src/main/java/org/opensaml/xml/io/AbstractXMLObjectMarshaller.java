@@ -343,7 +343,7 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
                     continue;
                 }
                 
-                String declared = XMLHelper.lookupNamespaceURI(domElement, namespace.getNamespacePrefix());
+                String declared = NamespaceSupport.lookupNamespaceURI(domElement, namespace.getNamespacePrefix());
                 if (declared != null && namespace.getNamespaceURI().equals(declared)) {
                     log.trace("Namespace {} has already been declared on an ancestor of {} no need to add it here", namespace,
                             xmlObject.getElementQName());

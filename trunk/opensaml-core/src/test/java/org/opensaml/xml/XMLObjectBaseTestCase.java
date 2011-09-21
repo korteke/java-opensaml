@@ -30,6 +30,7 @@ import org.custommonkey.xmlunit.XMLAssert;
 import org.custommonkey.xmlunit.XMLUnit;
 import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.core.config.InitializationService;
+import org.opensaml.util.xml.SerializeSupport;
 import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallerFactory;
 import org.opensaml.xml.io.MarshallingException;
@@ -125,7 +126,7 @@ public abstract class XMLObjectBaseTestCase extends TestCase {
         try {
             Element generatedDOM = marshaller.marshall(xmlObject, parserPool.newDocument());
             if (log.isDebugEnabled()) {
-                log.debug("Marshalled DOM was " + XMLHelper.nodeToString(generatedDOM));
+                log.debug("Marshalled DOM was " + SerializeSupport.nodeToString(generatedDOM));
             }
             XMLAssert.assertXMLIdentical(failMessage, new Diff(expectedDOM, generatedDOM.getOwnerDocument()), true);
         } catch (Exception e) {

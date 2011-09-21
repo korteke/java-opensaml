@@ -34,6 +34,7 @@ import javax.xml.validation.SchemaFactory;
 import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.util.StringSupport;
 import org.opensaml.util.xml.ElementSupport;
+import org.opensaml.util.xml.SerializeSupport;
 import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.Unmarshaller;
 import org.opensaml.xml.parse.BasicParserPool;
@@ -170,7 +171,7 @@ public class XMLConfigurator {
      */
     public void load(Document configuration) throws ConfigurationException {
         log.debug("Loading configuration from XML Document");
-        log.trace("{}", XMLHelper.nodeToString(configuration.getDocumentElement()));
+        log.trace("{}", SerializeSupport.nodeToString(configuration.getDocumentElement()));
 
         // Schema validation
         log.debug("Schema validating configuration Document");
@@ -298,7 +299,7 @@ public class XMLConfigurator {
             validatorSuite = new ValidatorSuite(validatorSuiteId);
 
             log.debug("Initializing ValidatorSuite {}", validatorSuiteId);
-            log.trace(XMLHelper.nodeToString(validatorSuiteElement));
+            log.trace(SerializeSupport.nodeToString(validatorSuiteElement));
 
             NodeList validatorList = validatorSuiteElement.getElementsByTagNameNS(XMLConstants.XMLTOOLING_CONFIG_NS,
                     "Validator");

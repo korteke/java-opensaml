@@ -27,6 +27,7 @@ import org.opensaml.common.binding.BasicSAMLMessageContext;
 import org.opensaml.common.binding.decoding.SAMLMessageDecoder;
 import org.opensaml.saml1.core.Response;
 import org.opensaml.util.Base64;
+import org.opensaml.util.xml.SerializeSupport;
 import org.opensaml.ws.message.decoder.MessageDecodingException;
 import org.opensaml.ws.transport.http.HttpServletRequestAdapter;
 import org.opensaml.xml.security.SecurityException;
@@ -35,7 +36,6 @@ import org.opensaml.xml.security.XMLSecurityHelper;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.signature.Signature;
 import org.opensaml.xml.signature.Signer;
-import org.opensaml.xml.util.XMLHelper;
 import org.springframework.mock.web.MockHttpServletRequest;
 
 /**
@@ -231,7 +231,7 @@ public class HTTPPostDecoderTest extends BaseTestCase {
     
     protected String encodeMessage(SAMLObject message) throws Exception {
         marshallerFactory.getMarshaller(message).marshall(message);
-        String messageStr = XMLHelper.nodeToString(message.getDOM());
+        String messageStr = SerializeSupport.nodeToString(message.getDOM());
         
         return Base64.encodeBytes(messageStr.getBytes("UTF-8"), Base64.DONT_BREAK_LINES);
     }

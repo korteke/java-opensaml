@@ -35,6 +35,7 @@ import org.opensaml.saml2.core.StatusResponseType;
 import org.opensaml.util.Base64;
 import org.opensaml.util.Pair;
 import org.opensaml.util.net.UriSupport;
+import org.opensaml.util.xml.SerializeSupport;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.message.encoder.MessageEncodingException;
 import org.opensaml.ws.transport.http.HTTPOutTransport;
@@ -45,7 +46,6 @@ import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.XMLSecurityHelper;
 import org.opensaml.xml.security.XMLSigningUtil;
 import org.opensaml.xml.security.credential.Credential;
-import org.opensaml.xml.util.XMLHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -137,7 +137,7 @@ public class HTTPRedirectDeflateEncoder extends BaseSAML2MessageEncoder {
     protected String deflateAndBase64Encode(SAMLObject message) throws MessageEncodingException {
         log.debug("Deflating and Base64 encoding SAML message");
         try {
-            String messageStr = XMLHelper.nodeToString(marshallMessage(message));
+            String messageStr = SerializeSupport.nodeToString(marshallMessage(message));
 
             ByteArrayOutputStream bytesOut = new ByteArrayOutputStream();
             Deflater deflater = new Deflater(Deflater.DEFLATED, true);

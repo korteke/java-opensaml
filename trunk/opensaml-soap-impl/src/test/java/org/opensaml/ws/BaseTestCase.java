@@ -24,6 +24,7 @@ import junit.framework.TestCase;
 import org.custommonkey.xmlunit.Diff;
 import org.custommonkey.xmlunit.XMLAssert;
 import org.custommonkey.xmlunit.XMLUnit;
+import org.opensaml.util.xml.SerializeSupport;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.XMLConfigurator;
 import org.opensaml.xml.XMLObject;
@@ -33,7 +34,6 @@ import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallerFactory;
 import org.opensaml.xml.io.UnmarshallerFactory;
 import org.opensaml.xml.parse.BasicParserPool;
-import org.opensaml.xml.util.XMLHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -117,7 +117,7 @@ public abstract class BaseTestCase extends TestCase {
         try {
             Element generatedDOM = marshaller.marshall(xmlObject, parserPool.newDocument());
             if (log.isDebugEnabled()) {
-                log.debug("Marshalled DOM was " + XMLHelper.nodeToString(generatedDOM));
+                log.debug("Marshalled DOM was " + SerializeSupport.nodeToString(generatedDOM));
             }
             XMLAssert.assertXMLIdentical(failMessage, new Diff(expectedDOM, generatedDOM.getOwnerDocument()), true);
         } catch (Exception e) {
