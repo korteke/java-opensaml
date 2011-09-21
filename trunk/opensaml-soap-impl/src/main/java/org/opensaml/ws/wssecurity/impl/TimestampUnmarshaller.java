@@ -20,6 +20,7 @@ package org.opensaml.ws.wssecurity.impl;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.util.xml.QNameSupport;
 import org.opensaml.ws.wssecurity.Created;
 import org.opensaml.ws.wssecurity.Expires;
 import org.opensaml.ws.wssecurity.Timestamp;
@@ -53,7 +54,7 @@ public class TimestampUnmarshaller extends AbstractWSSecurityObjectUnmarshaller 
         Timestamp timestamp = (Timestamp) xmlObject;
         
         QName attrName =
-            XMLHelper.constructQName(attribute.getNamespaceURI(), attribute.getLocalName(), attribute.getPrefix());
+            QNameSupport.constructQName(attribute.getNamespaceURI(), attribute.getLocalName(), attribute.getPrefix());
         if (Timestamp.WSU_ID_ATTR_NAME.equals(attrName)) {
             timestamp.setWSUId(attribute.getValue());
             attribute.getOwnerElement().setIdAttributeNode(attribute, true);

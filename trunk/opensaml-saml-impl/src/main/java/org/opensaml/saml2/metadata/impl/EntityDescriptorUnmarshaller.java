@@ -32,6 +32,7 @@ import org.opensaml.saml2.metadata.EntityDescriptor;
 import org.opensaml.saml2.metadata.Organization;
 import org.opensaml.saml2.metadata.RoleDescriptor;
 import org.opensaml.util.StringSupport;
+import org.opensaml.util.xml.DomTypeSupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.signature.Signature;
@@ -80,7 +81,7 @@ public class EntityDescriptorUnmarshaller extends AbstractSAMLObjectUnmarshaller
                 && !StringSupport.isNullOrEmpty(attribute.getValue())) {
             entityDescriptor.setValidUntil(new DateTime(attribute.getValue(), ISOChronology.getInstanceUTC()));
         } else if (attribute.getLocalName().equals(CacheableSAMLObject.CACHE_DURATION_ATTRIB_NAME)) {
-            entityDescriptor.setCacheDuration(XMLHelper.durationToLong(attribute.getValue()));
+            entityDescriptor.setCacheDuration(DomTypeSupport.durationToLong(attribute.getValue()));
         } else {
             QName attribQName = XMLHelper.getNodeQName(attribute);
             if (attribute.isId()) {

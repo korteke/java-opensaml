@@ -19,10 +19,10 @@ package org.opensaml.ws.wssecurity.impl;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.util.xml.QNameSupport;
 import org.opensaml.ws.wssecurity.SignatureConfirmation;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
-import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Attr;
 
 /**
@@ -35,7 +35,7 @@ public class SignatureConfirmationUnmarshaller extends AbstractWSSecurityObjectU
         SignatureConfirmation sc = (SignatureConfirmation) xmlObject;
         
         QName attrName =
-            XMLHelper.constructQName(attribute.getNamespaceURI(), attribute.getLocalName(), attribute.getPrefix());
+            QNameSupport.constructQName(attribute.getNamespaceURI(), attribute.getLocalName(), attribute.getPrefix());
         if (SignatureConfirmation.WSU_ID_ATTR_NAME.equals(attrName)) {
             sc.setWSUId(attribute.getValue());
             attribute.getOwnerElement().setIdAttributeNode(attribute, true);

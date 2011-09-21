@@ -20,6 +20,7 @@ package org.opensaml.ws.wssecurity.impl;
 import javax.xml.namespace.QName;
 
 import org.opensaml.util.StringSupport;
+import org.opensaml.util.xml.QNameSupport;
 import org.opensaml.ws.wssecurity.AttributedDateTime;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
@@ -37,7 +38,7 @@ public class AttributedDateTimeUnmarshaller extends AbstractWSSecurityObjectUnma
         AttributedDateTime dateTime = (AttributedDateTime) xmlObject;
         
         QName attrName =
-            XMLHelper.constructQName(attribute.getNamespaceURI(), attribute.getLocalName(), attribute.getPrefix());
+            QNameSupport.constructQName(attribute.getNamespaceURI(), attribute.getLocalName(), attribute.getPrefix());
         if (AttributedDateTime.WSU_ID_ATTR_NAME.equals(attrName)) {
             dateTime.setWSUId(attribute.getValue());
             attribute.getOwnerElement().setIdAttributeNode(attribute, true);

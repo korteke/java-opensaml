@@ -19,6 +19,7 @@ package org.opensaml.xml;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.util.xml.QNameSupport;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Attr;
@@ -55,7 +56,7 @@ public abstract class AbstractExtensibleXMLObjectUnmarshaller extends AbstractEl
      */
     protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
         AttributeExtensibleXMLObject anyAttribute = (AttributeExtensibleXMLObject) xmlObject;
-        QName attribQName = XMLHelper.constructQName(attribute.getNamespaceURI(), attribute.getLocalName(), attribute
+        QName attribQName = QNameSupport.constructQName(attribute.getNamespaceURI(), attribute.getLocalName(), attribute
                 .getPrefix());
         if (attribute.isId()) {
             anyAttribute.getUnknownAttributes().registerID(attribQName);

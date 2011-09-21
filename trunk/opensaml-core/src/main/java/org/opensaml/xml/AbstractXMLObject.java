@@ -25,10 +25,10 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.util.ObjectSupport;
 import org.opensaml.util.StringSupport;
+import org.opensaml.util.xml.QNameSupport;
 import org.opensaml.xml.schema.XSBooleanValue;
 import org.opensaml.xml.util.IDIndex;
 import org.opensaml.xml.util.XMLConstants;
-import org.opensaml.xml.util.XMLHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
@@ -81,7 +81,7 @@ public abstract class AbstractXMLObject implements XMLObject {
     protected AbstractXMLObject(String namespaceURI, String elementLocalName, String namespacePrefix) {
         nsManager = new NamespaceManager(this);
         idIndex = new IDIndex(this);
-        elementQname = XMLHelper.constructQName(namespaceURI, elementLocalName, namespacePrefix);
+        elementQname = QNameSupport.constructQName(namespaceURI, elementLocalName, namespacePrefix);
         if(namespaceURI != null){
             setElementNamespacePrefix(namespacePrefix);
         }
@@ -501,7 +501,7 @@ public abstract class AbstractXMLObject implements XMLObject {
      * @param elementQName the element's QName
      */
     protected void setElementQName(QName elementQName) {
-        this.elementQname = XMLHelper.constructQName(elementQName.getNamespaceURI(), elementQName.getLocalPart(),
+        this.elementQname = QNameSupport.constructQName(elementQName.getNamespaceURI(), elementQName.getLocalPart(),
                 elementQName.getPrefix());
         getNamespaceManager().registerElementName(this.elementQname);
     }

@@ -25,9 +25,9 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.common.impl.AbstractSAMLObjectUnmarshaller;
 import org.opensaml.saml2.core.AuthnContextDecl;
+import org.opensaml.util.xml.QNameSupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
-import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Attr;
 
 /**
@@ -47,7 +47,7 @@ public class AuthnContextDeclUnmarshaller extends AbstractSAMLObjectUnmarshaller
     protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
         AuthnContextDecl authnCtcDecl = (AuthnContextDecl) xmlObject;
 
-        QName attribQName = XMLHelper.constructQName(attribute.getNamespaceURI(), attribute.getLocalName(), attribute
+        QName attribQName = QNameSupport.constructQName(attribute.getNamespaceURI(), attribute.getLocalName(), attribute
                 .getPrefix());
 
         if (attribute.isId()) {

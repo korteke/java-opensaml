@@ -23,10 +23,10 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.common.impl.AbstractSAMLObjectMarshaller;
 import org.opensaml.saml2.core.Attribute;
+import org.opensaml.util.xml.AttributeSupport;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
 
@@ -53,7 +53,7 @@ public class AttributeMarshaller extends AbstractSAMLObjectMarshaller {
 
         Attr attr;
         for (Entry<QName, String> entry : attribute.getUnknownAttributes().entrySet()) {
-            attr = XMLHelper.constructAttribute(domElement.getOwnerDocument(), entry.getKey());
+            attr = AttributeSupport.constructAttribute(domElement.getOwnerDocument(), entry.getKey());
             attr.setValue(entry.getValue());
             domElement.setAttributeNodeNS(attr);
             if (Configuration.isIDAttribute(entry.getKey())

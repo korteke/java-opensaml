@@ -19,11 +19,11 @@ package org.opensaml.xml.schema.impl;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.util.xml.QNameSupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.AbstractXMLObjectUnmarshaller;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.schema.XSAny;
-import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Attr;
 
 /**
@@ -43,7 +43,7 @@ public class XSAnyUnmarshaller extends AbstractXMLObjectUnmarshaller {
     protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
         XSAny xsAny = (XSAny) xmlObject;
 
-        QName attribQName = XMLHelper.constructQName(attribute.getNamespaceURI(), attribute.getLocalName(), attribute
+        QName attribQName = QNameSupport.constructQName(attribute.getNamespaceURI(), attribute.getLocalName(), attribute
                 .getPrefix());
 
         if (attribute.isId()) {

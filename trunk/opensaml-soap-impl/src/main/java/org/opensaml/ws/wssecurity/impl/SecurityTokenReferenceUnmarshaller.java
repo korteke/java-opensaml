@@ -19,6 +19,7 @@ package org.opensaml.ws.wssecurity.impl;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.util.xml.QNameSupport;
 import org.opensaml.ws.wssecurity.SecurityTokenReference;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
@@ -43,7 +44,7 @@ public class SecurityTokenReferenceUnmarshaller extends AbstractWSSecurityObject
         SecurityTokenReference str = (SecurityTokenReference) xmlObject;
         
         QName attribQName = 
-            XMLHelper.constructQName(attribute.getNamespaceURI(), attribute.getLocalName(), attribute.getPrefix());
+            QNameSupport.constructQName(attribute.getNamespaceURI(), attribute.getLocalName(), attribute.getPrefix());
         if (SecurityTokenReference.WSU_ID_ATTR_NAME.equals(attribQName)) {
             str.setWSUId(attribute.getValue());
             attribute.getOwnerElement().setIdAttributeNode(attribute, true);

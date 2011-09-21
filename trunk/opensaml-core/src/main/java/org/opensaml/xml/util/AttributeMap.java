@@ -30,6 +30,7 @@ import org.opensaml.util.ObjectSupport;
 import org.opensaml.util.StringSupport;
 import org.opensaml.util.collections.LazyMap;
 import org.opensaml.util.collections.LazySet;
+import org.opensaml.util.xml.QNameSupport;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.NamespaceManager;
 import org.opensaml.xml.XMLObject;
@@ -492,7 +493,7 @@ public class AttributeMap implements Map<QName, String> {
         String nsURI = XMLObjectHelper.lookupNamespaceURI(attributeOwner, candidatePrefix);
         log.trace("Resolved namespace URI '{}'", nsURI);
         if (nsURI != null) {
-            QName name = XMLHelper.constructQName(nsURI, localPart, candidatePrefix);
+            QName name = QNameSupport.constructQName(nsURI, localPart, candidatePrefix);
             log.trace("Resolved QName '{}'", name);
             return name;
         } else {
