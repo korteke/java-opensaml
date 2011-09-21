@@ -33,6 +33,7 @@ import javax.xml.validation.SchemaFactory;
 
 import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.util.StringSupport;
+import org.opensaml.util.xml.AttributeSupport;
 import org.opensaml.util.xml.ElementSupport;
 import org.opensaml.util.xml.SerializeSupport;
 import org.opensaml.xml.io.Marshaller;
@@ -40,7 +41,6 @@ import org.opensaml.xml.io.Unmarshaller;
 import org.opensaml.xml.parse.BasicParserPool;
 import org.opensaml.xml.parse.XMLParserException;
 import org.opensaml.xml.util.XMLConstants;
-import org.opensaml.xml.util.XMLHelper;
 import org.opensaml.xml.validation.Validator;
 import org.opensaml.xml.validation.ValidatorSuite;
 import org.slf4j.Logger;
@@ -241,7 +241,7 @@ public class XMLConfigurator {
 
             // Get the element name of type this object provider is for
             qNameAttrib = objectProvider.getAttributeNodeNS(null, "qualifiedName");
-            objectProviderName = XMLHelper.getAttributeValueAsQName(qNameAttrib);
+            objectProviderName = AttributeSupport.getAttributeValueAsQName(qNameAttrib);
 
             log.debug("Initializing object provider {}", objectProviderName);
 
@@ -305,7 +305,7 @@ public class XMLConfigurator {
                     "Validator");
             for (int j = 0; j < validatorList.getLength(); j++) {
                 validatorElement = (Element) validatorList.item(j);
-                validatorQName = XMLHelper.getAttributeValueAsQName(validatorElement.getAttributeNodeNS(null,
+                validatorQName = AttributeSupport.getAttributeValueAsQName(validatorElement.getAttributeNodeNS(null,
                         "qualifiedName"));
 
                 validator = (Validator) createClassInstance(validatorElement);

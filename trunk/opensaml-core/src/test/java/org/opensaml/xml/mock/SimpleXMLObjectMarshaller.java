@@ -20,7 +20,7 @@ package org.opensaml.xml.mock;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.AbstractXMLObjectMarshaller;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.util.XMLHelper;
+import org.opensaml.xml.util.XMLObjectHelper;
 import org.w3c.dom.Element;
 
 /**
@@ -37,7 +37,7 @@ public class SimpleXMLObjectMarshaller extends AbstractXMLObjectMarshaller {
             domElement.setIdAttributeNS(null, SimpleXMLObject.ID_ATTRIB_NAME, true);
         }
         
-        XMLHelper.marshallAttributeMap(simpleXMLObject.getUnknownAttributes(), domElement);
+        XMLObjectHelper.marshallAttributeMap(simpleXMLObject.getUnknownAttributes(), domElement);
 
     }
 

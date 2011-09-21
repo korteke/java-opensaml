@@ -22,7 +22,7 @@ import org.opensaml.ws.wstrust.Challenge;
 import org.opensaml.ws.wstrust.SignChallengeType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
-import org.opensaml.xml.util.XMLHelper;
+import org.opensaml.xml.util.XMLObjectHelper;
 import org.w3c.dom.Attr;
 
 /**
@@ -35,7 +35,7 @@ public class SignChallengeTypeUnmarshaller extends AbstractWSTrustObjectUnmarsha
     /** {@inheritDoc} */
     protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
         SignChallengeType signChallengeType= (SignChallengeType) xmlObject;
-        XMLHelper.unmarshallToAttributeMap(signChallengeType.getUnknownAttributes(), attribute);
+        XMLObjectHelper.unmarshallToAttributeMap(signChallengeType.getUnknownAttributes(), attribute);
     }
 
     /** {@inheritDoc} */

@@ -20,7 +20,7 @@ package org.opensaml.ws.wspolicy.impl;
 import org.opensaml.ws.wspolicy.PolicyAttachment;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.util.XMLHelper;
+import org.opensaml.xml.util.XMLObjectHelper;
 import org.w3c.dom.Element;
 
 /**
@@ -31,7 +31,7 @@ public class PolicyAttachmentMarshaller extends AbstractWSPolicyObjectMarshaller
     /** {@inheritDoc} */
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         PolicyAttachment pa = (PolicyAttachment) xmlObject;
-        XMLHelper.marshallAttributeMap(pa.getUnknownAttributes(), domElement);
+        XMLObjectHelper.marshallAttributeMap(pa.getUnknownAttributes(), domElement);
     }
 
 }

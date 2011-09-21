@@ -235,7 +235,7 @@ public class HttpSOAPClient implements SOAPClient {
         try {
             Element responseElem = parserPool.parse(responseStream).getDocumentElement();
             if (log.isDebugEnabled()) {
-                log.debug("Inbound SOAP message was:\n" + XMLHelper.prettyPrintXML(responseElem));
+                log.debug("Inbound SOAP message was:\n" + SerializeSupport.prettyPrintXML(responseElem));
             }
             Unmarshaller unmarshaller = Configuration.getUnmarshallerFactory().getUnmarshaller(responseElem);
             return (Envelope) unmarshaller.unmarshall(responseElem);

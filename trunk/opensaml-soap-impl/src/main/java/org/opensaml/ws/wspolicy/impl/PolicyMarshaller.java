@@ -21,7 +21,7 @@ import org.opensaml.ws.wspolicy.Policy;
 import org.opensaml.ws.wssecurity.IdBearing;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.util.XMLHelper;
+import org.opensaml.xml.util.XMLObjectHelper;
 import org.w3c.dom.Element;
 
 
@@ -40,10 +40,10 @@ public class PolicyMarshaller extends OperatorContentTypeMarshaller {
         }
         
         if (policy.getWSUId() != null) {
-            XMLHelper.marshallAttribute(IdBearing.WSU_ID_ATTR_NAME, policy.getWSUId(), domElement, true);
+            XMLObjectHelper.marshallAttribute(IdBearing.WSU_ID_ATTR_NAME, policy.getWSUId(), domElement, true);
         }
         
-        XMLHelper.marshallAttributeMap(policy.getUnknownAttributes(), domElement);
+        XMLObjectHelper.marshallAttributeMap(policy.getUnknownAttributes(), domElement);
     }
 
 }

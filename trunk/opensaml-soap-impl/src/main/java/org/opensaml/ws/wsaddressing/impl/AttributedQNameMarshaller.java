@@ -21,7 +21,7 @@ import org.opensaml.ws.wsaddressing.AttributedQName;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.schema.impl.XSQNameMarshaller;
-import org.opensaml.xml.util.XMLHelper;
+import org.opensaml.xml.util.XMLObjectHelper;
 import org.w3c.dom.Element;
 
 /**
@@ -32,7 +32,7 @@ public class AttributedQNameMarshaller extends XSQNameMarshaller {
     /** {@inheritDoc} */
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         AttributedQName attributedQName = (AttributedQName) xmlObject;
-        XMLHelper.marshallAttributeMap(attributedQName.getUnknownAttributes(), domElement);
+        XMLObjectHelper.marshallAttributeMap(attributedQName.getUnknownAttributes(), domElement);
     }
     
 }

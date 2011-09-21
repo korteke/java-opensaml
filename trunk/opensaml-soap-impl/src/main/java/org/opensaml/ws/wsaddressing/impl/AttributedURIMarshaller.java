@@ -22,7 +22,7 @@ import org.opensaml.util.xml.ElementSupport;
 import org.opensaml.ws.wsaddressing.AttributedURI;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.util.XMLHelper;
+import org.opensaml.xml.util.XMLObjectHelper;
 import org.w3c.dom.Element;
 
 /**
@@ -40,6 +40,6 @@ public class AttributedURIMarshaller extends AbstractWSAddressingObjectMarshalle
     /** {@inheritDoc} */
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         AttributedURI attributedURI = (AttributedURI) xmlObject;
-        XMLHelper.marshallAttributeMap(attributedURI.getUnknownAttributes(), domElement);
+        XMLObjectHelper.marshallAttributeMap(attributedURI.getUnknownAttributes(), domElement);
     }
 }

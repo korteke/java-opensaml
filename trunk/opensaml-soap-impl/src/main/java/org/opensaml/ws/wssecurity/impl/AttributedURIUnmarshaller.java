@@ -23,7 +23,7 @@ import org.opensaml.util.xml.QNameSupport;
 import org.opensaml.ws.wssecurity.AttributedURI;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
-import org.opensaml.xml.util.XMLHelper;
+import org.opensaml.xml.util.XMLObjectHelper;
 import org.w3c.dom.Attr;
 
 /**
@@ -41,7 +41,7 @@ public class AttributedURIUnmarshaller extends AbstractWSSecurityObjectUnmarshal
             attributedURI.setWSUId(attribute.getValue());
             attribute.getOwnerElement().setIdAttributeNode(attribute, true);
         } else {
-            XMLHelper.unmarshallToAttributeMap(attributedURI.getUnknownAttributes(), attribute);
+            XMLObjectHelper.unmarshallToAttributeMap(attributedURI.getUnknownAttributes(), attribute);
         }
     }
 

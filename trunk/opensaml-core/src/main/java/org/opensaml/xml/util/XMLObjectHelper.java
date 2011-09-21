@@ -21,8 +21,14 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.io.Writer;
+import java.util.List;
+import java.util.Map.Entry;
+
+import javax.xml.namespace.QName;
 
 import org.opensaml.util.ObjectSupport;
+import org.opensaml.util.StringSupport;
+import org.opensaml.util.xml.AttributeSupport;
 import org.opensaml.util.xml.QNameSupport;
 import org.opensaml.util.xml.SerializeSupport;
 import org.opensaml.xml.Configuration;
@@ -37,6 +43,7 @@ import org.opensaml.xml.parse.ParserPool;
 import org.opensaml.xml.parse.XMLParserException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -247,7 +254,7 @@ public final class XMLObjectHelper {
     public static void marshallToOutputStream(XMLObject xmlObject, OutputStream outputStream) 
             throws MarshallingException {
         Element element = marshall(xmlObject);
-        XMLHelper.writeNode(element, outputStream);
+        SerializeSupport.writeNode(element, outputStream);
     }
     
     /**
@@ -315,6 +322,77 @@ public final class XMLObjectHelper {
      */
     private static Logger getLogger() {
         return LoggerFactory.getLogger(XMLObjectHelper.class);
+    }
+
+    /**
+     * Marshall an attribute name and value to a DOM Element. This is particularly useful for attributes whose names
+     * appear in namespace-qualified form.
+     * 
+     * @param attributeName the attribute name in QName form
+     * @param attributeValues the attribute values
+     * @param domElement the target element to which to marshall
+     * @param isIDAttribute flag indicating whether the attribute being marshalled should be handled as an ID-typed
+     *            attribute
+     */
+    public static void marshallAttribute(QName attributeName, List<String> attributeValues, Element domElement,
+            boolean isIDAttribute) {
+        marshallAttribute(attributeName, StringSupport.listToStringValue(attributeValues, " "), domElement,
+                isIDAttribute);
+    }
+
+    /**
+     * Marshall an attribute name and value to a DOM Element. This is particularly useful for attributes whose names
+     * appear in namespace-qualified form.
+     * 
+     * @param attributeName the attribute name in QName form
+     * @param attributeValue the attribute value
+     * @param domElement the target element to which to marshall
+     * @param isIDAttribute flag indicating whether the attribute being marshalled should be handled as an ID-typed
+     *            attribute
+     */
+    public static void marshallAttribute(QName attributeName, String attributeValue, Element domElement,
+            boolean isIDAttribute) {
+        Document document = domElement.getOwnerDocument();
+        Attr attribute = AttributeSupport.constructAttribute(document, attributeName);
+        attribute.setValue(attributeValue);
+        domElement.setAttributeNodeNS(attribute);
+        if (isIDAttribute) {
+            domElement.setIdAttributeNode(attribute, true);
+        }
+    }
+
+    /**
+     * Marshall the attributes represented by the indicated AttributeMap into the indicated DOM Element.
+     * 
+     * @param attributeMap the AttributeMap
+     * @param domElement the target Element
+     */
+    public static void marshallAttributeMap(AttributeMap attributeMap, Element domElement) {
+        Document document = domElement.getOwnerDocument();
+        Attr attribute = null;
+        for (Entry<QName, String> entry : attributeMap.entrySet()) {
+            attribute = AttributeSupport.constructAttribute(document, entry.getKey());
+            attribute.setValue(entry.getValue());
+            domElement.setAttributeNodeNS(attribute);
+            if (Configuration.isIDAttribute(entry.getKey()) || attributeMap.isIDAttribute(entry.getKey())) {
+                domElement.setIdAttributeNode(attribute, true);
+            }
+        }
+    }
+
+    /**
+     * Unmarshall a DOM Attr to an AttributeMap.
+     * 
+     * @param attributeMap the target AttributeMap
+     * @param attribute the target DOM Attr
+     */
+    public static void unmarshallToAttributeMap(AttributeMap attributeMap, Attr attribute) {
+        QName attribQName = QNameSupport.constructQName(attribute.getNamespaceURI(), attribute.getLocalName(), attribute
+                .getPrefix());
+        attributeMap.put(attribQName, attribute.getValue());
+        if (attribute.isId() || Configuration.isIDAttribute(attribQName)) {
+            attributeMap.registerID(attribQName);
+        }
     }
     
 }

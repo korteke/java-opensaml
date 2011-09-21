@@ -21,7 +21,7 @@ import org.opensaml.util.StringSupport;
 import org.opensaml.ws.wssecurity.Embedded;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.util.XMLHelper;
+import org.opensaml.xml.util.XMLObjectHelper;
 import org.w3c.dom.Element;
 
 /**
@@ -37,7 +37,7 @@ public class EmbeddedMarshaller extends AbstractWSSecurityObjectMarshaller {
             domElement.setAttributeNS(null, Embedded.VALUE_TYPE_ATTRIB_NAME, embedded.getValueType());
         }
         
-        XMLHelper.marshallAttributeMap(embedded.getUnknownAttributes(), domElement);
+        XMLObjectHelper.marshallAttributeMap(embedded.getUnknownAttributes(), domElement);
         
     }
 
