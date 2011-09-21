@@ -24,6 +24,7 @@ import java.io.Writer;
 
 import org.opensaml.util.ObjectSupport;
 import org.opensaml.util.xml.QNameSupport;
+import org.opensaml.util.xml.SerializeSupport;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.Namespace;
 import org.opensaml.xml.XMLObject;
@@ -145,7 +146,7 @@ public final class XMLObjectHelper {
 
         if (log.isTraceEnabled()) {
             log.trace("Resultant DOM message was:");
-            log.trace(XMLHelper.nodeToString(messageElem));
+            log.trace(SerializeSupport.nodeToString(messageElem));
         }
 
         log.debug("Unmarshalling DOM parsed from InputStream");
@@ -230,7 +231,7 @@ public final class XMLObjectHelper {
         
         if (log.isTraceEnabled()) {
             log.trace("Marshalled XMLObject into DOM:");
-            log.trace(XMLHelper.nodeToString(messageElem));
+            log.trace(SerializeSupport.nodeToString(messageElem));
         }
         
         return messageElem;

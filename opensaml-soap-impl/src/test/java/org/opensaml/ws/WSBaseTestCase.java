@@ -28,6 +28,7 @@ import junit.framework.TestCase;
 import org.custommonkey.xmlunit.Diff;
 import org.custommonkey.xmlunit.XMLAssert;
 import org.custommonkey.xmlunit.XMLUnit;
+import org.opensaml.util.xml.SerializeSupport;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.XMLObjectBuilder;
@@ -36,7 +37,6 @@ import org.opensaml.xml.io.Unmarshaller;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.parse.BasicParserPool;
 import org.opensaml.xml.parse.XMLParserException;
-import org.opensaml.xml.util.XMLHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -166,7 +166,7 @@ public abstract class WSBaseTestCase extends TestCase {
         Element element= marshaller.marshall(object);
         assertNotNull(element);
 
-        System.out.println(XMLHelper.nodeToString(element));
+        System.out.println(SerializeSupport.nodeToString(element));
 
         T object2= (T) unmarshaller.unmarshall(element);
         assertNotNull(object2);
@@ -180,7 +180,7 @@ public abstract class WSBaseTestCase extends TestCase {
         Element element2= marshaller.marshall(object2);
         assertNotNull(element2);
 
-        System.out.println(XMLHelper.nodeToString(element2));
+        System.out.println(SerializeSupport.nodeToString(element2));
 
         // These need to be false, otherwise the test below is invalid
         //System.out.println("Element equals: " + element.isSameNode(element2)); 

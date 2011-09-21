@@ -32,6 +32,7 @@ import org.apache.commons.httpclient.methods.ByteArrayRequestEntity;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.RequestEntity;
 import org.opensaml.util.resolver.ResolverException;
+import org.opensaml.util.xml.SerializeSupport;
 import org.opensaml.ws.security.SecurityPolicy;
 import org.opensaml.ws.security.SecurityPolicyResolver;
 import org.opensaml.ws.soap.client.SOAPClient;
@@ -162,7 +163,7 @@ public class HttpSOAPClient implements SOAPClient {
             OutputStreamWriter writer = new OutputStreamWriter(arrayOut, charset);
 
             if (log.isDebugEnabled()) {
-                log.debug("Outbound SOAP message is:\n" + XMLHelper.prettyPrintXML(marshaller.marshall(message)));
+                log.debug("Outbound SOAP message is:\n" + SerializeSupport.prettyPrintXML(marshaller.marshall(message)));
             }
             XMLHelper.writeNode(marshaller.marshall(message), writer);
             return new ByteArrayRequestEntity(arrayOut.toByteArray(), "text/xml");

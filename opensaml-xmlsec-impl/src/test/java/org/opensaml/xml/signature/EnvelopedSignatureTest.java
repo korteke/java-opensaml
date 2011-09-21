@@ -22,6 +22,7 @@ import java.security.GeneralSecurityException;
 import java.security.KeyPair;
 import java.security.PublicKey;
 
+import org.opensaml.util.xml.SerializeSupport;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.XMLObjectBaseTestCase;
 import org.opensaml.xml.io.Marshaller;
@@ -35,7 +36,6 @@ import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.keyinfo.KeyInfoHelper;
 import org.opensaml.xml.signature.impl.SignatureBuilder;
-import org.opensaml.xml.util.XMLHelper;
 import org.opensaml.xml.validation.ValidationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -96,7 +96,7 @@ public class EnvelopedSignatureTest extends XMLObjectBaseTestCase {
         Signer.signObject(signature);
         
         if (log.isDebugEnabled()) {
-            log.debug("Marshalled Signature: \n" + XMLHelper.nodeToString(signedElement));
+            log.debug("Marshalled Signature: \n" + SerializeSupport.nodeToString(signedElement));
         }
         
         SignatureValidator sigValidator = new SignatureValidator(goodCredential);

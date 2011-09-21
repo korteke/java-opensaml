@@ -25,6 +25,7 @@ import org.opensaml.common.binding.SAMLMessageContext;
 import org.opensaml.common.xml.SAMLConstants;
 import org.opensaml.util.Base64;
 import org.opensaml.util.StringSupport;
+import org.opensaml.util.xml.SerializeSupport;
 import org.opensaml.ws.message.encoder.MessageEncodingException;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.io.Marshaller;
@@ -37,7 +38,6 @@ import org.opensaml.xml.security.XMLSigningUtil;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.keyinfo.KeyInfoGenerator;
 import org.opensaml.xml.signature.KeyInfo;
-import org.opensaml.xml.util.XMLHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -147,7 +147,7 @@ public class HTTPPostSimpleSignEncoder extends HTTPPostEncoder {
                     log.error("No KeyInfo marshaller available from configuration");
                     throw new MessageEncodingException("No KeyInfo marshaller was configured");
                 }
-                String kiXML = XMLHelper.nodeToString(marshaller.marshall(keyInfo));
+                String kiXML = SerializeSupport.nodeToString(marshaller.marshall(keyInfo));
                 String kiBase64 = Base64.encodeBytes(kiXML.getBytes(), Base64.DONT_BREAK_LINES);
                 return kiBase64;
             } else {

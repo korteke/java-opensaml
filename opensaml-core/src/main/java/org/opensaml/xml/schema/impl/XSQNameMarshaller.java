@@ -18,11 +18,11 @@
 package org.opensaml.xml.schema.impl;
 
 import org.opensaml.util.xml.ElementSupport;
+import org.opensaml.util.xml.QNameSupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.AbstractXMLObjectMarshaller;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.schema.XSQName;
-import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Element;
 
 /**
@@ -38,6 +38,6 @@ public class XSQNameMarshaller extends AbstractXMLObjectMarshaller {
     /** {@inheritDoc} */
     protected void marshallElementContent(XMLObject xmlObject, Element domElement) throws MarshallingException {
         XSQName qname = (XSQName) xmlObject;
-        ElementSupport.appendTextContent(domElement, XMLHelper.qnameToContentString(qname.getValue()));
+        ElementSupport.appendTextContent(domElement, QNameSupport.qnameToContentString(qname.getValue()));
     }
 }

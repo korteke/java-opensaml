@@ -26,6 +26,7 @@ import org.opensaml.common.binding.BasicSAMLMessageContext;
 import org.opensaml.common.binding.decoding.SAMLMessageDecoder;
 import org.opensaml.saml2.core.AttributeQuery;
 import org.opensaml.saml2.core.Response;
+import org.opensaml.util.xml.SerializeSupport;
 import org.opensaml.ws.message.decoder.MessageDecodingException;
 import org.opensaml.ws.message.encoder.MessageEncodingException;
 import org.opensaml.ws.soap.soap11.Envelope;
@@ -38,7 +39,6 @@ import org.opensaml.xml.security.XMLSecurityHelper;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.signature.Signature;
 import org.opensaml.xml.signature.Signer;
-import org.opensaml.xml.util.XMLHelper;
 import org.springframework.mock.web.MockHttpServletRequest;
 
 /**
@@ -237,6 +237,6 @@ public class HTTPSOAP11DecoderTest extends BaseTestCase {
     
     protected String encodeMessage(XMLObject message) throws MessageEncodingException, MarshallingException {
         marshallerFactory.getMarshaller(message).marshall(message);
-        return XMLHelper.nodeToString(message.getDOM());
+        return SerializeSupport.nodeToString(message.getDOM());
     }
 }

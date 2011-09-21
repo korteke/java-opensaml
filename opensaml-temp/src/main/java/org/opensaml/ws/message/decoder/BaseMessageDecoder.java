@@ -21,6 +21,7 @@ import java.io.InputStream;
 
 import org.opensaml.util.resolver.ResolverException;
 import org.opensaml.util.xml.QNameSupport;
+import org.opensaml.util.xml.SerializeSupport;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.security.SecurityPolicy;
 import org.opensaml.ws.security.SecurityPolicyResolver;
@@ -34,7 +35,6 @@ import org.opensaml.xml.parse.BasicParserPool;
 import org.opensaml.xml.parse.ParserPool;
 import org.opensaml.xml.parse.XMLParserException;
 import org.opensaml.xml.security.SecurityException;
-import org.opensaml.xml.util.XMLHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -111,7 +111,7 @@ public abstract class BaseMessageDecoder implements MessageDecoder {
                     return;
                 }
             }
-            protocolMessageLog.debug("\n" + XMLHelper.prettyPrintXML(messageContext.getInboundMessage().getDOM()));
+            protocolMessageLog.debug("\n" + SerializeSupport.prettyPrintXML(messageContext.getInboundMessage().getDOM()));
         }
     }
 
@@ -193,7 +193,7 @@ public abstract class BaseMessageDecoder implements MessageDecoder {
             Element messageElem = messageDoc.getDocumentElement();
 
             if (log.isTraceEnabled()) {
-                log.trace("Resultant DOM message was:\n{}", XMLHelper.nodeToString(messageElem));
+                log.trace("Resultant DOM message was:\n{}", SerializeSupport.nodeToString(messageElem));
             }
 
             log.debug("Unmarshalling message DOM");

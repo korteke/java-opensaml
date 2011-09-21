@@ -29,6 +29,7 @@ import org.opensaml.saml2.core.AuthnRequest;
 import org.opensaml.saml2.core.RequestAbstractType;
 import org.opensaml.saml2.core.Response;
 import org.opensaml.util.Base64;
+import org.opensaml.util.xml.SerializeSupport;
 import org.opensaml.ws.message.decoder.MessageDecodingException;
 import org.opensaml.ws.transport.http.HttpServletRequestAdapter;
 import org.opensaml.xml.security.SecurityException;
@@ -247,7 +248,7 @@ public class HTTPPostDecoderTest extends BaseTestCase {
     
     protected String encodeMessage(SAMLObject message) throws Exception {
         marshallerFactory.getMarshaller(message).marshall(message);
-        String messageStr = XMLHelper.nodeToString(message.getDOM());
+        String messageStr = SerializeSupport.nodeToString(message.getDOM());
         
         return Base64.encodeBytes(messageStr.getBytes("UTF-8"), Base64.DONT_BREAK_LINES);
     }

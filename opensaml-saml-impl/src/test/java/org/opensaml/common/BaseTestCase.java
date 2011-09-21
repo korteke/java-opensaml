@@ -28,6 +28,7 @@ import org.opensaml.Configuration;
 import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.core.config.InitializationException;
 import org.opensaml.core.config.InitializationService;
+import org.opensaml.util.xml.SerializeSupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.XMLObjectBuilder;
 import org.opensaml.xml.XMLObjectBuilderFactory;
@@ -39,7 +40,6 @@ import org.opensaml.xml.io.UnmarshallerFactory;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.parse.ParserPool;
 import org.opensaml.xml.parse.XMLParserException;
-import org.opensaml.xml.util.XMLHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -118,7 +118,7 @@ public abstract class BaseTestCase extends TestCase {
         try {
             Element generatedDOM = marshaller.marshall(xmlObject, parser.newDocument());
             if(log.isDebugEnabled()) {
-                log.debug("Marshalled DOM was " + XMLHelper.nodeToString(generatedDOM));
+                log.debug("Marshalled DOM was " + SerializeSupport.nodeToString(generatedDOM));
             }
             XMLAssert.assertXMLIdentical(failMessage, new Diff(expectedDOM, generatedDOM.getOwnerDocument()), true);
         } catch (Exception e) {

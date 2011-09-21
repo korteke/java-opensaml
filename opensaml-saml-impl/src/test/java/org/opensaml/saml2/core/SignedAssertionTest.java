@@ -28,6 +28,7 @@ import org.opensaml.saml2.core.impl.AuthnStatementBuilder;
 import org.opensaml.saml2.core.impl.IssuerBuilder;
 import org.opensaml.util.SecureRandomIdentifierGenerator;
 import org.opensaml.util.criteria.CriteriaSet;
+import org.opensaml.util.xml.SerializeSupport;
 import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.io.UnmarshallingException;
@@ -43,7 +44,6 @@ import org.opensaml.xml.signature.SignatureException;
 import org.opensaml.xml.signature.Signer;
 import org.opensaml.xml.signature.impl.ExplicitKeySignatureTrustEngine;
 import org.opensaml.xml.signature.impl.SignatureBuilder;
-import org.opensaml.xml.util.XMLHelper;
 import org.opensaml.xml.validation.ValidationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -126,7 +126,7 @@ public class SignedAssertionTest extends BaseTestCase {
         Signer.signObject(signature);
         
         if (log.isDebugEnabled()) {
-            log.debug("Marshalled signed assertion: \n" + XMLHelper.nodeToString(assertion.getDOM()));
+            log.debug("Marshalled signed assertion: \n" + SerializeSupport.nodeToString(assertion.getDOM()));
         }
         
         // Unmarshall new tree around DOM to avoid side effects and Apache xmlsec bug.

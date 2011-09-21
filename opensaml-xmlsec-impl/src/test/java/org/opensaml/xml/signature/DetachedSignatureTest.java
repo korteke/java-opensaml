@@ -19,6 +19,7 @@ package org.opensaml.xml.signature;
 
 import java.security.KeyPair;
 
+import org.opensaml.util.xml.SerializeSupport;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.XMLObjectBaseTestCase;
 import org.opensaml.xml.io.Marshaller;
@@ -95,7 +96,7 @@ public class DetachedSignatureTest extends XMLObjectBaseTestCase {
 
         Signer.signObject(signature);
         if (log.isDebugEnabled()) {
-            log.debug("Marshalled deatched Signature: \n" + XMLHelper.nodeToString(signedElement));
+            log.debug("Marshalled deatched Signature: \n" + SerializeSupport.nodeToString(signedElement));
         }
 
         Unmarshaller unmarshaller = Configuration.getUnmarshallerFactory().getUnmarshaller(signedElement);
@@ -139,7 +140,7 @@ public class DetachedSignatureTest extends XMLObjectBaseTestCase {
 
         Signer.signObject(signature);
         if (log.isDebugEnabled()) {
-            log.debug("Marshalled deatched Signature: \n" + XMLHelper.nodeToString(signatureElement));
+            log.debug("Marshalled deatched Signature: \n" + SerializeSupport.nodeToString(signatureElement));
         }
 
         SignatureValidator sigValidator = new SignatureValidator(goodCredential);

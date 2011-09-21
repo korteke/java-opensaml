@@ -17,12 +17,12 @@
 
 package org.opensaml.ws.message.encoder;
 
+import org.opensaml.util.xml.SerializeSupport;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.util.XMLHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
@@ -70,7 +70,7 @@ public abstract class BaseMessageEncoder implements MessageEncoder {
                     return;
                 }
             }
-            protocolMessageLog.debug("\n" + XMLHelper.prettyPrintXML(messageContext.getOutboundMessage().getDOM()));
+            protocolMessageLog.debug("\n" + SerializeSupport.prettyPrintXML(messageContext.getOutboundMessage().getDOM()));
         }
     }
 
@@ -106,7 +106,7 @@ public abstract class BaseMessageEncoder implements MessageEncoder {
             }
             Element messageElem = marshaller.marshall(message);
             if (log.isTraceEnabled()) {
-                log.trace("Marshalled message into DOM:\n{}", XMLHelper.nodeToString(messageElem));
+                log.trace("Marshalled message into DOM:\n{}", SerializeSupport.nodeToString(messageElem));
             }
             return messageElem;
         } catch (MarshallingException e) {
