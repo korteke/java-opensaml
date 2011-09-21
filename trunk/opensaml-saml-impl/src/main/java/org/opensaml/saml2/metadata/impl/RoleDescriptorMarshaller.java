@@ -28,9 +28,9 @@ import org.opensaml.saml2.common.CacheableSAMLObject;
 import org.opensaml.saml2.common.TimeBoundSAMLObject;
 import org.opensaml.saml2.metadata.RoleDescriptor;
 import org.opensaml.util.xml.AttributeSupport;
+import org.opensaml.util.xml.DomTypeSupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.util.XMLHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Attr;
@@ -65,7 +65,7 @@ public abstract class RoleDescriptorMarshaller extends AbstractSAMLObjectMarshal
         // Set the cacheDuration attribute
         if (roleDescriptor.getCacheDuration() != null) {
             log.trace("Writting cacheDuration attribute to EntitiesDescriptor DOM element");
-            String cacheDuration = XMLHelper.longToDuration(roleDescriptor.getCacheDuration());
+            String cacheDuration = DomTypeSupport.longToDuration(roleDescriptor.getCacheDuration());
             domElement.setAttributeNS(null, CacheableSAMLObject.CACHE_DURATION_ATTRIB_NAME, cacheDuration);
         }
 

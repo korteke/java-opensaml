@@ -19,7 +19,7 @@ package org.opensaml.xml;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.xml.util.XMLHelper;
+import org.opensaml.util.xml.DomTypeSupport;
 import org.w3c.dom.Element;
 
 /**
@@ -62,7 +62,7 @@ public abstract class AbstractXMLObjectBuilder<XMLObjectType extends XMLObject> 
         String localName = element.getLocalName();
         String nsURI = element.getNamespaceURI();
         String nsPrefix = element.getPrefix();
-        QName schemaType = XMLHelper.getXSIType(element);
+        QName schemaType = DomTypeSupport.getXSIType(element);
 
         xmlObject = buildObject(nsURI, localName, nsPrefix, schemaType);
 

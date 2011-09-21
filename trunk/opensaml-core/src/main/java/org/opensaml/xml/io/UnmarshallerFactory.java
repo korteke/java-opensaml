@@ -23,7 +23,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.xml.util.XMLHelper;
+import org.opensaml.util.xml.DomTypeSupport;
+import org.opensaml.util.xml.QNameSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
@@ -75,10 +76,10 @@ public class UnmarshallerFactory {
     public Unmarshaller getUnmarshaller(Element domElement) {
         Unmarshaller unmarshaller;
 
-        unmarshaller = getUnmarshaller(XMLHelper.getXSIType(domElement));
+        unmarshaller = getUnmarshaller(DomTypeSupport.getXSIType(domElement));
 
         if (unmarshaller == null) {
-            unmarshaller = getUnmarshaller(XMLHelper.getNodeQName(domElement));
+            unmarshaller = getUnmarshaller(QNameSupport.getNodeQName(domElement));
         }
 
         return unmarshaller;

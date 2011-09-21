@@ -19,10 +19,10 @@ package org.opensaml.xml.encryption.impl;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.util.xml.QNameSupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.encryption.EncryptionProperty;
 import org.opensaml.xml.io.UnmarshallingException;
-import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Attr;
 
 /**
@@ -40,7 +40,7 @@ public class EncryptionPropertyUnmarshaller extends AbstractXMLEncryptionUnmarsh
         } else if (attribute.getLocalName().equals(EncryptionProperty.TARGET_ATTRIB_NAME)) {
             ep.setTarget(attribute.getValue());
         } else {
-            QName attributeName = XMLHelper.getNodeQName(attribute);
+            QName attributeName = QNameSupport.getNodeQName(attribute);
             if (attribute.isId()) {
                 ep.getUnknownAttributes().registerID(attributeName);
             }

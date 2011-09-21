@@ -33,6 +33,7 @@ import org.apache.xml.security.encryption.XMLEncryptionException;
 import org.opensaml.util.StringSupport;
 import org.opensaml.util.xml.ElementSupport;
 import org.opensaml.util.xml.NamespaceSupport;
+import org.opensaml.util.xml.QNameSupport;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.XMLObjectBuilderFactory;
@@ -50,7 +51,6 @@ import org.opensaml.xml.signature.KeyInfo;
 import org.opensaml.xml.signature.SignatureConstants;
 import org.opensaml.xml.signature.XMLSignatureBuilder;
 import org.opensaml.xml.util.XMLConstants;
-import org.opensaml.xml.util.XMLHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -389,7 +389,7 @@ public class Encrypter {
             Iterator childIter = apacheEncryptedKey.getEncryptionMethod().getEncryptionMethodInformation();
             while (childIter.hasNext()) {
                 Element child = (Element) childIter.next();
-                if (DigestMethod.DEFAULT_ELEMENT_NAME.equals(XMLHelper.getNodeQName(child))) {
+                if (DigestMethod.DEFAULT_ELEMENT_NAME.equals(QNameSupport.getNodeQName(child))) {
                     sawDigestMethod = true;
                     break;
                 }

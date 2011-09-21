@@ -23,6 +23,7 @@ import java.io.Reader;
 import java.io.Writer;
 
 import org.opensaml.util.ObjectSupport;
+import org.opensaml.util.xml.QNameSupport;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.Namespace;
 import org.opensaml.xml.XMLObject;
@@ -151,10 +152,10 @@ public final class XMLObjectHelper {
         Unmarshaller unmarshaller = Configuration.getUnmarshallerFactory().getUnmarshaller(messageElem);
         if (unmarshaller == null) {
             log.error("Unable to unmarshall InputStream, no unmarshaller registered for element "
-                    + XMLHelper.getNodeQName(messageElem));
+                    + QNameSupport.getNodeQName(messageElem));
             throw new UnmarshallingException(
                     "Unable to unmarshall InputStream, no unmarshaller registered for element "
-                            + XMLHelper.getNodeQName(messageElem));
+                            + QNameSupport.getNodeQName(messageElem));
         }
 
         XMLObject message = unmarshaller.unmarshall(messageElem);
@@ -190,10 +191,10 @@ public final class XMLObjectHelper {
         Unmarshaller unmarshaller = Configuration.getUnmarshallerFactory().getUnmarshaller(messageElem);
         if (unmarshaller == null) {
             log.error("Unable to unmarshall Reader, no unmarshaller registered for element "
-                    + XMLHelper.getNodeQName(messageElem));
+                    + QNameSupport.getNodeQName(messageElem));
             throw new UnmarshallingException(
                     "Unable to unmarshall Reader, no unmarshaller registered for element "
-                            + XMLHelper.getNodeQName(messageElem));
+                            + QNameSupport.getNodeQName(messageElem));
         }
 
         XMLObject message = unmarshaller.unmarshall(messageElem);

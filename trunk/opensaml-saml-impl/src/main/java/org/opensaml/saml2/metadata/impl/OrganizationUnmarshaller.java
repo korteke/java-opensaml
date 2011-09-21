@@ -29,9 +29,9 @@ import org.opensaml.saml2.metadata.Organization;
 import org.opensaml.saml2.metadata.OrganizationDisplayName;
 import org.opensaml.saml2.metadata.OrganizationName;
 import org.opensaml.saml2.metadata.OrganizationURL;
+import org.opensaml.util.xml.QNameSupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
-import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Attr;
 
 /**
@@ -63,7 +63,7 @@ public class OrganizationUnmarshaller extends AbstractSAMLObjectUnmarshaller {
     protected void processAttribute(XMLObject samlObject, Attr attribute) throws UnmarshallingException {
         Organization org = (Organization) samlObject;
 
-        QName attribQName = XMLHelper.getNodeQName(attribute);
+        QName attribQName = QNameSupport.getNodeQName(attribute);
         if (attribute.isId()) {
             org.getUnknownAttributes().registerID(attribQName);
         }

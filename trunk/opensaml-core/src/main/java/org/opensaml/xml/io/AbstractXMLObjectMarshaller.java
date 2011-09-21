@@ -145,7 +145,7 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
     public Element marshall(XMLObject xmlObject, Element parentElement) throws MarshallingException {
         Element domElement;
 
-        log.trace("Starting to marshall {} as child of {}", xmlObject.getElementQName(), XMLHelper
+        log.trace("Starting to marshall {} as child of {}", xmlObject.getElementQName(), QNameSupport
                 .getNodeQName(parentElement));
 
         if (parentElement == null) {
@@ -162,7 +162,7 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
             prepareForAdoption(xmlObject);
 
             log.trace("Appending DOM of XMLObject {} as child of parent element {}", xmlObject.getElementQName(),
-                    XMLHelper.getNodeQName(parentElement));
+                    QNameSupport.getNodeQName(parentElement));
             ElementSupport.appendChildElement(parentElement, domElement);
 
             return domElement;
