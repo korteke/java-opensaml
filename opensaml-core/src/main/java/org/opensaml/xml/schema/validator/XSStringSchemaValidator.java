@@ -17,8 +17,8 @@
 
 package org.opensaml.xml.schema.validator;
 
+import org.opensaml.util.StringSupport;
 import org.opensaml.xml.schema.XSString;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.validation.ValidationException;
 import org.opensaml.xml.validation.Validator;
 
@@ -73,7 +73,7 @@ public class XSStringSchemaValidator<T extends XSString> implements Validator<T>
      */
     protected void validateStringContent(T xmlObject) throws ValidationException {
         if (! isAllowEmptyContent()) {
-            if (DatatypeHelper.isEmpty(xmlObject.getValue())) {
+            if (StringSupport.isNullOrEmpty(xmlObject.getValue())) {
                 throw new ValidationException("String content may not be empty");
             }
         }

@@ -25,7 +25,7 @@ import java.util.List;
 
 import org.opensaml.saml1.core.Assertion;
 import org.opensaml.saml1.core.Statement;
-import org.opensaml.xml.util.DatatypeHelper;
+import org.opensaml.util.StringSupport;
 import org.opensaml.xml.validation.ValidationException;
 import org.opensaml.xml.validation.Validator;
 
@@ -61,7 +61,7 @@ public class AssertionSchemaValidator implements Validator<Assertion> {
      * @throws ValidationException
      */
     protected void validateId(Assertion assertion) throws ValidationException {
-         if (DatatypeHelper.isEmpty(assertion.getID())) {
+         if (StringSupport.isNullOrEmpty(assertion.getID())) {
              throw new ValidationException("ID not present");
          }
     }
@@ -72,7 +72,7 @@ public class AssertionSchemaValidator implements Validator<Assertion> {
      * @throws ValidationException
      */
     protected void validateIssuer(Assertion assertion) throws ValidationException {
-        if (DatatypeHelper.isEmpty(assertion.getIssuer())) {
+        if (StringSupport.isNullOrEmpty(assertion.getIssuer())) {
              throw new ValidationException("Issuer not present");
          }
     }

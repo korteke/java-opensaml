@@ -17,6 +17,7 @@
 
 package org.opensaml.xml.signature.impl;
 
+import org.opensaml.util.StringSupport;
 import org.opensaml.util.criteria.CriteriaSet;
 import org.opensaml.util.resolver.ResolverException;
 import org.opensaml.xml.security.SecurityException;
@@ -26,7 +27,6 @@ import org.opensaml.xml.security.keyinfo.KeyInfoCriterion;
 import org.opensaml.xml.signature.Signature;
 import org.opensaml.xml.signature.SignatureTrustEngine;
 import org.opensaml.xml.signature.SignatureValidator;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.validation.ValidationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -192,7 +192,7 @@ public abstract class BaseSignatureTrustEngine<TrustBasisType> implements Signat
         if (content == null || content.length == 0) {
             throw new SecurityException("Content byte array was null or empty");
         }
-        if (DatatypeHelper.isEmpty(algorithmURI)) {
+        if (StringSupport.isNullOrEmpty(algorithmURI)) {
             throw new SecurityException("Signature algorithm was null or empty");
         }
         if (trustBasisCriteria == null) {

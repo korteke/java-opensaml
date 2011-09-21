@@ -21,7 +21,7 @@
 package org.opensaml.saml2.core.validator;
 
 import org.opensaml.saml2.core.SessionIndex;
-import org.opensaml.xml.util.DatatypeHelper;
+import org.opensaml.util.StringSupport;
 import org.opensaml.xml.validation.ValidationException;
 import org.opensaml.xml.validation.Validator;
 
@@ -50,7 +50,7 @@ public class SessionIndexSchemaValidator implements Validator<SessionIndex> {
      * @throws ValidationException 
      */
     protected void validateSessionIndex(SessionIndex si) throws ValidationException {
-        if (DatatypeHelper.isEmpty(si.getSessionIndex())) {
+        if (StringSupport.isNullOrEmpty(si.getSessionIndex())) {
             throw new ValidationException("SessionIndex must be non-empty");
         }
     }

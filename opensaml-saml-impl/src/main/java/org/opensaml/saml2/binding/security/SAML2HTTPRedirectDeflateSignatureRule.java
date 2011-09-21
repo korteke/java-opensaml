@@ -23,10 +23,10 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.opensaml.common.binding.SAMLMessageContext;
 import org.opensaml.common.binding.security.BaseSAMLSimpleSignatureSecurityPolicyRule;
+import org.opensaml.util.StringSupport;
 import org.opensaml.ws.security.SecurityPolicyException;
 import org.opensaml.ws.transport.http.HTTPTransportUtils;
 import org.opensaml.xml.signature.SignatureTrustEngine;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -64,7 +64,7 @@ public class SAML2HTTPRedirectDeflateSignatureRule extends BaseSAMLSimpleSignatu
         log.debug("Constructing signed content string from URL query string {}", queryString);
 
         String constructed = buildSignedContentString(queryString);
-        if (DatatypeHelper.isEmpty(constructed)) {
+        if (StringSupport.isNullOrEmpty(constructed)) {
             log.warn("Could not extract signed content string from query string");
             return null;
         }

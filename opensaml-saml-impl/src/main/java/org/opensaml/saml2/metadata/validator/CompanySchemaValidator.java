@@ -22,7 +22,7 @@
 package org.opensaml.saml2.metadata.validator;
 
 import org.opensaml.saml2.metadata.Company;
-import org.opensaml.xml.util.DatatypeHelper;
+import org.opensaml.util.StringSupport;
 import org.opensaml.xml.validation.ValidationException;
 import org.opensaml.xml.validation.Validator;
 
@@ -48,7 +48,7 @@ public class CompanySchemaValidator implements Validator<Company> {
      * @throws ValidationException
      */
     protected void validateName(Company company) throws ValidationException {
-        if (DatatypeHelper.isEmpty(company.getName())) {
+        if (StringSupport.isNullOrEmpty(company.getName())) {
             throw new ValidationException("Name required");
         }
     }

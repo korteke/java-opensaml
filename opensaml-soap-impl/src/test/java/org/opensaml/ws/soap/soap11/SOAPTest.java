@@ -19,6 +19,7 @@ package org.opensaml.ws.soap.soap11;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.util.StringSupport;
 import org.opensaml.ws.BaseTestCase;
 import org.opensaml.ws.soap.soap11.impl.DetailBuilder;
 import org.opensaml.ws.soap.soap11.impl.FaultActorBuilder;
@@ -29,7 +30,6 @@ import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.io.Unmarshaller;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.parse.XMLParserException;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -190,22 +190,22 @@ public class SOAPTest extends BaseTestCase {
         
        DetailBuilder detailBuilder = (DetailBuilder) builderFactory.getBuilder(Detail.DEFAULT_ELEMENT_NAME); 
        Detail detail = detailBuilder.buildObject();
-       assertTrue("Namespace URI was not empty", DatatypeHelper.isEmpty(detail.getElementQName().getNamespaceURI()));
-       assertTrue("Namespace prefix was not empty", DatatypeHelper.isEmpty(detail.getElementQName().getPrefix()));
+       assertTrue("Namespace URI was not empty", StringSupport.isNullOrEmpty(detail.getElementQName().getNamespaceURI()));
+       assertTrue("Namespace prefix was not empty", StringSupport.isNullOrEmpty(detail.getElementQName().getPrefix()));
         
        FaultActorBuilder faultActorBuilder = (FaultActorBuilder) builderFactory.getBuilder(FaultActor.DEFAULT_ELEMENT_NAME); 
        FaultActor faultActor = faultActorBuilder.buildObject();
-       assertTrue("Namespace URI was not empty", DatatypeHelper.isEmpty(faultActor.getElementQName().getNamespaceURI()));
-       assertTrue("Namespace prefix was not empty", DatatypeHelper.isEmpty(faultActor.getElementQName().getPrefix()));
+       assertTrue("Namespace URI was not empty", StringSupport.isNullOrEmpty(faultActor.getElementQName().getNamespaceURI()));
+       assertTrue("Namespace prefix was not empty", StringSupport.isNullOrEmpty(faultActor.getElementQName().getPrefix()));
        
        FaultCodeBuilder faultCodeBuilder = (FaultCodeBuilder) builderFactory.getBuilder(FaultCode.DEFAULT_ELEMENT_NAME); 
        FaultCode faultCode = faultCodeBuilder.buildObject();
-       assertTrue("Namespace URI was not empty", DatatypeHelper.isEmpty(faultCode.getElementQName().getNamespaceURI()));
-       assertTrue("Namespace prefix was not empty", DatatypeHelper.isEmpty(faultCode.getElementQName().getPrefix()));
+       assertTrue("Namespace URI was not empty", StringSupport.isNullOrEmpty(faultCode.getElementQName().getNamespaceURI()));
+       assertTrue("Namespace prefix was not empty", StringSupport.isNullOrEmpty(faultCode.getElementQName().getPrefix()));
        
        FaultStringBuilder faultStringBuilder = (FaultStringBuilder) builderFactory.getBuilder(FaultString.DEFAULT_ELEMENT_NAME); 
        FaultString faultString = faultStringBuilder.buildObject();
-       assertTrue("Namespace URI was not empty", DatatypeHelper.isEmpty(faultString.getElementQName().getNamespaceURI()));
-       assertTrue("Namespace prefix was not empty", DatatypeHelper.isEmpty(faultString.getElementQName().getPrefix()));
+       assertTrue("Namespace URI was not empty", StringSupport.isNullOrEmpty(faultString.getElementQName().getNamespaceURI()));
+       assertTrue("Namespace prefix was not empty", StringSupport.isNullOrEmpty(faultString.getElementQName().getPrefix()));
     }
 }

@@ -17,10 +17,10 @@
 
 package org.opensaml.ws.wssecurity.impl;
 
+import org.opensaml.util.StringSupport;
 import org.opensaml.ws.wssecurity.AttributedURI;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Element;
 
@@ -33,7 +33,7 @@ public class AttributedURIMarshaller extends AbstractWSSecurityObjectMarshaller 
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         AttributedURI attributedURI = (AttributedURI) xmlObject;
         
-        if (!DatatypeHelper.isEmpty(attributedURI.getWSUId())) {
+        if (!StringSupport.isNullOrEmpty(attributedURI.getWSUId())) {
             XMLHelper.marshallAttribute(AttributedURI.WSU_ID_ATTR_NAME, attributedURI.getWSUId(), domElement, true);
         }
         

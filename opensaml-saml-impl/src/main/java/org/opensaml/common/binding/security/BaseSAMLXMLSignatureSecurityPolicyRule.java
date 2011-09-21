@@ -19,6 +19,7 @@ package org.opensaml.common.binding.security;
 
 import org.opensaml.common.binding.SAMLMessageContext;
 import org.opensaml.security.MetadataCriterion;
+import org.opensaml.util.StringSupport;
 import org.opensaml.util.criteria.CriteriaSet;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.security.SecurityPolicyException;
@@ -28,7 +29,6 @@ import org.opensaml.xml.security.criteria.EntityIDCriterion;
 import org.opensaml.xml.security.criteria.UsageCriterion;
 import org.opensaml.xml.security.trust.TrustEngine;
 import org.opensaml.xml.signature.Signature;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -60,7 +60,7 @@ public abstract class BaseSAMLXMLSignatureSecurityPolicyRule extends BaseTrustEn
         SAMLMessageContext samlContext = (SAMLMessageContext) messageContext;
         
         CriteriaSet criteriaSet = new CriteriaSet();
-        if (! DatatypeHelper.isEmpty(entityID)) {
+        if (!StringSupport.isNullOrEmpty(entityID)) {
             criteriaSet.add(new EntityIDCriterion(entityID) );
         }
         

@@ -21,7 +21,7 @@
 package org.opensaml.saml2.core.validator;
 
 import org.opensaml.saml2.core.StatusCode;
-import org.opensaml.xml.util.DatatypeHelper;
+import org.opensaml.util.StringSupport;
 import org.opensaml.xml.validation.ValidationException;
 import org.opensaml.xml.validation.Validator;
 
@@ -50,7 +50,7 @@ public class StatusCodeSchemaValidator implements Validator<StatusCode> {
      * @throws ValidationException
      */
     protected void validateValue(StatusCode sc) throws ValidationException {
-        if (DatatypeHelper.isEmpty(sc.getValue())) {
+        if (StringSupport.isNullOrEmpty(sc.getValue())) {
             throw new ValidationException("Value attribute is required");
         }
     }

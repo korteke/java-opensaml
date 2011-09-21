@@ -22,7 +22,7 @@
 package org.opensaml.saml1.core.validator;
 
 import org.opensaml.saml1.core.AttributeDesignator;
-import org.opensaml.xml.util.DatatypeHelper;
+import org.opensaml.util.StringSupport;
 import org.opensaml.xml.validation.ValidationException;
 import org.opensaml.xml.validation.Validator;
 
@@ -43,7 +43,7 @@ public class AttributeDesignatorSchemaValidator<AttributeDesignatorType extends 
      * @throws ValidationException
      */
     protected void validateNameSpace(AttributeDesignator designator) throws ValidationException {
-        if (DatatypeHelper.isEmpty(designator.getAttributeNamespace())) {
+        if (StringSupport.isNullOrEmpty(designator.getAttributeNamespace())) {
             throw new ValidationException("AttributeNameSpace attribute not present or invalid");
         }
     }
@@ -54,7 +54,7 @@ public class AttributeDesignatorSchemaValidator<AttributeDesignatorType extends 
      * @throws ValidationException
      */
     protected void validateName(AttributeDesignator designator) throws ValidationException {
-        if (DatatypeHelper.isEmpty(designator.getAttributeName())) {
+        if (StringSupport.isNullOrEmpty(designator.getAttributeName())) {
             throw new ValidationException("AttributeName attribute not present or invalid");
         }
     }

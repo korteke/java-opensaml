@@ -17,10 +17,10 @@
 
 package org.opensaml.ws.wssecurity.impl;
 
+import org.opensaml.util.StringSupport;
 import org.opensaml.ws.wssecurity.AttributedString;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Element;
 
@@ -33,7 +33,7 @@ public class AttributedStringMarshaller extends AbstractWSSecurityObjectMarshall
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         AttributedString attributedString = (AttributedString) xmlObject;
         
-        if (!DatatypeHelper.isEmpty(attributedString.getWSUId())) {
+        if (!StringSupport.isNullOrEmpty(attributedString.getWSUId())) {
             XMLHelper.marshallAttribute(AttributedString.WSU_ID_ATTR_NAME, attributedString.getWSUId(), domElement, true);
         }
         

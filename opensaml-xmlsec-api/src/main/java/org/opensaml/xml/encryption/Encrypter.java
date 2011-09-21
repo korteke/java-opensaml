@@ -30,6 +30,7 @@ import javax.crypto.SecretKey;
 import org.apache.xml.security.Init;
 import org.apache.xml.security.encryption.XMLCipher;
 import org.apache.xml.security.encryption.XMLEncryptionException;
+import org.opensaml.util.StringSupport;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.XMLObjectBuilderFactory;
@@ -46,7 +47,6 @@ import org.opensaml.xml.signature.DigestMethod;
 import org.opensaml.xml.signature.KeyInfo;
 import org.opensaml.xml.signature.SignatureConstants;
 import org.opensaml.xml.signature.XMLSignatureBuilder;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.util.XMLConstants;
 import org.opensaml.xml.util.XMLHelper;
 import org.slf4j.Logger;
@@ -549,7 +549,7 @@ public class Encrypter {
             log.error("Data encryption parameters are required");
             throw new EncryptionException("Data encryption parameters are required");
         }
-        if (DatatypeHelper.isEmpty(encParams.getAlgorithm())) {
+        if (StringSupport.isNullOrEmpty(encParams.getAlgorithm())) {
             log.error("Data encryption algorithm URI is required");
             throw new EncryptionException("Data encryption algorithm URI is required");
         }
@@ -581,7 +581,7 @@ public class Encrypter {
             log.error("Attempt made to use DSA key for encrypted key transport");
             throw new EncryptionException("DSA keys may not be used for encrypted key transport");
         }
-        if (DatatypeHelper.isEmpty(kekParams.getAlgorithm())) {
+        if (StringSupport.isNullOrEmpty(kekParams.getAlgorithm())) {
             log.error("Key encryption algorithm URI is required");
             throw new EncryptionException("Key encryption algorithm URI is required");
         }

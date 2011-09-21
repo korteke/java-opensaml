@@ -18,7 +18,7 @@
 package org.opensaml.saml1.core.validator;
 
 import org.opensaml.saml1.core.AuthenticationStatement;
-import org.opensaml.xml.util.DatatypeHelper;
+import org.opensaml.util.StringSupport;
 import org.opensaml.xml.validation.ValidationException;
 
 /**
@@ -44,7 +44,7 @@ public class AuthenticationStatementSchemaValidator extends SubjectStatementSche
      */
     protected void validateAuthenticationMethod(AuthenticationStatement authenticationStatement)
             throws ValidationException {
-        if (DatatypeHelper.isEmpty(authenticationStatement.getAuthenticationMethod())) {
+        if (StringSupport.isNullOrEmpty(authenticationStatement.getAuthenticationMethod())) {
             throw new ValidationException("No authenticationStatement URI is null");
         }
     }

@@ -22,6 +22,7 @@ import java.security.interfaces.DSAParams;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.opensaml.util.StringSupport;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xml.security.keyinfo.NamedKeyInfoGeneratorManager;
@@ -406,7 +407,7 @@ public class BasicSecurityConfiguration implements SecurityConfiguration {
          * @param length the key length (optional, may be null)
          */
         protected DataEncryptionIndex(String jcaAlgorithmName, Integer length) {
-            if (DatatypeHelper.isEmpty(jcaAlgorithmName)) {
+            if (StringSupport.isNullOrEmpty(jcaAlgorithmName)) {
                 throw new IllegalArgumentException("JCA Algorithm name may not be null or empty");
             }
             keyAlgorithm = DatatypeHelper.safeTrimOrNullString(jcaAlgorithmName);
@@ -474,7 +475,7 @@ public class BasicSecurityConfiguration implements SecurityConfiguration {
          * @param wrappedKeyAlgorithm the JCA algorithm name of the key to be encrypted (optional, may be null)
          */
         protected KeyTransportEncryptionIndex(String jcaAlgorithmName, Integer length, String wrappedKeyAlgorithm) {
-            if (DatatypeHelper.isEmpty(jcaAlgorithmName)) {
+            if (StringSupport.isNullOrEmpty(jcaAlgorithmName)) {
                 throw new IllegalArgumentException("JCA Algorithm name may not be null or empty");
             }
             keyAlgorithm = DatatypeHelper.safeTrimOrNullString(jcaAlgorithmName);

@@ -26,6 +26,7 @@ import javax.xml.namespace.QName;
 
 import net.jcip.annotations.NotThreadSafe;
 
+import org.opensaml.util.StringSupport;
 import org.opensaml.util.collections.LazyMap;
 import org.opensaml.util.collections.LazySet;
 import org.opensaml.xml.Configuration;
@@ -92,7 +93,7 @@ public class AttributeMap implements Map<QName, String> {
                 attributeOwner.getIDIndex().deregisterIDMapping(oldValue);
                 attributeOwner.getIDIndex().registerIDMapping(value, attributeOwner);
             }
-            if (!DatatypeHelper.isEmpty(attributeName.getNamespaceURI())) {
+            if (!StringSupport.isNullOrEmpty(attributeName.getNamespaceURI())) {
                 if (value == null) {
                     attributeOwner.getNamespaceManager().deregisterAttributeName(attributeName);
                 } else {
@@ -119,7 +120,7 @@ public class AttributeMap implements Map<QName, String> {
         String oldValueString = get(attributeName);
         
         QName oldValue = null;
-        if (!DatatypeHelper.isEmpty(oldValueString)) {
+        if (!StringSupport.isNullOrEmpty(oldValueString)) {
             oldValue = resolveQName(oldValueString, true);
         }
         

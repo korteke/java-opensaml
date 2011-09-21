@@ -17,11 +17,11 @@
 
 package org.opensaml.xacml.policy.impl;
 
+import org.opensaml.util.StringSupport;
 import org.opensaml.xacml.impl.AbstractXACMLObjectMarshaller;
 import org.opensaml.xacml.policy.VariableReferenceType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.w3c.dom.Element;
 
 /**
@@ -38,7 +38,7 @@ public class VariableReferenceTypeMarshaller extends AbstractXACMLObjectMarshall
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         VariableReferenceType variableReferenceType = (VariableReferenceType) xmlObject;
         
-        if(!DatatypeHelper.isEmpty(variableReferenceType.getVariableId())){
+        if(!StringSupport.isNullOrEmpty(variableReferenceType.getVariableId())){
             domElement.setAttribute(VariableReferenceType.VARIABLE_ID_ATTRIB_NAME,
                     variableReferenceType.getVariableId());
         }

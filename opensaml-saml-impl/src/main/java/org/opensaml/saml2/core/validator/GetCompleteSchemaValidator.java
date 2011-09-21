@@ -21,7 +21,7 @@
 package org.opensaml.saml2.core.validator;
 
 import org.opensaml.saml2.core.GetComplete;
-import org.opensaml.xml.util.DatatypeHelper;
+import org.opensaml.util.StringSupport;
 import org.opensaml.xml.validation.ValidationException;
 import org.opensaml.xml.validation.Validator;
 
@@ -50,7 +50,7 @@ public class GetCompleteSchemaValidator implements Validator<GetComplete> {
      * @throws ValidationException
      */
     protected void validateGetComplete(GetComplete gc) throws ValidationException {
-        if (DatatypeHelper.isEmpty(gc.getGetComplete())) {
+        if (StringSupport.isNullOrEmpty(gc.getGetComplete())) {
             throw new ValidationException("GetComplete element must be non-empty");
         }
     }

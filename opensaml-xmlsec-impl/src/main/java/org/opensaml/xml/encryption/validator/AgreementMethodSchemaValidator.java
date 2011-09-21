@@ -17,8 +17,8 @@
 
 package org.opensaml.xml.encryption.validator;
 
+import org.opensaml.util.StringSupport;
 import org.opensaml.xml.encryption.AgreementMethod;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.validation.ValidationException;
 import org.opensaml.xml.validation.Validator;
 
@@ -39,7 +39,7 @@ public class AgreementMethodSchemaValidator implements Validator<AgreementMethod
      * @throws ValidationException  thrown if the object is invalid
      */
     protected void validateAlgorithm(AgreementMethod xmlObject) throws ValidationException {
-        if (DatatypeHelper.isEmpty(xmlObject.getAlgorithm())) {
+        if (StringSupport.isNullOrEmpty(xmlObject.getAlgorithm())) {
             throw new ValidationException("AgreementMethod algorithm URI was empty");
         }
     }

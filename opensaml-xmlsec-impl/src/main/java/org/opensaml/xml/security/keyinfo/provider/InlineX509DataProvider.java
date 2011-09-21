@@ -30,6 +30,7 @@ import java.util.List;
 import javax.security.auth.x500.X500Principal;
 
 import org.opensaml.util.Base64;
+import org.opensaml.util.StringSupport;
 import org.opensaml.util.collections.LazySet;
 import org.opensaml.util.criteria.CriteriaSet;
 import org.opensaml.xml.XMLObject;
@@ -50,7 +51,6 @@ import org.opensaml.xml.signature.X509Data;
 import org.opensaml.xml.signature.X509IssuerSerial;
 import org.opensaml.xml.signature.X509SKI;
 import org.opensaml.xml.signature.X509SubjectName;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -281,7 +281,7 @@ public class InlineX509DataProvider extends AbstractKeyInfoProvider {
      */
     protected X509Certificate findCertFromSubjectNames(List<X509Certificate> certs, List<X509SubjectName> names) {
         for (X509SubjectName subjectName : names) {
-            if (! DatatypeHelper.isEmpty(subjectName.getValue())) {
+            if (!StringSupport.isNullOrEmpty(subjectName.getValue())) {
                 X500Principal subjectX500Principal = x500DNHandler.parse(subjectName.getValue());
                 for (X509Certificate cert : certs) {
                     if (cert.getSubjectX500Principal().equals(subjectX500Principal)) {
@@ -307,7 +307,7 @@ public class InlineX509DataProvider extends AbstractKeyInfoProvider {
             }
             String issuerNameValue = issuerSerial.getX509IssuerName().getValue();
             BigInteger serialNumber  = issuerSerial.getX509SerialNumber().getValue();
-            if (! DatatypeHelper.isEmpty(issuerNameValue)) {
+            if (!StringSupport.isNullOrEmpty(issuerNameValue)) {
                 X500Principal issuerX500Principal = x500DNHandler.parse(issuerNameValue);
                 for (X509Certificate cert : certs) {
                     if (cert.getIssuerX500Principal().equals(issuerX500Principal) &&
@@ -329,7 +329,7 @@ public class InlineX509DataProvider extends AbstractKeyInfoProvider {
      */
     protected X509Certificate findCertFromSubjectKeyIdentifier(List<X509Certificate> certs, List<X509SKI> skis) {
         for (X509SKI ski : skis) {
-            if (! DatatypeHelper.isEmpty(ski.getValue())) {
+            if (!StringSupport.isNullOrEmpty(ski.getValue())) {
                 byte[] xmlValue = Base64.decode(ski.getValue());
                 for (X509Certificate cert : certs) {
                     byte[] certValue = X509Util.getSubjectKeyIdentifier(cert);

@@ -20,6 +20,7 @@ package org.opensaml.xml.encryption;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.opensaml.util.StringSupport;
 import org.opensaml.xml.security.keyinfo.KeyInfoHelper;
 import org.opensaml.xml.util.DatatypeHelper;
 
@@ -68,7 +69,7 @@ public abstract class AbstractEncryptedKeyResolver implements EncryptedKeyResolv
      */
     protected boolean matchCarriedKeyName(EncryptedData encryptedData, EncryptedKey encryptedKey) {
         if (encryptedKey.getCarriedKeyName() == null 
-                || DatatypeHelper.isEmpty(encryptedKey.getCarriedKeyName().getValue()) ) {
+                || StringSupport.isNullOrEmpty(encryptedKey.getCarriedKeyName().getValue()) ) {
             return true;
         }
         
@@ -98,13 +99,13 @@ public abstract class AbstractEncryptedKeyResolver implements EncryptedKeyResolv
             return true;
         }
         
-        if (DatatypeHelper.isEmpty(encryptedData.getID())) {
+        if (StringSupport.isNullOrEmpty(encryptedData.getID())) {
             return false;
         }
         
         List<DataReference> drlist = encryptedKey.getReferenceList().getDataReferences();
         for (DataReference dr : drlist) {
-            if (DatatypeHelper.isEmpty(dr.getURI()) || ! dr.getURI().startsWith("#") ) {
+            if (StringSupport.isNullOrEmpty(dr.getURI()) || ! dr.getURI().startsWith("#") ) {
                 continue;
             }
             if (dr.resolveIDFromRoot(dr.getURI().substring(1)) == encryptedData) {

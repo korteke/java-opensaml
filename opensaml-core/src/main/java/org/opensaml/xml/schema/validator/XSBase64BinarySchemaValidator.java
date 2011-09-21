@@ -17,8 +17,8 @@
 
 package org.opensaml.xml.schema.validator;
 
+import org.opensaml.util.StringSupport;
 import org.opensaml.xml.schema.XSBase64Binary;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.validation.ValidationException;
 import org.opensaml.xml.validation.Validator;
 
@@ -73,7 +73,7 @@ public class XSBase64BinarySchemaValidator<T extends XSBase64Binary> implements 
      */
     protected void validateBase64BinaryContent(T xmlObject) throws ValidationException {
         if (! isAllowEmptyContent()) {
-            if (DatatypeHelper.isEmpty(xmlObject.getValue())) {
+            if (StringSupport.isNullOrEmpty(xmlObject.getValue())) {
                 throw new ValidationException("Base64Binary content may not be empty");
             }
         }

@@ -21,7 +21,7 @@
 package org.opensaml.saml2.core.validator;
 
 import org.opensaml.saml2.core.RequesterID;
-import org.opensaml.xml.util.DatatypeHelper;
+import org.opensaml.util.StringSupport;
 import org.opensaml.xml.validation.ValidationException;
 import org.opensaml.xml.validation.Validator;
 
@@ -44,7 +44,7 @@ public class RequesterIDSchemaValidator implements Validator<RequesterID> {
     }
 
     protected void validateRequesterID(RequesterID reqid) throws ValidationException {
-        if (DatatypeHelper.isEmpty(reqid.getRequesterID())) {
+        if (StringSupport.isNullOrEmpty(reqid.getRequesterID())) {
             throw new ValidationException("RequesterID element must be non-empty");
         }
     }

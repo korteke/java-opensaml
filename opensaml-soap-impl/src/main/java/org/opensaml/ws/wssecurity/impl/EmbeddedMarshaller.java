@@ -17,10 +17,10 @@
 
 package org.opensaml.ws.wssecurity.impl;
 
+import org.opensaml.util.StringSupport;
 import org.opensaml.ws.wssecurity.Embedded;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Element;
 
@@ -33,7 +33,7 @@ public class EmbeddedMarshaller extends AbstractWSSecurityObjectMarshaller {
     /** {@inheritDoc} */
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         Embedded embedded = (Embedded) xmlObject;
-        if (!DatatypeHelper.isEmpty(embedded.getValueType())) {
+        if (!StringSupport.isNullOrEmpty(embedded.getValueType())) {
             domElement.setAttributeNS(null, Embedded.VALUE_TYPE_ATTRIB_NAME, embedded.getValueType());
         }
         

@@ -22,7 +22,7 @@ package org.opensaml.saml2.core.validator;
 
 import org.opensaml.common.SAMLVersion;
 import org.opensaml.saml2.core.StatusResponseType;
-import org.opensaml.xml.util.DatatypeHelper;
+import org.opensaml.util.StringSupport;
 import org.opensaml.xml.validation.ValidationException;
 import org.opensaml.xml.validation.Validator;
 
@@ -66,7 +66,7 @@ public abstract class StatusResponseTypeSchemaValidator<StatusResponse extends S
      * @throws ValidationException
      */
     protected void validateID(StatusResponse response) throws ValidationException {
-        if (DatatypeHelper.isEmpty(response.getID()))
+        if (StringSupport.isNullOrEmpty(response.getID()))
             throw new ValidationException("ID attribute must not be empty");
     }
 

@@ -35,6 +35,7 @@ import org.opensaml.saml2.metadata.RoleDescriptor;
 import org.opensaml.saml2.metadata.provider.MetadataProvider;
 import org.opensaml.saml2.metadata.provider.MetadataProviderException;
 import org.opensaml.saml2.metadata.provider.ObservableMetadataProvider;
+import org.opensaml.util.StringSupport;
 import org.opensaml.util.criteria.CriteriaSet;
 import org.opensaml.util.resolver.ResolverException;
 import org.opensaml.xml.security.XMLSecurityHelper;
@@ -46,7 +47,6 @@ import org.opensaml.xml.security.criteria.EntityIDCriterion;
 import org.opensaml.xml.security.criteria.UsageCriterion;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xml.security.keyinfo.KeyInfoCriterion;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -187,7 +187,7 @@ public class MetadataCredentialResolver extends AbstractCriteriaFilteringCredent
         if (mdCriteria == null) {
             throw new IllegalArgumentException("SAML metadata criteria must be supplied");
         }
-        if (DatatypeHelper.isEmpty(entityCriteria.getEntityID())) {
+        if (StringSupport.isNullOrEmpty(entityCriteria.getEntityID())) {
             throw new IllegalArgumentException("Credential owner entity ID criteria value must be supplied");
         }
         if (mdCriteria.getRole() == null) {
@@ -316,7 +316,7 @@ public class MetadataCredentialResolver extends AbstractCriteriaFilteringCredent
                         new Object[] {entityID, role, protocol});
             }
 
-            if (DatatypeHelper.isEmpty(protocol)) {
+            if (StringSupport.isNullOrEmpty(protocol)) {
                 return metadata.getRole(entityID, role);
             } else {
                 RoleDescriptor roleDescriptor = metadata.getRole(entityID, role, protocol);

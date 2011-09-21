@@ -22,7 +22,7 @@
 package org.opensaml.saml2.metadata.validator;
 
 import org.opensaml.saml2.metadata.AffiliationDescriptor;
-import org.opensaml.xml.util.DatatypeHelper;
+import org.opensaml.util.StringSupport;
 import org.opensaml.xml.validation.ValidationException;
 import org.opensaml.xml.validation.Validator;
 
@@ -49,7 +49,7 @@ public class AffiliationDescriptorSchemaValidator implements Validator<Affiliati
      * @throws ValidationException
      */
     protected void validateOwner(AffiliationDescriptor affiliationDescriptor) throws ValidationException {
-        if (DatatypeHelper.isEmpty(affiliationDescriptor.getOwnerID())) {
+        if (StringSupport.isNullOrEmpty(affiliationDescriptor.getOwnerID())) {
             throw new ValidationException("Owner ID required.");
         } else if (affiliationDescriptor.getOwnerID().length() > 1024) {
             throw new ValidationException("Max Owner ID length is 1024.");

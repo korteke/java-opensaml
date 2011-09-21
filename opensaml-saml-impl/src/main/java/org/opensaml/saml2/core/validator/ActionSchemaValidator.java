@@ -22,7 +22,7 @@
 package org.opensaml.saml2.core.validator;
 
 import org.opensaml.saml2.core.Action;
-import org.opensaml.xml.util.DatatypeHelper;
+import org.opensaml.util.StringSupport;
 import org.opensaml.xml.validation.ValidationException;
 import org.opensaml.xml.validation.Validator;
 
@@ -48,7 +48,7 @@ public class ActionSchemaValidator implements Validator<Action> {
      * @throws ValidationException
      */
     protected void validateAction(Action action) throws ValidationException {
-        if (DatatypeHelper.isEmpty(action.getAction())) {
+        if (StringSupport.isNullOrEmpty(action.getAction())) {
             throw new ValidationException("Action label must be specified.");
         }
     }
@@ -60,7 +60,7 @@ public class ActionSchemaValidator implements Validator<Action> {
      * @throws ValidationException
      */
     protected void validateNamespace(Action action) throws ValidationException {
-        if (DatatypeHelper.isEmpty(action.getNamespace())) {
+        if (StringSupport.isNullOrEmpty(action.getNamespace())) {
             throw new ValidationException("Namespace is required attribute.");
         }
     }

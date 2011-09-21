@@ -22,7 +22,7 @@
 package org.opensaml.saml2.metadata.validator;
 
 import org.opensaml.saml2.metadata.AttributeProfile;
-import org.opensaml.xml.util.DatatypeHelper;
+import org.opensaml.util.StringSupport;
 import org.opensaml.xml.validation.ValidationException;
 import org.opensaml.xml.validation.Validator;
 
@@ -48,7 +48,7 @@ public class AttributeProfileSchemaValidator implements Validator<AttributeProfi
      * @throws ValidationException
      */
     protected void validateProfileURI(AttributeProfile attributeProfile) throws ValidationException {
-        if (DatatypeHelper.isEmpty(attributeProfile.getProfileURI())) {
+        if (StringSupport.isNullOrEmpty(attributeProfile.getProfileURI())) {
             throw new ValidationException("ProfileURI required");
         }
     }

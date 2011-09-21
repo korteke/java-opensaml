@@ -26,11 +26,11 @@ import org.opensaml.common.SAMLObject;
 import org.opensaml.common.binding.SAMLMessageContext;
 import org.opensaml.common.xml.SAMLConstants;
 import org.opensaml.util.Base64;
+import org.opensaml.util.StringSupport;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.message.decoder.MessageDecodingException;
 import org.opensaml.ws.transport.http.HTTPInTransport;
 import org.opensaml.xml.parse.ParserPool;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -90,9 +90,9 @@ public class HTTPRedirectDeflateDecoder extends BaseSAML2MessageDecoder {
         log.debug("Decoded RelayState: {}", relayState);
 
         InputStream samlMessageIns;
-        if (!DatatypeHelper.isEmpty(inTransport.getParameterValue("SAMLRequest"))) {
+        if (!StringSupport.isNullOrEmpty(inTransport.getParameterValue("SAMLRequest"))) {
             samlMessageIns = decodeMessage(inTransport.getParameterValue("SAMLRequest"));
-        } else if (!DatatypeHelper.isEmpty(inTransport.getParameterValue("SAMLResponse"))) {
+        } else if (!StringSupport.isNullOrEmpty(inTransport.getParameterValue("SAMLResponse"))) {
             samlMessageIns = decodeMessage(inTransport.getParameterValue("SAMLResponse"));
         } else {
             throw new MessageDecodingException(
@@ -111,7 +111,7 @@ public class HTTPRedirectDeflateDecoder extends BaseSAML2MessageDecoder {
     protected boolean isMessageSigned(SAMLMessageContext messageContext) {
         HTTPInTransport inTransport = (HTTPInTransport) messageContext.getInboundMessageTransport();
         String sigParam = inTransport.getParameterValue("Signature");
-        return (!DatatypeHelper.isEmpty(sigParam)) || super.isMessageSigned(messageContext);
+        return (!StringSupport.isNullOrEmpty(sigParam)) || super.isMessageSigned(messageContext);
     }
 
     /**

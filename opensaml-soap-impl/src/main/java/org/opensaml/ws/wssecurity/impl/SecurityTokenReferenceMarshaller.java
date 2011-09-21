@@ -19,10 +19,10 @@ package org.opensaml.ws.wssecurity.impl;
 
 import java.util.List;
 
+import org.opensaml.util.StringSupport;
 import org.opensaml.ws.wssecurity.SecurityTokenReference;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Element;
 
@@ -36,7 +36,7 @@ public class SecurityTokenReferenceMarshaller extends AbstractWSSecurityObjectMa
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         SecurityTokenReference str = (SecurityTokenReference) xmlObject;
         
-        if (!DatatypeHelper.isEmpty(str.getWSUId())) {
+        if (!StringSupport.isNullOrEmpty(str.getWSUId())) {
             XMLHelper.marshallAttribute(SecurityTokenReference.WSU_ID_ATTR_NAME, str.getWSUId(), domElement, true);
         }
         

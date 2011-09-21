@@ -19,9 +19,9 @@ package org.opensaml.xml.encryption.validator;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.util.StringSupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.encryption.ReferenceType;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.util.XMLConstants;
 import org.opensaml.xml.validation.ValidationException;
 import org.opensaml.xml.validation.Validator;
@@ -44,7 +44,7 @@ public class ReferenceTypeSchemaValidator implements Validator<ReferenceType> {
      * @throws ValidationException  thrown if the object is invalid
      */
     protected void validateURI(ReferenceType xmlObject) throws ValidationException {
-        if (DatatypeHelper.isEmpty(xmlObject.getURI())) {
+        if (StringSupport.isNullOrEmpty(xmlObject.getURI())) {
             throw new ValidationException("ReferenceType URI was empty");
         }
     }

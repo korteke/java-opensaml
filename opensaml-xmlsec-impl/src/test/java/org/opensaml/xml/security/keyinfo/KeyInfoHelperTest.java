@@ -32,6 +32,7 @@ import java.util.List;
 import javax.security.auth.x500.X500Principal;
 
 import org.opensaml.util.Base64;
+import org.opensaml.util.StringSupport;
 import org.opensaml.xml.XMLObjectBaseTestCase;
 import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.signature.DSAKeyValue;
@@ -50,7 +51,6 @@ import org.opensaml.xml.signature.X509IssuerSerial;
 import org.opensaml.xml.signature.X509SKI;
 import org.opensaml.xml.signature.X509SubjectName;
 import org.opensaml.xml.signature.Y;
-import org.opensaml.xml.util.DatatypeHelper;
 
 /**
  * Test to exercise the KeyInfoHelper methods to convert
@@ -590,7 +590,7 @@ public class KeyInfoHelperTest extends XMLObjectBaseTestCase {
         byte[] skiValue = Base64.decode(cert1SKIPlainBase64);
         X509SKI xmlSKI = KeyInfoHelper.buildX509SKI(javaCert1);
         assertNotNull("Constructed X509SKI was null", xmlSKI);
-        assertFalse("SKI value was empty", DatatypeHelper.isEmpty(xmlSKI.getValue()));
+        assertFalse("SKI value was empty", StringSupport.isNullOrEmpty(xmlSKI.getValue()));
         byte[] xmlValue = Base64.decode(xmlSKI.getValue());
         assertNotNull("Decoded XML SKI value was null", xmlValue);
         assertTrue("Incorrect SKI value", Arrays.equals(skiValue, xmlValue) );

@@ -24,9 +24,9 @@ import org.apache.xml.security.transforms.Transform;
 import org.apache.xml.security.transforms.TransformationException;
 import org.apache.xml.security.transforms.Transforms;
 import org.opensaml.common.SignableSAMLObject;
+import org.opensaml.util.StringSupport;
 import org.opensaml.xml.signature.Signature;
 import org.opensaml.xml.signature.impl.SignatureImpl;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.validation.ValidationException;
 import org.opensaml.xml.validation.Validator;
 import org.slf4j.Logger;
@@ -126,11 +126,11 @@ public class SAMLSignatureProfileValidator implements Validator<Signature> {
      * @throws ValidationException thrown if the URI or ID attribute values are invalid
      */
     protected void validateReferenceURI(String uri, String id) throws ValidationException {
-        if (!DatatypeHelper.isEmpty(uri)) {
+        if (!StringSupport.isNullOrEmpty(uri)) {
             if (!uri.startsWith("#")) {
                 log.error("Signature Reference URI was not a document fragment reference: " + uri);
                 throw new ValidationException("Signature Reference URI was not a document fragment reference");
-            } else if (DatatypeHelper.isEmpty(id)) {
+            } else if (StringSupport.isNullOrEmpty(id)) {
                 log.error("SignableSAMLObject did not contain an ID attribute");
                 throw new ValidationException("SignableSAMLObject did not contain an ID attribute");
             } else if (uri.length() < 2 || !id.equals(uri.substring(1))) {

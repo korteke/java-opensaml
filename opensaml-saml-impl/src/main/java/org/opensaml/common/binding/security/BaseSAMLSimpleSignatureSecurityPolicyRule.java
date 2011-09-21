@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.opensaml.common.binding.SAMLMessageContext;
 import org.opensaml.security.MetadataCriterion;
 import org.opensaml.util.Base64;
+import org.opensaml.util.StringSupport;
 import org.opensaml.util.criteria.CriteriaSet;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.security.SecurityPolicyException;
@@ -35,7 +36,6 @@ import org.opensaml.xml.security.credential.UsageType;
 import org.opensaml.xml.security.criteria.EntityIDCriterion;
 import org.opensaml.xml.security.criteria.UsageCriterion;
 import org.opensaml.xml.signature.SignatureTrustEngine;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -89,7 +89,7 @@ public abstract class BaseSAMLSimpleSignatureSecurityPolicyRule implements Secur
         }
 
         String sigAlg = getSignatureAlgorithm(request);
-        if (DatatypeHelper.isEmpty(sigAlg)) {
+        if (StringSupport.isNullOrEmpty(sigAlg)) {
             log.warn("Signature algorithm could not be extracted from request, can not validate simple signature");
             return;
         }
@@ -248,7 +248,7 @@ public abstract class BaseSAMLSimpleSignatureSecurityPolicyRule implements Secur
      */
     protected byte[] getSignature(HttpServletRequest request) throws SecurityPolicyException {
         String signature = request.getParameter("Signature");
-        if (DatatypeHelper.isEmpty(signature)) {
+        if (StringSupport.isNullOrEmpty(signature)) {
             return null;
         }
         return Base64.decode(signature);
@@ -293,7 +293,7 @@ public abstract class BaseSAMLSimpleSignatureSecurityPolicyRule implements Secur
             throws SecurityPolicyException {
 
         CriteriaSet criteriaSet = new CriteriaSet();
-        if (!DatatypeHelper.isEmpty(entityID)) {
+        if (!StringSupport.isNullOrEmpty(entityID)) {
             criteriaSet.add(new EntityIDCriterion(entityID));
         }
 

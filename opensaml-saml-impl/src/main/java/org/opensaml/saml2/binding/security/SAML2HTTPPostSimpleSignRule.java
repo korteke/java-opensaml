@@ -27,6 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.opensaml.common.binding.SAMLMessageContext;
 import org.opensaml.common.binding.security.BaseSAMLSimpleSignatureSecurityPolicyRule;
 import org.opensaml.util.Base64;
+import org.opensaml.util.StringSupport;
 import org.opensaml.util.criteria.CriteriaSet;
 import org.opensaml.util.resolver.ResolverException;
 import org.opensaml.ws.security.SecurityPolicyException;
@@ -40,7 +41,6 @@ import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xml.security.keyinfo.KeyInfoCriterion;
 import org.opensaml.xml.signature.KeyInfo;
 import org.opensaml.xml.signature.SignatureTrustEngine;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -105,7 +105,7 @@ public class SAML2HTTPPostSimpleSignRule extends BaseSAMLSimpleSignatureSecurity
         builder.append("&SigAlg=" + request.getParameter("SigAlg"));
 
         String constructed = builder.toString();
-        if (DatatypeHelper.isEmpty(constructed)) {
+        if (StringSupport.isNullOrEmpty(constructed)) {
             log.warn("Could not construct signed content string from form control data");
             return null;
         }
@@ -124,7 +124,7 @@ public class SAML2HTTPPostSimpleSignRule extends BaseSAMLSimpleSignatureSecurity
             throws SecurityPolicyException {
 
         String kiBase64 = request.getParameter("KeyInfo");
-        if (DatatypeHelper.isEmpty(kiBase64)) {
+        if (StringSupport.isNullOrEmpty(kiBase64)) {
             log.debug("Form control data did not contain a KeyInfo");
             return null;
         } else {

@@ -19,11 +19,11 @@ package org.opensaml.xml.signature.impl;
 
 import java.math.BigInteger;
 
+import org.opensaml.util.StringSupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.AbstractXMLObjectUnmarshaller;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.signature.X509SerialNumber;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.w3c.dom.Attr;
 
 /**
@@ -46,7 +46,7 @@ public class X509SerialNumberUnmarshaller extends AbstractXMLObjectUnmarshaller 
     protected void processElementContent(XMLObject xmlObject, String elementContent) {
         X509SerialNumber x509SerialNumber = (X509SerialNumber) xmlObject;
         
-        if(! DatatypeHelper.isEmpty(elementContent)){
+        if(!StringSupport.isNullOrEmpty(elementContent)){
             x509SerialNumber.setValue( new BigInteger(elementContent) );
         }
     }

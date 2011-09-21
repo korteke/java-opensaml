@@ -22,7 +22,7 @@
 package org.opensaml.saml2.metadata.validator;
 
 import org.opensaml.saml2.metadata.EntityDescriptor;
-import org.opensaml.xml.util.DatatypeHelper;
+import org.opensaml.util.StringSupport;
 import org.opensaml.xml.validation.ValidationException;
 import org.opensaml.xml.validation.Validator;
 
@@ -49,7 +49,7 @@ public class EntityDescriptorSchemaValidator implements Validator<EntityDescript
      * @throws ValidationException
      */
     protected void validateEntityID(EntityDescriptor entityDescriptor) throws ValidationException {
-        if (DatatypeHelper.isEmpty(entityDescriptor.getEntityID())) {
+        if (StringSupport.isNullOrEmpty(entityDescriptor.getEntityID())) {
             throw new ValidationException("Entity ID required.");
         } else if (entityDescriptor.getEntityID().length() > 1024) {
             throw new ValidationException("Max Entity ID length is 1024.");

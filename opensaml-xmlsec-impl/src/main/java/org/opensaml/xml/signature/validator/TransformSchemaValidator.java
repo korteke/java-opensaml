@@ -17,8 +17,8 @@
 
 package org.opensaml.xml.signature.validator;
 
+import org.opensaml.util.StringSupport;
 import org.opensaml.xml.signature.Transform;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.validation.ValidationException;
 import org.opensaml.xml.validation.Validator;
 
@@ -39,7 +39,7 @@ public class TransformSchemaValidator implements Validator<Transform> {
      * @throws ValidationException  thrown if the object is invalid
      */
     protected void validateAlgorithm(Transform xmlObject) throws ValidationException {
-        if (DatatypeHelper.isEmpty(xmlObject.getAlgorithm())) {
+        if (StringSupport.isNullOrEmpty(xmlObject.getAlgorithm())) {
             throw new ValidationException("Transform algorithm URI was empty");
         }
     }

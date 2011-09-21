@@ -17,11 +17,11 @@
 
 package org.opensaml.xacml.policy.impl;
 
+import org.opensaml.util.StringSupport;
 import org.opensaml.xacml.impl.AbstractXACMLObjectMarshaller;
 import org.opensaml.xacml.policy.PolicyType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.w3c.dom.Element;
 
 /** Marshaller for {@link PolicyType} objects. */
@@ -36,15 +36,15 @@ public class PolicyTypeMarshaller extends AbstractXACMLObjectMarshaller {
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         PolicyType policy = (PolicyType) xmlObject;
 
-        if (!DatatypeHelper.isEmpty(policy.getPolicyId())) {
+        if (!StringSupport.isNullOrEmpty(policy.getPolicyId())) {
             domElement.setAttribute(PolicyType.POLICY_ID_ATTRIB_NAME, policy.getPolicyId());
         }
 
-        if (!DatatypeHelper.isEmpty(policy.getVersion())) {
+        if (!StringSupport.isNullOrEmpty(policy.getVersion())) {
             domElement.setAttribute(PolicyType.VERSION_ATTRIB_NAME, policy.getVersion());
         }
 
-        if (!DatatypeHelper.isEmpty(policy.getRuleCombiningAlgoId())) {
+        if (!StringSupport.isNullOrEmpty(policy.getRuleCombiningAlgoId())) {
             domElement.setAttribute(PolicyType.RULE_COMBINING_ALG_ID_ATTRIB_NAME, policy.getRuleCombiningAlgoId());
         }
     }

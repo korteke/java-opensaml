@@ -17,10 +17,10 @@
 
 package org.opensaml.xacml.policy.impl;
 
+import org.opensaml.util.StringSupport;
 import org.opensaml.xacml.policy.PolicySetCombinerParametersType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.w3c.dom.Element;
 
 /**
@@ -37,7 +37,7 @@ public class PolicySetCombinerParametersTypeMarshaller extends CombinerParameter
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         PolicySetCombinerParametersType policySetCombinerParametersType = (PolicySetCombinerParametersType)xmlObject;
         
-        if(!DatatypeHelper.isEmpty(policySetCombinerParametersType.getPolicySetIdRef())){
+        if(!StringSupport.isNullOrEmpty(policySetCombinerParametersType.getPolicySetIdRef())){
             domElement.setAttribute(PolicySetCombinerParametersType.POLICY_SET_ID_REF_ATTRIB_NAME,
                     policySetCombinerParametersType.getPolicySetIdRef());
         }   

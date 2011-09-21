@@ -21,7 +21,7 @@
 package org.opensaml.saml2.core.validator;
 
 import org.opensaml.saml2.core.StatusMessage;
-import org.opensaml.xml.util.DatatypeHelper;
+import org.opensaml.util.StringSupport;
 import org.opensaml.xml.validation.ValidationException;
 import org.opensaml.xml.validation.Validator;
 
@@ -44,7 +44,7 @@ public class StatusMessageSchemaValidator implements Validator<StatusMessage> {
     }
 
     protected void validateMessage(StatusMessage sm) throws ValidationException {
-        if (DatatypeHelper.isEmpty(sm.getMessage())) {
+        if (StringSupport.isNullOrEmpty(sm.getMessage())) {
             throw new ValidationException("Message element just be non-empty");
         }
     }

@@ -21,7 +21,7 @@
 package org.opensaml.saml2.core.validator;
 
 import org.opensaml.saml2.core.AuthzDecisionQuery;
-import org.opensaml.xml.util.DatatypeHelper;
+import org.opensaml.util.StringSupport;
 import org.opensaml.xml.validation.ValidationException;
 
 /**
@@ -63,7 +63,7 @@ public class AuthzDecisionQuerySchemaValidator extends SubjectQuerySchemaValidat
      * @throws ValidationException 
      */
     protected void validateResource(AuthzDecisionQuery query) throws ValidationException {
-        if (DatatypeHelper.isEmpty(query.getResource())) {
+        if (StringSupport.isNullOrEmpty(query.getResource())) {
             throw new ValidationException("Resource attribute is required");
         }
     }
