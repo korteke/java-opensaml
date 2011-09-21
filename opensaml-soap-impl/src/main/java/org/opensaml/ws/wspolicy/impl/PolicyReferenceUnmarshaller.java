@@ -19,6 +19,7 @@ package org.opensaml.ws.wspolicy.impl;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.util.xml.QNameSupport;
 import org.opensaml.ws.wspolicy.PolicyReference;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
@@ -40,7 +41,7 @@ public class PolicyReferenceUnmarshaller extends AbstractWSPolicyObjectUnmarshal
         QName digestAlgorithmName = new QName(PolicyReference.DIGEST_ALGORITHM_ATTRIB_NAME);
 
         QName attribQName = 
-            XMLHelper.constructQName(attribute.getNamespaceURI(), attribute.getLocalName(), attribute .getPrefix());
+            QNameSupport.constructQName(attribute.getNamespaceURI(), attribute.getLocalName(), attribute .getPrefix());
 
         if (uriName.equals(attribQName)) {
             pr.setURI(attribute.getValue());

@@ -32,6 +32,7 @@ import org.opensaml.saml2.metadata.KeyDescriptor;
 import org.opensaml.saml2.metadata.Organization;
 import org.opensaml.saml2.metadata.RoleDescriptor;
 import org.opensaml.util.StringSupport;
+import org.opensaml.util.xml.DomTypeSupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.signature.Signature;
@@ -74,7 +75,7 @@ public abstract class RoleDescriptorUnmarshaller extends AbstractSAMLObjectUnmar
                 && !StringSupport.isNullOrEmpty(attribute.getValue())) {
             roleDescriptor.setValidUntil(new DateTime(attribute.getValue(), ISOChronology.getInstanceUTC()));
         } else if (attribute.getLocalName().equals(CacheableSAMLObject.CACHE_DURATION_ATTRIB_NAME)) {
-            roleDescriptor.setCacheDuration(XMLHelper.durationToLong(attribute.getValue()));
+            roleDescriptor.setCacheDuration(DomTypeSupport.durationToLong(attribute.getValue()));
         } else if (attribute.getLocalName().equals(RoleDescriptor.PROTOCOL_ENUMERATION_ATTRIB_NAME)) {
             StringTokenizer protocolTokenizer = new StringTokenizer(attribute.getValue(), " ");
             while (protocolTokenizer.hasMoreTokens()) {

@@ -31,6 +31,7 @@ import org.apache.xml.security.Init;
 import org.apache.xml.security.encryption.XMLCipher;
 import org.apache.xml.security.encryption.XMLEncryptionException;
 import org.opensaml.util.StringSupport;
+import org.opensaml.util.xml.ElementSupport;
 import org.opensaml.util.xml.NamespaceSupport;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.XMLObject;
@@ -394,7 +395,7 @@ public class Encrypter {
                 }
             }
             if (! sawDigestMethod) {
-                Element digestMethodElem = XMLHelper.constructElement(containingDocument,
+                Element digestMethodElem = ElementSupport.constructElement(containingDocument,
                         DigestMethod.DEFAULT_ELEMENT_NAME);
                 NamespaceSupport.appendNamespaceDeclaration(digestMethodElem, 
                         XMLConstants.XMLSIG_NS, XMLConstants.XMLSIG_PREFIX);

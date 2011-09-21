@@ -18,6 +18,7 @@
 package org.opensaml.xml.schema.impl;
 
 import org.opensaml.util.StringSupport;
+import org.opensaml.util.xml.QNameSupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.AbstractXMLObjectUnmarshaller;
 import org.opensaml.xml.io.UnmarshallingException;
@@ -52,7 +53,7 @@ public class XSQNameUnmarshaller extends AbstractXMLObjectUnmarshaller {
         String textContent = StringSupport.trimOrNull(content.getWholeText());
         if (textContent != null) {
             XSQName qname = (XSQName) xmlObject;
-            qname.setValue(XMLHelper.constructQName(textContent, XMLHelper.getElementAncestor(content)));
+            qname.setValue(QNameSupport.constructQName(XMLHelper.getElementAncestor(content), textContent));
         }
     }
 }

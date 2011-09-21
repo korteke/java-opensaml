@@ -19,11 +19,11 @@ package org.opensaml.ws.soap.soap11.impl;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.util.xml.QNameSupport;
 import org.opensaml.ws.soap.soap11.Header;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.AbstractXMLObjectUnmarshaller;
 import org.opensaml.xml.io.UnmarshallingException;
-import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Attr;
 
 /**
@@ -41,7 +41,7 @@ public class HeaderUnmarshaller extends AbstractXMLObjectUnmarshaller {
     /** {@inheritDoc} */
     protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
         Header header = (Header) xmlObject;
-        QName attribQName = XMLHelper.constructQName(attribute.getNamespaceURI(), attribute.getLocalName(), attribute
+        QName attribQName = QNameSupport.constructQName(attribute.getNamespaceURI(), attribute.getLocalName(), attribute
                 .getPrefix());
         if (attribute.isId()) {
             header.getUnknownAttributes().registerID(attribQName);

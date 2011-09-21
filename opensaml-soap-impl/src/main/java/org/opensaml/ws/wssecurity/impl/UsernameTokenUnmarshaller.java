@@ -19,6 +19,7 @@ package org.opensaml.ws.wssecurity.impl;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.util.xml.QNameSupport;
 import org.opensaml.ws.wssecurity.Username;
 import org.opensaml.ws.wssecurity.UsernameToken;
 import org.opensaml.xml.XMLObject;
@@ -47,7 +48,7 @@ public class UsernameTokenUnmarshaller extends AbstractWSSecurityObjectUnmarshal
         UsernameToken token = (UsernameToken) xmlObject;
         
         QName attribQName = 
-            XMLHelper.constructQName(attribute.getNamespaceURI(), attribute.getLocalName(), attribute.getPrefix());
+            QNameSupport.constructQName(attribute.getNamespaceURI(), attribute.getLocalName(), attribute.getPrefix());
         if (UsernameToken.WSU_ID_ATTR_NAME.equals(attribQName)) {
             token.setWSUId(attribute.getValue());
             attribute.getOwnerElement().setIdAttributeNode(attribute, true);

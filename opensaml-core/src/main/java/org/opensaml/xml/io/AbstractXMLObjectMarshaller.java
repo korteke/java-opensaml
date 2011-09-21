@@ -28,6 +28,7 @@ import org.opensaml.util.ObjectSupport;
 import org.opensaml.util.StringSupport;
 import org.opensaml.util.xml.ElementSupport;
 import org.opensaml.util.xml.NamespaceSupport;
+import org.opensaml.util.xml.QNameSupport;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.Namespace;
 import org.opensaml.xml.XMLObject;
@@ -78,7 +79,7 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
      *            unmarshaller operates on
      */
     protected AbstractXMLObjectMarshaller(String targetNamespaceURI, String targetLocalName) {
-        targetQName = XMLHelper.constructQName(targetNamespaceURI, targetLocalName, null);
+        targetQName = QNameSupport.constructQName(targetNamespaceURI, targetLocalName, null);
 
         marshallerFactory = Configuration.getMarshallerFactory();
     }
@@ -124,7 +125,7 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
 
         log.trace("{} does not contain a cached DOM representation. Creating Element to marshall into.", xmlObject
                 .getElementQName());
-        domElement = XMLHelper.constructElement(document, xmlObject.getElementQName());
+        domElement = ElementSupport.constructElement(document, xmlObject.getElementQName());
 
         log.trace("Setting created element as document root");
         // we need to do this before the rest of the marshalling so that signing and other ID dependent operations have
@@ -170,7 +171,7 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
         log.trace("{} does not contain a cached DOM representation. Creating Element to marshall into.", xmlObject
                 .getElementQName());
         Document owningDocument = parentElement.getOwnerDocument();
-        domElement = XMLHelper.constructElement(owningDocument, xmlObject.getElementQName());
+        domElement = ElementSupport.constructElement(owningDocument, xmlObject.getElementQName());
 
         log.trace("Appending newly created element to given parent element");
         // we need to do this before the rest of the marshalling so that signing and other ID dependent operations have

@@ -27,6 +27,7 @@ import org.opensaml.common.impl.AbstractSAMLObjectMarshaller;
 import org.opensaml.saml2.common.CacheableSAMLObject;
 import org.opensaml.saml2.common.TimeBoundSAMLObject;
 import org.opensaml.saml2.metadata.RoleDescriptor;
+import org.opensaml.util.xml.AttributeSupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.util.XMLHelper;
@@ -90,7 +91,7 @@ public abstract class RoleDescriptorMarshaller extends AbstractSAMLObjectMarshal
 
         Attr attribute;
         for (Entry<QName, String> entry : roleDescriptor.getUnknownAttributes().entrySet()) {
-            attribute = XMLHelper.constructAttribute(domElement.getOwnerDocument(), entry.getKey());
+            attribute = AttributeSupport.constructAttribute(domElement.getOwnerDocument(), entry.getKey());
             attribute.setValue(entry.getValue());
             domElement.setAttributeNodeNS(attribute);
             if (Configuration.isIDAttribute(entry.getKey())

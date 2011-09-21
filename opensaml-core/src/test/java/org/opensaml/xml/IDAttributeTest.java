@@ -22,12 +22,12 @@ import java.util.Map;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.util.xml.QNameSupport;
 import org.opensaml.xml.io.Unmarshaller;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.mock.SimpleXMLObject;
 import org.opensaml.xml.parse.XMLParserException;
 import org.opensaml.xml.schema.XSAny;
-import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Document;
 
 /**
@@ -224,7 +224,7 @@ public class IDAttributeTest extends XMLObjectBaseTestCase {
         
         // Now manually register the "id" attribute in the AttributeMap of child 0 as being an ID type.
         // This should cause the expected ID-to-XMLObject mapping behaviour to take place.
-        QName idName = XMLHelper.constructQName(null, "id", null);
+        QName idName = QNameSupport.constructQName(null, "id", null);
         epChild0.getUnknownAttributes().registerID(idName);
         assertEquals("Lookup of ID mapping failed", epChild0, epParent.resolveID("1144"));
         
@@ -259,7 +259,7 @@ public class IDAttributeTest extends XMLObjectBaseTestCase {
         
         // Now manually register the "id" attribute in the AttributeMap of child 0 as being an ID type.
         // This should cause the expected ID-to-XMLObject mapping behaviour to take place.
-        QName idName = XMLHelper.constructQName(null, "id", null);
+        QName idName = QNameSupport.constructQName(null, "id", null);
         epChild0.getUnknownAttributes().registerID(idName);
         assertEquals("Lookup of ID mapping failed", epChild0, epParent.resolveID("1144"));
         

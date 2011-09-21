@@ -20,11 +20,11 @@ package org.opensaml.saml2.metadata.impl;
 import org.opensaml.common.impl.AbstractSAMLObjectMarshaller;
 import org.opensaml.common.xml.SAMLConstants;
 import org.opensaml.saml2.metadata.LocalizedName;
+import org.opensaml.util.xml.AttributeSupport;
 import org.opensaml.util.xml.ElementSupport;
 import org.opensaml.xml.LangBearing;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
 
@@ -40,7 +40,7 @@ public class LocalizedURIMarshaller extends AbstractSAMLObjectMarshaller {
         LocalizedName name = (LocalizedName) samlObject;
 
         if (name.getXMLLang() != null) {
-            Attr attribute = XMLHelper.constructAttribute(domElement.getOwnerDocument(), SAMLConstants.XML_NS,
+            Attr attribute = AttributeSupport.constructAttribute(domElement.getOwnerDocument(), SAMLConstants.XML_NS,
                     LangBearing.XML_LANG_ATTR_LOCAL_NAME, SAMLConstants.XML_PREFIX);
             attribute.setValue(name.getXMLLang());
             domElement.setAttributeNodeNS(attribute);

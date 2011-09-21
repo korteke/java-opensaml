@@ -19,6 +19,7 @@ package org.opensaml.ws.wssecurity.impl;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.util.xml.QNameSupport;
 import org.opensaml.ws.wssecurity.AttributedString;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
@@ -35,7 +36,7 @@ public class AttributedStringUnmarshaller extends AbstractWSSecurityObjectUnmars
         AttributedString attributedString = (AttributedString) xmlObject;
         
         QName attribQName = 
-            XMLHelper.constructQName(attribute.getNamespaceURI(), attribute.getLocalName(), attribute.getPrefix());
+            QNameSupport.constructQName(attribute.getNamespaceURI(), attribute.getLocalName(), attribute.getPrefix());
         if (AttributedString.WSU_ID_ATTR_NAME.equals(attribQName)) {
             attributedString.setWSUId(attribute.getValue());
             attribute.getOwnerElement().setIdAttributeNode(attribute, true);

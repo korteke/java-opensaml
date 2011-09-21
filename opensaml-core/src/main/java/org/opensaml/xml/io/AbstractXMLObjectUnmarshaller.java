@@ -86,7 +86,7 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
      *            unmarshaller operates on
      */
     protected AbstractXMLObjectUnmarshaller(String targetNamespaceURI, String targetLocalName) {
-        targetQName = XMLHelper.constructQName(targetNamespaceURI, targetLocalName, null);
+        targetQName = QNameSupport.constructQName(targetNamespaceURI, targetLocalName, null);
 
         xmlObjectBuilderFactory = Configuration.getBuilderFactory();
         unmarshallerFactory = Configuration.getUnmarshallerFactory();

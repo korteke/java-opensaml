@@ -21,8 +21,8 @@ import java.util.Map.Entry;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.util.xml.AttributeSupport;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -62,7 +62,7 @@ public class AbstractExtensibleXMLObjectMarshaller extends AbstractElementExtens
         Attr attribute;
         Document document = domElement.getOwnerDocument();
         for (Entry<QName, String> entry : anyAttribute.getUnknownAttributes().entrySet()) {
-            attribute = XMLHelper.constructAttribute(document, entry.getKey());
+            attribute = AttributeSupport.constructAttribute(document, entry.getKey());
             attribute.setValue(entry.getValue());
             domElement.setAttributeNodeNS(attribute);
             if (Configuration.isIDAttribute(entry.getKey())
