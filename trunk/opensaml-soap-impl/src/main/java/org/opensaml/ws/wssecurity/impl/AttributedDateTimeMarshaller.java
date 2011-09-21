@@ -18,6 +18,7 @@
 package org.opensaml.ws.wssecurity.impl;
 
 import org.opensaml.util.StringSupport;
+import org.opensaml.util.xml.ElementSupport;
 import org.opensaml.ws.wssecurity.AttributedDateTime;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
@@ -45,7 +46,7 @@ public class AttributedDateTimeMarshaller extends AbstractWSSecurityObjectMarsha
     /** {@inheritDoc} */
     protected void marshallElementContent(XMLObject xmlObject, Element domElement) throws MarshallingException {
         AttributedDateTime dateTime = (AttributedDateTime) xmlObject;
-        XMLHelper.appendTextContent(domElement, dateTime.getValue());
+        ElementSupport.appendTextContent(domElement, dateTime.getValue());
     }
     
 }

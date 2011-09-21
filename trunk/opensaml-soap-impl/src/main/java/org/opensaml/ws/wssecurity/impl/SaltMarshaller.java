@@ -17,10 +17,10 @@
 
 package org.opensaml.ws.wssecurity.impl;
 
+import org.opensaml.util.xml.ElementSupport;
 import org.opensaml.ws.wssecurity.Salt;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Element;
 
 /**
@@ -32,7 +32,7 @@ public class SaltMarshaller extends AbstractWSSecurityObjectMarshaller {
     /** {@inheritDoc} */
     protected void marshallElementContent(XMLObject xmlObject, Element domElement) throws MarshallingException {
         Salt salt = (Salt) xmlObject;
-        XMLHelper.appendTextContent(domElement, salt.getValue());
+        ElementSupport.appendTextContent(domElement, salt.getValue());
     }
 
 }

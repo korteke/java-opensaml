@@ -17,11 +17,11 @@
 
 package org.opensaml.xacml.policy.impl;
 
+import org.opensaml.util.xml.ElementSupport;
 import org.opensaml.xacml.impl.AbstractXACMLObjectMarshaller;
 import org.opensaml.xacml.policy.DescriptionType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Element;
 
 /**
@@ -39,7 +39,7 @@ public class DescriptionTypeMarshaller extends AbstractXACMLObjectMarshaller {
         DescriptionType message = (DescriptionType) xmlobject;
 
         if (message.getValue() != null) {
-            XMLHelper.appendTextContent(domElement, message.getValue());
+            ElementSupport.appendTextContent(domElement, message.getValue());
         }
     }
 

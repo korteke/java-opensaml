@@ -23,9 +23,9 @@ package org.opensaml.saml2.core.impl;
 
 import org.opensaml.common.impl.AbstractSAMLObjectMarshaller;
 import org.opensaml.saml2.core.Action;
+import org.opensaml.util.xml.ElementSupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Element;
 
 /**
@@ -45,6 +45,6 @@ public class ActionMarshaller extends AbstractSAMLObjectMarshaller {
     /** {@inheritDoc} */
     protected void marshallElementContent(XMLObject samlObject, Element domElement) throws MarshallingException {
         Action action = (Action) samlObject;
-        XMLHelper.appendTextContent(domElement, action.getAction());
+        ElementSupport.appendTextContent(domElement, action.getAction());
     }
 }

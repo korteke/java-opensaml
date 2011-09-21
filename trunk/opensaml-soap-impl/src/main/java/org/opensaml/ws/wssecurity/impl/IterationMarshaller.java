@@ -18,10 +18,10 @@
 package org.opensaml.ws.wssecurity.impl;
 
 
+import org.opensaml.util.xml.ElementSupport;
 import org.opensaml.ws.wssecurity.Iteration;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Element;
 
 /**
@@ -35,7 +35,7 @@ public class IterationMarshaller extends AbstractWSSecurityObjectMarshaller {
         Iteration iteration = (Iteration) xmlObject;
         
         if (iteration.getValue() != null) {
-            XMLHelper.appendTextContent(domElement, iteration.getValue().toString());
+            ElementSupport.appendTextContent(domElement, iteration.getValue().toString());
         }
     }
 

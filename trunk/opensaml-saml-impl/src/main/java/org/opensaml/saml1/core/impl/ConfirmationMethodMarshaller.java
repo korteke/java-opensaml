@@ -19,9 +19,9 @@ package org.opensaml.saml1.core.impl;
 
 import org.opensaml.common.impl.AbstractSAMLObjectMarshaller;
 import org.opensaml.saml1.core.ConfirmationMethod;
+import org.opensaml.util.xml.ElementSupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Element;
 
 /**
@@ -33,6 +33,6 @@ public class ConfirmationMethodMarshaller extends AbstractSAMLObjectMarshaller {
     protected void marshallElementContent(XMLObject samlObject, Element domElement) throws MarshallingException {
         ConfirmationMethod confirmationMethod = (ConfirmationMethod) samlObject;
 
-        XMLHelper.appendTextContent(domElement, confirmationMethod.getConfirmationMethod());
+        ElementSupport.appendTextContent(domElement, confirmationMethod.getConfirmationMethod());
     }
 }

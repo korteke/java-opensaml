@@ -17,6 +17,7 @@
 
 package org.opensaml.ws.wsaddressing.impl;
 
+import org.opensaml.util.xml.ElementSupport;
 import org.opensaml.ws.wsaddressing.AttributedUnsignedLong;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
@@ -38,7 +39,7 @@ public class AttributedUnsignedLongMarshaller extends AbstractWSAddressingObject
     protected void marshallElementContent(XMLObject xmlObject, Element domElement) throws MarshallingException {
         AttributedUnsignedLong aul = (AttributedUnsignedLong) xmlObject;
         if (aul.getValue() != null) {
-            XMLHelper.appendTextContent(domElement, aul.getValue().toString());
+            ElementSupport.appendTextContent(domElement, aul.getValue().toString());
         }
     }
 

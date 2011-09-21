@@ -23,9 +23,9 @@ package org.opensaml.saml2.metadata.impl;
 
 import org.opensaml.common.impl.AbstractSAMLObjectMarshaller;
 import org.opensaml.saml2.metadata.TelephoneNumber;
+import org.opensaml.util.xml.ElementSupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Element;
 
 /**
@@ -38,7 +38,7 @@ public class TelephoneNumberMarshaller extends AbstractSAMLObjectMarshaller {
         TelephoneNumber number = (TelephoneNumber) samlObject;
 
         if (number.getNumber() != null) {
-            XMLHelper.appendTextContent(domElement, number.getNumber());
+            ElementSupport.appendTextContent(domElement, number.getNumber());
         }
     }
 }

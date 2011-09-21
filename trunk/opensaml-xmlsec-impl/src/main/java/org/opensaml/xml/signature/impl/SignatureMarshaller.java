@@ -23,6 +23,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.apache.xml.security.Init;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.signature.XMLSignature;
+import org.opensaml.util.xml.ElementSupport;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.Marshaller;
@@ -31,7 +32,6 @@ import org.opensaml.xml.security.XMLSecurityHelper;
 import org.opensaml.xml.signature.ContentReference;
 import org.opensaml.xml.signature.KeyInfo;
 import org.opensaml.xml.signature.Signature;
-import org.opensaml.xml.util.XMLHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -68,7 +68,7 @@ public class SignatureMarshaller implements Marshaller {
     /** {@inheritDoc} */
     public Element marshall(XMLObject xmlObject, Element parentElement) throws MarshallingException {
         Element signatureElement = createSignatureElement((SignatureImpl) xmlObject, parentElement.getOwnerDocument());
-        XMLHelper.appendChildElement(parentElement, signatureElement);
+        ElementSupport.appendChildElement(parentElement, signatureElement);
         return signatureElement;
     }
 

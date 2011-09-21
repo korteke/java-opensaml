@@ -18,6 +18,7 @@
 package org.opensaml.ws.wssecurity.impl;
 
 import org.opensaml.util.StringSupport;
+import org.opensaml.util.xml.ElementSupport;
 import org.opensaml.ws.wssecurity.AttributedString;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
@@ -44,7 +45,7 @@ public class AttributedStringMarshaller extends AbstractWSSecurityObjectMarshall
     /** {@inheritDoc} */
     protected void marshallElementContent(XMLObject xmlObject, Element domElement) throws MarshallingException {
         AttributedString attributedString = (AttributedString) xmlObject;
-        XMLHelper.appendTextContent(domElement, attributedString.getValue());
+        ElementSupport.appendTextContent(domElement, attributedString.getValue());
     }
     
 }

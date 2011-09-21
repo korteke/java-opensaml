@@ -17,11 +17,11 @@
 
 package org.opensaml.xacml.ctx.impl;
 
+import org.opensaml.util.xml.ElementSupport;
 import org.opensaml.xacml.ctx.DecisionType;
 import org.opensaml.xacml.impl.AbstractXACMLObjectMarshaller;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Element;
 
 /** Marshaller for {@link DecisionType} objects. */
@@ -47,7 +47,7 @@ public class DecisionTypeMarshaller extends AbstractXACMLObjectMarshaller {
     /** {@inheritDoc} */
     protected void marshallElementContent(XMLObject samlObject, Element domElement) throws MarshallingException {
         DecisionType decision = (DecisionType) samlObject;
-        XMLHelper.appendTextContent(domElement, decision.getDecision().toString());
+        ElementSupport.appendTextContent(domElement, decision.getDecision().toString());
     }
 
 }

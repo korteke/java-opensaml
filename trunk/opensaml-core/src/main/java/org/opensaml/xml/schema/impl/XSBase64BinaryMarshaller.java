@@ -17,11 +17,11 @@
 
 package org.opensaml.xml.schema.impl;
 
+import org.opensaml.util.xml.ElementSupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.AbstractXMLObjectMarshaller;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.schema.XSBase64Binary;
-import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Element;
 
 /**
@@ -38,6 +38,6 @@ public class XSBase64BinaryMarshaller extends AbstractXMLObjectMarshaller {
     protected void marshallElementContent(XMLObject xmlObject, Element domElement) throws MarshallingException {
         XSBase64Binary xsBase64Binary = (XSBase64Binary) xmlObject;
 
-        XMLHelper.appendTextContent(domElement, xsBase64Binary.getValue());
+        ElementSupport.appendTextContent(domElement, xsBase64Binary.getValue());
     }
 }

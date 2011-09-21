@@ -23,9 +23,9 @@ package org.opensaml.saml2.core.impl;
 
 import org.opensaml.common.impl.AbstractSAMLObjectMarshaller;
 import org.opensaml.saml2.core.NewID;
+import org.opensaml.util.xml.ElementSupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Element;
 
 /**
@@ -38,7 +38,7 @@ public class NewIDMarshaller extends AbstractSAMLObjectMarshaller {
         NewID newID = (NewID) samlObject;
 
         if (newID.getNewID() != null) {
-            XMLHelper.appendTextContent(domElement, newID.getNewID());
+            ElementSupport.appendTextContent(domElement, newID.getNewID());
         }
     }
 }

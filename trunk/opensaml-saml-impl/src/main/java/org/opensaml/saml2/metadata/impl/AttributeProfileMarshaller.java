@@ -23,9 +23,9 @@ package org.opensaml.saml2.metadata.impl;
 
 import org.opensaml.common.impl.AbstractSAMLObjectMarshaller;
 import org.opensaml.saml2.metadata.AttributeProfile;
+import org.opensaml.util.xml.ElementSupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Element;
 
 /**
@@ -37,7 +37,7 @@ public class AttributeProfileMarshaller extends AbstractSAMLObjectMarshaller {
     protected void marshallElementContent(XMLObject samlObject, Element domElement) throws MarshallingException {
         AttributeProfile profile = (AttributeProfile) samlObject;
         if (profile.getProfileURI() != null) {
-            XMLHelper.appendTextContent(domElement, profile.getProfileURI());
+            ElementSupport.appendTextContent(domElement, profile.getProfileURI());
         }
     }
 }

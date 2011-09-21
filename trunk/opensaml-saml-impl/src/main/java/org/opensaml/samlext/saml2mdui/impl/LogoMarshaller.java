@@ -20,6 +20,7 @@ package org.opensaml.samlext.saml2mdui.impl;
 import org.opensaml.common.impl.AbstractSAMLObjectMarshaller;
 import org.opensaml.common.xml.SAMLConstants;
 import org.opensaml.samlext.saml2mdui.Logo;
+import org.opensaml.util.xml.ElementSupport;
 import org.opensaml.xml.LangBearing;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
@@ -57,7 +58,7 @@ public class LogoMarshaller extends AbstractSAMLObjectMarshaller {
         Logo logo = (Logo) samlObject;
 
         if (logo.getURL() != null) {
-            XMLHelper.appendTextContent(domElement, logo.getURL());
+            ElementSupport.appendTextContent(domElement, logo.getURL());
         }
     }
 }

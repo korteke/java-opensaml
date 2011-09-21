@@ -19,9 +19,9 @@ package org.opensaml.samlext.saml2mdui.impl;
 
 import org.opensaml.common.impl.AbstractSAMLObjectMarshaller;
 import org.opensaml.samlext.saml2mdui.GeolocationHint;
+import org.opensaml.util.xml.ElementSupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Element;
 
 /**
@@ -34,7 +34,7 @@ public class GeolocationHintMarshaller extends AbstractSAMLObjectMarshaller {
         GeolocationHint name = (GeolocationHint) samlObject;
 
         if (name.getHint() != null) {
-            XMLHelper.appendTextContent(domElement, name.getHint());
+            ElementSupport.appendTextContent(domElement, name.getHint());
         }
     }
 }

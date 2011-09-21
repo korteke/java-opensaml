@@ -20,6 +20,7 @@ package org.opensaml.saml2.metadata.impl;
 import org.opensaml.common.impl.AbstractSAMLObjectMarshaller;
 import org.opensaml.common.xml.SAMLConstants;
 import org.opensaml.saml2.metadata.LocalizedName;
+import org.opensaml.util.xml.ElementSupport;
 import org.opensaml.xml.LangBearing;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
@@ -51,7 +52,7 @@ public class LocalizedNameMarshaller extends AbstractSAMLObjectMarshaller {
         LocalizedName name = (LocalizedName) samlObject;
 
         if (name.getValue() != null) {
-            XMLHelper.appendTextContent(domElement, name.getValue());
+            ElementSupport.appendTextContent(domElement, name.getValue());
         }
     }
 }

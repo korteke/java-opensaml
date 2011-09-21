@@ -17,10 +17,10 @@
 
 package org.opensaml.ws.wsfed.impl;
 
+import org.opensaml.util.xml.ElementSupport;
 import org.opensaml.ws.wsfed.Address;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.AbstractXMLObjectMarshaller;
-import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Element;
 
 /** A thread-safe marshaller for {@link Address} objects. */
@@ -36,7 +36,7 @@ public class AddressMarshaller extends AbstractXMLObjectMarshaller {
         Address address = (Address) fedObject;
 
         if (address.getValue() != null) {
-            XMLHelper.appendTextContent(domElement, address.getValue());
+            ElementSupport.appendTextContent(domElement, address.getValue());
         }
     }
 
