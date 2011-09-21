@@ -20,6 +20,7 @@ package org.opensaml.xml.io;
 import javax.xml.namespace.QName;
 
 import org.opensaml.util.ObjectSupport;
+import org.opensaml.util.StringSupport;
 import org.opensaml.util.xml.QNameSupport;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.Namespace;
@@ -27,7 +28,6 @@ import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.XMLObjectBuilder;
 import org.opensaml.xml.XMLObjectBuilderFactory;
 import org.opensaml.xml.schema.XSBooleanValue;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.util.XMLConstants;
 import org.opensaml.xml.util.XMLHelper;
 import org.slf4j.Logger;
@@ -218,7 +218,7 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
     protected void unmarshallAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
         QName attribName = XMLHelper.getNodeQName(attribute);
         log.trace("Pre-processing attribute {}", attribName);
-        String attributeNamespace = DatatypeHelper.safeTrimOrNullString(attribute.getNamespaceURI());
+        String attributeNamespace = StringSupport.trimOrNull(attribute.getNamespaceURI());
 
         if (ObjectSupport.equals(attributeNamespace, XMLConstants.XMLNS_NS)) {
             unmarshallNamespaceAttribute(xmlObject, attribute);
@@ -348,7 +348,7 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
      * @throws UnmarshallingException thrown if there is a problem unmarshalling the text node
      */
     protected void unmarshallTextContent(XMLObject xmlObject, Text content) throws UnmarshallingException {
-        String textContent = DatatypeHelper.safeTrimOrNullString(content.getWholeText());
+        String textContent = StringSupport.trimOrNull(content.getWholeText());
         if (textContent != null) {
             processElementContent(xmlObject, textContent);
         }

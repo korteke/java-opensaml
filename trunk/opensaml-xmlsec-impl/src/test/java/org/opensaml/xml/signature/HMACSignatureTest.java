@@ -24,6 +24,7 @@ import javax.crypto.SecretKey;
 
 import org.apache.xml.security.signature.SignedInfo;
 import org.apache.xml.security.signature.XMLSignature;
+import org.opensaml.util.StringSupport;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.XMLObjectBaseTestCase;
 import org.opensaml.xml.io.Marshaller;
@@ -39,7 +40,6 @@ import org.opensaml.xml.security.keyinfo.KeyInfoHelper;
 import org.opensaml.xml.signature.impl.KeyInfoBuilder;
 import org.opensaml.xml.signature.impl.SignatureBuilder;
 import org.opensaml.xml.signature.impl.SignatureImpl;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.util.XMLConstants;
 import org.opensaml.xml.util.XMLHelper;
 import org.opensaml.xml.validation.ValidationException;
@@ -187,7 +187,7 @@ public class HMACSignatureTest extends XMLObjectBaseTestCase {
         
         KeyName keyName = keyInfo.getKeyNames().get(0);
         assertNotNull("KeyName was null", keyName);
-        String keyNameValue = DatatypeHelper.safeTrimOrNullString(keyName.getValue());
+        String keyNameValue = StringSupport.trimOrNull(keyName.getValue());
         assertNotNull("KeyName value was empty", keyNameValue);
         
         assertNull("HMACOutputLength value was not null", signature.getHMACOutputLength());
@@ -218,7 +218,7 @@ public class HMACSignatureTest extends XMLObjectBaseTestCase {
         
         KeyName keyName = keyInfo.getKeyNames().get(0);
         assertNotNull("KeyName was null", keyName);
-        String keyNameValue = DatatypeHelper.safeTrimOrNullString(keyName.getValue());
+        String keyNameValue = StringSupport.trimOrNull(keyName.getValue());
         assertNotNull("KeyName value was empty", keyNameValue);
         
         assertNotNull("HMACOutputLength value was null", signature.getHMACOutputLength());
@@ -270,7 +270,7 @@ public class HMACSignatureTest extends XMLObjectBaseTestCase {
             XMLHelper.getChildElementsByTagNameNS(sigMethodElement, XMLConstants.XMLSIG_NS, "HMACOutputLength");
         assertFalse("Signature method should have HMACOutputLength child", children.isEmpty());
         Element outputLengthElement = children.get(0);
-        String value = DatatypeHelper.safeTrimOrNullString(outputLengthElement.getTextContent());
+        String value = StringSupport.trimOrNull(outputLengthElement.getTextContent());
         assertNotNull("Output length value was empty", value);
         assertEquals("Output length was not the expected value", hmacOutputLength, new Integer(value));
     }

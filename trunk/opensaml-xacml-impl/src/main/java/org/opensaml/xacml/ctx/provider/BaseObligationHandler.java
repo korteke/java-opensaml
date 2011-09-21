@@ -18,8 +18,8 @@
 package org.opensaml.xacml.ctx.provider;
 
 import org.opensaml.util.ObjectSupport;
+import org.opensaml.util.StringSupport;
 import org.opensaml.xacml.policy.ObligationType;
-import org.opensaml.xml.util.DatatypeHelper;
 
 /**
  * Base class for all obligation handlers.
@@ -53,7 +53,7 @@ public abstract class BaseObligationHandler {
      * @param handlerPrecedence precedence of this handler
      */
     protected BaseObligationHandler(String obligationId, int handlerPrecedence) {
-        id = DatatypeHelper.safeTrimOrNullString(obligationId);
+        id = StringSupport.trimOrNull(obligationId);
         if (id == null) {
             throw new IllegalArgumentException("Provided obligation ID may not be null or empty");
         }

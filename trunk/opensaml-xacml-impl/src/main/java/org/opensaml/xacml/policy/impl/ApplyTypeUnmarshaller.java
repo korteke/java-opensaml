@@ -17,12 +17,12 @@
 
 package org.opensaml.xacml.policy.impl;
 
+import org.opensaml.util.StringSupport;
 import org.opensaml.xacml.impl.AbstractXACMLObjectUnmarshaller;
 import org.opensaml.xacml.policy.ApplyType;
 import org.opensaml.xacml.policy.ExpressionType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.w3c.dom.Attr;
 
 /**
@@ -40,7 +40,7 @@ public class ApplyTypeUnmarshaller extends AbstractXACMLObjectUnmarshaller {
 
         if (attribute.getLocalName().equals(ApplyType.FUNCTION_ID_ATTRIB_NAME)) {
             ApplyType applyType = (ApplyType) xmlObject;
-            applyType.setFunctionId(DatatypeHelper.safeTrimOrNullString(attribute.getValue()));
+            applyType.setFunctionId(StringSupport.trimOrNull(attribute.getValue()));
         } else {
             super.processAttribute(xmlObject, attribute);
         }

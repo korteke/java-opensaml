@@ -39,11 +39,11 @@ import org.opensaml.saml2.metadata.EntityDescriptor;
 import org.opensaml.saml2.metadata.RoleDescriptor;
 import org.opensaml.saml2.metadata.provider.MetadataProvider;
 import org.opensaml.saml2.metadata.provider.MetadataProviderException;
+import org.opensaml.util.StringSupport;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.message.decoder.MessageDecodingException;
 import org.opensaml.xml.parse.ParserPool;
 import org.opensaml.xml.security.SecurityException;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -219,7 +219,7 @@ public abstract class BaseSAML1MessageDecoder extends BaseSAMLMessageDecoder {
     protected void extractAttributeQueryInfo(SAMLMessageContext messageContext, AttributeQuery query) {
         if (useQueryResourceAsEntityId) {
             log.debug("Attempting to extract issuer from SAML 1 AttributeQuery Resource attribute");
-            String resource = DatatypeHelper.safeTrimOrNullString(query.getResource());
+            String resource = StringSupport.trimOrNull(query.getResource());
 
             if (resource != null) {
                 messageContext.setInboundMessageIssuer(resource);
@@ -239,7 +239,7 @@ public abstract class BaseSAML1MessageDecoder extends BaseSAMLMessageDecoder {
             AuthorizationDecisionQuery query) {
         if (useQueryResourceAsEntityId) {
             log.debug("Attempting to extract issuer from SAML 1 AuthorizationDecisionQuery Resource attribute");
-            String resource = DatatypeHelper.safeTrimOrNullString(query.getResource());
+            String resource = StringSupport.trimOrNull(query.getResource());
 
             if (resource != null) {
                 messageContext.setInboundMessageIssuer(resource);
@@ -348,7 +348,7 @@ public abstract class BaseSAML1MessageDecoder extends BaseSAMLMessageDecoder {
         String messageDestination = null;
         if (samlMessage instanceof ResponseAbstractType) {
             ResponseAbstractType response = (ResponseAbstractType) samlMessage;
-            messageDestination = DatatypeHelper.safeTrimOrNullString(response.getRecipient());
+            messageDestination = StringSupport.trimOrNull(response.getRecipient());
         } else if (samlMessage instanceof RequestAbstractType) {
             // don't treat as an error, just return null
             return null;

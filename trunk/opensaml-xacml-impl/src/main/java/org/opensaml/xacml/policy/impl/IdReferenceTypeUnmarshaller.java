@@ -17,11 +17,11 @@
 
 package org.opensaml.xacml.policy.impl;
 
+import org.opensaml.util.StringSupport;
 import org.opensaml.xacml.policy.IdReferenceType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.schema.impl.XSStringUnmarshaller;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.w3c.dom.Attr;
 
 /**
@@ -40,11 +40,11 @@ public class IdReferenceTypeUnmarshaller extends XSStringUnmarshaller {
         IdReferenceType idReferenceType = (IdReferenceType)xmlObject;
      
         if(attribute.getLocalName().equals(IdReferenceType.EARLIEST_VERSION_ATTRIB_NAME)){           
-            idReferenceType.setEarliestVersion(DatatypeHelper.safeTrimOrNullString(attribute.getValue()));
+            idReferenceType.setEarliestVersion(StringSupport.trimOrNull(attribute.getValue()));
         }else if(attribute.getLocalName().equals(IdReferenceType.LATEST_VERSION_ATTRIB_NAME)){           
-            idReferenceType.setLatestVersion(DatatypeHelper.safeTrimOrNullString(attribute.getValue()));
+            idReferenceType.setLatestVersion(StringSupport.trimOrNull(attribute.getValue()));
         }else if(attribute.getLocalName().equals(IdReferenceType.VERSION_ATTRIB_NAME)){           
-            idReferenceType.setVersion(DatatypeHelper.safeTrimOrNullString(attribute.getValue()));
+            idReferenceType.setVersion(StringSupport.trimOrNull(attribute.getValue()));
         } else {
             super.processAttribute(xmlObject, attribute);
         }

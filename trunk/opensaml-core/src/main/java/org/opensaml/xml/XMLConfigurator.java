@@ -32,11 +32,11 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
 import org.opensaml.core.config.ConfigurationService;
+import org.opensaml.util.StringSupport;
 import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.Unmarshaller;
 import org.opensaml.xml.parse.BasicParserPool;
 import org.opensaml.xml.parse.XMLParserException;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.util.XMLConstants;
 import org.opensaml.xml.util.XMLHelper;
 import org.opensaml.xml.validation.Validator;
@@ -357,7 +357,7 @@ public class XMLConfigurator {
      */
     protected Object createClassInstance(Element configuration) throws ConfigurationException {
         String className = configuration.getAttributeNS(null, "className");
-        className = DatatypeHelper.safeTrimOrNullString(className);
+        className = StringSupport.trimOrNull(className);
 
         if (className == null) {
             return null;

@@ -17,12 +17,12 @@
 
 package org.opensaml.xacml.policy.impl;
 
+import org.opensaml.util.StringSupport;
 import org.opensaml.xacml.impl.AbstractXACMLObjectUnmarshaller;
 import org.opensaml.xacml.policy.AttributeDesignatorType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.schema.XSBooleanValue;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.w3c.dom.Attr;
 
 /**
@@ -41,11 +41,11 @@ public class AttributeDesignatorTypeUnmarshaller extends AbstractXACMLObjectUnma
         AttributeDesignatorType attributeDesignatorType = (AttributeDesignatorType) xmlObject;
         
         if (attribute.getLocalName().equals(AttributeDesignatorType.ATTRIBUTE_ID_ATTRIB_NAME)){
-            attributeDesignatorType.setAttribtueId(DatatypeHelper.safeTrimOrNullString(attribute.getValue()));
+            attributeDesignatorType.setAttribtueId(StringSupport.trimOrNull(attribute.getValue()));
         } else  if (attribute.getLocalName().equals(AttributeDesignatorType.DATA_TYPE_ATTRIB_NAME)){
-            attributeDesignatorType.setDataType(DatatypeHelper.safeTrimOrNullString(attribute.getValue()));
+            attributeDesignatorType.setDataType(StringSupport.trimOrNull(attribute.getValue()));
         } else  if (attribute.getLocalName().equals(AttributeDesignatorType.ISSUER_ATTRIB_NAME)){
-            attributeDesignatorType.setIssuer(DatatypeHelper.safeTrimOrNullString(attribute.getValue()));
+            attributeDesignatorType.setIssuer(StringSupport.trimOrNull(attribute.getValue()));
         } else  if (attribute.getLocalName().equals(AttributeDesignatorType.MUST_BE_PRESENT_ATTRIB_NAME)){
             if (attribute.getValue().equals("True") || attribute.getValue().equals("true")) {
                 attributeDesignatorType.setMustBePresentXSBoolean(XSBooleanValue.valueOf("1"));

@@ -19,7 +19,7 @@ package org.opensaml.saml1.binding.artifact;
 
 import java.util.Arrays;
 
-import org.opensaml.xml.util.DatatypeHelper;
+import org.opensaml.util.StringSupport;
 
 /**
  * SAML 1 Type 0x0002 Artifact. SAML 1, type 2, artifacts contains a 2 byte type code with a value of 1 followed by a 20
@@ -119,7 +119,7 @@ public class SAML1ArtifactType0002 extends AbstractSAML1Artifact {
      * @throws IllegalArgumentException thrown if the given location is empty or null
      */
     protected void setSourceLocation(String newLocation) {
-        String location = DatatypeHelper.safeTrimOrNullString(newLocation);
+        String location = StringSupport.trimOrNull(newLocation);
         if (location == null) {
             throw new IllegalArgumentException("Artifact source location may not be a null or empty string");
         }

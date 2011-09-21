@@ -27,6 +27,7 @@ import java.util.Set;
 import javax.xml.namespace.QName;
 
 import org.opensaml.util.ObjectSupport;
+import org.opensaml.util.StringSupport;
 import org.opensaml.util.collections.LazyList;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.soap.soap11.ActorBearing;
@@ -45,7 +46,6 @@ import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.XMLObjectBuilderFactory;
 import org.opensaml.xml.schema.XSBooleanValue;
 import org.opensaml.xml.util.AttributeMap;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.util.XMLHelper;
 
 /**
@@ -92,7 +92,7 @@ public final class SOAPHelper {
             }
         }
         if (soapObject instanceof AttributeExtensibleXMLObject) {
-            String value = DatatypeHelper.safeTrimOrNullString(((AttributeExtensibleXMLObject) soapObject)
+            String value = StringSupport.trimOrNull(((AttributeExtensibleXMLObject) soapObject)
                     .getUnknownAttributes().get(MustUnderstandBearing.SOAP11_MUST_UNDERSTAND_ATTR_NAME));
             return ObjectSupport.equals("1", value);
         }
@@ -126,13 +126,13 @@ public final class SOAPHelper {
     public static String getSOAP11ActorAttribute(XMLObject soapObject) {
         String value = null;
         if (soapObject instanceof ActorBearing) {
-            value = DatatypeHelper.safeTrimOrNullString(((ActorBearing) soapObject).getSOAP11Actor());
+            value = StringSupport.trimOrNull(((ActorBearing) soapObject).getSOAP11Actor());
             if (value != null) {
                 return value;
             }
         }
         if (soapObject instanceof AttributeExtensibleXMLObject) {
-            value = DatatypeHelper.safeTrimOrNullString(((AttributeExtensibleXMLObject) soapObject)
+            value = StringSupport.trimOrNull(((AttributeExtensibleXMLObject) soapObject)
                     .getUnknownAttributes().get(ActorBearing.SOAP11_ACTOR_ATTR_NAME));
             return value;
         }
@@ -182,7 +182,7 @@ public final class SOAPHelper {
         } else if (soapObject instanceof AttributeExtensibleXMLObject) {
             ((AttributeExtensibleXMLObject) soapObject).getUnknownAttributes().put(
                     EncodingStyleBearing.SOAP11_ENCODING_STYLE_ATTR_NAME,
-                    DatatypeHelper.listToStringValue(encodingStyles, " "));
+                    StringSupport.listToStringValue(encodingStyles, " "));
         } else {
             throw new IllegalArgumentException(
                     "Specified object was neither EncodingStyleBearing nor AttributeExtensible");
@@ -204,10 +204,10 @@ public final class SOAPHelper {
             }
         }
         if (soapObject instanceof AttributeExtensibleXMLObject) {
-            String value = DatatypeHelper.safeTrimOrNullString(((AttributeExtensibleXMLObject) soapObject)
+            String value = StringSupport.trimOrNull(((AttributeExtensibleXMLObject) soapObject)
                     .getUnknownAttributes().get(EncodingStyleBearing.SOAP11_ENCODING_STYLE_ATTR_NAME));
             if (value != null) {
-                DatatypeHelper.stringToList(value, XMLHelper.LIST_DELIMITERS);
+                StringSupport.stringToList(value, XMLHelper.LIST_DELIMITERS);
             }
         }
         return null;
@@ -245,7 +245,7 @@ public final class SOAPHelper {
         }
 
         if (style == null && soapObject instanceof AttributeExtensibleXMLObject) {
-            style = DatatypeHelper.safeTrimOrNullString(((AttributeExtensibleXMLObject) soapObject)
+            style = StringSupport.trimOrNull(((AttributeExtensibleXMLObject) soapObject)
                     .getUnknownAttributes().get(
                             org.opensaml.ws.soap.soap12.EncodingStyleBearing.SOAP12_ENCODING_STYLE_ATTR_NAME));
         }
@@ -288,7 +288,7 @@ public final class SOAPHelper {
             }
         }
         if (soapObject instanceof AttributeExtensibleXMLObject) {
-            String value = DatatypeHelper.safeTrimOrNullString(((AttributeExtensibleXMLObject) soapObject)
+            String value = StringSupport.trimOrNull(((AttributeExtensibleXMLObject) soapObject)
                     .getUnknownAttributes().get(
                             org.opensaml.ws.soap.soap12.MustUnderstandBearing.SOAP12_MUST_UNDERSTAND_ATTR_NAME));
             return ObjectSupport.equals("1", value) || ObjectSupport.equals("true", value);
@@ -329,7 +329,7 @@ public final class SOAPHelper {
             }
         }
         if (soapObject instanceof AttributeExtensibleXMLObject) {
-            String value = DatatypeHelper.safeTrimOrNullString(((AttributeExtensibleXMLObject) soapObject)
+            String value = StringSupport.trimOrNull(((AttributeExtensibleXMLObject) soapObject)
                     .getUnknownAttributes().get(org.opensaml.ws.soap.soap12.RelayBearing.SOAP12_RELAY_ATTR_LOCAL_NAME));
             return ObjectSupport.equals("1", value) || ObjectSupport.equals("true", value);
         }
@@ -368,7 +368,7 @@ public final class SOAPHelper {
         }
 
         if (role == null && soapObject instanceof AttributeExtensibleXMLObject) {
-            role = DatatypeHelper.safeTrimOrNullString(((AttributeExtensibleXMLObject) soapObject)
+            role = StringSupport.trimOrNull(((AttributeExtensibleXMLObject) soapObject)
                     .getUnknownAttributes().get(
                             org.opensaml.ws.soap.soap12.RoleBearing.SOAP12_ROLE_ATTR_LOCAL_NAME));
         }

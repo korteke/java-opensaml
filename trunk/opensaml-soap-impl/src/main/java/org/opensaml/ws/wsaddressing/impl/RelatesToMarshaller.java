@@ -17,11 +17,11 @@
 
 package org.opensaml.ws.wsaddressing.impl;
 
+import org.opensaml.util.StringSupport;
 import org.opensaml.ws.wsaddressing.RelatesTo;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.schema.impl.XSURIMarshaller;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Element;
 
@@ -34,7 +34,7 @@ public class RelatesToMarshaller extends XSURIMarshaller {
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         RelatesTo relatesTo = (RelatesTo) xmlObject;
         
-        String relationshipType = DatatypeHelper.safeTrimOrNullString(relatesTo.getRelationshipType());
+        String relationshipType = StringSupport.trimOrNull(relatesTo.getRelationshipType());
         if (relationshipType != null) {
             domElement.setAttributeNS(null, RelatesTo.RELATIONSHIP_TYPE_ATTRIB_NAME, relationshipType);
         }

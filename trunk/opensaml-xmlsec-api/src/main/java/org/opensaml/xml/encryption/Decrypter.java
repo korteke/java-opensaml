@@ -53,7 +53,6 @@ import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xml.security.keyinfo.KeyInfoCriterion;
 import org.opensaml.xml.signature.DigestMethod;
 import org.opensaml.xml.signature.SignatureConstants;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -712,7 +711,7 @@ public class Decrypter {
             if (!digestMethods.isEmpty()) {
                 DigestMethod dm = (DigestMethod) digestMethods.get(0);
                 if (! SignatureConstants.ALGO_ID_DIGEST_SHA1
-                        .equals(DatatypeHelper.safeTrimOrNullString(dm.getAlgorithm())) ) {
+                        .equals(StringSupport.trimOrNull(dm.getAlgorithm())) ) {
                     log.error("EncryptedKey/EncryptionMethod/DigestMethod contains unsupported algorithm URI: {}",
                             dm.getAlgorithm());
                     throw new DecryptionException(
@@ -851,7 +850,7 @@ public class Decrypter {
             // This element is optional
             return Collections.emptySet();
         }
-        String encAlgorithmURI = DatatypeHelper.safeTrimOrNullString(encMethod.getAlgorithm());
+        String encAlgorithmURI = StringSupport.trimOrNull(encMethod.getAlgorithm());
         if (encAlgorithmURI == null) {
             return Collections.emptySet();
         }

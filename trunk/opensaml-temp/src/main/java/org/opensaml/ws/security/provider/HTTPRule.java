@@ -17,11 +17,11 @@
 
 package org.opensaml.ws.security.provider;
 
+import org.opensaml.util.StringSupport;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.security.SecurityPolicyException;
 import org.opensaml.ws.security.SecurityPolicyRule;
 import org.opensaml.ws.transport.http.HTTPTransport;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,8 +50,8 @@ public class HTTPRule implements SecurityPolicyRule {
      * @param secured whether the request must be secured
      */
     public HTTPRule(String type, String method, boolean secured) {
-        requiredContentType = DatatypeHelper.safeTrimOrNullString(type);
-        requiredRequestMethod = DatatypeHelper.safeTrimOrNullString(method);
+        requiredContentType = StringSupport.trimOrNull(type);
+        requiredRequestMethod = StringSupport.trimOrNull(method);
         requireSecured = secured;
     }
 

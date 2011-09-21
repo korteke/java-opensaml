@@ -23,12 +23,12 @@ import org.apache.xml.security.Init;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.signature.SignedInfo;
 import org.apache.xml.security.signature.XMLSignature;
+import org.opensaml.util.StringSupport;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.io.Unmarshaller;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.signature.KeyInfo;
 import org.opensaml.xml.signature.Signature;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.util.XMLConstants;
 import org.opensaml.xml.util.XMLHelper;
 import org.slf4j.Logger;
@@ -102,7 +102,7 @@ public class SignatureUnmarshaller implements Unmarshaller {
                 "HMACOutputLength");
         if (!children.isEmpty()) {
             Element hmacElement = children.get(0);
-            String value = DatatypeHelper.safeTrimOrNullString(hmacElement.getTextContent());
+            String value = StringSupport.trimOrNull(hmacElement.getTextContent());
             if (value != null) {
                 return new Integer(value);
             }

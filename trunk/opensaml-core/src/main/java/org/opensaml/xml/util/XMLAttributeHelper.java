@@ -17,6 +17,7 @@
 
 package org.opensaml.xml.util;
 
+import org.opensaml.util.StringSupport;
 import org.opensaml.xml.AttributeExtensibleXMLObject;
 import org.opensaml.xml.BaseBearing;
 import org.opensaml.xml.IdBearing;
@@ -69,13 +70,13 @@ public final class XMLAttributeHelper {
     public static String getXMLId(XMLObject xmlObject) {
         String value = null;
         if (xmlObject instanceof IdBearing) {
-            value = DatatypeHelper.safeTrimOrNullString(((IdBearing)xmlObject).getXMLId());
+            value = StringSupport.trimOrNull(((IdBearing)xmlObject).getXMLId());
             if (value != null) {
                 return value;
             }
         }
         if (xmlObject instanceof AttributeExtensibleXMLObject) {
-            value = DatatypeHelper.safeTrimOrNullString(((AttributeExtensibleXMLObject)xmlObject)
+            value = StringSupport.trimOrNull(((AttributeExtensibleXMLObject)xmlObject)
                         .getUnknownAttributes().get(IdBearing.XML_ID_ATTR_NAME));
             return value;
         }
@@ -109,13 +110,13 @@ public final class XMLAttributeHelper {
     public static String getXMLLang(XMLObject xmlObject) {
         String value = null;
         if (xmlObject instanceof LangBearing) {
-            value = DatatypeHelper.safeTrimOrNullString(((LangBearing)xmlObject).getXMLLang());
+            value = StringSupport.trimOrNull(((LangBearing)xmlObject).getXMLLang());
             if (value != null) {
                 return value;
             }
         }
         if (xmlObject instanceof AttributeExtensibleXMLObject) {
-            value = DatatypeHelper.safeTrimOrNullString(((AttributeExtensibleXMLObject)xmlObject)
+            value = StringSupport.trimOrNull(((AttributeExtensibleXMLObject)xmlObject)
                         .getUnknownAttributes().get(LangBearing.XML_LANG_ATTR_NAME));
             return value;
         }
@@ -149,13 +150,13 @@ public final class XMLAttributeHelper {
     public static String getXMLBase(XMLObject xmlObject) {
         String value = null;
         if (xmlObject instanceof BaseBearing) {
-            value = DatatypeHelper.safeTrimOrNullString(((BaseBearing)xmlObject).getXMLBase());
+            value = StringSupport.trimOrNull(((BaseBearing)xmlObject).getXMLBase());
             if (value != null) {
                 return value;
             }
         }
         if (xmlObject instanceof AttributeExtensibleXMLObject) {
-            value = DatatypeHelper.safeTrimOrNullString(((AttributeExtensibleXMLObject)xmlObject)
+            value = StringSupport.trimOrNull(((AttributeExtensibleXMLObject)xmlObject)
                         .getUnknownAttributes().get(BaseBearing.XML_BASE_ATTR_NAME));
             return value;
         }
@@ -196,7 +197,7 @@ public final class XMLAttributeHelper {
         }
         String valueString = null;
         if (xmlObject instanceof AttributeExtensibleXMLObject) {
-            valueString = DatatypeHelper.safeTrimOrNullString(((AttributeExtensibleXMLObject)xmlObject)
+            valueString = StringSupport.trimOrNull(((AttributeExtensibleXMLObject)xmlObject)
                         .getUnknownAttributes().get(SpaceBearing.XML_SPACE_ATTR_NAME));
             if (valueString != null) {
                 return XMLSpaceEnum.parseValue(valueString);

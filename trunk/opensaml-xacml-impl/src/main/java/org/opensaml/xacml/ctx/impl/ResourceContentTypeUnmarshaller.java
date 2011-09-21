@@ -19,11 +19,11 @@ package org.opensaml.xacml.ctx.impl;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.util.StringSupport;
 import org.opensaml.xacml.ctx.ResourceContentType;
 import org.opensaml.xacml.impl.AbstractXACMLObjectUnmarshaller;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Attr;
 
@@ -68,6 +68,6 @@ public class ResourceContentTypeUnmarshaller extends AbstractXACMLObjectUnmarsha
     /** {@inheritDoc} */
     protected void processElementContent(XMLObject xmlObject, String elementContent) {
         ResourceContentType resourceContent = (ResourceContentType) xmlObject;
-        resourceContent.setValue(DatatypeHelper.safeTrimOrNullString(elementContent));
+        resourceContent.setValue(StringSupport.trimOrNull(elementContent));
     }
 }

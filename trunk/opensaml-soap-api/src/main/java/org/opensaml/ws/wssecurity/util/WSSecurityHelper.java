@@ -19,6 +19,7 @@ package org.opensaml.ws.wssecurity.util;
 
 import java.util.List;
 
+import org.opensaml.util.StringSupport;
 import org.opensaml.util.collections.LazyList;
 import org.opensaml.ws.wssecurity.IdBearing;
 import org.opensaml.ws.wssecurity.TokenTypeBearing;
@@ -26,7 +27,6 @@ import org.opensaml.ws.wssecurity.UsageBearing;
 import org.opensaml.xml.AttributeExtensibleXMLObject;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.util.AttributeMap;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.util.XMLHelper;
 
 /**
@@ -67,13 +67,13 @@ public final class WSSecurityHelper {
     public static String getWSUId(XMLObject soapObject) {
         String value = null;
         if (soapObject instanceof IdBearing) {
-            value = DatatypeHelper.safeTrimOrNullString(((IdBearing)soapObject).getWSUId());
+            value = StringSupport.trimOrNull(((IdBearing)soapObject).getWSUId());
             if (value != null) {
                 return value;
             }
         }
         if (soapObject instanceof AttributeExtensibleXMLObject) {
-            value = DatatypeHelper.safeTrimOrNullString(((AttributeExtensibleXMLObject)soapObject)
+            value = StringSupport.trimOrNull(((AttributeExtensibleXMLObject)soapObject)
                         .getUnknownAttributes().get(IdBearing.WSU_ID_ATTR_NAME));
             return value;
         }
@@ -107,13 +107,13 @@ public final class WSSecurityHelper {
     public static String getWSSE11TokenType(XMLObject soapObject) {
         String value = null;
         if (soapObject instanceof TokenTypeBearing) {
-            value = DatatypeHelper.safeTrimOrNullString(((TokenTypeBearing)soapObject).getWSSE11TokenType());
+            value = StringSupport.trimOrNull(((TokenTypeBearing)soapObject).getWSSE11TokenType());
             if (value != null) {
                 return value;
             }
         }
         if (soapObject instanceof AttributeExtensibleXMLObject) {
-            value = DatatypeHelper.safeTrimOrNullString(((AttributeExtensibleXMLObject)soapObject)
+            value = StringSupport.trimOrNull(((AttributeExtensibleXMLObject)soapObject)
                         .getUnknownAttributes().get(TokenTypeBearing.WSSE11_TOKEN_TYPE_ATTR_NAME));
             return value;
         }
@@ -162,7 +162,7 @@ public final class WSSecurityHelper {
         } else if (soapObject instanceof AttributeExtensibleXMLObject) {
             ((AttributeExtensibleXMLObject)soapObject).getUnknownAttributes()
                 .put(UsageBearing.WSSE_USAGE_ATTR_NAME, 
-                        DatatypeHelper.listToStringValue(usages, " "));
+                        StringSupport.listToStringValue(usages, " "));
         } else {
             throw new IllegalArgumentException("Specified object was neither UsageBearing nor AttributeExtensible");
         }
@@ -183,10 +183,10 @@ public final class WSSecurityHelper {
             }
         }
         if (soapObject instanceof AttributeExtensibleXMLObject) {
-            String value = DatatypeHelper.safeTrimOrNullString(((AttributeExtensibleXMLObject)soapObject)
+            String value = StringSupport.trimOrNull(((AttributeExtensibleXMLObject)soapObject)
                     .getUnknownAttributes().get(UsageBearing.WSSE_USAGE_ATTR_NAME));
             if (value != null) {
-                DatatypeHelper.stringToList(value, XMLHelper.LIST_DELIMITERS);
+                StringSupport.stringToList(value, XMLHelper.LIST_DELIMITERS);
             }
         }
         return null;

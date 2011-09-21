@@ -17,10 +17,10 @@
 
 package org.opensaml.xacml.policy.impl;
 
+import org.opensaml.util.StringSupport;
 import org.opensaml.xacml.policy.AttributeAssignmentType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.w3c.dom.Attr;
 
 /** UnMarshaller for {@link AttributeAssignmentType}. */
@@ -37,8 +37,8 @@ public class AttributeAssignmentTypeUnmarshaller extends AttributeValueTypeUnmar
         AttributeAssignmentType attrib = (AttributeAssignmentType) samlObject;
 
         if (attribute.getLocalName().equals(AttributeAssignmentType.ATTR_ID_ATTRIB_NAME)) {
-            attrib.setAttributeId(DatatypeHelper.safeTrimOrNullString(attribute.getValue()));
-        } else{        	
+            attrib.setAttributeId(StringSupport.trimOrNull(attribute.getValue()));
+        } else{
         	super.processAttribute(samlObject, attribute);
         }
     }

@@ -30,7 +30,6 @@ import org.opensaml.xml.Configuration;
 import org.opensaml.xml.Namespace;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.parse.XMLParserException;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.util.XMLConstants;
 import org.opensaml.xml.util.XMLHelper;
 import org.slf4j.Logger;
@@ -273,7 +272,7 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
      */
     protected void marshallNamespacePrefix(XMLObject xmlObject, Element domElement) {
         String prefix = xmlObject.getElementQName().getPrefix();
-        prefix = DatatypeHelper.safeTrimOrNullString(prefix);
+        prefix = StringSupport.trimOrNull(prefix);
 
         if (prefix != null) {
             domElement.setPrefix(prefix);
@@ -349,8 +348,8 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
                 }
             }
             log.trace("Adding namespace declaration {} to {}", namespace, xmlObject.getElementQName());
-            String nsURI = DatatypeHelper.safeTrimOrNullString(namespace.getNamespaceURI());
-            String nsPrefix = DatatypeHelper.safeTrimOrNullString(namespace.getNamespacePrefix());
+            String nsURI = StringSupport.trimOrNull(namespace.getNamespaceURI());
+            String nsPrefix = StringSupport.trimOrNull(namespace.getNamespacePrefix());
 
             XMLHelper.appendNamespaceDeclaration(domElement, nsURI, nsPrefix);
         }
@@ -393,8 +392,8 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
         }
 
         log.trace("Setting xsi:type attribute with for XMLObject {}", xmlObject.getElementQName());
-        String typeLocalName = DatatypeHelper.safeTrimOrNullString(type.getLocalPart());
-        String typePrefix = DatatypeHelper.safeTrimOrNullString(type.getPrefix());
+        String typeLocalName = StringSupport.trimOrNull(type.getLocalPart());
+        String typePrefix = StringSupport.trimOrNull(type.getPrefix());
 
         if (typeLocalName == null) {
             throw new MarshallingException("The type QName on XMLObject " + xmlObject.getElementQName()
