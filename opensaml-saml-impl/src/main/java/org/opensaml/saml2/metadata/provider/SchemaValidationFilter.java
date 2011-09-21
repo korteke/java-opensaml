@@ -21,8 +21,8 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.validation.Validator;
 
 import org.opensaml.common.xml.SAMLSchemaBuilder;
+import org.opensaml.util.StringSupport;
 import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
@@ -43,7 +43,7 @@ public class SchemaValidationFilter implements MetadataFilter {
     public SchemaValidationFilter(String[] extensionSchemas) {
         if (extensionSchemas != null) {
             for (String extension : extensionSchemas) {
-                extension = DatatypeHelper.safeTrimOrNullString(extension);
+                extension = StringSupport.trimOrNull(extension);
                 if (extension != null) {
                     SAMLSchemaBuilder.addExtensionSchema(extension);
                 }

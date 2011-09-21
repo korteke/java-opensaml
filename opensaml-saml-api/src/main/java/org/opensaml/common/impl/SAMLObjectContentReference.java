@@ -36,7 +36,6 @@ import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.security.SecurityConfiguration;
 import org.opensaml.xml.signature.ContentReference;
 import org.opensaml.xml.signature.SignatureConstants;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

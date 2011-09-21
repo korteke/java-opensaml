@@ -24,8 +24,8 @@ import java.util.Set;
 import javax.xml.namespace.QName;
 
 import org.opensaml.util.ObjectSupport;
+import org.opensaml.util.StringSupport;
 import org.opensaml.xml.schema.XSBooleanValue;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.util.IDIndex;
 import org.opensaml.xml.util.XMLConstants;
 import org.opensaml.xml.util.XMLHelper;
@@ -291,7 +291,7 @@ public abstract class AbstractXMLObject implements XMLObject {
      * @return the value that should be assigned
      */
     protected String prepareForAssignment(String oldValue, String newValue) {
-        String newString = DatatypeHelper.safeTrimOrNullString(newValue);
+        String newString = StringSupport.trimOrNull(newValue);
 
         if (!ObjectSupport.equals(oldValue, newString)) {
             releaseThisandParentDOM();
@@ -387,7 +387,7 @@ public abstract class AbstractXMLObject implements XMLObject {
      * @param newID the new value of the ID-typed attribute
      */
     protected void registerOwnID(String oldID, String newID) {
-        String newString = DatatypeHelper.safeTrimOrNullString(newID);
+        String newString = StringSupport.trimOrNull(newID);
 
         if (!ObjectSupport.equals(oldID, newString)) {
             if (oldID != null) {
@@ -508,7 +508,7 @@ public abstract class AbstractXMLObject implements XMLObject {
 
     /** {@inheritDoc} */
     public void setNoNamespaceSchemaLocation(String location) {
-        noNamespaceSchemaLocation = DatatypeHelper.safeTrimOrNullString(location);
+        noNamespaceSchemaLocation = StringSupport.trimOrNull(location);
         manageQualifiedAttributeNamespace(XMLConstants.XSI_NO_NAMESPACE_SCHEMA_LOCATION_ATTRIB_NAME, schemaLocation != null);
     }
 
@@ -519,7 +519,7 @@ public abstract class AbstractXMLObject implements XMLObject {
 
     /** {@inheritDoc} */
     public void setSchemaLocation(String location) {
-        schemaLocation = DatatypeHelper.safeTrimOrNullString(location);
+        schemaLocation = StringSupport.trimOrNull(location);
         manageQualifiedAttributeNamespace(XMLConstants.XSI_SCHEMA_LOCATION_ATTRIB_NAME, schemaLocation != null);
     }
 

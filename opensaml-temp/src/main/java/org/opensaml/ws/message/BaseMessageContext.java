@@ -17,12 +17,12 @@
 
 package org.opensaml.ws.message;
 
+import org.opensaml.util.StringSupport;
 import org.opensaml.ws.message.handler.HandlerChainResolver;
 import org.opensaml.ws.security.SecurityPolicyResolver;
 import org.opensaml.ws.transport.InTransport;
 import org.opensaml.ws.transport.OutTransport;
 import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.util.DatatypeHelper;
 
 /**
  * Base class for message context implementations.
@@ -104,7 +104,7 @@ public class BaseMessageContext implements MessageContext {
 
     /** {@inheritDoc} */
     public void setCommunicationProfileId(String id) {
-        communicationProfile = DatatypeHelper.safeTrimOrNullString(id);
+        communicationProfile = StringSupport.trimOrNull(id);
     }
 
     /** {@inheritDoc} */

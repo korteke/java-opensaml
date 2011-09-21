@@ -17,7 +17,7 @@
 
 package org.opensaml.xml.schema;
 
-import org.opensaml.xml.util.DatatypeHelper;
+import org.opensaml.util.StringSupport;
 
 /**
  * A class representing a boolean attribute. This class tracks the usage of the literals {true, false, 1, 0} to ensure
@@ -165,7 +165,7 @@ public class XSBooleanValue {
      * @return the boolean value
      */
     public static XSBooleanValue valueOf(String booleanString) {
-        String trimmedBooleanString = DatatypeHelper.safeTrimOrNullString(booleanString);
+        String trimmedBooleanString = StringSupport.trimOrNull(booleanString);
         if (trimmedBooleanString != null) {
             if (trimmedBooleanString.equals("1")) {
                 return new XSBooleanValue(Boolean.TRUE, true);

@@ -25,9 +25,9 @@ import org.opensaml.saml2.metadata.Endpoint;
 import org.opensaml.saml2.metadata.EntityDescriptor;
 import org.opensaml.saml2.metadata.RoleDescriptor;
 import org.opensaml.saml2.metadata.provider.MetadataProvider;
+import org.opensaml.util.StringSupport;
 import org.opensaml.ws.message.BaseMessageContext;
 import org.opensaml.xml.security.credential.Credential;
-import org.opensaml.xml.util.DatatypeHelper;
 
 /**
  * Base implemention of {@link SAMLMessageContext}.
@@ -230,7 +230,7 @@ public class BasicSAMLMessageContext<InboundMessageType extends SAMLObject, Outb
 
     /** {@inheritDoc} */
     public void setInboundSAMLMessageId(String id) {
-        inboundSAMLMessageId = DatatypeHelper.safeTrimOrNullString(id);
+        inboundSAMLMessageId = StringSupport.trimOrNull(id);
     }
 
     /** {@inheritDoc} */
@@ -240,12 +240,12 @@ public class BasicSAMLMessageContext<InboundMessageType extends SAMLObject, Outb
 
     /** {@inheritDoc} */
     public void setInboundSAMLProtocol(String protocol) {
-        inboundSAMLProtocol = DatatypeHelper.safeTrimOrNullString(protocol);
+        inboundSAMLProtocol = StringSupport.trimOrNull(protocol);
     }
 
     /** {@inheritDoc} */
     public void setLocalEntityId(String id) {
-        localEntityId = DatatypeHelper.safeTrimOrNullString(id);
+        localEntityId = StringSupport.trimOrNull(id);
     }
 
     /** {@inheritDoc} */
@@ -275,7 +275,7 @@ public class BasicSAMLMessageContext<InboundMessageType extends SAMLObject, Outb
 
     /** {@inheritDoc} */
     public void setOutboundSAMLMessageId(String id) {
-        outboundSAMLMessageId = DatatypeHelper.safeTrimOrNullString(id);
+        outboundSAMLMessageId = StringSupport.trimOrNull(id);
     }
 
     /** {@inheritDoc} */
@@ -290,7 +290,7 @@ public class BasicSAMLMessageContext<InboundMessageType extends SAMLObject, Outb
 
     /** {@inheritDoc} */
     public void setOutboundSAMLProtocol(String protocol) {
-        outboundSAMLProtocol = DatatypeHelper.safeTrimOrNullString(protocol);
+        outboundSAMLProtocol = StringSupport.trimOrNull(protocol);
     }
 
     /** {@inheritDoc} */
@@ -300,7 +300,7 @@ public class BasicSAMLMessageContext<InboundMessageType extends SAMLObject, Outb
 
     /** {@inheritDoc} */
     public void setPeerEntityId(String id) {
-        peerEntityId = DatatypeHelper.safeTrimOrNullString(id);
+        peerEntityId = StringSupport.trimOrNull(id);
     }
 
     /** {@inheritDoc} */
@@ -320,7 +320,7 @@ public class BasicSAMLMessageContext<InboundMessageType extends SAMLObject, Outb
 
     /** {@inheritDoc} */
     public void setRelayState(String state) {
-        relayState = DatatypeHelper.safeTrimOrNullString(state);
+        relayState = StringSupport.trimOrNull(state);
     }
 
     /** {@inheritDoc} */

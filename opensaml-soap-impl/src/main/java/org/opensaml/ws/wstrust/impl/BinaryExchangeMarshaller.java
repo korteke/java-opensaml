@@ -17,11 +17,11 @@
 
 package org.opensaml.ws.wstrust.impl;
 
+import org.opensaml.util.StringSupport;
 import org.opensaml.ws.wstrust.BinaryExchange;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.schema.impl.XSStringMarshaller;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Element;
 
@@ -37,11 +37,11 @@ public class BinaryExchangeMarshaller extends XSStringMarshaller {
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         BinaryExchange binaryExchange = (BinaryExchange) xmlObject;
         
-        String valueType = DatatypeHelper.safeTrimOrNullString(binaryExchange.getValueType());
+        String valueType = StringSupport.trimOrNull(binaryExchange.getValueType());
         if (valueType != null) {
             domElement.setAttributeNS(null, BinaryExchange.VALUE_TYPE_ATTRIB_NAME, valueType);
         }
-        String encodingType = DatatypeHelper.safeTrimOrNullString(binaryExchange.getEncodingType());
+        String encodingType = StringSupport.trimOrNull(binaryExchange.getEncodingType());
         if (encodingType != null) {
             domElement.setAttributeNS(null, BinaryExchange.ENCODING_TYPE_ATTRIB_NAME, encodingType);
         }

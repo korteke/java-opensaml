@@ -19,8 +19,8 @@ package org.opensaml.ws.soap.client.http;
 
 import net.jcip.annotations.ThreadSafe;
 
+import org.opensaml.util.StringSupport;
 import org.opensaml.ws.soap.client.SOAPClient.SOAPRequestParameters;
-import org.opensaml.xml.util.DatatypeHelper;
 
 /** HTTP transported SOAP request parameters. */
 @ThreadSafe
@@ -38,7 +38,7 @@ public class HttpSOAPRequestParameters implements SOAPRequestParameters {
      * @param action value for the SOAPAction HTTP header
      */
     public HttpSOAPRequestParameters(String action) {
-        soapAction = DatatypeHelper.safeTrimOrNullString(action);
+        soapAction = StringSupport.trimOrNull(action);
     }
 
     /**

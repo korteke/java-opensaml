@@ -25,7 +25,6 @@ import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.message.decoder.MessageDecodingException;
 import org.opensaml.ws.transport.http.HTTPInTransport;
 import org.opensaml.xml.parse.ParserPool;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -100,7 +99,7 @@ public class HTTPArtifactDecoder extends BaseSAML2MessageDecoder {
      */
     protected void processArtifact(SAMLMessageContext samlMsgCtx) throws MessageDecodingException {
         HTTPInTransport inTransport = (HTTPInTransport) samlMsgCtx.getInboundMessageTransport();
-        String encodedArtifact = DatatypeHelper.safeTrimOrNullString(inTransport.getParameterValue("SAMLart"));
+        String encodedArtifact = StringSupport.trimOrNull(inTransport.getParameterValue("SAMLart"));
         if (encodedArtifact == null) {
             log.error("URL SAMLart parameter was missing or did not contain a value.");
             throw new MessageDecodingException("URL TARGET parameter was missing or did not contain a value.");

@@ -511,18 +511,18 @@ public class AttributeMap implements Map<QName, String> {
      * @return the attribute value string representation of the QName
      */
     private String constructAttributeValue(QName attributeValue) {
-        String trimmedLocalName = DatatypeHelper.safeTrimOrNullString(attributeValue.getLocalPart());
+        String trimmedLocalName = StringSupport.trimOrNull(attributeValue.getLocalPart());
 
         if (trimmedLocalName == null) {
             throw new IllegalArgumentException("Local name may not be null or empty");
         }
 
         String qualifiedName;
-        String trimmedPrefix = DatatypeHelper.safeTrimOrNullString(attributeValue.getPrefix());
+        String trimmedPrefix = StringSupport.trimOrNull(attributeValue.getPrefix());
         if (trimmedPrefix != null) {
-            qualifiedName = trimmedPrefix + ":" + DatatypeHelper.safeTrimOrNullString(trimmedLocalName);
+            qualifiedName = trimmedPrefix + ":" + StringSupport.trimOrNull(trimmedLocalName);
         } else {
-            qualifiedName = DatatypeHelper.safeTrimOrNullString(trimmedLocalName);
+            qualifiedName = StringSupport.trimOrNull(trimmedLocalName);
         }
         return qualifiedName;
     }

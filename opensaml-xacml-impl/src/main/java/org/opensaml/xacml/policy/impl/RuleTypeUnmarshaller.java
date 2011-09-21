@@ -17,6 +17,7 @@
 
 package org.opensaml.xacml.policy.impl;
 
+import org.opensaml.util.StringSupport;
 import org.opensaml.xacml.impl.AbstractXACMLObjectUnmarshaller;
 import org.opensaml.xacml.policy.ConditionType;
 import org.opensaml.xacml.policy.DescriptionType;
@@ -25,7 +26,6 @@ import org.opensaml.xacml.policy.RuleType;
 import org.opensaml.xacml.policy.TargetType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.w3c.dom.Attr;
 
 /**
@@ -45,9 +45,9 @@ public class RuleTypeUnmarshaller extends AbstractXACMLObjectUnmarshaller {
       
         if(attribute.getLocalName().equals(RuleType.EFFECT_ATTRIB_NAME)){
             ruleType.setEffect(EffectType.valueOf(
-                    DatatypeHelper.safeTrimOrNullString(attribute.getValue())));                       
+                    StringSupport.trimOrNull(attribute.getValue())));                       
         } else if(attribute.getLocalName().equals(RuleType.RULE_ID_ATTRIB_NAME)){
-            ruleType.setRuleId(DatatypeHelper.safeTrimOrNullString(attribute.getValue()));
+            ruleType.setRuleId(StringSupport.trimOrNull(attribute.getValue()));
         } else {
             super.processAttribute(xmlObject, attribute);
         }

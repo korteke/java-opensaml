@@ -17,11 +17,11 @@
 
 package org.opensaml.xacml.policy.impl;
 
+import org.opensaml.util.StringSupport;
 import org.opensaml.xacml.impl.AbstractXACMLObjectUnmarshaller;
 import org.opensaml.xacml.policy.VariableDefinitionType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.w3c.dom.Attr;
 
 /**
@@ -40,7 +40,7 @@ public class VariableDefinitionTypeUnmarshaller extends AbstractXACMLObjectUnmar
         
         if(attribute.getLocalName().equals(VariableDefinitionType.VARIABLE_ID_ATTRIB_NAME)){
             VariableDefinitionType variableDefinitionType = (VariableDefinitionType) xmlObject;
-            variableDefinitionType.setVariableId(DatatypeHelper.safeTrimOrNullString(attribute.getValue()));
+            variableDefinitionType.setVariableId(StringSupport.trimOrNull(attribute.getValue()));
         } else {
             super.processAttribute(xmlObject, attribute);
         }

@@ -29,7 +29,7 @@ import org.apache.commons.httpclient.params.HttpClientParams;
 import org.apache.commons.httpclient.params.HttpConnectionManagerParams;
 import org.apache.commons.httpclient.protocol.Protocol;
 import org.apache.commons.httpclient.protocol.SecureProtocolSocketFactory;
-import org.opensaml.xml.util.DatatypeHelper;
+import org.opensaml.util.StringSupport;
 
 /**
  * A builder for {@link HttpClient}s.
@@ -163,7 +163,7 @@ public class HttpClientBuilder {
      * @param host host name of the HTTP proxy server through which connections will be made
      */
     public void setProxyHost(String host) {
-        proxyHost = DatatypeHelper.safeTrimOrNullString(host);
+        proxyHost = StringSupport.trimOrNull(host);
     }
 
     /**
@@ -199,7 +199,7 @@ public class HttpClientBuilder {
      * @param username username used to connect to the HTTP proxy server
      */
     public void setProxyUsername(String username) {
-        proxyUsername = DatatypeHelper.safeTrimOrNullString(username);
+        proxyUsername = StringSupport.trimOrNull(username);
     }
 
     /**
@@ -217,7 +217,7 @@ public class HttpClientBuilder {
      * @param password password used to connect to the HTTP proxy server
      */
     public void setProxyPassword(String password) {
-        proxyPassword = DatatypeHelper.safeTrimOrNullString(password);
+        proxyPassword = StringSupport.trimOrNull(password);
     }
 
     /**

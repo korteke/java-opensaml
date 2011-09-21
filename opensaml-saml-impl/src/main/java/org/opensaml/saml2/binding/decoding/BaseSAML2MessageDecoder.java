@@ -35,11 +35,11 @@ import org.opensaml.saml2.metadata.EntityDescriptor;
 import org.opensaml.saml2.metadata.RoleDescriptor;
 import org.opensaml.saml2.metadata.provider.MetadataProvider;
 import org.opensaml.saml2.metadata.provider.MetadataProviderException;
+import org.opensaml.util.StringSupport;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.message.decoder.MessageDecodingException;
 import org.opensaml.xml.parse.ParserPool;
 import org.opensaml.xml.security.SecurityException;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -246,10 +246,10 @@ public abstract class BaseSAML2MessageDecoder extends BaseSAMLMessageDecoder {
         String messageDestination = null;
         if (samlMessage instanceof RequestAbstractType) {
             RequestAbstractType request =  (RequestAbstractType) samlMessage;
-            messageDestination = DatatypeHelper.safeTrimOrNullString(request.getDestination());
+            messageDestination = StringSupport.trimOrNull(request.getDestination());
         } else if (samlMessage instanceof StatusResponseType) {
             StatusResponseType response = (StatusResponseType) samlMessage;
-            messageDestination = DatatypeHelper.safeTrimOrNullString(response.getDestination());
+            messageDestination = StringSupport.trimOrNull(response.getDestination());
         } else {
             log.error("Invalid SAML message type encountered: {}", samlMessage.getElementQName().toString());
             throw new MessageDecodingException("Invalid SAML message type encountered");

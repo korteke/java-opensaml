@@ -29,7 +29,6 @@ import org.opensaml.util.ObjectSupport;
 import org.opensaml.util.StringSupport;
 import org.opensaml.util.collections.LazyMap;
 import org.opensaml.util.collections.LazySet;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.util.XMLConstants;
 
 /**
@@ -396,11 +395,11 @@ public class NamespaceManager {
      * @return a Namespace built using the information in the QName
      */
     private Namespace buildNamespace(QName name) {
-        String uri = DatatypeHelper.safeTrimOrNullString(name.getNamespaceURI());
+        String uri = StringSupport.trimOrNull(name.getNamespaceURI());
         if (uri == null) {
             throw new IllegalArgumentException("A non-empty namespace URI must be supplied");
         }
-        String prefix = DatatypeHelper.safeTrimOrNullString(name.getPrefix());
+        String prefix = StringSupport.trimOrNull(name.getPrefix());
         return new Namespace(uri, prefix);
     }
     
@@ -574,7 +573,7 @@ public class NamespaceManager {
      */
     private void addPrefixes(Set<String> prefixes, Collection<Namespace> namespaces) {
         for (Namespace ns : namespaces) {
-            String prefix = DatatypeHelper.safeTrimOrNullString(ns.getNamespacePrefix());
+            String prefix = StringSupport.trimOrNull(ns.getNamespacePrefix());
             if (prefix == null) {
                 prefix = DEFAULT_NS_TOKEN;
             }

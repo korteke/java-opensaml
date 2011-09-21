@@ -26,7 +26,7 @@ import org.opensaml.saml2.core.AuthnRequest;
 import org.opensaml.saml2.metadata.Endpoint;
 import org.opensaml.saml2.metadata.IndexedEndpoint;
 import org.opensaml.util.ObjectSupport;
-import org.opensaml.xml.util.DatatypeHelper;
+import org.opensaml.util.StringSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -103,7 +103,7 @@ public class AuthnResponseEndpointSelector extends BasicEndpointSelector {
         AuthnRequest request = (AuthnRequest) getSamlRequest();
 
         boolean filterByRequestBinding = false;
-        String acsBinding = DatatypeHelper.safeTrimOrNullString(request.getProtocolBinding());
+        String acsBinding = StringSupport.trimOrNull(request.getProtocolBinding());
         if (acsBinding != null && request.getAssertionConsumerServiceIndex() != null) {
             filterByRequestBinding = true;
         }
@@ -172,7 +172,7 @@ public class AuthnResponseEndpointSelector extends BasicEndpointSelector {
      * @return the selected endpoint
      */
     protected Endpoint selectEndpointByACSURL(AuthnRequest request, List<IndexedEndpoint> endpoints) {
-        String acsBinding = DatatypeHelper.safeTrimOrNullString(request.getProtocolBinding());
+        String acsBinding = StringSupport.trimOrNull(request.getProtocolBinding());
 
         for (IndexedEndpoint endpoint : endpoints) {
             if (!getSupportedIssuerBindings().contains(endpoint.getBinding())) {

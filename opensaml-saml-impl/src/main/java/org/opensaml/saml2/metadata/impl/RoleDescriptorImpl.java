@@ -29,10 +29,10 @@ import org.opensaml.saml2.metadata.ContactPerson;
 import org.opensaml.saml2.metadata.KeyDescriptor;
 import org.opensaml.saml2.metadata.Organization;
 import org.opensaml.saml2.metadata.RoleDescriptor;
+import org.opensaml.util.StringSupport;
 import org.opensaml.util.collections.LazyList;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.util.AttributeMap;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.util.XMLObjectChildrenList;
 
 /** Concrete implementation of {@link org.opensaml.saml2.metadata.RoleDescriptor}. */
@@ -136,7 +136,7 @@ public abstract class RoleDescriptorImpl extends AbstractSignableSAMLObject impl
 
     /** {@inheritDoc} */
     public void addSupportedProtocol(String protocol) {
-        protocol = DatatypeHelper.safeTrimOrNullString(protocol);
+        protocol = StringSupport.trimOrNull(protocol);
         if (protocol != null && !supportedProtocols.contains(protocol)) {
             releaseThisandParentDOM();
             supportedProtocols.add(protocol);
@@ -145,7 +145,7 @@ public abstract class RoleDescriptorImpl extends AbstractSignableSAMLObject impl
 
     /** {@inheritDoc} */
     public void removeSupportedProtocol(String protocol) {
-        protocol = DatatypeHelper.safeTrimOrNullString(protocol);
+        protocol = StringSupport.trimOrNull(protocol);
         if (protocol != null && supportedProtocols.contains(protocol)) {
             releaseThisandParentDOM();
             supportedProtocols.remove(protocol);

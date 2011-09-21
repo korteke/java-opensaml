@@ -19,8 +19,8 @@ package org.opensaml.security;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.util.StringSupport;
 import org.opensaml.util.criteria.Criterion;
-import org.opensaml.xml.util.DatatypeHelper;
 
 /**
  * An implementation of {@link Criterion} which specifies criteria pertaining 
@@ -60,7 +60,7 @@ public final class MetadataCriterion implements Criterion {
      * @param protocol The protocol to set.
      */
     public void setProtocol(String protocol) {
-        entityProtocol = DatatypeHelper.safeTrimOrNullString(protocol);
+        entityProtocol = StringSupport.trimOrNull(protocol);
     }
 
     /**

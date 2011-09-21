@@ -188,7 +188,7 @@ public final class XMLHelper {
      * @return the active local of the element
      */
     public static Locale getLanguage(Element element) {
-        String lang = DatatypeHelper.safeTrimOrNullString(element.getAttributeNS(XMLConstants.XML_NS, "lang"));
+        String lang = StringSupport.trimOrNull(element.getAttributeNS(XMLConstants.XML_NS, "lang"));
         if (lang != null) {
             if (lang.contains("-")) {
                 lang = lang.substring(0, lang.indexOf("-"));
@@ -223,18 +223,18 @@ public final class XMLHelper {
      * @return the constructed attribute
      */
     public static Attr constructAttribute(Document document, String namespaceURI, String localName, String prefix) {
-        String trimmedLocalName = DatatypeHelper.safeTrimOrNullString(localName);
+        String trimmedLocalName = StringSupport.trimOrNull(localName);
 
         if (trimmedLocalName == null) {
             throw new IllegalArgumentException("Local name may not be null or empty");
         }
 
         String qualifiedName;
-        String trimmedPrefix = DatatypeHelper.safeTrimOrNullString(prefix);
+        String trimmedPrefix = StringSupport.trimOrNull(prefix);
         if (trimmedPrefix != null) {
-            qualifiedName = trimmedPrefix + ":" + DatatypeHelper.safeTrimOrNullString(trimmedLocalName);
+            qualifiedName = trimmedPrefix + ":" + StringSupport.trimOrNull(trimmedLocalName);
         } else {
-            qualifiedName = DatatypeHelper.safeTrimOrNullString(trimmedLocalName);
+            qualifiedName = StringSupport.trimOrNull(trimmedLocalName);
         }
 
         if (StringSupport.isNullOrEmpty(namespaceURI)) {
@@ -300,7 +300,7 @@ public final class XMLHelper {
         if (attribute == null) {
             return Collections.emptyList();
         }
-        return DatatypeHelper.stringToList(attribute.getValue(), LIST_DELIMITERS);
+        return StringSupport.stringToList(attribute.getValue(), LIST_DELIMITERS);
     }
 
     /**
@@ -336,7 +336,7 @@ public final class XMLHelper {
      */
     public static void marshallAttribute(QName attributeName, List<String> attributeValues, Element domElement,
             boolean isIDAttribute) {
-        marshallAttribute(attributeName, DatatypeHelper.listToStringValue(attributeValues, " "), domElement,
+        marshallAttribute(attributeName, StringSupport.listToStringValue(attributeValues, " "), domElement,
                 isIDAttribute);
     }
 
@@ -391,7 +391,7 @@ public final class XMLHelper {
         for (int i = 0; i < nodeList.getLength(); i++) {
             Node node = nodeList.item(i);
             if (node.getNodeType() == Node.TEXT_NODE) {
-                elementContent = DatatypeHelper.safeTrimOrNullString(((Text) node).getWholeText());
+                elementContent = StringSupport.trimOrNull(((Text) node).getWholeText());
                 break;
             }
         }
@@ -420,7 +420,7 @@ public final class XMLHelper {
         if (element == null) {
             return Collections.emptyList();
         }
-        return DatatypeHelper.stringToList(element.getTextContent(), LIST_DELIMITERS);
+        return StringSupport.stringToList(element.getTextContent(), LIST_DELIMITERS);
     }
 
     /**
@@ -504,18 +504,18 @@ public final class XMLHelper {
      * @return the element
      */
     public static Element constructElement(Document document, String namespaceURI, String localName, String prefix) {
-        String trimmedLocalName = DatatypeHelper.safeTrimOrNullString(localName);
+        String trimmedLocalName = StringSupport.trimOrNull(localName);
 
         if (trimmedLocalName == null) {
             throw new IllegalArgumentException("Local name may not be null or empty");
         }
 
         String qualifiedName;
-        String trimmedPrefix = DatatypeHelper.safeTrimOrNullString(prefix);
+        String trimmedPrefix = StringSupport.trimOrNull(prefix);
         if (trimmedPrefix != null) {
-            qualifiedName = trimmedPrefix + ":" + DatatypeHelper.safeTrimOrNullString(trimmedLocalName);
+            qualifiedName = trimmedPrefix + ":" + StringSupport.trimOrNull(trimmedLocalName);
         } else {
-            qualifiedName = DatatypeHelper.safeTrimOrNullString(trimmedLocalName);
+            qualifiedName = StringSupport.trimOrNull(trimmedLocalName);
         }
 
         if (!StringSupport.isNullOrEmpty(namespaceURI)) {
@@ -576,8 +576,8 @@ public final class XMLHelper {
      * @param prefix the prefix for the namespace
      */
     public static void appendNamespaceDeclaration(Element domElement, String namespaceURI, String prefix) {
-        String nsURI = DatatypeHelper.safeTrimOrNullString(namespaceURI);
-        String nsPrefix = DatatypeHelper.safeTrimOrNullString(prefix);
+        String nsURI = StringSupport.trimOrNull(namespaceURI);
+        String nsPrefix = StringSupport.trimOrNull(prefix);
 
         String attributeName;
         if (nsPrefix == null) {
@@ -1015,7 +1015,7 @@ public final class XMLHelper {
     public static String qnameToContentString(QName qname) {
         StringBuffer buf = new StringBuffer();
 
-        String prefix = DatatypeHelper.safeTrimOrNullString(qname.getPrefix());
+        String prefix = StringSupport.trimOrNull(qname.getPrefix());
         if (prefix != null) {
             buf.append(prefix);
             buf.append(":");

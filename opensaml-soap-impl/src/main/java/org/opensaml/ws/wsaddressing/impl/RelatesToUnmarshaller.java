@@ -17,11 +17,11 @@
 
 package org.opensaml.ws.wsaddressing.impl;
 
+import org.opensaml.util.StringSupport;
 import org.opensaml.ws.wsaddressing.RelatesTo;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.schema.impl.XSURIUnmarshaller;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Attr;
 
@@ -35,7 +35,7 @@ public class RelatesToUnmarshaller extends XSURIUnmarshaller {
         RelatesTo relatesTo = (RelatesTo) xmlObject;
         
         if (RelatesTo.RELATIONSHIP_TYPE_ATTRIB_NAME.equals(attribute.getLocalName())) {
-            relatesTo.setRelationshipType(DatatypeHelper.safeTrimOrNullString(attribute.getValue()));
+            relatesTo.setRelationshipType(StringSupport.trimOrNull(attribute.getValue()));
         } else {
             XMLHelper.unmarshallToAttributeMap(relatesTo.getUnknownAttributes(), attribute);
         }

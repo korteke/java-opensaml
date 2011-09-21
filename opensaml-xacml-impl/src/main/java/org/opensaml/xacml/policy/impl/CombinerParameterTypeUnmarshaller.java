@@ -17,12 +17,12 @@
 
 package org.opensaml.xacml.policy.impl;
 
+import org.opensaml.util.StringSupport;
 import org.opensaml.xacml.impl.AbstractXACMLObjectUnmarshaller;
 import org.opensaml.xacml.policy.AttributeValueType;
 import org.opensaml.xacml.policy.CombinerParameterType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.w3c.dom.Attr;
 
 /**
@@ -41,7 +41,7 @@ public class CombinerParameterTypeUnmarshaller extends AbstractXACMLObjectUnmars
         CombinerParameterType combinerParameterType = (CombinerParameterType) xmlObject;
       
         if(attribute.getLocalName().equals(CombinerParameterType.PARAMETER_NAMEATTRIB_NAME)){
-            combinerParameterType.setParameterName(DatatypeHelper.safeTrimOrNullString(attribute.getValue()));
+            combinerParameterType.setParameterName(StringSupport.trimOrNull(attribute.getValue()));
         } else {
             super.processAttribute(xmlObject, attribute);
         }

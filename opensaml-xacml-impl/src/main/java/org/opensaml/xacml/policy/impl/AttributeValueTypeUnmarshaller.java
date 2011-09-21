@@ -19,11 +19,11 @@ package org.opensaml.xacml.policy.impl;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.util.StringSupport;
 import org.opensaml.xacml.impl.AbstractXACMLObjectUnmarshaller;
 import org.opensaml.xacml.policy.AttributeValueType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Attr;
 
@@ -46,7 +46,7 @@ public class AttributeValueTypeUnmarshaller extends AbstractXACMLObjectUnmarshal
         attributeValue.getUnknownAttributes().put(attribQName, attribute.getValue());
         
         if(attribute.getLocalName().equals(AttributeValueType.DATA_TYPE_ATTRIB_NAME)){
-        	attributeValue.setDataType(DatatypeHelper.safeTrimOrNullString(attribute.getValue()));
+        	attributeValue.setDataType(StringSupport.trimOrNull(attribute.getValue()));
         }
     }
 

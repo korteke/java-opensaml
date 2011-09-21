@@ -22,7 +22,6 @@ import java.util.List;
 
 import org.opensaml.util.StringSupport;
 import org.opensaml.xml.security.keyinfo.KeyInfoHelper;
-import org.opensaml.xml.util.DatatypeHelper;
 
 /**
  * Abstract class implementation for {@link EncryptedKeyResolver}.
@@ -50,7 +49,7 @@ public abstract class AbstractEncryptedKeyResolver implements EncryptedKeyResolv
      * @return true if the recipient value matches the resolver's criteria, false otherwise
      */
     protected boolean matchRecipient(String recipient) {
-        String trimmedRecipient = DatatypeHelper.safeTrimOrNullString(recipient);
+        String trimmedRecipient = StringSupport.trimOrNull(recipient);
         if (trimmedRecipient == null || recipients.isEmpty()) {
             return true;
         }

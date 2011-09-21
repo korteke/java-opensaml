@@ -18,11 +18,11 @@
 package org.opensaml.common.binding.security;
 
 import org.opensaml.common.binding.SAMLMessageContext;
+import org.opensaml.util.StringSupport;
 import org.opensaml.util.storage.ReplayCache;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.security.SecurityPolicyException;
 import org.opensaml.ws.security.SecurityPolicyRule;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -77,7 +77,7 @@ public class MessageReplayRule implements SecurityPolicyRule {
 
         SAMLMessageContext samlMsgCtx = (SAMLMessageContext) messageContext;
 
-        String messageIsuer = DatatypeHelper.safeTrimOrNullString(samlMsgCtx.getInboundMessageIssuer());
+        String messageIsuer = StringSupport.trimOrNull(samlMsgCtx.getInboundMessageIssuer());
         if (messageIsuer == null) {
             if (requiredRule) {
                 log.warn("Message contained no Issuer ID, replay check not possible");
@@ -86,7 +86,7 @@ public class MessageReplayRule implements SecurityPolicyRule {
             return;
         }
 
-        String messageId = DatatypeHelper.safeTrimOrNullString(samlMsgCtx.getInboundSAMLMessageId());
+        String messageId = StringSupport.trimOrNull(samlMsgCtx.getInboundSAMLMessageId());
         if (messageId == null) {
             if (requiredRule) {
                 log.warn("Message contained no ID, replay check not possible");

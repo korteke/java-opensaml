@@ -17,6 +17,7 @@
 
 package org.opensaml.xacml.policy.impl;
 
+import org.opensaml.util.StringSupport;
 import org.opensaml.xacml.impl.AbstractXACMLObjectUnmarshaller;
 import org.opensaml.xacml.policy.AttributeDesignatorType;
 import org.opensaml.xacml.policy.AttributeSelectorType;
@@ -24,7 +25,6 @@ import org.opensaml.xacml.policy.AttributeValueType;
 import org.opensaml.xacml.policy.ResourceMatchType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.w3c.dom.Attr;
 
 /** Unmarshaller of {@link ResourceMatchType} objects. */
@@ -39,7 +39,7 @@ public class ResourceMatchTypeUnmarshaller extends AbstractXACMLObjectUnmarshall
     protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
         if (attribute.getLocalName().equals(ResourceMatchType.MATCH_ID_ATTRIB_NAME)) {
             ResourceMatchType matchType = (ResourceMatchType) xmlObject;
-            matchType.setMatchId(DatatypeHelper.safeTrimOrNullString(attribute.getValue()));
+            matchType.setMatchId(StringSupport.trimOrNull(attribute.getValue()));
         } else {
             super.processAttribute(xmlObject, attribute);
         }

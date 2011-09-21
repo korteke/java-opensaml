@@ -26,7 +26,6 @@ import org.opensaml.util.StringSupport;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xml.security.keyinfo.NamedKeyInfoGeneratorManager;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -410,7 +409,7 @@ public class BasicSecurityConfiguration implements SecurityConfiguration {
             if (StringSupport.isNullOrEmpty(jcaAlgorithmName)) {
                 throw new IllegalArgumentException("JCA Algorithm name may not be null or empty");
             }
-            keyAlgorithm = DatatypeHelper.safeTrimOrNullString(jcaAlgorithmName);
+            keyAlgorithm = StringSupport.trimOrNull(jcaAlgorithmName);
             keyLength = length;
         }
         
@@ -478,9 +477,9 @@ public class BasicSecurityConfiguration implements SecurityConfiguration {
             if (StringSupport.isNullOrEmpty(jcaAlgorithmName)) {
                 throw new IllegalArgumentException("JCA Algorithm name may not be null or empty");
             }
-            keyAlgorithm = DatatypeHelper.safeTrimOrNullString(jcaAlgorithmName);
+            keyAlgorithm = StringSupport.trimOrNull(jcaAlgorithmName);
             keyLength = length;
-            wrappedAlgorithm = DatatypeHelper.safeTrimOrNullString(wrappedKeyAlgorithm);
+            wrappedAlgorithm = StringSupport.trimOrNull(wrappedKeyAlgorithm);
         }
         
         /** {@inheritDoc} */

@@ -17,11 +17,11 @@
 
 package org.opensaml.xml.schema.impl;
 
+import org.opensaml.util.StringSupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.AbstractXMLObjectUnmarshaller;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.schema.XSQName;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.util.XMLHelper;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Text;
@@ -49,7 +49,7 @@ public class XSQNameUnmarshaller extends AbstractXMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
     protected void unmarshallTextContent(XMLObject xmlObject, Text content) throws UnmarshallingException {
-        String textContent = DatatypeHelper.safeTrimOrNullString(content.getWholeText());
+        String textContent = StringSupport.trimOrNull(content.getWholeText());
         if (textContent != null) {
             XSQName qname = (XSQName) xmlObject;
             qname.setValue(XMLHelper.constructQName(textContent, XMLHelper.getElementAncestor(content)));

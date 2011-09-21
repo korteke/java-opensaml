@@ -22,9 +22,9 @@ import java.util.Set;
 import javax.xml.namespace.QName;
 
 import org.opensaml.util.ObjectSupport;
+import org.opensaml.util.StringSupport;
 import org.opensaml.util.collections.LazySet;
 import org.opensaml.xml.schema.XSAny;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.util.XMLConstants;
 
 /**
@@ -294,11 +294,11 @@ public class NamespaceManagerTest extends XMLObjectBaseTestCase {
     }
     
     private Namespace buildNamespace(QName name) {
-        String uri = DatatypeHelper.safeTrimOrNullString(name.getNamespaceURI());
+        String uri = StringSupport.trimOrNull(name.getNamespaceURI());
         if (uri == null) {
             throw new IllegalArgumentException("A non-empty namespace URI must be supplied");
         }
-        String prefix = DatatypeHelper.safeTrimOrNullString(name.getPrefix());
+        String prefix = StringSupport.trimOrNull(name.getPrefix());
         return new Namespace(uri, prefix);
     }
     

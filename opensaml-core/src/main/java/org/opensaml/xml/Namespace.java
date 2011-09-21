@@ -18,7 +18,7 @@
 package org.opensaml.xml;
 
 import org.opensaml.util.ObjectSupport;
-import org.opensaml.xml.util.DatatypeHelper;
+import org.opensaml.util.StringSupport;
 import org.opensaml.xml.util.XMLConstants;
 
 /** Data structure for representing XML namespace attributes. */
@@ -48,8 +48,8 @@ public class Namespace {
      * @param prefix the prefix of the namespace
      */
     public Namespace(String uri, String prefix) {
-        namespaceURI = DatatypeHelper.safeTrimOrNullString(uri);
-        namespacePrefix = DatatypeHelper.safeTrimOrNullString(prefix);
+        namespaceURI = StringSupport.trimOrNull(uri);
+        namespacePrefix = StringSupport.trimOrNull(prefix);
         nsStr = null;
     }
 
@@ -68,7 +68,7 @@ public class Namespace {
      * @param newPrefix the prefix of the namespace
      */
     public void setNamespacePrefix(String newPrefix) {
-        namespacePrefix = DatatypeHelper.safeTrimOrNullString(newPrefix);
+        namespacePrefix = StringSupport.trimOrNull(newPrefix);
         nsStr = null;
     }
 
@@ -87,7 +87,7 @@ public class Namespace {
      * @param newURI the URI of the namespace
      */
     public void setNamespaceURI(String newURI) {
-        namespaceURI = DatatypeHelper.safeTrimOrNullString(newURI);
+        namespaceURI = StringSupport.trimOrNull(newURI);
         nsStr = null;
     }
 
