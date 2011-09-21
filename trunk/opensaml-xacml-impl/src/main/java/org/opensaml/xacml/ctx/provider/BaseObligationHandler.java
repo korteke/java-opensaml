@@ -17,6 +17,7 @@
 
 package org.opensaml.xacml.ctx.provider;
 
+import org.opensaml.util.ObjectSupport;
 import org.opensaml.xacml.policy.ObligationType;
 import org.opensaml.xml.util.DatatypeHelper;
 
@@ -101,7 +102,7 @@ public abstract class BaseObligationHandler {
         }
 
         if (obj instanceof BaseObligationHandler) {
-            return DatatypeHelper.safeEquals(getObligationId(), ((BaseObligationHandler) obj).getObligationId());
+            return ObjectSupport.equals(getObligationId(), ((BaseObligationHandler) obj).getObligationId());
         }
 
         return false;

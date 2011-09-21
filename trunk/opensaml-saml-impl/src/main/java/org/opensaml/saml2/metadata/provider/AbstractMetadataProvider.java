@@ -32,12 +32,12 @@ import org.opensaml.saml2.common.SAML2Helper;
 import org.opensaml.saml2.metadata.EntitiesDescriptor;
 import org.opensaml.saml2.metadata.EntityDescriptor;
 import org.opensaml.saml2.metadata.RoleDescriptor;
+import org.opensaml.util.ObjectSupport;
 import org.opensaml.util.StringSupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.Unmarshaller;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.parse.ParserPool;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.util.XMLHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -522,7 +522,7 @@ public abstract class AbstractMetadataProvider extends BaseMetadataProvider {
             if (metadata instanceof EntityDescriptor) {
                 log.trace("Metadata root is an entity descriptor, checking if it's the one we're looking for.");
                 descriptor = (EntityDescriptor) metadata;
-                if (!DatatypeHelper.safeEquals(descriptor.getEntityID(), entityID)) {
+                if (!ObjectSupport.equals(descriptor.getEntityID(), entityID)) {
                     // skip this one, it isn't what we're looking for
                     descriptor = null;
                 }
@@ -562,7 +562,7 @@ public abstract class AbstractMetadataProvider extends BaseMetadataProvider {
         if (entityDescriptors != null && !entityDescriptors.isEmpty()) {
             for (EntityDescriptor entityDescriptor : entityDescriptors) {
                 log.trace("Checking entity descriptor with entity ID {}", entityDescriptor.getEntityID());
-                if (DatatypeHelper.safeEquals(entityDescriptor.getEntityID(), entityID) && isValid(entityDescriptor)) {
+                if (ObjectSupport.equals(entityDescriptor.getEntityID(), entityID) && isValid(entityDescriptor)) {
                     return entityDescriptor;
                 }
             }
@@ -596,7 +596,7 @@ public abstract class AbstractMetadataProvider extends BaseMetadataProvider {
     protected EntitiesDescriptor getEntitiesDescriptorByName(String name, EntitiesDescriptor rootDescriptor) {
         EntitiesDescriptor descriptor = null;
 
-        if (DatatypeHelper.safeEquals(name, rootDescriptor.getName()) && isValid(rootDescriptor)) {
+        if (ObjectSupport.equals(name, rootDescriptor.getName()) && isValid(rootDescriptor)) {
             descriptor = rootDescriptor;
         } else {
             List<EntitiesDescriptor> childDescriptors = rootDescriptor.getEntitiesDescriptors();

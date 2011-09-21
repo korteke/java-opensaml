@@ -19,11 +19,11 @@ package org.opensaml.xml.signature.impl;
 
 import java.math.BigInteger;
 
+import org.opensaml.util.ObjectSupport;
 import org.opensaml.util.StringSupport;
 import org.opensaml.xml.schema.impl.XSBase64BinaryImpl;
 import org.opensaml.xml.security.keyinfo.KeyInfoHelper;
 import org.opensaml.xml.signature.CryptoBinary;
-import org.opensaml.xml.util.DatatypeHelper;
 
 /**
  * Concrete implementation of {@link org.opensaml.xml.signature.CryptoBinary}.
@@ -65,7 +65,7 @@ public class CryptoBinaryImpl extends XSBase64BinaryImpl implements CryptoBinary
     /** {@inheritDoc} */
     public void setValue(String newValue) {
         if (bigIntValue != null 
-                && (!DatatypeHelper.safeEquals(getValue(), newValue) || newValue == null)) {
+                && (!ObjectSupport.equals(getValue(), newValue) || newValue == null)) {
             // Just clear the cached value, my not be needed in big int form again,
             // let it be lazily recreated if necessary
             bigIntValue = null;

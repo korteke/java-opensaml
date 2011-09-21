@@ -20,10 +20,10 @@ package org.opensaml.xml.encryption;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.opensaml.util.ObjectSupport;
 import org.opensaml.util.StringSupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.signature.RetrievalMethod;
-import org.opensaml.xml.util.DatatypeHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,7 +51,7 @@ public class SimpleRetrievalMethodEncryptedKeyResolver extends AbstractEncrypted
         }
 
         for (RetrievalMethod rm : encryptedData.getKeyInfo().getRetrievalMethods()) {
-            if (!DatatypeHelper.safeEquals(rm.getType(), EncryptionConstants.TYPE_ENCRYPTED_KEY)) {
+            if (!ObjectSupport.equals(rm.getType(), EncryptionConstants.TYPE_ENCRYPTED_KEY)) {
                 continue;
             }
             if (rm.getTransforms() != null) {

@@ -25,6 +25,7 @@ import org.opensaml.common.binding.BasicEndpointSelector;
 import org.opensaml.saml2.core.AuthnRequest;
 import org.opensaml.saml2.metadata.Endpoint;
 import org.opensaml.saml2.metadata.IndexedEndpoint;
+import org.opensaml.util.ObjectSupport;
 import org.opensaml.xml.util.DatatypeHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -148,7 +149,7 @@ public class AuthnResponseEndpointSelector extends BasicEndpointSelector {
                 continue;
             }
 
-            if (DatatypeHelper.safeEquals(acsIndex, endpoint.getIndex())) {
+            if (ObjectSupport.equals(acsIndex, endpoint.getIndex())) {
                 return endpoint;
             } else {
                 log.debug("Endpoint '{}' with index '{}' discard because it does have the required index '{}'",
@@ -182,15 +183,15 @@ public class AuthnResponseEndpointSelector extends BasicEndpointSelector {
             }
 
             if (acsBinding != null) {
-                if (!DatatypeHelper.safeEquals(acsBinding, endpoint.getBinding())) {
+                if (!ObjectSupport.equals(acsBinding, endpoint.getBinding())) {
                     log.debug("Endpoint '{}' with binding '{}' discarded because it does not meet protocol binding selection criteria",
                                     endpoint.getLocation(), endpoint.getBinding());
                     continue;
                 }
             }
 
-            if (DatatypeHelper.safeEquals(endpoint.getLocation(), request.getAssertionConsumerServiceURL())
-                    || DatatypeHelper.safeEquals(endpoint.getResponseLocation(), request
+            if (ObjectSupport.equals(endpoint.getLocation(), request.getAssertionConsumerServiceURL())
+                    || ObjectSupport.equals(endpoint.getResponseLocation(), request
                             .getAssertionConsumerServiceURL())) {
                 return endpoint;
             } else {

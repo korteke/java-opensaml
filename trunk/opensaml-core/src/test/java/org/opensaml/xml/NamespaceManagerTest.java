@@ -21,6 +21,7 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.util.ObjectSupport;
 import org.opensaml.util.collections.LazySet;
 import org.opensaml.xml.schema.XSAny;
 import org.opensaml.xml.util.DatatypeHelper;
@@ -302,8 +303,8 @@ public class NamespaceManagerTest extends XMLObjectBaseTestCase {
     }
     
     private boolean equals(Namespace ns1, Namespace ns2) {
-        if (DatatypeHelper.safeEquals(ns1.getNamespaceURI(), ns2.getNamespaceURI()) 
-                && DatatypeHelper.safeEquals(ns1.getNamespacePrefix(), ns2.getNamespacePrefix())) {
+        if (ObjectSupport.equals(ns1.getNamespaceURI(), ns2.getNamespaceURI()) 
+                && ObjectSupport.equals(ns1.getNamespacePrefix(), ns2.getNamespacePrefix())) {
             return true;
         } else {
             return false;

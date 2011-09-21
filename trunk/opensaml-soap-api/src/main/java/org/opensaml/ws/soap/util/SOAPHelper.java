@@ -26,6 +26,7 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.util.ObjectSupport;
 import org.opensaml.util.collections.LazyList;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.soap.soap11.ActorBearing;
@@ -93,7 +94,7 @@ public final class SOAPHelper {
         if (soapObject instanceof AttributeExtensibleXMLObject) {
             String value = DatatypeHelper.safeTrimOrNullString(((AttributeExtensibleXMLObject) soapObject)
                     .getUnknownAttributes().get(MustUnderstandBearing.SOAP11_MUST_UNDERSTAND_ATTR_NAME));
-            return DatatypeHelper.safeEquals("1", value);
+            return ObjectSupport.equals("1", value);
         }
         return false;
     }
@@ -290,7 +291,7 @@ public final class SOAPHelper {
             String value = DatatypeHelper.safeTrimOrNullString(((AttributeExtensibleXMLObject) soapObject)
                     .getUnknownAttributes().get(
                             org.opensaml.ws.soap.soap12.MustUnderstandBearing.SOAP12_MUST_UNDERSTAND_ATTR_NAME));
-            return DatatypeHelper.safeEquals("1", value) || DatatypeHelper.safeEquals("true", value);
+            return ObjectSupport.equals("1", value) || ObjectSupport.equals("true", value);
         }
         return false;
     }
@@ -330,7 +331,7 @@ public final class SOAPHelper {
         if (soapObject instanceof AttributeExtensibleXMLObject) {
             String value = DatatypeHelper.safeTrimOrNullString(((AttributeExtensibleXMLObject) soapObject)
                     .getUnknownAttributes().get(org.opensaml.ws.soap.soap12.RelayBearing.SOAP12_RELAY_ATTR_LOCAL_NAME));
-            return DatatypeHelper.safeEquals("1", value) || DatatypeHelper.safeEquals("true", value);
+            return ObjectSupport.equals("1", value) || ObjectSupport.equals("true", value);
         }
         return false;
     }

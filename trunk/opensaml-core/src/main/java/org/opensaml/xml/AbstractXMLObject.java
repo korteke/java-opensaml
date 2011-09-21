@@ -23,6 +23,7 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.util.ObjectSupport;
 import org.opensaml.xml.schema.XSBooleanValue;
 import org.opensaml.xml.util.DatatypeHelper;
 import org.opensaml.xml.util.IDIndex;
@@ -292,7 +293,7 @@ public abstract class AbstractXMLObject implements XMLObject {
     protected String prepareForAssignment(String oldValue, String newValue) {
         String newString = DatatypeHelper.safeTrimOrNullString(newValue);
 
-        if (!DatatypeHelper.safeEquals(oldValue, newString)) {
+        if (!ObjectSupport.equals(oldValue, newString)) {
             releaseThisandParentDOM();
         }
 
@@ -388,7 +389,7 @@ public abstract class AbstractXMLObject implements XMLObject {
     protected void registerOwnID(String oldID, String newID) {
         String newString = DatatypeHelper.safeTrimOrNullString(newID);
 
-        if (!DatatypeHelper.safeEquals(oldID, newString)) {
+        if (!ObjectSupport.equals(oldID, newString)) {
             if (oldID != null) {
                 idIndex.deregisterIDMapping(oldID);
             }

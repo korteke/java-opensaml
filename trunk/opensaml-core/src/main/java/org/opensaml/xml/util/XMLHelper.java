@@ -35,6 +35,7 @@ import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.Duration;
 import javax.xml.namespace.QName;
 
+import org.opensaml.util.ObjectSupport;
 import org.opensaml.util.StringSupport;
 import org.opensaml.util.collections.LazyMap;
 import org.opensaml.xml.Configuration;
@@ -751,8 +752,8 @@ public final class XMLHelper {
             childNode = childNodes.item(i);
             if (childNode.getNodeType() == Node.ELEMENT_NODE) {
                 e = (Element) childNode;
-                if (DatatypeHelper.safeEquals(e.getNamespaceURI(), namespaceURI)
-                        && DatatypeHelper.safeEquals(e.getLocalName(), localName)) {
+                if (ObjectSupport.equals(e.getNamespaceURI(), namespaceURI)
+                        && ObjectSupport.equals(e.getLocalName(), localName)) {
                     children.add(e);
                 }
             }
@@ -781,7 +782,7 @@ public final class XMLHelper {
             childNode = childNodes.item(i);
             if (childNode.getNodeType() == Node.ELEMENT_NODE) {
                 e = (Element) childNode;
-                if (DatatypeHelper.safeEquals(e.getLocalName(), localName)) {
+                if (ObjectSupport.equals(e.getLocalName(), localName)) {
                     children.add(e);
                 }
             }
@@ -1141,8 +1142,8 @@ public final class XMLHelper {
      * @return true iff the element's local name and namespace match the parameters
      */
     public static boolean isElementNamed(Element e, String ns, String localName) {
-        return e != null && DatatypeHelper.safeEquals(ns, e.getNamespaceURI())
-                && DatatypeHelper.safeEquals(localName, e.getLocalName());
+        return e != null && ObjectSupport.equals(ns, e.getNamespaceURI())
+                && ObjectSupport.equals(localName, e.getLocalName());
     }
 
     /**

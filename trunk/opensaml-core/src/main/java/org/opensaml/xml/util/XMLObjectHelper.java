@@ -22,6 +22,7 @@ import java.io.OutputStream;
 import java.io.Reader;
 import java.io.Writer;
 
+import org.opensaml.util.ObjectSupport;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.Namespace;
 import org.opensaml.xml.XMLObject;
@@ -272,7 +273,7 @@ public final class XMLObjectHelper {
         
         while (current != null) {
             for (Namespace ns : current.getNamespaces()) {
-                if (DatatypeHelper.safeEquals(ns.getNamespacePrefix(), prefix)) {
+                if (ObjectSupport.equals(ns.getNamespacePrefix(), prefix)) {
                     return ns.getNamespaceURI();
                 }
             }
@@ -295,7 +296,7 @@ public final class XMLObjectHelper {
         
         while (current != null) {
             for (Namespace ns : current.getNamespaces()) {
-                if (DatatypeHelper.safeEquals(ns.getNamespaceURI(), namespaceURI)) {
+                if (ObjectSupport.equals(ns.getNamespaceURI(), namespaceURI)) {
                     return ns.getNamespacePrefix();
                 }
             }

@@ -21,6 +21,7 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.util.ObjectSupport;
 import org.opensaml.util.collections.LazySet;
 import org.opensaml.xml.AttributeExtensibleXMLObject;
 import org.opensaml.xml.Namespace;
@@ -184,8 +185,8 @@ public class AttributeMapTest extends XMLObjectBaseTestCase {
     }
     
     private boolean equals(Namespace ns1, Namespace ns2) {
-        if (DatatypeHelper.safeEquals(ns1.getNamespaceURI(), ns1.getNamespaceURI()) 
-                && DatatypeHelper.safeEquals(ns2.getNamespacePrefix(), ns2.getNamespacePrefix())) {
+        if (ObjectSupport.equals(ns1.getNamespaceURI(), ns1.getNamespaceURI()) 
+                && ObjectSupport.equals(ns2.getNamespacePrefix(), ns2.getNamespacePrefix())) {
             return true;
         } else {
             return false;
