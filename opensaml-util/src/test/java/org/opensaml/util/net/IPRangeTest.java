@@ -59,4 +59,28 @@ public class IPRangeTest {
         testInvalid("1:2:3:4:5:6:7:8/wrong");
     }
 
+    @Test
+    public void contains() {
+        // IPRange given a network address
+        IPRange networkRange = IPRange.parseCIDRBlock("192.168.117.192/28");
+        
+        // IPRange given a host address
+        IPRange hostRange = IPRange.parseCIDRBlock("192.168.117.199/28");
+        
+        // test for contain
+        byte[] bytes = new byte[]{(byte)192, (byte)168, 117, (byte)191};
+        Assert.assertFalse(networkRange.contains(bytes));
+        Assert.assertFalse(hostRange.contains(bytes));
+        
+        for (int host = 0; host < 16; host++) {
+            bytes[3] = (byte)(192+host);
+            Assert.assertTrue(networkRange.contains(bytes));
+            Assert.assertTrue(hostRange.contains(bytes));
+        }
+        
+        bytes[3] = (byte)(192+16);
+        Assert.assertFalse(networkRange.contains(bytes));
+        Assert.assertFalse(hostRange.contains(bytes));
+    }
+    
 }
