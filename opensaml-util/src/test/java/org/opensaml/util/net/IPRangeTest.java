@@ -83,4 +83,84 @@ public class IPRangeTest {
         Assert.assertFalse(hostRange.contains(bytes));
     }
     
+    @Test
+    public void getNetworkAddress() {
+        IPRange v6a = IPRange.parseCIDRBlock("1234:5678:90ab:cdef:FfFf:AaAa:BBBB:CCCC/128");
+        byte[] expected6a = {
+                (byte)0x12,
+                (byte)0x34,
+                (byte)0x56,
+                (byte)0x78,
+                (byte)0x90,
+                (byte)0xab,
+                (byte)0xcd,
+                (byte)0xef,
+                (byte)0xff,
+                (byte)0xff,
+                (byte)0xaa,
+                (byte)0xaa,
+                (byte)0xbb,
+                (byte)0xbb,
+                (byte)0xcc,
+                (byte)0xcc,
+        };
+        Assert.assertEquals(v6a.getNetworkAddress().getAddress(), expected6a);
+        
+        IPRange v6b = IPRange.parseCIDRBlock("1234:5678:90ab:cdef:FfFf:AaAa:BBBB:CCCC/104");
+        byte[] expected6b = {
+                (byte)0x12,
+                (byte)0x34,
+                (byte)0x56,
+                (byte)0x78,
+                (byte)0x90,
+                (byte)0xab,
+                (byte)0xcd,
+                (byte)0xef,
+                (byte)0xff,
+                (byte)0xff,
+                (byte)0xaa,
+                (byte)0xaa,
+                (byte)0xbb,
+                (byte)0x00,
+                (byte)0x00,
+                (byte)0x00,
+        };
+        Assert.assertEquals(v6b.getNetworkAddress().getAddress(), expected6b);
+
+        IPRange v4a = IPRange.parseCIDRBlock("192.168.117.17/32");
+        byte[] expected4a = {
+                (byte)192, (byte)168, (byte)117, (byte)17
+        };
+        Assert.assertEquals(v4a.getNetworkAddress().getAddress(), expected4a);
+
+        IPRange v4b = IPRange.parseCIDRBlock("192.168.117.17/16");
+        byte[] expected4b = {
+                (byte)192, (byte)168, (byte)0, (byte)0
+        };
+        Assert.assertEquals(v4b.getNetworkAddress().getAddress(), expected4b);
+    }
+    
+    @Test
+    public void getHostAddress() {
+        IPRange v6a = IPRange.parseCIDRBlock("1234:5678:90ab:cdef:FfFf:AaAa:BBBB:CCCC/128");
+        Assert.assertNull(v6a.getHostAddress());
+
+        IPRange v6b = IPRange.parseCIDRBlock("1234:5678:90ab:cdef::/64");
+        Assert.assertNull(v6b.getHostAddress());
+        
+        IPRange v6c = IPRange.parseCIDRBlock("1234:5678:90ab:cdef:FfFf:AaAa:BBBB:CCCC/64");
+        Assert.assertNotNull(v6c.getHostAddress());
+        Assert.assertEquals(v6c.getHostAddress().getAddress(), v6a.getNetworkAddress().getAddress());
+        
+        IPRange v4a = IPRange.parseCIDRBlock("192.168.117.17/32");
+        Assert.assertNull(v4a.getHostAddress());
+
+        IPRange v4b = IPRange.parseCIDRBlock("192.168.0.0/16");
+        Assert.assertNull(v4b.getHostAddress());
+        
+        IPRange v4c = IPRange.parseCIDRBlock("192.168.117.17/16");
+        Assert.assertNotNull(v4c.getHostAddress());
+        Assert.assertEquals(v4c.getHostAddress().getAddress(), v4a.getNetworkAddress().getAddress());
+    }
+    
 }

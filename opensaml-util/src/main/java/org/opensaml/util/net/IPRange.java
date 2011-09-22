@@ -27,10 +27,13 @@ import org.opensaml.util.StringSupport;
 public class IPRange {
 
     /** Number of bits within the address.  32 bits for IPv4 address, 128 bits for IPv6 addresses. */
-    private int addressLength;
+    private final int addressLength;
 
     /** The IP network address for the range. */
-    private BitSet network;
+    private final BitSet network;
+    
+    /** The IP host address, if a host address rather than a network address was specified. */
+    private final BitSet host;
 
     /** The netmask for the range. */
     private BitSet mask;
@@ -66,10 +69,38 @@ public class IPRange {
         mask = new BitSet(addressLength);
         mask.set(addressLength - maskSize, addressLength, true);
 
-        network = toBitSet(address);
+        BitSet hostAddress = toBitSet(address);
+
+        network = (BitSet)hostAddress.clone();
         network.and(mask);
+        
+        if (hostAddress.equals(network)) {
+            host = null;
+        } else {
+            host = hostAddress;
+        }
     }
 
+    /**
+     * Returns the network address corresponding to this range as an {@link InetAddress}.
+     * 
+     * @return network address as an {@link InetAddress}
+     */
+    public InetAddress getNetworkAddress() {
+        return toInetAddress(network);
+    }
+    
+    /**
+     * Returns the host address originally specified for this range, if it was a
+     * host address rather than a network address.  Returns null if the address
+     * specified was a network address.
+     * 
+     * @return host address as an {@link InetAddress}, or null
+     */
+    public InetAddress getHostAddress() {
+        return toInetAddress(host);
+    }
+    
     /**
      * Validate an IPv4 address for use as the base of a CIDR block.
      * 
@@ -203,4 +234,45 @@ public class IPRange {
 
         return bits;
     }
+
+    /**
+     * Convert a {@link BitSet} representing an address into an
+     * equivalent array of bytes, sized according to the address
+     * length of this {@link IPRange}.
+     * 
+     * @param bits {@link BitSet} representing an address
+     * @return array of bytes representing the same address
+     */
+    private byte[] toByteArray(BitSet bits) {
+        byte[] bytes = new byte[addressLength / 8];
+        for (int i = 0; i < addressLength; i++) {
+            if (bits.get(i)) {
+                bytes[bytes.length - i / 8 - 1] |= 1 << (i % 8);
+            }
+        }
+        return bytes;
+    }
+    
+    /**
+     * Convert a {@link BitSet} representing an address into an
+     * equivalent {@link InetAddress}.
+     * 
+     * Returns null for either a null {@link BitSet} or for any
+     * problems encountered by {@link InetAddress}.
+     * 
+     * @param bits {@link BitSet} representing an address
+     * @return {@link InetAddress} representing the same address
+     */
+    private InetAddress toInetAddress(BitSet bits) {
+        if (bits == null) {
+            return null;
+        }
+        try {
+            return InetAddress.getByAddress(toByteArray(bits));
+        } catch (UnknownHostException e) {
+            // only supposed to happen if the address length is invalid
+            return null;
+        }
+    }
+    
 }
