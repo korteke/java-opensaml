@@ -52,13 +52,17 @@ import org.opensaml.util.resource.ResourceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+//TODO add fewer-arg convenience constructor(s)
+//TODO authentication
+//TODO deal with case where cache file(s) are removed unexpectedly
+//TODO consider if we want to allow a mode of operation that doesn't cache files 
+
 /**
  * A resource that fetches data from a remote source via HTTP. A backup/cache of the data is maintained in a local file.
  * The backup file is used if a conditional get, based on the ETag and last modified time, indicates that the data has
  * not been modified or if there is a problem fetching the data from the remote source (e.g. if the remote server is
  * down).
  */
-// TODO authentication
 @NotThreadSafe
 public class HttpResource implements CachingResource, FilebackedRemoteResource {
 
@@ -97,7 +101,7 @@ public class HttpResource implements CachingResource, FilebackedRemoteResource {
 
     /** Last modified time associated with cached metadata. */
     private String cachedResourceLastModified;
-
+    
     /**
      * Constructor.
      * 
@@ -268,7 +272,7 @@ public class HttpResource implements CachingResource, FilebackedRemoteResource {
     /** {@inheritDoc} */
     public InputStream getInputStreamFromBackupFile() throws ResourceException {
         log.debug("Reading HTTP resource from backup file {}", backupFile.getAbsolutePath());
-        
+
         if (!backupFile.exists()) {
             log.debug("Backup file {} does not exist, unable to read data from it", backupFile.getAbsolutePath());
             return null;
@@ -279,6 +283,17 @@ public class HttpResource implements CachingResource, FilebackedRemoteResource {
         } catch (IOException e) {
             throw new ResourceException("Unable to read backup file " + getBackupFilePath(), e);
         }
+    }
+
+    /** {@inheritDoc} */
+    public InputStream getInputStream(boolean returnCache) throws ResourceException {
+        InputStream ins = getInputStream();
+
+        if (ins == null && returnCache) {
+            ins = getInputStreamFromBackupFile();
+        }
+
+        return ins;
     }
 
     /**
@@ -415,7 +430,7 @@ public class HttpResource implements CachingResource, FilebackedRemoteResource {
         }
         if (!tmpDataFile.renameTo(backupFile)) {
             tmpDataFile.delete();
-            if(tmpPropFile.exists()){
+            if (tmpPropFile.exists()) {
                 tmpPropFile.delete();
             }
             log.debug("Unable to copy temporary data file to {}", backupFile.getAbsolutePath());
