@@ -17,6 +17,8 @@
 
 package org.opensaml.util.resource;
 
+import java.io.InputStream;
+
 /**
  * A {@link Resource} which may cache the fetched data. This is useful when fetching data from a remote source that may
  * not change as often as the data is read.
@@ -37,4 +39,15 @@ public interface CachingResource extends Resource {
 
     /** Expires any cached resource data. */
     public void expireCache();
+    
+    /**
+     * Gets the input stream to the resource's data.
+     * 
+     * @param returnCache whether to return the cached copy {@link #getInputStream()} returns null
+     * 
+     * @return the resource data, never null
+     * 
+     * @throws ResourceException thrown if there is a problem getting the resource data
+     */
+    public InputStream getInputStream(boolean returnCache) throws ResourceException;
 }
