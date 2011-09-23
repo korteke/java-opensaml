@@ -18,19 +18,19 @@
 package org.opensaml.xml.signature.impl;
 
 import org.opensaml.xml.AbstractXMLObjectBuilder;
+import org.opensaml.xml.signature.SignatureConstants;
 import org.opensaml.xml.signature.X509SerialNumber;
 import org.opensaml.xml.signature.XMLSignatureBuilder;
-import org.opensaml.xml.util.XMLConstants;
 
 /**
  * Builder of {@link org.opensaml.xml.signature.X509SerialNumber}.
  */
-public class X509SerialNumberBuilder extends AbstractXMLObjectBuilder<X509SerialNumber> 
-    implements XMLSignatureBuilder<X509SerialNumber> {
+public class X509SerialNumberBuilder extends AbstractXMLObjectBuilder<X509SerialNumber> implements
+        XMLSignatureBuilder<X509SerialNumber> {
 
     /**
      * Constructor.
-     *
+     * 
      */
     public X509SerialNumberBuilder() {
     }
@@ -42,8 +42,8 @@ public class X509SerialNumberBuilder extends AbstractXMLObjectBuilder<X509Serial
 
     /** {@inheritDoc} */
     public X509SerialNumber buildObject() {
-        return buildObject(XMLConstants.XMLSIG_NS, X509SerialNumber.DEFAULT_ELEMENT_LOCAL_NAME, 
-                XMLConstants.XMLSIG_PREFIX);
+        return buildObject(SignatureConstants.XMLSIG_NS, X509SerialNumber.DEFAULT_ELEMENT_LOCAL_NAME,
+                SignatureConstants.XMLSIG_PREFIX);
     }
 
 }

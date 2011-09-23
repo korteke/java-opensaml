@@ -20,9 +20,9 @@ package org.opensaml.xml.signature.validator;
 import org.opensaml.xml.BaseXMLObjectValidatorTestCase;
 import org.opensaml.xml.mock.SimpleXMLObject;
 import org.opensaml.xml.mock.SimpleXMLObjectBuilder;
+import org.opensaml.xml.signature.SignatureConstants;
 import org.opensaml.xml.signature.X509Certificate;
 import org.opensaml.xml.signature.X509Data;
-import org.opensaml.xml.util.XMLConstants;
 
 /**
  *
@@ -52,7 +52,7 @@ public class X509DataSchemaValidatorTest extends BaseXMLObjectValidatorTestCase 
         X509Data x509Data = (X509Data) target;
         
         SimpleXMLObjectBuilder sxoBuilder = new SimpleXMLObjectBuilder();
-        SimpleXMLObject sxo = sxoBuilder.buildObject(XMLConstants.XMLSIG_NS, "Foo", XMLConstants.XMLSIG_PREFIX);
+        SimpleXMLObject sxo = sxoBuilder.buildObject(SignatureConstants.XMLSIG_NS, "Foo", SignatureConstants.XMLSIG_PREFIX);
         
         x509Data.getXMLObjects().add(sxo);
         

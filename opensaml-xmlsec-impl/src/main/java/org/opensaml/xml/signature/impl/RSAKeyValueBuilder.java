@@ -19,17 +19,18 @@ package org.opensaml.xml.signature.impl;
 
 import org.opensaml.xml.AbstractXMLObjectBuilder;
 import org.opensaml.xml.signature.RSAKeyValue;
+import org.opensaml.xml.signature.SignatureConstants;
 import org.opensaml.xml.signature.XMLSignatureBuilder;
-import org.opensaml.xml.util.XMLConstants;
 
 /**
  * Builder of {@link org.opensaml.xml.signature.RSAKeyValue}
  */
-public class RSAKeyValueBuilder extends AbstractXMLObjectBuilder<RSAKeyValue> implements XMLSignatureBuilder<RSAKeyValue> {
+public class RSAKeyValueBuilder extends AbstractXMLObjectBuilder<RSAKeyValue> implements
+        XMLSignatureBuilder<RSAKeyValue> {
 
     /**
      * Constructor
-     *
+     * 
      */
     public RSAKeyValueBuilder() {
     }
@@ -41,7 +42,8 @@ public class RSAKeyValueBuilder extends AbstractXMLObjectBuilder<RSAKeyValue> im
 
     /** {@inheritDoc} */
     public RSAKeyValue buildObject() {
-        return buildObject(XMLConstants.XMLSIG_NS, RSAKeyValue.DEFAULT_ELEMENT_LOCAL_NAME, XMLConstants.XMLSIG_PREFIX);
+        return buildObject(SignatureConstants.XMLSIG_NS, RSAKeyValue.DEFAULT_ELEMENT_LOCAL_NAME,
+                SignatureConstants.XMLSIG_PREFIX);
     }
 
 }

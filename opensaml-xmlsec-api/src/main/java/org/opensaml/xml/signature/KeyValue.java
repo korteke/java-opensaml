@@ -20,61 +20,62 @@ package org.opensaml.xml.signature;
 import javax.xml.namespace.QName;
 
 import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.util.XMLConstants;
 import org.opensaml.xml.validation.ValidatingXMLObject;
 
 /**
  * XMLObject representing XML Digital Signature, version 20020212, KeyValue element.
  */
 public interface KeyValue extends ValidatingXMLObject {
-    
+
     /** Element local name */
     public final static String DEFAULT_ELEMENT_LOCAL_NAME = "KeyValue";
-    
+
     /** Default element name */
-    public final static QName DEFAULT_ELEMENT_NAME = new QName(XMLConstants.XMLSIG_NS, DEFAULT_ELEMENT_LOCAL_NAME, XMLConstants.XMLSIG_PREFIX);
-    
+    public final static QName DEFAULT_ELEMENT_NAME = new QName(SignatureConstants.XMLSIG_NS,
+            DEFAULT_ELEMENT_LOCAL_NAME, SignatureConstants.XMLSIG_PREFIX);
+
     /** Local name of the XSI type */
-    public final static String TYPE_LOCAL_NAME = "KeyValueType"; 
-        
+    public final static String TYPE_LOCAL_NAME = "KeyValueType";
+
     /** QName of the XSI type */
-    public final static QName TYPE_NAME = new QName(XMLConstants.XMLSIG_NS, TYPE_LOCAL_NAME, XMLConstants.XMLSIG_PREFIX);
-    
+    public final static QName TYPE_NAME = new QName(SignatureConstants.XMLSIG_NS, TYPE_LOCAL_NAME,
+            SignatureConstants.XMLSIG_PREFIX);
+
     /**
      * Get the DSAKeyValue child element
      * 
      * @return DSAKeyValue child element
      */
     public DSAKeyValue getDSAKeyValue();
-    
+
     /**
      * Set the DSAKeyValue child element
      * 
      * @param newDSAKeyValue the new DSAKeyValue child element
      */
     public void setDSAKeyValue(DSAKeyValue newDSAKeyValue);
-    
+
     /**
      * Get the RSAKeyValue child element
      * 
      * @return the RSAKeyValue child element
      */
     public RSAKeyValue getRSAKeyValue();
-    
+
     /**
      * Set the RSAKeyValue child element
      * 
      * @param newRSAKeyValue the new RSAKeyValue child element
      */
     public void setRSAKeyValue(RSAKeyValue newRSAKeyValue);
-    
+
     /**
      * Get the wildcard &lt;any&gt; XMLObject child element
      * 
      * @return the wildcard XMLObject child element
      */
     public XMLObject getUnknownXMLObject();
-    
+
     /**
      * Set the wildcard &lt;any&gt; XMLObject child element
      * 

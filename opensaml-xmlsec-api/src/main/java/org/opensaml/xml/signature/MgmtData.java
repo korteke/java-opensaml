@@ -20,17 +20,17 @@ package org.opensaml.xml.signature;
 import javax.xml.namespace.QName;
 
 import org.opensaml.xml.schema.XSString;
-import org.opensaml.xml.util.XMLConstants;
 
 /**
  * XMLObject representing XML Digital Signature, version 20020212, MgmtData element.
  */
 public interface MgmtData extends XSString {
-    
+
     /** Element local name */
     public final static String DEFAULT_ELEMENT_LOCAL_NAME = "MgmtData";
-    
+
     /** Default element name */
-    public final static QName DEFAULT_ELEMENT_NAME = new QName(XMLConstants.XMLSIG_NS, DEFAULT_ELEMENT_LOCAL_NAME, XMLConstants.XMLSIG_PREFIX);
+    public final static QName DEFAULT_ELEMENT_NAME = new QName(SignatureConstants.XMLSIG_NS,
+            DEFAULT_ELEMENT_LOCAL_NAME, SignatureConstants.XMLSIG_PREFIX);
 
 }

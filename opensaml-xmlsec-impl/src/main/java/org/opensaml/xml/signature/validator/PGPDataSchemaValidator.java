@@ -26,7 +26,7 @@ import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.signature.PGPData;
 import org.opensaml.xml.signature.PGPKeyID;
 import org.opensaml.xml.signature.PGPKeyPacket;
-import org.opensaml.xml.util.XMLConstants;
+import org.opensaml.xml.signature.SignatureConstants;
 import org.opensaml.xml.validation.ValidationException;
 import org.opensaml.xml.validation.Validator;
 
@@ -78,7 +78,7 @@ public class PGPDataSchemaValidator implements Validator<PGPData> {
         for (XMLObject child : xmlObject.getUnknownXMLObjects()) {
             QName childName = child.getElementQName();
             if (! getValidDSChildNames().contains(childName) 
-                    && XMLConstants.XMLSIG_NS.equals(childName.getNamespaceURI())) {
+                    && SignatureConstants.XMLSIG_NS.equals(childName.getNamespaceURI())) {
                 throw new ValidationException("PGPData contains an illegal child extension element: " + childName);
             }
         }

@@ -20,18 +20,17 @@ package org.opensaml.xml.encryption;
 import javax.xml.namespace.QName;
 
 import org.opensaml.xml.signature.CryptoBinary;
-import org.opensaml.xml.util.XMLConstants;
 
 /**
  * XMLObject representing XML Digital Signature, version 20020212, seed element.
  */
 public interface Seed extends CryptoBinary {
-    
+
     /** Element local name. */
     public static final String DEFAULT_ELEMENT_LOCAL_NAME = "seed";
-    
+
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(XMLConstants.XMLENC_NS, DEFAULT_ELEMENT_LOCAL_NAME, 
-            XMLConstants.XMLENC_PREFIX);
+    public static final QName DEFAULT_ELEMENT_NAME = new QName(EncryptionConstants.XMLENC_NS,
+            DEFAULT_ELEMENT_LOCAL_NAME, EncryptionConstants.XMLENC_PREFIX);
 
 }

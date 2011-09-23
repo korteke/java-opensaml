@@ -18,9 +18,9 @@
 package org.opensaml.xml.encryption.impl;
 
 import org.opensaml.xml.AbstractXMLObjectBuilder;
+import org.opensaml.xml.encryption.EncryptionConstants;
 import org.opensaml.xml.encryption.KeySize;
 import org.opensaml.xml.encryption.XMLEncryptionBuilder;
-import org.opensaml.xml.util.XMLConstants;
 
 /**
  * Builder of {@link org.opensaml.xml.encryption.KeySize}
@@ -29,7 +29,7 @@ public class KeySizeBuilder extends AbstractXMLObjectBuilder<KeySize> implements
 
     /**
      * Constructor
-     *
+     * 
      */
     public KeySizeBuilder() {
     }
@@ -41,7 +41,8 @@ public class KeySizeBuilder extends AbstractXMLObjectBuilder<KeySize> implements
 
     /** {@inheritDoc} */
     public KeySize buildObject() {
-        return buildObject(XMLConstants.XMLENC_NS, KeySize.DEFAULT_ELEMENT_LOCAL_NAME, XMLConstants.XMLENC_PREFIX);
+        return buildObject(EncryptionConstants.XMLENC_NS, KeySize.DEFAULT_ELEMENT_LOCAL_NAME,
+                EncryptionConstants.XMLENC_PREFIX);
     }
 
 }

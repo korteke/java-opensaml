@@ -18,7 +18,6 @@
 package org.opensaml.xml.signature;
 
 import org.opensaml.xml.AbstractXMLObject;
-import org.opensaml.xml.util.XMLConstants;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -58,7 +57,7 @@ public abstract class AbstractSignableXMLObject extends AbstractXMLObject implem
             }
 
             childElement = (Element) children.item(i);
-            if (childElement.getNamespaceURI().equals(XMLConstants.XMLSIG_NS)
+            if (childElement.getNamespaceURI().equals(SignatureConstants.XMLSIG_NS)
                     && childElement.getLocalName().equals(Signature.DEFAULT_ELEMENT_LOCAL_NAME)) {
                 return true;
             }

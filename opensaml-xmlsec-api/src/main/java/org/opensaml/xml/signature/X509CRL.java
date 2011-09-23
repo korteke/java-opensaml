@@ -20,7 +20,6 @@ package org.opensaml.xml.signature;
 import javax.xml.namespace.QName;
 
 import org.opensaml.xml.schema.XSBase64Binary;
-import org.opensaml.xml.util.XMLConstants;
 
 /** XMLObject representing XML Digital Signature, version 20020212, X509CRL element. */
 public interface X509CRL extends XSBase64Binary {
@@ -29,7 +28,7 @@ public interface X509CRL extends XSBase64Binary {
     public static final String DEFAULT_ELEMENT_LOCAL_NAME = "X509CRL";
 
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(XMLConstants.XMLSIG_NS, DEFAULT_ELEMENT_LOCAL_NAME,
-            XMLConstants.XMLSIG_PREFIX);
+    public static final QName DEFAULT_ELEMENT_NAME = new QName(SignatureConstants.XMLSIG_NS,
+            DEFAULT_ELEMENT_LOCAL_NAME, SignatureConstants.XMLSIG_PREFIX);
 
 }

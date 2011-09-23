@@ -18,9 +18,9 @@
 package org.opensaml.xml.encryption.impl;
 
 import org.opensaml.xml.AbstractXMLObjectBuilder;
+import org.opensaml.xml.encryption.EncryptionConstants;
 import org.opensaml.xml.encryption.Transforms;
 import org.opensaml.xml.encryption.XMLEncryptionBuilder;
-import org.opensaml.xml.util.XMLConstants;
 
 /**
  * Builder of {@link org.opensaml.xml.encryption.Transforms}
@@ -29,7 +29,7 @@ public class TransformsBuilder extends AbstractXMLObjectBuilder<Transforms> impl
 
     /**
      * Constructor
-     *
+     * 
      */
     public TransformsBuilder() {
     }
@@ -41,7 +41,8 @@ public class TransformsBuilder extends AbstractXMLObjectBuilder<Transforms> impl
 
     /** {@inheritDoc} */
     public Transforms buildObject() {
-        return buildObject(XMLConstants.XMLENC_NS, Transforms.DEFAULT_ELEMENT_LOCAL_NAME, XMLConstants.XMLENC_PREFIX);
+        return buildObject(EncryptionConstants.XMLENC_NS, Transforms.DEFAULT_ELEMENT_LOCAL_NAME,
+                EncryptionConstants.XMLENC_PREFIX);
     }
 
 }

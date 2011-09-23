@@ -23,13 +23,13 @@ import org.opensaml.xml.mock.SimpleXMLObjectBuilder;
 import org.opensaml.xml.signature.DSAKeyValue;
 import org.opensaml.xml.signature.KeyValue;
 import org.opensaml.xml.signature.RSAKeyValue;
-import org.opensaml.xml.util.XMLConstants;
+import org.opensaml.xml.signature.SignatureConstants;
 
 /**
  *
  */
 public class KeyValueSchemaValidatorTest extends BaseXMLObjectValidatorTestCase {
-    
+
     public KeyValueSchemaValidatorTest() {
         targetQName = KeyValue.DEFAULT_ELEMENT_NAME;
         validator = new KeyValueSchemaValidator();
@@ -38,35 +38,36 @@ public class KeyValueSchemaValidatorTest extends BaseXMLObjectValidatorTestCase 
     protected void populateRequiredData() {
         super.populateRequiredData();
         KeyValue keyValue = (KeyValue) target;
-        
+
         keyValue.setRSAKeyValue((RSAKeyValue) buildXMLObject(RSAKeyValue.DEFAULT_ELEMENT_NAME));
     }
-    
+
     public void testEmptyChildren() {
         KeyValue keyValue = (KeyValue) target;
-        
+
         keyValue.setRSAKeyValue(null);
-        
+
         assertValidationFail("KeyValue child list was empty, should have failed validation");
     }
-    
+
     public void testTooManyChildren() {
         KeyValue keyValue = (KeyValue) target;
-        
+
         keyValue.setDSAKeyValue((DSAKeyValue) buildXMLObject(DSAKeyValue.DEFAULT_ELEMENT_NAME));
-        
+
         assertValidationFail("KeyValue had too many children, should have failed validation");
     }
 
     public void testInvalidNamespaceExtensionChild() {
         KeyValue keyValue = (KeyValue) target;
-        
+
         SimpleXMLObjectBuilder sxoBuilder = new SimpleXMLObjectBuilder();
-        SimpleXMLObject sxo = sxoBuilder.buildObject(XMLConstants.XMLSIG_NS, "Foo", XMLConstants.XMLSIG_PREFIX);
-        
+        SimpleXMLObject sxo =
+                sxoBuilder.buildObject(SignatureConstants.XMLSIG_NS, "Foo", SignatureConstants.XMLSIG_PREFIX);
+
         keyValue.setRSAKeyValue(null);
         keyValue.setUnknownXMLObject(sxo);
-        
+
         assertValidationFail("KeyInfo contained a child with an invalid namespace, should have failed validation");
     }
 }

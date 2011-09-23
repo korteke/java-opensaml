@@ -19,8 +19,8 @@ package org.opensaml.xml.signature.impl;
 
 import org.opensaml.xml.AbstractXMLObjectBuilder;
 import org.opensaml.xml.signature.Seed;
+import org.opensaml.xml.signature.SignatureConstants;
 import org.opensaml.xml.signature.XMLSignatureBuilder;
-import org.opensaml.xml.util.XMLConstants;
 
 /**
  * Builder of {@link org.opensaml.xml.signature.Seed}
@@ -29,7 +29,7 @@ public class SeedBuilder extends AbstractXMLObjectBuilder<Seed> implements XMLSi
 
     /**
      * Constructor
-     *
+     * 
      */
     public SeedBuilder() {
     }
@@ -41,7 +41,8 @@ public class SeedBuilder extends AbstractXMLObjectBuilder<Seed> implements XMLSi
 
     /** {@inheritDoc} */
     public Seed buildObject() {
-        return buildObject(XMLConstants.XMLSIG_NS, Seed.DEFAULT_ELEMENT_LOCAL_NAME, XMLConstants.XMLSIG_PREFIX);
+        return buildObject(SignatureConstants.XMLSIG_NS, Seed.DEFAULT_ELEMENT_LOCAL_NAME,
+                SignatureConstants.XMLSIG_PREFIX);
     }
 
 }

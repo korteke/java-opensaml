@@ -18,8 +18,8 @@
 package org.opensaml.saml2.metadata.impl;
 
 import org.opensaml.common.impl.AbstractSAMLObjectUnmarshaller;
-import org.opensaml.common.xml.SAMLConstants;
 import org.opensaml.saml2.metadata.LocalizedName;
+import org.opensaml.util.xml.XmlConstants;
 import org.opensaml.xml.LangBearing;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
@@ -35,7 +35,7 @@ public class LocalizedNameUnmarshaller extends AbstractSAMLObjectUnmarshaller {
      */
     protected void processAttribute(XMLObject samlObject, Attr attribute) throws UnmarshallingException {
         if (attribute.getLocalName().equals(LangBearing.XML_LANG_ATTR_LOCAL_NAME)
-                && SAMLConstants.XML_NS.equals(attribute.getNamespaceURI())) {
+                && XmlConstants.XML_NS.equals(attribute.getNamespaceURI())) {
             LocalizedName name = (LocalizedName) samlObject;
 
             name.setXMLLang(attribute.getValue());

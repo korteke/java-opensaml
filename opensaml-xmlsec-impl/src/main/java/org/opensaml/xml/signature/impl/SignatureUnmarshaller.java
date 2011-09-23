@@ -30,7 +30,7 @@ import org.opensaml.xml.io.Unmarshaller;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.signature.KeyInfo;
 import org.opensaml.xml.signature.Signature;
-import org.opensaml.xml.util.XMLConstants;
+import org.opensaml.xml.signature.SignatureConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
@@ -55,8 +55,9 @@ public class SignatureUnmarshaller implements Unmarshaller {
     public Signature unmarshall(Element signatureElement) throws UnmarshallingException {
         log.debug("Starting to unmarshall Apache XML-Security-based SignatureImpl element");
 
-        SignatureImpl signature = new SignatureImpl(signatureElement.getNamespaceURI(),
-                signatureElement.getLocalName(), signatureElement.getPrefix());
+        SignatureImpl signature =
+                new SignatureImpl(signatureElement.getNamespaceURI(), signatureElement.getLocalName(),
+                        signatureElement.getPrefix());
 
         try {
             log.debug("Constructing Apache XMLSignature object");
@@ -73,8 +74,8 @@ public class SignatureUnmarshaller implements Unmarshaller {
             org.apache.xml.security.keys.KeyInfo xmlSecKeyInfo = xmlSignature.getKeyInfo();
             if (xmlSecKeyInfo != null) {
                 log.debug("Adding KeyInfo to Signature");
-                Unmarshaller unmarshaller = Configuration.getUnmarshallerFactory().getUnmarshaller(
-                        xmlSecKeyInfo.getElement());
+                Unmarshaller unmarshaller =
+                        Configuration.getUnmarshallerFactory().getUnmarshaller(xmlSecKeyInfo.getElement());
                 KeyInfo keyInfo = (KeyInfo) unmarshaller.unmarshall(xmlSecKeyInfo.getElement());
                 signature.setKeyInfo(keyInfo);
             }
@@ -98,8 +99,9 @@ public class SignatureUnmarshaller implements Unmarshaller {
             return null;
         }
         // Should be at most one element
-        List<Element> children = ElementSupport.getChildElementsByTagNameNS(signatureMethodElement, XMLConstants.XMLSIG_NS,
-                "HMACOutputLength");
+        List<Element> children =
+                ElementSupport.getChildElementsByTagNameNS(signatureMethodElement, SignatureConstants.XMLSIG_NS,
+                        "HMACOutputLength");
         if (!children.isEmpty()) {
             Element hmacElement = children.get(0);
             String value = StringSupport.trimOrNull(hmacElement.getTextContent());

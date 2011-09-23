@@ -18,19 +18,19 @@
 package org.opensaml.xml.encryption.impl;
 
 import org.opensaml.xml.AbstractXMLObjectBuilder;
+import org.opensaml.xml.encryption.EncryptionConstants;
 import org.opensaml.xml.encryption.RecipientKeyInfo;
 import org.opensaml.xml.encryption.XMLEncryptionBuilder;
-import org.opensaml.xml.util.XMLConstants;
 
 /**
  * Builder of {@link org.opensaml.xml.encryption.ReferenceList}
  */
-public class RecipientKeyInfoBuilder extends AbstractXMLObjectBuilder<RecipientKeyInfo>
-    implements XMLEncryptionBuilder<RecipientKeyInfo> {
+public class RecipientKeyInfoBuilder extends AbstractXMLObjectBuilder<RecipientKeyInfo> implements
+        XMLEncryptionBuilder<RecipientKeyInfo> {
 
     /**
      * Constructor
-     *
+     * 
      */
     public RecipientKeyInfoBuilder() {
     }
@@ -42,7 +42,8 @@ public class RecipientKeyInfoBuilder extends AbstractXMLObjectBuilder<RecipientK
 
     /** {@inheritDoc} */
     public RecipientKeyInfo buildObject() {
-        return buildObject(XMLConstants.XMLENC_NS, RecipientKeyInfo.DEFAULT_ELEMENT_LOCAL_NAME, XMLConstants.XMLENC_PREFIX);
+        return buildObject(EncryptionConstants.XMLENC_NS, RecipientKeyInfo.DEFAULT_ELEMENT_LOCAL_NAME,
+                EncryptionConstants.XMLENC_PREFIX);
     }
 
 }

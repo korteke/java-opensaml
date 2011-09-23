@@ -42,7 +42,6 @@ import org.opensaml.xml.security.keyinfo.KeyInfoHelper;
 import org.opensaml.xml.signature.impl.KeyInfoBuilder;
 import org.opensaml.xml.signature.impl.SignatureBuilder;
 import org.opensaml.xml.signature.impl.SignatureImpl;
-import org.opensaml.xml.util.XMLConstants;
 import org.opensaml.xml.validation.ValidationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -245,7 +244,7 @@ public class HMACSignatureTest extends XMLObjectBaseTestCase {
         assertNotNull("Apache SignedInfo was null", apacheSignedInfo);
         Element sigMethodElement = apacheSignedInfo.getSignatureMethodElement();
         List<Element> children = 
-            ElementSupport.getChildElementsByTagNameNS(sigMethodElement, XMLConstants.XMLSIG_NS, "HMACOutputLength");
+            ElementSupport.getChildElementsByTagNameNS(sigMethodElement, SignatureConstants.XMLSIG_NS, "HMACOutputLength");
         assertTrue("Signature method should not have HMACOutputLength child", children.isEmpty());
     }
 
@@ -268,7 +267,7 @@ public class HMACSignatureTest extends XMLObjectBaseTestCase {
         assertNotNull("Apache SignedInfo was null", apacheSignedInfo);
         Element sigMethodElement = apacheSignedInfo.getSignatureMethodElement();
         List<Element> children = 
-            ElementSupport.getChildElementsByTagNameNS(sigMethodElement, XMLConstants.XMLSIG_NS, "HMACOutputLength");
+            ElementSupport.getChildElementsByTagNameNS(sigMethodElement, SignatureConstants.XMLSIG_NS, "HMACOutputLength");
         assertFalse("Signature method should have HMACOutputLength child", children.isEmpty());
         Element outputLengthElement = children.get(0);
         String value = StringSupport.trimOrNull(outputLengthElement.getTextContent());

@@ -17,71 +17,71 @@
 
 package org.opensaml.xml.signature;
 
-
 import java.util.List;
 
 import javax.xml.namespace.QName;
 
 import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.util.XMLConstants;
 import org.opensaml.xml.validation.ValidatingXMLObject;
 
 /**
  * XMLObject representing XML Digital Signature, version 20020212, Transform element.
  */
 public interface Transform extends ValidatingXMLObject {
-    
+
     /** Element local name */
     public final static String DEFAULT_ELEMENT_LOCAL_NAME = "Transform";
-    
+
     /** Default element name */
-    public final static QName DEFAULT_ELEMENT_NAME = new QName(XMLConstants.XMLSIG_NS, DEFAULT_ELEMENT_LOCAL_NAME, XMLConstants.XMLSIG_PREFIX);
-    
+    public final static QName DEFAULT_ELEMENT_NAME = new QName(SignatureConstants.XMLSIG_NS,
+            DEFAULT_ELEMENT_LOCAL_NAME, SignatureConstants.XMLSIG_PREFIX);
+
     /** Local name of the XSI type */
-    public final static String TYPE_LOCAL_NAME = "TransformType"; 
-        
+    public final static String TYPE_LOCAL_NAME = "TransformType";
+
     /** QName of the XSI type */
-    public final static QName TYPE_NAME = new QName(XMLConstants.XMLSIG_NS, TYPE_LOCAL_NAME, XMLConstants.XMLSIG_PREFIX);
-    
+    public final static QName TYPE_NAME = new QName(SignatureConstants.XMLSIG_NS, TYPE_LOCAL_NAME,
+            SignatureConstants.XMLSIG_PREFIX);
+
     /** Algorithm attribute name */
     public final static String ALGORITHM_ATTRIB_NAME = "Algorithm";
-    
+
     /**
      * Get the Algorithm URI attribute value
-     *  
+     * 
      * @return the Algorithm URI attribute value
      */
     public String getAlgorithm();
-    
+
     /**
      * 
      * Set the Algorithm URI attribute value
-     *  
+     * 
      * @param newAlgorithm the new Algorithm URI attribute value
      */
     public void setAlgorithm(String newAlgorithm);
-    
-    /** 
+
+    /**
      * Get the list of XMLObject children that match a particular QName
-     *
+     * 
      * @param typeOrName the QName of the statements to return
      * 
      * @return the list of XMLObject children that match the given QName
      */
     public List<XMLObject> getXMLObjects(QName typeOrName);
-    
-    /** 
+
+    /**
      * Get the list of XPath child elements
      * 
      * @return list of XPath child elements
      */
     public List<XPath> getXPaths();
-    
+
     /**
      * Gets the ordered list of all XMLObject child elements of this element.
      * 
      * @return list of XMLObject children
      */
     public List<XMLObject> getAllChildren();
-    
+
 }

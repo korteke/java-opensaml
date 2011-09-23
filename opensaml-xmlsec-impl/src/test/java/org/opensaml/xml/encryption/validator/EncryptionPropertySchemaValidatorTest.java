@@ -19,17 +19,18 @@ package org.opensaml.xml.encryption.validator;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.util.xml.XmlConstants;
 import org.opensaml.xml.BaseXMLObjectValidatorTestCase;
+import org.opensaml.xml.encryption.EncryptionConstants;
 import org.opensaml.xml.encryption.EncryptionProperty;
 import org.opensaml.xml.mock.SimpleXMLObject;
 import org.opensaml.xml.mock.SimpleXMLObjectBuilder;
-import org.opensaml.xml.util.XMLConstants;
 
 /**
  *
  */
 public class EncryptionPropertySchemaValidatorTest extends BaseXMLObjectValidatorTestCase {
-    
+
     public EncryptionPropertySchemaValidatorTest() {
         targetQName = EncryptionProperty.DEFAULT_ELEMENT_NAME;
         validator = new EncryptionPropertySchemaValidator();
@@ -38,43 +39,44 @@ public class EncryptionPropertySchemaValidatorTest extends BaseXMLObjectValidato
     protected void populateRequiredData() {
         super.populateRequiredData();
         EncryptionProperty encProp = (EncryptionProperty) target;
-        
+
         encProp.getUnknownXMLObjects().add(buildXMLObject(simpleXMLObjectQName));
     }
-    
+
     public void testMissingChildren() {
         EncryptionProperty encProp = (EncryptionProperty) target;
-        
+
         encProp.getUnknownXMLObjects().clear();
         assertValidationFail("EncryptionProperty child list was empty, should have failed validation");
     }
-    
+
     public void testInvalidNamespaceChildren() {
         EncryptionProperty encProp = (EncryptionProperty) target;
-        
+
         SimpleXMLObjectBuilder sxoBuilder = new SimpleXMLObjectBuilder();
-        SimpleXMLObject sxo = sxoBuilder.buildObject(XMLConstants.XMLENC_NS, "Foo", XMLConstants.XMLENC_PREFIX);
-        
+        SimpleXMLObject sxo =
+                sxoBuilder.buildObject(EncryptionConstants.XMLENC_NS, "Foo", EncryptionConstants.XMLENC_PREFIX);
+
         encProp.getUnknownXMLObjects().add(sxo);
-        
+
         assertValidationFail("EncryptionProperty contained a child with an invalid namespace, should have failed validation");
     }
-    
+
     public void testInvalidNamespaceAttributes() {
         EncryptionProperty encProp = (EncryptionProperty) target;
-        
+
         QName attribName = new QName("urn:namespace:foo", "FooAttrib", "foo");
         encProp.getUnknownAttributes().put(attribName, "foobar");
-        
+
         assertValidationFail("EncryptionProperty contained an attribute with an invalid namespace, should have failed validation");
     }
-    
+
     public void testValidNamespaceAttributes() {
         EncryptionProperty encProp = (EncryptionProperty) target;
-        
-        QName attribName = new QName(XMLConstants.XML_NS, "lang", XMLConstants.XML_PREFIX);
+
+        QName attribName = new QName(XmlConstants.XML_NS, "lang", XmlConstants.XML_PREFIX);
         encProp.getUnknownAttributes().put(attribName, "en-US");
-        
+
         assertValidationPass("EncryptionProperty contained an attribute from the XML namespace, should have passed validation");
     }
 

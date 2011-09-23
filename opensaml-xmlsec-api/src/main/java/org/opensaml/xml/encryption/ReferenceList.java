@@ -21,42 +21,39 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.xml.util.XMLConstants;
 import org.opensaml.xml.validation.ValidatingXMLObject;
 
 /**
  * XMLObject representing XML Encryption, version 20021210, ReferenceList element.
  */
 public interface ReferenceList extends ValidatingXMLObject {
-    
+
     /** Element local name. */
     public static final String DEFAULT_ELEMENT_LOCAL_NAME = "ReferenceList";
-    
+
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(XMLConstants.XMLENC_NS, DEFAULT_ELEMENT_LOCAL_NAME, 
-            XMLConstants.XMLENC_PREFIX);
-    
+    public static final QName DEFAULT_ELEMENT_NAME = new QName(EncryptionConstants.XMLENC_NS,
+            DEFAULT_ELEMENT_LOCAL_NAME, EncryptionConstants.XMLENC_PREFIX);
+
     /**
      * Get the list of reference child elements.
      * 
      * @return the list of reference child elements
      */
     public List<ReferenceType> getReferences();
-    
+
     /**
      * Get the list of data reference child elements.
      * 
      * @return the list of data reference child elements
      */
     public List<DataReference> getDataReferences();
-    
+
     /**
      * Get the list of key reference child elements.
      * 
      * @return the list of key reference child elements
      */
     public List<KeyReference> getKeyReferences();
-    
-    
 
 }

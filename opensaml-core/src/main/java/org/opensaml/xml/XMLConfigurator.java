@@ -40,7 +40,6 @@ import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.Unmarshaller;
 import org.opensaml.xml.parse.BasicParserPool;
 import org.opensaml.xml.parse.XMLParserException;
-import org.opensaml.xml.util.XMLConstants;
 import org.opensaml.xml.validation.Validator;
 import org.opensaml.xml.validation.ValidatorSuite;
 import org.slf4j.Logger;
@@ -56,9 +55,21 @@ import org.xml.sax.SAXException;
  */
 public class XMLConfigurator {
 
+    /** Configuration namespace. */
+    public static final String XMLTOOLING_CONFIG_NS = "http://www.opensaml.org/xmltooling-config";
+
+    /** Configuration namespace prefix. */
+    public static final String XMLTOOLING_CONFIG_PREFIX = "xt";
+
+    /** Name of the object provider used for objects that don't have a registered object provider. */
+    public static final String XMLTOOLING_DEFAULT_OBJECT_PROVIDER = "DEFAULT";
+
+    /** Location, on the classpath, of the XMLTooling configuration schema. */
+    public static final String XMLTOOLING_SCHEMA_LOCATION = "/schema/xmltooling-config.xsd";
+
     /** Class logger. */
     private final Logger log = LoggerFactory.getLogger(XMLConfigurator.class);
-    
+
     /** Whether the XML configuration elements that configured object providers should be retained. */
     private boolean retainXMLConfiguration;
 
@@ -67,7 +78,7 @@ public class XMLConfigurator {
 
     /** Schema used to validate configruation files. */
     private Schema configurationSchema;
-    
+
     /** The provider registry instance to use. */
     private XMLObjectProviderRegistry registry;
 
@@ -79,7 +90,7 @@ public class XMLConfigurator {
     public XMLConfigurator() throws ConfigurationException {
         this(false);
     }
-    
+
     /**
      * Constructor.
      * 
@@ -87,14 +98,14 @@ public class XMLConfigurator {
      * 
      * @throws ConfigurationException thrown if the validation schema for configuration files can not be created
      * 
-     * @deprecated this method will be removed once {@link Configuration} no longer has the option to store the XML configuration fragements
+     * @deprecated this method will be removed once {@link Configuration} no longer has the option to store the XML
+     *             configuration fragements
      */
     public XMLConfigurator(boolean retainXML) throws ConfigurationException {
         retainXMLConfiguration = retainXML;
         parserPool = new BasicParserPool();
         SchemaFactory factory = SchemaFactory.newInstance(javax.xml.XMLConstants.W3C_XML_SCHEMA_NS_URI);
-        Source schemaSource = new StreamSource(XMLConfigurator.class
-                .getResourceAsStream(XMLConstants.XMLTOOLING_SCHEMA_LOCATION));
+        Source schemaSource = new StreamSource(XMLConfigurator.class.getResourceAsStream(XMLTOOLING_SCHEMA_LOCATION));
         try {
             configurationSchema = factory.newSchema(schemaSource);
 
@@ -104,8 +115,8 @@ public class XMLConfigurator {
         } catch (SAXException e) {
             throw new ConfigurationException("Unable to read XMLTooling configuration schema", e);
         }
-        
-        synchronized(ConfigurationService.class) {
+
+        synchronized (ConfigurationService.class) {
             registry = ConfigurationService.get(XMLObjectProviderRegistry.class);
             if (registry == null) {
                 log.debug("XMLObjectProviderRegistry did not exist in ConfigurationService, will be created");
@@ -190,8 +201,7 @@ public class XMLConfigurator {
      */
     protected void load(Element configurationRoot) throws ConfigurationException {
         // Initialize object providers
-        NodeList objectProviders = configurationRoot.getElementsByTagNameNS(XMLConstants.XMLTOOLING_CONFIG_NS,
-                "ObjectProviders");
+        NodeList objectProviders = configurationRoot.getElementsByTagNameNS(XMLTOOLING_CONFIG_NS, "ObjectProviders");
         if (objectProviders.getLength() > 0) {
             log.debug("Preparing to load ObjectProviders");
             initializeObjectProviders((Element) objectProviders.item(0));
@@ -199,8 +209,8 @@ public class XMLConfigurator {
         }
 
         // Initialize validator suites
-        NodeList validatorSuitesNodes = configurationRoot.getElementsByTagNameNS(XMLConstants.XMLTOOLING_CONFIG_NS,
-                "ValidatorSuites");
+        NodeList validatorSuitesNodes =
+                configurationRoot.getElementsByTagNameNS(XMLTOOLING_CONFIG_NS, "ValidatorSuites");
         if (validatorSuitesNodes.getLength() > 0) {
             log.debug("Preparing to load ValidatorSuites");
             initializeValidatorSuites((Element) validatorSuitesNodes.item(0));
@@ -208,8 +218,7 @@ public class XMLConfigurator {
         }
 
         // Initialize ID attributes
-        NodeList idAttributesNodes = configurationRoot.getElementsByTagNameNS(XMLConstants.XMLTOOLING_CONFIG_NS,
-                "IDAttributes");
+        NodeList idAttributesNodes = configurationRoot.getElementsByTagNameNS(XMLTOOLING_CONFIG_NS, "IDAttributes");
         if (idAttributesNodes.getLength() > 0) {
             log.debug("Preparing to load IDAttributes");
             initializeIDAttributes((Element) idAttributesNodes.item(0));
@@ -234,8 +243,7 @@ public class XMLConfigurator {
         Marshaller marshaller;
         Unmarshaller unmarshaller;
 
-        NodeList providerList = objectProviders.getElementsByTagNameNS(XMLConstants.XMLTOOLING_CONFIG_NS,
-                "ObjectProvider");
+        NodeList providerList = objectProviders.getElementsByTagNameNS(XMLTOOLING_CONFIG_NS, "ObjectProvider");
         for (int i = 0; i < providerList.getLength(); i++) {
             objectProvider = (Element) providerList.item(i);
 
@@ -246,22 +254,25 @@ public class XMLConfigurator {
             log.debug("Initializing object provider {}", objectProviderName);
 
             try {
-                configuration = (Element) objectProvider.getElementsByTagNameNS(XMLConstants.XMLTOOLING_CONFIG_NS,
-                        "BuilderClass").item(0);
+                configuration =
+                        (Element) objectProvider.getElementsByTagNameNS(XMLTOOLING_CONFIG_NS, "BuilderClass").item(0);
                 builder = (XMLObjectBuilder) createClassInstance(configuration);
 
-                configuration = (Element) objectProvider.getElementsByTagNameNS(XMLConstants.XMLTOOLING_CONFIG_NS,
-                        "MarshallingClass").item(0);
+                configuration =
+                        (Element) objectProvider.getElementsByTagNameNS(XMLTOOLING_CONFIG_NS, "MarshallingClass").item(
+                                0);
                 marshaller = (Marshaller) createClassInstance(configuration);
 
-                configuration = (Element) objectProvider.getElementsByTagNameNS(XMLConstants.XMLTOOLING_CONFIG_NS,
-                        "UnmarshallingClass").item(0);
+                configuration =
+                        (Element) objectProvider.getElementsByTagNameNS(XMLTOOLING_CONFIG_NS, "UnmarshallingClass")
+                                .item(0);
                 unmarshaller = (Unmarshaller) createClassInstance(configuration);
 
-                if(retainXMLConfiguration){
+                if (retainXMLConfiguration) {
                     // TODO think we should probably remove this now
-                    //getRegistry().registerObjectProvider(objectProviderName, builder, marshaller, unmarshaller, objectProvider);
-                }else{
+                    // getRegistry().registerObjectProvider(objectProviderName, builder, marshaller, unmarshaller,
+                    // objectProvider);
+                } else {
                     getRegistry().registerObjectProvider(objectProviderName, builder, marshaller, unmarshaller);
                 }
 
@@ -291,8 +302,8 @@ public class XMLConfigurator {
         Element validatorElement;
         QName validatorQName;
 
-        NodeList validatorSuiteList = validatorSuitesElement.getElementsByTagNameNS(XMLConstants.XMLTOOLING_CONFIG_NS,
-                "ValidatorSuite");
+        NodeList validatorSuiteList =
+                validatorSuitesElement.getElementsByTagNameNS(XMLTOOLING_CONFIG_NS, "ValidatorSuite");
         for (int i = 0; i < validatorSuiteList.getLength(); i++) {
             validatorSuiteElement = (Element) validatorSuiteList.item(i);
             validatorSuiteId = validatorSuiteElement.getAttributeNS(null, "id");
@@ -301,22 +312,22 @@ public class XMLConfigurator {
             log.debug("Initializing ValidatorSuite {}", validatorSuiteId);
             log.trace(SerializeSupport.nodeToString(validatorSuiteElement));
 
-            NodeList validatorList = validatorSuiteElement.getElementsByTagNameNS(XMLConstants.XMLTOOLING_CONFIG_NS,
-                    "Validator");
+            NodeList validatorList = validatorSuiteElement.getElementsByTagNameNS(XMLTOOLING_CONFIG_NS, "Validator");
             for (int j = 0; j < validatorList.getLength(); j++) {
                 validatorElement = (Element) validatorList.item(j);
-                validatorQName = AttributeSupport.getAttributeValueAsQName(validatorElement.getAttributeNodeNS(null,
-                        "qualifiedName"));
+                validatorQName =
+                        AttributeSupport.getAttributeValueAsQName(validatorElement.getAttributeNodeNS(null,
+                                "qualifiedName"));
 
                 validator = (Validator) createClassInstance(validatorElement);
                 validatorSuite.registerValidator(validatorQName, validator);
             }
 
             log.debug("ValidtorSuite {} has been initialized", validatorSuiteId);
-            if(retainXMLConfiguration){
+            if (retainXMLConfiguration) {
                 // TODO think we should probably remove this now
-                //getRegistry().registerValidatorSuite(validatorSuiteId, validatorSuite, validatorSuiteElement);
-            }else{
+                // getRegistry().registerValidatorSuite(validatorSuiteId, validatorSuite, validatorSuiteElement);
+            } else {
                 getRegistry().registerValidatorSuite(validatorSuiteId, validatorSuite);
             }
         }
@@ -333,8 +344,7 @@ public class XMLConfigurator {
         Element idAttributeElement;
         QName attributeQName;
 
-        NodeList idAttributeList = idAttributesElement.getElementsByTagNameNS(XMLConstants.XMLTOOLING_CONFIG_NS,
-                "IDAttribute");
+        NodeList idAttributeList = idAttributesElement.getElementsByTagNameNS(XMLTOOLING_CONFIG_NS, "IDAttribute");
 
         for (int i = 0; i < idAttributeList.getLength(); i++) {
             idAttributeElement = (Element) idAttributeList.item(i);
@@ -367,8 +377,8 @@ public class XMLConfigurator {
 
         try {
             log.trace("Creating instance of {}", className);
-            //TODO switch to thread context class loader, this seems more correct. Need to test and verify.
-            //ClassLoader classLoader = this.getClass().getClassLoader();
+            // TODO switch to thread context class loader, this seems more correct. Need to test and verify.
+            // ClassLoader classLoader = this.getClass().getClassLoader();
             ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
             Class clazz = classLoader.loadClass(className);
             Constructor constructor = clazz.getConstructor();
@@ -401,7 +411,7 @@ public class XMLConfigurator {
             throw new ConfigurationException(errorMsg, e);
         }
     }
-    
+
     /**
      * Get the XMLObject provider registry instance to use.
      * 

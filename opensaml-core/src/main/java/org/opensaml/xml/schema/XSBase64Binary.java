@@ -19,7 +19,7 @@ package org.opensaml.xml.schema;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.xml.util.XMLConstants;
+import org.opensaml.util.xml.XmlConstants;
 import org.opensaml.xml.validation.ValidatingXMLObject;
 
 /**
@@ -31,7 +31,7 @@ public interface XSBase64Binary extends ValidatingXMLObject {
     public static final String TYPE_LOCAL_NAME = "base64Binary"; 
         
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = new QName(XMLConstants.XSD_NS, TYPE_LOCAL_NAME, XMLConstants.XSD_PREFIX);
+    public static final QName TYPE_NAME = new QName(XmlConstants.XSD_NS, TYPE_LOCAL_NAME, XmlConstants.XSD_PREFIX);
     
     /**
      * Gets the base64-encoded binary value.

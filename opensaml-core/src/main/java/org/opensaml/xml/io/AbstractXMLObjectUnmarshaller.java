@@ -23,13 +23,13 @@ import org.opensaml.util.ObjectSupport;
 import org.opensaml.util.StringSupport;
 import org.opensaml.util.xml.DomTypeSupport;
 import org.opensaml.util.xml.QNameSupport;
+import org.opensaml.util.xml.XmlConstants;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.Namespace;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.XMLObjectBuilder;
 import org.opensaml.xml.XMLObjectBuilderFactory;
 import org.opensaml.xml.schema.XSBooleanValue;
-import org.opensaml.xml.util.XMLConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Attr;
@@ -220,9 +220,9 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
         log.trace("Pre-processing attribute {}", attribName);
         String attributeNamespace = StringSupport.trimOrNull(attribute.getNamespaceURI());
 
-        if (ObjectSupport.equals(attributeNamespace, XMLConstants.XMLNS_NS)) {
+        if (ObjectSupport.equals(attributeNamespace, XmlConstants.XMLNS_NS)) {
             unmarshallNamespaceAttribute(xmlObject, attribute);
-        } else if (ObjectSupport.equals(attributeNamespace, XMLConstants.XSI_NS)) {
+        } else if (ObjectSupport.equals(attributeNamespace, XmlConstants.XSI_NS)) {
             unmarshallSchemaInstanceAttributes(xmlObject, attribute);
         } else {
             log.trace("Attribute {} is neither a schema type nor namespace, calling processAttribute()",
@@ -231,8 +231,8 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
             String attributeNSPrefix;
             if (attributeNSURI != null) {
                 attributeNSPrefix = attribute.lookupPrefix(attributeNSURI);
-                if (attributeNSPrefix == null && XMLConstants.XML_NS.equals(attributeNSURI)) {
-                    attributeNSPrefix = XMLConstants.XML_PREFIX;
+                if (attributeNSPrefix == null && XmlConstants.XML_NS.equals(attributeNSURI)) {
+                    attributeNSPrefix = XmlConstants.XML_PREFIX;
                 }
                 xmlObject.getNamespaceManager().registerAttributeName(attribName);
             }
@@ -253,7 +253,7 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
         log.trace("{} is a namespace declaration, adding it to the list of namespaces on the XMLObject",
                 QNameSupport.getNodeQName(attribute));
         Namespace namespace;
-        if (ObjectSupport.equals(attribute.getLocalName(), XMLConstants.XMLNS_PREFIX)) {
+        if (ObjectSupport.equals(attribute.getLocalName(), XmlConstants.XMLNS_PREFIX)) {
             namespace = new Namespace(attribute.getValue(), null);
         } else {
             namespace = new Namespace(attribute.getValue(), attribute.getLocalName());
@@ -270,17 +270,17 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
      */
     protected void unmarshallSchemaInstanceAttributes(XMLObject xmlObject, Attr attribute) {
         QName attribName = QNameSupport.getNodeQName(attribute);
-        if (XMLConstants.XSI_TYPE_ATTRIB_NAME.equals(attribName)) {
+        if (XmlConstants.XSI_TYPE_ATTRIB_NAME.equals(attribName)) {
             log.trace("Saw XMLObject {} with an xsi:type of: {}", xmlObject.getElementQName(), attribute.getValue());
-        } else if (XMLConstants.XSI_SCHEMA_LOCATION_ATTRIB_NAME.equals(attribName)) {
+        } else if (XmlConstants.XSI_SCHEMA_LOCATION_ATTRIB_NAME.equals(attribName)) {
             log.trace("Saw XMLObject {} with an xsi:schemaLocation of: {}", xmlObject.getElementQName(),
                     attribute.getValue());
             xmlObject.setSchemaLocation(attribute.getValue());
-        } else if (XMLConstants.XSI_NO_NAMESPACE_SCHEMA_LOCATION_ATTRIB_NAME.equals(attribName)) {
+        } else if (XmlConstants.XSI_NO_NAMESPACE_SCHEMA_LOCATION_ATTRIB_NAME.equals(attribName)) {
             log.trace("Saw XMLObject {} with an xsi:noNamespaceSchemaLocation of: {}", xmlObject.getElementQName(),
                     attribute.getValue());
             xmlObject.setNoNamespaceSchemaLocation(attribute.getValue());
-        } else if (XMLConstants.XSI_NIL_ATTRIB_NAME.equals(attribName)) {
+        } else if (XmlConstants.XSI_NIL_ATTRIB_NAME.equals(attribName)) {
             log.trace("Saw XMLObject {} with an xsi:nil of: {}", xmlObject.getElementQName(), attribute.getValue());
             xmlObject.setNil(XSBooleanValue.valueOf(attribute.getValue()));
         }

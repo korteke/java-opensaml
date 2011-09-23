@@ -23,13 +23,13 @@ import java.util.Set;
 import javax.xml.namespace.QName;
 
 import org.opensaml.xml.XMLObject;
+import org.opensaml.xml.signature.SignatureConstants;
 import org.opensaml.xml.signature.X509CRL;
 import org.opensaml.xml.signature.X509Certificate;
 import org.opensaml.xml.signature.X509Data;
 import org.opensaml.xml.signature.X509IssuerSerial;
 import org.opensaml.xml.signature.X509SKI;
 import org.opensaml.xml.signature.X509SubjectName;
-import org.opensaml.xml.util.XMLConstants;
 import org.opensaml.xml.validation.ValidationException;
 import org.opensaml.xml.validation.Validator;
 
@@ -82,7 +82,7 @@ public class X509DataSchemaValidator implements Validator<X509Data> {
         for (XMLObject child : xmlObject.getXMLObjects()) {
             QName childName = child.getElementQName();
             if (! getValidDSChildNames().contains(childName) 
-                    && XMLConstants.XMLSIG_NS.equals(childName.getNamespaceURI())) {
+                    && SignatureConstants.XMLSIG_NS.equals(childName.getNamespaceURI())) {
                 throw new ValidationException("X509Data contains an illegal child extension element: " + childName);
             }
         }

@@ -18,18 +18,19 @@
 package org.opensaml.xml.encryption.impl;
 
 import org.opensaml.xml.AbstractXMLObjectBuilder;
+import org.opensaml.xml.encryption.EncryptionConstants;
 import org.opensaml.xml.encryption.KeyReference;
 import org.opensaml.xml.encryption.XMLEncryptionBuilder;
-import org.opensaml.xml.util.XMLConstants;
 
 /**
  * Builder of {@link org.opensaml.xml.encryption.KeyReference}
  */
-public class KeyReferenceBuilder extends AbstractXMLObjectBuilder<KeyReference> implements XMLEncryptionBuilder<KeyReference> {
+public class KeyReferenceBuilder extends AbstractXMLObjectBuilder<KeyReference> implements
+        XMLEncryptionBuilder<KeyReference> {
 
     /**
      * Constructor
-     *
+     * 
      */
     public KeyReferenceBuilder() {
     }
@@ -41,7 +42,8 @@ public class KeyReferenceBuilder extends AbstractXMLObjectBuilder<KeyReference> 
 
     /** {@inheritDoc} */
     public KeyReference buildObject() {
-        return buildObject(XMLConstants.XMLENC_NS, KeyReference.DEFAULT_ELEMENT_LOCAL_NAME, XMLConstants.XMLENC_PREFIX);
+        return buildObject(EncryptionConstants.XMLENC_NS, KeyReference.DEFAULT_ELEMENT_LOCAL_NAME,
+                EncryptionConstants.XMLENC_PREFIX);
     }
 
 }

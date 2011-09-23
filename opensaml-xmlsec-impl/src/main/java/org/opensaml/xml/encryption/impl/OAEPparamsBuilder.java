@@ -18,9 +18,9 @@
 package org.opensaml.xml.encryption.impl;
 
 import org.opensaml.xml.AbstractXMLObjectBuilder;
+import org.opensaml.xml.encryption.EncryptionConstants;
 import org.opensaml.xml.encryption.OAEPparams;
 import org.opensaml.xml.encryption.XMLEncryptionBuilder;
-import org.opensaml.xml.util.XMLConstants;
 
 /**
  * Builder of {@link org.opensaml.xml.encryption.OAEPparams}
@@ -29,7 +29,7 @@ public class OAEPparamsBuilder extends AbstractXMLObjectBuilder<OAEPparams> impl
 
     /**
      * Constructor
-     *
+     * 
      */
     public OAEPparamsBuilder() {
     }
@@ -41,7 +41,8 @@ public class OAEPparamsBuilder extends AbstractXMLObjectBuilder<OAEPparams> impl
 
     /** {@inheritDoc} */
     public OAEPparams buildObject() {
-        return buildObject(XMLConstants.XMLENC_NS, OAEPparams.DEFAULT_ELEMENT_LOCAL_NAME, XMLConstants.XMLENC_PREFIX);
+        return buildObject(EncryptionConstants.XMLENC_NS, OAEPparams.DEFAULT_ELEMENT_LOCAL_NAME,
+                EncryptionConstants.XMLENC_PREFIX);
     }
 
 }

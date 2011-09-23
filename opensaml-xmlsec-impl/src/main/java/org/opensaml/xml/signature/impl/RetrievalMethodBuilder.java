@@ -19,17 +19,18 @@ package org.opensaml.xml.signature.impl;
 
 import org.opensaml.xml.AbstractXMLObjectBuilder;
 import org.opensaml.xml.signature.RetrievalMethod;
+import org.opensaml.xml.signature.SignatureConstants;
 import org.opensaml.xml.signature.XMLSignatureBuilder;
-import org.opensaml.xml.util.XMLConstants;
 
 /**
  * Builder of {@link org.opensaml.xml.signature.RetrievalMethod}
  */
-public class RetrievalMethodBuilder extends AbstractXMLObjectBuilder<RetrievalMethod> implements XMLSignatureBuilder<RetrievalMethod> {
+public class RetrievalMethodBuilder extends AbstractXMLObjectBuilder<RetrievalMethod> implements
+        XMLSignatureBuilder<RetrievalMethod> {
 
     /**
      * Constructor
-     *
+     * 
      */
     public RetrievalMethodBuilder() {
     }
@@ -41,7 +42,8 @@ public class RetrievalMethodBuilder extends AbstractXMLObjectBuilder<RetrievalMe
 
     /** {@inheritDoc} */
     public RetrievalMethod buildObject() {
-        return buildObject(XMLConstants.XMLSIG_NS, RetrievalMethod.DEFAULT_ELEMENT_LOCAL_NAME, XMLConstants.XMLSIG_PREFIX);
+        return buildObject(SignatureConstants.XMLSIG_NS, RetrievalMethod.DEFAULT_ELEMENT_LOCAL_NAME,
+                SignatureConstants.XMLSIG_PREFIX);
     }
 
 }

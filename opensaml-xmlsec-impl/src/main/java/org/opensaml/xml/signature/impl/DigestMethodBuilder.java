@@ -18,19 +18,19 @@
 package org.opensaml.xml.signature.impl;
 
 import org.opensaml.xml.AbstractXMLObjectBuilder;
+import org.opensaml.xml.encryption.EncryptionConstants;
 import org.opensaml.xml.signature.DigestMethod;
 import org.opensaml.xml.signature.XMLSignatureBuilder;
-import org.opensaml.xml.util.XMLConstants;
 
 /**
  * Builder of {@link org.opensaml.xml.signature.DigestMethod}.
  */
-public class DigestMethodBuilder extends AbstractXMLObjectBuilder<DigestMethod> 
-        implements XMLSignatureBuilder<DigestMethod> {
+public class DigestMethodBuilder extends AbstractXMLObjectBuilder<DigestMethod> implements
+        XMLSignatureBuilder<DigestMethod> {
 
     /**
      * Constructor.
-     *
+     * 
      */
     public DigestMethodBuilder() {
     }
@@ -42,7 +42,7 @@ public class DigestMethodBuilder extends AbstractXMLObjectBuilder<DigestMethod>
 
     /** {@inheritDoc} */
     public DigestMethod buildObject() {
-        return buildObject(XMLConstants.XMLENC_NS, DigestMethod.DEFAULT_ELEMENT_LOCAL_NAME, XMLConstants.XMLENC_PREFIX);
+        return buildObject(EncryptionConstants.XMLENC_NS, DigestMethod.DEFAULT_ELEMENT_LOCAL_NAME,
+                EncryptionConstants.XMLENC_PREFIX);
     }
-
 }

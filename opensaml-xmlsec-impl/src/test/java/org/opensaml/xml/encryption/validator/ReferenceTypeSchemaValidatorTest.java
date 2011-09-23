@@ -19,16 +19,16 @@ package org.opensaml.xml.encryption.validator;
 
 import org.opensaml.xml.BaseXMLObjectValidatorTestCase;
 import org.opensaml.xml.encryption.DataReference;
+import org.opensaml.xml.encryption.EncryptionConstants;
 import org.opensaml.xml.encryption.ReferenceType;
 import org.opensaml.xml.mock.SimpleXMLObject;
 import org.opensaml.xml.mock.SimpleXMLObjectBuilder;
-import org.opensaml.xml.util.XMLConstants;
 
 /**
  *
  */
 public class ReferenceTypeSchemaValidatorTest extends BaseXMLObjectValidatorTestCase {
-    
+
     public ReferenceTypeSchemaValidatorTest() {
         // Don't want to create a builder just for this test,
         // so just use DataReference to test, it doesn't add anything.
@@ -39,31 +39,32 @@ public class ReferenceTypeSchemaValidatorTest extends BaseXMLObjectValidatorTest
     protected void populateRequiredData() {
         super.populateRequiredData();
         ReferenceType ref = (ReferenceType) target;
-        
+
         ref.setURI("urn:string:foo");
     }
-    
+
     public void testMissingURI() {
         ReferenceType ref = (ReferenceType) target;
-        
+
         ref.setURI(null);
         assertValidationFail("ReferenceType URI was null, should have failed validation");
-        
+
         ref.setURI("");
         assertValidationFail("ReferenceType URI was empty, should have failed validation");
-        
+
         ref.setURI("       ");
         assertValidationFail("ReferenceType URI was all whitespace, should have failed validation");
     }
-    
+
     public void testInvalidNamespaceChildren() {
         ReferenceType rt = (ReferenceType) target;
-        
+
         SimpleXMLObjectBuilder sxoBuilder = new SimpleXMLObjectBuilder();
-        SimpleXMLObject sxo = sxoBuilder.buildObject(XMLConstants.XMLENC_NS, "Foo", XMLConstants.XMLENC_PREFIX);
-        
+        SimpleXMLObject sxo =
+                sxoBuilder.buildObject(EncryptionConstants.XMLENC_NS, "Foo", EncryptionConstants.XMLENC_PREFIX);
+
         rt.getUnknownXMLObjects().add(sxo);
-        
+
         assertValidationFail("ReferenceType contained a child with an invalid namespace, should have failed validation");
     }
 

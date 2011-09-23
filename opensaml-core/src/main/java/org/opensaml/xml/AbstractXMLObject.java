@@ -26,9 +26,9 @@ import javax.xml.namespace.QName;
 import org.opensaml.util.ObjectSupport;
 import org.opensaml.util.StringSupport;
 import org.opensaml.util.xml.QNameSupport;
+import org.opensaml.util.xml.XmlConstants;
 import org.opensaml.xml.schema.XSBooleanValue;
 import org.opensaml.xml.util.IDIndex;
-import org.opensaml.xml.util.XMLConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
@@ -509,7 +509,7 @@ public abstract class AbstractXMLObject implements XMLObject {
     /** {@inheritDoc} */
     public void setNoNamespaceSchemaLocation(String location) {
         noNamespaceSchemaLocation = StringSupport.trimOrNull(location);
-        manageQualifiedAttributeNamespace(XMLConstants.XSI_NO_NAMESPACE_SCHEMA_LOCATION_ATTRIB_NAME, schemaLocation != null);
+        manageQualifiedAttributeNamespace(XmlConstants.XSI_NO_NAMESPACE_SCHEMA_LOCATION_ATTRIB_NAME, schemaLocation != null);
     }
 
     /** {@inheritDoc} */
@@ -520,7 +520,7 @@ public abstract class AbstractXMLObject implements XMLObject {
     /** {@inheritDoc} */
     public void setSchemaLocation(String location) {
         schemaLocation = StringSupport.trimOrNull(location);
-        manageQualifiedAttributeNamespace(XMLConstants.XSI_SCHEMA_LOCATION_ATTRIB_NAME, schemaLocation != null);
+        manageQualifiedAttributeNamespace(XmlConstants.XSI_SCHEMA_LOCATION_ATTRIB_NAME, schemaLocation != null);
     }
 
     /**
@@ -533,7 +533,7 @@ public abstract class AbstractXMLObject implements XMLObject {
     protected void setSchemaType(QName type) {
         typeQname = type;
         getNamespaceManager().registerElementType(typeQname);
-        manageQualifiedAttributeNamespace(XMLConstants.XSI_TYPE_ATTRIB_NAME, typeQname != null);
+        manageQualifiedAttributeNamespace(XmlConstants.XSI_TYPE_ATTRIB_NAME, typeQname != null);
     }
     
     /** {@inheritDoc} */
@@ -557,13 +557,13 @@ public abstract class AbstractXMLObject implements XMLObject {
         } else {
             nil = prepareForAssignment(nil, null);
         }
-        manageQualifiedAttributeNamespace(XMLConstants.XSI_NIL_ATTRIB_NAME, nil != null);
+        manageQualifiedAttributeNamespace(XmlConstants.XSI_NIL_ATTRIB_NAME, nil != null);
     }
 
     /** {@inheritDoc} */
     public void setNil(XSBooleanValue newNil) {
         nil = prepareForAssignment(nil, newNil);
-        manageQualifiedAttributeNamespace(XMLConstants.XSI_NIL_ATTRIB_NAME, nil != null);
+        manageQualifiedAttributeNamespace(XmlConstants.XSI_NIL_ATTRIB_NAME, nil != null);
     }
 
 }

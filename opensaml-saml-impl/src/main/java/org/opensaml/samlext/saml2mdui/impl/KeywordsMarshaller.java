@@ -18,10 +18,10 @@
 package org.opensaml.samlext.saml2mdui.impl;
 
 import org.opensaml.common.impl.AbstractSAMLObjectMarshaller;
-import org.opensaml.common.xml.SAMLConstants;
 import org.opensaml.samlext.saml2mdui.Keywords;
 import org.opensaml.util.xml.AttributeSupport;
 import org.opensaml.util.xml.ElementSupport;
+import org.opensaml.util.xml.XmlConstants;
 import org.opensaml.xml.LangBearing;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
@@ -40,8 +40,8 @@ public class KeywordsMarshaller extends AbstractSAMLObjectMarshaller {
         Keywords words = (Keywords) samlObject;
 
         if (words.getXMLLang() != null) {
-            Attr attribute = AttributeSupport.constructAttribute(domElement.getOwnerDocument(), SAMLConstants.XML_NS,
-                    LangBearing.XML_LANG_ATTR_LOCAL_NAME, SAMLConstants.XML_PREFIX);
+            Attr attribute = AttributeSupport.constructAttribute(domElement.getOwnerDocument(), XmlConstants.XML_NS,
+                    LangBearing.XML_LANG_ATTR_LOCAL_NAME, XmlConstants.XML_PREFIX);
             attribute.setValue(words.getXMLLang());
             domElement.setAttributeNodeNS(attribute);
         }

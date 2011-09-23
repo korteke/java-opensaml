@@ -23,13 +23,13 @@ import org.opensaml.xml.mock.SimpleXMLObjectBuilder;
 import org.opensaml.xml.signature.PGPData;
 import org.opensaml.xml.signature.PGPKeyID;
 import org.opensaml.xml.signature.PGPKeyPacket;
-import org.opensaml.xml.util.XMLConstants;
+import org.opensaml.xml.signature.SignatureConstants;
 
 /**
  *
  */
 public class PGPDataSchemaValidatorTest extends BaseXMLObjectValidatorTestCase {
-    
+
     public PGPDataSchemaValidatorTest() {
         targetQName = PGPData.DEFAULT_ELEMENT_NAME;
         validator = new PGPDataSchemaValidator();
@@ -38,29 +38,29 @@ public class PGPDataSchemaValidatorTest extends BaseXMLObjectValidatorTestCase {
     protected void populateRequiredData() {
         super.populateRequiredData();
         PGPData pgpData = (PGPData) target;
-        
+
         pgpData.setPGPKeyID((PGPKeyID) buildXMLObject(PGPKeyID.DEFAULT_ELEMENT_NAME));
         pgpData.setPGPKeyPacket(((PGPKeyPacket) buildXMLObject(PGPKeyPacket.DEFAULT_ELEMENT_NAME)));
         pgpData.getUnknownXMLObjects().add(buildXMLObject(simpleXMLObjectQName));
     }
-    
+
     public void testNoKeyID() {
         PGPData pgpData = (PGPData) target;
-        
+
         pgpData.setPGPKeyID(null);
         assertValidationPass("PGPData had no PDPKeyID, but should have been valid");
     }
-    
+
     public void testNoKeyPacket() {
         PGPData pgpData = (PGPData) target;
-        
+
         pgpData.setPGPKeyPacket(null);
         assertValidationPass("PGPData had no PDPKeyPacket, but should have been valid");
     }
-    
+
     public void testEmptyChildren() {
         PGPData pgpData = (PGPData) target;
-        
+
         pgpData.setPGPKeyID(null);
         pgpData.setPGPKeyPacket(null);
         pgpData.getUnknownXMLObjects().clear();
@@ -69,12 +69,13 @@ public class PGPDataSchemaValidatorTest extends BaseXMLObjectValidatorTestCase {
 
     public void testInvalidNamespaceChildren() {
         PGPData pgpData = (PGPData) target;
-        
+
         SimpleXMLObjectBuilder sxoBuilder = new SimpleXMLObjectBuilder();
-        SimpleXMLObject sxo = sxoBuilder.buildObject(XMLConstants.XMLSIG_NS, "Foo", XMLConstants.XMLSIG_PREFIX);
-        
+        SimpleXMLObject sxo =
+                sxoBuilder.buildObject(SignatureConstants.XMLSIG_NS, "Foo", SignatureConstants.XMLSIG_PREFIX);
+
         pgpData.getUnknownXMLObjects().add(sxo);
-        
+
         assertValidationFail("PGPData contained a child with an invalid namespace, should have failed validation");
     }
 }

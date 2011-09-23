@@ -20,38 +20,36 @@ package org.opensaml.xml.encryption;
 import javax.xml.namespace.QName;
 
 import org.opensaml.xml.ElementExtensibleXMLObject;
-import org.opensaml.xml.util.XMLConstants;
 import org.opensaml.xml.validation.ValidatingXMLObject;
 
 /**
  * XMLObject representing XML Encryption, version 20021210, ReferenceType type. This is the base type for
- * {@link DataReference} and {@link KeyReference} types. 
+ * {@link DataReference} and {@link KeyReference} types.
  */
 public interface ReferenceType extends ValidatingXMLObject, ElementExtensibleXMLObject {
-    
+
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "ReferenceType"; 
-        
+    public static final String TYPE_LOCAL_NAME = "ReferenceType";
+
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = new QName(XMLConstants.XMLENC_NS, TYPE_LOCAL_NAME, 
-            XMLConstants.XMLENC_PREFIX);
-    
+    public static final QName TYPE_NAME = new QName(EncryptionConstants.XMLENC_NS, TYPE_LOCAL_NAME,
+            EncryptionConstants.XMLENC_PREFIX);
+
     /** URI attribute name. */
     public static final String URI_ATTRIB_NAME = "URI";
-    
+
     /**
      * Get the URI attribute which indicates the referent of this reference.
      * 
      * @return the URI referent attribute value
      */
     public String getURI();
-    
+
     /**
      * Set the URI attribute which indicates the referent of this reference.
      * 
      * @param newURI the new URI attribute value
      */
     public void setURI(String newURI);
-    
 
 }

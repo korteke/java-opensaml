@@ -18,9 +18,9 @@
 package org.opensaml.xml.signature.impl;
 
 import org.opensaml.xml.AbstractXMLObjectBuilder;
+import org.opensaml.xml.signature.SignatureConstants;
 import org.opensaml.xml.signature.XMLSignatureBuilder;
 import org.opensaml.xml.signature.XPath;
-import org.opensaml.xml.util.XMLConstants;
 
 /**
  * Builder of {@link org.opensaml.xml.signature.XPath}
@@ -29,7 +29,7 @@ public class XPathBuilder extends AbstractXMLObjectBuilder<XPath> implements XML
 
     /**
      * Constructor
-     *
+     * 
      */
     public XPathBuilder() {
     }
@@ -41,7 +41,8 @@ public class XPathBuilder extends AbstractXMLObjectBuilder<XPath> implements XML
 
     /** {@inheritDoc} */
     public XPath buildObject() {
-        return buildObject(XMLConstants.XMLSIG_NS, XPath.DEFAULT_ELEMENT_LOCAL_NAME, XMLConstants.XMLSIG_PREFIX);
+        return buildObject(SignatureConstants.XMLSIG_NS, XPath.DEFAULT_ELEMENT_LOCAL_NAME,
+                SignatureConstants.XMLSIG_PREFIX);
     }
 
 }

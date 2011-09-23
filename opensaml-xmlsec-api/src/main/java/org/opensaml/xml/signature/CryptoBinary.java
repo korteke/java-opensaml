@@ -22,32 +22,31 @@ import java.math.BigInteger;
 import javax.xml.namespace.QName;
 
 import org.opensaml.xml.schema.XSBase64Binary;
-import org.opensaml.xml.util.XMLConstants;
 
 /**
  * XMLObject representing XML Digital Signature, version 20020212, CryptoBinary simple type.
  */
 public interface CryptoBinary extends XSBase64Binary {
-    
+
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "CryptoBinary"; 
-        
+    public static final String TYPE_LOCAL_NAME = "CryptoBinary";
+
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = 
-        new QName(XMLConstants.XMLSIG_NS, TYPE_LOCAL_NAME, XMLConstants.XMLSIG_PREFIX);
-    
+    public static final QName TYPE_NAME = new QName(SignatureConstants.XMLSIG_NS, TYPE_LOCAL_NAME,
+            SignatureConstants.XMLSIG_PREFIX);
+
     /**
      * Convenience method to get the value of the element as a BigInteger type.
      * 
      * @return the BigInteger representation of the element's content
      */
-    public BigInteger getValueBigInt(); 
-    
+    public BigInteger getValueBigInt();
+
     /**
      * Convenience method to set the value of the element as a BigInteger type.
      * 
      * @param bigInt the new BigInteger representation of the element's content
      */
-    public void setValueBigInt(BigInteger bigInt); 
-    
+    public void setValueBigInt(BigInteger bigInt);
+
 }

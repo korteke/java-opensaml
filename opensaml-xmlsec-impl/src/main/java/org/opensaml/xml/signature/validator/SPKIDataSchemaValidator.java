@@ -22,7 +22,7 @@ import javax.xml.namespace.QName;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.signature.SPKIData;
 import org.opensaml.xml.signature.SPKISexp;
-import org.opensaml.xml.util.XMLConstants;
+import org.opensaml.xml.signature.SignatureConstants;
 import org.opensaml.xml.validation.ValidationException;
 import org.opensaml.xml.validation.Validator;
 
@@ -62,7 +62,7 @@ public class SPKIDataSchemaValidator implements Validator<SPKIData> {
         for (XMLObject child : xmlObject.getXMLObjects()) {
             QName childName = child.getElementQName();
             if (! SPKISexp.DEFAULT_ELEMENT_NAME.equals(childName) 
-                    && XMLConstants.XMLSIG_NS.equals(childName.getNamespaceURI())) {
+                    && SignatureConstants.XMLSIG_NS.equals(childName.getNamespaceURI())) {
                 throw new ValidationException("PGPData contains an illegal child extension element: " + childName);
             }
         }
