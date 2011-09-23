@@ -29,6 +29,7 @@ import javax.xml.namespace.QName;
 import org.opensaml.util.ObjectSupport;
 import org.opensaml.util.StringSupport;
 import org.opensaml.util.collections.LazyList;
+import org.opensaml.util.xml.XmlConstants;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.soap.soap11.ActorBearing;
 import org.opensaml.ws.soap.soap11.Detail;
@@ -46,7 +47,6 @@ import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.XMLObjectBuilderFactory;
 import org.opensaml.xml.schema.XSBooleanValue;
 import org.opensaml.xml.util.AttributeMap;
-import org.opensaml.xml.util.XMLHelper;
 
 /**
  * Helper methods for working with SOAP.
@@ -207,7 +207,7 @@ public final class SOAPHelper {
             String value = StringSupport.trimOrNull(((AttributeExtensibleXMLObject) soapObject)
                     .getUnknownAttributes().get(EncodingStyleBearing.SOAP11_ENCODING_STYLE_ATTR_NAME));
             if (value != null) {
-                StringSupport.stringToList(value, XMLHelper.LIST_DELIMITERS);
+                StringSupport.stringToList(value, XmlConstants.LIST_DELIMITERS);
             }
         }
         return null;

@@ -18,7 +18,7 @@
 package org.opensaml.xml;
 
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 import javax.xml.namespace.QName;
@@ -40,7 +40,6 @@ import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.mock.SimpleXMLObject;
 import org.opensaml.xml.parse.ParserPool;
 import org.opensaml.xml.parse.XMLParserException;
-import org.opensaml.xml.util.XMLHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -181,7 +180,7 @@ public abstract class XMLObjectBaseTestCase extends TestCase {
      */
     public void printXML(Node node, String filename) {
         try {
-            XMLHelper.writeNode(node, new FileWriter(new File(filename)));
+            SerializeSupport.writeNode(node, new FileOutputStream(new File(filename)));
         } catch (IOException e) {
             e.printStackTrace();
         }

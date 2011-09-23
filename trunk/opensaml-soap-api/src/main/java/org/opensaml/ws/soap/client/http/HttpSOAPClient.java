@@ -20,7 +20,6 @@ package org.opensaml.ws.soap.client.http;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
 import java.util.List;
 
@@ -51,7 +50,6 @@ import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.parse.ParserPool;
 import org.opensaml.xml.parse.XMLParserException;
 import org.opensaml.xml.security.SecurityException;
-import org.opensaml.xml.util.XMLHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
@@ -160,12 +158,11 @@ public class HttpSOAPClient implements SOAPClient {
         try {
             Marshaller marshaller = Configuration.getMarshallerFactory().getMarshaller(message);
             ByteArrayOutputStream arrayOut = new ByteArrayOutputStream();
-            OutputStreamWriter writer = new OutputStreamWriter(arrayOut, charset);
 
             if (log.isDebugEnabled()) {
                 log.debug("Outbound SOAP message is:\n" + SerializeSupport.prettyPrintXML(marshaller.marshall(message)));
             }
-            XMLHelper.writeNode(marshaller.marshall(message), writer);
+            SerializeSupport.writeNode(marshaller.marshall(message), arrayOut);
             return new ByteArrayRequestEntity(arrayOut.toByteArray(), "text/xml");
         } catch (MarshallingException e) {
             throw new SOAPClientException("Unable to marshall SOAP envelope", e);

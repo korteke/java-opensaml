@@ -17,15 +17,11 @@
 
 package org.opensaml.saml1.binding.encoding;
 
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
-import java.io.Writer;
-
 import org.opensaml.Configuration;
 import org.opensaml.common.SAMLObject;
 import org.opensaml.common.binding.SAMLMessageContext;
 import org.opensaml.common.xml.SAMLConstants;
+import org.opensaml.util.xml.SerializeSupport;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.message.encoder.MessageEncodingException;
 import org.opensaml.ws.soap.common.SOAPObjectBuilder;
@@ -34,7 +30,6 @@ import org.opensaml.ws.soap.soap11.Envelope;
 import org.opensaml.ws.transport.http.HTTPOutTransport;
 import org.opensaml.ws.transport.http.HTTPTransportUtils;
 import org.opensaml.xml.XMLObjectBuilderFactory;
-import org.opensaml.xml.util.XMLHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
@@ -90,23 +85,14 @@ public class HTTPSOAP11Encoder extends BaseSAML1MessageEncoder {
         samlMsgCtx.setOutboundMessage(envelope);
 
         Element envelopeElem = marshallMessage(envelope);
-        try {
-            HTTPOutTransport outTransport = (HTTPOutTransport) messageContext.getOutboundMessageTransport();
-            HTTPTransportUtils.addNoCacheHeaders(outTransport);
-            HTTPTransportUtils.setUTF8Encoding(outTransport);
-            HTTPTransportUtils.setContentType(outTransport, "text/xml");
-            outTransport.setHeader("SOAPAction", "http://www.oasis-open.org/committees/security");
 
-            Writer out = new OutputStreamWriter(outTransport.getOutgoingStream(), "UTF-8");
-            XMLHelper.writeNode(envelopeElem, out);
-            out.flush();
-        } catch (UnsupportedEncodingException e) {
-            log.error("JVM does not support required UTF-8 encoding");
-            throw new MessageEncodingException("JVM does not support required UTF-8 encoding");
-        } catch (IOException e) {
-            log.error("Unable to write message content to outbound stream", e);
-            throw new MessageEncodingException("Unable to write message content to outbound stream", e);
-        }
+        HTTPOutTransport outTransport = (HTTPOutTransport) messageContext.getOutboundMessageTransport();
+        HTTPTransportUtils.addNoCacheHeaders(outTransport);
+        HTTPTransportUtils.setUTF8Encoding(outTransport);
+        HTTPTransportUtils.setContentType(outTransport, "text/xml");
+        outTransport.setHeader("SOAPAction", "http://www.oasis-open.org/committees/security");
+
+        SerializeSupport.writeNode(envelopeElem, outTransport.getOutgoingStream());
     }
 
     /**

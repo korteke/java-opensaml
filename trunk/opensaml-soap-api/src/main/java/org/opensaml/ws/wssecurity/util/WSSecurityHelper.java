@@ -21,13 +21,13 @@ import java.util.List;
 
 import org.opensaml.util.StringSupport;
 import org.opensaml.util.collections.LazyList;
+import org.opensaml.util.xml.XmlConstants;
 import org.opensaml.ws.wssecurity.IdBearing;
 import org.opensaml.ws.wssecurity.TokenTypeBearing;
 import org.opensaml.ws.wssecurity.UsageBearing;
 import org.opensaml.xml.AttributeExtensibleXMLObject;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.util.AttributeMap;
-import org.opensaml.xml.util.XMLHelper;
 
 /**
  * Helper methods for working with WS-Security.
@@ -186,7 +186,7 @@ public final class WSSecurityHelper {
             String value = StringSupport.trimOrNull(((AttributeExtensibleXMLObject)soapObject)
                     .getUnknownAttributes().get(UsageBearing.WSSE_USAGE_ATTR_NAME));
             if (value != null) {
-                StringSupport.stringToList(value, XMLHelper.LIST_DELIMITERS);
+                StringSupport.stringToList(value, XmlConstants.LIST_DELIMITERS);
             }
         }
         return null;

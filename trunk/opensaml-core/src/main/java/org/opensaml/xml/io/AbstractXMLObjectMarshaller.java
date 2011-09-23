@@ -32,11 +32,10 @@ import org.opensaml.util.xml.QNameSupport;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.Namespace;
 import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.parse.XMLParserException;
 import org.opensaml.xml.util.XMLConstants;
-import org.opensaml.xml.util.XMLHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -462,8 +461,8 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
             log.trace("Rooting all visible namespaces of XMLObject {} before adding it to new parent Element",
                     domCachingObject.getElementQName());
             try {
-                XMLHelper.rootNamespaces(domCachingObject.getDOM());
-            } catch (XMLParserException e) {
+                NamespaceSupport.rootNamespaces(domCachingObject.getDOM());
+            } catch (DOMException e) {
                 String errorMsg = "Unable to root namespaces of cached DOM element, "
                         + domCachingObject.getElementQName();
                 log.error(errorMsg, e);

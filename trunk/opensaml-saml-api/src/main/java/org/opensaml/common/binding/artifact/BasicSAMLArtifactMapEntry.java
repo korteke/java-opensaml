@@ -28,6 +28,7 @@ import org.opensaml.Configuration;
 import org.opensaml.common.SAMLObject;
 import org.opensaml.common.binding.artifact.SAMLArtifactMap.SAMLArtifactMapEntry;
 import org.opensaml.util.storage.AbstractExpiringObject;
+import org.opensaml.util.xml.SerializeSupport;
 import org.opensaml.xml.XMLRuntimeException;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.io.UnmarshallingException;
@@ -175,14 +176,11 @@ public class BasicSAMLArtifactMapEntry extends AbstractExpiringObject implements
         
         if (serializedMessage == null) {
             log.debug("Serializing SAMLObject to a string");
-            StringWriter writer = new StringWriter();
             try {
-                XMLObjectHelper.marshallToWriter(message, writer);
+                serializedMessage = SerializeSupport.nodeToString(XMLObjectHelper.marshall(message));
             } catch (MarshallingException e) {
                 throw new XMLRuntimeException("Error marshalling the SAMLObject: " + e.getMessage());
             }
-            
-            serializedMessage = writer.toString();
             
             if (log.isTraceEnabled()) {
                 log.trace("Serialized SAMLObject data was:");

@@ -45,7 +45,7 @@ public interface CachingResource extends Resource {
      * 
      * @param returnCache whether to return the cached copy {@link #getInputStream()} returns null
      * 
-     * @return the resource data, never null
+     * @return the resource data, or null if the data is cached and cached data is not to be returned
      * 
      * @throws ResourceException thrown if there is a problem getting the resource data
      */

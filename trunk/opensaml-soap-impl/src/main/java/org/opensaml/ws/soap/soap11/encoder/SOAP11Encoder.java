@@ -17,11 +17,7 @@
 
 package org.opensaml.ws.soap.soap11.encoder;
 
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
-import java.io.Writer;
-
+import org.opensaml.util.xml.SerializeSupport;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.message.encoder.MessageEncodingException;
 import org.opensaml.ws.message.handler.BaseHandlerChainAwareMessageEncoder;
@@ -31,7 +27,6 @@ import org.opensaml.ws.soap.soap11.Envelope;
 import org.opensaml.ws.transport.OutTransport;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.XMLObjectBuilderFactory;
-import org.opensaml.xml.util.XMLHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
@@ -83,18 +78,8 @@ public class SOAP11Encoder extends BaseHandlerChainAwareMessageEncoder {
         
         preprocessTransport(messageContext);
         
-        try {
-            OutTransport outTransport = messageContext.getOutboundMessageTransport();
-            Writer out = new OutputStreamWriter(outTransport.getOutgoingStream(), "UTF-8");
-            XMLHelper.writeNode(envelopeElem, out);
-            out.flush();
-        } catch (UnsupportedEncodingException e) {
-            log.error("JVM does not support required UTF-8 encoding");
-            throw new MessageEncodingException("JVM does not support required UTF-8 encoding");
-        } catch (IOException e) {
-            log.error("Unable to write message content to outbound stream", e);
-            throw new MessageEncodingException("Unable to write message content to outbound stream", e);
-        }
+        OutTransport outTransport = messageContext.getOutboundMessageTransport();
+        SerializeSupport.writeNode(envelopeElem, outTransport.getOutgoingStream());
     }
     
     /**
@@ -130,5 +115,4 @@ public class SOAP11Encoder extends BaseHandlerChainAwareMessageEncoder {
 
         return envelope;
     }
- 
 }
