@@ -19,7 +19,6 @@ package org.opensaml.xml.signature;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.xml.util.XMLConstants;
 import org.opensaml.xml.validation.ValidatingXMLObject;
 
 /** XMLObject representing XML Digital Signature, version 20020212, RSAKeyValue element. */
@@ -29,14 +28,15 @@ public interface RSAKeyValue extends ValidatingXMLObject {
     public static final String DEFAULT_ELEMENT_LOCAL_NAME = "RSAKeyValue";
 
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(XMLConstants.XMLSIG_NS, DEFAULT_ELEMENT_LOCAL_NAME,
-            XMLConstants.XMLSIG_PREFIX);
+    public static final QName DEFAULT_ELEMENT_NAME = new QName(SignatureConstants.XMLSIG_NS,
+            DEFAULT_ELEMENT_LOCAL_NAME, SignatureConstants.XMLSIG_PREFIX);
 
     /** Local name of the XSI type. */
     public static final String TYPE_LOCAL_NAME = "RSAKeyValueType";
 
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = new QName(XMLConstants.XMLSIG_NS, TYPE_LOCAL_NAME, XMLConstants.XMLSIG_PREFIX);
+    public static final QName TYPE_NAME = new QName(SignatureConstants.XMLSIG_NS, TYPE_LOCAL_NAME,
+            SignatureConstants.XMLSIG_PREFIX);
 
     /**
      * Get the Modulus child element.

@@ -30,7 +30,6 @@ import org.opensaml.xml.io.MarshallerFactory;
 import org.opensaml.xml.io.Unmarshaller;
 import org.opensaml.xml.io.UnmarshallerFactory;
 import org.opensaml.xml.parse.ParserPool;
-import org.opensaml.xml.util.XMLConstants;
 import org.opensaml.xml.validation.ValidatorSuite;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,8 +47,8 @@ import org.w3c.dom.Element;
 public class XMLObjectProviderRegistry {
 
     /** Default object provider. */
-    private static QName defaultProvider = new QName(XMLConstants.XMLTOOLING_CONFIG_NS,
-            XMLConstants.XMLTOOLING_DEFAULT_OBJECT_PROVIDER);
+    private static QName defaultProvider = new QName(XMLConfigurator.XMLTOOLING_CONFIG_NS,
+            XMLConfigurator.XMLTOOLING_DEFAULT_OBJECT_PROVIDER);
     
     /** Logger. */
     private Logger log = LoggerFactory.getLogger(XMLObjectProviderRegistry.class);

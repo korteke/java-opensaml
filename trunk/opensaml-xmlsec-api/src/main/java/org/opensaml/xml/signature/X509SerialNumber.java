@@ -21,34 +21,34 @@ import java.math.BigInteger;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.xml.util.XMLConstants;
+import org.opensaml.util.xml.XmlConstants;
 import org.opensaml.xml.validation.ValidatingXMLObject;
 
 /**
  * XMLObject representing XML Digital Signature, version 20020212, X509SerialNumber element.
  */
 public interface X509SerialNumber extends ValidatingXMLObject {
-    
+
     /** Element local name. */
     public static final String DEFAULT_ELEMENT_LOCAL_NAME = "X509SerialNumber";
-    
+
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = 
-        new QName(XMLConstants.XMLSIG_NS, DEFAULT_ELEMENT_LOCAL_NAME, XMLConstants.XMLSIG_PREFIX);
-    
+    public static final QName DEFAULT_ELEMENT_NAME = new QName(SignatureConstants.XMLSIG_NS,
+            DEFAULT_ELEMENT_LOCAL_NAME, SignatureConstants.XMLSIG_PREFIX);
+
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "integer"; 
-        
+    public static final String TYPE_LOCAL_NAME = "integer";
+
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = new QName(XMLConstants.XSD_NS, TYPE_LOCAL_NAME, XMLConstants.XSD_PREFIX);
-    
+    public static final QName TYPE_NAME = new QName(XmlConstants.XSD_NS, TYPE_LOCAL_NAME, XmlConstants.XSD_PREFIX);
+
     /**
      * Gets the integer.
      * 
      * @return the integer
      */
     public BigInteger getValue();
-    
+
     /**
      * Sets the integer.
      * 

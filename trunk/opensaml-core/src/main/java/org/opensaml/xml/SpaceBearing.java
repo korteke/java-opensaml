@@ -19,7 +19,7 @@ package org.opensaml.xml;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.xml.util.XMLConstants;
+import org.opensaml.util.xml.XmlConstants;
 
 /**
  * Interface for element having a <code>@xml:space</code> attribute.
@@ -63,7 +63,7 @@ public interface SpaceBearing {
 
     /** The <code>xml:space</code> qualified attribute name. */
     public static final QName XML_SPACE_ATTR_NAME =
-        new QName(XMLConstants.XML_NS, XML_SPACE_ATTR_LOCAL_NAME, XMLConstants.XML_PREFIX);
+        new QName(XmlConstants.XML_NS, XML_SPACE_ATTR_LOCAL_NAME, XmlConstants.XML_PREFIX);
 
     /**
      * Returns the <code>@xml:space</code> attribute value.

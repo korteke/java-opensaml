@@ -20,7 +20,6 @@ package org.opensaml.xml.encryption;
 import javax.xml.namespace.QName;
 
 import org.opensaml.xml.ElementExtensibleXMLObject;
-import org.opensaml.xml.util.XMLConstants;
 import org.opensaml.xml.validation.ValidatingXMLObject;
 
 /**
@@ -32,15 +31,15 @@ public interface AgreementMethod extends ValidatingXMLObject, ElementExtensibleX
     public static final String DEFAULT_ELEMENT_LOCAL_NAME = "AgreementMethod";
 
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(XMLConstants.XMLENC_NS, DEFAULT_ELEMENT_LOCAL_NAME,
-            XMLConstants.XMLENC_PREFIX);
+    public static final QName DEFAULT_ELEMENT_NAME = new QName(EncryptionConstants.XMLENC_NS,
+            DEFAULT_ELEMENT_LOCAL_NAME, EncryptionConstants.XMLENC_PREFIX);
 
     /** Local name of the XSI type. */
     public static final String TYPE_LOCAL_NAME = "AgreementMethodType";
 
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = new QName(XMLConstants.XMLENC_NS, TYPE_LOCAL_NAME, 
-            XMLConstants.XMLENC_PREFIX);
+    public static final QName TYPE_NAME = new QName(EncryptionConstants.XMLENC_NS, TYPE_LOCAL_NAME,
+            EncryptionConstants.XMLENC_PREFIX);
 
     /** Algorithm attribute name. */
     public static final String ALGORITHM_ATTRIBUTE_NAME = "Algorithm";

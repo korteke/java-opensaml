@@ -19,14 +19,13 @@ package org.opensaml.xml.encryption.impl;
 
 import org.opensaml.xml.AbstractXMLObjectBuilder;
 import org.opensaml.xml.encryption.DHKeyValue;
+import org.opensaml.xml.encryption.EncryptionConstants;
 import org.opensaml.xml.encryption.XMLEncryptionBuilder;
-import org.opensaml.xml.util.XMLConstants;
 
 /**
  * Builder of {@link org.opensaml.xml.encryption.DHKeyValue}.
  */
-public class DHKeyValueBuilder extends AbstractXMLObjectBuilder<DHKeyValue> implements 
-        XMLEncryptionBuilder<DHKeyValue> {
+public class DHKeyValueBuilder extends AbstractXMLObjectBuilder<DHKeyValue> implements XMLEncryptionBuilder<DHKeyValue> {
 
     /** Constructor. */
     public DHKeyValueBuilder() {
@@ -39,7 +38,8 @@ public class DHKeyValueBuilder extends AbstractXMLObjectBuilder<DHKeyValue> impl
 
     /** {@inheritDoc} */
     public DHKeyValue buildObject() {
-        return buildObject(XMLConstants.XMLENC_NS, DHKeyValue.DEFAULT_ELEMENT_LOCAL_NAME, XMLConstants.XMLENC_PREFIX);
+        return buildObject(EncryptionConstants.XMLENC_NS, DHKeyValue.DEFAULT_ELEMENT_LOCAL_NAME,
+                EncryptionConstants.XMLENC_PREFIX);
     }
 
 }

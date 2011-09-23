@@ -19,8 +19,6 @@ package org.opensaml.xml.encryption;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.xml.util.XMLConstants;
-
 /**
  * XMLObject representing XML Encryption, version 20021210, EncryptedData element.
  */
@@ -30,14 +28,14 @@ public interface EncryptedData extends EncryptedType {
     public static final String DEFAULT_ELEMENT_LOCAL_NAME = "EncryptedData";
 
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(XMLConstants.XMLENC_NS, DEFAULT_ELEMENT_LOCAL_NAME,
-            XMLConstants.XMLENC_PREFIX);
+    public static final QName DEFAULT_ELEMENT_NAME = new QName(EncryptionConstants.XMLENC_NS,
+            DEFAULT_ELEMENT_LOCAL_NAME, EncryptionConstants.XMLENC_PREFIX);
 
     /** Local name of the XSI type. */
     public static final String TYPE_LOCAL_NAME = "EncryptedDataType";
 
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = new QName(XMLConstants.XMLENC_NS, TYPE_LOCAL_NAME, 
-            XMLConstants.XMLENC_PREFIX);
+    public static final QName TYPE_NAME = new QName(EncryptionConstants.XMLENC_NS, TYPE_LOCAL_NAME,
+            EncryptionConstants.XMLENC_PREFIX);
 
 }

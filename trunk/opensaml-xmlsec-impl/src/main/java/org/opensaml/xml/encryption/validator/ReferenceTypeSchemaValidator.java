@@ -21,13 +21,13 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.util.StringSupport;
 import org.opensaml.xml.XMLObject;
+import org.opensaml.xml.encryption.EncryptionConstants;
 import org.opensaml.xml.encryption.ReferenceType;
-import org.opensaml.xml.util.XMLConstants;
 import org.opensaml.xml.validation.ValidationException;
 import org.opensaml.xml.validation.Validator;
 
 /**
- * Checks {@link org.opensaml.xml.encryption.ReferenceType} for Schema compliance. 
+ * Checks {@link org.opensaml.xml.encryption.ReferenceType} for Schema compliance.
  */
 public class ReferenceTypeSchemaValidator implements Validator<ReferenceType> {
 
@@ -41,14 +41,14 @@ public class ReferenceTypeSchemaValidator implements Validator<ReferenceType> {
      * Validate the URI.
      * 
      * @param xmlObject the object to validate
-     * @throws ValidationException  thrown if the object is invalid
+     * @throws ValidationException thrown if the object is invalid
      */
     protected void validateURI(ReferenceType xmlObject) throws ValidationException {
         if (StringSupport.isNullOrEmpty(xmlObject.getURI())) {
             throw new ValidationException("ReferenceType URI was empty");
         }
     }
-    
+
     /**
      * Validate that all children are from another namespace.
      * 
@@ -59,7 +59,7 @@ public class ReferenceTypeSchemaValidator implements Validator<ReferenceType> {
         // Validate that any children are from another namespace.
         for (XMLObject child : xmlObject.getUnknownXMLObjects()) {
             QName childName = child.getElementQName();
-            if (XMLConstants.XMLENC_NS.equals(childName.getNamespaceURI())) {
+            if (EncryptionConstants.XMLENC_NS.equals(childName.getNamespaceURI())) {
                 throw new ValidationException("ReferenceType contains an illegal child extension element: " + childName);
             }
         }

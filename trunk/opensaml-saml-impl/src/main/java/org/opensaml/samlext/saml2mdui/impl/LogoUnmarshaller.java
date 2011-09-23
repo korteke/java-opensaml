@@ -18,8 +18,8 @@
 package org.opensaml.samlext.saml2mdui.impl;
 
 import org.opensaml.common.impl.AbstractSAMLObjectUnmarshaller;
-import org.opensaml.common.xml.SAMLConstants;
 import org.opensaml.samlext.saml2mdui.Logo;
+import org.opensaml.util.xml.XmlConstants;
 import org.opensaml.xml.LangBearing;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
@@ -43,7 +43,7 @@ public class LogoUnmarshaller extends AbstractSAMLObjectUnmarshaller {
         Logo logo = (Logo) samlObject;
 
         if (attribute.getLocalName().equals(LangBearing.XML_LANG_ATTR_LOCAL_NAME)
-                && SAMLConstants.XML_NS.equals(attribute.getNamespaceURI())) {
+                && XmlConstants.XML_NS.equals(attribute.getNamespaceURI())) {
             logo.setXMLLang(attribute.getValue());
         } else if (attribute.getLocalName().equals(Logo.HEIGHT_ATTR_NAME)) {
             logo.setHeight(Integer.valueOf(attribute.getValue()));

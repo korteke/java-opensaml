@@ -23,7 +23,6 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.security.credential.Credential;
-import org.opensaml.xml.util.XMLConstants;
 
 /**
  * XMLObject representing an enveloped or detached XML Digital Signature, version 20020212, Signature element.
@@ -34,15 +33,15 @@ public interface Signature extends XMLObject {
     public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Signature";
 
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(XMLConstants.XMLSIG_NS, DEFAULT_ELEMENT_LOCAL_NAME,
-            XMLConstants.XMLSIG_PREFIX);
+    public static final QName DEFAULT_ELEMENT_NAME = new QName(SignatureConstants.XMLSIG_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+            SignatureConstants.XMLSIG_PREFIX);
 
     /** Local name of the XSI type. */
     public static final String TYPE_LOCAL_NAME = "SignatureType";
 
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = new QName(XMLConstants.XMLSIG_NS, TYPE_LOCAL_NAME, 
-            XMLConstants.XMLSIG_PREFIX);
+    public static final QName TYPE_NAME = new QName(SignatureConstants.XMLSIG_NS, TYPE_LOCAL_NAME, 
+            SignatureConstants.XMLSIG_PREFIX);
 
     /**
      * Gets the canonicalization algorithm used to create the signature content.

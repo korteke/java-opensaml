@@ -19,8 +19,8 @@ package org.opensaml.xml.signature.impl;
 
 import org.opensaml.xml.AbstractXMLObjectBuilder;
 import org.opensaml.xml.signature.PGPData;
+import org.opensaml.xml.signature.SignatureConstants;
 import org.opensaml.xml.signature.XMLSignatureBuilder;
-import org.opensaml.xml.util.XMLConstants;
 
 /**
  * Builder of {@link org.opensaml.xml.signature.PGPData}
@@ -29,7 +29,7 @@ public class PGPDataBuilder extends AbstractXMLObjectBuilder<PGPData> implements
 
     /**
      * Constructor
-     *
+     * 
      */
     public PGPDataBuilder() {
     }
@@ -41,7 +41,8 @@ public class PGPDataBuilder extends AbstractXMLObjectBuilder<PGPData> implements
 
     /** {@inheritDoc} */
     public PGPData buildObject() {
-        return buildObject(XMLConstants.XMLSIG_NS, PGPData.DEFAULT_ELEMENT_LOCAL_NAME, XMLConstants.XMLSIG_PREFIX);
+        return buildObject(SignatureConstants.XMLSIG_NS, PGPData.DEFAULT_ELEMENT_LOCAL_NAME,
+                SignatureConstants.XMLSIG_PREFIX);
     }
 
 }

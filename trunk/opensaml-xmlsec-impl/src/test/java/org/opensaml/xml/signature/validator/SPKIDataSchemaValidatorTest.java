@@ -22,7 +22,7 @@ import org.opensaml.xml.mock.SimpleXMLObject;
 import org.opensaml.xml.mock.SimpleXMLObjectBuilder;
 import org.opensaml.xml.signature.SPKIData;
 import org.opensaml.xml.signature.SPKISexp;
-import org.opensaml.xml.util.XMLConstants;
+import org.opensaml.xml.signature.SignatureConstants;
 
 /**
  *
@@ -53,7 +53,7 @@ public class SPKIDataSchemaValidatorTest extends BaseXMLObjectValidatorTestCase 
         SPKIData spkiData = (SPKIData) target;
         
         SimpleXMLObjectBuilder sxoBuilder = new SimpleXMLObjectBuilder();
-        SimpleXMLObject sxo = sxoBuilder.buildObject(XMLConstants.XMLSIG_NS, "Foo", XMLConstants.XMLSIG_PREFIX);
+        SimpleXMLObject sxo = sxoBuilder.buildObject(SignatureConstants.XMLSIG_NS, "Foo", SignatureConstants.XMLSIG_PREFIX);
         
         spkiData.getXMLObjects().add(buildXMLObject(SPKISexp.DEFAULT_ELEMENT_NAME));
         spkiData.getXMLObjects().add(sxo);

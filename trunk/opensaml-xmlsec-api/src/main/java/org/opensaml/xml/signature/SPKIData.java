@@ -22,48 +22,48 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.util.XMLConstants;
 import org.opensaml.xml.validation.ValidatingXMLObject;
 
 /**
  * XMLObject representing XML Digital Signature, version 20020212, SPKIData element.
  */
 public interface SPKIData extends ValidatingXMLObject {
-    
+
     /** Element local name */
     public final static String DEFAULT_ELEMENT_LOCAL_NAME = "SPKIData";
-    
+
     /** Default element name */
-    public final static QName DEFAULT_ELEMENT_NAME = new QName(XMLConstants.XMLSIG_NS, DEFAULT_ELEMENT_LOCAL_NAME, XMLConstants.XMLSIG_PREFIX);
-    
+    public final static QName DEFAULT_ELEMENT_NAME = new QName(SignatureConstants.XMLSIG_NS,
+            DEFAULT_ELEMENT_LOCAL_NAME, SignatureConstants.XMLSIG_PREFIX);
+
     /** Local name of the XSI type */
-    public final static String TYPE_LOCAL_NAME = "SPKIDataType"; 
-        
+    public final static String TYPE_LOCAL_NAME = "SPKIDataType";
+
     /** QName of the XSI type */
-    public final static QName TYPE_NAME = new QName(XMLConstants.XMLSIG_NS, TYPE_LOCAL_NAME, XMLConstants.XMLSIG_PREFIX);
-    
+    public final static QName TYPE_NAME = new QName(SignatureConstants.XMLSIG_NS, TYPE_LOCAL_NAME,
+            SignatureConstants.XMLSIG_PREFIX);
+
     /**
      * Get the list of all XMLObject children
      * 
      * @return the list of XMLObject children
      */
     public List<XMLObject> getXMLObjects();
-    
+
     /**
-     * Get the list of XMLObject children whose type or element
-     * QName matches the specified QName
+     * Get the list of XMLObject children whose type or element QName matches the specified QName
      * 
      * @param typeOrName the QName of the desired elements
      * 
      * @return the matching list of XMLObject children
      */
     public List<XMLObject> getXMLObjects(QName typeOrName);
-    
+
     /**
      * Get the list of SPKISexp child elements
      * 
      * @return the list of SPKISexp child elements
-     */ 
+     */
     public List<SPKISexp> getSPKISexps();
 
 }

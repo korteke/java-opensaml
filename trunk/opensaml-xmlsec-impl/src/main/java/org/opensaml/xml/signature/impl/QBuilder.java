@@ -19,8 +19,8 @@ package org.opensaml.xml.signature.impl;
 
 import org.opensaml.xml.AbstractXMLObjectBuilder;
 import org.opensaml.xml.signature.Q;
+import org.opensaml.xml.signature.SignatureConstants;
 import org.opensaml.xml.signature.XMLSignatureBuilder;
-import org.opensaml.xml.util.XMLConstants;
 
 /**
  * Builder of {@link org.opensaml.xml.signature.Q}
@@ -29,7 +29,7 @@ public class QBuilder extends AbstractXMLObjectBuilder<Q> implements XMLSignatur
 
     /**
      * Constructor
-     *
+     * 
      */
     public QBuilder() {
     }
@@ -41,7 +41,7 @@ public class QBuilder extends AbstractXMLObjectBuilder<Q> implements XMLSignatur
 
     /** {@inheritDoc} */
     public Q buildObject() {
-        return buildObject(XMLConstants.XMLSIG_NS, Q.DEFAULT_ELEMENT_LOCAL_NAME, XMLConstants.XMLSIG_PREFIX);
+        return buildObject(SignatureConstants.XMLSIG_NS, Q.DEFAULT_ELEMENT_LOCAL_NAME, SignatureConstants.XMLSIG_PREFIX);
     }
 
 }

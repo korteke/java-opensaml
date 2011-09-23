@@ -18,19 +18,19 @@
 package org.opensaml.xml.encryption.impl;
 
 import org.opensaml.xml.AbstractXMLObjectBuilder;
+import org.opensaml.xml.encryption.EncryptionConstants;
 import org.opensaml.xml.encryption.EncryptionProperties;
 import org.opensaml.xml.encryption.XMLEncryptionBuilder;
-import org.opensaml.xml.util.XMLConstants;
 
 /**
  * Builder of {@link org.opensaml.xml.encryption.EncryptionProperties}.
  */
-public class EncryptionPropertiesBuilder extends AbstractXMLObjectBuilder<EncryptionProperties>
-    implements XMLEncryptionBuilder<EncryptionProperties> {
+public class EncryptionPropertiesBuilder extends AbstractXMLObjectBuilder<EncryptionProperties> implements
+        XMLEncryptionBuilder<EncryptionProperties> {
 
     /**
      * Constructor.
-     *
+     * 
      */
     public EncryptionPropertiesBuilder() {
     }
@@ -42,7 +42,8 @@ public class EncryptionPropertiesBuilder extends AbstractXMLObjectBuilder<Encryp
 
     /** {@inheritDoc} */
     public EncryptionProperties buildObject() {
-        return buildObject(XMLConstants.XMLENC_NS, EncryptionProperties.DEFAULT_ELEMENT_LOCAL_NAME, XMLConstants.XMLENC_PREFIX);
+        return buildObject(EncryptionConstants.XMLENC_NS, EncryptionProperties.DEFAULT_ELEMENT_LOCAL_NAME,
+                EncryptionConstants.XMLENC_PREFIX);
     }
 
 }

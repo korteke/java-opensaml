@@ -19,8 +19,8 @@ package org.opensaml.xml.signature.impl;
 
 import org.opensaml.xml.AbstractXMLObjectBuilder;
 import org.opensaml.xml.signature.Exponent;
+import org.opensaml.xml.signature.SignatureConstants;
 import org.opensaml.xml.signature.XMLSignatureBuilder;
-import org.opensaml.xml.util.XMLConstants;
 
 /**
  * Builder of {@link org.opensaml.xml.signature.Exponent}
@@ -29,7 +29,7 @@ public class ExponentBuilder extends AbstractXMLObjectBuilder<Exponent> implemen
 
     /**
      * Constructor
-     *
+     * 
      */
     public ExponentBuilder() {
     }
@@ -41,7 +41,8 @@ public class ExponentBuilder extends AbstractXMLObjectBuilder<Exponent> implemen
 
     /** {@inheritDoc} */
     public Exponent buildObject() {
-        return buildObject(XMLConstants.XMLSIG_NS, Exponent.DEFAULT_ELEMENT_LOCAL_NAME, XMLConstants.XMLSIG_PREFIX);
+        return buildObject(SignatureConstants.XMLSIG_NS, Exponent.DEFAULT_ELEMENT_LOCAL_NAME,
+                SignatureConstants.XMLSIG_PREFIX);
     }
 
 }

@@ -24,7 +24,6 @@ import javax.xml.namespace.QName;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.encryption.AgreementMethod;
 import org.opensaml.xml.encryption.EncryptedKey;
-import org.opensaml.xml.util.XMLConstants;
 import org.opensaml.xml.validation.ValidatingXMLObject;
 
 /** XMLObject representing XML Digital Signature, version 20020212, KeyInfoType complex type. */
@@ -34,7 +33,8 @@ public interface KeyInfoType extends ValidatingXMLObject {
     public static final String TYPE_LOCAL_NAME = "KeyInfoType";
 
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = new QName(XMLConstants.XMLSIG_NS, TYPE_LOCAL_NAME, XMLConstants.XMLSIG_PREFIX);
+    public static final QName TYPE_NAME = new QName(SignatureConstants.XMLSIG_NS, TYPE_LOCAL_NAME,
+            SignatureConstants.XMLSIG_PREFIX);
 
     /** Id attribute name. */
     public static final String ID_ATTRIB_NAME = "Id";

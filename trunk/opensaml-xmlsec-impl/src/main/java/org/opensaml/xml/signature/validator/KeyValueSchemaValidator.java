@@ -23,7 +23,7 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.signature.KeyValue;
-import org.opensaml.xml.util.XMLConstants;
+import org.opensaml.xml.signature.SignatureConstants;
 import org.opensaml.xml.validation.ValidationException;
 import org.opensaml.xml.validation.Validator;
 
@@ -68,7 +68,7 @@ public class KeyValueSchemaValidator implements Validator<KeyValue> {
             return;
         }
         QName childName = unknownChild.getElementQName();
-        if (XMLConstants.XMLSIG_NS.equals(childName.getNamespaceURI())) {
+        if (SignatureConstants.XMLSIG_NS.equals(childName.getNamespaceURI())) {
             throw new ValidationException("KeyValue contains an illegal child extension element: " + childName);
         }
     }

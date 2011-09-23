@@ -19,7 +19,7 @@ package org.opensaml.xml;
 
 import org.opensaml.util.ObjectSupport;
 import org.opensaml.util.StringSupport;
-import org.opensaml.xml.util.XMLConstants;
+import org.opensaml.util.xml.XmlConstants;
 
 /** Data structure for representing XML namespace attributes. */
 public class Namespace {
@@ -165,7 +165,7 @@ public class Namespace {
     protected void constructStringRepresentation() {
         StringBuffer stringRep = new StringBuffer();
 
-        stringRep.append(XMLConstants.XMLNS_PREFIX);
+        stringRep.append(XmlConstants.XMLNS_PREFIX);
 
         if (namespacePrefix != null) {
             stringRep.append(":");

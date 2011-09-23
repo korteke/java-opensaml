@@ -19,14 +19,15 @@ package org.opensaml.xml.encryption.validator;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.util.xml.XmlConstants;
 import org.opensaml.xml.XMLObject;
+import org.opensaml.xml.encryption.EncryptionConstants;
 import org.opensaml.xml.encryption.EncryptionProperty;
-import org.opensaml.xml.util.XMLConstants;
 import org.opensaml.xml.validation.ValidationException;
 import org.opensaml.xml.validation.Validator;
 
 /**
- * Checks {@link org.opensaml.xml.encryption.EncryptionProperty} for Schema compliance. 
+ * Checks {@link org.opensaml.xml.encryption.EncryptionProperty} for Schema compliance.
  */
 public class EncryptionPropertySchemaValidator implements Validator<EncryptionProperty> {
 
@@ -41,14 +42,14 @@ public class EncryptionPropertySchemaValidator implements Validator<EncryptionPr
      * Validate the unknown children.
      * 
      * @param xmlObject the object to validate
-     * @throws ValidationException  thrown if the object is invalid
+     * @throws ValidationException thrown if the object is invalid
      */
     protected void validateUnknownChildren(EncryptionProperty xmlObject) throws ValidationException {
         if (xmlObject.getUnknownXMLObjects().isEmpty()) {
             throw new ValidationException("No children were present in the EncryptionProperty object");
         }
     }
-    
+
     /**
      * Validate that all children are from another namespace.
      * 
@@ -59,15 +60,16 @@ public class EncryptionPropertySchemaValidator implements Validator<EncryptionPr
         // Validate that any children are from another namespace.
         for (XMLObject child : xmlObject.getUnknownXMLObjects()) {
             QName childName = child.getElementQName();
-            if (XMLConstants.XMLENC_NS.equals(childName.getNamespaceURI())) {
-                throw new ValidationException("EncryptionProperty contains an illegal child extension element: " + childName);
+            if (EncryptionConstants.XMLENC_NS.equals(childName.getNamespaceURI())) {
+                throw new ValidationException("EncryptionProperty contains an illegal child extension element: "
+                        + childName);
             }
         }
     }
-    
+
     /**
-     * Validate that any wildcard attributes are from the 
-     * XML namespace <code>http://www.w3.org/XML/1998/namespace</code>.
+     * Validate that any wildcard attributes are from the XML namespace
+     * <code>http://www.w3.org/XML/1998/namespace</code>.
      * 
      * @param xmlObject the object to validate
      * @throws ValidationException thrown if the object is invalid
@@ -75,8 +77,9 @@ public class EncryptionPropertySchemaValidator implements Validator<EncryptionPr
     protected void validateAttributeNamespaces(EncryptionProperty xmlObject) throws ValidationException {
         // Validate that any extension attribute are from the XML namespace
         for (QName attribName : xmlObject.getUnknownAttributes().keySet()) {
-            if (! XMLConstants.XML_NS.equals(attribName.getNamespaceURI())) {
-                throw new ValidationException("EncryptionProperty contains an illegal extension attribute: " + attribName);
+            if (!XmlConstants.XML_NS.equals(attribName.getNamespaceURI())) {
+                throw new ValidationException("EncryptionProperty contains an illegal extension attribute: "
+                        + attribName);
             }
         }
     }

@@ -17,46 +17,46 @@
 
 package org.opensaml.xml.signature;
 
-
 import javax.xml.namespace.QName;
 
 import org.opensaml.xml.ElementExtensibleXMLObject;
-import org.opensaml.xml.util.XMLConstants;
 import org.opensaml.xml.validation.ValidatingXMLObject;
 
 /**
  * XMLObject representing XML Digital Signature, version 20020212, DigestMethod element.
  */
 public interface DigestMethod extends ValidatingXMLObject, ElementExtensibleXMLObject {
-    
+
     /** Element local name. */
     public static final String DEFAULT_ELEMENT_LOCAL_NAME = "DigestMethod";
-    
+
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(XMLConstants.XMLSIG_NS, DEFAULT_ELEMENT_LOCAL_NAME, XMLConstants.XMLSIG_PREFIX);
-    
+    public static final QName DEFAULT_ELEMENT_NAME = new QName(SignatureConstants.XMLSIG_NS,
+            DEFAULT_ELEMENT_LOCAL_NAME, SignatureConstants.XMLSIG_PREFIX);
+
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "DigestMethodType"; 
-        
+    public static final String TYPE_LOCAL_NAME = "DigestMethodType";
+
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = new QName(XMLConstants.XMLSIG_NS, TYPE_LOCAL_NAME, XMLConstants.XMLSIG_PREFIX);
-    
+    public static final QName TYPE_NAME = new QName(SignatureConstants.XMLSIG_NS, TYPE_LOCAL_NAME,
+            SignatureConstants.XMLSIG_PREFIX);
+
     /** Algorithm attribute name. */
     public static final String ALGORITHM_ATTRIB_NAME = "Algorithm";
-    
+
     /**
      * Get the Algorithm URI attribute value.
-     *  
+     * 
      * @return the Algorithm URI attribute value
      */
     public String getAlgorithm();
-    
+
     /**
      * 
      * Set the Algorithm URI attribute value.
-     *  
+     * 
      * @param newAlgorithm the new Algorithm URI attribute value
      */
     public void setAlgorithm(String newAlgorithm);
-    
+
 }

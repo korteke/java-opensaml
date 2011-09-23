@@ -19,8 +19,8 @@ package org.opensaml.xml.encryption.impl;
 
 import org.opensaml.xml.AbstractXMLObjectBuilder;
 import org.opensaml.xml.encryption.CipherReference;
+import org.opensaml.xml.encryption.EncryptionConstants;
 import org.opensaml.xml.encryption.XMLEncryptionBuilder;
-import org.opensaml.xml.util.XMLConstants;
 
 /**
  * Builder of {@link org.opensaml.xml.encryption.CipherReference}.
@@ -39,8 +39,7 @@ public class CipherReferenceBuilder extends AbstractXMLObjectBuilder<CipherRefer
 
     /** {@inheritDoc} */
     public CipherReference buildObject() {
-        return buildObject(XMLConstants.XMLENC_NS, CipherReference.DEFAULT_ELEMENT_LOCAL_NAME,
-                XMLConstants.XMLENC_PREFIX);
+        return buildObject(EncryptionConstants.XMLENC_NS, CipherReference.DEFAULT_ELEMENT_LOCAL_NAME,
+                EncryptionConstants.XMLENC_PREFIX);
     }
-
 }

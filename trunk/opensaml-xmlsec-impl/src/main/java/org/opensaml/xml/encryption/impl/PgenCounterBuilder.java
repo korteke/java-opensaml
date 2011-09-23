@@ -18,18 +18,19 @@
 package org.opensaml.xml.encryption.impl;
 
 import org.opensaml.xml.AbstractXMLObjectBuilder;
+import org.opensaml.xml.encryption.EncryptionConstants;
 import org.opensaml.xml.encryption.PgenCounter;
 import org.opensaml.xml.encryption.XMLEncryptionBuilder;
-import org.opensaml.xml.util.XMLConstants;
 
 /**
  * Builder of {@link org.opensaml.xml.encryption.PgenCounter}
  */
-public class PgenCounterBuilder extends AbstractXMLObjectBuilder<PgenCounter> implements XMLEncryptionBuilder<PgenCounter> {
+public class PgenCounterBuilder extends AbstractXMLObjectBuilder<PgenCounter> implements
+        XMLEncryptionBuilder<PgenCounter> {
 
     /**
      * Constructor
-     *
+     * 
      */
     public PgenCounterBuilder() {
     }
@@ -41,7 +42,8 @@ public class PgenCounterBuilder extends AbstractXMLObjectBuilder<PgenCounter> im
 
     /** {@inheritDoc} */
     public PgenCounter buildObject() {
-        return buildObject(XMLConstants.XMLENC_NS, PgenCounter.DEFAULT_ELEMENT_LOCAL_NAME, XMLConstants.XMLENC_PREFIX);
+        return buildObject(EncryptionConstants.XMLENC_NS, PgenCounter.DEFAULT_ELEMENT_LOCAL_NAME,
+                EncryptionConstants.XMLENC_PREFIX);
     }
 
 }

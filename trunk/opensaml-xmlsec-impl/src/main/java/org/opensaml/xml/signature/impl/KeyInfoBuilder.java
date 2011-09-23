@@ -19,8 +19,8 @@ package org.opensaml.xml.signature.impl;
 
 import org.opensaml.xml.AbstractXMLObjectBuilder;
 import org.opensaml.xml.signature.KeyInfo;
+import org.opensaml.xml.signature.SignatureConstants;
 import org.opensaml.xml.signature.XMLSignatureBuilder;
-import org.opensaml.xml.util.XMLConstants;
 
 /**
  * Builder of {@link org.opensaml.xml.signature.KeyInfo}
@@ -29,7 +29,7 @@ public class KeyInfoBuilder extends AbstractXMLObjectBuilder<KeyInfo> implements
 
     /**
      * Constructor
-     *
+     * 
      */
     public KeyInfoBuilder() {
     }
@@ -41,7 +41,8 @@ public class KeyInfoBuilder extends AbstractXMLObjectBuilder<KeyInfo> implements
 
     /** {@inheritDoc} */
     public KeyInfo buildObject() {
-        return buildObject(XMLConstants.XMLSIG_NS, KeyInfo.DEFAULT_ELEMENT_LOCAL_NAME, XMLConstants.XMLSIG_PREFIX);
+        return buildObject(SignatureConstants.XMLSIG_NS, KeyInfo.DEFAULT_ELEMENT_LOCAL_NAME,
+                SignatureConstants.XMLSIG_PREFIX);
     }
 
 }

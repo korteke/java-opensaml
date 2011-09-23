@@ -19,8 +19,8 @@ package org.opensaml.xml.signature.impl;
 
 import org.opensaml.xml.AbstractXMLObjectBuilder;
 import org.opensaml.xml.signature.PGPKeyID;
+import org.opensaml.xml.signature.SignatureConstants;
 import org.opensaml.xml.signature.XMLSignatureBuilder;
-import org.opensaml.xml.util.XMLConstants;
 
 /**
  * Builder of {@link org.opensaml.xml.signature.PGPKeyID}
@@ -29,7 +29,7 @@ public class PGPKeyIDBuilder extends AbstractXMLObjectBuilder<PGPKeyID> implemen
 
     /**
      * Constructor
-     *
+     * 
      */
     public PGPKeyIDBuilder() {
     }
@@ -41,7 +41,8 @@ public class PGPKeyIDBuilder extends AbstractXMLObjectBuilder<PGPKeyID> implemen
 
     /** {@inheritDoc} */
     public PGPKeyID buildObject() {
-        return buildObject(XMLConstants.XMLSIG_NS, PGPKeyID.DEFAULT_ELEMENT_LOCAL_NAME, XMLConstants.XMLSIG_PREFIX);
+        return buildObject(SignatureConstants.XMLSIG_NS, PGPKeyID.DEFAULT_ELEMENT_LOCAL_NAME,
+                SignatureConstants.XMLSIG_PREFIX);
     }
 
 }

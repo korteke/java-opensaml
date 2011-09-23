@@ -29,7 +29,7 @@ import org.opensaml.util.ObjectSupport;
 import org.opensaml.util.StringSupport;
 import org.opensaml.util.collections.LazyMap;
 import org.opensaml.util.collections.LazySet;
-import org.opensaml.xml.util.XMLConstants;
+import org.opensaml.util.xml.XmlConstants;
 
 /**
  * A class which is responsible for managing XML namespace-related data for an {@link XMLObject}.
@@ -46,11 +46,11 @@ public class NamespaceManager {
     
     /** The 'xml' namespace. */
     private static final Namespace XML_NAMESPACE = 
-        new Namespace(XMLConstants.XML_NS, XMLConstants.XML_PREFIX);
+        new Namespace(XmlConstants.XML_NS, XmlConstants.XML_PREFIX);
     
     /** The 'xsi' namespace. */
     private static final Namespace XSI_NAMESPACE = 
-        new Namespace(XMLConstants.XSI_NS, XMLConstants.XSI_PREFIX);
+        new Namespace(XmlConstants.XSI_NS, XmlConstants.XSI_PREFIX);
     
     /** The owning XMLObject. */
     private XMLObject owner;

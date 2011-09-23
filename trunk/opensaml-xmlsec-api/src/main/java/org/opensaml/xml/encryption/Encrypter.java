@@ -50,7 +50,6 @@ import org.opensaml.xml.signature.DigestMethod;
 import org.opensaml.xml.signature.KeyInfo;
 import org.opensaml.xml.signature.SignatureConstants;
 import org.opensaml.xml.signature.XMLSignatureBuilder;
-import org.opensaml.xml.util.XMLConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -66,8 +65,8 @@ import org.w3c.dom.Element;
  * </p>
  * 
  * <p>
- * The parameters for data encryption are specified with an instance of {@link EncryptionParameters}. The parameters
- * for key encryption are specified with one or more instances of {@link KeyEncryptionParameters}.
+ * The parameters for data encryption are specified with an instance of {@link EncryptionParameters}. The parameters for
+ * key encryption are specified with one or more instances of {@link KeyEncryptionParameters}.
  * </p>
  * 
  * <p>
@@ -153,8 +152,7 @@ public class Encrypter {
      * @return the resulting EncryptedData element
      * @throws EncryptionException exception thrown on encryption errors
      */
-    public EncryptedData encryptElement(XMLObject xmlObject, EncryptionParameters encParams) 
-            throws EncryptionException {
+    public EncryptedData encryptElement(XMLObject xmlObject, EncryptionParameters encParams) throws EncryptionException {
         List<KeyEncryptionParameters> emptyKEKParamsList = new ArrayList<KeyEncryptionParameters>();
         return encryptElement(xmlObject, encParams, emptyKEKParamsList, false);
     }
@@ -290,8 +288,8 @@ public class Encrypter {
 
         if (kekParams.getKeyInfoGenerator() != null) {
             KeyInfoGenerator generator = kekParams.getKeyInfoGenerator();
-            log.debug("Dynamically generating KeyInfo from Credential for EncryptedKey using generator: {}",
-                    generator.getClass().getName());
+            log.debug("Dynamically generating KeyInfo from Credential for EncryptedKey using generator: {}", generator
+                    .getClass().getName());
             try {
                 encryptedKey.setKeyInfo(generator.generate(kekParams.getEncryptionCredential()));
             } catch (SecurityException e) {
@@ -346,8 +344,8 @@ public class Encrypter {
         org.apache.xml.security.encryption.EncryptedKey apacheEncryptedKey;
         try {
             apacheEncryptedKey = xmlCipher.encryptKey(containingDocument, targetKey);
-            postProcessApacheEncryptedKey(apacheEncryptedKey, targetKey, encryptionKey,
-                    encryptionAlgorithmURI, containingDocument);
+            postProcessApacheEncryptedKey(apacheEncryptedKey, targetKey, encryptionKey, encryptionAlgorithmURI,
+                    containingDocument);
         } catch (XMLEncryptionException e) {
             log.error("Error encrypting element on key encryption", e);
             throw new EncryptionException("Error encrypting element on key encryption", e);
@@ -366,9 +364,9 @@ public class Encrypter {
     }
 
     /**
-     *  
+     * 
      * Post-process the Apache EncryptedKey, prior to marshalling to DOM and unmarshalling into an XMLObject.
-     *  
+     * 
      * @param apacheEncryptedKey the Apache EncryptedKeyObject to post-process
      * @param targetKey the key to encrypt
      * @param encryptionKey the key with which to encrypt the target key
@@ -380,8 +378,8 @@ public class Encrypter {
     protected void postProcessApacheEncryptedKey(org.apache.xml.security.encryption.EncryptedKey apacheEncryptedKey,
             Key targetKey, Key encryptionKey, String encryptionAlgorithmURI, Document containingDocument)
             throws EncryptionException {
-        
-        // Workaround for XML-Security library issue.  To maximize interop, explicitly express the library
+
+        // Workaround for XML-Security library issue. To maximize interop, explicitly express the library
         // default of SHA-1 digest method input parameter to RSA-OAEP key transport algorithm.
         // Check and only add if the library hasn't already done so, which it currently doesn't.
         if (EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP.equals(encryptionAlgorithmURI)) {
@@ -394,17 +392,17 @@ public class Encrypter {
                     break;
                 }
             }
-            if (! sawDigestMethod) {
-                Element digestMethodElem = ElementSupport.constructElement(containingDocument,
-                        DigestMethod.DEFAULT_ELEMENT_NAME);
-                NamespaceSupport.appendNamespaceDeclaration(digestMethodElem, 
-                        XMLConstants.XMLSIG_NS, XMLConstants.XMLSIG_PREFIX);
-                digestMethodElem.setAttributeNS(null, DigestMethod.ALGORITHM_ATTRIB_NAME, 
+            if (!sawDigestMethod) {
+                Element digestMethodElem =
+                        ElementSupport.constructElement(containingDocument, DigestMethod.DEFAULT_ELEMENT_NAME);
+                NamespaceSupport.appendNamespaceDeclaration(digestMethodElem, SignatureConstants.XMLSIG_NS,
+                        SignatureConstants.XMLSIG_PREFIX);
+                digestMethodElem.setAttributeNS(null, DigestMethod.ALGORITHM_ATTRIB_NAME,
                         SignatureConstants.ALGO_ID_DIGEST_SHA1);
                 apacheEncryptedKey.getEncryptionMethod().addEncryptionMethodInformation(digestMethodElem);
             }
         }
-        
+
     }
 
     /**
@@ -492,14 +490,14 @@ public class Encrypter {
             encryptionKey = generateEncryptionKey(encryptionAlgorithmURI);
         }
 
-        EncryptedData encryptedData = encryptElement(xmlObject, encryptionKey, encryptionAlgorithmURI,
-                encryptContentMode);
+        EncryptedData encryptedData =
+                encryptElement(xmlObject, encryptionKey, encryptionAlgorithmURI, encryptContentMode);
         Document ownerDocument = encryptedData.getDOM().getOwnerDocument();
 
         if (encParams.getKeyInfoGenerator() != null) {
             KeyInfoGenerator generator = encParams.getKeyInfoGenerator();
-            log.debug("Dynamically generating KeyInfo from Credential for EncryptedData using generator: {}",
-                    generator.getClass().getName());
+            log.debug("Dynamically generating KeyInfo from Credential for EncryptedData using generator: {}", generator
+                    .getClass().getName());
             try {
                 encryptedData.setKeyInfo(generator.generate(encParams.getEncryptionCredential()));
             } catch (SecurityException e) {
@@ -643,8 +641,7 @@ public class Encrypter {
      */
     protected SecretKey generateEncryptionKey(String encryptionAlgorithmURI) throws EncryptionException {
         try {
-            log.debug("Generating random symmetric data encryption key from algorithm URI: {}", 
-                    encryptionAlgorithmURI);
+            log.debug("Generating random symmetric data encryption key from algorithm URI: {}", encryptionAlgorithmURI);
             return XMLSecurityHelper.generateSymmetricKey(encryptionAlgorithmURI);
         } catch (NoSuchAlgorithmException e) {
             log.error("Could not generate encryption key, algorithm URI was invalid: " + encryptionAlgorithmURI);

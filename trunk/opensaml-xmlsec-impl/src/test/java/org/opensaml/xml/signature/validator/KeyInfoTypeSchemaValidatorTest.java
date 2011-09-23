@@ -22,7 +22,7 @@ import org.opensaml.xml.mock.SimpleXMLObject;
 import org.opensaml.xml.mock.SimpleXMLObjectBuilder;
 import org.opensaml.xml.signature.KeyInfo;
 import org.opensaml.xml.signature.KeyName;
-import org.opensaml.xml.util.XMLConstants;
+import org.opensaml.xml.signature.SignatureConstants;
 
 /**
  *
@@ -52,7 +52,7 @@ public class KeyInfoTypeSchemaValidatorTest extends BaseXMLObjectValidatorTestCa
         KeyInfo keyInfo = (KeyInfo) target;
         
         SimpleXMLObjectBuilder sxoBuilder = new SimpleXMLObjectBuilder();
-        SimpleXMLObject sxo = sxoBuilder.buildObject(XMLConstants.XMLSIG_NS, "Foo", XMLConstants.XMLSIG_PREFIX);
+        SimpleXMLObject sxo = sxoBuilder.buildObject(SignatureConstants.XMLSIG_NS, "Foo", SignatureConstants.XMLSIG_PREFIX);
         
         keyInfo.getXMLObjects().add(sxo);
         

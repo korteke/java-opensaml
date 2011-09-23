@@ -18,18 +18,19 @@
 package org.opensaml.xml.signature.impl;
 
 import org.opensaml.xml.AbstractXMLObjectBuilder;
+import org.opensaml.xml.signature.SignatureConstants;
 import org.opensaml.xml.signature.X509SubjectName;
 import org.opensaml.xml.signature.XMLSignatureBuilder;
-import org.opensaml.xml.util.XMLConstants;
 
 /**
  * Builder of {@link org.opensaml.xml.signature.X509SubjectName}
  */
-public class X509SubjectNameBuilder extends AbstractXMLObjectBuilder<X509SubjectName> implements XMLSignatureBuilder<X509SubjectName> {
+public class X509SubjectNameBuilder extends AbstractXMLObjectBuilder<X509SubjectName> implements
+        XMLSignatureBuilder<X509SubjectName> {
 
     /**
      * Constructor
-     *
+     * 
      */
     public X509SubjectNameBuilder() {
     }
@@ -41,7 +42,8 @@ public class X509SubjectNameBuilder extends AbstractXMLObjectBuilder<X509Subject
 
     /** {@inheritDoc} */
     public X509SubjectName buildObject() {
-        return buildObject(XMLConstants.XMLSIG_NS, X509SubjectName.DEFAULT_ELEMENT_LOCAL_NAME, XMLConstants.XMLSIG_PREFIX);
+        return buildObject(SignatureConstants.XMLSIG_NS, X509SubjectName.DEFAULT_ELEMENT_LOCAL_NAME,
+                SignatureConstants.XMLSIG_PREFIX);
     }
 
 }

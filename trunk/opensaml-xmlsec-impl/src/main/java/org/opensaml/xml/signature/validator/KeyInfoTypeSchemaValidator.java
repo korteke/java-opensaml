@@ -30,8 +30,8 @@ import org.opensaml.xml.signature.MgmtData;
 import org.opensaml.xml.signature.PGPData;
 import org.opensaml.xml.signature.RetrievalMethod;
 import org.opensaml.xml.signature.SPKIData;
+import org.opensaml.xml.signature.SignatureConstants;
 import org.opensaml.xml.signature.X509Data;
-import org.opensaml.xml.util.XMLConstants;
 import org.opensaml.xml.validation.ValidationException;
 import org.opensaml.xml.validation.Validator;
 
@@ -84,7 +84,7 @@ public class KeyInfoTypeSchemaValidator implements Validator<KeyInfoType> {
         for (XMLObject child : xmlObject.getXMLObjects()) {
             QName childName = child.getElementQName();
             if (! getValidDSChildNames().contains(childName) 
-                    && XMLConstants.XMLSIG_NS.equals(childName.getNamespaceURI())) {
+                    && SignatureConstants.XMLSIG_NS.equals(childName.getNamespaceURI())) {
                 throw new ValidationException("KeyInfoType contains an illegal child extension element: " + childName);
             }
         }

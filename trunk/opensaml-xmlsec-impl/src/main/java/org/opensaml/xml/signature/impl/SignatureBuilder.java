@@ -18,7 +18,7 @@
 package org.opensaml.xml.signature.impl;
 
 import org.opensaml.xml.AbstractXMLObjectBuilder;
-import org.opensaml.xml.util.XMLConstants;
+import org.opensaml.xml.signature.SignatureConstants;
 
 /**
  * Builder of {@link org.opensaml.xml.signature.Signature}s.
@@ -31,14 +31,15 @@ public class SignatureBuilder extends AbstractXMLObjectBuilder<SignatureImpl> {
     public SignatureBuilder() {
 
     }
-    
+
     /**
      * Creates the XMLObject with the default prefix and local name.
      * 
      * @return the Signature object
      */
     public SignatureImpl buildObject() {
-        return buildObject(XMLConstants.XMLSIG_NS, SignatureImpl.DEFAULT_ELEMENT_LOCAL_NAME, XMLConstants.XMLSIG_PREFIX);
+        return buildObject(SignatureConstants.XMLSIG_NS, SignatureImpl.DEFAULT_ELEMENT_LOCAL_NAME,
+                SignatureConstants.XMLSIG_PREFIX);
     }
 
     /** {@inheritDoc} */

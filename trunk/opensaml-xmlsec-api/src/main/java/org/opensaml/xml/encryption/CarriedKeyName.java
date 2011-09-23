@@ -20,7 +20,6 @@ package org.opensaml.xml.encryption;
 import javax.xml.namespace.QName;
 
 import org.opensaml.xml.schema.XSString;
-import org.opensaml.xml.util.XMLConstants;
 
 /**
  * XMLObject representing XML Encryption, version 20021210, CarriedKeyName element.
@@ -31,7 +30,7 @@ public interface CarriedKeyName extends XSString {
     public static final String DEFAULT_ELEMENT_LOCAL_NAME = "CarriedKeyName";
 
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(XMLConstants.XMLENC_NS, DEFAULT_ELEMENT_LOCAL_NAME,
-            XMLConstants.XMLENC_PREFIX);
+    public static final QName DEFAULT_ELEMENT_NAME = new QName(EncryptionConstants.XMLENC_NS,
+            DEFAULT_ELEMENT_LOCAL_NAME, EncryptionConstants.XMLENC_PREFIX);
 
 }

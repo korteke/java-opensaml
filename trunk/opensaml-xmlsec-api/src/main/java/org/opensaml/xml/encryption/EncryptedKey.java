@@ -19,8 +19,6 @@ package org.opensaml.xml.encryption;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.xml.util.XMLConstants;
-
 /**
  * XMLObject representing XML Encryption, version 20021210, EncryptedKey element.
  */
@@ -28,63 +26,61 @@ public interface EncryptedKey extends EncryptedType {
 
     /** Element local name. */
     public static final String DEFAULT_ELEMENT_LOCAL_NAME = "EncryptedKey";
-    
+
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(XMLConstants.XMLENC_NS, DEFAULT_ELEMENT_LOCAL_NAME, 
-            XMLConstants.XMLENC_PREFIX);
-    
+    public static final QName DEFAULT_ELEMENT_NAME = new QName(EncryptionConstants.XMLENC_NS,
+            DEFAULT_ELEMENT_LOCAL_NAME, EncryptionConstants.XMLENC_PREFIX);
+
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "EncryptedKeyType"; 
-        
+    public static final String TYPE_LOCAL_NAME = "EncryptedKeyType";
+
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = new QName(XMLConstants.XMLENC_NS, TYPE_LOCAL_NAME, 
-            XMLConstants.XMLENC_PREFIX);
-    
+    public static final QName TYPE_NAME = new QName(EncryptionConstants.XMLENC_NS, TYPE_LOCAL_NAME,
+            EncryptionConstants.XMLENC_PREFIX);
+
     /** Recipient attribute name. */
     public static final String RECIPIENT_ATTRIB_NAME = "Recipient";
-    
+
     /**
      * Gets the hint about for whom this encrypted key is intended.
      * 
      * @return the hint about who this encrypted key is intended for
      */
     public String getRecipient();
-    
+
     /**
      * Sets the hint about for whom this encrypted key is intended.
      * 
      * @param newRecipient the hint about who this encrypted key is intended for
      */
     public void setRecipient(String newRecipient);
-    
+
     /**
-     * Gets the child element containing pointers to EncryptedData and EncryptedKey elements
-     * encrypted using this key.
+     * Gets the child element containing pointers to EncryptedData and EncryptedKey elements encrypted using this key.
      * 
      * @return the element containing a list of pointers to encrypted elements
      */
     public ReferenceList getReferenceList();
-    
+
     /**
-     * Sets the child element containing pointers to EncryptedData and EncryptedKey elements
-     * encrypted using this key.
+     * Sets the child element containing pointers to EncryptedData and EncryptedKey elements encrypted using this key.
      * 
      * @param newReferenceList the new reference list for this encrypted key
      */
     public void setReferenceList(ReferenceList newReferenceList);
-    
+
     /**
      * Gets the child element carrying the human readable name for this key.
      * 
      * @return the human readable name for this key
      */
     public CarriedKeyName getCarriedKeyName();
-    
+
     /**
      * Sets the child element carrying the human readable name for this key.
      * 
      * @param newCarriedKeyName the human readable name for this key
      */
     public void setCarriedKeyName(CarriedKeyName newCarriedKeyName);
-    
+
 }

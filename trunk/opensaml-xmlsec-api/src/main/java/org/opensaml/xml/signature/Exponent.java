@@ -19,17 +19,16 @@ package org.opensaml.xml.signature;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.xml.util.XMLConstants;
-
 /**
  * XMLObject representing XML Digital Signature, version 20020212, Exponent element.
  */
 public interface Exponent extends CryptoBinary {
-    
-    /** Element local name */
-    public final static String DEFAULT_ELEMENT_LOCAL_NAME = "Exponent";
-    
-    /** Default element name */
-    public final static QName DEFAULT_ELEMENT_NAME = new QName(XMLConstants.XMLSIG_NS, DEFAULT_ELEMENT_LOCAL_NAME, XMLConstants.XMLSIG_PREFIX);
+
+    /** Element local name. */
+    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Exponent";
+
+    /** Default element name. */
+    public static final QName DEFAULT_ELEMENT_NAME = new QName(SignatureConstants.XMLSIG_NS,
+            DEFAULT_ELEMENT_LOCAL_NAME, SignatureConstants.XMLSIG_PREFIX);
 
 }

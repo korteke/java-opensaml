@@ -19,8 +19,8 @@ package org.opensaml.ws.wssecurity;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.util.xml.XmlConstants;
 import org.opensaml.xml.schema.XSInteger;
-import org.opensaml.xml.util.XMLConstants;
 
 /**
  * The &lt;wsse11:Iteration&gt; element within a &lt;wsse:UsernameToken&gt;
@@ -42,6 +42,6 @@ public interface Iteration extends XSInteger, WSSecurityObject {
     public static final String TYPE_LOCAL_NAME = "unsignedInt"; 
         
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = new QName(XMLConstants.XSD_NS, TYPE_LOCAL_NAME, XMLConstants.XSD_PREFIX);
+    public static final QName TYPE_NAME = new QName(XmlConstants.XSD_NS, TYPE_LOCAL_NAME, XmlConstants.XSD_PREFIX);
 
 }

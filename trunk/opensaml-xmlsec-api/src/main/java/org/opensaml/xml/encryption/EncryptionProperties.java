@@ -21,50 +21,49 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.xml.util.XMLConstants;
 import org.opensaml.xml.validation.ValidatingXMLObject;
 
 /**
  * XMLObject representing XML Encryption, version 20021210, EncryptionProperties element.
  */
 public interface EncryptionProperties extends ValidatingXMLObject {
-    
+
     /** Element local name. */
     public static final String DEFAULT_ELEMENT_LOCAL_NAME = "EncryptionProperties";
-    
+
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(XMLConstants.XMLENC_NS, DEFAULT_ELEMENT_LOCAL_NAME, 
-            XMLConstants.XMLENC_PREFIX);
-    
+    public static final QName DEFAULT_ELEMENT_NAME = new QName(EncryptionConstants.XMLENC_NS,
+            DEFAULT_ELEMENT_LOCAL_NAME, EncryptionConstants.XMLENC_PREFIX);
+
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "EncryptionPropertiesType"; 
-        
+    public static final String TYPE_LOCAL_NAME = "EncryptionPropertiesType";
+
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = new QName(XMLConstants.XMLENC_NS, TYPE_LOCAL_NAME, 
-            XMLConstants.XMLENC_PREFIX);
-    
+    public static final QName TYPE_NAME = new QName(EncryptionConstants.XMLENC_NS, TYPE_LOCAL_NAME,
+            EncryptionConstants.XMLENC_PREFIX);
+
     /** ID attribute name. */
     public static final String ID_ATTRIB_NAME = "Id";
-    
+
     /**
      * Get the ID attribute that uniquely identifies this element.
      * 
      * @return ID attribute
      */
     public String getID();
-    
+
     /**
      * Set the ID attribute that uniquely identifies this element.
      * 
      * @param newID the new ID attribute value
      */
     public void setID(String newID);
-    
+
     /**
      * Get the list of EncryptionProperty child elements.
      * 
      * @return the List of EncryptionProperty child elements
      */
     public List<EncryptionProperty> getEncryptionProperties();
-    
+
 }

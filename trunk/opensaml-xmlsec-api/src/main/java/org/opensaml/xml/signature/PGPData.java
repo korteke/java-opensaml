@@ -20,52 +20,53 @@ package org.opensaml.xml.signature;
 import javax.xml.namespace.QName;
 
 import org.opensaml.xml.ElementExtensibleXMLObject;
-import org.opensaml.xml.util.XMLConstants;
 import org.opensaml.xml.validation.ValidatingXMLObject;
 
 /**
  * XMLObject representing XML Digital Signature, version 20020212, PGPData element.
  */
 public interface PGPData extends ValidatingXMLObject, ElementExtensibleXMLObject {
-    
+
     /** Element local name */
     public final static String DEFAULT_ELEMENT_LOCAL_NAME = "PGPData";
-    
+
     /** Default element name */
-    public final static QName DEFAULT_ELEMENT_NAME = new QName(XMLConstants.XMLSIG_NS, DEFAULT_ELEMENT_LOCAL_NAME, XMLConstants.XMLSIG_PREFIX);
-    
+    public final static QName DEFAULT_ELEMENT_NAME = new QName(SignatureConstants.XMLSIG_NS,
+            DEFAULT_ELEMENT_LOCAL_NAME, SignatureConstants.XMLSIG_PREFIX);
+
     /** Local name of the XSI type */
-    public final static String TYPE_LOCAL_NAME = "PGPDataType"; 
-        
+    public final static String TYPE_LOCAL_NAME = "PGPDataType";
+
     /** QName of the XSI type */
-    public final static QName TYPE_NAME = new QName(XMLConstants.XMLSIG_NS, TYPE_LOCAL_NAME, XMLConstants.XMLSIG_PREFIX);
-    
+    public final static QName TYPE_NAME = new QName(SignatureConstants.XMLSIG_NS, TYPE_LOCAL_NAME,
+            SignatureConstants.XMLSIG_PREFIX);
+
     /**
      * Get PGPKeyID child element
      * 
      * @return the PGPKeyID child element
      */
     public PGPKeyID getPGPKeyID();
-    
+
     /**
      * Set PGPKeyID child element
      * 
      * @param newPGPKeyID the new PGPKeyID
      */
     public void setPGPKeyID(PGPKeyID newPGPKeyID);
-    
+
     /**
      * Get PGPKeyPacket child element
      * 
      * @return the PGPKeyPacket child element
      */
     public PGPKeyPacket getPGPKeyPacket();
-    
+
     /**
      * Set PGPKeyPacket child element
      * 
      * @param newPGPKeyPacket the new PGPKeyPacket
      */
     public void setPGPKeyPacket(PGPKeyPacket newPGPKeyPacket);
-    
+
 }

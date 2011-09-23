@@ -20,7 +20,6 @@ package org.opensaml.xml.encryption;
 import javax.xml.namespace.QName;
 
 import org.opensaml.xml.signature.KeyInfo;
-import org.opensaml.xml.util.XMLConstants;
 import org.opensaml.xml.validation.ValidatingXMLObject;
 
 /**
@@ -33,8 +32,8 @@ public interface EncryptedType extends ValidatingXMLObject {
     public static final String TYPE_LOCAL_NAME = "EncryptedType";
 
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = new QName(XMLConstants.XMLENC_NS, TYPE_LOCAL_NAME, 
-            XMLConstants.XMLENC_PREFIX);
+    public static final QName TYPE_NAME = new QName(EncryptionConstants.XMLENC_NS, TYPE_LOCAL_NAME,
+            EncryptionConstants.XMLENC_PREFIX);
 
     /** Id attribute name. */
     public static final String ID_ATTRIB_NAME = "Id";
