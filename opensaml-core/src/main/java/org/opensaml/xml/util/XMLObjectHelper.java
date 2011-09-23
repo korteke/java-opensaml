@@ -20,7 +20,6 @@ package org.opensaml.xml.util;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Reader;
-import java.io.Writer;
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -192,7 +191,7 @@ public final class XMLObjectHelper {
 
         if (log.isTraceEnabled()) {
             log.trace("Resultant DOM message was:");
-            log.trace(XMLHelper.nodeToString(messageElem));
+            log.trace(SerializeSupport.nodeToString(messageElem));
         }
 
         log.debug("Unmarshalling DOM parsed from Reader");
@@ -255,18 +254,6 @@ public final class XMLObjectHelper {
             throws MarshallingException {
         Element element = marshall(xmlObject);
         SerializeSupport.writeNode(element, outputStream);
-    }
-    
-    /**
-     * Marshall an XMLObject to a Writer.
-     * 
-     * @param xmlObject the XMLObject to marshall
-     * @param writer the Writer to which to marshall
-     * @throws MarshallingException if there is a problem marshalling the object
-     */
-    public static void marshallToWriter(XMLObject xmlObject, Writer writer) throws MarshallingException {
-        Element element = marshall(xmlObject);
-        XMLHelper.writeNode(element, writer);
     }
     
     /**

@@ -52,10 +52,8 @@ import org.opensaml.util.resource.ResourceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-//TODO add fewer-arg convenience constructor(s)
 //TODO authentication
 //TODO deal with case where cache file(s) are removed unexpectedly
-//TODO consider if we want to allow a mode of operation that doesn't cache files 
 
 /**
  * A resource that fetches data from a remote source via HTTP. A backup/cache of the data is maintained in a local file.
@@ -101,6 +99,17 @@ public class HttpResource implements CachingResource, FilebackedRemoteResource {
 
     /** Last modified time associated with cached metadata. */
     private String cachedResourceLastModified;
+
+    /**
+     * Constructor.  Initializes {@link #saveConditionalGetData} to true.
+     * 
+     * @param url URL of the remote resource data
+     * @param client client used to fetch the remote resource data
+     * @param backup file to which remote resource data is written as a backup/cache
+     */
+    public HttpResource(final String url, final HttpClient client, final String backup) {
+        this(url, client, backup, true);
+    }
     
     /**
      * Constructor.
@@ -126,17 +135,6 @@ public class HttpResource implements CachingResource, FilebackedRemoteResource {
         if (saveConditionalGetData) {
             readInSavedConditionalGetData();
         }
-    }
-
-    /**
-     * Constructor.  Initializes {@link #saveConditionalGetData} to true.
-     * 
-     * @param url URL of the remote resource data
-     * @param client client used to fetch the remote resource data
-     * @param backup file to which remote resource data is written as a backup/cache
-     */
-    public HttpResource(final String url, final HttpClient client, final String backup) {
-        this(url, client, backup, true);
     }
     
     /** {@inheritDoc} */
@@ -233,6 +231,17 @@ public class HttpResource implements CachingResource, FilebackedRemoteResource {
             httpRequest.abort();
         }
     }
+    
+    /** {@inheritDoc} */
+    public InputStream getInputStream(boolean returnCache) throws ResourceException {
+        InputStream ins = getInputStream();
+
+        if (ins == null && returnCache) {
+            ins = getInputStreamFromBackupFile();
+        }
+
+        return ins;
+    }
 
     /** {@inheritDoc} */
     public long getCacheInstant() {
@@ -283,17 +292,6 @@ public class HttpResource implements CachingResource, FilebackedRemoteResource {
         } catch (IOException e) {
             throw new ResourceException("Unable to read backup file " + getBackupFilePath(), e);
         }
-    }
-
-    /** {@inheritDoc} */
-    public InputStream getInputStream(boolean returnCache) throws ResourceException {
-        InputStream ins = getInputStream();
-
-        if (ins == null && returnCache) {
-            ins = getInputStreamFromBackupFile();
-        }
-
-        return ins;
     }
 
     /**

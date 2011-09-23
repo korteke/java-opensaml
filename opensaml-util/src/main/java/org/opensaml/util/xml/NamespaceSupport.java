@@ -20,9 +20,11 @@ package org.opensaml.util.xml;
 import org.opensaml.util.Assert;
 import org.opensaml.util.ObjectSupport;
 import org.opensaml.util.StringSupport;
+import org.w3c.dom.DOMException;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 /** Set of helper methods for working with DOM namespaces. */
 public final class NamespaceSupport {
@@ -38,7 +40,8 @@ public final class NamespaceSupport {
      * @param namespaceURI the URI of the namespace
      * @param prefix the prefix for the namespace
      */
-    public static void appendNamespaceDeclaration(final Element element, final String namespaceURI, final String prefix) {
+    public static void
+            appendNamespaceDeclaration(final Element element, final String namespaceURI, final String prefix) {
         Assert.isNotNull(element, "Element may not be null");
 
         final String nsURI = StringSupport.trimOrNull(namespaceURI);
@@ -201,5 +204,110 @@ public final class NamespaceSupport {
      */
     public static String lookupPrefix(final Element startingElement, final String namespaceURI) {
         return lookupPrefix(startingElement, null, namespaceURI);
+    }
+
+    /**
+     * Ensures that all the visibly used namespaces referenced by the given Element or its descendants are declared by
+     * the given Element or one of its descendants.
+     * 
+     * <strong>NOTE:</strong> This is a very costly operation.
+     * 
+     * @param domElement the element to act as the root of the namespace declarations
+     */
+    public static void rootNamespaces(Element domElement) {
+        rootNamespaces(domElement, domElement);
+    }
+
+    /**
+     * Recursively called function that ensures all the visibly used namespaces referenced by the given Element or its
+     * descendants are declared if they don't appear in the list of already resolved namespaces.
+     * 
+     * @param domElement the Element
+     * @param upperNamespaceSearchBound the "root" element of the fragment where namespaces may be rooted
+     */
+    private static void rootNamespaces(Element domElement, Element upperNamespaceSearchBound) {
+        String namespaceURI = null;
+        String namespacePrefix = domElement.getPrefix();
+
+        // Check if the namespace for this element is already declared on this element
+        boolean nsDeclaredOnElement = false;
+        if (namespacePrefix == null) {
+            nsDeclaredOnElement = domElement.hasAttributeNS(null, XmlConstants.XMLNS_PREFIX);
+        } else {
+            nsDeclaredOnElement = domElement.hasAttributeNS(XmlConstants.XMLNS_NS, namespacePrefix);
+        }
+
+        if (!nsDeclaredOnElement) {
+            // Namspace for element was not declared on the element itself, see if the namespace is declared on
+            // an ancestral element within the subtree where namespaces much be rooted
+            namespaceURI = lookupNamespaceURI(domElement, upperNamespaceSearchBound, namespacePrefix);
+
+            if (namespaceURI == null) {
+                // Namespace for the element is not declared on any ancestral nodes within the subtree where namespaces
+                // must be rooted. Resolve the namespace from ancestors outside that subtree.
+                namespaceURI = lookupNamespaceURI(upperNamespaceSearchBound, null, namespacePrefix);
+                if (namespaceURI != null) {
+                    // Namespace resolved outside the subtree where namespaces must be declared so declare the namespace
+                    // on this element (within the subtree).
+                    appendNamespaceDeclaration(domElement, namespaceURI, namespacePrefix);
+                } else {
+                    // Namespace couldn't be resolved from any ancestor. If the namespace prefix is null then the
+                    // element is simply in the undeclared default document namespace, which is fine. If it isn't null
+                    // then a namespace prefix, that hasn't properly been declared, is being used.
+                    if (namespacePrefix != null) {
+                        throw new DOMException(DOMException.NAMESPACE_ERR, "Unable to resolve namespace prefix "
+                                + namespacePrefix + " found on element " + QNameSupport.getNodeQName(domElement));
+                    }
+                }
+            }
+        }
+
+        // Make sure all the attribute URIs are rooted here or have been rooted in an ancestor
+        NamedNodeMap attributes = domElement.getAttributes();
+        Node attributeNode;
+        for (int i = 0; i < attributes.getLength(); i++) {
+            namespacePrefix = null;
+            namespaceURI = null;
+            attributeNode = attributes.item(i);
+
+            // Shouldn't need this check, but just to be safe, we have it
+            if (attributeNode.getNodeType() != Node.ATTRIBUTE_NODE) {
+                continue;
+            }
+
+            namespacePrefix = attributeNode.getPrefix();
+            if (!StringSupport.isNullOrEmpty(namespacePrefix)) {
+                // If it's the "xmlns" prefix then it is the namespace declaration,
+                // don't try to look it up and redeclare it
+                if (namespacePrefix.equals(XmlConstants.XMLNS_PREFIX)
+                        || namespacePrefix.equals(XmlConstants.XML_PREFIX)) {
+                    continue;
+                }
+
+                // check to see if the namespace for the prefix has already been defined within the XML fragment
+                namespaceURI = lookupNamespaceURI(domElement, upperNamespaceSearchBound, namespacePrefix);
+                if (namespaceURI == null) {
+                    namespaceURI = lookupNamespaceURI(upperNamespaceSearchBound, null, namespacePrefix);
+                    if (namespaceURI == null) {
+                        throw new DOMException(DOMException.NAMESPACE_ERR, "Unable to resolve namespace prefix " + namespacePrefix
+                                + " found on attribute " + QNameSupport.getNodeQName(attributeNode)
+                                + " found on element " + QNameSupport.getNodeQName(domElement));
+                    }
+
+                    appendNamespaceDeclaration(domElement, namespaceURI, namespacePrefix);
+                }
+            }
+        }
+
+        // Now for the child elements, we pass a copy of the resolved namespace list in order to
+        // maintain proper scoping of namespaces.
+        NodeList childNodes = domElement.getChildNodes();
+        Node childNode;
+        for (int i = 0; i < childNodes.getLength(); i++) {
+            childNode = childNodes.item(i);
+            if (childNode.getNodeType() == Node.ELEMENT_NODE) {
+                rootNamespaces((Element) childNode, upperNamespaceSearchBound);
+            }
+        }
     }
 }
