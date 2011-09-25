@@ -33,8 +33,7 @@ public final class EntityIdCriterion implements Criterion {
      * @param entityId the entity ID, can not be null or empty
      */
     public EntityIdCriterion(final String entityId) {
-        id = StringSupport.trimOrNull(entityId);
-        Assert.isNotNull(entityId, "Entity ID can not be null or empty");
+        id = Assert.isNotNull(StringSupport.trimOrNull(entityId), "Entity ID can not be null or empty");
     }
 
     /**

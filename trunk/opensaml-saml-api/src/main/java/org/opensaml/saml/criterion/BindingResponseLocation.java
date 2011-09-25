@@ -33,8 +33,9 @@ public final class BindingResponseLocation implements Criterion {
      * @param responseLocationUri the binding response location URI, never null or empty
      */
     public BindingResponseLocation(String responseLocationUri) {
-        location = StringSupport.trimOrNull(responseLocationUri);
-        Assert.isNotNull(location, "Response location can not be null or empty");
+        location =
+                Assert.isNotNull(StringSupport.trimOrNull(responseLocationUri),
+                        "Response location can not be null or empty");
     }
 
     /**
@@ -45,7 +46,7 @@ public final class BindingResponseLocation implements Criterion {
     public String getLocation() {
         return location;
     }
-    
+
     /** {@inheritDoc} */
     public String toString() {
         StringBuilder builder = new StringBuilder();

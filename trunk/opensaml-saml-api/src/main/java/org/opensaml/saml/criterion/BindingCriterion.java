@@ -33,8 +33,7 @@ public final class BindingCriterion implements Criterion {
      * @param bindingUri the SAML binding URI, never null or empty
      */
     public BindingCriterion(String bindingUri) {
-        binding = StringSupport.trimOrNull(bindingUri);
-        Assert.isNotNull(binding, "Binding URI can not be null or empty");
+        binding = Assert.isNotNull(StringSupport.trimOrNull(bindingUri), "Binding URI can not be null or empty");
     }
 
     /**
@@ -45,7 +44,7 @@ public final class BindingCriterion implements Criterion {
     public String getBinding() {
         return binding;
     }
-    
+
     /** {@inheritDoc} */
     public String toString() {
         StringBuilder builder = new StringBuilder();
@@ -65,15 +64,15 @@ public final class BindingCriterion implements Criterion {
         if (this == obj) {
             return true;
         }
-        
+
         if (obj == null) {
             return false;
         }
-        
+
         if (obj instanceof BindingCriterion) {
-            return binding.equals(((BindingCriterion)obj).binding);
+            return binding.equals(((BindingCriterion) obj).binding);
         }
-        
+
         return false;
     }
 }

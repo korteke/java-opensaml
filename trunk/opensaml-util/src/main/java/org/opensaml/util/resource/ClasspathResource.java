@@ -47,8 +47,8 @@ public class ClasspathResource implements Resource {
      * @param classLoader class loader used to locate the resource
      */
     public ClasspathResource(final String resourcePath, final ClassLoader classLoader) {
-        final String trimmedPath = StringSupport.trimOrNull(resourcePath);
-        Assert.isNotNull(trimmedPath, "Resource path may not be null or empty");
+        final String trimmedPath =
+                Assert.isNotNull(StringSupport.trimOrNull(resourcePath), "Resource path may not be null or empty");
 
         Assert.isNotNull(classLoader, "Resource class loader may not be null");
 

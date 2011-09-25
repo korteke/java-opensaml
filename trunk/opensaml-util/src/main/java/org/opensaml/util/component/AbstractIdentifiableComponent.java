@@ -46,8 +46,6 @@ public abstract class AbstractIdentifiableComponent implements IdentifiableCompo
      * @param componentId unique identifier for this component, can not be null or empty
      */
     protected void setId(String componentId) {
-        String trimmedId = StringSupport.trimOrNull(componentId);
-        Assert.isNotNull(trimmedId, "Component ID can not be null or empty");
-        id = trimmedId;
+        id = Assert.isNotNull(StringSupport.trimOrNull(componentId), "Component ID can not be null or empty");
     }
 }

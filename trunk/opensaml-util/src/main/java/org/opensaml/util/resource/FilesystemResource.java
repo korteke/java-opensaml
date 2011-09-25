@@ -37,9 +37,9 @@ public class FilesystemResource implements Resource {
      * @param resourcePath file read by this resource, never null or empty
      */
     public FilesystemResource(final String resourcePath) {
-        final String trimmedPath = StringSupport.trimOrNull(resourcePath);
-        Assert.isNotNull(trimmedPath, "Resource file path may not be null or empty");
-        resourceFile = new File(trimmedPath);
+        resourceFile =
+                new File(Assert.isNotNull(StringSupport.trimOrNull(resourcePath),
+                        "Resource file path may not be null or empty"));
     }
 
     /** {@inheritDoc} */

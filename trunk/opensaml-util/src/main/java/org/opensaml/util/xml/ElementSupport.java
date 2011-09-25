@@ -73,7 +73,7 @@ public final class ElementSupport {
 
         Assert.isNotNull(parentElement, "Parent Element may not be null");
         final Document parentDocument = parentElement.getOwnerDocument();
-        if(!parentDocument.equals(childElement.getOwnerDocument())){
+        if (!parentDocument.equals(childElement.getOwnerDocument())) {
             adoptElement(parentDocument, childElement);
         }
 
@@ -122,8 +122,8 @@ public final class ElementSupport {
             final String prefix) {
         Assert.isNotNull(document, "Document may not be null");
 
-        final String trimmedLocalName = StringSupport.trimOrNull(localName);
-        Assert.isNotNull(trimmedLocalName, "Element local name may not be null or empty");
+        final String trimmedLocalName =
+                Assert.isNotNull(StringSupport.trimOrNull(localName), "Element local name may not be null or empty");
 
         String qualifiedName;
         final String trimmedPrefix = StringSupport.trimOrNull(prefix);
@@ -440,16 +440,16 @@ public final class ElementSupport {
         Assert.isNotNull(element, "Element may not be null");
 
         final Element rootElement = document.getDocumentElement();
-        if(rootElement == null){
+        if (rootElement == null) {
             adoptElement(document, element);
             document.appendChild(element);
             return;
         }
-        
-        if(rootElement.isSameNode(element)){
+
+        if (rootElement.isSameNode(element)) {
             return;
         }
-        
+
         adoptElement(document, element);
         document.replaceChild(element, rootElement);
     }

@@ -30,22 +30,28 @@ public final class Assert {
      * Checks that the given collection is empty. If the collection is not empty an {@link IllegalArgumentException} is
      * thrown.
      * 
+     * @param <T> type of items in the collection
      * @param collection collection check
+     * 
+     * @return the checked input
      */
-    public static void isEmpty(final Collection<?> collection) {
-        isEmpty(collection, null);
+    public static <T> Collection<T> isEmpty(final Collection<T> collection) {
+        return isEmpty(collection, null);
     }
 
     /**
      * Checks that the given collection is empty. If the collection is not empty an {@link IllegalArgumentException} is
      * thrown.
      * 
+     * @param <T> type of items in the collection
      * @param collection collection check
      * @param message message used in the {@link IllegalArgumentException}
+     * 
+     * @return the checked input
      */
-    public static void isEmpty(final Collection<?> collection, final String message) {
+    public static <T> Collection<T> isEmpty(final Collection<T> collection, final String message) {
         if (collection.isEmpty()) {
-            return;
+            return collection;
         }
         throw new IllegalArgumentException(message);
     }
@@ -77,9 +83,11 @@ public final class Assert {
      * 
      * @param threshold the threshold
      * @param number the number to be checked
+     * 
+     * @return the checked input
      */
-    public static void isGreaterThan(final long threshold, final long number) {
-        isGreaterThan(threshold, number, null);
+    public static long isGreaterThan(final long threshold, final long number) {
+        return isGreaterThan(threshold, number, null);
     }
 
     /**
@@ -89,10 +97,12 @@ public final class Assert {
      * @param threshold the threshold
      * @param number the number to be checked
      * @param message message used in the {@link IllegalArgumentException}
+     * 
+     * @return the checked input
      */
-    public static void isGreaterThan(final long threshold, final long number, final String message) {
+    public static long isGreaterThan(final long threshold, final long number, final String message) {
         if (number > threshold) {
-            return;
+            return number;
         }
         throw new IllegalArgumentException(message);
     }
@@ -103,9 +113,11 @@ public final class Assert {
      * 
      * @param threshold the threshold
      * @param number the number to be checked
+     * 
+     * @return the checked input
      */
-    public static void isGreaterThanOrEqual(final long threshold, final long number) {
-        isGreaterThanOrEqual(threshold, number, null);
+    public static long isGreaterThanOrEqual(final long threshold, final long number) {
+        return isGreaterThanOrEqual(threshold, number, null);
     }
 
     /**
@@ -115,10 +127,12 @@ public final class Assert {
      * @param threshold the threshold
      * @param number the number to be checked
      * @param message message used in the {@link IllegalArgumentException}
+     * 
+     * @return the checked input
      */
-    public static void isGreaterThanOrEqual(final long threshold, final long number, final String message) {
+    public static long isGreaterThanOrEqual(final long threshold, final long number, final String message) {
         if (number >= threshold) {
-            return;
+            return number;
         }
         throw new IllegalArgumentException(message);
     }
@@ -129,9 +143,11 @@ public final class Assert {
      * 
      * @param threshold the threshold
      * @param number the number to be checked
+     * 
+     * @return the checked input
      */
-    public static void isLessThan(final long threshold, final long number) {
-        isLessThan(threshold, number, null);
+    public static long isLessThan(final long threshold, final long number) {
+        return isLessThan(threshold, number, null);
     }
 
     /**
@@ -141,10 +157,12 @@ public final class Assert {
      * @param threshold the threshold
      * @param number the number to be checked
      * @param message message used in the {@link IllegalArgumentException}
+     * 
+     * @return the checked input
      */
-    public static void isLessThan(final long threshold, final long number, final String message) {
+    public static long isLessThan(final long threshold, final long number, final String message) {
         if (number < threshold) {
-            return;
+            return number;
         }
         throw new IllegalArgumentException(message);
     }
@@ -155,9 +173,11 @@ public final class Assert {
      * 
      * @param threshold the threshold
      * @param number the number to be checked
+     * 
+     * @return the checked input
      */
-    public static void isLessThanOrEqual(final long threshold, final long number) {
-        isLessThanOrEqual(threshold, number, null);
+    public static long isLessThanOrEqual(final long threshold, final long number) {
+        return isLessThanOrEqual(threshold, number, null);
     }
 
     /**
@@ -167,10 +187,12 @@ public final class Assert {
      * @param threshold the threshold
      * @param number the number to be checked
      * @param message message used in the {@link IllegalArgumentException}
+     * 
+     * @return the checked input
      */
-    public static void isLessThanOrEqual(final long threshold, final long number, final String message) {
+    public static long isLessThanOrEqual(final long threshold, final long number, final String message) {
         if (number <= threshold) {
-            return;
+            return number;
         }
         throw new IllegalArgumentException(message);
     }
@@ -179,43 +201,57 @@ public final class Assert {
      * Checks that the given collection is not empty. If the collection is empty an {@link IllegalArgumentException} is
      * thrown.
      * 
+     * @param <T> type of items in the collection
      * @param collection collection check
+     * 
+     * @return the checked input
      */
-    public static void isNotEmpty(final Collection<?> collection) {
-        isNotEmpty(collection, null);
+    public static <T> Collection<T> isNotEmpty(final Collection<T> collection) {
+        return isNotEmpty(collection, null);
     }
 
     /**
      * Checks that the given collection is not empty. If the collection is empty an {@link IllegalArgumentException} is
      * thrown.
      * 
+     * @param <T> type of items in the collection
      * @param collection collection check
      * @param message message used in the {@link IllegalArgumentException}
+     * 
+     * @return the checked input
      */
-    public static void isNotEmpty(final Collection<?> collection, final String message) {
+    public static <T> Collection<T> isNotEmpty(final Collection<T> collection, final String message) {
         if (collection == null || collection.isEmpty()) {
             throw new IllegalArgumentException(message);
         }
+
+        return collection;
     }
 
     /**
      * Checks that the given object is not null. If the object is null an {@link IllegalArgumentException} is thrown.
      * 
+     * @param <T> object type
      * @param obj object to check
+     * 
+     * @return the checked input
      */
-    public static void isNotNull(final Object obj) {
-        isNotNull(obj, null);
+    public static <T> T isNotNull(final T obj) {
+        return isNotNull(obj, null);
     }
 
     /**
      * Checks that the given object is not null. If the object is null an {@link IllegalArgumentException} is thrown.
      * 
+     * @param <T> object type
      * @param obj object to check
      * @param message message used in {@link IllegalArgumentException}
+     * 
+     * @return the checked input
      */
-    public static void isNotNull(final Object obj, final String message) {
+    public static <T> T isNotNull(final T obj, final String message) {
         if (obj != null) {
-            return;
+            return obj;
         }
         throw new IllegalArgumentException(message);
     }
@@ -223,21 +259,27 @@ public final class Assert {
     /**
      * Checks that the given object is null. If the object is not null an {@link IllegalArgumentException} is thrown.
      * 
+     * @param <T> object type
      * @param obj object to check
+     * 
+     * @return the checked input
      */
-    public static void isNull(final Object obj) {
-        isNull(obj, null);
+    public static <T> T isNull(final T obj) {
+        return isNull(obj, null);
     }
 
     /**
      * Checks that the given object is null. If the object is not null an {@link IllegalArgumentException} is thrown.
      * 
+     * @param <T> object type
      * @param obj object to check
      * @param message message used in {@link IllegalArgumentException}
+     * 
+     * @return the checked input
      */
-    public static void isNull(final Object obj, final String message) {
+    public static <T> T isNull(final T obj, final String message) {
         if (obj == null) {
-            return;
+            return obj;
         }
         throw new IllegalArgumentException(message);
     }
@@ -270,9 +312,11 @@ public final class Assert {
      * @param lowerTheshold lower bound of the range
      * @param upperThreshold upper bound of the range
      * @param number number to check
+     * 
+     * @return the checked input
      */
-    public static void numberInRangeExclusive(final long lowerTheshold, final long upperThreshold, final long number) {
-        numberInRangeExclusive(lowerTheshold, upperThreshold, number, null);
+    public static long numberInRangeExclusive(final long lowerTheshold, final long upperThreshold, final long number) {
+        return numberInRangeExclusive(lowerTheshold, upperThreshold, number, null);
     }
 
     /**
@@ -283,11 +327,13 @@ public final class Assert {
      * @param upperThreshold upper bound of the range
      * @param number number to check
      * @param message message used in the {@link IllegalArgumentException}
+     * 
+     * @return the checked input
      */
-    public static void numberInRangeExclusive(final long lowerTheshold, final long upperThreshold, final long number,
+    public static long numberInRangeExclusive(final long lowerTheshold, final long upperThreshold, final long number,
             final String message) {
         if (number > lowerTheshold && number < upperThreshold) {
-            return;
+            return number;
         }
         throw new IllegalArgumentException(message);
     }
@@ -299,9 +345,11 @@ public final class Assert {
      * @param lowerTheshold lower bound of the range
      * @param upperThreshold upper bound of the range
      * @param number number to check
+     * 
+     * @return the checked input
      */
-    public static void numberInRangeInclusive(final long lowerTheshold, final long upperThreshold, final long number) {
-        numberInRangeInclusive(lowerTheshold, upperThreshold, number, null);
+    public static long numberInRangeInclusive(final long lowerTheshold, final long upperThreshold, final long number) {
+        return numberInRangeInclusive(lowerTheshold, upperThreshold, number, null);
     }
 
     /**
@@ -312,11 +360,13 @@ public final class Assert {
      * @param upperThreshold upper bound of the range
      * @param number number to check
      * @param message message used in the {@link IllegalArgumentException}
+     * 
+     * @return the checked input
      */
-    public static void numberInRangeInclusive(final long lowerTheshold, final long upperThreshold, final long number,
+    public static long numberInRangeInclusive(final long lowerTheshold, final long upperThreshold, final long number,
             final String message) {
         if (number >= lowerTheshold && number <= upperThreshold) {
-            return;
+            return number;
         }
 
         throw new IllegalArgumentException(message);

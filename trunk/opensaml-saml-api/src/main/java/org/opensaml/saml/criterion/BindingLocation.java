@@ -33,8 +33,7 @@ public final class BindingLocation implements Criterion {
      * @param locationUri the binding location URI, never null or empty
      */
     public BindingLocation(String locationUri) {
-        location = StringSupport.trimOrNull(locationUri);
-        Assert.isNotNull(location, "Location can not be null or empty");
+        location = Assert.isNotNull(StringSupport.trimOrNull(locationUri), "Location can not be null or empty");
     }
 
     /**

@@ -101,7 +101,7 @@ public class HttpResource implements CachingResource, FilebackedRemoteResource {
     private String cachedResourceLastModified;
 
     /**
-     * Constructor.  Initializes {@link #saveConditionalGetData} to true.
+     * Constructor. Initializes {@link #saveConditionalGetData} to true.
      * 
      * @param url URL of the remote resource data
      * @param client client used to fetch the remote resource data
@@ -110,7 +110,7 @@ public class HttpResource implements CachingResource, FilebackedRemoteResource {
     public HttpResource(final String url, final HttpClient client, final String backup) {
         this(url, client, backup, true);
     }
-    
+
     /**
      * Constructor.
      * 
@@ -120,15 +120,11 @@ public class HttpResource implements CachingResource, FilebackedRemoteResource {
      * @param saveConditionalGetData whether to save conditional GET data in addition to backup data
      */
     public HttpResource(final String url, final HttpClient client, final String backup, boolean saveConditionalGetData) {
-        resourceUrl = StringSupport.trimOrNull(url);
-        Assert.isNotNull(resourceUrl, "Resource URL may not be null or empty");
+        resourceUrl = Assert.isNotNull(StringSupport.trimOrNull(url), "Resource URL may not be null or empty");
 
-        Assert.isNotNull(client, "HTTP client may not be null");
-        httpClient = client;
+        httpClient = Assert.isNotNull(client, "HTTP client may not be null");
 
-        final String trimmedBackup = StringSupport.trimOrNull(backup);
-        Assert.isNotNull(trimmedBackup, "Backup file path can not be null");
-        backupFile = new File(trimmedBackup);
+        backupFile = new File(Assert.isNotNull(StringSupport.trimOrNull(backup), "Backup file path can not be null"));
         propFile = new File(backupFile.getAbsolutePath() + ".props");
 
         savingConditionalGetData = saveConditionalGetData;
@@ -136,7 +132,7 @@ public class HttpResource implements CachingResource, FilebackedRemoteResource {
             readInSavedConditionalGetData();
         }
     }
-    
+
     /** {@inheritDoc} */
     public String getLocation() {
         return resourceUrl;
@@ -231,7 +227,7 @@ public class HttpResource implements CachingResource, FilebackedRemoteResource {
             httpRequest.abort();
         }
     }
-    
+
     /** {@inheritDoc} */
     public InputStream getInputStream(boolean returnCache) throws ResourceException {
         InputStream ins = getInputStream();
