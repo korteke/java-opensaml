@@ -153,8 +153,7 @@ public class HttpClientBuilder {
      * @throws UnknownHostException thrown if the given IP or hostname can not be resolved
      */
     public void setSocketLocalAddress(final String ipOrHost) throws UnknownHostException {
-        Assert.isNotNull(ipOrHost, "IP or hostname may not be null");
-        socketLocalAddress = InetAddress.getByName(ipOrHost);
+        socketLocalAddress = InetAddress.getByName(Assert.isNotNull(ipOrHost, "IP or hostname may not be null"));
     }
 
     /**
@@ -192,8 +191,7 @@ public class HttpClientBuilder {
      * @param size size of the socket buffer, in bytes, used for request/response buffering; must be greater than 0
      */
     public void setSocketBufferSize(final int size) {
-        Assert.isGreaterThan(0, size, "Socket buffer size must be greater than 0");
-        socketBufferSize = size;
+        socketBufferSize = (int) Assert.isGreaterThan(0, size, "Socket buffer size must be greater than 0");
     }
 
     /**
@@ -289,8 +287,7 @@ public class HttpClientBuilder {
      *            than zero
      */
     public void setConnectionsMaxTotal(final int max) {
-        Assert.isGreaterThan(0, max, "Max total connections must be greater than 0");
-        connectionsMaxTotal = max;
+        connectionsMaxTotal = (int) Assert.isGreaterThan(0, max, "Max total connections must be greater than 0");
     }
 
     /**
@@ -308,8 +305,8 @@ public class HttpClientBuilder {
      * @param max maximum number of connection per route; must be greater than zero
      */
     public void setConnectionsMaxPerRoute(final int max) {
-        Assert.isGreaterThan(0, max, "Max connections per route must be greater than zero");
-        connectionsMaxPerRoute = max;
+        connectionsMaxPerRoute =
+                (int) Assert.isGreaterThan(0, max, "Max connections per route must be greater than zero");
     }
 
     /**
@@ -344,9 +341,10 @@ public class HttpClientBuilder {
      * 
      * @param port port of the default proxy used when making connection; must be greater than 0 and less than 65536
      */
-    public void setConnectionProxyPort(final int port) {
-        Assert.numberInRangeExclusive(0, 65536, port, "Proxy port must be between 0 and 65536, exclusive");
-        connectionProxyPort = port;
+    public void setConnectionProxyPort(final int port) {        
+        connectionProxyPort =
+                (int) Assert
+                        .numberInRangeExclusive(0, 65536, port, "Proxy port must be between 0 and 65536, exclusive");
     }
 
     /**
@@ -521,7 +519,7 @@ public class HttpClientBuilder {
 
             try {
                 SSLContext sslcontext = SSLContext.getInstance("TLS");
-                sslcontext.init(null, new TrustManager[] { noTrustManager }, null);
+                sslcontext.init(null, new TrustManager[] {noTrustManager}, null);
                 sslSF = new SSLSocketFactory(sslcontext);
             } catch (NoSuchAlgorithmException e) {
                 throw new RuntimeException("TLS SSLContext type is required to be supported by the JVM but is not", e);

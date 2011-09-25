@@ -50,10 +50,10 @@ public final class DomTypeSupport {
      * @return the date/time expressed as milliseconds since the epoch
      */
     public static long dateTimeToLong(final String dateTime) {
-        String trimmedString = StringSupport.trimOrNull(dateTime);
-        Assert.isNotNull(trimmedString, "Lexical dateTime may not be null or empty");
+        String trimmedString =
+                Assert.isNotNull(StringSupport.trimOrNull(dateTime), "Lexical dateTime may not be null or empty");
 
-        XMLGregorianCalendar calendar = dataTypeFactory.newXMLGregorianCalendar(dateTime);
+        XMLGregorianCalendar calendar = dataTypeFactory.newXMLGregorianCalendar(trimmedString);
         return calendar.toGregorianCalendar().getTimeInMillis();
     }
 

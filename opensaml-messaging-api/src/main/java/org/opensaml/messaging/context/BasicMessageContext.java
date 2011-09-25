@@ -52,9 +52,7 @@ public class BasicMessageContext<MessageType> extends AbstractSubcontextContaine
      */
     public BasicMessageContext(String contextId) {
         creationTime = new DateTime();
-
-        id = StringSupport.trimOrNull(contextId);
-        Assert.isNotNull(id, "Context ID can not be null or empty");
+        id = Assert.isNotNull(StringSupport.trimOrNull(contextId), "Context ID can not be null or empty");
     }
 
     /** {@inheritDoc} */

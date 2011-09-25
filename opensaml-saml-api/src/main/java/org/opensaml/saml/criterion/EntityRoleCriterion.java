@@ -34,8 +34,7 @@ public final class EntityRoleCriterion implements Criterion {
      * @param samlRole the entity role, never null
      */
     public EntityRoleCriterion(QName samlRole) {
-        role = samlRole;
-        Assert.isNotNull(role, "SAML role can not be null");
+        role = Assert.isNotNull(samlRole, "SAML role can not be null");
     }
 
     /**
@@ -46,7 +45,7 @@ public final class EntityRoleCriterion implements Criterion {
     public QName getRole() {
         return role;
     }
-    
+
     /** {@inheritDoc} */
     public String toString() {
         StringBuilder builder = new StringBuilder();
