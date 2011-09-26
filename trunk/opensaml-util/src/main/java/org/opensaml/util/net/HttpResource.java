@@ -17,21 +17,16 @@
 
 package org.opensaml.util.net;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.Properties;
 
 import net.jcip.annotations.NotThreadSafe;
+import net.jcip.annotations.ThreadSafe;
 
 import org.apache.http.Header;
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpHeaders;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -41,28 +36,21 @@ import org.apache.http.client.methods.HttpHead;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.cookie.DateParseException;
 import org.apache.http.impl.cookie.DateUtils;
-import org.apache.http.util.EntityUtils;
 import org.opensaml.util.Assert;
-import org.opensaml.util.CloseableSupport;
-import org.opensaml.util.Pair;
 import org.opensaml.util.StringSupport;
-import org.opensaml.util.resource.CachingResource;
-import org.opensaml.util.resource.FilebackedRemoteResource;
+import org.opensaml.util.constraint.documented.NotEmpty;
+import org.opensaml.util.constraint.documented.NotNull;
+import org.opensaml.util.constraint.documented.Null;
+import org.opensaml.util.resource.Resource;
 import org.opensaml.util.resource.ResourceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 //TODO authentication
-//TODO deal with case where cache file(s) are removed unexpectedly
 
-/**
- * A resource that fetches data from a remote source via HTTP. A backup/cache of the data is maintained in a local file.
- * The backup file is used if a conditional get, based on the ETag and last modified time, indicates that the data has
- * not been modified or if there is a problem fetching the data from the remote source (e.g. if the remote server is
- * down).
- */
+/** A resource that fetches data from a remote source via HTTP. */
 @NotThreadSafe
-public class HttpResource implements CachingResource, FilebackedRemoteResource {
+public class HttpResource implements Resource {
 
     /** Property name under which the ETag data is stored. */
     public static final String ETAG_PROP = "etag";
@@ -79,58 +67,57 @@ public class HttpResource implements CachingResource, FilebackedRemoteResource {
     /** URL of remote resource. */
     private final String resourceUrl;
 
-    /** Backup and local cache of metadata. */
-    private final File backupFile;
+    /** Strategy used to customize an {@link HttpGet} before using it. */
+    private HttpGetCustomizationStrategy httpGetCustomizationStrategy;
 
-    /** File used to store ETag and Last-Modified properties associated with backup file. */
-    private final File propFile;
-
-    /**
-     * Whether the data (ETag and/or Last-Modified) information will be saved in addition to the backup file and then
-     * used to bootstrap this resource next time.
-     */
-    private final boolean savingConditionalGetData;
-
-    /** Instant, in milliseconds since the epoch, when the backup file was created. */
-    private long backupFileCreationInstant;
-
-    /** ETag associated with cached metadata. */
-    private String cachedResourceETag;
-
-    /** Last modified time associated with cached metadata. */
-    private String cachedResourceLastModified;
-
-    /**
-     * Constructor. Initializes {@link #saveConditionalGetData} to true.
-     * 
-     * @param url URL of the remote resource data
-     * @param client client used to fetch the remote resource data
-     * @param backup file to which remote resource data is written as a backup/cache
-     */
-    public HttpResource(final String url, final HttpClient client, final String backup) {
-        this(url, client, backup, true);
-    }
+    /** Strategy used to customize an {@link HttpResponse} before get its content. */
+    private HttpResponseCustomizationStrategy httpResponseCustomizationStrategy;
 
     /**
      * Constructor.
      * 
-     * @param url URL of the remote resource data
      * @param client client used to fetch the remote resource data
-     * @param backup file to which remote resource data is written as a backup/cache
-     * @param saveConditionalGetData whether to save conditional GET data in addition to backup data
+     * @param url URL of the remote resource data
      */
-    public HttpResource(final String url, final HttpClient client, final String backup, boolean saveConditionalGetData) {
-        resourceUrl = Assert.isNotNull(StringSupport.trimOrNull(url), "Resource URL may not be null or empty");
-
+    public HttpResource(@NotNull final HttpClient client, @NotNull @NotEmpty final String url) {
         httpClient = Assert.isNotNull(client, "HTTP client may not be null");
+        resourceUrl = Assert.isNotNull(StringSupport.trimOrNull(url), "Resource URL may not be null or empty");
+    }
 
-        backupFile = new File(Assert.isNotNull(StringSupport.trimOrNull(backup), "Backup file path can not be null"));
-        propFile = new File(backupFile.getAbsolutePath() + ".props");
+    /**
+     * Gets the strategy used customize the {@link HttpGet} used to fetch the resource.
+     * 
+     * @return strategy used customize the {@link HttpGet} used to fetch the resource
+     */
+    public @Null HttpGetCustomizationStrategy getHttpGetCustomizationStrategy() {
+        return httpGetCustomizationStrategy;
+    }
 
-        savingConditionalGetData = saveConditionalGetData;
-        if (saveConditionalGetData) {
-            readInSavedConditionalGetData();
-        }
+    /**
+     * Sets the strategy used customize the {@link HttpGet} used to fetch the resource.
+     * 
+     * @param strategy strategy used customize the {@link HttpGet} used to fetch the resource
+     */
+    public void setHttpGetCustomizationStrategy(@Null final HttpGetCustomizationStrategy strategy) {
+        httpGetCustomizationStrategy = strategy;
+    }
+
+    /**
+     * Gets the strategy used to customize the {@link HttpResponse} before its content is returned.
+     * 
+     * @return strategy used to customize the {@link HttpResponse} before its content is returned
+     */
+    public HttpResponseCustomizationStrategy getHttpResponseCustomizationStrategy() {
+        return httpResponseCustomizationStrategy;
+    }
+
+    /**
+     * Sets the strategy used to customize the {@link HttpResponse} before its content is returned.
+     * 
+     * @param strategy strategy used to customize the {@link HttpResponse} before its content is returned
+     */
+    public void setHttpResponseCustomizationStrategy(@Null final HttpResponseCustomizationStrategy strategy) {
+        httpResponseCustomizationStrategy = strategy;
     }
 
     /** {@inheritDoc} */
@@ -138,35 +125,80 @@ public class HttpResource implements CachingResource, FilebackedRemoteResource {
         return resourceUrl;
     }
 
-    /**
-     * Gets whether the data (ETag and/or Last-Modified) information will be saved in addition to the backup file and
-     * then used to bootstrap this resource next time.
-     * 
-     * @return whether conditional GET data is saved along with backup data file
-     */
-    public boolean isSavingConditionalGetData() {
-        return savingConditionalGetData;
-    }
-
     /** {@inheritDoc} */
     public long getLastModifiedTime() throws ResourceException {
-        if (cachedResourceLastModified == null) {
-            return -1;
-        }
-
         try {
-            final Date lastModDate = DateUtils.parseDate(cachedResourceLastModified);
-            final GregorianCalendar cal = new GregorianCalendar();
-            cal.setTime(lastModDate);
-            return cal.getTimeInMillis();
+            HttpResponse httpResponse = getResourceHeaders();
+
+            final Header httpHeader = httpResponse.getFirstHeader(HttpHeaders.LAST_MODIFIED);
+            if (httpHeader != null) {
+                final Date lastModDate = DateUtils.parseDate(httpHeader.getValue());
+                final GregorianCalendar cal = new GregorianCalendar();
+                cal.setTime(lastModDate);
+                return cal.getTimeInMillis();
+            } else {
+                throw new ResourceException(resourceUrl + " did not return the required " + HttpHeaders.LAST_MODIFIED
+                        + " header");
+            }
         } catch (DateParseException e) {
-            throw new ResourceException("Unable to parse " + cachedResourceLastModified
-                    + " from HTTP last modified header", e);
+            throw new ResourceException("Unable to parse HTTP " + HttpHeaders.LAST_MODIFIED + " header", e);
         }
     }
 
     /** {@inheritDoc} */
     public boolean exists() throws ResourceException {
+        HttpResponse httpResponse = getResourceHeaders();
+        int statusCode = httpResponse.getStatusLine().getStatusCode();
+
+        if (statusCode == HttpStatus.SC_OK || statusCode == HttpStatus.SC_NOT_MODIFIED) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /** {@inheritDoc} */
+    public InputStream getInputStream() throws ResourceException {
+        final HttpGet httpRequest = buildGetMethod();
+
+        try {
+            log.debug("Attempting to fetch data from '{}'", resourceUrl);
+            HttpResponse response = httpClient.execute(httpRequest);
+            final int httpStatus = response.getStatusLine().getStatusCode();
+
+            if (httpStatus >= 200 && httpStatus <= 299) {
+                if (httpResponseCustomizationStrategy != null) {
+                    response = httpResponseCustomizationStrategy.customize(response);
+                }
+
+                final HttpEntity responseEntity = response.getEntity();
+                if (responseEntity == null) {
+                    throw new ResourceException(resourceUrl + " returned the successful status code " + httpStatus
+                            + " but did not return any content");
+                }
+
+                return response.getEntity().getContent();
+            } else {
+                log.debug("Unacceptable status code, {}, returned when fetching metadata from '{}'", httpStatus,
+                        resourceUrl);
+                throw new ResourceException("Unable to read resource from " + resourceUrl
+                        + ", received a status code of " + httpStatus);
+            }
+        } catch (IOException e) {
+            httpRequest.abort();
+            throw new ResourceException("Error retrieving metadata from " + resourceUrl, e);
+        }
+    }
+
+    /**
+     * Attempts to fetch only the headers for a given resource. If the HEAD requests are unsupported than a more costly
+     * GET request is performed.
+     * 
+     * @return the response from the request
+     * 
+     * @throws ResourceException thrown if there is a problem contacting the resource
+     */
+    private HttpResponse getResourceHeaders() throws ResourceException {
         HttpUriRequest httpRequest = new HttpHead(resourceUrl);
 
         try {
@@ -174,19 +206,15 @@ public class HttpResource implements CachingResource, FilebackedRemoteResource {
             int statusCode = httpResponse.getStatusLine().getStatusCode();
             httpRequest.abort();
 
-            if (statusCode == HttpStatus.SC_METHOD_NOT_ALLOWED) {
+            if (statusCode == HttpStatus.SC_METHOD_NOT_ALLOWED || statusCode == HttpStatus.SC_NOT_IMPLEMENTED) {
                 log.debug(resourceUrl + " does not support HEAD requests, falling back to GET request");
-                httpRequest = buildGetRequest();
+                httpRequest = buildGetMethod();
                 httpResponse = httpClient.execute(httpRequest);
                 statusCode = httpResponse.getStatusLine().getStatusCode();
                 httpRequest.abort();
             }
 
-            if (statusCode == HttpStatus.SC_OK || statusCode == HttpStatus.SC_NOT_MODIFIED) {
-                return true;
-            }
-
-            return false;
+            return httpResponse;
         } catch (IOException e) {
             throw new ResourceException("Error contacting resource " + resourceUrl, e);
         } finally {
@@ -194,294 +222,48 @@ public class HttpResource implements CachingResource, FilebackedRemoteResource {
         }
     }
 
-    /** {@inheritDoc} */
-    public InputStream getInputStream() throws ResourceException {
-        final HttpGet httpRequest = buildGetRequest();
+    /**
+     * Gets the, potentially customized, {@link HttpGet} method.
+     * 
+     * @return the {@link HttpGet} method
+     */
+    private HttpGet buildGetMethod() {
+        final HttpGet httpGet = new HttpGet(resourceUrl);
 
-        try {
-            log.debug("Attempting to fetch data from '{}'", resourceUrl);
-            final HttpResponse response = httpClient.execute(httpRequest);
-            final int httpStatus = response.getStatusLine().getStatusCode();
-
-            switch (httpStatus) {
-                case HttpStatus.SC_OK:
-                    log.debug("New data available from '{}', processing it", resourceUrl);
-                    return getInputStreamFromResponse(response);
-                case HttpStatus.SC_NOT_MODIFIED:
-                    log.debug("Metadata unchanged since last request");
-                    return null;
-                default:
-                    log.debug(
-                            "Unacceptable status code, {}, returned when fetching metadata from '{}', using cached data if available",
-                            httpStatus, resourceUrl);
-                    InputStream ins = getInputStreamFromBackupFile();
-                    if (ins == null) {
-                        throw new ResourceException("Unable to read resource from " + resourceUrl + " or backup file "
-                                + backupFile.getAbsolutePath());
-                    }
-                    return ins;
-            }
-        } catch (IOException e) {
-            throw new ResourceException("Error retrieving metadata from " + resourceUrl, e);
-        } finally {
-            httpRequest.abort();
+        if (httpGetCustomizationStrategy == null) {
+            return httpGet;
         }
+        return httpGetCustomizationStrategy.customize(httpGet);
     }
 
-    /** {@inheritDoc} */
-    public InputStream getInputStream(boolean returnCache) throws ResourceException {
-        InputStream ins = getInputStream();
+    /** Strategy that can be used to customize an {@link HttpGet} object before it is used. */
+    @ThreadSafe
+    public static interface HttpGetCustomizationStrategy {
 
-        if (ins == null && returnCache) {
-            ins = getInputStreamFromBackupFile();
-        }
-
-        return ins;
-    }
-
-    /** {@inheritDoc} */
-    public long getCacheInstant() {
-        return backupFileCreationInstant;
-    }
-
-    /** {@inheritDoc} */
-    public void expireCache() {
-        cachedResourceETag = null;
-        cachedResourceLastModified = null;
-
-        if (backupFile.exists()) {
-            backupFile.delete();
-            backupFileCreationInstant = 0;
-        }
-
-        if (propFile.exists()) {
-            propFile.delete();
-        }
-    }
-
-    /** {@inheritDoc} */
-    public boolean backupFileExists() {
-        return backupFile.exists();
-    }
-
-    /** {@inheritDoc} */
-    public long getBackupFileCreationInstant() {
-        return backupFileCreationInstant;
-    }
-
-    /** {@inheritDoc} */
-    public String getBackupFilePath() {
-        return backupFile.getAbsolutePath();
-    }
-
-    /** {@inheritDoc} */
-    public InputStream getInputStreamFromBackupFile() throws ResourceException {
-        log.debug("Reading HTTP resource from backup file {}", backupFile.getAbsolutePath());
-
-        if (!backupFile.exists()) {
-            log.debug("Backup file {} does not exist, unable to read data from it", backupFile.getAbsolutePath());
-            return null;
-        }
-
-        try {
-            return new FileInputStream(backupFile);
-        } catch (IOException e) {
-            throw new ResourceException("Unable to read backup file " + getBackupFilePath(), e);
-        }
+        /**
+         * Customizes the given {@link HttpGet} object.
+         * 
+         * @param httpGet the current {@link HttpGet}
+         * 
+         * @return the customized {@link HttpGet}
+         */
+        public HttpGet customize(@NotNull final HttpGet httpGet);
     }
 
     /**
-     * Gets the ETag from a given HTTP response.
-     * 
-     * @param response the HTTP response
-     * 
-     * @return the header value or null if the response is null or no header was present in the response
+     * Strategy used to perform any {@link HttpResponse} processing prior to returning the {@link InputStream} for its
+     * content.
      */
-    private String getETag(final HttpResponse response) {
-        if (response == null) {
-            return null;
-        }
+    @ThreadSafe
+    public static interface HttpResponseCustomizationStrategy {
 
-        final Header httpHeader = response.getFirstHeader(HttpHeaders.ETAG);
-        if (httpHeader != null) {
-            return httpHeader.getValue();
-        }
-
-        return null;
-    }
-
-    /**
-     * Gets the {@value HttpClientSupport#HEADER_LAST_MODIFIED} from a given HTTP response.
-     * 
-     * @param response the HTTP response
-     * 
-     * @return the header value or null if the response is null or no header was present in the response
-     */
-    private String getLastModified(final HttpResponse response) {
-        if (response == null) {
-            return null;
-        }
-
-        final Header httpHeader = response.getFirstHeader(HttpHeaders.LAST_MODIFIED);
-        if (httpHeader != null) {
-            return httpHeader.getValue();
-        }
-
-        return null;
-    }
-
-    /** Reads in any previously saved conditional GET data. */
-    private void readInSavedConditionalGetData() {
-        if (!propFile.exists()) {
-            return;
-        }
-
-        Properties props = new Properties();
-        try {
-            props.load(new FileReader(propFile));
-            cachedResourceETag = StringSupport.trimOrNull(props.getProperty(ETAG_PROP));
-            cachedResourceLastModified = StringSupport.trimOrNull(props.getProperty(LAST_MODIFIED_PROP));
-        } catch (IOException e) {
-            log.debug("Unable to read in property file {}", propFile.getAbsolutePath());
-        }
-    }
-
-    /**
-     * Builds the HTTP GET method used to fetch the metadata. The returned method advertises support for GZIP and
-     * deflate compression, enables conditional GETs if the cached metadata came with either an ETag or Last-Modified
-     * information, and sets up basic authentication if such is configured.
-     * 
-     * @return the constructed GET method
-     */
-    private HttpGet buildGetRequest() {
-        final HttpGet getMethod = new HttpGet(resourceUrl);
-
-        if (cachedResourceETag != null) {
-            getMethod.setHeader(HttpHeaders.IF_NONE_MATCH, cachedResourceETag);
-        }
-
-        if (cachedResourceLastModified != null) {
-            getMethod.setHeader(HttpHeaders.IF_MODIFIED_SINCE, cachedResourceLastModified);
-        }
-
-        return getMethod;
-    }
-
-    /**
-     * Saves the remote data to the backup file and returns an {@link InputStream} to the given data. Also updates the
-     * cached resource ETag and last modified time as well as the charset used for the data.
-     * 
-     * @param response response from the HTTP request
-     * 
-     * @return the resource data
-     * 
-     * @throws ResourceException thrown if there is a problem saving the resource data to the backup file
-     */
-    private InputStream getInputStreamFromResponse(final HttpResponse response) throws ResourceException {
-        try {
-            final byte[] responseEntity = EntityUtils.toByteArray(response.getEntity());
-            log.debug("Recived response entity of {} bytes", responseEntity.length);
-
-            cachedResourceETag = getETag(response);
-            cachedResourceLastModified = getLastModified(response);
-            log.debug("HTTP response included an ETag of {} and a Last-Modified of {}", cachedResourceETag,
-                    cachedResourceLastModified);
-
-            saveToBackupFile(responseEntity, cachedResourceETag, cachedResourceLastModified);
-
-            return new ByteArrayInputStream(responseEntity);
-        } catch (Exception e) {
-            log.debug(
-                    "Error retrieving metadata from '{}' and saving backup copy to '{}'.  Reading data from cached copy if available",
-                    resourceUrl, getBackupFilePath());
-            return getInputStreamFromBackupFile();
-        }
-    }
-
-    /**
-     * Saves the resource data to the backup file and optionally, based on {@link #savingConditionalGetData}, the
-     * associated ETag and/or Last-Modified.
-     * 
-     * When this method is invoked a temp file is created, the data written to it, and then the existing backup file is
-     * deleted and the temp file renamed to the backup file.
-     * 
-     * @param data resource data to be written to the backup file, never null
-     * @param etag ETag data associated with the current data, may be null
-     * @param lastModified Last-Modified data associated with the current data, may be null
-     * 
-     * @throws IOException thrown if there is a problem writing the backup file (e.g. if the process does not have write
-     *             permission to the backup file)
-     */
-    private void saveToBackupFile(final byte[] data, String etag, String lastModified) throws IOException {
-        log.debug("Saving backup of response to {}", backupFile.getAbsolutePath());
-
-        final Pair<File, File> tmpFiles = saveToTempFiles(data, etag, lastModified);
-        final File tmpDataFile = tmpFiles.getFirst();
-        final File tmpPropFile = tmpFiles.getSecond();
-
-        if (backupFile.exists()) {
-            backupFile.delete();
-        }
-        if (!tmpDataFile.renameTo(backupFile)) {
-            tmpDataFile.delete();
-            if (tmpPropFile.exists()) {
-                tmpPropFile.delete();
-            }
-            log.debug("Unable to copy temporary data file to {}", backupFile.getAbsolutePath());
-            return;
-        }
-        backupFileCreationInstant = backupFile.lastModified();
-
-        if (propFile.exists()) {
-            propFile.delete();
-        }
-        if (tmpPropFile != null) {
-            if (!tmpPropFile.renameTo(propFile)) {
-                tmpPropFile.delete();
-                log.debug("Unable to copy temporary property file to {}.props", backupFile.getAbsolutePath());
-            }
-        }
-
-        log.debug("Wrote {} bytes to backup file {}", backupFile.length(), backupFile.getAbsolutePath());
-    }
-
-    /**
-     * Writes the data to temporary files.
-     * 
-     * @param data data to be saved
-     * @param etag ETag data associated with the current data, may be null
-     * @param lastModified Last-Modified data associated with the current data, may be null
-     * 
-     * @return the temp files; the first file is the data file and the second file is the property file and may be null
-     *         if no data was written
-     * 
-     * @throws IOException thrown if there is a problem writing the temporary data to disk
-     */
-    private Pair<File, File> saveToTempFiles(final byte[] data, String etag, String lastModified) throws IOException {
-        final String tmpFileName = Integer.toString(resourceUrl.hashCode());
-
-        final File tmpPropFile;
-        if (savingConditionalGetData && (etag != null || lastModified != null)) {
-            tmpPropFile = File.createTempFile(tmpFileName, "props");
-            Properties props = new Properties();
-            if (etag != null) {
-                props.put("etag", etag);
-            }
-            if (lastModified != null) {
-                props.put("modified", lastModified);
-            }
-
-            props.store(new FileWriter(tmpPropFile), "Properties for URL " + resourceUrl);
-        } else {
-            tmpPropFile = null;
-        }
-
-        final File tmpDataFile = File.createTempFile(Integer.toString(resourceUrl.hashCode()), null);
-        final FileOutputStream out = new FileOutputStream(tmpDataFile);
-        out.write(data);
-        out.flush();
-        CloseableSupport.closeQuietly(out);
-
-        return new Pair<File, File>(tmpDataFile, tmpPropFile);
+        /**
+         * Customizes the given {@link HttpResponse}.
+         * 
+         * @param httpResponse the current {@link HttpResponse}
+         * 
+         * @return the customized {@link HttpResponse}
+         */
+        public HttpResponse customize(@NotNull final HttpResponse httpResponse);
     }
 }

@@ -18,9 +18,7 @@
 package org.opensaml.util.net;
 
 import java.io.File;
-import java.io.FileReader;
 import java.io.InputStream;
-import java.util.Properties;
 
 import org.apache.http.client.HttpClient;
 import org.opensaml.util.resource.ResourceException;
@@ -35,7 +33,7 @@ public class HttpResourceTest {
     private HttpClient httpClient;
 
     private File backupFile;
-    
+
     private File propFile;
 
     @BeforeTest
@@ -48,9 +46,9 @@ public class HttpResourceTest {
         if (backupFile.exists()) {
             backupFile.delete();
         }
-        
+
         propFile = new File(backupFile.getAbsolutePath() + ".props");
-        if(propFile.exists()){
+        if (propFile.exists()) {
             propFile.delete();
         }
     }
@@ -60,8 +58,8 @@ public class HttpResourceTest {
         if (backupFile.exists()) {
             backupFile.delete();
         }
-        
-        if(propFile.exists()){
+
+        if (propFile.exists()) {
             propFile.delete();
         }
     }
@@ -69,48 +67,40 @@ public class HttpResourceTest {
     @Test
     public void testInvalidInstantiation() {
         try {
-            new HttpResource(null, httpClient, backupFile.getAbsolutePath(), false);
+            new HttpResource(null, "http://example.org");
             Assert.fail();
         } catch (IllegalArgumentException e) {
             // expected this
         }
 
         try {
-            new HttpResource("http://example.org", null, backupFile.getAbsolutePath(), false);
+            new HttpResource(httpClient, null);
             Assert.fail();
         } catch (IllegalArgumentException e) {
             // expected this
         }
 
-        try {
-            new HttpResource("http://example.org", httpClient, null, false);
-            Assert.fail();
-        } catch (IllegalArgumentException e) {
-            // expected this
-        }
     }
 
     @Test
     public void testValidUrl() throws Exception {
         String url = "http://shibboleth.net";
 
-        HttpResource resource = new HttpResource(url, httpClient, backupFile.getAbsolutePath(), false);
+        HttpResource resource = new HttpResource(httpClient, url);
         Assert.assertEquals(resource.getLocation(), url);
 
         Assert.assertTrue(resource.exists());
 
         InputStream ins = resource.getInputStream();
         Assert.assertNotNull(ins);
-
         Assert.assertTrue(ins.available() > 0);
-        Assert.assertEquals(resource.getCacheInstant(), resource.getBackupFileCreationInstant());
     }
 
     @Test
     public void testInvalidUrl() throws Exception {
         String url = "http://shibboleth.net/lkjeiocjkljn";
 
-        HttpResource resource = new HttpResource(url, httpClient, backupFile.getAbsolutePath(), false);
+        HttpResource resource = new HttpResource(httpClient, url);
         Assert.assertEquals(resource.getLocation(), url);
 
         Assert.assertFalse(resource.exists());
@@ -121,18 +111,5 @@ public class HttpResourceTest {
         } catch (ResourceException e) {
             // expected this
         }
-    }
-
-    @Test
-    public void testSaveConditionalGetData() throws Exception {
-        String url = "http://shibboleth.net";
-        HttpResource resource = new HttpResource(url, httpClient, backupFile.getAbsolutePath(), true);
-        resource.getInputStream();
-
-        Assert.assertTrue(propFile.exists());
-
-        Properties props = new Properties();
-        props.load(new FileReader(propFile));
-        Assert.assertTrue(props.containsKey(HttpResource.LAST_MODIFIED_PROP));
     }
 }
