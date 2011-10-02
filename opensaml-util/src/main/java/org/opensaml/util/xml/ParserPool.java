@@ -25,9 +25,10 @@ import javax.xml.validation.Schema;
 
 import org.w3c.dom.Document;
 
-/**
- * A pool of XML parsers.
- */
+//TODO needs to implement destructable and verifiable component
+//TODO may need to implement initializable component
+
+/** A pool of XML parsers. */
 public interface ParserPool {
 
     /**
