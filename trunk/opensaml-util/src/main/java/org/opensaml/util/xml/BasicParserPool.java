@@ -227,9 +227,9 @@ public class BasicParserPool implements ParserPool {
             final Document document = builder.parse(input);
             return document;
         } catch (SAXException e) {
-            throw new XMLParserException("Invalid XML", e);
+            throw new XMLParserException("Unable to parse inputstream, it containsed invalid XML", e);
         } catch (IOException e) {
-            throw new XMLParserException("Unable to read XML from input stream", e);
+            throw new XMLParserException("Unable to read data from input stream", e);
         } finally {
             returnBuilder(builder);
         }
@@ -532,7 +532,7 @@ public class BasicParserPool implements ParserPool {
 
             return builder;
         } catch (ParserConfigurationException e) {
-            log.error("Unable to create new document builder", e);
+            log.debug("Unable to create new document builder", e);
             throw new XMLParserException("Unable to create new document builder", e);
         }
     }
