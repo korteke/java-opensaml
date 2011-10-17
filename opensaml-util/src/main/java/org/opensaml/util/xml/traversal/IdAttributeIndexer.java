@@ -17,33 +17,79 @@
 
 package org.opensaml.util.xml.traversal;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.xml.namespace.QName;
+
+import org.opensaml.util.constraint.documented.NoNullElements;
+import org.opensaml.util.constraint.documented.NotNull;
+import org.opensaml.util.constraint.documented.Unmodifiable;
+import org.opensaml.util.xml.QNameSupport;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-import org.w3c.dom.UserDataHandler;
 
 /**
  * This {@link NodeVisitor} performs two tasks. One it creates an index, stored as use data on the {@link Document}
  * node, that maps an ID to the element that carries that ID. Second, it ensure thats all IDs in the document are
- * unique. This visitor only works if the first node in the traversal is either a {@link Document} or an {@link Element}
- * that is the document element.
+ * unique.
  * 
  * In addition to attributes which are known to be ID attributes (i.e., {@link Attr#isId()} returns true) this visitor
  * can treat other attributes as ID attributes. This is helpful if the content model of the document is known ahead of
  * time and schema validation is not used (and thus ID attributes are not marked as such).
  * 
- * This visitor installs a {@link UserDataHandler} on all {@link Element} and {@link Attr} nodes and uses this to keep
- * the ID index up to date across DOM mutations.
- * 
- * If, at any point, the uniqueness constraint on IDs is violated, a {@link DuplicateIdException} will be thrown.
+ * This visitor only works if the first node in the traversal is either a {@link Document} or an {@link Element} that is
+ * the document element. If more than one element has the same ID a {@link DuplicateIdException} is thrown.
  */
 public class IdAttributeIndexer implements NodeVisitor {
 
     /** The name under which the ID index will be stored as {@link Document} user data. */
     private static final String USER_DATA_NAME = IdAttributeIndexer.class.getPackage().getName() + ".IdIndex";
+
+    /** Name of attributes that should be considered ID attribute, regardless of whether {@link Attr#isId()} is true. */
+    private Set<QName> idAttributes;
+
+    /** Constructor. */
+    public IdAttributeIndexer() {
+        idAttributes = Collections.emptySet();
+    }
+
+    /**
+     * Gets attributes considered ID attributes.
+     * 
+     * @return attributes considered ID attributes
+     */
+    public @NotNull @NoNullElements @Unmodifiable Set<QName> getIdAttributes() {
+        return idAttributes;
+    }
+
+    /**
+     * Sets the attributes considered ID attributes.
+     * 
+     * @param attributes attributes considered ID attributes
+     */
+    public void setIdAttributes(final Set<QName> attributes) {
+        if (attributes == null || attributes.isEmpty()) {
+            idAttributes = Collections.emptySet();
+        }
+
+        HashSet<QName> newIdAttributes = new HashSet<QName>();
+        for (QName attribute : attributes) {
+            if (attribute != null) {
+                newIdAttributes.add(attribute);
+            }
+        }
+
+        if (newIdAttributes.isEmpty()) {
+            idAttributes = Collections.emptySet();
+        } else {
+            idAttributes = Collections.unmodifiableSet(attributes);
+        }
+    }
 
     /** {@inheritDoc} */
     public boolean supportsNodeType(Short nodeType) {
@@ -70,10 +116,25 @@ public class IdAttributeIndexer implements NodeVisitor {
 
     /** {@inheritDoc} */
     public void visit(Node node) throws TraversalException {
-        Attr attribute = (Attr) node;
+        final Attr attribute = (Attr) node;
+        final QName attributeName = QNameSupport.getNodeQName(attribute);
 
-        // TODO Auto-generated method stub
+        if (idAttributes.contains(attributeName)) {
+            final HashMap<String, Element> idIndex =
+                    (HashMap<String, Element>) node.getOwnerDocument().getUserData(USER_DATA_NAME);
+            final Element element = attribute.getOwnerElement();
 
+            final String id = attribute.getValue();
+            if (idIndex.containsKey(id)) {
+                final Element previousElement = idIndex.get(id);
+                throw new DuplicateIdException("An element with a name of " + QNameSupport.getNodeQName(element)
+                        + " with ID attribute " + attributeName + " has an ID of " + id
+                        + " which already refers to an element with a name of "
+                        + QNameSupport.getNodeQName(previousElement));
+            } else {
+                idIndex.put(id, element);
+            }
+        }
     }
 
     /** {@inheritDoc} */
@@ -119,19 +180,5 @@ public class IdAttributeIndexer implements NodeVisitor {
         public DuplicateIdException(String message, Exception wrappedException) {
             super(message, wrappedException);
         }
-    }
-
-    /**
-     * {@link UserDataHandler} that keeps the ID index, located on the {@link Document}, up to date across DOM
-     * mutations.
-     */
-    private class UpdatingIdIndexHandler implements UserDataHandler {
-
-        /** {@inheritDoc} */
-        public void handle(short operation, String key, Object data, Node src, Node dst) {
-            // TODO Auto-generated method stub
-
-        }
-
     }
 }
