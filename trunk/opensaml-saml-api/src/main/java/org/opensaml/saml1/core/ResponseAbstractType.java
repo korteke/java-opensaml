@@ -56,15 +56,12 @@ public interface ResponseAbstractType extends SignableSAMLObject {
     /** Set the ID */
     public void setID(String id);
     
-    /** Return the Minor Version (attribute). */
-    public int getMinorVersion();
-    
     /**
-     * Gets the major version of this SAML message.
+     * Sets the SAML version for this message.
      * 
-     * @return the major version of this SAML message
+     * @return SAML version for this message
      */
-    public int getMajorVersion();
+    public SAMLVersion getVersion();
     
     /**
      * Sets the SAML version for this message.

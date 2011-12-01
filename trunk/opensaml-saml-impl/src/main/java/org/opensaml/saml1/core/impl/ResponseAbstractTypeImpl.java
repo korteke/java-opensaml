@@ -81,15 +81,10 @@ public abstract class ResponseAbstractTypeImpl extends AbstractSignableSAMLObjec
     }
 
     /** {@inheritDoc} */
-    public int getMinorVersion() {
-        return version.getMinorVersion();
+    public SAMLVersion getVersion() {
+        return version;
     }
-
-    /** {@inheritDoc} */
-    public int getMajorVersion() {
-        return version.getMajorVersion();
-    }
-
+    
     /** {@inheritDoc} */
     public void setVersion(SAMLVersion newVersion) {
         version = prepareForAssignment(version, newVersion);
