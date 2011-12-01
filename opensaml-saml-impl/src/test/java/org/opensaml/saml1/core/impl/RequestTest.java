@@ -78,7 +78,7 @@ public class RequestTest extends BaseSAMLObjectProviderTestCase {
         Request request = (Request) unmarshallElement(singleElementOptionalAttributesFile);
         
         assertEquals("ID", expectedID, request.getID());
-        assertEquals("MinorVersion", expectedMinorVersion, request.getMinorVersion());
+        assertEquals("MinorVersion", expectedMinorVersion, request.getVersion().getMinorVersion());
         assertEquals("IssueInstant", expectedIssueInstant, request.getIssueInstant());
         
     }

@@ -22,7 +22,9 @@
 package org.opensaml.saml1.core.impl;
 
 import org.opensaml.Configuration;
+import org.opensaml.common.SAMLVersion;
 import org.opensaml.common.impl.AbstractSAMLObjectMarshaller;
+import org.opensaml.saml1.core.RequestAbstractType;
 import org.opensaml.saml1.core.ResponseAbstractType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
@@ -39,7 +41,7 @@ public abstract class ResponseAbstractTypeMarshaller extends AbstractSAMLObjectM
 
         if (response.getID() != null) {
             domElement.setAttributeNS(null, ResponseAbstractType.ID_ATTRIB_NAME, response.getID());
-            if (response.getMinorVersion() != 0) {
+            if (response.getVersion() != SAMLVersion.VERSION_10) {
                 domElement.setIdAttributeNS(null, ResponseAbstractType.ID_ATTRIB_NAME, true);
             }
         }
@@ -53,11 +55,10 @@ public abstract class ResponseAbstractTypeMarshaller extends AbstractSAMLObjectM
             domElement.setAttributeNS(null, ResponseAbstractType.ISSUEINSTANT_ATTRIB_NAME, date);
         }
 
-        if (response.getMinorVersion() != 0) {
-            String minorVersion = Integer.toString(response.getMinorVersion());
-            domElement.setAttributeNS(null, ResponseAbstractType.MINORVERSION_ATTRIB_NAME, minorVersion);
-            domElement.setAttributeNS(null, ResponseAbstractType.MAJORVERSION_ATTRIB_NAME, "1");
-        }
+        domElement.setAttributeNS(null, RequestAbstractType.MAJORVERSION_ATTRIB_NAME,
+                Integer.toString(response.getVersion().getMajorVersion()));
+        domElement.setAttributeNS(null, RequestAbstractType.MINORVERSION_ATTRIB_NAME,
+                Integer.toString(response.getVersion().getMinorVersion()));
 
         if (response.getRecipient() != null) {
             domElement.setAttributeNS(null, ResponseAbstractType.RECIPIENT_ATTRIB_NAME, response.getRecipient());

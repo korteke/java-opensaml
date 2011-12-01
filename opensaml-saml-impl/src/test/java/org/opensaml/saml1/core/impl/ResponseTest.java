@@ -108,7 +108,7 @@ public class ResponseTest extends BaseSAMLObjectProviderTestCase {
         string = response.getRecipient();
         assertEquals("Recipient attribute ", expectedRecipient, string);
 
-        int i = response.getMinorVersion();
+        int i = response.getVersion().getMinorVersion();
         assertEquals("MinorVersion attribute ", expectedMinorVersion, i);
     }
 

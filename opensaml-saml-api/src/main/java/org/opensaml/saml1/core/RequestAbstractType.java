@@ -44,20 +44,18 @@ public interface RequestAbstractType extends SignableSAMLObject {
     /** Name for the attribute which defines the Issue Instant. */
     public final static String ID_ATTRIB_NAME = "RequestID";
 
-    /**
-     * Gets the major version of this SAML message.
+    /** 
+     * Gets the SAML version of this message. 
      * 
-     * @return the major version of this SAML message
+     * @return the SAML version of this message
      */
-    public int getMajorVersion();
+    public SAMLVersion getVersion();
     
     /**
-     * Gets the minor version of this SAML message.
+     * Sets the SAML version of this message.
      * 
-     * @return the minor version of this SAML message
+     * @param version SAML version of this message
      */
-    public int getMinorVersion();
-    
     public void setVersion(SAMLVersion version);
       
     /** Get the issue instant */

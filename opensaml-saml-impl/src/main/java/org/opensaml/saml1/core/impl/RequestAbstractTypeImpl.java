@@ -72,13 +72,8 @@ public abstract class RequestAbstractTypeImpl extends AbstractSignableSAMLObject
     }
 
     /** {@inheritDoc} */
-    public int getMajorVersion() {
-        return version.getMajorVersion();
-    }
-
-    /** {@inheritDoc} */
-    public int getMinorVersion() {
-        return version.getMinorVersion();
+    public SAMLVersion getVersion() {
+        return version;
     }
 
     /** {@inheritDoc} */

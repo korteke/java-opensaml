@@ -21,6 +21,7 @@
 
 package org.opensaml.saml1.core.validator;
 
+import org.opensaml.common.SAMLVersion;
 import org.opensaml.saml1.core.RequestAbstractType;
 import org.opensaml.util.StringSupport;
 import org.opensaml.xml.validation.ValidationException;
@@ -47,7 +48,7 @@ public class RequestAbstractTypeSchemaValidator<RequestType extends RequestAbstr
      * @throws ValidationException
      */
     protected void validateVersion(RequestAbstractType request) throws ValidationException {
-        if ((request.getMajorVersion() != 1) && (request.getMinorVersion() != 0 || request.getMinorVersion() != 1)) {
+        if (request.getVersion() != SAMLVersion.VERSION_10 || request.getVersion() != SAMLVersion.VERSION_11) {
             throw new ValidationException("Invalid Version");
         }
     }

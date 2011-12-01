@@ -48,7 +48,7 @@ public abstract class RequestAbstractTypeUnmarshaller extends AbstractSAMLObject
     public XMLObject unmarshall(Element domElement) throws UnmarshallingException {
         // After regular unmarshalling, check the minor version and set ID-ness if not SAML 1.0
         RequestAbstractType request = (RequestAbstractType) super.unmarshall(domElement);
-        if (request.getMinorVersion() != 0 && !StringSupport.isNullOrEmpty(request.getID())) {
+        if (request.getVersion() != SAMLVersion.VERSION_10 && !StringSupport.isNullOrEmpty(request.getID())) {
             domElement.setIdAttributeNS(null, RequestAbstractType.ID_ATTRIB_NAME, true);
         }
         return request;
