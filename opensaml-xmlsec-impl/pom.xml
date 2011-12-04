@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
 
@@ -21,11 +22,7 @@
             <artifactId>opensaml-xmlsec-api</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>opensaml-security-api</artifactId>
-            <version>${project.version}</version>
-        </dependency>
+        <!-- TODO This needs to be removed once classes are moved from security-impl to security-api -->
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>opensaml-security-impl</artifactId>
@@ -38,19 +35,13 @@
 
         <!-- Test Dependencies -->
         <dependency>
-            <groupId>xmlunit</groupId>
-            <artifactId>xmlunit</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>opensaml-core</artifactId>
             <version>${project.version}</version>
             <type>test-jar</type>
             <scope>test</scope>
         </dependency>
-
-        <!-- Managed Dependencies -->
-
+        
     </dependencies>
+    
 </project>

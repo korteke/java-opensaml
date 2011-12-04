@@ -17,17 +17,11 @@
 
     <dependencies>
         <!-- Compile Dependencies -->
-
-        <!-- Provided Dependencies -->
-
-        <!-- Runtime Dependencies -->
-
-        <!-- Test Dependencies -->
-
-        <!-- Managed Dependencies -->
         <dependency>
+            <!-- Required if you're using the HttpResource or HttpClientBuilder -->
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>edu.vt.middleware</groupId>
@@ -37,10 +31,17 @@
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
         </dependency>
+
+        <!-- Provided Dependencies -->
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
         </dependency>
-    </dependencies>
 
+        <!-- Runtime Dependencies -->
+
+        <!-- Test Dependencies -->
+
+    </dependencies>
+    
 </project>
