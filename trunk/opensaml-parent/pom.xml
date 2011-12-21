@@ -11,7 +11,11 @@
     </parent>
 
     <name>OpenSAML</name>
-    <description>A library for creating, reading, writing and performing some processing of SAML message.</description>
+    <description>
+        A library for creating, reading, writing and performing some processing of SAML messages.
+        
+        For further information see https://wiki.shibboleth.net/confluence/display/OS30/Home
+    </description>
     
     <groupId>org.opensaml</groupId>
     <artifactId>opensaml-parent</artifactId>
