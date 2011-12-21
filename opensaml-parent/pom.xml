@@ -11,14 +11,16 @@
     </parent>
 
     <name>OpenSAML</name>
+    <description>A library for creating, reading, writing and performing some processing of SAML message.</description>
+    
     <groupId>org.opensaml</groupId>
     <artifactId>opensaml-parent</artifactId>
     <version>3.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <modules>
-        <module>../opensaml-core</module>
         <module>../opensaml-util</module>
+        <module>../opensaml-core</module>
         <module>../opensaml-security-api</module>
         <module>../opensaml-security-impl</module>
         <module>../opensaml-xmlsec-api</module>
@@ -103,26 +105,5 @@
 
         </dependencies>
     </dependencyManagement>
-
-    <profiles>
-        <profile>
-            <id>release</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-javadoc-plugin</artifactId>
-                        <version>2.7</version>
-                        <configuration>
-                            <links>
-                                <link>http://hc.apache.org/httpcomponents-client-ga/httpclient/apidocs/</link>
-                                <link>http://vt-middleware.googlecode.com/svn/vt-crypt/javadoc/vt-crypt-2.1.3/</link>
-                            </links>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
-
+    
 </project>
