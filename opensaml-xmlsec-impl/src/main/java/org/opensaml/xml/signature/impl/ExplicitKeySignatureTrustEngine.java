@@ -17,9 +17,9 @@
 
 package org.opensaml.xml.signature.impl;
 
-import org.opensaml.util.StringSupport;
-import org.opensaml.util.criteria.CriteriaSet;
-import org.opensaml.util.resolver.ResolverException;
+import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
+import net.shibboleth.utilities.java.support.resolver.ResolverException;
+
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.XMLSecurityHelper;
 import org.opensaml.xml.security.XMLSigningUtil;
@@ -35,6 +35,8 @@ import org.opensaml.xml.signature.Signature;
 import org.opensaml.xml.signature.SignatureTrustEngine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.base.Strings;
 
 /**
  * An implementation of {@link SignatureTrustEngine} which evaluates the validity and trustworthiness of XML and raw
@@ -92,7 +94,7 @@ public class ExplicitKeySignatureTrustEngine extends BaseSignatureTrustEngine<It
             criteriaSet.add(new UsageCriterion(UsageType.SIGNING));
         }
         String jcaAlgorithm = XMLSecurityHelper.getKeyAlgorithmFromURI(signature.getSignatureAlgorithm());
-        if (!StringSupport.isNullOrEmpty(jcaAlgorithm)) {
+        if (!Strings.isNullOrEmpty(jcaAlgorithm)) {
             criteriaSet.add(new KeyAlgorithmCriterion(jcaAlgorithm), true);
         }
 
@@ -134,7 +136,7 @@ public class ExplicitKeySignatureTrustEngine extends BaseSignatureTrustEngine<It
             criteriaSet.add(new UsageCriterion(UsageType.SIGNING));
         }
         String jcaAlgorithm = XMLSecurityHelper.getKeyAlgorithmFromURI(algorithmURI);
-        if (!StringSupport.isNullOrEmpty(jcaAlgorithm)) {
+        if (!Strings.isNullOrEmpty(jcaAlgorithm)) {
             criteriaSet.add(new KeyAlgorithmCriterion(jcaAlgorithm), true);
         }
 

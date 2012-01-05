@@ -19,13 +19,14 @@ package org.opensaml.ws.wssecurity.impl;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.util.StringSupport;
 import org.opensaml.util.xml.QNameSupport;
 import org.opensaml.ws.wssecurity.AttributedDateTime;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.util.XMLObjectHelper;
 import org.w3c.dom.Attr;
+
+import com.google.common.base.Strings;
 
 /**
  * AttributedDateTimeUnmarshaller.
@@ -50,7 +51,7 @@ public class AttributedDateTimeUnmarshaller extends AbstractWSSecurityObjectUnma
     /** {@inheritDoc} */
     protected void processElementContent(XMLObject xmlObject, String elementContent) {
         AttributedDateTime dateTime = (AttributedDateTime) xmlObject;
-        if (!StringSupport.isNullOrEmpty(elementContent)) {
+        if (!Strings.isNullOrEmpty(elementContent)) {
             dateTime.setValue(elementContent);
         }
     }

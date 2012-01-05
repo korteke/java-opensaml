@@ -21,7 +21,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.StringReader;
-import java.io.StringWriter;
 
 import org.joda.time.DateTime;
 import org.opensaml.Configuration;

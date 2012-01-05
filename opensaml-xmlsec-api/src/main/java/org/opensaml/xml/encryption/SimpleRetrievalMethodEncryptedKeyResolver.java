@@ -20,13 +20,13 @@ package org.opensaml.xml.encryption;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.opensaml.util.StringSupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.signature.RetrievalMethod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Objects;
+import com.google.common.base.Strings;
 
 /**
  * Implementation of {@link EncryptedKeyResolver} which finds {@link EncryptedKey} elements by dereferencing
@@ -81,7 +81,7 @@ public class SimpleRetrievalMethodEncryptedKeyResolver extends AbstractEncrypted
      */
     protected EncryptedKey dereferenceURI(RetrievalMethod rm) {
         String uri = rm.getURI();
-        if (StringSupport.isNullOrEmpty(uri) || !uri.startsWith("#")) {
+        if (Strings.isNullOrEmpty(uri) || !uri.startsWith("#")) {
             log.warn("EncryptedKey RetrievalMethod did not contain a same-document URI reference, can not process");
             return null;
         }

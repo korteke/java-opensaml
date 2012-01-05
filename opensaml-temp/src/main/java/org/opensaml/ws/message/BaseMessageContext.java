@@ -17,7 +17,8 @@
 
 package org.opensaml.ws.message;
 
-import org.opensaml.util.StringSupport;
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
+
 import org.opensaml.ws.message.handler.HandlerChainResolver;
 import org.opensaml.ws.security.SecurityPolicyResolver;
 import org.opensaml.ws.transport.InTransport;

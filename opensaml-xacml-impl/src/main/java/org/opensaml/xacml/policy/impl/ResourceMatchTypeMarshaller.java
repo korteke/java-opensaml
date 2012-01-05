@@ -17,12 +17,13 @@
 
 package org.opensaml.xacml.policy.impl;
 
-import org.opensaml.util.StringSupport;
 import org.opensaml.xacml.impl.AbstractXACMLObjectMarshaller;
 import org.opensaml.xacml.policy.ResourceMatchType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
 import org.w3c.dom.Element;
+
+import com.google.common.base.Strings;
 
 /** Marshaller of {@link ResourceMatchType} objects. */
 public class ResourceMatchTypeMarshaller extends AbstractXACMLObjectMarshaller {
@@ -36,7 +37,7 @@ public class ResourceMatchTypeMarshaller extends AbstractXACMLObjectMarshaller {
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         ResourceMatchType matchType = (ResourceMatchType) xmlObject;
 
-        if (!StringSupport.isNullOrEmpty(matchType.getMatchId())) {
+        if (!Strings.isNullOrEmpty(matchType.getMatchId())) {
             domElement.setAttribute(ResourceMatchType.MATCH_ID_ATTRIB_NAME, matchType.getMatchId());
         }
     }

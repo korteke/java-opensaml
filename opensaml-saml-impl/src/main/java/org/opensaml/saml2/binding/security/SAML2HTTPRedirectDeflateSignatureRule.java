@@ -23,12 +23,13 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.opensaml.common.binding.SAMLMessageContext;
 import org.opensaml.common.binding.security.BaseSAMLSimpleSignatureSecurityPolicyRule;
-import org.opensaml.util.StringSupport;
 import org.opensaml.ws.security.SecurityPolicyException;
 import org.opensaml.ws.transport.http.HTTPTransportUtils;
 import org.opensaml.xml.signature.SignatureTrustEngine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.base.Strings;
 
 /**
  * Security policy which evaluates simple "blob" signatures according to the SAML 2 HTTP-Redirect DEFLATE binding.
@@ -64,7 +65,7 @@ public class SAML2HTTPRedirectDeflateSignatureRule extends BaseSAMLSimpleSignatu
         log.debug("Constructing signed content string from URL query string {}", queryString);
 
         String constructed = buildSignedContentString(queryString);
-        if (StringSupport.isNullOrEmpty(constructed)) {
+        if (Strings.isNullOrEmpty(constructed)) {
             log.warn("Could not extract signed content string from query string");
             return null;
         }

@@ -24,9 +24,10 @@ package org.opensaml.saml1.core.validator;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml1.core.AuthorityBinding;
-import org.opensaml.util.StringSupport;
 import org.opensaml.xml.validation.ValidationException;
 import org.opensaml.xml.validation.Validator;
+
+import com.google.common.base.Strings;
 
 /**
  * Checks {@link org.opensaml.saml1.core.AuthorityBinding} for Schema compliance.
@@ -64,7 +65,7 @@ public class AuthorityBindingSchemaValidator implements Validator<AuthorityBindi
      * @throws ValidationException
      */
     protected void validateLocation(AuthorityBinding authorityBinding) throws ValidationException {
-        if (StringSupport.isNullOrEmpty(authorityBinding.getLocation())) {
+        if (Strings.isNullOrEmpty(authorityBinding.getLocation())) {
             throw new ValidationException("Location attribute not present or invalid ");
         }
     }
@@ -75,7 +76,7 @@ public class AuthorityBindingSchemaValidator implements Validator<AuthorityBindi
      * @throws ValidationException
      */
     protected void validateBinding(AuthorityBinding authorityBinding) throws ValidationException {
-        if (StringSupport.isNullOrEmpty(authorityBinding.getBinding())) {
+        if (Strings.isNullOrEmpty(authorityBinding.getBinding())) {
             throw new ValidationException("Binding attribute not present or invalid ");
         }
     }

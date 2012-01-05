@@ -24,6 +24,9 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
+import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
+import net.shibboleth.utilities.java.support.resolver.ResolverException;
+
 import org.opensaml.common.BaseTestCase;
 import org.opensaml.common.SAMLTestHelper;
 import org.opensaml.core.config.ConfigurationService;
@@ -32,8 +35,6 @@ import org.opensaml.saml2.metadata.EntityDescriptor;
 import org.opensaml.saml2.metadata.IDPSSODescriptor;
 import org.opensaml.saml2.metadata.RoleDescriptor;
 import org.opensaml.saml2.metadata.provider.DOMMetadataProvider;
-import org.opensaml.util.criteria.CriteriaSet;
-import org.opensaml.util.resolver.ResolverException;
 import org.opensaml.xml.security.BasicSecurityConfiguration;
 import org.opensaml.xml.security.SecurityConfiguration;
 import org.opensaml.xml.security.SecurityException;

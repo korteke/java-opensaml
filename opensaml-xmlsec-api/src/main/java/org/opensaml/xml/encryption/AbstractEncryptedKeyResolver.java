@@ -20,8 +20,11 @@ package org.opensaml.xml.encryption;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.opensaml.util.StringSupport;
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
+
 import org.opensaml.xml.security.keyinfo.KeyInfoHelper;
+
+import com.google.common.base.Strings;
 
 /**
  * Abstract class implementation for {@link EncryptedKeyResolver}.
@@ -68,7 +71,7 @@ public abstract class AbstractEncryptedKeyResolver implements EncryptedKeyResolv
      */
     protected boolean matchCarriedKeyName(EncryptedData encryptedData, EncryptedKey encryptedKey) {
         if (encryptedKey.getCarriedKeyName() == null 
-                || StringSupport.isNullOrEmpty(encryptedKey.getCarriedKeyName().getValue()) ) {
+                || Strings.isNullOrEmpty(encryptedKey.getCarriedKeyName().getValue()) ) {
             return true;
         }
         
@@ -98,13 +101,13 @@ public abstract class AbstractEncryptedKeyResolver implements EncryptedKeyResolv
             return true;
         }
         
-        if (StringSupport.isNullOrEmpty(encryptedData.getID())) {
+        if (Strings.isNullOrEmpty(encryptedData.getID())) {
             return false;
         }
         
         List<DataReference> drlist = encryptedKey.getReferenceList().getDataReferences();
         for (DataReference dr : drlist) {
-            if (StringSupport.isNullOrEmpty(dr.getURI()) || ! dr.getURI().startsWith("#") ) {
+            if (Strings.isNullOrEmpty(dr.getURI()) || ! dr.getURI().startsWith("#") ) {
                 continue;
             }
             if (dr.resolveIDFromRoot(dr.getURI().substring(1)) == encryptedData) {

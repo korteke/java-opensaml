@@ -20,8 +20,9 @@ package org.opensaml.xml.security.credential;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.opensaml.util.criteria.CriteriaSet;
-import org.opensaml.util.resolver.ResolverException;
+import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
+import net.shibboleth.utilities.java.support.resolver.ResolverException;
+
 import org.opensaml.xml.security.credential.criteria.EvaluableCredentialCriteriaRegistry;
 import org.opensaml.xml.security.credential.criteria.EvaluableCredentialCriterion;
 

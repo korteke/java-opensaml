@@ -27,7 +27,6 @@ import org.opensaml.common.SAMLVersion;
 import org.opensaml.common.impl.AbstractSAMLObjectUnmarshaller;
 import org.opensaml.saml1.core.RequestAbstractType;
 import org.opensaml.saml1.core.RespondWith;
-import org.opensaml.util.StringSupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.signature.Signature;
@@ -35,6 +34,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
+
+import com.google.common.base.Strings;
 
 /**
  * A thread safe Unmarshaller for {@link org.opensaml.saml1.core.RequestAbstractType} objects.
@@ -48,7 +49,7 @@ public abstract class RequestAbstractTypeUnmarshaller extends AbstractSAMLObject
     public XMLObject unmarshall(Element domElement) throws UnmarshallingException {
         // After regular unmarshalling, check the minor version and set ID-ness if not SAML 1.0
         RequestAbstractType request = (RequestAbstractType) super.unmarshall(domElement);
-        if (request.getVersion() != SAMLVersion.VERSION_10 && !StringSupport.isNullOrEmpty(request.getID())) {
+        if (request.getVersion() != SAMLVersion.VERSION_10 && !Strings.isNullOrEmpty(request.getID())) {
             domElement.setIdAttributeNS(null, RequestAbstractType.ID_ATTRIB_NAME, true);
         }
         return request;
@@ -75,7 +76,7 @@ public abstract class RequestAbstractTypeUnmarshaller extends AbstractSAMLObject
         if (RequestAbstractType.ID_ATTRIB_NAME.equals(attribute.getLocalName())) {
             request.setID(attribute.getValue());
         } else if (RequestAbstractType.ISSUEINSTANT_ATTRIB_NAME.equals(attribute.getLocalName())
-                && !StringSupport.isNullOrEmpty(attribute.getValue())) {
+                && !Strings.isNullOrEmpty(attribute.getValue())) {
             DateTime cal = new DateTime(attribute.getValue(), ISOChronology.getInstanceUTC());
             request.setIssueInstant(cal);
         } else if (RequestAbstractType.MINORVERSION_ATTRIB_NAME.equals(attribute.getLocalName())) {

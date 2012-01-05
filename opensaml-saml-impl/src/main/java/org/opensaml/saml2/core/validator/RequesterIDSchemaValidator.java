@@ -21,9 +21,10 @@
 package org.opensaml.saml2.core.validator;
 
 import org.opensaml.saml2.core.RequesterID;
-import org.opensaml.util.StringSupport;
 import org.opensaml.xml.validation.ValidationException;
 import org.opensaml.xml.validation.Validator;
+
+import com.google.common.base.Strings;
 
 /**
  * Checks {@link org.opensaml.saml2.core.RequesterID} for Schema compliance.
@@ -44,7 +45,7 @@ public class RequesterIDSchemaValidator implements Validator<RequesterID> {
     }
 
     protected void validateRequesterID(RequesterID reqid) throws ValidationException {
-        if (StringSupport.isNullOrEmpty(reqid.getRequesterID())) {
+        if (Strings.isNullOrEmpty(reqid.getRequesterID())) {
             throw new ValidationException("RequesterID element must be non-empty");
         }
     }

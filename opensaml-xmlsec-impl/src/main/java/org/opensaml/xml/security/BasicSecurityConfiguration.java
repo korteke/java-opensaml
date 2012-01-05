@@ -22,12 +22,15 @@ import java.security.interfaces.DSAParams;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.opensaml.util.StringSupport;
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
+
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xml.security.keyinfo.NamedKeyInfoGeneratorManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.base.Strings;
 
 /**
  * Basic in-memory implementation of {@link SecurityConfiguration}.
@@ -406,7 +409,7 @@ public class BasicSecurityConfiguration implements SecurityConfiguration {
          * @param length the key length (optional, may be null)
          */
         protected DataEncryptionIndex(String jcaAlgorithmName, Integer length) {
-            if (StringSupport.isNullOrEmpty(jcaAlgorithmName)) {
+            if (Strings.isNullOrEmpty(jcaAlgorithmName)) {
                 throw new IllegalArgumentException("JCA Algorithm name may not be null or empty");
             }
             keyAlgorithm = StringSupport.trimOrNull(jcaAlgorithmName);
@@ -474,7 +477,7 @@ public class BasicSecurityConfiguration implements SecurityConfiguration {
          * @param wrappedKeyAlgorithm the JCA algorithm name of the key to be encrypted (optional, may be null)
          */
         protected KeyTransportEncryptionIndex(String jcaAlgorithmName, Integer length, String wrappedKeyAlgorithm) {
-            if (StringSupport.isNullOrEmpty(jcaAlgorithmName)) {
+            if (Strings.isNullOrEmpty(jcaAlgorithmName)) {
                 throw new IllegalArgumentException("JCA Algorithm name may not be null or empty");
             }
             keyAlgorithm = StringSupport.trimOrNull(jcaAlgorithmName);

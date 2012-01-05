@@ -17,7 +17,7 @@
 
 package org.opensaml.xml.schema;
 
-import org.opensaml.util.StringSupport;
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 /**
  * A class representing a boolean attribute. This class tracks the usage of the literals {true, false, 1, 0} to ensure

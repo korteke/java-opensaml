@@ -17,7 +17,8 @@
 
 package org.opensaml.xacml.ctx.provider;
 
-import org.opensaml.util.StringSupport;
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
+
 import org.opensaml.xacml.policy.ObligationType;
 
 import com.google.common.base.Objects;

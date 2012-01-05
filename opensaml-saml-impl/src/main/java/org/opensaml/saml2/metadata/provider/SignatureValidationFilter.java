@@ -19,12 +19,13 @@ package org.opensaml.saml2.metadata.provider;
 
 import java.util.Iterator;
 
+import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
+
 import org.opensaml.saml2.metadata.AffiliationDescriptor;
 import org.opensaml.saml2.metadata.EntitiesDescriptor;
 import org.opensaml.saml2.metadata.EntityDescriptor;
 import org.opensaml.saml2.metadata.RoleDescriptor;
 import org.opensaml.security.SAMLSignatureProfileValidator;
-import org.opensaml.util.criteria.CriteriaSet;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.credential.UsageType;

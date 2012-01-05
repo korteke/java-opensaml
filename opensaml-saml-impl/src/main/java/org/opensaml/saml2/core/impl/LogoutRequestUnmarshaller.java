@@ -24,10 +24,11 @@ import org.opensaml.saml2.core.EncryptedID;
 import org.opensaml.saml2.core.LogoutRequest;
 import org.opensaml.saml2.core.NameID;
 import org.opensaml.saml2.core.SessionIndex;
-import org.opensaml.util.StringSupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.w3c.dom.Attr;
+
+import com.google.common.base.Strings;
 
 /**
  * A thread-safe Unmarshaller for {@link org.opensaml.saml2.core.LogoutRequest} objects.
@@ -41,7 +42,7 @@ public class LogoutRequestUnmarshaller extends RequestAbstractTypeUnmarshaller {
         if (attribute.getLocalName().equals(LogoutRequest.REASON_ATTRIB_NAME)) {
             req.setReason(attribute.getValue());
         } else if (attribute.getLocalName().equals(LogoutRequest.NOT_ON_OR_AFTER_ATTRIB_NAME)
-                && !StringSupport.isNullOrEmpty(attribute.getValue())) {
+                && !Strings.isNullOrEmpty(attribute.getValue())) {
             req.setNotOnOrAfter(new DateTime(attribute.getValue(), ISOChronology.getInstanceUTC()));
         } else {
             super.processAttribute(samlObject, attribute);

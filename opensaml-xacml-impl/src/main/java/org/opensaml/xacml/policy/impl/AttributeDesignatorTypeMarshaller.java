@@ -17,12 +17,13 @@
 
 package org.opensaml.xacml.policy.impl;
 
-import org.opensaml.util.StringSupport;
 import org.opensaml.xacml.impl.AbstractXACMLObjectMarshaller;
 import org.opensaml.xacml.policy.AttributeDesignatorType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
 import org.w3c.dom.Element;
+
+import com.google.common.base.Strings;
 
 /**
  * Marshaller for {@link AttributeDesignatorType}.
@@ -39,17 +40,17 @@ public class AttributeDesignatorTypeMarshaller extends AbstractXACMLObjectMarsha
 	    throws MarshallingException {
 	AttributeDesignatorType attributeDesignatorType = (AttributeDesignatorType) xmlObject;
 
-	if (!StringSupport.isNullOrEmpty(attributeDesignatorType.getAttributeId())) {
+	if (!Strings.isNullOrEmpty(attributeDesignatorType.getAttributeId())) {
 	    domElement.setAttribute(
 		    AttributeDesignatorType.ATTRIBUTE_ID_ATTRIB_NAME,
 		    attributeDesignatorType.getAttributeId());
 	}
-	if (!StringSupport.isNullOrEmpty(attributeDesignatorType.getDataType())) {
+	if (!Strings.isNullOrEmpty(attributeDesignatorType.getDataType())) {
 	    domElement.setAttribute(
 		    AttributeDesignatorType.DATA_TYPE_ATTRIB_NAME,
 		    attributeDesignatorType.getDataType());
 	}
-	if (!StringSupport.isNullOrEmpty(attributeDesignatorType.getIssuer())) {
+	if (!Strings.isNullOrEmpty(attributeDesignatorType.getIssuer())) {
 	    domElement.setAttribute(AttributeDesignatorType.ISSUER_ATTRIB_NAME,
 		    attributeDesignatorType.getIssuer());
 	}

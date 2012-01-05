@@ -17,12 +17,13 @@
 
 package org.opensaml.xacml.policy.impl;
 
-import org.opensaml.util.StringSupport;
 import org.opensaml.xacml.impl.AbstractXACMLObjectMarshaller;
 import org.opensaml.xacml.policy.RuleCombinerParametersType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
 import org.w3c.dom.Element;
+
+import com.google.common.base.Strings;
 
 /**
  * Marshaller for {@link RuleCombinerParametersType}.
@@ -38,7 +39,7 @@ public class RuleCombinerParametersTypeMarshaller extends AbstractXACMLObjectMar
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         RuleCombinerParametersType ruleCombinerParametersType = (RuleCombinerParametersType)xmlObject;
         
-        if(!StringSupport.isNullOrEmpty(ruleCombinerParametersType.getRuleIdRef())){
+        if(!Strings.isNullOrEmpty(ruleCombinerParametersType.getRuleIdRef())){
             domElement.setAttribute(RuleCombinerParametersType.RULE_ID_REF_ATTRIB_NAME,
                     ruleCombinerParametersType.getRuleIdRef());
         }        

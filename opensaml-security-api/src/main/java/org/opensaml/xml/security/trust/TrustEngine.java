@@ -17,7 +17,8 @@
 
 package org.opensaml.xml.security.trust;
 
-import org.opensaml.util.criteria.CriteriaSet;
+import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
+
 import org.opensaml.xml.security.SecurityException;
 
 /**

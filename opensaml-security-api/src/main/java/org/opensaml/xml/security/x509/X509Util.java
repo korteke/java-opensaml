@@ -34,6 +34,8 @@ import java.util.List;
 
 import javax.security.auth.x500.X500Principal;
 
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
+
 import org.apache.commons.ssl.TrustMaterial;
 import org.bouncycastle.asn1.ASN1InputStream;
 import org.bouncycastle.asn1.DERObject;
@@ -44,13 +46,13 @@ import org.bouncycastle.asn1.DERString;
 import org.bouncycastle.asn1.x509.SubjectKeyIdentifier;
 import org.bouncycastle.x509.extension.SubjectKeyIdentifierStructure;
 import org.bouncycastle.x509.extension.X509ExtensionUtil;
-import org.opensaml.util.StringSupport;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.util.IPAddressHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.base.Strings;
 import com.google.common.io.Files;
 
 /**
@@ -403,7 +405,7 @@ public class X509Util {
         StringBuilder builder = new StringBuilder();
         builder.append('[');
         builder.append(String.format("subjectName='%s'", x500DNHandler.getName(x500Principal)));
-        if (!StringSupport.isNullOrEmpty(credential.getEntityId())) {
+        if (!Strings.isNullOrEmpty(credential.getEntityId())) {
             builder.append(String.format(" |credential entityID='%s'", StringSupport.trimOrNull(credential
                     .getEntityId())));
         }

@@ -21,9 +21,10 @@ import java.util.List;
 
 import org.opensaml.common.impl.AbstractSAMLObject;
 import org.opensaml.samlext.saml2mdui.Logo;
-import org.opensaml.util.StringSupport;
 import org.opensaml.xml.LangBearing;
 import org.opensaml.xml.XMLObject;
+
+import com.google.common.base.Strings;
 
 /**
  * Concrete implementation of {@link org.opensaml.samlext.saml2mdui.Logo}.
@@ -92,7 +93,7 @@ public class LogoImpl extends AbstractSAMLObject implements Logo {
 
     /** {@inheritDoc} */
     public void setXMLLang(String newLang) {
-        boolean hasValue = newLang != null && !StringSupport.isNullOrEmpty(newLang);
+        boolean hasValue = newLang != null && !Strings.isNullOrEmpty(newLang);
         lang = prepareForAssignment(lang, newLang);
         manageQualifiedAttributeNamespace(LangBearing.XML_LANG_ATTR_NAME, hasValue);
     }

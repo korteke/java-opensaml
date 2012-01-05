@@ -23,9 +23,10 @@ package org.opensaml.saml1.core.validator;
 
 import org.opensaml.common.SAMLVersion;
 import org.opensaml.saml1.core.ResponseAbstractType;
-import org.opensaml.util.StringSupport;
 import org.opensaml.xml.validation.ValidationException;
 import org.opensaml.xml.validation.Validator;
+
+import com.google.common.base.Strings;
 
 /**
  * Checks {@link org.opensaml.saml1.core.ResponseAbstractType} for Schema compliance.
@@ -60,7 +61,7 @@ public class ResponseAbstractTypeSchemaValidator<ResponseType extends ResponseAb
      * @throws ValidationException
      */
     protected void validateID(ResponseAbstractType response) throws ValidationException {
-        if (StringSupport.isNullOrEmpty(response.getID())) {
+        if (Strings.isNullOrEmpty(response.getID())) {
             throw new ValidationException("RequestID is null, empty or whitespace");
         }
     }

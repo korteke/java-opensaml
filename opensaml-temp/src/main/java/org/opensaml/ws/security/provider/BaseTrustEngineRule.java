@@ -17,7 +17,8 @@
 
 package org.opensaml.ws.security.provider;
 
-import org.opensaml.util.criteria.CriteriaSet;
+import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
+
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.security.SecurityPolicyException;
 import org.opensaml.ws.security.SecurityPolicyRule;

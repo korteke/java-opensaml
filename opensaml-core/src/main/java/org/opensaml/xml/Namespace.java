@@ -17,7 +17,8 @@
 
 package org.opensaml.xml;
 
-import org.opensaml.util.StringSupport;
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
+
 import org.opensaml.util.xml.XmlConstants;
 
 import com.google.common.base.Objects;

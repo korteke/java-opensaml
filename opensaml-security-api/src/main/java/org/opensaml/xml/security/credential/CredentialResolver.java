@@ -18,9 +18,9 @@
 package org.opensaml.xml.security.credential;
 
 
-import org.opensaml.util.criteria.CriteriaSet;
-import org.opensaml.util.criteria.Criterion;
-import org.opensaml.util.resolver.Resolver;
+import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
+import net.shibboleth.utilities.java.support.resolver.Criterion;
+import net.shibboleth.utilities.java.support.resolver.Resolver;
 
 /**
  * A resolver which uses {@link Criterion} to resolve and return instances of {@link Credential}.

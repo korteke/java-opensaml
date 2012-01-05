@@ -20,8 +20,9 @@ package org.opensaml.ws.security.provider;
 import java.util.Collections;
 import java.util.List;
 
+import net.shibboleth.utilities.java.support.resolver.ResolverException;
+
 import org.opensaml.util.collections.LazyList;
-import org.opensaml.util.resolver.ResolverException;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.security.SecurityPolicy;
 import org.opensaml.ws.security.SecurityPolicyResolver;

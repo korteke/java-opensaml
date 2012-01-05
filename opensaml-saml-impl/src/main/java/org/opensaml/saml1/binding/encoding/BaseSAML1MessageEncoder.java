@@ -30,7 +30,6 @@ import org.opensaml.common.binding.SAMLMessageContext;
 import org.opensaml.common.binding.encoding.SAMLMessageEncoder;
 import org.opensaml.saml2.core.Response;
 import org.opensaml.saml2.metadata.Endpoint;
-import org.opensaml.util.StringSupport;
 import org.opensaml.ws.message.encoder.BaseMessageEncoder;
 import org.opensaml.ws.message.encoder.MessageEncodingException;
 import org.opensaml.xml.XMLObjectBuilder;
@@ -44,6 +43,8 @@ import org.opensaml.xml.signature.SignatureException;
 import org.opensaml.xml.signature.Signer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.base.Strings;
 
 //TODO pull allowed URL scheme check out in to a separate class
 //TODO pull out the getEndpointURL method to support class and share it with BaseSAML2MessageEncoder
@@ -111,7 +112,7 @@ public abstract class BaseSAML1MessageEncoder extends BaseMessageEncoder impleme
 
         URI endpointUrl;
         if (messageContext.getOutboundMessage() instanceof Response
-                && !StringSupport.isNullOrEmpty(endpoint.getResponseLocation())) {
+                && !Strings.isNullOrEmpty(endpoint.getResponseLocation())) {
             try {
                 endpointUrl = new URI(endpoint.getResponseLocation());
             } catch (URISyntaxException e) {
@@ -119,7 +120,7 @@ public abstract class BaseSAML1MessageEncoder extends BaseMessageEncoder impleme
                         + " is not a valid URL", e);
             }
         } else {
-            if (StringSupport.isNullOrEmpty(endpoint.getLocation())) {
+            if (Strings.isNullOrEmpty(endpoint.getLocation())) {
                 throw new MessageEncodingException("Relying party endpoint location was null or empty.");
             }
             try {

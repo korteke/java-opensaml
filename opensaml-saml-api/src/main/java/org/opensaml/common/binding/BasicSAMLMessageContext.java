@@ -19,13 +19,14 @@ package org.opensaml.common.binding;
 
 import javax.xml.namespace.QName;
 
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
+
 import org.joda.time.DateTime;
 import org.opensaml.common.SAMLObject;
 import org.opensaml.saml2.metadata.Endpoint;
 import org.opensaml.saml2.metadata.EntityDescriptor;
 import org.opensaml.saml2.metadata.RoleDescriptor;
 import org.opensaml.saml2.metadata.provider.MetadataProvider;
-import org.opensaml.util.StringSupport;
 import org.opensaml.ws.message.BaseMessageContext;
 import org.opensaml.xml.security.credential.Credential;
 

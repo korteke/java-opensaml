@@ -17,8 +17,10 @@
 
 package org.opensaml.xml.security.criteria;
 
-import org.opensaml.util.StringSupport;
-import org.opensaml.util.criteria.Criterion;
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
+import net.shibboleth.utilities.java.support.resolver.Criterion;
+
+import com.google.common.base.Strings;
 
 /**
  * An implementation of {@link Criterion} which specifies key algorithm criteria.
@@ -52,7 +54,7 @@ public final class KeyAlgorithmCriterion implements Criterion {
      * @param algorithm The keyAlgorithm to set.
      */
     public void setKeyAlgorithm(String algorithm) {
-        if (StringSupport.isNullOrEmpty(algorithm)) {
+        if (Strings.isNullOrEmpty(algorithm)) {
             throw new IllegalArgumentException("Key algorithm criteria value must be supplied");
         }
         keyAlgorithm = StringSupport.trimOrNull(algorithm);

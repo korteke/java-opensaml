@@ -31,11 +31,12 @@ import org.opensaml.saml2.core.Conditions;
 import org.opensaml.saml2.core.Issuer;
 import org.opensaml.saml2.core.Statement;
 import org.opensaml.saml2.core.Subject;
-import org.opensaml.util.StringSupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.signature.Signature;
 import org.w3c.dom.Attr;
+
+import com.google.common.base.Strings;
 
 /**
  * A thread-safe Unmarshaller for {@link org.opensaml.saml2.core.Assertion}.
@@ -70,7 +71,7 @@ public class AssertionUnmarshaller extends AbstractSAMLObjectUnmarshaller {
         if (attribute.getLocalName().equals(Assertion.VERSION_ATTRIB_NAME)) {
             assertion.setVersion(SAMLVersion.valueOf(attribute.getValue()));
         } else if (attribute.getLocalName().equals(Assertion.ISSUE_INSTANT_ATTRIB_NAME)
-                && !StringSupport.isNullOrEmpty(attribute.getValue())) {
+                && !Strings.isNullOrEmpty(attribute.getValue())) {
             assertion.setIssueInstant(new DateTime(attribute.getValue(), ISOChronology.getInstanceUTC()));
         } else if (attribute.getLocalName().equals(Assertion.ID_ATTRIB_NAME)) {
             assertion.setID(attribute.getValue());

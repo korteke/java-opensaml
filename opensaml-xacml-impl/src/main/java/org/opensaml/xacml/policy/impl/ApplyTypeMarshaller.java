@@ -17,12 +17,13 @@
 
 package org.opensaml.xacml.policy.impl;
 
-import org.opensaml.util.StringSupport;
 import org.opensaml.xacml.impl.AbstractXACMLObjectMarshaller;
 import org.opensaml.xacml.policy.ApplyType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
 import org.w3c.dom.Element;
+
+import com.google.common.base.Strings;
 
 /**
  * Marshaller for {@link ApplyType}.
@@ -39,7 +40,7 @@ public class ApplyTypeMarshaller extends AbstractXACMLObjectMarshaller {
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         ApplyType applyType = (ApplyType)xmlObject;
         
-        if(!StringSupport.isNullOrEmpty(applyType.getFunctionId())){
+        if(!Strings.isNullOrEmpty(applyType.getFunctionId())){
             domElement.setAttribute(ApplyType.FUNCTION_ID_ATTRIB_NAME, applyType.getFunctionId());
         }
 

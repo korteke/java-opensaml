@@ -17,10 +17,11 @@
 
 package org.opensaml.xml.encryption.validator;
 
-import org.opensaml.util.StringSupport;
 import org.opensaml.xml.encryption.EncryptionMethod;
 import org.opensaml.xml.validation.ValidationException;
 import org.opensaml.xml.validation.Validator;
+
+import com.google.common.base.Strings;
 
 /**
  * Checks {@link org.opensaml.xml.encryption.EncryptionMethod} for Schema compliance. 
@@ -39,7 +40,7 @@ public class EncryptionMethodSchemaValidator implements Validator<EncryptionMeth
      * @throws ValidationException  thrown if the object is invalid
      */
     protected void validateAlgorithm(EncryptionMethod xmlObject) throws ValidationException {
-        if (StringSupport.isNullOrEmpty(xmlObject.getAlgorithm())) {
+        if (Strings.isNullOrEmpty(xmlObject.getAlgorithm())) {
             throw new ValidationException("EncryptionMethod algorithm URI was empty");
         }
     }

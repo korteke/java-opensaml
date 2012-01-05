@@ -22,9 +22,10 @@
 package org.opensaml.saml2.core.validator;
 
 import org.opensaml.saml2.core.AssertionURIRef;
-import org.opensaml.util.StringSupport;
 import org.opensaml.xml.validation.ValidationException;
 import org.opensaml.xml.validation.Validator;
+
+import com.google.common.base.Strings;
 
 /**
  * Checks {@link org.opensaml.saml2.core.AssertionURIRef} for Schema compliance.
@@ -48,7 +49,7 @@ public class AssertionURIRefSchemaValidator implements Validator<AssertionURIRef
      * @throws ValidationException
      */
     protected void validateURIRef(AssertionURIRef assertionURIRef) throws ValidationException {
-        if (StringSupport.isNullOrEmpty(assertionURIRef.getAssertionURI())) {
+        if (Strings.isNullOrEmpty(assertionURIRef.getAssertionURI())) {
             throw new ValidationException("AssertionURI required");
         }
     }

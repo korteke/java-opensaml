@@ -22,8 +22,9 @@
 package org.opensaml.saml1.core.validator;
 
 import org.opensaml.saml1.core.AuthorizationDecisionQuery;
-import org.opensaml.util.StringSupport;
 import org.opensaml.xml.validation.ValidationException;
+
+import com.google.common.base.Strings;
 
 /**
  * Checks {@link org.opensaml.saml1.core.AuthorizationDecisionQuery} for Schema compliance.
@@ -46,7 +47,7 @@ public class AuthorizationDecisionQuerySchemaValidator extends SubjectQuerySchem
      * @throws ValidationException
      */
     protected void validateResourcePresent(AuthorizationDecisionQuery query) throws ValidationException {
-        if (StringSupport.isNullOrEmpty(query.getResource())) {
+        if (Strings.isNullOrEmpty(query.getResource())) {
             throw new ValidationException("No Resource attribute present");
         }
     }

@@ -19,12 +19,12 @@ package org.opensaml.xml.signature.impl;
 
 import java.math.BigInteger;
 
-import org.opensaml.util.StringSupport;
 import org.opensaml.xml.schema.impl.XSBase64BinaryImpl;
 import org.opensaml.xml.security.keyinfo.KeyInfoHelper;
 import org.opensaml.xml.signature.CryptoBinary;
 
 import com.google.common.base.Objects;
+import com.google.common.base.Strings;
 
 /**
  * Concrete implementation of {@link org.opensaml.xml.signature.CryptoBinary}.
@@ -47,7 +47,7 @@ public class CryptoBinaryImpl extends XSBase64BinaryImpl implements CryptoBinary
 
     /** {@inheritDoc} */
     public BigInteger getValueBigInt() {
-        if (bigIntValue == null && !StringSupport.isNullOrEmpty(getValue())) {
+        if (bigIntValue == null && !Strings.isNullOrEmpty(getValue())) {
             bigIntValue = KeyInfoHelper.decodeBigIntegerFromCryptoBinary(getValue());
         }
         return bigIntValue;

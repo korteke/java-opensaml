@@ -28,8 +28,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
 
-import org.opensaml.util.criteria.CriteriaSet;
-import org.opensaml.util.resolver.ResolverException;
+import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
+import net.shibboleth.utilities.java.support.resolver.ResolverException;
+
 import org.opensaml.xml.security.criteria.EntityIDCriterion;
 import org.opensaml.xml.security.criteria.UsageCriterion;
 import org.opensaml.xml.security.x509.BasicX509Credential;

@@ -25,12 +25,13 @@ import org.opensaml.saml2.common.Extensions;
 import org.opensaml.saml2.common.TimeBoundSAMLObject;
 import org.opensaml.saml2.metadata.EntitiesDescriptor;
 import org.opensaml.saml2.metadata.EntityDescriptor;
-import org.opensaml.util.StringSupport;
 import org.opensaml.util.xml.DomTypeSupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.signature.Signature;
 import org.w3c.dom.Attr;
+
+import com.google.common.base.Strings;
 
 /**
  * A thread safe Unmarshaller for {@link org.opensaml.saml2.metadata.EntitiesDescriptor} objects.
@@ -63,7 +64,7 @@ public class EntitiesDescriptorUnmarshaller extends AbstractSAMLObjectUnmarshall
             entitiesDescriptor.setID(attribute.getValue());
             attribute.getOwnerElement().setIdAttributeNode(attribute, true);
         } else if (attribute.getLocalName().equals(TimeBoundSAMLObject.VALID_UNTIL_ATTRIB_NAME)
-                && !StringSupport.isNullOrEmpty(attribute.getValue())) {
+                && !Strings.isNullOrEmpty(attribute.getValue())) {
             entitiesDescriptor.setValidUntil(new DateTime(attribute.getValue(), ISOChronology.getInstanceUTC()));
         } else if (attribute.getLocalName().equals(CacheableSAMLObject.CACHE_DURATION_ATTRIB_NAME)) {
             entitiesDescriptor.setCacheDuration(new Long(DomTypeSupport.durationToLong(attribute.getValue())));

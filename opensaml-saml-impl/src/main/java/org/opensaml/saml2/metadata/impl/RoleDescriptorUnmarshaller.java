@@ -31,13 +31,14 @@ import org.opensaml.saml2.metadata.ContactPerson;
 import org.opensaml.saml2.metadata.KeyDescriptor;
 import org.opensaml.saml2.metadata.Organization;
 import org.opensaml.saml2.metadata.RoleDescriptor;
-import org.opensaml.util.StringSupport;
 import org.opensaml.util.xml.DomTypeSupport;
 import org.opensaml.util.xml.QNameSupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.signature.Signature;
 import org.w3c.dom.Attr;
+
+import com.google.common.base.Strings;
 
 /**
  * A thread safe Unmarshaller for {@link org.opensaml.saml2.metadata.RoleDescriptor} objects.
@@ -72,7 +73,7 @@ public abstract class RoleDescriptorUnmarshaller extends AbstractSAMLObjectUnmar
             roleDescriptor.setID(attribute.getValue());
             attribute.getOwnerElement().setIdAttributeNode(attribute, true);
         } else if (attribute.getLocalName().equals(TimeBoundSAMLObject.VALID_UNTIL_ATTRIB_NAME)
-                && !StringSupport.isNullOrEmpty(attribute.getValue())) {
+                && !Strings.isNullOrEmpty(attribute.getValue())) {
             roleDescriptor.setValidUntil(new DateTime(attribute.getValue(), ISOChronology.getInstanceUTC()));
         } else if (attribute.getLocalName().equals(CacheableSAMLObject.CACHE_DURATION_ATTRIB_NAME)) {
             roleDescriptor.setCacheDuration(DomTypeSupport.durationToLong(attribute.getValue()));

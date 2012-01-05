@@ -17,8 +17,9 @@
 
 package org.opensaml.messaging.context;
 
+import net.shibboleth.utilities.java.support.component.IdentifiableComponent;
+
 import org.joda.time.DateTime;
-import org.opensaml.util.component.IdentifiableComponent;
 
 /**
  * Interface for a component which represents the context used to store state used for purposes related to messaging.

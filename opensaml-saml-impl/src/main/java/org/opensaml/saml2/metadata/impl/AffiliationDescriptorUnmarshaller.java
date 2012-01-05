@@ -28,13 +28,14 @@ import org.opensaml.saml2.common.TimeBoundSAMLObject;
 import org.opensaml.saml2.metadata.AffiliateMember;
 import org.opensaml.saml2.metadata.AffiliationDescriptor;
 import org.opensaml.saml2.metadata.KeyDescriptor;
-import org.opensaml.util.StringSupport;
 import org.opensaml.util.xml.DomTypeSupport;
 import org.opensaml.util.xml.QNameSupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.signature.Signature;
 import org.w3c.dom.Attr;
+
+import com.google.common.base.Strings;
 
 /**
  * A thread safe Unmarshaller for {@link org.opensaml.saml2.metadata.AffiliationDescriptor}s.
@@ -69,7 +70,7 @@ public class AffiliationDescriptorUnmarshaller extends AbstractSAMLObjectUnmarsh
             descriptor.setID(attribute.getValue());
             attribute.getOwnerElement().setIdAttributeNode(attribute, true);
         } else if (attribute.getLocalName().equals(TimeBoundSAMLObject.VALID_UNTIL_ATTRIB_NAME)
-                && !StringSupport.isNullOrEmpty(attribute.getValue())) {
+                && !Strings.isNullOrEmpty(attribute.getValue())) {
             descriptor.setValidUntil(new DateTime(attribute.getValue(), ISOChronology.getInstanceUTC()));
         } else if (attribute.getLocalName().equals(CacheableSAMLObject.CACHE_DURATION_ATTRIB_NAME)) {
             descriptor.setCacheDuration(DomTypeSupport.durationToLong(attribute.getValue()));

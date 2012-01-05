@@ -22,11 +22,10 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import net.shibboleth.utilities.java.support.codec.Base64Support;
+import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
 import org.opensaml.common.binding.SAMLMessageContext;
 import org.opensaml.security.MetadataCriterion;
-import org.opensaml.util.StringSupport;
-import org.opensaml.util.criteria.CriteriaSet;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.security.SecurityPolicyException;
 import org.opensaml.ws.security.SecurityPolicyRule;
@@ -39,6 +38,8 @@ import org.opensaml.xml.security.criteria.UsageCriterion;
 import org.opensaml.xml.signature.SignatureTrustEngine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.base.Strings;
 
 /**
  * Base class for security rules which verify simple "blob" signatures computed over some components of a request.
@@ -90,7 +91,7 @@ public abstract class BaseSAMLSimpleSignatureSecurityPolicyRule implements Secur
         }
 
         String sigAlg = getSignatureAlgorithm(request);
-        if (StringSupport.isNullOrEmpty(sigAlg)) {
+        if (Strings.isNullOrEmpty(sigAlg)) {
             log.warn("Signature algorithm could not be extracted from request, can not validate simple signature");
             return;
         }
@@ -249,7 +250,7 @@ public abstract class BaseSAMLSimpleSignatureSecurityPolicyRule implements Secur
      */
     protected byte[] getSignature(HttpServletRequest request) throws SecurityPolicyException {
         String signature = request.getParameter("Signature");
-        if (StringSupport.isNullOrEmpty(signature)) {
+        if (Strings.isNullOrEmpty(signature)) {
             return null;
         }
         return Base64Support.decode(signature);
@@ -294,7 +295,7 @@ public abstract class BaseSAMLSimpleSignatureSecurityPolicyRule implements Secur
             throws SecurityPolicyException {
 
         CriteriaSet criteriaSet = new CriteriaSet();
-        if (!StringSupport.isNullOrEmpty(entityID)) {
+        if (!Strings.isNullOrEmpty(entityID)) {
             criteriaSet.add(new EntityIDCriterion(entityID));
         }
 

@@ -17,7 +17,8 @@
 
 package org.opensaml.xml.util;
 
-import org.opensaml.util.StringSupport;
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
+
 import org.opensaml.xml.AttributeExtensibleXMLObject;
 import org.opensaml.xml.BaseBearing;
 import org.opensaml.xml.IdBearing;

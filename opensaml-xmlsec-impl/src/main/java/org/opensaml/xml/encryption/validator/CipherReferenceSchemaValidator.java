@@ -17,10 +17,11 @@
 
 package org.opensaml.xml.encryption.validator;
 
-import org.opensaml.util.StringSupport;
 import org.opensaml.xml.encryption.CipherReference;
 import org.opensaml.xml.validation.ValidationException;
 import org.opensaml.xml.validation.Validator;
+
+import com.google.common.base.Strings;
 
 /**
  * Checks {@link org.opensaml.xml.encryption.CipherReference} for Schema compliance. 
@@ -39,7 +40,7 @@ public class CipherReferenceSchemaValidator implements Validator<CipherReference
      * @throws ValidationException  thrown if the object is invalid
      */
     protected void validateURI(CipherReference xmlObject) throws ValidationException {
-        if (StringSupport.isNullOrEmpty(xmlObject.getURI())) {
+        if (Strings.isNullOrEmpty(xmlObject.getURI())) {
             throw new ValidationException("CipherReference URI was empty");
         }
     }

@@ -22,10 +22,11 @@ import org.joda.time.chrono.ISOChronology;
 import org.opensaml.saml1.core.AuthenticationStatement;
 import org.opensaml.saml1.core.AuthorityBinding;
 import org.opensaml.saml1.core.SubjectLocality;
-import org.opensaml.util.StringSupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.w3c.dom.Attr;
+
+import com.google.common.base.Strings;
 
 /**
  * A thread-safe Unmarshaller for {@link org.opensaml.saml1.core.AuthenticationStatement} objects.
@@ -52,7 +53,7 @@ public class AuthenticationStatementUnmarshaller extends SubjectStatementUnmarsh
         AuthenticationStatement authenticationStatement = (AuthenticationStatement) samlObject;
 
         if (AuthenticationStatement.AUTHENTICATIONINSTANT_ATTRIB_NAME.equals(attribute.getLocalName())
-                && !StringSupport.isNullOrEmpty(attribute.getValue())) {
+                && !Strings.isNullOrEmpty(attribute.getValue())) {
             DateTime value = new DateTime(attribute.getValue(), ISOChronology.getInstanceUTC());
             authenticationStatement.setAuthenticationInstant(value);
         } else if (AuthenticationStatement.AUTHENTICATIONMETHOD_ATTRIB_NAME.equals(attribute.getLocalName())) {

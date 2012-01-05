@@ -19,7 +19,8 @@ package org.opensaml.xacml.policy.impl;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.util.StringSupport;
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
+
 import org.opensaml.util.xml.QNameSupport;
 import org.opensaml.xacml.impl.AbstractXACMLObjectUnmarshaller;
 import org.opensaml.xacml.policy.AttributeValueType;

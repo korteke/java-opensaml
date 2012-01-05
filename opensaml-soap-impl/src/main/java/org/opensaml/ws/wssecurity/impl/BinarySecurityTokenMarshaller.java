@@ -17,11 +17,12 @@
 
 package org.opensaml.ws.wssecurity.impl;
 
-import org.opensaml.util.StringSupport;
 import org.opensaml.ws.wssecurity.BinarySecurityToken;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
 import org.w3c.dom.Element;
+
+import com.google.common.base.Strings;
 
 /**
  * BinarySecurityTokenMarshaller.
@@ -31,7 +32,7 @@ public class BinarySecurityTokenMarshaller extends EncodedStringMarshaller {
     /** {@inheritDoc} */
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         BinarySecurityToken token = (BinarySecurityToken) xmlObject;
-        if (!StringSupport.isNullOrEmpty(token.getValueType())) {
+        if (!Strings.isNullOrEmpty(token.getValueType())) {
             domElement.setAttributeNS(null, BinarySecurityToken.ENCODING_TYPE_ATTRIB_NAME, token.getValueType());
         }
         super.marshallAttributes(xmlObject, domElement);

@@ -17,13 +17,14 @@
 
 package org.opensaml.xacml.policy.impl;
 
-import org.opensaml.util.StringSupport;
 import org.opensaml.xacml.impl.AbstractXACMLObjectMarshaller;
 import org.opensaml.xacml.policy.EffectType;
 import org.opensaml.xacml.policy.ObligationType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
 import org.w3c.dom.Element;
+
+import com.google.common.base.Strings;
 
 /** Marshaller for {@link ObligationType}. */
 public class ObligationTypeMarshaller extends AbstractXACMLObjectMarshaller {
@@ -37,7 +38,7 @@ public class ObligationTypeMarshaller extends AbstractXACMLObjectMarshaller {
     protected void marshallAttributes(XMLObject samlElement, Element domElement) throws MarshallingException {
         ObligationType obligation = (ObligationType) samlElement;
 
-        if (!StringSupport.isNullOrEmpty(obligation.getObligationId())) {
+        if (!Strings.isNullOrEmpty(obligation.getObligationId())) {
             domElement.setAttributeNS(null, ObligationType.OBLIGATION_ID_ATTRIB_NAME, obligation.getObligationId());
         }
         if (obligation.getFulfillOn() != null) {

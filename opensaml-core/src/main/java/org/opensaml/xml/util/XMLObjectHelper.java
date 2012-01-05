@@ -25,7 +25,8 @@ import java.util.Map.Entry;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.util.StringSupport;
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
+
 import org.opensaml.util.xml.AttributeSupport;
 import org.opensaml.util.xml.QNameSupport;
 import org.opensaml.util.xml.SerializeSupport;

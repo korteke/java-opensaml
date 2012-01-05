@@ -21,9 +21,10 @@
 package org.opensaml.saml2.core.validator;
 
 import org.opensaml.saml2.core.StatusMessage;
-import org.opensaml.util.StringSupport;
 import org.opensaml.xml.validation.ValidationException;
 import org.opensaml.xml.validation.Validator;
+
+import com.google.common.base.Strings;
 
 /**
  * hecks {@link org.opensaml.saml2.core.StatusMessage} for Schema compliance.
@@ -44,7 +45,7 @@ public class StatusMessageSchemaValidator implements Validator<StatusMessage> {
     }
 
     protected void validateMessage(StatusMessage sm) throws ValidationException {
-        if (StringSupport.isNullOrEmpty(sm.getMessage())) {
+        if (Strings.isNullOrEmpty(sm.getMessage())) {
             throw new ValidationException("Message element just be non-empty");
         }
     }

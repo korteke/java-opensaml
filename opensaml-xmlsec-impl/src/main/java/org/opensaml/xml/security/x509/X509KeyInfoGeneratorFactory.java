@@ -24,7 +24,6 @@ import java.util.Set;
 
 import javax.security.auth.x500.X500Principal;
 
-import org.opensaml.util.StringSupport;
 import org.opensaml.util.collections.LazySet;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.XMLObject;
@@ -42,6 +41,8 @@ import org.opensaml.xml.signature.impl.KeyInfoBuilder;
 import org.opensaml.xml.signature.impl.X509DataBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.base.Strings;
 
 /**
  * A factory implementation which produces instances of {@link KeyInfoGenerator} capable of 
@@ -470,7 +471,7 @@ public class X509KeyInfoGeneratorFactory extends BasicKeyInfoGeneratorFactory {
         protected void processCertX509SubjectName(X509Data x509Data, java.security.cert.X509Certificate cert) {
             if (options.emitX509SubjectName) {
                 String subjectNameValue = getSubjectName(cert);
-                if (! StringSupport.isNullOrEmpty(subjectNameValue)) {
+                if (! Strings.isNullOrEmpty(subjectNameValue)) {
                     x509Data.getX509SubjectNames().add( KeyInfoHelper.buildX509SubjectName(subjectNameValue));
                 }
             }
@@ -486,7 +487,7 @@ public class X509KeyInfoGeneratorFactory extends BasicKeyInfoGeneratorFactory {
         protected void processCertX509IssuerSerial(X509Data x509Data, java.security.cert.X509Certificate cert) {
             if (options.emitX509IssuerSerial) {
                 String issuerNameValue = getIssuerName(cert);
-                if (! StringSupport.isNullOrEmpty(issuerNameValue)) {
+                if (! Strings.isNullOrEmpty(issuerNameValue)) {
                     x509Data.getX509IssuerSerials().add( 
                             KeyInfoHelper.buildX509IssuerSerial(issuerNameValue, cert.getSerialNumber()) );
                 }
@@ -520,7 +521,7 @@ public class X509KeyInfoGeneratorFactory extends BasicKeyInfoGeneratorFactory {
             if (cert == null) {
                 return null;
             }
-            if (! StringSupport.isNullOrEmpty(options.x500SubjectDNFormat)) {
+            if (! Strings.isNullOrEmpty(options.x500SubjectDNFormat)) {
                 return options.x500DNHandler.getName(cert.getSubjectX500Principal(), options.x500SubjectDNFormat);
             } else {
                 return options.x500DNHandler.getName(cert.getSubjectX500Principal());
@@ -538,7 +539,7 @@ public class X509KeyInfoGeneratorFactory extends BasicKeyInfoGeneratorFactory {
             if (cert == null) {
                 return null;
             }
-            if (! StringSupport.isNullOrEmpty(options.x500IssuerDNFormat)) {
+            if (! Strings.isNullOrEmpty(options.x500IssuerDNFormat)) {
                 return options.x500DNHandler.getName(cert.getIssuerX500Principal(), options.x500IssuerDNFormat);
             } else {
                 return options.x500DNHandler.getName(cert.getIssuerX500Principal());
@@ -555,7 +556,7 @@ public class X509KeyInfoGeneratorFactory extends BasicKeyInfoGeneratorFactory {
         protected void processSubjectDNKeyName(KeyInfo keyInfo, java.security.cert.X509Certificate cert) {
             if (options.emitSubjectDNAsKeyName) {
                 String subjectNameValue = getSubjectName(cert);
-                if (! StringSupport.isNullOrEmpty(subjectNameValue)) {
+                if (! Strings.isNullOrEmpty(subjectNameValue)) {
                    KeyInfoHelper.addKeyName(keyInfo, subjectNameValue); 
                 }
             }
@@ -571,7 +572,7 @@ public class X509KeyInfoGeneratorFactory extends BasicKeyInfoGeneratorFactory {
         protected void processSubjectCNKeyName(KeyInfo keyInfo, java.security.cert.X509Certificate cert) {
             if (options.emitSubjectCNAsKeyName) {
                 for (String name : X509Util.getCommonNames(cert.getSubjectX500Principal())) {
-                    if (! StringSupport.isNullOrEmpty(name)) {
+                    if (! Strings.isNullOrEmpty(name)) {
                         KeyInfoHelper.addKeyName(keyInfo, name);
                     }
                 }

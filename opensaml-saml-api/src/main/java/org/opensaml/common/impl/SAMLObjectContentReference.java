@@ -28,7 +28,6 @@ import org.apache.xml.security.transforms.Transforms;
 import org.apache.xml.security.transforms.params.InclusiveNamespaces;
 import org.opensaml.common.SignableSAMLObject;
 import org.opensaml.core.config.ConfigurationService;
-import org.opensaml.util.StringSupport;
 import org.opensaml.util.collections.LazyList;
 import org.opensaml.util.collections.LazySet;
 import org.opensaml.xml.NamespaceManager;
@@ -38,6 +37,8 @@ import org.opensaml.xml.signature.ContentReference;
 import org.opensaml.xml.signature.SignatureConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.base.Strings;
 
 /**
  * A content reference for SAML objects that will be signed. The reference is created per the SAML specification. 
@@ -147,7 +148,7 @@ public class SAMLObjectContentReference implements ContentReference {
                 }
             }
 
-            if (!StringSupport.isNullOrEmpty(signableObject.getSignatureReferenceID()) ) {
+            if (!Strings.isNullOrEmpty(signableObject.getSignatureReferenceID()) ) {
                 signature.addDocument("#" + signableObject.getSignatureReferenceID(), dsigTransforms, digestAlgorithm);
             } else {
                 log.debug("SignableSAMLObject had no reference ID, signing using whole document Reference URI");

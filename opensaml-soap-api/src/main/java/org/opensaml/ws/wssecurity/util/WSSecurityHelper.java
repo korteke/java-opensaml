@@ -19,7 +19,8 @@ package org.opensaml.ws.wssecurity.util;
 
 import java.util.List;
 
-import org.opensaml.util.StringSupport;
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
+
 import org.opensaml.util.collections.LazyList;
 import org.opensaml.util.xml.XmlConstants;
 import org.opensaml.ws.wssecurity.IdBearing;

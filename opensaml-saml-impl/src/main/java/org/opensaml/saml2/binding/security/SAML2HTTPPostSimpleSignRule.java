@@ -25,12 +25,11 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import net.shibboleth.utilities.java.support.codec.Base64Support;
+import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
+import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
 import org.opensaml.common.binding.SAMLMessageContext;
 import org.opensaml.common.binding.security.BaseSAMLSimpleSignatureSecurityPolicyRule;
-import org.opensaml.util.StringSupport;
-import org.opensaml.util.criteria.CriteriaSet;
-import org.opensaml.util.resolver.ResolverException;
 import org.opensaml.ws.security.SecurityPolicyException;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.io.Unmarshaller;
@@ -45,6 +44,8 @@ import org.opensaml.xml.signature.SignatureTrustEngine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
+
+import com.google.common.base.Strings;
 
 /**
  * Security policy which evaluates simple "blob" signatures according to the SAML 2 HTTP-POST-SimpleSign binding.
@@ -106,7 +107,7 @@ public class SAML2HTTPPostSimpleSignRule extends BaseSAMLSimpleSignatureSecurity
         builder.append("&SigAlg=" + request.getParameter("SigAlg"));
 
         String constructed = builder.toString();
-        if (StringSupport.isNullOrEmpty(constructed)) {
+        if (Strings.isNullOrEmpty(constructed)) {
             log.warn("Could not construct signed content string from form control data");
             return null;
         }
@@ -125,7 +126,7 @@ public class SAML2HTTPPostSimpleSignRule extends BaseSAMLSimpleSignatureSecurity
             throws SecurityPolicyException {
 
         String kiBase64 = request.getParameter("KeyInfo");
-        if (StringSupport.isNullOrEmpty(kiBase64)) {
+        if (Strings.isNullOrEmpty(kiBase64)) {
             log.debug("Form control data did not contain a KeyInfo");
             return null;
         } else {

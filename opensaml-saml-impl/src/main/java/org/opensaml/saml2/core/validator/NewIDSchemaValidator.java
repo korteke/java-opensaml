@@ -21,9 +21,10 @@
 package org.opensaml.saml2.core.validator;
 
 import org.opensaml.saml2.core.NewID;
-import org.opensaml.util.StringSupport;
 import org.opensaml.xml.validation.ValidationException;
 import org.opensaml.xml.validation.Validator;
+
+import com.google.common.base.Strings;
 
 /**
  * Checks {@link org.opensaml.saml2.core.NewID} for Schema compliance.
@@ -50,7 +51,7 @@ public class NewIDSchemaValidator implements Validator<NewID> {
      * @throws ValidationException
      */
     protected void validateNewID(NewID newid) throws ValidationException {
-        if (StringSupport.isNullOrEmpty(newid.getNewID())) {
+        if (Strings.isNullOrEmpty(newid.getNewID())) {
             throw new ValidationException("NewID must be non-empty");
         }
     }

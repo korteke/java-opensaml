@@ -24,10 +24,11 @@ import java.util.Set;
 
 import javax.security.auth.x500.X500Principal;
 
-import org.opensaml.util.StringSupport;
 import org.opensaml.xml.security.SecurityException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.base.Strings;
 
 /**
  * A basic implementaion of {@link X509CredentialNameEvaluator} which evaluates various identifiers 
@@ -296,7 +297,7 @@ public class BasicX509CredentialNameEvaluator implements X509CredentialNameEvalu
         String commonName = commonNames.get(0);
         log.debug("Extracted common name from certificate: {}", commonName);
 
-        if (StringSupport.isNullOrEmpty(commonName)) {
+        if (Strings.isNullOrEmpty(commonName)) {
             return false;
         }
         if (trustedNames.contains(commonName)) {

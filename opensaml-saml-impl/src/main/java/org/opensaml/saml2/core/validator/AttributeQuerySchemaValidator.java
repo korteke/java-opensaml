@@ -28,8 +28,9 @@ import net.shibboleth.utilities.java.support.collection.Pair;
 
 import org.opensaml.saml2.core.Attribute;
 import org.opensaml.saml2.core.AttributeQuery;
-import org.opensaml.util.StringSupport;
 import org.opensaml.xml.validation.ValidationException;
+
+import com.google.common.base.Strings;
 
 /**
  * Checks {@link org.opensaml.saml2.core.AttributeQuery} for Schema compliance.
@@ -66,7 +67,7 @@ public class AttributeQuerySchemaValidator extends SubjectQuerySchemaValidator<A
         for (Attribute attribute : attributes) {
             attributeName = attribute.getName();
             attributeNameFormat = attribute.getNameFormat();
-            if (StringSupport.isNullOrEmpty(attributeNameFormat)) {
+            if (Strings.isNullOrEmpty(attributeNameFormat)) {
                 // SAML 2 core, sec. 2.7.3.1, if no format is specified,
                 // unspecified is in effect. This avoids bug in processing null value.
                 attributeNameFormat = Attribute.UNSPECIFIED;

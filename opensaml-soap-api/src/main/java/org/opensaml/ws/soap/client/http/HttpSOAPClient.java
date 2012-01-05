@@ -24,13 +24,13 @@ import java.nio.charset.Charset;
 import java.util.List;
 
 import net.jcip.annotations.ThreadSafe;
+import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.methods.ByteArrayRequestEntity;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.RequestEntity;
-import org.opensaml.util.resolver.ResolverException;
 import org.opensaml.util.xml.SerializeSupport;
 import org.opensaml.ws.security.SecurityPolicy;
 import org.opensaml.ws.security.SecurityPolicyResolver;

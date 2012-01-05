@@ -22,9 +22,10 @@
 package org.opensaml.saml2.core.validator;
 
 import org.opensaml.saml2.core.SubjectConfirmation;
-import org.opensaml.util.StringSupport;
 import org.opensaml.xml.validation.ValidationException;
 import org.opensaml.xml.validation.Validator;
+
+import com.google.common.base.Strings;
 
 /**
  * Checks {@link org.opensaml.saml2.core.SubjectConfirmation} for Schema compliance.
@@ -48,7 +49,7 @@ public class SubjectConfirmationSchemaValidator implements Validator<SubjectConf
      * @throws ValidationException
      */
     protected void validateMethod(SubjectConfirmation subjectConfirmation) throws ValidationException {
-        if (StringSupport.isNullOrEmpty(subjectConfirmation.getMethod())) {
+        if (Strings.isNullOrEmpty(subjectConfirmation.getMethod())) {
             throw new ValidationException("Method required");
         }
     }

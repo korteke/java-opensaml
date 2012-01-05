@@ -30,10 +30,9 @@ import java.util.List;
 import javax.security.auth.x500.X500Principal;
 
 import net.shibboleth.utilities.java.support.codec.Base64Support;
+import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
-import org.opensaml.util.StringSupport;
 import org.opensaml.util.collections.LazySet;
-import org.opensaml.util.criteria.CriteriaSet;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.credential.Credential;
@@ -54,6 +53,8 @@ import org.opensaml.xml.signature.X509SKI;
 import org.opensaml.xml.signature.X509SubjectName;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.base.Strings;
 
 /**
  * Implementation of {@link KeyInfoProvider} which provides basic support for extracting a {@link X509Credential} from
@@ -281,7 +282,7 @@ public class InlineX509DataProvider extends AbstractKeyInfoProvider {
      */
     protected X509Certificate findCertFromSubjectNames(List<X509Certificate> certs, List<X509SubjectName> names) {
         for (X509SubjectName subjectName : names) {
-            if (!StringSupport.isNullOrEmpty(subjectName.getValue())) {
+            if (!Strings.isNullOrEmpty(subjectName.getValue())) {
                 X500Principal subjectX500Principal = x500DNHandler.parse(subjectName.getValue());
                 for (X509Certificate cert : certs) {
                     if (cert.getSubjectX500Principal().equals(subjectX500Principal)) {
@@ -307,7 +308,7 @@ public class InlineX509DataProvider extends AbstractKeyInfoProvider {
             }
             String issuerNameValue = issuerSerial.getX509IssuerName().getValue();
             BigInteger serialNumber = issuerSerial.getX509SerialNumber().getValue();
-            if (!StringSupport.isNullOrEmpty(issuerNameValue)) {
+            if (!Strings.isNullOrEmpty(issuerNameValue)) {
                 X500Principal issuerX500Principal = x500DNHandler.parse(issuerNameValue);
                 for (X509Certificate cert : certs) {
                     if (cert.getIssuerX500Principal().equals(issuerX500Principal)
@@ -329,7 +330,7 @@ public class InlineX509DataProvider extends AbstractKeyInfoProvider {
      */
     protected X509Certificate findCertFromSubjectKeyIdentifier(List<X509Certificate> certs, List<X509SKI> skis) {
         for (X509SKI ski : skis) {
-            if (!StringSupport.isNullOrEmpty(ski.getValue())) {
+            if (!Strings.isNullOrEmpty(ski.getValue())) {
                 byte[] xmlValue = Base64Support.decode(ski.getValue());
                 for (X509Certificate cert : certs) {
                     byte[] certValue = X509Util.getSubjectKeyIdentifier(cert);

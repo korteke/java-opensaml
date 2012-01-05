@@ -21,9 +21,10 @@
 package org.opensaml.saml2.core.validator;
 
 import org.opensaml.saml2.core.SessionIndex;
-import org.opensaml.util.StringSupport;
 import org.opensaml.xml.validation.ValidationException;
 import org.opensaml.xml.validation.Validator;
+
+import com.google.common.base.Strings;
 
 /**
  * Checks {@link org.opensaml.saml2.core.SessionIndex} for Schema compliance.
@@ -50,7 +51,7 @@ public class SessionIndexSchemaValidator implements Validator<SessionIndex> {
      * @throws ValidationException 
      */
     protected void validateSessionIndex(SessionIndex si) throws ValidationException {
-        if (StringSupport.isNullOrEmpty(si.getSessionIndex())) {
+        if (Strings.isNullOrEmpty(si.getSessionIndex())) {
             throw new ValidationException("SessionIndex must be non-empty");
         }
     }

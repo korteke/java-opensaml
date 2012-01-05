@@ -22,9 +22,10 @@
 package org.opensaml.saml2.metadata.validator;
 
 import org.opensaml.saml2.metadata.GivenName;
-import org.opensaml.util.StringSupport;
 import org.opensaml.xml.validation.ValidationException;
 import org.opensaml.xml.validation.Validator;
+
+import com.google.common.base.Strings;
 
 /**
  * Checks {@link org.opensaml.saml2.metadata.GivenName} for Schema compliance.
@@ -48,7 +49,7 @@ public class GivenNameSchemaValidator implements Validator<GivenName> {
      * @throws ValidationException
      */
     protected void validateName(GivenName givenName) throws ValidationException {
-        if (StringSupport.isNullOrEmpty(givenName.getName())) {
+        if (Strings.isNullOrEmpty(givenName.getName())) {
             throw new ValidationException("Name required");
         }
     }

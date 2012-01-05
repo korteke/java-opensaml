@@ -17,12 +17,13 @@
 
 package org.opensaml.ws.wssecurity.impl;
 
-import org.opensaml.util.StringSupport;
 import org.opensaml.ws.wssecurity.SignatureConfirmation;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.util.XMLObjectHelper;
 import org.w3c.dom.Element;
+
+import com.google.common.base.Strings;
 
 /**
  * SignatureConfirmationMarshaller.
@@ -33,10 +34,10 @@ public class SignatureConfirmationMarshaller extends AbstractWSSecurityObjectMar
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         SignatureConfirmation sc = (SignatureConfirmation) xmlObject;
         
-        if (!StringSupport.isNullOrEmpty(sc.getWSUId())) {
+        if (!Strings.isNullOrEmpty(sc.getWSUId())) {
             XMLObjectHelper.marshallAttribute(SignatureConfirmation.WSU_ID_ATTR_NAME, sc.getWSUId(), domElement, true);
         }
-        if (!StringSupport.isNullOrEmpty(sc.getValue())) {
+        if (!Strings.isNullOrEmpty(sc.getValue())) {
             domElement.setAttributeNS(null, SignatureConfirmation.VALUE_ATTRIB_NAME, sc.getValue());
         }
     }

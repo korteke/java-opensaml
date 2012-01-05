@@ -25,7 +25,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-import org.opensaml.util.criteria.Criterion;
+import net.shibboleth.utilities.java.support.resolver.Criterion;
+
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.credential.Credential;

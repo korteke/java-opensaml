@@ -22,9 +22,10 @@
 package org.opensaml.saml1.core.validator;
 
 import org.opensaml.saml1.core.Action;
-import org.opensaml.util.StringSupport;
 import org.opensaml.xml.validation.ValidationException;
 import org.opensaml.xml.validation.Validator;
+
+import com.google.common.base.Strings;
 
 /**
  * Checks {@link org.opensaml.saml1.core.Action} for Schema compliance.
@@ -33,7 +34,7 @@ public class ActionSpecValidator implements Validator<Action> {
 
     /** {@inheritDoc} */
     public void validate(Action action) throws ValidationException {
-         if (StringSupport.isNullOrEmpty(action.getContents())) {
+         if (Strings.isNullOrEmpty(action.getContents())) {
              throw new ValidationException("Action label must be specified");
          }
 

@@ -17,10 +17,10 @@
 
 package org.opensaml.common.binding.security;
 
+import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
+
 import org.opensaml.common.binding.SAMLMessageContext;
 import org.opensaml.security.MetadataCriterion;
-import org.opensaml.util.StringSupport;
-import org.opensaml.util.criteria.CriteriaSet;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.security.SecurityPolicyException;
 import org.opensaml.ws.security.provider.BaseTrustEngineRule;
@@ -31,6 +31,8 @@ import org.opensaml.xml.security.trust.TrustEngine;
 import org.opensaml.xml.signature.Signature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.base.Strings;
 
 /**
  * Base class for SAML security policy rules which evaluate a signature with a signature trust engine.
@@ -60,7 +62,7 @@ public abstract class BaseSAMLXMLSignatureSecurityPolicyRule extends BaseTrustEn
         SAMLMessageContext samlContext = (SAMLMessageContext) messageContext;
         
         CriteriaSet criteriaSet = new CriteriaSet();
-        if (!StringSupport.isNullOrEmpty(entityID)) {
+        if (!Strings.isNullOrEmpty(entityID)) {
             criteriaSet.add(new EntityIDCriterion(entityID) );
         }
         

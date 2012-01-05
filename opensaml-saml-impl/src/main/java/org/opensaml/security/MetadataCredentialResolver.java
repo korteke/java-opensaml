@@ -30,14 +30,14 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import javax.xml.namespace.QName;
 
+import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
+import net.shibboleth.utilities.java.support.resolver.ResolverException;
+
 import org.opensaml.saml2.metadata.KeyDescriptor;
 import org.opensaml.saml2.metadata.RoleDescriptor;
 import org.opensaml.saml2.metadata.provider.MetadataProvider;
 import org.opensaml.saml2.metadata.provider.MetadataProviderException;
 import org.opensaml.saml2.metadata.provider.ObservableMetadataProvider;
-import org.opensaml.util.StringSupport;
-import org.opensaml.util.criteria.CriteriaSet;
-import org.opensaml.util.resolver.ResolverException;
 import org.opensaml.xml.security.XMLSecurityHelper;
 import org.opensaml.xml.security.credential.AbstractCriteriaFilteringCredentialResolver;
 import org.opensaml.xml.security.credential.BasicCredential;
@@ -49,6 +49,8 @@ import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xml.security.keyinfo.KeyInfoCriterion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.base.Strings;
 
 /**
  * A credential resolver capable of resolving credentials from SAML 2 metadata;
@@ -187,7 +189,7 @@ public class MetadataCredentialResolver extends AbstractCriteriaFilteringCredent
         if (mdCriteria == null) {
             throw new IllegalArgumentException("SAML metadata criteria must be supplied");
         }
-        if (StringSupport.isNullOrEmpty(entityCriteria.getEntityID())) {
+        if (Strings.isNullOrEmpty(entityCriteria.getEntityID())) {
             throw new IllegalArgumentException("Credential owner entity ID criteria value must be supplied");
         }
         if (mdCriteria.getRole() == null) {
@@ -316,7 +318,7 @@ public class MetadataCredentialResolver extends AbstractCriteriaFilteringCredent
                         new Object[] {entityID, role, protocol});
             }
 
-            if (StringSupport.isNullOrEmpty(protocol)) {
+            if (Strings.isNullOrEmpty(protocol)) {
                 return metadata.getRole(entityID, role);
             } else {
                 RoleDescriptor roleDescriptor = metadata.getRole(entityID, role, protocol);

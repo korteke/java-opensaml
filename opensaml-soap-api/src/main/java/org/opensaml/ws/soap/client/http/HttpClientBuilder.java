@@ -18,6 +18,7 @@
 package org.opensaml.ws.soap.client.http;
 
 import net.jcip.annotations.NotThreadSafe;
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 import org.apache.commons.httpclient.DefaultHttpMethodRetryHandler;
 import org.apache.commons.httpclient.HostConfiguration;
@@ -29,7 +30,6 @@ import org.apache.commons.httpclient.params.HttpClientParams;
 import org.apache.commons.httpclient.params.HttpConnectionManagerParams;
 import org.apache.commons.httpclient.protocol.Protocol;
 import org.apache.commons.httpclient.protocol.SecureProtocolSocketFactory;
-import org.opensaml.util.StringSupport;
 
 /**
  * A builder for {@link HttpClient}s.

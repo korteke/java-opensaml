@@ -17,12 +17,13 @@
 
 package org.opensaml.ws.wssecurity.impl;
 
-import org.opensaml.util.StringSupport;
 import org.opensaml.ws.wssecurity.Timestamp;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.util.XMLObjectHelper;
 import org.w3c.dom.Element;
+
+import com.google.common.base.Strings;
 
 /**
  * TimestampMarshaller.
@@ -34,7 +35,7 @@ public class TimestampMarshaller extends AbstractWSSecurityObjectMarshaller {
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         Timestamp timestamp = (Timestamp) xmlObject;
         
-        if (!StringSupport.isNullOrEmpty(timestamp.getWSUId())) {
+        if (!Strings.isNullOrEmpty(timestamp.getWSUId())) {
             XMLObjectHelper.marshallAttribute(Timestamp.WSU_ID_ATTR_NAME, timestamp.getWSUId(), domElement, true);
         }
         
