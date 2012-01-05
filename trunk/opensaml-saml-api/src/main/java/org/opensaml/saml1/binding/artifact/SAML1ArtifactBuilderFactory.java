@@ -20,7 +20,7 @@ package org.opensaml.saml1.binding.artifact;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.opensaml.util.Base64;
+import net.shibboleth.utilities.java.support.codec.Base64Support;
 
 /**
  * Factory used to construct SAML 1 artifact builders.
@@ -65,7 +65,7 @@ public class SAML1ArtifactBuilderFactory {
      * @return constructed artifact
      */
     public AbstractSAML1Artifact buildArtifact(String base64Artifact){
-        return buildArtifact(Base64.decode(base64Artifact));
+        return buildArtifact(Base64Support.decode(base64Artifact));
     }
 
     /**

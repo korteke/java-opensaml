@@ -19,7 +19,8 @@ package org.opensaml.xml.signature.impl;
 
 import java.util.Set;
 
-import org.opensaml.util.Pair;
+import net.shibboleth.utilities.java.support.collection.Pair;
+
 import org.opensaml.util.criteria.CriteriaSet;
 import org.opensaml.util.resolver.ResolverException;
 import org.opensaml.xml.security.SecurityException;

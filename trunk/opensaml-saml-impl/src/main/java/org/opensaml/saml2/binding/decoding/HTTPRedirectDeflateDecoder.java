@@ -22,10 +22,12 @@ import java.io.InputStream;
 import java.util.zip.Inflater;
 import java.util.zip.InflaterInputStream;
 
+import net.shibboleth.utilities.java.support.codec.Base64Support;
+
+import org.apache.commons.codec.binary.Base64;
 import org.opensaml.common.SAMLObject;
 import org.opensaml.common.binding.SAMLMessageContext;
 import org.opensaml.common.xml.SAMLConstants;
-import org.opensaml.util.Base64;
 import org.opensaml.util.StringSupport;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.message.decoder.MessageDecodingException;
@@ -126,7 +128,7 @@ public class HTTPRedirectDeflateDecoder extends BaseSAML2MessageDecoder {
     protected InputStream decodeMessage(String message) throws MessageDecodingException {
         log.debug("Base64 decoding and inflating SAML message");
 
-        byte[] decodedBytes = Base64.decode(message);
+        byte[] decodedBytes = Base64Support.decode(message);
         if(decodedBytes == null){
             log.error("Unable to Base64 decode incoming message");
             throw new MessageDecodingException("Unable to Base64 decode incoming message");

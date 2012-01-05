@@ -44,13 +44,14 @@ import org.bouncycastle.asn1.DERString;
 import org.bouncycastle.asn1.x509.SubjectKeyIdentifier;
 import org.bouncycastle.x509.extension.SubjectKeyIdentifierStructure;
 import org.bouncycastle.x509.extension.X509ExtensionUtil;
-import org.opensaml.util.FileSupport;
 import org.opensaml.util.StringSupport;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.util.IPAddressHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.io.Files;
 
 /**
  * Utility class for working with X509 objects.
@@ -300,7 +301,7 @@ public class X509Util {
         }
         
         try{
-            return decodeCertificate(FileSupport.fileToByteArray(certs));
+            return decodeCertificate(Files.toByteArray(certs));
         }catch(IOException e){
             throw new CertificateException("Error reading certificate file " + certs.getAbsolutePath(), e);
         }
@@ -347,7 +348,7 @@ public class X509Util {
         }
         
         try{
-            return decodeCRLs(FileSupport.fileToByteArray(crls));
+            return decodeCRLs(Files.toByteArray(crls));
         }catch(IOException e){
             throw new CRLException("Error reading CRL file " + crls.getAbsolutePath(), e);
         }

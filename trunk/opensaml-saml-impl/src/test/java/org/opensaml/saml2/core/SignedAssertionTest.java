@@ -19,6 +19,8 @@ package org.opensaml.saml2.core;
 
 import java.security.KeyPair;
 
+import net.shibboleth.utilities.java.support.security.RandomIdentifierGenerationStrategy;
+
 import org.joda.time.DateTime;
 import org.opensaml.common.BaseTestCase;
 import org.opensaml.common.SAMLTestHelper;
@@ -26,7 +28,6 @@ import org.opensaml.common.SAMLVersion;
 import org.opensaml.saml2.core.impl.AssertionBuilder;
 import org.opensaml.saml2.core.impl.AuthnStatementBuilder;
 import org.opensaml.saml2.core.impl.IssuerBuilder;
-import org.opensaml.util.SecureRandomIdentifierGenerator;
 import org.opensaml.util.criteria.CriteriaSet;
 import org.opensaml.util.xml.SerializeSupport;
 import org.opensaml.xml.io.Marshaller;
@@ -69,7 +70,7 @@ public class SignedAssertionTest extends BaseTestCase {
     private SignatureBuilder signatureBuilder;
     
     /** Generator of element IDs. */
-    private SecureRandomIdentifierGenerator idGenerator;
+    private RandomIdentifierGenerationStrategy idGenerator;
 
     /** {@inheritDoc} */
     protected void setUp() throws Exception {
@@ -86,7 +87,7 @@ public class SignedAssertionTest extends BaseTestCase {
         authnStatementBuilder = (AuthnStatementBuilder) builderFactory.getBuilder(AuthnStatement.DEFAULT_ELEMENT_NAME);
         signatureBuilder = (SignatureBuilder) builderFactory.getBuilder(Signature.DEFAULT_ELEMENT_NAME);
         
-        idGenerator = new SecureRandomIdentifierGenerator();
+        idGenerator = new RandomIdentifierGenerationStrategy();
     }
     
     /**

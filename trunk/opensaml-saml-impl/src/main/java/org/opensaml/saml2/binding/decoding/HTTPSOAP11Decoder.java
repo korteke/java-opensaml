@@ -24,7 +24,6 @@ import javax.xml.namespace.QName;
 import org.opensaml.common.SAMLObject;
 import org.opensaml.common.binding.SAMLMessageContext;
 import org.opensaml.common.xml.SAMLConstants;
-import org.opensaml.util.ObjectSupport;
 import org.opensaml.util.collections.LazyList;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.message.decoder.MessageDecodingException;
@@ -36,6 +35,8 @@ import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.parse.ParserPool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.base.Objects;
 
 /**
  * SAML 2.0 SOAP 1.1 over HTTP binding decoder.
@@ -168,7 +169,7 @@ public class HTTPSOAP11Decoder extends BaseSAML2MessageDecoder {
         for (XMLObject header : headers) {
             if (header instanceof AttributeExtensibleXMLObject) {
                 attribExtensObject = (AttributeExtensibleXMLObject) header;
-                if (ObjectSupport.equals("1", attribExtensObject.getUnknownAttributes().get(soapMustUnderstand))) {
+                if (Objects.equal("1", attribExtensObject.getUnknownAttributes().get(soapMustUnderstand))) {
                     if (!understoodHeaders.contains(header.getElementQName())) {
                         throw new MessageDecodingException("SOAP decoder encountered a header, "
                                 + header.getElementQName()

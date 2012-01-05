@@ -25,11 +25,12 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.util.ObjectSupport;
 import org.opensaml.util.StringSupport;
 import org.opensaml.util.collections.LazyMap;
 import org.opensaml.util.collections.LazySet;
 import org.opensaml.util.xml.XmlConstants;
+
+import com.google.common.base.Objects;
 
 /**
  * A class which is responsible for managing XML namespace-related data for an {@link XMLObject}.
@@ -421,8 +422,8 @@ public class NamespaceManager {
         }
         
         for (Namespace namespace : namespaces) {
-            if (ObjectSupport.equals(namespace.getNamespaceURI(), newNamespace.getNamespaceURI()) &&
-                    ObjectSupport.equals(namespace.getNamespacePrefix(), newNamespace.getNamespacePrefix())) {
+            if (Objects.equal(namespace.getNamespaceURI(), newNamespace.getNamespaceURI()) &&
+                    Objects.equal(namespace.getNamespacePrefix(), newNamespace.getNamespacePrefix())) {
                 if (newNamespace.alwaysDeclare() && !namespace.alwaysDeclare()) {
                     // An alwaysDeclare=true trumps false.
                     // Don't modify the existing object in the set, merely swap them.
@@ -455,8 +456,8 @@ public class NamespaceManager {
         Iterator<Namespace> iter = namespaces.iterator();
         while (iter.hasNext()) {
             Namespace namespace = iter.next();
-            if (ObjectSupport.equals(namespace.getNamespaceURI(), oldNamespace.getNamespaceURI()) &&
-                    ObjectSupport.equals(namespace.getNamespacePrefix(), oldNamespace.getNamespacePrefix())) {
+            if (Objects.equal(namespace.getNamespaceURI(), oldNamespace.getNamespaceURI()) &&
+                    Objects.equal(namespace.getNamespacePrefix(), oldNamespace.getNamespacePrefix())) {
                 iter.remove();
             }
         }

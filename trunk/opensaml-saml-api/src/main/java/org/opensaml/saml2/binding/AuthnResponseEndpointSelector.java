@@ -25,10 +25,11 @@ import org.opensaml.common.binding.BasicEndpointSelector;
 import org.opensaml.saml2.core.AuthnRequest;
 import org.opensaml.saml2.metadata.Endpoint;
 import org.opensaml.saml2.metadata.IndexedEndpoint;
-import org.opensaml.util.ObjectSupport;
 import org.opensaml.util.StringSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.base.Objects;
 
 /**
  * An endpoint selector that implements the additional selection constraints described within the SAML 2.0 AuthnRequest
@@ -149,7 +150,7 @@ public class AuthnResponseEndpointSelector extends BasicEndpointSelector {
                 continue;
             }
 
-            if (ObjectSupport.equals(acsIndex, endpoint.getIndex())) {
+            if (Objects.equal(acsIndex, endpoint.getIndex())) {
                 return endpoint;
             } else {
                 log.debug("Endpoint '{}' with index '{}' discard because it does have the required index '{}'",
@@ -183,15 +184,15 @@ public class AuthnResponseEndpointSelector extends BasicEndpointSelector {
             }
 
             if (acsBinding != null) {
-                if (!ObjectSupport.equals(acsBinding, endpoint.getBinding())) {
+                if (!Objects.equal(acsBinding, endpoint.getBinding())) {
                     log.debug("Endpoint '{}' with binding '{}' discarded because it does not meet protocol binding selection criteria",
                                     endpoint.getLocation(), endpoint.getBinding());
                     continue;
                 }
             }
 
-            if (ObjectSupport.equals(endpoint.getLocation(), request.getAssertionConsumerServiceURL())
-                    || ObjectSupport.equals(endpoint.getResponseLocation(), request
+            if (Objects.equal(endpoint.getLocation(), request.getAssertionConsumerServiceURL())
+                    || Objects.equal(endpoint.getResponseLocation(), request
                             .getAssertionConsumerServiceURL())) {
                 return endpoint;
             } else {

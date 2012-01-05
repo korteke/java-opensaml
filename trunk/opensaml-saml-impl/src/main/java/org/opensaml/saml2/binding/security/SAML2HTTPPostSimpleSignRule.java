@@ -24,9 +24,10 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import net.shibboleth.utilities.java.support.codec.Base64Support;
+
 import org.opensaml.common.binding.SAMLMessageContext;
 import org.opensaml.common.binding.security.BaseSAMLSimpleSignatureSecurityPolicyRule;
-import org.opensaml.util.Base64;
 import org.opensaml.util.StringSupport;
 import org.opensaml.util.criteria.CriteriaSet;
 import org.opensaml.util.resolver.ResolverException;
@@ -85,10 +86,10 @@ public class SAML2HTTPPostSimpleSignRule extends BaseSAMLSimpleSignatureSecurity
         String samlMsg;
         try {
             if (request.getParameter("SAMLRequest") != null) {
-                samlMsg = new String(Base64.decode(request.getParameter("SAMLRequest")), "UTF-8");
+                samlMsg = new String(Base64Support.decode(request.getParameter("SAMLRequest")), "UTF-8");
                 builder.append("SAMLRequest=" + samlMsg);
             } else if (request.getParameter("SAMLResponse") != null) {
-                samlMsg = new String(Base64.decode(request.getParameter("SAMLResponse")), "UTF-8");
+                samlMsg = new String(Base64Support.decode(request.getParameter("SAMLResponse")), "UTF-8");
                 builder.append("SAMLResponse=" + samlMsg);
             } else {
                 log.warn("Could not extract either a SAMLRequest or a SAMLResponse from the form control data");
@@ -131,13 +132,13 @@ public class SAML2HTTPPostSimpleSignRule extends BaseSAMLSimpleSignatureSecurity
             log.debug("Found a KeyInfo in form control data, extracting validation credentials");
         }
 
-        Unmarshaller unmarshaller = Configuration.getUnmarshallerFactory()
-                .getUnmarshaller(KeyInfo.DEFAULT_ELEMENT_NAME);
+        Unmarshaller unmarshaller =
+                Configuration.getUnmarshallerFactory().getUnmarshaller(KeyInfo.DEFAULT_ELEMENT_NAME);
         if (unmarshaller == null) {
             throw new SecurityPolicyException("Could not obtain a KeyInfo unmarshaller");
         }
 
-        ByteArrayInputStream is = new ByteArrayInputStream(Base64.decode(kiBase64));
+        ByteArrayInputStream is = new ByteArrayInputStream(Base64Support.decode(kiBase64));
         KeyInfo keyInfo = null;
         try {
             Document doc = parser.parse(is);

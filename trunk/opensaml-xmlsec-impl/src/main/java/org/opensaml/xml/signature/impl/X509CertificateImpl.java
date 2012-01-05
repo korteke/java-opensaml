@@ -20,11 +20,12 @@ package org.opensaml.xml.signature.impl;
 import java.util.Collections;
 import java.util.List;
 
-import org.opensaml.util.ObjectSupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.signature.X509Certificate;
 import org.opensaml.xml.util.IndexingObjectStore;
 import org.opensaml.xml.validation.AbstractValidatingXMLObject;
+
+import com.google.common.base.Objects;
 
 /** Concrete implementation of {@link X509Certificate}. */
 public class X509CertificateImpl extends AbstractValidatingXMLObject implements X509Certificate {
@@ -58,7 +59,7 @@ public class X509CertificateImpl extends AbstractValidatingXMLObject implements 
         String b64Cert = prepareForAssignment(currentCert, newValue);
 
         // This is a new value, remove the old one, add the new one
-        if (!ObjectSupport.equals(currentCert, b64Cert)) {
+        if (!Objects.equal(currentCert, b64Cert)) {
             B64_CERT_STORE.remove(b64CertIndex);
             b64CertIndex = B64_CERT_STORE.put(b64Cert);
         }

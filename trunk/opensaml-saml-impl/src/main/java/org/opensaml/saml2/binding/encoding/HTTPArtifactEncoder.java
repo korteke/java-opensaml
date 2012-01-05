@@ -21,6 +21,9 @@ import java.io.OutputStreamWriter;
 import java.net.URI;
 import java.util.List;
 
+import net.shibboleth.utilities.java.support.collection.Pair;
+import net.shibboleth.utilities.java.support.net.UriSupport;
+
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.opensaml.Configuration;
@@ -31,8 +34,6 @@ import org.opensaml.common.xml.SAMLConstants;
 import org.opensaml.saml2.binding.artifact.AbstractSAML2Artifact;
 import org.opensaml.saml2.binding.artifact.SAML2ArtifactBuilder;
 import org.opensaml.saml2.binding.artifact.SAML2ArtifactType0004;
-import org.opensaml.util.Pair;
-import org.opensaml.util.net.UriSupport;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.message.encoder.MessageEncodingException;
 import org.opensaml.ws.transport.http.HTTPOutTransport;

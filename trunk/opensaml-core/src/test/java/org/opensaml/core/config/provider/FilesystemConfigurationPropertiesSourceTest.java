@@ -23,7 +23,8 @@ import java.util.Properties;
 import junit.framework.TestCase;
 
 import org.opensaml.core.config.ConfigurationPropertiesSource;
-import org.opensaml.util.FileSupport;
+
+import com.google.common.io.Files;
 
 /**
  * Test {@link AbstractFilesystemConfigurationPropertiesSource}.
@@ -50,7 +51,7 @@ public class FilesystemConfigurationPropertiesSourceTest extends TestCase {
     /** {@inheritDoc} */
     protected void setUp() throws Exception {
         super.setUp();
-        FileSupport.copyFile(masterFile, targetFile);
+        Files.copy(masterFile, targetFile);
     }
 
     /** {@inheritDoc} */

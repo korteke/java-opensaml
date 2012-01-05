@@ -17,9 +17,10 @@
 
 package org.opensaml.xacml.ctx.provider;
 
-import org.opensaml.util.ObjectSupport;
 import org.opensaml.util.StringSupport;
 import org.opensaml.xacml.policy.ObligationType;
+
+import com.google.common.base.Objects;
 
 /**
  * Base class for all obligation handlers.
@@ -102,7 +103,7 @@ public abstract class BaseObligationHandler {
         }
 
         if (obj instanceof BaseObligationHandler) {
-            return ObjectSupport.equals(getObligationId(), ((BaseObligationHandler) obj).getObligationId());
+            return Objects.equal(getObligationId(), ((BaseObligationHandler) obj).getObligationId());
         }
 
         return false;

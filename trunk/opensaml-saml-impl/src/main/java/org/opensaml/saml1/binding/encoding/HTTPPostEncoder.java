@@ -22,13 +22,14 @@ import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 
+import net.shibboleth.utilities.java.support.codec.Base64Support;
+
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.opensaml.common.SAMLObject;
 import org.opensaml.common.binding.SAMLMessageContext;
 import org.opensaml.common.xml.SAMLConstants;
 import org.opensaml.saml1.core.ResponseAbstractType;
-import org.opensaml.util.Base64;
 import org.opensaml.util.xml.SerializeSupport;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.message.encoder.MessageEncodingException;
@@ -133,12 +134,13 @@ public class HTTPPostEncoder extends BaseSAML1MessageEncoder {
 
             log.debug("Marshalling and Base64 encoding SAML message");
             String messageXML = SerializeSupport.nodeToString(marshallMessage(messageContext.getOutboundSAMLMessage()));
-            String encodedMessage = Base64.encodeBytes(messageXML.getBytes("UTF-8"), Base64.DONT_BREAK_LINES);
+            String encodedMessage = Base64Support.encode(messageXML.getBytes("UTF-8"), Base64Support.UNCHUNKED);
             context.put("SAMLResponse", encodedMessage);
 
             if (messageContext.getRelayState() != null) {
                 String encodedRelayState = esapiEncoder.encodeForHTMLAttribute(messageContext.getRelayState());
-                log.debug("Setting TARGET parameter to: '{}', encoded as '{}'", messageContext.getRelayState(), encodedRelayState);
+                log.debug("Setting TARGET parameter to: '{}', encoded as '{}'", messageContext.getRelayState(),
+                        encodedRelayState);
                 context.put("TARGET", encodedRelayState);
             }
 
@@ -151,7 +153,7 @@ public class HTTPPostEncoder extends BaseSAML1MessageEncoder {
             Writer out = new OutputStreamWriter(transportOutStream, "UTF-8");
             velocityEngine.mergeTemplate(velocityTemplateId, "UTF-8", context, out);
             out.flush();
-        }catch(UnsupportedEncodingException e){
+        } catch (UnsupportedEncodingException e) {
             log.error("UTF-8 encoding is not supported, this VM is not Java compliant.");
             throw new MessageEncodingException("Unable to encode message, UTF-8 encoding is not supported");
         } catch (Exception e) {

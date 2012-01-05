@@ -26,7 +26,7 @@ import java.util.Arrays;
 
 import javax.crypto.Mac;
 
-import org.bouncycastle.util.encoders.Hex;
+import org.apache.commons.codec.binary.Hex;
 import org.opensaml.xml.security.credential.Credential;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -96,7 +96,7 @@ public final class SigningUtil {
             signature.initSign(signingKey);
             signature.update(input);
             byte[] rawSignature = signature.sign();
-            log.debug("Computed signature: {}", new String(Hex.encode(rawSignature)));
+            log.debug("Computed signature: {}", Hex.encodeHex(rawSignature));
             return rawSignature;
         } catch (GeneralSecurityException e) {
             log.error("Error during signature generation", e);
@@ -126,7 +126,7 @@ public final class SigningUtil {
             mac.init(signingKey);
             mac.update(input);
             byte[] rawMAC = mac.doFinal();
-            log.debug("Computed MAC: {}", new String(Hex.encode(rawMAC)));
+            log.debug("Computed MAC: {}", Hex.encodeHexString(rawMAC));
             return rawMAC;
         } catch (GeneralSecurityException e) {
             log.error("Error during MAC generation", e);

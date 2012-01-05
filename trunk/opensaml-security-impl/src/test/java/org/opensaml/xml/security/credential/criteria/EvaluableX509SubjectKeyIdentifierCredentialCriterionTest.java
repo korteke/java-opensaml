@@ -20,8 +20,8 @@ package org.opensaml.xml.security.credential.criteria;
 import java.security.cert.X509Certificate;
 
 import junit.framework.TestCase;
+import net.shibboleth.utilities.java.support.codec.Base64Support;
 
-import org.opensaml.util.Base64;
 import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.credential.BasicCredential;
 import org.opensaml.xml.security.x509.BasicX509Credential;
@@ -88,7 +88,7 @@ public class EvaluableX509SubjectKeyIdentifierCredentialCriterionTest extends Te
         
         entityCert = SecurityHelper.buildJavaX509Cert(entityCertBase64);
         entityCertNoSKI = SecurityHelper.buildJavaX509Cert(entityCertNoSKIBase64);
-        subjectKeyIdentifier = Base64.decode(entityCertSKIBase64);
+        subjectKeyIdentifier = Base64Support.decode(entityCertSKIBase64);
         
         credential = new BasicX509Credential();
         credential.setEntityCertificate(entityCert);

@@ -19,7 +19,8 @@ package org.opensaml.saml2.binding.artifact;
 
 import java.util.Map;
 
-import org.opensaml.util.Base64;
+import net.shibboleth.utilities.java.support.codec.Base64Support;
+
 import org.opensaml.util.collections.LazyMap;
 
 /**
@@ -64,7 +65,7 @@ public class SAML2ArtifactBuilderFactory {
      * @return constructed artifact
      */
     public AbstractSAML2Artifact buildArtifact(String base64Artifact){
-        return buildArtifact(Base64.decode(base64Artifact));
+        return buildArtifact(Base64Support.decode(base64Artifact));
     }
 
     /**

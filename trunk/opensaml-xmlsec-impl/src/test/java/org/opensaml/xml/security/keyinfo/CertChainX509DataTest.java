@@ -25,7 +25,9 @@ import java.util.List;
 
 import javax.security.auth.x500.X500Principal;
 
-import org.opensaml.util.Base64;
+import net.shibboleth.utilities.java.support.codec.Base64Support;
+
+import org.apache.commons.codec.binary.Base64;
 import org.opensaml.util.criteria.CriteriaSet;
 import org.opensaml.util.resolver.ResolverException;
 import org.opensaml.xml.XMLObjectBaseTestCase;
@@ -119,7 +121,7 @@ public class CertChainX509DataTest extends XMLObjectBaseTestCase {
         
         new X500Principal("cn=foobar.example.org, O=Internet2");
         new X500Principal("cn=ca.example.org, O=Internet2");
-        Base64.decode(entityCertSKIBase64);
+        Base64Support.decode(entityCertSKIBase64);
     }
     
     /**
