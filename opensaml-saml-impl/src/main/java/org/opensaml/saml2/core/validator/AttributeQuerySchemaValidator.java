@@ -24,9 +24,10 @@ package org.opensaml.saml2.core.validator;
 import java.util.HashSet;
 import java.util.List;
 
+import net.shibboleth.utilities.java.support.collection.Pair;
+
 import org.opensaml.saml2.core.Attribute;
 import org.opensaml.saml2.core.AttributeQuery;
-import org.opensaml.util.Pair;
 import org.opensaml.util.StringSupport;
 import org.opensaml.xml.validation.ValidationException;
 

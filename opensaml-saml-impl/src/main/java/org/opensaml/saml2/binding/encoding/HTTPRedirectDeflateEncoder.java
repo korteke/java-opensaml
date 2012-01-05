@@ -26,15 +26,16 @@ import java.util.List;
 import java.util.zip.Deflater;
 import java.util.zip.DeflaterOutputStream;
 
+import net.shibboleth.utilities.java.support.codec.Base64Support;
+import net.shibboleth.utilities.java.support.collection.Pair;
+import net.shibboleth.utilities.java.support.net.UriSupport;
+
 import org.opensaml.common.SAMLObject;
 import org.opensaml.common.SignableSAMLObject;
 import org.opensaml.common.binding.SAMLMessageContext;
 import org.opensaml.common.xml.SAMLConstants;
 import org.opensaml.saml2.core.RequestAbstractType;
 import org.opensaml.saml2.core.StatusResponseType;
-import org.opensaml.util.Base64;
-import org.opensaml.util.Pair;
-import org.opensaml.util.net.UriSupport;
 import org.opensaml.util.xml.SerializeSupport;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.message.encoder.MessageEncodingException;
@@ -145,7 +146,7 @@ public class HTTPRedirectDeflateEncoder extends BaseSAML2MessageEncoder {
             deflaterStream.write(messageStr.getBytes("UTF-8"));
             deflaterStream.finish();
 
-            return Base64.encodeBytes(bytesOut.toByteArray(), Base64.DONT_BREAK_LINES);
+            return Base64Support.encode(bytesOut.toByteArray(), Base64Support.UNCHUNKED);
         } catch (IOException e) {
             throw new MessageEncodingException("Unable to DEFLATE and Base64 encode SAML message", e);
         }
@@ -256,7 +257,7 @@ public class HTTPRedirectDeflateEncoder extends BaseSAML2MessageEncoder {
         try {
             byte[] rawSignature =
                     XMLSigningUtil.signWithURI(signingCredential, algorithmURI, queryString.getBytes("UTF-8"));
-            b64Signature = Base64.encodeBytes(rawSignature, Base64.DONT_BREAK_LINES);
+            b64Signature = Base64Support.encode(rawSignature, Base64Support.UNCHUNKED);
             log.debug("Generated digital signature value (base64-encoded) {}", b64Signature);
         } catch (SecurityException e) {
             log.error("Error during URL signing process", e);

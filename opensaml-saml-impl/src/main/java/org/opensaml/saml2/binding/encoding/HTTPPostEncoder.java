@@ -21,6 +21,8 @@ import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 
+import net.shibboleth.utilities.java.support.codec.Base64Support;
+
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.opensaml.common.SAMLObject;
@@ -28,7 +30,6 @@ import org.opensaml.common.binding.SAMLMessageContext;
 import org.opensaml.common.xml.SAMLConstants;
 import org.opensaml.saml2.core.RequestAbstractType;
 import org.opensaml.saml2.core.StatusResponseType;
-import org.opensaml.util.Base64;
 import org.opensaml.util.xml.SerializeSupport;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.message.encoder.MessageEncodingException;
@@ -151,7 +152,7 @@ public class HTTPPostEncoder extends BaseSAML2MessageEncoder {
      */
     protected void populateVelocityContext(VelocityContext velocityContext, SAMLMessageContext messageContext,
             String endpointURL) throws MessageEncodingException {
-        
+
         Encoder esapiEncoder = ESAPI.encoder();
 
         String encodedEndpointURL = esapiEncoder.encodeForHTMLAttribute(endpointURL);
@@ -164,7 +165,7 @@ public class HTTPPostEncoder extends BaseSAML2MessageEncoder {
         }
         try {
             String messageXML = SerializeSupport.nodeToString(messageContext.getOutboundSAMLMessage().getDOM());
-            String encodedMessage = Base64.encodeBytes(messageXML.getBytes("UTF-8"), Base64.DONT_BREAK_LINES);
+            String encodedMessage = Base64Support.encode(messageXML.getBytes("UTF-8"), Base64Support.UNCHUNKED);
             if (messageContext.getOutboundSAMLMessage() instanceof RequestAbstractType) {
                 velocityContext.put("SAMLRequest", encodedMessage);
             } else if (messageContext.getOutboundSAMLMessage() instanceof StatusResponseType) {

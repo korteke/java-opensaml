@@ -20,6 +20,9 @@ package org.opensaml.saml1.binding.encoding;
 import java.net.URI;
 import java.util.List;
 
+import net.shibboleth.utilities.java.support.collection.Pair;
+import net.shibboleth.utilities.java.support.net.UriSupport;
+
 import org.opensaml.Configuration;
 import org.opensaml.common.SAMLObject;
 import org.opensaml.common.binding.SAMLMessageContext;
@@ -31,8 +34,6 @@ import org.opensaml.saml1.binding.artifact.SAML1ArtifactType0001;
 import org.opensaml.saml1.core.Assertion;
 import org.opensaml.saml1.core.NameIdentifier;
 import org.opensaml.saml1.core.Response;
-import org.opensaml.util.Pair;
-import org.opensaml.util.net.UriSupport;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.message.encoder.MessageEncodingException;
 import org.opensaml.ws.transport.http.HTTPOutTransport;

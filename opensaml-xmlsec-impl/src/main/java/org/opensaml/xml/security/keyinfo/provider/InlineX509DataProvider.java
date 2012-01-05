@@ -29,7 +29,8 @@ import java.util.List;
 
 import javax.security.auth.x500.X500Principal;
 
-import org.opensaml.util.Base64;
+import net.shibboleth.utilities.java.support.codec.Base64Support;
+
 import org.opensaml.util.StringSupport;
 import org.opensaml.util.collections.LazySet;
 import org.opensaml.util.criteria.CriteriaSet;
@@ -55,28 +56,27 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Implementation of {@link KeyInfoProvider} which provides basic support for extracting a {@link X509Credential} 
- * from an {@link X509Data} child of KeyInfo.
+ * Implementation of {@link KeyInfoProvider} which provides basic support for extracting a {@link X509Credential} from
+ * an {@link X509Data} child of KeyInfo.
  * 
- * This provider supports only inline {@link X509Certificate}'s and  {@link X509CRL}'s.
- * If only one certificate is present, it is assumed to be the end-entity certificate containing
- * the public key represented by this KeyInfo.  If multiple certificates are present, and any instances
- * of {@link X509SubjectName}, {@link X509IssuerSerial}, or {@link X509SKI} are also present, they
- * will be used to identify the end-entity certificate, in accordance with the XML Signature specification.
- * If a public key from a previously resolved {@link KeyValue} is available in the resolution context,
- * it will also be used to identify the end-entity certificate. If the end-entity certificate can not
- * otherwise be identified, the cert contained in the first X509Certificate element will be treated as
- * the end-entity certificate.
+ * This provider supports only inline {@link X509Certificate}'s and {@link X509CRL}'s. If only one certificate is
+ * present, it is assumed to be the end-entity certificate containing the public key represented by this KeyInfo. If
+ * multiple certificates are present, and any instances of {@link X509SubjectName}, {@link X509IssuerSerial}, or
+ * {@link X509SKI} are also present, they will be used to identify the end-entity certificate, in accordance with the
+ * XML Signature specification. If a public key from a previously resolved {@link KeyValue} is available in the
+ * resolution context, it will also be used to identify the end-entity certificate. If the end-entity certificate can
+ * not otherwise be identified, the cert contained in the first X509Certificate element will be treated as the
+ * end-entity certificate.
  * 
  */
 public class InlineX509DataProvider extends AbstractKeyInfoProvider {
-    
+
     /** Class logger. */
     private final Logger log = LoggerFactory.getLogger(InlineX509DataProvider.class);
-    
+
     /** Responsible for parsing and serializing X.500 names to/from {@link X500Principal} instances. */
     private X500DNHandler x500DNHandler;
-    
+
     /**
      * Constructor.
      */
@@ -111,24 +111,24 @@ public class InlineX509DataProvider extends AbstractKeyInfoProvider {
     }
 
     /** {@inheritDoc} */
-    public Collection<Credential> process(KeyInfoCredentialResolver resolver, XMLObject keyInfoChild, 
+    public Collection<Credential> process(KeyInfoCredentialResolver resolver, XMLObject keyInfoChild,
             CriteriaSet criteriaSet, KeyInfoResolutionContext kiContext) throws SecurityException {
-        
-        if (! handles(keyInfoChild)) {
+
+        if (!handles(keyInfoChild)) {
             return null;
         }
-        
+
         X509Data x509Data = (X509Data) keyInfoChild;
-        
+
         log.debug("Attempting to extract credential from an X509Data");
-        
+
         List<X509Certificate> certs = extractCertificates(x509Data);
         if (certs.isEmpty()) {
             log.info("The X509Data contained no X509Certificate elements, skipping credential extraction");
             return null;
         }
         List<X509CRL> crls = extractCRLs(x509Data);
-        
+
         PublicKey resolvedPublicKey = null;
         if (kiContext != null && kiContext.getKey() != null && kiContext.getKey() instanceof PublicKey) {
             resolvedPublicKey = (PublicKey) kiContext.getKey();
@@ -138,21 +138,21 @@ public class InlineX509DataProvider extends AbstractKeyInfoProvider {
             log.warn("The end-entity cert could not be identified, skipping credential extraction");
             return null;
         }
-        
+
         BasicX509Credential cred = new BasicX509Credential();
         cred.setEntityCertificate(entityCert);
         cred.setCRLs(crls);
         cred.setEntityCertificateChain(certs);
-        
+
         if (kiContext != null) {
             cred.getKeyNames().addAll(kiContext.getKeyNames());
         }
-        
+
         CredentialContext credContext = buildCredentialContext(kiContext);
         if (credContext != null) {
             cred.getCredentalContextSet().add(credContext);
         }
-        
+
         LazySet<Credential> credentialSet = new LazySet<Credential>();
         credentialSet.add(cred);
         return credentialSet;
@@ -173,7 +173,7 @@ public class InlineX509DataProvider extends AbstractKeyInfoProvider {
             log.error("Error extracting CRL's from X509Data", e);
             throw new SecurityException("Error extracting CRL's from X509Data", e);
         }
-        
+
         log.debug("Found {} X509CRLs", crls.size());
         return crls;
     }
@@ -209,51 +209,51 @@ public class InlineX509DataProvider extends AbstractKeyInfoProvider {
         if (certs == null || certs.isEmpty()) {
             return null;
         }
-        
+
         // If there is only 1 certificate, treat it as the end-entity certificate
         if (certs.size() == 1) {
             log.debug("Single certificate was present, treating as end-entity certificate");
             return certs.get(0);
         }
-        
+
         X509Certificate cert = null;
-        
-        //Check against public key already resolved in resolution context
+
+        // Check against public key already resolved in resolution context
         cert = findCertFromKey(certs, resolvedKey);
         if (cert != null) {
             log.debug("End-entity certificate resolved by matching previously resolved public key");
             return cert;
         }
- 
-        //Check against any subject names
+
+        // Check against any subject names
         cert = findCertFromSubjectNames(certs, x509Data.getX509SubjectNames());
         if (cert != null) {
             log.debug("End-entity certificate resolved by matching X509SubjectName");
             return cert;
         }
 
-        //Check against issuer serial
+        // Check against issuer serial
         cert = findCertFromIssuerSerials(certs, x509Data.getX509IssuerSerials());
         if (cert != null) {
             log.debug("End-entity certificate resolved by matching X509IssuerSerial");
             return cert;
         }
 
-        //Check against any subject key identifiers
+        // Check against any subject key identifiers
         cert = findCertFromSubjectKeyIdentifier(certs, x509Data.getX509SKIs());
         if (cert != null) {
             log.debug("End-entity certificate resolved by matching X509SKI");
             return cert;
         }
-        
+
         // TODO use some heuristic algorithm to try and figure it out based on the cert list alone.
-        //      This would be in X509Utils or somewhere else external to this class.
-        
+        // This would be in X509Utils or somewhere else external to this class.
+
         // As a final fallback, treat the first cert in the X509Data element as the entity cert
         log.debug("Treating the first certificate in the X509Data as the end-entity certificate");
         return certs.get(0);
     }
-    
+
     /**
      * Find the certificate from the chain that contains the specified key.
      * 
@@ -271,7 +271,7 @@ public class InlineX509DataProvider extends AbstractKeyInfoProvider {
         }
         return null;
     }
-    
+
     /**
      * Find the certificate from the chain that contains one of the specified subject names.
      * 
@@ -292,7 +292,7 @@ public class InlineX509DataProvider extends AbstractKeyInfoProvider {
         }
         return null;
     }
-    
+
     /**
      * Find the certificate from the chain identified by one of the specified issuer serials.
      * 
@@ -306,12 +306,12 @@ public class InlineX509DataProvider extends AbstractKeyInfoProvider {
                 continue;
             }
             String issuerNameValue = issuerSerial.getX509IssuerName().getValue();
-            BigInteger serialNumber  = issuerSerial.getX509SerialNumber().getValue();
+            BigInteger serialNumber = issuerSerial.getX509SerialNumber().getValue();
             if (!StringSupport.isNullOrEmpty(issuerNameValue)) {
                 X500Principal issuerX500Principal = x500DNHandler.parse(issuerNameValue);
                 for (X509Certificate cert : certs) {
-                    if (cert.getIssuerX500Principal().equals(issuerX500Principal) &&
-                            cert.getSerialNumber().equals(serialNumber)) {
+                    if (cert.getIssuerX500Principal().equals(issuerX500Principal)
+                            && cert.getSerialNumber().equals(serialNumber)) {
                         return cert;
                     }
                 }
@@ -319,7 +319,7 @@ public class InlineX509DataProvider extends AbstractKeyInfoProvider {
         }
         return null;
     }
-    
+
     /**
      * Find the certificate from the chain that contains one of the specified subject key identifiers.
      * 
@@ -330,7 +330,7 @@ public class InlineX509DataProvider extends AbstractKeyInfoProvider {
     protected X509Certificate findCertFromSubjectKeyIdentifier(List<X509Certificate> certs, List<X509SKI> skis) {
         for (X509SKI ski : skis) {
             if (!StringSupport.isNullOrEmpty(ski.getValue())) {
-                byte[] xmlValue = Base64.decode(ski.getValue());
+                byte[] xmlValue = Base64Support.decode(ski.getValue());
                 for (X509Certificate cert : certs) {
                     byte[] certValue = X509Util.getSubjectKeyIdentifier(cert);
                     if (certValue != null && Arrays.equals(xmlValue, certValue)) {
@@ -340,5 +340,5 @@ public class InlineX509DataProvider extends AbstractKeyInfoProvider {
             }
         }
         return null;
-    } 
+    }
 }

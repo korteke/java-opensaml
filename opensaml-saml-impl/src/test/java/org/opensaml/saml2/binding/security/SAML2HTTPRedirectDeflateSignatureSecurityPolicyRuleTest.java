@@ -25,6 +25,9 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.shibboleth.utilities.java.support.collection.Pair;
+import net.shibboleth.utilities.java.support.net.UriSupport;
+
 import org.opensaml.common.SAMLObjectBuilder;
 import org.opensaml.common.SAMLTestHelper;
 import org.opensaml.common.binding.BasicSAMLMessageContext;
@@ -37,8 +40,6 @@ import org.opensaml.saml2.core.Response;
 import org.opensaml.saml2.metadata.AssertionConsumerService;
 import org.opensaml.saml2.metadata.Endpoint;
 import org.opensaml.saml2.metadata.SPSSODescriptor;
-import org.opensaml.util.Pair;
-import org.opensaml.util.net.UriSupport;
 import org.opensaml.ws.message.encoder.MessageEncodingException;
 import org.opensaml.ws.transport.InTransport;
 import org.opensaml.ws.transport.http.HTTPInTransport;

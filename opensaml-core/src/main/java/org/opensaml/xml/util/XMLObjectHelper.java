@@ -25,7 +25,6 @@ import java.util.Map.Entry;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.util.ObjectSupport;
 import org.opensaml.util.StringSupport;
 import org.opensaml.util.xml.AttributeSupport;
 import org.opensaml.util.xml.QNameSupport;
@@ -45,6 +44,8 @@ import org.slf4j.LoggerFactory;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import com.google.common.base.Objects;
 
 
 /**
@@ -269,7 +270,7 @@ public final class XMLObjectHelper {
         
         while (current != null) {
             for (Namespace ns : current.getNamespaces()) {
-                if (ObjectSupport.equals(ns.getNamespacePrefix(), prefix)) {
+                if (Objects.equal(ns.getNamespacePrefix(), prefix)) {
                     return ns.getNamespaceURI();
                 }
             }
@@ -292,7 +293,7 @@ public final class XMLObjectHelper {
         
         while (current != null) {
             for (Namespace ns : current.getNamespaces()) {
-                if (ObjectSupport.equals(ns.getNamespaceURI(), namespaceURI)) {
+                if (Objects.equal(ns.getNamespaceURI(), namespaceURI)) {
                     return ns.getNamespacePrefix();
                 }
             }

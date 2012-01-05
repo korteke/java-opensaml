@@ -21,11 +21,12 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.util.ObjectSupport;
 import org.opensaml.util.StringSupport;
 import org.opensaml.util.collections.LazySet;
 import org.opensaml.util.xml.XmlConstants;
 import org.opensaml.xml.schema.XSAny;
+
+import com.google.common.base.Objects;
 
 /**
  * Test the NamespaceManger used by XMLObjects.
@@ -303,8 +304,8 @@ public class NamespaceManagerTest extends XMLObjectBaseTestCase {
     }
     
     private boolean equals(Namespace ns1, Namespace ns2) {
-        if (ObjectSupport.equals(ns1.getNamespaceURI(), ns2.getNamespaceURI()) 
-                && ObjectSupport.equals(ns1.getNamespacePrefix(), ns2.getNamespacePrefix())) {
+        if (Objects.equal(ns1.getNamespaceURI(), ns2.getNamespaceURI()) 
+                && Objects.equal(ns1.getNamespacePrefix(), ns2.getNamespacePrefix())) {
             return true;
         } else {
             return false;

@@ -19,11 +19,12 @@ package org.opensaml.saml2.binding.encoding;
 
 import java.io.UnsupportedEncodingException;
 
+import net.shibboleth.utilities.java.support.codec.Base64Support;
+
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.opensaml.common.binding.SAMLMessageContext;
 import org.opensaml.common.xml.SAMLConstants;
-import org.opensaml.util.Base64;
 import org.opensaml.util.StringSupport;
 import org.opensaml.util.xml.SerializeSupport;
 import org.opensaml.ws.message.encoder.MessageEncodingException;
@@ -148,7 +149,7 @@ public class HTTPPostSimpleSignEncoder extends HTTPPostEncoder {
                     throw new MessageEncodingException("No KeyInfo marshaller was configured");
                 }
                 String kiXML = SerializeSupport.nodeToString(marshaller.marshall(keyInfo));
-                String kiBase64 = Base64.encodeBytes(kiXML.getBytes(), Base64.DONT_BREAK_LINES);
+                String kiBase64 = Base64Support.encode(kiXML.getBytes(), Base64Support.UNCHUNKED);
                 return kiBase64;
             } else {
                 return null;
@@ -167,12 +168,13 @@ public class HTTPPostSimpleSignEncoder extends HTTPPostEncoder {
      * 
      * @param velocityContext the Velocity context which is already populated with the values for SAML message and relay
      *            state
-     * @param messageContext  the SAML message context being processed
+     * @param messageContext the SAML message context being processed
      * @param sigAlgURI the signature algorithm URI
      * 
      * @return the form control data string for signature computation
      */
-    protected String buildFormDataToSign(VelocityContext velocityContext, SAMLMessageContext messageContext, String sigAlgURI) {
+    protected String buildFormDataToSign(VelocityContext velocityContext, SAMLMessageContext messageContext,
+            String sigAlgURI) {
         StringBuilder builder = new StringBuilder();
 
         boolean isRequest = false;
@@ -189,7 +191,7 @@ public class HTTPPostSimpleSignEncoder extends HTTPPostEncoder {
 
         String msg = null;
         try {
-            msg = new String(Base64.decode(msgB64), "UTF-8");
+            msg = new String(Base64Support.decode(msgB64), "UTF-8");
         } catch (UnsupportedEncodingException e) {
             // All JVM's required to support UTF-8
         }
@@ -258,8 +260,9 @@ public class HTTPPostSimpleSignEncoder extends HTTPPostEncoder {
 
         String b64Signature = null;
         try {
-            byte[] rawSignature = XMLSigningUtil.signWithURI(signingCredential, algorithmURI, formData.getBytes("UTF-8"));
-            b64Signature = Base64.encodeBytes(rawSignature, Base64.DONT_BREAK_LINES);
+            byte[] rawSignature =
+                    XMLSigningUtil.signWithURI(signingCredential, algorithmURI, formData.getBytes("UTF-8"));
+            b64Signature = Base64Support.encode(rawSignature, Base64Support.UNCHUNKED);
             log.debug("Generated digital signature value (base64-encoded) {}", b64Signature);
         } catch (SecurityException e) {
             log.error("Error during URL signing process", e);

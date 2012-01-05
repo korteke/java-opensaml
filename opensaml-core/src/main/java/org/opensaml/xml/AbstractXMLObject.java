@@ -23,7 +23,6 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.util.ObjectSupport;
 import org.opensaml.util.StringSupport;
 import org.opensaml.util.xml.QNameSupport;
 import org.opensaml.util.xml.XmlConstants;
@@ -32,6 +31,8 @@ import org.opensaml.xml.util.IDIndex;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
+
+import com.google.common.base.Objects;
 
 /**
  * An abstract implementation of XMLObject.
@@ -293,7 +294,7 @@ public abstract class AbstractXMLObject implements XMLObject {
     protected String prepareForAssignment(String oldValue, String newValue) {
         String newString = StringSupport.trimOrNull(newValue);
 
-        if (!ObjectSupport.equals(oldValue, newString)) {
+        if (!Objects.equal(oldValue, newString)) {
             releaseThisandParentDOM();
         }
 
@@ -389,7 +390,7 @@ public abstract class AbstractXMLObject implements XMLObject {
     protected void registerOwnID(String oldID, String newID) {
         String newString = StringSupport.trimOrNull(newID);
 
-        if (!ObjectSupport.equals(oldID, newString)) {
+        if (!Objects.equal(oldID, newString)) {
             if (oldID != null) {
                 idIndex.deregisterIDMapping(oldID);
             }

@@ -52,9 +52,9 @@ import java.util.Map;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 
+import net.shibboleth.utilities.java.support.codec.Base64Support;
+
 import org.apache.commons.ssl.PKCS8Key;
-import org.opensaml.util.Base64;
-import org.opensaml.util.FileSupport;
 import org.opensaml.util.collections.LazyMap;
 import org.opensaml.xml.security.credential.BasicCredential;
 import org.opensaml.xml.security.credential.Credential;
@@ -62,18 +62,19 @@ import org.opensaml.xml.security.x509.BasicX509Credential;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.io.Files;
+
 /**
  * Helper methods for security-related requirements.
  */
 public final class SecurityHelper {
-    
+
     /** Maps key algorithms to the signing algorithm used in the key matching function. */
     private static Map<String, String> keyMatchAlgorithms;
 
     /** Constructor. */
     private SecurityHelper() {
     }
-
 
     /**
      * Extract the encryption key from the credential.
@@ -240,18 +241,15 @@ public final class SecurityHelper {
         X509EncodedKeySpec keySpec = new X509EncodedKeySpec(key);
         try {
             return buildKey(keySpec, "RSA");
-        }
-        catch (KeyException ex) {
+        } catch (KeyException ex) {
         }
         try {
             return buildKey(keySpec, "DSA");
-        }
-        catch (KeyException ex) {
+        } catch (KeyException ex) {
         }
         try {
             return buildKey(keySpec, "EC");
-        }
-        catch (KeyException ex) {
+        } catch (KeyException ex) {
         }
         throw new KeyException("Unsupported key type.");
     }
@@ -315,7 +313,7 @@ public final class SecurityHelper {
         }
 
         try {
-            return decodePrivateKey(FileSupport.fileToByteArray(key), password);
+            return decodePrivateKey(Files.toByteArray(key), password);
         } catch (IOException e) {
             throw new KeyException("Error reading Key file " + key.getAbsolutePath(), e);
         }
@@ -348,26 +346,26 @@ public final class SecurityHelper {
      * @throws CertificateException thrown if there is an error constructing certificate
      */
     public static java.security.cert.X509Certificate buildJavaX509Cert(String base64Cert) throws CertificateException {
-        CertificateFactory  cf = CertificateFactory.getInstance("X.509");
-        ByteArrayInputStream input = new ByteArrayInputStream(Base64.decode(base64Cert));
+        CertificateFactory cf = CertificateFactory.getInstance("X.509");
+        ByteArrayInputStream input = new ByteArrayInputStream(Base64Support.decode(base64Cert));
         return (java.security.cert.X509Certificate) cf.generateCertificate(input);
     }
-    
+
     /**
      * Build Java CRL from base64 encoding.
      * 
      * @param base64CRL base64-encoded CRL
      * @return a native Java X509 CRL
      * @throws CertificateException thrown if there is an error constructing certificate
-     * @throws CRLException  thrown if there is an error constructing CRL
+     * @throws CRLException thrown if there is an error constructing CRL
      */
-    public static java.security.cert.X509CRL buildJavaX509CRL(String base64CRL)
-            throws CertificateException, CRLException {
-        CertificateFactory  cf = CertificateFactory.getInstance("X.509");
-        ByteArrayInputStream input = new ByteArrayInputStream(Base64.decode(base64CRL));
+    public static java.security.cert.X509CRL buildJavaX509CRL(String base64CRL) throws CertificateException,
+            CRLException {
+        CertificateFactory cf = CertificateFactory.getInstance("X.509");
+        ByteArrayInputStream input = new ByteArrayInputStream(Base64Support.decode(base64CRL));
         return (java.security.cert.X509CRL) cf.generateCRL(input);
     }
-    
+
     /**
      * Build Java DSA public key from base64 encoding.
      * 
@@ -376,10 +374,10 @@ public final class SecurityHelper {
      * @throws KeyException thrown if there is an error constructing key
      */
     public static DSAPublicKey buildJavaDSAPublicKey(String base64EncodedKey) throws KeyException {
-        X509EncodedKeySpec keySpec = new X509EncodedKeySpec(Base64.decode(base64EncodedKey));
+        X509EncodedKeySpec keySpec = new X509EncodedKeySpec(Base64Support.decode(base64EncodedKey));
         return (DSAPublicKey) buildKey(keySpec, "DSA");
     }
-    
+
     /**
      * Build Java RSA public key from base64 encoding.
      * 
@@ -388,10 +386,10 @@ public final class SecurityHelper {
      * @throws KeyException thrown if there is an error constructing key
      */
     public static RSAPublicKey buildJavaRSAPublicKey(String base64EncodedKey) throws KeyException {
-        X509EncodedKeySpec keySpec = new X509EncodedKeySpec(Base64.decode(base64EncodedKey));
+        X509EncodedKeySpec keySpec = new X509EncodedKeySpec(Base64Support.decode(base64EncodedKey));
         return (RSAPublicKey) buildKey(keySpec, "RSA");
     }
-    
+
     /**
      * Build Java EC public key from base64 encoding.
      * 
@@ -400,10 +398,10 @@ public final class SecurityHelper {
      * @throws KeyException thrown if there is an error constructing key
      */
     public static ECPublicKey buildJavaECPublicKey(String base64EncodedKey) throws KeyException {
-        X509EncodedKeySpec keySpec = new X509EncodedKeySpec(Base64.decode(base64EncodedKey));
+        X509EncodedKeySpec keySpec = new X509EncodedKeySpec(Base64Support.decode(base64EncodedKey));
         return (ECPublicKey) buildKey(keySpec, "EC");
     }
-    
+
     /**
      * Build Java RSA private key from base64 encoding.
      * 
@@ -411,14 +409,14 @@ public final class SecurityHelper {
      * @return a native Java RSAPrivateKey
      * @throws KeyException thrown if there is an error constructing key
      */
-    public static RSAPrivateKey buildJavaRSAPrivateKey(String base64EncodedKey)  throws KeyException {
-        PrivateKey key =  buildJavaPrivateKey(base64EncodedKey);
-        if (! (key instanceof RSAPrivateKey)) {
+    public static RSAPrivateKey buildJavaRSAPrivateKey(String base64EncodedKey) throws KeyException {
+        PrivateKey key = buildJavaPrivateKey(base64EncodedKey);
+        if (!(key instanceof RSAPrivateKey)) {
             throw new KeyException("Generated key was not an RSAPrivateKey instance");
         }
         return (RSAPrivateKey) key;
     }
-    
+
     /**
      * Build Java DSA private key from base64 encoding.
      * 
@@ -426,14 +424,14 @@ public final class SecurityHelper {
      * @return a native Java DSAPrivateKey
      * @throws KeyException thrown if there is an error constructing key
      */
-    public static DSAPrivateKey buildJavaDSAPrivateKey(String base64EncodedKey)  throws KeyException {
-        PrivateKey key =  buildJavaPrivateKey(base64EncodedKey);
-        if (! (key instanceof DSAPrivateKey)) {
+    public static DSAPrivateKey buildJavaDSAPrivateKey(String base64EncodedKey) throws KeyException {
+        PrivateKey key = buildJavaPrivateKey(base64EncodedKey);
+        if (!(key instanceof DSAPrivateKey)) {
             throw new KeyException("Generated key was not a DSAPrivateKey instance");
         }
         return (DSAPrivateKey) key;
     }
-    
+
     /**
      * Build Java private key from base64 encoding. The key should have no password.
      * 
@@ -441,10 +439,10 @@ public final class SecurityHelper {
      * @return a native Java PrivateKey
      * @throws KeyException thrown if there is an error constructing key
      */
-    public static PrivateKey buildJavaPrivateKey(String base64EncodedKey)  throws KeyException {
-        return SecurityHelper.decodePrivateKey(Base64.decode(base64EncodedKey), null);
+    public static PrivateKey buildJavaPrivateKey(String base64EncodedKey) throws KeyException {
+        return SecurityHelper.decodePrivateKey(Base64Support.decode(base64EncodedKey), null);
     }
-    
+
     /**
      * Generates a public key from the given key spec.
      * 
@@ -453,8 +451,8 @@ public final class SecurityHelper {
      * 
      * @return the generated {@link PublicKey}
      * 
-     * @throws KeyException thrown if the key algorithm is not supported by the JCE or the key spec does not
-     *             contain valid information
+     * @throws KeyException thrown if the key algorithm is not supported by the JCE or the key spec does not contain
+     *             valid information
      */
     public static PublicKey buildKey(KeySpec keySpec, String keyAlgorithm) throws KeyException {
         try {
@@ -466,9 +464,7 @@ public final class SecurityHelper {
             throw new KeyException("Invalid key information", e);
         }
     }
-    
 
-    
     /**
      * Generate a random symmetric key.
      * 
@@ -479,8 +475,8 @@ public final class SecurityHelper {
      * @throws NoSuchAlgorithmException algorithm not found
      * @throws NoSuchProviderException provider not found
      */
-    public static SecretKey generateKey(String algo, int keyLength, String provider) 
-            throws NoSuchAlgorithmException, NoSuchProviderException {
+    public static SecretKey generateKey(String algo, int keyLength, String provider) throws NoSuchAlgorithmException,
+            NoSuchProviderException {
         SecretKey key = null;
         KeyGenerator keyGenerator = null;
         if (provider != null) {
@@ -492,7 +488,7 @@ public final class SecurityHelper {
         key = keyGenerator.generateKey();
         return key;
     }
-    
+
     /**
      * Generate a random asymmetric key pair.
      * 
@@ -503,8 +499,8 @@ public final class SecurityHelper {
      * @throws NoSuchAlgorithmException algorithm not found
      * @throws NoSuchProviderException provider not found
      */
-    public static KeyPair generateKeyPair(String algo, int keyLength, String provider) 
-            throws NoSuchAlgorithmException, NoSuchProviderException {
+    public static KeyPair generateKeyPair(String algo, int keyLength, String provider) throws NoSuchAlgorithmException,
+            NoSuchProviderException {
         KeyPairGenerator keyGenerator = null;
         if (provider != null) {
             keyGenerator = KeyPairGenerator.getInstance(algo, provider);
@@ -533,14 +529,14 @@ public final class SecurityHelper {
 
         String jcaAlgoID = keyMatchAlgorithms.get(privKey.getAlgorithm());
         if (jcaAlgoID == null) {
-            throw new SecurityException("Can't determine JCA algorithm ID for key matching from key algorithm: " 
+            throw new SecurityException("Can't determine JCA algorithm ID for key matching from key algorithm: "
                     + privKey.getAlgorithm());
         }
 
         if (log.isDebugEnabled()) {
             log.debug("Attempting to match key pair containing key algorithms public '{}' private '{}', "
-                    + "using JCA signature algorithm '{}'", new Object[] { pubKey.getAlgorithm(),
-                    privKey.getAlgorithm(), jcaAlgoID, });
+                    + "using JCA signature algorithm '{}'", new Object[] {pubKey.getAlgorithm(),
+                    privKey.getAlgorithm(), jcaAlgoID,});
         }
 
         byte[] data = "This is the data to sign".getBytes();
@@ -548,7 +544,6 @@ public final class SecurityHelper {
         return SigningUtil.verify(pubKey, jcaAlgoID, signature, data);
     }
 
-    
     /**
      * Get an SLF4J Logger.
      * 
@@ -557,7 +552,7 @@ public final class SecurityHelper {
     private static Logger getLogger() {
         return LoggerFactory.getLogger(SecurityHelper.class);
     }
-    
+
     static {
         keyMatchAlgorithms = new LazyMap<String, String>();
         keyMatchAlgorithms.put("RSA", "SHA1withRSA");

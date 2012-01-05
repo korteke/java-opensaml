@@ -21,9 +21,10 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import net.shibboleth.utilities.java.support.codec.Base64Support;
+
 import org.opensaml.common.binding.SAMLMessageContext;
 import org.opensaml.security.MetadataCriterion;
-import org.opensaml.util.Base64;
 import org.opensaml.util.StringSupport;
 import org.opensaml.util.criteria.CriteriaSet;
 import org.opensaml.ws.message.MessageContext;
@@ -251,7 +252,7 @@ public abstract class BaseSAMLSimpleSignatureSecurityPolicyRule implements Secur
         if (StringSupport.isNullOrEmpty(signature)) {
             return null;
         }
-        return Base64.decode(signature);
+        return Base64Support.decode(signature);
     }
 
     /**

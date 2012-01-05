@@ -19,8 +19,9 @@ package org.opensaml.common.binding.artifact;
 
 import java.util.Arrays;
 
-import org.bouncycastle.util.encoders.Hex;
-import org.opensaml.util.Base64;
+import net.shibboleth.utilities.java.support.codec.Base64Support;
+
+import org.apache.commons.codec.binary.Hex;
 
 /**
  * Base class for SAML artifacts.
@@ -38,7 +39,7 @@ public abstract class AbstractSAMLArtifact {
      * @throws IllegalArgumentException thrown if the given type code is not two bytes in length
      */
     protected AbstractSAMLArtifact(byte[] code) {
-        if(code.length != 2){
+        if (code.length != 2) {
             throw new IllegalArgumentException("Type code was not 2-bytes in size");
         }
         typeCode = code;
@@ -72,8 +73,6 @@ public abstract class AbstractSAMLArtifact {
      * Sets the 2 byte type code for this artifact.
      * 
      * @param newTypeCode 2 byte type code for this artifact
-     * 
-     * @throws IllegalArgumentException thrown if the given type code is not two bytes
      */
     protected void setTypeCode(byte[] newTypeCode) {
         typeCode = newTypeCode;
@@ -92,7 +91,7 @@ public abstract class AbstractSAMLArtifact {
      * @return Base64 encoded artifact.
      */
     public String base64Encode() {
-        return new String(Base64.encodeBytes(getArtifactBytes()));
+        return Base64Support.encode(getArtifactBytes(), Base64Support.UNCHUNKED);
     }
 
     /**
@@ -101,15 +100,15 @@ public abstract class AbstractSAMLArtifact {
      * @return hex encoded artifact
      */
     public String hexEncode() {
-        return new String(Hex.encode(getArtifactBytes()));
+        return Hex.encodeHexString(getArtifactBytes());
     }
 
     /** {@inheritDoc} */
     public boolean equals(Object o) {
-        if(o == this){
+        if (o == this) {
             return true;
         }
-        
+
         if (o instanceof AbstractSAMLArtifact) {
             AbstractSAMLArtifact otherArtifact = (AbstractSAMLArtifact) o;
             return Arrays.equals(getArtifactBytes(), otherArtifact.getArtifactBytes());
@@ -122,9 +121,9 @@ public abstract class AbstractSAMLArtifact {
     public int hashCode() {
         return Arrays.hashCode(getArtifactBytes());
     }
-    
+
     /** {@inheritDoc} */
-    public String toString(){
+    public String toString() {
         return base64Encode();
     }
 }

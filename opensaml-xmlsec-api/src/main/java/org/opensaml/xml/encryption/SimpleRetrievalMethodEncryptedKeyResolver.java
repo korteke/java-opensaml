@@ -20,12 +20,13 @@ package org.opensaml.xml.encryption;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.opensaml.util.ObjectSupport;
 import org.opensaml.util.StringSupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.signature.RetrievalMethod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.base.Objects;
 
 /**
  * Implementation of {@link EncryptedKeyResolver} which finds {@link EncryptedKey} elements by dereferencing
@@ -51,7 +52,7 @@ public class SimpleRetrievalMethodEncryptedKeyResolver extends AbstractEncrypted
         }
 
         for (RetrievalMethod rm : encryptedData.getKeyInfo().getRetrievalMethods()) {
-            if (!ObjectSupport.equals(rm.getType(), EncryptionConstants.TYPE_ENCRYPTED_KEY)) {
+            if (!Objects.equal(rm.getType(), EncryptionConstants.TYPE_ENCRYPTED_KEY)) {
                 continue;
             }
             if (rm.getTransforms() != null) {

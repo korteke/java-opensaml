@@ -17,9 +17,10 @@
 
 package org.opensaml.xml;
 
-import org.opensaml.util.ObjectSupport;
 import org.opensaml.util.StringSupport;
 import org.opensaml.util.xml.XmlConstants;
+
+import com.google.common.base.Objects;
 
 /** Data structure for representing XML namespace attributes. */
 public class Namespace {
@@ -151,8 +152,8 @@ public class Namespace {
         
         if (obj instanceof Namespace) {
             Namespace otherNamespace = (Namespace) obj;
-            if (ObjectSupport.equals(otherNamespace.getNamespaceURI(), getNamespaceURI())){
-                if (ObjectSupport.equals(otherNamespace.getNamespacePrefix(), getNamespacePrefix())){
+            if (Objects.equal(otherNamespace.getNamespaceURI(), getNamespaceURI())){
+                if (Objects.equal(otherNamespace.getNamespacePrefix(), getNamespacePrefix())){
                     return otherNamespace.alwaysDeclare() == alwaysDeclare();
                 }
             }

@@ -26,7 +26,6 @@ import javax.xml.namespace.QName;
 
 import net.jcip.annotations.NotThreadSafe;
 
-import org.opensaml.util.ObjectSupport;
 import org.opensaml.util.StringSupport;
 import org.opensaml.util.collections.LazyMap;
 import org.opensaml.util.collections.LazySet;
@@ -36,6 +35,8 @@ import org.opensaml.xml.NamespaceManager;
 import org.opensaml.xml.XMLObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.base.Objects;
 
 /**
  * A map of attribute names and attribute values that invalidates the DOM of the attribute owning XMLObject when the
@@ -126,7 +127,7 @@ public class AttributeMap implements Map<QName, String> {
             oldValue = resolveQName(oldValueString, true);
         }
         
-        if (!ObjectSupport.equals(oldValue, value)) {
+        if (!Objects.equal(oldValue, value)) {
             releaseDOM();
             if (value != null) {
                 // new value is not null, old value was either null or non-equal

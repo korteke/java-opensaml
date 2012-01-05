@@ -20,10 +20,11 @@ package org.opensaml.saml2.binding.decoding;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
+import net.shibboleth.utilities.java.support.codec.Base64Support;
+
 import org.opensaml.common.SAMLObject;
 import org.opensaml.common.binding.SAMLMessageContext;
 import org.opensaml.common.xml.SAMLConstants;
-import org.opensaml.util.Base64;
 import org.opensaml.util.StringSupport;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.message.decoder.MessageDecodingException;
@@ -119,7 +120,7 @@ public class HTTPPostDecoder extends BaseSAML2MessageDecoder {
         }
 
         log.trace("Base64 decoding SAML message:\n{}", encodedMessage);
-        byte[] decodedBytes = Base64.decode(encodedMessage);
+        byte[] decodedBytes = Base64Support.decode(encodedMessage);
         if(decodedBytes == null){
             log.error("Unable to Base64 decode SAML message");
             throw new MessageDecodingException("Unable to Base64 decode SAML message");

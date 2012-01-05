@@ -19,7 +19,6 @@ package org.opensaml.xml.io;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.util.ObjectSupport;
 import org.opensaml.util.StringSupport;
 import org.opensaml.util.xml.DomTypeSupport;
 import org.opensaml.util.xml.QNameSupport;
@@ -38,6 +37,8 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
+
+import com.google.common.base.Objects;
 
 /**
  * An thread safe abstract unmarshaller. This unmarshaller will:
@@ -220,9 +221,9 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
         log.trace("Pre-processing attribute {}", attribName);
         String attributeNamespace = StringSupport.trimOrNull(attribute.getNamespaceURI());
 
-        if (ObjectSupport.equals(attributeNamespace, XmlConstants.XMLNS_NS)) {
+        if (Objects.equal(attributeNamespace, XmlConstants.XMLNS_NS)) {
             unmarshallNamespaceAttribute(xmlObject, attribute);
-        } else if (ObjectSupport.equals(attributeNamespace, XmlConstants.XSI_NS)) {
+        } else if (Objects.equal(attributeNamespace, XmlConstants.XSI_NS)) {
             unmarshallSchemaInstanceAttributes(xmlObject, attribute);
         } else {
             log.trace("Attribute {} is neither a schema type nor namespace, calling processAttribute()",
@@ -253,7 +254,7 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
         log.trace("{} is a namespace declaration, adding it to the list of namespaces on the XMLObject",
                 QNameSupport.getNodeQName(attribute));
         Namespace namespace;
-        if (ObjectSupport.equals(attribute.getLocalName(), XmlConstants.XMLNS_PREFIX)) {
+        if (Objects.equal(attribute.getLocalName(), XmlConstants.XMLNS_PREFIX)) {
             namespace = new Namespace(attribute.getValue(), null);
         } else {
             namespace = new Namespace(attribute.getValue(), attribute.getLocalName());

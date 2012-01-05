@@ -21,12 +21,13 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.KeyPair;
 
+import net.shibboleth.utilities.java.support.codec.Base64Support;
+
 import org.opensaml.common.BaseTestCase;
 import org.opensaml.common.SAMLObject;
 import org.opensaml.common.binding.BasicSAMLMessageContext;
 import org.opensaml.common.binding.decoding.SAMLMessageDecoder;
 import org.opensaml.saml1.core.Response;
-import org.opensaml.util.Base64;
 import org.opensaml.util.xml.SerializeSupport;
 import org.opensaml.ws.message.decoder.MessageDecodingException;
 import org.opensaml.ws.transport.http.HttpServletRequestAdapter;
@@ -42,57 +43,57 @@ import org.springframework.mock.web.MockHttpServletRequest;
  * Test case for SAML 1 HTTP POST decoding.
  */
 public class HTTPPostDecoderTest extends BaseTestCase {
-    
+
     private String responseRecipient = "https://sp.example.org/sso/acs";
-    
+
     private String expectedRelayValue = "relay";
-    
+
     private SAMLMessageDecoder decoder;
-    
+
     private BasicSAMLMessageContext messageContext;
-    
+
     private MockHttpServletRequest httpRequest;
-    
+
     /** {@inheritDoc} */
     protected void setUp() throws Exception {
         super.setUp();
-        
+
         httpRequest = new MockHttpServletRequest();
         httpRequest.setMethod("POST");
         httpRequest.setParameter("TARGET", expectedRelayValue);
-        
+
         messageContext = new BasicSAMLMessageContext();
         messageContext.setInboundMessageTransport(new HttpServletRequestAdapter(httpRequest));
-        
+
         decoder = new HTTPPostDecoder();
     }
 
     /** Test decoding message. */
     public void testDecode() throws Exception {
         Response samlResponse = (Response) unmarshallElement("/data/org/opensaml/saml1/binding/Response.xml");
-        
+
         String deliveredEndpointURL = samlResponse.getRecipient();
-        
+
         httpRequest.setParameter("SAMLResponse", encodeMessage(samlResponse));
-        
+
         populateRequestURL(httpRequest, deliveredEndpointURL);
-        
+
         decoder.decode(messageContext);
 
         assertTrue(messageContext.getInboundMessage() instanceof Response);
         assertTrue(messageContext.getInboundSAMLMessage() instanceof Response);
         assertEquals(expectedRelayValue, messageContext.getRelayState());
     }
-    
+
     public void testMessageEndpointGood() throws Exception {
         Response samlResponse = (Response) unmarshallElement("/data/org/opensaml/saml1/binding/Response.xml");
-        
+
         String deliveredEndpointURL = samlResponse.getRecipient();
-        
+
         httpRequest.setParameter("SAMLResponse", encodeMessage(samlResponse));
-        
+
         populateRequestURL(httpRequest, deliveredEndpointURL);
-        
+
         try {
             decoder.decode(messageContext);
         } catch (SecurityException e) {
@@ -101,14 +102,14 @@ public class HTTPPostDecoderTest extends BaseTestCase {
             fail("Caught MessageDecodingException: " + e.getMessage());
         }
     }
-    
+
     public void testMessageEndpointGoodWithQueryParams() throws Exception {
         Response samlResponse = (Response) unmarshallElement("/data/org/opensaml/saml1/binding/Response.xml");
-        
+
         String deliveredEndpointURL = samlResponse.getRecipient() + "?paramFoo=bar&paramBar=baz";
-        
+
         httpRequest.setParameter("SAMLResponse", encodeMessage(samlResponse));
-        
+
         populateRequestURL(httpRequest, deliveredEndpointURL);
 
         try {
@@ -119,14 +120,14 @@ public class HTTPPostDecoderTest extends BaseTestCase {
             fail("Caught MessageDecodingException: " + e.getMessage());
         }
     }
-    
+
     public void testMessageEndpointInvalidURI() throws Exception {
         Response samlResponse = (Response) unmarshallElement("/data/org/opensaml/saml1/binding/Response.xml");
-        
+
         String deliveredEndpointURL = samlResponse.getRecipient() + "/some/other/endpointURI";
-        
+
         httpRequest.setParameter("SAMLResponse", encodeMessage(samlResponse));
-        
+
         populateRequestURL(httpRequest, deliveredEndpointURL);
 
         try {
@@ -138,14 +139,14 @@ public class HTTPPostDecoderTest extends BaseTestCase {
             fail("Caught MessageDecodingException: " + e.getMessage());
         }
     }
-    
+
     public void testMessageEndpointInvalidHost() throws Exception {
         Response samlResponse = (Response) unmarshallElement("/data/org/opensaml/saml1/binding/Response.xml");
-        
+
         String deliveredEndpointURL = "https://bogus-sp.example.com/sso/acs";
-        
+
         httpRequest.setParameter("SAMLResponse", encodeMessage(samlResponse));
-        
+
         populateRequestURL(httpRequest, deliveredEndpointURL);
 
         try {
@@ -157,15 +158,15 @@ public class HTTPPostDecoderTest extends BaseTestCase {
             fail("Caught MessageDecodingException: " + e.getMessage());
         }
     }
-    
+
     public void testMessageEndpointMissingDestinationNotSigned() throws Exception {
         Response samlResponse = (Response) unmarshallElement("/data/org/opensaml/saml1/binding/Response.xml");
         samlResponse.setRecipient(null);
-        
+
         String deliveredEndpointURL = responseRecipient;
-        
+
         httpRequest.setParameter("SAMLResponse", encodeMessage(samlResponse));
-        
+
         populateRequestURL(httpRequest, deliveredEndpointURL);
 
         try {
@@ -177,11 +178,11 @@ public class HTTPPostDecoderTest extends BaseTestCase {
             fail("Caught MessageDecodingException: " + e.getMessage());
         }
     }
-    
+
     public void testMessageEndpointMissingDestinationSigned() throws Exception {
         Response samlResponse = (Response) unmarshallElement("/data/org/opensaml/saml1/binding/Response.xml");
         samlResponse.setRecipient(null);
-        
+
         Signature signature = (Signature) buildXMLObject(Signature.DEFAULT_ELEMENT_NAME);
         KeyPair kp = SecurityHelper.generateKeyPair("RSA", 1024, null);
         Credential signingCred = SecurityHelper.getSimpleCredential(kp.getPublic(), kp.getPrivate());
@@ -190,11 +191,11 @@ public class HTTPPostDecoderTest extends BaseTestCase {
         XMLSecurityHelper.prepareSignatureParams(signature, signingCred, null, null);
         marshallerFactory.getMarshaller(samlResponse).marshall(samlResponse);
         Signer.signObject(signature);
-        
+
         String deliveredEndpointURL = responseRecipient;
-        
+
         httpRequest.setParameter("SAMLResponse", encodeMessage(samlResponse));
-        
+
         populateRequestURL(httpRequest, deliveredEndpointURL);
 
         try {
@@ -206,7 +207,7 @@ public class HTTPPostDecoderTest extends BaseTestCase {
             fail("Caught MessageDecodingException: " + e.getMessage());
         }
     }
-    
+
     private void populateRequestURL(MockHttpServletRequest request, String requestURL) {
         URL url = null;
         try {
@@ -228,11 +229,11 @@ public class HTTPPostDecoderTest extends BaseTestCase {
         request.setRequestURI(url.getPath());
         request.setQueryString(url.getQuery());
     }
-    
+
     protected String encodeMessage(SAMLObject message) throws Exception {
         marshallerFactory.getMarshaller(message).marshall(message);
         String messageStr = SerializeSupport.nodeToString(message.getDOM());
-        
-        return Base64.encodeBytes(messageStr.getBytes("UTF-8"), Base64.DONT_BREAK_LINES);
+
+        return Base64Support.encode(messageStr.getBytes("UTF-8"), Base64Support.UNCHUNKED);
     }
 }

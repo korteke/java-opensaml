@@ -21,6 +21,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.KeyPair;
 
+import net.shibboleth.utilities.java.support.codec.Base64Support;
+
 import org.opensaml.common.BaseTestCase;
 import org.opensaml.common.SAMLObject;
 import org.opensaml.common.binding.BasicSAMLMessageContext;
@@ -28,7 +30,6 @@ import org.opensaml.common.binding.decoding.SAMLMessageDecoder;
 import org.opensaml.saml2.core.AuthnRequest;
 import org.opensaml.saml2.core.RequestAbstractType;
 import org.opensaml.saml2.core.Response;
-import org.opensaml.util.Base64;
 import org.opensaml.util.xml.SerializeSupport;
 import org.opensaml.ws.message.decoder.MessageDecodingException;
 import org.opensaml.ws.transport.http.HttpServletRequestAdapter;
@@ -249,7 +250,7 @@ public class HTTPPostDecoderTest extends BaseTestCase {
         marshallerFactory.getMarshaller(message).marshall(message);
         String messageStr = SerializeSupport.nodeToString(message.getDOM());
         
-        return Base64.encodeBytes(messageStr.getBytes("UTF-8"), Base64.DONT_BREAK_LINES);
+        return Base64Support.encode(messageStr.getBytes("UTF-8"), Base64Support.UNCHUNKED);
     }
     
 }

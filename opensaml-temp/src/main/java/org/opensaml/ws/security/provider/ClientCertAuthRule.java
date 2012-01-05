@@ -22,7 +22,8 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.opensaml.util.Base64;
+import net.shibboleth.utilities.java.support.codec.Base64Support;
+
 import org.opensaml.util.StringSupport;
 import org.opensaml.util.criteria.CriteriaSet;
 import org.opensaml.ws.message.MessageContext;
@@ -115,7 +116,8 @@ public class ClientCertAuthRule extends BaseTrustEngineRule<X509Credential> {
         if (log.isDebugEnabled()) {
             try {
                 log.debug("Attempting to authenticate inbound connection that presented the certificate:");
-                log.debug(Base64.encodeBytes(requestCredential.getEntityCertificate().getEncoded()));
+                log.debug(Base64Support.encode(requestCredential.getEntityCertificate().getEncoded(),
+                        Base64Support.UNCHUNKED));
             } catch (CertificateEncodingException e) {
                 // do nothing
             }
@@ -467,8 +469,9 @@ public class ClientCertAuthRule extends BaseTrustEngineRule<X509Credential> {
         }
         String name = null;
         if (!StringSupport.isNullOrEmpty(certNameOptions.getX500SubjectDNFormat())) {
-            name = certNameOptions.getX500DNHandler().getName(cert.getSubjectX500Principal(),
-                    certNameOptions.getX500SubjectDNFormat());
+            name =
+                    certNameOptions.getX500DNHandler().getName(cert.getSubjectX500Principal(),
+                            certNameOptions.getX500SubjectDNFormat());
         } else {
             name = certNameOptions.getX500DNHandler().getName(cert.getSubjectX500Principal());
         }
@@ -486,7 +489,7 @@ public class ClientCertAuthRule extends BaseTrustEngineRule<X509Credential> {
      */
     protected List<String> getAltNames(X509Certificate cert, Integer altNameType) {
         log.debug("Extracting alt names from certificate of type: {}", altNameType.toString());
-        Integer[] nameTypes = new Integer[] { altNameType };
+        Integer[] nameTypes = new Integer[] {altNameType};
         List altNames = X509Util.getAltNames(cert, nameTypes);
         List<String> names = new ArrayList<String>();
         for (Object altNameValue : altNames) {
