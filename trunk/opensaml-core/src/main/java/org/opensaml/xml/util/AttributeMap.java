@@ -25,8 +25,8 @@ import java.util.Set;
 import javax.xml.namespace.QName;
 
 import net.jcip.annotations.NotThreadSafe;
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
-import org.opensaml.util.StringSupport;
 import org.opensaml.util.collections.LazyMap;
 import org.opensaml.util.collections.LazySet;
 import org.opensaml.util.xml.QNameSupport;
@@ -37,6 +37,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Objects;
+import com.google.common.base.Strings;
 
 /**
  * A map of attribute names and attribute values that invalidates the DOM of the attribute owning XMLObject when the
@@ -96,7 +97,7 @@ public class AttributeMap implements Map<QName, String> {
                 attributeOwner.getIDIndex().deregisterIDMapping(oldValue);
                 attributeOwner.getIDIndex().registerIDMapping(value, attributeOwner);
             }
-            if (!StringSupport.isNullOrEmpty(attributeName.getNamespaceURI())) {
+            if (!Strings.isNullOrEmpty(attributeName.getNamespaceURI())) {
                 if (value == null) {
                     attributeOwner.getNamespaceManager().deregisterAttributeName(attributeName);
                 } else {
@@ -123,7 +124,7 @@ public class AttributeMap implements Map<QName, String> {
         String oldValueString = get(attributeName);
         
         QName oldValue = null;
-        if (!StringSupport.isNullOrEmpty(oldValueString)) {
+        if (!Strings.isNullOrEmpty(oldValueString)) {
             oldValue = resolveQName(oldValueString, true);
         }
         

@@ -17,11 +17,12 @@
 
 package org.opensaml.saml.metadata;
 
+import net.shibboleth.utilities.java.support.component.IdentifiableComponent;
+import net.shibboleth.utilities.java.support.component.ValidatableComponent;
+import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
+import net.shibboleth.utilities.java.support.resolver.Resolver;
+
 import org.opensaml.saml2.metadata.EntityDescriptor;
-import org.opensaml.util.component.IdentifiableComponent;
-import org.opensaml.util.component.ValidatableComponent;
-import org.opensaml.util.criteria.CriteriaSet;
-import org.opensaml.util.resolver.Resolver;
 
 /**
  * A metadata resolver that scans SAML metadata for Entities that match a given set of criteria.

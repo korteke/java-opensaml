@@ -18,8 +18,8 @@
 package org.opensaml.ws.soap.client.http;
 
 import net.jcip.annotations.ThreadSafe;
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
-import org.opensaml.util.StringSupport;
 import org.opensaml.ws.soap.client.SOAPClient.SOAPRequestParameters;
 
 /** HTTP transported SOAP request parameters. */

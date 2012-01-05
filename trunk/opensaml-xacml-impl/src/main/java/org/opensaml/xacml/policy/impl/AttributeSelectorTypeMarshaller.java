@@ -17,13 +17,14 @@
 
 package org.opensaml.xacml.policy.impl;
 
-import org.opensaml.util.StringSupport;
 import org.opensaml.xacml.impl.AbstractXACMLObjectMarshaller;
 import org.opensaml.xacml.policy.AttributeDesignatorType;
 import org.opensaml.xacml.policy.AttributeSelectorType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
 import org.w3c.dom.Element;
+
+import com.google.common.base.Strings;
 
 /**
  * Marshaller for {@link AttributeSelectorType}.
@@ -39,11 +40,11 @@ public class AttributeSelectorTypeMarshaller extends AbstractXACMLObjectMarshall
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         AttributeSelectorType attributeSelectorType = (AttributeSelectorType) xmlObject;
         
-        if(!StringSupport.isNullOrEmpty(attributeSelectorType.getDataType())){
+        if(!Strings.isNullOrEmpty(attributeSelectorType.getDataType())){
             domElement.setAttribute(AttributeSelectorType.DATA_TYPE_ATTRIB_NAME, 
                     attributeSelectorType.getDataType());
         }
-        if(!StringSupport.isNullOrEmpty(attributeSelectorType.getRequestContextPath())){
+        if(!Strings.isNullOrEmpty(attributeSelectorType.getRequestContextPath())){
             domElement.setAttribute(AttributeSelectorType.REQUEST_CONTEXT_PATH_ATTRIB_NAME, 
                     attributeSelectorType.getRequestContextPath());
         }

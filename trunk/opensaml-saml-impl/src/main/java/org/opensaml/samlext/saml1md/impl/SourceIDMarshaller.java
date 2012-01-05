@@ -19,11 +19,12 @@ package org.opensaml.samlext.saml1md.impl;
 
 import org.opensaml.common.impl.AbstractSAMLObjectMarshaller;
 import org.opensaml.samlext.saml1md.SourceID;
-import org.opensaml.util.StringSupport;
 import org.opensaml.util.xml.ElementSupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
 import org.w3c.dom.Element;
+
+import com.google.common.base.Strings;
 
 /**
  * Marshaller of {@link SourceID} objects.
@@ -34,7 +35,7 @@ public class SourceIDMarshaller extends AbstractSAMLObjectMarshaller {
     protected void marshallElementContent(XMLObject xmlObject, Element domElement) throws MarshallingException {
         SourceID sourceID = (SourceID) xmlObject;
 
-        if (!StringSupport.isNullOrEmpty(sourceID.getValue())) {
+        if (!Strings.isNullOrEmpty(sourceID.getValue())) {
             ElementSupport.appendTextContent(domElement, sourceID.getValue());
         }
     }

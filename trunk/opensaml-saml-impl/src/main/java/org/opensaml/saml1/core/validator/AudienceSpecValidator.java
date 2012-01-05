@@ -22,9 +22,10 @@
 package org.opensaml.saml1.core.validator;
 
 import org.opensaml.saml1.core.Audience;
-import org.opensaml.util.StringSupport;
 import org.opensaml.xml.validation.ValidationException;
 import org.opensaml.xml.validation.Validator;
+
+import com.google.common.base.Strings;
 
 /**
  * Checks {@link org.opensaml.saml1.core.AudienceRestrictionCondition} for Spec compliance.
@@ -37,7 +38,7 @@ public class AudienceSpecValidator implements Validator<Audience> {
     }
     
     protected void validateURIPresent(Audience audience) throws ValidationException {
-        if (StringSupport.isNullOrEmpty(audience.getUri())) {
+        if (Strings.isNullOrEmpty(audience.getUri())) {
             throw new ValidationException("AudienceURI Required");
         }
     }

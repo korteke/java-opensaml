@@ -22,9 +22,10 @@
 package org.opensaml.saml2.metadata.validator;
 
 import org.opensaml.saml2.metadata.EmailAddress;
-import org.opensaml.util.StringSupport;
 import org.opensaml.xml.validation.ValidationException;
 import org.opensaml.xml.validation.Validator;
+
+import com.google.common.base.Strings;
 
 /**
  * Checks {@link org.opensaml.saml2.metadata.EmailAddress} for Schema compliance.
@@ -48,7 +49,7 @@ public class EmailAddressSchemaValidator implements Validator<EmailAddress> {
      * @throws ValidationException
      */
     protected void validateAddress(EmailAddress emailAddress) throws ValidationException {
-        if (StringSupport.isNullOrEmpty(emailAddress.getAddress())) {
+        if (Strings.isNullOrEmpty(emailAddress.getAddress())) {
             throw new ValidationException("Address required");
         }
     }

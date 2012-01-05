@@ -22,9 +22,10 @@
 package org.opensaml.saml2.metadata.validator;
 
 import org.opensaml.saml2.metadata.RequestedAttribute;
-import org.opensaml.util.StringSupport;
 import org.opensaml.xml.validation.ValidationException;
 import org.opensaml.xml.validation.Validator;
+
+import com.google.common.base.Strings;
 
 /**
  * Checks {@link org.opensaml.saml2.metadata.RequestedAttribute} for Schema compliance.
@@ -48,7 +49,7 @@ public class RequestedAttributeSchemaValidator implements Validator<RequestedAtt
      * @throws ValidationException
      */
     protected void validateName(RequestedAttribute attribute) throws ValidationException {
-        if (StringSupport.isNullOrEmpty(attribute.getName())) {
+        if (Strings.isNullOrEmpty(attribute.getName())) {
             throw new ValidationException("Name is required attribute");
         }
     }

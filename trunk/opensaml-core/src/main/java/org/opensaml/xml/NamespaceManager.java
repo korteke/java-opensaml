@@ -25,12 +25,14 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.util.StringSupport;
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
+
 import org.opensaml.util.collections.LazyMap;
 import org.opensaml.util.collections.LazySet;
 import org.opensaml.util.xml.XmlConstants;
 
 import com.google.common.base.Objects;
+import com.google.common.base.Strings;
 
 /**
  * A class which is responsible for managing XML namespace-related data for an {@link XMLObject}.
@@ -590,7 +592,7 @@ public class NamespaceManager {
      * @return true if the QName contains non-empty namespace info and should be managed, false otherwise
      */
     private boolean checkQName(QName name) {
-        return !StringSupport.isNullOrEmpty(name.getNamespaceURI());
+        return !Strings.isNullOrEmpty(name.getNamespaceURI());
     }
     
 }

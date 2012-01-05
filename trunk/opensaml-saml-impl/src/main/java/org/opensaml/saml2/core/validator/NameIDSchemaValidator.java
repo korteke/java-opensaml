@@ -22,9 +22,10 @@
 package org.opensaml.saml2.core.validator;
 
 import org.opensaml.saml2.core.NameID;
-import org.opensaml.util.StringSupport;
 import org.opensaml.xml.validation.ValidationException;
 import org.opensaml.xml.validation.Validator;
+
+import com.google.common.base.Strings;
 
 /**
  * Checks {@link org.opensaml.saml2.core.NameID} for Schema compliance.
@@ -48,7 +49,7 @@ public class NameIDSchemaValidator implements Validator<NameID> {
      * @throws ValidationException
      */
     protected void validateName(NameID nameID) throws ValidationException {
-        if (StringSupport.isNullOrEmpty(nameID.getValue())) {
+        if (Strings.isNullOrEmpty(nameID.getValue())) {
             throw new ValidationException("Name is required");
         }
     }

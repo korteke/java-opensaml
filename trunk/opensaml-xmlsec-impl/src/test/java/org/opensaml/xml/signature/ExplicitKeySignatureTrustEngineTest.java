@@ -22,7 +22,8 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.opensaml.util.criteria.CriteriaSet;
+import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
+
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.XMLObjectBaseTestCase;
 import org.opensaml.xml.io.MarshallingException;

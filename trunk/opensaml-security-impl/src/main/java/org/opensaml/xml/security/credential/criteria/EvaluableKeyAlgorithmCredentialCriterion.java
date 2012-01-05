@@ -19,11 +19,14 @@ package org.opensaml.xml.security.credential.criteria;
 
 import java.security.Key;
 
-import org.opensaml.util.StringSupport;
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
+
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.criteria.KeyAlgorithmCriterion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.base.Strings;
 
 /**
  * Instance of evaluable credential criteria for evaluating the credential key algorithm.
@@ -54,7 +57,7 @@ public class EvaluableKeyAlgorithmCredentialCriterion implements EvaluableCreden
      * @param newKeyAlgorithm the criteria value which is the basis for evaluation
      */
     public EvaluableKeyAlgorithmCredentialCriterion(String newKeyAlgorithm) {
-        if (StringSupport.isNullOrEmpty(newKeyAlgorithm)) {
+        if (Strings.isNullOrEmpty(newKeyAlgorithm)) {
             throw new IllegalArgumentException("Key algorithm may not be null");
         }
         keyAlgorithm = newKeyAlgorithm;

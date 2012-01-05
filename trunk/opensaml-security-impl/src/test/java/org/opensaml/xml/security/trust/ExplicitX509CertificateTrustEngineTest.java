@@ -23,8 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import junit.framework.TestCase;
+import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
-import org.opensaml.util.criteria.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.credential.BasicCredential;

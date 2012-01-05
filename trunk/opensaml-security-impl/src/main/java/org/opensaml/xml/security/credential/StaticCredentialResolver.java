@@ -20,8 +20,8 @@ package org.opensaml.xml.security.credential;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.opensaml.util.criteria.CriteriaSet;
-import org.opensaml.util.resolver.ResolverException;
+import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
+import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
 /**
  * Simple implementation of {@link CredentialResolver} which just stores and returns a static set of credentials.

@@ -27,10 +27,11 @@ import java.util.Set;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
+
 import org.apache.xml.security.Init;
 import org.apache.xml.security.algorithms.JCEMapper;
 import org.opensaml.core.config.ConfigurationService;
-import org.opensaml.util.StringSupport;
 import org.opensaml.util.collections.LazySet;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.encryption.EncryptionParameters;
@@ -45,6 +46,8 @@ import org.opensaml.xml.signature.Signature;
 import org.opensaml.xml.signature.SignatureConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.base.Strings;
 
 /**
  * Helper methods for security-related requirements.
@@ -155,7 +158,7 @@ public final class XMLSecurityHelper {
     public static SecretKey generateSymmetricKey(String algoURI) throws NoSuchAlgorithmException, KeyException {
         Logger log = getLogger();
         String jceAlgorithmName = getKeyAlgorithmFromURI(algoURI);
-        if (StringSupport.isNullOrEmpty(jceAlgorithmName)) {
+        if (Strings.isNullOrEmpty(jceAlgorithmName)) {
             log.error("Mapping from algorithm URI '" + algoURI
                     + "' to key algorithm not available, key generation failed");
             throw new NoSuchAlgorithmException("Algorithm URI'" + algoURI + "' is invalid for key generation");
@@ -522,7 +525,7 @@ public final class XMLSecurityHelper {
         NamedKeyInfoGeneratorManager kiMgr = secConfig.getKeyInfoGeneratorManager();
         if (kiMgr != null) {
             KeyInfoGeneratorFactory kiFactory = null;
-            if (StringSupport.isNullOrEmpty(keyInfoGenName)) {
+            if (Strings.isNullOrEmpty(keyInfoGenName)) {
                 kiFactory = kiMgr.getDefaultManager().getFactory(credential);
             } else {
                 kiFactory = kiMgr.getFactory(keyInfoGenName, credential);

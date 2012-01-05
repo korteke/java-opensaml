@@ -17,13 +17,14 @@
 
 package org.opensaml.ws.wssecurity.impl;
 
-import org.opensaml.util.StringSupport;
 import org.opensaml.util.xml.ElementSupport;
 import org.opensaml.ws.wssecurity.AttributedDateTime;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.util.XMLObjectHelper;
 import org.w3c.dom.Element;
+
+import com.google.common.base.Strings;
 
 /**
  * AttributedDateTimeMarshaller.
@@ -35,7 +36,7 @@ public class AttributedDateTimeMarshaller extends AbstractWSSecurityObjectMarsha
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         AttributedDateTime dateTime = (AttributedDateTime) xmlObject;
         
-        if (!StringSupport.isNullOrEmpty(dateTime.getWSUId())) {
+        if (!Strings.isNullOrEmpty(dateTime.getWSUId())) {
             XMLObjectHelper.marshallAttribute(AttributedDateTime.WSU_ID_ATTR_NAME, dateTime.getWSUId(), domElement, true);
         }
         

@@ -19,7 +19,7 @@ package org.opensaml.xml.security.criteria;
 
 import java.security.PublicKey;
 
-import org.opensaml.util.criteria.Criterion;
+import net.shibboleth.utilities.java.support.resolver.Criterion;
 
 /**
  * An implementation of {@link Criterion} which specifies public key criteria.

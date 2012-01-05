@@ -17,8 +17,10 @@
 
 package org.opensaml.xml.security.criteria;
 
-import org.opensaml.util.StringSupport;
-import org.opensaml.util.criteria.Criterion;
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
+import net.shibboleth.utilities.java.support.resolver.Criterion;
+
+import com.google.common.base.Strings;
 
 /**
  * An implementation of {@link Criterion} which specifies key name criteria.
@@ -52,7 +54,7 @@ public final class KeyNameCriterion implements Criterion {
      * @param name The keyName to set.
      */
     public void setKeyName(String name) {
-        if (StringSupport.isNullOrEmpty(name)) {
+        if (Strings.isNullOrEmpty(name)) {
             throw new IllegalArgumentException("Key name criteria value must be supplied");
         }
         keyName = StringSupport.trimOrNull(name);

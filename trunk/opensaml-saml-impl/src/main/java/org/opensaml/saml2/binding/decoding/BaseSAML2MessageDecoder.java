@@ -21,6 +21,8 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
+
 import org.opensaml.common.SAMLObject;
 import org.opensaml.common.binding.SAMLMessageContext;
 import org.opensaml.common.binding.decoding.BaseSAMLMessageDecoder;
@@ -35,7 +37,6 @@ import org.opensaml.saml2.metadata.EntityDescriptor;
 import org.opensaml.saml2.metadata.RoleDescriptor;
 import org.opensaml.saml2.metadata.provider.MetadataProvider;
 import org.opensaml.saml2.metadata.provider.MetadataProviderException;
-import org.opensaml.util.StringSupport;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.message.decoder.MessageDecodingException;
 import org.opensaml.xml.parse.ParserPool;

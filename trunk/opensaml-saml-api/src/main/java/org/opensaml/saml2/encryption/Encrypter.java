@@ -37,7 +37,6 @@ import org.opensaml.saml2.core.EncryptedID;
 import org.opensaml.saml2.core.NameID;
 import org.opensaml.saml2.core.NewEncryptedID;
 import org.opensaml.saml2.core.NewID;
-import org.opensaml.util.StringSupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.XMLObjectBuilderFactory;
 import org.opensaml.xml.encryption.CarriedKeyName;
@@ -60,6 +59,8 @@ import org.opensaml.xml.signature.XMLSignatureBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
+
+import com.google.common.base.Strings;
 
 /**
  * Encrypter for SAML 2 SAMLObjects which has specific options for generating instances of subtypes of
@@ -484,7 +485,7 @@ public class Encrypter extends org.opensaml.xml.encryption.Encrypter {
         // Get the name of the data encryption key
         List<KeyName> dataEncKeyNames = encData.getKeyInfo().getKeyNames();
         String carriedKeyNameValue;
-        if (dataEncKeyNames.size() == 0 || StringSupport.isNullOrEmpty(dataEncKeyNames.get(0).getValue())) {
+        if (dataEncKeyNames.size() == 0 || Strings.isNullOrEmpty(dataEncKeyNames.get(0).getValue())) {
             // If there isn't one, autogenerate a random key name.
             String keyNameValue = idGenerator.generateIdentifier();
             log.debug("EncryptedData encryption key had no KeyName, generated one for use in CarriedKeyName: {}",

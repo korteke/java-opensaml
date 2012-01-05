@@ -17,9 +17,9 @@
 
 package org.opensaml.xml.signature.impl;
 
-import org.opensaml.util.StringSupport;
-import org.opensaml.util.criteria.CriteriaSet;
-import org.opensaml.util.resolver.ResolverException;
+import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
+import net.shibboleth.utilities.java.support.resolver.ResolverException;
+
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
@@ -30,6 +30,8 @@ import org.opensaml.xml.signature.SignatureValidator;
 import org.opensaml.xml.validation.ValidationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.base.Strings;
 
 /**
  * A base implementation of {@link SignatureTrustEngine} which evaluates the validity and trustworthiness of XML and raw
@@ -192,7 +194,7 @@ public abstract class BaseSignatureTrustEngine<TrustBasisType> implements Signat
         if (content == null || content.length == 0) {
             throw new SecurityException("Content byte array was null or empty");
         }
-        if (StringSupport.isNullOrEmpty(algorithmURI)) {
+        if (Strings.isNullOrEmpty(algorithmURI)) {
             throw new SecurityException("Signature algorithm was null or empty");
         }
         if (trustBasisCriteria == null) {

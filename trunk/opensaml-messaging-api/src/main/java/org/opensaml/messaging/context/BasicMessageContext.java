@@ -19,9 +19,10 @@ package org.opensaml.messaging.context;
 
 import java.util.UUID;
 
+import net.shibboleth.utilities.java.support.logic.Assert;
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
+
 import org.joda.time.DateTime;
-import org.opensaml.util.Assert;
-import org.opensaml.util.StringSupport;
 
 /**
  * A basic implementation of of {@link MessageContext}.

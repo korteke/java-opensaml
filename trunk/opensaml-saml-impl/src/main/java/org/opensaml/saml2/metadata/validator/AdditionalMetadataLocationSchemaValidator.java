@@ -22,9 +22,10 @@
 package org.opensaml.saml2.metadata.validator;
 
 import org.opensaml.saml2.metadata.AdditionalMetadataLocation;
-import org.opensaml.util.StringSupport;
 import org.opensaml.xml.validation.ValidationException;
 import org.opensaml.xml.validation.Validator;
+
+import com.google.common.base.Strings;
 
 /**
  * Checks {@link org.opensaml.saml2.metadata.AdditionalMetadataLocation} for Schema compliance.
@@ -49,7 +50,7 @@ public class AdditionalMetadataLocationSchemaValidator implements Validator<Addi
      * @throws ValidationException
      */
     protected void validateLocation(AdditionalMetadataLocation aml) throws ValidationException {
-        if (StringSupport.isNullOrEmpty(aml.getLocationURI())) {
+        if (Strings.isNullOrEmpty(aml.getLocationURI())) {
             throw new ValidationException("Location required");
         }
     }
@@ -61,7 +62,7 @@ public class AdditionalMetadataLocationSchemaValidator implements Validator<Addi
      * @throws ValidationException
      */
     protected void validateNamespace(AdditionalMetadataLocation aml) throws ValidationException {
-        if (StringSupport.isNullOrEmpty(aml.getNamespaceURI())) {
+        if (Strings.isNullOrEmpty(aml.getNamespaceURI())) {
             throw new ValidationException("Namespace required");
         }
     }

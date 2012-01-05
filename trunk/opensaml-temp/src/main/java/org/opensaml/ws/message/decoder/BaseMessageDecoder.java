@@ -19,7 +19,8 @@ package org.opensaml.ws.message.decoder;
 
 import java.io.InputStream;
 
-import org.opensaml.util.resolver.ResolverException;
+import net.shibboleth.utilities.java.support.resolver.ResolverException;
+
 import org.opensaml.util.xml.QNameSupport;
 import org.opensaml.util.xml.SerializeSupport;
 import org.opensaml.ws.message.MessageContext;

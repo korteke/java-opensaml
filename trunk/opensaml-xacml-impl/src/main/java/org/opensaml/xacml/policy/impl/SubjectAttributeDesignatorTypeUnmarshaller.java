@@ -17,7 +17,8 @@
 
 package org.opensaml.xacml.policy.impl;
 
-import org.opensaml.util.StringSupport;
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
+
 import org.opensaml.xacml.policy.SubjectAttributeDesignatorType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;

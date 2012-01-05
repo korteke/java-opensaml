@@ -17,12 +17,13 @@
 
 package org.opensaml.xacml.policy.impl;
 
-import org.opensaml.util.StringSupport;
 import org.opensaml.xacml.impl.AbstractXACMLObjectMarshaller;
 import org.opensaml.xacml.policy.CombinerParameterType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
 import org.w3c.dom.Element;
+
+import com.google.common.base.Strings;
 
 /**
  * Marshaller for {@link CombinerParameterType}.
@@ -38,7 +39,7 @@ public class CombinerParameterTypeMarshaller extends AbstractXACMLObjectMarshall
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         CombinerParameterType combinerParameterType = (CombinerParameterType) xmlObject;
 
-        if (!StringSupport.isNullOrEmpty(combinerParameterType.getParameterName())) {
+        if (!Strings.isNullOrEmpty(combinerParameterType.getParameterName())) {
             domElement.setAttribute(CombinerParameterType.PARAMETER_NAMEATTRIB_NAME,
                     combinerParameterType.getParameterName());
         }      

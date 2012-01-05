@@ -23,9 +23,8 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import junit.framework.TestCase;
-
-import org.opensaml.util.criteria.CriteriaSet;
-import org.opensaml.util.resolver.ResolverException;
+import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
+import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
 /**
  * Testing the chaining credential resolver.

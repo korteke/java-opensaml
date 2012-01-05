@@ -17,12 +17,13 @@
 
 package org.opensaml.xacml.policy.impl;
 
-import org.opensaml.util.StringSupport;
 import org.opensaml.xacml.impl.AbstractXACMLObjectMarshaller;
 import org.opensaml.xacml.policy.VariableDefinitionType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
 import org.w3c.dom.Element;
+
+import com.google.common.base.Strings;
 
 /**
  * Marshaller for {@link VariableDefinitionType}.
@@ -38,7 +39,7 @@ public class VariableDefinitionTypeMarshaller extends AbstractXACMLObjectMarshal
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         VariableDefinitionType variableDefinitionType = (VariableDefinitionType) xmlObject;
         
-        if(!StringSupport.isNullOrEmpty(variableDefinitionType.getVariableId())){
+        if(!Strings.isNullOrEmpty(variableDefinitionType.getVariableId())){
             domElement.setAttribute(VariableDefinitionType.VARIABLE_ID_ATTRIB_NAME,
                     variableDefinitionType.getVariableId());
         }   

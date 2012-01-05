@@ -22,9 +22,10 @@
 package org.opensaml.saml2.metadata.validator;
 
 import org.opensaml.saml2.metadata.TelephoneNumber;
-import org.opensaml.util.StringSupport;
 import org.opensaml.xml.validation.ValidationException;
 import org.opensaml.xml.validation.Validator;
+
+import com.google.common.base.Strings;
 
 /**
  * Checks {@link org.opensaml.saml2.metadata.TelephoneNumber} for Schema compliance.
@@ -48,7 +49,7 @@ public class TelephoneNumberSchemaValidator implements Validator<TelephoneNumber
      * @throws ValidationException
      */
     protected void validateNumber(TelephoneNumber telephoneNumber) throws ValidationException {
-        if (StringSupport.isNullOrEmpty(telephoneNumber.getNumber())) {
+        if (Strings.isNullOrEmpty(telephoneNumber.getNumber())) {
             throw new ValidationException("Number required");
         }
     }

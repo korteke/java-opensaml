@@ -21,11 +21,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
+
 import org.opensaml.common.binding.BasicEndpointSelector;
 import org.opensaml.saml2.core.AuthnRequest;
 import org.opensaml.saml2.metadata.Endpoint;
 import org.opensaml.saml2.metadata.IndexedEndpoint;
-import org.opensaml.util.StringSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -17,11 +17,12 @@
 
 package org.opensaml.xacml.policy.impl;
 
-import org.opensaml.util.StringSupport;
 import org.opensaml.xacml.policy.SubjectAttributeDesignatorType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
 import org.w3c.dom.Element;
+
+import com.google.common.base.Strings;
 
 /**
  * Marshaller for {@link SubjectAttributeDesignatorType}.
@@ -37,7 +38,7 @@ public class SubjectAttributeDesignatorTypeMarshaller extends AttributeDesignato
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {       
         SubjectAttributeDesignatorType subjectAttributeDesignatorType = (SubjectAttributeDesignatorType) xmlObject;
         
-        if(!StringSupport.isNullOrEmpty(subjectAttributeDesignatorType.getSubjectCategory())){            
+        if(!Strings.isNullOrEmpty(subjectAttributeDesignatorType.getSubjectCategory())){            
             domElement.setAttribute(SubjectAttributeDesignatorType.SUBJECT_CATEGORY_ATTRIB_NAME, 
                     subjectAttributeDesignatorType.getSubjectCategory());
         }

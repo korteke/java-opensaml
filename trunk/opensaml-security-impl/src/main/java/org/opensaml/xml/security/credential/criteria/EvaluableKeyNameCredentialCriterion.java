@@ -17,11 +17,12 @@
 
 package org.opensaml.xml.security.credential.criteria;
 
-import org.opensaml.util.StringSupport;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.criteria.KeyNameCriterion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.base.Strings;
 
 /**
  * Instance of evaluable credential criteria for evaluating credential key names.
@@ -52,7 +53,7 @@ public class EvaluableKeyNameCredentialCriterion implements EvaluableCredentialC
      * @param newKeyName the criteria value which is the basis for evaluation
      */
     public EvaluableKeyNameCredentialCriterion(String newKeyName) {
-        if (StringSupport.isNullOrEmpty(newKeyName)) {
+        if (Strings.isNullOrEmpty(newKeyName)) {
             throw new IllegalArgumentException("Key name may not be null");
         }
         keyName = newKeyName;

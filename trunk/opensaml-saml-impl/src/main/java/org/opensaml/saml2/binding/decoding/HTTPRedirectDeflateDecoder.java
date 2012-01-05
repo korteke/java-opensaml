@@ -24,17 +24,17 @@ import java.util.zip.InflaterInputStream;
 
 import net.shibboleth.utilities.java.support.codec.Base64Support;
 
-import org.apache.commons.codec.binary.Base64;
 import org.opensaml.common.SAMLObject;
 import org.opensaml.common.binding.SAMLMessageContext;
 import org.opensaml.common.xml.SAMLConstants;
-import org.opensaml.util.StringSupport;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.message.decoder.MessageDecodingException;
 import org.opensaml.ws.transport.http.HTTPInTransport;
 import org.opensaml.xml.parse.ParserPool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.base.Strings;
 
 /**
  * SAML 2.0 HTTP Redirect decoder using the DEFLATE encoding method.
@@ -92,9 +92,9 @@ public class HTTPRedirectDeflateDecoder extends BaseSAML2MessageDecoder {
         log.debug("Decoded RelayState: {}", relayState);
 
         InputStream samlMessageIns;
-        if (!StringSupport.isNullOrEmpty(inTransport.getParameterValue("SAMLRequest"))) {
+        if (!Strings.isNullOrEmpty(inTransport.getParameterValue("SAMLRequest"))) {
             samlMessageIns = decodeMessage(inTransport.getParameterValue("SAMLRequest"));
-        } else if (!StringSupport.isNullOrEmpty(inTransport.getParameterValue("SAMLResponse"))) {
+        } else if (!Strings.isNullOrEmpty(inTransport.getParameterValue("SAMLResponse"))) {
             samlMessageIns = decodeMessage(inTransport.getParameterValue("SAMLResponse"));
         } else {
             throw new MessageDecodingException(
@@ -113,7 +113,7 @@ public class HTTPRedirectDeflateDecoder extends BaseSAML2MessageDecoder {
     protected boolean isMessageSigned(SAMLMessageContext messageContext) {
         HTTPInTransport inTransport = (HTTPInTransport) messageContext.getInboundMessageTransport();
         String sigParam = inTransport.getParameterValue("Signature");
-        return (!StringSupport.isNullOrEmpty(sigParam)) || super.isMessageSigned(messageContext);
+        return (!Strings.isNullOrEmpty(sigParam)) || super.isMessageSigned(messageContext);
     }
 
     /**

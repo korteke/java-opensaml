@@ -25,13 +25,14 @@ import net.shibboleth.utilities.java.support.codec.Base64Support;
 import org.opensaml.common.SAMLObject;
 import org.opensaml.common.binding.SAMLMessageContext;
 import org.opensaml.common.xml.SAMLConstants;
-import org.opensaml.util.StringSupport;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.message.decoder.MessageDecodingException;
 import org.opensaml.ws.transport.http.HTTPInTransport;
 import org.opensaml.xml.parse.ParserPool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.base.Strings;
 
 /** Message decoder implementing the SAML 2.0 HTTP POST binding. */
 public class HTTPPostDecoder extends BaseSAML2MessageDecoder {
@@ -109,11 +110,11 @@ public class HTTPPostDecoder extends BaseSAML2MessageDecoder {
     protected InputStream getBase64DecodedMessage(HTTPInTransport transport) throws MessageDecodingException {
         log.debug("Getting Base64 encoded message from request");
         String encodedMessage = transport.getParameterValue("SAMLRequest");
-        if (StringSupport.isNullOrEmpty(encodedMessage)) {
+        if (Strings.isNullOrEmpty(encodedMessage)) {
             encodedMessage = transport.getParameterValue("SAMLResponse");
         }
 
-        if (StringSupport.isNullOrEmpty(encodedMessage)) {
+        if (Strings.isNullOrEmpty(encodedMessage)) {
             log.error("Request did not contain either a SAMLRequest or "
                     + "SAMLResponse paramter.  Invalid request for SAML 2 HTTP POST binding.");
             throw new MessageDecodingException("No SAML message present in request");

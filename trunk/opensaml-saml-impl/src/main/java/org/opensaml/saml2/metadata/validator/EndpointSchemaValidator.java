@@ -22,9 +22,10 @@
 package org.opensaml.saml2.metadata.validator;
 
 import org.opensaml.saml2.metadata.Endpoint;
-import org.opensaml.util.StringSupport;
 import org.opensaml.xml.validation.ValidationException;
 import org.opensaml.xml.validation.Validator;
+
+import com.google.common.base.Strings;
 
 /**
  * Checks {@link org.opensaml.saml2.metadata.Endpoint} for Schema compliance.
@@ -49,7 +50,7 @@ public class EndpointSchemaValidator<EndpointType extends Endpoint> implements V
      * @throws ValidationException
      */
     protected void validateBinding(Endpoint endpoint) throws ValidationException {
-        if (StringSupport.isNullOrEmpty(endpoint.getBinding())) {
+        if (Strings.isNullOrEmpty(endpoint.getBinding())) {
             throw new ValidationException("Binding required");
         }
     }
@@ -61,7 +62,7 @@ public class EndpointSchemaValidator<EndpointType extends Endpoint> implements V
      * @throws ValidationException
      */
     protected void validateLocation(Endpoint endpoint) throws ValidationException {
-        if (StringSupport.isNullOrEmpty(endpoint.getLocation())) {
+        if (Strings.isNullOrEmpty(endpoint.getLocation())) {
             throw new ValidationException("Location required");
         }
     }

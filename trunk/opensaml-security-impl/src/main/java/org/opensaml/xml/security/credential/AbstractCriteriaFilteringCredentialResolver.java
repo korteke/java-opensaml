@@ -20,12 +20,13 @@ package org.opensaml.xml.security.credential;
 import java.util.HashSet;
 import java.util.Set;
 
+import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
+import net.shibboleth.utilities.java.support.resolver.Criterion;
+import net.shibboleth.utilities.java.support.resolver.ResolverException;
+
 import org.opensaml.util.criteria.CriteriaFilteringIterable;
 import org.opensaml.util.criteria.CriteriaFilteringIterator;
-import org.opensaml.util.criteria.CriteriaSet;
-import org.opensaml.util.criteria.Criterion;
 import org.opensaml.util.criteria.EvaluableCriterion;
-import org.opensaml.util.resolver.ResolverException;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.credential.criteria.EvaluableCredentialCriteriaRegistry;
 import org.opensaml.xml.security.credential.criteria.EvaluableCredentialCriterion;

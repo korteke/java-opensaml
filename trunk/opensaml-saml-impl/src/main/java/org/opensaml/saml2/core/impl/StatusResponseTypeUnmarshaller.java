@@ -29,11 +29,12 @@ import org.opensaml.saml2.common.Extensions;
 import org.opensaml.saml2.core.Issuer;
 import org.opensaml.saml2.core.Status;
 import org.opensaml.saml2.core.StatusResponseType;
-import org.opensaml.util.StringSupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.signature.Signature;
 import org.w3c.dom.Attr;
+
+import com.google.common.base.Strings;
 
 /**
  * A thread-safe Unmarshaller for {@link org.opensaml.saml2.core.StatusResponseType} objects.
@@ -52,7 +53,7 @@ public abstract class StatusResponseTypeUnmarshaller extends AbstractSAMLObjectU
         } else if (attribute.getLocalName().equals(StatusResponseType.IN_RESPONSE_TO_ATTRIB_NAME)) {
             sr.setInResponseTo(attribute.getValue());
         } else if (attribute.getLocalName().equals(StatusResponseType.ISSUE_INSTANT_ATTRIB_NAME)
-                && !StringSupport.isNullOrEmpty(attribute.getValue())) {
+                && !Strings.isNullOrEmpty(attribute.getValue())) {
             sr.setIssueInstant(new DateTime(attribute.getValue(), ISOChronology.getInstanceUTC()));
         } else if (attribute.getLocalName().equals(StatusResponseType.DESTINATION_ATTRIB_NAME)) {
             sr.setDestination(attribute.getValue());

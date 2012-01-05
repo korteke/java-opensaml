@@ -17,9 +17,10 @@
 
 package org.opensaml.messaging.decoder;
 
+import net.shibboleth.utilities.java.support.component.AbstractInitializableComponent;
+import net.shibboleth.utilities.java.support.component.UnmodifiableComponent;
+
 import org.opensaml.messaging.context.MessageContext;
-import org.opensaml.util.component.AbstractInitializableComponent;
-import org.opensaml.util.component.UnmodifiableComponent;
 
 /**
  * Abstract message decoder.

@@ -17,11 +17,12 @@
 
 package org.opensaml.ws.wssecurity.impl;
 
-import org.opensaml.util.StringSupport;
 import org.opensaml.ws.wssecurity.EncodedString;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
 import org.w3c.dom.Element;
+
+import com.google.common.base.Strings;
 
 /**
  * Marshaller for instances of {@link EncodedString}.
@@ -31,7 +32,7 @@ public class EncodedStringMarshaller extends AttributedStringMarshaller {
     /** {@inheritDoc} */
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         EncodedString encodedString = (EncodedString) xmlObject;
-        if (!StringSupport.isNullOrEmpty(encodedString.getEncodingType())){
+        if (!Strings.isNullOrEmpty(encodedString.getEncodingType())){
             domElement.setAttributeNS(null, EncodedString.ENCODING_TYPE_ATTRIB_NAME, encodedString.getEncodingType());
         }
         super.marshallAttributes(xmlObject, domElement);

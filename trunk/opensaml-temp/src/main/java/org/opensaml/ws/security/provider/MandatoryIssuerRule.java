@@ -17,12 +17,13 @@
 
 package org.opensaml.ws.security.provider;
 
-import org.opensaml.util.StringSupport;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.security.SecurityPolicyException;
 import org.opensaml.ws.security.SecurityPolicyRule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.base.Strings;
 
 /**
  * Security policy rule implementation that which requires that an inbound message context issuer has been set by a
@@ -36,7 +37,7 @@ public class MandatoryIssuerRule implements SecurityPolicyRule {
     /** {@inheritDoc} */
     public void evaluate(MessageContext messageContext) throws SecurityPolicyException {
 
-        if (StringSupport.isNullOrEmpty(messageContext.getInboundMessageIssuer())) {
+        if (Strings.isNullOrEmpty(messageContext.getInboundMessageIssuer())) {
             log.error("Mandatory inbound message context issuer was not present");
             throw new SecurityPolicyException("Mandatory inbound message context issuer not present");
         }

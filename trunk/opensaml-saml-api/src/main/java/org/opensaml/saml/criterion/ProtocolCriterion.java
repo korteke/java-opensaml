@@ -17,9 +17,9 @@
 
 package org.opensaml.saml.criterion;
 
-import org.opensaml.util.Assert;
-import org.opensaml.util.StringSupport;
-import org.opensaml.util.criteria.Criterion;
+import net.shibboleth.utilities.java.support.logic.Assert;
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
+import net.shibboleth.utilities.java.support.resolver.Criterion;
 
 /** {@link Criterion} representing an entity ID. */
 public final class ProtocolCriterion implements Criterion {

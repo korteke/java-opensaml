@@ -26,10 +26,11 @@ import org.joda.time.chrono.ISOChronology;
 import org.opensaml.common.impl.AbstractSAMLObjectUnmarshaller;
 import org.opensaml.saml2.core.Condition;
 import org.opensaml.saml2.core.Conditions;
-import org.opensaml.util.StringSupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.w3c.dom.Attr;
+
+import com.google.common.base.Strings;
 
 /**
  * A thread-safe Unmarshaller for {@link org.opensaml.saml2.core.Conditions} objects.
@@ -52,10 +53,10 @@ public class ConditionsUnmarshaller extends AbstractSAMLObjectUnmarshaller {
         Conditions conditions = (Conditions) samlObject;
 
         if (attribute.getLocalName().equals(Conditions.NOT_BEFORE_ATTRIB_NAME)
-                && !StringSupport.isNullOrEmpty(attribute.getValue())) {
+                && !Strings.isNullOrEmpty(attribute.getValue())) {
             conditions.setNotBefore(new DateTime(attribute.getValue(), ISOChronology.getInstanceUTC()));
         } else if (attribute.getLocalName().equals(Conditions.NOT_ON_OR_AFTER_ATTRIB_NAME)
-                && !StringSupport.isNullOrEmpty(attribute.getValue())) {
+                && !Strings.isNullOrEmpty(attribute.getValue())) {
             conditions.setNotOnOrAfter(new DateTime(attribute.getValue(), ISOChronology.getInstanceUTC()));
         } else {
             super.processAttribute(samlObject, attribute);

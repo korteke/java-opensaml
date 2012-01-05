@@ -21,7 +21,6 @@ import java.util.Map.Entry;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.util.StringSupport;
 import org.opensaml.util.xml.AttributeSupport;
 import org.opensaml.util.xml.ElementSupport;
 import org.opensaml.xacml.impl.AbstractXACMLObjectMarshaller;
@@ -32,6 +31,8 @@ import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
+
+import com.google.common.base.Strings;
 
 /** Marshaller for {@link org.opensaml.xacml.policy.AttributeValueType}. */
 public class AttributeValueTypeMarshaller extends AbstractXACMLObjectMarshaller {
@@ -45,7 +46,7 @@ public class AttributeValueTypeMarshaller extends AbstractXACMLObjectMarshaller 
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         AttributeValueType attributeValue = (AttributeValueType) xmlObject;
 
-        if(!StringSupport.isNullOrEmpty(attributeValue.getDataType())){
+        if(!Strings.isNullOrEmpty(attributeValue.getDataType())){
         	domElement.setAttributeNS(null,AttributeAssignmentType.DATA_TYPE_ATTRIB_NAME, attributeValue.getDataType());
         }
         

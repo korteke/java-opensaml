@@ -22,8 +22,9 @@
 package org.opensaml.saml2.metadata.validator;
 
 import org.opensaml.saml2.metadata.IDPSSODescriptor;
-import org.opensaml.util.StringSupport;
 import org.opensaml.xml.validation.ValidationException;
+
+import com.google.common.base.Strings;
 
 /**
  * Checks {@link org.opensaml.saml2.metadata.IDPSSODescriptor} for Spec compliance.
@@ -44,7 +45,7 @@ public class IDPSSODescriptorSpecValidator extends SSODescriptorSpecValidator<ID
     protected void validateSingleSign(IDPSSODescriptor idpssoDescriptor) throws ValidationException {
         if (idpssoDescriptor.getSingleSignOnServices() != null && idpssoDescriptor.getSingleSignOnServices().size() > 0) {
             for (int i = 0; i < idpssoDescriptor.getSingleSignOnServices().size(); i++) {
-                if (!StringSupport.isNullOrEmpty(idpssoDescriptor.getSingleSignOnServices().get(i).getResponseLocation())) {
+                if (!Strings.isNullOrEmpty(idpssoDescriptor.getSingleSignOnServices().get(i).getResponseLocation())) {
                     throw new ValidationException("ResponseLocation of all SingleSignOnServices must be null");
                 }
             }
@@ -55,7 +56,7 @@ public class IDPSSODescriptorSpecValidator extends SSODescriptorSpecValidator<ID
         if (idpssoDescriptor.getNameIDMappingServices() != null
                 && idpssoDescriptor.getNameIDMappingServices().size() > 0) {
             for (int i = 0; i < idpssoDescriptor.getNameIDMappingServices().size(); i++) {
-                if (!StringSupport.isNullOrEmpty(idpssoDescriptor.getNameIDMappingServices().get(i).getResponseLocation())) {
+                if (!Strings.isNullOrEmpty(idpssoDescriptor.getNameIDMappingServices().get(i).getResponseLocation())) {
                     throw new ValidationException("ResponseLocation of all NameIDMappingServices must be null");
                 }
             }

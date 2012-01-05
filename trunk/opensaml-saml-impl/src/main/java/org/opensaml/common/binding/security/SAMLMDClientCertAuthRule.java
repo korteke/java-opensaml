@@ -17,9 +17,10 @@
 
 package org.opensaml.common.binding.security;
 
+import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
+
 import org.opensaml.common.binding.SAMLMessageContext;
 import org.opensaml.security.MetadataCriterion;
-import org.opensaml.util.criteria.CriteriaSet;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.security.SecurityPolicyException;
 import org.opensaml.ws.security.provider.CertificateNameOptions;

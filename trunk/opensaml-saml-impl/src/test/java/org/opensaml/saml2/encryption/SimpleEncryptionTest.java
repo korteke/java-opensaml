@@ -29,7 +29,6 @@ import org.opensaml.saml2.core.EncryptedID;
 import org.opensaml.saml2.core.NameID;
 import org.opensaml.saml2.core.NewEncryptedID;
 import org.opensaml.saml2.core.NewID;
-import org.opensaml.util.StringSupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.encryption.EncryptionConstants;
 import org.opensaml.xml.encryption.EncryptionException;
@@ -39,6 +38,8 @@ import org.opensaml.xml.security.XMLSecurityHelper;
 import org.opensaml.xml.security.keyinfo.StaticKeyInfoGenerator;
 import org.opensaml.xml.signature.KeyInfo;
 import org.opensaml.xml.signature.KeyName;
+
+import com.google.common.base.Strings;
 
 /**
  * Simple tests for encryption.
@@ -124,7 +125,7 @@ public class SimpleEncryptionTest extends BaseTestCase {
                 encTarget.getEncryptedData().getKeyInfo().getEncryptedKeys().size());
         
         assertFalse("EncryptedData ID attribute was empty",
-                StringSupport.isNullOrEmpty(encTarget.getEncryptedData().getID()));
+                Strings.isNullOrEmpty(encTarget.getEncryptedData().getID()));
     }
     
     /**
@@ -165,7 +166,7 @@ public class SimpleEncryptionTest extends BaseTestCase {
                 encTarget.getEncryptedData().getKeyInfo().getEncryptedKeys().size());
         
         assertFalse("EncryptedData ID attribute was empty",
-                StringSupport.isNullOrEmpty(encTarget.getEncryptedData().getID()));
+                Strings.isNullOrEmpty(encTarget.getEncryptedData().getID()));
     }
     
     /**
@@ -207,7 +208,7 @@ public class SimpleEncryptionTest extends BaseTestCase {
                 encTarget.getEncryptedData().getKeyInfo().getEncryptedKeys().size());
         
         assertFalse("EncryptedData ID attribute was empty",
-                StringSupport.isNullOrEmpty(encTarget.getEncryptedData().getID()));
+                Strings.isNullOrEmpty(encTarget.getEncryptedData().getID()));
     }
     
     /**
@@ -250,7 +251,7 @@ public class SimpleEncryptionTest extends BaseTestCase {
                 encTarget.getEncryptedData().getKeyInfo().getEncryptedKeys().size());
         
         assertFalse("EncryptedData ID attribute was empty",
-                StringSupport.isNullOrEmpty(encTarget.getEncryptedData().getID()));
+                Strings.isNullOrEmpty(encTarget.getEncryptedData().getID()));
     }
     
     /**
@@ -292,7 +293,7 @@ public class SimpleEncryptionTest extends BaseTestCase {
                 encTarget.getEncryptedData().getKeyInfo().getEncryptedKeys().size());
         
         assertFalse("EncryptedData ID attribute was empty",
-                StringSupport.isNullOrEmpty(encTarget.getEncryptedData().getID()));
+                Strings.isNullOrEmpty(encTarget.getEncryptedData().getID()));
         
     }
     

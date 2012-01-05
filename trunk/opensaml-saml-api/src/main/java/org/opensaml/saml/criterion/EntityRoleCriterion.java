@@ -19,8 +19,8 @@ package org.opensaml.saml.criterion;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.util.Assert;
-import org.opensaml.util.criteria.Criterion;
+import net.shibboleth.utilities.java.support.logic.Assert;
+import net.shibboleth.utilities.java.support.resolver.Criterion;
 
 /** {@link Criterion} representing an entity role. */
 public final class EntityRoleCriterion implements Criterion {

@@ -19,9 +19,10 @@ package org.opensaml.messaging.decoder.servlet;
 
 import javax.servlet.http.HttpServletRequest;
 
+import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.utilities.java.support.component.UnmodifiableComponentException;
+
 import org.opensaml.messaging.decoder.AbstractMessageDecoder;
-import org.opensaml.util.component.ComponentInitializationException;
-import org.opensaml.util.component.UnmodifiableComponentException;
 
 /**
  * Abstract implementation of {@link HttpServletRequestMessageDecoder}.

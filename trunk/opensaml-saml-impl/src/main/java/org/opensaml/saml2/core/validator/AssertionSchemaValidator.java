@@ -22,9 +22,10 @@
 package org.opensaml.saml2.core.validator;
 
 import org.opensaml.saml2.core.Assertion;
-import org.opensaml.util.StringSupport;
 import org.opensaml.xml.validation.ValidationException;
 import org.opensaml.xml.validation.Validator;
+
+import com.google.common.base.Strings;
 
 /**
  * Checks {@link org.opensaml.saml2.core.Assertion} for Schema compliance.
@@ -75,7 +76,7 @@ public class AssertionSchemaValidator implements Validator<Assertion> {
      * @throws ValidationException
      */
     protected void validateID(Assertion assertion) throws ValidationException {
-        if (StringSupport.isNullOrEmpty(assertion.getID())) {
+        if (Strings.isNullOrEmpty(assertion.getID())) {
             throw new ValidationException("ID is required attribute");
         }
     }

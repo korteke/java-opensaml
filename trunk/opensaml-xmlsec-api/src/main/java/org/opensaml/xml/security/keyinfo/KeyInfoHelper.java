@@ -42,7 +42,6 @@ import java.util.List;
 
 import net.shibboleth.utilities.java.support.codec.Base64Support;
 
-import org.opensaml.util.StringSupport;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.XMLObjectBuilderFactory;
 import org.opensaml.xml.security.x509.X509Util;
@@ -65,6 +64,8 @@ import org.opensaml.xml.signature.X509SubjectName;
 import org.opensaml.xml.signature.Y;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.base.Strings;
 
 /**
  * Utility class for working with data inside a KeyInfo object.
@@ -601,9 +602,9 @@ public class KeyInfoHelper {
      * @return true if all parameters are present and non-empty, false otherwise
      */
     public static boolean hasCompleteDSAParams(DSAKeyValue keyDescriptor) {
-        if (keyDescriptor.getG() == null || StringSupport.isNullOrEmpty(keyDescriptor.getG().getValue())
-                || keyDescriptor.getP() == null || StringSupport.isNullOrEmpty(keyDescriptor.getP().getValue())
-                || keyDescriptor.getQ() == null || StringSupport.isNullOrEmpty(keyDescriptor.getQ().getValue())) {
+        if (keyDescriptor.getG() == null || Strings.isNullOrEmpty(keyDescriptor.getG().getValue())
+                || keyDescriptor.getP() == null || Strings.isNullOrEmpty(keyDescriptor.getP().getValue())
+                || keyDescriptor.getQ() == null || Strings.isNullOrEmpty(keyDescriptor.getQ().getValue())) {
             return false;
         }
         return true;

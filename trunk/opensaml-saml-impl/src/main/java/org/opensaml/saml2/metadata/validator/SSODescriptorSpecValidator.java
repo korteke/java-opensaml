@@ -22,8 +22,9 @@
 package org.opensaml.saml2.metadata.validator;
 
 import org.opensaml.saml2.metadata.SSODescriptor;
-import org.opensaml.util.StringSupport;
 import org.opensaml.xml.validation.ValidationException;
+
+import com.google.common.base.Strings;
 
 /**
  * Checks {@link org.opensaml.saml2.metadata.SSODescriptor} for Spec compliance.
@@ -51,7 +52,7 @@ public class SSODescriptorSpecValidator<SSODescriptorType extends SSODescriptor>
         if (ssoDescriptor.getArtifactResolutionServices() != null
                 && ssoDescriptor.getArtifactResolutionServices().size() > 0) {
             for (int i = 0; i < ssoDescriptor.getArtifactResolutionServices().size(); i++) {
-                if (!StringSupport.isNullOrEmpty(ssoDescriptor.getArtifactResolutionServices().get(i).getResponseLocation())) {
+                if (!Strings.isNullOrEmpty(ssoDescriptor.getArtifactResolutionServices().get(i).getResponseLocation())) {
                     throw new ValidationException("ResponseLocation of all ArtificatResolutionServices must be null");
                 }
             }

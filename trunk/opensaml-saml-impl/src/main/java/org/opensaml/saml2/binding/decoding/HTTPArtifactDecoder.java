@@ -18,9 +18,10 @@
 package org.opensaml.saml2.binding.decoding;
 
 
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
+
 import org.opensaml.common.binding.SAMLMessageContext;
 import org.opensaml.common.xml.SAMLConstants;
-import org.opensaml.util.StringSupport;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.message.decoder.MessageDecodingException;
 import org.opensaml.ws.transport.http.HTTPInTransport;

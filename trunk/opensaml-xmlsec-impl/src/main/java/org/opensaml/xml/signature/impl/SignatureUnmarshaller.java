@@ -19,11 +19,12 @@ package org.opensaml.xml.signature.impl;
 
 import java.util.List;
 
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
+
 import org.apache.xml.security.Init;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.signature.SignedInfo;
 import org.apache.xml.security.signature.XMLSignature;
-import org.opensaml.util.StringSupport;
 import org.opensaml.util.xml.ElementSupport;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.io.Unmarshaller;

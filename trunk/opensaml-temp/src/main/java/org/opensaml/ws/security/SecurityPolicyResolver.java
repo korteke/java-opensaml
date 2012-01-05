@@ -17,7 +17,8 @@
 
 package org.opensaml.ws.security;
 
-import org.opensaml.util.resolver.Resolver;
+import net.shibboleth.utilities.java.support.resolver.Resolver;
+
 import org.opensaml.ws.message.MessageContext;
 
 /**

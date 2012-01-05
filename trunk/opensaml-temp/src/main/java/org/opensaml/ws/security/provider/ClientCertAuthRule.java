@@ -23,9 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.shibboleth.utilities.java.support.codec.Base64Support;
+import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
-import org.opensaml.util.StringSupport;
-import org.opensaml.util.criteria.CriteriaSet;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.security.SecurityPolicyException;
 import org.opensaml.xml.security.credential.Credential;
@@ -37,6 +36,8 @@ import org.opensaml.xml.security.x509.X509Credential;
 import org.opensaml.xml.security.x509.X509Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.base.Strings;
 
 /**
  * Policy rule that checks if the client cert used to authenticate the request is valid and trusted.
@@ -218,7 +219,7 @@ public class ClientCertAuthRule extends BaseTrustEngineRule<X509Credential> {
             throws SecurityPolicyException {
 
         CriteriaSet criteriaSet = new CriteriaSet();
-        if (!StringSupport.isNullOrEmpty(entityID)) {
+        if (!Strings.isNullOrEmpty(entityID)) {
             criteriaSet.add(new EntityIDCriterion(entityID));
         }
 
@@ -468,7 +469,7 @@ public class ClientCertAuthRule extends BaseTrustEngineRule<X509Credential> {
             return null;
         }
         String name = null;
-        if (!StringSupport.isNullOrEmpty(certNameOptions.getX500SubjectDNFormat())) {
+        if (!Strings.isNullOrEmpty(certNameOptions.getX500SubjectDNFormat())) {
             name =
                     certNameOptions.getX500DNHandler().getName(cert.getSubjectX500Principal(),
                             certNameOptions.getX500SubjectDNFormat());

@@ -20,8 +20,9 @@ package org.opensaml.saml2.metadata.provider;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.validation.Validator;
 
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
+
 import org.opensaml.common.xml.SAMLSchemaBuilder;
-import org.opensaml.util.StringSupport;
 import org.opensaml.xml.XMLObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

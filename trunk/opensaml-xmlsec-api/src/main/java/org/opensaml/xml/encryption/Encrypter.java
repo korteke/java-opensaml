@@ -30,7 +30,6 @@ import javax.crypto.SecretKey;
 import org.apache.xml.security.Init;
 import org.apache.xml.security.encryption.XMLCipher;
 import org.apache.xml.security.encryption.XMLEncryptionException;
-import org.opensaml.util.StringSupport;
 import org.opensaml.util.xml.ElementSupport;
 import org.opensaml.util.xml.NamespaceSupport;
 import org.opensaml.util.xml.QNameSupport;
@@ -54,6 +53,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import com.google.common.base.Strings;
 
 /**
  * Supports encryption of XMLObjects, their content and keys, according to the XML Encryption specification, version
@@ -549,7 +550,7 @@ public class Encrypter {
             log.error("Data encryption parameters are required");
             throw new EncryptionException("Data encryption parameters are required");
         }
-        if (StringSupport.isNullOrEmpty(encParams.getAlgorithm())) {
+        if (Strings.isNullOrEmpty(encParams.getAlgorithm())) {
             log.error("Data encryption algorithm URI is required");
             throw new EncryptionException("Data encryption algorithm URI is required");
         }
@@ -581,7 +582,7 @@ public class Encrypter {
             log.error("Attempt made to use DSA key for encrypted key transport");
             throw new EncryptionException("DSA keys may not be used for encrypted key transport");
         }
-        if (StringSupport.isNullOrEmpty(kekParams.getAlgorithm())) {
+        if (Strings.isNullOrEmpty(kekParams.getAlgorithm())) {
             log.error("Key encryption algorithm URI is required");
             throw new EncryptionException("Key encryption algorithm URI is required");
         }

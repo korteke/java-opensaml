@@ -25,12 +25,13 @@ import org.opensaml.saml1.core.Advice;
 import org.opensaml.saml1.core.Assertion;
 import org.opensaml.saml1.core.Conditions;
 import org.opensaml.saml1.core.Statement;
-import org.opensaml.util.StringSupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.signature.Signature;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
+
+import com.google.common.base.Strings;
 
 /**
  * A thread-safe Unmarshaller for {@link org.opensaml.saml1.core.Assertion} objects.
@@ -41,7 +42,7 @@ public class AssertionUnmarshaller extends AbstractSAMLObjectUnmarshaller {
     public XMLObject unmarshall(Element domElement) throws UnmarshallingException {
         // After regular unmarshalling, check the minor version and set ID-ness if not SAML 1.0
         Assertion assertion = (Assertion) super.unmarshall(domElement);
-        if (assertion.getMinorVersion() != 0 && !StringSupport.isNullOrEmpty(assertion.getID())) {
+        if (assertion.getMinorVersion() != 0 && !Strings.isNullOrEmpty(assertion.getID())) {
             domElement.setIdAttributeNS(null, Assertion.ID_ATTRIB_NAME, true);
         }
         return assertion;
@@ -76,7 +77,7 @@ public class AssertionUnmarshaller extends AbstractSAMLObjectUnmarshaller {
         } else if (Assertion.ISSUER_ATTRIB_NAME.equals(attribute.getLocalName())) {
             assertion.setIssuer(attribute.getValue());
         } else if (Assertion.ISSUEINSTANT_ATTRIB_NAME.equals(attribute.getLocalName())
-                && !StringSupport.isNullOrEmpty(attribute.getValue())) {
+                && !Strings.isNullOrEmpty(attribute.getValue())) {
             assertion.setIssueInstant(new DateTime(attribute.getValue(), ISOChronology.getInstanceUTC()));
         } else if (Assertion.MINORVERSION_ATTRIB_NAME.equals(attribute.getLocalName())) {
             if (attribute.getValue().equals("0")) {

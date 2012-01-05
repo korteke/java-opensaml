@@ -17,7 +17,8 @@
 
 package org.opensaml.ws.wsaddressing.impl;
 
-import org.opensaml.util.StringSupport;
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
+
 import org.opensaml.ws.wsaddressing.RelatesTo;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;

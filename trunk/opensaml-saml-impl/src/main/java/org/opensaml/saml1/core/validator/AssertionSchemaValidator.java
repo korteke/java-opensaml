@@ -25,9 +25,10 @@ import java.util.List;
 
 import org.opensaml.saml1.core.Assertion;
 import org.opensaml.saml1.core.Statement;
-import org.opensaml.util.StringSupport;
 import org.opensaml.xml.validation.ValidationException;
 import org.opensaml.xml.validation.Validator;
+
+import com.google.common.base.Strings;
 
 /**
  * Checks {@link org.opensaml.saml1.core.Assertion} for Schema compliance.
@@ -61,7 +62,7 @@ public class AssertionSchemaValidator implements Validator<Assertion> {
      * @throws ValidationException
      */
     protected void validateId(Assertion assertion) throws ValidationException {
-         if (StringSupport.isNullOrEmpty(assertion.getID())) {
+         if (Strings.isNullOrEmpty(assertion.getID())) {
              throw new ValidationException("ID not present");
          }
     }
@@ -72,7 +73,7 @@ public class AssertionSchemaValidator implements Validator<Assertion> {
      * @throws ValidationException
      */
     protected void validateIssuer(Assertion assertion) throws ValidationException {
-        if (StringSupport.isNullOrEmpty(assertion.getIssuer())) {
+        if (Strings.isNullOrEmpty(assertion.getIssuer())) {
              throw new ValidationException("Issuer not present");
          }
     }

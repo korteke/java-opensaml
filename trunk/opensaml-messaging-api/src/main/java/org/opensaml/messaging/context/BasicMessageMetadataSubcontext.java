@@ -17,7 +17,7 @@
 
 package org.opensaml.messaging.context;
 
-import org.opensaml.util.StringSupport;
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 /** A {@link Subcontext} of a {@link MessageContext} that carries some basic metadata about the message. */
 public class BasicMessageMetadataSubcontext extends AbstractSubcontext {

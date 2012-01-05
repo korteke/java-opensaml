@@ -27,10 +27,11 @@ import org.opensaml.common.impl.AbstractSAMLObjectUnmarshaller;
 import org.opensaml.saml2.core.AuthnContext;
 import org.opensaml.saml2.core.AuthnStatement;
 import org.opensaml.saml2.core.SubjectLocality;
-import org.opensaml.util.StringSupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.w3c.dom.Attr;
+
+import com.google.common.base.Strings;
 
 /**
  * A thread-safe Unmarshaller for {@link org.opensaml.saml2.core.AuthnStatement}.
@@ -53,12 +54,12 @@ public class AuthnStatementUnmarshaller extends AbstractSAMLObjectUnmarshaller {
     protected void processAttribute(XMLObject samlObject, Attr attribute) throws UnmarshallingException {
         AuthnStatement authnStatement = (AuthnStatement) samlObject;
         if (attribute.getLocalName().equals(AuthnStatement.AUTHN_INSTANT_ATTRIB_NAME)
-                && !StringSupport.isNullOrEmpty(attribute.getValue())) {
+                && !Strings.isNullOrEmpty(attribute.getValue())) {
             authnStatement.setAuthnInstant(new DateTime(attribute.getValue(), ISOChronology.getInstanceUTC()));
         } else if (attribute.getLocalName().equals(AuthnStatement.SESSION_INDEX_ATTRIB_NAME)) {
             authnStatement.setSessionIndex(attribute.getValue());
         } else if (attribute.getLocalName().equals(AuthnStatement.SESSION_NOT_ON_OR_AFTER_ATTRIB_NAME)
-                && !StringSupport.isNullOrEmpty(attribute.getValue())) {
+                && !Strings.isNullOrEmpty(attribute.getValue())) {
             authnStatement.setSessionNotOnOrAfter(new DateTime(attribute.getValue(), ISOChronology.getInstanceUTC()));
         } else {
             super.processAttribute(samlObject, attribute);

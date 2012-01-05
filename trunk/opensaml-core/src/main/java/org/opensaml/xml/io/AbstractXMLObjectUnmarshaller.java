@@ -19,7 +19,8 @@ package org.opensaml.xml.io;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.util.StringSupport;
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
+
 import org.opensaml.util.xml.DomTypeSupport;
 import org.opensaml.util.xml.QNameSupport;
 import org.opensaml.util.xml.XmlConstants;

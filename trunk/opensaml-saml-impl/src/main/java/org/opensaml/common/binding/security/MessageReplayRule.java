@@ -17,8 +17,9 @@
 
 package org.opensaml.common.binding.security;
 
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
+
 import org.opensaml.common.binding.SAMLMessageContext;
-import org.opensaml.util.StringSupport;
 import org.opensaml.util.storage.ReplayCache;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.security.SecurityPolicyException;

@@ -22,9 +22,10 @@ package org.opensaml.saml2.core.validator;
 
 
 import org.opensaml.saml2.core.Artifact;
-import org.opensaml.util.StringSupport;
 import org.opensaml.xml.validation.ValidationException;
 import org.opensaml.xml.validation.Validator;
+
+import com.google.common.base.Strings;
 
 /**
  * Checks {@link org.opensaml.saml2.core.Artifact} for Schema compliance.
@@ -49,7 +50,7 @@ public class ArtifactSchemaValidator implements Validator<Artifact> {
      * @throws ValidationException if invalid
      */
     protected void validateArtifact(Artifact artifact) throws ValidationException {
-        if (StringSupport.isNullOrEmpty(artifact.getArtifact())) {
+        if (Strings.isNullOrEmpty(artifact.getArtifact())) {
             throw new ValidationException("Artifact must contain a value");
         }
     }

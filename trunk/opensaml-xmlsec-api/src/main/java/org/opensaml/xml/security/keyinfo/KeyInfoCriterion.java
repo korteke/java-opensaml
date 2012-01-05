@@ -17,7 +17,8 @@
 
 package org.opensaml.xml.security.keyinfo;
 
-import org.opensaml.util.criteria.Criterion;
+import net.shibboleth.utilities.java.support.resolver.Criterion;
+
 import org.opensaml.xml.signature.KeyInfo;
 
 /**

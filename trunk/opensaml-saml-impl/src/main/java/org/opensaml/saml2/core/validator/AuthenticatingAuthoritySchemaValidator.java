@@ -22,9 +22,10 @@
 package org.opensaml.saml2.core.validator;
 
 import org.opensaml.saml2.core.AuthenticatingAuthority;
-import org.opensaml.util.StringSupport;
 import org.opensaml.xml.validation.ValidationException;
 import org.opensaml.xml.validation.Validator;
+
+import com.google.common.base.Strings;
 
 /**
  * Checks {@link org.opensaml.saml2.core.AuthenticatingAuthority} for Schema compliance.
@@ -48,7 +49,7 @@ public class AuthenticatingAuthoritySchemaValidator implements Validator<Authent
      * @throws ValidationException
      */
     protected void validateURI(AuthenticatingAuthority authenAuthority) throws ValidationException {
-        if (StringSupport.isNullOrEmpty(authenAuthority.getURI())) {
+        if (Strings.isNullOrEmpty(authenAuthority.getURI())) {
             throw new ValidationException("URI required");
         }
     }

@@ -24,8 +24,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
+
 import org.opensaml.core.config.ConfigurationPropertiesSource;
-import org.opensaml.util.StringSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

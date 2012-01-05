@@ -22,9 +22,10 @@
 package org.opensaml.saml2.core.validator;
 
 import org.opensaml.saml2.core.AuthzDecisionStatement;
-import org.opensaml.util.StringSupport;
 import org.opensaml.xml.validation.ValidationException;
 import org.opensaml.xml.validation.Validator;
+
+import com.google.common.base.Strings;
 
 /**
  * Checks {@link org.opensaml.saml2.core.AuthzDecisionStatement} for Schema compliance.
@@ -50,7 +51,7 @@ public class AuthzDecisionStatementSchemaValidator implements Validator<AuthzDec
      * @throws ValidationException
      */
     protected void validateResource(AuthzDecisionStatement authzDS) throws ValidationException {
-        if (StringSupport.isNullOrEmpty(authzDS.getResource())) {
+        if (Strings.isNullOrEmpty(authzDS.getResource())) {
             throw new ValidationException("Resource required");
         }
     }

@@ -17,8 +17,8 @@
 
 package org.opensaml.xml.security.credential;
 
-import org.opensaml.util.criteria.CriteriaSet;
-import org.opensaml.util.resolver.ResolverException;
+import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
+import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
 /**
  * Abstract base class for {@link CredentialResolver} implementations.

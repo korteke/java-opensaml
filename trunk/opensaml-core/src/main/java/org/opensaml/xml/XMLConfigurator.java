@@ -31,8 +31,9 @@ import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
+
 import org.opensaml.core.config.ConfigurationService;
-import org.opensaml.util.StringSupport;
 import org.opensaml.util.xml.AttributeSupport;
 import org.opensaml.util.xml.ElementSupport;
 import org.opensaml.util.xml.SerializeSupport;

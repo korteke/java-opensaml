@@ -24,7 +24,8 @@ import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.opensaml.util.StringSupport;
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
+
 import org.opensaml.util.xml.ElementSupport;
 import org.opensaml.util.xml.NamespaceSupport;
 import org.opensaml.util.xml.QNameSupport;
@@ -39,6 +40,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import com.google.common.base.Objects;
+import com.google.common.base.Strings;
 
 /**
  * A thread safe, abstract implementation of the {@link org.opensaml.xml.io.Marshaller} interface. This class handles
@@ -369,14 +371,14 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
     protected void marshallSchemaInstanceAttributes(XMLObject xmlObject, Element domElement)
             throws MarshallingException {
 
-        if (!StringSupport.isNullOrEmpty(xmlObject.getSchemaLocation())) {
+        if (!Strings.isNullOrEmpty(xmlObject.getSchemaLocation())) {
             log.trace("Setting xsi:schemaLocation for XMLObject {} to {}", xmlObject.getElementQName(), xmlObject
                     .getSchemaLocation());
             domElement.setAttributeNS(XmlConstants.XSI_NS, XmlConstants.XSI_PREFIX + ":schemaLocation", xmlObject
                     .getSchemaLocation());
         }
 
-        if (!StringSupport.isNullOrEmpty(xmlObject.getNoNamespaceSchemaLocation())) {
+        if (!Strings.isNullOrEmpty(xmlObject.getNoNamespaceSchemaLocation())) {
             log.trace("Setting xsi:noNamespaceSchemaLocation for XMLObject {} to {}", xmlObject.getElementQName(),
                     xmlObject.getNoNamespaceSchemaLocation());
             domElement.setAttributeNS(XmlConstants.XSI_NS, XmlConstants.XSI_PREFIX + ":noNamespaceSchemaLocation",

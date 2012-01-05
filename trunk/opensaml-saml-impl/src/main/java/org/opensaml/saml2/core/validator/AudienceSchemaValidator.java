@@ -22,9 +22,10 @@
 package org.opensaml.saml2.core.validator;
 
 import org.opensaml.saml2.core.Audience;
-import org.opensaml.util.StringSupport;
 import org.opensaml.xml.validation.ValidationException;
 import org.opensaml.xml.validation.Validator;
+
+import com.google.common.base.Strings;
 
 /**
  * Checks {@link org.opensaml.saml2.core.Audience} for Schema compliance.
@@ -48,7 +49,7 @@ public class AudienceSchemaValidator implements Validator<Audience> {
      * @throws ValidationException
      */
     protected void validateAudienceURI(Audience audience) throws ValidationException {
-        if (StringSupport.isNullOrEmpty(audience.getAudienceURI())) {
+        if (Strings.isNullOrEmpty(audience.getAudienceURI())) {
             throw new ValidationException("AudienceURI required");
         }
     }
