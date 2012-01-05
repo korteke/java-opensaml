@@ -19,7 +19,8 @@ package org.opensaml.xacml.policy.impl;
 
 import java.util.List;
 
-import org.opensaml.util.collections.LazyList;
+import net.shibboleth.utilities.java.support.collection.LazyList;
+
 import org.opensaml.xacml.impl.AbstractXACMLObject;
 import org.opensaml.xacml.policy.AttributeSelectorType;
 import org.opensaml.xml.XMLObject;

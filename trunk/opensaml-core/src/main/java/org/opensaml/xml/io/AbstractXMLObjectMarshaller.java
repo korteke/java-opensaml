@@ -25,11 +25,11 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
+import net.shibboleth.utilities.java.support.xml.ElementSupport;
+import net.shibboleth.utilities.java.support.xml.NamespaceSupport;
+import net.shibboleth.utilities.java.support.xml.QNameSupport;
+import net.shibboleth.utilities.java.support.xml.XmlConstants;
 
-import org.opensaml.util.xml.ElementSupport;
-import org.opensaml.util.xml.NamespaceSupport;
-import org.opensaml.util.xml.QNameSupport;
-import org.opensaml.util.xml.XmlConstants;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.Namespace;
 import org.opensaml.xml.XMLObject;

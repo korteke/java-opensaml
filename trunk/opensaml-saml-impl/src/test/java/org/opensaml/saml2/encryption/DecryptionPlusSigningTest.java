@@ -23,13 +23,14 @@ import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 
+import net.shibboleth.utilities.java.support.xml.SerializeSupport;
+
 import org.joda.time.DateTime;
 import org.opensaml.common.BaseTestCase;
 import org.opensaml.saml2.core.Assertion;
 import org.opensaml.saml2.core.EncryptedAssertion;
 import org.opensaml.saml2.core.Issuer;
 import org.opensaml.saml2.core.Response;
-import org.opensaml.util.xml.SerializeSupport;
 import org.opensaml.xml.encryption.DecryptionException;
 import org.opensaml.xml.encryption.EncryptionConstants;
 import org.opensaml.xml.encryption.EncryptionException;

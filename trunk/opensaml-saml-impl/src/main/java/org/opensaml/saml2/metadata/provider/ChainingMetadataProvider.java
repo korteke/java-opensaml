@@ -28,12 +28,13 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import javax.xml.namespace.QName;
 
+import net.shibboleth.utilities.java.support.collection.LazySet;
+
 import org.joda.time.DateTime;
 import org.opensaml.saml2.common.Extensions;
 import org.opensaml.saml2.metadata.EntitiesDescriptor;
 import org.opensaml.saml2.metadata.EntityDescriptor;
 import org.opensaml.saml2.metadata.RoleDescriptor;
-import org.opensaml.util.collections.LazySet;
 import org.opensaml.xml.Namespace;
 import org.opensaml.xml.NamespaceManager;
 import org.opensaml.xml.XMLObject;

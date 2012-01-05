@@ -24,7 +24,8 @@ import java.util.Set;
 
 import javax.security.auth.x500.X500Principal;
 
-import org.opensaml.util.collections.LazySet;
+import net.shibboleth.utilities.java.support.collection.LazySet;
+
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.security.SecurityException;

@@ -19,7 +19,8 @@ package org.opensaml.xml;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.util.xml.DomTypeSupport;
+import net.shibboleth.utilities.java.support.xml.DomTypeSupport;
+
 import org.w3c.dom.Element;
 
 /**

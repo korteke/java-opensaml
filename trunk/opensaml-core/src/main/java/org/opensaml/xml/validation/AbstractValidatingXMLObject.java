@@ -20,7 +20,8 @@ package org.opensaml.xml.validation;
 import java.util.Collections;
 import java.util.List;
 
-import org.opensaml.util.collections.LazyList;
+import net.shibboleth.utilities.java.support.collection.LazyList;
+
 import org.opensaml.xml.AbstractXMLObject;
 import org.opensaml.xml.XMLObject;
 import org.slf4j.Logger;

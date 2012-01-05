@@ -20,12 +20,12 @@ package org.opensaml.saml2.binding.encoding;
 import java.io.UnsupportedEncodingException;
 
 import net.shibboleth.utilities.java.support.codec.Base64Support;
+import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.opensaml.common.binding.SAMLMessageContext;
 import org.opensaml.common.xml.SAMLConstants;
-import org.opensaml.util.xml.SerializeSupport;
 import org.opensaml.ws.message.encoder.MessageEncodingException;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.io.Marshaller;

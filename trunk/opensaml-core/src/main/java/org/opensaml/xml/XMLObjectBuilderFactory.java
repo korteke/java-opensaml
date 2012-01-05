@@ -23,8 +23,9 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.util.xml.DomTypeSupport;
-import org.opensaml.util.xml.QNameSupport;
+import net.shibboleth.utilities.java.support.xml.DomTypeSupport;
+import net.shibboleth.utilities.java.support.xml.QNameSupport;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;

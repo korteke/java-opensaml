@@ -19,9 +19,10 @@ package org.opensaml.xml.schema;
 
 import javax.xml.namespace.QName;
 
+import net.shibboleth.utilities.java.support.xml.XmlConstants;
+
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
-import org.opensaml.util.xml.XmlConstants;
 import org.opensaml.xml.validation.ValidatingXMLObject;
 
 /**

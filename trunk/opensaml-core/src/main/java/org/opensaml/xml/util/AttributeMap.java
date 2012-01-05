@@ -25,11 +25,11 @@ import java.util.Set;
 import javax.xml.namespace.QName;
 
 import net.jcip.annotations.NotThreadSafe;
+import net.shibboleth.utilities.java.support.collection.LazyMap;
+import net.shibboleth.utilities.java.support.collection.LazySet;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
+import net.shibboleth.utilities.java.support.xml.QNameSupport;
 
-import org.opensaml.util.collections.LazyMap;
-import org.opensaml.util.collections.LazySet;
-import org.opensaml.util.xml.QNameSupport;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.NamespaceManager;
 import org.opensaml.xml.XMLObject;

@@ -20,6 +20,9 @@ package org.opensaml.common.impl;
 import java.util.List;
 import java.util.Set;
 
+import net.shibboleth.utilities.java.support.collection.LazyList;
+import net.shibboleth.utilities.java.support.collection.LazySet;
+
 import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.signature.XMLSignatureException;
 import org.apache.xml.security.transforms.Transform;
@@ -28,8 +31,6 @@ import org.apache.xml.security.transforms.Transforms;
 import org.apache.xml.security.transforms.params.InclusiveNamespaces;
 import org.opensaml.common.SignableSAMLObject;
 import org.opensaml.core.config.ConfigurationService;
-import org.opensaml.util.collections.LazyList;
-import org.opensaml.util.collections.LazySet;
 import org.opensaml.xml.NamespaceManager;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.security.SecurityConfiguration;

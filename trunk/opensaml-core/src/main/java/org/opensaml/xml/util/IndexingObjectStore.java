@@ -23,8 +23,7 @@ import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import net.jcip.annotations.ThreadSafe;
-
-import org.opensaml.util.collections.LazyMap;
+import net.shibboleth.utilities.java.support.collection.LazyMap;
 
 /**
  * This class is used to store instances of objects that may be created independently but are, in face, the same object.

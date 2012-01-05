@@ -19,7 +19,8 @@ package org.opensaml.xml;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.util.xml.QNameSupport;
+import net.shibboleth.utilities.java.support.xml.QNameSupport;
+
 import org.opensaml.xml.io.UnmarshallingException;
 import org.w3c.dom.Attr;
 

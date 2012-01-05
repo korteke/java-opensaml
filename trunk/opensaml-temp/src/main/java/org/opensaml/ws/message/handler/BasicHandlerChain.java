@@ -19,7 +19,8 @@ package org.opensaml.ws.message.handler;
 
 import java.util.List;
 
-import org.opensaml.util.collections.LazyList;
+import net.shibboleth.utilities.java.support.collection.LazyList;
+
 import org.opensaml.ws.message.MessageContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

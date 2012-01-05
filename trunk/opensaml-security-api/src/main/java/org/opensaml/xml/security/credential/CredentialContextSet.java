@@ -17,7 +17,7 @@
 
 package org.opensaml.xml.security.credential;
 
-import org.opensaml.util.collections.ClassIndexedSet;
+import net.shibboleth.utilities.java.support.collection.ClassIndexedSet;
 
 
 /**

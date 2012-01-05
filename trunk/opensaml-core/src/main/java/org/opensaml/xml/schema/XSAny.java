@@ -19,7 +19,8 @@ package org.opensaml.xml.schema;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.util.xml.XmlConstants;
+import net.shibboleth.utilities.java.support.xml.XmlConstants;
+
 import org.opensaml.xml.AttributeExtensibleXMLObject;
 import org.opensaml.xml.ElementExtensibleXMLObject;
 import org.opensaml.xml.validation.ValidatingXMLObject;

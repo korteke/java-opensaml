@@ -27,12 +27,12 @@ import java.util.Set;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 
+import net.shibboleth.utilities.java.support.collection.LazySet;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 import org.apache.xml.security.Init;
 import org.apache.xml.security.algorithms.JCEMapper;
 import org.opensaml.core.config.ConfigurationService;
-import org.opensaml.util.collections.LazySet;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.encryption.EncryptionParameters;
 import org.opensaml.xml.encryption.KeyEncryptionParameters;

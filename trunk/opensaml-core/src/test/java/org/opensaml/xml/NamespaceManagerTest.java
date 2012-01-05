@@ -21,10 +21,10 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
+import net.shibboleth.utilities.java.support.collection.LazySet;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
+import net.shibboleth.utilities.java.support.xml.XmlConstants;
 
-import org.opensaml.util.collections.LazySet;
-import org.opensaml.util.xml.XmlConstants;
 import org.opensaml.xml.schema.XSAny;
 
 import com.google.common.base.Objects;

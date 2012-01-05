@@ -22,6 +22,7 @@ import java.net.URL;
 import java.security.KeyPair;
 
 import net.shibboleth.utilities.java.support.codec.Base64Support;
+import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 
 import org.opensaml.common.BaseTestCase;
 import org.opensaml.common.SAMLObject;
@@ -30,7 +31,6 @@ import org.opensaml.common.binding.decoding.SAMLMessageDecoder;
 import org.opensaml.saml2.core.AuthnRequest;
 import org.opensaml.saml2.core.RequestAbstractType;
 import org.opensaml.saml2.core.Response;
-import org.opensaml.util.xml.SerializeSupport;
 import org.opensaml.ws.message.decoder.MessageDecodingException;
 import org.opensaml.ws.transport.http.HttpServletRequestAdapter;
 import org.opensaml.xml.security.SecurityException;

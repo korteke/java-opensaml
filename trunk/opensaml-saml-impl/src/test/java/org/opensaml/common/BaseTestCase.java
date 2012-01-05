@@ -20,6 +20,7 @@ package org.opensaml.common;
 import javax.xml.namespace.QName;
 
 import junit.framework.TestCase;
+import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 
 import org.custommonkey.xmlunit.Diff;
 import org.custommonkey.xmlunit.XMLAssert;
@@ -28,7 +29,6 @@ import org.opensaml.Configuration;
 import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.core.config.InitializationException;
 import org.opensaml.core.config.InitializationService;
-import org.opensaml.util.xml.SerializeSupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.XMLObjectBuilder;
 import org.opensaml.xml.XMLObjectBuilderFactory;

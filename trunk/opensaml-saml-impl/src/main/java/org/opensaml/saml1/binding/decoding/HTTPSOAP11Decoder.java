@@ -21,11 +21,12 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
+import net.shibboleth.utilities.java.support.collection.LazyList;
+
 import org.opensaml.common.SAMLObject;
 import org.opensaml.common.binding.SAMLMessageContext;
 import org.opensaml.common.binding.artifact.SAMLArtifactMap;
 import org.opensaml.common.xml.SAMLConstants;
-import org.opensaml.util.collections.LazyList;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.message.decoder.MessageDecodingException;
 import org.opensaml.ws.soap.soap11.Envelope;

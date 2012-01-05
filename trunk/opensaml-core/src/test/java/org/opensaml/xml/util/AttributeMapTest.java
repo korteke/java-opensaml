@@ -21,9 +21,9 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
+import net.shibboleth.utilities.java.support.collection.LazySet;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
-import org.opensaml.util.collections.LazySet;
 import org.opensaml.xml.AttributeExtensibleXMLObject;
 import org.opensaml.xml.Namespace;
 import org.opensaml.xml.XMLObject;

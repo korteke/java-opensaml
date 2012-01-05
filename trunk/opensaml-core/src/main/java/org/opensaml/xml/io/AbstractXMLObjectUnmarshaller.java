@@ -20,10 +20,10 @@ package org.opensaml.xml.io;
 import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
+import net.shibboleth.utilities.java.support.xml.DomTypeSupport;
+import net.shibboleth.utilities.java.support.xml.QNameSupport;
+import net.shibboleth.utilities.java.support.xml.XmlConstants;
 
-import org.opensaml.util.xml.DomTypeSupport;
-import org.opensaml.util.xml.QNameSupport;
-import org.opensaml.util.xml.XmlConstants;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.Namespace;
 import org.opensaml.xml.XMLObject;

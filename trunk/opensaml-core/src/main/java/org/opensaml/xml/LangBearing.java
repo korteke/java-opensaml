@@ -19,7 +19,7 @@ package org.opensaml.xml;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.util.xml.XmlConstants;
+import net.shibboleth.utilities.java.support.xml.XmlConstants;
 
 /**
  * Interface for element having a <code>@xml:lang</code> attribute.

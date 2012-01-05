@@ -30,9 +30,9 @@ import java.util.List;
 import javax.security.auth.x500.X500Principal;
 
 import net.shibboleth.utilities.java.support.codec.Base64Support;
+import net.shibboleth.utilities.java.support.collection.LazySet;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
-import org.opensaml.util.collections.LazySet;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.credential.Credential;

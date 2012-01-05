@@ -18,7 +18,8 @@
 package org.opensaml.ws.wstrust.impl;
 
 
-import org.opensaml.util.xml.ElementSupport;
+import net.shibboleth.utilities.java.support.xml.ElementSupport;
+
 import org.opensaml.ws.wstrust.Forwardable;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;

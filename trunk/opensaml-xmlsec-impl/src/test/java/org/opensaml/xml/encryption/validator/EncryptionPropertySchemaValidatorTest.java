@@ -19,7 +19,8 @@ package org.opensaml.xml.encryption.validator;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.util.xml.XmlConstants;
+import net.shibboleth.utilities.java.support.xml.XmlConstants;
+
 import org.opensaml.xml.BaseXMLObjectValidatorTestCase;
 import org.opensaml.xml.encryption.EncryptionConstants;
 import org.opensaml.xml.encryption.EncryptionProperty;

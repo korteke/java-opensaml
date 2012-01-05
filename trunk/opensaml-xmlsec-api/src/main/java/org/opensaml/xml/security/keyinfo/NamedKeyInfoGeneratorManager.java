@@ -21,7 +21,8 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
-import org.opensaml.util.collections.LazyMap;
+import net.shibboleth.utilities.java.support.collection.LazyMap;
+
 import org.opensaml.xml.security.credential.Credential;
 
 /**
