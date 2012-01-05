@@ -25,9 +25,9 @@ import java.util.Map;
 import javax.xml.namespace.QName;
 
 import net.jcip.annotations.NotThreadSafe;
+import net.shibboleth.utilities.java.support.collection.LazyList;
+import net.shibboleth.utilities.java.support.collection.LazyMap;
 
-import org.opensaml.util.collections.LazyList;
-import org.opensaml.util.collections.LazyMap;
 import org.opensaml.xml.XMLObject;
 
 /**

@@ -22,12 +22,13 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.StringReader;
 
+import net.shibboleth.utilities.java.support.xml.SerializeSupport;
+
 import org.joda.time.DateTime;
 import org.opensaml.Configuration;
 import org.opensaml.common.SAMLObject;
 import org.opensaml.common.binding.artifact.SAMLArtifactMap.SAMLArtifactMapEntry;
 import org.opensaml.util.storage.AbstractExpiringObject;
-import org.opensaml.util.xml.SerializeSupport;
 import org.opensaml.xml.XMLRuntimeException;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.io.UnmarshallingException;

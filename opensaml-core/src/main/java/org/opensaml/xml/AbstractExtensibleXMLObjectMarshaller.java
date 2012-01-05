@@ -21,7 +21,8 @@ import java.util.Map.Entry;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.util.xml.AttributeSupport;
+import net.shibboleth.utilities.java.support.xml.AttributeSupport;
+
 import org.opensaml.xml.io.MarshallingException;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;

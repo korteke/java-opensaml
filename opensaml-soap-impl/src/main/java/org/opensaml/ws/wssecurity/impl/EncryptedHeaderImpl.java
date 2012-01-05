@@ -20,7 +20,8 @@ package org.opensaml.ws.wssecurity.impl;
 import java.util.Collections;
 import java.util.List;
 
-import org.opensaml.util.collections.LazyList;
+import net.shibboleth.utilities.java.support.collection.LazyList;
+
 import org.opensaml.ws.soap.soap11.ActorBearing;
 import org.opensaml.ws.soap.soap11.MustUnderstandBearing;
 import org.opensaml.ws.soap.soap12.RelayBearing;

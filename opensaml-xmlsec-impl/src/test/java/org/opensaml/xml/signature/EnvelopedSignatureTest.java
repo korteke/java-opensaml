@@ -22,7 +22,8 @@ import java.security.GeneralSecurityException;
 import java.security.KeyPair;
 import java.security.PublicKey;
 
-import org.opensaml.util.xml.SerializeSupport;
+import net.shibboleth.utilities.java.support.xml.SerializeSupport;
+
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.XMLObjectBaseTestCase;
 import org.opensaml.xml.io.Marshaller;

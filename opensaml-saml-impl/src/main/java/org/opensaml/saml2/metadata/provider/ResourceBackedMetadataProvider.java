@@ -19,9 +19,10 @@ package org.opensaml.saml2.metadata.provider;
 
 import java.util.Timer;
 
+import net.shibboleth.utilities.java.support.resource.Resource;
+import net.shibboleth.utilities.java.support.resource.ResourceException;
+
 import org.joda.time.DateTime;
-import org.opensaml.util.resource.Resource;
-import org.opensaml.util.resource.ResourceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

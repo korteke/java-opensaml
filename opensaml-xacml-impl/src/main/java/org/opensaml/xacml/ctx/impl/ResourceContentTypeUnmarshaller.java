@@ -20,8 +20,8 @@ package org.opensaml.xacml.ctx.impl;
 import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
+import net.shibboleth.utilities.java.support.xml.QNameSupport;
 
-import org.opensaml.util.xml.QNameSupport;
 import org.opensaml.xacml.ctx.ResourceContentType;
 import org.opensaml.xacml.impl.AbstractXACMLObjectUnmarshaller;
 import org.opensaml.xml.XMLObject;

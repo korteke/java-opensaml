@@ -25,7 +25,8 @@ import java.util.Map.Entry;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.util.xml.AttributeSupport;
+import net.shibboleth.utilities.java.support.xml.AttributeSupport;
+
 import org.opensaml.ws.soap.soap11.Envelope;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.XMLObject;

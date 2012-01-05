@@ -25,10 +25,11 @@ import java.util.Map.Entry;
 
 import javax.xml.namespace.QName;
 
+import net.shibboleth.utilities.java.support.xml.AttributeSupport;
+import net.shibboleth.utilities.java.support.xml.ElementSupport;
+
 import org.opensaml.common.impl.AbstractSAMLObjectMarshaller;
 import org.opensaml.saml2.core.AuthnContextDecl;
-import org.opensaml.util.xml.AttributeSupport;
-import org.opensaml.util.xml.ElementSupport;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;

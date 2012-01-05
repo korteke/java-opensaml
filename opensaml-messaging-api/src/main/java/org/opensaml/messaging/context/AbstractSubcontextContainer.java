@@ -21,8 +21,9 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
 
+import net.shibboleth.utilities.java.support.collection.ClassIndexedSet;
+
 import org.opensaml.messaging.MessageRuntimeException;
-import org.opensaml.util.collections.ClassIndexedSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

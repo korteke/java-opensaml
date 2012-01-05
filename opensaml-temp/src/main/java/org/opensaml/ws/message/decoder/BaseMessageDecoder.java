@@ -20,9 +20,9 @@ package org.opensaml.ws.message.decoder;
 import java.io.InputStream;
 
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
+import net.shibboleth.utilities.java.support.xml.QNameSupport;
+import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 
-import org.opensaml.util.xml.QNameSupport;
-import org.opensaml.util.xml.SerializeSupport;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.security.SecurityPolicy;
 import org.opensaml.ws.security.SecurityPolicyResolver;

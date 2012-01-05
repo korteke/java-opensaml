@@ -27,12 +27,13 @@ import java.util.List;
 
 import javax.crypto.SecretKey;
 
+import net.shibboleth.utilities.java.support.xml.ElementSupport;
+import net.shibboleth.utilities.java.support.xml.NamespaceSupport;
+import net.shibboleth.utilities.java.support.xml.QNameSupport;
+
 import org.apache.xml.security.Init;
 import org.apache.xml.security.encryption.XMLCipher;
 import org.apache.xml.security.encryption.XMLEncryptionException;
-import org.opensaml.util.xml.ElementSupport;
-import org.opensaml.util.xml.NamespaceSupport;
-import org.opensaml.util.xml.QNameSupport;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.XMLObjectBuilderFactory;

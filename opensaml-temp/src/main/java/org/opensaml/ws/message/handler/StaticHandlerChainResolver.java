@@ -20,7 +20,8 @@ package org.opensaml.ws.message.handler;
 import java.util.Collections;
 import java.util.List;
 
-import org.opensaml.util.collections.LazyList;
+import net.shibboleth.utilities.java.support.collection.LazyList;
+
 import org.opensaml.ws.message.MessageContext;
 
 /** A simple handler chain resolver implementation that returns a static list of handler chains. */

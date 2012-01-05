@@ -19,10 +19,10 @@ package org.opensaml.ws.wssecurity.util;
 
 import java.util.List;
 
+import net.shibboleth.utilities.java.support.collection.LazyList;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
+import net.shibboleth.utilities.java.support.xml.XmlConstants;
 
-import org.opensaml.util.collections.LazyList;
-import org.opensaml.util.xml.XmlConstants;
 import org.opensaml.ws.wssecurity.IdBearing;
 import org.opensaml.ws.wssecurity.TokenTypeBearing;
 import org.opensaml.ws.wssecurity.UsageBearing;

@@ -17,7 +17,8 @@
 
 package org.opensaml.xacml.policy.impl;
 
-import org.opensaml.util.xml.ElementSupport;
+import net.shibboleth.utilities.java.support.xml.ElementSupport;
+
 import org.opensaml.xacml.impl.AbstractXACMLObjectMarshaller;
 import org.opensaml.xacml.policy.DescriptionType;
 import org.opensaml.xml.XMLObject;

@@ -20,7 +20,8 @@ package org.opensaml.ws.wssecurity.impl;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.util.xml.QNameSupport;
+import net.shibboleth.utilities.java.support.xml.QNameSupport;
+
 import org.opensaml.ws.wssecurity.Created;
 import org.opensaml.ws.wssecurity.Expires;
 import org.opensaml.ws.wssecurity.Timestamp;

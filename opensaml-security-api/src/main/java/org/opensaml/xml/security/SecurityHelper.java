@@ -53,9 +53,9 @@ import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 
 import net.shibboleth.utilities.java.support.codec.Base64Support;
+import net.shibboleth.utilities.java.support.collection.LazyMap;
 
 import org.apache.commons.ssl.PKCS8Key;
-import org.opensaml.util.collections.LazyMap;
 import org.opensaml.xml.security.credential.BasicCredential;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.x509.BasicX509Credential;

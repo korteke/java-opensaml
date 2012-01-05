@@ -24,11 +24,11 @@ import java.util.Set;
 import javax.xml.namespace.QName;
 
 import junit.framework.TestCase;
+import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 
 import org.custommonkey.xmlunit.Diff;
 import org.custommonkey.xmlunit.XMLAssert;
 import org.custommonkey.xmlunit.XMLUnit;
-import org.opensaml.util.xml.SerializeSupport;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.XMLObjectBuilder;

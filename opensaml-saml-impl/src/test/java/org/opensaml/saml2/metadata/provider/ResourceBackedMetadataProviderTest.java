@@ -22,11 +22,12 @@ import java.net.URL;
 import java.util.List;
 import java.util.Timer;
 
+import net.shibboleth.utilities.java.support.resource.FilesystemResource;
+
 import org.opensaml.common.BaseTestCase;
 import org.opensaml.saml2.metadata.EntityDescriptor;
 import org.opensaml.saml2.metadata.IDPSSODescriptor;
 import org.opensaml.saml2.metadata.RoleDescriptor;
-import org.opensaml.util.resource.FilesystemResource;
 
 /** Unit test for {@link ResourceBackedMetadataProvider}. */
 public class ResourceBackedMetadataProviderTest extends BaseTestCase {

@@ -17,7 +17,8 @@
 
 package org.opensaml.ws.wssecurity.impl;
 
-import org.opensaml.util.xml.ElementSupport;
+import net.shibboleth.utilities.java.support.xml.ElementSupport;
+
 import org.opensaml.ws.wssecurity.Salt;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;

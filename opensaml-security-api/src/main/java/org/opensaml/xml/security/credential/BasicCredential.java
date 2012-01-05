@@ -22,9 +22,8 @@ import java.security.PublicKey;
 
 import javax.crypto.SecretKey;
 
+import net.shibboleth.utilities.java.support.collection.LazySet;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
-
-import org.opensaml.util.collections.LazySet;
 
 /**
  * A basic implementation of {@link Credential}.

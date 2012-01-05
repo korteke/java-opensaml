@@ -17,7 +17,8 @@
 
 package org.opensaml.ws.wsaddressing.impl;
 
-import org.opensaml.util.xml.ElementSupport;
+import net.shibboleth.utilities.java.support.xml.ElementSupport;
+
 import org.opensaml.ws.wsaddressing.AttributedUnsignedLong;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;

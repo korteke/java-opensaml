@@ -17,11 +17,12 @@
 
 package org.opensaml.saml1.binding.encoding;
 
+import net.shibboleth.utilities.java.support.xml.SerializeSupport;
+
 import org.opensaml.Configuration;
 import org.opensaml.common.SAMLObject;
 import org.opensaml.common.binding.SAMLMessageContext;
 import org.opensaml.common.xml.SAMLConstants;
-import org.opensaml.util.xml.SerializeSupport;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.message.encoder.MessageEncodingException;
 import org.opensaml.ws.soap.common.SOAPObjectBuilder;

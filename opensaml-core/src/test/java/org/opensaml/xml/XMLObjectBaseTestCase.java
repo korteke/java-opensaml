@@ -24,13 +24,13 @@ import java.io.IOException;
 import javax.xml.namespace.QName;
 
 import junit.framework.TestCase;
+import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 
 import org.custommonkey.xmlunit.Diff;
 import org.custommonkey.xmlunit.XMLAssert;
 import org.custommonkey.xmlunit.XMLUnit;
 import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.core.config.InitializationService;
-import org.opensaml.util.xml.SerializeSupport;
 import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallerFactory;
 import org.opensaml.xml.io.MarshallingException;

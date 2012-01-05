@@ -19,9 +19,10 @@ package org.opensaml.saml1.core.impl;
 
 import javax.xml.namespace.QName;
 
+import net.shibboleth.utilities.java.support.xml.QNameSupport;
+
 import org.opensaml.common.impl.AbstractSAMLObjectMarshaller;
 import org.opensaml.saml1.core.StatusCode;
-import org.opensaml.util.xml.QNameSupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
 import org.w3c.dom.Element;

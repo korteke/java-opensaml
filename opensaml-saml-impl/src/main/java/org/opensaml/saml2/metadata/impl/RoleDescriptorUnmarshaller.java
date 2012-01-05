@@ -21,6 +21,9 @@ import java.util.StringTokenizer;
 
 import javax.xml.namespace.QName;
 
+import net.shibboleth.utilities.java.support.xml.DomTypeSupport;
+import net.shibboleth.utilities.java.support.xml.QNameSupport;
+
 import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
 import org.opensaml.common.impl.AbstractSAMLObjectUnmarshaller;
@@ -31,8 +34,6 @@ import org.opensaml.saml2.metadata.ContactPerson;
 import org.opensaml.saml2.metadata.KeyDescriptor;
 import org.opensaml.saml2.metadata.Organization;
 import org.opensaml.saml2.metadata.RoleDescriptor;
-import org.opensaml.util.xml.DomTypeSupport;
-import org.opensaml.util.xml.QNameSupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.signature.Signature;

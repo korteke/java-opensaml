@@ -19,7 +19,8 @@ package org.opensaml.ws.wssecurity;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.util.xml.XmlConstants;
+import net.shibboleth.utilities.java.support.xml.XmlConstants;
+
 import org.opensaml.xml.schema.XSInteger;
 
 /**

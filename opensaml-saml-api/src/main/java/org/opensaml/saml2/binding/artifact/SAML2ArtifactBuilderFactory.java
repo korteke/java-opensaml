@@ -20,8 +20,7 @@ package org.opensaml.saml2.binding.artifact;
 import java.util.Map;
 
 import net.shibboleth.utilities.java.support.codec.Base64Support;
-
-import org.opensaml.util.collections.LazyMap;
+import net.shibboleth.utilities.java.support.collection.LazyMap;
 
 /**
  * Factory used to construct SAML 2 artifact builders.

@@ -19,10 +19,11 @@ package org.opensaml.saml2.core.impl;
 
 import javax.xml.namespace.QName;
 
+import net.shibboleth.utilities.java.support.xml.QNameSupport;
+
 import org.opensaml.common.impl.AbstractSAMLObjectUnmarshaller;
 import org.opensaml.common.xml.SAMLConstants;
 import org.opensaml.saml2.core.Attribute;
-import org.opensaml.util.xml.QNameSupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.w3c.dom.Attr;

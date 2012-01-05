@@ -17,11 +17,12 @@
 
 package org.opensaml.saml2.metadata.impl;
 
+import net.shibboleth.utilities.java.support.xml.AttributeSupport;
+import net.shibboleth.utilities.java.support.xml.ElementSupport;
+import net.shibboleth.utilities.java.support.xml.XmlConstants;
+
 import org.opensaml.common.impl.AbstractSAMLObjectMarshaller;
 import org.opensaml.saml2.metadata.LocalizedName;
-import org.opensaml.util.xml.AttributeSupport;
-import org.opensaml.util.xml.ElementSupport;
-import org.opensaml.util.xml.XmlConstants;
 import org.opensaml.xml.LangBearing;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;

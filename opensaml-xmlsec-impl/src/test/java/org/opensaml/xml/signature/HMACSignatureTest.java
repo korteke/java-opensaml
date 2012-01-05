@@ -23,11 +23,11 @@ import java.util.List;
 import javax.crypto.SecretKey;
 
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
+import net.shibboleth.utilities.java.support.xml.ElementSupport;
+import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 
 import org.apache.xml.security.signature.SignedInfo;
 import org.apache.xml.security.signature.XMLSignature;
-import org.opensaml.util.xml.ElementSupport;
-import org.opensaml.util.xml.SerializeSupport;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.XMLObjectBaseTestCase;
 import org.opensaml.xml.io.Marshaller;

@@ -32,11 +32,11 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
+import net.shibboleth.utilities.java.support.xml.AttributeSupport;
+import net.shibboleth.utilities.java.support.xml.ElementSupport;
+import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 
 import org.opensaml.core.config.ConfigurationService;
-import org.opensaml.util.xml.AttributeSupport;
-import org.opensaml.util.xml.ElementSupport;
-import org.opensaml.util.xml.SerializeSupport;
 import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.Unmarshaller;
 import org.opensaml.xml.parse.BasicParserPool;

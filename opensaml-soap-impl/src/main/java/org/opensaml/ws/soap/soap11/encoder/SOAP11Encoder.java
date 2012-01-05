@@ -17,7 +17,8 @@
 
 package org.opensaml.ws.soap.soap11.encoder;
 
-import org.opensaml.util.xml.SerializeSupport;
+import net.shibboleth.utilities.java.support.xml.SerializeSupport;
+
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.message.encoder.MessageEncodingException;
 import org.opensaml.ws.message.handler.BaseHandlerChainAwareMessageEncoder;

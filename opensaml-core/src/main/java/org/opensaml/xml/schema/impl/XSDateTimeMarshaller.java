@@ -17,7 +17,8 @@
 
 package org.opensaml.xml.schema.impl;
 
-import org.opensaml.util.xml.ElementSupport;
+import net.shibboleth.utilities.java.support.xml.ElementSupport;
+
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.BaseXMLObjectMarshaller;
 import org.opensaml.xml.io.MarshallingException;

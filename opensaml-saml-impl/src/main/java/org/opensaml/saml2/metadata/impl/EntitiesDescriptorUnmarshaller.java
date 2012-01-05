@@ -17,6 +17,8 @@
 
 package org.opensaml.saml2.metadata.impl;
 
+import net.shibboleth.utilities.java.support.xml.DomTypeSupport;
+
 import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
 import org.opensaml.common.impl.AbstractSAMLObjectUnmarshaller;
@@ -25,7 +27,6 @@ import org.opensaml.saml2.common.Extensions;
 import org.opensaml.saml2.common.TimeBoundSAMLObject;
 import org.opensaml.saml2.metadata.EntitiesDescriptor;
 import org.opensaml.saml2.metadata.EntityDescriptor;
-import org.opensaml.util.xml.DomTypeSupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.signature.Signature;

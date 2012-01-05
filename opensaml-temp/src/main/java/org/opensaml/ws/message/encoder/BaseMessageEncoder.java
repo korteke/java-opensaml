@@ -17,7 +17,8 @@
 
 package org.opensaml.ws.message.encoder;
 
-import org.opensaml.util.xml.SerializeSupport;
+import net.shibboleth.utilities.java.support.xml.SerializeSupport;
+
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.XMLObject;

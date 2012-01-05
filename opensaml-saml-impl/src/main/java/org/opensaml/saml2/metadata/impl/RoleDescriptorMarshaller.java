@@ -22,13 +22,14 @@ import java.util.Map.Entry;
 
 import javax.xml.namespace.QName;
 
+import net.shibboleth.utilities.java.support.xml.AttributeSupport;
+import net.shibboleth.utilities.java.support.xml.DomTypeSupport;
+
 import org.opensaml.Configuration;
 import org.opensaml.common.impl.AbstractSAMLObjectMarshaller;
 import org.opensaml.saml2.common.CacheableSAMLObject;
 import org.opensaml.saml2.common.TimeBoundSAMLObject;
 import org.opensaml.saml2.metadata.RoleDescriptor;
-import org.opensaml.util.xml.AttributeSupport;
-import org.opensaml.util.xml.DomTypeSupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
 import org.slf4j.Logger;

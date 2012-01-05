@@ -21,6 +21,7 @@ import java.security.KeyPair;
 
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.security.RandomIdentifierGenerationStrategy;
+import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 
 import org.joda.time.DateTime;
 import org.opensaml.common.BaseTestCase;
@@ -29,7 +30,6 @@ import org.opensaml.common.SAMLVersion;
 import org.opensaml.saml2.core.impl.AssertionBuilder;
 import org.opensaml.saml2.core.impl.AuthnStatementBuilder;
 import org.opensaml.saml2.core.impl.IssuerBuilder;
-import org.opensaml.util.xml.SerializeSupport;
 import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.io.UnmarshallingException;

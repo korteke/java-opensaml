@@ -19,7 +19,8 @@ package org.opensaml.ws.wssecurity.impl;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.util.xml.QNameSupport;
+import net.shibboleth.utilities.java.support.xml.QNameSupport;
+
 import org.opensaml.ws.wssecurity.EncryptedHeader;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.encryption.EncryptedData;
