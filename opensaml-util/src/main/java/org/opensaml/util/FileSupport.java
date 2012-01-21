@@ -25,6 +25,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 /** File helper functions. */
+@Deprecated
 public final class FileSupport {
 
     /** Constructor. */

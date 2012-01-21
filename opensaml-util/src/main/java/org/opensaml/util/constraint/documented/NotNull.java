@@ -23,6 +23,7 @@ import java.lang.annotation.Target;
 /** Indicates that a given object can not be null. */
 @DocumentedConstraint
 @Target({ElementType.FIELD, ElementType.LOCAL_VARIABLE, ElementType.METHOD, ElementType.PARAMETER})
+@Deprecated
 public @interface NotNull {
 
 }

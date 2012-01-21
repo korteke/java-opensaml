@@ -28,6 +28,7 @@ import java.util.Set;
  * 
  * @param <T> the type of candidate elements being evaluated
  */
+@Deprecated
 public class CriteriaFilteringIterable<T> implements Iterable<T> {
     
     /** The candidates to evaluate. */

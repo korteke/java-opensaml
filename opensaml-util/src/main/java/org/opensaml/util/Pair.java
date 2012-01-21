@@ -23,6 +23,7 @@ package org.opensaml.util;
  * @param <T1> type of the first object in the pair
  * @param <T2> type of the second object in the pair
  */
+@Deprecated
 public class Pair<T1, T2> {
 
     /** First object in pair. */

@@ -20,6 +20,7 @@ package org.opensaml.util.criteria;
 import org.opensaml.util.collections.ClassIndexedSet;
 
 /** This class holds instances of {@link Criterion} which are used in resolution or evaluation operations. */
+@Deprecated
 public class CriteriaSet extends ClassIndexedSet<Criterion> {
 
     /** Constructor. */

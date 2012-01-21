@@ -18,6 +18,7 @@
 package org.opensaml.util.xml;
 
 /** Enum representing the allowed values of the xml:space attribute. */
+@Deprecated
 public enum XmlSpace {
 
     /** xml:space value "default". */

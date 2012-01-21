@@ -21,6 +21,7 @@ import java.io.Closeable;
 import java.io.IOException;
 
 /** Utility for closing {@link Closeable}s. */
+@Deprecated
 public final class CloseableSupport {
 
     /** Constructor. */

@@ -23,6 +23,7 @@ import java.lang.annotation.Target;
 /** Indicates that a given numeric value is less than the specified value. */
 @DocumentedConstraint
 @Target({ElementType.FIELD, ElementType.LOCAL_VARIABLE, ElementType.METHOD, ElementType.PARAMETER})
+@Deprecated
 public @interface LessThan {
     
     /** The threshold value. */

@@ -22,6 +22,7 @@ import org.joda.time.DateTime;
 /**
  * A simple interface for objects that may expire at a given time.
  */
+@Deprecated
 public interface ExpiringObject {
 
     /**

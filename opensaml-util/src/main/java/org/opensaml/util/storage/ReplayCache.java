@@ -30,6 +30,7 @@ import org.slf4j.LoggerFactory;
  * This class is thread-safe and uses a basic reentrant lock to avoid corruption of the underlying store, as well as to
  * prevent race conditions with respect to replay checking.
  */
+@Deprecated
 public class ReplayCache {
 
     /** Logger. */

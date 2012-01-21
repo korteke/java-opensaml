@@ -18,6 +18,7 @@
 package org.opensaml.util.xml.traversal;
 
 /** Exception indicating that the starting node of a traversal is not acceptable for a given {@link NodeVisitor}. */
+@Deprecated
 public class InvalidStartingNode extends TraversalException {
     
     /** Serial version UID. */

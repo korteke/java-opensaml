@@ -27,6 +27,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 /** Set of helper methods for working with DOM QNames. */
+@Deprecated
 public final class QNameSupport {
 
     /** Constructor. */

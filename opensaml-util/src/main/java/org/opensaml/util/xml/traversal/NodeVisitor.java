@@ -27,6 +27,7 @@ import org.w3c.dom.Node;
  * {@link VisitingDomTreeWalker}.
  */
 @ThreadSafe
+@Deprecated
 public interface NodeVisitor {
 
     /**

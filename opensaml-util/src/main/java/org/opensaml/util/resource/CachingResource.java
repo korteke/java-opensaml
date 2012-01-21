@@ -21,6 +21,7 @@ package org.opensaml.util.resource;
  * A {@link Resource} which may cache the fetched data. This is useful when fetching data from a remote source that may
  * not change as often as the data is read.
  */
+@Deprecated
 public interface CachingResource extends Resource {
 
     /**

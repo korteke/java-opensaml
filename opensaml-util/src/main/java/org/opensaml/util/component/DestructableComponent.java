@@ -18,6 +18,7 @@
 package org.opensaml.util.component;
 
 /** A component which can be destroyed and its resources reclaimed. */
+@Deprecated
 public interface DestructableComponent extends Component {
 
     /** Destroys the component. */

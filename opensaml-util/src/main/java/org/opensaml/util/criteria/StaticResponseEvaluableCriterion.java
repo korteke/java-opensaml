@@ -25,6 +25,7 @@ import net.jcip.annotations.ThreadSafe;
  * @param <T> the type of object which may be evaluated
  */
 @ThreadSafe
+@Deprecated
 public class StaticResponseEvaluableCriterion<T> implements EvaluableCriterion<T> {
 
     /** {@link EvaluableCriterion} that always returns {@link Boolean#TRUE}. */

@@ -49,6 +49,7 @@ import org.opensaml.util.Assert;
 import org.opensaml.util.StringSupport;
 
 /** Builder used to construct {@link HttpClient} objects configured with particular settings. */
+@Deprecated
 public class HttpClientBuilder {
 
     /** Local IP address used when establishing connections. Default value: system default local address */

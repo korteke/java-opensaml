@@ -18,6 +18,7 @@
 package org.opensaml.util.component;
 
 /** Exception thrown if a component has not been initialized and needs to be in order to perform the operation. */
+@Deprecated
 public class UninitializedComponentException extends RuntimeException {
 
     /** Serial version UID. */

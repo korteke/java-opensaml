@@ -24,6 +24,7 @@ import org.w3c.dom.Node;
 
 /** An implementation of {@link Traverser} that returns {@link Node} in depth first order. */
 @NotThreadSafe
+@Deprecated
 public class DepthFirstTraverser implements Traverser {
 
     /**

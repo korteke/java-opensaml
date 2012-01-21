@@ -29,6 +29,7 @@ import org.w3c.dom.Document;
 //TODO may need to implement initializable component
 
 /** A pool of XML parsers. */
+@Deprecated
 public interface ParserPool {
 
     /**

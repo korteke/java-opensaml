@@ -28,6 +28,7 @@ import org.slf4j.LoggerFactory;
 /**
  * A simple task that periodically sweeps over a Map and removes expired entries.
  */
+@Deprecated
 public class ExpiringObjectStorageServiceSweeper extends TimerTask {
 
     /** Class logger. */

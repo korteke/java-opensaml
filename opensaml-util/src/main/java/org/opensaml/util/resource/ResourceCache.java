@@ -37,6 +37,7 @@ import org.opensaml.util.constraint.documented.Unmodifiable;
 //TODO need to deal with expiring cached resources
 
 /** A store which can be used to cache content fetched via a {@link Resource}. */
+@Deprecated
 public interface ResourceCache {
 
     /**

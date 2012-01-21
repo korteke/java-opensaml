@@ -23,6 +23,7 @@ import java.lang.annotation.Target;
 /** Indicates that a given numeric value must be with the given exclusive range. */
 @DocumentedConstraint
 @Target({ElementType.FIELD, ElementType.LOCAL_VARIABLE, ElementType.METHOD, ElementType.PARAMETER})
+@Deprecated
 public @interface ExclusiveRange {
     
     /** Range minimum. */

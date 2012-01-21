@@ -31,6 +31,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 
 /** Set of helper methods for working with DOM Attributes. */
+@Deprecated
 public final class AttributeSupport {
 
     /** Constructor. */

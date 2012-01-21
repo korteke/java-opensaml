@@ -32,7 +32,7 @@ import net.jcip.annotations.NotThreadSafe;
  * 
  * @param <ElementType> type of elements within the list
  */
-@NotThreadSafe
+@Deprecated
 public class LazyList<ElementType> implements List<ElementType>, Serializable {
 
     /** Serial version UID. */

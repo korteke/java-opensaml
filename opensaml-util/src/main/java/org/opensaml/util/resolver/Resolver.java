@@ -25,6 +25,7 @@ package org.opensaml.util.resolver;
  * @param <ProductType> the type of objects produced by this resolver
  * @param <CriteriaType> the type of criteria to process during resolution
  */
+@Deprecated
 public interface Resolver<ProductType, CriteriaType> {
     
 

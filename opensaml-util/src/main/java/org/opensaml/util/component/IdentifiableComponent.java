@@ -18,6 +18,7 @@
 package org.opensaml.util.component;
 
 /** A {@link Component} which can be assigned a unique identifier. */
+@Deprecated
 public interface IdentifiableComponent extends Component {
 
     /**

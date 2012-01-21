@@ -25,6 +25,7 @@ import org.opensaml.util.Assert;
 import org.opensaml.util.StringSupport;
 
 /** A resource which reads data from the classpath. */
+@Deprecated
 public class ClasspathResource implements Resource {
 
     /** URL to the classpath resource. */

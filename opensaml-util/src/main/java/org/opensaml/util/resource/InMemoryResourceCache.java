@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /** A simple in-memory store of cache resources. */
+@Deprecated
 public class InMemoryResourceCache implements ResourceCache {
 
     /** The in-memory store of cached resources. */

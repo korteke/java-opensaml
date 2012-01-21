@@ -31,7 +31,7 @@ import net.jcip.annotations.NotThreadSafe;
  * 
  * @param <ElementType> type of the elements within the set
  */
-@NotThreadSafe
+@Deprecated
 public class LazySet<ElementType> implements Set<ElementType>, Serializable {
 
     /** Serial version UID. */

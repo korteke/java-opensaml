@@ -18,6 +18,7 @@
 package org.opensaml.util.component;
 
 /** Support class for working with {@link Component} objects. */
+@Deprecated
 public final class ComponentSupport {
 
     /** Constructor. */

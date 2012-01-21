@@ -20,6 +20,7 @@ package org.opensaml.util.xml;
 import javax.xml.namespace.QName;
 
 /** XML related constants. */
+@Deprecated
 public final class XmlConstants {
 
     // XML

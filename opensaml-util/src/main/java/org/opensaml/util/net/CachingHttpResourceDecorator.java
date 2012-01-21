@@ -33,6 +33,7 @@ import org.opensaml.util.resource.ResourceCache.CachedResource;
  * An extension to the {@link CachingResourceDecorator} that wraps a {@link HttpResponse} and in addition to the normal
  * caching supports HTTP conditional gets.
  */
+@Deprecated
 public class CachingHttpResourceDecorator extends CachingResourceDecorator {
 
     /** Property name under which the ETag data is stored. */

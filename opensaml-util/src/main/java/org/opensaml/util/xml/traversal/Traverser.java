@@ -22,6 +22,7 @@ import java.util.Iterator;
 import org.w3c.dom.Node;
 
 /** Base interface for classes that traverse a DOM tree. */
+@Deprecated
 public interface Traverser extends Iterator<Node> {
 
 }

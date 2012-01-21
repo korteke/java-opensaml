@@ -23,6 +23,7 @@ import java.lang.annotation.Target;
 /** Indicates that the annotated object can not be modified. */
 @DocumentedConstraint
 @Target({ElementType.FIELD, ElementType.LOCAL_VARIABLE, ElementType.METHOD, ElementType.PARAMETER})
+@Deprecated
 public @interface Unmodifiable {
 
 }

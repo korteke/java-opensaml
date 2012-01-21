@@ -23,6 +23,7 @@ import java.lang.annotation.Target;
 /** Indicates that a given numeric value must be with the given inclusive range. */
 @DocumentedConstraint
 @Target({ElementType.FIELD, ElementType.LOCAL_VARIABLE, ElementType.METHOD, ElementType.PARAMETER})
+@Deprecated
 public @interface InclusiveRange {
     
     /** Range minimum. */

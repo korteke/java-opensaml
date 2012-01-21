@@ -20,6 +20,7 @@ package org.opensaml.util.resolver;
 /**
  * Base exception for resolver related errors.
  */
+@Deprecated
 public class ResolverException extends Exception {
 
     /** Serial version UID. */

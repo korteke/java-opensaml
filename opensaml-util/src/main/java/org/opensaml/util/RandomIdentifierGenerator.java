@@ -24,6 +24,7 @@ import org.bouncycastle.util.encoders.Hex;
 /**
  * Generates identifiers using random data obtained from a {@link java.util.Random} instance.
  */
+@Deprecated
 public class RandomIdentifierGenerator implements IdentifierGenerator {
 
     /** Random number generator. */

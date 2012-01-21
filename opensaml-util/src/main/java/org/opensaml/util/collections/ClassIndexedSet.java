@@ -31,6 +31,7 @@ import org.opensaml.util.Assert;
  * 
  * @param <T> the type of object stored by this class
  */
+@Deprecated
 public class ClassIndexedSet<T> extends AbstractSet<T> implements Set<T> {
 
     /** Storage for set members. */

@@ -26,6 +26,7 @@ import org.opensaml.util.StringSupport;
  * Note, while this implementation's {@link #setId(String)} is protected it can always be hoisted to a public method if
  * that is desired.
  */
+@Deprecated
 public abstract class AbstractIdentifiableComponent implements IdentifiableComponent {
 
     /** The unique identifier for this component. */

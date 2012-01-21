@@ -33,6 +33,7 @@ import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
 
 /** Set of helper methods for working with DOM data types. */
+@Deprecated
 public final class DomTypeSupport {
 
     /** JAXP DatatypeFactory. */
