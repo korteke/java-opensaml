@@ -20,6 +20,7 @@ package org.opensaml.util.xml;
 /**
  * An exception thrown when there is a problem creating an XML parser or parsing XML with on.
  */
+@Deprecated
 public class XMLParserException extends Exception {
 
     /**

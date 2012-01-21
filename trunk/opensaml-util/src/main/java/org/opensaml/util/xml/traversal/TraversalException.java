@@ -18,6 +18,7 @@
 package org.opensaml.util.xml.traversal;
 
 /** An exception thrown when an issue occurs when traversing a DOM tree. */
+@Deprecated
 public class TraversalException extends RuntimeException {
 
     /** Serial version UID. */

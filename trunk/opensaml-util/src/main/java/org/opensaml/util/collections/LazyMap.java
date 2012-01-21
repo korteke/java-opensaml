@@ -32,7 +32,7 @@ import net.jcip.annotations.NotThreadSafe;
  * @param <KeyType> the type of the map keys
  * @param <ValueType> the type of the map values
  */
-@NotThreadSafe
+@Deprecated
 public class LazyMap<KeyType, ValueType> implements Map<KeyType, ValueType>, Serializable {
 
     /** Serial version UID. */

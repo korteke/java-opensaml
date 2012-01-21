@@ -30,6 +30,7 @@ import org.w3c.dom.Node;
 
 /** A DOM tree walker that runs a set of {@link NodeVisitor} against each node in the DOM tree. */
 @ThreadSafe
+@Deprecated
 public class VisitingDomTreeWalker {
 
     /** Set of registered visitors. */

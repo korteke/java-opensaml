@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.opensaml.util.StringSupport;
 
 /** Utilities for working with HTTP Servlet requests and responses. */
+@Deprecated
 public final class HttpServletSupport {
 
     /** Constructor. */

@@ -24,6 +24,7 @@ import java.util.BitSet;
 import org.opensaml.util.StringSupport;
 
 /** Represents a range of IP addresses. */
+@Deprecated
 public class IPRange {
 
     /** Number of bits within the address.  32 bits for IPv4 address, 128 bits for IPv6 addresses. */

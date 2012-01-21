@@ -21,6 +21,7 @@ package org.opensaml.util.component;
  * A {@link Component} which needs to be initialized prior to any "real" use. Real use usually means, for example,
  * calling business logic but does not usually cover getting/setting properties.
  */
+@Deprecated
 public interface InitializableComponent extends Component {
 
     /**

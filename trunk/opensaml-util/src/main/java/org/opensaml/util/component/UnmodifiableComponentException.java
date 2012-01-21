@@ -18,6 +18,7 @@
 package org.opensaml.util.component;
 
 /** Exception thrown if a component is in an unmodifiable state and a modification is attempted. */
+@Deprecated
 public class UnmodifiableComponentException extends RuntimeException {
 
     /** Serial version UID. */

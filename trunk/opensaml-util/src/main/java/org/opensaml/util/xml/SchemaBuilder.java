@@ -35,6 +35,7 @@ import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
 /** A helper class for building {@link Schema} from a set of input. */
+@Deprecated
 public final class SchemaBuilder {
 
     /** Language of the schema files. */

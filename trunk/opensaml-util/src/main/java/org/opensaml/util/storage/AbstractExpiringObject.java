@@ -23,6 +23,7 @@ import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
 
 /** Base implementation for {@link ExpiringObject}. */
+@Deprecated
 public abstract class AbstractExpiringObject implements ExpiringObject, Serializable {
 
     /** Serial version UID. */

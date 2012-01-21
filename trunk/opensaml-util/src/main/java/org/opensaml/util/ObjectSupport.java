@@ -18,6 +18,7 @@
 package org.opensaml.util;
 
 /** Helper methods for working with Objects. */
+@Deprecated
 public final class ObjectSupport {
 
     /** Constructor. */

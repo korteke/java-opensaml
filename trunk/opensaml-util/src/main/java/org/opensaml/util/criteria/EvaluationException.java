@@ -18,6 +18,7 @@
 package org.opensaml.util.criteria;
 
 /** Exception for resolver related errors thrown when {@link EvaluableCriterion} fail. */
+@Deprecated
 public class EvaluationException extends Exception {
 
     /** Serial version UID. */

@@ -25,6 +25,7 @@ import org.opensaml.util.StringSupport;
  * Note, this class synchronizes the {@link #setId(String)} method and, if the component is already initialized this
  * method is treated as no-op.
  */
+@Deprecated
 public abstract class AbstractIdentifiableInitializableComponent extends AbstractInitializableComponent implements
         IdentifiableComponent {
 

@@ -22,6 +22,7 @@ package org.opensaml.util.criteria;
  * 
  * @param <T> the type of object which may be evaluated
  */
+@Deprecated
 public interface EvaluableCriterion<T> extends Criterion {
 
     /**

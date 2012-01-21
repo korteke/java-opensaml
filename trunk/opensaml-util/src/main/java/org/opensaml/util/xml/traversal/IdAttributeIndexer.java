@@ -45,6 +45,7 @@ import org.w3c.dom.Node;
  * This visitor only works if the first node in the traversal is either a {@link Document} or an {@link Element} that is
  * the document element. If more than one element has the same ID a {@link DuplicateIdException} is thrown.
  */
+@Deprecated
 public class IdAttributeIndexer implements NodeVisitor {
 
     /** The name under which the ID index will be stored as {@link Document} user data. */

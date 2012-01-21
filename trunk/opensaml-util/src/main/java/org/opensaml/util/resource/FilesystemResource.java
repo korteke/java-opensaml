@@ -26,6 +26,7 @@ import org.opensaml.util.Assert;
 import org.opensaml.util.StringSupport;
 
 /** An {@link Resource} that reads data from a fileystem file. */
+@Deprecated
 public class FilesystemResource implements Resource {
 
     /** Filesytem file read by this resource. */

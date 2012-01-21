@@ -27,6 +27,7 @@ import java.lang.annotation.Target;
  */
 @DocumentedConstraint
 @Target({ElementType.FIELD, ElementType.LOCAL_VARIABLE, ElementType.METHOD, ElementType.PARAMETER})
+@Deprecated
 public @interface NotLive {
 
 }

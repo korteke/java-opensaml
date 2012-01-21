@@ -25,6 +25,7 @@ import org.bouncycastle.util.encoders.Hex;
 /**
  * Generates identifiers using random data obtained from a {@link java.security.SecureRandom} instance.
  */
+@Deprecated
 public class SecureRandomIdentifierGenerator implements IdentifierGenerator {
 
     /** Random number generator. */

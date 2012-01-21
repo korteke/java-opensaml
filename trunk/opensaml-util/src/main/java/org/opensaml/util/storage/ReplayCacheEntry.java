@@ -22,6 +22,7 @@ import java.io.Serializable;
 import org.joda.time.DateTime;
 
 /** Replay cache storage service entry. */
+@Deprecated
 public class ReplayCacheEntry extends AbstractExpiringObject implements Serializable {
 
     /** Serial version UID. */

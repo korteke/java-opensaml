@@ -18,6 +18,7 @@
 package org.opensaml.util.component;
 
 /** A {@link Component} which can be validated at run time in order to ensure proper operation. */
+@Deprecated
 public interface ValidatableComponent extends Component {
 
     /**

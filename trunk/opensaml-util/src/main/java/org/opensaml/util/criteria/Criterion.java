@@ -20,6 +20,7 @@ package org.opensaml.util.criteria;
 /**
  * A generic marker interface for representing criteria used in resolution or evaluation operations.
  */
+@Deprecated
 public interface Criterion {
 
 }

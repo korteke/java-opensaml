@@ -41,6 +41,7 @@ import org.w3c.dom.ls.LSSerializer;
 import org.w3c.dom.ls.LSSerializerFilter;
 
 /** Set of helper functions for serializing/writing DOM nodes. */
+@Deprecated
 public final class SerializeSupport {
 
     /** Constructor. */

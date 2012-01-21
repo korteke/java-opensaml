@@ -21,6 +21,7 @@ package org.opensaml.util;
  * Interface for identifier generators.  This identifier can be used for things like
  * digital signature identifiers, opaque principal identifiers, etc. 
  */
+@Deprecated
 public interface IdentifierGenerator {
 
     /**

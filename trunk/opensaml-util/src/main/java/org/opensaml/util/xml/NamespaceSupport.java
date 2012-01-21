@@ -27,6 +27,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 /** Set of helper methods for working with DOM namespaces. */
+@Deprecated
 public final class NamespaceSupport {
 
     /** Constructor. */

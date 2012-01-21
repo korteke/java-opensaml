@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 /** String utility methods. */
+@Deprecated
 public final class StringSupport {
 
     /** Constructor. */

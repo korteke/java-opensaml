@@ -23,6 +23,7 @@ import java.util.Iterator;
 import org.opensaml.util.Assert;
 
 /** Set of helper methods for working with collections. */
+@Deprecated
 public final class CollectionSupport {
 
     /** Constructor. */

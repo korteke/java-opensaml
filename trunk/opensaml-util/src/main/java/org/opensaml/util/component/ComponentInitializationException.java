@@ -18,6 +18,7 @@
 package org.opensaml.util.component;
 
 /** Exception thrown if there is a problem initializing a component. */
+@Deprecated
 public class ComponentInitializationException extends Exception {
 
     /** Serial version UID. */

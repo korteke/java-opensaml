@@ -20,6 +20,7 @@ package org.opensaml.util;
 import java.util.Collection;
 
 /** Utility class for checking constraints on various parameters. */
+@Deprecated
 public final class Assert {
 
     /** Constructor. */

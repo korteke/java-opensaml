@@ -23,6 +23,7 @@ import java.lang.annotation.Target;
 /** Indicates that a given numeric value is greater than the specified value. */
 @DocumentedConstraint
 @Target({ElementType.FIELD, ElementType.LOCAL_VARIABLE, ElementType.METHOD, ElementType.PARAMETER})
+@Deprecated
 public @interface GreaterThan {
     
     /** The threshold value. */

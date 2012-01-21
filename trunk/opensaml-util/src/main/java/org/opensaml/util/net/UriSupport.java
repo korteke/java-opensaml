@@ -30,6 +30,7 @@ import org.opensaml.util.Pair;
 import org.opensaml.util.StringSupport;
 
 /** Helper methods for building {@link URI}s and parsing some HTTP URL information. */
+@Deprecated
 public final class UriSupport {
 
     /** Constructor. */

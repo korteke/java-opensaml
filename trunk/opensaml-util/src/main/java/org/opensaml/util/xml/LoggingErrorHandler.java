@@ -25,6 +25,7 @@ import org.xml.sax.SAXParseException;
 /**
  * A SAX error handler that logs errors a {@link Logger} before rethrowing them.
  */
+@Deprecated
 public final class LoggingErrorHandler implements ErrorHandler {
 
     /** Error logger. */

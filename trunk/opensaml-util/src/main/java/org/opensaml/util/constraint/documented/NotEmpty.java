@@ -23,6 +23,7 @@ import java.lang.annotation.Target;
 /** Indicates that the annotated array, string, collection other object is not empty. */
 @DocumentedConstraint
 @Target({ElementType.FIELD, ElementType.LOCAL_VARIABLE, ElementType.METHOD, ElementType.PARAMETER})
+@Deprecated
 public @interface NotEmpty {
 
 }

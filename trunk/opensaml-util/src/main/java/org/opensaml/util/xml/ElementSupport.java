@@ -35,6 +35,7 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 
 /** Set of helper methods for working with DOM Elements. */
+@Deprecated
 public final class ElementSupport {
 
     /** Constructor. */

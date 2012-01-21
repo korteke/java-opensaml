@@ -18,6 +18,7 @@
 package org.opensaml.util.component;
 
 /** A marker interface that represents something used as a discrete part of a larger system. */
+@Deprecated
 public interface Component {
 
 }

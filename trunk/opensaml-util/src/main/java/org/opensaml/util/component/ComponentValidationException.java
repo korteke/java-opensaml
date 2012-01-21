@@ -18,6 +18,7 @@
 package org.opensaml.util.component;
 
 /** Exception thrown if there is a problem validating a component. */
+@Deprecated
 public class ComponentValidationException extends Exception {
 
     /** Serial version UID. */

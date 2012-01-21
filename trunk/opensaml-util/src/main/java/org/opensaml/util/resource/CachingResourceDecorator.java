@@ -28,6 +28,7 @@ import org.opensaml.util.resource.ResourceCache.CachedResource;
 
 /** A decorator that may be used to wrap a {@link Resource} in order to add content caching. */
 @ThreadSafe
+@Deprecated
 public class CachingResourceDecorator implements CachingResource {
 
     /** The resource used to fetch new information. */

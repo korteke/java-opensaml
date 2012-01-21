@@ -23,6 +23,7 @@ import java.lang.annotation.Target;
 /** Indicates that the annotated collection does not contain any null elements. */
 @DocumentedConstraint
 @Target({ElementType.FIELD, ElementType.LOCAL_VARIABLE, ElementType.METHOD, ElementType.PARAMETER})
+@Deprecated
 public @interface NoNullElements {
 
 }

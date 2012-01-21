@@ -30,6 +30,7 @@ import java.util.Set;
  * @param <KeyType> the type of object used as keys
  * @param <ValueType> the type of object stored as values
  */
+@Deprecated
 public class ValueTypeIndexedMap<KeyType, ValueType> implements Map<KeyType, ValueType> {
 
     /** Class to represent null values. */

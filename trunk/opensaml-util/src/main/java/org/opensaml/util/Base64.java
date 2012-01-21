@@ -58,6 +58,7 @@ package org.opensaml.util;
  * @author rob@iharder.net
  * @version 2.1
  */
+@Deprecated
 public class Base64 {
 
     /* ******** P U B L I C F I E L D S ******** */

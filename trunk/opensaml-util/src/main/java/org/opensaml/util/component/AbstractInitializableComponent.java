@@ -18,6 +18,7 @@
 package org.opensaml.util.component;
 
 /** Base class for things that implement {@link InitializableComponent}. */
+@Deprecated
 public abstract class AbstractInitializableComponent implements InitializableComponent {
 
     /** Whether this component has been initialized. */

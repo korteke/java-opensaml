@@ -20,6 +20,7 @@ package org.opensaml.util.resource;
 import java.io.InputStream;
 
 /** An interface representing an data resource. */
+@Deprecated
 public interface Resource {
 
     /**

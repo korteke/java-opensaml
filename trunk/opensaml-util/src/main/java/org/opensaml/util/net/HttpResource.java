@@ -50,6 +50,7 @@ import org.slf4j.LoggerFactory;
 
 /** A resource that fetches data from a remote source via HTTP. */
 @NotThreadSafe
+@Deprecated
 public class HttpResource implements Resource {
 
     /** Property name under which the ETag data is stored. */
@@ -204,14 +205,12 @@ public class HttpResource implements Resource {
         try {
             HttpResponse httpResponse = httpClient.execute(httpRequest);
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            httpRequest.abort();
 
             if (statusCode == HttpStatus.SC_METHOD_NOT_ALLOWED || statusCode == HttpStatus.SC_NOT_IMPLEMENTED) {
                 log.debug(resourceUrl + " does not support HEAD requests, falling back to GET request");
                 httpRequest = buildGetMethod();
                 httpResponse = httpClient.execute(httpRequest);
                 statusCode = httpResponse.getStatusLine().getStatusCode();
-                httpRequest.abort();
             }
 
             return httpResponse;

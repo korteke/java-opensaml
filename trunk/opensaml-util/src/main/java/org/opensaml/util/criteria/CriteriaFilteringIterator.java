@@ -44,6 +44,7 @@ import java.util.Set;
  * 
  * @param <T> the type of candidate elements being evaluated
  */
+@Deprecated
 public class CriteriaFilteringIterator<T> implements Iterator<T> {
     
     /** The candidates to evaluate. */

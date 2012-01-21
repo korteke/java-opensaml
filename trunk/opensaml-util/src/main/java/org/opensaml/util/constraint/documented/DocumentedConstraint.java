@@ -27,6 +27,7 @@ import java.lang.annotation.Target;
 @Documented
 @Retention(RetentionPolicy.SOURCE)
 @Target({ElementType.ANNOTATION_TYPE})
+@Deprecated
 public @interface DocumentedConstraint {
 
 }

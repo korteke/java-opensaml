@@ -18,6 +18,7 @@
 package org.opensaml.util.resource;
 
 /** Indicates a problem accessing a resource. */
+@Deprecated
 public class ResourceException extends Exception {
 
     /** Serial version UID. */

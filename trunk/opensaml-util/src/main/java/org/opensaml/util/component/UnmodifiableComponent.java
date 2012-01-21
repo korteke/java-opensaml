@@ -21,6 +21,7 @@ package org.opensaml.util.component;
  * A marker interface for components that may be put in an unmodifiable state and if a modification occurs afterwards
  * the unchecked exception {@link UnmodifiableComponentException}.
  */
+@Deprecated
 public interface UnmodifiableComponent extends Component {
 
 }

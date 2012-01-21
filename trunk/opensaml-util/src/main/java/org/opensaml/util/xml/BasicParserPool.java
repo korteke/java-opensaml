@@ -56,6 +56,7 @@ import org.xml.sax.SAXException;
  * 
  * This implementation of {@link ParserPool} does not allow its properties to be modified once it has been initialized.
  */
+@Deprecated
 public class BasicParserPool implements ParserPool {
 
     /** Class logger. */
