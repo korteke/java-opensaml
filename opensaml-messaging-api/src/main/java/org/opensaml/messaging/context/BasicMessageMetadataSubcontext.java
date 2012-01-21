@@ -19,22 +19,22 @@ package org.opensaml.messaging.context;
 
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
-/** A {@link Subcontext} of a {@link MessageContext} that carries some basic metadata about the message. */
-public class BasicMessageMetadataSubcontext extends AbstractSubcontext {
+/** A {@link Context} intended to be used as a subcontext of a {@link MessageContext}  that carries some basic metadata about the message. */
+public class BasicMessageMetadataSubcontext extends AbstractContext {
 
     /** The ID of the message. */
-    private String id;
+    private String messageId;
 
     /** The issue instant, in milliseconds since the epoch, of the message. */
     private long issueInstant;
 
     /** The issuer of the message. */
     private String issuer;
-
+    
     /**
-     * Constructor. Adds this subcontext to the parent
+     * Constructor. Adds this context to the parent message context.
      * 
-     * @param parent the parent subcontext
+     * @param parent the parent message context
      */
     public BasicMessageMetadataSubcontext(MessageContext parent) {
         super(parent);
@@ -46,16 +46,16 @@ public class BasicMessageMetadataSubcontext extends AbstractSubcontext {
      * @return ID of the message, may be null
      */
     public String getMessageId() {
-        return id;
+        return messageId;
     }
 
     /**
      * Sets the ID of the message.
      * 
-     * @param messageId ID of the message
+     * @param newMessageId ID of the message
      */
-    public void setMessageId(String messageId) {
-        id = StringSupport.trimOrNull(messageId);
+    public void setMessageId(String newMessageId) {
+        newMessageId = StringSupport.trimOrNull(newMessageId);
     }
 
     /**

@@ -31,7 +31,7 @@ package org.opensaml.messaging.context;
  *
  * @param <MessageType> the message type of the message context 
  */
-public interface MessageContext<MessageType> extends Context, SubcontextContainer {
+public interface MessageContext<MessageType> extends Context {
 
     /**
      * Get the message represented by the message context.

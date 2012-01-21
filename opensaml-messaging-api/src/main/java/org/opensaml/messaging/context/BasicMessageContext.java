@@ -17,44 +17,16 @@
 
 package org.opensaml.messaging.context;
 
-import java.util.UUID;
-
-import net.shibboleth.utilities.java.support.logic.Assert;
-import net.shibboleth.utilities.java.support.primitive.StringSupport;
-
-import org.joda.time.DateTime;
 
 /**
  * A basic implementation of of {@link MessageContext}.
  * 
  * @param <MessageType> the type of message represented by the message context
  */
-public class BasicMessageContext<MessageType> extends AbstractSubcontextContainer implements
-        MessageContext<MessageType> {
+public class BasicMessageContext<MessageType> extends AbstractContext implements MessageContext<MessageType> {
 
     /** The message represented. */
     private MessageType msg;
-
-    /** The context unique identifier. */
-    private String id;
-
-    /** The context creation timestamp. */
-    private DateTime creationTime;
-
-    /** Constructor. Generates a random context ID. */
-    public BasicMessageContext() {
-        this(UUID.randomUUID().toString());
-    }
-
-    /**
-     * Constructor.
-     * 
-     * @param contextId ID for this context, not null nor empty
-     */
-    public BasicMessageContext(String contextId) {
-        creationTime = new DateTime();
-        id = Assert.isNotNull(StringSupport.trimOrNull(contextId), "Context ID can not be null or empty");
-    }
 
     /** {@inheritDoc} */
     public MessageType getMessage() {
@@ -66,13 +38,4 @@ public class BasicMessageContext<MessageType> extends AbstractSubcontextContaine
         msg = message;
     }
 
-    /** {@inheritDoc} */
-    public String getId() {
-        return id;
-    }
-
-    /** {@inheritDoc} */
-    public DateTime getCreationTime() {
-        return creationTime;
-    }
 }

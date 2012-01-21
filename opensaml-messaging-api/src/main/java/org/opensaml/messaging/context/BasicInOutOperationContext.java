@@ -28,7 +28,7 @@ import org.joda.time.chrono.ISOChronology;
  * @param <InboundMessageType> the inbound message type
  * @param <OutboundMessageType> the outbound message type
  */
-public class BasicInOutOperationContext<InboundMessageType, OutboundMessageType> extends AbstractSubcontextContainer
+public class BasicInOutOperationContext<InboundMessageType, OutboundMessageType> extends AbstractContext
         implements InOutOperationContext<InboundMessageType, OutboundMessageType> {
 
     /** The inbound message context. */
@@ -37,16 +37,9 @@ public class BasicInOutOperationContext<InboundMessageType, OutboundMessageType>
     /** The outbound message context. */
     private MessageContext<OutboundMessageType> outboundContext;
 
-    /** The context unique identifier. */
-    private String id;
-
-    /** The context creation timestamp. */
-    private DateTime creationTime;
-
     /** Constructor. Sets ID to a generated UUID and creation time to now. */
     protected BasicInOutOperationContext() {
-        id = UUID.randomUUID().toString();
-        creationTime = new DateTime(ISOChronology.getInstanceUTC());
+        super();
     }
 
     /**
@@ -90,16 +83,6 @@ public class BasicInOutOperationContext<InboundMessageType, OutboundMessageType>
      */
     public void setOutboundMessageContext(MessageContext<OutboundMessageType> context) {
         outboundContext = context;
-    }
-
-    /** {@inheritDoc} */
-    public DateTime getCreationTime() {
-        return creationTime;
-    }
-
-    /** {@inheritDoc} */
-    public String getId() {
-        return id;
     }
 
 }
