@@ -247,7 +247,7 @@ public class AbstractContextTest {
         Assert.assertNull(parent1.getSubcontext(TestContext.class, false));
     }
     
-    public class TestContext extends AbstractContext {
+    public static class TestContext extends AbstractContext {
 
         /**
          * Constructor.
