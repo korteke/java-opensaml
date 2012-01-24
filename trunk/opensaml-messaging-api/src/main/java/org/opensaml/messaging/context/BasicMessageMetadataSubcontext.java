@@ -33,16 +33,6 @@ public class BasicMessageMetadataSubcontext extends AbstractContext {
     private String issuer;
 
     /**
-     * Constructor. Adds this context to the parent message context.
-     * 
-     * @param parent the parent message context
-     */
-    public BasicMessageMetadataSubcontext(MessageContext parent) {
-        super();
-        parent.addSubcontext(this);
-    }
-
-    /**
      * Gets the ID of the message.
      * 
      * @return ID of the message, may be null
