@@ -58,9 +58,10 @@ public abstract class AbstractContext implements Context {
     /** Constructor. Generates a random context id. */
     public AbstractContext() {
         subcontexts = new ClassIndexedSet<Context>();
-        id = UUID.randomUUID().toString();
         creationTime = new DateTime();
-        autoCreateSubcontexts = true;
+        
+        setAutoCreateSubcontexts(false);
+        setId(UUID.randomUUID().toString());
     }
     
     /**
@@ -81,7 +82,7 @@ public abstract class AbstractContext implements Context {
      */
     public AbstractContext(final Context newParent) {
         this();
-        setParent(newParent);
+        newParent.addSubcontext(this);
     }
     
     /**
@@ -93,7 +94,7 @@ public abstract class AbstractContext implements Context {
     public AbstractContext(final String contextId, final Context newParent) {
         this();
         setId(contextId);
-        setParent(newParent);
+        newParent.addSubcontext(this);
     }
     
     /** {@inheritDoc} */
@@ -126,30 +127,7 @@ public abstract class AbstractContext implements Context {
      * @param newParent the new context parent
      */
     protected void setParent(final Context newParent) {
-        Context oldParent = parent;
         parent = newParent;
-        
-        if (parent != null) {
-            log.trace("Setting context with type '{}' with id '{}' as parent of context with type '{}' with id '{}'", 
-                    new String[]{parent.getClass().getName(), parent.getId(), this.getClass().getName(), this.getId()});
-            Context currentChild = parent.getSubcontext(this.getClass());
-            if (currentChild == null) {
-                log.trace("Adding context to parent");
-                parent.addSubcontext(this);
-            } else if (currentChild == this) {
-                log.trace("Context was already in parent's subcontext collection");
-            } else {
-                // TODO: not sure what to do here, perhaps either throw exception or else do a force add.
-               log.warn("A different instance of type {} was a child of parent context, could not add this instance");
-            }
-        } else {
-           log.trace("New parent context was null for context '{}' with id '{}'", this.getClass().getName(), this.getId());
-        }
-        
-        if (oldParent != null) {
-            log.trace("Removing context from old parent");
-            oldParent.removeSubcontext(this);
-        }
     }
     
     /** {@inheritDoc} */
@@ -183,12 +161,58 @@ public abstract class AbstractContext implements Context {
     }
     
     /** {@inheritDoc} */
-    public void addSubcontext(Context subContext, boolean replace) {
-        subcontexts.add(subContext, replace);
+    public void addSubcontext(Context subcontext, boolean replace) {
+        Context existing = subcontexts.get(subcontext.getClass());
+        if (existing == subcontext) {
+            log.trace("Subcontext to add was already a child of the current context, skipping");
+            return;
+        }
+        
+        // Note: This will throw if replace == false and existing != null.
+        // In that case, no link management happens, which is what we want, to leave things in a consistent state.
+        log.trace("Attempting to store a subcontext with type '{}' id '{}' with replace option '{}'", 
+                new String[]{subcontext.getClass().getName(), subcontext.getId(), new Boolean(replace).toString()});
+        subcontexts.add(subcontext, replace);
+        
+        // Manage parent/child links
+        
+        // If subcontext was formerly a child of another parent, remove that link
+        Context oldParent = subcontext.getParent();
+        if (oldParent != null && oldParent != this) {
+            log.trace("New subcontext with type '{}' id '{}' is currently a subcontext of parent with type '{}' id '{}', removing it",
+                    new String[]{subcontext.getClass().getName(), subcontext.getId(), 
+                    oldParent.getClass().getName(), oldParent.getId(),});
+            subcontext.getParent().removeSubcontext(subcontext);
+        }
+        
+        // Set parent pointer of new subcontext to this instance
+        if (subcontext instanceof AbstractContext) {
+            log.trace("New subcontext with type '{}' id '{}' is set to have parent with type '{}' id '{}', removing it",
+                    new String[]{subcontext.getClass().getName(), subcontext.getId(), 
+                    this.getClass().getName(), this.getId(),});
+            ((AbstractContext)subcontext).setParent(this);
+        }
+        
+        // If we're replacing an existing subcontext (if class was a duplicate, will only get here if replace == true),
+        // then clear out its parent pointer.
+        if (existing != null) {
+            if (existing instanceof AbstractContext) {
+                log.trace("Old subcontext with type '{}' id '{}' will have parent cleared",
+                        new String[]{existing.getClass().getName(), existing.getId(), });
+                ((AbstractContext)existing).setParent(null);
+            }
+        }
+        
     }
     
     /** {@inheritDoc} */
     public void removeSubcontext(Context subcontext) {
+        log.trace("Removing subcontext with type '{}' id '{}' from parent with type '{}' id '{}'",
+                new String[]{subcontext.getClass().getName(), subcontext.getId(), 
+                this.getClass().getName(), this.getId(),});
+        if (subcontext instanceof AbstractContext) {
+            ((AbstractContext)subcontext).setParent(null);
+        }
         subcontexts.remove(subcontext);
     }
     
@@ -202,7 +226,7 @@ public abstract class AbstractContext implements Context {
     
     /** {@inheritDoc} */
     public Iterator<Context>  iterator() {
-        return subcontexts.iterator();
+        return new ContextSetNoRemoveIteratorDecorator(subcontexts.iterator());
     }
     
     /** {@inheritDoc} */
@@ -212,6 +236,12 @@ public abstract class AbstractContext implements Context {
     
     /** {@inheritDoc} */
     public void clearSubcontexts() {
+        log.trace("Clearing all subcontexts from context with type '{}' id '{}'", this.getClass().getName(), this.getId());
+        for (Context subcontext : subcontexts) {
+            if (subcontext instanceof AbstractContext) {
+                ((AbstractContext)subcontext).setParent(null);
+            }
+        }
         subcontexts.clear();
     }
     
@@ -256,6 +286,40 @@ public abstract class AbstractContext implements Context {
             log.error("Invocation target error on creating subcontext", e);
             throw new MessageRuntimeException("Error creating subcontext", e);
         }
+    }
+    
+    /**
+     * Iterator decorator which disallows the remove() operation on the iterator.
+     */
+    protected class ContextSetNoRemoveIteratorDecorator implements Iterator<Context> {
+        
+        /** The decorated iterator. */
+        private Iterator<Context> wrappedIterator;
+        
+        /**
+         * Constructor.
+         *
+         * @param iterator the iterator instance to decorator
+         */
+        protected ContextSetNoRemoveIteratorDecorator(Iterator<Context> iterator) {
+            wrappedIterator = iterator;
+        }
+
+        /** {@inheritDoc} */
+        public boolean hasNext() {
+            return wrappedIterator.hasNext();
+        }
+
+        /** {@inheritDoc} */
+        public Context next() {
+            return wrappedIterator.next();
+        }
+
+        /** {@inheritDoc} */
+        public void remove() {
+            throw new UnsupportedOperationException("Removal of subcontexts via the iterator is unsupported");
+        }
+        
     }
     
 }

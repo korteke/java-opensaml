@@ -27,7 +27,12 @@ import org.joda.time.DateTime;
  * Interface for a component which represents the context used to store state used for purposes related to messaging.
  * 
  * <p>
- * A Context may also function as a container of subcontexts.
+ * Specific implementations of contexts would normally add additional properties to the
+ * context to represent the state that is to be stored by that particular context implementation.
+ * </p>
+ * 
+ * <p>
+ * A context may also function as a container of subcontexts.
  * Access to subcontexts is class-based.  The parent context may hold only
  * one instance of a given class at a given time.  This class-based indexing approach
  * is used to enforce type-safety over the subcontext instances returned from the parent context,
@@ -51,14 +56,14 @@ public interface Context extends IdentifiableComponent, Iterable<Context> {
     public DateTime getCreationTime();
     
     /**
-     * Get the parent context.
+     * Get the parent context, if there is one.
      * 
      * @return the parent context or null 
      */
     public Context getParent();
     
     /**
-     * Get a subcontext from the container.
+     * Get a subcontext of the current context.
      * 
      * @param <T> the type of subcontext being operated on
      * @param clazz the class type to obtain
@@ -67,7 +72,7 @@ public interface Context extends IdentifiableComponent, Iterable<Context> {
     public <T extends Context> T getSubcontext(Class<T> clazz);
     
     /**
-     * Get a subcontext from the container.
+     * Get a subcontext of the current context.
      * 
      * @param <T> the type of subcontext being operated on
      * @param clazz the class type to obtain
@@ -77,14 +82,14 @@ public interface Context extends IdentifiableComponent, Iterable<Context> {
     public <T extends Context> T getSubcontext(Class<T> clazz, boolean autocreate);
     
     /**
-     * Add a subcontext to the container.
+     * Add a subcontext to the current context.
      * 
      * @param subContext the subcontext to add
      */
     public void addSubcontext(Context subContext);
     
     /**
-     * Add a subcontext to the container.
+     * Add a subcontext to the current context.
      * 
      * @param subContext the subcontext to add
      * @param replace flag indicating whether to replace the existing instance of the subcontext if present
@@ -93,7 +98,7 @@ public interface Context extends IdentifiableComponent, Iterable<Context> {
     public void addSubcontext(Context subContext, boolean replace);
     
     /**
-     * Remove a subcontext from the container.
+     * Remove a subcontext from the current context.
      * 
      * @param <T> the type of subcontext being operated on
      * @param subcontext the subcontext to remove
@@ -101,7 +106,7 @@ public interface Context extends IdentifiableComponent, Iterable<Context> {
     public <T extends Context> void removeSubcontext(Context subcontext);
     
     /**
-     * Remove the subcontext from the container which corresponds to the supplied class.
+     * Remove the subcontext from the current context which corresponds to the supplied class.
      * 
      * @param <T> the type of subcontext being operated on
      * @param clazz the subcontext class to remove
@@ -109,31 +114,31 @@ public interface Context extends IdentifiableComponent, Iterable<Context> {
     public <T extends Context> void removeSubcontext(Class<T> clazz);
     
     /**
-     * Return whether the container currently contains an instance of
+     * Return whether the current context currently contains an instance of
      * the specified subcontext class.
      * 
      * @param <T> the type of subcontext being operated on
      * @param clazz the class to check
-     * @return true if the container contains an instance of the class, false otherwise
+     * @return true if the current context contains an instance of the class, false otherwise
      */
     public <T extends Context> boolean containsSubcontext(Class<T> clazz);
     
     /**
-     * Clear the subcontext container.
+     * Clear the subcontexts of the current context.
      */
     public void clearSubcontexts();
     
     /**
-     * Get whether the container auto-creates subcontexts by default.
+     * Get whether the context auto-creates subcontexts by default.
      * 
-     * @return true if the container auto-creates subcontexts, false otherwise
+     * @return true if the context auto-creates subcontexts, false otherwise
      */
     public boolean isAutoCreateSubcontexts();
     
     /**
-     * Set whether the container auto-creates subcontexts by default.
+     * Set whether the context auto-creates subcontexts by default.
      * 
-     * @param autoCreate whether the container should auto-create subcontexts
+     * @param autoCreate whether the context should auto-create subcontexts
      */
     public void setAutoCreateSubcontexts(boolean autoCreate);
     
