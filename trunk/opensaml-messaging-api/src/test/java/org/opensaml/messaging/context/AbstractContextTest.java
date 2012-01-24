@@ -39,43 +39,6 @@ public class AbstractContextTest {
     }
     
     /**
-     *  Test the constructor which takes an Id value.
-     */
-    public void testIdConstructor() {
-        TestContext context = new TestContext("abc123");
-        Assert.assertNull(context.getParent());
-        
-        Assert.assertEquals(context.getId(), "abc123", "Unexpected context id");
-    }
-    
-    /**
-     *  Test the constructor which takes a new parent context value.
-     */
-    public void testParentConstructor() {
-        TestContext parent = new TestContext();
-        TestContext child = new TestContext(parent);
-        
-        Assert.assertNull(parent.getParent());
-        Assert.assertNotNull(child.getParent());
-        Assert.assertTrue(child.getParent() == parent, "Parent of child is not the expected value");
-    }
-    
-    /**
-     *  Test the constructor which takes both a new Id and new parent context.
-     */
-    public void testIdParentConstructor() {
-        TestContext parent = new TestContext();
-        TestContext child = new TestContext("abc123", parent);
-        
-        Assert.assertEquals(child.getId(), "abc123", "Unexpected context id");
-        
-        Assert.assertNull(parent.getParent());
-        Assert.assertNotNull(child.getParent());
-        Assert.assertTrue(child.getParent() == parent, "Parent of child is not the expected value");
-        
-    }
-    
-    /**
      *  Test basic adding and removing of subcontexts.
      */
     public void testAddRemoveSubcontexts() {
@@ -245,46 +208,6 @@ public class AbstractContextTest {
         Assert.assertTrue(child.getParent() == parent2);
         Assert.assertFalse(parent1.containsSubcontext(TestContext.class));
         Assert.assertNull(parent1.getSubcontext(TestContext.class, false));
-    }
-    
-    public static class TestContext extends AbstractContext {
-
-        /**
-         * Constructor.
-         *
-         */
-        public TestContext() {
-            super();
-        }
-
-        /**
-         * Constructor.
-         *
-         * @param newParent
-         */
-        public TestContext(Context newParent) {
-            super(newParent);
-        }
-
-        /**
-         * Constructor.
-         *
-         * @param contextId
-         * @param newParent
-         */
-        public TestContext(String contextId, Context newParent) {
-            super(contextId, newParent);
-        }
-
-        /**
-         * Constructor.
-         *
-         * @param contextId
-         */
-        public TestContext(String contextId) {
-            super(contextId);
-        }
-        
     }
 
 }

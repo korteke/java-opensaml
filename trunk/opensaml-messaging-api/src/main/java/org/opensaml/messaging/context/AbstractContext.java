@@ -64,39 +64,6 @@ public abstract class AbstractContext implements Context {
         setId(UUID.randomUUID().toString());
     }
     
-    /**
-     * Constructor.
-     * 
-     * @param contextId ID for this context, not null nor empty
-     */
-    public AbstractContext(final String contextId) {
-        this();
-        setId(contextId);
-    }
-    
-    /**
-     * Constructor. Adds this context as a child of the given parent.
-     * Generates a random context id.
-     * 
-     * @param newParent the owning parent context.
-     */
-    public AbstractContext(final Context newParent) {
-        this();
-        newParent.addSubcontext(this);
-    }
-    
-    /**
-     * Constructor.
-     * 
-     * @param contextId ID for this context, not null nor empty
-     * @param newParent the owning parent context.
-     */
-    public AbstractContext(final String contextId, final Context newParent) {
-        this();
-        setId(contextId);
-        newParent.addSubcontext(this);
-    }
-    
     /** {@inheritDoc} */
     public String getId() {
         return id;
@@ -265,8 +232,8 @@ public abstract class AbstractContext implements Context {
     protected <T extends Context> T createSubcontext(Class<T> clazz) {
         Constructor<T> constructor;
         try {
-            constructor = clazz.getConstructor(new Class[] {Context.class});
-            return constructor.newInstance(new Object[] { this });
+            constructor = clazz.getConstructor();
+            return constructor.newInstance();
         } catch (SecurityException e) {
             log.error("Security error on creating subcontext", e);
             throw new MessageRuntimeException("Error creating subcontext", e);

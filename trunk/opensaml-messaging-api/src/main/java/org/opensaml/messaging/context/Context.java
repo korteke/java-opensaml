@@ -41,9 +41,9 @@ import org.joda.time.DateTime;
  * 
  * <p>
  * When a subcontext is requested and it does not exist in the parent context, it may optionally be
- * auto-created.  In order to auto-created in this manner, the subcontext type
- * <strong>MUST</strong> have a single-arg constructor which takes a <code>Context</code>.
- * If the requested subcontext does not conform to this convention, auto-creation will fail.
+ * auto-created.  In order to be auto-created in this manner, the subcontext type
+ * <strong>MUST</strong> have a no-arg constructor. If the requested subcontext does not conform 
+ * to this convention, auto-creation will fail.
  * </p>
  */
 public interface Context extends IdentifiableComponent, Iterable<Context> {

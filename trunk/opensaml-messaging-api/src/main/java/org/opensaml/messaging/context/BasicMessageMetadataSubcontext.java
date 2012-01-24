@@ -19,7 +19,8 @@ package org.opensaml.messaging.context;
 
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
-/** A {@link Context} intended to be used as a subcontext of a {@link MessageContext}  that carries some basic metadata about the message. */
+/** A {@link Context} intended to be used as a subcontext of a {@link MessageContext}  that carries 
+ * some basic metadata about the message. */
 public class BasicMessageMetadataSubcontext extends AbstractContext {
 
     /** The ID of the message. */
@@ -30,14 +31,15 @@ public class BasicMessageMetadataSubcontext extends AbstractContext {
 
     /** The issuer of the message. */
     private String issuer;
-    
+
     /**
      * Constructor. Adds this context to the parent message context.
      * 
      * @param parent the parent message context
      */
     public BasicMessageMetadataSubcontext(MessageContext parent) {
-        super(parent);
+        super();
+        parent.addSubcontext(this);
     }
 
     /**
@@ -55,7 +57,7 @@ public class BasicMessageMetadataSubcontext extends AbstractContext {
      * @param newMessageId ID of the message
      */
     public void setMessageId(String newMessageId) {
-        newMessageId = StringSupport.trimOrNull(newMessageId);
+        messageId = StringSupport.trimOrNull(newMessageId);
     }
 
     /**
