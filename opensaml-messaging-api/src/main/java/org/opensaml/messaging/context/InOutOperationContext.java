@@ -62,6 +62,15 @@ public class InOutOperationContext<InboundMessageType, OutboundMessageType> exte
     public MessageContext<InboundMessageType> getInboundMessageContext() {
         return inboundContext;
     }
+    
+    /**
+     * Sets the inbound message context.
+     * 
+     * @param context inbound message context, may be null
+     */
+    public void setInboundMessageContext(MessageContext<InboundMessageType> context) {
+        inboundContext = context;
+    }
 
     /**
      * The outbound message context instance.
@@ -70,6 +79,15 @@ public class InOutOperationContext<InboundMessageType, OutboundMessageType> exte
      */
     public MessageContext<OutboundMessageType> getOutboundMessageContext() {
         return outboundContext;
+    }
+    
+    /**
+     * Sets the outbound message context.
+     * 
+     * @param context outbound message context, may be null
+     */
+    public void setOutboundMessageContext(MessageContext<OutboundMessageType> context) {
+        outboundContext = context;
     }
 
 }
