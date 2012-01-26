@@ -17,19 +17,16 @@
 
 package org.opensaml.messaging.context;
 
-import java.util.UUID;
-
-import org.joda.time.DateTime;
-import org.joda.time.chrono.ISOChronology;
 
 /**
- * Basic implementation of {@link InOutOperationContext}.
- * 
- * @param <InboundMessageType> the inbound message type
- * @param <OutboundMessageType> the outbound message type
- */
-public class BasicInOutOperationContext<InboundMessageType, OutboundMessageType> extends BaseContext
-        implements InOutOperationContext<InboundMessageType, OutboundMessageType> {
+* An operation context which represents concretely a message exchange pattern involving an 
+* inbound message and an outbound message. This is the typical request-response
+* pattern seen in messaging environments, and might be either server-side or client-side.
+* 
+* @param <InboundMessageType> the inbound message type
+* @param <OutboundMessageType> the outbound message type
+*/
+public class InOutOperationContext<InboundMessageType, OutboundMessageType> extends BaseContext {
 
     /** The inbound message context. */
     private MessageContext<InboundMessageType> inboundContext;
@@ -38,7 +35,7 @@ public class BasicInOutOperationContext<InboundMessageType, OutboundMessageType>
     private MessageContext<OutboundMessageType> outboundContext;
 
     /** Constructor. Sets ID to a generated UUID and creation time to now. */
-    protected BasicInOutOperationContext() {
+    protected InOutOperationContext() {
         super();
     }
 
@@ -48,7 +45,7 @@ public class BasicInOutOperationContext<InboundMessageType, OutboundMessageType>
      * @param inbound the inbound message context
      * @param outbound the outbound message context
      */
-    public BasicInOutOperationContext(MessageContext<InboundMessageType> inbound,
+    public InOutOperationContext(MessageContext<InboundMessageType> inbound,
             MessageContext<OutboundMessageType> outbound) {
         this();
 
@@ -57,32 +54,22 @@ public class BasicInOutOperationContext<InboundMessageType, OutboundMessageType>
 
     }
 
-    /** {@inheritDoc} */
+    /**
+     * The inbound message context instance.
+     * 
+     * @return the inbound message context
+     */
     public MessageContext<InboundMessageType> getInboundMessageContext() {
         return inboundContext;
     }
 
     /**
-     * Sets the inbound message context.
+     * The outbound message context instance.
      * 
-     * @param context inbound message context, may be null
+     * @return the outbound message context
      */
-    public void setInboundMessageContext(MessageContext<InboundMessageType> context) {
-        inboundContext = context;
-    }
-
-    /** {@inheritDoc} */
     public MessageContext<OutboundMessageType> getOutboundMessageContext() {
         return outboundContext;
-    }
-
-    /**
-     * Sets the outbound message context.
-     * 
-     * @param context outbound message context, may be null
-     */
-    public void setOutboundMessageContext(MessageContext<OutboundMessageType> context) {
-        outboundContext = context;
     }
 
 }
