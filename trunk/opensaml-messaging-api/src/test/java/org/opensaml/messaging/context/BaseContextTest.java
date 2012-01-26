@@ -23,10 +23,10 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**
- * Test the AbstractContext implementation.
+ * Test the BaseContext implementation.
  */
 @Test
-public class AbstractContextTest {
+public class BaseContextTest {
     
     /**
      * Test the no-arg constructor.
@@ -112,10 +112,10 @@ public class AbstractContextTest {
         Assert.assertTrue(child.getParent() == parent, "Parent of child is not the expected value");
         Assert.assertTrue(parent.getSubcontext(TestContext.class, false) == child, "Child of parent is not the expected value");
         
-        Iterator<Context> iterator = parent.iterator();
+        Iterator<BaseContext> iterator = parent.iterator();
         
         Assert.assertTrue(iterator.hasNext());
-        Context returnedContext = iterator.next();
+        BaseContext returnedContext = iterator.next();
         Assert.assertTrue(returnedContext == child);
         
         Assert.assertFalse(iterator.hasNext());
@@ -127,7 +127,7 @@ public class AbstractContextTest {
     @Test(expectedExceptions = UnsupportedOperationException.class)
     public void testNoRemoveIterator() {
         TestContext parent = new TestContext();
-        Iterator<Context> iterator = parent.iterator();
+        Iterator<BaseContext> iterator = parent.iterator();
         iterator.remove();
     }
     

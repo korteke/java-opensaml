@@ -19,21 +19,37 @@ package org.opensaml.messaging.context;
 
 
 /**
- * A basic implementation of of {@link MessageContext}.
+ * A context component which holds the state related to the processing of a single message.
  * 
- * @param <MessageType> the type of message represented by the message context
+ * <p>
+ * Additional information associated with the message represented by the context may be held by the context
+ * as subordinate subcontext instances. Subcontext instances may simply hold state information related to the message, 
+ * in which case they may be seen as a type-safe variant of the ubiquitous properties map pattern.  They may 
+ * also be more functional or operational in nature, for example providing "views" onto the message 
+ * and/or message context data.
+ * </p>
+ *
+ * @param <MessageType> the message type of the message context 
  */
-public class BasicMessageContext<MessageType> extends AbstractContext implements MessageContext<MessageType> {
+public class BasicMessageContext<MessageType> extends BaseContext {
 
     /** The message represented. */
     private MessageType msg;
 
-    /** {@inheritDoc} */
+    /**
+     * Get the message represented by the message context.
+     * 
+     * @return the message
+     */
     public MessageType getMessage() {
         return msg;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Set the message represented by the message context.
+     * 
+     * @param message the message
+     */
     public void setMessage(MessageType message) {
         msg = message;
     }

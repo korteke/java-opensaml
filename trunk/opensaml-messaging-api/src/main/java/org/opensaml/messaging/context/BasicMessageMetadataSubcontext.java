@@ -21,7 +21,7 @@ import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 /** A {@link Context} intended to be used as a subcontext of a {@link MessageContext}  that carries 
  * some basic metadata about the message. */
-public class BasicMessageMetadataSubcontext extends AbstractContext {
+public class BasicMessageMetadataSubcontext extends BaseContext {
 
     /** The ID of the message. */
     private String messageId;
