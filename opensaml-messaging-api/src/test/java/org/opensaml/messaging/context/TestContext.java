@@ -20,6 +20,6 @@ package org.opensaml.messaging.context;
 /**
  * A concrete test context implementation for use in unit tests.
  */
-public class TestContext extends AbstractContext {
+public class TestContext extends BaseContext {
 
 }

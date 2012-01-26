@@ -28,7 +28,7 @@ import org.joda.time.chrono.ISOChronology;
  * @param <InboundMessageType> the inbound message type
  * @param <OutboundMessageType> the outbound message type
  */
-public class BasicInOutOperationContext<InboundMessageType, OutboundMessageType> extends AbstractContext
+public class BasicInOutOperationContext<InboundMessageType, OutboundMessageType> extends BaseContext
         implements InOutOperationContext<InboundMessageType, OutboundMessageType> {
 
     /** The inbound message context. */

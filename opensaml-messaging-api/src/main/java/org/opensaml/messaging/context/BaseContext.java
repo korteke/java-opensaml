@@ -23,6 +23,7 @@ import java.util.Iterator;
 import java.util.UUID;
 
 import net.shibboleth.utilities.java.support.collection.ClassIndexedSet;
+import net.shibboleth.utilities.java.support.component.IdentifiableComponent;
 import net.shibboleth.utilities.java.support.logic.Assert;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
@@ -31,20 +32,40 @@ import org.opensaml.messaging.MessageRuntimeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 /**
- * Abstract implementation of {@link Context}.
+ * Base implementation of a component which represents the context used to store state 
+ * used for purposes related to messaging.
+ * 
+ * <p>
+ * Specific implementations of contexts would normally add additional properties to the
+ * context to represent the state that is to be stored by that particular context implementation.
+ * </p>
+ * 
+ * <p>
+ * A context may also function as a container of subcontexts.
+ * Access to subcontexts is class-based.  The parent context may hold only
+ * one instance of a given class at a given time.  This class-based indexing approach
+ * is used to enforce type-safety over the subcontext instances returned from the parent context,
+ * and avoids the need for casting.
+ * </p>
+ * 
+ * <p>
+ * When a subcontext is requested and it does not exist in the parent context, it may optionally be
+ * auto-created.  In order to be auto-created in this manner, the subcontext type
+ * <strong>MUST</strong> have a no-arg constructor. If the requested subcontext does not conform 
+ * to this convention, auto-creation will fail.
+ * </p>
  */
-public abstract class AbstractContext implements Context {
+public abstract class BaseContext implements IdentifiableComponent, Iterable<BaseContext> {
 
     /** Logger. */
-    private final Logger log = LoggerFactory.getLogger(AbstractContext.class);
+    private final Logger log = LoggerFactory.getLogger(BaseContext.class);
     
     /** The owning parent context. */
-    private Context parent;
+    private BaseContext parent;
 
     /** The subcontexts being managed. */
-    private ClassIndexedSet<Context> subcontexts;
+    private ClassIndexedSet<BaseContext> subcontexts;
     
     /** The context id. */
     private String id;
@@ -56,8 +77,8 @@ public abstract class AbstractContext implements Context {
     private boolean autoCreateSubcontexts;
     
     /** Constructor. Generates a random context id. */
-    public AbstractContext() {
-        subcontexts = new ClassIndexedSet<Context>();
+    public BaseContext() {
+        subcontexts = new ClassIndexedSet<BaseContext>();
         creationTime = new DateTime();
         
         setAutoCreateSubcontexts(false);
@@ -78,13 +99,21 @@ public abstract class AbstractContext implements Context {
         id = Assert.isNotNull(StringSupport.trimOrNull(newId), "Context ID can not be null or empty");
     }
     
-    /** {@inheritDoc} */
+    /**
+     * Get the timestamp of the creation of the context.
+     * 
+     * @return the creation timestamp
+     */
     public DateTime getCreationTime() {
         return creationTime;
     }
     
-    /** {@inheritDoc} */
-    public Context getParent() {
+    /**
+     * Get the parent context, if there is one.
+     * 
+     * @return the parent context or null 
+     */
+    public BaseContext getParent() {
         return parent;
     }
     
@@ -93,17 +122,30 @@ public abstract class AbstractContext implements Context {
      * 
      * @param newParent the new context parent
      */
-    protected void setParent(final Context newParent) {
+    protected void setParent(final BaseContext newParent) {
         parent = newParent;
     }
     
-    /** {@inheritDoc} */
-    public <T extends Context> T getSubcontext(Class<T> clazz) {
+    /**
+     * Get a subcontext of the current context.
+     * 
+     * @param <T> the type of subcontext being operated on
+     * @param clazz the class type to obtain
+     * @return the held instance of the class, or null
+     */
+    public <T extends BaseContext> T getSubcontext(Class<T> clazz) {
         return getSubcontext(clazz, isAutoCreateSubcontexts());
     }
     
-    /** {@inheritDoc} */
-    public <T extends Context> T getSubcontext(Class<T> clazz, boolean autocreate) {
+    /**
+     * Get a subcontext of the current context.
+     * 
+     * @param <T> the type of subcontext being operated on
+     * @param clazz the class type to obtain
+     * @param autocreate flag indicating whether the subcontext instance should be auto-created
+     * @return the held instance of the class, or null
+     */ 
+    public <T extends BaseContext> T getSubcontext(Class<T> clazz, boolean autocreate) {
         log.trace("Request for subcontext of type: {}", clazz.getName());
         T subcontext = subcontexts.get(clazz);
         if (subcontext != null) {
@@ -122,14 +164,24 @@ public abstract class AbstractContext implements Context {
         return null;
     }
     
-    /** {@inheritDoc} */
-    public void addSubcontext(Context subContext) {
+    /**
+     * Add a subcontext to the current context.
+     * 
+     * @param subContext the subcontext to add
+     */
+    public void addSubcontext(BaseContext subContext) {
         addSubcontext(subContext, false);
     }
     
-    /** {@inheritDoc} */
-    public void addSubcontext(Context subcontext, boolean replace) {
-        Context existing = subcontexts.get(subcontext.getClass());
+    /**
+     * Add a subcontext to the current context.
+     * 
+     * @param subContext the subcontext to add
+     * @param replace flag indicating whether to replace the existing instance of the subcontext if present
+     * 
+     */
+    public void addSubcontext(BaseContext subcontext, boolean replace) {
+        BaseContext existing = subcontexts.get(subcontext.getClass());
         if (existing == subcontext) {
             log.trace("Subcontext to add was already a child of the current context, skipping");
             return;
@@ -144,7 +196,7 @@ public abstract class AbstractContext implements Context {
         // Manage parent/child links
         
         // If subcontext was formerly a child of another parent, remove that link
-        Context oldParent = subcontext.getParent();
+        BaseContext oldParent = subcontext.getParent();
         if (oldParent != null && oldParent != this) {
             log.trace("New subcontext with type '{}' id '{}' is currently a subcontext of parent with type '{}' id '{}', removing it",
                     new String[]{subcontext.getClass().getName(), subcontext.getId(), 
@@ -153,73 +205,92 @@ public abstract class AbstractContext implements Context {
         }
         
         // Set parent pointer of new subcontext to this instance
-        if (subcontext instanceof AbstractContext) {
-            log.trace("New subcontext with type '{}' id '{}' is set to have parent with type '{}' id '{}', removing it",
-                    new String[]{subcontext.getClass().getName(), subcontext.getId(), 
-                    this.getClass().getName(), this.getId(),});
-            ((AbstractContext)subcontext).setParent(this);
-        }
+        log.trace("New subcontext with type '{}' id '{}' is set to have parent with type '{}' id '{}', removing it",
+                new String[]{subcontext.getClass().getName(), subcontext.getId(), 
+                this.getClass().getName(), this.getId(),});
+        subcontext.setParent(this);
         
         // If we're replacing an existing subcontext (if class was a duplicate, will only get here if replace == true),
         // then clear out its parent pointer.
         if (existing != null) {
-            if (existing instanceof AbstractContext) {
-                log.trace("Old subcontext with type '{}' id '{}' will have parent cleared",
-                        new String[]{existing.getClass().getName(), existing.getId(), });
-                ((AbstractContext)existing).setParent(null);
-            }
+            log.trace("Old subcontext with type '{}' id '{}' will have parent cleared",
+                    new String[]{existing.getClass().getName(), existing.getId(), });
+            existing.setParent(null);
         }
         
     }
     
-    /** {@inheritDoc} */
-    public void removeSubcontext(Context subcontext) {
+    /**
+     * Remove a subcontext from the current context.
+     * 
+     * @param <T> the type of subcontext being operated on
+     * @param subcontext the subcontext to remove
+     */
+    public void removeSubcontext(BaseContext subcontext) {
         log.trace("Removing subcontext with type '{}' id '{}' from parent with type '{}' id '{}'",
                 new String[]{subcontext.getClass().getName(), subcontext.getId(), 
                 this.getClass().getName(), this.getId(),});
-        if (subcontext instanceof AbstractContext) {
-            ((AbstractContext)subcontext).setParent(null);
-        }
+        subcontext.setParent(null);
         subcontexts.remove(subcontext);
     }
     
-    /** {@inheritDoc} */
-    public <T extends Context>void removeSubcontext(Class<T> clazz) {
-        Context subcontext = getSubcontext(clazz, false);
+    /**
+     * Remove the subcontext from the current context which corresponds to the supplied class.
+     * 
+     * @param <T> the type of subcontext being operated on
+     * @param clazz the subcontext class to remove
+     */
+    public <T extends BaseContext>void removeSubcontext(Class<T> clazz) {
+        BaseContext subcontext = getSubcontext(clazz, false);
         if (subcontext != null) {
             removeSubcontext(subcontext);
         }
     }
     
-    /** {@inheritDoc} */
-    public Iterator<Context>  iterator() {
-        return new ContextSetNoRemoveIteratorDecorator(subcontexts.iterator());
-    }
-    
-    /** {@inheritDoc} */
-    public <T extends Context> boolean containsSubcontext(Class<T> clazz) {
+    /**
+     * Return whether the current context currently contains an instance of
+     * the specified subcontext class.
+     * 
+     * @param <T> the type of subcontext being operated on
+     * @param clazz the class to check
+     * @return true if the current context contains an instance of the class, false otherwise
+     */
+    public <T extends BaseContext> boolean containsSubcontext(Class<T> clazz) {
         return subcontexts.contains(clazz);
     }
     
-    /** {@inheritDoc} */
+    /**
+     * Clear the subcontexts of the current context.
+     */
     public void clearSubcontexts() {
         log.trace("Clearing all subcontexts from context with type '{}' id '{}'", this.getClass().getName(), this.getId());
-        for (Context subcontext : subcontexts) {
-            if (subcontext instanceof AbstractContext) {
-                ((AbstractContext)subcontext).setParent(null);
-            }
+        for (BaseContext subcontext : subcontexts) {
+            subcontext.setParent(null);
         }
         subcontexts.clear();
     }
     
-    /** {@inheritDoc} */
+    /**
+     * Get whether the context auto-creates subcontexts by default.
+     * 
+     * @return true if the context auto-creates subcontexts, false otherwise
+     */
     public boolean isAutoCreateSubcontexts() {
         return autoCreateSubcontexts;
     }
     
-    /** {@inheritDoc} */
+    /**
+     * Set whether the context auto-creates subcontexts by default.
+     * 
+     * @param autoCreate whether the context should auto-create subcontexts
+     */
     public void setAutoCreateSubcontexts(boolean autoCreate) {
         autoCreateSubcontexts = autoCreate;
+    }
+    
+    /** {@inheritDoc} */
+    public Iterator<BaseContext>  iterator() {
+        return new ContextSetNoRemoveIteratorDecorator(subcontexts.iterator());
     }
     
     /**
@@ -229,7 +300,7 @@ public abstract class AbstractContext implements Context {
      * @param clazz the class of the subcontext instance to create
      * @return the new subcontext instance
      */
-    protected <T extends Context> T createSubcontext(Class<T> clazz) {
+    protected <T extends BaseContext> T createSubcontext(Class<T> clazz) {
         Constructor<T> constructor;
         try {
             constructor = clazz.getConstructor();
@@ -258,17 +329,17 @@ public abstract class AbstractContext implements Context {
     /**
      * Iterator decorator which disallows the remove() operation on the iterator.
      */
-    protected class ContextSetNoRemoveIteratorDecorator implements Iterator<Context> {
+    protected class ContextSetNoRemoveIteratorDecorator implements Iterator<BaseContext> {
         
         /** The decorated iterator. */
-        private Iterator<Context> wrappedIterator;
+        private Iterator<BaseContext> wrappedIterator;
         
         /**
          * Constructor.
          *
          * @param iterator the iterator instance to decorator
          */
-        protected ContextSetNoRemoveIteratorDecorator(Iterator<Context> iterator) {
+        protected ContextSetNoRemoveIteratorDecorator(Iterator<BaseContext> iterator) {
             wrappedIterator = iterator;
         }
 
@@ -278,7 +349,7 @@ public abstract class AbstractContext implements Context {
         }
 
         /** {@inheritDoc} */
-        public Context next() {
+        public BaseContext next() {
             return wrappedIterator.next();
         }
 
