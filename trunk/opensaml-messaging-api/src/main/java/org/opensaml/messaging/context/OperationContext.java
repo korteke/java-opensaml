@@ -21,6 +21,6 @@ package org.opensaml.messaging.context;
  * A marker interface for a context which represents an operation, which is the concrete realization 
  * of a particular message exchange pattern.
  */
-public interface OperationContext extends Context {
+public interface OperationContext {
 
 }
