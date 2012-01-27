@@ -176,7 +176,7 @@ public abstract class BaseContext implements IdentifiableComponent, Iterable<Bas
     /**
      * Add a subcontext to the current context.
      * 
-     * @param subContext the subcontext to add
+     * @param subcontext the subcontext to add
      * @param replace flag indicating whether to replace the existing instance of the subcontext if present
      * 
      */
@@ -223,7 +223,6 @@ public abstract class BaseContext implements IdentifiableComponent, Iterable<Bas
     /**
      * Remove a subcontext from the current context.
      * 
-     * @param <T> the type of subcontext being operated on
      * @param subcontext the subcontext to remove
      */
     public void removeSubcontext(BaseContext subcontext) {
@@ -263,7 +262,8 @@ public abstract class BaseContext implements IdentifiableComponent, Iterable<Bas
      * Clear the subcontexts of the current context.
      */
     public void clearSubcontexts() {
-        log.trace("Clearing all subcontexts from context with type '{}' id '{}'", this.getClass().getName(), this.getId());
+        log.trace("Clearing all subcontexts from context with type '{}' id '{}'",
+                this.getClass().getName(), this.getId());
         for (BaseContext subcontext : subcontexts) {
             subcontext.setParent(null);
         }
