@@ -23,6 +23,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.security.KeyPair;
 
+import net.shibboleth.utilities.java.support.xml.XMLParserException;
+
 import org.apache.xml.security.utils.IdResolver;
 import org.opensaml.xml.XMLObjectProviderRegistrySupport;
 import org.opensaml.xml.XMLObject;
@@ -31,7 +33,6 @@ import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.mock.SignableSimpleXMLObject;
-import org.opensaml.xml.parse.XMLParserException;
 import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.XMLSecurityHelper;
 import org.opensaml.xml.security.credential.Credential;

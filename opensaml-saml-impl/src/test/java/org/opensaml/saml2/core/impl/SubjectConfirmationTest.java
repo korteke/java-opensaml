@@ -19,13 +19,14 @@ package org.opensaml.saml2.core.impl;
 
 import javax.xml.namespace.QName;
 
+import net.shibboleth.utilities.java.support.xml.XMLParserException;
+
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
 import org.opensaml.common.xml.SAMLConstants;
 import org.opensaml.saml2.core.EncryptedID;
 import org.opensaml.saml2.core.NameID;
 import org.opensaml.saml2.core.SubjectConfirmation;
 import org.opensaml.saml2.core.SubjectConfirmationData;
-import org.opensaml.xml.parse.XMLParserException;
 import org.w3c.dom.Document;
 
 /**

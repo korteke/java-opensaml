@@ -19,6 +19,7 @@ package org.opensaml.xml.signature;
 
 import java.security.KeyPair;
 
+import net.shibboleth.utilities.java.support.xml.BasicParserPool;
 import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 
 import org.opensaml.xml.XMLObjectProviderRegistrySupport;
@@ -29,7 +30,6 @@ import org.opensaml.xml.io.Unmarshaller;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.mock.SignableSimpleXMLObject;
 import org.opensaml.xml.mock.SignableSimpleXMLObjectBuilder;
-import org.opensaml.xml.parse.BasicParserPool;
 import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.credential.BasicCredential;
 import org.opensaml.xml.signature.impl.SignatureBuilder;

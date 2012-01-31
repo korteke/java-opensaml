@@ -17,10 +17,11 @@
 
 package org.opensaml.ws.message.handler;
 
+import net.shibboleth.utilities.java.support.xml.ParserPool;
+
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.message.decoder.BaseMessageDecoder;
 import org.opensaml.ws.message.decoder.MessageDecodingException;
-import org.opensaml.xml.parse.ParserPool;
 import org.opensaml.xml.security.SecurityException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -22,6 +22,8 @@ import java.io.ByteArrayOutputStream;
 
 import javax.xml.namespace.QName;
 
+import net.shibboleth.utilities.java.support.xml.XMLParserException;
+
 import org.custommonkey.xmlunit.Diff;
 import org.custommonkey.xmlunit.XMLAssert;
 import org.opensaml.ws.BaseTestCase;
@@ -41,7 +43,6 @@ import org.opensaml.xml.XMLObjectProviderRegistrySupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.Unmarshaller;
 import org.opensaml.xml.io.UnmarshallingException;
-import org.opensaml.xml.parse.XMLParserException;
 import org.opensaml.xml.schema.XSAny;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

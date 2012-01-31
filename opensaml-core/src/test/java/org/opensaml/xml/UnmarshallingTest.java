@@ -19,11 +19,12 @@ package org.opensaml.xml;
 
 import java.util.List;
 
+import net.shibboleth.utilities.java.support.xml.XMLParserException;
+
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.io.Unmarshaller;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.mock.SimpleXMLObject;
-import org.opensaml.xml.parse.XMLParserException;
 import org.w3c.dom.Document;
 
 /**

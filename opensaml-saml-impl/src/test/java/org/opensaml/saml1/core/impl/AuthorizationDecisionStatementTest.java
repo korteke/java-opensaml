@@ -23,6 +23,8 @@ package org.opensaml.saml1.core.impl;
 
 import javax.xml.namespace.QName;
 
+import net.shibboleth.utilities.java.support.xml.XMLParserException;
+
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
 import org.opensaml.common.xml.SAMLConstants;
 import org.opensaml.saml1.core.Action;
@@ -31,7 +33,6 @@ import org.opensaml.saml1.core.DecisionTypeEnumeration;
 import org.opensaml.saml1.core.Evidence;
 import org.opensaml.saml1.core.Subject;
 import org.opensaml.xml.io.UnmarshallingException;
-import org.opensaml.xml.parse.XMLParserException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 

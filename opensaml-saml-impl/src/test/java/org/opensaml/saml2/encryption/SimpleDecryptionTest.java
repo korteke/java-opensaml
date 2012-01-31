@@ -23,6 +23,8 @@ import java.security.NoSuchProviderException;
 
 import javax.crypto.SecretKey;
 
+import net.shibboleth.utilities.java.support.xml.XMLParserException;
+
 import org.opensaml.common.BaseTestCase;
 import org.opensaml.common.SAMLObject;
 import org.opensaml.saml2.core.Assertion;
@@ -37,7 +39,6 @@ import org.opensaml.xml.encryption.DecryptionException;
 import org.opensaml.xml.encryption.EncryptionConstants;
 import org.opensaml.xml.encryption.EncryptionException;
 import org.opensaml.xml.encryption.EncryptionParameters;
-import org.opensaml.xml.parse.XMLParserException;
 import org.opensaml.xml.security.XMLSecurityHelper;
 import org.opensaml.xml.security.credential.BasicCredential;
 import org.opensaml.xml.security.credential.Credential;
