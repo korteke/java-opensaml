@@ -24,9 +24,10 @@ import java.security.NoSuchProviderException;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.shibboleth.utilities.java.support.xml.XMLParserException;
+
 import org.opensaml.xml.XMLObjectBaseTestCase;
 import org.opensaml.xml.mock.SignableSimpleXMLObject;
-import org.opensaml.xml.parse.XMLParserException;
 import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.XMLSecurityHelper;
 import org.opensaml.xml.security.keyinfo.StaticKeyInfoGenerator;

@@ -19,13 +19,14 @@ package org.opensaml.xml;
 
 import javax.xml.namespace.QName;
 
+import net.shibboleth.utilities.java.support.xml.XMLParserException;
+
 import org.custommonkey.xmlunit.Diff;
 import org.custommonkey.xmlunit.XMLAssert;
 import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.mock.SimpleXMLObject;
 import org.opensaml.xml.mock.SimpleXMLObjectBuilder;
-import org.opensaml.xml.parse.XMLParserException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 

@@ -17,12 +17,13 @@
 
 package org.opensaml.core;
 
+import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.utilities.java.support.xml.BasicParserPool;
+
 import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.core.config.InitializationException;
 import org.opensaml.core.config.Initializer;
 import org.opensaml.xml.XMLObjectProviderRegistry;
-import org.opensaml.xml.parse.StaticBasicParserPool;
-import org.opensaml.xml.parse.XMLParserException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,7 +32,7 @@ import org.slf4j.LoggerFactory;
  * 
  * <p>
  * The ParserPool configured by default here is an instance of
- * {@link StaticBasicParserPool}, with a maxPoolSize property of 50 
+ * {@link BasicParserPool}, with a maxPoolSize property of 50 
  * and all other properties with default values.
  * </p>
  * 
@@ -51,11 +52,11 @@ public class GlobalParserPoolInitializer implements Initializer {
 
     /** {@inheritDoc} */
     public void init() throws InitializationException {
-        StaticBasicParserPool pp = new StaticBasicParserPool();
+        BasicParserPool pp = new BasicParserPool();
         pp.setMaxPoolSize(50);
         try {
             pp.initialize();
-        } catch (XMLParserException e) {
+        } catch (ComponentInitializationException e) {
             throw new InitializationException("Error initializing parser pool", e);
         }
         

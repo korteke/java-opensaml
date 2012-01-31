@@ -17,11 +17,12 @@
 
 package org.opensaml.ws.soap.soap11.decoder.http;
 
+import net.shibboleth.utilities.java.support.xml.ParserPool;
+
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.message.decoder.MessageDecodingException;
 import org.opensaml.ws.soap.soap11.decoder.SOAP11Decoder;
 import org.opensaml.ws.transport.http.HTTPInTransport;
-import org.opensaml.xml.parse.ParserPool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

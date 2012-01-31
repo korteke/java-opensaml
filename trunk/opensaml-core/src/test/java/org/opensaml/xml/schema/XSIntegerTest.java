@@ -19,12 +19,13 @@ package org.opensaml.xml.schema;
 
 import javax.xml.namespace.QName;
 
+import net.shibboleth.utilities.java.support.xml.XMLParserException;
+
 import org.opensaml.xml.XMLObjectBaseTestCase;
 import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.io.Unmarshaller;
 import org.opensaml.xml.io.UnmarshallingException;
-import org.opensaml.xml.parse.XMLParserException;
 import org.opensaml.xml.schema.impl.XSIntegerBuilder;
 import org.w3c.dom.Document;
 

@@ -23,11 +23,11 @@ import java.util.Map;
 import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.xml.QNameSupport;
+import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
 import org.opensaml.xml.io.Unmarshaller;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.mock.SimpleXMLObject;
-import org.opensaml.xml.parse.XMLParserException;
 import org.opensaml.xml.schema.XSAny;
 import org.w3c.dom.Document;
 

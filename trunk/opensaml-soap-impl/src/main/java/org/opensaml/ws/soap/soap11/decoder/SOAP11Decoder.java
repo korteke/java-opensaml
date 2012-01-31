@@ -19,6 +19,8 @@ package org.opensaml.ws.soap.soap11.decoder ;
 
 import java.util.List;
 
+import net.shibboleth.utilities.java.support.xml.ParserPool;
+
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.message.decoder.MessageDecodingException;
 import org.opensaml.ws.message.handler.BaseHandlerChainAwareMessageDecoder;
@@ -26,7 +28,6 @@ import org.opensaml.ws.soap.soap11.Envelope;
 import org.opensaml.ws.soap.soap11.Header;
 import org.opensaml.ws.transport.InTransport;
 import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.parse.ParserPool;
 import org.opensaml.xml.security.SecurityException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
