@@ -114,7 +114,7 @@ public final class XMLObjectSupport {
             return null;
         }
         
-        Marshaller marshaller = XMLObjectProviderRegistrySupport.getMarshallerFactory().getMarshaller(originalXMLObject);
+        Marshaller marshaller = getMarshaller(originalXMLObject);
         Element origElement = marshaller.marshall(originalXMLObject);
         
         Element clonedElement = null;
@@ -132,7 +132,7 @@ public final class XMLObjectSupport {
             clonedElement = (Element) origElement.cloneNode(true);
         }
         
-        Unmarshaller unmarshaller = XMLObjectProviderRegistrySupport.getUnmarshallerFactory().getUnmarshaller(clonedElement);
+        Unmarshaller unmarshaller = getUnmarshaller(clonedElement);
         T clonedXMLObject = (T) unmarshaller.unmarshall(clonedElement);
         
         return clonedXMLObject;
@@ -161,7 +161,7 @@ public final class XMLObjectSupport {
         }
 
         log.debug("Unmarshalling DOM parsed from InputStream");
-        Unmarshaller unmarshaller = XMLObjectProviderRegistrySupport.getUnmarshallerFactory().getUnmarshaller(messageElem);
+        Unmarshaller unmarshaller = getUnmarshaller(messageElem);
         if (unmarshaller == null) {
             log.error("Unable to unmarshall InputStream, no unmarshaller registered for element "
                     + QNameSupport.getNodeQName(messageElem));
@@ -200,7 +200,7 @@ public final class XMLObjectSupport {
         }
 
         log.debug("Unmarshalling DOM parsed from Reader");
-        Unmarshaller unmarshaller = XMLObjectProviderRegistrySupport.getUnmarshallerFactory().getUnmarshaller(messageElem);
+        Unmarshaller unmarshaller = getUnmarshaller(messageElem);
         if (unmarshaller == null) {
             log.error("Unable to unmarshall Reader, no unmarshaller registered for element "
                     + QNameSupport.getNodeQName(messageElem));
@@ -232,7 +232,7 @@ public final class XMLObjectSupport {
             return xmlObject.getDOM();
         }
 
-        Marshaller marshaller = XMLObjectProviderRegistrySupport.getMarshallerFactory().getMarshaller(xmlObject);
+        Marshaller marshaller = getMarshaller(xmlObject);
         if (marshaller == null) {
             log.error("Unable to marshall XMLOBject, no marshaller registered for object: "
                     + xmlObject.getElementQName());
@@ -464,7 +464,7 @@ public final class XMLObjectSupport {
      * @param element the DOM element
      * @return an XMLObject unmarshaller, or null if no provider registered
      */
-    public static Unmarshaller getunmarshaller(Element element) {
+    public static Unmarshaller getUnmarshaller(Element element) {
         return getProviderRegistry().getUnmarshallerFactory().getUnmarshaller(element);
     }
     
