@@ -20,7 +20,7 @@ package org.opensaml.ws.wssecurity.impl;
 import org.opensaml.ws.wssecurity.UsernameToken;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.util.XMLObjectHelper;
+import org.opensaml.xml.util.XMLObjectSupport;
 import org.w3c.dom.Element;
 
 import com.google.common.base.Strings;
@@ -35,10 +35,10 @@ public class UsernameTokenMarshaller extends AbstractWSSecurityObjectMarshaller 
         UsernameToken usernameToken = (UsernameToken) xmlObject;
         
         if (!Strings.isNullOrEmpty(usernameToken.getWSUId())) {
-            XMLObjectHelper.marshallAttribute(UsernameToken.WSU_ID_ATTR_NAME, usernameToken.getWSUId(), domElement, true);
+            XMLObjectSupport.marshallAttribute(UsernameToken.WSU_ID_ATTR_NAME, usernameToken.getWSUId(), domElement, true);
         }
         
-        XMLObjectHelper.marshallAttributeMap(usernameToken.getUnknownAttributes(), domElement);
+        XMLObjectSupport.marshallAttributeMap(usernameToken.getUnknownAttributes(), domElement);
         
     }
 

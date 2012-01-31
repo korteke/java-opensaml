@@ -24,7 +24,7 @@ import java.security.PublicKey;
 
 import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 
-import org.opensaml.xml.Configuration;
+import org.opensaml.xml.XMLObjectProviderRegistrySupport;
 import org.opensaml.xml.XMLObjectBaseTestCase;
 import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallingException;
@@ -91,7 +91,7 @@ public class EnvelopedSignatureTest extends XMLObjectBaseTestCase {
         SignableSimpleXMLObject sxo = getXMLObjectWithSignature();
         Signature signature = sxo.getSignature();
 
-        Marshaller marshaller = Configuration.getMarshallerFactory().getMarshaller(sxo);
+        Marshaller marshaller = XMLObjectProviderRegistrySupport.getMarshallerFactory().getMarshaller(sxo);
         Element signedElement = marshaller.marshall(sxo);
         
         Signer.signObject(signature);
@@ -125,7 +125,7 @@ public class EnvelopedSignatureTest extends XMLObjectBaseTestCase {
         Document envelopedSignatureDoc = parserPool.parse(ins);
         Element rootElement = envelopedSignatureDoc.getDocumentElement();
 
-        Unmarshaller unmarshaller = Configuration.getUnmarshallerFactory().getUnmarshaller(rootElement);
+        Unmarshaller unmarshaller = XMLObjectProviderRegistrySupport.getUnmarshallerFactory().getUnmarshaller(rootElement);
         SignableSimpleXMLObject sxo = (SignableSimpleXMLObject) unmarshaller.unmarshall(rootElement);
 
         assertEquals("Id attribute was not expected value", "FOO", sxo.getId());

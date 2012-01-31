@@ -23,7 +23,7 @@ import org.opensaml.ws.wstrust.BinaryExchange;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.schema.impl.XSStringMarshaller;
-import org.opensaml.xml.util.XMLObjectHelper;
+import org.opensaml.xml.util.XMLObjectSupport;
 import org.w3c.dom.Element;
 
 /**
@@ -47,7 +47,7 @@ public class BinaryExchangeMarshaller extends XSStringMarshaller {
             domElement.setAttributeNS(null, BinaryExchange.ENCODING_TYPE_ATTRIB_NAME, encodingType);
         }
         
-        XMLObjectHelper.marshallAttributeMap(binaryExchange.getUnknownAttributes(), domElement);
+        XMLObjectSupport.marshallAttributeMap(binaryExchange.getUnknownAttributes(), domElement);
     }
 
 }

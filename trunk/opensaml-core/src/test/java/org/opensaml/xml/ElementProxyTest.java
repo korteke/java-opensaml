@@ -34,7 +34,7 @@ public class ElementProxyTest extends XMLObjectBaseTestCase {
         String documentLocation = "/data/org/opensaml/xml/UnknownContent.xml";
         Document document = parserPool.parse(UnmarshallingTest.class.getResourceAsStream(documentLocation));
 
-        Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(Configuration.getDefaultProviderQName());
+        Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(XMLObjectProviderRegistrySupport.getDefaultProviderQName());
         XMLObject xmlobject = unmarshaller.unmarshall(document.getDocumentElement());
         
         assertEquals("Unexpted root element name", "products", xmlobject.getElementQName().getLocalPart());

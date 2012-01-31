@@ -25,7 +25,7 @@ import net.shibboleth.utilities.java.support.xml.QNameSupport;
 import org.opensaml.ws.wssecurity.SecurityTokenReference;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
-import org.opensaml.xml.util.XMLObjectHelper;
+import org.opensaml.xml.util.XMLObjectSupport;
 import org.w3c.dom.Attr;
 
 /**
@@ -53,7 +53,7 @@ public class SecurityTokenReferenceUnmarshaller extends AbstractWSSecurityObject
         } else if (SecurityTokenReference.WSSE_USAGE_ATTR_NAME.equals(attribQName)) {
             str.setWSSEUsages(AttributeSupport.getAttributeValueAsList(attribute));
         } else {
-            XMLObjectHelper.unmarshallToAttributeMap(str.getUnknownAttributes(), attribute);
+            XMLObjectSupport.unmarshallToAttributeMap(str.getUnknownAttributes(), attribute);
         }
     }
 

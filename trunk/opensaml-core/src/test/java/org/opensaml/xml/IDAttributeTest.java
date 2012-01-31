@@ -205,7 +205,7 @@ public class IDAttributeTest extends XMLObjectBaseTestCase {
         String documentLocation = "/data/org/opensaml/xml/IDAttributeWithAttributeMap.xml";
         Document document = parserPool.parse(IDAttributeTest.class.getResourceAsStream(documentLocation));
 
-        Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(Configuration.getDefaultProviderQName());
+        Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(XMLObjectProviderRegistrySupport.getDefaultProviderQName());
         XMLObject xmlobject = unmarshaller.unmarshall(document.getDocumentElement());
         
         XSAny epParent = (XSAny) xmlobject;
@@ -249,7 +249,7 @@ public class IDAttributeTest extends XMLObjectBaseTestCase {
         String documentLocation = "/data/org/opensaml/xml/IDAttributeWithAttributeMap.xml";
         Document document = parserPool.parse(IDAttributeTest.class.getResourceAsStream(documentLocation));
 
-        Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(Configuration.getDefaultProviderQName());
+        Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(XMLObjectProviderRegistrySupport.getDefaultProviderQName());
         XMLObject xmlobject = unmarshaller.unmarshall(document.getDocumentElement());
         
         XSAny epParent = (XSAny) xmlobject;
@@ -288,7 +288,7 @@ public class IDAttributeTest extends XMLObjectBaseTestCase {
     }
     
     /**
-     * Tests that attributes registered globally on {@link org.opensaml.xml.Configuration} are being
+     * Tests that attributes registered globally on {@link org.opensaml.xml.XMLObjectProviderRegistrySupport} are being
      * handled properly in the AttributeMap.
      * @throws XMLParserException 
      * @throws UnmarshallingException 
@@ -299,7 +299,7 @@ public class IDAttributeTest extends XMLObjectBaseTestCase {
         
         String documentLocation = "/data/org/opensaml/xml/IDAttributeGlobal.xml";
         Document document = parserPool.parse(IDAttributeTest.class.getResourceAsStream(documentLocation));
-        Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(Configuration.getDefaultProviderQName());
+        Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(XMLObjectProviderRegistrySupport.getDefaultProviderQName());
         
         // With no registration
         xmlObject = unmarshaller.unmarshall(document.getDocumentElement());
@@ -307,7 +307,7 @@ public class IDAttributeTest extends XMLObjectBaseTestCase {
         assertNull("Lookup of non-existent ID mapping didn't return null", xmlObject.resolveID("GlobalID2"));
         
         // Now register the attribute QName in the global config
-        Configuration.registerIDAttribute(attribQName);
+        XMLObjectProviderRegistrySupport.registerIDAttribute(attribQName);
         document = parserPool.parse(IDAttributeTest.class.getResourceAsStream(documentLocation));
         xmlObject = unmarshaller.unmarshall(document.getDocumentElement());
         assertEquals("Lookup of ID mapping failed", xmlObject, xmlObject.resolveID("GlobalID1"));
@@ -315,7 +315,7 @@ public class IDAttributeTest extends XMLObjectBaseTestCase {
                 xmlObject.resolveID("GlobalID2"));
         
         // After deregistration
-        Configuration.deregisterIDAttribute(attribQName);
+        XMLObjectProviderRegistrySupport.deregisterIDAttribute(attribQName);
         document = parserPool.parse(IDAttributeTest.class.getResourceAsStream(documentLocation));
         xmlObject = unmarshaller.unmarshall(document.getDocumentElement());
         assertNull("Lookup of non-existent ID mapping didn't return null", xmlObject.resolveID("GlobalID1"));

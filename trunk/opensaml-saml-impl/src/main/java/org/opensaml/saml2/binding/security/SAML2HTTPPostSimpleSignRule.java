@@ -31,7 +31,7 @@ import net.shibboleth.utilities.java.support.resolver.ResolverException;
 import org.opensaml.common.binding.SAMLMessageContext;
 import org.opensaml.common.binding.security.BaseSAMLSimpleSignatureSecurityPolicyRule;
 import org.opensaml.ws.security.SecurityPolicyException;
-import org.opensaml.xml.Configuration;
+import org.opensaml.xml.XMLObjectProviderRegistrySupport;
 import org.opensaml.xml.io.Unmarshaller;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.parse.ParserPool;
@@ -134,7 +134,7 @@ public class SAML2HTTPPostSimpleSignRule extends BaseSAMLSimpleSignatureSecurity
         }
 
         Unmarshaller unmarshaller =
-                Configuration.getUnmarshallerFactory().getUnmarshaller(KeyInfo.DEFAULT_ELEMENT_NAME);
+                XMLObjectProviderRegistrySupport.getUnmarshallerFactory().getUnmarshaller(KeyInfo.DEFAULT_ELEMENT_NAME);
         if (unmarshaller == null) {
             throw new SecurityPolicyException("Could not obtain a KeyInfo unmarshaller");
         }

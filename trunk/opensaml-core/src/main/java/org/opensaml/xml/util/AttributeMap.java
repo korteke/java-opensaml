@@ -30,7 +30,7 @@ import net.shibboleth.utilities.java.support.collection.LazySet;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.xml.QNameSupport;
 
-import org.opensaml.xml.Configuration;
+import org.opensaml.xml.XMLObjectProviderRegistrySupport;
 import org.opensaml.xml.NamespaceManager;
 import org.opensaml.xml.XMLObject;
 import org.slf4j.Logger;
@@ -93,7 +93,7 @@ public class AttributeMap implements Map<QName, String> {
         if (value != oldValue) {
             releaseDOM();
             attributes.put(attributeName, value);
-            if (isIDAttribute(attributeName) || Configuration.isIDAttribute(attributeName)) {
+            if (isIDAttribute(attributeName) || XMLObjectProviderRegistrySupport.isIDAttribute(attributeName)) {
                 attributeOwner.getIDIndex().deregisterIDMapping(oldValue);
                 attributeOwner.getIDIndex().registerIDMapping(value, attributeOwner);
             }
@@ -195,7 +195,7 @@ public class AttributeMap implements Map<QName, String> {
         if (removedValue != null) {
             releaseDOM();
             QName attributeName = (QName) key;
-            if (isIDAttribute(attributeName) || Configuration.isIDAttribute(attributeName)) {
+            if (isIDAttribute(attributeName) || XMLObjectProviderRegistrySupport.isIDAttribute(attributeName)) {
                 attributeOwner.getIDIndex().deregisterIDMapping(removedValue);
             }
             attributeOwner.getNamespaceManager().deregisterAttributeName(attributeName);
@@ -492,7 +492,7 @@ public class AttributeMap implements Map<QName, String> {
         
         log.trace("Evaluated QName local part as '{}'", localPart);
         
-        String nsURI = XMLObjectHelper.lookupNamespaceURI(attributeOwner, candidatePrefix);
+        String nsURI = XMLObjectSupport.lookupNamespaceURI(attributeOwner, candidatePrefix);
         log.trace("Resolved namespace URI '{}'", nsURI);
         if (nsURI != null) {
             QName name = QNameSupport.constructQName(nsURI, localPart, candidatePrefix);

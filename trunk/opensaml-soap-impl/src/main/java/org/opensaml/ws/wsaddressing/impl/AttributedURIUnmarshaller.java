@@ -20,7 +20,7 @@ package org.opensaml.ws.wsaddressing.impl;
 import org.opensaml.ws.wsaddressing.AttributedURI;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
-import org.opensaml.xml.util.XMLObjectHelper;
+import org.opensaml.xml.util.XMLObjectSupport;
 import org.w3c.dom.Attr;
 
 /**
@@ -40,7 +40,7 @@ public class AttributedURIUnmarshaller extends AbstractWSAddressingObjectUnmarsh
     /** {@inheritDoc} */
     protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
         AttributedURI attributedURI = (AttributedURI) xmlObject;
-        XMLObjectHelper.unmarshallToAttributeMap(attributedURI.getUnknownAttributes(), attribute);
+        XMLObjectSupport.unmarshallToAttributeMap(attributedURI.getUnknownAttributes(), attribute);
     }
 
 }

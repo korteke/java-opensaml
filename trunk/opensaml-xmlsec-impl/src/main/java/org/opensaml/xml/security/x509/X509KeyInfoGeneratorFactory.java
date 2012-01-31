@@ -26,7 +26,7 @@ import javax.security.auth.x500.X500Principal;
 
 import net.shibboleth.utilities.java.support.collection.LazySet;
 
-import org.opensaml.xml.Configuration;
+import org.opensaml.xml.XMLObjectProviderRegistrySupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.credential.BasicKeyInfoGeneratorFactory;
@@ -369,9 +369,9 @@ public class X509KeyInfoGeneratorFactory extends BasicKeyInfoGeneratorFactory {
             options = newOptions;
             
             keyInfoBuilder = 
-                (KeyInfoBuilder) Configuration.getBuilderFactory().getBuilder(KeyInfo.DEFAULT_ELEMENT_NAME);
+                (KeyInfoBuilder) XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilder(KeyInfo.DEFAULT_ELEMENT_NAME);
             x509DataBuilder = 
-                (X509DataBuilder) Configuration.getBuilderFactory().getBuilder(X509Data.DEFAULT_ELEMENT_NAME);
+                (X509DataBuilder) XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilder(X509Data.DEFAULT_ELEMENT_NAME);
         }
 
         /** {@inheritDoc} */

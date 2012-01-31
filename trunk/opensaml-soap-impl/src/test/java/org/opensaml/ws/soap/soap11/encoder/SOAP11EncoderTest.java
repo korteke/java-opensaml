@@ -37,7 +37,7 @@ import org.opensaml.ws.soap.soap11.Envelope;
 import org.opensaml.ws.soap.soap11.Header;
 import org.opensaml.ws.soap.util.SOAPHelper;
 import org.opensaml.ws.transport.OutputStreamOutTransportAdapter;
-import org.opensaml.xml.Configuration;
+import org.opensaml.xml.XMLObjectProviderRegistrySupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.Unmarshaller;
 import org.opensaml.xml.io.UnmarshallingException;
@@ -192,7 +192,7 @@ public class SOAP11EncoderTest extends BaseTestCase {
                env.setHeader((Header) buildXMLObject(Header.DEFAULT_ELEMENT_NAME));
             }
             XSAny tHeader =
-                (XSAny) builderFactory.getBuilder(Configuration.getDefaultProviderQName()).buildObject(tHeaderName);
+                (XSAny) builderFactory.getBuilder(XMLObjectProviderRegistrySupport.getDefaultProviderQName()).buildObject(tHeaderName);
             tHeader.setTextContent(context.transaction);
             SOAPHelper.addMustUnderstandAttribute(tHeader, true);
             env.getHeader().getUnknownXMLObjects().add(tHeader);

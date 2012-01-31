@@ -41,7 +41,7 @@ import org.opensaml.ws.soap.client.SOAPMessageContext;
 import org.opensaml.ws.soap.common.SOAPException;
 import org.opensaml.ws.soap.soap11.Envelope;
 import org.opensaml.ws.soap.soap11.Fault;
-import org.opensaml.xml.Configuration;
+import org.opensaml.xml.XMLObjectProviderRegistrySupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallingException;
@@ -156,7 +156,7 @@ public class HttpSOAPClient implements SOAPClient {
      */
     protected RequestEntity createRequestEntity(Envelope message, Charset charset) throws SOAPClientException {
         try {
-            Marshaller marshaller = Configuration.getMarshallerFactory().getMarshaller(message);
+            Marshaller marshaller = XMLObjectProviderRegistrySupport.getMarshallerFactory().getMarshaller(message);
             ByteArrayOutputStream arrayOut = new ByteArrayOutputStream();
 
             if (log.isDebugEnabled()) {
@@ -234,7 +234,7 @@ public class HttpSOAPClient implements SOAPClient {
             if (log.isDebugEnabled()) {
                 log.debug("Inbound SOAP message was:\n" + SerializeSupport.prettyPrintXML(responseElem));
             }
-            Unmarshaller unmarshaller = Configuration.getUnmarshallerFactory().getUnmarshaller(responseElem);
+            Unmarshaller unmarshaller = XMLObjectProviderRegistrySupport.getUnmarshallerFactory().getUnmarshaller(responseElem);
             return (Envelope) unmarshaller.unmarshall(responseElem);
         } catch (XMLParserException e) {
             throw new SOAPClientException("Unable to parse the XML within the response", e);

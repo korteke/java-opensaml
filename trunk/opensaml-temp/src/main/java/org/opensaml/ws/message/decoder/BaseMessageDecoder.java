@@ -26,7 +26,7 @@ import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.security.SecurityPolicy;
 import org.opensaml.ws.security.SecurityPolicyResolver;
-import org.opensaml.xml.Configuration;
+import org.opensaml.xml.XMLObjectProviderRegistrySupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallingException;
@@ -96,7 +96,7 @@ public abstract class BaseMessageDecoder implements MessageDecoder {
         if(protocolMessageLog.isDebugEnabled() && messageContext.getInboundMessage() != null){
             if (messageContext.getInboundMessage().getDOM() == null) {
                 XMLObject message = messageContext.getInboundMessage();
-                Marshaller marshaller = Configuration.getMarshallerFactory().getMarshaller(message);
+                Marshaller marshaller = XMLObjectProviderRegistrySupport.getMarshallerFactory().getMarshaller(message);
                 if (marshaller != null) {
                     try {
                         marshaller.marshall(message);
@@ -198,7 +198,7 @@ public abstract class BaseMessageDecoder implements MessageDecoder {
             }
 
             log.debug("Unmarshalling message DOM");
-            Unmarshaller unmarshaller = Configuration.getUnmarshallerFactory().getUnmarshaller(messageElem);
+            Unmarshaller unmarshaller = XMLObjectProviderRegistrySupport.getUnmarshallerFactory().getUnmarshaller(messageElem);
             if (unmarshaller == null) {
                 log.error("Unable to unmarshall message, no unmarshaller registered for message element "
                         + QNameSupport.getNodeQName(messageElem));

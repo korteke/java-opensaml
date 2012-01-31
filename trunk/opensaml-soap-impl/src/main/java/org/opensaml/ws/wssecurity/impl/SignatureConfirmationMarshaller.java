@@ -20,7 +20,7 @@ package org.opensaml.ws.wssecurity.impl;
 import org.opensaml.ws.wssecurity.SignatureConfirmation;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.util.XMLObjectHelper;
+import org.opensaml.xml.util.XMLObjectSupport;
 import org.w3c.dom.Element;
 
 import com.google.common.base.Strings;
@@ -35,7 +35,7 @@ public class SignatureConfirmationMarshaller extends AbstractWSSecurityObjectMar
         SignatureConfirmation sc = (SignatureConfirmation) xmlObject;
         
         if (!Strings.isNullOrEmpty(sc.getWSUId())) {
-            XMLObjectHelper.marshallAttribute(SignatureConfirmation.WSU_ID_ATTR_NAME, sc.getWSUId(), domElement, true);
+            XMLObjectSupport.marshallAttribute(SignatureConfirmation.WSU_ID_ATTR_NAME, sc.getWSUId(), domElement, true);
         }
         if (!Strings.isNullOrEmpty(sc.getValue())) {
             domElement.setAttributeNS(null, SignatureConfirmation.VALUE_ATTRIB_NAME, sc.getValue());

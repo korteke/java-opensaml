@@ -20,7 +20,7 @@ package org.opensaml.saml1.core;
 import java.io.InputStream;
 
 import org.opensaml.common.BaseTestCase;
-import org.opensaml.xml.Configuration;
+import org.opensaml.xml.XMLObjectProviderRegistrySupport;
 import org.opensaml.xml.io.Unmarshaller;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.parse.XMLParserException;
@@ -49,7 +49,7 @@ public class ResponseTest extends BaseTestCase {
         try {
             InputStream in = ResponseTest.class.getResourceAsStream(fullResponsePath);
             Document responseDoc = parser.parse(in);
-            Unmarshaller unmarshaller = Configuration.getUnmarshallerFactory().getUnmarshaller(
+            Unmarshaller unmarshaller = XMLObjectProviderRegistrySupport.getUnmarshallerFactory().getUnmarshaller(
                     responseDoc.getDocumentElement());
 
             Response response = (Response) unmarshaller.unmarshall(responseDoc.getDocumentElement());

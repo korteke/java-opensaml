@@ -20,7 +20,7 @@ package org.opensaml.ws.wssecurity.impl;
 import org.opensaml.ws.wssecurity.Reference;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
-import org.opensaml.xml.util.XMLObjectHelper;
+import org.opensaml.xml.util.XMLObjectSupport;
 import org.w3c.dom.Attr;
 
 /**
@@ -38,7 +38,7 @@ public class ReferenceUnmarshaller extends AbstractWSSecurityObjectUnmarshaller 
         } else if (Reference.VALUE_TYPE_ATTRIB_NAME.equals(attrName)) {
             reference.setValueType(attribute.getValue());
         } else {
-            XMLObjectHelper.unmarshallToAttributeMap(reference.getUnknownAttributes(), attribute);
+            XMLObjectSupport.unmarshallToAttributeMap(reference.getUnknownAttributes(), attribute);
         }
     }
 

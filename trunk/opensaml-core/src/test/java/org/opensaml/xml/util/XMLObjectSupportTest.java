@@ -17,7 +17,7 @@
 
 package org.opensaml.xml.util;
 
-import org.opensaml.xml.Configuration;
+import org.opensaml.xml.XMLObjectProviderRegistrySupport;
 import org.opensaml.xml.XMLObjectBaseTestCase;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.io.UnmarshallingException;
@@ -27,11 +27,11 @@ import org.opensaml.xml.mock.SimpleXMLObjectBuilder;
 /**
  * Tests of XMLObjectHelper utility methods.
  */
-public class XMLObjectHelperTest extends XMLObjectBaseTestCase {
+public class XMLObjectSupportTest extends XMLObjectBaseTestCase {
 
     /** Tests cloning an XMLObject. */
     public void testXMLObjectClone() {
-        SimpleXMLObjectBuilder sxoBuilder = (SimpleXMLObjectBuilder) Configuration.getBuilderFactory()
+        SimpleXMLObjectBuilder sxoBuilder = (SimpleXMLObjectBuilder) XMLObjectProviderRegistrySupport.getBuilderFactory()
             .getBuilder(SimpleXMLObject.ELEMENT_NAME);
         
         SimpleXMLObject origChildObj = sxoBuilder.buildObject();
@@ -42,7 +42,7 @@ public class XMLObjectHelperTest extends XMLObjectBaseTestCase {
         
         SimpleXMLObject clonedParentObj = null;
         try {
-            clonedParentObj = XMLObjectHelper.cloneXMLObject(origParentObj);
+            clonedParentObj = XMLObjectSupport.cloneXMLObject(origParentObj);
         } catch (MarshallingException e) {
             fail("Object cloning failed on marshalling: " + e.getMessage());
         } catch (UnmarshallingException e) {
@@ -65,7 +65,7 @@ public class XMLObjectHelperTest extends XMLObjectBaseTestCase {
     
     /** Tests cloning an XMLObject. */
     public void testXMLObjectCloneWithRootInNewDocument() {
-        SimpleXMLObjectBuilder sxoBuilder = (SimpleXMLObjectBuilder) Configuration.getBuilderFactory()
+        SimpleXMLObjectBuilder sxoBuilder = (SimpleXMLObjectBuilder) XMLObjectProviderRegistrySupport.getBuilderFactory()
             .getBuilder(SimpleXMLObject.ELEMENT_NAME);
         
         SimpleXMLObject origChildObj = sxoBuilder.buildObject();
@@ -76,7 +76,7 @@ public class XMLObjectHelperTest extends XMLObjectBaseTestCase {
         
         SimpleXMLObject clonedParentObj = null;
         try {
-            clonedParentObj = XMLObjectHelper.cloneXMLObject(origParentObj, true);
+            clonedParentObj = XMLObjectSupport.cloneXMLObject(origParentObj, true);
         } catch (MarshallingException e) {
             fail("Object cloning failed on marshalling: " + e.getMessage());
         } catch (UnmarshallingException e) {

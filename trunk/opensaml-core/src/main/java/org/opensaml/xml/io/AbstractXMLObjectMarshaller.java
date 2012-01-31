@@ -30,7 +30,7 @@ import net.shibboleth.utilities.java.support.xml.NamespaceSupport;
 import net.shibboleth.utilities.java.support.xml.QNameSupport;
 import net.shibboleth.utilities.java.support.xml.XmlConstants;
 
-import org.opensaml.xml.Configuration;
+import org.opensaml.xml.XMLObjectProviderRegistrySupport;
 import org.opensaml.xml.Namespace;
 import org.opensaml.xml.XMLObject;
 import org.slf4j.Logger;
@@ -66,7 +66,7 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
 
     /** Constructor. */
     protected AbstractXMLObjectMarshaller() {
-        marshallerFactory = Configuration.getMarshallerFactory();
+        marshallerFactory = XMLObjectProviderRegistrySupport.getMarshallerFactory();
     }
 
     /**
@@ -83,7 +83,7 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
     protected AbstractXMLObjectMarshaller(String targetNamespaceURI, String targetLocalName) {
         targetQName = QNameSupport.constructQName(targetNamespaceURI, targetLocalName, null);
 
-        marshallerFactory = Configuration.getMarshallerFactory();
+        marshallerFactory = XMLObjectProviderRegistrySupport.getMarshallerFactory();
     }
 
     /** {@inheritDoc} */
@@ -306,7 +306,7 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
                 Marshaller marshaller = marshallerFactory.getMarshaller(childXMLObject);
 
                 if (marshaller == null) {
-                    marshaller = marshallerFactory.getMarshaller(Configuration.getDefaultProviderQName());
+                    marshaller = marshallerFactory.getMarshaller(XMLObjectProviderRegistrySupport.getDefaultProviderQName());
 
                     if (marshaller == null) {
                         String errorMsg = "No marshaller available for " + childXMLObject.getElementQName()

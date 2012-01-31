@@ -29,7 +29,7 @@ import net.shibboleth.utilities.java.support.xml.AttributeSupport;
 
 import org.opensaml.common.impl.AbstractSAMLObjectMarshaller;
 import org.opensaml.saml2.metadata.Organization;
-import org.opensaml.xml.Configuration;
+import org.opensaml.xml.XMLObjectProviderRegistrySupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
 import org.w3c.dom.Attr;
@@ -51,7 +51,7 @@ public class OrganizationMarshaller extends AbstractSAMLObjectMarshaller {
             attribute = AttributeSupport.constructAttribute(domElement.getOwnerDocument(), entry.getKey());
             attribute.setValue(entry.getValue());
             domElement.setAttributeNodeNS(attribute);
-            if (Configuration.isIDAttribute(entry.getKey()) || org.getUnknownAttributes().isIDAttribute(entry.getKey())) {
+            if (XMLObjectProviderRegistrySupport.isIDAttribute(entry.getKey()) || org.getUnknownAttributes().isIDAttribute(entry.getKey())) {
                 attribute.getOwnerElement().setIdAttributeNode(attribute, true);
             }
         }

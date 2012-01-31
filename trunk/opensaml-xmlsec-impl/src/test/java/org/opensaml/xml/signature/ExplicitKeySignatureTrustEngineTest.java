@@ -24,7 +24,7 @@ import java.util.List;
 
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
-import org.opensaml.xml.Configuration;
+import org.opensaml.xml.XMLObjectProviderRegistrySupport;
 import org.opensaml.xml.XMLObjectBaseTestCase;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.mock.SignableSimpleXMLObject;
@@ -324,7 +324,7 @@ public class ExplicitKeySignatureTrustEngineTest extends XMLObjectBaseTestCase {
         sxo.setSignature(signature);
         
         try {
-            Configuration.getMarshallerFactory().getMarshaller(sxo).marshall(sxo);
+            XMLObjectProviderRegistrySupport.getMarshallerFactory().getMarshaller(sxo).marshall(sxo);
         } catch (MarshallingException e) {
             fail("Error marshalling object for signing: " + e);
         }

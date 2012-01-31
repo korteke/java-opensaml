@@ -23,7 +23,7 @@ import org.opensaml.ws.wsaddressing.RelatesTo;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.schema.impl.XSURIUnmarshaller;
-import org.opensaml.xml.util.XMLObjectHelper;
+import org.opensaml.xml.util.XMLObjectSupport;
 import org.w3c.dom.Attr;
 
 /**
@@ -38,7 +38,7 @@ public class RelatesToUnmarshaller extends XSURIUnmarshaller {
         if (RelatesTo.RELATIONSHIP_TYPE_ATTRIB_NAME.equals(attribute.getLocalName())) {
             relatesTo.setRelationshipType(StringSupport.trimOrNull(attribute.getValue()));
         } else {
-            XMLObjectHelper.unmarshallToAttributeMap(relatesTo.getUnknownAttributes(), attribute);
+            XMLObjectSupport.unmarshallToAttributeMap(relatesTo.getUnknownAttributes(), attribute);
         }
     }
 

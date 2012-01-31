@@ -28,10 +28,10 @@ import org.opensaml.xml.parse.ParserPool;
 import org.opensaml.xml.validation.ValidatorSuite;
 
 /** Class for loading library configuration files and retrieving the configured components. */
-public class Configuration {
+public class XMLObjectProviderRegistrySupport {
 
     /** Constructor. */
-    protected Configuration() {
+    protected XMLObjectProviderRegistrySupport() {
 
     }
     

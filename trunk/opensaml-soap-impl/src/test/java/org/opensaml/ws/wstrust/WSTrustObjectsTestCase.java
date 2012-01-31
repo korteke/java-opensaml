@@ -28,7 +28,7 @@ import org.opensaml.ws.wssecurity.Password;
 import org.opensaml.ws.wssecurity.Timestamp;
 import org.opensaml.ws.wssecurity.Username;
 import org.opensaml.ws.wssecurity.UsernameToken;
-import org.opensaml.xml.Configuration;
+import org.opensaml.xml.XMLObjectProviderRegistrySupport;
 import org.opensaml.xml.XMLConfigurator;
 import org.opensaml.xml.schema.XSAny;
 import org.opensaml.xml.schema.XSBooleanValue;
@@ -58,7 +58,7 @@ public class WSTrustObjectsTestCase extends WSBaseTestCase {
         configurator.load(is);
         
         // register provider for TestClaims supporting config
-        Configuration.registerObjectProvider(TEST_CLAIMS_QNAME,  
+        XMLObjectProviderRegistrySupport.registerObjectProvider(TEST_CLAIMS_QNAME,  
                 new XSAnyBuilder(), new XSAnyMarshaller(), new XSAnyUnmarshaller());
     }
 

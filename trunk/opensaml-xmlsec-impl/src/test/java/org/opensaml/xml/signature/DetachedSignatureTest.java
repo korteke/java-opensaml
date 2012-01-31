@@ -21,7 +21,7 @@ import java.security.KeyPair;
 
 import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 
-import org.opensaml.xml.Configuration;
+import org.opensaml.xml.XMLObjectProviderRegistrySupport;
 import org.opensaml.xml.XMLObjectBaseTestCase;
 import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallingException;
@@ -91,7 +91,7 @@ public class DetachedSignatureTest extends XMLObjectBaseTestCase {
         SignableSimpleXMLObject sxo = getXMLObjectWithSignature();
         Signature signature = sxo.getSignature();
 
-        Marshaller marshaller = Configuration.getMarshallerFactory().getMarshaller(sxo);
+        Marshaller marshaller = XMLObjectProviderRegistrySupport.getMarshallerFactory().getMarshaller(sxo);
         Element signedElement = marshaller.marshall(sxo);
 
         Signer.signObject(signature);
@@ -99,7 +99,7 @@ public class DetachedSignatureTest extends XMLObjectBaseTestCase {
             log.debug("Marshalled deatched Signature: \n" + SerializeSupport.nodeToString(signedElement));
         }
 
-        Unmarshaller unmarshaller = Configuration.getUnmarshallerFactory().getUnmarshaller(signedElement);
+        Unmarshaller unmarshaller = XMLObjectProviderRegistrySupport.getUnmarshallerFactory().getUnmarshaller(signedElement);
         sxo = (SignableSimpleXMLObject) unmarshaller.unmarshall(signedElement);
         signature = (Signature) sxo.getOrderedChildren().get(1);
 
@@ -135,7 +135,7 @@ public class DetachedSignatureTest extends XMLObjectBaseTestCase {
         contentReference.setDigestAlgorithm(SignatureConstants.ALGO_ID_DIGEST_SHA1);
         signature.getContentReferences().add(contentReference);
 
-        Marshaller marshaller = Configuration.getMarshallerFactory().getMarshaller(signature);
+        Marshaller marshaller = XMLObjectProviderRegistrySupport.getMarshallerFactory().getMarshaller(signature);
         Element signatureElement = marshaller.marshall(signature);
 
         Signer.signObject(signature);

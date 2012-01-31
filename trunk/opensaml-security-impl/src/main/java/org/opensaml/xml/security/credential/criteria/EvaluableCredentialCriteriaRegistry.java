@@ -27,7 +27,7 @@ import java.util.Properties;
 
 import net.shibboleth.utilities.java.support.resolver.Criterion;
 
-import org.opensaml.xml.Configuration;
+import org.opensaml.xml.XMLObjectProviderRegistrySupport;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.credential.Credential;
 import org.slf4j.Logger;
@@ -222,7 +222,7 @@ public final class EvaluableCredentialCriteriaRegistry {
             String criteriaName = (String) key;
             String evaluatorName = mappings.getProperty(criteriaName);
 
-            ClassLoader classLoader = Configuration.class.getClassLoader();
+            ClassLoader classLoader = XMLObjectProviderRegistrySupport.class.getClassLoader();
             Class criteriaClass = null;
             try {
                 criteriaClass = classLoader.loadClass(criteriaName);

@@ -20,7 +20,7 @@ package org.opensaml.ws.wsaddressing.impl;
 import org.opensaml.ws.wsaddressing.ReferenceParameters;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
-import org.opensaml.xml.util.XMLObjectHelper;
+import org.opensaml.xml.util.XMLObjectSupport;
 import org.w3c.dom.Attr;
 
 /**
@@ -32,7 +32,7 @@ public class ReferenceParametersUnmarshaller extends AbstractWSAddressingObjectU
     /** {@inheritDoc} */
     protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
         ReferenceParameters rp = (ReferenceParameters) xmlObject;
-        XMLObjectHelper.unmarshallToAttributeMap(rp.getUnknownAttributes(), attribute);
+        XMLObjectSupport.unmarshallToAttributeMap(rp.getUnknownAttributes(), attribute);
     }
 
     /** {@inheritDoc} */

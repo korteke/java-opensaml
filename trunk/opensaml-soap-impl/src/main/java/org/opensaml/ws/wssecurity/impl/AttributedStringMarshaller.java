@@ -22,7 +22,7 @@ import net.shibboleth.utilities.java.support.xml.ElementSupport;
 import org.opensaml.ws.wssecurity.AttributedString;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.util.XMLObjectHelper;
+import org.opensaml.xml.util.XMLObjectSupport;
 import org.w3c.dom.Element;
 
 import com.google.common.base.Strings;
@@ -37,10 +37,10 @@ public class AttributedStringMarshaller extends AbstractWSSecurityObjectMarshall
         AttributedString attributedString = (AttributedString) xmlObject;
         
         if (!Strings.isNullOrEmpty(attributedString.getWSUId())) {
-            XMLObjectHelper.marshallAttribute(AttributedString.WSU_ID_ATTR_NAME, attributedString.getWSUId(), domElement, true);
+            XMLObjectSupport.marshallAttribute(AttributedString.WSU_ID_ATTR_NAME, attributedString.getWSUId(), domElement, true);
         }
         
-        XMLObjectHelper.marshallAttributeMap(attributedString.getUnknownAttributes(), domElement);
+        XMLObjectSupport.marshallAttributeMap(attributedString.getUnknownAttributes(), domElement);
         
     }
 

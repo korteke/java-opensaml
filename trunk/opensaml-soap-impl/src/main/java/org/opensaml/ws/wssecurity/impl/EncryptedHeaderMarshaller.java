@@ -20,7 +20,7 @@ package org.opensaml.ws.wssecurity.impl;
 import org.opensaml.ws.wssecurity.EncryptedHeader;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.util.XMLObjectHelper;
+import org.opensaml.xml.util.XMLObjectSupport;
 import org.w3c.dom.Element;
 
 /**
@@ -33,27 +33,27 @@ public class EncryptedHeaderMarshaller extends AbstractWSSecurityObjectMarshalle
         EncryptedHeader eh = (EncryptedHeader) xmlObject;
         
         if (eh.getWSUId() != null) {
-            XMLObjectHelper.marshallAttribute(EncryptedHeader.WSU_ID_ATTR_NAME, 
+            XMLObjectSupport.marshallAttribute(EncryptedHeader.WSU_ID_ATTR_NAME, 
                     eh.getWSUId(), domElement, true);
         }
         if (eh.isSOAP11MustUnderstandXSBoolean() != null) {
-            XMLObjectHelper.marshallAttribute(EncryptedHeader.SOAP11_MUST_UNDERSTAND_ATTR_NAME, 
+            XMLObjectSupport.marshallAttribute(EncryptedHeader.SOAP11_MUST_UNDERSTAND_ATTR_NAME, 
                     eh.isSOAP11MustUnderstandXSBoolean().toString(), domElement, false);
         }
         if (eh.getSOAP11Actor() != null) {
-            XMLObjectHelper.marshallAttribute(EncryptedHeader.SOAP11_ACTOR_ATTR_NAME, 
+            XMLObjectSupport.marshallAttribute(EncryptedHeader.SOAP11_ACTOR_ATTR_NAME, 
                     eh.getSOAP11Actor(), domElement, false);
         }
         if (eh.isSOAP12MustUnderstandXSBoolean() != null) {
-            XMLObjectHelper.marshallAttribute(EncryptedHeader.SOAP12_MUST_UNDERSTAND_ATTR_NAME, 
+            XMLObjectSupport.marshallAttribute(EncryptedHeader.SOAP12_MUST_UNDERSTAND_ATTR_NAME, 
                     eh.isSOAP12MustUnderstandXSBoolean().toString(), domElement, false);
         }
         if (eh.getSOAP12Role() != null) {
-            XMLObjectHelper.marshallAttribute(EncryptedHeader.SOAP12_ROLE_ATTR_NAME,
+            XMLObjectSupport.marshallAttribute(EncryptedHeader.SOAP12_ROLE_ATTR_NAME,
                     eh.getSOAP12Role(), domElement, false);
         }
         if (eh.isSOAP12RelayXSBoolean() != null) {
-            XMLObjectHelper.marshallAttribute(EncryptedHeader.SOAP12_RELAY_ATTR_NAME, 
+            XMLObjectSupport.marshallAttribute(EncryptedHeader.SOAP12_RELAY_ATTR_NAME, 
                     eh.isSOAP12RelayXSBoolean().toString(), domElement, false);
         }
         

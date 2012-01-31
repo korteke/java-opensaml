@@ -34,7 +34,7 @@ import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.parse.ParserPool;
 import org.opensaml.xml.parse.XMLParserException;
-import org.opensaml.xml.util.XMLObjectHelper;
+import org.opensaml.xml.util.XMLObjectSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -177,7 +177,7 @@ public class BasicSAMLArtifactMapEntry extends AbstractExpiringObject implements
         if (serializedMessage == null) {
             log.debug("Serializing SAMLObject to a string");
             try {
-                serializedMessage = SerializeSupport.nodeToString(XMLObjectHelper.marshall(message));
+                serializedMessage = SerializeSupport.nodeToString(XMLObjectSupport.marshall(message));
             } catch (MarshallingException e) {
                 throw new XMLRuntimeException("Error marshalling the SAMLObject: " + e.getMessage());
             }
@@ -222,7 +222,7 @@ public class BasicSAMLArtifactMapEntry extends AbstractExpiringObject implements
             }
             StringReader reader = new StringReader(getSerializedMessage());
             try {
-                SAMLObject samlObject = (SAMLObject) XMLObjectHelper.unmarshallFromReader(parserPool, reader);
+                SAMLObject samlObject = (SAMLObject) XMLObjectSupport.unmarshallFromReader(parserPool, reader);
                 message = samlObject;
             } catch (XMLParserException e) {
                 throw new IOException("Error parsing XML into DOM: " + e.getMessage());

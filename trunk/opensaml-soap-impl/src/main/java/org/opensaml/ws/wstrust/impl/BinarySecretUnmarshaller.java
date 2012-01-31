@@ -21,7 +21,7 @@ import org.opensaml.ws.wstrust.BinarySecret;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.schema.impl.XSBase64BinaryUnmarshaller;
-import org.opensaml.xml.util.XMLObjectHelper;
+import org.opensaml.xml.util.XMLObjectSupport;
 import org.w3c.dom.Attr;
 
 /**
@@ -36,7 +36,7 @@ public class BinarySecretUnmarshaller extends XSBase64BinaryUnmarshaller {
         if (BinarySecret.TYPE_ATTRIB_NAME.equals(attribute.getLocalName())) {
             bs.setType(attribute.getValue());
         } else {
-            XMLObjectHelper.unmarshallToAttributeMap(bs.getUnknownAttributes(), attribute);
+            XMLObjectSupport.unmarshallToAttributeMap(bs.getUnknownAttributes(), attribute);
         }
     }
 

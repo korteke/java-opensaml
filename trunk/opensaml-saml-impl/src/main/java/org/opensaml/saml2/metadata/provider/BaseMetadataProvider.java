@@ -17,7 +17,7 @@
 
 package org.opensaml.saml2.metadata.provider;
 
-import org.opensaml.xml.Configuration;
+import org.opensaml.xml.XMLObjectProviderRegistrySupport;
 import org.opensaml.xml.io.UnmarshallerFactory;
 
 /**
@@ -37,7 +37,7 @@ public abstract class BaseMetadataProvider implements MetadataProvider {
     /** Constructor. */
     public BaseMetadataProvider() {
         requireValidMetadata = false;
-        unmarshallerFactory = Configuration.getUnmarshallerFactory();
+        unmarshallerFactory = XMLObjectProviderRegistrySupport.getUnmarshallerFactory();
     }
 
     /** {@inheritDoc} */

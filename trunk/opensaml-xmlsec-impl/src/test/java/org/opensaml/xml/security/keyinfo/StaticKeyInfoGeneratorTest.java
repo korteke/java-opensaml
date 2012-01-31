@@ -20,7 +20,7 @@ package org.opensaml.xml.security.keyinfo;
 import java.security.KeyException;
 import java.security.PublicKey;
 
-import org.opensaml.xml.Configuration;
+import org.opensaml.xml.XMLObjectProviderRegistrySupport;
 import org.opensaml.xml.XMLObjectBaseTestCase;
 import org.opensaml.xml.encryption.EncryptedData;
 import org.opensaml.xml.io.MarshallingException;
@@ -132,7 +132,7 @@ public class StaticKeyInfoGeneratorTest extends XMLObjectBaseTestCase {
     public void testWithCloningWithDOMCache() throws SecurityException, KeyException, MarshallingException {
         EncryptedData encData = (EncryptedData) buildXMLObject(EncryptedData.DEFAULT_ELEMENT_NAME);
         
-        Configuration.getMarshallerFactory().getMarshaller(origKeyInfo).marshall(origKeyInfo);
+        XMLObjectProviderRegistrySupport.getMarshallerFactory().getMarshaller(origKeyInfo).marshall(origKeyInfo);
         assertNotNull("Original KeyInfo should have a cached DOM", origKeyInfo.getDOM());
         Element origDOM = origKeyInfo.getDOM();
         

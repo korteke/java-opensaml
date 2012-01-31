@@ -25,7 +25,7 @@ import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 import org.custommonkey.xmlunit.Diff;
 import org.custommonkey.xmlunit.XMLAssert;
 import org.custommonkey.xmlunit.XMLUnit;
-import org.opensaml.xml.Configuration;
+import org.opensaml.xml.XMLObjectProviderRegistrySupport;
 import org.opensaml.xml.XMLConfigurator;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.XMLObjectBuilder;
@@ -80,9 +80,9 @@ public abstract class BaseTestCase extends TestCase {
             configurator.load(soap11Config);
             configurator.load(defaulfConfig);
 
-            builderFactory = Configuration.getBuilderFactory();
-            marshallerFactory = Configuration.getMarshallerFactory();
-            unmarshallerFactory = Configuration.getUnmarshallerFactory();
+            builderFactory = XMLObjectProviderRegistrySupport.getBuilderFactory();
+            marshallerFactory = XMLObjectProviderRegistrySupport.getMarshallerFactory();
+            unmarshallerFactory = XMLObjectProviderRegistrySupport.getUnmarshallerFactory();
         } catch (Exception e) {
             System.err.println("Can not initialize test suite, " + e.getMessage());
         }
@@ -133,7 +133,7 @@ public abstract class BaseTestCase extends TestCase {
      * @return the build XMLObject
      */
     public XMLObject buildXMLObject(QName objectQName) {
-        XMLObjectBuilder builder = Configuration.getBuilderFactory().getBuilder(objectQName);
+        XMLObjectBuilder builder = XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilder(objectQName);
         if (builder == null) {
             fail("Unable to retrieve builder for object QName " + objectQName);
         }
