@@ -28,7 +28,8 @@ import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
-import org.opensaml.xml.parse.LoggingErrorHandler;
+import net.shibboleth.utilities.java.support.xml.LoggingErrorHandler;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
