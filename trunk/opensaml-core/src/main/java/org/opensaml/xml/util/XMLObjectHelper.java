@@ -30,9 +30,13 @@ import net.shibboleth.utilities.java.support.xml.AttributeSupport;
 import net.shibboleth.utilities.java.support.xml.QNameSupport;
 import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 
+import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.Namespace;
 import org.opensaml.xml.XMLObject;
+import org.opensaml.xml.XMLObjectBuilder;
+import org.opensaml.xml.XMLObjectBuilderFactory;
+import org.opensaml.xml.XMLObjectProviderRegistry;
 import org.opensaml.xml.XMLRuntimeException;
 import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallingException;
@@ -384,4 +388,93 @@ public final class XMLObjectHelper {
         }
     }
     
+    /**
+     * Build an XMLObject based on the element name.
+     * 
+     * @param elementName the element name
+     * @return an XMLObject, or null if no provider registered
+     */
+    public static XMLObject buildXMLObject(QName elementName) {
+        XMLObjectBuilder<XMLObject> builder = getProviderRegistry().getBuilderFactory().getBuilder(elementName);
+        if (builder != null) {
+            return builder.buildObject(elementName);
+        } else {
+            return null;
+        }
+    }
+    
+    /**
+     * Build an XMLObject based on the element nane and xsi:type.
+     * 
+     * @param elementName the element name
+     * @param typeName the xsi:type
+     * @return an XMLObject, or null if no provider registered
+     */
+    public static XMLObject buildXMLObject(QName elementName, QName typeName) {
+        XMLObjectBuilder<XMLObject> builder = getProviderRegistry().getBuilderFactory().getBuilder(elementName);
+        if (builder != null) {
+            return builder.buildObject(elementName, typeName);
+        } else {
+            return null;
+        }
+    }
+    
+    /**
+     * Obtain an XMLObject builder for the given QName.
+     * 
+     * @param typeOrName the element name or type
+     * @return an XMLObject builder, or null if no provider registered
+     */
+    public static XMLObjectBuilder<XMLObject> getBuilder(QName typeOrName) {
+        return getProviderRegistry().getBuilderFactory().getBuilder(typeOrName);
+    }
+    
+    /**
+     * Obtain an XMLObject marshaller for the given QName.
+     * 
+     * @param typeOrName the element name or type
+     * @return an XMLObject marshaller, or null if no provider registered
+     */
+    public static Marshaller getMarshaller(QName typeOrName) {
+        return getProviderRegistry().getMarshallerFactory().getMarshaller(typeOrName);
+    }
+    
+    /**
+     * Obtain an XMLObject marshaller for the given XMLObject.
+     * 
+     * @param xmlObject the XMLObject to be marshalled
+     * @return an XMLObject marshaller, or null if no provider registered
+     */
+    public static Marshaller getMarshaller(XMLObject xmlObject) {
+        return getProviderRegistry().getMarshallerFactory().getMarshaller(xmlObject);
+    }
+    
+    /**
+     * Obtain an XMLObject unmarshaller for the given QName.
+     * 
+     * @param typeOrName the element name or type
+     * @return an XMLObject unmarshaller, or null if no provider registered
+     */
+    public static Unmarshaller getunmarshaller(QName typeOrName) {
+        return getProviderRegistry().getUnmarshallerFactory().getUnmarshaller(typeOrName);
+    }
+    
+    /**
+     * Obtain an XMLObject unmarshaller  for the given DOM Element.
+     * 
+     * @param element the DOM element
+     * @return an XMLObject unmarshaller, or null if no provider registered
+     */
+    public static Unmarshaller getunmarshaller(Element element) {
+        return getProviderRegistry().getUnmarshallerFactory().getUnmarshaller(element);
+    }
+    
+    /**
+     * Obtain the XMLObject provider registry.
+     * 
+     * @return the configured XMLObject provider registry
+     */
+    private static XMLObjectProviderRegistry getProviderRegistry() {
+        return ConfigurationService.get(XMLObjectProviderRegistry.class);
+    }
 }
