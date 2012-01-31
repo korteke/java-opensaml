@@ -33,7 +33,7 @@ import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import org.apache.xml.security.Init;
 import org.apache.xml.security.algorithms.JCEMapper;
 import org.opensaml.core.config.ConfigurationService;
-import org.opensaml.xml.Configuration;
+import org.opensaml.xml.XMLObjectProviderRegistrySupport;
 import org.opensaml.xml.encryption.EncryptionParameters;
 import org.opensaml.xml.encryption.KeyEncryptionParameters;
 import org.opensaml.xml.security.credential.BasicCredential;
@@ -274,7 +274,7 @@ public final class XMLSecurityHelper {
      * 
      * <p>
      * All values are determined by the specified {@link SecurityConfiguration}. If a security configuration is not
-     * supplied, the global security configuration ({@link Configuration#getGlobalSecurityConfiguration()}) will be
+     * supplied, the global security configuration ({@link XMLObjectProviderRegistrySupport#getGlobalSecurityConfiguration()}) will be
      * used.
      * </p>
      * 
@@ -358,7 +358,7 @@ public final class XMLSecurityHelper {
      * 
      * <p>
      * All values are determined by the specified {@link SecurityConfiguration}. If a security configuration is not
-     * supplied, the global security configuration ({@link Configuration#getGlobalSecurityConfiguration()}) will be
+     * supplied, the global security configuration ({@link XMLObjectProviderRegistrySupport#getGlobalSecurityConfiguration()}) will be
      * used.
      * </p>
      * 
@@ -428,7 +428,7 @@ public final class XMLSecurityHelper {
      * 
      * <p>
      * All values are determined by the specified {@link SecurityConfiguration}. If a security configuration is not
-     * supplied, the global security configuration ({@link Configuration#getGlobalSecurityConfiguration()}) will be
+     * supplied, the global security configuration ({@link XMLObjectProviderRegistrySupport#getGlobalSecurityConfiguration()}) will be
      * used.
      * </p>
      * 
@@ -503,7 +503,7 @@ public final class XMLSecurityHelper {
      * 
      * <p>
      * The generator is determined by the specified {@link SecurityConfiguration}. If a security configuration is not
-     * supplied, the global security configuration ({@link Configuration#getGlobalSecurityConfiguration()}) will be
+     * supplied, the global security configuration ({@link XMLObjectProviderRegistrySupport#getGlobalSecurityConfiguration()}) will be
      * used.
      * </p>
      * 

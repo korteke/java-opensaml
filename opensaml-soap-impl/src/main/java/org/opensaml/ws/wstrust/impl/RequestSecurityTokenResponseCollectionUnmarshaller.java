@@ -21,7 +21,7 @@ import org.opensaml.ws.wstrust.RequestSecurityTokenResponse;
 import org.opensaml.ws.wstrust.RequestSecurityTokenResponseCollection;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
-import org.opensaml.xml.util.XMLObjectHelper;
+import org.opensaml.xml.util.XMLObjectSupport;
 import org.w3c.dom.Attr;
 
 
@@ -34,7 +34,7 @@ public class RequestSecurityTokenResponseCollectionUnmarshaller extends Abstract
     /** {@inheritDoc} */
     protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
         RequestSecurityTokenResponseCollection rstrc = (RequestSecurityTokenResponseCollection) xmlObject;
-        XMLObjectHelper.unmarshallToAttributeMap(rstrc.getUnknownAttributes(), attribute);
+        XMLObjectSupport.unmarshallToAttributeMap(rstrc.getUnknownAttributes(), attribute);
     }
 
     /** {@inheritDoc} */

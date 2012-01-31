@@ -25,7 +25,7 @@ import org.opensaml.ws.wssecurity.Username;
 import org.opensaml.ws.wssecurity.UsernameToken;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
-import org.opensaml.xml.util.XMLObjectHelper;
+import org.opensaml.xml.util.XMLObjectSupport;
 import org.w3c.dom.Attr;
 
 /**
@@ -54,7 +54,7 @@ public class UsernameTokenUnmarshaller extends AbstractWSSecurityObjectUnmarshal
             token.setWSUId(attribute.getValue());
             attribute.getOwnerElement().setIdAttributeNode(attribute, true);
         } else {
-            XMLObjectHelper.unmarshallToAttributeMap(token.getUnknownAttributes(), attribute);
+            XMLObjectSupport.unmarshallToAttributeMap(token.getUnknownAttributes(), attribute);
         }
     }
 

@@ -20,7 +20,7 @@ package org.opensaml.ws.wssecurity.impl;
 import org.opensaml.ws.wssecurity.Timestamp;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.util.XMLObjectHelper;
+import org.opensaml.xml.util.XMLObjectSupport;
 import org.w3c.dom.Element;
 
 import com.google.common.base.Strings;
@@ -36,10 +36,10 @@ public class TimestampMarshaller extends AbstractWSSecurityObjectMarshaller {
         Timestamp timestamp = (Timestamp) xmlObject;
         
         if (!Strings.isNullOrEmpty(timestamp.getWSUId())) {
-            XMLObjectHelper.marshallAttribute(Timestamp.WSU_ID_ATTR_NAME, timestamp.getWSUId(), domElement, true);
+            XMLObjectSupport.marshallAttribute(Timestamp.WSU_ID_ATTR_NAME, timestamp.getWSUId(), domElement, true);
         }
         
-        XMLObjectHelper.marshallAttributeMap(timestamp.getUnknownAttributes(), domElement);
+        XMLObjectSupport.marshallAttributeMap(timestamp.getUnknownAttributes(), domElement);
     }
 
 }

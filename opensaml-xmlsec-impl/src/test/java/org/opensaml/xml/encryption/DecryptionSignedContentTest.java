@@ -24,7 +24,7 @@ import java.io.InputStream;
 import java.security.KeyPair;
 
 import org.apache.xml.security.utils.IdResolver;
-import org.opensaml.xml.Configuration;
+import org.opensaml.xml.XMLObjectProviderRegistrySupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.XMLObjectBaseTestCase;
 import org.opensaml.xml.io.Marshaller;
@@ -177,7 +177,7 @@ public class DecryptionSignedContentTest extends XMLObjectBaseTestCase {
 
         sxo.setSignature(sig);
 
-        Marshaller marshaller = Configuration.getMarshallerFactory().getMarshaller(sxo);
+        Marshaller marshaller = XMLObjectProviderRegistrySupport.getMarshallerFactory().getMarshaller(sxo);
         Element signedElement = marshaller.marshall(sxo);
 
         Signer.signObject(sig);

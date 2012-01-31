@@ -24,7 +24,7 @@ import javax.xml.namespace.QName;
 import net.shibboleth.utilities.java.support.xml.AttributeSupport;
 
 import org.opensaml.ws.soap.soap11.Detail;
-import org.opensaml.xml.Configuration;
+import org.opensaml.xml.XMLObjectProviderRegistrySupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.AbstractXMLObjectMarshaller;
 import org.opensaml.xml.io.MarshallingException;
@@ -45,7 +45,7 @@ public class DetailMarshaller extends AbstractXMLObjectMarshaller {
             attribute = AttributeSupport.constructAttribute(domElement.getOwnerDocument(), entry.getKey());
             attribute.setValue(entry.getValue());
             domElement.setAttributeNodeNS(attribute);
-            if (Configuration.isIDAttribute(entry.getKey()) 
+            if (XMLObjectProviderRegistrySupport.isIDAttribute(entry.getKey()) 
                     || detail.getUnknownAttributes().isIDAttribute(entry.getKey())) {
                 attribute.getOwnerElement().setIdAttributeNode(attribute, true);
             }

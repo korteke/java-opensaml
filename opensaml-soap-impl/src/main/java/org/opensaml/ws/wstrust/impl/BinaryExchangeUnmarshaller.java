@@ -21,7 +21,7 @@ import org.opensaml.ws.wstrust.BinaryExchange;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.schema.impl.XSStringUnmarshaller;
-import org.opensaml.xml.util.XMLObjectHelper;
+import org.opensaml.xml.util.XMLObjectSupport;
 import org.w3c.dom.Attr;
 
 /**
@@ -42,7 +42,7 @@ public class BinaryExchangeUnmarshaller extends XSStringUnmarshaller {
         } else if (BinaryExchange.ENCODING_TYPE_ATTRIB_NAME.equals(attrName)) {
             binaryExchange.setEncodingType(attribute.getValue());
         } else {
-            XMLObjectHelper.unmarshallToAttributeMap(binaryExchange.getUnknownAttributes(), attribute);
+            XMLObjectSupport.unmarshallToAttributeMap(binaryExchange.getUnknownAttributes(), attribute);
         }
     }
 

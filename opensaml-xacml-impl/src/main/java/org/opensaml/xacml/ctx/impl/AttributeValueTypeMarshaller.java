@@ -26,7 +26,7 @@ import net.shibboleth.utilities.java.support.xml.ElementSupport;
 
 import org.opensaml.xacml.ctx.AttributeValueType;
 import org.opensaml.xacml.impl.AbstractXACMLObjectMarshaller;
-import org.opensaml.xml.Configuration;
+import org.opensaml.xml.XMLObjectProviderRegistrySupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
 import org.w3c.dom.Attr;
@@ -49,7 +49,7 @@ public class AttributeValueTypeMarshaller extends AbstractXACMLObjectMarshaller 
             attribute = AttributeSupport.constructAttribute(domElement.getOwnerDocument(), entry.getKey());
             attribute.setValue(entry.getValue());
             domElement.setAttributeNodeNS(attribute);
-            if (Configuration.isIDAttribute(entry.getKey())
+            if (XMLObjectProviderRegistrySupport.isIDAttribute(entry.getKey())
                     || attributeValue.getUnknownAttributes().isIDAttribute(entry.getKey())) {
                 attribute.getOwnerElement().setIdAttributeNode(attribute, true);
             }

@@ -141,7 +141,7 @@ public abstract class XMLObjectBaseTestCase extends TestCase {
      * @return the build XMLObject
      */
     public XMLObject buildXMLObject(QName objectQName) {
-        XMLObjectBuilder builder = Configuration.getBuilderFactory().getBuilder(objectQName);
+        XMLObjectBuilder builder = XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilder(objectQName);
         if (builder == null) {
             fail("Unable to retrieve builder for object QName " + objectQName);
         }
@@ -158,7 +158,7 @@ public abstract class XMLObjectBaseTestCase extends TestCase {
             Document doc = parserPool.parse(XMLObjectBaseTestCase.class.getResourceAsStream(elementFile));
             Element samlElement = doc.getDocumentElement();
 
-            Unmarshaller unmarshaller = Configuration.getUnmarshallerFactory().getUnmarshaller(samlElement);
+            Unmarshaller unmarshaller = XMLObjectProviderRegistrySupport.getUnmarshallerFactory().getUnmarshaller(samlElement);
             if (unmarshaller == null) {
                 fail("Unable to retrieve unmarshaller by DOM Element");
             }

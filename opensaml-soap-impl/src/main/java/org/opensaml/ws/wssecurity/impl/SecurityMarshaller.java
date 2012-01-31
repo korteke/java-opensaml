@@ -20,7 +20,7 @@ package org.opensaml.ws.wssecurity.impl;
 import org.opensaml.ws.wssecurity.Security;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.util.XMLObjectHelper;
+import org.opensaml.xml.util.XMLObjectSupport;
 import org.w3c.dom.Element;
 
 /**
@@ -32,7 +32,7 @@ public class SecurityMarshaller extends AbstractWSSecurityObjectMarshaller {
     /** {@inheritDoc} */
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         Security security = (Security) xmlObject;
-        XMLObjectHelper.marshallAttributeMap(security.getUnknownAttributes(), domElement);
+        XMLObjectSupport.marshallAttributeMap(security.getUnknownAttributes(), domElement);
     }
 
 }

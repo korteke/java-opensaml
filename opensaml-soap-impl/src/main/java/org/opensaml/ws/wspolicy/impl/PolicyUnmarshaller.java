@@ -24,7 +24,7 @@ import net.shibboleth.utilities.java.support.xml.QNameSupport;
 import org.opensaml.ws.wspolicy.Policy;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
-import org.opensaml.xml.util.XMLObjectHelper;
+import org.opensaml.xml.util.XMLObjectSupport;
 import org.w3c.dom.Attr;
 
 
@@ -50,7 +50,7 @@ public class PolicyUnmarshaller extends OperatorContentTypeUnmarshaller {
             policy.setWSUId(attribute.getValue());
             attribute.getOwnerElement().setIdAttributeNode(attribute, true);
         } else {
-            XMLObjectHelper.unmarshallToAttributeMap(policy.getUnknownAttributes(), attribute);
+            XMLObjectSupport.unmarshallToAttributeMap(policy.getUnknownAttributes(), attribute);
         }
     }
     

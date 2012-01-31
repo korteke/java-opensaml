@@ -20,7 +20,7 @@ package org.opensaml.ws.wstrust.impl;
 import org.opensaml.ws.wstrust.Claims;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
-import org.opensaml.xml.util.XMLObjectHelper;
+import org.opensaml.xml.util.XMLObjectSupport;
 import org.w3c.dom.Attr;
 
 
@@ -37,7 +37,7 @@ public class ClaimsUnmarshaller extends AbstractWSTrustObjectUnmarshaller {
         if (Claims.DIALECT_ATTRIB_NAME.equals(attribute.getLocalName())) {
             claims.setDialect(attribute.getValue());
         } else {
-            XMLObjectHelper.unmarshallToAttributeMap(claims.getUnknownAttributes(), attribute);
+            XMLObjectSupport.unmarshallToAttributeMap(claims.getUnknownAttributes(), attribute);
         }
     }
 

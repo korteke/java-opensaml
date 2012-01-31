@@ -42,7 +42,7 @@ import java.util.List;
 
 import net.shibboleth.utilities.java.support.codec.Base64Support;
 
-import org.opensaml.xml.Configuration;
+import org.opensaml.xml.XMLObjectProviderRegistrySupport;
 import org.opensaml.xml.XMLObjectBuilderFactory;
 import org.opensaml.xml.security.x509.X509Util;
 import org.opensaml.xml.signature.DSAKeyValue;
@@ -117,7 +117,7 @@ public class KeyInfoHelper {
      */
     public static void addKeyName(KeyInfo keyInfo, String keyNameValue) {
         KeyName keyName =
-                (KeyName) Configuration.getBuilderFactory().getBuilder(KeyName.DEFAULT_ELEMENT_NAME)
+                (KeyName) XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilder(KeyName.DEFAULT_ELEMENT_NAME)
                         .buildObject(KeyName.DEFAULT_ELEMENT_NAME);
         keyName.setValue(keyNameValue);
         keyInfo.getKeyNames().add(keyName);
@@ -289,7 +289,7 @@ public class KeyInfoHelper {
         X509Data x509Data;
         if (keyInfo.getX509Datas().size() == 0) {
             x509Data =
-                    (X509Data) Configuration.getBuilderFactory().getBuilder(X509Data.DEFAULT_ELEMENT_NAME)
+                    (X509Data) XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilder(X509Data.DEFAULT_ELEMENT_NAME)
                             .buildObject(X509Data.DEFAULT_ELEMENT_NAME);
             keyInfo.getX509Datas().add(x509Data);
         } else {
@@ -311,7 +311,7 @@ public class KeyInfoHelper {
         X509Data x509Data;
         if (keyInfo.getX509Datas().size() == 0) {
             x509Data =
-                    (X509Data) Configuration.getBuilderFactory().getBuilder(X509Data.DEFAULT_ELEMENT_NAME)
+                    (X509Data) XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilder(X509Data.DEFAULT_ELEMENT_NAME)
                             .buildObject(X509Data.DEFAULT_ELEMENT_NAME);
             keyInfo.getX509Datas().add(x509Data);
         } else {
@@ -332,7 +332,7 @@ public class KeyInfoHelper {
     public static org.opensaml.xml.signature.X509Certificate buildX509Certificate(X509Certificate cert)
             throws CertificateEncodingException {
         org.opensaml.xml.signature.X509Certificate xmlCert =
-                (org.opensaml.xml.signature.X509Certificate) Configuration.getBuilderFactory()
+                (org.opensaml.xml.signature.X509Certificate) XMLObjectProviderRegistrySupport.getBuilderFactory()
                         .getBuilder(org.opensaml.xml.signature.X509Certificate.DEFAULT_ELEMENT_NAME)
                         .buildObject(org.opensaml.xml.signature.X509Certificate.DEFAULT_ELEMENT_NAME);
 
@@ -352,7 +352,7 @@ public class KeyInfoHelper {
      */
     public static org.opensaml.xml.signature.X509CRL buildX509CRL(X509CRL crl) throws CRLException {
         org.opensaml.xml.signature.X509CRL xmlCRL =
-                (org.opensaml.xml.signature.X509CRL) Configuration.getBuilderFactory()
+                (org.opensaml.xml.signature.X509CRL) XMLObjectProviderRegistrySupport.getBuilderFactory()
                         .getBuilder(org.opensaml.xml.signature.X509CRL.DEFAULT_ELEMENT_NAME)
                         .buildObject(org.opensaml.xml.signature.X509CRL.DEFAULT_ELEMENT_NAME);
 
@@ -369,7 +369,7 @@ public class KeyInfoHelper {
      */
     public static X509SubjectName buildX509SubjectName(String subjectName) {
         X509SubjectName xmlSubjectName =
-                (X509SubjectName) Configuration.getBuilderFactory().getBuilder(X509SubjectName.DEFAULT_ELEMENT_NAME)
+                (X509SubjectName) XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilder(X509SubjectName.DEFAULT_ELEMENT_NAME)
                         .buildObject(X509SubjectName.DEFAULT_ELEMENT_NAME);
         xmlSubjectName.setValue(subjectName);
         return xmlSubjectName;
@@ -384,17 +384,17 @@ public class KeyInfoHelper {
      */
     public static X509IssuerSerial buildX509IssuerSerial(String issuerName, BigInteger serialNumber) {
         X509IssuerName xmlIssuerName =
-                (X509IssuerName) Configuration.getBuilderFactory().getBuilder(X509IssuerName.DEFAULT_ELEMENT_NAME)
+                (X509IssuerName) XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilder(X509IssuerName.DEFAULT_ELEMENT_NAME)
                         .buildObject(X509IssuerName.DEFAULT_ELEMENT_NAME);
         xmlIssuerName.setValue(issuerName);
 
         X509SerialNumber xmlSerialNumber =
-                (X509SerialNumber) Configuration.getBuilderFactory().getBuilder(X509SerialNumber.DEFAULT_ELEMENT_NAME)
+                (X509SerialNumber) XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilder(X509SerialNumber.DEFAULT_ELEMENT_NAME)
                         .buildObject(X509SerialNumber.DEFAULT_ELEMENT_NAME);
         xmlSerialNumber.setValue(serialNumber);
 
         X509IssuerSerial xmlIssuerSerial =
-                (X509IssuerSerial) Configuration.getBuilderFactory().getBuilder(X509IssuerSerial.DEFAULT_ELEMENT_NAME)
+                (X509IssuerSerial) XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilder(X509IssuerSerial.DEFAULT_ELEMENT_NAME)
                         .buildObject(X509IssuerSerial.DEFAULT_ELEMENT_NAME);
         xmlIssuerSerial.setX509IssuerName(xmlIssuerName);
         xmlIssuerSerial.setX509SerialNumber(xmlSerialNumber);
@@ -415,7 +415,7 @@ public class KeyInfoHelper {
         }
 
         X509SKI xmlSKI =
-                (X509SKI) Configuration.getBuilderFactory().getBuilder(X509SKI.DEFAULT_ELEMENT_NAME)
+                (X509SKI) XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilder(X509SKI.DEFAULT_ELEMENT_NAME)
                         .buildObject(X509SKI.DEFAULT_ELEMENT_NAME);
         xmlSKI.setValue(Base64Support.encode(skiPlainValue, Base64Support.CHUNKED));
 
@@ -435,7 +435,7 @@ public class KeyInfoHelper {
      */
     public static void addPublicKey(KeyInfo keyInfo, PublicKey pk) throws IllegalArgumentException {
         KeyValue keyValue =
-                (KeyValue) Configuration.getBuilderFactory().getBuilder(KeyValue.DEFAULT_ELEMENT_NAME)
+                (KeyValue) XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilder(KeyValue.DEFAULT_ELEMENT_NAME)
                         .buildObject(KeyValue.DEFAULT_ELEMENT_NAME);
 
         if (pk instanceof RSAPublicKey) {
@@ -456,7 +456,7 @@ public class KeyInfoHelper {
      * @return an {@link RSAKeyValue} XMLObject
      */
     public static RSAKeyValue buildRSAKeyValue(RSAPublicKey rsaPubKey) {
-        XMLObjectBuilderFactory builderFactory = Configuration.getBuilderFactory();
+        XMLObjectBuilderFactory builderFactory = XMLObjectProviderRegistrySupport.getBuilderFactory();
         RSAKeyValue rsaKeyValue =
                 (RSAKeyValue) builderFactory.getBuilder(RSAKeyValue.DEFAULT_ELEMENT_NAME).buildObject(
                         RSAKeyValue.DEFAULT_ELEMENT_NAME);
@@ -483,7 +483,7 @@ public class KeyInfoHelper {
      * @return an {@link DSAKeyValue} XMLObject
      */
     public static DSAKeyValue buildDSAKeyValue(DSAPublicKey dsaPubKey) {
-        XMLObjectBuilderFactory builderFactory = Configuration.getBuilderFactory();
+        XMLObjectBuilderFactory builderFactory = XMLObjectProviderRegistrySupport.getBuilderFactory();
         DSAKeyValue dsaKeyValue =
                 (DSAKeyValue) builderFactory.getBuilder(DSAKeyValue.DEFAULT_ELEMENT_NAME).buildObject(
                         DSAKeyValue.DEFAULT_ELEMENT_NAME);

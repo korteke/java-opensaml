@@ -35,7 +35,7 @@ import net.shibboleth.utilities.java.support.resolver.ResolverException;
 import org.apache.xml.security.Init;
 import org.apache.xml.security.encryption.XMLCipher;
 import org.apache.xml.security.encryption.XMLEncryptionException;
-import org.opensaml.xml.Configuration;
+import org.opensaml.xml.XMLObjectProviderRegistrySupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallingException;
@@ -230,7 +230,7 @@ public class Decrypter {
         features.put("http://apache.org/xml/features/dom/defer-node-expansion", Boolean.FALSE);
         parserPool.setBuilderFeatures(features);
 
-        unmarshallerFactory = Configuration.getUnmarshallerFactory();
+        unmarshallerFactory = XMLObjectProviderRegistrySupport.getUnmarshallerFactory();
         
         defaultRootInNewDocument = false;
     }
@@ -930,7 +930,7 @@ public class Decrypter {
     protected void checkAndMarshall(XMLObject xmlObject) throws DecryptionException {
         Element targetElement = xmlObject.getDOM();
         if (targetElement == null) {
-            Marshaller marshaller = Configuration.getMarshallerFactory().getMarshaller(xmlObject);
+            Marshaller marshaller = XMLObjectProviderRegistrySupport.getMarshallerFactory().getMarshaller(xmlObject);
             try {
                 targetElement = marshaller.marshall(xmlObject);
             } catch (MarshallingException e) {

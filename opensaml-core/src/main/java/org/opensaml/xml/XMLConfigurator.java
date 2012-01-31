@@ -95,11 +95,11 @@ public class XMLConfigurator {
     /**
      * Constructor.
      * 
-     * @param retainXML whether to retain the XML configuration elements within the {@link Configuration}.
+     * @param retainXML whether to retain the XML configuration elements within the {@link XMLObjectProviderRegistrySupport}.
      * 
      * @throws ConfigurationException thrown if the validation schema for configuration files can not be created
      * 
-     * @deprecated this method will be removed once {@link Configuration} no longer has the option to store the XML
+     * @deprecated this method will be removed once {@link XMLObjectProviderRegistrySupport} no longer has the option to store the XML
      *             configuration fragements
      */
     public XMLConfigurator(boolean retainXML) throws ConfigurationException {

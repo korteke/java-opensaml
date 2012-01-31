@@ -21,7 +21,7 @@ import org.opensaml.saml2.ecp.RelayState;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.schema.impl.XSStringMarshaller;
-import org.opensaml.xml.util.XMLObjectHelper;
+import org.opensaml.xml.util.XMLObjectSupport;
 import org.w3c.dom.Element;
 
 /**
@@ -34,11 +34,11 @@ public class RelayStateMarshaller extends XSStringMarshaller {
         RelayState relayState = (RelayState) xmlObject;
         
         if (relayState.isSOAP11MustUnderstandXSBoolean() != null) {
-            XMLObjectHelper.marshallAttribute(RelayState.SOAP11_MUST_UNDERSTAND_ATTR_NAME, 
+            XMLObjectSupport.marshallAttribute(RelayState.SOAP11_MUST_UNDERSTAND_ATTR_NAME, 
                     relayState.isSOAP11MustUnderstandXSBoolean().toString(), domElement, false);
         }
         if (relayState.getSOAP11Actor() != null) {
-            XMLObjectHelper.marshallAttribute(RelayState.SOAP11_ACTOR_ATTR_NAME, 
+            XMLObjectSupport.marshallAttribute(RelayState.SOAP11_ACTOR_ATTR_NAME, 
                     relayState.getSOAP11Actor(), domElement, false);
         }
         

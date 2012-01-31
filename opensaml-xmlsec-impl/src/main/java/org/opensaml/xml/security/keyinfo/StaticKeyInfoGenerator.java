@@ -17,7 +17,7 @@
 
 package org.opensaml.xml.security.keyinfo;
 
-import org.opensaml.xml.Configuration;
+import org.opensaml.xml.XMLObjectProviderRegistrySupport;
 import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.io.Unmarshaller;
@@ -140,7 +140,7 @@ public class StaticKeyInfoGenerator implements KeyInfoGenerator {
         if (keyInfoMarshaller != null) {
             return keyInfoMarshaller;
         }
-        keyInfoMarshaller = Configuration.getMarshallerFactory().getMarshaller(KeyInfo.DEFAULT_ELEMENT_NAME);
+        keyInfoMarshaller = XMLObjectProviderRegistrySupport.getMarshallerFactory().getMarshaller(KeyInfo.DEFAULT_ELEMENT_NAME);
         if (keyInfoMarshaller == null) {
             throw new SecurityException("Could not obtain KeyInfo marshaller from the configuration");
         }
@@ -157,7 +157,7 @@ public class StaticKeyInfoGenerator implements KeyInfoGenerator {
         if (keyInfoUnmarshaller != null) {
             return keyInfoUnmarshaller;
         }
-        keyInfoUnmarshaller = Configuration.getUnmarshallerFactory().getUnmarshaller(KeyInfo.DEFAULT_ELEMENT_NAME);
+        keyInfoUnmarshaller = XMLObjectProviderRegistrySupport.getUnmarshallerFactory().getUnmarshaller(KeyInfo.DEFAULT_ELEMENT_NAME);
         if (keyInfoUnmarshaller == null) {
             throw new SecurityException("Could not obtain KeyInfo unmarshaller from the configuration");
         }

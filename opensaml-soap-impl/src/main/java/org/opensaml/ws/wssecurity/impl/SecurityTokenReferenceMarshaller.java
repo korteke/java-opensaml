@@ -22,7 +22,7 @@ import java.util.List;
 import org.opensaml.ws.wssecurity.SecurityTokenReference;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.util.XMLObjectHelper;
+import org.opensaml.xml.util.XMLObjectSupport;
 import org.w3c.dom.Element;
 
 import com.google.common.base.Strings;
@@ -38,15 +38,15 @@ public class SecurityTokenReferenceMarshaller extends AbstractWSSecurityObjectMa
         SecurityTokenReference str = (SecurityTokenReference) xmlObject;
         
         if (!Strings.isNullOrEmpty(str.getWSUId())) {
-            XMLObjectHelper.marshallAttribute(SecurityTokenReference.WSU_ID_ATTR_NAME, str.getWSUId(), domElement, true);
+            XMLObjectSupport.marshallAttribute(SecurityTokenReference.WSU_ID_ATTR_NAME, str.getWSUId(), domElement, true);
         }
         
         List<String> usages = str.getWSSEUsages();
         if (usages != null && ! usages.isEmpty()) {
-            XMLObjectHelper.marshallAttribute(SecurityTokenReference.WSSE_USAGE_ATTR_NAME, usages, domElement, false);
+            XMLObjectSupport.marshallAttribute(SecurityTokenReference.WSSE_USAGE_ATTR_NAME, usages, domElement, false);
         }
         
-        XMLObjectHelper.marshallAttributeMap(str.getUnknownAttributes(), domElement);
+        XMLObjectSupport.marshallAttributeMap(str.getUnknownAttributes(), domElement);
     }
 
 }

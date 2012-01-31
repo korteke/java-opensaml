@@ -26,7 +26,7 @@ import org.opensaml.ws.soap.common.SOAPObjectBuilder;
 import org.opensaml.ws.soap.soap11.Body;
 import org.opensaml.ws.soap.soap11.Envelope;
 import org.opensaml.ws.transport.OutTransport;
-import org.opensaml.xml.Configuration;
+import org.opensaml.xml.XMLObjectProviderRegistrySupport;
 import org.opensaml.xml.XMLObjectBuilderFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,7 +51,7 @@ public class SOAP11Encoder extends BaseHandlerChainAwareMessageEncoder {
     @SuppressWarnings("unchecked")
     public SOAP11Encoder() {
         super();
-        XMLObjectBuilderFactory builderFactory = Configuration.getBuilderFactory();
+        XMLObjectBuilderFactory builderFactory = XMLObjectProviderRegistrySupport.getBuilderFactory();
         envBuilder = (SOAPObjectBuilder<Envelope>) builderFactory.getBuilder(Envelope.DEFAULT_ELEMENT_NAME);
         bodyBuilder = (SOAPObjectBuilder<Body>) builderFactory.getBuilder(Body.DEFAULT_ELEMENT_NAME);
     }

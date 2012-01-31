@@ -21,7 +21,7 @@ import org.opensaml.common.BaseSAMLObjectProviderTestCase;
 import org.opensaml.common.SAMLObjectBuilder;
 import org.opensaml.samlext.saml2delrestrict.Delegate;
 import org.opensaml.samlext.saml2delrestrict.DelegationRestrictionType;
-import org.opensaml.xml.Configuration;
+import org.opensaml.xml.XMLObjectProviderRegistrySupport;
 
 /**
  * Test case for creating, marshalling, and unmarshalling {@link Delegate}.
@@ -62,7 +62,7 @@ public class DelegationRestrictionTypeTest extends BaseSAMLObjectProviderTestCas
     /** {@inheritDoc} */
     public void testSingleElementMarshall() {
         SAMLObjectBuilder<DelegationRestrictionType> builder =
-            (SAMLObjectBuilder<DelegationRestrictionType>) Configuration.getBuilderFactory().getBuilder(DelegationRestrictionType.TYPE_NAME);
+            (SAMLObjectBuilder<DelegationRestrictionType>) XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilder(DelegationRestrictionType.TYPE_NAME);
         
         DelegationRestrictionType drt = builder.buildObject();
 
@@ -73,7 +73,7 @@ public class DelegationRestrictionTypeTest extends BaseSAMLObjectProviderTestCas
     /** {@inheritDoc} */
     public void testChildElementsMarshall() {
         SAMLObjectBuilder<DelegationRestrictionType> builder =
-            (SAMLObjectBuilder<DelegationRestrictionType>) Configuration.getBuilderFactory().getBuilder(DelegationRestrictionType.TYPE_NAME);
+            (SAMLObjectBuilder<DelegationRestrictionType>) XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilder(DelegationRestrictionType.TYPE_NAME);
         
         DelegationRestrictionType drt = builder.buildObject();
         

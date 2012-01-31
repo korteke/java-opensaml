@@ -19,7 +19,7 @@ package org.opensaml.xml.security.credential;
 
 import java.util.List;
 
-import org.opensaml.xml.Configuration;
+import org.opensaml.xml.XMLObjectProviderRegistrySupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.keyinfo.KeyInfoGenerator;
@@ -165,7 +165,7 @@ public class BasicKeyInfoGeneratorFactory implements KeyInfoGeneratorFactory {
         protected BasicKeyInfoGenerator(BasicOptions newOptions) {
             options = newOptions;
             keyInfoBuilder = 
-                (KeyInfoBuilder) Configuration.getBuilderFactory().getBuilder(KeyInfo.DEFAULT_ELEMENT_NAME);
+                (KeyInfoBuilder) XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilder(KeyInfo.DEFAULT_ELEMENT_NAME);
         }
 
         /** {@inheritDoc} */

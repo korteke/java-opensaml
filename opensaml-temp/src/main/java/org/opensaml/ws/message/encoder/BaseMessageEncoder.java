@@ -20,7 +20,7 @@ package org.opensaml.ws.message.encoder;
 import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 
 import org.opensaml.ws.message.MessageContext;
-import org.opensaml.xml.Configuration;
+import org.opensaml.xml.XMLObjectProviderRegistrySupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallingException;
@@ -97,7 +97,7 @@ public abstract class BaseMessageEncoder implements MessageEncoder {
         log.debug("Marshalling message");
 
         try {
-            Marshaller marshaller = Configuration.getMarshallerFactory().getMarshaller(message);
+            Marshaller marshaller = XMLObjectProviderRegistrySupport.getMarshallerFactory().getMarshaller(message);
             if (marshaller == null) {
                 log.error("Unable to marshall message, no marshaller registered for message object: "
                         + message.getElementQName());

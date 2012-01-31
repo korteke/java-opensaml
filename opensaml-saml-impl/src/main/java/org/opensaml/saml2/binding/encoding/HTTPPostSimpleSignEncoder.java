@@ -27,7 +27,7 @@ import org.apache.velocity.app.VelocityEngine;
 import org.opensaml.common.binding.SAMLMessageContext;
 import org.opensaml.common.xml.SAMLConstants;
 import org.opensaml.ws.message.encoder.MessageEncodingException;
-import org.opensaml.xml.Configuration;
+import org.opensaml.xml.XMLObjectProviderRegistrySupport;
 import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.security.SecurityConfiguration;
@@ -144,7 +144,7 @@ public class HTTPPostSimpleSignEncoder extends HTTPPostEncoder {
         try {
             KeyInfo keyInfo = kiGenerator.generate(signingCredential);
             if (keyInfo != null) {
-                Marshaller marshaller = Configuration.getMarshallerFactory().getMarshaller(keyInfo);
+                Marshaller marshaller = XMLObjectProviderRegistrySupport.getMarshallerFactory().getMarshaller(keyInfo);
                 if (marshaller == null) {
                     log.error("No KeyInfo marshaller available from configuration");
                     throw new MessageEncodingException("No KeyInfo marshaller was configured");

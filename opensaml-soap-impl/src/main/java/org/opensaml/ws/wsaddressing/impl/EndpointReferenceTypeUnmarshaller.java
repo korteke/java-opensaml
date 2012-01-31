@@ -23,7 +23,7 @@ import org.opensaml.ws.wsaddressing.Metadata;
 import org.opensaml.ws.wsaddressing.ReferenceParameters;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
-import org.opensaml.xml.util.XMLObjectHelper;
+import org.opensaml.xml.util.XMLObjectSupport;
 import org.w3c.dom.Attr;
 
 /**
@@ -50,7 +50,7 @@ public class EndpointReferenceTypeUnmarshaller extends AbstractWSAddressingObjec
     /** {@inheritDoc} */
     protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
         EndpointReferenceType epr = (EndpointReferenceType) xmlObject;
-        XMLObjectHelper.unmarshallToAttributeMap(epr.getUnknownAttributes(), attribute);
+        XMLObjectSupport.unmarshallToAttributeMap(epr.getUnknownAttributes(), attribute);
     }
 
 }

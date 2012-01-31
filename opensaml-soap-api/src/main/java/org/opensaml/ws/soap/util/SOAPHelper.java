@@ -42,7 +42,7 @@ import org.opensaml.ws.soap.soap11.FaultString;
 import org.opensaml.ws.soap.soap11.Header;
 import org.opensaml.ws.soap.soap11.MustUnderstandBearing;
 import org.opensaml.xml.AttributeExtensibleXMLObject;
-import org.opensaml.xml.Configuration;
+import org.opensaml.xml.XMLObjectProviderRegistrySupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.XMLObjectBuilderFactory;
 import org.opensaml.xml.schema.XSBooleanValue;
@@ -458,7 +458,7 @@ public final class SOAPHelper {
     public static void addSOAP11HeaderBlock(Envelope envelope, XMLObject headerBlock) {
         Header envelopeHeader = envelope.getHeader();
         if (envelopeHeader == null) {
-            envelopeHeader = (Header) Configuration.getBuilderFactory().getBuilder(Header.DEFAULT_ELEMENT_NAME)
+            envelopeHeader = (Header) XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilder(Header.DEFAULT_ELEMENT_NAME)
                 .buildObject(Header.DEFAULT_ELEMENT_NAME);
             envelope.setHeader(envelopeHeader);
         }
@@ -610,7 +610,7 @@ public final class SOAPHelper {
             throw new IllegalArgumentException("Argument for 'faultstring' may not be null");
         }
         
-        XMLObjectBuilderFactory builderFactory = Configuration.getBuilderFactory(); 
+        XMLObjectBuilderFactory builderFactory = XMLObjectProviderRegistrySupport.getBuilderFactory(); 
         
         Fault faultObj =  (Fault) builderFactory.getBuilder(Fault.DEFAULT_ELEMENT_NAME)
             .buildObject(Fault.DEFAULT_ELEMENT_NAME);

@@ -23,7 +23,7 @@ import org.opensaml.common.binding.artifact.SAMLArtifactMap.SAMLArtifactMapEntry
 import org.opensaml.xml.XMLRuntimeException;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.io.UnmarshallingException;
-import org.opensaml.xml.util.XMLObjectHelper;
+import org.opensaml.xml.util.XMLObjectSupport;
 
 /**
  * A basic factory for instances of {@link SAMLArtifactMapEntryFactory}.
@@ -98,7 +98,7 @@ public class BasicSAMLArtifactMapEntryFactory implements SAMLArtifactMapEntryFac
             return samlMessage;
         } else {
             try {
-                return XMLObjectHelper.cloneXMLObject(samlMessage, true);
+                return XMLObjectSupport.cloneXMLObject(samlMessage, true);
             } catch (MarshallingException e) {
                 throw new XMLRuntimeException("Error during marshalling of SAMLObject", e);
             } catch (UnmarshallingException e) {

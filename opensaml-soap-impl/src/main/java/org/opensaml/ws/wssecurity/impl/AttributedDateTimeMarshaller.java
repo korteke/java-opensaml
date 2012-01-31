@@ -22,7 +22,7 @@ import net.shibboleth.utilities.java.support.xml.ElementSupport;
 import org.opensaml.ws.wssecurity.AttributedDateTime;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.util.XMLObjectHelper;
+import org.opensaml.xml.util.XMLObjectSupport;
 import org.w3c.dom.Element;
 
 import com.google.common.base.Strings;
@@ -38,10 +38,10 @@ public class AttributedDateTimeMarshaller extends AbstractWSSecurityObjectMarsha
         AttributedDateTime dateTime = (AttributedDateTime) xmlObject;
         
         if (!Strings.isNullOrEmpty(dateTime.getWSUId())) {
-            XMLObjectHelper.marshallAttribute(AttributedDateTime.WSU_ID_ATTR_NAME, dateTime.getWSUId(), domElement, true);
+            XMLObjectSupport.marshallAttribute(AttributedDateTime.WSU_ID_ATTR_NAME, dateTime.getWSUId(), domElement, true);
         }
         
-        XMLObjectHelper.marshallAttributeMap(dateTime.getUnknownAttributes(), domElement);
+        XMLObjectSupport.marshallAttributeMap(dateTime.getUnknownAttributes(), domElement);
         
     }
 

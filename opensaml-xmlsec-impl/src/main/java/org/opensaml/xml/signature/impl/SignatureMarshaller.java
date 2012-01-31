@@ -25,7 +25,7 @@ import net.shibboleth.utilities.java.support.xml.ElementSupport;
 import org.apache.xml.security.Init;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.signature.XMLSignature;
-import org.opensaml.xml.Configuration;
+import org.opensaml.xml.XMLObjectProviderRegistrySupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallingException;
@@ -120,7 +120,7 @@ public class SignatureMarshaller implements Marshaller {
             Element signatureElement = dsig.getElement();
 
             if (signature.getKeyInfo() != null) {
-                Marshaller keyInfoMarshaller = Configuration.getMarshallerFactory().getMarshaller(
+                Marshaller keyInfoMarshaller = XMLObjectProviderRegistrySupport.getMarshallerFactory().getMarshaller(
                         KeyInfo.DEFAULT_ELEMENT_NAME);
                 keyInfoMarshaller.marshall(signature.getKeyInfo(), signatureElement);
             }

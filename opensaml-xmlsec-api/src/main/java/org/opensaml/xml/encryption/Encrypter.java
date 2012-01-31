@@ -34,7 +34,7 @@ import net.shibboleth.utilities.java.support.xml.QNameSupport;
 import org.apache.xml.security.Init;
 import org.apache.xml.security.encryption.XMLCipher;
 import org.apache.xml.security.encryption.XMLEncryptionException;
-import org.opensaml.xml.Configuration;
+import org.opensaml.xml.XMLObjectProviderRegistrySupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.XMLObjectBuilderFactory;
 import org.opensaml.xml.io.Marshaller;
@@ -109,11 +109,11 @@ public class Encrypter {
      * 
      */
     public Encrypter() {
-        UnmarshallerFactory unmarshallerFactory = Configuration.getUnmarshallerFactory();
+        UnmarshallerFactory unmarshallerFactory = XMLObjectProviderRegistrySupport.getUnmarshallerFactory();
         encryptedDataUnmarshaller = unmarshallerFactory.getUnmarshaller(EncryptedData.DEFAULT_ELEMENT_NAME);
         encryptedKeyUnmarshaller = unmarshallerFactory.getUnmarshaller(EncryptedKey.DEFAULT_ELEMENT_NAME);
 
-        XMLObjectBuilderFactory builderFactory = Configuration.getBuilderFactory();
+        XMLObjectBuilderFactory builderFactory = XMLObjectProviderRegistrySupport.getBuilderFactory();
         keyInfoBuilder = (XMLSignatureBuilder<KeyInfo>) builderFactory.getBuilder(KeyInfo.DEFAULT_ELEMENT_NAME);
 
         jcaProviderName = null;
@@ -529,7 +529,7 @@ public class Encrypter {
     protected void checkAndMarshall(XMLObject xmlObject) throws EncryptionException {
         Element targetElement = xmlObject.getDOM();
         if (targetElement == null) {
-            Marshaller marshaller = Configuration.getMarshallerFactory().getMarshaller(xmlObject);
+            Marshaller marshaller = XMLObjectProviderRegistrySupport.getMarshallerFactory().getMarshaller(xmlObject);
             try {
                 targetElement = marshaller.marshall(xmlObject);
             } catch (MarshallingException e) {

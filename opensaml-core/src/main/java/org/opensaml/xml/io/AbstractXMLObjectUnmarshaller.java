@@ -24,7 +24,7 @@ import net.shibboleth.utilities.java.support.xml.DomTypeSupport;
 import net.shibboleth.utilities.java.support.xml.QNameSupport;
 import net.shibboleth.utilities.java.support.xml.XmlConstants;
 
-import org.opensaml.xml.Configuration;
+import org.opensaml.xml.XMLObjectProviderRegistrySupport;
 import org.opensaml.xml.Namespace;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.XMLObjectBuilder;
@@ -72,8 +72,8 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
      * Constructor.
      */
     protected AbstractXMLObjectUnmarshaller() {
-        xmlObjectBuilderFactory = Configuration.getBuilderFactory();
-        unmarshallerFactory = Configuration.getUnmarshallerFactory();
+        xmlObjectBuilderFactory = XMLObjectProviderRegistrySupport.getBuilderFactory();
+        unmarshallerFactory = XMLObjectProviderRegistrySupport.getUnmarshallerFactory();
     }
 
     /**
@@ -90,8 +90,8 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
     protected AbstractXMLObjectUnmarshaller(String targetNamespaceURI, String targetLocalName) {
         targetQName = QNameSupport.constructQName(targetNamespaceURI, targetLocalName, null);
 
-        xmlObjectBuilderFactory = Configuration.getBuilderFactory();
-        unmarshallerFactory = Configuration.getUnmarshallerFactory();
+        xmlObjectBuilderFactory = XMLObjectProviderRegistrySupport.getBuilderFactory();
+        unmarshallerFactory = XMLObjectProviderRegistrySupport.getUnmarshallerFactory();
     }
 
     /** {@inheritDoc} */
@@ -191,7 +191,7 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
 
         xmlObjectBuilder = xmlObjectBuilderFactory.getBuilder(domElement);
         if (xmlObjectBuilder == null) {
-            xmlObjectBuilder = xmlObjectBuilderFactory.getBuilder(Configuration.getDefaultProviderQName());
+            xmlObjectBuilder = xmlObjectBuilderFactory.getBuilder(XMLObjectProviderRegistrySupport.getDefaultProviderQName());
             if (xmlObjectBuilder == null) {
                 String errorMsg = "Unable to located builder for " + QNameSupport.getNodeQName(domElement);
                 log.error(errorMsg);
@@ -299,7 +299,7 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
      */
     protected void checkIDAttribute(Attr attribute) {
         QName attribName = QNameSupport.getNodeQName(attribute);
-        if (Configuration.isIDAttribute(attribName) && !attribute.isId()) {
+        if (XMLObjectProviderRegistrySupport.isIDAttribute(attribName) && !attribute.isId()) {
             attribute.getOwnerElement().setIdAttributeNode(attribute, true);
         }
     }
@@ -321,7 +321,7 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
         Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(childElement);
 
         if (unmarshaller == null) {
-            unmarshaller = unmarshallerFactory.getUnmarshaller(Configuration.getDefaultProviderQName());
+            unmarshaller = unmarshallerFactory.getUnmarshaller(XMLObjectProviderRegistrySupport.getDefaultProviderQName());
             if (unmarshaller == null) {
                 String errorMsg =
                         "No unmarshaller available for " + QNameSupport.getNodeQName(childElement) + ", child of "

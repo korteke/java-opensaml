@@ -29,7 +29,7 @@ import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 import org.custommonkey.xmlunit.Diff;
 import org.custommonkey.xmlunit.XMLAssert;
 import org.custommonkey.xmlunit.XMLUnit;
-import org.opensaml.xml.Configuration;
+import org.opensaml.xml.XMLObjectProviderRegistrySupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.XMLObjectBuilder;
 import org.opensaml.xml.io.Marshaller;
@@ -91,7 +91,7 @@ public abstract class WSBaseTestCase extends TestCase {
     }
 
     protected void registerBuilders() {
-        builders_= Configuration.getBuilderFactory().getBuilders();
+        builders_= XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilders();
         Set<QName> keys= builders_.keySet();
         if (log.isTraceEnabled()) {
             for (QName name : keys) {
@@ -103,11 +103,11 @@ public abstract class WSBaseTestCase extends TestCase {
     }
 
     protected void registerMarshallers() {
-        marshallers_= Configuration.getMarshallerFactory().getMarshallers();
+        marshallers_= XMLObjectProviderRegistrySupport.getMarshallerFactory().getMarshallers();
     }
 
     protected void registerUnmarshallers() {
-        unmarshallers_= Configuration.getUnmarshallerFactory().getUnmarshallers();
+        unmarshallers_= XMLObjectProviderRegistrySupport.getUnmarshallerFactory().getUnmarshallers();
     }
 
     protected void createParser() {

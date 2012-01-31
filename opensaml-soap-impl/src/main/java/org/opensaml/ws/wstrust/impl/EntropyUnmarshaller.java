@@ -20,7 +20,7 @@ package org.opensaml.ws.wstrust.impl;
 import org.opensaml.ws.wstrust.Claims;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
-import org.opensaml.xml.util.XMLObjectHelper;
+import org.opensaml.xml.util.XMLObjectSupport;
 import org.w3c.dom.Attr;
 
 
@@ -34,7 +34,7 @@ public class EntropyUnmarshaller extends AbstractWSTrustObjectUnmarshaller {
     /** {@inheritDoc} */
     protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
         Claims claims = (Claims) xmlObject;
-        XMLObjectHelper.unmarshallToAttributeMap(claims.getUnknownAttributes(), attribute);
+        XMLObjectSupport.unmarshallToAttributeMap(claims.getUnknownAttributes(), attribute);
     }
 
     /** {@inheritDoc} */

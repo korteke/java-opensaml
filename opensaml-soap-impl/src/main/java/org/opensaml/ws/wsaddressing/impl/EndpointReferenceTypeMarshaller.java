@@ -20,7 +20,7 @@ package org.opensaml.ws.wsaddressing.impl;
 import org.opensaml.ws.wsaddressing.EndpointReferenceType;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.util.XMLObjectHelper;
+import org.opensaml.xml.util.XMLObjectSupport;
 import org.w3c.dom.Element;
 
 /**
@@ -32,7 +32,7 @@ public class EndpointReferenceTypeMarshaller extends AbstractWSAddressingObjectM
     /** {@inheritDoc} */
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         EndpointReferenceType eprType = (EndpointReferenceType) xmlObject;
-        XMLObjectHelper.marshallAttributeMap(eprType.getUnknownAttributes(), domElement);
+        XMLObjectSupport.marshallAttributeMap(eprType.getUnknownAttributes(), domElement);
     }
 
 }

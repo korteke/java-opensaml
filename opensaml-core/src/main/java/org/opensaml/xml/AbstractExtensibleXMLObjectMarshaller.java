@@ -66,7 +66,7 @@ public class AbstractExtensibleXMLObjectMarshaller extends AbstractElementExtens
             attribute = AttributeSupport.constructAttribute(document, entry.getKey());
             attribute.setValue(entry.getValue());
             domElement.setAttributeNodeNS(attribute);
-            if (Configuration.isIDAttribute(entry.getKey())
+            if (XMLObjectProviderRegistrySupport.isIDAttribute(entry.getKey())
                     || anyAttribute.getUnknownAttributes().isIDAttribute(entry.getKey())) {
                 attribute.getOwnerElement().setIdAttributeNode(attribute, true);
             }

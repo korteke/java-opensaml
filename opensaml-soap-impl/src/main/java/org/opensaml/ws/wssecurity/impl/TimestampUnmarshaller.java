@@ -27,7 +27,7 @@ import org.opensaml.ws.wssecurity.Expires;
 import org.opensaml.ws.wssecurity.Timestamp;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
-import org.opensaml.xml.util.XMLObjectHelper;
+import org.opensaml.xml.util.XMLObjectSupport;
 import org.w3c.dom.Attr;
 
 /**
@@ -60,7 +60,7 @@ public class TimestampUnmarshaller extends AbstractWSSecurityObjectUnmarshaller 
             timestamp.setWSUId(attribute.getValue());
             attribute.getOwnerElement().setIdAttributeNode(attribute, true);
         } else {
-            XMLObjectHelper.unmarshallToAttributeMap(timestamp.getUnknownAttributes(), attribute);
+            XMLObjectSupport.unmarshallToAttributeMap(timestamp.getUnknownAttributes(), attribute);
         }
         
     }

@@ -20,7 +20,7 @@ package org.opensaml.ws.wssecurity.impl;
 import org.opensaml.ws.wssecurity.TransformationParameters;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.util.XMLObjectHelper;
+import org.opensaml.xml.util.XMLObjectSupport;
 import org.w3c.dom.Element;
 
 /**
@@ -32,7 +32,7 @@ public class TransformationParametersMarshaller extends AbstractWSSecurityObject
     /** {@inheritDoc} */
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         TransformationParameters tp = (TransformationParameters) xmlObject;
-        XMLObjectHelper.marshallAttributeMap(tp.getUnknownAttributes(), domElement);
+        XMLObjectSupport.marshallAttributeMap(tp.getUnknownAttributes(), domElement);
     }
 
 }

@@ -20,7 +20,7 @@ package org.opensaml.ws.wssecurity.impl;
 import org.opensaml.ws.wssecurity.Embedded;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
-import org.opensaml.xml.util.XMLObjectHelper;
+import org.opensaml.xml.util.XMLObjectSupport;
 import org.w3c.dom.Attr;
 
 /**
@@ -36,7 +36,7 @@ public class EmbeddedUnmarshaller extends AbstractWSSecurityObjectUnmarshaller {
         if (Embedded.VALUE_TYPE_ATTRIB_NAME.equals(attrName)) {
             embedded.setValueType(attribute.getValue());
         } else {
-            XMLObjectHelper.unmarshallToAttributeMap(embedded.getUnknownAttributes(), attribute);
+            XMLObjectSupport.unmarshallToAttributeMap(embedded.getUnknownAttributes(), attribute);
         }
     }
 

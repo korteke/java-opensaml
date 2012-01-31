@@ -22,7 +22,7 @@ import net.shibboleth.utilities.java.support.xml.ElementSupport;
 import org.opensaml.ws.wsaddressing.AttributedUnsignedLong;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.util.XMLObjectHelper;
+import org.opensaml.xml.util.XMLObjectSupport;
 import org.w3c.dom.Element;
 
 /**
@@ -33,7 +33,7 @@ public class AttributedUnsignedLongMarshaller extends AbstractWSAddressingObject
     /** {@inheritDoc} */
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         AttributedUnsignedLong aul = (AttributedUnsignedLong) xmlObject;
-        XMLObjectHelper.marshallAttributeMap(aul.getUnknownAttributes(), domElement);
+        XMLObjectSupport.marshallAttributeMap(aul.getUnknownAttributes(), domElement);
     }
 
     /** {@inheritDoc} */

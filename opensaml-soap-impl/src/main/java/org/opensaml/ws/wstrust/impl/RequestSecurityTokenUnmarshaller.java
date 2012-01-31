@@ -21,7 +21,7 @@ package org.opensaml.ws.wstrust.impl;
 import org.opensaml.ws.wstrust.RequestSecurityToken;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
-import org.opensaml.xml.util.XMLObjectHelper;
+import org.opensaml.xml.util.XMLObjectSupport;
 import org.w3c.dom.Attr;
 
 /**
@@ -36,7 +36,7 @@ public class RequestSecurityTokenUnmarshaller extends AbstractWSTrustObjectUnmar
         if (RequestSecurityToken.CONTEXT_ATTRIB_NAME.equals(attribute.getLocalName())) {
             rst.setContext(attribute.getValue());
         } else {
-            XMLObjectHelper.unmarshallToAttributeMap(rst.getUnknownAttributes(), attribute);
+            XMLObjectSupport.unmarshallToAttributeMap(rst.getUnknownAttributes(), attribute);
         }
     }
 

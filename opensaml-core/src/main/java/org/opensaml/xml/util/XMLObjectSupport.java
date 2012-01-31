@@ -31,7 +31,7 @@ import net.shibboleth.utilities.java.support.xml.QNameSupport;
 import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 
 import org.opensaml.core.config.ConfigurationService;
-import org.opensaml.xml.Configuration;
+import org.opensaml.xml.XMLObjectProviderRegistrySupport;
 import org.opensaml.xml.Namespace;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.XMLObjectBuilder;
@@ -56,10 +56,10 @@ import com.google.common.base.Objects;
 /**
  * A helper class for working with XMLObjects.
  */
-public final class XMLObjectHelper {
+public final class XMLObjectSupport {
     
     /** Constructor. */
-    private XMLObjectHelper() { }
+    private XMLObjectSupport() { }
     
     /**
      * Clone an XMLObject by brute force:
@@ -115,14 +115,14 @@ public final class XMLObjectHelper {
             return null;
         }
         
-        Marshaller marshaller = Configuration.getMarshallerFactory().getMarshaller(originalXMLObject);
+        Marshaller marshaller = XMLObjectProviderRegistrySupport.getMarshallerFactory().getMarshaller(originalXMLObject);
         Element origElement = marshaller.marshall(originalXMLObject);
         
         Element clonedElement = null;
         
         if (rootInNewDocument) {
             try {
-                Document newDocument = Configuration.getParserPool().newDocument();
+                Document newDocument = XMLObjectProviderRegistrySupport.getParserPool().newDocument();
                 // Note: importNode copies the node tree and does not modify the source document
                 clonedElement = (Element) newDocument.importNode(origElement, true);
                 newDocument.appendChild(clonedElement);
@@ -133,7 +133,7 @@ public final class XMLObjectHelper {
             clonedElement = (Element) origElement.cloneNode(true);
         }
         
-        Unmarshaller unmarshaller = Configuration.getUnmarshallerFactory().getUnmarshaller(clonedElement);
+        Unmarshaller unmarshaller = XMLObjectProviderRegistrySupport.getUnmarshallerFactory().getUnmarshaller(clonedElement);
         T clonedXMLObject = (T) unmarshaller.unmarshall(clonedElement);
         
         return clonedXMLObject;
@@ -162,7 +162,7 @@ public final class XMLObjectHelper {
         }
 
         log.debug("Unmarshalling DOM parsed from InputStream");
-        Unmarshaller unmarshaller = Configuration.getUnmarshallerFactory().getUnmarshaller(messageElem);
+        Unmarshaller unmarshaller = XMLObjectProviderRegistrySupport.getUnmarshallerFactory().getUnmarshaller(messageElem);
         if (unmarshaller == null) {
             log.error("Unable to unmarshall InputStream, no unmarshaller registered for element "
                     + QNameSupport.getNodeQName(messageElem));
@@ -201,7 +201,7 @@ public final class XMLObjectHelper {
         }
 
         log.debug("Unmarshalling DOM parsed from Reader");
-        Unmarshaller unmarshaller = Configuration.getUnmarshallerFactory().getUnmarshaller(messageElem);
+        Unmarshaller unmarshaller = XMLObjectProviderRegistrySupport.getUnmarshallerFactory().getUnmarshaller(messageElem);
         if (unmarshaller == null) {
             log.error("Unable to unmarshall Reader, no unmarshaller registered for element "
                     + QNameSupport.getNodeQName(messageElem));
@@ -233,7 +233,7 @@ public final class XMLObjectHelper {
             return xmlObject.getDOM();
         }
 
-        Marshaller marshaller = Configuration.getMarshallerFactory().getMarshaller(xmlObject);
+        Marshaller marshaller = XMLObjectProviderRegistrySupport.getMarshallerFactory().getMarshaller(xmlObject);
         if (marshaller == null) {
             log.error("Unable to marshall XMLOBject, no marshaller registered for object: "
                     + xmlObject.getElementQName());
@@ -314,7 +314,7 @@ public final class XMLObjectHelper {
      * @return a Logger instance
      */
     private static Logger getLogger() {
-        return LoggerFactory.getLogger(XMLObjectHelper.class);
+        return LoggerFactory.getLogger(XMLObjectSupport.class);
     }
 
     /**
@@ -367,7 +367,7 @@ public final class XMLObjectHelper {
             attribute = AttributeSupport.constructAttribute(document, entry.getKey());
             attribute.setValue(entry.getValue());
             domElement.setAttributeNodeNS(attribute);
-            if (Configuration.isIDAttribute(entry.getKey()) || attributeMap.isIDAttribute(entry.getKey())) {
+            if (XMLObjectProviderRegistrySupport.isIDAttribute(entry.getKey()) || attributeMap.isIDAttribute(entry.getKey())) {
                 domElement.setIdAttributeNode(attribute, true);
             }
         }
@@ -383,7 +383,7 @@ public final class XMLObjectHelper {
         QName attribQName = QNameSupport.constructQName(attribute.getNamespaceURI(), attribute.getLocalName(), attribute
                 .getPrefix());
         attributeMap.put(attribQName, attribute.getValue());
-        if (attribute.isId() || Configuration.isIDAttribute(attribQName)) {
+        if (attribute.isId() || XMLObjectProviderRegistrySupport.isIDAttribute(attribQName)) {
             attributeMap.registerID(attribQName);
         }
     }

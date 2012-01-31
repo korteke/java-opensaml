@@ -22,7 +22,7 @@ import java.io.InputStream;
 import javax.xml.namespace.QName;
 
 import org.opensaml.ws.WSBaseTestCase;
-import org.opensaml.xml.Configuration;
+import org.opensaml.xml.XMLObjectProviderRegistrySupport;
 import org.opensaml.xml.XMLConfigurator;
 import org.opensaml.xml.schema.XSAny;
 import org.opensaml.xml.schema.impl.XSAnyBuilder;
@@ -52,7 +52,7 @@ public class WSPolicyObjectsTestCase extends WSBaseTestCase {
         configurator.load(is);
         
         // register provider for Test supporting config
-        Configuration.registerObjectProvider(TEST_ELEMENT_QNAME,  
+        XMLObjectProviderRegistrySupport.registerObjectProvider(TEST_ELEMENT_QNAME,  
                 new XSAnyBuilder(), new XSAnyMarshaller(), new XSAnyUnmarshaller());
     }
     

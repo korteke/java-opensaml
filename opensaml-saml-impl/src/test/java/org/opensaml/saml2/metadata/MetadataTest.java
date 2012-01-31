@@ -20,7 +20,7 @@ package org.opensaml.saml2.metadata;
 import java.io.InputStream;
 
 import org.opensaml.common.BaseTestCase;
-import org.opensaml.xml.Configuration;
+import org.opensaml.xml.XMLObjectProviderRegistrySupport;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.Unmarshaller;
 import org.opensaml.xml.io.UnmarshallingException;
@@ -59,7 +59,7 @@ public class MetadataTest extends BaseTestCase {
         try {
             InputStream in = MetadataTest.class.getResourceAsStream(inCommonMDFile);
             Document inCommonMDDoc = parser.parse(in);
-            Unmarshaller unmarshaller = Configuration.getUnmarshallerFactory().getUnmarshaller(
+            Unmarshaller unmarshaller = XMLObjectProviderRegistrySupport.getUnmarshallerFactory().getUnmarshaller(
                     inCommonMDDoc.getDocumentElement());
 
             XMLObject inCommonMD = unmarshaller.unmarshall(inCommonMDDoc.getDocumentElement());
@@ -85,7 +85,7 @@ public class MetadataTest extends BaseTestCase {
         try {
             InputStream in = MetadataTest.class.getResourceAsStream(switchMDFile);
             Document switchMDDoc = parser.parse(in);
-            Unmarshaller unmarshaller = Configuration.getUnmarshallerFactory().getUnmarshaller(
+            Unmarshaller unmarshaller = XMLObjectProviderRegistrySupport.getUnmarshallerFactory().getUnmarshaller(
                     switchMDDoc.getDocumentElement());
 
             XMLObject switchMD = unmarshaller.unmarshall(switchMDDoc.getDocumentElement());
@@ -111,7 +111,7 @@ public class MetadataTest extends BaseTestCase {
         try {
             InputStream in = MetadataTest.class.getResourceAsStream(switchMDFile);
             Document ukFedDoc = parser.parse(in);            
-            Unmarshaller unmarshaller = Configuration.getUnmarshallerFactory().getUnmarshaller(
+            Unmarshaller unmarshaller = XMLObjectProviderRegistrySupport.getUnmarshallerFactory().getUnmarshaller(
                     ukFedDoc.getDocumentElement());
             XMLObject ukFedMD = unmarshaller.unmarshall(ukFedDoc.getDocumentElement());
 

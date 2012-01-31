@@ -28,7 +28,7 @@ import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 
 import org.apache.xml.security.signature.SignedInfo;
 import org.apache.xml.security.signature.XMLSignature;
-import org.opensaml.xml.Configuration;
+import org.opensaml.xml.XMLObjectProviderRegistrySupport;
 import org.opensaml.xml.XMLObjectBaseTestCase;
 import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallingException;
@@ -110,7 +110,7 @@ public class HMACSignatureTest extends XMLObjectBaseTestCase {
         SignableSimpleXMLObject sxo = getXMLObjectWithSignature(false);
         Signature signature = sxo.getSignature();
 
-        Marshaller marshaller = Configuration.getMarshallerFactory().getMarshaller(sxo);
+        Marshaller marshaller = XMLObjectProviderRegistrySupport.getMarshallerFactory().getMarshaller(sxo);
         Element signedElement = marshaller.marshall(sxo);
         
         Signer.signObject(signature);
@@ -142,7 +142,7 @@ public class HMACSignatureTest extends XMLObjectBaseTestCase {
         SignableSimpleXMLObject sxo = getXMLObjectWithSignature(true);
         Signature signature = sxo.getSignature();
 
-        Marshaller marshaller = Configuration.getMarshallerFactory().getMarshaller(sxo);
+        Marshaller marshaller = XMLObjectProviderRegistrySupport.getMarshallerFactory().getMarshaller(sxo);
         Element signedElement = marshaller.marshall(sxo);
         
         Signer.signObject(signature);
@@ -175,7 +175,7 @@ public class HMACSignatureTest extends XMLObjectBaseTestCase {
         Document envelopedSignatureDoc = parserPool.parse(ins);
         Element rootElement = envelopedSignatureDoc.getDocumentElement();
 
-        Unmarshaller unmarshaller = Configuration.getUnmarshallerFactory().getUnmarshaller(rootElement);
+        Unmarshaller unmarshaller = XMLObjectProviderRegistrySupport.getUnmarshallerFactory().getUnmarshaller(rootElement);
         SignableSimpleXMLObject sxo = (SignableSimpleXMLObject) unmarshaller.unmarshall(rootElement);
 
         assertEquals("Id attribute was not expected value", "FOO", sxo.getId());
@@ -206,7 +206,7 @@ public class HMACSignatureTest extends XMLObjectBaseTestCase {
         Document envelopedSignatureDoc = parserPool.parse(ins);
         Element rootElement = envelopedSignatureDoc.getDocumentElement();
 
-        Unmarshaller unmarshaller = Configuration.getUnmarshallerFactory().getUnmarshaller(rootElement);
+        Unmarshaller unmarshaller = XMLObjectProviderRegistrySupport.getUnmarshallerFactory().getUnmarshaller(rootElement);
         SignableSimpleXMLObject sxo = (SignableSimpleXMLObject) unmarshaller.unmarshall(rootElement);
 
         assertEquals("Id attribute was not expected value", "FOO", sxo.getId());
@@ -235,7 +235,7 @@ public class HMACSignatureTest extends XMLObjectBaseTestCase {
         SignableSimpleXMLObject sxo = getXMLObjectWithSignature(false);
         Signature signature = sxo.getSignature();
 
-        Marshaller marshaller = Configuration.getMarshallerFactory().getMarshaller(sxo);
+        Marshaller marshaller = XMLObjectProviderRegistrySupport.getMarshallerFactory().getMarshaller(sxo);
         marshaller.marshall(sxo);
         
         assertNotNull("Signature DOM was null", signature.getDOM());
@@ -258,7 +258,7 @@ public class HMACSignatureTest extends XMLObjectBaseTestCase {
         SignableSimpleXMLObject sxo = getXMLObjectWithSignature(true);
         Signature signature = sxo.getSignature();
 
-        Marshaller marshaller = Configuration.getMarshallerFactory().getMarshaller(sxo);
+        Marshaller marshaller = XMLObjectProviderRegistrySupport.getMarshallerFactory().getMarshaller(sxo);
         marshaller.marshall(sxo);
         
         assertNotNull("Signature DOM was null", signature.getDOM());
