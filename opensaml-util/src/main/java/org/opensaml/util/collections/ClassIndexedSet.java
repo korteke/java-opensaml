@@ -23,7 +23,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.opensaml.util.Assert;
+import net.shibboleth.utilities.java.support.logic.Assert;
 
 /**
  * Set implementation which provides indexed access to set members via their class, and which allows only one instance
@@ -31,7 +31,6 @@ import org.opensaml.util.Assert;
  * 
  * @param <T> the type of object stored by this class
  */
-@Deprecated
 public class ClassIndexedSet<T> extends AbstractSet<T> implements Set<T> {
 
     /** Storage for set members. */

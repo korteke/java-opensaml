@@ -22,13 +22,13 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
 import java.util.UUID;
 
-import net.shibboleth.utilities.java.support.collection.ClassIndexedSet;
 import net.shibboleth.utilities.java.support.component.IdentifiableComponent;
 import net.shibboleth.utilities.java.support.logic.Assert;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 import org.joda.time.DateTime;
 import org.opensaml.messaging.MessageRuntimeException;
+import org.opensaml.util.collections.ClassIndexedSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
