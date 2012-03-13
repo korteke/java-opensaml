@@ -17,14 +17,12 @@
 
 package org.opensaml.xml.security.credential;
 
-import net.shibboleth.utilities.java.support.collection.ClassIndexedSet;
-
+import org.opensaml.util.collections.ClassIndexedSet;
 
 /**
  * This class holds instances of {@link CredentialContext} which represent information
  * about the context in which a {@link CredentialResolver} has resolved a {@link Credential}.
  */
 public class CredentialContextSet extends ClassIndexedSet<CredentialContext> {
-    
-    
+       
 }
