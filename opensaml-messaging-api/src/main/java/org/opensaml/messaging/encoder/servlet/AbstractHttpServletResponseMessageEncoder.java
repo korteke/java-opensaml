@@ -20,7 +20,7 @@ package org.opensaml.messaging.encoder.servlet;
 import javax.servlet.http.HttpServletResponse;
 
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.component.UnmodifiableComponentException;
+import net.shibboleth.utilities.java.support.component.ComponentSupport;
 
 import org.opensaml.messaging.encoder.AbstractMessageEncoder;
 
@@ -42,10 +42,17 @@ public abstract class AbstractHttpServletResponseMessageEncoder<MessageType> ext
 
     /** {@inheritDoc} */
     public synchronized void setHttpServletResponse(HttpServletResponse servletResponse) {
-        if (isInitialized()) {
-            throw new UnmodifiableComponentException("Servlet response can not be changed once decoder is initialized");
-        }
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+
         response = servletResponse;
+    }
+
+    /** {@inheritDoc} */
+    protected void doDestroy() {
+        response = null;
+
+        super.doDestroy();
     }
 
     /** {@inheritDoc} */
