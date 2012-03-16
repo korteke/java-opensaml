@@ -17,8 +17,9 @@
 
 package org.opensaml.messaging.encoder;
 
-import net.shibboleth.utilities.java.support.component.AbstractInitializableComponent;
+import net.shibboleth.utilities.java.support.component.AbstractDestructableInitializableComponent;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.component.UnmodifiableComponent;
 
 import org.opensaml.messaging.context.MessageContext;
@@ -28,20 +29,26 @@ import org.opensaml.messaging.context.MessageContext;
  * 
  * @param <MessageType> the message type of the message context on which to operate
  */
-public abstract class AbstractMessageEncoder<MessageType> extends AbstractInitializableComponent implements
+public abstract class AbstractMessageEncoder<MessageType> extends AbstractDestructableInitializableComponent implements
         MessageEncoder<MessageType>, UnmodifiableComponent {
 
     /** The message context. */
     private MessageContext<MessageType> messageContext;
 
     /** {@inheritDoc} */
-    public void setMessageContext(MessageContext<MessageType> context) {
+    public synchronized void setMessageContext(MessageContext<MessageType> context) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+
         messageContext = context;
     }
 
     /** {@inheritDoc} */
-    public void destroy() {
-        // Default implementation is a no-op
+    public void encode() throws MessageEncodingException {
+        ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
+        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+
+        doEncoder();
     }
 
     /**
@@ -54,6 +61,13 @@ public abstract class AbstractMessageEncoder<MessageType> extends AbstractInitia
     }
 
     /** {@inheritDoc} */
+    protected void doDestroy() {
+        messageContext = null;
+
+        super.doDestroy();
+    }
+
+    /** {@inheritDoc} */
     protected void doInitialize() throws ComponentInitializationException {
         super.doInitialize();
 
@@ -61,4 +75,12 @@ public abstract class AbstractMessageEncoder<MessageType> extends AbstractInitia
             throw new ComponentInitializationException("Message context can not be null");
         }
     }
+
+    /**
+     * Performs the encoding logic. By the time this is called, this encoder has already been initialized and checked to
+     * ensure that it has not been destroyed.
+     * 
+     * @throws MessageEncodingException thrown if there is a problem encoding the message
+     */
+    protected abstract void doEncoder() throws MessageEncodingException;
 }

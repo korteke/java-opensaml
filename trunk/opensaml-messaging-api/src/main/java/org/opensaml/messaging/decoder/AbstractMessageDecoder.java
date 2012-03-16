@@ -17,7 +17,8 @@
 
 package org.opensaml.messaging.decoder;
 
-import net.shibboleth.utilities.java.support.component.AbstractInitializableComponent;
+import net.shibboleth.utilities.java.support.component.AbstractDestructableInitializableComponent;
+import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.component.UnmodifiableComponent;
 
 import org.opensaml.messaging.context.MessageContext;
@@ -27,7 +28,7 @@ import org.opensaml.messaging.context.MessageContext;
  * 
  * @param <MessageType> the message type of the message context on which to operate
  */
-public abstract class AbstractMessageDecoder<MessageType> extends AbstractInitializableComponent implements
+public abstract class AbstractMessageDecoder<MessageType> extends AbstractDestructableInitializableComponent implements
         MessageDecoder<MessageType>, UnmodifiableComponent {
 
     /** Message context. */
@@ -38,11 +39,6 @@ public abstract class AbstractMessageDecoder<MessageType> extends AbstractInitia
         return messageContext;
     }
 
-    /** {@inheritDoc} */
-    public void destroy() {
-        // Default implementation is a no-op
-    }
-
     /**
      * Set the message context.
      * 
@@ -51,4 +47,27 @@ public abstract class AbstractMessageDecoder<MessageType> extends AbstractInitia
     protected void setMessageContext(MessageContext<MessageType> context) {
         messageContext = context;
     }
+
+    /** {@inheritDoc} */
+    public void decode() throws MessageDecodingException {
+        ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
+        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+
+        doDecode();
+    }
+    
+    /** {@inheritDoc} */
+    protected void doDestroy() {
+        messageContext = null;
+        
+        super.doDestroy();
+    }
+
+    /**
+     * Performs the decoding logic. By the time this is called, this decoder has already been initialized and checked to
+     * ensure that it has not been destroyed.
+     * 
+     * @throws MessageDecodingException thrown if there is a problem decoding the message
+     */
+    protected abstract void doDecode() throws MessageDecodingException;
 }

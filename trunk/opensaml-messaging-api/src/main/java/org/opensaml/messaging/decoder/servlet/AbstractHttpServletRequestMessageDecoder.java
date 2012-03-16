@@ -20,7 +20,7 @@ package org.opensaml.messaging.decoder.servlet;
 import javax.servlet.http.HttpServletRequest;
 
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.component.UnmodifiableComponentException;
+import net.shibboleth.utilities.java.support.component.ComponentSupport;
 
 import org.opensaml.messaging.decoder.AbstractMessageDecoder;
 
@@ -42,10 +42,17 @@ public abstract class AbstractHttpServletRequestMessageDecoder<MessageType> exte
 
     /** {@inheritDoc} */
     public synchronized void setHttpServletRequest(HttpServletRequest servletRequest) {
-        if (isInitialized()) {
-            throw new UnmodifiableComponentException("Servlet request can not be changed once decoder is initialized");
-        }
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+
         request = servletRequest;
+    }
+    
+    /** {@inheritDoc} */
+    protected void doDestroy() {
+        request = null;
+        
+        super.doDestroy();
     }
 
     /** {@inheritDoc} */
