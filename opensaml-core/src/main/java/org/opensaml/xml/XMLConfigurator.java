@@ -31,6 +31,7 @@ import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
+import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.xml.AttributeSupport;
 import net.shibboleth.utilities.java.support.xml.BasicParserPool;
@@ -113,8 +114,11 @@ public class XMLConfigurator {
             parserPool.setIgnoreComments(true);
             parserPool.setIgnoreElementContentWhitespace(true);
             parserPool.setSchema(configurationSchema);
+            parserPool.initialize();
         } catch (SAXException e) {
             throw new ConfigurationException("Unable to read XMLTooling configuration schema", e);
+        } catch (ComponentInitializationException e) {
+            throw new ConfigurationException("Unable to initialize parser pool", e);
         }
 
         synchronized (ConfigurationService.class) {
