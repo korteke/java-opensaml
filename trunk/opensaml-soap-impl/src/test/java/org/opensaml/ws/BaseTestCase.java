@@ -66,6 +66,7 @@ public abstract class BaseTestCase extends TestCase {
         
         parserPool = new BasicParserPool();
         parserPool.setNamespaceAware(true);
+        parserPool.initialize();
 
         Class clazz = BaseTestCase.class;
         try {
