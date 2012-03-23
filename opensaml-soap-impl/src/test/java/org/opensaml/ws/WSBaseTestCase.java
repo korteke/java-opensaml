@@ -24,6 +24,7 @@ import java.util.Set;
 import javax.xml.namespace.QName;
 
 import junit.framework.TestCase;
+import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.xml.BasicParserPool;
 import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 import net.shibboleth.utilities.java.support.xml.XMLParserException;
@@ -110,9 +111,10 @@ public abstract class WSBaseTestCase extends TestCase {
         unmarshallers_= XMLObjectProviderRegistrySupport.getUnmarshallerFactory().getUnmarshallers();
     }
 
-    protected void createParser() {
+    protected void createParser() throws ComponentInitializationException {
         parser_= new BasicParserPool();
         parser_.setNamespaceAware(true);
+        parser_.initialize();
     }
 
     @SuppressWarnings("unchecked")
