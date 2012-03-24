@@ -24,14 +24,13 @@ import java.net.Socket;
 import java.net.SocketAddress;
 import java.security.GeneralSecurityException;
 
+import javax.annotation.concurrent.ThreadSafe;
 import javax.net.SocketFactory;
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509KeyManager;
 import javax.net.ssl.X509TrustManager;
-
-import net.jcip.annotations.ThreadSafe;
 
 import org.apache.commons.httpclient.params.HttpConnectionParams;
 import org.apache.commons.httpclient.protocol.SecureProtocolSocketFactory;

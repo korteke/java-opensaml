@@ -21,7 +21,8 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
-import net.jcip.annotations.NotThreadSafe;
+import javax.annotation.concurrent.NotThreadSafe;
+
 import net.shibboleth.utilities.java.support.collection.LazyMap;
 
 import org.opensaml.xml.XMLObject;
