@@ -22,17 +22,17 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.concurrent.NotThreadSafe;
 import javax.xml.namespace.QName;
 
-import net.jcip.annotations.NotThreadSafe;
 import net.shibboleth.utilities.java.support.collection.LazyMap;
 import net.shibboleth.utilities.java.support.collection.LazySet;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.xml.QNameSupport;
 
-import org.opensaml.xml.XMLObjectProviderRegistrySupport;
 import org.opensaml.xml.NamespaceManager;
 import org.opensaml.xml.XMLObject;
+import org.opensaml.xml.XMLObjectProviderRegistrySupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

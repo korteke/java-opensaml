@@ -17,7 +17,8 @@
 
 package org.opensaml.ws.soap.client.http;
 
-import net.jcip.annotations.NotThreadSafe;
+import javax.annotation.concurrent.NotThreadSafe;
+
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 import org.apache.commons.httpclient.DefaultHttpMethodRetryHandler;
