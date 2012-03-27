@@ -41,14 +41,26 @@
 
         <!-- Test Dependencies -->
         <dependency>
-            <groupId>org.springframework</groupId>
+            <groupId>${spring.groupId}</groupId>
             <artifactId>spring-test</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>${spring.groupId}</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>${spring.version}</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>opensaml-core</artifactId>
             <version>${project.version}</version>
             <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>opensaml-soap-impl</artifactId>
+            <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
         
