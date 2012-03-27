@@ -21,11 +21,13 @@ import javax.xml.namespace.QName;
 
 import junit.framework.TestCase;
 import net.shibboleth.utilities.java.support.xml.BasicParserPool;
+import net.shibboleth.utilities.java.support.xml.ParserPool;
 import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 
 import org.custommonkey.xmlunit.Diff;
 import org.custommonkey.xmlunit.XMLAssert;
 import org.custommonkey.xmlunit.XMLUnit;
+import org.opensaml.core.config.InitializationService;
 import org.opensaml.xml.XMLObjectProviderRegistrySupport;
 import org.opensaml.xml.XMLConfigurator;
 import org.opensaml.xml.XMLObject;
@@ -48,7 +50,7 @@ public abstract class BaseTestCase extends TestCase {
     private final Logger log = LoggerFactory.getLogger(BaseTestCase.class);
 
     /** Parser pool. */
-    protected static BasicParserPool parserPool;
+    protected static ParserPool parserPool;
 
     /** XMLObject builder factory. */
     protected static XMLObjectBuilderFactory builderFactory;
@@ -64,29 +66,13 @@ public abstract class BaseTestCase extends TestCase {
         super.setUp();
         XMLUnit.setIgnoreWhitespace(true);
         
-        parserPool = new BasicParserPool();
-        parserPool.setNamespaceAware(true);
-        parserPool.initialize();
-
-        Class clazz = BaseTestCase.class;
-        try {
-
-            // Configuration Files
-            Document wsfedConfig = parserPool.parse(clazz.getResourceAsStream("/wsfed11-protocol-config.xml"));
-            Document soap11Config = parserPool.parse(clazz.getResourceAsStream("/soap11-config.xml"));
-            Document defaulfConfig = parserPool.parse(clazz.getResourceAsStream("/default-config.xml"));
-            
-            XMLConfigurator configurator = new XMLConfigurator();
-            configurator.load(wsfedConfig);
-            configurator.load(soap11Config);
-            configurator.load(defaulfConfig);
-
-            builderFactory = XMLObjectProviderRegistrySupport.getBuilderFactory();
-            marshallerFactory = XMLObjectProviderRegistrySupport.getMarshallerFactory();
-            unmarshallerFactory = XMLObjectProviderRegistrySupport.getUnmarshallerFactory();
-        } catch (Exception e) {
-            System.err.println("Can not initialize test suite, " + e.getMessage());
-        }
+        InitializationService.initialize();
+        
+        parserPool = XMLObjectProviderRegistrySupport.getParserPool();
+        builderFactory = XMLObjectProviderRegistrySupport.getBuilderFactory();
+        marshallerFactory = XMLObjectProviderRegistrySupport.getMarshallerFactory();
+        unmarshallerFactory = XMLObjectProviderRegistrySupport.getUnmarshallerFactory();
+        
     }
 
     /**
