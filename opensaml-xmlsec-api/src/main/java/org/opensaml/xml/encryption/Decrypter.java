@@ -27,6 +27,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.Criterion;
@@ -229,6 +230,12 @@ public class Decrypter {
         HashMap<String, Boolean> features = new HashMap<String, Boolean>();
         features.put("http://apache.org/xml/features/dom/defer-node-expansion", Boolean.FALSE);
         parserPool.setBuilderFeatures(features);
+        
+        try {
+            parserPool.initialize();
+        } catch (ComponentInitializationException e) {
+            log.error("Error initializing decrypter's internal parser pool", e);
+        }
 
         unmarshallerFactory = XMLObjectProviderRegistrySupport.getUnmarshallerFactory();
         
