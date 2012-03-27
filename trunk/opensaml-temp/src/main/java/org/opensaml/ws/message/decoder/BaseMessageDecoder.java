@@ -57,7 +57,7 @@ public abstract class BaseMessageDecoder implements MessageDecoder {
 
     /** Constructor. */
     public BaseMessageDecoder() {
-        parserPool = new BasicParserPool();
+        parserPool = XMLObjectProviderRegistrySupport.getParserPool();
     }
 
     /**
