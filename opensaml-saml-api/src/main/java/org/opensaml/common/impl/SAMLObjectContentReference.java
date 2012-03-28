@@ -34,8 +34,8 @@ import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.core.xml.NamespaceManager;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.xmlsec.SecurityConfiguration;
-import org.opensaml.xmlsec.signature.ContentReference;
-import org.opensaml.xmlsec.signature.SignatureConstants;
+import org.opensaml.xmlsec.signature.support.ContentReference;
+import org.opensaml.xmlsec.signature.support.SignatureConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

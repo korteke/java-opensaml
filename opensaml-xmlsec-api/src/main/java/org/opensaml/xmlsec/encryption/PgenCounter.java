@@ -19,6 +19,7 @@ package org.opensaml.xmlsec.encryption;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 import org.opensaml.xmlsec.signature.CryptoBinary;
 
 /**

@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.xmlsec.signature;
+package org.opensaml.xmlsec.signature.support;
 
 /**
  * Constants defined in or related to the XML Signature specification, version 20020112.

@@ -25,7 +25,7 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.validation.ValidationException;
 import org.opensaml.core.xml.validation.Validator;
 import org.opensaml.xmlsec.signature.KeyValue;
-import org.opensaml.xmlsec.signature.SignatureConstants;
+import org.opensaml.xmlsec.signature.support.SignatureConstants;
 
 /**
  * Checks {@link org.opensaml.xmlsec.signature.KeyValue} for Schema compliance. 

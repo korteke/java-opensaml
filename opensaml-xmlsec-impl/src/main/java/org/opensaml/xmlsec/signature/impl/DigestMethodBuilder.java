@@ -18,7 +18,7 @@
 package org.opensaml.xmlsec.signature.impl;
 
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
-import org.opensaml.xmlsec.encryption.EncryptionConstants;
+import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 import org.opensaml.xmlsec.signature.DigestMethod;
 import org.opensaml.xmlsec.signature.XMLSignatureBuilder;
 

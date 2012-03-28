@@ -32,16 +32,16 @@ import org.opensaml.xml.mock.SignableSimpleXMLObject;
 import org.opensaml.xmlsec.XMLSecurityHelper;
 import org.opensaml.xmlsec.encryption.EncryptedData;
 import org.opensaml.xmlsec.encryption.EncryptedKey;
-import org.opensaml.xmlsec.encryption.Encrypter;
-import org.opensaml.xmlsec.encryption.EncryptionConstants;
-import org.opensaml.xmlsec.encryption.EncryptionException;
-import org.opensaml.xmlsec.encryption.EncryptionParameters;
-import org.opensaml.xmlsec.encryption.KeyEncryptionParameters;
+import org.opensaml.xmlsec.encryption.support.Encrypter;
+import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
+import org.opensaml.xmlsec.encryption.support.EncryptionException;
+import org.opensaml.xmlsec.encryption.support.EncryptionParameters;
+import org.opensaml.xmlsec.encryption.support.KeyEncryptionParameters;
 import org.opensaml.xmlsec.keyinfo.impl.StaticKeyInfoGenerator;
 import org.opensaml.xmlsec.signature.DigestMethod;
 import org.opensaml.xmlsec.signature.KeyInfo;
 import org.opensaml.xmlsec.signature.KeyName;
-import org.opensaml.xmlsec.signature.SignatureConstants;
+import org.opensaml.xmlsec.signature.support.SignatureConstants;
 import org.w3c.dom.Document;
 
 /**

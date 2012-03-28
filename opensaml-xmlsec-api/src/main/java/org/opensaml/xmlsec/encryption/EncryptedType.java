@@ -20,6 +20,7 @@ package org.opensaml.xmlsec.encryption;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.validation.ValidatingXMLObject;
+import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 import org.opensaml.xmlsec.signature.KeyInfo;
 
 /**

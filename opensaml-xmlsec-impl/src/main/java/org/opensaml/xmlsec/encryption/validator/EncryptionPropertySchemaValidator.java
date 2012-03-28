@@ -24,8 +24,8 @@ import net.shibboleth.utilities.java.support.xml.XmlConstants;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.validation.ValidationException;
 import org.opensaml.core.xml.validation.Validator;
-import org.opensaml.xmlsec.encryption.EncryptionConstants;
 import org.opensaml.xmlsec.encryption.EncryptionProperty;
+import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 
 /**
  * Checks {@link org.opensaml.xmlsec.encryption.EncryptionProperty} for Schema compliance.

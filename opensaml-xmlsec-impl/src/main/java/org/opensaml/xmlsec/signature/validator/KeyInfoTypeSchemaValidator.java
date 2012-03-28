@@ -32,8 +32,8 @@ import org.opensaml.xmlsec.signature.MgmtData;
 import org.opensaml.xmlsec.signature.PGPData;
 import org.opensaml.xmlsec.signature.RetrievalMethod;
 import org.opensaml.xmlsec.signature.SPKIData;
-import org.opensaml.xmlsec.signature.SignatureConstants;
 import org.opensaml.xmlsec.signature.X509Data;
+import org.opensaml.xmlsec.signature.support.SignatureConstants;
 
 /**
  * Checks {@link org.opensaml.xmlsec.signature.KeyInfoType} for Schema compliance. 

@@ -32,7 +32,7 @@ import org.opensaml.xmlsec.XMLSecurityHelper;
 import org.opensaml.xmlsec.XMLSigningUtil;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xmlsec.signature.Signature;
-import org.opensaml.xmlsec.signature.SignatureTrustEngine;
+import org.opensaml.xmlsec.signature.support.SignatureTrustEngine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.xmlsec.encryption;
+package org.opensaml.xmlsec.encryption.support;
 
 /**
  * Exception thrown when an error occurs during decryption operations.

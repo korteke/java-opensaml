@@ -23,6 +23,8 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.security.credential.Credential;
+import org.opensaml.xmlsec.signature.support.ContentReference;
+import org.opensaml.xmlsec.signature.support.SignatureConstants;
 
 /**
  * XMLObject representing an enveloped or detached XML Digital Signature, version 20020212, Signature element.

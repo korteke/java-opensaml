@@ -15,35 +15,22 @@
  * limitations under the License.
  */
 
-package org.opensaml.xmlsec.signature;
+package org.opensaml.xmlsec.signature.support;
 
-import org.opensaml.security.credential.CredentialContext;
+import org.apache.xml.security.signature.XMLSignature;
 
 /**
- * A credential context for credentials resolved from a {@link KeyInfo} that was found in 
- * in XML Signature {@link Signature} element.
+ * Interface for representing the references to the content that is digitally signed.
+ * 
+ * Individual implementations of this may with to expose properties, such as the ability to 
+ * set the digest algorithm if it may vary based on runtime information.
  */
-public class XMLSignatureCredentialContext implements CredentialContext {
-
-    /** The Signature element context. */ 
-    private Signature sig;
+public interface ContentReference {
     
     /**
-     * Constructor.
+     * Called by the signature marshaller to allow references to be added to the signature. 
      *
-     * @param signature the signature resolution context
+     * @param signature the signature object
      */
-    public XMLSignatureCredentialContext(Signature signature) {
-        sig = signature;
-    }
-
-    /**
-     * Gets the Signature element context.
-     * 
-     * @return signature context
-     */
-    public Signature getSignature() {
-        return sig;
-    }
-    
+    public void createReference(XMLSignature signature);
 }

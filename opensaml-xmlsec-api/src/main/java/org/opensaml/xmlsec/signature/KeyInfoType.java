@@ -25,6 +25,7 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.validation.ValidatingXMLObject;
 import org.opensaml.xmlsec.encryption.AgreementMethod;
 import org.opensaml.xmlsec.encryption.EncryptedKey;
+import org.opensaml.xmlsec.signature.support.SignatureConstants;
 
 /** XMLObject representing XML Digital Signature, version 20020212, KeyInfoType complex type. */
 public interface KeyInfoType extends ValidatingXMLObject {

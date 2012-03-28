@@ -27,7 +27,7 @@ import org.opensaml.saml2.common.Extensions;
 import org.opensaml.saml2.metadata.EntitiesDescriptor;
 import org.opensaml.saml2.metadata.EntityDescriptor;
 import org.opensaml.xmlsec.signature.Signature;
-import org.opensaml.xmlsec.signature.SignatureConstants;
+import org.opensaml.xmlsec.signature.support.SignatureConstants;
 
 /**
  * Test case for creating, marshalling, and unmarshalling

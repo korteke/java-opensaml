@@ -19,7 +19,7 @@ package org.opensaml.xmlsec;
 
 import java.util.List;
 
-import org.opensaml.xmlsec.encryption.EncryptedKeyResolver;
+import org.opensaml.xmlsec.encryption.support.EncryptedKeyResolver;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 
 /**

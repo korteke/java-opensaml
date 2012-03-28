@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.xmlsec.encryption;
+package org.opensaml.xmlsec.encryption.support;
 
 import org.opensaml.security.credential.Credential;
 import org.opensaml.xmlsec.keyinfo.KeyInfoGenerator;

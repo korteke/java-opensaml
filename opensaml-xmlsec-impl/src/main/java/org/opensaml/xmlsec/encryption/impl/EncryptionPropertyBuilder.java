@@ -18,9 +18,9 @@
 package org.opensaml.xmlsec.encryption.impl;
 
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
-import org.opensaml.xmlsec.encryption.EncryptionConstants;
 import org.opensaml.xmlsec.encryption.EncryptionProperty;
 import org.opensaml.xmlsec.encryption.XMLEncryptionBuilder;
+import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 
 /**
  * Builder of {@link org.opensaml.xmlsec.encryption.EncryptionProperty}

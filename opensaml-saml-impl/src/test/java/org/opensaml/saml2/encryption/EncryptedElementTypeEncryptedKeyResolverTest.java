@@ -24,7 +24,7 @@ import org.opensaml.common.BaseTestCase;
 import org.opensaml.saml2.core.EncryptedAssertion;
 import org.opensaml.xmlsec.encryption.EncryptedData;
 import org.opensaml.xmlsec.encryption.EncryptedKey;
-import org.opensaml.xmlsec.encryption.EncryptedKeyResolver;
+import org.opensaml.xmlsec.encryption.support.EncryptedKeyResolver;
 
 /**
  * Test the SAML EncryptedElementType encrypted key resolver, with keys as peers.

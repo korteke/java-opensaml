@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.xmlsec.encryption;
+package org.opensaml.xmlsec.encryption.support;
 
 /**
  * Constants defined in or related to the XML Encryption specification, version 20021210.

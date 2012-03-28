@@ -38,13 +38,13 @@ import org.opensaml.xml.security.XMLSecurityTestingHelper;
 import org.opensaml.xmlsec.XMLSigningUtil;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xmlsec.keyinfo.impl.X509KeyInfoGeneratorFactory;
-import org.opensaml.xmlsec.signature.DocumentInternalIDContentReference;
 import org.opensaml.xmlsec.signature.KeyInfo;
 import org.opensaml.xmlsec.signature.SignableXMLObject;
 import org.opensaml.xmlsec.signature.Signature;
-import org.opensaml.xmlsec.signature.SignatureConstants;
-import org.opensaml.xmlsec.signature.SignatureException;
 import org.opensaml.xmlsec.signature.impl.ExplicitKeySignatureTrustEngine;
+import org.opensaml.xmlsec.signature.support.DocumentInternalIDContentReference;
+import org.opensaml.xmlsec.signature.support.SignatureConstants;
+import org.opensaml.xmlsec.signature.support.SignatureException;
 import org.opensaml.xmlsec.signature.support.Signer;
 
 /**

@@ -22,6 +22,7 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.validation.ValidatingXMLObject;
+import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 
 /**
  * XMLObject representing XML Encryption, version 20021210, EncryptionProperties element.

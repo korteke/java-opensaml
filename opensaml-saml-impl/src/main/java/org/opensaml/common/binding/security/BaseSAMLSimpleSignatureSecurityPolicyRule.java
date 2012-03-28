@@ -35,7 +35,7 @@ import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.security.SecurityPolicyException;
 import org.opensaml.ws.security.SecurityPolicyRule;
 import org.opensaml.ws.transport.http.HttpServletRequestAdapter;
-import org.opensaml.xmlsec.signature.SignatureTrustEngine;
+import org.opensaml.xmlsec.signature.support.SignatureTrustEngine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

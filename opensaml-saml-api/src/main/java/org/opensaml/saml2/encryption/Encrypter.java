@@ -45,12 +45,12 @@ import org.opensaml.xmlsec.encryption.CarriedKeyName;
 import org.opensaml.xmlsec.encryption.DataReference;
 import org.opensaml.xmlsec.encryption.EncryptedData;
 import org.opensaml.xmlsec.encryption.EncryptedKey;
-import org.opensaml.xmlsec.encryption.EncryptionConstants;
-import org.opensaml.xmlsec.encryption.EncryptionException;
-import org.opensaml.xmlsec.encryption.EncryptionParameters;
-import org.opensaml.xmlsec.encryption.KeyEncryptionParameters;
 import org.opensaml.xmlsec.encryption.ReferenceList;
 import org.opensaml.xmlsec.encryption.XMLEncryptionBuilder;
+import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
+import org.opensaml.xmlsec.encryption.support.EncryptionException;
+import org.opensaml.xmlsec.encryption.support.EncryptionParameters;
+import org.opensaml.xmlsec.encryption.support.KeyEncryptionParameters;
 import org.opensaml.xmlsec.keyinfo.KeyInfoGenerator;
 import org.opensaml.xmlsec.signature.KeyInfo;
 import org.opensaml.xmlsec.signature.KeyName;
@@ -89,11 +89,11 @@ import com.google.common.base.Strings;
  * 
  * <p>
  * For information on other parameters and options, and general XML Encryption issues, see
- * {@link org.opensaml.xmlsec.encryption.Encrypter}.
+ * {@link org.opensaml.xmlsec.encryption.support.Encrypter}.
  * </p>
  * 
  */
-public class Encrypter extends org.opensaml.xmlsec.encryption.Encrypter {
+public class Encrypter extends org.opensaml.xmlsec.encryption.support.Encrypter {
 
     /**
      * Options for where to place the resulting EncryptedKey elements with respect to the associated EncryptedData

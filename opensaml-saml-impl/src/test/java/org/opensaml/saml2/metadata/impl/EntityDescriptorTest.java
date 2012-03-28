@@ -35,7 +35,7 @@ import org.opensaml.saml2.metadata.Organization;
 import org.opensaml.saml2.metadata.PDPDescriptor;
 import org.opensaml.saml2.metadata.SPSSODescriptor;
 import org.opensaml.xmlsec.signature.Signature;
-import org.opensaml.xmlsec.signature.SignatureConstants;
+import org.opensaml.xmlsec.signature.support.SignatureConstants;
 
 /**
  * Test case for creating, marshalling, and unmarshalling {@link org.opensaml.saml2.metadata.impl.EntityDescriptorImpl}.

@@ -18,6 +18,7 @@
 package org.opensaml.xmlsec.signature;
 
 import org.opensaml.core.xml.AbstractXMLObject;
+import org.opensaml.xmlsec.signature.support.SignatureConstants;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;

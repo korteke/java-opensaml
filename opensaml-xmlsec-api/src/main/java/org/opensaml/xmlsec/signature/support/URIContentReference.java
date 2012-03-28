@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.xmlsec.signature;
+package org.opensaml.xmlsec.signature.support;
 
 import java.util.LinkedList;
 import java.util.List;

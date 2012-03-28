@@ -38,14 +38,14 @@ import org.opensaml.security.SecurityException;
 import org.opensaml.security.SecurityHelper;
 import org.opensaml.security.credential.BasicCredential;
 import org.opensaml.security.credential.Credential;
-import org.opensaml.xmlsec.encryption.EncryptionParameters;
-import org.opensaml.xmlsec.encryption.KeyEncryptionParameters;
+import org.opensaml.xmlsec.encryption.support.EncryptionParameters;
+import org.opensaml.xmlsec.encryption.support.KeyEncryptionParameters;
 import org.opensaml.xmlsec.keyinfo.KeyInfoGenerator;
 import org.opensaml.xmlsec.keyinfo.KeyInfoGeneratorFactory;
 import org.opensaml.xmlsec.keyinfo.NamedKeyInfoGeneratorManager;
 import org.opensaml.xmlsec.signature.KeyInfo;
 import org.opensaml.xmlsec.signature.Signature;
-import org.opensaml.xmlsec.signature.SignatureConstants;
+import org.opensaml.xmlsec.signature.support.SignatureConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -346,7 +346,7 @@ public final class XMLSecurityHelper {
 
     /**
      * Build an instance of {@link EncryptionParameters} suitable for passing to an
-     * {@link org.opensaml.xmlsec.encryption.Encrypter}.
+     * {@link org.opensaml.xmlsec.encryption.support.Encrypter}.
      * 
      * <p>
      * The following parameter values will be added:
@@ -415,7 +415,7 @@ public final class XMLSecurityHelper {
 
     /**
      * Build an instance of {@link KeyEncryptionParameters} suitable for passing to an
-     * {@link org.opensaml.xmlsec.encryption.Encrypter}.
+     * {@link org.opensaml.xmlsec.encryption.support.Encrypter}.
      * 
      * <p>
      * The following parameter values will be added:

@@ -15,9 +15,12 @@
  * limitations under the License.
  */
 
-package org.opensaml.xmlsec.encryption;
+package org.opensaml.xmlsec.encryption.support;
 
 import java.util.List;
+
+import org.opensaml.xmlsec.encryption.EncryptedData;
+import org.opensaml.xmlsec.encryption.EncryptedKey;
 
 /**
  * Interface for resolving {@link EncryptedKey} elements based on a particular

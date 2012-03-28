@@ -40,7 +40,7 @@ import org.opensaml.ws.security.SecurityPolicyException;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCriterion;
 import org.opensaml.xmlsec.signature.KeyInfo;
-import org.opensaml.xmlsec.signature.SignatureTrustEngine;
+import org.opensaml.xmlsec.signature.support.SignatureTrustEngine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
