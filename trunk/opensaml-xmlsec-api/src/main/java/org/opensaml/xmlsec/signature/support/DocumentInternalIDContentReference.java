@@ -15,22 +15,21 @@
  * limitations under the License.
  */
 
-package org.opensaml.xmlsec.signature;
+package org.opensaml.xmlsec.signature.support;
 
-import org.apache.xml.security.signature.XMLSignature;
 
 /**
- * Interface for representing the references to the content that is digitally signed.
- * 
- * Individual implementations of this may with to expose properties, such as the ability to 
- * set the digest algorithm if it may vary based on runtime information.
+ * A content reference that references Elements withing the same document by ID attribute. That is the reference is
+ * <code>#ID</code> where ID is the value of the ID attribute of the Element.
  */
-public interface ContentReference {
-    
+public class DocumentInternalIDContentReference extends URIContentReference {
+
     /**
-     * Called by the signature marshaller to allow references to be added to the signature. 
-     *
-     * @param signature the signature object
+     * Constructor. The anchor designator (#) must not be included in the ID.
+     * 
+     * @param referenceID the reference ID of the element to be signed
      */
-    public void createReference(XMLSignature signature);
+    public DocumentInternalIDContentReference(String referenceID) {
+        super("#" + referenceID);
+    }
 }

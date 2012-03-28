@@ -20,6 +20,7 @@ package org.opensaml.xmlsec.signature;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.schema.XSBase64Binary;
+import org.opensaml.xmlsec.signature.support.SignatureConstants;
 
 /**
  * XMLObject representing XML Digital Signature, version 20020212, SPKISexp element.

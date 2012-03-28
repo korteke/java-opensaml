@@ -19,7 +19,7 @@ package org.opensaml.xmlsec;
 
 import java.util.List;
 
-import org.opensaml.xmlsec.signature.SignatureTrustEngine;
+import org.opensaml.xmlsec.signature.support.SignatureTrustEngine;
 
 /**
  * The configuration information to use when validating an XML signature.

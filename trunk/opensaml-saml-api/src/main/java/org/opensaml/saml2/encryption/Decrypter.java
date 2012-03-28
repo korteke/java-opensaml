@@ -27,8 +27,8 @@ import org.opensaml.saml2.core.EncryptedElementType;
 import org.opensaml.saml2.core.EncryptedID;
 import org.opensaml.saml2.core.NewEncryptedID;
 import org.opensaml.saml2.core.NewID;
-import org.opensaml.xmlsec.encryption.DecryptionException;
-import org.opensaml.xmlsec.encryption.EncryptedKeyResolver;
+import org.opensaml.xmlsec.encryption.support.DecryptionException;
+import org.opensaml.xmlsec.encryption.support.EncryptedKeyResolver;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,10 +38,10 @@ import org.slf4j.LoggerFactory;
  * 
  * <p>
  * For information on other parameters and options, and general XML Encryption issues,
- * see {@link org.opensaml.xmlsec.encryption.Decrypter}.
+ * see {@link org.opensaml.xmlsec.encryption.support.Decrypter}.
  * </p>
  */
-public class Decrypter extends org.opensaml.xmlsec.encryption.Decrypter {
+public class Decrypter extends org.opensaml.xmlsec.encryption.support.Decrypter {
     
     /** Class logger. */
     private final Logger log = LoggerFactory.getLogger(Decrypter.class);

@@ -25,13 +25,13 @@ import javax.xml.namespace.QName;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.validation.ValidationException;
 import org.opensaml.core.xml.validation.Validator;
-import org.opensaml.xmlsec.signature.SignatureConstants;
 import org.opensaml.xmlsec.signature.X509CRL;
 import org.opensaml.xmlsec.signature.X509Certificate;
 import org.opensaml.xmlsec.signature.X509Data;
 import org.opensaml.xmlsec.signature.X509IssuerSerial;
 import org.opensaml.xmlsec.signature.X509SKI;
 import org.opensaml.xmlsec.signature.X509SubjectName;
+import org.opensaml.xmlsec.signature.support.SignatureConstants;
 
 /**
  * Checks {@link org.opensaml.xmlsec.signature.X509Data} for Schema compliance. 

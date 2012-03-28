@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.xmlsec.encryption;
+package org.opensaml.xmlsec.encryption.support;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -51,10 +51,14 @@ import org.opensaml.security.criteria.KeyAlgorithmCriterion;
 import org.opensaml.security.criteria.KeyLengthCriterion;
 import org.opensaml.security.criteria.UsageCriterion;
 import org.opensaml.xmlsec.XMLSecurityHelper;
+import org.opensaml.xmlsec.encryption.EncryptedData;
+import org.opensaml.xmlsec.encryption.EncryptedKey;
+import org.opensaml.xmlsec.encryption.EncryptedType;
+import org.opensaml.xmlsec.encryption.EncryptionMethod;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCriterion;
 import org.opensaml.xmlsec.signature.DigestMethod;
-import org.opensaml.xmlsec.signature.SignatureConstants;
+import org.opensaml.xmlsec.signature.support.SignatureConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;

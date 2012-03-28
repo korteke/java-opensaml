@@ -24,6 +24,7 @@ import javax.xml.namespace.QName;
 import net.shibboleth.utilities.java.support.xml.XmlConstants;
 
 import org.opensaml.core.xml.validation.ValidatingXMLObject;
+import org.opensaml.xmlsec.signature.support.SignatureConstants;
 
 /**
  * XMLObject representing XML Digital Signature, version 20020212, X509SerialNumber element.

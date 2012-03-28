@@ -18,8 +18,8 @@
 package org.opensaml.xml.encryption.validator;
 
 import org.opensaml.core.xml.BaseXMLObjectValidatorTestCase;
-import org.opensaml.xmlsec.encryption.EncryptionConstants;
 import org.opensaml.xmlsec.encryption.EncryptionMethod;
+import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 import org.opensaml.xmlsec.encryption.validator.EncryptionMethodSchemaValidator;
 
 /**

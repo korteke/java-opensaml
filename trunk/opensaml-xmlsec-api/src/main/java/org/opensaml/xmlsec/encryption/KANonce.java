@@ -20,6 +20,7 @@ package org.opensaml.xmlsec.encryption;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.schema.XSBase64Binary;
+import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 
 /**
  * XMLObject representing XML Encryption, version 20021210, KA-Nonce element.

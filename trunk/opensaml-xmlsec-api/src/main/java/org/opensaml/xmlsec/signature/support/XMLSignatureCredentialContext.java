@@ -15,21 +15,37 @@
  * limitations under the License.
  */
 
-package org.opensaml.xmlsec.signature;
+package org.opensaml.xmlsec.signature.support;
 
+import org.opensaml.security.credential.CredentialContext;
+import org.opensaml.xmlsec.signature.KeyInfo;
+import org.opensaml.xmlsec.signature.Signature;
 
 /**
- * A content reference that references Elements withing the same document by ID attribute. That is the reference is
- * <code>#ID</code> where ID is the value of the ID attribute of the Element.
+ * A credential context for credentials resolved from a {@link KeyInfo} that was found in 
+ * in XML Signature {@link Signature} element.
  */
-public class DocumentInternalIDContentReference extends URIContentReference {
+public class XMLSignatureCredentialContext implements CredentialContext {
+
+    /** The Signature element context. */ 
+    private Signature sig;
+    
+    /**
+     * Constructor.
+     *
+     * @param signature the signature resolution context
+     */
+    public XMLSignatureCredentialContext(Signature signature) {
+        sig = signature;
+    }
 
     /**
-     * Constructor. The anchor designator (#) must not be included in the ID.
+     * Gets the Signature element context.
      * 
-     * @param referenceID the reference ID of the element to be signed
+     * @return signature context
      */
-    public DocumentInternalIDContentReference(String referenceID) {
-        super("#" + referenceID);
+    public Signature getSignature() {
+        return sig;
     }
+    
 }

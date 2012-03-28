@@ -23,7 +23,7 @@ import org.opensaml.core.xml.mock.SimpleXMLObjectBuilder;
 import org.opensaml.xmlsec.signature.DSAKeyValue;
 import org.opensaml.xmlsec.signature.KeyValue;
 import org.opensaml.xmlsec.signature.RSAKeyValue;
-import org.opensaml.xmlsec.signature.SignatureConstants;
+import org.opensaml.xmlsec.signature.support.SignatureConstants;
 import org.opensaml.xmlsec.signature.validator.KeyValueSchemaValidator;
 
 /**

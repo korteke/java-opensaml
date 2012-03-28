@@ -25,8 +25,8 @@ import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.xml.mock.SignableSimpleXMLObject;
 import org.opensaml.xmlsec.encryption.EncryptedData;
 import org.opensaml.xmlsec.encryption.EncryptedKey;
-import org.opensaml.xmlsec.encryption.EncryptedKeyResolver;
-import org.opensaml.xmlsec.encryption.SimpleRetrievalMethodEncryptedKeyResolver;
+import org.opensaml.xmlsec.encryption.support.EncryptedKeyResolver;
+import org.opensaml.xmlsec.encryption.support.SimpleRetrievalMethodEncryptedKeyResolver;
 
 /**
  * Test the encrypted key resolver which dereferences RetrievalMethods.

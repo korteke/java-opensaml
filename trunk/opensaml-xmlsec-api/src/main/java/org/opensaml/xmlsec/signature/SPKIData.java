@@ -23,6 +23,7 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.validation.ValidatingXMLObject;
+import org.opensaml.xmlsec.signature.support.SignatureConstants;
 
 /**
  * XMLObject representing XML Digital Signature, version 20020212, SPKIData element.

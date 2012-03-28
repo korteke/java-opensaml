@@ -15,13 +15,16 @@
  * limitations under the License.
  */
 
-package org.opensaml.xmlsec.encryption;
+package org.opensaml.xmlsec.encryption.support;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
+import org.opensaml.xmlsec.encryption.DataReference;
+import org.opensaml.xmlsec.encryption.EncryptedData;
+import org.opensaml.xmlsec.encryption.EncryptedKey;
 import org.opensaml.xmlsec.keyinfo.KeyInfoHelper;
 
 import com.google.common.base.Strings;

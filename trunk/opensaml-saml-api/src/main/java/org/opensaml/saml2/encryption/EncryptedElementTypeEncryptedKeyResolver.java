@@ -21,10 +21,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.opensaml.saml2.core.EncryptedElementType;
-import org.opensaml.xmlsec.encryption.AbstractEncryptedKeyResolver;
 import org.opensaml.xmlsec.encryption.EncryptedData;
 import org.opensaml.xmlsec.encryption.EncryptedKey;
-import org.opensaml.xmlsec.encryption.EncryptedKeyResolver;
+import org.opensaml.xmlsec.encryption.support.AbstractEncryptedKeyResolver;
+import org.opensaml.xmlsec.encryption.support.EncryptedKeyResolver;
 
 /**
  * An implementation of {@link EncryptedKeyResolver} which resolves {@link EncryptedKey}

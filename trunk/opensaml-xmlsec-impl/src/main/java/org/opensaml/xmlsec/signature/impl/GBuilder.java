@@ -19,8 +19,8 @@ package org.opensaml.xmlsec.signature.impl;
 
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
 import org.opensaml.xmlsec.signature.G;
-import org.opensaml.xmlsec.signature.SignatureConstants;
 import org.opensaml.xmlsec.signature.XMLSignatureBuilder;
+import org.opensaml.xmlsec.signature.support.SignatureConstants;
 
 /**
  * Builder of {@link org.opensaml.xmlsec.signature.G}

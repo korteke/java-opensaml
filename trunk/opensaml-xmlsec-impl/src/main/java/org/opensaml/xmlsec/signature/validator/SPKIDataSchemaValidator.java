@@ -24,7 +24,7 @@ import org.opensaml.core.xml.validation.ValidationException;
 import org.opensaml.core.xml.validation.Validator;
 import org.opensaml.xmlsec.signature.SPKIData;
 import org.opensaml.xmlsec.signature.SPKISexp;
-import org.opensaml.xmlsec.signature.SignatureConstants;
+import org.opensaml.xmlsec.signature.support.SignatureConstants;
 
 /**
  * Checks {@link org.opensaml.xmlsec.signature.SPKIData} for Schema compliance. 

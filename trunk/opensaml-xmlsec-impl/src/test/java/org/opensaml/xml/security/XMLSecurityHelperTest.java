@@ -24,8 +24,8 @@ import junit.framework.TestCase;
 
 import org.opensaml.security.SecurityHelper;
 import org.opensaml.xmlsec.XMLSecurityHelper;
-import org.opensaml.xmlsec.encryption.EncryptionConstants;
-import org.opensaml.xmlsec.signature.SignatureConstants;
+import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
+import org.opensaml.xmlsec.signature.support.SignatureConstants;
 
 /**
  * Unit test for {@link SecurityHelper}.

@@ -28,7 +28,7 @@ import org.opensaml.core.xml.validation.Validator;
 import org.opensaml.xmlsec.signature.PGPData;
 import org.opensaml.xmlsec.signature.PGPKeyID;
 import org.opensaml.xmlsec.signature.PGPKeyPacket;
-import org.opensaml.xmlsec.signature.SignatureConstants;
+import org.opensaml.xmlsec.signature.support.SignatureConstants;
 
 /**
  * Checks {@link org.opensaml.xmlsec.signature.PGPData} for Schema compliance. 

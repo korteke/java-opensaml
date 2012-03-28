@@ -22,8 +22,8 @@ import javax.xml.namespace.QName;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.validation.ValidationException;
 import org.opensaml.core.xml.validation.Validator;
-import org.opensaml.xmlsec.encryption.EncryptionConstants;
 import org.opensaml.xmlsec.encryption.ReferenceType;
+import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 
 import com.google.common.base.Strings;
 

@@ -15,12 +15,14 @@
  * limitations under the License.
  */
 
-package org.opensaml.xmlsec.encryption;
+package org.opensaml.xmlsec.encryption.support;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.xmlsec.encryption.EncryptedData;
+import org.opensaml.xmlsec.encryption.EncryptedKey;
 import org.opensaml.xmlsec.signature.RetrievalMethod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

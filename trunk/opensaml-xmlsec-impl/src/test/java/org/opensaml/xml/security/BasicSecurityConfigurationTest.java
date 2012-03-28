@@ -26,8 +26,8 @@ import org.opensaml.security.SecurityHelper;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.xmlsec.XMLSecurityHelper;
 import org.opensaml.xmlsec.config.BasicSecurityConfiguration;
-import org.opensaml.xmlsec.encryption.EncryptionConstants;
-import org.opensaml.xmlsec.signature.SignatureConstants;
+import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
+import org.opensaml.xmlsec.signature.support.SignatureConstants;
 
 /**
  * Testing some aspects of the basic security config impl.
