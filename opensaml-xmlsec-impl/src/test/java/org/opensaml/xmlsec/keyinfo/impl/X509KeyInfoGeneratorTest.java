@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.xml.security.x509;
+package org.opensaml.xmlsec.keyinfo.impl;
 
 import java.math.BigInteger;
 import java.security.KeyException;
