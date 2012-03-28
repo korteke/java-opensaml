@@ -21,9 +21,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.opensaml.security.credential.Credential;
-import org.opensaml.xml.security.credential.CollectionCredentialResolver;
-import org.opensaml.xml.security.credential.criteria.EvaluableCredentialCriteriaRegistry;
-import org.opensaml.xml.security.credential.criteria.EvaluableCredentialCriterion;
+import org.opensaml.security.credential.criteria.impl.EvaluableCredentialCriteriaRegistry;
+import org.opensaml.security.credential.criteria.impl.EvaluableCredentialCriterion;
+import org.opensaml.security.credential.impl.CollectionCredentialResolver;
 import org.opensaml.xml.signature.KeyName;
 import org.opensaml.xml.signature.X509SubjectName;
 
