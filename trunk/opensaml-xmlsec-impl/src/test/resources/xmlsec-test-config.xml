@@ -5,9 +5,9 @@
         
         <!-- SignableSimpleXMLObject object used for testing -->
         <ObjectProvider qualifiedName="test:SignableSimpleElement">
-            <BuilderClass className="org.opensaml.xml.mock.SignableSimpleXMLObjectBuilder"/>
-            <MarshallingClass className="org.opensaml.xml.mock.SignableSimpleXMLObjectMarshaller"/>
-            <UnmarshallingClass className="org.opensaml.xml.mock.SignableSimpleXMLObjectUnmarshaller"/>
+            <BuilderClass className="org.opensaml.xmlsec.mock.SignableSimpleXMLObjectBuilder"/>
+            <MarshallingClass className="org.opensaml.xmlsec.mock.SignableSimpleXMLObjectMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.xmlsec.mock.SignableSimpleXMLObjectUnmarshaller"/>
         </ObjectProvider>
         
     </ObjectProviders>
