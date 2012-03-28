@@ -35,8 +35,6 @@ import org.opensaml.security.x509.X500DNHandler;
 import org.opensaml.security.x509.X509Credential;
 import org.opensaml.security.x509.X509Util;
 import org.opensaml.xml.security.credential.BasicKeyInfoGeneratorFactory;
-import org.opensaml.xml.signature.impl.KeyInfoBuilder;
-import org.opensaml.xml.signature.impl.X509DataBuilder;
 import org.opensaml.xmlsec.keyinfo.KeyInfoGenerator;
 import org.opensaml.xmlsec.keyinfo.KeyInfoHelper;
 import org.opensaml.xmlsec.signature.KeyInfo;
@@ -44,6 +42,8 @@ import org.opensaml.xmlsec.signature.X509CRL;
 import org.opensaml.xmlsec.signature.X509Certificate;
 import org.opensaml.xmlsec.signature.X509Data;
 import org.opensaml.xmlsec.signature.X509SKI;
+import org.opensaml.xmlsec.signature.impl.KeyInfoBuilder;
+import org.opensaml.xmlsec.signature.impl.X509DataBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -20,6 +20,7 @@ package org.opensaml.xml.encryption.validator;
 import org.opensaml.core.xml.BaseXMLObjectValidatorTestCase;
 import org.opensaml.xmlsec.encryption.AgreementMethod;
 import org.opensaml.xmlsec.encryption.EncryptionConstants;
+import org.opensaml.xmlsec.encryption.validator.AgreementMethodSchemaValidator;
 
 /**
  *

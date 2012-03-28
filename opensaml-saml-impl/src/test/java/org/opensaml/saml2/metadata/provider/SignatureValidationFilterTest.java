@@ -29,9 +29,9 @@ import org.opensaml.saml2.metadata.EntityDescriptor;
 import org.opensaml.security.SecurityHelper;
 import org.opensaml.security.credential.impl.StaticCredentialResolver;
 import org.opensaml.security.x509.X509Credential;
-import org.opensaml.xml.signature.impl.ExplicitKeySignatureTrustEngine;
 import org.opensaml.xmlsec.XMLSecurityHelper;
 import org.opensaml.xmlsec.signature.SignatureTrustEngine;
+import org.opensaml.xmlsec.signature.impl.ExplicitKeySignatureTrustEngine;
 import org.w3c.dom.Document;
 
 /**

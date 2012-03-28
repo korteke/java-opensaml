@@ -20,12 +20,12 @@ package org.opensaml.xml.security;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.opensaml.xml.security.keyinfo.BasicProviderKeyInfoCredentialResolver;
-import org.opensaml.xml.security.keyinfo.KeyInfoProvider;
-import org.opensaml.xml.security.keyinfo.provider.DSAKeyValueProvider;
-import org.opensaml.xml.security.keyinfo.provider.InlineX509DataProvider;
-import org.opensaml.xml.security.keyinfo.provider.RSAKeyValueProvider;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
+import org.opensaml.xmlsec.keyinfo.impl.BasicProviderKeyInfoCredentialResolver;
+import org.opensaml.xmlsec.keyinfo.impl.KeyInfoProvider;
+import org.opensaml.xmlsec.keyinfo.impl.provider.DSAKeyValueProvider;
+import org.opensaml.xmlsec.keyinfo.impl.provider.InlineX509DataProvider;
+import org.opensaml.xmlsec.keyinfo.impl.provider.RSAKeyValueProvider;
 
 /**
  * Helper methods for security-related requirements.

@@ -29,9 +29,11 @@ import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.security.SecurityHelper;
 import org.opensaml.security.credential.BasicCredential;
 import org.opensaml.security.credential.Credential;
-import org.opensaml.xml.security.keyinfo.provider.DSAKeyValueProvider;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCriterion;
+import org.opensaml.xmlsec.keyinfo.impl.BasicProviderKeyInfoCredentialResolver;
+import org.opensaml.xmlsec.keyinfo.impl.KeyInfoProvider;
+import org.opensaml.xmlsec.keyinfo.impl.provider.DSAKeyValueProvider;
 import org.opensaml.xmlsec.signature.KeyInfo;
 
 

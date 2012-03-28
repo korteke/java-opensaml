@@ -23,6 +23,7 @@ import org.opensaml.core.xml.mock.SimpleXMLObjectBuilder;
 import org.opensaml.xmlsec.signature.SignatureConstants;
 import org.opensaml.xmlsec.signature.X509Certificate;
 import org.opensaml.xmlsec.signature.X509Data;
+import org.opensaml.xmlsec.signature.validator.X509DataSchemaValidator;
 
 /**
  *

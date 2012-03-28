@@ -21,6 +21,7 @@ import org.opensaml.core.xml.BaseXMLObjectValidatorTestCase;
 import org.opensaml.xmlsec.signature.Exponent;
 import org.opensaml.xmlsec.signature.Modulus;
 import org.opensaml.xmlsec.signature.RSAKeyValue;
+import org.opensaml.xmlsec.signature.validator.RSAKeyValueSchemaValidator;
 
 /**
  *

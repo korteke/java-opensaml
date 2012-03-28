@@ -21,6 +21,7 @@ import java.math.BigInteger;
 
 import org.opensaml.core.xml.BaseXMLObjectValidatorTestCase;
 import org.opensaml.xmlsec.signature.X509SerialNumber;
+import org.opensaml.xmlsec.signature.validator.X509SerialNumberSchemaValidator;
 
 /**
  *
