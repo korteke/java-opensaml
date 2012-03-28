@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.xml.security.credential;
+package org.opensaml.xmlsec.keyinfo.impl;
 
 import java.security.KeyException;
 import java.security.PublicKey;
