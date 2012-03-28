@@ -26,7 +26,7 @@ import org.opensaml.saml2.metadata.EncryptionMethod;
 /**
  * Concrete implementation of {@link org.opensaml.saml2.metadata.EncryptionMethod}.
  */
-public class EncryptionMethodImpl extends org.opensaml.xml.encryption.impl.EncryptionMethodImpl implements EncryptionMethod {
+public class EncryptionMethodImpl extends org.opensaml.xmlsec.encryption.impl.EncryptionMethodImpl implements EncryptionMethod {
 
     /**
      * Constructor.

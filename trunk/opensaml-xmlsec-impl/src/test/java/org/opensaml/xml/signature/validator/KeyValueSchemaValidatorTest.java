@@ -24,6 +24,7 @@ import org.opensaml.xmlsec.signature.DSAKeyValue;
 import org.opensaml.xmlsec.signature.KeyValue;
 import org.opensaml.xmlsec.signature.RSAKeyValue;
 import org.opensaml.xmlsec.signature.SignatureConstants;
+import org.opensaml.xmlsec.signature.validator.KeyValueSchemaValidator;
 
 /**
  *

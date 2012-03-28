@@ -21,6 +21,7 @@ import org.opensaml.core.xml.BaseXMLObjectValidatorTestCase;
 import org.opensaml.xmlsec.encryption.CipherData;
 import org.opensaml.xmlsec.encryption.CipherReference;
 import org.opensaml.xmlsec.encryption.CipherValue;
+import org.opensaml.xmlsec.encryption.validator.CipherDataSchemaValidator;
 
 /**
  *

@@ -24,6 +24,7 @@ import org.opensaml.xmlsec.signature.PgenCounter;
 import org.opensaml.xmlsec.signature.Q;
 import org.opensaml.xmlsec.signature.Seed;
 import org.opensaml.xmlsec.signature.Y;
+import org.opensaml.xmlsec.signature.validator.DSAKeyValueSchemaValidator;
 
 /**
  *

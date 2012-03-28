@@ -24,6 +24,7 @@ import org.opensaml.xmlsec.signature.PGPData;
 import org.opensaml.xmlsec.signature.PGPKeyID;
 import org.opensaml.xmlsec.signature.PGPKeyPacket;
 import org.opensaml.xmlsec.signature.SignatureConstants;
+import org.opensaml.xmlsec.signature.validator.PGPDataSchemaValidator;
 
 /**
  *

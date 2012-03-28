@@ -23,6 +23,7 @@ import org.opensaml.core.xml.mock.SimpleXMLObjectBuilder;
 import org.opensaml.xmlsec.encryption.DataReference;
 import org.opensaml.xmlsec.encryption.EncryptionConstants;
 import org.opensaml.xmlsec.encryption.ReferenceType;
+import org.opensaml.xmlsec.encryption.validator.ReferenceTypeSchemaValidator;
 
 /**
  *

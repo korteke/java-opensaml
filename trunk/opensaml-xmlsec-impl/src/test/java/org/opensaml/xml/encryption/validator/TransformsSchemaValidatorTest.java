@@ -19,6 +19,7 @@ package org.opensaml.xml.encryption.validator;
 
 import org.opensaml.core.xml.BaseXMLObjectValidatorTestCase;
 import org.opensaml.xmlsec.encryption.Transforms;
+import org.opensaml.xmlsec.encryption.validator.TransformsSchemaValidator;
 import org.opensaml.xmlsec.signature.Transform;
 
 /**

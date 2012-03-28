@@ -23,9 +23,9 @@ import org.apache.xml.security.Init;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.signature.XMLSignature;
 import org.opensaml.security.SecurityHelper;
-import org.opensaml.xml.signature.impl.SignatureImpl;
 import org.opensaml.xmlsec.signature.Signature;
 import org.opensaml.xmlsec.signature.SignatureException;
+import org.opensaml.xmlsec.signature.impl.SignatureImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
