@@ -36,8 +36,6 @@ import org.opensaml.core.xml.validation.ValidationException;
 import org.opensaml.security.SecurityHelper;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.xml.mock.SignableSimpleXMLObject;
-import org.opensaml.xml.signature.SignatureValidator;
-import org.opensaml.xml.signature.Signer;
 import org.opensaml.xmlsec.XMLSecurityHelper;
 import org.opensaml.xmlsec.encryption.Decrypter;
 import org.opensaml.xmlsec.encryption.DecryptionException;
@@ -52,6 +50,8 @@ import org.opensaml.xmlsec.signature.DocumentInternalIDContentReference;
 import org.opensaml.xmlsec.signature.Signature;
 import org.opensaml.xmlsec.signature.SignatureConstants;
 import org.opensaml.xmlsec.signature.SignatureException;
+import org.opensaml.xmlsec.signature.support.SignatureValidator;
+import org.opensaml.xmlsec.signature.support.Signer;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 

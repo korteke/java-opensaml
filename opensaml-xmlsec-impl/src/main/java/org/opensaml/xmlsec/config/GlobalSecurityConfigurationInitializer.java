@@ -20,8 +20,6 @@ package org.opensaml.xmlsec.config;
 import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.core.config.InitializationException;
 import org.opensaml.core.config.Initializer;
-import org.opensaml.xml.security.BasicSecurityConfiguration;
-import org.opensaml.xml.security.DefaultSecurityConfigurationBootstrap;
 import org.opensaml.xmlsec.SecurityConfiguration;
 
 /**
