@@ -21,10 +21,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.ws.wstrust.Code;
 import org.opensaml.ws.wstrust.Reason;
 import org.opensaml.ws.wstrust.Status;
-import org.opensaml.xml.XMLObject;
 
 /**
  * StatusImpl.

@@ -21,12 +21,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.xacml.ctx.DecisionType;
 import org.opensaml.xacml.ctx.ResultType;
 import org.opensaml.xacml.ctx.StatusType;
 import org.opensaml.xacml.impl.AbstractXACMLObject;
 import org.opensaml.xacml.policy.ObligationsType;
-import org.opensaml.xml.XMLObject;
 
 /** Concrete implementation of {@link ResultType}. */
 public class ResultTypeImpl extends AbstractXACMLObject implements ResultType {

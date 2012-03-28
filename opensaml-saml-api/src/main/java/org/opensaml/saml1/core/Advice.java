@@ -23,7 +23,7 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.common.SAMLObject;
 import org.opensaml.common.xml.SAMLConstants;
-import org.opensaml.xml.ElementExtensibleXMLObject;
+import org.opensaml.core.xml.ElementExtensibleXMLObject;
 
 /**
  * This interface defines how the object representing a SAML 1 <code> Advice </code> element behaves.

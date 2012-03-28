@@ -19,9 +19,9 @@ package org.opensaml.ws.wsaddressing.util;
 
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
+import org.opensaml.core.xml.AttributeExtensibleXMLObject;
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.ws.wsaddressing.IsReferenceParameterBearing;
-import org.opensaml.xml.AttributeExtensibleXMLObject;
-import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.schema.XSBooleanValue;
 
 import com.google.common.base.Objects;

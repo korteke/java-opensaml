@@ -17,8 +17,8 @@
 
 package org.opensaml.ws.wstrust.impl;
 
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.ws.wstrust.BinarySecret;
-import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.schema.impl.XSBase64BinaryMarshaller;
 import org.opensaml.xml.util.XMLObjectSupport;

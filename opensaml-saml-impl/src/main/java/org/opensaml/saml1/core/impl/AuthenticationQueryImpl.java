@@ -21,8 +21,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml1.core.AuthenticationQuery;
-import org.opensaml.xml.XMLObject;
 
 /**
  * Concrete implementation of the {@link org.opensaml.saml1.core.AuthenticationQuery} interface

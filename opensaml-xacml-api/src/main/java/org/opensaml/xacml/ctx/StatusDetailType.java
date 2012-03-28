@@ -19,9 +19,9 @@ package org.opensaml.xacml.ctx;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.core.xml.ElementExtensibleXMLObject;
 import org.opensaml.xacml.XACMLConstants;
 import org.opensaml.xacml.XACMLObject;
-import org.opensaml.xml.ElementExtensibleXMLObject;
 
 /** XACML context StatusDetail schema type. */
 public interface StatusDetailType extends XACMLObject, ElementExtensibleXMLObject {

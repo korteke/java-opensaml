@@ -17,9 +17,9 @@
 
 package org.opensaml.ws.wstrust.impl;
 
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.ws.wstrust.RequestSecurityTokenResponse;
 import org.opensaml.ws.wstrust.RequestSecurityTokenResponseCollection;
-import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.util.XMLObjectSupport;
 import org.w3c.dom.Attr;

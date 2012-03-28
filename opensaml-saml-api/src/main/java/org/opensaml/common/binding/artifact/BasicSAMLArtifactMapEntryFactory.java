@@ -20,7 +20,7 @@ package org.opensaml.common.binding.artifact;
 import org.opensaml.common.SAMLObject;
 import org.opensaml.common.binding.artifact.SAMLArtifactMap.SAMLArtifactMapEntry;
 import org.opensaml.common.binding.artifact.SAMLArtifactMap.SAMLArtifactMapEntryFactory;
-import org.opensaml.xml.XMLRuntimeException;
+import org.opensaml.core.xml.XMLRuntimeException;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.util.XMLObjectSupport;

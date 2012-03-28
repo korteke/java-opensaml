@@ -17,7 +17,7 @@
 
 package org.opensaml.saml2.metadata.provider;
 
-import org.opensaml.xml.XMLObjectProviderRegistrySupport;
+import org.opensaml.core.xml.XMLObjectProviderRegistrySupport;
 import org.opensaml.xml.io.UnmarshallerFactory;
 
 /**

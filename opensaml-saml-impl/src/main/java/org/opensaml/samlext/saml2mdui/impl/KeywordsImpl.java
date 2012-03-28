@@ -20,9 +20,9 @@ package org.opensaml.samlext.saml2mdui.impl;
 import java.util.List;
 
 import org.opensaml.common.impl.AbstractSAMLObject;
+import org.opensaml.core.xml.LangBearing;
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.samlext.saml2mdui.Keywords;
-import org.opensaml.xml.LangBearing;
-import org.opensaml.xml.XMLObject;
 
 import com.google.common.base.Strings;
 

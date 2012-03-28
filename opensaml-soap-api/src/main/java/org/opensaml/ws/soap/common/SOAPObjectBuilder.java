@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.soap.common;
 
-import org.opensaml.xml.XMLObjectBuilder;
+import org.opensaml.core.xml.XMLObjectBuilder;
 
 /**
  * Builder for SOAPObjects.

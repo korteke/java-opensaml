@@ -19,7 +19,7 @@ package org.opensaml.ws.wssecurity;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.xml.AttributeExtensibleXMLObject;
+import org.opensaml.core.xml.AttributeExtensibleXMLObject;
 
 /**
  * The &lt;wsse:Reference&gt; empty element.

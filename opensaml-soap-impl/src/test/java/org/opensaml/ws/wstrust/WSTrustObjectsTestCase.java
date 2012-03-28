@@ -22,14 +22,14 @@ import java.io.InputStream;
 import javax.xml.namespace.QName;
 
 import org.joda.time.DateTime;
+import org.opensaml.core.xml.XMLConfigurator;
+import org.opensaml.core.xml.XMLObjectProviderRegistrySupport;
 import org.opensaml.ws.WSBaseTestCase;
 import org.opensaml.ws.wssecurity.Created;
 import org.opensaml.ws.wssecurity.Password;
 import org.opensaml.ws.wssecurity.Timestamp;
 import org.opensaml.ws.wssecurity.Username;
 import org.opensaml.ws.wssecurity.UsernameToken;
-import org.opensaml.xml.XMLObjectProviderRegistrySupport;
-import org.opensaml.xml.XMLConfigurator;
 import org.opensaml.xml.schema.XSAny;
 import org.opensaml.xml.schema.XSBooleanValue;
 import org.opensaml.xml.schema.impl.XSAnyBuilder;

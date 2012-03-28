@@ -24,11 +24,11 @@ import javax.xml.namespace.QName;
 import net.shibboleth.utilities.java.support.collection.LazySet;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
-import org.opensaml.xml.AttributeExtensibleXMLObject;
-import org.opensaml.xml.Namespace;
-import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.XMLObjectBaseTestCase;
-import org.opensaml.xml.XMLObjectBuilder;
+import org.opensaml.core.xml.AttributeExtensibleXMLObject;
+import org.opensaml.core.xml.Namespace;
+import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.XMLObjectBaseTestCase;
+import org.opensaml.core.xml.XMLObjectBuilder;
 import org.opensaml.xml.schema.XSAny;
 
 import com.google.common.base.Objects;

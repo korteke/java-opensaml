@@ -17,9 +17,9 @@
 
 package org.opensaml.xacml.ctx.impl;
 
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.xacml.ctx.StatusMessageType;
 import org.opensaml.xacml.impl.AbstractXACMLObjectUnmarshaller;
-import org.opensaml.xml.XMLObject;
 
 /**
  *Unmarshaller for {@link org.opensaml.xacml.ctx.StatusMessageType}.

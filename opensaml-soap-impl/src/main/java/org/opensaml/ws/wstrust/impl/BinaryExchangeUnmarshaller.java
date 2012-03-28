@@ -17,8 +17,8 @@
 
 package org.opensaml.ws.wstrust.impl;
 
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.ws.wstrust.BinaryExchange;
-import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.schema.impl.XSStringUnmarshaller;
 import org.opensaml.xml.util.XMLObjectSupport;

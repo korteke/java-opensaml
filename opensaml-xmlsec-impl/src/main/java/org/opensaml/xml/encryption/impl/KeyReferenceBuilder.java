@@ -17,7 +17,7 @@
 
 package org.opensaml.xml.encryption.impl;
 
-import org.opensaml.xml.AbstractXMLObjectBuilder;
+import org.opensaml.core.xml.AbstractXMLObjectBuilder;
 import org.opensaml.xml.encryption.EncryptionConstants;
 import org.opensaml.xml.encryption.KeyReference;
 import org.opensaml.xml.encryption.XMLEncryptionBuilder;

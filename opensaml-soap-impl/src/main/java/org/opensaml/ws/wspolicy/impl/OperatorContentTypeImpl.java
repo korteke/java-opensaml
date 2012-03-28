@@ -23,12 +23,12 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.ws.wspolicy.All;
 import org.opensaml.ws.wspolicy.ExactlyOne;
 import org.opensaml.ws.wspolicy.OperatorContentType;
 import org.opensaml.ws.wspolicy.Policy;
 import org.opensaml.ws.wspolicy.PolicyReference;
-import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.util.IndexedXMLObjectChildrenList;
 
 /**

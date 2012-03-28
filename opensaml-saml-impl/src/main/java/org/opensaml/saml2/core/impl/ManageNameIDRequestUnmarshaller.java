@@ -21,13 +21,13 @@
 
 package org.opensaml.saml2.core.impl;
 
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml2.core.EncryptedID;
 import org.opensaml.saml2.core.ManageNameIDRequest;
 import org.opensaml.saml2.core.NameID;
 import org.opensaml.saml2.core.NewEncryptedID;
 import org.opensaml.saml2.core.NewID;
 import org.opensaml.saml2.core.Terminate;
-import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
 
 /**

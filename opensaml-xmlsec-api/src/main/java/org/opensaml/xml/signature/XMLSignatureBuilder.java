@@ -17,8 +17,8 @@
 
 package org.opensaml.xml.signature;
 
-import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.XMLObjectBuilder;
+import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.XMLObjectBuilder;
 
 /**
  * Builder for XMLObjects from {@link org.opensaml.xml.signature}

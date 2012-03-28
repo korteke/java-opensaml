@@ -24,8 +24,8 @@ package org.opensaml.saml1.core.impl;
 import java.util.List;
 
 import org.opensaml.common.impl.AbstractSAMLObject;
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml1.core.AttributeDesignator;
-import org.opensaml.xml.XMLObject;
 
 /**
  * Concrete Implementation of the {@link org.opensaml.saml1.core.AttributeDesignator} interface.

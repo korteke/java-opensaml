@@ -19,11 +19,11 @@ package org.opensaml.ws.message;
 
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.ws.message.handler.HandlerChainResolver;
 import org.opensaml.ws.security.SecurityPolicyResolver;
 import org.opensaml.ws.transport.InTransport;
 import org.opensaml.ws.transport.OutTransport;
-import org.opensaml.xml.XMLObject;
 
 /**
  * Base class for message context implementations.

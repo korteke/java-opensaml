@@ -17,8 +17,8 @@
 
 package org.opensaml.saml2.ecp.impl;
 
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml2.ecp.RelayState;
-import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.schema.impl.XSStringMarshaller;
 import org.opensaml.xml.util.XMLObjectSupport;

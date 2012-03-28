@@ -22,6 +22,7 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.ws.BaseTestCase;
 import org.opensaml.ws.message.BaseMessageContext;
 import org.opensaml.ws.message.MessageContext;
@@ -33,7 +34,6 @@ import org.opensaml.ws.message.handler.StaticHandlerChainResolver;
 import org.opensaml.ws.soap.common.SOAPHandler;
 import org.opensaml.ws.soap.soap11.Envelope;
 import org.opensaml.ws.transport.InputStreamInTransportAdapter;
-import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.schema.XSAny;
 import org.opensaml.xml.security.SecurityException;
 

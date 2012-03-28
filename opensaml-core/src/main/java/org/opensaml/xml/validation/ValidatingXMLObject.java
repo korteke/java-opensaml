@@ -19,7 +19,7 @@ package org.opensaml.xml.validation;
 
 import java.util.List;
 
-import org.opensaml.xml.XMLObject;
+import org.opensaml.core.xml.XMLObject;
 
 /**
  * A functional interface for XMLObjects that offer the ability

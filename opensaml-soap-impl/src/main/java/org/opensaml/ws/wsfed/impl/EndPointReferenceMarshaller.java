@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wsfed.impl;
 
-import org.opensaml.xml.XMLObject;
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.xml.io.AbstractXMLObjectMarshaller;
 import org.w3c.dom.Element;
 

@@ -21,13 +21,13 @@
 
 package org.opensaml.saml2.metadata.impl;
 
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml2.core.Attribute;
 import org.opensaml.saml2.metadata.AssertionIDRequestService;
 import org.opensaml.saml2.metadata.AttributeProfile;
 import org.opensaml.saml2.metadata.IDPSSODescriptor;
 import org.opensaml.saml2.metadata.NameIDMappingService;
 import org.opensaml.saml2.metadata.SingleSignOnService;
-import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.schema.XSBooleanValue;
 import org.w3c.dom.Attr;

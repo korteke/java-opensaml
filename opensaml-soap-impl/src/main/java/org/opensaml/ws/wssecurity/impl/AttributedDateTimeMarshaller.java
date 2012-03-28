@@ -19,8 +19,8 @@ package org.opensaml.ws.wssecurity.impl;
 
 import net.shibboleth.utilities.java.support.xml.ElementSupport;
 
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.ws.wssecurity.AttributedDateTime;
-import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.util.XMLObjectSupport;
 import org.w3c.dom.Element;

@@ -31,8 +31,8 @@ import org.apache.xml.security.transforms.Transforms;
 import org.apache.xml.security.transforms.params.InclusiveNamespaces;
 import org.opensaml.common.SignableSAMLObject;
 import org.opensaml.core.config.ConfigurationService;
-import org.opensaml.xml.NamespaceManager;
-import org.opensaml.xml.XMLObject;
+import org.opensaml.core.xml.NamespaceManager;
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.xml.security.SecurityConfiguration;
 import org.opensaml.xml.signature.ContentReference;
 import org.opensaml.xml.signature.SignatureConstants;
@@ -57,7 +57,7 @@ import com.google.common.base.Strings;
  * 
  * <p>
  * When generating an exclusive canonicalization transform, an inclusive namespace list is 
- * generated from the namespaces, retrieved from {@link org.opensaml.xml.XMLObject#getNamespaces()},
+ * generated from the namespaces, retrieved from {@link org.opensaml.core.xml.XMLObject#getNamespaces()},
  * used by the SAML object to be signed and all of it's descendants.
  * </p>
  * 

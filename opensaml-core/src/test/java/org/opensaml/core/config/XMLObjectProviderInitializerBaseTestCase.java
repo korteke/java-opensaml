@@ -19,7 +19,7 @@ package org.opensaml.core.config;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.xml.XMLObjectProviderRegistry;
+import org.opensaml.core.xml.XMLObjectProviderRegistry;
 
 /**
  * An abstract base class for XMLObject provider initializers which takes care of the boilerplate, requiring

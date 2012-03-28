@@ -22,13 +22,13 @@ import java.util.List;
 
 import net.shibboleth.utilities.java.support.collection.LazyList;
 
-import org.opensaml.xml.AbstractXMLObject;
-import org.opensaml.xml.XMLObject;
+import org.opensaml.core.xml.AbstractXMLObject;
+import org.opensaml.core.xml.XMLObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Extension of {@link org.opensaml.xml.AbstractXMLObject} that implements
+ * Extension of {@link org.opensaml.core.xml.AbstractXMLObject} that implements
  * {@link org.opensaml.xml.validation.ValidatingXMLObject}.
  */
 public abstract class AbstractValidatingXMLObject extends AbstractXMLObject implements ValidatingXMLObject {

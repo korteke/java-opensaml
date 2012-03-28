@@ -21,7 +21,7 @@ import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
 import org.opensaml.common.BaseComplexSAMLObjectTestCase;
 import org.opensaml.common.SAMLVersion;
-import org.opensaml.xml.XMLObjectBuilder;
+import org.opensaml.core.xml.XMLObjectBuilder;
 import org.opensaml.xml.schema.XSString;
 
 /**

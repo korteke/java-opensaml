@@ -22,11 +22,11 @@ import java.util.Collections;
 import java.util.List;
 
 import org.opensaml.common.impl.AbstractSAMLObject;
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml1.core.Status;
 import org.opensaml.saml1.core.StatusCode;
 import org.opensaml.saml1.core.StatusDetail;
 import org.opensaml.saml1.core.StatusMessage;
-import org.opensaml.xml.XMLObject;
 
 /**
  * Concrete Implementation {@link org.opensaml.saml1.core.Status}

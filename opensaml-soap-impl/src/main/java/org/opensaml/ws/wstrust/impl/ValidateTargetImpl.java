@@ -21,8 +21,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.ws.wstrust.ValidateTarget;
-import org.opensaml.xml.XMLObject;
 
 /**
  * ValidateTargetImpl.

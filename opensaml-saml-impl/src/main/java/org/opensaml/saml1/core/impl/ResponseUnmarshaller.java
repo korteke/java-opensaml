@@ -17,10 +17,10 @@
 
 package org.opensaml.saml1.core.impl;
 
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml1.core.Assertion;
 import org.opensaml.saml1.core.Response;
 import org.opensaml.saml1.core.Status;
-import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
 
 /**

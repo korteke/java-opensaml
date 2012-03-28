@@ -21,9 +21,9 @@
 
 package org.opensaml.saml2.core.impl;
 
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml2.core.AssertionIDRef;
 import org.opensaml.saml2.core.AssertionIDRequest;
-import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
 
 /**

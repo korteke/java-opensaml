@@ -18,8 +18,8 @@
 package org.opensaml.saml1.core.impl;
 
 import org.opensaml.common.impl.AbstractSAMLObjectUnmarshaller;
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml1.core.ConfirmationMethod;
-import org.opensaml.xml.XMLObject;
 
 /**
  * A thread-safe Unmarshaller for {@link org.opensaml.saml1.core.ConfirmationMethod} objects.

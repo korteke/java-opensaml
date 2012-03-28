@@ -18,8 +18,8 @@
 package org.opensaml.samlext.saml2mdui.impl;
 
 import org.opensaml.common.impl.AbstractSAMLObjectUnmarshaller;
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.samlext.saml2mdui.GeolocationHint;
-import org.opensaml.xml.XMLObject;
 
 /**
  * A thread-safe unmarshaller for {@link org.opensaml.samlext.saml2mdui.GeolocationHint} objects.

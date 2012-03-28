@@ -19,8 +19,8 @@ package org.opensaml.ws.wsaddressing;
 
 import java.io.InputStream;
 
+import org.opensaml.core.xml.XMLConfigurator;
 import org.opensaml.ws.WSBaseTestCase;
-import org.opensaml.xml.XMLConfigurator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

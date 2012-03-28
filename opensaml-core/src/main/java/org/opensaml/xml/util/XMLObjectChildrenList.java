@@ -23,7 +23,7 @@ import java.util.List;
 
 import net.shibboleth.utilities.java.support.collection.LazyList;
 
-import org.opensaml.xml.XMLObject;
+import org.opensaml.core.xml.XMLObject;
 
 /**
  * Resizable list for the children of XMLObjects. This list implements all optional List operations and does not all for

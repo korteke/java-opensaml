@@ -22,8 +22,8 @@ import java.io.InputStream;
 import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
 import org.opensaml.common.BaseTestCase;
-import org.opensaml.xml.XMLObjectProviderRegistrySupport;
-import org.opensaml.xml.XMLObject;
+import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.XMLObjectProviderRegistrySupport;
 import org.opensaml.xml.io.Unmarshaller;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.w3c.dom.Document;

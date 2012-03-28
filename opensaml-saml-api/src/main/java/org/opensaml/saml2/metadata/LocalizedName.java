@@ -18,7 +18,7 @@
 package org.opensaml.saml2.metadata;
 
 import org.opensaml.common.SAMLObject;
-import org.opensaml.xml.LangBearing;
+import org.opensaml.core.xml.LangBearing;
 import org.opensaml.xml.schema.XSString;
 
 /**

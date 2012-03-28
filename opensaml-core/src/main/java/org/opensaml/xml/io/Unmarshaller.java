@@ -17,11 +17,11 @@
 
 package org.opensaml.xml.io;
 
-import org.opensaml.xml.XMLObject;
+import org.opensaml.core.xml.XMLObject;
 import org.w3c.dom.Element;
 
 /**
- * Unmarshallers are used to unmarshall a W3C DOM element into a {@link org.opensaml.xml.XMLObject}.
+ * Unmarshallers are used to unmarshall a W3C DOM element into a {@link org.opensaml.core.xml.XMLObject}.
  */
 public interface Unmarshaller {
 

@@ -20,7 +20,7 @@ package org.opensaml.saml2.common;
 import java.util.List;
 
 import org.joda.time.DateTime;
-import org.opensaml.xml.XMLObject;
+import org.opensaml.core.xml.XMLObject;
 
 public class SAML2Helper {
 

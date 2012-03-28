@@ -17,11 +17,11 @@
 
 package org.opensaml.ws.message;
 
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.ws.message.handler.HandlerChainResolver;
 import org.opensaml.ws.security.SecurityPolicyResolver;
 import org.opensaml.ws.transport.InTransport;
 import org.opensaml.ws.transport.OutTransport;
-import org.opensaml.xml.XMLObject;
 
 /**
  * A message context represents the entire context for a given message through the receive, process, and/or response

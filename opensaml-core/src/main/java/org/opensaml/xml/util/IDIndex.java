@@ -25,10 +25,10 @@ import javax.annotation.concurrent.NotThreadSafe;
 
 import net.shibboleth.utilities.java.support.collection.LazyMap;
 
-import org.opensaml.xml.XMLObject;
+import org.opensaml.core.xml.XMLObject;
 
 /**
- * Class which provides storage for the ID-to-XMLObject index mapping on an owning {@link org.opensaml.xml.XMLObject}.
+ * Class which provides storage for the ID-to-XMLObject index mapping on an owning {@link org.opensaml.core.xml.XMLObject}.
  */
 @NotThreadSafe
 public class IDIndex {

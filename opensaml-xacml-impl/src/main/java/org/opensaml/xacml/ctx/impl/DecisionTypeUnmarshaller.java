@@ -17,10 +17,10 @@
 
 package org.opensaml.xacml.ctx.impl;
 
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.xacml.ctx.DecisionType;
 import org.opensaml.xacml.ctx.DecisionType.DECISION;
 import org.opensaml.xacml.impl.AbstractXACMLObjectUnmarshaller;
-import org.opensaml.xml.XMLObject;
 
 /** Unmarshaller for {@link DecisionType} objects. */
 public class DecisionTypeUnmarshaller extends AbstractXACMLObjectUnmarshaller {

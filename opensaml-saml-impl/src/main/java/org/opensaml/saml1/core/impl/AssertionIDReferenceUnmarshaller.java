@@ -18,8 +18,8 @@
 package org.opensaml.saml1.core.impl;
 
 import org.opensaml.common.impl.AbstractSAMLObjectUnmarshaller;
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml1.core.AssertionIDReference;
-import org.opensaml.xml.XMLObject;
 
 /** A thread-safe Unmarshaller for {@link org.opensaml.saml1.core.AssertionIDReference} objects. */
 public class AssertionIDReferenceUnmarshaller extends AbstractSAMLObjectUnmarshaller {

@@ -17,7 +17,7 @@
 
 package org.opensaml.xml.io;
 
-import org.opensaml.xml.XMLObject;
+import org.opensaml.core.xml.XMLObject;
 import org.w3c.dom.Attr;
 
 /**

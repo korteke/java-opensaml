@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wspolicy;
 
-import org.opensaml.xml.XMLObject;
+import org.opensaml.core.xml.XMLObject;
 
 /**
  * WSPolicyObject is the base interface for all WS-Policy elements.

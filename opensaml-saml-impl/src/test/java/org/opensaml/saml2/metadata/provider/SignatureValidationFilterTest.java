@@ -23,8 +23,8 @@ import java.security.cert.X509Certificate;
 import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
 import org.opensaml.common.BaseTestCase;
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml2.metadata.EntityDescriptor;
-import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.XMLSecurityHelper;

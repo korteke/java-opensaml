@@ -19,7 +19,7 @@ package org.opensaml.xml.signature.validator;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.xml.XMLObject;
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.xml.signature.SPKIData;
 import org.opensaml.xml.signature.SPKISexp;
 import org.opensaml.xml.signature.SignatureConstants;

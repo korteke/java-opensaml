@@ -17,7 +17,7 @@
 
 package org.opensaml.xml.schema.impl;
 
-import org.opensaml.xml.AbstractXMLObjectBuilder;
+import org.opensaml.core.xml.AbstractXMLObjectBuilder;
 import org.opensaml.xml.schema.XSURI;
 
 /**

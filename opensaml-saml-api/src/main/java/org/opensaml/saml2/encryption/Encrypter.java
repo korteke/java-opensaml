@@ -27,6 +27,8 @@ import net.shibboleth.utilities.java.support.security.IdentifierGenerationStrate
 import net.shibboleth.utilities.java.support.security.RandomIdentifierGenerationStrategy;
 
 import org.opensaml.Configuration;
+import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.XMLObjectBuilderFactory;
 import org.opensaml.saml2.core.Assertion;
 import org.opensaml.saml2.core.Attribute;
 import org.opensaml.saml2.core.BaseID;
@@ -37,8 +39,6 @@ import org.opensaml.saml2.core.EncryptedID;
 import org.opensaml.saml2.core.NameID;
 import org.opensaml.saml2.core.NewEncryptedID;
 import org.opensaml.saml2.core.NewID;
-import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.XMLObjectBuilderFactory;
 import org.opensaml.xml.encryption.CarriedKeyName;
 import org.opensaml.xml.encryption.DataReference;
 import org.opensaml.xml.encryption.EncryptedData;

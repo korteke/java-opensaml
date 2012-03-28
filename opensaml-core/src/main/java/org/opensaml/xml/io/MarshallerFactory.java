@@ -23,13 +23,13 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.xml.XMLObject;
+import org.opensaml.core.xml.XMLObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * This thread-safe factory creates {@link org.opensaml.xml.io.Marshaller}s that can be used to convert
- * {@link org.opensaml.xml.XMLObject}s into W3C DOM elements. Marshallers are stored and retrieved by a
+ * {@link org.opensaml.core.xml.XMLObject}s into W3C DOM elements. Marshallers are stored and retrieved by a
  * {@link javax.xml.namespace.QName} key. This key is either the XML Schema Type or element QName of the XML element the
  * XMLObject is marshalled into.
  */

@@ -17,7 +17,7 @@
 
 package org.opensaml.xml.encryption.impl;
 
-import org.opensaml.xml.XMLObject;
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.xml.encryption.DHKeyValue;
 import org.opensaml.xml.encryption.Generator;
 import org.opensaml.xml.encryption.P;

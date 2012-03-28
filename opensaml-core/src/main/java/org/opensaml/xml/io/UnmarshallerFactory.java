@@ -32,7 +32,7 @@ import org.w3c.dom.Element;
 
 /**
  * This thread-safe factory creates {@link org.opensaml.xml.io.Unmarshaller}s that can be used to convert W3C DOM
- * elements into {@link org.opensaml.xml.XMLObject}s. Unmarshallers are stored and retrieved by a
+ * elements into {@link org.opensaml.core.xml.XMLObject}s. Unmarshallers are stored and retrieved by a
  * {@link javax.xml.namespace.QName} key. This key is either the XML Schema Type or element QName of the XML element
  * being unmarshalled.
  */

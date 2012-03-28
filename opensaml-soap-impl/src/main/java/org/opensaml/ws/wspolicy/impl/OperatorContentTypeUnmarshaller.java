@@ -17,8 +17,8 @@
 
 package org.opensaml.ws.wspolicy.impl;
 
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.ws.wspolicy.OperatorContentType;
-import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
 
 /**

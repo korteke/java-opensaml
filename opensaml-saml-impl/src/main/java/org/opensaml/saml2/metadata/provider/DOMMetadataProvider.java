@@ -17,7 +17,7 @@
 
 package org.opensaml.saml2.metadata.provider;
 
-import org.opensaml.xml.XMLObject;
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.xml.io.Unmarshaller;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.slf4j.Logger;

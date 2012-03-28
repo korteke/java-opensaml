@@ -19,8 +19,8 @@ package org.opensaml.ws.wstrust.impl;
 
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.ws.wstrust.BinaryExchange;
-import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.schema.impl.XSStringMarshaller;
 import org.opensaml.xml.util.XMLObjectSupport;

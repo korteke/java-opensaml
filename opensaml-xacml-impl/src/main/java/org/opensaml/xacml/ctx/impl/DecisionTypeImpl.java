@@ -20,9 +20,9 @@ package org.opensaml.xacml.ctx.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.xacml.ctx.DecisionType;
 import org.opensaml.xacml.impl.AbstractXACMLObject;
-import org.opensaml.xml.XMLObject;
 
 /** Concrete implementation of {@link DecisionType}. */
 public class DecisionTypeImpl extends AbstractXACMLObject implements DecisionType {

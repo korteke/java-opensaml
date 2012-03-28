@@ -18,9 +18,9 @@
 package org.opensaml.ws.wstrust.impl;
 
 
+import org.opensaml.core.xml.AbstractXMLObjectBuilder;
 import org.opensaml.ws.wstrust.WSTrustObject;
 import org.opensaml.ws.wstrust.WSTrustObjectBuilder;
-import org.opensaml.xml.AbstractXMLObjectBuilder;
 
 /**
  * AbstractWSTrustObjectBuilder.

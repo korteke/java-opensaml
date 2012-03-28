@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wspolicy;
 
-import org.opensaml.xml.XMLObjectBuilder;
+import org.opensaml.core.xml.XMLObjectBuilder;
 
 /**
  * WSPolicyObjectBuilder.

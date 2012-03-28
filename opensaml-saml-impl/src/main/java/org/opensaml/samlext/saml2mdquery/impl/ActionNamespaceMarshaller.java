@@ -20,8 +20,8 @@ package org.opensaml.samlext.saml2mdquery.impl;
 import net.shibboleth.utilities.java.support.xml.ElementSupport;
 
 import org.opensaml.common.impl.AbstractSAMLObjectMarshaller;
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.samlext.saml2mdquery.ActionNamespace;
-import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
 import org.w3c.dom.Element;
 

@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.opensaml.xml.XMLObject;
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.xml.signature.RetrievalMethod;
 import org.opensaml.xml.signature.Transforms;
 import org.opensaml.xml.validation.AbstractValidatingXMLObject;

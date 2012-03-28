@@ -17,7 +17,7 @@
 
 package org.opensaml.xml.encryption.validator;
 
-import org.opensaml.xml.BaseXMLObjectValidatorTestCase;
+import org.opensaml.core.xml.BaseXMLObjectValidatorTestCase;
 import org.opensaml.xml.encryption.DataReference;
 import org.opensaml.xml.encryption.EncryptionConstants;
 import org.opensaml.xml.encryption.ReferenceType;

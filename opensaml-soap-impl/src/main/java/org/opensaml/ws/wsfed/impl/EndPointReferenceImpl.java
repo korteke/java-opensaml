@@ -21,10 +21,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.opensaml.core.xml.AbstractXMLObject;
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.ws.wsfed.Address;
 import org.opensaml.ws.wsfed.EndPointReference;
-import org.opensaml.xml.AbstractXMLObject;
-import org.opensaml.xml.XMLObject;
 
 /** Implementation of the {@link EndPointReference} object. */
 public class EndPointReferenceImpl extends AbstractXMLObject implements EndPointReference {

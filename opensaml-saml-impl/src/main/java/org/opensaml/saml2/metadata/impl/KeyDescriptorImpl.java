@@ -22,9 +22,9 @@ import java.util.Collections;
 import java.util.List;
 
 import org.opensaml.common.impl.AbstractSAMLObject;
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml2.metadata.EncryptionMethod;
 import org.opensaml.saml2.metadata.KeyDescriptor;
-import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.security.credential.UsageType;
 import org.opensaml.xml.signature.KeyInfo;
 import org.opensaml.xml.util.XMLObjectChildrenList;

@@ -19,9 +19,9 @@ package org.opensaml.xacml.ctx.impl;
 
 import java.util.List;
 
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.xacml.ctx.StatusMessageType;
 import org.opensaml.xacml.impl.AbstractXACMLObject;
-import org.opensaml.xml.XMLObject;
 
 /**
  * Implementation of {@link org.opensaml.xacml.ctx.StatusMessageType}.

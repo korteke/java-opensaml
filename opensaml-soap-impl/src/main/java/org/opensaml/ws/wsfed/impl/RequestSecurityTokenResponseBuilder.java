@@ -17,10 +17,10 @@
 
 package org.opensaml.ws.wsfed.impl;
 
+import org.opensaml.core.xml.AbstractXMLObjectBuilder;
 import org.opensaml.ws.wsfed.RequestSecurityTokenResponse;
 import org.opensaml.ws.wsfed.WSFedConstants;
 import org.opensaml.ws.wsfed.WSFedObjectBuilder;
-import org.opensaml.xml.AbstractXMLObjectBuilder;
 
 /** Builder of {@link RequestSecurityTokenResponseImpl} objects. */
 public class RequestSecurityTokenResponseBuilder extends AbstractXMLObjectBuilder<RequestSecurityTokenResponse>

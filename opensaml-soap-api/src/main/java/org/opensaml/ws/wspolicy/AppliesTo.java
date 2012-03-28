@@ -19,8 +19,8 @@ package org.opensaml.ws.wspolicy;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.xml.AttributeExtensibleXMLObject;
-import org.opensaml.xml.ElementExtensibleXMLObject;
+import org.opensaml.core.xml.AttributeExtensibleXMLObject;
+import org.opensaml.core.xml.ElementExtensibleXMLObject;
 
 /**
  * The wsp:AppliesTo element.

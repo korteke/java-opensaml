@@ -28,7 +28,7 @@ import org.opensaml.xml.io.MarshallingException;
  * 
  * <p>
  * An implementation of this interface MUST ensure that the persisted SAML message is no longer tied to any 
- * parent {@link org.opensaml.xml.XMLObject} that may have contained it.  This ensures that it can be safely added 
+ * parent {@link org.opensaml.core.xml.XMLObject} that may have contained it.  This ensures that it can be safely added 
  * to another object once retrieved from the map.  This might for example be achieved by: 
  * 1) cloning the SAMLObject prior to storage, or 2) by serializing it to a string and re-parsing 
  * and unmarhsalling it once retrieved from the underlying data store.

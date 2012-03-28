@@ -19,8 +19,8 @@ package org.opensaml.xacml.policy.impl;
 
 import java.util.List;
 
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.xacml.policy.PolicySetCombinerParametersType;
-import org.opensaml.xml.XMLObject;
 
 /**
  *Implementation of {@link PolicySetCombinerParametersType}.

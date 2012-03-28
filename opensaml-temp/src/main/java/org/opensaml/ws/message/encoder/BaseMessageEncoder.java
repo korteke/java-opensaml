@@ -19,9 +19,9 @@ package org.opensaml.ws.message.encoder;
 
 import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 
+import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.XMLObjectProviderRegistrySupport;
 import org.opensaml.ws.message.MessageContext;
-import org.opensaml.xml.XMLObjectProviderRegistrySupport;
-import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallingException;
 import org.slf4j.Logger;

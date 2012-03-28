@@ -19,8 +19,8 @@ package org.opensaml.saml1.core.impl;
 
 import org.joda.time.format.ISODateTimeFormat;
 import org.opensaml.common.impl.AbstractSAMLObjectMarshaller;
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml1.core.Assertion;
-import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
 import org.w3c.dom.Element;
 

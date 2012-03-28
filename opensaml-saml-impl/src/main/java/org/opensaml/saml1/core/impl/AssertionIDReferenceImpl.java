@@ -20,8 +20,8 @@ package org.opensaml.saml1.core.impl;
 import java.util.List;
 
 import org.opensaml.common.impl.AbstractSAMLObject;
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml1.core.AssertionIDReference;
-import org.opensaml.xml.XMLObject;
 
 /**
  * Concrete Implementation of {@link org.opensaml.saml1.core.AssertionIDReference} Object

@@ -17,9 +17,9 @@
 
 package org.opensaml.saml1.core.impl;
 
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml1.core.Attribute;
 import org.opensaml.saml1.core.AttributeStatement;
-import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
 
 /**

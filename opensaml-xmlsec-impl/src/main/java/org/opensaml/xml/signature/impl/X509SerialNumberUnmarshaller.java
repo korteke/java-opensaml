@@ -19,7 +19,7 @@ package org.opensaml.xml.signature.impl;
 
 import java.math.BigInteger;
 
-import org.opensaml.xml.XMLObject;
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.xml.io.AbstractXMLObjectUnmarshaller;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.signature.X509SerialNumber;

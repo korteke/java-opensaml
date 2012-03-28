@@ -17,7 +17,7 @@
 
 package org.opensaml.xml.encryption.impl;
 
-import org.opensaml.xml.XMLObject;
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.xml.encryption.CarriedKeyName;
 import org.opensaml.xml.encryption.EncryptedKey;
 import org.opensaml.xml.encryption.ReferenceList;

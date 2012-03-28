@@ -24,9 +24,9 @@ import javax.xml.namespace.QName;
 import net.shibboleth.utilities.java.support.xml.AttributeSupport;
 
 import org.opensaml.common.impl.AbstractSAMLObjectMarshaller;
+import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.XMLObjectProviderRegistrySupport;
 import org.opensaml.saml2.metadata.Endpoint;
-import org.opensaml.xml.XMLObjectProviderRegistrySupport;
-import org.opensaml.xml.XMLObject;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
 

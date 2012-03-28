@@ -20,8 +20,8 @@ package org.opensaml.saml1.core.impl;
 import java.util.List;
 
 import org.opensaml.common.impl.AbstractSAMLObject;
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml1.core.Audience;
-import org.opensaml.xml.XMLObject;
 
 /**
  * Concrete class implementation of {@link org.opensaml.saml1.core.Audience}

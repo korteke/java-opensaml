@@ -22,6 +22,7 @@ import java.util.List;
 
 import net.shibboleth.utilities.java.support.collection.LazyList;
 
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.xml.signature.AbstractSignableXMLObject;
 import org.opensaml.xml.validation.ValidatingXMLObject;
 import org.opensaml.xml.validation.ValidationException;

@@ -23,9 +23,9 @@ import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.xml.AttributeSupport;
 
+import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.XMLObjectProviderRegistrySupport;
 import org.opensaml.ws.soap.soap11.Header;
-import org.opensaml.xml.XMLObjectProviderRegistrySupport;
-import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.AbstractXMLObjectMarshaller;
 import org.opensaml.xml.io.MarshallingException;
 import org.w3c.dom.Attr;

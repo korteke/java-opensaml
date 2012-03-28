@@ -31,13 +31,13 @@ import javax.xml.namespace.QName;
 import net.shibboleth.utilities.java.support.collection.LazySet;
 
 import org.joda.time.DateTime;
+import org.opensaml.core.xml.Namespace;
+import org.opensaml.core.xml.NamespaceManager;
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml2.common.Extensions;
 import org.opensaml.saml2.metadata.EntitiesDescriptor;
 import org.opensaml.saml2.metadata.EntityDescriptor;
 import org.opensaml.saml2.metadata.RoleDescriptor;
-import org.opensaml.xml.Namespace;
-import org.opensaml.xml.NamespaceManager;
-import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.schema.XSBooleanValue;
 import org.opensaml.xml.signature.Signature;
 import org.opensaml.xml.util.IDIndex;

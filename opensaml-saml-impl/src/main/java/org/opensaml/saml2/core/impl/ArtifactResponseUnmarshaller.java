@@ -22,11 +22,11 @@
 package org.opensaml.saml2.core.impl;
 
 import org.opensaml.common.SAMLObject;
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml2.common.Extensions;
 import org.opensaml.saml2.core.ArtifactResponse;
 import org.opensaml.saml2.core.Issuer;
 import org.opensaml.saml2.core.Status;
-import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.signature.Signature;
 

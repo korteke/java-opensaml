@@ -17,7 +17,7 @@
 
 package org.opensaml.saml2.metadata.provider;
 
-import org.opensaml.xml.XMLObject;
+import org.opensaml.core.xml.XMLObject;
 
 /**
  * A metadata filter is used to process a metadata document after it has been unmarshalled into object.
