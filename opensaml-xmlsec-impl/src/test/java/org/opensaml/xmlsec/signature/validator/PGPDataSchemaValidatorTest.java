@@ -1,0 +1,82 @@
+/*
+ * Licensed to the University Corporation for Advanced Internet Development, 
+ * Inc. (UCAID) under one or more contributor license agreements.  See the 
+ * NOTICE file distributed with this work for additional information regarding
+ * copyright ownership. The UCAID licenses this file to You under the Apache 
+ * License, Version 2.0 (the "License"); you may not use this file except in 
+ * compliance with the License.  You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package org.opensaml.xmlsec.signature.validator;
+
+import org.opensaml.core.xml.BaseXMLObjectValidatorTestCase;
+import org.opensaml.core.xml.mock.SimpleXMLObject;
+import org.opensaml.core.xml.mock.SimpleXMLObjectBuilder;
+import org.opensaml.xmlsec.signature.PGPData;
+import org.opensaml.xmlsec.signature.PGPKeyID;
+import org.opensaml.xmlsec.signature.PGPKeyPacket;
+import org.opensaml.xmlsec.signature.support.SignatureConstants;
+import org.opensaml.xmlsec.signature.validator.PGPDataSchemaValidator;
+
+/**
+ *
+ */
+public class PGPDataSchemaValidatorTest extends BaseXMLObjectValidatorTestCase {
+
+    public PGPDataSchemaValidatorTest() {
+        targetQName = PGPData.DEFAULT_ELEMENT_NAME;
+        validator = new PGPDataSchemaValidator();
+    }
+
+    protected void populateRequiredData() {
+        super.populateRequiredData();
+        PGPData pgpData = (PGPData) target;
+
+        pgpData.setPGPKeyID((PGPKeyID) buildXMLObject(PGPKeyID.DEFAULT_ELEMENT_NAME));
+        pgpData.setPGPKeyPacket(((PGPKeyPacket) buildXMLObject(PGPKeyPacket.DEFAULT_ELEMENT_NAME)));
+        pgpData.getUnknownXMLObjects().add(buildXMLObject(simpleXMLObjectQName));
+    }
+
+    public void testNoKeyID() {
+        PGPData pgpData = (PGPData) target;
+
+        pgpData.setPGPKeyID(null);
+        assertValidationPass("PGPData had no PDPKeyID, but should have been valid");
+    }
+
+    public void testNoKeyPacket() {
+        PGPData pgpData = (PGPData) target;
+
+        pgpData.setPGPKeyPacket(null);
+        assertValidationPass("PGPData had no PDPKeyPacket, but should have been valid");
+    }
+
+    public void testEmptyChildren() {
+        PGPData pgpData = (PGPData) target;
+
+        pgpData.setPGPKeyID(null);
+        pgpData.setPGPKeyPacket(null);
+        pgpData.getUnknownXMLObjects().clear();
+        assertValidationFail("PGPData child list was empty, should have failed validation");
+    }
+
+    public void testInvalidNamespaceChildren() {
+        PGPData pgpData = (PGPData) target;
+
+        SimpleXMLObjectBuilder sxoBuilder = new SimpleXMLObjectBuilder();
+        SimpleXMLObject sxo =
+                sxoBuilder.buildObject(SignatureConstants.XMLSIG_NS, "Foo", SignatureConstants.XMLSIG_PREFIX);
+
+        pgpData.getUnknownXMLObjects().add(sxo);
+
+        assertValidationFail("PGPData contained a child with an invalid namespace, should have failed validation");
+    }
+}
