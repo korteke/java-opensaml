@@ -19,8 +19,8 @@ package org.opensaml.xml.security.trust;
 
 import java.security.cert.X509Certificate;
 
-import org.opensaml.xml.security.credential.Credential;
-import org.opensaml.xml.security.x509.X509Credential;
+import org.opensaml.security.credential.Credential;
+import org.opensaml.security.x509.X509Credential;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

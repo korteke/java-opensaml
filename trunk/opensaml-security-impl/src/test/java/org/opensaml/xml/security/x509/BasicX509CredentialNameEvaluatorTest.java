@@ -22,8 +22,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
-import org.opensaml.xml.security.SecurityException;
-import org.opensaml.xml.security.SecurityHelper;
+import org.opensaml.security.SecurityException;
+import org.opensaml.security.SecurityHelper;
+import org.opensaml.security.x509.X509Credential;
+import org.opensaml.security.x509.X509Util;
 
 /**
  * Tests the {@link CertPathPKIXTrustEvaluator} implementation.

@@ -20,10 +20,10 @@ package org.opensaml.xml.security.credential.criteria;
 import java.security.cert.X509Certificate;
 import java.util.Arrays;
 
-import org.opensaml.xml.security.credential.Credential;
-import org.opensaml.xml.security.x509.X509Credential;
-import org.opensaml.xml.security.x509.X509SubjectKeyIdentifierCriterion;
-import org.opensaml.xml.security.x509.X509Util;
+import org.opensaml.security.credential.Credential;
+import org.opensaml.security.x509.X509Credential;
+import org.opensaml.security.x509.X509SubjectKeyIdentifierCriterion;
+import org.opensaml.security.x509.X509Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

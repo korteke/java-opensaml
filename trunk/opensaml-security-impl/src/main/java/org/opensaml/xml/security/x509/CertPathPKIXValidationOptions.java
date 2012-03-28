@@ -17,6 +17,9 @@
 
 package org.opensaml.xml.security.x509;
 
+import org.opensaml.security.x509.PKIXTrustEvaluator;
+import org.opensaml.security.x509.PKIXValidationOptions;
+
 /**
  * Specialization of {@link PKIXValidationOptions} which specifies options specific to a {@link PKIXTrustEvaluator}
  * based on the Java CertPath API.

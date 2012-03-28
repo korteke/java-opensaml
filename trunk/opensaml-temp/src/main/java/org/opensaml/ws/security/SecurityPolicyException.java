@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.security;
 
-import org.opensaml.xml.security.SecurityException;
+import org.opensaml.security.SecurityException;
 
 /**
  * Exception indicating a security policy failure.

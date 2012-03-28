@@ -30,12 +30,12 @@ import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
-import org.opensaml.xml.security.SecurityException;
-import org.opensaml.xml.security.SecurityHelper;
-import org.opensaml.xml.security.credential.Credential;
+import org.opensaml.security.SecurityException;
+import org.opensaml.security.SecurityHelper;
+import org.opensaml.security.credential.Credential;
+import org.opensaml.security.x509.X509Credential;
 import org.opensaml.xml.security.keyinfo.provider.InlineX509DataProvider;
 import org.opensaml.xml.security.keyinfo.provider.RSAKeyValueProvider;
-import org.opensaml.xml.security.x509.X509Credential;
 import org.opensaml.xml.signature.KeyInfo;
 
 

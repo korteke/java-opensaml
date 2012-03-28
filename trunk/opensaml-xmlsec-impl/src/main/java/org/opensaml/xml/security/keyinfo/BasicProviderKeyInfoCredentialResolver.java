@@ -33,11 +33,11 @@ import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.xml.security.SecurityException;
-import org.opensaml.xml.security.SecurityHelper;
+import org.opensaml.security.SecurityException;
+import org.opensaml.security.SecurityHelper;
+import org.opensaml.security.credential.BasicCredential;
+import org.opensaml.security.credential.Credential;
 import org.opensaml.xml.security.credential.AbstractCriteriaFilteringCredentialResolver;
-import org.opensaml.xml.security.credential.BasicCredential;
-import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.signature.KeyInfo;
 import org.opensaml.xml.signature.KeyName;
 import org.opensaml.xml.signature.KeyValue;

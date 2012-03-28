@@ -25,14 +25,14 @@ import java.util.List;
 import junit.framework.TestCase;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
-import org.opensaml.xml.security.SecurityException;
-import org.opensaml.xml.security.SecurityHelper;
-import org.opensaml.xml.security.credential.BasicCredential;
-import org.opensaml.xml.security.credential.Credential;
-import org.opensaml.xml.security.credential.CredentialResolver;
+import org.opensaml.security.SecurityException;
+import org.opensaml.security.SecurityHelper;
+import org.opensaml.security.credential.BasicCredential;
+import org.opensaml.security.credential.Credential;
+import org.opensaml.security.credential.CredentialResolver;
+import org.opensaml.security.criteria.EntityIDCriterion;
+import org.opensaml.security.x509.BasicX509Credential;
 import org.opensaml.xml.security.credential.StaticCredentialResolver;
-import org.opensaml.xml.security.criteria.EntityIDCriterion;
-import org.opensaml.xml.security.x509.BasicX509Credential;
 
 /**
  * Test the explicit key trust engine.

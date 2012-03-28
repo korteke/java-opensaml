@@ -28,12 +28,12 @@ import org.opensaml.saml2.core.AuthnRequest;
 import org.opensaml.saml2.core.NameID;
 import org.opensaml.saml2.core.Response;
 import org.opensaml.saml2.metadata.SPSSODescriptor;
-import org.opensaml.xml.security.SecurityHelper;
+import org.opensaml.security.SecurityHelper;
+import org.opensaml.security.credential.Credential;
+import org.opensaml.security.trust.TrustEngine;
+import org.opensaml.security.x509.BasicX509Credential;
 import org.opensaml.xml.security.credential.CollectionCredentialResolver;
-import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
-import org.opensaml.xml.security.trust.TrustEngine;
-import org.opensaml.xml.security.x509.BasicX509Credential;
 import org.opensaml.xml.signature.Signature;
 import org.opensaml.xml.signature.impl.ExplicitKeySignatureTrustEngine;
 

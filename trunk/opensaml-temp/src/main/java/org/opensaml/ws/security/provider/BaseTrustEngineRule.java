@@ -19,11 +19,11 @@ package org.opensaml.ws.security.provider;
 
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
+import org.opensaml.security.SecurityException;
+import org.opensaml.security.trust.TrustEngine;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.security.SecurityPolicyException;
 import org.opensaml.ws.security.SecurityPolicyRule;
-import org.opensaml.xml.security.SecurityException;
-import org.opensaml.xml.security.trust.TrustEngine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

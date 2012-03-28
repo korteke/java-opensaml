@@ -22,6 +22,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import org.opensaml.security.credential.BasicCredential;
+import org.opensaml.security.credential.Credential;
+
 import junit.framework.TestCase;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;

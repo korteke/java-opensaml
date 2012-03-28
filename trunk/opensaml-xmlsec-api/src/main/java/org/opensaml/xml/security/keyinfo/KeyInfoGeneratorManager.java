@@ -22,7 +22,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.opensaml.xml.security.credential.Credential;
+import org.opensaml.security.credential.Credential;
 
 /**
  * A manager for {@link KeyInfoGeneratorFactory} instances.  Factories are uniquely indexed according to the 

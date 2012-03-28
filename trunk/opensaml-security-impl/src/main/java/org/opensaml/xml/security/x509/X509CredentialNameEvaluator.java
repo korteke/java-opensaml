@@ -19,7 +19,8 @@ package org.opensaml.xml.security.x509;
 
 import java.util.Set;
 
-import org.opensaml.xml.security.SecurityException;
+import org.opensaml.security.SecurityException;
+import org.opensaml.security.x509.X509Credential;
 
 /**
  * Interface for classes which evaluate an {@link X509Credential} against a 

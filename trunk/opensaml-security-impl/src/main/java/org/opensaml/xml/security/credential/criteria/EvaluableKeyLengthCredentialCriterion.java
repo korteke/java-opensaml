@@ -19,9 +19,9 @@ package org.opensaml.xml.security.credential.criteria;
 
 import java.security.Key;
 
-import org.opensaml.xml.security.SecurityHelper;
-import org.opensaml.xml.security.credential.Credential;
-import org.opensaml.xml.security.criteria.KeyLengthCriterion;
+import org.opensaml.security.SecurityHelper;
+import org.opensaml.security.credential.Credential;
+import org.opensaml.security.criteria.KeyLengthCriterion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

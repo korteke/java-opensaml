@@ -19,10 +19,10 @@ package org.opensaml.xml.signature;
 
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
-import org.opensaml.xml.security.SecurityException;
-import org.opensaml.xml.security.credential.Credential;
+import org.opensaml.security.SecurityException;
+import org.opensaml.security.credential.Credential;
+import org.opensaml.security.trust.TrustEngine;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
-import org.opensaml.xml.security.trust.TrustEngine;
 
 /**
  * Evaluates the trustworthiness and validity of XML or raw Signatures against implementation-specific requirements.

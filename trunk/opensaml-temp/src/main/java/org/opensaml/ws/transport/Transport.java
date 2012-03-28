@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.transport;
 
-import org.opensaml.xml.security.credential.Credential;
+import org.opensaml.security.credential.Credential;
 
 /**
  * Base interface for inbound and outbound transports.

@@ -17,7 +17,9 @@
 
 package org.opensaml.xml.security;
 
-import org.opensaml.xml.security.credential.Credential;
+import org.opensaml.security.SecurityException;
+import org.opensaml.security.SigningUtil;
+import org.opensaml.security.credential.Credential;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

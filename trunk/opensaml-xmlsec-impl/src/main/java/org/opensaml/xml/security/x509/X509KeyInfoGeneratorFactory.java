@@ -28,9 +28,13 @@ import net.shibboleth.utilities.java.support.collection.LazySet;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.XMLObjectProviderRegistrySupport;
-import org.opensaml.xml.security.SecurityException;
+import org.opensaml.security.SecurityException;
+import org.opensaml.security.credential.Credential;
+import org.opensaml.security.x509.InternalX500DNHandler;
+import org.opensaml.security.x509.X500DNHandler;
+import org.opensaml.security.x509.X509Credential;
+import org.opensaml.security.x509.X509Util;
 import org.opensaml.xml.security.credential.BasicKeyInfoGeneratorFactory;
-import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.keyinfo.KeyInfoGenerator;
 import org.opensaml.xml.security.keyinfo.KeyInfoHelper;
 import org.opensaml.xml.signature.KeyInfo;

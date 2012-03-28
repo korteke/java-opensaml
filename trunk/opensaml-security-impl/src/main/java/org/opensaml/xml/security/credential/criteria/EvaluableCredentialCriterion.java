@@ -17,8 +17,8 @@
 
 package org.opensaml.xml.security.credential.criteria;
 
+import org.opensaml.security.credential.Credential;
 import org.opensaml.util.criteria.EvaluableCriterion;
-import org.opensaml.xml.security.credential.Credential;
 
 /**
  * Marker interface for evaluable credential resolver criteria.

@@ -24,7 +24,11 @@ import java.util.Set;
 
 import javax.security.auth.x500.X500Principal;
 
-import org.opensaml.xml.security.SecurityException;
+import org.opensaml.security.SecurityException;
+import org.opensaml.security.x509.InternalX500DNHandler;
+import org.opensaml.security.x509.X500DNHandler;
+import org.opensaml.security.x509.X509Credential;
+import org.opensaml.security.x509.X509Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

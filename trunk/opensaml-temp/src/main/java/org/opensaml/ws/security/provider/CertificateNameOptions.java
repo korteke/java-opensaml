@@ -21,8 +21,8 @@ import java.util.LinkedHashSet;
 
 import javax.security.auth.x500.X500Principal;
 
-import org.opensaml.xml.security.x509.InternalX500DNHandler;
-import org.opensaml.xml.security.x509.X500DNHandler;
+import org.opensaml.security.x509.InternalX500DNHandler;
+import org.opensaml.security.x509.X500DNHandler;
 
 /**
  * Options for deriving message context issuer names from an X.509 certificate. Used by {@link ClientCertAuthRule}.

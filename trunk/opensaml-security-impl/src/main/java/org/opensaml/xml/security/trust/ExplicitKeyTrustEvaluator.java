@@ -19,7 +19,7 @@ package org.opensaml.xml.security.trust;
 
 import java.security.Key;
 
-import org.opensaml.xml.security.credential.Credential;
+import org.opensaml.security.credential.Credential;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -32,11 +32,11 @@ import org.opensaml.common.BaseTestCase;
 import org.opensaml.saml2.metadata.SPSSODescriptor;
 import org.opensaml.saml2.metadata.provider.FilesystemMetadataProvider;
 import org.opensaml.saml2.metadata.provider.MetadataProviderException;
-import org.opensaml.xml.security.SecurityException;
-import org.opensaml.xml.security.credential.Credential;
-import org.opensaml.xml.security.credential.UsageType;
-import org.opensaml.xml.security.criteria.EntityIDCriterion;
-import org.opensaml.xml.security.criteria.UsageCriterion;
+import org.opensaml.security.SecurityException;
+import org.opensaml.security.credential.Credential;
+import org.opensaml.security.credential.UsageType;
+import org.opensaml.security.criteria.EntityIDCriterion;
+import org.opensaml.security.criteria.UsageCriterion;
 
 /**
  * Testing various cases of caching by the metadata credential resolver.

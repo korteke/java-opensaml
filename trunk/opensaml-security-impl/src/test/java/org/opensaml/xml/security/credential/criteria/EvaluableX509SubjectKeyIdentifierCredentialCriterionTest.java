@@ -22,10 +22,10 @@ import java.security.cert.X509Certificate;
 import junit.framework.TestCase;
 import net.shibboleth.utilities.java.support.codec.Base64Support;
 
-import org.opensaml.xml.security.SecurityHelper;
-import org.opensaml.xml.security.credential.BasicCredential;
-import org.opensaml.xml.security.x509.BasicX509Credential;
-import org.opensaml.xml.security.x509.X509SubjectKeyIdentifierCriterion;
+import org.opensaml.security.SecurityHelper;
+import org.opensaml.security.credential.BasicCredential;
+import org.opensaml.security.x509.BasicX509Credential;
+import org.opensaml.security.x509.X509SubjectKeyIdentifierCriterion;
 
 /**
  *

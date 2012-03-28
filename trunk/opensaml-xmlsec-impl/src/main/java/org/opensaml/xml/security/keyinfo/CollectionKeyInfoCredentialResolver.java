@@ -20,8 +20,8 @@ package org.opensaml.xml.security.keyinfo;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.opensaml.security.credential.Credential;
 import org.opensaml.xml.security.credential.CollectionCredentialResolver;
-import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.credential.criteria.EvaluableCredentialCriteriaRegistry;
 import org.opensaml.xml.security.credential.criteria.EvaluableCredentialCriterion;
 import org.opensaml.xml.signature.KeyName;

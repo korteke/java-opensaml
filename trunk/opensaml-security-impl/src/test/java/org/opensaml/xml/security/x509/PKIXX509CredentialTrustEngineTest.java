@@ -29,8 +29,12 @@ import java.util.Set;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
-import org.opensaml.xml.security.SecurityException;
-import org.opensaml.xml.security.criteria.EntityIDCriterion;
+import org.opensaml.security.SecurityException;
+import org.opensaml.security.criteria.EntityIDCriterion;
+import org.opensaml.security.x509.BasicX509Credential;
+import org.opensaml.security.x509.PKIXValidationInformation;
+import org.opensaml.security.x509.X509Credential;
+import org.opensaml.security.x509.X509Util;
 
 /**
  * Tests the {@link PKIXX509CredentialTrustEngine} implementation.

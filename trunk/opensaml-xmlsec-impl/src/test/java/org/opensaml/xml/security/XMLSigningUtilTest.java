@@ -31,7 +31,9 @@ import javax.crypto.SecretKey;
 
 import junit.framework.TestCase;
 
-import org.opensaml.xml.security.credential.Credential;
+import org.opensaml.security.SecurityException;
+import org.opensaml.security.SecurityHelper;
+import org.opensaml.security.credential.Credential;
 import org.opensaml.xml.signature.SignatureConstants;
 
 /**

@@ -25,8 +25,8 @@ import org.opensaml.saml2.metadata.Endpoint;
 import org.opensaml.saml2.metadata.EntityDescriptor;
 import org.opensaml.saml2.metadata.RoleDescriptor;
 import org.opensaml.saml2.metadata.provider.MetadataProvider;
+import org.opensaml.security.credential.Credential;
 import org.opensaml.ws.message.MessageContext;
-import org.opensaml.xml.security.credential.Credential;
 
 /**
  * SAML specific extension to the more basic {@link MessageContext}.

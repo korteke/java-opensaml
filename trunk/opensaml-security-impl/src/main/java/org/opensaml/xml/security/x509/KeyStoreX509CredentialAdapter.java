@@ -29,7 +29,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import org.opensaml.xml.security.credential.BasicCredential;
+import org.opensaml.security.credential.BasicCredential;
+import org.opensaml.security.x509.X509Credential;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

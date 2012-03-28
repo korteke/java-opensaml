@@ -24,10 +24,10 @@ import javax.security.auth.x500.X500Principal;
 
 import junit.framework.TestCase;
 
-import org.opensaml.xml.security.SecurityHelper;
-import org.opensaml.xml.security.credential.BasicCredential;
-import org.opensaml.xml.security.x509.BasicX509Credential;
-import org.opensaml.xml.security.x509.X509IssuerSerialCriterion;
+import org.opensaml.security.SecurityHelper;
+import org.opensaml.security.credential.BasicCredential;
+import org.opensaml.security.x509.BasicX509Credential;
+import org.opensaml.security.x509.X509IssuerSerialCriterion;
 
 /**
  *

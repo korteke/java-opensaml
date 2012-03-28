@@ -26,7 +26,7 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.XMLObjectChildrenList;
 import org.opensaml.saml2.metadata.EncryptionMethod;
 import org.opensaml.saml2.metadata.KeyDescriptor;
-import org.opensaml.xml.security.credential.UsageType;
+import org.opensaml.security.credential.UsageType;
 import org.opensaml.xml.signature.KeyInfo;
 
 /**

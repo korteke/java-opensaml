@@ -35,8 +35,8 @@ import org.opensaml.common.binding.security.BaseSAMLSimpleSignatureSecurityPolic
 import org.opensaml.core.xml.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.Unmarshaller;
 import org.opensaml.core.xml.io.UnmarshallingException;
+import org.opensaml.security.credential.Credential;
 import org.opensaml.ws.security.SecurityPolicyException;
-import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xml.security.keyinfo.KeyInfoCriterion;
 import org.opensaml.xml.signature.KeyInfo;

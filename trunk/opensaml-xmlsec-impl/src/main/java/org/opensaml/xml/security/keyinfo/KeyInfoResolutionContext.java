@@ -26,7 +26,7 @@ import java.util.Set;
 import net.shibboleth.utilities.java.support.collection.LazyMap;
 import net.shibboleth.utilities.java.support.collection.LazySet;
 
-import org.opensaml.xml.security.credential.Credential;
+import org.opensaml.security.credential.Credential;
 import org.opensaml.xml.signature.KeyInfo;
 
 

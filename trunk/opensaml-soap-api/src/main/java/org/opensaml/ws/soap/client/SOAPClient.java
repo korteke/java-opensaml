@@ -19,8 +19,8 @@ package org.opensaml.ws.soap.client;
 
 import javax.annotation.concurrent.ThreadSafe;
 
+import org.opensaml.security.SecurityException;
 import org.opensaml.ws.soap.common.SOAPException;
-import org.opensaml.xml.security.SecurityException;
 
 /**
  * An interface for a very basic SOAP client.

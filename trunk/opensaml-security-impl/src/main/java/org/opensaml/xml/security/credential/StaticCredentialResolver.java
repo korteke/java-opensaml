@@ -20,6 +20,9 @@ package org.opensaml.xml.security.credential;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.opensaml.security.credential.Credential;
+import org.opensaml.security.credential.CredentialResolver;
+
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 

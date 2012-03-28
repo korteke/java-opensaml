@@ -29,7 +29,8 @@ import javax.net.ssl.X509KeyManager;
 
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
-import org.opensaml.xml.security.credential.BasicCredential;
+import org.opensaml.security.credential.BasicCredential;
+import org.opensaml.security.x509.X509Credential;
 
 /** A class that wraps a {@link X509KeyManager} and exposes it as an {@link X509Credential}. */
 public class X509KeyManagerX509CredentialAdapter extends BasicCredential implements X509Credential {

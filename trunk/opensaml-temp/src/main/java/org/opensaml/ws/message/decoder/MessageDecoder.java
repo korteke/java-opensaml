@@ -17,8 +17,8 @@
 
 package org.opensaml.ws.message.decoder;
 
+import org.opensaml.security.SecurityException;
 import org.opensaml.ws.message.MessageContext;
-import org.opensaml.xml.security.SecurityException;
 
 /**
  * Decodes a message, from an inbound transport, in a binding specific manner. As the decode proceeds information is

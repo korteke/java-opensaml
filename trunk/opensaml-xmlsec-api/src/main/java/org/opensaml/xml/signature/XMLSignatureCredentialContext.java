@@ -17,7 +17,7 @@
 
 package org.opensaml.xml.signature;
 
-import org.opensaml.xml.security.credential.CredentialContext;
+import org.opensaml.security.credential.CredentialContext;
 
 /**
  * A credential context for credentials resolved from a {@link KeyInfo} that was found in 
