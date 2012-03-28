@@ -22,7 +22,7 @@ import java.util.List;
 import org.opensaml.saml2.metadata.EncryptionMethod;
 import org.opensaml.saml2.metadata.KeyDescriptor;
 import org.opensaml.saml2.metadata.RoleDescriptor;
-import org.opensaml.xml.security.credential.CredentialContext;
+import org.opensaml.security.credential.CredentialContext;
 
 /**
  * A credential context for credentials resolved from a {@link org.opensaml.xml.signature.KeyInfo} that was found in

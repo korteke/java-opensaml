@@ -21,9 +21,9 @@ import java.security.cert.X509Certificate;
 
 import javax.security.auth.x500.X500Principal;
 
-import org.opensaml.xml.security.credential.Credential;
-import org.opensaml.xml.security.x509.X509Credential;
-import org.opensaml.xml.security.x509.X509SubjectNameCriterion;
+import org.opensaml.security.credential.Credential;
+import org.opensaml.security.x509.X509Credential;
+import org.opensaml.security.x509.X509SubjectNameCriterion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -22,8 +22,9 @@ import java.security.KeyPair;
 import junit.framework.TestCase;
 
 import org.apache.xml.security.Init;
+import org.opensaml.security.SecurityHelper;
+import org.opensaml.security.credential.Credential;
 import org.opensaml.xml.encryption.EncryptionConstants;
-import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.signature.SignatureConstants;
 
 /**

@@ -27,8 +27,8 @@ import java.util.List;
 import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
+import org.opensaml.security.SecurityHelper;
 import org.opensaml.xml.mock.SignableSimpleXMLObject;
-import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.security.XMLSecurityHelper;
 import org.opensaml.xml.security.keyinfo.StaticKeyInfoGenerator;
 import org.opensaml.xml.signature.DigestMethod;

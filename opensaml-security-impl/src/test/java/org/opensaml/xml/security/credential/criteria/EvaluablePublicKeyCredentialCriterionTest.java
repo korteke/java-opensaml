@@ -23,9 +23,9 @@ import java.security.PublicKey;
 
 import junit.framework.TestCase;
 
-import org.opensaml.xml.security.SecurityHelper;
-import org.opensaml.xml.security.credential.BasicCredential;
-import org.opensaml.xml.security.criteria.PublicKeyCriterion;
+import org.opensaml.security.SecurityHelper;
+import org.opensaml.security.credential.BasicCredential;
+import org.opensaml.security.criteria.PublicKeyCriterion;
 
 /**
  *

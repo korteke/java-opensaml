@@ -20,11 +20,11 @@ package org.opensaml.xml.security.keyinfo;
 import java.util.Collection;
 
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
-import org.opensaml.xml.security.credential.BasicCredential;
+import org.opensaml.security.credential.BasicCredential;
+import org.opensaml.security.credential.Credential;
+import org.opensaml.security.x509.BasicX509Credential;
+import org.opensaml.security.x509.X509Credential;
 import org.opensaml.xml.security.credential.BasicKeyInfoGeneratorFactory;
-import org.opensaml.xml.security.credential.Credential;
-import org.opensaml.xml.security.x509.BasicX509Credential;
-import org.opensaml.xml.security.x509.X509Credential;
 import org.opensaml.xml.security.x509.X509KeyInfoGeneratorFactory;
 
 /**

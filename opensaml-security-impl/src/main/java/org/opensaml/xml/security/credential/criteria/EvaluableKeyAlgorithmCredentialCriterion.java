@@ -21,8 +21,8 @@ import java.security.Key;
 
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
-import org.opensaml.xml.security.credential.Credential;
-import org.opensaml.xml.security.criteria.KeyAlgorithmCriterion;
+import org.opensaml.security.credential.Credential;
+import org.opensaml.security.criteria.KeyAlgorithmCriterion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

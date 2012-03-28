@@ -19,9 +19,9 @@ package org.opensaml.xml.security.credential.criteria;
 
 import junit.framework.TestCase;
 
-import org.opensaml.xml.security.credential.BasicCredential;
-import org.opensaml.xml.security.credential.UsageType;
-import org.opensaml.xml.security.criteria.UsageCriterion;
+import org.opensaml.security.credential.BasicCredential;
+import org.opensaml.security.credential.UsageType;
+import org.opensaml.security.criteria.UsageCriterion;
 
 /**
  *

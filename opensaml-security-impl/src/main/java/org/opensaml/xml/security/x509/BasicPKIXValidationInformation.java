@@ -21,6 +21,8 @@ import java.security.cert.X509CRL;
 import java.security.cert.X509Certificate;
 import java.util.Collection;
 
+import org.opensaml.security.x509.PKIXValidationInformation;
+
 /**
  * Basic implementation of {@link PKIXValidationInformation}.
  */

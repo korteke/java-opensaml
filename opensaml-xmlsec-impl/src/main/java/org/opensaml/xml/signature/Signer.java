@@ -22,7 +22,7 @@ import java.util.List;
 import org.apache.xml.security.Init;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.signature.XMLSignature;
-import org.opensaml.xml.security.SecurityHelper;
+import org.opensaml.security.SecurityHelper;
 import org.opensaml.xml.signature.impl.SignatureImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -34,7 +34,7 @@ import javax.security.auth.x500.X500Principal;
 import net.shibboleth.utilities.java.support.codec.Base64Support;
 
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
-import org.opensaml.xml.security.SecurityHelper;
+import org.opensaml.security.SecurityHelper;
 import org.opensaml.xml.signature.DSAKeyValue;
 import org.opensaml.xml.signature.Exponent;
 import org.opensaml.xml.signature.G;

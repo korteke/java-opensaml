@@ -23,7 +23,7 @@ import java.util.Set;
 
 import net.shibboleth.utilities.java.support.collection.LazyMap;
 
-import org.opensaml.xml.security.credential.Credential;
+import org.opensaml.security.credential.Credential;
 
 /**
  * A manager for named sets of {@link KeyInfoGeneratorFactory} instances. Each name key serves as an index to an

@@ -22,7 +22,8 @@ import java.util.List;
 
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
-import org.opensaml.xml.security.SecurityException;
+import org.opensaml.security.SecurityException;
+import org.opensaml.security.trust.TrustEngine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

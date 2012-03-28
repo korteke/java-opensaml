@@ -17,9 +17,9 @@
 
 package org.opensaml.xml.security.credential.criteria;
 
-import org.opensaml.xml.security.credential.Credential;
-import org.opensaml.xml.security.credential.UsageType;
-import org.opensaml.xml.security.criteria.UsageCriterion;
+import org.opensaml.security.credential.Credential;
+import org.opensaml.security.credential.UsageType;
+import org.opensaml.security.criteria.UsageCriterion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

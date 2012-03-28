@@ -19,7 +19,7 @@ package org.opensaml.xml.security;
 
 import java.security.interfaces.DSAParams;
 
-import org.opensaml.xml.security.credential.Credential;
+import org.opensaml.security.credential.Credential;
 import org.opensaml.xml.security.keyinfo.KeyInfoGenerator;
 
 

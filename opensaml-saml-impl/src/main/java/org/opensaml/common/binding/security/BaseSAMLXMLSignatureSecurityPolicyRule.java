@@ -21,13 +21,13 @@ import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
 import org.opensaml.common.binding.SAMLMessageContext;
 import org.opensaml.security.MetadataCriterion;
+import org.opensaml.security.credential.UsageType;
+import org.opensaml.security.criteria.EntityIDCriterion;
+import org.opensaml.security.criteria.UsageCriterion;
+import org.opensaml.security.trust.TrustEngine;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.security.SecurityPolicyException;
 import org.opensaml.ws.security.provider.BaseTrustEngineRule;
-import org.opensaml.xml.security.credential.UsageType;
-import org.opensaml.xml.security.criteria.EntityIDCriterion;
-import org.opensaml.xml.security.criteria.UsageCriterion;
-import org.opensaml.xml.security.trust.TrustEngine;
 import org.opensaml.xml.signature.Signature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

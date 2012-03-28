@@ -25,11 +25,11 @@ import net.shibboleth.utilities.java.support.collection.LazySet;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.xml.security.SecurityException;
-import org.opensaml.xml.security.credential.BasicCredential;
-import org.opensaml.xml.security.credential.Credential;
-import org.opensaml.xml.security.credential.CredentialContext;
-import org.opensaml.xml.security.criteria.KeyAlgorithmCriterion;
+import org.opensaml.security.SecurityException;
+import org.opensaml.security.credential.BasicCredential;
+import org.opensaml.security.credential.Credential;
+import org.opensaml.security.credential.CredentialContext;
+import org.opensaml.security.criteria.KeyAlgorithmCriterion;
 import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xml.security.keyinfo.KeyInfoHelper;
 import org.opensaml.xml.security.keyinfo.KeyInfoProvider;

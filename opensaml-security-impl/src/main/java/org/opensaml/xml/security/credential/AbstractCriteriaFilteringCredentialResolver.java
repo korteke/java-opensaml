@@ -24,10 +24,12 @@ import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.Criterion;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
+import org.opensaml.security.SecurityException;
+import org.opensaml.security.credential.Credential;
+import org.opensaml.security.credential.CredentialResolver;
 import org.opensaml.util.criteria.CriteriaFilteringIterable;
 import org.opensaml.util.criteria.CriteriaFilteringIterator;
 import org.opensaml.util.criteria.EvaluableCriterion;
-import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.credential.criteria.EvaluableCredentialCriteriaRegistry;
 import org.opensaml.xml.security.credential.criteria.EvaluableCredentialCriterion;
 

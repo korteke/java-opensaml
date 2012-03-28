@@ -31,10 +31,14 @@ import java.util.Map;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
-import org.opensaml.xml.security.criteria.EntityIDCriterion;
-import org.opensaml.xml.security.criteria.UsageCriterion;
-import org.opensaml.xml.security.x509.BasicX509Credential;
-import org.opensaml.xml.security.x509.X509Credential;
+import org.opensaml.security.credential.BasicCredential;
+import org.opensaml.security.credential.Credential;
+import org.opensaml.security.credential.CredentialResolver;
+import org.opensaml.security.credential.UsageType;
+import org.opensaml.security.criteria.EntityIDCriterion;
+import org.opensaml.security.criteria.UsageCriterion;
+import org.opensaml.security.x509.BasicX509Credential;
+import org.opensaml.security.x509.X509Credential;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

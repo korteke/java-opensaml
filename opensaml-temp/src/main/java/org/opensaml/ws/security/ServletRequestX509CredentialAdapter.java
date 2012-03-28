@@ -22,9 +22,9 @@ import java.util.Arrays;
 
 import javax.servlet.ServletRequest;
 
-import org.opensaml.xml.security.credential.UsageType;
-import org.opensaml.xml.security.x509.BasicX509Credential;
-import org.opensaml.xml.security.x509.X509Credential;
+import org.opensaml.security.credential.UsageType;
+import org.opensaml.security.x509.BasicX509Credential;
+import org.opensaml.security.x509.X509Credential;
 
 /**
  * An adapter that exposes the X.509 certificates contained in the servlet request attribute.

@@ -21,7 +21,7 @@ import org.opensaml.common.impl.AbstractSAMLObjectMarshaller;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml2.metadata.KeyDescriptor;
-import org.opensaml.xml.security.credential.UsageType;
+import org.opensaml.security.credential.UsageType;
 import org.w3c.dom.Element;
 
 /**

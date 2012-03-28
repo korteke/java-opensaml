@@ -23,7 +23,7 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.common.SAMLObject;
 import org.opensaml.common.xml.SAMLConstants;
-import org.opensaml.xml.security.credential.UsageType;
+import org.opensaml.security.credential.UsageType;
 import org.opensaml.xml.signature.KeyInfo;
 
 public interface KeyDescriptor extends SAMLObject {

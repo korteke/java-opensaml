@@ -17,7 +17,7 @@
 
 package org.opensaml.xml.security.keyinfo;
 
-import org.opensaml.xml.security.credential.CredentialResolver;
+import org.opensaml.security.credential.CredentialResolver;
 import org.opensaml.xml.signature.KeyInfo;
 
 /**

@@ -19,8 +19,8 @@ package org.opensaml.xml.security.credential.criteria;
 
 import java.security.PublicKey;
 
-import org.opensaml.xml.security.credential.Credential;
-import org.opensaml.xml.security.criteria.PublicKeyCriterion;
+import org.opensaml.security.credential.Credential;
+import org.opensaml.security.criteria.PublicKeyCriterion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

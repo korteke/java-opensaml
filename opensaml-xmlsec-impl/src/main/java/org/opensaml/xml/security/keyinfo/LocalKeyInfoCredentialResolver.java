@@ -25,11 +25,11 @@ import java.util.List;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
+import org.opensaml.security.credential.Credential;
+import org.opensaml.security.credential.CredentialResolver;
+import org.opensaml.security.criteria.KeyNameCriterion;
+import org.opensaml.security.criteria.PublicKeyCriterion;
 import org.opensaml.xml.encryption.Decrypter;
-import org.opensaml.xml.security.credential.Credential;
-import org.opensaml.xml.security.credential.CredentialResolver;
-import org.opensaml.xml.security.criteria.KeyNameCriterion;
-import org.opensaml.xml.security.criteria.PublicKeyCriterion;
 import org.opensaml.xml.signature.KeyInfo;
 
 /**
