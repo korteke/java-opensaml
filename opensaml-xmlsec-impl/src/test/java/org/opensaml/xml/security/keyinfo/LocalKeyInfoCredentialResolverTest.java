@@ -29,7 +29,7 @@ import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.security.SecurityHelper;
 import org.opensaml.security.credential.BasicCredential;
 import org.opensaml.security.credential.Credential;
-import org.opensaml.xml.security.credential.CollectionCredentialResolver;
+import org.opensaml.security.credential.impl.CollectionCredentialResolver;
 import org.opensaml.xml.security.keyinfo.provider.RSAKeyValueProvider;
 import org.opensaml.xml.signature.KeyInfo;
 
