@@ -18,12 +18,12 @@
 package org.opensaml.xml.encryption.impl;
 
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
-import org.opensaml.xml.encryption.EncryptionConstants;
-import org.opensaml.xml.encryption.PgenCounter;
-import org.opensaml.xml.encryption.XMLEncryptionBuilder;
+import org.opensaml.xmlsec.encryption.EncryptionConstants;
+import org.opensaml.xmlsec.encryption.PgenCounter;
+import org.opensaml.xmlsec.encryption.XMLEncryptionBuilder;
 
 /**
- * Builder of {@link org.opensaml.xml.encryption.PgenCounter}
+ * Builder of {@link org.opensaml.xmlsec.encryption.PgenCounter}
  */
 public class PgenCounterBuilder extends AbstractXMLObjectBuilder<PgenCounter> implements
         XMLEncryptionBuilder<PgenCounter> {

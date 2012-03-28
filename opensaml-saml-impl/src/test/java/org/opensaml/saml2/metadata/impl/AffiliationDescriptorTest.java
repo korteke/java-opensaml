@@ -26,8 +26,8 @@ import org.opensaml.common.xml.SAMLConstants;
 import org.opensaml.saml2.common.Extensions;
 import org.opensaml.saml2.metadata.AffiliateMember;
 import org.opensaml.saml2.metadata.AffiliationDescriptor;
-import org.opensaml.xml.signature.Signature;
-import org.opensaml.xml.signature.SignatureConstants;
+import org.opensaml.xmlsec.signature.Signature;
+import org.opensaml.xmlsec.signature.SignatureConstants;
 
 /**
  * Test case for creating, marshalling, and unmarshalling

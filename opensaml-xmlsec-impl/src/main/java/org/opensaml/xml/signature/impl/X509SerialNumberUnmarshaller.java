@@ -22,7 +22,7 @@ import java.math.BigInteger;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.AbstractXMLObjectUnmarshaller;
 import org.opensaml.core.xml.io.UnmarshallingException;
-import org.opensaml.xml.signature.X509SerialNumber;
+import org.opensaml.xmlsec.signature.X509SerialNumber;
 import org.w3c.dom.Attr;
 
 import com.google.common.base.Strings;

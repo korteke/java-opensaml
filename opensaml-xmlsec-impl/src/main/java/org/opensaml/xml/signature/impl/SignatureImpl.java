@@ -25,9 +25,9 @@ import org.apache.xml.security.signature.XMLSignature;
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.security.credential.Credential;
-import org.opensaml.xml.signature.ContentReference;
-import org.opensaml.xml.signature.KeyInfo;
-import org.opensaml.xml.signature.Signature;
+import org.opensaml.xmlsec.signature.ContentReference;
+import org.opensaml.xmlsec.signature.KeyInfo;
+import org.opensaml.xmlsec.signature.Signature;
 
 /**
  * XMLObject representing an enveloped or detached XML Digital Signature, version 20020212, Signature element.

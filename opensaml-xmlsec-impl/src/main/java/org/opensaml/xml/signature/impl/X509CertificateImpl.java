@@ -23,7 +23,7 @@ import java.util.List;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.IndexingObjectStore;
 import org.opensaml.core.xml.validation.AbstractValidatingXMLObject;
-import org.opensaml.xml.signature.X509Certificate;
+import org.opensaml.xmlsec.signature.X509Certificate;
 
 import com.google.common.base.Objects;
 

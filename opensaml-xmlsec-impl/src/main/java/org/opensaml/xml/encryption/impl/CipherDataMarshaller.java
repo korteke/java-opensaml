@@ -18,7 +18,7 @@
 package org.opensaml.xml.encryption.impl;
 
 /**
- * A thread-safe Marshaller for {@link org.opensaml.xml.encryption.CipherData} objects.
+ * A thread-safe Marshaller for {@link org.opensaml.xmlsec.encryption.CipherData} objects.
  */
 public class CipherDataMarshaller extends AbstractXMLEncryptionMarshaller {
 

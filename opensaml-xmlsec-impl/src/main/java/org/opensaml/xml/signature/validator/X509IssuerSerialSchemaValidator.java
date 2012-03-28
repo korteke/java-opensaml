@@ -19,10 +19,10 @@ package org.opensaml.xml.signature.validator;
 
 import org.opensaml.core.xml.validation.ValidationException;
 import org.opensaml.core.xml.validation.Validator;
-import org.opensaml.xml.signature.X509IssuerSerial;
+import org.opensaml.xmlsec.signature.X509IssuerSerial;
 
 /**
- * Checks {@link org.opensaml.xml.signature.X509IssuerSerial} for Schema compliance. 
+ * Checks {@link org.opensaml.xmlsec.signature.X509IssuerSerial} for Schema compliance. 
  */
 public class X509IssuerSerialSchemaValidator implements Validator<X509IssuerSerial> {
 

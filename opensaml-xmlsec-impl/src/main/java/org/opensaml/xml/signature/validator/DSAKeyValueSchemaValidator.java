@@ -19,10 +19,10 @@ package org.opensaml.xml.signature.validator;
 
 import org.opensaml.core.xml.validation.ValidationException;
 import org.opensaml.core.xml.validation.Validator;
-import org.opensaml.xml.signature.DSAKeyValue;
+import org.opensaml.xmlsec.signature.DSAKeyValue;
 
 /**
- * Checks {@link org.opensaml.xml.signature.DSAKeyValue} for Schema compliance. 
+ * Checks {@link org.opensaml.xmlsec.signature.DSAKeyValue} for Schema compliance. 
  */
 public class DSAKeyValueSchemaValidator implements Validator<DSAKeyValue> {
 

@@ -21,10 +21,10 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.opensaml.common.SignableSAMLObject;
 import org.opensaml.xml.AbstractValidatingSignableXMLObject;
-import org.opensaml.xml.signature.Signature;
+import org.opensaml.xmlsec.signature.Signature;
 
 /**
- * Abstract SAMLObject implementation that also implements {@link org.opensaml.xml.signature.SignableXMLObject}.
+ * Abstract SAMLObject implementation that also implements {@link org.opensaml.xmlsec.signature.SignableXMLObject}.
  */
 public abstract class AbstractSignableSAMLObject extends AbstractValidatingSignableXMLObject implements
         SignableSAMLObject {

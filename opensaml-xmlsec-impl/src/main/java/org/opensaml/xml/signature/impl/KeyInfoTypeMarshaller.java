@@ -19,11 +19,11 @@ package org.opensaml.xml.signature.impl;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
-import org.opensaml.xml.signature.KeyInfoType;
+import org.opensaml.xmlsec.signature.KeyInfoType;
 import org.w3c.dom.Element;
 
 /**
- * A thread-safe Marshaller for {@link org.opensaml.xml.signature.KeyInfoType} objects.
+ * A thread-safe Marshaller for {@link org.opensaml.xmlsec.signature.KeyInfoType} objects.
  */
 public class KeyInfoTypeMarshaller extends AbstractXMLSignatureMarshaller {
 

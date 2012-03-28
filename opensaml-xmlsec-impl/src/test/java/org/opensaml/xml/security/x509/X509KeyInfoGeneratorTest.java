@@ -39,12 +39,12 @@ import org.opensaml.security.SecurityException;
 import org.opensaml.security.SecurityHelper;
 import org.opensaml.security.x509.BasicX509Credential;
 import org.opensaml.security.x509.X509Util;
-import org.opensaml.xml.security.keyinfo.KeyInfoGenerator;
-import org.opensaml.xml.security.keyinfo.KeyInfoHelper;
-import org.opensaml.xml.signature.KeyInfo;
-import org.opensaml.xml.signature.X509Data;
-import org.opensaml.xml.signature.X509IssuerSerial;
-import org.opensaml.xml.signature.X509SKI;
+import org.opensaml.xmlsec.keyinfo.KeyInfoGenerator;
+import org.opensaml.xmlsec.keyinfo.KeyInfoHelper;
+import org.opensaml.xmlsec.signature.KeyInfo;
+import org.opensaml.xmlsec.signature.X509Data;
+import org.opensaml.xmlsec.signature.X509IssuerSerial;
+import org.opensaml.xmlsec.signature.X509SKI;
 
 /**
  * Tests the factory and impl for X509KeyInfoGenerator.

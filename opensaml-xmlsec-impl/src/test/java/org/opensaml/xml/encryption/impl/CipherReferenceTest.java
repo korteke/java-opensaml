@@ -19,8 +19,8 @@ package org.opensaml.xml.encryption.impl;
 
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
-import org.opensaml.xml.encryption.CipherReference;
-import org.opensaml.xml.encryption.Transforms;
+import org.opensaml.xmlsec.encryption.CipherReference;
+import org.opensaml.xmlsec.encryption.Transforms;
 
 /**
  *

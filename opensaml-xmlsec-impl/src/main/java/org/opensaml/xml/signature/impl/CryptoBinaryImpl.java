@@ -20,14 +20,14 @@ package org.opensaml.xml.signature.impl;
 import java.math.BigInteger;
 
 import org.opensaml.core.xml.schema.impl.XSBase64BinaryImpl;
-import org.opensaml.xml.security.keyinfo.KeyInfoHelper;
-import org.opensaml.xml.signature.CryptoBinary;
+import org.opensaml.xmlsec.keyinfo.KeyInfoHelper;
+import org.opensaml.xmlsec.signature.CryptoBinary;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Strings;
 
 /**
- * Concrete implementation of {@link org.opensaml.xml.signature.CryptoBinary}.
+ * Concrete implementation of {@link org.opensaml.xmlsec.signature.CryptoBinary}.
  */
 public class CryptoBinaryImpl extends XSBase64BinaryImpl implements CryptoBinary {
     

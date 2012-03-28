@@ -17,10 +17,10 @@
 
 package org.opensaml.xml.signature.impl;
 
-import org.opensaml.xml.signature.Q;
+import org.opensaml.xmlsec.signature.Q;
 
 /**
- * Concrete implementation of {@link org.opensaml.xml.signature.Q}
+ * Concrete implementation of {@link org.opensaml.xmlsec.signature.Q}
  */
 public class QImpl extends CryptoBinaryImpl implements Q {
 

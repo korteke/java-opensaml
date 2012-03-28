@@ -29,10 +29,21 @@ import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.security.credential.BasicCredential;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.xml.mock.SignableSimpleXMLObject;
-import org.opensaml.xml.security.XMLSecurityHelper;
-import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xml.security.keyinfo.StaticKeyInfoCredentialResolver;
-import org.opensaml.xml.signature.KeyInfo;
+import org.opensaml.xmlsec.XMLSecurityHelper;
+import org.opensaml.xmlsec.encryption.Decrypter;
+import org.opensaml.xmlsec.encryption.DecryptionException;
+import org.opensaml.xmlsec.encryption.EncryptedData;
+import org.opensaml.xmlsec.encryption.EncryptedKey;
+import org.opensaml.xmlsec.encryption.EncryptedKeyResolver;
+import org.opensaml.xmlsec.encryption.Encrypter;
+import org.opensaml.xmlsec.encryption.EncryptionConstants;
+import org.opensaml.xmlsec.encryption.EncryptionException;
+import org.opensaml.xmlsec.encryption.EncryptionParameters;
+import org.opensaml.xmlsec.encryption.InlineEncryptedKeyResolver;
+import org.opensaml.xmlsec.encryption.KeyEncryptionParameters;
+import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
+import org.opensaml.xmlsec.signature.KeyInfo;
 import org.w3c.dom.Document;
 
 /**

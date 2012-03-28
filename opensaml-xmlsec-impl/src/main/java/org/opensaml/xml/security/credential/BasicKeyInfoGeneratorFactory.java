@@ -23,11 +23,11 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.XMLObjectProviderRegistrySupport;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.Credential;
-import org.opensaml.xml.security.keyinfo.KeyInfoGenerator;
-import org.opensaml.xml.security.keyinfo.KeyInfoGeneratorFactory;
-import org.opensaml.xml.security.keyinfo.KeyInfoHelper;
-import org.opensaml.xml.signature.KeyInfo;
 import org.opensaml.xml.signature.impl.KeyInfoBuilder;
+import org.opensaml.xmlsec.keyinfo.KeyInfoGenerator;
+import org.opensaml.xmlsec.keyinfo.KeyInfoGeneratorFactory;
+import org.opensaml.xmlsec.keyinfo.KeyInfoHelper;
+import org.opensaml.xmlsec.signature.KeyInfo;
 
 import com.google.common.base.Strings;
 

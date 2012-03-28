@@ -21,6 +21,7 @@ import java.util.List;
 
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.impl.StaticCredentialResolver;
+import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 
 /**
  * Simple implementation of {@link KeyInfoCredentialResolver} which just stores and returns a static set of credentials.

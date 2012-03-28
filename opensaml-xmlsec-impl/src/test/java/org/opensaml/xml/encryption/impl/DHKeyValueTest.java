@@ -19,13 +19,13 @@ package org.opensaml.xml.encryption.impl;
 
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
-import org.opensaml.xml.encryption.DHKeyValue;
-import org.opensaml.xml.encryption.Generator;
-import org.opensaml.xml.encryption.P;
-import org.opensaml.xml.encryption.PgenCounter;
-import org.opensaml.xml.encryption.Public;
-import org.opensaml.xml.encryption.Q;
-import org.opensaml.xml.encryption.Seed;
+import org.opensaml.xmlsec.encryption.DHKeyValue;
+import org.opensaml.xmlsec.encryption.Generator;
+import org.opensaml.xmlsec.encryption.P;
+import org.opensaml.xmlsec.encryption.PgenCounter;
+import org.opensaml.xmlsec.encryption.Public;
+import org.opensaml.xmlsec.encryption.Q;
+import org.opensaml.xmlsec.encryption.Seed;
 
 /**
  *

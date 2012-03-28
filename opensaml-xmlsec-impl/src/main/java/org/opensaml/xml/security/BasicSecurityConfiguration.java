@@ -26,8 +26,9 @@ import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 import org.opensaml.security.SecurityHelper;
 import org.opensaml.security.credential.Credential;
-import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
-import org.opensaml.xml.security.keyinfo.NamedKeyInfoGeneratorManager;
+import org.opensaml.xmlsec.SecurityConfiguration;
+import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
+import org.opensaml.xmlsec.keyinfo.NamedKeyInfoGeneratorManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

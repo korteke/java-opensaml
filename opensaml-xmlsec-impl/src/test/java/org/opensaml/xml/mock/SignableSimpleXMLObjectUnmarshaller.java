@@ -26,8 +26,8 @@ import org.opensaml.core.xml.io.AbstractXMLObjectUnmarshaller;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.core.xml.mock.SimpleXMLObject;
 import org.opensaml.core.xml.util.XMLObjectSupport;
-import org.opensaml.xml.encryption.EncryptedData;
-import org.opensaml.xml.signature.Signature;
+import org.opensaml.xmlsec.encryption.EncryptedData;
+import org.opensaml.xmlsec.signature.Signature;
 import org.w3c.dom.Attr;
 
 /**

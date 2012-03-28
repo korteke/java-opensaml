@@ -23,11 +23,11 @@ import net.shibboleth.utilities.java.support.xml.QNameSupport;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
-import org.opensaml.xml.encryption.EncryptionProperty;
+import org.opensaml.xmlsec.encryption.EncryptionProperty;
 import org.w3c.dom.Attr;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.xml.encryption.EncryptionProperty} objects.
+ * A thread-safe Unmarshaller for {@link org.opensaml.xmlsec.encryption.EncryptionProperty} objects.
  */
 public class EncryptionPropertyUnmarshaller extends AbstractXMLEncryptionUnmarshaller {
 

@@ -18,12 +18,12 @@
 package org.opensaml.xml.signature.impl;
 
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
-import org.opensaml.xml.signature.PgenCounter;
-import org.opensaml.xml.signature.SignatureConstants;
-import org.opensaml.xml.signature.XMLSignatureBuilder;
+import org.opensaml.xmlsec.signature.PgenCounter;
+import org.opensaml.xmlsec.signature.SignatureConstants;
+import org.opensaml.xmlsec.signature.XMLSignatureBuilder;
 
 /**
- * Builder of {@link org.opensaml.xml.signature.PgenCounter}
+ * Builder of {@link org.opensaml.xmlsec.signature.PgenCounter}
  */
 public class PgenCounterBuilder extends AbstractXMLObjectBuilder<PgenCounter> implements
         XMLSignatureBuilder<PgenCounter> {

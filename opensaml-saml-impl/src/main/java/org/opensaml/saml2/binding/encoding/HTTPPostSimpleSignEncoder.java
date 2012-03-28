@@ -33,11 +33,11 @@ import org.opensaml.security.SecurityException;
 import org.opensaml.security.SecurityHelper;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.ws.message.encoder.MessageEncodingException;
-import org.opensaml.xml.security.SecurityConfiguration;
-import org.opensaml.xml.security.XMLSecurityHelper;
-import org.opensaml.xml.security.XMLSigningUtil;
-import org.opensaml.xml.security.keyinfo.KeyInfoGenerator;
-import org.opensaml.xml.signature.KeyInfo;
+import org.opensaml.xmlsec.SecurityConfiguration;
+import org.opensaml.xmlsec.XMLSecurityHelper;
+import org.opensaml.xmlsec.XMLSigningUtil;
+import org.opensaml.xmlsec.keyinfo.KeyInfoGenerator;
+import org.opensaml.xmlsec.signature.KeyInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

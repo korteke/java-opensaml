@@ -19,11 +19,11 @@ package org.opensaml.xml.signature.impl;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
-import org.opensaml.xml.signature.RetrievalMethod;
+import org.opensaml.xmlsec.signature.RetrievalMethod;
 import org.w3c.dom.Element;
 
 /**
- * A thread-safe Marshaller for {@link org.opensaml.xml.signature.RetrievalMethod} objects.
+ * A thread-safe Marshaller for {@link org.opensaml.xmlsec.signature.RetrievalMethod} objects.
  */
 public class RetrievalMethodMarshaller extends AbstractXMLSignatureMarshaller {
 

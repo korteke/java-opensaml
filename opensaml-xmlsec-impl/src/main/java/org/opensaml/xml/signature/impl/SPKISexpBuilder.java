@@ -18,12 +18,12 @@
 package org.opensaml.xml.signature.impl;
 
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
-import org.opensaml.xml.signature.SPKISexp;
-import org.opensaml.xml.signature.SignatureConstants;
-import org.opensaml.xml.signature.XMLSignatureBuilder;
+import org.opensaml.xmlsec.signature.SPKISexp;
+import org.opensaml.xmlsec.signature.SignatureConstants;
+import org.opensaml.xmlsec.signature.XMLSignatureBuilder;
 
 /**
- * Builder of {@link org.opensaml.xml.signature.SPKISexp}
+ * Builder of {@link org.opensaml.xmlsec.signature.SPKISexp}
  */
 public class SPKISexpBuilder extends AbstractXMLObjectBuilder<SPKISexp> implements XMLSignatureBuilder<SPKISexp> {
 

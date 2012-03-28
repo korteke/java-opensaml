@@ -18,7 +18,7 @@
 package org.opensaml.xml.signature.validator;
 
 import org.opensaml.core.xml.BaseXMLObjectValidatorTestCase;
-import org.opensaml.xml.signature.CryptoBinary;
+import org.opensaml.xmlsec.signature.CryptoBinary;
 
 /**
  * Tests CryptoBinaryValidator.

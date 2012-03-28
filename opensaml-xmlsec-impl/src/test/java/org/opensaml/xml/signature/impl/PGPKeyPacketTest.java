@@ -19,7 +19,7 @@ package org.opensaml.xml.signature.impl;
 
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
-import org.opensaml.xml.signature.PGPKeyPacket;
+import org.opensaml.xmlsec.signature.PGPKeyPacket;
 
 /**
  *

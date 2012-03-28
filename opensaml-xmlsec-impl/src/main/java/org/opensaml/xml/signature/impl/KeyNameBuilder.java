@@ -18,12 +18,12 @@
 package org.opensaml.xml.signature.impl;
 
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
-import org.opensaml.xml.signature.KeyName;
-import org.opensaml.xml.signature.SignatureConstants;
-import org.opensaml.xml.signature.XMLSignatureBuilder;
+import org.opensaml.xmlsec.signature.KeyName;
+import org.opensaml.xmlsec.signature.SignatureConstants;
+import org.opensaml.xmlsec.signature.XMLSignatureBuilder;
 
 /**
- * Builder of {@link org.opensaml.xml.signature.KeyName}
+ * Builder of {@link org.opensaml.xmlsec.signature.KeyName}
  */
 public class KeyNameBuilder extends AbstractXMLObjectBuilder<KeyName> implements XMLSignatureBuilder<KeyName> {
 

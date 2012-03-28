@@ -23,11 +23,11 @@ import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.validation.AbstractValidatingXMLObject;
-import org.opensaml.xml.encryption.CipherReference;
-import org.opensaml.xml.encryption.Transforms;
+import org.opensaml.xmlsec.encryption.CipherReference;
+import org.opensaml.xmlsec.encryption.Transforms;
 
 /**
- * Concrete implementation of {@link org.opensaml.xml.encryption.CipherReference}.
+ * Concrete implementation of {@link org.opensaml.xmlsec.encryption.CipherReference}.
  */
 public class CipherReferenceImpl extends AbstractValidatingXMLObject implements CipherReference {
 

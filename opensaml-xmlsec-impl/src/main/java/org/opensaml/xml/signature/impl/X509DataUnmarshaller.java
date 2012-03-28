@@ -19,10 +19,10 @@ package org.opensaml.xml.signature.impl;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
-import org.opensaml.xml.signature.X509Data;
+import org.opensaml.xmlsec.signature.X509Data;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.xml.signature.X509Data} objects.
+ * A thread-safe Unmarshaller for {@link org.opensaml.xmlsec.signature.X509Data} objects.
  */
 public class X509DataUnmarshaller extends AbstractXMLSignatureUnmarshaller {
 

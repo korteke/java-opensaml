@@ -18,12 +18,12 @@
 package org.opensaml.xml.encryption.impl;
 
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
-import org.opensaml.xml.encryption.EncryptionConstants;
-import org.opensaml.xml.encryption.EncryptionMethod;
-import org.opensaml.xml.encryption.XMLEncryptionBuilder;
+import org.opensaml.xmlsec.encryption.EncryptionConstants;
+import org.opensaml.xmlsec.encryption.EncryptionMethod;
+import org.opensaml.xmlsec.encryption.XMLEncryptionBuilder;
 
 /**
- * Builder of {@link org.opensaml.xml.encryption.EncryptionMethod}
+ * Builder of {@link org.opensaml.xmlsec.encryption.EncryptionMethod}
  */
 public class EncryptionMethodBuilder extends AbstractXMLObjectBuilder<EncryptionMethod> implements
         XMLEncryptionBuilder<EncryptionMethod> {

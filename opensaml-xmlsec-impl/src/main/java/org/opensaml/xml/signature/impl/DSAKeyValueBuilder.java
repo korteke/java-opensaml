@@ -18,12 +18,12 @@
 package org.opensaml.xml.signature.impl;
 
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
-import org.opensaml.xml.signature.DSAKeyValue;
-import org.opensaml.xml.signature.SignatureConstants;
-import org.opensaml.xml.signature.XMLSignatureBuilder;
+import org.opensaml.xmlsec.signature.DSAKeyValue;
+import org.opensaml.xmlsec.signature.SignatureConstants;
+import org.opensaml.xmlsec.signature.XMLSignatureBuilder;
 
 /**
- * Builder of {@link org.opensaml.xml.signature.DSAKeyValue}
+ * Builder of {@link org.opensaml.xmlsec.signature.DSAKeyValue}
  */
 public class DSAKeyValueBuilder extends AbstractXMLObjectBuilder<DSAKeyValue> implements
         XMLSignatureBuilder<DSAKeyValue> {

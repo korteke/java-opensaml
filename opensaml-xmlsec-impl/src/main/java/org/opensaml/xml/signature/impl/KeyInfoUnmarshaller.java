@@ -17,7 +17,7 @@
 
 package org.opensaml.xml.signature.impl;
 
-/** Unmarshaller of {@link org.opensaml.xml.signature.KeyInfo} objects. */
+/** Unmarshaller of {@link org.opensaml.xmlsec.signature.KeyInfo} objects. */
 public class KeyInfoUnmarshaller extends KeyInfoTypeUnmarshaller {
 
 }

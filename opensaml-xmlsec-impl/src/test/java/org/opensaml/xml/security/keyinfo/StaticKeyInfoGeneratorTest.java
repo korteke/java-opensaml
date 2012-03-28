@@ -25,9 +25,10 @@ import org.opensaml.core.xml.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.SecurityHelper;
-import org.opensaml.xml.encryption.EncryptedData;
-import org.opensaml.xml.signature.KeyInfo;
-import org.opensaml.xml.signature.KeyName;
+import org.opensaml.xmlsec.encryption.EncryptedData;
+import org.opensaml.xmlsec.keyinfo.KeyInfoHelper;
+import org.opensaml.xmlsec.signature.KeyInfo;
+import org.opensaml.xmlsec.signature.KeyName;
 import org.w3c.dom.Element;
 
 /**

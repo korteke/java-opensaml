@@ -19,13 +19,13 @@ package org.opensaml.xml.encryption.impl;
 
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
-import org.opensaml.xml.encryption.CarriedKeyName;
-import org.opensaml.xml.encryption.CipherData;
-import org.opensaml.xml.encryption.EncryptedKey;
-import org.opensaml.xml.encryption.EncryptionMethod;
-import org.opensaml.xml.encryption.EncryptionProperties;
-import org.opensaml.xml.encryption.ReferenceList;
-import org.opensaml.xml.signature.KeyInfo;
+import org.opensaml.xmlsec.encryption.CarriedKeyName;
+import org.opensaml.xmlsec.encryption.CipherData;
+import org.opensaml.xmlsec.encryption.EncryptedKey;
+import org.opensaml.xmlsec.encryption.EncryptionMethod;
+import org.opensaml.xmlsec.encryption.EncryptionProperties;
+import org.opensaml.xmlsec.encryption.ReferenceList;
+import org.opensaml.xmlsec.signature.KeyInfo;
 
 /**
  *

@@ -18,7 +18,7 @@
 package org.opensaml.xml.signature.impl;
 
 /**
- * A thread-safe Marshaller for {@link org.opensaml.xml.signature.PGPData} objects.
+ * A thread-safe Marshaller for {@link org.opensaml.xmlsec.signature.PGPData} objects.
  */
 public class PGPDataMarshaller extends AbstractXMLSignatureMarshaller {
 

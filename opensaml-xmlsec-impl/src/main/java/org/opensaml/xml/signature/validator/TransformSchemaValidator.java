@@ -19,12 +19,12 @@ package org.opensaml.xml.signature.validator;
 
 import org.opensaml.core.xml.validation.ValidationException;
 import org.opensaml.core.xml.validation.Validator;
-import org.opensaml.xml.signature.Transform;
+import org.opensaml.xmlsec.signature.Transform;
 
 import com.google.common.base.Strings;
 
 /**
- * Checks {@link org.opensaml.xml.signature.Transform} for Schema compliance. 
+ * Checks {@link org.opensaml.xmlsec.signature.Transform} for Schema compliance. 
  */
 public class TransformSchemaValidator implements Validator<Transform> {
 

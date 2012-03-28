@@ -28,11 +28,11 @@ import org.opensaml.security.criteria.KeyAlgorithmCriterion;
 import org.opensaml.security.criteria.UsageCriterion;
 import org.opensaml.security.trust.TrustedCredentialTrustEngine;
 import org.opensaml.security.trust.impl.ExplicitKeyTrustEvaluator;
-import org.opensaml.xml.security.XMLSecurityHelper;
-import org.opensaml.xml.security.XMLSigningUtil;
-import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
-import org.opensaml.xml.signature.Signature;
-import org.opensaml.xml.signature.SignatureTrustEngine;
+import org.opensaml.xmlsec.XMLSecurityHelper;
+import org.opensaml.xmlsec.XMLSigningUtil;
+import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
+import org.opensaml.xmlsec.signature.Signature;
+import org.opensaml.xmlsec.signature.SignatureTrustEngine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

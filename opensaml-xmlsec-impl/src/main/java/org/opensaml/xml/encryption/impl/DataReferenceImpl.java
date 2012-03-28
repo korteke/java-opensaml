@@ -17,10 +17,10 @@
 
 package org.opensaml.xml.encryption.impl;
 
-import org.opensaml.xml.encryption.DataReference;
+import org.opensaml.xmlsec.encryption.DataReference;
 
 /**
- * Concrete implementation of {@link org.opensaml.xml.encryption.DataReference}.
+ * Concrete implementation of {@link org.opensaml.xmlsec.encryption.DataReference}.
  */
 public class DataReferenceImpl extends ReferenceTypeImpl implements DataReference {
 

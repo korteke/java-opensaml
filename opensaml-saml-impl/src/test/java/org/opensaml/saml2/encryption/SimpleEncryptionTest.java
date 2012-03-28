@@ -30,14 +30,14 @@ import org.opensaml.saml2.core.EncryptedID;
 import org.opensaml.saml2.core.NameID;
 import org.opensaml.saml2.core.NewEncryptedID;
 import org.opensaml.saml2.core.NewID;
-import org.opensaml.xml.encryption.EncryptionConstants;
-import org.opensaml.xml.encryption.EncryptionException;
-import org.opensaml.xml.encryption.EncryptionParameters;
-import org.opensaml.xml.encryption.KeyEncryptionParameters;
-import org.opensaml.xml.security.XMLSecurityHelper;
 import org.opensaml.xml.security.keyinfo.StaticKeyInfoGenerator;
-import org.opensaml.xml.signature.KeyInfo;
-import org.opensaml.xml.signature.KeyName;
+import org.opensaml.xmlsec.XMLSecurityHelper;
+import org.opensaml.xmlsec.encryption.EncryptionConstants;
+import org.opensaml.xmlsec.encryption.EncryptionException;
+import org.opensaml.xmlsec.encryption.EncryptionParameters;
+import org.opensaml.xmlsec.encryption.KeyEncryptionParameters;
+import org.opensaml.xmlsec.signature.KeyInfo;
+import org.opensaml.xmlsec.signature.KeyName;
 
 import com.google.common.base.Strings;
 
@@ -94,7 +94,7 @@ public class SimpleEncryptionTest extends BaseTestCase {
     public void testAssertion() {
         Assertion target = (Assertion) unmarshallElement("/data/org/opensaml/saml2/encryption/Assertion.xml");
         
-        KeyName keyName = (KeyName) buildXMLObject(org.opensaml.xml.signature.KeyName.DEFAULT_ELEMENT_NAME);
+        KeyName keyName = (KeyName) buildXMLObject(org.opensaml.xmlsec.signature.KeyName.DEFAULT_ELEMENT_NAME);
         keyName.setValue(expectedKeyName);
         keyInfo.getKeyNames().add(keyName);
         encParams.setKeyInfoGenerator(new StaticKeyInfoGenerator(keyInfo));
@@ -135,7 +135,7 @@ public class SimpleEncryptionTest extends BaseTestCase {
     public void testAssertionAsID() {
         Assertion target = (Assertion) unmarshallElement("/data/org/opensaml/saml2/encryption/Assertion.xml");
         
-        KeyName keyName = (KeyName) buildXMLObject(org.opensaml.xml.signature.KeyName.DEFAULT_ELEMENT_NAME);
+        KeyName keyName = (KeyName) buildXMLObject(org.opensaml.xmlsec.signature.KeyName.DEFAULT_ELEMENT_NAME);
         keyName.setValue(expectedKeyName);
         keyInfo.getKeyNames().add(keyName);
         encParams.setKeyInfoGenerator(new StaticKeyInfoGenerator(keyInfo));
@@ -177,7 +177,7 @@ public class SimpleEncryptionTest extends BaseTestCase {
         Assertion assertion = (Assertion) unmarshallElement("/data/org/opensaml/saml2/encryption/Assertion.xml");
         NameID target = assertion.getSubject().getNameID();
         
-        KeyName keyName = (KeyName) buildXMLObject(org.opensaml.xml.signature.KeyName.DEFAULT_ELEMENT_NAME);
+        KeyName keyName = (KeyName) buildXMLObject(org.opensaml.xmlsec.signature.KeyName.DEFAULT_ELEMENT_NAME);
         keyName.setValue(expectedKeyName);
         keyInfo.getKeyNames().add(keyName);
         encParams.setKeyInfoGenerator(new StaticKeyInfoGenerator(keyInfo));
@@ -220,7 +220,7 @@ public class SimpleEncryptionTest extends BaseTestCase {
         Attribute target = assertion.getAttributeStatements().get(0).getAttributes().get(0);
         
         
-        KeyName keyName = (KeyName) buildXMLObject(org.opensaml.xml.signature.KeyName.DEFAULT_ELEMENT_NAME);
+        KeyName keyName = (KeyName) buildXMLObject(org.opensaml.xmlsec.signature.KeyName.DEFAULT_ELEMENT_NAME);
         keyName.setValue(expectedKeyName);
         keyInfo.getKeyNames().add(keyName);
         encParams.setKeyInfoGenerator(new StaticKeyInfoGenerator(keyInfo));
@@ -262,7 +262,7 @@ public class SimpleEncryptionTest extends BaseTestCase {
         NewID target = (NewID) buildXMLObject(NewID.DEFAULT_ELEMENT_NAME);
         target.setNewID("SomeNewID");
         
-        KeyName keyName = (KeyName) buildXMLObject(org.opensaml.xml.signature.KeyName.DEFAULT_ELEMENT_NAME);
+        KeyName keyName = (KeyName) buildXMLObject(org.opensaml.xmlsec.signature.KeyName.DEFAULT_ELEMENT_NAME);
         keyName.setValue(expectedKeyName);
         keyInfo.getKeyNames().add(keyName);
         encParams.setKeyInfoGenerator(new StaticKeyInfoGenerator(keyInfo));
@@ -304,7 +304,7 @@ public class SimpleEncryptionTest extends BaseTestCase {
         Attribute target = assertion.getAttributeStatements().get(0).getAttributes().get(0);
         Attribute target2 = assertion.getAttributeStatements().get(0).getAttributes().get(1);
         
-        KeyName keyName = (KeyName) buildXMLObject(org.opensaml.xml.signature.KeyName.DEFAULT_ELEMENT_NAME);
+        KeyName keyName = (KeyName) buildXMLObject(org.opensaml.xmlsec.signature.KeyName.DEFAULT_ELEMENT_NAME);
         keyName.setValue(expectedKeyName);
         keyInfo.getKeyNames().add(keyName);
         encParams.setKeyInfoGenerator(new StaticKeyInfoGenerator(keyInfo));

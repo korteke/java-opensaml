@@ -24,7 +24,7 @@ import org.opensaml.common.xml.SAMLConstants;
 import org.opensaml.saml2.metadata.EncryptionMethod;
 import org.opensaml.saml2.metadata.KeyDescriptor;
 import org.opensaml.security.credential.UsageType;
-import org.opensaml.xml.signature.KeyInfo;
+import org.opensaml.xmlsec.signature.KeyInfo;
 
 /**
  * Test case for creating, marshalling, and unmarshalling

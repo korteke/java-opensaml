@@ -18,7 +18,7 @@
 package org.opensaml.xml.signature.impl;
 
 /**
- * A thread-safe Marshaller for {@link org.opensaml.xml.signature.Transforms} objects.
+ * A thread-safe Marshaller for {@link org.opensaml.xmlsec.signature.Transforms} objects.
  */
 public class TransformsMarshaller extends AbstractXMLSignatureMarshaller {
 

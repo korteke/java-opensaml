@@ -28,7 +28,7 @@ import org.opensaml.saml2.common.Extensions;
 import org.opensaml.saml2.core.ArtifactResponse;
 import org.opensaml.saml2.core.Issuer;
 import org.opensaml.saml2.core.Status;
-import org.opensaml.xml.signature.Signature;
+import org.opensaml.xmlsec.signature.Signature;
 
 /**
  * A thread-safe Unmarshaller for {@link org.opensaml.saml2.core.ArtifactResponse}.

@@ -18,8 +18,8 @@
 package org.opensaml.xml.signature.validator;
 
 import org.opensaml.core.xml.BaseXMLObjectValidatorTestCase;
-import org.opensaml.xml.signature.Transform;
-import org.opensaml.xml.signature.Transforms;
+import org.opensaml.xmlsec.signature.Transform;
+import org.opensaml.xmlsec.signature.Transforms;
 
 /**
  *

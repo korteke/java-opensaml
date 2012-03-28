@@ -19,11 +19,11 @@ package org.opensaml.xml.encryption.impl;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
-import org.opensaml.xml.encryption.EncryptionMethod;
+import org.opensaml.xmlsec.encryption.EncryptionMethod;
 import org.w3c.dom.Element;
 
 /**
- * A thread-safe Marshaller for {@link org.opensaml.xml.encryption.EncryptionMethod} objects.
+ * A thread-safe Marshaller for {@link org.opensaml.xmlsec.encryption.EncryptionMethod} objects.
  */
 public class EncryptionMethodMarshaller extends AbstractXMLEncryptionMarshaller {
 

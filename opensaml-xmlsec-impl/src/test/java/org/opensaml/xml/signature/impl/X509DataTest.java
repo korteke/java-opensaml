@@ -20,12 +20,12 @@ package org.opensaml.xml.signature.impl;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.core.xml.mock.SimpleXMLObject;
-import org.opensaml.xml.signature.X509CRL;
-import org.opensaml.xml.signature.X509Certificate;
-import org.opensaml.xml.signature.X509Data;
-import org.opensaml.xml.signature.X509IssuerSerial;
-import org.opensaml.xml.signature.X509SKI;
-import org.opensaml.xml.signature.X509SubjectName;
+import org.opensaml.xmlsec.signature.X509CRL;
+import org.opensaml.xmlsec.signature.X509Certificate;
+import org.opensaml.xmlsec.signature.X509Data;
+import org.opensaml.xmlsec.signature.X509IssuerSerial;
+import org.opensaml.xmlsec.signature.X509SKI;
+import org.opensaml.xmlsec.signature.X509SubjectName;
 
 /**
  *

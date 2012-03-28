@@ -19,8 +19,8 @@ package org.opensaml.xml.signature.impl;
 
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
-import org.opensaml.xml.signature.RetrievalMethod;
-import org.opensaml.xml.signature.Transforms;
+import org.opensaml.xmlsec.signature.RetrievalMethod;
+import org.opensaml.xmlsec.signature.Transforms;
 
 /**
  *

@@ -31,7 +31,9 @@ import org.opensaml.security.SecurityHelper;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.x509.X509Credential;
 import org.opensaml.xml.security.keyinfo.provider.InlineX509DataProvider;
-import org.opensaml.xml.signature.KeyInfo;
+import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
+import org.opensaml.xmlsec.keyinfo.KeyInfoCriterion;
+import org.opensaml.xmlsec.signature.KeyInfo;
 
 
 /**

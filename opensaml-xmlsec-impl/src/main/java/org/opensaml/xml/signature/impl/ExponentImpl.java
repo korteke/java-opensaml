@@ -17,10 +17,10 @@
 
 package org.opensaml.xml.signature.impl;
 
-import org.opensaml.xml.signature.Exponent;
+import org.opensaml.xmlsec.signature.Exponent;
 
 /**
- * Concrete implementation of {@link org.opensaml.xml.signature.Exponent}
+ * Concrete implementation of {@link org.opensaml.xmlsec.signature.Exponent}
  */
 public class ExponentImpl extends CryptoBinaryImpl implements Exponent {
 

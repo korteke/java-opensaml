@@ -20,9 +20,9 @@ package org.opensaml.xml.encryption.validator;
 import org.opensaml.core.xml.BaseXMLObjectValidatorTestCase;
 import org.opensaml.core.xml.mock.SimpleXMLObject;
 import org.opensaml.core.xml.mock.SimpleXMLObjectBuilder;
-import org.opensaml.xml.encryption.DataReference;
-import org.opensaml.xml.encryption.EncryptionConstants;
-import org.opensaml.xml.encryption.ReferenceType;
+import org.opensaml.xmlsec.encryption.DataReference;
+import org.opensaml.xmlsec.encryption.EncryptionConstants;
+import org.opensaml.xmlsec.encryption.ReferenceType;
 
 /**
  *

@@ -19,10 +19,10 @@ package org.opensaml.xml.encryption.validator;
 
 import org.opensaml.core.xml.validation.ValidationException;
 import org.opensaml.core.xml.validation.Validator;
-import org.opensaml.xml.encryption.EncryptedType;
+import org.opensaml.xmlsec.encryption.EncryptedType;
 
 /**
- * Checks {@link org.opensaml.xml.encryption.EncryptedType} for Schema compliance. 
+ * Checks {@link org.opensaml.xmlsec.encryption.EncryptedType} for Schema compliance. 
  */
 public class EncryptedTypeSchemaValidator implements Validator<EncryptedType> {
 

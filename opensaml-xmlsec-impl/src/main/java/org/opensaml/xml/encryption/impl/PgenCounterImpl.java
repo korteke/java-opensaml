@@ -17,12 +17,12 @@
 
 package org.opensaml.xml.encryption.impl;
 
-import org.opensaml.xml.encryption.PgenCounter;
 import org.opensaml.xml.signature.impl.CryptoBinaryImpl;
+import org.opensaml.xmlsec.encryption.PgenCounter;
 
 
 /**
- * Concrete implementation of {@link org.opensaml.xml.encryption.PgenCounter}
+ * Concrete implementation of {@link org.opensaml.xmlsec.encryption.PgenCounter}
  */
 public class PgenCounterImpl extends CryptoBinaryImpl implements PgenCounter {
 

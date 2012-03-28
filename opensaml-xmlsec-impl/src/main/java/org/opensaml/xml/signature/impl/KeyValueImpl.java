@@ -23,12 +23,12 @@ import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.validation.AbstractValidatingXMLObject;
-import org.opensaml.xml.signature.DSAKeyValue;
-import org.opensaml.xml.signature.KeyValue;
-import org.opensaml.xml.signature.RSAKeyValue;
+import org.opensaml.xmlsec.signature.DSAKeyValue;
+import org.opensaml.xmlsec.signature.KeyValue;
+import org.opensaml.xmlsec.signature.RSAKeyValue;
 
 /**
- * Concrete implementation of {@link org.opensaml.xml.signature.KeyValue}
+ * Concrete implementation of {@link org.opensaml.xmlsec.signature.KeyValue}
  */
 public class KeyValueImpl extends AbstractValidatingXMLObject implements KeyValue {
     

@@ -19,11 +19,11 @@ package org.opensaml.xml.signature.impl;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
-import org.opensaml.xml.signature.Transform;
+import org.opensaml.xmlsec.signature.Transform;
 import org.w3c.dom.Attr;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.xml.signature.Transform} objects.
+ * A thread-safe Unmarshaller for {@link org.opensaml.xmlsec.signature.Transform} objects.
  */
 public class TransformUnmarshaller extends AbstractXMLSignatureUnmarshaller {
 

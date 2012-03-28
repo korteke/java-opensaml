@@ -23,7 +23,7 @@ import org.opensaml.ws.soap.soap11.ActorBearing;
 import org.opensaml.ws.soap.soap11.MustUnderstandBearing;
 import org.opensaml.ws.soap.soap12.RelayBearing;
 import org.opensaml.ws.soap.soap12.RoleBearing;
-import org.opensaml.xml.encryption.EncryptedData;
+import org.opensaml.xmlsec.encryption.EncryptedData;
 
 /**
  * The &lt;wsse:EncryptedHeader&gt; element.

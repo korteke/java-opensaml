@@ -30,12 +30,12 @@ import org.opensaml.security.credential.BasicCredential;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.CredentialContext;
 import org.opensaml.security.criteria.KeyAlgorithmCriterion;
-import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
-import org.opensaml.xml.security.keyinfo.KeyInfoHelper;
 import org.opensaml.xml.security.keyinfo.KeyInfoProvider;
 import org.opensaml.xml.security.keyinfo.KeyInfoResolutionContext;
-import org.opensaml.xml.signature.DSAKeyValue;
-import org.opensaml.xml.signature.KeyValue;
+import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
+import org.opensaml.xmlsec.keyinfo.KeyInfoHelper;
+import org.opensaml.xmlsec.signature.DSAKeyValue;
+import org.opensaml.xmlsec.signature.KeyValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

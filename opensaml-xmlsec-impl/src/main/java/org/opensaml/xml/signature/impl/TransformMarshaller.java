@@ -19,11 +19,11 @@ package org.opensaml.xml.signature.impl;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
-import org.opensaml.xml.signature.Transform;
+import org.opensaml.xmlsec.signature.Transform;
 import org.w3c.dom.Element;
 
 /**
- * A thread-safe Marshaller for {@link org.opensaml.xml.signature.Transform} objects.
+ * A thread-safe Marshaller for {@link org.opensaml.xmlsec.signature.Transform} objects.
  */
 public class TransformMarshaller extends AbstractXMLSignatureMarshaller {
 

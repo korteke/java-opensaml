@@ -18,10 +18,10 @@
 package org.opensaml.xml.encryption.impl;
 
 import org.opensaml.core.xml.schema.impl.XSBase64BinaryImpl;
-import org.opensaml.xml.encryption.OAEPparams;
+import org.opensaml.xmlsec.encryption.OAEPparams;
 
 /**
- * Concrete implementation of {@link org.opensaml.xml.encryption.OAEPparams}
+ * Concrete implementation of {@link org.opensaml.xmlsec.encryption.OAEPparams}
  */
 public class OAEPparamsImpl extends XSBase64BinaryImpl implements OAEPparams {
 

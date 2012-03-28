@@ -32,8 +32,8 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.AttributeMap;
 import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
 import org.opensaml.core.xml.util.XMLObjectChildrenList;
-import org.opensaml.xml.encryption.EncryptedData;
-import org.opensaml.xml.signature.AbstractSignableXMLObject;
+import org.opensaml.xmlsec.encryption.EncryptedData;
+import org.opensaml.xmlsec.signature.AbstractSignableXMLObject;
 
 /**
  * Simple XMLObject that can be used for testing

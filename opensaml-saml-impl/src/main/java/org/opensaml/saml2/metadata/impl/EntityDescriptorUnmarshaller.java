@@ -36,7 +36,7 @@ import org.opensaml.saml2.metadata.ContactPerson;
 import org.opensaml.saml2.metadata.EntityDescriptor;
 import org.opensaml.saml2.metadata.Organization;
 import org.opensaml.saml2.metadata.RoleDescriptor;
-import org.opensaml.xml.signature.Signature;
+import org.opensaml.xmlsec.signature.Signature;
 import org.w3c.dom.Attr;
 
 import com.google.common.base.Strings;

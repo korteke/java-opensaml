@@ -19,11 +19,11 @@ package org.opensaml.xml.encryption.impl;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
-import org.opensaml.xml.encryption.ReferenceType;
+import org.opensaml.xmlsec.encryption.ReferenceType;
 import org.w3c.dom.Element;
 
 /**
- * A thread-safe Marshaller for {@link org.opensaml.xml.encryption.ReferenceType} objects.
+ * A thread-safe Marshaller for {@link org.opensaml.xmlsec.encryption.ReferenceType} objects.
  */
 public class ReferenceTypeMarshaller extends AbstractXMLEncryptionMarshaller {
 

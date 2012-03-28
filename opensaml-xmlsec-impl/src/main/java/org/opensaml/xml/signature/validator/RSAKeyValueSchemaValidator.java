@@ -19,10 +19,10 @@ package org.opensaml.xml.signature.validator;
 
 import org.opensaml.core.xml.validation.ValidationException;
 import org.opensaml.core.xml.validation.Validator;
-import org.opensaml.xml.signature.RSAKeyValue;
+import org.opensaml.xmlsec.signature.RSAKeyValue;
 
 /**
- * Checks {@link org.opensaml.xml.signature.RSAKeyValue} for Schema compliance. 
+ * Checks {@link org.opensaml.xmlsec.signature.RSAKeyValue} for Schema compliance. 
  */
 public class RSAKeyValueSchemaValidator implements Validator<RSAKeyValue> {
 

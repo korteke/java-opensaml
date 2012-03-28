@@ -22,13 +22,13 @@ import javax.xml.namespace.QName;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.validation.ValidationException;
 import org.opensaml.core.xml.validation.Validator;
-import org.opensaml.xml.encryption.EncryptionConstants;
-import org.opensaml.xml.encryption.ReferenceType;
+import org.opensaml.xmlsec.encryption.EncryptionConstants;
+import org.opensaml.xmlsec.encryption.ReferenceType;
 
 import com.google.common.base.Strings;
 
 /**
- * Checks {@link org.opensaml.xml.encryption.ReferenceType} for Schema compliance.
+ * Checks {@link org.opensaml.xmlsec.encryption.ReferenceType} for Schema compliance.
  */
 public class ReferenceTypeSchemaValidator implements Validator<ReferenceType> {
 

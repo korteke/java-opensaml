@@ -26,10 +26,10 @@ import javax.xml.namespace.QName;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
 import org.opensaml.core.xml.validation.AbstractValidatingXMLObject;
-import org.opensaml.xml.encryption.ReferenceType;
+import org.opensaml.xmlsec.encryption.ReferenceType;
 
 /**
- * Concrete implementation of {@link org.opensaml.xml.encryption.ReferenceType}
+ * Concrete implementation of {@link org.opensaml.xmlsec.encryption.ReferenceType}
  */
 public class ReferenceTypeImpl extends AbstractValidatingXMLObject implements ReferenceType {
     

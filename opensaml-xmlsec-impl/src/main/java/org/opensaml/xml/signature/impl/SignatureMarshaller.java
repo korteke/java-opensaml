@@ -29,18 +29,18 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.Marshaller;
 import org.opensaml.core.xml.io.MarshallingException;
-import org.opensaml.xml.security.XMLSecurityHelper;
-import org.opensaml.xml.signature.ContentReference;
-import org.opensaml.xml.signature.KeyInfo;
-import org.opensaml.xml.signature.Signature;
+import org.opensaml.xmlsec.XMLSecurityHelper;
+import org.opensaml.xmlsec.signature.ContentReference;
+import org.opensaml.xmlsec.signature.KeyInfo;
+import org.opensaml.xmlsec.signature.Signature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
- * A marshaller for {@link org.opensaml.xml.signature.Signature} objects. This marshaller is really a no-op class. All
- * the creation of the signature DOM elements is handled by {@link org.opensaml.xml.signature.Signer} when it signs the
+ * A marshaller for {@link org.opensaml.xmlsec.signature.Signature} objects. This marshaller is really a no-op class. All
+ * the creation of the signature DOM elements is handled by {@link org.opensaml.xmlsec.signature.Signer} when it signs the
  * object.
  */
 public class SignatureMarshaller implements Marshaller {

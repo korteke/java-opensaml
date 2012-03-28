@@ -19,12 +19,12 @@ package org.opensaml.xml.signature.validator;
 
 import org.opensaml.core.xml.validation.ValidationException;
 import org.opensaml.core.xml.validation.Validator;
-import org.opensaml.xml.signature.RetrievalMethod;
+import org.opensaml.xmlsec.signature.RetrievalMethod;
 
 import com.google.common.base.Strings;
 
 /**
- * Checks {@link org.opensaml.xml.signature.RetrievalMethod} for Schema compliance. 
+ * Checks {@link org.opensaml.xmlsec.signature.RetrievalMethod} for Schema compliance. 
  */
 public class RetrievalMethodSchemaValidator implements Validator<RetrievalMethod> {
 

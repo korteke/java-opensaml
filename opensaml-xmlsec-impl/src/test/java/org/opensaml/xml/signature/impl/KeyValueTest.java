@@ -19,8 +19,8 @@ package org.opensaml.xml.signature.impl;
 
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
-import org.opensaml.xml.signature.KeyValue;
-import org.opensaml.xml.signature.RSAKeyValue;
+import org.opensaml.xmlsec.signature.KeyValue;
+import org.opensaml.xmlsec.signature.RSAKeyValue;
 
 /**
  *

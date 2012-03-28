@@ -18,7 +18,7 @@
 package org.opensaml.xml.signature.impl;
 
 /**
- * A thread-safe Marshaller for {@link org.opensaml.xml.signature.KeyValue} objects.
+ * A thread-safe Marshaller for {@link org.opensaml.xmlsec.signature.KeyValue} objects.
  */
 public class KeyValueMarshaller extends AbstractXMLSignatureMarshaller {
 

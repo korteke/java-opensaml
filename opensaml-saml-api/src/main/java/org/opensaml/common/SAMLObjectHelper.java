@@ -22,8 +22,8 @@ import java.util.List;
 import org.opensaml.common.impl.SAMLObjectContentReference;
 import org.opensaml.core.xml.Namespace;
 import org.opensaml.core.xml.NamespaceManager;
-import org.opensaml.xml.signature.ContentReference;
-import org.opensaml.xml.signature.SignatureConstants;
+import org.opensaml.xmlsec.signature.ContentReference;
+import org.opensaml.xmlsec.signature.SignatureConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

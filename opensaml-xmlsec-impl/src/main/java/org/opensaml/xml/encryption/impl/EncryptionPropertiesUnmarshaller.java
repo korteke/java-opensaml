@@ -19,12 +19,12 @@ package org.opensaml.xml.encryption.impl;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
-import org.opensaml.xml.encryption.EncryptionProperties;
-import org.opensaml.xml.encryption.EncryptionProperty;
+import org.opensaml.xmlsec.encryption.EncryptionProperties;
+import org.opensaml.xmlsec.encryption.EncryptionProperty;
 import org.w3c.dom.Attr;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.xml.encryption.EncryptionProperties} objects.
+ * A thread-safe Unmarshaller for {@link org.opensaml.xmlsec.encryption.EncryptionProperties} objects.
  */
 public class EncryptionPropertiesUnmarshaller extends AbstractXMLEncryptionUnmarshaller {
 

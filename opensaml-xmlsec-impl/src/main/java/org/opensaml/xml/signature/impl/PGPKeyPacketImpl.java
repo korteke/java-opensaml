@@ -18,10 +18,10 @@
 package org.opensaml.xml.signature.impl;
 
 import org.opensaml.core.xml.schema.impl.XSBase64BinaryImpl;
-import org.opensaml.xml.signature.PGPKeyPacket;
+import org.opensaml.xmlsec.signature.PGPKeyPacket;
 
 /**
- * Concrete implementation of {@link org.opensaml.xml.signature.PGPKeyPacket}
+ * Concrete implementation of {@link org.opensaml.xmlsec.signature.PGPKeyPacket}
  */
 public class PGPKeyPacketImpl extends XSBase64BinaryImpl implements PGPKeyPacket {
 

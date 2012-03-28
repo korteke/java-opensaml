@@ -23,8 +23,9 @@ import java.security.PrivateKey;
 import junit.framework.TestCase;
 
 import org.opensaml.security.SecurityHelper;
-import org.opensaml.xml.encryption.EncryptionConstants;
-import org.opensaml.xml.signature.SignatureConstants;
+import org.opensaml.xmlsec.XMLSecurityHelper;
+import org.opensaml.xmlsec.encryption.EncryptionConstants;
+import org.opensaml.xmlsec.signature.SignatureConstants;
 
 /**
  * Unit test for {@link SecurityHelper}.

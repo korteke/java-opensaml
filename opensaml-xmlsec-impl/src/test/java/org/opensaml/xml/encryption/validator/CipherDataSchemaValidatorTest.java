@@ -18,9 +18,9 @@
 package org.opensaml.xml.encryption.validator;
 
 import org.opensaml.core.xml.BaseXMLObjectValidatorTestCase;
-import org.opensaml.xml.encryption.CipherData;
-import org.opensaml.xml.encryption.CipherReference;
-import org.opensaml.xml.encryption.CipherValue;
+import org.opensaml.xmlsec.encryption.CipherData;
+import org.opensaml.xmlsec.encryption.CipherReference;
+import org.opensaml.xmlsec.encryption.CipherValue;
 
 /**
  *

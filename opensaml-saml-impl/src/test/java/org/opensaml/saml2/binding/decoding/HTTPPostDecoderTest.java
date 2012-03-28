@@ -36,9 +36,9 @@ import org.opensaml.security.SecurityHelper;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.ws.message.decoder.MessageDecodingException;
 import org.opensaml.ws.transport.http.HttpServletRequestAdapter;
-import org.opensaml.xml.security.XMLSecurityHelper;
-import org.opensaml.xml.signature.Signature;
 import org.opensaml.xml.signature.Signer;
+import org.opensaml.xmlsec.XMLSecurityHelper;
+import org.opensaml.xmlsec.signature.Signature;
 import org.springframework.mock.web.MockHttpServletRequest;
 
 /**

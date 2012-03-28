@@ -37,13 +37,13 @@ import org.opensaml.saml2.core.NewEncryptedID;
 import org.opensaml.saml2.core.NewID;
 import org.opensaml.security.credential.BasicCredential;
 import org.opensaml.security.credential.Credential;
-import org.opensaml.xml.encryption.DecryptionException;
-import org.opensaml.xml.encryption.EncryptionConstants;
-import org.opensaml.xml.encryption.EncryptionException;
-import org.opensaml.xml.encryption.EncryptionParameters;
-import org.opensaml.xml.security.XMLSecurityHelper;
-import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xml.security.keyinfo.StaticKeyInfoCredentialResolver;
+import org.opensaml.xmlsec.XMLSecurityHelper;
+import org.opensaml.xmlsec.encryption.DecryptionException;
+import org.opensaml.xmlsec.encryption.EncryptionConstants;
+import org.opensaml.xmlsec.encryption.EncryptionException;
+import org.opensaml.xmlsec.encryption.EncryptionParameters;
+import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 import org.w3c.dom.Document;
 
 /**

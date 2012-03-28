@@ -19,13 +19,13 @@ package org.opensaml.xml.encryption.impl;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
-import org.opensaml.xml.encryption.CarriedKeyName;
-import org.opensaml.xml.encryption.EncryptedKey;
-import org.opensaml.xml.encryption.ReferenceList;
+import org.opensaml.xmlsec.encryption.CarriedKeyName;
+import org.opensaml.xmlsec.encryption.EncryptedKey;
+import org.opensaml.xmlsec.encryption.ReferenceList;
 import org.w3c.dom.Attr;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.xml.encryption.EncryptedKey} objects.
+ * A thread-safe Unmarshaller for {@link org.opensaml.xmlsec.encryption.EncryptedKey} objects.
  */
 public class EncryptedKeyUnmarshaller extends EncryptedTypeUnmarshaller {
 

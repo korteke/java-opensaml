@@ -44,9 +44,9 @@ import org.opensaml.security.credential.UsageType;
 import org.opensaml.security.credential.impl.AbstractCriteriaFilteringCredentialResolver;
 import org.opensaml.security.criteria.EntityIDCriterion;
 import org.opensaml.security.criteria.UsageCriterion;
-import org.opensaml.xml.security.XMLSecurityHelper;
-import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
-import org.opensaml.xml.security.keyinfo.KeyInfoCriterion;
+import org.opensaml.xmlsec.XMLSecurityHelper;
+import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
+import org.opensaml.xmlsec.keyinfo.KeyInfoCriterion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -25,7 +25,7 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.ws.wssecurity.EncryptedHeader;
-import org.opensaml.xml.encryption.EncryptedData;
+import org.opensaml.xmlsec.encryption.EncryptedData;
 import org.w3c.dom.Attr;
 
 /**

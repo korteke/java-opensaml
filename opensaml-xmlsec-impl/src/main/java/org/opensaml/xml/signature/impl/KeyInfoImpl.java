@@ -17,10 +17,10 @@
 
 package org.opensaml.xml.signature.impl;
 
-import org.opensaml.xml.signature.KeyInfo;
+import org.opensaml.xmlsec.signature.KeyInfo;
 
 /**
- * Concrete implementation of {@link org.opensaml.xml.signature.KeyInfo}
+ * Concrete implementation of {@link org.opensaml.xmlsec.signature.KeyInfo}
  */
 public class KeyInfoImpl extends KeyInfoTypeImpl implements KeyInfo {
 

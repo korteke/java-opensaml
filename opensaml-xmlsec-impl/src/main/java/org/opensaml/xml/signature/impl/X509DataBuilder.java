@@ -18,12 +18,12 @@
 package org.opensaml.xml.signature.impl;
 
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
-import org.opensaml.xml.signature.SignatureConstants;
-import org.opensaml.xml.signature.X509Data;
-import org.opensaml.xml.signature.XMLSignatureBuilder;
+import org.opensaml.xmlsec.signature.SignatureConstants;
+import org.opensaml.xmlsec.signature.X509Data;
+import org.opensaml.xmlsec.signature.XMLSignatureBuilder;
 
 /**
- * Builder of {@link org.opensaml.xml.signature.X509Data}
+ * Builder of {@link org.opensaml.xmlsec.signature.X509Data}
  */
 public class X509DataBuilder extends AbstractXMLObjectBuilder<X509Data> implements XMLSignatureBuilder<X509Data> {
 

@@ -20,9 +20,9 @@ package org.opensaml.xml.signature.validator;
 import org.opensaml.core.xml.BaseXMLObjectValidatorTestCase;
 import org.opensaml.core.xml.mock.SimpleXMLObject;
 import org.opensaml.core.xml.mock.SimpleXMLObjectBuilder;
-import org.opensaml.xml.signature.KeyInfo;
-import org.opensaml.xml.signature.KeyName;
-import org.opensaml.xml.signature.SignatureConstants;
+import org.opensaml.xmlsec.signature.KeyInfo;
+import org.opensaml.xmlsec.signature.KeyName;
+import org.opensaml.xmlsec.signature.SignatureConstants;
 
 /**
  *

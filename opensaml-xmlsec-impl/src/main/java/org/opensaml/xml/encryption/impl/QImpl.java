@@ -17,12 +17,12 @@
 
 package org.opensaml.xml.encryption.impl;
 
-import org.opensaml.xml.encryption.Q;
 import org.opensaml.xml.signature.impl.CryptoBinaryImpl;
+import org.opensaml.xmlsec.encryption.Q;
 
 
 /**
- * Concrete implementation of {@link org.opensaml.xml.encryption.Q}
+ * Concrete implementation of {@link org.opensaml.xmlsec.encryption.Q}
  */
 public class QImpl extends CryptoBinaryImpl implements Q {
 

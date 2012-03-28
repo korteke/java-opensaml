@@ -41,21 +41,21 @@ import org.opensaml.saml2.core.NewEncryptedID;
 import org.opensaml.saml2.core.NewID;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.SecurityHelper;
-import org.opensaml.xml.encryption.CarriedKeyName;
-import org.opensaml.xml.encryption.DataReference;
-import org.opensaml.xml.encryption.EncryptedData;
-import org.opensaml.xml.encryption.EncryptedKey;
-import org.opensaml.xml.encryption.EncryptionConstants;
-import org.opensaml.xml.encryption.EncryptionException;
-import org.opensaml.xml.encryption.EncryptionParameters;
-import org.opensaml.xml.encryption.KeyEncryptionParameters;
-import org.opensaml.xml.encryption.ReferenceList;
-import org.opensaml.xml.encryption.XMLEncryptionBuilder;
-import org.opensaml.xml.security.keyinfo.KeyInfoGenerator;
-import org.opensaml.xml.signature.KeyInfo;
-import org.opensaml.xml.signature.KeyName;
-import org.opensaml.xml.signature.RetrievalMethod;
-import org.opensaml.xml.signature.XMLSignatureBuilder;
+import org.opensaml.xmlsec.encryption.CarriedKeyName;
+import org.opensaml.xmlsec.encryption.DataReference;
+import org.opensaml.xmlsec.encryption.EncryptedData;
+import org.opensaml.xmlsec.encryption.EncryptedKey;
+import org.opensaml.xmlsec.encryption.EncryptionConstants;
+import org.opensaml.xmlsec.encryption.EncryptionException;
+import org.opensaml.xmlsec.encryption.EncryptionParameters;
+import org.opensaml.xmlsec.encryption.KeyEncryptionParameters;
+import org.opensaml.xmlsec.encryption.ReferenceList;
+import org.opensaml.xmlsec.encryption.XMLEncryptionBuilder;
+import org.opensaml.xmlsec.keyinfo.KeyInfoGenerator;
+import org.opensaml.xmlsec.signature.KeyInfo;
+import org.opensaml.xmlsec.signature.KeyName;
+import org.opensaml.xmlsec.signature.RetrievalMethod;
+import org.opensaml.xmlsec.signature.XMLSignatureBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -89,11 +89,11 @@ import com.google.common.base.Strings;
  * 
  * <p>
  * For information on other parameters and options, and general XML Encryption issues, see
- * {@link org.opensaml.xml.encryption.Encrypter}.
+ * {@link org.opensaml.xmlsec.encryption.Encrypter}.
  * </p>
  * 
  */
-public class Encrypter extends org.opensaml.xml.encryption.Encrypter {
+public class Encrypter extends org.opensaml.xmlsec.encryption.Encrypter {
 
     /**
      * Options for where to place the resulting EncryptedKey elements with respect to the associated EncryptedData

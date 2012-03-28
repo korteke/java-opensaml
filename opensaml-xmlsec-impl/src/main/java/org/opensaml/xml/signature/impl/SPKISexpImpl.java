@@ -18,10 +18,10 @@
 package org.opensaml.xml.signature.impl;
 
 import org.opensaml.core.xml.schema.impl.XSBase64BinaryImpl;
-import org.opensaml.xml.signature.SPKISexp;
+import org.opensaml.xmlsec.signature.SPKISexp;
 
 /**
- * Concrete implementation of {@link org.opensaml.xml.signature.SPKISexp}
+ * Concrete implementation of {@link org.opensaml.xmlsec.signature.SPKISexp}
  */
 public class SPKISexpImpl extends XSBase64BinaryImpl implements SPKISexp {
 

@@ -21,8 +21,8 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.core.config.Initializer;
 import org.opensaml.core.config.XMLObjectProviderInitializerBaseTestCase;
-import org.opensaml.xml.encryption.EncryptedData;
-import org.opensaml.xml.signature.Signature;
+import org.opensaml.xmlsec.encryption.EncryptedData;
+import org.opensaml.xmlsec.signature.Signature;
 
 /**
  * Test XMLObject provider initializer for module "xmlsec-impl".

@@ -18,10 +18,10 @@
 package org.opensaml.xml.signature.impl;
 
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
-import org.opensaml.xml.signature.SignatureConstants;
+import org.opensaml.xmlsec.signature.SignatureConstants;
 
 /**
- * Builder of {@link org.opensaml.xml.signature.Signature}s.
+ * Builder of {@link org.opensaml.xmlsec.signature.Signature}s.
  */
 public class SignatureBuilder extends AbstractXMLObjectBuilder<SignatureImpl> {
 

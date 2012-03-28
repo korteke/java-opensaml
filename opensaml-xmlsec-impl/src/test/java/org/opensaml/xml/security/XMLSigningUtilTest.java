@@ -34,7 +34,8 @@ import junit.framework.TestCase;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.SecurityHelper;
 import org.opensaml.security.credential.Credential;
-import org.opensaml.xml.signature.SignatureConstants;
+import org.opensaml.xmlsec.XMLSigningUtil;
+import org.opensaml.xmlsec.signature.SignatureConstants;
 
 /**
  * Test the SigningUtil operations for generating and verifying simple, raw signatures and MAC's.

@@ -19,7 +19,7 @@ package org.opensaml.xml.signature.impl;
 
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
-import org.opensaml.xml.signature.X509Certificate;
+import org.opensaml.xmlsec.signature.X509Certificate;
 
 /**
  *

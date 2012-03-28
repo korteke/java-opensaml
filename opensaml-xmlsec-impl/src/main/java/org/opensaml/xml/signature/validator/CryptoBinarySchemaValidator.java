@@ -18,10 +18,10 @@
 package org.opensaml.xml.signature.validator;
 
 import org.opensaml.core.xml.schema.validator.XSBase64BinarySchemaValidator;
-import org.opensaml.xml.signature.CryptoBinary;
+import org.opensaml.xmlsec.signature.CryptoBinary;
 
 /**
- * Checks {@link org.opensaml.xml.signature.CryptoBinary} for Schema compliance. 
+ * Checks {@link org.opensaml.xmlsec.signature.CryptoBinary} for Schema compliance. 
  */
 public class CryptoBinarySchemaValidator extends XSBase64BinarySchemaValidator<CryptoBinary> {
     

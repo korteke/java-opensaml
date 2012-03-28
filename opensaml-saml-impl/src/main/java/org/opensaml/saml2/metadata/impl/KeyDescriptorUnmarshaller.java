@@ -23,7 +23,7 @@ import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml2.metadata.EncryptionMethod;
 import org.opensaml.saml2.metadata.KeyDescriptor;
 import org.opensaml.security.credential.UsageType;
-import org.opensaml.xml.signature.KeyInfo;
+import org.opensaml.xmlsec.signature.KeyInfo;
 import org.w3c.dom.Attr;
 
 /**

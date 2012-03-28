@@ -20,7 +20,7 @@ package org.opensaml.xml.encryption.impl;
 import org.opensaml.xml.signature.impl.KeyInfoTypeUnmarshaller;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.xml.encryption.RecipientKeyInfo} objects.
+ * A thread-safe Unmarshaller for {@link org.opensaml.xmlsec.encryption.RecipientKeyInfo} objects.
  */
 public class RecipientKeyInfoUnmarshaller extends KeyInfoTypeUnmarshaller {
 

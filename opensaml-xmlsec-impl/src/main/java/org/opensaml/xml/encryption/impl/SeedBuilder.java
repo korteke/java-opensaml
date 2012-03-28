@@ -18,12 +18,12 @@
 package org.opensaml.xml.encryption.impl;
 
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
-import org.opensaml.xml.encryption.EncryptionConstants;
-import org.opensaml.xml.encryption.Seed;
-import org.opensaml.xml.encryption.XMLEncryptionBuilder;
+import org.opensaml.xmlsec.encryption.EncryptionConstants;
+import org.opensaml.xmlsec.encryption.Seed;
+import org.opensaml.xmlsec.encryption.XMLEncryptionBuilder;
 
 /**
- * Builder of {@link org.opensaml.xml.encryption.Seed}
+ * Builder of {@link org.opensaml.xmlsec.encryption.Seed}
  */
 public class SeedBuilder extends AbstractXMLObjectBuilder<Seed> implements XMLEncryptionBuilder<Seed> {
 

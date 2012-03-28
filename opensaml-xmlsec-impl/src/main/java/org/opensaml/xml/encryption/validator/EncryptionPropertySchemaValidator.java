@@ -24,11 +24,11 @@ import net.shibboleth.utilities.java.support.xml.XmlConstants;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.validation.ValidationException;
 import org.opensaml.core.xml.validation.Validator;
-import org.opensaml.xml.encryption.EncryptionConstants;
-import org.opensaml.xml.encryption.EncryptionProperty;
+import org.opensaml.xmlsec.encryption.EncryptionConstants;
+import org.opensaml.xmlsec.encryption.EncryptionProperty;
 
 /**
- * Checks {@link org.opensaml.xml.encryption.EncryptionProperty} for Schema compliance.
+ * Checks {@link org.opensaml.xmlsec.encryption.EncryptionProperty} for Schema compliance.
  */
 public class EncryptionPropertySchemaValidator implements Validator<EncryptionProperty> {
 

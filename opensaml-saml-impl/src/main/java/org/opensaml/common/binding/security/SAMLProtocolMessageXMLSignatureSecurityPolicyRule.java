@@ -26,7 +26,7 @@ import org.opensaml.security.SAMLSignatureProfileValidator;
 import org.opensaml.security.trust.TrustEngine;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.security.SecurityPolicyException;
-import org.opensaml.xml.signature.Signature;
+import org.opensaml.xmlsec.signature.Signature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

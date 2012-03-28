@@ -24,8 +24,9 @@ import junit.framework.TestCase;
 import org.apache.xml.security.Init;
 import org.opensaml.security.SecurityHelper;
 import org.opensaml.security.credential.Credential;
-import org.opensaml.xml.encryption.EncryptionConstants;
-import org.opensaml.xml.signature.SignatureConstants;
+import org.opensaml.xmlsec.XMLSecurityHelper;
+import org.opensaml.xmlsec.encryption.EncryptionConstants;
+import org.opensaml.xmlsec.signature.SignatureConstants;
 
 /**
  * Testing some aspects of the basic security config impl.

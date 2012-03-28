@@ -18,12 +18,12 @@
 package org.opensaml.xml.signature.impl;
 
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
-import org.opensaml.xml.signature.MgmtData;
-import org.opensaml.xml.signature.SignatureConstants;
-import org.opensaml.xml.signature.XMLSignatureBuilder;
+import org.opensaml.xmlsec.signature.MgmtData;
+import org.opensaml.xmlsec.signature.SignatureConstants;
+import org.opensaml.xmlsec.signature.XMLSignatureBuilder;
 
 /**
- * Builder of {@link org.opensaml.xml.signature.MgmtData}
+ * Builder of {@link org.opensaml.xmlsec.signature.MgmtData}
  */
 public class MgmtDataBuilder extends AbstractXMLObjectBuilder<MgmtData> implements XMLSignatureBuilder<MgmtData> {
 

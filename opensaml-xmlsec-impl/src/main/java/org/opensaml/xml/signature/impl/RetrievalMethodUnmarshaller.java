@@ -19,12 +19,12 @@ package org.opensaml.xml.signature.impl;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
-import org.opensaml.xml.signature.RetrievalMethod;
-import org.opensaml.xml.signature.Transforms;
+import org.opensaml.xmlsec.signature.RetrievalMethod;
+import org.opensaml.xmlsec.signature.Transforms;
 import org.w3c.dom.Attr;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.xml.signature.RetrievalMethod} objects.
+ * A thread-safe Unmarshaller for {@link org.opensaml.xmlsec.signature.RetrievalMethod} objects.
  */
 public class RetrievalMethodUnmarshaller extends AbstractXMLSignatureUnmarshaller {
 

@@ -19,7 +19,7 @@ package org.opensaml.xml.encryption.impl;
 
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
-import org.opensaml.xml.encryption.Generator;
+import org.opensaml.xmlsec.encryption.Generator;
 
 /**
  *

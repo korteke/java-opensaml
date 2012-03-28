@@ -23,12 +23,12 @@ import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.validation.AbstractValidatingXMLObject;
-import org.opensaml.xml.signature.X509IssuerName;
-import org.opensaml.xml.signature.X509IssuerSerial;
-import org.opensaml.xml.signature.X509SerialNumber;
+import org.opensaml.xmlsec.signature.X509IssuerName;
+import org.opensaml.xmlsec.signature.X509IssuerSerial;
+import org.opensaml.xmlsec.signature.X509SerialNumber;
 
 /**
- * Concrete implementation of {@link org.opensaml.xml.signature.X509IssuerSerial}
+ * Concrete implementation of {@link org.opensaml.xmlsec.signature.X509IssuerSerial}
  */
 public class X509IssuerSerialImpl extends AbstractValidatingXMLObject implements X509IssuerSerial {
     

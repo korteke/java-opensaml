@@ -18,12 +18,12 @@
 package org.opensaml.xml.signature.impl;
 
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
-import org.opensaml.xml.signature.Exponent;
-import org.opensaml.xml.signature.SignatureConstants;
-import org.opensaml.xml.signature.XMLSignatureBuilder;
+import org.opensaml.xmlsec.signature.Exponent;
+import org.opensaml.xmlsec.signature.SignatureConstants;
+import org.opensaml.xmlsec.signature.XMLSignatureBuilder;
 
 /**
- * Builder of {@link org.opensaml.xml.signature.Exponent}
+ * Builder of {@link org.opensaml.xmlsec.signature.Exponent}
  */
 public class ExponentBuilder extends AbstractXMLObjectBuilder<Exponent> implements XMLSignatureBuilder<Exponent> {
 

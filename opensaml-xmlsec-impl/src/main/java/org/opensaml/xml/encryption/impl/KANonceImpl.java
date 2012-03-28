@@ -18,10 +18,10 @@
 package org.opensaml.xml.encryption.impl;
 
 import org.opensaml.core.xml.schema.impl.XSBase64BinaryImpl;
-import org.opensaml.xml.encryption.KANonce;
+import org.opensaml.xmlsec.encryption.KANonce;
 
 /**
- * Concrete implementation of {@link org.opensaml.xml.encryption.KANonce}
+ * Concrete implementation of {@link org.opensaml.xmlsec.encryption.KANonce}
  */
 public class KANonceImpl extends XSBase64BinaryImpl implements KANonce {
 

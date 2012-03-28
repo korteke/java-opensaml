@@ -19,8 +19,8 @@ package org.opensaml.xml.encryption.impl;
 
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
-import org.opensaml.xml.encryption.EncryptionProperties;
-import org.opensaml.xml.encryption.EncryptionProperty;
+import org.opensaml.xmlsec.encryption.EncryptionProperties;
+import org.opensaml.xmlsec.encryption.EncryptionProperty;
 
 /**
  *

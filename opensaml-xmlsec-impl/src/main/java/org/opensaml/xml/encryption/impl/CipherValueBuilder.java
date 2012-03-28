@@ -18,12 +18,12 @@
 package org.opensaml.xml.encryption.impl;
 
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
-import org.opensaml.xml.encryption.CipherValue;
-import org.opensaml.xml.encryption.EncryptionConstants;
-import org.opensaml.xml.encryption.XMLEncryptionBuilder;
+import org.opensaml.xmlsec.encryption.CipherValue;
+import org.opensaml.xmlsec.encryption.EncryptionConstants;
+import org.opensaml.xmlsec.encryption.XMLEncryptionBuilder;
 
 /**
- * Builder of {@link org.opensaml.xml.encryption.CipherValue}.
+ * Builder of {@link org.opensaml.xmlsec.encryption.CipherValue}.
  */
 public class CipherValueBuilder extends AbstractXMLObjectBuilder<CipherValue> implements
         XMLEncryptionBuilder<CipherValue> {

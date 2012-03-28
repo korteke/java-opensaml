@@ -19,17 +19,17 @@ package org.opensaml.xml.signature.impl;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
-import org.opensaml.xml.signature.DSAKeyValue;
-import org.opensaml.xml.signature.G;
-import org.opensaml.xml.signature.J;
-import org.opensaml.xml.signature.P;
-import org.opensaml.xml.signature.PgenCounter;
-import org.opensaml.xml.signature.Q;
-import org.opensaml.xml.signature.Seed;
-import org.opensaml.xml.signature.Y;
+import org.opensaml.xmlsec.signature.DSAKeyValue;
+import org.opensaml.xmlsec.signature.G;
+import org.opensaml.xmlsec.signature.J;
+import org.opensaml.xmlsec.signature.P;
+import org.opensaml.xmlsec.signature.PgenCounter;
+import org.opensaml.xmlsec.signature.Q;
+import org.opensaml.xmlsec.signature.Seed;
+import org.opensaml.xmlsec.signature.Y;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.xml.signature.DSAKeyValue} objects.
+ * A thread-safe Unmarshaller for {@link org.opensaml.xmlsec.signature.DSAKeyValue} objects.
  */
 public class DSAKeyValueUnmarshaller extends AbstractXMLSignatureUnmarshaller {
 
