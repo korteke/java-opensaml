@@ -23,12 +23,12 @@ import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.validation.AbstractValidatingXMLObject;
-import org.opensaml.xml.encryption.CipherData;
-import org.opensaml.xml.encryption.CipherReference;
-import org.opensaml.xml.encryption.CipherValue;
+import org.opensaml.xmlsec.encryption.CipherData;
+import org.opensaml.xmlsec.encryption.CipherReference;
+import org.opensaml.xmlsec.encryption.CipherValue;
 
 /**
- * Concrete implementation of {@link org.opensaml.xml.encryption.CipherData}.
+ * Concrete implementation of {@link org.opensaml.xmlsec.encryption.CipherData}.
  */
 public class CipherDataImpl extends AbstractValidatingXMLObject implements CipherData {
     

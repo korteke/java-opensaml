@@ -18,12 +18,12 @@
 package org.opensaml.xml.encryption.impl;
 
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
-import org.opensaml.xml.encryption.EncryptionConstants;
-import org.opensaml.xml.encryption.OAEPparams;
-import org.opensaml.xml.encryption.XMLEncryptionBuilder;
+import org.opensaml.xmlsec.encryption.EncryptionConstants;
+import org.opensaml.xmlsec.encryption.OAEPparams;
+import org.opensaml.xmlsec.encryption.XMLEncryptionBuilder;
 
 /**
- * Builder of {@link org.opensaml.xml.encryption.OAEPparams}
+ * Builder of {@link org.opensaml.xmlsec.encryption.OAEPparams}
  */
 public class OAEPparamsBuilder extends AbstractXMLObjectBuilder<OAEPparams> implements XMLEncryptionBuilder<OAEPparams> {
 

@@ -19,12 +19,12 @@ package org.opensaml.xml.signature.impl;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
-import org.opensaml.xml.signature.DSAKeyValue;
-import org.opensaml.xml.signature.KeyValue;
-import org.opensaml.xml.signature.RSAKeyValue;
+import org.opensaml.xmlsec.signature.DSAKeyValue;
+import org.opensaml.xmlsec.signature.KeyValue;
+import org.opensaml.xmlsec.signature.RSAKeyValue;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.xml.signature.KeyValue} objects.
+ * A thread-safe Unmarshaller for {@link org.opensaml.xmlsec.signature.KeyValue} objects.
  */
 public class KeyValueUnmarshaller extends AbstractXMLSignatureUnmarshaller {
 

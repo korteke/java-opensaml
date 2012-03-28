@@ -18,12 +18,12 @@
 package org.opensaml.xml.encryption.impl;
 
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
-import org.opensaml.xml.encryption.DataReference;
-import org.opensaml.xml.encryption.EncryptionConstants;
-import org.opensaml.xml.encryption.XMLEncryptionBuilder;
+import org.opensaml.xmlsec.encryption.DataReference;
+import org.opensaml.xmlsec.encryption.EncryptionConstants;
+import org.opensaml.xmlsec.encryption.XMLEncryptionBuilder;
 
 /**
- * Builder of {@link org.opensaml.xml.encryption.DataReference}.
+ * Builder of {@link org.opensaml.xmlsec.encryption.DataReference}.
  */
 public class DataReferenceBuilder extends AbstractXMLObjectBuilder<DataReference> implements
         XMLEncryptionBuilder<DataReference> {

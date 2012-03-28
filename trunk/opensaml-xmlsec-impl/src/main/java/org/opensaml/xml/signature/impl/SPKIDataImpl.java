@@ -26,11 +26,11 @@ import javax.xml.namespace.QName;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
 import org.opensaml.core.xml.validation.AbstractValidatingXMLObject;
-import org.opensaml.xml.signature.SPKIData;
-import org.opensaml.xml.signature.SPKISexp;
+import org.opensaml.xmlsec.signature.SPKIData;
+import org.opensaml.xmlsec.signature.SPKISexp;
 
 /**
- * Concrete implementation of {@link org.opensaml.xml.signature.SPKIData}
+ * Concrete implementation of {@link org.opensaml.xmlsec.signature.SPKIData}
  */
 public class SPKIDataImpl extends AbstractValidatingXMLObject implements SPKIData {
     

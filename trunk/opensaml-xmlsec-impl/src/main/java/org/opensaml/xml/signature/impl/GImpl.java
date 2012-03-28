@@ -17,10 +17,10 @@
 
 package org.opensaml.xml.signature.impl;
 
-import org.opensaml.xml.signature.G;
+import org.opensaml.xmlsec.signature.G;
 
 /**
- * Concrete implementation of {@link org.opensaml.xml.signature.G}
+ * Concrete implementation of {@link org.opensaml.xmlsec.signature.G}
  */
 public class GImpl extends CryptoBinaryImpl implements G {
 

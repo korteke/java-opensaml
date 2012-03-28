@@ -18,9 +18,9 @@
 package org.opensaml.xml.signature.validator;
 
 import org.opensaml.core.xml.BaseXMLObjectValidatorTestCase;
-import org.opensaml.xml.signature.X509IssuerName;
-import org.opensaml.xml.signature.X509IssuerSerial;
-import org.opensaml.xml.signature.X509SerialNumber;
+import org.opensaml.xmlsec.signature.X509IssuerName;
+import org.opensaml.xmlsec.signature.X509IssuerSerial;
+import org.opensaml.xmlsec.signature.X509SerialNumber;
 
 /**
  *

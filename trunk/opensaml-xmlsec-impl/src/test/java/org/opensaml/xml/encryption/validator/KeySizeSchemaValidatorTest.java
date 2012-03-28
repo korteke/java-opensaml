@@ -18,7 +18,7 @@
 package org.opensaml.xml.encryption.validator;
 
 import org.opensaml.core.xml.BaseXMLObjectValidatorTestCase;
-import org.opensaml.xml.encryption.KeySize;
+import org.opensaml.xmlsec.encryption.KeySize;
 
 /**
  * Tests CryptoBinaryValidator.

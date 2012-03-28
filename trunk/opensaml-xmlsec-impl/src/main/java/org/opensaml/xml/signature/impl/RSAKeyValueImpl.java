@@ -23,12 +23,12 @@ import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.validation.AbstractValidatingXMLObject;
-import org.opensaml.xml.signature.Exponent;
-import org.opensaml.xml.signature.Modulus;
-import org.opensaml.xml.signature.RSAKeyValue;
+import org.opensaml.xmlsec.signature.Exponent;
+import org.opensaml.xmlsec.signature.Modulus;
+import org.opensaml.xmlsec.signature.RSAKeyValue;
 
 /**
- * Concrete implementation of {@link org.opensaml.xml.signature.RSAKeyValue}
+ * Concrete implementation of {@link org.opensaml.xmlsec.signature.RSAKeyValue}
  */
 public class RSAKeyValueImpl extends AbstractValidatingXMLObject implements RSAKeyValue {
     

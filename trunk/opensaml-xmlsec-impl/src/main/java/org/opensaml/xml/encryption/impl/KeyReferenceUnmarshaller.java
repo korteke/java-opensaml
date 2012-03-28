@@ -18,7 +18,7 @@
 package org.opensaml.xml.encryption.impl;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.xml.encryption.KeyReference} objects.
+ * A thread-safe Unmarshaller for {@link org.opensaml.xmlsec.encryption.KeyReference} objects.
  */
 public class KeyReferenceUnmarshaller extends ReferenceTypeUnmarshaller {
 

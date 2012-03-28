@@ -19,12 +19,12 @@ package org.opensaml.xml.encryption.validator;
 
 import org.opensaml.core.xml.validation.ValidationException;
 import org.opensaml.core.xml.validation.Validator;
-import org.opensaml.xml.encryption.AgreementMethod;
+import org.opensaml.xmlsec.encryption.AgreementMethod;
 
 import com.google.common.base.Strings;
 
 /**
- * Checks {@link org.opensaml.xml.encryption.AgreementMethod} for Schema compliance. 
+ * Checks {@link org.opensaml.xmlsec.encryption.AgreementMethod} for Schema compliance. 
  */
 public class AgreementMethodSchemaValidator implements Validator<AgreementMethod> {
 

@@ -18,10 +18,10 @@
 package org.opensaml.xml.encryption.impl;
 
 import org.opensaml.core.xml.schema.impl.XSStringImpl;
-import org.opensaml.xml.encryption.CarriedKeyName;
+import org.opensaml.xmlsec.encryption.CarriedKeyName;
 
 /**
- * Concrete implementation of {@link org.opensaml.xml.encryption.CarriedKeyName}.
+ * Concrete implementation of {@link org.opensaml.xmlsec.encryption.CarriedKeyName}.
  */
 public class CarriedKeyNameImpl extends XSStringImpl implements CarriedKeyName {
 

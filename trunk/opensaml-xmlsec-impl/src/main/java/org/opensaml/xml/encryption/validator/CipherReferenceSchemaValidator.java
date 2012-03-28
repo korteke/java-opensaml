@@ -19,12 +19,12 @@ package org.opensaml.xml.encryption.validator;
 
 import org.opensaml.core.xml.validation.ValidationException;
 import org.opensaml.core.xml.validation.Validator;
-import org.opensaml.xml.encryption.CipherReference;
+import org.opensaml.xmlsec.encryption.CipherReference;
 
 import com.google.common.base.Strings;
 
 /**
- * Checks {@link org.opensaml.xml.encryption.CipherReference} for Schema compliance. 
+ * Checks {@link org.opensaml.xmlsec.encryption.CipherReference} for Schema compliance. 
  */
 public class CipherReferenceSchemaValidator implements Validator<CipherReference> {
 

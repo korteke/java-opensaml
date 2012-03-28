@@ -18,12 +18,12 @@
 package org.opensaml.xml.signature.impl;
 
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
-import org.opensaml.xml.signature.SignatureConstants;
-import org.opensaml.xml.signature.XMLSignatureBuilder;
-import org.opensaml.xml.signature.XPath;
+import org.opensaml.xmlsec.signature.SignatureConstants;
+import org.opensaml.xmlsec.signature.XMLSignatureBuilder;
+import org.opensaml.xmlsec.signature.XPath;
 
 /**
- * Builder of {@link org.opensaml.xml.signature.XPath}
+ * Builder of {@link org.opensaml.xmlsec.signature.XPath}
  */
 public class XPathBuilder extends AbstractXMLObjectBuilder<XPath> implements XMLSignatureBuilder<XPath> {
 

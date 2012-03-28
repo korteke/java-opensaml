@@ -18,7 +18,7 @@
 package org.opensaml.xml.encryption.impl;
 
 /**
- * A thread-safe Marshaller for {@link org.opensaml.xml.encryption.DHKeyValue} objects.
+ * A thread-safe Marshaller for {@link org.opensaml.xmlsec.encryption.DHKeyValue} objects.
  */
 public class DHKeyValueMarshaller extends AbstractXMLEncryptionMarshaller {
 

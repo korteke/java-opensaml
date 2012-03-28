@@ -26,11 +26,11 @@ import javax.xml.namespace.QName;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
 import org.opensaml.core.xml.validation.AbstractValidatingXMLObject;
-import org.opensaml.xml.signature.Transform;
-import org.opensaml.xml.signature.XPath;
+import org.opensaml.xmlsec.signature.Transform;
+import org.opensaml.xmlsec.signature.XPath;
 
 /**
- * Concrete implementation of {@link org.opensaml.xml.signature.Transform}
+ * Concrete implementation of {@link org.opensaml.xmlsec.signature.Transform}
  */
 public class TransformImpl extends AbstractValidatingXMLObject implements Transform {
     

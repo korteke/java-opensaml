@@ -35,10 +35,16 @@ import org.opensaml.security.criteria.EntityIDCriterion;
 import org.opensaml.security.x509.BasicX509Credential;
 import org.opensaml.xml.mock.SignableSimpleXMLObject;
 import org.opensaml.xml.security.XMLSecurityTestingHelper;
-import org.opensaml.xml.security.XMLSigningUtil;
-import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xml.security.x509.X509KeyInfoGeneratorFactory;
 import org.opensaml.xml.signature.impl.ExplicitKeySignatureTrustEngine;
+import org.opensaml.xmlsec.XMLSigningUtil;
+import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
+import org.opensaml.xmlsec.signature.DocumentInternalIDContentReference;
+import org.opensaml.xmlsec.signature.KeyInfo;
+import org.opensaml.xmlsec.signature.SignableXMLObject;
+import org.opensaml.xmlsec.signature.Signature;
+import org.opensaml.xmlsec.signature.SignatureConstants;
+import org.opensaml.xmlsec.signature.SignatureException;
 
 /**
  * Test explicit key signature trust engine.

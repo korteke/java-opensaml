@@ -30,7 +30,7 @@ import org.opensaml.ws.soap.soap12.RelayBearing;
 import org.opensaml.ws.soap.soap12.RoleBearing;
 import org.opensaml.ws.wssecurity.EncryptedHeader;
 import org.opensaml.ws.wssecurity.IdBearing;
-import org.opensaml.xml.encryption.EncryptedData;
+import org.opensaml.xmlsec.encryption.EncryptedData;
 
 /**
  * Implementation of {@link EncryptedHeader}.

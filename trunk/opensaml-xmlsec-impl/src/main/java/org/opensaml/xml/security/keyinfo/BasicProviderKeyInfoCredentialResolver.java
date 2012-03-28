@@ -38,9 +38,12 @@ import org.opensaml.security.SecurityHelper;
 import org.opensaml.security.credential.BasicCredential;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.impl.AbstractCriteriaFilteringCredentialResolver;
-import org.opensaml.xml.signature.KeyInfo;
-import org.opensaml.xml.signature.KeyName;
-import org.opensaml.xml.signature.KeyValue;
+import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
+import org.opensaml.xmlsec.keyinfo.KeyInfoCriterion;
+import org.opensaml.xmlsec.keyinfo.KeyInfoHelper;
+import org.opensaml.xmlsec.signature.KeyInfo;
+import org.opensaml.xmlsec.signature.KeyName;
+import org.opensaml.xmlsec.signature.KeyValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

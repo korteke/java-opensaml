@@ -24,7 +24,8 @@ import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.Credential;
-import org.opensaml.xml.signature.KeyInfo;
+import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
+import org.opensaml.xmlsec.signature.KeyInfo;
 
 /**
  * Interface for providers used in conjunction with a {@link KeyInfoCredentialResolver} which 

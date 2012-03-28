@@ -26,6 +26,7 @@ import org.opensaml.core.xml.validation.Validator;
 import org.opensaml.security.SecurityHelper;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.xml.signature.impl.SignatureImpl;
+import org.opensaml.xmlsec.signature.Signature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

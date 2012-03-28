@@ -21,11 +21,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.opensaml.xml.security.keyinfo.BasicProviderKeyInfoCredentialResolver;
-import org.opensaml.xml.security.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xml.security.keyinfo.KeyInfoProvider;
 import org.opensaml.xml.security.keyinfo.provider.DSAKeyValueProvider;
 import org.opensaml.xml.security.keyinfo.provider.InlineX509DataProvider;
 import org.opensaml.xml.security.keyinfo.provider.RSAKeyValueProvider;
+import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 
 /**
  * Helper methods for SAML testing.

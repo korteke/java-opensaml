@@ -18,10 +18,10 @@
 package org.opensaml.xml.encryption.impl;
 
 import org.opensaml.core.xml.schema.impl.XSIntegerImpl;
-import org.opensaml.xml.encryption.KeySize;
+import org.opensaml.xmlsec.encryption.KeySize;
 
 /**
- * Concrete implementation of {@link org.opensaml.xml.encryption.KeySize}
+ * Concrete implementation of {@link org.opensaml.xmlsec.encryption.KeySize}
  */
 public class KeySizeImpl extends XSIntegerImpl implements KeySize {
 

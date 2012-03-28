@@ -19,14 +19,14 @@ package org.opensaml.xml.encryption.impl;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
-import org.opensaml.xml.encryption.AgreementMethod;
-import org.opensaml.xml.encryption.KANonce;
-import org.opensaml.xml.encryption.OriginatorKeyInfo;
-import org.opensaml.xml.encryption.RecipientKeyInfo;
+import org.opensaml.xmlsec.encryption.AgreementMethod;
+import org.opensaml.xmlsec.encryption.KANonce;
+import org.opensaml.xmlsec.encryption.OriginatorKeyInfo;
+import org.opensaml.xmlsec.encryption.RecipientKeyInfo;
 import org.w3c.dom.Attr;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.xml.encryption.AgreementMethod} objects.
+ * A thread-safe Unmarshaller for {@link org.opensaml.xmlsec.encryption.AgreementMethod} objects.
  */
 public class AgreementMethodUnmarshaller extends AbstractXMLEncryptionUnmarshaller {
 

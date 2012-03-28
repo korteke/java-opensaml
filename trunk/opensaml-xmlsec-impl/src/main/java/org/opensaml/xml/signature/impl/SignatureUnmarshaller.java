@@ -29,15 +29,15 @@ import org.apache.xml.security.signature.XMLSignature;
 import org.opensaml.core.xml.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.Unmarshaller;
 import org.opensaml.core.xml.io.UnmarshallingException;
-import org.opensaml.xml.signature.KeyInfo;
-import org.opensaml.xml.signature.Signature;
-import org.opensaml.xml.signature.SignatureConstants;
+import org.opensaml.xmlsec.signature.KeyInfo;
+import org.opensaml.xmlsec.signature.Signature;
+import org.opensaml.xmlsec.signature.SignatureConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
 
 /**
- * An unmarshaller for {@link org.opensaml.xml.signature.Signature} objects.
+ * An unmarshaller for {@link org.opensaml.xmlsec.signature.Signature} objects.
  */
 public class SignatureUnmarshaller implements Unmarshaller {
 

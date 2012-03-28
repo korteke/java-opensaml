@@ -26,10 +26,10 @@ import javax.xml.namespace.QName;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
 import org.opensaml.core.xml.validation.AbstractValidatingXMLObject;
-import org.opensaml.xml.signature.DigestMethod;
+import org.opensaml.xmlsec.signature.DigestMethod;
 
 /**
- * Concrete implementation of {@link org.opensaml.xml.signature.DigestMethod}.
+ * Concrete implementation of {@link org.opensaml.xmlsec.signature.DigestMethod}.
  */
 public class DigestMethodImpl extends AbstractValidatingXMLObject implements DigestMethod {
     

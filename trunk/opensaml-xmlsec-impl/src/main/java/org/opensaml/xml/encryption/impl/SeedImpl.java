@@ -17,12 +17,12 @@
 
 package org.opensaml.xml.encryption.impl;
 
-import org.opensaml.xml.encryption.Seed;
 import org.opensaml.xml.signature.impl.CryptoBinaryImpl;
+import org.opensaml.xmlsec.encryption.Seed;
 
 
 /**
- * Concrete implementation of {@link org.opensaml.xml.encryption.Seed}
+ * Concrete implementation of {@link org.opensaml.xmlsec.encryption.Seed}
  */
 public class SeedImpl extends CryptoBinaryImpl implements Seed {
 

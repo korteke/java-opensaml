@@ -26,19 +26,19 @@ import javax.xml.namespace.QName;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
 import org.opensaml.core.xml.validation.AbstractValidatingXMLObject;
-import org.opensaml.xml.encryption.AgreementMethod;
-import org.opensaml.xml.encryption.EncryptedKey;
-import org.opensaml.xml.signature.KeyInfoType;
-import org.opensaml.xml.signature.KeyName;
-import org.opensaml.xml.signature.KeyValue;
-import org.opensaml.xml.signature.MgmtData;
-import org.opensaml.xml.signature.PGPData;
-import org.opensaml.xml.signature.RetrievalMethod;
-import org.opensaml.xml.signature.SPKIData;
-import org.opensaml.xml.signature.X509Data;
+import org.opensaml.xmlsec.encryption.AgreementMethod;
+import org.opensaml.xmlsec.encryption.EncryptedKey;
+import org.opensaml.xmlsec.signature.KeyInfoType;
+import org.opensaml.xmlsec.signature.KeyName;
+import org.opensaml.xmlsec.signature.KeyValue;
+import org.opensaml.xmlsec.signature.MgmtData;
+import org.opensaml.xmlsec.signature.PGPData;
+import org.opensaml.xmlsec.signature.RetrievalMethod;
+import org.opensaml.xmlsec.signature.SPKIData;
+import org.opensaml.xmlsec.signature.X509Data;
 
 /**
- * Concrete implementation of {@link org.opensaml.xml.signature.KeyInfoType}
+ * Concrete implementation of {@link org.opensaml.xmlsec.signature.KeyInfoType}
  */
 public class KeyInfoTypeImpl extends AbstractValidatingXMLObject implements KeyInfoType {
     

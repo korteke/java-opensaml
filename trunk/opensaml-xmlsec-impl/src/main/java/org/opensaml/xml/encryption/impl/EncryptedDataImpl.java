@@ -17,10 +17,10 @@
 
 package org.opensaml.xml.encryption.impl;
 
-import org.opensaml.xml.encryption.EncryptedData;
+import org.opensaml.xmlsec.encryption.EncryptedData;
 
 /**
- * Concrete implementation of {@link org.opensaml.xml.encryption.EncryptedData}.
+ * Concrete implementation of {@link org.opensaml.xmlsec.encryption.EncryptedData}.
  */
 public class EncryptedDataImpl extends EncryptedTypeImpl implements EncryptedData {
 

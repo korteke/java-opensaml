@@ -19,12 +19,12 @@ package org.opensaml.xml.encryption.impl;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
-import org.opensaml.xml.encryption.CipherReference;
-import org.opensaml.xml.encryption.Transforms;
+import org.opensaml.xmlsec.encryption.CipherReference;
+import org.opensaml.xmlsec.encryption.Transforms;
 import org.w3c.dom.Attr;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.xml.encryption.CipherReference} objects.
+ * A thread-safe Unmarshaller for {@link org.opensaml.xmlsec.encryption.CipherReference} objects.
  */
 public class CipherReferenceUnmarshaller extends AbstractXMLEncryptionUnmarshaller {
 

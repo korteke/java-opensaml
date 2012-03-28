@@ -18,7 +18,7 @@
 package org.opensaml.xml.signature.validator;
 
 import org.opensaml.core.xml.BaseXMLObjectValidatorTestCase;
-import org.opensaml.xml.signature.RetrievalMethod;
+import org.opensaml.xmlsec.signature.RetrievalMethod;
 
 /**
  *

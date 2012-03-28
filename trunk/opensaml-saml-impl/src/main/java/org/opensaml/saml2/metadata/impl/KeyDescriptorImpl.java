@@ -27,7 +27,7 @@ import org.opensaml.core.xml.util.XMLObjectChildrenList;
 import org.opensaml.saml2.metadata.EncryptionMethod;
 import org.opensaml.saml2.metadata.KeyDescriptor;
 import org.opensaml.security.credential.UsageType;
-import org.opensaml.xml.signature.KeyInfo;
+import org.opensaml.xmlsec.signature.KeyInfo;
 
 /**
  * Concrete implementation of {@link org.opensaml.saml2.metadata.KeyDescriptor}.

@@ -18,7 +18,7 @@
 package org.opensaml.xml.signature.impl;
 
 /**
- * A thread-safe Marshaller for {@link org.opensaml.xml.signature.SPKIData} objects.
+ * A thread-safe Marshaller for {@link org.opensaml.xmlsec.signature.SPKIData} objects.
  */
 public class SPKIDataMarshaller extends AbstractXMLSignatureMarshaller {
 

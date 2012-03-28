@@ -19,11 +19,11 @@ package org.opensaml.xml.encryption.impl;
 
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
-import org.opensaml.xml.encryption.CipherData;
-import org.opensaml.xml.encryption.EncryptedData;
-import org.opensaml.xml.encryption.EncryptionMethod;
-import org.opensaml.xml.encryption.EncryptionProperties;
-import org.opensaml.xml.signature.KeyInfo;
+import org.opensaml.xmlsec.encryption.CipherData;
+import org.opensaml.xmlsec.encryption.EncryptedData;
+import org.opensaml.xmlsec.encryption.EncryptionMethod;
+import org.opensaml.xmlsec.encryption.EncryptionProperties;
+import org.opensaml.xmlsec.signature.KeyInfo;
 
 /**
  *

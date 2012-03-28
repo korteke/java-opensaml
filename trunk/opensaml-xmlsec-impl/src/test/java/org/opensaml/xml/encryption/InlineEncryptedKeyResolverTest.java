@@ -21,6 +21,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
+import org.opensaml.xmlsec.encryption.EncryptedData;
+import org.opensaml.xmlsec.encryption.EncryptedKey;
+import org.opensaml.xmlsec.encryption.EncryptedKeyResolver;
+import org.opensaml.xmlsec.encryption.InlineEncryptedKeyResolver;
 
 /**
  * Test the inline encrypted key resolver.

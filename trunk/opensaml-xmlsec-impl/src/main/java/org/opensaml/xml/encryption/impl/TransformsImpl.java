@@ -24,11 +24,11 @@ import java.util.List;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.XMLObjectChildrenList;
 import org.opensaml.core.xml.validation.AbstractValidatingXMLObject;
-import org.opensaml.xml.encryption.Transforms;
-import org.opensaml.xml.signature.Transform;
+import org.opensaml.xmlsec.encryption.Transforms;
+import org.opensaml.xmlsec.signature.Transform;
 
 /**
- * Concrete implementation of {@link org.opensaml.xml.encryption.Transforms}
+ * Concrete implementation of {@link org.opensaml.xmlsec.encryption.Transforms}
  */
 public class TransformsImpl extends AbstractValidatingXMLObject implements Transforms {
     

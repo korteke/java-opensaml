@@ -18,7 +18,7 @@
 package org.opensaml.xml.security.keyinfo;
 
 import org.opensaml.security.credential.CredentialContext;
-import org.opensaml.xml.signature.KeyInfo;
+import org.opensaml.xmlsec.signature.KeyInfo;
 
 /**
  * Context for credentials resolved from a {@link KeyInfo} element.

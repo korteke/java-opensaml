@@ -19,15 +19,15 @@ package org.opensaml.xml.encryption.impl;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
-import org.opensaml.xml.encryption.CipherData;
-import org.opensaml.xml.encryption.EncryptedType;
-import org.opensaml.xml.encryption.EncryptionMethod;
-import org.opensaml.xml.encryption.EncryptionProperties;
-import org.opensaml.xml.signature.KeyInfo;
+import org.opensaml.xmlsec.encryption.CipherData;
+import org.opensaml.xmlsec.encryption.EncryptedType;
+import org.opensaml.xmlsec.encryption.EncryptionMethod;
+import org.opensaml.xmlsec.encryption.EncryptionProperties;
+import org.opensaml.xmlsec.signature.KeyInfo;
 import org.w3c.dom.Attr;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.xml.encryption.EncryptedType} objects.
+ * A thread-safe Unmarshaller for {@link org.opensaml.xmlsec.encryption.EncryptedType} objects.
  */
 public abstract class EncryptedTypeUnmarshaller extends AbstractXMLEncryptionUnmarshaller {
 

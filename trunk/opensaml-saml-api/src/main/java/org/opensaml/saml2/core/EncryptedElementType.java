@@ -23,8 +23,8 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.common.SAMLObject;
 import org.opensaml.common.xml.SAMLConstants;
-import org.opensaml.xml.encryption.EncryptedData;
-import org.opensaml.xml.encryption.EncryptedKey;
+import org.opensaml.xmlsec.encryption.EncryptedData;
+import org.opensaml.xmlsec.encryption.EncryptedKey;
 
 /**
  * SAML 2.0 Core EncryptedElementType.

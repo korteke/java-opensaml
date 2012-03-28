@@ -22,12 +22,12 @@ import java.util.Collections;
 import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.xml.encryption.CarriedKeyName;
-import org.opensaml.xml.encryption.EncryptedKey;
-import org.opensaml.xml.encryption.ReferenceList;
+import org.opensaml.xmlsec.encryption.CarriedKeyName;
+import org.opensaml.xmlsec.encryption.EncryptedKey;
+import org.opensaml.xmlsec.encryption.ReferenceList;
 
 /**
- * Concrete implementation of {@link org.opensaml.xml.encryption.EncryptedKey}.
+ * Concrete implementation of {@link org.opensaml.xmlsec.encryption.EncryptedKey}.
  */
 public class EncryptedKeyImpl extends EncryptedTypeImpl implements EncryptedKey {
     

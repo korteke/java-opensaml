@@ -17,7 +17,7 @@
 
 package org.opensaml.xml.encryption.impl;
 
-import org.opensaml.xml.encryption.KeyReference;
+import org.opensaml.xmlsec.encryption.KeyReference;
 
 /**
  *

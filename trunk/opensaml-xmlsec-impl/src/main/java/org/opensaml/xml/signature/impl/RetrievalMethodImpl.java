@@ -23,11 +23,11 @@ import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.validation.AbstractValidatingXMLObject;
-import org.opensaml.xml.signature.RetrievalMethod;
-import org.opensaml.xml.signature.Transforms;
+import org.opensaml.xmlsec.signature.RetrievalMethod;
+import org.opensaml.xmlsec.signature.Transforms;
 
 /**
- * Concrete implementation of {@link org.opensaml.xml.signature.RetrievalMethod}
+ * Concrete implementation of {@link org.opensaml.xmlsec.signature.RetrievalMethod}
  */
 public class RetrievalMethodImpl extends AbstractValidatingXMLObject implements RetrievalMethod {
     

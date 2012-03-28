@@ -29,8 +29,8 @@ import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.CredentialResolver;
 import org.opensaml.security.criteria.KeyNameCriterion;
 import org.opensaml.security.criteria.PublicKeyCriterion;
-import org.opensaml.xml.encryption.Decrypter;
-import org.opensaml.xml.signature.KeyInfo;
+import org.opensaml.xmlsec.encryption.Decrypter;
+import org.opensaml.xmlsec.signature.KeyInfo;
 
 /**
  * A simple specialization of {@link BasicProviderKeyInfoCredentialResolver}

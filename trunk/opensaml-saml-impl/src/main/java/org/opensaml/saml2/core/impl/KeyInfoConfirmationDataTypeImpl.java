@@ -21,7 +21,7 @@ import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml2.core.KeyInfoConfirmationDataType;
-import org.opensaml.xml.signature.KeyInfo;
+import org.opensaml.xmlsec.signature.KeyInfo;
 
 /**
  * Concrete implementation of {@link org.opensaml.saml2.core.SubjectConfirmationData}.

@@ -26,12 +26,12 @@ import net.shibboleth.utilities.java.support.xml.AttributeSupport;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.MarshallingException;
-import org.opensaml.xml.encryption.EncryptionProperty;
+import org.opensaml.xmlsec.encryption.EncryptionProperty;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
 
 /**
- * A thread-safe Marshaller for {@link org.opensaml.xml.encryption.EncryptionProperty} objects.
+ * A thread-safe Marshaller for {@link org.opensaml.xmlsec.encryption.EncryptionProperty} objects.
  */
 public class EncryptionPropertyMarshaller extends AbstractXMLEncryptionMarshaller {
 

@@ -18,10 +18,10 @@
 package org.opensaml.xml.encryption.validator;
 
 import org.opensaml.core.xml.schema.validator.XSIntegerSchemaValidator;
-import org.opensaml.xml.encryption.KeySize;
+import org.opensaml.xmlsec.encryption.KeySize;
 
 /**
- * Checks {@link org.opensaml.xml.encryption.KeySize} for Schema compliance. 
+ * Checks {@link org.opensaml.xmlsec.encryption.KeySize} for Schema compliance. 
  */
 public class KeySizeSchemaValidator extends XSIntegerSchemaValidator<KeySize> {
     

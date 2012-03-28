@@ -29,10 +29,10 @@ import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
 import org.opensaml.core.xml.validation.AbstractValidatingXMLObject;
 
 /**
- * Concrete implementation of {@link org.opensaml.xml.encryption.EncryptionProperty}
+ * Concrete implementation of {@link org.opensaml.xmlsec.encryption.EncryptionProperty}
  */
 public class EncryptionPropertyImpl extends AbstractValidatingXMLObject implements
-        org.opensaml.xml.encryption.EncryptionProperty {
+        org.opensaml.xmlsec.encryption.EncryptionProperty {
     
     /** Target attribute value */
     private String target;

@@ -18,10 +18,10 @@
 package org.opensaml.xml.signature.impl;
 
 import org.opensaml.core.xml.schema.impl.XSBase64BinaryImpl;
-import org.opensaml.xml.signature.X509SKI;
+import org.opensaml.xmlsec.signature.X509SKI;
 
 /**
- * Concrete implementation of {@link org.opensaml.xml.signature.X509SKI}
+ * Concrete implementation of {@link org.opensaml.xmlsec.signature.X509SKI}
  */
 public class X509SKIImpl extends XSBase64BinaryImpl implements X509SKI {
 

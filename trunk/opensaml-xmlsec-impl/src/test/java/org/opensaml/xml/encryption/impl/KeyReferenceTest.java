@@ -20,7 +20,7 @@ package org.opensaml.xml.encryption.impl;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.core.xml.mock.SimpleXMLObject;
-import org.opensaml.xml.encryption.KeyReference;
+import org.opensaml.xmlsec.encryption.KeyReference;
 
 /**
  *

@@ -19,10 +19,10 @@ package org.opensaml.xml.signature.impl;
 
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
 import org.opensaml.core.xml.XMLObjectBuilder;
-import org.opensaml.xml.signature.CryptoBinary;
+import org.opensaml.xmlsec.signature.CryptoBinary;
 
 /**
- * Builder of {@link org.opensaml.xml.signature.CryptoBinary}.
+ * Builder of {@link org.opensaml.xmlsec.signature.CryptoBinary}.
  */
 public class CryptoBinaryBuilder extends AbstractXMLObjectBuilder<CryptoBinary> 
     implements XMLObjectBuilder<CryptoBinary>{

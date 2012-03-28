@@ -20,7 +20,7 @@ package org.opensaml.xml.encryption.impl;
 import org.opensaml.xml.signature.impl.KeyInfoTypeMarshaller;
 
 /**
- * A thread-safe Marshaller for {@link org.opensaml.xml.encryption.OriginatorKeyInfo} objects.
+ * A thread-safe Marshaller for {@link org.opensaml.xmlsec.encryption.OriginatorKeyInfo} objects.
  */
 public class OriginatorKeyInfoMarshaller extends KeyInfoTypeMarshaller {
 

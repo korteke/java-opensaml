@@ -25,7 +25,7 @@ import org.opensaml.saml2.metadata.RoleDescriptor;
 import org.opensaml.security.credential.CredentialContext;
 
 /**
- * A credential context for credentials resolved from a {@link org.opensaml.xml.signature.KeyInfo} that was found in
+ * A credential context for credentials resolved from a {@link org.opensaml.xmlsec.signature.KeyInfo} that was found in
  * SAML 2 metadata.
  */
 public class SAMLMDCredentialContext implements CredentialContext {

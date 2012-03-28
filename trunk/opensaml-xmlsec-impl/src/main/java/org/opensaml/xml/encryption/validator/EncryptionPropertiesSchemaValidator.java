@@ -19,10 +19,10 @@ package org.opensaml.xml.encryption.validator;
 
 import org.opensaml.core.xml.validation.ValidationException;
 import org.opensaml.core.xml.validation.Validator;
-import org.opensaml.xml.encryption.EncryptionProperties;
+import org.opensaml.xmlsec.encryption.EncryptionProperties;
 
 /**
- * Checks {@link org.opensaml.xml.encryption.EncryptionProperties} for Schema compliance. 
+ * Checks {@link org.opensaml.xmlsec.encryption.EncryptionProperties} for Schema compliance. 
  */
 public class EncryptionPropertiesSchemaValidator implements Validator<EncryptionProperties> {
 

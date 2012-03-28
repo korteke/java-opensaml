@@ -17,7 +17,7 @@
 
 package org.opensaml.common;
 
-import org.opensaml.xml.signature.SignableXMLObject;
+import org.opensaml.xmlsec.signature.SignableXMLObject;
 
 /**
  * A signable SAMLObject.

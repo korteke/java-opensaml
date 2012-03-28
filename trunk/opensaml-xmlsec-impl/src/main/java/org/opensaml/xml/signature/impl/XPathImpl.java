@@ -18,10 +18,10 @@
 package org.opensaml.xml.signature.impl;
 
 import org.opensaml.core.xml.schema.impl.XSStringImpl;
-import org.opensaml.xml.signature.XPath;
+import org.opensaml.xmlsec.signature.XPath;
 
 /**
- * Concrete implementation of {@link org.opensaml.xml.signature.XPath}
+ * Concrete implementation of {@link org.opensaml.xmlsec.signature.XPath}
  */
 public class XPathImpl extends XSStringImpl implements XPath {
 

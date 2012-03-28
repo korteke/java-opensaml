@@ -17,12 +17,12 @@
 
 package org.opensaml.xml.encryption.impl;
 
-import org.opensaml.xml.encryption.Generator;
 import org.opensaml.xml.signature.impl.CryptoBinaryImpl;
+import org.opensaml.xmlsec.encryption.Generator;
 
 
 /**
- * Concrete implementation of {@link org.opensaml.xml.encryption.Generator}
+ * Concrete implementation of {@link org.opensaml.xmlsec.encryption.Generator}
  */
 public class GeneratorImpl extends CryptoBinaryImpl implements Generator {
 

@@ -24,11 +24,11 @@ import javax.xml.namespace.QName;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.validation.ValidationException;
 import org.opensaml.core.xml.validation.Validator;
-import org.opensaml.xml.signature.KeyValue;
-import org.opensaml.xml.signature.SignatureConstants;
+import org.opensaml.xmlsec.signature.KeyValue;
+import org.opensaml.xmlsec.signature.SignatureConstants;
 
 /**
- * Checks {@link org.opensaml.xml.signature.KeyValue} for Schema compliance. 
+ * Checks {@link org.opensaml.xmlsec.signature.KeyValue} for Schema compliance. 
  */
 public class KeyValueSchemaValidator implements Validator<KeyValue> {
 

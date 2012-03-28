@@ -17,12 +17,12 @@
 
 package org.opensaml.xml.encryption.impl;
 
-import org.opensaml.xml.encryption.Public;
 import org.opensaml.xml.signature.impl.CryptoBinaryImpl;
+import org.opensaml.xmlsec.encryption.Public;
 
 
 /**
- * Concrete implementation of {@link org.opensaml.xml.encryption.Public}
+ * Concrete implementation of {@link org.opensaml.xmlsec.encryption.Public}
  */
 public class PublicImpl extends CryptoBinaryImpl implements Public {
 

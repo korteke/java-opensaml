@@ -25,7 +25,7 @@ import org.opensaml.common.xml.SAMLConstants;
 /**
  * SAML 2.0 Metadata EncryptionMethod.
  */
-public interface EncryptionMethod extends org.opensaml.xml.encryption.EncryptionMethod, SAMLObject {
+public interface EncryptionMethod extends org.opensaml.xmlsec.encryption.EncryptionMethod, SAMLObject {
     
     /** Element local name. */
     public static final String DEFAULT_ELEMENT_LOCAL_NAME = "EncryptionMethod";

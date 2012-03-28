@@ -18,10 +18,10 @@
 package org.opensaml.xml.signature.impl;
 
 import org.opensaml.core.xml.schema.impl.XSStringImpl;
-import org.opensaml.xml.signature.KeyName;
+import org.opensaml.xmlsec.signature.KeyName;
 
 /**
- * Concrete implementation of {@link org.opensaml.xml.signature.KeyName}
+ * Concrete implementation of {@link org.opensaml.xmlsec.signature.KeyName}
  */
 public class KeyNameImpl extends XSStringImpl implements KeyName {
 

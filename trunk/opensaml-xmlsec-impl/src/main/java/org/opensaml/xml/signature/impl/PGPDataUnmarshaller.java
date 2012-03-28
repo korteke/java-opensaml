@@ -19,12 +19,12 @@ package org.opensaml.xml.signature.impl;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
-import org.opensaml.xml.signature.PGPData;
-import org.opensaml.xml.signature.PGPKeyID;
-import org.opensaml.xml.signature.PGPKeyPacket;
+import org.opensaml.xmlsec.signature.PGPData;
+import org.opensaml.xmlsec.signature.PGPKeyID;
+import org.opensaml.xmlsec.signature.PGPKeyPacket;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.xml.signature.PGPData} objects.
+ * A thread-safe Unmarshaller for {@link org.opensaml.xmlsec.signature.PGPData} objects.
  */
 public class PGPDataUnmarshaller extends AbstractXMLSignatureUnmarshaller {
 

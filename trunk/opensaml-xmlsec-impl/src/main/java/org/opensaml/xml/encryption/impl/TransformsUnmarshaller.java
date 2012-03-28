@@ -19,11 +19,11 @@ package org.opensaml.xml.encryption.impl;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
-import org.opensaml.xml.encryption.Transforms;
-import org.opensaml.xml.signature.Transform;
+import org.opensaml.xmlsec.encryption.Transforms;
+import org.opensaml.xmlsec.signature.Transform;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.xml.encryption.Transforms} objects.
+ * A thread-safe Unmarshaller for {@link org.opensaml.xmlsec.encryption.Transforms} objects.
  */
 public class TransformsUnmarshaller extends AbstractXMLEncryptionUnmarshaller {
 

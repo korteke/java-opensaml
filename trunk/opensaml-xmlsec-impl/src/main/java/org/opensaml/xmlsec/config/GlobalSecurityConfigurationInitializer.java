@@ -22,7 +22,7 @@ import org.opensaml.core.config.InitializationException;
 import org.opensaml.core.config.Initializer;
 import org.opensaml.xml.security.BasicSecurityConfiguration;
 import org.opensaml.xml.security.DefaultSecurityConfigurationBootstrap;
-import org.opensaml.xml.security.SecurityConfiguration;
+import org.opensaml.xmlsec.SecurityConfiguration;
 
 /**
  * An initializer which initializes the global security configuration.

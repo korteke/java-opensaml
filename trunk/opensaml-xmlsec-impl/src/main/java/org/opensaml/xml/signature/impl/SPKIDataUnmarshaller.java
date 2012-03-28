@@ -19,10 +19,10 @@ package org.opensaml.xml.signature.impl;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
-import org.opensaml.xml.signature.SPKIData;
+import org.opensaml.xmlsec.signature.SPKIData;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.xml.signature.SPKIData} objects.
+ * A thread-safe Unmarshaller for {@link org.opensaml.xmlsec.signature.SPKIData} objects.
  */
 public class SPKIDataUnmarshaller extends AbstractXMLSignatureUnmarshaller {
 

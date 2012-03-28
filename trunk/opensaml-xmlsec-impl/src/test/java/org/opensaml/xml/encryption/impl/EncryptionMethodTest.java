@@ -20,9 +20,9 @@ package org.opensaml.xml.encryption.impl;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.core.xml.mock.SimpleXMLObject;
-import org.opensaml.xml.encryption.EncryptionMethod;
-import org.opensaml.xml.encryption.KeySize;
-import org.opensaml.xml.encryption.OAEPparams;
+import org.opensaml.xmlsec.encryption.EncryptionMethod;
+import org.opensaml.xmlsec.encryption.KeySize;
+import org.opensaml.xmlsec.encryption.OAEPparams;
 
 /**
  *

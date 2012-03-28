@@ -33,9 +33,9 @@ import org.opensaml.common.SignableSAMLObject;
 import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.core.xml.NamespaceManager;
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.xml.security.SecurityConfiguration;
-import org.opensaml.xml.signature.ContentReference;
-import org.opensaml.xml.signature.SignatureConstants;
+import org.opensaml.xmlsec.SecurityConfiguration;
+import org.opensaml.xmlsec.signature.ContentReference;
+import org.opensaml.xmlsec.signature.SignatureConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

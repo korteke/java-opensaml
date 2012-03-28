@@ -24,11 +24,11 @@ import java.util.List;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.XMLObjectChildrenList;
 import org.opensaml.core.xml.validation.AbstractValidatingXMLObject;
-import org.opensaml.xml.encryption.EncryptionProperties;
-import org.opensaml.xml.encryption.EncryptionProperty;
+import org.opensaml.xmlsec.encryption.EncryptionProperties;
+import org.opensaml.xmlsec.encryption.EncryptionProperty;
 
 /**
- * Concrete implementation of {@link org.opensaml.xml.encryption.EncryptionProperties}.
+ * Concrete implementation of {@link org.opensaml.xmlsec.encryption.EncryptionProperties}.
  */
 public class EncryptionPropertiesImpl extends AbstractValidatingXMLObject implements EncryptionProperties {
     

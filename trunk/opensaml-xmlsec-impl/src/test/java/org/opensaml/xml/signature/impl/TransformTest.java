@@ -20,8 +20,8 @@ package org.opensaml.xml.signature.impl;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.core.xml.mock.SimpleXMLObject;
-import org.opensaml.xml.signature.Transform;
-import org.opensaml.xml.signature.XPath;
+import org.opensaml.xmlsec.signature.Transform;
+import org.opensaml.xmlsec.signature.XPath;
 
 /**
  *

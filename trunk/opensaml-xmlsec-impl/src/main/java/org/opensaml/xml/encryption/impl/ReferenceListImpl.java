@@ -24,13 +24,13 @@ import java.util.List;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
 import org.opensaml.core.xml.validation.AbstractValidatingXMLObject;
-import org.opensaml.xml.encryption.DataReference;
-import org.opensaml.xml.encryption.KeyReference;
-import org.opensaml.xml.encryption.ReferenceList;
-import org.opensaml.xml.encryption.ReferenceType;
+import org.opensaml.xmlsec.encryption.DataReference;
+import org.opensaml.xmlsec.encryption.KeyReference;
+import org.opensaml.xmlsec.encryption.ReferenceList;
+import org.opensaml.xmlsec.encryption.ReferenceType;
 
 /**
- * Concrete implementation of {@link org.opensaml.xml.encryption.ReferenceList}
+ * Concrete implementation of {@link org.opensaml.xmlsec.encryption.ReferenceList}
  */
 public class ReferenceListImpl extends AbstractValidatingXMLObject implements ReferenceList {
     

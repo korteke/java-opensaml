@@ -37,9 +37,9 @@ import org.opensaml.ws.message.decoder.MessageDecodingException;
 import org.opensaml.ws.message.encoder.MessageEncodingException;
 import org.opensaml.ws.soap.soap11.Envelope;
 import org.opensaml.ws.transport.http.HttpServletRequestAdapter;
-import org.opensaml.xml.security.XMLSecurityHelper;
-import org.opensaml.xml.signature.Signature;
 import org.opensaml.xml.signature.Signer;
+import org.opensaml.xmlsec.XMLSecurityHelper;
+import org.opensaml.xmlsec.signature.Signature;
 import org.springframework.mock.web.MockHttpServletRequest;
 
 /**

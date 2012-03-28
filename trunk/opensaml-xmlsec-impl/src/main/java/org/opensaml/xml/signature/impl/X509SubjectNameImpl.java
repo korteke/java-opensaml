@@ -18,10 +18,10 @@
 package org.opensaml.xml.signature.impl;
 
 import org.opensaml.core.xml.schema.impl.XSStringImpl;
-import org.opensaml.xml.signature.X509SubjectName;
+import org.opensaml.xmlsec.signature.X509SubjectName;
 
 /**
- * Concrete implementation of {@link org.opensaml.xml.signature.X509SubjectName}
+ * Concrete implementation of {@link org.opensaml.xmlsec.signature.X509SubjectName}
  */
 public class X509SubjectNameImpl extends XSStringImpl implements X509SubjectName {
 

@@ -18,12 +18,12 @@
 package org.opensaml.xml.signature.impl;
 
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
-import org.opensaml.xml.signature.RetrievalMethod;
-import org.opensaml.xml.signature.SignatureConstants;
-import org.opensaml.xml.signature.XMLSignatureBuilder;
+import org.opensaml.xmlsec.signature.RetrievalMethod;
+import org.opensaml.xmlsec.signature.SignatureConstants;
+import org.opensaml.xmlsec.signature.XMLSignatureBuilder;
 
 /**
- * Builder of {@link org.opensaml.xml.signature.RetrievalMethod}
+ * Builder of {@link org.opensaml.xmlsec.signature.RetrievalMethod}
  */
 public class RetrievalMethodBuilder extends AbstractXMLObjectBuilder<RetrievalMethod> implements
         XMLSignatureBuilder<RetrievalMethod> {

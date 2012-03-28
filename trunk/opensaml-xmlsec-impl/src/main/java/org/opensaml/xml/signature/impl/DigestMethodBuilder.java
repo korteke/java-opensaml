@@ -18,12 +18,12 @@
 package org.opensaml.xml.signature.impl;
 
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
-import org.opensaml.xml.encryption.EncryptionConstants;
-import org.opensaml.xml.signature.DigestMethod;
-import org.opensaml.xml.signature.XMLSignatureBuilder;
+import org.opensaml.xmlsec.encryption.EncryptionConstants;
+import org.opensaml.xmlsec.signature.DigestMethod;
+import org.opensaml.xmlsec.signature.XMLSignatureBuilder;
 
 /**
- * Builder of {@link org.opensaml.xml.signature.DigestMethod}.
+ * Builder of {@link org.opensaml.xmlsec.signature.DigestMethod}.
  */
 public class DigestMethodBuilder extends AbstractXMLObjectBuilder<DigestMethod> implements
         XMLSignatureBuilder<DigestMethod> {

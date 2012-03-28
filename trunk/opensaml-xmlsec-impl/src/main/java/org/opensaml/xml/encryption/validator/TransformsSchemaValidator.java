@@ -19,10 +19,10 @@ package org.opensaml.xml.encryption.validator;
 
 import org.opensaml.core.xml.validation.ValidationException;
 import org.opensaml.core.xml.validation.Validator;
-import org.opensaml.xml.encryption.Transforms;
+import org.opensaml.xmlsec.encryption.Transforms;
 
 /**
- * Checks {@link org.opensaml.xml.encryption.Transforms} for Schema compliance. 
+ * Checks {@link org.opensaml.xmlsec.encryption.Transforms} for Schema compliance. 
  */
 public class TransformsSchemaValidator implements Validator<Transforms> {
 

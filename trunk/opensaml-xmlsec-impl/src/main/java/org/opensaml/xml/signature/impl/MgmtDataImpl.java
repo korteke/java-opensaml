@@ -18,10 +18,10 @@
 package org.opensaml.xml.signature.impl;
 
 import org.opensaml.core.xml.schema.impl.XSStringImpl;
-import org.opensaml.xml.signature.MgmtData;
+import org.opensaml.xmlsec.signature.MgmtData;
 
 /**
- * Concrete implementation of {@link org.opensaml.xml.signature.MgmtData}
+ * Concrete implementation of {@link org.opensaml.xmlsec.signature.MgmtData}
  */
 public class MgmtDataImpl extends XSStringImpl implements MgmtData {
 

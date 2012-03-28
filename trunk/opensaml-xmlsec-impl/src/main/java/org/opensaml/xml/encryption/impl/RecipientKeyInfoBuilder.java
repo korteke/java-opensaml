@@ -18,12 +18,12 @@
 package org.opensaml.xml.encryption.impl;
 
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
-import org.opensaml.xml.encryption.EncryptionConstants;
-import org.opensaml.xml.encryption.RecipientKeyInfo;
-import org.opensaml.xml.encryption.XMLEncryptionBuilder;
+import org.opensaml.xmlsec.encryption.EncryptionConstants;
+import org.opensaml.xmlsec.encryption.RecipientKeyInfo;
+import org.opensaml.xmlsec.encryption.XMLEncryptionBuilder;
 
 /**
- * Builder of {@link org.opensaml.xml.encryption.ReferenceList}
+ * Builder of {@link org.opensaml.xmlsec.encryption.ReferenceList}
  */
 public class RecipientKeyInfoBuilder extends AbstractXMLObjectBuilder<RecipientKeyInfo> implements
         XMLEncryptionBuilder<RecipientKeyInfo> {

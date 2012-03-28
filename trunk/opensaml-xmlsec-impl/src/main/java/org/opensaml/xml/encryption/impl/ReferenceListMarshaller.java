@@ -18,7 +18,7 @@
 package org.opensaml.xml.encryption.impl;
 
 /**
- * A thread-safe Marshaller for {@link org.opensaml.xml.encryption.ReferenceList} objects.
+ * A thread-safe Marshaller for {@link org.opensaml.xmlsec.encryption.ReferenceList} objects.
  */
 public class ReferenceListMarshaller extends AbstractXMLEncryptionMarshaller {
 

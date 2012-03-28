@@ -18,12 +18,12 @@
 package org.opensaml.xml.signature.validator;
 
 import org.opensaml.core.xml.BaseXMLObjectValidatorTestCase;
-import org.opensaml.xml.signature.DSAKeyValue;
-import org.opensaml.xml.signature.P;
-import org.opensaml.xml.signature.PgenCounter;
-import org.opensaml.xml.signature.Q;
-import org.opensaml.xml.signature.Seed;
-import org.opensaml.xml.signature.Y;
+import org.opensaml.xmlsec.signature.DSAKeyValue;
+import org.opensaml.xmlsec.signature.P;
+import org.opensaml.xmlsec.signature.PgenCounter;
+import org.opensaml.xmlsec.signature.Q;
+import org.opensaml.xmlsec.signature.Seed;
+import org.opensaml.xmlsec.signature.Y;
 
 /**
  *

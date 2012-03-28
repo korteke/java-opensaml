@@ -26,13 +26,13 @@ import javax.xml.namespace.QName;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
 import org.opensaml.core.xml.validation.AbstractValidatingXMLObject;
-import org.opensaml.xml.encryption.AgreementMethod;
-import org.opensaml.xml.encryption.KANonce;
-import org.opensaml.xml.encryption.OriginatorKeyInfo;
-import org.opensaml.xml.encryption.RecipientKeyInfo;
+import org.opensaml.xmlsec.encryption.AgreementMethod;
+import org.opensaml.xmlsec.encryption.KANonce;
+import org.opensaml.xmlsec.encryption.OriginatorKeyInfo;
+import org.opensaml.xmlsec.encryption.RecipientKeyInfo;
 
 /**
- * Concrete implementation of {@link org.opensaml.xml.encryption.AgreementMethod}.
+ * Concrete implementation of {@link org.opensaml.xmlsec.encryption.AgreementMethod}.
  */
 public class AgreementMethodImpl extends AbstractValidatingXMLObject implements AgreementMethod {
     

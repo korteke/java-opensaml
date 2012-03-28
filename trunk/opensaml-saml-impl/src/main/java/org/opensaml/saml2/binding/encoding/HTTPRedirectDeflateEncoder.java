@@ -44,9 +44,9 @@ import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.message.encoder.MessageEncodingException;
 import org.opensaml.ws.transport.http.HTTPOutTransport;
 import org.opensaml.ws.transport.http.HTTPTransportUtils;
-import org.opensaml.xml.security.SecurityConfiguration;
-import org.opensaml.xml.security.XMLSecurityHelper;
-import org.opensaml.xml.security.XMLSigningUtil;
+import org.opensaml.xmlsec.SecurityConfiguration;
+import org.opensaml.xmlsec.XMLSecurityHelper;
+import org.opensaml.xmlsec.XMLSigningUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

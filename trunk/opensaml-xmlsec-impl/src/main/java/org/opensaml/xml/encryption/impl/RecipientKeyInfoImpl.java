@@ -17,11 +17,11 @@
 
 package org.opensaml.xml.encryption.impl;
 
-import org.opensaml.xml.encryption.RecipientKeyInfo;
 import org.opensaml.xml.signature.impl.KeyInfoTypeImpl;
+import org.opensaml.xmlsec.encryption.RecipientKeyInfo;
 
 /**
- * Concrete implementation of {@link org.opensaml.xml.encryption.RecipientKeyInfo}
+ * Concrete implementation of {@link org.opensaml.xmlsec.encryption.RecipientKeyInfo}
  */
 public class RecipientKeyInfoImpl extends KeyInfoTypeImpl implements RecipientKeyInfo {
 

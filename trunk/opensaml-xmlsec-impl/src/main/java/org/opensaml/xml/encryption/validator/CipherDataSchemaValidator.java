@@ -19,10 +19,10 @@ package org.opensaml.xml.encryption.validator;
 
 import org.opensaml.core.xml.validation.ValidationException;
 import org.opensaml.core.xml.validation.Validator;
-import org.opensaml.xml.encryption.CipherData;
+import org.opensaml.xmlsec.encryption.CipherData;
 
 /**
- * Checks {@link org.opensaml.xml.encryption.CipherData} for Schema compliance. 
+ * Checks {@link org.opensaml.xmlsec.encryption.CipherData} for Schema compliance. 
  */
 public class CipherDataSchemaValidator implements Validator<CipherData> {
 
