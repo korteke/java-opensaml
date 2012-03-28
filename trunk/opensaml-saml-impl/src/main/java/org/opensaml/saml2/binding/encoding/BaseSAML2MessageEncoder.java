@@ -38,10 +38,10 @@ import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.ws.message.encoder.BaseMessageEncoder;
 import org.opensaml.ws.message.encoder.MessageEncodingException;
-import org.opensaml.xml.signature.Signer;
 import org.opensaml.xmlsec.XMLSecurityHelper;
 import org.opensaml.xmlsec.signature.Signature;
 import org.opensaml.xmlsec.signature.SignatureException;
+import org.opensaml.xmlsec.signature.support.Signer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

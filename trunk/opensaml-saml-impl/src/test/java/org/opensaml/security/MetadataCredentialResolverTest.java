@@ -42,9 +42,9 @@ import org.opensaml.security.credential.UsageType;
 import org.opensaml.security.criteria.EntityIDCriterion;
 import org.opensaml.security.criteria.UsageCriterion;
 import org.opensaml.security.x509.X509Credential;
-import org.opensaml.xml.security.BasicSecurityConfiguration;
 import org.opensaml.xmlsec.SecurityConfiguration;
 import org.opensaml.xmlsec.XMLSecurityHelper;
+import org.opensaml.xmlsec.config.BasicSecurityConfiguration;
 import org.w3c.dom.Document;
 
 /**

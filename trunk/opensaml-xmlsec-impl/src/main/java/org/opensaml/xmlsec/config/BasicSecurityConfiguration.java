@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.xml.security;
+package org.opensaml.xmlsec.config;
 
 import java.security.Key;
 import java.security.interfaces.DSAParams;

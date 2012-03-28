@@ -38,8 +38,6 @@ import org.opensaml.saml2.core.Response;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.SecurityHelper;
 import org.opensaml.security.credential.Credential;
-import org.opensaml.xml.signature.SignatureValidator;
-import org.opensaml.xml.signature.Signer;
 import org.opensaml.xmlsec.XMLSecurityHelper;
 import org.opensaml.xmlsec.encryption.DecryptionException;
 import org.opensaml.xmlsec.encryption.EncryptionConstants;
@@ -49,6 +47,8 @@ import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xmlsec.keyinfo.impl.StaticKeyInfoCredentialResolver;
 import org.opensaml.xmlsec.signature.Signature;
 import org.opensaml.xmlsec.signature.SignatureException;
+import org.opensaml.xmlsec.signature.support.SignatureValidator;
+import org.opensaml.xmlsec.signature.support.Signer;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 

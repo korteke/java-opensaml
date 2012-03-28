@@ -23,11 +23,11 @@ import net.shibboleth.utilities.java.support.resolver.ResolverException;
 import org.opensaml.core.xml.validation.ValidationException;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.Credential;
-import org.opensaml.xml.signature.SignatureValidator;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCriterion;
 import org.opensaml.xmlsec.signature.Signature;
 import org.opensaml.xmlsec.signature.SignatureTrustEngine;
+import org.opensaml.xmlsec.signature.support.SignatureValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

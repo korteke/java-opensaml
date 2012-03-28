@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.xml.security.x509;
+package org.opensaml.xmlsec.keyinfo.impl;
 
 import java.security.cert.CRLException;
 import java.security.cert.CertificateEncodingException;
@@ -34,7 +34,6 @@ import org.opensaml.security.x509.InternalX500DNHandler;
 import org.opensaml.security.x509.X500DNHandler;
 import org.opensaml.security.x509.X509Credential;
 import org.opensaml.security.x509.X509Util;
-import org.opensaml.xml.security.credential.BasicKeyInfoGeneratorFactory;
 import org.opensaml.xmlsec.keyinfo.KeyInfoGenerator;
 import org.opensaml.xmlsec.keyinfo.KeyInfoHelper;
 import org.opensaml.xmlsec.signature.KeyInfo;

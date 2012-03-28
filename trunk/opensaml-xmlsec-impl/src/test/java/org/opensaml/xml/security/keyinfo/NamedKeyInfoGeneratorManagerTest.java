@@ -24,11 +24,11 @@ import org.opensaml.security.credential.BasicCredential;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.x509.BasicX509Credential;
 import org.opensaml.security.x509.X509Credential;
-import org.opensaml.xml.security.credential.BasicKeyInfoGeneratorFactory;
-import org.opensaml.xml.security.x509.X509KeyInfoGeneratorFactory;
 import org.opensaml.xmlsec.keyinfo.KeyInfoGeneratorFactory;
 import org.opensaml.xmlsec.keyinfo.KeyInfoGeneratorManager;
 import org.opensaml.xmlsec.keyinfo.NamedKeyInfoGeneratorManager;
+import org.opensaml.xmlsec.keyinfo.impl.BasicKeyInfoGeneratorFactory;
+import org.opensaml.xmlsec.keyinfo.impl.X509KeyInfoGeneratorFactory;
 
 /**
  * Test the NamedKeyInfoGeneratorFactory manager.
