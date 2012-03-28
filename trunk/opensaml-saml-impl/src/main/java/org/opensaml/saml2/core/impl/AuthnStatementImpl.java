@@ -27,10 +27,10 @@ import java.util.List;
 
 import org.joda.time.DateTime;
 import org.opensaml.common.impl.AbstractSAMLObject;
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml2.core.AuthnContext;
 import org.opensaml.saml2.core.AuthnStatement;
 import org.opensaml.saml2.core.SubjectLocality;
-import org.opensaml.xml.XMLObject;
 
 /**
  * A concrete implementation of {@link org.opensaml.saml2.core.AuthnStatement}.

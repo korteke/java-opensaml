@@ -19,8 +19,8 @@ package org.opensaml.xml.security.credential;
 
 import java.util.List;
 
-import org.opensaml.xml.XMLObjectProviderRegistrySupport;
-import org.opensaml.xml.XMLObject;
+import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.XMLObjectProviderRegistrySupport;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.keyinfo.KeyInfoGenerator;
 import org.opensaml.xml.security.keyinfo.KeyInfoGeneratorFactory;

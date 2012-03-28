@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wsaddressing;
 
-import org.opensaml.xml.XMLObject;
+import org.opensaml.core.xml.XMLObject;
 
 /**
  * Abstract WS-Addressing object interface.

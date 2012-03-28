@@ -17,9 +17,9 @@
 
 package org.opensaml.samlext.saml2mdquery.impl;
 
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.samlext.saml2mdquery.ActionNamespace;
 import org.opensaml.samlext.saml2mdquery.AuthzDecisionQueryDescriptorType;
-import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
 
 /** Unmarshaller for {@link AuthzDecisionQueryDescriptorType} objects. */

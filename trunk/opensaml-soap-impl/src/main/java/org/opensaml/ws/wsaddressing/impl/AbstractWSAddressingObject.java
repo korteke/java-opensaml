@@ -19,8 +19,8 @@ package org.opensaml.ws.wsaddressing.impl;
 
 import java.util.List;
 
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.ws.wsaddressing.WSAddressingObject;
-import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.validation.AbstractValidatingXMLObject;
 
 /**

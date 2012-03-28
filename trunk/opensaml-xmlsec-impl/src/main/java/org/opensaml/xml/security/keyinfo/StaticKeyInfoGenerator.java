@@ -17,7 +17,7 @@
 
 package org.opensaml.xml.security.keyinfo;
 
-import org.opensaml.xml.XMLObjectProviderRegistrySupport;
+import org.opensaml.core.xml.XMLObjectProviderRegistrySupport;
 import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.io.Unmarshaller;

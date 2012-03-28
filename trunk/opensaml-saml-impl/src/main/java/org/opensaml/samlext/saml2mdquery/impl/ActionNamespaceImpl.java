@@ -20,8 +20,8 @@ package org.opensaml.samlext.saml2mdquery.impl;
 import java.util.List;
 
 import org.opensaml.common.impl.AbstractSAMLObject;
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.samlext.saml2mdquery.ActionNamespace;
-import org.opensaml.xml.XMLObject;
 
 /**
  * Concrete implementation of {@link ActionNamespace}.

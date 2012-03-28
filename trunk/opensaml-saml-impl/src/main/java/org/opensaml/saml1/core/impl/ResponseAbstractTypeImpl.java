@@ -24,8 +24,8 @@ import java.util.List;
 import org.joda.time.DateTime;
 import org.opensaml.common.SAMLVersion;
 import org.opensaml.common.impl.AbstractSignableSAMLObject;
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml1.core.ResponseAbstractType;
-import org.opensaml.xml.XMLObject;
 
 /**
  * Abstract implementation of {@link org.opensaml.saml1.core.ResponseAbstractType} Object

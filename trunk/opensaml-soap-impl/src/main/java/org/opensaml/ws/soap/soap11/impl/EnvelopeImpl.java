@@ -21,11 +21,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.ws.soap.common.AbstractExtensibleSOAPObject;
 import org.opensaml.ws.soap.soap11.Body;
 import org.opensaml.ws.soap.soap11.Envelope;
 import org.opensaml.ws.soap.soap11.Header;
-import org.opensaml.xml.XMLObject;
 
 /**
  * Concrete implementation of {@link org.opensaml.ws.soap.soap11.Envelope}.

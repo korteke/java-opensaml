@@ -19,7 +19,7 @@ package org.opensaml.common.impl;
 
 import org.opensaml.common.SAMLObject;
 import org.opensaml.common.SAMLObjectBuilder;
-import org.opensaml.xml.AbstractXMLObjectBuilder;
+import org.opensaml.core.xml.AbstractXMLObjectBuilder;
 
 /**
  * Base builder for {@link org.opensaml.common.SAMLObject}s.

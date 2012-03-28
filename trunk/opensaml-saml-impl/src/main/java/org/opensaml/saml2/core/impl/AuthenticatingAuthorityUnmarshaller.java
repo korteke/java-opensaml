@@ -22,8 +22,8 @@
 package org.opensaml.saml2.core.impl;
 
 import org.opensaml.common.impl.AbstractSAMLObjectUnmarshaller;
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml2.core.AuthenticatingAuthority;
-import org.opensaml.xml.XMLObject;
 
 /**
  * A thread-safe Unmarshaller for {@link org.opensaml.saml2.core.AuthenticatingAuthority}.

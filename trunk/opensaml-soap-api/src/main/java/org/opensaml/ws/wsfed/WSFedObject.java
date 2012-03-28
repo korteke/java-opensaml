@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wsfed;
 
-import org.opensaml.xml.XMLObject;
+import org.opensaml.core.xml.XMLObject;
 
 /** Marker interface for WS-Federation {@link XMLObject}s. */
 public interface WSFedObject extends XMLObject {

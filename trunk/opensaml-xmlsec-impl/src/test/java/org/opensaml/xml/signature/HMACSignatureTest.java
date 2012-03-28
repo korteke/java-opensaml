@@ -29,8 +29,8 @@ import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
 import org.apache.xml.security.signature.SignedInfo;
 import org.apache.xml.security.signature.XMLSignature;
-import org.opensaml.xml.XMLObjectProviderRegistrySupport;
-import org.opensaml.xml.XMLObjectBaseTestCase;
+import org.opensaml.core.xml.XMLObjectBaseTestCase;
+import org.opensaml.core.xml.XMLObjectProviderRegistrySupport;
 import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.io.Unmarshaller;

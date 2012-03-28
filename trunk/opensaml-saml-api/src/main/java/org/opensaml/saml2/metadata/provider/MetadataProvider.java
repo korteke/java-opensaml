@@ -21,10 +21,10 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml2.metadata.EntitiesDescriptor;
 import org.opensaml.saml2.metadata.EntityDescriptor;
 import org.opensaml.saml2.metadata.RoleDescriptor;
-import org.opensaml.xml.XMLObject;
 
 /**
  * A local store into which metadata can be loaded and queried. Specific implementations may perform additional logic

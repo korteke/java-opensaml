@@ -28,8 +28,8 @@ import net.shibboleth.utilities.java.support.xml.QNameSupport;
 import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
 import org.opensaml.common.impl.AbstractSAMLObjectUnmarshaller;
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml2.core.SubjectConfirmationData;
-import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.w3c.dom.Attr;
 

@@ -24,8 +24,8 @@ import java.security.NoSuchProviderException;
 
 import javax.crypto.SecretKey;
 
-import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.XMLObjectBaseTestCase;
+import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.xml.mock.SignableSimpleXMLObject;
 import org.opensaml.xml.security.XMLSecurityHelper;
 import org.opensaml.xml.security.credential.BasicCredential;

@@ -21,12 +21,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.xacml.ctx.StatusCodeType;
 import org.opensaml.xacml.ctx.StatusDetailType;
 import org.opensaml.xacml.ctx.StatusMessageType;
 import org.opensaml.xacml.ctx.StatusType;
 import org.opensaml.xacml.impl.AbstractXACMLObject;
-import org.opensaml.xml.XMLObject;
 
 /** Concrete implementation of {@link StatusType}. */
 public class StatusTypeImpl extends AbstractXACMLObject implements StatusType {

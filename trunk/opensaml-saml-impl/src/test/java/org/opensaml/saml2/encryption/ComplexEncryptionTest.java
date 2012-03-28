@@ -21,12 +21,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.opensaml.common.BaseTestCase;
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml2.core.Assertion;
 import org.opensaml.saml2.core.Attribute;
 import org.opensaml.saml2.core.EncryptedAssertion;
 import org.opensaml.saml2.core.EncryptedAttribute;
 import org.opensaml.saml2.encryption.Encrypter.KeyPlacement;
-import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.encryption.DataReference;
 import org.opensaml.xml.encryption.EncryptedData;
 import org.opensaml.xml.encryption.EncryptedKey;

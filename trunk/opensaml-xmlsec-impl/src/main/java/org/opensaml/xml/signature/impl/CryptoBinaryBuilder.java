@@ -17,8 +17,8 @@
 
 package org.opensaml.xml.signature.impl;
 
-import org.opensaml.xml.AbstractXMLObjectBuilder;
-import org.opensaml.xml.XMLObjectBuilder;
+import org.opensaml.core.xml.AbstractXMLObjectBuilder;
+import org.opensaml.core.xml.XMLObjectBuilder;
 import org.opensaml.xml.signature.CryptoBinary;
 
 /**

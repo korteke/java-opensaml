@@ -20,10 +20,10 @@ package org.opensaml.xacml.policy.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.xacml.impl.AbstractXACMLObject;
 import org.opensaml.xacml.policy.ActionType;
 import org.opensaml.xacml.policy.ActionsType;
-import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.util.XMLObjectChildrenList;
 
 /**

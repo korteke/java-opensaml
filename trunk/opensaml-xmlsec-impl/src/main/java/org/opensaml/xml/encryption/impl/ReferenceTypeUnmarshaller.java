@@ -17,7 +17,7 @@
 
 package org.opensaml.xml.encryption.impl;
 
-import org.opensaml.xml.XMLObject;
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.xml.encryption.ReferenceType;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.w3c.dom.Attr;

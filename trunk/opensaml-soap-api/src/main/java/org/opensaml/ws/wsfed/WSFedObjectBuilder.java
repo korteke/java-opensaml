@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wsfed;
 
-import org.opensaml.xml.XMLObjectBuilder;
+import org.opensaml.core.xml.XMLObjectBuilder;
 
 /**
  * Builder of {@link WSFedObject}s.

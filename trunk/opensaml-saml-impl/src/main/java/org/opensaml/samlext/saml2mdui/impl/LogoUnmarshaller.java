@@ -20,9 +20,9 @@ package org.opensaml.samlext.saml2mdui.impl;
 import net.shibboleth.utilities.java.support.xml.XmlConstants;
 
 import org.opensaml.common.impl.AbstractSAMLObjectUnmarshaller;
+import org.opensaml.core.xml.LangBearing;
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.samlext.saml2mdui.Logo;
-import org.opensaml.xml.LangBearing;
-import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.w3c.dom.Attr;
 

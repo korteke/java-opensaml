@@ -24,7 +24,7 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.common.SAMLObject;
 import org.opensaml.common.xml.SAMLConstants;
-import org.opensaml.xml.ElementExtensibleXMLObject;
+import org.opensaml.core.xml.ElementExtensibleXMLObject;
 
 /**
  * Interface to describe how a <code> StatusDetail <\code> element behaves 

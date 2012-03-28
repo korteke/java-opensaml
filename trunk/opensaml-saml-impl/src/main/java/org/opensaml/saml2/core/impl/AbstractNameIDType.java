@@ -20,8 +20,8 @@ package org.opensaml.saml2.core.impl;
 import java.util.List;
 
 import org.opensaml.common.impl.AbstractSAMLObject;
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml2.core.NameIDType;
-import org.opensaml.xml.XMLObject;
 
 /**
  * Abstract implementation of {@link org.opensaml.saml2.core.NameIDType}.

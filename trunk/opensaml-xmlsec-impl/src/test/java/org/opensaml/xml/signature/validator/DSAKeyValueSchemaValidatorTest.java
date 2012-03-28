@@ -17,7 +17,7 @@
 
 package org.opensaml.xml.signature.validator;
 
-import org.opensaml.xml.BaseXMLObjectValidatorTestCase;
+import org.opensaml.core.xml.BaseXMLObjectValidatorTestCase;
 import org.opensaml.xml.signature.DSAKeyValue;
 import org.opensaml.xml.signature.P;
 import org.opensaml.xml.signature.PgenCounter;

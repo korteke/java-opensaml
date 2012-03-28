@@ -17,9 +17,9 @@
 
 package org.opensaml.ws.soap.soap11.impl;
 
+import org.opensaml.core.xml.AbstractXMLObjectBuilder;
 import org.opensaml.ws.soap.common.SOAPObjectBuilder;
 import org.opensaml.ws.soap.soap11.FaultCode;
-import org.opensaml.xml.AbstractXMLObjectBuilder;
 
 /**
  * Builder of {@link org.opensaml.ws.soap.soap11.impl.FaultCodeImpl} objects.

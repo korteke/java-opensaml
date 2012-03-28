@@ -32,8 +32,8 @@ import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
 import org.opensaml.common.binding.SAMLMessageContext;
 import org.opensaml.common.binding.security.BaseSAMLSimpleSignatureSecurityPolicyRule;
+import org.opensaml.core.xml.XMLObjectProviderRegistrySupport;
 import org.opensaml.ws.security.SecurityPolicyException;
-import org.opensaml.xml.XMLObjectProviderRegistrySupport;
 import org.opensaml.xml.io.Unmarshaller;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.security.credential.Credential;

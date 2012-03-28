@@ -17,7 +17,7 @@
 
 package org.opensaml.xacml;
 
-import org.opensaml.xml.XMLObjectBuilder;
+import org.opensaml.core.xml.XMLObjectBuilder;
 
 /**
  * Builder of XACML objects.

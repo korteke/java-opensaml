@@ -22,7 +22,7 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.xml.XMLObject;
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.xml.signature.KeyInfoType;
 import org.opensaml.xml.signature.KeyName;
 import org.opensaml.xml.signature.KeyValue;

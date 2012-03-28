@@ -18,9 +18,9 @@
 package org.opensaml.ws.wstrust.impl;
 
 
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.ws.wstrust.Authenticator;
 import org.opensaml.ws.wstrust.CombinedHash;
-import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
 
 /**

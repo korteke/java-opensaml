@@ -28,13 +28,13 @@ import org.opensaml.common.SAMLObject;
 import org.opensaml.common.binding.SAMLMessageContext;
 import org.opensaml.common.binding.artifact.SAMLArtifactMap;
 import org.opensaml.common.xml.SAMLConstants;
+import org.opensaml.core.xml.AttributeExtensibleXMLObject;
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.message.decoder.MessageDecodingException;
 import org.opensaml.ws.soap.soap11.Envelope;
 import org.opensaml.ws.soap.soap11.Header;
 import org.opensaml.ws.transport.http.HTTPInTransport;
-import org.opensaml.xml.AttributeExtensibleXMLObject;
-import org.opensaml.xml.XMLObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

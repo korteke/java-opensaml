@@ -20,7 +20,7 @@ package org.opensaml.xml.signature.impl;
 
 import java.math.BigInteger;
 
-import org.opensaml.xml.XMLObjectProviderBaseTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.xml.signature.X509SerialNumber;
 
 /**

@@ -19,7 +19,7 @@ package org.opensaml.xml.encryption.validator;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.xml.XMLObject;
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.xml.encryption.EncryptionConstants;
 import org.opensaml.xml.encryption.ReferenceType;
 import org.opensaml.xml.validation.ValidationException;

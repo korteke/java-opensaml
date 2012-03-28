@@ -17,7 +17,7 @@
 
 package org.opensaml.xml.validation;
 
-import org.opensaml.xml.XMLObject;
+import org.opensaml.core.xml.XMLObject;
 
 /**
  * An interface for classes that implement rules for checking the 

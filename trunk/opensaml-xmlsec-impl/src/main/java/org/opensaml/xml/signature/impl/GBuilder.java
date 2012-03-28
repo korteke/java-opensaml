@@ -17,7 +17,7 @@
 
 package org.opensaml.xml.signature.impl;
 
-import org.opensaml.xml.AbstractXMLObjectBuilder;
+import org.opensaml.core.xml.AbstractXMLObjectBuilder;
 import org.opensaml.xml.signature.G;
 import org.opensaml.xml.signature.SignatureConstants;
 import org.opensaml.xml.signature.XMLSignatureBuilder;

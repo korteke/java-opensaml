@@ -20,8 +20,8 @@ package org.opensaml.saml1.core.impl;
 import java.util.List;
 
 import org.opensaml.common.impl.AbstractSAMLObject;
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml1.core.DoNotCacheCondition;
-import org.opensaml.xml.XMLObject;
 
 /**
  * Concrete Implementation of a {@link org.opensaml.saml1.core.DoNotCacheCondition} Objects.

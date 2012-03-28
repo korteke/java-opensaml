@@ -19,9 +19,9 @@ package org.opensaml.xacml.policy.impl;
 
 import java.util.List;
 
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.xacml.impl.AbstractXACMLObject;
 import org.opensaml.xacml.policy.DescriptionType;
-import org.opensaml.xml.XMLObject;
 
 /**
  *

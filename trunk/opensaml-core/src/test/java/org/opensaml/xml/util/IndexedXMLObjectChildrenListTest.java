@@ -23,7 +23,7 @@ import javax.xml.namespace.QName;
 
 import junit.framework.TestCase;
 
-import org.opensaml.xml.XMLObject;
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.xml.mock.SimpleXMLObject;
 import org.opensaml.xml.mock.SimpleXMLObjectBuilder;
 

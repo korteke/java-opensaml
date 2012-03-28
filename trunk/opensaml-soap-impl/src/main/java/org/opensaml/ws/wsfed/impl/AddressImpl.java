@@ -20,9 +20,9 @@ package org.opensaml.ws.wsfed.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.opensaml.core.xml.AbstractXMLObject;
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.ws.wsfed.Address;
-import org.opensaml.xml.AbstractXMLObject;
-import org.opensaml.xml.XMLObject;
 
 /** Implementation of the {@link Address} object. */
 public class AddressImpl extends AbstractXMLObject implements Address {

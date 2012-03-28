@@ -22,7 +22,7 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.opensaml.common.SAMLObject;
-import org.opensaml.xml.LangBearing;
+import org.opensaml.core.xml.LangBearing;
 
 /**
  * DisplayName.

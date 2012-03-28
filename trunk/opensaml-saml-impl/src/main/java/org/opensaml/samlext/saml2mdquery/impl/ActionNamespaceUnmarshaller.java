@@ -18,8 +18,8 @@
 package org.opensaml.samlext.saml2mdquery.impl;
 
 import org.opensaml.common.impl.AbstractSAMLObjectUnmarshaller;
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.samlext.saml2mdquery.ActionNamespace;
-import org.opensaml.xml.XMLObject;
 
 /**
  * Unmarshaller for {@link ActionNamespace} objects.

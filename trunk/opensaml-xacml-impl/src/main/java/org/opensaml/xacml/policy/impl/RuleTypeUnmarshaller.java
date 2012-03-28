@@ -19,13 +19,13 @@ package org.opensaml.xacml.policy.impl;
 
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.xacml.impl.AbstractXACMLObjectUnmarshaller;
 import org.opensaml.xacml.policy.ConditionType;
 import org.opensaml.xacml.policy.DescriptionType;
 import org.opensaml.xacml.policy.EffectType;
 import org.opensaml.xacml.policy.RuleType;
 import org.opensaml.xacml.policy.TargetType;
-import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.w3c.dom.Attr;
 

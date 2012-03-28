@@ -21,10 +21,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.ws.wsaddressing.Action;
 import org.opensaml.ws.wsaddressing.ProblemAction;
 import org.opensaml.ws.wsaddressing.SoapAction;
-import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.util.AttributeMap;
 
 /**

@@ -18,7 +18,7 @@
 package org.opensaml.common;
 
 import org.opensaml.DefaultBootstrap;
-import org.opensaml.xml.ConfigurationException;
+import org.opensaml.core.xml.ConfigurationException;
 
 /**
  * Extension to the default bootstrap process which sets up configuration for testing

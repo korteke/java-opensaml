@@ -25,7 +25,7 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.common.SAMLObject;
 import org.opensaml.common.xml.SAMLConstants;
-import org.opensaml.xml.ElementExtensibleXMLObject;
+import org.opensaml.core.xml.ElementExtensibleXMLObject;
 
 /**
  * SAML 2.0 Core StatusDetail.

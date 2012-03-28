@@ -21,8 +21,8 @@
 
 package org.opensaml.saml2.metadata.impl;
 
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml2.metadata.IndexedEndpoint;
-import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.schema.XSBooleanValue;
 import org.w3c.dom.Attr;

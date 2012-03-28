@@ -18,8 +18,8 @@
 package org.opensaml.samlext.saml2mdui.impl;
 
 import org.opensaml.common.impl.AbstractSAMLObjectUnmarshaller;
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.samlext.saml2mdui.UIInfo;
-import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
 
 /**

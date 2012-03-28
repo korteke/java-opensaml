@@ -18,7 +18,7 @@
 package org.opensaml.xml.signature.impl;
 
 
-import org.opensaml.xml.XMLObjectProviderBaseTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.xml.mock.SimpleXMLObject;
 import org.opensaml.xml.signature.SPKIData;
 import org.opensaml.xml.signature.SPKISexp;

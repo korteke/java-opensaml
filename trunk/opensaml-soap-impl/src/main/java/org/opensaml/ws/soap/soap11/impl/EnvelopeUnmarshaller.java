@@ -21,10 +21,10 @@ import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.xml.QNameSupport;
 
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.ws.soap.soap11.Body;
 import org.opensaml.ws.soap.soap11.Envelope;
 import org.opensaml.ws.soap.soap11.Header;
-import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.AbstractXMLObjectUnmarshaller;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.w3c.dom.Attr;

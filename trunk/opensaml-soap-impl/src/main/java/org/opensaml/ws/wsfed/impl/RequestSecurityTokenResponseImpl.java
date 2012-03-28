@@ -21,11 +21,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.opensaml.core.xml.AbstractXMLObject;
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.ws.wsfed.AppliesTo;
 import org.opensaml.ws.wsfed.RequestSecurityTokenResponse;
 import org.opensaml.ws.wsfed.RequestedSecurityToken;
-import org.opensaml.xml.AbstractXMLObject;
-import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.util.XMLObjectChildrenList;
 
 /** Implementation of the {@link RequestSecurityTokenResponse} object. */

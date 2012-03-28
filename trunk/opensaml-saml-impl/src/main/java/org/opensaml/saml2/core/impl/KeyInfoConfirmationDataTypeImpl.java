@@ -19,8 +19,8 @@ package org.opensaml.saml2.core.impl;
 
 import java.util.List;
 
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml2.core.KeyInfoConfirmationDataType;
-import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.signature.KeyInfo;
 
 /**

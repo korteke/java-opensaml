@@ -19,10 +19,10 @@ package org.opensaml.xacml.ctx;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.core.xml.AttributeExtensibleXMLObject;
+import org.opensaml.core.xml.ElementExtensibleXMLObject;
 import org.opensaml.xacml.XACMLConstants;
 import org.opensaml.xacml.XACMLObject;
-import org.opensaml.xml.AttributeExtensibleXMLObject;
-import org.opensaml.xml.ElementExtensibleXMLObject;
 
 /** XACML context AttributeValue schema type. */
 public interface AttributeValueType extends XACMLObject, ElementExtensibleXMLObject, AttributeExtensibleXMLObject {

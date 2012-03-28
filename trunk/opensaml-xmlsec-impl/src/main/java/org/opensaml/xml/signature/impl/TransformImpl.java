@@ -23,7 +23,7 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.xml.XMLObject;
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.xml.signature.Transform;
 import org.opensaml.xml.signature.XPath;
 import org.opensaml.xml.util.IndexedXMLObjectChildrenList;

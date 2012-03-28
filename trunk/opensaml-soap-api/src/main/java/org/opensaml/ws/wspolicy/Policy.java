@@ -19,8 +19,8 @@ package org.opensaml.ws.wspolicy;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.core.xml.AttributeExtensibleXMLObject;
 import org.opensaml.ws.wssecurity.IdBearing;
-import org.opensaml.xml.AttributeExtensibleXMLObject;
 
 /**
  * The wsp:Policy element.

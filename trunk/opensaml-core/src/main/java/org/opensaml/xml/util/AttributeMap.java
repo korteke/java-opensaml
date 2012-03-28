@@ -30,9 +30,9 @@ import net.shibboleth.utilities.java.support.collection.LazySet;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.xml.QNameSupport;
 
-import org.opensaml.xml.NamespaceManager;
-import org.opensaml.xml.XMLObject;
-import org.opensaml.xml.XMLObjectProviderRegistrySupport;
+import org.opensaml.core.xml.NamespaceManager;
+import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.XMLObjectProviderRegistrySupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

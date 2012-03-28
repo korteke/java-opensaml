@@ -23,6 +23,7 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.opensaml.common.impl.AbstractSAMLObject;
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.samlext.saml2mdui.Description;
 import org.opensaml.samlext.saml2mdui.DisplayName;
 import org.opensaml.samlext.saml2mdui.InformationURL;
@@ -30,7 +31,6 @@ import org.opensaml.samlext.saml2mdui.Keywords;
 import org.opensaml.samlext.saml2mdui.Logo;
 import org.opensaml.samlext.saml2mdui.PrivacyStatementURL;
 import org.opensaml.samlext.saml2mdui.UIInfo;
-import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.util.IndexedXMLObjectChildrenList;
 
 /**

@@ -42,8 +42,8 @@ import java.util.List;
 
 import net.shibboleth.utilities.java.support.codec.Base64Support;
 
-import org.opensaml.xml.XMLObjectProviderRegistrySupport;
-import org.opensaml.xml.XMLObjectBuilderFactory;
+import org.opensaml.core.xml.XMLObjectBuilderFactory;
+import org.opensaml.core.xml.XMLObjectProviderRegistrySupport;
 import org.opensaml.xml.security.x509.X509Util;
 import org.opensaml.xml.signature.DSAKeyValue;
 import org.opensaml.xml.signature.Exponent;

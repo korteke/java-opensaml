@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wssecurity;
 
-import org.opensaml.xml.XMLObject;
+import org.opensaml.core.xml.XMLObject;
 
 /**
  * WSSecurityObject is the base interface for all the WS-Security elements.

@@ -19,9 +19,9 @@ package org.opensaml.saml2.metadata.impl;
 
 import java.util.List;
 
+import org.opensaml.core.xml.LangBearing;
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml2.metadata.LocalizedName;
-import org.opensaml.xml.LangBearing;
-import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.schema.impl.XSStringImpl;
 
 import com.google.common.base.Strings;

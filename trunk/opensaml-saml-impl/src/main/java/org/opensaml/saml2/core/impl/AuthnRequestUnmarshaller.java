@@ -21,13 +21,13 @@
 
 package org.opensaml.saml2.core.impl;
 
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml2.core.AuthnRequest;
 import org.opensaml.saml2.core.Conditions;
 import org.opensaml.saml2.core.NameIDPolicy;
 import org.opensaml.saml2.core.RequestedAuthnContext;
 import org.opensaml.saml2.core.Scoping;
 import org.opensaml.saml2.core.Subject;
-import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.schema.XSBooleanValue;
 import org.w3c.dom.Attr;

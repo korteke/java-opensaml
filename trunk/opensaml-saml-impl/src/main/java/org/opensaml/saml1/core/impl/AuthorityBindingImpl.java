@@ -22,8 +22,8 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.opensaml.common.impl.AbstractSAMLObject;
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml1.core.AuthorityBinding;
-import org.opensaml.xml.XMLObject;
 
 /**
  * A concrete impementation of the {@link org.opensaml.saml1.core.SubjectLocality} interface

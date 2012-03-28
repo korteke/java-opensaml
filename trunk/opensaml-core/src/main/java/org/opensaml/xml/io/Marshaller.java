@@ -17,12 +17,12 @@
 
 package org.opensaml.xml.io;
 
-import org.opensaml.xml.XMLObject;
+import org.opensaml.core.xml.XMLObject;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
- * Marshallers are used to marshall a {@link org.opensaml.xml.XMLObject} into a W3C DOM element.
+ * Marshallers are used to marshall a {@link org.opensaml.core.xml.XMLObject} into a W3C DOM element.
  */
 public interface Marshaller {
 

@@ -28,7 +28,7 @@ import javax.xml.namespace.QName;
 import net.shibboleth.utilities.java.support.collection.LazyList;
 import net.shibboleth.utilities.java.support.collection.LazyMap;
 
-import org.opensaml.xml.XMLObject;
+import org.opensaml.core.xml.XMLObject;
 
 /**
  * A list which indexes XMLObjects by their schema type and element QName for quick retrival based on those items.

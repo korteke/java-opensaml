@@ -19,13 +19,13 @@ package org.opensaml.xml.util;
 
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
-import org.opensaml.xml.AttributeExtensibleXMLObject;
-import org.opensaml.xml.BaseBearing;
-import org.opensaml.xml.IdBearing;
-import org.opensaml.xml.LangBearing;
-import org.opensaml.xml.SpaceBearing;
-import org.opensaml.xml.SpaceBearing.XMLSpaceEnum;
-import org.opensaml.xml.XMLObject;
+import org.opensaml.core.xml.AttributeExtensibleXMLObject;
+import org.opensaml.core.xml.BaseBearing;
+import org.opensaml.core.xml.IdBearing;
+import org.opensaml.core.xml.LangBearing;
+import org.opensaml.core.xml.SpaceBearing;
+import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.SpaceBearing.XMLSpaceEnum;
 
 /**
  * Helper methods for working with global attributes from the XML namespace. These are namely:

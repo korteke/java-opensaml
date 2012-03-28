@@ -29,8 +29,8 @@ import net.shibboleth.utilities.java.support.xml.AttributeSupport;
 
 import org.opensaml.Configuration;
 import org.opensaml.common.impl.AbstractSAMLObjectMarshaller;
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml2.core.SubjectConfirmationData;
-import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Element;

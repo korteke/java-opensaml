@@ -17,7 +17,7 @@
 
 package org.opensaml.xml.signature.validator;
 
-import org.opensaml.xml.BaseXMLObjectValidatorTestCase;
+import org.opensaml.core.xml.BaseXMLObjectValidatorTestCase;
 import org.opensaml.xml.signature.Exponent;
 import org.opensaml.xml.signature.Modulus;
 import org.opensaml.xml.signature.RSAKeyValue;

@@ -22,8 +22,8 @@ import java.security.KeyPair;
 import net.shibboleth.utilities.java.support.xml.BasicParserPool;
 import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 
-import org.opensaml.xml.XMLObjectProviderRegistrySupport;
-import org.opensaml.xml.XMLObjectBaseTestCase;
+import org.opensaml.core.xml.XMLObjectBaseTestCase;
+import org.opensaml.core.xml.XMLObjectProviderRegistrySupport;
 import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.io.Unmarshaller;

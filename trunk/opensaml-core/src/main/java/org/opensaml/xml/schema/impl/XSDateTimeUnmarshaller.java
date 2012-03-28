@@ -19,7 +19,7 @@ package org.opensaml.xml.schema.impl;
 
 import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
-import org.opensaml.xml.XMLObject;
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.xml.io.BaseXMLObjectUnmarshaller;
 import org.opensaml.xml.schema.XSDateTime;
 

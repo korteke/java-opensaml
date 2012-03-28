@@ -21,10 +21,10 @@
 
 package org.opensaml.saml2.metadata.impl;
 
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml2.metadata.AssertionConsumerService;
 import org.opensaml.saml2.metadata.AttributeConsumingService;
 import org.opensaml.saml2.metadata.SPSSODescriptor;
-import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.schema.XSBooleanValue;
 import org.w3c.dom.Attr;

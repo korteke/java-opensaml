@@ -18,8 +18,8 @@
 package org.opensaml.ws.wssecurity.impl;
 
 
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.ws.wssecurity.Reference;
-import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.util.XMLObjectSupport;
 import org.w3c.dom.Element;

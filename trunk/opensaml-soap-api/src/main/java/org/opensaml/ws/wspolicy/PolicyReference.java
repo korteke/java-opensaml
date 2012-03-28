@@ -19,7 +19,7 @@ package org.opensaml.ws.wspolicy;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.xml.AttributeExtensibleXMLObject;
+import org.opensaml.core.xml.AttributeExtensibleXMLObject;
 
 /**
  * The wsp:PolicyReference element.

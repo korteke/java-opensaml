@@ -20,7 +20,7 @@ package org.opensaml.xml.encryption;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.opensaml.xml.XMLObjectBaseTestCase;
+import org.opensaml.core.xml.XMLObjectBaseTestCase;
 
 /**
  * Test the inline encrypted key resolver.

@@ -19,7 +19,7 @@ package org.opensaml.xml.signature;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.xml.XMLObject;
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.xml.validation.ValidatingXMLObject;
 
 /**

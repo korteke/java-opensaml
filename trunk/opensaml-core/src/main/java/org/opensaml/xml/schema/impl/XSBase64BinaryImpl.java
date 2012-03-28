@@ -19,7 +19,7 @@ package org.opensaml.xml.schema.impl;
 
 import java.util.List;
 
-import org.opensaml.xml.XMLObject;
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.xml.schema.XSBase64Binary;
 import org.opensaml.xml.validation.AbstractValidatingXMLObject;
 

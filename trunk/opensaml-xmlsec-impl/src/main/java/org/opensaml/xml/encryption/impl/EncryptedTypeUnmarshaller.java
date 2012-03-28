@@ -17,7 +17,7 @@
 
 package org.opensaml.xml.encryption.impl;
 
-import org.opensaml.xml.XMLObject;
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.xml.encryption.CipherData;
 import org.opensaml.xml.encryption.EncryptedType;
 import org.opensaml.xml.encryption.EncryptionMethod;

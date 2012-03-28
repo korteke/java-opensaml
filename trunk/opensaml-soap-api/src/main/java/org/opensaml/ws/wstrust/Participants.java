@@ -21,7 +21,7 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.xml.ElementExtensibleXMLObject;
+import org.opensaml.core.xml.ElementExtensibleXMLObject;
 
 /**
  * The wst:Participants element.

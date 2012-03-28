@@ -23,7 +23,7 @@ import javax.xml.validation.Validator;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 import org.opensaml.common.xml.SAMLSchemaBuilder;
-import org.opensaml.xml.XMLObject;
+import org.opensaml.core.xml.XMLObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;

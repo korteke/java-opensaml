@@ -21,8 +21,8 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.core.config.InitializationException;
-import org.opensaml.xml.AbstractXMLObjectProviderInitializer;
-import org.opensaml.xml.XMLObjectProviderRegistry;
+import org.opensaml.core.xml.AbstractXMLObjectProviderInitializer;
+import org.opensaml.core.xml.XMLObjectProviderRegistry;
 
 /**
  * XMLObject provider initializer for module "core".

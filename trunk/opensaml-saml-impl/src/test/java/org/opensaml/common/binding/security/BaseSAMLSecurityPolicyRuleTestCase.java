@@ -21,10 +21,10 @@ import org.opensaml.common.BaseTestCase;
 import org.opensaml.common.SAMLObject;
 import org.opensaml.common.binding.BasicSAMLMessageContext;
 import org.opensaml.common.binding.SAMLMessageContext;
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.ws.security.SecurityPolicyException;
 import org.opensaml.ws.security.SecurityPolicyRule;
 import org.opensaml.ws.transport.InTransport;
-import org.opensaml.xml.XMLObject;
 
 /**
  * Base class for security policy rule tests.

@@ -25,7 +25,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.xml.XMLObject;
+import org.opensaml.core.xml.XMLObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,8 +34,8 @@ import org.slf4j.LoggerFactory;
  * usage specific checks, such as those outlined in things like profiles for specific XML specification.
  * 
  * Registered {@link org.opensaml.xml.validation.Validator}s must be stateless. The xmlObjectTarget may be the
- * XMLObject's element QName retrieved by {@link org.opensaml.xml.XMLObject#getElementQName()} or schema type, retrieved
- * by {@link org.opensaml.xml.XMLObject#getSchemaType()}, with schema type registered checks performed first.
+ * XMLObject's element QName retrieved by {@link org.opensaml.core.xml.XMLObject#getElementQName()} or schema type, retrieved
+ * by {@link org.opensaml.core.xml.XMLObject#getSchemaType()}, with schema type registered checks performed first.
  */
 public class ValidatorSuite {
 

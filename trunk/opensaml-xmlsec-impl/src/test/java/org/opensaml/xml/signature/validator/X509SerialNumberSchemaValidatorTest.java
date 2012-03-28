@@ -19,7 +19,7 @@ package org.opensaml.xml.signature.validator;
 
 import java.math.BigInteger;
 
-import org.opensaml.xml.BaseXMLObjectValidatorTestCase;
+import org.opensaml.core.xml.BaseXMLObjectValidatorTestCase;
 import org.opensaml.xml.signature.X509SerialNumber;
 
 /**

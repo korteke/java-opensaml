@@ -17,8 +17,8 @@
 
 package org.opensaml.ws.wstrust.impl;
 
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.ws.wstrust.RenewTarget;
-import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
 
 

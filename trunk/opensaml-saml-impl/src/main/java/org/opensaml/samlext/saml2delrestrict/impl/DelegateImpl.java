@@ -23,11 +23,11 @@ import java.util.List;
 
 import org.joda.time.DateTime;
 import org.opensaml.common.impl.AbstractSAMLObject;
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml2.core.BaseID;
 import org.opensaml.saml2.core.EncryptedID;
 import org.opensaml.saml2.core.NameID;
 import org.opensaml.samlext.saml2delrestrict.Delegate;
-import org.opensaml.xml.XMLObject;
 
 /**
  * Implementation of {@link Delegate}.

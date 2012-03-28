@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wstrust;
 
-import org.opensaml.xml.XMLObject;
+import org.opensaml.core.xml.XMLObject;
 
 /**
  * WSTrustObject is the base interface for all the WS-Trust elements.

@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wssecurity;
 
-import org.opensaml.xml.XMLObjectBuilder;
+import org.opensaml.core.xml.XMLObjectBuilder;
 
 /**
  * WSSecurityObjectBuilder.

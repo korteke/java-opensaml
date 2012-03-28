@@ -18,9 +18,9 @@
 package org.opensaml.ws.wssecurity.impl;
 
 
+import org.opensaml.core.xml.AbstractXMLObjectBuilder;
 import org.opensaml.ws.wssecurity.WSSecurityObject;
 import org.opensaml.ws.wssecurity.WSSecurityObjectBuilder;
-import org.opensaml.xml.AbstractXMLObjectBuilder;
 
 /**
  * AbstractWSSecurityObjectBuilder

@@ -18,7 +18,7 @@
 package org.opensaml.xml.signature.impl;
 
 
-import org.opensaml.xml.XMLObjectProviderBaseTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.xml.signature.X509IssuerName;
 import org.opensaml.xml.signature.X509IssuerSerial;
 import org.opensaml.xml.signature.X509SerialNumber;

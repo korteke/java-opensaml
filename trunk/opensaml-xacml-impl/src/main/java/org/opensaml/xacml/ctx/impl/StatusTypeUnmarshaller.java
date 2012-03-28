@@ -17,12 +17,12 @@
 
 package org.opensaml.xacml.ctx.impl;
 
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.xacml.ctx.StatusCodeType;
 import org.opensaml.xacml.ctx.StatusDetailType;
 import org.opensaml.xacml.ctx.StatusMessageType;
 import org.opensaml.xacml.ctx.StatusType;
 import org.opensaml.xacml.impl.AbstractXACMLObjectUnmarshaller;
-import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
 
 /** Unmarshaller for {@link StatusType} objects. */

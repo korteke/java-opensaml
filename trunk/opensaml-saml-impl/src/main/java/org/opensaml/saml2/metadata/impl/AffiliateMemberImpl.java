@@ -20,8 +20,8 @@ package org.opensaml.saml2.metadata.impl;
 import java.util.List;
 
 import org.opensaml.common.impl.AbstractSAMLObject;
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml2.metadata.AffiliateMember;
-import org.opensaml.xml.XMLObject;
 
 /**
  * Concrete implementation of {@link org.opensaml.saml2.metadata.AffiliateMember}.

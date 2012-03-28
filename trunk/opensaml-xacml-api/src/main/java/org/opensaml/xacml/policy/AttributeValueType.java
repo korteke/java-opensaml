@@ -19,9 +19,9 @@ package org.opensaml.xacml.policy;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.core.xml.AttributeExtensibleXMLObject;
+import org.opensaml.core.xml.ElementExtensibleXMLObject;
 import org.opensaml.xacml.XACMLConstants;
-import org.opensaml.xml.AttributeExtensibleXMLObject;
-import org.opensaml.xml.ElementExtensibleXMLObject;
 
 /** XACML AttributeValue schema type. */
 public interface AttributeValueType extends ExpressionType, AttributeExtensibleXMLObject, ElementExtensibleXMLObject {

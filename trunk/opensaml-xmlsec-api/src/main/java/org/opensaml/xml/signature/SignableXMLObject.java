@@ -17,7 +17,7 @@
 
 package org.opensaml.xml.signature;
 
-import org.opensaml.xml.XMLObject;
+import org.opensaml.core.xml.XMLObject;
 
 /**
  * An XMLObject whose DOM representation can be digitally signed.

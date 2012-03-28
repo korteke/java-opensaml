@@ -18,10 +18,10 @@
 package org.opensaml.ws.wstrust.impl;
 
 
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.ws.wstrust.Participant;
 import org.opensaml.ws.wstrust.Participants;
 import org.opensaml.ws.wstrust.Primary;
-import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.UnmarshallingException;
 
 /**
