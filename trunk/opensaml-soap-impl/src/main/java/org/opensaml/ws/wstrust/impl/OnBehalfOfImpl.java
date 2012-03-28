@@ -21,8 +21,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.xml.namespace.QName;
+
 import org.opensaml.ws.wstrust.OnBehalfOf;
 import org.opensaml.xml.XMLObject;
+import org.opensaml.xml.util.IndexedXMLObjectChildrenList;
 
 /**
  * OnBehalfOfImpl.
@@ -30,8 +33,8 @@ import org.opensaml.xml.XMLObject;
  */
 public class OnBehalfOfImpl extends AbstractWSTrustObject implements OnBehalfOf {
     
-    /** Wildcard child element. */
-    private XMLObject unknownChild;
+    /** Wildcard child elements. */
+    private IndexedXMLObjectChildrenList<XMLObject> unknownChildren;
 
     /**
      * Constructor.
@@ -42,24 +45,24 @@ public class OnBehalfOfImpl extends AbstractWSTrustObject implements OnBehalfOf 
      */
     public OnBehalfOfImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
+        unknownChildren = new IndexedXMLObjectChildrenList<XMLObject>(this);
     }
 
     /** {@inheritDoc} */
-    public XMLObject getUnknownXMLObject() {
-        return unknownChild;
+    public List<XMLObject> getUnknownXMLObjects() {
+        return unknownChildren;
     }
 
     /** {@inheritDoc} */
-    public void setUnknownXMLObject(XMLObject unknownObject) {
-        unknownChild = prepareForAssignment(unknownChild, unknownObject);
+    public List<XMLObject> getUnknownXMLObjects(QName typeOrName) {
+        return (List<XMLObject>) unknownChildren.subList(typeOrName);
     }
-
+    
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
         List<XMLObject> children = new ArrayList<XMLObject>();
-        if (unknownChild != null) {
-            children.add(unknownChild);
-        }
+        children.addAll(unknownChildren);
         return Collections.unmodifiableList(children);
     }
+
 }
