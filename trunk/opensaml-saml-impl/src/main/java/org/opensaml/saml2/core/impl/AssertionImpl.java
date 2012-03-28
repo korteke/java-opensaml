@@ -32,6 +32,7 @@ import org.opensaml.common.SAMLVersion;
 import org.opensaml.common.impl.AbstractSignableSAMLObject;
 import org.opensaml.common.xml.SAMLConstants;
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
 import org.opensaml.saml2.core.Advice;
 import org.opensaml.saml2.core.Assertion;
 import org.opensaml.saml2.core.AttributeStatement;
@@ -41,7 +42,6 @@ import org.opensaml.saml2.core.Conditions;
 import org.opensaml.saml2.core.Issuer;
 import org.opensaml.saml2.core.Statement;
 import org.opensaml.saml2.core.Subject;
-import org.opensaml.xml.util.IndexedXMLObjectChildrenList;
 
 /**
  * A concrete implementation of {@link org.opensaml.saml2.core.Assertion}.

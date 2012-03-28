@@ -17,9 +17,9 @@
 
 package org.opensaml.xml.signature.validator;
 
+import org.opensaml.core.xml.validation.ValidationException;
+import org.opensaml.core.xml.validation.Validator;
 import org.opensaml.xml.signature.RSAKeyValue;
-import org.opensaml.xml.validation.ValidationException;
-import org.opensaml.xml.validation.Validator;
 
 /**
  * Checks {@link org.opensaml.xml.signature.RSAKeyValue} for Schema compliance. 

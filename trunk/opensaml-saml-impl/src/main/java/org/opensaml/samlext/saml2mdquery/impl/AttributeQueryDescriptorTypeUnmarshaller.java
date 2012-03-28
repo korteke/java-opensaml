@@ -18,9 +18,9 @@
 package org.opensaml.samlext.saml2mdquery.impl;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml2.metadata.AttributeConsumingService;
 import org.opensaml.samlext.saml2mdquery.AttributeQueryDescriptorType;
-import org.opensaml.xml.io.UnmarshallingException;
 
 /**
  * Unmarshaller of {@link AttributeQueryDescriptorType} objects.

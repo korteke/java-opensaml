@@ -17,9 +17,9 @@
 
 package org.opensaml.xml.encryption.validator;
 
+import org.opensaml.core.xml.validation.ValidationException;
+import org.opensaml.core.xml.validation.Validator;
 import org.opensaml.xml.encryption.ReferenceList;
-import org.opensaml.xml.validation.ValidationException;
-import org.opensaml.xml.validation.Validator;
 
 /**
  * Checks {@link org.opensaml.xml.encryption.ReferenceList} for Schema compliance. 

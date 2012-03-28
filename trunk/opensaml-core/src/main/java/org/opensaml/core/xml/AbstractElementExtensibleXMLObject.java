@@ -22,8 +22,8 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.xml.util.IndexedXMLObjectChildrenList;
-import org.opensaml.xml.validation.AbstractValidatingXMLObject;
+import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
+import org.opensaml.core.xml.validation.AbstractValidatingXMLObject;
 
 /**
  * AbstractElementExtensible is an element of type <code>xs:any</code>, but without <code>xs:anyAttribute</code>

@@ -22,12 +22,12 @@ import java.util.Collections;
 import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.validation.AbstractValidatingXMLObject;
 import org.opensaml.ws.soap.soap11.Detail;
 import org.opensaml.ws.soap.soap11.Fault;
 import org.opensaml.ws.soap.soap11.FaultActor;
 import org.opensaml.ws.soap.soap11.FaultCode;
 import org.opensaml.ws.soap.soap11.FaultString;
-import org.opensaml.xml.validation.AbstractValidatingXMLObject;
 
 /**
  * Concrete implemenation of {@link org.opensaml.ws.soap.soap11.Fault}.

@@ -27,8 +27,8 @@ import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.xml.QNameSupport;
 import net.shibboleth.utilities.java.support.xml.XmlConstants;
 
-import org.opensaml.xml.schema.XSBooleanValue;
-import org.opensaml.xml.util.IDIndex;
+import org.opensaml.core.xml.schema.XSBooleanValue;
+import org.opensaml.core.xml.util.IDIndex;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;

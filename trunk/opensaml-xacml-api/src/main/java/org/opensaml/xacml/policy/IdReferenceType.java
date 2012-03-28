@@ -19,9 +19,9 @@ package org.opensaml.xacml.policy;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.core.xml.schema.XSString;
 import org.opensaml.xacml.XACMLConstants;
 import org.opensaml.xacml.XACMLObject;
-import org.opensaml.xml.schema.XSString;
 
 /** XACML IdReference schema type. */
 public interface IdReferenceType extends XACMLObject, XSString {

@@ -22,9 +22,9 @@
 package org.opensaml.saml2.metadata.impl;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml2.core.impl.AttributeMarshaller;
 import org.opensaml.saml2.metadata.RequestedAttribute;
-import org.opensaml.xml.io.MarshallingException;
 import org.w3c.dom.Element;
 
 /**

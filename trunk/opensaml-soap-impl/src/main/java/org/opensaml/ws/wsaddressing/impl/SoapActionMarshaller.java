@@ -17,8 +17,8 @@
 
 package org.opensaml.ws.wsaddressing.impl;
 
+import org.opensaml.core.xml.schema.impl.XSURIMarshaller;
 import org.opensaml.ws.wsaddressing.SoapAction;
-import org.opensaml.xml.schema.impl.XSURIMarshaller;
 
 /**
  * Marshaller for instances of {@link SoapAction}.

@@ -21,8 +21,8 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
 import org.opensaml.common.xml.SAMLConstants;
+import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.saml2.metadata.RequestedAttribute;
-import org.opensaml.xml.schema.XSBooleanValue;
 
 /**
  * Test case for creating, marshalling, and unmarshalling

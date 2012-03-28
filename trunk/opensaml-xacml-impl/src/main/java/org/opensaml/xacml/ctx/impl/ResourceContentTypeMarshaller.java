@@ -26,9 +26,9 @@ import net.shibboleth.utilities.java.support.xml.ElementSupport;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.XMLObjectProviderRegistrySupport;
+import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.xacml.ctx.ResourceContentType;
 import org.opensaml.xacml.impl.AbstractXACMLObjectMarshaller;
-import org.opensaml.xml.io.MarshallingException;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
 

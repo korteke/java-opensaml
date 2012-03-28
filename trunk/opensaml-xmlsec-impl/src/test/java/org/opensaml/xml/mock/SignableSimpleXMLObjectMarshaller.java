@@ -18,13 +18,13 @@
 package org.opensaml.xml.mock;
 
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.xml.io.AbstractXMLObjectMarshaller;
-import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.util.XMLObjectSupport;
+import org.opensaml.core.xml.io.AbstractXMLObjectMarshaller;
+import org.opensaml.core.xml.io.MarshallingException;
+import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.w3c.dom.Element;
 
 /**
- * Marshaller for {@link org.opensaml.xml.mock.SimpleXMLObject} objects.
+ * Marshaller for {@link org.opensaml.core.xml.mock.SimpleXMLObject} objects.
  */
 public class SignableSimpleXMLObjectMarshaller extends AbstractXMLObjectMarshaller {
 

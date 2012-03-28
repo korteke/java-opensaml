@@ -22,11 +22,11 @@ import java.util.Collections;
 import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.schema.XSBooleanValue;
+import org.opensaml.core.xml.util.XMLObjectChildrenList;
 import org.opensaml.saml2.metadata.NameIDFormat;
 import org.opensaml.saml2.metadata.impl.RoleDescriptorImpl;
 import org.opensaml.samlext.saml2mdquery.QueryDescriptorType;
-import org.opensaml.xml.schema.XSBooleanValue;
-import org.opensaml.xml.util.XMLObjectChildrenList;
 
 /**
  * Concrete implementation of {@link QueryDescriptorType}.

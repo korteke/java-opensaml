@@ -20,8 +20,8 @@
  */
 package org.opensaml.saml2.core.validator;
 
+import org.opensaml.core.xml.validation.ValidationException;
 import org.opensaml.saml2.core.SubjectQuery;
-import org.opensaml.xml.validation.ValidationException;
 
 /**
  * Checks {@link org.opensaml.saml2.core.SubjectQuery} for Schema compliance.

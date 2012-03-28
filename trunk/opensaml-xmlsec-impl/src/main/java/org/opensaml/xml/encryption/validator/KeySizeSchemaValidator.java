@@ -17,8 +17,8 @@
 
 package org.opensaml.xml.encryption.validator;
 
+import org.opensaml.core.xml.schema.validator.XSIntegerSchemaValidator;
 import org.opensaml.xml.encryption.KeySize;
-import org.opensaml.xml.schema.validator.XSIntegerSchemaValidator;
 
 /**
  * Checks {@link org.opensaml.xml.encryption.KeySize} for Schema compliance. 

@@ -18,8 +18,8 @@
 package org.opensaml.ws.wssecurity.impl;
 
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.xml.io.AbstractXMLObjectUnmarshaller;
-import org.opensaml.xml.io.UnmarshallingException;
+import org.opensaml.core.xml.io.AbstractXMLObjectUnmarshaller;
+import org.opensaml.core.xml.io.UnmarshallingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Attr;
@@ -45,7 +45,7 @@ public abstract class AbstractWSSecurityObjectUnmarshaller extends AbstractXMLOb
     /*
      * No-op method. Extending implementations should override this method if they have child element to unmarshall.
      * 
-     * @see org.opensaml.xml.io.AbstractXMLObjectUnmarshaller#processChildElement(org.opensaml.xml.XMLObject,
+     * @see org.opensaml.core.xml.io.AbstractXMLObjectUnmarshaller#processChildElement(org.opensaml.xml.XMLObject,
      *      org.opensaml.xml.XMLObject)
      */
     protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
@@ -57,7 +57,7 @@ public abstract class AbstractWSSecurityObjectUnmarshaller extends AbstractXMLOb
     /*
      * No-op method. Extending implementations should override this method if they have attributes to unmarshall.
      * 
-     * @see org.opensaml.xml.io.AbstractXMLObjectUnmarshaller#processAttribute(org.opensaml.xml.XMLObject,
+     * @see org.opensaml.core.xml.io.AbstractXMLObjectUnmarshaller#processAttribute(org.opensaml.xml.XMLObject,
      *      org.w3c.dom.Attr)
      */
     protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
@@ -68,7 +68,7 @@ public abstract class AbstractWSSecurityObjectUnmarshaller extends AbstractXMLOb
     /*
      * No-op method. Extending implementations should override this method if they have element content to unmarshall.
      * 
-     * @see org.opensaml.xml.io.AbstractXMLObjectUnmarshaller#processElementContent(org.opensaml.xml.XMLObject,
+     * @see org.opensaml.core.xml.io.AbstractXMLObjectUnmarshaller#processElementContent(org.opensaml.xml.XMLObject,
      *      java.lang.String)
      */
     protected void processElementContent(XMLObject xmlObject, String elementContent) {

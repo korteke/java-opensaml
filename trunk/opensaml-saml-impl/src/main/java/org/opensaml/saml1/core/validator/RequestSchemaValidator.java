@@ -21,8 +21,8 @@
 
 package org.opensaml.saml1.core.validator;
 
+import org.opensaml.core.xml.validation.ValidationException;
 import org.opensaml.saml1.core.Request;
-import org.opensaml.xml.validation.ValidationException;
 
 /**
  * Checks {@link org.opensaml.saml1.core.Request} for Schema compliance.

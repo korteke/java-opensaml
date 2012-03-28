@@ -25,9 +25,9 @@ import net.shibboleth.utilities.java.support.xml.AttributeSupport;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.XMLObjectProviderRegistrySupport;
+import org.opensaml.core.xml.io.AbstractXMLObjectMarshaller;
+import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.ws.soap.soap11.Header;
-import org.opensaml.xml.io.AbstractXMLObjectMarshaller;
-import org.opensaml.xml.io.MarshallingException;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
 

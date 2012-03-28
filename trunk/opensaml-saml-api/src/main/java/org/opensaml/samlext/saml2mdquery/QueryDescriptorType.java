@@ -22,9 +22,9 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.opensaml.common.xml.SAMLConstants;
+import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.saml2.metadata.NameIDFormat;
 import org.opensaml.saml2.metadata.RoleDescriptor;
-import org.opensaml.xml.schema.XSBooleanValue;
 
 /**
  * SAML 2.0 Metadata extension QueryDescriptorType.

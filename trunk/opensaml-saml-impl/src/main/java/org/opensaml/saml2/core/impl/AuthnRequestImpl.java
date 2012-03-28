@@ -26,13 +26,13 @@ import java.util.Collections;
 import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.saml2.core.AuthnRequest;
 import org.opensaml.saml2.core.Conditions;
 import org.opensaml.saml2.core.NameIDPolicy;
 import org.opensaml.saml2.core.RequestedAuthnContext;
 import org.opensaml.saml2.core.Scoping;
 import org.opensaml.saml2.core.Subject;
-import org.opensaml.xml.schema.XSBooleanValue;
 
 /**
  * A concrete implementation of {@link org.opensaml.saml2.core.AuthnRequest}.

@@ -19,8 +19,8 @@ package org.opensaml.ws.soap.soap11;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.core.xml.schema.XSURI;
 import org.opensaml.ws.soap.common.SOAPObject;
-import org.opensaml.xml.schema.XSURI;
 
 /**
  * SOAP 1.1 faultactor.

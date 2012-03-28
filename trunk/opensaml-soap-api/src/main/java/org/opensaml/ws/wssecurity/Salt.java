@@ -19,7 +19,7 @@ package org.opensaml.ws.wssecurity;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.xml.schema.XSBase64Binary;
+import org.opensaml.core.xml.schema.XSBase64Binary;
 
 /**
  * The &lt;wsse11:Salt&gt; element within the &lt;wsse:UsernameToken&gt;

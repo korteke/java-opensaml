@@ -28,6 +28,7 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.util.XMLObjectChildrenList;
 import org.opensaml.saml2.metadata.ArtifactResolutionService;
 import org.opensaml.saml2.metadata.Endpoint;
 import org.opensaml.saml2.metadata.ManageNameIDService;
@@ -35,7 +36,6 @@ import org.opensaml.saml2.metadata.NameIDFormat;
 import org.opensaml.saml2.metadata.SSODescriptor;
 import org.opensaml.saml2.metadata.SingleLogoutService;
 import org.opensaml.saml2.metadata.support.SAML2MetadataHelper;
-import org.opensaml.xml.util.XMLObjectChildrenList;
 
 /**
  * Concrete implementation of {@link org.opensaml.saml2.metadata.SSODescriptor}.

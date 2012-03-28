@@ -18,10 +18,10 @@
 package org.opensaml.xml.encryption.impl;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.xml.encryption.CipherData;
 import org.opensaml.xml.encryption.CipherReference;
 import org.opensaml.xml.encryption.CipherValue;
-import org.opensaml.xml.io.UnmarshallingException;
 
 /**
  * A thread-safe Unmarshaller for {@link org.opensaml.xml.encryption.CipherData} objects.

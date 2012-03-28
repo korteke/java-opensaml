@@ -18,10 +18,10 @@
 package org.opensaml.xacml.policy.impl;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.xacml.impl.AbstractXACMLObjectUnmarshaller;
 import org.opensaml.xacml.policy.SubjectMatchType;
 import org.opensaml.xacml.policy.SubjectType;
-import org.opensaml.xml.io.UnmarshallingException;
 
 /**
  * Unmarshaller for {@link SubjectType}.

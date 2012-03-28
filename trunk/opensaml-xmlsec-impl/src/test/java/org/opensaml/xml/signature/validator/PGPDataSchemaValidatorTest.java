@@ -18,8 +18,8 @@
 package org.opensaml.xml.signature.validator;
 
 import org.opensaml.core.xml.BaseXMLObjectValidatorTestCase;
-import org.opensaml.xml.mock.SimpleXMLObject;
-import org.opensaml.xml.mock.SimpleXMLObjectBuilder;
+import org.opensaml.core.xml.mock.SimpleXMLObject;
+import org.opensaml.core.xml.mock.SimpleXMLObjectBuilder;
 import org.opensaml.xml.signature.PGPData;
 import org.opensaml.xml.signature.PGPKeyID;
 import org.opensaml.xml.signature.PGPKeyPacket;

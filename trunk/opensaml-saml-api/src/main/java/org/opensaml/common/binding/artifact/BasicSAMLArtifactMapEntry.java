@@ -31,10 +31,10 @@ import org.opensaml.Configuration;
 import org.opensaml.common.SAMLObject;
 import org.opensaml.common.binding.artifact.SAMLArtifactMap.SAMLArtifactMapEntry;
 import org.opensaml.core.xml.XMLRuntimeException;
+import org.opensaml.core.xml.io.MarshallingException;
+import org.opensaml.core.xml.io.UnmarshallingException;
+import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.util.storage.AbstractExpiringObject;
-import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.io.UnmarshallingException;
-import org.opensaml.xml.util.XMLObjectSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

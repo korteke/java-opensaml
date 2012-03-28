@@ -3,11 +3,11 @@
 
   <xt:ObjectProviders>
     <xt:ObjectProvider qualifiedName="test:SimpleElement">
-      <xt:BuilderClass className="org.opensaml.xml.mock.SimpleXMLObjectBuilder">
+      <xt:BuilderClass className="org.opensaml.core.xml.mock.SimpleXMLObjectBuilder">
         <test:foo/>
       </xt:BuilderClass>
-      <xt:MarshallingClass className="org.opensaml.xml.mock.SimpleXMLObjectMarshaller"/>
-      <xt:UnmarshallingClass className="org.opensaml.xml.mock.SimpleXMLObjectUnmarshaller"/>
+      <xt:MarshallingClass className="org.opensaml.core.xml.mock.SimpleXMLObjectMarshaller"/>
+      <xt:UnmarshallingClass className="org.opensaml.core.xml.mock.SimpleXMLObjectUnmarshaller"/>
     </xt:ObjectProvider>
   </xt:ObjectProviders>
   

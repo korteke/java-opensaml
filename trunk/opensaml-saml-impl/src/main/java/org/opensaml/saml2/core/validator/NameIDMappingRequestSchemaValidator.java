@@ -20,8 +20,8 @@
  */
 package org.opensaml.saml2.core.validator;
 
+import org.opensaml.core.xml.validation.ValidationException;
 import org.opensaml.saml2.core.NameIDMappingRequest;
-import org.opensaml.xml.validation.ValidationException;
 
 /**
  * Checks {@link org.opensaml.saml2.core.NameIDMappingRequest} for Schema compliance.

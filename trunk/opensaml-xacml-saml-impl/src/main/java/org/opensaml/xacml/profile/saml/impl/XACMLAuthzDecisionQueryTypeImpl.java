@@ -22,14 +22,14 @@ import java.util.Collections;
 import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.schema.XSBooleanValue;
+import org.opensaml.core.xml.util.XMLObjectChildrenList;
 import org.opensaml.saml2.core.impl.RequestAbstractTypeImpl;
 import org.opensaml.xacml.ctx.RequestType;
 import org.opensaml.xacml.policy.PolicySetType;
 import org.opensaml.xacml.policy.PolicyType;
 import org.opensaml.xacml.profile.saml.ReferencedPoliciesType;
 import org.opensaml.xacml.profile.saml.XACMLAuthzDecisionQueryType;
-import org.opensaml.xml.schema.XSBooleanValue;
-import org.opensaml.xml.util.XMLObjectChildrenList;
 
 /** A concrete implementation of {@link XACMLAuthzDecisionQueryType}. */
 public class XACMLAuthzDecisionQueryTypeImpl extends RequestAbstractTypeImpl implements XACMLAuthzDecisionQueryType {

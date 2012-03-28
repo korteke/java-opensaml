@@ -20,7 +20,7 @@ package org.opensaml.ws.wsaddressing;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.AttributeExtensibleXMLObject;
-import org.opensaml.xml.schema.XSQName;
+import org.opensaml.core.xml.schema.XSQName;
 
 /**
  * Interface for type &lt;wsa:AttributedQName&gt;.

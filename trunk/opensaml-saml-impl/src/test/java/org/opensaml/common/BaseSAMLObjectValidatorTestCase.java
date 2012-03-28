@@ -23,11 +23,11 @@ package org.opensaml.common;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.xml.validation.ValidationException;
-import org.opensaml.xml.validation.Validator;
+import org.opensaml.core.xml.validation.ValidationException;
+import org.opensaml.core.xml.validation.Validator;
 
 /**
- * Base test case for all OpenSAML tests that test the {@link org.opensaml.xml.validation.Validator}'s
+ * Base test case for all OpenSAML tests that test the {@link org.opensaml.core.xml.validation.Validator}'s
  * that validate SAML objects.
  */
 public abstract class BaseSAMLObjectValidatorTestCase extends BaseTestCase {

@@ -17,7 +17,7 @@
 
 package org.opensaml.xml.signature.impl;
 
-import org.opensaml.xml.schema.impl.XSBase64BinaryMarshaller;
+import org.opensaml.core.xml.schema.impl.XSBase64BinaryMarshaller;
 
 /**
  * A thread-safe Marshaller for {@link org.opensaml.xml.signature.CryptoBinary} objects.

@@ -17,8 +17,8 @@
 
 package org.opensaml.xacml.impl;
 
+import org.opensaml.core.xml.validation.AbstractValidatingXMLObject;
 import org.opensaml.xacml.XACMLObject;
-import org.opensaml.xml.validation.AbstractValidatingXMLObject;
 
 /**
  * An abstract implementation of XACMLObject.

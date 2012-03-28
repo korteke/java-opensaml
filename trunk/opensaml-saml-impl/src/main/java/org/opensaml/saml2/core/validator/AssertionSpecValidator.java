@@ -21,9 +21,9 @@
 
 package org.opensaml.saml2.core.validator;
 
+import org.opensaml.core.xml.validation.ValidationException;
+import org.opensaml.core.xml.validation.Validator;
 import org.opensaml.saml2.core.Assertion;
-import org.opensaml.xml.validation.ValidationException;
-import org.opensaml.xml.validation.Validator;
 
 /**
  * Checks {@link org.opensaml.saml2.core.Assertion} for Spec compliance.

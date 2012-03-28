@@ -21,9 +21,9 @@ import java.util.Collections;
 import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.util.IndexingObjectStore;
+import org.opensaml.core.xml.validation.AbstractValidatingXMLObject;
 import org.opensaml.xml.signature.X509CRL;
-import org.opensaml.xml.util.IndexingObjectStore;
-import org.opensaml.xml.validation.AbstractValidatingXMLObject;
 
 import com.google.common.base.Objects;
 

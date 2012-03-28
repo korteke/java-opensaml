@@ -21,8 +21,8 @@
 
 package org.opensaml.saml2.metadata.validator;
 
+import org.opensaml.core.xml.validation.ValidationException;
 import org.opensaml.saml2.metadata.SSODescriptor;
-import org.opensaml.xml.validation.ValidationException;
 
 import com.google.common.base.Strings;
 

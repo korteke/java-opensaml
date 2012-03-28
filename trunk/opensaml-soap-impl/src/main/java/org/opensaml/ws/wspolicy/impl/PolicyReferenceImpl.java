@@ -20,8 +20,8 @@ package org.opensaml.ws.wspolicy.impl;
 import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.util.AttributeMap;
 import org.opensaml.ws.wspolicy.PolicyReference;
-import org.opensaml.xml.util.AttributeMap;
 
 /**
  * PolicyReferenceImpl.

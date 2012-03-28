@@ -17,8 +17,8 @@
 
 package org.opensaml.ws.wstrust.impl;
 
+import org.opensaml.core.xml.schema.impl.XSURIImpl;
 import org.opensaml.ws.wstrust.CanonicalizationAlgorithm;
-import org.opensaml.xml.schema.impl.XSURIImpl;
 
 /**
  * CanonicalizationAlgorithmImpl.

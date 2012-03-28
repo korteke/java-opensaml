@@ -21,8 +21,8 @@ import java.util.List;
 
 import org.opensaml.core.xml.LangBearing;
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.schema.impl.XSStringImpl;
 import org.opensaml.saml2.metadata.LocalizedName;
-import org.opensaml.xml.schema.impl.XSStringImpl;
 
 import com.google.common.base.Strings;
 

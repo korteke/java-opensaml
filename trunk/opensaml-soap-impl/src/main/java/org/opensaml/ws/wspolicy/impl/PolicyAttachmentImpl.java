@@ -24,12 +24,12 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.util.AttributeMap;
+import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
 import org.opensaml.ws.wspolicy.AppliesTo;
 import org.opensaml.ws.wspolicy.Policy;
 import org.opensaml.ws.wspolicy.PolicyAttachment;
 import org.opensaml.ws.wspolicy.PolicyReference;
-import org.opensaml.xml.util.AttributeMap;
-import org.opensaml.xml.util.IndexedXMLObjectChildrenList;
 
 /**
  * PolicyAttachmentImpl.

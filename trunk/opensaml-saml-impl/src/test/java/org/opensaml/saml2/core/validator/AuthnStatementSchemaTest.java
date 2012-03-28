@@ -23,9 +23,9 @@ import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
 import org.opensaml.common.BaseSAMLObjectValidatorTestCase;
 import org.opensaml.common.xml.SAMLConstants;
+import org.opensaml.core.xml.validation.ValidationException;
 import org.opensaml.saml2.core.AuthnContext;
 import org.opensaml.saml2.core.AuthnStatement;
-import org.opensaml.xml.validation.ValidationException;
 
 /**
  * Test case for {@link org.opensaml.saml2.core.validator.AuthnStatementSchemaValidator}.

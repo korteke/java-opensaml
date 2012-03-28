@@ -24,10 +24,10 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.util.AttributeMap;
+import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
 import org.opensaml.xacml.ctx.ResourceContentType;
 import org.opensaml.xacml.impl.AbstractXACMLObject;
-import org.opensaml.xml.util.AttributeMap;
-import org.opensaml.xml.util.IndexedXMLObjectChildrenList;
 
 /** Concrete implementation of {@link ResourceContentType}. */
 public class ResourceContentTypeImpl extends AbstractXACMLObject implements ResourceContentType {

@@ -18,7 +18,7 @@
 package org.opensaml.xml.signature.impl;
 
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.xml.io.UnmarshallingException;
+import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.xml.signature.PGPData;
 import org.opensaml.xml.signature.PGPKeyID;
 import org.opensaml.xml.signature.PGPKeyPacket;

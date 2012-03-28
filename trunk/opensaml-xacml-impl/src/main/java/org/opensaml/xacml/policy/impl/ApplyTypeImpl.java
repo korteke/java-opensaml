@@ -22,10 +22,10 @@ import java.util.Collections;
 import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.util.XMLObjectChildrenList;
 import org.opensaml.xacml.impl.AbstractXACMLObject;
 import org.opensaml.xacml.policy.ApplyType;
 import org.opensaml.xacml.policy.ExpressionType;
-import org.opensaml.xml.util.XMLObjectChildrenList;
 
 /**
  *Implementation of {@link ApplyType}.

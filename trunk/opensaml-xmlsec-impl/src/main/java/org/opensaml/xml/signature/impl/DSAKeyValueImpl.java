@@ -22,6 +22,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.validation.AbstractValidatingXMLObject;
 import org.opensaml.xml.signature.DSAKeyValue;
 import org.opensaml.xml.signature.G;
 import org.opensaml.xml.signature.J;
@@ -30,7 +31,6 @@ import org.opensaml.xml.signature.PgenCounter;
 import org.opensaml.xml.signature.Q;
 import org.opensaml.xml.signature.Seed;
 import org.opensaml.xml.signature.Y;
-import org.opensaml.xml.validation.AbstractValidatingXMLObject;
 
 /**
  * Concrete implementation of {@link org.opensaml.xml.signature.DSAKeyValue}

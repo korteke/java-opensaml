@@ -35,22 +35,22 @@
         <!-- faultcode -->
         <xt:ObjectProvider qualifiedName="faultactor">
             <xt:BuilderClass className="org.opensaml.ws.soap.soap11.impl.FaultActorBuilder"/>
-            <xt:MarshallingClass className="org.opensaml.xml.schema.impl.XSURIMarshaller"/>
-            <xt:UnmarshallingClass className="org.opensaml.xml.schema.impl.XSURIUnmarshaller"/>
+            <xt:MarshallingClass className="org.opensaml.core.xml.schema.impl.XSURIMarshaller"/>
+            <xt:UnmarshallingClass className="org.opensaml.core.xml.schema.impl.XSURIUnmarshaller"/>
         </xt:ObjectProvider>
         
         <!-- faultcode -->
         <xt:ObjectProvider qualifiedName="faultcode">
             <xt:BuilderClass className="org.opensaml.ws.soap.soap11.impl.FaultCodeBuilder"/>
-            <xt:MarshallingClass className="org.opensaml.xml.schema.impl.XSQNameMarshaller"/>
-            <xt:UnmarshallingClass className="org.opensaml.xml.schema.impl.XSQNameUnmarshaller"/>
+            <xt:MarshallingClass className="org.opensaml.core.xml.schema.impl.XSQNameMarshaller"/>
+            <xt:UnmarshallingClass className="org.opensaml.core.xml.schema.impl.XSQNameUnmarshaller"/>
         </xt:ObjectProvider>
         
         <!-- faultstring -->
         <xt:ObjectProvider qualifiedName="faultstring">
             <xt:BuilderClass className="org.opensaml.ws.soap.soap11.impl.FaultStringBuilder"/>
-            <xt:MarshallingClass className="org.opensaml.xml.schema.impl.XSStringMarshaller"/>
-            <xt:UnmarshallingClass className="org.opensaml.xml.schema.impl.XSStringUnmarshaller"/>
+            <xt:MarshallingClass className="org.opensaml.core.xml.schema.impl.XSStringMarshaller"/>
+            <xt:UnmarshallingClass className="org.opensaml.core.xml.schema.impl.XSStringUnmarshaller"/>
         </xt:ObjectProvider>
         
         <!-- Header -->

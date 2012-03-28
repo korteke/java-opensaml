@@ -23,8 +23,8 @@ import net.shibboleth.utilities.java.support.xml.QNameSupport;
 
 import org.opensaml.common.impl.AbstractSAMLObjectMarshaller;
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml1.core.StatusCode;
-import org.opensaml.xml.io.MarshallingException;
 import org.w3c.dom.Element;
 
 /**

@@ -25,10 +25,10 @@ import net.shibboleth.utilities.java.support.xml.XmlConstants;
 
 import org.opensaml.core.xml.AttributeExtensibleXMLObject;
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.util.AttributeMap;
 import org.opensaml.ws.wssecurity.IdBearing;
 import org.opensaml.ws.wssecurity.TokenTypeBearing;
 import org.opensaml.ws.wssecurity.UsageBearing;
-import org.opensaml.xml.util.AttributeMap;
 
 /**
  * Helper methods for working with WS-Security.

@@ -22,9 +22,9 @@ import java.util.List;
 import net.shibboleth.utilities.java.support.collection.LazyList;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.xacml.impl.AbstractXACMLObject;
 import org.opensaml.xacml.policy.AttributeDesignatorType;
-import org.opensaml.xml.schema.XSBooleanValue;
 
 /**
  * Implementation of {@link AttributeDesignatorType}.

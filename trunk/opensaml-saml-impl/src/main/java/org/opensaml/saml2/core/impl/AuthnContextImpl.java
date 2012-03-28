@@ -27,12 +27,12 @@ import java.util.List;
 
 import org.opensaml.common.impl.AbstractSAMLObject;
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.util.XMLObjectChildrenList;
 import org.opensaml.saml2.core.AuthenticatingAuthority;
 import org.opensaml.saml2.core.AuthnContext;
 import org.opensaml.saml2.core.AuthnContextClassRef;
 import org.opensaml.saml2.core.AuthnContextDecl;
 import org.opensaml.saml2.core.AuthnContextDeclRef;
-import org.opensaml.xml.util.XMLObjectChildrenList;
 
 /**
  * A concrete implemenation of {@link org.opensaml.saml2.core.AuthnContext}.

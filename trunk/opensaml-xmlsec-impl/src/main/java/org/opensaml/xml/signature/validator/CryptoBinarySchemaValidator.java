@@ -17,7 +17,7 @@
 
 package org.opensaml.xml.signature.validator;
 
-import org.opensaml.xml.schema.validator.XSBase64BinarySchemaValidator;
+import org.opensaml.core.xml.schema.validator.XSBase64BinarySchemaValidator;
 import org.opensaml.xml.signature.CryptoBinary;
 
 /**

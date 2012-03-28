@@ -17,7 +17,7 @@
 
 package org.opensaml.core.xml;
 
-import org.opensaml.xml.util.AttributeMap;
+import org.opensaml.core.xml.util.AttributeMap;
 
 /**
  * An interface for XMLObjects that represent DOM elements that support 

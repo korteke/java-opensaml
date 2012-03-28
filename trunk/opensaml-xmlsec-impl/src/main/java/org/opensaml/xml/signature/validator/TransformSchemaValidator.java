@@ -17,9 +17,9 @@
 
 package org.opensaml.xml.signature.validator;
 
+import org.opensaml.core.xml.validation.ValidationException;
+import org.opensaml.core.xml.validation.Validator;
 import org.opensaml.xml.signature.Transform;
-import org.opensaml.xml.validation.ValidationException;
-import org.opensaml.xml.validation.Validator;
 
 import com.google.common.base.Strings;
 

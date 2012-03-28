@@ -21,7 +21,7 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.common.SAMLObject;
 import org.opensaml.common.xml.SAMLConstants;
-import org.opensaml.xml.schema.XSString;
+import org.opensaml.core.xml.schema.XSString;
 
 /**
  * SAML 1 Metadata extension SourceID

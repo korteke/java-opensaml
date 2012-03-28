@@ -17,9 +17,9 @@
 
 package org.opensaml.ws.wsaddressing.impl;
 
+import org.opensaml.core.xml.schema.impl.XSURIImpl;
+import org.opensaml.core.xml.util.AttributeMap;
 import org.opensaml.ws.wsaddressing.AttributedURI;
-import org.opensaml.xml.schema.impl.XSURIImpl;
-import org.opensaml.xml.util.AttributeMap;
 
 /**
  * AbstractAttributedURIType is the abstract implementation of {@link AttributedURI}.

@@ -23,9 +23,9 @@ package org.opensaml.saml1.core.validator;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.core.xml.validation.ValidationException;
+import org.opensaml.core.xml.validation.Validator;
 import org.opensaml.saml1.core.AuthorityBinding;
-import org.opensaml.xml.validation.ValidationException;
-import org.opensaml.xml.validation.Validator;
 
 import com.google.common.base.Strings;
 

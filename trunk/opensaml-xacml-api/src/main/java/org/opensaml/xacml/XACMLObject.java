@@ -17,7 +17,7 @@
 
 package org.opensaml.xacml;
 
-import org.opensaml.xml.validation.ValidatingXMLObject;
+import org.opensaml.core.xml.validation.ValidatingXMLObject;
 
 /**
  * Base interface for XACML objects.

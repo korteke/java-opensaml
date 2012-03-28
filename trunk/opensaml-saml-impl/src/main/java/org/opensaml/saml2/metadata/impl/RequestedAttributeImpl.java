@@ -24,9 +24,9 @@ package org.opensaml.saml2.metadata.impl;
 import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.saml2.core.impl.AttributeImpl;
 import org.opensaml.saml2.metadata.RequestedAttribute;
-import org.opensaml.xml.schema.XSBooleanValue;
 
 /**
  * Concrete implementation of {@link org.opensaml.saml2.metadata.RequestedAttribute}

@@ -19,8 +19,8 @@ package org.opensaml.ws.soap.soap11;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.ws.soap.util.SOAPConstants;
-import org.opensaml.xml.schema.XSBooleanValue;
 
 /**
  * Interface for element having a <code>@soap11:mustUnderstand</code> attribute.

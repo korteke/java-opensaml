@@ -20,10 +20,10 @@ package org.opensaml.ws.wsaddressing.impl;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.io.MarshallingException;
+import org.opensaml.core.xml.schema.impl.XSURIMarshaller;
+import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.ws.wsaddressing.RelatesTo;
-import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.schema.impl.XSURIMarshaller;
-import org.opensaml.xml.util.XMLObjectSupport;
 import org.w3c.dom.Element;
 
 /**

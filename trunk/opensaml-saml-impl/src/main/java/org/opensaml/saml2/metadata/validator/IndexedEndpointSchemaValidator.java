@@ -21,8 +21,8 @@
 
 package org.opensaml.saml2.metadata.validator;
 
+import org.opensaml.core.xml.validation.ValidationException;
 import org.opensaml.saml2.metadata.IndexedEndpoint;
-import org.opensaml.xml.validation.ValidationException;
 
 /**
  * Checks {@link org.opensaml.saml2.metadata.IndexedEndpoint} for Schema compliance.

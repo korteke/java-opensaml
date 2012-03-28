@@ -5,30 +5,30 @@
         
         <!-- SimpleXMLObject object used for testing -->
         <ObjectProvider qualifiedName="test:SimpleElement">
-            <BuilderClass className="org.opensaml.xml.mock.SimpleXMLObjectBuilder"/>
-            <MarshallingClass className="org.opensaml.xml.mock.SimpleXMLObjectMarshaller"/>
-            <UnmarshallingClass className="org.opensaml.xml.mock.SimpleXMLObjectUnmarshaller"/>
+            <BuilderClass className="org.opensaml.core.xml.mock.SimpleXMLObjectBuilder"/>
+            <MarshallingClass className="org.opensaml.core.xml.mock.SimpleXMLObjectMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.core.xml.mock.SimpleXMLObjectUnmarshaller"/>
         </ObjectProvider>
         
         <!-- SimpleXMLObject object used for testing -->
         <ObjectProvider qualifiedName="test:Response">
-            <BuilderClass className="org.opensaml.xml.mock.SimpleXMLObjectBuilder"/>
-            <MarshallingClass className="org.opensaml.xml.mock.SimpleXMLObjectMarshaller"/>
-            <UnmarshallingClass className="org.opensaml.xml.mock.SimpleXMLObjectUnmarshaller"/>
+            <BuilderClass className="org.opensaml.core.xml.mock.SimpleXMLObjectBuilder"/>
+            <MarshallingClass className="org.opensaml.core.xml.mock.SimpleXMLObjectMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.core.xml.mock.SimpleXMLObjectUnmarshaller"/>
         </ObjectProvider>
         
         <!-- SimpleXMLObject object used for testing -->
         <ObjectProvider qualifiedName="test:Statement">
-            <BuilderClass className="org.opensaml.xml.mock.SimpleXMLObjectBuilder"/>
-            <MarshallingClass className="org.opensaml.xml.mock.SimpleXMLObjectMarshaller"/>
-            <UnmarshallingClass className="org.opensaml.xml.mock.SimpleXMLObjectUnmarshaller"/>
+            <BuilderClass className="org.opensaml.core.xml.mock.SimpleXMLObjectBuilder"/>
+            <MarshallingClass className="org.opensaml.core.xml.mock.SimpleXMLObjectMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.core.xml.mock.SimpleXMLObjectUnmarshaller"/>
         </ObjectProvider>
         
         <!-- Default object provider impl for testing -->
         <ObjectProvider qualifiedName="DEFAULT">
-            <BuilderClass className="org.opensaml.xml.schema.impl.XSAnyBuilder"/>
-            <MarshallingClass className="org.opensaml.xml.schema.impl.XSAnyMarshaller"/>
-            <UnmarshallingClass className="org.opensaml.xml.schema.impl.XSAnyUnmarshaller"/>
+            <BuilderClass className="org.opensaml.core.xml.schema.impl.XSAnyBuilder"/>
+            <MarshallingClass className="org.opensaml.core.xml.schema.impl.XSAnyMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.core.xml.schema.impl.XSAnyUnmarshaller"/>
         </ObjectProvider>
         
     </ObjectProviders>

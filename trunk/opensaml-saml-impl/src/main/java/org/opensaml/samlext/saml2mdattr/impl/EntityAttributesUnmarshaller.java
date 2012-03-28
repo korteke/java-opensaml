@@ -19,10 +19,10 @@ package org.opensaml.samlext.saml2mdattr.impl;
 
 import org.opensaml.common.impl.AbstractSAMLObjectUnmarshaller;
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml2.core.Assertion;
 import org.opensaml.saml2.core.Attribute;
 import org.opensaml.samlext.saml2mdattr.EntityAttributes;
-import org.opensaml.xml.io.UnmarshallingException;
 
 /** A thread-safe Unmarshaller for {@link org.opensaml.samlext.saml2mdattr.EntityAttributes}. */
 public class EntityAttributesUnmarshaller extends AbstractSAMLObjectUnmarshaller {

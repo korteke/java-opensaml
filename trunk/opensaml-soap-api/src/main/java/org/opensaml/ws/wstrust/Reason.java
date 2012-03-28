@@ -19,7 +19,7 @@ package org.opensaml.ws.wstrust;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.xml.schema.XSString;
+import org.opensaml.core.xml.schema.XSString;
 
 /**
  * The &lt;wst:Reason&gt; child element of a &lt;wst:Status&gt; element.

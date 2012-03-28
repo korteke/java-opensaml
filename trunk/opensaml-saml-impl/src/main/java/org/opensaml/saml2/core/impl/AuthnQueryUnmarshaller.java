@@ -22,9 +22,9 @@
 package org.opensaml.saml2.core.impl;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml2.core.AuthnQuery;
 import org.opensaml.saml2.core.RequestedAuthnContext;
-import org.opensaml.xml.io.UnmarshallingException;
 import org.w3c.dom.Attr;
 
 /**

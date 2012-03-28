@@ -20,7 +20,7 @@ package org.opensaml.ws.wssecurity;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.AttributeExtensibleXMLObject;
-import org.opensaml.xml.schema.XSURI;
+import org.opensaml.core.xml.schema.XSURI;
 
 /**
  * Interface for elements of complex type AttributedURI.

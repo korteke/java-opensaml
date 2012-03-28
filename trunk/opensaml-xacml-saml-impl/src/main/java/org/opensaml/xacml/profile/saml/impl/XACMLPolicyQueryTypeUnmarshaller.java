@@ -18,11 +18,11 @@
 package org.opensaml.xacml.profile.saml.impl;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml2.core.impl.RequestAbstractTypeUnmarshaller;
 import org.opensaml.xacml.ctx.RequestType;
 import org.opensaml.xacml.policy.IdReferenceType;
 import org.opensaml.xacml.profile.saml.XACMLPolicyQueryType;
-import org.opensaml.xml.io.UnmarshallingException;
 
 /** Unmarshaller for {@link XACMLPolicyQueryType}. */
 public class XACMLPolicyQueryTypeUnmarshaller extends RequestAbstractTypeUnmarshaller {

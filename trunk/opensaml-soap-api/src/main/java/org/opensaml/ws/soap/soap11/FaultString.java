@@ -19,8 +19,8 @@ package org.opensaml.ws.soap.soap11;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.core.xml.schema.XSString;
 import org.opensaml.ws.soap.common.SOAPObject;
-import org.opensaml.xml.schema.XSString;
 
 /**
  * SOAP 1.1 faultstring.

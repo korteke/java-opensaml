@@ -27,11 +27,11 @@ import net.shibboleth.utilities.java.support.xml.XMLParserException;
 import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml1.core.AssertionArtifact;
 import org.opensaml.saml1.core.AssertionIDReference;
 import org.opensaml.saml1.core.AttributeQuery;
 import org.opensaml.saml1.core.Request;
-import org.opensaml.xml.io.MarshallingException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 

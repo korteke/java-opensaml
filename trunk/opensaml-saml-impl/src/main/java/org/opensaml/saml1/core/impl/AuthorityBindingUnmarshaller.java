@@ -21,12 +21,12 @@ import net.shibboleth.utilities.java.support.xml.AttributeSupport;
 
 import org.opensaml.common.impl.AbstractSAMLObjectUnmarshaller;
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml1.core.AuthorityBinding;
-import org.opensaml.xml.io.UnmarshallingException;
 import org.w3c.dom.Attr;
 
 /**
- * A thread-safe {@link org.opensaml.xml.io.Unmarshaller} for {@link org.opensaml.saml1.core.AuthorityBinding} objects.
+ * A thread-safe {@link org.opensaml.core.xml.io.Unmarshaller} for {@link org.opensaml.saml1.core.AuthorityBinding} objects.
  */
 public class AuthorityBindingUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 

@@ -21,7 +21,7 @@ import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.xml.QNameSupport;
 
-import org.opensaml.xml.io.UnmarshallingException;
+import org.opensaml.core.xml.io.UnmarshallingException;
 import org.w3c.dom.Attr;
 
 /**

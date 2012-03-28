@@ -21,12 +21,12 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.saml2.core.RequestAbstractType;
 import org.opensaml.xacml.XACMLObject;
 import org.opensaml.xacml.ctx.RequestType;
 import org.opensaml.xacml.policy.PolicySetType;
 import org.opensaml.xacml.policy.PolicyType;
-import org.opensaml.xml.schema.XSBooleanValue;
 
 /** A SAML XACML profile XACMLAuthzDecisionQuery schema type. */
 public interface XACMLAuthzDecisionQueryType extends RequestAbstractType, XACMLObject {

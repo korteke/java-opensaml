@@ -21,11 +21,11 @@
 
 package org.opensaml.saml2.core.validator;
 
+import org.opensaml.core.xml.validation.ValidationException;
+import org.opensaml.core.xml.validation.Validator;
 import org.opensaml.saml2.core.Conditions;
 import org.opensaml.saml2.core.OneTimeUse;
 import org.opensaml.saml2.core.ProxyRestriction;
-import org.opensaml.xml.validation.ValidationException;
-import org.opensaml.xml.validation.Validator;
 
 /**
  * Checks the {@link org.opensaml.saml2.core.Conditions} for Spec compliance.

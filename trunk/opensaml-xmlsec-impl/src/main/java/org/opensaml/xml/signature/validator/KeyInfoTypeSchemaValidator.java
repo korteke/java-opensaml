@@ -23,6 +23,8 @@ import java.util.Set;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.validation.ValidationException;
+import org.opensaml.core.xml.validation.Validator;
 import org.opensaml.xml.signature.KeyInfoType;
 import org.opensaml.xml.signature.KeyName;
 import org.opensaml.xml.signature.KeyValue;
@@ -32,8 +34,6 @@ import org.opensaml.xml.signature.RetrievalMethod;
 import org.opensaml.xml.signature.SPKIData;
 import org.opensaml.xml.signature.SignatureConstants;
 import org.opensaml.xml.signature.X509Data;
-import org.opensaml.xml.validation.ValidationException;
-import org.opensaml.xml.validation.Validator;
 
 /**
  * Checks {@link org.opensaml.xml.signature.KeyInfoType} for Schema compliance. 

@@ -17,8 +17,8 @@
 
 package org.opensaml.core.xml;
 
-import org.opensaml.xml.io.AbstractXMLObjectUnmarshaller;
-import org.opensaml.xml.io.UnmarshallingException;
+import org.opensaml.core.xml.io.AbstractXMLObjectUnmarshaller;
+import org.opensaml.core.xml.io.UnmarshallingException;
 import org.w3c.dom.Attr;
 
 /**

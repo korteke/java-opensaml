@@ -25,6 +25,7 @@ import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
 import org.opensaml.common.xml.SAMLConstants;
+import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.saml2.common.Extensions;
 import org.opensaml.saml2.metadata.ArtifactResolutionService;
 import org.opensaml.saml2.metadata.AssertionConsumerService;
@@ -35,7 +36,6 @@ import org.opensaml.saml2.metadata.NameIDFormat;
 import org.opensaml.saml2.metadata.Organization;
 import org.opensaml.saml2.metadata.SPSSODescriptor;
 import org.opensaml.saml2.metadata.SingleLogoutService;
-import org.opensaml.xml.schema.XSBooleanValue;
 
 /**
  * 

@@ -18,11 +18,11 @@
 package org.opensaml.xml.encryption.impl;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.xml.encryption.AgreementMethod;
 import org.opensaml.xml.encryption.KANonce;
 import org.opensaml.xml.encryption.OriginatorKeyInfo;
 import org.opensaml.xml.encryption.RecipientKeyInfo;
-import org.opensaml.xml.io.UnmarshallingException;
 import org.w3c.dom.Attr;
 
 /**

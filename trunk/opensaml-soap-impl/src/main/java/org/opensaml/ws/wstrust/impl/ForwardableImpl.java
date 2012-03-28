@@ -20,8 +20,8 @@ package org.opensaml.ws.wstrust.impl;
 import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.ws.wstrust.Forwardable;
-import org.opensaml.xml.schema.XSBooleanValue;
 
 /**
  * ForwardableImpl.

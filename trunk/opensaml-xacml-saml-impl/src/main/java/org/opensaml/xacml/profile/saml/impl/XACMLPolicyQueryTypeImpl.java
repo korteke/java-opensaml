@@ -22,12 +22,12 @@ import java.util.Collections;
 import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
 import org.opensaml.saml2.core.impl.RequestAbstractTypeImpl;
 import org.opensaml.xacml.XACMLObject;
 import org.opensaml.xacml.ctx.RequestType;
 import org.opensaml.xacml.policy.IdReferenceType;
 import org.opensaml.xacml.profile.saml.XACMLPolicyQueryType;
-import org.opensaml.xml.util.IndexedXMLObjectChildrenList;
 
 /** Concrete implementation of {@link XACMLPolicyQueryType}. */
 public class XACMLPolicyQueryTypeImpl extends RequestAbstractTypeImpl implements XACMLPolicyQueryType {

@@ -17,8 +17,8 @@
 
 package org.opensaml.security;
 
+import org.opensaml.core.xml.util.AbstractWrappedSingletonFactory;
 import org.opensaml.saml2.metadata.provider.MetadataProvider;
-import org.opensaml.xml.util.AbstractWrappedSingletonFactory;
 
 /**
  * Singleton factory for producing instances of {@link MetadataCredentialResolver}

@@ -18,16 +18,16 @@
 package org.opensaml.ws.soap.soap11.impl;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.io.AbstractXMLObjectUnmarshaller;
+import org.opensaml.core.xml.io.UnmarshallingException;
+import org.opensaml.core.xml.schema.XSQName;
+import org.opensaml.core.xml.schema.XSString;
+import org.opensaml.core.xml.schema.XSURI;
 import org.opensaml.ws.soap.soap11.Detail;
 import org.opensaml.ws.soap.soap11.Fault;
 import org.opensaml.ws.soap.soap11.FaultActor;
 import org.opensaml.ws.soap.soap11.FaultCode;
 import org.opensaml.ws.soap.soap11.FaultString;
-import org.opensaml.xml.io.AbstractXMLObjectUnmarshaller;
-import org.opensaml.xml.io.UnmarshallingException;
-import org.opensaml.xml.schema.XSQName;
-import org.opensaml.xml.schema.XSString;
-import org.opensaml.xml.schema.XSURI;
 import org.w3c.dom.Attr;
 
 /**

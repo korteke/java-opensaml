@@ -23,10 +23,10 @@ package org.opensaml.saml1.core.validator;
 
 import java.util.List;
 
+import org.opensaml.core.xml.validation.ValidationException;
+import org.opensaml.core.xml.validation.Validator;
 import org.opensaml.saml1.core.Assertion;
 import org.opensaml.saml1.core.Statement;
-import org.opensaml.xml.validation.ValidationException;
-import org.opensaml.xml.validation.Validator;
 
 import com.google.common.base.Strings;
 

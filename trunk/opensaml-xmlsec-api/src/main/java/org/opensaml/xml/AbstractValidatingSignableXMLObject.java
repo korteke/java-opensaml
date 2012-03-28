@@ -23,16 +23,16 @@ import java.util.List;
 import net.shibboleth.utilities.java.support.collection.LazyList;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.validation.ValidatingXMLObject;
+import org.opensaml.core.xml.validation.ValidationException;
+import org.opensaml.core.xml.validation.Validator;
 import org.opensaml.xml.signature.AbstractSignableXMLObject;
-import org.opensaml.xml.validation.ValidatingXMLObject;
-import org.opensaml.xml.validation.ValidationException;
-import org.opensaml.xml.validation.Validator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * Extension of {@link org.opensaml.xml.signature.AbstractSignableXMLObject} that implements
- * {@link org.opensaml.xml.validation.ValidatingXMLObject}.
+ * {@link org.opensaml.core.xml.validation.ValidatingXMLObject}.
  */
 public abstract class AbstractValidatingSignableXMLObject extends AbstractSignableXMLObject implements
         ValidatingXMLObject {

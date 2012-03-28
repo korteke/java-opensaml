@@ -18,8 +18,8 @@
 package org.opensaml.saml2.metadata.validator;
 
 import org.opensaml.common.BaseSAMLObjectValidatorTestCase;
+import org.opensaml.core.xml.validation.ValidationException;
 import org.opensaml.saml2.metadata.Endpoint;
-import org.opensaml.xml.validation.ValidationException;
 
 /**
  * Test case for {@link org.opensaml.saml2.metadata.AddtionalMetadataLocation}.

@@ -19,9 +19,9 @@ package org.opensaml.xacml.ctx;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.core.xml.schema.XSString;
 import org.opensaml.xacml.XACMLConstants;
 import org.opensaml.xacml.XACMLObject;
-import org.opensaml.xml.schema.XSString;
 
 /** XACML context StatusMessage schema type. */
 public interface StatusMessageType extends XSString, XACMLObject {

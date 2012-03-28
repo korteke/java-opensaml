@@ -19,8 +19,8 @@ package org.opensaml.ws.wstrust.impl;
 
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.ws.wstrust.RequestedSecurityToken;
-import org.opensaml.xml.io.UnmarshallingException;
 
 /**
  * Unmarshaller for the &lt;wst:RequestedSecurityToken&gt; element.

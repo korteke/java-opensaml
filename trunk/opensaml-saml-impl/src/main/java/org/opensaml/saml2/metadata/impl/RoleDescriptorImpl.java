@@ -28,13 +28,13 @@ import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import org.joda.time.DateTime;
 import org.opensaml.common.impl.AbstractSignableSAMLObject;
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.util.AttributeMap;
+import org.opensaml.core.xml.util.XMLObjectChildrenList;
 import org.opensaml.saml2.common.Extensions;
 import org.opensaml.saml2.metadata.ContactPerson;
 import org.opensaml.saml2.metadata.KeyDescriptor;
 import org.opensaml.saml2.metadata.Organization;
 import org.opensaml.saml2.metadata.RoleDescriptor;
-import org.opensaml.xml.util.AttributeMap;
-import org.opensaml.xml.util.XMLObjectChildrenList;
 
 /** Concrete implementation of {@link org.opensaml.saml2.metadata.RoleDescriptor}. */
 public abstract class RoleDescriptorImpl extends AbstractSignableSAMLObject implements RoleDescriptor {

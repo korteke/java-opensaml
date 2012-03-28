@@ -19,7 +19,7 @@ package org.opensaml.ws.wspolicy;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.xml.schema.XSBooleanValue;
+import org.opensaml.core.xml.schema.XSBooleanValue;
 
 /**
  * Interface for element having a <code>@wsp:Optional</code> attribute.

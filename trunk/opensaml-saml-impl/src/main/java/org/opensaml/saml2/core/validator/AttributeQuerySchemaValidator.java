@@ -26,9 +26,9 @@ import java.util.List;
 
 import net.shibboleth.utilities.java.support.collection.Pair;
 
+import org.opensaml.core.xml.validation.ValidationException;
 import org.opensaml.saml2.core.Attribute;
 import org.opensaml.saml2.core.AttributeQuery;
-import org.opensaml.xml.validation.ValidationException;
 
 import com.google.common.base.Strings;
 

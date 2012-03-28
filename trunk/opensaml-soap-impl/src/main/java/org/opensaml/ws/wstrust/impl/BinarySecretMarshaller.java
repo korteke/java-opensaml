@@ -18,10 +18,10 @@
 package org.opensaml.ws.wstrust.impl;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.io.MarshallingException;
+import org.opensaml.core.xml.schema.impl.XSBase64BinaryMarshaller;
+import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.ws.wstrust.BinarySecret;
-import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.schema.impl.XSBase64BinaryMarshaller;
-import org.opensaml.xml.util.XMLObjectSupport;
 import org.w3c.dom.Element;
 
 /**

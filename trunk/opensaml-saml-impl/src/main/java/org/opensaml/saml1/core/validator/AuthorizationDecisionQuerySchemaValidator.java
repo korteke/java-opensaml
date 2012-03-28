@@ -21,8 +21,8 @@
 
 package org.opensaml.saml1.core.validator;
 
+import org.opensaml.core.xml.validation.ValidationException;
 import org.opensaml.saml1.core.AuthorizationDecisionQuery;
-import org.opensaml.xml.validation.ValidationException;
 
 import com.google.common.base.Strings;
 

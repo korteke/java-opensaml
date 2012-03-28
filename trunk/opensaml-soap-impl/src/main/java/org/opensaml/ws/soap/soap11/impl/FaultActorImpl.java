@@ -17,8 +17,8 @@
 
 package org.opensaml.ws.soap.soap11.impl;
 
+import org.opensaml.core.xml.schema.impl.XSURIImpl;
 import org.opensaml.ws.soap.soap11.FaultActor;
-import org.opensaml.xml.schema.impl.XSURIImpl;
 
 /**
  * Concrete implementation of {@link org.opensaml.ws.soap.soap11.FaultActor}.

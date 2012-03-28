@@ -20,7 +20,7 @@ package org.opensaml.common.binding.artifact;
 import java.util.Map;
 
 import org.opensaml.common.SAMLObject;
-import org.opensaml.xml.io.MarshallingException;
+import org.opensaml.core.xml.io.MarshallingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

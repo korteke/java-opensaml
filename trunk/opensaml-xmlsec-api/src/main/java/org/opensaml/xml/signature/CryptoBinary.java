@@ -21,7 +21,7 @@ import java.math.BigInteger;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.xml.schema.XSBase64Binary;
+import org.opensaml.core.xml.schema.XSBase64Binary;
 
 /**
  * XMLObject representing XML Digital Signature, version 20020212, CryptoBinary simple type.

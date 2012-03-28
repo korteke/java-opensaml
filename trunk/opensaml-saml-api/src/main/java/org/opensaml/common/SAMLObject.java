@@ -17,7 +17,7 @@
 
 package org.opensaml.common;
 
-import org.opensaml.xml.validation.ValidatingXMLObject;
+import org.opensaml.core.xml.validation.ValidatingXMLObject;
 
 /**
  * A base interface for all SAML Objects.

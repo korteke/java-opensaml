@@ -22,11 +22,11 @@ import javax.xml.namespace.QName;
 import net.shibboleth.utilities.java.support.xml.ParserPool;
 
 import org.opensaml.core.config.ConfigurationService;
-import org.opensaml.xml.io.Marshaller;
-import org.opensaml.xml.io.MarshallerFactory;
-import org.opensaml.xml.io.Unmarshaller;
-import org.opensaml.xml.io.UnmarshallerFactory;
-import org.opensaml.xml.validation.ValidatorSuite;
+import org.opensaml.core.xml.io.Marshaller;
+import org.opensaml.core.xml.io.MarshallerFactory;
+import org.opensaml.core.xml.io.Unmarshaller;
+import org.opensaml.core.xml.io.UnmarshallerFactory;
+import org.opensaml.core.xml.validation.ValidatorSuite;
 
 /** Class for loading library configuration files and retrieving the configured components. */
 public class XMLObjectProviderRegistrySupport {

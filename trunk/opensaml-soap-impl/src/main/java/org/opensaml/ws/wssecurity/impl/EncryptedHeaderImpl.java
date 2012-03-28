@@ -23,6 +23,7 @@ import java.util.List;
 import net.shibboleth.utilities.java.support.collection.LazyList;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.ws.soap.soap11.ActorBearing;
 import org.opensaml.ws.soap.soap11.MustUnderstandBearing;
 import org.opensaml.ws.soap.soap12.RelayBearing;
@@ -30,7 +31,6 @@ import org.opensaml.ws.soap.soap12.RoleBearing;
 import org.opensaml.ws.wssecurity.EncryptedHeader;
 import org.opensaml.ws.wssecurity.IdBearing;
 import org.opensaml.xml.encryption.EncryptedData;
-import org.opensaml.xml.schema.XSBooleanValue;
 
 /**
  * Implementation of {@link EncryptedHeader}.

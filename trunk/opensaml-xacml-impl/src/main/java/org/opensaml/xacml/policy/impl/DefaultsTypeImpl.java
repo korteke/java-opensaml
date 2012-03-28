@@ -22,9 +22,9 @@ import java.util.Collections;
 import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.schema.XSString;
 import org.opensaml.xacml.impl.AbstractXACMLObject;
 import org.opensaml.xacml.policy.DefaultsType;
-import org.opensaml.xml.schema.XSString;
 
 /** Implementation for {@link DefaultsType}. */
 public class DefaultsTypeImpl extends AbstractXACMLObject implements DefaultsType {
