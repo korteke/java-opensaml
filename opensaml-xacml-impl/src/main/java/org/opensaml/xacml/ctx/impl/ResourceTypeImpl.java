@@ -22,11 +22,11 @@ import java.util.Collections;
 import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.util.XMLObjectChildrenList;
 import org.opensaml.xacml.ctx.AttributeType;
 import org.opensaml.xacml.ctx.ResourceContentType;
 import org.opensaml.xacml.ctx.ResourceType;
 import org.opensaml.xacml.impl.AbstractXACMLObject;
-import org.opensaml.xml.util.XMLObjectChildrenList;
 
 /** Concrete implementation of {@link ResourceType}. */
 public class ResourceTypeImpl extends AbstractXACMLObject implements ResourceType {

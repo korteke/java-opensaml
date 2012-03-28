@@ -20,9 +20,9 @@ package org.opensaml.saml2.metadata.validator;
 import javax.xml.namespace.QName;
 
 import org.opensaml.common.xml.SAMLConstants;
+import org.opensaml.core.xml.validation.ValidationException;
 import org.opensaml.saml2.metadata.AssertionConsumerService;
 import org.opensaml.saml2.metadata.SPSSODescriptor;
-import org.opensaml.xml.validation.ValidationException;
 
 /**
  * Test case for {@link org.opensaml.saml2.metadata.SPSSODescriptor}.

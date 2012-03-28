@@ -18,7 +18,7 @@
 package org.opensaml.ws.wstrust.impl;
 
 
-import org.opensaml.xml.schema.impl.XSURIUnmarshaller;
+import org.opensaml.core.xml.schema.impl.XSURIUnmarshaller;
 
 /**
  * Unmarshaller for the wst:ComputedKey element.

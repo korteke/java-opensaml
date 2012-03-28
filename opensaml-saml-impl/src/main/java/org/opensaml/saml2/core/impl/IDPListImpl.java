@@ -27,10 +27,10 @@ import java.util.List;
 
 import org.opensaml.common.impl.AbstractSAMLObject;
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.util.XMLObjectChildrenList;
 import org.opensaml.saml2.core.GetComplete;
 import org.opensaml.saml2.core.IDPEntry;
 import org.opensaml.saml2.core.IDPList;
-import org.opensaml.xml.util.XMLObjectChildrenList;
 
 /**
  * Concrete implementation of {@link org.opensaml.saml2.core.IDPList}.

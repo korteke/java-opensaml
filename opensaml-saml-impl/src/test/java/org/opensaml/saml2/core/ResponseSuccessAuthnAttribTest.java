@@ -22,7 +22,7 @@ import org.joda.time.chrono.ISOChronology;
 import org.opensaml.common.BaseComplexSAMLObjectTestCase;
 import org.opensaml.common.SAMLVersion;
 import org.opensaml.core.xml.XMLObjectBuilder;
-import org.opensaml.xml.schema.XSString;
+import org.opensaml.core.xml.schema.XSString;
 
 /**
  * Tests unmarshalling and marshalling for various response messages.

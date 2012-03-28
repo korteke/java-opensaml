@@ -21,7 +21,7 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.xml.validation.ValidatingXMLObject;
+import org.opensaml.core.xml.validation.ValidatingXMLObject;
 
 /**
  * XMLObject representing XML Encryption, version 20021210, ReferenceList element.

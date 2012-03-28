@@ -21,8 +21,8 @@ package org.opensaml.xml.encryption.impl;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
+import org.opensaml.core.xml.mock.SimpleXMLObject;
 import org.opensaml.xml.encryption.EncryptionProperty;
-import org.opensaml.xml.mock.SimpleXMLObject;
 
 /**
  *

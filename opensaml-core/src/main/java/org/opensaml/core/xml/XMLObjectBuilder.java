@@ -74,7 +74,7 @@ public interface XMLObjectBuilder<XMLObjectType extends XMLObject> {
      * Creates an XMLObject using information from the given DOM element. This method must set the QName for the Element
      * QName within the constructed XMLObject.
      * 
-     * This method is used by {@link org.opensaml.xml.io.AbstractXMLObjectUnmarshaller}.
+     * This method is used by {@link org.opensaml.core.xml.io.AbstractXMLObjectUnmarshaller}.
      * 
      * @param element the DOM Element containing information about the object to be built.
      * 

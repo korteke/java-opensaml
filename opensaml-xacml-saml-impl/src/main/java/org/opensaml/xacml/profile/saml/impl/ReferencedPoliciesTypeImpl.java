@@ -23,10 +23,10 @@ import java.util.List;
 
 import org.opensaml.common.impl.AbstractSAMLObject;
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.util.XMLObjectChildrenList;
 import org.opensaml.xacml.policy.PolicySetType;
 import org.opensaml.xacml.policy.PolicyType;
 import org.opensaml.xacml.profile.saml.ReferencedPoliciesType;
-import org.opensaml.xml.util.XMLObjectChildrenList;
 
 /**
  * Implementation of {@link ReferencedPoliciesType}.

@@ -23,10 +23,10 @@ import java.util.List;
 
 import org.opensaml.common.xml.SAMLConstants;
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.util.XMLObjectChildrenList;
 import org.opensaml.saml1.core.Action;
 import org.opensaml.saml1.core.AuthorizationDecisionQuery;
 import org.opensaml.saml1.core.Evidence;
-import org.opensaml.xml.util.XMLObjectChildrenList;
 
 /**
  * Concrete implementation of the {@link org.opensaml.saml1.core.AuthorizationDecisionQuery} interface

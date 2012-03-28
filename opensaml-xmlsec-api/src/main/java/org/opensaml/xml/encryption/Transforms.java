@@ -21,8 +21,8 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.core.xml.validation.ValidatingXMLObject;
 import org.opensaml.xml.signature.Transform;
-import org.opensaml.xml.validation.ValidatingXMLObject;
 
 /**
  * XMLObject representing XML Encryption, version 20021210, Transforms element.

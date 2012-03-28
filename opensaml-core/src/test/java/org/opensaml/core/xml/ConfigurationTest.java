@@ -32,10 +32,10 @@ import org.opensaml.core.xml.ConfigurationException;
 import org.opensaml.core.xml.XMLConfigurator;
 import org.opensaml.core.xml.XMLObjectBuilder;
 import org.opensaml.core.xml.XMLObjectProviderRegistrySupport;
-import org.opensaml.xml.io.Marshaller;
-import org.opensaml.xml.io.Unmarshaller;
-import org.opensaml.xml.validation.Validator;
-import org.opensaml.xml.validation.ValidatorSuite;
+import org.opensaml.core.xml.io.Marshaller;
+import org.opensaml.core.xml.io.Unmarshaller;
+import org.opensaml.core.xml.validation.Validator;
+import org.opensaml.core.xml.validation.ValidatorSuite;
 
 /**
  * Test case for the library configuration mechanism.

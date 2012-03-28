@@ -34,6 +34,8 @@ import org.opensaml.core.xml.AttributeExtensibleXMLObject;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.XMLObjectBuilderFactory;
 import org.opensaml.core.xml.XMLObjectProviderRegistrySupport;
+import org.opensaml.core.xml.schema.XSBooleanValue;
+import org.opensaml.core.xml.util.AttributeMap;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.soap.soap11.ActorBearing;
 import org.opensaml.ws.soap.soap11.Detail;
@@ -45,8 +47,6 @@ import org.opensaml.ws.soap.soap11.FaultCode;
 import org.opensaml.ws.soap.soap11.FaultString;
 import org.opensaml.ws.soap.soap11.Header;
 import org.opensaml.ws.soap.soap11.MustUnderstandBearing;
-import org.opensaml.xml.schema.XSBooleanValue;
-import org.opensaml.xml.util.AttributeMap;
 
 import com.google.common.base.Objects;
 

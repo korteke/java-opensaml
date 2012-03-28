@@ -22,9 +22,9 @@
 package org.opensaml.saml1.core.validator;
 
 import org.opensaml.common.SAMLVersion;
+import org.opensaml.core.xml.validation.ValidationException;
+import org.opensaml.core.xml.validation.Validator;
 import org.opensaml.saml1.core.RequestAbstractType;
-import org.opensaml.xml.validation.ValidationException;
-import org.opensaml.xml.validation.Validator;
 
 import com.google.common.base.Strings;
 

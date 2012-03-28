@@ -17,7 +17,7 @@
 
 package org.opensaml.xml.signature.impl;
 
-import org.opensaml.xml.schema.impl.XSBase64BinaryImpl;
+import org.opensaml.core.xml.schema.impl.XSBase64BinaryImpl;
 import org.opensaml.xml.signature.X509SKI;
 
 /**

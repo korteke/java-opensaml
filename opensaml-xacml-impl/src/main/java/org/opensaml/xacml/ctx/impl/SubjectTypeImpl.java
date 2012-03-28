@@ -22,10 +22,10 @@ import java.util.Collections;
 import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.util.XMLObjectChildrenList;
 import org.opensaml.xacml.ctx.AttributeType;
 import org.opensaml.xacml.ctx.SubjectType;
 import org.opensaml.xacml.impl.AbstractXACMLObject;
-import org.opensaml.xml.util.XMLObjectChildrenList;
 
 /** Concrete implementation of {@link SubjectType}. */
 public class SubjectTypeImpl extends AbstractXACMLObject implements SubjectType {

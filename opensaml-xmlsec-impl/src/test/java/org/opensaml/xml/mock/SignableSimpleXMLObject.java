@@ -29,11 +29,11 @@ import javax.xml.namespace.QName;
 import org.opensaml.core.xml.AttributeExtensibleXMLObject;
 import org.opensaml.core.xml.ElementExtensibleXMLObject;
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.util.AttributeMap;
+import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
+import org.opensaml.core.xml.util.XMLObjectChildrenList;
 import org.opensaml.xml.encryption.EncryptedData;
 import org.opensaml.xml.signature.AbstractSignableXMLObject;
-import org.opensaml.xml.util.AttributeMap;
-import org.opensaml.xml.util.IndexedXMLObjectChildrenList;
-import org.opensaml.xml.util.XMLObjectChildrenList;
 
 /**
  * Simple XMLObject that can be used for testing

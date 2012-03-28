@@ -24,10 +24,10 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
 import org.opensaml.xacml.ctx.StatusCodeType;
 import org.opensaml.xacml.ctx.StatusDetailType;
 import org.opensaml.xacml.impl.AbstractXACMLObject;
-import org.opensaml.xml.util.IndexedXMLObjectChildrenList;
 
 /** Concrete implementation of {@link StatusCodeType}. */
 public class StatusDetailTypeImpl extends AbstractXACMLObject implements StatusDetailType {

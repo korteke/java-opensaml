@@ -22,7 +22,7 @@ import javax.xml.namespace.QName;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
 import org.opensaml.core.xml.AttributeExtensibleXMLObject;
-import org.opensaml.xml.schema.XSString;
+import org.opensaml.core.xml.schema.XSString;
 
 /**
  * Interface for elements of complex type AttributedDateTime.

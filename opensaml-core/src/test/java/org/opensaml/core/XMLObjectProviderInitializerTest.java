@@ -23,7 +23,7 @@ import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.core.config.Initializer;
 import org.opensaml.core.config.XMLObjectProviderInitializerBaseTestCase;
 import org.opensaml.core.xml.XMLObjectProviderRegistry;
-import org.opensaml.xml.schema.XSString;
+import org.opensaml.core.xml.schema.XSString;
 
 /**
  * Test XMLObject provider initializer for module "core".

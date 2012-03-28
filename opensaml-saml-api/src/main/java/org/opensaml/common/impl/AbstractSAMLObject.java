@@ -19,7 +19,7 @@ package org.opensaml.common.impl;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
-import org.opensaml.xml.validation.AbstractValidatingXMLObject;
+import org.opensaml.core.xml.validation.AbstractValidatingXMLObject;
 
 /**
  * An abstract implementation of SAMLObject.

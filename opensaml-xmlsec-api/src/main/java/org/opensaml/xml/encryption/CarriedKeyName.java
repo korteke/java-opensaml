@@ -19,7 +19,7 @@ package org.opensaml.xml.encryption;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.xml.schema.XSString;
+import org.opensaml.core.xml.schema.XSString;
 
 /**
  * XMLObject representing XML Encryption, version 20021210, CarriedKeyName element.

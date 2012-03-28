@@ -29,7 +29,7 @@ import org.custommonkey.xmlunit.XMLAssert;
 import org.joda.time.DateTime;
 import org.opensaml.common.BaseTestCase;
 import org.opensaml.common.SAMLObject;
-import org.opensaml.xml.io.MarshallingException;
+import org.opensaml.core.xml.io.MarshallingException;
 import org.w3c.dom.Document;
 
 /**

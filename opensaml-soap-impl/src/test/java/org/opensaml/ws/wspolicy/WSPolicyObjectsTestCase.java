@@ -23,11 +23,11 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLConfigurator;
 import org.opensaml.core.xml.XMLObjectProviderRegistrySupport;
+import org.opensaml.core.xml.schema.XSAny;
+import org.opensaml.core.xml.schema.impl.XSAnyBuilder;
+import org.opensaml.core.xml.schema.impl.XSAnyMarshaller;
+import org.opensaml.core.xml.schema.impl.XSAnyUnmarshaller;
 import org.opensaml.ws.WSBaseTestCase;
-import org.opensaml.xml.schema.XSAny;
-import org.opensaml.xml.schema.impl.XSAnyBuilder;
-import org.opensaml.xml.schema.impl.XSAnyMarshaller;
-import org.opensaml.xml.schema.impl.XSAnyUnmarshaller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

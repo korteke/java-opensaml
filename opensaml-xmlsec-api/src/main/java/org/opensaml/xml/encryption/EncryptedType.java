@@ -19,8 +19,8 @@ package org.opensaml.xml.encryption;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.core.xml.validation.ValidatingXMLObject;
 import org.opensaml.xml.signature.KeyInfo;
-import org.opensaml.xml.validation.ValidatingXMLObject;
 
 /**
  * XMLObject representing XML Encryption, version 20021210, EncryptedType type. This is the base type for

@@ -23,12 +23,12 @@ import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
 import org.opensaml.common.impl.AbstractSAMLObjectUnmarshaller;
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml2.common.CacheableSAMLObject;
 import org.opensaml.saml2.common.Extensions;
 import org.opensaml.saml2.common.TimeBoundSAMLObject;
 import org.opensaml.saml2.metadata.EntitiesDescriptor;
 import org.opensaml.saml2.metadata.EntityDescriptor;
-import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.signature.Signature;
 import org.w3c.dom.Attr;
 

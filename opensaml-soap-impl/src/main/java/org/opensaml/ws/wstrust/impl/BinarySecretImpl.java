@@ -20,9 +20,9 @@ package org.opensaml.ws.wstrust.impl;
 import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.schema.impl.XSBase64BinaryImpl;
+import org.opensaml.core.xml.util.AttributeMap;
 import org.opensaml.ws.wstrust.BinarySecret;
-import org.opensaml.xml.schema.impl.XSBase64BinaryImpl;
-import org.opensaml.xml.util.AttributeMap;
 
 /**
  * BinarySecretImpl.

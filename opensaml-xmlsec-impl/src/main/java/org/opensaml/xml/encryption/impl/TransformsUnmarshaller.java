@@ -18,8 +18,8 @@
 package org.opensaml.xml.encryption.impl;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.xml.encryption.Transforms;
-import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.signature.Transform;
 
 /**

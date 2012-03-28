@@ -22,9 +22,9 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.validation.ValidatingXMLObject;
 import org.opensaml.xml.encryption.AgreementMethod;
 import org.opensaml.xml.encryption.EncryptedKey;
-import org.opensaml.xml.validation.ValidatingXMLObject;
 
 /** XMLObject representing XML Digital Signature, version 20020212, KeyInfoType complex type. */
 public interface KeyInfoType extends ValidatingXMLObject {

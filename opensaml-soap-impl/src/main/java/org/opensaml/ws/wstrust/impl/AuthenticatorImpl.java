@@ -24,9 +24,9 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
 import org.opensaml.ws.wstrust.Authenticator;
 import org.opensaml.ws.wstrust.CombinedHash;
-import org.opensaml.xml.util.IndexedXMLObjectChildrenList;
 
 /**
  * AuthenticatorImpl.

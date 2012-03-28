@@ -22,12 +22,12 @@ import java.util.Collections;
 import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
+import org.opensaml.core.xml.validation.AbstractValidatingXMLObject;
 import org.opensaml.xml.encryption.DataReference;
 import org.opensaml.xml.encryption.KeyReference;
 import org.opensaml.xml.encryption.ReferenceList;
 import org.opensaml.xml.encryption.ReferenceType;
-import org.opensaml.xml.util.IndexedXMLObjectChildrenList;
-import org.opensaml.xml.validation.AbstractValidatingXMLObject;
 
 /**
  * Concrete implementation of {@link org.opensaml.xml.encryption.ReferenceList}

@@ -23,12 +23,12 @@ import java.util.Set;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.validation.ValidationException;
+import org.opensaml.core.xml.validation.Validator;
 import org.opensaml.xml.signature.PGPData;
 import org.opensaml.xml.signature.PGPKeyID;
 import org.opensaml.xml.signature.PGPKeyPacket;
 import org.opensaml.xml.signature.SignatureConstants;
-import org.opensaml.xml.validation.ValidationException;
-import org.opensaml.xml.validation.Validator;
 
 /**
  * Checks {@link org.opensaml.xml.signature.PGPData} for Schema compliance. 

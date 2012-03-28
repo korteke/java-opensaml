@@ -18,10 +18,10 @@
 package org.opensaml.xacml.ctx.impl;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.xacml.ctx.ResponseType;
 import org.opensaml.xacml.ctx.ResultType;
 import org.opensaml.xacml.impl.AbstractXACMLObjectUnmarshaller;
-import org.opensaml.xml.io.UnmarshallingException;
 
 /** Unmarshaller for {@link ResponseType} objects. */
 public class ResponseTypeUnmarshaller extends AbstractXACMLObjectUnmarshaller {

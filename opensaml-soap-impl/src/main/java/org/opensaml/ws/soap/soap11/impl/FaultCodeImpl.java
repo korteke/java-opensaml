@@ -17,8 +17,8 @@
 
 package org.opensaml.ws.soap.soap11.impl;
 
+import org.opensaml.core.xml.schema.impl.XSQNameImpl;
 import org.opensaml.ws.soap.soap11.FaultCode;
-import org.opensaml.xml.schema.impl.XSQNameImpl;
 
 /**
  * Concrete implementation of {@link org.opensaml.ws.soap.soap11.FaultCode}.

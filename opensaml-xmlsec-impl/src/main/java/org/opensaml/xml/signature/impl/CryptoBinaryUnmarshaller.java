@@ -17,7 +17,7 @@
 
 package org.opensaml.xml.signature.impl;
 
-import org.opensaml.xml.schema.impl.XSBase64BinaryUnmarshaller;
+import org.opensaml.core.xml.schema.impl.XSBase64BinaryUnmarshaller;
 
 /**
  * A thread-safe Unmarshaller for {@link org.opensaml.xml.signature.CryptoBinary} objects.

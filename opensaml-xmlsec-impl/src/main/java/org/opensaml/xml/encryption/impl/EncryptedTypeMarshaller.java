@@ -18,8 +18,8 @@
 package org.opensaml.xml.encryption.impl;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.xml.encryption.EncryptedType;
-import org.opensaml.xml.io.MarshallingException;
 import org.w3c.dom.Element;
 
 /**

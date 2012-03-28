@@ -17,8 +17,8 @@
 
 package org.opensaml.ws.soap.soap11.impl;
 
+import org.opensaml.core.xml.schema.impl.XSStringImpl;
 import org.opensaml.ws.soap.soap11.FaultString;
-import org.opensaml.xml.schema.impl.XSStringImpl;
 
 /**
  * Concrete implemenation of {@link org.opensaml.ws.soap.soap11.FaultString}.

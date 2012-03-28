@@ -21,7 +21,7 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.xml.validation.ValidatingXMLObject;
+import org.opensaml.core.xml.validation.ValidatingXMLObject;
 
 /**
  * XMLObject representing XML Digital Signature, version 20020212, Transforms element.

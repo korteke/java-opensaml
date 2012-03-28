@@ -24,12 +24,12 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.util.AttributeMap;
+import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
 import org.opensaml.ws.wsaddressing.Address;
 import org.opensaml.ws.wsaddressing.EndpointReferenceType;
 import org.opensaml.ws.wsaddressing.Metadata;
 import org.opensaml.ws.wsaddressing.ReferenceParameters;
-import org.opensaml.xml.util.AttributeMap;
-import org.opensaml.xml.util.IndexedXMLObjectChildrenList;
 
 /**
  * Abstract implementation of the element of type {@link EndpointReferenceType }.

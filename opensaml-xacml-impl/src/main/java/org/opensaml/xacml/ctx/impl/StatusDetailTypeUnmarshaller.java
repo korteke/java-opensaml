@@ -18,9 +18,9 @@
 package org.opensaml.xacml.ctx.impl;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.xacml.ctx.StatusDetailType;
 import org.opensaml.xacml.impl.AbstractXACMLObjectUnmarshaller;
-import org.opensaml.xml.io.UnmarshallingException;
 
 /** Unmarshaller for {@link StatusDetailType} objects. */
 public class StatusDetailTypeUnmarshaller extends AbstractXACMLObjectUnmarshaller {

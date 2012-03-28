@@ -23,10 +23,10 @@ import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
 import org.custommonkey.xmlunit.Diff;
 import org.custommonkey.xmlunit.XMLAssert;
-import org.opensaml.xml.io.Marshaller;
-import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.mock.SimpleXMLObject;
-import org.opensaml.xml.mock.SimpleXMLObjectBuilder;
+import org.opensaml.core.xml.io.Marshaller;
+import org.opensaml.core.xml.io.MarshallingException;
+import org.opensaml.core.xml.mock.SimpleXMLObject;
+import org.opensaml.core.xml.mock.SimpleXMLObjectBuilder;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 

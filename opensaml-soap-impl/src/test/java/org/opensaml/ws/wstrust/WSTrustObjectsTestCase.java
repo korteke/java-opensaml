@@ -24,17 +24,17 @@ import javax.xml.namespace.QName;
 import org.joda.time.DateTime;
 import org.opensaml.core.xml.XMLConfigurator;
 import org.opensaml.core.xml.XMLObjectProviderRegistrySupport;
+import org.opensaml.core.xml.schema.XSAny;
+import org.opensaml.core.xml.schema.XSBooleanValue;
+import org.opensaml.core.xml.schema.impl.XSAnyBuilder;
+import org.opensaml.core.xml.schema.impl.XSAnyMarshaller;
+import org.opensaml.core.xml.schema.impl.XSAnyUnmarshaller;
 import org.opensaml.ws.WSBaseTestCase;
 import org.opensaml.ws.wssecurity.Created;
 import org.opensaml.ws.wssecurity.Password;
 import org.opensaml.ws.wssecurity.Timestamp;
 import org.opensaml.ws.wssecurity.Username;
 import org.opensaml.ws.wssecurity.UsernameToken;
-import org.opensaml.xml.schema.XSAny;
-import org.opensaml.xml.schema.XSBooleanValue;
-import org.opensaml.xml.schema.impl.XSAnyBuilder;
-import org.opensaml.xml.schema.impl.XSAnyMarshaller;
-import org.opensaml.xml.schema.impl.XSAnyUnmarshaller;
 
 /**
  * WSTrustObjectsTestCase is the base test case for the WS-Trust objects.

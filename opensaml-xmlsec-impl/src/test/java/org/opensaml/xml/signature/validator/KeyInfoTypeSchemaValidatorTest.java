@@ -18,8 +18,8 @@
 package org.opensaml.xml.signature.validator;
 
 import org.opensaml.core.xml.BaseXMLObjectValidatorTestCase;
-import org.opensaml.xml.mock.SimpleXMLObject;
-import org.opensaml.xml.mock.SimpleXMLObjectBuilder;
+import org.opensaml.core.xml.mock.SimpleXMLObject;
+import org.opensaml.core.xml.mock.SimpleXMLObjectBuilder;
 import org.opensaml.xml.signature.KeyInfo;
 import org.opensaml.xml.signature.KeyName;
 import org.opensaml.xml.signature.SignatureConstants;

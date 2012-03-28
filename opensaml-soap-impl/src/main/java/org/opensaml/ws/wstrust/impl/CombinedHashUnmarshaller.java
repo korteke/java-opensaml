@@ -18,7 +18,7 @@
 package org.opensaml.ws.wstrust.impl;
 
 
-import org.opensaml.xml.schema.impl.XSBase64BinaryUnmarshaller;
+import org.opensaml.core.xml.schema.impl.XSBase64BinaryUnmarshaller;
 
 /**
  * Unmarshaller for the wst:CombinedHash element.

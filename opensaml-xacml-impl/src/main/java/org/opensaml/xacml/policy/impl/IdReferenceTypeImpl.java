@@ -17,8 +17,8 @@
 
 package org.opensaml.xacml.policy.impl;
 
+import org.opensaml.core.xml.schema.impl.XSStringImpl;
 import org.opensaml.xacml.policy.IdReferenceType;
-import org.opensaml.xml.schema.impl.XSStringImpl;
 
 /**
  * Implementation of {@link IdReferenceType}.

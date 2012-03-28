@@ -46,9 +46,9 @@ import org.bouncycastle.asn1.DERString;
 import org.bouncycastle.asn1.x509.SubjectKeyIdentifier;
 import org.bouncycastle.x509.extension.SubjectKeyIdentifierStructure;
 import org.bouncycastle.x509.extension.X509ExtensionUtil;
+import org.opensaml.core.xml.util.IPAddressHelper;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.SecurityHelper;
-import org.opensaml.xml.util.IPAddressHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

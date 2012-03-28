@@ -22,11 +22,11 @@ import java.util.Collections;
 import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.util.XMLObjectChildrenList;
 import org.opensaml.saml1.core.Action;
 import org.opensaml.saml1.core.AuthorizationDecisionStatement;
 import org.opensaml.saml1.core.DecisionTypeEnumeration;
 import org.opensaml.saml1.core.Evidence;
-import org.opensaml.xml.util.XMLObjectChildrenList;
 
 /**
  * A concrete implementation of {@link org.opensaml.saml1.core.AuthorizationDecisionStatement}

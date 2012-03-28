@@ -26,10 +26,10 @@ import java.util.Collections;
 import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.util.XMLObjectChildrenList;
 import org.opensaml.saml2.core.Action;
 import org.opensaml.saml2.core.AuthzDecisionQuery;
 import org.opensaml.saml2.core.Evidence;
-import org.opensaml.xml.util.XMLObjectChildrenList;
 
 /**
  * Concrete implementation of {@link org.opensaml.saml2.core.AuthzDecisionQuery}.

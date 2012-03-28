@@ -22,10 +22,10 @@ import javax.xml.namespace.QName;
 import net.shibboleth.utilities.java.support.xml.XmlConstants;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.validation.ValidationException;
+import org.opensaml.core.xml.validation.Validator;
 import org.opensaml.xml.encryption.EncryptionConstants;
 import org.opensaml.xml.encryption.EncryptionProperty;
-import org.opensaml.xml.validation.ValidationException;
-import org.opensaml.xml.validation.Validator;
 
 /**
  * Checks {@link org.opensaml.xml.encryption.EncryptionProperty} for Schema compliance.

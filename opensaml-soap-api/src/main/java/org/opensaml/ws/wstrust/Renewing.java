@@ -19,7 +19,7 @@ package org.opensaml.ws.wstrust;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.xml.schema.XSBooleanValue;
+import org.opensaml.core.xml.schema.XSBooleanValue;
 
 /**
  * The wst:Renewing element.

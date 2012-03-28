@@ -19,11 +19,11 @@ package org.opensaml.xml.encryption.impl;
 
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
+import org.opensaml.core.xml.mock.SimpleXMLObject;
 import org.opensaml.xml.encryption.AgreementMethod;
 import org.opensaml.xml.encryption.KANonce;
 import org.opensaml.xml.encryption.OriginatorKeyInfo;
 import org.opensaml.xml.encryption.RecipientKeyInfo;
-import org.opensaml.xml.mock.SimpleXMLObject;
 
 /**
  *

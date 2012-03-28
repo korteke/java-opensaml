@@ -18,11 +18,11 @@
 package org.opensaml.saml2.metadata.impl;
 
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.saml2.metadata.AttributeConsumingService;
 import org.opensaml.saml2.metadata.RequestedAttribute;
 import org.opensaml.saml2.metadata.ServiceDescription;
 import org.opensaml.saml2.metadata.ServiceName;
-import org.opensaml.xml.schema.XSBooleanValue;
 
 /**
  * Test case for creating, marshalling, and unmarshalling

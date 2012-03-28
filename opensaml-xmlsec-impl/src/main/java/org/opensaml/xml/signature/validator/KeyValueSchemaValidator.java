@@ -22,10 +22,10 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.validation.ValidationException;
+import org.opensaml.core.xml.validation.Validator;
 import org.opensaml.xml.signature.KeyValue;
 import org.opensaml.xml.signature.SignatureConstants;
-import org.opensaml.xml.validation.ValidationException;
-import org.opensaml.xml.validation.Validator;
 
 /**
  * Checks {@link org.opensaml.xml.signature.KeyValue} for Schema compliance. 

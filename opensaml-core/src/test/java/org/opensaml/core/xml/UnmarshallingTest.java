@@ -21,10 +21,10 @@ import java.util.List;
 
 import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
-import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.io.Unmarshaller;
-import org.opensaml.xml.io.UnmarshallingException;
-import org.opensaml.xml.mock.SimpleXMLObject;
+import org.opensaml.core.xml.io.MarshallingException;
+import org.opensaml.core.xml.io.Unmarshaller;
+import org.opensaml.core.xml.io.UnmarshallingException;
+import org.opensaml.core.xml.mock.SimpleXMLObject;
 import org.w3c.dom.Document;
 
 /**

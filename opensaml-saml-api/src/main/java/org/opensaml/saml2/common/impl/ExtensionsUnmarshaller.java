@@ -19,9 +19,9 @@ package org.opensaml.saml2.common.impl;
 
 import org.opensaml.common.impl.AbstractSAMLObjectUnmarshaller;
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.io.AbstractXMLObjectUnmarshaller;
+import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml2.common.Extensions;
-import org.opensaml.xml.io.AbstractXMLObjectUnmarshaller;
-import org.opensaml.xml.io.UnmarshallingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Attr;

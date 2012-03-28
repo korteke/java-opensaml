@@ -21,7 +21,7 @@ import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.xml.XmlConstants;
 
-import org.opensaml.xml.schema.XSInteger;
+import org.opensaml.core.xml.schema.XSInteger;
 
 /**
  * The &lt;wsse11:Iteration&gt; element within a &lt;wsse:UsernameToken&gt;

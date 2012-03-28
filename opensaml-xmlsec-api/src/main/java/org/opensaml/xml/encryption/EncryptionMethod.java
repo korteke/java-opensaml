@@ -20,7 +20,7 @@ package org.opensaml.xml.encryption;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.ElementExtensibleXMLObject;
-import org.opensaml.xml.validation.ValidatingXMLObject;
+import org.opensaml.core.xml.validation.ValidatingXMLObject;
 
 /**
  * XMLObject representing XML Encryption, version 20021210, EncryptionMethod element.

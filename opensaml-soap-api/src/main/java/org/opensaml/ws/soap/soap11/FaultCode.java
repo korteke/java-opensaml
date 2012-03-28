@@ -19,9 +19,9 @@ package org.opensaml.ws.soap.soap11;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.core.xml.schema.XSQName;
 import org.opensaml.ws.soap.common.SOAPObject;
 import org.opensaml.ws.soap.util.SOAPConstants;
-import org.opensaml.xml.schema.XSQName;
 
 /**
  * SOAP 1.1 faultcode.

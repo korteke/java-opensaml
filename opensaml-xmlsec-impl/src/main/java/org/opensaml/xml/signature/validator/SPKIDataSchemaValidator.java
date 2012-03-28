@@ -20,11 +20,11 @@ package org.opensaml.xml.signature.validator;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.validation.ValidationException;
+import org.opensaml.core.xml.validation.Validator;
 import org.opensaml.xml.signature.SPKIData;
 import org.opensaml.xml.signature.SPKISexp;
 import org.opensaml.xml.signature.SignatureConstants;
-import org.opensaml.xml.validation.ValidationException;
-import org.opensaml.xml.validation.Validator;
 
 /**
  * Checks {@link org.opensaml.xml.signature.SPKIData} for Schema compliance. 

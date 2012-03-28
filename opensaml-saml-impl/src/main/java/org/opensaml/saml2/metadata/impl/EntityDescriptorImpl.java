@@ -26,6 +26,9 @@ import javax.xml.namespace.QName;
 import org.joda.time.DateTime;
 import org.opensaml.common.impl.AbstractSignableSAMLObject;
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.util.AttributeMap;
+import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
+import org.opensaml.core.xml.util.XMLObjectChildrenList;
 import org.opensaml.saml2.common.Extensions;
 import org.opensaml.saml2.metadata.AdditionalMetadataLocation;
 import org.opensaml.saml2.metadata.AffiliationDescriptor;
@@ -38,9 +41,6 @@ import org.opensaml.saml2.metadata.Organization;
 import org.opensaml.saml2.metadata.PDPDescriptor;
 import org.opensaml.saml2.metadata.RoleDescriptor;
 import org.opensaml.saml2.metadata.SPSSODescriptor;
-import org.opensaml.xml.util.AttributeMap;
-import org.opensaml.xml.util.IndexedXMLObjectChildrenList;
-import org.opensaml.xml.util.XMLObjectChildrenList;
 
 /**
  * Concretate implementation of {@link org.opensaml.saml2.metadata.EntitiesDescriptor}.

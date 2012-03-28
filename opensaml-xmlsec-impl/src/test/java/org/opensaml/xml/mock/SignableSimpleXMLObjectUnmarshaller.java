@@ -22,15 +22,16 @@
 package org.opensaml.xml.mock;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.io.AbstractXMLObjectUnmarshaller;
+import org.opensaml.core.xml.io.UnmarshallingException;
+import org.opensaml.core.xml.mock.SimpleXMLObject;
+import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.xml.encryption.EncryptedData;
-import org.opensaml.xml.io.AbstractXMLObjectUnmarshaller;
-import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.signature.Signature;
-import org.opensaml.xml.util.XMLObjectSupport;
 import org.w3c.dom.Attr;
 
 /**
- * Unmarshaller for {@link org.opensaml.xml.mock.SimpleXMLObject}.
+ * Unmarshaller for {@link org.opensaml.core.xml.mock.SimpleXMLObject}.
  */
 public class SignableSimpleXMLObjectUnmarshaller extends AbstractXMLObjectUnmarshaller {
 

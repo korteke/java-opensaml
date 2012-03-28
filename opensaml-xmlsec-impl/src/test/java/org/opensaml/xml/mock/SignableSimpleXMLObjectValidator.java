@@ -20,11 +20,11 @@
  */
 package org.opensaml.xml.mock;
 
-import org.opensaml.xml.validation.ValidationException;
-import org.opensaml.xml.validation.Validator;
+import org.opensaml.core.xml.validation.ValidationException;
+import org.opensaml.core.xml.validation.Validator;
 
 /**
- * A very simple validator that ensures an XMLObject is of type {@link org.opensaml.xml.mock.SimpleXMLObject}.
+ * A very simple validator that ensures an XMLObject is of type {@link org.opensaml.core.xml.mock.SimpleXMLObject}.
  */
 public abstract class SignableSimpleXMLObjectValidator implements Validator<SignableSimpleXMLObject> {
     

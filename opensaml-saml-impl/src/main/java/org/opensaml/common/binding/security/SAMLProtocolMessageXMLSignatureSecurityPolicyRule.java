@@ -20,13 +20,13 @@ package org.opensaml.common.binding.security;
 import org.opensaml.common.SAMLObject;
 import org.opensaml.common.SignableSAMLObject;
 import org.opensaml.common.binding.SAMLMessageContext;
+import org.opensaml.core.xml.validation.ValidationException;
+import org.opensaml.core.xml.validation.Validator;
 import org.opensaml.security.SAMLSignatureProfileValidator;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.security.SecurityPolicyException;
 import org.opensaml.xml.security.trust.TrustEngine;
 import org.opensaml.xml.signature.Signature;
-import org.opensaml.xml.validation.ValidationException;
-import org.opensaml.xml.validation.Validator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

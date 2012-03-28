@@ -20,7 +20,7 @@ package org.opensaml.ws.wstrust;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.AttributeExtensibleXMLObject;
-import org.opensaml.xml.schema.XSBase64Binary;
+import org.opensaml.core.xml.schema.XSBase64Binary;
 
 /**
  * The wst:BinarySecret element.

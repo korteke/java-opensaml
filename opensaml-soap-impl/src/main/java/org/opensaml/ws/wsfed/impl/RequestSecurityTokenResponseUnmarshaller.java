@@ -18,10 +18,10 @@
 package org.opensaml.ws.wsfed.impl;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.io.AbstractXMLObjectUnmarshaller;
 import org.opensaml.ws.wsfed.AppliesTo;
 import org.opensaml.ws.wsfed.RequestSecurityTokenResponse;
 import org.opensaml.ws.wsfed.RequestedSecurityToken;
-import org.opensaml.xml.io.AbstractXMLObjectUnmarshaller;
 import org.w3c.dom.Attr;
 
 /** A thread-safe unmarshaller for {@link RequestSecurityTokenResponse} objects. */

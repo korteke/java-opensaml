@@ -19,7 +19,7 @@ package org.opensaml.xml.encryption;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.xml.schema.XSInteger;
+import org.opensaml.core.xml.schema.XSInteger;
 
 /**
  * XMLObject representing XML Encryption, version 20021210, KeySize element.

@@ -18,10 +18,10 @@
 package org.opensaml.xacml.policy.impl;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.io.UnmarshallingException;
+import org.opensaml.core.xml.schema.XSString;
 import org.opensaml.xacml.impl.AbstractXACMLObjectUnmarshaller;
 import org.opensaml.xacml.policy.DefaultsType;
-import org.opensaml.xml.io.UnmarshallingException;
-import org.opensaml.xml.schema.XSString;
 
 /** Unmarshaller for {@link DefaultsType}. */
 public class DefaultsTypeUnmarshaller extends AbstractXACMLObjectUnmarshaller {

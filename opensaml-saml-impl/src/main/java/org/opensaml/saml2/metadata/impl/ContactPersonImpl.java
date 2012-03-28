@@ -26,6 +26,8 @@ import java.util.List;
 
 import org.opensaml.common.impl.AbstractSAMLObject;
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.util.AttributeMap;
+import org.opensaml.core.xml.util.XMLObjectChildrenList;
 import org.opensaml.saml2.common.Extensions;
 import org.opensaml.saml2.metadata.Company;
 import org.opensaml.saml2.metadata.ContactPerson;
@@ -34,8 +36,6 @@ import org.opensaml.saml2.metadata.EmailAddress;
 import org.opensaml.saml2.metadata.GivenName;
 import org.opensaml.saml2.metadata.SurName;
 import org.opensaml.saml2.metadata.TelephoneNumber;
-import org.opensaml.xml.util.AttributeMap;
-import org.opensaml.xml.util.XMLObjectChildrenList;
 
 /**
  * Concrete implementation of {@link org.opensaml.saml2.metadata.ContactPerson}

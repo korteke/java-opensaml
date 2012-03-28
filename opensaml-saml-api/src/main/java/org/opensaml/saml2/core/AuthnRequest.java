@@ -20,7 +20,7 @@ package org.opensaml.saml2.core;
 import javax.xml.namespace.QName;
 
 import org.opensaml.common.xml.SAMLConstants;
-import org.opensaml.xml.schema.XSBooleanValue;
+import org.opensaml.core.xml.schema.XSBooleanValue;
 
 /**
  * SAML 2.0 Core AuthnRequest.

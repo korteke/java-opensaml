@@ -19,11 +19,11 @@ package org.opensaml.saml1.core.impl;
 
 import org.opensaml.common.impl.AbstractSAMLObjectUnmarshaller;
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml1.core.Status;
 import org.opensaml.saml1.core.StatusCode;
 import org.opensaml.saml1.core.StatusDetail;
 import org.opensaml.saml1.core.StatusMessage;
-import org.opensaml.xml.io.UnmarshallingException;
 
 /**
  * A thread-safe Unmarshaller for {@link org.opensaml.saml1.core.Status} objects.

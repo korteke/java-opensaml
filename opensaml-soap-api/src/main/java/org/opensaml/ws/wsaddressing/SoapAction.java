@@ -19,7 +19,7 @@ package org.opensaml.ws.wsaddressing;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.xml.schema.XSURI;
+import org.opensaml.core.xml.schema.XSURI;
 
 /**
  * Interface for element of type &lt;wsa:SoapAction&gt;.

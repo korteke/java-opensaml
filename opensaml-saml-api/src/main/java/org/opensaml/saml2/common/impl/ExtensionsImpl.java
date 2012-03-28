@@ -24,8 +24,8 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.common.impl.AbstractSAMLObject;
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
 import org.opensaml.saml2.common.Extensions;
-import org.opensaml.xml.util.IndexedXMLObjectChildrenList;
 
 /**
  * Implementation of {@link org.opensaml.saml2.common.Extensions}

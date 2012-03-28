@@ -17,7 +17,7 @@
 
 package org.opensaml.core.xml;
 
-import org.opensaml.xml.util.AttributeMap;
+import org.opensaml.core.xml.util.AttributeMap;
 
 /**
  * AbstractExtensibleXMLObject is an element of type <code>xs:any</code>, and with <code>xs:anyAttribute</code>

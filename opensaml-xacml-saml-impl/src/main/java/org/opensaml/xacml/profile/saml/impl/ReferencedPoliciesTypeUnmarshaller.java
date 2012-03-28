@@ -19,10 +19,10 @@ package org.opensaml.xacml.profile.saml.impl;
 
 import org.opensaml.common.impl.AbstractSAMLObjectUnmarshaller;
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.xacml.policy.PolicySetType;
 import org.opensaml.xacml.policy.PolicyType;
 import org.opensaml.xacml.profile.saml.ReferencedPoliciesType;
-import org.opensaml.xml.io.UnmarshallingException;
 
 /**
  * Unmarshaller for {@link ReferencedPoliciesType}.

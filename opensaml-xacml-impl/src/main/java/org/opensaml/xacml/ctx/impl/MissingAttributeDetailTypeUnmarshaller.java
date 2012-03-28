@@ -18,10 +18,10 @@
 package org.opensaml.xacml.ctx.impl;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.xacml.ctx.AttributeValueType;
 import org.opensaml.xacml.ctx.MissingAttributeDetailType;
 import org.opensaml.xacml.impl.AbstractXACMLObjectUnmarshaller;
-import org.opensaml.xml.io.UnmarshallingException;
 import org.w3c.dom.Attr;
 
 /** Unmarshaller for {@link MissingAttributeDetailType} objects. */

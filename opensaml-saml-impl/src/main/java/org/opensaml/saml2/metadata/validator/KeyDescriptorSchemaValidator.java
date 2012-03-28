@@ -21,10 +21,10 @@
 
 package org.opensaml.saml2.metadata.validator;
 
+import org.opensaml.core.xml.validation.ValidationException;
+import org.opensaml.core.xml.validation.Validator;
 import org.opensaml.saml2.metadata.KeyDescriptor;
 import org.opensaml.xml.security.credential.UsageType;
-import org.opensaml.xml.validation.ValidationException;
-import org.opensaml.xml.validation.Validator;
 
 /**
  * Checks {@link org.opensaml.saml2.metadata.KeyDescriptor} for Schema compliance.

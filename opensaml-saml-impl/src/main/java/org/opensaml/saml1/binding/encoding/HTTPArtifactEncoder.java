@@ -28,6 +28,7 @@ import org.opensaml.common.SAMLObject;
 import org.opensaml.common.binding.SAMLMessageContext;
 import org.opensaml.common.binding.artifact.SAMLArtifactMap;
 import org.opensaml.common.xml.SAMLConstants;
+import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml1.binding.artifact.AbstractSAML1Artifact;
 import org.opensaml.saml1.binding.artifact.SAML1ArtifactBuilder;
 import org.opensaml.saml1.binding.artifact.SAML1ArtifactType0001;
@@ -37,7 +38,6 @@ import org.opensaml.saml1.core.Response;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.message.encoder.MessageEncodingException;
 import org.opensaml.ws.transport.http.HTTPOutTransport;
-import org.opensaml.xml.io.MarshallingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

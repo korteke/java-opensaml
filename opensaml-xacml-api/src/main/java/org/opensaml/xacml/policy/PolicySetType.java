@@ -21,9 +21,9 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
 import org.opensaml.xacml.XACMLConstants;
 import org.opensaml.xacml.XACMLObject;
-import org.opensaml.xml.util.IndexedXMLObjectChildrenList;
 
 /** XACML PolicySet schema types. */
 public interface PolicySetType extends XACMLObject {

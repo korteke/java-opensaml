@@ -17,8 +17,8 @@
 
 package org.opensaml.xml.encryption.impl;
 
+import org.opensaml.core.xml.schema.impl.XSStringImpl;
 import org.opensaml.xml.encryption.CarriedKeyName;
-import org.opensaml.xml.schema.impl.XSStringImpl;
 
 /**
  * Concrete implementation of {@link org.opensaml.xml.encryption.CarriedKeyName}.

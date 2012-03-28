@@ -23,10 +23,10 @@ import java.util.List;
 
 import org.opensaml.common.impl.AbstractSAMLObject;
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.util.XMLObjectChildrenList;
 import org.opensaml.saml1.core.ConfirmationMethod;
 import org.opensaml.saml1.core.SubjectConfirmation;
 import org.opensaml.xml.signature.KeyInfo;
-import org.opensaml.xml.util.XMLObjectChildrenList;
 
 /**
  * Concrete implementation of a <code> SubjectConfirmation </code> object

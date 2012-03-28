@@ -23,12 +23,12 @@ package org.opensaml.saml2.core.impl;
 
 import org.opensaml.common.impl.AbstractSAMLObjectUnmarshaller;
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml2.core.Assertion;
 import org.opensaml.saml2.core.AssertionIDRef;
 import org.opensaml.saml2.core.AssertionURIRef;
 import org.opensaml.saml2.core.EncryptedAssertion;
 import org.opensaml.saml2.core.Evidence;
-import org.opensaml.xml.io.UnmarshallingException;
 
 /**
  * A thread-safe Unmarshaller for {@link org.opensaml.saml2.core.Evidence}.

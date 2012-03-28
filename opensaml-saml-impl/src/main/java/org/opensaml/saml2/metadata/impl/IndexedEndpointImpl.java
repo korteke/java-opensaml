@@ -21,8 +21,8 @@
 
 package org.opensaml.saml2.metadata.impl;
 
+import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.saml2.metadata.IndexedEndpoint;
-import org.opensaml.xml.schema.XSBooleanValue;
 
 /**
  * Concrete implementation of {@link org.opensaml.saml2.metadata.IndexedEndpoint}

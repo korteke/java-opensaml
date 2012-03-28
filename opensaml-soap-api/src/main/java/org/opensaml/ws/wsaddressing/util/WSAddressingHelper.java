@@ -21,8 +21,8 @@ import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 import org.opensaml.core.xml.AttributeExtensibleXMLObject;
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.ws.wsaddressing.IsReferenceParameterBearing;
-import org.opensaml.xml.schema.XSBooleanValue;
 
 import com.google.common.base.Objects;
 

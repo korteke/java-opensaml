@@ -19,7 +19,7 @@ package org.opensaml.ws.wstrust;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.xml.schema.XSURI;
+import org.opensaml.core.xml.schema.XSURI;
 
 /**
  * The wst:RequestType element.

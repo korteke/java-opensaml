@@ -54,8 +54,8 @@
         <!-- RespondWith -->
         <ObjectProvider qualifiedName="saml1p:RespondWith">
             <BuilderClass className="org.opensaml.saml1.core.impl.RespondWithBuilder"/>
-            <MarshallingClass className="org.opensaml.xml.schema.impl.XSQNameMarshaller"/>
-            <UnmarshallingClass className="org.opensaml.xml.schema.impl.XSQNameUnmarshaller"/>
+            <MarshallingClass className="org.opensaml.core.xml.schema.impl.XSQNameMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.core.xml.schema.impl.XSQNameUnmarshaller"/>
         </ObjectProvider>
 
         <!-- Response -->

@@ -20,10 +20,10 @@ package org.opensaml.saml2.metadata.validator;
 import javax.xml.namespace.QName;
 
 import org.opensaml.common.xml.SAMLConstants;
+import org.opensaml.core.xml.validation.ValidationException;
 import org.opensaml.saml2.metadata.IDPSSODescriptor;
 import org.opensaml.saml2.metadata.NameIDMappingService;
 import org.opensaml.saml2.metadata.SingleSignOnService;
-import org.opensaml.xml.validation.ValidationException;
 
 /**
  * Test case for {@link org.opensaml.saml2.metadata.IDPSSODescriptor}.

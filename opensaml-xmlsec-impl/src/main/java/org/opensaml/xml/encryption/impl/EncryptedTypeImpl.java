@@ -22,12 +22,12 @@ import java.util.Collections;
 import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.validation.AbstractValidatingXMLObject;
 import org.opensaml.xml.encryption.CipherData;
 import org.opensaml.xml.encryption.EncryptedType;
 import org.opensaml.xml.encryption.EncryptionMethod;
 import org.opensaml.xml.encryption.EncryptionProperties;
 import org.opensaml.xml.signature.KeyInfo;
-import org.opensaml.xml.validation.AbstractValidatingXMLObject;
 
 /**
  * Abstract implementation of {@link org.opensaml.xml.encryption.EncryptedType}.

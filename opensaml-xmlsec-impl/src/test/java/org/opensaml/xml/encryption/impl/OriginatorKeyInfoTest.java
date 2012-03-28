@@ -19,8 +19,8 @@ package org.opensaml.xml.encryption.impl;
 
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
+import org.opensaml.core.xml.mock.SimpleXMLObject;
 import org.opensaml.xml.encryption.OriginatorKeyInfo;
-import org.opensaml.xml.mock.SimpleXMLObject;
 import org.opensaml.xml.signature.KeyName;
 import org.opensaml.xml.signature.KeyValue;
 import org.opensaml.xml.signature.MgmtData;

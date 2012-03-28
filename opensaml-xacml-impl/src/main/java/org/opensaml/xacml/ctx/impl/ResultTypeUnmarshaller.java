@@ -18,12 +18,12 @@
 package org.opensaml.xacml.ctx.impl;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.xacml.ctx.DecisionType;
 import org.opensaml.xacml.ctx.ResultType;
 import org.opensaml.xacml.ctx.StatusType;
 import org.opensaml.xacml.impl.AbstractXACMLObjectUnmarshaller;
 import org.opensaml.xacml.policy.ObligationsType;
-import org.opensaml.xml.io.UnmarshallingException;
 import org.w3c.dom.Attr;
 
 /** Unmarshaller for {@link ResultType} objects. */

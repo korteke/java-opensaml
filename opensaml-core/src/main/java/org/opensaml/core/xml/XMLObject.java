@@ -22,8 +22,8 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.xml.schema.XSBooleanValue;
-import org.opensaml.xml.util.IDIndex;
+import org.opensaml.core.xml.schema.XSBooleanValue;
+import org.opensaml.core.xml.util.IDIndex;
 import org.w3c.dom.Element;
 
 /**

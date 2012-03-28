@@ -22,8 +22,8 @@ import java.security.PublicKey;
 
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.XMLObjectProviderRegistrySupport;
+import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.xml.encryption.EncryptedData;
-import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.SecurityHelper;
 import org.opensaml.xml.signature.KeyInfo;

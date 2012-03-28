@@ -22,11 +22,11 @@ import java.util.Collections;
 import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.util.XMLObjectChildrenList;
 import org.opensaml.xacml.impl.AbstractXACMLObject;
 import org.opensaml.xacml.policy.AttributeAssignmentType;
 import org.opensaml.xacml.policy.EffectType;
 import org.opensaml.xacml.policy.ObligationType;
-import org.opensaml.xml.util.XMLObjectChildrenList;
 
 /** Implementation for {@link ObligationType}. */
 public class ObligationTypeImpl extends AbstractXACMLObject implements ObligationType {

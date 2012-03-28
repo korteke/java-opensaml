@@ -24,11 +24,11 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
+import org.opensaml.core.xml.validation.AbstractValidatingXMLObject;
 import org.opensaml.xml.signature.PGPData;
 import org.opensaml.xml.signature.PGPKeyID;
 import org.opensaml.xml.signature.PGPKeyPacket;
-import org.opensaml.xml.util.IndexedXMLObjectChildrenList;
-import org.opensaml.xml.validation.AbstractValidatingXMLObject;
 
 /**
  * Concrete implementation of {@link org.opensaml.xml.signature.PGPData}

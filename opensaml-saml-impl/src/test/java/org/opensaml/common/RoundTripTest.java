@@ -20,6 +20,12 @@ package org.opensaml.common;
 import org.custommonkey.xmlunit.Diff;
 import org.custommonkey.xmlunit.XMLAssert;
 import org.opensaml.Configuration;
+import org.opensaml.core.xml.io.Marshaller;
+import org.opensaml.core.xml.io.MarshallerFactory;
+import org.opensaml.core.xml.io.MarshallingException;
+import org.opensaml.core.xml.io.Unmarshaller;
+import org.opensaml.core.xml.io.UnmarshallerFactory;
+import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml2.metadata.Organization;
 import org.opensaml.saml2.metadata.OrganizationDisplayName;
 import org.opensaml.saml2.metadata.OrganizationName;
@@ -28,12 +34,6 @@ import org.opensaml.saml2.metadata.impl.OrganizationBuilder;
 import org.opensaml.saml2.metadata.impl.OrganizationDisplayNameBuilder;
 import org.opensaml.saml2.metadata.impl.OrganizationNameBuilder;
 import org.opensaml.saml2.metadata.impl.OrganizationURLBuilder;
-import org.opensaml.xml.io.Marshaller;
-import org.opensaml.xml.io.MarshallerFactory;
-import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.io.Unmarshaller;
-import org.opensaml.xml.io.UnmarshallerFactory;
-import org.opensaml.xml.io.UnmarshallingException;
 import org.w3c.dom.Element;
 
 /**

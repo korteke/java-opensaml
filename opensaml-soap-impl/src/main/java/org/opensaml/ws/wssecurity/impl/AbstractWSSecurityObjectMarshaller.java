@@ -18,8 +18,8 @@
 package org.opensaml.ws.wssecurity.impl;
 
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.xml.io.AbstractXMLObjectMarshaller;
-import org.opensaml.xml.io.MarshallingException;
+import org.opensaml.core.xml.io.AbstractXMLObjectMarshaller;
+import org.opensaml.core.xml.io.MarshallingException;
 import org.w3c.dom.Element;
 
 /**
@@ -39,7 +39,7 @@ public abstract class AbstractWSSecurityObjectMarshaller extends AbstractXMLObje
      * No-op method. Extending implementations should override this method if they have attributes to marshall into the
      * Element.
      * 
-     * @see org.opensaml.xml.io.AbstractXMLObjectMarshaller#marshallAttributes(org.opensaml.xml.XMLObject,
+     * @see org.opensaml.core.xml.io.AbstractXMLObjectMarshaller#marshallAttributes(org.opensaml.xml.XMLObject,
      *      org.w3c.dom.Element)
      */
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
@@ -50,7 +50,7 @@ public abstract class AbstractWSSecurityObjectMarshaller extends AbstractXMLObje
      * No-op method. Extending implementations should override this method if they have text content to marshall into
      * the Element.
      * 
-     * @see org.opensaml.xml.io.AbstractXMLObjectMarshaller#marshallElementContent(org.opensaml.xml.XMLObject,
+     * @see org.opensaml.core.xml.io.AbstractXMLObjectMarshaller#marshallElementContent(org.opensaml.xml.XMLObject,
      *      org.w3c.dom.Element)
      */
     protected void marshallElementContent(XMLObject xmlObject, Element domElement) throws MarshallingException {

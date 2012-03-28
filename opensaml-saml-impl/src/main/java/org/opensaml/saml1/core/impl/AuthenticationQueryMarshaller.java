@@ -18,8 +18,8 @@
 package org.opensaml.saml1.core.impl;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml1.core.AuthenticationQuery;
-import org.opensaml.xml.io.MarshallingException;
 import org.w3c.dom.Element;
 
 /**

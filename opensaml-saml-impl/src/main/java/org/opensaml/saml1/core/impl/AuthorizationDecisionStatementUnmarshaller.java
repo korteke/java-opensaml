@@ -18,11 +18,11 @@
 package org.opensaml.saml1.core.impl;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml1.core.Action;
 import org.opensaml.saml1.core.AuthorizationDecisionStatement;
 import org.opensaml.saml1.core.DecisionTypeEnumeration;
 import org.opensaml.saml1.core.Evidence;
-import org.opensaml.xml.io.UnmarshallingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Attr;

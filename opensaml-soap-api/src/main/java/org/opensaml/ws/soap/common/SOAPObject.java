@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.soap.common;
 
-import org.opensaml.xml.validation.ValidatingXMLObject;
+import org.opensaml.core.xml.validation.ValidatingXMLObject;
 
 /**
  * Base interface for all SOAP objects.

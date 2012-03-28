@@ -31,13 +31,13 @@ import org.opensaml.common.BaseTestCase;
 import org.opensaml.common.SAMLObject;
 import org.opensaml.common.binding.BasicSAMLMessageContext;
 import org.opensaml.common.binding.decoding.SAMLMessageDecoder;
+import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml2.core.AuthnRequest;
 import org.opensaml.saml2.core.RequestAbstractType;
 import org.opensaml.saml2.core.Response;
 import org.opensaml.ws.message.decoder.MessageDecodingException;
 import org.opensaml.ws.message.encoder.MessageEncodingException;
 import org.opensaml.ws.transport.http.HttpServletRequestAdapter;
-import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.security.SecurityException;
 import org.springframework.mock.web.MockHttpServletRequest;
 

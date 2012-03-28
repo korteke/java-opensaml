@@ -24,7 +24,7 @@ package org.opensaml.xml.mock;
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
 
 /**
- * Builder of {@link org.opensaml.xml.mock.SimpleXMLObject}s.
+ * Builder of {@link org.opensaml.core.xml.mock.SimpleXMLObject}s.
  */
 public class SignableSimpleXMLObjectBuilder extends AbstractXMLObjectBuilder<SignableSimpleXMLObject> {
     

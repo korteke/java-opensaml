@@ -18,8 +18,8 @@
 package org.opensaml.ws.wspolicy.impl;
 
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.xml.io.AbstractXMLObjectMarshaller;
-import org.opensaml.xml.io.MarshallingException;
+import org.opensaml.core.xml.io.AbstractXMLObjectMarshaller;
+import org.opensaml.core.xml.io.MarshallingException;
 import org.w3c.dom.Element;
 
 /**

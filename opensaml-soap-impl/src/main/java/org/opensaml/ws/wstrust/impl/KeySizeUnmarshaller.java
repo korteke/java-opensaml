@@ -18,7 +18,7 @@
 package org.opensaml.ws.wstrust.impl;
 
 
-import org.opensaml.xml.schema.impl.XSIntegerUnmarshaller;
+import org.opensaml.core.xml.schema.impl.XSIntegerUnmarshaller;
 
 /**
  * Unmarshaller for the wst:KeySize element.

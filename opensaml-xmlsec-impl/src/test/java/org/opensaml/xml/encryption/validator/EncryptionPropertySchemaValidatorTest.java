@@ -22,10 +22,10 @@ import javax.xml.namespace.QName;
 import net.shibboleth.utilities.java.support.xml.XmlConstants;
 
 import org.opensaml.core.xml.BaseXMLObjectValidatorTestCase;
+import org.opensaml.core.xml.mock.SimpleXMLObject;
+import org.opensaml.core.xml.mock.SimpleXMLObjectBuilder;
 import org.opensaml.xml.encryption.EncryptionConstants;
 import org.opensaml.xml.encryption.EncryptionProperty;
-import org.opensaml.xml.mock.SimpleXMLObject;
-import org.opensaml.xml.mock.SimpleXMLObjectBuilder;
 
 /**
  *

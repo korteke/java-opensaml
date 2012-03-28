@@ -19,7 +19,7 @@ package org.opensaml.ws.wstrust;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.xml.schema.XSBoolean;
+import org.opensaml.core.xml.schema.XSBoolean;
 
 /**
  * The wst:Delegatable element.

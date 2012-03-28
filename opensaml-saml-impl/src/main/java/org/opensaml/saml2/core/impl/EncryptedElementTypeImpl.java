@@ -23,10 +23,10 @@ import java.util.List;
 
 import org.opensaml.common.impl.AbstractSAMLObject;
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.util.XMLObjectChildrenList;
 import org.opensaml.saml2.core.EncryptedElementType;
 import org.opensaml.xml.encryption.EncryptedData;
 import org.opensaml.xml.encryption.EncryptedKey;
-import org.opensaml.xml.util.XMLObjectChildrenList;
 
 /**
  * A concrete implementation of {@link org.opensaml.saml2.core.EncryptedElementType}.

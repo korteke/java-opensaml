@@ -19,10 +19,10 @@ package org.opensaml.xacml.profile.saml.impl;
 
 import org.opensaml.common.impl.AbstractSAMLObjectUnmarshaller;
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.xacml.ctx.RequestType;
 import org.opensaml.xacml.ctx.ResponseType;
 import org.opensaml.xacml.profile.saml.XACMLAuthzDecisionStatementType;
-import org.opensaml.xml.io.UnmarshallingException;
 
 /**
  * A thread-safe Unmarshaller for {@link org.opensaml.xacml.profile.saml.XACMLAuthzDecisionStatementType}.

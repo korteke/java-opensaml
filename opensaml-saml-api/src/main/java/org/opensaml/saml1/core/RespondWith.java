@@ -25,7 +25,7 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.common.SAMLObject;
 import org.opensaml.common.xml.SAMLConstants;
-import org.opensaml.xml.schema.XSQName;
+import org.opensaml.core.xml.schema.XSQName;
 
 /**
  * This interface defines how the (deprecated) RespondWith element would behave.

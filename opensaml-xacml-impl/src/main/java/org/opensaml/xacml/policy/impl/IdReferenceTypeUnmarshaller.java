@@ -20,9 +20,9 @@ package org.opensaml.xacml.policy.impl;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.io.UnmarshallingException;
+import org.opensaml.core.xml.schema.impl.XSStringUnmarshaller;
 import org.opensaml.xacml.policy.IdReferenceType;
-import org.opensaml.xml.io.UnmarshallingException;
-import org.opensaml.xml.schema.impl.XSStringUnmarshaller;
 import org.w3c.dom.Attr;
 
 /**

@@ -26,7 +26,7 @@ import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.XMLObjectProviderRegistrySupport;
-import org.opensaml.xml.io.MarshallingException;
+import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.xml.mock.SignableSimpleXMLObject;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.SecurityHelper;

@@ -18,11 +18,11 @@
 package org.opensaml.ws.wsaddressing.impl;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.io.UnmarshallingException;
+import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.ws.wsaddressing.Action;
 import org.opensaml.ws.wsaddressing.ProblemAction;
 import org.opensaml.ws.wsaddressing.SoapAction;
-import org.opensaml.xml.io.UnmarshallingException;
-import org.opensaml.xml.util.XMLObjectSupport;
 import org.w3c.dom.Attr;
 
 /**

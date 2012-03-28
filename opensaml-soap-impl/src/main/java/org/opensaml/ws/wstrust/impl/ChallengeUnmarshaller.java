@@ -18,7 +18,7 @@
 package org.opensaml.ws.wstrust.impl;
 
 
-import org.opensaml.xml.schema.impl.XSStringUnmarshaller;
+import org.opensaml.core.xml.schema.impl.XSStringUnmarshaller;
 
 /**
  * Unmarshaller for the wst:Challenge element.

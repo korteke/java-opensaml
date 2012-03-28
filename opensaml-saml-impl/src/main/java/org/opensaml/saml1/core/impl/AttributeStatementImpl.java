@@ -22,9 +22,9 @@ import java.util.Collections;
 import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.util.XMLObjectChildrenList;
 import org.opensaml.saml1.core.Attribute;
 import org.opensaml.saml1.core.AttributeStatement;
-import org.opensaml.xml.util.XMLObjectChildrenList;
 
 /**
  * A Concrete implementation of the {@link org.opensaml.saml1.core.AttributeStatement} Interface

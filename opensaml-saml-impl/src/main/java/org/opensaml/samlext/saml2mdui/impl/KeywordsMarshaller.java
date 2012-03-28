@@ -24,8 +24,8 @@ import net.shibboleth.utilities.java.support.xml.XmlConstants;
 import org.opensaml.common.impl.AbstractSAMLObjectMarshaller;
 import org.opensaml.core.xml.LangBearing;
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.samlext.saml2mdui.Keywords;
-import org.opensaml.xml.io.MarshallingException;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
 

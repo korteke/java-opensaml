@@ -23,9 +23,9 @@ package org.opensaml.saml1.core.impl;
 
 import org.opensaml.common.impl.AbstractSAMLObjectUnmarshaller;
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml1.core.Subject;
 import org.opensaml.saml1.core.SubjectStatement;
-import org.opensaml.xml.io.UnmarshallingException;
 
 /**
  * Unamershaller for {@link SubjectStatement}s.

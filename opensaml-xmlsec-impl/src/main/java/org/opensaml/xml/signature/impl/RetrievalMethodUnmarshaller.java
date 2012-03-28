@@ -18,7 +18,7 @@
 package org.opensaml.xml.signature.impl;
 
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.xml.io.UnmarshallingException;
+import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.xml.signature.RetrievalMethod;
 import org.opensaml.xml.signature.Transforms;
 import org.w3c.dom.Attr;

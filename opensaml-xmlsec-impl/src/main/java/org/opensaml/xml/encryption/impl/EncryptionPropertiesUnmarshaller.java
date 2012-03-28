@@ -18,9 +18,9 @@
 package org.opensaml.xml.encryption.impl;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.xml.encryption.EncryptionProperties;
 import org.opensaml.xml.encryption.EncryptionProperty;
-import org.opensaml.xml.io.UnmarshallingException;
 import org.w3c.dom.Attr;
 
 /**

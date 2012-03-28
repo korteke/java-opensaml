@@ -23,10 +23,10 @@ import java.util.List;
 
 import org.joda.time.DateTime;
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.util.XMLObjectChildrenList;
 import org.opensaml.saml1.core.AuthenticationStatement;
 import org.opensaml.saml1.core.AuthorityBinding;
 import org.opensaml.saml1.core.SubjectLocality;
-import org.opensaml.xml.util.XMLObjectChildrenList;
 
 /**
  * A Concrete implementation of the {@link org.opensaml.saml1.core.AuthenticationStatement} Interface

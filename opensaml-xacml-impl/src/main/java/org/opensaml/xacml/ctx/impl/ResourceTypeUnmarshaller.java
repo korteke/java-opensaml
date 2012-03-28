@@ -18,11 +18,11 @@
 package org.opensaml.xacml.ctx.impl;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.xacml.ctx.AttributeType;
 import org.opensaml.xacml.ctx.ResourceContentType;
 import org.opensaml.xacml.ctx.ResourceType;
 import org.opensaml.xacml.impl.AbstractXACMLObjectUnmarshaller;
-import org.opensaml.xml.io.UnmarshallingException;
 
 /** Unmarshaller for {@link ResourceType} objects. */
 public class ResourceTypeUnmarshaller extends AbstractXACMLObjectUnmarshaller {

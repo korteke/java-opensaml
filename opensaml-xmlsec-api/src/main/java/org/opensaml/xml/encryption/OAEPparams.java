@@ -19,7 +19,7 @@ package org.opensaml.xml.encryption;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.xml.schema.XSBase64Binary;
+import org.opensaml.core.xml.schema.XSBase64Binary;
 
 /**
  * XMLObject representing XML Encryption, version 20021210, OAEPparams element.

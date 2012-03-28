@@ -29,7 +29,7 @@ import org.opensaml.core.xml.Namespace;
 import org.opensaml.core.xml.NamespaceManager;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.XMLObjectBuilder;
-import org.opensaml.xml.schema.XSAny;
+import org.opensaml.core.xml.schema.XSAny;
 
 import com.google.common.base.Objects;
 

@@ -18,7 +18,7 @@
 package org.opensaml.samlext.idpdisco;
 
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
-import org.opensaml.xml.schema.XSBooleanValue;
+import org.opensaml.core.xml.schema.XSBooleanValue;
 
 /**
  * Test case for creating, marshalling, and unmarshalling {@link DiscoveryResponseImpl}.

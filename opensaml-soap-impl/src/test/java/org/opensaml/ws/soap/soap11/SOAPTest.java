@@ -21,15 +21,15 @@ import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
+import org.opensaml.core.xml.io.MarshallingException;
+import org.opensaml.core.xml.io.Unmarshaller;
+import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.ws.BaseTestCase;
 import org.opensaml.ws.soap.soap11.impl.DetailBuilder;
 import org.opensaml.ws.soap.soap11.impl.FaultActorBuilder;
 import org.opensaml.ws.soap.soap11.impl.FaultCodeBuilder;
 import org.opensaml.ws.soap.soap11.impl.FaultStringBuilder;
 import org.opensaml.ws.soap.util.SOAPConstants;
-import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.io.Unmarshaller;
-import org.opensaml.xml.io.UnmarshallingException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 

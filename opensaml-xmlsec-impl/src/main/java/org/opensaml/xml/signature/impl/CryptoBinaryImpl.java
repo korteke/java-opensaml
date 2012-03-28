@@ -19,7 +19,7 @@ package org.opensaml.xml.signature.impl;
 
 import java.math.BigInteger;
 
-import org.opensaml.xml.schema.impl.XSBase64BinaryImpl;
+import org.opensaml.core.xml.schema.impl.XSBase64BinaryImpl;
 import org.opensaml.xml.security.keyinfo.KeyInfoHelper;
 import org.opensaml.xml.signature.CryptoBinary;
 

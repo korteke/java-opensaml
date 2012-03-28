@@ -19,10 +19,10 @@ package org.opensaml.saml1.core.impl;
 
 import org.opensaml.common.impl.AbstractSAMLObjectUnmarshaller;
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml1.core.Advice;
 import org.opensaml.saml1.core.Assertion;
 import org.opensaml.saml1.core.AssertionIDReference;
-import org.opensaml.xml.io.UnmarshallingException;
 
 /**
  * A thread-safe Unmarshaller for {@link org.opensaml.saml1.core.Advice} objects.

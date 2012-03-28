@@ -23,9 +23,9 @@ import java.util.List;
 
 import org.opensaml.common.impl.AbstractSAMLObject;
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.util.AttributeMap;
+import org.opensaml.core.xml.util.XMLObjectChildrenList;
 import org.opensaml.saml2.core.Attribute;
-import org.opensaml.xml.util.AttributeMap;
-import org.opensaml.xml.util.XMLObjectChildrenList;
 
 /**
  * Concrete implementation of {@link org.opensaml.saml2.core.Attribute}.

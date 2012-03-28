@@ -31,12 +31,12 @@ import org.joda.time.DateTime;
 import org.opensaml.common.impl.AbstractSAMLObject;
 import org.opensaml.common.xml.SAMLConstants;
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
 import org.opensaml.saml2.core.AudienceRestriction;
 import org.opensaml.saml2.core.Condition;
 import org.opensaml.saml2.core.Conditions;
 import org.opensaml.saml2.core.OneTimeUse;
 import org.opensaml.saml2.core.ProxyRestriction;
-import org.opensaml.xml.util.IndexedXMLObjectChildrenList;
 
 /**
  * Concrete implementation of {@link org.opensaml.saml2.core.Conditions}.

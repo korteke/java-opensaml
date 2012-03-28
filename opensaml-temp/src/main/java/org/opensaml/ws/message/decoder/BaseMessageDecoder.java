@@ -28,13 +28,13 @@ import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.XMLObjectProviderRegistrySupport;
+import org.opensaml.core.xml.io.Marshaller;
+import org.opensaml.core.xml.io.MarshallingException;
+import org.opensaml.core.xml.io.Unmarshaller;
+import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.security.SecurityPolicy;
 import org.opensaml.ws.security.SecurityPolicyResolver;
-import org.opensaml.xml.io.Marshaller;
-import org.opensaml.xml.io.MarshallingException;
-import org.opensaml.xml.io.Unmarshaller;
-import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.security.SecurityException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

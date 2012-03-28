@@ -22,10 +22,10 @@ import java.util.Collections;
 import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.validation.AbstractValidatingXMLObject;
 import org.opensaml.xml.signature.Exponent;
 import org.opensaml.xml.signature.Modulus;
 import org.opensaml.xml.signature.RSAKeyValue;
-import org.opensaml.xml.validation.AbstractValidatingXMLObject;
 
 /**
  * Concrete implementation of {@link org.opensaml.xml.signature.RSAKeyValue}
