@@ -25,7 +25,6 @@ import javax.xml.namespace.QName;
 import org.opensaml.saml.common.BaseSAMLObjectValidatorTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.IDPEntry;
-import org.opensaml.saml.saml2.core.validator.IDPEntrySchemaValidator;
 
 /**
  *

@@ -28,7 +28,6 @@ import org.opensaml.saml.saml2.core.MockBaseID;
 import org.opensaml.saml.saml2.core.NameID;
 import org.opensaml.saml.saml2.core.NameIDMappingRequest;
 import org.opensaml.saml.saml2.core.NameIDPolicy;
-import org.opensaml.saml.saml2.core.validator.NameIDMappingRequestSchemaValidator;
 
 /**
  *

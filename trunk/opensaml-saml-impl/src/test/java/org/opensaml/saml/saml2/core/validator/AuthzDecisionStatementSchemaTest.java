@@ -25,8 +25,6 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.Action;
 import org.opensaml.saml.saml2.core.AuthzDecisionStatement;
 import org.opensaml.saml.saml2.core.DecisionTypeEnumeration;
-import org.opensaml.saml.saml2.core.validator.AuthzDecisionStatementSchemaValidator;
-import org.opensaml.saml.saml2.core.validator.org;
 
 /**
  * Test case for {@link org.opensaml.saml.saml2.core.validator.AuthzDecisionStatementSchemaValidator}.

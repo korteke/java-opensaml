@@ -34,7 +34,6 @@ import org.opensaml.saml.saml2.metadata.AssertionIDRequestService;
 import org.opensaml.saml.saml2.metadata.AuthzService;
 import org.opensaml.saml.saml2.metadata.NameIDFormat;
 import org.opensaml.saml.saml2.metadata.PDPDescriptor;
-import org.opensaml.saml.saml2.metadata.impl.org;
 
 /**
  * Test case for creating, marshalling, and unmarshalling {@link org.opensaml.saml.saml2.metadata.impl.PDPDescriptorImpl}.

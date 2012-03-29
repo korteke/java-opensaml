@@ -26,7 +26,6 @@ import org.opensaml.saml.common.SAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.config.Configuration;
 import org.opensaml.saml.saml2.core.KeyInfoConfirmationDataType;
-import org.opensaml.saml.saml2.core.impl.org;
 import org.opensaml.xmlsec.signature.KeyInfo;
 
 /**

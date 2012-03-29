@@ -21,8 +21,6 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml1.core.AttributeQuery;
-import org.opensaml.saml.saml1.core.validator.AttributeQuerySchemaValidator;
-import org.opensaml.saml.saml1.core.validator.org;
 
 /**
  * Test case for {@link org.opensaml.saml.saml1.core.validator.AttributeQuerySchemaValidator}.
