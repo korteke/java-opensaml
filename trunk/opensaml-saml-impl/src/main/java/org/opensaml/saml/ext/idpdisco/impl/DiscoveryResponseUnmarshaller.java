@@ -15,29 +15,11 @@
  * limitations under the License.
  */
 
-package org.opensaml.saml.samlext.saml1md.impl;
+package org.opensaml.saml.ext.idpdisco.impl;
 
-import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
-import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml.ext.saml1md.SourceID;
+import org.opensaml.saml.saml2.metadata.impl.IndexedEndpointUnmarshaller;
 
-/**
- * Builder of {@link SourceIDImpl} objects.
- */
-public class SourceIDBuilder extends AbstractSAMLObjectBuilder<SourceID> {
+/** A thread-safe Unmarshaller for {@link org.opensaml.saml.ext.idpdisco.DiscoveryResponse} objects. */
+public class DiscoveryResponseUnmarshaller extends IndexedEndpointUnmarshaller {
 
-    /** Constructor */
-    public SourceIDBuilder() {
-
-    }
-
-    /** {@inheritDoc} */
-    public SourceID buildObject() {
-        return buildObject(SAMLConstants.SAML1MD_NS, SourceID.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1MD_PREFIX);
-    }
-
-    /** {@inheritDoc} */
-    public SourceID buildObject(String namespaceURI, String localName, String namespacePrefix) {
-        return new SourceIDImpl(namespaceURI, localName, namespacePrefix);
-    }
 }

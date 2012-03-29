@@ -20,7 +20,7 @@ package org.opensaml.samlext.idpdisco;
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
 import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.saml.ext.idpdisco.DiscoveryResponse;
-import org.opensaml.saml.samlext.idpdisco.impl.DiscoveryResponseImpl;
+import org.opensaml.saml.ext.idpdisco.impl.DiscoveryResponseImpl;
 
 /**
  * Test case for creating, marshalling, and unmarshalling {@link DiscoveryResponseImpl}.

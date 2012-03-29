@@ -15,11 +15,29 @@
  * limitations under the License.
  */
 
-package org.opensaml.saml.samlext.idpdisco.impl;
+/**
+ * 
+ */
 
-import org.opensaml.saml.saml2.metadata.impl.IndexedEndpointMarshaller;
+package org.opensaml.saml.ext.idpdisco.impl;
 
-/** A thread-safe Marshaller for {@link org.opensaml.saml.ext.idpdisco.DiscoveryResponse} objects. */
-public class DiscoveryResponseMarshaller extends IndexedEndpointMarshaller {
+import org.opensaml.saml.ext.idpdisco.DiscoveryResponse;
+import org.opensaml.saml.saml2.metadata.impl.IndexedEndpointImpl;
 
+/**
+ * This plugs into the standard opensaml2 parser framework to allow us to get use <code> DiscoverResponse </code>
+ * elements in our extensions.
+ */
+public class DiscoveryResponseImpl extends IndexedEndpointImpl implements DiscoveryResponse {
+    
+    /**
+     * Constructor.
+     * 
+     * @param namespaceURI the Uri
+     * @param elementLocalName the local name
+     * @param namespacePrefix the prefix
+     */
+    protected DiscoveryResponseImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
+        super(namespaceURI, elementLocalName, namespacePrefix);
+    }
 }

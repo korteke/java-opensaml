@@ -15,29 +15,29 @@
  * limitations under the License.
  */
 
-package org.opensaml.saml.samlext.saml1md.impl;
+package org.opensaml.saml.ext.saml1md.impl;
 
-import net.shibboleth.utilities.java.support.xml.ElementSupport;
-
-import org.opensaml.core.xml.XMLObject;
-import org.opensaml.core.xml.io.MarshallingException;
-import org.opensaml.saml.common.impl.AbstractSAMLObjectMarshaller;
+import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
+import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.ext.saml1md.SourceID;
-import org.w3c.dom.Element;
-
-import com.google.common.base.Strings;
 
 /**
- * Marshaller of {@link SourceID} objects.
+ * Builder of {@link SourceIDImpl} objects.
  */
-public class SourceIDMarshaller extends AbstractSAMLObjectMarshaller {
+public class SourceIDBuilder extends AbstractSAMLObjectBuilder<SourceID> {
+
+    /** Constructor */
+    public SourceIDBuilder() {
+
+    }
 
     /** {@inheritDoc} */
-    protected void marshallElementContent(XMLObject xmlObject, Element domElement) throws MarshallingException {
-        SourceID sourceID = (SourceID) xmlObject;
+    public SourceID buildObject() {
+        return buildObject(SAMLConstants.SAML1MD_NS, SourceID.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1MD_PREFIX);
+    }
 
-        if (!Strings.isNullOrEmpty(sourceID.getValue())) {
-            ElementSupport.appendTextContent(domElement, sourceID.getValue());
-        }
+    /** {@inheritDoc} */
+    public SourceID buildObject(String namespaceURI, String localName, String namespacePrefix) {
+        return new SourceIDImpl(namespaceURI, localName, namespacePrefix);
     }
 }

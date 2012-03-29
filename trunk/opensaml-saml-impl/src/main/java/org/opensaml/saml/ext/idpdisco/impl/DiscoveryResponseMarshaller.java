@@ -15,21 +15,11 @@
  * limitations under the License.
  */
 
-package org.opensaml.saml.samlext.saml1md.impl;
+package org.opensaml.saml.ext.idpdisco.impl;
 
-import org.opensaml.core.xml.XMLObject;
-import org.opensaml.saml.common.impl.AbstractSAMLObjectUnmarshaller;
-import org.opensaml.saml.ext.saml1md.SourceID;
+import org.opensaml.saml.saml2.metadata.impl.IndexedEndpointMarshaller;
 
-/**
- * Unmarshaller for {@link SourceID} objects.
- */
-public class SourceIDUnmarshaller extends AbstractSAMLObjectUnmarshaller {
+/** A thread-safe Marshaller for {@link org.opensaml.saml.ext.idpdisco.DiscoveryResponse} objects. */
+public class DiscoveryResponseMarshaller extends IndexedEndpointMarshaller {
 
-    /** {@inheritDoc} */
-    protected void processElementContent(XMLObject samlObject, String elementContent) {
-        SourceID sourceID = (SourceID) samlObject;
-
-        sourceID.setValue(elementContent);
-    }
 }

@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.saml.samlext.saml1md.impl;
+package org.opensaml.saml.ext.saml1md.impl;
 
 import java.util.List;
 

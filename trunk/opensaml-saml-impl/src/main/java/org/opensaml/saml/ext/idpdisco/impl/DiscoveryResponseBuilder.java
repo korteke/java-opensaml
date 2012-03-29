@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.saml.samlext.idpdisco.impl;
+package org.opensaml.saml.ext.idpdisco.impl;
 
 import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
