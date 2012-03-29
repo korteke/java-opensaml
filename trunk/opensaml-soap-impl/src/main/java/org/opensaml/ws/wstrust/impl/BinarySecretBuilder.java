@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wstrust.impl;
 
-import org.opensaml.ws.wstrust.BinarySecret;
+import org.opensaml.soap.wstrust.BinarySecret;
 
 /**
  * Builder for the BinarySecret element.

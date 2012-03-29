@@ -19,7 +19,7 @@ package org.opensaml.ws.wssecurity.impl;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
-import org.opensaml.ws.wssecurity.BinarySecurityToken;
+import org.opensaml.soap.wssecurity.BinarySecurityToken;
 import org.w3c.dom.Attr;
 
 /**

@@ -23,8 +23,8 @@ import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.AttributeMap;
-import org.opensaml.ws.wstrust.RequestSecurityTokenResponse;
-import org.opensaml.ws.wstrust.RequestSecurityTokenResponseCollection;
+import org.opensaml.soap.wstrust.RequestSecurityTokenResponse;
+import org.opensaml.soap.wstrust.RequestSecurityTokenResponseCollection;
 
 /**
  * RequestSecurityTokenResponseCollectionImpl.

@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wstrust.impl;
 
-import org.opensaml.ws.wstrust.Authenticator;
+import org.opensaml.soap.wstrust.Authenticator;
 
 /**
  * Builder for the Authenticator element.

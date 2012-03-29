@@ -20,7 +20,7 @@ package org.opensaml.ws.wstrust.impl;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.schema.XSBooleanValue;
-import org.opensaml.ws.wstrust.Forwardable;
+import org.opensaml.soap.wstrust.Forwardable;
 
 /**
  * Unmarshaller for the wst:Forwardable element.

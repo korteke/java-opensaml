@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wstrust.impl;
 
-import org.opensaml.ws.wstrust.ProofEncryption;
+import org.opensaml.soap.wstrust.ProofEncryption;
 
 /**
  * Builder for the ProofEncryption element.

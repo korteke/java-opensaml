@@ -18,7 +18,7 @@
 package org.opensaml.ws.wstrust.impl;
 
 import org.opensaml.core.xml.schema.impl.XSIntegerImpl;
-import org.opensaml.ws.wstrust.KeySize;
+import org.opensaml.soap.wstrust.KeySize;
 
 /**
  * KeySizeImpl.

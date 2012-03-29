@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wstrust.impl;
 
-import org.opensaml.ws.wstrust.CombinedHash;
+import org.opensaml.soap.wstrust.CombinedHash;
 
 /**
  * Builder for the CombinedHash element.

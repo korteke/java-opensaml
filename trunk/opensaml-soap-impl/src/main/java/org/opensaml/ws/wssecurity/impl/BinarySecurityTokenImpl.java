@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wssecurity.impl;
 
-import org.opensaml.ws.wssecurity.BinarySecurityToken;
+import org.opensaml.soap.wssecurity.BinarySecurityToken;
 
 /**
  * BinarySecurityTokenImpl.

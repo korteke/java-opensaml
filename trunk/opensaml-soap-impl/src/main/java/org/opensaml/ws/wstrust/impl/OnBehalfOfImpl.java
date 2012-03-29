@@ -25,7 +25,7 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
-import org.opensaml.ws.wstrust.OnBehalfOf;
+import org.opensaml.soap.wstrust.OnBehalfOf;
 
 /**
  * OnBehalfOfImpl.

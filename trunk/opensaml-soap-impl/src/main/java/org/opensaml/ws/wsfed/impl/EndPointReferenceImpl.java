@@ -23,8 +23,8 @@ import java.util.List;
 
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.ws.wsfed.Address;
-import org.opensaml.ws.wsfed.EndPointReference;
+import org.opensaml.soap.wsfed.Address;
+import org.opensaml.soap.wsfed.EndPointReference;
 
 /** Implementation of the {@link EndPointReference} object. */
 public class EndPointReferenceImpl extends AbstractXMLObject implements EndPointReference {

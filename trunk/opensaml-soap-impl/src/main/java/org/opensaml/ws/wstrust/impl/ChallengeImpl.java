@@ -18,7 +18,7 @@
 package org.opensaml.ws.wstrust.impl;
 
 import org.opensaml.core.xml.schema.impl.XSStringImpl;
-import org.opensaml.ws.wstrust.Challenge;
+import org.opensaml.soap.wstrust.Challenge;
 
 /**
  * ChallengeImpl.

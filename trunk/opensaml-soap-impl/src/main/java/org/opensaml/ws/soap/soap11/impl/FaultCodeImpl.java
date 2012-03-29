@@ -18,10 +18,10 @@
 package org.opensaml.ws.soap.soap11.impl;
 
 import org.opensaml.core.xml.schema.impl.XSQNameImpl;
-import org.opensaml.ws.soap.soap11.FaultCode;
+import org.opensaml.soap.soap11.FaultCode;
 
 /**
- * Concrete implementation of {@link org.opensaml.ws.soap.soap11.FaultCode}.
+ * Concrete implementation of {@link org.opensaml.soap.soap11.FaultCode}.
  */
 public class FaultCodeImpl extends XSQNameImpl implements FaultCode {
 

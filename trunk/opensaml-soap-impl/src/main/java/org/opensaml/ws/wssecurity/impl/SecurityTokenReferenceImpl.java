@@ -26,9 +26,9 @@ import javax.xml.namespace.QName;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.AttributeMap;
 import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
-import org.opensaml.ws.wssecurity.IdBearing;
-import org.opensaml.ws.wssecurity.SecurityTokenReference;
-import org.opensaml.ws.wssecurity.UsageBearing;
+import org.opensaml.soap.wssecurity.IdBearing;
+import org.opensaml.soap.wssecurity.SecurityTokenReference;
+import org.opensaml.soap.wssecurity.UsageBearing;
 
 /**
  * SecurityTokenReferenceImpl.

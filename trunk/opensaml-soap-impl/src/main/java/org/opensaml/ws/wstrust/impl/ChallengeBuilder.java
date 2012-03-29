@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wstrust.impl;
 
-import org.opensaml.ws.wstrust.Challenge;
+import org.opensaml.soap.wstrust.Challenge;
 
 /**
  * Builder for the Challenge element.

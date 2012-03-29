@@ -18,7 +18,7 @@
 package org.opensaml.ws.wstrust.impl;
 
 import org.opensaml.core.xml.validation.AbstractValidatingXMLObject;
-import org.opensaml.ws.wstrust.WSTrustObject;
+import org.opensaml.soap.wstrust.WSTrustObject;
 
 /**
  * AbstractWSTrustObject.

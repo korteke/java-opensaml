@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wspolicy.impl;
 
-import org.opensaml.ws.wspolicy.ExactlyOne;
+import org.opensaml.soap.wspolicy.ExactlyOne;
 
 /**
  * Builder for the ExactlyOne element.

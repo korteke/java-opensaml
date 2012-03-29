@@ -18,11 +18,11 @@
 package org.opensaml.ws.soap.soap11.impl;
 
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
-import org.opensaml.ws.soap.common.SOAPObjectBuilder;
-import org.opensaml.ws.soap.soap11.FaultString;
+import org.opensaml.soap.common.SOAPObjectBuilder;
+import org.opensaml.soap.soap11.FaultString;
 
 /**
- * Builder of {@link org.opensaml.ws.soap.soap11.impl.FaultStringImpl} objects.
+ * Builder of {@link org.opensaml.soap.soap11.impl.FaultStringImpl} objects.
  */
 public class FaultStringBuilder extends AbstractXMLObjectBuilder<FaultString> implements SOAPObjectBuilder<FaultString> {
 

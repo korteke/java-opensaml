@@ -19,8 +19,8 @@ package org.opensaml.ws.wspolicy.impl;
 
 
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
-import org.opensaml.ws.wspolicy.WSPolicyObject;
-import org.opensaml.ws.wspolicy.WSPolicyObjectBuilder;
+import org.opensaml.soap.wspolicy.WSPolicyObject;
+import org.opensaml.soap.wspolicy.WSPolicyObjectBuilder;
 
 /**
  * AbstactWSPolicyObjectBuilder.

@@ -24,12 +24,12 @@ import net.shibboleth.utilities.java.support.collection.LazyList;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.schema.XSBooleanValue;
-import org.opensaml.ws.soap.soap11.ActorBearing;
-import org.opensaml.ws.soap.soap11.MustUnderstandBearing;
-import org.opensaml.ws.soap.soap12.RelayBearing;
-import org.opensaml.ws.soap.soap12.RoleBearing;
-import org.opensaml.ws.wssecurity.EncryptedHeader;
-import org.opensaml.ws.wssecurity.IdBearing;
+import org.opensaml.soap.soap11.ActorBearing;
+import org.opensaml.soap.soap11.MustUnderstandBearing;
+import org.opensaml.soap.soap12.RelayBearing;
+import org.opensaml.soap.soap12.RoleBearing;
+import org.opensaml.soap.wssecurity.EncryptedHeader;
+import org.opensaml.soap.wssecurity.IdBearing;
 import org.opensaml.xmlsec.encryption.EncryptedData;
 
 /**
@@ -156,14 +156,14 @@ public class EncryptedHeaderImpl extends AbstractWSSecurityObject implements Enc
         } else {
             soap12MustUnderstand = prepareForAssignment(soap12MustUnderstand, null);
         }
-        manageQualifiedAttributeNamespace(org.opensaml.ws.soap.soap12.MustUnderstandBearing.SOAP12_MUST_UNDERSTAND_ATTR_NAME, 
+        manageQualifiedAttributeNamespace(org.opensaml.soap.soap12.MustUnderstandBearing.SOAP12_MUST_UNDERSTAND_ATTR_NAME, 
                 soap12MustUnderstand != null);
     }
 
     /** {@inheritDoc} */
     public void setSOAP12MustUnderstand(XSBooleanValue newMustUnderstand) {
             soap12MustUnderstand = prepareForAssignment(soap12MustUnderstand, newMustUnderstand);
-            manageQualifiedAttributeNamespace(org.opensaml.ws.soap.soap12.MustUnderstandBearing.SOAP12_MUST_UNDERSTAND_ATTR_NAME, 
+            manageQualifiedAttributeNamespace(org.opensaml.soap.soap12.MustUnderstandBearing.SOAP12_MUST_UNDERSTAND_ATTR_NAME, 
                     soap12MustUnderstand != null);
     }
 

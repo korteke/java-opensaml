@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wstrust.impl;
 
-import org.opensaml.ws.wstrust.UseKey;
+import org.opensaml.soap.wstrust.UseKey;
 
 /**
  * Builder for the UseKey element.

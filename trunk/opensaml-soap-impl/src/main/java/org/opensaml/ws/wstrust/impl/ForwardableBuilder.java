@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wstrust.impl;
 
-import org.opensaml.ws.wstrust.Forwardable;
+import org.opensaml.soap.wstrust.Forwardable;
 
 /**
  * Builder for the Forwardable element.

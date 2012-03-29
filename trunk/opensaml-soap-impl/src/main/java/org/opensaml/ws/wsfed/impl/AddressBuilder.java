@@ -18,9 +18,9 @@
 package org.opensaml.ws.wsfed.impl;
 
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
-import org.opensaml.ws.wsfed.Address;
-import org.opensaml.ws.wsfed.WSFedConstants;
-import org.opensaml.ws.wsfed.WSFedObjectBuilder;
+import org.opensaml.soap.wsfed.Address;
+import org.opensaml.soap.wsfed.WSFedConstants;
+import org.opensaml.soap.wsfed.WSFedObjectBuilder;
 
 /** Builder of {@link AddressImpl} objects. */
 public class AddressBuilder extends AbstractXMLObjectBuilder<Address> implements WSFedObjectBuilder<Address> {

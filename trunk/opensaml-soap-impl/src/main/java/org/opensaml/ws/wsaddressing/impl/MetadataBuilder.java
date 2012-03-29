@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wsaddressing.impl;
 
-import org.opensaml.ws.wsaddressing.Metadata;
+import org.opensaml.soap.wsaddressing.Metadata;
 
 /**
  * MetadataBuilder.

@@ -22,8 +22,8 @@ import java.util.Collections;
 import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.ws.wssecurity.SecurityTokenReference;
-import org.opensaml.ws.wstrust.RequestedReferenceType;
+import org.opensaml.soap.wssecurity.SecurityTokenReference;
+import org.opensaml.soap.wstrust.RequestedReferenceType;
 
 /**
  * RequestedReferenceTypeImpl.

@@ -24,9 +24,9 @@ import java.util.List;
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.XMLObjectChildrenList;
-import org.opensaml.ws.wsfed.AppliesTo;
-import org.opensaml.ws.wsfed.RequestSecurityTokenResponse;
-import org.opensaml.ws.wsfed.RequestedSecurityToken;
+import org.opensaml.soap.wsfed.AppliesTo;
+import org.opensaml.soap.wsfed.RequestSecurityTokenResponse;
+import org.opensaml.soap.wsfed.RequestedSecurityToken;
 
 /** Implementation of the {@link RequestSecurityTokenResponse} object. */
 public class RequestSecurityTokenResponseImpl extends AbstractXMLObject implements RequestSecurityTokenResponse {

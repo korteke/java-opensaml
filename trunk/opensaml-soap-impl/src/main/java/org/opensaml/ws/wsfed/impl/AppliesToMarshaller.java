@@ -21,7 +21,7 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.AbstractXMLObjectMarshaller;
 import org.w3c.dom.Element;
 
-/** A thread safe marshaller for {@link org.opensaml.ws.wsfed.AppliesTo} objects. */
+/** A thread safe marshaller for {@link org.opensaml.soap.wsfed.AppliesTo} objects. */
 public class AppliesToMarshaller extends AbstractXMLObjectMarshaller {
 
     /** {@inheritDoc} */

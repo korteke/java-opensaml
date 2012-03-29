@@ -22,7 +22,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.ws.wstrust.Encryption;
+import org.opensaml.soap.wstrust.Encryption;
 
 /**
  * EncryptionImpl.

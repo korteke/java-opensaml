@@ -20,7 +20,7 @@ package org.opensaml.ws.wstrust.impl;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
-import org.opensaml.ws.wstrust.KeyExchangeToken;
+import org.opensaml.soap.wstrust.KeyExchangeToken;
 
 /**
  * Unmarshaller for the wst:KeyExchangeToken element.

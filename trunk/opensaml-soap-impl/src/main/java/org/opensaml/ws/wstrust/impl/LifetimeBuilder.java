@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wstrust.impl;
 
-import org.opensaml.ws.wstrust.Lifetime;
+import org.opensaml.soap.wstrust.Lifetime;
 
 /**
  * Builder for the Lifetime element.

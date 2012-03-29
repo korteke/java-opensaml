@@ -20,7 +20,7 @@ package org.opensaml.ws.wstrust.impl;
 import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.ws.wstrust.RequestedTokenCancelled;
+import org.opensaml.soap.wstrust.RequestedTokenCancelled;
 
 /**
  * RequestedTokenCancelledImpl.

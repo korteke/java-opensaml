@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wsaddressing.impl;
 
-import org.opensaml.ws.wsaddressing.EndpointReference;
+import org.opensaml.soap.wsaddressing.EndpointReference;
 
 /**
  * Concrete implementation of element {@link EndpointReference}.

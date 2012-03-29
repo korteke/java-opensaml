@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wstrust.impl;
 
-import org.opensaml.ws.wstrust.RenewTarget;
+import org.opensaml.soap.wstrust.RenewTarget;
 
 /**
  * Builder for the RenewTarget element.

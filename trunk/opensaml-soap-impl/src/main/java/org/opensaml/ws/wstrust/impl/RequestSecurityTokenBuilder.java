@@ -17,12 +17,12 @@
 
 package org.opensaml.ws.wstrust.impl;
 
-import org.opensaml.ws.wstrust.RequestSecurityToken;
+import org.opensaml.soap.wstrust.RequestSecurityToken;
 
 /**
  * Builder for the RequestSecurityToken element.
  * 
- * @see org.opensaml.ws.wstrust.RequestSecurityToken
+ * @see org.opensaml.soap.wstrust.RequestSecurityToken
  * 
  */
 public class RequestSecurityTokenBuilder extends AbstractWSTrustObjectBuilder<RequestSecurityToken> {

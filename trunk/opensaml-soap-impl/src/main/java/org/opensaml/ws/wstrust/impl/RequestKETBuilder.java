@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wstrust.impl;
 
-import org.opensaml.ws.wstrust.RequestKET;
+import org.opensaml.soap.wstrust.RequestKET;
 
 /**
  * Builder for the RequestKET element.

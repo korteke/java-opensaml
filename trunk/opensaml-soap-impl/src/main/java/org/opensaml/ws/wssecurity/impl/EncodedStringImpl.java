@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wssecurity.impl;
 
-import org.opensaml.ws.wssecurity.EncodedString;
+import org.opensaml.soap.wssecurity.EncodedString;
 
 /**
  * Implementation of {@link EncodedString}.

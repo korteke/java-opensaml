@@ -18,8 +18,8 @@
 package org.opensaml.ws.wspolicy.impl;
 
 import org.opensaml.core.xml.util.AttributeMap;
-import org.opensaml.ws.wspolicy.Policy;
-import org.opensaml.ws.wssecurity.IdBearing;
+import org.opensaml.soap.wspolicy.Policy;
+import org.opensaml.soap.wssecurity.IdBearing;
 
 /**
  * PolicyImpl.

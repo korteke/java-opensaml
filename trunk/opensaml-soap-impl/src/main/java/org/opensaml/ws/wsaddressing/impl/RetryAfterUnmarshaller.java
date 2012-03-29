@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wsaddressing.impl;
 
-import org.opensaml.ws.wsaddressing.RetryAfter;
+import org.opensaml.soap.wsaddressing.RetryAfter;
 
 /**
  * Unmarshaller for instances of {@link RetryAfter}.

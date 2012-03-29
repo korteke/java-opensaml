@@ -21,7 +21,7 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.AbstractXMLObjectMarshaller;
 import org.w3c.dom.Element;
 
-/** A thread safe marshaller for {@link org.opensaml.ws.wsfed.RequestedSecurityToken} objects. */
+/** A thread safe marshaller for {@link org.opensaml.soap.wsfed.RequestedSecurityToken} objects. */
 public class RequestedSecurityTokenMarshaller extends AbstractXMLObjectMarshaller {
 
     /** {@inheritDoc} */

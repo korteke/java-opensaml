@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wstrust.impl;
 
-import org.opensaml.ws.wstrust.SignatureAlgorithm;
+import org.opensaml.soap.wstrust.SignatureAlgorithm;
 
 /**
  * Builder for the SignatureAlgorithm element.

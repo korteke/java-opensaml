@@ -20,6 +20,11 @@ package org.opensaml.ws.wsaddressing;
 import java.io.InputStream;
 
 import org.opensaml.core.xml.XMLConfigurator;
+import org.opensaml.soap.wsaddressing.Action;
+import org.opensaml.soap.wsaddressing.Address;
+import org.opensaml.soap.wsaddressing.EndpointReference;
+import org.opensaml.soap.wsaddressing.Metadata;
+import org.opensaml.soap.wsaddressing.ReferenceParameters;
 import org.opensaml.ws.WSBaseTestCase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

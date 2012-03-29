@@ -20,7 +20,7 @@ package org.opensaml.ws.wssecurity.impl;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
-import org.opensaml.ws.wssecurity.KeyIdentifier;
+import org.opensaml.soap.wssecurity.KeyIdentifier;
 import org.w3c.dom.Attr;
 
 /**

@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wstrust.impl;
 
-import org.opensaml.ws.wstrust.Status;
+import org.opensaml.soap.wstrust.Status;
 
 /**
  * Builder for the Status element.

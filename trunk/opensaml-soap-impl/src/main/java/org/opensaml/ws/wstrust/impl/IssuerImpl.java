@@ -17,8 +17,8 @@
 
 package org.opensaml.ws.wstrust.impl;
 
+import org.opensaml.soap.wstrust.Issuer;
 import org.opensaml.ws.wsaddressing.impl.EndpointReferenceTypeImpl;
-import org.opensaml.ws.wstrust.Issuer;
 
 /**
  * IssuerImpl.

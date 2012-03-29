@@ -24,7 +24,7 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
-import org.opensaml.ws.wstrust.KeyExchangeToken;
+import org.opensaml.soap.wstrust.KeyExchangeToken;
 
 /**
  * KeyExchangeTokenImpl.

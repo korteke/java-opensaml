@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wspolicy.impl;
 
-import org.opensaml.ws.wspolicy.AppliesTo;
+import org.opensaml.soap.wspolicy.AppliesTo;
 
 /**
  * Builder for the AppliesTo element.

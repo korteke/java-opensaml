@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wstrust.impl;
 
-import org.opensaml.ws.wstrust.SignChallenge;
+import org.opensaml.soap.wstrust.SignChallenge;
 
 /**
  * SignChallengeImpl.

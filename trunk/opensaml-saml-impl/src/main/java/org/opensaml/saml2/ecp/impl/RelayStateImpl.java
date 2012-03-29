@@ -23,8 +23,8 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.core.xml.schema.impl.XSStringImpl;
 import org.opensaml.saml2.ecp.RelayState;
-import org.opensaml.ws.soap.soap11.ActorBearing;
-import org.opensaml.ws.soap.soap11.MustUnderstandBearing;
+import org.opensaml.soap.soap11.ActorBearing;
+import org.opensaml.soap.soap11.MustUnderstandBearing;
 
 /**
  *  A concrete implementation of {@link RelayState}.

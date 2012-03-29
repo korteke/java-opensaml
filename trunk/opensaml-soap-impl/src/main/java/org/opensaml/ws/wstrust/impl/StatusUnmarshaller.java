@@ -20,9 +20,9 @@ package org.opensaml.ws.wstrust.impl;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
-import org.opensaml.ws.wstrust.Code;
-import org.opensaml.ws.wstrust.Reason;
-import org.opensaml.ws.wstrust.Status;
+import org.opensaml.soap.wstrust.Code;
+import org.opensaml.soap.wstrust.Reason;
+import org.opensaml.soap.wstrust.Status;
 
 /**
  * Unmarshaller for the wst:Status element.

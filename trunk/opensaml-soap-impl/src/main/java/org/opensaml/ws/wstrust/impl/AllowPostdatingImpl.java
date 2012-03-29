@@ -20,7 +20,7 @@ package org.opensaml.ws.wstrust.impl;
 import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.ws.wstrust.AllowPostdating;
+import org.opensaml.soap.wstrust.AllowPostdating;
 
 /**
  * AllowPostdatingImpl.

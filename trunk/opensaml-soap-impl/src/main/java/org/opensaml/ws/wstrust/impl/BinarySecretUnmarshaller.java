@@ -21,7 +21,7 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.core.xml.schema.impl.XSBase64BinaryUnmarshaller;
 import org.opensaml.core.xml.util.XMLObjectSupport;
-import org.opensaml.ws.wstrust.BinarySecret;
+import org.opensaml.soap.wstrust.BinarySecret;
 import org.w3c.dom.Attr;
 
 /**

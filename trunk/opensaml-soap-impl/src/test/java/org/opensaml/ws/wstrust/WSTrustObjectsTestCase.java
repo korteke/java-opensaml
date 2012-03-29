@@ -29,12 +29,30 @@ import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.core.xml.schema.impl.XSAnyBuilder;
 import org.opensaml.core.xml.schema.impl.XSAnyMarshaller;
 import org.opensaml.core.xml.schema.impl.XSAnyUnmarshaller;
+import org.opensaml.soap.wssecurity.Created;
+import org.opensaml.soap.wssecurity.Password;
+import org.opensaml.soap.wssecurity.Timestamp;
+import org.opensaml.soap.wssecurity.Username;
+import org.opensaml.soap.wssecurity.UsernameToken;
+import org.opensaml.soap.wstrust.AllowPostdating;
+import org.opensaml.soap.wstrust.AuthenticationType;
+import org.opensaml.soap.wstrust.Authenticator;
+import org.opensaml.soap.wstrust.BinaryExchange;
+import org.opensaml.soap.wstrust.BinarySecret;
+import org.opensaml.soap.wstrust.CancelTarget;
+import org.opensaml.soap.wstrust.CanonicalizationAlgorithm;
+import org.opensaml.soap.wstrust.Challenge;
+import org.opensaml.soap.wstrust.Claims;
+import org.opensaml.soap.wstrust.Code;
+import org.opensaml.soap.wstrust.CombinedHash;
+import org.opensaml.soap.wstrust.ComputedKey;
+import org.opensaml.soap.wstrust.ComputedKeyAlgorithm;
+import org.opensaml.soap.wstrust.Delegatable;
+import org.opensaml.soap.wstrust.DelegateTo;
+import org.opensaml.soap.wstrust.RequestSecurityToken;
+import org.opensaml.soap.wstrust.RequestType;
+import org.opensaml.soap.wstrust.TokenType;
 import org.opensaml.ws.WSBaseTestCase;
-import org.opensaml.ws.wssecurity.Created;
-import org.opensaml.ws.wssecurity.Password;
-import org.opensaml.ws.wssecurity.Timestamp;
-import org.opensaml.ws.wssecurity.Username;
-import org.opensaml.ws.wssecurity.UsernameToken;
 
 /**
  * WSTrustObjectsTestCase is the base test case for the WS-Trust objects.

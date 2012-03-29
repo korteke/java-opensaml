@@ -27,12 +27,12 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.AbstractXMLObjectMarshaller;
 import org.opensaml.core.xml.io.MarshallingException;
-import org.opensaml.ws.soap.soap11.Detail;
+import org.opensaml.soap.soap11.Detail;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
 
 /**
- * A thread-safe marshaller for {@link org.opensaml.ws.soap.soap11.Detail}s.
+ * A thread-safe marshaller for {@link org.opensaml.soap.soap11.Detail}s.
  */
 public class DetailMarshaller extends AbstractXMLObjectMarshaller {
 

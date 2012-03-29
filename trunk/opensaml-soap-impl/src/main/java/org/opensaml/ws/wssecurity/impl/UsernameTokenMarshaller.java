@@ -20,7 +20,7 @@ package org.opensaml.ws.wssecurity.impl;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.util.XMLObjectSupport;
-import org.opensaml.ws.wssecurity.UsernameToken;
+import org.opensaml.soap.wssecurity.UsernameToken;
 import org.w3c.dom.Element;
 
 import com.google.common.base.Strings;

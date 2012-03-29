@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wstrust.impl;
 
-import org.opensaml.ws.wstrust.EncryptWith;
+import org.opensaml.soap.wstrust.EncryptWith;
 
 /**
  * Builder for the EncryptWith element.

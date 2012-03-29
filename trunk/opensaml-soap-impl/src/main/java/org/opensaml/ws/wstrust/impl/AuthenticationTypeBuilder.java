@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wstrust.impl;
 
-import org.opensaml.ws.wstrust.AuthenticationType;
+import org.opensaml.soap.wstrust.AuthenticationType;
 
 /**
  * Builder for the AuthenticationType element.

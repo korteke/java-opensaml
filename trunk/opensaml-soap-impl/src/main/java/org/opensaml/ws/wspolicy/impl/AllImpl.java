@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wspolicy.impl;
 
-import org.opensaml.ws.wspolicy.All;
+import org.opensaml.soap.wspolicy.All;
 
 /**
  * AllImpl.

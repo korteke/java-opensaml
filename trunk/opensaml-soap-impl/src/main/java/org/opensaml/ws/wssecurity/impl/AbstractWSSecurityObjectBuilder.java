@@ -19,8 +19,8 @@ package org.opensaml.ws.wssecurity.impl;
 
 
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
-import org.opensaml.ws.wssecurity.WSSecurityObject;
-import org.opensaml.ws.wssecurity.WSSecurityObjectBuilder;
+import org.opensaml.soap.wssecurity.WSSecurityObject;
+import org.opensaml.soap.wssecurity.WSSecurityObjectBuilder;
 
 /**
  * AbstractWSSecurityObjectBuilder
@@ -33,7 +33,7 @@ public abstract class AbstractWSSecurityObjectBuilder<WSSecurityObjectType exten
     /*
      * (non-Javadoc)
      * 
-     * @see org.opensaml.ws.wssecurity.WSSecurityObjectBuilder#buildObject()
+     * @see org.opensaml.soap.wssecurity.WSSecurityObjectBuilder#buildObject()
      */
     public abstract WSSecurityObjectType buildObject();
 }

@@ -26,9 +26,9 @@ import javax.xml.namespace.QName;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.AttributeMap;
 import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
-import org.opensaml.ws.wssecurity.IdBearing;
-import org.opensaml.ws.wssecurity.Username;
-import org.opensaml.ws.wssecurity.UsernameToken;
+import org.opensaml.soap.wssecurity.IdBearing;
+import org.opensaml.soap.wssecurity.Username;
+import org.opensaml.soap.wssecurity.UsernameToken;
 
 /**
  * Implementation of {@link UsernameToken}.

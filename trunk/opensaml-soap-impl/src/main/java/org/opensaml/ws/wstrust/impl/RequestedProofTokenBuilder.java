@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wstrust.impl;
 
-import org.opensaml.ws.wstrust.RequestedProofToken;
+import org.opensaml.soap.wstrust.RequestedProofToken;
 
 /**
  * Builder for the RequestedProofToken element.

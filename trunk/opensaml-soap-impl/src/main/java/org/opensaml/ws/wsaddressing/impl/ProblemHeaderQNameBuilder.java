@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wsaddressing.impl;
 
-import org.opensaml.ws.wsaddressing.ProblemHeaderQName;
+import org.opensaml.soap.wsaddressing.ProblemHeaderQName;
 
 /**
  * ProblemHeaderQNameBuilder.

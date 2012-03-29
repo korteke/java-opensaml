@@ -18,7 +18,7 @@
 package org.opensaml.ws.wstrust.impl;
 
 import org.opensaml.core.xml.schema.impl.XSURIImpl;
-import org.opensaml.ws.wstrust.ComputedKey;
+import org.opensaml.soap.wstrust.ComputedKey;
 
 /**
  * ComputedKeyImpl.

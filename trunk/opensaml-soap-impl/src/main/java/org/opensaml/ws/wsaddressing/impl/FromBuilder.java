@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wsaddressing.impl;
 
-import org.opensaml.ws.wsaddressing.From;
+import org.opensaml.soap.wsaddressing.From;
 
 /**
  * Builder for the {@link From} element.

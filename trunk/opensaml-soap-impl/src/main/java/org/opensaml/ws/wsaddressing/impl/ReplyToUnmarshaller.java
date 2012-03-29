@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wsaddressing.impl;
 
-import org.opensaml.ws.wsaddressing.ReplyTo;
+import org.opensaml.soap.wsaddressing.ReplyTo;
 
 /**
  * Unmarshaller for the {@link ReplyTo} element.

@@ -22,7 +22,7 @@ import java.util.List;
 
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.ws.wsfed.Address;
+import org.opensaml.soap.wsfed.Address;
 
 /** Implementation of the {@link Address} object. */
 public class AddressImpl extends AbstractXMLObject implements Address {

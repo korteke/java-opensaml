@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wssecurity.impl;
 
-import org.opensaml.ws.wssecurity.Nonce;
+import org.opensaml.soap.wssecurity.Nonce;
 
 /**
  * NonceBuilder.

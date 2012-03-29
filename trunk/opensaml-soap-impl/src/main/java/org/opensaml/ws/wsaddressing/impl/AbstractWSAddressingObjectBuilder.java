@@ -19,8 +19,8 @@ package org.opensaml.ws.wsaddressing.impl;
 
 
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
-import org.opensaml.ws.wsaddressing.WSAddressingObject;
-import org.opensaml.ws.wsaddressing.WSAddressingObjectBuilder;
+import org.opensaml.soap.wsaddressing.WSAddressingObject;
+import org.opensaml.soap.wsaddressing.WSAddressingObjectBuilder;
 
 /**
  * AbstractWSAddressObjectBuilder.

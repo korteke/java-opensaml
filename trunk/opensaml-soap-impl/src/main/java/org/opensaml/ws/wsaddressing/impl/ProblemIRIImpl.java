@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wsaddressing.impl;
 
-import org.opensaml.ws.wsaddressing.ProblemIRI;
+import org.opensaml.soap.wsaddressing.ProblemIRI;
 
 /**
  * ProblemIRIImpl is the concrete implementation of {@link ProblemIRI}.

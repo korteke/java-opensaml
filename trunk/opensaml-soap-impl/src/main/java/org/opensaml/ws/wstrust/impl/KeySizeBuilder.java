@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wstrust.impl;
 
-import org.opensaml.ws.wstrust.KeySize;
+import org.opensaml.soap.wstrust.KeySize;
 
 /**
  * Builder for the KeySize element.

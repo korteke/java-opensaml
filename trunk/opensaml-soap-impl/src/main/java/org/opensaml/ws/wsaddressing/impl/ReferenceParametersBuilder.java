@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wsaddressing.impl;
 
-import org.opensaml.ws.wsaddressing.ReferenceParameters;
+import org.opensaml.soap.wsaddressing.ReferenceParameters;
 
 /**
  * ReferenceParametersBuilder.

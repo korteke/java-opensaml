@@ -22,7 +22,7 @@ import net.shibboleth.utilities.java.support.xml.ElementSupport;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.util.XMLObjectSupport;
-import org.opensaml.ws.wssecurity.AttributedDateTime;
+import org.opensaml.soap.wssecurity.AttributedDateTime;
 import org.w3c.dom.Element;
 
 import com.google.common.base.Strings;
