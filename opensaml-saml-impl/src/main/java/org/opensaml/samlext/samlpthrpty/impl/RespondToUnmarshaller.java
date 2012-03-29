@@ -20,7 +20,7 @@ package org.opensaml.samlext.samlpthrpty.impl;
 import org.opensaml.saml2.core.impl.AbstractNameIDTypeUnmarshaller;
 
 /**
- * Unmarshaller for {@link org.opensaml.samlext.samlpthrpty.RespondTo} objects.
+ * Unmarshaller for {@link org.opensaml.saml.ext.samlpthrpty.RespondTo} objects.
  */
 public class RespondToUnmarshaller extends AbstractNameIDTypeUnmarshaller {
 

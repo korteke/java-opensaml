@@ -20,7 +20,7 @@ package org.opensaml.samlext.samlpthrpty.impl;
 import org.opensaml.saml2.core.impl.AbstractNameIDTypeMarshaller;
 
 /**
- * Marshaller of {@link org.opensaml.samlext.samlpthrpty.RespondTo} objects.
+ * Marshaller of {@link org.opensaml.saml.ext.samlpthrpty.RespondTo} objects.
  */
 public class RespondToMarshaller extends AbstractNameIDTypeMarshaller {
 

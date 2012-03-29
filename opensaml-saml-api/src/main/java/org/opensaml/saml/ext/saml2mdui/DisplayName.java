@@ -15,30 +15,28 @@
  * limitations under the License.
  */
 
-package org.opensaml.samlext.saml2mdquery;
-
-import java.util.List;
+package org.opensaml.saml.ext.saml2mdui;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.saml.common.xml.SAMLConstants;
+import org.opensaml.saml.saml2.metadata.LocalizedName;
 
 /**
- * SAML 2.0 Metadata extension AuthzDecisionQueryDescriptorType.
- */
-public interface AuthzDecisionQueryDescriptorType extends QueryDescriptorType {
+ * DisplayName.
+ *
+ * See IdP Discovery and Login UI Metadata Extension Profile.
+ *
+ * @author Rod Widdowson August 2010
+ * 
+ * Reflects the UINFO in the IdP Discovery and Login UI Metadata Extension Profile/
+ * */
+public interface DisplayName extends LocalizedName {
 
-    /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "AuthzDecisionQueryDescriptorType";
-
-    /** QName of the XSI type. */
-    public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MDQUERY_NS, TYPE_LOCAL_NAME,
-            SAMLConstants.SAML20MDQUERY_PREFIX);
+    /** Element local name. */
+    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "DisplayName";
     
-    /**
-     * Gets the list of action namespaces support by this role.
-     * 
-     * @return the list of action namespaces support by this role
-     */
-    public List<ActionNamespace> getActionNamespaces();
+    /** Default element name. */
+    public static final QName DEFAULT_ELEMENT_NAME = new QName(UIInfo.MDUI_NS, 
+            DEFAULT_ELEMENT_LOCAL_NAME, UIInfo.MDUI_PREFIX);
+    
 }

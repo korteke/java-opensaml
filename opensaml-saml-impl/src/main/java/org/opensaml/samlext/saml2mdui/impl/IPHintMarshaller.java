@@ -22,11 +22,11 @@ import net.shibboleth.utilities.java.support.xml.ElementSupport;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml.common.impl.AbstractSAMLObjectMarshaller;
-import org.opensaml.samlext.saml2mdui.IPHint;
+import org.opensaml.saml.ext.saml2mdui.IPHint;
 import org.w3c.dom.Element;
 
 /**
- * A thread safe Marshaller for {@link org.opensaml.samlext.saml2mdui.IPHint} objects.
+ * A thread safe Marshaller for {@link org.opensaml.saml.ext.saml2mdui.IPHint} objects.
  */
 public class IPHintMarshaller extends AbstractSAMLObjectMarshaller {
 

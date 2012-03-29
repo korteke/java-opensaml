@@ -18,11 +18,11 @@
 package org.opensaml.samlext.saml2mdui.impl;
 
 import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
-import org.opensaml.samlext.saml2mdui.DiscoHints;
-import org.opensaml.samlext.saml2mdui.IPHint;
+import org.opensaml.saml.ext.saml2mdui.DiscoHints;
+import org.opensaml.saml.ext.saml2mdui.IPHint;
 
 /**
- * Builder of {@link org.opensaml.samlext.saml2mdui.IPHint} objects.
+ * Builder of {@link org.opensaml.saml.ext.saml2mdui.IPHint} objects.
  */
 public class IPHintBuilder extends AbstractSAMLObjectBuilder<IPHint> {
 

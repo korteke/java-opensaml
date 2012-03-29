@@ -15,28 +15,23 @@
  * limitations under the License.
  */
 
-package org.opensaml.samlext.saml2mdui;
+package org.opensaml.saml.ext.saml2mdquery;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.saml.saml2.metadata.LocalizedName;
+import org.opensaml.core.xml.schema.XSURI;
+import org.opensaml.saml.common.SAMLObject;
+import org.opensaml.saml.common.xml.SAMLConstants;
 
 /**
- * DisplayName.
- *
- * See IdP Discovery and Login UI Metadata Extension Profile.
- *
- * @author Rod Widdowson August 2010
- * 
- * Reflects the UINFO in the IdP Discovery and Login UI Metadata Extension Profile/
- * */
-public interface DisplayName extends LocalizedName {
+ * SAML 2.0 Metadata extension ActionNamespace
+ */
+public interface ActionNamespace extends XSURI, SAMLObject {
 
-    /** Element local name. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "DisplayName";
-    
-    /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(UIInfo.MDUI_NS, 
-            DEFAULT_ELEMENT_LOCAL_NAME, UIInfo.MDUI_PREFIX);
-    
+    /** Element local name */
+    public final static String DEFAULT_ELEMENT_LOCAL_NAME = "ActionNamespace";
+
+    /** Default element name */
+    public final static QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MDQUERY_NS,
+            DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MDQUERY_PREFIX);
 }

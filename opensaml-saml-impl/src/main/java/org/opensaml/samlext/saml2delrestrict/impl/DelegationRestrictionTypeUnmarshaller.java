@@ -20,8 +20,8 @@ package org.opensaml.samlext.saml2delrestrict.impl;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.impl.AbstractSAMLObjectUnmarshaller;
-import org.opensaml.samlext.saml2delrestrict.Delegate;
-import org.opensaml.samlext.saml2delrestrict.DelegationRestrictionType;
+import org.opensaml.saml.ext.saml2delrestrict.Delegate;
+import org.opensaml.saml.ext.saml2delrestrict.DelegationRestrictionType;
 
 /**
  * Unmarshaller for instances of {@link DelegationRestrictionType}.

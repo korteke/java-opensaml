@@ -15,43 +15,29 @@
  * limitations under the License.
  */
 
-package org.opensaml.samlext.saml2mdui;
+package org.opensaml.saml.ext.saml2mdui;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.saml.common.SAMLObject;
+import org.opensaml.saml.saml2.metadata.LocalizedURI;
 
 /**
- * IPHint.
+ * PrivacyStatementURL.
  *
  * See IdP Discovery and Login UI Metadata Extension Profile.
  *
  * @author Rod Widdowson August 2010
  * 
- * The <GeolocationHint> element specifies the geographic coordinates associated 
- *  with, or serviced by, the entity.  Coordinates are given in decimal form using
- *  the World Geodetic System (2d) coordinate system.
+ * Reflects the PrivacyStatementURL in the IdP Discovery and Login UI Metadata Extension Profile.
+ * 
  */
-public interface GeolocationHint extends SAMLObject {
-
+public interface PrivacyStatementURL extends LocalizedURI {
+    
     /** Element local name. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "GeolocationHint";
+    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "PrivacyStatementURL";
     
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(DiscoHints.MDUI_NS, 
-            DEFAULT_ELEMENT_LOCAL_NAME, DiscoHints.MDUI_PREFIX);
+    public static final QName DEFAULT_ELEMENT_NAME = new QName(UIInfo.MDUI_NS, 
+            DEFAULT_ELEMENT_LOCAL_NAME, UIInfo.MDUI_PREFIX);
     
-    /**
-     * Gets the Hint.
-     * 
-     * @return the Hint
-     */
-    public String getHint();
-    
-    /**
-     * Sets the hint.
-     * 
-     * @param newHint hint
-     */
-    public void setHint(String newHint);
 }

@@ -25,16 +25,16 @@ import javax.xml.namespace.QName;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
 import org.opensaml.saml.common.impl.AbstractSAMLObject;
-import org.opensaml.samlext.saml2mdui.Description;
-import org.opensaml.samlext.saml2mdui.DisplayName;
-import org.opensaml.samlext.saml2mdui.InformationURL;
-import org.opensaml.samlext.saml2mdui.Keywords;
-import org.opensaml.samlext.saml2mdui.Logo;
-import org.opensaml.samlext.saml2mdui.PrivacyStatementURL;
-import org.opensaml.samlext.saml2mdui.UIInfo;
+import org.opensaml.saml.ext.saml2mdui.Description;
+import org.opensaml.saml.ext.saml2mdui.DisplayName;
+import org.opensaml.saml.ext.saml2mdui.InformationURL;
+import org.opensaml.saml.ext.saml2mdui.Keywords;
+import org.opensaml.saml.ext.saml2mdui.Logo;
+import org.opensaml.saml.ext.saml2mdui.PrivacyStatementURL;
+import org.opensaml.saml.ext.saml2mdui.UIInfo;
 
 /**
- * Concrete implementation of {@link org.opensaml.samlext.saml2mdui.UIInfo}.
+ * Concrete implementation of {@link org.opensaml.saml.ext.saml2mdui.UIInfo}.
  * @author Rod Widdowson
  */
 public class UIInfoImpl extends AbstractSAMLObject implements UIInfo {

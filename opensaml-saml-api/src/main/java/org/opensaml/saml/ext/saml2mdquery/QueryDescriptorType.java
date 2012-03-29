@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.samlext.saml2mdquery;
+package org.opensaml.saml.ext.saml2mdquery;
 
 import java.util.List;
 

@@ -21,10 +21,10 @@ import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.common.impl.AbstractSAMLObject;
-import org.opensaml.samlext.saml2mdui.DomainHint;
+import org.opensaml.saml.ext.saml2mdui.DomainHint;
 
 /**
- * Concrete implementation of {@link org.opensaml.samlext.saml2mdui.DomainHint}.
+ * Concrete implementation of {@link org.opensaml.saml.ext.saml2mdui.DomainHint}.
  */
 public class DomainHintImpl extends AbstractSAMLObject implements DomainHint{
 

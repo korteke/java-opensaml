@@ -15,21 +15,23 @@
  * limitations under the License.
  */
 
-package org.opensaml.samlext.saml2mdquery;
+package org.opensaml.saml.ext.samlpthrpty;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
+import org.opensaml.saml.saml2.core.NameIDType;
 
 /**
- * SAML 2.0 Metadata extension AuthnQueryDescriptorType.
+ * SAML 2.0 Protocol Third-party extension RespondTo
  */
-public interface AuthnQueryDescriptorType extends QueryDescriptorType {
+public interface RespondTo extends NameIDType, SAMLObject {
 
-    /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "AuthnQueryDescriptorType";
+    /** Element local name */
+    public final static String DEFAULT_ELEMENT_LOCAL_NAME = "RespondTo";
 
-    /** QName of the XSI type. */
-    public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MDQUERY_NS, TYPE_LOCAL_NAME,
-            SAMLConstants.SAML20MDQUERY_PREFIX);
+    /** Default element name */
+    public final static QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20PTHRPTY_NS,
+            DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20PTHRPTY_PREFIX);
 }

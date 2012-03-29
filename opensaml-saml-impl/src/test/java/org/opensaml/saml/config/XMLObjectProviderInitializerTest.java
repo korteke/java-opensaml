@@ -21,19 +21,19 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.core.config.Initializer;
 import org.opensaml.core.config.XMLObjectProviderInitializerBaseTestCase;
+import org.opensaml.saml.ext.idpdisco.DiscoveryResponse;
+import org.opensaml.saml.ext.saml1md.SourceID;
+import org.opensaml.saml.ext.saml2delrestrict.Delegate;
+import org.opensaml.saml.ext.saml2mdattr.EntityAttributes;
+import org.opensaml.saml.ext.saml2mdquery.AttributeQueryDescriptorType;
+import org.opensaml.saml.ext.saml2mdui.UIInfo;
+import org.opensaml.saml.ext.samlpthrpty.RespondTo;
 import org.opensaml.saml.saml1.core.AuthenticationStatement;
 import org.opensaml.saml.saml1.core.RespondWith;
 import org.opensaml.saml.saml2.core.AuthnRequest;
 import org.opensaml.saml.saml2.core.AuthnStatement;
 import org.opensaml.saml.saml2.ecp.RelayState;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
-import org.opensaml.samlext.idpdisco.DiscoveryResponse;
-import org.opensaml.samlext.saml1md.SourceID;
-import org.opensaml.samlext.saml2delrestrict.Delegate;
-import org.opensaml.samlext.saml2mdattr.EntityAttributes;
-import org.opensaml.samlext.saml2mdquery.AttributeQueryDescriptorType;
-import org.opensaml.samlext.saml2mdui.UIInfo;
-import org.opensaml.samlext.samlpthrpty.RespondTo;
 
 /**
  * Test XMLObject provider initializer for module "saml-impl".

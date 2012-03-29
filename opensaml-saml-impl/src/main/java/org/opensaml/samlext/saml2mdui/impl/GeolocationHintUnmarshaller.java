@@ -19,10 +19,10 @@ package org.opensaml.samlext.saml2mdui.impl;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.common.impl.AbstractSAMLObjectUnmarshaller;
-import org.opensaml.samlext.saml2mdui.GeolocationHint;
+import org.opensaml.saml.ext.saml2mdui.GeolocationHint;
 
 /**
- * A thread-safe unmarshaller for {@link org.opensaml.samlext.saml2mdui.GeolocationHint} objects.
+ * A thread-safe unmarshaller for {@link org.opensaml.saml.ext.saml2mdui.GeolocationHint} objects.
  */
 public class GeolocationHintUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 

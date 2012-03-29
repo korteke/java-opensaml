@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.samlext.saml2delrestrict;
+package org.opensaml.saml.ext.saml2delrestrict;
 
 import javax.xml.namespace.QName;
 

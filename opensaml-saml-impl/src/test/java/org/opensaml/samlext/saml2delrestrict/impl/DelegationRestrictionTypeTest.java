@@ -20,8 +20,8 @@ package org.opensaml.samlext.saml2delrestrict.impl;
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
 import org.opensaml.core.xml.XMLObjectProviderRegistrySupport;
 import org.opensaml.saml.common.SAMLObjectBuilder;
-import org.opensaml.samlext.saml2delrestrict.Delegate;
-import org.opensaml.samlext.saml2delrestrict.DelegationRestrictionType;
+import org.opensaml.saml.ext.saml2delrestrict.Delegate;
+import org.opensaml.saml.ext.saml2delrestrict.DelegationRestrictionType;
 
 /**
  * Test case for creating, marshalling, and unmarshalling {@link Delegate}.

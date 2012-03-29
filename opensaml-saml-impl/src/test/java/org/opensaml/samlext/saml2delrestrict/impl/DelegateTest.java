@@ -20,8 +20,8 @@ package org.opensaml.samlext.saml2delrestrict.impl;
 import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.saml.ext.saml2delrestrict.Delegate;
 import org.opensaml.saml.saml2.core.NameID;
-import org.opensaml.samlext.saml2delrestrict.Delegate;
 
 /**
  * Test case for creating, marshalling, and unmarshalling {@link Delegate}.

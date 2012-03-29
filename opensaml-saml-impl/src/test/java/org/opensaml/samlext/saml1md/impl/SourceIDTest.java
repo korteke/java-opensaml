@@ -18,7 +18,7 @@
 package org.opensaml.samlext.saml1md.impl;
 
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
-import org.opensaml.samlext.saml1md.SourceID;
+import org.opensaml.saml.ext.saml1md.SourceID;
 
 /**
  * Tests {@link SourceIDImpl}

@@ -20,7 +20,7 @@ package org.opensaml.samlext.saml2mdui.impl;
 import org.opensaml.saml2.metadata.impl.LocalizedURIUnmarshaller;
 
 /**
- * A thread-safe unmarshaller for {@link org.opensaml.samlext.saml2mdui.InformationURL} objects.
+ * A thread-safe unmarshaller for {@link org.opensaml.saml.ext.saml2mdui.InformationURL} objects.
  */
 public class InformationURLUnmarshaller extends LocalizedURIUnmarshaller {
 }

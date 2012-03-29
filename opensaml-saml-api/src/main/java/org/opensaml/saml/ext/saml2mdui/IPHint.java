@@ -15,31 +15,42 @@
  * limitations under the License.
  */
 
-package org.opensaml.samlext.saml2mdquery;
-
-import java.util.List;
+package org.opensaml.saml.ext.saml2mdui;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml.saml2.metadata.AttributeConsumingService;
+import org.opensaml.saml.common.SAMLObject;
 
 /**
- * SAML 2.0 Metadata extension AttributeQueryDescriptorType.
+ * IPHint.
+ *
+ * See IdP Discovery and Login UI Metadata Extension Profile.
+ *
+ * @author Rod Widdowson August 2010
+ * 
+ * The <IPHint> element specifies a set of [CIDR] blocks associated with, 
+ *  or serviced by, the entity.  Both IPv4 and IPv6 CIDR blocks MUST be supported.
  */
-public interface AttributeQueryDescriptorType extends QueryDescriptorType {
+public interface IPHint extends SAMLObject {
+
+    /** Element local name. */
+    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "IPHint";
     
-    /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "AttributeQueryDescriptorType";
-
-    /** QName of the XSI type. */
-    public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MDQUERY_NS, TYPE_LOCAL_NAME,
-            SAMLConstants.SAML20MDQUERY_PREFIX);
-
+    /** Default element name. */
+    public static final QName DEFAULT_ELEMENT_NAME = new QName(DiscoHints.MDUI_NS, 
+            DEFAULT_ELEMENT_LOCAL_NAME, DiscoHints.MDUI_PREFIX);
+    
     /**
-     * Gets the list of attribute consuming service endpoints support by this role.
+     * Gets the Hint.
      * 
-     * @return the list of attribute consuming service endpoints support by this role
+     * @return the Hint
      */
-    public List<AttributeConsumingService> getAttributeConsumingServices();
+    public String getHint();
+    
+    /**
+     * Sets the hint.
+     * 
+     * @param newHint hint
+     */
+    public void setHint(String newHint);
 }

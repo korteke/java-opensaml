@@ -15,29 +15,25 @@
  * limitations under the License.
  */
 
-package org.opensaml.samlext.saml2mdui;
+package org.opensaml.saml.ext.idpdisco;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.saml.saml2.metadata.LocalizedURI;
+import org.opensaml.saml.saml2.metadata.IndexedEndpoint;
 
-/**
- * InformationURL.
- *
- * See IdP Discovery and Login UI Metadata Extension Profile.
- *
- * @author Rod Widdowson August 2010
- * 
- * Reflects the InformationURL in the IdP Discovery and Login UI Metadata Extension Profile.
- * 
- */
-public interface InformationURL extends LocalizedURI {
+/** SAML Identity Provider Discovery Protocol DiscoveryResponse */
+public interface DiscoveryResponse extends IndexedEndpoint {
 
-    /** Element local name. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "InformationURL";
-    
+    /** Namespace for Discovery Service metadata extensions. */
+    public static final String IDP_DISCO_NS = "urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol";
+
+    /** Default namespace prefix used by this library. */
+    public static final String IDP_DISCO_PREFIX = "idpdisco";
+
+    /** Name of the element inside the Extensions. */
+    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "DiscoveryResponse";
+
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(DiscoHints.MDUI_NS, 
-            DEFAULT_ELEMENT_LOCAL_NAME, DiscoHints.MDUI_PREFIX);
-    
+    public static final QName DEFAULT_ELEMENT_NAME = new QName(IDP_DISCO_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+            IDP_DISCO_PREFIX);
 }

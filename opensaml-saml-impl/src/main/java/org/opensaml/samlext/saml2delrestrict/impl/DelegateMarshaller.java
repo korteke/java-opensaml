@@ -21,7 +21,7 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml.common.impl.AbstractSAMLObjectMarshaller;
 import org.opensaml.saml.config.Configuration;
-import org.opensaml.samlext.saml2delrestrict.Delegate;
+import org.opensaml.saml.ext.saml2delrestrict.Delegate;
 import org.w3c.dom.Element;
 
 import com.google.common.base.Strings;

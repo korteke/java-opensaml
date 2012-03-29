@@ -20,10 +20,10 @@ package org.opensaml.samlext.saml2mdui.impl;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.impl.AbstractSAMLObjectUnmarshaller;
-import org.opensaml.samlext.saml2mdui.DiscoHints;
+import org.opensaml.saml.ext.saml2mdui.DiscoHints;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.samlext.saml2mdui.DiscoHints} objects.
+ * A thread-safe Unmarshaller for {@link org.opensaml.saml.ext.saml2mdui.DiscoHints} objects.
  */
 public class DiscoHintsUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 

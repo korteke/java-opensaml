@@ -25,9 +25,9 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.XMLObjectChildrenList;
+import org.opensaml.saml.ext.saml2mdquery.AttributeQueryDescriptorType;
 import org.opensaml.saml.saml2.metadata.AttributeConsumingService;
 import org.opensaml.saml.saml2.metadata.Endpoint;
-import org.opensaml.samlext.saml2mdquery.AttributeQueryDescriptorType;
 
 /**
  * Concrete implementation of {@link AttributeQueryDescriptorType}.

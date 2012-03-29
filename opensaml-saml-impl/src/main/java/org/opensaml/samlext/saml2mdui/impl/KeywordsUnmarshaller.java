@@ -25,11 +25,11 @@ import org.opensaml.core.xml.LangBearing;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.impl.AbstractSAMLObjectUnmarshaller;
-import org.opensaml.samlext.saml2mdui.Keywords;
+import org.opensaml.saml.ext.saml2mdui.Keywords;
 import org.w3c.dom.Attr;
 
 /**
- * A thread-safe unmarshaller for {@link org.opensaml.samlext.saml2mdui.Keywords} objects.
+ * A thread-safe unmarshaller for {@link org.opensaml.saml.ext.saml2mdui.Keywords} objects.
  */
 public class KeywordsUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 

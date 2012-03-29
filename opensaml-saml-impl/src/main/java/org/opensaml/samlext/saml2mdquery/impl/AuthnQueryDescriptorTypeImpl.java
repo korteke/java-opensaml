@@ -22,8 +22,8 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.saml.ext.saml2mdquery.AuthnQueryDescriptorType;
 import org.opensaml.saml.saml2.metadata.Endpoint;
-import org.opensaml.samlext.saml2mdquery.AuthnQueryDescriptorType;
 
 /**
  * Concrete implementation of {@link AuthnQueryDescriptorType}.

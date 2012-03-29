@@ -15,46 +15,43 @@
  * limitations under the License.
  */
 
-package org.opensaml.samlext.saml2mdui;
-
-import java.util.List;
+package org.opensaml.saml.ext.saml2mdui;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.core.xml.LangBearing;
 import org.opensaml.saml.common.SAMLObject;
 
 /**
- * DisplayName.
+ * IPHint.
  *
  * See IdP Discovery and Login UI Metadata Extension Profile.
  *
  * @author Rod Widdowson August 2010
  * 
- * Reflects the Description in the IdP Discovery and Login UI Metadata Extension Profile.
- * 
+ * The <GeolocationHint> element specifies the geographic coordinates associated 
+ *  with, or serviced by, the entity.  Coordinates are given in decimal form using
+ *  the World Geodetic System (2d) coordinate system.
  */
-public interface Keywords extends SAMLObject, LangBearing  {
+public interface GeolocationHint extends SAMLObject {
 
     /** Element local name. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Keywords";
+    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "GeolocationHint";
     
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(UIInfo.MDUI_NS, 
-            DEFAULT_ELEMENT_LOCAL_NAME, UIInfo.MDUI_PREFIX);
+    public static final QName DEFAULT_ELEMENT_NAME = new QName(DiscoHints.MDUI_NS, 
+            DEFAULT_ELEMENT_LOCAL_NAME, DiscoHints.MDUI_PREFIX);
     
     /**
-     * Gets the keywords.
+     * Gets the Hint.
      * 
-     * @return the keywords
+     * @return the Hint
      */
-    public List<String> getKeywords();
+    public String getHint();
     
     /**
-     * Sets the keywords.
+     * Sets the hint.
      * 
-     * @param val The keywords
+     * @param newHint hint
      */
-    public void setKeywords(List<String> val);
-   
+    public void setHint(String newHint);
 }

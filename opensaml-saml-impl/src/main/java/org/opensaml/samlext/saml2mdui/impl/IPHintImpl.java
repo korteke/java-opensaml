@@ -21,10 +21,10 @@ import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.common.impl.AbstractSAMLObject;
-import org.opensaml.samlext.saml2mdui.IPHint;
+import org.opensaml.saml.ext.saml2mdui.IPHint;
 
 /**
- * Concrete implementation of {@link org.opensaml.samlext.saml2mdui.IPHint}.
+ * Concrete implementation of {@link org.opensaml.saml.ext.saml2mdui.IPHint}.
  */
 public class IPHintImpl extends AbstractSAMLObject implements IPHint {
 

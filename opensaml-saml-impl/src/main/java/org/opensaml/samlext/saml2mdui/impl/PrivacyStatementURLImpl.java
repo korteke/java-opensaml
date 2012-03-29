@@ -17,12 +17,12 @@
 
 package org.opensaml.samlext.saml2mdui.impl;
 
+import org.opensaml.saml.ext.saml2mdui.PrivacyStatementURL;
 import org.opensaml.saml2.metadata.impl.LocalizedURIImpl;
-import org.opensaml.samlext.saml2mdui.PrivacyStatementURL;
 
 
 /**
- * Concrete implementation of {@link org.opensaml.samlext.saml2mdui.PrivacyStatementURL}.
+ * Concrete implementation of {@link org.opensaml.saml.ext.saml2mdui.PrivacyStatementURL}.
  * @author Rod Widdowson
  */
 

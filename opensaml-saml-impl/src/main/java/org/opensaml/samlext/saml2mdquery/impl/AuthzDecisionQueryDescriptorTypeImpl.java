@@ -25,9 +25,9 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.XMLObjectChildrenList;
+import org.opensaml.saml.ext.saml2mdquery.ActionNamespace;
+import org.opensaml.saml.ext.saml2mdquery.AuthzDecisionQueryDescriptorType;
 import org.opensaml.saml.saml2.metadata.Endpoint;
-import org.opensaml.samlext.saml2mdquery.ActionNamespace;
-import org.opensaml.samlext.saml2mdquery.AuthzDecisionQueryDescriptorType;
 
 /**
  * Concrete implementation of {@link AuthzDecisionQueryDescriptorType}.

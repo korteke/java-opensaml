@@ -6,16 +6,16 @@
 
 		<!-- Delegate provider -->
 		<ObjectProvider qualifiedName="del:Delegate">
-			<BuilderClass className="org.opensaml.samlext.saml2delrestrict.impl.DelegateBuilder"/>
-			<MarshallingClass className="org.opensaml.samlext.saml2delrestrict.impl.DelegateMarshaller"/>
-			<UnmarshallingClass className="org.opensaml.samlext.saml2delrestrict.impl.DelegateUnmarshaller"/>
+			<BuilderClass className="org.opensaml.saml.ext.saml2delrestrict.impl.DelegateBuilder"/>
+			<MarshallingClass className="org.opensaml.saml.ext.saml2delrestrict.impl.DelegateMarshaller"/>
+			<UnmarshallingClass className="org.opensaml.saml.ext.saml2delrestrict.impl.DelegateUnmarshaller"/>
 		</ObjectProvider>
 		
 		<!-- DelegationRestrictionType provider -->
 		<ObjectProvider qualifiedName="del:DelegationRestrictionType">
-			<BuilderClass className="org.opensaml.samlext.saml2delrestrict.impl.DelegationRestrictionTypeBuilder"/>
-			<MarshallingClass className="org.opensaml.samlext.saml2delrestrict.impl.DelegationRestrictionTypeMarshaller"/>
-			<UnmarshallingClass className="org.opensaml.samlext.saml2delrestrict.impl.DelegationRestrictionTypeUnmarshaller"/>
+			<BuilderClass className="org.opensaml.saml.ext.saml2delrestrict.impl.DelegationRestrictionTypeBuilder"/>
+			<MarshallingClass className="org.opensaml.saml.ext.saml2delrestrict.impl.DelegationRestrictionTypeMarshaller"/>
+			<UnmarshallingClass className="org.opensaml.saml.ext.saml2delrestrict.impl.DelegationRestrictionTypeUnmarshaller"/>
 		</ObjectProvider>
 		
 	</ObjectProviders>

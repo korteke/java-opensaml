@@ -25,10 +25,10 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.impl.AbstractSAMLObject;
+import org.opensaml.saml.ext.saml2mdattr.EntityAttributes;
 import org.opensaml.saml.saml2.core.Assertion;
 import org.opensaml.saml.saml2.core.Attribute;
 import org.opensaml.saml.saml2.core.Evidentiary;
-import org.opensaml.samlext.saml2mdattr.EntityAttributes;
 
 /** Concrete implementation of {@link EntityAttributes}. */
 public class EntityAttributesImpl extends AbstractSAMLObject implements EntityAttributes {

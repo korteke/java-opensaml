@@ -21,7 +21,7 @@ import org.opensaml.saml2.metadata.impl.LocalizedNameMarshaller;
 
 
 /**
- * A thread safe Marshaller for {@link org.opensaml.samlext.saml2mdui.Description} objects.
+ * A thread safe Marshaller for {@link org.opensaml.saml.ext.saml2mdui.Description} objects.
  */
 public class DescriptionMarshaller extends LocalizedNameMarshaller {
 

@@ -18,11 +18,11 @@
 package org.opensaml.samlext.saml2mdui.impl;
 
 import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
-import org.opensaml.samlext.saml2mdui.Logo;
-import org.opensaml.samlext.saml2mdui.UIInfo;
+import org.opensaml.saml.ext.saml2mdui.Logo;
+import org.opensaml.saml.ext.saml2mdui.UIInfo;
 
 /**
- * Builder of {@link org.opensaml.samlext.saml2mdui.Logo} objects.
+ * Builder of {@link org.opensaml.saml.ext.saml2mdui.Logo} objects.
  */
 public class LogoBuilder extends AbstractSAMLObjectBuilder<Logo> {
 

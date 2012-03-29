@@ -17,11 +17,11 @@
 
 package org.opensaml.samlext.saml2mdui.impl;
 
+import org.opensaml.saml.ext.saml2mdui.InformationURL;
 import org.opensaml.saml2.metadata.impl.LocalizedURIImpl;
-import org.opensaml.samlext.saml2mdui.InformationURL;
 
 /**
- * Concrete implementation of {@link org.opensaml.samlext.saml2mdui.InformationURL}.
+ * Concrete implementation of {@link org.opensaml.saml.ext.saml2mdui.InformationURL}.
  * @author Rod Widdowson
  */
 

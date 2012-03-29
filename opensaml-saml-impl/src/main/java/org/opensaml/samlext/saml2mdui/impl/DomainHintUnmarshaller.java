@@ -19,10 +19,10 @@ package org.opensaml.samlext.saml2mdui.impl;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.common.impl.AbstractSAMLObjectUnmarshaller;
-import org.opensaml.samlext.saml2mdui.DomainHint;
+import org.opensaml.saml.ext.saml2mdui.DomainHint;
 
 /**
- * A thread-safe unmarshaller for {@link org.opensaml.samlext.saml2mdui.DomainHint} objects.
+ * A thread-safe unmarshaller for {@link org.opensaml.saml.ext.saml2mdui.DomainHint} objects.
  */
 public class DomainHintUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 

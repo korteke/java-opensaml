@@ -19,8 +19,8 @@ package org.opensaml.samlext.saml2mdquery.impl;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
+import org.opensaml.saml.ext.saml2mdquery.QueryDescriptorType;
 import org.opensaml.saml2.metadata.impl.RoleDescriptorMarshaller;
-import org.opensaml.samlext.saml2mdquery.QueryDescriptorType;
 import org.w3c.dom.Element;
 
 /**
