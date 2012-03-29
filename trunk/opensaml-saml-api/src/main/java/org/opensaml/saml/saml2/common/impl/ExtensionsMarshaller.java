@@ -15,21 +15,36 @@
  * limitations under the License.
  */
 
-package org.opensaml.saml1.binding.artifact;
+package org.opensaml.saml.saml2.common.impl;
 
-import org.opensaml.saml.common.binding.artifact.AbstractSAMLArtifact;
+import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.io.AbstractXMLObjectMarshaller;
+import org.opensaml.core.xml.io.MarshallingException;
+import org.w3c.dom.Element;
 
 /**
- * SAML 1 Artifact marker.
+ * A thread-safe Marshaller for {@link org.opensaml.saml.saml2.common.Extensions} objects.
  */
-public abstract class AbstractSAML1Artifact extends AbstractSAMLArtifact {
+public class ExtensionsMarshaller extends AbstractXMLObjectMarshaller {
 
     /**
-     * Constructor.
-     * 
-     * @param typeCode artifact type code
+     * Constructor
      */
-    protected AbstractSAML1Artifact(byte[] typeCode) {
-        super(typeCode);
+    public ExtensionsMarshaller() {
+        super();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
+        // no attributes
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected void marshallElementContent(XMLObject xmlObject, Element domElement) throws MarshallingException {
+        // no content
     }
 }

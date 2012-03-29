@@ -21,8 +21,8 @@ import org.joda.time.chrono.ISOChronology;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.opensaml.core.config.ConfigurationService;
-import org.opensaml.saml1.binding.artifact.SAML1ArtifactBuilderFactory;
-import org.opensaml.saml2.binding.artifact.SAML2ArtifactBuilderFactory;
+import org.opensaml.saml.saml1.binding.artifact.SAML1ArtifactBuilderFactory;
+import org.opensaml.saml.saml2.binding.artifact.SAML2ArtifactBuilderFactory;
 
 /**
  * SAML-related configuration information.

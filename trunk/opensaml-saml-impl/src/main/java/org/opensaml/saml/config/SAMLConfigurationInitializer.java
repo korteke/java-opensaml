@@ -20,8 +20,8 @@ package org.opensaml.saml.config;
 import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.core.config.InitializationException;
 import org.opensaml.core.config.Initializer;
-import org.opensaml.saml1.binding.artifact.SAML1ArtifactBuilderFactory;
-import org.opensaml.saml2.binding.artifact.SAML2ArtifactBuilderFactory;
+import org.opensaml.saml.saml1.binding.artifact.SAML1ArtifactBuilderFactory;
+import org.opensaml.saml.saml2.binding.artifact.SAML2ArtifactBuilderFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -15,13 +15,13 @@
  * limitations under the License.
  */
 
-package org.opensaml.saml2.common.impl;
+package org.opensaml.saml.saml2.common.impl;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.AbstractXMLObjectUnmarshaller;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.impl.AbstractSAMLObjectUnmarshaller;
-import org.opensaml.saml2.common.Extensions;
+import org.opensaml.saml.saml2.common.Extensions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Attr;

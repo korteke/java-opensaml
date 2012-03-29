@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.saml2.binding;
+package org.opensaml.saml.saml2.binding;
 
 import java.util.ArrayList;
 import java.util.Iterator;

@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.saml1.binding;
+package org.opensaml.saml.saml1.binding;
 
 import java.util.Collection;
 

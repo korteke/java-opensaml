@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.saml2.common;
+package org.opensaml.saml.saml2.common;
 
 import javax.xml.namespace.QName;
 

@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.saml1.binding.artifact;
+package org.opensaml.saml.saml1.binding.artifact;
 
 import java.util.HashMap;
 import java.util.Map;
