@@ -18,14 +18,14 @@
 package org.opensaml.saml.saml2.common.impl;
 
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.core.xml.io.AbstractXMLObjectMarshaller;
 import org.opensaml.core.xml.io.MarshallingException;
+import org.opensaml.saml.common.impl.AbstractSAMLObjectMarshaller;
 import org.w3c.dom.Element;
 
 /**
  * A thread-safe Marshaller for {@link org.opensaml.saml.saml2.common.Extensions} objects.
  */
-public class ExtensionsMarshaller extends AbstractXMLObjectMarshaller {
+public class ExtensionsMarshaller extends AbstractSAMLObjectMarshaller {
 
     /**
      * Constructor
