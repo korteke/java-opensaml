@@ -27,7 +27,7 @@ import net.shibboleth.utilities.java.support.xml.QNameSupport;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
-import org.opensaml.saml.common.impl.AbstractSAMLObjectUnmarshaller;
+import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
 import org.opensaml.saml.saml2.common.Extensions;
 import org.opensaml.saml.saml2.metadata.Company;
 import org.opensaml.saml.saml2.metadata.ContactPerson;

@@ -24,7 +24,7 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
-import org.opensaml.saml.common.impl.AbstractSAMLObject;
+import org.opensaml.saml.common.AbstractSAMLObject;
 import org.opensaml.saml.ext.saml2mdui.DiscoHints;
 import org.opensaml.saml.ext.saml2mdui.DomainHint;
 import org.opensaml.saml.ext.saml2mdui.GeolocationHint;

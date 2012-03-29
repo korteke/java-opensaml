@@ -17,7 +17,7 @@
 
 package org.opensaml.xacml.profile.saml.impl;
 
-import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
+import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.saml2.core.Statement;
 import org.opensaml.xacml.profile.saml.XACMLAuthzDecisionStatementType;
 

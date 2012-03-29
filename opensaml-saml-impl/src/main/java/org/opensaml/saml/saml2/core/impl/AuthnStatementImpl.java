@@ -27,7 +27,7 @@ import java.util.List;
 
 import org.joda.time.DateTime;
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.saml.common.impl.AbstractSAMLObject;
+import org.opensaml.saml.common.AbstractSAMLObject;
 import org.opensaml.saml.saml2.core.AuthnContext;
 import org.opensaml.saml.saml2.core.AuthnStatement;
 import org.opensaml.saml.saml2.core.SubjectLocality;

@@ -17,7 +17,7 @@
 
 package org.opensaml.saml.ext.saml2mdui.impl;
 
-import org.opensaml.saml.common.impl.AbstractSAMLObjectMarshaller;
+import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
 
 /**
  * A thread safe Marshaller for {@link org.opensaml.saml.ext.saml2mdui.UIInfo} objects.

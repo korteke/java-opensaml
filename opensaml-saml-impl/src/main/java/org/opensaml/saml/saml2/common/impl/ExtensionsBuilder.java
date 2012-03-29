@@ -15,24 +15,28 @@
  * limitations under the License.
  */
 
-package org.opensaml.saml.common.impl;
+package org.opensaml.saml.saml2.common.impl;
 
-import org.opensaml.core.xml.AbstractXMLObjectBuilder;
-import org.opensaml.saml.common.SAMLObject;
-import org.opensaml.saml.common.SAMLObjectBuilder;
+import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
+import org.opensaml.saml.common.xml.SAMLConstants;
+import org.opensaml.saml.saml2.common.Extensions;
 
 /**
- * Base builder for {@link org.opensaml.saml.common.SAMLObject}s.
- * 
- * @param <SAMLObjectType> the SAML object type built
+ * Builder of {@link org.opensaml.saml.saml2.common.impl.ExtensionsImpl} objects.
  */
-public abstract class AbstractSAMLObjectBuilder<SAMLObjectType extends SAMLObject> extends
-        AbstractXMLObjectBuilder<SAMLObjectType> implements SAMLObjectBuilder<SAMLObjectType> {
+public class ExtensionsBuilder extends AbstractSAMLObjectBuilder<Extensions> {
 
     /**
-     * Builds a SAMLObject using the default name and namespace information provided SAML specifications.
-     * 
-     * @return built SAMLObject
+     * {@inheritDoc}
      */
-    public abstract SAMLObjectType buildObject();
+    public Extensions buildObject() {
+        return buildObject(SAMLConstants.SAML20MD_NS, Extensions.LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Extensions buildObject(String namespaceURI, String localName, String namespacePrefix) {
+        return new ExtensionsImpl(namespaceURI, localName, namespacePrefix);
+    }
 }

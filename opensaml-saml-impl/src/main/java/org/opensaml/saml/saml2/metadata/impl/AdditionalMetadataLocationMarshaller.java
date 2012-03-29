@@ -19,7 +19,7 @@ package org.opensaml.saml.saml2.metadata.impl;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
-import org.opensaml.saml.common.impl.AbstractSAMLObjectMarshaller;
+import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
 import org.opensaml.saml.saml2.metadata.AdditionalMetadataLocation;
 import org.w3c.dom.Element;
 

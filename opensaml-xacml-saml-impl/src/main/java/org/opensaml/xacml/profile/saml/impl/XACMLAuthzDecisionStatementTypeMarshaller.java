@@ -17,7 +17,7 @@
 
 package org.opensaml.xacml.profile.saml.impl;
 
-import org.opensaml.saml.common.impl.AbstractSAMLObjectMarshaller;
+import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
 
 /**
  * A thread-safe Marshaller for {@link org.opensaml.xacml.profile.saml.XACMLAuthzDecisionStatementType}. New 27/07/2007

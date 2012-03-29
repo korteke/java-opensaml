@@ -29,7 +29,7 @@ import org.joda.time.DateTime;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.AttributeMap;
 import org.opensaml.core.xml.util.XMLObjectChildrenList;
-import org.opensaml.saml.common.impl.AbstractSignableSAMLObject;
+import org.opensaml.saml.common.AbstractSignableSAMLObject;
 import org.opensaml.saml.saml2.common.Extensions;
 import org.opensaml.saml.saml2.metadata.AffiliateMember;
 import org.opensaml.saml.saml2.metadata.AffiliationDescriptor;

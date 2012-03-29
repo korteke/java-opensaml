@@ -21,7 +21,7 @@ import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
-import org.opensaml.saml.common.impl.AbstractSAMLObjectUnmarshaller;
+import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
 import org.opensaml.saml.saml1.core.Condition;
 import org.opensaml.saml.saml1.core.Conditions;
 import org.w3c.dom.Attr;

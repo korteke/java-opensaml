@@ -17,7 +17,7 @@
 
 package org.opensaml.saml.ext.saml2mdui.impl;
 
-import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
+import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.ext.saml2mdui.Description;
 import org.opensaml.saml.ext.saml2mdui.UIInfo;
 

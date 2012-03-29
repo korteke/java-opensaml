@@ -21,7 +21,7 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
-import org.opensaml.saml.common.impl.AbstractSAMLObjectMarshaller;
+import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
 
 /**
  * A thread-safe marshaller for {@link org.opensaml.saml.saml2.core.Advice}.

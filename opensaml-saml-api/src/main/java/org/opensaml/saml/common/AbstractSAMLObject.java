@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.saml.common.impl;
+package org.opensaml.saml.common;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;

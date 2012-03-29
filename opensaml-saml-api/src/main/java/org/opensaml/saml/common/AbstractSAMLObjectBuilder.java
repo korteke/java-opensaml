@@ -15,36 +15,22 @@
  * limitations under the License.
  */
 
-package org.opensaml.saml.saml2.common.impl;
+package org.opensaml.saml.common;
 
-import org.opensaml.core.xml.XMLObject;
-import org.opensaml.core.xml.io.MarshallingException;
-import org.opensaml.saml.common.impl.AbstractSAMLObjectMarshaller;
-import org.w3c.dom.Element;
+import org.opensaml.core.xml.AbstractXMLObjectBuilder;
 
 /**
- * A thread-safe Marshaller for {@link org.opensaml.saml.saml2.common.Extensions} objects.
+ * Base builder for {@link org.opensaml.saml.common.SAMLObject}s.
+ * 
+ * @param <SAMLObjectType> the SAML object type built
  */
-public class ExtensionsMarshaller extends AbstractSAMLObjectMarshaller {
+public abstract class AbstractSAMLObjectBuilder<SAMLObjectType extends SAMLObject> extends
+        AbstractXMLObjectBuilder<SAMLObjectType> implements SAMLObjectBuilder<SAMLObjectType> {
 
     /**
-     * Constructor
+     * Builds a SAMLObject using the default name and namespace information provided SAML specifications.
+     * 
+     * @return built SAMLObject
      */
-    public ExtensionsMarshaller() {
-        super();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
-        // no attributes
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected void marshallElementContent(XMLObject xmlObject, Element domElement) throws MarshallingException {
-        // no content
-    }
+    public abstract SAMLObjectType buildObject();
 }

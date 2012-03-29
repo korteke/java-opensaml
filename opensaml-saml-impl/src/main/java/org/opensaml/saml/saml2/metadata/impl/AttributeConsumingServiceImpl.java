@@ -28,7 +28,7 @@ import java.util.List;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.core.xml.util.XMLObjectChildrenList;
-import org.opensaml.saml.common.impl.AbstractSAMLObject;
+import org.opensaml.saml.common.AbstractSAMLObject;
 import org.opensaml.saml.saml2.metadata.AttributeConsumingService;
 import org.opensaml.saml.saml2.metadata.RequestedAttribute;
 import org.opensaml.saml.saml2.metadata.ServiceDescription;

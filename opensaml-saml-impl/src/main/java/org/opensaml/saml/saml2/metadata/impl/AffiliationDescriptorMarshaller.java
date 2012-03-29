@@ -30,7 +30,7 @@ import net.shibboleth.utilities.java.support.xml.DomTypeSupport;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
-import org.opensaml.saml.common.impl.AbstractSAMLObjectMarshaller;
+import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
 import org.opensaml.saml.config.Configuration;
 import org.opensaml.saml.saml2.common.CacheableSAMLObject;
 import org.opensaml.saml.saml2.common.TimeBoundSAMLObject;

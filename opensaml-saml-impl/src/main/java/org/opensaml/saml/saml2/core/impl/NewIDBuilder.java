@@ -21,7 +21,7 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
-import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
+import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.NewID;
 
