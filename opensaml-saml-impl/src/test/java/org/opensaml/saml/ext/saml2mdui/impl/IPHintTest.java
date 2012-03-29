@@ -18,20 +18,19 @@
 /**
  * 
  */
-package org.opensaml.saml.ext.saml2mdui;
+package org.opensaml.saml.ext.saml2mdui.impl;
 
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
-import org.opensaml.saml.ext.saml2mdui.GeolocationHint;
+import org.opensaml.saml.ext.saml2mdui.IPHint;
 import org.opensaml.saml.ext.saml2mdui.UIInfo;
-import org.opensaml.saml.ext.saml2mdui.org;
 
 /**
  * Test case for creating, marshalling, and unmarshalling
- * {@link org.opensaml.saml2.samlext.saml2mdui.GeolocationHint}.
+ * {@link org.opensaml.saml.saml2.metadata.OrganizationName}.
  */
-public class GeolocationHintTest extends BaseSAMLObjectProviderTestCase {
+public class IPHintTest extends BaseSAMLObjectProviderTestCase {
     
     /** Expected name. */
     private String expectedHint;
@@ -39,19 +38,19 @@ public class GeolocationHintTest extends BaseSAMLObjectProviderTestCase {
     /**
      * Constructor.
      */
-    public GeolocationHintTest() {
-        singleElementFile = "/data/org/opensaml/samlext/saml2mdui/GeolocationHint.xml";
+    public IPHintTest() {
+        singleElementFile = "/data/org/opensaml/samlext/saml2mdui/IPHint.xml";
     }
     
     /** {@inheritDoc} */
     protected void setUp() throws Exception {
         super.setUp();
-        expectedHint = "geo:lat,long";
+        expectedHint = "10.0.0.0/23";
     }
 
     /** {@inheritDoc} */
     public void testSingleElementUnmarshall() {
-        GeolocationHint hint = (GeolocationHint) unmarshallElement(singleElementFile);
+        IPHint hint = (IPHint) unmarshallElement(singleElementFile);
         
         assertEquals("Name was not expected value", expectedHint, hint.getHint());
     }
@@ -59,10 +58,10 @@ public class GeolocationHintTest extends BaseSAMLObjectProviderTestCase {
     /** {@inheritDoc} */
     public void testSingleElementMarshall() {
         QName qname = new QName(UIInfo.MDUI_NS, 
-                                GeolocationHint.DEFAULT_ELEMENT_LOCAL_NAME, 
+                                IPHint.DEFAULT_ELEMENT_LOCAL_NAME, 
                                 UIInfo.MDUI_PREFIX);
         
-        GeolocationHint hint = (GeolocationHint) buildXMLObject(qname);
+        IPHint hint = (IPHint) buildXMLObject(qname);
         
         hint.setHint(expectedHint);
 

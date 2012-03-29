@@ -18,36 +18,35 @@
 /**
  * 
  */
-package org.opensaml.saml.ext.saml2mdui;
+package org.opensaml.saml.ext.saml2mdui.impl;
 
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
-import org.opensaml.saml.ext.saml2mdui.Description;
+import org.opensaml.saml.ext.saml2mdui.DisplayName;
 import org.opensaml.saml.ext.saml2mdui.UIInfo;
 
 /**
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.metadata.OrganizationName}.
  */
-public class DescriptionTest extends BaseSAMLObjectProviderTestCase {
+public class DisplayNameTest extends BaseSAMLObjectProviderTestCase {
     
     /** Expected name. */
-    protected String expectValue = "Textual Desriptice prose";
+    protected String expectValue="Prifysgol Caerdydd";
     /** Expected language. */
-    protected String expectLang =  "lang";
+    protected String expectLang = "cy";
     
     /**
      * Constructor.
      */
-    public DescriptionTest() {
-        singleElementFile = "/data/org/opensaml/samlext/saml2mdui/Description.xml";
+    public DisplayNameTest() {
+        singleElementFile = "/data/org/opensaml/samlext/saml2mdui/DisplayName.xml";
     }
     
-
     /** {@inheritDoc} */
     public void testSingleElementUnmarshall() {
-        Description name = (Description) unmarshallElement(singleElementFile);
+        DisplayName name = (DisplayName) unmarshallElement(singleElementFile);
         
         assertEquals("Name was not expected value", expectValue, name.getValue());
         assertEquals("xml:lang was not expected value", expectLang, name.getXMLLang());
@@ -56,10 +55,10 @@ public class DescriptionTest extends BaseSAMLObjectProviderTestCase {
     /** {@inheritDoc} */
     public void testSingleElementMarshall() {
         QName qname = new QName(UIInfo.MDUI_NS, 
-                                Description.DEFAULT_ELEMENT_LOCAL_NAME, 
+                                DisplayName.DEFAULT_ELEMENT_LOCAL_NAME, 
                                 UIInfo.MDUI_PREFIX);
         
-        Description name = (Description) buildXMLObject(qname);
+        DisplayName name = (DisplayName) buildXMLObject(qname);
         
         name.setValue(expectValue);
         name.setXMLLang(expectLang);

@@ -18,53 +18,52 @@
 /**
  * 
  */
-package org.opensaml.saml.ext.saml2mdui;
+package org.opensaml.saml.ext.saml2mdui.impl;
 
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
-import org.opensaml.saml.ext.saml2mdui.IPHint;
+import org.opensaml.saml.ext.saml2mdui.InformationURL;
 import org.opensaml.saml.ext.saml2mdui.UIInfo;
 
 /**
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.metadata.OrganizationName}.
  */
-public class IPHintTest extends BaseSAMLObjectProviderTestCase {
+public class InformationURLTest extends BaseSAMLObjectProviderTestCase {
     
     /** Expected name. */
-    private String expectedHint;
+    protected String expectValue = "http://example.org/Info/URL";
+    /** Expected language. */
+    protected String expectLang = "infoUrlLang";
     
     /**
      * Constructor.
      */
-    public IPHintTest() {
-        singleElementFile = "/data/org/opensaml/samlext/saml2mdui/IPHint.xml";
+    public InformationURLTest() {
+        singleElementFile = "/data/org/opensaml/samlext/saml2mdui/InformationURL.xml";
     }
     
     /** {@inheritDoc} */
-    protected void setUp() throws Exception {
-        super.setUp();
-        expectedHint = "10.0.0.0/23";
-    }
-
-    /** {@inheritDoc} */
     public void testSingleElementUnmarshall() {
-        IPHint hint = (IPHint) unmarshallElement(singleElementFile);
-        
-        assertEquals("Name was not expected value", expectedHint, hint.getHint());
+        InformationURL url = (InformationURL) unmarshallElement(singleElementFile);
+
+        assertEquals("URI was not expected value", expectValue, url.getValue());
+        assertEquals("xml:lang was not expected value", expectLang, url.getXMLLang());
+
     }
 
     /** {@inheritDoc} */
     public void testSingleElementMarshall() {
         QName qname = new QName(UIInfo.MDUI_NS, 
-                                IPHint.DEFAULT_ELEMENT_LOCAL_NAME, 
+                                InformationURL.DEFAULT_ELEMENT_LOCAL_NAME, 
                                 UIInfo.MDUI_PREFIX);
         
-        IPHint hint = (IPHint) buildXMLObject(qname);
+        InformationURL url = (InformationURL) buildXMLObject(qname);
         
-        hint.setHint(expectedHint);
+        url.setValue(expectValue);
+        url.setXMLLang(expectLang);
 
-        assertEquals(expectedDOM, hint);
+        assertEquals(expectedDOM, url);
     }
 }

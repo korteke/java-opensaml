@@ -18,51 +18,52 @@
 /**
  * 
  */
-package org.opensaml.saml.ext.saml2mdui;
+package org.opensaml.saml.ext.saml2mdui.impl;
 
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
-import org.opensaml.saml.ext.saml2mdui.DisplayName;
+import org.opensaml.saml.ext.saml2mdui.PrivacyStatementURL;
 import org.opensaml.saml.ext.saml2mdui.UIInfo;
 
 /**
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.metadata.OrganizationName}.
  */
-public class DisplayNameTest extends BaseSAMLObjectProviderTestCase {
+public class PrivacyStatementURLTest extends BaseSAMLObjectProviderTestCase {
     
     /** Expected name. */
-    protected String expectValue="Prifysgol Caerdydd";
+    protected String expectValue="https://example.org/Privacy";
     /** Expected language. */
-    protected String expectLang = "cy";
+    protected String expectLang="PrivacyLang";
     
     /**
      * Constructor.
      */
-    public DisplayNameTest() {
-        singleElementFile = "/data/org/opensaml/samlext/saml2mdui/DisplayName.xml";
+    public PrivacyStatementURLTest() {
+        singleElementFile = "/data/org/opensaml/samlext/saml2mdui/PrivacyStatementURL.xml";
     }
     
+
     /** {@inheritDoc} */
     public void testSingleElementUnmarshall() {
-        DisplayName name = (DisplayName) unmarshallElement(singleElementFile);
+        PrivacyStatementURL url = (PrivacyStatementURL) unmarshallElement(singleElementFile);
         
-        assertEquals("Name was not expected value", expectValue, name.getValue());
-        assertEquals("xml:lang was not expected value", expectLang, name.getXMLLang());
+        assertEquals("URI was not expected value", expectValue, url.getValue());
+        assertEquals("xml:lang was not expected value", expectLang, url.getXMLLang());
     }
 
     /** {@inheritDoc} */
     public void testSingleElementMarshall() {
         QName qname = new QName(UIInfo.MDUI_NS, 
-                                DisplayName.DEFAULT_ELEMENT_LOCAL_NAME, 
+                                PrivacyStatementURL.DEFAULT_ELEMENT_LOCAL_NAME, 
                                 UIInfo.MDUI_PREFIX);
         
-        DisplayName name = (DisplayName) buildXMLObject(qname);
+        PrivacyStatementURL url = (PrivacyStatementURL) buildXMLObject(qname);
         
-        name.setValue(expectValue);
-        name.setXMLLang(expectLang);
+        url.setValue(expectValue);
+        url.setXMLLang(expectLang);
 
-        assertEquals(expectedDOM, name);
+        assertEquals(expectedDOM, url);
     }
 }

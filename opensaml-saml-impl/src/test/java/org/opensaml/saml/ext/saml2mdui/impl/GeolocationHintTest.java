@@ -18,52 +18,54 @@
 /**
  * 
  */
-package org.opensaml.saml.ext.saml2mdui;
+package org.opensaml.saml.ext.saml2mdui.impl;
 
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
-import org.opensaml.saml.ext.saml2mdui.InformationURL;
+import org.opensaml.saml.ext.saml2mdui.GeolocationHint;
 import org.opensaml.saml.ext.saml2mdui.UIInfo;
+import org.opensaml.saml.ext.saml2mdui.impl.org;
 
 /**
  * Test case for creating, marshalling, and unmarshalling
- * {@link org.opensaml.saml.saml2.metadata.OrganizationName}.
+ * {@link org.opensaml.saml2.samlext.saml2mdui.GeolocationHint}.
  */
-public class InformationURLTest extends BaseSAMLObjectProviderTestCase {
+public class GeolocationHintTest extends BaseSAMLObjectProviderTestCase {
     
     /** Expected name. */
-    protected String expectValue = "http://example.org/Info/URL";
-    /** Expected language. */
-    protected String expectLang = "infoUrlLang";
+    private String expectedHint;
     
     /**
      * Constructor.
      */
-    public InformationURLTest() {
-        singleElementFile = "/data/org/opensaml/samlext/saml2mdui/InformationURL.xml";
+    public GeolocationHintTest() {
+        singleElementFile = "/data/org/opensaml/samlext/saml2mdui/GeolocationHint.xml";
     }
     
     /** {@inheritDoc} */
+    protected void setUp() throws Exception {
+        super.setUp();
+        expectedHint = "geo:lat,long";
+    }
+
+    /** {@inheritDoc} */
     public void testSingleElementUnmarshall() {
-        InformationURL url = (InformationURL) unmarshallElement(singleElementFile);
-
-        assertEquals("URI was not expected value", expectValue, url.getValue());
-        assertEquals("xml:lang was not expected value", expectLang, url.getXMLLang());
-
+        GeolocationHint hint = (GeolocationHint) unmarshallElement(singleElementFile);
+        
+        assertEquals("Name was not expected value", expectedHint, hint.getHint());
     }
 
     /** {@inheritDoc} */
     public void testSingleElementMarshall() {
         QName qname = new QName(UIInfo.MDUI_NS, 
-                                InformationURL.DEFAULT_ELEMENT_LOCAL_NAME, 
+                                GeolocationHint.DEFAULT_ELEMENT_LOCAL_NAME, 
                                 UIInfo.MDUI_PREFIX);
         
-        InformationURL url = (InformationURL) buildXMLObject(qname);
+        GeolocationHint hint = (GeolocationHint) buildXMLObject(qname);
         
-        url.setValue(expectValue);
-        url.setXMLLang(expectLang);
+        hint.setHint(expectedHint);
 
-        assertEquals(expectedDOM, url);
+        assertEquals(expectedDOM, hint);
     }
 }
