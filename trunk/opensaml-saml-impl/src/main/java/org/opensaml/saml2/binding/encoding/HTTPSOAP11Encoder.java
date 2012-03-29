@@ -19,11 +19,11 @@ package org.opensaml.saml2.binding.encoding;
 
 import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 
-import org.opensaml.Configuration;
 import org.opensaml.common.SAMLObject;
 import org.opensaml.common.binding.SAMLMessageContext;
 import org.opensaml.common.xml.SAMLConstants;
 import org.opensaml.core.xml.XMLObjectBuilderFactory;
+import org.opensaml.saml.config.Configuration;
 import org.opensaml.soap.common.SOAPObjectBuilder;
 import org.opensaml.soap.soap11.Body;
 import org.opensaml.soap.soap11.Envelope;

@@ -27,10 +27,10 @@ import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.xml.AttributeSupport;
 
-import org.opensaml.Configuration;
 import org.opensaml.common.impl.AbstractSAMLObjectMarshaller;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
+import org.opensaml.saml.config.Configuration;
 import org.opensaml.saml2.core.SubjectConfirmationData;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Element;

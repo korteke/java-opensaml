@@ -22,9 +22,9 @@ import java.net.URL;
 
 import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
-import org.opensaml.Configuration;
 import org.opensaml.common.BaseTestCase;
 import org.opensaml.common.SAMLObjectBuilder;
+import org.opensaml.saml.config.Configuration;
 import org.opensaml.saml2.metadata.EntitiesDescriptor;
 
 /** Unit test for {@link RequiredValidUntilFilter}. */
