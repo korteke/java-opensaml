@@ -25,10 +25,10 @@ import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.common.impl.AbstractSAMLObject;
-import org.opensaml.saml2.core.NewID;
+import org.opensaml.saml.saml2.core.NewID;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml2.core.NewID}.
+ * Concrete implementation of {@link org.opensaml.saml.saml2.core.NewID}.
  */
 public class NewIDImpl extends AbstractSAMLObject implements NewID {
 

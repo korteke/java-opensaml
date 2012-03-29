@@ -24,6 +24,7 @@ import java.util.Timer;
 
 import org.apache.commons.httpclient.HttpClient;
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.saml.saml2.metadata.provider.MetadataProviderException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;

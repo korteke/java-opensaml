@@ -29,13 +29,13 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.core.xml.util.XMLObjectChildrenList;
 import org.opensaml.saml.common.impl.AbstractSAMLObject;
-import org.opensaml.saml2.metadata.AttributeConsumingService;
-import org.opensaml.saml2.metadata.RequestedAttribute;
-import org.opensaml.saml2.metadata.ServiceDescription;
-import org.opensaml.saml2.metadata.ServiceName;
+import org.opensaml.saml.saml2.metadata.AttributeConsumingService;
+import org.opensaml.saml.saml2.metadata.RequestedAttribute;
+import org.opensaml.saml.saml2.metadata.ServiceDescription;
+import org.opensaml.saml.saml2.metadata.ServiceName;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml2.metadata.AttributeConsumingService}.
+ * Concrete implementation of {@link org.opensaml.saml.saml2.metadata.AttributeConsumingService}.
  */
 public class AttributeConsumingServiceImpl extends AbstractSAMLObject implements AttributeConsumingService {
 

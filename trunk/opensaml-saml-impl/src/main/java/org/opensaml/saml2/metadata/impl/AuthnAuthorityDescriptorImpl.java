@@ -25,14 +25,14 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.XMLObjectChildrenList;
-import org.opensaml.saml2.metadata.AssertionIDRequestService;
-import org.opensaml.saml2.metadata.AuthnAuthorityDescriptor;
-import org.opensaml.saml2.metadata.AuthnQueryService;
-import org.opensaml.saml2.metadata.Endpoint;
-import org.opensaml.saml2.metadata.NameIDFormat;
+import org.opensaml.saml.saml2.metadata.AssertionIDRequestService;
+import org.opensaml.saml.saml2.metadata.AuthnAuthorityDescriptor;
+import org.opensaml.saml.saml2.metadata.AuthnQueryService;
+import org.opensaml.saml.saml2.metadata.Endpoint;
+import org.opensaml.saml.saml2.metadata.NameIDFormat;
 
 /**
- * Concreate implementation of {@link org.opensaml.saml2.metadata.AuthnAuthorityDescriptor}
+ * Concreate implementation of {@link org.opensaml.saml.saml2.metadata.AuthnAuthorityDescriptor}
  */
 public class AuthnAuthorityDescriptorImpl extends RoleDescriptorImpl implements AuthnAuthorityDescriptor {
 

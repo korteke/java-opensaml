@@ -23,13 +23,13 @@ package org.opensaml.saml2.core.impl;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
-import org.opensaml.saml2.core.Action;
-import org.opensaml.saml2.core.AuthzDecisionQuery;
-import org.opensaml.saml2.core.Evidence;
+import org.opensaml.saml.saml2.core.Action;
+import org.opensaml.saml.saml2.core.AuthzDecisionQuery;
+import org.opensaml.saml.saml2.core.Evidence;
 import org.w3c.dom.Attr;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml2.core.AuthzDecisionQuery} objects.
+ * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.core.AuthzDecisionQuery} objects.
  */
 public class AuthzDecisionQueryUnmarshaller extends SubjectQueryUnmarshaller {
 

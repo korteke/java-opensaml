@@ -23,10 +23,10 @@ package org.opensaml.saml2.metadata.impl;
 
 import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml2.metadata.PDPDescriptor;
+import org.opensaml.saml.saml2.metadata.PDPDescriptor;
 
 /**
- * Builder of {@link org.opensaml.saml2.metadata.impl.PDPDescriptorImpl}
+ * Builder of {@link org.opensaml.saml.saml2.metadata.impl.PDPDescriptorImpl}
  */
 public class PDPDescriptorBuilder extends AbstractSAMLObjectBuilder<PDPDescriptor> {
 

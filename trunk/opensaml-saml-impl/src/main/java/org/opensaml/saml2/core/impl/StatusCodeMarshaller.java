@@ -24,11 +24,11 @@ package org.opensaml.saml2.core.impl;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml.common.impl.AbstractSAMLObjectMarshaller;
-import org.opensaml.saml2.core.StatusCode;
+import org.opensaml.saml.saml2.core.StatusCode;
 import org.w3c.dom.Element;
 
 /**
- * A thread safe Marshaller for {@link org.opensaml.saml2.core.StatusCode} objects.
+ * A thread safe Marshaller for {@link org.opensaml.saml.saml2.core.StatusCode} objects.
  */
 public class StatusCodeMarshaller extends AbstractSAMLObjectMarshaller {
 

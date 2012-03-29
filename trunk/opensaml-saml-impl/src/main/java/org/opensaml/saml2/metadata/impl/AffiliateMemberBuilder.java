@@ -19,10 +19,10 @@ package org.opensaml.saml2.metadata.impl;
 
 import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml2.metadata.AffiliateMember;
+import org.opensaml.saml.saml2.metadata.AffiliateMember;
 
 /**
- * Builder for {@link org.opensaml.saml2.metadata.impl.AffiliateMemberImpl}s.
+ * Builder for {@link org.opensaml.saml.saml2.metadata.impl.AffiliateMemberImpl}s.
  */
 public class AffiliateMemberBuilder extends AbstractSAMLObjectBuilder<AffiliateMember> {
 

@@ -21,10 +21,10 @@
 
 package org.opensaml.saml2.core.impl;
 
-import org.opensaml.saml2.core.LogoutResponse;
+import org.opensaml.saml.saml2.core.LogoutResponse;
 
 /**
- * A concrete implementation of {@link org.opensaml.saml2.core.LogoutResponse}.
+ * A concrete implementation of {@link org.opensaml.saml.saml2.core.LogoutResponse}.
  */
 public class LogoutResponseImpl extends StatusResponseTypeImpl implements LogoutResponse {
 

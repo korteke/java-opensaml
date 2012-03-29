@@ -17,10 +17,10 @@
 
 package org.opensaml.saml2.core.impl;
 
-import org.opensaml.saml2.core.EncryptedAssertion;
+import org.opensaml.saml.saml2.core.EncryptedAssertion;
 
 /**
- * A concrete implementation of {@link org.opensaml.saml2.core.EncryptedAssertion}.
+ * A concrete implementation of {@link org.opensaml.saml.saml2.core.EncryptedAssertion}.
  */
 public class EncryptedAssertionImpl extends EncryptedElementTypeImpl implements EncryptedAssertion {
 

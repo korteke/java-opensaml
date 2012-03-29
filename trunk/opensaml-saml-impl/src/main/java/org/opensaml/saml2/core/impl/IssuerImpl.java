@@ -17,10 +17,10 @@
 
 package org.opensaml.saml2.core.impl;
 
-import org.opensaml.saml2.core.Issuer;
+import org.opensaml.saml.saml2.core.Issuer;
 
 /**
- * A concrete implementation of {@link org.opensaml.saml2.core.Issuer}.
+ * A concrete implementation of {@link org.opensaml.saml.saml2.core.Issuer}.
  */
 public class IssuerImpl extends AbstractNameIDType implements Issuer {
 

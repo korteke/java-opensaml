@@ -20,10 +20,10 @@ package org.opensaml.saml1.core.validator;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml1.core.AuthenticationQuery;
+import org.opensaml.saml.saml1.core.AuthenticationQuery;
 
 /**
- * Test case for {@link org.opensaml.saml1.core.validator.AuthenticationQuerySchemaValidator}.
+ * Test case for {@link org.opensaml.saml.saml1.core.validator.AuthenticationQuerySchemaValidator}.
  */
 public class AuthenticationQuerySchemaTest extends SubjectQuerySchemaTestBase  {
 

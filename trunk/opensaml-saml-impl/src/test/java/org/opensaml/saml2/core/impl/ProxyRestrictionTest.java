@@ -21,11 +21,11 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml2.core.Audience;
-import org.opensaml.saml2.core.ProxyRestriction;
+import org.opensaml.saml.saml2.core.Audience;
+import org.opensaml.saml.saml2.core.ProxyRestriction;
 
 /**
- * Test case for creating, marshalling, and unmarshalling {@link org.opensaml.saml2.core.impl.ProxyRestrictionImpl}.
+ * Test case for creating, marshalling, and unmarshalling {@link org.opensaml.saml.saml2.core.impl.ProxyRestrictionImpl}.
  */
 public class ProxyRestrictionTest extends BaseSAMLObjectProviderTestCase {
 

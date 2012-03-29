@@ -25,11 +25,11 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.saml.common.impl.AbstractSAMLObjectUnmarshaller;
-import org.opensaml.saml2.core.NameIDPolicy;
+import org.opensaml.saml.saml2.core.NameIDPolicy;
 import org.w3c.dom.Attr;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml2.core.NameIDPolicy} objects.
+ * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.core.NameIDPolicy} objects.
  */
 public class NameIDPolicyUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 

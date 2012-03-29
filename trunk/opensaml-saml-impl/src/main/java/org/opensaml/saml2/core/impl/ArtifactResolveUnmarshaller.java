@@ -23,11 +23,11 @@ package org.opensaml.saml2.core.impl;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
-import org.opensaml.saml2.core.Artifact;
-import org.opensaml.saml2.core.ArtifactResolve;
+import org.opensaml.saml.saml2.core.Artifact;
+import org.opensaml.saml.saml2.core.ArtifactResolve;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml2.core.ArtifactResolve}.
+ * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.core.ArtifactResolve}.
  */
 public class ArtifactResolveUnmarshaller extends RequestAbstractTypeUnmarshaller {
 

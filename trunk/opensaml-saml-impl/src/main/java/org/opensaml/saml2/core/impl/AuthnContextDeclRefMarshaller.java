@@ -26,11 +26,11 @@ import net.shibboleth.utilities.java.support.xml.ElementSupport;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml.common.impl.AbstractSAMLObjectMarshaller;
-import org.opensaml.saml2.core.AuthnContextDeclRef;
+import org.opensaml.saml.saml2.core.AuthnContextDeclRef;
 import org.w3c.dom.Element;
 
 /**
- * A thread-safe Marshaller for {@link org.opensaml.saml2.core.AuthnContextDeclRef}.
+ * A thread-safe Marshaller for {@link org.opensaml.saml.saml2.core.AuthnContextDeclRef}.
  */
 public class AuthnContextDeclRefMarshaller extends AbstractSAMLObjectMarshaller {
 

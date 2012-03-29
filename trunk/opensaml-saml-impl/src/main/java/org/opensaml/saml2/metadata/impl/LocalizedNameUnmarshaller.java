@@ -23,11 +23,11 @@ import org.opensaml.core.xml.LangBearing;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.impl.AbstractSAMLObjectUnmarshaller;
-import org.opensaml.saml2.metadata.LocalizedName;
+import org.opensaml.saml.saml2.metadata.LocalizedName;
 import org.w3c.dom.Attr;
 
 /**
- * A thread-safe unmarshaller for {@link org.opensaml.saml2.metadata.LocalizedName} objects.
+ * A thread-safe unmarshaller for {@link org.opensaml.saml.saml2.metadata.LocalizedName} objects.
  */
 public class LocalizedNameUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 

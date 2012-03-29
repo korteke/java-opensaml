@@ -21,10 +21,10 @@ import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.common.impl.AbstractSAMLObject;
-import org.opensaml.saml1.core.ConfirmationMethod;
+import org.opensaml.saml.saml1.core.ConfirmationMethod;
 
 /**
- * Concrete Implementation of the {@link org.opensaml.saml1.core.ConfirmationMethod} interface
+ * Concrete Implementation of the {@link org.opensaml.saml.saml1.core.ConfirmationMethod} interface
  */
 public class ConfirmationMethodImpl extends AbstractSAMLObject implements ConfirmationMethod {
 

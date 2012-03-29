@@ -18,10 +18,10 @@
 package org.opensaml.saml2.metadata.validator;
 
 import org.opensaml.core.xml.validation.ValidationException;
-import org.opensaml.saml2.metadata.SPSSODescriptor;
+import org.opensaml.saml.saml2.metadata.SPSSODescriptor;
 
 /**
- * Checks {@link org.opensaml.saml2.metadata.SPSSODescriptor} for Schema compliance.
+ * Checks {@link org.opensaml.saml.saml2.metadata.SPSSODescriptor} for Schema compliance.
  */
 public class SPSSODescriptorSchemaValidator extends SSODescriptorSchemaValidator<SPSSODescriptor> {
 

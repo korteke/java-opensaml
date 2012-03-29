@@ -23,10 +23,10 @@ package org.opensaml.saml2.metadata.impl;
 
 import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml2.metadata.Company;
+import org.opensaml.saml.saml2.metadata.Company;
 
 /**
- * Builder of {@link org.opensaml.saml2.metadata.impl.CompanyImpl}
+ * Builder of {@link org.opensaml.saml.saml2.metadata.impl.CompanyImpl}
  */
 public class CompanyBuilder extends AbstractSAMLObjectBuilder<Company> {
 

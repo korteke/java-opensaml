@@ -22,12 +22,12 @@ import net.shibboleth.utilities.java.support.xml.ElementSupport;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml.common.impl.AbstractSAMLObjectMarshaller;
-import org.opensaml.saml2.core.NameID;
-import org.opensaml.saml2.core.NameIDType;
+import org.opensaml.saml.saml2.core.NameID;
+import org.opensaml.saml.saml2.core.NameIDType;
 import org.w3c.dom.Element;
 
 /**
- * A thread safe Marshaller for {@link org.opensaml.saml2.core.NameIDType} objects.
+ * A thread safe Marshaller for {@link org.opensaml.saml.saml2.core.NameIDType} objects.
  */
 public abstract class AbstractNameIDTypeMarshaller extends AbstractSAMLObjectMarshaller {
 

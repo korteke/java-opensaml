@@ -25,6 +25,7 @@ import org.opensaml.common.BaseTestCase;
 import org.opensaml.core.xml.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.Unmarshaller;
 import org.opensaml.core.xml.io.UnmarshallingException;
+import org.opensaml.saml.saml1.core.Response;
 import org.w3c.dom.Document;
 
 /**

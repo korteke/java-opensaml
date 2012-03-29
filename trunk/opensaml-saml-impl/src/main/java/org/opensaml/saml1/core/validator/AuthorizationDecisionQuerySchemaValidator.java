@@ -22,12 +22,12 @@
 package org.opensaml.saml1.core.validator;
 
 import org.opensaml.core.xml.validation.ValidationException;
-import org.opensaml.saml1.core.AuthorizationDecisionQuery;
+import org.opensaml.saml.saml1.core.AuthorizationDecisionQuery;
 
 import com.google.common.base.Strings;
 
 /**
- * Checks {@link org.opensaml.saml1.core.AuthorizationDecisionQuery} for Schema compliance.
+ * Checks {@link org.opensaml.saml.saml1.core.AuthorizationDecisionQuery} for Schema compliance.
  */
 public class AuthorizationDecisionQuerySchemaValidator extends SubjectQuerySchemaValidator<AuthorizationDecisionQuery> {
 

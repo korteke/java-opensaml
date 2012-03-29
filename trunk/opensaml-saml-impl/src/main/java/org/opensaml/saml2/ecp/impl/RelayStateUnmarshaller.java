@@ -25,7 +25,7 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.core.xml.schema.impl.XSStringUnmarshaller;
-import org.opensaml.saml2.ecp.RelayState;
+import org.opensaml.saml.saml2.ecp.RelayState;
 import org.w3c.dom.Attr;
 
 /**

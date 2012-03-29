@@ -19,11 +19,11 @@ package org.opensaml.saml1.core.impl;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
-import org.opensaml.saml1.core.AuthenticationQuery;
+import org.opensaml.saml.saml1.core.AuthenticationQuery;
 import org.w3c.dom.Element;
 
 /**
- * A thread safe Marshaller for {@link org.opensaml.saml1.core.AuthenticationQuery} objects.
+ * A thread safe Marshaller for {@link org.opensaml.saml.saml1.core.AuthenticationQuery} objects.
  */
 public class AuthenticationQueryMarshaller extends SubjectQueryMarshaller {
 

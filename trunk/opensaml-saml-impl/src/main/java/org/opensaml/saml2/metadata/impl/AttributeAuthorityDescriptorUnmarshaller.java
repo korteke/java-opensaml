@@ -23,15 +23,15 @@ package org.opensaml.saml2.metadata.impl;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
-import org.opensaml.saml2.core.Attribute;
-import org.opensaml.saml2.metadata.AssertionIDRequestService;
-import org.opensaml.saml2.metadata.AttributeAuthorityDescriptor;
-import org.opensaml.saml2.metadata.AttributeProfile;
-import org.opensaml.saml2.metadata.AttributeService;
-import org.opensaml.saml2.metadata.NameIDFormat;
+import org.opensaml.saml.saml2.core.Attribute;
+import org.opensaml.saml.saml2.metadata.AssertionIDRequestService;
+import org.opensaml.saml.saml2.metadata.AttributeAuthorityDescriptor;
+import org.opensaml.saml.saml2.metadata.AttributeProfile;
+import org.opensaml.saml.saml2.metadata.AttributeService;
+import org.opensaml.saml.saml2.metadata.NameIDFormat;
 
 /**
- * A thread safe unmarshaller for {@link org.opensaml.saml2.metadata.AttributeAuthorityDescriptor}s.
+ * A thread safe unmarshaller for {@link org.opensaml.saml.saml2.metadata.AttributeAuthorityDescriptor}s.
  */
 public class AttributeAuthorityDescriptorUnmarshaller extends RoleDescriptorUnmarshaller {
 

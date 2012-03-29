@@ -23,10 +23,10 @@ package org.opensaml.saml2.metadata.impl;
 
 import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml2.metadata.AttributeService;
+import org.opensaml.saml.saml2.metadata.AttributeService;
 
 /**
- * Builder for {@link org.opensaml.saml2.metadata.impl.AttributeServiceImpl}.
+ * Builder for {@link org.opensaml.saml.saml2.metadata.impl.AttributeServiceImpl}.
  */
 public class AttributeServiceBuilder extends AbstractSAMLObjectBuilder<AttributeService> {
 

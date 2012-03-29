@@ -24,13 +24,13 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml2.core.GetComplete;
-import org.opensaml.saml2.core.IDPEntry;
-import org.opensaml.saml2.core.IDPList;
+import org.opensaml.saml.saml2.core.GetComplete;
+import org.opensaml.saml.saml2.core.IDPEntry;
+import org.opensaml.saml.saml2.core.IDPList;
 
 /**
  * Test case for creating, marshalling, and unmarshalling
- * {@link org.opensaml.saml2.core.impl.IDPEntryImpl}.
+ * {@link org.opensaml.saml.saml2.core.impl.IDPEntryImpl}.
  */
 public class IDPListTest extends BaseSAMLObjectProviderTestCase {
     

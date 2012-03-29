@@ -24,7 +24,7 @@ package org.opensaml.saml2.core.impl;
 import org.opensaml.saml.common.impl.AbstractSAMLObjectMarshaller;
 
 /**
- * A thread-safe Marshaller for {@link org.opensaml.saml2.core.Evidence}.
+ * A thread-safe Marshaller for {@link org.opensaml.saml.saml2.core.Evidence}.
  */
 public class EvidenceMarshaller extends AbstractSAMLObjectMarshaller {
 

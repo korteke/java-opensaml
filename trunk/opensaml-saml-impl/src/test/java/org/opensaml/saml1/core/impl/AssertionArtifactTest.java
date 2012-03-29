@@ -24,10 +24,10 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml1.core.AssertionArtifact;
+import org.opensaml.saml.saml1.core.AssertionArtifact;
 
 /**
- * Test for {@link org.opensaml.saml1.core.AssertionArtifact}
+ * Test for {@link org.opensaml.saml.saml1.core.AssertionArtifact}
  */
 public class AssertionArtifactTest extends BaseSAMLObjectProviderTestCase {
 

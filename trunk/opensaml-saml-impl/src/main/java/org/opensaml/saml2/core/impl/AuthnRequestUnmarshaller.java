@@ -24,16 +24,16 @@ package org.opensaml.saml2.core.impl;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.core.xml.schema.XSBooleanValue;
-import org.opensaml.saml2.core.AuthnRequest;
-import org.opensaml.saml2.core.Conditions;
-import org.opensaml.saml2.core.NameIDPolicy;
-import org.opensaml.saml2.core.RequestedAuthnContext;
-import org.opensaml.saml2.core.Scoping;
-import org.opensaml.saml2.core.Subject;
+import org.opensaml.saml.saml2.core.AuthnRequest;
+import org.opensaml.saml.saml2.core.Conditions;
+import org.opensaml.saml.saml2.core.NameIDPolicy;
+import org.opensaml.saml.saml2.core.RequestedAuthnContext;
+import org.opensaml.saml.saml2.core.Scoping;
+import org.opensaml.saml.saml2.core.Subject;
 import org.w3c.dom.Attr;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml2.core.AuthnRequest} objects.
+ * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.core.AuthnRequest} objects.
  */
 public class AuthnRequestUnmarshaller extends RequestAbstractTypeUnmarshaller {
 

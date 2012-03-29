@@ -27,14 +27,14 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml1.core.Action;
-import org.opensaml.saml1.core.AuthorizationDecisionQuery;
-import org.opensaml.saml1.core.Evidence;
-import org.opensaml.saml1.core.Subject;
+import org.opensaml.saml.saml1.core.Action;
+import org.opensaml.saml.saml1.core.AuthorizationDecisionQuery;
+import org.opensaml.saml.saml1.core.Evidence;
+import org.opensaml.saml.saml1.core.Subject;
 import org.w3c.dom.Document;
 
 /**
- * Test class for org.opensaml.saml1.core.AttributeQuery
+ * Test class for org.opensaml.saml.saml1.core.AttributeQuery
  */
 public class AuthorizationDecisionQueryTest extends BaseSAMLObjectProviderTestCase {
 

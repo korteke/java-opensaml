@@ -19,10 +19,10 @@ package org.opensaml.saml1.core.impl;
 
 import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml1.core.StatusMessage;
+import org.opensaml.saml.saml1.core.StatusMessage;
 
 /**
- * Builder of {@link org.opensaml.saml1.core.impl.StatusMessageImpl} objects.
+ * Builder of {@link org.opensaml.saml.saml1.core.impl.StatusMessageImpl} objects.
  */
 public class StatusMessageBuilder extends AbstractSAMLObjectBuilder<StatusMessage> {
 

@@ -23,8 +23,8 @@ package org.opensaml.saml2.core.impl;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml2.core.NameID;
-import org.opensaml.saml2.core.NameIDMappingResponse;
+import org.opensaml.saml.saml2.core.NameID;
+import org.opensaml.saml.saml2.core.NameIDMappingResponse;
 
 /**
  *

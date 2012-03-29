@@ -23,13 +23,13 @@ import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.common.impl.AbstractSAMLObject;
-import org.opensaml.saml1.core.Status;
-import org.opensaml.saml1.core.StatusCode;
-import org.opensaml.saml1.core.StatusDetail;
-import org.opensaml.saml1.core.StatusMessage;
+import org.opensaml.saml.saml1.core.Status;
+import org.opensaml.saml.saml1.core.StatusCode;
+import org.opensaml.saml.saml1.core.StatusDetail;
+import org.opensaml.saml.saml1.core.StatusMessage;
 
 /**
- * Concrete Implementation {@link org.opensaml.saml1.core.Status}
+ * Concrete Implementation {@link org.opensaml.saml.saml1.core.Status}
  */
 public class StatusImpl extends AbstractSAMLObject implements Status {
 

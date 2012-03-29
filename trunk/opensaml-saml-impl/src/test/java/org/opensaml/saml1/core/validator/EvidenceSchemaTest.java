@@ -21,12 +21,12 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.common.BaseSAMLObjectValidatorTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml1.core.Assertion;
-import org.opensaml.saml1.core.AssertionIDReference;
-import org.opensaml.saml1.core.Evidence;
+import org.opensaml.saml.saml1.core.Assertion;
+import org.opensaml.saml.saml1.core.AssertionIDReference;
+import org.opensaml.saml.saml1.core.Evidence;
 
 /**
- * Test case for {@link org.opensaml.saml1.core.validator.EvidenceSchemaValidator}.
+ * Test case for {@link org.opensaml.saml.saml1.core.validator.EvidenceSchemaValidator}.
  */
 public class EvidenceSchemaTest extends BaseSAMLObjectValidatorTestCase {
 

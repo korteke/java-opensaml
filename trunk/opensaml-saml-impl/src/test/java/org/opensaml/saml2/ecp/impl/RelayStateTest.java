@@ -18,7 +18,7 @@
 package org.opensaml.saml2.ecp.impl;
 
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
-import org.opensaml.saml2.ecp.RelayState;
+import org.opensaml.saml.saml2.ecp.RelayState;
 
 /**
  * Test case for creating, marshalling, and unmarshalling {@link RelayState}.

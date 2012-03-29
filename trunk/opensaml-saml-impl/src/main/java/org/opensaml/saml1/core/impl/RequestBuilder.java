@@ -19,10 +19,10 @@ package org.opensaml.saml1.core.impl;
 
 import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml1.core.Request;
+import org.opensaml.saml.saml1.core.Request;
 
 /**
- * Builder of {@link org.opensaml.saml1.core.impl.RequestImpl} objects.
+ * Builder of {@link org.opensaml.saml.saml1.core.impl.RequestImpl} objects.
  */
 public class RequestBuilder extends AbstractSAMLObjectBuilder<Request> {
 

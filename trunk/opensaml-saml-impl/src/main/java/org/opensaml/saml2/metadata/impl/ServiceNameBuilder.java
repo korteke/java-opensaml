@@ -23,10 +23,10 @@ package org.opensaml.saml2.metadata.impl;
 
 import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml2.metadata.ServiceName;
+import org.opensaml.saml.saml2.metadata.ServiceName;
 
 /**
- * Builder of {@link org.opensaml.saml2.metadata.impl.ServiceNameImpl}
+ * Builder of {@link org.opensaml.saml.saml2.metadata.impl.ServiceNameImpl}
  */
 public class ServiceNameBuilder extends AbstractSAMLObjectBuilder<ServiceName> {
 

@@ -20,7 +20,7 @@ package org.opensaml.saml1.core.impl;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.impl.AbstractSAMLObjectUnmarshaller;
-import org.opensaml.saml1.core.AttributeDesignator;
+import org.opensaml.saml.saml1.core.AttributeDesignator;
 import org.w3c.dom.Attr;
 
 /** Unmarshaller for {@link AttributeDesignator} objects. */

@@ -24,7 +24,7 @@ package org.opensaml.saml2.core.impl;
 import org.opensaml.saml.common.impl.AbstractSAMLObjectMarshaller;
 
 /**
- * A thread-safe Marshaller for {@link org.opensaml.saml2.core.AttributeStatement}.
+ * A thread-safe Marshaller for {@link org.opensaml.saml.saml2.core.AttributeStatement}.
  */
 public class AttributeStatementMarshaller extends AbstractSAMLObjectMarshaller {
 

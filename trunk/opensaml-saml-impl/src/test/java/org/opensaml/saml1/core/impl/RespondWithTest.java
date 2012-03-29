@@ -23,11 +23,11 @@ package org.opensaml.saml1.core.impl;
 import javax.xml.namespace.QName;
 
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
-import org.opensaml.saml1.core.AttributeStatement;
-import org.opensaml.saml1.core.RespondWith;
+import org.opensaml.saml.saml1.core.AttributeStatement;
+import org.opensaml.saml.saml1.core.RespondWith;
 
 /**
- * Test for org.opensaml.saml1.core.RespondWith.
+ * Test for org.opensaml.saml.saml1.core.RespondWith.
  */
 public class RespondWithTest extends BaseSAMLObjectProviderTestCase {
 

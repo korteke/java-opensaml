@@ -17,10 +17,10 @@
 
 package org.opensaml.saml2.core.impl;
 
-import org.opensaml.saml2.core.EncryptedID;
+import org.opensaml.saml.saml2.core.EncryptedID;
 
 /**
- * A concrete implementation of {@link org.opensaml.saml2.core.EncryptedID}.
+ * A concrete implementation of {@link org.opensaml.saml.saml2.core.EncryptedID}.
  */
 public class EncryptedIDImpl extends EncryptedElementTypeImpl implements EncryptedID {
 

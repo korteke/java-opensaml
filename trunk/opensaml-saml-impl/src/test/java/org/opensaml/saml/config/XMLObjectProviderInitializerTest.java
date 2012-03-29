@@ -21,12 +21,12 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.core.config.Initializer;
 import org.opensaml.core.config.XMLObjectProviderInitializerBaseTestCase;
-import org.opensaml.saml1.core.AuthenticationStatement;
-import org.opensaml.saml1.core.RespondWith;
-import org.opensaml.saml2.core.AuthnRequest;
-import org.opensaml.saml2.core.AuthnStatement;
-import org.opensaml.saml2.ecp.RelayState;
-import org.opensaml.saml2.metadata.EntityDescriptor;
+import org.opensaml.saml.saml1.core.AuthenticationStatement;
+import org.opensaml.saml.saml1.core.RespondWith;
+import org.opensaml.saml.saml2.core.AuthnRequest;
+import org.opensaml.saml.saml2.core.AuthnStatement;
+import org.opensaml.saml.saml2.ecp.RelayState;
+import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.opensaml.samlext.idpdisco.DiscoveryResponse;
 import org.opensaml.samlext.saml1md.SourceID;
 import org.opensaml.samlext.saml2delrestrict.Delegate;

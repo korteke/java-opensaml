@@ -24,13 +24,13 @@ package org.opensaml.saml2.core.impl;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.impl.AbstractSAMLObjectUnmarshaller;
-import org.opensaml.saml2.core.IDPList;
-import org.opensaml.saml2.core.RequesterID;
-import org.opensaml.saml2.core.Scoping;
+import org.opensaml.saml.saml2.core.IDPList;
+import org.opensaml.saml.saml2.core.RequesterID;
+import org.opensaml.saml.saml2.core.Scoping;
 import org.w3c.dom.Attr;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml2.core.Scoping} objects.
+ * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.core.Scoping} objects.
  */
 public class ScopingUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 

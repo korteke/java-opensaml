@@ -21,11 +21,11 @@
 package org.opensaml.saml2.core.impl;
 
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
-import org.opensaml.saml2.core.IDPEntry;
+import org.opensaml.saml.saml2.core.IDPEntry;
 
 /**
  * Test case for creating, marshalling, and unmarshalling
- * {@link org.opensaml.saml2.core.impl.IDPEntryImpl}.
+ * {@link org.opensaml.saml.saml2.core.impl.IDPEntryImpl}.
  */
 public class IDPEntryTest extends BaseSAMLObjectProviderTestCase {
     

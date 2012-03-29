@@ -25,11 +25,11 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml.common.impl.AbstractSAMLObjectMarshaller;
 import org.opensaml.saml.config.Configuration;
-import org.opensaml.saml2.core.StatusResponseType;
+import org.opensaml.saml.saml2.core.StatusResponseType;
 import org.w3c.dom.Element;
 
 /**
- * A thread safe Marshaller for {@link org.opensaml.saml2.core.StatusResponseType} objects.
+ * A thread safe Marshaller for {@link org.opensaml.saml.saml2.core.StatusResponseType} objects.
  */
 public abstract class StatusResponseTypeMarshaller extends AbstractSAMLObjectMarshaller {
 

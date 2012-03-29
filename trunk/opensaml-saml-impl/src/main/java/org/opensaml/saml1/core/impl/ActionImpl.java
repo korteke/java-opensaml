@@ -21,10 +21,10 @@ import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.common.impl.AbstractSAMLObject;
-import org.opensaml.saml1.core.Action;
+import org.opensaml.saml.saml1.core.Action;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml1.core.Action}
+ * Concrete implementation of {@link org.opensaml.saml.saml1.core.Action}
  */
 public class ActionImpl extends AbstractSAMLObject implements Action {
 

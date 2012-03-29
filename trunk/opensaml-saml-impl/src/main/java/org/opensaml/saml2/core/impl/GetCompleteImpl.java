@@ -25,10 +25,10 @@ import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.common.impl.AbstractSAMLObject;
-import org.opensaml.saml2.core.GetComplete;
+import org.opensaml.saml.saml2.core.GetComplete;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml2.core.GetComplete}.
+ * Concrete implementation of {@link org.opensaml.saml.saml2.core.GetComplete}.
  */
 public class GetCompleteImpl extends AbstractSAMLObject implements GetComplete {
 

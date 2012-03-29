@@ -21,10 +21,10 @@
 
 package org.opensaml.saml2.metadata.validator;
 
-import org.opensaml.saml2.metadata.AssertionIDRequestService;
+import org.opensaml.saml.saml2.metadata.AssertionIDRequestService;
 
 /**
- * Checks {@link org.opensaml.saml2.metadata.AssertionIDRequestService} for Schema compliance.
+ * Checks {@link org.opensaml.saml.saml2.metadata.AssertionIDRequestService} for Schema compliance.
  */
 public class AssertionIDRequestServiceSchemaValidator extends EndpointSchemaValidator<AssertionIDRequestService> {
 

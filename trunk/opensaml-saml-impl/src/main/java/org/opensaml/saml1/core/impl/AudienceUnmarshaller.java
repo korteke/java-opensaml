@@ -19,10 +19,10 @@ package org.opensaml.saml1.core.impl;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.common.impl.AbstractSAMLObjectUnmarshaller;
-import org.opensaml.saml1.core.Audience;
+import org.opensaml.saml.saml1.core.Audience;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml1.core.Audience} objects.
+ * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml1.core.Audience} objects.
  */
 public class AudienceUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 

@@ -22,10 +22,10 @@ import javax.xml.namespace.QName;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml1.core.Attribute;
+import org.opensaml.saml.saml1.core.Attribute;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml1.core.impl.AttributeImpl} objects.
+ * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml1.core.impl.AttributeImpl} objects.
  */
 public class AttributeUnmarshaller extends AttributeDesignatorUnmarshaller {
 

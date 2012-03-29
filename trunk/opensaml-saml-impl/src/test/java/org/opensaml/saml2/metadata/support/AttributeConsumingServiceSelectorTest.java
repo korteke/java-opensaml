@@ -22,11 +22,12 @@ import java.net.URL;
 
 import org.opensaml.common.BaseTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml2.metadata.AttributeConsumingService;
-import org.opensaml.saml2.metadata.RoleDescriptor;
-import org.opensaml.saml2.metadata.SPSSODescriptor;
+import org.opensaml.saml.saml2.metadata.AttributeConsumingService;
+import org.opensaml.saml.saml2.metadata.RoleDescriptor;
+import org.opensaml.saml.saml2.metadata.SPSSODescriptor;
+import org.opensaml.saml.saml2.metadata.provider.MetadataProviderException;
+import org.opensaml.saml.saml2.metadata.support.AttributeConsumingServiceSelector;
 import org.opensaml.saml2.metadata.provider.FilesystemMetadataProvider;
-import org.opensaml.saml2.metadata.provider.MetadataProviderException;
 import org.opensaml.samlext.saml2mdquery.AttributeQueryDescriptorType;
 
 /**

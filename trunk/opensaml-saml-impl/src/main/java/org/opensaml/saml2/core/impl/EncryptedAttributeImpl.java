@@ -17,10 +17,10 @@
 
 package org.opensaml.saml2.core.impl;
 
-import org.opensaml.saml2.core.EncryptedAttribute;
+import org.opensaml.saml.saml2.core.EncryptedAttribute;
 
 /**
- * A concrete implementation of {@link org.opensaml.saml2.core.EncryptedAttribute}.
+ * A concrete implementation of {@link org.opensaml.saml.saml2.core.EncryptedAttribute}.
  */
 public class EncryptedAttributeImpl extends EncryptedElementTypeImpl implements EncryptedAttribute {
 

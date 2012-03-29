@@ -23,7 +23,7 @@ package org.opensaml.saml2.metadata.impl;
 
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml2.metadata.ServiceDescription} objects.
+ * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.metadata.ServiceDescription} objects.
  */
 public class ServiceDescriptionUnmarshaller extends LocalizedNameUnmarshaller {
 

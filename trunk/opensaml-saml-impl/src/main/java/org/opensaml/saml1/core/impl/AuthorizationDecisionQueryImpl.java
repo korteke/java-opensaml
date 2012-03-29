@@ -24,12 +24,12 @@ import java.util.List;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.XMLObjectChildrenList;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml1.core.Action;
-import org.opensaml.saml1.core.AuthorizationDecisionQuery;
-import org.opensaml.saml1.core.Evidence;
+import org.opensaml.saml.saml1.core.Action;
+import org.opensaml.saml.saml1.core.AuthorizationDecisionQuery;
+import org.opensaml.saml.saml1.core.Evidence;
 
 /**
- * Concrete implementation of the {@link org.opensaml.saml1.core.AuthorizationDecisionQuery} interface
+ * Concrete implementation of the {@link org.opensaml.saml.saml1.core.AuthorizationDecisionQuery} interface
  */
 public class AuthorizationDecisionQueryImpl extends SubjectQueryImpl implements AuthorizationDecisionQuery {
 

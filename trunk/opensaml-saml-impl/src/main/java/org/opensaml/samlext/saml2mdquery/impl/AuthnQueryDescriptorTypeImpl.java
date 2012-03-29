@@ -22,7 +22,7 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.saml2.metadata.Endpoint;
+import org.opensaml.saml.saml2.metadata.Endpoint;
 import org.opensaml.samlext.saml2mdquery.AuthnQueryDescriptorType;
 
 /**

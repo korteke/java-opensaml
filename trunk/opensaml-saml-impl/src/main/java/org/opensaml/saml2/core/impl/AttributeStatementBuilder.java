@@ -23,10 +23,10 @@ package org.opensaml.saml2.core.impl;
 
 import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml2.core.AttributeStatement;
+import org.opensaml.saml.saml2.core.AttributeStatement;
 
 /**
- * Builder for {@link org.opensaml.saml2.core.impl.AttributeStatementImpl} objects.
+ * Builder for {@link org.opensaml.saml.saml2.core.impl.AttributeStatementImpl} objects.
  */
 public class AttributeStatementBuilder extends AbstractSAMLObjectBuilder<AttributeStatement> {
 

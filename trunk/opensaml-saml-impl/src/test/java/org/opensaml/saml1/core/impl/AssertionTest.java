@@ -27,18 +27,18 @@ import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
 import org.opensaml.core.xml.io.MarshallingException;
-import org.opensaml.saml1.core.Advice;
-import org.opensaml.saml1.core.Assertion;
-import org.opensaml.saml1.core.AttributeStatement;
-import org.opensaml.saml1.core.AuthenticationStatement;
-import org.opensaml.saml1.core.AuthorizationDecisionStatement;
-import org.opensaml.saml1.core.Conditions;
-import org.opensaml.saml1.core.Statement;
+import org.opensaml.saml.saml1.core.Advice;
+import org.opensaml.saml.saml1.core.Assertion;
+import org.opensaml.saml.saml1.core.AttributeStatement;
+import org.opensaml.saml.saml1.core.AuthenticationStatement;
+import org.opensaml.saml.saml1.core.AuthorizationDecisionStatement;
+import org.opensaml.saml.saml1.core.Conditions;
+import org.opensaml.saml.saml1.core.Statement;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
- * Test for {@link org.opensaml.saml1.core.impl.Assertion}
+ * Test for {@link org.opensaml.saml.saml1.core.impl.Assertion}
  */
 public class AssertionTest extends BaseSAMLObjectProviderTestCase {
 

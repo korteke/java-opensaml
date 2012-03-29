@@ -24,11 +24,11 @@ package org.opensaml.saml2.core.impl;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.impl.AbstractSAMLObjectUnmarshaller;
-import org.opensaml.saml2.core.StatusCode;
+import org.opensaml.saml.saml2.core.StatusCode;
 import org.w3c.dom.Attr;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml2.core.StatusCode} objects.
+ * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.core.StatusCode} objects.
  */
 public class StatusCodeUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 

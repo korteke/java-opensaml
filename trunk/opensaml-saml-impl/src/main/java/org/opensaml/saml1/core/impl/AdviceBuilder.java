@@ -19,10 +19,10 @@ package org.opensaml.saml1.core.impl;
 
 import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml1.core.Advice;
+import org.opensaml.saml.saml1.core.Advice;
 
 /**
- * Builder of {@link org.opensaml.saml1.core.impl.AdviceImpl} objects.
+ * Builder of {@link org.opensaml.saml.saml1.core.impl.AdviceImpl} objects.
  */
 public class AdviceBuilder extends AbstractSAMLObjectBuilder<Advice> {
 

@@ -24,10 +24,10 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml1.core.SubjectLocality;
+import org.opensaml.saml.saml1.core.SubjectLocality;
 
 /**
- * Test for {@link org.opensaml.saml1.core.impl.SubjectLocalityImpl}
+ * Test for {@link org.opensaml.saml.saml1.core.impl.SubjectLocalityImpl}
  */
 public class SubjectLocalityTest extends BaseSAMLObjectProviderTestCase {
 

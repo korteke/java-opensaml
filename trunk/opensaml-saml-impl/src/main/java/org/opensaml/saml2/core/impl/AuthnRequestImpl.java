@@ -27,15 +27,15 @@ import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.schema.XSBooleanValue;
-import org.opensaml.saml2.core.AuthnRequest;
-import org.opensaml.saml2.core.Conditions;
-import org.opensaml.saml2.core.NameIDPolicy;
-import org.opensaml.saml2.core.RequestedAuthnContext;
-import org.opensaml.saml2.core.Scoping;
-import org.opensaml.saml2.core.Subject;
+import org.opensaml.saml.saml2.core.AuthnRequest;
+import org.opensaml.saml.saml2.core.Conditions;
+import org.opensaml.saml.saml2.core.NameIDPolicy;
+import org.opensaml.saml.saml2.core.RequestedAuthnContext;
+import org.opensaml.saml.saml2.core.Scoping;
+import org.opensaml.saml.saml2.core.Subject;
 
 /**
- * A concrete implementation of {@link org.opensaml.saml2.core.AuthnRequest}.
+ * A concrete implementation of {@link org.opensaml.saml.saml2.core.AuthnRequest}.
  */
 public class AuthnRequestImpl extends RequestAbstractTypeImpl implements AuthnRequest {
 

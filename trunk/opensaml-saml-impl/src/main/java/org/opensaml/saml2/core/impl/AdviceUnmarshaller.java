@@ -24,10 +24,10 @@ package org.opensaml.saml2.core.impl;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.impl.AbstractSAMLObjectUnmarshaller;
-import org.opensaml.saml2.core.Advice;
+import org.opensaml.saml.saml2.core.Advice;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml2.core.Advice}.
+ * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.core.Advice}.
  */
 public class AdviceUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 

@@ -23,12 +23,12 @@ package org.opensaml.saml2.core.validator;
 
 import org.opensaml.core.xml.validation.ValidationException;
 import org.opensaml.core.xml.validation.Validator;
-import org.opensaml.saml2.core.Conditions;
-import org.opensaml.saml2.core.OneTimeUse;
-import org.opensaml.saml2.core.ProxyRestriction;
+import org.opensaml.saml.saml2.core.Conditions;
+import org.opensaml.saml.saml2.core.OneTimeUse;
+import org.opensaml.saml.saml2.core.ProxyRestriction;
 
 /**
- * Checks the {@link org.opensaml.saml2.core.Conditions} for Spec compliance.
+ * Checks the {@link org.opensaml.saml.saml2.core.Conditions} for Spec compliance.
  */
 public class ConditionsSpecValidator implements Validator<Conditions> {
 

@@ -22,10 +22,10 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
 import org.opensaml.saml.common.binding.SAMLMessageContext;
-import org.opensaml.saml1.core.Assertion;
-import org.opensaml.saml1.core.NameIdentifier;
-import org.opensaml.saml1.core.RequestAbstractType;
-import org.opensaml.saml1.core.Response;
+import org.opensaml.saml.saml1.core.Assertion;
+import org.opensaml.saml.saml1.core.NameIdentifier;
+import org.opensaml.saml.saml1.core.RequestAbstractType;
+import org.opensaml.saml.saml1.core.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

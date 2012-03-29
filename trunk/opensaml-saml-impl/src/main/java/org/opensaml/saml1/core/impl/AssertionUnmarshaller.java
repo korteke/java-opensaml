@@ -23,10 +23,10 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.SAMLVersion;
 import org.opensaml.saml.common.impl.AbstractSAMLObjectUnmarshaller;
-import org.opensaml.saml1.core.Advice;
-import org.opensaml.saml1.core.Assertion;
-import org.opensaml.saml1.core.Conditions;
-import org.opensaml.saml1.core.Statement;
+import org.opensaml.saml.saml1.core.Advice;
+import org.opensaml.saml.saml1.core.Assertion;
+import org.opensaml.saml.saml1.core.Conditions;
+import org.opensaml.saml.saml1.core.Statement;
 import org.opensaml.xmlsec.signature.Signature;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
@@ -34,7 +34,7 @@ import org.w3c.dom.Element;
 import com.google.common.base.Strings;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml1.core.Assertion} objects.
+ * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml1.core.Assertion} objects.
  */
 public class AssertionUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 

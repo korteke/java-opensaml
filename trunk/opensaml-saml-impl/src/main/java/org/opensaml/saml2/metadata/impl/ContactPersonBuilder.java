@@ -23,10 +23,10 @@ package org.opensaml.saml2.metadata.impl;
 
 import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml2.metadata.ContactPerson;
+import org.opensaml.saml.saml2.metadata.ContactPerson;
 
 /**
- * Builder of {@link org.opensaml.saml2.metadata.impl.ContactPersonImpl}
+ * Builder of {@link org.opensaml.saml.saml2.metadata.impl.ContactPersonImpl}
  */
 public class ContactPersonBuilder extends AbstractSAMLObjectBuilder<ContactPerson> {
 

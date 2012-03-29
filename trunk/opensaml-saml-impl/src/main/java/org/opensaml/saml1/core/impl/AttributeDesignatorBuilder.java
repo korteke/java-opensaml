@@ -23,10 +23,10 @@ package org.opensaml.saml1.core.impl;
 
 import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml1.core.AttributeDesignator;
+import org.opensaml.saml.saml1.core.AttributeDesignator;
 
 /**
- * Builder of {@link org.opensaml.saml1.core.impl.AttributeDesignatorImpl} objects.
+ * Builder of {@link org.opensaml.saml.saml1.core.impl.AttributeDesignatorImpl} objects.
  */
 public class AttributeDesignatorBuilder extends AbstractSAMLObjectBuilder<AttributeDesignator> {
 

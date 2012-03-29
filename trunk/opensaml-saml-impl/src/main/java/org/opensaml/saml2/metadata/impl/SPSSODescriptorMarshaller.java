@@ -23,11 +23,11 @@ package org.opensaml.saml2.metadata.impl;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
-import org.opensaml.saml2.metadata.SPSSODescriptor;
+import org.opensaml.saml.saml2.metadata.SPSSODescriptor;
 import org.w3c.dom.Element;
 
 /**
- * A thread safe Marshaller for {@link org.opensaml.saml2.metadata.SPSSODescriptor} objects.
+ * A thread safe Marshaller for {@link org.opensaml.saml.saml2.metadata.SPSSODescriptor} objects.
  */
 public class SPSSODescriptorMarshaller extends SSODescriptorMarshaller {
 

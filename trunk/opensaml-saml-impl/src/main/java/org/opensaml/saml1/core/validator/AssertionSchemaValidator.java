@@ -25,13 +25,13 @@ import java.util.List;
 
 import org.opensaml.core.xml.validation.ValidationException;
 import org.opensaml.core.xml.validation.Validator;
-import org.opensaml.saml1.core.Assertion;
-import org.opensaml.saml1.core.Statement;
+import org.opensaml.saml.saml1.core.Assertion;
+import org.opensaml.saml.saml1.core.Statement;
 
 import com.google.common.base.Strings;
 
 /**
- * Checks {@link org.opensaml.saml1.core.Assertion} for Schema compliance.
+ * Checks {@link org.opensaml.saml.saml1.core.Assertion} for Schema compliance.
  */
 public class AssertionSchemaValidator implements Validator<Assertion> {
 

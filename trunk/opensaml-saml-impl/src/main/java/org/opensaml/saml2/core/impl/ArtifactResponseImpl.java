@@ -27,10 +27,10 @@ import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.common.SAMLObject;
-import org.opensaml.saml2.core.ArtifactResponse;
+import org.opensaml.saml.saml2.core.ArtifactResponse;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml2.core.ArtifactResponse}.
+ * Concrete implementation of {@link org.opensaml.saml.saml2.core.ArtifactResponse}.
  */
 public class ArtifactResponseImpl extends StatusResponseTypeImpl implements ArtifactResponse {
 

@@ -19,10 +19,10 @@ package org.opensaml.saml1.core.impl;
 
 import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml1.core.Action;
+import org.opensaml.saml.saml1.core.Action;
 
 /**
- * Builder of {@link org.opensaml.saml1.core.impl.ActionImpl} objects.
+ * Builder of {@link org.opensaml.saml.saml1.core.impl.ActionImpl} objects.
  */
 public class ActionBuilder extends AbstractSAMLObjectBuilder<Action> {
 

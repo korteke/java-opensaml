@@ -22,10 +22,10 @@ import javax.xml.namespace.QName;
 import org.opensaml.common.BaseSAMLObjectValidatorTestCase;
 import org.opensaml.core.xml.validation.ValidationException;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml2.metadata.OrganizationDisplayName;
+import org.opensaml.saml.saml2.metadata.OrganizationDisplayName;
 
 /**
- * Test case for {@link org.opensaml.saml2.metadata.OrganizationDisplayName}.
+ * Test case for {@link org.opensaml.saml.saml2.metadata.OrganizationDisplayName}.
  */
 public class OrganizationDisplayNameSchemaTest extends BaseSAMLObjectValidatorTestCase {
 

@@ -19,7 +19,7 @@ package org.opensaml.xacml.profile.saml;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.saml2.core.Statement;
+import org.opensaml.saml.saml2.core.Statement;
 import org.opensaml.xacml.XACMLObject;
 import org.opensaml.xacml.ctx.RequestType;
 import org.opensaml.xacml.ctx.ResponseType;

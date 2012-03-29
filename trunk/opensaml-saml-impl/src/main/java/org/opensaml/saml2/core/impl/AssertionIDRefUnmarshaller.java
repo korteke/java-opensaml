@@ -23,10 +23,10 @@ package org.opensaml.saml2.core.impl;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.common.impl.AbstractSAMLObjectUnmarshaller;
-import org.opensaml.saml2.core.AssertionIDRef;
+import org.opensaml.saml.saml2.core.AssertionIDRef;
 
 /**
- * A thead-safe Unmarshaller for {@link org.opensaml.saml2.core.AssertionIDRef}.
+ * A thead-safe Unmarshaller for {@link org.opensaml.saml.saml2.core.AssertionIDRef}.
  */
 public class AssertionIDRefUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 

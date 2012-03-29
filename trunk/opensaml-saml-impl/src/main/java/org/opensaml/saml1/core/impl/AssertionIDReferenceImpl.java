@@ -21,10 +21,10 @@ import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.common.impl.AbstractSAMLObject;
-import org.opensaml.saml1.core.AssertionIDReference;
+import org.opensaml.saml.saml1.core.AssertionIDReference;
 
 /**
- * Concrete Implementation of {@link org.opensaml.saml1.core.AssertionIDReference} Object
+ * Concrete Implementation of {@link org.opensaml.saml.saml1.core.AssertionIDReference} Object
  */
 public class AssertionIDReferenceImpl extends AbstractSAMLObject implements AssertionIDReference {
 

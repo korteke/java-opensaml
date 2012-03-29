@@ -18,12 +18,12 @@
 package org.opensaml.saml2.core.impl;
 
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
-import org.opensaml.saml2.core.EncryptedID;
+import org.opensaml.saml.saml2.core.EncryptedID;
 import org.opensaml.xmlsec.encryption.EncryptedData;
 import org.opensaml.xmlsec.encryption.EncryptedKey;
 
 /**
- * Test case for creating, marshalling, and unmarshalling {@link org.opensaml.saml2.core.impl.EncryptedIDImpl}.
+ * Test case for creating, marshalling, and unmarshalling {@link org.opensaml.saml.saml2.core.impl.EncryptedIDImpl}.
  */
 public class EncryptedIDTest extends BaseSAMLObjectProviderTestCase {
 

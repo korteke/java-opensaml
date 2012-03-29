@@ -21,11 +21,11 @@
 package org.opensaml.saml2.metadata.impl;
 
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
-import org.opensaml.saml2.metadata.ManageNameIDService;
+import org.opensaml.saml.saml2.metadata.ManageNameIDService;
 
 /**
  * Test case for creating, marshalling, and unmarshalling
- * {@link org.opensaml.saml2.metadata.impl.ManageNameIDServiceImpl}.
+ * {@link org.opensaml.saml.saml2.metadata.impl.ManageNameIDServiceImpl}.
  */
 public class ManageNameIDServiceTest extends BaseSAMLObjectProviderTestCase {
     

@@ -22,10 +22,10 @@ import java.util.Collections;
 import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.saml1.core.AuthenticationQuery;
+import org.opensaml.saml.saml1.core.AuthenticationQuery;
 
 /**
- * Concrete implementation of the {@link org.opensaml.saml1.core.AuthenticationQuery} interface
+ * Concrete implementation of the {@link org.opensaml.saml.saml1.core.AuthenticationQuery} interface
  */
 public class AuthenticationQueryImpl extends SubjectQueryImpl implements AuthenticationQuery {
 

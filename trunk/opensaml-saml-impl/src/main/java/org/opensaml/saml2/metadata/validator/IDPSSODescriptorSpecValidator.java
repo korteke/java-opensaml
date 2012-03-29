@@ -22,12 +22,12 @@
 package org.opensaml.saml2.metadata.validator;
 
 import org.opensaml.core.xml.validation.ValidationException;
-import org.opensaml.saml2.metadata.IDPSSODescriptor;
+import org.opensaml.saml.saml2.metadata.IDPSSODescriptor;
 
 import com.google.common.base.Strings;
 
 /**
- * Checks {@link org.opensaml.saml2.metadata.IDPSSODescriptor} for Spec compliance.
+ * Checks {@link org.opensaml.saml.saml2.metadata.IDPSSODescriptor} for Spec compliance.
  */
 public class IDPSSODescriptorSpecValidator extends SSODescriptorSpecValidator<IDPSSODescriptor> {
 

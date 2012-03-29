@@ -25,10 +25,10 @@ import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.common.impl.AbstractSAMLObject;
-import org.opensaml.saml2.metadata.TelephoneNumber;
+import org.opensaml.saml.saml2.metadata.TelephoneNumber;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml2.metadata.TelephoneNumber}
+ * Concrete implementation of {@link org.opensaml.saml.saml2.metadata.TelephoneNumber}
  */
 public class TelephoneNumberImpl extends AbstractSAMLObject implements TelephoneNumber {
 

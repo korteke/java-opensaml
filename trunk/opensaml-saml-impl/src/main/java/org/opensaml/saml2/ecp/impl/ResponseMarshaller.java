@@ -21,7 +21,7 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.saml.common.impl.AbstractSAMLObjectMarshaller;
-import org.opensaml.saml2.ecp.Response;
+import org.opensaml.saml.saml2.ecp.Response;
 import org.w3c.dom.Element;
 
 /**

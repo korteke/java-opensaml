@@ -23,10 +23,10 @@ package org.opensaml.saml2.metadata.impl;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.common.impl.AbstractSAMLObjectUnmarshaller;
-import org.opensaml.saml2.metadata.NameIDFormat;
+import org.opensaml.saml.saml2.metadata.NameIDFormat;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml2.metadata.NameIDFormat} objects.
+ * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.metadata.NameIDFormat} objects.
  */
 public class NameIDFormatUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 

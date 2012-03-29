@@ -19,7 +19,7 @@ package org.opensaml.saml.saml2.binding.artifact;
 
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.binding.SAMLMessageContext;
-import org.opensaml.saml2.core.NameID;
+import org.opensaml.saml.saml2.core.NameID;
 
 /**
  * Builder of typed SAML 2 artifacts.

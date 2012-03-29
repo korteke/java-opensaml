@@ -19,10 +19,10 @@ package org.opensaml.saml1.core.impl;
 
 import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml1.core.Response;
+import org.opensaml.saml.saml1.core.Response;
 
 /**
- * Builder of {@link org.opensaml.saml1.core.impl.ResponseImpl} objects.
+ * Builder of {@link org.opensaml.saml.saml1.core.impl.ResponseImpl} objects.
  */
 public class ResponseBuilder extends AbstractSAMLObjectBuilder<Response> {
 

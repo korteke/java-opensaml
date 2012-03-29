@@ -19,10 +19,10 @@ package org.opensaml.saml1.core.impl;
 
 import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml1.core.AssertionIDReference;
+import org.opensaml.saml.saml1.core.AssertionIDReference;
 
 /**
- * Builder of {@link org.opensaml.saml1.core.impl.AssertionIDReferenceImpl} objects.
+ * Builder of {@link org.opensaml.saml.saml1.core.impl.AssertionIDReferenceImpl} objects.
  */
 public class AssertionIDReferenceBuilder extends AbstractSAMLObjectBuilder<AssertionIDReference> {
 

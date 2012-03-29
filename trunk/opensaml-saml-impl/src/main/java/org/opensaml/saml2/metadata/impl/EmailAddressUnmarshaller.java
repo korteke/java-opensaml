@@ -23,10 +23,10 @@ package org.opensaml.saml2.metadata.impl;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.common.impl.AbstractSAMLObjectUnmarshaller;
-import org.opensaml.saml2.metadata.EmailAddress;
+import org.opensaml.saml.saml2.metadata.EmailAddress;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml2.metadata.EmailAddress} objects.
+ * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.metadata.EmailAddress} objects.
  */
 public class EmailAddressUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 

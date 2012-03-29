@@ -26,13 +26,13 @@ import javax.xml.namespace.QName;
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
 import org.opensaml.core.xml.schema.impl.XSAnyBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml1.core.ConfirmationMethod;
-import org.opensaml.saml1.core.SubjectConfirmation;
-import org.opensaml.saml1.core.SubjectConfirmationData;
+import org.opensaml.saml.saml1.core.ConfirmationMethod;
+import org.opensaml.saml.saml1.core.SubjectConfirmation;
+import org.opensaml.saml.saml1.core.SubjectConfirmationData;
 import org.w3c.dom.Document;
 
 /**
- * Test for {@link org.opensaml.saml1.core.impl.Subject}
+ * Test for {@link org.opensaml.saml.saml1.core.impl.Subject}
  */
 public class SubjectConfirmationTest extends BaseSAMLObjectProviderTestCase {
 

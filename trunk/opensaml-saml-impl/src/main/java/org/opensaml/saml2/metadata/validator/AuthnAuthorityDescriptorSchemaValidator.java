@@ -22,10 +22,10 @@
 package org.opensaml.saml2.metadata.validator;
 
 import org.opensaml.core.xml.validation.ValidationException;
-import org.opensaml.saml2.metadata.AuthnAuthorityDescriptor;
+import org.opensaml.saml.saml2.metadata.AuthnAuthorityDescriptor;
 
 /**
- * Checks {@link org.opensaml.saml2.metadata.AuthnAuthorityDescriptor} for Schema compliance.
+ * Checks {@link org.opensaml.saml.saml2.metadata.AuthnAuthorityDescriptor} for Schema compliance.
  */
 public class AuthnAuthorityDescriptorSchemaValidator extends RoleDescriptorSchemaValidator<AuthnAuthorityDescriptor> {
 

@@ -22,6 +22,7 @@ import java.util.List;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.schema.XSString;
 import org.opensaml.saml.common.impl.AbstractSAMLObject;
+import org.opensaml.saml.saml2.core.BaseID;
 
 /**
  * Mock BaseID class for testing purposes.

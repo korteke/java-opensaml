@@ -21,11 +21,11 @@
 package org.opensaml.saml2.metadata.impl;
 
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
-import org.opensaml.saml2.metadata.Company;
+import org.opensaml.saml.saml2.metadata.Company;
 
 /**
  * Test case for creating, marshalling, and unmarshalling
- * {@link org.opensaml.saml2.metadata.impl.CompanyImpl}.
+ * {@link org.opensaml.saml.saml2.metadata.impl.CompanyImpl}.
  */
 public class CompanyTest extends BaseSAMLObjectProviderTestCase {
     

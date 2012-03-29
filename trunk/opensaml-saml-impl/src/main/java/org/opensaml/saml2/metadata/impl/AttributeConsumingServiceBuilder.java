@@ -23,10 +23,10 @@ package org.opensaml.saml2.metadata.impl;
 
 import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml2.metadata.AttributeConsumingService;
+import org.opensaml.saml.saml2.metadata.AttributeConsumingService;
 
 /**
- * Builder of {@link org.opensaml.saml2.metadata.impl.AttributeConsumingServiceImpl}.
+ * Builder of {@link org.opensaml.saml.saml2.metadata.impl.AttributeConsumingServiceImpl}.
  */
 public class AttributeConsumingServiceBuilder extends AbstractSAMLObjectBuilder<AttributeConsumingService> {
 

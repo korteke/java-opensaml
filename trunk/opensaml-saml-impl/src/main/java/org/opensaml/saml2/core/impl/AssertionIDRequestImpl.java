@@ -27,11 +27,11 @@ import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.XMLObjectChildrenList;
-import org.opensaml.saml2.core.AssertionIDRef;
-import org.opensaml.saml2.core.AssertionIDRequest;
+import org.opensaml.saml.saml2.core.AssertionIDRef;
+import org.opensaml.saml.saml2.core.AssertionIDRequest;
 
 /**
- * A concrete implementation of {@link org.opensaml.saml2.core.AssertionIDRequest}.
+ * A concrete implementation of {@link org.opensaml.saml.saml2.core.AssertionIDRequest}.
  */
 public class AssertionIDRequestImpl extends RequestAbstractTypeImpl implements AssertionIDRequest {
 

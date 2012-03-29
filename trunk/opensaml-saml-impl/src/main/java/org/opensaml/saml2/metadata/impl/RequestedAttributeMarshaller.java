@@ -23,12 +23,12 @@ package org.opensaml.saml2.metadata.impl;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
+import org.opensaml.saml.saml2.metadata.RequestedAttribute;
 import org.opensaml.saml2.core.impl.AttributeMarshaller;
-import org.opensaml.saml2.metadata.RequestedAttribute;
 import org.w3c.dom.Element;
 
 /**
- * A thread-safe Marshaller for {@link org.opensaml.saml2.metadata.RequestedAttribute} objects.
+ * A thread-safe Marshaller for {@link org.opensaml.saml.saml2.metadata.RequestedAttribute} objects.
  */
 public class RequestedAttributeMarshaller extends AttributeMarshaller {
 

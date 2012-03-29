@@ -21,10 +21,10 @@
 
 package org.opensaml.saml2.metadata.validator;
 
-import org.opensaml.saml2.metadata.SSODescriptor;
+import org.opensaml.saml.saml2.metadata.SSODescriptor;
 
 /**
- * Checks {@link org.opensaml.saml2.metadata.SSODescriptor} for Schema compliance.
+ * Checks {@link org.opensaml.saml.saml2.metadata.SSODescriptor} for Schema compliance.
  */
 public class SSODescriptorSchemaValidator<SSODecriptorType extends SSODescriptor> extends RoleDescriptorSchemaValidator<SSODecriptorType> {
 

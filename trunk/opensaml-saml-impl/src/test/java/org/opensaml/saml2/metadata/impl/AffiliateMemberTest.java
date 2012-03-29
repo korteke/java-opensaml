@@ -21,11 +21,11 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml2.metadata.AffiliateMember;
+import org.opensaml.saml.saml2.metadata.AffiliateMember;
 
 /**
  * Test case for creating, marshalling, and unmarshalling
- * {@link org.opensaml.saml2.metadata.impl.AffiliateMemberImpl}.
+ * {@link org.opensaml.saml.saml2.metadata.impl.AffiliateMemberImpl}.
  */
 public class AffiliateMemberTest extends BaseSAMLObjectProviderTestCase {
     

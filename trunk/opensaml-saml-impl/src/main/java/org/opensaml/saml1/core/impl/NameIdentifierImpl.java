@@ -21,10 +21,10 @@ import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.common.impl.AbstractSAMLObject;
-import org.opensaml.saml1.core.NameIdentifier;
+import org.opensaml.saml.saml1.core.NameIdentifier;
 
 /**
- * Complete implementation of {@link org.opensaml.saml1.core.impl.NameIdentifierImpl}
+ * Complete implementation of {@link org.opensaml.saml.saml1.core.impl.NameIdentifierImpl}
  */
 public class NameIdentifierImpl extends AbstractSAMLObject implements NameIdentifier {
 

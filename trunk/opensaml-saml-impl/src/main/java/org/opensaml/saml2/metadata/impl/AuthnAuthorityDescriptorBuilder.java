@@ -19,10 +19,10 @@ package org.opensaml.saml2.metadata.impl;
 
 import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml2.metadata.AuthnAuthorityDescriptor;
+import org.opensaml.saml.saml2.metadata.AuthnAuthorityDescriptor;
 
 /**
- * A builder for {@link org.opensaml.saml2.metadata.impl.AuthnAuthorityDescriptorImpl} objects.
+ * A builder for {@link org.opensaml.saml.saml2.metadata.impl.AuthnAuthorityDescriptorImpl} objects.
  */
 public class AuthnAuthorityDescriptorBuilder extends AbstractSAMLObjectBuilder<AuthnAuthorityDescriptor> {
 

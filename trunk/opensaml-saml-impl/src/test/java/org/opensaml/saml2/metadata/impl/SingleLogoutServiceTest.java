@@ -21,11 +21,11 @@
 package org.opensaml.saml2.metadata.impl;
 
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
-import org.opensaml.saml2.metadata.SingleLogoutService;
+import org.opensaml.saml.saml2.metadata.SingleLogoutService;
 
 /**
  * Test case for creating, marshalling, and unmarshalling
- * {@link org.opensaml.saml2.metadata.impl.SingleLogoutServiceImpl}.
+ * {@link org.opensaml.saml.saml2.metadata.impl.SingleLogoutServiceImpl}.
  */
 public class SingleLogoutServiceTest extends BaseSAMLObjectProviderTestCase {
     

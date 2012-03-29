@@ -28,7 +28,7 @@ import org.opensaml.common.BaseTestCase;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.binding.BasicSAMLMessageContext;
 import org.opensaml.saml.common.binding.decoding.SAMLMessageDecoder;
-import org.opensaml.saml1.core.Response;
+import org.opensaml.saml.saml1.core.Response;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.SecurityHelper;
 import org.opensaml.security.credential.Credential;

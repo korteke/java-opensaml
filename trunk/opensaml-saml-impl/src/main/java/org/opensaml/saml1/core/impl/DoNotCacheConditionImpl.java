@@ -21,10 +21,10 @@ import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.common.impl.AbstractSAMLObject;
-import org.opensaml.saml1.core.DoNotCacheCondition;
+import org.opensaml.saml.saml1.core.DoNotCacheCondition;
 
 /**
- * Concrete Implementation of a {@link org.opensaml.saml1.core.DoNotCacheCondition} Objects.
+ * Concrete Implementation of a {@link org.opensaml.saml.saml1.core.DoNotCacheCondition} Objects.
  */
 public class DoNotCacheConditionImpl extends AbstractSAMLObject implements DoNotCacheCondition {
 

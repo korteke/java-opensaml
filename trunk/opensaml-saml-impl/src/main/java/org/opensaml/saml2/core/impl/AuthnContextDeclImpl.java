@@ -30,10 +30,10 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.AttributeMap;
 import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
 import org.opensaml.saml.common.impl.AbstractSAMLObject;
-import org.opensaml.saml2.core.AuthnContextDecl;
+import org.opensaml.saml.saml2.core.AuthnContextDecl;
 
 /**
- * A concrete implementation of {@link org.opensaml.saml2.core.AuthnContextDecl}.
+ * A concrete implementation of {@link org.opensaml.saml.saml2.core.AuthnContextDecl}.
  */
 public class AuthnContextDeclImpl extends AbstractSAMLObject implements AuthnContextDecl {
 

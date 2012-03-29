@@ -19,10 +19,10 @@ package org.opensaml.saml1.core.impl;
 
 import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml1.core.Conditions;
+import org.opensaml.saml.saml1.core.Conditions;
 
 /**
- * Builder of {@link org.opensaml.saml1.core.impl.ConditionsImpl} objects.
+ * Builder of {@link org.opensaml.saml.saml1.core.impl.ConditionsImpl} objects.
  */
 public class ConditionsBuilder extends AbstractSAMLObjectBuilder<Conditions> {
 

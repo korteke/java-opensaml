@@ -20,12 +20,12 @@ package org.opensaml.saml1.core.impl;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.impl.AbstractSAMLObjectUnmarshaller;
-import org.opensaml.saml1.core.NameIdentifier;
-import org.opensaml.saml1.core.Subject;
-import org.opensaml.saml1.core.SubjectConfirmation;
+import org.opensaml.saml.saml1.core.NameIdentifier;
+import org.opensaml.saml.saml1.core.Subject;
+import org.opensaml.saml.saml1.core.SubjectConfirmation;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml1.core.Subject} objects.
+ * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml1.core.Subject} objects.
  */
 public class SubjectUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 

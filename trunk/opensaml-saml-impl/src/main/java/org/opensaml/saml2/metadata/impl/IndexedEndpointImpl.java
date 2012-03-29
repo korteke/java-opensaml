@@ -22,10 +22,10 @@
 package org.opensaml.saml2.metadata.impl;
 
 import org.opensaml.core.xml.schema.XSBooleanValue;
-import org.opensaml.saml2.metadata.IndexedEndpoint;
+import org.opensaml.saml.saml2.metadata.IndexedEndpoint;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml2.metadata.IndexedEndpoint}
+ * Concrete implementation of {@link org.opensaml.saml.saml2.metadata.IndexedEndpoint}
  */
 public abstract class IndexedEndpointImpl extends EndpointImpl implements IndexedEndpoint {
 

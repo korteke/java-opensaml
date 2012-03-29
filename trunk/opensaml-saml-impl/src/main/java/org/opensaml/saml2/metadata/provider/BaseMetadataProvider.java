@@ -19,6 +19,9 @@ package org.opensaml.saml2.metadata.provider;
 
 import org.opensaml.core.xml.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.UnmarshallerFactory;
+import org.opensaml.saml.saml2.metadata.provider.MetadataFilter;
+import org.opensaml.saml.saml2.metadata.provider.MetadataProvider;
+import org.opensaml.saml.saml2.metadata.provider.MetadataProviderException;
 
 /**
  * Base class for metadata providers.

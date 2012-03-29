@@ -22,10 +22,10 @@
 package org.opensaml.saml1.core.validator;
 
 import org.opensaml.core.xml.validation.ValidationException;
-import org.opensaml.saml1.core.AttributeQuery;
+import org.opensaml.saml.saml1.core.AttributeQuery;
 
 /**
- * Checks {@link org.opensaml.saml1.core.AttributeQuery} for Schema compliance.
+ * Checks {@link org.opensaml.saml.saml1.core.AttributeQuery} for Schema compliance.
  */
 public class AttributeQuerySchemaValidator extends SubjectQuerySchemaValidator<AttributeQuery> {
 

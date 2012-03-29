@@ -18,9 +18,9 @@
 package org.opensaml.saml2.ecp.impl;
 
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
-import org.opensaml.saml2.core.IDPList;
-import org.opensaml.saml2.core.Issuer;
-import org.opensaml.saml2.ecp.Request;
+import org.opensaml.saml.saml2.core.IDPList;
+import org.opensaml.saml.saml2.core.Issuer;
+import org.opensaml.saml.saml2.ecp.Request;
 
 /**
  * Test case for creating, marshalling, and unmarshalling {@link Request}.

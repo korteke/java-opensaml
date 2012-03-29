@@ -25,10 +25,10 @@ import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.common.impl.AbstractSAMLObject;
-import org.opensaml.saml2.core.SessionIndex;
+import org.opensaml.saml.saml2.core.SessionIndex;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml2.core.SessionIndex}.
+ * Concrete implementation of {@link org.opensaml.saml.saml2.core.SessionIndex}.
  */
 public class SessionIndexImpl extends AbstractSAMLObject implements SessionIndex {
 

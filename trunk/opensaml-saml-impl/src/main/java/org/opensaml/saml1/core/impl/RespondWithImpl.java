@@ -23,7 +23,7 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.common.impl.AbstractSAMLObject;
-import org.opensaml.saml1.core.RespondWith;
+import org.opensaml.saml.saml1.core.RespondWith;
 
 /**
  * Implementation of {@link RespondWith}.

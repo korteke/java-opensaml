@@ -21,10 +21,10 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml1.core.StatusCode;
+import org.opensaml.saml.saml1.core.StatusCode;
 
 /**
- * Test class for org.opensaml.saml1.core.StatusCode.
+ * Test class for org.opensaml.saml.saml1.core.StatusCode.
  */
 public class StatusCodeTest extends BaseSAMLObjectProviderTestCase {
 

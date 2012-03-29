@@ -19,10 +19,10 @@ package org.opensaml.saml1.core.impl;
 
 import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml1.core.DoNotCacheCondition;
+import org.opensaml.saml.saml1.core.DoNotCacheCondition;
 
 /**
- * Builder of {@link org.opensaml.saml1.core.impl.DoNotCacheConditionImpl} objects.
+ * Builder of {@link org.opensaml.saml.saml1.core.impl.DoNotCacheConditionImpl} objects.
  */
 public class DoNotCacheConditionBuilder extends AbstractSAMLObjectBuilder<DoNotCacheCondition> {
 

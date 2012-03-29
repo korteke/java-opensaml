@@ -24,13 +24,13 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml2.core.IDPList;
-import org.opensaml.saml2.core.RequesterID;
-import org.opensaml.saml2.core.Scoping;
+import org.opensaml.saml.saml2.core.IDPList;
+import org.opensaml.saml.saml2.core.RequesterID;
+import org.opensaml.saml.saml2.core.Scoping;
 
 /**
  *Test case for creating, marshalling, and unmarshalling
- * {@link org.opensaml.saml2.core.impl.ScopingImpl}.
+ * {@link org.opensaml.saml.saml2.core.impl.ScopingImpl}.
  */
 public class ScopingTest extends BaseSAMLObjectProviderTestCase {
     

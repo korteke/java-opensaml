@@ -23,11 +23,11 @@ import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.XMLObjectChildrenList;
-import org.opensaml.saml1.core.AttributeDesignator;
-import org.opensaml.saml1.core.AttributeQuery;
+import org.opensaml.saml.saml1.core.AttributeDesignator;
+import org.opensaml.saml.saml1.core.AttributeQuery;
 
 /**
- * Concrete implementation of the {@link org.opensaml.saml1.core.AttributeQuery} interface
+ * Concrete implementation of the {@link org.opensaml.saml.saml1.core.AttributeQuery} interface
  */
 public class AttributeQueryImpl extends SubjectQueryImpl implements AttributeQuery {
 

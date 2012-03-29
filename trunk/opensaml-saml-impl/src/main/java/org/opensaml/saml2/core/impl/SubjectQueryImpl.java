@@ -26,11 +26,11 @@ import java.util.Collections;
 import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.saml2.core.Subject;
-import org.opensaml.saml2.core.SubjectQuery;
+import org.opensaml.saml.saml2.core.Subject;
+import org.opensaml.saml.saml2.core.SubjectQuery;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml2.core.SubjectQuery}.
+ * Concrete implementation of {@link org.opensaml.saml.saml2.core.SubjectQuery}.
  */
 public abstract class SubjectQueryImpl extends RequestAbstractTypeImpl implements SubjectQuery {
 

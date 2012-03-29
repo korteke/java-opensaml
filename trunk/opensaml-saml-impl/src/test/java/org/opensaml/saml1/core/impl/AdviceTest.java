@@ -25,12 +25,12 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml1.core.Advice;
-import org.opensaml.saml1.core.Assertion;
-import org.opensaml.saml1.core.AssertionIDReference;
+import org.opensaml.saml.saml1.core.Advice;
+import org.opensaml.saml.saml1.core.Assertion;
+import org.opensaml.saml.saml1.core.AssertionIDReference;
 
 /**
- * Test for {@link org.opensaml.saml1.core.impl.Advice}
+ * Test for {@link org.opensaml.saml.saml1.core.impl.Advice}
  */
 public class AdviceTest extends BaseSAMLObjectProviderTestCase {
 

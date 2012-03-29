@@ -23,10 +23,10 @@ package org.opensaml.saml2.core.impl;
 
 import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml2.core.SubjectConfirmation;
+import org.opensaml.saml.saml2.core.SubjectConfirmation;
 
 /**
- * Builder for {@link org.opensaml.saml2.core.impl.SubjectConfirmationImpl} objects.
+ * Builder for {@link org.opensaml.saml.saml2.core.impl.SubjectConfirmationImpl} objects.
  */
 public class SubjectConfirmationBuilder extends AbstractSAMLObjectBuilder<SubjectConfirmation> {
 

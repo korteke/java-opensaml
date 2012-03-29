@@ -20,11 +20,11 @@ package org.opensaml.saml2.metadata.impl;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml.common.impl.AbstractSAMLObjectMarshaller;
-import org.opensaml.saml2.metadata.AdditionalMetadataLocation;
+import org.opensaml.saml.saml2.metadata.AdditionalMetadataLocation;
 import org.w3c.dom.Element;
 
 /**
- * A thread safe marshaller for {@link org.opensaml.saml2.metadata.AdditionalMetadataLocation} objects.
+ * A thread safe marshaller for {@link org.opensaml.saml.saml2.metadata.AdditionalMetadataLocation} objects.
  */
 public class AdditionalMetadataLocationMarshaller extends AbstractSAMLObjectMarshaller {
 

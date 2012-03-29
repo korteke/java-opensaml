@@ -29,14 +29,14 @@ import org.opensaml.saml.common.impl.AbstractSAMLObjectMarshaller;
 import org.opensaml.saml.config.Configuration;
 import org.opensaml.saml.saml2.common.CacheableSAMLObject;
 import org.opensaml.saml.saml2.common.TimeBoundSAMLObject;
-import org.opensaml.saml2.metadata.EntityDescriptor;
+import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
 
 /**
- * A thread safe Marshaller for {@link org.opensaml.saml2.metadata.EntityDescriptor} objects.
+ * A thread safe Marshaller for {@link org.opensaml.saml.saml2.metadata.EntityDescriptor} objects.
  */
 public class EntityDescriptorMarshaller extends AbstractSAMLObjectMarshaller {
 

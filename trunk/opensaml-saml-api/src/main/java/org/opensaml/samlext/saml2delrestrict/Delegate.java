@@ -22,9 +22,9 @@ import javax.xml.namespace.QName;
 import org.joda.time.DateTime;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml2.core.BaseID;
-import org.opensaml.saml2.core.EncryptedID;
-import org.opensaml.saml2.core.NameID;
+import org.opensaml.saml.saml2.core.BaseID;
+import org.opensaml.saml.saml2.core.EncryptedID;
+import org.opensaml.saml.saml2.core.NameID;
 
 /**
  * SAML 2.0 Condition for Delegation Restriction - Delegate element.

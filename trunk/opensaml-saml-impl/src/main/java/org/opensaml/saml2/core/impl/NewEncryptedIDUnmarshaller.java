@@ -18,7 +18,7 @@
 package org.opensaml.saml2.core.impl;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml2.core.NewEncryptedID}.
+ * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.core.NewEncryptedID}.
  */
 public class NewEncryptedIDUnmarshaller extends EncryptedElementTypeUnmarshaller {
 

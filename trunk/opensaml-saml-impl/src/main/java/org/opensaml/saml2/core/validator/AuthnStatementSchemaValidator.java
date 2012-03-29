@@ -23,10 +23,10 @@ package org.opensaml.saml2.core.validator;
 
 import org.opensaml.core.xml.validation.ValidationException;
 import org.opensaml.core.xml.validation.Validator;
-import org.opensaml.saml2.core.AuthnStatement;
+import org.opensaml.saml.saml2.core.AuthnStatement;
 
 /**
- * Checks {@link org.opensaml.saml2.core.AuthnStatement} for Schema compliance.
+ * Checks {@link org.opensaml.saml.saml2.core.AuthnStatement} for Schema compliance.
  */
 public class AuthnStatementSchemaValidator implements Validator<AuthnStatement> {
 

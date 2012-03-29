@@ -18,7 +18,7 @@
 package org.opensaml.saml1.core.impl;
 
 /**
- * A thread safe Marshaller for {@link org.opensaml.saml1.core.Response} objects.
+ * A thread safe Marshaller for {@link org.opensaml.saml.saml1.core.Response} objects.
  */
 public class ResponseMarshaller extends ResponseAbstractTypeMarshaller {
 

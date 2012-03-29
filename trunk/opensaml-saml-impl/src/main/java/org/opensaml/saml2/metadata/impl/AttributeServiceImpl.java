@@ -21,10 +21,10 @@
 
 package org.opensaml.saml2.metadata.impl;
 
-import org.opensaml.saml2.metadata.AttributeService;
+import org.opensaml.saml.saml2.metadata.AttributeService;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml2.metadata.AttributeService}.
+ * Concrete implementation of {@link org.opensaml.saml.saml2.metadata.AttributeService}.
  */
 public class AttributeServiceImpl extends EndpointImpl implements AttributeService {
 

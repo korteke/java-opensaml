@@ -19,10 +19,10 @@ package org.opensaml.saml2.metadata.impl;
 
 import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml2.metadata.KeyDescriptor;
+import org.opensaml.saml.saml2.metadata.KeyDescriptor;
 
 /**
- * Builder of {@link org.opensaml.saml2.metadata.impl.KeyDescriptorImpl} objects.
+ * Builder of {@link org.opensaml.saml.saml2.metadata.impl.KeyDescriptorImpl} objects.
  */
 public class KeyDescriptorBuilder extends AbstractSAMLObjectBuilder<KeyDescriptor> {
 

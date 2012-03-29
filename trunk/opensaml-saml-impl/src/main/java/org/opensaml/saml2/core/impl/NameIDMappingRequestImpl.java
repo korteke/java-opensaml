@@ -22,14 +22,14 @@ import java.util.Collections;
 import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.saml2.core.BaseID;
-import org.opensaml.saml2.core.EncryptedID;
-import org.opensaml.saml2.core.NameID;
-import org.opensaml.saml2.core.NameIDMappingRequest;
-import org.opensaml.saml2.core.NameIDPolicy;
+import org.opensaml.saml.saml2.core.BaseID;
+import org.opensaml.saml.saml2.core.EncryptedID;
+import org.opensaml.saml.saml2.core.NameID;
+import org.opensaml.saml.saml2.core.NameIDMappingRequest;
+import org.opensaml.saml.saml2.core.NameIDPolicy;
 
 /**
- * A concrete implementation of {@link org.opensaml.saml2.core.NameIDMappingRequest}.
+ * A concrete implementation of {@link org.opensaml.saml.saml2.core.NameIDMappingRequest}.
  */
 public class NameIDMappingRequestImpl extends RequestAbstractTypeImpl implements NameIDMappingRequest {
 

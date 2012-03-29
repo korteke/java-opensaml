@@ -27,7 +27,7 @@ import org.opensaml.core.xml.mock.SimpleXMLObject;
 
 /**
  * Test case for creating, marshalling, and unmarshalling
- * {@link org.opensaml.saml2.metadata.OrganizationName}.
+ * {@link org.opensaml.saml.saml2.metadata.OrganizationName}.
  */
 public class UIInfoTest extends BaseSAMLObjectProviderTestCase {
     

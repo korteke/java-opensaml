@@ -19,10 +19,10 @@ package org.opensaml.saml2.metadata.impl;
 
 import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml2.metadata.AuthzService;
+import org.opensaml.saml.saml2.metadata.AuthzService;
 
 /**
- * Builder for {@link org.opensaml.saml2.metadata.impl.AuthzServiceImpl}.
+ * Builder for {@link org.opensaml.saml.saml2.metadata.impl.AuthzServiceImpl}.
  */
 public class AuthzServiceBuilder extends AbstractSAMLObjectBuilder<AuthzService> {
 

@@ -22,7 +22,7 @@
 package org.opensaml.saml2.metadata.impl;
 
 /**
- * A thread safe Marshaller for {@link org.opensaml.saml2.metadata.ArtifactResolutionService} objects.
+ * A thread safe Marshaller for {@link org.opensaml.saml.saml2.metadata.ArtifactResolutionService} objects.
  */
 public class ArtifactResolutionServiceMarshaller extends IndexedEndpointMarshaller {
 

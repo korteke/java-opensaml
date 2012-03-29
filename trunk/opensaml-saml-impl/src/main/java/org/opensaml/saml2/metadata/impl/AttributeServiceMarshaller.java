@@ -22,7 +22,7 @@
 package org.opensaml.saml2.metadata.impl;
 
 /**
- * A thread safe Marshaller for {@link org.opensaml.saml2.metadata.AttributeService} objects.
+ * A thread safe Marshaller for {@link org.opensaml.saml.saml2.metadata.AttributeService} objects.
  */
 public class AttributeServiceMarshaller extends EndpointMarshaller {
 

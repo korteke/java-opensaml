@@ -23,10 +23,10 @@ package org.opensaml.saml2.core.impl;
 
 import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml2.core.Assertion;
+import org.opensaml.saml.saml2.core.Assertion;
 
 /**
- * Builder for {@link org.opensaml.saml2.core.impl.AssertionImpl} objects.
+ * Builder for {@link org.opensaml.saml.saml2.core.impl.AssertionImpl} objects.
  */
 public class AssertionBuilder extends AbstractSAMLObjectBuilder<Assertion> {
 

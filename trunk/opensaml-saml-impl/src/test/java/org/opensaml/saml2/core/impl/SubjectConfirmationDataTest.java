@@ -23,11 +23,11 @@ import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml2.core.SubjectConfirmationData;
+import org.opensaml.saml.saml2.core.SubjectConfirmationData;
 
 /**
  * Test case for creating, marshalling, and unmarshalling
- * {@link org.opensaml.saml2.core.impl.SubjectConfirmationDataImpl}.
+ * {@link org.opensaml.saml.saml2.core.impl.SubjectConfirmationDataImpl}.
  */
 public class SubjectConfirmationDataTest extends BaseSAMLObjectProviderTestCase {
 

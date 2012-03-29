@@ -23,7 +23,7 @@ package org.opensaml.saml2.metadata.impl;
 
 
 /**
- * A thread safe Marshaller for {@link org.opensaml.saml2.metadata.ServiceName} objects.
+ * A thread safe Marshaller for {@link org.opensaml.saml.saml2.metadata.ServiceName} objects.
  */
 public class ServiceNameMarshaller extends LocalizedNameMarshaller {
 

@@ -18,14 +18,14 @@
 package org.opensaml.saml2.core.impl;
 
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
-import org.opensaml.saml2.core.Advice;
-import org.opensaml.saml2.core.Assertion;
-import org.opensaml.saml2.core.AssertionIDRef;
-import org.opensaml.saml2.core.AssertionURIRef;
-import org.opensaml.saml2.core.EncryptedAssertion;
+import org.opensaml.saml.saml2.core.Advice;
+import org.opensaml.saml.saml2.core.Assertion;
+import org.opensaml.saml.saml2.core.AssertionIDRef;
+import org.opensaml.saml.saml2.core.AssertionURIRef;
+import org.opensaml.saml.saml2.core.EncryptedAssertion;
 
 /**
- * Test case for creating, marshalling, and unmarshalling {@link org.opensaml.saml2.core.impl.AdviceImpl}.
+ * Test case for creating, marshalling, and unmarshalling {@link org.opensaml.saml.saml2.core.impl.AdviceImpl}.
  */
 public class AdviceTest extends BaseSAMLObjectProviderTestCase {
 

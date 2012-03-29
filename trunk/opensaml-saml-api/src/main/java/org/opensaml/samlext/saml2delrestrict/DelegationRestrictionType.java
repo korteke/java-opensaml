@@ -22,7 +22,7 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml2.core.Condition;
+import org.opensaml.saml.saml2.core.Condition;
 
 /**
  * SAML 2.0 Condition for Delegation Restriction - DelegationRestrictionType complex type.

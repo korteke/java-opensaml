@@ -21,10 +21,10 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.common.BaseSAMLObjectValidatorTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml2.metadata.EncryptionMethod;
+import org.opensaml.saml.saml2.metadata.EncryptionMethod;
 
 /**
- * Test case for {@link org.opensaml.saml2.metadata.EncryptionMethod}.
+ * Test case for {@link org.opensaml.saml.saml2.metadata.EncryptionMethod}.
  */
 public class EncryptionMethodSchemaTest extends BaseSAMLObjectValidatorTestCase {
 

@@ -22,11 +22,12 @@ import java.util.List;
 
 import org.opensaml.common.BaseTestCase;
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.saml2.core.Assertion;
-import org.opensaml.saml2.core.Attribute;
-import org.opensaml.saml2.core.EncryptedAssertion;
-import org.opensaml.saml2.core.EncryptedAttribute;
-import org.opensaml.saml2.encryption.Encrypter.KeyPlacement;
+import org.opensaml.saml.saml2.core.Assertion;
+import org.opensaml.saml.saml2.core.Attribute;
+import org.opensaml.saml.saml2.core.EncryptedAssertion;
+import org.opensaml.saml.saml2.core.EncryptedAttribute;
+import org.opensaml.saml.saml2.encryption.Encrypter;
+import org.opensaml.saml.saml2.encryption.Encrypter.KeyPlacement;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.xmlsec.XMLSecurityHelper;
 import org.opensaml.xmlsec.encryption.DataReference;

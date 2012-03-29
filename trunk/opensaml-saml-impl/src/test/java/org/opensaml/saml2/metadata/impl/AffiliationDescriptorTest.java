@@ -24,14 +24,14 @@ import org.joda.time.chrono.ISOChronology;
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.common.Extensions;
-import org.opensaml.saml2.metadata.AffiliateMember;
-import org.opensaml.saml2.metadata.AffiliationDescriptor;
+import org.opensaml.saml.saml2.metadata.AffiliateMember;
+import org.opensaml.saml.saml2.metadata.AffiliationDescriptor;
 import org.opensaml.xmlsec.signature.Signature;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 
 /**
  * Test case for creating, marshalling, and unmarshalling
- * {@link org.opensaml.saml2.metadata.impl.AffiliationDescriptorImpl}.
+ * {@link org.opensaml.saml.saml2.metadata.impl.AffiliationDescriptorImpl}.
  */
 public class AffiliationDescriptorTest extends BaseSAMLObjectProviderTestCase {
 

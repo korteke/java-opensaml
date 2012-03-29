@@ -23,11 +23,11 @@ package org.opensaml.saml2.core.impl;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
-import org.opensaml.saml2.core.AssertionIDRef;
-import org.opensaml.saml2.core.AssertionIDRequest;
+import org.opensaml.saml.saml2.core.AssertionIDRef;
+import org.opensaml.saml.saml2.core.AssertionIDRequest;
 
 /**
- * A thead-safe Unmarshaller for {@link org.opensaml.saml2.core.AssertionIDRequest}.
+ * A thead-safe Unmarshaller for {@link org.opensaml.saml.saml2.core.AssertionIDRequest}.
  */
 public class AssertionIDRequestUnmarshaller extends RequestAbstractTypeUnmarshaller {
 

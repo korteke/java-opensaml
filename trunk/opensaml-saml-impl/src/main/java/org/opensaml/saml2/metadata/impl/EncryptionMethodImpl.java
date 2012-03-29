@@ -21,10 +21,10 @@
 
 package org.opensaml.saml2.metadata.impl;
 
-import org.opensaml.saml2.metadata.EncryptionMethod;
+import org.opensaml.saml.saml2.metadata.EncryptionMethod;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml2.metadata.EncryptionMethod}.
+ * Concrete implementation of {@link org.opensaml.saml.saml2.metadata.EncryptionMethod}.
  */
 public class EncryptionMethodImpl extends org.opensaml.xmlsec.encryption.impl.EncryptionMethodImpl implements EncryptionMethod {
 

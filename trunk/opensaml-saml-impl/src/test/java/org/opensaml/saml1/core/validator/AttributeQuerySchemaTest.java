@@ -20,10 +20,10 @@ package org.opensaml.saml1.core.validator;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml1.core.AttributeQuery;
+import org.opensaml.saml.saml1.core.AttributeQuery;
 
 /**
- * Test case for {@link org.opensaml.saml1.core.validator.AttributeQuerySchemaValidator}.
+ * Test case for {@link org.opensaml.saml.saml1.core.validator.AttributeQuerySchemaValidator}.
  */
 public class AttributeQuerySchemaTest extends SubjectQuerySchemaTestBase  {
 

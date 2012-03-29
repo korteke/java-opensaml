@@ -30,19 +30,19 @@ import org.opensaml.saml.common.impl.AbstractSAMLObjectUnmarshaller;
 import org.opensaml.saml.saml2.common.CacheableSAMLObject;
 import org.opensaml.saml.saml2.common.Extensions;
 import org.opensaml.saml.saml2.common.TimeBoundSAMLObject;
-import org.opensaml.saml2.metadata.AdditionalMetadataLocation;
-import org.opensaml.saml2.metadata.AffiliationDescriptor;
-import org.opensaml.saml2.metadata.ContactPerson;
-import org.opensaml.saml2.metadata.EntityDescriptor;
-import org.opensaml.saml2.metadata.Organization;
-import org.opensaml.saml2.metadata.RoleDescriptor;
+import org.opensaml.saml.saml2.metadata.AdditionalMetadataLocation;
+import org.opensaml.saml.saml2.metadata.AffiliationDescriptor;
+import org.opensaml.saml.saml2.metadata.ContactPerson;
+import org.opensaml.saml.saml2.metadata.EntityDescriptor;
+import org.opensaml.saml.saml2.metadata.Organization;
+import org.opensaml.saml.saml2.metadata.RoleDescriptor;
 import org.opensaml.xmlsec.signature.Signature;
 import org.w3c.dom.Attr;
 
 import com.google.common.base.Strings;
 
 /**
- * A thread safe Unmarshaller for {@link org.opensaml.saml2.metadata.EntityDescriptor}s.
+ * A thread safe Unmarshaller for {@link org.opensaml.saml.saml2.metadata.EntityDescriptor}s.
  */
 public class EntityDescriptorUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 

@@ -31,12 +31,12 @@ import org.opensaml.core.xml.util.AttributeMap;
 import org.opensaml.core.xml.util.XMLObjectChildrenList;
 import org.opensaml.saml.common.impl.AbstractSignableSAMLObject;
 import org.opensaml.saml.saml2.common.Extensions;
-import org.opensaml.saml2.metadata.AffiliateMember;
-import org.opensaml.saml2.metadata.AffiliationDescriptor;
-import org.opensaml.saml2.metadata.KeyDescriptor;
+import org.opensaml.saml.saml2.metadata.AffiliateMember;
+import org.opensaml.saml.saml2.metadata.AffiliationDescriptor;
+import org.opensaml.saml.saml2.metadata.KeyDescriptor;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml2.metadata.AffiliationDescriptor}.
+ * Concrete implementation of {@link org.opensaml.saml.saml2.metadata.AffiliationDescriptor}.
  */
 public class AffiliationDescriptorImpl extends AbstractSignableSAMLObject implements AffiliationDescriptor {
 

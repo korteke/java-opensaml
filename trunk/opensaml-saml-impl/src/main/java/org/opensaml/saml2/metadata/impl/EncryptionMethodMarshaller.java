@@ -19,7 +19,7 @@ package org.opensaml.saml2.metadata.impl;
 
 
 /**
- * A thread safe Marshaller for {@link org.opensaml.saml2.metadata.EncryptionMethod} objects.
+ * A thread safe Marshaller for {@link org.opensaml.saml.saml2.metadata.EncryptionMethod} objects.
  */
 public class EncryptionMethodMarshaller extends org.opensaml.xmlsec.encryption.impl.EncryptionMethodMarshaller {
 

@@ -23,10 +23,10 @@ package org.opensaml.saml2.metadata.impl;
 
 import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml2.metadata.TelephoneNumber;
+import org.opensaml.saml.saml2.metadata.TelephoneNumber;
 
 /**
- * Builder of {@link org.opensaml.saml2.metadata.impl.TelephoneNumberImpl}
+ * Builder of {@link org.opensaml.saml.saml2.metadata.impl.TelephoneNumberImpl}
  */
 public class TelephoneNumberBuilder extends AbstractSAMLObjectBuilder<TelephoneNumber> {
 

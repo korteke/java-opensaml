@@ -21,10 +21,10 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.common.BaseSAMLObjectValidatorTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml1.core.Audience;
+import org.opensaml.saml.saml1.core.Audience;
 
 /**
- * Test case for {@link org.opensaml.saml1.core.validator.AudienceSpecValidator}.
+ * Test case for {@link org.opensaml.saml.saml1.core.validator.AudienceSpecValidator}.
  */
 public class AudienceSpecTest extends BaseSAMLObjectValidatorTestCase {
 

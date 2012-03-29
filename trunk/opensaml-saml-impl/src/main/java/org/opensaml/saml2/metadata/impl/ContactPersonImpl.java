@@ -29,16 +29,16 @@ import org.opensaml.core.xml.util.AttributeMap;
 import org.opensaml.core.xml.util.XMLObjectChildrenList;
 import org.opensaml.saml.common.impl.AbstractSAMLObject;
 import org.opensaml.saml.saml2.common.Extensions;
-import org.opensaml.saml2.metadata.Company;
-import org.opensaml.saml2.metadata.ContactPerson;
-import org.opensaml.saml2.metadata.ContactPersonTypeEnumeration;
-import org.opensaml.saml2.metadata.EmailAddress;
-import org.opensaml.saml2.metadata.GivenName;
-import org.opensaml.saml2.metadata.SurName;
-import org.opensaml.saml2.metadata.TelephoneNumber;
+import org.opensaml.saml.saml2.metadata.Company;
+import org.opensaml.saml.saml2.metadata.ContactPerson;
+import org.opensaml.saml.saml2.metadata.ContactPersonTypeEnumeration;
+import org.opensaml.saml.saml2.metadata.EmailAddress;
+import org.opensaml.saml.saml2.metadata.GivenName;
+import org.opensaml.saml.saml2.metadata.SurName;
+import org.opensaml.saml.saml2.metadata.TelephoneNumber;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml2.metadata.ContactPerson}
+ * Concrete implementation of {@link org.opensaml.saml.saml2.metadata.ContactPerson}
  */
 public class ContactPersonImpl extends AbstractSAMLObject implements ContactPerson {
 

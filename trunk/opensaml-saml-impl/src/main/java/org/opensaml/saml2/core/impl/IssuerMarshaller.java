@@ -19,7 +19,7 @@ package org.opensaml.saml2.core.impl;
 
 
 /**
- * A thread-safe Marshaller for {@link org.opensaml.saml2.core.Issuer}.
+ * A thread-safe Marshaller for {@link org.opensaml.saml.saml2.core.Issuer}.
  */
 public class IssuerMarshaller extends AbstractNameIDTypeMarshaller {
 

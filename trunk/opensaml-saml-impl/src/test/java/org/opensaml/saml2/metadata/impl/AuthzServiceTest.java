@@ -21,11 +21,11 @@
 package org.opensaml.saml2.metadata.impl;
 
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
-import org.opensaml.saml2.metadata.AuthzService;
+import org.opensaml.saml.saml2.metadata.AuthzService;
 
 /**
  * Test case for creating, marshalling, and unmarshalling
- * {@link org.opensaml.saml2.metadata.impl.AuthzServiceImpl}.
+ * {@link org.opensaml.saml.saml2.metadata.impl.AuthzServiceImpl}.
  */
 public class AuthzServiceTest extends BaseSAMLObjectProviderTestCase {
     

@@ -25,10 +25,10 @@ import org.joda.time.DateTime;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.common.SAMLVersion;
 import org.opensaml.saml.common.impl.AbstractSignableSAMLObject;
-import org.opensaml.saml1.core.ResponseAbstractType;
+import org.opensaml.saml.saml1.core.ResponseAbstractType;
 
 /**
- * Abstract implementation of {@link org.opensaml.saml1.core.ResponseAbstractType} Object
+ * Abstract implementation of {@link org.opensaml.saml.saml1.core.ResponseAbstractType} Object
  */
 public abstract class ResponseAbstractTypeImpl extends AbstractSignableSAMLObject implements ResponseAbstractType {
 

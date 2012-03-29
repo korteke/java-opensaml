@@ -26,14 +26,14 @@ import org.joda.time.chrono.ISOChronology;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.impl.AbstractSAMLObjectUnmarshaller;
-import org.opensaml.saml2.core.Condition;
-import org.opensaml.saml2.core.Conditions;
+import org.opensaml.saml.saml2.core.Condition;
+import org.opensaml.saml.saml2.core.Conditions;
 import org.w3c.dom.Attr;
 
 import com.google.common.base.Strings;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml2.core.Conditions} objects.
+ * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.core.Conditions} objects.
  */
 public class ConditionsUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 

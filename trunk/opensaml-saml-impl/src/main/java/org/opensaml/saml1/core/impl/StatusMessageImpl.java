@@ -21,10 +21,10 @@ import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.common.impl.AbstractSAMLObject;
-import org.opensaml.saml1.core.StatusMessage;
+import org.opensaml.saml.saml1.core.StatusMessage;
 
 /**
- * Concrete implementation of org.opensaml.saml1.core StatusMessage object
+ * Concrete implementation of org.opensaml.saml.saml1.core StatusMessage object
  */
 public class StatusMessageImpl extends AbstractSAMLObject implements StatusMessage {
 

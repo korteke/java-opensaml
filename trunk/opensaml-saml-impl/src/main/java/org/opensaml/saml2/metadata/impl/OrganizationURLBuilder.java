@@ -23,10 +23,10 @@ package org.opensaml.saml2.metadata.impl;
 
 import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml2.metadata.OrganizationURL;
+import org.opensaml.saml.saml2.metadata.OrganizationURL;
 
 /**
- * Builder of {@link org.opensaml.saml2.metadata.impl.OrganizationURLImpl}
+ * Builder of {@link org.opensaml.saml.saml2.metadata.impl.OrganizationURLImpl}
  */
 public class OrganizationURLBuilder extends AbstractSAMLObjectBuilder<OrganizationURL> {
 

@@ -23,12 +23,12 @@ import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.common.impl.AbstractSAMLObject;
-import org.opensaml.saml1.core.NameIdentifier;
-import org.opensaml.saml1.core.Subject;
-import org.opensaml.saml1.core.SubjectConfirmation;
+import org.opensaml.saml.saml1.core.NameIdentifier;
+import org.opensaml.saml.saml1.core.Subject;
+import org.opensaml.saml.saml1.core.SubjectConfirmation;
 
 /**
- * Complete implementation of {@link org.opensaml.saml1.core.Subject}
+ * Complete implementation of {@link org.opensaml.saml.saml1.core.Subject}
  */
 public class SubjectImpl extends AbstractSAMLObject implements Subject {
 

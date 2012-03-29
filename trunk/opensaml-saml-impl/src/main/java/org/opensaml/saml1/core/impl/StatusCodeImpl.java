@@ -25,10 +25,10 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.common.impl.AbstractSAMLObject;
-import org.opensaml.saml1.core.StatusCode;
+import org.opensaml.saml.saml1.core.StatusCode;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml1.core.StatusCode} Object.
+ * Concrete implementation of {@link org.opensaml.saml.saml1.core.StatusCode} Object.
  */
 public class StatusCodeImpl extends AbstractSAMLObject implements StatusCode {
 

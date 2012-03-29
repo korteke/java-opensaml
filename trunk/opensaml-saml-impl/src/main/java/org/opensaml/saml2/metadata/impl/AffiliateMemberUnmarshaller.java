@@ -19,10 +19,10 @@ package org.opensaml.saml2.metadata.impl;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.common.impl.AbstractSAMLObjectUnmarshaller;
-import org.opensaml.saml2.metadata.AffiliateMember;
+import org.opensaml.saml.saml2.metadata.AffiliateMember;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml2.metadata.AffiliateMember}s.
+ * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.metadata.AffiliateMember}s.
  */
 public class AffiliateMemberUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 

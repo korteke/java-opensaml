@@ -24,12 +24,12 @@ package org.opensaml.saml2.metadata.impl;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.core.xml.schema.XSBooleanValue;
+import org.opensaml.saml.saml2.metadata.RequestedAttribute;
 import org.opensaml.saml2.core.impl.AttributeUnmarshaller;
-import org.opensaml.saml2.metadata.RequestedAttribute;
 import org.w3c.dom.Attr;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml2.metadata.RequestedAttribute} objects.
+ * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.metadata.RequestedAttribute} objects.
  */
 public class RequestedAttributeUnmarshaller extends AttributeUnmarshaller {
 

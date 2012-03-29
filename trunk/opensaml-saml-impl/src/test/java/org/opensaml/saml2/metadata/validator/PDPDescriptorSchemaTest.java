@@ -21,11 +21,11 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.validation.ValidationException;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml2.metadata.AuthzService;
-import org.opensaml.saml2.metadata.PDPDescriptor;
+import org.opensaml.saml.saml2.metadata.AuthzService;
+import org.opensaml.saml.saml2.metadata.PDPDescriptor;
 
 /**
- * Test case for {@link org.opensaml.saml2.metadata.PDPDescriptor}.
+ * Test case for {@link org.opensaml.saml.saml2.metadata.PDPDescriptor}.
  */
 public class PDPDescriptorSchemaTest extends RoleDescriptorSchemaTestBase {
 

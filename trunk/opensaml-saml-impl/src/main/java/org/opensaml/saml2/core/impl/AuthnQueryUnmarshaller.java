@@ -23,12 +23,12 @@ package org.opensaml.saml2.core.impl;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
-import org.opensaml.saml2.core.AuthnQuery;
-import org.opensaml.saml2.core.RequestedAuthnContext;
+import org.opensaml.saml.saml2.core.AuthnQuery;
+import org.opensaml.saml.saml2.core.RequestedAuthnContext;
 import org.w3c.dom.Attr;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml2.core.AuthnQuery} objects.
+ * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.core.AuthnQuery} objects.
  */
 public class AuthnQueryUnmarshaller extends SubjectQueryUnmarshaller {
 

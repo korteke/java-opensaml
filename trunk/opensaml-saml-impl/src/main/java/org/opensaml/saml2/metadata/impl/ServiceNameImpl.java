@@ -21,10 +21,10 @@
 
 package org.opensaml.saml2.metadata.impl;
 
-import org.opensaml.saml2.metadata.ServiceName;
+import org.opensaml.saml.saml2.metadata.ServiceName;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml2.metadata.ServiceName}.
+ * Concrete implementation of {@link org.opensaml.saml.saml2.metadata.ServiceName}.
  */
 public class ServiceNameImpl extends LocalizedNameImpl implements ServiceName {
 

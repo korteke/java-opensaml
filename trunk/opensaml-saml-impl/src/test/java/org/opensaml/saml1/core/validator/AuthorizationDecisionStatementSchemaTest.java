@@ -20,12 +20,12 @@ package org.opensaml.saml1.core.validator;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml1.core.Action;
-import org.opensaml.saml1.core.AuthorizationDecisionStatement;
-import org.opensaml.saml1.core.DecisionTypeEnumeration;
+import org.opensaml.saml.saml1.core.Action;
+import org.opensaml.saml.saml1.core.AuthorizationDecisionStatement;
+import org.opensaml.saml.saml1.core.DecisionTypeEnumeration;
 
 /**
- * Test case for {@link org.opensaml.saml1.core.validator.AuthorizationDecisionStatementSchemaValidator}.
+ * Test case for {@link org.opensaml.saml.saml1.core.validator.AuthorizationDecisionStatementSchemaValidator}.
  */
 public class AuthorizationDecisionStatementSchemaTest extends SubjectStatementSchemaTestBase {
 

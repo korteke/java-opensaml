@@ -19,10 +19,10 @@ package org.opensaml.saml2.metadata.impl;
 
 import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml2.metadata.EntitiesDescriptor;
+import org.opensaml.saml.saml2.metadata.EntitiesDescriptor;
 
 /**
- * A builder of {@link org.opensaml.saml2.metadata.impl.EntitiesDescriptorImpl} objects.
+ * A builder of {@link org.opensaml.saml.saml2.metadata.impl.EntitiesDescriptorImpl} objects.
  */
 public class EntitiesDescriptorBuilder extends AbstractSAMLObjectBuilder<EntitiesDescriptor> {
 

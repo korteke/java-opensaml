@@ -20,7 +20,7 @@ package org.opensaml.samlext.saml2mdquery.impl;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.core.xml.schema.XSBooleanValue;
-import org.opensaml.saml2.metadata.NameIDFormat;
+import org.opensaml.saml.saml2.metadata.NameIDFormat;
 import org.opensaml.saml2.metadata.impl.RoleDescriptorUnmarshaller;
 import org.opensaml.samlext.saml2mdquery.QueryDescriptorType;
 import org.w3c.dom.Attr;

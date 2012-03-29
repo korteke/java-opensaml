@@ -23,10 +23,10 @@ package org.opensaml.saml2.core.impl;
 
 import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml2.core.LogoutRequest;
+import org.opensaml.saml.saml2.core.LogoutRequest;
 
 /**
- * Builder of {@link org.opensaml.saml2.core.impl.LogoutRequestImpl}.
+ * Builder of {@link org.opensaml.saml.saml2.core.impl.LogoutRequestImpl}.
  */
 public class LogoutRequestBuilder extends AbstractSAMLObjectBuilder<LogoutRequest> {
 

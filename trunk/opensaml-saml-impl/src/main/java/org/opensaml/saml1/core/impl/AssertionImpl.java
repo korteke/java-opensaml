@@ -29,14 +29,14 @@ import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
 import org.opensaml.saml.common.SAMLVersion;
 import org.opensaml.saml.common.impl.AbstractSignableSAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml1.core.Advice;
-import org.opensaml.saml1.core.Assertion;
-import org.opensaml.saml1.core.AttributeStatement;
-import org.opensaml.saml1.core.AuthenticationStatement;
-import org.opensaml.saml1.core.AuthorizationDecisionStatement;
-import org.opensaml.saml1.core.Conditions;
-import org.opensaml.saml1.core.Statement;
-import org.opensaml.saml1.core.SubjectStatement;
+import org.opensaml.saml.saml1.core.Advice;
+import org.opensaml.saml.saml1.core.Assertion;
+import org.opensaml.saml.saml1.core.AttributeStatement;
+import org.opensaml.saml.saml1.core.AuthenticationStatement;
+import org.opensaml.saml.saml1.core.AuthorizationDecisionStatement;
+import org.opensaml.saml.saml1.core.Conditions;
+import org.opensaml.saml.saml1.core.Statement;
+import org.opensaml.saml.saml1.core.SubjectStatement;
 
 /**
  * This class implements the SAML 1 <code> Assertion </code> statement.

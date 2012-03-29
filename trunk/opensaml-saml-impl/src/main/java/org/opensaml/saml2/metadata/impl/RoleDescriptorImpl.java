@@ -31,12 +31,12 @@ import org.opensaml.core.xml.util.AttributeMap;
 import org.opensaml.core.xml.util.XMLObjectChildrenList;
 import org.opensaml.saml.common.impl.AbstractSignableSAMLObject;
 import org.opensaml.saml.saml2.common.Extensions;
-import org.opensaml.saml2.metadata.ContactPerson;
-import org.opensaml.saml2.metadata.KeyDescriptor;
-import org.opensaml.saml2.metadata.Organization;
-import org.opensaml.saml2.metadata.RoleDescriptor;
+import org.opensaml.saml.saml2.metadata.ContactPerson;
+import org.opensaml.saml.saml2.metadata.KeyDescriptor;
+import org.opensaml.saml.saml2.metadata.Organization;
+import org.opensaml.saml.saml2.metadata.RoleDescriptor;
 
-/** Concrete implementation of {@link org.opensaml.saml2.metadata.RoleDescriptor}. */
+/** Concrete implementation of {@link org.opensaml.saml.saml2.metadata.RoleDescriptor}. */
 public abstract class RoleDescriptorImpl extends AbstractSignableSAMLObject implements RoleDescriptor {
 
     /** ID attribute. */

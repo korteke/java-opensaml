@@ -22,13 +22,13 @@ package org.opensaml.saml1.core.validator;
 
 import org.opensaml.core.xml.validation.ValidationException;
 import org.opensaml.core.xml.validation.Validator;
-import org.opensaml.saml1.core.Assertion;
-import org.opensaml.saml1.core.Condition;
-import org.opensaml.saml1.core.Conditions;
-import org.opensaml.saml1.core.DoNotCacheCondition;
+import org.opensaml.saml.saml1.core.Assertion;
+import org.opensaml.saml.saml1.core.Condition;
+import org.opensaml.saml.saml1.core.Conditions;
+import org.opensaml.saml.saml1.core.DoNotCacheCondition;
 
 /**
- * Spec validator for {@link org.opensaml.saml1.core.Assertion}
+ * Spec validator for {@link org.opensaml.saml.saml1.core.Assertion}
  */
 public class AssertionSpecValidator implements Validator<Assertion> {
 

@@ -27,8 +27,8 @@ import org.opensaml.common.BaseSAMLObjectProviderTestCase;
 import org.opensaml.core.xml.schema.XSString;
 import org.opensaml.core.xml.schema.impl.XSStringBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml1.core.Attribute;
-import org.opensaml.saml1.core.AttributeValue;
+import org.opensaml.saml.saml1.core.Attribute;
+import org.opensaml.saml.saml1.core.AttributeValue;
 
 /**
  * 

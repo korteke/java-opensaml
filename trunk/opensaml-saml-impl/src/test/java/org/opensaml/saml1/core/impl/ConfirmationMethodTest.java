@@ -24,10 +24,10 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml1.core.ConfirmationMethod;
+import org.opensaml.saml.saml1.core.ConfirmationMethod;
 
 /**
- * test for {@link org.opensaml.saml1.core.impl.ConfirmationMethod}
+ * test for {@link org.opensaml.saml.saml1.core.impl.ConfirmationMethod}
  */
 public class ConfirmationMethodTest extends BaseSAMLObjectProviderTestCase {
 

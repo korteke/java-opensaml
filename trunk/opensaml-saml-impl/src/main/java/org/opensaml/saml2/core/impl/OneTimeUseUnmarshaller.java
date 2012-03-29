@@ -24,7 +24,7 @@ package org.opensaml.saml2.core.impl;
 import org.opensaml.saml.common.impl.AbstractSAMLObjectUnmarshaller;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml2.core.OneTimeUse} objects.
+ * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.core.OneTimeUse} objects.
  */
 public class OneTimeUseUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 

@@ -29,7 +29,7 @@ import org.opensaml.common.BaseSAMLObjectProviderTestCase;
 
 /**
  * Test case for creating, marshalling, and unmarshalling
- * {@link org.opensaml.saml2.metadata.OrganizationName}.
+ * {@link org.opensaml.saml.saml2.metadata.OrganizationName}.
  */
 public class KeywordsTest extends BaseSAMLObjectProviderTestCase {
     

@@ -17,10 +17,10 @@
 
 package org.opensaml.saml2.core.impl;
 
-import org.opensaml.saml2.core.NameID;
+import org.opensaml.saml.saml2.core.NameID;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml2.core.NameID}.
+ * Concrete implementation of {@link org.opensaml.saml.saml2.core.NameID}.
  */
 public class NameIDImpl extends AbstractNameIDType implements NameID {
 

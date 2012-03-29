@@ -23,10 +23,10 @@ package org.opensaml.saml2.metadata.validator;
 
 import org.opensaml.core.xml.validation.ValidationException;
 import org.opensaml.core.xml.validation.Validator;
-import org.opensaml.saml2.metadata.EntityDescriptor;
+import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 
 /**
- * Checks {@link org.opensaml.saml2.metadata.EntityDescriptor} for Spec compliance.
+ * Checks {@link org.opensaml.saml.saml2.metadata.EntityDescriptor} for Spec compliance.
  */
 public class EntityDescriptorSpecValidator implements Validator<EntityDescriptor> {
 

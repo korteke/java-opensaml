@@ -21,11 +21,11 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml2.metadata.AdditionalMetadataLocation;
+import org.opensaml.saml.saml2.metadata.AdditionalMetadataLocation;
 
 /**
  * Test case for creating, marshalling, and unmarshalling
- * {@link org.opensaml.saml2.metadata.impl.AdditionalMetadataLocationImpl}.
+ * {@link org.opensaml.saml.saml2.metadata.impl.AdditionalMetadataLocationImpl}.
  */
 public class AdditionalMetadataLocationTest extends BaseSAMLObjectProviderTestCase {
 

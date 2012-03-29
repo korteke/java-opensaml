@@ -23,12 +23,12 @@ package org.opensaml.saml2.metadata.validator;
 
 import org.opensaml.core.xml.validation.ValidationException;
 import org.opensaml.core.xml.validation.Validator;
-import org.opensaml.saml2.metadata.NameIDFormat;
+import org.opensaml.saml.saml2.metadata.NameIDFormat;
 
 import com.google.common.base.Strings;
 
 /**
- * Checks {@link org.opensaml.saml2.metadata.NameIDFormat} for Schema compliance.
+ * Checks {@link org.opensaml.saml.saml2.metadata.NameIDFormat} for Schema compliance.
  */
 public class NameIDFormatSchemaValidator implements Validator<NameIDFormat> {
 

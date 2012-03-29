@@ -20,7 +20,7 @@ package org.opensaml.saml1.core.impl;
 import org.opensaml.saml.common.impl.AbstractSAMLObjectMarshaller;
 
 /**
- * A thread safe Marshaller for {@link org.opensaml.saml1.core.Status} objects.
+ * A thread safe Marshaller for {@link org.opensaml.saml.saml1.core.Status} objects.
  */
 public class StatusMarshaller extends AbstractSAMLObjectMarshaller {
 

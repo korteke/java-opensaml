@@ -24,11 +24,11 @@ package org.opensaml.saml2.core.impl;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.impl.AbstractSAMLObjectUnmarshaller;
-import org.opensaml.saml2.core.IDPEntry;
+import org.opensaml.saml.saml2.core.IDPEntry;
 import org.w3c.dom.Attr;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml2.core.IDPEntry} objects.
+ * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.core.IDPEntry} objects.
  */
 public class IDPEntryUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 

@@ -23,14 +23,14 @@ import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.common.impl.AbstractSAMLObject;
-import org.opensaml.saml2.core.BaseID;
-import org.opensaml.saml2.core.EncryptedID;
-import org.opensaml.saml2.core.NameID;
-import org.opensaml.saml2.core.SubjectConfirmation;
-import org.opensaml.saml2.core.SubjectConfirmationData;
+import org.opensaml.saml.saml2.core.BaseID;
+import org.opensaml.saml.saml2.core.EncryptedID;
+import org.opensaml.saml.saml2.core.NameID;
+import org.opensaml.saml.saml2.core.SubjectConfirmation;
+import org.opensaml.saml.saml2.core.SubjectConfirmationData;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml2.core.SubjectConfirmation}.
+ * Concrete implementation of {@link org.opensaml.saml.saml2.core.SubjectConfirmation}.
  */
 public class SubjectConfirmationImpl extends AbstractSAMLObject implements SubjectConfirmation {
 

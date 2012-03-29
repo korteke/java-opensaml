@@ -21,11 +21,11 @@
 package org.opensaml.saml2.core.impl;
 
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
-import org.opensaml.saml2.core.GetComplete;
+import org.opensaml.saml.saml2.core.GetComplete;
 
 /**
  * Test case for creating, marshalling, and unmarshalling
- * {@link org.opensaml.saml2.core.impl.GetCompleteImpl}.
+ * {@link org.opensaml.saml.saml2.core.impl.GetCompleteImpl}.
  */
 public class GetCompleteTest extends BaseSAMLObjectProviderTestCase {
     

@@ -21,7 +21,7 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.saml2.core.RequestAbstractType;
+import org.opensaml.saml.saml2.core.RequestAbstractType;
 import org.opensaml.xacml.XACMLObject;
 import org.opensaml.xacml.ctx.RequestType;
 import org.opensaml.xacml.policy.IdReferenceType;

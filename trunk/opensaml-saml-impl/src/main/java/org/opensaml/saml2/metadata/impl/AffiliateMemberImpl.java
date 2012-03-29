@@ -21,10 +21,10 @@ import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.common.impl.AbstractSAMLObject;
-import org.opensaml.saml2.metadata.AffiliateMember;
+import org.opensaml.saml.saml2.metadata.AffiliateMember;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml2.metadata.AffiliateMember}.
+ * Concrete implementation of {@link org.opensaml.saml.saml2.metadata.AffiliateMember}.
  */
 public class AffiliateMemberImpl extends AbstractSAMLObject implements AffiliateMember {
 

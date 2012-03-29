@@ -22,7 +22,7 @@
 package org.opensaml.saml2.metadata.impl;
 
 /**
- * A thread safe Marshaller for {@link org.opensaml.saml2.metadata.AssertionIDRequestService}s.
+ * A thread safe Marshaller for {@link org.opensaml.saml.saml2.metadata.AssertionIDRequestService}s.
  */
 public class AssertionIDRequestServiceMarshaller extends EndpointMarshaller {
 

@@ -21,11 +21,11 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.common.BaseSAMLObjectValidatorTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml1.core.Subject;
-import org.opensaml.saml1.core.SubjectQuery;
+import org.opensaml.saml.saml1.core.Subject;
+import org.opensaml.saml.saml1.core.SubjectQuery;
 
 /**
- * Test class for {@link org.opensaml.saml1.core.validator.SubjectQuerySchemaValidator}.
+ * Test class for {@link org.opensaml.saml.saml1.core.validator.SubjectQuerySchemaValidator}.
  */
 public abstract class SubjectQuerySpecTestBase extends BaseSAMLObjectValidatorTestCase {
 

@@ -19,7 +19,7 @@ package org.opensaml.saml1.core.impl;
 
 import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml1.core.Assertion;
+import org.opensaml.saml.saml1.core.Assertion;
 
 /** 
  * Builder of {@link AssertionImpl} objects. 

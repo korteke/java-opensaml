@@ -26,11 +26,11 @@ import net.shibboleth.utilities.java.support.xml.ElementSupport;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml.common.impl.AbstractSAMLObjectMarshaller;
-import org.opensaml.saml2.core.Action;
+import org.opensaml.saml.saml2.core.Action;
 import org.w3c.dom.Element;
 
 /**
- * A thread-safe Marshaller for {@link org.opensaml.saml2.core.Action}.
+ * A thread-safe Marshaller for {@link org.opensaml.saml.saml2.core.Action}.
  */
 public class ActionMarshaller extends AbstractSAMLObjectMarshaller {
 

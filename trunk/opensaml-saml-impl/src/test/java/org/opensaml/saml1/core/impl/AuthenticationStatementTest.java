@@ -27,10 +27,10 @@ import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml1.core.AuthenticationStatement;
-import org.opensaml.saml1.core.AuthorityBinding;
-import org.opensaml.saml1.core.Subject;
-import org.opensaml.saml1.core.SubjectLocality;
+import org.opensaml.saml.saml1.core.AuthenticationStatement;
+import org.opensaml.saml.saml1.core.AuthorityBinding;
+import org.opensaml.saml.saml1.core.Subject;
+import org.opensaml.saml.saml1.core.SubjectLocality;
 
 /**
  * 

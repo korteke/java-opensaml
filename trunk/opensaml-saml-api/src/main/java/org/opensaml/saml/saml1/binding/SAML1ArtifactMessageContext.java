@@ -21,7 +21,7 @@ import java.util.Collection;
 
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.binding.SAMLMessageContext;
-import org.opensaml.saml1.core.Assertion;
+import org.opensaml.saml.saml1.core.Assertion;
 
 /**
  * Extensions to the base SAML message context that carries artifact related information.

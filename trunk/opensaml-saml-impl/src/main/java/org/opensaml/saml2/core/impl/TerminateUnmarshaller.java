@@ -24,7 +24,7 @@ package org.opensaml.saml2.core.impl;
 import org.opensaml.saml.common.impl.AbstractSAMLObjectUnmarshaller;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml2.core.Terminate} objects.
+ * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.core.Terminate} objects.
  */
 public class TerminateUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 

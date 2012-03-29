@@ -23,13 +23,13 @@ package org.opensaml.saml2.metadata.impl;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
-import org.opensaml.saml2.metadata.AssertionIDRequestService;
-import org.opensaml.saml2.metadata.AuthzService;
-import org.opensaml.saml2.metadata.NameIDFormat;
-import org.opensaml.saml2.metadata.PDPDescriptor;
+import org.opensaml.saml.saml2.metadata.AssertionIDRequestService;
+import org.opensaml.saml.saml2.metadata.AuthzService;
+import org.opensaml.saml.saml2.metadata.NameIDFormat;
+import org.opensaml.saml.saml2.metadata.PDPDescriptor;
 
 /**
- * A thread safe Unmarshaller for {@link org.opensaml.saml2.metadata.PDPDescriptor} objects.
+ * A thread safe Unmarshaller for {@link org.opensaml.saml.saml2.metadata.PDPDescriptor} objects.
  */
 public class PDPDescriptorUnmarshaller extends RoleDescriptorUnmarshaller {
 

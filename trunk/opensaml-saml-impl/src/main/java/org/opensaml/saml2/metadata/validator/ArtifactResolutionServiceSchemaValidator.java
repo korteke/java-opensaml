@@ -21,10 +21,10 @@
 
 package org.opensaml.saml2.metadata.validator;
 
-import org.opensaml.saml2.metadata.ArtifactResolutionService;
+import org.opensaml.saml.saml2.metadata.ArtifactResolutionService;
 
 /**
- * Checks {@link org.opensaml.saml2.metadata.ArtifactResolutionService} for Schema compliance.
+ * Checks {@link org.opensaml.saml.saml2.metadata.ArtifactResolutionService} for Schema compliance.
  */
 public class ArtifactResolutionServiceSchemaValidator extends IndexedEndpointSchemaValidator<ArtifactResolutionService> {
 

@@ -25,10 +25,10 @@ import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.common.impl.AbstractSAMLObject;
-import org.opensaml.saml2.metadata.SurName;
+import org.opensaml.saml.saml2.metadata.SurName;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml2.metadata.SurName}
+ * Concrete implementation of {@link org.opensaml.saml.saml2.metadata.SurName}
  */
 public class SurNameImpl extends AbstractSAMLObject implements SurName {
 

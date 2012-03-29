@@ -23,13 +23,13 @@ package org.opensaml.saml2.core.impl;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml2.core.Assertion;
-import org.opensaml.saml2.core.EncryptedAssertion;
-import org.opensaml.saml2.core.Response;
+import org.opensaml.saml.saml2.core.Assertion;
+import org.opensaml.saml.saml2.core.EncryptedAssertion;
+import org.opensaml.saml.saml2.core.Response;
 
 /**
  * Test case for creating, marshalling, and unmarshalling
- * {@link org.opensaml.saml2.core.impl.ResponseImpl}.
+ * {@link org.opensaml.saml.saml2.core.impl.ResponseImpl}.
  */
 public class ResponseTest extends StatusResponseTestBase {
     

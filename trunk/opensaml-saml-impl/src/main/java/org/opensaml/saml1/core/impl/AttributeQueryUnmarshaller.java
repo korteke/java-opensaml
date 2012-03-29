@@ -19,12 +19,12 @@ package org.opensaml.saml1.core.impl;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
-import org.opensaml.saml1.core.AttributeDesignator;
-import org.opensaml.saml1.core.AttributeQuery;
+import org.opensaml.saml.saml1.core.AttributeDesignator;
+import org.opensaml.saml.saml1.core.AttributeQuery;
 import org.w3c.dom.Attr;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml1.core.AttributeQuery} objects.
+ * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml1.core.AttributeQuery} objects.
  */
 public class AttributeQueryUnmarshaller extends SubjectQueryUnmarshaller {
 

@@ -21,10 +21,10 @@
 
 package org.opensaml.saml2.metadata.impl;
 
-import org.opensaml.saml2.metadata.AuthnQueryService;
+import org.opensaml.saml.saml2.metadata.AuthnQueryService;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml2.metadata.AuthnQueryService}
+ * Concrete implementation of {@link org.opensaml.saml.saml2.metadata.AuthnQueryService}
  */
 public class AuthnQueryServiceImpl extends EndpointImpl implements AuthnQueryService {
 

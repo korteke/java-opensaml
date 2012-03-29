@@ -23,12 +23,12 @@ import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.XMLObjectChildrenList;
-import org.opensaml.saml1.core.Assertion;
-import org.opensaml.saml1.core.Response;
-import org.opensaml.saml1.core.Status;
+import org.opensaml.saml.saml1.core.Assertion;
+import org.opensaml.saml.saml1.core.Response;
+import org.opensaml.saml.saml1.core.Status;
 
 /**
- * Implementation of the {@link org.opensaml.saml1.core.Response} Object
+ * Implementation of the {@link org.opensaml.saml.saml1.core.Response} Object
  */
 public class ResponseImpl extends ResponseAbstractTypeImpl implements Response {
 

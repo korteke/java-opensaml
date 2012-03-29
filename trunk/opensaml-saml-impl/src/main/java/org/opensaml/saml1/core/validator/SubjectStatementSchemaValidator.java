@@ -19,10 +19,10 @@ package org.opensaml.saml1.core.validator;
 
 import org.opensaml.core.xml.validation.ValidationException;
 import org.opensaml.core.xml.validation.Validator;
-import org.opensaml.saml1.core.SubjectStatement;
+import org.opensaml.saml.saml1.core.SubjectStatement;
 
 /**
- * Checks {@link org.opensaml.saml1.core.SubjectStatement} for Schema compliance.
+ * Checks {@link org.opensaml.saml.saml1.core.SubjectStatement} for Schema compliance.
  */
 public class SubjectStatementSchemaValidator<SubjectStatementType extends SubjectStatement> implements
         Validator<SubjectStatementType> {

@@ -26,11 +26,11 @@ import java.util.Collections;
 import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.saml2.core.Artifact;
-import org.opensaml.saml2.core.ArtifactResolve;
+import org.opensaml.saml.saml2.core.Artifact;
+import org.opensaml.saml.saml2.core.ArtifactResolve;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml2.core.ArtifactResolve}.
+ * Concrete implementation of {@link org.opensaml.saml.saml2.core.ArtifactResolve}.
  */
 public class ArtifactResolveImpl extends RequestAbstractTypeImpl implements ArtifactResolve {
 

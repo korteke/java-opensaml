@@ -23,10 +23,10 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.SAMLObject;
-import org.opensaml.saml2.metadata.Endpoint;
-import org.opensaml.saml2.metadata.EntityDescriptor;
-import org.opensaml.saml2.metadata.RoleDescriptor;
-import org.opensaml.saml2.metadata.provider.MetadataProvider;
+import org.opensaml.saml.saml2.metadata.Endpoint;
+import org.opensaml.saml.saml2.metadata.EntityDescriptor;
+import org.opensaml.saml.saml2.metadata.RoleDescriptor;
+import org.opensaml.saml.saml2.metadata.provider.MetadataProvider;
 
 /**
  * Endpoint selectors choose the endpoint that should be used to contact a peer.

@@ -24,12 +24,12 @@ import java.util.List;
 import org.joda.time.DateTime;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.XMLObjectChildrenList;
-import org.opensaml.saml1.core.AuthenticationStatement;
-import org.opensaml.saml1.core.AuthorityBinding;
-import org.opensaml.saml1.core.SubjectLocality;
+import org.opensaml.saml.saml1.core.AuthenticationStatement;
+import org.opensaml.saml.saml1.core.AuthorityBinding;
+import org.opensaml.saml.saml1.core.SubjectLocality;
 
 /**
- * A Concrete implementation of the {@link org.opensaml.saml1.core.AuthenticationStatement} Interface
+ * A Concrete implementation of the {@link org.opensaml.saml.saml1.core.AuthenticationStatement} Interface
  */
 public class AuthenticationStatementImpl extends SubjectStatementImpl implements AuthenticationStatement {
 

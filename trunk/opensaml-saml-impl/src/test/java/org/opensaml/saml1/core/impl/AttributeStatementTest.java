@@ -27,12 +27,12 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml1.core.Attribute;
-import org.opensaml.saml1.core.AttributeStatement;
-import org.opensaml.saml1.core.Subject;
+import org.opensaml.saml.saml1.core.Attribute;
+import org.opensaml.saml.saml1.core.AttributeStatement;
+import org.opensaml.saml.saml1.core.Subject;
 
 /**
- * Test for {@link org.opensaml.saml1.core.AttributeStatement}
+ * Test for {@link org.opensaml.saml.saml1.core.AttributeStatement}
  */
 public class AttributeStatementTest extends BaseSAMLObjectProviderTestCase {
 

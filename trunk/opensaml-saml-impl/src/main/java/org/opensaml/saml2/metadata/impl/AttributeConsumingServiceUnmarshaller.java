@@ -25,14 +25,14 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.saml.common.impl.AbstractSAMLObjectUnmarshaller;
-import org.opensaml.saml2.metadata.AttributeConsumingService;
-import org.opensaml.saml2.metadata.RequestedAttribute;
-import org.opensaml.saml2.metadata.ServiceDescription;
-import org.opensaml.saml2.metadata.ServiceName;
+import org.opensaml.saml.saml2.metadata.AttributeConsumingService;
+import org.opensaml.saml.saml2.metadata.RequestedAttribute;
+import org.opensaml.saml.saml2.metadata.ServiceDescription;
+import org.opensaml.saml.saml2.metadata.ServiceName;
 import org.w3c.dom.Attr;
 
 /**
- * A thread safe Unmarshaller for {@link org.opensaml.saml2.metadata.AttributeConsumingService} objects.
+ * A thread safe Unmarshaller for {@link org.opensaml.saml.saml2.metadata.AttributeConsumingService} objects.
  */
 public class AttributeConsumingServiceUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 

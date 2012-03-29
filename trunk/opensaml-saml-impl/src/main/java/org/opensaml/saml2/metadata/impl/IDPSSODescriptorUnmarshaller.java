@@ -24,16 +24,16 @@ package org.opensaml.saml2.metadata.impl;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.core.xml.schema.XSBooleanValue;
-import org.opensaml.saml2.core.Attribute;
-import org.opensaml.saml2.metadata.AssertionIDRequestService;
-import org.opensaml.saml2.metadata.AttributeProfile;
-import org.opensaml.saml2.metadata.IDPSSODescriptor;
-import org.opensaml.saml2.metadata.NameIDMappingService;
-import org.opensaml.saml2.metadata.SingleSignOnService;
+import org.opensaml.saml.saml2.core.Attribute;
+import org.opensaml.saml.saml2.metadata.AssertionIDRequestService;
+import org.opensaml.saml.saml2.metadata.AttributeProfile;
+import org.opensaml.saml.saml2.metadata.IDPSSODescriptor;
+import org.opensaml.saml.saml2.metadata.NameIDMappingService;
+import org.opensaml.saml.saml2.metadata.SingleSignOnService;
 import org.w3c.dom.Attr;
 
 /**
- * A thread safe Unmarshaller for {@link org.opensaml.saml2.metadata.SSODescriptor} objects.
+ * A thread safe Unmarshaller for {@link org.opensaml.saml.saml2.metadata.SSODescriptor} objects.
  */
 public class IDPSSODescriptorUnmarshaller extends SSODescriptorUnmarshaller {
 
