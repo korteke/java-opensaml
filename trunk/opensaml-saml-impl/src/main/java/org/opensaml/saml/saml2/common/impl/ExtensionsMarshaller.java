@@ -17,26 +17,34 @@
 
 package org.opensaml.saml.saml2.common.impl;
 
-import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
-import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml.saml2.common.Extensions;
+import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.io.MarshallingException;
+import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
+import org.w3c.dom.Element;
 
 /**
- * Builder of {@link org.opensaml.saml.saml2.common.impl.ExtensionsImpl} objects.
+ * A thread-safe Marshaller for {@link org.opensaml.saml.saml2.common.Extensions} objects.
  */
-public class ExtensionsBuilder extends AbstractSAMLObjectBuilder<Extensions> {
+public class ExtensionsMarshaller extends AbstractSAMLObjectMarshaller {
 
     /**
-     * {@inheritDoc}
+     * Constructor
      */
-    public Extensions buildObject() {
-        return buildObject(SAMLConstants.SAML20MD_NS, Extensions.LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
+    public ExtensionsMarshaller() {
+        super();
     }
 
     /**
      * {@inheritDoc}
      */
-    public Extensions buildObject(String namespaceURI, String localName, String namespacePrefix) {
-        return new ExtensionsImpl(namespaceURI, localName, namespacePrefix);
+    protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
+        // no attributes
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected void marshallElementContent(XMLObject xmlObject, Element domElement) throws MarshallingException {
+        // no content
     }
 }

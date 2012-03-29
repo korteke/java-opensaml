@@ -15,13 +15,11 @@
  * limitations under the License.
  */
 
-package org.opensaml.saml.common.impl;
+package org.opensaml.saml.common;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.AbstractXMLObjectMarshaller;
 import org.opensaml.core.xml.io.MarshallingException;
-import org.opensaml.saml.common.SAMLObjectHelper;
-import org.opensaml.saml.common.SignableSAMLObject;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 

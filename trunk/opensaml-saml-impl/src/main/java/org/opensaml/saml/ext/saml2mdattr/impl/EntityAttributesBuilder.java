@@ -17,7 +17,7 @@
 
 package org.opensaml.saml.ext.saml2mdattr.impl;
 
-import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
+import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.ext.saml2mdattr.EntityAttributes;
 
 /** Builder of {@link EntityAttributesImpl} objects. */

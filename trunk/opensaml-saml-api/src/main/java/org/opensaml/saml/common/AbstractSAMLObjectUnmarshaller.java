@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.saml.common.impl;
+package org.opensaml.saml.common;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.AbstractXMLObjectUnmarshaller;
@@ -24,7 +24,7 @@ import org.w3c.dom.Attr;
 
 /**
  * An thread safe abstract unmarshaller. This abstract marshaller only works with
- * {@link org.opensaml.saml.common.impl.AbstractSAMLObject}.
+ * {@link org.opensaml.saml.common.AbstractSAMLObject}.
  */
 public abstract class AbstractSAMLObjectUnmarshaller extends AbstractXMLObjectUnmarshaller {
 

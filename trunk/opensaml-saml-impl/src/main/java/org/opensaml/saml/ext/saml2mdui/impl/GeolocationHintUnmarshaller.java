@@ -18,7 +18,7 @@
 package org.opensaml.saml.ext.saml2mdui.impl;
 
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.saml.common.impl.AbstractSAMLObjectUnmarshaller;
+import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
 import org.opensaml.saml.ext.saml2mdui.GeolocationHint;
 
 /**

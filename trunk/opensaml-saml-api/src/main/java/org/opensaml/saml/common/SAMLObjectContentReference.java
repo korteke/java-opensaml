@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.saml.common.impl;
+package org.opensaml.saml.common;
 
 import java.util.List;
 import java.util.Set;
@@ -32,7 +32,6 @@ import org.apache.xml.security.transforms.params.InclusiveNamespaces;
 import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.core.xml.NamespaceManager;
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.saml.common.SignableSAMLObject;
 import org.opensaml.xmlsec.SecurityConfiguration;
 import org.opensaml.xmlsec.signature.support.ContentReference;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;

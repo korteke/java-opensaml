@@ -24,7 +24,7 @@ import net.shibboleth.utilities.java.support.xml.XmlConstants;
 import org.opensaml.core.xml.LangBearing;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
-import org.opensaml.saml.common.impl.AbstractSAMLObjectUnmarshaller;
+import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
 import org.opensaml.saml.ext.saml2mdui.Keywords;
 import org.w3c.dom.Attr;
 

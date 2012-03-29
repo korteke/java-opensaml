@@ -15,11 +15,10 @@
  * limitations under the License.
  */
 
-package org.opensaml.saml.common.impl;
+package org.opensaml.saml.common;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
-import org.opensaml.saml.common.SignableSAMLObject;
 import org.opensaml.xml.AbstractValidatingSignableXMLObject;
 import org.opensaml.xmlsec.signature.Signature;
 
