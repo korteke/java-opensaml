@@ -24,6 +24,13 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
 import org.opensaml.core.xml.mock.SimpleXMLObject;
+import org.opensaml.saml.ext.saml2mdui.Description;
+import org.opensaml.saml.ext.saml2mdui.DisplayName;
+import org.opensaml.saml.ext.saml2mdui.InformationURL;
+import org.opensaml.saml.ext.saml2mdui.Keywords;
+import org.opensaml.saml.ext.saml2mdui.Logo;
+import org.opensaml.saml.ext.saml2mdui.PrivacyStatementURL;
+import org.opensaml.saml.ext.saml2mdui.UIInfo;
 
 /**
  * Test case for creating, marshalling, and unmarshalling

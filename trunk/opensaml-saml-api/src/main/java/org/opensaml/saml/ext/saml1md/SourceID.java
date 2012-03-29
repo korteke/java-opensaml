@@ -15,29 +15,22 @@
  * limitations under the License.
  */
 
-package org.opensaml.samlext.saml2mdui;
+package org.opensaml.saml.ext.saml1md;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.saml.saml2.metadata.LocalizedURI;
+import org.opensaml.core.xml.schema.XSString;
+import org.opensaml.saml.common.SAMLObject;
+import org.opensaml.saml.common.xml.SAMLConstants;
 
 /**
- * PrivacyStatementURL.
- *
- * See IdP Discovery and Login UI Metadata Extension Profile.
- *
- * @author Rod Widdowson August 2010
- * 
- * Reflects the PrivacyStatementURL in the IdP Discovery and Login UI Metadata Extension Profile.
- * 
+ * SAML 1 Metadata extension SourceID
  */
-public interface PrivacyStatementURL extends LocalizedURI {
+public interface SourceID extends SAMLObject, XSString {
     
-    /** Element local name. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "PrivacyStatementURL";
+    /** Element name, no namespace */
+    public final static String DEFAULT_ELEMENT_LOCAL_NAME = "SourceID";
     
-    /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(UIInfo.MDUI_NS, 
-            DEFAULT_ELEMENT_LOCAL_NAME, UIInfo.MDUI_PREFIX);
-    
+    /** Default element name */
+    public final static QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML1MD_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1MD_PREFIX);
 }

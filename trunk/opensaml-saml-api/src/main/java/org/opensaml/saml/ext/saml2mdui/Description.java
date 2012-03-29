@@ -15,42 +15,30 @@
  * limitations under the License.
  */
 
-package org.opensaml.samlext.saml2mdui;
+package org.opensaml.saml.ext.saml2mdui;
 
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.SAMLObject;
+import org.opensaml.saml.saml2.metadata.LocalizedName;
 
 /**
- * IPHint.
+ * DisplayName.
  *
  * See IdP Discovery and Login UI Metadata Extension Profile.
  *
  * @author Rod Widdowson August 2010
  * 
- * The <IPHint> element specifies a set of [CIDR] blocks associated with, 
- *  or serviced by, the entity.  Both IPv4 and IPv6 CIDR blocks MUST be supported.
+ * Reflects the Description in the IdP Discovery and Login UI Metadata Extension Profile.
+ * 
  */
-public interface IPHint extends SAMLObject {
+public interface Description extends LocalizedName, SAMLObject {
 
     /** Element local name. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "IPHint";
+    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Description";
     
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(DiscoHints.MDUI_NS, 
-            DEFAULT_ELEMENT_LOCAL_NAME, DiscoHints.MDUI_PREFIX);
+    public static final QName DEFAULT_ELEMENT_NAME = new QName(UIInfo.MDUI_NS, 
+            DEFAULT_ELEMENT_LOCAL_NAME, UIInfo.MDUI_PREFIX);
     
-    /**
-     * Gets the Hint.
-     * 
-     * @return the Hint
-     */
-    public String getHint();
-    
-    /**
-     * Sets the hint.
-     * 
-     * @param newHint hint
-     */
-    public void setHint(String newHint);
 }

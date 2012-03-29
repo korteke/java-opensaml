@@ -6,9 +6,9 @@
 
         <!-- Description provider -->
         <ObjectProvider qualifiedName="mdattr:EntityAttributes">
-            <BuilderClass className="org.opensaml.samlext.saml2mdattr.impl.EntityAttributesBuilder"/>
-            <MarshallingClass className="org.opensaml.samlext.saml2mdattr.impl.EntityAttributesMarshaller"/>
-            <UnmarshallingClass className="org.opensaml.samlext.saml2mdattr.impl.EntityAttributesUnmarshaller"/>
+            <BuilderClass className="org.opensaml.saml.ext.saml2mdattr.impl.EntityAttributesBuilder"/>
+            <MarshallingClass className="org.opensaml.saml.ext.saml2mdattr.impl.EntityAttributesMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.saml.ext.saml2mdattr.impl.EntityAttributesUnmarshaller"/>
         </ObjectProvider>
 
     </ObjectProviders>

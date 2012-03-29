@@ -20,7 +20,7 @@ package org.opensaml.samlext.saml2mdui.impl;
 import org.opensaml.saml2.metadata.impl.LocalizedNameMarshaller;
 
 /**
- * A thread safe Marshaller for {@link org.opensaml.samlext.saml2mdui.DisplayName} objects.
+ * A thread safe Marshaller for {@link org.opensaml.saml.ext.saml2mdui.DisplayName} objects.
  */
 public class DisplayNameMarshaller extends LocalizedNameMarshaller {
 

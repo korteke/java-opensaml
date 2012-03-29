@@ -26,6 +26,8 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.saml.ext.saml2mdui.Keywords;
+import org.opensaml.saml.ext.saml2mdui.UIInfo;
 
 /**
  * Test case for creating, marshalling, and unmarshalling

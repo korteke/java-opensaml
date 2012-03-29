@@ -6,9 +6,9 @@
 
 		<!-- SourceID provider -->
 		<ObjectProvider qualifiedName="saml1md:SourceID">
-			<BuilderClass className="org.opensaml.samlext.saml1md.impl.SourceIDBuilder"/>
-			<MarshallingClass className="org.opensaml.samlext.saml1md.impl.SourceIDMarshaller"/>
-			<UnmarshallingClass className="org.opensaml.samlext.saml1md.impl.SourceIDUnmarshaller"/>
+			<BuilderClass className="org.opensaml.saml.ext.saml1md.impl.SourceIDBuilder"/>
+			<MarshallingClass className="org.opensaml.saml.ext.saml1md.impl.SourceIDMarshaller"/>
+			<UnmarshallingClass className="org.opensaml.saml.ext.saml1md.impl.SourceIDUnmarshaller"/>
 		</ObjectProvider>
 
 	</ObjectProviders>

@@ -20,7 +20,7 @@ package org.opensaml.samlext.saml2mdui.impl;
 import org.opensaml.saml2.metadata.impl.LocalizedNameUnmarshaller;
 
 /**
- * A thread-safe unmarshaller for {@link org.opensaml.samlext.saml2mdui.DisplayName} objects.
+ * A thread-safe unmarshaller for {@link org.opensaml.saml.ext.saml2mdui.DisplayName} objects.
  */
 public class DisplayNameUnmarshaller extends LocalizedNameUnmarshaller {
 

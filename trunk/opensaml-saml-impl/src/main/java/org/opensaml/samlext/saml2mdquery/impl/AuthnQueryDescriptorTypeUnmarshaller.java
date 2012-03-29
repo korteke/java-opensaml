@@ -18,7 +18,7 @@
 package org.opensaml.samlext.saml2mdquery.impl;
 
 /**
- * Unmarshaller of {@link org.opensaml.samlext.saml2mdquery.AuthnQueryDescriptorType} objects.
+ * Unmarshaller of {@link org.opensaml.saml.ext.saml2mdquery.AuthnQueryDescriptorType} objects.
  */
 public class AuthnQueryDescriptorTypeUnmarshaller extends QueryDescriptorTypeUnmarshaller {
 

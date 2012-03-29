@@ -25,12 +25,12 @@ import javax.xml.namespace.QName;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
 import org.opensaml.saml.common.impl.AbstractSAMLObject;
-import org.opensaml.samlext.saml2mdui.DiscoHints;
-import org.opensaml.samlext.saml2mdui.DomainHint;
-import org.opensaml.samlext.saml2mdui.GeolocationHint;
-import org.opensaml.samlext.saml2mdui.IPHint;
+import org.opensaml.saml.ext.saml2mdui.DiscoHints;
+import org.opensaml.saml.ext.saml2mdui.DomainHint;
+import org.opensaml.saml.ext.saml2mdui.GeolocationHint;
+import org.opensaml.saml.ext.saml2mdui.IPHint;
 
-/** Concrete implementation of {@link org.opensaml.samlext.saml2mdui.DiscoHints}. */
+/** Concrete implementation of {@link org.opensaml.saml.ext.saml2mdui.DiscoHints}. */
 public class DiscoHintsImpl extends AbstractSAMLObject implements DiscoHints {
     
     /** Children of the UIInfo. */

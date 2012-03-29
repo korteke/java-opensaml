@@ -19,7 +19,7 @@ package org.opensaml.samlext.saml1md.impl;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.common.impl.AbstractSAMLObjectUnmarshaller;
-import org.opensaml.samlext.saml1md.SourceID;
+import org.opensaml.saml.ext.saml1md.SourceID;
 
 /**
  * Unmarshaller for {@link SourceID} objects.

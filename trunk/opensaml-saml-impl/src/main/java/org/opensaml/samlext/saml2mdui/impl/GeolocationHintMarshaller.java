@@ -22,11 +22,11 @@ import net.shibboleth.utilities.java.support.xml.ElementSupport;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml.common.impl.AbstractSAMLObjectMarshaller;
-import org.opensaml.samlext.saml2mdui.GeolocationHint;
+import org.opensaml.saml.ext.saml2mdui.GeolocationHint;
 import org.w3c.dom.Element;
 
 /**
- * A thread safe Marshaller for {@link org.opensaml.samlext.saml2mdui.GeolocationHint} objects.
+ * A thread safe Marshaller for {@link org.opensaml.saml.ext.saml2mdui.GeolocationHint} objects.
  */
 public class GeolocationHintMarshaller extends AbstractSAMLObjectMarshaller {
 

@@ -21,7 +21,7 @@ import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.common.impl.AbstractSAMLObject;
-import org.opensaml.samlext.saml2mdquery.ActionNamespace;
+import org.opensaml.saml.ext.saml2mdquery.ActionNamespace;
 
 /**
  * Concrete implementation of {@link ActionNamespace}.

@@ -21,6 +21,7 @@
 
 package org.opensaml.samlext.idpdisco;
 
+import org.opensaml.saml.ext.idpdisco.DiscoveryResponse;
 import org.opensaml.saml2.metadata.impl.IndexedEndpointImpl;
 
 /**

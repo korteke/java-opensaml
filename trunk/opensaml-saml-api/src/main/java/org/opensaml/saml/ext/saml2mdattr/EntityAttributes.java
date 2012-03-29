@@ -15,32 +15,45 @@
  * limitations under the License.
  */
 
-package org.opensaml.samlext.saml2delrestrict;
+package org.opensaml.saml.ext.saml2mdattr;
 
 import java.util.List;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml.saml2.core.Condition;
+import org.opensaml.saml.saml2.core.Assertion;
+import org.opensaml.saml.saml2.core.Attribute;
 
-/**
- * SAML 2.0 Condition for Delegation Restriction - DelegationRestrictionType complex type.
- */
-public interface DelegationRestrictionType extends Condition {
+/** SAML V2.0 Metadata Extension for Entity Attributes EntityAttributes SAML object. */
+public interface EntityAttributes extends SAMLObject {
+
+    /** Element local name. */
+    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "EntityAttributes";
+
+    /** Default element name. */
+    public static final QName DEFAULT_ELEMENT_NAME =
+        new QName(SAMLConstants.SAML20MDATTR_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MDATTR_PREFIX);
     
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "DelegationRestrictionType";
+    public static final String TYPE_LOCAL_NAME = "EntityAttributesType";
 
     /** QName of the XSI type. */
     public static final QName TYPE_NAME =
-        new QName(SAMLConstants.SAML20DEL_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML20DEL_PREFIX);
+        new QName(SAMLConstants.SAML20MDATTR_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML20MDATTR_PREFIX);
     
     /**
-     * Get the list of Delegate child elements.
+     * Gets the attributes about the entity.
      * 
-     * @return list of Delegate children
+     * @return attributes about the entity
      */
-    List<Delegate> getDelegates();
-
+    public List<Attribute> getAttributes();
+    
+    /**
+     * Gets the assertions about the entity.
+     * 
+     * @return assertions about the entity
+     */
+    public List<Assertion> getAssertions();
 }

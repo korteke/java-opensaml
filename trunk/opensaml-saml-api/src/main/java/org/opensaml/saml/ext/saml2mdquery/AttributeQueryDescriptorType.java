@@ -15,23 +15,31 @@
  * limitations under the License.
  */
 
-package org.opensaml.samlext.samlpthrpty;
+package org.opensaml.saml.ext.saml2mdquery;
+
+import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml.saml2.core.NameIDType;
+import org.opensaml.saml.saml2.metadata.AttributeConsumingService;
 
 /**
- * SAML 2.0 Protocol Third-party extension RespondTo
+ * SAML 2.0 Metadata extension AttributeQueryDescriptorType.
  */
-public interface RespondTo extends NameIDType, SAMLObject {
+public interface AttributeQueryDescriptorType extends QueryDescriptorType {
+    
+    /** Local name of the XSI type. */
+    public static final String TYPE_LOCAL_NAME = "AttributeQueryDescriptorType";
 
-    /** Element local name */
-    public final static String DEFAULT_ELEMENT_LOCAL_NAME = "RespondTo";
+    /** QName of the XSI type. */
+    public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MDQUERY_NS, TYPE_LOCAL_NAME,
+            SAMLConstants.SAML20MDQUERY_PREFIX);
 
-    /** Default element name */
-    public final static QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20PTHRPTY_NS,
-            DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20PTHRPTY_PREFIX);
+    /**
+     * Gets the list of attribute consuming service endpoints support by this role.
+     * 
+     * @return the list of attribute consuming service endpoints support by this role
+     */
+    public List<AttributeConsumingService> getAttributeConsumingServices();
 }

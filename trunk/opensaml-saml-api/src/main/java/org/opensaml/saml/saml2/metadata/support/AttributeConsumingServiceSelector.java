@@ -19,10 +19,10 @@ package org.opensaml.saml.saml2.metadata.support;
 
 import java.util.List;
 
+import org.opensaml.saml.ext.saml2mdquery.AttributeQueryDescriptorType;
 import org.opensaml.saml.saml2.metadata.AttributeConsumingService;
 import org.opensaml.saml.saml2.metadata.RoleDescriptor;
 import org.opensaml.saml.saml2.metadata.SPSSODescriptor;
-import org.opensaml.samlext.saml2mdquery.AttributeQueryDescriptorType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

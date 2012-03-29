@@ -17,8 +17,8 @@
 
 package org.opensaml.samlext.samlpthrpty.impl;
 
+import org.opensaml.saml.ext.samlpthrpty.RespondTo;
 import org.opensaml.saml2.core.impl.AbstractNameIDType;
-import org.opensaml.samlext.samlpthrpty.RespondTo;
 
 /**
  * Concerte implementation of {@link RespondTo}.

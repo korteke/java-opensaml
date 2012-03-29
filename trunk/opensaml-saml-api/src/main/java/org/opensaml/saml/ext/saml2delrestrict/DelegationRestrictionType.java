@@ -15,30 +15,32 @@
  * limitations under the License.
  */
 
-package org.opensaml.samlext.saml2mdui;
+package org.opensaml.saml.ext.saml2delrestrict;
+
+import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.saml.common.SAMLObject;
-import org.opensaml.saml.saml2.metadata.LocalizedName;
+import org.opensaml.saml.common.xml.SAMLConstants;
+import org.opensaml.saml.saml2.core.Condition;
 
 /**
- * DisplayName.
- *
- * See IdP Discovery and Login UI Metadata Extension Profile.
- *
- * @author Rod Widdowson August 2010
- * 
- * Reflects the Description in the IdP Discovery and Login UI Metadata Extension Profile.
- * 
+ * SAML 2.0 Condition for Delegation Restriction - DelegationRestrictionType complex type.
  */
-public interface Description extends LocalizedName, SAMLObject {
+public interface DelegationRestrictionType extends Condition {
+    
+    /** Local name of the XSI type. */
+    public static final String TYPE_LOCAL_NAME = "DelegationRestrictionType";
 
-    /** Element local name. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Description";
+    /** QName of the XSI type. */
+    public static final QName TYPE_NAME =
+        new QName(SAMLConstants.SAML20DEL_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML20DEL_PREFIX);
     
-    /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(UIInfo.MDUI_NS, 
-            DEFAULT_ELEMENT_LOCAL_NAME, UIInfo.MDUI_PREFIX);
-    
+    /**
+     * Get the list of Delegate child elements.
+     * 
+     * @return list of Delegate children
+     */
+    List<Delegate> getDelegates();
+
 }

@@ -22,7 +22,7 @@
 package org.opensaml.samlext.saml2delrestrict.impl;
 
 import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
-import org.opensaml.samlext.saml2delrestrict.Delegate;
+import org.opensaml.saml.ext.saml2delrestrict.Delegate;
 
 /**
  * Builder of {@link Delegate}.

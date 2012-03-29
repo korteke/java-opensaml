@@ -6,9 +6,9 @@
 
 		<!-- RespondTo provider -->
 		<ObjectProvider qualifiedName="thrpty:RespondTo">
-			<BuilderClass className="org.opensaml.samlext.samlpthrpty.impl.RespondToBuilder"/>
-			<MarshallingClass className="org.opensaml.samlext.samlpthrpty.impl.RespondToMarshaller"/>
-			<UnmarshallingClass className="org.opensaml.samlext.samlpthrpty.impl.RespondToUnmarshaller"/>
+			<BuilderClass className="org.opensaml.saml.ext.samlpthrpty.impl.RespondToBuilder"/>
+			<MarshallingClass className="org.opensaml.saml.ext.samlpthrpty.impl.RespondToMarshaller"/>
+			<UnmarshallingClass className="org.opensaml.saml.ext.samlpthrpty.impl.RespondToUnmarshaller"/>
 		</ObjectProvider>
 	</ObjectProviders>
 </XMLTooling>

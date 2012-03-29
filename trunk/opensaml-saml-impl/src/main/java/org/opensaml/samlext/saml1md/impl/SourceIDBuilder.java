@@ -19,7 +19,7 @@ package org.opensaml.samlext.saml1md.impl;
 
 import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.samlext.saml1md.SourceID;
+import org.opensaml.saml.ext.saml1md.SourceID;
 
 /**
  * Builder of {@link SourceIDImpl} objects.

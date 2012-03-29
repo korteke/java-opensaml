@@ -21,7 +21,7 @@ import org.opensaml.saml2.metadata.impl.LocalizedURIMarshaller;
 
 
 /**
- * A thread safe Marshaller for {@link org.opensaml.samlext.saml2mdui.InformationURL} objects.
+ * A thread safe Marshaller for {@link org.opensaml.saml.ext.saml2mdui.InformationURL} objects.
  */
 public class InformationURLMarshaller extends LocalizedURIMarshaller {
 }

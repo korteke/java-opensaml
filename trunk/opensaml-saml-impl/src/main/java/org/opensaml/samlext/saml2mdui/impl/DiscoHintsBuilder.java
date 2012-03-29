@@ -18,10 +18,10 @@
 package org.opensaml.samlext.saml2mdui.impl;
 
 import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
-import org.opensaml.samlext.saml2mdui.DiscoHints;
+import org.opensaml.saml.ext.saml2mdui.DiscoHints;
 
 /**
- * Builder of {@link org.opensaml.samlext.saml2mdui.UIInfo}.
+ * Builder of {@link org.opensaml.saml.ext.saml2mdui.UIInfo}.
  */
 public class DiscoHintsBuilder extends AbstractSAMLObjectBuilder<DiscoHints> {
 

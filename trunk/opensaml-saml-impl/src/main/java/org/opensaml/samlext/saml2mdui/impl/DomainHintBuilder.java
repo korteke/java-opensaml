@@ -18,11 +18,11 @@
 package org.opensaml.samlext.saml2mdui.impl;
 
 import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
-import org.opensaml.samlext.saml2mdui.DiscoHints;
-import org.opensaml.samlext.saml2mdui.DomainHint;
+import org.opensaml.saml.ext.saml2mdui.DiscoHints;
+import org.opensaml.saml.ext.saml2mdui.DomainHint;
 
 /**
- * Builder of {@link org.opensaml.samlext.saml2mdui.DomainHint} objects.
+ * Builder of {@link org.opensaml.saml.ext.saml2mdui.DomainHint} objects.
  */
 public class DomainHintBuilder extends AbstractSAMLObjectBuilder<DomainHint> {
 

@@ -15,42 +15,21 @@
  * limitations under the License.
  */
 
-package org.opensaml.samlext.saml2mdui;
+package org.opensaml.saml.ext.saml2mdquery;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.saml.common.SAMLObject;
+import org.opensaml.saml.common.xml.SAMLConstants;
 
 /**
- * IPHint.
- *
- * See IdP Discovery and Login UI Metadata Extension Profile.
- *
- * @author Rod Widdowson August 2010
- * 
- * The <DomainHint> element specifies a set of DNS domains associated with, 
- * or serviced by, the entity. 
+ * SAML 2.0 Metadata extension AuthnQueryDescriptorType.
  */
-public interface DomainHint extends SAMLObject {
+public interface AuthnQueryDescriptorType extends QueryDescriptorType {
 
-    /** Element local name. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "DomainHint";
-    
-    /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(DiscoHints.MDUI_NS, 
-            DEFAULT_ELEMENT_LOCAL_NAME, DiscoHints.MDUI_PREFIX);
-    
-    /**
-     * Gets the Hint.
-     * 
-     * @return the Hint
-     */
-    public String getHint();
-    
-    /**
-     * Sets the hint.
-     * 
-     * @param newHint hint
-     */
-    public void setHint(String newHint);
+    /** Local name of the XSI type. */
+    public static final String TYPE_LOCAL_NAME = "AuthnQueryDescriptorType";
+
+    /** QName of the XSI type. */
+    public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MDQUERY_NS, TYPE_LOCAL_NAME,
+            SAMLConstants.SAML20MDQUERY_PREFIX);
 }

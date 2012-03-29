@@ -21,7 +21,7 @@ import org.opensaml.saml2.metadata.impl.LocalizedNameUnmarshaller;
 
 
 /**
- * A thread-safe unmarshaller for {@link org.opensaml.samlext.saml2mdui.Description} objects.
+ * A thread-safe unmarshaller for {@link org.opensaml.saml.ext.saml2mdui.Description} objects.
  */
 public class DescriptionUnmarshaller extends LocalizedNameUnmarshaller {
 

@@ -25,12 +25,12 @@ import org.opensaml.core.xml.LangBearing;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml.common.impl.AbstractSAMLObjectMarshaller;
-import org.opensaml.samlext.saml2mdui.Logo;
+import org.opensaml.saml.ext.saml2mdui.Logo;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
 
 /**
- * A thread safe Marshaller for {@link org.opensaml.samlext.saml2mdui.Logo} objects.
+ * A thread safe Marshaller for {@link org.opensaml.saml.ext.saml2mdui.Logo} objects.
  */
 public class LogoMarshaller extends AbstractSAMLObjectMarshaller {
 

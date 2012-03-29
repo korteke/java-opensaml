@@ -23,11 +23,11 @@ import org.opensaml.core.xml.LangBearing;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.impl.AbstractSAMLObjectUnmarshaller;
-import org.opensaml.samlext.saml2mdui.Logo;
+import org.opensaml.saml.ext.saml2mdui.Logo;
 import org.w3c.dom.Attr;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.samlext.saml2mdui.Logo} objects.
+ * A thread-safe Unmarshaller for {@link org.opensaml.saml.ext.saml2mdui.Logo} objects.
  */
 public class LogoUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 

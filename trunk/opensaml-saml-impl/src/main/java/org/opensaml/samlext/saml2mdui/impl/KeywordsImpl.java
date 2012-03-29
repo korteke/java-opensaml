@@ -22,12 +22,12 @@ import java.util.List;
 import org.opensaml.core.xml.LangBearing;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.common.impl.AbstractSAMLObject;
-import org.opensaml.samlext.saml2mdui.Keywords;
+import org.opensaml.saml.ext.saml2mdui.Keywords;
 
 import com.google.common.base.Strings;
 
 /**
- * Concrete Implementation of  {@link org.opensaml.samlext.saml2mdui.Keywords}.
+ * Concrete Implementation of  {@link org.opensaml.saml.ext.saml2mdui.Keywords}.
  */
 public class KeywordsImpl extends AbstractSAMLObject implements Keywords {
 

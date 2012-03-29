@@ -15,22 +15,42 @@
  * limitations under the License.
  */
 
-package org.opensaml.samlext.saml1md;
+package org.opensaml.saml.ext.saml2mdui;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.core.xml.schema.XSString;
 import org.opensaml.saml.common.SAMLObject;
-import org.opensaml.saml.common.xml.SAMLConstants;
 
 /**
- * SAML 1 Metadata extension SourceID
+ * IPHint.
+ *
+ * See IdP Discovery and Login UI Metadata Extension Profile.
+ *
+ * @author Rod Widdowson August 2010
+ * 
+ * The <DomainHint> element specifies a set of DNS domains associated with, 
+ * or serviced by, the entity. 
  */
-public interface SourceID extends SAMLObject, XSString {
+public interface DomainHint extends SAMLObject {
+
+    /** Element local name. */
+    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "DomainHint";
     
-    /** Element name, no namespace */
-    public final static String DEFAULT_ELEMENT_LOCAL_NAME = "SourceID";
+    /** Default element name. */
+    public static final QName DEFAULT_ELEMENT_NAME = new QName(DiscoHints.MDUI_NS, 
+            DEFAULT_ELEMENT_LOCAL_NAME, DiscoHints.MDUI_PREFIX);
     
-    /** Default element name */
-    public final static QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML1MD_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1MD_PREFIX);
+    /**
+     * Gets the Hint.
+     * 
+     * @return the Hint
+     */
+    public String getHint();
+    
+    /**
+     * Sets the hint.
+     * 
+     * @param newHint hint
+     */
+    public void setHint(String newHint);
 }

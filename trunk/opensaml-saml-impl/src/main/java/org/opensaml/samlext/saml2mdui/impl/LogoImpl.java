@@ -22,12 +22,12 @@ import java.util.List;
 import org.opensaml.core.xml.LangBearing;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.common.impl.AbstractSAMLObject;
-import org.opensaml.samlext.saml2mdui.Logo;
+import org.opensaml.saml.ext.saml2mdui.Logo;
 
 import com.google.common.base.Strings;
 
 /**
- * Concrete implementation of {@link org.opensaml.samlext.saml2mdui.Logo}.
+ * Concrete implementation of {@link org.opensaml.saml.ext.saml2mdui.Logo}.
  * @author rod widdowson
  */
 public class LogoImpl extends AbstractSAMLObject implements Logo {

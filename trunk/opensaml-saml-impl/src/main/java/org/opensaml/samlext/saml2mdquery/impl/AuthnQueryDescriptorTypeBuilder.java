@@ -19,7 +19,7 @@ package org.opensaml.samlext.saml2mdquery.impl;
 
 import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.samlext.saml2mdquery.AuthnQueryDescriptorType;
+import org.opensaml.saml.ext.saml2mdquery.AuthnQueryDescriptorType;
 
 /**
  * Builder of {@link AuthnQueryDescriptorTypeImpl} objects.

@@ -18,7 +18,7 @@
 package org.opensaml.samlext.saml2delrestrict.impl;
 
 import org.opensaml.saml.common.impl.AbstractSAMLObjectMarshaller;
-import org.opensaml.samlext.saml2delrestrict.DelegationRestrictionType;
+import org.opensaml.saml.ext.saml2delrestrict.DelegationRestrictionType;
 
 /**
  * Marshaller for instances of {@link DelegationRestrictionType}.
