@@ -18,8 +18,10 @@
 package org.opensaml.common.binding.artifact;
 
 import org.opensaml.common.BaseTestCase;
-import org.opensaml.common.SAMLObject;
-import org.opensaml.common.binding.artifact.SAMLArtifactMap.SAMLArtifactMapEntry;
+import org.opensaml.saml.common.SAMLObject;
+import org.opensaml.saml.common.binding.artifact.BasicSAMLArtifactMapEntry;
+import org.opensaml.saml.common.binding.artifact.BasicSAMLArtifactMapEntryFactory;
+import org.opensaml.saml.common.binding.artifact.SAMLArtifactMap.SAMLArtifactMapEntry;
 import org.opensaml.saml1.core.Assertion;
 import org.opensaml.saml1.core.Response;
 

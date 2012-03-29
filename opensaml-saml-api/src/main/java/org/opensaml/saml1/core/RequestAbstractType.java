@@ -23,8 +23,8 @@ package org.opensaml.saml1.core;
 import java.util.List;
 
 import org.joda.time.DateTime;
-import org.opensaml.common.SAMLVersion;
-import org.opensaml.common.SignableSAMLObject;
+import org.opensaml.saml.common.SAMLVersion;
+import org.opensaml.saml.common.SignableSAMLObject;
 
 /**
  * This interface describes the base class for types derived from

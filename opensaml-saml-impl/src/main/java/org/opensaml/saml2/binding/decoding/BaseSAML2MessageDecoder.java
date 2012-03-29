@@ -24,10 +24,10 @@ import javax.xml.namespace.QName;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.xml.ParserPool;
 
-import org.opensaml.common.SAMLObject;
-import org.opensaml.common.binding.SAMLMessageContext;
-import org.opensaml.common.binding.decoding.BaseSAMLMessageDecoder;
-import org.opensaml.common.xml.SAMLConstants;
+import org.opensaml.saml.common.SAMLObject;
+import org.opensaml.saml.common.binding.SAMLMessageContext;
+import org.opensaml.saml.common.binding.decoding.BaseSAMLMessageDecoder;
+import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml2.core.Assertion;
 import org.opensaml.saml2.core.Issuer;
 import org.opensaml.saml2.core.NameIDType;

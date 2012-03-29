@@ -30,11 +30,11 @@ import net.shibboleth.utilities.java.support.resolver.ResolverException;
 import net.shibboleth.utilities.java.support.xml.ParserPool;
 import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
-import org.opensaml.common.binding.SAMLMessageContext;
 import org.opensaml.common.binding.security.BaseSAMLSimpleSignatureSecurityPolicyRule;
 import org.opensaml.core.xml.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.Unmarshaller;
 import org.opensaml.core.xml.io.UnmarshallingException;
+import org.opensaml.saml.common.binding.SAMLMessageContext;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.ws.security.SecurityPolicyException;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;

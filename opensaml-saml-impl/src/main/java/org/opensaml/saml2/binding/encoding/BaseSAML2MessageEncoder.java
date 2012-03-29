@@ -23,13 +23,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.opensaml.common.SAMLObject;
-import org.opensaml.common.SignableSAMLObject;
-import org.opensaml.common.binding.SAMLMessageContext;
-import org.opensaml.common.binding.encoding.SAMLMessageEncoder;
 import org.opensaml.core.xml.XMLObjectBuilder;
 import org.opensaml.core.xml.io.Marshaller;
 import org.opensaml.core.xml.io.MarshallingException;
+import org.opensaml.saml.common.SAMLObject;
+import org.opensaml.saml.common.SignableSAMLObject;
+import org.opensaml.saml.common.binding.SAMLMessageContext;
+import org.opensaml.saml.common.binding.encoding.SAMLMessageEncoder;
 import org.opensaml.saml.config.Configuration;
 import org.opensaml.saml2.core.Response;
 import org.opensaml.saml2.core.StatusResponseType;

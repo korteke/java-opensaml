@@ -26,11 +26,11 @@ import net.shibboleth.utilities.java.support.net.UriSupport;
 
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
-import org.opensaml.common.binding.SAMLMessageContext;
-import org.opensaml.common.binding.artifact.AbstractSAMLArtifact;
-import org.opensaml.common.binding.artifact.SAMLArtifactMap;
-import org.opensaml.common.xml.SAMLConstants;
 import org.opensaml.core.xml.io.MarshallingException;
+import org.opensaml.saml.common.binding.SAMLMessageContext;
+import org.opensaml.saml.common.binding.artifact.AbstractSAMLArtifact;
+import org.opensaml.saml.common.binding.artifact.SAMLArtifactMap;
+import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.config.Configuration;
 import org.opensaml.saml2.binding.artifact.AbstractSAML2Artifact;
 import org.opensaml.saml2.binding.artifact.SAML2ArtifactBuilder;

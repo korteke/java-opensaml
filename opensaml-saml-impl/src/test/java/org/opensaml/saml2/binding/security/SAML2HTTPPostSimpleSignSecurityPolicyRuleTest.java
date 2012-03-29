@@ -29,11 +29,11 @@ import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.runtime.RuntimeConstants;
-import org.opensaml.common.SAMLObjectBuilder;
 import org.opensaml.common.SAMLTestHelper;
-import org.opensaml.common.binding.BasicSAMLMessageContext;
-import org.opensaml.common.binding.SAMLMessageContext;
 import org.opensaml.common.binding.security.BaseSAMLSecurityPolicyRuleTestCase;
+import org.opensaml.saml.common.SAMLObjectBuilder;
+import org.opensaml.saml.common.binding.BasicSAMLMessageContext;
+import org.opensaml.saml.common.binding.SAMLMessageContext;
 import org.opensaml.saml2.binding.encoding.HTTPPostSimpleSignEncoder;
 import org.opensaml.saml2.core.AuthnRequest;
 import org.opensaml.saml2.core.NameID;

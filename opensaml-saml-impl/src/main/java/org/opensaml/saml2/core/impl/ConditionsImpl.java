@@ -28,10 +28,10 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.joda.time.DateTime;
-import org.opensaml.common.impl.AbstractSAMLObject;
-import org.opensaml.common.xml.SAMLConstants;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
+import org.opensaml.saml.common.impl.AbstractSAMLObject;
+import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml2.core.AudienceRestriction;
 import org.opensaml.saml2.core.Condition;
 import org.opensaml.saml2.core.Conditions;

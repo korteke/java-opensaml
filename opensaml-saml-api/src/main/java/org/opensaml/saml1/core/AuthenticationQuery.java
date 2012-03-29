@@ -22,7 +22,7 @@ package org.opensaml.saml1.core;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.common.xml.SAMLConstants;
+import org.opensaml.saml.common.xml.SAMLConstants;
 
 /**
  * Description of the behaviour of the <code> AuthenticationQuery </code> element

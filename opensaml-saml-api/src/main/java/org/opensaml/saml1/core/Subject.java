@@ -22,8 +22,8 @@ package org.opensaml.saml1.core;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.common.SAMLObject;
-import org.opensaml.common.xml.SAMLConstants;
+import org.opensaml.saml.common.SAMLObject;
+import org.opensaml.saml.common.xml.SAMLConstants;
 
 /**
  * Interface to describe how the <code> Subject </code> elements work.

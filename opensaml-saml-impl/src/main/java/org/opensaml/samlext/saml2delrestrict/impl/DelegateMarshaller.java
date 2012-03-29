@@ -17,9 +17,9 @@
 
 package org.opensaml.samlext.saml2delrestrict.impl;
 
-import org.opensaml.common.impl.AbstractSAMLObjectMarshaller;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
+import org.opensaml.saml.common.impl.AbstractSAMLObjectMarshaller;
 import org.opensaml.saml.config.Configuration;
 import org.opensaml.samlext.saml2delrestrict.Delegate;
 import org.w3c.dom.Element;

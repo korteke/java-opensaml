@@ -17,9 +17,9 @@
 
 package org.opensaml.saml2.metadata;
 
-import org.opensaml.common.SAMLObject;
 import org.opensaml.core.xml.LangBearing;
 import org.opensaml.core.xml.schema.XSString;
+import org.opensaml.saml.common.SAMLObject;
 
 /**
  * LocalizedName.

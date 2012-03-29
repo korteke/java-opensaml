@@ -21,7 +21,7 @@
 
 package org.opensaml.samlext.saml2delrestrict.impl;
 
-import org.opensaml.common.impl.AbstractSAMLObjectBuilder;
+import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
 import org.opensaml.samlext.saml2delrestrict.DelegationRestrictionType;
 
 /**

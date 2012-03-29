@@ -20,7 +20,7 @@
  */
 package org.opensaml.saml2.core;
 
-import org.opensaml.common.SAMLObject;
+import org.opensaml.saml.common.SAMLObject;
 
 /**
  * Marker interface for element types that can constitute evidence within a @{org.opensaml.saml2.core.Evidence} object.

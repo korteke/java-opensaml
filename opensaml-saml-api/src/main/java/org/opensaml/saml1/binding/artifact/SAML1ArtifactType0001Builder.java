@@ -21,7 +21,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
-import org.opensaml.common.binding.SAMLMessageContext;
+import org.opensaml.saml.common.binding.SAMLMessageContext;
 import org.opensaml.saml1.core.Assertion;
 import org.opensaml.saml1.core.NameIdentifier;
 import org.opensaml.saml1.core.RequestAbstractType;

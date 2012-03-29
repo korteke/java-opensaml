@@ -19,9 +19,9 @@ package org.opensaml.saml2.binding.encoding;
 
 import org.joda.time.DateTime;
 import org.opensaml.common.BaseTestCase;
-import org.opensaml.common.SAMLObjectBuilder;
-import org.opensaml.common.SAMLVersion;
-import org.opensaml.common.binding.BasicSAMLMessageContext;
+import org.opensaml.saml.common.SAMLObjectBuilder;
+import org.opensaml.saml.common.SAMLVersion;
+import org.opensaml.saml.common.binding.BasicSAMLMessageContext;
 import org.opensaml.saml2.core.Response;
 import org.opensaml.saml2.core.Status;
 import org.opensaml.saml2.core.StatusCode;

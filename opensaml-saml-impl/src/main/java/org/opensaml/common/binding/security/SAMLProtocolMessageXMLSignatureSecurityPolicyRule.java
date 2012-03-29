@@ -17,11 +17,11 @@
 
 package org.opensaml.common.binding.security;
 
-import org.opensaml.common.SAMLObject;
-import org.opensaml.common.SignableSAMLObject;
-import org.opensaml.common.binding.SAMLMessageContext;
 import org.opensaml.core.xml.validation.ValidationException;
 import org.opensaml.core.xml.validation.Validator;
+import org.opensaml.saml.common.SAMLObject;
+import org.opensaml.saml.common.SignableSAMLObject;
+import org.opensaml.saml.common.binding.SAMLMessageContext;
 import org.opensaml.security.SAMLSignatureProfileValidator;
 import org.opensaml.security.trust.TrustEngine;
 import org.opensaml.ws.message.MessageContext;

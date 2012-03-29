@@ -17,7 +17,7 @@
 
 package org.opensaml.saml2.binding.artifact;
 
-import org.opensaml.common.binding.artifact.AbstractSAMLArtifact;
+import org.opensaml.saml.common.binding.artifact.AbstractSAMLArtifact;
 
 /**
  * SAML 2 Artifact base class. SAML 2 artifacts contains a 2 byte type code followed by a 2 byte endpoint index followed

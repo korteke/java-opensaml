@@ -21,9 +21,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.opensaml.common.impl.AbstractSAMLObject;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.XMLObjectChildrenList;
+import org.opensaml.saml.common.impl.AbstractSAMLObject;
 import org.opensaml.samlext.saml2delrestrict.Delegate;
 import org.opensaml.samlext.saml2delrestrict.DelegationRestrictionType;
 

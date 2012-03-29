@@ -20,9 +20,9 @@ package org.opensaml.saml1.binding.artifact;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
-import org.opensaml.common.binding.BasicEndpointSelector;
-import org.opensaml.common.binding.SAMLMessageContext;
-import org.opensaml.common.xml.SAMLConstants;
+import org.opensaml.saml.common.binding.BasicEndpointSelector;
+import org.opensaml.saml.common.binding.SAMLMessageContext;
+import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml1.core.Assertion;
 import org.opensaml.saml1.core.NameIdentifier;
 import org.opensaml.saml1.core.RequestAbstractType;

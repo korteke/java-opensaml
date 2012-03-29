@@ -17,9 +17,9 @@
 
 package org.opensaml.saml2.metadata.impl;
 
-import org.opensaml.common.SAMLObjectBuilder;
-import org.opensaml.common.impl.AbstractSAMLObjectBuilder;
-import org.opensaml.common.xml.SAMLConstants;
+import org.opensaml.saml.common.SAMLObjectBuilder;
+import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
+import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml2.metadata.EncryptionMethod;
 
 /**

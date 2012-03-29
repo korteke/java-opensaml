@@ -21,9 +21,9 @@
 
 package org.opensaml.saml1.core.validator;
 
-import org.opensaml.common.SAMLVersion;
 import org.opensaml.core.xml.validation.ValidationException;
 import org.opensaml.core.xml.validation.Validator;
+import org.opensaml.saml.common.SAMLVersion;
 import org.opensaml.saml1.core.ResponseAbstractType;
 
 import com.google.common.base.Strings;

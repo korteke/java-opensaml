@@ -17,8 +17,8 @@
 
 package org.opensaml.samlext.idpdisco;
 
-import org.opensaml.common.impl.AbstractSAMLObjectBuilder;
-import org.opensaml.common.xml.SAMLConstants;
+import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
+import org.opensaml.saml.common.xml.SAMLConstants;
 
 /** Builder of {@link org.opensaml.samlext.idpdisco.DiscoveryResponse}. */
 public class DiscoveryResponseBuilder extends AbstractSAMLObjectBuilder<DiscoveryResponse> {

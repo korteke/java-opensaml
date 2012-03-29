@@ -28,8 +28,9 @@ import org.custommonkey.xmlunit.Diff;
 import org.custommonkey.xmlunit.XMLAssert;
 import org.joda.time.DateTime;
 import org.opensaml.common.BaseTestCase;
-import org.opensaml.common.SAMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
+import org.opensaml.saml.common.SAMLObject;
+import org.opensaml.saml.common.binding.artifact.BasicSAMLArtifactMapEntry;
 import org.w3c.dom.Document;
 
 /**

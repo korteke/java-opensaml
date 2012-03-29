@@ -17,10 +17,10 @@
 
 package org.opensaml.saml2.binding.security;
 
-import org.opensaml.common.SAMLObject;
-import org.opensaml.common.SignableSAMLObject;
-import org.opensaml.common.binding.SAMLMessageContext;
-import org.opensaml.common.xml.SAMLConstants;
+import org.opensaml.saml.common.SAMLObject;
+import org.opensaml.saml.common.SignableSAMLObject;
+import org.opensaml.saml.common.binding.SAMLMessageContext;
+import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml2.core.AuthnRequest;
 import org.opensaml.saml2.metadata.SPSSODescriptor;
 import org.opensaml.saml2.metadata.provider.MetadataProvider;

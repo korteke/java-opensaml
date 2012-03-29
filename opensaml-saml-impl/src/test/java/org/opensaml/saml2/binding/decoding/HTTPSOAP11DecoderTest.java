@@ -24,10 +24,10 @@ import java.security.KeyPair;
 import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 
 import org.opensaml.common.BaseTestCase;
-import org.opensaml.common.binding.BasicSAMLMessageContext;
-import org.opensaml.common.binding.decoding.SAMLMessageDecoder;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
+import org.opensaml.saml.common.binding.BasicSAMLMessageContext;
+import org.opensaml.saml.common.binding.decoding.SAMLMessageDecoder;
 import org.opensaml.saml2.core.AttributeQuery;
 import org.opensaml.saml2.core.Response;
 import org.opensaml.security.SecurityException;

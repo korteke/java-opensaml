@@ -17,8 +17,8 @@
 
 package org.opensaml.saml2.binding.artifact;
 
-import org.opensaml.common.SAMLObject;
-import org.opensaml.common.binding.SAMLMessageContext;
+import org.opensaml.saml.common.SAMLObject;
+import org.opensaml.saml.common.binding.SAMLMessageContext;
 import org.opensaml.saml2.core.NameID;
 
 /**

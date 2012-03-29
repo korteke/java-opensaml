@@ -17,8 +17,8 @@
 
 package org.opensaml.saml2.common;
 
-import org.opensaml.common.SAMLObject;
 import org.opensaml.core.xml.ElementExtensibleXMLObject;
+import org.opensaml.saml.common.SAMLObject;
 
 /**
  * SAML 2.0 Extensions

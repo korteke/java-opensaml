@@ -21,7 +21,7 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.common.xml.SAMLConstants;
+import org.opensaml.saml.common.xml.SAMLConstants;
 
 /**
  * This interface describes how ab object representing a SAML1 <code> AudienceRestrictionCondition </code> element will

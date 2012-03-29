@@ -28,11 +28,11 @@ import java.util.List;
 import net.shibboleth.utilities.java.support.collection.Pair;
 import net.shibboleth.utilities.java.support.net.UriSupport;
 
-import org.opensaml.common.SAMLObjectBuilder;
 import org.opensaml.common.SAMLTestHelper;
-import org.opensaml.common.binding.BasicSAMLMessageContext;
-import org.opensaml.common.binding.SAMLMessageContext;
 import org.opensaml.common.binding.security.BaseSAMLSecurityPolicyRuleTestCase;
+import org.opensaml.saml.common.SAMLObjectBuilder;
+import org.opensaml.saml.common.binding.BasicSAMLMessageContext;
+import org.opensaml.saml.common.binding.SAMLMessageContext;
 import org.opensaml.saml2.binding.encoding.HTTPRedirectDeflateEncoder;
 import org.opensaml.saml2.core.AuthnRequest;
 import org.opensaml.saml2.core.NameID;

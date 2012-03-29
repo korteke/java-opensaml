@@ -17,7 +17,7 @@
 
 package org.opensaml.xacml.profile.saml.impl;
 
-import org.opensaml.common.impl.AbstractSAMLObjectBuilder;
+import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
 import org.opensaml.xacml.profile.saml.XACMLPolicyQueryType;
 
 /** Builder for {@link org.opensaml.xacml.profile.saml.XACMLPolicyQueryType} objects. */

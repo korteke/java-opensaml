@@ -19,8 +19,8 @@ package org.opensaml.saml1.binding;
 
 import java.util.Collection;
 
-import org.opensaml.common.SAMLObject;
-import org.opensaml.common.binding.SAMLMessageContext;
+import org.opensaml.saml.common.SAMLObject;
+import org.opensaml.saml.common.binding.SAMLMessageContext;
 import org.opensaml.saml1.core.Assertion;
 
 /**

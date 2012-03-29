@@ -20,7 +20,7 @@ package org.opensaml.common;
 import org.w3c.dom.Document;
 
 /**
- * Base test case for all OpenSAML tests that work with {@link org.opensaml.common.SAMLObject}s.
+ * Base test case for all OpenSAML tests that work with {@link org.opensaml.saml.common.SAMLObject}s.
  */
 public abstract class BaseSAMLObjectProviderTestCase extends BaseTestCase {
 

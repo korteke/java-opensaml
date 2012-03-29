@@ -19,7 +19,7 @@ package org.opensaml.saml1.core;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.common.xml.SAMLConstants;
+import org.opensaml.saml.common.xml.SAMLConstants;
 
 /**
  * This interface is for the SAML1 <code> SubjectQuery </code> extention point.

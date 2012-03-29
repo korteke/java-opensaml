@@ -26,10 +26,10 @@ import net.shibboleth.utilities.java.support.collection.LazyList;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 import org.joda.time.DateTime;
-import org.opensaml.common.impl.AbstractSignableSAMLObject;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.AttributeMap;
 import org.opensaml.core.xml.util.XMLObjectChildrenList;
+import org.opensaml.saml.common.impl.AbstractSignableSAMLObject;
 import org.opensaml.saml2.common.Extensions;
 import org.opensaml.saml2.metadata.ContactPerson;
 import org.opensaml.saml2.metadata.KeyDescriptor;

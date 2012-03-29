@@ -20,8 +20,8 @@ package org.opensaml.saml2.core;
 import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
 import org.opensaml.common.BaseComplexSAMLObjectTestCase;
-import org.opensaml.common.SAMLVersion;
 import org.opensaml.core.xml.schema.XSBooleanValue;
+import org.opensaml.saml.common.SAMLVersion;
 
 /**
  * Tests unmarshalling and marshalling for various request messages.
