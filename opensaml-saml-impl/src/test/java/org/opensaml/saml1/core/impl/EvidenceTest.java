@@ -28,6 +28,7 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml1.core.Assertion;
 import org.opensaml.saml.saml1.core.AssertionIDReference;
 import org.opensaml.saml.saml1.core.Evidence;
+import org.opensaml.saml.saml1.core.impl.EvidenceImpl;
 
 /**
  * Test for {@link EvidenceImpl}

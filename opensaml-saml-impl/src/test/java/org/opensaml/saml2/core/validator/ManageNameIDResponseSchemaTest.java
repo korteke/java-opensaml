@@ -24,6 +24,7 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.ManageNameIDResponse;
+import org.opensaml.saml.saml2.core.validator.ManageNameIDResponseSchemaValidator;
 
 /**
  *

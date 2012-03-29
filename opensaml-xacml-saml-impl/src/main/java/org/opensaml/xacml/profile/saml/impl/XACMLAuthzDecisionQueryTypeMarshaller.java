@@ -19,7 +19,7 @@ package org.opensaml.xacml.profile.saml.impl;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
-import org.opensaml.saml2.core.impl.RequestAbstractTypeMarshaller;
+import org.opensaml.saml.saml2.core.impl.RequestAbstractTypeMarshaller;
 import org.opensaml.xacml.profile.saml.XACMLAuthzDecisionQueryType;
 import org.w3c.dom.Element;
 

@@ -33,6 +33,7 @@ import org.opensaml.saml.saml1.core.AuthorizationDecisionStatement;
 import org.opensaml.saml.saml1.core.DecisionTypeEnumeration;
 import org.opensaml.saml.saml1.core.Evidence;
 import org.opensaml.saml.saml1.core.Subject;
+import org.opensaml.saml.saml1.core.impl.AuthorizationDecisionStatementUnmarshaller;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 

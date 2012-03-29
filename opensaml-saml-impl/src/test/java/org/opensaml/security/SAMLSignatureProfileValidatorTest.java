@@ -20,6 +20,7 @@ package org.opensaml.security;
 import org.opensaml.common.BaseTestCase;
 import org.opensaml.core.xml.validation.ValidationException;
 import org.opensaml.saml.common.SignableSAMLObject;
+import org.opensaml.saml.security.SAMLSignatureProfileValidator;
 import org.opensaml.xmlsec.signature.Signature;
 import org.opensaml.xmlsec.signature.impl.SignatureImpl;
 

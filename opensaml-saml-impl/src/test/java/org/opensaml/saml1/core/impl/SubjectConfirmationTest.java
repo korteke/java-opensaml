@@ -29,6 +29,7 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml1.core.ConfirmationMethod;
 import org.opensaml.saml.saml1.core.SubjectConfirmation;
 import org.opensaml.saml.saml1.core.SubjectConfirmationData;
+import org.opensaml.saml.saml1.core.impl.SubjectConfirmationImpl;
 import org.w3c.dom.Document;
 
 /**

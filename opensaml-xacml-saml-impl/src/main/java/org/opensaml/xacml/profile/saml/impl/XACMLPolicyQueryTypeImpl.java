@@ -23,7 +23,7 @@ import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
-import org.opensaml.saml2.core.impl.RequestAbstractTypeImpl;
+import org.opensaml.saml.saml2.core.impl.RequestAbstractTypeImpl;
 import org.opensaml.xacml.XACMLObject;
 import org.opensaml.xacml.ctx.RequestType;
 import org.opensaml.xacml.policy.IdReferenceType;

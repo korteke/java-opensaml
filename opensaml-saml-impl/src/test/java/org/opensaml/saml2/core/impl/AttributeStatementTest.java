@@ -21,6 +21,7 @@ import org.opensaml.common.BaseSAMLObjectProviderTestCase;
 import org.opensaml.saml.saml2.core.Attribute;
 import org.opensaml.saml.saml2.core.AttributeStatement;
 import org.opensaml.saml.saml2.core.EncryptedAttribute;
+import org.opensaml.saml.saml2.core.impl.org;
 
 /**
  * Test case for creating, marshalling, and unmarshalling {@link org.opensaml.saml.saml2.core.impl.AttributeStatementImpl}.

@@ -21,6 +21,7 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.metadata.SPSSODescriptor;
+import org.opensaml.saml.saml2.metadata.validator.SPSSODescriptorSpecValidator;
 
 /**
  * Test case for {@link org.opensaml.saml.saml2.metadata.SPSSODescriptor}.

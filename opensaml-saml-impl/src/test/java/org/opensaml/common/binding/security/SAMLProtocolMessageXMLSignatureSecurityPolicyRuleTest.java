@@ -24,6 +24,7 @@ import java.util.List;
 
 import org.opensaml.common.SAMLTestHelper;
 import org.opensaml.saml.common.binding.SAMLMessageContext;
+import org.opensaml.saml.common.binding.security.SAMLProtocolMessageXMLSignatureSecurityPolicyRule;
 import org.opensaml.saml.saml2.core.AuthnRequest;
 import org.opensaml.saml.saml2.core.NameID;
 import org.opensaml.saml.saml2.core.Response;

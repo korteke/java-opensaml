@@ -22,6 +22,7 @@ import org.opensaml.common.BaseTestCase;
 import org.opensaml.saml.common.SAMLObjectBuilder;
 import org.opensaml.saml.common.SAMLVersion;
 import org.opensaml.saml.common.binding.BasicSAMLMessageContext;
+import org.opensaml.saml.saml2.binding.encoding.HTTPSOAP11Encoder;
 import org.opensaml.saml.saml2.core.Response;
 import org.opensaml.saml.saml2.core.Status;
 import org.opensaml.saml.saml2.core.StatusCode;

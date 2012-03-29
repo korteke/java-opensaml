@@ -26,7 +26,9 @@ import org.opensaml.common.BaseTestCase;
 import org.opensaml.saml.common.SAMLObjectBuilder;
 import org.opensaml.saml.config.Configuration;
 import org.opensaml.saml.saml2.metadata.EntitiesDescriptor;
+import org.opensaml.saml.saml2.metadata.provider.FilesystemMetadataProvider;
 import org.opensaml.saml.saml2.metadata.provider.MetadataProviderException;
+import org.opensaml.saml.saml2.metadata.provider.RequiredValidUntilFilter;
 
 /** Unit test for {@link RequiredValidUntilFilter}. */
 public class RequiredValidUntilTest extends BaseTestCase {

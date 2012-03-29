@@ -23,6 +23,8 @@ import org.opensaml.common.BaseSAMLObjectValidatorTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml1.core.AttributeQuery;
 import org.opensaml.saml.saml1.core.AuthorityBinding;
+import org.opensaml.saml.saml1.core.validator.AuthorityBindingSchemaValidator;
+import org.opensaml.saml.saml1.core.validator.org;
 
 /**
  * Test case for {@link org.opensaml.saml.saml1.core.validator.AuthorityBindingSchemaValidator}.

@@ -23,6 +23,7 @@ import org.opensaml.core.xml.validation.ValidationException;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.metadata.AttributeAuthorityDescriptor;
 import org.opensaml.saml.saml2.metadata.AttributeService;
+import org.opensaml.saml.saml2.metadata.validator.AttributeAuthorityDescriptorSchemaValidator;
 
 /**
  * Test case for {@link org.opensaml.saml.saml2.metadata.AttributeAuthorityDescriptor}.

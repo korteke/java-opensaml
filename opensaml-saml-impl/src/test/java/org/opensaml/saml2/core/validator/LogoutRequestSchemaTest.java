@@ -26,6 +26,7 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.EncryptedID;
 import org.opensaml.saml.saml2.core.LogoutRequest;
 import org.opensaml.saml.saml2.core.NameID;
+import org.opensaml.saml.saml2.core.validator.LogoutRequestSchemaValidator;
 import org.opensaml.saml2.core.MockBaseID;
 
 /**

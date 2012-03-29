@@ -19,6 +19,7 @@ package org.opensaml.saml2.core.impl;
 
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
 import org.opensaml.saml.saml2.core.StatusMessage;
+import org.opensaml.saml.saml2.core.impl.org;
 
 /**
  * Test case for creating, marshalling, and unmarshalling

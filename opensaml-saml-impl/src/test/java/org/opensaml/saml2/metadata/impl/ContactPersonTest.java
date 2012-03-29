@@ -29,6 +29,7 @@ import org.opensaml.saml.saml2.metadata.EmailAddress;
 import org.opensaml.saml.saml2.metadata.GivenName;
 import org.opensaml.saml.saml2.metadata.SurName;
 import org.opensaml.saml.saml2.metadata.TelephoneNumber;
+import org.opensaml.saml.saml2.metadata.impl.org;
 
 /**
  * Test case for creating, marshalling, and unmarshalling

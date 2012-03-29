@@ -6,9 +6,9 @@
 
 		<!-- DiscoveryResponse provider -->
 		<ObjectProvider qualifiedName="idpdisco:DiscoveryResponse">
-			<BuilderClass className=" org.opensaml.saml.ext.idpdisco.DiscoveryResponseBuilder"/>
-			<MarshallingClass className="org.opensaml.saml.ext.idpdisco.DiscoveryResponseMarshaller"/>
-			<UnmarshallingClass className="org.opensaml.saml.ext.idpdisco.DiscoveryResponseUnmarshaller"/>
+			<BuilderClass className=" org.opensaml.saml.ext.idpdisco.impl.DiscoveryResponseBuilder"/>
+			<MarshallingClass className="org.opensaml.saml.ext.idpdisco.impl.DiscoveryResponseMarshaller"/>
+			<UnmarshallingClass className="org.opensaml.saml.ext.idpdisco.impl.DiscoveryResponseUnmarshaller"/>
 		</ObjectProvider>
 		
 	</ObjectProviders>

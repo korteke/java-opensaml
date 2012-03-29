@@ -24,6 +24,7 @@ import org.opensaml.core.xml.validation.ValidationException;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.metadata.EntitiesDescriptor;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
+import org.opensaml.saml.saml2.metadata.validator.EntitiesDescriptorSchemaValidator;
 
 /**
  * Test case for {@link org.opensaml.saml.saml2.metadata.EntitiesDescriptor}.

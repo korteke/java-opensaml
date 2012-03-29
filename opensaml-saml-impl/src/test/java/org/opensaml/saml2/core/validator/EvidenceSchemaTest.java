@@ -26,6 +26,8 @@ import org.opensaml.saml.saml2.core.Assertion;
 import org.opensaml.saml.saml2.core.AssertionIDRef;
 import org.opensaml.saml.saml2.core.AssertionURIRef;
 import org.opensaml.saml.saml2.core.Evidence;
+import org.opensaml.saml.saml2.core.validator.EvidenceSchemaValidator;
+import org.opensaml.saml.saml2.core.validator.org;
 
 /**
  * Test case for {@link org.opensaml.saml.saml2.core.validator.EvidenceSchemaValidator}.

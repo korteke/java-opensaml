@@ -27,6 +27,7 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.IDPList;
 import org.opensaml.saml.saml2.core.RequesterID;
 import org.opensaml.saml.saml2.core.Scoping;
+import org.opensaml.saml.saml2.core.impl.org;
 
 /**
  *Test case for creating, marshalling, and unmarshalling

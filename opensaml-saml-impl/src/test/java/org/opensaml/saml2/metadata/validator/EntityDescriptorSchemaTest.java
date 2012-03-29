@@ -25,6 +25,7 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.metadata.AffiliationDescriptor;
 import org.opensaml.saml.saml2.metadata.AttributeAuthorityDescriptor;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
+import org.opensaml.saml.saml2.metadata.validator.EntityDescriptorSchemaValidator;
 
 /**
  * Test case for {@link org.opensaml.saml.saml2.metadata.EntityDescriptor}.

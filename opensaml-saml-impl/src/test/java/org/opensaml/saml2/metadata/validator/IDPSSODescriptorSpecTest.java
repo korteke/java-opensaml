@@ -24,6 +24,7 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.metadata.IDPSSODescriptor;
 import org.opensaml.saml.saml2.metadata.NameIDMappingService;
 import org.opensaml.saml.saml2.metadata.SingleSignOnService;
+import org.opensaml.saml.saml2.metadata.validator.IDPSSODescriptorSpecValidator;
 
 /**
  * Test case for {@link org.opensaml.saml.saml2.metadata.IDPSSODescriptor}.

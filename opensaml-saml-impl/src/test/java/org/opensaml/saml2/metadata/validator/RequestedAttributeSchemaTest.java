@@ -21,6 +21,7 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.metadata.RequestedAttribute;
+import org.opensaml.saml.saml2.metadata.validator.RequestedAttributeSchemaValidator;
 import org.opensaml.saml2.core.validator.AttributeSchemaTest;
 
 /**

@@ -23,6 +23,7 @@ import org.opensaml.saml.saml2.metadata.AttributeConsumingService;
 import org.opensaml.saml.saml2.metadata.RequestedAttribute;
 import org.opensaml.saml.saml2.metadata.ServiceDescription;
 import org.opensaml.saml.saml2.metadata.ServiceName;
+import org.opensaml.saml.saml2.metadata.impl.org;
 
 /**
  * Test case for creating, marshalling, and unmarshalling

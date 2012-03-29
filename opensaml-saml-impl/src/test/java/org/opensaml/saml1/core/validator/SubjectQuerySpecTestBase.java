@@ -23,6 +23,7 @@ import org.opensaml.common.BaseSAMLObjectValidatorTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml1.core.Subject;
 import org.opensaml.saml.saml1.core.SubjectQuery;
+import org.opensaml.saml.saml1.core.validator.org;
 
 /**
  * Test class for {@link org.opensaml.saml.saml1.core.validator.SubjectQuerySchemaValidator}.

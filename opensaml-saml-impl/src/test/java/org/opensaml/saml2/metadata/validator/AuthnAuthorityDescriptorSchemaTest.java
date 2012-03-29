@@ -23,6 +23,7 @@ import org.opensaml.core.xml.validation.ValidationException;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.metadata.AuthnAuthorityDescriptor;
 import org.opensaml.saml.saml2.metadata.AuthnQueryService;
+import org.opensaml.saml.saml2.metadata.validator.AuthnAuthorityDescriptorSchemaValidator;
 
 /**
  * Test case for {@link org.opensaml.saml.saml2.metadata.AuthnAuthorityDescriptor}.

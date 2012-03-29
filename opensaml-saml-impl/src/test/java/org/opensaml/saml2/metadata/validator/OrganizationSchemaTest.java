@@ -26,6 +26,7 @@ import org.opensaml.saml.saml2.metadata.Organization;
 import org.opensaml.saml.saml2.metadata.OrganizationDisplayName;
 import org.opensaml.saml.saml2.metadata.OrganizationName;
 import org.opensaml.saml.saml2.metadata.OrganizationURL;
+import org.opensaml.saml.saml2.metadata.validator.OrganizationSchemaValidator;
 
 /**
  * Test case for {@link org.opensaml.saml.saml2.metadata.Organization}.

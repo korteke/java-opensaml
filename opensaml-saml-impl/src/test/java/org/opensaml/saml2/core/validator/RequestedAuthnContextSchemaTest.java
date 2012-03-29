@@ -27,6 +27,7 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.AuthnContextClassRef;
 import org.opensaml.saml.saml2.core.AuthnContextDeclRef;
 import org.opensaml.saml.saml2.core.RequestedAuthnContext;
+import org.opensaml.saml.saml2.core.validator.RequestedAuthnContextSchemaValidator;
 
 /**
  *
