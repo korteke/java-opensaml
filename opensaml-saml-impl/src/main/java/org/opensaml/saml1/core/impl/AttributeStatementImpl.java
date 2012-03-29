@@ -23,11 +23,11 @@ import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.XMLObjectChildrenList;
-import org.opensaml.saml1.core.Attribute;
-import org.opensaml.saml1.core.AttributeStatement;
+import org.opensaml.saml.saml1.core.Attribute;
+import org.opensaml.saml.saml1.core.AttributeStatement;
 
 /**
- * A Concrete implementation of the {@link org.opensaml.saml1.core.AttributeStatement} Interface
+ * A Concrete implementation of the {@link org.opensaml.saml.saml1.core.AttributeStatement} Interface
  */
 public class AttributeStatementImpl extends SubjectStatementImpl implements AttributeStatement {
 

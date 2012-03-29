@@ -24,11 +24,11 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml2.metadata.ServiceName;
+import org.opensaml.saml.saml2.metadata.ServiceName;
 
 /**
  * Test case for creating, marshalling, and unmarshalling
- * {@link org.opensaml.saml2.metadata.ServiceDescription}.
+ * {@link org.opensaml.saml.saml2.metadata.ServiceDescription}.
  */
 public class ServiceNameTest extends BaseSAMLObjectProviderTestCase {
     

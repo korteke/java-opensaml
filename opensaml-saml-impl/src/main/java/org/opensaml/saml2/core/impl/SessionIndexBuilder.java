@@ -23,10 +23,10 @@ package org.opensaml.saml2.core.impl;
 
 import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml2.core.SessionIndex;
+import org.opensaml.saml.saml2.core.SessionIndex;
 
 /**
- * A Builder for {@link org.opensaml.saml2.core.impl.SessionIndexImpl} objects.
+ * A Builder for {@link org.opensaml.saml.saml2.core.impl.SessionIndexImpl} objects.
  */
 public class SessionIndexBuilder extends AbstractSAMLObjectBuilder<SessionIndex> {
 

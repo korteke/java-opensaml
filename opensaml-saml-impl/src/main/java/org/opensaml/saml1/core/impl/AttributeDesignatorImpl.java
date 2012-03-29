@@ -25,10 +25,10 @@ import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.common.impl.AbstractSAMLObject;
-import org.opensaml.saml1.core.AttributeDesignator;
+import org.opensaml.saml.saml1.core.AttributeDesignator;
 
 /**
- * Concrete Implementation of the {@link org.opensaml.saml1.core.AttributeDesignator} interface.
+ * Concrete Implementation of the {@link org.opensaml.saml.saml1.core.AttributeDesignator} interface.
  */
 public class AttributeDesignatorImpl extends AbstractSAMLObject implements AttributeDesignator {
 

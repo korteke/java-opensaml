@@ -27,16 +27,16 @@ import org.joda.time.chrono.ISOChronology;
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.common.Extensions;
-import org.opensaml.saml2.metadata.AssertionIDRequestService;
-import org.opensaml.saml2.metadata.AuthnAuthorityDescriptor;
-import org.opensaml.saml2.metadata.AuthnQueryService;
-import org.opensaml.saml2.metadata.ContactPerson;
-import org.opensaml.saml2.metadata.NameIDFormat;
-import org.opensaml.saml2.metadata.Organization;
+import org.opensaml.saml.saml2.metadata.AssertionIDRequestService;
+import org.opensaml.saml.saml2.metadata.AuthnAuthorityDescriptor;
+import org.opensaml.saml.saml2.metadata.AuthnQueryService;
+import org.opensaml.saml.saml2.metadata.ContactPerson;
+import org.opensaml.saml.saml2.metadata.NameIDFormat;
+import org.opensaml.saml.saml2.metadata.Organization;
 
 /**
  * Test case for creating, marshalling, and unmarshalling
- * {@link org.opensaml.saml2.metadata.impl.AuthnAuthorityDescriptorImpl}.
+ * {@link org.opensaml.saml.saml2.metadata.impl.AuthnAuthorityDescriptorImpl}.
  */
 public class AuthnAuthorityDescriptorTest extends BaseSAMLObjectProviderTestCase {
 

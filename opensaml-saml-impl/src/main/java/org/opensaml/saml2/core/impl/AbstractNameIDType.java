@@ -21,10 +21,10 @@ import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.common.impl.AbstractSAMLObject;
-import org.opensaml.saml2.core.NameIDType;
+import org.opensaml.saml.saml2.core.NameIDType;
 
 /**
- * Abstract implementation of {@link org.opensaml.saml2.core.NameIDType}.
+ * Abstract implementation of {@link org.opensaml.saml.saml2.core.NameIDType}.
  */
 public class AbstractNameIDType extends AbstractSAMLObject implements NameIDType {
 

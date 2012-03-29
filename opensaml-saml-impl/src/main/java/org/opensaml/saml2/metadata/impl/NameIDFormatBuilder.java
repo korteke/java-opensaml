@@ -23,10 +23,10 @@ package org.opensaml.saml2.metadata.impl;
 
 import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml2.metadata.NameIDFormat;
+import org.opensaml.saml.saml2.metadata.NameIDFormat;
 
 /**
- * Builder of {@link org.opensaml.saml2.metadata.impl.NameIDFormatImpl}
+ * Builder of {@link org.opensaml.saml.saml2.metadata.impl.NameIDFormatImpl}
  */
 public class NameIDFormatBuilder extends AbstractSAMLObjectBuilder<NameIDFormat> {
 

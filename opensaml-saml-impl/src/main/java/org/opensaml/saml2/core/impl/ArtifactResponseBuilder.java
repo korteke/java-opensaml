@@ -23,10 +23,10 @@ package org.opensaml.saml2.core.impl;
 
 import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml2.core.ArtifactResponse;
+import org.opensaml.saml.saml2.core.ArtifactResponse;
 
 /**
- * A Builder for {@link org.opensaml.saml2.core.impl.ArtifactResponseImpl} objects.
+ * A Builder for {@link org.opensaml.saml.saml2.core.impl.ArtifactResponseImpl} objects.
  */
 public class ArtifactResponseBuilder extends AbstractSAMLObjectBuilder<ArtifactResponse> {
 

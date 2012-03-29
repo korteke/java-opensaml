@@ -23,10 +23,10 @@ package org.opensaml.saml2.metadata.impl;
 
 import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml2.metadata.SPSSODescriptor;
+import org.opensaml.saml.saml2.metadata.SPSSODescriptor;
 
 /**
- * Builder of {@link org.opensaml.saml2.metadata.impl.SPSSODescriptorImpl}
+ * Builder of {@link org.opensaml.saml.saml2.metadata.impl.SPSSODescriptorImpl}
  */
 public class SPSSODescriptorBuilder extends AbstractSAMLObjectBuilder<SPSSODescriptor> {
 

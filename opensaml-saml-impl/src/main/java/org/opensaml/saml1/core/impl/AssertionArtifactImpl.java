@@ -21,10 +21,10 @@ import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.common.impl.AbstractSAMLObject;
-import org.opensaml.saml1.core.AssertionArtifact;
+import org.opensaml.saml.saml1.core.AssertionArtifact;
 
 /**
- * Concrete implementation if {@link org.opensaml.saml1.core.AssertionArtifact}
+ * Concrete implementation if {@link org.opensaml.saml.saml1.core.AssertionArtifact}
  */
 public class AssertionArtifactImpl extends AbstractSAMLObject implements AssertionArtifact {
 

@@ -19,10 +19,10 @@ package org.opensaml.saml1.core.impl;
 
 import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml1.core.Evidence;
+import org.opensaml.saml.saml1.core.Evidence;
 
 /**
- * Builder of {@link org.opensaml.saml1.core.impl.EvidenceImpl} objects.
+ * Builder of {@link org.opensaml.saml.saml1.core.impl.EvidenceImpl} objects.
  */
 public class EvidenceBuilder extends AbstractSAMLObjectBuilder<Evidence> {
 

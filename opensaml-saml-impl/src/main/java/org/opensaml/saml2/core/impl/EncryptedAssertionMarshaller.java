@@ -18,7 +18,7 @@
 package org.opensaml.saml2.core.impl;
 
 /**
- * A thread-safe Marshaller for {@link org.opensaml.saml2.core.EncryptedAssertion}.
+ * A thread-safe Marshaller for {@link org.opensaml.saml.saml2.core.EncryptedAssertion}.
  */
 public class EncryptedAssertionMarshaller extends EncryptedElementTypeMarshaller {
 

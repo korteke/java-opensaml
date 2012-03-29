@@ -19,10 +19,10 @@ package org.opensaml.saml1.core.impl;
 
 import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml1.core.Attribute;
+import org.opensaml.saml.saml1.core.Attribute;
 
 /**
- * Builder of {@link org.opensaml.saml1.core.impl.AttributeImpl} objects.
+ * Builder of {@link org.opensaml.saml.saml1.core.impl.AttributeImpl} objects.
  */
 public class AttributeBuilder extends AbstractSAMLObjectBuilder<Attribute> {
 

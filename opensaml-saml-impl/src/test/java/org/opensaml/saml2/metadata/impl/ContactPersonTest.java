@@ -22,17 +22,17 @@ import javax.xml.namespace.QName;
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.common.Extensions;
-import org.opensaml.saml2.metadata.Company;
-import org.opensaml.saml2.metadata.ContactPerson;
-import org.opensaml.saml2.metadata.ContactPersonTypeEnumeration;
-import org.opensaml.saml2.metadata.EmailAddress;
-import org.opensaml.saml2.metadata.GivenName;
-import org.opensaml.saml2.metadata.SurName;
-import org.opensaml.saml2.metadata.TelephoneNumber;
+import org.opensaml.saml.saml2.metadata.Company;
+import org.opensaml.saml.saml2.metadata.ContactPerson;
+import org.opensaml.saml.saml2.metadata.ContactPersonTypeEnumeration;
+import org.opensaml.saml.saml2.metadata.EmailAddress;
+import org.opensaml.saml.saml2.metadata.GivenName;
+import org.opensaml.saml.saml2.metadata.SurName;
+import org.opensaml.saml.saml2.metadata.TelephoneNumber;
 
 /**
  * Test case for creating, marshalling, and unmarshalling
- * {@link org.opensaml.saml2.metadata.impl.ContactPersonImpl}.
+ * {@link org.opensaml.saml.saml2.metadata.impl.ContactPersonImpl}.
  */
 public class ContactPersonTest extends BaseSAMLObjectProviderTestCase {
     

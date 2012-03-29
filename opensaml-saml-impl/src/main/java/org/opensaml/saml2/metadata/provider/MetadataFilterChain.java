@@ -22,6 +22,8 @@ import java.util.Collections;
 import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.saml.saml2.metadata.provider.FilterException;
+import org.opensaml.saml.saml2.metadata.provider.MetadataFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

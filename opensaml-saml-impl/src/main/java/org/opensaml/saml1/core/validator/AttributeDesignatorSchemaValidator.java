@@ -23,12 +23,12 @@ package org.opensaml.saml1.core.validator;
 
 import org.opensaml.core.xml.validation.ValidationException;
 import org.opensaml.core.xml.validation.Validator;
-import org.opensaml.saml1.core.AttributeDesignator;
+import org.opensaml.saml.saml1.core.AttributeDesignator;
 
 import com.google.common.base.Strings;
 
 /**
- * Checks {@link org.opensaml.saml1.core.AttributeDesignator} for Schema compliance.
+ * Checks {@link org.opensaml.saml.saml1.core.AttributeDesignator} for Schema compliance.
  */
 public class AttributeDesignatorSchemaValidator<AttributeDesignatorType extends AttributeDesignator> implements Validator<AttributeDesignatorType> {
 

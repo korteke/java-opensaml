@@ -23,12 +23,12 @@ package org.opensaml.saml2.metadata.validator;
 
 import org.opensaml.core.xml.validation.ValidationException;
 import org.opensaml.core.xml.validation.Validator;
-import org.opensaml.saml2.metadata.SurName;
+import org.opensaml.saml.saml2.metadata.SurName;
 
 import com.google.common.base.Strings;
 
 /**
- * Checks {@link org.opensaml.saml2.metadata.SurName} for Schema compliance.
+ * Checks {@link org.opensaml.saml.saml2.metadata.SurName} for Schema compliance.
  */
 public class SurNameSchemaValidator implements Validator<SurName> {
 

@@ -21,7 +21,7 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.schema.impl.XSStringMarshaller;
 import org.opensaml.core.xml.util.XMLObjectSupport;
-import org.opensaml.saml2.ecp.RelayState;
+import org.opensaml.saml.saml2.ecp.RelayState;
 import org.w3c.dom.Element;
 
 /**

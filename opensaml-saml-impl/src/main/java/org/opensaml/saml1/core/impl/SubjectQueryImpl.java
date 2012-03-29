@@ -23,11 +23,11 @@ import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.common.impl.AbstractSAMLObject;
-import org.opensaml.saml1.core.Subject;
-import org.opensaml.saml1.core.SubjectQuery;
+import org.opensaml.saml.saml1.core.Subject;
+import org.opensaml.saml.saml1.core.SubjectQuery;
 
 /**
- * Concrete (but abstract) implementation of {@link org.opensaml.saml1.core.SubjectQuery} abstract type
+ * Concrete (but abstract) implementation of {@link org.opensaml.saml.saml1.core.SubjectQuery} abstract type
  */
 public abstract class SubjectQueryImpl extends AbstractSAMLObject implements SubjectQuery {
 

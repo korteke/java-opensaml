@@ -19,10 +19,10 @@ package org.opensaml.saml1.core.impl;
 
 import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml1.core.AuthorizationDecisionQuery;
+import org.opensaml.saml.saml1.core.AuthorizationDecisionQuery;
 
 /**
- * Builder of {@link org.opensaml.saml1.core.impl.AuthorizationDecisionQueryImpl} objects.
+ * Builder of {@link org.opensaml.saml.saml1.core.impl.AuthorizationDecisionQueryImpl} objects.
  */
 public class AuthorizationDecisionQueryBuilder extends AbstractSAMLObjectBuilder<AuthorizationDecisionQuery> {
 

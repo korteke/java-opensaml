@@ -19,10 +19,10 @@ package org.opensaml.saml1.core.impl;
 
 import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml1.core.Audience;
+import org.opensaml.saml.saml1.core.Audience;
 
 /**
- * Builder of {@link org.opensaml.saml1.core.impl.AudienceImpl} objects.
+ * Builder of {@link org.opensaml.saml.saml1.core.impl.AudienceImpl} objects.
  */
 public class AudienceBuilder extends AbstractSAMLObjectBuilder<Audience> {
 

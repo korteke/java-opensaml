@@ -23,10 +23,10 @@ package org.opensaml.saml2.core.impl;
 
 import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml2.core.IDPEntry;
+import org.opensaml.saml.saml2.core.IDPEntry;
 
 /**
- * Builder of {@link org.opensaml.saml2.core.impl.IDPEntryImpl}.
+ * Builder of {@link org.opensaml.saml.saml2.core.impl.IDPEntryImpl}.
  */
 public class IDPEntryBuilder extends AbstractSAMLObjectBuilder<IDPEntry> {
 

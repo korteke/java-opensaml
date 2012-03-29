@@ -21,10 +21,10 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.common.BaseSAMLObjectValidatorTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml1.core.Action;
+import org.opensaml.saml.saml1.core.Action;
 
 /**
- * Test case for {@link org.opensaml.saml1.core.validator.ActionSpecValidator}.
+ * Test case for {@link org.opensaml.saml.saml1.core.validator.ActionSpecValidator}.
  */
 public class ActionSpecTest extends BaseSAMLObjectValidatorTestCase {
 

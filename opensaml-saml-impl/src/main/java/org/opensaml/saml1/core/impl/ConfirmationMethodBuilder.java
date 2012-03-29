@@ -19,10 +19,10 @@ package org.opensaml.saml1.core.impl;
 
 import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml1.core.ConfirmationMethod;
+import org.opensaml.saml.saml1.core.ConfirmationMethod;
 
 /**
- * Builder of {@link org.opensaml.saml1.core.impl.ConfirmationMethodImpl} objects.
+ * Builder of {@link org.opensaml.saml.saml1.core.impl.ConfirmationMethodImpl} objects.
  */
 public class ConfirmationMethodBuilder extends AbstractSAMLObjectBuilder<ConfirmationMethod> {
 

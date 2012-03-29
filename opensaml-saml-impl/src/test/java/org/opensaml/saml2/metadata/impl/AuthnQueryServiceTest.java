@@ -21,11 +21,11 @@
 package org.opensaml.saml2.metadata.impl;
 
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
-import org.opensaml.saml2.metadata.AuthnQueryService;
+import org.opensaml.saml.saml2.metadata.AuthnQueryService;
 
 /**
  * Test case for creating, marshalling, and unmarshalling
- * {@link org.opensaml.saml2.metadata.impl.AuthnQueryServiceImpl}.
+ * {@link org.opensaml.saml.saml2.metadata.impl.AuthnQueryServiceImpl}.
  */
 public class AuthnQueryServiceTest extends BaseSAMLObjectProviderTestCase {
     

@@ -21,10 +21,10 @@
 package org.opensaml.saml2.core.validator;
 
 import org.opensaml.core.xml.validation.ValidationException;
-import org.opensaml.saml2.core.AuthnRequest;
+import org.opensaml.saml.saml2.core.AuthnRequest;
 
 /**
- * Checks {@link org.opensaml.saml2.core.AuthnRequest} for Schema compliance.
+ * Checks {@link org.opensaml.saml.saml2.core.AuthnRequest} for Schema compliance.
  */
 public class AuthnRequestSchemaValidator extends RequestAbstractTypeSchemaValidator<AuthnRequest>{
 

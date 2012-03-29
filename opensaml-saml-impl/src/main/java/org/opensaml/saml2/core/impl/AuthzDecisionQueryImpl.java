@@ -27,12 +27,12 @@ import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.XMLObjectChildrenList;
-import org.opensaml.saml2.core.Action;
-import org.opensaml.saml2.core.AuthzDecisionQuery;
-import org.opensaml.saml2.core.Evidence;
+import org.opensaml.saml.saml2.core.Action;
+import org.opensaml.saml.saml2.core.AuthzDecisionQuery;
+import org.opensaml.saml.saml2.core.Evidence;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml2.core.AuthzDecisionQuery}.
+ * Concrete implementation of {@link org.opensaml.saml.saml2.core.AuthzDecisionQuery}.
  */
 public class AuthzDecisionQueryImpl extends SubjectQueryImpl implements AuthzDecisionQuery {
 

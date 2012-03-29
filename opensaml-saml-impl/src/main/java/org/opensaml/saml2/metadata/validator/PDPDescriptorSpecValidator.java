@@ -21,10 +21,10 @@
 
 package org.opensaml.saml2.metadata.validator;
 
-import org.opensaml.saml2.metadata.PDPDescriptor;
+import org.opensaml.saml.saml2.metadata.PDPDescriptor;
 
 /**
- * Checks {@link org.opensaml.saml2.metadata.PDPDescriptor} for Spec compliance.
+ * Checks {@link org.opensaml.saml.saml2.metadata.PDPDescriptor} for Spec compliance.
  */
 public class PDPDescriptorSpecValidator extends RoleDescriptorSpecValidator<PDPDescriptor> {
 

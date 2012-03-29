@@ -24,14 +24,14 @@ package org.opensaml.saml2.core.impl;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.impl.AbstractSAMLObjectUnmarshaller;
-import org.opensaml.saml2.core.AuthnContextClassRef;
-import org.opensaml.saml2.core.AuthnContextComparisonTypeEnumeration;
-import org.opensaml.saml2.core.AuthnContextDeclRef;
-import org.opensaml.saml2.core.RequestedAuthnContext;
+import org.opensaml.saml.saml2.core.AuthnContextClassRef;
+import org.opensaml.saml.saml2.core.AuthnContextComparisonTypeEnumeration;
+import org.opensaml.saml.saml2.core.AuthnContextDeclRef;
+import org.opensaml.saml.saml2.core.RequestedAuthnContext;
 import org.w3c.dom.Attr;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml2.core.RequestedAuthnContext} objects.
+ * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.core.RequestedAuthnContext} objects.
  */
 public class RequestedAuthnContextUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 

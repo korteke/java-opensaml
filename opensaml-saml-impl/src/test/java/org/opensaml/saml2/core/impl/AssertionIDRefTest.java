@@ -21,10 +21,10 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml2.core.AssertionIDRef;
+import org.opensaml.saml.saml2.core.AssertionIDRef;
 
 /**
- * Test case for creating, marshalling, and unmarshalling {@link org.opensaml.saml2.core.impl.AssertionIDRefImpl}.
+ * Test case for creating, marshalling, and unmarshalling {@link org.opensaml.saml.saml2.core.impl.AssertionIDRefImpl}.
  */
 public class AssertionIDRefTest extends BaseSAMLObjectProviderTestCase {
 

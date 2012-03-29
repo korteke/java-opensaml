@@ -27,13 +27,13 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
 import org.opensaml.saml.common.impl.AbstractSAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml1.core.Assertion;
-import org.opensaml.saml1.core.AssertionIDReference;
-import org.opensaml.saml1.core.Evidence;
-import org.opensaml.saml1.core.Evidentiary;
+import org.opensaml.saml.saml1.core.Assertion;
+import org.opensaml.saml.saml1.core.AssertionIDReference;
+import org.opensaml.saml.saml1.core.Evidence;
+import org.opensaml.saml.saml1.core.Evidentiary;
 
 /**
- * Concrete implementation of the {@link org.opensaml.saml1.core.Evidence} interface.
+ * Concrete implementation of the {@link org.opensaml.saml.saml1.core.Evidence} interface.
  */
 public class EvidenceImpl extends AbstractSAMLObject implements Evidence {
 

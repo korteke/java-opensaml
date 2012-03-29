@@ -22,7 +22,7 @@
 package org.opensaml.saml2.metadata.impl;
 
 /**
- * A thread safe Unmarshaller for {@link org.opensaml.saml2.metadata.SingleSignOnService} objects.
+ * A thread safe Unmarshaller for {@link org.opensaml.saml.saml2.metadata.SingleSignOnService} objects.
  */
 public class SingleSignOnServiceUnmarshaller extends EndpointUnmarshaller {
 

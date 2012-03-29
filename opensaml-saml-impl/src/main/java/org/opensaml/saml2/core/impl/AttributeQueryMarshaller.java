@@ -22,7 +22,7 @@
 package org.opensaml.saml2.core.impl;
 
 /**
- * A thread-safe Marshaller for {@link org.opensaml.saml2.core.AttributeQuery}.
+ * A thread-safe Marshaller for {@link org.opensaml.saml.saml2.core.AttributeQuery}.
  */
 public class AttributeQueryMarshaller extends SubjectQueryMarshaller {
 

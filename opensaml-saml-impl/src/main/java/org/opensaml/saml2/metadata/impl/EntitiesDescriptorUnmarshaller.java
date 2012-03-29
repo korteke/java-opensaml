@@ -27,15 +27,15 @@ import org.opensaml.saml.common.impl.AbstractSAMLObjectUnmarshaller;
 import org.opensaml.saml.saml2.common.CacheableSAMLObject;
 import org.opensaml.saml.saml2.common.Extensions;
 import org.opensaml.saml.saml2.common.TimeBoundSAMLObject;
-import org.opensaml.saml2.metadata.EntitiesDescriptor;
-import org.opensaml.saml2.metadata.EntityDescriptor;
+import org.opensaml.saml.saml2.metadata.EntitiesDescriptor;
+import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.opensaml.xmlsec.signature.Signature;
 import org.w3c.dom.Attr;
 
 import com.google.common.base.Strings;
 
 /**
- * A thread safe Unmarshaller for {@link org.opensaml.saml2.metadata.EntitiesDescriptor} objects.
+ * A thread safe Unmarshaller for {@link org.opensaml.saml.saml2.metadata.EntitiesDescriptor} objects.
  */
 public class EntitiesDescriptorUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 

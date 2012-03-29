@@ -22,9 +22,9 @@ import java.util.ArrayList;
 import javax.xml.namespace.QName;
 
 import org.opensaml.common.BaseTestCase;
-import org.opensaml.saml2.metadata.AttributeAuthorityDescriptor;
-import org.opensaml.saml2.metadata.IDPSSODescriptor;
-import org.opensaml.saml2.metadata.SPSSODescriptor;
+import org.opensaml.saml.saml2.metadata.AttributeAuthorityDescriptor;
+import org.opensaml.saml.saml2.metadata.IDPSSODescriptor;
+import org.opensaml.saml.saml2.metadata.SPSSODescriptor;
 
 /**
  * Unit tests for {@link EntityRoleFilter}.

@@ -18,9 +18,9 @@
 package org.opensaml.saml2.binding.security;
 
 import org.opensaml.common.binding.security.BaseSAMLSecurityPolicyRuleTestCase;
-import org.opensaml.saml2.core.AuthnRequest;
-import org.opensaml.saml2.core.NameID;
-import org.opensaml.saml2.core.Response;
+import org.opensaml.saml.saml2.core.AuthnRequest;
+import org.opensaml.saml.saml2.core.NameID;
+import org.opensaml.saml.saml2.core.Response;
 import org.opensaml.saml2.metadata.provider.DOMMetadataProvider;
 import org.opensaml.ws.transport.InTransport;
 import org.opensaml.ws.transport.http.HTTPInTransport;

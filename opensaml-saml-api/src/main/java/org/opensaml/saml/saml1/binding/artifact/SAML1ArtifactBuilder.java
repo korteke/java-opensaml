@@ -18,10 +18,10 @@
 package org.opensaml.saml.saml1.binding.artifact;
 
 import org.opensaml.saml.common.binding.SAMLMessageContext;
-import org.opensaml.saml1.core.Assertion;
-import org.opensaml.saml1.core.NameIdentifier;
-import org.opensaml.saml1.core.RequestAbstractType;
-import org.opensaml.saml1.core.Response;
+import org.opensaml.saml.saml1.core.Assertion;
+import org.opensaml.saml.saml1.core.NameIdentifier;
+import org.opensaml.saml.saml1.core.RequestAbstractType;
+import org.opensaml.saml.saml1.core.Response;
 
 /**
  * Builder of typed SAML 1 artifacts.

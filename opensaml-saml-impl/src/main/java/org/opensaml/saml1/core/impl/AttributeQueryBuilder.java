@@ -19,10 +19,10 @@ package org.opensaml.saml1.core.impl;
 
 import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml1.core.AttributeQuery;
+import org.opensaml.saml.saml1.core.AttributeQuery;
 
 /**
- * Builder of {@link org.opensaml.saml1.core.impl.AttributeQueryImpl} objects.
+ * Builder of {@link org.opensaml.saml.saml1.core.impl.AttributeQueryImpl} objects.
  */
 public class AttributeQueryBuilder extends AbstractSAMLObjectBuilder<AttributeQuery> {
 

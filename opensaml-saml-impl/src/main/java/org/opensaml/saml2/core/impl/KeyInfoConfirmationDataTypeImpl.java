@@ -20,11 +20,11 @@ package org.opensaml.saml2.core.impl;
 import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.saml2.core.KeyInfoConfirmationDataType;
+import org.opensaml.saml.saml2.core.KeyInfoConfirmationDataType;
 import org.opensaml.xmlsec.signature.KeyInfo;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml2.core.SubjectConfirmationData}.
+ * Concrete implementation of {@link org.opensaml.saml.saml2.core.SubjectConfirmationData}.
  */
 public class KeyInfoConfirmationDataTypeImpl extends SubjectConfirmationDataImpl 
         implements KeyInfoConfirmationDataType {

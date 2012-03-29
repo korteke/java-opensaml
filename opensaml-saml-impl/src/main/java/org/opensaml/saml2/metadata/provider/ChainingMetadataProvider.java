@@ -39,9 +39,12 @@ import org.opensaml.core.xml.util.IDIndex;
 import org.opensaml.core.xml.validation.ValidationException;
 import org.opensaml.core.xml.validation.Validator;
 import org.opensaml.saml.saml2.common.Extensions;
-import org.opensaml.saml2.metadata.EntitiesDescriptor;
-import org.opensaml.saml2.metadata.EntityDescriptor;
-import org.opensaml.saml2.metadata.RoleDescriptor;
+import org.opensaml.saml.saml2.metadata.EntitiesDescriptor;
+import org.opensaml.saml.saml2.metadata.EntityDescriptor;
+import org.opensaml.saml.saml2.metadata.RoleDescriptor;
+import org.opensaml.saml.saml2.metadata.provider.MetadataFilter;
+import org.opensaml.saml.saml2.metadata.provider.MetadataProvider;
+import org.opensaml.saml.saml2.metadata.provider.MetadataProviderException;
 import org.opensaml.xmlsec.signature.Signature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -332,7 +335,7 @@ public class ChainingMetadataProvider extends BaseMetadataProvider implements Ob
 
     /**
      * Convenience method for calling
-     * {@link org.opensaml.saml2.metadata.provider.ObservableMetadataProvider.Observer#onEvent(MetadataProvider)} on
+     * {@link org.opensaml.saml.saml2.metadata.provider.ObservableMetadataProvider.Observer#onEvent(MetadataProvider)} on
      * every registered Observer passing in this provider.
      */
     protected void emitChangeEvent() {

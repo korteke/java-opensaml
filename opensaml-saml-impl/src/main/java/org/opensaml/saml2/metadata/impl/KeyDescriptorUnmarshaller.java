@@ -20,14 +20,14 @@ package org.opensaml.saml2.metadata.impl;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.impl.AbstractSAMLObjectUnmarshaller;
-import org.opensaml.saml2.metadata.EncryptionMethod;
-import org.opensaml.saml2.metadata.KeyDescriptor;
+import org.opensaml.saml.saml2.metadata.EncryptionMethod;
+import org.opensaml.saml.saml2.metadata.KeyDescriptor;
 import org.opensaml.security.credential.UsageType;
 import org.opensaml.xmlsec.signature.KeyInfo;
 import org.w3c.dom.Attr;
 
 /**
- * A thread-safe unmarshaller for {@link org.opensaml.saml2.metadata.KeyDescriptor}s.
+ * A thread-safe unmarshaller for {@link org.opensaml.saml.saml2.metadata.KeyDescriptor}s.
  */
 public class KeyDescriptorUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 

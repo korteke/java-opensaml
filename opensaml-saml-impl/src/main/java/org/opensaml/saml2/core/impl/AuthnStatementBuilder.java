@@ -23,10 +23,10 @@ package org.opensaml.saml2.core.impl;
 
 import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml2.core.AuthnStatement;
+import org.opensaml.saml.saml2.core.AuthnStatement;
 
 /**
- * Builder for {@link org.opensaml.saml2.core.impl.AuthnStatementImpl} objects.
+ * Builder for {@link org.opensaml.saml.saml2.core.impl.AuthnStatementImpl} objects.
  */
 public class AuthnStatementBuilder extends AbstractSAMLObjectBuilder<AuthnStatement> {
 

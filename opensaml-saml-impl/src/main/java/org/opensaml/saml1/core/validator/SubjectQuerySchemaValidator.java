@@ -23,10 +23,10 @@ package org.opensaml.saml1.core.validator;
 
 import org.opensaml.core.xml.validation.ValidationException;
 import org.opensaml.core.xml.validation.Validator;
-import org.opensaml.saml1.core.SubjectQuery;
+import org.opensaml.saml.saml1.core.SubjectQuery;
 
 /**
- * Checks {@link org.opensaml.saml1.core.SubjectQuery} for Schema compliance.
+ * Checks {@link org.opensaml.saml.saml1.core.SubjectQuery} for Schema compliance.
  */
 public class SubjectQuerySchemaValidator<QueryType extends SubjectQuery> implements Validator<QueryType> {
 

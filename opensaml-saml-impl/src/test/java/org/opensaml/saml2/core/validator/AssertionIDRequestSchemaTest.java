@@ -23,8 +23,8 @@ package org.opensaml.saml2.core.validator;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml2.core.AssertionIDRef;
-import org.opensaml.saml2.core.AssertionIDRequest;
+import org.opensaml.saml.saml2.core.AssertionIDRef;
+import org.opensaml.saml.saml2.core.AssertionIDRequest;
 
 /**
  *

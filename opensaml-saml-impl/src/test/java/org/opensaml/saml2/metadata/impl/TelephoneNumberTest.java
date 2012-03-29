@@ -21,11 +21,11 @@
 package org.opensaml.saml2.metadata.impl;
 
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
-import org.opensaml.saml2.metadata.TelephoneNumber;
+import org.opensaml.saml.saml2.metadata.TelephoneNumber;
 
 /**
  * Test case for creating, marshalling, and unmarshalling
- * {@link org.opensaml.saml2.metadata.TelephoneNumber}.
+ * {@link org.opensaml.saml.saml2.metadata.TelephoneNumber}.
  */
 public class TelephoneNumberTest extends BaseSAMLObjectProviderTestCase {
     

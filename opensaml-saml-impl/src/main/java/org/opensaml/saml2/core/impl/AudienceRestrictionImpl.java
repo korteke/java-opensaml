@@ -28,11 +28,11 @@ import java.util.List;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.XMLObjectChildrenList;
 import org.opensaml.saml.common.impl.AbstractSAMLObject;
-import org.opensaml.saml2.core.Audience;
-import org.opensaml.saml2.core.AudienceRestriction;
+import org.opensaml.saml.saml2.core.Audience;
+import org.opensaml.saml.saml2.core.AudienceRestriction;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml2.core.AudienceRestriction}.
+ * Concrete implementation of {@link org.opensaml.saml.saml2.core.AudienceRestriction}.
  */
 public class AudienceRestrictionImpl extends AbstractSAMLObject implements AudienceRestriction {
 

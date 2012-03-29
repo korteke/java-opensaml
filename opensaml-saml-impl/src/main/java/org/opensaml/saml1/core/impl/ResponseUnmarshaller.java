@@ -19,12 +19,12 @@ package org.opensaml.saml1.core.impl;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
-import org.opensaml.saml1.core.Assertion;
-import org.opensaml.saml1.core.Response;
-import org.opensaml.saml1.core.Status;
+import org.opensaml.saml.saml1.core.Assertion;
+import org.opensaml.saml.saml1.core.Response;
+import org.opensaml.saml.saml1.core.Status;
 
 /**
- * A thread-safe {@link org.opensaml.core.xml.io.Unmarshaller} for {@link org.opensaml.saml1.core.Response} objects.
+ * A thread-safe {@link org.opensaml.core.xml.io.Unmarshaller} for {@link org.opensaml.saml.saml1.core.Response} objects.
  */
 public class ResponseUnmarshaller extends ResponseAbstractTypeUnmarshaller {
 

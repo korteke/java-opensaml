@@ -19,10 +19,10 @@ package org.opensaml.saml1.core.validator;
 
 import org.joda.time.DateTime;
 import org.opensaml.common.BaseSAMLObjectValidatorTestCase;
-import org.opensaml.saml1.core.RequestAbstractType;
+import org.opensaml.saml.saml1.core.RequestAbstractType;
 
 /**
- * Test case for {@link org.opensaml.saml1.core.validator.RequestSchemaValidator}.
+ * Test case for {@link org.opensaml.saml.saml1.core.validator.RequestSchemaValidator}.
  */
 public abstract class RequestAbstractTypeSchemaTestBase extends BaseSAMLObjectValidatorTestCase {
 

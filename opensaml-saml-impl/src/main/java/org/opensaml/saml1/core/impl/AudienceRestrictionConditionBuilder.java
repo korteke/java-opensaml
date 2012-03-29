@@ -19,10 +19,10 @@ package org.opensaml.saml1.core.impl;
 
 import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml1.core.AudienceRestrictionCondition;
+import org.opensaml.saml.saml1.core.AudienceRestrictionCondition;
 
 /**
- * Builder of {@link org.opensaml.saml1.core.impl.AudienceRestrictionConditionImpl} objects.
+ * Builder of {@link org.opensaml.saml.saml1.core.impl.AudienceRestrictionConditionImpl} objects.
  */
 public class AudienceRestrictionConditionBuilder extends AbstractSAMLObjectBuilder<AudienceRestrictionCondition> {
 

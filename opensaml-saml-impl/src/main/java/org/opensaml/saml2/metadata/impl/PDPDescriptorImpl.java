@@ -29,14 +29,14 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.XMLObjectChildrenList;
-import org.opensaml.saml2.metadata.AssertionIDRequestService;
-import org.opensaml.saml2.metadata.AuthzService;
-import org.opensaml.saml2.metadata.Endpoint;
-import org.opensaml.saml2.metadata.NameIDFormat;
-import org.opensaml.saml2.metadata.PDPDescriptor;
+import org.opensaml.saml.saml2.metadata.AssertionIDRequestService;
+import org.opensaml.saml.saml2.metadata.AuthzService;
+import org.opensaml.saml.saml2.metadata.Endpoint;
+import org.opensaml.saml.saml2.metadata.NameIDFormat;
+import org.opensaml.saml.saml2.metadata.PDPDescriptor;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml2.metadata.PDPDescriptor}.
+ * Concrete implementation of {@link org.opensaml.saml.saml2.metadata.PDPDescriptor}.
  */
 public class PDPDescriptorImpl extends RoleDescriptorImpl implements PDPDescriptor {
 

@@ -20,7 +20,8 @@ package org.opensaml.saml2.metadata.provider;
 import java.io.File;
 
 import org.opensaml.common.BaseTestCase;
-import org.opensaml.saml2.metadata.EntitiesDescriptor;
+import org.opensaml.saml.saml2.metadata.EntitiesDescriptor;
+import org.opensaml.saml.saml2.metadata.provider.MetadataProviderException;
 
 /**
  * Test case for {@link FileBackedHTTPMetadataProvider}.

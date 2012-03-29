@@ -23,10 +23,10 @@ package org.opensaml.saml2.core.impl;
 
 import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml2.core.AuthnContext;
+import org.opensaml.saml.saml2.core.AuthnContext;
 
 /**
- * Builder for {@link org.opensaml.saml2.core.impl.AuthnContextImpl} objects.
+ * Builder for {@link org.opensaml.saml.saml2.core.impl.AuthnContextImpl} objects.
  */
 public class AuthnContextBuilder extends AbstractSAMLObjectBuilder<AuthnContext> {
 

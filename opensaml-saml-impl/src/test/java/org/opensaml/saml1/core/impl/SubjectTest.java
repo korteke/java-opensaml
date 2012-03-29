@@ -25,12 +25,12 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml1.core.NameIdentifier;
-import org.opensaml.saml1.core.Subject;
-import org.opensaml.saml1.core.SubjectConfirmation;
+import org.opensaml.saml.saml1.core.NameIdentifier;
+import org.opensaml.saml.saml1.core.Subject;
+import org.opensaml.saml.saml1.core.SubjectConfirmation;
 
 /**
- * Test for {@link org.opensaml.saml1.core.impl.Subject}
+ * Test for {@link org.opensaml.saml.saml1.core.impl.Subject}
  */
 public class SubjectTest extends BaseSAMLObjectProviderTestCase {
 

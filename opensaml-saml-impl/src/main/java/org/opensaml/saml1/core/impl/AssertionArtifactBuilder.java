@@ -19,10 +19,10 @@ package org.opensaml.saml1.core.impl;
 
 import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml1.core.AssertionArtifact;
+import org.opensaml.saml.saml1.core.AssertionArtifact;
 
 /**
- * Builder of {@link org.opensaml.saml1.core.impl.AssertionArtifactImpl} objects.
+ * Builder of {@link org.opensaml.saml.saml1.core.impl.AssertionArtifactImpl} objects.
  */
 public class AssertionArtifactBuilder extends AbstractSAMLObjectBuilder<AssertionArtifact> {
 

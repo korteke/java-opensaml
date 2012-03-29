@@ -24,10 +24,10 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml1.core.DoNotCacheCondition;
+import org.opensaml.saml.saml1.core.DoNotCacheCondition;
 
 /**
- * Test class for {@link org.opensaml.saml1.core.impl.DoNotCacheConditionImpl} objects
+ * Test class for {@link org.opensaml.saml.saml1.core.impl.DoNotCacheConditionImpl} objects
  */
 public class DoNotCacheConditionTest extends BaseSAMLObjectProviderTestCase {
 

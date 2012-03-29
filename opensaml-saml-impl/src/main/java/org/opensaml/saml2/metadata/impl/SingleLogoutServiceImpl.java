@@ -21,10 +21,10 @@
 
 package org.opensaml.saml2.metadata.impl;
 
-import org.opensaml.saml2.metadata.SingleLogoutService;
+import org.opensaml.saml.saml2.metadata.SingleLogoutService;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml2.metadata.SingleLogoutService}.
+ * Concrete implementation of {@link org.opensaml.saml.saml2.metadata.SingleLogoutService}.
  */
 public class SingleLogoutServiceImpl extends EndpointImpl implements SingleLogoutService {
 

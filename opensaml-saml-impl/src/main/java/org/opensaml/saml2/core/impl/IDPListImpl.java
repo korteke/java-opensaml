@@ -28,12 +28,12 @@ import java.util.List;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.XMLObjectChildrenList;
 import org.opensaml.saml.common.impl.AbstractSAMLObject;
-import org.opensaml.saml2.core.GetComplete;
-import org.opensaml.saml2.core.IDPEntry;
-import org.opensaml.saml2.core.IDPList;
+import org.opensaml.saml.saml2.core.GetComplete;
+import org.opensaml.saml.saml2.core.IDPEntry;
+import org.opensaml.saml.saml2.core.IDPList;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml2.core.IDPList}.
+ * Concrete implementation of {@link org.opensaml.saml.saml2.core.IDPList}.
  */
 public class IDPListImpl extends AbstractSAMLObject implements IDPList {
 

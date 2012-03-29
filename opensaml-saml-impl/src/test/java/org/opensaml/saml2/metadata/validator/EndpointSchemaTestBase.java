@@ -19,10 +19,10 @@ package org.opensaml.saml2.metadata.validator;
 
 import org.opensaml.common.BaseSAMLObjectValidatorTestCase;
 import org.opensaml.core.xml.validation.ValidationException;
-import org.opensaml.saml2.metadata.Endpoint;
+import org.opensaml.saml.saml2.metadata.Endpoint;
 
 /**
- * Test case for {@link org.opensaml.saml2.metadata.AddtionalMetadataLocation}.
+ * Test case for {@link org.opensaml.saml.saml2.metadata.AddtionalMetadataLocation}.
  */
 public abstract class EndpointSchemaTestBase extends BaseSAMLObjectValidatorTestCase {
 

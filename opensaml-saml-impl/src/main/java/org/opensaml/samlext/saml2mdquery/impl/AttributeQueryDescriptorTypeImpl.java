@@ -25,8 +25,8 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.XMLObjectChildrenList;
-import org.opensaml.saml2.metadata.AttributeConsumingService;
-import org.opensaml.saml2.metadata.Endpoint;
+import org.opensaml.saml.saml2.metadata.AttributeConsumingService;
+import org.opensaml.saml.saml2.metadata.Endpoint;
 import org.opensaml.samlext.saml2mdquery.AttributeQueryDescriptorType;
 
 /**

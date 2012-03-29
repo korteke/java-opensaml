@@ -19,10 +19,10 @@ package org.opensaml.saml2.core.impl;
 
 import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml2.core.EncryptedID;
+import org.opensaml.saml.saml2.core.EncryptedID;
 
 /**
- * Builder for {@link org.opensaml.saml2.core.impl.EncryptedIDImpl} objects.
+ * Builder for {@link org.opensaml.saml.saml2.core.impl.EncryptedIDImpl} objects.
  */
 public class EncryptedIDBuilder extends AbstractSAMLObjectBuilder<EncryptedID> {
 

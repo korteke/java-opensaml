@@ -24,12 +24,12 @@ import java.util.List;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.XMLObjectChildrenList;
 import org.opensaml.saml.common.impl.AbstractSAMLObject;
-import org.opensaml.saml2.core.EncryptedElementType;
+import org.opensaml.saml.saml2.core.EncryptedElementType;
 import org.opensaml.xmlsec.encryption.EncryptedData;
 import org.opensaml.xmlsec.encryption.EncryptedKey;
 
 /**
- * A concrete implementation of {@link org.opensaml.saml2.core.EncryptedElementType}.
+ * A concrete implementation of {@link org.opensaml.saml.saml2.core.EncryptedElementType}.
  */
 public class EncryptedElementTypeImpl extends AbstractSAMLObject implements EncryptedElementType {
     

@@ -22,12 +22,12 @@ package org.opensaml.saml2.core.validator;
 
 import org.opensaml.core.xml.validation.ValidationException;
 import org.opensaml.core.xml.validation.Validator;
-import org.opensaml.saml2.core.StatusCode;
+import org.opensaml.saml.saml2.core.StatusCode;
 
 import com.google.common.base.Strings;
 
 /**
- * Checks {@link org.opensaml.saml2.core.StatusCode} for Schema compliance.
+ * Checks {@link org.opensaml.saml.saml2.core.StatusCode} for Schema compliance.
  */
 public class StatusCodeSchemaValidator implements Validator<StatusCode> {
 

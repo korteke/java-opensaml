@@ -21,10 +21,10 @@
 
 package org.opensaml.saml2.metadata.impl;
 
-import org.opensaml.saml2.metadata.SingleSignOnService;
+import org.opensaml.saml.saml2.metadata.SingleSignOnService;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml2.metadata.SingleSignOnService}.
+ * Concrete implementation of {@link org.opensaml.saml.saml2.metadata.SingleSignOnService}.
  */
 public class SingleSignOnServiceImpl extends EndpointImpl implements SingleSignOnService {
 

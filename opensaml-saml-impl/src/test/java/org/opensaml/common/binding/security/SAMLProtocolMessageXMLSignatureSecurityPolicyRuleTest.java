@@ -24,10 +24,10 @@ import java.util.List;
 
 import org.opensaml.common.SAMLTestHelper;
 import org.opensaml.saml.common.binding.SAMLMessageContext;
-import org.opensaml.saml2.core.AuthnRequest;
-import org.opensaml.saml2.core.NameID;
-import org.opensaml.saml2.core.Response;
-import org.opensaml.saml2.metadata.SPSSODescriptor;
+import org.opensaml.saml.saml2.core.AuthnRequest;
+import org.opensaml.saml.saml2.core.NameID;
+import org.opensaml.saml.saml2.core.Response;
+import org.opensaml.saml.saml2.metadata.SPSSODescriptor;
 import org.opensaml.security.SecurityHelper;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.impl.CollectionCredentialResolver;

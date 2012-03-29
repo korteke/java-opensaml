@@ -23,10 +23,10 @@ package org.opensaml.saml2.core.impl;
 
 import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml2.core.RequesterID;
+import org.opensaml.saml.saml2.core.RequesterID;
 
 /**
- * Builder of {@link org.opensaml.saml2.core.impl.RequesterIDImpl}.
+ * Builder of {@link org.opensaml.saml.saml2.core.impl.RequesterIDImpl}.
  */
 public class RequesterIDBuilder extends AbstractSAMLObjectBuilder<RequesterID> {
 

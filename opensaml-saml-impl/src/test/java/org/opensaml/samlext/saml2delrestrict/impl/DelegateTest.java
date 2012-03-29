@@ -20,7 +20,7 @@ package org.opensaml.samlext.saml2delrestrict.impl;
 import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
-import org.opensaml.saml2.core.NameID;
+import org.opensaml.saml.saml2.core.NameID;
 import org.opensaml.samlext.saml2delrestrict.Delegate;
 
 /**

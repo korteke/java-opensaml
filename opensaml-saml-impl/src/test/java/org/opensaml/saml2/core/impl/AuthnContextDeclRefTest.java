@@ -21,10 +21,10 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml2.core.AuthnContextDeclRef;
+import org.opensaml.saml.saml2.core.AuthnContextDeclRef;
 
 /**
- * Test case for creating, marshalling, and unmarshalling {@link org.opensaml.saml2.core.impl.AuthnContextDeclRefImpl}.
+ * Test case for creating, marshalling, and unmarshalling {@link org.opensaml.saml.saml2.core.impl.AuthnContextDeclRefImpl}.
  */
 public class AuthnContextDeclRefTest extends BaseSAMLObjectProviderTestCase {
 

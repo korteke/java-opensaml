@@ -21,10 +21,10 @@
 
 package org.opensaml.saml2.metadata.impl;
 
-import org.opensaml.saml2.metadata.ArtifactResolutionService;
+import org.opensaml.saml.saml2.metadata.ArtifactResolutionService;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml2.metadata.ArtifactResolutionService}
+ * Concrete implementation of {@link org.opensaml.saml.saml2.metadata.ArtifactResolutionService}
  */
 public class ArtifactResolutionServiceImpl extends IndexedEndpointImpl implements ArtifactResolutionService {
 

@@ -23,10 +23,10 @@ package org.opensaml.saml2.metadata.impl;
 
 import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml2.metadata.SurName;
+import org.opensaml.saml.saml2.metadata.SurName;
 
 /**
- * Builder of {@link org.opensaml.saml2.metadata.impl.SurNameImpl}
+ * Builder of {@link org.opensaml.saml.saml2.metadata.impl.SurNameImpl}
  */
 public class SurNameBuilder extends AbstractSAMLObjectBuilder<SurName> {
 

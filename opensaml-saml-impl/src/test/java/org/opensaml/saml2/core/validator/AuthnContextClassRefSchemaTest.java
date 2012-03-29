@@ -22,10 +22,10 @@ import javax.xml.namespace.QName;
 import org.opensaml.common.BaseSAMLObjectValidatorTestCase;
 import org.opensaml.core.xml.validation.ValidationException;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml2.core.AuthnContextClassRef;
+import org.opensaml.saml.saml2.core.AuthnContextClassRef;
 
 /**
- * Test case for {@link org.opensaml.saml2.core.validator.AuthnContextClassRefSchemaValidator}.
+ * Test case for {@link org.opensaml.saml.saml2.core.validator.AuthnContextClassRefSchemaValidator}.
  */
 public class AuthnContextClassRefSchemaTest extends BaseSAMLObjectValidatorTestCase {
 

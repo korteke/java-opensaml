@@ -23,12 +23,12 @@ package org.opensaml.saml2.metadata.validator;
 
 import org.opensaml.core.xml.validation.ValidationException;
 import org.opensaml.core.xml.validation.Validator;
-import org.opensaml.saml2.metadata.AdditionalMetadataLocation;
+import org.opensaml.saml.saml2.metadata.AdditionalMetadataLocation;
 
 import com.google.common.base.Strings;
 
 /**
- * Checks {@link org.opensaml.saml2.metadata.AdditionalMetadataLocation} for Schema compliance.
+ * Checks {@link org.opensaml.saml.saml2.metadata.AdditionalMetadataLocation} for Schema compliance.
  */
 public class AdditionalMetadataLocationSchemaValidator implements Validator<AdditionalMetadataLocation> {
 

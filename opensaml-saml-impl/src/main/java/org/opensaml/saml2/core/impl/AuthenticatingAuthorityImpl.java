@@ -25,10 +25,10 @@ import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.common.impl.AbstractSAMLObject;
-import org.opensaml.saml2.core.AuthenticatingAuthority;
+import org.opensaml.saml.saml2.core.AuthenticatingAuthority;
 
 /**
- * A concrete implemenation of {@link org.opensaml.saml2.core.AuthenticatingAuthority}.
+ * A concrete implemenation of {@link org.opensaml.saml.saml2.core.AuthenticatingAuthority}.
  */
 public class AuthenticatingAuthorityImpl extends AbstractSAMLObject implements AuthenticatingAuthority {
 

@@ -23,10 +23,10 @@ package org.opensaml.saml2.core.validator;
 
 import org.opensaml.core.xml.validation.ValidationException;
 import org.opensaml.core.xml.validation.Validator;
-import org.opensaml.saml2.core.Evidence;
+import org.opensaml.saml.saml2.core.Evidence;
 
 /**
- * Checks {@link org.opensaml.saml2.core.Evidence} for Schema compliance.
+ * Checks {@link org.opensaml.saml.saml2.core.Evidence} for Schema compliance.
  */
 public class EvidenceSchemaValidator implements Validator<Evidence> {
 

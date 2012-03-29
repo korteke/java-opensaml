@@ -24,11 +24,11 @@ import net.shibboleth.utilities.java.support.xml.QNameSupport;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.impl.AbstractSAMLObjectUnmarshaller;
-import org.opensaml.saml2.metadata.Endpoint;
+import org.opensaml.saml.saml2.metadata.Endpoint;
 import org.w3c.dom.Attr;
 
 /**
- * A thread-safe unmarshaller for {@link org.opensaml.saml2.metadata.Endpoint} objects.
+ * A thread-safe unmarshaller for {@link org.opensaml.saml.saml2.metadata.Endpoint} objects.
  */
 public class EndpointUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 

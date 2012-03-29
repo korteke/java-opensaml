@@ -21,14 +21,14 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml2.core.AuthenticatingAuthority;
-import org.opensaml.saml2.core.AuthnContext;
-import org.opensaml.saml2.core.AuthnContextClassRef;
-import org.opensaml.saml2.core.AuthnContextDecl;
-import org.opensaml.saml2.core.AuthnContextDeclRef;
+import org.opensaml.saml.saml2.core.AuthenticatingAuthority;
+import org.opensaml.saml.saml2.core.AuthnContext;
+import org.opensaml.saml.saml2.core.AuthnContextClassRef;
+import org.opensaml.saml.saml2.core.AuthnContextDecl;
+import org.opensaml.saml.saml2.core.AuthnContextDeclRef;
 
 /**
- * Test case for creating, marshalling, and unmarshalling {@link org.opensaml.saml2.core.impl.AuthnContextImpl}.
+ * Test case for creating, marshalling, and unmarshalling {@link org.opensaml.saml.saml2.core.impl.AuthnContextImpl}.
  */
 public class AuthnContextTest extends BaseSAMLObjectProviderTestCase {
 

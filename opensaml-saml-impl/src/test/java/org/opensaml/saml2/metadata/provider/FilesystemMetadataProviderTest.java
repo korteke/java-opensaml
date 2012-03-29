@@ -22,9 +22,10 @@ import java.net.URL;
 import java.util.List;
 
 import org.opensaml.common.BaseTestCase;
-import org.opensaml.saml2.metadata.EntityDescriptor;
-import org.opensaml.saml2.metadata.IDPSSODescriptor;
-import org.opensaml.saml2.metadata.RoleDescriptor;
+import org.opensaml.saml.saml2.metadata.EntityDescriptor;
+import org.opensaml.saml.saml2.metadata.IDPSSODescriptor;
+import org.opensaml.saml.saml2.metadata.RoleDescriptor;
+import org.opensaml.saml.saml2.metadata.provider.MetadataProviderException;
 
 public class FilesystemMetadataProviderTest extends BaseTestCase {
 

@@ -23,10 +23,10 @@ package org.opensaml.saml2.core.impl;
 
 import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml2.core.ManageNameIDResponse;
+import org.opensaml.saml.saml2.core.ManageNameIDResponse;
 
 /**
- * A Builder for {@link org.opensaml.saml2.core.impl.ManageNameIDResponseImpl} objects.
+ * A Builder for {@link org.opensaml.saml.saml2.core.impl.ManageNameIDResponseImpl} objects.
  */
 public class ManageNameIDResponseBuilder extends AbstractSAMLObjectBuilder<ManageNameIDResponse> {
 

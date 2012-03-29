@@ -21,10 +21,10 @@
 
 package org.opensaml.saml2.metadata.impl;
 
-import org.opensaml.saml2.metadata.ManageNameIDService;
+import org.opensaml.saml.saml2.metadata.ManageNameIDService;
 
 /**
- * Concrete implenentation of {@link org.opensaml.saml2.metadata.ManageNameIDService}.
+ * Concrete implenentation of {@link org.opensaml.saml.saml2.metadata.ManageNameIDService}.
  */
 public class ManageNameIDServiceImpl extends EndpointImpl implements ManageNameIDService {
 

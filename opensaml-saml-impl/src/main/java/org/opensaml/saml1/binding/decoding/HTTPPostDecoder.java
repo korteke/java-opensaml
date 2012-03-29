@@ -26,7 +26,7 @@ import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.binding.SAMLMessageContext;
 import org.opensaml.saml.common.binding.artifact.SAMLArtifactMap;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml1.core.ResponseAbstractType;
+import org.opensaml.saml.saml1.core.ResponseAbstractType;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.message.decoder.MessageDecodingException;
 import org.opensaml.ws.transport.http.HTTPInTransport;

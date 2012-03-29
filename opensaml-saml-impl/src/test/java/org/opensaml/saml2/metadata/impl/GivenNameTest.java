@@ -21,11 +21,11 @@
 package org.opensaml.saml2.metadata.impl;
 
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
-import org.opensaml.saml2.metadata.GivenName;
+import org.opensaml.saml.saml2.metadata.GivenName;
 
 /**
  * Test case for creating, marshalling, and unmarshalling
- * {@link org.opensaml.saml2.metadata.GivenName}.
+ * {@link org.opensaml.saml.saml2.metadata.GivenName}.
  */
 public class GivenNameTest extends BaseSAMLObjectProviderTestCase {
     

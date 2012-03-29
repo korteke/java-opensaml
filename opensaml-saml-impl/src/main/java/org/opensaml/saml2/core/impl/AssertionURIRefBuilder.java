@@ -23,10 +23,10 @@ package org.opensaml.saml2.core.impl;
 
 import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml2.core.AssertionURIRef;
+import org.opensaml.saml.saml2.core.AssertionURIRef;
 
 /**
- * Builder for {@link org.opensaml.saml2.core.impl.AssertionURIRefImpl} objects.
+ * Builder for {@link org.opensaml.saml.saml2.core.impl.AssertionURIRefImpl} objects.
  */
 public class AssertionURIRefBuilder extends AbstractSAMLObjectBuilder<AssertionURIRef> {
 

@@ -23,10 +23,10 @@ package org.opensaml.saml2.metadata.impl;
 
 import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml2.metadata.SingleLogoutService;
+import org.opensaml.saml.saml2.metadata.SingleLogoutService;
 
 /**
- * Builder of {@link org.opensaml.saml2.metadata.impl.SingleLogoutServiceImpl}.
+ * Builder of {@link org.opensaml.saml.saml2.metadata.impl.SingleLogoutServiceImpl}.
  */
 public class SingleLogoutServiceBuilder extends AbstractSAMLObjectBuilder<SingleLogoutService> {
 

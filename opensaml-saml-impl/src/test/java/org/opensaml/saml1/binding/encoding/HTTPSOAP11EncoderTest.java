@@ -22,9 +22,9 @@ import org.opensaml.common.BaseTestCase;
 import org.opensaml.saml.common.SAMLObjectBuilder;
 import org.opensaml.saml.common.SAMLVersion;
 import org.opensaml.saml.common.binding.BasicSAMLMessageContext;
-import org.opensaml.saml1.core.Request;
-import org.opensaml.saml2.metadata.AssertionConsumerService;
-import org.opensaml.saml2.metadata.Endpoint;
+import org.opensaml.saml.saml1.core.Request;
+import org.opensaml.saml.saml2.metadata.AssertionConsumerService;
+import org.opensaml.saml.saml2.metadata.Endpoint;
 import org.opensaml.ws.transport.http.HttpServletResponseAdapter;
 import org.springframework.mock.web.MockHttpServletResponse;
 

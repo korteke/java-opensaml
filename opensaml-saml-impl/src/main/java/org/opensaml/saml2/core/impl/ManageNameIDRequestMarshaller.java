@@ -22,7 +22,7 @@
 package org.opensaml.saml2.core.impl;
 
 /**
- * A thread safe Marshaller for {@link org.opensaml.saml2.core.ManageNameIDRequest} objects.
+ * A thread safe Marshaller for {@link org.opensaml.saml.saml2.core.ManageNameIDRequest} objects.
  */
 public class ManageNameIDRequestMarshaller extends RequestAbstractTypeMarshaller {
 

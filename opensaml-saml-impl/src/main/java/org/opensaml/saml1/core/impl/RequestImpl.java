@@ -23,17 +23,17 @@ import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.XMLObjectChildrenList;
-import org.opensaml.saml1.core.AssertionArtifact;
-import org.opensaml.saml1.core.AssertionIDReference;
-import org.opensaml.saml1.core.AttributeQuery;
-import org.opensaml.saml1.core.AuthenticationQuery;
-import org.opensaml.saml1.core.AuthorizationDecisionQuery;
-import org.opensaml.saml1.core.Query;
-import org.opensaml.saml1.core.Request;
-import org.opensaml.saml1.core.SubjectQuery;
+import org.opensaml.saml.saml1.core.AssertionArtifact;
+import org.opensaml.saml.saml1.core.AssertionIDReference;
+import org.opensaml.saml.saml1.core.AttributeQuery;
+import org.opensaml.saml.saml1.core.AuthenticationQuery;
+import org.opensaml.saml.saml1.core.AuthorizationDecisionQuery;
+import org.opensaml.saml.saml1.core.Query;
+import org.opensaml.saml.saml1.core.Request;
+import org.opensaml.saml.saml1.core.SubjectQuery;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml1.core.Request}
+ * Concrete implementation of {@link org.opensaml.saml.saml1.core.Request}
  */
 public class RequestImpl extends RequestAbstractTypeImpl implements Request {
 

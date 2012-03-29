@@ -28,15 +28,15 @@ import java.util.List;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
 import org.opensaml.saml.common.impl.AbstractSAMLObject;
-import org.opensaml.saml2.core.Assertion;
-import org.opensaml.saml2.core.AssertionIDRef;
-import org.opensaml.saml2.core.AssertionURIRef;
-import org.opensaml.saml2.core.EncryptedAssertion;
-import org.opensaml.saml2.core.Evidence;
-import org.opensaml.saml2.core.Evidentiary;
+import org.opensaml.saml.saml2.core.Assertion;
+import org.opensaml.saml.saml2.core.AssertionIDRef;
+import org.opensaml.saml.saml2.core.AssertionURIRef;
+import org.opensaml.saml.saml2.core.EncryptedAssertion;
+import org.opensaml.saml.saml2.core.Evidence;
+import org.opensaml.saml.saml2.core.Evidentiary;
 
 /**
- * A concrete implementation of {@link org.opensaml.saml2.core.Evidence}.
+ * A concrete implementation of {@link org.opensaml.saml.saml2.core.Evidence}.
  */
 public class EvidenceImpl extends AbstractSAMLObject implements Evidence {
 

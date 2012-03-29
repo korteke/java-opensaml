@@ -30,20 +30,20 @@ import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
 import org.opensaml.core.xml.util.XMLObjectChildrenList;
 import org.opensaml.saml.common.impl.AbstractSignableSAMLObject;
 import org.opensaml.saml.saml2.common.Extensions;
-import org.opensaml.saml2.metadata.AdditionalMetadataLocation;
-import org.opensaml.saml2.metadata.AffiliationDescriptor;
-import org.opensaml.saml2.metadata.AttributeAuthorityDescriptor;
-import org.opensaml.saml2.metadata.AuthnAuthorityDescriptor;
-import org.opensaml.saml2.metadata.ContactPerson;
-import org.opensaml.saml2.metadata.EntityDescriptor;
-import org.opensaml.saml2.metadata.IDPSSODescriptor;
-import org.opensaml.saml2.metadata.Organization;
-import org.opensaml.saml2.metadata.PDPDescriptor;
-import org.opensaml.saml2.metadata.RoleDescriptor;
-import org.opensaml.saml2.metadata.SPSSODescriptor;
+import org.opensaml.saml.saml2.metadata.AdditionalMetadataLocation;
+import org.opensaml.saml.saml2.metadata.AffiliationDescriptor;
+import org.opensaml.saml.saml2.metadata.AttributeAuthorityDescriptor;
+import org.opensaml.saml.saml2.metadata.AuthnAuthorityDescriptor;
+import org.opensaml.saml.saml2.metadata.ContactPerson;
+import org.opensaml.saml.saml2.metadata.EntityDescriptor;
+import org.opensaml.saml.saml2.metadata.IDPSSODescriptor;
+import org.opensaml.saml.saml2.metadata.Organization;
+import org.opensaml.saml.saml2.metadata.PDPDescriptor;
+import org.opensaml.saml.saml2.metadata.RoleDescriptor;
+import org.opensaml.saml.saml2.metadata.SPSSODescriptor;
 
 /**
- * Concretate implementation of {@link org.opensaml.saml2.metadata.EntitiesDescriptor}.
+ * Concretate implementation of {@link org.opensaml.saml.saml2.metadata.EntitiesDescriptor}.
  */
 public class EntityDescriptorImpl extends AbstractSignableSAMLObject implements EntityDescriptor {
 

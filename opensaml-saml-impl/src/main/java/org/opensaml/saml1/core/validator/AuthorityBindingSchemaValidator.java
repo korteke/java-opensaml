@@ -25,12 +25,12 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.validation.ValidationException;
 import org.opensaml.core.xml.validation.Validator;
-import org.opensaml.saml1.core.AuthorityBinding;
+import org.opensaml.saml.saml1.core.AuthorityBinding;
 
 import com.google.common.base.Strings;
 
 /**
- * Checks {@link org.opensaml.saml1.core.AuthorityBinding} for Schema compliance.
+ * Checks {@link org.opensaml.saml.saml1.core.AuthorityBinding} for Schema compliance.
  */
 public class AuthorityBindingSchemaValidator implements Validator<AuthorityBinding> {
 

@@ -21,10 +21,10 @@ import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.common.impl.AbstractSAMLObject;
-import org.opensaml.saml1.core.SubjectLocality;
+import org.opensaml.saml.saml1.core.SubjectLocality;
 
 /**
- * A concrete impementation of the {@link org.opensaml.saml1.core.SubjectLocality} interface
+ * A concrete impementation of the {@link org.opensaml.saml.saml1.core.SubjectLocality} interface
  */
 public class SubjectLocalityImpl extends AbstractSAMLObject implements SubjectLocality {
 

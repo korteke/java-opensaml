@@ -26,11 +26,11 @@ import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml.common.SAMLVersion;
 import org.opensaml.saml.common.impl.AbstractSAMLObjectMarshaller;
 import org.opensaml.saml.config.Configuration;
-import org.opensaml.saml1.core.RequestAbstractType;
+import org.opensaml.saml.saml1.core.RequestAbstractType;
 import org.w3c.dom.Element;
 
 /**
- * A thread safe Marshaller for {@link org.opensaml.saml1.core.RequestAbstractType} objects.
+ * A thread safe Marshaller for {@link org.opensaml.saml.saml1.core.RequestAbstractType} objects.
  */
 public class RequestAbstractTypeMarshaller extends AbstractSAMLObjectMarshaller {
 

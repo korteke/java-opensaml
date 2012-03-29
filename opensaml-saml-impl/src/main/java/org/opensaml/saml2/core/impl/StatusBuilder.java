@@ -23,10 +23,10 @@ package org.opensaml.saml2.core.impl;
 
 import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml2.core.Status;
+import org.opensaml.saml.saml2.core.Status;
 
 /**
- * Builder of {@link org.opensaml.saml2.core.impl.StatusImpl}.
+ * Builder of {@link org.opensaml.saml.saml2.core.impl.StatusImpl}.
  */
 public class StatusBuilder extends AbstractSAMLObjectBuilder<Status> {
 

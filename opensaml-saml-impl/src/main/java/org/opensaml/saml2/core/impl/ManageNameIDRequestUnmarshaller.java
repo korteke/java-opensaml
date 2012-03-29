@@ -23,15 +23,15 @@ package org.opensaml.saml2.core.impl;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
-import org.opensaml.saml2.core.EncryptedID;
-import org.opensaml.saml2.core.ManageNameIDRequest;
-import org.opensaml.saml2.core.NameID;
-import org.opensaml.saml2.core.NewEncryptedID;
-import org.opensaml.saml2.core.NewID;
-import org.opensaml.saml2.core.Terminate;
+import org.opensaml.saml.saml2.core.EncryptedID;
+import org.opensaml.saml.saml2.core.ManageNameIDRequest;
+import org.opensaml.saml.saml2.core.NameID;
+import org.opensaml.saml.saml2.core.NewEncryptedID;
+import org.opensaml.saml.saml2.core.NewID;
+import org.opensaml.saml.saml2.core.Terminate;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml2.core.ManageNameIDRequest} objects.
+ * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.core.ManageNameIDRequest} objects.
  */
 public class ManageNameIDRequestUnmarshaller extends RequestAbstractTypeUnmarshaller {
 

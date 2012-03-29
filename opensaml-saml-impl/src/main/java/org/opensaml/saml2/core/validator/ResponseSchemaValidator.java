@@ -21,10 +21,10 @@
 package org.opensaml.saml2.core.validator;
 
 import org.opensaml.core.xml.validation.ValidationException;
-import org.opensaml.saml2.core.Response;
+import org.opensaml.saml.saml2.core.Response;
 
 /**
- * Checks {@link org.opensaml.saml2.core.Response} for Schema compliance.
+ * Checks {@link org.opensaml.saml.saml2.core.Response} for Schema compliance.
  */
 public class ResponseSchemaValidator extends StatusResponseTypeSchemaValidator<Response> {
 

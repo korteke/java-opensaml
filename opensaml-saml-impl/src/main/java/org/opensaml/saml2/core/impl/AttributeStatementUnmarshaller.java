@@ -24,12 +24,12 @@ package org.opensaml.saml2.core.impl;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.impl.AbstractSAMLObjectUnmarshaller;
-import org.opensaml.saml2.core.Attribute;
-import org.opensaml.saml2.core.AttributeStatement;
-import org.opensaml.saml2.core.EncryptedAttribute;
+import org.opensaml.saml.saml2.core.Attribute;
+import org.opensaml.saml.saml2.core.AttributeStatement;
+import org.opensaml.saml.saml2.core.EncryptedAttribute;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml2.core.AttributeStatement}.
+ * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.core.AttributeStatement}.
  */
 public class AttributeStatementUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 

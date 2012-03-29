@@ -24,11 +24,11 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml1.core.AttributeQuery;
-import org.opensaml.saml1.core.AuthorityBinding;
+import org.opensaml.saml.saml1.core.AttributeQuery;
+import org.opensaml.saml.saml1.core.AuthorityBinding;
 
 /**
- *  Test for {@link org.opensaml.saml1.core.impl.AuthorityBinding}
+ *  Test for {@link org.opensaml.saml.saml1.core.impl.AuthorityBinding}
  */
 public class AuthorityBindingTest extends BaseSAMLObjectProviderTestCase {
 

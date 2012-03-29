@@ -22,7 +22,7 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml2.metadata.AttributeConsumingService;
+import org.opensaml.saml.saml2.metadata.AttributeConsumingService;
 
 /**
  * SAML 2.0 Metadata extension AttributeQueryDescriptorType.

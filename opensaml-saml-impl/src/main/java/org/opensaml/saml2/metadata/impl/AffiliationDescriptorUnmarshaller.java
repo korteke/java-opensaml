@@ -30,16 +30,16 @@ import org.opensaml.saml.common.impl.AbstractSAMLObjectUnmarshaller;
 import org.opensaml.saml.saml2.common.CacheableSAMLObject;
 import org.opensaml.saml.saml2.common.Extensions;
 import org.opensaml.saml.saml2.common.TimeBoundSAMLObject;
-import org.opensaml.saml2.metadata.AffiliateMember;
-import org.opensaml.saml2.metadata.AffiliationDescriptor;
-import org.opensaml.saml2.metadata.KeyDescriptor;
+import org.opensaml.saml.saml2.metadata.AffiliateMember;
+import org.opensaml.saml.saml2.metadata.AffiliationDescriptor;
+import org.opensaml.saml.saml2.metadata.KeyDescriptor;
 import org.opensaml.xmlsec.signature.Signature;
 import org.w3c.dom.Attr;
 
 import com.google.common.base.Strings;
 
 /**
- * A thread safe Unmarshaller for {@link org.opensaml.saml2.metadata.AffiliationDescriptor}s.
+ * A thread safe Unmarshaller for {@link org.opensaml.saml.saml2.metadata.AffiliationDescriptor}s.
  */
 public class AffiliationDescriptorUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 

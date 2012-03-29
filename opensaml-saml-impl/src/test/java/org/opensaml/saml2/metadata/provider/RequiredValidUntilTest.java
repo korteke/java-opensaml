@@ -25,7 +25,8 @@ import org.joda.time.chrono.ISOChronology;
 import org.opensaml.common.BaseTestCase;
 import org.opensaml.saml.common.SAMLObjectBuilder;
 import org.opensaml.saml.config.Configuration;
-import org.opensaml.saml2.metadata.EntitiesDescriptor;
+import org.opensaml.saml.saml2.metadata.EntitiesDescriptor;
+import org.opensaml.saml.saml2.metadata.provider.MetadataProviderException;
 
 /** Unit test for {@link RequiredValidUntilFilter}. */
 public class RequiredValidUntilTest extends BaseTestCase {

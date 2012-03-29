@@ -21,11 +21,11 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.validation.ValidationException;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml2.metadata.ArtifactResolutionService;
-import org.opensaml.saml2.metadata.SSODescriptor;
+import org.opensaml.saml.saml2.metadata.ArtifactResolutionService;
+import org.opensaml.saml.saml2.metadata.SSODescriptor;
 
 /**
- * Test case for {@link org.opensaml.saml2.metadata.SSODescriptor}.
+ * Test case for {@link org.opensaml.saml.saml2.metadata.SSODescriptor}.
  */
 public abstract class SSODescriptorSpecTestBase extends RoleDescriptorSpecTestBase {
 

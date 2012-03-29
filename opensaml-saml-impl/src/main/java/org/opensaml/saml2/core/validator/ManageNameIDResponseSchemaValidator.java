@@ -21,10 +21,10 @@
 package org.opensaml.saml2.core.validator;
 
 import org.opensaml.core.xml.validation.ValidationException;
-import org.opensaml.saml2.core.ManageNameIDResponse;
+import org.opensaml.saml.saml2.core.ManageNameIDResponse;
 
 /**
- * Checks {@link org.opensaml.saml2.core.ManageNameIDResponse} for Schema compliance.
+ * Checks {@link org.opensaml.saml.saml2.core.ManageNameIDResponse} for Schema compliance.
  */
 public class ManageNameIDResponseSchemaValidator extends StatusResponseTypeSchemaValidator<ManageNameIDResponse> {
 

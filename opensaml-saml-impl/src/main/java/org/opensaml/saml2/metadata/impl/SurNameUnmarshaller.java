@@ -23,10 +23,10 @@ package org.opensaml.saml2.metadata.impl;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.common.impl.AbstractSAMLObjectUnmarshaller;
-import org.opensaml.saml2.metadata.SurName;
+import org.opensaml.saml.saml2.metadata.SurName;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml2.metadata.SurName} objects.
+ * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.metadata.SurName} objects.
  */
 public class SurNameUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 

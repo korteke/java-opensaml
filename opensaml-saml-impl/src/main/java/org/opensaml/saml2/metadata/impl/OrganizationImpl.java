@@ -29,13 +29,13 @@ import org.opensaml.core.xml.util.AttributeMap;
 import org.opensaml.core.xml.util.XMLObjectChildrenList;
 import org.opensaml.saml.common.impl.AbstractSAMLObject;
 import org.opensaml.saml.saml2.common.Extensions;
-import org.opensaml.saml2.metadata.Organization;
-import org.opensaml.saml2.metadata.OrganizationDisplayName;
-import org.opensaml.saml2.metadata.OrganizationName;
-import org.opensaml.saml2.metadata.OrganizationURL;
+import org.opensaml.saml.saml2.metadata.Organization;
+import org.opensaml.saml.saml2.metadata.OrganizationDisplayName;
+import org.opensaml.saml.saml2.metadata.OrganizationName;
+import org.opensaml.saml.saml2.metadata.OrganizationURL;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml2.metadata.Organization}
+ * Concrete implementation of {@link org.opensaml.saml.saml2.metadata.Organization}
  */
 public class OrganizationImpl extends AbstractSAMLObject implements Organization {
 

@@ -26,15 +26,15 @@ import org.joda.time.chrono.ISOChronology;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.impl.AbstractSAMLObjectUnmarshaller;
-import org.opensaml.saml2.core.AuthnContext;
-import org.opensaml.saml2.core.AuthnStatement;
-import org.opensaml.saml2.core.SubjectLocality;
+import org.opensaml.saml.saml2.core.AuthnContext;
+import org.opensaml.saml.saml2.core.AuthnStatement;
+import org.opensaml.saml.saml2.core.SubjectLocality;
 import org.w3c.dom.Attr;
 
 import com.google.common.base.Strings;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml2.core.AuthnStatement}.
+ * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.core.AuthnStatement}.
  */
 public class AuthnStatementUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 

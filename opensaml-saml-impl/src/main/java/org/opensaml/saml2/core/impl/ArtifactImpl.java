@@ -25,10 +25,10 @@ import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.common.impl.AbstractSAMLObject;
-import org.opensaml.saml2.core.Artifact;
+import org.opensaml.saml.saml2.core.Artifact;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml2.core.Artifact}.
+ * Concrete implementation of {@link org.opensaml.saml.saml2.core.Artifact}.
  */
 public class ArtifactImpl extends AbstractSAMLObject implements Artifact {
 

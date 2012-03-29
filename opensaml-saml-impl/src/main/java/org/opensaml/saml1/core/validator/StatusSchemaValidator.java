@@ -19,10 +19,10 @@ package org.opensaml.saml1.core.validator;
 
 import org.opensaml.core.xml.validation.ValidationException;
 import org.opensaml.core.xml.validation.Validator;
-import org.opensaml.saml1.core.Status;
+import org.opensaml.saml.saml1.core.Status;
 
 /**
- * Checks {@link org.opensaml.saml1.core.Status} for Schema compliance.
+ * Checks {@link org.opensaml.saml.saml1.core.Status} for Schema compliance.
  */
 public class StatusSchemaValidator implements Validator<Status> {
 

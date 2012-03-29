@@ -26,11 +26,11 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.XMLObjectChildrenList;
 import org.opensaml.saml.common.SAMLVersion;
 import org.opensaml.saml.common.impl.AbstractSignableSAMLObject;
-import org.opensaml.saml1.core.RequestAbstractType;
-import org.opensaml.saml1.core.RespondWith;
+import org.opensaml.saml.saml1.core.RequestAbstractType;
+import org.opensaml.saml.saml1.core.RespondWith;
 
 /**
- * Implementation of {@link org.opensaml.saml1.core.RequestAbstractType}.
+ * Implementation of {@link org.opensaml.saml.saml1.core.RequestAbstractType}.
  */
 public abstract class RequestAbstractTypeImpl extends AbstractSignableSAMLObject implements RequestAbstractType {
 

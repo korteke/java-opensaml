@@ -21,11 +21,11 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.validation.ValidationException;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml2.metadata.AttributeAuthorityDescriptor;
-import org.opensaml.saml2.metadata.AttributeService;
+import org.opensaml.saml.saml2.metadata.AttributeAuthorityDescriptor;
+import org.opensaml.saml.saml2.metadata.AttributeService;
 
 /**
- * Test case for {@link org.opensaml.saml2.metadata.AttributeAuthorityDescriptor}.
+ * Test case for {@link org.opensaml.saml.saml2.metadata.AttributeAuthorityDescriptor}.
  */
 public class AttributeAuthorityDescriptorSchemaTest extends RoleDescriptorSchemaTestBase {
 

@@ -25,10 +25,10 @@ import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.common.impl.AbstractSAMLObject;
-import org.opensaml.saml2.core.Audience;
+import org.opensaml.saml.saml2.core.Audience;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml2.core.Audience}.
+ * Concrete implementation of {@link org.opensaml.saml.saml2.core.Audience}.
  */
 public class AudienceImpl extends AbstractSAMLObject implements Audience {
 

@@ -22,10 +22,10 @@
 package org.opensaml.saml2.metadata.validator;
 
 import org.opensaml.core.xml.validation.ValidationException;
-import org.opensaml.saml2.metadata.IndexedEndpoint;
+import org.opensaml.saml.saml2.metadata.IndexedEndpoint;
 
 /**
- * Checks {@link org.opensaml.saml2.metadata.IndexedEndpoint} for Schema compliance.
+ * Checks {@link org.opensaml.saml.saml2.metadata.IndexedEndpoint} for Schema compliance.
  */
 public class IndexedEndpointSchemaValidator<EndpointType extends IndexedEndpoint> extends EndpointSchemaValidator<EndpointType> {
 

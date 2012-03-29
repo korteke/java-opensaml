@@ -23,10 +23,10 @@ package org.opensaml.saml2.core.impl;
 
 import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml2.core.AuthenticatingAuthority;
+import org.opensaml.saml.saml2.core.AuthenticatingAuthority;
 
 /**
- * Builder for {@link org.opensaml.saml2.core.impl.AuthenticatingAuthorityImpl} objects.
+ * Builder for {@link org.opensaml.saml.saml2.core.impl.AuthenticatingAuthorityImpl} objects.
  */
 public class AuthenticatingAuthorityBuilder extends AbstractSAMLObjectBuilder<AuthenticatingAuthority> {
 

@@ -19,10 +19,10 @@ package org.opensaml.saml1.core.impl;
 
 import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml1.core.SubjectLocality;
+import org.opensaml.saml.saml1.core.SubjectLocality;
 
 /**
- * Builder of {@link org.opensaml.saml1.core.impl.SubjectLocalityImpl} objects.
+ * Builder of {@link org.opensaml.saml.saml1.core.impl.SubjectLocalityImpl} objects.
  */
 public class SubjectLocalityBuilder extends AbstractSAMLObjectBuilder<SubjectLocality> {
 

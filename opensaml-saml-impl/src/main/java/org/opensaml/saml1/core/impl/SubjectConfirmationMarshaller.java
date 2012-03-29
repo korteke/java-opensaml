@@ -20,7 +20,7 @@ package org.opensaml.saml1.core.impl;
 import org.opensaml.saml.common.impl.AbstractSAMLObjectMarshaller;
 
 /**
- * A thread safe Marshaller for {@link org.opensaml.saml1.core.SubjectConfirmation} objects.
+ * A thread safe Marshaller for {@link org.opensaml.saml.saml1.core.SubjectConfirmation} objects.
  */
 public class SubjectConfirmationMarshaller extends AbstractSAMLObjectMarshaller {
 

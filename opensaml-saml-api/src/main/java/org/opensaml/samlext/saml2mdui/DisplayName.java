@@ -19,7 +19,7 @@ package org.opensaml.samlext.saml2mdui;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.saml2.metadata.LocalizedName;
+import org.opensaml.saml.saml2.metadata.LocalizedName;
 
 /**
  * DisplayName.

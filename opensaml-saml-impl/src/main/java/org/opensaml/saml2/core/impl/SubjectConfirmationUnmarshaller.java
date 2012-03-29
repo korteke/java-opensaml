@@ -20,15 +20,15 @@ package org.opensaml.saml2.core.impl;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.impl.AbstractSAMLObjectUnmarshaller;
-import org.opensaml.saml2.core.BaseID;
-import org.opensaml.saml2.core.EncryptedID;
-import org.opensaml.saml2.core.NameID;
-import org.opensaml.saml2.core.SubjectConfirmation;
-import org.opensaml.saml2.core.SubjectConfirmationData;
+import org.opensaml.saml.saml2.core.BaseID;
+import org.opensaml.saml.saml2.core.EncryptedID;
+import org.opensaml.saml.saml2.core.NameID;
+import org.opensaml.saml.saml2.core.SubjectConfirmation;
+import org.opensaml.saml.saml2.core.SubjectConfirmationData;
 import org.w3c.dom.Attr;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml2.core.SubjectConfirmation} objects.
+ * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.core.SubjectConfirmation} objects.
  */
 public class SubjectConfirmationUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 

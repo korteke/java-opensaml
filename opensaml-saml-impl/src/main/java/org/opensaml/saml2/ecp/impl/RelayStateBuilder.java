@@ -23,7 +23,7 @@ package org.opensaml.saml2.ecp.impl;
 
 import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml2.ecp.RelayState;
+import org.opensaml.saml.saml2.ecp.RelayState;
 
 /**
  * A Builder for {@link RelayState} objects.

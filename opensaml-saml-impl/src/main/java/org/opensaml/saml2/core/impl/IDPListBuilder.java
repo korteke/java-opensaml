@@ -23,10 +23,10 @@ package org.opensaml.saml2.core.impl;
 
 import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml2.core.IDPList;
+import org.opensaml.saml.saml2.core.IDPList;
 
 /**
- * Builder of {@link org.opensaml.saml2.core.impl.IDPListImpl}.
+ * Builder of {@link org.opensaml.saml.saml2.core.impl.IDPListImpl}.
  */
 public class IDPListBuilder extends AbstractSAMLObjectBuilder<IDPList> {
 

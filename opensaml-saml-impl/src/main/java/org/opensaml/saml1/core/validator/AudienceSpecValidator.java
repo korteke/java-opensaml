@@ -23,12 +23,12 @@ package org.opensaml.saml1.core.validator;
 
 import org.opensaml.core.xml.validation.ValidationException;
 import org.opensaml.core.xml.validation.Validator;
-import org.opensaml.saml1.core.Audience;
+import org.opensaml.saml.saml1.core.Audience;
 
 import com.google.common.base.Strings;
 
 /**
- * Checks {@link org.opensaml.saml1.core.AudienceRestrictionCondition} for Spec compliance.
+ * Checks {@link org.opensaml.saml.saml1.core.AudienceRestrictionCondition} for Spec compliance.
  */
 public class AudienceSpecValidator implements Validator<Audience> {
 

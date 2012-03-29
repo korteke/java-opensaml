@@ -18,7 +18,7 @@
 package org.opensaml.saml2.core.impl;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml2.core.EncryptedAttribute}.
+ * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.core.EncryptedAttribute}.
  */
 public class EncryptedAttributeUnmarshaller extends EncryptedElementTypeUnmarshaller {
 

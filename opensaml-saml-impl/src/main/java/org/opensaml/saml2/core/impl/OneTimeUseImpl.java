@@ -25,10 +25,10 @@ import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.common.impl.AbstractSAMLObject;
-import org.opensaml.saml2.core.OneTimeUse;
+import org.opensaml.saml.saml2.core.OneTimeUse;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml2.core.OneTimeUse}.
+ * Concrete implementation of {@link org.opensaml.saml.saml2.core.OneTimeUse}.
  */
 public class OneTimeUseImpl extends AbstractSAMLObject implements OneTimeUse {
 

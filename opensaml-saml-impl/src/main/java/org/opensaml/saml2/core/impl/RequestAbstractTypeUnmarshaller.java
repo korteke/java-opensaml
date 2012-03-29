@@ -28,15 +28,15 @@ import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.SAMLVersion;
 import org.opensaml.saml.common.impl.AbstractSAMLObjectUnmarshaller;
 import org.opensaml.saml.saml2.common.Extensions;
-import org.opensaml.saml2.core.Issuer;
-import org.opensaml.saml2.core.RequestAbstractType;
+import org.opensaml.saml.saml2.core.Issuer;
+import org.opensaml.saml.saml2.core.RequestAbstractType;
 import org.opensaml.xmlsec.signature.Signature;
 import org.w3c.dom.Attr;
 
 import com.google.common.base.Strings;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml2.core.RequestAbstractType} objects.
+ * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.core.RequestAbstractType} objects.
  */
 public abstract class RequestAbstractTypeUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 

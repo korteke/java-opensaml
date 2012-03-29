@@ -20,11 +20,11 @@ package org.opensaml.saml1.core.validator;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml1.core.Response;
-import org.opensaml.saml1.core.Status;
+import org.opensaml.saml.saml1.core.Response;
+import org.opensaml.saml.saml1.core.Status;
 
 /**
- * Test case for {@link org.opensaml.saml1.core.validator.ResponseSchemaValidator}.
+ * Test case for {@link org.opensaml.saml.saml1.core.validator.ResponseSchemaValidator}.
  */
 public class ResponseSchemaTest extends ResponseAbstractTypeSchemaTestBase  {
 

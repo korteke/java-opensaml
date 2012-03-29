@@ -18,7 +18,7 @@
 package org.opensaml.saml2.metadata.impl;
 
 /**
- * A thread safe Unmarshaller for {@link org.opensaml.saml2.metadata.EncryptionMethod} objects.
+ * A thread safe Unmarshaller for {@link org.opensaml.saml.saml2.metadata.EncryptionMethod} objects.
  */
 public class EncryptionMethodUnmarshaller extends org.opensaml.xmlsec.encryption.impl.EncryptionMethodUnmarshaller {
 

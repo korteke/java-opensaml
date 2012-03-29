@@ -25,12 +25,12 @@ import org.opensaml.common.BaseSAMLObjectProviderTestCase;
 import org.opensaml.saml.common.SAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.config.Configuration;
-import org.opensaml.saml2.core.KeyInfoConfirmationDataType;
+import org.opensaml.saml.saml2.core.KeyInfoConfirmationDataType;
 import org.opensaml.xmlsec.signature.KeyInfo;
 
 /**
  * Test case for creating, marshalling, and unmarshalling
- * {@link org.opensaml.saml2.core.impl.KeyInfoConfirmationDataTypeImpl}.
+ * {@link org.opensaml.saml.saml2.core.impl.KeyInfoConfirmationDataTypeImpl}.
  */
 public class KeyInfoConfirmationDataTypeTest extends BaseSAMLObjectProviderTestCase {
 

@@ -24,10 +24,10 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml1.core.Audience;
+import org.opensaml.saml.saml1.core.Audience;
 
 /**
- * Test for org.opensaml.saml1.core.Audience Objects
+ * Test for org.opensaml.saml.saml1.core.Audience Objects
  */
 public class AudienceTest extends BaseSAMLObjectProviderTestCase {
 

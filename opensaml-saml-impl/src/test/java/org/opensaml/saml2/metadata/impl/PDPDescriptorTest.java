@@ -30,13 +30,13 @@ import org.joda.time.chrono.ISOChronology;
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.common.Extensions;
-import org.opensaml.saml2.metadata.AssertionIDRequestService;
-import org.opensaml.saml2.metadata.AuthzService;
-import org.opensaml.saml2.metadata.NameIDFormat;
-import org.opensaml.saml2.metadata.PDPDescriptor;
+import org.opensaml.saml.saml2.metadata.AssertionIDRequestService;
+import org.opensaml.saml.saml2.metadata.AuthzService;
+import org.opensaml.saml.saml2.metadata.NameIDFormat;
+import org.opensaml.saml.saml2.metadata.PDPDescriptor;
 
 /**
- * Test case for creating, marshalling, and unmarshalling {@link org.opensaml.saml2.metadata.impl.PDPDescriptorImpl}.
+ * Test case for creating, marshalling, and unmarshalling {@link org.opensaml.saml.saml2.metadata.impl.PDPDescriptorImpl}.
  */
 public class PDPDescriptorTest extends BaseSAMLObjectProviderTestCase {
 

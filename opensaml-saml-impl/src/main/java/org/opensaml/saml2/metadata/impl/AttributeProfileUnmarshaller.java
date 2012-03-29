@@ -23,10 +23,10 @@ package org.opensaml.saml2.metadata.impl;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.common.impl.AbstractSAMLObjectUnmarshaller;
-import org.opensaml.saml2.metadata.AttributeProfile;
+import org.opensaml.saml.saml2.metadata.AttributeProfile;
 
 /**
- * A thread safe Unmarshaller for {@link org.opensaml.saml2.metadata.AttributeProfile} objects.
+ * A thread safe Unmarshaller for {@link org.opensaml.saml.saml2.metadata.AttributeProfile} objects.
  */
 public class AttributeProfileUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 

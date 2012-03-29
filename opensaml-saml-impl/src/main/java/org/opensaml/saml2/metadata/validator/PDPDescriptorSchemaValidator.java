@@ -22,10 +22,10 @@
 package org.opensaml.saml2.metadata.validator;
 
 import org.opensaml.core.xml.validation.ValidationException;
-import org.opensaml.saml2.metadata.PDPDescriptor;
+import org.opensaml.saml.saml2.metadata.PDPDescriptor;
 
 /**
- * Checks {@link org.opensaml.saml2.metadata.PDPDescriptor} for Schema compliance.
+ * Checks {@link org.opensaml.saml.saml2.metadata.PDPDescriptor} for Schema compliance.
  */
 public class PDPDescriptorSchemaValidator extends RoleDescriptorSchemaValidator<PDPDescriptor> {
 

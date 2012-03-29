@@ -24,14 +24,14 @@ import java.util.List;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.XMLObjectChildrenList;
 import org.opensaml.saml.common.impl.AbstractSAMLObject;
-import org.opensaml.saml2.core.BaseID;
-import org.opensaml.saml2.core.EncryptedID;
-import org.opensaml.saml2.core.NameID;
-import org.opensaml.saml2.core.Subject;
-import org.opensaml.saml2.core.SubjectConfirmation;
+import org.opensaml.saml.saml2.core.BaseID;
+import org.opensaml.saml.saml2.core.EncryptedID;
+import org.opensaml.saml.saml2.core.NameID;
+import org.opensaml.saml.saml2.core.Subject;
+import org.opensaml.saml.saml2.core.SubjectConfirmation;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml2.core.Subject}.
+ * Concrete implementation of {@link org.opensaml.saml.saml2.core.Subject}.
  */
 public class SubjectImpl extends AbstractSAMLObject implements Subject {
 

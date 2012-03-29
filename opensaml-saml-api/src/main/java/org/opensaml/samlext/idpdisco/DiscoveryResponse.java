@@ -19,7 +19,7 @@ package org.opensaml.samlext.idpdisco;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.saml2.metadata.IndexedEndpoint;
+import org.opensaml.saml.saml2.metadata.IndexedEndpoint;
 
 /** SAML Identity Provider Discovery Protocol DiscoveryResponse */
 public interface DiscoveryResponse extends IndexedEndpoint {

@@ -19,10 +19,10 @@ package org.opensaml.saml1.core.impl;
 
 import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml1.core.NameIdentifier;
+import org.opensaml.saml.saml1.core.NameIdentifier;
 
 /**
- * Builder of{@link org.opensaml.saml1.core.impl.NameIdentifierImpl} objects.
+ * Builder of{@link org.opensaml.saml.saml1.core.impl.NameIdentifierImpl} objects.
  */
 public class NameIdentifierBuilder extends AbstractSAMLObjectBuilder<NameIdentifier> {
 

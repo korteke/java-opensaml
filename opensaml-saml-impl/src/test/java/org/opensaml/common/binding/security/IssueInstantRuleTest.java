@@ -18,9 +18,9 @@
 package org.opensaml.common.binding.security;
 
 import org.joda.time.DateTime;
-import org.opensaml.saml2.core.AttributeQuery;
-import org.opensaml.saml2.core.NameID;
-import org.opensaml.saml2.core.Response;
+import org.opensaml.saml.saml2.core.AttributeQuery;
+import org.opensaml.saml.saml2.core.NameID;
+import org.opensaml.saml.saml2.core.Response;
 
 /**
  * Testing SAML issue instant security policy rule.

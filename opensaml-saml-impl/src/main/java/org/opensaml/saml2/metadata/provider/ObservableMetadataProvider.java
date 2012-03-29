@@ -19,6 +19,8 @@ package org.opensaml.saml2.metadata.provider;
 
 import java.util.List;
 
+import org.opensaml.saml.saml2.metadata.provider.MetadataProvider;
+
 /**
  * A metadata provider that provides event notification to observers. This may be used, for example, to signal an update
  * of an internal cache of metadata allowing other subsystems to perform some action based on that.

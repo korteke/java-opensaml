@@ -23,14 +23,14 @@ import org.joda.time.DateTime;
 import org.opensaml.common.BaseSAMLObjectValidatorTestCase;
 import org.opensaml.saml.common.SAMLVersion;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml1.core.Assertion;
-import org.opensaml.saml1.core.AttributeStatement;
-import org.opensaml.saml1.core.Condition;
-import org.opensaml.saml1.core.Conditions;
-import org.opensaml.saml1.core.DoNotCacheCondition;
+import org.opensaml.saml.saml1.core.Assertion;
+import org.opensaml.saml.saml1.core.AttributeStatement;
+import org.opensaml.saml.saml1.core.Condition;
+import org.opensaml.saml.saml1.core.Conditions;
+import org.opensaml.saml.saml1.core.DoNotCacheCondition;
 
 /**
- * Test case for {@link org.opensaml.saml1.core.validator.AssertionSchemaValidator}.
+ * Test case for {@link org.opensaml.saml.saml1.core.validator.AssertionSchemaValidator}.
  */
 public class AssertionSpecTest extends BaseSAMLObjectValidatorTestCase {
 

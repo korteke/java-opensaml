@@ -27,12 +27,12 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
 import org.opensaml.saml.common.impl.AbstractSAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml1.core.Advice;
-import org.opensaml.saml1.core.Assertion;
-import org.opensaml.saml1.core.AssertionIDReference;
+import org.opensaml.saml.saml1.core.Advice;
+import org.opensaml.saml.saml1.core.Assertion;
+import org.opensaml.saml.saml1.core.AssertionIDReference;
 
 /**
- * Concrete Implementation of the {@link org.opensaml.saml1.core.Advice} Object
+ * Concrete Implementation of the {@link org.opensaml.saml.saml1.core.Advice} Object
  */
 public class AdviceImpl extends AbstractSAMLObject implements Advice {
 

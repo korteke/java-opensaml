@@ -23,8 +23,8 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml2.core.Assertion;
-import org.opensaml.saml2.core.Attribute;
+import org.opensaml.saml.saml2.core.Assertion;
+import org.opensaml.saml.saml2.core.Attribute;
 
 /** SAML V2.0 Metadata Extension for Entity Attributes EntityAttributes SAML object. */
 public interface EntityAttributes extends SAMLObject {

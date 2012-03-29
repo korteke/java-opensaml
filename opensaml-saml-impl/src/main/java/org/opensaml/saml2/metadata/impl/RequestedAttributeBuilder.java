@@ -23,10 +23,10 @@ package org.opensaml.saml2.metadata.impl;
 
 import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml2.metadata.RequestedAttribute;
+import org.opensaml.saml.saml2.metadata.RequestedAttribute;
 
 /**
- * Builder for {@link org.opensaml.saml2.metadata.impl.RequestedAttributeImpl}.
+ * Builder for {@link org.opensaml.saml.saml2.metadata.impl.RequestedAttributeImpl}.
  */
 public class RequestedAttributeBuilder extends AbstractSAMLObjectBuilder<RequestedAttribute> {
 

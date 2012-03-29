@@ -27,8 +27,8 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.SAMLVersion;
 import org.opensaml.saml.common.impl.AbstractSAMLObjectUnmarshaller;
-import org.opensaml.saml1.core.RequestAbstractType;
-import org.opensaml.saml1.core.RespondWith;
+import org.opensaml.saml.saml1.core.RequestAbstractType;
+import org.opensaml.saml.saml1.core.RespondWith;
 import org.opensaml.xmlsec.signature.Signature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,7 +38,7 @@ import org.w3c.dom.Element;
 import com.google.common.base.Strings;
 
 /**
- * A thread safe Unmarshaller for {@link org.opensaml.saml1.core.RequestAbstractType} objects.
+ * A thread safe Unmarshaller for {@link org.opensaml.saml.saml1.core.RequestAbstractType} objects.
  */
 public abstract class RequestAbstractTypeUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 

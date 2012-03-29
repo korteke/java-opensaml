@@ -32,14 +32,14 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
 import org.opensaml.saml.common.impl.AbstractSAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml2.core.AudienceRestriction;
-import org.opensaml.saml2.core.Condition;
-import org.opensaml.saml2.core.Conditions;
-import org.opensaml.saml2.core.OneTimeUse;
-import org.opensaml.saml2.core.ProxyRestriction;
+import org.opensaml.saml.saml2.core.AudienceRestriction;
+import org.opensaml.saml.saml2.core.Condition;
+import org.opensaml.saml.saml2.core.Conditions;
+import org.opensaml.saml.saml2.core.OneTimeUse;
+import org.opensaml.saml.saml2.core.ProxyRestriction;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml2.core.Conditions}.
+ * Concrete implementation of {@link org.opensaml.saml.saml2.core.Conditions}.
  */
 public class ConditionsImpl extends AbstractSAMLObject implements Conditions {
 

@@ -21,14 +21,14 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml2.metadata.EncryptionMethod;
-import org.opensaml.saml2.metadata.KeyDescriptor;
+import org.opensaml.saml.saml2.metadata.EncryptionMethod;
+import org.opensaml.saml.saml2.metadata.KeyDescriptor;
 import org.opensaml.security.credential.UsageType;
 import org.opensaml.xmlsec.signature.KeyInfo;
 
 /**
  * Test case for creating, marshalling, and unmarshalling
- * {@link org.opensaml.saml2.metadata.impl.KeyDescriptorImpl}.
+ * {@link org.opensaml.saml.saml2.metadata.impl.KeyDescriptorImpl}.
  */
 public class KeyDescriptorTest extends BaseSAMLObjectProviderTestCase {
 

@@ -25,13 +25,13 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.saml2.common.Extensions;
-import org.opensaml.saml2.core.ArtifactResponse;
-import org.opensaml.saml2.core.Issuer;
-import org.opensaml.saml2.core.Status;
+import org.opensaml.saml.saml2.core.ArtifactResponse;
+import org.opensaml.saml.saml2.core.Issuer;
+import org.opensaml.saml.saml2.core.Status;
 import org.opensaml.xmlsec.signature.Signature;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml2.core.ArtifactResponse}.
+ * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.core.ArtifactResponse}.
  */
 public class ArtifactResponseUnmarshaller extends StatusResponseTypeUnmarshaller {
 

@@ -18,10 +18,10 @@
 package org.opensaml.saml1.core.validator;
 
 import org.opensaml.core.xml.validation.ValidationException;
-import org.opensaml.saml1.core.Attribute;
+import org.opensaml.saml.saml1.core.Attribute;
 
 /**
- * Checks {@link org.opensaml.saml1.core.Attribute} for Schema compliance.
+ * Checks {@link org.opensaml.saml.saml1.core.Attribute} for Schema compliance.
  */
 public class AttributeSchemaValidator extends AttributeDesignatorSchemaValidator<Attribute> {
 

@@ -19,10 +19,10 @@ package org.opensaml.saml2.metadata.impl;
 
 import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml2.metadata.AffiliationDescriptor;
+import org.opensaml.saml.saml2.metadata.AffiliationDescriptor;
 
 /**
- * A builder for {@link org.opensaml.saml2.metadata.impl.AffiliationDescriptorImpl} objects.
+ * A builder for {@link org.opensaml.saml.saml2.metadata.impl.AffiliationDescriptorImpl} objects.
  */
 public class AffiliationDescriptorBuilder extends AbstractSAMLObjectBuilder<AffiliationDescriptor> {
 

@@ -29,17 +29,17 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.impl.AbstractSAMLObjectUnmarshaller;
 import org.opensaml.saml.saml2.common.Extensions;
-import org.opensaml.saml2.metadata.Company;
-import org.opensaml.saml2.metadata.ContactPerson;
-import org.opensaml.saml2.metadata.ContactPersonTypeEnumeration;
-import org.opensaml.saml2.metadata.EmailAddress;
-import org.opensaml.saml2.metadata.GivenName;
-import org.opensaml.saml2.metadata.SurName;
-import org.opensaml.saml2.metadata.TelephoneNumber;
+import org.opensaml.saml.saml2.metadata.Company;
+import org.opensaml.saml.saml2.metadata.ContactPerson;
+import org.opensaml.saml.saml2.metadata.ContactPersonTypeEnumeration;
+import org.opensaml.saml.saml2.metadata.EmailAddress;
+import org.opensaml.saml.saml2.metadata.GivenName;
+import org.opensaml.saml.saml2.metadata.SurName;
+import org.opensaml.saml.saml2.metadata.TelephoneNumber;
 import org.w3c.dom.Attr;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml2.metadata.ContactPerson} objects.
+ * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.metadata.ContactPerson} objects.
  */
 public class ContactPersonUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 

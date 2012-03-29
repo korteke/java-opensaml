@@ -23,10 +23,10 @@ package org.opensaml.saml2.core.impl;
 
 import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml2.core.AssertionIDRequest;
+import org.opensaml.saml.saml2.core.AssertionIDRequest;
 
 /**
- * A Builder for {@link org.opensaml.saml2.core.impl.AssertionIDRequestImpl}.
+ * A Builder for {@link org.opensaml.saml.saml2.core.impl.AssertionIDRequestImpl}.
  */
 public class AssertionIDRequestBuilder extends AbstractSAMLObjectBuilder<AssertionIDRequest> {
 

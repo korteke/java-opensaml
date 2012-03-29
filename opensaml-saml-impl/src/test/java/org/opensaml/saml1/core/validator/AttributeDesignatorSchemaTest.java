@@ -21,10 +21,10 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.common.BaseSAMLObjectValidatorTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml1.core.AttributeDesignator;
+import org.opensaml.saml.saml1.core.AttributeDesignator;
 
 /**
- * Test case for {@link org.opensaml.saml1.core.validator.AttributeDesignatorSchemaValidator}.
+ * Test case for {@link org.opensaml.saml.saml1.core.validator.AttributeDesignatorSchemaValidator}.
  */
 public class AttributeDesignatorSchemaTest extends BaseSAMLObjectValidatorTestCase {
 

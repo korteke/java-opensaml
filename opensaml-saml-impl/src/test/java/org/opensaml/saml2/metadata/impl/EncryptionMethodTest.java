@@ -19,7 +19,7 @@ package org.opensaml.saml2.metadata.impl;
 
 
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
-import org.opensaml.saml2.metadata.EncryptionMethod;
+import org.opensaml.saml.saml2.metadata.EncryptionMethod;
 import org.opensaml.xmlsec.encryption.KeySize;
 import org.opensaml.xmlsec.encryption.OAEPparams;
 import org.opensaml.xmlsec.signature.DigestMethod;

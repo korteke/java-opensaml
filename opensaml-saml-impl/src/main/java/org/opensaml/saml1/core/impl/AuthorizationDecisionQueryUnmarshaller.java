@@ -19,13 +19,13 @@ package org.opensaml.saml1.core.impl;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
-import org.opensaml.saml1.core.Action;
-import org.opensaml.saml1.core.AuthorizationDecisionQuery;
-import org.opensaml.saml1.core.Evidence;
+import org.opensaml.saml.saml1.core.Action;
+import org.opensaml.saml.saml1.core.AuthorizationDecisionQuery;
+import org.opensaml.saml.saml1.core.Evidence;
 import org.w3c.dom.Attr;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml1.core.AuthorizationDecisionQuery} objects.
+ * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml1.core.AuthorizationDecisionQuery} objects.
  */
 public class AuthorizationDecisionQueryUnmarshaller extends SubjectQueryUnmarshaller {
 

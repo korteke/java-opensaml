@@ -26,10 +26,10 @@ import java.util.List;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.saml.common.impl.AbstractSAMLObject;
-import org.opensaml.saml2.core.NameIDPolicy;
+import org.opensaml.saml.saml2.core.NameIDPolicy;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml2.core.NameIDPolicy}.
+ * Concrete implementation of {@link org.opensaml.saml.saml2.core.NameIDPolicy}.
  */
 public class NameIDPolicyImpl extends AbstractSAMLObject implements NameIDPolicy {
 

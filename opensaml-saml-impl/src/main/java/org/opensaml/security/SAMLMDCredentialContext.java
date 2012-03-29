@@ -19,9 +19,9 @@ package org.opensaml.security;
 
 import java.util.List;
 
-import org.opensaml.saml2.metadata.EncryptionMethod;
-import org.opensaml.saml2.metadata.KeyDescriptor;
-import org.opensaml.saml2.metadata.RoleDescriptor;
+import org.opensaml.saml.saml2.metadata.EncryptionMethod;
+import org.opensaml.saml.saml2.metadata.KeyDescriptor;
+import org.opensaml.saml.saml2.metadata.RoleDescriptor;
 import org.opensaml.security.credential.CredentialContext;
 
 /**

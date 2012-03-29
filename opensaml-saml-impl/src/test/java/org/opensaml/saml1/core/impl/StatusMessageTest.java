@@ -24,10 +24,10 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml1.core.StatusMessage;
+import org.opensaml.saml.saml1.core.StatusMessage;
 
 /**
- * Test for org.opensaml.saml1.core.StatusMessage 
+ * Test for org.opensaml.saml.saml1.core.StatusMessage 
  */
 public class StatusMessageTest extends BaseSAMLObjectProviderTestCase {
 

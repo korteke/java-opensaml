@@ -20,8 +20,8 @@ package org.opensaml.samlext.saml2mdattr;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
-import org.opensaml.saml2.core.Assertion;
-import org.opensaml.saml2.core.Attribute;
+import org.opensaml.saml.saml2.core.Assertion;
+import org.opensaml.saml.saml2.core.Attribute;
 
 /** Unit test for {@link EntityAttributes}. */
 public class EntityAttributesTest extends BaseSAMLObjectProviderTestCase {

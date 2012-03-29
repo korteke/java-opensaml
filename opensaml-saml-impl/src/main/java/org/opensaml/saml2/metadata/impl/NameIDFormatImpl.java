@@ -25,10 +25,10 @@ import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.common.impl.AbstractSAMLObject;
-import org.opensaml.saml2.metadata.NameIDFormat;
+import org.opensaml.saml.saml2.metadata.NameIDFormat;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml2.metadata.NameIDFormat}.
+ * Concrete implementation of {@link org.opensaml.saml.saml2.metadata.NameIDFormat}.
  */
 public class NameIDFormatImpl extends AbstractSAMLObject implements NameIDFormat {
 

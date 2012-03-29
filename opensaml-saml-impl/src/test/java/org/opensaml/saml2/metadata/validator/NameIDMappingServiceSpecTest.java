@@ -20,10 +20,10 @@ package org.opensaml.saml2.metadata.validator;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml2.metadata.NameIDMappingService;
+import org.opensaml.saml.saml2.metadata.NameIDMappingService;
 
 /**
- * Test case for {@link org.opensaml.saml2.metadata.NameIDMappingService}.
+ * Test case for {@link org.opensaml.saml.saml2.metadata.NameIDMappingService}.
  */
 public class NameIDMappingServiceSpecTest extends EndpointSchemaTestBase {
 

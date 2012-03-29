@@ -24,14 +24,14 @@ import java.util.List;
 import org.joda.time.DateTime;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.XMLObjectChildrenList;
-import org.opensaml.saml2.core.BaseID;
-import org.opensaml.saml2.core.EncryptedID;
-import org.opensaml.saml2.core.LogoutRequest;
-import org.opensaml.saml2.core.NameID;
-import org.opensaml.saml2.core.SessionIndex;
+import org.opensaml.saml.saml2.core.BaseID;
+import org.opensaml.saml.saml2.core.EncryptedID;
+import org.opensaml.saml.saml2.core.LogoutRequest;
+import org.opensaml.saml.saml2.core.NameID;
+import org.opensaml.saml.saml2.core.SessionIndex;
 
 /**
- * A concrete implementation of {@link org.opensaml.saml2.core.LogoutRequest}.
+ * A concrete implementation of {@link org.opensaml.saml.saml2.core.LogoutRequest}.
  */
 public class LogoutRequestImpl extends RequestAbstractTypeImpl implements LogoutRequest {
 

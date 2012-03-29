@@ -25,11 +25,11 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml1.core.AuthenticationQuery;
-import org.opensaml.saml1.core.Subject;
+import org.opensaml.saml.saml1.core.AuthenticationQuery;
+import org.opensaml.saml.saml1.core.Subject;
 
 /**
- * Test class for org.opensaml.saml1.core.AuthenticationQuery
+ * Test class for org.opensaml.saml.saml1.core.AuthenticationQuery
  */
 public class AuthenticationQueryTest extends BaseSAMLObjectProviderTestCase {
 

@@ -22,12 +22,12 @@ import java.util.List;
 import org.opensaml.core.xml.LangBearing;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.schema.impl.XSStringImpl;
-import org.opensaml.saml2.metadata.LocalizedName;
+import org.opensaml.saml.saml2.metadata.LocalizedName;
 
 import com.google.common.base.Strings;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml2.metadata.LocalizedName}.
+ * Concrete implementation of {@link org.opensaml.saml.saml2.metadata.LocalizedName}.
  */
 public class LocalizedNameImpl extends XSStringImpl implements LocalizedName {
 

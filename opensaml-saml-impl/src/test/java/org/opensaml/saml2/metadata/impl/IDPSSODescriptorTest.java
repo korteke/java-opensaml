@@ -27,17 +27,17 @@ import org.opensaml.common.BaseSAMLObjectProviderTestCase;
 import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.common.Extensions;
-import org.opensaml.saml2.metadata.ArtifactResolutionService;
-import org.opensaml.saml2.metadata.AssertionIDRequestService;
-import org.opensaml.saml2.metadata.AttributeProfile;
-import org.opensaml.saml2.metadata.ContactPerson;
-import org.opensaml.saml2.metadata.IDPSSODescriptor;
-import org.opensaml.saml2.metadata.ManageNameIDService;
-import org.opensaml.saml2.metadata.NameIDFormat;
-import org.opensaml.saml2.metadata.NameIDMappingService;
-import org.opensaml.saml2.metadata.Organization;
-import org.opensaml.saml2.metadata.SingleLogoutService;
-import org.opensaml.saml2.metadata.SingleSignOnService;
+import org.opensaml.saml.saml2.metadata.ArtifactResolutionService;
+import org.opensaml.saml.saml2.metadata.AssertionIDRequestService;
+import org.opensaml.saml.saml2.metadata.AttributeProfile;
+import org.opensaml.saml.saml2.metadata.ContactPerson;
+import org.opensaml.saml.saml2.metadata.IDPSSODescriptor;
+import org.opensaml.saml.saml2.metadata.ManageNameIDService;
+import org.opensaml.saml.saml2.metadata.NameIDFormat;
+import org.opensaml.saml.saml2.metadata.NameIDMappingService;
+import org.opensaml.saml.saml2.metadata.Organization;
+import org.opensaml.saml.saml2.metadata.SingleLogoutService;
+import org.opensaml.saml.saml2.metadata.SingleSignOnService;
 
 /**
  * 

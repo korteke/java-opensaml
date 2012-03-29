@@ -25,10 +25,10 @@ import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.binding.BasicEndpointSelector;
 import org.opensaml.saml.common.binding.SAMLMessageContext;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml2.core.NameID;
-import org.opensaml.saml2.metadata.ArtifactResolutionService;
-import org.opensaml.saml2.metadata.Endpoint;
-import org.opensaml.saml2.metadata.IndexedEndpoint;
+import org.opensaml.saml.saml2.core.NameID;
+import org.opensaml.saml.saml2.metadata.ArtifactResolutionService;
+import org.opensaml.saml.saml2.metadata.Endpoint;
+import org.opensaml.saml.saml2.metadata.IndexedEndpoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

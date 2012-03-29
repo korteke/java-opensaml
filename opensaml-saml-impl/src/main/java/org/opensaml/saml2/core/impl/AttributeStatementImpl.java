@@ -28,12 +28,12 @@ import java.util.List;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
 import org.opensaml.saml.common.impl.AbstractSAMLObject;
-import org.opensaml.saml2.core.Attribute;
-import org.opensaml.saml2.core.AttributeStatement;
-import org.opensaml.saml2.core.EncryptedAttribute;
+import org.opensaml.saml.saml2.core.Attribute;
+import org.opensaml.saml.saml2.core.AttributeStatement;
+import org.opensaml.saml.saml2.core.EncryptedAttribute;
 
 /**
- * A concrete implementation of {@link org.opensaml.saml2.core.AttributeStatement}.
+ * A concrete implementation of {@link org.opensaml.saml.saml2.core.AttributeStatement}.
  */
 public class AttributeStatementImpl extends AbstractSAMLObject implements AttributeStatement {
 

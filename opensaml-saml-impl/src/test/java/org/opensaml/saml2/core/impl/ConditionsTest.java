@@ -23,14 +23,14 @@ import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml2.core.AudienceRestriction;
-import org.opensaml.saml2.core.Condition;
-import org.opensaml.saml2.core.Conditions;
-import org.opensaml.saml2.core.OneTimeUse;
-import org.opensaml.saml2.core.ProxyRestriction;
+import org.opensaml.saml.saml2.core.AudienceRestriction;
+import org.opensaml.saml.saml2.core.Condition;
+import org.opensaml.saml.saml2.core.Conditions;
+import org.opensaml.saml.saml2.core.OneTimeUse;
+import org.opensaml.saml.saml2.core.ProxyRestriction;
 
 /**
- * Test case for creating, marshalling, and unmarshalling {@link org.opensaml.saml2.core.impl.ConditionsImpl}.
+ * Test case for creating, marshalling, and unmarshalling {@link org.opensaml.saml.saml2.core.impl.ConditionsImpl}.
  */
 public class ConditionsTest extends BaseSAMLObjectProviderTestCase {
 

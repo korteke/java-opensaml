@@ -27,10 +27,10 @@ import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.common.impl.AbstractSAMLObject;
-import org.opensaml.saml2.core.StatusCode;
+import org.opensaml.saml.saml2.core.StatusCode;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml2.core.StatusCode}.
+ * Concrete implementation of {@link org.opensaml.saml.saml2.core.StatusCode}.
  */
 public class StatusCodeImpl extends AbstractSAMLObject implements StatusCode {
 

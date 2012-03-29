@@ -21,10 +21,10 @@
 package org.opensaml.saml2.core.validator;
 
 import org.opensaml.core.xml.validation.ValidationException;
-import org.opensaml.saml2.core.LogoutResponse;
+import org.opensaml.saml.saml2.core.LogoutResponse;
 
 /**
- * Checks {@link org.opensaml.saml2.core.LogoutRequest} for Schema compliance.
+ * Checks {@link org.opensaml.saml.saml2.core.LogoutRequest} for Schema compliance.
  */
 public class LogoutResponseSchemaValidator extends StatusResponseTypeSchemaValidator<LogoutResponse> {
 

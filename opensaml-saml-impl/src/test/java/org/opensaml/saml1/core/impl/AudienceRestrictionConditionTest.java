@@ -25,8 +25,8 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml1.core.Audience;
-import org.opensaml.saml1.core.AudienceRestrictionCondition;
+import org.opensaml.saml.saml1.core.Audience;
+import org.opensaml.saml.saml1.core.AudienceRestrictionCondition;
 
 /**
  * Test class for data.org.opensaml.saml1.AudienceRestrictionCondition

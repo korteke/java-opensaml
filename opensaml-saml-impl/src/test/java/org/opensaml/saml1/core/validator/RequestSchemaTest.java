@@ -20,14 +20,14 @@ package org.opensaml.saml1.core.validator;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml1.core.AssertionArtifact;
-import org.opensaml.saml1.core.AssertionIDReference;
-import org.opensaml.saml1.core.AttributeQuery;
-import org.opensaml.saml1.core.Query;
-import org.opensaml.saml1.core.Request;
+import org.opensaml.saml.saml1.core.AssertionArtifact;
+import org.opensaml.saml.saml1.core.AssertionIDReference;
+import org.opensaml.saml.saml1.core.AttributeQuery;
+import org.opensaml.saml.saml1.core.Query;
+import org.opensaml.saml.saml1.core.Request;
 
 /**
- * Test case for {@link org.opensaml.saml1.core.validator.RequestSchemaValidator}.
+ * Test case for {@link org.opensaml.saml.saml1.core.validator.RequestSchemaValidator}.
  */
 public class RequestSchemaTest extends RequestAbstractTypeSchemaTestBase  {
 

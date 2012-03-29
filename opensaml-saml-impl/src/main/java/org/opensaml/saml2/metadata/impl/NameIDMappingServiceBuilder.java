@@ -23,10 +23,10 @@ package org.opensaml.saml2.metadata.impl;
 
 import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml2.metadata.NameIDMappingService;
+import org.opensaml.saml.saml2.metadata.NameIDMappingService;
 
 /**
- * Builder of (@link org.opensaml.saml2.metadata.impl.NameIDMappingServiceImpl}.
+ * Builder of (@link org.opensaml.saml.saml2.metadata.impl.NameIDMappingServiceImpl}.
  */
 public class NameIDMappingServiceBuilder extends AbstractSAMLObjectBuilder<NameIDMappingService> {
 

@@ -20,10 +20,10 @@ package org.opensaml.saml2.metadata.validator;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml2.metadata.AssertionConsumerService;
+import org.opensaml.saml.saml2.metadata.AssertionConsumerService;
 
 /**
- * Test case for {@link org.opensaml.saml2.metadata.AssertionConsumerService}.
+ * Test case for {@link org.opensaml.saml.saml2.metadata.AssertionConsumerService}.
  */
 public class AssertionConsumerServiceSchemaTest extends IndexedEndpointSchemaTestBase {
 

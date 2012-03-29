@@ -25,10 +25,10 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.AttributeMap;
 import org.opensaml.core.xml.util.XMLObjectChildrenList;
 import org.opensaml.saml.common.impl.AbstractSAMLObject;
-import org.opensaml.saml2.core.Attribute;
+import org.opensaml.saml.saml2.core.Attribute;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml2.core.Attribute}.
+ * Concrete implementation of {@link org.opensaml.saml.saml2.core.Attribute}.
  */
 public class AttributeImpl extends AbstractSAMLObject implements Attribute {
 

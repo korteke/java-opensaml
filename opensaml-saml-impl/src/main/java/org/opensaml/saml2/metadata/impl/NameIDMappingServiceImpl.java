@@ -21,10 +21,10 @@
 
 package org.opensaml.saml2.metadata.impl;
 
-import org.opensaml.saml2.metadata.NameIDMappingService;
+import org.opensaml.saml.saml2.metadata.NameIDMappingService;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml2.metadata.NameIDMappingService}.
+ * Concrete implementation of {@link org.opensaml.saml.saml2.metadata.NameIDMappingService}.
  */
 public class NameIDMappingServiceImpl extends EndpointImpl implements NameIDMappingService {
 

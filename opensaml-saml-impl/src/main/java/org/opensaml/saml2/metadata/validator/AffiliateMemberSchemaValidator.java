@@ -23,12 +23,12 @@ package org.opensaml.saml2.metadata.validator;
 
 import org.opensaml.core.xml.validation.ValidationException;
 import org.opensaml.core.xml.validation.Validator;
-import org.opensaml.saml2.metadata.AffiliateMember;
+import org.opensaml.saml.saml2.metadata.AffiliateMember;
 
 import com.google.common.base.Strings;
 
 /**
- * Checks {@link org.opensaml.saml2.metadata.AffiliateMember} for Schema compliance.
+ * Checks {@link org.opensaml.saml.saml2.metadata.AffiliateMember} for Schema compliance.
  */
 public class AffiliateMemberSchemaValidator implements Validator<AffiliateMember> {
 

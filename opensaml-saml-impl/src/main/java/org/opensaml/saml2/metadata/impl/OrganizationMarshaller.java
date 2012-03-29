@@ -31,12 +31,12 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml.common.impl.AbstractSAMLObjectMarshaller;
-import org.opensaml.saml2.metadata.Organization;
+import org.opensaml.saml.saml2.metadata.Organization;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
 
 /**
- * A thread safe Marshaller for {@link org.opensaml.saml2.metadata.Organization} objects.
+ * A thread safe Marshaller for {@link org.opensaml.saml.saml2.metadata.Organization} objects.
  */
 public class OrganizationMarshaller extends AbstractSAMLObjectMarshaller {
 

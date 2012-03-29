@@ -21,11 +21,11 @@
 package org.opensaml.saml2.metadata.impl;
 
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
-import org.opensaml.saml2.metadata.EmailAddress;
+import org.opensaml.saml.saml2.metadata.EmailAddress;
 
 /**
  * Test case for creating, marshalling, and unmarshalling
- * {@link org.opensaml.saml2.metadata.impl.EmailAddressImpl}.
+ * {@link org.opensaml.saml.saml2.metadata.impl.EmailAddressImpl}.
  */
 public class EmailAddressTest extends BaseSAMLObjectProviderTestCase {
     

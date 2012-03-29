@@ -20,12 +20,12 @@ package org.opensaml.saml2.core.impl;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.impl.AbstractSAMLObjectUnmarshaller;
-import org.opensaml.saml2.core.NameID;
-import org.opensaml.saml2.core.NameIDType;
+import org.opensaml.saml.saml2.core.NameID;
+import org.opensaml.saml.saml2.core.NameIDType;
 import org.w3c.dom.Attr;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml2.core.NameIDType} objects.
+ * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.core.NameIDType} objects.
  */
 public abstract class AbstractNameIDTypeUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 

@@ -21,10 +21,10 @@
 
 package org.opensaml.saml2.metadata.validator;
 
-import org.opensaml.saml2.metadata.AuthnQueryService;
+import org.opensaml.saml.saml2.metadata.AuthnQueryService;
 
 /**
- * Checks {@link org.opensaml.saml2.metadata.AuthnQueryService} for Schema compliance.
+ * Checks {@link org.opensaml.saml.saml2.metadata.AuthnQueryService} for Schema compliance.
  */
 public class AuthnQueryServiceSchemaValidator extends EndpointSchemaValidator<AuthnQueryService> {
 

@@ -28,15 +28,15 @@ import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
 import org.opensaml.core.xml.io.MarshallingException;
-import org.opensaml.saml1.core.AssertionArtifact;
-import org.opensaml.saml1.core.AssertionIDReference;
-import org.opensaml.saml1.core.AttributeQuery;
-import org.opensaml.saml1.core.Request;
+import org.opensaml.saml.saml1.core.AssertionArtifact;
+import org.opensaml.saml.saml1.core.AssertionIDReference;
+import org.opensaml.saml.saml1.core.AttributeQuery;
+import org.opensaml.saml.saml1.core.Request;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
- * Test in and around the {@link org.opensaml.saml1.core.Request} interface
+ * Test in and around the {@link org.opensaml.saml.saml1.core.Request} interface
  */
 public class RequestTest extends BaseSAMLObjectProviderTestCase {
 

@@ -23,10 +23,10 @@ package org.opensaml.saml2.metadata.validator;
 
 import org.opensaml.core.xml.validation.ValidationException;
 import org.opensaml.core.xml.validation.Validator;
-import org.opensaml.saml2.metadata.ServiceDescription;
+import org.opensaml.saml.saml2.metadata.ServiceDescription;
 
 /**
- * Checks {@link org.opensaml.saml2.metadata.ServiceDescription} for Schema compliance.
+ * Checks {@link org.opensaml.saml.saml2.metadata.ServiceDescription} for Schema compliance.
  */
 public class ServiceDescriptionSchemaValidator implements Validator<ServiceDescription> {
 

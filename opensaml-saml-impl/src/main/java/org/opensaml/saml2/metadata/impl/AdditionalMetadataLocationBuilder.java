@@ -19,10 +19,10 @@ package org.opensaml.saml2.metadata.impl;
 
 import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml2.metadata.AdditionalMetadataLocation;
+import org.opensaml.saml.saml2.metadata.AdditionalMetadataLocation;
 
 /**
- * A builder for {@link org.opensaml.saml2.metadata.impl.AdditionalMetadataLocationImpl} objects.
+ * A builder for {@link org.opensaml.saml.saml2.metadata.impl.AdditionalMetadataLocationImpl} objects.
  */
 public class AdditionalMetadataLocationBuilder extends AbstractSAMLObjectBuilder<AdditionalMetadataLocation> {
 

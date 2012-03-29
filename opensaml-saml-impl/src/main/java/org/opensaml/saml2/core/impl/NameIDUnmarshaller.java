@@ -19,7 +19,7 @@ package org.opensaml.saml2.core.impl;
 
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml2.core.NameID} objects.
+ * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.core.NameID} objects.
  */
 public class NameIDUnmarshaller extends AbstractNameIDTypeUnmarshaller {
 

@@ -23,10 +23,10 @@ package org.opensaml.saml2.metadata.impl;
 
 import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml2.metadata.ArtifactResolutionService;
+import org.opensaml.saml.saml2.metadata.ArtifactResolutionService;
 
 /**
- * Builder for {@link org.opensaml.saml2.metadata.impl.ArtifactResolutionServiceImpl}
+ * Builder for {@link org.opensaml.saml.saml2.metadata.impl.ArtifactResolutionServiceImpl}
  */
 public class ArtifactResolutionServiceBuilder extends AbstractSAMLObjectBuilder<ArtifactResolutionService> {
 
