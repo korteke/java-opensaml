@@ -23,7 +23,7 @@ import org.joda.time.DateTime;
 import org.opensaml.saml.common.SAMLVersion;
 import org.opensaml.saml.common.SignableSAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml2.common.Extensions;
+import org.opensaml.saml.saml2.common.Extensions;
 
 /**
  * SAML 2.0 Core RequestAbstractType.

@@ -188,15 +188,15 @@
         
         <!--  Extensions -->
         <ObjectProvider qualifiedName="saml2md:Extensions">
-            <BuilderClass className="org.opensaml.saml2.common.impl.ExtensionsBuilder"/>
-            <MarshallingClass className="org.opensaml.saml2.common.impl.ExtensionsMarshaller"/>
-            <UnmarshallingClass className="org.opensaml.saml2.common.impl.ExtensionsUnmarshaller"/>
+            <BuilderClass className="org.opensaml.saml.saml2.common.impl.ExtensionsBuilder"/>
+            <MarshallingClass className="org.opensaml.saml.saml2.common.impl.ExtensionsMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.saml.saml2.common.impl.ExtensionsUnmarshaller"/>
         </ObjectProvider>
         
         <ObjectProvider qualifiedName="saml2md:ExtensionsType">
-            <BuilderClass className="org.opensaml.saml2.common.impl.ExtensionsBuilder"/>
-            <MarshallingClass className="org.opensaml.saml2.common.impl.ExtensionsMarshaller"/>
-            <UnmarshallingClass className="org.opensaml.saml2.common.impl.ExtensionsUnmarshaller"/>
+            <BuilderClass className="org.opensaml.saml.saml2.common.impl.ExtensionsBuilder"/>
+            <MarshallingClass className="org.opensaml.saml.saml2.common.impl.ExtensionsMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.saml.saml2.common.impl.ExtensionsUnmarshaller"/>
         </ObjectProvider>
         
         <!-- GivenName -->

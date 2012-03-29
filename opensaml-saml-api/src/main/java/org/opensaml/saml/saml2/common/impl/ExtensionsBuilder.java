@@ -15,16 +15,28 @@
  * limitations under the License.
  */
 
-package org.opensaml.saml2.common;
+package org.opensaml.saml.saml2.common.impl;
 
-import org.opensaml.core.xml.ElementExtensibleXMLObject;
-import org.opensaml.saml.common.SAMLObject;
+import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
+import org.opensaml.saml.common.xml.SAMLConstants;
+import org.opensaml.saml.saml2.common.Extensions;
 
 /**
- * SAML 2.0 Extensions
+ * Builder of {@link org.opensaml.saml.saml2.common.impl.ExtensionsImpl} objects.
  */
-public interface Extensions extends SAMLObject, ElementExtensibleXMLObject {
+public class ExtensionsBuilder extends AbstractSAMLObjectBuilder<Extensions> {
 
-	/** Local name, no namespace */
-	public final static String LOCAL_NAME = "Extensions";
+    /**
+     * {@inheritDoc}
+     */
+    public Extensions buildObject() {
+        return buildObject(SAMLConstants.SAML20MD_NS, Extensions.LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Extensions buildObject(String namespaceURI, String localName, String namespacePrefix) {
+        return new ExtensionsImpl(namespaceURI, localName, namespacePrefix);
+    }
 }

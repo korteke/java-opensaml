@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.saml2.binding.artifact;
+package org.opensaml.saml.saml2.binding.artifact;
 
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.binding.SAMLMessageContext;

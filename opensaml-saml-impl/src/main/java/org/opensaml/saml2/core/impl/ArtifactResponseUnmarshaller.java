@@ -24,7 +24,7 @@ package org.opensaml.saml2.core.impl;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.SAMLObject;
-import org.opensaml.saml2.common.Extensions;
+import org.opensaml.saml.saml2.common.Extensions;
 import org.opensaml.saml2.core.ArtifactResponse;
 import org.opensaml.saml2.core.Issuer;
 import org.opensaml.saml2.core.Status;

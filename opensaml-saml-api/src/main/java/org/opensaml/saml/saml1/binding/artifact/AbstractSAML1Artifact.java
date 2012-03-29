@@ -15,28 +15,21 @@
  * limitations under the License.
  */
 
-package org.opensaml.saml2.common.impl;
+package org.opensaml.saml.saml1.binding.artifact;
 
-import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
-import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml2.common.Extensions;
+import org.opensaml.saml.common.binding.artifact.AbstractSAMLArtifact;
 
 /**
- * Builder of {@link org.opensaml.saml2.common.impl.ExtensionsImpl} objects.
+ * SAML 1 Artifact marker.
  */
-public class ExtensionsBuilder extends AbstractSAMLObjectBuilder<Extensions> {
+public abstract class AbstractSAML1Artifact extends AbstractSAMLArtifact {
 
     /**
-     * {@inheritDoc}
+     * Constructor.
+     * 
+     * @param typeCode artifact type code
      */
-    public Extensions buildObject() {
-        return buildObject(SAMLConstants.SAML20MD_NS, Extensions.LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public Extensions buildObject(String namespaceURI, String localName, String namespacePrefix) {
-        return new ExtensionsImpl(namespaceURI, localName, namespacePrefix);
+    protected AbstractSAML1Artifact(byte[] typeCode) {
+        super(typeCode);
     }
 }
