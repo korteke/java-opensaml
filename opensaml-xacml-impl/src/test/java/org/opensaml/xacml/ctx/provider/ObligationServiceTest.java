@@ -17,7 +17,7 @@
 
 package org.opensaml.xacml.ctx.provider;
 
-import org.opensaml.common.BaseTestCase;
+import org.opensaml.saml.common.BaseTestCase;
 import org.opensaml.xacml.ctx.DecisionType;
 import org.opensaml.xacml.ctx.DecisionType.DECISION;
 import org.opensaml.xacml.ctx.ResultType;
