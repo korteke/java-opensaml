@@ -25,6 +25,8 @@ import org.opensaml.saml.saml1.core.AssertionIDReference;
 import org.opensaml.saml.saml1.core.AttributeQuery;
 import org.opensaml.saml.saml1.core.Query;
 import org.opensaml.saml.saml1.core.Request;
+import org.opensaml.saml.saml1.core.validator.RequestSchemaValidator;
+import org.opensaml.saml.saml1.core.validator.org;
 
 /**
  * Test case for {@link org.opensaml.saml.saml1.core.validator.RequestSchemaValidator}.

@@ -30,10 +30,10 @@ import org.opensaml.saml.saml2.metadata.Organization;
 import org.opensaml.saml.saml2.metadata.OrganizationDisplayName;
 import org.opensaml.saml.saml2.metadata.OrganizationName;
 import org.opensaml.saml.saml2.metadata.OrganizationURL;
-import org.opensaml.saml2.metadata.impl.OrganizationBuilder;
-import org.opensaml.saml2.metadata.impl.OrganizationDisplayNameBuilder;
-import org.opensaml.saml2.metadata.impl.OrganizationNameBuilder;
-import org.opensaml.saml2.metadata.impl.OrganizationURLBuilder;
+import org.opensaml.saml.saml2.metadata.impl.OrganizationBuilder;
+import org.opensaml.saml.saml2.metadata.impl.OrganizationDisplayNameBuilder;
+import org.opensaml.saml.saml2.metadata.impl.OrganizationNameBuilder;
+import org.opensaml.saml.saml2.metadata.impl.OrganizationURLBuilder;
 import org.w3c.dom.Element;
 
 /**

@@ -19,6 +19,7 @@ package org.opensaml.saml2.core.impl;
 
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
 import org.opensaml.saml.saml2.core.NewEncryptedID;
+import org.opensaml.saml.saml2.core.impl.org;
 import org.opensaml.xmlsec.encryption.EncryptedData;
 import org.opensaml.xmlsec.encryption.EncryptedKey;
 

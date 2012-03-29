@@ -33,6 +33,7 @@ import org.opensaml.saml.saml2.metadata.AuthnQueryService;
 import org.opensaml.saml.saml2.metadata.ContactPerson;
 import org.opensaml.saml.saml2.metadata.NameIDFormat;
 import org.opensaml.saml.saml2.metadata.Organization;
+import org.opensaml.saml.saml2.metadata.impl.org;
 
 /**
  * Test case for creating, marshalling, and unmarshalling

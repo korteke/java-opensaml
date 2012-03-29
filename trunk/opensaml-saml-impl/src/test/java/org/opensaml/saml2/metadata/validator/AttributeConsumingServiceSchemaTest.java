@@ -25,6 +25,7 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.metadata.AttributeConsumingService;
 import org.opensaml.saml.saml2.metadata.RequestedAttribute;
 import org.opensaml.saml.saml2.metadata.ServiceName;
+import org.opensaml.saml.saml2.metadata.validator.AttributeConsumingServiceSchemaValidator;
 
 /**
  * Test case for {@link org.opensaml.saml.saml2.metadata.AttributeConsumingService}.

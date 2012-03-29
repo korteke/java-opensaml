@@ -25,6 +25,8 @@ import org.opensaml.common.BaseTestCase;
 import org.opensaml.saml.saml2.metadata.AttributeAuthorityDescriptor;
 import org.opensaml.saml.saml2.metadata.IDPSSODescriptor;
 import org.opensaml.saml.saml2.metadata.SPSSODescriptor;
+import org.opensaml.saml.saml2.metadata.provider.EntityRoleFilter;
+import org.opensaml.saml.saml2.metadata.provider.HTTPMetadataProvider;
 
 /**
  * Unit tests for {@link EntityRoleFilter}.

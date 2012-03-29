@@ -30,8 +30,10 @@ import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
 import org.opensaml.common.BaseTestCase;
 import org.opensaml.saml.saml2.metadata.SPSSODescriptor;
+import org.opensaml.saml.saml2.metadata.provider.FilesystemMetadataProvider;
 import org.opensaml.saml.saml2.metadata.provider.MetadataProviderException;
-import org.opensaml.saml2.metadata.provider.FilesystemMetadataProvider;
+import org.opensaml.saml.security.MetadataCredentialResolver;
+import org.opensaml.saml.security.MetadataCriterion;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.UsageType;

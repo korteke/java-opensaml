@@ -24,6 +24,7 @@ import org.opensaml.saml.saml2.metadata.EntitiesDescriptor;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.opensaml.saml.saml2.metadata.IDPSSODescriptor;
 import org.opensaml.saml.saml2.metadata.RoleDescriptor;
+import org.opensaml.saml.saml2.metadata.provider.HTTPMetadataProvider;
 import org.opensaml.saml.saml2.metadata.provider.MetadataProviderException;
 
 /**

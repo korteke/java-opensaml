@@ -22,6 +22,8 @@ import javax.xml.namespace.QName;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml1.core.Action;
 import org.opensaml.saml.saml1.core.AuthorizationDecisionQuery;
+import org.opensaml.saml.saml1.core.validator.AuthorizationDecisionQuerySchemaValidator;
+import org.opensaml.saml.saml1.core.validator.org;
 
 /**
  * Test case for {@link org.opensaml.saml.saml1.core.validator.AuthorizationDecisionQuerySchemaValidator}.

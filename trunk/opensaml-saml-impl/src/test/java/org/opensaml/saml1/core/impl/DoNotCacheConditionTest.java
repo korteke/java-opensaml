@@ -25,6 +25,7 @@ import javax.xml.namespace.QName;
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml1.core.DoNotCacheCondition;
+import org.opensaml.saml.saml1.core.impl.org;
 
 /**
  * Test class for {@link org.opensaml.saml.saml1.core.impl.DoNotCacheConditionImpl} objects

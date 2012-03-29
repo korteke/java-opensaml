@@ -24,6 +24,8 @@ import org.opensaml.core.xml.schema.impl.XSStringBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml1.core.Attribute;
 import org.opensaml.saml.saml1.core.AttributeValue;
+import org.opensaml.saml.saml1.core.validator.AttributeSchemaValidator;
+import org.opensaml.saml.saml1.core.validator.org;
 
 /**
  * Test case for {@link org.opensaml.saml.saml1.core.validator.AttributeSchemaValidator}.

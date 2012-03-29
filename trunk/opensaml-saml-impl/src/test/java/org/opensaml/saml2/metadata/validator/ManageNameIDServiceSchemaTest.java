@@ -21,6 +21,7 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.metadata.ManageNameIDService;
+import org.opensaml.saml.saml2.metadata.validator.ManageNameIDServiceSchemaValidator;
 
 /**
  * Test case for {@link org.opensaml.saml.saml2.metadata.ManageNameIDService}.

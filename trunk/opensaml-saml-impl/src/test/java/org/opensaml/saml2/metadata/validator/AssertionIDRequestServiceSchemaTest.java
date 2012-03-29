@@ -21,6 +21,7 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.metadata.AssertionIDRequestService;
+import org.opensaml.saml.saml2.metadata.validator.AssertionIDRequestServiceSchemaValidator;
 
 /**
  * Test case for {@link org.opensaml.saml.saml2.metadata.AssertionIDRequestService}.

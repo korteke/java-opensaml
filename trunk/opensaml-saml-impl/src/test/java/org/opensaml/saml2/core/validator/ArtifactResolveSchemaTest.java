@@ -25,6 +25,7 @@ import javax.xml.namespace.QName;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.Artifact;
 import org.opensaml.saml.saml2.core.ArtifactResolve;
+import org.opensaml.saml.saml2.core.validator.ArtifactResolveSchemaValidator;
 
 /**
  *

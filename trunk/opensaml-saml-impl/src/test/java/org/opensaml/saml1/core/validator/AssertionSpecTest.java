@@ -28,6 +28,8 @@ import org.opensaml.saml.saml1.core.AttributeStatement;
 import org.opensaml.saml.saml1.core.Condition;
 import org.opensaml.saml.saml1.core.Conditions;
 import org.opensaml.saml.saml1.core.DoNotCacheCondition;
+import org.opensaml.saml.saml1.core.validator.AssertionSpecValidator;
+import org.opensaml.saml.saml1.core.validator.org;
 
 /**
  * Test case for {@link org.opensaml.saml.saml1.core.validator.AssertionSchemaValidator}.

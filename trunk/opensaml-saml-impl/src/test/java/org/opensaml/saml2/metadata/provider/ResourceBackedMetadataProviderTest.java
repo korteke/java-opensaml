@@ -29,6 +29,7 @@ import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.opensaml.saml.saml2.metadata.IDPSSODescriptor;
 import org.opensaml.saml.saml2.metadata.RoleDescriptor;
 import org.opensaml.saml.saml2.metadata.provider.MetadataProviderException;
+import org.opensaml.saml.saml2.metadata.provider.ResourceBackedMetadataProvider;
 
 /** Unit test for {@link ResourceBackedMetadataProvider}. */
 public class ResourceBackedMetadataProviderTest extends BaseTestCase {

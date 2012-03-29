@@ -26,6 +26,8 @@ import org.opensaml.core.xml.validation.ValidationException;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.Assertion;
 import org.opensaml.saml.saml2.core.Issuer;
+import org.opensaml.saml.saml2.core.validator.AssertionSchemaValidator;
+import org.opensaml.saml.saml2.core.validator.org;
 
 /**
  * Test case for {@link org.opensaml.saml.saml2.core.validator.AssertionSchemaValidator}.

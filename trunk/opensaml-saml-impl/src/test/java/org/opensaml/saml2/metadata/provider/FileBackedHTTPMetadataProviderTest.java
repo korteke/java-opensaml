@@ -21,6 +21,8 @@ import java.io.File;
 
 import org.opensaml.common.BaseTestCase;
 import org.opensaml.saml.saml2.metadata.EntitiesDescriptor;
+import org.opensaml.saml.saml2.metadata.provider.FileBackedHTTPMetadataProvider;
+import org.opensaml.saml.saml2.metadata.provider.HTTPMetadataProvider;
 import org.opensaml.saml.saml2.metadata.provider.MetadataProviderException;
 
 /**

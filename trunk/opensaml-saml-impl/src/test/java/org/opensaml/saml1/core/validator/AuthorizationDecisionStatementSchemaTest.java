@@ -23,6 +23,8 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml1.core.Action;
 import org.opensaml.saml.saml1.core.AuthorizationDecisionStatement;
 import org.opensaml.saml.saml1.core.DecisionTypeEnumeration;
+import org.opensaml.saml.saml1.core.validator.AuthorizationDecisionStatementSchemaValidator;
+import org.opensaml.saml.saml1.core.validator.org;
 
 /**
  * Test case for {@link org.opensaml.saml.saml1.core.validator.AuthorizationDecisionStatementSchemaValidator}.

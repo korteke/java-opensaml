@@ -17,7 +17,7 @@
 
 package org.opensaml.xacml.profile.saml.impl;
 
-import org.opensaml.saml2.core.impl.RequestAbstractTypeMarshaller;
+import org.opensaml.saml.saml2.core.impl.RequestAbstractTypeMarshaller;
 
 /** Marshaller for {@link org.opensaml.xacml.profile.saml.XACMLPolicyQueryType}. */
 public class XACMLPolicyQueryTypeMarshaller extends RequestAbstractTypeMarshaller {

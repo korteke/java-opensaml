@@ -26,9 +26,9 @@ import org.opensaml.saml.ext.saml2mdquery.AttributeQueryDescriptorType;
 import org.opensaml.saml.saml2.metadata.AttributeConsumingService;
 import org.opensaml.saml.saml2.metadata.RoleDescriptor;
 import org.opensaml.saml.saml2.metadata.SPSSODescriptor;
+import org.opensaml.saml.saml2.metadata.provider.FilesystemMetadataProvider;
 import org.opensaml.saml.saml2.metadata.provider.MetadataProviderException;
 import org.opensaml.saml.saml2.metadata.support.AttributeConsumingServiceSelector;
-import org.opensaml.saml2.metadata.provider.FilesystemMetadataProvider;
 
 /**
  * Tests of AttributeConsumingServiceSelector.

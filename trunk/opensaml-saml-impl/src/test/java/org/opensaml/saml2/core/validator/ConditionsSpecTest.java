@@ -25,6 +25,8 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.Conditions;
 import org.opensaml.saml.saml2.core.OneTimeUse;
 import org.opensaml.saml.saml2.core.ProxyRestriction;
+import org.opensaml.saml.saml2.core.validator.ConditionsSpecValidator;
+import org.opensaml.saml.saml2.core.validator.org;
 
 /**
  * Test case for {@link org.opensaml.saml.saml2.core.validator.ConditionsSpecValidator}.

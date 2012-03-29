@@ -23,6 +23,7 @@ package org.opensaml.saml2.metadata.impl;
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
 import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.saml.saml2.metadata.AssertionConsumerService;
+import org.opensaml.saml.saml2.metadata.impl.org;
 
 /**
  * Test case for creating, marshalling, and unmarshalling

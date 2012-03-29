@@ -19,6 +19,7 @@ package org.opensaml.common.binding.security;
 
 import java.util.HashMap;
 
+import org.opensaml.saml.common.binding.security.MessageReplayRule;
 import org.opensaml.saml.saml2.core.AttributeQuery;
 import org.opensaml.saml.saml2.core.NameID;
 import org.opensaml.saml.saml2.core.Response;

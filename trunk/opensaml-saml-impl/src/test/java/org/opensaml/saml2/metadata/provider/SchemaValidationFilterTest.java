@@ -18,6 +18,8 @@
 package org.opensaml.saml2.metadata.provider;
 
 import org.opensaml.common.BaseTestCase;
+import org.opensaml.saml.saml2.metadata.provider.HTTPMetadataProvider;
+import org.opensaml.saml.saml2.metadata.provider.SchemaValidationFilter;
 
 /**
  * Unit tests for {@link SchemaValidationFilter}.

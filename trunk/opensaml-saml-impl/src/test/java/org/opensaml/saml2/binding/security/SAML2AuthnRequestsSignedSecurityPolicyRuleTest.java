@@ -18,10 +18,11 @@
 package org.opensaml.saml2.binding.security;
 
 import org.opensaml.common.binding.security.BaseSAMLSecurityPolicyRuleTestCase;
+import org.opensaml.saml.saml2.binding.security.SAML2AuthnRequestsSignedRule;
 import org.opensaml.saml.saml2.core.AuthnRequest;
 import org.opensaml.saml.saml2.core.NameID;
 import org.opensaml.saml.saml2.core.Response;
-import org.opensaml.saml2.metadata.provider.DOMMetadataProvider;
+import org.opensaml.saml.saml2.metadata.provider.DOMMetadataProvider;
 import org.opensaml.ws.transport.InTransport;
 import org.opensaml.ws.transport.http.HTTPInTransport;
 import org.opensaml.ws.transport.http.HttpServletRequestAdapter;

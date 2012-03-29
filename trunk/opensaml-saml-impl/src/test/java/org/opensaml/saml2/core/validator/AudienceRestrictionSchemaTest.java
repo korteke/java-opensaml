@@ -24,6 +24,8 @@ import org.opensaml.core.xml.validation.ValidationException;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.Audience;
 import org.opensaml.saml.saml2.core.AudienceRestriction;
+import org.opensaml.saml.saml2.core.validator.AudienceRestrictionSchemaValidator;
+import org.opensaml.saml.saml2.core.validator.org;
 
 /**
  * Test case for {@link org.opensaml.saml.saml2.core.validator.AudienceRestrictionSchemaValidator}.
