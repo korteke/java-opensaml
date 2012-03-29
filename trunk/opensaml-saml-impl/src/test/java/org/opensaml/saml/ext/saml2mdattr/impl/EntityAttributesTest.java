@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.saml.ext.saml2mdattr;
+package org.opensaml.saml.ext.saml2mdattr.impl;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;

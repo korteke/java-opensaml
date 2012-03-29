@@ -18,64 +18,52 @@
 /**
  * 
  */
-package org.opensaml.saml.ext.saml2mdui;
-
-import java.util.ArrayList;
-import java.util.List;
+package org.opensaml.saml.ext.saml2mdui.impl;
 
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
-import org.opensaml.saml.ext.saml2mdui.Keywords;
+import org.opensaml.saml.ext.saml2mdui.Description;
 import org.opensaml.saml.ext.saml2mdui.UIInfo;
 
 /**
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.metadata.OrganizationName}.
  */
-public class KeywordsTest extends BaseSAMLObjectProviderTestCase {
+public class DescriptionTest extends BaseSAMLObjectProviderTestCase {
     
-    /** Expected Keywords. */
-    private final List<String> expectedWords;
-    /** Expected Language.*/
-    private final String expectedLang;
+    /** Expected name. */
+    protected String expectValue = "Textual Desriptice prose";
+    /** Expected language. */
+    protected String expectLang =  "lang";
     
     /**
      * Constructor.
      */
-    public KeywordsTest() {
-        singleElementFile = "/data/org/opensaml/samlext/saml2mdui/Keywords.xml";
-        String[] contents = {"This", "is", "a", "six", "element", "keyword"}; 
-        expectedWords = new ArrayList(contents.length);
-        for (String s : contents) {
-            expectedWords.add(s);
-        }
-        expectedLang = "en";
+    public DescriptionTest() {
+        singleElementFile = "/data/org/opensaml/samlext/saml2mdui/Description.xml";
     }
     
-    /** {@inheritDoc} */
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
 
     /** {@inheritDoc} */
     public void testSingleElementUnmarshall() {
-        Keywords name = (Keywords) unmarshallElement(singleElementFile);
+        Description name = (Description) unmarshallElement(singleElementFile);
         
-        assertEquals("Keyworks were not expected value", expectedWords, name.getKeywords());
-        assertEquals("Language was not expected value", expectedLang, name.getXMLLang());
+        assertEquals("Name was not expected value", expectValue, name.getValue());
+        assertEquals("xml:lang was not expected value", expectLang, name.getXMLLang());
     }
 
     /** {@inheritDoc} */
     public void testSingleElementMarshall() {
         QName qname = new QName(UIInfo.MDUI_NS, 
-                                Keywords.DEFAULT_ELEMENT_LOCAL_NAME, 
+                                Description.DEFAULT_ELEMENT_LOCAL_NAME, 
                                 UIInfo.MDUI_PREFIX);
         
-        Keywords keywords = (Keywords) buildXMLObject(qname);
-        keywords.setXMLLang(expectedLang);
-        keywords.setKeywords(expectedWords);
+        Description name = (Description) buildXMLObject(qname);
+        
+        name.setValue(expectValue);
+        name.setXMLLang(expectLang);
 
-        assertEquals(expectedDOM, keywords);
+        assertEquals(expectedDOM, name);
     }
 }

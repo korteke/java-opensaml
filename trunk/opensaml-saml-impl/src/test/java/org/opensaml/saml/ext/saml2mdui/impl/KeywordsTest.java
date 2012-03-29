@@ -18,53 +18,64 @@
 /**
  * 
  */
-package org.opensaml.saml.ext.saml2mdui;
+package org.opensaml.saml.ext.saml2mdui.impl;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
-import org.opensaml.saml.ext.saml2mdui.DomainHint;
+import org.opensaml.saml.ext.saml2mdui.Keywords;
 import org.opensaml.saml.ext.saml2mdui.UIInfo;
 
 /**
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.metadata.OrganizationName}.
  */
-public class DomainHintTest extends BaseSAMLObjectProviderTestCase {
+public class KeywordsTest extends BaseSAMLObjectProviderTestCase {
     
-    /** Expected name. */
-    private String expectedHint;
+    /** Expected Keywords. */
+    private final List<String> expectedWords;
+    /** Expected Language.*/
+    private final String expectedLang;
     
     /**
      * Constructor.
      */
-    public DomainHintTest() {
-        singleElementFile = "/data/org/opensaml/samlext/saml2mdui/DomainHint.xml";
+    public KeywordsTest() {
+        singleElementFile = "/data/org/opensaml/samlext/saml2mdui/Keywords.xml";
+        String[] contents = {"This", "is", "a", "six", "element", "keyword"}; 
+        expectedWords = new ArrayList(contents.length);
+        for (String s : contents) {
+            expectedWords.add(s);
+        }
+        expectedLang = "en";
     }
     
     /** {@inheritDoc} */
     protected void setUp() throws Exception {
         super.setUp();
-        expectedHint = ".ed.ac.uk";
     }
 
     /** {@inheritDoc} */
     public void testSingleElementUnmarshall() {
-        DomainHint hint = (DomainHint) unmarshallElement(singleElementFile);
+        Keywords name = (Keywords) unmarshallElement(singleElementFile);
         
-        assertEquals("Name was not expected value", expectedHint, hint.getHint());
+        assertEquals("Keyworks were not expected value", expectedWords, name.getKeywords());
+        assertEquals("Language was not expected value", expectedLang, name.getXMLLang());
     }
 
     /** {@inheritDoc} */
     public void testSingleElementMarshall() {
         QName qname = new QName(UIInfo.MDUI_NS, 
-                                DomainHint.DEFAULT_ELEMENT_LOCAL_NAME, 
+                                Keywords.DEFAULT_ELEMENT_LOCAL_NAME, 
                                 UIInfo.MDUI_PREFIX);
         
-        DomainHint hint = (DomainHint) buildXMLObject(qname);
-        
-        hint.setHint(expectedHint);
+        Keywords keywords = (Keywords) buildXMLObject(qname);
+        keywords.setXMLLang(expectedLang);
+        keywords.setKeywords(expectedWords);
 
-        assertEquals(expectedDOM, hint);
+        assertEquals(expectedDOM, keywords);
     }
 }
