@@ -19,9 +19,9 @@ package org.opensaml.samlext.saml1md;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.common.SAMLObject;
-import org.opensaml.common.xml.SAMLConstants;
 import org.opensaml.core.xml.schema.XSString;
+import org.opensaml.saml.common.SAMLObject;
+import org.opensaml.saml.common.xml.SAMLConstants;
 
 /**
  * SAML 1 Metadata extension SourceID

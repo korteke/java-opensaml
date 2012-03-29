@@ -21,7 +21,7 @@
 
 package org.opensaml.saml1.core.impl;
 
-import org.opensaml.common.impl.AbstractSAMLObjectMarshaller;
+import org.opensaml.saml.common.impl.AbstractSAMLObjectMarshaller;
 
 /**
  * Marshaller for {@link org.opensaml.saml1.core.SubjectStatement} XMLObjects.

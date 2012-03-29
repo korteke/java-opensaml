@@ -21,8 +21,8 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.common.SAMLObject;
-import org.opensaml.common.xml.SAMLConstants;
+import org.opensaml.saml.common.SAMLObject;
+import org.opensaml.saml.common.xml.SAMLConstants;
 
 /**
  * This interface defines how the object representing a SAML 1 <code> AttributeStatement </code> element behaves.

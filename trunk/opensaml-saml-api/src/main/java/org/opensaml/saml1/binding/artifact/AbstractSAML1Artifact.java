@@ -17,7 +17,7 @@
 
 package org.opensaml.saml1.binding.artifact;
 
-import org.opensaml.common.binding.artifact.AbstractSAMLArtifact;
+import org.opensaml.saml.common.binding.artifact.AbstractSAMLArtifact;
 
 /**
  * SAML 1 Artifact marker.

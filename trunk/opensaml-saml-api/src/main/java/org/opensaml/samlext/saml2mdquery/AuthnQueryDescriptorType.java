@@ -19,7 +19,7 @@ package org.opensaml.samlext.saml2mdquery;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.common.xml.SAMLConstants;
+import org.opensaml.saml.common.xml.SAMLConstants;
 
 /**
  * SAML 2.0 Metadata extension AuthnQueryDescriptorType.

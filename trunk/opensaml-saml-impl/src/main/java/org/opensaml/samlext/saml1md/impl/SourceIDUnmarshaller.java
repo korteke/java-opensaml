@@ -17,8 +17,8 @@
 
 package org.opensaml.samlext.saml1md.impl;
 
-import org.opensaml.common.impl.AbstractSAMLObjectUnmarshaller;
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.saml.common.impl.AbstractSAMLObjectUnmarshaller;
 import org.opensaml.samlext.saml1md.SourceID;
 
 /**

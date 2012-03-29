@@ -22,9 +22,9 @@ import java.util.List;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.xml.ParserPool;
 
-import org.opensaml.common.binding.SAMLMessageContext;
-import org.opensaml.common.binding.artifact.SAMLArtifactMap;
-import org.opensaml.common.xml.SAMLConstants;
+import org.opensaml.saml.common.binding.SAMLMessageContext;
+import org.opensaml.saml.common.binding.artifact.SAMLArtifactMap;
+import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.message.decoder.MessageDecodingException;
 import org.opensaml.ws.transport.http.HTTPInTransport;

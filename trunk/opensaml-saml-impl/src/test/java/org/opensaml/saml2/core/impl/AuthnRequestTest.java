@@ -22,8 +22,8 @@ package org.opensaml.saml2.core.impl;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.common.xml.SAMLConstants;
 import org.opensaml.core.xml.schema.XSBooleanValue;
+import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml2.core.AuthnRequest;
 import org.opensaml.saml2.core.Conditions;
 import org.opensaml.saml2.core.NameIDPolicy;

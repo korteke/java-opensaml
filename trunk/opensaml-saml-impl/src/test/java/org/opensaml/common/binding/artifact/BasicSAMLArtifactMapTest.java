@@ -22,9 +22,10 @@ import java.util.HashMap;
 import org.custommonkey.xmlunit.Diff;
 import org.custommonkey.xmlunit.XMLAssert;
 import org.opensaml.common.BaseTestCase;
-import org.opensaml.common.SAMLObject;
-import org.opensaml.common.binding.artifact.SAMLArtifactMap.SAMLArtifactMapEntry;
 import org.opensaml.core.xml.io.MarshallingException;
+import org.opensaml.saml.common.SAMLObject;
+import org.opensaml.saml.common.binding.artifact.BasicSAMLArtifactMap;
+import org.opensaml.saml.common.binding.artifact.SAMLArtifactMap.SAMLArtifactMapEntry;
 import org.w3c.dom.Document;
 
 /**

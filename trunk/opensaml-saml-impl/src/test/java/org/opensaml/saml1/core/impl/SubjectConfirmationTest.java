@@ -24,8 +24,8 @@ package org.opensaml.saml1.core.impl;
 import javax.xml.namespace.QName;
 
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
-import org.opensaml.common.xml.SAMLConstants;
 import org.opensaml.core.xml.schema.impl.XSAnyBuilder;
+import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml1.core.ConfirmationMethod;
 import org.opensaml.saml1.core.SubjectConfirmation;
 import org.opensaml.saml1.core.SubjectConfirmationData;

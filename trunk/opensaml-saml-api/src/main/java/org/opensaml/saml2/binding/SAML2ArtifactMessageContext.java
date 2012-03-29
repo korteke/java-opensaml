@@ -17,8 +17,8 @@
 
 package org.opensaml.saml2.binding;
 
-import org.opensaml.common.SAMLObject;
-import org.opensaml.common.binding.SAMLMessageContext;
+import org.opensaml.saml.common.SAMLObject;
+import org.opensaml.saml.common.binding.SAMLMessageContext;
 
 /**
  * Extensions to the base SAML message context that carries artifact related information.

@@ -24,11 +24,11 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.joda.time.DateTime;
-import org.opensaml.common.SAMLVersion;
-import org.opensaml.common.impl.AbstractSignableSAMLObject;
-import org.opensaml.common.xml.SAMLConstants;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
+import org.opensaml.saml.common.SAMLVersion;
+import org.opensaml.saml.common.impl.AbstractSignableSAMLObject;
+import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml1.core.Advice;
 import org.opensaml.saml1.core.Assertion;
 import org.opensaml.saml1.core.AttributeStatement;

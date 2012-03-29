@@ -17,7 +17,7 @@
 
 package org.opensaml.xacml.profile.saml.impl;
 
-import org.opensaml.common.impl.AbstractSAMLObjectMarshaller;
+import org.opensaml.saml.common.impl.AbstractSAMLObjectMarshaller;
 
 /**
  * Marshaller for {@link org.opensaml.xacml.profile.saml.ReferencedPoliciesType}.

@@ -20,8 +20,8 @@ package org.opensaml.saml2.core.validator;
 import javax.xml.namespace.QName;
 
 import org.opensaml.common.BaseSAMLObjectValidatorTestCase;
-import org.opensaml.common.xml.SAMLConstants;
 import org.opensaml.core.xml.validation.ValidationException;
+import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml2.core.Assertion;
 import org.opensaml.saml2.core.AssertionIDRef;
 import org.opensaml.saml2.core.AssertionURIRef;

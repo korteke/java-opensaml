@@ -19,8 +19,8 @@ package org.opensaml.samlext.saml2mdui;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.common.SAMLObject;
 import org.opensaml.core.xml.LangBearing;
+import org.opensaml.saml.common.SAMLObject;
 
 /**
  * Localized logo type.

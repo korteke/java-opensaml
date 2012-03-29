@@ -19,8 +19,8 @@ package org.opensaml.saml2.metadata.validator;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.common.xml.SAMLConstants;
 import org.opensaml.core.xml.validation.ValidationException;
+import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml2.metadata.ArtifactResolutionService;
 import org.opensaml.saml2.metadata.SSODescriptor;
 

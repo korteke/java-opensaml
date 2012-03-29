@@ -18,7 +18,7 @@
 package org.opensaml.common.binding.security;
 
 import org.joda.time.DateTime;
-import org.opensaml.common.binding.SAMLMessageContext;
+import org.opensaml.saml.common.binding.SAMLMessageContext;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.security.SecurityPolicyException;
 

@@ -24,7 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import net.shibboleth.utilities.java.support.codec.Base64Support;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
-import org.opensaml.common.binding.SAMLMessageContext;
+import org.opensaml.saml.common.binding.SAMLMessageContext;
 import org.opensaml.security.MetadataCriterion;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.Credential;

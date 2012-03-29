@@ -17,7 +17,7 @@
 
 package org.opensaml.saml1.core.impl;
 
-import org.opensaml.common.impl.AbstractSAMLObjectUnmarshaller;
+import org.opensaml.saml.common.impl.AbstractSAMLObjectUnmarshaller;
 
 /**
  * A thread-safe Unmarshaller for {@link org.opensaml.saml1.core.DoNotCacheCondition} objects.

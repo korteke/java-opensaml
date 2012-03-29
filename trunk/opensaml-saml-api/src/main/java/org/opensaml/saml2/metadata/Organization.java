@@ -21,9 +21,9 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.common.SAMLObject;
-import org.opensaml.common.xml.SAMLConstants;
 import org.opensaml.core.xml.AttributeExtensibleXMLObject;
+import org.opensaml.saml.common.SAMLObject;
+import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml2.common.Extensions;
 
 /**

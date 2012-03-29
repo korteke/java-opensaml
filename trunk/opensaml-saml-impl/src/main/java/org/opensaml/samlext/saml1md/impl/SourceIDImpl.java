@@ -19,8 +19,8 @@ package org.opensaml.samlext.saml1md.impl;
 
 import java.util.List;
 
-import org.opensaml.common.impl.AbstractSAMLObject;
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.saml.common.impl.AbstractSAMLObject;
 import org.opensaml.samlext.saml1md.SourceID;
 
 public class SourceIDImpl extends AbstractSAMLObject implements SourceID {

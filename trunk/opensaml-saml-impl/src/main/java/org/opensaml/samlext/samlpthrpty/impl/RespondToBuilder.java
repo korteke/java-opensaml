@@ -17,8 +17,8 @@
 
 package org.opensaml.samlext.samlpthrpty.impl;
 
-import org.opensaml.common.impl.AbstractSAMLObjectBuilder;
-import org.opensaml.common.xml.SAMLConstants;
+import org.opensaml.saml.common.impl.AbstractSAMLObjectBuilder;
+import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.samlext.samlpthrpty.RespondTo;
 
 /**

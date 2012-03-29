@@ -25,9 +25,9 @@ import net.shibboleth.utilities.java.support.codec.Base64Support;
 import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 
 import org.opensaml.common.BaseTestCase;
-import org.opensaml.common.SAMLObject;
-import org.opensaml.common.binding.BasicSAMLMessageContext;
-import org.opensaml.common.binding.decoding.SAMLMessageDecoder;
+import org.opensaml.saml.common.SAMLObject;
+import org.opensaml.saml.common.binding.BasicSAMLMessageContext;
+import org.opensaml.saml.common.binding.decoding.SAMLMessageDecoder;
 import org.opensaml.saml1.core.Response;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.SecurityHelper;

@@ -21,8 +21,8 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.common.SAMLObject;
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.saml.common.SAMLObject;
 
 /**
  * See IdP Discovery and Login UI Metadata Extension Profile.

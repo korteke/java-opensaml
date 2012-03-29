@@ -20,7 +20,7 @@ package org.opensaml.saml1.core.validator;
 import javax.xml.namespace.QName;
 
 import org.joda.time.DateTime;
-import org.opensaml.common.xml.SAMLConstants;
+import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml1.core.AuthenticationStatement;
 
 /**

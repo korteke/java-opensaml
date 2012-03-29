@@ -26,9 +26,9 @@ import java.util.Collections;
 import java.util.List;
 
 import org.joda.time.DateTime;
-import org.opensaml.common.SAMLVersion;
-import org.opensaml.common.impl.AbstractSignableSAMLObject;
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.saml.common.SAMLVersion;
+import org.opensaml.saml.common.impl.AbstractSignableSAMLObject;
 import org.opensaml.saml2.common.Extensions;
 import org.opensaml.saml2.core.Issuer;
 import org.opensaml.saml2.core.Status;

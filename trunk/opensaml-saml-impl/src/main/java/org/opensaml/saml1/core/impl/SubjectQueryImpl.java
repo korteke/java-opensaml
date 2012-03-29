@@ -21,8 +21,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.opensaml.common.impl.AbstractSAMLObject;
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.saml.common.impl.AbstractSAMLObject;
 import org.opensaml.saml1.core.Subject;
 import org.opensaml.saml1.core.SubjectQuery;
 

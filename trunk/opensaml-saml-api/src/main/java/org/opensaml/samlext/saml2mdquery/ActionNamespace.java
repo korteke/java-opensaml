@@ -19,9 +19,9 @@ package org.opensaml.samlext.saml2mdquery;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.common.SAMLObject;
-import org.opensaml.common.xml.SAMLConstants;
 import org.opensaml.core.xml.schema.XSURI;
+import org.opensaml.saml.common.SAMLObject;
+import org.opensaml.saml.common.xml.SAMLConstants;
 
 /**
  * SAML 2.0 Metadata extension ActionNamespace

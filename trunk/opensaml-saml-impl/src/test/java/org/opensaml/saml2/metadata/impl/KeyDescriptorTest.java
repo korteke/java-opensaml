@@ -20,7 +20,7 @@ package org.opensaml.saml2.metadata.impl;
 import javax.xml.namespace.QName;
 
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
-import org.opensaml.common.xml.SAMLConstants;
+import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml2.metadata.EncryptionMethod;
 import org.opensaml.saml2.metadata.KeyDescriptor;
 import org.opensaml.security.credential.UsageType;

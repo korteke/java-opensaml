@@ -17,8 +17,8 @@
 
 package org.opensaml.saml2.encryption;
 
-import org.opensaml.common.SAMLObject;
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml2.core.Assertion;
 import org.opensaml.saml2.core.Attribute;
 import org.opensaml.saml2.core.EncryptedAssertion;

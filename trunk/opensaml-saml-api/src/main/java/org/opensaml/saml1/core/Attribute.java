@@ -21,8 +21,8 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.common.xml.SAMLConstants;
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.saml.common.xml.SAMLConstants;
 
 /**
  * This interface defines how the object representing a SAML 1 <code> Attribute </code> element behaves.

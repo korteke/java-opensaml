@@ -25,9 +25,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.opensaml.common.impl.AbstractSAMLObject;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.XMLObjectChildrenList;
+import org.opensaml.saml.common.impl.AbstractSAMLObject;
 import org.opensaml.saml2.core.IDPList;
 import org.opensaml.saml2.core.RequesterID;
 import org.opensaml.saml2.core.Scoping;
