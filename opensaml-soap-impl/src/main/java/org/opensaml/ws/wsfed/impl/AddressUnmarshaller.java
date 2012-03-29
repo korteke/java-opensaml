@@ -19,7 +19,7 @@ package org.opensaml.ws.wsfed.impl;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.AbstractXMLObjectUnmarshaller;
-import org.opensaml.ws.wsfed.Address;
+import org.opensaml.soap.wsfed.Address;
 import org.w3c.dom.Attr;
 
 /** A thread-safe unmarshaller for {@link Address} objects. */

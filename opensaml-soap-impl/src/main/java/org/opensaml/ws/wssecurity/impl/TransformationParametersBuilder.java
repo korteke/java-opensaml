@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wssecurity.impl;
 
-import org.opensaml.ws.wssecurity.TransformationParameters;
+import org.opensaml.soap.wssecurity.TransformationParameters;
 
 /**
  * TransformationParametersBuilder.

@@ -18,7 +18,7 @@
 package org.opensaml.ws.wsaddressing.impl;
 
 import org.opensaml.core.xml.schema.impl.XSURIImpl;
-import org.opensaml.ws.wsaddressing.SoapAction;
+import org.opensaml.soap.wsaddressing.SoapAction;
 
 /**
  * Implementation of {@link SoapAction}.

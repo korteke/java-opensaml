@@ -18,7 +18,7 @@
 package org.opensaml.ws.wstrust.impl;
 
 import org.opensaml.core.xml.schema.impl.XSStringImpl;
-import org.opensaml.ws.wstrust.KeyWrapAlgorithm;
+import org.opensaml.soap.wstrust.KeyWrapAlgorithm;
 
 /**
  * KeyWrapAlgorithmImpl.

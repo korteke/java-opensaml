@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wspolicy.impl;
 
-import org.opensaml.ws.wspolicy.PolicyReference;
+import org.opensaml.soap.wspolicy.PolicyReference;
 
 /**
  * Builder for the PolicyReference element.

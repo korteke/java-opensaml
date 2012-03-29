@@ -18,7 +18,7 @@
 package org.opensaml.ws.wssecurity.impl;
 
 import org.opensaml.core.xml.schema.impl.XSIntegerImpl;
-import org.opensaml.ws.wssecurity.Iteration;
+import org.opensaml.soap.wssecurity.Iteration;
 
 /**
  * IterationImpl.

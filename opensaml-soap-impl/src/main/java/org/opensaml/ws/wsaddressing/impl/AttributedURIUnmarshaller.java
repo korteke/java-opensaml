@@ -20,7 +20,7 @@ package org.opensaml.ws.wsaddressing.impl;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.core.xml.util.XMLObjectSupport;
-import org.opensaml.ws.wsaddressing.AttributedURI;
+import org.opensaml.soap.wsaddressing.AttributedURI;
 import org.w3c.dom.Attr;
 
 /**

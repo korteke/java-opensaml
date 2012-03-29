@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wstrust.impl;
 
-import org.opensaml.ws.wstrust.Participant;
+import org.opensaml.soap.wstrust.Participant;
 
 /**
  * Builder for the Participant element.

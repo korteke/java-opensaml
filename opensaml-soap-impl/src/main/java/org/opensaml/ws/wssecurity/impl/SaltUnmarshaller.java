@@ -18,7 +18,7 @@
 package org.opensaml.ws.wssecurity.impl;
 
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.ws.wssecurity.Salt;
+import org.opensaml.soap.wssecurity.Salt;
 
 /**
  * SaltUnmarshaller.

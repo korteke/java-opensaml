@@ -21,7 +21,7 @@ import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.validation.AbstractValidatingXMLObject;
-import org.opensaml.ws.wsaddressing.WSAddressingObject;
+import org.opensaml.soap.wsaddressing.WSAddressingObject;
 
 /**
  * AbstractWSAddressingObject.

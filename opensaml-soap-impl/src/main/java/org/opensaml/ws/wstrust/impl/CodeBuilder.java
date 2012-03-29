@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wstrust.impl;
 
-import org.opensaml.ws.wstrust.Code;
+import org.opensaml.soap.wstrust.Code;
 
 /**
  * Builder for the Code element.

@@ -23,7 +23,7 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.core.xml.schema.impl.XSURIUnmarshaller;
 import org.opensaml.core.xml.util.XMLObjectSupport;
-import org.opensaml.ws.wsaddressing.RelatesTo;
+import org.opensaml.soap.wsaddressing.RelatesTo;
 import org.w3c.dom.Attr;
 
 /**

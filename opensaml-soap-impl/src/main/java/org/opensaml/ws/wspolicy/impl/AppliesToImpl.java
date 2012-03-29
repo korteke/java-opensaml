@@ -26,7 +26,7 @@ import javax.xml.namespace.QName;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.AttributeMap;
 import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
-import org.opensaml.ws.wspolicy.AppliesTo;
+import org.opensaml.soap.wspolicy.AppliesTo;
 
 /**
  * AppliesToImpl.

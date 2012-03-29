@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wstrust.impl;
 
-import org.opensaml.ws.wstrust.CanonicalizationAlgorithm;
+import org.opensaml.soap.wstrust.CanonicalizationAlgorithm;
 
 /**
  * Builder for the CanonicalizationAlgorithm element.

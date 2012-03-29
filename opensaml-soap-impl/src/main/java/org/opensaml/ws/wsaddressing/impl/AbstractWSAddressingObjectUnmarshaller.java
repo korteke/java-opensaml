@@ -25,7 +25,7 @@ import org.slf4j.LoggerFactory;
 import org.w3c.dom.Attr;
 
 /**
- * An abstract unmarshaller implementation for XMLObjects from {@link org.opensaml.ws.wsaddressing}.
+ * An abstract unmarshaller implementation for XMLObjects from {@link org.opensaml.soap.wsaddressing}.
  */
 public abstract class AbstractWSAddressingObjectUnmarshaller extends AbstractXMLObjectUnmarshaller {
 

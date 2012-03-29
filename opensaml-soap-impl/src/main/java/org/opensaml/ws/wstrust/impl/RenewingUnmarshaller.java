@@ -21,7 +21,7 @@ package org.opensaml.ws.wstrust.impl;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.core.xml.schema.XSBooleanValue;
-import org.opensaml.ws.wstrust.Renewing;
+import org.opensaml.soap.wstrust.Renewing;
 import org.w3c.dom.Attr;
 
 /**

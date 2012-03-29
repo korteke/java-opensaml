@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wstrust.impl;
 
-import org.opensaml.ws.wstrust.AllowPostdating;
+import org.opensaml.soap.wstrust.AllowPostdating;
 
 /**
  * Builder for the AllowPostdating element.

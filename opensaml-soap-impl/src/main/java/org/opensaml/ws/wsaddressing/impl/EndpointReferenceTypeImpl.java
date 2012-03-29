@@ -26,10 +26,10 @@ import javax.xml.namespace.QName;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.AttributeMap;
 import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
-import org.opensaml.ws.wsaddressing.Address;
-import org.opensaml.ws.wsaddressing.EndpointReferenceType;
-import org.opensaml.ws.wsaddressing.Metadata;
-import org.opensaml.ws.wsaddressing.ReferenceParameters;
+import org.opensaml.soap.wsaddressing.Address;
+import org.opensaml.soap.wsaddressing.EndpointReferenceType;
+import org.opensaml.soap.wsaddressing.Metadata;
+import org.opensaml.soap.wsaddressing.ReferenceParameters;
 
 /**
  * Abstract implementation of the element of type {@link EndpointReferenceType }.

@@ -18,7 +18,7 @@
 package org.opensaml.ws.wstrust.impl;
 
 import org.opensaml.core.xml.schema.impl.XSBase64BinaryImpl;
-import org.opensaml.ws.wstrust.CombinedHash;
+import org.opensaml.soap.wstrust.CombinedHash;
 
 /**
  * CombinedHashImpl.

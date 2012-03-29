@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wstrust.impl;
 
-import org.opensaml.ws.wstrust.ComputedKey;
+import org.opensaml.soap.wstrust.ComputedKey;
 
 /**
  * Builder for the ComputedKey element.

@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wsaddressing.impl;
 
-import org.opensaml.ws.wsaddressing.ProblemAction;
+import org.opensaml.soap.wsaddressing.ProblemAction;
 
 /**
  * ProblemActionBuilder.

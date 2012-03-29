@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wstrust.impl;
 
-import org.opensaml.ws.wstrust.Entropy;
+import org.opensaml.soap.wstrust.Entropy;
 
 /**
  * Builder for the Entropy element.

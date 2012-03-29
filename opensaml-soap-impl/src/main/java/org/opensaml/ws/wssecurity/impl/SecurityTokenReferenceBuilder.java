@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wssecurity.impl;
 
-import org.opensaml.ws.wssecurity.SecurityTokenReference;
+import org.opensaml.soap.wssecurity.SecurityTokenReference;
 
 /**
  * SecurityTokenReferenceBuilder.

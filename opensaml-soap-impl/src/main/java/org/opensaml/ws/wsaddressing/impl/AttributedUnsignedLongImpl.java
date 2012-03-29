@@ -18,7 +18,7 @@
 package org.opensaml.ws.wsaddressing.impl;
 
 import org.opensaml.core.xml.util.AttributeMap;
-import org.opensaml.ws.wsaddressing.AttributedUnsignedLong;
+import org.opensaml.soap.wsaddressing.AttributedUnsignedLong;
 
 /**
  * Implementation of {@link AttributedUnsignedLong}.

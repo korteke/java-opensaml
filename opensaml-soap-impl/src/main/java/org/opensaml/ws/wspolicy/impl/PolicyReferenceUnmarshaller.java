@@ -24,7 +24,7 @@ import net.shibboleth.utilities.java.support.xml.QNameSupport;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.core.xml.util.XMLObjectSupport;
-import org.opensaml.ws.wspolicy.PolicyReference;
+import org.opensaml.soap.wspolicy.PolicyReference;
 import org.w3c.dom.Attr;
 
 /**

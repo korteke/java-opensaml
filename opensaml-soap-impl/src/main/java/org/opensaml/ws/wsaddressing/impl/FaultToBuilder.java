@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wsaddressing.impl;
 
-import org.opensaml.ws.wsaddressing.FaultTo;
+import org.opensaml.soap.wsaddressing.FaultTo;
 
 /**
  * Builder for the {@link FaultTo} element.

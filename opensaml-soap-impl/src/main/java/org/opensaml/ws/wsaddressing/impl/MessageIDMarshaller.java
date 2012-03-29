@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wsaddressing.impl;
 
-import org.opensaml.ws.wsaddressing.MessageID;
+import org.opensaml.soap.wsaddressing.MessageID;
 
 /**
  * Marshaller for the &lt;wsa:MessageID&gt; element.

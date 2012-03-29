@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wsaddressing.impl;
 
-import org.opensaml.ws.wsaddressing.Action;
+import org.opensaml.soap.wsaddressing.Action;
 
 /**
  * ActionImpl is the concrete implementation of {@link Action}.

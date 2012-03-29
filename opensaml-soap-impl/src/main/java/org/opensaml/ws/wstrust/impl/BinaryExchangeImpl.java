@@ -19,7 +19,7 @@ package org.opensaml.ws.wstrust.impl;
 
 import org.opensaml.core.xml.schema.impl.XSStringImpl;
 import org.opensaml.core.xml.util.AttributeMap;
-import org.opensaml.ws.wstrust.BinaryExchange;
+import org.opensaml.soap.wstrust.BinaryExchange;
 
 /**
  * BinaryExchangeImpl.

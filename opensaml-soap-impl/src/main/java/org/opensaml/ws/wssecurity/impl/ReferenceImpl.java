@@ -18,7 +18,7 @@
 package org.opensaml.ws.wssecurity.impl;
 
 import org.opensaml.core.xml.util.AttributeMap;
-import org.opensaml.ws.wssecurity.Reference;
+import org.opensaml.soap.wssecurity.Reference;
 
 /**
  * ReferenceImpl.

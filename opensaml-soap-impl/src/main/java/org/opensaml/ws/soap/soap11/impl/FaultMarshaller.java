@@ -23,7 +23,7 @@ import org.opensaml.core.xml.io.MarshallingException;
 import org.w3c.dom.Element;
 
 /**
- * A thread-safe marshaller for {@link org.opensaml.ws.soap.soap11.Fault}s.
+ * A thread-safe marshaller for {@link org.opensaml.soap.soap11.Fault}s.
  */
 public class FaultMarshaller extends AbstractXMLObjectMarshaller {
 

@@ -20,14 +20,14 @@ package org.opensaml.ws.soap.soap11.encoder.http;
 import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.soap.soap11.Envelope;
+import org.opensaml.soap.soap11.Header;
+import org.opensaml.soap.wsaddressing.Action;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.message.encoder.MessageEncodingException;
-import org.opensaml.ws.soap.soap11.Envelope;
-import org.opensaml.ws.soap.soap11.Header;
 import org.opensaml.ws.soap.soap11.encoder.SOAP11Encoder;
 import org.opensaml.ws.transport.http.HTTPOutTransport;
 import org.opensaml.ws.transport.http.HTTPTransportUtils;
-import org.opensaml.ws.wsaddressing.Action;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

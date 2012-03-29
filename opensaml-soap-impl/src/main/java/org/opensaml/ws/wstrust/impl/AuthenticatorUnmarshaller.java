@@ -20,8 +20,8 @@ package org.opensaml.ws.wstrust.impl;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
-import org.opensaml.ws.wstrust.Authenticator;
-import org.opensaml.ws.wstrust.CombinedHash;
+import org.opensaml.soap.wstrust.Authenticator;
+import org.opensaml.soap.wstrust.CombinedHash;
 
 /**
  * Unmarshaller for the wst:Authenticator element.

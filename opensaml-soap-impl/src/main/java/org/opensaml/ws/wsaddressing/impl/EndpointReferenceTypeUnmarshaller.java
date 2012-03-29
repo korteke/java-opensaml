@@ -20,10 +20,10 @@ package org.opensaml.ws.wsaddressing.impl;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.core.xml.util.XMLObjectSupport;
-import org.opensaml.ws.wsaddressing.Address;
-import org.opensaml.ws.wsaddressing.EndpointReferenceType;
-import org.opensaml.ws.wsaddressing.Metadata;
-import org.opensaml.ws.wsaddressing.ReferenceParameters;
+import org.opensaml.soap.wsaddressing.Address;
+import org.opensaml.soap.wsaddressing.EndpointReferenceType;
+import org.opensaml.soap.wsaddressing.Metadata;
+import org.opensaml.soap.wsaddressing.ReferenceParameters;
 import org.w3c.dom.Attr;
 
 /**

@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wsaddressing.impl;
 
-import org.opensaml.ws.wsaddressing.ProblemIRI;
+import org.opensaml.soap.wsaddressing.ProblemIRI;
 
 /**
  * Marshaller for the &lt;wsa:ProblemIRI&gt; element.

@@ -18,7 +18,7 @@
 package org.opensaml.ws.wstrust.impl;
 
 import org.opensaml.core.xml.schema.impl.XSURIImpl;
-import org.opensaml.ws.wstrust.KeyType;
+import org.opensaml.soap.wstrust.KeyType;
 
 /**
  * KeyTypeImpl.

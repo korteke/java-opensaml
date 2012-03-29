@@ -25,9 +25,9 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
-import org.opensaml.ws.wstrust.Participant;
-import org.opensaml.ws.wstrust.Participants;
-import org.opensaml.ws.wstrust.Primary;
+import org.opensaml.soap.wstrust.Participant;
+import org.opensaml.soap.wstrust.Participants;
+import org.opensaml.soap.wstrust.Primary;
 
 /**
  * ParticipantsImpl.

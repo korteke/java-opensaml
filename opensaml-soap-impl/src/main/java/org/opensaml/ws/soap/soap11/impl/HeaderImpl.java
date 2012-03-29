@@ -17,11 +17,11 @@
 
 package org.opensaml.ws.soap.soap11.impl;
 
-import org.opensaml.ws.soap.common.AbstractExtensibleSOAPObject;
-import org.opensaml.ws.soap.soap11.Header;
+import org.opensaml.soap.common.AbstractExtensibleSOAPObject;
+import org.opensaml.soap.soap11.Header;
 
 /**
- * Concrete implementation of {@link org.opensaml.ws.soap.soap11.Header}.
+ * Concrete implementation of {@link org.opensaml.soap.soap11.Header}.
  */
 public class HeaderImpl extends AbstractExtensibleSOAPObject implements Header {
 

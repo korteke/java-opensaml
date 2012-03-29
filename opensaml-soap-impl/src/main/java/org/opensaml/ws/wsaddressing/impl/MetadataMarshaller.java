@@ -21,7 +21,7 @@ package org.opensaml.ws.wsaddressing.impl;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.util.XMLObjectSupport;
-import org.opensaml.ws.wsaddressing.Metadata;
+import org.opensaml.soap.wsaddressing.Metadata;
 import org.w3c.dom.Element;
 
 /**

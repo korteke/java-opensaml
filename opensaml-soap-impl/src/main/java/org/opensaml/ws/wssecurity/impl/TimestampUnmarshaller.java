@@ -25,9 +25,9 @@ import net.shibboleth.utilities.java.support.xml.QNameSupport;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.core.xml.util.XMLObjectSupport;
-import org.opensaml.ws.wssecurity.Created;
-import org.opensaml.ws.wssecurity.Expires;
-import org.opensaml.ws.wssecurity.Timestamp;
+import org.opensaml.soap.wssecurity.Created;
+import org.opensaml.soap.wssecurity.Expires;
+import org.opensaml.soap.wssecurity.Timestamp;
 import org.w3c.dom.Attr;
 
 /**

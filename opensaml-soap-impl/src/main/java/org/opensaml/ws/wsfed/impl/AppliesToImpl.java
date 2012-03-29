@@ -23,8 +23,8 @@ import java.util.List;
 
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.ws.wsfed.AppliesTo;
-import org.opensaml.ws.wsfed.EndPointReference;
+import org.opensaml.soap.wsfed.AppliesTo;
+import org.opensaml.soap.wsfed.EndPointReference;
 
 /** Implementation of the {@link AppliesTo} Object. */
 public class AppliesToImpl extends AbstractXMLObject implements AppliesTo {

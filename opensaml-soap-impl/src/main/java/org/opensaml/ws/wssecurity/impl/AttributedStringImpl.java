@@ -18,8 +18,8 @@
 package org.opensaml.ws.wssecurity.impl;
 
 import org.opensaml.core.xml.util.AttributeMap;
-import org.opensaml.ws.wssecurity.AttributedString;
-import org.opensaml.ws.wssecurity.IdBearing;
+import org.opensaml.soap.wssecurity.AttributedString;
+import org.opensaml.soap.wssecurity.IdBearing;
 
 /**
  * Implementation of {@link AttributedString}.

@@ -17,12 +17,12 @@
 
 package org.opensaml.ws.wstrust.impl;
 
-import org.opensaml.ws.wstrust.TokenType;
+import org.opensaml.soap.wstrust.TokenType;
 
 /**
  * Builder for the TokenType element.
  * 
- * @see org.opensaml.ws.wstrust.TokenType
+ * @see org.opensaml.soap.wstrust.TokenType
  * 
  */
 public class TokenTypeBuilder extends AbstractWSTrustObjectBuilder<TokenType> {

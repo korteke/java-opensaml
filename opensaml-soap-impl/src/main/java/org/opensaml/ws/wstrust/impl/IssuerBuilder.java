@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wstrust.impl;
 
-import org.opensaml.ws.wstrust.Issuer;
+import org.opensaml.soap.wstrust.Issuer;
 
 /**
  * Builder for the Issuer element.

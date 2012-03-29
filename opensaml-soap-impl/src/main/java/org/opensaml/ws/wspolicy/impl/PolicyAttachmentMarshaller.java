@@ -20,7 +20,7 @@ package org.opensaml.ws.wspolicy.impl;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.util.XMLObjectSupport;
-import org.opensaml.ws.wspolicy.PolicyAttachment;
+import org.opensaml.soap.wspolicy.PolicyAttachment;
 import org.w3c.dom.Element;
 
 /**

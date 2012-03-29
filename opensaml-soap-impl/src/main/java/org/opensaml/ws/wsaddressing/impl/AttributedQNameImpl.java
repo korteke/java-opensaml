@@ -19,7 +19,7 @@ package org.opensaml.ws.wsaddressing.impl;
 
 import org.opensaml.core.xml.schema.impl.XSQNameImpl;
 import org.opensaml.core.xml.util.AttributeMap;
-import org.opensaml.ws.wsaddressing.AttributedQName;
+import org.opensaml.soap.wsaddressing.AttributedQName;
 
 /**
  * Implementation of {@link AttributedQName}.

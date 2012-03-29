@@ -24,11 +24,11 @@ import net.shibboleth.utilities.java.support.xml.QNameSupport;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.AbstractXMLObjectUnmarshaller;
 import org.opensaml.core.xml.io.UnmarshallingException;
-import org.opensaml.ws.soap.soap11.Body;
+import org.opensaml.soap.soap11.Body;
 import org.w3c.dom.Attr;
 
 /**
- * A thread-safe unmarshaller for {@link org.opensaml.ws.soap.soap11.Body}s.
+ * A thread-safe unmarshaller for {@link org.opensaml.soap.soap11.Body}s.
  */
 public class BodyUnmarshaller extends AbstractXMLObjectUnmarshaller {
 

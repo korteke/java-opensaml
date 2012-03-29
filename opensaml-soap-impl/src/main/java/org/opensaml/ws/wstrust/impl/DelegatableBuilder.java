@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wstrust.impl;
 
-import org.opensaml.ws.wstrust.Delegatable;
+import org.opensaml.soap.wstrust.Delegatable;
 
 /**
  * Builder for the Delegatable element.

@@ -21,7 +21,7 @@ import net.shibboleth.utilities.java.support.xml.ElementSupport;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.AbstractXMLObjectMarshaller;
-import org.opensaml.ws.wsfed.Address;
+import org.opensaml.soap.wsfed.Address;
 import org.w3c.dom.Element;
 
 /** A thread-safe marshaller for {@link Address} objects. */

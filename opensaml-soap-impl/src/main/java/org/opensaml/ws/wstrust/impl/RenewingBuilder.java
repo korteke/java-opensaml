@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wstrust.impl;
 
-import org.opensaml.ws.wstrust.Renewing;
+import org.opensaml.soap.wstrust.Renewing;
 
 /**
  * Builder for the Renewing element.

@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wstrust.impl;
 
-import org.opensaml.ws.wstrust.Claims;
+import org.opensaml.soap.wstrust.Claims;
 
 /**
  * Builder for the Claims element.

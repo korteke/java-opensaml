@@ -22,8 +22,8 @@ import java.util.Collections;
 import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.ws.wstrust.RequestSecurityToken;
-import org.opensaml.ws.wstrust.RequestSecurityTokenCollection;
+import org.opensaml.soap.wstrust.RequestSecurityToken;
+import org.opensaml.soap.wstrust.RequestSecurityTokenCollection;
 
 /**
  * RequestSecurityTokenCollectionImpl.

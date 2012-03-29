@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wstrust.impl;
 
-import org.opensaml.ws.wstrust.RequestedUnattachedReference;
+import org.opensaml.soap.wstrust.RequestedUnattachedReference;
 
 /**
  * Builder for the RequestedUnattachedReference element.

@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wstrust.impl;
 
-import org.opensaml.ws.wstrust.RequestedAttachedReference;
+import org.opensaml.soap.wstrust.RequestedAttachedReference;
 
 /**
  * Builder for the RequestedAttachedReference element.

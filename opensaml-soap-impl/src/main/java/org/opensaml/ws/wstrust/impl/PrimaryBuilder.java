@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wstrust.impl;
 
-import org.opensaml.ws.wstrust.Primary;
+import org.opensaml.soap.wstrust.Primary;
 
 /**
  * Builder for the Primary element.

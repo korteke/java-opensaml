@@ -18,9 +18,9 @@
 package org.opensaml.ws.wsfed.impl;
 
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
-import org.opensaml.ws.wsfed.AppliesTo;
-import org.opensaml.ws.wsfed.WSFedConstants;
-import org.opensaml.ws.wsfed.WSFedObjectBuilder;
+import org.opensaml.soap.wsfed.AppliesTo;
+import org.opensaml.soap.wsfed.WSFedConstants;
+import org.opensaml.soap.wsfed.WSFedObjectBuilder;
 
 /** Builder of {@link AppliesToImpl} objects. */
 public class AppliesToBuilder extends AbstractXMLObjectBuilder<AppliesTo> implements WSFedObjectBuilder<AppliesTo> {

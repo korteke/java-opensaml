@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wstrust.impl;
 
-import org.opensaml.ws.wstrust.KeyWrapAlgorithm;
+import org.opensaml.soap.wstrust.KeyWrapAlgorithm;
 
 /**
  * Builder for the KeyWrapAlgorithm element.

@@ -19,7 +19,7 @@ package org.opensaml.ws.wssecurity.impl;
 
 
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.ws.wssecurity.Iteration;
+import org.opensaml.soap.wssecurity.Iteration;
 
 /**
  * IterationUnmarshaller.

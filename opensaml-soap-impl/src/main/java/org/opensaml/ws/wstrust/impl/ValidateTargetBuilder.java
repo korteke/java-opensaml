@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wstrust.impl;
 
-import org.opensaml.ws.wstrust.ValidateTarget;
+import org.opensaml.soap.wstrust.ValidateTarget;
 
 /**
  * Builder for the ValidateTarget element.

@@ -22,7 +22,7 @@ import net.shibboleth.utilities.java.support.xml.ElementSupport;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.util.XMLObjectSupport;
-import org.opensaml.ws.wsaddressing.AttributedUnsignedLong;
+import org.opensaml.soap.wsaddressing.AttributedUnsignedLong;
 import org.w3c.dom.Element;
 
 /**

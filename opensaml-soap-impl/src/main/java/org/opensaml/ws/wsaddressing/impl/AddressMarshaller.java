@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wsaddressing.impl;
 
-import org.opensaml.ws.wsaddressing.Address;
+import org.opensaml.soap.wsaddressing.Address;
 
 /**
  * Marshaller for the &lt;wsa:Address&gt; element.

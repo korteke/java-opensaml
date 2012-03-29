@@ -20,7 +20,7 @@ package org.opensaml.ws.wstrust.impl;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.schema.XSBooleanValue;
-import org.opensaml.ws.wstrust.Delegatable;
+import org.opensaml.soap.wstrust.Delegatable;
 
 /**
  * Unmarshaller for the wst:Delegatable element.

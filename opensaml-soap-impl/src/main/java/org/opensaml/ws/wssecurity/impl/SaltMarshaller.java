@@ -21,7 +21,7 @@ import net.shibboleth.utilities.java.support.xml.ElementSupport;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
-import org.opensaml.ws.wssecurity.Salt;
+import org.opensaml.soap.wssecurity.Salt;
 import org.w3c.dom.Element;
 
 /**

@@ -18,7 +18,7 @@
 package org.opensaml.ws.wspolicy.impl;
 
 import org.opensaml.core.xml.validation.AbstractValidatingXMLObject;
-import org.opensaml.ws.wspolicy.WSPolicyObject;
+import org.opensaml.soap.wspolicy.WSPolicyObject;
 
 /**
  * AbstractWSSecurityObject.

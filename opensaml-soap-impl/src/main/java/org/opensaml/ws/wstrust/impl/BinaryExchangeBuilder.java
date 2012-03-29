@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wstrust.impl;
 
-import org.opensaml.ws.wstrust.BinaryExchange;
+import org.opensaml.soap.wstrust.BinaryExchange;
 
 /**
  * Builder for the BinaryExchange element.

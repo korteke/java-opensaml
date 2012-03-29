@@ -21,12 +21,12 @@ import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 
 import org.opensaml.core.xml.XMLObjectBuilderFactory;
 import org.opensaml.core.xml.XMLObjectProviderRegistrySupport;
+import org.opensaml.soap.common.SOAPObjectBuilder;
+import org.opensaml.soap.soap11.Body;
+import org.opensaml.soap.soap11.Envelope;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.message.encoder.MessageEncodingException;
 import org.opensaml.ws.message.handler.BaseHandlerChainAwareMessageEncoder;
-import org.opensaml.ws.soap.common.SOAPObjectBuilder;
-import org.opensaml.ws.soap.soap11.Body;
-import org.opensaml.ws.soap.soap11.Envelope;
 import org.opensaml.ws.transport.OutTransport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wstrust.impl;
 
-import org.opensaml.ws.wstrust.KeyExchangeToken;
+import org.opensaml.soap.wstrust.KeyExchangeToken;
 
 /**
  * Builder for the KeyExchangeToken element.

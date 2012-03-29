@@ -26,13 +26,13 @@ import javax.xml.namespace.QName;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.AttributeMap;
 import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
-import org.opensaml.ws.wssecurity.Created;
-import org.opensaml.ws.wssecurity.Expires;
-import org.opensaml.ws.wssecurity.IdBearing;
-import org.opensaml.ws.wssecurity.Timestamp;
+import org.opensaml.soap.wssecurity.Created;
+import org.opensaml.soap.wssecurity.Expires;
+import org.opensaml.soap.wssecurity.IdBearing;
+import org.opensaml.soap.wssecurity.Timestamp;
 
 /**
- * Concrete implementation of {@link org.opensaml.ws.wssecurity.Timestamp}.
+ * Concrete implementation of {@link org.opensaml.soap.wssecurity.Timestamp}.
  * 
  */
 public class TimestampImpl extends AbstractWSSecurityObject implements Timestamp {

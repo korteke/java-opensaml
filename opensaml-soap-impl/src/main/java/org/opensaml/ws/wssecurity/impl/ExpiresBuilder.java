@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wssecurity.impl;
 
-import org.opensaml.ws.wssecurity.Expires;
+import org.opensaml.soap.wssecurity.Expires;
 
 /**
  * ExpiresBuilder
@@ -28,7 +28,7 @@ public class ExpiresBuilder extends AbstractWSSecurityObjectBuilder<Expires> {
     /*
      * (non-Javadoc)
      * 
-     * @see org.opensaml.ws.wssecurity.impl.AbstractWSSecurityObjectBuilder#buildObject()
+     * @see org.opensaml.soap.wssecurity.impl.AbstractWSSecurityObjectBuilder#buildObject()
      */
     @Override
     public Expires buildObject() {

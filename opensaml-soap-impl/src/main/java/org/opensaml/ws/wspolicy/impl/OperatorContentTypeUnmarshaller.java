@@ -19,7 +19,7 @@ package org.opensaml.ws.wspolicy.impl;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
-import org.opensaml.ws.wspolicy.OperatorContentType;
+import org.opensaml.soap.wspolicy.OperatorContentType;
 
 /**
  * Unmarshaller for the wsp:OperatorContentType element.

@@ -18,7 +18,7 @@
 package org.opensaml.ws.wssecurity.impl;
 
 import org.opensaml.core.xml.schema.impl.XSBase64BinaryImpl;
-import org.opensaml.ws.wssecurity.Salt;
+import org.opensaml.soap.wssecurity.Salt;
 
 /**
  * SaltImpl.

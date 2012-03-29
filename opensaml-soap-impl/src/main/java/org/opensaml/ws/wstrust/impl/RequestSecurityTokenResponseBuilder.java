@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wstrust.impl;
 
-import org.opensaml.ws.wstrust.RequestSecurityTokenResponse;
+import org.opensaml.soap.wstrust.RequestSecurityTokenResponse;
 
 /**
  * Builder for the RequestSecurityTokenResponse element.

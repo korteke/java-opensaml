@@ -18,12 +18,12 @@
 package org.opensaml.ws.soap.soap11.impl;
 
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
-import org.opensaml.ws.soap.common.SOAPObjectBuilder;
-import org.opensaml.ws.soap.soap11.Header;
-import org.opensaml.ws.soap.util.SOAPConstants;
+import org.opensaml.soap.common.SOAPObjectBuilder;
+import org.opensaml.soap.soap11.Header;
+import org.opensaml.soap.util.SOAPConstants;
 
 /**
- * Builder of {@link org.opensaml.ws.soap.soap11.impl.HeaderImpl} objects.
+ * Builder of {@link org.opensaml.soap.soap11.impl.HeaderImpl} objects.
  */
 public class HeaderBuilder extends AbstractXMLObjectBuilder<Header> implements SOAPObjectBuilder<Header>{
 

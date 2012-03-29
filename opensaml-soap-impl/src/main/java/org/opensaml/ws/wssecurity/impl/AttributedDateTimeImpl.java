@@ -22,8 +22,8 @@ import org.joda.time.chrono.ISOChronology;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 import org.opensaml.core.xml.util.AttributeMap;
-import org.opensaml.ws.wssecurity.AttributedDateTime;
-import org.opensaml.ws.wssecurity.IdBearing;
+import org.opensaml.soap.wssecurity.AttributedDateTime;
+import org.opensaml.soap.wssecurity.IdBearing;
 
 /**
  * Implementation of {@link AttributedDateTime}.

@@ -24,8 +24,8 @@ import org.opensaml.common.xml.SAMLConstants;
 import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.saml2.core.IDPList;
 import org.opensaml.saml2.core.Issuer;
-import org.opensaml.ws.soap.soap11.ActorBearing;
-import org.opensaml.ws.soap.soap11.MustUnderstandBearing;
+import org.opensaml.soap.soap11.ActorBearing;
+import org.opensaml.soap.soap11.MustUnderstandBearing;
 
 /**
  * SAML 2.0 ECP Request SOAP header.

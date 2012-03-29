@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wspolicy.impl;
 
-import org.opensaml.ws.wspolicy.PolicyAttachment;
+import org.opensaml.soap.wspolicy.PolicyAttachment;
 
 /**
  * Builder for the PolicyAttachment element.

@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wstrust.impl;
 
-import org.opensaml.ws.wstrust.SignChallengeResponse;
+import org.opensaml.soap.wstrust.SignChallengeResponse;
 
 /**
  * Builder for the SignChallengeResponse element.

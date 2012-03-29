@@ -17,12 +17,12 @@
 
 package org.opensaml.ws.wstrust.impl;
 
-import org.opensaml.ws.wstrust.RequestType;
+import org.opensaml.soap.wstrust.RequestType;
 
 /**
  * Builder for the RequestType element.
  * 
- * @see org.opensaml.ws.wstrust.RequestType
+ * @see org.opensaml.soap.wstrust.RequestType
  * 
  */
 public class RequestTypeBuilder extends AbstractWSTrustObjectBuilder<RequestType> {

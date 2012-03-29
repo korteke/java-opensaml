@@ -17,11 +17,11 @@
 
 package org.opensaml.ws.soap.soap11.impl;
 
-import org.opensaml.ws.soap.common.AbstractExtensibleSOAPObject;
-import org.opensaml.ws.soap.soap11.Detail;
+import org.opensaml.soap.common.AbstractExtensibleSOAPObject;
+import org.opensaml.soap.soap11.Detail;
 
 /**
- * Concrete implementation of {@link org.opensaml.ws.soap.soap11.Detail}.
+ * Concrete implementation of {@link org.opensaml.soap.soap11.Detail}.
  */
 public class DetailImpl extends AbstractExtensibleSOAPObject implements Detail {
 

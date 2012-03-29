@@ -18,11 +18,11 @@
 package org.opensaml.ws.soap.soap11.impl;
 
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
-import org.opensaml.ws.soap.common.SOAPObjectBuilder;
-import org.opensaml.ws.soap.soap11.FaultActor;
+import org.opensaml.soap.common.SOAPObjectBuilder;
+import org.opensaml.soap.soap11.FaultActor;
 
 /**
- * A builder of {@link org.opensaml.ws.soap.soap11.impl.FaultActorImpl} objects.
+ * A builder of {@link org.opensaml.soap.soap11.impl.FaultActorImpl} objects.
  */
 public class FaultActorBuilder extends AbstractXMLObjectBuilder<FaultActor> implements SOAPObjectBuilder<FaultActor> {
 

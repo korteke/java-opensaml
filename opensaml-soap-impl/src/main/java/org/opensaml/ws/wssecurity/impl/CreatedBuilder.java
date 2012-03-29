@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wssecurity.impl;
 
-import org.opensaml.ws.wssecurity.Created;
+import org.opensaml.soap.wssecurity.Created;
 
 /**
  * Builder for the &lt;wsu:Created&gt; element.
@@ -28,7 +28,7 @@ public class CreatedBuilder extends AbstractWSSecurityObjectBuilder<Created> {
     /*
      * (non-Javadoc)
      * 
-     * @see org.opensaml.ws.wssecurity.impl.AbstractWSSecurityObjectBuilder#buildObject()
+     * @see org.opensaml.soap.wssecurity.impl.AbstractWSSecurityObjectBuilder#buildObject()
      */
     @Override
     public Created buildObject() {

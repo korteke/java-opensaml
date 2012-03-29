@@ -18,10 +18,10 @@
 package org.opensaml.ws.soap.soap11.impl;
 
 import org.opensaml.core.xml.schema.impl.XSURIImpl;
-import org.opensaml.ws.soap.soap11.FaultActor;
+import org.opensaml.soap.soap11.FaultActor;
 
 /**
- * Concrete implementation of {@link org.opensaml.ws.soap.soap11.FaultActor}.
+ * Concrete implementation of {@link org.opensaml.soap.soap11.FaultActor}.
  */
 public class FaultActorImpl extends XSURIImpl implements FaultActor {
 

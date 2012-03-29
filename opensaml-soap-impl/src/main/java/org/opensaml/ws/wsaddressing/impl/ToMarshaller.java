@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wsaddressing.impl;
 
-import org.opensaml.ws.wsaddressing.To;
+import org.opensaml.soap.wsaddressing.To;
 
 /**
  * Marshaller for the &lt;wsa:To&gt; element.

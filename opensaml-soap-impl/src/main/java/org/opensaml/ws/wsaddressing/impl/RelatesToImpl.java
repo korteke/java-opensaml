@@ -19,7 +19,7 @@ package org.opensaml.ws.wsaddressing.impl;
 
 import org.opensaml.core.xml.schema.impl.XSURIImpl;
 import org.opensaml.core.xml.util.AttributeMap;
-import org.opensaml.ws.wsaddressing.RelatesTo;
+import org.opensaml.soap.wsaddressing.RelatesTo;
 
 /**
  * Implementation of {@link RelatesTo}.

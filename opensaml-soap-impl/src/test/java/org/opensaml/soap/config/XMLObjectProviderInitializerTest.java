@@ -21,11 +21,11 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.core.config.Initializer;
 import org.opensaml.core.config.XMLObjectProviderInitializerBaseTestCase;
-import org.opensaml.ws.soap.soap11.Envelope;
-import org.opensaml.ws.wsaddressing.Action;
-import org.opensaml.ws.wspolicy.Policy;
-import org.opensaml.ws.wssecurity.Security;
-import org.opensaml.ws.wstrust.RequestedSecurityToken;
+import org.opensaml.soap.soap11.Envelope;
+import org.opensaml.soap.wsaddressing.Action;
+import org.opensaml.soap.wspolicy.Policy;
+import org.opensaml.soap.wssecurity.Security;
+import org.opensaml.soap.wstrust.RequestedSecurityToken;
 
 /**
  * Test XMLObject provider initializer for module "soap-impl".
@@ -42,7 +42,7 @@ public class XMLObjectProviderInitializerTest extends XMLObjectProviderInitializ
         return new QName[] {
                 Envelope.DEFAULT_ELEMENT_NAME,
                 Action.ELEMENT_NAME,
-                org.opensaml.ws.wsfed.RequestedSecurityToken.DEFAULT_ELEMENT_NAME,
+                org.opensaml.soap.wsfed.RequestedSecurityToken.DEFAULT_ELEMENT_NAME,
                 Policy.ELEMENT_NAME,
                 Security.ELEMENT_NAME,
                 RequestedSecurityToken.ELEMENT_NAME,

@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wstrust.impl;
 
-import org.opensaml.ws.wstrust.CancelTarget;
+import org.opensaml.soap.wstrust.CancelTarget;
 
 /**
  * Builder for the CancelTarget element.

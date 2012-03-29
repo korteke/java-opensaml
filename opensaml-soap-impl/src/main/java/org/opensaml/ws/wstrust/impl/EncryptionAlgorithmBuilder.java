@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wstrust.impl;
 
-import org.opensaml.ws.wstrust.EncryptionAlgorithm;
+import org.opensaml.soap.wstrust.EncryptionAlgorithm;
 
 /**
  * Builder for the EncryptionAlgorithm element.

@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wstrust.impl;
 
-import org.opensaml.ws.wstrust.IssuedTokens;
+import org.opensaml.soap.wstrust.IssuedTokens;
 
 /**
  * Builder for the IssuedTokens element.

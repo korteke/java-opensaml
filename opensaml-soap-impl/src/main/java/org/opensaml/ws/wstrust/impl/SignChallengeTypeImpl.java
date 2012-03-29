@@ -26,8 +26,8 @@ import javax.xml.namespace.QName;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.AttributeMap;
 import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
-import org.opensaml.ws.wstrust.Challenge;
-import org.opensaml.ws.wstrust.SignChallengeType;
+import org.opensaml.soap.wstrust.Challenge;
+import org.opensaml.soap.wstrust.SignChallengeType;
 
 /**
  * SignChallengeTypeImpl.

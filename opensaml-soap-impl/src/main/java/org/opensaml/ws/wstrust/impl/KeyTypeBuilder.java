@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wstrust.impl;
 
-import org.opensaml.ws.wstrust.KeyType;
+import org.opensaml.soap.wstrust.KeyType;
 
 /**
  * Builder for the KeyType element.

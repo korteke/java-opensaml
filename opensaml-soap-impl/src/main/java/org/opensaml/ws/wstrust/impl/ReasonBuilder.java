@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wstrust.impl;
 
-import org.opensaml.ws.wstrust.Reason;
+import org.opensaml.soap.wstrust.Reason;
 
 /**
  * Builder for the Reason element.

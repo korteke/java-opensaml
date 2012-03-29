@@ -17,7 +17,7 @@
 
 package org.opensaml.ws.wssecurity.impl;
 
-import org.opensaml.ws.wssecurity.Expires;
+import org.opensaml.soap.wssecurity.Expires;
 
 /**
  * ExpiresImpl.
