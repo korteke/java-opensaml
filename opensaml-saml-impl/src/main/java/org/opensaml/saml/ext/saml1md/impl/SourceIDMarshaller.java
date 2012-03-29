@@ -15,29 +15,29 @@
  * limitations under the License.
  */
 
+package org.opensaml.saml.ext.saml1md.impl;
+
+import net.shibboleth.utilities.java.support.xml.ElementSupport;
+
+import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.io.MarshallingException;
+import org.opensaml.saml.common.impl.AbstractSAMLObjectMarshaller;
+import org.opensaml.saml.ext.saml1md.SourceID;
+import org.w3c.dom.Element;
+
+import com.google.common.base.Strings;
+
 /**
- * 
+ * Marshaller of {@link SourceID} objects.
  */
+public class SourceIDMarshaller extends AbstractSAMLObjectMarshaller {
 
-package org.opensaml.saml.samlext.idpdisco.impl;
+    /** {@inheritDoc} */
+    protected void marshallElementContent(XMLObject xmlObject, Element domElement) throws MarshallingException {
+        SourceID sourceID = (SourceID) xmlObject;
 
-import org.opensaml.saml.ext.idpdisco.DiscoveryResponse;
-import org.opensaml.saml.saml2.metadata.impl.IndexedEndpointImpl;
-
-/**
- * This plugs into the standard opensaml2 parser framework to allow us to get use <code> DiscoverResponse </code>
- * elements in our extensions.
- */
-public class DiscoveryResponseImpl extends IndexedEndpointImpl implements DiscoveryResponse {
-    
-    /**
-     * Constructor.
-     * 
-     * @param namespaceURI the Uri
-     * @param elementLocalName the local name
-     * @param namespacePrefix the prefix
-     */
-    protected DiscoveryResponseImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
-        super(namespaceURI, elementLocalName, namespacePrefix);
+        if (!Strings.isNullOrEmpty(sourceID.getValue())) {
+            ElementSupport.appendTextContent(domElement, sourceID.getValue());
+        }
     }
 }
