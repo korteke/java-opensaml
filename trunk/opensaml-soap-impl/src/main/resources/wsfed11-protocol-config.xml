@@ -5,33 +5,33 @@
     <ObjectProviders>
     
         <ObjectProvider qualifiedName="wsa:Address">
-            <BuilderClass className="org.opensaml.ws.wsfed.impl.AddressBuilder"/>
-            <MarshallingClass className="org.opensaml.ws.wsfed.impl.AddressMarshaller"/>
-            <UnmarshallingClass className="org.opensaml.ws.wsfed.impl.AddressUnmarshaller"/>
+            <BuilderClass className="org.opensaml.soap.wsfed.impl.AddressBuilder"/>
+            <MarshallingClass className="org.opensaml.soap.wsfed.impl.AddressMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.soap.wsfed.impl.AddressUnmarshaller"/>
         </ObjectProvider>
         
         <ObjectProvider qualifiedName="wsp:AppliesTo">
-            <BuilderClass className="org.opensaml.ws.wsfed.impl.AppliesToBuilder"/>
-            <MarshallingClass className="org.opensaml.ws.wsfed.impl.AppliesToMarshaller"/>
-            <UnmarshallingClass className="org.opensaml.ws.wsfed.impl.AppliesToUnmarshaller"/>
+            <BuilderClass className="org.opensaml.soap.wsfed.impl.AppliesToBuilder"/>
+            <MarshallingClass className="org.opensaml.soap.wsfed.impl.AppliesToMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.soap.wsfed.impl.AppliesToUnmarshaller"/>
         </ObjectProvider>
         
         <ObjectProvider qualifiedName="wsa:EndPointReference">
-            <BuilderClass className="org.opensaml.ws.wsfed.impl.EndPointReferenceBuilder"/>
-            <MarshallingClass className="org.opensaml.ws.wsfed.impl.EndPointReferenceMarshaller"/>
-            <UnmarshallingClass className="org.opensaml.ws.wsfed.impl.EndPointReferenceUnmarshaller"/>
+            <BuilderClass className="org.opensaml.soap.wsfed.impl.EndPointReferenceBuilder"/>
+            <MarshallingClass className="org.opensaml.soap.wsfed.impl.EndPointReferenceMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.soap.wsfed.impl.EndPointReferenceUnmarshaller"/>
         </ObjectProvider>
                 
         <ObjectProvider qualifiedName="wst:RequestedSecurityToken">
-            <BuilderClass className="org.opensaml.ws.wsfed.impl.RequestedSecurityTokenBuilder"/>
-            <MarshallingClass className="org.opensaml.ws.wsfed.impl.RequestedSecurityTokenMarshaller"/>
-            <UnmarshallingClass className="org.opensaml.ws.wsfed.impl.RequestedSecurityTokenUnmarshaller"/>
+            <BuilderClass className="org.opensaml.soap.wsfed.impl.RequestedSecurityTokenBuilder"/>
+            <MarshallingClass className="org.opensaml.soap.wsfed.impl.RequestedSecurityTokenMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.soap.wsfed.impl.RequestedSecurityTokenUnmarshaller"/>
         </ObjectProvider>
         
         <ObjectProvider qualifiedName="wst:RequestSecurityTokenResponse">
-            <BuilderClass className="org.opensaml.ws.wsfed.impl.RequestSecurityTokenResponseBuilder"/>
-            <MarshallingClass className="org.opensaml.ws.wsfed.impl.RequestSecurityTokenResponseMarshaller"/>
-            <UnmarshallingClass className="org.opensaml.ws.wsfed.impl.RequestSecurityTokenResponseUnmarshaller"/>
+            <BuilderClass className="org.opensaml.soap.wsfed.impl.RequestSecurityTokenResponseBuilder"/>
+            <MarshallingClass className="org.opensaml.soap.wsfed.impl.RequestSecurityTokenResponseMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.soap.wsfed.impl.RequestSecurityTokenResponseUnmarshaller"/>
         </ObjectProvider>
 
     </ObjectProviders>
