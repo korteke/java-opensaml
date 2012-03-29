@@ -23,7 +23,6 @@ import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.metadata.RequestedAttribute;
-import org.opensaml.saml.saml2.metadata.impl.org;
 
 /**
  * Test case for creating, marshalling, and unmarshalling

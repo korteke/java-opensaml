@@ -25,7 +25,6 @@ import javax.xml.namespace.QName;
 import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml1.core.Action;
-import org.opensaml.saml.saml1.core.impl.org;
 
 /**
  * Test for {@link org.opensaml.saml.saml1.core.impl.ActionImpl}

@@ -22,8 +22,6 @@ import javax.xml.namespace.QName;
 import org.joda.time.DateTime;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml1.core.AuthenticationStatement;
-import org.opensaml.saml.saml1.core.validator.AuthenticationStatementSchemaValidator;
-import org.opensaml.saml.saml1.core.validator.org;
 
 /**
  * Test case for {@link org.opensaml.saml.saml1.core.validator.AuthenticationStatementSchemaValidator}.

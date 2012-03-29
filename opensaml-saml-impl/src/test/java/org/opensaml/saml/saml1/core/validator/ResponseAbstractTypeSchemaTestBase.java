@@ -20,7 +20,6 @@ package org.opensaml.saml.saml1.core.validator;
 import org.joda.time.DateTime;
 import org.opensaml.saml.common.BaseSAMLObjectValidatorTestCase;
 import org.opensaml.saml.saml1.core.ResponseAbstractType;
-import org.opensaml.saml.saml1.core.validator.org;
 
 /**
  * Test case for {@link org.opensaml.saml.saml1.core.validator.ResponseAbstractTypeSchemaValidator}.

@@ -22,8 +22,6 @@ import javax.xml.namespace.QName;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml1.core.Response;
 import org.opensaml.saml.saml1.core.Status;
-import org.opensaml.saml.saml1.core.validator.ResponseSchemaValidator;
-import org.opensaml.saml.saml1.core.validator.org;
 
 /**
  * Test case for {@link org.opensaml.saml.saml1.core.validator.ResponseSchemaValidator}.

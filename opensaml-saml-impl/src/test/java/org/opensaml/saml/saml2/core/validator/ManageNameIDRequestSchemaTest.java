@@ -26,7 +26,6 @@ import org.opensaml.saml.saml2.core.NameID;
 import org.opensaml.saml.saml2.core.NewEncryptedID;
 import org.opensaml.saml.saml2.core.NewID;
 import org.opensaml.saml.saml2.core.Terminate;
-import org.opensaml.saml.saml2.core.validator.ManageNameIDRequestSchemaValidator;
 
 /**
  *

@@ -23,7 +23,6 @@ package org.opensaml.saml.saml2.core.impl;
 import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
 import org.opensaml.saml.saml2.core.NameIDPolicy;
-import org.opensaml.saml.saml2.core.impl.org;
 
 /**
  * Test case for creating, marshalling, and unmarshalling

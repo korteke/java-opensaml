@@ -25,7 +25,6 @@ import org.opensaml.saml.saml2.core.Action;
 import org.opensaml.saml.saml2.core.AuthzDecisionStatement;
 import org.opensaml.saml.saml2.core.DecisionTypeEnumeration;
 import org.opensaml.saml.saml2.core.Evidence;
-import org.opensaml.saml.saml2.core.impl.org;
 
 /**
  * Test case for creating, marshalling, and unmarshalling
