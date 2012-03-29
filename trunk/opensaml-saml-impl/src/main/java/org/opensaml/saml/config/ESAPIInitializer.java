@@ -28,7 +28,7 @@ public class ESAPIInitializer implements Initializer {
 
     /** {@inheritDoc} */
     public void init() throws InitializationException {
-        ESAPI.initialize("org.opensaml.saml.ESAPISecurityConfig"); 
+        ESAPI.initialize("org.opensaml.saml.config.ESAPISecurityConfig"); 
     }
 
 }
