@@ -21,10 +21,10 @@ import javax.xml.namespace.QName;
 
 import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
-import org.opensaml.Configuration;
 import org.opensaml.common.BaseSAMLObjectProviderTestCase;
 import org.opensaml.common.SAMLObjectBuilder;
 import org.opensaml.common.xml.SAMLConstants;
+import org.opensaml.saml.config.Configuration;
 import org.opensaml.saml2.core.KeyInfoConfirmationDataType;
 import org.opensaml.xmlsec.signature.KeyInfo;
 

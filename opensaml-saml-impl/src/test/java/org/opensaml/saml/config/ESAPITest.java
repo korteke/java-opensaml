@@ -15,10 +15,11 @@
  * limitations under the License.
  */
 
-package org.opensaml;
+package org.opensaml.saml.config;
 
 import junit.framework.TestCase;
 
+import org.opensaml.saml.config.DefaultBootstrap;
 import org.owasp.esapi.ESAPI;
 import org.owasp.esapi.Encoder;
 import org.owasp.esapi.SecurityConfiguration;

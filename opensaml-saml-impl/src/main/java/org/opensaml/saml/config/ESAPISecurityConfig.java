@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml;
+package org.opensaml.saml.config;
 
 import java.io.File;
 import java.io.IOException;

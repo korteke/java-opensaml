@@ -27,13 +27,13 @@ import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
 import org.joda.time.DateTime;
-import org.opensaml.Configuration;
 import org.opensaml.common.SAMLObject;
 import org.opensaml.common.binding.artifact.SAMLArtifactMap.SAMLArtifactMapEntry;
 import org.opensaml.core.xml.XMLRuntimeException;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.core.xml.util.XMLObjectSupport;
+import org.opensaml.saml.config.Configuration;
 import org.opensaml.util.storage.AbstractExpiringObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -21,9 +21,9 @@
 
 package org.opensaml.saml2.core.impl;
 
-import org.opensaml.Configuration;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
+import org.opensaml.saml.config.Configuration;
 import org.opensaml.saml2.core.LogoutRequest;
 import org.w3c.dom.Element;
 

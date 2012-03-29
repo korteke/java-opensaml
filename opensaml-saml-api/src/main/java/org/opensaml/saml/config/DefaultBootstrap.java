@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml;
+package org.opensaml.saml.config;
 
 import org.opensaml.core.config.InitializationException;
 import org.opensaml.core.config.InitializationService;

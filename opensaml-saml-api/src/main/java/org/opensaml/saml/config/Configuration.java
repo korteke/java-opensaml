@@ -15,11 +15,10 @@
  * limitations under the License.
  */
 
-package org.opensaml;
+package org.opensaml.saml.config;
 
 import org.joda.time.format.DateTimeFormatter;
 import org.opensaml.core.config.ConfigurationService;
-import org.opensaml.saml.config.SAMLConfiguration;
 import org.opensaml.saml1.binding.artifact.SAML1ArtifactBuilderFactory;
 import org.opensaml.saml2.binding.artifact.SAML2ArtifactBuilderFactory;
 
