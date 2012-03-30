@@ -17,11 +17,11 @@
 
 package org.opensaml.soap.common;
 
-import org.opensaml.core.xml.validation.ValidatingXMLObject;
+import org.opensaml.core.xml.XMLObject;
 
 /**
  * Base interface for all SOAP objects.
  */
-public interface SOAPObject extends ValidatingXMLObject {
+public interface SOAPObject extends XMLObject {
 
 }

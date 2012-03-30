@@ -23,17 +23,17 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.AttributeExtensibleXMLObject;
 import org.opensaml.core.xml.ElementExtensibleXMLObject;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.AttributeMap;
 import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
-import org.opensaml.core.xml.validation.AbstractValidatingXMLObject;
 
 /**
  * Abstract class implementating validation and element and attribute extensibility.
  */
-public class AbstractExtensibleSOAPObject extends AbstractValidatingXMLObject implements SOAPObject,
+public class AbstractExtensibleSOAPObject extends AbstractXMLObject implements SOAPObject,
         AttributeExtensibleXMLObject, ElementExtensibleXMLObject {
 
     /** "Any" type children. */

@@ -21,8 +21,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.core.xml.validation.AbstractValidatingXMLObject;
 import org.opensaml.xmlsec.signature.DSAKeyValue;
 import org.opensaml.xmlsec.signature.KeyValue;
 import org.opensaml.xmlsec.signature.RSAKeyValue;
@@ -30,7 +30,7 @@ import org.opensaml.xmlsec.signature.RSAKeyValue;
 /**
  * Concrete implementation of {@link org.opensaml.xmlsec.signature.KeyValue}
  */
-public class KeyValueImpl extends AbstractValidatingXMLObject implements KeyValue {
+public class KeyValueImpl extends AbstractXMLObject implements KeyValue {
     
     /** DSAKeyValue child element */
     private DSAKeyValue dsaKeyValue;

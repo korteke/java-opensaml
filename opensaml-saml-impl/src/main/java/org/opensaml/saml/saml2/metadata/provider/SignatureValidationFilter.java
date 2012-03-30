@@ -22,8 +22,6 @@ import java.util.Iterator;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.core.xml.validation.ValidationException;
-import org.opensaml.core.xml.validation.Validator;
 import org.opensaml.saml.saml2.metadata.AffiliationDescriptor;
 import org.opensaml.saml.saml2.metadata.EntitiesDescriptor;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
@@ -36,6 +34,7 @@ import org.opensaml.security.credential.UsageType;
 import org.opensaml.security.criteria.UsageCriterion;
 import org.opensaml.xmlsec.signature.SignableXMLObject;
 import org.opensaml.xmlsec.signature.Signature;
+import org.opensaml.xmlsec.signature.support.SignatureException;
 import org.opensaml.xmlsec.signature.support.SignatureTrustEngine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,8 +56,9 @@ public class SignatureValidationFilter implements MetadataFilter {
     /** Set of externally specified default criteria for input to the trust engine. */
     private CriteriaSet defaultCriteria;
     
+    //TODO decide if this should an interface and impl
     /** Pre-validator for XML Signature instances. */
-    private Validator<Signature> sigValidator;
+    private SAMLSignatureProfileValidator sigValidator;
 
     /**
      * Constructor.
@@ -72,22 +72,6 @@ public class SignatureValidationFilter implements MetadataFilter {
 
         signatureTrustEngine = engine;
         sigValidator = new SAMLSignatureProfileValidator();
-    }
-    
-    /**
-     * Constructor.
-     * 
-     * @param engine the trust engine used to validate signatures on incoming metadata.
-     * @param signatureValidator optional pre-validator used to validate Signature elements prior to the actual
-     *            cryptographic validation operation
-     */
-    public SignatureValidationFilter(SignatureTrustEngine engine, Validator<Signature> signatureValidator) {
-        if (engine == null) {
-            throw new IllegalArgumentException("Signature trust engine may not be null");
-        }
-
-        signatureTrustEngine = engine;
-        sigValidator = signatureValidator;
     }
 
     /**
@@ -104,7 +88,7 @@ public class SignatureValidationFilter implements MetadataFilter {
      * 
      * @return the configured Signature validator, or null
      */
-    public Validator<Signature> getSignaturePrevalidator() {
+    public SAMLSignatureProfileValidator getSignaturePrevalidator() {
         return sigValidator;
     }
 
@@ -338,7 +322,7 @@ public class SignatureValidationFilter implements MetadataFilter {
         if (getSignaturePrevalidator() != null) {
             try {
                 getSignaturePrevalidator().validate(signature);
-            } catch (ValidationException e) {
+            } catch (SignatureException e) {
                 log.error("Signature on metadata entry '{}' failed signature pre-validation", metadataEntryName);
                 throw new FilterException("Metadata instance signature failed signature pre-validation", e);
             }

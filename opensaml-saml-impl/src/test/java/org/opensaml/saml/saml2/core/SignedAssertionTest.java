@@ -27,7 +27,6 @@ import org.joda.time.DateTime;
 import org.opensaml.core.xml.io.Marshaller;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.io.UnmarshallingException;
-import org.opensaml.core.xml.validation.ValidationException;
 import org.opensaml.saml.common.BaseTestCase;
 import org.opensaml.saml.common.SAMLTestHelper;
 import org.opensaml.saml.common.SAMLVersion;
@@ -103,7 +102,7 @@ public class SignedAssertionTest extends BaseTestCase {
      * @throws SecurityException 
      */
     public void testAssertionSignature() 
-        throws MarshallingException, ValidationException, SignatureException, UnmarshallingException, SecurityException{
+        throws MarshallingException, SignatureException, UnmarshallingException, SecurityException{
         DateTime now = new DateTime();
         
         Assertion assertion = assertionBuilder.buildObject();

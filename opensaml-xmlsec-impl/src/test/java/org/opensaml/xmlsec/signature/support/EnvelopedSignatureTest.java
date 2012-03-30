@@ -22,6 +22,8 @@ import java.security.GeneralSecurityException;
 import java.security.KeyPair;
 import java.security.PublicKey;
 
+import javax.xml.bind.ValidationException;
+
 import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
@@ -31,7 +33,6 @@ import org.opensaml.core.xml.io.Marshaller;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.io.Unmarshaller;
 import org.opensaml.core.xml.io.UnmarshallingException;
-import org.opensaml.core.xml.validation.ValidationException;
 import org.opensaml.security.SecurityHelper;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.xmlsec.keyinfo.KeyInfoHelper;
@@ -40,11 +41,6 @@ import org.opensaml.xmlsec.mock.SignableSimpleXMLObjectBuilder;
 import org.opensaml.xmlsec.signature.KeyInfo;
 import org.opensaml.xmlsec.signature.Signature;
 import org.opensaml.xmlsec.signature.impl.SignatureBuilder;
-import org.opensaml.xmlsec.signature.support.DocumentInternalIDContentReference;
-import org.opensaml.xmlsec.signature.support.SignatureConstants;
-import org.opensaml.xmlsec.signature.support.SignatureException;
-import org.opensaml.xmlsec.signature.support.SignatureValidator;
-import org.opensaml.xmlsec.signature.support.Signer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -114,7 +110,7 @@ public class EnvelopedSignatureTest extends XMLObjectBaseTestCase {
             sigValidator = new SignatureValidator(badCredential);
             sigValidator.validate(signature);
             fail("Validated signature with improper public key");
-        } catch (ValidationException e) {
+        } catch (SignatureException e) {
             // expected
         }
     }

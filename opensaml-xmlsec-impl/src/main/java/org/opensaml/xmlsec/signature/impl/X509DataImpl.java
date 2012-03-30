@@ -23,9 +23,9 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
-import org.opensaml.core.xml.validation.AbstractValidatingXMLObject;
 import org.opensaml.xmlsec.signature.X509CRL;
 import org.opensaml.xmlsec.signature.X509Certificate;
 import org.opensaml.xmlsec.signature.X509Data;
@@ -34,7 +34,7 @@ import org.opensaml.xmlsec.signature.X509SKI;
 import org.opensaml.xmlsec.signature.X509SubjectName;
 
 /** Concrete implementation of {@link X509Data}. */
-public class X509DataImpl extends AbstractValidatingXMLObject implements X509Data {
+public class X509DataImpl extends AbstractXMLObject implements X509Data {
 
     /** The list of XMLObject child elements. */
     private final IndexedXMLObjectChildrenList indexedChildren;

@@ -20,13 +20,13 @@ package org.opensaml.xmlsec.signature;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.ElementExtensibleXMLObject;
-import org.opensaml.core.xml.validation.ValidatingXMLObject;
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 
 /**
  * XMLObject representing XML Digital Signature, version 20020212, PGPData element.
  */
-public interface PGPData extends ValidatingXMLObject, ElementExtensibleXMLObject {
+public interface PGPData extends XMLObject, ElementExtensibleXMLObject {
 
     /** Element local name */
     public final static String DEFAULT_ELEMENT_LOCAL_NAME = "PGPData";

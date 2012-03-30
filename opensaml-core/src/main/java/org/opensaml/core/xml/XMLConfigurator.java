@@ -42,8 +42,6 @@ import net.shibboleth.utilities.java.support.xml.XMLParserException;
 import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.core.xml.io.Marshaller;
 import org.opensaml.core.xml.io.Unmarshaller;
-import org.opensaml.core.xml.validation.Validator;
-import org.opensaml.core.xml.validation.ValidatorSuite;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Attr;
@@ -213,15 +211,6 @@ public class XMLConfigurator {
             log.debug("ObjectProviders load complete");
         }
 
-        // Initialize validator suites
-        NodeList validatorSuitesNodes =
-                configurationRoot.getElementsByTagNameNS(XMLTOOLING_CONFIG_NS, "ValidatorSuites");
-        if (validatorSuitesNodes.getLength() > 0) {
-            log.debug("Preparing to load ValidatorSuites");
-            initializeValidatorSuites((Element) validatorSuitesNodes.item(0));
-            log.debug("ValidatorSuites load complete");
-        }
-
         // Initialize ID attributes
         NodeList idAttributesNodes = configurationRoot.getElementsByTagNameNS(XMLTOOLING_CONFIG_NS, "IDAttributes");
         if (idAttributesNodes.getLength() > 0) {
@@ -287,53 +276,6 @@ public class XMLConfigurator {
                 // clean up any parts of the object provider that might have been registered before the failure
                 getRegistry().deregisterObjectProvider(objectProviderName);
                 throw e;
-            }
-        }
-    }
-
-    /**
-     * Initializes the validator suites specified in the configuration file.
-     * 
-     * @param validatorSuitesElement the ValidatorSuites element from the configuration file
-     * 
-     * @throws ConfigurationException thrown if there is a problem initializing the validator suites, usually because of
-     *             malformed elements
-     */
-    protected void initializeValidatorSuites(Element validatorSuitesElement) throws ConfigurationException {
-        ValidatorSuite validatorSuite;
-        Validator validator;
-        Element validatorSuiteElement;
-        String validatorSuiteId;
-        Element validatorElement;
-        QName validatorQName;
-
-        NodeList validatorSuiteList =
-                validatorSuitesElement.getElementsByTagNameNS(XMLTOOLING_CONFIG_NS, "ValidatorSuite");
-        for (int i = 0; i < validatorSuiteList.getLength(); i++) {
-            validatorSuiteElement = (Element) validatorSuiteList.item(i);
-            validatorSuiteId = validatorSuiteElement.getAttributeNS(null, "id");
-            validatorSuite = new ValidatorSuite(validatorSuiteId);
-
-            log.debug("Initializing ValidatorSuite {}", validatorSuiteId);
-            log.trace(SerializeSupport.nodeToString(validatorSuiteElement));
-
-            NodeList validatorList = validatorSuiteElement.getElementsByTagNameNS(XMLTOOLING_CONFIG_NS, "Validator");
-            for (int j = 0; j < validatorList.getLength(); j++) {
-                validatorElement = (Element) validatorList.item(j);
-                validatorQName =
-                        AttributeSupport.getAttributeValueAsQName(validatorElement.getAttributeNodeNS(null,
-                                "qualifiedName"));
-
-                validator = (Validator) createClassInstance(validatorElement);
-                validatorSuite.registerValidator(validatorQName, validator);
-            }
-
-            log.debug("ValidtorSuite {} has been initialized", validatorSuiteId);
-            if (retainXMLConfiguration) {
-                // TODO think we should probably remove this now
-                // getRegistry().registerValidatorSuite(validatorSuiteId, validatorSuite, validatorSuiteElement);
-            } else {
-                getRegistry().registerValidatorSuite(validatorSuiteId, validatorSuite);
             }
         }
     }

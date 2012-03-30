@@ -24,15 +24,15 @@ import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
+import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.schema.XSDateTime;
-import org.opensaml.core.xml.validation.AbstractValidatingXMLObject;
 
 
 /**
  * Concrete implementation of {@link org.opensaml.core.xml.schema.XSDateTime}.
  */
-public class XSDateTimeImpl extends AbstractValidatingXMLObject implements XSDateTime {
+public class XSDateTimeImpl extends AbstractXMLObject implements XSDateTime {
     
     /** Value of this dateTime element. */
     private DateTime value;

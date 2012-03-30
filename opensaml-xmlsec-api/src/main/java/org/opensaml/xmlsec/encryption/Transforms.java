@@ -21,14 +21,14 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.core.xml.validation.ValidatingXMLObject;
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 import org.opensaml.xmlsec.signature.Transform;
 
 /**
  * XMLObject representing XML Encryption, version 20021210, Transforms element.
  */
-public interface Transforms extends ValidatingXMLObject {
+public interface Transforms extends XMLObject {
 
     /** Element local name. */
     public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Transforms";

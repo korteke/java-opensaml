@@ -21,8 +21,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.core.xml.validation.AbstractValidatingXMLObject;
 import org.opensaml.xmlsec.encryption.DHKeyValue;
 import org.opensaml.xmlsec.encryption.Generator;
 import org.opensaml.xmlsec.encryption.P;
@@ -34,7 +34,7 @@ import org.opensaml.xmlsec.encryption.Seed;
 /**
  * Concrete implementation of {@link org.opensaml.xmlsec.encryption.DHKeyValue}.
  */
-public class DHKeyValueImpl extends AbstractValidatingXMLObject implements DHKeyValue {
+public class DHKeyValueImpl extends AbstractXMLObject implements DHKeyValue {
     
     /** P child element. */
     private P p;

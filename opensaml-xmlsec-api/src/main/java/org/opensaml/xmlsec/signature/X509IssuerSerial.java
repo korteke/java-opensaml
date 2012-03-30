@@ -19,11 +19,11 @@ package org.opensaml.xmlsec.signature;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.core.xml.validation.ValidatingXMLObject;
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 
 /** XMLObject representing XML Digital Signature, version 20020212, X509IssuerSerial element. */
-public interface X509IssuerSerial extends ValidatingXMLObject {
+public interface X509IssuerSerial extends XMLObject {
 
     /** Element local name. */
     public static final String DEFAULT_ELEMENT_LOCAL_NAME = "X509IssuerSerial";

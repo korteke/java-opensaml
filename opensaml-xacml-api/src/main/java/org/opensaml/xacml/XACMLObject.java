@@ -17,11 +17,11 @@
 
 package org.opensaml.xacml;
 
-import org.opensaml.core.xml.validation.ValidatingXMLObject;
+import org.opensaml.core.xml.XMLObject;
 
 /**
  * Base interface for XACML objects.
  */
-public interface XACMLObject extends ValidatingXMLObject {
+public interface XACMLObject extends XMLObject {
 
 }

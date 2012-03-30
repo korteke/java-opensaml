@@ -17,12 +17,12 @@
 
 package org.opensaml.saml.security;
 
-import org.opensaml.core.xml.validation.ValidationException;
 import org.opensaml.saml.common.BaseTestCase;
 import org.opensaml.saml.common.SignableSAMLObject;
 import org.opensaml.saml.security.SAMLSignatureProfileValidator;
 import org.opensaml.xmlsec.signature.Signature;
 import org.opensaml.xmlsec.signature.impl.SignatureImpl;
+import org.opensaml.xmlsec.signature.support.SignatureException;
 
 /**
  * Test the SAML XML Signature profile validator.
@@ -107,7 +107,7 @@ public class SAMLSignatureProfileValidatorTest extends BaseTestCase {
     protected void assertValidationPass(String message, Signature validateTarget) {
        try {
            validator.validate(validateTarget);
-       } catch (ValidationException e) {
+       } catch (SignatureException e) {
            fail(message + " : Expected success, but validation failure raised ValidationException: " + e.getMessage());
        }
     }
@@ -123,7 +123,7 @@ public class SAMLSignatureProfileValidatorTest extends BaseTestCase {
        try {
            validator.validate(validateTarget);
            fail(message + " : Validation success, expected failure to raise ValidationException");
-       } catch (ValidationException e) {
+       } catch (SignatureException e) {
        }
     }
     

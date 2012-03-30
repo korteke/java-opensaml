@@ -23,11 +23,10 @@ import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.transforms.Transform;
 import org.apache.xml.security.transforms.TransformationException;
 import org.apache.xml.security.transforms.Transforms;
-import org.opensaml.core.xml.validation.ValidationException;
-import org.opensaml.core.xml.validation.Validator;
 import org.opensaml.saml.common.SignableSAMLObject;
 import org.opensaml.xmlsec.signature.Signature;
 import org.opensaml.xmlsec.signature.impl.SignatureImpl;
+import org.opensaml.xmlsec.signature.support.SignatureException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,13 +36,13 @@ import com.google.common.base.Strings;
  * A validator for instances of {@link Signature}, which validates that the signature meets security-related
  * requirements indicated by the SAML profile of XML Signature.
  */
-public class SAMLSignatureProfileValidator implements Validator<Signature> {
+public class SAMLSignatureProfileValidator {
 
     /** Class logger. */
     private final Logger log = LoggerFactory.getLogger(SAMLSignatureProfileValidator.class);
 
     /** {@inheritDoc} */
-    public void validate(Signature signature) throws ValidationException {
+    public void validate(Signature signature) throws SignatureException {
 
         if (!(signature instanceof SignatureImpl)) {
             log.info("Signature was not an instance of SignatureImpl, was {} validation not supported", signature
@@ -59,19 +58,19 @@ public class SAMLSignatureProfileValidator implements Validator<Signature> {
      * <code>XMLSignature</code> instance.
      * 
      * @param sigImpl the signature implementation object to validate
-     * @throws ValidationException thrown if the signature is not valid with respect to the profile
+     * @throws SignatureException thrown if the signature is not valid with respect to the profile
      */
-    protected void validateSignatureImpl(SignatureImpl sigImpl) throws ValidationException {
+    protected void validateSignatureImpl(SignatureImpl sigImpl) throws SignatureException {
 
         if (sigImpl.getXMLSignature() == null) {
             log.error("SignatureImpl did not contain the an Apache XMLSignature child");
-            throw new ValidationException("Apache XMLSignature does not exist on SignatureImpl");
+            throw new SignatureException("Apache XMLSignature does not exist on SignatureImpl");
         }
         XMLSignature apacheSig = sigImpl.getXMLSignature();
 
         if (!(sigImpl.getParent() instanceof SignableSAMLObject)) {
             log.error("Signature is not an immedidate child of a SignableSAMLObject");
-            throw new ValidationException("Signature is not an immediate child of a SignableSAMLObject.");
+            throw new SignatureException("Signature is not an immediate child of a SignableSAMLObject.");
         }
         SignableSAMLObject signableObject = (SignableSAMLObject) sigImpl.getParent();
 
@@ -92,14 +91,14 @@ public class SAMLSignatureProfileValidator implements Validator<Signature> {
      * 
      * @param apacheSig the Apache XML Signature instance
      * @return the valid Reference contained within the SignedInfo
-     * @throws ValidationException thrown if the Signature does not contain exactly 1 Reference, or if there is an error
+     * @throws SignatureException thrown if the Signature does not contain exactly 1 Reference, or if there is an error
      *             obtaining the Reference instance
      */
-    protected Reference validateReference(XMLSignature apacheSig) throws ValidationException {
+    protected Reference validateReference(XMLSignature apacheSig) throws SignatureException {
         int numReferences = apacheSig.getSignedInfo().getLength();
         if (numReferences != 1) {
             log.error("Signature SignedInfo had invalid number of References: " + numReferences);
-            throw new ValidationException("Signature SignedInfo must have exactly 1 Reference element");
+            throw new SignatureException("Signature SignedInfo must have exactly 1 Reference element");
         }
 
         Reference ref = null;
@@ -107,11 +106,11 @@ public class SAMLSignatureProfileValidator implements Validator<Signature> {
             ref = apacheSig.getSignedInfo().item(0);
         } catch (XMLSecurityException e) {
             log.error("Apache XML Security exception obtaining Reference", e);
-            throw new ValidationException("Could not obtain Reference from Signature/SignedInfo", e);
+            throw new SignatureException("Could not obtain Reference from Signature/SignedInfo", e);
         }
         if (ref == null) {
             log.error("Signature Reference was null");
-            throw new ValidationException("Signature Reference was null");
+            throw new SignatureException("Signature Reference was null");
         }
         return ref;
     }
@@ -124,21 +123,21 @@ public class SAMLSignatureProfileValidator implements Validator<Signature> {
      * 
      * @param uri the Signature Reference URI attribute value
      * @param id the Signature parents ID attribute value
-     * @throws ValidationException thrown if the URI or ID attribute values are invalid
+     * @throws SignatureException thrown if the URI or ID attribute values are invalid
      */
-    protected void validateReferenceURI(String uri, String id) throws ValidationException {
+    protected void validateReferenceURI(String uri, String id) throws SignatureException {
         if (!Strings.isNullOrEmpty(uri)) {
             if (!uri.startsWith("#")) {
                 log.error("Signature Reference URI was not a document fragment reference: " + uri);
-                throw new ValidationException("Signature Reference URI was not a document fragment reference");
+                throw new SignatureException("Signature Reference URI was not a document fragment reference");
             } else if (Strings.isNullOrEmpty(id)) {
                 log.error("SignableSAMLObject did not contain an ID attribute");
-                throw new ValidationException("SignableSAMLObject did not contain an ID attribute");
+                throw new SignatureException("SignableSAMLObject did not contain an ID attribute");
             } else if (uri.length() < 2 || !id.equals(uri.substring(1))) {
                 log
                         .error(String.format("Reference URI '%s' did not point to SignableSAMLObject with ID '%s'",
                                 uri, id));
-                throw new ValidationException("Reference URI did not point to parent ID");
+                throw new SignatureException("Reference URI did not point to parent ID");
             }
         }
     }
@@ -151,26 +150,26 @@ public class SAMLSignatureProfileValidator implements Validator<Signature> {
      * allowed.
      * 
      * @param reference the Signature reference containing the transforms to evaluate
-     * @throws ValidationException thrown if the set of transforms is invalid
+     * @throws SignatureException thrown if the set of transforms is invalid
      */
-    protected void validateTransforms(Reference reference) throws ValidationException {
+    protected void validateTransforms(Reference reference) throws SignatureException {
         Transforms transforms = null;
         try {
             transforms = reference.getTransforms();
         } catch (XMLSecurityException e) {
             log.error("Apache XML Security error obtaining Transforms instance", e);
-            throw new ValidationException("Apache XML Security error obtaining Transforms instance", e);
+            throw new SignatureException("Apache XML Security error obtaining Transforms instance", e);
         }
 
         if (transforms == null) {
             log.error("Error obtaining Transforms instance, null was returned");
-            throw new ValidationException("Transforms instance was null");
+            throw new SignatureException("Transforms instance was null");
         }
 
         int numTransforms = transforms.getLength();
         if (numTransforms > 2) {
             log.error("Invalid number of Transforms was present: " + numTransforms);
-            throw new ValidationException("Invalid number of transforms");
+            throw new SignatureException("Invalid number of transforms");
         }
 
         boolean sawEnveloped = false;
@@ -180,7 +179,7 @@ public class SAMLSignatureProfileValidator implements Validator<Signature> {
                 transform = transforms.item(i);
             } catch (TransformationException e) {
                 log.error("Error obtaining transform instance", e);
-                throw new ValidationException("Error obtaining transform instance", e);
+                throw new SignatureException("Error obtaining transform instance", e);
             }
             String uri = transform.getURI();
             if (Transforms.TRANSFORM_ENVELOPED_SIGNATURE.equals(uri)) {
@@ -191,13 +190,13 @@ public class SAMLSignatureProfileValidator implements Validator<Signature> {
                 log.debug("Saw Exclusive C14N signature transform");
             } else {
                 log.error("Saw invalid signature transform: " + uri);
-                throw new ValidationException("Signature contained an invalid transform");
+                throw new SignatureException("Signature contained an invalid transform");
             }
         }
 
         if (!sawEnveloped) {
             log.error("Signature was missing the required Enveloped signature transform");
-            throw new ValidationException("Transforms did not contain the required enveloped transform");
+            throw new SignatureException("Transforms did not contain the required enveloped transform");
         }
     }
 

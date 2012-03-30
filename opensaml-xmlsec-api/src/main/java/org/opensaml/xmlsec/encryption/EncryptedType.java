@@ -19,7 +19,7 @@ package org.opensaml.xmlsec.encryption;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.core.xml.validation.ValidatingXMLObject;
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 import org.opensaml.xmlsec.signature.KeyInfo;
 
@@ -27,7 +27,7 @@ import org.opensaml.xmlsec.signature.KeyInfo;
  * XMLObject representing XML Encryption, version 20021210, EncryptedType type. This is the base type for
  * {@link EncryptedData} and {@link EncryptedKey} types.
  */
-public interface EncryptedType extends ValidatingXMLObject {
+public interface EncryptedType extends XMLObject {
 
     /** Local name of the XSI type. */
     public static final String TYPE_LOCAL_NAME = "EncryptedType";

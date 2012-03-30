@@ -23,14 +23,14 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.schema.XSQName;
-import org.opensaml.core.xml.validation.AbstractValidatingXMLObject;
 
 /**
  * Concrete implementation of {@link org.opensaml.core.xml.schema.XSQName}.
  */
-public class XSQNameImpl extends AbstractValidatingXMLObject implements XSQName {
+public class XSQNameImpl extends AbstractXMLObject implements XSQName {
 
     /** QName value. */
     private QName value;

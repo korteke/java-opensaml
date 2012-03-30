@@ -21,13 +21,13 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.core.xml.validation.ValidatingXMLObject;
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 
 /**
  * XMLObject representing XML Encryption, version 20021210, ReferenceList element.
  */
-public interface ReferenceList extends ValidatingXMLObject {
+public interface ReferenceList extends XMLObject {
 
     /** Element local name. */
     public static final String DEFAULT_ELEMENT_LOCAL_NAME = "ReferenceList";

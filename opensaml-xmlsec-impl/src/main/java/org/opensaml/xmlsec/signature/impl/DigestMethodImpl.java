@@ -23,15 +23,15 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
-import org.opensaml.core.xml.validation.AbstractValidatingXMLObject;
 import org.opensaml.xmlsec.signature.DigestMethod;
 
 /**
  * Concrete implementation of {@link org.opensaml.xmlsec.signature.DigestMethod}.
  */
-public class DigestMethodImpl extends AbstractValidatingXMLObject implements DigestMethod {
+public class DigestMethodImpl extends AbstractXMLObject implements DigestMethod {
     
     /** Algorithm attribute value. */
     private String algorithm;

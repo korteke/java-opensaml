@@ -19,14 +19,13 @@ package org.opensaml.saml.common;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
-import org.opensaml.xml.AbstractValidatingSignableXMLObject;
+import org.opensaml.xmlsec.signature.AbstractSignableXMLObject;
 import org.opensaml.xmlsec.signature.Signature;
 
 /**
  * Abstract SAMLObject implementation that also implements {@link org.opensaml.xmlsec.signature.SignableXMLObject}.
  */
-public abstract class AbstractSignableSAMLObject extends AbstractValidatingSignableXMLObject implements
-        SignableSAMLObject {
+public abstract class AbstractSignableSAMLObject extends AbstractSignableXMLObject implements SignableSAMLObject {
 
     /**
      * Constructor.

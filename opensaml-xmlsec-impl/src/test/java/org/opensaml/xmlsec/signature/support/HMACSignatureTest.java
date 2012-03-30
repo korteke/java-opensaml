@@ -21,6 +21,7 @@ import java.io.InputStream;
 import java.util.List;
 
 import javax.crypto.SecretKey;
+import javax.xml.bind.ValidationException;
 
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.xml.ElementSupport;
@@ -35,7 +36,6 @@ import org.opensaml.core.xml.io.Marshaller;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.io.Unmarshaller;
 import org.opensaml.core.xml.io.UnmarshallingException;
-import org.opensaml.core.xml.validation.ValidationException;
 import org.opensaml.security.SecurityHelper;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.xmlsec.keyinfo.KeyInfoHelper;
@@ -47,11 +47,6 @@ import org.opensaml.xmlsec.signature.Signature;
 import org.opensaml.xmlsec.signature.impl.KeyInfoBuilder;
 import org.opensaml.xmlsec.signature.impl.SignatureBuilder;
 import org.opensaml.xmlsec.signature.impl.SignatureImpl;
-import org.opensaml.xmlsec.signature.support.DocumentInternalIDContentReference;
-import org.opensaml.xmlsec.signature.support.SignatureConstants;
-import org.opensaml.xmlsec.signature.support.SignatureException;
-import org.opensaml.xmlsec.signature.support.SignatureValidator;
-import org.opensaml.xmlsec.signature.support.Signer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -134,7 +129,7 @@ public class HMACSignatureTest extends XMLObjectBaseTestCase {
             sigValidator = new SignatureValidator(badCredential);
             sigValidator.validate(signature);
             fail("Validated signature with invalid secret key");
-        } catch (ValidationException e) {
+        } catch (SignatureException e) {
             // expected
         }
     }
@@ -146,7 +141,7 @@ public class HMACSignatureTest extends XMLObjectBaseTestCase {
      * @throws ValidationException thrown if signature validator fails to validate the signature
      * @throws SignatureException 
      */
-    public void testSigningAndVerificationWithOutputLength() throws MarshallingException, ValidationException, SignatureException {
+    public void testSigningAndVerificationWithOutputLength() throws MarshallingException, SignatureException {
         SignableSimpleXMLObject sxo = getXMLObjectWithSignature(true);
         Signature signature = sxo.getSignature();
 
@@ -166,7 +161,7 @@ public class HMACSignatureTest extends XMLObjectBaseTestCase {
             sigValidator = new SignatureValidator(badCredential);
             sigValidator.validate(signature);
             fail("Validated signature with invalid secret key");
-        } catch (ValidationException e) {
+        } catch (SignatureException e) {
             // expected
         }
     }

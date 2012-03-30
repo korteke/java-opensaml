@@ -19,13 +19,13 @@ package org.opensaml.xmlsec.encryption;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.core.xml.validation.ValidatingXMLObject;
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 
 /**
  * XMLObject representing XML Encryption, version 20021210, DHKeyValue element.
  */
-public interface DHKeyValue extends ValidatingXMLObject {
+public interface DHKeyValue extends XMLObject {
 
     /** Element local name. */
     public static final String DEFAULT_ELEMENT_LOCAL_NAME = "DHKeyValue";

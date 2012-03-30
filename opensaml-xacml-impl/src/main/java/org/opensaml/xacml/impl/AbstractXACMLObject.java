@@ -17,13 +17,13 @@
 
 package org.opensaml.xacml.impl;
 
-import org.opensaml.core.xml.validation.AbstractValidatingXMLObject;
+import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.xacml.XACMLObject;
 
 /**
  * An abstract implementation of XACMLObject.
  */
-public abstract class AbstractXACMLObject extends AbstractValidatingXMLObject implements XACMLObject {
+public abstract class AbstractXACMLObject extends AbstractXMLObject implements XACMLObject {
 
     /**
      * Constructor.

@@ -17,13 +17,13 @@
 
 package org.opensaml.soap.wstrust.impl;
 
-import org.opensaml.core.xml.validation.AbstractValidatingXMLObject;
+import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.soap.wstrust.WSTrustObject;
 
 /**
  * AbstractWSTrustObject.
  */
-public abstract class AbstractWSTrustObject extends AbstractValidatingXMLObject implements WSTrustObject {
+public abstract class AbstractWSTrustObject extends AbstractXMLObject implements WSTrustObject {
 
     /**
      * Constructor.

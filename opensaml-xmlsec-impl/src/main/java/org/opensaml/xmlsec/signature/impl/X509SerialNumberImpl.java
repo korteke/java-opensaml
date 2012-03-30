@@ -20,14 +20,14 @@ package org.opensaml.xmlsec.signature.impl;
 import java.math.BigInteger;
 import java.util.List;
 
+import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.core.xml.validation.AbstractValidatingXMLObject;
 import org.opensaml.xmlsec.signature.X509SerialNumber;
 
 /**
  * Concrete implementation of {@link org.opensaml.xmlsec.signature.X509SerialNumber}.
  */
-public class X509SerialNumberImpl extends AbstractValidatingXMLObject implements X509SerialNumber {
+public class X509SerialNumberImpl extends AbstractXMLObject implements X509SerialNumber {
     
     /** The serial number value. */
     private BigInteger value;

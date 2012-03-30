@@ -23,9 +23,9 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
-import org.opensaml.core.xml.validation.AbstractValidatingXMLObject;
 import org.opensaml.xmlsec.encryption.AgreementMethod;
 import org.opensaml.xmlsec.encryption.KANonce;
 import org.opensaml.xmlsec.encryption.OriginatorKeyInfo;
@@ -34,7 +34,7 @@ import org.opensaml.xmlsec.encryption.RecipientKeyInfo;
 /**
  * Concrete implementation of {@link org.opensaml.xmlsec.encryption.AgreementMethod}.
  */
-public class AgreementMethodImpl extends AbstractValidatingXMLObject implements AgreementMethod {
+public class AgreementMethodImpl extends AbstractXMLObject implements AgreementMethod {
     
     /** Algorithm attribute value. */
     private String algorithm;

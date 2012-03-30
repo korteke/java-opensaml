@@ -23,9 +23,9 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
-import org.opensaml.core.xml.validation.AbstractValidatingXMLObject;
 import org.opensaml.xmlsec.encryption.AgreementMethod;
 import org.opensaml.xmlsec.encryption.EncryptedKey;
 import org.opensaml.xmlsec.signature.KeyInfoType;
@@ -40,7 +40,7 @@ import org.opensaml.xmlsec.signature.X509Data;
 /**
  * Concrete implementation of {@link org.opensaml.xmlsec.signature.KeyInfoType}
  */
-public class KeyInfoTypeImpl extends AbstractValidatingXMLObject implements KeyInfoType {
+public class KeyInfoTypeImpl extends AbstractXMLObject implements KeyInfoType {
     
     /** The list of XMLObject child elements */
     private final IndexedXMLObjectChildrenList indexedChildren;

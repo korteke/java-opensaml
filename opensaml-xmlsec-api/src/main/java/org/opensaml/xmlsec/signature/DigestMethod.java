@@ -20,13 +20,13 @@ package org.opensaml.xmlsec.signature;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.ElementExtensibleXMLObject;
-import org.opensaml.core.xml.validation.ValidatingXMLObject;
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 
 /**
  * XMLObject representing XML Digital Signature, version 20020212, DigestMethod element.
  */
-public interface DigestMethod extends ValidatingXMLObject, ElementExtensibleXMLObject {
+public interface DigestMethod extends XMLObject, ElementExtensibleXMLObject {
 
     /** Element local name. */
     public static final String DEFAULT_ELEMENT_LOCAL_NAME = "DigestMethod";

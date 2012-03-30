@@ -21,15 +21,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.core.xml.validation.AbstractValidatingXMLObject;
 import org.opensaml.xmlsec.encryption.CipherReference;
 import org.opensaml.xmlsec.encryption.Transforms;
 
 /**
  * Concrete implementation of {@link org.opensaml.xmlsec.encryption.CipherReference}.
  */
-public class CipherReferenceImpl extends AbstractValidatingXMLObject implements CipherReference {
+public class CipherReferenceImpl extends AbstractXMLObject implements CipherReference {
 
     /** URI attribute value. */
     private String uri;

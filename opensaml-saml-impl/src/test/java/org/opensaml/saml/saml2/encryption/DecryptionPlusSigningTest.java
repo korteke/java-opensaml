@@ -29,7 +29,6 @@ import net.shibboleth.utilities.java.support.xml.XMLParserException;
 import org.joda.time.DateTime;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.io.UnmarshallingException;
-import org.opensaml.core.xml.validation.ValidationException;
 import org.opensaml.saml.common.BaseTestCase;
 import org.opensaml.saml.saml2.core.Assertion;
 import org.opensaml.saml.saml2.core.EncryptedAssertion;
@@ -159,7 +158,7 @@ public class DecryptionPlusSigningTest extends BaseTestCase {
         SignatureValidator firstSigValidator = new SignatureValidator(signingCred);
         try {
             firstSigValidator.validate(newResponse.getSignature());
-        } catch (ValidationException e1) {
+        } catch (SignatureException e1) {
             fail("First Response signature validation failed");
         }
         
@@ -184,7 +183,7 @@ public class DecryptionPlusSigningTest extends BaseTestCase {
         SignatureValidator secondSigValidator = new SignatureValidator(signingCred);
         try {
             secondSigValidator.validate(newResponse.getSignature());
-        } catch (ValidationException e1) {
+        } catch (SignatureException e1) {
             fail("Second Response signature validation failed");
         }
         

@@ -21,8 +21,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.core.xml.validation.AbstractValidatingXMLObject;
 import org.opensaml.soap.soap11.Detail;
 import org.opensaml.soap.soap11.Fault;
 import org.opensaml.soap.soap11.FaultActor;
@@ -32,7 +32,7 @@ import org.opensaml.soap.soap11.FaultString;
 /**
  * Concrete implemenation of {@link org.opensaml.soap.soap11.Fault}.
  */
-public class FaultImpl extends AbstractValidatingXMLObject implements Fault {
+public class FaultImpl extends AbstractXMLObject implements Fault {
 
     /** Fault code. */
     private FaultCode faultCode;

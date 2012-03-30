@@ -21,8 +21,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.core.xml.validation.AbstractValidatingXMLObject;
 import org.opensaml.xmlsec.signature.DSAKeyValue;
 import org.opensaml.xmlsec.signature.G;
 import org.opensaml.xmlsec.signature.J;
@@ -35,7 +35,7 @@ import org.opensaml.xmlsec.signature.Y;
 /**
  * Concrete implementation of {@link org.opensaml.xmlsec.signature.DSAKeyValue}
  */
-public class DSAKeyValueImpl extends AbstractValidatingXMLObject implements DSAKeyValue {
+public class DSAKeyValueImpl extends AbstractXMLObject implements DSAKeyValue {
     
     /** P child element */
     private P p;

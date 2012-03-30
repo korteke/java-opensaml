@@ -20,15 +20,15 @@ package org.opensaml.xmlsec.signature.impl;
 import java.util.Collections;
 import java.util.List;
 
+import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.IndexingObjectStore;
-import org.opensaml.core.xml.validation.AbstractValidatingXMLObject;
 import org.opensaml.xmlsec.signature.X509Certificate;
 
 import com.google.common.base.Objects;
 
 /** Concrete implementation of {@link X509Certificate}. */
-public class X509CertificateImpl extends AbstractValidatingXMLObject implements X509Certificate {
+public class X509CertificateImpl extends AbstractXMLObject implements X509Certificate {
 
     /** Class-level index of Base64 encoded cert values. */
     private static final IndexingObjectStore<String> B64_CERT_STORE = new IndexingObjectStore<String>();

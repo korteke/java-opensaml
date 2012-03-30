@@ -21,12 +21,12 @@ import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.xml.XmlConstants;
 
-import org.opensaml.core.xml.validation.ValidatingXMLObject;
+import org.opensaml.core.xml.XMLObject;
 
 /**
  * XMLObject that represents an XML schema QName content bearing element.
  */
-public interface XSQName extends ValidatingXMLObject {
+public interface XSQName extends XMLObject {
 
     /** Local name of the XSI type. */
     public static final String TYPE_LOCAL_NAME = "QName"; 

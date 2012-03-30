@@ -26,7 +26,6 @@ import org.opensaml.core.xml.io.Marshaller;
 import org.opensaml.core.xml.io.MarshallerFactory;
 import org.opensaml.core.xml.io.Unmarshaller;
 import org.opensaml.core.xml.io.UnmarshallerFactory;
-import org.opensaml.core.xml.validation.ValidatorSuite;
 
 /** Class for loading library configuration files and retrieving the configured components. */
 public class XMLObjectProviderRegistrySupport {
@@ -120,36 +119,6 @@ public class XMLObjectProviderRegistrySupport {
      */
     public static UnmarshallerFactory getUnmarshallerFactory() {
         return ConfigurationService.get(XMLObjectProviderRegistry.class).getUnmarshallerFactory();
-    }
-
-    /**
-     * Registers a configured validator suite.
-     * 
-     * @param suiteId the ID of the suite
-     * @param suite the configured suite
-     */
-    public static void registerValidatorSuite(String suiteId, ValidatorSuite suite) {
-        ConfigurationService.get(XMLObjectProviderRegistry.class).registerValidatorSuite(suiteId, suite);
-    }
-
-    /**
-     * Removes a registered validator suite.
-     * 
-     * @param suiteId the ID of the suite
-     */
-    public static void deregisterValidatorSuite(String suiteId) {
-        ConfigurationService.get(XMLObjectProviderRegistry.class).deregisterValidatorSuite(suiteId);
-    }
-
-    /**
-     * Gets a configured ValidatorSuite by its ID.
-     * 
-     * @param suiteId the suite's ID
-     * 
-     * @return the ValidatorSuite or null if no suite was registered under that ID
-     */
-    public static ValidatorSuite getValidatorSuite(String suiteId) {
-        return ConfigurationService.get(XMLObjectProviderRegistry.class).getValidatorSuite(suiteId);
     }
 
     /**

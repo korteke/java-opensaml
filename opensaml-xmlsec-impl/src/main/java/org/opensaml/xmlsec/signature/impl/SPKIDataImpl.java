@@ -23,16 +23,16 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
-import org.opensaml.core.xml.validation.AbstractValidatingXMLObject;
 import org.opensaml.xmlsec.signature.SPKIData;
 import org.opensaml.xmlsec.signature.SPKISexp;
 
 /**
  * Concrete implementation of {@link org.opensaml.xmlsec.signature.SPKIData}
  */
-public class SPKIDataImpl extends AbstractValidatingXMLObject implements SPKIData {
+public class SPKIDataImpl extends AbstractXMLObject implements SPKIData {
     
     /** The list of XMLObject child elements */
     private final IndexedXMLObjectChildrenList indexedChildren;

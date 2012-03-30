@@ -23,15 +23,15 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.AttributeMap;
 import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
-import org.opensaml.core.xml.validation.AbstractValidatingXMLObject;
 
 /**
  * Concrete implementation of {@link org.opensaml.xmlsec.encryption.EncryptionProperty}
  */
-public class EncryptionPropertyImpl extends AbstractValidatingXMLObject implements
+public class EncryptionPropertyImpl extends AbstractXMLObject implements
         org.opensaml.xmlsec.encryption.EncryptionProperty {
     
     /** Target attribute value */
