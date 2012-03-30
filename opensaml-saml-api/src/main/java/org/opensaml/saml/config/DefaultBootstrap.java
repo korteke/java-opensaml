@@ -19,7 +19,7 @@ package org.opensaml.saml.config;
 
 import org.opensaml.core.config.InitializationException;
 import org.opensaml.core.config.InitializationService;
-import org.opensaml.core.xml.config.ConfigurationException;
+import org.opensaml.core.xml.config.XMLConfigurationException;
 
 /**
  * This class can be used to bootstrap the OpenSAML library with the default configurations that ship with the library.
@@ -34,16 +34,16 @@ public class DefaultBootstrap {
     /**
      * Initializes the OpenSAML library, loading default configurations.
      * 
-     * @throws ConfigurationException thrown if there is a problem initializing the OpenSAML library
+     * @throws XMLConfigurationException thrown if there is a problem initializing the OpenSAML library
      */
-    public static synchronized void bootstrap() throws ConfigurationException {
+    public static synchronized void bootstrap() throws XMLConfigurationException {
 
         // TODO this is likely just temporary.  Usage of the bootstrap class should eventually probably go away
         // and be replaced with direct calls of InitializationService.
         try {
             InitializationService.initialize();
         } catch (InitializationException e) {
-            throw new ConfigurationException(e);
+            throw new XMLConfigurationException(e);
         }
  
     }

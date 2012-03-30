@@ -17,7 +17,7 @@
 
 package org.opensaml.saml.common;
 
-import org.opensaml.core.xml.config.ConfigurationException;
+import org.opensaml.core.xml.config.XMLConfigurationException;
 import org.opensaml.saml.config.DefaultBootstrap;
 
 /**
@@ -30,7 +30,7 @@ public class TestBootstrap extends DefaultBootstrap {
     private static String[] testConfigs = {  };
     
     /** {@inheritDoc} */
-    public static synchronized void bootstrap() throws ConfigurationException {
+    public static synchronized void bootstrap() throws XMLConfigurationException {
         DefaultBootstrap.bootstrap();
         
         //TODO
