@@ -20,7 +20,7 @@ package org.opensaml.core.xml.config;
 /**
  * An exception thrown when an error occurs loading information via {@link org.opensaml.core.xml.config.XMLConfigurator}.
  */
-public class ConfigurationException extends Exception {
+public class XMLConfigurationException extends Exception {
 
     /** Serial version UID. */
     private static final long serialVersionUID = -6777602050296807774L;
@@ -28,7 +28,7 @@ public class ConfigurationException extends Exception {
     /**
      * Constructor.
      */
-    public ConfigurationException() {
+    public XMLConfigurationException() {
         super();
     }
 
@@ -37,7 +37,7 @@ public class ConfigurationException extends Exception {
      * 
      * @param message exception message
      */
-    public ConfigurationException(String message) {
+    public XMLConfigurationException(String message) {
         super(message);
     }
 
@@ -46,7 +46,7 @@ public class ConfigurationException extends Exception {
      * 
      * @param wrappedException exception to be wrapped by this one
      */
-    public ConfigurationException(Exception wrappedException) {
+    public XMLConfigurationException(Exception wrappedException) {
         super(wrappedException);
     }
 
@@ -56,7 +56,7 @@ public class ConfigurationException extends Exception {
      * @param message exception message
      * @param wrappedException exception to be wrapped by this one
      */
-    public ConfigurationException(String message, Exception wrappedException) {
+    public XMLConfigurationException(String message, Exception wrappedException) {
         super(message, wrappedException);
     }
 }

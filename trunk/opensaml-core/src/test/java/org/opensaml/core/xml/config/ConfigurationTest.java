@@ -27,7 +27,7 @@ import net.shibboleth.utilities.java.support.xml.BasicParserPool;
 import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
 import org.opensaml.core.xml.XMLObjectBuilder;
-import org.opensaml.core.xml.config.ConfigurationException;
+import org.opensaml.core.xml.config.XMLConfigurationException;
 import org.opensaml.core.xml.config.XMLConfigurator;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.Marshaller;
@@ -50,9 +50,9 @@ public class ConfigurationTest extends TestCase {
     /**
      * Constructor
      * 
-     * @throws ConfigurationException
+     * @throws XMLConfigurationException
      */
-    public ConfigurationTest() throws ConfigurationException {
+    public ConfigurationTest() throws XMLConfigurationException {
         configurator = new XMLConfigurator();
 
         parserPool = new BasicParserPool();
@@ -68,7 +68,7 @@ public class ConfigurationTest extends TestCase {
             InputStream sxConfig = XMLObjectProviderRegistrySupport.class
                     .getResourceAsStream("/data/org/opensaml/xml/InvalidConfiguration.xml");
             configurator.load(sxConfig);
-        } catch (ConfigurationException e) {
+        } catch (XMLConfigurationException e) {
             return;
         }
 
@@ -100,7 +100,7 @@ public class ConfigurationTest extends TestCase {
         try {
             configurator.load(nonConfig);
             fail("Configuration loaded file that contained invalid classes");
-        } catch (ConfigurationException e) {
+        } catch (XMLConfigurationException e) {
             // this is supposed to fail
         }
     }
@@ -129,9 +129,9 @@ public class ConfigurationTest extends TestCase {
      * properly.
      * 
      * @throws XMLParserException thrown if the XML config file can not be read
-     * @throws ConfigurationException thrown if the ID attributes can not be registered
+     * @throws XMLConfigurationException thrown if the ID attributes can not be registered
      */
-    public void testIDAttributeConfiguration() throws XMLParserException, ConfigurationException {
+    public void testIDAttributeConfiguration() throws XMLParserException, XMLConfigurationException {
         QName fooQName = new QName("http://www.example.org/testObjects", "foo", "test");
         QName barQName = new QName("http://www.example.org/testObjects", "bar", "test");
         QName bazQName = new QName("http://www.example.org/testObjects", "baz", "test");

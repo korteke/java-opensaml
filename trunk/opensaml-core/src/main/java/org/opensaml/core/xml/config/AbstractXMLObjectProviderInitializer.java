@@ -48,7 +48,7 @@ public abstract class AbstractXMLObjectProviderInitializer implements Initialize
                 InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream(resource);
                 configurator.load(is);
             }
-        } catch (ConfigurationException e) {
+        } catch (XMLConfigurationException e) {
             log.error("Problem loading configuration resource", e);
             throw new InitializationException("Problem loading configuration resource", e);
         }

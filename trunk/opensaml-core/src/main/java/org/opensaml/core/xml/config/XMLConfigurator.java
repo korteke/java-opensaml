@@ -86,9 +86,9 @@ public class XMLConfigurator {
     /**
      * Constructor.
      * 
-     * @throws ConfigurationException thrown if the validation schema for configuration files can not be created
+     * @throws XMLConfigurationException thrown if the validation schema for configuration files can not be created
      */
-    public XMLConfigurator() throws ConfigurationException {
+    public XMLConfigurator() throws XMLConfigurationException {
         this(false);
     }
 
@@ -97,12 +97,12 @@ public class XMLConfigurator {
      * 
      * @param retainXML whether to retain the XML configuration elements within the {@link XMLObjectProviderRegistrySupport}.
      * 
-     * @throws ConfigurationException thrown if the validation schema for configuration files can not be created
+     * @throws XMLConfigurationException thrown if the validation schema for configuration files can not be created
      * 
      * @deprecated this method will be removed once {@link XMLObjectProviderRegistrySupport} no longer has the option to store the XML
      *             configuration fragements
      */
-    public XMLConfigurator(boolean retainXML) throws ConfigurationException {
+    public XMLConfigurator(boolean retainXML) throws XMLConfigurationException {
         retainXMLConfiguration = retainXML;
         parserPool = new BasicParserPool();
         SchemaFactory factory = SchemaFactory.newInstance(javax.xml.XMLConstants.W3C_XML_SCHEMA_NS_URI);
@@ -115,9 +115,9 @@ public class XMLConfigurator {
             parserPool.setSchema(configurationSchema);
             parserPool.initialize();
         } catch (SAXException e) {
-            throw new ConfigurationException("Unable to read XMLTooling configuration schema", e);
+            throw new XMLConfigurationException("Unable to read XMLTooling configuration schema", e);
         } catch (ComponentInitializationException e) {
-            throw new ConfigurationException("Unable to initialize parser pool", e);
+            throw new XMLConfigurationException("Unable to initialize parser pool", e);
         }
 
         synchronized (ConfigurationService.class) {
@@ -136,9 +136,9 @@ public class XMLConfigurator {
      * 
      * @param configurationFile the configuration file(s) to be loaded
      * 
-     * @throws ConfigurationException thrown if the configuration file(s) can not be be read or invalid
+     * @throws XMLConfigurationException thrown if the configuration file(s) can not be be read or invalid
      */
-    public void load(File configurationFile) throws ConfigurationException {
+    public void load(File configurationFile) throws XMLConfigurationException {
         if (configurationFile == null || !configurationFile.canRead()) {
             log.error("Unable to read configuration file {}", configurationFile);
         }
@@ -165,15 +165,15 @@ public class XMLConfigurator {
      * 
      * @param configurationStream configuration stream
      * 
-     * @throws ConfigurationException thrown if the given configuration is invalid or can not be read
+     * @throws XMLConfigurationException thrown if the given configuration is invalid or can not be read
      */
-    public void load(InputStream configurationStream) throws ConfigurationException {
+    public void load(InputStream configurationStream) throws XMLConfigurationException {
         try {
             Document configuration = parserPool.parse(configurationStream);
             load(configuration);
         } catch (XMLParserException e) {
             log.error("Invalid configuration file", e);
-            throw new ConfigurationException("Unable to create DocumentBuilder", e);
+            throw new XMLConfigurationException("Unable to create DocumentBuilder", e);
         }
 
     }
@@ -182,9 +182,9 @@ public class XMLConfigurator {
      * Loads the configuration docuement.
      * 
      * @param configuration the configurationd document
-     * @throws ConfigurationException thrown if the configuration file(s) can not be be read or invalid
+     * @throws XMLConfigurationException thrown if the configuration file(s) can not be be read or invalid
      */
-    public void load(Document configuration) throws ConfigurationException {
+    public void load(Document configuration) throws XMLConfigurationException {
         log.debug("Loading configuration from XML Document");
         log.trace("{}", SerializeSupport.nodeToString(configuration.getDocumentElement()));
 
@@ -201,9 +201,9 @@ public class XMLConfigurator {
      * 
      * @param configurationRoot root of the configuration
      * 
-     * @throws ConfigurationException thrown if there is a problem processing the configuration
+     * @throws XMLConfigurationException thrown if there is a problem processing the configuration
      */
-    protected void load(Element configurationRoot) throws ConfigurationException {
+    protected void load(Element configurationRoot) throws XMLConfigurationException {
         // Initialize object providers
         NodeList objectProviders = configurationRoot.getElementsByTagNameNS(XMLTOOLING_CONFIG_NS, "ObjectProviders");
         if (objectProviders.getLength() > 0) {
@@ -226,9 +226,9 @@ public class XMLConfigurator {
      * 
      * @param objectProviders the configuration for the various object providers
      * 
-     * @throws ConfigurationException thrown if the configuration elements are invalid
+     * @throws XMLConfigurationException thrown if the configuration elements are invalid
      */
-    protected void initializeObjectProviders(Element objectProviders) throws ConfigurationException {
+    protected void initializeObjectProviders(Element objectProviders) throws XMLConfigurationException {
         // Process ObjectProvider child elements
         Element objectProvider;
         Attr qNameAttrib;
@@ -272,7 +272,7 @@ public class XMLConfigurator {
                 }
 
                 log.debug("{} intialized and configuration cached", objectProviderName);
-            } catch (ConfigurationException e) {
+            } catch (XMLConfigurationException e) {
                 log.error("Error initializing object provier " + objectProvider, e);
                 // clean up any parts of the object provider that might have been registered before the failure
                 getRegistry().deregisterObjectProvider(objectProviderName);
@@ -286,9 +286,9 @@ public class XMLConfigurator {
      * 
      * @param idAttributesElement the IDAttributes element from the configuration file
      * 
-     * @throws ConfigurationException thrown if there is a problem with a parsing or registering the the ID attribute
+     * @throws XMLConfigurationException thrown if there is a problem with a parsing or registering the the ID attribute
      */
-    protected void initializeIDAttributes(Element idAttributesElement) throws ConfigurationException {
+    protected void initializeIDAttributes(Element idAttributesElement) throws XMLConfigurationException {
         Element idAttributeElement;
         QName attributeQName;
 
@@ -313,9 +313,9 @@ public class XMLConfigurator {
      * 
      * @return an instance of the given class
      * 
-     * @throws ConfigurationException thrown if the class can not be instaniated
+     * @throws XMLConfigurationException thrown if the class can not be instaniated
      */
-    protected Object createClassInstance(Element configuration) throws ConfigurationException {
+    protected Object createClassInstance(Element configuration) throws XMLConfigurationException {
         String className = configuration.getAttributeNS(null, "className");
         className = StringSupport.trimOrNull(className);
 
@@ -333,7 +333,7 @@ public class XMLConfigurator {
             return constructor.newInstance();
         } catch (Exception e) {
             log.error("Can not create instance of " + className, e);
-            throw new ConfigurationException("Can not create instance of " + className, e);
+            throw new XMLConfigurationException("Can not create instance of " + className, e);
         }
     }
 
@@ -342,9 +342,9 @@ public class XMLConfigurator {
      * 
      * @param configuration the configuration to validate
      * 
-     * @throws ConfigurationException thrown if the configuration is not schema-valid
+     * @throws XMLConfigurationException thrown if the configuration is not schema-valid
      */
-    protected void validateConfiguration(Document configuration) throws ConfigurationException {
+    protected void validateConfiguration(Document configuration) throws XMLConfigurationException {
         try {
             javax.xml.validation.Validator schemaValidator = configurationSchema.newValidator();
             schemaValidator.validate(new DOMSource(configuration));
@@ -352,11 +352,11 @@ public class XMLConfigurator {
             // Should never get here as the DOM is already in memory
             String errorMsg = "Unable to read configuration file DOM";
             log.error(errorMsg, e);
-            throw new ConfigurationException(errorMsg, e);
+            throw new XMLConfigurationException(errorMsg, e);
         } catch (SAXException e) {
             String errorMsg = "Configuration file does not validate against schema";
             log.error(errorMsg, e);
-            throw new ConfigurationException(errorMsg, e);
+            throw new XMLConfigurationException(errorMsg, e);
         }
     }
 
