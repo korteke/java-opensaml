@@ -22,8 +22,8 @@ import java.io.InputStream;
 import javax.xml.namespace.QName;
 
 import org.joda.time.DateTime;
-import org.opensaml.core.xml.XMLConfigurator;
-import org.opensaml.core.xml.XMLObjectProviderRegistrySupport;
+import org.opensaml.core.xml.config.XMLConfigurator;
+import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.schema.XSAny;
 import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.core.xml.schema.impl.XSAnyBuilder;

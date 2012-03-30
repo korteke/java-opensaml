@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.core.xml;
+package org.opensaml.core.xml.config;
 
 import java.io.InputStream;
 
@@ -26,6 +26,10 @@ import junit.framework.TestCase;
 import net.shibboleth.utilities.java.support.xml.BasicParserPool;
 import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
+import org.opensaml.core.xml.XMLObjectBuilder;
+import org.opensaml.core.xml.config.ConfigurationException;
+import org.opensaml.core.xml.config.XMLConfigurator;
+import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.Marshaller;
 import org.opensaml.core.xml.io.Unmarshaller;
 

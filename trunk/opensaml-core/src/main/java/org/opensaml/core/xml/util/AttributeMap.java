@@ -32,7 +32,7 @@ import net.shibboleth.utilities.java.support.xml.QNameSupport;
 
 import org.opensaml.core.xml.NamespaceManager;
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.core.xml.XMLObjectProviderRegistrySupport;
+import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

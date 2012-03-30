@@ -18,7 +18,7 @@
 package org.opensaml.core.xml.util;
 
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
-import org.opensaml.core.xml.XMLObjectProviderRegistrySupport;
+import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.core.xml.mock.SimpleXMLObject;

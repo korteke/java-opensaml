@@ -17,7 +17,7 @@
 
 package org.opensaml.xacml.profile.saml.config;
 
-import org.opensaml.core.xml.AbstractXMLObjectProviderInitializer;
+import org.opensaml.core.xml.config.AbstractXMLObjectProviderInitializer;
 
 /**
  * XMLObject provider initializer for module "xacml-saml-impl".

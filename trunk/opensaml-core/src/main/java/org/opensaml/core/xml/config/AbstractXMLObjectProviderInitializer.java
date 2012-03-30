@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.core.xml;
+package org.opensaml.core.xml.config;
 
 import java.io.InputStream;
 

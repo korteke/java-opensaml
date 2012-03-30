@@ -20,7 +20,7 @@ package org.opensaml.xacml.profile.saml.config;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.config.Initializer;
-import org.opensaml.core.config.XMLObjectProviderInitializerBaseTestCase;
+import org.opensaml.core.xml.config.XMLObjectProviderInitializerBaseTestCase;
 import org.opensaml.xacml.profile.saml.XACMLPolicyStatementType;
 
 /**

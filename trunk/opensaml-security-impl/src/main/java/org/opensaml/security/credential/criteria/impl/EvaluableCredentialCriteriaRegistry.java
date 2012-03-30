@@ -27,7 +27,7 @@ import java.util.Properties;
 
 import net.shibboleth.utilities.java.support.resolver.Criterion;
 
-import org.opensaml.core.xml.XMLObjectProviderRegistrySupport;
+import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.Credential;
 import org.slf4j.Logger;

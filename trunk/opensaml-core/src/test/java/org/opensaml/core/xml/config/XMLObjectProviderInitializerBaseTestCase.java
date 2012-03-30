@@ -15,11 +15,15 @@
  * limitations under the License.
  */
 
-package org.opensaml.core.config;
+package org.opensaml.core.xml.config;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.core.xml.XMLObjectProviderRegistry;
+import org.opensaml.core.config.ConfigurationService;
+import org.opensaml.core.config.InitializationException;
+import org.opensaml.core.config.Initializer;
+import org.opensaml.core.config.InitializerBaseTestCase;
+import org.opensaml.core.xml.config.XMLObjectProviderRegistry;
 
 /**
  * An abstract base class for XMLObject provider initializers which takes care of the boilerplate, requiring

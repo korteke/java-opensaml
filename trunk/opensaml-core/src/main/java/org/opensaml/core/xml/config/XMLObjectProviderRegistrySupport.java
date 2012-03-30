@@ -15,13 +15,15 @@
  * limitations under the License.
  */
 
-package org.opensaml.core.xml;
+package org.opensaml.core.xml.config;
 
 import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.xml.ParserPool;
 
 import org.opensaml.core.config.ConfigurationService;
+import org.opensaml.core.xml.XMLObjectBuilder;
+import org.opensaml.core.xml.XMLObjectBuilderFactory;
 import org.opensaml.core.xml.io.Marshaller;
 import org.opensaml.core.xml.io.MarshallerFactory;
 import org.opensaml.core.xml.io.Unmarshaller;

@@ -27,7 +27,7 @@ import javax.security.auth.x500.X500Principal;
 import net.shibboleth.utilities.java.support.collection.LazySet;
 
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.core.xml.XMLObjectProviderRegistrySupport;
+import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.x509.InternalX500DNHandler;

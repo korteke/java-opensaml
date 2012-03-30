@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.core.xml;
+package org.opensaml.core.xml.config;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -40,6 +40,7 @@ import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
 import org.opensaml.core.config.ConfigurationService;
+import org.opensaml.core.xml.XMLObjectBuilder;
 import org.opensaml.core.xml.io.Marshaller;
 import org.opensaml.core.xml.io.Unmarshaller;
 import org.slf4j.Logger;

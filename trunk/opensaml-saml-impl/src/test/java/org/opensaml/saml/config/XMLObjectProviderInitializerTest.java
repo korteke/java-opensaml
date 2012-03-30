@@ -20,7 +20,7 @@ package org.opensaml.saml.config;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.config.Initializer;
-import org.opensaml.core.config.XMLObjectProviderInitializerBaseTestCase;
+import org.opensaml.core.xml.config.XMLObjectProviderInitializerBaseTestCase;
 import org.opensaml.saml.ext.idpdisco.DiscoveryResponse;
 import org.opensaml.saml.ext.saml1md.SourceID;
 import org.opensaml.saml.ext.saml2delrestrict.Delegate;
