@@ -24,7 +24,7 @@ import javax.xml.namespace.QName;
 import net.shibboleth.utilities.java.support.xml.AttributeSupport;
 
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.core.xml.XMLObjectProviderRegistrySupport;
+import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.xmlsec.encryption.EncryptionProperty;
 import org.w3c.dom.Attr;

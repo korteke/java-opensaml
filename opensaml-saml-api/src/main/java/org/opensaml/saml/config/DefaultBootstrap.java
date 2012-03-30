@@ -19,7 +19,7 @@ package org.opensaml.saml.config;
 
 import org.opensaml.core.config.InitializationException;
 import org.opensaml.core.config.InitializationService;
-import org.opensaml.core.xml.ConfigurationException;
+import org.opensaml.core.xml.config.ConfigurationException;
 
 /**
  * This class can be used to bootstrap the OpenSAML library with the default configurations that ship with the library.

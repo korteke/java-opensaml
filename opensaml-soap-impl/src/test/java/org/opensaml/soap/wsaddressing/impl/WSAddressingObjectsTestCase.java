@@ -19,7 +19,7 @@ package org.opensaml.soap.wsaddressing.impl;
 
 import java.io.InputStream;
 
-import org.opensaml.core.xml.XMLConfigurator;
+import org.opensaml.core.xml.config.XMLConfigurator;
 import org.opensaml.soap.WSBaseTestCase;
 import org.opensaml.soap.wsaddressing.Action;
 import org.opensaml.soap.wsaddressing.Address;

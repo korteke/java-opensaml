@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.core;
+package org.opensaml.core.xml.config;
 
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.xml.BasicParserPool;
@@ -23,7 +23,6 @@ import net.shibboleth.utilities.java.support.xml.BasicParserPool;
 import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.core.config.InitializationException;
 import org.opensaml.core.config.Initializer;
-import org.opensaml.core.xml.XMLObjectProviderRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

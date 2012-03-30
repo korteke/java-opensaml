@@ -17,7 +17,7 @@
 
 package org.opensaml.saml.ext.saml2delrestrict.impl;
 
-import org.opensaml.core.xml.XMLObjectProviderRegistrySupport;
+import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
 import org.opensaml.saml.common.SAMLObjectBuilder;
 import org.opensaml.saml.ext.saml2delrestrict.Delegate;

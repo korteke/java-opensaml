@@ -17,7 +17,7 @@
 
 package org.opensaml.saml.common;
 
-import org.opensaml.core.xml.ConfigurationException;
+import org.opensaml.core.xml.config.ConfigurationException;
 import org.opensaml.saml.config.DefaultBootstrap;
 
 /**

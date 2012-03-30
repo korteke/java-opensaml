@@ -15,38 +15,23 @@
  * limitations under the License.
  */
 
-package org.opensaml.core;
+package org.opensaml.core.xml.config;
 
-import javax.xml.namespace.QName;
-
-import org.opensaml.core.config.ConfigurationService;
-import org.opensaml.core.config.InitializationException;
-import org.opensaml.core.xml.AbstractXMLObjectProviderInitializer;
-import org.opensaml.core.xml.XMLObjectProviderRegistry;
+import org.opensaml.core.xml.config.AbstractXMLObjectProviderInitializer;
 
 /**
- * XMLObject provider initializer for module "core".
+ * XMLObject provider initializer for module "core", for testing classes only.
  */
-public class XMLObjectProviderInitializer extends AbstractXMLObjectProviderInitializer {
+public class TestXMLObjectProviderInitializer extends AbstractXMLObjectProviderInitializer {
     
     /** Config resources. */
     private static String[] configs = {
-        "/default-config.xml",
-        "/schema-config.xml",
+        "/xmltooling-config.xml",
         };
 
     /** {@inheritDoc} */
     protected String[] getConfigResources() {
         return configs;
-    }
-
-    /** {@inheritDoc} */
-    public void init() throws InitializationException {
-        super.init();
-        
-        XMLObjectProviderRegistry registry = ConfigurationService.get(XMLObjectProviderRegistry.class);
-        
-        registry.registerIDAttribute(new QName(javax.xml.XMLConstants.XML_NS_URI, "id"));
     }
 
 }

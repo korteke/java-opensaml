@@ -20,7 +20,7 @@ package org.opensaml.soap.config;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.config.Initializer;
-import org.opensaml.core.config.XMLObjectProviderInitializerBaseTestCase;
+import org.opensaml.core.xml.config.XMLObjectProviderInitializerBaseTestCase;
 import org.opensaml.soap.soap11.Envelope;
 import org.opensaml.soap.wsaddressing.Action;
 import org.opensaml.soap.wspolicy.Policy;

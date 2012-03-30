@@ -29,7 +29,7 @@ import org.opensaml.saml.saml2.binding.artifact.SAML2ArtifactBuilderFactory;
  * {@link DefaultBootstrap#bootstrap()} but may done in any manner so long as all the needed object providers and
  * artifact factory are created and registered with the configuration.
  */
-public class Configuration extends org.opensaml.core.xml.XMLObjectProviderRegistrySupport {
+public class Configuration extends org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport {
 
     /**
      * Gets the date format used to string'ify SAML's {@link org.joda.time.DateTime} objects.
