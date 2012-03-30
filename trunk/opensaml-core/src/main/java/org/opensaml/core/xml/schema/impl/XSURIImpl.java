@@ -21,14 +21,14 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.schema.XSURI;
-import org.opensaml.core.xml.validation.AbstractValidatingXMLObject;
 
 /**
  * Conrete implementation of {@link org.opensaml.core.xml.schema.XSURI}.
  */
-public class XSURIImpl extends AbstractValidatingXMLObject implements XSURI {
+public class XSURIImpl extends AbstractXMLObject implements XSURI {
 
     /** URI value. */
     private String value;

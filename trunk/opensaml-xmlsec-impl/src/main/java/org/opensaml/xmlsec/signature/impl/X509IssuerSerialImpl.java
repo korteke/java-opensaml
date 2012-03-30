@@ -21,8 +21,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.core.xml.validation.AbstractValidatingXMLObject;
 import org.opensaml.xmlsec.signature.X509IssuerName;
 import org.opensaml.xmlsec.signature.X509IssuerSerial;
 import org.opensaml.xmlsec.signature.X509SerialNumber;
@@ -30,7 +30,7 @@ import org.opensaml.xmlsec.signature.X509SerialNumber;
 /**
  * Concrete implementation of {@link org.opensaml.xmlsec.signature.X509IssuerSerial}
  */
-public class X509IssuerSerialImpl extends AbstractValidatingXMLObject implements X509IssuerSerial {
+public class X509IssuerSerialImpl extends AbstractXMLObject implements X509IssuerSerial {
     
     /** X509IssuerName child element */
     private X509IssuerName issuerName;

@@ -17,8 +17,6 @@
 
 package org.opensaml.saml.common.binding.security;
 
-import org.opensaml.core.xml.validation.ValidationException;
-import org.opensaml.core.xml.validation.Validator;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.SignableSAMLObject;
 import org.opensaml.saml.common.binding.SAMLMessageContext;
@@ -27,6 +25,7 @@ import org.opensaml.security.trust.TrustEngine;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.security.SecurityPolicyException;
 import org.opensaml.xmlsec.signature.Signature;
+import org.opensaml.xmlsec.signature.support.SignatureException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,8 +52,9 @@ public class SAMLProtocolMessageXMLSignatureSecurityPolicyRule extends BaseSAMLX
     /** Logger. */
     private final Logger log = LoggerFactory.getLogger(SAMLProtocolMessageXMLSignatureSecurityPolicyRule.class);
 
+    //TODO decide whether this should be an interface with an impl
     /** Validator for XML Signature instances. */
-    private Validator<Signature> sigValidator;
+    private SAMLSignatureProfileValidator sigValidator;
 
     /**
      * Constructor.
@@ -66,19 +66,6 @@ public class SAMLProtocolMessageXMLSignatureSecurityPolicyRule extends BaseSAMLX
     public SAMLProtocolMessageXMLSignatureSecurityPolicyRule(TrustEngine<Signature> engine) {
         super(engine);
         sigValidator = new SAMLSignatureProfileValidator();
-    }
-
-    /**
-     * Constructor.
-     * 
-     * @param engine Trust engine used to verify the signature
-     * @param signatureValidator optional pre-validator used to validate Signature elements prior to the actual
-     *            cryptographic validation operation
-     */
-    public SAMLProtocolMessageXMLSignatureSecurityPolicyRule(TrustEngine<Signature> engine,
-            Validator<Signature> signatureValidator) {
-        super(engine);
-        sigValidator = signatureValidator;
     }
 
     /** {@inheritDoc} */
@@ -148,7 +135,7 @@ public class SAMLProtocolMessageXMLSignatureSecurityPolicyRule extends BaseSAMLX
      * 
      * @return the configured Signature validator, or null
      */
-    protected Validator<Signature> getSignaturePrevalidator() {
+    protected SAMLSignatureProfileValidator getSignaturePrevalidator() {
         return sigValidator;
     }
 
@@ -162,7 +149,7 @@ public class SAMLProtocolMessageXMLSignatureSecurityPolicyRule extends BaseSAMLX
         if (getSignaturePrevalidator() != null) {
             try {
                 getSignaturePrevalidator().validate(signature);
-            } catch (ValidationException e) {
+            } catch (SignatureException e) {
                 log.debug("Protocol message signature failed signature pre-validation", e);
                 throw new SecurityPolicyException("Protocol message signature failed signature pre-validation", e);
             }

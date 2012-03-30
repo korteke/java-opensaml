@@ -17,14 +17,14 @@
 
 package org.opensaml.soap.wspolicy.impl;
 
-import org.opensaml.core.xml.validation.AbstractValidatingXMLObject;
+import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.soap.wspolicy.WSPolicyObject;
 
 /**
  * AbstractWSSecurityObject.
  * 
  */
-public abstract class AbstractWSPolicyObject extends AbstractValidatingXMLObject implements WSPolicyObject {
+public abstract class AbstractWSPolicyObject extends AbstractXMLObject implements WSPolicyObject {
 
     /**
      * Constructor.

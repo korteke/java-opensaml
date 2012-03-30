@@ -20,13 +20,12 @@ package org.opensaml.xmlsec.encryption;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.ElementExtensibleXMLObject;
-import org.opensaml.core.xml.validation.ValidatingXMLObject;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 
 /**
  * XMLObject representing XML Encryption, version 20021210, EncryptionMethod element.
  */
-public interface EncryptionMethod extends ValidatingXMLObject, ElementExtensibleXMLObject {
+public interface EncryptionMethod extends ElementExtensibleXMLObject {
 
     /** Element local name. */
     public static final String DEFAULT_ELEMENT_LOCAL_NAME = "EncryptionMethod";

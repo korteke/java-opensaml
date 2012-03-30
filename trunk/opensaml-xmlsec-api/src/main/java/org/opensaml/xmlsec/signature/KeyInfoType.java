@@ -22,13 +22,12 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.core.xml.validation.ValidatingXMLObject;
 import org.opensaml.xmlsec.encryption.AgreementMethod;
 import org.opensaml.xmlsec.encryption.EncryptedKey;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 
 /** XMLObject representing XML Digital Signature, version 20020212, KeyInfoType complex type. */
-public interface KeyInfoType extends ValidatingXMLObject {
+public interface KeyInfoType extends XMLObject {
 
     /** Local name of the XSI type. */
     public static final String TYPE_LOCAL_NAME = "KeyInfoType";

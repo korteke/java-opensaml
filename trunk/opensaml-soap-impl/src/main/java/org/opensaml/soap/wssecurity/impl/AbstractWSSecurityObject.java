@@ -19,15 +19,15 @@ package org.opensaml.soap.wssecurity.impl;
 
 import java.util.List;
 
+import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.core.xml.validation.AbstractValidatingXMLObject;
 import org.opensaml.soap.wssecurity.WSSecurityObject;
 
 /**
  * AbstractWSSecurityObject
  * 
  */
-public abstract class AbstractWSSecurityObject extends AbstractValidatingXMLObject implements WSSecurityObject {
+public abstract class AbstractWSSecurityObject extends AbstractXMLObject implements WSSecurityObject {
 
     /**
      * Constructor.

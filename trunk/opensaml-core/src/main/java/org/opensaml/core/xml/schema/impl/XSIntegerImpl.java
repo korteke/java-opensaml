@@ -19,14 +19,14 @@ package org.opensaml.core.xml.schema.impl;
 
 import java.util.List;
 
+import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.schema.XSInteger;
-import org.opensaml.core.xml.validation.AbstractValidatingXMLObject;
 
 /**
  * Concrete implementation of {@link org.opensaml.core.xml.schema.XSInteger}.
  */
-public class XSIntegerImpl extends AbstractValidatingXMLObject implements XSInteger {
+public class XSIntegerImpl extends AbstractXMLObject implements XSInteger {
 
     /** Value of this integer element. */
     private Integer value;

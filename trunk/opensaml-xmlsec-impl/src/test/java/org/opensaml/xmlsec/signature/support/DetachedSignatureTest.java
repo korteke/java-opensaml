@@ -19,6 +19,8 @@ package org.opensaml.xmlsec.signature.support;
 
 import java.security.KeyPair;
 
+import javax.xml.bind.ValidationException;
+
 import net.shibboleth.utilities.java.support.xml.BasicParserPool;
 import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 
@@ -28,19 +30,12 @@ import org.opensaml.core.xml.io.Marshaller;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.io.Unmarshaller;
 import org.opensaml.core.xml.io.UnmarshallingException;
-import org.opensaml.core.xml.validation.ValidationException;
 import org.opensaml.security.SecurityHelper;
 import org.opensaml.security.credential.BasicCredential;
 import org.opensaml.xmlsec.mock.SignableSimpleXMLObject;
 import org.opensaml.xmlsec.mock.SignableSimpleXMLObjectBuilder;
 import org.opensaml.xmlsec.signature.Signature;
 import org.opensaml.xmlsec.signature.impl.SignatureBuilder;
-import org.opensaml.xmlsec.signature.support.DocumentInternalIDContentReference;
-import org.opensaml.xmlsec.signature.support.SignatureConstants;
-import org.opensaml.xmlsec.signature.support.SignatureException;
-import org.opensaml.xmlsec.signature.support.SignatureValidator;
-import org.opensaml.xmlsec.signature.support.Signer;
-import org.opensaml.xmlsec.signature.support.URIContentReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
@@ -94,7 +89,7 @@ public class DetachedSignatureTest extends XMLObjectBaseTestCase {
      * @throws SignatureException 
      */
     public void testInternalSignatureAndVerification() throws MarshallingException, UnmarshallingException,
-            ValidationException, SignatureException {
+            SignatureException {
         SignableSimpleXMLObject sxo = getXMLObjectWithSignature();
         Signature signature = sxo.getSignature();
 
@@ -117,7 +112,7 @@ public class DetachedSignatureTest extends XMLObjectBaseTestCase {
             sigValidator = new SignatureValidator(badCredential);
             sigValidator.validate(signature);
             fail("Validated signature with improper public key");
-        } catch (ValidationException e) {
+        } catch (SignatureException e) {
             // expected
         }
     }
@@ -130,7 +125,7 @@ public class DetachedSignatureTest extends XMLObjectBaseTestCase {
      * @throws ValidationException thrown if the signature verification fails
      * @throws SignatureException 
      */
-    public void testExternalSignatureAndVerification() throws MarshallingException, ValidationException, SignatureException {
+    public void testExternalSignatureAndVerification() throws MarshallingException, SignatureException {
         Signature signature = sigBuilder.buildObject();
         signature.setSigningCredential(goodCredential);
         signature.setCanonicalizationAlgorithm(SignatureConstants.ALGO_ID_C14N_EXCL_OMIT_COMMENTS);

@@ -19,15 +19,15 @@ package org.opensaml.soap.wsaddressing.impl;
 
 import java.util.List;
 
+import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.core.xml.validation.AbstractValidatingXMLObject;
 import org.opensaml.soap.wsaddressing.WSAddressingObject;
 
 /**
  * AbstractWSAddressingObject.
  * 
  */
-public abstract class AbstractWSAddressingObject extends AbstractValidatingXMLObject implements WSAddressingObject {
+public abstract class AbstractWSAddressingObject extends AbstractXMLObject implements WSAddressingObject {
 
     /**
      * Constructor.

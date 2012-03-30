@@ -21,9 +21,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
-import org.opensaml.core.xml.validation.AbstractValidatingXMLObject;
 import org.opensaml.xmlsec.encryption.DataReference;
 import org.opensaml.xmlsec.encryption.KeyReference;
 import org.opensaml.xmlsec.encryption.ReferenceList;
@@ -32,7 +32,7 @@ import org.opensaml.xmlsec.encryption.ReferenceType;
 /**
  * Concrete implementation of {@link org.opensaml.xmlsec.encryption.ReferenceList}
  */
-public class ReferenceListImpl extends AbstractValidatingXMLObject implements ReferenceList {
+public class ReferenceListImpl extends AbstractXMLObject implements ReferenceList {
     
     /** ReferenceType child elements */
     private final IndexedXMLObjectChildrenList indexedChildren;

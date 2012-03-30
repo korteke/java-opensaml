@@ -20,12 +20,12 @@ package org.opensaml.xmlsec.signature.impl;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
-import org.opensaml.core.xml.validation.ValidationException;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCriterion;
 import org.opensaml.xmlsec.signature.Signature;
+import org.opensaml.xmlsec.signature.support.SignatureException;
 import org.opensaml.xmlsec.signature.support.SignatureTrustEngine;
 import org.opensaml.xmlsec.signature.support.SignatureValidator;
 import org.slf4j.Logger;
@@ -147,7 +147,7 @@ public abstract class BaseSignatureTrustEngine<TrustBasisType> implements Signat
         SignatureValidator validator = new SignatureValidator(credential);
         try {
             validator.validate(signature);
-        } catch (ValidationException e) {
+        } catch (SignatureException e) {
             log.debug("Signature validation using candidate validation credential failed", e);
             return false;
         }

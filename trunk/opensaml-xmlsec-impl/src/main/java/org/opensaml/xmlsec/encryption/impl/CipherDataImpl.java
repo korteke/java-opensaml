@@ -21,8 +21,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.core.xml.validation.AbstractValidatingXMLObject;
 import org.opensaml.xmlsec.encryption.CipherData;
 import org.opensaml.xmlsec.encryption.CipherReference;
 import org.opensaml.xmlsec.encryption.CipherValue;
@@ -30,7 +30,7 @@ import org.opensaml.xmlsec.encryption.CipherValue;
 /**
  * Concrete implementation of {@link org.opensaml.xmlsec.encryption.CipherData}.
  */
-public class CipherDataImpl extends AbstractValidatingXMLObject implements CipherData {
+public class CipherDataImpl extends AbstractXMLObject implements CipherData {
     
     /** CipherValue child element. */
     private CipherValue cipherValue;

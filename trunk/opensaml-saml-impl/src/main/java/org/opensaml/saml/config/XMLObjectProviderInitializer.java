@@ -27,19 +27,16 @@ public class XMLObjectProviderInitializer extends AbstractXMLObjectProviderIniti
     /** Config resources. */
     private static String[] configs = {
         "/saml1-assertion-config.xml", 
-        "/saml1-core-validation-config.xml", 
         "/saml1-metadata-config.xml", 
         "/saml1-protocol-config.xml",
         "/saml2-assertion-config.xml", 
         "/saml2-assertion-delegation-restriction-config.xml",    
-        "/saml2-core-validation-config.xml", 
         "/saml2-ecp-config.xml",
         "/saml2-metadata-attr-config.xml",
         "/saml2-metadata-config.xml",
         "/saml2-metadata-idp-discovery-config.xml",
         "/saml2-metadata-query-config.xml", 
         "/saml2-metadata-ui-config.xml",
-        "/saml2-metadata-validation-config.xml", 
         "/saml2-protocol-config.xml",
         "/saml2-protocol-thirdparty-config.xml",
         };

@@ -23,12 +23,12 @@ import net.shibboleth.utilities.java.support.xml.XmlConstants;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
-import org.opensaml.core.xml.validation.ValidatingXMLObject;
+import org.opensaml.core.xml.XMLObject;
 
 /**
  * XMLObject that represents an XML Schema dateTime.
  */
-public interface XSDateTime extends ValidatingXMLObject {
+public interface XSDateTime extends XMLObject {
 
     /** Local name of the XSI type. */
     public static final String TYPE_LOCAL_NAME = "dateTime"; 

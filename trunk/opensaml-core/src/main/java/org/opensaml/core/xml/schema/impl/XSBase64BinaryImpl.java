@@ -19,14 +19,14 @@ package org.opensaml.core.xml.schema.impl;
 
 import java.util.List;
 
+import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.schema.XSBase64Binary;
-import org.opensaml.core.xml.validation.AbstractValidatingXMLObject;
 
 /**
  * Concrete implementation of {@link org.opensaml.core.xml.schema.XSBase64Binary}.
  */
-public class XSBase64BinaryImpl extends AbstractValidatingXMLObject implements XSBase64Binary {
+public class XSBase64BinaryImpl extends AbstractXMLObject implements XSBase64Binary {
 
     /** Value of this base64Binary element. */
     private String value;

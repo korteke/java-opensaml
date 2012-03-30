@@ -21,12 +21,12 @@ import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.xml.XmlConstants;
 
-import org.opensaml.core.xml.validation.ValidatingXMLObject;
+import org.opensaml.core.xml.XMLObject;
 
 /**
  * XMLObject that represents an XML Schema base64Binary.
  */
-public interface XSBase64Binary extends ValidatingXMLObject {
+public interface XSBase64Binary extends XMLObject {
 
     /** Local name of the XSI type. */
     public static final String TYPE_LOCAL_NAME = "base64Binary"; 

@@ -21,16 +21,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.XMLObjectChildrenList;
-import org.opensaml.core.xml.validation.AbstractValidatingXMLObject;
 import org.opensaml.xmlsec.encryption.EncryptionProperties;
 import org.opensaml.xmlsec.encryption.EncryptionProperty;
 
 /**
  * Concrete implementation of {@link org.opensaml.xmlsec.encryption.EncryptionProperties}.
  */
-public class EncryptionPropertiesImpl extends AbstractValidatingXMLObject implements EncryptionProperties {
+public class EncryptionPropertiesImpl extends AbstractXMLObject implements EncryptionProperties {
     
     /** Id attribute value. */
     private String id;

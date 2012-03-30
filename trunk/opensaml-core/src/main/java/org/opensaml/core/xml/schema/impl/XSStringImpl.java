@@ -19,14 +19,14 @@ package org.opensaml.core.xml.schema.impl;
 
 import java.util.List;
 
+import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.schema.XSString;
-import org.opensaml.core.xml.validation.AbstractValidatingXMLObject;
 
 /**
  * Concrete implementation of {@link org.opensaml.core.xml.schema.XSString}.
  */
-public class XSStringImpl extends AbstractValidatingXMLObject implements XSString {
+public class XSStringImpl extends AbstractXMLObject implements XSString {
 
     /** Value of this string element. */
     private String value;

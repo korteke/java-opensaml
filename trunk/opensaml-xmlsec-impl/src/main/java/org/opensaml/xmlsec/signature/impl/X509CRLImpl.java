@@ -20,15 +20,15 @@ package org.opensaml.xmlsec.signature.impl;
 import java.util.Collections;
 import java.util.List;
 
+import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.IndexingObjectStore;
-import org.opensaml.core.xml.validation.AbstractValidatingXMLObject;
 import org.opensaml.xmlsec.signature.X509CRL;
 
 import com.google.common.base.Objects;
 
 /** Concrete implementation of {@link X509CRL}. */
-public class X509CRLImpl extends AbstractValidatingXMLObject implements X509CRL {
+public class X509CRLImpl extends AbstractXMLObject implements X509CRL {
 
     /** Class-level index of Base64 encoded CRL values. */
     private static final IndexingObjectStore<String> B64_CRL_STORE = new IndexingObjectStore<String>();

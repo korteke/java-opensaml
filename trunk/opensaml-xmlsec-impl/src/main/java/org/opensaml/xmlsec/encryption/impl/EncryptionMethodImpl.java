@@ -23,9 +23,9 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
-import org.opensaml.core.xml.validation.AbstractValidatingXMLObject;
 import org.opensaml.xmlsec.encryption.EncryptionMethod;
 import org.opensaml.xmlsec.encryption.KeySize;
 import org.opensaml.xmlsec.encryption.OAEPparams;
@@ -33,7 +33,7 @@ import org.opensaml.xmlsec.encryption.OAEPparams;
 /**
  * Concrete implementation of {@link org.opensaml.xmlsec.encryption.EncryptionMethod}.
  */
-public class EncryptionMethodImpl extends AbstractValidatingXMLObject implements EncryptionMethod {
+public class EncryptionMethodImpl extends AbstractXMLObject implements EncryptionMethod {
     
     /** Algorithm attribute value. */
     private String algorithm;

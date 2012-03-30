@@ -36,8 +36,6 @@ import org.opensaml.core.xml.NamespaceManager;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.core.xml.util.IDIndex;
-import org.opensaml.core.xml.validation.ValidationException;
-import org.opensaml.core.xml.validation.Validator;
 import org.opensaml.saml.saml2.common.Extensions;
 import org.opensaml.saml.saml2.metadata.EntitiesDescriptor;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
@@ -586,24 +584,6 @@ public class ChainingMetadataProvider extends BaseMetadataProvider implements Ob
         /** {@inheritDoc} */
         public void setSchemaLocation(String location) {
 
-        }
-
-        /** {@inheritDoc} */
-        public void deregisterValidator(Validator validator) {
-
-        }
-
-        /** {@inheritDoc} */
-        public List<Validator> getValidators() {
-            return new ArrayList<Validator>();
-        }
-
-        /** {@inheritDoc} */
-        public void registerValidator(Validator validator) {
-        }
-
-        /** {@inheritDoc} */
-        public void validate(boolean validateDescendants) throws ValidationException {
         }
 
         /** {@inheritDoc} */

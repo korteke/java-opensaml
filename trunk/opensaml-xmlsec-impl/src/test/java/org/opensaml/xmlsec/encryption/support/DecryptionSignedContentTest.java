@@ -32,17 +32,10 @@ import org.opensaml.core.xml.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.Marshaller;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.io.UnmarshallingException;
-import org.opensaml.core.xml.validation.ValidationException;
 import org.opensaml.security.SecurityHelper;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.xmlsec.XMLSecurityHelper;
 import org.opensaml.xmlsec.encryption.EncryptedData;
-import org.opensaml.xmlsec.encryption.support.Decrypter;
-import org.opensaml.xmlsec.encryption.support.DecryptionException;
-import org.opensaml.xmlsec.encryption.support.Encrypter;
-import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
-import org.opensaml.xmlsec.encryption.support.EncryptionException;
-import org.opensaml.xmlsec.encryption.support.EncryptionParameters;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xmlsec.keyinfo.impl.StaticKeyInfoCredentialResolver;
 import org.opensaml.xmlsec.mock.SignableSimpleXMLObject;
@@ -95,7 +88,7 @@ public class DecryptionSignedContentTest extends XMLObjectBaseTestCase {
      * @throws IOException
      * @throws SignatureException 
      */
-    public void testDecryptAndVerifySignedElement() throws MarshallingException, ValidationException,
+    public void testDecryptAndVerifySignedElement() throws MarshallingException, 
             UnmarshallingException, EncryptionException, DecryptionException, XMLParserException, IOException, SignatureException {
         // Get signed element
         Element signedElement = getSignedElement();
@@ -156,7 +149,7 @@ public class DecryptionSignedContentTest extends XMLObjectBaseTestCase {
         SignatureValidator sigValidator = new SignatureValidator(signingCredential);
         try {
             sigValidator.validate(sxo.getSignature());
-        } catch (ValidationException e) {
+        } catch (SignatureException e) {
             fail("Signature validation failed: " + e);
         }
     }

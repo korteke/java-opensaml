@@ -20,14 +20,13 @@ package org.opensaml.xmlsec.encryption;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.ElementExtensibleXMLObject;
-import org.opensaml.core.xml.validation.ValidatingXMLObject;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 
 /**
  * XMLObject representing XML Encryption, version 20021210, ReferenceType type. This is the base type for
  * {@link DataReference} and {@link KeyReference} types.
  */
-public interface ReferenceType extends ValidatingXMLObject, ElementExtensibleXMLObject {
+public interface ReferenceType extends ElementExtensibleXMLObject {
 
     /** Local name of the XSI type. */
     public static final String TYPE_LOCAL_NAME = "ReferenceType";

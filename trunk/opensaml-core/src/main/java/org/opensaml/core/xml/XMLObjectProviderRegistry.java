@@ -31,7 +31,6 @@ import org.opensaml.core.xml.io.Marshaller;
 import org.opensaml.core.xml.io.MarshallerFactory;
 import org.opensaml.core.xml.io.Unmarshaller;
 import org.opensaml.core.xml.io.UnmarshallerFactory;
-import org.opensaml.core.xml.validation.ValidatorSuite;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
@@ -69,9 +68,6 @@ public class XMLObjectProviderRegistry {
     /** Configured XMLObject unmarshaller factory. */
     private UnmarshallerFactory unmarshallerFactory;
 
-    /** Configured ValidatorSuites. */
-    private Map<String, ValidatorSuite> validatorSuites;
-
     /** Configured set of attribute QNames which have been globally registered as having an ID type. */
     private Set<QName> idAttributeNames;
 
@@ -85,7 +81,6 @@ public class XMLObjectProviderRegistry {
         builderFactory = new XMLObjectBuilderFactory();
         marshallerFactory = new MarshallerFactory();
         unmarshallerFactory = new UnmarshallerFactory();
-        validatorSuites = new ConcurrentHashMap<String, ValidatorSuite>(5);
         idAttributeNames = new CopyOnWriteArraySet<QName>();
         
         registerIDAttribute(new QName(javax.xml.XMLConstants.XML_NS_URI, "id"));
@@ -175,37 +170,6 @@ public class XMLObjectProviderRegistry {
      */
     public UnmarshallerFactory getUnmarshallerFactory() {
         return unmarshallerFactory;
-    }
-
-    /**
-     * Registers a configured validator suite.
-     * 
-     * @param suiteId the ID of the suite
-     * @param suite the configured suite
-     */
-    public void registerValidatorSuite(String suiteId, ValidatorSuite suite) {
-        validatorSuites.put(suiteId, suite);
-    }
-
-    /**
-     * Removes a registered validator suite.
-     * 
-     * @param suiteId the ID of the suite
-     */
-    public void deregisterValidatorSuite(String suiteId) {
-        validatorSuiteConfigurations.remove(suiteId);
-        validatorSuites.remove(suiteId);
-    }
-
-    /**
-     * Gets a configured ValidatorSuite by its ID.
-     * 
-     * @param suiteId the suite's ID
-     * 
-     * @return the ValidatorSuite or null if no suite was registered under that ID
-     */
-    public ValidatorSuite getValidatorSuite(String suiteId) {
-        return validatorSuites.get(suiteId);
     }
 
     /**

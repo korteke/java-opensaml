@@ -19,13 +19,13 @@ package org.opensaml.xmlsec.encryption;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.core.xml.validation.ValidatingXMLObject;
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 
 /**
  * XMLObject representing XML Encryption, version 20021210, CipherReference element.
  */
-public interface CipherReference extends ValidatingXMLObject {
+public interface CipherReference extends XMLObject {
 
     /** Element local name. */
     public static final String DEFAULT_ELEMENT_LOCAL_NAME = "CipherReference";

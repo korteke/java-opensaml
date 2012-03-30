@@ -21,16 +21,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.XMLObjectChildrenList;
-import org.opensaml.core.xml.validation.AbstractValidatingXMLObject;
 import org.opensaml.xmlsec.signature.Transform;
 import org.opensaml.xmlsec.signature.Transforms;
 
 /**
  * Concrete implementation of {@link org.opensaml.xmlsec.signature.Transforms}
  */
-public class TransformsImpl extends AbstractValidatingXMLObject implements Transforms {
+public class TransformsImpl extends AbstractXMLObject implements Transforms {
     
     private final XMLObjectChildrenList transforms;
 

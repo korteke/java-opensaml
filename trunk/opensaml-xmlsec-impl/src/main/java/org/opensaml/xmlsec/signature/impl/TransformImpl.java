@@ -23,16 +23,16 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
-import org.opensaml.core.xml.validation.AbstractValidatingXMLObject;
 import org.opensaml.xmlsec.signature.Transform;
 import org.opensaml.xmlsec.signature.XPath;
 
 /**
  * Concrete implementation of {@link org.opensaml.xmlsec.signature.Transform}
  */
-public class TransformImpl extends AbstractValidatingXMLObject implements Transform {
+public class TransformImpl extends AbstractXMLObject implements Transform {
     
     private String algorithm;
     

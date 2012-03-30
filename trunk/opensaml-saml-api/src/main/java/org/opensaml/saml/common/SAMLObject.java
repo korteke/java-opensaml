@@ -17,11 +17,11 @@
 
 package org.opensaml.saml.common;
 
-import org.opensaml.core.xml.validation.ValidatingXMLObject;
+import org.opensaml.core.xml.XMLObject;
 
 /**
  * A base interface for all SAML Objects.
  */
-public interface SAMLObject extends ValidatingXMLObject {
+public interface SAMLObject extends XMLObject {
 
 }

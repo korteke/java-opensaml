@@ -23,9 +23,9 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
-import org.opensaml.core.xml.validation.AbstractValidatingXMLObject;
 import org.opensaml.xmlsec.signature.PGPData;
 import org.opensaml.xmlsec.signature.PGPKeyID;
 import org.opensaml.xmlsec.signature.PGPKeyPacket;
@@ -33,7 +33,7 @@ import org.opensaml.xmlsec.signature.PGPKeyPacket;
 /**
  * Concrete implementation of {@link org.opensaml.xmlsec.signature.PGPData}
  */
-public class PGPDataImpl extends AbstractValidatingXMLObject implements PGPData {
+public class PGPDataImpl extends AbstractXMLObject implements PGPData {
     
     /** PGPKeyID child element value */
     private PGPKeyID pgpKeyID;

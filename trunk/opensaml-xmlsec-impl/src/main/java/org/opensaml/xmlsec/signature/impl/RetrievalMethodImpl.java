@@ -21,15 +21,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.core.xml.validation.AbstractValidatingXMLObject;
 import org.opensaml.xmlsec.signature.RetrievalMethod;
 import org.opensaml.xmlsec.signature.Transforms;
 
 /**
  * Concrete implementation of {@link org.opensaml.xmlsec.signature.RetrievalMethod}
  */
-public class RetrievalMethodImpl extends AbstractValidatingXMLObject implements RetrievalMethod {
+public class RetrievalMethodImpl extends AbstractXMLObject implements RetrievalMethod {
     
     /** URI attribute value */
     private String uri;

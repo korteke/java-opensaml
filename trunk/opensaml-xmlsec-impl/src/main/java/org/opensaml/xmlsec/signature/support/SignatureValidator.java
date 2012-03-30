@@ -21,8 +21,6 @@ import java.security.Key;
 
 import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.signature.XMLSignatureException;
-import org.opensaml.core.xml.validation.ValidationException;
-import org.opensaml.core.xml.validation.Validator;
 import org.opensaml.security.SecurityHelper;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.xmlsec.signature.Signature;
@@ -33,7 +31,7 @@ import org.slf4j.LoggerFactory;
 /**
  * A validator that validates an XML Signature on its content.
  */
-public class SignatureValidator implements Validator<Signature> {
+public class SignatureValidator {
 
     /** Class logger. */
     private final Logger log = LoggerFactory.getLogger(SignatureValidator.class);
@@ -51,7 +49,7 @@ public class SignatureValidator implements Validator<Signature> {
     }
 
     /** {@inheritDoc} */
-    public void validate(Signature signature) throws ValidationException {
+    public void validate(Signature signature) throws SignatureException {
         log.debug("Attempting to validate signature using key from supplied credential");
 
         XMLSignature xmlSig = buildSignature(signature);
@@ -59,7 +57,7 @@ public class SignatureValidator implements Validator<Signature> {
         Key validationKey = SecurityHelper.extractVerificationKey(validationCredential);
         if (validationKey == null) {
             log.debug("Supplied credential contained no key suitable for signature validation");
-            throw new ValidationException("No key available to validate signature");
+            throw new SignatureException("No key available to validate signature");
         }
         
         log.debug("Validating signature with signature algorithm URI: {}", signature.getSignatureAlgorithm());
@@ -72,12 +70,12 @@ public class SignatureValidator implements Validator<Signature> {
                 return;
             }
         } catch (XMLSignatureException e) {
-            throw new ValidationException("Unable to evaluate key against signature", e);
+            throw new SignatureException("Unable to evaluate key against signature", e);
         }
 
         log.debug("Signature did not validate against the credential's key");
 
-        throw new ValidationException("Signature did not validate against the credential's key");
+        throw new SignatureException("Signature did not validate against the credential's key");
     }
 
     /**

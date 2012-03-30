@@ -18,24 +18,16 @@
 package org.opensaml.core.xml;
 
 import java.io.InputStream;
-import java.util.List;
 
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
 import junit.framework.TestCase;
-
 import net.shibboleth.utilities.java.support.xml.BasicParserPool;
 import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
-import org.opensaml.core.xml.ConfigurationException;
-import org.opensaml.core.xml.XMLConfigurator;
-import org.opensaml.core.xml.XMLObjectBuilder;
-import org.opensaml.core.xml.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.Marshaller;
 import org.opensaml.core.xml.io.Unmarshaller;
-import org.opensaml.core.xml.validation.Validator;
-import org.opensaml.core.xml.validation.ValidatorSuite;
 
 /**
  * Test case for the library configuration mechanism.
@@ -107,31 +99,6 @@ public class ConfigurationTest extends TestCase {
         } catch (ConfigurationException e) {
             // this is supposed to fail
         }
-    }
-
-    /**
-     * Tests that ValidatorSuites are correctly configured.
-     * 
-     * @throws XMLParserException thrown if the configuration XML file can not be read
-     * @throws ConfigurationException thrown if there the ValidatorSuites can not be configured
-     */
-    public void testValidatorSuiteConfiguration() throws XMLParserException, ConfigurationException {
-        String suite1Id = "TestSuite1";
-        String suite2Id = "TestSuite2";
-
-        InputStream validatorConfig = XMLObjectProviderRegistrySupport.class
-                .getResourceAsStream("/data/org/opensaml/xml/ValidatorSuiteConfiguration.xml");
-        configurator.load(validatorConfig);
-
-        ValidatorSuite suite1 = XMLObjectProviderRegistrySupport.getValidatorSuite(suite1Id);
-        assertNotNull("ValidatorSuite TestSuite1 was not configured", suite1);
-        List<Validator> suite1Validators = suite1.getValidators(simpleXMLObjectQName);
-        assertEquals("Suite1 did not have expected number of validators", 2, suite1Validators.size());
-
-        ValidatorSuite suite2 = XMLObjectProviderRegistrySupport.getValidatorSuite(suite2Id);
-        assertNotNull("ValidatorSuite TestSuite2 was not configured", suite2);
-        List<Validator> suite2Validators = suite2.getValidators(simpleXMLObjectQName);
-        assertEquals("Suite2 did not have expected number of validators", 1, suite2Validators.size());
     }
 
     /**

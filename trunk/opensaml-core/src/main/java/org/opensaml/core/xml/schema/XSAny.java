@@ -23,12 +23,11 @@ import net.shibboleth.utilities.java.support.xml.XmlConstants;
 
 import org.opensaml.core.xml.AttributeExtensibleXMLObject;
 import org.opensaml.core.xml.ElementExtensibleXMLObject;
-import org.opensaml.core.xml.validation.ValidatingXMLObject;
 
 /**
  * Represents the schema Any type.
  */
-public interface XSAny extends ElementExtensibleXMLObject, AttributeExtensibleXMLObject, ValidatingXMLObject {
+public interface XSAny extends ElementExtensibleXMLObject, AttributeExtensibleXMLObject {
 
     /** Local name of the XSI type. */
     public static final String TYPE_LOCAL_NAME = "anyType"; 
