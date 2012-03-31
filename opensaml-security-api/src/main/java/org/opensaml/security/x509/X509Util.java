@@ -34,6 +34,7 @@ import java.util.List;
 
 import javax.security.auth.x500.X500Principal;
 
+import net.shibboleth.utilities.java.support.net.IPAddressSupport;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 import org.apache.commons.ssl.TrustMaterial;
@@ -46,7 +47,6 @@ import org.bouncycastle.asn1.DERString;
 import org.bouncycastle.asn1.x509.SubjectKeyIdentifier;
 import org.bouncycastle.x509.extension.SubjectKeyIdentifierStructure;
 import org.bouncycastle.x509.extension.X509ExtensionUtil;
-import org.opensaml.core.xml.util.IPAddressHelper;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.SecurityHelper;
 import org.slf4j.Logger;
@@ -432,7 +432,7 @@ public class X509Util {
 
         if (IP_ADDRESS_ALT_NAME.equals(nameType)) {
             // this is a byte[], IP addr in network byte order
-            return IPAddressHelper.addressToString((byte[]) nameValue);
+            return IPAddressSupport.addressToString((byte[]) nameValue);
         }
 
         if (EDI_PARTY_ALT_NAME.equals(nameType) || X400ADDRESS_ALT_NAME.equals(nameType)
