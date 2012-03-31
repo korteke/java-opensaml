@@ -18,11 +18,13 @@
 package org.opensaml.xmlsec.signature.impl;
 
 import java.util.Collections;
+
 import java.util.List;
+
+import net.shibboleth.utilities.java.support.collection.IndexingObjectStore;
 
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.core.xml.util.IndexingObjectStore;
 import org.opensaml.xmlsec.signature.X509Certificate;
 
 import com.google.common.base.Objects;
