@@ -36,12 +36,12 @@ import org.opensaml.core.xml.SpaceBearing.XMLSpaceEnum;
  *   <li>xml:space</li>
  * </ol>
  */
-public final class XMLAttributeHelper {
+public final class XMLAttributeSupport {
 
     /**
      * Private constructor.
      */
-    private XMLAttributeHelper() {
+    private XMLAttributeSupport() {
     }
     
     /**
