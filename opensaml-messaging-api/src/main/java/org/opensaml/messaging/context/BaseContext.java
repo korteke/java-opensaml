@@ -24,7 +24,7 @@ import java.util.UUID;
 
 import net.shibboleth.utilities.java.support.collection.ClassIndexedSet;
 import net.shibboleth.utilities.java.support.component.IdentifiableComponent;
-import net.shibboleth.utilities.java.support.logic.Assert;
+import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 import org.joda.time.DateTime;
@@ -96,7 +96,7 @@ public abstract class BaseContext implements IdentifiableComponent, Iterable<Bas
      * @param newId the new context id
      */
     protected void setId(final String newId) {
-        id = Assert.isNotNull(StringSupport.trimOrNull(newId), "Context ID can not be null or empty");
+        id = Constraint.isNotNull(StringSupport.trimOrNull(newId), "Context ID can not be null or empty");
     }
     
     /**

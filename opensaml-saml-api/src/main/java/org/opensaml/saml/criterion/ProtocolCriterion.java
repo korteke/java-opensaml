@@ -17,7 +17,7 @@
 
 package org.opensaml.saml.criterion;
 
-import net.shibboleth.utilities.java.support.logic.Assert;
+import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.resolver.Criterion;
 
@@ -34,7 +34,7 @@ public final class ProtocolCriterion implements Criterion {
      */
     public ProtocolCriterion(final String protocolUri) {
         protocol =
-                Assert.isNotNull(StringSupport.trimOrNull(protocolUri), "SAML protocol URI can not be null or empty");
+                Constraint.isNotNull(StringSupport.trimOrNull(protocolUri), "SAML protocol URI can not be null or empty");
     }
 
     /**
