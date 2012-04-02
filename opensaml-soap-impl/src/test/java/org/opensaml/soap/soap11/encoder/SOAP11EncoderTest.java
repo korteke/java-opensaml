@@ -78,7 +78,7 @@ public class SOAP11EncoderTest extends BaseTestCase {
      * @throws MessageEncodingException
      */
     public void testBasicEncoding() throws XMLParserException, UnmarshallingException, MessageEncodingException {
-        String soapMessage = "/data/org/opensaml/ws/soap/soap11/SOAPNoHeaders.xml";
+        String soapMessage = "/data/org/opensaml/soap/soap11/SOAPNoHeaders.xml";
         Envelope controlEnv = (Envelope) parseUnmarshallResource(soapMessage, false);
         
         Envelope env = (Envelope) parseUnmarshallResource(soapMessage, true);
@@ -105,10 +105,10 @@ public class SOAP11EncoderTest extends BaseTestCase {
      * @throws MessageEncodingException
      */
     public void testEncodingWithHandler() throws XMLParserException, UnmarshallingException, MessageEncodingException {
-        String controlMessage = "/data/org/opensaml/ws/soap/soap11/SOAPHeaderMustUnderstand.xml";
+        String controlMessage = "/data/org/opensaml/soap/soap11/SOAPHeaderMustUnderstand.xml";
         Envelope controlEnv = (Envelope) parseUnmarshallResource(controlMessage, false);
         
-        String soapMessage = "/data/org/opensaml/ws/soap/soap11/SOAPNoHeaders.xml";
+        String soapMessage = "/data/org/opensaml/soap/soap11/SOAPNoHeaders.xml";
         Envelope env = (Envelope) parseUnmarshallResource(soapMessage, true);
         assertNull(env.getDOM());
         
