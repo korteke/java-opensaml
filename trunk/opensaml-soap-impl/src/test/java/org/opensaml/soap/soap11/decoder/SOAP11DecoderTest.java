@@ -67,7 +67,7 @@ public class SOAP11DecoderTest extends BaseTestCase {
      * @throws SecurityException
      */
     public void testBasicNoHeaders() throws MessageDecodingException, SecurityException {
-        String soapMessage = "/data/org/opensaml/ws/soap/soap11/SOAPNoHeaders.xml";
+        String soapMessage = "/data/org/opensaml/soap/soap11/SOAPNoHeaders.xml";
         InputStreamInTransportAdapter inTransport = getInTransportResource(soapMessage);
         
         messageContext.setInboundMessageTransport(inTransport);
@@ -85,7 +85,7 @@ public class SOAP11DecoderTest extends BaseTestCase {
      */
 // TODO disable until mustUnderstand support is complete
 //    public void testNotMustUnderstandHeader() throws SecurityException {
-//        String soapMessage = "/data/org/opensaml/ws/soap/soap11/SOAPHeaderNotMustUnderstand.xml";
+//        String soapMessage = "/data/org/opensaml/soap/soap11/SOAPHeaderNotMustUnderstand.xml";
 //        InputStreamInTransportAdapter inTransport = getInTransportResource(soapMessage);
 //        
 //        messageContext.setInboundMessageTransport(inTransport);
@@ -103,7 +103,7 @@ public class SOAP11DecoderTest extends BaseTestCase {
      */
  // TODO disable until mustUnderstand support is complete
 //    public void testMustUnderstandHeaderFail() throws SecurityException {
-//        String soapMessage = "/data/org/opensaml/ws/soap/soap11/SOAPHeaderMustUnderstand.xml";
+//        String soapMessage = "/data/org/opensaml/soap/soap11/SOAPHeaderMustUnderstand.xml";
 //        InputStreamInTransportAdapter inTransport = getInTransportResource(soapMessage);
 //        
 //        messageContext.setInboundMessageTransport(inTransport);
@@ -122,7 +122,7 @@ public class SOAP11DecoderTest extends BaseTestCase {
      */
  // TODO disable until mustUnderstand support is complete
 //    public void testMustUnderstandHeaderWithHandler() throws SecurityException {
-//        String soapMessage = "/data/org/opensaml/ws/soap/soap11/SOAPHeaderMustUnderstand.xml";
+//        String soapMessage = "/data/org/opensaml/soap/soap11/SOAPHeaderMustUnderstand.xml";
 //        InputStreamInTransportAdapter inTransport = getInTransportResource(soapMessage);
 //        
 //        handlerChain.getHandlers().add(new TestHeaderHandler());
@@ -142,7 +142,7 @@ public class SOAP11DecoderTest extends BaseTestCase {
      * @throws MessageDecodingException 
      */
     public void testHandlerChainInvocation() throws SecurityException, MessageDecodingException {
-        String soapMessage = "/data/org/opensaml/ws/soap/soap11/SOAPHeaderNotMustUnderstand.xml";
+        String soapMessage = "/data/org/opensaml/soap/soap11/SOAPHeaderNotMustUnderstand.xml";
         InputStreamInTransportAdapter inTransport = getInTransportResource(soapMessage);
         
         handlerChain.getHandlers().add(new TestHeaderHandler());
