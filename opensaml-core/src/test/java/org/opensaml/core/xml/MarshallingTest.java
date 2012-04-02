@@ -55,7 +55,7 @@ public class MarshallingTest extends XMLObjectBaseTestCase {
      */
     public void testMarshallingWithAttributes() throws XMLParserException {
         String expectedId = "Firefly";
-        String expectedDocumentLocation = "/data/org/opensaml/xml/SimpleXMLObjectWithAttribute.xml";
+        String expectedDocumentLocation = "/data/org/opensaml/core/xml/SimpleXMLObjectWithAttribute.xml";
         Document expectedDocument = parserPool.parse(MarshallingTest.class
                 .getResourceAsStream(expectedDocumentLocation));
 
@@ -73,7 +73,7 @@ public class MarshallingTest extends XMLObjectBaseTestCase {
      * @throws XMLParserException
      */
     public void testMarshallingWithElementContent() throws XMLParserException {
-        String expectedDocumentLocation = "/data/org/opensaml/xml/SimpleXMLObjectWithContent.xml";
+        String expectedDocumentLocation = "/data/org/opensaml/core/xml/SimpleXMLObjectWithContent.xml";
         Document expectedDocument = parserPool.parse(MarshallingTest.class
                 .getResourceAsStream(expectedDocumentLocation));
 
@@ -107,7 +107,7 @@ public class MarshallingTest extends XMLObjectBaseTestCase {
      * @throws MarshallingException
      */
     public void testMarshallingWithChildElements() throws XMLParserException, MarshallingException {
-        String expectedDocumentLocation = "/data/org/opensaml/xml/SimpleXMLObjectWithChildren.xml";
+        String expectedDocumentLocation = "/data/org/opensaml/core/xml/SimpleXMLObjectWithChildren.xml";
         Document expectedDocument = parserPool.parse(MarshallingTest.class
                 .getResourceAsStream(expectedDocumentLocation));
 
@@ -129,8 +129,8 @@ public class MarshallingTest extends XMLObjectBaseTestCase {
      * @throws MarshallingException 
      */
     public void testMarshallingXMLFragment() throws XMLParserException, MarshallingException {
-        String expectedDocumentLocation = "/data/org/opensaml/xml/SOAPMessageWithContent.xml";
-        String soapDocLocation = "/data/org/opensaml/xml/SOAPMessage.xml";
+        String expectedDocumentLocation = "/data/org/opensaml/core/xml/SOAPMessageWithContent.xml";
+        String soapDocLocation = "/data/org/opensaml/core/xml/SOAPMessage.xml";
         Document soapDoc = parserPool.parse(MarshallingTest.class.getResourceAsStream(soapDocLocation));
         Element soapBody = (Element) soapDoc.getDocumentElement().getElementsByTagName("Body").item(0);
         

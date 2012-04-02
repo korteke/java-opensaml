@@ -34,7 +34,7 @@ public class ElementProxyTest extends XMLObjectBaseTestCase {
      * Tests unmarshalling unknown content into the element proxy.
      */
     public void testUnmarshallUnknownContent() throws XMLParserException, UnmarshallingException{
-        String documentLocation = "/data/org/opensaml/xml/UnknownContent.xml";
+        String documentLocation = "/data/org/opensaml/core/xml/UnknownContent.xml";
         Document document = parserPool.parse(UnmarshallingTest.class.getResourceAsStream(documentLocation));
 
         Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(XMLObjectProviderRegistrySupport.getDefaultProviderQName());
