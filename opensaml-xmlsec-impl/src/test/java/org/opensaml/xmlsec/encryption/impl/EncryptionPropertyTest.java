@@ -45,9 +45,9 @@ public class EncryptionPropertyTest extends XMLObjectProviderBaseTestCase {
      *
      */
     public EncryptionPropertyTest() {
-        singleElementFile = "/data/org/opensaml/xml/encryption/impl/EncryptionProperty.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/xml/encryption/impl/EncryptionPropertyOptionalAttributes.xml";
-        childElementsFile = "/data/org/opensaml/xml/encryption/impl/EncryptionPropertyChildElements.xml";
+        singleElementFile = "/data/org/opensaml/xmlsec/encryption/impl/EncryptionProperty.xml";
+        singleElementOptionalAttributesFile = "/data/org/opensaml/xmlsec/encryption/impl/EncryptionPropertyOptionalAttributes.xml";
+        childElementsFile = "/data/org/opensaml/xmlsec/encryption/impl/EncryptionPropertyChildElements.xml";
     }
 
     /** {@inheritDoc} */

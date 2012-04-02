@@ -33,7 +33,7 @@ public class OAEPparamsTest extends XMLObjectProviderBaseTestCase {
      *
      */
     public OAEPparamsTest() {
-        singleElementFile = "/data/org/opensaml/xml/encryption/impl/OAEPparams.xml";
+        singleElementFile = "/data/org/opensaml/xmlsec/encryption/impl/OAEPparams.xml";
         
     }
 

@@ -35,7 +35,7 @@ public class X509SerialNumberTest extends XMLObjectProviderBaseTestCase {
      *
      */
     public X509SerialNumberTest() {
-        singleElementFile = "/data/org/opensaml/xml/signature/impl/X509SerialNumber.xml";
+        singleElementFile = "/data/org/opensaml/xmlsec/signature/impl/X509SerialNumber.xml";
         
     }
 

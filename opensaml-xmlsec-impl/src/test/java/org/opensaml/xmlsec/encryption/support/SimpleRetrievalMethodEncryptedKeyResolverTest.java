@@ -46,7 +46,7 @@ public class SimpleRetrievalMethodEncryptedKeyResolverTest extends XMLObjectBase
     
     /** No recipients specified to resolver, one EncryptedKey in instance. */
     public void testSingleEKNoRecipient() {
-        String filename =  "/data/org/opensaml/xml/encryption/SimpleRetrievalMethodEncryptedKeyResolverSingle.xml";
+        String filename =  "/data/org/opensaml/xmlsec/encryption/support/SimpleRetrievalMethodEncryptedKeyResolverSingle.xml";
         SignableSimpleXMLObject sxo =  (SignableSimpleXMLObject) unmarshallElement(filename);
         assertNotNull(sxo);
         assertNotNull(sxo.getSimpleXMLObjects().get(0));
@@ -70,7 +70,7 @@ public class SimpleRetrievalMethodEncryptedKeyResolverTest extends XMLObjectBase
     
     /** One recipients specified to resolver, one EncryptedKey in instance. */
     public void testSingleEKWithRecipient() {
-        String filename =  "/data/org/opensaml/xml/encryption/SimpleRetrievalMethodEncryptedKeyResolverSingle.xml";
+        String filename =  "/data/org/opensaml/xmlsec/encryption/support/SimpleRetrievalMethodEncryptedKeyResolverSingle.xml";
         SignableSimpleXMLObject sxo =  (SignableSimpleXMLObject) unmarshallElement(filename);
         assertNotNull(sxo);
         assertNotNull(sxo.getSimpleXMLObjects().get(0));
@@ -95,7 +95,7 @@ public class SimpleRetrievalMethodEncryptedKeyResolverTest extends XMLObjectBase
     /** One recipients specified to resolver, RetrievalMethod has Transforms, so should fail. */
     public void testSingleEKWithTransform() {
         String filename =  
-            "/data/org/opensaml/xml/encryption/SimpleRetrievalMethodEncryptedKeyResolverSingleWithTransforms.xml";
+            "/data/org/opensaml/xmlsec/encryption/support/SimpleRetrievalMethodEncryptedKeyResolverSingleWithTransforms.xml";
         SignableSimpleXMLObject sxo =  (SignableSimpleXMLObject) unmarshallElement(filename);
         assertNotNull(sxo);
         assertNotNull(sxo.getSimpleXMLObjects().get(0));
@@ -118,7 +118,7 @@ public class SimpleRetrievalMethodEncryptedKeyResolverTest extends XMLObjectBase
     /** One recipients specified to resolver, three EncryptedKeys in instance, 
      * two RetrievalMethod references. */
     public void testMultiEKWithOneRecipient() {
-        String filename =  "/data/org/opensaml/xml/encryption/SimpleRetrievalMethodEncryptedKeyResolverMultiple.xml";
+        String filename =  "/data/org/opensaml/xmlsec/encryption/support/SimpleRetrievalMethodEncryptedKeyResolverMultiple.xml";
         SignableSimpleXMLObject sxo =  (SignableSimpleXMLObject) unmarshallElement(filename);
         assertNotNull(sxo);
         assertNotNull(sxo.getSimpleXMLObjects().get(0));
@@ -143,7 +143,7 @@ public class SimpleRetrievalMethodEncryptedKeyResolverTest extends XMLObjectBase
     /** Two recipients specified to resolver, three EncryptedKeys in instance, 
      * two RetrievalMethod references. */
     public void testMultiEKWithTwoRecipients() {
-        String filename =  "/data/org/opensaml/xml/encryption/SimpleRetrievalMethodEncryptedKeyResolverMultiple.xml";
+        String filename =  "/data/org/opensaml/xmlsec/encryption/support/SimpleRetrievalMethodEncryptedKeyResolverMultiple.xml";
         SignableSimpleXMLObject sxo =  (SignableSimpleXMLObject) unmarshallElement(filename);
         assertNotNull(sxo);
         assertNotNull(sxo.getSimpleXMLObjects().get(0));

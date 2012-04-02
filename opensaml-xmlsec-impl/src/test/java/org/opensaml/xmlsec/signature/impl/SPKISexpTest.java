@@ -33,7 +33,7 @@ public class SPKISexpTest extends XMLObjectProviderBaseTestCase {
      *
      */
     public SPKISexpTest() {
-        singleElementFile = "/data/org/opensaml/xml/signature/impl/SPKISexp.xml";
+        singleElementFile = "/data/org/opensaml/xmlsec/signature/impl/SPKISexp.xml";
         
     }
 

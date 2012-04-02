@@ -78,7 +78,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
         encURI = EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128;
         kekURI = EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSA15;
         
-        targetFile = "/data/org/opensaml/xml/encryption/SimpleDecryptionTest.xml";
+        targetFile = "/data/org/opensaml/xmlsec/encryption/support/SimpleDecryptionTest.xml";
     }
     
     /** {@inheritDoc} */

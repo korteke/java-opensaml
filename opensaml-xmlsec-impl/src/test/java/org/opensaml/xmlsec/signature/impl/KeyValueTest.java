@@ -32,8 +32,8 @@ public class KeyValueTest extends XMLObjectProviderBaseTestCase {
      *
      */
     public KeyValueTest() {
-        singleElementFile = "/data/org/opensaml/xml/signature/impl/KeyValue.xml";
-        childElementsFile = "/data/org/opensaml/xml/signature/impl/KeyValueChildElements.xml";
+        singleElementFile = "/data/org/opensaml/xmlsec/signature/impl/KeyValue.xml";
+        childElementsFile = "/data/org/opensaml/xmlsec/signature/impl/KeyValueChildElements.xml";
     }
 
     /** {@inheritDoc} */

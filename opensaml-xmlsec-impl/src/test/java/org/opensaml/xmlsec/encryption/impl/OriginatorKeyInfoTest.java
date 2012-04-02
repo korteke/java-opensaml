@@ -41,9 +41,9 @@ public class OriginatorKeyInfoTest extends XMLObjectProviderBaseTestCase {
      *
      */
     public OriginatorKeyInfoTest() {
-        singleElementFile = "/data/org/opensaml/xml/encryption/impl/OriginatorKeyInfo.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/xml/encryption/impl/OriginatorKeyInfoOptionalAttributes.xml";
-        childElementsFile = "/data/org/opensaml/xml/encryption/impl/OriginatorKeyInfoChildElements.xml";
+        singleElementFile = "/data/org/opensaml/xmlsec/encryption/impl/OriginatorKeyInfo.xml";
+        singleElementOptionalAttributesFile = "/data/org/opensaml/xmlsec/encryption/impl/OriginatorKeyInfoOptionalAttributes.xml";
+        childElementsFile = "/data/org/opensaml/xmlsec/encryption/impl/OriginatorKeyInfoChildElements.xml";
     }
 
     /** {@inheritDoc} */

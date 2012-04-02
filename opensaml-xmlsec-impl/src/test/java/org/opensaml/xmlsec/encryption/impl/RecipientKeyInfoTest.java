@@ -41,9 +41,9 @@ public class RecipientKeyInfoTest extends XMLObjectProviderBaseTestCase {
      *
      */
     public RecipientKeyInfoTest() {
-        singleElementFile = "/data/org/opensaml/xml/encryption/impl/RecipientKeyInfo.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/xml/encryption/impl/RecipientKeyInfoOptionalAttributes.xml";
-        childElementsFile = "/data/org/opensaml/xml/encryption/impl/RecipientKeyInfoChildElements.xml";
+        singleElementFile = "/data/org/opensaml/xmlsec/encryption/impl/RecipientKeyInfo.xml";
+        singleElementOptionalAttributesFile = "/data/org/opensaml/xmlsec/encryption/impl/RecipientKeyInfoOptionalAttributes.xml";
+        childElementsFile = "/data/org/opensaml/xmlsec/encryption/impl/RecipientKeyInfoChildElements.xml";
     }
 
     /** {@inheritDoc} */

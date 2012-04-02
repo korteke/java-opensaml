@@ -33,7 +33,7 @@ public class CarriedKeyNameTest extends XMLObjectProviderBaseTestCase {
      *
      */
     public CarriedKeyNameTest() {
-        singleElementFile = "/data/org/opensaml/xml/encryption/impl/CarriedKeyName.xml";
+        singleElementFile = "/data/org/opensaml/xmlsec/encryption/impl/CarriedKeyName.xml";
         
     }
 

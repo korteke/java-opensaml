@@ -33,7 +33,7 @@ public class KANonceTest extends XMLObjectProviderBaseTestCase {
      *
      */
     public KANonceTest() {
-        singleElementFile = "/data/org/opensaml/xml/encryption/impl/KANonce.xml";
+        singleElementFile = "/data/org/opensaml/xmlsec/encryption/impl/KANonce.xml";
         
     }
 

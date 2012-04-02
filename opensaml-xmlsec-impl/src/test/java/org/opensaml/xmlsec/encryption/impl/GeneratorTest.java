@@ -33,7 +33,7 @@ public class GeneratorTest extends XMLObjectProviderBaseTestCase {
      *
      */
     public GeneratorTest() {
-        singleElementFile = "/data/org/opensaml/xml/encryption/impl/Generator.xml";
+        singleElementFile = "/data/org/opensaml/xmlsec/encryption/impl/Generator.xml";
         
     }
 

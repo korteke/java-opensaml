@@ -35,8 +35,8 @@ public class KeyReferenceTest extends XMLObjectProviderBaseTestCase {
      *
      */
     public KeyReferenceTest() {
-        singleElementFile = "/data/org/opensaml/xml/encryption/impl/KeyReference.xml";
-        childElementsFile = "/data/org/opensaml/xml/encryption/impl/KeyReferenceChildElements.xml";
+        singleElementFile = "/data/org/opensaml/xmlsec/encryption/impl/KeyReference.xml";
+        childElementsFile = "/data/org/opensaml/xmlsec/encryption/impl/KeyReferenceChildElements.xml";
     }
 
     /** {@inheritDoc} */

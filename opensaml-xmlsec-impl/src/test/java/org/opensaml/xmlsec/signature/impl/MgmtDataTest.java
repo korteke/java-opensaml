@@ -33,7 +33,7 @@ public class MgmtDataTest extends XMLObjectProviderBaseTestCase {
      *
      */
     public MgmtDataTest() {
-        singleElementFile = "/data/org/opensaml/xml/signature/impl/MgmtData.xml";
+        singleElementFile = "/data/org/opensaml/xmlsec/signature/impl/MgmtData.xml";
         
     }
 

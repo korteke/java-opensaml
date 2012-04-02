@@ -123,7 +123,7 @@ public class EnvelopedSignatureTest extends XMLObjectBaseTestCase {
      * @throws GeneralSecurityException 
      */
     public void testUnmarshall() throws XMLParserException, UnmarshallingException, GeneralSecurityException {
-        String envelopedSignatureFile = "/data/org/opensaml/xml/signature/envelopedSignature.xml";
+        String envelopedSignatureFile = "/data/org/opensaml/xmlsec/signature/support/envelopedSignature.xml";
         InputStream ins = EnvelopedSignatureTest.class.getResourceAsStream(envelopedSignatureFile);
         Document envelopedSignatureDoc = parserPool.parse(ins);
         Element rootElement = envelopedSignatureDoc.getDocumentElement();

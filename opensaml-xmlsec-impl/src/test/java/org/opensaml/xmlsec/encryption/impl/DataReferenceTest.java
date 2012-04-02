@@ -35,8 +35,8 @@ public class DataReferenceTest extends XMLObjectProviderBaseTestCase {
      *
      */
     public DataReferenceTest() {
-        singleElementFile = "/data/org/opensaml/xml/encryption/impl/DataReference.xml";
-        childElementsFile = "/data/org/opensaml/xml/encryption/impl/DataReferenceChildElements.xml";
+        singleElementFile = "/data/org/opensaml/xmlsec/encryption/impl/DataReference.xml";
+        childElementsFile = "/data/org/opensaml/xmlsec/encryption/impl/DataReferenceChildElements.xml";
     }
 
     /** {@inheritDoc} */

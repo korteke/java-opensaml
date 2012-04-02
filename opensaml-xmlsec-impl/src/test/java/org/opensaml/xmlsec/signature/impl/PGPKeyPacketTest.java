@@ -33,7 +33,7 @@ public class PGPKeyPacketTest extends XMLObjectProviderBaseTestCase {
      *
      */
     public PGPKeyPacketTest() {
-        singleElementFile = "/data/org/opensaml/xml/signature/impl/PGPKeyPacket.xml";
+        singleElementFile = "/data/org/opensaml/xmlsec/signature/impl/PGPKeyPacket.xml";
         
     }
 

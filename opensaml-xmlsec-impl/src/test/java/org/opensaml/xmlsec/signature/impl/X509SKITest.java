@@ -33,7 +33,7 @@ public class X509SKITest extends XMLObjectProviderBaseTestCase {
      *
      */
     public X509SKITest() {
-        singleElementFile = "/data/org/opensaml/xml/signature/impl/X509SKI.xml";
+        singleElementFile = "/data/org/opensaml/xmlsec/signature/impl/X509SKI.xml";
         
     }
 

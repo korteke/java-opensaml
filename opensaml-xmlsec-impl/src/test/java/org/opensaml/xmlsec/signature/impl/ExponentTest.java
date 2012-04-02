@@ -33,7 +33,7 @@ public class ExponentTest extends XMLObjectProviderBaseTestCase {
      *
      */
     public ExponentTest() {
-        singleElementFile = "/data/org/opensaml/xml/signature/impl/Exponent.xml";
+        singleElementFile = "/data/org/opensaml/xmlsec/signature/impl/Exponent.xml";
         
     }
 
