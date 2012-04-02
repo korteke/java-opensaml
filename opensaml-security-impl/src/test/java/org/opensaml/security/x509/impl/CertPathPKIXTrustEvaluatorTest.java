@@ -39,7 +39,7 @@ import org.opensaml.security.x509.impl.CertPathPKIXTrustEvaluator;
  */
 public class CertPathPKIXTrustEvaluatorTest extends XMLObjectBaseTestCase {
     
-    private static final String DATA_PATH = "/data/org/opensaml/xml/security/x509/";
+    private static final String DATA_PATH = "/data/org/opensaml/security/x509/impl/";
     
     private static final Set<X509CRL> EMPTY_CRLS = new HashSet<X509CRL>();
     
