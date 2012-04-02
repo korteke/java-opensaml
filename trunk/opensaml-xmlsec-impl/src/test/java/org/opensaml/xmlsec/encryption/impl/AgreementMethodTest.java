@@ -38,8 +38,8 @@ public class AgreementMethodTest extends XMLObjectProviderBaseTestCase {
      *
      */
     public AgreementMethodTest() {
-        singleElementFile = "/data/org/opensaml/xml/encryption/impl/AgreementMethod.xml";
-        childElementsFile = "/data/org/opensaml/xml/encryption/impl/AgreementMethodChildElements.xml";
+        singleElementFile = "/data/org/opensaml/xmlsec/encryption/impl/AgreementMethod.xml";
+        childElementsFile = "/data/org/opensaml/xmlsec/encryption/impl/AgreementMethodChildElements.xml";
     }
 
     /** {@inheritDoc} */

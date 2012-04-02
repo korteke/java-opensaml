@@ -33,8 +33,8 @@ public class CipherDataTest extends XMLObjectProviderBaseTestCase {
      *
      */
     public CipherDataTest() {
-        singleElementFile = "/data/org/opensaml/xml/encryption/impl/CipherData.xml";
-        childElementsFile = "/data/org/opensaml/xml/encryption/impl/CipherDataChildElements.xml";
+        singleElementFile = "/data/org/opensaml/xmlsec/encryption/impl/CipherData.xml";
+        childElementsFile = "/data/org/opensaml/xmlsec/encryption/impl/CipherDataChildElements.xml";
     }
 
     /** {@inheritDoc} */

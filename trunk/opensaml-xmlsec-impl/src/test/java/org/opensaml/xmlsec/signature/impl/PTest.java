@@ -33,7 +33,7 @@ public class PTest extends XMLObjectProviderBaseTestCase {
      *
      */
     public PTest() {
-        singleElementFile = "/data/org/opensaml/xml/signature/impl/P.xml";
+        singleElementFile = "/data/org/opensaml/xmlsec/signature/impl/P.xml";
         
     }
 

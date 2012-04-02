@@ -33,7 +33,7 @@ public class X509CRLTest extends XMLObjectProviderBaseTestCase {
      *
      */
     public X509CRLTest() {
-        singleElementFile = "/data/org/opensaml/xml/signature/impl/X509CRL.xml";
+        singleElementFile = "/data/org/opensaml/xmlsec/signature/impl/X509CRL.xml";
         
     }
 

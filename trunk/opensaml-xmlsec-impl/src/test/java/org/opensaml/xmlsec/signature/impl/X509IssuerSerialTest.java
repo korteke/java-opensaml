@@ -33,8 +33,8 @@ public class X509IssuerSerialTest extends XMLObjectProviderBaseTestCase {
      *
      */
     public X509IssuerSerialTest() {
-        singleElementFile = "/data/org/opensaml/xml/signature/impl/X509IssuerSerial.xml";
-        childElementsFile = "/data/org/opensaml/xml/signature/impl/X509IssuerSerialChildElements.xml";
+        singleElementFile = "/data/org/opensaml/xmlsec/signature/impl/X509IssuerSerial.xml";
+        childElementsFile = "/data/org/opensaml/xmlsec/signature/impl/X509IssuerSerialChildElements.xml";
     }
 
     /** {@inheritDoc} */

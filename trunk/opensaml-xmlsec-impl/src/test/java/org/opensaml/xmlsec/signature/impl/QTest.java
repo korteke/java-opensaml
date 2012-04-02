@@ -33,7 +33,7 @@ public class QTest extends XMLObjectProviderBaseTestCase {
      *
      */
     public QTest() {
-        singleElementFile = "/data/org/opensaml/xml/signature/impl/Q.xml";
+        singleElementFile = "/data/org/opensaml/xmlsec/signature/impl/Q.xml";
         
     }
 

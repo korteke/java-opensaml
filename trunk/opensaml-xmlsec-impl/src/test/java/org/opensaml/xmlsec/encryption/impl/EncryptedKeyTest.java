@@ -47,9 +47,9 @@ public class EncryptedKeyTest extends XMLObjectProviderBaseTestCase {
      *
      */
     public EncryptedKeyTest() {
-        singleElementFile = "/data/org/opensaml/xml/encryption/impl/EncryptedKey.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/xml/encryption/impl/EncryptedKeyOptionalAttributes.xml";
-        childElementsFile = "/data/org/opensaml/xml/encryption/impl/EncryptedKeyChildElements.xml";
+        singleElementFile = "/data/org/opensaml/xmlsec/encryption/impl/EncryptedKey.xml";
+        singleElementOptionalAttributesFile = "/data/org/opensaml/xmlsec/encryption/impl/EncryptedKeyOptionalAttributes.xml";
+        childElementsFile = "/data/org/opensaml/xmlsec/encryption/impl/EncryptedKeyChildElements.xml";
     }
 
     /** {@inheritDoc} */

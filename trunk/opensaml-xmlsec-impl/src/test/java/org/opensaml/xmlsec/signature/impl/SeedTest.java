@@ -33,7 +33,7 @@ public class SeedTest extends XMLObjectProviderBaseTestCase {
      *
      */
     public SeedTest() {
-        singleElementFile = "/data/org/opensaml/xml/signature/impl/Seed.xml";
+        singleElementFile = "/data/org/opensaml/xmlsec/signature/impl/Seed.xml";
         
     }
 

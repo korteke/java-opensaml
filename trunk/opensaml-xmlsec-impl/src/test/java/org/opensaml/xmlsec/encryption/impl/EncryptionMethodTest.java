@@ -38,8 +38,8 @@ public class EncryptionMethodTest extends XMLObjectProviderBaseTestCase {
      *
      */
     public EncryptionMethodTest() {
-        singleElementFile = "/data/org/opensaml/xml/encryption/impl/EncryptionMethod.xml";
-        childElementsFile = "/data/org/opensaml/xml/encryption/impl/EncryptionMethodChildElements.xml";
+        singleElementFile = "/data/org/opensaml/xmlsec/encryption/impl/EncryptionMethod.xml";
+        childElementsFile = "/data/org/opensaml/xmlsec/encryption/impl/EncryptionMethodChildElements.xml";
     }
 
     /** {@inheritDoc} */

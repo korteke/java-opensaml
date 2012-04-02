@@ -34,8 +34,8 @@ public class CipherReferenceTest extends XMLObjectProviderBaseTestCase {
      *
      */
     public CipherReferenceTest() {
-        singleElementFile = "/data/org/opensaml/xml/encryption/impl/CipherReference.xml";
-        childElementsFile = "/data/org/opensaml/xml/encryption/impl/CipherReferenceChildElements.xml";
+        singleElementFile = "/data/org/opensaml/xmlsec/encryption/impl/CipherReference.xml";
+        childElementsFile = "/data/org/opensaml/xmlsec/encryption/impl/CipherReferenceChildElements.xml";
     }
 
     /** {@inheritDoc} */

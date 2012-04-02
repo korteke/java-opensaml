@@ -36,8 +36,8 @@ public class ReferenceListTest extends XMLObjectProviderBaseTestCase {
      *
      */
     public ReferenceListTest() {
-        singleElementFile = "/data/org/opensaml/xml/encryption/impl/ReferenceList.xml";
-        childElementsFile = "/data/org/opensaml/xml/encryption/impl/ReferenceListChildElements.xml";
+        singleElementFile = "/data/org/opensaml/xmlsec/encryption/impl/ReferenceList.xml";
+        childElementsFile = "/data/org/opensaml/xmlsec/encryption/impl/ReferenceListChildElements.xml";
     }
 
     /** {@inheritDoc} */

@@ -34,8 +34,8 @@ public class TransformsTest extends XMLObjectProviderBaseTestCase {
      *
      */
     public TransformsTest() {
-        singleElementFile = "/data/org/opensaml/xml/signature/impl/Transforms.xml";
-        childElementsFile = "/data/org/opensaml/xml/signature/impl/TransformsChildElements.xml";
+        singleElementFile = "/data/org/opensaml/xmlsec/signature/impl/Transforms.xml";
+        childElementsFile = "/data/org/opensaml/xmlsec/signature/impl/TransformsChildElements.xml";
     }
 
     /** {@inheritDoc} */
