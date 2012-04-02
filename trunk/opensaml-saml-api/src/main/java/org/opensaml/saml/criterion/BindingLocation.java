@@ -17,7 +17,7 @@
 
 package org.opensaml.saml.criterion;
 
-import net.shibboleth.utilities.java.support.logic.Assert;
+import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.resolver.Criterion;
 
@@ -33,7 +33,7 @@ public final class BindingLocation implements Criterion {
      * @param locationUri the binding location URI, never null or empty
      */
     public BindingLocation(String locationUri) {
-        location = Assert.isNotNull(StringSupport.trimOrNull(locationUri), "Location can not be null or empty");
+        location = Constraint.isNotNull(StringSupport.trimOrNull(locationUri), "Location can not be null or empty");
     }
 
     /**

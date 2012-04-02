@@ -17,7 +17,7 @@
 
 package org.opensaml.saml.criterion;
 
-import net.shibboleth.utilities.java.support.logic.Assert;
+import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.resolver.Criterion;
 
@@ -33,7 +33,7 @@ public final class EntityIdCriterion implements Criterion {
      * @param entityId the entity ID, can not be null or empty
      */
     public EntityIdCriterion(final String entityId) {
-        id = Assert.isNotNull(StringSupport.trimOrNull(entityId), "Entity ID can not be null or empty");
+        id = Constraint.isNotNull(StringSupport.trimOrNull(entityId), "Entity ID can not be null or empty");
     }
 
     /**

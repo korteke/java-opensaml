@@ -19,7 +19,7 @@ package org.opensaml.saml.criterion;
 
 import javax.xml.namespace.QName;
 
-import net.shibboleth.utilities.java.support.logic.Assert;
+import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.resolver.Criterion;
 
 /** {@link Criterion} representing an entity role. */
@@ -34,7 +34,7 @@ public final class EntityRoleCriterion implements Criterion {
      * @param samlRole the entity role, never null
      */
     public EntityRoleCriterion(QName samlRole) {
-        role = Assert.isNotNull(samlRole, "SAML role can not be null");
+        role = Constraint.isNotNull(samlRole, "SAML role can not be null");
     }
 
     /**
