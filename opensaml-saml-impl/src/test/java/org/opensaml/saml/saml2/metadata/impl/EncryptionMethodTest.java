@@ -38,8 +38,8 @@ public class EncryptionMethodTest extends BaseSAMLObjectProviderTestCase {
      *
      */
     public EncryptionMethodTest() {
-        singleElementFile = "/data/org/opensaml/saml2/metadata/impl/EncryptionMethod.xml";
-        childElementsFile = "/data/org/opensaml/saml2/metadata/impl/EncryptionMethodChildElements.xml";
+        singleElementFile = "/data/org/opensaml/saml/saml2/metadata/impl/EncryptionMethod.xml";
+        childElementsFile = "/data/org/opensaml/saml/saml2/metadata/impl/EncryptionMethodChildElements.xml";
     }
 
     /** {@inheritDoc} */

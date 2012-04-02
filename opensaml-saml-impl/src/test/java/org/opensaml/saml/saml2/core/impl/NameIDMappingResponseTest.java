@@ -37,9 +37,9 @@ public class NameIDMappingResponseTest extends StatusResponseTestBase {
      */
     public NameIDMappingResponseTest() {
         super();
-        singleElementFile = "/data/org/opensaml/saml2/core/impl/NameIDMappingResponse.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/saml2/core/impl/NameIDMappingResponseOptionalAttributes.xml";
-        childElementsFile = "/data/org/opensaml/saml2/core/impl/NameIDMappingResponseChildElements.xml";
+        singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/NameIDMappingResponse.xml";
+        singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml2/core/impl/NameIDMappingResponseOptionalAttributes.xml";
+        childElementsFile = "/data/org/opensaml/saml/saml2/core/impl/NameIDMappingResponseChildElements.xml";
     }
     
     

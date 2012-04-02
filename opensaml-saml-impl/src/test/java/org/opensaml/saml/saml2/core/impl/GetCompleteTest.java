@@ -38,7 +38,7 @@ public class GetCompleteTest extends BaseSAMLObjectProviderTestCase {
     public GetCompleteTest() {
         super();
         
-       singleElementFile = "/data/org/opensaml/saml2/core/impl/GetComplete.xml";
+       singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/GetComplete.xml";
     }
 
     /** {@inheritDoc} */

@@ -36,7 +36,7 @@ public class CompanyTest extends BaseSAMLObjectProviderTestCase {
      * Constructor
      */
     public CompanyTest() {
-        singleElementFile = "/data/org/opensaml/saml2/metadata/impl/Company.xml";
+        singleElementFile = "/data/org/opensaml/saml/saml2/metadata/impl/Company.xml";
     }
     
     /** {@inheritDoc} */

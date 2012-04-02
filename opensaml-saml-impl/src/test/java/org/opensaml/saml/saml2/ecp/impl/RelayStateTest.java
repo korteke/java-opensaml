@@ -32,7 +32,7 @@ public class RelayStateTest extends BaseSAMLObjectProviderTestCase {
     private Boolean expectedSOAP11MustUnderstand;
     
     public RelayStateTest() {
-        singleElementFile = "/data/org/opensaml/saml2/ecp/impl/RelayState.xml";
+        singleElementFile = "/data/org/opensaml/saml/saml2/ecp/impl/RelayState.xml";
     }
  
     /** {@inheritDoc} */

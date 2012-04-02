@@ -71,7 +71,7 @@ public class HTTPPostDecoderTest extends BaseTestCase {
 
     /** Test decoding message. */
     public void testDecode() throws Exception {
-        Response samlResponse = (Response) unmarshallElement("/data/org/opensaml/saml1/binding/Response.xml");
+        Response samlResponse = (Response) unmarshallElement("/data/org/opensaml/saml/saml1/binding/Response.xml");
 
         String deliveredEndpointURL = samlResponse.getRecipient();
 
@@ -87,7 +87,7 @@ public class HTTPPostDecoderTest extends BaseTestCase {
     }
 
     public void testMessageEndpointGood() throws Exception {
-        Response samlResponse = (Response) unmarshallElement("/data/org/opensaml/saml1/binding/Response.xml");
+        Response samlResponse = (Response) unmarshallElement("/data/org/opensaml/saml/saml1/binding/Response.xml");
 
         String deliveredEndpointURL = samlResponse.getRecipient();
 
@@ -105,7 +105,7 @@ public class HTTPPostDecoderTest extends BaseTestCase {
     }
 
     public void testMessageEndpointGoodWithQueryParams() throws Exception {
-        Response samlResponse = (Response) unmarshallElement("/data/org/opensaml/saml1/binding/Response.xml");
+        Response samlResponse = (Response) unmarshallElement("/data/org/opensaml/saml/saml1/binding/Response.xml");
 
         String deliveredEndpointURL = samlResponse.getRecipient() + "?paramFoo=bar&paramBar=baz";
 
@@ -123,7 +123,7 @@ public class HTTPPostDecoderTest extends BaseTestCase {
     }
 
     public void testMessageEndpointInvalidURI() throws Exception {
-        Response samlResponse = (Response) unmarshallElement("/data/org/opensaml/saml1/binding/Response.xml");
+        Response samlResponse = (Response) unmarshallElement("/data/org/opensaml/saml/saml1/binding/Response.xml");
 
         String deliveredEndpointURL = samlResponse.getRecipient() + "/some/other/endpointURI";
 
@@ -142,7 +142,7 @@ public class HTTPPostDecoderTest extends BaseTestCase {
     }
 
     public void testMessageEndpointInvalidHost() throws Exception {
-        Response samlResponse = (Response) unmarshallElement("/data/org/opensaml/saml1/binding/Response.xml");
+        Response samlResponse = (Response) unmarshallElement("/data/org/opensaml/saml/saml1/binding/Response.xml");
 
         String deliveredEndpointURL = "https://bogus-sp.example.com/sso/acs";
 
@@ -161,7 +161,7 @@ public class HTTPPostDecoderTest extends BaseTestCase {
     }
 
     public void testMessageEndpointMissingDestinationNotSigned() throws Exception {
-        Response samlResponse = (Response) unmarshallElement("/data/org/opensaml/saml1/binding/Response.xml");
+        Response samlResponse = (Response) unmarshallElement("/data/org/opensaml/saml/saml1/binding/Response.xml");
         samlResponse.setRecipient(null);
 
         String deliveredEndpointURL = responseRecipient;
@@ -181,7 +181,7 @@ public class HTTPPostDecoderTest extends BaseTestCase {
     }
 
     public void testMessageEndpointMissingDestinationSigned() throws Exception {
-        Response samlResponse = (Response) unmarshallElement("/data/org/opensaml/saml1/binding/Response.xml");
+        Response samlResponse = (Response) unmarshallElement("/data/org/opensaml/saml/saml1/binding/Response.xml");
         samlResponse.setRecipient(null);
 
         Signature signature = (Signature) buildXMLObject(Signature.DEFAULT_ELEMENT_NAME);

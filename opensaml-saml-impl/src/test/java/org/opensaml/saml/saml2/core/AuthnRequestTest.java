@@ -40,7 +40,7 @@ public class AuthnRequestTest extends BaseComplexSAMLObjectTestCase {
      * Constructor
      */
     public AuthnRequestTest(){
-        elementFile = "/data/org/opensaml/saml2/core/AuthnRequest.xml";
+        elementFile = "/data/org/opensaml/saml/saml2/core/AuthnRequest.xml";
     }
     
 

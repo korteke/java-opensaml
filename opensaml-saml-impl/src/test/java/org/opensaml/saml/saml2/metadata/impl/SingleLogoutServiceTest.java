@@ -37,8 +37,8 @@ public class SingleLogoutServiceTest extends BaseSAMLObjectProviderTestCase {
      * Constructor
      */
     public SingleLogoutServiceTest() {
-        singleElementFile = "/data/org/opensaml/saml2/metadata/impl/SingleLogoutService.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/saml2/metadata/impl/SingleLogoutServiceOptionalAttributes.xml";
+        singleElementFile = "/data/org/opensaml/saml/saml2/metadata/impl/SingleLogoutService.xml";
+        singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml2/metadata/impl/SingleLogoutServiceOptionalAttributes.xml";
     }
     
     /** {@inheritDoc} */

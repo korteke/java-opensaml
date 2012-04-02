@@ -36,7 +36,7 @@ public class NameIDFormatTest extends BaseSAMLObjectProviderTestCase {
      * Constructor
      */
     public NameIDFormatTest() {
-        singleElementFile = "/data/org/opensaml/saml2/metadata/impl/NameIDFormat.xml";
+        singleElementFile = "/data/org/opensaml/saml/saml2/metadata/impl/NameIDFormat.xml";
     }
     
     /** {@inheritDoc} */

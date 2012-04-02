@@ -51,7 +51,7 @@ public class BasicSAMLArtifactMapEntryTest extends BaseTestCase {
     protected void setUp() throws Exception {
         super.setUp();
         
-        samlObject = (SAMLObject) unmarshallElement("/data/org/opensaml/saml2/core/ResponseSuccessAuthnAttrib.xml");
+        samlObject = (SAMLObject) unmarshallElement("/data/org/opensaml/saml/saml2/core/ResponseSuccessAuthnAttrib.xml");
         origDocument = samlObject.getDOM().getOwnerDocument();
         // Drop the DOM for a more realistic test, usuallly the artifact SAMLObject will be built, not unmarshalled
         samlObject.releaseChildrenDOM(true);

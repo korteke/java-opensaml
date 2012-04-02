@@ -46,8 +46,8 @@ public class RequestedAttributeTest extends BaseSAMLObjectProviderTestCase {
      * Constructor
      */
     public RequestedAttributeTest() {
-        singleElementFile = "/data/org/opensaml/saml2/metadata/impl/RequestedAttribute.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/saml2/metadata/impl/RequestedAttributeOptionalAttributes.xml";
+        singleElementFile = "/data/org/opensaml/saml/saml2/metadata/impl/RequestedAttribute.xml";
+        singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml2/metadata/impl/RequestedAttributeOptionalAttributes.xml";
     }
 
     /** {@inheritDoc} */

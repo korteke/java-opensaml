@@ -29,8 +29,8 @@ public class EntityAttributesTest extends BaseSAMLObjectProviderTestCase {
 
     /** Constructor. */
     public EntityAttributesTest() {
-        singleElementFile = "/data/org/opensaml/samlext/saml2mdattr/EntityAttributes.xml";
-        childElementsFile = "/data/org/opensaml/samlext/saml2mdattr/EntityAttributesChildElements.xml";
+        singleElementFile = "/data/org/opensaml/saml/ext/saml2mdattr/EntityAttributes.xml";
+        childElementsFile = "/data/org/opensaml/saml/ext/saml2mdattr/EntityAttributesChildElements.xml";
     }
 
     /** {@inheritDoc} */

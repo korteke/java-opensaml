@@ -39,7 +39,7 @@ public class GeolocationHintTest extends BaseSAMLObjectProviderTestCase {
      * Constructor.
      */
     public GeolocationHintTest() {
-        singleElementFile = "/data/org/opensaml/samlext/saml2mdui/GeolocationHint.xml";
+        singleElementFile = "/data/org/opensaml/saml/ext/saml2mdui/GeolocationHint.xml";
     }
     
     /** {@inheritDoc} */

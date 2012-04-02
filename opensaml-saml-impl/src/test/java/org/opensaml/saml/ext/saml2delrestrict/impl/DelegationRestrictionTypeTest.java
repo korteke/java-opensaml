@@ -33,8 +33,8 @@ public class DelegationRestrictionTypeTest extends BaseSAMLObjectProviderTestCas
 
     /** Constructor */
     public DelegationRestrictionTypeTest() {
-        singleElementFile = "/data/org/opensaml/samlext/saml2delrestrict/impl/DelegationRestrictionType.xml";
-        childElementsFile = "/data/org/opensaml/samlext/saml2delrestrict/impl/DelegationRestrictionTypeChildElements.xml";
+        singleElementFile = "/data/org/opensaml/saml/ext/saml2delrestrict/impl/DelegationRestrictionType.xml";
+        childElementsFile = "/data/org/opensaml/saml/ext/saml2delrestrict/impl/DelegationRestrictionTypeChildElements.xml";
     }
 
     /** {@inheritDoc} */

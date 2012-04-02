@@ -36,7 +36,7 @@ public class ArtifactTest extends BaseSAMLObjectProviderTestCase {
      *
      */
     public ArtifactTest() {
-        singleElementFile = "/data/org/opensaml/saml2/core/impl/Artifact.xml";
+        singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/Artifact.xml";
     }
 
     /** {@inheritDoc} */

@@ -33,7 +33,7 @@ public class AuthnContextDeclRefTest extends BaseSAMLObjectProviderTestCase {
 
     /** Constructor */
     public AuthnContextDeclRefTest() {
-        singleElementFile = "/data/org/opensaml/saml2/core/impl/AuthnContextDeclRef.xml";
+        singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/AuthnContextDeclRef.xml";
     }
 
     /** {@inheritDoc} */

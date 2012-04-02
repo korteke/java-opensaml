@@ -41,7 +41,7 @@ public class DisplayNameTest extends BaseSAMLObjectProviderTestCase {
      * Constructor.
      */
     public DisplayNameTest() {
-        singleElementFile = "/data/org/opensaml/samlext/saml2mdui/DisplayName.xml";
+        singleElementFile = "/data/org/opensaml/saml/ext/saml2mdui/DisplayName.xml";
     }
     
     /** {@inheritDoc} */

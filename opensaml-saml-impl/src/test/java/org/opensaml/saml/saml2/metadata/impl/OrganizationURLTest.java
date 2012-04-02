@@ -40,7 +40,7 @@ public class OrganizationURLTest extends BaseSAMLObjectProviderTestCase {
      * Constructor
      */
     public OrganizationURLTest() {
-        singleElementFile = "/data/org/opensaml/saml2/metadata/impl/OrganizationURL.xml";
+        singleElementFile = "/data/org/opensaml/saml/saml2/metadata/impl/OrganizationURL.xml";
     }
     
     /** {@inheritDoc} */

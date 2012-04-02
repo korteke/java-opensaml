@@ -51,9 +51,9 @@ public class AffiliationDescriptorTest extends BaseSAMLObjectProviderTestCase {
      * Constructor
      */
     public AffiliationDescriptorTest() {
-        singleElementFile = "/data/org/opensaml/saml2/metadata/impl/AffiliationDescriptor.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/saml2/metadata/impl/AffiliationDescriptorOptionalAttributes.xml";
-        childElementsFile = "/data/org/opensaml/saml2/metadata/impl/AffiliationDescriptorChildElements.xml";
+        singleElementFile = "/data/org/opensaml/saml/saml2/metadata/impl/AffiliationDescriptor.xml";
+        singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml2/metadata/impl/AffiliationDescriptorOptionalAttributes.xml";
+        childElementsFile = "/data/org/opensaml/saml/saml2/metadata/impl/AffiliationDescriptorChildElements.xml";
     }
 
     protected void setUp() throws Exception {

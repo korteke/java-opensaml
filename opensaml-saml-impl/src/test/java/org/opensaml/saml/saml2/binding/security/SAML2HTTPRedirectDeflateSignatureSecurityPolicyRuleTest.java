@@ -240,7 +240,7 @@ public class SAML2HTTPRedirectDeflateSignatureSecurityPolicyRuleTest
     /** {@inheritDoc} */
     protected AuthnRequest buildInboundSAMLMessage() {
         AuthnRequest request = 
-            (AuthnRequest) unmarshallElement("/data/org/opensaml/saml2/binding/AuthnRequest.xml");
+            (AuthnRequest) unmarshallElement("/data/org/opensaml/saml/saml2/binding/AuthnRequest.xml");
         
         return request;
     }

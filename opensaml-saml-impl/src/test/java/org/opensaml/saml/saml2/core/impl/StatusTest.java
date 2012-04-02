@@ -39,8 +39,8 @@ public class StatusTest extends BaseSAMLObjectProviderTestCase {
      *
      */
     public StatusTest() {
-        singleElementFile = "/data/org/opensaml/saml2/core/impl/Status.xml";
-        childElementsFile = "/data/org/opensaml/saml2/core/impl/StatusChildElements.xml";
+        singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/Status.xml";
+        childElementsFile = "/data/org/opensaml/saml/saml2/core/impl/StatusChildElements.xml";
     }
 
     

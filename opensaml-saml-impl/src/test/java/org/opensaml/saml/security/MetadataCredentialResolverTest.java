@@ -139,7 +139,7 @@ public class MetadataCredentialResolverTest extends BaseTestCase {
     
     private String idpEntityID = "http://idp.example.org/shibboleth";
     
-    private String mdFileName = "/data/org/opensaml/security/test1-metadata.xml";
+    private String mdFileName = "/data/org/opensaml/saml/security/test1-metadata.xml";
     
     private DOMMetadataProvider mdProvider;
     

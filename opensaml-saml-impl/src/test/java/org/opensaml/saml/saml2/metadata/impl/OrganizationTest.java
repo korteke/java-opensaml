@@ -40,8 +40,8 @@ public class OrganizationTest extends BaseSAMLObjectProviderTestCase {
      * Constructor
      */
     public OrganizationTest() {
-        singleElementFile = "/data/org/opensaml/saml2/metadata/impl/Organization.xml";
-        childElementsFile = "/data/org/opensaml/saml2/metadata/impl/OrganizationChildElements.xml";
+        singleElementFile = "/data/org/opensaml/saml/saml2/metadata/impl/Organization.xml";
+        childElementsFile = "/data/org/opensaml/saml/saml2/metadata/impl/OrganizationChildElements.xml";
     }
 
     /** {@inheritDoc} */

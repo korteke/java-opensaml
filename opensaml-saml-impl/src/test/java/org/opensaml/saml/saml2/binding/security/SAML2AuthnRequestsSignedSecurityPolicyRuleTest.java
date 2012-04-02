@@ -46,7 +46,7 @@ public class SAML2AuthnRequestsSignedSecurityPolicyRuleTest
     protected void setUp() throws Exception {
         super.setUp();
         
-        String mdfile = "/data/org/opensaml/saml2/binding/Metadata-AuthnRequestsSigned.xml";
+        String mdfile = "/data/org/opensaml/saml/saml2/binding/Metadata-AuthnRequestsSigned.xml";
         Document mdDoc = parser.parse(SAML2AuthnRequestsSignedSecurityPolicyRuleTest.class.getResourceAsStream(mdfile));
         DOMMetadataProvider metadataProvider = new DOMMetadataProvider(mdDoc.getDocumentElement());
         metadataProvider.initialize();
@@ -61,7 +61,7 @@ public class SAML2AuthnRequestsSignedSecurityPolicyRuleTest
      */
     public void testNotSignedAndNotRequired() {
         AuthnRequest authnRequest = 
-            (AuthnRequest) unmarshallElement("/data/org/opensaml/saml2/binding/AuthnRequest.xml");
+            (AuthnRequest) unmarshallElement("/data/org/opensaml/saml/saml2/binding/AuthnRequest.xml");
         messageContext.setInboundSAMLMessage(authnRequest);
         messageContext.setInboundMessageIssuer(issuerSigningNotRequired);
         
@@ -74,7 +74,7 @@ public class SAML2AuthnRequestsSignedSecurityPolicyRuleTest
      */
     public void testNotSignedAndRequired() {
         AuthnRequest authnRequest = 
-            (AuthnRequest) unmarshallElement("/data/org/opensaml/saml2/binding/AuthnRequest.xml");
+            (AuthnRequest) unmarshallElement("/data/org/opensaml/saml/saml2/binding/AuthnRequest.xml");
         messageContext.setInboundSAMLMessage(authnRequest);
         messageContext.setInboundMessageIssuer(issuerSigningRequired);
         
@@ -86,7 +86,7 @@ public class SAML2AuthnRequestsSignedSecurityPolicyRuleTest
      */
     public void testSignedAndNotRequired() {
         AuthnRequest authnRequest = 
-            (AuthnRequest) unmarshallElement("/data/org/opensaml/saml2/binding/AuthnRequest-Signed.xml");
+            (AuthnRequest) unmarshallElement("/data/org/opensaml/saml/saml2/binding/AuthnRequest-Signed.xml");
         messageContext.setInboundSAMLMessage(authnRequest);
         messageContext.setInboundMessageIssuer(issuerSigningNotRequired);
         
@@ -98,7 +98,7 @@ public class SAML2AuthnRequestsSignedSecurityPolicyRuleTest
      */
     public void testSignedAndRequired() {
         AuthnRequest authnRequest = 
-            (AuthnRequest) unmarshallElement("/data/org/opensaml/saml2/binding/AuthnRequest-Signed.xml");
+            (AuthnRequest) unmarshallElement("/data/org/opensaml/saml/saml2/binding/AuthnRequest-Signed.xml");
         messageContext.setInboundSAMLMessage(authnRequest);
         messageContext.setInboundMessageIssuer(issuerSigningRequired);
         
@@ -110,7 +110,7 @@ public class SAML2AuthnRequestsSignedSecurityPolicyRuleTest
      */
     public void testSimpleSignedAndRequired() {
         AuthnRequest authnRequest = 
-            (AuthnRequest) unmarshallElement("/data/org/opensaml/saml2/binding/AuthnRequest.xml");
+            (AuthnRequest) unmarshallElement("/data/org/opensaml/saml/saml2/binding/AuthnRequest.xml");
         messageContext.setInboundSAMLMessage(authnRequest);
         messageContext.setInboundMessageIssuer(issuerSigningRequired);
         

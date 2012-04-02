@@ -36,7 +36,7 @@ public class SessionIndexTest extends BaseSAMLObjectProviderTestCase {
      *
      */
     public SessionIndexTest() {
-        singleElementFile = "/data/org/opensaml/saml2/core/impl/SessionIndex.xml";
+        singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/SessionIndex.xml";
     }
     
     

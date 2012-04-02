@@ -56,9 +56,9 @@ public class PDPDescriptorTest extends BaseSAMLObjectProviderTestCase {
      * Constructor
      */
     public PDPDescriptorTest() {
-        singleElementFile = "/data/org/opensaml/saml2/metadata/impl/PDPDescriptor.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/saml2/metadata/impl/PDPDescriptorOptionalAttributes.xml";
-        childElementsFile = "/data/org/opensaml/saml2/metadata/impl/PDPDescriptorChildElements.xml";
+        singleElementFile = "/data/org/opensaml/saml/saml2/metadata/impl/PDPDescriptor.xml";
+        singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml2/metadata/impl/PDPDescriptorOptionalAttributes.xml";
+        childElementsFile = "/data/org/opensaml/saml/saml2/metadata/impl/PDPDescriptorChildElements.xml";
     }
 
     /** {@inheritDoc} */

@@ -42,9 +42,9 @@ public class SubjectConfirmationTest extends BaseSAMLObjectProviderTestCase {
 
     /** Constructor */
     public SubjectConfirmationTest() {
-        singleElementFile = "/data/org/opensaml/saml2/core/impl/SubjectConfirmation.xml";
-        childElementsFile = "/data/org/opensaml/saml2/core/impl/SubjectConfirmationChildElements.xml";
-        childElementsWithEncryptedIDFile = "/data/org/opensaml/saml2/core/impl/SubjectConfirmationChildElementsWithEncryptedID.xml";
+        singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/SubjectConfirmation.xml";
+        childElementsFile = "/data/org/opensaml/saml/saml2/core/impl/SubjectConfirmationChildElements.xml";
+        childElementsWithEncryptedIDFile = "/data/org/opensaml/saml/saml2/core/impl/SubjectConfirmationChildElementsWithEncryptedID.xml";
     }
 
     /** {@inheritDoc} */

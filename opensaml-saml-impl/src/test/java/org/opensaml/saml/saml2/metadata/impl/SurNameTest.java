@@ -36,7 +36,7 @@ public class SurNameTest extends BaseSAMLObjectProviderTestCase {
      * Constructor
      */
     public SurNameTest() {
-        singleElementFile = "/data/org/opensaml/saml2/metadata/impl/SurName.xml";
+        singleElementFile = "/data/org/opensaml/saml/saml2/metadata/impl/SurName.xml";
     }
     
     /** {@inheritDoc} */

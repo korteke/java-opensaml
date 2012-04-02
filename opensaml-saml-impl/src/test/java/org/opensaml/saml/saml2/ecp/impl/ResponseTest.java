@@ -32,7 +32,7 @@ public class ResponseTest extends BaseSAMLObjectProviderTestCase {
     private Boolean expectedSOAP11MustUnderstand;
     
     public ResponseTest() {
-        singleElementFile = "/data/org/opensaml/saml2/ecp/impl/Response.xml";
+        singleElementFile = "/data/org/opensaml/saml/saml2/ecp/impl/Response.xml";
     }
  
     /** {@inheritDoc} */

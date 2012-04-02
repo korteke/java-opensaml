@@ -32,7 +32,7 @@ public class AffiliateMemberTest extends BaseSAMLObjectProviderTestCase {
     protected String expectedMemberID;
     
     public AffiliateMemberTest(){
-        singleElementFile = "/data/org/opensaml/saml2/metadata/impl/AffiliateMember.xml";
+        singleElementFile = "/data/org/opensaml/saml/saml2/metadata/impl/AffiliateMember.xml";
     }
     
     /** {@inheritDoc} */

@@ -44,8 +44,8 @@ public class EvidenceTest extends BaseSAMLObjectProviderTestCase {
 
     public EvidenceTest() {
         super();
-        singleElementFile = "/data/org/opensaml/saml1/impl/singleEvidence.xml";
-        childElementsFile = "/data/org/opensaml/saml1/impl/EvidenceWithChildren.xml";
+        singleElementFile = "/data/org/opensaml/saml/saml1/impl/singleEvidence.xml";
+        childElementsFile = "/data/org/opensaml/saml/saml1/impl/EvidenceWithChildren.xml";
         
         qname = new QName(SAMLConstants.SAML1_NS, Evidence.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
     }

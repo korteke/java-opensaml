@@ -36,8 +36,8 @@ public class AttributeStatementTest extends BaseSAMLObjectProviderTestCase {
 
     /** Constructor. */
     public AttributeStatementTest() {
-        singleElementFile = "/data/org/opensaml/saml2/core/impl/AttributeStatement.xml";
-        childElementsFile = "/data/org/opensaml/saml2/core/impl/AttributeStatementChildElements.xml";
+        singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/AttributeStatement.xml";
+        childElementsFile = "/data/org/opensaml/saml/saml2/core/impl/AttributeStatementChildElements.xml";
     }
 
     /** {@inheritDoc} */

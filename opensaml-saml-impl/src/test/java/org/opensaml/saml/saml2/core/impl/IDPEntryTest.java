@@ -44,8 +44,8 @@ public class IDPEntryTest extends BaseSAMLObjectProviderTestCase {
      */
     public IDPEntryTest() {
         super();
-        singleElementFile = "/data/org/opensaml/saml2/core/impl/IDPEntry.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/saml2/core/impl/IDPEntryOptionalAttributes.xml";
+        singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/IDPEntry.xml";
+        singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml2/core/impl/IDPEntryOptionalAttributes.xml";
     }
     
 

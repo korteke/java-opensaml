@@ -45,8 +45,8 @@ public class NameIDTest extends BaseSAMLObjectProviderTestCase {
 
     /** Constructor */
     public NameIDTest() {
-        singleElementFile = "/data/org/opensaml/saml2/core/impl/NameID.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/saml2/core/impl/NameIDOptionalAttributes.xml";
+        singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/NameID.xml";
+        singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml2/core/impl/NameIDOptionalAttributes.xml";
     }
 
     /** {@inheritDoc} */

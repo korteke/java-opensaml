@@ -48,9 +48,9 @@ public class ConditionsTest extends BaseSAMLObjectProviderTestCase {
 
     /** Constructor */
     public ConditionsTest() {
-        singleElementFile = "/data/org/opensaml/saml2/core/impl/Conditions.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/saml2/core/impl/ConditionsOptionalAttributes.xml";
-        childElementsFile = "/data/org/opensaml/saml2/core/impl/ConditionsChildElements.xml";
+        singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/Conditions.xml";
+        singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml2/core/impl/ConditionsOptionalAttributes.xml";
+        childElementsFile = "/data/org/opensaml/saml/saml2/core/impl/ConditionsChildElements.xml";
     }
 
     /** {@inheritDoc} */

@@ -171,7 +171,7 @@ public class SAMLProtocolMessageXMLSignatureSecurityPolicyRuleTest
         trustedCredentials.add(signingX509Cred);
         
         AuthnRequest request  = 
-            (AuthnRequest) unmarshallElement("/data/org/opensaml/common/binding/security/Signed-AuthnRequest-InvalidSignature.xml"); 
+            (AuthnRequest) unmarshallElement("/data/org/opensaml/saml/common/binding/security/Signed-AuthnRequest-InvalidSignature.xml"); 
         messageContext.setInboundSAMLMessage(request);
         
         assertRuleFailure("Protocol message signature was invalid due to document modification");
@@ -189,7 +189,7 @@ public class SAMLProtocolMessageXMLSignatureSecurityPolicyRuleTest
     /** {@inheritDoc} */
     protected AuthnRequest buildInboundSAMLMessage() {
         AuthnRequest request = 
-            (AuthnRequest) unmarshallElement("/data/org/opensaml/common/binding/security/Signed-AuthnRequest.xml");
+            (AuthnRequest) unmarshallElement("/data/org/opensaml/saml/common/binding/security/Signed-AuthnRequest.xml");
         
         return request;
         

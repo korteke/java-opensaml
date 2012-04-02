@@ -43,8 +43,8 @@ public class NameIDPolicyTest extends BaseSAMLObjectProviderTestCase {
      * Constructor
      */
     public NameIDPolicyTest() {
-        singleElementFile = "/data/org/opensaml/saml2/core/impl/NameIDPolicy.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/saml2/core/impl/NameIDPolicyOptionalAttributes.xml";
+        singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/NameIDPolicy.xml";
+        singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml2/core/impl/NameIDPolicyOptionalAttributes.xml";
     }
 
     /** {@inheritDoc} */

@@ -61,9 +61,9 @@ public class ResponseTest extends BaseSAMLObjectProviderTestCase {
      */
     public ResponseTest() {
         expectedID = "ident";
-        singleElementFile = "/data/org/opensaml/saml1/impl/singleResponse.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/saml1/impl/singleResponseAttributes.xml";
-        childElementsFile = "/data/org/opensaml/saml1/impl/ResponseWithChildren.xml";
+        singleElementFile = "/data/org/opensaml/saml/saml1/impl/singleResponse.xml";
+        singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml1/impl/singleResponseAttributes.xml";
+        childElementsFile = "/data/org/opensaml/saml/saml1/impl/ResponseWithChildren.xml";
         //
         // IssueInstant="1970-01-01T00:00:00.100Z"
         //
@@ -152,7 +152,7 @@ public class ResponseTest extends BaseSAMLObjectProviderTestCase {
     }
     
     public void testSignatureUnmarshall() {
-        Response response = (Response) unmarshallElement("/data/org/opensaml/saml1/impl/ResponseWithSignature.xml");
+        Response response = (Response) unmarshallElement("/data/org/opensaml/saml/saml1/impl/ResponseWithSignature.xml");
         
         assertNotNull("Response was null", response);
         assertNotNull("Signature was null", response.getSignature());
@@ -160,7 +160,7 @@ public class ResponseTest extends BaseSAMLObjectProviderTestCase {
     }
     
     public void testDOMIDResolutionUnmarshall() {
-        Response response = (Response) unmarshallElement("/data/org/opensaml/saml1/impl/ResponseWithSignature.xml");
+        Response response = (Response) unmarshallElement("/data/org/opensaml/saml/saml1/impl/ResponseWithSignature.xml");
         
         assertNotNull("Response was null", response);
         assertNotNull("Signature was null", response.getSignature());

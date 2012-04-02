@@ -37,7 +37,7 @@ public class NewIDTest extends BaseSAMLObjectProviderTestCase {
      */
     public NewIDTest() {
         super();
-        singleElementFile = "/data/org/opensaml/saml2/core/impl/NewID.xml";
+        singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/NewID.xml";
     }
 
     /** {@inheritDoc} */

@@ -40,8 +40,8 @@ public class AssertionConsumerServiceTest extends BaseSAMLObjectProviderTestCase
      * Constructor
      */
     public AssertionConsumerServiceTest() {
-        singleElementFile = "/data/org/opensaml/saml2/metadata/impl/AssertionConsumerService.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/saml2/metadata/impl/AssertionConsumerServiceOptionalAttributes.xml";
+        singleElementFile = "/data/org/opensaml/saml/saml2/metadata/impl/AssertionConsumerService.xml";
+        singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml2/metadata/impl/AssertionConsumerServiceOptionalAttributes.xml";
     }
     
     /** {@inheritDoc} */

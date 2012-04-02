@@ -37,9 +37,9 @@ public class ArtifactResolveTest extends RequestTestBase {
      */
     public ArtifactResolveTest() {
         super();
-        singleElementFile = "/data/org/opensaml/saml2/core/impl/ArtifactResolve.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/saml2/core/impl/ArtifactResolveOptionalAttributes.xml";
-        childElementsFile = "/data/org/opensaml/saml2/core/impl/ArtifactResolveChildElements.xml";
+        singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/ArtifactResolve.xml";
+        singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml2/core/impl/ArtifactResolveOptionalAttributes.xml";
+        childElementsFile = "/data/org/opensaml/saml/saml2/core/impl/ArtifactResolveChildElements.xml";
     }
 
     /** {@inheritDoc} */

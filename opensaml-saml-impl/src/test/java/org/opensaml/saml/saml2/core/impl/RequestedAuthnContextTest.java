@@ -46,9 +46,9 @@ public class RequestedAuthnContextTest extends BaseSAMLObjectProviderTestCase {
      *
      */
     public RequestedAuthnContextTest() {
-        singleElementFile = "/data/org/opensaml/saml2/core/impl/RequestedAuthnContext.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/saml2/core/impl/RequestedAuthnContextOptionalAttributes.xml";
-        childElementsFile = "/data/org/opensaml/saml2/core/impl/RequestedAuthnContextChildElements.xml";
+        singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/RequestedAuthnContext.xml";
+        singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml2/core/impl/RequestedAuthnContextOptionalAttributes.xml";
+        childElementsFile = "/data/org/opensaml/saml/saml2/core/impl/RequestedAuthnContextChildElements.xml";
     }
 
     /** {@inheritDoc} */

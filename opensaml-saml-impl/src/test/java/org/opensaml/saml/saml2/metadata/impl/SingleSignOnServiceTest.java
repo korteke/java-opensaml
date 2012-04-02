@@ -37,8 +37,8 @@ public class SingleSignOnServiceTest extends BaseSAMLObjectProviderTestCase {
      * Constructor
      */
     public SingleSignOnServiceTest() {
-        singleElementFile = "/data/org/opensaml/saml2/metadata/impl/SingleSignOnService.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/saml2/metadata/impl/SingleSignOnServiceOptionalAttributes.xml";
+        singleElementFile = "/data/org/opensaml/saml/saml2/metadata/impl/SingleSignOnService.xml";
+        singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml2/metadata/impl/SingleSignOnServiceOptionalAttributes.xml";
     }
     
     /** {@inheritDoc} */

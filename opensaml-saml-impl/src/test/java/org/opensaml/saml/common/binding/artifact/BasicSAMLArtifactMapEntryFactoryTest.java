@@ -40,7 +40,7 @@ public class BasicSAMLArtifactMapEntryFactoryTest extends BaseTestCase {
         factory = new BasicSAMLArtifactMapEntryFactory();
         
         //Don't typically store assertions, but need something that can take a parent, for testing purposes.
-        samlObject = (SAMLObject) unmarshallElement("/data/org/opensaml/saml1/core/SignedAssertion.xml");
+        samlObject = (SAMLObject) unmarshallElement("/data/org/opensaml/saml/saml1/core/SignedAssertion.xml");
     }
 
     public void testNoParent() {

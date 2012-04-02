@@ -48,7 +48,7 @@ public class ResourceBackedMetadataProviderTest extends BaseTestCase {
         supportedProtocol = "urn:oasis:names:tc:SAML:1.1:protocol";
 
         URL mdURL = ResourceBackedMetadataProviderTest.class
-                .getResource("/data/org/opensaml/saml2/metadata/InCommon-metadata.xml");
+                .getResource("/data/org/opensaml/saml/saml2/metadata/InCommon-metadata.xml");
         FilesystemResource mdResource = new FilesystemResource(new File(mdURL.toURI()).getAbsolutePath());
         mdResource.initialize();
 

@@ -35,9 +35,9 @@ public class DelegateTest extends BaseSAMLObjectProviderTestCase {
 
     /** Constructor */
     public DelegateTest() {
-        singleElementFile = "/data/org/opensaml/samlext/saml2delrestrict/impl/Delegate.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/samlext/saml2delrestrict/impl/DelegateOptionalAttributes.xml";
-        childElementsFile = "/data/org/opensaml/samlext/saml2delrestrict/impl/DelegateChildElements.xml";
+        singleElementFile = "/data/org/opensaml/saml/ext/saml2delrestrict/impl/Delegate.xml";
+        singleElementOptionalAttributesFile = "/data/org/opensaml/saml/ext/saml2delrestrict/impl/DelegateOptionalAttributes.xml";
+        childElementsFile = "/data/org/opensaml/saml/ext/saml2delrestrict/impl/DelegateChildElements.xml";
     }
 
     /** {@inheritDoc} */

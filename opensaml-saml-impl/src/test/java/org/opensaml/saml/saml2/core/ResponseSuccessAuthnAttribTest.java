@@ -50,7 +50,7 @@ public class ResponseSuccessAuthnAttribTest extends BaseComplexSAMLObjectTestCas
      * Constructor
      */
     public ResponseSuccessAuthnAttribTest(){
-        elementFile = "/data/org/opensaml/saml2/core/ResponseSuccessAuthnAttrib.xml";
+        elementFile = "/data/org/opensaml/saml/saml2/core/ResponseSuccessAuthnAttrib.xml";
     }
 
     /** {@inheritDoc} */

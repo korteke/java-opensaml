@@ -36,7 +36,7 @@ public class TelephoneNumberTest extends BaseSAMLObjectProviderTestCase {
      * Constructor
      */
     public TelephoneNumberTest() {
-        singleElementFile = "/data/org/opensaml/saml2/metadata/impl/TelephoneNumber.xml";
+        singleElementFile = "/data/org/opensaml/saml/saml2/metadata/impl/TelephoneNumber.xml";
     }
     
     /** {@inheritDoc} */

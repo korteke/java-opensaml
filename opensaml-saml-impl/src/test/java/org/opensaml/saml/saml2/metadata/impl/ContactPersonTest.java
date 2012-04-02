@@ -49,8 +49,8 @@ public class ContactPersonTest extends BaseSAMLObjectProviderTestCase {
      * Constructor
      */
     public ContactPersonTest() {
-        singleElementFile = "/data/org/opensaml/saml2/metadata/impl/ContactPerson.xml";
-        childElementsFile = "/data/org/opensaml/saml2/metadata/impl/ContactPersonChildElements.xml";
+        singleElementFile = "/data/org/opensaml/saml/saml2/metadata/impl/ContactPerson.xml";
+        childElementsFile = "/data/org/opensaml/saml/saml2/metadata/impl/ContactPersonChildElements.xml";
     }
     
     /** {@inheritDoc} */

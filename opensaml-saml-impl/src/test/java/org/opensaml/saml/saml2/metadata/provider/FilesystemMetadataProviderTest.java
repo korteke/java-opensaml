@@ -45,7 +45,7 @@ public class FilesystemMetadataProviderTest extends BaseTestCase {
         supportedProtocol = "urn:oasis:names:tc:SAML:1.1:protocol";
 
         URL mdURL = FilesystemMetadataProviderTest.class
-                .getResource("/data/org/opensaml/saml2/metadata/InCommon-metadata.xml");
+                .getResource("/data/org/opensaml/saml/saml2/metadata/InCommon-metadata.xml");
         File mdFile = new File(mdURL.toURI());
 
         metadataProvider = new FilesystemMetadataProvider(mdFile);
