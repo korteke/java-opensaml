@@ -37,8 +37,8 @@ public class ManageNameIDServiceTest extends BaseSAMLObjectProviderTestCase {
      * Constructor
      */
     public ManageNameIDServiceTest() {
-        singleElementFile = "/data/org/opensaml/saml2/metadata/impl/ManageNameIDService.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/saml2/metadata/impl/ManageNameIDServiceOptionalAttributes.xml";
+        singleElementFile = "/data/org/opensaml/saml/saml2/metadata/impl/ManageNameIDService.xml";
+        singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml2/metadata/impl/ManageNameIDServiceOptionalAttributes.xml";
     }
     
     /** {@inheritDoc} */

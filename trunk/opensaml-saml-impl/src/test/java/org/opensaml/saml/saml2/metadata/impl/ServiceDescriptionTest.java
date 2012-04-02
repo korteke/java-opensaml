@@ -42,7 +42,7 @@ public class ServiceDescriptionTest extends BaseSAMLObjectProviderTestCase {
      * Constructor
      */
     public ServiceDescriptionTest() {
-        singleElementFile = "/data/org/opensaml/saml2/metadata/impl/ServiceDescription.xml";
+        singleElementFile = "/data/org/opensaml/saml/saml2/metadata/impl/ServiceDescription.xml";
     }
     
     /** {@inheritDoc} */

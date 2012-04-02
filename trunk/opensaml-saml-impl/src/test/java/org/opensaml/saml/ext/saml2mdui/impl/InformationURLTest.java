@@ -41,7 +41,7 @@ public class InformationURLTest extends BaseSAMLObjectProviderTestCase {
      * Constructor.
      */
     public InformationURLTest() {
-        singleElementFile = "/data/org/opensaml/samlext/saml2mdui/InformationURL.xml";
+        singleElementFile = "/data/org/opensaml/saml/ext/saml2mdui/InformationURL.xml";
     }
     
     /** {@inheritDoc} */

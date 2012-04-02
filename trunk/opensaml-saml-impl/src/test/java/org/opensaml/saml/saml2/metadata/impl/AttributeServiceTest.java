@@ -40,8 +40,8 @@ public class AttributeServiceTest extends BaseSAMLObjectProviderTestCase {
      * Constructor
      */
     public AttributeServiceTest() {
-        singleElementFile = "/data/org/opensaml/saml2/metadata/impl/AttributeService.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/saml2/metadata/impl/AttributeServiceOptionalAttributes.xml";
+        singleElementFile = "/data/org/opensaml/saml/saml2/metadata/impl/AttributeService.xml";
+        singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml2/metadata/impl/AttributeServiceOptionalAttributes.xml";
     }
     
     /** {@inheritDoc} */

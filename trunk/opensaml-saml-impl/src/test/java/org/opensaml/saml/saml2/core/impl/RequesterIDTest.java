@@ -38,7 +38,7 @@ public class RequesterIDTest extends BaseSAMLObjectProviderTestCase {
     public RequesterIDTest() {
         super();
         
-       singleElementFile = "/data/org/opensaml/saml2/core/impl/RequesterID.xml";
+       singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/RequesterID.xml";
     }
 
     /** {@inheritDoc} */

@@ -30,7 +30,7 @@ public class OneTimeUseTest extends BaseSAMLObjectProviderTestCase {
 
     /** Constructor */
     public OneTimeUseTest() {
-        singleElementFile = "/data/org/opensaml/saml2/core/impl/OneTimeUse.xml";
+        singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/OneTimeUse.xml";
     }
 
     /** {@inheritDoc} */

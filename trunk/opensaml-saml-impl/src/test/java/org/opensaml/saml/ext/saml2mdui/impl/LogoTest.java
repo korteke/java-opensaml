@@ -48,8 +48,8 @@ public class LogoTest extends BaseSAMLObjectProviderTestCase {
      * Constructor.
      */
     public LogoTest() {
-        singleElementFile = "/data/org/opensaml/samlext/saml2mdui/Logo.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/samlext/saml2mdui/LogoWithLang.xml";
+        singleElementFile = "/data/org/opensaml/saml/ext/saml2mdui/Logo.xml";
+        singleElementOptionalAttributesFile = "/data/org/opensaml/saml/ext/saml2mdui/LogoWithLang.xml";
         expectedURL = "http://exaple.org/Logo";
         expectedHeight = new Integer(10);
         expectedWidth = new Integer(23);

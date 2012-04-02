@@ -32,8 +32,8 @@ public class EncryptedAssertionTest extends BaseSAMLObjectProviderTestCase {
 
     /** Constructor. */
     public EncryptedAssertionTest() {
-        singleElementFile = "/data/org/opensaml/saml2/core/impl/EncryptedAssertion.xml";
-        childElementsFile = "/data/org/opensaml/saml2/core/impl/EncryptedAssertionChildElements.xml";
+        singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/EncryptedAssertion.xml";
+        childElementsFile = "/data/org/opensaml/saml/saml2/core/impl/EncryptedAssertionChildElements.xml";
     }
 
     /** {@inheritDoc} */

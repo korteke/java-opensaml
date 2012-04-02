@@ -40,7 +40,7 @@ public class RequiredValidUntilTest extends BaseTestCase {
         super.setUp();
 
         URL mdURL = FilesystemMetadataProviderTest.class
-                .getResource("/data/org/opensaml/saml2/metadata/simple-metadata.xml");
+                .getResource("/data/org/opensaml/saml/saml2/metadata/simple-metadata.xml");
         metadataFile = new File(mdURL.toURI());
     }
 

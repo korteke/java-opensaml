@@ -33,7 +33,7 @@ public class SourceIDTest extends BaseSAMLObjectProviderTestCase {
     /** Constructor */
     public SourceIDTest() {
         super();
-        singleElementFile = "/data/org/opensaml/samlext/saml1md/impl/SourceID.xml";
+        singleElementFile = "/data/org/opensaml/saml/ext/saml1md/impl/SourceID.xml";
     }
 
     /** {@inheritDoc} */

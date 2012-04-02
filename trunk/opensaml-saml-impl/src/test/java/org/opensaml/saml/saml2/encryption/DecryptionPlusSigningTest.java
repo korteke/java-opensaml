@@ -113,7 +113,7 @@ public class DecryptionPlusSigningTest extends BaseTestCase {
             SignatureException, UnmarshallingException {
         
         //Build encrypted Assertion
-        String filename = "/data/org/opensaml/saml2/encryption/Assertion.xml";
+        String filename = "/data/org/opensaml/saml/saml2/encryption/Assertion.xml";
         Document targetDOM = getDOM(filename);
         
         Assertion assertion = (Assertion) unmarshallElement(filename);

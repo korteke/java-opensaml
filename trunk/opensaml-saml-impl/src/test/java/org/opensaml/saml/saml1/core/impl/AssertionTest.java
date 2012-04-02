@@ -65,9 +65,9 @@ public class AssertionTest extends BaseSAMLObjectProviderTestCase {
         //
         expectedIssueInstant = new DateTime(1970, 1, 2, 1, 1, 2, 100, ISOChronology.getInstanceUTC());
 
-        singleElementFile = "/data/org/opensaml/saml1/impl/singleAssertion.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/saml1/impl/singleAssertionAttributes.xml";
-        childElementsFile = "/data/org/opensaml/saml1/impl/AssertionWithChildren.xml";
+        singleElementFile = "/data/org/opensaml/saml/saml1/impl/singleAssertion.xml";
+        singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml1/impl/singleAssertionAttributes.xml";
+        childElementsFile = "/data/org/opensaml/saml/saml1/impl/AssertionWithChildren.xml";
         qname = Assertion.DEFAULT_ELEMENT_NAME;
     }
 
@@ -184,7 +184,7 @@ public class AssertionTest extends BaseSAMLObjectProviderTestCase {
     }
     
     public void testSignatureUnmarshall() {
-        Assertion assertion = (Assertion) unmarshallElement("/data/org/opensaml/saml1/impl/AssertionWithSignature.xml");
+        Assertion assertion = (Assertion) unmarshallElement("/data/org/opensaml/saml/saml1/impl/AssertionWithSignature.xml");
         
         assertNotNull("Assertion was null", assertion);
         assertNotNull("Signature was null", assertion.getSignature());
@@ -192,7 +192,7 @@ public class AssertionTest extends BaseSAMLObjectProviderTestCase {
     }
     
     public void testDOMIDResolutionUnmarshall() {
-        Assertion assertion = (Assertion) unmarshallElement("/data/org/opensaml/saml1/impl/AssertionWithSignature.xml");
+        Assertion assertion = (Assertion) unmarshallElement("/data/org/opensaml/saml/saml1/impl/AssertionWithSignature.xml");
         
         assertNotNull("Assertion was null", assertion);
         assertNotNull("Signature was null", assertion.getSignature());

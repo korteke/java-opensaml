@@ -37,8 +37,8 @@ public class AuthzServiceTest extends BaseSAMLObjectProviderTestCase {
      * Constructor
      */
     public AuthzServiceTest() {
-        singleElementFile = "/data/org/opensaml/saml2/metadata/impl/AuthzService.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/saml2/metadata/impl/AuthzServiceOptionalAttributes.xml";
+        singleElementFile = "/data/org/opensaml/saml/saml2/metadata/impl/AuthzService.xml";
+        singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml2/metadata/impl/AuthzServiceOptionalAttributes.xml";
     }
     
     /** {@inheritDoc} */

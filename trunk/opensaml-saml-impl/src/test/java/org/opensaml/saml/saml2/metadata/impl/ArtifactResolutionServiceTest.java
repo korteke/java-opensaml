@@ -40,8 +40,8 @@ public class ArtifactResolutionServiceTest extends BaseSAMLObjectProviderTestCas
      * Constructor
      */
     public ArtifactResolutionServiceTest() {
-        singleElementFile = "/data/org/opensaml/saml2/metadata/impl/ArtifactResolutionService.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/saml2/metadata/impl/ArtifactResolutionServiceOptionalAttributes.xml";
+        singleElementFile = "/data/org/opensaml/saml/saml2/metadata/impl/ArtifactResolutionService.xml";
+        singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml2/metadata/impl/ArtifactResolutionServiceOptionalAttributes.xml";
     }
     
     /** {@inheritDoc} */

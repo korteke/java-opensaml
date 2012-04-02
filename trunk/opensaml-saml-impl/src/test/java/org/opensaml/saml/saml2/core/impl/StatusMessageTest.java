@@ -34,7 +34,7 @@ public class StatusMessageTest extends BaseSAMLObjectProviderTestCase {
      *
      */
     public StatusMessageTest() {
-        singleElementFile = "/data/org/opensaml/saml2/core/impl/StatusMessage.xml";
+        singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/StatusMessage.xml";
     }
 
     /** {@inheritDoc} */

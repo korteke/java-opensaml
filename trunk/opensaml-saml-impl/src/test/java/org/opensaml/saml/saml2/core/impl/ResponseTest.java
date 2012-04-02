@@ -46,9 +46,9 @@ public class ResponseTest extends StatusResponseTestBase {
      */
     public ResponseTest() {
         super();
-        singleElementFile = "/data/org/opensaml/saml2/core/impl/Response.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/saml2/core/impl/ResponseOptionalAttributes.xml";
-        childElementsFile = "/data/org/opensaml/saml2/core/impl/ResponseChildElements.xml";
+        singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/Response.xml";
+        singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml2/core/impl/ResponseOptionalAttributes.xml";
+        childElementsFile = "/data/org/opensaml/saml/saml2/core/impl/ResponseChildElements.xml";
     }
 
     /** {@inheritDoc} */

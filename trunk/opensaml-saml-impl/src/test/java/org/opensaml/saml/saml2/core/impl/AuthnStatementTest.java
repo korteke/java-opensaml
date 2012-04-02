@@ -40,9 +40,9 @@ public class AuthnStatementTest extends BaseSAMLObjectProviderTestCase {
 
     /** Constructor */
     public AuthnStatementTest() {
-        singleElementFile = "/data/org/opensaml/saml2/core/impl/AuthnStatement.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/saml2/core/impl/AuthnStatementOptionalAttributes.xml";
-        childElementsFile = "/data/org/opensaml/saml2/core/impl/AuthnStatementChildElements.xml";
+        singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/AuthnStatement.xml";
+        singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml2/core/impl/AuthnStatementOptionalAttributes.xml";
+        childElementsFile = "/data/org/opensaml/saml/saml2/core/impl/AuthnStatementChildElements.xml";
     }
 
     /** {@inheritDoc} */

@@ -33,7 +33,7 @@ public class IssuerTest extends BaseSAMLObjectProviderTestCase {
 
     /** Constructor */
     public IssuerTest() {
-        singleElementFile = "/data/org/opensaml/saml2/core/impl/Issuer.xml";
+        singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/Issuer.xml";
     }
 
     /** {@inheritDoc} */

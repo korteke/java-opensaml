@@ -36,7 +36,7 @@ public class EmailAddressTest extends BaseSAMLObjectProviderTestCase {
      * Constructor
      */
     public EmailAddressTest() {
-        singleElementFile = "/data/org/opensaml/saml2/metadata/impl/EmailAddress.xml";
+        singleElementFile = "/data/org/opensaml/saml/saml2/metadata/impl/EmailAddress.xml";
     }
     
     /** {@inheritDoc} */

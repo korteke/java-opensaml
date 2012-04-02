@@ -34,7 +34,7 @@ public class AuthenticatingAuthorityTest extends BaseSAMLObjectProviderTestCase 
 
     /** Constructor */
     public AuthenticatingAuthorityTest() {
-        singleElementFile = "/data/org/opensaml/saml2/core/impl/AuthenticatingAuthority.xml";
+        singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/AuthenticatingAuthority.xml";
     }
 
     /** {@inheritDoc} */

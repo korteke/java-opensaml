@@ -33,7 +33,7 @@ public class AssertionIDRefTest extends BaseSAMLObjectProviderTestCase {
 
     /** Constructor */
     public AssertionIDRefTest() {
-        singleElementFile = "/data/org/opensaml/saml2/core/impl/AssertionIDRef.xml";
+        singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/AssertionIDRef.xml";
     }
 
     /** {@inheritDoc} */

@@ -40,9 +40,9 @@ public class AssertionIDRequestTest extends RequestTestBase {
     public AssertionIDRequestTest() {
         super();
         
-        singleElementFile = "/data/org/opensaml/saml2/core/impl/AssertionIDRequest.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/saml2/core/impl/AssertionIDRequestOptionalAttributes.xml";
-        childElementsFile = "/data/org/opensaml/saml2/core/impl/AssertionIDRequestChildElements.xml";
+        singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/AssertionIDRequest.xml";
+        singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml2/core/impl/AssertionIDRequestOptionalAttributes.xml";
+        childElementsFile = "/data/org/opensaml/saml/saml2/core/impl/AssertionIDRequestChildElements.xml";
     }
 
     /** {@inheritDoc} */

@@ -33,8 +33,8 @@ public class StatusCodeTest extends BaseSAMLObjectProviderTestCase {
 
     /**Constructor. */
     public StatusCodeTest() {
-        childElementsFile = "/data/org/opensaml/saml1/impl/FullStatusCode.xml";
-        singleElementFile = "/data/org/opensaml/saml1/impl/singleStatusCode.xml";
+        childElementsFile = "/data/org/opensaml/saml/saml1/impl/FullStatusCode.xml";
+        singleElementFile = "/data/org/opensaml/saml/saml1/impl/singleStatusCode.xml";
         
         qname = new QName(SAMLConstants.SAML10P_NS, StatusCode.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1P_PREFIX);
     }

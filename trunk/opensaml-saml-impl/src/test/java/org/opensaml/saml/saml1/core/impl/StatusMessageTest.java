@@ -44,8 +44,8 @@ public class StatusMessageTest extends BaseSAMLObjectProviderTestCase {
         super();
 
         contents = "Nibble a Happy Warthog";
-        singleElementFile = "/data/org/opensaml/saml1/impl/singleStatusMessage.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/saml1/impl/FullStatusMessage.xml";
+        singleElementFile = "/data/org/opensaml/saml/saml1/impl/singleStatusMessage.xml";
+        singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml1/impl/FullStatusMessage.xml";
         
         qname = new QName(SAMLConstants.SAML10P_NS, StatusMessage.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1P_PREFIX);
     }

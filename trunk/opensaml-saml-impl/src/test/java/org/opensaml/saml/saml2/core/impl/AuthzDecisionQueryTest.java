@@ -45,9 +45,9 @@ public class AuthzDecisionQueryTest extends SubjectQueryTestBase {
      */
     public AuthzDecisionQueryTest() {
         super();
-        singleElementFile = "/data/org/opensaml/saml2/core/impl/AuthzDecisionQuery.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/saml2/core/impl/AuthzDecisionQueryOptionalAttributes.xml";
-        childElementsFile = "/data/org/opensaml/saml2/core/impl/AuthzDecisionQueryChildElements.xml";
+        singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/AuthzDecisionQuery.xml";
+        singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml2/core/impl/AuthzDecisionQueryOptionalAttributes.xml";
+        childElementsFile = "/data/org/opensaml/saml/saml2/core/impl/AuthzDecisionQueryChildElements.xml";
     }
 
     /** {@inheritDoc} */

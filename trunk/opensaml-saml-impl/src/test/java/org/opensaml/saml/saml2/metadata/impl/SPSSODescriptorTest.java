@@ -61,9 +61,9 @@ public class SPSSODescriptorTest extends BaseSAMLObjectProviderTestCase {
      * Constructor
      */
     public SPSSODescriptorTest() {
-        singleElementFile = "/data/org/opensaml/saml2/metadata/impl/SPSSODescriptor.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/saml2/metadata/impl/SPSSODescriptorOptionalAttributes.xml";
-        childElementsFile = "/data/org/opensaml/saml2/metadata/impl/SPSSODescriptorChildElements.xml";
+        singleElementFile = "/data/org/opensaml/saml/saml2/metadata/impl/SPSSODescriptor.xml";
+        singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml2/metadata/impl/SPSSODescriptorOptionalAttributes.xml";
+        childElementsFile = "/data/org/opensaml/saml/saml2/metadata/impl/SPSSODescriptorChildElements.xml";
     }
 
     protected void setUp() throws Exception {

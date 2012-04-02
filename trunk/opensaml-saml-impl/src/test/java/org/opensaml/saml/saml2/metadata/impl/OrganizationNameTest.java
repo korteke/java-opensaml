@@ -42,7 +42,7 @@ public class OrganizationNameTest extends BaseSAMLObjectProviderTestCase {
      * Constructor
      */
     public OrganizationNameTest() {
-        singleElementFile = "/data/org/opensaml/saml2/metadata/impl/OrganizationName.xml";
+        singleElementFile = "/data/org/opensaml/saml/saml2/metadata/impl/OrganizationName.xml";
     }
     
     /** {@inheritDoc} */

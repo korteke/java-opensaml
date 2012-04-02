@@ -49,9 +49,9 @@ public class LogoutRequestTest extends RequestTestBase {
      */
     public LogoutRequestTest() {
         super();
-        singleElementFile = "/data/org/opensaml/saml2/core/impl/LogoutRequest.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/saml2/core/impl/LogoutRequestOptionalAttributes.xml";
-        childElementsFile = "/data/org/opensaml/saml2/core/impl/LogoutRequestChildElements.xml";
+        singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/LogoutRequest.xml";
+        singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml2/core/impl/LogoutRequestOptionalAttributes.xml";
+        childElementsFile = "/data/org/opensaml/saml/saml2/core/impl/LogoutRequestChildElements.xml";
     }
 
     /** {@inheritDoc} */

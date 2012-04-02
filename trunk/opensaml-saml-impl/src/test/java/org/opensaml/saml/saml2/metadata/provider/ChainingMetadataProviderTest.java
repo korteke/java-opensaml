@@ -52,7 +52,7 @@ public class ChainingMetadataProviderTest extends BaseTestCase {
         metadataProvider = new ChainingMetadataProvider();
 
         URL mdURL = FilesystemMetadataProviderTest.class
-                .getResource("/data/org/opensaml/saml2/metadata/InCommon-metadata.xml");
+                .getResource("/data/org/opensaml/saml/saml2/metadata/InCommon-metadata.xml");
         File mdFile = new File(mdURL.toURI());
         FilesystemMetadataProvider fileProvider = new FilesystemMetadataProvider(mdFile);
         fileProvider.setParserPool(parser);
@@ -60,7 +60,7 @@ public class ChainingMetadataProviderTest extends BaseTestCase {
         metadataProvider.addMetadataProvider(fileProvider);
 
         URL mdURL2 = FilesystemMetadataProviderTest.class
-                .getResource("/data/org/opensaml/saml2/metadata/metadata.switchaai_signed.xml");
+                .getResource("/data/org/opensaml/saml/saml2/metadata/metadata.switchaai_signed.xml");
         File mdFile2 = new File(mdURL2.toURI());
         FilesystemMetadataProvider fileProvider2 = new FilesystemMetadataProvider(mdFile2);
         fileProvider2.setParserPool(parser);

@@ -43,8 +43,8 @@ public class AssertionIDReferenceTest extends BaseSAMLObjectProviderTestCase {
      */
     public AssertionIDReferenceTest() {
         super();
-        singleElementFile = "/data/org/opensaml/saml1/impl/singleAssertionIDReference.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/saml1/impl/singleAssertionIDReferenceContents.xml";
+        singleElementFile = "/data/org/opensaml/saml/saml1/impl/singleAssertionIDReference.xml";
+        singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml1/impl/singleAssertionIDReferenceContents.xml";
         expectedNCName = "NibbleAHappyWarthog";
         qname = new QName(SAMLConstants.SAML1_NS, AssertionIDReference.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
     }

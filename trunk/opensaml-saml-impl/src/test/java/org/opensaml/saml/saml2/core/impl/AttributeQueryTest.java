@@ -40,9 +40,9 @@ public class AttributeQueryTest extends SubjectQueryTestBase {
      */
     public AttributeQueryTest() {
         super();
-        singleElementFile = "/data/org/opensaml/saml2/core/impl/AttributeQuery.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/saml2/core/impl/AttributeQueryOptionalAttributes.xml";
-        childElementsFile = "/data/org/opensaml/saml2/core/impl/AttributeQueryChildElements.xml";
+        singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/AttributeQuery.xml";
+        singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml2/core/impl/AttributeQueryOptionalAttributes.xml";
+        childElementsFile = "/data/org/opensaml/saml/saml2/core/impl/AttributeQueryChildElements.xml";
     }
     
     

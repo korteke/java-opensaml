@@ -63,9 +63,9 @@ public class IDPSSODescriptorTest extends BaseSAMLObjectProviderTestCase {
      * Constructor
      */
     public IDPSSODescriptorTest() {
-        singleElementFile = "/data/org/opensaml/saml2/metadata/impl/IDPSSODescriptor.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/saml2/metadata/impl/IDPSSODescriptorOptionalAttributes.xml";
-        childElementsFile = "/data/org/opensaml/saml2/metadata/impl/IDPSSODescriptorChildElements.xml";
+        singleElementFile = "/data/org/opensaml/saml/saml2/metadata/impl/IDPSSODescriptor.xml";
+        singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml2/metadata/impl/IDPSSODescriptorOptionalAttributes.xml";
+        childElementsFile = "/data/org/opensaml/saml/saml2/metadata/impl/IDPSSODescriptorChildElements.xml";
     }
 
     protected void setUp() throws Exception {

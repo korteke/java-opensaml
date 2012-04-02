@@ -40,7 +40,7 @@ public class ServiceNameTest extends BaseSAMLObjectProviderTestCase {
      * Constructor
      */
     public ServiceNameTest() {
-        singleElementFile = "/data/org/opensaml/saml2/metadata/impl/ServiceName.xml";
+        singleElementFile = "/data/org/opensaml/saml/saml2/metadata/impl/ServiceName.xml";
     }
     
 

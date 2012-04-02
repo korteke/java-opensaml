@@ -63,8 +63,8 @@ public class UIInfoTest extends BaseSAMLObjectProviderTestCase {
      * Constructor.
      */
     public UIInfoTest() {
-        singleElementFile = "/data/org/opensaml/samlext/saml2mdui/UIInfo.xml";
-        childElementsFile = "/data/org/opensaml/samlext/saml2mdui/UIInfoChildElements.xml";
+        singleElementFile = "/data/org/opensaml/saml/ext/saml2mdui/UIInfo.xml";
+        childElementsFile = "/data/org/opensaml/saml/ext/saml2mdui/UIInfoChildElements.xml";
     }
     
     /** {@inheritDoc} */

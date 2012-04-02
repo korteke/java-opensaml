@@ -57,9 +57,9 @@ public class KeyInfoConfirmationDataTypeTest extends BaseSAMLObjectProviderTestC
 
     /** Constructor. */
     public KeyInfoConfirmationDataTypeTest() {
-        singleElementFile = "/data/org/opensaml/saml2/core/impl/KeyInfoConfirmationDataType.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/saml2/core/impl/KeyInfoConfirmationDataTypeOptionalAttributes.xml";
-        childElementsFile = "/data/org/opensaml/saml2/core/impl/KeyInfoConfirmationDataTypeChildElements.xml";
+        singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/KeyInfoConfirmationDataType.xml";
+        singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml2/core/impl/KeyInfoConfirmationDataTypeOptionalAttributes.xml";
+        childElementsFile = "/data/org/opensaml/saml/saml2/core/impl/KeyInfoConfirmationDataTypeChildElements.xml";
     }
 
     /** {@inheritDoc} */

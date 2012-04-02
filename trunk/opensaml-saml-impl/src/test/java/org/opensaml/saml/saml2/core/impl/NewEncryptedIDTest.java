@@ -32,8 +32,8 @@ public class NewEncryptedIDTest extends BaseSAMLObjectProviderTestCase {
 
     /** Constructor. */
     public NewEncryptedIDTest() {
-        singleElementFile = "/data/org/opensaml/saml2/core/impl/NewEncryptedID.xml";
-        childElementsFile = "/data/org/opensaml/saml2/core/impl/NewEncryptedIDChildElements.xml";
+        singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/NewEncryptedID.xml";
+        childElementsFile = "/data/org/opensaml/saml/saml2/core/impl/NewEncryptedIDChildElements.xml";
     }
 
     /** {@inheritDoc} */

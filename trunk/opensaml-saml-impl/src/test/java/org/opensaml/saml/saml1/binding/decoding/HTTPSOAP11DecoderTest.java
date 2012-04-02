@@ -86,7 +86,7 @@ public class HTTPSOAP11DecoderTest extends BaseTestCase {
     }
     
     public void testMessageEndpointGood() throws Exception {
-        Envelope soapEnvelope = (Envelope) unmarshallElement("/data/org/opensaml/saml1/binding/ResponseSOAP.xml");
+        Envelope soapEnvelope = (Envelope) unmarshallElement("/data/org/opensaml/saml/saml1/binding/ResponseSOAP.xml");
         
         Response samlResponse = (Response) soapEnvelope.getBody().getUnknownXMLObjects().get(0);
         String deliveredEndpointURL = samlResponse.getRecipient();
@@ -105,7 +105,7 @@ public class HTTPSOAP11DecoderTest extends BaseTestCase {
     }
     
     public void testMessageEndpointGoodWithQueryParams() throws Exception {
-        Envelope soapEnvelope = (Envelope) unmarshallElement("/data/org/opensaml/saml1/binding/ResponseSOAP.xml");
+        Envelope soapEnvelope = (Envelope) unmarshallElement("/data/org/opensaml/saml/saml1/binding/ResponseSOAP.xml");
         
         Response samlResponse = (Response) soapEnvelope.getBody().getUnknownXMLObjects().get(0);
         String deliveredEndpointURL = samlResponse.getRecipient() + "?paramFoo=bar&paramBar=baz";
@@ -124,7 +124,7 @@ public class HTTPSOAP11DecoderTest extends BaseTestCase {
     }
     
     public void testMessageEndpointInvalidURI() throws Exception {
-        Envelope soapEnvelope = (Envelope) unmarshallElement("/data/org/opensaml/saml1/binding/ResponseSOAP.xml");
+        Envelope soapEnvelope = (Envelope) unmarshallElement("/data/org/opensaml/saml/saml1/binding/ResponseSOAP.xml");
         
         Response samlResponse = (Response) soapEnvelope.getBody().getUnknownXMLObjects().get(0);
         String deliveredEndpointURL = samlResponse.getRecipient() + "/some/other/endpointURI";
@@ -144,7 +144,7 @@ public class HTTPSOAP11DecoderTest extends BaseTestCase {
     }
     
     public void testMessageEndpointInvalidHost() throws Exception {
-        Envelope soapEnvelope = (Envelope) unmarshallElement("/data/org/opensaml/saml1/binding/ResponseSOAP.xml");
+        Envelope soapEnvelope = (Envelope) unmarshallElement("/data/org/opensaml/saml/saml1/binding/ResponseSOAP.xml");
         
         String deliveredEndpointURL = "https://bogus-sp.example.org/sso/acs";
         
@@ -163,7 +163,7 @@ public class HTTPSOAP11DecoderTest extends BaseTestCase {
     }
     
     public void testMessageEndpointMissingDestinationNotSigned() throws Exception {
-        Envelope soapEnvelope = (Envelope) unmarshallElement("/data/org/opensaml/saml1/binding/ResponseSOAP.xml");
+        Envelope soapEnvelope = (Envelope) unmarshallElement("/data/org/opensaml/saml/saml1/binding/ResponseSOAP.xml");
         
         Response samlResponse = (Response) soapEnvelope.getBody().getUnknownXMLObjects().get(0);
         samlResponse.setRecipient(null);
@@ -184,7 +184,7 @@ public class HTTPSOAP11DecoderTest extends BaseTestCase {
     }
     
     public void testMessageEndpointMissingDestinationSigned() throws Exception {
-        Envelope soapEnvelope = (Envelope) unmarshallElement("/data/org/opensaml/saml1/binding/ResponseSOAP.xml");
+        Envelope soapEnvelope = (Envelope) unmarshallElement("/data/org/opensaml/saml/saml1/binding/ResponseSOAP.xml");
         
         Response samlResponse = (Response) soapEnvelope.getBody().getUnknownXMLObjects().get(0);
         samlResponse.setRecipient(null);

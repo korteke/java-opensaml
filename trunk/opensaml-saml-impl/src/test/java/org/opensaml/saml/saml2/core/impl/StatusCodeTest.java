@@ -40,8 +40,8 @@ public class StatusCodeTest extends BaseSAMLObjectProviderTestCase {
      *
      */
     public StatusCodeTest() {
-       singleElementFile = "/data/org/opensaml/saml2/core/impl/StatusCode.xml";
-       childElementsFile = "/data/org/opensaml/saml2/core/impl/StatusCodeChildElements.xml";
+       singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/StatusCode.xml";
+       childElementsFile = "/data/org/opensaml/saml/saml2/core/impl/StatusCodeChildElements.xml";
     }
     
     /** {@inheritDoc} */

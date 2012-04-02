@@ -60,9 +60,9 @@ public class MetadataCredentialResolverCachingTest extends BaseTestCase {
     
     private CriteriaSet criteriaSet;
     
-    private String mdFileNameCacheTestUnspecified = "/data/org/opensaml/security/cachetest-metadata-unspecified.xml";
-    private String mdFileNameCacheTestSigning = "/data/org/opensaml/security/cachetest-metadata-signing.xml";
-    private String mdFileNameCacheTestEncryption = "/data/org/opensaml/security/cachetest-metadata-encryption.xml";
+    private String mdFileNameCacheTestUnspecified = "/data/org/opensaml/saml/security/cachetest-metadata-unspecified.xml";
+    private String mdFileNameCacheTestSigning = "/data/org/opensaml/saml/security/cachetest-metadata-signing.xml";
+    private String mdFileNameCacheTestEncryption = "/data/org/opensaml/saml/security/cachetest-metadata-encryption.xml";
     
     private File mdFileUnspec;
     private File mdFileEncryption;

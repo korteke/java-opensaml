@@ -37,8 +37,8 @@ public class NameIDMappingServiceTest extends BaseSAMLObjectProviderTestCase {
      * Constructor
      */
     public NameIDMappingServiceTest() {
-        singleElementFile = "/data/org/opensaml/saml2/metadata/impl/NameIDMappingService.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/saml2/metadata/impl/NameIDMappingServiceOptionalAttributes.xml";
+        singleElementFile = "/data/org/opensaml/saml/saml2/metadata/impl/NameIDMappingService.xml";
+        singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml2/metadata/impl/NameIDMappingServiceOptionalAttributes.xml";
     }
     
     /** {@inheritDoc} */

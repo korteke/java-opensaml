@@ -34,8 +34,8 @@ public class AudienceRestrictionTest extends BaseSAMLObjectProviderTestCase {
 
     /** Constructor */
     public AudienceRestrictionTest() {
-        singleElementFile = "/data/org/opensaml/saml2/core/impl/AudienceRestriction.xml";
-        childElementsFile = "/data/org/opensaml/saml2/core/impl/AudienceRestrictionChildElements.xml";
+        singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/AudienceRestriction.xml";
+        childElementsFile = "/data/org/opensaml/saml/saml2/core/impl/AudienceRestrictionChildElements.xml";
     }
 
     /** {@inheritDoc} */

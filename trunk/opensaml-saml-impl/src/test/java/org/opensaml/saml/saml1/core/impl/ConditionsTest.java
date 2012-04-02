@@ -54,9 +54,9 @@ public class ConditionsTest extends BaseSAMLObjectProviderTestCase {
      * 
      */
     public ConditionsTest() {
-        singleElementFile = "/data/org/opensaml/saml1/impl/singleConditions.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/saml1/impl/singleConditionsAttributes.xml";
-        childElementsFile = "/data/org/opensaml/saml1/impl/ConditionsWithChildren.xml";
+        singleElementFile = "/data/org/opensaml/saml/saml1/impl/singleConditions.xml";
+        singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml1/impl/singleConditionsAttributes.xml";
+        childElementsFile = "/data/org/opensaml/saml/saml1/impl/ConditionsWithChildren.xml";
         //
         // NotBefore="1970-01-01T01:00:00.123Z"
         //

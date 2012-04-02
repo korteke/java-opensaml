@@ -41,8 +41,8 @@ public class DiscoveryResponseTest extends BaseSAMLObjectProviderTestCase {
      * Constructor
      */
     public DiscoveryResponseTest() {
-        singleElementFile = "/data/org/opensaml/samlext/idpdisco/DiscoveryResponse.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/samlext/idpdisco/DiscoveryResponseOptionalAttributes.xml";
+        singleElementFile = "/data/org/opensaml/saml/ext/idpdisco/DiscoveryResponse.xml";
+        singleElementOptionalAttributesFile = "/data/org/opensaml/saml/ext/idpdisco/DiscoveryResponseOptionalAttributes.xml";
     }
 
     /** {@inheritDoc} */

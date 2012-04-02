@@ -104,7 +104,7 @@ public class HTTPPostDecoderTest extends BaseTestCase {
     }
     
     public void testMessageEndpointGood() throws Exception {
-        AuthnRequest samlRequest = (AuthnRequest) unmarshallElement("/data/org/opensaml/saml2/binding/AuthnRequest.xml");
+        AuthnRequest samlRequest = (AuthnRequest) unmarshallElement("/data/org/opensaml/saml/saml2/binding/AuthnRequest.xml");
         
         String deliveredEndpointURL = samlRequest.getDestination();
         
@@ -122,7 +122,7 @@ public class HTTPPostDecoderTest extends BaseTestCase {
     }
     
     public void testMessageEndpointGoodWithQueryParams() throws Exception {
-        AuthnRequest samlRequest = (AuthnRequest) unmarshallElement("/data/org/opensaml/saml2/binding/AuthnRequest.xml");
+        AuthnRequest samlRequest = (AuthnRequest) unmarshallElement("/data/org/opensaml/saml/saml2/binding/AuthnRequest.xml");
         
         String deliveredEndpointURL = samlRequest.getDestination() + "?paramFoo=bar&paramBar=baz";
         
@@ -140,7 +140,7 @@ public class HTTPPostDecoderTest extends BaseTestCase {
     }
     
     public void testMessageEndpointInvalidURI() throws Exception {
-        AuthnRequest samlRequest = (AuthnRequest) unmarshallElement("/data/org/opensaml/saml2/binding/AuthnRequest.xml");
+        AuthnRequest samlRequest = (AuthnRequest) unmarshallElement("/data/org/opensaml/saml/saml2/binding/AuthnRequest.xml");
         
         String deliveredEndpointURL = samlRequest.getDestination() + "/some/other/endpointURI";
         
@@ -159,7 +159,7 @@ public class HTTPPostDecoderTest extends BaseTestCase {
     }
     
     public void testMessageEndpointInvalidHost() throws Exception {
-        AuthnRequest samlRequest = (AuthnRequest) unmarshallElement("/data/org/opensaml/saml2/binding/AuthnRequest.xml");
+        AuthnRequest samlRequest = (AuthnRequest) unmarshallElement("/data/org/opensaml/saml/saml2/binding/AuthnRequest.xml");
         
         String deliveredEndpointURL = "https://bogusidp.example.com/idp/sso";
         
@@ -178,7 +178,7 @@ public class HTTPPostDecoderTest extends BaseTestCase {
     }
     
     public void testMessageEndpointMissingDestinationNotSigned() throws Exception {
-        AuthnRequest samlRequest = (AuthnRequest) unmarshallElement("/data/org/opensaml/saml2/binding/AuthnRequest.xml");
+        AuthnRequest samlRequest = (AuthnRequest) unmarshallElement("/data/org/opensaml/saml/saml2/binding/AuthnRequest.xml");
         samlRequest.setDestination(null);
         
         String deliveredEndpointURL = authnRequestDestination;
@@ -197,7 +197,7 @@ public class HTTPPostDecoderTest extends BaseTestCase {
     }
     
     public void testMessageEndpointMissingDestinationSigned() throws Exception {
-        AuthnRequest samlRequest = (AuthnRequest) unmarshallElement("/data/org/opensaml/saml2/binding/AuthnRequest.xml");
+        AuthnRequest samlRequest = (AuthnRequest) unmarshallElement("/data/org/opensaml/saml/saml2/binding/AuthnRequest.xml");
         samlRequest.setDestination(null);
         
         Signature signature = (Signature) buildXMLObject(Signature.DEFAULT_ELEMENT_NAME);

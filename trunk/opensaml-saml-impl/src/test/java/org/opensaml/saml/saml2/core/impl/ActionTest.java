@@ -36,8 +36,8 @@ public class ActionTest extends BaseSAMLObjectProviderTestCase {
 
     /** Constructor */
     public ActionTest() {
-        singleElementFile = "/data/org/opensaml/saml2/core/impl/Action.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/saml2/core/impl/ActionOptionalAttributes.xml";
+        singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/Action.xml";
+        singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml2/core/impl/ActionOptionalAttributes.xml";
     }
 
     /** {@inheritDoc} */

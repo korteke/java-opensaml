@@ -33,7 +33,7 @@ public class TerminateTest extends BaseSAMLObjectProviderTestCase {
      *
      */
     public TerminateTest() {
-        singleElementFile = "/data/org/opensaml/saml2/core/impl/Terminate.xml";
+        singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/Terminate.xml";
     }
 
     /** {@inheritDoc} */

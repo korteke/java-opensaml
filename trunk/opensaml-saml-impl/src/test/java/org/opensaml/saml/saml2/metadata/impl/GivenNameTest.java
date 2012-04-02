@@ -36,7 +36,7 @@ public class GivenNameTest extends BaseSAMLObjectProviderTestCase {
      * Constructor
      */
     public GivenNameTest() {
-        singleElementFile = "/data/org/opensaml/saml2/metadata/impl/GivenName.xml";
+        singleElementFile = "/data/org/opensaml/saml/saml2/metadata/impl/GivenName.xml";
     }
     
     /** {@inheritDoc} */

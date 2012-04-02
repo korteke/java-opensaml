@@ -40,8 +40,8 @@ public class ActionTest extends BaseSAMLObjectProviderTestCase {
      */
     public ActionTest() {
         super();
-        singleElementFile = "/data/org/opensaml/saml1/impl/singleAction.xml";
-        singleElementOptionalAttributesFile  = "/data/org/opensaml/saml1/impl/singleActionAttributes.xml";    
+        singleElementFile = "/data/org/opensaml/saml/saml1/impl/singleAction.xml";
+        singleElementOptionalAttributesFile  = "/data/org/opensaml/saml/saml1/impl/singleActionAttributes.xml";    
         expectedNamespace = "namespace";
         expectedContents = "Action Contents";
         qname = new QName(SAMLConstants.SAML1_NS, Action.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);

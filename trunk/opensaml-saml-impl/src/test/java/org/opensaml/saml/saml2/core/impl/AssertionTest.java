@@ -61,9 +61,9 @@ public class AssertionTest extends BaseSAMLObjectProviderTestCase {
 
     /** Constructor */
     public AssertionTest() {
-        singleElementFile = "/data/org/opensaml/saml2/core/impl/Assertion.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/saml2/core/impl/AssertionOptionalAttributes.xml";
-        childElementsFile = "/data/org/opensaml/saml2/core/impl/AssertionChildElements.xml";
+        singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/Assertion.xml";
+        singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml2/core/impl/AssertionOptionalAttributes.xml";
+        childElementsFile = "/data/org/opensaml/saml/saml2/core/impl/AssertionChildElements.xml";
     }
 
     /** {@inheritDoc} */
