@@ -20,6 +20,8 @@ package org.opensaml.security.x509;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.security.GeneralSecurityException;
 import java.security.PrivateKey;
 import java.security.cert.CRLException;
@@ -34,7 +36,6 @@ import java.util.List;
 
 import javax.security.auth.x500.X500Principal;
 
-import net.shibboleth.utilities.java.support.net.IPAddressSupport;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 import org.apache.commons.ssl.TrustMaterial;
@@ -54,6 +55,9 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Strings;
 import com.google.common.io.Files;
+import com.google.common.net.InetAddresses;
+
+import edu.vt.middleware.crypt.util.HexConverter;
 
 /**
  * Utility class for working with X509 objects.
@@ -432,7 +436,15 @@ public class X509Util {
 
         if (IP_ADDRESS_ALT_NAME.equals(nameType)) {
             // this is a byte[], IP addr in network byte order
-            return IPAddressSupport.addressToString((byte[]) nameValue);
+            byte [] nameValueBytes = (byte[]) nameValue;
+            try {
+                return InetAddresses.toAddrString(InetAddress.getByAddress(nameValueBytes));
+            } catch (UnknownHostException e) {
+                HexConverter hexConverter = new HexConverter(true);
+                log.warn("Was unable to convert IP address alt name byte[] to string: " +
+                        hexConverter.fromBytes(nameValueBytes), e);
+                return null;
+            }
         }
 
         if (EDI_PARTY_ALT_NAME.equals(nameType) || X400ADDRESS_ALT_NAME.equals(nameType)
