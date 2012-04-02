@@ -42,7 +42,7 @@ public class XSURITest extends XMLObjectBaseTestCase {
     /** {@inheritDoc} */
     protected void setUp() throws Exception{
         super.setUp();
-        testDocumentLocation = "/data/org/opensaml/xml/schema/xsURI.xml";
+        testDocumentLocation = "/data/org/opensaml/core/xml/schema/xsURI.xml";
         expectedXMLObjectQName = new QName("urn:oasis:names:tc:SAML:2.0:assertion", "AttributeValue", "saml");
         expectedValue = "urn:test:foo:bar:baz";
     }

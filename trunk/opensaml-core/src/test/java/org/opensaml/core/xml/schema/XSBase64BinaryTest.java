@@ -42,7 +42,7 @@ public class XSBase64BinaryTest extends XMLObjectBaseTestCase {
     /** {@inheritDoc} */
     protected void setUp() throws Exception{
         super.setUp();
-        testDocumentLocation = "/data/org/opensaml/xml/schema/xsBase64Binary.xml";
+        testDocumentLocation = "/data/org/opensaml/core/xml/schema/xsBase64Binary.xml";
         expectedXMLObjectQName = new QName("urn:example.org:foo", "bar", "foo");
         expectedValue = "abcdABCDE===";
     }

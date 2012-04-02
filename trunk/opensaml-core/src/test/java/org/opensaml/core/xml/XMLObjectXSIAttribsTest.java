@@ -43,7 +43,7 @@ public class XMLObjectXSIAttribsTest extends XMLObjectBaseTestCase {
     }
     
     public void testUnmarshallNoNil() throws XMLParserException, UnmarshallingException {
-        String documentLocation = "/data/org/opensaml/xml/SimpleXMLObjectWithAttribute.xml";
+        String documentLocation = "/data/org/opensaml/core/xml/SimpleXMLObjectWithAttribute.xml";
         Document document = parserPool.parse(XMLObjectXSIAttribsTest.class.getResourceAsStream(documentLocation));
 
         Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(document.getDocumentElement());
@@ -54,7 +54,7 @@ public class XMLObjectXSIAttribsTest extends XMLObjectBaseTestCase {
     }
     
     public void testUnmarshallNil() throws XMLParserException, UnmarshallingException {
-        String documentLocation = "/data/org/opensaml/xml/SimpleXMLObjectNil.xml";
+        String documentLocation = "/data/org/opensaml/core/xml/SimpleXMLObjectNil.xml";
         Document document = parserPool.parse(XMLObjectXSIAttribsTest.class.getResourceAsStream(documentLocation));
 
         Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(document.getDocumentElement());
@@ -65,7 +65,7 @@ public class XMLObjectXSIAttribsTest extends XMLObjectBaseTestCase {
     }
     
     public void testMarshallNil() throws XMLParserException {
-        String expectedDocumentLocation = "/data/org/opensaml/xml/SimpleXMLObjectNil.xml";
+        String expectedDocumentLocation = "/data/org/opensaml/core/xml/SimpleXMLObjectNil.xml";
         Document expectedDocument = parserPool.parse(XMLObjectXSIAttribsTest.class
                 .getResourceAsStream(expectedDocumentLocation));
 
@@ -78,7 +78,7 @@ public class XMLObjectXSIAttribsTest extends XMLObjectBaseTestCase {
     
     public void testUnmarshallSchemaLocation() throws XMLParserException, UnmarshallingException {
         String expectedValue = "http://www.example.com/Test http://www.example.com/Test.xsd";
-        String documentLocation = "/data/org/opensaml/xml/SimpleXMLObjectSchemaLocation.xml";
+        String documentLocation = "/data/org/opensaml/core/xml/SimpleXMLObjectSchemaLocation.xml";
         Document document = parserPool.parse(XMLObjectXSIAttribsTest.class.getResourceAsStream(documentLocation));
 
         Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(document.getDocumentElement());
@@ -89,7 +89,7 @@ public class XMLObjectXSIAttribsTest extends XMLObjectBaseTestCase {
     
     public void testMarshallSchemaLocation() throws XMLParserException {
         String expectedValue = "http://www.example.com/Test http://www.example.com/Test.xsd";
-        String expectedDocumentLocation = "/data/org/opensaml/xml/SimpleXMLObjectSchemaLocation.xml";
+        String expectedDocumentLocation = "/data/org/opensaml/core/xml/SimpleXMLObjectSchemaLocation.xml";
         Document expectedDocument = parserPool.parse(XMLObjectXSIAttribsTest.class
                 .getResourceAsStream(expectedDocumentLocation));
 
@@ -102,7 +102,7 @@ public class XMLObjectXSIAttribsTest extends XMLObjectBaseTestCase {
     
     public void testUnmarshallNoNamespaceSchemaLocation() throws XMLParserException, UnmarshallingException {
         String expectedValue = "http://www.example.com/Test.xsd";
-        String documentLocation = "/data/org/opensaml/xml/SimpleXMLObjectNoNamespaceSchemaLocation.xml";
+        String documentLocation = "/data/org/opensaml/core/xml/SimpleXMLObjectNoNamespaceSchemaLocation.xml";
         Document document = parserPool.parse(XMLObjectXSIAttribsTest.class.getResourceAsStream(documentLocation));
 
         Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(document.getDocumentElement());
@@ -113,7 +113,7 @@ public class XMLObjectXSIAttribsTest extends XMLObjectBaseTestCase {
     
     public void testMarshallNoNamespaceSchemaLocation() throws XMLParserException {
         String expectedValue = "http://www.example.com/Test.xsd";
-        String expectedDocumentLocation = "/data/org/opensaml/xml/SimpleXMLObjectNoNamespaceSchemaLocation.xml";
+        String expectedDocumentLocation = "/data/org/opensaml/core/xml/SimpleXMLObjectNoNamespaceSchemaLocation.xml";
         Document expectedDocument = parserPool.parse(XMLObjectXSIAttribsTest.class
                 .getResourceAsStream(expectedDocumentLocation));
 

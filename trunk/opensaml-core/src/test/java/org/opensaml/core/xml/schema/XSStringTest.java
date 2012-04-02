@@ -42,7 +42,7 @@ public class XSStringTest extends XMLObjectBaseTestCase {
     /** {@inheritDoc} */
     protected void setUp() throws Exception{
         super.setUp();
-        testDocumentLocation = "/data/org/opensaml/xml/schema/xsString.xml";
+        testDocumentLocation = "/data/org/opensaml/core/xml/schema/xsString.xml";
         expectedXMLObjectQName = new QName("urn:example.org:foo", "bar", "foo");
         expectedValue = "test";
     }

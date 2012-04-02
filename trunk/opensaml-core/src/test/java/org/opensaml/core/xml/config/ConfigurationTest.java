@@ -66,7 +66,7 @@ public class ConfigurationTest extends TestCase {
     public void testInvalidConfiguration() throws Exception {
         try {
             InputStream sxConfig = XMLObjectProviderRegistrySupport.class
-                    .getResourceAsStream("/data/org/opensaml/xml/InvalidConfiguration.xml");
+                    .getResourceAsStream("/data/org/opensaml/core/xml/config/InvalidConfiguration.xml");
             configurator.load(sxConfig);
         } catch (XMLConfigurationException e) {
             return;
@@ -82,7 +82,7 @@ public class ConfigurationTest extends TestCase {
 
         // Test loading the SimpleXMLObject configuration where builder contains additional children
         InputStream sxConfig = XMLObjectProviderRegistrySupport.class
-                .getResourceAsStream("/data/org/opensaml/xml/SimpleXMLObjectConfiguration.xml");
+                .getResourceAsStream("/data/org/opensaml/core/xml/config/SimpleXMLObjectConfiguration.xml");
         configurator.load(sxConfig);
 
         XMLObjectBuilder sxBuilder = XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilder(simpleXMLObjectQName);
@@ -96,7 +96,7 @@ public class ConfigurationTest extends TestCase {
 
         // Test loading a configuration with bogus classes
         InputStream nonConfig = XMLObjectProviderRegistrySupport.class
-                .getResourceAsStream("/data/org/opensaml/xml/NonexistantClassConfiguration.xml");
+                .getResourceAsStream("/data/org/opensaml/core/xml/config/NonexistantClassConfiguration.xml");
         try {
             configurator.load(nonConfig);
             fail("Configuration loaded file that contained invalid classes");
@@ -137,7 +137,7 @@ public class ConfigurationTest extends TestCase {
         QName bazQName = new QName("http://www.example.org/testObjects", "baz", "test");
 
         InputStream idAttributeConfig = XMLObjectProviderRegistrySupport.class
-                .getResourceAsStream("/data/org/opensaml/xml/IDAttributeConfiguration.xml");
+                .getResourceAsStream("/data/org/opensaml/core/xml/config/IDAttributeConfiguration.xml");
         configurator.load(idAttributeConfig);
 
         assertTrue("Registered ID attribute check returned false", XMLObjectProviderRegistrySupport.isIDAttribute(fooQName));
