@@ -17,7 +17,7 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.saml2.core.EncryptedAssertion;
 import org.opensaml.xmlsec.encryption.EncryptedData;
 import org.opensaml.xmlsec.encryption.EncryptedKey;
@@ -25,7 +25,7 @@ import org.opensaml.xmlsec.encryption.EncryptedKey;
 /**
  * Test case for creating, marshalling, and unmarshalling {@link org.opensaml.saml.saml2.core.impl.EncryptedAssertionImpl}.
  */
-public class EncryptedAssertionTest extends BaseSAMLObjectProviderTestCase {
+public class EncryptedAssertionTest extends XMLObjectProviderBaseTestCase {
 
     /** Count of EncryptedKey subelements. */
     private int encryptedKeyCount = 3;
@@ -64,7 +64,7 @@ public class EncryptedAssertionTest extends BaseSAMLObjectProviderTestCase {
     public void testSingleElementMarshall() {
         EncryptedAssertion encElement = (EncryptedAssertion) buildXMLObject(EncryptedAssertion.DEFAULT_ELEMENT_NAME);
 
-        assertEquals(expectedDOM, encElement);
+        assertXMLEquals(expectedDOM, encElement);
     }
 
     /** {@inheritDoc} */
@@ -76,6 +76,6 @@ public class EncryptedAssertionTest extends BaseSAMLObjectProviderTestCase {
             encElement.getEncryptedKeys().add((EncryptedKey) buildXMLObject(EncryptedKey.DEFAULT_ELEMENT_NAME));
         }
         
-        assertEquals(expectedChildElementsDOM, encElement);
+        assertXMLEquals(expectedChildElementsDOM, encElement);
     }
 }

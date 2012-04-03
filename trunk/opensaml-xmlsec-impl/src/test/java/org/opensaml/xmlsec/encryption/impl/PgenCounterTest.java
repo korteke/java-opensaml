@@ -57,7 +57,7 @@ public class PgenCounterTest extends XMLObjectProviderBaseTestCase {
         PgenCounter cbType = (PgenCounter) buildXMLObject(PgenCounter.DEFAULT_ELEMENT_NAME);
         cbType.setValue(expectedCryptoBinaryContent);
         
-        assertEquals(expectedDOM, cbType);
+        assertXMLEquals(expectedDOM, cbType);
     }
 
 }

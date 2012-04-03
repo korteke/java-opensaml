@@ -22,14 +22,14 @@ package org.opensaml.saml.saml1.core.impl;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml1.core.StatusMessage;
 
 /**
  * Test for org.opensaml.saml.saml1.core.StatusMessage 
  */
-public class StatusMessageTest extends BaseSAMLObjectProviderTestCase {
+public class StatusMessageTest extends XMLObjectProviderBaseTestCase {
 
     /** name used to generate objects */
     private final QName qname;
@@ -67,7 +67,7 @@ public class StatusMessageTest extends BaseSAMLObjectProviderTestCase {
     /** {@inheritDoc} */
 
     public void testSingleElementMarshall() {
-        assertEquals(expectedDOM, buildXMLObject(qname));
+        assertXMLEquals(expectedDOM, buildXMLObject(qname));
     }
 
     /** {@inheritDoc} */
@@ -76,6 +76,6 @@ public class StatusMessageTest extends BaseSAMLObjectProviderTestCase {
         StatusMessage statusMessage = (StatusMessage) buildXMLObject(qname);
 
         statusMessage.setMessage(contents);
-        assertEquals(expectedOptionalAttributesDOM, statusMessage);
+        assertXMLEquals(expectedOptionalAttributesDOM, statusMessage);
     }
 }

@@ -18,7 +18,7 @@
 package org.opensaml.saml.saml2.binding.encoding;
 
 import org.joda.time.DateTime;
-import org.opensaml.saml.common.BaseTestCase;
+import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.saml.common.SAMLObjectBuilder;
 import org.opensaml.saml.common.SAMLVersion;
 import org.opensaml.saml.common.binding.BasicSAMLMessageContext;
@@ -34,7 +34,7 @@ import org.springframework.mock.web.MockHttpServletResponse;
 /**
  * Test for SAML 2 SOAP 1.1 message encoder.
  */
-public class HTTPSOAP11EncoderTest extends BaseTestCase {
+public class HTTPSOAP11EncoderTest extends XMLObjectBaseTestCase {
 
     /**
      * Tests encoding a SAML message to an servlet response.

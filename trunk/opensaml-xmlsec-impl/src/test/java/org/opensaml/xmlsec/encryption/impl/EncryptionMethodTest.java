@@ -78,7 +78,7 @@ public class EncryptionMethodTest extends XMLObjectProviderBaseTestCase {
         
         em.setAlgorithm(expectedAlgorithm);
         
-        assertEquals(expectedDOM, em);
+        assertXMLEquals(expectedDOM, em);
     }
 
     /** {@inheritDoc} */
@@ -91,7 +91,7 @@ public class EncryptionMethodTest extends XMLObjectProviderBaseTestCase {
         em.getUnknownXMLObjects().add( buildXMLObject(SimpleXMLObject.ELEMENT_NAME));
         em.getUnknownXMLObjects().add( buildXMLObject(SimpleXMLObject.ELEMENT_NAME));
         
-        assertEquals(expectedChildElementsDOM, em);
+        assertXMLEquals(expectedChildElementsDOM, em);
     }
 
 }

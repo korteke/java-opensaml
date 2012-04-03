@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.saml.common.BaseTestCase;
+import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.saml.saml2.core.Assertion;
 import org.opensaml.saml.saml2.core.Attribute;
 import org.opensaml.saml.saml2.core.EncryptedAssertion;
@@ -48,7 +48,7 @@ import com.google.common.base.Strings;
  * Tests for encryption using single and multicast key encryption keys, 
  * and peer vs. inline key placement.
  */
-public class ComplexEncryptionTest extends BaseTestCase {
+public class ComplexEncryptionTest extends XMLObjectBaseTestCase {
     
     private Encrypter encrypter;
     private EncryptionParameters encParams;

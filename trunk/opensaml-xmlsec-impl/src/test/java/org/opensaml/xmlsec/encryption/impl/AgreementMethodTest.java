@@ -80,7 +80,7 @@ public class AgreementMethodTest extends XMLObjectProviderBaseTestCase {
         
         am.setAlgorithm(expectedAlgorithm);
         
-        assertEquals(expectedDOM, am);
+        assertXMLEquals(expectedDOM, am);
     }
 
     /** {@inheritDoc} */
@@ -94,7 +94,7 @@ public class AgreementMethodTest extends XMLObjectProviderBaseTestCase {
         am.setOriginatorKeyInfo((OriginatorKeyInfo) buildXMLObject(OriginatorKeyInfo.DEFAULT_ELEMENT_NAME));
         am.setRecipientKeyInfo((RecipientKeyInfo) buildXMLObject(RecipientKeyInfo.DEFAULT_ELEMENT_NAME));
         
-        assertEquals(expectedChildElementsDOM, am);
+        assertXMLEquals(expectedChildElementsDOM, am);
     }
 
 }

@@ -57,7 +57,7 @@ public class PGPKeyIDTest extends XMLObjectProviderBaseTestCase {
         PGPKeyID pgpElement = (PGPKeyID) buildXMLObject(PGPKeyID.DEFAULT_ELEMENT_NAME);
         pgpElement.setValue(expectedStringContent);
         
-        assertEquals(expectedDOM, pgpElement);
+        assertXMLEquals(expectedDOM, pgpElement);
     }
 
 }

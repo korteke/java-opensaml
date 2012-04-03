@@ -64,7 +64,7 @@ public class SPKIDataTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementMarshall() {
         SPKIData spkiData = (SPKIData) buildXMLObject(SPKIData.DEFAULT_ELEMENT_NAME);
         
-        assertEquals(expectedDOM, spkiData);
+        assertXMLEquals(expectedDOM, spkiData);
     }
 
     /** {@inheritDoc} */
@@ -76,7 +76,7 @@ public class SPKIDataTest extends XMLObjectProviderBaseTestCase {
         spkiData.getXMLObjects().add(buildXMLObject(SPKISexp.DEFAULT_ELEMENT_NAME));
         spkiData.getXMLObjects().add(buildXMLObject(SimpleXMLObject.ELEMENT_NAME));
         
-        assertEquals(expectedChildElementsDOM, spkiData);
+        assertXMLEquals(expectedChildElementsDOM, spkiData);
     }
 
 }

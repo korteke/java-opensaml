@@ -17,14 +17,14 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.saml2.core.StatusMessage;
 
 /**
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.core.impl.StatusMessageImpl}.
  */
-public class StatusMessageTest extends BaseSAMLObjectProviderTestCase {
+public class StatusMessageTest extends XMLObjectProviderBaseTestCase {
     
    /** The expected message*/ 
     protected String expectedMessage;
@@ -51,7 +51,7 @@ public class StatusMessageTest extends BaseSAMLObjectProviderTestCase {
         
         message.setMessage(expectedMessage);
         
-        assertEquals(expectedDOM, message);
+        assertXMLEquals(expectedDOM, message);
     }
 
     /** {@inheritDoc} */

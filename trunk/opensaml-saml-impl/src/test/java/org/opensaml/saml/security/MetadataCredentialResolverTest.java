@@ -28,7 +28,7 @@ import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
 import org.opensaml.core.config.ConfigurationService;
-import org.opensaml.saml.common.BaseTestCase;
+import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.saml.common.SAMLTestHelper;
 import org.opensaml.saml.saml2.metadata.EntitiesDescriptor;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
@@ -53,7 +53,7 @@ import org.w3c.dom.Document;
 /**
  * Testing the metadata credential resolver.
  */
-public class MetadataCredentialResolverTest extends BaseTestCase {
+public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
     
     private String idpRSAPubKeyName = "IDP-SSO-RSA-Key";
     private RSAPublicKey idpRSAPubKey;
@@ -162,7 +162,7 @@ public class MetadataCredentialResolverTest extends BaseTestCase {
         idpRSACert = SecurityHelper.buildJavaX509Cert(idpRSACertBase64);
         SecurityHelper.buildJavaX509Cert(keyAuthorityCertBase64);
         
-        Document mdDoc = parser.parse(MetadataCredentialResolverTest.class.getResourceAsStream(mdFileName));
+        Document mdDoc = parserPool.parse(MetadataCredentialResolverTest.class.getResourceAsStream(mdFileName));
         
         mdProvider = new DOMMetadataProvider(mdDoc.getDocumentElement());
         mdProvider.initialize();

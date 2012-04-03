@@ -17,7 +17,7 @@
 
 package org.opensaml.saml.ext.saml1md.impl;
 
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.ext.saml1md.SourceID;
 import org.opensaml.saml.ext.saml1md.impl.SourceIDBuilder;
 import org.opensaml.saml.ext.saml1md.impl.SourceIDImpl;
@@ -25,7 +25,7 @@ import org.opensaml.saml.ext.saml1md.impl.SourceIDImpl;
 /**
  * Tests {@link SourceIDImpl}
  */
-public class SourceIDTest extends BaseSAMLObjectProviderTestCase {
+public class SourceIDTest extends XMLObjectProviderBaseTestCase {
 
     /** Expected source ID value */
     private String expectedValue;
@@ -50,7 +50,7 @@ public class SourceIDTest extends BaseSAMLObjectProviderTestCase {
         SourceID sourceID = builder.buildObject();
         sourceID.setValue(expectedValue);
 
-        assertEquals(expectedDOM, sourceID);
+        assertXMLEquals(expectedDOM, sourceID);
     }
 
     /** {@inheritDoc} */

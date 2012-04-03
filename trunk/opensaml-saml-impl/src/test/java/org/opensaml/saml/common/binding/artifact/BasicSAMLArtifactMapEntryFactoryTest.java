@@ -17,7 +17,7 @@
 
 package org.opensaml.saml.common.binding.artifact;
 
-import org.opensaml.saml.common.BaseTestCase;
+import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.binding.artifact.BasicSAMLArtifactMapEntry;
 import org.opensaml.saml.common.binding.artifact.BasicSAMLArtifactMapEntryFactory;
@@ -28,7 +28,7 @@ import org.opensaml.saml.saml1.core.Response;
 /**
  * Test the basic SAML artifact map entry factory.
  */
-public class BasicSAMLArtifactMapEntryFactoryTest extends BaseTestCase {
+public class BasicSAMLArtifactMapEntryFactoryTest extends XMLObjectBaseTestCase {
     
     private BasicSAMLArtifactMapEntryFactory factory;
     private SAMLObject samlObject;

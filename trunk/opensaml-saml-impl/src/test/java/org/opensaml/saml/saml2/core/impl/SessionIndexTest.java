@@ -20,13 +20,13 @@
  */
 package org.opensaml.saml.saml2.core.impl;
 
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.saml2.core.SessionIndex;
 
 /**
  *
  */
-public class SessionIndexTest extends BaseSAMLObjectProviderTestCase {
+public class SessionIndexTest extends XMLObjectProviderBaseTestCase {
     
     /** Expected element content */
     private String expectedSessionIndex;
@@ -61,6 +61,6 @@ public class SessionIndexTest extends BaseSAMLObjectProviderTestCase {
         
         si.setSessionIndex(expectedSessionIndex);
         
-        assertEquals(expectedDOM, si);
+        assertXMLEquals(expectedDOM, si);
     }
 }

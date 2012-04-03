@@ -47,7 +47,7 @@ public class SAML2AuthnRequestsSignedSecurityPolicyRuleTest
         super.setUp();
         
         String mdfile = "/data/org/opensaml/saml/saml2/binding/Metadata-AuthnRequestsSigned.xml";
-        Document mdDoc = parser.parse(SAML2AuthnRequestsSignedSecurityPolicyRuleTest.class.getResourceAsStream(mdfile));
+        Document mdDoc = parserPool.parse(SAML2AuthnRequestsSignedSecurityPolicyRuleTest.class.getResourceAsStream(mdfile));
         DOMMetadataProvider metadataProvider = new DOMMetadataProvider(mdDoc.getDocumentElement());
         metadataProvider.initialize();
         

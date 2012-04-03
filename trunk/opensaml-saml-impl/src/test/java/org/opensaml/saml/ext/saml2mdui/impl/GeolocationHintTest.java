@@ -22,7 +22,7 @@ package org.opensaml.saml.ext.saml2mdui.impl;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.ext.saml2mdui.GeolocationHint;
 import org.opensaml.saml.ext.saml2mdui.UIInfo;
 
@@ -30,7 +30,7 @@ import org.opensaml.saml.ext.saml2mdui.UIInfo;
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml2.samlext.saml2mdui.GeolocationHint}.
  */
-public class GeolocationHintTest extends BaseSAMLObjectProviderTestCase {
+public class GeolocationHintTest extends XMLObjectProviderBaseTestCase {
     
     /** Expected name. */
     private String expectedHint;
@@ -65,6 +65,6 @@ public class GeolocationHintTest extends BaseSAMLObjectProviderTestCase {
         
         hint.setHint(expectedHint);
 
-        assertEquals(expectedDOM, hint);
+        assertXMLEquals(expectedDOM, hint);
     }
 }

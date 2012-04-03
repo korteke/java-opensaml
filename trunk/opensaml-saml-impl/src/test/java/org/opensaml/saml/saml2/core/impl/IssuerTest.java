@@ -19,14 +19,14 @@ package org.opensaml.saml.saml2.core.impl;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.Issuer;
 
 /**
  * Test case for creating, marshalling, and unmarshalling {@link org.opensaml.saml.saml2.core.impl.IssuerImpl}.
  */
-public class IssuerTest extends BaseSAMLObjectProviderTestCase {
+public class IssuerTest extends XMLObjectProviderBaseTestCase {
 
     /** Expected Issuer value */
     protected String expectedIssuer;
@@ -62,7 +62,7 @@ public class IssuerTest extends BaseSAMLObjectProviderTestCase {
         Issuer issuer = (Issuer) buildXMLObject(qname);
 
         issuer.setValue(expectedIssuer);
-        assertEquals(expectedDOM, issuer);
+        assertXMLEquals(expectedDOM, issuer);
     }
 
     /** {@inheritDoc} */

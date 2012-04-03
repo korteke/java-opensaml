@@ -57,7 +57,7 @@ public class PublicTest extends XMLObjectProviderBaseTestCase {
         Public cbType = (Public) buildXMLObject(Public.DEFAULT_ELEMENT_NAME);
         cbType.setValue(expectedCryptoBinaryContent);
         
-        assertEquals(expectedDOM, cbType);
+        assertXMLEquals(expectedDOM, cbType);
     }
 
 }

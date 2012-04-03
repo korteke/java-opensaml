@@ -66,7 +66,7 @@ public class ResponseTest extends StatusResponseTestBase {
         
         super.populateRequiredAttributes(resp);
         
-        assertEquals(expectedDOM, resp);
+        assertXMLEquals(expectedDOM, resp);
     }
 
     /** {@inheritDoc} */
@@ -78,7 +78,7 @@ public class ResponseTest extends StatusResponseTestBase {
         super.populateRequiredAttributes(resp);
         super.populateOptionalAttributes(resp);
         
-        assertEquals(expectedOptionalAttributesDOM, resp);
+        assertXMLEquals(expectedOptionalAttributesDOM, resp);
     }
 
     /** {@inheritDoc} */
@@ -93,7 +93,7 @@ public class ResponseTest extends StatusResponseTestBase {
         resp.getEncryptedAssertions().add((EncryptedAssertion) buildXMLObject(EncryptedAssertion.DEFAULT_ELEMENT_NAME));
         resp.getAssertions().add((Assertion) buildXMLObject(Assertion.DEFAULT_ELEMENT_NAME));
         
-        assertEquals(expectedChildElementsDOM, resp);
+        assertXMLEquals(expectedChildElementsDOM, resp);
     }
 
     /** {@inheritDoc} */

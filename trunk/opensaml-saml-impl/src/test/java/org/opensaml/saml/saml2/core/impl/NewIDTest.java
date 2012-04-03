@@ -20,13 +20,13 @@
  */
 package org.opensaml.saml.saml2.core.impl;
 
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.saml2.core.NewID;
 
 /**
  * 
  */
-public class NewIDTest extends BaseSAMLObjectProviderTestCase {
+public class NewIDTest extends XMLObjectProviderBaseTestCase {
     
     /** Expected element content */
     private String expectedNewID;
@@ -59,6 +59,6 @@ public class NewIDTest extends BaseSAMLObjectProviderTestCase {
         
         newID.setNewID(expectedNewID);
         
-        assertEquals(expectedDOM, newID);
+        assertXMLEquals(expectedDOM, newID);
     }
 }

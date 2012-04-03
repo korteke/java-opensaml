@@ -19,7 +19,7 @@ package org.opensaml.saml.saml2.core.impl;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.Audience;
 import org.opensaml.saml.saml2.core.ProxyRestriction;
@@ -27,7 +27,7 @@ import org.opensaml.saml.saml2.core.ProxyRestriction;
 /**
  * Test case for creating, marshalling, and unmarshalling {@link org.opensaml.saml.saml2.core.impl.ProxyRestrictionImpl}.
  */
-public class ProxyRestrictionTest extends BaseSAMLObjectProviderTestCase {
+public class ProxyRestrictionTest extends XMLObjectProviderBaseTestCase {
 
     /** Expected proxy Count */
     protected int expectedCount = 5;
@@ -66,7 +66,7 @@ public class ProxyRestrictionTest extends BaseSAMLObjectProviderTestCase {
 
         proxyRestriction.setProxyCount(expectedCount);
 
-        assertEquals(expectedDOM, proxyRestriction);
+        assertXMLEquals(expectedDOM, proxyRestriction);
     }
 
     /** {@inheritDoc} */
@@ -90,6 +90,6 @@ public class ProxyRestrictionTest extends BaseSAMLObjectProviderTestCase {
             proxyRestriction.getAudiences().add((Audience) buildXMLObject(audienceQName));
         }
 
-        assertEquals(expectedChildElementsDOM, proxyRestriction);
+        assertXMLEquals(expectedChildElementsDOM, proxyRestriction);
     }
 }

@@ -22,7 +22,7 @@ package org.opensaml.saml.saml2.metadata.impl;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.metadata.OrganizationURL;
 
@@ -30,7 +30,7 @@ import org.opensaml.saml.saml2.metadata.OrganizationURL;
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.metadata.OrganizationURL}.
  */
-public class OrganizationURLTest extends BaseSAMLObjectProviderTestCase {
+public class OrganizationURLTest extends XMLObjectProviderBaseTestCase {
     
     /** Expected URL. */
     private String expectValue = "http://example.org";
@@ -61,7 +61,7 @@ public class OrganizationURLTest extends BaseSAMLObjectProviderTestCase {
         url.setValue(expectValue);
         url.setXMLLang(expectLang);
 
-        assertEquals(expectedDOM, url);
+        assertXMLEquals(expectedDOM, url);
     }
 
 }

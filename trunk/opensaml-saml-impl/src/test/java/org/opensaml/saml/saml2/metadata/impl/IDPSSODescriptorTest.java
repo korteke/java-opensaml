@@ -24,7 +24,7 @@ import javax.xml.namespace.QName;
 import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
 import org.opensaml.core.xml.schema.XSBooleanValue;
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.common.Extensions;
 import org.opensaml.saml.saml2.metadata.ArtifactResolutionService;
@@ -42,7 +42,7 @@ import org.opensaml.saml.saml2.metadata.SingleSignOnService;
 /**
  * 
  */
-public class IDPSSODescriptorTest extends BaseSAMLObjectProviderTestCase {
+public class IDPSSODescriptorTest extends XMLObjectProviderBaseTestCase {
 
     /** List of expected supported protocols */
     protected ArrayList<String> expectedSupportedProtocol;
@@ -128,7 +128,7 @@ public class IDPSSODescriptorTest extends BaseSAMLObjectProviderTestCase {
         }
         descriptor.setWantAuthnRequestsSigned(expectedWantAuthnReqSigned);
 
-        assertEquals(expectedDOM, descriptor);
+        assertXMLEquals(expectedDOM, descriptor);
     }
 
     public void testSingleElementOptionalAttributesMarshall() {
@@ -144,7 +144,7 @@ public class IDPSSODescriptorTest extends BaseSAMLObjectProviderTestCase {
         descriptor.setErrorURL(expectedErrorURL);
         descriptor.setWantAuthnRequestsSigned(expectedWantAuthnReqSigned);
 
-        assertEquals(expectedOptionalAttributesDOM, descriptor);
+        assertXMLEquals(expectedOptionalAttributesDOM, descriptor);
     }
 
     /** {@inheritDoc} */
@@ -209,7 +209,7 @@ public class IDPSSODescriptorTest extends BaseSAMLObjectProviderTestCase {
         for (int i = 0; i < 3; i++) {
             descriptor.getAttributeProfiles().add((AttributeProfile) buildXMLObject(attributeProlfileQName));
         }
-        assertEquals(expectedChildElementsDOM, descriptor);
+        assertXMLEquals(expectedChildElementsDOM, descriptor);
     }
     
     /**

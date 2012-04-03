@@ -21,7 +21,7 @@ import java.io.File;
 import java.net.URL;
 import java.util.List;
 
-import org.opensaml.saml.common.BaseTestCase;
+import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.saml.saml2.metadata.EntitiesDescriptor;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.opensaml.saml.saml2.metadata.IDPSSODescriptor;
@@ -31,7 +31,7 @@ import org.opensaml.saml.saml2.metadata.provider.FilesystemMetadataProvider;
 import org.opensaml.saml.saml2.metadata.provider.MetadataProviderException;
 import org.opensaml.saml.saml2.metadata.provider.SchemaValidationFilter;
 
-public class ChainingMetadataProviderTest extends BaseTestCase {
+public class ChainingMetadataProviderTest extends XMLObjectBaseTestCase {
 
     private ChainingMetadataProvider metadataProvider;
 
@@ -55,7 +55,7 @@ public class ChainingMetadataProviderTest extends BaseTestCase {
                 .getResource("/data/org/opensaml/saml/saml2/metadata/InCommon-metadata.xml");
         File mdFile = new File(mdURL.toURI());
         FilesystemMetadataProvider fileProvider = new FilesystemMetadataProvider(mdFile);
-        fileProvider.setParserPool(parser);
+        fileProvider.setParserPool(parserPool);
         fileProvider.initialize();
         metadataProvider.addMetadataProvider(fileProvider);
 
@@ -63,7 +63,7 @@ public class ChainingMetadataProviderTest extends BaseTestCase {
                 .getResource("/data/org/opensaml/saml/saml2/metadata/metadata.switchaai_signed.xml");
         File mdFile2 = new File(mdURL2.toURI());
         FilesystemMetadataProvider fileProvider2 = new FilesystemMetadataProvider(mdFile2);
-        fileProvider2.setParserPool(parser);
+        fileProvider2.setParserPool(parserPool);
         fileProvider2.initialize();
         metadataProvider.addMetadataProvider(fileProvider2);
     }

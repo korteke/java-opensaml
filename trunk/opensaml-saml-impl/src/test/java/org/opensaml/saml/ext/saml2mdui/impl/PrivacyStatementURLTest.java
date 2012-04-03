@@ -22,7 +22,7 @@ package org.opensaml.saml.ext.saml2mdui.impl;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.ext.saml2mdui.PrivacyStatementURL;
 import org.opensaml.saml.ext.saml2mdui.UIInfo;
 
@@ -30,7 +30,7 @@ import org.opensaml.saml.ext.saml2mdui.UIInfo;
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.metadata.OrganizationName}.
  */
-public class PrivacyStatementURLTest extends BaseSAMLObjectProviderTestCase {
+public class PrivacyStatementURLTest extends XMLObjectProviderBaseTestCase {
     
     /** Expected name. */
     protected String expectValue="https://example.org/Privacy";
@@ -64,6 +64,6 @@ public class PrivacyStatementURLTest extends BaseSAMLObjectProviderTestCase {
         url.setValue(expectValue);
         url.setXMLLang(expectLang);
 
-        assertEquals(expectedDOM, url);
+        assertXMLEquals(expectedDOM, url);
     }
 }

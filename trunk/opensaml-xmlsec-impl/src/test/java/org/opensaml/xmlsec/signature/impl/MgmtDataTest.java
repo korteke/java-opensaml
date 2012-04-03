@@ -57,7 +57,7 @@ public class MgmtDataTest extends XMLObjectProviderBaseTestCase {
         MgmtData keyName = (MgmtData) buildXMLObject(MgmtData.DEFAULT_ELEMENT_NAME);
         keyName.setValue(expectedStringContent);
         
-        assertEquals(expectedDOM, keyName);
+        assertXMLEquals(expectedDOM, keyName);
     }
 
 }

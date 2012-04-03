@@ -22,14 +22,14 @@ package org.opensaml.saml.saml1.core.impl;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml1.core.NameIdentifier;
 
 /**
  * Test case for NameIdentifier
  */
-public class NameIdentifierTest extends BaseSAMLObjectProviderTestCase {
+public class NameIdentifierTest extends XMLObjectProviderBaseTestCase {
 
     /** name used to generate objects */
     private final QName qname;
@@ -74,7 +74,7 @@ public class NameIdentifierTest extends BaseSAMLObjectProviderTestCase {
     /** {@inheritDoc} */
 
     public void testSingleElementMarshall() {
-        assertEquals(expectedDOM, buildXMLObject(qname));
+        assertXMLEquals(expectedDOM, buildXMLObject(qname));
     }
 
     /** {@inheritDoc} */
@@ -86,6 +86,6 @@ public class NameIdentifierTest extends BaseSAMLObjectProviderTestCase {
         nameIdentifier.setNameIdentifier(expectedNameIdentifier);
         nameIdentifier.setNameQualifier(expectedNameQualifier);
         
-        assertEquals(expectedOptionalAttributesDOM, nameIdentifier);
+        assertXMLEquals(expectedOptionalAttributesDOM, nameIdentifier);
     }
 }

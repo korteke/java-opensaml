@@ -57,7 +57,7 @@ public class X509CertificateTest extends XMLObjectProviderBaseTestCase {
         X509Certificate x509Element = (X509Certificate) buildXMLObject(X509Certificate.DEFAULT_ELEMENT_NAME);
         x509Element.setValue(expectedStringContent);
         
-        assertEquals(expectedDOM, x509Element);
+        assertXMLEquals(expectedDOM, x509Element);
     }
 
 }

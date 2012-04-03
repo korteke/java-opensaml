@@ -19,14 +19,14 @@ package org.opensaml.saml.saml2.core.impl;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.NameID;
 
 /**
  * Test case for creating, marshalling, and unmarshalling {@link org.opensaml.saml.saml2.core.impl.NameIDImpl}.
  */
-public class NameIDTest extends BaseSAMLObjectProviderTestCase {
+public class NameIDTest extends XMLObjectProviderBaseTestCase {
 
     /** Expected Name value */
     private String expectedName;
@@ -94,7 +94,7 @@ public class NameIDTest extends BaseSAMLObjectProviderTestCase {
         NameID nameID = (NameID) buildXMLObject(qname);
 
         nameID.setValue(expectedName);
-        assertEquals(expectedDOM, nameID);
+        assertXMLEquals(expectedDOM, nameID);
     }
 
     /** {@inheritDoc} */
@@ -107,6 +107,6 @@ public class NameIDTest extends BaseSAMLObjectProviderTestCase {
         nameID.setSPNameQualifier(expectedSPNameQualifier);
         nameID.setFormat(expectedFormat);
         nameID.setSPProvidedID(expectedSPID);
-        assertEquals(expectedOptionalAttributesDOM, nameID);
+        assertXMLEquals(expectedOptionalAttributesDOM, nameID);
     }
 }

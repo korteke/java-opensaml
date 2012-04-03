@@ -69,7 +69,7 @@ public class CipherReferenceTest extends XMLObjectProviderBaseTestCase {
         
         cr.setURI(expectedURI);
         
-        assertEquals(expectedDOM, cr);
+        assertXMLEquals(expectedDOM, cr);
     }
 
     /** {@inheritDoc} */
@@ -79,7 +79,7 @@ public class CipherReferenceTest extends XMLObjectProviderBaseTestCase {
         cr.setURI(expectedURI);
         cr.setTransforms((Transforms) buildXMLObject(Transforms.DEFAULT_ELEMENT_NAME));
         
-        assertEquals(expectedChildElementsDOM, cr);
+        assertXMLEquals(expectedChildElementsDOM, cr);
     }
 
 }

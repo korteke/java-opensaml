@@ -91,7 +91,7 @@ public class OriginatorKeyInfoTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementMarshall() {
         OriginatorKeyInfo keyInfo = (OriginatorKeyInfo) buildXMLObject(OriginatorKeyInfo.DEFAULT_ELEMENT_NAME);
         
-        assertEquals(expectedDOM, keyInfo);
+        assertXMLEquals(expectedDOM, keyInfo);
     }
 
     /** {@inheritDoc} */
@@ -100,7 +100,7 @@ public class OriginatorKeyInfoTest extends XMLObjectProviderBaseTestCase {
         
         keyInfo.setID(expectedID);
         
-        assertEquals(expectedOptionalAttributesDOM, keyInfo);
+        assertXMLEquals(expectedOptionalAttributesDOM, keyInfo);
     }
 
     /** {@inheritDoc} */
@@ -121,7 +121,7 @@ public class OriginatorKeyInfoTest extends XMLObjectProviderBaseTestCase {
         keyInfo.getXMLObjects().add(buildXMLObject(MgmtData.DEFAULT_ELEMENT_NAME));
         keyInfo.getXMLObjects().add(buildXMLObject(SimpleXMLObject.ELEMENT_NAME));
         
-        assertEquals(expectedChildElementsDOM, keyInfo);
+        assertXMLEquals(expectedChildElementsDOM, keyInfo);
     }
 
 }

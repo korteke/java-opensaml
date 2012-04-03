@@ -22,7 +22,7 @@ package org.opensaml.saml.saml2.core.impl;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.StatusCode;
 
@@ -30,7 +30,7 @@ import org.opensaml.saml.saml2.core.StatusCode;
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.core.impl.StatusCodeImpl}.
  */
-public class StatusCodeTest extends BaseSAMLObjectProviderTestCase {
+public class StatusCodeTest extends XMLObjectProviderBaseTestCase {
     
     /** Expected Value attribute value*/
     private String expectedValue;
@@ -57,7 +57,7 @@ public class StatusCodeTest extends BaseSAMLObjectProviderTestCase {
         
         statusCode.setValue(expectedValue);
         
-        assertEquals(expectedDOM, statusCode);
+        assertXMLEquals(expectedDOM, statusCode);
 
     }
 
@@ -68,7 +68,7 @@ public class StatusCodeTest extends BaseSAMLObjectProviderTestCase {
         QName statusCodeQName = new QName(SAMLConstants.SAML20P_NS, StatusCode.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
         statusCode.setStatusCode((StatusCode) buildXMLObject(statusCodeQName));
         
-        assertEquals(expectedChildElementsDOM, statusCode);
+        assertXMLEquals(expectedChildElementsDOM, statusCode);
     }
 
 

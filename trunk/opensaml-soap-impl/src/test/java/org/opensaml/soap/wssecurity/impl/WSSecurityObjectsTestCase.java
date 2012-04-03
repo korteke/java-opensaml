@@ -17,14 +17,12 @@
 
 package org.opensaml.soap.wssecurity.impl;
 
-import java.io.InputStream;
 import java.util.List;
 
 import org.custommonkey.xmlunit.Diff;
 import org.custommonkey.xmlunit.XMLAssert;
 import org.joda.time.DateTime;
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.core.xml.config.XMLConfigurator;
 import org.opensaml.core.xml.io.Marshaller;
 import org.opensaml.soap.WSBaseTestCase;
 import org.opensaml.soap.wssecurity.BinarySecurityToken;
@@ -53,19 +51,6 @@ import org.w3c.dom.Element;
 public class WSSecurityObjectsTestCase extends WSBaseTestCase {
 
     public Logger log= LoggerFactory.getLogger(WSSecurityObjectsTestCase.class);
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.soap.WSBaseTestCase#configureWS()
-     */
-    @Override
-    protected void configureWS() throws Exception {
-        // load ws-security config
-        InputStream is= getClass().getResourceAsStream("/wssecurity-config.xml");
-        XMLConfigurator configurator= new XMLConfigurator();
-        configurator.load(is);
-    }
 
     protected void unmarshallAndMarshall(String filename) throws Exception {
         // TODO implementation
@@ -229,7 +214,7 @@ public class WSSecurityObjectsTestCase extends WSBaseTestCase {
         XMLAssert.assertXMLIdentical(new Diff(refDocument, document), true);
 
         // unmarshall directly from file
-        UsernameToken ut= unmarshallXML("/data/org/opensaml/soap/wssecurity/impl/UsernameToken.xml");
+        UsernameToken ut= unmarshallElement("/data/org/opensaml/soap/wssecurity/impl/UsernameToken.xml");
         assertEquals("test", ut.getUsername().getValue());
         Password utPassword = (Password) ut.getUnknownXMLObjects(Password.ELEMENT_NAME).get(0);
         assertNotNull(utPassword);

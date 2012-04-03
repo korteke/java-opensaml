@@ -60,7 +60,7 @@ public class AttributeQueryTest extends SubjectQueryTestBase {
         
         super.populateRequiredAttributes(query);
         
-        assertEquals(expectedDOM, query);
+        assertXMLEquals(expectedDOM, query);
     }
     
     
@@ -73,7 +73,7 @@ public class AttributeQueryTest extends SubjectQueryTestBase {
         super.populateRequiredAttributes(query);
         super.populateOptionalAttributes(query);
         
-        assertEquals(expectedOptionalAttributesDOM, query);
+        assertXMLEquals(expectedOptionalAttributesDOM, query);
     }
 
 
@@ -90,7 +90,7 @@ public class AttributeQueryTest extends SubjectQueryTestBase {
            query.getAttributes().add((Attribute) buildXMLObject(attributeQName));
        }
       
-       assertEquals(expectedChildElementsDOM, query);
+       assertXMLEquals(expectedChildElementsDOM, query);
     }
 
 

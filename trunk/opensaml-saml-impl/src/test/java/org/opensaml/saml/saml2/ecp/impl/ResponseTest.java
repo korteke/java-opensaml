@@ -17,13 +17,13 @@
 
 package org.opensaml.saml.saml2.ecp.impl;
 
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.saml2.ecp.Response;
 
 /**
  * Test case for creating, marshalling, and unmarshalling {@link Response}.
  */
-public class ResponseTest extends BaseSAMLObjectProviderTestCase {
+public class ResponseTest extends XMLObjectProviderBaseTestCase {
     
     private String expectedACSURL;
     
@@ -65,7 +65,7 @@ public class ResponseTest extends BaseSAMLObjectProviderTestCase {
         response.setSOAP11MustUnderstand(expectedSOAP11MustUnderstand);
         response.setAssertionConsumerServiceURL(expectedACSURL);
         
-        assertEquals(expectedDOM, response);
+        assertXMLEquals(expectedDOM, response);
     }
 
 }

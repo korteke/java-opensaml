@@ -21,7 +21,7 @@ import javax.xml.namespace.QName;
 
 import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.AudienceRestriction;
 import org.opensaml.saml.saml2.core.Condition;
@@ -32,7 +32,7 @@ import org.opensaml.saml.saml2.core.ProxyRestriction;
 /**
  * Test case for creating, marshalling, and unmarshalling {@link org.opensaml.saml.saml2.core.impl.ConditionsImpl}.
  */
-public class ConditionsTest extends BaseSAMLObjectProviderTestCase {
+public class ConditionsTest extends XMLObjectProviderBaseTestCase {
 
     /** Expected NotBefore value */
     private DateTime expectedNotBefore;
@@ -86,7 +86,7 @@ public class ConditionsTest extends BaseSAMLObjectProviderTestCase {
         Conditions conditions = (Conditions) buildXMLObject(qname);
 
         conditions.setNotBefore(expectedNotBefore);
-        assertEquals(expectedDOM, conditions);
+        assertXMLEquals(expectedDOM, conditions);
     }
 
     /** {@inheritDoc} */
@@ -97,7 +97,7 @@ public class ConditionsTest extends BaseSAMLObjectProviderTestCase {
         conditions.setNotBefore(expectedNotBefore);
         conditions.setNotOnOrAfter(expectedNotOnOrAfter);
 
-        assertEquals(expectedOptionalAttributesDOM, conditions);
+        assertXMLEquals(expectedOptionalAttributesDOM, conditions);
     }
 
     /** {@inheritDoc} */
@@ -126,6 +126,6 @@ public class ConditionsTest extends BaseSAMLObjectProviderTestCase {
         QName proxyRestrictionQName = new QName(SAMLConstants.SAML20_NS, ProxyRestriction.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
         conditions.getConditions().add((Condition) buildXMLObject(proxyRestrictionQName));
         
-        assertEquals(expectedChildElementsDOM, conditions);
+        assertXMLEquals(expectedChildElementsDOM, conditions);
     }
 }

@@ -64,7 +64,7 @@ public class CipherDataTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementMarshall() {
         CipherData cipherData = (CipherData) buildXMLObject(CipherData.DEFAULT_ELEMENT_NAME);
         
-        assertEquals(expectedDOM, cipherData);
+        assertXMLEquals(expectedDOM, cipherData);
     }
 
     /** {@inheritDoc} */
@@ -74,7 +74,7 @@ public class CipherDataTest extends XMLObjectProviderBaseTestCase {
         cipherData.setCipherValue((CipherValue) buildXMLObject(CipherValue.DEFAULT_ELEMENT_NAME));
         cipherData.setCipherReference((CipherReference) buildXMLObject(CipherReference.DEFAULT_ELEMENT_NAME));
         
-        assertEquals(expectedChildElementsDOM, cipherData);
+        assertXMLEquals(expectedChildElementsDOM, cipherData);
     }
 
 }

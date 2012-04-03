@@ -19,6 +19,7 @@ package org.opensaml.saml.common;
 
 import org.custommonkey.xmlunit.Diff;
 import org.custommonkey.xmlunit.XMLAssert;
+import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.io.Marshaller;
 import org.opensaml.core.xml.io.MarshallerFactory;
 import org.opensaml.core.xml.io.MarshallingException;
@@ -39,7 +40,7 @@ import org.w3c.dom.Element;
 /**
  * Round trip messaging test case.
  */
-public class RoundTripTest extends BaseTestCase {
+public class RoundTripTest extends XMLObjectBaseTestCase {
     
     /** Organization to marshall */
     private Organization organization;

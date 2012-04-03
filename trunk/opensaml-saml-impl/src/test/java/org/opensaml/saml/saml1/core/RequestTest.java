@@ -17,12 +17,12 @@
 
 package org.opensaml.saml.saml1.core;
 
-import org.opensaml.saml.common.BaseTestCase;
+import org.opensaml.core.xml.XMLObjectBaseTestCase;
 
 /**
  * Tests unmarshalling and marshalling for various request messages.
  */
-public class RequestTest extends BaseTestCase {
+public class RequestTest extends XMLObjectBaseTestCase {
 
     /**
      * Constructor

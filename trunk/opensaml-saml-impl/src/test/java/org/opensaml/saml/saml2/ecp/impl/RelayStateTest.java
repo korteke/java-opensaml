@@ -17,13 +17,13 @@
 
 package org.opensaml.saml.saml2.ecp.impl;
 
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.saml2.ecp.RelayState;
 
 /**
  * Test case for creating, marshalling, and unmarshalling {@link RelayState}.
  */
-public class RelayStateTest extends BaseSAMLObjectProviderTestCase {
+public class RelayStateTest extends XMLObjectProviderBaseTestCase {
     
     private String expectedContent;
     
@@ -65,7 +65,7 @@ public class RelayStateTest extends BaseSAMLObjectProviderTestCase {
         relayState.setSOAP11MustUnderstand(expectedSOAP11MustUnderstand);
         relayState.setValue(expectedContent);
         
-        assertEquals(expectedDOM, relayState);
+        assertXMLEquals(expectedDOM, relayState);
     }
 
 }

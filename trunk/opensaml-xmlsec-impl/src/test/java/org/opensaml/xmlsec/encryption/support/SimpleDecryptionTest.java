@@ -144,7 +144,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
             fail("Error on decryption of EncryptedData to element: " + e);
         }
         
-        assertEquals(targetDOM, decryptedXMLObject);
+        assertXMLEquals(targetDOM, decryptedXMLObject);
         
     }
     
@@ -168,7 +168,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
             fail("Error on decryption of EncryptedData to element: " + e);
         }
         
-        assertEquals(targetDOM, decryptedXMLObject);
+        assertXMLEquals(targetDOM, decryptedXMLObject);
         
     }
     

@@ -19,14 +19,14 @@ package org.opensaml.saml.saml2.core.impl;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.AssertionURIRef;
 
 /**
  * Test case for creating, marshalling, and unmarshalling {@link org.opensaml.saml.saml2.core.impl.AssertionURIRefImpl}.
  */
-public class AssertionURIRefTest extends BaseSAMLObjectProviderTestCase {
+public class AssertionURIRefTest extends XMLObjectProviderBaseTestCase {
 
     /** Expected Assertion URI value */
     protected String expectedAssertionURI;
@@ -63,7 +63,7 @@ public class AssertionURIRefTest extends BaseSAMLObjectProviderTestCase {
         AssertionURIRef assertionURIRef = (AssertionURIRef) buildXMLObject(qname);
 
         assertionURIRef.setAssertionURI(expectedAssertionURI);
-        assertEquals(expectedDOM, assertionURIRef);
+        assertXMLEquals(expectedDOM, assertionURIRef);
     }
 
     /** {@inheritDoc} */

@@ -68,7 +68,7 @@ public class DigestMethodTest extends XMLObjectProviderBaseTestCase {
         
         digestMethod.setAlgorithm(expectedAlgorithm);
         
-        assertEquals(expectedDOM, digestMethod);
+        assertXMLEquals(expectedDOM, digestMethod);
     }
 
     /** {@inheritDoc} */
@@ -80,7 +80,7 @@ public class DigestMethodTest extends XMLObjectProviderBaseTestCase {
         digestMethod.getUnknownXMLObjects().add( buildXMLObject(SimpleXMLObject.ELEMENT_NAME));
         digestMethod.getUnknownXMLObjects().add( buildXMLObject(SimpleXMLObject.ELEMENT_NAME));
         
-        assertEquals(expectedChildElementsDOM, digestMethod);
+        assertXMLEquals(expectedChildElementsDOM, digestMethod);
     }
 
 }

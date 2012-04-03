@@ -27,7 +27,7 @@ import javax.xml.namespace.QName;
 
 import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.common.Extensions;
 import org.opensaml.saml.saml2.metadata.AssertionIDRequestService;
@@ -38,7 +38,7 @@ import org.opensaml.saml.saml2.metadata.PDPDescriptor;
 /**
  * Test case for creating, marshalling, and unmarshalling {@link org.opensaml.saml.saml2.metadata.impl.PDPDescriptorImpl}.
  */
-public class PDPDescriptorTest extends BaseSAMLObjectProviderTestCase {
+public class PDPDescriptorTest extends XMLObjectProviderBaseTestCase {
 
     /** List of expected supported protocols */
     protected ArrayList<String> expectedSupportedProtocol;
@@ -114,7 +114,7 @@ public class PDPDescriptorTest extends BaseSAMLObjectProviderTestCase {
             descriptor.addSupportedProtocol(protocol);
         }
 
-        assertEquals(expectedDOM, descriptor);
+        assertXMLEquals(expectedDOM, descriptor);
     }
 
     /** {@inheritDoc} */
@@ -130,7 +130,7 @@ public class PDPDescriptorTest extends BaseSAMLObjectProviderTestCase {
         descriptor.setValidUntil(expectedValidUntil);
         descriptor.setErrorURL(expectedErrorURL);
 
-        assertEquals(expectedOptionalAttributesDOM, descriptor);
+        assertXMLEquals(expectedOptionalAttributesDOM, descriptor);
     }
 
     /** {@inheritDoc} */
@@ -158,6 +158,6 @@ public class PDPDescriptorTest extends BaseSAMLObjectProviderTestCase {
                 SAMLConstants.SAML20MD_PREFIX);
         descriptor.getNameIDFormats().add((NameIDFormat) buildXMLObject(nameIDFormatQName));
 
-        assertEquals(expectedChildElementsDOM, descriptor);
+        assertXMLEquals(expectedChildElementsDOM, descriptor);
     }
 }

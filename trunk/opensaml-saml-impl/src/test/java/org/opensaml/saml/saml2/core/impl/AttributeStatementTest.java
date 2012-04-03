@@ -17,7 +17,7 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.saml2.core.Attribute;
 import org.opensaml.saml.saml2.core.AttributeStatement;
 import org.opensaml.saml.saml2.core.EncryptedAttribute;
@@ -25,7 +25,7 @@ import org.opensaml.saml.saml2.core.EncryptedAttribute;
 /**
  * Test case for creating, marshalling, and unmarshalling {@link org.opensaml.saml.saml2.core.impl.AttributeStatementImpl}.
  */
-public class AttributeStatementTest extends BaseSAMLObjectProviderTestCase {
+public class AttributeStatementTest extends XMLObjectProviderBaseTestCase {
 
     /** Count of Attribute subelements. */
     private int expectedAttributeCount = 3;
@@ -66,7 +66,7 @@ public class AttributeStatementTest extends BaseSAMLObjectProviderTestCase {
         AttributeStatement attributeStatement = 
             (AttributeStatement) buildXMLObject(AttributeStatement.DEFAULT_ELEMENT_NAME);
 
-        assertEquals(expectedDOM, attributeStatement);
+        assertXMLEquals(expectedDOM, attributeStatement);
     }
 
     /** {@inheritDoc} */
@@ -87,6 +87,6 @@ public class AttributeStatementTest extends BaseSAMLObjectProviderTestCase {
         attributeStatement.getAttributes()
             .add((Attribute) buildXMLObject(Attribute.DEFAULT_ELEMENT_NAME));
 
-        assertEquals(expectedChildElementsDOM, attributeStatement);
+        assertXMLEquals(expectedChildElementsDOM, attributeStatement);
     }
 }

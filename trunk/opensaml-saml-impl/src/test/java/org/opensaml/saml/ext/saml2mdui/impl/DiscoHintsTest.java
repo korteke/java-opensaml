@@ -23,7 +23,7 @@ package org.opensaml.saml.ext.saml2mdui.impl;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.mock.SimpleXMLObject;
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.ext.saml2mdui.DiscoHints;
 import org.opensaml.saml.ext.saml2mdui.DomainHint;
 import org.opensaml.saml.ext.saml2mdui.GeolocationHint;
@@ -34,7 +34,7 @@ import org.opensaml.saml.ext.saml2mdui.UIInfo;
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.metadata.OrganizationName}.
  */
-public class DiscoHintsTest extends BaseSAMLObjectProviderTestCase {
+public class DiscoHintsTest extends XMLObjectProviderBaseTestCase {
     
     /** Expected count of &lt;IPHint/&gt;. */
     private final int expectedIPHintCount = 2;
@@ -78,7 +78,7 @@ public class DiscoHintsTest extends BaseSAMLObjectProviderTestCase {
         
         DiscoHints hints = (DiscoHints) buildXMLObject(qname);
         
-        assertEquals(expectedDOM, hints);
+        assertXMLEquals(expectedDOM, hints);
     }
 
     /** {@inheritDoc} */
@@ -109,7 +109,7 @@ public class DiscoHintsTest extends BaseSAMLObjectProviderTestCase {
         
         hints.getDomainHints().add((DomainHint) buildXMLObject(DomainHint.DEFAULT_ELEMENT_NAME));
 
-        assertEquals(expectedChildElementsDOM, hints);   
+        assertXMLEquals(expectedChildElementsDOM, hints);   
     }
 
 }

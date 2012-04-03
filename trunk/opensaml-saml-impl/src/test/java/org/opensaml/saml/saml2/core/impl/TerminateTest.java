@@ -20,13 +20,13 @@
  */
 package org.opensaml.saml.saml2.core.impl;
 
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.saml2.core.Terminate;
 
 /**
  *
  */
-public class TerminateTest extends BaseSAMLObjectProviderTestCase {
+public class TerminateTest extends XMLObjectProviderBaseTestCase {
 
     /**
      * Constructor
@@ -47,6 +47,6 @@ public class TerminateTest extends BaseSAMLObjectProviderTestCase {
     public void testSingleElementMarshall() {
         Terminate term = (Terminate) buildXMLObject(Terminate.DEFAULT_ELEMENT_NAME);
         
-        assertEquals(expectedDOM, term);
+        assertXMLEquals(expectedDOM, term);
     }
 }

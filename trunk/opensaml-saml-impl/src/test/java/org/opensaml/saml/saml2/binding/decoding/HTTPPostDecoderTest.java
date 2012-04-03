@@ -24,7 +24,7 @@ import java.security.KeyPair;
 import net.shibboleth.utilities.java.support.codec.Base64Support;
 import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 
-import org.opensaml.saml.common.BaseTestCase;
+import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.binding.BasicSAMLMessageContext;
 import org.opensaml.saml.common.binding.decoding.SAMLMessageDecoder;
@@ -45,7 +45,7 @@ import org.springframework.mock.web.MockHttpServletRequest;
 /**
  * Test case for HTTP POST decoders.
  */
-public class HTTPPostDecoderTest extends BaseTestCase {
+public class HTTPPostDecoderTest extends XMLObjectBaseTestCase {
     
     private String authnRequestDestination = "https://idp.example.com/idp/sso";
     

@@ -19,7 +19,7 @@ package org.opensaml.saml.saml2.metadata.provider;
 
 import java.io.File;
 
-import org.opensaml.saml.common.BaseTestCase;
+import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.saml.saml2.metadata.EntitiesDescriptor;
 import org.opensaml.saml.saml2.metadata.provider.FileBackedHTTPMetadataProvider;
 import org.opensaml.saml.saml2.metadata.provider.HTTPMetadataProvider;
@@ -28,7 +28,7 @@ import org.opensaml.saml.saml2.metadata.provider.MetadataProviderException;
 /**
  * Test case for {@link FileBackedHTTPMetadataProvider}.
  */
-public class FileBackedHTTPMetadataProviderTest extends BaseTestCase {
+public class FileBackedHTTPMetadataProviderTest extends XMLObjectBaseTestCase {
 
     private String mdUrl;
 
@@ -47,7 +47,7 @@ public class FileBackedHTTPMetadataProviderTest extends BaseTestCase {
         badMDURL = "http://www.google.com/";
         backupFilePath = System.getProperty("java.io.tmpdir") + "metadata.xml";
         metadataProvider = new FileBackedHTTPMetadataProvider(mdUrl, 1000 * 5, backupFilePath);
-        metadataProvider.setParserPool(parser);
+        metadataProvider.setParserPool(parserPool);
         metadataProvider.initialize();
     }
 
@@ -71,7 +71,7 @@ public class FileBackedHTTPMetadataProviderTest extends BaseTestCase {
         // Test pulling it from the backup file
         FileBackedHTTPMetadataProvider badProvider = new FileBackedHTTPMetadataProvider(badMDURL, 1000 * 5,
                 backupFilePath);
-        badProvider.setParserPool(parser);
+        badProvider.setParserPool(parserPool);
         
         try{
             badProvider.initialize();
@@ -82,7 +82,7 @@ public class FileBackedHTTPMetadataProviderTest extends BaseTestCase {
         
         badProvider = new FileBackedHTTPMetadataProvider(badMDURL, 1000 * 5,
                 backupFilePath);
-        badProvider.setParserPool(parser);
+        badProvider.setParserPool(parserPool);
         badProvider.setFailFastInitialization(false);
         badProvider.initialize();
     }

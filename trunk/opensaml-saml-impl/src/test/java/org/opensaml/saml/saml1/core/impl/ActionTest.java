@@ -22,14 +22,14 @@ package org.opensaml.saml.saml1.core.impl;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml1.core.Action;
 
 /**
  * Test for {@link org.opensaml.saml.saml1.core.impl.ActionImpl}
  */
-public class ActionTest extends BaseSAMLObjectProviderTestCase {
+public class ActionTest extends XMLObjectProviderBaseTestCase {
 
     private final String expectedContents;
     private final String expectedNamespace;
@@ -67,7 +67,7 @@ public class ActionTest extends BaseSAMLObjectProviderTestCase {
     /** {@inheritDoc} */
 
     public void testSingleElementMarshall() {
-        assertEquals(expectedDOM, buildXMLObject(qname));
+        assertXMLEquals(expectedDOM, buildXMLObject(qname));
     }
 
     /** {@inheritDoc} */
@@ -76,6 +76,6 @@ public class ActionTest extends BaseSAMLObjectProviderTestCase {
         Action action =(Action) buildXMLObject(qname);
         action.setNamespace(expectedNamespace);
         action.setContents(expectedContents);
-        assertEquals(expectedOptionalAttributesDOM, action);
+        assertXMLEquals(expectedOptionalAttributesDOM, action);
     }
 }

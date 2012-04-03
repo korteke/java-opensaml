@@ -57,7 +57,7 @@ public class X509CRLTest extends XMLObjectProviderBaseTestCase {
         X509CRL x509Element = (X509CRL) buildXMLObject(X509CRL.DEFAULT_ELEMENT_NAME);
         x509Element.setValue(expectedStringContent);
         
-        assertEquals(expectedDOM, x509Element);
+        assertXMLEquals(expectedDOM, x509Element);
     }
 
 }

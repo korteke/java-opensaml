@@ -57,7 +57,7 @@ public class GeneratorTest extends XMLObjectProviderBaseTestCase {
         Generator cbType = (Generator) buildXMLObject(Generator.DEFAULT_ELEMENT_NAME);
         cbType.setValue(expectedCryptoBinaryContent);
         
-        assertEquals(expectedDOM, cbType);
+        assertXMLEquals(expectedDOM, cbType);
     }
 
 }

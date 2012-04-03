@@ -98,7 +98,7 @@ public class EncryptedDataTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementMarshall() {
         EncryptedData ed = (EncryptedData) buildXMLObject(EncryptedData.DEFAULT_ELEMENT_NAME);
         
-        assertEquals(expectedDOM, ed);
+        assertXMLEquals(expectedDOM, ed);
     }
 
     /** {@inheritDoc} */
@@ -110,7 +110,7 @@ public class EncryptedDataTest extends XMLObjectProviderBaseTestCase {
         ed.setCipherData((CipherData) buildXMLObject(CipherData.DEFAULT_ELEMENT_NAME));
         ed.setEncryptionProperties((EncryptionProperties) buildXMLObject(EncryptionProperties.DEFAULT_ELEMENT_NAME));
         
-        assertEquals(expectedChildElementsDOM, ed);
+        assertXMLEquals(expectedChildElementsDOM, ed);
     }
 
     /** {@inheritDoc} */
@@ -122,7 +122,7 @@ public class EncryptedDataTest extends XMLObjectProviderBaseTestCase {
         ed.setMimeType(expectedMimeType);
         ed.setEncoding(expectedEncoding);
         
-        assertEquals(expectedOptionalAttributesDOM, ed);
+        assertXMLEquals(expectedOptionalAttributesDOM, ed);
     }
     
     

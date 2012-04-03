@@ -61,7 +61,7 @@ public class AuthnQueryTest extends SubjectQueryTestBase {
         
         super.populateRequiredAttributes(query);
         
-        assertEquals(expectedDOM, query);
+        assertXMLEquals(expectedDOM, query);
     }
     
     /** {@inheritDoc} */
@@ -73,7 +73,7 @@ public class AuthnQueryTest extends SubjectQueryTestBase {
         super.populateOptionalAttributes(query);
         query.setSessionIndex(expectedSessionIndex);
         
-        assertEquals(expectedOptionalAttributesDOM, query);
+        assertXMLEquals(expectedOptionalAttributesDOM, query);
     }
 
     /** {@inheritDoc} */
@@ -86,7 +86,7 @@ public class AuthnQueryTest extends SubjectQueryTestBase {
         QName requestedAuthnContextQName = new QName(SAMLConstants.SAML20P_NS, RequestedAuthnContext.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
         query.setRequestedAuthnContext((RequestedAuthnContext) buildXMLObject(requestedAuthnContextQName));
         
-        assertEquals(expectedChildElementsDOM, query);
+        assertXMLEquals(expectedChildElementsDOM, query);
     }
 
 

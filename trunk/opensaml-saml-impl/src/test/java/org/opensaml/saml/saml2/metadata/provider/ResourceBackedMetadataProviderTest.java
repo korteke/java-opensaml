@@ -24,7 +24,7 @@ import java.util.Timer;
 
 import net.shibboleth.utilities.java.support.resource.FilesystemResource;
 
-import org.opensaml.saml.common.BaseTestCase;
+import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.opensaml.saml.saml2.metadata.IDPSSODescriptor;
 import org.opensaml.saml.saml2.metadata.RoleDescriptor;
@@ -32,7 +32,7 @@ import org.opensaml.saml.saml2.metadata.provider.MetadataProviderException;
 import org.opensaml.saml.saml2.metadata.provider.ResourceBackedMetadataProvider;
 
 /** Unit test for {@link ResourceBackedMetadataProvider}. */
-public class ResourceBackedMetadataProviderTest extends BaseTestCase {
+public class ResourceBackedMetadataProviderTest extends XMLObjectBaseTestCase {
 
     private ResourceBackedMetadataProvider metadataProvider;
 
@@ -53,7 +53,7 @@ public class ResourceBackedMetadataProviderTest extends BaseTestCase {
         mdResource.initialize();
 
         metadataProvider = new ResourceBackedMetadataProvider(new Timer(), mdResource);
-        metadataProvider.setParserPool(parser);
+        metadataProvider.setParserPool(parserPool);
         metadataProvider.setMaxRefreshDelay(500000);
         metadataProvider.initialize();
     }

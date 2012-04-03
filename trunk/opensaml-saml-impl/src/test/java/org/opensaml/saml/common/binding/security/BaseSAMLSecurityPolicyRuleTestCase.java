@@ -18,7 +18,7 @@
 package org.opensaml.saml.common.binding.security;
 
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.saml.common.BaseTestCase;
+import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.binding.BasicSAMLMessageContext;
 import org.opensaml.saml.common.binding.SAMLMessageContext;
@@ -34,7 +34,7 @@ import org.opensaml.ws.transport.InTransport;
  * @param <NameIDType> type of SAML context name identifier (here unused)
  */
 public abstract class BaseSAMLSecurityPolicyRuleTestCase<InboundMessageType extends SAMLObject, 
-    OutboundMessageType extends SAMLObject, NameIDType extends SAMLObject>  extends BaseTestCase {
+    OutboundMessageType extends SAMLObject, NameIDType extends SAMLObject>  extends XMLObjectBaseTestCase {
     
     /** The security policy rule to evaluate. */
     protected SecurityPolicyRule rule;

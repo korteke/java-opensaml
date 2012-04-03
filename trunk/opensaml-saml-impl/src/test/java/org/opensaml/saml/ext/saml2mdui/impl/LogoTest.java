@@ -22,7 +22,7 @@ package org.opensaml.saml.ext.saml2mdui.impl;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.ext.saml2mdui.Logo;
 import org.opensaml.saml.ext.saml2mdui.UIInfo;
 
@@ -30,7 +30,7 @@ import org.opensaml.saml.ext.saml2mdui.UIInfo;
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.metadata.OrganizationName}.
  */
-public class LogoTest extends BaseSAMLObjectProviderTestCase {
+public class LogoTest extends XMLObjectProviderBaseTestCase {
     
     /** Expected URL. */
     private final String expectedURL;
@@ -92,7 +92,7 @@ public class LogoTest extends BaseSAMLObjectProviderTestCase {
         logo.setWidth(expectedWidth);
         logo.setHeight(expectedHeight);
 
-        assertEquals(expectedDOM, logo);
+        assertXMLEquals(expectedDOM, logo);
     }
 
     /** {@inheritDoc} */
@@ -108,6 +108,6 @@ public class LogoTest extends BaseSAMLObjectProviderTestCase {
         logo.setHeight(expectedHeight);
         logo.setXMLLang(expectedLang);
 
-        assertEquals(expectedOptionalAttributesDOM, logo);
+        assertXMLEquals(expectedOptionalAttributesDOM, logo);
     }
 }

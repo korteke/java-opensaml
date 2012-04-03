@@ -25,7 +25,7 @@ import java.util.ArrayList;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml1.core.Attribute;
 import org.opensaml.saml.saml1.core.AttributeStatement;
@@ -34,7 +34,7 @@ import org.opensaml.saml.saml1.core.Subject;
 /**
  * Test for {@link org.opensaml.saml.saml1.core.AttributeStatement}
  */
-public class AttributeStatementTest extends BaseSAMLObjectProviderTestCase {
+public class AttributeStatementTest extends XMLObjectProviderBaseTestCase {
 
     /** name used to generate objects */
     private final QName qname;
@@ -86,7 +86,7 @@ public class AttributeStatementTest extends BaseSAMLObjectProviderTestCase {
     /** {@inheritDoc} */
 
     public void testSingleElementMarshall() {
-        assertEquals(expectedDOM, buildXMLObject(qname));
+        assertXMLEquals(expectedDOM, buildXMLObject(qname));
     }
 
     /** {@inheritDoc} */
@@ -102,6 +102,6 @@ public class AttributeStatementTest extends BaseSAMLObjectProviderTestCase {
             attributeStatement.getAttributes().add((Attribute) buildXMLObject(oqname));
         }
 
-        assertEquals(expectedChildElementsDOM, attributeStatement);
+        assertXMLEquals(expectedChildElementsDOM, attributeStatement);
     }
 }

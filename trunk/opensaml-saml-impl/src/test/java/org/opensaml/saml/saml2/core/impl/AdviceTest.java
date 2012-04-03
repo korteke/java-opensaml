@@ -17,7 +17,7 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.saml2.core.Advice;
 import org.opensaml.saml.saml2.core.Assertion;
 import org.opensaml.saml.saml2.core.AssertionIDRef;
@@ -27,7 +27,7 @@ import org.opensaml.saml.saml2.core.EncryptedAssertion;
 /**
  * Test case for creating, marshalling, and unmarshalling {@link org.opensaml.saml.saml2.core.impl.AdviceImpl}.
  */
-public class AdviceTest extends BaseSAMLObjectProviderTestCase {
+public class AdviceTest extends XMLObjectProviderBaseTestCase {
 
     /** Count of AssertionIDRef subelements */
     protected int assertionIDRefCount = 3;
@@ -75,7 +75,7 @@ public class AdviceTest extends BaseSAMLObjectProviderTestCase {
     public void testSingleElementMarshall() {
         Advice advice = (Advice) buildXMLObject(Advice.DEFAULT_ELEMENT_NAME);
 
-        assertEquals(expectedDOM, advice);
+        assertXMLEquals(expectedDOM, advice);
     }
 
     /** {@inheritDoc} */
@@ -93,6 +93,6 @@ public class AdviceTest extends BaseSAMLObjectProviderTestCase {
         advice.getChildren().add(buildXMLObject(Assertion.DEFAULT_ELEMENT_NAME));
         advice.getChildren().add(buildXMLObject(EncryptedAssertion.DEFAULT_ELEMENT_NAME));
 
-        assertEquals(expectedChildElementsDOM, advice);
+        assertXMLEquals(expectedChildElementsDOM, advice);
     }
 }

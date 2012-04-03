@@ -17,11 +17,8 @@
 
 package org.opensaml.soap.wspolicy.impl;
 
-import java.io.InputStream;
-
 import javax.xml.namespace.QName;
 
-import org.opensaml.core.xml.config.XMLConfigurator;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.schema.XSAny;
 import org.opensaml.core.xml.schema.impl.XSAnyBuilder;
@@ -51,12 +48,8 @@ public class WSPolicyObjectsTestCase extends WSBaseTestCase {
     private static final QName TEST_ELEMENT_QNAME = new QName("urn:test:ns", "WildcardTest", "wct");
 
     /** {@inheritDoc} */
-    protected void configureWS() throws Exception {
-        // load ws-policy config
-        InputStream is= getClass().getResourceAsStream("/wspolicy-config.xml");
-        XMLConfigurator configurator= new XMLConfigurator();
-        configurator.load(is);
-        
+    protected void setUp() throws Exception {
+        super.setUp();
         // register provider for Test supporting config
         XMLObjectProviderRegistrySupport.registerObjectProvider(TEST_ELEMENT_QNAME,  
                 new XSAnyBuilder(), new XSAnyMarshaller(), new XSAnyUnmarshaller());

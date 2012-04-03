@@ -21,7 +21,7 @@ import javax.xml.namespace.QName;
 
 import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.common.Extensions;
 import org.opensaml.saml.saml2.metadata.AffiliateMember;
@@ -33,7 +33,7 @@ import org.opensaml.xmlsec.signature.support.SignatureConstants;
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.metadata.impl.AffiliationDescriptorImpl}.
  */
-public class AffiliationDescriptorTest extends BaseSAMLObjectProviderTestCase {
+public class AffiliationDescriptorTest extends XMLObjectProviderBaseTestCase {
 
     /** Expected affiliationOwnerID value */
     protected String expectedOwnerID;
@@ -118,7 +118,7 @@ public class AffiliationDescriptorTest extends BaseSAMLObjectProviderTestCase {
 
         descriptor.setOwnerID(expectedOwnerID);
 
-        assertEquals(expectedDOM, descriptor);
+        assertXMLEquals(expectedDOM, descriptor);
     }
 
     /** {@inheritDoc} */
@@ -132,7 +132,7 @@ public class AffiliationDescriptorTest extends BaseSAMLObjectProviderTestCase {
         descriptor.setValidUntil(expectedValidUntil);
         descriptor.setCacheDuration(expectedCacheDuration);
 
-        assertEquals(expectedOptionalAttributesDOM, descriptor);
+        assertXMLEquals(expectedOptionalAttributesDOM, descriptor);
     }
 
     public void testChildElementsMarshall() {
@@ -153,7 +153,7 @@ public class AffiliationDescriptorTest extends BaseSAMLObjectProviderTestCase {
         descriptor.getMembers().add((AffiliateMember) buildXMLObject(affilMemberQName));
         descriptor.getMembers().add((AffiliateMember) buildXMLObject(affilMemberQName));
 
-        assertEquals(expectedChildElementsDOM, descriptor);
+        assertXMLEquals(expectedChildElementsDOM, descriptor);
     }
     
     /**

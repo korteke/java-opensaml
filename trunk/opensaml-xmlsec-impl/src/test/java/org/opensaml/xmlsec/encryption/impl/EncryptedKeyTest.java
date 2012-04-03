@@ -107,7 +107,7 @@ public class EncryptedKeyTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementMarshall() {
         EncryptedKey ek = (EncryptedKey) buildXMLObject(EncryptedKey.DEFAULT_ELEMENT_NAME);
         
-        assertEquals(expectedDOM, ek);
+        assertXMLEquals(expectedDOM, ek);
     }
 
     /** {@inheritDoc} */
@@ -122,7 +122,7 @@ public class EncryptedKeyTest extends XMLObjectProviderBaseTestCase {
         ek.setReferenceList((ReferenceList) buildXMLObject(ReferenceList.DEFAULT_ELEMENT_NAME));
         ek.setCarriedKeyName((CarriedKeyName) buildXMLObject(CarriedKeyName.DEFAULT_ELEMENT_NAME));
         
-        assertEquals(expectedChildElementsDOM, ek);
+        assertXMLEquals(expectedChildElementsDOM, ek);
     }
 
     /** {@inheritDoc} */
@@ -135,7 +135,7 @@ public class EncryptedKeyTest extends XMLObjectProviderBaseTestCase {
         ek.setEncoding(expectedEncoding);
         ek.setRecipient(expectedRecipient);
         
-        assertEquals(expectedOptionalAttributesDOM, ek);
+        assertXMLEquals(expectedOptionalAttributesDOM, ek);
     }
 
 }

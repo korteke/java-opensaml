@@ -84,7 +84,7 @@ public class RetrievalMethodTest extends XMLObjectProviderBaseTestCase {
         
         rm.setURI(expectedURI);
         
-        assertEquals(expectedDOM, rm);
+        assertXMLEquals(expectedDOM, rm);
     }
     
     
@@ -96,7 +96,7 @@ public class RetrievalMethodTest extends XMLObjectProviderBaseTestCase {
         rm.setURI(expectedURI);
         rm.setType(expectedType);
         
-        assertEquals(expectedOptionalAttributesDOM, rm);
+        assertXMLEquals(expectedOptionalAttributesDOM, rm);
     }
 
     /** {@inheritDoc} */
@@ -106,7 +106,7 @@ public class RetrievalMethodTest extends XMLObjectProviderBaseTestCase {
         rm.setURI(expectedURI);
         rm.setTransforms((Transforms) buildXMLObject(Transforms.DEFAULT_ELEMENT_NAME));
         
-        assertEquals(expectedChildElementsDOM, rm);
+        assertXMLEquals(expectedChildElementsDOM, rm);
     }
 
 }

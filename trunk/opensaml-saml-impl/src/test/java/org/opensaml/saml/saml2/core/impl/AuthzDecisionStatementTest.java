@@ -19,7 +19,7 @@ package org.opensaml.saml.saml2.core.impl;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.Action;
 import org.opensaml.saml.saml2.core.AuthzDecisionStatement;
@@ -30,7 +30,7 @@ import org.opensaml.saml.saml2.core.Evidence;
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.core.impl.AuthzDecisionStatementImpl}.
  */
-public class AuthzDecisionStatementTest extends BaseSAMLObjectProviderTestCase {
+public class AuthzDecisionStatementTest extends XMLObjectProviderBaseTestCase {
 
     /** Expected Resource value */
     protected String expectedResource;
@@ -80,7 +80,7 @@ public class AuthzDecisionStatementTest extends BaseSAMLObjectProviderTestCase {
         AuthzDecisionStatement authzDecisionStatement = (AuthzDecisionStatement) buildXMLObject(qname);
 
         authzDecisionStatement.setResource(expectedResource);
-        assertEquals(expectedDOM, authzDecisionStatement);
+        assertXMLEquals(expectedDOM, authzDecisionStatement);
     }
 
     /** {@inheritDoc} */
@@ -91,7 +91,7 @@ public class AuthzDecisionStatementTest extends BaseSAMLObjectProviderTestCase {
         authzDecisionStatement.setResource(expectedResource);
         authzDecisionStatement.setDecision(expectedDecision);
 
-        assertEquals(expectedOptionalAttributesDOM, authzDecisionStatement);
+        assertXMLEquals(expectedOptionalAttributesDOM, authzDecisionStatement);
     }
 
     /** {@inheritDoc} */
@@ -114,6 +114,6 @@ public class AuthzDecisionStatementTest extends BaseSAMLObjectProviderTestCase {
         QName evidenceQName = new QName(SAMLConstants.SAML20_NS, Evidence.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
         authzDecisionStatement.setEvidence((Evidence) buildXMLObject(evidenceQName));
         
-        assertEquals(expectedChildElementsDOM, authzDecisionStatement);
+        assertXMLEquals(expectedChildElementsDOM, authzDecisionStatement);
     }
 }

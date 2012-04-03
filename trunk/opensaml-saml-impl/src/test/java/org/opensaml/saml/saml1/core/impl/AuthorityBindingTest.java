@@ -22,7 +22,7 @@ package org.opensaml.saml.saml1.core.impl;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml1.core.AttributeQuery;
 import org.opensaml.saml.saml1.core.AuthorityBinding;
@@ -30,7 +30,7 @@ import org.opensaml.saml.saml1.core.AuthorityBinding;
 /**
  *  Test for {@link org.opensaml.saml.saml1.core.impl.AuthorityBinding}
  */
-public class AuthorityBindingTest extends BaseSAMLObjectProviderTestCase {
+public class AuthorityBindingTest extends XMLObjectProviderBaseTestCase {
 
     /** name used to generate objects */
     private final QName qname;
@@ -79,7 +79,7 @@ public class AuthorityBindingTest extends BaseSAMLObjectProviderTestCase {
     /** {@inheritDoc} */
 
     public void testSingleElementMarshall() {
-        assertEquals(expectedDOM, buildXMLObject(qname));
+        assertXMLEquals(expectedDOM, buildXMLObject(qname));
     }
 
     /** {@inheritDoc} */
@@ -89,7 +89,7 @@ public class AuthorityBindingTest extends BaseSAMLObjectProviderTestCase {
         authorityBinding.setAuthorityKind(expectedAuthorityKind);
         authorityBinding.setBinding(expectedBinding);
         authorityBinding.setLocation(expectedLocation);
-        assertEquals(expectedOptionalAttributesDOM, authorityBinding);
+        assertXMLEquals(expectedOptionalAttributesDOM, authorityBinding);
     }
 
 }

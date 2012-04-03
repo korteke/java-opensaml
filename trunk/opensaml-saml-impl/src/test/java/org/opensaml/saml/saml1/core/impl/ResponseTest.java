@@ -26,7 +26,7 @@ import javax.xml.namespace.QName;
 import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
 import org.opensaml.core.xml.io.MarshallingException;
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.saml1.core.Assertion;
 import org.opensaml.saml.saml1.core.Response;
 import org.opensaml.saml.saml1.core.Status;
@@ -36,7 +36,7 @@ import org.w3c.dom.Element;
 /**
  * Test class for org.opensaml.saml.saml1.core.Response
  */
-public class ResponseTest extends BaseSAMLObjectProviderTestCase {
+public class ResponseTest extends XMLObjectProviderBaseTestCase {
 
     /** name used to generate objects */
     private final QName qname;
@@ -125,7 +125,7 @@ public class ResponseTest extends BaseSAMLObjectProviderTestCase {
 
     /** {@inheritDoc} */
     public void testSingleElementMarshall() {
-        assertEquals(expectedDOM, buildXMLObject(qname));
+        assertXMLEquals(expectedDOM, buildXMLObject(qname));
     }
 
     /** {@inheritDoc} */
@@ -137,7 +137,7 @@ public class ResponseTest extends BaseSAMLObjectProviderTestCase {
         response.setIssueInstant(expectedIssueInstant);
         response.setRecipient(expectedRecipient);
 
-        assertEquals(expectedOptionalAttributesDOM, response);
+        assertXMLEquals(expectedOptionalAttributesDOM, response);
     }
 
     /** {@inheritDoc} */
@@ -147,7 +147,7 @@ public class ResponseTest extends BaseSAMLObjectProviderTestCase {
         response.getAssertions().add((Assertion) buildXMLObject(Assertion.DEFAULT_ELEMENT_NAME));
         response.setStatus((Status)buildXMLObject(Status.DEFAULT_ELEMENT_NAME));
 
-        assertEquals(expectedChildElementsDOM, response);
+        assertXMLEquals(expectedChildElementsDOM, response);
 
     }
     

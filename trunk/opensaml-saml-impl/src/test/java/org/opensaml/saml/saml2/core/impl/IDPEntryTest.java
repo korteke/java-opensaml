@@ -20,14 +20,14 @@
  */
 package org.opensaml.saml.saml2.core.impl;
 
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.saml2.core.IDPEntry;
 
 /**
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.core.impl.IDPEntryImpl}.
  */
-public class IDPEntryTest extends BaseSAMLObjectProviderTestCase {
+public class IDPEntryTest extends XMLObjectProviderBaseTestCase {
     
     /** Expected ProviderID */
     private String expectedProviderID;
@@ -66,7 +66,7 @@ public class IDPEntryTest extends BaseSAMLObjectProviderTestCase {
         
         entry.setProviderID(expectedProviderID);
 
-        assertEquals(expectedDOM, entry);
+        assertXMLEquals(expectedDOM, entry);
     }
     
     
@@ -79,7 +79,7 @@ public class IDPEntryTest extends BaseSAMLObjectProviderTestCase {
         entry.setName(expectedName);
         entry.setLoc(expectedLocation);
         
-        assertEquals(expectedOptionalAttributesDOM, entry);
+        assertXMLEquals(expectedOptionalAttributesDOM, entry);
     }
 
 

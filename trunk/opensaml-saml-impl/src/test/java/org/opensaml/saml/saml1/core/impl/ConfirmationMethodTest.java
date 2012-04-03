@@ -22,14 +22,14 @@ package org.opensaml.saml.saml1.core.impl;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml1.core.ConfirmationMethod;
 
 /**
  * test for {@link org.opensaml.saml.saml1.core.impl.ConfirmationMethod}
  */
-public class ConfirmationMethodTest extends BaseSAMLObjectProviderTestCase {
+public class ConfirmationMethodTest extends XMLObjectProviderBaseTestCase {
 
     /** name used to generate objects */
     private final QName qname;
@@ -69,7 +69,7 @@ public class ConfirmationMethodTest extends BaseSAMLObjectProviderTestCase {
     /** {@inheritDoc} */
 
     public void testSingleElementMarshall() {
-        assertEquals(expectedDOM, buildXMLObject(qname));
+        assertXMLEquals(expectedDOM, buildXMLObject(qname));
     }
 
     /** {@inheritDoc} */
@@ -78,7 +78,7 @@ public class ConfirmationMethodTest extends BaseSAMLObjectProviderTestCase {
         ConfirmationMethod confirmationMethod = (ConfirmationMethod) buildXMLObject(qname);
         confirmationMethod.setConfirmationMethod(expectedConfirmationMethod);
         
-        assertEquals(expectedOptionalAttributesDOM, confirmationMethod);
+        assertXMLEquals(expectedOptionalAttributesDOM, confirmationMethod);
     }
 
 }

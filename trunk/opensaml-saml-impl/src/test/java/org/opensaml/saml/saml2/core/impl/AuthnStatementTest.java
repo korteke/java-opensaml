@@ -19,7 +19,7 @@ package org.opensaml.saml.saml2.core.impl;
 
 import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.saml2.core.AuthnContext;
 import org.opensaml.saml.saml2.core.AuthnStatement;
 import org.opensaml.saml.saml2.core.SubjectLocality;
@@ -27,7 +27,7 @@ import org.opensaml.saml.saml2.core.SubjectLocality;
 /**
  * Test case for creating, marshalling, and unmarshalling {@link org.opensaml.saml.saml2.core.impl.AuthnStatementImpl}.
  */
-public class AuthnStatementTest extends BaseSAMLObjectProviderTestCase {
+public class AuthnStatementTest extends XMLObjectProviderBaseTestCase {
 
     /** Expected AuthnInstant value */
     private DateTime expectedAuthnInstant;
@@ -84,7 +84,7 @@ public class AuthnStatementTest extends BaseSAMLObjectProviderTestCase {
         AuthnStatement authnStatement = (AuthnStatement) buildXMLObject(AuthnStatement.DEFAULT_ELEMENT_NAME);
 
         authnStatement.setAuthnInstant(expectedAuthnInstant);
-        assertEquals(expectedDOM, authnStatement);
+        assertXMLEquals(expectedDOM, authnStatement);
     }
 
     /** {@inheritDoc} */
@@ -95,7 +95,7 @@ public class AuthnStatementTest extends BaseSAMLObjectProviderTestCase {
         authnStatement.setSessionIndex(expectedSessionIndex);
         authnStatement.setSessionNotOnOrAfter(expectedSessionNotOnOrAfter);
 
-        assertEquals(expectedOptionalAttributesDOM, authnStatement);
+        assertXMLEquals(expectedOptionalAttributesDOM, authnStatement);
     }
 
     /** {@inheritDoc} */
@@ -113,6 +113,6 @@ public class AuthnStatementTest extends BaseSAMLObjectProviderTestCase {
         
         authnStatement.setAuthnContext((AuthnContext) buildXMLObject(AuthnContext.DEFAULT_ELEMENT_NAME));
         
-        assertEquals(expectedChildElementsDOM, authnStatement);
+        assertXMLEquals(expectedChildElementsDOM, authnStatement);
     }
 }

@@ -56,7 +56,7 @@ public class ArtifactResponseTest extends StatusResponseTestBase {
         
         super.populateRequiredAttributes(ar);
 
-        assertEquals(expectedDOM, ar);
+        assertXMLEquals(expectedDOM, ar);
     }
     
     /** {@inheritDoc} */
@@ -67,7 +67,7 @@ public class ArtifactResponseTest extends StatusResponseTestBase {
         super.populateRequiredAttributes(ar);
         super.populateOptionalAttributes(ar);
         
-        assertEquals(expectedOptionalAttributesDOM, ar);
+        assertXMLEquals(expectedOptionalAttributesDOM, ar);
     }
 
 
@@ -78,7 +78,7 @@ public class ArtifactResponseTest extends StatusResponseTestBase {
         
         super.populateChildElements(ar);
         
-        assertEquals(expectedChildElementsDOM, ar);
+        assertXMLEquals(expectedChildElementsDOM, ar);
     }
 
 

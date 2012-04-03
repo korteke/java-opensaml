@@ -57,7 +57,7 @@ public class NameIDMappingRequestTest extends RequestTestBase {
         
         super.populateRequiredAttributes(req);
         
-        assertEquals(expectedDOM, req);
+        assertXMLEquals(expectedDOM, req);
     }
 
     /** {@inheritDoc} */
@@ -68,7 +68,7 @@ public class NameIDMappingRequestTest extends RequestTestBase {
         super.populateRequiredAttributes(req);
         super.populateOptionalAttributes(req);
         
-        assertEquals(expectedOptionalAttributesDOM, req);
+        assertXMLEquals(expectedOptionalAttributesDOM, req);
     }
 
     /** {@inheritDoc} */
@@ -84,7 +84,7 @@ public class NameIDMappingRequestTest extends RequestTestBase {
         QName nameIDPolicyQName = new QName(SAMLConstants.SAML20P_NS, NameIDPolicy.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
         req.setNameIDPolicy((NameIDPolicy) buildXMLObject(nameIDPolicyQName));
         
-        assertEquals(expectedChildElementsDOM, req);
+        assertXMLEquals(expectedChildElementsDOM, req);
     }
 
     /** {@inheritDoc} */

@@ -23,7 +23,7 @@ package org.opensaml.saml.saml1.core.impl;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml1.core.Advice;
 import org.opensaml.saml.saml1.core.Assertion;
@@ -32,7 +32,7 @@ import org.opensaml.saml.saml1.core.AssertionIDReference;
 /**
  * Test for {@link org.opensaml.saml.saml1.core.impl.Advice}
  */
-public class AdviceTest extends BaseSAMLObjectProviderTestCase {
+public class AdviceTest extends XMLObjectProviderBaseTestCase {
 
     /** name used to generate objects */
     private final QName qname;
@@ -68,7 +68,7 @@ public class AdviceTest extends BaseSAMLObjectProviderTestCase {
 
     /** {@inheritDoc} */
     public void testSingleElementMarshall() {
-        assertEquals(expectedDOM, buildXMLObject(qname));
+        assertXMLEquals(expectedDOM, buildXMLObject(qname));
     }
 
     /** {@inheritDoc} */
@@ -83,6 +83,6 @@ public class AdviceTest extends BaseSAMLObjectProviderTestCase {
         advice.getAssertions().add((Assertion) buildXMLObject(assertionQname) );
         advice.getAssertionIDReferences().add((AssertionIDReference) buildXMLObject(assertionIDRefQname));
 
-        assertEquals(expectedChildElementsDOM, advice);
+        assertXMLEquals(expectedChildElementsDOM, advice);
     }
 }

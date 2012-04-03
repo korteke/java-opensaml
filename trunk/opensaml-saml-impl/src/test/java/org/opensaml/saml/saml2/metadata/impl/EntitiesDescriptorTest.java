@@ -21,7 +21,7 @@ import javax.xml.namespace.QName;
 
 import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.common.Extensions;
 import org.opensaml.saml.saml2.metadata.EntitiesDescriptor;
@@ -33,7 +33,7 @@ import org.opensaml.xmlsec.signature.support.SignatureConstants;
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.metadata.impl.EntitiesDescriptorImpl}.
  */
-public class EntitiesDescriptorTest extends BaseSAMLObjectProviderTestCase {
+public class EntitiesDescriptorTest extends XMLObjectProviderBaseTestCase {
 
     /** Expected Name attribute value */
     protected String expectedName;
@@ -125,7 +125,7 @@ public class EntitiesDescriptorTest extends BaseSAMLObjectProviderTestCase {
         QName qname = new QName(SAMLConstants.SAML20MD_NS, EntitiesDescriptor.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
         EntitiesDescriptor entitiesDescriptor = (EntitiesDescriptor) buildXMLObject(qname);
 
-        assertEquals(expectedDOM, entitiesDescriptor);
+        assertXMLEquals(expectedDOM, entitiesDescriptor);
     }
 
     /** {@inheritDoc} */
@@ -138,7 +138,7 @@ public class EntitiesDescriptorTest extends BaseSAMLObjectProviderTestCase {
         entitiesDescriptor.setCacheDuration(new Long(expectedCacheDuration));
         entitiesDescriptor.setValidUntil(expectedValidUntil);
 
-        assertEquals(expectedOptionalAttributesDOM, entitiesDescriptor);
+        assertXMLEquals(expectedOptionalAttributesDOM, entitiesDescriptor);
     }
 
     /** {@inheritDoc} */
@@ -159,7 +159,7 @@ public class EntitiesDescriptorTest extends BaseSAMLObjectProviderTestCase {
         entitiesDescriptor.getEntitiesDescriptors().add((EntitiesDescriptor) buildXMLObject(entitiesDescriptorQName));
         entitiesDescriptor.getEntityDescriptors().add((EntityDescriptor) buildXMLObject(entityDescriptorQName));
         entitiesDescriptor.getEntitiesDescriptors().add((EntitiesDescriptor) buildXMLObject(entitiesDescriptorQName));
-        assertEquals(expectedChildElementsDOM, entitiesDescriptor);
+        assertXMLEquals(expectedChildElementsDOM, entitiesDescriptor);
     }
     
     /**

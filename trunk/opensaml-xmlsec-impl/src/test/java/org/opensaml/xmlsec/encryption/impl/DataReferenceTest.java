@@ -71,7 +71,7 @@ public class DataReferenceTest extends XMLObjectProviderBaseTestCase {
         
         ref.setURI(expectedURI);
         
-        assertEquals(expectedDOM, ref);
+        assertXMLEquals(expectedDOM, ref);
     }
 
     /** {@inheritDoc} */
@@ -82,7 +82,7 @@ public class DataReferenceTest extends XMLObjectProviderBaseTestCase {
         ref.getUnknownXMLObjects().add((SimpleXMLObject) buildXMLObject(SimpleXMLObject.ELEMENT_NAME));
         ref.getUnknownXMLObjects().add((SimpleXMLObject) buildXMLObject(SimpleXMLObject.ELEMENT_NAME));
         
-        assertEquals(expectedChildElementsDOM, ref);
+        assertXMLEquals(expectedChildElementsDOM, ref);
     }
 
 }

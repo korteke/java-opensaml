@@ -25,7 +25,7 @@ import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
-import org.opensaml.saml.common.BaseTestCase;
+import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.saml.common.binding.BasicSAMLMessageContext;
 import org.opensaml.saml.common.binding.decoding.SAMLMessageDecoder;
 import org.opensaml.saml.saml2.binding.decoding.HTTPSOAP11Decoder;
@@ -46,7 +46,7 @@ import org.springframework.mock.web.MockHttpServletRequest;
 /**
  * Test case for HTTP SOAP 1.1 decoder.
  */
-public class HTTPSOAP11DecoderTest extends BaseTestCase {
+public class HTTPSOAP11DecoderTest extends XMLObjectBaseTestCase {
     
     private String attribQueryDestination = "https://idp.example.com/idp/aa";
     

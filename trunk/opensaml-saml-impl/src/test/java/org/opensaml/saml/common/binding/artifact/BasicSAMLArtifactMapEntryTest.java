@@ -28,7 +28,7 @@ import org.custommonkey.xmlunit.Diff;
 import org.custommonkey.xmlunit.XMLAssert;
 import org.joda.time.DateTime;
 import org.opensaml.core.xml.io.MarshallingException;
-import org.opensaml.saml.common.BaseTestCase;
+import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.binding.artifact.BasicSAMLArtifactMapEntry;
 import org.w3c.dom.Document;
@@ -36,7 +36,7 @@ import org.w3c.dom.Document;
 /**
  * Test the basic SAML artifact map entry.
  */
-public class BasicSAMLArtifactMapEntryTest extends BaseTestCase {
+public class BasicSAMLArtifactMapEntryTest extends XMLObjectBaseTestCase {
     
     private SAMLObject samlObject;
     

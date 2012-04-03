@@ -61,7 +61,7 @@ public class XSQNameTest extends XMLObjectBaseTestCase {
         marshaller.marshall(xsQName);
         
         Document document = parserPool.parse(XSQNameTest.class.getResourceAsStream(testDocumentLocation));
-        assertEquals("Marshalled XSQName does not match example document", document, xsQName);
+        assertXMLEquals("Marshalled XSQName does not match example document", document, xsQName);
     }
     
     /**

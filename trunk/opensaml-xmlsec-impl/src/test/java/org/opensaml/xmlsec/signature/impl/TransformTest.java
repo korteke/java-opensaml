@@ -76,7 +76,7 @@ public class TransformTest extends XMLObjectProviderBaseTestCase {
         
         transform.setAlgorithm(expectedAlgorithm);
         
-        assertEquals(expectedDOM, transform);
+        assertXMLEquals(expectedDOM, transform);
     }
 
     /** {@inheritDoc} */
@@ -90,7 +90,7 @@ public class TransformTest extends XMLObjectProviderBaseTestCase {
         transform.getAllChildren().add( buildXMLObject(XPath.DEFAULT_ELEMENT_NAME));
         transform.getAllChildren().add( buildXMLObject(SimpleXMLObject.ELEMENT_NAME));
 
-        assertEquals(expectedChildElementsDOM, transform);
+        assertXMLEquals(expectedChildElementsDOM, transform);
     }
 
 }

@@ -201,7 +201,7 @@ public class SAML2HTTPPostSimpleSignSecurityPolicyRuleTest extends
         KeyInfoCredentialResolver kiResolver = SAMLTestHelper.buildBasicInlineKeyInfoResolver();
         SignatureTrustEngine engine = new ExplicitKeySignatureTrustEngine(credResolver, kiResolver);
 
-        rule = new SAML2HTTPPostSimpleSignRule(engine, parser, kiResolver);
+        rule = new SAML2HTTPPostSimpleSignRule(engine, parserPool, kiResolver);
 
         messageContext.setInboundMessageIssuer(issuer);
         ((SAMLMessageContext) messageContext).setInboundSAMLMessageAuthenticated(false);
@@ -345,7 +345,7 @@ public class SAML2HTTPPostSimpleSignSecurityPolicyRuleTest extends
     private void populateRequest(MockHttpServletRequest request, String htmlContentString) throws XMLParserException {
         request.setContent(htmlContentString.getBytes());
 
-        Document doc = parser.parse(new ByteArrayInputStream(htmlContentString.getBytes()));
+        Document doc = parserPool.parse(new ByteArrayInputStream(htmlContentString.getBytes()));
         // html
         Element current = doc.getDocumentElement();
         // body

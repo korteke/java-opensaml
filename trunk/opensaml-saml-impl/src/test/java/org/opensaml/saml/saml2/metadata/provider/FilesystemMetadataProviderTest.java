@@ -21,7 +21,7 @@ import java.io.File;
 import java.net.URL;
 import java.util.List;
 
-import org.opensaml.saml.common.BaseTestCase;
+import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.opensaml.saml.saml2.metadata.IDPSSODescriptor;
 import org.opensaml.saml.saml2.metadata.RoleDescriptor;
@@ -29,7 +29,7 @@ import org.opensaml.saml.saml2.metadata.provider.FilesystemMetadataProvider;
 import org.opensaml.saml.saml2.metadata.provider.HTTPMetadataProvider;
 import org.opensaml.saml.saml2.metadata.provider.MetadataProviderException;
 
-public class FilesystemMetadataProviderTest extends BaseTestCase {
+public class FilesystemMetadataProviderTest extends XMLObjectBaseTestCase {
 
     private FilesystemMetadataProvider metadataProvider;
 
@@ -49,7 +49,7 @@ public class FilesystemMetadataProviderTest extends BaseTestCase {
         File mdFile = new File(mdURL.toURI());
 
         metadataProvider = new FilesystemMetadataProvider(mdFile);
-        metadataProvider.setParserPool(parser);
+        metadataProvider.setParserPool(parserPool);
         metadataProvider.initialize();
     }
 

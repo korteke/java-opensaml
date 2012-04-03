@@ -23,7 +23,7 @@ package org.opensaml.saml.saml1.core.impl;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml1.core.NameIdentifier;
 import org.opensaml.saml.saml1.core.Subject;
@@ -32,7 +32,7 @@ import org.opensaml.saml.saml1.core.SubjectConfirmation;
 /**
  * Test for {@link org.opensaml.saml.saml1.core.impl.Subject}
  */
-public class SubjectTest extends BaseSAMLObjectProviderTestCase {
+public class SubjectTest extends XMLObjectProviderBaseTestCase {
 
     /** name used to generate objects */
     private final QName qname;
@@ -68,7 +68,7 @@ public class SubjectTest extends BaseSAMLObjectProviderTestCase {
 
     /** {@inheritDoc} */
     public void testSingleElementMarshall() {
-        assertEquals(expectedDOM, buildXMLObject(qname));
+        assertXMLEquals(expectedDOM, buildXMLObject(qname));
     }
 
     /** {@inheritDoc} */
@@ -81,6 +81,6 @@ public class SubjectTest extends BaseSAMLObjectProviderTestCase {
         oqname = new QName(SAMLConstants.SAML1_NS, SubjectConfirmation.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
         subject.setSubjectConfirmation((SubjectConfirmation) buildXMLObject(oqname));
 
-        assertEquals(expectedChildElementsDOM, subject);
+        assertXMLEquals(expectedChildElementsDOM, subject);
     }
 }

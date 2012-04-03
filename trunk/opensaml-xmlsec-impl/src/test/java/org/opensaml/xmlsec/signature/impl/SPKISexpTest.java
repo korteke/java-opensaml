@@ -57,7 +57,7 @@ public class SPKISexpTest extends XMLObjectProviderBaseTestCase {
         SPKISexp spkiElement = (SPKISexp) buildXMLObject(SPKISexp.DEFAULT_ELEMENT_NAME);
         spkiElement.setValue(expectedStringContent);
         
-        assertEquals(expectedDOM, spkiElement);
+        assertXMLEquals(expectedDOM, spkiElement);
     }
 
 }

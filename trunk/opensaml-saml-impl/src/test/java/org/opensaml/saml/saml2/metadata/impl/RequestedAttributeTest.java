@@ -20,7 +20,7 @@ package org.opensaml.saml.saml2.metadata.impl;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.schema.XSBooleanValue;
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.metadata.RequestedAttribute;
 
@@ -28,7 +28,7 @@ import org.opensaml.saml.saml2.metadata.RequestedAttribute;
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.metadata.impl.RequestedAttributeImpl}.
  */
-public class RequestedAttributeTest extends BaseSAMLObjectProviderTestCase {
+public class RequestedAttributeTest extends XMLObjectProviderBaseTestCase {
 
     /** Expected Name attribute value */
     protected String expectedName;
@@ -96,7 +96,7 @@ public class RequestedAttributeTest extends BaseSAMLObjectProviderTestCase {
 
         requestedAttribute.setName(expectedName);
 
-        assertEquals(expectedDOM, requestedAttribute);
+        assertXMLEquals(expectedDOM, requestedAttribute);
     }
 
     /** {@inheritDoc} */
@@ -109,7 +109,7 @@ public class RequestedAttributeTest extends BaseSAMLObjectProviderTestCase {
         requestedAttribute.setFriendlyName(expectedFriendlyName);
         requestedAttribute.setIsRequired(expectedIsRequired);
 
-        assertEquals(expectedOptionalAttributesDOM, requestedAttribute);
+        assertXMLEquals(expectedOptionalAttributesDOM, requestedAttribute);
     }
     
     /**

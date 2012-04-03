@@ -57,7 +57,7 @@ public class OAEPparamsTest extends XMLObjectProviderBaseTestCase {
         OAEPparams oaep = (OAEPparams) buildXMLObject(OAEPparams.DEFAULT_ELEMENT_NAME);
         oaep.setValue(expectedBase64Content);
         
-        assertEquals(expectedDOM, oaep);
+        assertXMLEquals(expectedDOM, oaep);
     }
 
 }

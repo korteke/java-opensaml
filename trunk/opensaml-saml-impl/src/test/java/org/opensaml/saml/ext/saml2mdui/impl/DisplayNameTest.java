@@ -22,7 +22,7 @@ package org.opensaml.saml.ext.saml2mdui.impl;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.ext.saml2mdui.DisplayName;
 import org.opensaml.saml.ext.saml2mdui.UIInfo;
 
@@ -30,7 +30,7 @@ import org.opensaml.saml.ext.saml2mdui.UIInfo;
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.metadata.OrganizationName}.
  */
-public class DisplayNameTest extends BaseSAMLObjectProviderTestCase {
+public class DisplayNameTest extends XMLObjectProviderBaseTestCase {
     
     /** Expected name. */
     protected String expectValue="Prifysgol Caerdydd";
@@ -63,6 +63,6 @@ public class DisplayNameTest extends BaseSAMLObjectProviderTestCase {
         name.setValue(expectValue);
         name.setXMLLang(expectLang);
 
-        assertEquals(expectedDOM, name);
+        assertXMLEquals(expectedDOM, name);
     }
 }

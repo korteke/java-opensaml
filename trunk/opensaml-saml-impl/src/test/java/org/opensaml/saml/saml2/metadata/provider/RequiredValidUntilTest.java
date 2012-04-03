@@ -22,7 +22,7 @@ import java.net.URL;
 
 import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
-import org.opensaml.saml.common.BaseTestCase;
+import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.saml.common.SAMLObjectBuilder;
 import org.opensaml.saml.config.Configuration;
 import org.opensaml.saml.saml2.metadata.EntitiesDescriptor;
@@ -31,7 +31,7 @@ import org.opensaml.saml.saml2.metadata.provider.MetadataProviderException;
 import org.opensaml.saml.saml2.metadata.provider.RequiredValidUntilFilter;
 
 /** Unit test for {@link RequiredValidUntilFilter}. */
-public class RequiredValidUntilTest extends BaseTestCase {
+public class RequiredValidUntilTest extends XMLObjectBaseTestCase {
 
     private File metadataFile;
 
@@ -48,7 +48,7 @@ public class RequiredValidUntilTest extends BaseTestCase {
         RequiredValidUntilFilter filter = new RequiredValidUntilFilter();
 
         FilesystemMetadataProvider metadataProvider = new FilesystemMetadataProvider(metadataFile);
-        metadataProvider.setParserPool(parser);
+        metadataProvider.setParserPool(parserPool);
         metadataProvider.setMetadataFilter(filter);
         try {
             metadataProvider.initialize();
@@ -61,7 +61,7 @@ public class RequiredValidUntilTest extends BaseTestCase {
         RequiredValidUntilFilter filter = new RequiredValidUntilFilter(1);
 
         FilesystemMetadataProvider metadataProvider = new FilesystemMetadataProvider(metadataFile);
-        metadataProvider.setParserPool(parser);
+        metadataProvider.setParserPool(parserPool);
         metadataProvider.setMetadataFilter(filter);
 
         try {

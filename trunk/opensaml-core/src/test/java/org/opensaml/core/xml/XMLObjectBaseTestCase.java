@@ -20,23 +20,20 @@ package org.opensaml.core.xml;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 import javax.xml.namespace.QName;
 
 import junit.framework.TestCase;
 import net.shibboleth.utilities.java.support.xml.ParserPool;
+import net.shibboleth.utilities.java.support.xml.QNameSupport;
 import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
 import org.custommonkey.xmlunit.Diff;
 import org.custommonkey.xmlunit.XMLAssert;
 import org.custommonkey.xmlunit.XMLUnit;
-import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.core.config.InitializationService;
-import org.opensaml.core.xml.XMLObject;
-import org.opensaml.core.xml.XMLObjectBuilder;
-import org.opensaml.core.xml.XMLObjectBuilderFactory;
-import org.opensaml.core.xml.config.XMLObjectProviderRegistry;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.Marshaller;
 import org.opensaml.core.xml.io.MarshallerFactory;
@@ -72,14 +69,7 @@ public abstract class XMLObjectBaseTestCase extends TestCase {
     protected static UnmarshallerFactory unmarshallerFactory;
 
     /** QName for SimpleXMLObject */
-    protected static QName simpleXMLObjectQName;
-
-    /**
-     * Constructor
-     */
-    public XMLObjectBaseTestCase() {
-        simpleXMLObjectQName = new QName(SimpleXMLObject.NAMESPACE, SimpleXMLObject.LOCAL_NAME);
-    }
+    protected static QName simpleXMLObjectQName = new QName(SimpleXMLObject.NAMESPACE, SimpleXMLObject.LOCAL_NAME);
 
     /** {@inheritDoc} */
     protected void setUp() throws Exception {
@@ -89,11 +79,10 @@ public abstract class XMLObjectBaseTestCase extends TestCase {
         InitializationService.initialize();
         
         try {
-            XMLObjectProviderRegistry registry = ConfigurationService.get(XMLObjectProviderRegistry.class);
-            parserPool = registry.getParserPool();
-            builderFactory = registry.getBuilderFactory();
-            marshallerFactory = registry.getMarshallerFactory();
-            unmarshallerFactory = registry.getUnmarshallerFactory();
+            parserPool = XMLObjectProviderRegistrySupport.getParserPool();
+            builderFactory = XMLObjectProviderRegistrySupport.getBuilderFactory();
+            marshallerFactory = XMLObjectProviderRegistrySupport.getMarshallerFactory();
+            unmarshallerFactory = XMLObjectProviderRegistrySupport.getUnmarshallerFactory();
         } catch (Exception e) {
             log.error("Can not initialize XMLObjectBaseTestCase", e);
             throw e;
@@ -108,8 +97,8 @@ public abstract class XMLObjectBaseTestCase extends TestCase {
      * @param expectedDOM the expected DOM
      * @param xmlObject the XMLObject to be marshalled and compared against the expected DOM
      */
-    public void assertEquals(Document expectedDOM, XMLObject xmlObject) {
-        assertEquals("Marshalled DOM was not the same as the expected DOM", expectedDOM, xmlObject);
+    protected void assertXMLEquals(Document expectedDOM, XMLObject xmlObject) {
+        assertXMLEquals("Marshalled DOM was not the same as the expected DOM", expectedDOM, xmlObject);
     }
 
     /**
@@ -120,7 +109,7 @@ public abstract class XMLObjectBaseTestCase extends TestCase {
      * @param expectedDOM the expected DOM
      * @param xmlObject the XMLObject to be marshalled and compared against the expected DOM
      */
-    public void assertEquals(String failMessage, Document expectedDOM, XMLObject xmlObject) {
+    protected void assertXMLEquals(String failMessage, Document expectedDOM, XMLObject xmlObject) {
         Marshaller marshaller = marshallerFactory.getMarshaller(xmlObject);
         if (marshaller == null) {
             fail("Unable to locate marshaller for " + xmlObject.getElementQName()
@@ -145,12 +134,14 @@ public abstract class XMLObjectBaseTestCase extends TestCase {
      * 
      * @return the build XMLObject
      */
-    public XMLObject buildXMLObject(QName objectQName) {
-        XMLObjectBuilder builder = XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilder(objectQName);
+    protected <T extends XMLObject> T buildXMLObject(QName name) {
+        XMLObjectBuilder<T> builder = getBuilder(name);
         if (builder == null) {
-            fail("Unable to retrieve builder for object QName " + objectQName);
+            fail("no builder registered for: " + name);
         }
-        return builder.buildObject(objectQName.getNamespaceURI(), objectQName.getLocalPart(), objectQName.getPrefix());
+        T wsObj = builder.buildObject(name);
+        assertNotNull(wsObj);
+        return wsObj;
     }
     
     /**
@@ -158,17 +149,14 @@ public abstract class XMLObjectBaseTestCase extends TestCase {
      * 
      * @return the XMLObject from the file
      */
-    protected XMLObject unmarshallElement(String elementFile) {
+    protected <T extends XMLObject> T  unmarshallElement(String elementFile) {
         try {
-            Document doc = parserPool.parse(XMLObjectBaseTestCase.class.getResourceAsStream(elementFile));
-            Element samlElement = doc.getDocumentElement();
-
-            Unmarshaller unmarshaller = XMLObjectProviderRegistrySupport.getUnmarshallerFactory().getUnmarshaller(samlElement);
-            if (unmarshaller == null) {
-                fail("Unable to retrieve unmarshaller by DOM Element");
-            }
-
-            return unmarshaller.unmarshall(samlElement);
+            Document doc = parseXMLDocument(elementFile);
+            Element element = doc.getDocumentElement();
+            Unmarshaller unmarshaller = getUnmarshaller(element);
+            T object = (T) unmarshaller.unmarshall(element);
+            assertNotNull(object);
+            return object;
         } catch (XMLParserException e) {
             fail("Unable to parse element file " + elementFile);
         } catch (UnmarshallingException e) {
@@ -183,13 +171,12 @@ public abstract class XMLObjectBaseTestCase extends TestCase {
      * the console if filename is null.
      * 
      */
-    public void printXML(Node node, String filename) {
+    protected void printXML(Node node, String filename) {
         try {
             SerializeSupport.writeNode(node, new FileOutputStream(new File(filename)));
         } catch (IOException e) {
             e.printStackTrace();
         }
-        
     }
     
     /**
@@ -197,7 +184,7 @@ public abstract class XMLObjectBaseTestCase extends TestCase {
      * the console if filename is null.
      * 
      */
-    public void printXML(XMLObject xmlObject, String filename) {
+    protected void printXML(XMLObject xmlObject, String filename) {
         Element elem = null;
         try {
             elem = marshallerFactory.getMarshaller(xmlObject).marshall(xmlObject);
@@ -206,4 +193,97 @@ public abstract class XMLObjectBaseTestCase extends TestCase {
         }
         printXML(elem, filename);
     }
+
+    /**
+     * Lookup the XMLObjectBuilder for a QName.
+     * @param qname the QName for which to find the builder
+     * @return the XMLObjectBuilder
+     */
+    protected XMLObjectBuilder getBuilder(QName qname) {
+        XMLObjectBuilder builder = builderFactory.getBuilder(qname);
+        if (builder == null) {
+            fail("no builder registered for " + qname);
+        }
+        return builder;
+    }
+
+    /**
+     * Lookup the marshaller for a QName
+     * 
+     * @param qname the QName for which to find the marshaller
+     * @return the marshaller
+     */
+    protected Marshaller getMarshaller(QName qname) {
+        Marshaller marshaller = marshallerFactory.getMarshaller(qname);
+        if (marshaller == null) {
+            fail("no marshaller registered for " + qname);
+        }
+        return marshaller;
+    }
+
+    /**
+     * Lookup the marshaller for an XMLObject.
+     * 
+     * @param xmlObject the XMLObject for which to find the marshaller
+     * @return the marshaller
+     */
+    protected Marshaller getMarshaller(XMLObject xmlObject) {
+        Marshaller marshaller = marshallerFactory.getMarshaller(xmlObject);
+        if (marshaller == null) {
+            fail("no marshaller registered for " + xmlObject.getClass().getName());
+        }
+        return marshaller;
+    }
+
+    /**
+     * Lookup the unmarshaller for a QName.
+     * 
+     * @param qname the QName for which to find the unmarshaller
+     * @return the unmarshaller
+     */
+    protected Unmarshaller getUnmarshaller(QName qname) {
+        Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(qname);
+        if (unmarshaller == null) {
+            fail("no unmarshaller registered for " + qname);
+        }
+        return unmarshaller;
+    }
+
+    /**
+     * Lookup the unmarshaller for an XMLObject.
+     * 
+     * @param xmlObject the XMLObject for which to find the unmarshaller
+     * @return the unmarshaller
+     */
+    protected Unmarshaller getUnmarshaller(XMLObject xmlObject) {
+        return getUnmarshaller(xmlObject.getElementQName());
+    }
+
+    /**
+     * Lookup the unmarshaller for a DOM Element.
+     * 
+     * @param element the Element for which to find the unmarshaller
+     * @return the unmarshaller
+     */
+    protected Unmarshaller getUnmarshaller(Element element) {
+        Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(element);
+        if (unmarshaller == null) {
+            fail("no unmarshaller registered for " + QNameSupport.getNodeQName(element));
+        }
+        return unmarshaller;
+    }
+
+    /**
+     * Parse an XML file as a classpath resource.
+     * 
+     * @param xmlFilename the file to parse 
+     * @return the parsed Document
+     * @throws XMLParserException if parsing did not succeed
+     */
+    protected Document parseXMLDocument(String xmlFilename) throws XMLParserException {
+        InputStream is = getClass().getResourceAsStream(xmlFilename);
+        Document doc = parserPool.parse(is);
+        return doc;
+    }
+    
 }

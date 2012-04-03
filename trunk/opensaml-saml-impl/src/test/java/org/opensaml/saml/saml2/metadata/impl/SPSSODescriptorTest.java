@@ -24,7 +24,7 @@ import javax.xml.namespace.QName;
 import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
 import org.opensaml.core.xml.schema.XSBooleanValue;
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.common.Extensions;
 import org.opensaml.saml.saml2.metadata.ArtifactResolutionService;
@@ -40,7 +40,7 @@ import org.opensaml.saml.saml2.metadata.SingleLogoutService;
 /**
  * 
  */
-public class SPSSODescriptorTest extends BaseSAMLObjectProviderTestCase {
+public class SPSSODescriptorTest extends XMLObjectProviderBaseTestCase {
 
     /** expected value for AuthnRequestSigned attribute */
     protected XSBooleanValue expectedAuthnRequestSigned;
@@ -127,7 +127,7 @@ public class SPSSODescriptorTest extends BaseSAMLObjectProviderTestCase {
             descriptor.addSupportedProtocol(protocol);
         }
 
-        assertEquals(expectedDOM, descriptor);
+        assertXMLEquals(expectedDOM, descriptor);
     }
 
     public void testSingleElementOptionalAttributesMarshall() {
@@ -145,7 +145,7 @@ public class SPSSODescriptorTest extends BaseSAMLObjectProviderTestCase {
         descriptor.setCacheDuration(expectedCacheDuration);
         descriptor.setValidUntil(expectedValidUntil);
 
-        assertEquals(expectedOptionalAttributesDOM, descriptor);
+        assertXMLEquals(expectedOptionalAttributesDOM, descriptor);
     }
 
     /** {@inheritDoc} */
@@ -199,7 +199,7 @@ public class SPSSODescriptorTest extends BaseSAMLObjectProviderTestCase {
                 AttributeConsumingService.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
         descriptor.getAttributeConsumingServices().add((AttributeConsumingService) buildXMLObject(attribConsumeQName));
 
-        assertEquals(expectedChildElementsDOM, descriptor);
+        assertXMLEquals(expectedChildElementsDOM, descriptor);
     }
     
     /**

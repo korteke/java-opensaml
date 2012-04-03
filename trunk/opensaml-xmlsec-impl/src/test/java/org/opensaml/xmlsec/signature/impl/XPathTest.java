@@ -57,7 +57,7 @@ public class XPathTest extends XMLObjectProviderBaseTestCase {
         XPath xp = (XPath) buildXMLObject(XPath.DEFAULT_ELEMENT_NAME);
         xp.setValue(expectedStringContent);
         
-        assertEquals(expectedDOM, xp);
+        assertXMLEquals(expectedDOM, xp);
     }
 
 }

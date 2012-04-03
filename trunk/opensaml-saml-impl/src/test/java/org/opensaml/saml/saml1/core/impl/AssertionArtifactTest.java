@@ -22,14 +22,14 @@ package org.opensaml.saml.saml1.core.impl;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml1.core.AssertionArtifact;
 
 /**
  * Test for {@link org.opensaml.saml.saml1.core.AssertionArtifact}
  */
-public class AssertionArtifactTest extends BaseSAMLObjectProviderTestCase {
+public class AssertionArtifactTest extends XMLObjectProviderBaseTestCase {
 
     /** name used to generate objects */
     private final QName qname;
@@ -63,13 +63,13 @@ public class AssertionArtifactTest extends BaseSAMLObjectProviderTestCase {
 
     /** {@inheritDoc} */
     public void testSingleElementMarshall() {
-       assertEquals(expectedDOM, buildXMLObject(qname));
+       assertXMLEquals(expectedDOM, buildXMLObject(qname));
     }
 
     /** {@inheritDoc} */
     public void testSingleElementOptionalAttributesMarshall() {
         AssertionArtifact artifact = (AssertionArtifact) buildXMLObject(qname);
         artifact.setAssertionArtifact(expectedAssertionArtifact);
-        assertEquals(expectedOptionalAttributesDOM, artifact);
+        assertXMLEquals(expectedOptionalAttributesDOM, artifact);
     }
 }

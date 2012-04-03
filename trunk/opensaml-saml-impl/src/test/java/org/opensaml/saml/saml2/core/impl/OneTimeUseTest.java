@@ -19,14 +19,14 @@ package org.opensaml.saml.saml2.core.impl;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.OneTimeUse;
 
 /**
  * Test case for creating, marshalling, and unmarshalling {@link org.opensaml.saml.saml2.core.impl.Impl}.
  */
-public class OneTimeUseTest extends BaseSAMLObjectProviderTestCase {
+public class OneTimeUseTest extends XMLObjectProviderBaseTestCase {
 
     /** Constructor */
     public OneTimeUseTest() {
@@ -55,7 +55,7 @@ public class OneTimeUseTest extends BaseSAMLObjectProviderTestCase {
         QName qname = new QName(SAMLConstants.SAML20_NS, OneTimeUse.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
         OneTimeUse oneTimeUse = (OneTimeUse) buildXMLObject(qname);
 
-        assertEquals(expectedDOM, oneTimeUse);
+        assertXMLEquals(expectedDOM, oneTimeUse);
     }
 
     /** {@inheritDoc} */

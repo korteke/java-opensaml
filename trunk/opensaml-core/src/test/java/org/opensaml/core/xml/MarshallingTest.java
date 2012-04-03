@@ -63,7 +63,7 @@ public class MarshallingTest extends XMLObjectBaseTestCase {
         SimpleXMLObject sxObject = sxoBuilder.buildObject();
         sxObject.setId(expectedId);
 
-        assertEquals(expectedDocument, sxObject);
+        assertXMLEquals(expectedDocument, sxObject);
         assertNotNull("DOM was not cached after marshalling", sxObject.getDOM());
     }
 
@@ -96,7 +96,7 @@ public class MarshallingTest extends XMLObjectBaseTestCase {
         grandchild1.setValue("Content3");
         child3.getSimpleXMLObjects().add(grandchild1);
 
-        assertEquals(expectedDocument, sxObject);
+        assertXMLEquals(expectedDocument, sxObject);
         assertNotNull("DOM was not cached after marshalling", sxObject.getDOM());
     }
 
@@ -118,7 +118,7 @@ public class MarshallingTest extends XMLObjectBaseTestCase {
         sxObject.getSimpleXMLObjects().add(sxObjectChild1);
         sxObject.getSimpleXMLObjects().add(sxObjectChild2);
 
-        assertEquals(expectedDocument, sxObject);
+        assertXMLEquals(expectedDocument, sxObject);
         assertNotNull("DOM was not cached after marshalling", sxObject.getDOM());
     }
 

@@ -61,7 +61,7 @@ public class XSStringTest extends XMLObjectBaseTestCase {
         marshaller.marshall(xsString);
         
         Document document = parserPool.parse(XSStringTest.class.getResourceAsStream(testDocumentLocation));
-        assertEquals("Marshalled XSString does not match example document", document, xsString);
+        assertXMLEquals("Marshalled XSString does not match example document", document, xsString);
     }
     
     /**

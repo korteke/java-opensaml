@@ -27,7 +27,7 @@ import net.shibboleth.utilities.java.support.xml.XMLParserException;
 import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
 import org.opensaml.core.xml.io.MarshallingException;
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.saml1.core.AssertionArtifact;
 import org.opensaml.saml.saml1.core.AssertionIDReference;
 import org.opensaml.saml.saml1.core.AttributeQuery;
@@ -38,7 +38,7 @@ import org.w3c.dom.Element;
 /**
  * Test in and around the {@link org.opensaml.saml.saml1.core.Request} interface
  */
-public class RequestTest extends BaseSAMLObjectProviderTestCase {
+public class RequestTest extends XMLObjectProviderBaseTestCase {
 
     /** name used to generate objects */
     private final QName qname;
@@ -111,7 +111,7 @@ public class RequestTest extends BaseSAMLObjectProviderTestCase {
 
     /** {@inheritDoc} */
     public void testSingleElementMarshall() {
-        assertEquals(expectedDOM, buildXMLObject(qname));
+        assertXMLEquals(expectedDOM, buildXMLObject(qname));
     }
 
     /** {@inheritDoc} */
@@ -121,7 +121,7 @@ public class RequestTest extends BaseSAMLObjectProviderTestCase {
 
         request.setID(expectedID);
         request.setIssueInstant(expectedIssueInstant);
-        assertEquals(expectedOptionalAttributesDOM, request);
+        assertXMLEquals(expectedOptionalAttributesDOM, request);
     }
 
     /**
@@ -134,29 +134,25 @@ public class RequestTest extends BaseSAMLObjectProviderTestCase {
                 
         
         try {
-            dom = parser.parse(BaseSAMLObjectProviderTestCase.class
-                        .getResourceAsStream("/data/org/opensaml/saml/saml1/impl/RequestWithAssertionArtifact.xml"));
-            request = (Request) buildXMLObject(qname); 
+            dom = parserPool.parse(this.getClass().getResourceAsStream("/data/org/opensaml/saml/saml1/impl/RequestWithAssertionArtifact.xml")); request = (Request) buildXMLObject(qname); 
             oqname = AssertionArtifact.DEFAULT_ELEMENT_NAME;
             request.getAssertionArtifacts().add((AssertionArtifact) buildXMLObject(oqname));
             request.getAssertionArtifacts().add((AssertionArtifact) buildXMLObject(oqname));
-            assertEquals(dom, request);
+            assertXMLEquals(dom, request);
           
-            dom = parser.parse(BaseSAMLObjectProviderTestCase.class
-                    .getResourceAsStream("/data/org/opensaml/saml/saml1/impl/RequestWithAssertionIDReference.xml"));
+            dom = parserPool.parse(this.getClass().getResourceAsStream("/data/org/opensaml/saml/saml1/impl/RequestWithAssertionIDReference.xml"));
             request = (Request) buildXMLObject(qname); 
             oqname = AssertionIDReference.DEFAULT_ELEMENT_NAME;
             request.getAssertionIDReferences().add((AssertionIDReference) buildXMLObject(oqname));
             request.getAssertionIDReferences().add((AssertionIDReference) buildXMLObject(oqname));
             request.getAssertionIDReferences().add((AssertionIDReference) buildXMLObject(oqname));
-            assertEquals(dom, request);
+            assertXMLEquals(dom, request);
 
-            dom = parser.parse(BaseSAMLObjectProviderTestCase.class
-                    .getResourceAsStream("/data/org/opensaml/saml/saml1/impl/RequestWithQuery.xml"));
+            dom = parserPool.parse(this.getClass().getResourceAsStream("/data/org/opensaml/saml/saml1/impl/RequestWithQuery.xml"));
             request = (Request) buildXMLObject(qname); 
             oqname = AttributeQuery.DEFAULT_ELEMENT_NAME;
             request.setQuery((AttributeQuery) buildXMLObject(oqname));
-            assertEquals(dom, request);
+            assertXMLEquals(dom, request);
 
         } catch (XMLParserException e) {
             fail(e.toString());

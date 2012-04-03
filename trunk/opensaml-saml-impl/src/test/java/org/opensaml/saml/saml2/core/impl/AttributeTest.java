@@ -19,14 +19,14 @@ package org.opensaml.saml.saml2.core.impl;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.Attribute;
 
 /**
  * Test case for creating, marshalling, and unmarshalling {@link org.opensaml.saml.saml2.core.impl.AttributeImpl}.
  */
-public class AttributeTest extends BaseSAMLObjectProviderTestCase {
+public class AttributeTest extends XMLObjectProviderBaseTestCase {
 
     /** Expected Name attribute value */
     protected String expectedName;
@@ -86,7 +86,7 @@ public class AttributeTest extends BaseSAMLObjectProviderTestCase {
 
         attribute.setName(expectedName);
 
-        assertEquals(expectedDOM, attribute);
+        assertXMLEquals(expectedDOM, attribute);
     }
 
     /** {@inheritDoc} */
@@ -98,6 +98,6 @@ public class AttributeTest extends BaseSAMLObjectProviderTestCase {
         attribute.setNameFormat(expectedNameFormat);
         attribute.setFriendlyName(expectedFriendlyName);
 
-        assertEquals(expectedOptionalAttributesDOM, attribute);
+        assertXMLEquals(expectedOptionalAttributesDOM, attribute);
     }
 }

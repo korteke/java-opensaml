@@ -26,7 +26,7 @@ import javax.xml.namespace.QName;
 import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
 import org.opensaml.core.xml.io.MarshallingException;
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.saml1.core.Advice;
 import org.opensaml.saml.saml1.core.Assertion;
 import org.opensaml.saml.saml1.core.AttributeStatement;
@@ -40,7 +40,7 @@ import org.w3c.dom.Element;
 /**
  * Test for {@link org.opensaml.saml.saml1.core.impl.Assertion}
  */
-public class AssertionTest extends BaseSAMLObjectProviderTestCase {
+public class AssertionTest extends XMLObjectProviderBaseTestCase {
 
     /** name used to generate objects */
     private final QName qname;
@@ -142,7 +142,7 @@ public class AssertionTest extends BaseSAMLObjectProviderTestCase {
     /** {@inheritDoc} */
 
     public void testSingleElementMarshall() {
-        assertEquals(expectedDOM, buildXMLObject(qname));
+        assertXMLEquals(expectedDOM, buildXMLObject(qname));
     }
 
     /** {@inheritDoc} */
@@ -153,7 +153,7 @@ public class AssertionTest extends BaseSAMLObjectProviderTestCase {
         assertion.setIssueInstant(expectedIssueInstant);
         assertion.setID(expectedID);
         assertion.setIssuer(expectedIssuer);
-        assertEquals(expectedOptionalAttributesDOM, assertion);
+        assertXMLEquals(expectedOptionalAttributesDOM, assertion);
     }
 
     /**
@@ -180,7 +180,7 @@ public class AssertionTest extends BaseSAMLObjectProviderTestCase {
         assertion.getStatements().add((Statement) buildXMLObject(authorizationQname));
         assertion.getStatements().add((Statement) buildXMLObject(attributeQname));
 
-        assertEquals(expectedChildElementsDOM, assertion);
+        assertXMLEquals(expectedChildElementsDOM, assertion);
     }
     
     public void testSignatureUnmarshall() {

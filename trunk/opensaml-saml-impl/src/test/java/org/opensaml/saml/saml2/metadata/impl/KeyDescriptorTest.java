@@ -19,7 +19,7 @@ package org.opensaml.saml.saml2.metadata.impl;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.metadata.EncryptionMethod;
 import org.opensaml.saml.saml2.metadata.KeyDescriptor;
@@ -30,7 +30,7 @@ import org.opensaml.xmlsec.signature.KeyInfo;
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.metadata.impl.KeyDescriptorImpl}.
  */
-public class KeyDescriptorTest extends BaseSAMLObjectProviderTestCase {
+public class KeyDescriptorTest extends XMLObjectProviderBaseTestCase {
 
     /** Expected Name attribute value. */
     protected UsageType expectedUse;
@@ -89,7 +89,7 @@ public class KeyDescriptorTest extends BaseSAMLObjectProviderTestCase {
                 SAMLConstants.SAML20MD_PREFIX);
         KeyDescriptor keyDescriptor = (KeyDescriptor) buildXMLObject(qname);
 
-        assertEquals(expectedDOM, keyDescriptor);
+        assertXMLEquals(expectedDOM, keyDescriptor);
     }
 
     /** {@inheritDoc} */
@@ -100,7 +100,7 @@ public class KeyDescriptorTest extends BaseSAMLObjectProviderTestCase {
 
         keyDescriptor.setUse(UsageType.ENCRYPTION);
 
-        assertEquals(expectedOptionalAttributesDOM, keyDescriptor);
+        assertXMLEquals(expectedOptionalAttributesDOM, keyDescriptor);
     }
 
     /** {@inheritDoc} */
@@ -115,6 +115,6 @@ public class KeyDescriptorTest extends BaseSAMLObjectProviderTestCase {
         keyDescriptor.getEncryptionMethods()
             .add((EncryptionMethod) buildXMLObject(EncryptionMethod.DEFAULT_ELEMENT_NAME));
 
-        assertEquals(expectedChildElementsDOM, keyDescriptor);
+        assertXMLEquals(expectedChildElementsDOM, keyDescriptor);
     }
 }

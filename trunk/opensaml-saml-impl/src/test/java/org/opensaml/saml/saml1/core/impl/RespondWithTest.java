@@ -22,14 +22,14 @@ package org.opensaml.saml.saml1.core.impl;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.saml1.core.AttributeStatement;
 import org.opensaml.saml.saml1.core.RespondWith;
 
 /**
  * Test for org.opensaml.saml.saml1.core.RespondWith.
  */
-public class RespondWithTest extends BaseSAMLObjectProviderTestCase {
+public class RespondWithTest extends XMLObjectProviderBaseTestCase {
 
     /** Expected QName element content. */
     private final QName expectedQName;
@@ -61,6 +61,6 @@ public class RespondWithTest extends BaseSAMLObjectProviderTestCase {
         RespondWith respondWith = (RespondWith) buildXMLObject(RespondWith.DEFAULT_ELEMENT_NAME);
         respondWith.setValue(expectedQName);
         
-        assertEquals(expectedDOM, respondWith);
+        assertXMLEquals(expectedDOM, respondWith);
     }
 }

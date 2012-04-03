@@ -19,14 +19,14 @@ package org.opensaml.saml.saml2.core.impl;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.AssertionIDRef;
 
 /**
  * Test case for creating, marshalling, and unmarshalling {@link org.opensaml.saml.saml2.core.impl.AssertionIDRefImpl}.
  */
-public class AssertionIDRefTest extends BaseSAMLObjectProviderTestCase {
+public class AssertionIDRefTest extends XMLObjectProviderBaseTestCase {
 
     /** Expected AssertionID value */
     protected String expectedAssertionID;
@@ -63,7 +63,7 @@ public class AssertionIDRefTest extends BaseSAMLObjectProviderTestCase {
         AssertionIDRef assertionIDRef = (AssertionIDRef) buildXMLObject(qname);
 
         assertionIDRef.setAssertionID(expectedAssertionID);
-        assertEquals(expectedDOM, assertionIDRef);
+        assertXMLEquals(expectedDOM, assertionIDRef);
     }
 
     /** {@inheritDoc} */

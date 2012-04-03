@@ -18,14 +18,14 @@
 package org.opensaml.saml.ext.idpdisco.impl;
 
 import org.opensaml.core.xml.schema.XSBooleanValue;
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.ext.idpdisco.DiscoveryResponse;
 import org.opensaml.saml.ext.idpdisco.impl.DiscoveryResponseImpl;
 
 /**
  * Test case for creating, marshalling, and unmarshalling {@link DiscoveryResponseImpl}.
  */
-public class DiscoveryResponseTest extends BaseSAMLObjectProviderTestCase {
+public class DiscoveryResponseTest extends XMLObjectProviderBaseTestCase {
 
     protected String expectedBinding;
 
@@ -84,7 +84,7 @@ public class DiscoveryResponseTest extends BaseSAMLObjectProviderTestCase {
         service.setLocation(expectedLocation);
         service.setIndex(expectedIndex);
 
-        assertEquals(expectedDOM, service);
+        assertXMLEquals(expectedDOM, service);
     }
 
     /** {@inheritDoc} */
@@ -97,7 +97,7 @@ public class DiscoveryResponseTest extends BaseSAMLObjectProviderTestCase {
         service.setResponseLocation(expectedResponseLocation);
         service.setIsDefault(expectedIsDefault);
 
-        assertEquals(expectedOptionalAttributesDOM, service);
+        assertXMLEquals(expectedOptionalAttributesDOM, service);
     }
 
     /**

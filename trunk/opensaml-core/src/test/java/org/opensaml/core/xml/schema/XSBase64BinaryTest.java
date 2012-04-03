@@ -61,7 +61,7 @@ public class XSBase64BinaryTest extends XMLObjectBaseTestCase {
         marshaller.marshall(xsb64b);
         
         Document document = parserPool.parse(XSBase64BinaryTest.class.getResourceAsStream(testDocumentLocation));
-        assertEquals("Marshalled XSBase64Binary does not match example document", document, xsb64b);
+        assertXMLEquals("Marshalled XSBase64Binary does not match example document", document, xsb64b);
     }
     
     /**

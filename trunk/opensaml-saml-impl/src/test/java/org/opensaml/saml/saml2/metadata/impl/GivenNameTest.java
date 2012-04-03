@@ -20,14 +20,14 @@
  */
 package org.opensaml.saml.saml2.metadata.impl;
 
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.saml2.metadata.GivenName;
 
 /**
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.metadata.GivenName}.
  */
-public class GivenNameTest extends BaseSAMLObjectProviderTestCase {
+public class GivenNameTest extends XMLObjectProviderBaseTestCase {
     
     /** Expected name */
     protected String expectName;
@@ -59,7 +59,7 @@ public class GivenNameTest extends BaseSAMLObjectProviderTestCase {
         
         name.setName(expectName);
 
-        assertEquals(expectedDOM, name);
+        assertXMLEquals(expectedDOM, name);
     }
 
 }

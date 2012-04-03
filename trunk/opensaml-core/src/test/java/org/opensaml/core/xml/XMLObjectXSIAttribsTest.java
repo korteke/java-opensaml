@@ -73,7 +73,7 @@ public class XMLObjectXSIAttribsTest extends XMLObjectBaseTestCase {
         SimpleXMLObject sxObject = sxoBuilder.buildObject();
         sxObject.setNil(true);
 
-        assertEquals(expectedDocument, sxObject);
+        assertXMLEquals(expectedDocument, sxObject);
     }
     
     public void testUnmarshallSchemaLocation() throws XMLParserException, UnmarshallingException {
@@ -97,7 +97,7 @@ public class XMLObjectXSIAttribsTest extends XMLObjectBaseTestCase {
         SimpleXMLObject sxObject = sxoBuilder.buildObject();
         sxObject.setSchemaLocation(expectedValue);
 
-        assertEquals(expectedDocument, sxObject);
+        assertXMLEquals(expectedDocument, sxObject);
     }
     
     public void testUnmarshallNoNamespaceSchemaLocation() throws XMLParserException, UnmarshallingException {
@@ -121,7 +121,7 @@ public class XMLObjectXSIAttribsTest extends XMLObjectBaseTestCase {
         SimpleXMLObject sxObject = sxoBuilder.buildObject();
         sxObject.setNoNamespaceSchemaLocation(expectedValue);
 
-        assertEquals(expectedDocument, sxObject);
+        assertXMLEquals(expectedDocument, sxObject);
     }
     
 

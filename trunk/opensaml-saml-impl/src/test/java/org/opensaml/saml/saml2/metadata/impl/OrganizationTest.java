@@ -23,7 +23,7 @@ package org.opensaml.saml.saml2.metadata.impl;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.common.Extensions;
 import org.opensaml.saml.saml2.metadata.Organization;
@@ -34,7 +34,7 @@ import org.opensaml.saml.saml2.metadata.OrganizationURL;
 /**
  * Test case for creating, marshalling, and unmarshalling {@link org.opensaml.saml.saml2.metadata.OrganizationName}.
  */
-public class OrganizationTest extends BaseSAMLObjectProviderTestCase {
+public class OrganizationTest extends XMLObjectProviderBaseTestCase {
 
     /**
      * Constructor
@@ -69,7 +69,7 @@ public class OrganizationTest extends BaseSAMLObjectProviderTestCase {
     public void testSingleElementMarshall() {
         Organization org = (Organization) buildXMLObject(Organization.DEFAULT_ELEMENT_NAME);
 
-        assertEquals(expectedDOM, org);
+        assertXMLEquals(expectedDOM, org);
     }
 
     /**
@@ -92,6 +92,6 @@ public class OrganizationTest extends BaseSAMLObjectProviderTestCase {
 
         org.getURLs().add((OrganizationURL) buildXMLObject(OrganizationURL.DEFAULT_ELEMENT_NAME));
         
-        assertEquals(expectedChildElementsDOM, org);
+        assertXMLEquals(expectedChildElementsDOM, org);
     }
 }

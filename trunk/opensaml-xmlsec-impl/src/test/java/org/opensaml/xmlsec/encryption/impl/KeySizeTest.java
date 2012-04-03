@@ -57,7 +57,7 @@ public class KeySizeTest extends XMLObjectProviderBaseTestCase {
         KeySize keySize = (KeySize) buildXMLObject(KeySize.DEFAULT_ELEMENT_NAME);
         keySize.setValue(expectedIntegerContent);
         
-        assertEquals(expectedDOM, keySize);
+        assertXMLEquals(expectedDOM, keySize);
     }
 
 }

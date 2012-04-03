@@ -20,14 +20,14 @@
  */
 package org.opensaml.saml.saml2.core.impl;
 
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.saml2.core.GetComplete;
 
 /**
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.core.impl.GetCompleteImpl}.
  */
-public class GetCompleteTest extends BaseSAMLObjectProviderTestCase {
+public class GetCompleteTest extends XMLObjectProviderBaseTestCase {
     
     /** Expected element content*/
     private String expectedGetComplete;
@@ -61,6 +61,6 @@ public class GetCompleteTest extends BaseSAMLObjectProviderTestCase {
 
         gc.setGetComplete(expectedGetComplete);
         
-        assertEquals(expectedDOM, gc);
+        assertXMLEquals(expectedDOM, gc);
     }
 }

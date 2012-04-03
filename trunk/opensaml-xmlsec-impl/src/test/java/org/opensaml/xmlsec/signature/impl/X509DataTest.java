@@ -72,7 +72,7 @@ public class X509DataTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementMarshall() {
         X509Data x509Data = (X509Data) buildXMLObject(X509Data.DEFAULT_ELEMENT_NAME);
         
-        assertEquals(expectedDOM, x509Data);
+        assertXMLEquals(expectedDOM, x509Data);
     }
 
     /** {@inheritDoc} */
@@ -91,7 +91,7 @@ public class X509DataTest extends XMLObjectProviderBaseTestCase {
         x509Data.getXMLObjects().add(buildXMLObject(X509CRL.DEFAULT_ELEMENT_NAME));
         x509Data.getXMLObjects().add(buildXMLObject(X509Certificate.DEFAULT_ELEMENT_NAME));
         
-        assertEquals(expectedChildElementsDOM, x509Data);
+        assertXMLEquals(expectedChildElementsDOM, x509Data);
     }
 
 }

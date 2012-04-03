@@ -21,7 +21,7 @@ import javax.xml.namespace.QName;
 
 import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.common.SAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.config.Configuration;
@@ -32,7 +32,7 @@ import org.opensaml.xmlsec.signature.KeyInfo;
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.core.impl.KeyInfoConfirmationDataTypeImpl}.
  */
-public class KeyInfoConfirmationDataTypeTest extends BaseSAMLObjectProviderTestCase {
+public class KeyInfoConfirmationDataTypeTest extends XMLObjectProviderBaseTestCase {
 
     /** Expected NotBefore value. */
     private DateTime expectedNotBefore;
@@ -118,7 +118,7 @@ public class KeyInfoConfirmationDataTypeTest extends BaseSAMLObjectProviderTestC
     public void testSingleElementMarshall() {
         KeyInfoConfirmationDataType kicd = buildXMLObject();
 
-        assertEquals(expectedDOM, kicd);
+        assertXMLEquals(expectedDOM, kicd);
     }
 
     /** {@inheritDoc} */
@@ -131,7 +131,7 @@ public class KeyInfoConfirmationDataTypeTest extends BaseSAMLObjectProviderTestC
         kicd.setInResponseTo(expectedInResponseTo);
         kicd.setAddress(expectedAddress);
 
-        assertEquals(expectedOptionalAttributesDOM, kicd);
+        assertXMLEquals(expectedOptionalAttributesDOM, kicd);
     }
     
     /** {@inheritDoc} */
@@ -143,7 +143,7 @@ public class KeyInfoConfirmationDataTypeTest extends BaseSAMLObjectProviderTestC
             kicd.getKeyInfos().add(keyinfo);
         }
         
-        assertEquals(expectedChildElementsDOM, kicd);
+        assertXMLEquals(expectedChildElementsDOM, kicd);
     }
     
     /** {@inheritDoc} */

@@ -22,7 +22,7 @@ package org.opensaml.saml.saml2.core.impl;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.AuthnContextClassRef;
 import org.opensaml.saml.saml2.core.AuthnContextComparisonTypeEnumeration;
@@ -32,7 +32,7 @@ import org.opensaml.saml.saml2.core.RequestedAuthnContext;
 /**
  *
  */
-public class RequestedAuthnContextTest extends BaseSAMLObjectProviderTestCase {
+public class RequestedAuthnContextTest extends XMLObjectProviderBaseTestCase {
     
     /** Expected Comparison attribute */
     private AuthnContextComparisonTypeEnumeration expectedComparison;
@@ -63,7 +63,7 @@ public class RequestedAuthnContextTest extends BaseSAMLObjectProviderTestCase {
     public void testSingleElementMarshall() {
         RequestedAuthnContext rac = (RequestedAuthnContext) buildXMLObject(RequestedAuthnContext.DEFAULT_ELEMENT_NAME);
         
-        assertEquals(expectedDOM, rac);
+        assertXMLEquals(expectedDOM, rac);
 
     }
 
@@ -73,7 +73,7 @@ public class RequestedAuthnContextTest extends BaseSAMLObjectProviderTestCase {
         
         rac.setComparison(AuthnContextComparisonTypeEnumeration.EXACT);
         
-        assertEquals(expectedOptionalAttributesDOM, rac);
+        assertXMLEquals(expectedOptionalAttributesDOM, rac);
     }
     
     /** {@inheritDoc} */
@@ -85,7 +85,7 @@ public class RequestedAuthnContextTest extends BaseSAMLObjectProviderTestCase {
             rac.getAuthnContextClassRefs().add((AuthnContextClassRef) buildXMLObject(authnContextClassRefQName));
         }
         
-        assertEquals(expectedChildElementsDOM, rac);
+        assertXMLEquals(expectedChildElementsDOM, rac);
     }
 
     /** {@inheritDoc} */

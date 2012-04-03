@@ -54,7 +54,7 @@ public class ArtifactResolveTest extends RequestTestBase {
         
         super.populateRequiredAttributes(ar);
         
-        assertEquals(expectedDOM, ar);
+        assertXMLEquals(expectedDOM, ar);
     }
     
     /** {@inheritDoc} */
@@ -65,7 +65,7 @@ public class ArtifactResolveTest extends RequestTestBase {
         super.populateRequiredAttributes(ar);
         super.populateOptionalAttributes(ar);
         
-        assertEquals(expectedOptionalAttributesDOM, ar);
+        assertXMLEquals(expectedOptionalAttributesDOM, ar);
     }
 
     /** {@inheritDoc} */
@@ -78,7 +78,7 @@ public class ArtifactResolveTest extends RequestTestBase {
         QName artifactQName = new QName(SAMLConstants.SAML20P_NS, Artifact.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
         ar.setArtifact((Artifact) buildXMLObject(artifactQName));
         
-        assertEquals(expectedChildElementsDOM, ar);
+        assertXMLEquals(expectedChildElementsDOM, ar);
     }
  
 
