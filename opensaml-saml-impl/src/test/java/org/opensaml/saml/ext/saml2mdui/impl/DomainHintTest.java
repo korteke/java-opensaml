@@ -22,7 +22,7 @@ package org.opensaml.saml.ext.saml2mdui.impl;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.ext.saml2mdui.DomainHint;
 import org.opensaml.saml.ext.saml2mdui.UIInfo;
 
@@ -30,7 +30,7 @@ import org.opensaml.saml.ext.saml2mdui.UIInfo;
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.metadata.OrganizationName}.
  */
-public class DomainHintTest extends BaseSAMLObjectProviderTestCase {
+public class DomainHintTest extends XMLObjectProviderBaseTestCase {
     
     /** Expected name. */
     private String expectedHint;
@@ -65,6 +65,6 @@ public class DomainHintTest extends BaseSAMLObjectProviderTestCase {
         
         hint.setHint(expectedHint);
 
-        assertEquals(expectedDOM, hint);
+        assertXMLEquals(expectedDOM, hint);
     }
 }

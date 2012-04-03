@@ -57,7 +57,7 @@ public class YTest extends XMLObjectProviderBaseTestCase {
         Y cbType = (Y) buildXMLObject(Y.DEFAULT_ELEMENT_NAME);
         cbType.setValue(expectedCryptoBinaryContent);
         
-        assertEquals(expectedDOM, cbType);
+        assertXMLEquals(expectedDOM, cbType);
     }
 
 }

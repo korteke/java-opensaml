@@ -21,7 +21,7 @@ import java.net.URL;
 import java.security.KeyPair;
 
 import org.joda.time.DateTime;
-import org.opensaml.saml.common.BaseTestCase;
+import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.saml.common.SAMLObjectBuilder;
 import org.opensaml.saml.common.SAMLVersion;
 import org.opensaml.saml.common.binding.BasicSAMLMessageContext;
@@ -39,7 +39,7 @@ import org.springframework.mock.web.MockHttpServletResponse;
 /**
  * Unit test for redirect encoding.
  */
-public class HTTPRedirectDeflateEncoderTest extends BaseTestCase {
+public class HTTPRedirectDeflateEncoderTest extends XMLObjectBaseTestCase {
     
     /**
      * Tests encoding a SAML message to an servlet response.

@@ -17,7 +17,7 @@
 
 package org.opensaml.xacml.ctx.provider;
 
-import org.opensaml.saml.common.BaseTestCase;
+import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.xacml.ctx.DecisionType;
 import org.opensaml.xacml.ctx.DecisionType.DECISION;
 import org.opensaml.xacml.ctx.ResultType;
@@ -26,7 +26,7 @@ import org.opensaml.xacml.policy.ObligationType;
 import org.opensaml.xacml.policy.ObligationsType;
 
 /** Unit test for {@link ObligationService}. */
-public class ObligationServiceTest extends BaseTestCase {
+public class ObligationServiceTest extends XMLObjectBaseTestCase {
 
     private ObligationProcessingContext processingCtx;
 

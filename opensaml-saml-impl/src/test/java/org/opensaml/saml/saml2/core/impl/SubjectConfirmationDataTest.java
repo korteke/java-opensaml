@@ -21,7 +21,7 @@ import javax.xml.namespace.QName;
 
 import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.SubjectConfirmationData;
 
@@ -29,7 +29,7 @@ import org.opensaml.saml.saml2.core.SubjectConfirmationData;
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.core.impl.SubjectConfirmationDataImpl}.
  */
-public class SubjectConfirmationDataTest extends BaseSAMLObjectProviderTestCase {
+public class SubjectConfirmationDataTest extends XMLObjectProviderBaseTestCase {
 
     /** Expected NotBefore value */
     private DateTime expectedNotBefore;
@@ -99,7 +99,7 @@ public class SubjectConfirmationDataTest extends BaseSAMLObjectProviderTestCase 
         SubjectConfirmationData subjectCD = (SubjectConfirmationData) buildXMLObject(qname);
 
         subjectCD.setNotBefore(expectedNotBefore);
-        assertEquals(expectedDOM, subjectCD);
+        assertXMLEquals(expectedDOM, subjectCD);
     }
 
     /** {@inheritDoc} */
@@ -114,6 +114,6 @@ public class SubjectConfirmationDataTest extends BaseSAMLObjectProviderTestCase 
         subjectCD.setInResponseTo(expectedInResponseTo);
         subjectCD.setAddress(expectedAddress);
 
-        assertEquals(expectedOptionalAttributesDOM, subjectCD);
+        assertXMLEquals(expectedOptionalAttributesDOM, subjectCD);
     }
 }

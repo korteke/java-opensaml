@@ -59,7 +59,7 @@ public class AssertionIDRequestTest extends RequestTestBase {
         
         super.populateRequiredAttributes(req);
         
-        assertEquals(expectedDOM, req);
+        assertXMLEquals(expectedDOM, req);
     }
     
 
@@ -71,7 +71,7 @@ public class AssertionIDRequestTest extends RequestTestBase {
         super.populateRequiredAttributes(req);
         super.populateOptionalAttributes(req);
         
-        assertEquals(expectedOptionalAttributesDOM, req);
+        assertXMLEquals(expectedOptionalAttributesDOM, req);
     }
 
 
@@ -86,7 +86,7 @@ public class AssertionIDRequestTest extends RequestTestBase {
         for (int i = 0; i< expectedNumAssertionIDRefs; i++)
             req.getAssertionIDRefs().add((AssertionIDRef) buildXMLObject(assertionIDRefQName));
         
-        assertEquals(expectedChildElementsDOM, req);
+        assertXMLEquals(expectedChildElementsDOM, req);
     }
     
     /** {@inheritDoc} */

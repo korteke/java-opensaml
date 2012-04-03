@@ -25,7 +25,7 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml1.core.AttributeDesignator;
 import org.opensaml.saml.saml1.core.AttributeQuery;
@@ -34,7 +34,7 @@ import org.opensaml.saml.saml1.core.Subject;
 /**
  * Test class for org.opensaml.saml.saml1.core.AttributeQuery
  */
-public class AttributeQueryTest extends BaseSAMLObjectProviderTestCase {
+public class AttributeQueryTest extends XMLObjectProviderBaseTestCase {
 
     /** name used to generate objects */
     private final QName qname;
@@ -85,7 +85,7 @@ public class AttributeQueryTest extends BaseSAMLObjectProviderTestCase {
 
     /** {@inheritDoc} */
     public void testSingleElementMarshall() {
-        assertEquals(expectedDOM, buildXMLObject(qname));
+        assertXMLEquals(expectedDOM, buildXMLObject(qname));
     }
 
     /** {@inheritDoc} */
@@ -94,7 +94,7 @@ public class AttributeQueryTest extends BaseSAMLObjectProviderTestCase {
         attributeQuery = (AttributeQuery) buildXMLObject(qname);
 
         attributeQuery.setResource(expectedResource);
-        assertEquals(expectedOptionalAttributesDOM, attributeQuery);
+        assertXMLEquals(expectedOptionalAttributesDOM, attributeQuery);
     }
 
     /** {@inheritDoc} */
@@ -108,7 +108,7 @@ public class AttributeQueryTest extends BaseSAMLObjectProviderTestCase {
         list.add((AttributeDesignator) buildXMLObject(attqname));
         list.add((AttributeDesignator) buildXMLObject(attqname)); 
         list.add((AttributeDesignator) buildXMLObject(attqname)); 
-        assertEquals(expectedChildElementsDOM, attributeQuery);
+        assertXMLEquals(expectedChildElementsDOM, attributeQuery);
 
     }
 

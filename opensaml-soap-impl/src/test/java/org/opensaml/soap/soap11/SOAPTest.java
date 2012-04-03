@@ -21,18 +21,10 @@ import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
+import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.io.Unmarshaller;
 import org.opensaml.core.xml.io.UnmarshallingException;
-import org.opensaml.soap.BaseTestCase;
-import org.opensaml.soap.soap11.Body;
-import org.opensaml.soap.soap11.Detail;
-import org.opensaml.soap.soap11.Envelope;
-import org.opensaml.soap.soap11.Fault;
-import org.opensaml.soap.soap11.FaultActor;
-import org.opensaml.soap.soap11.FaultCode;
-import org.opensaml.soap.soap11.FaultString;
-import org.opensaml.soap.soap11.Header;
 import org.opensaml.soap.soap11.impl.DetailBuilder;
 import org.opensaml.soap.soap11.impl.FaultActorBuilder;
 import org.opensaml.soap.soap11.impl.FaultCodeBuilder;
@@ -46,7 +38,7 @@ import com.google.common.base.Strings;
 /**
  * Tests marshalling and unmarshalling SOAP messages.
  */
-public class SOAPTest extends BaseTestCase {
+public class SOAPTest extends XMLObjectBaseTestCase {
     
     /** Path, on classpath, to SOAP message test document. */
     private String soapMessage;
@@ -107,7 +99,7 @@ public class SOAPTest extends BaseTestCase {
         // Drop the DOM and remarshall, hopefully we get the same document back
         envelope.releaseDOM();
         envelope.releaseChildrenDOM(true);
-        assertEquals("Marshalled DOM was not the same as control DOM", soapDoc, envelope);
+        assertXMLEquals("Marshalled DOM was not the same as control DOM", soapDoc, envelope);
     }
     
     /**
@@ -152,7 +144,7 @@ public class SOAPTest extends BaseTestCase {
         // Drop the DOM and remarshall, hopefully we get the same document back
         envelope.releaseDOM();
         envelope.releaseChildrenDOM(true);
-        assertEquals("Marshalled DOM was not the same as control DOM", soapFaultDoc, envelope);
+        assertXMLEquals("Marshalled DOM was not the same as control DOM", soapFaultDoc, envelope);
     }
     
     /**
@@ -189,7 +181,7 @@ public class SOAPTest extends BaseTestCase {
         fault.setDetail(detail);
         
         Element marshalledEnvelope = marshallerFactory.getMarshaller(envelope).marshall(envelope);
-        assertEquals("Marshalled DOM was not the same as control DOM", soapDoc, envelope);
+        assertXMLEquals("Marshalled DOM was not the same as control DOM", soapDoc, envelope);
         
     }
     

@@ -57,7 +57,7 @@ public class KANonceTest extends XMLObjectProviderBaseTestCase {
         KANonce kan = (KANonce) buildXMLObject(KANonce.DEFAULT_ELEMENT_NAME);
         kan.setValue(expectedBase64Content);
         
-        assertEquals(expectedDOM, kan);
+        assertXMLEquals(expectedDOM, kan);
     }
 
 }

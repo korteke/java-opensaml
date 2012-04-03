@@ -19,14 +19,14 @@ package org.opensaml.saml.saml2.core.impl;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.SubjectLocality;
 
 /**
  * Test case for creating, marshalling, and unmarshalling {@link org.opensaml.saml.saml2.core.impl.SubjectLocalityImpl}.
  */
-public class SubjectLocalityTest extends BaseSAMLObjectProviderTestCase {
+public class SubjectLocalityTest extends XMLObjectProviderBaseTestCase {
 
     /** Expected Address value */
     private String expectedAddress;
@@ -74,7 +74,7 @@ public class SubjectLocalityTest extends BaseSAMLObjectProviderTestCase {
         SubjectLocality subjectLocality = (SubjectLocality) buildXMLObject(qname);
 
         subjectLocality.setAddress(expectedAddress);
-        assertEquals(expectedDOM, subjectLocality);
+        assertXMLEquals(expectedDOM, subjectLocality);
     }
 
     /** {@inheritDoc} */
@@ -84,6 +84,6 @@ public class SubjectLocalityTest extends BaseSAMLObjectProviderTestCase {
 
         subjectLocality.setAddress(expectedAddress);
         subjectLocality.setDNSName(expectedDNSName);
-        assertEquals(expectedOptionalAttributesDOM, subjectLocality);
+        assertXMLEquals(expectedOptionalAttributesDOM, subjectLocality);
     }
 }

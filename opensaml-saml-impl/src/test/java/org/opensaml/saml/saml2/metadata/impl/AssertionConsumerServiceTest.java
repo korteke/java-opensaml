@@ -21,14 +21,14 @@
 package org.opensaml.saml.saml2.metadata.impl;
 
 import org.opensaml.core.xml.schema.XSBooleanValue;
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.saml2.metadata.AssertionConsumerService;
 
 /**
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.metadata.impl.AssertionConsumerServiceImpl}.
  */
-public class AssertionConsumerServiceTest extends BaseSAMLObjectProviderTestCase {
+public class AssertionConsumerServiceTest extends XMLObjectProviderBaseTestCase {
     
     protected String expectedBinding;
     protected String expectedLocation;
@@ -83,7 +83,7 @@ public class AssertionConsumerServiceTest extends BaseSAMLObjectProviderTestCase
         service.setLocation(expectedLocation);
         service.setIndex(expectedIndex);
 
-        assertEquals(expectedDOM, service);
+        assertXMLEquals(expectedDOM, service);
     }
 
     /** {@inheritDoc} */
@@ -96,7 +96,7 @@ public class AssertionConsumerServiceTest extends BaseSAMLObjectProviderTestCase
         service.setResponseLocation(expectedResponseLocation);
         service.setIsDefault(expectedIsDefault);
 
-        assertEquals(expectedOptionalAttributesDOM, service);
+        assertXMLEquals(expectedOptionalAttributesDOM, service);
     }
     
     /**

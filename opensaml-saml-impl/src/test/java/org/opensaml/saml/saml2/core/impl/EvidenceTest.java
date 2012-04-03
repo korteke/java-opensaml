@@ -17,7 +17,7 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.saml2.core.Assertion;
 import org.opensaml.saml.saml2.core.AssertionIDRef;
 import org.opensaml.saml.saml2.core.AssertionURIRef;
@@ -27,7 +27,7 @@ import org.opensaml.saml.saml2.core.Evidence;
 /**
  * Test case for creating, marshalling, and unmarshalling {@link org.opensaml.saml.saml2.core.impl.EvidenceImpl}.
  */
-public class EvidenceTest extends BaseSAMLObjectProviderTestCase {
+public class EvidenceTest extends XMLObjectProviderBaseTestCase {
 
     /** Count of AssertionIDRef subelements. */
     private int assertionIDRefCount = 3;
@@ -77,7 +77,7 @@ public class EvidenceTest extends BaseSAMLObjectProviderTestCase {
     public void testSingleElementMarshall() {
         Evidence evidence = (Evidence) buildXMLObject(Evidence.DEFAULT_ELEMENT_NAME);
 
-        assertEquals(expectedDOM, evidence);
+        assertXMLEquals(expectedDOM, evidence);
     }
 
     /** {@inheritDoc} */
@@ -107,6 +107,6 @@ public class EvidenceTest extends BaseSAMLObjectProviderTestCase {
         evidence.getAssertions()
             .add((Assertion) buildXMLObject(Assertion.DEFAULT_ELEMENT_NAME));
         
-        assertEquals(expectedChildElementsDOM, evidence);
+        assertXMLEquals(expectedChildElementsDOM, evidence);
     }
 }

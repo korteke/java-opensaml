@@ -19,7 +19,7 @@ package org.opensaml.saml.saml2.metadata.provider;
 
 import java.util.List;
 
-import org.opensaml.saml.common.BaseTestCase;
+import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.saml.saml2.metadata.EntitiesDescriptor;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.opensaml.saml.saml2.metadata.IDPSSODescriptor;
@@ -30,7 +30,7 @@ import org.opensaml.saml.saml2.metadata.provider.MetadataProviderException;
 /**
  * Unit tests for {@link HTTPMetadataProvider}.
  */
-public class HTTPMetadataProviderTest extends BaseTestCase {
+public class HTTPMetadataProviderTest extends XMLObjectBaseTestCase {
 
     private String inCommonMDURL;
     private String entitiesDescriptorName;
@@ -47,7 +47,7 @@ public class HTTPMetadataProviderTest extends BaseTestCase {
         entityID = "urn:mace:incommon:washington.edu";
         supportedProtocol ="urn:oasis:names:tc:SAML:1.1:protocol";
         metadataProvider = new HTTPMetadataProvider(inCommonMDURL, 1000 * 5);
-        metadataProvider.setParserPool(parser);
+        metadataProvider.setParserPool(parserPool);
         metadataProvider.initialize();
     }
     

@@ -21,14 +21,14 @@
 package org.opensaml.saml.saml2.core.impl;
 
 import org.opensaml.core.xml.schema.XSBooleanValue;
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.saml2.core.NameIDPolicy;
 
 /**
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.core.impl.NameIDPolicyImpl}.
  */
-public class NameIDPolicyTest extends BaseSAMLObjectProviderTestCase {
+public class NameIDPolicyTest extends XMLObjectProviderBaseTestCase {
     
     /** Expected Format*/
     private String expectedFormat;
@@ -61,7 +61,7 @@ public class NameIDPolicyTest extends BaseSAMLObjectProviderTestCase {
     public void testSingleElementMarshall() {
         NameIDPolicy policy = (NameIDPolicy) buildXMLObject(NameIDPolicy.DEFAULT_ELEMENT_NAME);
         
-        assertEquals(expectedDOM, policy);
+        assertXMLEquals(expectedDOM, policy);
     }
 
     /** {@inheritDoc} */
@@ -72,7 +72,7 @@ public class NameIDPolicyTest extends BaseSAMLObjectProviderTestCase {
         policy.setSPNameQualifier(expectedSPNameQualifer);
         policy.setAllowCreate(expectedAllowCreate);
         
-        assertEquals(expectedOptionalAttributesDOM, policy);
+        assertXMLEquals(expectedOptionalAttributesDOM, policy);
     }
     
     /** {@inheritDoc} */

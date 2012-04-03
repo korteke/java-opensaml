@@ -19,13 +19,13 @@ package org.opensaml.saml.ext.saml2mdattr.impl;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.ext.saml2mdattr.EntityAttributes;
 import org.opensaml.saml.saml2.core.Assertion;
 import org.opensaml.saml.saml2.core.Attribute;
 
 /** Unit test for {@link EntityAttributes}. */
-public class EntityAttributesTest extends BaseSAMLObjectProviderTestCase {
+public class EntityAttributesTest extends XMLObjectProviderBaseTestCase {
 
     /** Constructor. */
     public EntityAttributesTest() {
@@ -54,7 +54,7 @@ public class EntityAttributesTest extends BaseSAMLObjectProviderTestCase {
     public void testSingleElementMarshall() {
         EntityAttributes attributes = (EntityAttributes) buildXMLObject(EntityAttributes.DEFAULT_ELEMENT_NAME);
 
-        assertEquals(expectedDOM, attributes);
+        assertXMLEquals(expectedDOM, attributes);
     }
 
     /** {@inheritDoc} */
@@ -79,6 +79,6 @@ public class EntityAttributesTest extends BaseSAMLObjectProviderTestCase {
         attributes.getAttributes().add(attrib3);
 
         assertEquals(5, attributes.getOrderedChildren().size());
-        assertEquals(expectedChildElementsDOM, attributes);
+        assertXMLEquals(expectedChildElementsDOM, attributes);
     }
 }

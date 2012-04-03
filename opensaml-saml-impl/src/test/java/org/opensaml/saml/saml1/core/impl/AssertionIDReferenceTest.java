@@ -23,14 +23,14 @@ package org.opensaml.saml.saml1.core.impl;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml1.core.AssertionIDReference;
 
 /**
  * Test case for {@link org.opensaml.saml.saml1.core.impl.AssertionIDReferenceImpl}
  */
-public class AssertionIDReferenceTest extends BaseSAMLObjectProviderTestCase {
+public class AssertionIDReferenceTest extends XMLObjectProviderBaseTestCase {
 
     private final String expectedNCName;
 
@@ -73,7 +73,7 @@ public class AssertionIDReferenceTest extends BaseSAMLObjectProviderTestCase {
     /** {@inheritDoc} */
 
     public void testSingleElementMarshall() {
-        assertEquals(expectedDOM, buildXMLObject(qname));
+        assertXMLEquals(expectedDOM, buildXMLObject(qname));
     }
 
     /** {@inheritDoc} */
@@ -82,6 +82,6 @@ public class AssertionIDReferenceTest extends BaseSAMLObjectProviderTestCase {
         AssertionIDReference assertionIDReference = (AssertionIDReference) buildXMLObject(qname);
 
         assertionIDReference.setReference(expectedNCName);
-        assertEquals(expectedOptionalAttributesDOM, assertionIDReference);
+        assertXMLEquals(expectedOptionalAttributesDOM, assertionIDReference);
     }
 }

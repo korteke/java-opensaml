@@ -17,7 +17,7 @@
 
 package org.opensaml.saml.saml2.ecp.impl;
 
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.saml2.core.IDPList;
 import org.opensaml.saml.saml2.core.Issuer;
 import org.opensaml.saml.saml2.ecp.Request;
@@ -25,7 +25,7 @@ import org.opensaml.saml.saml2.ecp.Request;
 /**
  * Test case for creating, marshalling, and unmarshalling {@link Request}.
  */
-public class RequestTest extends BaseSAMLObjectProviderTestCase {
+public class RequestTest extends XMLObjectProviderBaseTestCase {
     
     private String expectedProviderName;
     
@@ -96,7 +96,7 @@ public class RequestTest extends BaseSAMLObjectProviderTestCase {
         request.setSOAP11Actor(expectedSOAP11Actor);
         request.setSOAP11MustUnderstand(expectedSOAP11MustUnderstand);
         
-        assertEquals(expectedDOM, request);
+        assertXMLEquals(expectedDOM, request);
     }
 
     /** {@inheritDoc} */
@@ -108,7 +108,7 @@ public class RequestTest extends BaseSAMLObjectProviderTestCase {
         request.setProviderName(expectedProviderName);
         request.setPassive(expectedPassive);
         
-        assertEquals(expectedOptionalAttributesDOM, request);
+        assertXMLEquals(expectedOptionalAttributesDOM, request);
     }
 
     /** {@inheritDoc} */
@@ -121,7 +121,7 @@ public class RequestTest extends BaseSAMLObjectProviderTestCase {
         request.setIssuer((Issuer) buildXMLObject(Issuer.DEFAULT_ELEMENT_NAME));
         request.setIDPList((IDPList) buildXMLObject(IDPList.DEFAULT_ELEMENT_NAME));
         
-        assertEquals(expectedChildElementsDOM, request);
+        assertXMLEquals(expectedChildElementsDOM, request);
     }
 
 }

@@ -19,7 +19,7 @@ package org.opensaml.saml.saml2.core.impl;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.NameID;
 import org.opensaml.saml.saml2.core.Subject;
@@ -28,7 +28,7 @@ import org.opensaml.saml.saml2.core.SubjectConfirmation;
 /**
  * Test case for creating, marshalling, and unmarshalling {@link org.opensaml.saml.saml2.core.impl.SubjectImpl}.
  */
-public class SubjectTest extends BaseSAMLObjectProviderTestCase {
+public class SubjectTest extends XMLObjectProviderBaseTestCase {
 
     /** Count of SubjectConfirmation subelements */
     protected int expectedSubjectConfirmationCount = 2;
@@ -61,7 +61,7 @@ public class SubjectTest extends BaseSAMLObjectProviderTestCase {
         QName qname = new QName(SAMLConstants.SAML20_NS, Subject.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
         Subject subject = (Subject) buildXMLObject(qname);
 
-        assertEquals(expectedDOM, subject);
+        assertXMLEquals(expectedDOM, subject);
     }
 
     /** {@inheritDoc} */
@@ -90,6 +90,6 @@ public class SubjectTest extends BaseSAMLObjectProviderTestCase {
             subject.getSubjectConfirmations().add((SubjectConfirmation) buildXMLObject(subjectConfirmationQName));
         }
 
-        assertEquals(expectedChildElementsDOM, subject);
+        assertXMLEquals(expectedChildElementsDOM, subject);
     }
 }

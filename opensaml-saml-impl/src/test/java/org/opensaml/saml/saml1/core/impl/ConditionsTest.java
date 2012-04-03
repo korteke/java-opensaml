@@ -25,7 +25,7 @@ import javax.xml.namespace.QName;
 
 import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml1.core.AudienceRestrictionCondition;
 import org.opensaml.saml.saml1.core.Conditions;
@@ -34,7 +34,7 @@ import org.opensaml.saml.saml1.core.DoNotCacheCondition;
 /**
  * Test class for org.opensaml.saml.saml1.core.Conditions
  */
-public class ConditionsTest extends BaseSAMLObjectProviderTestCase {
+public class ConditionsTest extends XMLObjectProviderBaseTestCase {
 
     /** name used to generate objects */
     private final QName qname;
@@ -111,7 +111,7 @@ public class ConditionsTest extends BaseSAMLObjectProviderTestCase {
     public void testSingleElementMarshall() {
         Conditions conditions = (Conditions) buildXMLObject(qname);
 
-        assertEquals(expectedDOM, conditions);
+        assertXMLEquals(expectedDOM, conditions);
 
     }
 
@@ -122,7 +122,7 @@ public class ConditionsTest extends BaseSAMLObjectProviderTestCase {
         conditions.setNotBefore(expectedNotBeforeDate);
         conditions.setNotOnOrAfter(expectedNotOnOfAfter);
 
-        assertEquals(expectedOptionalAttributesDOM, conditions);
+        assertXMLEquals(expectedOptionalAttributesDOM, conditions);
     }
 
     /** {@inheritDoc} */
@@ -141,7 +141,7 @@ public class ConditionsTest extends BaseSAMLObjectProviderTestCase {
         //           
         conditions.getConditions().add((AudienceRestrictionCondition) buildXMLObject(arcQname));
 
-        assertEquals(expectedChildElementsDOM, conditions);
+        assertXMLEquals(expectedChildElementsDOM, conditions);
 
     }
 

@@ -57,7 +57,7 @@ public class PTest extends XMLObjectProviderBaseTestCase {
         P cbType = (P) buildXMLObject(P.DEFAULT_ELEMENT_NAME);
         cbType.setValue(expectedCryptoBinaryContent);
         
-        assertEquals(expectedDOM, cbType);
+        assertXMLEquals(expectedDOM, cbType);
     }
 
 }

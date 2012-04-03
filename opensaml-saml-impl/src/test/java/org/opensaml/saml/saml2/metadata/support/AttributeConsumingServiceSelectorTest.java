@@ -20,7 +20,7 @@ package org.opensaml.saml.saml2.metadata.support;
 import java.io.File;
 import java.net.URL;
 
-import org.opensaml.saml.common.BaseTestCase;
+import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.ext.saml2mdquery.AttributeQueryDescriptorType;
 import org.opensaml.saml.saml2.metadata.AttributeConsumingService;
@@ -33,7 +33,7 @@ import org.opensaml.saml.saml2.metadata.support.AttributeConsumingServiceSelecto
 /**
  * Tests of AttributeConsumingServiceSelector.
  */
-public class AttributeConsumingServiceSelectorTest extends BaseTestCase {
+public class AttributeConsumingServiceSelectorTest extends XMLObjectBaseTestCase {
     
     private String mdFileName;
     
@@ -51,7 +51,7 @@ public class AttributeConsumingServiceSelectorTest extends BaseTestCase {
         File mdFile = new File(mdURL.toURI());
         
         mdProvider = new FilesystemMetadataProvider(mdFile);
-        mdProvider.setParserPool(parser);
+        mdProvider.setParserPool(parserPool);
         mdProvider.initialize();
         
         acsSelector = new AttributeConsumingServiceSelector();

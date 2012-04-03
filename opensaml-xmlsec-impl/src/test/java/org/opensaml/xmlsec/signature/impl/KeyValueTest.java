@@ -65,7 +65,7 @@ public class KeyValueTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementMarshall() {
         KeyValue keyValue = (KeyValue) buildXMLObject(KeyValue.DEFAULT_ELEMENT_NAME);
         
-        assertEquals(expectedDOM, keyValue);
+        assertXMLEquals(expectedDOM, keyValue);
     }
 
     /** {@inheritDoc} */
@@ -74,7 +74,7 @@ public class KeyValueTest extends XMLObjectProviderBaseTestCase {
         
         keyValue.setRSAKeyValue((RSAKeyValue) buildXMLObject(RSAKeyValue.DEFAULT_ELEMENT_NAME));
         
-        assertEquals(expectedChildElementsDOM, keyValue);
+        assertXMLEquals(expectedChildElementsDOM, keyValue);
     }
 
 }

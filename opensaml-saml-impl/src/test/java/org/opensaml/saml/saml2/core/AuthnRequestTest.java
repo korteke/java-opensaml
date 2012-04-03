@@ -105,7 +105,7 @@ public class AuthnRequestTest extends BaseComplexSAMLObjectTestCase {
         request.setDestination("http://www.example.com/");
         request.setConsent("urn:oasis:names:tc:SAML:2.0:consent:obtained");
         
-        assertEquals("Marshalled AuthnRequest", expectedDOM, request);
+        assertXMLEquals("Marshalled AuthnRequest", expectedDOM, request);
         
         
     }

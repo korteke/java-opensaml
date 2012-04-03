@@ -19,14 +19,14 @@ package org.opensaml.saml.saml2.core.impl;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.AuthnContextDecl;
 
 /**
  * Test case for creating, marshalling, and unmarshalling {@link org.opensaml.saml.saml2.core.impl.AuthnContextDeclImpl}.
  */
-public class AuthnContextDeclTest extends BaseSAMLObjectProviderTestCase {
+public class AuthnContextDeclTest extends XMLObjectProviderBaseTestCase {
 
     /** Expected Declaration value. */
     protected String expectedDeclartion;
@@ -64,7 +64,7 @@ public class AuthnContextDeclTest extends BaseSAMLObjectProviderTestCase {
         AuthnContextDecl authnContextDecl = (AuthnContextDecl) buildXMLObject(qname);
 
         authnContextDecl.setTextContent(expectedDeclartion);
-        assertEquals(expectedDOM, authnContextDecl);
+        assertXMLEquals(expectedDOM, authnContextDecl);
     }
 
     /** {@inheritDoc} */

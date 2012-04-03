@@ -23,12 +23,11 @@ import java.util.Set;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.schema.XSAny;
 import org.opensaml.security.SecurityException;
-import org.opensaml.soap.BaseTestCase;
 import org.opensaml.soap.common.SOAPHandler;
 import org.opensaml.soap.soap11.Envelope;
-import org.opensaml.soap.soap11.decoder.SOAP11Decoder;
 import org.opensaml.ws.message.BaseMessageContext;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.message.decoder.MessageDecodingException;
@@ -41,7 +40,7 @@ import org.opensaml.ws.transport.InputStreamInTransportAdapter;
 /**
  * Test basic SOAP 1.1 message decoding.
  */
-public class SOAP11DecoderTest extends BaseTestCase {
+public class SOAP11DecoderTest extends XMLObjectBaseTestCase {
     
     private TestContext messageContext;
     

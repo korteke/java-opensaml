@@ -20,14 +20,14 @@
  */
 package org.opensaml.saml.saml2.core.impl;
 
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.saml2.core.RequesterID;
 
 /**
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.core.impl.RequesterIDImpl}.
  */
-public class RequesterIDTest extends BaseSAMLObjectProviderTestCase {
+public class RequesterIDTest extends XMLObjectProviderBaseTestCase {
     
     /** Expected element content*/
     private String expectedRequesterID;
@@ -60,6 +60,6 @@ public class RequesterIDTest extends BaseSAMLObjectProviderTestCase {
 
         reqID.setRequesterID(expectedRequesterID);
         
-        assertEquals(expectedDOM, reqID);
+        assertXMLEquals(expectedDOM, reqID);
     }
 }

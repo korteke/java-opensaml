@@ -24,7 +24,7 @@ package org.opensaml.saml.saml1.core.impl;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.schema.impl.XSAnyBuilder;
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml1.core.ConfirmationMethod;
 import org.opensaml.saml.saml1.core.SubjectConfirmation;
@@ -35,7 +35,7 @@ import org.w3c.dom.Document;
 /**
  * Test for {@link org.opensaml.saml.saml1.core.impl.Subject}
  */
-public class SubjectConfirmationTest extends BaseSAMLObjectProviderTestCase {
+public class SubjectConfirmationTest extends XMLObjectProviderBaseTestCase {
 
     /** name used to generate objects */
     private final QName qname;
@@ -60,8 +60,7 @@ public class SubjectConfirmationTest extends BaseSAMLObjectProviderTestCase {
     protected void setUp() throws Exception {
         super.setUp();
 
-        expectedFullDOM = parser.parse(BaseSAMLObjectProviderTestCase.class
-                .getResourceAsStream(fullElementsFile));
+        expectedFullDOM = parserPool.parse(this.getClass().getResourceAsStream(fullElementsFile));
     }
 
     /** {@inheritDoc} */
@@ -91,7 +90,7 @@ public class SubjectConfirmationTest extends BaseSAMLObjectProviderTestCase {
 
     /** {@inheritDoc} */
     public void testSingleElementMarshall() {
-        assertEquals(expectedDOM, buildXMLObject(qname));
+        assertXMLEquals(expectedDOM, buildXMLObject(qname));
     }
 
     /** {@inheritDoc} */
@@ -114,6 +113,6 @@ public class SubjectConfirmationTest extends BaseSAMLObjectProviderTestCase {
         oqname = new QName(SAMLConstants.SAML1_NS, SubjectConfirmationData.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
         subjectConfirmation.setSubjectConfirmationData(proxyBuilder.buildObject(oqname));
 
-        assertEquals(expectedFullDOM, subjectConfirmation);
+        assertXMLEquals(expectedFullDOM, subjectConfirmation);
     }
 }

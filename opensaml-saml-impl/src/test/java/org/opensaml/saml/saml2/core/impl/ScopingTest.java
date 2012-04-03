@@ -22,7 +22,7 @@ package org.opensaml.saml.saml2.core.impl;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.IDPList;
 import org.opensaml.saml.saml2.core.RequesterID;
@@ -32,7 +32,7 @@ import org.opensaml.saml.saml2.core.Scoping;
  *Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.core.impl.ScopingImpl}.
  */
-public class ScopingTest extends BaseSAMLObjectProviderTestCase {
+public class ScopingTest extends XMLObjectProviderBaseTestCase {
     
     /** Expected ProxyCount*/
     private int expectedProxyCount;
@@ -61,7 +61,7 @@ public class ScopingTest extends BaseSAMLObjectProviderTestCase {
     public void testSingleElementMarshall() {
         Scoping scoping = (Scoping) buildXMLObject(Scoping.DEFAULT_ELEMENT_NAME);
         
-        assertEquals(expectedDOM, scoping);
+        assertXMLEquals(expectedDOM, scoping);
 
     }
 
@@ -71,7 +71,7 @@ public class ScopingTest extends BaseSAMLObjectProviderTestCase {
         
         scoping.setProxyCount(new Integer(expectedProxyCount));
         
-        assertEquals(expectedOptionalAttributesDOM, scoping);
+        assertXMLEquals(expectedOptionalAttributesDOM, scoping);
     }
 
     /** {@inheritDoc} */
@@ -86,7 +86,7 @@ public class ScopingTest extends BaseSAMLObjectProviderTestCase {
             scoping.getRequesterIDs().add((RequesterID) buildXMLObject(requesterIDQName));
         }
         
-        assertEquals(expectedChildElementsDOM, scoping);
+        assertXMLEquals(expectedChildElementsDOM, scoping);
     }
 
     /** {@inheritDoc} */

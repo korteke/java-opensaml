@@ -22,14 +22,14 @@ package org.opensaml.saml.saml1.core.impl;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml1.core.DoNotCacheCondition;
 
 /**
  * Test class for {@link org.opensaml.saml.saml1.core.impl.DoNotCacheConditionImpl} objects
  */
-public class DoNotCacheConditionTest extends BaseSAMLObjectProviderTestCase {
+public class DoNotCacheConditionTest extends XMLObjectProviderBaseTestCase {
 
     /**
      * Constructor
@@ -50,7 +50,7 @@ public class DoNotCacheConditionTest extends BaseSAMLObjectProviderTestCase {
     /** {@inheritDoc} */
 
     public void testSingleElementMarshall() {
-        assertEquals(expectedDOM, buildXMLObject(new QName(SAMLConstants.SAML1_NS, DoNotCacheCondition.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX)));
+        assertXMLEquals(expectedDOM, buildXMLObject(new QName(SAMLConstants.SAML1_NS, DoNotCacheCondition.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX)));
     }
 
 }

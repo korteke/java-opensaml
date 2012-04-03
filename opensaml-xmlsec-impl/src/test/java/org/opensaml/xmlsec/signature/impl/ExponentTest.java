@@ -57,7 +57,7 @@ public class ExponentTest extends XMLObjectProviderBaseTestCase {
         Exponent cbType = (Exponent) buildXMLObject(Exponent.DEFAULT_ELEMENT_NAME);
         cbType.setValue(expectedCryptoBinaryContent);
         
-        assertEquals(expectedDOM, cbType);
+        assertXMLEquals(expectedDOM, cbType);
     }
 
 }

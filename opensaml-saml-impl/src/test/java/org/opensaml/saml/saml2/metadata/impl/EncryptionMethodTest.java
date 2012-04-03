@@ -18,7 +18,7 @@
 package org.opensaml.saml.saml2.metadata.impl;
 
 
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.saml2.metadata.EncryptionMethod;
 import org.opensaml.xmlsec.encryption.KeySize;
 import org.opensaml.xmlsec.encryption.OAEPparams;
@@ -27,7 +27,7 @@ import org.opensaml.xmlsec.signature.DigestMethod;
 /**
  *
  */
-public class EncryptionMethodTest extends BaseSAMLObjectProviderTestCase {
+public class EncryptionMethodTest extends XMLObjectProviderBaseTestCase {
     
     private String expectedAlgorithm;
     
@@ -78,7 +78,7 @@ public class EncryptionMethodTest extends BaseSAMLObjectProviderTestCase {
         
         em.setAlgorithm(expectedAlgorithm);
         
-        assertEquals(expectedDOM, em);
+        assertXMLEquals(expectedDOM, em);
     }
 
     /** {@inheritDoc} */
@@ -91,7 +91,7 @@ public class EncryptionMethodTest extends BaseSAMLObjectProviderTestCase {
         em.getUnknownXMLObjects().add( buildXMLObject(DigestMethod.DEFAULT_ELEMENT_NAME));
         em.getUnknownXMLObjects().add( buildXMLObject(DigestMethod.DEFAULT_ELEMENT_NAME));
         
-        assertEquals(expectedChildElementsDOM, em);
+        assertXMLEquals(expectedChildElementsDOM, em);
     }
 
 }

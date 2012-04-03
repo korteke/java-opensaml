@@ -22,14 +22,14 @@ package org.opensaml.saml.saml1.core.impl;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml1.core.Audience;
 
 /**
  * Test for org.opensaml.saml.saml1.core.Audience Objects
  */
-public class AudienceTest extends BaseSAMLObjectProviderTestCase {
+public class AudienceTest extends XMLObjectProviderBaseTestCase {
 
     /** name used to generate objects */
     private final QName qname;
@@ -66,7 +66,7 @@ public class AudienceTest extends BaseSAMLObjectProviderTestCase {
     /** {@inheritDoc} */
 
     public void testSingleElementMarshall() {
-        assertEquals(expectedDOM, buildXMLObject(qname));
+        assertXMLEquals(expectedDOM, buildXMLObject(qname));
     }
 
     /** {@inheritDoc} */
@@ -75,7 +75,7 @@ public class AudienceTest extends BaseSAMLObjectProviderTestCase {
         Audience audience = (Audience) buildXMLObject(qname);
         
         audience.setUri(expectedUri);
-        assertEquals(expectedOptionalAttributesDOM, audience);
+        assertXMLEquals(expectedOptionalAttributesDOM, audience);
         
     }
 

@@ -64,7 +64,7 @@ public class X509IssuerSerialTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementMarshall() {
         X509IssuerSerial x509Element = (X509IssuerSerial) buildXMLObject(X509IssuerSerial.DEFAULT_ELEMENT_NAME);
         
-        assertEquals(expectedDOM, x509Element);
+        assertXMLEquals(expectedDOM, x509Element);
     }
 
     /** {@inheritDoc} */
@@ -74,7 +74,7 @@ public class X509IssuerSerialTest extends XMLObjectProviderBaseTestCase {
         x509Element.setX509IssuerName((X509IssuerName) buildXMLObject(X509IssuerName.DEFAULT_ELEMENT_NAME));
         x509Element.setX509SerialNumber((X509SerialNumber) buildXMLObject(X509SerialNumber.DEFAULT_ELEMENT_NAME));
         
-        assertEquals(expectedChildElementsDOM, x509Element);
+        assertXMLEquals(expectedChildElementsDOM, x509Element);
     }
 
 }

@@ -20,14 +20,14 @@
  */
 package org.opensaml.saml.saml2.metadata.impl;
 
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.saml2.metadata.EmailAddress;
 
 /**
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.metadata.impl.EmailAddressImpl}.
  */
-public class EmailAddressTest extends BaseSAMLObjectProviderTestCase {
+public class EmailAddressTest extends XMLObjectProviderBaseTestCase {
     
     /** Expected email address */
     protected String expectedAddress;
@@ -59,6 +59,6 @@ public class EmailAddressTest extends BaseSAMLObjectProviderTestCase {
         
         address.setAddress(expectedAddress);
 
-        assertEquals(expectedDOM, address);
+        assertXMLEquals(expectedDOM, address);
     }
 }

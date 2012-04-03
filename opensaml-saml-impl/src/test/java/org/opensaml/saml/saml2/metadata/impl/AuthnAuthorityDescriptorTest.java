@@ -24,7 +24,7 @@ import javax.xml.namespace.QName;
 
 import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.common.Extensions;
 import org.opensaml.saml.saml2.metadata.AssertionIDRequestService;
@@ -38,7 +38,7 @@ import org.opensaml.saml.saml2.metadata.Organization;
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.metadata.impl.AuthnAuthorityDescriptorImpl}.
  */
-public class AuthnAuthorityDescriptorTest extends BaseSAMLObjectProviderTestCase {
+public class AuthnAuthorityDescriptorTest extends XMLObjectProviderBaseTestCase {
 
     /** Expected supported protocol enumeration */
     protected List<String> expectedSupportedProtocols;
@@ -157,7 +157,7 @@ public class AuthnAuthorityDescriptorTest extends BaseSAMLObjectProviderTestCase
 
         descriptor.addSupportedProtocol(SAMLConstants.SAML20P_NS);
 
-        assertEquals(expectedDOM, descriptor);
+        assertXMLEquals(expectedDOM, descriptor);
     }
 
     /** {@inheritDoc} */
@@ -170,7 +170,7 @@ public class AuthnAuthorityDescriptorTest extends BaseSAMLObjectProviderTestCase
         descriptor.setCacheDuration(expectedCacheDuration);
         descriptor.setErrorURL(expectedErrorURL);
 
-        assertEquals(expectedOptionalAttributesDOM, descriptor);
+        assertXMLEquals(expectedOptionalAttributesDOM, descriptor);
     }
 
     /** {@inheritDoc} */
@@ -207,6 +207,6 @@ public class AuthnAuthorityDescriptorTest extends BaseSAMLObjectProviderTestCase
             descriptor.getNameIDFormats().add((NameIDFormat) buildXMLObject(nameIDFormatQName));
         }
         
-        assertEquals(expectedChildElementsDOM, descriptor);
+        assertXMLEquals(expectedChildElementsDOM, descriptor);
     }
 }

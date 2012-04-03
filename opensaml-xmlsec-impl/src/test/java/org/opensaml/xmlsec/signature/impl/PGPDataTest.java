@@ -68,7 +68,7 @@ public class PGPDataTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementMarshall() {
         PGPData pgpData = (PGPData) buildXMLObject(PGPData.DEFAULT_ELEMENT_NAME);
         
-        assertEquals(expectedDOM, pgpData);
+        assertXMLEquals(expectedDOM, pgpData);
     }
 
     /** {@inheritDoc} */
@@ -80,7 +80,7 @@ public class PGPDataTest extends XMLObjectProviderBaseTestCase {
         pgpData.getUnknownXMLObjects().add(buildXMLObject(SimpleXMLObject.ELEMENT_NAME));
         pgpData.getUnknownXMLObjects().add(buildXMLObject(SimpleXMLObject.ELEMENT_NAME));
         
-        assertEquals(expectedChildElementsDOM, pgpData);
+        assertXMLEquals(expectedChildElementsDOM, pgpData);
     }
 
 }

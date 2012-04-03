@@ -64,7 +64,7 @@ public class XSDateTimeTest extends XMLObjectBaseTestCase {
         marshaller.marshall(xsDateTime);
         
         Document document = parserPool.parse(XSDateTimeTest.class.getResourceAsStream(testDocumentLocation));
-        assertEquals("Marshalled XSDateTime does not match example document", document, xsDateTime);
+        assertXMLEquals("Marshalled XSDateTime does not match example document", document, xsDateTime);
     }
     
     /**

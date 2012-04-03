@@ -19,7 +19,7 @@ package org.opensaml.saml.saml2.core.impl;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.AuthenticatingAuthority;
 
@@ -27,7 +27,7 @@ import org.opensaml.saml.saml2.core.AuthenticatingAuthority;
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.core.impl.AuthenticatingAuthorityImpl}.
  */
-public class AuthenticatingAuthorityTest extends BaseSAMLObjectProviderTestCase {
+public class AuthenticatingAuthorityTest extends XMLObjectProviderBaseTestCase {
 
     /** Expected URI value */
     protected String expectedURI;
@@ -64,7 +64,7 @@ public class AuthenticatingAuthorityTest extends BaseSAMLObjectProviderTestCase 
         AuthenticatingAuthority authenticatingAuthority = (AuthenticatingAuthority) buildXMLObject(qname);
 
         authenticatingAuthority.setURI(expectedURI);
-        assertEquals(expectedDOM, authenticatingAuthority);
+        assertXMLEquals(expectedDOM, authenticatingAuthority);
 
     }
 

@@ -53,7 +53,7 @@ public class LogoutResponseTest extends StatusResponseTestBase {
         
         super.populateRequiredAttributes(resp);
         
-        assertEquals(expectedDOM, resp);
+        assertXMLEquals(expectedDOM, resp);
     }
 
     /** {@inheritDoc} */
@@ -64,7 +64,7 @@ public class LogoutResponseTest extends StatusResponseTestBase {
         super.populateRequiredAttributes(resp);
         super.populateOptionalAttributes(resp);
         
-        assertEquals(expectedOptionalAttributesDOM, resp);
+        assertXMLEquals(expectedOptionalAttributesDOM, resp);
     }
     
     /** {@inheritDoc} */
@@ -74,7 +74,7 @@ public class LogoutResponseTest extends StatusResponseTestBase {
         
         super.populateChildElements(resp);
         
-        assertEquals(expectedChildElementsDOM, resp);
+        assertXMLEquals(expectedChildElementsDOM, resp);
     }
 
     /** {@inheritDoc} */

@@ -19,7 +19,7 @@ package org.opensaml.saml.saml2.core.impl;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.Audience;
 import org.opensaml.saml.saml2.core.AudienceRestriction;
@@ -27,7 +27,7 @@ import org.opensaml.saml.saml2.core.AudienceRestriction;
 /**
  * Test case for creating, marshalling, and unmarshalling {@link org.opensaml.saml.saml2.core.impl.AudienceRestrictionImpl}.
  */
-public class AudienceRestrictionTest extends BaseSAMLObjectProviderTestCase {
+public class AudienceRestrictionTest extends XMLObjectProviderBaseTestCase {
 
     /** Count of Audience subelements */
     protected int expectedAudienceCount = 2;
@@ -60,7 +60,7 @@ public class AudienceRestrictionTest extends BaseSAMLObjectProviderTestCase {
         QName qname = new QName(SAMLConstants.SAML20_NS, AudienceRestriction.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
         AudienceRestriction audienceRestriction = (AudienceRestriction) buildXMLObject(qname);
 
-        assertEquals(expectedDOM, audienceRestriction);
+        assertXMLEquals(expectedDOM, audienceRestriction);
     }
 
     /** {@inheritDoc} */
@@ -84,6 +84,6 @@ public class AudienceRestrictionTest extends BaseSAMLObjectProviderTestCase {
             audienceRestriction.getAudiences().add((Audience) buildXMLObject(audienceQName));
         }
 
-        assertEquals(expectedChildElementsDOM, audienceRestriction);
+        assertXMLEquals(expectedChildElementsDOM, audienceRestriction);
     }
 }

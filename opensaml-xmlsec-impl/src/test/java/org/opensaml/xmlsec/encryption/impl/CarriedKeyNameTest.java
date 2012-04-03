@@ -57,7 +57,7 @@ public class CarriedKeyNameTest extends XMLObjectProviderBaseTestCase {
         CarriedKeyName ckn = (CarriedKeyName) buildXMLObject(CarriedKeyName.DEFAULT_ELEMENT_NAME);
         ckn.setValue(expectedStringContent);
         
-        assertEquals(expectedDOM, ckn);
+        assertXMLEquals(expectedDOM, ckn);
     }
 
 }

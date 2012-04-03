@@ -57,7 +57,7 @@ public class QTest extends XMLObjectProviderBaseTestCase {
         Q cbType = (Q) buildXMLObject(Q.DEFAULT_ELEMENT_NAME);
         cbType.setValue(expectedCryptoBinaryContent);
         
-        assertEquals(expectedDOM, cbType);
+        assertXMLEquals(expectedDOM, cbType);
     }
 
 }

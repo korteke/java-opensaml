@@ -20,7 +20,7 @@ package org.opensaml.saml.saml2.encryption;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.opensaml.saml.common.BaseTestCase;
+import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.saml.saml2.core.EncryptedAssertion;
 import org.opensaml.saml.saml2.encryption.EncryptedElementTypeEncryptedKeyResolver;
 import org.opensaml.xmlsec.encryption.EncryptedData;
@@ -30,7 +30,7 @@ import org.opensaml.xmlsec.encryption.support.EncryptedKeyResolver;
 /**
  * Test the SAML EncryptedElementType encrypted key resolver, with keys as peers.
  */
-public class EncryptedElementTypeEncryptedKeyResolverTest extends BaseTestCase {
+public class EncryptedElementTypeEncryptedKeyResolverTest extends XMLObjectBaseTestCase {
     
     /** The resolver instance to be tested. */
     private EncryptedElementTypeEncryptedKeyResolver resolver;

@@ -20,14 +20,14 @@
  */
 package org.opensaml.saml.saml2.metadata.impl;
 
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.saml2.metadata.TelephoneNumber;
 
 /**
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.metadata.TelephoneNumber}.
  */
-public class TelephoneNumberTest extends BaseSAMLObjectProviderTestCase {
+public class TelephoneNumberTest extends XMLObjectProviderBaseTestCase {
     
     /** Expected telephone number */
     protected String expectedNumber;
@@ -59,6 +59,6 @@ public class TelephoneNumberTest extends BaseSAMLObjectProviderTestCase {
         
         number.setNumber(expectedNumber);
 
-        assertEquals(expectedDOM, number);
+        assertXMLEquals(expectedDOM, number);
     }
 }

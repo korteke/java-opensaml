@@ -57,7 +57,7 @@ public class ModulusTest extends XMLObjectProviderBaseTestCase {
         Modulus cbType = (Modulus) buildXMLObject(Modulus.DEFAULT_ELEMENT_NAME);
         cbType.setValue(expectedCryptoBinaryContent);
         
-        assertEquals(expectedDOM, cbType);
+        assertXMLEquals(expectedDOM, cbType);
     }
 
 }

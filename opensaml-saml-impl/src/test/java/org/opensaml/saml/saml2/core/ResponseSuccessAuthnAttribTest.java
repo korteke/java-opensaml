@@ -198,7 +198,7 @@ public class ResponseSuccessAuthnAttribTest extends BaseComplexSAMLObjectTestCas
         attribStatement.getAttributes().add(ldapAttrib);
         assertion.getAttributeStatements().add(attribStatement);
 
-        assertEquals("Marshalled Response was not the expected value", expectedDOM, response);
+        assertXMLEquals("Marshalled Response was not the expected value", expectedDOM, response);
     }
     
 }

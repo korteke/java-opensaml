@@ -65,7 +65,7 @@ public class TransformsTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementMarshall() {
         Transforms em = (Transforms) buildXMLObject(Transforms.DEFAULT_ELEMENT_NAME);
         
-        assertEquals(expectedDOM, em);
+        assertXMLEquals(expectedDOM, em);
     }
 
     /** {@inheritDoc} */
@@ -75,7 +75,7 @@ public class TransformsTest extends XMLObjectProviderBaseTestCase {
         em.getTransforms().add( (Transform) buildXMLObject(Transform.DEFAULT_ELEMENT_NAME));
         em.getTransforms().add( (Transform) buildXMLObject(Transform.DEFAULT_ELEMENT_NAME));
         
-        assertEquals(expectedChildElementsDOM, em);
+        assertXMLEquals(expectedChildElementsDOM, em);
     }
 
 }

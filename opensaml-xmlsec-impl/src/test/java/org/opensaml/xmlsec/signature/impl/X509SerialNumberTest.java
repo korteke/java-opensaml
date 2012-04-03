@@ -59,7 +59,7 @@ public class X509SerialNumberTest extends XMLObjectProviderBaseTestCase {
         X509SerialNumber x509Element = (X509SerialNumber) buildXMLObject(X509SerialNumber.DEFAULT_ELEMENT_NAME);
         x509Element.setValue(expectedBigIntegerContent);
         
-        assertEquals(expectedDOM, x509Element);
+        assertXMLEquals(expectedDOM, x509Element);
     }
 
 }

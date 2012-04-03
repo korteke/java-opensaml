@@ -93,7 +93,7 @@ public class AuthnRequestTest extends RequestTestBase {
         
         super.populateRequiredAttributes(req);
         
-        assertEquals(expectedDOM, req);
+        assertXMLEquals(expectedDOM, req);
 
     }
     
@@ -113,7 +113,7 @@ public class AuthnRequestTest extends RequestTestBase {
         req.setAttributeConsumingServiceIndex(expectedAttributeConsumingServiceIndex);
         req.setProviderName(expectedProviderName);
         
-        assertEquals(expectedOptionalAttributesDOM, req);
+        assertXMLEquals(expectedOptionalAttributesDOM, req);
     }
     
     /** {@inheritDoc} */
@@ -138,7 +138,7 @@ public class AuthnRequestTest extends RequestTestBase {
         QName scopingQName = new QName(SAMLConstants.SAML20P_NS, Scoping.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
         req.setScoping((Scoping) buildXMLObject(scopingQName));
         
-        assertEquals(expectedChildElementsDOM, req);
+        assertXMLEquals(expectedChildElementsDOM, req);
     }
 
     /** {@inheritDoc} */

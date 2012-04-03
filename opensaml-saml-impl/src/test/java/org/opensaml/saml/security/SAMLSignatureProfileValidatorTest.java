@@ -17,7 +17,7 @@
 
 package org.opensaml.saml.security;
 
-import org.opensaml.saml.common.BaseTestCase;
+import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.saml.common.SignableSAMLObject;
 import org.opensaml.saml.security.SAMLSignatureProfileValidator;
 import org.opensaml.xmlsec.signature.Signature;
@@ -27,7 +27,7 @@ import org.opensaml.xmlsec.signature.support.SignatureException;
 /**
  * Test the SAML XML Signature profile validator.
  */
-public class SAMLSignatureProfileValidatorTest extends BaseTestCase {
+public class SAMLSignatureProfileValidatorTest extends XMLObjectBaseTestCase {
     
     private SAMLSignatureProfileValidator validator;
     

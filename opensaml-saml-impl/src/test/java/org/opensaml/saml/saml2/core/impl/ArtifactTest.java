@@ -20,13 +20,13 @@
  */
 package org.opensaml.saml.saml2.core.impl;
 
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.saml2.core.Artifact;
 
 /**
  *
  */
-public class ArtifactTest extends BaseSAMLObjectProviderTestCase {
+public class ArtifactTest extends XMLObjectProviderBaseTestCase {
     
     /** Expected element content*/
     private String expectedContent;
@@ -58,6 +58,6 @@ public class ArtifactTest extends BaseSAMLObjectProviderTestCase {
         
         artifact.setArtifact(expectedContent);
         
-        assertEquals(expectedDOM, artifact);
+        assertXMLEquals(expectedDOM, artifact);
     }
 }

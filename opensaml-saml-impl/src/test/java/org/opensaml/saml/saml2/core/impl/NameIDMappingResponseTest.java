@@ -56,7 +56,7 @@ public class NameIDMappingResponseTest extends StatusResponseTestBase {
         
         super.populateRequiredAttributes(resp);
         
-        assertEquals(expectedDOM, resp);
+        assertXMLEquals(expectedDOM, resp);
     }
 
     /** {@inheritDoc} */
@@ -67,7 +67,7 @@ public class NameIDMappingResponseTest extends StatusResponseTestBase {
         super.populateRequiredAttributes(resp);
         super.populateOptionalAttributes(resp);
         
-        assertEquals(expectedOptionalAttributesDOM, resp);
+        assertXMLEquals(expectedOptionalAttributesDOM, resp);
     }
 
     /** {@inheritDoc} */
@@ -80,7 +80,7 @@ public class NameIDMappingResponseTest extends StatusResponseTestBase {
         QName nameIDQName = new QName(SAMLConstants.SAML20_NS, NameID.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
         req.setNameID((NameID) buildXMLObject(nameIDQName));
         
-        assertEquals(expectedChildElementsDOM, req);
+        assertXMLEquals(expectedChildElementsDOM, req);
     }
 
     /** {@inheritDoc} */

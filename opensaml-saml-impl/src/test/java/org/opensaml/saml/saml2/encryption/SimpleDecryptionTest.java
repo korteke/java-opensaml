@@ -25,7 +25,7 @@ import javax.crypto.SecretKey;
 
 import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
-import org.opensaml.saml.common.BaseTestCase;
+import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.saml2.core.Assertion;
 import org.opensaml.saml.saml2.core.Attribute;
@@ -51,7 +51,7 @@ import org.w3c.dom.Document;
 /**
  * Simple tests for SAML 2 decrypter, using a hardcoded key (so not testing complex encrypted key resolution, etc).
  */
-public class SimpleDecryptionTest extends BaseTestCase {
+public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
     
     private KeyInfoCredentialResolver keyResolver;
     
@@ -111,7 +111,7 @@ public class SimpleDecryptionTest extends BaseTestCase {
         assertNotNull("Decrypted target was null", decryptedTarget);
         assertTrue("Decrypted target was not the expected type", decryptedTarget instanceof Assertion);
         
-        assertEquals(targetDOM, decryptedTarget);
+        assertXMLEquals(targetDOM, decryptedTarget);
     }
     
     /**
@@ -139,7 +139,7 @@ public class SimpleDecryptionTest extends BaseTestCase {
         assertNotNull("Decrypted target was null", decryptedTarget);
         assertTrue("Decrypted target was not the expected type", decryptedTarget instanceof Assertion);
         
-        assertEquals(targetDOM, decryptedTarget);
+        assertXMLEquals(targetDOM, decryptedTarget);
     }
     
     /**
@@ -167,7 +167,7 @@ public class SimpleDecryptionTest extends BaseTestCase {
         assertNotNull("Decrypted target was null", decryptedTarget);
         assertTrue("Decrypted target was not the expected type", decryptedTarget instanceof NameID);
         
-        assertEquals(targetDOM, decryptedTarget);
+        assertXMLEquals(targetDOM, decryptedTarget);
     }
     
     /**
@@ -195,7 +195,7 @@ public class SimpleDecryptionTest extends BaseTestCase {
         assertNotNull("Decrypted target was null", decryptedTarget);
         assertTrue("Decrypted target was not the expected type", decryptedTarget instanceof NewID);
         
-        assertEquals(targetDOM, decryptedTarget);
+        assertXMLEquals(targetDOM, decryptedTarget);
     }
     
     /**
@@ -223,7 +223,7 @@ public class SimpleDecryptionTest extends BaseTestCase {
         assertNotNull("Decrypted target was null", decryptedTarget);
         assertTrue("Decrypted target was not the expected type", decryptedTarget instanceof Attribute);
         
-        assertEquals(targetDOM, decryptedTarget);
+        assertXMLEquals(targetDOM, decryptedTarget);
     }
     
     /**
@@ -266,7 +266,7 @@ public class SimpleDecryptionTest extends BaseTestCase {
      * @throws XMLParserException if parser encounters an error
      */
     private Document getDOM(String filename) throws XMLParserException {
-        Document targetDOM = parser.parse(SimpleDecryptionTest.class.getResourceAsStream(filename));
+        Document targetDOM = parserPool.parse(SimpleDecryptionTest.class.getResourceAsStream(filename));
         return targetDOM;
     }
     

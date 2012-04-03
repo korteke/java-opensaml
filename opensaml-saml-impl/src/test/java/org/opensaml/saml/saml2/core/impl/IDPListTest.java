@@ -22,7 +22,7 @@ package org.opensaml.saml.saml2.core.impl;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.GetComplete;
 import org.opensaml.saml.saml2.core.IDPEntry;
@@ -32,7 +32,7 @@ import org.opensaml.saml.saml2.core.IDPList;
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.core.impl.IDPEntryImpl}.
  */
-public class IDPListTest extends BaseSAMLObjectProviderTestCase {
+public class IDPListTest extends XMLObjectProviderBaseTestCase {
     
     /** The expected number of IDPEntry children */
     private int expectedNumIDPEntryChildren;
@@ -56,7 +56,7 @@ public class IDPListTest extends BaseSAMLObjectProviderTestCase {
     public void testSingleElementMarshall() {
         IDPList list = (IDPList) buildXMLObject(IDPList.DEFAULT_ELEMENT_NAME);
 
-        assertEquals(expectedDOM, list);
+        assertXMLEquals(expectedDOM, list);
     }
  
 
@@ -72,7 +72,7 @@ public class IDPListTest extends BaseSAMLObjectProviderTestCase {
         QName getCompelteQName = new QName(SAMLConstants.SAML20P_NS, GetComplete.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
         list.setGetComplete((GetComplete) buildXMLObject(getCompelteQName));
         
-        assertEquals(expectedChildElementsDOM, list);
+        assertXMLEquals(expectedChildElementsDOM, list);
         
     }
 

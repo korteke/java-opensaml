@@ -25,7 +25,7 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.ext.saml2mdui.Keywords;
 import org.opensaml.saml.ext.saml2mdui.UIInfo;
 
@@ -33,7 +33,7 @@ import org.opensaml.saml.ext.saml2mdui.UIInfo;
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.metadata.OrganizationName}.
  */
-public class KeywordsTest extends BaseSAMLObjectProviderTestCase {
+public class KeywordsTest extends XMLObjectProviderBaseTestCase {
     
     /** Expected Keywords. */
     private final List<String> expectedWords;
@@ -76,6 +76,6 @@ public class KeywordsTest extends BaseSAMLObjectProviderTestCase {
         keywords.setXMLLang(expectedLang);
         keywords.setKeywords(expectedWords);
 
-        assertEquals(expectedDOM, keywords);
+        assertXMLEquals(expectedDOM, keywords);
     }
 }

@@ -19,7 +19,7 @@ package org.opensaml.saml.saml2.metadata.impl;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.common.Extensions;
 import org.opensaml.saml.saml2.metadata.Company;
@@ -34,7 +34,7 @@ import org.opensaml.saml.saml2.metadata.TelephoneNumber;
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.metadata.impl.ContactPersonImpl}.
  */
-public class ContactPersonTest extends BaseSAMLObjectProviderTestCase {
+public class ContactPersonTest extends XMLObjectProviderBaseTestCase {
     
     /** Expected company name */
     protected ContactPersonTypeEnumeration expectedPersonType;
@@ -85,7 +85,7 @@ public class ContactPersonTest extends BaseSAMLObjectProviderTestCase {
         
         person.setType(expectedPersonType);
 
-        assertEquals(expectedDOM, person);
+        assertXMLEquals(expectedDOM, person);
     }
 
     /** {@inheritDoc} */
@@ -117,6 +117,6 @@ public class ContactPersonTest extends BaseSAMLObjectProviderTestCase {
             person.getEmailAddresses().add((EmailAddress) buildXMLObject(emailQName));
         }
         
-        assertEquals(expectedChildElementsDOM, person);
+        assertXMLEquals(expectedChildElementsDOM, person);
     }
 }

@@ -20,14 +20,14 @@
  */
 package org.opensaml.saml.saml2.metadata.impl;
 
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.saml2.metadata.AssertionIDRequestService;
 
 /**
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.metadata.impl.AssertionIDRequestServiceImpl}.
  */
-public class AssertionIDRequestServiceTest extends BaseSAMLObjectProviderTestCase {
+public class AssertionIDRequestServiceTest extends XMLObjectProviderBaseTestCase {
     
     protected String expectedBinding;
     protected String expectedLocation;
@@ -74,7 +74,7 @@ public class AssertionIDRequestServiceTest extends BaseSAMLObjectProviderTestCas
         service.setBinding(expectedBinding);
         service.setLocation(expectedLocation);
 
-        assertEquals(expectedDOM, service);
+        assertXMLEquals(expectedDOM, service);
     }
 
     /** {@inheritDoc} */
@@ -85,6 +85,6 @@ public class AssertionIDRequestServiceTest extends BaseSAMLObjectProviderTestCas
         service.setLocation(expectedLocation);
         service.setResponseLocation(expectedResponseLocation);
 
-        assertEquals(expectedOptionalAttributesDOM, service);
+        assertXMLEquals(expectedOptionalAttributesDOM, service);
     }
 }

@@ -61,7 +61,7 @@ public class XSIntegerTest extends XMLObjectBaseTestCase {
         marshaller.marshall(xsInteger);
         
         Document document = parserPool.parse(XSIntegerTest.class.getResourceAsStream(testDocumentLocation));
-        assertEquals("Marshalled XSInteger does not match example document", document, xsInteger);
+        assertXMLEquals("Marshalled XSInteger does not match example document", document, xsInteger);
     }
     
     /**

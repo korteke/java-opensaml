@@ -19,7 +19,7 @@ package org.opensaml.saml.saml2.core.impl;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.AuthenticatingAuthority;
 import org.opensaml.saml.saml2.core.AuthnContext;
@@ -30,7 +30,7 @@ import org.opensaml.saml.saml2.core.AuthnContextDeclRef;
 /**
  * Test case for creating, marshalling, and unmarshalling {@link org.opensaml.saml.saml2.core.impl.AuthnContextImpl}.
  */
-public class AuthnContextTest extends BaseSAMLObjectProviderTestCase {
+public class AuthnContextTest extends XMLObjectProviderBaseTestCase {
 
     /** Count of AuthenticatingAuthority subelements */
     protected int expectedAuthenticatingAuthorityCount = 2;
@@ -63,7 +63,7 @@ public class AuthnContextTest extends BaseSAMLObjectProviderTestCase {
         QName qname = new QName(SAMLConstants.SAML20_NS, AuthnContext.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
         AuthnContext authnContext = (AuthnContext) buildXMLObject(qname);
 
-        assertEquals(expectedDOM, authnContext);
+        assertXMLEquals(expectedDOM, authnContext);
     }
 
     /** {@inheritDoc} */
@@ -101,6 +101,6 @@ public class AuthnContextTest extends BaseSAMLObjectProviderTestCase {
             authnContext.getAuthenticatingAuthorities().add((AuthenticatingAuthority) buildXMLObject(authenticatingAuthorityQName));
         }
 
-        assertEquals(expectedChildElementsDOM, authnContext);
+        assertXMLEquals(expectedChildElementsDOM, authnContext);
     }
 }

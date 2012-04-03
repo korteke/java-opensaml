@@ -57,7 +57,7 @@ public class PGPKeyPacketTest extends XMLObjectProviderBaseTestCase {
         PGPKeyPacket pgpElement = (PGPKeyPacket) buildXMLObject(PGPKeyPacket.DEFAULT_ELEMENT_NAME);
         pgpElement.setValue(expectedStringContent);
         
-        assertEquals(expectedDOM, pgpElement);
+        assertXMLEquals(expectedDOM, pgpElement);
     }
 
 }

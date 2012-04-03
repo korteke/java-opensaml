@@ -57,7 +57,7 @@ public class SeedTest extends XMLObjectProviderBaseTestCase {
         Seed cbType = (Seed) buildXMLObject(Seed.DEFAULT_ELEMENT_NAME);
         cbType.setValue(expectedCryptoBinaryContent);
         
-        assertEquals(expectedDOM, cbType);
+        assertXMLEquals(expectedDOM, cbType);
     }
 
 }

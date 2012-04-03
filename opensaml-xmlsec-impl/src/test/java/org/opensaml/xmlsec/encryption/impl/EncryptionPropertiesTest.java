@@ -82,7 +82,7 @@ public class EncryptionPropertiesTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementMarshall() {
         EncryptionProperties ep = (EncryptionProperties) buildXMLObject(EncryptionProperties.DEFAULT_ELEMENT_NAME);
         
-        assertEquals(expectedDOM, ep);
+        assertXMLEquals(expectedDOM, ep);
     }
 
     /** {@inheritDoc} */
@@ -91,7 +91,7 @@ public class EncryptionPropertiesTest extends XMLObjectProviderBaseTestCase {
         
         ep.setID(expectedID);
         
-        assertEquals(expectedOptionalAttributesDOM, ep);
+        assertXMLEquals(expectedOptionalAttributesDOM, ep);
     }
 
     /** {@inheritDoc} */
@@ -102,7 +102,7 @@ public class EncryptionPropertiesTest extends XMLObjectProviderBaseTestCase {
         ep.getEncryptionProperties().add((EncryptionProperty) buildXMLObject(EncryptionProperty.DEFAULT_ELEMENT_NAME));
         ep.getEncryptionProperties().add((EncryptionProperty) buildXMLObject(EncryptionProperty.DEFAULT_ELEMENT_NAME));
         
-        assertEquals(expectedChildElementsDOM, ep);
+        assertXMLEquals(expectedChildElementsDOM, ep);
     }
 
 }

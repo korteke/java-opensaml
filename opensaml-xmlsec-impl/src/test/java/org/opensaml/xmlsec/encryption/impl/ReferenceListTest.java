@@ -70,7 +70,7 @@ public class ReferenceListTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementMarshall() {
         ReferenceList rl = (ReferenceList) buildXMLObject(ReferenceList.DEFAULT_ELEMENT_NAME);
         
-        assertEquals(expectedDOM, rl);
+        assertXMLEquals(expectedDOM, rl);
     }
 
     /** {@inheritDoc} */
@@ -81,7 +81,7 @@ public class ReferenceListTest extends XMLObjectProviderBaseTestCase {
         rl.getReferences().add( (KeyReference) buildXMLObject(KeyReference.DEFAULT_ELEMENT_NAME));
         rl.getReferences().add( (DataReference) buildXMLObject(DataReference.DEFAULT_ELEMENT_NAME));
         
-        assertEquals(expectedChildElementsDOM, rl);
+        assertXMLEquals(expectedChildElementsDOM, rl);
     }
 
 }

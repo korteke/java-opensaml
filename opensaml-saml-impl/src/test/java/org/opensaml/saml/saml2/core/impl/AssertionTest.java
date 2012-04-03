@@ -21,7 +21,7 @@ import javax.xml.namespace.QName;
 
 import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.common.SAMLVersion;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.Advice;
@@ -36,7 +36,7 @@ import org.opensaml.saml.saml2.core.Subject;
 /**
  * Test case for creating, marshalling, and unmarshalling {@link org.opensaml.saml.saml2.core.impl.AssertionImpl}.
  */
-public class AssertionTest extends BaseSAMLObjectProviderTestCase {
+public class AssertionTest extends XMLObjectProviderBaseTestCase {
 
     /** Expected Version value */
     private SAMLVersion expectedVersion;
@@ -105,7 +105,7 @@ public class AssertionTest extends BaseSAMLObjectProviderTestCase {
 
         assertion.setIssueInstant(expectedIssueInstant);
 
-        assertEquals(expectedDOM, assertion);
+        assertXMLEquals(expectedDOM, assertion);
     }
 
     /** {@inheritDoc} */
@@ -117,7 +117,7 @@ public class AssertionTest extends BaseSAMLObjectProviderTestCase {
         assertion.setID(expectedID);
         assertion.setVersion(expectedVersion);
 
-        assertEquals(expectedOptionalAttributesDOM, assertion);
+        assertXMLEquals(expectedOptionalAttributesDOM, assertion);
     }
 
     /** {@inheritDoc} */
@@ -168,6 +168,6 @@ public class AssertionTest extends BaseSAMLObjectProviderTestCase {
             assertion.getAttributeStatements().add((AttributeStatement) buildXMLObject(attributeStatementQName));
         }
         
-        assertEquals(expectedChildElementsDOM, assertion);
+        assertXMLEquals(expectedChildElementsDOM, assertion);
     }
 }

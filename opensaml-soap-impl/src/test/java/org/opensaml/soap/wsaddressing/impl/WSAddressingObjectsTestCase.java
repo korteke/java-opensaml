@@ -17,9 +17,6 @@
 
 package org.opensaml.soap.wsaddressing.impl;
 
-import java.io.InputStream;
-
-import org.opensaml.core.xml.config.XMLConfigurator;
 import org.opensaml.soap.WSBaseTestCase;
 import org.opensaml.soap.wsaddressing.Action;
 import org.opensaml.soap.wsaddressing.Address;
@@ -36,14 +33,6 @@ import org.slf4j.LoggerFactory;
 public class WSAddressingObjectsTestCase extends WSBaseTestCase {
 
     public Logger log= LoggerFactory.getLogger(WSAddressingObjectsTestCase.class);
-
-    /** {@inheritDoc} */
-    protected void configureWS() throws Exception {
-        // load ws-policy config
-        InputStream is= getClass().getResourceAsStream("/wsaddressing-config.xml");
-        XMLConfigurator configurator= new XMLConfigurator();
-        configurator.load(is);
-    }
 
     public void testAction() throws Exception {
         Action action= buildXMLObject(Action.ELEMENT_NAME);

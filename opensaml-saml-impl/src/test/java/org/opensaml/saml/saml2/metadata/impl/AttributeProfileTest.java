@@ -19,7 +19,7 @@ package org.opensaml.saml.saml2.metadata.impl;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.metadata.AttributeProfile;
 
@@ -27,7 +27,7 @@ import org.opensaml.saml.saml2.metadata.AttributeProfile;
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.metadata.impl.AttributeProfileImpl}.
  */
-public class AttributeProfileTest extends BaseSAMLObjectProviderTestCase {
+public class AttributeProfileTest extends XMLObjectProviderBaseTestCase {
     
     /** Expected ProfileURI */
     private String expectedProfileURI;
@@ -60,6 +60,6 @@ public class AttributeProfileTest extends BaseSAMLObjectProviderTestCase {
         
         profile.setProfileURI(expectedProfileURI);
         
-        assertEquals(expectedDOM, profile);
+        assertXMLEquals(expectedDOM, profile);
     }
 }

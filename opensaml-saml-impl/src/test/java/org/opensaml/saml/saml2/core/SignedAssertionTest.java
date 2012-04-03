@@ -27,7 +27,7 @@ import org.joda.time.DateTime;
 import org.opensaml.core.xml.io.Marshaller;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.io.UnmarshallingException;
-import org.opensaml.saml.common.BaseTestCase;
+import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.saml.common.SAMLTestHelper;
 import org.opensaml.saml.common.SAMLVersion;
 import org.opensaml.saml.saml2.core.Assertion;
@@ -51,7 +51,7 @@ import org.opensaml.xmlsec.signature.support.Signer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class SignedAssertionTest extends BaseTestCase {
+public class SignedAssertionTest extends XMLObjectBaseTestCase {
     
     /** Class logger. */
     private final Logger log = LoggerFactory.getLogger(SignedAssertionTest.class);

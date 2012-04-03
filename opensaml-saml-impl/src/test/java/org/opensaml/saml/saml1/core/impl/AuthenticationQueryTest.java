@@ -23,7 +23,7 @@ package org.opensaml.saml.saml1.core.impl;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml1.core.AuthenticationQuery;
 import org.opensaml.saml.saml1.core.Subject;
@@ -31,7 +31,7 @@ import org.opensaml.saml.saml1.core.Subject;
 /**
  * Test class for org.opensaml.saml.saml1.core.AuthenticationQuery
  */
-public class AuthenticationQueryTest extends BaseSAMLObjectProviderTestCase {
+public class AuthenticationQueryTest extends XMLObjectProviderBaseTestCase {
 
     /** name used to generate objects */
     private final QName qname;
@@ -81,7 +81,7 @@ public class AuthenticationQueryTest extends BaseSAMLObjectProviderTestCase {
 
     /** {@inheritDoc} */
     public void testSingleElementMarshall() {
-        assertEquals(expectedDOM, buildXMLObject(qname));
+        assertXMLEquals(expectedDOM, buildXMLObject(qname));
     }
 
     /** {@inheritDoc} */
@@ -89,7 +89,7 @@ public class AuthenticationQueryTest extends BaseSAMLObjectProviderTestCase {
         AuthenticationQuery authenticationQuery = (AuthenticationQuery) buildXMLObject(qname);
 
         authenticationQuery.setAuthenticationMethod(expectedAuthenticationMethod);
-        assertEquals(expectedOptionalAttributesDOM, authenticationQuery);
+        assertXMLEquals(expectedOptionalAttributesDOM, authenticationQuery);
     }
 
     /** {@inheritDoc} */
@@ -97,7 +97,7 @@ public class AuthenticationQueryTest extends BaseSAMLObjectProviderTestCase {
         AuthenticationQuery authenticationQuery = (AuthenticationQuery) buildXMLObject(qname);
 
         authenticationQuery.setSubject((Subject) buildXMLObject(new QName(SAMLConstants.SAML1_NS, Subject.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX)));
-        assertEquals(expectedChildElementsDOM, authenticationQuery);
+        assertXMLEquals(expectedChildElementsDOM, authenticationQuery);
 
     }
 

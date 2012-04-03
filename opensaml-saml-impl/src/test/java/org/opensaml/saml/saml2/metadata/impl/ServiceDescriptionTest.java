@@ -22,7 +22,7 @@ package org.opensaml.saml.saml2.metadata.impl;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.metadata.ServiceDescription;
 
@@ -30,7 +30,7 @@ import org.opensaml.saml.saml2.metadata.ServiceDescription;
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.metadata.ServiceDescription}.
  */
-public class ServiceDescriptionTest extends BaseSAMLObjectProviderTestCase {
+public class ServiceDescriptionTest extends XMLObjectProviderBaseTestCase {
     
     /** Expected description */
     /** Expected URL. */
@@ -61,6 +61,6 @@ public class ServiceDescriptionTest extends BaseSAMLObjectProviderTestCase {
         description.setValue(expectLocalizedDescription);
         description.setXMLLang(expectLang);
 
-        assertEquals(expectedDOM, description);
+        assertXMLEquals(expectedDOM, description);
     }
 }

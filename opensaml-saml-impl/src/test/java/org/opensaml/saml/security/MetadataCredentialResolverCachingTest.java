@@ -28,7 +28,7 @@ import javax.xml.namespace.QName;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
-import org.opensaml.saml.common.BaseTestCase;
+import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.saml.saml2.metadata.SPSSODescriptor;
 import org.opensaml.saml.saml2.metadata.provider.FilesystemMetadataProvider;
 import org.opensaml.saml.saml2.metadata.provider.MetadataProviderException;
@@ -44,7 +44,7 @@ import org.opensaml.security.criteria.UsageCriterion;
  * Testing various cases of caching by the metadata credential resolver.
  * See in particular Jira issue SIDP-229.
  */
-public class MetadataCredentialResolverCachingTest extends BaseTestCase {
+public class MetadataCredentialResolverCachingTest extends XMLObjectBaseTestCase {
     
     private String protocolFoo = "PROTOCOL_FOO";
     
@@ -121,7 +121,7 @@ public class MetadataCredentialResolverCachingTest extends BaseTestCase {
         assertTrue(mdFile.exists());
         
         FilesystemMetadataProvider fsProvider = new FilesystemMetadataProvider(mdFile);
-        fsProvider.setParserPool(parser);
+        fsProvider.setParserPool(parserPool);
         fsProvider.setMinRefreshDelay(1);
         fsProvider.setMaxRefreshDelay(2000);
         fsProvider.initialize();
@@ -165,7 +165,7 @@ public class MetadataCredentialResolverCachingTest extends BaseTestCase {
         assertTrue(mdFile.exists());
         
         FilesystemMetadataProvider fsProvider = new FilesystemMetadataProvider(mdFile);
-        fsProvider.setParserPool(parser);
+        fsProvider.setParserPool(parserPool);
         fsProvider.setMinRefreshDelay(1);
         fsProvider.setMaxRefreshDelay(2000);
         fsProvider.initialize();

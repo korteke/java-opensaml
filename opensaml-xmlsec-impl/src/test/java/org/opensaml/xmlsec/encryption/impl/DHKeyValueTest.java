@@ -76,7 +76,7 @@ public class DHKeyValueTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementMarshall() {
         DHKeyValue keyValue = (DHKeyValue) buildXMLObject(DHKeyValue.DEFAULT_ELEMENT_NAME);
         
-        assertEquals(expectedDOM, keyValue);
+        assertXMLEquals(expectedDOM, keyValue);
     }
 
     /** {@inheritDoc} */
@@ -90,7 +90,7 @@ public class DHKeyValueTest extends XMLObjectProviderBaseTestCase {
         keyValue.setSeed((Seed) buildXMLObject(Seed.DEFAULT_ELEMENT_NAME));
         keyValue.setPgenCounter((PgenCounter) buildXMLObject(PgenCounter.DEFAULT_ELEMENT_NAME));
         
-        assertEquals(expectedChildElementsDOM, keyValue);
+        assertXMLEquals(expectedChildElementsDOM, keyValue);
     }
 
 }

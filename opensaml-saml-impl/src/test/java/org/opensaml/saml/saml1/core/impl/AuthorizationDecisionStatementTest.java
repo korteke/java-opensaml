@@ -26,7 +26,7 @@ import javax.xml.namespace.QName;
 import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
 import org.opensaml.core.xml.io.UnmarshallingException;
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml1.core.Action;
 import org.opensaml.saml.saml1.core.AuthorizationDecisionStatement;
@@ -40,7 +40,7 @@ import org.w3c.dom.Element;
 /**
  * 
  */
-public class AuthorizationDecisionStatementTest extends BaseSAMLObjectProviderTestCase {
+public class AuthorizationDecisionStatementTest extends XMLObjectProviderBaseTestCase {
 
     /** name used to generate objects */
     private final QName qname;
@@ -91,8 +91,7 @@ public class AuthorizationDecisionStatementTest extends BaseSAMLObjectProviderTe
         assertEquals("Decision attribute ", expectedDecision.toString(), authorizationDecisionStatement.getDecision().toString());
 
         try {
-            Document doc = parser.parse(BaseSAMLObjectProviderTestCase.class
-                    .getResourceAsStream(illegalAttributesFile));
+            Document doc = parserPool.parse(this.getClass().getResourceAsStream(illegalAttributesFile));
             Element samlElement = doc.getDocumentElement();
 
             authorizationDecisionStatement = (AuthorizationDecisionStatement) new AuthorizationDecisionStatementUnmarshaller()
@@ -123,7 +122,7 @@ public class AuthorizationDecisionStatementTest extends BaseSAMLObjectProviderTe
     /** {@inheritDoc} */
 
     public void testSingleElementMarshall() {
-        assertEquals(expectedDOM, buildXMLObject(qname));
+        assertXMLEquals(expectedDOM, buildXMLObject(qname));
     }
 
     /** {@inheritDoc} */
@@ -135,7 +134,7 @@ public class AuthorizationDecisionStatementTest extends BaseSAMLObjectProviderTe
         authorizationDecisionStatement.setDecision(expectedDecision);
         authorizationDecisionStatement.setResource(expectedResource);
 
-        assertEquals(expectedOptionalAttributesDOM, authorizationDecisionStatement);
+        assertXMLEquals(expectedOptionalAttributesDOM, authorizationDecisionStatement);
     }
 
     /** {@inheritDoc} */
@@ -156,7 +155,7 @@ public class AuthorizationDecisionStatementTest extends BaseSAMLObjectProviderTe
 
         authorizationDecisionStatement.setEvidence((Evidence) buildXMLObject(oqname));
 
-        assertEquals(expectedChildElementsDOM, authorizationDecisionStatement);
+        assertXMLEquals(expectedChildElementsDOM, authorizationDecisionStatement);
     }
 
 }

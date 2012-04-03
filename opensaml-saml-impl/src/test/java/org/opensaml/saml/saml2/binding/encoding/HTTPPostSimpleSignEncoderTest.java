@@ -22,7 +22,7 @@ import java.security.KeyPair;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.runtime.RuntimeConstants;
 import org.joda.time.DateTime;
-import org.opensaml.saml.common.BaseTestCase;
+import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.saml.common.SAMLObjectBuilder;
 import org.opensaml.saml.common.SAMLVersion;
 import org.opensaml.saml.common.binding.BasicSAMLMessageContext;
@@ -41,7 +41,7 @@ import org.springframework.mock.web.MockHttpServletResponse;
 /**
  * Test case for {@link HTTPPostEncoder}.
  */
-public class HTTPPostSimpleSignEncoderTest extends BaseTestCase {
+public class HTTPPostSimpleSignEncoderTest extends XMLObjectBaseTestCase {
 
     /** Velocity template engine. */
     private VelocityEngine velocityEngine;

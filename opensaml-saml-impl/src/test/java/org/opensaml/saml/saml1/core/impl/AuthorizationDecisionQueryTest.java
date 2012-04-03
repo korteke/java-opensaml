@@ -25,7 +25,7 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml1.core.Action;
 import org.opensaml.saml.saml1.core.AuthorizationDecisionQuery;
@@ -36,7 +36,7 @@ import org.w3c.dom.Document;
 /**
  * Test class for org.opensaml.saml.saml1.core.AttributeQuery
  */
-public class AuthorizationDecisionQueryTest extends BaseSAMLObjectProviderTestCase {
+public class AuthorizationDecisionQueryTest extends XMLObjectProviderBaseTestCase {
 
     /** name used to generate objects */
     private final QName qname;
@@ -68,8 +68,7 @@ public class AuthorizationDecisionQueryTest extends BaseSAMLObjectProviderTestCa
     protected void setUp() throws Exception {
         super.setUp();
 
-        expectedFullDOM = parser.parse(BaseSAMLObjectProviderTestCase.class
-                .getResourceAsStream(fullElementsFile));
+        expectedFullDOM = parserPool.parse(this.getClass().getResourceAsStream(fullElementsFile));
     }
 
     /** {@inheritDoc} */
@@ -109,7 +108,7 @@ public class AuthorizationDecisionQueryTest extends BaseSAMLObjectProviderTestCa
 
     /** {@inheritDoc} */
     public void testSingleElementMarshall() {
-        assertEquals(expectedDOM, buildXMLObject(qname));
+        assertXMLEquals(expectedDOM, buildXMLObject(qname));
     } 
 
     /** {@inheritDoc} */
@@ -118,7 +117,7 @@ public class AuthorizationDecisionQueryTest extends BaseSAMLObjectProviderTestCa
         authorizationDecisionQuery = (AuthorizationDecisionQuery) buildXMLObject(qname);
 
         authorizationDecisionQuery.setResource(expectedResource);
-        assertEquals(expectedOptionalAttributesDOM, authorizationDecisionQuery);
+        assertXMLEquals(expectedOptionalAttributesDOM, authorizationDecisionQuery);
     }
 
     /**
@@ -137,7 +136,7 @@ public class AuthorizationDecisionQueryTest extends BaseSAMLObjectProviderTestCa
         list.add((Action) buildXMLObject(actionQname));
         
         authorizationDecisionQuery.setEvidence((Evidence) buildXMLObject(new QName(SAMLConstants.SAML1_NS, Evidence.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX)));
-        assertEquals(expectedFullDOM, authorizationDecisionQuery);
+        assertXMLEquals(expectedFullDOM, authorizationDecisionQuery);
 
     }
 

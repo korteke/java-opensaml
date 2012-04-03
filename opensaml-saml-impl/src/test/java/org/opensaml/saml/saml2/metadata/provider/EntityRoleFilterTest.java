@@ -21,7 +21,7 @@ import java.util.ArrayList;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.saml.common.BaseTestCase;
+import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.saml.saml2.metadata.AttributeAuthorityDescriptor;
 import org.opensaml.saml.saml2.metadata.IDPSSODescriptor;
 import org.opensaml.saml.saml2.metadata.SPSSODescriptor;
@@ -31,7 +31,7 @@ import org.opensaml.saml.saml2.metadata.provider.HTTPMetadataProvider;
 /**
  * Unit tests for {@link EntityRoleFilter}.
  */
-public class EntityRoleFilterTest extends BaseTestCase {
+public class EntityRoleFilterTest extends XMLObjectBaseTestCase {
 
     /** URL to InCommon metadata. */
     private String inCommonMDURL;
@@ -48,7 +48,7 @@ public class EntityRoleFilterTest extends BaseTestCase {
         retainedRoles.add(SPSSODescriptor.DEFAULT_ELEMENT_NAME);
 
         HTTPMetadataProvider metadataProvider = new HTTPMetadataProvider(inCommonMDURL, 1000 * 5);
-        metadataProvider.setParserPool(parser);
+        metadataProvider.setParserPool(parserPool);
         metadataProvider.setMetadataFilter(new EntityRoleFilter(retainedRoles));
         metadataProvider.initialize();
 
@@ -61,7 +61,7 @@ public class EntityRoleFilterTest extends BaseTestCase {
         retainedRoles.add(AttributeAuthorityDescriptor.DEFAULT_ELEMENT_NAME);
 
         HTTPMetadataProvider metadataProvider = new HTTPMetadataProvider(inCommonMDURL, 1000 * 5);
-        metadataProvider.setParserPool(parser);
+        metadataProvider.setParserPool(parserPool);
         metadataProvider.setMetadataFilter(new EntityRoleFilter(retainedRoles));
         metadataProvider.initialize();
 
@@ -72,7 +72,7 @@ public class EntityRoleFilterTest extends BaseTestCase {
         ArrayList<QName> retainedRoles = new ArrayList<QName>();
 
         HTTPMetadataProvider metadataProvider = new HTTPMetadataProvider(inCommonMDURL, 1000 * 5);
-        metadataProvider.setParserPool(parser);
+        metadataProvider.setParserPool(parserPool);
         metadataProvider.setMetadataFilter(new EntityRoleFilter(retainedRoles));
         metadataProvider.initialize();
 

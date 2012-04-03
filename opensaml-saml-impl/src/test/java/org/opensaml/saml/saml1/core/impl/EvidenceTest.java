@@ -23,7 +23,7 @@ package org.opensaml.saml.saml1.core.impl;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml1.core.Assertion;
 import org.opensaml.saml.saml1.core.AssertionIDReference;
@@ -33,7 +33,7 @@ import org.opensaml.saml.saml1.core.impl.EvidenceImpl;
 /**
  * Test for {@link EvidenceImpl}
  */
-public class EvidenceTest extends BaseSAMLObjectProviderTestCase {
+public class EvidenceTest extends XMLObjectProviderBaseTestCase {
 
     /** name used to generate objects */
     private final QName qname;
@@ -71,7 +71,7 @@ public class EvidenceTest extends BaseSAMLObjectProviderTestCase {
     /** {@inheritDoc} */
 
     public void testSingleElementMarshall() {
-        assertEquals(expectedDOM, buildXMLObject(qname));
+        assertXMLEquals(expectedDOM, buildXMLObject(qname));
     }
 
     /** {@inheritDoc} */
@@ -87,6 +87,6 @@ public class EvidenceTest extends BaseSAMLObjectProviderTestCase {
         evidence.getAssertions().add((Assertion) buildXMLObject(assertionQname));
         evidence.getAssertionIDReferences().add((AssertionIDReference) buildXMLObject(refQname));
 
-        assertEquals(expectedChildElementsDOM, evidence);
+        assertXMLEquals(expectedChildElementsDOM, evidence);
     }
 }

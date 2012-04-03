@@ -19,14 +19,14 @@ package org.opensaml.saml.ext.saml2delrestrict.impl;
 
 import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.ext.saml2delrestrict.Delegate;
 import org.opensaml.saml.saml2.core.NameID;
 
 /**
  * Test case for creating, marshalling, and unmarshalling {@link Delegate}.
  */
-public class DelegateTest extends BaseSAMLObjectProviderTestCase {
+public class DelegateTest extends XMLObjectProviderBaseTestCase {
 
     private DateTime expectedDelegationInstant;
     
@@ -82,7 +82,7 @@ public class DelegateTest extends BaseSAMLObjectProviderTestCase {
     public void testSingleElementMarshall() {
         Delegate delegate = (Delegate) buildXMLObject(Delegate.DEFAULT_ELEMENT_NAME);
 
-        assertEquals(expectedDOM, delegate);
+        assertXMLEquals(expectedDOM, delegate);
     }
 
     /** {@inheritDoc} */
@@ -92,7 +92,7 @@ public class DelegateTest extends BaseSAMLObjectProviderTestCase {
         delegate.setConfirmationMethod(expectedConfirmationMethod);
         delegate.setDelegationInstant(expectedDelegationInstant);
 
-        assertEquals(expectedOptionalAttributesDOM, delegate);
+        assertXMLEquals(expectedOptionalAttributesDOM, delegate);
     }
 
 
@@ -103,6 +103,6 @@ public class DelegateTest extends BaseSAMLObjectProviderTestCase {
         
         delegate.setNameID((NameID) buildXMLObject(NameID.DEFAULT_ELEMENT_NAME));
         
-        assertEquals(expectedChildElementsDOM, delegate);
+        assertXMLEquals(expectedChildElementsDOM, delegate);
     }
 }

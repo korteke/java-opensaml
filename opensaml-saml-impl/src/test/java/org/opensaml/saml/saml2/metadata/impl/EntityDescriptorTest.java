@@ -21,7 +21,7 @@ import javax.xml.namespace.QName;
 
 import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.common.Extensions;
 import org.opensaml.saml.saml2.metadata.AdditionalMetadataLocation;
@@ -40,7 +40,7 @@ import org.opensaml.xmlsec.signature.support.SignatureConstants;
 /**
  * Test case for creating, marshalling, and unmarshalling {@link org.opensaml.saml.saml2.metadata.impl.EntityDescriptorImpl}.
  */
-public class EntityDescriptorTest extends BaseSAMLObjectProviderTestCase {
+public class EntityDescriptorTest extends XMLObjectProviderBaseTestCase {
 
     /** Expected entityID value */
     protected String expectedEntityID;
@@ -132,7 +132,7 @@ public class EntityDescriptorTest extends BaseSAMLObjectProviderTestCase {
 
         descriptor.setEntityID(expectedEntityID);
 
-        assertEquals(expectedDOM, descriptor);
+        assertXMLEquals(expectedDOM, descriptor);
     }
 
     /** {@inheritDoc} */
@@ -145,7 +145,7 @@ public class EntityDescriptorTest extends BaseSAMLObjectProviderTestCase {
         descriptor.setValidUntil(expectedValidUntil);
         descriptor.setCacheDuration(expectedCacheDuration);
 
-        assertEquals(expectedOptionalAttributesDOM, descriptor);
+        assertXMLEquals(expectedOptionalAttributesDOM, descriptor);
     }
 
     /** {@inheritDoc} */
@@ -188,7 +188,7 @@ public class EntityDescriptorTest extends BaseSAMLObjectProviderTestCase {
             descriptor.getAdditionalMetadataLocations().add((AdditionalMetadataLocation) buildXMLObject(addMDQName));
         }
 
-        assertEquals(expectedChildElementsDOM, descriptor);
+        assertXMLEquals(expectedChildElementsDOM, descriptor);
     }
 
     /**

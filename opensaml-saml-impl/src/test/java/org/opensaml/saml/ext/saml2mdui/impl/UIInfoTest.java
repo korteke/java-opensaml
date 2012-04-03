@@ -23,7 +23,7 @@ package org.opensaml.saml.ext.saml2mdui.impl;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.mock.SimpleXMLObject;
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.ext.saml2mdui.Description;
 import org.opensaml.saml.ext.saml2mdui.DisplayName;
 import org.opensaml.saml.ext.saml2mdui.InformationURL;
@@ -36,7 +36,7 @@ import org.opensaml.saml.ext.saml2mdui.UIInfo;
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.metadata.OrganizationName}.
  */
-public class UIInfoTest extends BaseSAMLObjectProviderTestCase {
+public class UIInfoTest extends XMLObjectProviderBaseTestCase {
     
     /** Expected count of &lt;DisplayName&gt;. */
     private final int expectedDisplayNamesCount = 3;
@@ -88,7 +88,7 @@ public class UIInfoTest extends BaseSAMLObjectProviderTestCase {
         
         UIInfo uiinfo = (UIInfo) buildXMLObject(qname);
         
-        assertEquals(expectedDOM, uiinfo);
+        assertXMLEquals(expectedDOM, uiinfo);
     }
 
     /** {@inheritDoc} */
@@ -131,7 +131,7 @@ public class UIInfoTest extends BaseSAMLObjectProviderTestCase {
         
         uiinfo.getDisplayNames().add((DisplayName) buildXMLObject(DisplayName.DEFAULT_ELEMENT_NAME));
 
-        assertEquals(expectedChildElementsDOM, uiinfo);   
+        assertXMLEquals(expectedChildElementsDOM, uiinfo);   
     }
 
 }

@@ -57,7 +57,7 @@ public class CipherValueTest extends XMLObjectProviderBaseTestCase {
         CipherValue cv = (CipherValue) buildXMLObject(CipherValue.DEFAULT_ELEMENT_NAME);
         cv.setValue(expectedBase64Content);
         
-        assertEquals(expectedDOM, cv);
+        assertXMLEquals(expectedDOM, cv);
     }
 
 }

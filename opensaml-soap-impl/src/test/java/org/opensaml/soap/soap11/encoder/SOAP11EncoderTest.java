@@ -27,14 +27,13 @@ import net.shibboleth.utilities.java.support.xml.XMLParserException;
 import org.custommonkey.xmlunit.Diff;
 import org.custommonkey.xmlunit.XMLAssert;
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.Unmarshaller;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.core.xml.schema.XSAny;
-import org.opensaml.soap.BaseTestCase;
 import org.opensaml.soap.soap11.Envelope;
 import org.opensaml.soap.soap11.Header;
-import org.opensaml.soap.soap11.encoder.SOAP11Encoder;
 import org.opensaml.soap.util.SOAPHelper;
 import org.opensaml.ws.message.BaseMessageContext;
 import org.opensaml.ws.message.MessageContext;
@@ -51,7 +50,7 @@ import org.w3c.dom.Element;
 /**
  * Test basic SOAP 1.1 message encoding.
  */
-public class SOAP11EncoderTest extends BaseTestCase {
+public class SOAP11EncoderTest extends XMLObjectBaseTestCase {
     
     private TestContext messageContext;
     

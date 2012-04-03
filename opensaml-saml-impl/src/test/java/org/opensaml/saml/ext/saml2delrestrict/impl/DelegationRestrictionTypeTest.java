@@ -18,7 +18,7 @@
 package org.opensaml.saml.ext.saml2delrestrict.impl;
 
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.common.SAMLObjectBuilder;
 import org.opensaml.saml.ext.saml2delrestrict.Delegate;
 import org.opensaml.saml.ext.saml2delrestrict.DelegationRestrictionType;
@@ -26,7 +26,7 @@ import org.opensaml.saml.ext.saml2delrestrict.DelegationRestrictionType;
 /**
  * Test case for creating, marshalling, and unmarshalling {@link Delegate}.
  */
-public class DelegationRestrictionTypeTest extends BaseSAMLObjectProviderTestCase {
+public class DelegationRestrictionTypeTest extends XMLObjectProviderBaseTestCase {
 
     private int expectedDelegateChildren;
     
@@ -66,7 +66,7 @@ public class DelegationRestrictionTypeTest extends BaseSAMLObjectProviderTestCas
         
         DelegationRestrictionType drt = builder.buildObject();
 
-        assertEquals(expectedDOM, drt);
+        assertXMLEquals(expectedDOM, drt);
     }
 
 
@@ -81,6 +81,6 @@ public class DelegationRestrictionTypeTest extends BaseSAMLObjectProviderTestCas
         drt.getDelegates().add((Delegate) buildXMLObject(Delegate.DEFAULT_ELEMENT_NAME));
         drt.getDelegates().add((Delegate) buildXMLObject(Delegate.DEFAULT_ELEMENT_NAME));
         
-        assertEquals(expectedChildElementsDOM, drt);
+        assertXMLEquals(expectedChildElementsDOM, drt);
     }
 }

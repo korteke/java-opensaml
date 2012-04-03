@@ -57,7 +57,7 @@ public class X509SubjectNameTest extends XMLObjectProviderBaseTestCase {
         X509SubjectName x509Element = (X509SubjectName) buildXMLObject(X509SubjectName.DEFAULT_ELEMENT_NAME);
         x509Element.setValue(expectedStringContent);
         
-        assertEquals(expectedDOM, x509Element);
+        assertXMLEquals(expectedDOM, x509Element);
     }
 
 }

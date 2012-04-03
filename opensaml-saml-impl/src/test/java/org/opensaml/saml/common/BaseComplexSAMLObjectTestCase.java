@@ -17,13 +17,14 @@
 
 package org.opensaml.saml.common;
 
+import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.w3c.dom.Document;
 
 /**
  * Base test case for OpenSAML tests that work with {@link org.opensaml.saml.common.SAMLObject}s which represent full,
  * complex, typical "real world" examples of SAML documents.
  */
-public abstract class BaseComplexSAMLObjectTestCase extends BaseTestCase {
+public abstract class BaseComplexSAMLObjectTestCase extends XMLObjectBaseTestCase {
 
     /** Location of file containing a single element with NO optional attributes. */
     protected String elementFile;
@@ -36,7 +37,7 @@ public abstract class BaseComplexSAMLObjectTestCase extends BaseTestCase {
         super.setUp();
 
         if (elementFile != null) {
-            expectedDOM = parser.parse(BaseComplexSAMLObjectTestCase.class
+            expectedDOM = parserPool.parse(BaseComplexSAMLObjectTestCase.class
                     .getResourceAsStream(elementFile));
         }
     }

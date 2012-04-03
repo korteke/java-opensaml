@@ -19,14 +19,14 @@ package org.opensaml.saml.saml2.core.impl;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.AuthnContextClassRef;
 
 /**
  * Test case for creating, marshalling, and unmarshalling {@link org.opensaml.saml.saml2.core.impl.AuthnContextClassRefImpl}.
  */
-public class AuthnContextClassRefTest extends BaseSAMLObjectProviderTestCase {
+public class AuthnContextClassRefTest extends XMLObjectProviderBaseTestCase {
 
     /** Expected Class Reference value */
     protected String expectedClassRef;
@@ -62,7 +62,7 @@ public class AuthnContextClassRefTest extends BaseSAMLObjectProviderTestCase {
         AuthnContextClassRef authnContextClassRef = (AuthnContextClassRef) buildXMLObject(qname);
 
         authnContextClassRef.setAuthnContextClassRef(expectedClassRef);
-        assertEquals(expectedDOM, authnContextClassRef);
+        assertXMLEquals(expectedDOM, authnContextClassRef);
     }
 
     /** {@inheritDoc} */

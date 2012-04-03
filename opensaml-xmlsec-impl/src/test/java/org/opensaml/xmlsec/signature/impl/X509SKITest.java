@@ -57,7 +57,7 @@ public class X509SKITest extends XMLObjectProviderBaseTestCase {
         X509SKI x509Element = (X509SKI) buildXMLObject(X509SKI.DEFAULT_ELEMENT_NAME);
         x509Element.setValue(expectedStringContent);
         
-        assertEquals(expectedDOM, x509Element);
+        assertXMLEquals(expectedDOM, x509Element);
     }
 
 }

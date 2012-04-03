@@ -57,7 +57,7 @@ public class KeyNameTest extends XMLObjectProviderBaseTestCase {
         KeyName keyName = (KeyName) buildXMLObject(KeyName.DEFAULT_ELEMENT_NAME);
         keyName.setValue(expectedStringContent);
         
-        assertEquals(expectedDOM, keyName);
+        assertXMLEquals(expectedDOM, keyName);
     }
 
 }

@@ -29,7 +29,7 @@ import net.shibboleth.utilities.java.support.xml.XMLParserException;
 import org.joda.time.DateTime;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.io.UnmarshallingException;
-import org.opensaml.saml.common.BaseTestCase;
+import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.saml.saml2.core.Assertion;
 import org.opensaml.saml.saml2.core.EncryptedAssertion;
 import org.opensaml.saml.saml2.core.Issuer;
@@ -56,7 +56,7 @@ import org.w3c.dom.Element;
 /**
  *  Tests that decryption of an Assertion does not invalidate the signature of a containing object (Response).
  */
-public class DecryptionPlusSigningTest extends BaseTestCase {
+public class DecryptionPlusSigningTest extends XMLObjectBaseTestCase {
     
     private KeyInfoCredentialResolver keyResolver;
     
@@ -148,7 +148,7 @@ public class DecryptionPlusSigningTest extends BaseTestCase {
         //System.out.println(XMLHelper.prettyPrintXML(marshalledResponse));
         
         ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
-        Document parsedDoc = parser.parse(bais);
+        Document parsedDoc = parserPool.parse(bais);
         Element parsedResponse = parsedDoc.getDocumentElement();
         
         Response newResponse = 
@@ -177,7 +177,7 @@ public class DecryptionPlusSigningTest extends BaseTestCase {
         
         assertNotNull("Decrypted Assertion was null", decryptedAssertion);
         
-        assertEquals(targetDOM, decryptedAssertion);
+        assertXMLEquals(targetDOM, decryptedAssertion);
         
         // Validate Response signature second time
         SignatureValidator secondSigValidator = new SignatureValidator(signingCred);
@@ -197,7 +197,7 @@ public class DecryptionPlusSigningTest extends BaseTestCase {
      * @throws XMLParserException if parser encounters an error
      */
     private Document getDOM(String filename) throws XMLParserException {
-        Document targetDOM = parser.parse(DecryptionPlusSigningTest.class.getResourceAsStream(filename));
+        Document targetDOM = parserPool.parse(DecryptionPlusSigningTest.class.getResourceAsStream(filename));
         return targetDOM;
     }
     

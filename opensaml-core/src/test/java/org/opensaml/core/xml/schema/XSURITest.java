@@ -61,7 +61,7 @@ public class XSURITest extends XMLObjectBaseTestCase {
         marshaller.marshall(xsURI);
         
         Document document = parserPool.parse(XSURITest.class.getResourceAsStream(testDocumentLocation));
-        assertEquals("Marshalled XSURI does not match example document", document, xsURI);
+        assertXMLEquals("Marshalled XSURI does not match example document", document, xsURI);
     }
     
     /**

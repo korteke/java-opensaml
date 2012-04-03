@@ -65,7 +65,7 @@ public class AuthzDecisionQueryTest extends SubjectQueryTestBase {
         super.populateRequiredAttributes(query);
         query.setResource(expectedResource);
         
-        assertEquals(expectedDOM, query);
+        assertXMLEquals(expectedDOM, query);
     }
     
     
@@ -79,7 +79,7 @@ public class AuthzDecisionQueryTest extends SubjectQueryTestBase {
         super.populateOptionalAttributes(query);
         query.setResource(expectedResource);
         
-        assertEquals(expectedOptionalAttributesDOM, query);
+        assertXMLEquals(expectedOptionalAttributesDOM, query);
     }
     
     
@@ -99,7 +99,7 @@ public class AuthzDecisionQueryTest extends SubjectQueryTestBase {
         QName evidenceQName = new QName(SAMLConstants.SAML20_NS, Evidence.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
         query.setEvidence((Evidence) buildXMLObject(evidenceQName));
         
-        assertEquals(expectedChildElementsDOM, query);
+        assertXMLEquals(expectedChildElementsDOM, query);
     }
 
     /** {@inheritDoc} */

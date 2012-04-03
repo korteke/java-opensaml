@@ -69,7 +69,7 @@ public class LogoutRequestTest extends RequestTestBase {
         
         super.populateRequiredAttributes(req);
         
-        assertEquals(expectedDOM, req);
+        assertXMLEquals(expectedDOM, req);
     }
 
     /** {@inheritDoc} */
@@ -82,7 +82,7 @@ public class LogoutRequestTest extends RequestTestBase {
         req.setReason(expectedReason);
         req.setNotOnOrAfter(expectedNotOnOrAfter);
         
-        assertEquals(expectedOptionalAttributesDOM, req);
+        assertXMLEquals(expectedOptionalAttributesDOM, req);
     }
 
     /** {@inheritDoc} */
@@ -100,7 +100,7 @@ public class LogoutRequestTest extends RequestTestBase {
             req.getSessionIndexes().add((SessionIndex) buildXMLObject(sessionIndexQName));
         }
         
-        assertEquals(expectedChildElementsDOM, req);
+        assertXMLEquals(expectedChildElementsDOM, req);
     }
     
     /** {@inheritDoc} */

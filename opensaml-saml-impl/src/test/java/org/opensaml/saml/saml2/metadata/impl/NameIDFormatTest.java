@@ -20,14 +20,14 @@
  */
 package org.opensaml.saml.saml2.metadata.impl;
 
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.saml2.metadata.NameIDFormat;
 
 /**
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.metadata.NameIDFormat}.
  */
-public class NameIDFormatTest extends BaseSAMLObjectProviderTestCase {
+public class NameIDFormatTest extends XMLObjectProviderBaseTestCase {
     
     /** Expected format */
     protected String expectFormat;
@@ -59,7 +59,7 @@ public class NameIDFormatTest extends BaseSAMLObjectProviderTestCase {
         
         format.setFormat(expectFormat);
 
-        assertEquals(expectedDOM, format);
+        assertXMLEquals(expectedDOM, format);
     }
 
 }

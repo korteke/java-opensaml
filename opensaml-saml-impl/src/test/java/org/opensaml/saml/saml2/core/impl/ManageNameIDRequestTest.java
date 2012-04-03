@@ -57,7 +57,7 @@ public class ManageNameIDRequestTest extends RequestTestBase {
         
         super.populateRequiredAttributes(req);
         
-        assertEquals(expectedDOM, req);
+        assertXMLEquals(expectedDOM, req);
     }
 
     /** {@inheritDoc} */
@@ -68,7 +68,7 @@ public class ManageNameIDRequestTest extends RequestTestBase {
         super.populateRequiredAttributes(req);
         super.populateOptionalAttributes(req);
         
-        assertEquals(expectedOptionalAttributesDOM, req);
+        assertXMLEquals(expectedOptionalAttributesDOM, req);
     }
 
     /** {@inheritDoc} */
@@ -84,7 +84,7 @@ public class ManageNameIDRequestTest extends RequestTestBase {
         QName newIDQName = new QName(SAMLConstants.SAML20P_NS, NewID.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
         req.setNewID((NewID) buildXMLObject(newIDQName));
         
-        assertEquals(expectedChildElementsDOM, req);
+        assertXMLEquals(expectedChildElementsDOM, req);
     }
 
     /** {@inheritDoc} */

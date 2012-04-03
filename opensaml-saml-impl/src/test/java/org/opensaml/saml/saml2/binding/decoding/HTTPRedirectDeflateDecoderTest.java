@@ -28,7 +28,7 @@ import net.shibboleth.utilities.java.support.codec.Base64Support;
 import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 
 import org.opensaml.core.xml.io.MarshallingException;
-import org.opensaml.saml.common.BaseTestCase;
+import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.binding.BasicSAMLMessageContext;
 import org.opensaml.saml.common.binding.decoding.SAMLMessageDecoder;
@@ -45,7 +45,7 @@ import org.springframework.mock.web.MockHttpServletRequest;
 /**
  *
  */
-public class HTTPRedirectDeflateDecoderTest extends BaseTestCase {
+public class HTTPRedirectDeflateDecoderTest extends XMLObjectBaseTestCase {
 
     private String authnRequestDestination = "https://idp.example.com/idp/sso";
 

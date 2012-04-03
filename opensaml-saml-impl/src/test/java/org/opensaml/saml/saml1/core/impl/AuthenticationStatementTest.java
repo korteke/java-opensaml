@@ -25,7 +25,7 @@ import javax.xml.namespace.QName;
 
 import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml1.core.AuthenticationStatement;
 import org.opensaml.saml.saml1.core.AuthorityBinding;
@@ -35,7 +35,7 @@ import org.opensaml.saml.saml1.core.SubjectLocality;
 /**
  * 
  */
-public class AuthenticationStatementTest extends BaseSAMLObjectProviderTestCase {
+public class AuthenticationStatementTest extends XMLObjectProviderBaseTestCase {
 
     /** name used to generate objects */
     private final QName qname;
@@ -108,7 +108,7 @@ public class AuthenticationStatementTest extends BaseSAMLObjectProviderTestCase 
     /** {@inheritDoc} */
 
     public void testSingleElementMarshall() {
-        assertEquals(expectedDOM, buildXMLObject(qname));
+        assertXMLEquals(expectedDOM, buildXMLObject(qname));
     }
 
     /** {@inheritDoc} */
@@ -118,7 +118,7 @@ public class AuthenticationStatementTest extends BaseSAMLObjectProviderTestCase 
 
         authenticationStatement.setAuthenticationInstant(expectedAuthenticationInstant);
         authenticationStatement.setAuthenticationMethod(expectedAuthenticationMethod);
-        assertEquals(expectedOptionalAttributesDOM, authenticationStatement);
+        assertXMLEquals(expectedOptionalAttributesDOM, authenticationStatement);
     }
 
     /** {@inheritDoc} */
@@ -133,6 +133,6 @@ public class AuthenticationStatementTest extends BaseSAMLObjectProviderTestCase 
         authenticationStatement.getAuthorityBindings().add((AuthorityBinding) buildXMLObject(authQname));
         authenticationStatement.getAuthorityBindings().add((AuthorityBinding) buildXMLObject(authQname));
 
-        assertEquals(expectedChildElementsDOM, authenticationStatement);
+        assertXMLEquals(expectedChildElementsDOM, authenticationStatement);
     }
 }

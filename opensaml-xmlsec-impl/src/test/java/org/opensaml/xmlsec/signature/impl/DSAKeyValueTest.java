@@ -79,7 +79,7 @@ public class DSAKeyValueTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementMarshall() {
         DSAKeyValue keyValue = (DSAKeyValue) buildXMLObject(DSAKeyValue.DEFAULT_ELEMENT_NAME);
         
-        assertEquals(expectedDOM, keyValue);
+        assertXMLEquals(expectedDOM, keyValue);
     }
 
     /** {@inheritDoc} */
@@ -94,7 +94,7 @@ public class DSAKeyValueTest extends XMLObjectProviderBaseTestCase {
         keyValue.setSeed((Seed) buildXMLObject(Seed.DEFAULT_ELEMENT_NAME));
         keyValue.setPgenCounter((PgenCounter) buildXMLObject(PgenCounter.DEFAULT_ELEMENT_NAME));
         
-        assertEquals(expectedChildElementsDOM, keyValue);
+        assertXMLEquals(expectedChildElementsDOM, keyValue);
     }
 
 }

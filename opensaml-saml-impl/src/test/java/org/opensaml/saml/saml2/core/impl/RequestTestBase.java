@@ -21,7 +21,7 @@ import javax.xml.namespace.QName;
 
 import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
-import org.opensaml.saml.common.BaseSAMLObjectProviderTestCase;
+import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.SAMLVersion;
 import org.opensaml.saml.common.xml.SAMLConstants;
@@ -31,7 +31,7 @@ import org.opensaml.saml.saml2.core.RequestAbstractType;
 /**
  * 
  */
-public abstract class RequestTestBase extends BaseSAMLObjectProviderTestCase {
+public abstract class RequestTestBase extends XMLObjectProviderBaseTestCase {
 
     /** Expected ID value */
     protected String expectedID;

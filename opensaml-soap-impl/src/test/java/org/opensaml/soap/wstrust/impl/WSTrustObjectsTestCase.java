@@ -17,12 +17,9 @@
 
 package org.opensaml.soap.wstrust.impl;
 
-import java.io.InputStream;
-
 import javax.xml.namespace.QName;
 
 import org.joda.time.DateTime;
-import org.opensaml.core.xml.config.XMLConfigurator;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.schema.XSAny;
 import org.opensaml.core.xml.schema.XSBooleanValue;
@@ -66,15 +63,8 @@ public class WSTrustObjectsTestCase extends WSBaseTestCase {
     private static final QName TEST_CLAIMS_QNAME = new QName("urn:test:claims:ns", "TestClaim", "tc");
 
     /** {@inheritDoc} */
-    protected void configureWS() throws Exception {
-        // load ws-trust config
-        InputStream is= getClass().getResourceAsStream("/wstrust-config.xml");
-        XMLConfigurator configurator= new XMLConfigurator();
-        configurator.load(is);
-        // load ws-security config
-        is= getClass().getResourceAsStream("/wssecurity-config.xml");
-        configurator.load(is);
-        
+    protected void setUp() throws Exception {
+        super.setUp();
         // register provider for TestClaims supporting config
         XMLObjectProviderRegistrySupport.registerObjectProvider(TEST_CLAIMS_QNAME,  
                 new XSAnyBuilder(), new XSAnyMarshaller(), new XSAnyUnmarshaller());
@@ -297,7 +287,7 @@ public class WSTrustObjectsTestCase extends WSBaseTestCase {
         rst.getUnknownXMLObjects().add(timestamp);
         marshallAndUnmarshall(rst);
 
-        rst= unmarshallXML("/data/org/opensaml/soap/wstrust/impl/RequestSecurityToken.xml");
+        rst= unmarshallElement("/data/org/opensaml/soap/wstrust/impl/RequestSecurityToken.xml");
         rst.releaseDOM();
         marshallAndUnmarshall(rst);
     }
