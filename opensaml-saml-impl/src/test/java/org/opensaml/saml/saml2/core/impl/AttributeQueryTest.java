@@ -22,7 +22,7 @@ package org.opensaml.saml.saml2.core.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
@@ -107,7 +107,7 @@ public class AttributeQueryTest extends SubjectQueryTestBase {
     public void testSingleElementUnmarshall() {
         AttributeQuery query = (AttributeQuery) unmarshallElement(singleElementFile);
         
-        AssertJUnit.assertNotNull("AttributeQuery was null", query);
+        Assert.assertNotNull(query, "AttributeQuery was null");
         super.helperTestSingleElementUnmarshall(query);
 
     }
@@ -117,7 +117,7 @@ public class AttributeQueryTest extends SubjectQueryTestBase {
     public void testSingleElementOptionalAttributesUnmarshall() {
         AttributeQuery query = (AttributeQuery) unmarshallElement(singleElementOptionalAttributesFile);
         
-        AssertJUnit.assertNotNull("AttributeQuery was null", query);
+        Assert.assertNotNull(query, "AttributeQuery was null");
         super.helperTestSingleElementOptionalAttributesUnmarshall(query);
     }
     
@@ -127,7 +127,7 @@ public class AttributeQueryTest extends SubjectQueryTestBase {
     public void testChildElementsUnmarshall() {
         AttributeQuery query = (AttributeQuery) unmarshallElement(childElementsFile);
         
-        AssertJUnit.assertEquals("Attribute count", expectedNumAttributes, query.getAttributes().size());
+        Assert.assertEquals(query.getAttributes().size(), expectedNumAttributes, "Attribute count");
         super.helperTestChildElementsUnmarshall(query);
     }
 }

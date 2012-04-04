@@ -20,7 +20,7 @@ package org.opensaml.xmlsec.signature.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.xmlsec.signature.Modulus;
 
@@ -51,8 +51,8 @@ public class ModulusTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         Modulus cbType = (Modulus) unmarshallElement(singleElementFile);
         
-        AssertJUnit.assertNotNull("Modulus", cbType);
-        AssertJUnit.assertEquals("Modulus value", cbType.getValue(), expectedCryptoBinaryContent);
+        Assert.assertNotNull(cbType, "Modulus");
+        Assert.assertEquals(expectedCryptoBinaryContent, cbType.getValue(), "Modulus value");
     }
 
     /** {@inheritDoc} */

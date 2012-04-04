@@ -19,7 +19,7 @@ package org.opensaml.xmlsec;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import java.security.KeyPair;
 
 import org.apache.xml.security.Init;
@@ -55,43 +55,43 @@ public class BasicSecurityConfigurationTest {
     
     @Test
     public void testGetSigAlgURI() {
-        AssertJUnit.assertNull(config.getSignatureAlgorithmURI("RSA"));
-        AssertJUnit.assertNull(config.getSignatureAlgorithmURI(rsaCred));
+        Assert.assertNull(config.getSignatureAlgorithmURI("RSA"));
+        Assert.assertNull(config.getSignatureAlgorithmURI(rsaCred));
         
         config.registerSignatureAlgorithmURI("RSA", SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1);
         
-        AssertJUnit.assertEquals(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1, config.getSignatureAlgorithmURI("RSA"));
-        AssertJUnit.assertEquals(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1, config.getSignatureAlgorithmURI(rsaCred));
+        Assert.assertEquals(config.getSignatureAlgorithmURI("RSA"), SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1);
+        Assert.assertEquals(config.getSignatureAlgorithmURI(rsaCred), SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1);
     }
 
     @Test
     public void testGetDataEncURI() {
-        AssertJUnit.assertNull(config.getDataEncryptionAlgorithmURI("AES", 128));
-        AssertJUnit.assertNull(config.getDataEncryptionAlgorithmURI("AES", 256));
-        AssertJUnit.assertNull(config.getDataEncryptionAlgorithmURI("AES", null));
+        Assert.assertNull(config.getDataEncryptionAlgorithmURI("AES", 128));
+        Assert.assertNull(config.getDataEncryptionAlgorithmURI("AES", 256));
+        Assert.assertNull(config.getDataEncryptionAlgorithmURI("AES", null));
         
         config.registerDataEncryptionAlgorithmURI("AES", 128, EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128);
         config.registerDataEncryptionAlgorithmURI("AES", 256, EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256);
         config.registerDataEncryptionAlgorithmURI("AES", null, EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256);
         
-        AssertJUnit.assertEquals(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128, 
-                config.getDataEncryptionAlgorithmURI("AES", 128));
-        AssertJUnit.assertEquals(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256, 
-                config.getDataEncryptionAlgorithmURI("AES", 256));
-        AssertJUnit.assertEquals(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256, 
-                config.getDataEncryptionAlgorithmURI("AES", null));
+        Assert.assertEquals(config.getDataEncryptionAlgorithmURI("AES", 128), 
+                EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128);
+        Assert.assertEquals(config.getDataEncryptionAlgorithmURI("AES", 256), 
+                EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256);
+        Assert.assertEquals(config.getDataEncryptionAlgorithmURI("AES", null), 
+                EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256);
         
-        AssertJUnit.assertEquals(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128, 
-                config.getDataEncryptionAlgorithmURI(aes128Cred));
+        Assert.assertEquals(config.getDataEncryptionAlgorithmURI(aes128Cred), 
+                EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128);
     }
     
     @Test
     public void testGetKeyTransportEncURI() {
-        AssertJUnit.assertNull(config.getKeyTransportEncryptionAlgorithmURI("RSA", null, "AES"));
-        AssertJUnit.assertNull(config.getKeyTransportEncryptionAlgorithmURI("RSA", null, "DESede"));
-        AssertJUnit.assertNull(config.getKeyTransportEncryptionAlgorithmURI("RSA", null, null));
-        AssertJUnit.assertNull(config.getKeyTransportEncryptionAlgorithmURI("AES", 256, "AES"));
-        AssertJUnit.assertNull(config.getKeyTransportEncryptionAlgorithmURI("AES", 256, "DESede"));
+        Assert.assertNull(config.getKeyTransportEncryptionAlgorithmURI("RSA", null, "AES"));
+        Assert.assertNull(config.getKeyTransportEncryptionAlgorithmURI("RSA", null, "DESede"));
+        Assert.assertNull(config.getKeyTransportEncryptionAlgorithmURI("RSA", null, null));
+        Assert.assertNull(config.getKeyTransportEncryptionAlgorithmURI("AES", 256, "AES"));
+        Assert.assertNull(config.getKeyTransportEncryptionAlgorithmURI("AES", 256, "DESede"));
         
         config.registerKeyTransportEncryptionAlgorithmURI("RSA", null, "AES", 
                 EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP);
@@ -108,30 +108,30 @@ public class BasicSecurityConfigurationTest {
         config.registerKeyTransportEncryptionAlgorithmURI("AES", null, "DESede", 
                 EncryptionConstants.ALGO_ID_KEYWRAP_AES256);
         
-        AssertJUnit.assertEquals(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP, 
-                config.getKeyTransportEncryptionAlgorithmURI("RSA", null, "AES"));
-        AssertJUnit.assertEquals(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSA15, 
-                config.getKeyTransportEncryptionAlgorithmURI("RSA", null, "DESede"));
-        AssertJUnit.assertEquals(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSA15, 
-                config.getKeyTransportEncryptionAlgorithmURI("RSA", null, "FOO"));
-        AssertJUnit.assertEquals(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSA15, 
-                config.getKeyTransportEncryptionAlgorithmURI("RSA", null, null));
+        Assert.assertEquals(config.getKeyTransportEncryptionAlgorithmURI("RSA", null, "AES"), 
+                EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP);
+        Assert.assertEquals(config.getKeyTransportEncryptionAlgorithmURI("RSA", null, "DESede"), 
+                EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSA15);
+        Assert.assertEquals(config.getKeyTransportEncryptionAlgorithmURI("RSA", null, "FOO"), 
+                EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSA15);
+        Assert.assertEquals(config.getKeyTransportEncryptionAlgorithmURI("RSA", null, null), 
+                EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSA15);
         
-        AssertJUnit.assertEquals(EncryptionConstants.ALGO_ID_KEYWRAP_AES128,
-                config.getKeyTransportEncryptionAlgorithmURI("AES", 128, null));
-        AssertJUnit.assertEquals(EncryptionConstants.ALGO_ID_KEYWRAP_AES256,
-                config.getKeyTransportEncryptionAlgorithmURI("AES", 256, null));
-        AssertJUnit.assertEquals(EncryptionConstants.ALGO_ID_KEYWRAP_AES128,
-                config.getKeyTransportEncryptionAlgorithmURI("AES", null, "AES"));
-        AssertJUnit.assertEquals(EncryptionConstants.ALGO_ID_KEYWRAP_AES256,
-                config.getKeyTransportEncryptionAlgorithmURI("AES", null, "DESede"));
+        Assert.assertEquals(config.getKeyTransportEncryptionAlgorithmURI("AES", 128, null),
+                EncryptionConstants.ALGO_ID_KEYWRAP_AES128);
+        Assert.assertEquals(config.getKeyTransportEncryptionAlgorithmURI("AES", 256, null),
+                EncryptionConstants.ALGO_ID_KEYWRAP_AES256);
+        Assert.assertEquals(config.getKeyTransportEncryptionAlgorithmURI("AES", null, "AES"),
+                EncryptionConstants.ALGO_ID_KEYWRAP_AES128);
+        Assert.assertEquals(config.getKeyTransportEncryptionAlgorithmURI("AES", null, "DESede"),
+                EncryptionConstants.ALGO_ID_KEYWRAP_AES256);
         
-        AssertJUnit.assertEquals(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP, 
-                config.getKeyTransportEncryptionAlgorithmURI(rsaCred, "AES"));
-        AssertJUnit.assertEquals(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSA15, 
-                config.getKeyTransportEncryptionAlgorithmURI(rsaCred, "DESede"));
-        AssertJUnit.assertEquals(EncryptionConstants.ALGO_ID_KEYWRAP_AES128,
-                config.getKeyTransportEncryptionAlgorithmURI(aes128Cred, null));
+        Assert.assertEquals(config.getKeyTransportEncryptionAlgorithmURI(rsaCred, "AES"), 
+                EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP);
+        Assert.assertEquals(config.getKeyTransportEncryptionAlgorithmURI(rsaCred, "DESede"), 
+                EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSA15);
+        Assert.assertEquals(config.getKeyTransportEncryptionAlgorithmURI(aes128Cred, null),
+                EncryptionConstants.ALGO_ID_KEYWRAP_AES128);
         
     }
 }

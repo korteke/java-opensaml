@@ -19,7 +19,7 @@ package org.opensaml.saml.saml2.metadata.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import org.joda.time.DateTime;
@@ -81,14 +81,14 @@ public class EntityDescriptorTest extends XMLObjectProviderBaseTestCase {
         EntityDescriptor descriptor = (EntityDescriptor) unmarshallElement(singleElementFile);
 
         String entityID = descriptor.getEntityID();
-        AssertJUnit.assertEquals("entityID attribute has a value of " + entityID + ", expected a value of " + expectedEntityID,
-                expectedEntityID, entityID);
+        Assert.assertEquals(entityID,
+                expectedEntityID, "entityID attribute has a value of " + entityID + ", expected a value of " + expectedEntityID);
 
         Long duration = descriptor.getCacheDuration();
-        AssertJUnit.assertNull("cacheDuration attribute has a value of " + duration + ", expected no value", duration);
+        Assert.assertNull(duration, "cacheDuration attribute has a value of " + duration + ", expected no value");
 
         DateTime validUntil = descriptor.getValidUntil();
-        AssertJUnit.assertNull("validUntil attribute has a value of " + validUntil + ", expected no value", validUntil);
+        Assert.assertNull(validUntil, "validUntil attribute has a value of " + validUntil + ", expected no value");
     }
 
     /** {@inheritDoc} */
@@ -97,19 +97,19 @@ public class EntityDescriptorTest extends XMLObjectProviderBaseTestCase {
         EntityDescriptor descriptor = (EntityDescriptor) unmarshallElement(singleElementOptionalAttributesFile);
 
         String entityID = descriptor.getEntityID();
-        AssertJUnit.assertEquals("entityID attribute has a value of " + entityID + ", expected a value of " + expectedEntityID,
-                expectedEntityID, entityID);
+        Assert.assertEquals(entityID,
+                expectedEntityID, "entityID attribute has a value of " + entityID + ", expected a value of " + expectedEntityID);
 
         String id = descriptor.getID();
-        AssertJUnit.assertEquals("ID attribute has a value of " + id + ", expected a value of " + expectedID, expectedID, id);
+        Assert.assertEquals(id, expectedID, "ID attribute has a value of " + id + ", expected a value of " + expectedID);
 
         long duration = descriptor.getCacheDuration().longValue();
-        AssertJUnit.assertEquals("cacheDuration attribute has a value of " + duration + ", expected a value of "
-                + expectedCacheDuration, expectedCacheDuration, duration);
+        Assert.assertEquals(duration, expectedCacheDuration, "cacheDuration attribute has a value of " + duration + ", expected a value of "
+                        + expectedCacheDuration);
 
         DateTime validUntil = descriptor.getValidUntil();
-        AssertJUnit.assertEquals("validUntil attribute value did not match expected value", 0, expectedValidUntil
-                .compareTo(validUntil));
+        Assert.assertEquals(expectedValidUntil
+                .compareTo(validUntil), 0, "validUntil attribute value did not match expected value");
     }
 
     /** {@inheritDoc} */
@@ -117,17 +117,17 @@ public class EntityDescriptorTest extends XMLObjectProviderBaseTestCase {
     public void testChildElementsUnmarshall() {
         EntityDescriptor descriptor = (EntityDescriptor) unmarshallElement(childElementsFile);
 
-        AssertJUnit.assertNotNull("Extensions child", descriptor.getExtensions());
-        AssertJUnit.assertNotNull("Signature child", descriptor.getSignature());
-        AssertJUnit.assertEquals("IDPSSODescriptor count", 2, descriptor.getRoleDescriptors(IDPSSODescriptor.DEFAULT_ELEMENT_NAME).size());
-        AssertJUnit.assertEquals("SPSSODescriptor count", 3, descriptor.getRoleDescriptors(SPSSODescriptor.DEFAULT_ELEMENT_NAME).size());
-        AssertJUnit.assertEquals("AuthnAuthorityDescriptor count", 2, descriptor.getRoleDescriptors(AuthnAuthorityDescriptor.DEFAULT_ELEMENT_NAME).size());
-        AssertJUnit.assertEquals("AttributeAuthorityDescriptor count", 1, descriptor.getRoleDescriptors(AttributeAuthorityDescriptor.DEFAULT_ELEMENT_NAME).size());
-        AssertJUnit.assertEquals("PDPDescriptor count", 2, descriptor.getRoleDescriptors(PDPDescriptor.DEFAULT_ELEMENT_NAME).size());
-        AssertJUnit.assertNotNull("AffiliationDescriptor ", descriptor.getAffiliationDescriptor());
-        AssertJUnit.assertNotNull("Organization ", descriptor.getOrganization());
-        AssertJUnit.assertEquals("ContactPerson count", 1, descriptor.getContactPersons().size());
-        AssertJUnit.assertEquals("AdditionalMetadataLocation count", 3, descriptor.getAdditionalMetadataLocations().size());
+        Assert.assertNotNull(descriptor.getExtensions(), "Extensions child");
+        Assert.assertNotNull(descriptor.getSignature(), "Signature child");
+        Assert.assertEquals(descriptor.getRoleDescriptors(IDPSSODescriptor.DEFAULT_ELEMENT_NAME).size(), 2, "IDPSSODescriptor count");
+        Assert.assertEquals(descriptor.getRoleDescriptors(SPSSODescriptor.DEFAULT_ELEMENT_NAME).size(), 3, "SPSSODescriptor count");
+        Assert.assertEquals(descriptor.getRoleDescriptors(AuthnAuthorityDescriptor.DEFAULT_ELEMENT_NAME).size(), 2, "AuthnAuthorityDescriptor count");
+        Assert.assertEquals(descriptor.getRoleDescriptors(AttributeAuthorityDescriptor.DEFAULT_ELEMENT_NAME).size(), 1, "AttributeAuthorityDescriptor count");
+        Assert.assertEquals(descriptor.getRoleDescriptors(PDPDescriptor.DEFAULT_ELEMENT_NAME).size(), 2, "PDPDescriptor count");
+        Assert.assertNotNull(descriptor.getAffiliationDescriptor(), "AffiliationDescriptor ");
+        Assert.assertNotNull(descriptor.getOrganization(), "Organization ");
+        Assert.assertEquals(descriptor.getContactPersons().size(), 1, "ContactPerson count");
+        Assert.assertEquals(descriptor.getAdditionalMetadataLocations().size(), 3, "AdditionalMetadataLocation count");
     }
 
     /** {@inheritDoc} */

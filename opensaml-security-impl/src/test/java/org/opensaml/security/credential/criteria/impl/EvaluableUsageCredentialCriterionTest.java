@@ -19,7 +19,7 @@ package org.opensaml.security.credential.criteria.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import org.opensaml.security.credential.BasicCredential;
 import org.opensaml.security.credential.UsageType;
 import org.opensaml.security.credential.criteria.impl.EvaluableCredentialCriteriaRegistry;
@@ -52,28 +52,28 @@ public class EvaluableUsageCredentialCriterionTest {
     @Test
     public void testSatifsyExactMatch() {
         EvaluableUsageCredentialCriterion evalCrit = new EvaluableUsageCredentialCriterion(criteria);
-        AssertJUnit.assertTrue("Credential should have matched the evaluable criteria", evalCrit.evaluate(credential));
+        Assert.assertTrue(evalCrit.evaluate(credential), "Credential should have matched the evaluable criteria");
     }
     
     @Test
     public void testSatisfyWithUnspecifiedCriteria() {
         criteria.setUsage(UsageType.UNSPECIFIED);
         EvaluableUsageCredentialCriterion evalCrit = new EvaluableUsageCredentialCriterion(criteria);
-        AssertJUnit.assertTrue("Credential should have matched the evaluable criteria", evalCrit.evaluate(credential));
+        Assert.assertTrue(evalCrit.evaluate(credential), "Credential should have matched the evaluable criteria");
     }
     
     @Test
     public void testSatisfyWithUnspecifiedCredential() {
         credential.setUsageType(UsageType.UNSPECIFIED);
         EvaluableUsageCredentialCriterion evalCrit = new EvaluableUsageCredentialCriterion(criteria);
-        AssertJUnit.assertTrue("Credential should have matched the evaluable criteria", evalCrit.evaluate(credential));
+        Assert.assertTrue(evalCrit.evaluate(credential), "Credential should have matched the evaluable criteria");
     }
 
     @Test
     public void testNotSatisfy() {
         criteria.setUsage(UsageType.ENCRYPTION);
         EvaluableUsageCredentialCriterion evalCrit = new EvaluableUsageCredentialCriterion(criteria);
-        AssertJUnit.assertFalse("Credential should NOT have matched the evaluable criteria", evalCrit.evaluate(credential));
+        Assert.assertFalse(evalCrit.evaluate(credential), "Credential should NOT have matched the evaluable criteria");
     }
     
     /* With BasicCredential, can't set UsageType to null, so can't really test.
@@ -87,7 +87,7 @@ public class EvaluableUsageCredentialCriterionTest {
     @Test
     public void testRegistry() throws Exception {
         EvaluableCredentialCriterion evalCrit = EvaluableCredentialCriteriaRegistry.getEvaluator(criteria);
-        AssertJUnit.assertNotNull("Evaluable criteria was unavailable from the registry", evalCrit);
-        AssertJUnit.assertTrue("Credential should have matched the evaluable criteria", evalCrit.evaluate(credential));
+        Assert.assertNotNull(evalCrit, "Evaluable criteria was unavailable from the registry");
+        Assert.assertTrue(evalCrit.evaluate(credential), "Credential should have matched the evaluable criteria");
     }
 }

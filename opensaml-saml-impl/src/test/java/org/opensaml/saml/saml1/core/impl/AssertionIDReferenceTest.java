@@ -22,7 +22,7 @@
 package org.opensaml.saml.saml1.core.impl;
 
 import org.testng.annotations.Test;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -59,8 +59,8 @@ public class AssertionIDReferenceTest extends XMLObjectProviderBaseTestCase {
 
         assertionIDReference = (AssertionIDReference) unmarshallElement(singleElementFile);
 
-        AssertJUnit.assertNull("NCName was " + assertionIDReference.getReference() + " expected null", assertionIDReference
-                .getReference());
+        Assert.assertNull(assertionIDReference
+                .getReference(), "NCName was " + assertionIDReference.getReference() + " expected null");
     }
 
     /** {@inheritDoc} */
@@ -71,7 +71,7 @@ public class AssertionIDReferenceTest extends XMLObjectProviderBaseTestCase {
 
         assertionIDReference = (AssertionIDReference) unmarshallElement(singleElementOptionalAttributesFile);
 
-        AssertJUnit.assertEquals("NCName ", expectedNCName, assertionIDReference.getReference());
+        Assert.assertEquals(assertionIDReference.getReference(), expectedNCName, "NCName ");
     }
 
     /** {@inheritDoc} */

@@ -19,7 +19,7 @@ package org.opensaml.saml.saml2.core.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.saml2.core.Attribute;
 import org.opensaml.saml.saml2.core.AttributeStatement;
@@ -48,16 +48,16 @@ public class AttributeStatementTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         AttributeStatement attributeStatement = (AttributeStatement) unmarshallElement(singleElementFile);
 
-        AssertJUnit.assertNotNull(attributeStatement);
+        Assert.assertNotNull(attributeStatement);
     }
     
     /** {@inheritDoc} */
     @Test
     public void testChildElementsUnmarshall() {
         AttributeStatement attributeStatement = (AttributeStatement) unmarshallElement(childElementsFile);
-        AssertJUnit.assertEquals("Attribute Count", expectedAttributeCount, attributeStatement.getAttributes().size());
-        AssertJUnit.assertEquals("EncryptedAttribute Count", 
-                expectedEncryptedAttributeCount, attributeStatement.getEncryptedAttributes().size());
+        Assert.assertEquals(attributeStatement.getAttributes().size(), expectedAttributeCount, "Attribute Count");
+        Assert.assertEquals(attributeStatement.getEncryptedAttributes().size(), 
+                expectedEncryptedAttributeCount, "EncryptedAttribute Count");
     }
 
 

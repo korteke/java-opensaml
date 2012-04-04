@@ -20,7 +20,7 @@ package org.opensaml.xmlsec.signature.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.core.xml.mock.SimpleXMLObject;
 import org.opensaml.xmlsec.signature.SPKIData;
@@ -45,8 +45,8 @@ public class SPKIDataTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         SPKIData spkiData = (SPKIData) unmarshallElement(singleElementFile);
         
-        AssertJUnit.assertNotNull("SPKIData", spkiData);
-        AssertJUnit.assertEquals("Total # of XMLObject child elements", 0, spkiData.getXMLObjects().size());
+        Assert.assertNotNull(spkiData, "SPKIData");
+        Assert.assertEquals(spkiData.getXMLObjects().size(), 0, "Total # of XMLObject child elements");
     }
 
     /** {@inheritDoc} */
@@ -54,10 +54,10 @@ public class SPKIDataTest extends XMLObjectProviderBaseTestCase {
     public void testChildElementsUnmarshall() {
         SPKIData spkiData = (SPKIData) unmarshallElement(childElementsFile);
         
-        AssertJUnit.assertNotNull("SPKIData", spkiData);
-        AssertJUnit.assertEquals("Total # of XMLObject child elements", 4, spkiData.getXMLObjects().size());
-        AssertJUnit.assertEquals("# of SPKISexp child elements", 2, spkiData.getSPKISexps().size());
-        AssertJUnit.assertEquals("# of SimpleElement child elements", 2, spkiData.getXMLObjects(SimpleXMLObject.ELEMENT_NAME).size());
+        Assert.assertNotNull(spkiData, "SPKIData");
+        Assert.assertEquals(spkiData.getXMLObjects().size(), 4, "Total # of XMLObject child elements");
+        Assert.assertEquals(spkiData.getSPKISexps().size(), 2, "# of SPKISexp child elements");
+        Assert.assertEquals(spkiData.getXMLObjects(SimpleXMLObject.ELEMENT_NAME).size(), 2, "# of SimpleElement child elements");
     }
 
     /** {@inheritDoc} */

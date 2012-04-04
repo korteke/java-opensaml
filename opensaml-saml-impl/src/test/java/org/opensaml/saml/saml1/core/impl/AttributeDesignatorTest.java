@@ -22,7 +22,7 @@
 package org.opensaml.saml.saml1.core.impl;
 
 import org.testng.annotations.Test;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -60,8 +60,8 @@ public class AttributeDesignatorTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         AttributeDesignator ad = (AttributeDesignator) unmarshallElement(singleElementFile);
 
-        AssertJUnit.assertNull("AttributeName", ad.getAttributeName());
-        AssertJUnit.assertNull("AttributeNamespace", ad.getAttributeNamespace());
+        Assert.assertNull(ad.getAttributeName(), "AttributeName");
+        Assert.assertNull(ad.getAttributeNamespace(), "AttributeNamespace");
     }
 
     /** {@inheritDoc} */
@@ -69,8 +69,8 @@ public class AttributeDesignatorTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementOptionalAttributesUnmarshall() {
         AttributeDesignator ad = (AttributeDesignator) unmarshallElement(singleElementOptionalAttributesFile);
 
-        AssertJUnit.assertEquals("AttributeName", expectedAttributeName, ad.getAttributeName());
-        AssertJUnit.assertEquals("AttributeNamespace", expectedAttributeNamespace, ad.getAttributeNamespace());
+        Assert.assertEquals(ad.getAttributeName(), expectedAttributeName, "AttributeName");
+        Assert.assertEquals(ad.getAttributeNamespace(), expectedAttributeNamespace, "AttributeNamespace");
     }
 
     /** {@inheritDoc} */

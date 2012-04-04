@@ -19,7 +19,7 @@ package org.opensaml.saml.saml2.core.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import org.joda.time.DateTime;
@@ -71,7 +71,7 @@ public class SubjectConfirmationDataTest extends XMLObjectProviderBaseTestCase {
         SubjectConfirmationData subjectCD = (SubjectConfirmationData) unmarshallElement(singleElementFile);
 
         DateTime notBefore = subjectCD.getNotBefore();
-        AssertJUnit.assertEquals("NotBefore was " + notBefore + ", expected " + expectedNotBefore, expectedNotBefore, notBefore);
+        Assert.assertEquals(notBefore, expectedNotBefore, "NotBefore was " + notBefore + ", expected " + expectedNotBefore);
     }
 
     /** {@inheritDoc} */
@@ -80,21 +80,21 @@ public class SubjectConfirmationDataTest extends XMLObjectProviderBaseTestCase {
         SubjectConfirmationData subjectCD = (SubjectConfirmationData) unmarshallElement(singleElementOptionalAttributesFile);
 
         DateTime notBefore = subjectCD.getNotBefore();
-        AssertJUnit.assertEquals("NotBefore was " + notBefore + ", expected " + expectedNotBefore, expectedNotBefore, notBefore);
+        Assert.assertEquals(notBefore, expectedNotBefore, "NotBefore was " + notBefore + ", expected " + expectedNotBefore);
 
         DateTime notOnOrAfter = subjectCD.getNotOnOrAfter();
-        AssertJUnit.assertEquals("NotOnOrAfter was " + notOnOrAfter + ", expected " + expectedNotOnOrAfter, expectedNotOnOrAfter,
-                notOnOrAfter);
+        Assert.assertEquals(notOnOrAfter, expectedNotOnOrAfter,
+                "NotOnOrAfter was " + notOnOrAfter + ", expected " + expectedNotOnOrAfter);
 
         String recipient = subjectCD.getRecipient();
-        AssertJUnit.assertEquals("Recipient was " + recipient + ", expected " + expectedRecipient, expectedRecipient, recipient);
+        Assert.assertEquals(recipient, expectedRecipient, "Recipient was " + recipient + ", expected " + expectedRecipient);
 
         String inResponseTo = subjectCD.getInResponseTo();
-        AssertJUnit.assertEquals("InResponseTo was " + inResponseTo + ", expected " + expectedInResponseTo, expectedInResponseTo,
-                inResponseTo);
+        Assert.assertEquals(inResponseTo, expectedInResponseTo,
+                "InResponseTo was " + inResponseTo + ", expected " + expectedInResponseTo);
 
         String address = subjectCD.getAddress();
-        AssertJUnit.assertEquals("Address was " + address + ", expected " + expectedAddress, expectedAddress, address);
+        Assert.assertEquals(address, expectedAddress, "Address was " + address + ", expected " + expectedAddress);
     }
 
     /** {@inheritDoc} */

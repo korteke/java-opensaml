@@ -22,7 +22,7 @@ package org.opensaml.saml.saml2.core.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
@@ -102,8 +102,8 @@ public class AuthnQueryTest extends SubjectQueryTestBase {
     public void testSingleElementUnmarshall() {
         AuthnQuery query = (AuthnQuery) unmarshallElement(singleElementFile);
         
-        AssertJUnit.assertNotNull("AuthnQuery", query);
-        AssertJUnit.assertNull("SessionIndex", query.getSessionIndex());
+        Assert.assertNotNull(query, "AuthnQuery");
+        Assert.assertNull(query.getSessionIndex(), "SessionIndex");
         super.helperTestSingleElementUnmarshall(query);
 
     }
@@ -114,7 +114,7 @@ public class AuthnQueryTest extends SubjectQueryTestBase {
         AuthnQuery query = (AuthnQuery) unmarshallElement(singleElementOptionalAttributesFile);
         
         super.helperTestSingleElementOptionalAttributesUnmarshall(query);
-        AssertJUnit.assertEquals("Unmarshalled SessionIndex was not the expected value", expectedSessionIndex, query.getSessionIndex());
+        Assert.assertEquals(query.getSessionIndex(), expectedSessionIndex, "Unmarshalled SessionIndex was not the expected value");
     }
 
     /** {@inheritDoc} */
@@ -123,6 +123,6 @@ public class AuthnQueryTest extends SubjectQueryTestBase {
         AuthnQuery query = (AuthnQuery) unmarshallElement(childElementsFile);
         
         super.helperTestChildElementsUnmarshall(query);
-        AssertJUnit.assertNotNull("RequestedAuthnContext", query.getRequestedAuthnContext());
+        Assert.assertNotNull(query.getRequestedAuthnContext(), "RequestedAuthnContext");
     }
 }

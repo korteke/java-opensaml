@@ -20,7 +20,7 @@ package org.opensaml.xmlsec.signature.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.xmlsec.signature.PGPKeyPacket;
 
@@ -51,8 +51,8 @@ public class PGPKeyPacketTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         PGPKeyPacket pgpElement = (PGPKeyPacket) unmarshallElement(singleElementFile);
         
-        AssertJUnit.assertNotNull("PGPKeyPacket", pgpElement);
-        AssertJUnit.assertEquals("PGPKeyPacket value", pgpElement.getValue(), expectedStringContent);
+        Assert.assertNotNull(pgpElement, "PGPKeyPacket");
+        Assert.assertEquals(expectedStringContent, pgpElement.getValue(), "PGPKeyPacket value");
     }
 
     /** {@inheritDoc} */

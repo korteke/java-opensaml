@@ -19,7 +19,7 @@ package org.opensaml.saml.saml2.metadata.support;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import java.io.File;
 import java.net.URL;
 
@@ -69,15 +69,15 @@ public class AttributeConsumingServiceSelectorTest extends XMLObjectBaseTestCase
     public void testWithValidIndex() throws MetadataProviderException {
         RoleDescriptor role =  mdProvider.getRole("urn:test:entity:A", SPSSODescriptor.DEFAULT_ELEMENT_NAME,
                 SAMLConstants.SAML20P_NS);
-        AssertJUnit.assertNotNull(role);
+        Assert.assertNotNull(role);
         acsSelector.setRoleDescriptor(role);
         
         acsSelector.setIndex(1);
         
         AttributeConsumingService acs = acsSelector.selectService();
-        AssertJUnit.assertNotNull(acs);
+        Assert.assertNotNull(acs);
         
-        AssertJUnit.assertEquals("Wrong service selected", "A-SP-1", getName(acs));
+        Assert.assertEquals(getName(acs), "A-SP-1", "Wrong service selected");
     }
     
     /**
@@ -89,13 +89,13 @@ public class AttributeConsumingServiceSelectorTest extends XMLObjectBaseTestCase
     public void testExplicitDefault() throws MetadataProviderException {
         RoleDescriptor role =  mdProvider.getRole("urn:test:entity:A", SPSSODescriptor.DEFAULT_ELEMENT_NAME,
                 SAMLConstants.SAML20P_NS);
-        AssertJUnit.assertNotNull(role);
+        Assert.assertNotNull(role);
         acsSelector.setRoleDescriptor(role);
         
         AttributeConsumingService acs = acsSelector.selectService();
-        AssertJUnit.assertNotNull(acs);
+        Assert.assertNotNull(acs);
         
-        AssertJUnit.assertEquals("Wrong service selected", "A-SP-0", getName(acs));
+        Assert.assertEquals(getName(acs), "A-SP-0", "Wrong service selected");
     }
     
     /**
@@ -106,13 +106,13 @@ public class AttributeConsumingServiceSelectorTest extends XMLObjectBaseTestCase
     public void testFirstMissingDefault() throws MetadataProviderException {
         RoleDescriptor role =  mdProvider.getRole("urn:test:entity:B", SPSSODescriptor.DEFAULT_ELEMENT_NAME,
                 SAMLConstants.SAML20P_NS);
-        AssertJUnit.assertNotNull(role);
+        Assert.assertNotNull(role);
         acsSelector.setRoleDescriptor(role);
         
         AttributeConsumingService acs = acsSelector.selectService();
-        AssertJUnit.assertNotNull(acs);
+        Assert.assertNotNull(acs);
         
-        AssertJUnit.assertEquals("Wrong service selected", "B-SP-2", getName(acs));
+        Assert.assertEquals(getName(acs), "B-SP-2", "Wrong service selected");
     }
     
     /**
@@ -123,13 +123,13 @@ public class AttributeConsumingServiceSelectorTest extends XMLObjectBaseTestCase
     public void testFirstFalseDefault() throws MetadataProviderException {
         RoleDescriptor role =  mdProvider.getRole("urn:test:entity:C", SPSSODescriptor.DEFAULT_ELEMENT_NAME,
                 SAMLConstants.SAML20P_NS);
-        AssertJUnit.assertNotNull(role);
+        Assert.assertNotNull(role);
         acsSelector.setRoleDescriptor(role);
         
         AttributeConsumingService acs = acsSelector.selectService();
-        AssertJUnit.assertNotNull(acs);
+        Assert.assertNotNull(acs);
         
-        AssertJUnit.assertEquals("Wrong service selected", "C-SP-0", getName(acs));
+        Assert.assertEquals(getName(acs), "C-SP-0", "Wrong service selected");
     }
     
     /**
@@ -140,15 +140,15 @@ public class AttributeConsumingServiceSelectorTest extends XMLObjectBaseTestCase
     public void testAttributeQueryType() throws MetadataProviderException {
         RoleDescriptor role =  mdProvider.getRole("urn:test:entity:A", AttributeQueryDescriptorType.TYPE_NAME,
                 SAMLConstants.SAML20P_NS);
-        AssertJUnit.assertNotNull(role);
+        Assert.assertNotNull(role);
         acsSelector.setRoleDescriptor(role);
         
         acsSelector.setIndex(0);
         
         AttributeConsumingService acs = acsSelector.selectService();
-        AssertJUnit.assertNotNull(acs);
+        Assert.assertNotNull(acs);
         
-        AssertJUnit.assertEquals("Wrong service selected", "A-AQ-0", getName(acs));
+        Assert.assertEquals(getName(acs), "A-AQ-0", "Wrong service selected");
     }
     
     /**
@@ -159,13 +159,13 @@ public class AttributeConsumingServiceSelectorTest extends XMLObjectBaseTestCase
     public void testInvalidIndex() throws MetadataProviderException {
         RoleDescriptor role =  mdProvider.getRole("urn:test:entity:A", SPSSODescriptor.DEFAULT_ELEMENT_NAME,
                 SAMLConstants.SAML20P_NS);
-        AssertJUnit.assertNotNull(role);
+        Assert.assertNotNull(role);
         acsSelector.setRoleDescriptor(role);
         
         acsSelector.setIndex(3);
         
         AttributeConsumingService acs = acsSelector.selectService();
-        AssertJUnit.assertNull("Service should have been null due to invalid index", acs);
+        Assert.assertNull(acs, "Service should have been null due to invalid index");
     }
     
     /**
@@ -176,16 +176,16 @@ public class AttributeConsumingServiceSelectorTest extends XMLObjectBaseTestCase
     public void testInvalidIndexWithUseDefault() throws MetadataProviderException {
         RoleDescriptor role =  mdProvider.getRole("urn:test:entity:A", SPSSODescriptor.DEFAULT_ELEMENT_NAME,
                 SAMLConstants.SAML20P_NS);
-        AssertJUnit.assertNotNull(role);
+        Assert.assertNotNull(role);
         acsSelector.setRoleDescriptor(role);
         
         acsSelector.setIndex(3);
         acsSelector.setOnBadIndexUseDefault(true);
         
         AttributeConsumingService acs = acsSelector.selectService();
-        AssertJUnit.assertNotNull(acs);
+        Assert.assertNotNull(acs);
         
-        AssertJUnit.assertEquals("Wrong service selected", "A-SP-0", getName(acs));
+        Assert.assertEquals(getName(acs), "A-SP-0", "Wrong service selected");
     }
     
     /**
@@ -195,7 +195,7 @@ public class AttributeConsumingServiceSelectorTest extends XMLObjectBaseTestCase
     @Test
     public void testNoRoleDescriptor() throws MetadataProviderException {
         AttributeConsumingService acs = acsSelector.selectService();
-        AssertJUnit.assertNull("Service should have been null due to lack of role descriptor", acs);
+        Assert.assertNull(acs, "Service should have been null due to lack of role descriptor");
     }
     
     

@@ -22,7 +22,7 @@ package org.opensaml.saml.ext.saml2mdui.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,8 +61,8 @@ public class KeywordsTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         Keywords name = (Keywords) unmarshallElement(singleElementFile);
         
-        AssertJUnit.assertEquals("Keyworks were not expected value", expectedWords, name.getKeywords());
-        AssertJUnit.assertEquals("Language was not expected value", expectedLang, name.getXMLLang());
+        Assert.assertEquals(name.getKeywords(), expectedWords, "Keyworks were not expected value");
+        Assert.assertEquals(name.getXMLLang(), expectedLang, "Language was not expected value");
     }
 
     /** {@inheritDoc} */

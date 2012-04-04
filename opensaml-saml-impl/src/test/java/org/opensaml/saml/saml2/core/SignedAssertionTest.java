@@ -19,7 +19,7 @@ package org.opensaml.saml.saml2.core;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import java.security.KeyPair;
 
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
@@ -144,7 +144,7 @@ public class SignedAssertionTest extends XMLObjectBaseTestCase {
         ExplicitKeySignatureTrustEngine trustEngine = new ExplicitKeySignatureTrustEngine(credResolver, kiResolver);
         
         CriteriaSet criteriaSet = new CriteriaSet( new EntityIDCriterion("urn:example.org:issuer") );
-        AssertJUnit.assertTrue("Assertion signature was not valid",
-                trustEngine.validate(signedAssertion.getSignature(), criteriaSet));
+        Assert.assertTrue(trustEngine.validate(signedAssertion.getSignature(), criteriaSet),
+                "Assertion signature was not valid");
     }
 }

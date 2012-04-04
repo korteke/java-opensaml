@@ -18,7 +18,7 @@
 package org.opensaml.saml.ext.saml2mdattr.impl;
 
 import org.testng.annotations.Test;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -39,19 +39,19 @@ public class EntityAttributesTest extends XMLObjectProviderBaseTestCase {
     @Test
     public void testSingleElementUnmarshall() {
         EntityAttributes attributes = (EntityAttributes) unmarshallElement(singleElementFile);
-        AssertJUnit.assertNotNull(attributes);
-        AssertJUnit.assertTrue(attributes.getAssertions().isEmpty());
-        AssertJUnit.assertTrue(attributes.getAttributes().isEmpty());
+        Assert.assertNotNull(attributes);
+        Assert.assertTrue(attributes.getAssertions().isEmpty());
+        Assert.assertTrue(attributes.getAttributes().isEmpty());
     }
 
     /** {@inheritDoc} */
     @Test
     public void testChildElementsUnmarshall() {
         EntityAttributes attributes = (EntityAttributes) unmarshallElement(childElementsFile);
-        AssertJUnit.assertNotNull(attributes);
+        Assert.assertNotNull(attributes);
 
-        AssertJUnit.assertEquals(2, attributes.getAssertions().size());
-        AssertJUnit.assertEquals(3, attributes.getAttributes().size());
+        Assert.assertEquals(attributes.getAssertions().size(), 2);
+        Assert.assertEquals(attributes.getAttributes().size(), 3);
     }
 
     /** {@inheritDoc} */
@@ -84,7 +84,7 @@ public class EntityAttributesTest extends XMLObjectProviderBaseTestCase {
         attributes.getAttributes().add(attrib2);
         attributes.getAttributes().add(attrib3);
 
-        AssertJUnit.assertEquals(5, attributes.getOrderedChildren().size());
+        Assert.assertEquals(attributes.getOrderedChildren().size(), 5);
         assertXMLEquals(expectedChildElementsDOM, attributes);
     }
 }

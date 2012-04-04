@@ -23,7 +23,7 @@ package org.opensaml.saml.saml1.core.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import java.util.List;
 
 import javax.xml.namespace.QName;
@@ -80,10 +80,10 @@ public class AuthorizationDecisionQueryTest extends XMLObjectProviderBaseTestCas
         AuthorizationDecisionQuery authorizationDecisionQuery;
         authorizationDecisionQuery = (AuthorizationDecisionQuery) unmarshallElement(singleElementFile);
 
-        AssertJUnit.assertNull("Resource attribute present", authorizationDecisionQuery.getResource());
-        AssertJUnit.assertNull("Subject element present", authorizationDecisionQuery.getSubject());
-        AssertJUnit.assertEquals("Count of AttributeDesignator elements", 0, authorizationDecisionQuery.getActions().size());
-        AssertJUnit.assertNull("Evidence element present", authorizationDecisionQuery.getEvidence());
+        Assert.assertNull(authorizationDecisionQuery.getResource(), "Resource attribute present");
+        Assert.assertNull(authorizationDecisionQuery.getSubject(), "Subject element present");
+        Assert.assertEquals(authorizationDecisionQuery.getActions().size(), 0, "Count of AttributeDesignator elements");
+        Assert.assertNull(authorizationDecisionQuery.getEvidence(), "Evidence element present");
     }
 
     /** {@inheritDoc} */
@@ -92,10 +92,10 @@ public class AuthorizationDecisionQueryTest extends XMLObjectProviderBaseTestCas
         AuthorizationDecisionQuery authorizationDecisionQuery;
         authorizationDecisionQuery = (AuthorizationDecisionQuery) unmarshallElement(singleElementOptionalAttributesFile);
 
-        AssertJUnit.assertEquals("Resource attribute", expectedResource, authorizationDecisionQuery.getResource());
-        AssertJUnit.assertNull("Subject element present", authorizationDecisionQuery.getSubject());
-        AssertJUnit.assertEquals("Count of AttributeDesignator elements", 0, authorizationDecisionQuery.getActions().size());
-        AssertJUnit.assertNull("Evidence element present", authorizationDecisionQuery.getEvidence());
+        Assert.assertEquals(authorizationDecisionQuery.getResource(), expectedResource, "Resource attribute");
+        Assert.assertNull(authorizationDecisionQuery.getSubject(), "Subject element present");
+        Assert.assertEquals(authorizationDecisionQuery.getActions().size(), 0, "Count of AttributeDesignator elements");
+        Assert.assertNull(authorizationDecisionQuery.getEvidence(), "Evidence element present");
     }
 
     /**
@@ -106,9 +106,9 @@ public class AuthorizationDecisionQueryTest extends XMLObjectProviderBaseTestCas
         AuthorizationDecisionQuery authorizationDecisionQuery;
         authorizationDecisionQuery = (AuthorizationDecisionQuery) unmarshallElement(fullElementsFile);
 
-        AssertJUnit.assertNotNull("Subject element present", authorizationDecisionQuery.getSubject());
-        AssertJUnit.assertEquals("Count of Action elements", 3, authorizationDecisionQuery.getActions().size());
-        AssertJUnit.assertNotNull("Evidence element present", authorizationDecisionQuery.getEvidence());
+        Assert.assertNotNull(authorizationDecisionQuery.getSubject(), "Subject element present");
+        Assert.assertEquals(authorizationDecisionQuery.getActions().size(), 3, "Count of Action elements");
+        Assert.assertNotNull(authorizationDecisionQuery.getEvidence(), "Evidence element present");
     }
 
     /** {@inheritDoc} */

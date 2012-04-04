@@ -22,7 +22,7 @@ package org.opensaml.saml.saml2.metadata.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.saml2.metadata.EmailAddress;
 
@@ -53,7 +53,7 @@ public class EmailAddressTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         EmailAddress address = (EmailAddress) unmarshallElement(singleElementFile);
         
-        AssertJUnit.assertEquals("Email address was not expected value", expectedAddress, address.getAddress());
+        Assert.assertEquals(address.getAddress(), expectedAddress, "Email address was not expected value");
     }
 
     /** {@inheritDoc} */

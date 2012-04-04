@@ -18,7 +18,7 @@
 package org.opensaml.saml.saml2.binding.encoding;
 
 import org.testng.annotations.Test;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import java.net.URL;
 import java.security.KeyPair;
 
@@ -87,9 +87,9 @@ public class HTTPRedirectDeflateEncoderTest extends XMLObjectBaseTestCase {
         HTTPRedirectDeflateEncoder encoder = new HTTPRedirectDeflateEncoder();
         encoder.encode(messageContext);
 
-        AssertJUnit.assertEquals("Unexpected character encoding", response.getCharacterEncoding(), "UTF-8");
-        AssertJUnit.assertEquals("Unexpected cache controls", "no-cache, no-store", response.getHeader("Cache-control"));
-        AssertJUnit.assertEquals(-117456809, response.getRedirectedUrl().hashCode());
+        Assert.assertEquals("UTF-8", response.getCharacterEncoding(), "Unexpected character encoding");
+        Assert.assertEquals(response.getHeader("Cache-control"), "no-cache, no-store", "Unexpected cache controls");
+        Assert.assertEquals(response.getRedirectedUrl().hashCode(), -117456809);
     }
     
     /**
@@ -142,10 +142,10 @@ public class HTTPRedirectDeflateEncoderTest extends XMLObjectBaseTestCase {
         
         String queryString = new URL(response.getRedirectedUrl()).getQuery();
         
-        AssertJUnit.assertNotNull("Signature parameter was not found", 
-                HTTPTransportUtils.getRawQueryStringParameter(queryString, "Signature"));
-        AssertJUnit.assertNotNull("SigAlg parameter was not found", 
-                HTTPTransportUtils.getRawQueryStringParameter(queryString, "SigAlg"));
+        Assert.assertNotNull(HTTPTransportUtils.getRawQueryStringParameter(queryString, "Signature"), 
+                "Signature parameter was not found");
+        Assert.assertNotNull(HTTPTransportUtils.getRawQueryStringParameter(queryString, "SigAlg"), 
+                "SigAlg parameter was not found");
         
         // Note: to test that actual signature is cryptographically correct, really need a known good test vector.
         // Need to verify that we're signing over the right data in the right byte[] encoded form.

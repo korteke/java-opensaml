@@ -18,7 +18,7 @@
 package org.opensaml.core.xml;
 
 import org.testng.annotations.Test;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -54,13 +54,13 @@ public class IDAttributeTest extends XMLObjectBaseTestCase {
     public void testSimpleUnmarshall() {
         SimpleXMLObject sxObject =  (SimpleXMLObject) unmarshallElement("/data/org/opensaml/core/xml/IDAttribute.xml");
 
-        AssertJUnit.assertEquals("ID lookup failed", sxObject, sxObject.resolveID("IDLevel1"));
-        AssertJUnit.assertEquals("ID lookup failed", sxObject, sxObject.resolveIDFromRoot("IDLevel1"));
-        AssertJUnit.assertNull("Lookup of non-existent ID didn't return null", sxObject.resolveID("NonExistent"));
+        Assert.assertEquals(sxObject.resolveID("IDLevel1"), sxObject, "ID lookup failed");
+        Assert.assertEquals(sxObject.resolveIDFromRoot("IDLevel1"), sxObject, "ID lookup failed");
+        Assert.assertNull(sxObject.resolveID("NonExistent"), "Lookup of non-existent ID didn't return null");
         
         sxObject.setId(null);
-        AssertJUnit.assertNull("Lookup of removed ID (formerly extant) didn't return null", sxObject.resolveID("IDLevel1"));
-        AssertJUnit.assertNull("Lookup of removed ID (formerly extant) didn't return null", sxObject.resolveIDFromRoot("IDLevel1"));
+        Assert.assertNull(sxObject.resolveID("IDLevel1"), "Lookup of removed ID (formerly extant) didn't return null");
+        Assert.assertNull(sxObject.resolveIDFromRoot("IDLevel1"), "Lookup of removed ID (formerly extant) didn't return null");
     }
     
     /**
@@ -72,48 +72,48 @@ public class IDAttributeTest extends XMLObjectBaseTestCase {
         SimpleXMLObject sxObject = 
             (SimpleXMLObject) unmarshallElement("/data/org/opensaml/core/xml/IDAttributeWithChildrenList.xml");
         
-        AssertJUnit.assertNull("Lookup of non-existent ID didn't return null", sxObject.resolveID("NonExistent"));
-        AssertJUnit.assertNull("Lookup of non-existent ID didn't return null", sxObject.resolveIDFromRoot("NonExistent"));
+        Assert.assertNull(sxObject.resolveID("NonExistent"), "Lookup of non-existent ID didn't return null");
+        Assert.assertNull(sxObject.resolveIDFromRoot("NonExistent"), "Lookup of non-existent ID didn't return null");
         
         // Resolving from top-level root
-        AssertJUnit.assertEquals("ID lookup failed", sxObject, 
-                sxObject.resolveID("IDLevel1"));
-        AssertJUnit.assertEquals("ID lookup failed", sxObject.getSimpleXMLObjects().get(0), 
-                sxObject.resolveID("IDLevel2A"));
-        AssertJUnit.assertEquals("ID lookup failed", sxObject.getSimpleXMLObjects().get(1), 
-                sxObject.resolveID("IDLevel2B"));
-        AssertJUnit.assertEquals("ID lookup failed", sxObject.getSimpleXMLObjects().get(3), 
-                sxObject.resolveID("IDLevel2C"));
-        AssertJUnit.assertEquals("ID lookup failed", sxObject.getSimpleXMLObjects().get(0).getSimpleXMLObjects().get(0), 
-                sxObject.resolveID("IDLevel3A"));
-        AssertJUnit.assertEquals("ID lookup failed", sxObject.getSimpleXMLObjects().get(0).getSimpleXMLObjects().get(2), 
-                sxObject.resolveID("IDLevel3B"));
-        AssertJUnit.assertEquals("ID lookup failed", sxObject.getSimpleXMLObjects().get(0).getSimpleXMLObjects().get(3), 
-                sxObject.resolveID("IDLevel3C"));
-        AssertJUnit.assertEquals("ID lookup failed", sxObject.getSimpleXMLObjects().get(0).getSimpleXMLObjects().get(0)
+        Assert.assertEquals(sxObject.resolveID("IDLevel1"), sxObject, 
+                "ID lookup failed");
+        Assert.assertEquals(sxObject.resolveID("IDLevel2A"), sxObject.getSimpleXMLObjects().get(0), 
+                "ID lookup failed");
+        Assert.assertEquals(sxObject.resolveID("IDLevel2B"), sxObject.getSimpleXMLObjects().get(1), 
+                "ID lookup failed");
+        Assert.assertEquals(sxObject.resolveID("IDLevel2C"), sxObject.getSimpleXMLObjects().get(3), 
+                "ID lookup failed");
+        Assert.assertEquals(sxObject.resolveID("IDLevel3A"), sxObject.getSimpleXMLObjects().get(0).getSimpleXMLObjects().get(0), 
+                "ID lookup failed");
+        Assert.assertEquals(sxObject.resolveID("IDLevel3B"), sxObject.getSimpleXMLObjects().get(0).getSimpleXMLObjects().get(2), 
+                "ID lookup failed");
+        Assert.assertEquals(sxObject.resolveID("IDLevel3C"), sxObject.getSimpleXMLObjects().get(0).getSimpleXMLObjects().get(3), 
+                "ID lookup failed");
+        Assert.assertEquals(sxObject.resolveID("IDLevel4A"), sxObject.getSimpleXMLObjects().get(0).getSimpleXMLObjects().get(0)
                 .getSimpleXMLObjects().get(0), 
-                sxObject.resolveID("IDLevel4A"));
+                "ID lookup failed");
         
         // Resolving from secondary level root
-        AssertJUnit.assertEquals("ID lookup failed", sxObject.getSimpleXMLObjects().get(0), 
-                sxObject.getSimpleXMLObjects().get(0).resolveID("IDLevel2A"));
-        AssertJUnit.assertEquals("ID lookup failed", sxObject.getSimpleXMLObjects().get(0).getSimpleXMLObjects().get(0), 
-                sxObject.getSimpleXMLObjects().get(0).resolveID("IDLevel3A"));
-        AssertJUnit.assertEquals("ID lookup failed", sxObject.getSimpleXMLObjects().get(0).getSimpleXMLObjects().get(2), 
-                sxObject.getSimpleXMLObjects().get(0).resolveID("IDLevel3B"));
-        AssertJUnit.assertEquals("ID lookup failed", sxObject.getSimpleXMLObjects().get(0).getSimpleXMLObjects().get(3), 
-                sxObject.getSimpleXMLObjects().get(0).resolveID("IDLevel3C"));
-        AssertJUnit.assertEquals("ID lookup failed", sxObject.getSimpleXMLObjects().get(0).getSimpleXMLObjects().get(0)
+        Assert.assertEquals(sxObject.getSimpleXMLObjects().get(0).resolveID("IDLevel2A"), sxObject.getSimpleXMLObjects().get(0), 
+                "ID lookup failed");
+        Assert.assertEquals(sxObject.getSimpleXMLObjects().get(0).resolveID("IDLevel3A"), sxObject.getSimpleXMLObjects().get(0).getSimpleXMLObjects().get(0), 
+                "ID lookup failed");
+        Assert.assertEquals(sxObject.getSimpleXMLObjects().get(0).resolveID("IDLevel3B"), sxObject.getSimpleXMLObjects().get(0).getSimpleXMLObjects().get(2), 
+                "ID lookup failed");
+        Assert.assertEquals(sxObject.getSimpleXMLObjects().get(0).resolveID("IDLevel3C"), sxObject.getSimpleXMLObjects().get(0).getSimpleXMLObjects().get(3), 
+                "ID lookup failed");
+        Assert.assertEquals(sxObject.getSimpleXMLObjects().get(0).resolveID("IDLevel4A"), sxObject.getSimpleXMLObjects().get(0).getSimpleXMLObjects().get(0)
                 .getSimpleXMLObjects().get(0), 
-                sxObject.getSimpleXMLObjects().get(0).resolveID("IDLevel4A"));
-        AssertJUnit.assertNull("Lookup of non-existent ID didn't return null", 
-                sxObject.getSimpleXMLObjects().get(0).resolveID("IDLevel1"));
+                "ID lookup failed");
+        Assert.assertNull(sxObject.getSimpleXMLObjects().get(0).resolveID("IDLevel1"), 
+                "Lookup of non-existent ID didn't return null");
         
         // Resolving from lower-level child to a non-ancestor object using resolveIDFromRoot.
         SimpleXMLObject sxoIDLevel4A = sxObject.getSimpleXMLObjects().get(0)
             .getSimpleXMLObjects().get(0).getSimpleXMLObjects().get(0); 
         SimpleXMLObject sxoIDLevel2C = sxObject.getSimpleXMLObjects().get(3);
-        AssertJUnit.assertEquals("ID lookup failed", sxoIDLevel2C, sxoIDLevel4A.resolveIDFromRoot("IDLevel2C"));
+        Assert.assertEquals(sxoIDLevel4A.resolveIDFromRoot("IDLevel2C"), sxoIDLevel2C, "ID lookup failed");
     }
         
         
@@ -128,29 +128,29 @@ public class IDAttributeTest extends XMLObjectBaseTestCase {
         
         // Test propagation of attribute value change up the tree 
         sxObject.getSimpleXMLObjects().get(1).setId("NewIDLevel2B");
-        AssertJUnit.assertEquals("ID lookup failed", sxObject.getSimpleXMLObjects().get(1), 
-                sxObject.resolveID("NewIDLevel2B"));
-        AssertJUnit.assertNull("Lookup of non-existent ID didn't return null", sxObject.resolveID("IDLevel2B"));
+        Assert.assertEquals(sxObject.resolveID("NewIDLevel2B"), sxObject.getSimpleXMLObjects().get(1), 
+                "ID lookup failed");
+        Assert.assertNull(sxObject.resolveID("IDLevel2B"), "Lookup of non-existent ID didn't return null");
         
         sxObject.getSimpleXMLObjects().get(1).setId(null);
-        AssertJUnit.assertNull("Lookup of non-existent ID didn't return null", sxObject.resolveID("NewIDLevel2B"));
-        AssertJUnit.assertNull("Lookup of non-existent ID didn't return null", sxObject.resolveID("IDLevel2B"));
+        Assert.assertNull(sxObject.resolveID("NewIDLevel2B"), "Lookup of non-existent ID didn't return null");
+        Assert.assertNull(sxObject.resolveID("IDLevel2B"), "Lookup of non-existent ID didn't return null");
         
         sxObject.getSimpleXMLObjects().get(1).setId("IDLevel2B");
-        AssertJUnit.assertEquals("ID lookup failed", sxObject.getSimpleXMLObjects().get(1), 
-                sxObject.resolveID("IDLevel2B"));
-        AssertJUnit.assertNull("Lookup of non-existent ID didn't return null", sxObject.resolveID("NewIDLevel2B"));
+        Assert.assertEquals(sxObject.resolveID("IDLevel2B"), sxObject.getSimpleXMLObjects().get(1), 
+                "ID lookup failed");
+        Assert.assertNull(sxObject.resolveID("NewIDLevel2B"), "Lookup of non-existent ID didn't return null");
         
         sxObject.getSimpleXMLObjects().get(0).getSimpleXMLObjects().get(3).setId("NewIDLevel3C");
-        AssertJUnit.assertEquals("ID lookup failed", sxObject.getSimpleXMLObjects().get(0).getSimpleXMLObjects().get(3), 
-                sxObject.resolveID("NewIDLevel3C"));
-        AssertJUnit.assertNull("Lookup of non-existent ID didn't return null", sxObject.resolveID("IDLevel3C"));
+        Assert.assertEquals(sxObject.resolveID("NewIDLevel3C"), sxObject.getSimpleXMLObjects().get(0).getSimpleXMLObjects().get(3), 
+                "ID lookup failed");
+        Assert.assertNull(sxObject.resolveID("IDLevel3C"), "Lookup of non-existent ID didn't return null");
         
         sxObject.getSimpleXMLObjects().get(0).getSimpleXMLObjects().get(0).setId(null);
-        AssertJUnit.assertNull("Lookup of non-existent ID didn't return null", sxObject.resolveID("IDLevel3A"));
+        Assert.assertNull(sxObject.resolveID("IDLevel3A"), "Lookup of non-existent ID didn't return null");
         sxObject.getSimpleXMLObjects().get(0).getSimpleXMLObjects().get(0).setId("IDLevel3A");
-        AssertJUnit.assertEquals("ID lookup failed", sxObject.getSimpleXMLObjects().get(0).getSimpleXMLObjects().get(0), 
-                sxObject.resolveID("IDLevel3A"));
+        Assert.assertEquals(sxObject.resolveID("IDLevel3A"), sxObject.getSimpleXMLObjects().get(0).getSimpleXMLObjects().get(0), 
+                "ID lookup failed");
     }
         
     /**
@@ -164,38 +164,38 @@ public class IDAttributeTest extends XMLObjectBaseTestCase {
             (SimpleXMLObject) unmarshallElement("/data/org/opensaml/core/xml/IDAttributeWithChildrenList.xml");
         
         SimpleXMLObject targetIDLevel3B = sxObject.getSimpleXMLObjects().get(0).getSimpleXMLObjects().get(2);
-        AssertJUnit.assertEquals("ID lookup failed", targetIDLevel3B, sxObject.resolveID("IDLevel3B"));
+        Assert.assertEquals(sxObject.resolveID("IDLevel3B"), targetIDLevel3B, "ID lookup failed");
         
         // remove(int)
         sxObject.getSimpleXMLObjects().get(0).getSimpleXMLObjects().remove(2);
-        AssertJUnit.assertNull("Lookup of non-existent ID didn't return null", sxObject.resolveID("IDLevel3B"));
+        Assert.assertNull(sxObject.resolveID("IDLevel3B"), "Lookup of non-existent ID didn't return null");
         // add(XMLObject)
         sxObject.getSimpleXMLObjects().get(0).getSimpleXMLObjects().add(targetIDLevel3B);
-        AssertJUnit.assertEquals("ID lookup failed", targetIDLevel3B, sxObject.resolveID("IDLevel3B"));
+        Assert.assertEquals(sxObject.resolveID("IDLevel3B"), targetIDLevel3B, "ID lookup failed");
         // remove(XMLObject)
         sxObject.getSimpleXMLObjects().get(0).getSimpleXMLObjects().remove(targetIDLevel3B);
-        AssertJUnit.assertNull("Lookup of non-existent ID didn't return null", sxObject.resolveID("IDLevel3B"));
+        Assert.assertNull(sxObject.resolveID("IDLevel3B"), "Lookup of non-existent ID didn't return null");
         // set(int, XMLObject)
         sxObject.getSimpleXMLObjects().get(0).getSimpleXMLObjects().set(1, targetIDLevel3B);
-        AssertJUnit.assertEquals("ID lookup failed", targetIDLevel3B, sxObject.resolveID("IDLevel3B"));
+        Assert.assertEquals(sxObject.resolveID("IDLevel3B"), targetIDLevel3B, "ID lookup failed");
         sxObject.getSimpleXMLObjects().get(0).getSimpleXMLObjects().remove(targetIDLevel3B);
-        AssertJUnit.assertNull("Lookup of non-existent ID didn't return null", sxObject.resolveID("IDLevel3B"));
+        Assert.assertNull(sxObject.resolveID("IDLevel3B"), "Lookup of non-existent ID didn't return null");
         
         // Ops using new object
         SimpleXMLObject newSimpleObject = (SimpleXMLObject) buildXMLObject(SimpleXMLObject.ELEMENT_NAME);
         newSimpleObject.setId("NewSimpleElement");
         
         sxObject.getSimpleXMLObjects().get(3).getSimpleXMLObjects().add(newSimpleObject);
-        AssertJUnit.assertEquals("ID lookup failed", newSimpleObject, sxObject.resolveID("NewSimpleElement"));
+        Assert.assertEquals(sxObject.resolveID("NewSimpleElement"), newSimpleObject, "ID lookup failed");
         sxObject.getSimpleXMLObjects().get(3).getSimpleXMLObjects().remove(newSimpleObject);
-        AssertJUnit.assertNull("Lookup of non-existent ID didn't return null", sxObject.resolveID("NewSimpleElement"));
+        Assert.assertNull(sxObject.resolveID("NewSimpleElement"), "Lookup of non-existent ID didn't return null");
         
         // clear
         sxObject.getSimpleXMLObjects().get(0).getSimpleXMLObjects().clear();
-        AssertJUnit.assertNull("Lookup of non-existent ID didn't return null", sxObject.resolveID("IDLevel3A"));
-        AssertJUnit.assertNull("Lookup of non-existent ID didn't return null", sxObject.resolveID("IDLevel3B"));
-        AssertJUnit.assertNull("Lookup of non-existent ID didn't return null", sxObject.resolveID("IDLevel3C"));
-        AssertJUnit.assertNull("Lookup of non-existent ID didn't return null", sxObject.resolveID("IDLevel4A"));
+        Assert.assertNull(sxObject.resolveID("IDLevel3A"), "Lookup of non-existent ID didn't return null");
+        Assert.assertNull(sxObject.resolveID("IDLevel3B"), "Lookup of non-existent ID didn't return null");
+        Assert.assertNull(sxObject.resolveID("IDLevel3C"), "Lookup of non-existent ID didn't return null");
+        Assert.assertNull(sxObject.resolveID("IDLevel4A"), "Lookup of non-existent ID didn't return null");
     }
     
     /**
@@ -218,29 +218,29 @@ public class IDAttributeTest extends XMLObjectBaseTestCase {
         XMLObject xmlobject = unmarshaller.unmarshall(document.getDocumentElement());
         
         XSAny epParent = (XSAny) xmlobject;
-        AssertJUnit.assertNotNull("Cast of parent to XSAny failed", epParent);
+        Assert.assertNotNull(epParent, "Cast of parent to XSAny failed");
         
         XSAny epChild0 = (XSAny) epParent.getUnknownXMLObjects().get(0);
-        AssertJUnit.assertNotNull("Cast of child 0 to XSAny failed", epChild0);
+        Assert.assertNotNull(epChild0, "Cast of child 0 to XSAny failed");
         
         XSAny epChild1 = (XSAny) epParent.getUnknownXMLObjects().get(1);
-        AssertJUnit.assertNotNull("Cast of child 1 to XSAny failed", epChild1);
+        Assert.assertNotNull(epChild1, "Cast of child 1 to XSAny failed");
         
         // Since not doing schema validation, etc, the parser won't register the ID type in the DOM
         // (i.e. DOM Attribute.isId() will fail) and so the unmarshaller won't be able to register 
         // the "id" attribute as an ID type. This is expected.
-        AssertJUnit.assertNull("Lookup of non-existent ID mapping didn't return null", epParent.resolveID("1144"));
-        AssertJUnit.assertNull("Lookup of non-existent ID mapping didn't return null", epParent.resolveID("1166"));
+        Assert.assertNull(epParent.resolveID("1144"), "Lookup of non-existent ID mapping didn't return null");
+        Assert.assertNull(epParent.resolveID("1166"), "Lookup of non-existent ID mapping didn't return null");
         
         // Now manually register the "id" attribute in the AttributeMap of child 0 as being an ID type.
         // This should cause the expected ID-to-XMLObject mapping behaviour to take place.
         QName idName = QNameSupport.constructQName(null, "id", null);
         epChild0.getUnknownAttributes().registerID(idName);
-        AssertJUnit.assertEquals("Lookup of ID mapping failed", epChild0, epParent.resolveID("1144"));
+        Assert.assertEquals(epParent.resolveID("1144"), epChild0, "Lookup of ID mapping failed");
         
         // Resolving from child1 to child0, which is not an ancestor of child1, using resolveIDFromRoot
-        AssertJUnit.assertNull("Lookup of non-existent ID mapping didn't return null", epChild1.resolveID("1144"));
-        AssertJUnit.assertEquals("Lookup of ID mapping failed", epChild0, epChild1.resolveIDFromRoot("1144"));
+        Assert.assertNull(epChild1.resolveID("1144"), "Lookup of non-existent ID mapping didn't return null");
+        Assert.assertEquals(epChild1.resolveIDFromRoot("1144"), epChild0, "Lookup of ID mapping failed");
     }
     
     /**
@@ -263,38 +263,38 @@ public class IDAttributeTest extends XMLObjectBaseTestCase {
         XMLObject xmlobject = unmarshaller.unmarshall(document.getDocumentElement());
         
         XSAny epParent = (XSAny) xmlobject;
-        AssertJUnit.assertNotNull("Cast of parent to XSAny failed", epParent);
+        Assert.assertNotNull(epParent, "Cast of parent to XSAny failed");
         
         XSAny epChild0 = (XSAny) epParent.getUnknownXMLObjects().get(0);
-        AssertJUnit.assertNotNull("Cast of child 0 to XSAny failed", epChild0);
+        Assert.assertNotNull(epChild0, "Cast of child 0 to XSAny failed");
         
         // Now manually register the "id" attribute in the AttributeMap of child 0 as being an ID type.
         // This should cause the expected ID-to-XMLObject mapping behaviour to take place.
         QName idName = QNameSupport.constructQName(null, "id", null);
         epChild0.getUnknownAttributes().registerID(idName);
-        AssertJUnit.assertEquals("Lookup of ID mapping failed", epChild0, epParent.resolveID("1144"));
+        Assert.assertEquals(epParent.resolveID("1144"), epChild0, "Lookup of ID mapping failed");
         
         // AttributeMap op tests
         // put
         epChild0.getUnknownAttributes().put(idName, "9999");
-        AssertJUnit.assertNull("Lookup of non-existent ID mapping didn't return null", epParent.resolveID("1144"));
-        AssertJUnit.assertEquals("Lookup of ID mapping failed", epChild0, epParent.resolveID("9999"));
+        Assert.assertNull(epParent.resolveID("1144"), "Lookup of non-existent ID mapping didn't return null");
+        Assert.assertEquals(epParent.resolveID("9999"), epChild0, "Lookup of ID mapping failed");
         // remove
         epChild0.getUnknownAttributes().remove(idName);
-        AssertJUnit.assertNull("Lookup of non-existent ID mapping didn't return null", epParent.resolveID("9999"));
+        Assert.assertNull(epParent.resolveID("9999"), "Lookup of non-existent ID mapping didn't return null");
         // putAll
         Map<QName, String> attribs = new HashMap<QName, String>();
         attribs.put(idName, "1967");
         epChild0.getUnknownAttributes().putAll(attribs);
-        AssertJUnit.assertEquals("Lookup of ID mapping failed", epChild0, epParent.resolveID("1967"));
+        Assert.assertEquals(epParent.resolveID("1967"), epChild0, "Lookup of ID mapping failed");
         // clear
         epChild0.getUnknownAttributes().clear();
-        AssertJUnit.assertNull("Lookup of non-existent ID mapping didn't return null", epParent.resolveID("1967"));
+        Assert.assertNull(epParent.resolveID("1967"), "Lookup of non-existent ID mapping didn't return null");
         // deregisterID
         epChild0.getUnknownAttributes().put(idName, "abc123");
-        AssertJUnit.assertEquals("Lookup of ID mapping failed", epChild0, epParent.resolveID("abc123"));
+        Assert.assertEquals(epParent.resolveID("abc123"), epChild0, "Lookup of ID mapping failed");
         epChild0.getUnknownAttributes().deregisterID(idName);
-        AssertJUnit.assertNull("Lookup of non-existent ID mapping didn't return null", epParent.resolveID("abc123"));
+        Assert.assertNull(epParent.resolveID("abc123"), "Lookup of non-existent ID mapping didn't return null");
     }
     
     /**
@@ -314,23 +314,23 @@ public class IDAttributeTest extends XMLObjectBaseTestCase {
         
         // With no registration
         xmlObject = unmarshaller.unmarshall(document.getDocumentElement());
-        AssertJUnit.assertNull("Lookup of non-existent ID mapping didn't return null", xmlObject.resolveID("GlobalID1"));
-        AssertJUnit.assertNull("Lookup of non-existent ID mapping didn't return null", xmlObject.resolveID("GlobalID2"));
+        Assert.assertNull(xmlObject.resolveID("GlobalID1"), "Lookup of non-existent ID mapping didn't return null");
+        Assert.assertNull(xmlObject.resolveID("GlobalID2"), "Lookup of non-existent ID mapping didn't return null");
         
         // Now register the attribute QName in the global config
         XMLObjectProviderRegistrySupport.registerIDAttribute(attribQName);
         document = parserPool.parse(IDAttributeTest.class.getResourceAsStream(documentLocation));
         xmlObject = unmarshaller.unmarshall(document.getDocumentElement());
-        AssertJUnit.assertEquals("Lookup of ID mapping failed", xmlObject, xmlObject.resolveID("GlobalID1"));
-        AssertJUnit.assertEquals("Lookup of ID mapping failed", ((XSAny) xmlObject).getUnknownXMLObjects().get(0),
-                xmlObject.resolveID("GlobalID2"));
+        Assert.assertEquals(xmlObject.resolveID("GlobalID1"), xmlObject, "Lookup of ID mapping failed");
+        Assert.assertEquals(xmlObject.resolveID("GlobalID2"), ((XSAny) xmlObject).getUnknownXMLObjects().get(0),
+                "Lookup of ID mapping failed");
         
         // After deregistration
         XMLObjectProviderRegistrySupport.deregisterIDAttribute(attribQName);
         document = parserPool.parse(IDAttributeTest.class.getResourceAsStream(documentLocation));
         xmlObject = unmarshaller.unmarshall(document.getDocumentElement());
-        AssertJUnit.assertNull("Lookup of non-existent ID mapping didn't return null", xmlObject.resolveID("GlobalID1"));
-        AssertJUnit.assertNull("Lookup of non-existent ID mapping didn't return null", xmlObject.resolveID("GlobalID2"));
+        Assert.assertNull(xmlObject.resolveID("GlobalID1"), "Lookup of non-existent ID mapping didn't return null");
+        Assert.assertNull(xmlObject.resolveID("GlobalID2"), "Lookup of non-existent ID mapping didn't return null");
     }
         
 }

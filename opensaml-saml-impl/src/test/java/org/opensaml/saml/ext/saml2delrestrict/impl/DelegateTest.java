@@ -19,7 +19,7 @@ package org.opensaml.saml.ext.saml2delrestrict.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -55,7 +55,7 @@ public class DelegateTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         Delegate delegate = (Delegate) unmarshallElement(singleElementFile);
 
-        AssertJUnit.assertNotNull(delegate);
+        Assert.assertNotNull(delegate);
     }
 
     /** {@inheritDoc} */
@@ -63,13 +63,13 @@ public class DelegateTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementOptionalAttributesUnmarshall() {
         Delegate delegate = (Delegate) unmarshallElement(singleElementOptionalAttributesFile);
         
-        AssertJUnit.assertNotNull(delegate);
+        Assert.assertNotNull(delegate);
 
         DateTime instant = delegate.getDelegationInstant();
-        AssertJUnit.assertEquals("DelegationInstant was unexpected value", expectedDelegationInstant, instant);
+        Assert.assertEquals(instant, expectedDelegationInstant, "DelegationInstant was unexpected value");
 
         String cm = delegate.getConfirmationMethod();
-        AssertJUnit.assertEquals("ConfirmationMethod was unexpected value", expectedConfirmationMethod, cm);
+        Assert.assertEquals(cm, expectedConfirmationMethod, "ConfirmationMethod was unexpected value");
     }
     
     /** {@inheritDoc} */
@@ -77,11 +77,11 @@ public class DelegateTest extends XMLObjectProviderBaseTestCase {
     public void testChildElementsUnmarshall() {
         Delegate delegate = (Delegate) unmarshallElement(childElementsFile);
         
-        AssertJUnit.assertNotNull(delegate);
+        Assert.assertNotNull(delegate);
         
-        AssertJUnit.assertNotNull("NameID was null", delegate.getNameID());
-        AssertJUnit.assertNull("BaseID was non-null", delegate.getBaseID());
-        AssertJUnit.assertNull("EncryptedID was non-null", delegate.getEncryptedID());
+        Assert.assertNotNull(delegate.getNameID(), "NameID was null");
+        Assert.assertNull(delegate.getBaseID(), "BaseID was non-null");
+        Assert.assertNull(delegate.getEncryptedID(), "EncryptedID was non-null");
     }
 
     /** {@inheritDoc} */

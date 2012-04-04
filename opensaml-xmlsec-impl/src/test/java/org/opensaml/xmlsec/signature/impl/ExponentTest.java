@@ -20,7 +20,7 @@ package org.opensaml.xmlsec.signature.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.xmlsec.signature.Exponent;
 
@@ -51,8 +51,8 @@ public class ExponentTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         Exponent cbType = (Exponent) unmarshallElement(singleElementFile);
         
-        AssertJUnit.assertNotNull("Exponent", cbType);
-        AssertJUnit.assertEquals("Exponent value", cbType.getValue(), expectedCryptoBinaryContent);
+        Assert.assertNotNull(cbType, "Exponent");
+        Assert.assertEquals(expectedCryptoBinaryContent, cbType.getValue(), "Exponent value");
     }
 
     /** {@inheritDoc} */

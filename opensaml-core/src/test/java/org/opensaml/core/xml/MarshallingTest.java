@@ -18,7 +18,7 @@
 package org.opensaml.core.xml;
 
 import org.testng.annotations.Test;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.xml.XMLParserException;
@@ -67,7 +67,7 @@ public class MarshallingTest extends XMLObjectBaseTestCase {
         sxObject.setId(expectedId);
 
         assertXMLEquals(expectedDocument, sxObject);
-        AssertJUnit.assertNotNull("DOM was not cached after marshalling", sxObject.getDOM());
+        Assert.assertNotNull(sxObject.getDOM(), "DOM was not cached after marshalling");
     }
 
     /**
@@ -101,7 +101,7 @@ public class MarshallingTest extends XMLObjectBaseTestCase {
         child3.getSimpleXMLObjects().add(grandchild1);
 
         assertXMLEquals(expectedDocument, sxObject);
-        AssertJUnit.assertNotNull("DOM was not cached after marshalling", sxObject.getDOM());
+        Assert.assertNotNull(sxObject.getDOM(), "DOM was not cached after marshalling");
     }
 
     /**
@@ -124,7 +124,7 @@ public class MarshallingTest extends XMLObjectBaseTestCase {
         sxObject.getSimpleXMLObjects().add(sxObjectChild2);
 
         assertXMLEquals(expectedDocument, sxObject);
-        AssertJUnit.assertNotNull("DOM was not cached after marshalling", sxObject.getDOM());
+        Assert.assertNotNull(sxObject.getDOM(), "DOM was not cached after marshalling");
     }
 
     /**
@@ -149,14 +149,14 @@ public class MarshallingTest extends XMLObjectBaseTestCase {
         // Marshall it once so the DOM is cached
         Marshaller marshaller = marshallerFactory.getMarshaller(simpleXMLObjectQName);
         marshaller.marshall(response);
-        AssertJUnit.assertNotNull("DOM was not cached after marshalling", response.getDOM());
+        Assert.assertNotNull(response.getDOM(), "DOM was not cached after marshalling");
         
         // Marshall statement (with cached DOM) into SOAP Body element child
         Document expectedDocument = parserPool.parse(MarshallingTest.class.getResourceAsStream(expectedDocumentLocation));
         Element statementElem = marshaller.marshall(statement, soapBody);
         XMLAssert.assertXMLIdentical(new Diff(expectedDocument, statementElem.getOwnerDocument()), true);
-        AssertJUnit.assertNull("Parent of XML fragment DOM was not invalidated during marshalling", response.getDOM());
-        AssertJUnit.assertNotNull("XML fragment DOM was invalidated during marshalling", statement.getDOM());
+        Assert.assertNull(response.getDOM(), "Parent of XML fragment DOM was not invalidated during marshalling");
+        Assert.assertNotNull(statement.getDOM(), "XML fragment DOM was invalidated during marshalling");
     }
     
     /**
@@ -169,14 +169,14 @@ public class MarshallingTest extends XMLObjectBaseTestCase {
     @Test
     public void testMarshallingExistingEmptyDocument() throws XMLParserException, MarshallingException {
         Document document = parserPool.newDocument();
-        AssertJUnit.assertNull("Incorrect document root", document.getDocumentElement());
+        Assert.assertNull(document.getDocumentElement(), "Incorrect document root");
         
         SimpleXMLObject sxo = (SimpleXMLObject) buildXMLObject(SimpleXMLObject.ELEMENT_NAME);
         sxo.setId("idValue");
         
         marshallerFactory.getMarshaller(sxo).marshall(sxo, document);
-        AssertJUnit.assertNotNull("Incorrect document root", document.getDocumentElement());
-        AssertJUnit.assertTrue("Incorrect document root", document.getDocumentElement().isSameNode(sxo.getDOM()));
+        Assert.assertNotNull(document.getDocumentElement(), "Incorrect document root");
+        Assert.assertTrue(document.getDocumentElement().isSameNode(sxo.getDOM()), "Incorrect document root");
     }
     
     /**
@@ -191,13 +191,13 @@ public class MarshallingTest extends XMLObjectBaseTestCase {
         Document document = parserPool.newDocument();
         Element element = document.createElementNS(null, "Foo");
         document.appendChild(element);
-        AssertJUnit.assertTrue("Incorrect document root", document.getDocumentElement().isSameNode(element));
+        Assert.assertTrue(document.getDocumentElement().isSameNode(element), "Incorrect document root");
         
         SimpleXMLObject sxo = (SimpleXMLObject) buildXMLObject(SimpleXMLObject.ELEMENT_NAME);
         sxo.setId("idValue");
         
         marshallerFactory.getMarshaller(sxo).marshall(sxo, document);
-        AssertJUnit.assertFalse("Document root should have been replaced", document.getDocumentElement().isSameNode(element));
-        AssertJUnit.assertTrue("Incorrect document root", document.getDocumentElement().isSameNode(sxo.getDOM()));
+        Assert.assertFalse(document.getDocumentElement().isSameNode(element), "Document root should have been replaced");
+        Assert.assertTrue(document.getDocumentElement().isSameNode(sxo.getDOM()), "Incorrect document root");
     }
 }

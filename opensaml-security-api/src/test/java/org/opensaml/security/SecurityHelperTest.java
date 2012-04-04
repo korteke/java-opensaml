@@ -19,7 +19,7 @@ package org.opensaml.security;
 
 import org.testng.annotations.Test;
 import org.testng.Assert;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import java.io.InputStream;
 import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
@@ -97,14 +97,14 @@ public class SecurityHelperTest {
     public void testDerivePublicKey() throws Exception{
         PrivateKey privKey = testPrivKey(rsaPrivKeyPEMNoEncrypt, null, "RSA");
         PublicKey pubKey = SecurityHelper.derivePublicKey(privKey);
-        AssertJUnit.assertNotNull(pubKey);
-        AssertJUnit.assertEquals("RSA", pubKey.getAlgorithm());
+        Assert.assertNotNull(pubKey);
+        Assert.assertEquals(pubKey.getAlgorithm(), "RSA");
         
         pubKey = null;
         privKey = testPrivKey(dsaPrivKeyPEMNoEncrypt, null, "DSA");
         pubKey = SecurityHelper.derivePublicKey(privKey);
-        AssertJUnit.assertNotNull(pubKey);
-        AssertJUnit.assertEquals("DSA", pubKey.getAlgorithm());
+        Assert.assertNotNull(pubKey);
+        Assert.assertEquals(pubKey.getAlgorithm(), "DSA");
     }
 
     
@@ -120,19 +120,19 @@ public class SecurityHelperTest {
         KeyPair kp1dsa = SecurityHelper.generateKeyPair("DSA", 1024, null);
         KeyPair kp2dsa = SecurityHelper.generateKeyPair("DSA", 1024, null);
         
-        AssertJUnit.assertTrue(SecurityHelper.matchKeyPair(kp1rsa.getPublic(), kp1rsa.getPrivate()));
-        AssertJUnit.assertTrue(SecurityHelper.matchKeyPair(kp2rsa.getPublic(), kp2rsa.getPrivate()));
-        AssertJUnit.assertFalse(SecurityHelper.matchKeyPair(kp1rsa.getPublic(), kp2rsa.getPrivate()));
-        AssertJUnit.assertFalse(SecurityHelper.matchKeyPair(kp2rsa.getPublic(), kp1rsa.getPrivate()));
+        Assert.assertTrue(SecurityHelper.matchKeyPair(kp1rsa.getPublic(), kp1rsa.getPrivate()));
+        Assert.assertTrue(SecurityHelper.matchKeyPair(kp2rsa.getPublic(), kp2rsa.getPrivate()));
+        Assert.assertFalse(SecurityHelper.matchKeyPair(kp1rsa.getPublic(), kp2rsa.getPrivate()));
+        Assert.assertFalse(SecurityHelper.matchKeyPair(kp2rsa.getPublic(), kp1rsa.getPrivate()));
         
-        AssertJUnit.assertTrue(SecurityHelper.matchKeyPair(kp1dsa.getPublic(), kp1dsa.getPrivate()));
-        AssertJUnit.assertTrue(SecurityHelper.matchKeyPair(kp2dsa.getPublic(), kp2dsa.getPrivate()));
-        AssertJUnit.assertFalse(SecurityHelper.matchKeyPair(kp1dsa.getPublic(), kp2dsa.getPrivate()));
-        AssertJUnit.assertFalse(SecurityHelper.matchKeyPair(kp2dsa.getPublic(), kp1dsa.getPrivate()));
+        Assert.assertTrue(SecurityHelper.matchKeyPair(kp1dsa.getPublic(), kp1dsa.getPrivate()));
+        Assert.assertTrue(SecurityHelper.matchKeyPair(kp2dsa.getPublic(), kp2dsa.getPrivate()));
+        Assert.assertFalse(SecurityHelper.matchKeyPair(kp1dsa.getPublic(), kp2dsa.getPrivate()));
+        Assert.assertFalse(SecurityHelper.matchKeyPair(kp2dsa.getPublic(), kp1dsa.getPrivate()));
         
         try {
             // key algorithm type mismatch, should be an error
-            AssertJUnit.assertFalse(SecurityHelper.matchKeyPair(kp1rsa.getPublic(), kp2dsa.getPrivate()));
+            Assert.assertFalse(SecurityHelper.matchKeyPair(kp1rsa.getPublic(), kp2dsa.getPrivate()));
             Assert.fail("Key algorithm mismatch should have caused evaluation failure");
         } catch (SecurityException e) {
            // expected 
@@ -140,14 +140,14 @@ public class SecurityHelperTest {
         
         try {
             // null key, should be an error
-            AssertJUnit.assertFalse(SecurityHelper.matchKeyPair(kp1rsa.getPublic(), null));
+            Assert.assertFalse(SecurityHelper.matchKeyPair(kp1rsa.getPublic(), null));
             Assert.fail("Null key should have caused failure");
         } catch (SecurityException e) {
            // expected 
         }
         try {
             // null key, should be an error
-            AssertJUnit.assertFalse(SecurityHelper.matchKeyPair(null, kp1rsa.getPrivate()));
+            Assert.assertFalse(SecurityHelper.matchKeyPair(null, kp1rsa.getPrivate()));
             Assert.fail("Key algorithm mismatch should have caused evaluation failure");
         } catch (SecurityException e) {
             // expected
@@ -163,8 +163,8 @@ public class SecurityHelperTest {
         keyInS.read(keyBytes);
 
         PrivateKey key = SecurityHelper.decodePrivateKey(keyBytes, password);
-        AssertJUnit.assertNotNull(key);
-        AssertJUnit.assertEquals(algo, key.getAlgorithm());
+        Assert.assertNotNull(key);
+        Assert.assertEquals(key.getAlgorithm(), algo);
         
         return key;
     }

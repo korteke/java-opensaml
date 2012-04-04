@@ -20,7 +20,7 @@ package org.opensaml.saml.saml2.binding.decoding;
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
 import org.testng.Assert;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.KeyPair;
@@ -86,8 +86,8 @@ public class HTTPSOAP11DecoderTest extends XMLObjectBaseTestCase {
 
         decoder.decode(messageContext);
 
-        AssertJUnit.assertTrue(messageContext.getInboundMessage() instanceof Envelope);
-        AssertJUnit.assertTrue(messageContext.getInboundSAMLMessage() instanceof Response);
+        Assert.assertTrue(messageContext.getInboundMessage() instanceof Envelope);
+        Assert.assertTrue(messageContext.getInboundSAMLMessage() instanceof Response);
     }
     
     @Test

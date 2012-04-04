@@ -18,7 +18,7 @@
 package org.opensaml.core.xml;
 
 import org.testng.annotations.Test;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
 import org.opensaml.core.xml.XMLObject;
@@ -43,7 +43,7 @@ public class ElementProxyTest extends XMLObjectBaseTestCase {
         Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(XMLObjectProviderRegistrySupport.getDefaultProviderQName());
         XMLObject xmlobject = unmarshaller.unmarshall(document.getDocumentElement());
         
-        AssertJUnit.assertEquals("Unexpted root element name", "products", xmlobject.getElementQName().getLocalPart());
-        AssertJUnit.assertEquals("Unexpected number of children", 2, xmlobject.getOrderedChildren().size());
+        Assert.assertEquals(xmlobject.getElementQName().getLocalPart(), "products", "Unexpted root element name");
+        Assert.assertEquals(xmlobject.getOrderedChildren().size(), 2, "Unexpected number of children");
     }
 }

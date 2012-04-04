@@ -19,7 +19,7 @@ package org.opensaml.core.xml.config;
 
 import org.testng.annotations.Test;
 import org.testng.Assert;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import java.io.InputStream;
 
 import javax.xml.XMLConstants;
@@ -90,13 +90,13 @@ public class ConfigurationTest {
         configurator.load(sxConfig);
 
         XMLObjectBuilder sxBuilder = XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilder(simpleXMLObjectQName);
-        AssertJUnit.assertNotNull("SimpleXMLObject did not have a registered builder", sxBuilder);
+        Assert.assertNotNull(sxBuilder, "SimpleXMLObject did not have a registered builder");
 
         Marshaller sxMarshaller = XMLObjectProviderRegistrySupport.getMarshallerFactory().getMarshaller(simpleXMLObjectQName);
-        AssertJUnit.assertNotNull("SimpleXMLObject did not have a registered marshaller", sxMarshaller);
+        Assert.assertNotNull(sxMarshaller, "SimpleXMLObject did not have a registered marshaller");
 
         Unmarshaller sxUnmarshaller = XMLObjectProviderRegistrySupport.getUnmarshallerFactory().getUnmarshaller(simpleXMLObjectQName);
-        AssertJUnit.assertNotNull("SimpleXMLObject did not have a registered unmarshaller", sxUnmarshaller);
+        Assert.assertNotNull(sxUnmarshaller, "SimpleXMLObject did not have a registered unmarshaller");
 
         // Test loading a configuration with bogus classes
         InputStream nonConfig = XMLObjectProviderRegistrySupport.class
@@ -116,17 +116,17 @@ public class ConfigurationTest {
     public void testIDAttributeRegistration() {
         QName attribQname = new QName("http://example.org", "someIDAttribName", "test");
 
-        AssertJUnit.assertFalse("Non-registered ID attribute check returned true", XMLObjectProviderRegistrySupport.isIDAttribute(attribQname));
+        Assert.assertFalse(XMLObjectProviderRegistrySupport.isIDAttribute(attribQname), "Non-registered ID attribute check returned true");
 
         XMLObjectProviderRegistrySupport.registerIDAttribute(attribQname);
-        AssertJUnit.assertTrue("Registered ID attribute check returned false", XMLObjectProviderRegistrySupport.isIDAttribute(attribQname));
+        Assert.assertTrue(XMLObjectProviderRegistrySupport.isIDAttribute(attribQname), "Registered ID attribute check returned false");
 
         XMLObjectProviderRegistrySupport.deregisterIDAttribute(attribQname);
-        AssertJUnit.assertFalse("Non-registered ID attribute check returned true", XMLObjectProviderRegistrySupport.isIDAttribute(attribQname));
+        Assert.assertFalse(XMLObjectProviderRegistrySupport.isIDAttribute(attribQname), "Non-registered ID attribute check returned true");
 
         // Check xml:id, which is hardcoded in the Configuration static initializer
         QName xmlIDQName = new QName(XMLConstants.XML_NS_URI, "id");
-        AssertJUnit.assertTrue("Registered ID attribute check returned false", XMLObjectProviderRegistrySupport.isIDAttribute(xmlIDQName));
+        Assert.assertTrue(XMLObjectProviderRegistrySupport.isIDAttribute(xmlIDQName), "Registered ID attribute check returned false");
     }
 
     /**
@@ -146,9 +146,9 @@ public class ConfigurationTest {
                 .getResourceAsStream("/data/org/opensaml/core/xml/config/IDAttributeConfiguration.xml");
         configurator.load(idAttributeConfig);
 
-        AssertJUnit.assertTrue("Registered ID attribute check returned false", XMLObjectProviderRegistrySupport.isIDAttribute(fooQName));
-        AssertJUnit.assertTrue("Registered ID attribute check returned false", XMLObjectProviderRegistrySupport.isIDAttribute(barQName));
-        AssertJUnit.assertTrue("Registered ID attribute check returned false", XMLObjectProviderRegistrySupport.isIDAttribute(bazQName));
+        Assert.assertTrue(XMLObjectProviderRegistrySupport.isIDAttribute(fooQName), "Registered ID attribute check returned false");
+        Assert.assertTrue(XMLObjectProviderRegistrySupport.isIDAttribute(barQName), "Registered ID attribute check returned false");
+        Assert.assertTrue(XMLObjectProviderRegistrySupport.isIDAttribute(bazQName), "Registered ID attribute check returned false");
 
         XMLObjectProviderRegistrySupport.deregisterIDAttribute(fooQName);
         XMLObjectProviderRegistrySupport.deregisterIDAttribute(barQName);

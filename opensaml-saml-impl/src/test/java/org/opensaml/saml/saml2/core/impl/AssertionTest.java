@@ -19,7 +19,7 @@ package org.opensaml.saml.saml2.core.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import org.joda.time.DateTime;
@@ -83,8 +83,8 @@ public class AssertionTest extends XMLObjectProviderBaseTestCase {
         Assertion assertion = (Assertion) unmarshallElement(singleElementFile);
 
         DateTime notBefore = assertion.getIssueInstant();
-        AssertJUnit.assertEquals("IssueInstant was " + notBefore + ", expected " + expectedIssueInstant, expectedIssueInstant,
-                notBefore);
+        Assert.assertEquals(notBefore, expectedIssueInstant,
+                "IssueInstant was " + notBefore + ", expected " + expectedIssueInstant);
     }
 
     /** {@inheritDoc} */
@@ -93,14 +93,14 @@ public class AssertionTest extends XMLObjectProviderBaseTestCase {
         Assertion assertion = (Assertion) unmarshallElement(singleElementOptionalAttributesFile);
 
         DateTime issueInstant = assertion.getIssueInstant();
-        AssertJUnit.assertEquals("IssueInstant was " + issueInstant + ", expected " + expectedIssueInstant, expectedIssueInstant,
-                issueInstant);
+        Assert.assertEquals(issueInstant, expectedIssueInstant,
+                "IssueInstant was " + issueInstant + ", expected " + expectedIssueInstant);
 
         String id = assertion.getID();
-        AssertJUnit.assertEquals("ID was " + id + ", expected " + expectedID, expectedID, id);
+        Assert.assertEquals(id, expectedID, "ID was " + id + ", expected " + expectedID);
         
         SAMLVersion version = assertion.getVersion();
-        AssertJUnit.assertEquals("Version was " + version + ", expected " + expectedVersion, expectedVersion, version);
+        Assert.assertEquals(version, expectedVersion, "Version was " + version + ", expected " + expectedVersion);
     }
 
     /** {@inheritDoc} */
@@ -132,16 +132,16 @@ public class AssertionTest extends XMLObjectProviderBaseTestCase {
     public void testChildElementsUnmarshall() {
         Assertion assertion = (Assertion) unmarshallElement(childElementsFile);
 
-        AssertJUnit.assertNotNull("Issuer element not present", assertion.getIssuer());
-        AssertJUnit.assertNotNull("Subject element not present", assertion.getSubject());
-        AssertJUnit.assertNotNull("Conditions element not present", assertion.getConditions());
-        AssertJUnit.assertNotNull("Advice element not present", assertion.getAdvice());
-        AssertJUnit.assertEquals("Statement count not as expected", statementCount, assertion.getStatements().size());
-        AssertJUnit.assertEquals("AuthnStatement count not as expected", authnStatementCount, assertion.getAuthnStatements().size());
-        AssertJUnit.assertEquals("AuthzDecisionStatment count not as expected", authzDecisionStatementCount, assertion
-                .getAuthzDecisionStatements().size());
-        AssertJUnit.assertEquals("AttributeStatement count not as expected", attributeStatementCount, assertion
-                .getAttributeStatements().size());
+        Assert.assertNotNull(assertion.getIssuer(), "Issuer element not present");
+        Assert.assertNotNull(assertion.getSubject(), "Subject element not present");
+        Assert.assertNotNull(assertion.getConditions(), "Conditions element not present");
+        Assert.assertNotNull(assertion.getAdvice(), "Advice element not present");
+        Assert.assertEquals(assertion.getStatements().size(), statementCount, "Statement count not as expected");
+        Assert.assertEquals(assertion.getAuthnStatements().size(), authnStatementCount, "AuthnStatement count not as expected");
+        Assert.assertEquals(assertion
+                .getAuthzDecisionStatements().size(), authzDecisionStatementCount, "AuthzDecisionStatment count not as expected");
+        Assert.assertEquals(assertion
+                .getAttributeStatements().size(), attributeStatementCount, "AttributeStatement count not as expected");
     }
 
     /** {@inheritDoc} */

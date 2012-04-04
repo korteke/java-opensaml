@@ -19,7 +19,7 @@ package org.opensaml.xmlsec.keyinfo.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
@@ -81,7 +81,7 @@ public class LocalKeyInfoCredentialResolverTest extends XMLObjectBaseTestCase {
         CriteriaSet criteriaSet = new CriteriaSet( new KeyInfoCriterion(keyInfo) );
         Credential resolvedCred = keyInfoResolver.resolveSingle(criteriaSet);
         
-        AssertJUnit.assertEquals("Unexpected local credential resolved", localCred, resolvedCred);
+        Assert.assertEquals(resolvedCred, localCred, "Unexpected local credential resolved");
     }
 
     @Test
@@ -91,7 +91,7 @@ public class LocalKeyInfoCredentialResolverTest extends XMLObjectBaseTestCase {
         CriteriaSet criteriaSet = new CriteriaSet( new KeyInfoCriterion(keyInfo) );
         Credential resolvedCred = keyInfoResolver.resolveSingle(criteriaSet);
         
-        AssertJUnit.assertEquals("Unexpected local credential resolved", localCred, resolvedCred);
+        Assert.assertEquals(resolvedCred, localCred, "Unexpected local credential resolved");
     }
     
     @Test
@@ -104,7 +104,7 @@ public class LocalKeyInfoCredentialResolverTest extends XMLObjectBaseTestCase {
         CriteriaSet criteriaSet = new CriteriaSet( new KeyInfoCriterion(keyInfo) );
         Credential resolvedCred = keyInfoResolver.resolveSingle(criteriaSet);
         
-        AssertJUnit.assertNull("Expected no credential to be resolved", resolvedCred);
+        Assert.assertNull(resolvedCred, "Expected no credential to be resolved");
     }
     
 }

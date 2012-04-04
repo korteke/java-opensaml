@@ -20,7 +20,7 @@ package org.opensaml.saml.saml2.core.impl;
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
 import org.testng.Assert;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import org.joda.time.DateTime;
@@ -82,9 +82,9 @@ public class KeyInfoConfirmationDataTypeTest extends XMLObjectProviderBaseTestCa
     @Test
     public void testSingleElementUnmarshall() {
         KeyInfoConfirmationDataType kicd = (KeyInfoConfirmationDataType) unmarshallElement(singleElementFile);
-        AssertJUnit.assertNotNull("Object was null", kicd);
+        Assert.assertNotNull(kicd, "Object was null");
         
-        AssertJUnit.assertEquals("Object xsi:type was not the expected value", expectedType, kicd.getSchemaType());
+        Assert.assertEquals(kicd.getSchemaType(), expectedType, "Object xsi:type was not the expected value");
 
     }
 
@@ -94,31 +94,31 @@ public class KeyInfoConfirmationDataTypeTest extends XMLObjectProviderBaseTestCa
         KeyInfoConfirmationDataType kicd = (KeyInfoConfirmationDataType) unmarshallElement(singleElementOptionalAttributesFile);
 
         DateTime notBefore = kicd.getNotBefore();
-        AssertJUnit.assertEquals("NotBefore was " + notBefore + ", expected " + expectedNotBefore, expectedNotBefore, notBefore);
+        Assert.assertEquals(notBefore, expectedNotBefore, "NotBefore was " + notBefore + ", expected " + expectedNotBefore);
 
         DateTime notOnOrAfter = kicd.getNotOnOrAfter();
-        AssertJUnit.assertEquals("NotOnOrAfter was " + notOnOrAfter + ", expected " + expectedNotOnOrAfter, expectedNotOnOrAfter,
-                notOnOrAfter);
+        Assert.assertEquals(notOnOrAfter, expectedNotOnOrAfter,
+                "NotOnOrAfter was " + notOnOrAfter + ", expected " + expectedNotOnOrAfter);
 
         String recipient = kicd.getRecipient();
-        AssertJUnit.assertEquals("Recipient was " + recipient + ", expected " + expectedRecipient, expectedRecipient, recipient);
+        Assert.assertEquals(recipient, expectedRecipient, "Recipient was " + recipient + ", expected " + expectedRecipient);
 
         String inResponseTo = kicd.getInResponseTo();
-        AssertJUnit.assertEquals("InResponseTo was " + inResponseTo + ", expected " + expectedInResponseTo, expectedInResponseTo,
-                inResponseTo);
+        Assert.assertEquals(inResponseTo, expectedInResponseTo,
+                "InResponseTo was " + inResponseTo + ", expected " + expectedInResponseTo);
 
         String address = kicd.getAddress();
-        AssertJUnit.assertEquals("Address was " + address + ", expected " + expectedAddress, expectedAddress, address);
+        Assert.assertEquals(address, expectedAddress, "Address was " + address + ", expected " + expectedAddress);
         
-        AssertJUnit.assertEquals("Object xsi:type was not the expected value", expectedType, kicd.getSchemaType());
+        Assert.assertEquals(kicd.getSchemaType(), expectedType, "Object xsi:type was not the expected value");
     }
     
     @Test
     public void testChildElementsUnmarshall() {
         KeyInfoConfirmationDataType kicd = (KeyInfoConfirmationDataType) unmarshallElement(childElementsFile);
         
-        AssertJUnit.assertEquals("Unexpected number of KeyInfo children", 3, kicd.getKeyInfos().size());
-        AssertJUnit.assertEquals("Unexpected number of KeyInfo children", 3, kicd.getUnknownXMLObjects(KeyInfo.DEFAULT_ELEMENT_NAME).size());
+        Assert.assertEquals(kicd.getKeyInfos().size(), 3, "Unexpected number of KeyInfo children");
+        Assert.assertEquals(kicd.getUnknownXMLObjects(KeyInfo.DEFAULT_ELEMENT_NAME).size(), 3, "Unexpected number of KeyInfo children");
     }
 
     /** {@inheritDoc} */

@@ -21,7 +21,7 @@
 package org.opensaml.saml.saml1.core.impl;
 
 import org.testng.annotations.Test;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -65,9 +65,9 @@ public class AuthorityBindingTest extends XMLObjectProviderBaseTestCase {
     @Test
     public void testSingleElementUnmarshall() {
         AuthorityBinding authorityBinding = (AuthorityBinding) unmarshallElement(singleElementFile);
-        AssertJUnit.assertNull("AuthorityKind attribute present", authorityBinding.getAuthorityKind());
-        AssertJUnit.assertNull("Binding attribute present", authorityBinding.getBinding());
-        AssertJUnit.assertNull("Location attribute present", authorityBinding.getLocation());
+        Assert.assertNull(authorityBinding.getAuthorityKind(), "AuthorityKind attribute present");
+        Assert.assertNull(authorityBinding.getBinding(), "Binding attribute present");
+        Assert.assertNull(authorityBinding.getLocation(), "Location attribute present");
     }
 
     /** {@inheritDoc} */
@@ -75,9 +75,9 @@ public class AuthorityBindingTest extends XMLObjectProviderBaseTestCase {
     @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
         AuthorityBinding authorityBinding = (AuthorityBinding) unmarshallElement(singleElementOptionalAttributesFile);
-        AssertJUnit.assertEquals("AuthorityKind attribute", expectedAuthorityKind, authorityBinding.getAuthorityKind());
-        AssertJUnit.assertEquals("Binding attribute", expectedBinding, authorityBinding.getBinding());
-        AssertJUnit.assertEquals("Location attribute", expectedLocation, authorityBinding.getLocation());        
+        Assert.assertEquals(authorityBinding.getAuthorityKind(), expectedAuthorityKind, "AuthorityKind attribute");
+        Assert.assertEquals(authorityBinding.getBinding(), expectedBinding, "Binding attribute");
+        Assert.assertEquals(authorityBinding.getLocation(), expectedLocation, "Location attribute");        
     }
 
     /** {@inheritDoc} */

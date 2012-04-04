@@ -22,7 +22,7 @@ package org.opensaml.saml.saml2.core.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -100,9 +100,9 @@ public class ScopingTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         Scoping scoping = (Scoping) unmarshallElement(singleElementFile);
         
-        AssertJUnit.assertNull("ProxyCount", scoping.getProxyCount());
-        AssertJUnit.assertNull("IDPList", scoping.getIDPList());
-        AssertJUnit.assertEquals("RequesterID count", 0 , scoping.getRequesterIDs().size());
+        Assert.assertNull(scoping.getProxyCount(), "ProxyCount");
+        Assert.assertNull(scoping.getIDPList(), "IDPList");
+        Assert.assertEquals(scoping.getRequesterIDs().size(), 0 , "RequesterID count");
 
     }
 
@@ -111,9 +111,9 @@ public class ScopingTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementOptionalAttributesUnmarshall() {
         Scoping scoping = (Scoping) unmarshallElement(singleElementOptionalAttributesFile);
         
-        AssertJUnit.assertNotNull("ProxyCount", scoping.getProxyCount());
-        AssertJUnit.assertNull("IDPList", scoping.getIDPList());
-        AssertJUnit.assertEquals("RequesterID count", 0, scoping.getRequesterIDs().size());
+        Assert.assertNotNull(scoping.getProxyCount(), "ProxyCount");
+        Assert.assertNull(scoping.getIDPList(), "IDPList");
+        Assert.assertEquals(scoping.getRequesterIDs().size(), 0, "RequesterID count");
     }
     
     /** {@inheritDoc} */
@@ -121,8 +121,8 @@ public class ScopingTest extends XMLObjectProviderBaseTestCase {
     public void testChildElementsUnmarshall() {
         Scoping scoping = (Scoping) unmarshallElement(childElementsFile);
         
-        AssertJUnit.assertNull("ProxyCount", scoping.getProxyCount());
-        AssertJUnit.assertNotNull("IDPList", scoping.getIDPList());
-        AssertJUnit.assertEquals("RequesterID count", expectedNumRequestIDs, scoping.getRequesterIDs().size());
+        Assert.assertNull(scoping.getProxyCount(), "ProxyCount");
+        Assert.assertNotNull(scoping.getIDPList(), "IDPList");
+        Assert.assertEquals(scoping.getRequesterIDs().size(), expectedNumRequestIDs, "RequesterID count");
     }
 }

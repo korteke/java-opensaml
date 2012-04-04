@@ -19,7 +19,7 @@ package org.opensaml.saml.saml2.core.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -51,7 +51,7 @@ public class AuthnContextClassRefTest extends XMLObjectProviderBaseTestCase {
         AuthnContextClassRef authnContextClassRef = (AuthnContextClassRef) unmarshallElement(singleElementFile);
 
         String classRef = authnContextClassRef.getAuthnContextClassRef();
-        AssertJUnit.assertEquals("Class Reference was " + classRef + ", expected " + expectedClassRef, expectedClassRef, classRef);
+        Assert.assertEquals(classRef, expectedClassRef, "Class Reference was " + classRef + ", expected " + expectedClassRef);
     }
 
     /** {@inheritDoc} */

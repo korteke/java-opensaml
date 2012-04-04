@@ -21,7 +21,7 @@
 package org.opensaml.saml.saml1.core.impl;
 
 import org.testng.annotations.Test;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -52,9 +52,9 @@ public class RespondWithTest extends XMLObjectProviderBaseTestCase {
     @Test
     public void testSingleElementUnmarshall() {
         RespondWith respondWith = (RespondWith) unmarshallElement(singleElementFile);
-        AssertJUnit.assertNotNull("Object was null", respondWith);
+        Assert.assertNotNull(respondWith, "Object was null");
         
-        AssertJUnit.assertEquals("Unexpected QName content value", expectedQName, respondWith.getValue());
+        Assert.assertEquals(respondWith.getValue(), expectedQName, "Unexpected QName content value");
     }
 
 

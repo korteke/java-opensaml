@@ -19,7 +19,7 @@ package org.opensaml.saml.saml2.core.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -41,7 +41,7 @@ public class OneTimeUseTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         OneTimeUse oneTimeUse = (OneTimeUse) unmarshallElement(singleElementFile);
 
-        AssertJUnit.assertNotNull(oneTimeUse);
+        Assert.assertNotNull(oneTimeUse);
     }
 
     /** {@inheritDoc} */

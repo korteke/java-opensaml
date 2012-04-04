@@ -19,7 +19,7 @@ package org.opensaml.saml.saml2.core.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.saml2.core.Advice;
 import org.opensaml.saml.saml2.core.Assertion;
@@ -55,7 +55,7 @@ public class AdviceTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         Advice advice = (Advice) unmarshallElement(singleElementFile);
 
-        AssertJUnit.assertNotNull(advice);
+        Assert.assertNotNull(advice);
     }
 
     /** {@inheritDoc} */
@@ -63,12 +63,12 @@ public class AdviceTest extends XMLObjectProviderBaseTestCase {
     public void testChildElementsUnmarshall() {
         Advice advice = (Advice) unmarshallElement(childElementsFile);
 
-        AssertJUnit.assertEquals("AssertionIDRef count not as expected", assertionIDRefCount, advice.getAssertionIDReferences()
-                .size());
-        AssertJUnit.assertEquals("AssertionURIRef count not as expected", assertionURIRefCount, advice.getAssertionURIReferences()
-                .size());
-        AssertJUnit.assertEquals("Assertion count not as expected", assertionCount, advice.getAssertions().size());
-        AssertJUnit.assertEquals("EncryptedAssertion count not as expected", encryptedAssertionCount, advice.getEncryptedAssertions().size());
+        Assert.assertEquals(advice.getAssertionIDReferences()
+                .size(), assertionIDRefCount, "AssertionIDRef count not as expected");
+        Assert.assertEquals(advice.getAssertionURIReferences()
+                .size(), assertionURIRefCount, "AssertionURIRef count not as expected");
+        Assert.assertEquals(advice.getAssertions().size(), assertionCount, "Assertion count not as expected");
+        Assert.assertEquals(advice.getEncryptedAssertions().size(), encryptedAssertionCount, "EncryptedAssertion count not as expected");
     }
     
     /** {@inheritDoc} */

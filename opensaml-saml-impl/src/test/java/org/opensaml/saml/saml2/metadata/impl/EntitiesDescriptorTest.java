@@ -19,7 +19,7 @@ package org.opensaml.saml.saml2.metadata.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import org.joda.time.DateTime;
@@ -82,13 +82,13 @@ public class EntitiesDescriptorTest extends XMLObjectProviderBaseTestCase {
         EntitiesDescriptor entitiesDescriptorObj = (EntitiesDescriptor) unmarshallElement(singleElementFile);
 
         String name = entitiesDescriptorObj.getName();
-        AssertJUnit.assertNull("Name attribute has a value of " + name + ", expected no value", name);
+        Assert.assertNull(name, "Name attribute has a value of " + name + ", expected no value");
 
         Long duration = entitiesDescriptorObj.getCacheDuration();
-        AssertJUnit.assertNull("cacheDuration attribute has a value of " + duration + ", expected no value", duration);
+        Assert.assertNull(duration, "cacheDuration attribute has a value of " + duration + ", expected no value");
 
         DateTime validUntil = entitiesDescriptorObj.getValidUntil();
-        AssertJUnit.assertNull("validUntil attribute has a value of " + validUntil + ", expected no value", validUntil);
+        Assert.assertNull(validUntil, "validUntil attribute has a value of " + validUntil + ", expected no value");
     }
 
     /** {@inheritDoc} */
@@ -97,19 +97,19 @@ public class EntitiesDescriptorTest extends XMLObjectProviderBaseTestCase {
         EntitiesDescriptor entitiesDescriptorObj = (EntitiesDescriptor) unmarshallElement(singleElementOptionalAttributesFile);
 
         String name = entitiesDescriptorObj.getName();
-        AssertJUnit.assertEquals("Name attribute has a value of " + name + ", expected a value of " + expectedName, expectedName,
-                name);
+        Assert.assertEquals(name, expectedName,
+                "Name attribute has a value of " + name + ", expected a value of " + expectedName);
 
         String id = entitiesDescriptorObj.getID();
-        AssertJUnit.assertEquals("ID attriubte has a value of " + id + ", expected a value of " + expectedID, expectedID, id);
+        Assert.assertEquals(id, expectedID, "ID attriubte has a value of " + id + ", expected a value of " + expectedID);
 
         long duration = entitiesDescriptorObj.getCacheDuration().longValue();
-        AssertJUnit.assertEquals("cacheDuration attribute has a value of " + duration + ", expected a value of "
-                + expectedCacheDuration, expectedCacheDuration, duration);
+        Assert.assertEquals(duration, expectedCacheDuration, "cacheDuration attribute has a value of " + duration + ", expected a value of "
+                        + expectedCacheDuration);
 
         DateTime validUntil = entitiesDescriptorObj.getValidUntil();
-        AssertJUnit.assertEquals("validUntil attribute value did not match expected value", 0, expectedValidUntil
-                .compareTo(validUntil));
+        Assert.assertEquals(expectedValidUntil
+                .compareTo(validUntil), 0, "validUntil attribute value did not match expected value");
     }
 
     /** {@inheritDoc} */
@@ -117,12 +117,12 @@ public class EntitiesDescriptorTest extends XMLObjectProviderBaseTestCase {
     public void testChildElementsUnmarshall() {
         EntitiesDescriptor entitiesDescriptor = (EntitiesDescriptor) unmarshallElement(childElementsFile);
 
-        AssertJUnit.assertNotNull("Signature", entitiesDescriptor.getSignature());
-        AssertJUnit.assertNotNull("Extensions", entitiesDescriptor.getExtensions());
-        AssertJUnit.assertEquals("Entities Descriptor child elements", expectedEntitiesDescriptorsCount, entitiesDescriptor
-                .getEntitiesDescriptors().size());
-        AssertJUnit.assertEquals("Entity Descriptor child elements", expectedEntityDescriptorsCount, entitiesDescriptor
-                .getEntityDescriptors().size());
+        Assert.assertNotNull(entitiesDescriptor.getSignature(), "Signature");
+        Assert.assertNotNull(entitiesDescriptor.getExtensions(), "Extensions");
+        Assert.assertEquals(entitiesDescriptor
+                .getEntitiesDescriptors().size(), expectedEntitiesDescriptorsCount, "Entities Descriptor child elements");
+        Assert.assertEquals(entitiesDescriptor
+                .getEntityDescriptors().size(), expectedEntityDescriptorsCount, "Entity Descriptor child elements");
     }
 
     /** {@inheritDoc} */

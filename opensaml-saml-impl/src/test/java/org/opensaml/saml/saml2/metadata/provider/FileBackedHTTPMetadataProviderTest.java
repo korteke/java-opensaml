@@ -21,7 +21,7 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
 import org.testng.Assert;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import java.io.File;
 
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
@@ -68,11 +68,11 @@ public class FileBackedHTTPMetadataProviderTest extends XMLObjectBaseTestCase {
     @Test
     public void testGetMetadata() throws MetadataProviderException {
         EntitiesDescriptor descriptor = (EntitiesDescriptor) metadataProvider.getMetadata();
-        AssertJUnit.assertNotNull("Retrieved metadata was null", descriptor);
+        Assert.assertNotNull(descriptor, "Retrieved metadata was null");
 
         File backupFile = new File(backupFilePath);
-        AssertJUnit.assertTrue("Backup file was not created", backupFile.exists());
-        AssertJUnit.assertTrue("Backup file contains no data", backupFile.length() > 0);
+        Assert.assertTrue(backupFile.exists(), "Backup file was not created");
+        Assert.assertTrue(backupFile.length() > 0, "Backup file contains no data");
 
         // Test pulling it from the backup file
         FileBackedHTTPMetadataProvider badProvider = new FileBackedHTTPMetadataProvider(badMDURL, 1000 * 5,

@@ -22,7 +22,7 @@ package org.opensaml.saml.saml2.core.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
@@ -99,7 +99,7 @@ public class ManageNameIDRequestTest extends RequestTestBase {
     public void testSingleElementUnmarshall() {
         ManageNameIDRequest req = (ManageNameIDRequest) unmarshallElement(singleElementFile);
         
-        AssertJUnit.assertNotNull("ManageNameIDRequest was null", req);
+        Assert.assertNotNull(req, "ManageNameIDRequest was null");
         super.helperTestSingleElementUnmarshall(req);
     }
 
@@ -108,7 +108,7 @@ public class ManageNameIDRequestTest extends RequestTestBase {
     public void testSingleElementOptionalAttributesUnmarshall() {
         ManageNameIDRequest req = (ManageNameIDRequest) unmarshallElement(singleElementOptionalAttributesFile);
         
-        AssertJUnit.assertNotNull("ManageNameIDRequest was null", req);
+        Assert.assertNotNull(req, "ManageNameIDRequest was null");
         super.helperTestSingleElementOptionalAttributesUnmarshall(req);
     }
 
@@ -117,8 +117,8 @@ public class ManageNameIDRequestTest extends RequestTestBase {
     public void testChildElementsUnmarshall() {
         ManageNameIDRequest req = (ManageNameIDRequest) unmarshallElement(childElementsFile);
         
-        AssertJUnit.assertNotNull("NameID was null", req.getNameID());
-        AssertJUnit.assertNotNull("NewID was null", req.getNewID());
+        Assert.assertNotNull(req.getNameID(), "NameID was null");
+        Assert.assertNotNull(req.getNewID(), "NewID was null");
         super.helperTestChildElementsUnmarshall(req);
     }
 

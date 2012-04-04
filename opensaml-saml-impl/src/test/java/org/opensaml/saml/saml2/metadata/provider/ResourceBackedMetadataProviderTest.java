@@ -19,7 +19,7 @@ package org.opensaml.saml.saml2.metadata.provider;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import java.io.File;
 import java.net.URL;
 import java.util.List;
@@ -66,8 +66,8 @@ public class ResourceBackedMetadataProviderTest extends XMLObjectBaseTestCase {
     @Test
     public void testGetEntityDescriptor() throws MetadataProviderException {
         EntityDescriptor descriptor = metadataProvider.getEntityDescriptor(entityID);
-        AssertJUnit.assertNotNull("Retrieved entity descriptor was null", descriptor);
-        AssertJUnit.assertEquals("Entity's ID does not match requested ID", entityID, descriptor.getEntityID());
+        Assert.assertNotNull(descriptor, "Retrieved entity descriptor was null");
+        Assert.assertEquals(descriptor.getEntityID(), entityID, "Entity's ID does not match requested ID");
     }
 
     /**
@@ -76,8 +76,8 @@ public class ResourceBackedMetadataProviderTest extends XMLObjectBaseTestCase {
     @Test
     public void testGetRole() throws MetadataProviderException {
         List<RoleDescriptor> roles = metadataProvider.getRole(entityID, IDPSSODescriptor.DEFAULT_ELEMENT_NAME);
-        AssertJUnit.assertNotNull("Roles for entity descriptor was null", roles);
-        AssertJUnit.assertEquals("Unexpected number of roles", 1, roles.size());
+        Assert.assertNotNull(roles, "Roles for entity descriptor was null");
+        Assert.assertEquals(roles.size(), 1, "Unexpected number of roles");
     }
 
     /**
@@ -87,6 +87,6 @@ public class ResourceBackedMetadataProviderTest extends XMLObjectBaseTestCase {
     public void testGetRoleWithSupportedProtocol() throws MetadataProviderException {
         RoleDescriptor role = metadataProvider.getRole(entityID, IDPSSODescriptor.DEFAULT_ELEMENT_NAME,
                 supportedProtocol);
-        AssertJUnit.assertNotNull("Roles for entity descriptor was null", role);
+        Assert.assertNotNull(role, "Roles for entity descriptor was null");
     }
 }

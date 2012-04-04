@@ -19,7 +19,7 @@ package org.opensaml.core.xml.schema;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.xml.XMLParserException;
@@ -81,8 +81,8 @@ public class XSBase64BinaryTest extends XMLObjectBaseTestCase {
         Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(document.getDocumentElement());
         XSBase64Binary xsb64b = (XSBase64Binary) unmarshaller.unmarshall(document.getDocumentElement());
         
-        AssertJUnit.assertEquals("Unexpected XSBase64Binary QName", expectedXMLObjectQName, xsb64b.getElementQName());
-        AssertJUnit.assertEquals("Unexpected XSBase64Binary schema type", XSBase64Binary.TYPE_NAME, xsb64b.getSchemaType());
-        AssertJUnit.assertEquals("Unexpected value of XSBase64Binary", xsb64b.getValue(), expectedValue);
+        Assert.assertEquals(xsb64b.getElementQName(), expectedXMLObjectQName, "Unexpected XSBase64Binary QName");
+        Assert.assertEquals(xsb64b.getSchemaType(), XSBase64Binary.TYPE_NAME, "Unexpected XSBase64Binary schema type");
+        Assert.assertEquals(expectedValue, xsb64b.getValue(), "Unexpected value of XSBase64Binary");
     }
 }

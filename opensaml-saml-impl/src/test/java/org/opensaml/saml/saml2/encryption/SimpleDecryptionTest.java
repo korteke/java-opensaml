@@ -20,7 +20,7 @@ package org.opensaml.saml.saml2.encryption;
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
 import org.testng.Assert;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
@@ -112,8 +112,8 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
             Assert.fail("Error on decryption of encrypted SAML 2 type to element: " + e);
         }
         
-        AssertJUnit.assertNotNull("Decrypted target was null", decryptedTarget);
-        AssertJUnit.assertTrue("Decrypted target was not the expected type", decryptedTarget instanceof Assertion);
+        Assert.assertNotNull(decryptedTarget, "Decrypted target was null");
+        Assert.assertTrue(decryptedTarget instanceof Assertion, "Decrypted target was not the expected type");
         
         assertXMLEquals(targetDOM, decryptedTarget);
     }
@@ -141,8 +141,8 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
             Assert.fail("Error on decryption of encrypted SAML 2 type to element: " + e);
         }
         
-        AssertJUnit.assertNotNull("Decrypted target was null", decryptedTarget);
-        AssertJUnit.assertTrue("Decrypted target was not the expected type", decryptedTarget instanceof Assertion);
+        Assert.assertNotNull(decryptedTarget, "Decrypted target was null");
+        Assert.assertTrue(decryptedTarget instanceof Assertion, "Decrypted target was not the expected type");
         
         assertXMLEquals(targetDOM, decryptedTarget);
     }
@@ -170,8 +170,8 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
             Assert.fail("Error on decryption of encrypted SAML 2 type to element: " + e);
         }
         
-        AssertJUnit.assertNotNull("Decrypted target was null", decryptedTarget);
-        AssertJUnit.assertTrue("Decrypted target was not the expected type", decryptedTarget instanceof NameID);
+        Assert.assertNotNull(decryptedTarget, "Decrypted target was null");
+        Assert.assertTrue(decryptedTarget instanceof NameID, "Decrypted target was not the expected type");
         
         assertXMLEquals(targetDOM, decryptedTarget);
     }
@@ -199,8 +199,8 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
             Assert.fail("Error on decryption of encrypted SAML 2 type to element: " + e);
         }
         
-        AssertJUnit.assertNotNull("Decrypted target was null", decryptedTarget);
-        AssertJUnit.assertTrue("Decrypted target was not the expected type", decryptedTarget instanceof NewID);
+        Assert.assertNotNull(decryptedTarget, "Decrypted target was null");
+        Assert.assertTrue(decryptedTarget instanceof NewID, "Decrypted target was not the expected type");
         
         assertXMLEquals(targetDOM, decryptedTarget);
     }
@@ -228,8 +228,8 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
             Assert.fail("Error on decryption of encrypted SAML 2 type to element: " + e);
         }
         
-        AssertJUnit.assertNotNull("Decrypted target was null", decryptedTarget);
-        AssertJUnit.assertTrue("Decrypted target was not the expected type", decryptedTarget instanceof Attribute);
+        Assert.assertNotNull(decryptedTarget, "Decrypted target was null");
+        Assert.assertTrue(decryptedTarget instanceof Attribute, "Decrypted target was not the expected type");
         
         assertXMLEquals(targetDOM, decryptedTarget);
     }

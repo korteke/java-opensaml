@@ -20,7 +20,7 @@ package org.opensaml.xmlsec.signature.support;
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
 import org.testng.Assert;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import java.io.InputStream;
 import java.security.GeneralSecurityException;
 import java.security.KeyPair;
@@ -136,16 +136,16 @@ public class EnvelopedSignatureTest extends XMLObjectBaseTestCase {
         Unmarshaller unmarshaller = XMLObjectProviderRegistrySupport.getUnmarshallerFactory().getUnmarshaller(rootElement);
         SignableSimpleXMLObject sxo = (SignableSimpleXMLObject) unmarshaller.unmarshall(rootElement);
 
-        AssertJUnit.assertEquals("Id attribute was not expected value", "FOO", sxo.getId());
+        Assert.assertEquals(sxo.getId(), "FOO", "Id attribute was not expected value");
 
         Signature signature = sxo.getSignature();
-        AssertJUnit.assertNotNull("Signature was null", signature);
+        Assert.assertNotNull(signature, "Signature was null");
 
         KeyInfo keyInfo = signature.getKeyInfo();
-        AssertJUnit.assertNotNull("Signature's KeyInfo was null", keyInfo);
+        Assert.assertNotNull(keyInfo, "Signature's KeyInfo was null");
         
         PublicKey pubKey = KeyInfoHelper.getPublicKeys(keyInfo).get(0);
-        AssertJUnit.assertNotNull("KeyInfo did not contain the verification key", pubKey);
+        Assert.assertNotNull(pubKey, "KeyInfo did not contain the verification key");
     }
 
     /**

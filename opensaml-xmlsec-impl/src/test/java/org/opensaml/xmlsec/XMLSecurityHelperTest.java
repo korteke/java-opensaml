@@ -18,7 +18,7 @@
 package org.opensaml.xmlsec;
 
 import org.testng.annotations.Test;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import java.io.InputStream;
 import java.security.PrivateKey;
 
@@ -57,37 +57,37 @@ public class XMLSecurityHelperTest {
     @Test
     public void testKeyAlgorithmURIMappings() {
         // Encryption related.
-        AssertJUnit.assertEquals("RSA", XMLSecurityHelper.getKeyAlgorithmFromURI(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSA15));
-        AssertJUnit.assertEquals("RSA", XMLSecurityHelper.getKeyAlgorithmFromURI(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP));
+        Assert.assertEquals(XMLSecurityHelper.getKeyAlgorithmFromURI(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSA15), "RSA");
+        Assert.assertEquals(XMLSecurityHelper.getKeyAlgorithmFromURI(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP), "RSA");
         
-        AssertJUnit.assertEquals("AES", XMLSecurityHelper.getKeyAlgorithmFromURI(EncryptionConstants.ALGO_ID_KEYWRAP_AES128));
-        AssertJUnit.assertEquals("AES", XMLSecurityHelper.getKeyAlgorithmFromURI(EncryptionConstants.ALGO_ID_KEYWRAP_AES192));
-        AssertJUnit.assertEquals("AES", XMLSecurityHelper.getKeyAlgorithmFromURI(EncryptionConstants.ALGO_ID_KEYWRAP_AES256));
-        AssertJUnit.assertEquals("DESede", XMLSecurityHelper.getKeyAlgorithmFromURI(EncryptionConstants.ALGO_ID_KEYWRAP_TRIPLEDES));
+        Assert.assertEquals(XMLSecurityHelper.getKeyAlgorithmFromURI(EncryptionConstants.ALGO_ID_KEYWRAP_AES128), "AES");
+        Assert.assertEquals(XMLSecurityHelper.getKeyAlgorithmFromURI(EncryptionConstants.ALGO_ID_KEYWRAP_AES192), "AES");
+        Assert.assertEquals(XMLSecurityHelper.getKeyAlgorithmFromURI(EncryptionConstants.ALGO_ID_KEYWRAP_AES256), "AES");
+        Assert.assertEquals(XMLSecurityHelper.getKeyAlgorithmFromURI(EncryptionConstants.ALGO_ID_KEYWRAP_TRIPLEDES), "DESede");
         
-        AssertJUnit.assertEquals("AES", XMLSecurityHelper.getKeyAlgorithmFromURI(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128));
-        AssertJUnit.assertEquals("AES", XMLSecurityHelper.getKeyAlgorithmFromURI(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES192));
-        AssertJUnit.assertEquals("AES", XMLSecurityHelper.getKeyAlgorithmFromURI(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256));
-        AssertJUnit.assertEquals("DESede", XMLSecurityHelper.getKeyAlgorithmFromURI(EncryptionConstants.ALGO_ID_BLOCKCIPHER_TRIPLEDES));
+        Assert.assertEquals(XMLSecurityHelper.getKeyAlgorithmFromURI(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128), "AES");
+        Assert.assertEquals(XMLSecurityHelper.getKeyAlgorithmFromURI(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES192), "AES");
+        Assert.assertEquals(XMLSecurityHelper.getKeyAlgorithmFromURI(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256), "AES");
+        Assert.assertEquals(XMLSecurityHelper.getKeyAlgorithmFromURI(EncryptionConstants.ALGO_ID_BLOCKCIPHER_TRIPLEDES), "DESede");
         
         //Signature related.
-        AssertJUnit.assertEquals("RSA", XMLSecurityHelper.getKeyAlgorithmFromURI(SignatureConstants.ALGO_ID_SIGNATURE_RSA));
-        AssertJUnit.assertEquals("RSA", XMLSecurityHelper.getKeyAlgorithmFromURI(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1));
-        AssertJUnit.assertEquals("RSA", XMLSecurityHelper.getKeyAlgorithmFromURI(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256));
-        AssertJUnit.assertEquals("RSA", XMLSecurityHelper.getKeyAlgorithmFromURI(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA384));
-        AssertJUnit.assertEquals("RSA", XMLSecurityHelper.getKeyAlgorithmFromURI(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA512));
-        AssertJUnit.assertEquals("RSA", XMLSecurityHelper.getKeyAlgorithmFromURI(SignatureConstants.ALGO_ID_SIGNATURE_NOT_RECOMMENDED_RSA_MD5));
-        AssertJUnit.assertEquals("RSA", XMLSecurityHelper.getKeyAlgorithmFromURI(SignatureConstants.ALGO_ID_SIGNATURE_RSA_RIPEMD160));
-        AssertJUnit.assertEquals("DSA", XMLSecurityHelper.getKeyAlgorithmFromURI(SignatureConstants.ALGO_ID_SIGNATURE_DSA));
-        AssertJUnit.assertEquals("ECDSA", XMLSecurityHelper.getKeyAlgorithmFromURI(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA1));
+        Assert.assertEquals(XMLSecurityHelper.getKeyAlgorithmFromURI(SignatureConstants.ALGO_ID_SIGNATURE_RSA), "RSA");
+        Assert.assertEquals(XMLSecurityHelper.getKeyAlgorithmFromURI(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1), "RSA");
+        Assert.assertEquals(XMLSecurityHelper.getKeyAlgorithmFromURI(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256), "RSA");
+        Assert.assertEquals(XMLSecurityHelper.getKeyAlgorithmFromURI(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA384), "RSA");
+        Assert.assertEquals(XMLSecurityHelper.getKeyAlgorithmFromURI(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA512), "RSA");
+        Assert.assertEquals(XMLSecurityHelper.getKeyAlgorithmFromURI(SignatureConstants.ALGO_ID_SIGNATURE_NOT_RECOMMENDED_RSA_MD5), "RSA");
+        Assert.assertEquals(XMLSecurityHelper.getKeyAlgorithmFromURI(SignatureConstants.ALGO_ID_SIGNATURE_RSA_RIPEMD160), "RSA");
+        Assert.assertEquals(XMLSecurityHelper.getKeyAlgorithmFromURI(SignatureConstants.ALGO_ID_SIGNATURE_DSA), "DSA");
+        Assert.assertEquals(XMLSecurityHelper.getKeyAlgorithmFromURI(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA1), "ECDSA");
         
         // Mac related.  No specific key algorithm is indicated, any symmetric key will do. Should always return null;
-        AssertJUnit.assertNull(XMLSecurityHelper.getKeyAlgorithmFromURI(SignatureConstants.ALGO_ID_MAC_HMAC_SHA1));
-        AssertJUnit.assertNull(XMLSecurityHelper.getKeyAlgorithmFromURI(SignatureConstants.ALGO_ID_MAC_HMAC_SHA256));
-        AssertJUnit.assertNull(XMLSecurityHelper.getKeyAlgorithmFromURI(SignatureConstants.ALGO_ID_MAC_HMAC_SHA384));
-        AssertJUnit.assertNull(XMLSecurityHelper.getKeyAlgorithmFromURI(SignatureConstants.ALGO_ID_MAC_HMAC_SHA512));
-        AssertJUnit.assertNull(XMLSecurityHelper.getKeyAlgorithmFromURI(SignatureConstants.ALGO_ID_MAC_HMAC_NOT_RECOMMENDED_MD5));
-        AssertJUnit.assertNull(XMLSecurityHelper.getKeyAlgorithmFromURI(SignatureConstants.ALGO_ID_MAC_HMAC_RIPEMD160));
+        Assert.assertNull(XMLSecurityHelper.getKeyAlgorithmFromURI(SignatureConstants.ALGO_ID_MAC_HMAC_SHA1));
+        Assert.assertNull(XMLSecurityHelper.getKeyAlgorithmFromURI(SignatureConstants.ALGO_ID_MAC_HMAC_SHA256));
+        Assert.assertNull(XMLSecurityHelper.getKeyAlgorithmFromURI(SignatureConstants.ALGO_ID_MAC_HMAC_SHA384));
+        Assert.assertNull(XMLSecurityHelper.getKeyAlgorithmFromURI(SignatureConstants.ALGO_ID_MAC_HMAC_SHA512));
+        Assert.assertNull(XMLSecurityHelper.getKeyAlgorithmFromURI(SignatureConstants.ALGO_ID_MAC_HMAC_NOT_RECOMMENDED_MD5));
+        Assert.assertNull(XMLSecurityHelper.getKeyAlgorithmFromURI(SignatureConstants.ALGO_ID_MAC_HMAC_RIPEMD160));
     }    
     
     
@@ -101,8 +101,8 @@ public class XMLSecurityHelperTest {
         keyInS.read(keyBytes);
 
         PrivateKey key = SecurityHelper.decodePrivateKey(keyBytes, password);
-        AssertJUnit.assertNotNull(key);
-        AssertJUnit.assertEquals(algo, key.getAlgorithm());
+        Assert.assertNotNull(key);
+        Assert.assertEquals(key.getAlgorithm(), algo);
         
         return key;
     }

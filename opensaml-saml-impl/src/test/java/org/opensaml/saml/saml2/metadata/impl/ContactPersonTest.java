@@ -19,7 +19,7 @@ package org.opensaml.saml.saml2.metadata.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -67,7 +67,7 @@ public class ContactPersonTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         ContactPerson person = (ContactPerson) unmarshallElement(singleElementFile);
         
-        AssertJUnit.assertEquals("Contact type was not expected value", expectedPersonType, person.getType());
+        Assert.assertEquals(person.getType(), expectedPersonType, "Contact type was not expected value");
     }
 
     /** {@inheritDoc} */
@@ -76,11 +76,11 @@ public class ContactPersonTest extends XMLObjectProviderBaseTestCase {
     {
         ContactPerson person = (ContactPerson) unmarshallElement(childElementsFile);
         
-        AssertJUnit.assertNotNull("Extension Element not present", person.getExtensions());
-        AssertJUnit.assertNotNull("Company Element not present", person.getCompany());
-        AssertJUnit.assertNotNull("GivenName not present", person.getGivenName());
-        AssertJUnit.assertEquals("Email address count", emailAddressCount, person.getEmailAddresses().size());
-        AssertJUnit.assertEquals("Telephone Number count", telephoneNumberCount, person.getTelephoneNumbers().size());
+        Assert.assertNotNull(person.getExtensions(), "Extension Element not present");
+        Assert.assertNotNull(person.getCompany(), "Company Element not present");
+        Assert.assertNotNull(person.getGivenName(), "GivenName not present");
+        Assert.assertEquals(person.getEmailAddresses().size(), emailAddressCount, "Email address count");
+        Assert.assertEquals(person.getTelephoneNumbers().size(), telephoneNumberCount, "Telephone Number count");
     }
 
     /** {@inheritDoc} */

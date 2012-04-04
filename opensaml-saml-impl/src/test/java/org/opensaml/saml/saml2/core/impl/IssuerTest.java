@@ -19,7 +19,7 @@ package org.opensaml.saml.saml2.core.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -51,7 +51,7 @@ public class IssuerTest extends XMLObjectProviderBaseTestCase {
         Issuer issuer = (Issuer) unmarshallElement(singleElementFile);
 
         String issuername = issuer.getValue();
-        AssertJUnit.assertEquals("Issuer was " + issuername + ", expected " + expectedIssuer, expectedIssuer, issuername);
+        Assert.assertEquals(issuername, expectedIssuer, "Issuer was " + issuername + ", expected " + expectedIssuer);
     }
 
     /** {@inheritDoc} */

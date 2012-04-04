@@ -20,7 +20,7 @@ package org.opensaml.xmlsec.encryption.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.xmlsec.encryption.Seed;
 
@@ -51,8 +51,8 @@ public class SeedTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         Seed cbType = (Seed) unmarshallElement(singleElementFile);
         
-        AssertJUnit.assertNotNull("Seed", cbType);
-        AssertJUnit.assertEquals("Seed value", cbType.getValue(), expectedCryptoBinaryContent);
+        Assert.assertNotNull(cbType, "Seed");
+        Assert.assertEquals(expectedCryptoBinaryContent, cbType.getValue(), "Seed value");
     }
 
     /** {@inheritDoc} */

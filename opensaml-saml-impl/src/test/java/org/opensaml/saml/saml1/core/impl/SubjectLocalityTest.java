@@ -21,7 +21,7 @@
 package org.opensaml.saml.saml1.core.impl;
 
 import org.testng.annotations.Test;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -60,8 +60,8 @@ public class SubjectLocalityTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         SubjectLocality subjectLocality = (SubjectLocality) unmarshallElement(singleElementFile);
         
-        AssertJUnit.assertNull("IPAddress present", subjectLocality.getIPAddress());
-        AssertJUnit.assertNull("DNSAddress present", subjectLocality.getDNSAddress());
+        Assert.assertNull(subjectLocality.getIPAddress(), "IPAddress present");
+        Assert.assertNull(subjectLocality.getDNSAddress(), "DNSAddress present");
     }
 
     /** {@inheritDoc} */
@@ -70,8 +70,8 @@ public class SubjectLocalityTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementOptionalAttributesUnmarshall() {
         SubjectLocality subjectLocality = (SubjectLocality) unmarshallElement(singleElementOptionalAttributesFile);
         
-        AssertJUnit.assertEquals("IPAddress", expectedIPAddress, subjectLocality.getIPAddress());
-        AssertJUnit.assertEquals("DNSAddress", expectedDNSAddress, subjectLocality.getDNSAddress());
+        Assert.assertEquals(subjectLocality.getIPAddress(), expectedIPAddress, "IPAddress");
+        Assert.assertEquals(subjectLocality.getDNSAddress(), expectedDNSAddress, "DNSAddress");
     }
 
     /** {@inheritDoc} */

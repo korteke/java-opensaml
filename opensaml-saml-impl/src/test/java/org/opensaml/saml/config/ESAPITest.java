@@ -19,7 +19,7 @@ package org.opensaml.saml.config;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import org.opensaml.saml.config.DefaultBootstrap;
 import org.owasp.esapi.ESAPI;
 import org.owasp.esapi.Encoder;
@@ -42,10 +42,10 @@ public class ESAPITest {
     @Test
     public void testInit() {
         SecurityConfiguration sc = ESAPI.securityConfiguration();
-        AssertJUnit.assertNotNull("ESAPI SecurityConfiguration was null", sc);
+        Assert.assertNotNull(sc, "ESAPI SecurityConfiguration was null");
         
         Encoder encoder = ESAPI.encoder();
-        AssertJUnit.assertNotNull("ESAPI Encoder was null", encoder);
+        Assert.assertNotNull(encoder, "ESAPI Encoder was null");
     }
 
 }

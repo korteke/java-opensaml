@@ -19,7 +19,7 @@ package org.opensaml.core.xml.schema;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.xml.XMLParserException;
@@ -81,8 +81,8 @@ public class XSStringTest extends XMLObjectBaseTestCase {
         Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(document.getDocumentElement());
         XSString xsString = (XSString) unmarshaller.unmarshall(document.getDocumentElement());
         
-        AssertJUnit.assertEquals("Unexpected XSString QName", expectedXMLObjectQName, xsString.getElementQName());
-        AssertJUnit.assertEquals("Unexpected XSString schema type", XSString.TYPE_NAME, xsString.getSchemaType());
-        AssertJUnit.assertEquals("Unexpected value of XSString", xsString.getValue(), expectedValue);
+        Assert.assertEquals(xsString.getElementQName(), expectedXMLObjectQName, "Unexpected XSString QName");
+        Assert.assertEquals(xsString.getSchemaType(), XSString.TYPE_NAME, "Unexpected XSString schema type");
+        Assert.assertEquals(expectedValue, xsString.getValue(), "Unexpected value of XSString");
     }
 }

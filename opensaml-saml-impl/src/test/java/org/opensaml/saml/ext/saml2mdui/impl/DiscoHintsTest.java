@@ -22,7 +22,7 @@ package org.opensaml.saml.ext.saml2mdui.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.mock.SimpleXMLObject;
@@ -86,10 +86,10 @@ public class DiscoHintsTest extends XMLObjectProviderBaseTestCase {
     public void testChildElementsUnmarshall(){
         DiscoHints hints = (DiscoHints) unmarshallElement(childElementsFile);
         
-        AssertJUnit.assertEquals("<IPHint> count", expectedIPHintCount, hints.getIPHints().size());
-        AssertJUnit.assertEquals("<DomainHint> count", expectedDomainHintsCount, hints.getDomainHints().size());
-        AssertJUnit.assertEquals("<GeolocationHint> count", expectedGeolocationHintsCount, hints.getGeolocationHints().size());
-        AssertJUnit.assertEquals("<test:SimpleElement> count", expectedSimpleElementCount, hints.getXMLObjects(SimpleXMLObject.ELEMENT_NAME).size());
+        Assert.assertEquals(hints.getIPHints().size(), expectedIPHintCount, "<IPHint> count");
+        Assert.assertEquals(hints.getDomainHints().size(), expectedDomainHintsCount, "<DomainHint> count");
+        Assert.assertEquals(hints.getGeolocationHints().size(), expectedGeolocationHintsCount, "<GeolocationHint> count");
+        Assert.assertEquals(hints.getXMLObjects(SimpleXMLObject.ELEMENT_NAME).size(), expectedSimpleElementCount, "<test:SimpleElement> count");
     }
 
     /** {@inheritDoc} */

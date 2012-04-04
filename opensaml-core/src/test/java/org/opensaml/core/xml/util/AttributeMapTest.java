@@ -20,7 +20,7 @@ package org.opensaml.core.xml.util;
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
 import org.testng.Assert;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import java.util.Set;
 
 import javax.xml.namespace.QName;
@@ -82,11 +82,11 @@ public class AttributeMapTest extends XMLObjectBaseTestCase {
         attributeMap.put(attrName2, "foo");
         attributeMap.put(attrName3, "foo");
         
-        AssertJUnit.assertEquals("Wrong map size", 3, attributeMap.size());
+        Assert.assertEquals(attributeMap.size(), 3, "Wrong map size");
         
         owner.getUnknownAttributes().clear();
         
-        AssertJUnit.assertEquals("Wrong map size", 0, attributeMap.size());
+        Assert.assertEquals(attributeMap.size(), 0, "Wrong map size");
     }
     
     @Test
@@ -160,7 +160,7 @@ public class AttributeMapTest extends XMLObjectBaseTestCase {
         
         if (nsSize != null) {
             int size = nsSize.intValue();
-            AssertJUnit.assertEquals("Wrong number of unique namespaces", size, xo.getNamespaces().size());
+            Assert.assertEquals(xo.getNamespaces().size(), size, "Wrong number of unique namespaces");
         }
         
         outer: 

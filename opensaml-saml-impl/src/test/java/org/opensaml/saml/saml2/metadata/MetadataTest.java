@@ -27,7 +27,7 @@ import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.Unmarshaller;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.testng.Assert;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 import org.w3c.dom.Document;
 
@@ -62,8 +62,8 @@ public class MetadataTest extends XMLObjectBaseTestCase {
 
             XMLObject inCommonMD = unmarshaller.unmarshall(inCommonMDDoc.getDocumentElement());
 
-            AssertJUnit.assertEquals("First element of InCommon data was not expected EntitiesDescriptor", "EntitiesDescriptor",
-                    inCommonMD.getElementQName().getLocalPart());
+            Assert.assertEquals(inCommonMD.getElementQName().getLocalPart(), "EntitiesDescriptor",
+                    "First element of InCommon data was not expected EntitiesDescriptor");
         } catch (XMLParserException xe) {
             Assert.fail("Unable to parse XML file: " + xe);
         } catch (UnmarshallingException ue) {
@@ -89,8 +89,8 @@ public class MetadataTest extends XMLObjectBaseTestCase {
 
             XMLObject switchMD = unmarshaller.unmarshall(switchMDDoc.getDocumentElement());
 
-            AssertJUnit.assertEquals("First element of SWITCH data was not expected EntitiesDescriptor", "EntitiesDescriptor",
-                    switchMD.getElementQName().getLocalPart());
+            Assert.assertEquals(switchMD.getElementQName().getLocalPart(), "EntitiesDescriptor",
+                    "First element of SWITCH data was not expected EntitiesDescriptor");
         } catch (XMLParserException xe) {
             Assert.fail("Unable to parse XML file: " + xe);
         } catch (UnmarshallingException ue) {
@@ -115,8 +115,8 @@ public class MetadataTest extends XMLObjectBaseTestCase {
                     ukFedDoc.getDocumentElement());
             XMLObject ukFedMD = unmarshaller.unmarshall(ukFedDoc.getDocumentElement());
 
-            AssertJUnit.assertEquals("First element of UK Federation data was not expected EntitiesDescriptor", "EntitiesDescriptor",
-                    ukFedMD.getElementQName().getLocalPart());
+            Assert.assertEquals(ukFedMD.getElementQName().getLocalPart(), "EntitiesDescriptor",
+                    "First element of UK Federation data was not expected EntitiesDescriptor");
         } catch (XMLParserException xe) {
             Assert.fail("Unable to parse XML file: " + xe);
         } catch (UnmarshallingException ue) {

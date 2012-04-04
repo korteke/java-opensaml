@@ -19,7 +19,7 @@ package org.opensaml.saml.saml2.core.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.saml2.core.EncryptedID;
 import org.opensaml.xmlsec.encryption.EncryptedData;
@@ -44,9 +44,9 @@ public class EncryptedIDTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         EncryptedID encElement = (EncryptedID) unmarshallElement(singleElementFile);
 
-        AssertJUnit.assertNotNull(encElement);
-        AssertJUnit.assertNull("EncryptedData child element", encElement.getEncryptedData());
-        AssertJUnit.assertEquals("# of EncryptedKey children", 0, encElement.getEncryptedKeys().size());
+        Assert.assertNotNull(encElement);
+        Assert.assertNull(encElement.getEncryptedData(), "EncryptedData child element");
+        Assert.assertEquals(encElement.getEncryptedKeys().size(), 0, "# of EncryptedKey children");
     }
     
     /** {@inheritDoc} */
@@ -54,9 +54,9 @@ public class EncryptedIDTest extends XMLObjectProviderBaseTestCase {
     public void testChildElementsUnmarshall() {
         EncryptedID encElement = (EncryptedID) unmarshallElement(childElementsFile);
         
-        AssertJUnit.assertNotNull("EncryptedID was null", encElement);
-        AssertJUnit.assertNotNull("EncryptedData child element", encElement.getEncryptedData());
-        AssertJUnit.assertEquals("# of EncryptedKey children", encryptedKeyCount, encElement.getEncryptedKeys().size());
+        Assert.assertNotNull(encElement, "EncryptedID was null");
+        Assert.assertNotNull(encElement.getEncryptedData(), "EncryptedData child element");
+        Assert.assertEquals(encElement.getEncryptedKeys().size(), encryptedKeyCount, "# of EncryptedKey children");
 
     }
 

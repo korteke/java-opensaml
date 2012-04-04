@@ -20,7 +20,7 @@ package org.opensaml.xmlsec.signature.support;
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
 import org.testng.Assert;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import java.io.InputStream;
 import java.util.List;
 
@@ -187,20 +187,20 @@ public class HMACSignatureTest extends XMLObjectBaseTestCase {
         Unmarshaller unmarshaller = XMLObjectProviderRegistrySupport.getUnmarshallerFactory().getUnmarshaller(rootElement);
         SignableSimpleXMLObject sxo = (SignableSimpleXMLObject) unmarshaller.unmarshall(rootElement);
 
-        AssertJUnit.assertEquals("Id attribute was not expected value", "FOO", sxo.getId());
+        Assert.assertEquals(sxo.getId(), "FOO", "Id attribute was not expected value");
 
         Signature signature = sxo.getSignature();
-        AssertJUnit.assertNotNull("Signature was null", signature);
+        Assert.assertNotNull(signature, "Signature was null");
 
         KeyInfo keyInfo = signature.getKeyInfo();
-        AssertJUnit.assertNotNull("Signature's KeyInfo was null", keyInfo);
+        Assert.assertNotNull(keyInfo, "Signature's KeyInfo was null");
         
         KeyName keyName = keyInfo.getKeyNames().get(0);
-        AssertJUnit.assertNotNull("KeyName was null", keyName);
+        Assert.assertNotNull(keyName, "KeyName was null");
         String keyNameValue = StringSupport.trimOrNull(keyName.getValue());
-        AssertJUnit.assertNotNull("KeyName value was empty", keyNameValue);
+        Assert.assertNotNull(keyNameValue, "KeyName value was empty");
         
-        AssertJUnit.assertNull("HMACOutputLength value was not null", signature.getHMACOutputLength());
+        Assert.assertNull(signature.getHMACOutputLength(), "HMACOutputLength value was not null");
     }
     
     /**
@@ -219,21 +219,21 @@ public class HMACSignatureTest extends XMLObjectBaseTestCase {
         Unmarshaller unmarshaller = XMLObjectProviderRegistrySupport.getUnmarshallerFactory().getUnmarshaller(rootElement);
         SignableSimpleXMLObject sxo = (SignableSimpleXMLObject) unmarshaller.unmarshall(rootElement);
 
-        AssertJUnit.assertEquals("Id attribute was not expected value", "FOO", sxo.getId());
+        Assert.assertEquals(sxo.getId(), "FOO", "Id attribute was not expected value");
 
         Signature signature = sxo.getSignature();
-        AssertJUnit.assertNotNull("Signature was null", signature);
+        Assert.assertNotNull(signature, "Signature was null");
 
         KeyInfo keyInfo = signature.getKeyInfo();
-        AssertJUnit.assertNotNull("Signature's KeyInfo was null", keyInfo);
+        Assert.assertNotNull(keyInfo, "Signature's KeyInfo was null");
         
         KeyName keyName = keyInfo.getKeyNames().get(0);
-        AssertJUnit.assertNotNull("KeyName was null", keyName);
+        Assert.assertNotNull(keyName, "KeyName was null");
         String keyNameValue = StringSupport.trimOrNull(keyName.getValue());
-        AssertJUnit.assertNotNull("KeyName value was empty", keyNameValue);
+        Assert.assertNotNull(keyNameValue, "KeyName value was empty");
         
-        AssertJUnit.assertNotNull("HMACOutputLength value was null", signature.getHMACOutputLength());
-        AssertJUnit.assertEquals("HMACOutputLength value was incorrect value", hmacOutputLength, signature.getHMACOutputLength());
+        Assert.assertNotNull(signature.getHMACOutputLength(), "HMACOutputLength value was null");
+        Assert.assertEquals(signature.getHMACOutputLength(), hmacOutputLength, "HMACOutputLength value was incorrect value");
     }
     
     /**
@@ -249,15 +249,15 @@ public class HMACSignatureTest extends XMLObjectBaseTestCase {
         Marshaller marshaller = XMLObjectProviderRegistrySupport.getMarshallerFactory().getMarshaller(sxo);
         marshaller.marshall(sxo);
         
-        AssertJUnit.assertNotNull("Signature DOM was null", signature.getDOM());
+        Assert.assertNotNull(signature.getDOM(), "Signature DOM was null");
         XMLSignature apacheSignature = ((SignatureImpl) signature).getXMLSignature();
-        AssertJUnit.assertNotNull("Apache XMLSignature was null", apacheSignature);
+        Assert.assertNotNull(apacheSignature, "Apache XMLSignature was null");
         SignedInfo apacheSignedInfo = apacheSignature.getSignedInfo(); 
-        AssertJUnit.assertNotNull("Apache SignedInfo was null", apacheSignedInfo);
+        Assert.assertNotNull(apacheSignedInfo, "Apache SignedInfo was null");
         Element sigMethodElement = apacheSignedInfo.getSignatureMethodElement();
         List<Element> children = 
             ElementSupport.getChildElementsByTagNameNS(sigMethodElement, SignatureConstants.XMLSIG_NS, "HMACOutputLength");
-        AssertJUnit.assertTrue("Signature method should not have HMACOutputLength child", children.isEmpty());
+        Assert.assertTrue(children.isEmpty(), "Signature method should not have HMACOutputLength child");
     }
 
     /**
@@ -273,19 +273,19 @@ public class HMACSignatureTest extends XMLObjectBaseTestCase {
         Marshaller marshaller = XMLObjectProviderRegistrySupport.getMarshallerFactory().getMarshaller(sxo);
         marshaller.marshall(sxo);
         
-        AssertJUnit.assertNotNull("Signature DOM was null", signature.getDOM());
+        Assert.assertNotNull(signature.getDOM(), "Signature DOM was null");
         XMLSignature apacheSignature = ((SignatureImpl) signature).getXMLSignature();
-        AssertJUnit.assertNotNull("Apache XMLSignature was null", apacheSignature);
+        Assert.assertNotNull(apacheSignature, "Apache XMLSignature was null");
         SignedInfo apacheSignedInfo = apacheSignature.getSignedInfo(); 
-        AssertJUnit.assertNotNull("Apache SignedInfo was null", apacheSignedInfo);
+        Assert.assertNotNull(apacheSignedInfo, "Apache SignedInfo was null");
         Element sigMethodElement = apacheSignedInfo.getSignatureMethodElement();
         List<Element> children = 
             ElementSupport.getChildElementsByTagNameNS(sigMethodElement, SignatureConstants.XMLSIG_NS, "HMACOutputLength");
-        AssertJUnit.assertFalse("Signature method should have HMACOutputLength child", children.isEmpty());
+        Assert.assertFalse(children.isEmpty(), "Signature method should have HMACOutputLength child");
         Element outputLengthElement = children.get(0);
         String value = StringSupport.trimOrNull(outputLengthElement.getTextContent());
-        AssertJUnit.assertNotNull("Output length value was empty", value);
-        AssertJUnit.assertEquals("Output length was not the expected value", hmacOutputLength, new Integer(value));
+        Assert.assertNotNull(value, "Output length value was empty");
+        Assert.assertEquals(new Integer(value), hmacOutputLength, "Output length was not the expected value");
     }
 
     /**

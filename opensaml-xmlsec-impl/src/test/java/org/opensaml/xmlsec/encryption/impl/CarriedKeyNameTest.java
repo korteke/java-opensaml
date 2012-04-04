@@ -20,7 +20,7 @@ package org.opensaml.xmlsec.encryption.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.xmlsec.encryption.CarriedKeyName;
 
@@ -51,8 +51,8 @@ public class CarriedKeyNameTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         CarriedKeyName ckn = (CarriedKeyName) unmarshallElement(singleElementFile);
         
-        AssertJUnit.assertNotNull("CarriedKeyName", ckn);
-        AssertJUnit.assertEquals("CarriedKeyName value", ckn.getValue(), expectedStringContent);
+        Assert.assertNotNull(ckn, "CarriedKeyName");
+        Assert.assertEquals(expectedStringContent, ckn.getValue(), "CarriedKeyName value");
     }
 
     /** {@inheritDoc} */

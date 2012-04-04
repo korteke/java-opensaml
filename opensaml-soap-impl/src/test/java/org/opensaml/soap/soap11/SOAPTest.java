@@ -19,7 +19,7 @@ package org.opensaml.soap.soap11;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.xml.XMLParserException;
@@ -87,17 +87,17 @@ public class SOAPTest extends XMLObjectBaseTestCase {
         // Check to make sure everything unmarshalled okay
         QName encodingStyleName = new QName("http://schemas.xmlsoap.org/soap/envelope/", "encodingStyle");
         String encodingStyleValue = envelope.getUnknownAttributes().get(encodingStyleName);
-        AssertJUnit.assertNotNull("Encoding style was null", encodingStyleValue);
-        AssertJUnit.assertEquals("Encoding style had unexpected value", 
-                "http://schemas.xmlsoap.org/soap/encoding/", encodingStyleValue);
+        Assert.assertNotNull(encodingStyleValue, "Encoding style was null");
+        Assert.assertEquals(encodingStyleValue, 
+                "http://schemas.xmlsoap.org/soap/encoding/", "Encoding style had unexpected value");
         
         Header header = envelope.getHeader();
-        AssertJUnit.assertNotNull("Header was null", header);
-        AssertJUnit.assertEquals("Unexpected number of Header children", 1, header.getUnknownXMLObjects().size());
+        Assert.assertNotNull(header, "Header was null");
+        Assert.assertEquals(header.getUnknownXMLObjects().size(), 1, "Unexpected number of Header children");
         
         Body body = envelope.getBody();
-        AssertJUnit.assertNotNull("Body was null", body);
-        AssertJUnit.assertEquals("Unexpected number of Body children", 1, body.getUnknownXMLObjects().size());
+        Assert.assertNotNull(body, "Body was null");
+        Assert.assertEquals(body.getUnknownXMLObjects().size(), 1, "Unexpected number of Body children");
         
         // Drop the DOM and remarshall, hopefully we get the same document back
         envelope.releaseDOM();
@@ -120,30 +120,30 @@ public class SOAPTest extends XMLObjectBaseTestCase {
         
         // Check to make sure everything unmarshalled okay
         Header header = envelope.getHeader();
-        AssertJUnit.assertNull("Header was not null", header);
+        Assert.assertNull(header, "Header was not null");
         
         Body body = envelope.getBody();
-        AssertJUnit.assertNotNull("Body was null", body);
-        AssertJUnit.assertEquals("Unexpected number of Body children", 1, body.getUnknownXMLObjects().size());
+        Assert.assertNotNull(body, "Body was null");
+        Assert.assertEquals(body.getUnknownXMLObjects().size(), 1, "Unexpected number of Body children");
         
         Fault fault = (Fault) body.getUnknownXMLObjects().get(0);
-        AssertJUnit.assertNotNull("Fault was null", fault);
+        Assert.assertNotNull(fault, "Fault was null");
         
         FaultActor actor = fault.getActor();
-        AssertJUnit.assertNotNull("FaultActor was null", actor);
-        AssertJUnit.assertEquals("FaultActor had unexpected value", expectedFaultActor, actor.getValue());
+        Assert.assertNotNull(actor, "FaultActor was null");
+        Assert.assertEquals(actor.getValue(), expectedFaultActor, "FaultActor had unexpected value");
         
         FaultCode code = fault.getCode();
-        AssertJUnit.assertNotNull("FaultCode was null", code);
-        AssertJUnit.assertEquals("FaultCode had unexpected value", expectedFaultCode, code.getValue());
+        Assert.assertNotNull(code, "FaultCode was null");
+        Assert.assertEquals(code.getValue(), expectedFaultCode, "FaultCode had unexpected value");
         
         FaultString message = fault.getMessage();
-        AssertJUnit.assertNotNull("FaultString was null", message);
-        AssertJUnit.assertEquals("FaultString had unexpected value", expectedFaultString, message.getValue());
+        Assert.assertNotNull(message, "FaultString was null");
+        Assert.assertEquals(message.getValue(), expectedFaultString, "FaultString had unexpected value");
         
         Detail detail = fault.getDetail();
-        AssertJUnit.assertNotNull("Detail was null", detail);
-        AssertJUnit.assertEquals("Unexpected number of Body children", 1, detail.getUnknownXMLObjects().size());
+        Assert.assertNotNull(detail, "Detail was null");
+        Assert.assertEquals(detail.getUnknownXMLObjects().size(), 1, "Unexpected number of Body children");
         
         // Drop the DOM and remarshall, hopefully we get the same document back
         envelope.releaseDOM();
@@ -198,22 +198,22 @@ public class SOAPTest extends XMLObjectBaseTestCase {
         
        DetailBuilder detailBuilder = (DetailBuilder) builderFactory.getBuilder(Detail.DEFAULT_ELEMENT_NAME); 
        Detail detail = detailBuilder.buildObject();
-       AssertJUnit.assertTrue("Namespace URI was not empty", Strings.isNullOrEmpty(detail.getElementQName().getNamespaceURI()));
-       AssertJUnit.assertTrue("Namespace prefix was not empty", Strings.isNullOrEmpty(detail.getElementQName().getPrefix()));
+       Assert.assertTrue(Strings.isNullOrEmpty(detail.getElementQName().getNamespaceURI()), "Namespace URI was not empty");
+       Assert.assertTrue(Strings.isNullOrEmpty(detail.getElementQName().getPrefix()), "Namespace prefix was not empty");
         
        FaultActorBuilder faultActorBuilder = (FaultActorBuilder) builderFactory.getBuilder(FaultActor.DEFAULT_ELEMENT_NAME); 
        FaultActor faultActor = faultActorBuilder.buildObject();
-       AssertJUnit.assertTrue("Namespace URI was not empty", Strings.isNullOrEmpty(faultActor.getElementQName().getNamespaceURI()));
-       AssertJUnit.assertTrue("Namespace prefix was not empty", Strings.isNullOrEmpty(faultActor.getElementQName().getPrefix()));
+       Assert.assertTrue(Strings.isNullOrEmpty(faultActor.getElementQName().getNamespaceURI()), "Namespace URI was not empty");
+       Assert.assertTrue(Strings.isNullOrEmpty(faultActor.getElementQName().getPrefix()), "Namespace prefix was not empty");
        
        FaultCodeBuilder faultCodeBuilder = (FaultCodeBuilder) builderFactory.getBuilder(FaultCode.DEFAULT_ELEMENT_NAME); 
        FaultCode faultCode = faultCodeBuilder.buildObject();
-       AssertJUnit.assertTrue("Namespace URI was not empty", Strings.isNullOrEmpty(faultCode.getElementQName().getNamespaceURI()));
-       AssertJUnit.assertTrue("Namespace prefix was not empty", Strings.isNullOrEmpty(faultCode.getElementQName().getPrefix()));
+       Assert.assertTrue(Strings.isNullOrEmpty(faultCode.getElementQName().getNamespaceURI()), "Namespace URI was not empty");
+       Assert.assertTrue(Strings.isNullOrEmpty(faultCode.getElementQName().getPrefix()), "Namespace prefix was not empty");
        
        FaultStringBuilder faultStringBuilder = (FaultStringBuilder) builderFactory.getBuilder(FaultString.DEFAULT_ELEMENT_NAME); 
        FaultString faultString = faultStringBuilder.buildObject();
-       AssertJUnit.assertTrue("Namespace URI was not empty", Strings.isNullOrEmpty(faultString.getElementQName().getNamespaceURI()));
-       AssertJUnit.assertTrue("Namespace prefix was not empty", Strings.isNullOrEmpty(faultString.getElementQName().getPrefix()));
+       Assert.assertTrue(Strings.isNullOrEmpty(faultString.getElementQName().getNamespaceURI()), "Namespace URI was not empty");
+       Assert.assertTrue(Strings.isNullOrEmpty(faultString.getElementQName().getPrefix()), "Namespace prefix was not empty");
     }
 }

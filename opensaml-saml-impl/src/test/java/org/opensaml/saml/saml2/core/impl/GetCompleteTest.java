@@ -22,7 +22,7 @@ package org.opensaml.saml.saml2.core.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.saml2.core.GetComplete;
 
@@ -55,7 +55,7 @@ public class GetCompleteTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         GetComplete gc = (GetComplete) unmarshallElement(singleElementFile);
         
-       AssertJUnit.assertEquals("Unmarshalled GetComplete URI was not the expected value", expectedGetComplete, gc.getGetComplete()); 
+       Assert.assertEquals(gc.getGetComplete(), expectedGetComplete, "Unmarshalled GetComplete URI was not the expected value"); 
 
     }
 

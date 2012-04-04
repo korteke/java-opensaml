@@ -19,7 +19,7 @@ package org.opensaml.soap.soap11.decoder;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import java.util.Collections;
 import java.util.Set;
 
@@ -76,9 +76,9 @@ public class SOAP11DecoderTest extends XMLObjectBaseTestCase {
         decoder.decode(messageContext);
         
         XMLObject msg = messageContext.getInboundMessage();
-        AssertJUnit.assertNotNull(msg);
+        Assert.assertNotNull(msg);
         
-        AssertJUnit.assertTrue(msg instanceof Envelope);
+        Assert.assertTrue(msg instanceof Envelope);
     }
     
     /**
@@ -154,8 +154,8 @@ public class SOAP11DecoderTest extends XMLObjectBaseTestCase {
         messageContext.setInboundMessageTransport(inTransport);
         decoder.decode(messageContext);
         
-        AssertJUnit.assertEquals("Invalid test header value", "5", messageContext.transaction);
-        AssertJUnit.assertNotNull("Context body message was null", messageContext.bodyMessage);
+        Assert.assertEquals(messageContext.transaction, "5", "Invalid test header value");
+        Assert.assertNotNull(messageContext.bodyMessage, "Context body message was null");
         
     }
     

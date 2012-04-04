@@ -19,7 +19,7 @@ package org.opensaml.saml.saml2.core.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -64,7 +64,7 @@ public class AuthzDecisionStatementTest extends XMLObjectProviderBaseTestCase {
         AuthzDecisionStatement authzDecisionStatement = (AuthzDecisionStatement) unmarshallElement(singleElementFile);
 
         String resource = authzDecisionStatement.getResource();
-        AssertJUnit.assertEquals("Resource not as expected", expectedResource, resource);
+        Assert.assertEquals(resource, expectedResource, "Resource not as expected");
     }
 
     /** {@inheritDoc} */
@@ -73,10 +73,10 @@ public class AuthzDecisionStatementTest extends XMLObjectProviderBaseTestCase {
         AuthzDecisionStatement authzDecisionStatement = (AuthzDecisionStatement) unmarshallElement(singleElementOptionalAttributesFile);
 
         String resource = authzDecisionStatement.getResource();
-        AssertJUnit.assertEquals("Resource not as expected", expectedResource, resource);
+        Assert.assertEquals(resource, expectedResource, "Resource not as expected");
 
         DecisionTypeEnumeration decision = authzDecisionStatement.getDecision();
-        AssertJUnit.assertEquals("Decision not as expected", expectedDecision.toString(), decision.toString());
+        Assert.assertEquals(decision.toString(), expectedDecision.toString(), "Decision not as expected");
     }
 
     /** {@inheritDoc} */
@@ -105,8 +105,8 @@ public class AuthzDecisionStatementTest extends XMLObjectProviderBaseTestCase {
     @Test
     public void testChildElementsUnmarshall() {
         AuthzDecisionStatement authzDecisionStatement = (AuthzDecisionStatement) unmarshallElement(childElementsFile);
-        AssertJUnit.assertEquals("Action Count", expectedActionCount, authzDecisionStatement.getActions().size());
-        AssertJUnit.assertNotNull("Evidence element not present", authzDecisionStatement.getEvidence());
+        Assert.assertEquals(authzDecisionStatement.getActions().size(), expectedActionCount, "Action Count");
+        Assert.assertNotNull(authzDecisionStatement.getEvidence(), "Evidence element not present");
     }
 
     /** {@inheritDoc} */

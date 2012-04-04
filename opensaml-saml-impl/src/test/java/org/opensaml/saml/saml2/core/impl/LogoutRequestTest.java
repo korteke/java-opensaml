@@ -22,7 +22,7 @@ package org.opensaml.saml.saml2.core.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import org.joda.time.DateTime;
@@ -115,9 +115,9 @@ public class LogoutRequestTest extends RequestTestBase {
     public void testSingleElementUnmarshall() {
         LogoutRequest req = (LogoutRequest) unmarshallElement(singleElementFile);
         
-        AssertJUnit.assertNotNull("LogoutRequest was null", req);
-        AssertJUnit.assertNull("Reason was not null", req.getReason());
-        AssertJUnit.assertNull("NotOnOrAfter was not null", req.getNotOnOrAfter());
+        Assert.assertNotNull(req, "LogoutRequest was null");
+        Assert.assertNull(req.getReason(), "Reason was not null");
+        Assert.assertNull(req.getNotOnOrAfter(), "NotOnOrAfter was not null");
         super.helperTestSingleElementUnmarshall(req);
     }
  
@@ -126,8 +126,8 @@ public class LogoutRequestTest extends RequestTestBase {
     public void testSingleElementOptionalAttributesUnmarshall() {
         LogoutRequest req = (LogoutRequest) unmarshallElement(singleElementOptionalAttributesFile);
         
-        AssertJUnit.assertEquals("Unmarshalled Reason attribute was not the expectecd value", expectedReason, req.getReason());
-        AssertJUnit.assertEquals("Unmarshalled NotOnOrAfter attribute was not the expectecd value", 0, expectedNotOnOrAfter.compareTo(req.getNotOnOrAfter()));
+        Assert.assertEquals(req.getReason(), expectedReason, "Unmarshalled Reason attribute was not the expectecd value");
+        Assert.assertEquals(expectedNotOnOrAfter.compareTo(req.getNotOnOrAfter()), 0, "Unmarshalled NotOnOrAfter attribute was not the expectecd value");
         super.helperTestSingleElementOptionalAttributesUnmarshall(req);
     }
     
@@ -136,8 +136,8 @@ public class LogoutRequestTest extends RequestTestBase {
     public void testChildElementsUnmarshall() {
         LogoutRequest req = (LogoutRequest) unmarshallElement(childElementsFile);
         
-        AssertJUnit.assertNotNull("Identifier was null", req.getNameID());
-        AssertJUnit.assertEquals("Number of unmarshalled SessionIndexes was not the expected value", expectedNumSessionIndexes, req.getSessionIndexes().size());
+        Assert.assertNotNull(req.getNameID(), "Identifier was null");
+        Assert.assertEquals(req.getSessionIndexes().size(), expectedNumSessionIndexes, "Number of unmarshalled SessionIndexes was not the expected value");
         super.helperTestChildElementsUnmarshall(req);
     }
     

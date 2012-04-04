@@ -22,7 +22,7 @@ package org.opensaml.saml.ext.saml2mdui.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -64,9 +64,9 @@ public class LogoTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         Logo logo = (Logo) unmarshallElement(singleElementFile);
         
-        AssertJUnit.assertEquals("URL was not expected value", expectedURL, logo.getURL());
-        AssertJUnit.assertEquals("height was not expected value", expectedHeight, logo.getHeight());
-        AssertJUnit.assertEquals("width was not expected value", expectedWidth, logo.getWidth());
+        Assert.assertEquals(logo.getURL(), expectedURL, "URL was not expected value");
+        Assert.assertEquals(logo.getHeight(), expectedHeight, "height was not expected value");
+        Assert.assertEquals(logo.getWidth(), expectedWidth, "width was not expected value");
     }
 
     /** {@inheritDoc} */
@@ -74,10 +74,10 @@ public class LogoTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementOptionalAttributesUnmarshall() {
         Logo logo = (Logo) unmarshallElement(singleElementOptionalAttributesFile);
         
-        AssertJUnit.assertEquals("URL was not expected value", expectedURL, logo.getURL());
-        AssertJUnit.assertEquals("height was not expected value", expectedHeight, logo.getHeight());
-        AssertJUnit.assertEquals("width was not expected value", expectedWidth, logo.getWidth());
-        AssertJUnit.assertEquals("xml:lang was not the expected value", expectedLang, logo.getXMLLang());
+        Assert.assertEquals(logo.getURL(), expectedURL, "URL was not expected value");
+        Assert.assertEquals(logo.getHeight(), expectedHeight, "height was not expected value");
+        Assert.assertEquals(logo.getWidth(), expectedWidth, "width was not expected value");
+        Assert.assertEquals(logo.getXMLLang(), expectedLang, "xml:lang was not the expected value");
     }
 
     /** {@inheritDoc} */

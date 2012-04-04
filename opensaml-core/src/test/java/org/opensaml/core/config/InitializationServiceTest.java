@@ -20,7 +20,7 @@ package org.opensaml.core.config;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import java.util.Properties;
 
 import org.opensaml.core.config.provider.ThreadLocalConfigurationPropertiesHolder;
@@ -50,12 +50,12 @@ public class InitializationServiceTest {
     @Test
     public void testProviderInit() throws InitializationException {
         XMLObjectProviderRegistry registry = ConfigurationService.get(XMLObjectProviderRegistry.class);
-        AssertJUnit.assertNull("Registry was non-null", registry);        
+        Assert.assertNull(registry, "Registry was non-null");        
         
         InitializationService.initialize();
         
         registry = ConfigurationService.get(XMLObjectProviderRegistry.class);
-        AssertJUnit.assertNotNull("Registry was null", registry);        
+        Assert.assertNotNull(registry, "Registry was null");        
     }
 
 }

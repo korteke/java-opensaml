@@ -27,7 +27,7 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.Status;
 import org.opensaml.saml.saml2.core.StatusCode;
 import org.opensaml.saml.saml2.core.StatusMessage;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**
@@ -73,9 +73,9 @@ public class StatusTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         Status status = (Status) unmarshallElement(singleElementFile);
         
-        AssertJUnit.assertNotNull("Status", status);
-        AssertJUnit.assertNull("StatusCode child", status.getStatusCode());
-        AssertJUnit.assertNull("StatusMessage", status.getStatusMessage());
+        Assert.assertNotNull(status, "Status");
+        Assert.assertNull(status.getStatusCode(), "StatusCode child");
+        Assert.assertNull(status.getStatusMessage(), "StatusMessage");
     }
 
 
@@ -84,7 +84,7 @@ public class StatusTest extends XMLObjectProviderBaseTestCase {
     public void testChildElementsUnmarshall() {
         Status status = (Status) unmarshallElement(childElementsFile);
         
-        AssertJUnit.assertNotNull("StatusCode of Status was null", status.getStatusCode());
-        AssertJUnit.assertNotNull("StatusMessage of Status was null", status.getStatusMessage());
+        Assert.assertNotNull(status.getStatusCode(), "StatusCode of Status was null");
+        Assert.assertNotNull(status.getStatusMessage(), "StatusMessage of Status was null");
     }
 }

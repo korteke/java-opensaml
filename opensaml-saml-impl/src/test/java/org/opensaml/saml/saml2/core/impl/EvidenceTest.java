@@ -19,7 +19,7 @@ package org.opensaml.saml.saml2.core.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.saml2.core.Assertion;
 import org.opensaml.saml.saml2.core.AssertionIDRef;
@@ -56,7 +56,7 @@ public class EvidenceTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         Evidence evidence = (Evidence) unmarshallElement(singleElementFile);
 
-        AssertJUnit.assertNotNull(evidence);
+        Assert.assertNotNull(evidence);
     }
 
     /** {@inheritDoc} */
@@ -64,13 +64,13 @@ public class EvidenceTest extends XMLObjectProviderBaseTestCase {
     public void testChildElementsUnmarshall() {
         Evidence evidence = (Evidence) unmarshallElement(childElementsFile);
 
-        AssertJUnit.assertEquals("AssertionIDRef count not as expected", assertionIDRefCount, evidence.getAssertionIDReferences()
-                .size());
-        AssertJUnit.assertEquals("AssertionURIRef count not as expected", assertionURIRefCount, evidence
-                .getAssertionURIReferences().size());
-        AssertJUnit.assertEquals("Assertion count not as expected", assertionCount, evidence.getAssertions().size());
-        AssertJUnit.assertEquals("EncryptedAssertion count not as expected", 
-                encryptedAssertionCount, evidence.getEncryptedAssertions().size());
+        Assert.assertEquals(evidence.getAssertionIDReferences()
+                .size(), assertionIDRefCount, "AssertionIDRef count not as expected");
+        Assert.assertEquals(evidence
+                .getAssertionURIReferences().size(), assertionURIRefCount, "AssertionURIRef count not as expected");
+        Assert.assertEquals(evidence.getAssertions().size(), assertionCount, "Assertion count not as expected");
+        Assert.assertEquals(evidence.getEncryptedAssertions().size(), 
+                encryptedAssertionCount, "EncryptedAssertion count not as expected");
     }
 
     /** {@inheritDoc} */

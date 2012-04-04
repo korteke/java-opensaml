@@ -22,7 +22,7 @@ package org.opensaml.saml.ext.saml2mdui.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -56,7 +56,7 @@ public class GeolocationHintTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         GeolocationHint hint = (GeolocationHint) unmarshallElement(singleElementFile);
         
-        AssertJUnit.assertEquals("Name was not expected value", expectedHint, hint.getHint());
+        Assert.assertEquals(hint.getHint(), expectedHint, "Name was not expected value");
     }
 
     /** {@inheritDoc} */

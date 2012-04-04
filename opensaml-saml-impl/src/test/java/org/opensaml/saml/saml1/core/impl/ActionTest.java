@@ -21,7 +21,7 @@
 package org.opensaml.saml.saml1.core.impl;
 
 import org.testng.annotations.Test;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -55,8 +55,8 @@ public class ActionTest extends XMLObjectProviderBaseTestCase {
     @Test
     public void testSingleElementUnmarshall() {
         Action action = (Action) unmarshallElement(singleElementFile);
-        AssertJUnit.assertNull("namespace attribute present", action.getNamespace());
-        AssertJUnit.assertNull("Contents present", action.getContents());
+        Assert.assertNull(action.getNamespace(), "namespace attribute present");
+        Assert.assertNull(action.getContents(), "Contents present");
     }
 
     /** {@inheritDoc} */
@@ -64,8 +64,8 @@ public class ActionTest extends XMLObjectProviderBaseTestCase {
     @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
         Action action = (Action) unmarshallElement(singleElementOptionalAttributesFile);
-        AssertJUnit.assertEquals("namespace attribute ", expectedNamespace, action.getNamespace());
-        AssertJUnit.assertEquals("Contents ", expectedContents, action.getContents());
+        Assert.assertEquals(action.getNamespace(), expectedNamespace, "namespace attribute ");
+        Assert.assertEquals(action.getContents(), expectedContents, "Contents ");
     }
 
     /** {@inheritDoc} */

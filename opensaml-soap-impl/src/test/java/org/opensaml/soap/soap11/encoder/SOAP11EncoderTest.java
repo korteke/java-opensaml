@@ -17,7 +17,7 @@
 
 package org.opensaml.soap.soap11.encoder;
 
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
 import java.io.ByteArrayInputStream;
@@ -84,7 +84,7 @@ public class SOAP11EncoderTest extends XMLObjectBaseTestCase {
         Envelope controlEnv = (Envelope) parseUnmarshallResource(soapMessage, false);
         
         Envelope env = (Envelope) parseUnmarshallResource(soapMessage, true);
-        AssertJUnit.assertNull(env.getDOM());
+        Assert.assertNull(env.getDOM());
         
         XMLObject msg = env.getBody().getUnknownXMLObjects().get(0);
         msg.setParent(null);
@@ -95,7 +95,7 @@ public class SOAP11EncoderTest extends XMLObjectBaseTestCase {
         encoder.encode(messageContext);
         
         Envelope encodedEnv = (Envelope) getEncodedMessage(messageContext);
-        AssertJUnit.assertNotNull(encodedEnv.getDOM());
+        Assert.assertNotNull(encodedEnv.getDOM());
         
         XMLAssert.assertXMLIdentical(new Diff(controlEnv.getDOM().getOwnerDocument(), encodedEnv.getDOM().getOwnerDocument()), true);
     }
@@ -113,7 +113,7 @@ public class SOAP11EncoderTest extends XMLObjectBaseTestCase {
         
         String soapMessage = "/data/org/opensaml/soap/soap11/SOAPNoHeaders.xml";
         Envelope env = (Envelope) parseUnmarshallResource(soapMessage, true);
-        AssertJUnit.assertNull(env.getDOM());
+        Assert.assertNull(env.getDOM());
         
         XMLObject msg = env.getBody().getUnknownXMLObjects().get(0);
         msg.setParent(null);
@@ -126,7 +126,7 @@ public class SOAP11EncoderTest extends XMLObjectBaseTestCase {
         encoder.encode(messageContext);
         
         Envelope encodedEnv = (Envelope) getEncodedMessage(messageContext);
-        AssertJUnit.assertNotNull(encodedEnv.getDOM());
+        Assert.assertNotNull(encodedEnv.getDOM());
         
         XMLAssert.assertXMLIdentical(new Diff(controlEnv.getDOM().getOwnerDocument(), encodedEnv.getDOM().getOwnerDocument()), true);
     }

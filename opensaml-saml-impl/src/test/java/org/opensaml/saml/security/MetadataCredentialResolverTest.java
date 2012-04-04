@@ -21,7 +21,7 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
 import org.testng.Assert;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import java.security.cert.X509Certificate;
 import java.security.interfaces.RSAPublicKey;
 import java.util.ArrayList;
@@ -210,23 +210,23 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
            checkContextAndID(credential, idpEntityID, idpRole);
         }
         
-        AssertJUnit.assertEquals("Incorrect number of credentials resolved", 3, resolved.size());
+        Assert.assertEquals(resolved.size(), 3, "Incorrect number of credentials resolved");
         
         for (Credential credential : resolved) {
             X509Credential x509Cred;
             switch(credential.getUsageType()) {
                 case SIGNING:
                     x509Cred = (X509Credential) credential;
-                    AssertJUnit.assertEquals("Unexpected value for certificate", idpDSACert, x509Cred.getEntityCertificate());
+                    Assert.assertEquals(x509Cred.getEntityCertificate(), idpDSACert, "Unexpected value for certificate");
                     break;
                 case ENCRYPTION:
-                    AssertJUnit.assertTrue("Expected value for key name not found", 
-                            credential.getKeyNames().contains(idpRSAPubKeyName));
-                    AssertJUnit.assertEquals("Unexpected value for key", idpRSAPubKey, credential.getPublicKey());
+                    Assert.assertTrue(credential.getKeyNames().contains(idpRSAPubKeyName), 
+                            "Expected value for key name not found");
+                    Assert.assertEquals(credential.getPublicKey(), idpRSAPubKey, "Unexpected value for key");
                     break;
                 case UNSPECIFIED:
                     x509Cred = (X509Credential) credential;
-                    AssertJUnit.assertEquals("Unexpected value for certificate", idpRSACert, x509Cred.getEntityCertificate());
+                    Assert.assertEquals(x509Cred.getEntityCertificate(), idpRSACert, "Unexpected value for certificate");
                     break;
                 default:
             }
@@ -250,7 +250,7 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
            checkContextAndID(credential, idpEntityID, idpRole);
         }
         
-        AssertJUnit.assertEquals("Incorrect number of credentials resolved", 2, resolved.size());
+        Assert.assertEquals(resolved.size(), 2, "Incorrect number of credentials resolved");
         
         for (Credential credential : resolved) {
             X509Credential x509Cred;
@@ -259,13 +259,13 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
                     Assert.fail("Credential with invalid usage was resolved");
                     break;
                 case ENCRYPTION:
-                    AssertJUnit.assertTrue("Expected value for key name not found", 
-                            credential.getKeyNames().contains(idpRSAPubKeyName));
-                    AssertJUnit.assertEquals("Unexpected value for key", idpRSAPubKey, credential.getPublicKey());
+                    Assert.assertTrue(credential.getKeyNames().contains(idpRSAPubKeyName), 
+                            "Expected value for key name not found");
+                    Assert.assertEquals(credential.getPublicKey(), idpRSAPubKey, "Unexpected value for key");
                     break;
                 case UNSPECIFIED:
                     x509Cred = (X509Credential) credential;
-                    AssertJUnit.assertEquals("Unexpected value for certificate", idpRSACert, x509Cred.getEntityCertificate());
+                    Assert.assertEquals(x509Cred.getEntityCertificate(), idpRSACert, "Unexpected value for certificate");
                     break;
                 default:
             }
@@ -289,21 +289,21 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
            checkContextAndID(credential, idpEntityID, idpRole);
         }
         
-        AssertJUnit.assertEquals("Incorrect number of credentials resolved", 2, resolved.size());
+        Assert.assertEquals(resolved.size(), 2, "Incorrect number of credentials resolved");
         
         for (Credential credential : resolved) {
             X509Credential x509Cred;
             switch(credential.getUsageType()) {
                 case SIGNING:
                     x509Cred = (X509Credential) credential;
-                    AssertJUnit.assertEquals("Unexpected value for certificate", idpDSACert, x509Cred.getEntityCertificate());
+                    Assert.assertEquals(x509Cred.getEntityCertificate(), idpDSACert, "Unexpected value for certificate");
                     break;
                 case ENCRYPTION:
                     Assert.fail("Credential with invalid usage was resolved");
                     break;
                 case UNSPECIFIED:
                     x509Cred = (X509Credential) credential;
-                    AssertJUnit.assertEquals("Unexpected value for certificate", idpRSACert, x509Cred.getEntityCertificate());
+                    Assert.assertEquals(x509Cred.getEntityCertificate(), idpRSACert, "Unexpected value for certificate");
                     break;
                 default:
             }
@@ -327,19 +327,19 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
            checkContextAndID(credential, idpEntityID, idpRole);
         }
         
-        AssertJUnit.assertEquals("Incorrect number of credentials resolved", 2, resolved.size());
+        Assert.assertEquals(resolved.size(), 2, "Incorrect number of credentials resolved");
         
         for (Credential credential : resolved) {
             X509Credential x509Cred;
             switch(credential.getUsageType()) {
                 case SIGNING:
                     x509Cred = (X509Credential) credential;
-                    AssertJUnit.assertEquals("Unexpected value for certificate", idpDSACert, x509Cred.getEntityCertificate());
+                    Assert.assertEquals(x509Cred.getEntityCertificate(), idpDSACert, "Unexpected value for certificate");
                     break;
                 case ENCRYPTION:
-                    AssertJUnit.assertTrue("Expected value for key name not found", 
-                            credential.getKeyNames().contains(idpRSAPubKeyName));
-                    AssertJUnit.assertEquals("Unexpected value for key", idpRSAPubKey, credential.getPublicKey());
+                    Assert.assertTrue(credential.getKeyNames().contains(idpRSAPubKeyName), 
+                            "Expected value for key name not found");
+                    Assert.assertEquals(credential.getPublicKey(), idpRSAPubKey, "Unexpected value for key");
                     break;
                 case UNSPECIFIED:
                     Assert.fail("Credential was resolved from invalid protocol");
@@ -367,14 +367,14 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
            checkContextAndID(credential, idpEntityID, idpRole);
         }
         
-        AssertJUnit.assertEquals("Incorrect number of credentials resolved", 1, resolved.size());
+        Assert.assertEquals(resolved.size(), 1, "Incorrect number of credentials resolved");
         
         for (Credential credential : resolved) {
             X509Credential x509Cred;
             switch(credential.getUsageType()) {
                 case SIGNING:
                     x509Cred = (X509Credential) credential;
-                    AssertJUnit.assertEquals("Unexpected value for certificate", idpDSACert, x509Cred.getEntityCertificate());
+                    Assert.assertEquals(x509Cred.getEntityCertificate(), idpDSACert, "Unexpected value for certificate");
                     break;
                 case ENCRYPTION:
                     Assert.fail("Credential was resolved from invalid protocol or usage");
@@ -405,7 +405,7 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
            checkContextAndID(credential, idpEntityID, idpRole);
         }
         
-        AssertJUnit.assertEquals("Incorrect number of credentials resolved", 1, resolved.size());
+        Assert.assertEquals(resolved.size(), 1, "Incorrect number of credentials resolved");
         
         for (Credential credential : resolved) {
             switch(credential.getUsageType()) {
@@ -413,9 +413,9 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
                     Assert.fail("Credential was resolved from invalid protocol or usage");
                     break;
                 case ENCRYPTION:
-                    AssertJUnit.assertTrue("Expected value for key name not found", 
-                            credential.getKeyNames().contains(idpRSAPubKeyName));
-                    AssertJUnit.assertEquals("Unexpected value for key", idpRSAPubKey, credential.getPublicKey());
+                    Assert.assertTrue(credential.getKeyNames().contains(idpRSAPubKeyName), 
+                            "Expected value for key name not found");
+                    Assert.assertEquals(credential.getPublicKey(), idpRSAPubKey, "Unexpected value for key");
                     break;
                 case UNSPECIFIED:
                     Assert.fail("Credential was resolved from invalid protocol or usage");
@@ -442,7 +442,7 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
            checkContextAndID(credential, idpEntityID, idpRole);
         }
         
-        AssertJUnit.assertEquals("Incorrect number of credentials resolved", 1, resolved.size());
+        Assert.assertEquals(resolved.size(), 1, "Incorrect number of credentials resolved");
         
         for (Credential credential : resolved) {
             X509Credential x509Cred;
@@ -455,7 +455,7 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
                     break;
                 case UNSPECIFIED:
                     x509Cred = (X509Credential) credential;
-                    AssertJUnit.assertEquals("Unexpected value for certificate", idpRSACert, x509Cred.getEntityCertificate());
+                    Assert.assertEquals(x509Cred.getEntityCertificate(), idpRSACert, "Unexpected value for certificate");
                     break;
                 default:
             }
@@ -480,7 +480,7 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
            checkContextAndID(credential, idpEntityID, idpRole);
         }
         
-        AssertJUnit.assertEquals("Incorrect number of credentials resolved", 1, resolved.size());
+        Assert.assertEquals(resolved.size(), 1, "Incorrect number of credentials resolved");
         
         for (Credential credential : resolved) {
             X509Credential x509Cred;
@@ -493,7 +493,7 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
                     break;
                 case UNSPECIFIED:
                     x509Cred = (X509Credential) credential;
-                    AssertJUnit.assertEquals("Unexpected value for certificate", idpRSACert, x509Cred.getEntityCertificate());
+                    Assert.assertEquals(x509Cred.getEntityCertificate(), idpRSACert, "Unexpected value for certificate");
                     break;
                 default:
             }
@@ -518,7 +518,7 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
            checkContextAndID(credential, idpEntityID, idpRole);
         }
         
-        AssertJUnit.assertEquals("Incorrect number of credentials resolved", 1, resolved.size());
+        Assert.assertEquals(resolved.size(), 1, "Incorrect number of credentials resolved");
         
         for (Credential credential : resolved) {
             X509Credential x509Cred;
@@ -531,7 +531,7 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
                     break;
                 case UNSPECIFIED:
                     x509Cred = (X509Credential) credential;
-                    AssertJUnit.assertEquals("Unexpected value for certificate", idpRSACert, x509Cred.getEntityCertificate());
+                    Assert.assertEquals(x509Cred.getEntityCertificate(), idpRSACert, "Unexpected value for certificate");
                     break;
                 default:
             }
@@ -546,24 +546,24 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
      * @param role the expected type of role from the context role descriptor data
      */
     private void checkContextAndID(Credential credential, String entityID, QName role) {
-        AssertJUnit.assertEquals("Unexpected value found for credential entityID", entityID, credential.getEntityId());
+        Assert.assertEquals(credential.getEntityId(), entityID, "Unexpected value found for credential entityID");
         
         SAMLMDCredentialContext mdContext = credential.getCredentalContextSet().get(SAMLMDCredentialContext.class);
-        AssertJUnit.assertNotNull("SAMLMDCredentialContext was not available", mdContext);
+        Assert.assertNotNull(mdContext, "SAMLMDCredentialContext was not available");
         
-        AssertJUnit.assertNotNull(mdContext.getRoleDescriptor());
+        Assert.assertNotNull(mdContext.getRoleDescriptor());
         RoleDescriptor contextRole = mdContext.getRoleDescriptor();
-        AssertJUnit.assertEquals("Unexpected value for context role descriptor", role, contextRole.getElementQName());
+        Assert.assertEquals(contextRole.getElementQName(), role, "Unexpected value for context role descriptor");
         
-        AssertJUnit.assertTrue(contextRole.getParent() instanceof EntityDescriptor);
+        Assert.assertTrue(contextRole.getParent() instanceof EntityDescriptor);
         EntityDescriptor entityDescriptor = (EntityDescriptor) mdContext.getRoleDescriptor().getParent();
-        AssertJUnit.assertEquals("Unexpected value for entity descriptor entity ID", entityID, entityDescriptor.getEntityID());
+        Assert.assertEquals(entityDescriptor.getEntityID(), entityID, "Unexpected value for entity descriptor entity ID");
         
-        AssertJUnit.assertTrue(entityDescriptor.getParent() instanceof EntitiesDescriptor);
+        Assert.assertTrue(entityDescriptor.getParent() instanceof EntitiesDescriptor);
         EntitiesDescriptor entitiesDescriptor = (EntitiesDescriptor) entityDescriptor.getParent();
         
-        AssertJUnit.assertNotNull(entitiesDescriptor.getExtensions());
-        AssertJUnit.assertNotNull(entitiesDescriptor.getExtensions().getUnknownXMLObjects().get(0));
+        Assert.assertNotNull(entitiesDescriptor.getExtensions());
+        Assert.assertNotNull(entitiesDescriptor.getExtensions().getUnknownXMLObjects().get(0));
     }
 
 }

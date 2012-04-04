@@ -19,7 +19,7 @@ package org.opensaml.core.xml.schema;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.xml.XMLParserException;
@@ -81,8 +81,8 @@ public class XSIntegerTest extends XMLObjectBaseTestCase {
         Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(document.getDocumentElement());
         XSInteger xsInteger = (XSInteger) unmarshaller.unmarshall(document.getDocumentElement());
         
-        AssertJUnit.assertEquals("Unexpected XSInteger QName", expectedXMLObjectQName, xsInteger.getElementQName());
-        AssertJUnit.assertEquals("Unexpected XSInteger schema type", XSInteger.TYPE_NAME, xsInteger.getSchemaType());
-        AssertJUnit.assertEquals("Unexpected value of XSInteger", xsInteger.getValue(), expectedValue);
+        Assert.assertEquals(xsInteger.getElementQName(), expectedXMLObjectQName, "Unexpected XSInteger QName");
+        Assert.assertEquals(xsInteger.getSchemaType(), XSInteger.TYPE_NAME, "Unexpected XSInteger schema type");
+        Assert.assertEquals(expectedValue, xsInteger.getValue(), "Unexpected value of XSInteger");
     }
 }

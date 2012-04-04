@@ -19,7 +19,7 @@ package org.opensaml.saml.saml2.core.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -62,7 +62,7 @@ public class AttributeTest extends XMLObjectProviderBaseTestCase {
         Attribute attribute = (Attribute) unmarshallElement(singleElementFile);
 
         String name = attribute.getName();
-        AssertJUnit.assertEquals("Name was " + name + ", expected " + expectedName, expectedName, name);
+        Assert.assertEquals(name, expectedName, "Name was " + name + ", expected " + expectedName);
 
     }
 
@@ -72,15 +72,15 @@ public class AttributeTest extends XMLObjectProviderBaseTestCase {
         Attribute attribute = (Attribute) unmarshallElement(singleElementOptionalAttributesFile);
 
         String name = attribute.getName();
-        AssertJUnit.assertEquals("Name was " + name + ", expected " + expectedName, expectedName, name);
+        Assert.assertEquals(name, expectedName, "Name was " + name + ", expected " + expectedName);
 
         String nameFormat = attribute.getNameFormat();
-        AssertJUnit.assertEquals("NameFormat was " + nameFormat + ", expected " + expectedNameFormat, expectedNameFormat,
-                nameFormat);
+        Assert.assertEquals(nameFormat, expectedNameFormat,
+                "NameFormat was " + nameFormat + ", expected " + expectedNameFormat);
 
         String friendlyName = attribute.getFriendlyName();
-        AssertJUnit.assertEquals("FriendlyName was " + friendlyName + ", expected " + expectedFriendlyName, expectedFriendlyName,
-                friendlyName);
+        Assert.assertEquals(friendlyName, expectedFriendlyName,
+                "FriendlyName was " + friendlyName + ", expected " + expectedFriendlyName);
     }
 
     /** {@inheritDoc} */

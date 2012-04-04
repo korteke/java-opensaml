@@ -22,7 +22,7 @@ package org.opensaml.saml.saml2.metadata.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.saml2.metadata.NameIDFormat;
 
@@ -53,7 +53,7 @@ public class NameIDFormatTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         NameIDFormat format = (NameIDFormat) unmarshallElement(singleElementFile);
         
-        AssertJUnit.assertEquals("Format was not expected value", expectFormat, format.getFormat());
+        Assert.assertEquals(format.getFormat(), expectFormat, "Format was not expected value");
     }
 
     /** {@inheritDoc} */

@@ -20,7 +20,7 @@ package org.opensaml.saml.saml1.binding.decoding;
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
 import org.testng.Assert;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.KeyPair;
@@ -85,9 +85,9 @@ public class HTTPPostDecoderTest extends XMLObjectBaseTestCase {
 
         decoder.decode(messageContext);
 
-        AssertJUnit.assertTrue(messageContext.getInboundMessage() instanceof Response);
-        AssertJUnit.assertTrue(messageContext.getInboundSAMLMessage() instanceof Response);
-        AssertJUnit.assertEquals(expectedRelayValue, messageContext.getRelayState());
+        Assert.assertTrue(messageContext.getInboundMessage() instanceof Response);
+        Assert.assertTrue(messageContext.getInboundSAMLMessage() instanceof Response);
+        Assert.assertEquals(messageContext.getRelayState(), expectedRelayValue);
     }
 
     @Test

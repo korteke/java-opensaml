@@ -19,7 +19,7 @@ package org.opensaml.saml.saml2.ecp.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.saml2.core.IDPList;
 import org.opensaml.saml.saml2.core.Issuer;
@@ -60,10 +60,10 @@ public class RequestTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         Request request = (Request) unmarshallElement(singleElementFile);
         
-        AssertJUnit.assertNotNull(request);
+        Assert.assertNotNull(request);
         
-        AssertJUnit.assertEquals("SOAP mustUnderstand had unxpected value", expectedSOAP11MustUnderstand, request.isSOAP11MustUnderstand());
-        AssertJUnit.assertEquals("SOAP actor had unxpected value", expectedSOAP11Actor, request.getSOAP11Actor());
+        Assert.assertEquals(request.isSOAP11MustUnderstand(), expectedSOAP11MustUnderstand, "SOAP mustUnderstand had unxpected value");
+        Assert.assertEquals(request.getSOAP11Actor(), expectedSOAP11Actor, "SOAP actor had unxpected value");
     }
  
     /** {@inheritDoc} */
@@ -71,13 +71,13 @@ public class RequestTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementOptionalAttributesUnmarshall() {
         Request request = (Request) unmarshallElement(singleElementOptionalAttributesFile);
         
-        AssertJUnit.assertNotNull(request);
+        Assert.assertNotNull(request);
         
-        AssertJUnit.assertEquals("SOAP mustUnderstand had unxpected value", expectedSOAP11MustUnderstand, request.isSOAP11MustUnderstand());
-        AssertJUnit.assertEquals("SOAP actor had unxpected value", expectedSOAP11Actor, request.getSOAP11Actor());
+        Assert.assertEquals(request.isSOAP11MustUnderstand(), expectedSOAP11MustUnderstand, "SOAP mustUnderstand had unxpected value");
+        Assert.assertEquals(request.getSOAP11Actor(), expectedSOAP11Actor, "SOAP actor had unxpected value");
         
-        AssertJUnit.assertEquals("IsPassive had unexpected value", expectedPassive, request.isPassive());
-        AssertJUnit.assertEquals("ProviderName had unexpected value", expectedProviderName, request.getProviderName());
+        Assert.assertEquals(request.isPassive(), expectedPassive, "IsPassive had unexpected value");
+        Assert.assertEquals(request.getProviderName(), expectedProviderName, "ProviderName had unexpected value");
     }
    
     /** {@inheritDoc} */
@@ -85,13 +85,13 @@ public class RequestTest extends XMLObjectProviderBaseTestCase {
     public void testChildElementsUnmarshall() {
         Request request = (Request) unmarshallElement(childElementsFile);
         
-        AssertJUnit.assertNotNull(request);
+        Assert.assertNotNull(request);
         
-        AssertJUnit.assertEquals("SOAP mustUnderstand had unxpected value", expectedSOAP11MustUnderstand, request.isSOAP11MustUnderstand());
-        AssertJUnit.assertEquals("SOAP actor had unxpected value", expectedSOAP11Actor, request.getSOAP11Actor());
+        Assert.assertEquals(request.isSOAP11MustUnderstand(), expectedSOAP11MustUnderstand, "SOAP mustUnderstand had unxpected value");
+        Assert.assertEquals(request.getSOAP11Actor(), expectedSOAP11Actor, "SOAP actor had unxpected value");
         
-        AssertJUnit.assertNotNull("Issuer was null", request.getIssuer());
-        AssertJUnit.assertNotNull("IDPList was null", request.getIDPList());
+        Assert.assertNotNull(request.getIssuer(), "Issuer was null");
+        Assert.assertNotNull(request.getIDPList(), "IDPList was null");
     }
     
     /** {@inheritDoc} */

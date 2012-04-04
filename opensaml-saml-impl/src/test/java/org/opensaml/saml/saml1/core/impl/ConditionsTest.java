@@ -22,7 +22,7 @@
 package org.opensaml.saml.saml1.core.impl;
 
 import org.testng.annotations.Test;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import org.joda.time.DateTime;
@@ -79,10 +79,10 @@ public class ConditionsTest extends XMLObjectProviderBaseTestCase {
         conditions = (Conditions) unmarshallElement(singleElementFile);
 
         DateTime date = conditions.getNotBefore();
-        AssertJUnit.assertNull("NotBefore attribute has a value of " + date + ", expected no value", date);
+        Assert.assertNull(date, "NotBefore attribute has a value of " + date + ", expected no value");
 
         date = conditions.getNotOnOrAfter();
-        AssertJUnit.assertNull("NotOnOrAfter attribute has a value of " + date + ", expected no value", date);
+        Assert.assertNull(date, "NotOnOrAfter attribute has a value of " + date + ", expected no value");
 
     }
 
@@ -93,8 +93,8 @@ public class ConditionsTest extends XMLObjectProviderBaseTestCase {
 
         conditions = (Conditions) unmarshallElement(singleElementOptionalAttributesFile);
 
-        AssertJUnit.assertEquals("NotBefore attribute ", expectedNotBeforeDate, conditions.getNotBefore());
-        AssertJUnit.assertEquals("NotOnOrAfter attribute ", expectedNotOnOfAfter, conditions.getNotOnOrAfter());
+        Assert.assertEquals(conditions.getNotBefore(), expectedNotBeforeDate, "NotBefore attribute ");
+        Assert.assertEquals(conditions.getNotOnOrAfter(), expectedNotOnOfAfter, "NotOnOrAfter attribute ");
     }
 
     /*
@@ -106,10 +106,10 @@ public class ConditionsTest extends XMLObjectProviderBaseTestCase {
 
         conditions = (Conditions) unmarshallElement(childElementsFile);
 
-        AssertJUnit.assertEquals("Number of AudienceRestrictionCondition elements", 3, conditions
-                .getAudienceRestrictionConditions().size());
-        AssertJUnit.assertEquals("Number of DoNotCacheCondition children", 1, conditions.getDoNotCacheConditions().size());
-        AssertJUnit.assertEquals("Wrong number of Condition children", 4, conditions.getConditions().size());
+        Assert.assertEquals(conditions
+                .getAudienceRestrictionConditions().size(), 3, "Number of AudienceRestrictionCondition elements");
+        Assert.assertEquals(conditions.getDoNotCacheConditions().size(), 1, "Number of DoNotCacheCondition children");
+        Assert.assertEquals(conditions.getConditions().size(), 4, "Wrong number of Condition children");
     }
 
     /** {@inheritDoc} */

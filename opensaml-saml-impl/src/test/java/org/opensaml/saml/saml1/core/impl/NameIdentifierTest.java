@@ -21,7 +21,7 @@
 package org.opensaml.saml.saml1.core.impl;
 
 import org.testng.annotations.Test;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -59,9 +59,9 @@ public class NameIdentifierTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         NameIdentifier nameIdentifier = (NameIdentifier) unmarshallElement(singleElementFile);
         
-        AssertJUnit.assertNull("Name Identifer contents present", nameIdentifier.getNameIdentifier());
-        AssertJUnit.assertNull("NameQualifier present", nameIdentifier.getNameQualifier());
-        AssertJUnit.assertNull("Format present", nameIdentifier.getFormat());
+        Assert.assertNull(nameIdentifier.getNameIdentifier(), "Name Identifer contents present");
+        Assert.assertNull(nameIdentifier.getNameQualifier(), "NameQualifier present");
+        Assert.assertNull(nameIdentifier.getFormat(), "Format present");
     }
 
     /** {@inheritDoc} */
@@ -70,9 +70,9 @@ public class NameIdentifierTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementOptionalAttributesUnmarshall() {
         NameIdentifier nameIdentifier = (NameIdentifier) unmarshallElement(singleElementOptionalAttributesFile);
         
-        AssertJUnit.assertEquals("Name Identifier contents", expectedNameIdentifier, nameIdentifier.getNameIdentifier());
-        AssertJUnit.assertEquals("NameQualfier attribute", expectedNameQualifier, nameIdentifier.getNameQualifier());
-        AssertJUnit.assertEquals("Format attribute", expectedFormat, nameIdentifier.getFormat());
+        Assert.assertEquals(nameIdentifier.getNameIdentifier(), expectedNameIdentifier, "Name Identifier contents");
+        Assert.assertEquals(nameIdentifier.getNameQualifier(), expectedNameQualifier, "NameQualfier attribute");
+        Assert.assertEquals(nameIdentifier.getFormat(), expectedFormat, "Format attribute");
     }
 
     /** {@inheritDoc} */

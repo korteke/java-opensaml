@@ -22,7 +22,7 @@
 package org.opensaml.saml.saml1.core.impl;
 
 import org.testng.annotations.Test;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -55,8 +55,8 @@ public class SubjectTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         Subject subject = (Subject) unmarshallElement(singleElementFile);
 
-        AssertJUnit.assertNull("Non zero number of child NameIdentifier elements", subject.getNameIdentifier());
-        AssertJUnit.assertNull("Non zero number of child SubjectConfirmation elements", subject.getSubjectConfirmation());
+        Assert.assertNull(subject.getNameIdentifier(), "Non zero number of child NameIdentifier elements");
+        Assert.assertNull(subject.getSubjectConfirmation(), "Non zero number of child SubjectConfirmation elements");
     }
 
     /**
@@ -66,8 +66,8 @@ public class SubjectTest extends XMLObjectProviderBaseTestCase {
     public void testChildElementsUnmarshall() {
         Subject subject = (Subject) unmarshallElement(childElementsFile);
 
-        AssertJUnit.assertNotNull("Zero child NameIdentifier elements", subject.getNameIdentifier());
-        AssertJUnit.assertNotNull("Zero child SubjectConfirmation elements", subject.getSubjectConfirmation());
+        Assert.assertNotNull(subject.getNameIdentifier(), "Zero child NameIdentifier elements");
+        Assert.assertNotNull(subject.getSubjectConfirmation(), "Zero child SubjectConfirmation elements");
     }
 
     /** {@inheritDoc} */

@@ -22,7 +22,7 @@
 package org.opensaml.saml.saml1.core.impl;
 
 import org.testng.annotations.Test;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -58,7 +58,7 @@ public class EvidenceTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         Evidence evidence = (Evidence) unmarshallElement(singleElementFile);
 
-        AssertJUnit.assertEquals("AssertionIDReference or Assertion element was present", 0, evidence.getEvidence().size());
+        Assert.assertEquals(evidence.getEvidence().size(), 0, "AssertionIDReference or Assertion element was present");
     }
 
     /** {@inheritDoc} */
@@ -67,9 +67,9 @@ public class EvidenceTest extends XMLObjectProviderBaseTestCase {
     public void testChildElementsUnmarshall() {
         Evidence evidence = (Evidence) unmarshallElement(childElementsFile);
 
-        AssertJUnit.assertEquals("Assertion and AssertionIDReference element count", 4, evidence.getEvidence().size());
-        AssertJUnit.assertEquals("AssertionIDReference element count", 2, evidence.getAssertionIDReferences().size());
-        AssertJUnit.assertEquals("Assertion element count", 2, evidence.getAssertions().size());
+        Assert.assertEquals(evidence.getEvidence().size(), 4, "Assertion and AssertionIDReference element count");
+        Assert.assertEquals(evidence.getAssertionIDReferences().size(), 2, "AssertionIDReference element count");
+        Assert.assertEquals(evidence.getAssertions().size(), 2, "Assertion element count");
     }
 
     /** {@inheritDoc} */

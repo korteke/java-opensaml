@@ -20,7 +20,7 @@ package org.opensaml.xmlsec.encryption.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.xmlsec.encryption.Public;
 
@@ -51,8 +51,8 @@ public class PublicTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         Public cbType = (Public) unmarshallElement(singleElementFile);
         
-        AssertJUnit.assertNotNull("Public", cbType);
-        AssertJUnit.assertEquals("Public", cbType.getValue(), expectedCryptoBinaryContent);
+        Assert.assertNotNull(cbType, "Public");
+        Assert.assertEquals(expectedCryptoBinaryContent, cbType.getValue(), "Public");
     }
 
     /** {@inheritDoc} */

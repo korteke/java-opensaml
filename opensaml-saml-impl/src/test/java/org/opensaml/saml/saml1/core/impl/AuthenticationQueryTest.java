@@ -22,7 +22,7 @@
 package org.opensaml.saml.saml1.core.impl;
 
 import org.testng.annotations.Test;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -59,8 +59,8 @@ public class AuthenticationQueryTest extends XMLObjectProviderBaseTestCase {
         
         authenticationQuery = (AuthenticationQuery) unmarshallElement(singleElementFile);
 
-        AssertJUnit.assertNull("AuthenticationQuery attribute present", authenticationQuery.getAuthenticationMethod());;
-        AssertJUnit.assertNull("Subject element present", authenticationQuery.getSubject());
+        Assert.assertNull(authenticationQuery.getAuthenticationMethod(), "AuthenticationQuery attribute present");;
+        Assert.assertNull(authenticationQuery.getSubject(), "Subject element present");
     }
 
     /** {@inheritDoc} */
@@ -70,8 +70,8 @@ public class AuthenticationQueryTest extends XMLObjectProviderBaseTestCase {
         
         authenticationQuery = (AuthenticationQuery) unmarshallElement(singleElementOptionalAttributesFile);
 
-        AssertJUnit.assertEquals("AuthenticationQuery attribute", expectedAuthenticationMethod, authenticationQuery.getAuthenticationMethod());;
-        AssertJUnit.assertNull("Subject element present", authenticationQuery.getSubject());
+        Assert.assertEquals(authenticationQuery.getAuthenticationMethod(), expectedAuthenticationMethod, "AuthenticationQuery attribute");;
+        Assert.assertNull(authenticationQuery.getSubject(), "Subject element present");
     }
 
     /** {@inheritDoc} */
@@ -81,7 +81,7 @@ public class AuthenticationQueryTest extends XMLObjectProviderBaseTestCase {
         
         authenticationQuery = (AuthenticationQuery) unmarshallElement(childElementsFile);
 
-        AssertJUnit.assertNotNull("No Subject element found", authenticationQuery.getSubject());
+        Assert.assertNotNull(authenticationQuery.getSubject(), "No Subject element found");
     }
 
     /** {@inheritDoc} */

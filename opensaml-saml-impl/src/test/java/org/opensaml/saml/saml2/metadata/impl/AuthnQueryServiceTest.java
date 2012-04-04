@@ -22,7 +22,7 @@ package org.opensaml.saml.saml2.metadata.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.saml2.metadata.AuthnQueryService;
 
@@ -57,8 +57,8 @@ public class AuthnQueryServiceTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         AuthnQueryService service = (AuthnQueryService) unmarshallElement(singleElementFile);
         
-        AssertJUnit.assertEquals("Binding URI was not expected value", expectedBinding, service.getBinding());
-        AssertJUnit.assertEquals("Location was not expected value", expectedLocation, service.getLocation());
+        Assert.assertEquals(service.getBinding(), expectedBinding, "Binding URI was not expected value");
+        Assert.assertEquals(service.getLocation(), expectedLocation, "Location was not expected value");
     }
 
     /** {@inheritDoc} */
@@ -66,9 +66,9 @@ public class AuthnQueryServiceTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementOptionalAttributesUnmarshall() {
         AuthnQueryService service = (AuthnQueryService) unmarshallElement(singleElementOptionalAttributesFile);
         
-        AssertJUnit.assertEquals("Binding URI was not expected value", expectedBinding, service.getBinding());
-        AssertJUnit.assertEquals("Location was not expected value", expectedLocation, service.getLocation());
-        AssertJUnit.assertEquals("ResponseLocation was not expected value", expectedResponseLocation, service.getResponseLocation());;
+        Assert.assertEquals(service.getBinding(), expectedBinding, "Binding URI was not expected value");
+        Assert.assertEquals(service.getLocation(), expectedLocation, "Location was not expected value");
+        Assert.assertEquals(service.getResponseLocation(), expectedResponseLocation, "ResponseLocation was not expected value");;
     }
 
     /** {@inheritDoc} */

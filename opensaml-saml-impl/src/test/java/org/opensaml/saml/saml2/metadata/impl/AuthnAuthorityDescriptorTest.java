@@ -19,7 +19,7 @@ package org.opensaml.saml.saml2.metadata.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -102,17 +102,17 @@ public class AuthnAuthorityDescriptorTest extends XMLObjectProviderBaseTestCase 
         AuthnAuthorityDescriptor authnAuthorityObj = (AuthnAuthorityDescriptor) unmarshallElement(singleElementFile);
 
         List<String> protoEnum = authnAuthorityObj.getSupportedProtocols();
-        AssertJUnit.assertEquals("Supported protocol enumeration was not equal to expected enumeration",
-                expectedSupportedProtocols, protoEnum);
+        Assert.assertEquals(protoEnum,
+                expectedSupportedProtocols, "Supported protocol enumeration was not equal to expected enumeration");
 
         Long duration = authnAuthorityObj.getCacheDuration();
-        AssertJUnit.assertNull("cacheDuration attribute has a value of " + duration + ", expected no value", duration);
+        Assert.assertNull(duration, "cacheDuration attribute has a value of " + duration + ", expected no value");
 
         DateTime validUntil = authnAuthorityObj.getValidUntil();
-        AssertJUnit.assertNull("validUntil attribute has a value of " + validUntil + ", expected no value", validUntil);
+        Assert.assertNull(validUntil, "validUntil attribute has a value of " + validUntil + ", expected no value");
 
         String errorURL = authnAuthorityObj.getErrorURL();
-        AssertJUnit.assertNull("errorURL attribute has a value of " + errorURL + ", expected no value", errorURL);
+        Assert.assertNull(errorURL, "errorURL attribute has a value of " + errorURL + ", expected no value");
     }
 
     /** {@inheritDoc} */
@@ -121,20 +121,20 @@ public class AuthnAuthorityDescriptorTest extends XMLObjectProviderBaseTestCase 
         AuthnAuthorityDescriptor authnAuthorityObj = (AuthnAuthorityDescriptor) unmarshallElement(singleElementOptionalAttributesFile);
 
         List<String> protoEnum = authnAuthorityObj.getSupportedProtocols();
-        AssertJUnit.assertEquals("Supported protocol enumeration was not equal to expected enumeration",
-                expectedSupportedProtocols, protoEnum);
+        Assert.assertEquals(protoEnum,
+                expectedSupportedProtocols, "Supported protocol enumeration was not equal to expected enumeration");
 
         long duration = authnAuthorityObj.getCacheDuration().longValue();
-        AssertJUnit.assertEquals("cacheDuration attribute has a value of " + duration + ", expected a value of "
-                + expectedCacheDuration, expectedCacheDuration, duration);
+        Assert.assertEquals(duration, expectedCacheDuration, "cacheDuration attribute has a value of " + duration + ", expected a value of "
+                        + expectedCacheDuration);
 
         DateTime validUntil = authnAuthorityObj.getValidUntil();
-        AssertJUnit.assertEquals("validUntil attribute value did not match expected value", 0, expectedValidUntil
-                .compareTo(validUntil));
+        Assert.assertEquals(expectedValidUntil
+                .compareTo(validUntil), 0, "validUntil attribute value did not match expected value");
 
         String errorURL = authnAuthorityObj.getErrorURL();
-        AssertJUnit.assertEquals("errorURL attribute has a value of " + errorURL + ", expected a value of " + expectedErrorURL,
-                expectedErrorURL, errorURL);
+        Assert.assertEquals(errorURL,
+                expectedErrorURL, "errorURL attribute has a value of " + errorURL + ", expected a value of " + expectedErrorURL);
     }
     
     /** {@inheritDoc} */
@@ -144,15 +144,15 @@ public class AuthnAuthorityDescriptorTest extends XMLObjectProviderBaseTestCase 
     {
         AuthnAuthorityDescriptor authnAuthorityObj = (AuthnAuthorityDescriptor) unmarshallElement(childElementsFile);
 
-        AssertJUnit.assertNotNull("<Extensions>", authnAuthorityObj.getExtensions());
-        AssertJUnit.assertEquals("KeyDescriptor", 0, authnAuthorityObj.getKeyDescriptors().size());
+        Assert.assertNotNull(authnAuthorityObj.getExtensions(), "<Extensions>");
+        Assert.assertEquals(authnAuthorityObj.getKeyDescriptors().size(), 0, "KeyDescriptor");
 
-        AssertJUnit.assertEquals("KeyDescriptors count", expectedKeyDescriptors, authnAuthorityObj.getKeyDescriptors().size());
-        AssertJUnit.assertNotNull("Organization", authnAuthorityObj.getOrganization());
-        AssertJUnit.assertEquals("ContactPersons count", expectedContactPersons, authnAuthorityObj.getContactPersons().size());
-        AssertJUnit.assertEquals("AuthnQueryServices count", expectedAuthnQueryServices, authnAuthorityObj.getAuthnQueryServices().size());
-        AssertJUnit.assertEquals("AssertionIDRequestServices count", expectedAssertionIdRequestServices, authnAuthorityObj.getAssertionIDRequestServices().size());
-        AssertJUnit.assertEquals("NameIdFormats count", expectedNameIdFormats, authnAuthorityObj.getNameIDFormats().size());
+        Assert.assertEquals(authnAuthorityObj.getKeyDescriptors().size(), expectedKeyDescriptors, "KeyDescriptors count");
+        Assert.assertNotNull(authnAuthorityObj.getOrganization(), "Organization");
+        Assert.assertEquals(authnAuthorityObj.getContactPersons().size(), expectedContactPersons, "ContactPersons count");
+        Assert.assertEquals(authnAuthorityObj.getAuthnQueryServices().size(), expectedAuthnQueryServices, "AuthnQueryServices count");
+        Assert.assertEquals(authnAuthorityObj.getAssertionIDRequestServices().size(), expectedAssertionIdRequestServices, "AssertionIDRequestServices count");
+        Assert.assertEquals(authnAuthorityObj.getNameIDFormats().size(), expectedNameIdFormats, "NameIdFormats count");
     }
 
     /** {@inheritDoc} */

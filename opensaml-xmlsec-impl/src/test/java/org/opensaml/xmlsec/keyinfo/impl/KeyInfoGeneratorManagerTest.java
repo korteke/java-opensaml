@@ -20,7 +20,7 @@ package org.opensaml.xmlsec.keyinfo.impl;
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
 import org.testng.Assert;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import java.util.Collection;
 
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
@@ -59,43 +59,43 @@ public class KeyInfoGeneratorManagerTest extends XMLObjectBaseTestCase {
     /** Test factory registration. */
     @Test
     public void testRegister() {
-        AssertJUnit.assertEquals("Unexpected # of managed factories", 0, manager.getFactories().size());
+        Assert.assertEquals(manager.getFactories().size(), 0, "Unexpected # of managed factories");
         
         manager.registerFactory(basicFactory);
-        AssertJUnit.assertEquals("Unexpected # of managed factories", 1, manager.getFactories().size());
-        AssertJUnit.assertTrue("Expected factory not found", manager.getFactories().contains(basicFactory));
+        Assert.assertEquals(manager.getFactories().size(), 1, "Unexpected # of managed factories");
+        Assert.assertTrue(manager.getFactories().contains(basicFactory), "Expected factory not found");
         
         manager.registerFactory(x509Factory);
-        AssertJUnit.assertEquals("Unexpected # of managed factories", 2, manager.getFactories().size());
-        AssertJUnit.assertTrue("Expected factory not found", manager.getFactories().contains(x509Factory));
+        Assert.assertEquals(manager.getFactories().size(), 2, "Unexpected # of managed factories");
+        Assert.assertTrue(manager.getFactories().contains(x509Factory), "Expected factory not found");
         
         // basicFactory2 should replace basicFactory
         manager.registerFactory(basicFactory2);
-        AssertJUnit.assertEquals("Unexpected # of managed factories", 2, manager.getFactories().size());
-        AssertJUnit.assertTrue("Expected factory not found", manager.getFactories().contains(basicFactory2));
-        AssertJUnit.assertFalse("Unexpected factory found", manager.getFactories().contains(basicFactory));
+        Assert.assertEquals(manager.getFactories().size(), 2, "Unexpected # of managed factories");
+        Assert.assertTrue(manager.getFactories().contains(basicFactory2), "Expected factory not found");
+        Assert.assertFalse(manager.getFactories().contains(basicFactory), "Unexpected factory found");
     }
     
     /** Test factory de-registration. */
     @Test
     public void testDeregister() {
-        AssertJUnit.assertEquals("Unexpected # of managed factories", 0, manager.getFactories().size());
+        Assert.assertEquals(manager.getFactories().size(), 0, "Unexpected # of managed factories");
         
         manager.registerFactory(basicFactory);
         manager.registerFactory(x509Factory);
-        AssertJUnit.assertEquals("Unexpected # of managed factories", 2, manager.getFactories().size());
-        AssertJUnit.assertTrue("Expected factory not found", manager.getFactories().contains(basicFactory));
-        AssertJUnit.assertTrue("Expected factory not found", manager.getFactories().contains(x509Factory));
+        Assert.assertEquals(manager.getFactories().size(), 2, "Unexpected # of managed factories");
+        Assert.assertTrue(manager.getFactories().contains(basicFactory), "Expected factory not found");
+        Assert.assertTrue(manager.getFactories().contains(x509Factory), "Expected factory not found");
         
         manager.deregisterFactory(x509Factory);
-        AssertJUnit.assertEquals("Unexpected # of managed factories", 1, manager.getFactories().size());
-        AssertJUnit.assertTrue("Expected factory not found", manager.getFactories().contains(basicFactory));
-        AssertJUnit.assertFalse("Unexpected factory found", manager.getFactories().contains(x509Factory));
+        Assert.assertEquals(manager.getFactories().size(), 1, "Unexpected # of managed factories");
+        Assert.assertTrue(manager.getFactories().contains(basicFactory), "Expected factory not found");
+        Assert.assertFalse(manager.getFactories().contains(x509Factory), "Unexpected factory found");
         
         manager.deregisterFactory(basicFactory);
-        AssertJUnit.assertEquals("Unexpected # of managed factories", 0, manager.getFactories().size());
-        AssertJUnit.assertFalse("Unexpected factory found", manager.getFactories().contains(basicFactory));
-        AssertJUnit.assertFalse("Unexpected factory found", manager.getFactories().contains(x509Factory));
+        Assert.assertEquals(manager.getFactories().size(), 0, "Unexpected # of managed factories");
+        Assert.assertFalse(manager.getFactories().contains(basicFactory), "Unexpected factory found");
+        Assert.assertFalse(manager.getFactories().contains(x509Factory), "Unexpected factory found");
     }
     
     /** Test that getFactories() works, and is unmodifiable. */
@@ -103,7 +103,7 @@ public class KeyInfoGeneratorManagerTest extends XMLObjectBaseTestCase {
     public void testGetFactories() {
         manager.registerFactory(basicFactory);
         manager.registerFactory(x509Factory);
-        AssertJUnit.assertEquals("Unexpected # of managed factories", 2, manager.getFactories().size());
+        Assert.assertEquals(manager.getFactories().size(), 2, "Unexpected # of managed factories");
         
         Collection<KeyInfoGeneratorFactory> factories = manager.getFactories();
         
@@ -120,20 +120,20 @@ public class KeyInfoGeneratorManagerTest extends XMLObjectBaseTestCase {
     public void testLookupFactory() {
         manager.registerFactory(basicFactory);
         manager.registerFactory(x509Factory);
-        AssertJUnit.assertEquals("Unexpected # of managed factories", 2, manager.getFactories().size());
+        Assert.assertEquals(manager.getFactories().size(), 2, "Unexpected # of managed factories");
         
         Credential basicCred = new BasicCredential();
         X509Credential x509Cred = new BasicX509Credential();
         
-        AssertJUnit.assertNotNull("Failed to find factory based on credential", manager.getFactory(basicCred));
-        AssertJUnit.assertTrue("Found incorrect factory based on credential", basicFactory == manager.getFactory(basicCred));
+        Assert.assertNotNull(manager.getFactory(basicCred), "Failed to find factory based on credential");
+        Assert.assertTrue(basicFactory == manager.getFactory(basicCred), "Found incorrect factory based on credential");
         
-        AssertJUnit.assertNotNull("Failed to find factory based on credential", manager.getFactory(x509Cred));
-        AssertJUnit.assertTrue("Found incorrect factory based on credential", x509Factory == manager.getFactory(x509Cred));
+        Assert.assertNotNull(manager.getFactory(x509Cred), "Failed to find factory based on credential");
+        Assert.assertTrue(x509Factory == manager.getFactory(x509Cred), "Found incorrect factory based on credential");
         
         manager.registerFactory(x509Factory2);
-        AssertJUnit.assertNotNull("Failed to find factory based on credential", manager.getFactory(x509Cred));
-        AssertJUnit.assertTrue("Found incorrect factory based on credential", x509Factory2 == manager.getFactory(x509Cred));
+        Assert.assertNotNull(manager.getFactory(x509Cred), "Failed to find factory based on credential");
+        Assert.assertTrue(x509Factory2 == manager.getFactory(x509Cred), "Found incorrect factory based on credential");
     }
 
 }

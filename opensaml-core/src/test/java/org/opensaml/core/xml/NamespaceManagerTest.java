@@ -20,7 +20,7 @@ package org.opensaml.core.xml;
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
 import org.testng.Assert;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import java.util.Set;
 
 import javax.xml.namespace.QName;
@@ -143,29 +143,29 @@ public class NamespaceManagerTest extends XMLObjectBaseTestCase {
         Namespace ns2 = new Namespace(ns2uri, ns2Prefix);
         
         //Will be there b/c it's the ns of the element
-        AssertJUnit.assertNotNull(findNamespace(nsManager, ns1));
-        AssertJUnit.assertEquals(1, nsManager.getNamespaces().size());
-        AssertJUnit.assertFalse(findNamespace(nsManager, ns1).alwaysDeclare());
+        Assert.assertNotNull(findNamespace(nsManager, ns1));
+        Assert.assertEquals(nsManager.getNamespaces().size(), 1);
+        Assert.assertFalse(findNamespace(nsManager, ns1).alwaysDeclare());
         
         nsManager.registerNamespaceDeclaration(ns1);
-        AssertJUnit.assertEquals(1, nsManager.getNamespaces().size());
-        AssertJUnit.assertNotNull(findNamespace(nsManager, ns1));
-        AssertJUnit.assertTrue(findNamespace(nsManager, ns1).alwaysDeclare());
+        Assert.assertEquals(nsManager.getNamespaces().size(), 1);
+        Assert.assertNotNull(findNamespace(nsManager, ns1));
+        Assert.assertTrue(findNamespace(nsManager, ns1).alwaysDeclare());
         
         nsManager.registerNamespaceDeclaration(ns2);
-        AssertJUnit.assertEquals(2, nsManager.getNamespaces().size());
-        AssertJUnit.assertNotNull(findNamespace(nsManager, ns2));
-        AssertJUnit.assertTrue(findNamespace(nsManager, ns2).alwaysDeclare());
+        Assert.assertEquals(nsManager.getNamespaces().size(), 2);
+        Assert.assertNotNull(findNamespace(nsManager, ns2));
+        Assert.assertTrue(findNamespace(nsManager, ns2).alwaysDeclare());
         
         // Should still be there b/c of element name, but no longer always declared
         nsManager.deregisterNamespaceDeclaration(ns1);
-        AssertJUnit.assertEquals(2, nsManager.getNamespaces().size());
-        AssertJUnit.assertNotNull(findNamespace(nsManager, ns1));
-        AssertJUnit.assertFalse(findNamespace(nsManager, ns1).alwaysDeclare());
+        Assert.assertEquals(nsManager.getNamespaces().size(), 2);
+        Assert.assertNotNull(findNamespace(nsManager, ns1));
+        Assert.assertFalse(findNamespace(nsManager, ns1).alwaysDeclare());
         
         nsManager.deregisterNamespaceDeclaration(ns2);
-        AssertJUnit.assertEquals(1, nsManager.getNamespaces().size());
-        AssertJUnit.assertNull(findNamespace(nsManager, ns2));
+        Assert.assertEquals(nsManager.getNamespaces().size(), 1);
+        Assert.assertNull(findNamespace(nsManager, ns2));
     }
     
     @Test
@@ -173,27 +173,27 @@ public class NamespaceManagerTest extends XMLObjectBaseTestCase {
         Namespace ns1 = new Namespace(ns1uri, ns1Prefix);
         Namespace ns2 = new Namespace(ns2uri, ns2Prefix);
         
-        AssertJUnit.assertEquals(1, nsManager.getNamespaces().size());
+        Assert.assertEquals(nsManager.getNamespaces().size(), 1);
         
         nsManager.registerNamespace(ns1);
-        AssertJUnit.assertEquals(1, nsManager.getNamespaces().size());
-        AssertJUnit.assertNotNull(findNamespace(nsManager, ns1));
-        AssertJUnit.assertFalse(findNamespace(nsManager, ns1).alwaysDeclare());
+        Assert.assertEquals(nsManager.getNamespaces().size(), 1);
+        Assert.assertNotNull(findNamespace(nsManager, ns1));
+        Assert.assertFalse(findNamespace(nsManager, ns1).alwaysDeclare());
         
         nsManager.registerNamespace(ns2);
-        AssertJUnit.assertEquals(2, nsManager.getNamespaces().size());
-        AssertJUnit.assertNotNull(findNamespace(nsManager, ns2));
-        AssertJUnit.assertFalse(findNamespace(nsManager, ns2).alwaysDeclare());
+        Assert.assertEquals(nsManager.getNamespaces().size(), 2);
+        Assert.assertNotNull(findNamespace(nsManager, ns2));
+        Assert.assertFalse(findNamespace(nsManager, ns2).alwaysDeclare());
         
         // Should still be there b/c of element name
         nsManager.deregisterNamespace(ns1);
-        AssertJUnit.assertEquals(2, nsManager.getNamespaces().size());
-        AssertJUnit.assertNotNull(findNamespace(nsManager, ns1));
-        AssertJUnit.assertFalse(findNamespace(nsManager, ns1).alwaysDeclare());
+        Assert.assertEquals(nsManager.getNamespaces().size(), 2);
+        Assert.assertNotNull(findNamespace(nsManager, ns1));
+        Assert.assertFalse(findNamespace(nsManager, ns1).alwaysDeclare());
         
         nsManager.deregisterNamespace(ns2);
-        AssertJUnit.assertEquals(1, nsManager.getNamespaces().size());
-        AssertJUnit.assertNull(findNamespace(nsManager, ns2));
+        Assert.assertEquals(nsManager.getNamespaces().size(), 1);
+        Assert.assertNull(findNamespace(nsManager, ns2));
     }
     
     @Test
@@ -264,10 +264,10 @@ public class NamespaceManagerTest extends XMLObjectBaseTestCase {
     private void checkPrefixes(NamespaceManager manager, String ... controlPrefixes) {
         Set<String> nonVisiblePrefixes = manager.getNonVisibleNamespacePrefixes();
         
-        AssertJUnit.assertEquals("Wrong number of not visible prefixes", controlPrefixes.length, nonVisiblePrefixes.size());
+        Assert.assertEquals(nonVisiblePrefixes.size(), controlPrefixes.length, "Wrong number of not visible prefixes");
         
         for (String prefix : controlPrefixes) {
-            AssertJUnit.assertTrue("Expected prefix not seen: " + prefix, nonVisiblePrefixes.contains(prefix));
+            Assert.assertTrue(nonVisiblePrefixes.contains(prefix), "Expected prefix not seen: " + prefix);
         }
     }
     
@@ -284,7 +284,7 @@ public class NamespaceManagerTest extends XMLObjectBaseTestCase {
         
         if (nsSize != null) {
             int size = nsSize.intValue();
-            AssertJUnit.assertEquals("Wrong number of unique namespaces", size, xo.getNamespaces().size());
+            Assert.assertEquals(xo.getNamespaces().size(), size, "Wrong number of unique namespaces");
         }
         
         outer: 

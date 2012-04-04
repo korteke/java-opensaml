@@ -20,7 +20,7 @@ package org.opensaml.security.trust.impl;
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
 import org.testng.Assert;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
 import org.opensaml.security.SecurityException;
@@ -55,21 +55,21 @@ public class ChainingTrustEngineTest {
     public void testFirstTrusted() throws SecurityException {
         engine.getChain().add( new FooEngine(Boolean.TRUE));
         engine.getChain().add( new FooEngine(Boolean.FALSE));
-        AssertJUnit.assertTrue("Engine # 1 evaled token as trusted", engine.validate(token, criteriaSet));
+        Assert.assertTrue(engine.validate(token, criteriaSet), "Engine # 1 evaled token as trusted");
     }
 
     @Test
     public void testSecondTrusted() throws SecurityException {
         engine.getChain().add( new FooEngine(Boolean.FALSE));
         engine.getChain().add( new FooEngine(Boolean.TRUE));
-        AssertJUnit.assertTrue("Engine # 2 evaled token as trusted", engine.validate(token, criteriaSet));
+        Assert.assertTrue(engine.validate(token, criteriaSet), "Engine # 2 evaled token as trusted");
     }
     
     @Test
     public void testNoneTrusted() throws SecurityException {
         engine.getChain().add( new FooEngine(Boolean.FALSE));
         engine.getChain().add( new FooEngine(Boolean.FALSE));
-        AssertJUnit.assertFalse("No engine evaled token as trusted", engine.validate(token, criteriaSet));
+        Assert.assertFalse(engine.validate(token, criteriaSet), "No engine evaled token as trusted");
     }
     
     @Test

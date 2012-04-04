@@ -20,7 +20,7 @@ package org.opensaml.xmlsec.signature.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.core.xml.mock.SimpleXMLObject;
 import org.opensaml.xmlsec.signature.DigestMethod;
@@ -51,9 +51,9 @@ public class DigestMethodTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         DigestMethod digestMethod = (DigestMethod) unmarshallElement(singleElementFile);
         
-        AssertJUnit.assertNotNull("DigestMethod", digestMethod);
-        AssertJUnit.assertEquals("Algorithm attribute", expectedAlgorithm, digestMethod.getAlgorithm());
-        AssertJUnit.assertEquals("Total children", 0, digestMethod.getUnknownXMLObjects().size());
+        Assert.assertNotNull(digestMethod, "DigestMethod");
+        Assert.assertEquals(digestMethod.getAlgorithm(), expectedAlgorithm, "Algorithm attribute");
+        Assert.assertEquals(digestMethod.getUnknownXMLObjects().size(), 0, "Total children");
     }
 
     /** {@inheritDoc} */
@@ -61,9 +61,9 @@ public class DigestMethodTest extends XMLObjectProviderBaseTestCase {
     public void testChildElementsUnmarshall() {
         DigestMethod digestMethod = (DigestMethod) unmarshallElement(childElementsFile);
         
-        AssertJUnit.assertNotNull("DigestMethod", digestMethod);
-        AssertJUnit.assertEquals("Algorithm attribute", expectedAlgorithm, digestMethod.getAlgorithm());
-        AssertJUnit.assertEquals("Total children", expectedTotalChildren, digestMethod.getUnknownXMLObjects().size());
+        Assert.assertNotNull(digestMethod, "DigestMethod");
+        Assert.assertEquals(digestMethod.getAlgorithm(), expectedAlgorithm, "Algorithm attribute");
+        Assert.assertEquals(digestMethod.getUnknownXMLObjects().size(), expectedTotalChildren, "Total children");
     }
 
     /** {@inheritDoc} */

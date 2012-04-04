@@ -20,7 +20,7 @@ package org.opensaml.xmlsec.signature.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.xmlsec.signature.PgenCounter;
 
@@ -51,8 +51,8 @@ public class PgenCounterTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         PgenCounter cbType = (PgenCounter) unmarshallElement(singleElementFile);
         
-        AssertJUnit.assertNotNull("PgenCounter", cbType);
-        AssertJUnit.assertEquals("PgenCounter value", cbType.getValue(), expectedCryptoBinaryContent);
+        Assert.assertNotNull(cbType, "PgenCounter");
+        Assert.assertEquals(expectedCryptoBinaryContent, cbType.getValue(), "PgenCounter value");
     }
 
     /** {@inheritDoc} */

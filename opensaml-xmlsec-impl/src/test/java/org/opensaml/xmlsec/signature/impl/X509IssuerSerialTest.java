@@ -20,7 +20,7 @@ package org.opensaml.xmlsec.signature.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.xmlsec.signature.X509IssuerName;
 import org.opensaml.xmlsec.signature.X509IssuerSerial;
@@ -45,9 +45,9 @@ public class X509IssuerSerialTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         X509IssuerSerial x509Element = (X509IssuerSerial) unmarshallElement(singleElementFile);
         
-        AssertJUnit.assertNotNull("X509IssuerSerial", x509Element);
-        AssertJUnit.assertNull("X509IssuerName child element", x509Element.getX509IssuerName());
-        AssertJUnit.assertNull("X509SerialNumber child element", x509Element.getX509SerialNumber());
+        Assert.assertNotNull(x509Element, "X509IssuerSerial");
+        Assert.assertNull(x509Element.getX509IssuerName(), "X509IssuerName child element");
+        Assert.assertNull(x509Element.getX509SerialNumber(), "X509SerialNumber child element");
     }
 
     /** {@inheritDoc} */
@@ -55,9 +55,9 @@ public class X509IssuerSerialTest extends XMLObjectProviderBaseTestCase {
     public void testChildElementsUnmarshall() {
         X509IssuerSerial x509Element = (X509IssuerSerial) unmarshallElement(childElementsFile);
         
-        AssertJUnit.assertNotNull("X509IssuerSerial", x509Element);
-        AssertJUnit.assertNotNull("X509IssuerName child element", x509Element.getX509IssuerName());
-        AssertJUnit.assertNotNull("X509SerialNumber child element", x509Element.getX509SerialNumber());
+        Assert.assertNotNull(x509Element, "X509IssuerSerial");
+        Assert.assertNotNull(x509Element.getX509IssuerName(), "X509IssuerName child element");
+        Assert.assertNotNull(x509Element.getX509SerialNumber(), "X509SerialNumber child element");
     }
 
     /** {@inheritDoc} */

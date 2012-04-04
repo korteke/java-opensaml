@@ -19,7 +19,7 @@ package org.opensaml.saml.saml2.binding.encoding;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.runtime.RuntimeConstants;
 import org.joda.time.DateTime;
@@ -103,10 +103,10 @@ public class HTTPPostEncoderTest extends XMLObjectBaseTestCase {
         "/templates/saml2-post-binding.vm");
         encoder.encode(messageContext);
 
-        AssertJUnit.assertEquals("Unexpected content type", "text/html", response.getContentType());
-        AssertJUnit.assertEquals("Unexpected character encoding", response.getCharacterEncoding(), "UTF-8");
-        AssertJUnit.assertEquals("Unexpected cache controls", "no-cache, no-store", response.getHeader("Cache-control"));
-        AssertJUnit.assertEquals(833802980, response.getContentAsString().hashCode());
+        Assert.assertEquals(response.getContentType(), "text/html", "Unexpected content type");
+        Assert.assertEquals("UTF-8", response.getCharacterEncoding(), "Unexpected character encoding");
+        Assert.assertEquals(response.getHeader("Cache-control"), "no-cache, no-store", "Unexpected cache controls");
+        Assert.assertEquals(response.getContentAsString().hashCode(), 833802980);
     }
 
     @Test
@@ -138,9 +138,9 @@ public class HTTPPostEncoderTest extends XMLObjectBaseTestCase {
         "/templates/saml2-post-binding.vm");
         encoder.encode(messageContext);
 
-        AssertJUnit.assertEquals("Unexpected content type", "text/html", response.getContentType());
-        AssertJUnit.assertEquals("Unexpected character encoding", response.getCharacterEncoding(), "UTF-8");
-        AssertJUnit.assertEquals("Unexpected cache controls", "no-cache, no-store", response.getHeader("Cache-control"));
-        AssertJUnit.assertEquals(-1355812539, response.getContentAsString().hashCode());
+        Assert.assertEquals(response.getContentType(), "text/html", "Unexpected content type");
+        Assert.assertEquals("UTF-8", response.getCharacterEncoding(), "Unexpected character encoding");
+        Assert.assertEquals(response.getHeader("Cache-control"), "no-cache, no-store", "Unexpected cache controls");
+        Assert.assertEquals(response.getContentAsString().hashCode(), -1355812539);
     }
 }

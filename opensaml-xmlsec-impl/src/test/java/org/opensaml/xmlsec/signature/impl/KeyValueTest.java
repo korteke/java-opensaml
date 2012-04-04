@@ -20,7 +20,7 @@ package org.opensaml.xmlsec.signature.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.xmlsec.signature.KeyValue;
 import org.opensaml.xmlsec.signature.RSAKeyValue;
@@ -44,10 +44,10 @@ public class KeyValueTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         KeyValue keyValue = (KeyValue) unmarshallElement(singleElementFile);
         
-        AssertJUnit.assertNotNull("KeyValue", keyValue);
-        AssertJUnit.assertNull("RSAKeyValue child element", keyValue.getRSAKeyValue());
-        AssertJUnit.assertNull("DSAKeyValue child element", keyValue.getDSAKeyValue());
-        AssertJUnit.assertNull("Wildcard child element", keyValue.getUnknownXMLObject());
+        Assert.assertNotNull(keyValue, "KeyValue");
+        Assert.assertNull(keyValue.getRSAKeyValue(), "RSAKeyValue child element");
+        Assert.assertNull(keyValue.getDSAKeyValue(), "DSAKeyValue child element");
+        Assert.assertNull(keyValue.getUnknownXMLObject(), "Wildcard child element");
     }
 
     /** {@inheritDoc} */
@@ -55,10 +55,10 @@ public class KeyValueTest extends XMLObjectProviderBaseTestCase {
     public void testChildElementsUnmarshall() {
         KeyValue keyValue = (KeyValue) unmarshallElement(childElementsFile);
         
-        AssertJUnit.assertNotNull("KeyValue", keyValue);
-        AssertJUnit.assertNotNull("RSAKeyValue child element", keyValue.getRSAKeyValue());
-        AssertJUnit.assertNull("DSAKeyValue child element", keyValue.getDSAKeyValue());
-        AssertJUnit.assertNull("Wildcard child element", keyValue.getUnknownXMLObject());
+        Assert.assertNotNull(keyValue, "KeyValue");
+        Assert.assertNotNull(keyValue.getRSAKeyValue(), "RSAKeyValue child element");
+        Assert.assertNull(keyValue.getDSAKeyValue(), "DSAKeyValue child element");
+        Assert.assertNull(keyValue.getUnknownXMLObject(), "Wildcard child element");
     }
 
     /** {@inheritDoc} */

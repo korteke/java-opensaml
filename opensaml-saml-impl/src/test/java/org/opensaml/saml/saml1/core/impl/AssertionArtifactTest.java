@@ -21,7 +21,7 @@
 package org.opensaml.saml.saml1.core.impl;
 
 import org.testng.annotations.Test;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -54,7 +54,7 @@ public class AssertionArtifactTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         AssertionArtifact artifact = (AssertionArtifact) unmarshallElement(singleElementFile);
         
-        AssertJUnit.assertNull("AssertionArtifact contents present", artifact.getAssertionArtifact());
+        Assert.assertNull(artifact.getAssertionArtifact(), "AssertionArtifact contents present");
     }
 
     /** {@inheritDoc} */
@@ -62,7 +62,7 @@ public class AssertionArtifactTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementOptionalAttributesUnmarshall() {
         AssertionArtifact artifact = (AssertionArtifact) unmarshallElement(singleElementOptionalAttributesFile);
         
-        AssertJUnit.assertEquals("AssertionArtifact contents present", expectedAssertionArtifact, artifact.getAssertionArtifact());
+        Assert.assertEquals(artifact.getAssertionArtifact(), expectedAssertionArtifact, "AssertionArtifact contents present");
     }
 
     /** {@inheritDoc} */

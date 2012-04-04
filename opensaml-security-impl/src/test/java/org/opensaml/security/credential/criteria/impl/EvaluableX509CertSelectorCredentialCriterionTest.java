@@ -19,7 +19,7 @@ package org.opensaml.security.credential.criteria.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.cert.X509CertSelector;
@@ -89,38 +89,38 @@ public class EvaluableX509CertSelectorCredentialCriterionTest {
     @Test
     public void testSatifsyByCert() {
         certSelector.setCertificate(entityCert);
-        AssertJUnit.assertTrue("Credential should have matched the evaluable criteria", evalCrit.evaluate(credential));
+        Assert.assertTrue(evalCrit.evaluate(credential), "Credential should have matched the evaluable criteria");
     }
     
     @Test
     public void testSatifsyByKey() {
         certSelector.setSubjectPublicKey(entityCert.getPublicKey());
-        AssertJUnit.assertTrue("Credential should have matched the evaluable criteria", evalCrit.evaluate(credential));
+        Assert.assertTrue(evalCrit.evaluate(credential), "Credential should have matched the evaluable criteria");
     }
     
     @Test
     public void testSatifsyBySubjectName() {
         certSelector.setSubject(subjectName);
-        AssertJUnit.assertTrue("Credential should have matched the evaluable criteria", evalCrit.evaluate(credential));
+        Assert.assertTrue(evalCrit.evaluate(credential), "Credential should have matched the evaluable criteria");
     }
 
     @Test
     public void testNotSatisfy() throws NoSuchAlgorithmException, NoSuchProviderException {
         certSelector.setSubjectPublicKey( SecurityHelper.generateKeyPair("RSA", 1024, null).getPublic() );
-        AssertJUnit.assertFalse("Credential should NOT have matched the evaluable criteria", evalCrit.evaluate(credential));
+        Assert.assertFalse(evalCrit.evaluate(credential), "Credential should NOT have matched the evaluable criteria");
     }
     
     @Test
     public void testNotSatisfyWrongCredType() {
         certSelector.setCertificate(entityCert);
         BasicCredential basicCred = new BasicCredential();
-        AssertJUnit.assertFalse("Credential should NOT have matched the evaluable criteria", evalCrit.evaluate(basicCred));
+        Assert.assertFalse(evalCrit.evaluate(basicCred), "Credential should NOT have matched the evaluable criteria");
     }
     
     @Test
     public void testNotSatisfyNoCert() {
         certSelector.setCertificate(entityCert);
         credential.setEntityCertificate(null);
-        AssertJUnit.assertFalse("Credential should NOT have matched the evaluable criteria", evalCrit.evaluate(credential));
+        Assert.assertFalse(evalCrit.evaluate(credential), "Credential should NOT have matched the evaluable criteria");
     }
 }

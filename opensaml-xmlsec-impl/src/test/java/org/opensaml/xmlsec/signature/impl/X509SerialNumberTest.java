@@ -20,7 +20,7 @@ package org.opensaml.xmlsec.signature.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import java.math.BigInteger;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -53,8 +53,8 @@ public class X509SerialNumberTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         X509SerialNumber x509Element = (X509SerialNumber) unmarshallElement(singleElementFile);
         
-        AssertJUnit.assertNotNull("X509SerialNumber", x509Element);
-        AssertJUnit.assertEquals("X509SerialNumber value", x509Element.getValue(), expectedBigIntegerContent);
+        Assert.assertNotNull(x509Element, "X509SerialNumber");
+        Assert.assertEquals(expectedBigIntegerContent, x509Element.getValue(), "X509SerialNumber value");
     }
 
     /** {@inheritDoc} */

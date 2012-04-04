@@ -19,7 +19,7 @@ package org.opensaml.saml.saml2.core.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.saml2.core.StatusMessage;
 
@@ -62,6 +62,6 @@ public class StatusMessageTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         StatusMessage message = (StatusMessage) unmarshallElement(singleElementFile);
         
-        AssertJUnit.assertEquals("Unmarshalled status message was not the expected value", expectedMessage, message.getMessage());   
+        Assert.assertEquals(message.getMessage(), expectedMessage, "Unmarshalled status message was not the expected value");   
     }
 }

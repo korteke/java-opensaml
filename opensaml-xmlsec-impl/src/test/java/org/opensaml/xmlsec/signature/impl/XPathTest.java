@@ -20,7 +20,7 @@ package org.opensaml.xmlsec.signature.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.xmlsec.signature.XPath;
 
@@ -51,8 +51,8 @@ public class XPathTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         XPath xp = (XPath) unmarshallElement(singleElementFile);
         
-        AssertJUnit.assertNotNull("XPath", xp);
-        AssertJUnit.assertEquals("XPath value", xp.getValue(), expectedStringContent);
+        Assert.assertNotNull(xp, "XPath");
+        Assert.assertEquals(expectedStringContent, xp.getValue(), "XPath value");
     }
 
     /** {@inheritDoc} */

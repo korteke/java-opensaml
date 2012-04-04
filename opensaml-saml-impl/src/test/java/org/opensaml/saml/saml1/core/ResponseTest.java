@@ -19,7 +19,7 @@ package org.opensaml.saml.saml1.core;
 
 import org.testng.annotations.Test;
 import org.testng.Assert;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import java.io.InputStream;
 
 import net.shibboleth.utilities.java.support.xml.XMLParserException;
@@ -60,8 +60,8 @@ public class ResponseTest extends XMLObjectBaseTestCase {
 
             Response response = (Response) unmarshaller.unmarshall(responseDoc.getDocumentElement());
 
-            AssertJUnit.assertEquals("First element of response data was not expected Response", "Response",
-                    response.getElementQName().getLocalPart());
+            Assert.assertEquals(response.getElementQName().getLocalPart(), "Response",
+                    "First element of response data was not expected Response");
         } catch (XMLParserException xe) {
             Assert.fail("Unable to parse XML file: " + xe);
         } catch (UnmarshallingException ue) {

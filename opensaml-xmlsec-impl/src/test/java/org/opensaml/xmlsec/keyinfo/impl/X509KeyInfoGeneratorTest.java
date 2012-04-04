@@ -19,7 +19,7 @@ package org.opensaml.xmlsec.keyinfo.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import java.math.BigInteger;
 import java.security.KeyException;
 import java.security.PublicKey;
@@ -194,7 +194,7 @@ public class X509KeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         generator = factory.newInstance();
         KeyInfo keyInfo = generator.generate(credential);
 
-        AssertJUnit.assertNull("Generated KeyInfo with no options should have been null", keyInfo);
+        Assert.assertNull(keyInfo, "Generated KeyInfo with no options should have been null");
     }
 
     /**
@@ -209,13 +209,13 @@ public class X509KeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         generator = factory.newInstance();
         KeyInfo keyInfo = generator.generate(credential);
 
-        AssertJUnit.assertNotNull("Generated KeyInfo was null", keyInfo);
-        AssertJUnit.assertNotNull("Generated KeyInfo children list was null", keyInfo.getOrderedChildren());
+        Assert.assertNotNull(keyInfo, "Generated KeyInfo was null");
+        Assert.assertNotNull(keyInfo.getOrderedChildren(), "Generated KeyInfo children list was null");
 
-        AssertJUnit.assertEquals("Unexpected number of KeyInfo children", 1, keyInfo.getOrderedChildren().size());
-        AssertJUnit.assertEquals("Unexpected number of KeyValue elements", 1, keyInfo.getKeyValues().size());
+        Assert.assertEquals(keyInfo.getOrderedChildren().size(), 1, "Unexpected number of KeyInfo children");
+        Assert.assertEquals(keyInfo.getKeyValues().size(), 1, "Unexpected number of KeyValue elements");
         PublicKey generatedKey = KeyInfoHelper.getKey(keyInfo.getKeyValues().get(0));
-        AssertJUnit.assertEquals("Unexpected key value", pubKey, generatedKey);
+        Assert.assertEquals(generatedKey, pubKey, "Unexpected key value");
     }
 
     /**
@@ -230,13 +230,13 @@ public class X509KeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         generator = factory.newInstance();
         KeyInfo keyInfo = generator.generate(credential);
 
-        AssertJUnit.assertNotNull("Generated KeyInfo was null", keyInfo);
-        AssertJUnit.assertNotNull("Generated KeyInfo children list was null", keyInfo.getOrderedChildren());
+        Assert.assertNotNull(keyInfo, "Generated KeyInfo was null");
+        Assert.assertNotNull(keyInfo.getOrderedChildren(), "Generated KeyInfo children list was null");
 
-        AssertJUnit.assertEquals("Unexpected number of KeyName elements", 2, keyInfo.getKeyNames().size());
+        Assert.assertEquals(keyInfo.getKeyNames().size(), 2, "Unexpected number of KeyName elements");
         List<String> keyNames = KeyInfoHelper.getKeyNames(keyInfo);
-        AssertJUnit.assertTrue("Failed to find expected KeyName value", keyNames.contains(keyNameFoo));
-        AssertJUnit.assertTrue("Failed to find expected KeyName value", keyNames.contains(keyNameBar));
+        Assert.assertTrue(keyNames.contains(keyNameFoo), "Failed to find expected KeyName value");
+        Assert.assertTrue(keyNames.contains(keyNameBar), "Failed to find expected KeyName value");
     }
 
     /**
@@ -251,12 +251,12 @@ public class X509KeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         generator = factory.newInstance();
         KeyInfo keyInfo = generator.generate(credential);
 
-        AssertJUnit.assertNotNull("Generated KeyInfo was null", keyInfo);
-        AssertJUnit.assertNotNull("Generated KeyInfo children list was null", keyInfo.getOrderedChildren());
+        Assert.assertNotNull(keyInfo, "Generated KeyInfo was null");
+        Assert.assertNotNull(keyInfo.getOrderedChildren(), "Generated KeyInfo children list was null");
 
-        AssertJUnit.assertEquals("Unexpected number of KeyName elements", 1, keyInfo.getKeyNames().size());
+        Assert.assertEquals(keyInfo.getKeyNames().size(), 1, "Unexpected number of KeyName elements");
         List<String> keyNames = KeyInfoHelper.getKeyNames(keyInfo);
-        AssertJUnit.assertTrue("Failed to find expected KeyName value", keyNames.contains(entityID));
+        Assert.assertTrue(keyNames.contains(entityID), "Failed to find expected KeyName value");
     }
 
     /**
@@ -272,14 +272,14 @@ public class X509KeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         generator = factory.newInstance();
         KeyInfo keyInfo = generator.generate(credential);
 
-        AssertJUnit.assertNotNull("Generated KeyInfo was null", keyInfo);
-        AssertJUnit.assertNotNull("Generated KeyInfo children list was null", keyInfo.getOrderedChildren());
+        Assert.assertNotNull(keyInfo, "Generated KeyInfo was null");
+        Assert.assertNotNull(keyInfo.getOrderedChildren(), "Generated KeyInfo children list was null");
 
-        AssertJUnit.assertEquals("Unexpected number of X509Data elements", 1, keyInfo.getX509Datas().size());
+        Assert.assertEquals(keyInfo.getX509Datas().size(), 1, "Unexpected number of X509Data elements");
         X509Data x509Data = keyInfo.getX509Datas().get(0);
-        AssertJUnit.assertEquals("Unexpected number of X509Certificate elements", 1, x509Data.getX509Certificates().size());
+        Assert.assertEquals(x509Data.getX509Certificates().size(), 1, "Unexpected number of X509Certificate elements");
         List<X509Certificate> certs = KeyInfoHelper.getCertificates(x509Data);
-        AssertJUnit.assertEquals("Unexpected certificate value found", entityCert, certs.get(0));
+        Assert.assertEquals(certs.get(0), entityCert, "Unexpected certificate value found");
     }
 
     /**
@@ -295,15 +295,15 @@ public class X509KeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         generator = factory.newInstance();
         KeyInfo keyInfo = generator.generate(credential);
 
-        AssertJUnit.assertNotNull("Generated KeyInfo was null", keyInfo);
-        AssertJUnit.assertNotNull("Generated KeyInfo children list was null", keyInfo.getOrderedChildren());
+        Assert.assertNotNull(keyInfo, "Generated KeyInfo was null");
+        Assert.assertNotNull(keyInfo.getOrderedChildren(), "Generated KeyInfo children list was null");
 
-        AssertJUnit.assertEquals("Unexpected number of X509Data elements", 1, keyInfo.getX509Datas().size());
+        Assert.assertEquals(keyInfo.getX509Datas().size(), 1, "Unexpected number of X509Data elements");
         X509Data x509Data = keyInfo.getX509Datas().get(0);
-        AssertJUnit.assertEquals("Unexpected number of X509Certificate elements", 2, x509Data.getX509Certificates().size());
+        Assert.assertEquals(x509Data.getX509Certificates().size(), 2, "Unexpected number of X509Certificate elements");
         List<X509Certificate> certs = KeyInfoHelper.getCertificates(x509Data);
-        AssertJUnit.assertTrue("Expected certificate value not found", certs.contains(entityCert));
-        AssertJUnit.assertTrue("Expected certificate value not found", certs.contains(caCert));
+        Assert.assertTrue(certs.contains(entityCert), "Expected certificate value not found");
+        Assert.assertTrue(certs.contains(caCert), "Expected certificate value not found");
     }
 
     /**
@@ -320,15 +320,15 @@ public class X509KeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         generator = factory.newInstance();
         KeyInfo keyInfo = generator.generate(credential);
 
-        AssertJUnit.assertNotNull("Generated KeyInfo was null", keyInfo);
-        AssertJUnit.assertNotNull("Generated KeyInfo children list was null", keyInfo.getOrderedChildren());
+        Assert.assertNotNull(keyInfo, "Generated KeyInfo was null");
+        Assert.assertNotNull(keyInfo.getOrderedChildren(), "Generated KeyInfo children list was null");
 
-        AssertJUnit.assertEquals("Unexpected number of X509Data elements", 1, keyInfo.getX509Datas().size());
+        Assert.assertEquals(keyInfo.getX509Datas().size(), 1, "Unexpected number of X509Data elements");
         X509Data x509Data = keyInfo.getX509Datas().get(0);
-        AssertJUnit.assertEquals("Unexpected number of X509Certificate elements", 2, x509Data.getX509Certificates().size());
+        Assert.assertEquals(x509Data.getX509Certificates().size(), 2, "Unexpected number of X509Certificate elements");
         List<X509Certificate> certs = KeyInfoHelper.getCertificates(x509Data);
-        AssertJUnit.assertTrue("Expected certificate value not found", certs.contains(entityCert));
-        AssertJUnit.assertTrue("Expected certificate value not found", certs.contains(caCert));
+        Assert.assertTrue(certs.contains(entityCert), "Expected certificate value not found");
+        Assert.assertTrue(certs.contains(caCert), "Expected certificate value not found");
     }
 
     /**
@@ -344,14 +344,14 @@ public class X509KeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         generator = factory.newInstance();
         KeyInfo keyInfo = generator.generate(credential);
 
-        AssertJUnit.assertNotNull("Generated KeyInfo was null", keyInfo);
-        AssertJUnit.assertNotNull("Generated KeyInfo children list was null", keyInfo.getOrderedChildren());
+        Assert.assertNotNull(keyInfo, "Generated KeyInfo was null");
+        Assert.assertNotNull(keyInfo.getOrderedChildren(), "Generated KeyInfo children list was null");
 
-        AssertJUnit.assertEquals("Unexpected number of X509Data elements", 1, keyInfo.getX509Datas().size());
+        Assert.assertEquals(keyInfo.getX509Datas().size(), 1, "Unexpected number of X509Data elements");
         X509Data x509Data = keyInfo.getX509Datas().get(0);
-        AssertJUnit.assertEquals("Unexpected number of X509CRL elements", 1, x509Data.getX509CRLs().size());
+        Assert.assertEquals(x509Data.getX509CRLs().size(), 1, "Unexpected number of X509CRL elements");
         X509CRL crl = KeyInfoHelper.getCRL(x509Data.getX509CRLs().get(0));
-        AssertJUnit.assertEquals("Unexpected CRL value found", caCRL, crl);
+        Assert.assertEquals(crl, caCRL, "Unexpected CRL value found");
     }
 
     /**
@@ -366,14 +366,14 @@ public class X509KeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         generator = factory.newInstance();
         KeyInfo keyInfo = generator.generate(credential);
 
-        AssertJUnit.assertNotNull("Generated KeyInfo was null", keyInfo);
-        AssertJUnit.assertNotNull("Generated KeyInfo children list was null", keyInfo.getOrderedChildren());
+        Assert.assertNotNull(keyInfo, "Generated KeyInfo was null");
+        Assert.assertNotNull(keyInfo.getOrderedChildren(), "Generated KeyInfo children list was null");
 
-        AssertJUnit.assertEquals("Unexpected number of X509Data elements", 1, keyInfo.getX509Datas().size());
+        Assert.assertEquals(keyInfo.getX509Datas().size(), 1, "Unexpected number of X509Data elements");
         X509Data x509Data = keyInfo.getX509Datas().get(0);
-        AssertJUnit.assertEquals("Unexpected number of X509SubjectName elements", 1, x509Data.getX509SubjectNames().size());
+        Assert.assertEquals(x509Data.getX509SubjectNames().size(), 1, "Unexpected number of X509SubjectName elements");
         String name = StringSupport.trimOrNull(x509Data.getX509SubjectNames().get(0).getValue());
-        AssertJUnit.assertEquals("Unexpected X509SubjectName value found", subjectName, new X500Principal(name));
+        Assert.assertEquals(new X500Principal(name), subjectName, "Unexpected X509SubjectName value found");
     }
 
     /**
@@ -388,19 +388,19 @@ public class X509KeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         generator = factory.newInstance();
         KeyInfo keyInfo = generator.generate(credential);
 
-        AssertJUnit.assertNotNull("Generated KeyInfo was null", keyInfo);
-        AssertJUnit.assertNotNull("Generated KeyInfo children list was null", keyInfo.getOrderedChildren());
+        Assert.assertNotNull(keyInfo, "Generated KeyInfo was null");
+        Assert.assertNotNull(keyInfo.getOrderedChildren(), "Generated KeyInfo children list was null");
 
-        AssertJUnit.assertEquals("Unexpected number of X509Data elements", 1, keyInfo.getX509Datas().size());
+        Assert.assertEquals(keyInfo.getX509Datas().size(), 1, "Unexpected number of X509Data elements");
         X509Data x509Data = keyInfo.getX509Datas().get(0);
-        AssertJUnit.assertEquals("Unexpected number of X509IssuerSerial elements", 1, x509Data.getX509IssuerSerials().size());
+        Assert.assertEquals(x509Data.getX509IssuerSerials().size(), 1, "Unexpected number of X509IssuerSerial elements");
         X509IssuerSerial issuerSerial = x509Data.getX509IssuerSerials().get(0);
-        AssertJUnit.assertNotNull("X509IssuerName not present", issuerSerial.getX509IssuerName());
-        AssertJUnit.assertNotNull("X509SerialNumber not present", issuerSerial.getX509SerialNumber());
+        Assert.assertNotNull(issuerSerial.getX509IssuerName(), "X509IssuerName not present");
+        Assert.assertNotNull(issuerSerial.getX509SerialNumber(), "X509SerialNumber not present");
         String name = StringSupport.trimOrNull(issuerSerial.getX509IssuerName().getValue());
-        AssertJUnit.assertEquals("Unexpected X509IssuerName value found", issuerName, new X500Principal(name));
+        Assert.assertEquals(new X500Principal(name), issuerName, "Unexpected X509IssuerName value found");
         BigInteger number = issuerSerial.getX509SerialNumber().getValue();
-        AssertJUnit.assertEquals("Unexpected serial number value found", serialNumber, number);
+        Assert.assertEquals(number, serialNumber, "Unexpected serial number value found");
     }
 
     /**
@@ -415,15 +415,15 @@ public class X509KeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         generator = factory.newInstance();
         KeyInfo keyInfo = generator.generate(credential);
 
-        AssertJUnit.assertNotNull("Generated KeyInfo was null", keyInfo);
-        AssertJUnit.assertNotNull("Generated KeyInfo children list was null", keyInfo.getOrderedChildren());
+        Assert.assertNotNull(keyInfo, "Generated KeyInfo was null");
+        Assert.assertNotNull(keyInfo.getOrderedChildren(), "Generated KeyInfo children list was null");
 
-        AssertJUnit.assertEquals("Unexpected number of X509Data elements", 1, keyInfo.getX509Datas().size());
+        Assert.assertEquals(keyInfo.getX509Datas().size(), 1, "Unexpected number of X509Data elements");
         X509Data x509Data = keyInfo.getX509Datas().get(0);
-        AssertJUnit.assertEquals("Unexpected number of X509SKI elements", 1, x509Data.getX509SKIs().size());
+        Assert.assertEquals(x509Data.getX509SKIs().size(), 1, "Unexpected number of X509SKI elements");
         X509SKI ski = x509Data.getX509SKIs().get(0);
         byte[] skiValue = Base64Support.decode(StringSupport.trimOrNull(ski.getValue()));
-        AssertJUnit.assertTrue("Unexpected SKI value found", Arrays.equals(subjectKeyIdentifier, skiValue));
+        Assert.assertTrue(Arrays.equals(subjectKeyIdentifier, skiValue), "Unexpected SKI value found");
     }
 
     /**
@@ -438,13 +438,13 @@ public class X509KeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         generator = factory.newInstance();
         KeyInfo keyInfo = generator.generate(credential);
 
-        AssertJUnit.assertNotNull("Generated KeyInfo was null", keyInfo);
-        AssertJUnit.assertNotNull("Generated KeyInfo children list was null", keyInfo.getOrderedChildren());
+        Assert.assertNotNull(keyInfo, "Generated KeyInfo was null");
+        Assert.assertNotNull(keyInfo.getOrderedChildren(), "Generated KeyInfo children list was null");
 
-        AssertJUnit.assertEquals("Unexpected number of KeyName elements", 1, keyInfo.getKeyNames().size());
+        Assert.assertEquals(keyInfo.getKeyNames().size(), 1, "Unexpected number of KeyName elements");
         List<String> keyNames = KeyInfoHelper.getKeyNames(keyInfo);
         String name = StringSupport.trimOrNull(keyNames.get(0));
-        AssertJUnit.assertEquals("Unexpected subject DN key name value found", subjectName, new X500Principal(name));
+        Assert.assertEquals(new X500Principal(name), subjectName, "Unexpected subject DN key name value found");
     }
 
     /**
@@ -459,12 +459,12 @@ public class X509KeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         generator = factory.newInstance();
         KeyInfo keyInfo = generator.generate(credential);
 
-        AssertJUnit.assertNotNull("Generated KeyInfo was null", keyInfo);
-        AssertJUnit.assertNotNull("Generated KeyInfo children list was null", keyInfo.getOrderedChildren());
+        Assert.assertNotNull(keyInfo, "Generated KeyInfo was null");
+        Assert.assertNotNull(keyInfo.getOrderedChildren(), "Generated KeyInfo children list was null");
 
-        AssertJUnit.assertEquals("Unexpected number of KeyName elements", 1, keyInfo.getKeyNames().size());
+        Assert.assertEquals(keyInfo.getKeyNames().size(), 1, "Unexpected number of KeyName elements");
         List<String> keyNames = KeyInfoHelper.getKeyNames(keyInfo);
-        AssertJUnit.assertTrue("Failed to find expected KeyName value", keyNames.contains(subjectCN));
+        Assert.assertTrue(keyNames.contains(subjectCN), "Failed to find expected KeyName value");
     }
 
     /**
@@ -481,24 +481,24 @@ public class X509KeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         KeyInfo keyInfo = generator.generate(credential);
 
         // Haven't set any alt name types yet, so expect no output
-        AssertJUnit.assertNull("Generated KeyInfo was not null", keyInfo);
+        Assert.assertNull(keyInfo, "Generated KeyInfo was not null");
 
         // Just a sanity check
         byte[] extensionValue = credential.getEntityCertificate().getExtensionValue(subjectAltNameExtensionOID);
-        AssertJUnit.assertNotNull("Entity cert's Java native getExtensionValue() was null", extensionValue);
-        AssertJUnit.assertTrue("Entity cert's extension value was empty", extensionValue.length > 0);
+        Assert.assertNotNull(extensionValue, "Entity cert's Java native getExtensionValue() was null");
+        Assert.assertTrue(extensionValue.length > 0, "Entity cert's extension value was empty");
 
         factory.getSubjectAltNames().add(altName1Type);
 
         generator = factory.newInstance();
         keyInfo = generator.generate(credential);
 
-        AssertJUnit.assertNotNull("Generated KeyInfo was null", keyInfo);
-        AssertJUnit.assertNotNull("Generated KeyInfo children list was null", keyInfo.getOrderedChildren());
+        Assert.assertNotNull(keyInfo, "Generated KeyInfo was null");
+        Assert.assertNotNull(keyInfo.getOrderedChildren(), "Generated KeyInfo children list was null");
 
-        AssertJUnit.assertEquals("Unexpected number of KeyName elements", 1, keyInfo.getKeyNames().size());
+        Assert.assertEquals(keyInfo.getKeyNames().size(), 1, "Unexpected number of KeyName elements");
         List<String> keyNames = KeyInfoHelper.getKeyNames(keyInfo);
-        AssertJUnit.assertTrue("Failed to find expected KeyName value", keyNames.contains(altName1));
+        Assert.assertTrue(keyNames.contains(altName1), "Failed to find expected KeyName value");
 
         factory.getSubjectAltNames().add(altName2Type);
         factory.getSubjectAltNames().add(altName3Type);
@@ -506,14 +506,14 @@ public class X509KeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         generator = factory.newInstance();
         keyInfo = generator.generate(credential);
 
-        AssertJUnit.assertNotNull("Generated KeyInfo was null", keyInfo);
-        AssertJUnit.assertNotNull("Generated KeyInfo children list was null", keyInfo.getOrderedChildren());
+        Assert.assertNotNull(keyInfo, "Generated KeyInfo was null");
+        Assert.assertNotNull(keyInfo.getOrderedChildren(), "Generated KeyInfo children list was null");
 
-        AssertJUnit.assertEquals("Unexpected number of KeyName elements", 3, keyInfo.getKeyNames().size());
+        Assert.assertEquals(keyInfo.getKeyNames().size(), 3, "Unexpected number of KeyName elements");
         keyNames = KeyInfoHelper.getKeyNames(keyInfo);
-        AssertJUnit.assertTrue("Failed to find expected KeyName value", keyNames.contains(altName1));
-        AssertJUnit.assertTrue("Failed to find expected KeyName value", keyNames.contains(altName2));
-        AssertJUnit.assertTrue("Failed to find expected KeyName value", keyNames.contains(altName3));
+        Assert.assertTrue(keyNames.contains(altName1), "Failed to find expected KeyName value");
+        Assert.assertTrue(keyNames.contains(altName2), "Failed to find expected KeyName value");
+        Assert.assertTrue(keyNames.contains(altName3), "Failed to find expected KeyName value");
     }
 
     /**
@@ -535,18 +535,18 @@ public class X509KeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         generator = factory.newInstance();
         KeyInfo keyInfo = generator.generate(credential);
 
-        AssertJUnit.assertNotNull("Generated KeyInfo was null", keyInfo);
-        AssertJUnit.assertNotNull("Generated KeyInfo children list was null", keyInfo.getOrderedChildren());
+        Assert.assertNotNull(keyInfo, "Generated KeyInfo was null");
+        Assert.assertNotNull(keyInfo.getOrderedChildren(), "Generated KeyInfo children list was null");
 
-        AssertJUnit.assertEquals("Unexpected number of KeyName elements", 7, keyInfo.getKeyNames().size());
+        Assert.assertEquals(keyInfo.getKeyNames().size(), 7, "Unexpected number of KeyName elements");
         List<String> keyNames = KeyInfoHelper.getKeyNames(keyInfo);
-        AssertJUnit.assertTrue("Failed to find expected KeyName value", keyNames.contains(keyNameFoo));
-        AssertJUnit.assertTrue("Failed to find expected KeyName value", keyNames.contains(keyNameBar));
-        AssertJUnit.assertTrue("Failed to find expected KeyName value", keyNames.contains(entityID));
-        AssertJUnit.assertTrue("Failed to find expected KeyName value", keyNames.contains(subjectCN));
-        AssertJUnit.assertTrue("Failed to find expected KeyName value", keyNames.contains(altName1));
-        AssertJUnit.assertTrue("Failed to find expected KeyName value", keyNames.contains(altName2));
-        AssertJUnit.assertTrue("Failed to find expected KeyName value", keyNames.contains(altName3));
+        Assert.assertTrue(keyNames.contains(keyNameFoo), "Failed to find expected KeyName value");
+        Assert.assertTrue(keyNames.contains(keyNameBar), "Failed to find expected KeyName value");
+        Assert.assertTrue(keyNames.contains(entityID), "Failed to find expected KeyName value");
+        Assert.assertTrue(keyNames.contains(subjectCN), "Failed to find expected KeyName value");
+        Assert.assertTrue(keyNames.contains(altName1), "Failed to find expected KeyName value");
+        Assert.assertTrue(keyNames.contains(altName2), "Failed to find expected KeyName value");
+        Assert.assertTrue(keyNames.contains(altName3), "Failed to find expected KeyName value");
     }
 
     /**
@@ -560,7 +560,7 @@ public class X509KeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         generator = factory.newInstance();
         KeyInfo keyInfo = generator.generate(credential);
 
-        AssertJUnit.assertNull("Generated KeyInfo was null", keyInfo);
+        Assert.assertNull(keyInfo, "Generated KeyInfo was null");
 
         factory.setEmitKeyNames(true);
         factory.setEmitEntityIDAsKeyName(true);
@@ -568,14 +568,14 @@ public class X509KeyInfoGeneratorTest extends XMLObjectBaseTestCase {
 
         keyInfo = generator.generate(credential);
 
-        AssertJUnit.assertNull("Generated KeyInfo was null", keyInfo);
+        Assert.assertNull(keyInfo, "Generated KeyInfo was null");
 
         generator = factory.newInstance();
         keyInfo = generator.generate(credential);
 
-        AssertJUnit.assertNotNull("Generated KeyInfo was null", keyInfo);
-        AssertJUnit.assertNotNull("Generated KeyInfo children list was null", keyInfo.getOrderedChildren());
-        AssertJUnit.assertEquals("Unexpected # of KeyInfo children found", 4, keyInfo.getOrderedChildren().size());
+        Assert.assertNotNull(keyInfo, "Generated KeyInfo was null");
+        Assert.assertNotNull(keyInfo.getOrderedChildren(), "Generated KeyInfo children list was null");
+        Assert.assertEquals(keyInfo.getOrderedChildren().size(), 4, "Unexpected # of KeyInfo children found");
     }
 
 }

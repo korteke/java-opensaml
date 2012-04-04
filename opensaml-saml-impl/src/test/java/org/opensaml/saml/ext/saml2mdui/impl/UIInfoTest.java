@@ -22,7 +22,7 @@ package org.opensaml.saml.ext.saml2mdui.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.mock.SimpleXMLObject;
@@ -96,14 +96,14 @@ public class UIInfoTest extends XMLObjectProviderBaseTestCase {
     public void testChildElementsUnmarshall(){
         UIInfo uiinfo = (UIInfo) unmarshallElement(childElementsFile);
         
-        AssertJUnit.assertEquals("<DisplayName> count", expectedDisplayNamesCount, uiinfo.getDisplayNames().size());
-        AssertJUnit.assertEquals("<Descriptions> count", expectedDescriptionsCount, uiinfo.getDescriptions().size());
-        AssertJUnit.assertEquals("<Logos> count", expectedLogosCount, uiinfo.getLogos().size());
-        AssertJUnit.assertEquals("<Keywords> count", expectedKeywordsCount, uiinfo.getKeywords().size());
-        AssertJUnit.assertEquals("<InformationURLs> count", expectedInformationURLsCount, uiinfo.getInformationURLs().size());
-        AssertJUnit.assertEquals("<PrivacyStatementURLs> count", expectedPrivacyStatementURLsCount, 
-                                                     uiinfo.getPrivacyStatementURLs().size());
-        AssertJUnit.assertEquals("<test:SimpleElement> count", expectedSimpleElementCount, uiinfo.getXMLObjects(SimpleXMLObject.ELEMENT_NAME).size());
+        Assert.assertEquals(uiinfo.getDisplayNames().size(), expectedDisplayNamesCount, "<DisplayName> count");
+        Assert.assertEquals(uiinfo.getDescriptions().size(), expectedDescriptionsCount, "<Descriptions> count");
+        Assert.assertEquals(uiinfo.getLogos().size(), expectedLogosCount, "<Logos> count");
+        Assert.assertEquals(uiinfo.getKeywords().size(), expectedKeywordsCount, "<Keywords> count");
+        Assert.assertEquals(uiinfo.getInformationURLs().size(), expectedInformationURLsCount, "<InformationURLs> count");
+        Assert.assertEquals(uiinfo.getPrivacyStatementURLs().size(), expectedPrivacyStatementURLsCount, 
+                                                     "<PrivacyStatementURLs> count");
+        Assert.assertEquals(uiinfo.getXMLObjects(SimpleXMLObject.ELEMENT_NAME).size(), expectedSimpleElementCount, "<test:SimpleElement> count");
         
        
     }

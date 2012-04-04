@@ -18,7 +18,7 @@
 package org.opensaml.core.xml;
 
 import org.testng.annotations.Test;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import java.util.List;
 
 import net.shibboleth.utilities.java.support.xml.XMLParserException;
@@ -56,8 +56,8 @@ public class UnmarshallingTest extends XMLObjectBaseTestCase {
         Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(document.getDocumentElement());
         SimpleXMLObject sxObject = (SimpleXMLObject) unmarshaller.unmarshall(document.getDocumentElement());
 
-        AssertJUnit.assertNotNull("DOM was not cached after unmarshalling", sxObject.getDOM());
-        AssertJUnit.assertEquals("ID was not expected value", expectedId, sxObject.getId());
+        Assert.assertNotNull(sxObject.getDOM(), "DOM was not cached after unmarshalling");
+        Assert.assertEquals(sxObject.getId(), expectedId, "ID was not expected value");
     }
 
     /**
@@ -74,25 +74,25 @@ public class UnmarshallingTest extends XMLObjectBaseTestCase {
         Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(document.getDocumentElement());
         SimpleXMLObject sxObject = (SimpleXMLObject) unmarshaller.unmarshall(document.getDocumentElement());
         
-        AssertJUnit.assertNotNull("DOM was not cached after unmarshalling", sxObject.getDOM());
+        Assert.assertNotNull(sxObject.getDOM(), "DOM was not cached after unmarshalling");
         
         List<SimpleXMLObject> children = sxObject.getSimpleXMLObjects();
-        AssertJUnit.assertEquals("Unexpected number of children", 3, children.size());
+        Assert.assertEquals(children.size(), 3, "Unexpected number of children");
         
         SimpleXMLObject child1 = children.get(0);
-        AssertJUnit.assertEquals("Unexpected value (text content) for child 1", "Content1", child1.getValue());
+        Assert.assertEquals(child1.getValue(), "Content1", "Unexpected value (text content) for child 1");
         
         SimpleXMLObject child2 = children.get(1);
-        AssertJUnit.assertEquals("Unexpected value (text content) for child 2", "Content2", child2.getValue());
+        Assert.assertEquals(child2.getValue(), "Content2", "Unexpected value (text content) for child 2");
         
         SimpleXMLObject child3 = children.get(2);
-        AssertJUnit.assertNull("Child had text content when it should not", child3.getValue());
+        Assert.assertNull(child3.getValue(), "Child had text content when it should not");
         
         List<SimpleXMLObject> grandChildren = child3.getSimpleXMLObjects();
-        AssertJUnit.assertEquals("Unexpected number of grandchildren (children for child 3)", 1, grandChildren.size());
+        Assert.assertEquals(grandChildren.size(), 1, "Unexpected number of grandchildren (children for child 3)");
         
         SimpleXMLObject grandChild1 = grandChildren.get(0);
-        AssertJUnit.assertEquals("Unexpected value (text content) for grandchild 1", "Content3", grandChild1.getValue());
+        Assert.assertEquals(grandChild1.getValue(), "Content3", "Unexpected value (text content) for grandchild 1");
     }
 
     /**
@@ -109,8 +109,8 @@ public class UnmarshallingTest extends XMLObjectBaseTestCase {
         Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(document.getDocumentElement());
         SimpleXMLObject sxObject = (SimpleXMLObject) unmarshaller.unmarshall(document.getDocumentElement());
 
-        AssertJUnit.assertNotNull("DOM was not cached after unmarshalling", sxObject.getDOM());
+        Assert.assertNotNull(sxObject.getDOM(), "DOM was not cached after unmarshalling");
         
-        AssertJUnit.assertEquals("Number of children elements was not expected value", 2, sxObject.getSimpleXMLObjects().size());
+        Assert.assertEquals(sxObject.getSimpleXMLObjects().size(), 2, "Number of children elements was not expected value");
     }
 }
